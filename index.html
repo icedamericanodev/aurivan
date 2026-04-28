@@ -614,6 +614,165 @@ header {
   font-weight:600;margin-top:8px;
 }
 
+
+/* CONFIDENCE RATING */
+.conf-row {
+  display:flex;gap:8px;margin-top:16px;justify-content:center;
+}
+.conf-btn {
+  padding:10px 18px;border-radius:10px;border:2px solid var(--border2);
+  background:var(--surface);font-family:"Plus Jakarta Sans",sans-serif;
+  font-size:12px;font-weight:700;cursor:pointer;transition:var(--tr);
+  display:flex;align-items:center;gap:6px;color:var(--text2);
+}
+.conf-btn:hover {transform:translateY(-2px);box-shadow:var(--shadow);}
+.conf-btn[data-conf="sure"]:hover,.conf-btn[data-conf="sure"].picked {
+  border-color:var(--correct);background:var(--correct-light);color:var(--correct);
+}
+.conf-btn[data-conf="educated"]:hover,.conf-btn[data-conf="educated"].picked {
+  border-color:var(--warning);background:var(--warning-light);color:var(--warning);
+}
+.conf-btn[data-conf="guessing"]:hover,.conf-btn[data-conf="guessing"].picked {
+  border-color:var(--wrong);background:var(--wrong-light);color:var(--wrong);
+}
+.conf-label {
+  font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);text-align:center;margin-top:12px;
+  margin-bottom:4px;
+}
+
+/* DOMAIN PROGRESS BAR */
+.dp-coverage {
+  display:flex;align-items:center;gap:6px;margin-top:6px;
+}
+.dp-cov-track {
+  flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;
+}
+.dp-cov-fill {height:100%;border-radius:2px;transition:width 0.6s ease;}
+.dp-cov-text {
+  font-family:"JetBrains Mono",monospace;font-size:8px;color:var(--muted);
+  flex-shrink:0;
+}
+
+/* SESSION SUMMARY MODAL */
+.summary-overlay {
+  position:fixed;inset:0;background:rgba(26,16,8,0.6);z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  animation:flagFadeIn 0.3s ease;
+}
+.summary-modal {
+  background:var(--surface);border:2px solid var(--border2);
+  border-radius:var(--radius);max-width:520px;width:92%;
+  max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);
+  animation:slideUp 0.4s ease both;padding:32px;
+}
+.summary-title {
+  font-family:"Playfair Display",serif;font-size:24px;font-weight:900;
+  text-align:center;margin-bottom:6px;
+}
+.summary-sub {
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:24px;
+}
+.summary-big-score {
+  font-family:"Playfair Display",serif;font-size:64px;font-weight:900;
+  text-align:center;line-height:1;margin-bottom:4px;
+}
+.summary-score-label {
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:24px;
+}
+.summary-grid {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;
+}
+.summary-stat {
+  background:var(--surface2);border:2px solid var(--border);
+  border-radius:12px;padding:14px;text-align:center;
+}
+.summary-stat-num {
+  font-family:"Playfair Display",serif;font-size:24px;font-weight:900;
+  display:block;line-height:1;margin-bottom:4px;
+}
+.summary-stat-label {
+  font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--muted);
+}
+.summary-domain-row {
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.summary-domain-label {
+  font-family:"JetBrains Mono",monospace;font-size:10px;width:80px;
+  flex-shrink:0;font-weight:500;
+}
+.summary-domain-track {
+  flex:1;height:8px;background:var(--border2);border-radius:4px;overflow:hidden;
+}
+.summary-domain-fill {height:100%;border-radius:4px;transition:width 0.8s ease;}
+.summary-domain-pct {
+  font-family:"Playfair Display",serif;font-size:14px;font-weight:900;
+  width:40px;text-align:right;
+}
+.summary-section-label {
+  font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:12px;margin-top:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.summary-section-label::after {content:"";flex:1;height:1px;background:var(--border2);}
+.summary-focus {
+  background:var(--surface2);border:2px solid var(--border);
+  border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;
+  margin-bottom:8px;
+}
+.summary-focus-icon {font-size:20px;flex-shrink:0;}
+.summary-focus-text {font-size:13px;color:var(--text2);font-weight:500;line-height:1.5;}
+.summary-focus-text strong {color:var(--text);}
+.summary-conf-row {
+  display:flex;gap:10px;margin-bottom:20px;justify-content:center;
+}
+.summary-conf-card {
+  background:var(--surface2);border:2px solid var(--border);
+  border-radius:10px;padding:12px 16px;text-align:center;flex:1;
+}
+.summary-conf-num {
+  font-family:"Playfair Display",serif;font-size:20px;font-weight:900;
+  display:block;margin-bottom:2px;
+}
+.summary-conf-label {
+  font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.summary-close {
+  width:100%;padding:14px;border-radius:10px;margin-top:20px;
+  background:var(--text);color:var(--bg);border:none;
+  font-family:"Plus Jakarta Sans",sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:var(--tr);
+}
+.summary-close:hover {background:var(--accent);}
+
+/* REVIEW MISSED BUTTON */
+.review-incorrect-btn {
+  width:100%;padding:14px;border-radius:var(--radius);
+  background:var(--wrong-light);border:2px solid #fca5a5;
+  font-family:"Plus Jakarta Sans",sans-serif;font-size:14px;font-weight:700;
+  color:var(--wrong);cursor:pointer;transition:var(--tr);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:16px;
+}
+.review-incorrect-btn:hover {transform:translateY(-2px);box-shadow:var(--shadow);}
+.review-incorrect-btn .incorrect-count {
+  background:var(--wrong);color:#fff;padding:2px 8px;border-radius:100px;
+  font-size:11px;font-weight:700;
+}
+
+/* SESSION SUMMARY BUTTON */
+.session-btn {
+  background:none;border:2px solid var(--border2);border-radius:10px;
+  padding:8px 16px;font-family:"Plus Jakarta Sans",sans-serif;
+  font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;
+  transition:var(--tr);display:flex;align-items:center;gap:6px;
+}
+.session-btn:hover {border-color:var(--accent);color:var(--accent);}
+
 /* FLAG MODAL */
 .flag-overlay {
   position:fixed;inset:0;background:rgba(26,16,8,0.5);z-index:100;
@@ -732,8 +891,9 @@ header {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill">200 Questions · Free</span>
+    <span class="bank-pill">200 Questions · v3.3</span>
     <button class="whats-new-btn" onclick="showChangelog()">What\x27s New</button>
+    <button class="whats-new-btn" onclick="showSessionSummary()" style="font-size:10px;letter-spacing:0.1em">&#128202; Summary</button>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
   </div>
 </header>
@@ -774,12 +934,13 @@ header {
       <button class="ctrl-btn" data-diff="application" onclick="setDiff(this,'application')">Application</button>
       <button class="ctrl-btn" data-diff="analysis" onclick="setDiff(this,'analysis')">Analysis</button>
     </div>
-    <div class="ctrl-group" style="margin-left:auto">
+    <div class="ctrl-group" style="margin-left:auto" id="timerCtrlArea">
       <span class="ctrl-label">Timer</span>
-      <button class="ctrl-btn active" id="timerToggle" onclick="toggleTimer()">90s ON</button>
+      <button class="ctrl-btn active" onclick="setTimerDuration(90)">90s</button>
     </div>
   </div>
 
+  <div id="missedBtnArea"></div>
   <button class="gen-btn" onclick="nextQ()">
     <span class="gen-icon">✦</span>
     <span id="genBtnText">Start Practice</span>
@@ -864,6 +1025,9 @@ var S = {
   selectedDomain: "1", // string key to match QB
   diff: "any",
   timerEnabled: true,
+  timerSeconds: 0, // 0 = auto (1min per Q), or custom
+  domainTimerActive: false,
+  domainTimerRemaining: 0,
   score: {t:0, c:0},
   // ds keys are strings "1"-"5"
   ds: {"1":{t:0,c:0},"2":{t:0,c:0},"3":{t:0,c:0},"4":{t:0,c:0},"5":{t:0,c:0}},
@@ -881,11 +1045,17 @@ var S = {
   mockQueue: [],
   mockCurrent: 0,
   mockAnswers: [],
+  missedQuestions: [],
+  answeredIds: {},
+  confidenceLog: [],
+  sessionHistory: [],
 };
 
 // ── BUILD QUEUES ──
 function buildQueues() {
+  S.answeredIds = {};
   Object.keys(DI).forEach(function(d) {
+    S.answeredIds[d] = {};
     var qs = (QB[d] || []).slice();
     // shuffle
     for (var i = qs.length - 1; i > 0; i--) {
@@ -901,21 +1071,33 @@ function buildQueues() {
 function getNextQ(domainStr, diff) {
   var pool = S.queues[domainStr] || [];
   if (!pool.length) return null;
+
+  // Check if all questions in this domain have been covered
+  var bankTotal = (QB[domainStr] || []).length;
+  var covered = (S.answeredIds && S.answeredIds[domainStr]) ? Object.keys(S.answeredIds[domainStr]).length : 0;
+  if (covered >= bankTotal && bankTotal > 0) return null;
+
   var filtered = (diff === "any") ? pool : pool.filter(function(q){ return q.difficulty === diff; });
   if (!filtered.length) filtered = pool;
+
+  // Skip questions already answered - find next unanswered
+  var attempts = 0;
+  var maxAttempts = filtered.length;
   var idx = S.qIdx[domainStr] % filtered.length;
-  S.qIdx[domainStr]++;
-  if (S.qIdx[domainStr] >= filtered.length) {
-    // reshuffle
-    var arr = pool.slice();
-    for (var i = arr.length-1; i>0; i--) {
-      var j = Math.floor(Math.random()*(i+1));
-      var t=arr[i];arr[i]=arr[j];arr[j]=t;
+
+  while (attempts < maxAttempts) {
+    var candidate = filtered[idx];
+    var isAnswered = (S.answeredIds && S.answeredIds[domainStr] && candidate.id && S.answeredIds[domainStr][candidate.id]);
+    if (!isAnswered) {
+      S.qIdx[domainStr] = idx + 1;
+      return candidate;
     }
-    S.queues[domainStr] = arr;
-    S.qIdx[domainStr] = 0;
+    idx = (idx + 1) % filtered.length;
+    attempts++;
   }
-  return filtered[idx];
+
+  // All filtered questions answered - return null to trigger domain complete
+  return null;
 }
 
 // ── TAB SWITCHING ──
@@ -949,35 +1131,105 @@ function setDiff(btn, d) {
 // ── TIMER TOGGLE ──
 function toggleTimer() {
   S.timerEnabled = !S.timerEnabled;
-  var btn = document.getElementById('timerToggle');
-  btn.textContent = S.timerEnabled ? '90s ON' : 'Timer OFF';
-  btn.classList.toggle('active', S.timerEnabled);
+  updateTimerDisplay();
+}
+
+function setTimerDuration(mins) {
+  S.timerSeconds = mins; // stored as minutes selection (0=auto)
+  S.timerEnabled = true;
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  var area = document.getElementById('timerCtrlArea');
+  if (!area) return;
+  var bankCount = (QB[S.selectedDomain] || []).length;
+  var coveredCount = (S.answeredIds && S.answeredIds[S.selectedDomain]) ? Object.keys(S.answeredIds[S.selectedDomain]).length : 0;
+  var remaining = bankCount - coveredCount;
+  var autoMins = remaining > 0 ? remaining : bankCount;
+  var html = '<span class="ctrl-label">Session Timer</span>'
+    + '<button class="ctrl-btn' + (!S.timerEnabled ? ' active' : '') + '" onclick="S.timerEnabled=false;S.domainTimerActive=false;clearAllTimers();updateTimerDisplay()">OFF</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 0 ? ' active' : '') + '" onclick="setTimerDuration(0)">Auto (' + autoMins + 'min)</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 15 ? ' active' : '') + '" onclick="setTimerDuration(15)">15min</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 30 ? ' active' : '') + '" onclick="setTimerDuration(30)">30min</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 60 ? ' active' : '') + '" onclick="setTimerDuration(60)">60min</button>';
+  area.innerHTML = html;
 }
 
 // ── CLEAR ALL TIMERS ──
 function clearAllTimers() {
   if (S.practiceTimerInt) { clearInterval(S.practiceTimerInt); S.practiceTimerInt = null; }
   if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
+  S.domainTimerActive = false;
   var ta = document.getElementById('timerArea');
   if (ta) ta.style.display = 'none';
 }
 
 // ── PRACTICE TIMER ──
-function startPracticeTimer(seconds, onExpire) {
-  clearAllTimers();
+function startDomainTimer() {
+  if (!S.timerEnabled || S.domainTimerActive) return;
+  var bankCount = (QB[S.selectedDomain] || []).length;
+  var coveredCount = (S.answeredIds && S.answeredIds[S.selectedDomain]) ? Object.keys(S.answeredIds[S.selectedDomain]).length : 0;
+  var remaining = bankCount - coveredCount;
+  var totalMins;
+  if (S.timerSeconds === 0) {
+    totalMins = remaining > 0 ? remaining : bankCount; // 1 min per question
+  } else {
+    totalMins = S.timerSeconds;
+  }
+  var totalSecs = totalMins * 60;
+  S.domainTimerRemaining = totalSecs;
+  S.domainTimerActive = true;
+
   var ta = document.getElementById('timerArea');
   if (!ta) return;
   ta.style.display = 'block';
-  var total = seconds;
-  ta.innerHTML = '<div class="timer-wrap"><div><div class="timer-digits ok" id="tDig">' + seconds + 's</div><div class="timer-sub">Time Remaining</div></div><div class="timer-track"><div class="timer-fill" id="tFill" style="width:100%;background:#6ee7b7"></div></div></div>';
+  var total = totalSecs;
+
+  function formatTime(s) {
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  ta.innerHTML = '<div class="timer-wrap"><div><div class="timer-digits ok" id="tDig">' + formatTime(totalSecs) + '</div><div class="timer-sub">Session Timer (' + totalMins + ' min)</div></div><div class="timer-track"><div class="timer-fill" id="tFill" style="width:100%;background:#6ee7b7"></div></div></div>';
+
+  if (S.practiceTimerInt) clearInterval(S.practiceTimerInt);
   S.practiceTimerInt = setInterval(function(){
-    seconds--;
+    S.domainTimerRemaining--;
+    var secs = S.domainTimerRemaining;
     var d = document.getElementById('tDig');
     var f = document.getElementById('tFill');
-    if (d) { d.textContent = seconds + 's'; d.className = 'timer-digits ' + (seconds<=15?'urgent':seconds<=30?'warn':'ok'); }
-    if (f) { f.style.width = ((seconds/total)*100) + '%'; f.style.background = seconds<=15?'#fca5a5':seconds<=30?'#fcd34d':'#6ee7b7'; }
-    if (seconds <= 0) { clearAllTimers(); onExpire(); }
+    var urgentThreshold = total * 0.1;
+    var warnThreshold = total * 0.25;
+    if (d) {
+      d.textContent = formatTime(secs);
+      d.className = 'timer-digits ' + (secs <= urgentThreshold ? 'urgent' : secs <= warnThreshold ? 'warn' : 'ok');
+    }
+    if (f) {
+      f.style.width = ((secs/total)*100) + '%';
+      f.style.background = secs <= urgentThreshold ? '#fca5a5' : secs <= warnThreshold ? '#fcd34d' : '#6ee7b7';
+    }
+    if (secs <= 0) {
+      clearAllTimers();
+      S.domainTimerActive = false;
+      document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--wrong-light);border:2px solid #fca5a5;border-radius:var(--radius);padding:36px">'
+        + '<div class="empty-icon">\u23f0</div>'
+        + '<div class="empty-title" style="color:var(--wrong)">Time is Up!</div>'
+        + '<div class="empty-sub">Your ' + totalMins + '-minute session has ended.</div>'
+        + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
+        + '<button class="act-btn primary" onclick="showSessionSummary()" style="background:var(--accent);border-color:var(--accent);color:#fff">\ud83d\udcca View Summary</button>'
+        + '<button class="act-btn secondary" onclick="backToPractice()">Continue Without Timer</button>'
+        + '</div></div>';
+      var genBtn = document.querySelector('.gen-btn');
+      if (genBtn) genBtn.style.display = 'none';
+    }
   }, 1000);
+}
+
+function startPracticeTimer(seconds, onExpire) {
+  // Legacy compatibility - now starts domain timer instead
+  if (!S.domainTimerActive) startDomainTimer();
 }
 
 // ── MOCK TIMER ──
@@ -1008,6 +1260,7 @@ function updateStats() {
   var bd = document.getElementById('bkBadge');
   bd.textContent = n;
   bd.style.display = n > 0 ? 'inline' : 'none';
+  updateMissedBtn();
 }
 
 // ── MINDSET ROTATION ──
@@ -1034,13 +1287,15 @@ function renderDomainGrid() {
     var pc = pct===null?'var(--muted)':pct>=75?'var(--correct)':pct>=50?'var(--warning)':'var(--wrong)';
     var isSelected = S.selectedDomain === d;
     var bankCount = (QB[d]||[]).length;
+    var coveredCount = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
+    var covPct = bankCount > 0 ? Math.round((coveredCount / bankCount) * 100) : 0;
     var pctText = pct !== null ? pct + '%' : '--';
     var triedText = st.t > 0 ? st.c + '/' + st.t : '0 attempts';
     html += '<div class="domain-card ' + (isSelected?'selected':'') + '" data-d="' + d + '" onclick="selectDomain(' + d + ')">';
     html += '<span class="dc-num">' + d + '</span>';
     html += '<span class="dc-name">' + info.short + '</span>';
     html += '<span class="dc-pct" style="color:' + (isSelected?'#fff':pc) + '">' + pctText + '</span>';
-    html += '<div class="dc-tried" style="color:' + (isSelected?'rgba(255,255,255,0.7)':'var(--muted)') + '">' + triedText + ' &middot; ' + bankCount + 'Q</div>';
+    html += '<div class="dc-tried" style="color:' + (isSelected?'rgba(255,255,255,0.7)':'var(--muted)') + '">' + triedText + ' &middot; ' + coveredCount + '/' + bankCount + ' covered</div>';
     html += '<div class="bar" style="width:' + (pct||0) + '%"></div>';
     html += '</div>';
   });
@@ -1050,6 +1305,12 @@ function renderDomainGrid() {
 // ── NEXT PRACTICE QUESTION ──
 function nextQ() {
   clearAllTimers();
+  // If in missed review mode, show next missed instead
+  if (missedReviewMode) {
+    missedReviewIndex++;
+    showNextMissed();
+    return;
+  }
   var q = getNextQ(S.selectedDomain, S.diff);
   if (!q) {
     document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">No questions found</div><div class="empty-sub">Try a different difficulty or domain.</div></div>';
@@ -1059,11 +1320,12 @@ function nextQ() {
   S.qn++;
   document.getElementById('genBtnText').textContent = 'Next Question';
   renderQuestion(q);
-  if (S.timerEnabled) startPracticeTimer(90, function(){ onPracticeTimeout(); });
+  if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
 }
 
 // ── PRACTICE TIMEOUT ──
 function onPracticeTimeout() {
+  if (!S.current) return;
   document.querySelectorAll('.opt').forEach(function(b){
     b.disabled = true;
     if (b.dataset.l === S.current.correct) b.classList.add('reveal');
@@ -1073,6 +1335,18 @@ function onPracticeTimeout() {
   if (!S.ds[d]) S.ds[d] = {t:0,c:0};
   S.ds[d].t++;
   S.streak = 0;
+  // Track as missed (timeout = wrong)
+  if (S.current && S.missedQuestions) {
+    var alreadyMissed = false;
+    for (var m = 0; m < S.missedQuestions.length; m++) {
+      if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
+    }
+    if (!alreadyMissed) S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+  }
+  if (S.current.id && S.answeredIds && S.answeredIds[d]) {
+    S.answeredIds[d][S.current.id] = true;
+  }
+  S.sessionHistory.push({domain:d,correct:false,confidence:"none",question:S.current.question.substring(0,80)});
   updateStats();
   renderDomainGrid();
   showResult(null, S.current.correct, true);
@@ -1085,7 +1359,7 @@ function renderQuestion(q) {
   var letters = ['A','B','C','D'];
   var isBk = S.bookmarks.some(function(b){ return b.id === q.id; });
   var optsHtml = letters.map(function(l){
-    return '<button class="opt" data-l="' + l + '" onclick="selectAnswer(\'' + l + '\',\'' + q.correct + '\')">'
+    return '<button class="opt" data-l="' + l + '" onclick="selectAnswer(\'' + l + '\',\'' + q.correct + '\')" disabled>'
       + '<span class="opt-letter">' + l + '</span>'
       + '<span>' + q.options[l] + '</span>'
       + '</button>';
@@ -1102,13 +1376,19 @@ function renderQuestion(q) {
     + '<span class="diff-tag ' + diffClass + '">' + bloomLabel + '</span>'
     + subtopicHtml
     + '<div class="q-meta">'
-    + '<span class="q-num">#' + S.qn + '</span>'
+    + '<span class="q-num">#' + getQuestionNumber(q) + '</span>'
     + '<button class="bk-btn' + (isBk?' saved':'') + '" id="bkBtn" onclick="toggleBookmark()">&#128278;</button>'
     + '<button class="fl-btn" onclick="showFlagModal()" title="Flag this question">&#9873;</button>'
     + '</div></div>'
     + '<div class="q-body">'
     + '<p class="q-text">' + q.question + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
+    + '<div class="conf-label">How confident are you?</div>'
+    + '<div class="conf-row">'
+    + '<button class="conf-btn" data-conf="sure" onclick="setConfidence(\x27sure\x27)">\ud83d\udcaa Sure</button>'
+    + '<button class="conf-btn" data-conf="educated" onclick="setConfidence(\x27educated\x27)">\ud83e\udd14 Educated Guess</button>'
+    + '<button class="conf-btn" data-conf="guessing" onclick="setConfidence(\x27guessing\x27)">\ud83c\udfb2 Guessing</button>'
+    + '</div>'
     + '</div>'
     + '<div class="result-panel" id="rPanel"></div>'
     + '</div>';
@@ -1116,7 +1396,10 @@ function renderQuestion(q) {
 
 // ── SELECT ANSWER ──
 function selectAnswer(chosen, correct) {
+  if (!S.current) return;
   clearAllTimers();
+  // Hide confidence buttons
+  document.querySelectorAll(".conf-btn").forEach(function(b){ b.disabled = true; });
   document.querySelectorAll('.opt').forEach(function(b){
     b.disabled = true;
     var l = b.dataset.l;
@@ -1131,6 +1414,42 @@ function selectAnswer(chosen, correct) {
   if (!S.ds[d]) S.ds[d] = {t:0,c:0};
   S.ds[d].t++;
   if (ok) S.ds[d].c++;
+
+  // Track answered question ID for coverage
+  if (S.current.id && S.answeredIds[d]) {
+    S.answeredIds[d][S.current.id] = true;
+  }
+
+  // Track missed questions for spaced repetition
+  if (!ok && S.current) {
+    var alreadyMissed = false;
+    for (var m = 0; m < S.missedQuestions.length; m++) {
+      if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
+    }
+    if (!alreadyMissed) S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+  }
+  // Remove from missed if answered correctly
+  if (ok && S.current) {
+    S.missedQuestions = S.missedQuestions.filter(function(q){ return q.id !== S.current.id; });
+  }
+
+  // Log confidence
+  S.confidenceLog.push({
+    qId: S.current.id || "unknown",
+    confidence: currentConfidence,
+    correct: ok
+  });
+
+  // Session history
+  S.sessionHistory.push({
+    domain: d,
+    correct: ok,
+    confidence: currentConfidence,
+    question: S.current.question.substring(0, 80)
+  });
+
+  currentConfidence = "none";
+
   updateStats();
   renderDomainGrid();
   showResult(chosen, correct, false);
@@ -1279,7 +1598,7 @@ function renderMockSetup() {
   document.getElementById('mockArea').innerHTML =
     '<div class="mock-setup-card">'
     + '<div class="mock-title">CISA Mock Exam</div>'
-    + '<div class="mock-sub">30 questions weighted by real exam percentages.<br>90 seconds per question. <strong>No explanations until the end.</strong></div>'
+    + '<div class="mock-sub">30 questions weighted by real exam percentages.<br>Timed session. <strong>No explanations until the end.</strong></div>'
     + '<div class="mock-chips">' + chipsHtml + '</div>'
     + '<button class="mock-start" onclick="startMock()">Start Mock Exam &rarr;</button>'
     + '</div>';
@@ -1332,7 +1651,7 @@ function showMockQuestion() {
     + '<div style="height:6px;background:var(--border2);border-radius:3px;margin-bottom:20px;overflow:hidden">'
     + '<div style="height:100%;width:' + progressPct + '%;background:var(--accent);border-radius:3px;transition:width 0.4s ease"></div></div>'
     + '<div class="timer-wrap" style="margin-bottom:16px">'
-    + '<div><div class="timer-digits ok" id="mTD">90s</div><div class="timer-sub">Time Remaining</div></div>'
+    + '<div><div class="timer-digits ok" id="mTD">90s</div><div class="timer-sub">Per Question (Mock Exam)</div></div>'
     + '<div class="timer-track"><div class="timer-fill" id="mTF" style="width:100%;background:#6ee7b7"></div></div>'
     + '</div>'
     + '<div class="q-card">'
@@ -1351,9 +1670,33 @@ function showMockQuestion() {
 }
 
 function selectMockAnswer(chosen, correct) {
-  clearAllTimers();
+  if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
   var ok = chosen === correct;
   S.mockAnswers[S.mockCurrent] = {q: S.current, chosen: chosen, correct: correct, ok: ok};
+
+  // Track in domain stats so Weak Spots reflects mock performance
+  if (S.current) {
+    var d = String(S.current.domain);
+    if (!S.ds[d]) S.ds[d] = {t:0, c:0};
+    S.ds[d].t++;
+    if (ok) S.ds[d].c++;
+    S.score.t++;
+    if (ok) S.score.c++;
+    // Track answered ID
+    if (S.current.id && S.answeredIds && S.answeredIds[d]) {
+      S.answeredIds[d][S.current.id] = true;
+    }
+    // Track incorrect for review
+    if (!ok) {
+      var alreadyMissed = false;
+      if (S.missedQuestions) {
+        for (var m = 0; m < S.missedQuestions.length; m++) {
+          if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
+        }
+        if (!alreadyMissed) S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+      }
+    }
+  }
   document.querySelectorAll('#mOpts .opt').forEach(function(b){
     b.disabled = true;
     var l = b.dataset.l;
@@ -1421,7 +1764,12 @@ function showMockResults() {
     + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
     + '<button class="act-btn secondary" onclick="renderMockSetup()">Retake Mock</button>'
     + '<button class="act-btn primary" onclick="switchTab(\x27weakspots\x27)">View Weak Spots &rarr;</button>'
-    + '</div></div></div>';
+    + '</div>'
+    + '<div style="margin-top:28px">'
+    + '<div style="font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px">Answer Key<span style=\x27flex:1;height:1px;background:var(--border2)\x27></span></div>'
+    + buildMockAnswerKey(answers)
+    + '</div>'
+    + '</div></div>';
 }
 
 
@@ -1455,7 +1803,7 @@ var onboardSteps = [
     desc: "These tools help you study smarter and give feedback.",
     features: [
       {icon: "\ud83d\udd16", text: "<strong>Bookmark</strong> tricky questions to review later from the Saved tab"},
-      {icon: "\u23f1\ufe0f", text: "<strong>90-second timer</strong> trains exam pace. Toggle it on/off anytime."},
+      {icon: "\u23f1\ufe0f", text: "<strong>Session timer (set your own pace)</strong> set your own session timer to practice at exam pace. Options: Auto (1 min/question), 15, 30, or 60 minutes."},
       {icon: "\ud83d\udcc8", text: "<strong>Weak Spots tab</strong> shows which domains need more practice"},
       {icon: "\u2691", text: "<strong>Flag a question</strong> if you think an answer is wrong or unclear. Your feedback goes directly to the developer!"}
     ]
@@ -1551,10 +1899,316 @@ function checkOnboarding() {
 buildQueues();
 renderDomainGrid();
 updateStats();
+updateTimerDisplay();
 setInterval(rotateMindset, 7500);
 checkOnboarding();
 
 
+
+
+// ── CONFIDENCE RATING ──
+var currentConfidence = "none";
+
+function setConfidence(level) {
+  currentConfidence = level;
+  document.querySelectorAll(".conf-btn").forEach(function(b) {
+    b.classList.toggle("picked", b.dataset.conf === level);
+  });
+  // Enable answer options after confidence is selected
+  document.querySelectorAll(".opt").forEach(function(b) {
+    b.disabled = false;
+  });
+}
+
+
+
+
+// ── DOMAIN COMPLETE SCREEN ──
+function showDomainComplete(d) {
+  d = String(d);
+  var info = DI[d];
+  var bankTotal = (QB[d] || []).length;
+  var st = S.ds[d] || {t:0, c:0};
+  var pct = st.t > 0 ? Math.round((st.c / st.t) * 100) : 0;
+  var pctColor = pct >= 75 ? 'var(--correct)' : pct >= 50 ? 'var(--warning)' : 'var(--wrong)';
+  var domMissed = S.missedQuestions ? S.missedQuestions.filter(function(mq){ return String(mq.domain) === d; }) : [];
+
+  // Hide the generate button and missed button
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'none';
+  var missedArea = document.getElementById('missedBtnArea');
+  if (missedArea) missedArea.innerHTML = '';
+
+  var missedListHtml = '';
+  if (domMissed.length > 0) {
+    missedListHtml = '<div style="margin-top:20px;text-align:left">'
+      + '<div style="font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Incorrect Answers to Review (' + domMissed.length + ')</div>';
+    for (var i = 0; i < domMissed.length; i++) {
+      var mq = domMissed[i];
+      var qNum = getQuestionNumber(mq);
+      missedListHtml += '<div style="background:var(--wrong-light);border:2px solid #fca5a5;border-radius:10px;padding:12px 16px;margin-bottom:8px;cursor:pointer;transition:all 0.2s ease" onclick="reviewSpecificMissed(\x27' + d + '\x27,' + i + ')" onmouseover="this.style.transform=\x27translateX(4px)\x27" onmouseout="this.style.transform=\x27none\x27">'
+        + '<div style="display:flex;align-items:center;gap:10px">'
+        + '<span style="font-family:\x27Playfair Display\x27,serif;font-size:16px;font-weight:900;color:var(--wrong)">#' + qNum + '</span>'
+        + '<span style="font-size:13px;color:var(--text2);font-weight:500;line-height:1.5">' + mq.question.substring(0, 100) + (mq.question.length > 100 ? '...' : '') + '</span>'
+        + '</div></div>';
+    }
+    missedListHtml += '</div>';
+  }
+
+  document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid #a7f3d0;border-radius:var(--radius);padding:36px 28px">'
+    + '<div class="empty-icon">\ud83c\udfc6</div>'
+    + '<div class="empty-title" style="color:var(--correct)">Domain ' + d + ' Complete!</div>'
+    + '<div class="empty-sub">You answered all ' + bankTotal + ' questions in ' + info.name + '</div>'
+    + '<div style="margin-top:16px;font-family:\x27Playfair Display\x27,serif;font-size:48px;font-weight:900;color:' + pctColor + '">' + pct + '%</div>'
+    + '<div style="font-family:\x27JetBrains Mono\x27,monospace;font-size:10px;color:var(--muted);margin-bottom:20px">' + st.c + ' of ' + st.t + ' correct</div>'
+    + missedListHtml
+    + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
+    + '<button class="act-btn primary" onclick="restartAndShowBtn(\x27' + d + '\x27)" style="background:var(--accent);border-color:var(--accent);color:#fff">\ud83d\udd04 Restart Domain</button>'
+    + (domMissed.length > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + d + '\x27)" style="background:var(--wrong);border-color:var(--wrong);color:#fff">\ud83d\udcdd Review All Incorrect ' + domMissed.length + ' Missed</button>' : '')
+    + '<button class="act-btn secondary" onclick="showSessionSummary()">\ud83d\udcca View Summary</button>'
+    + '</div></div>';
+}
+
+function restartAndShowBtn(d) {
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  resetDomain(d);
+}
+
+// ── PERMANENT QUESTION NUMBER ──
+function getQuestionNumber(q) {
+  if (!q || !q.id || !q.domain) return "?";
+  var d = String(q.domain);
+  var bank = QB[d] || [];
+  for (var i = 0; i < bank.length; i++) {
+    if (bank[i].id === q.id) return (i + 1);
+  }
+  return "?";
+}
+
+// ── RESET DOMAIN ──
+function resetDomain(d) {
+  d = String(d);
+  if (S.answeredIds && S.answeredIds[d]) S.answeredIds[d] = {};
+  S.qIdx[d] = 0;
+  // Reshuffle the domain queue
+  var qs = (QB[d] || []).slice();
+  for (var i = qs.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = qs[i]; qs[i] = qs[j]; qs[j] = tmp;
+  }
+  S.queues[d] = qs;
+  renderDomainGrid();
+  nextQ();
+}
+
+// ── REVIEW MISSED QUESTIONS ──
+function updateMissedBtn() {
+  var area = document.getElementById("missedBtnArea");
+  if (!area) return;
+  if (S.missedQuestions && S.missedQuestions.length > 0) {
+    var domMissed = S.missedQuestions.filter(function(q){ return String(q.domain) === S.selectedDomain; });
+    var missedLabel = domMissed.length > 0
+      ? '\ud83d\udd04 Review Incorrect (D' + S.selectedDomain + ': ' + domMissed.length + ' | Total: ' + S.missedQuestions.length + ')'
+      : '\ud83d\udd04 Review All Incorrect Incorrect Answers';
+    area.innerHTML = '<button class="review-incorrect-btn" onclick="reviewMissed()">'
+      + missedLabel + ' <span class="incorrect-count">' + S.missedQuestions.length + '</span>'
+      + '</button>';
+  } else {
+    area.innerHTML = "";
+  }
+}
+
+var missedReviewMode = false;
+var missedReviewQueue = [];
+var missedReviewIndex = 0;
+var missedReviewDomain = null;
+
+function reviewMissed() {
+  if (!S.missedQuestions || S.missedQuestions.length === 0) {
+    document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">\u2705</div><div class="empty-title">No incorrect answers!</div><div class="empty-sub">Great job! You have no incorrect answers to review.</div></div>';
+    return;
+  }
+  // Start review of all missed for current domain
+  startMissedReview(S.selectedDomain);
+}
+
+function startMissedReview(d) {
+  d = String(d);
+  missedReviewDomain = d;
+  missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
+  if (missedReviewQueue.length === 0) {
+    missedReviewQueue = S.missedQuestions.slice();
+    missedReviewDomain = "all";
+  }
+  missedReviewIndex = 0;
+  missedReviewMode = true;
+  // Show gen button again
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  showNextMissed();
+}
+
+function reviewSpecificMissed(d, idx) {
+  d = String(d);
+  missedReviewDomain = d;
+  missedReviewQueue = S.missedQuestions.filter(function(q){ return String(q.domain) === d; });
+  missedReviewIndex = idx;
+  missedReviewMode = true;
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  showNextMissed();
+}
+
+function showNextMissed() {
+  clearAllTimers();
+  if (missedReviewIndex >= missedReviewQueue.length) {
+    // All missed reviewed
+    missedReviewMode = false;
+    var remaining = S.missedQuestions.filter(function(q){ 
+      return missedReviewDomain === "all" || String(q.domain) === missedReviewDomain; 
+    }).length;
+    document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid #a7f3d0;border-radius:var(--radius);padding:36px">'
+      + '<div class="empty-icon">\ud83c\udf89</div>'
+      + '<div class="empty-title" style="color:var(--correct)">Review Complete!</div>'
+      + '<div class="empty-sub">' + (remaining > 0 ? remaining + ' questions still in your review queue (answered incorrectly again).' : 'You answered all review questions correctly! Great work!') + '</div>'
+      + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
+      + (remaining > 0 ? '<button class="act-btn primary" onclick="startMissedReview(\x27' + missedReviewDomain + '\x27)" style="background:var(--wrong);border-color:var(--wrong);color:#fff">\ud83d\udd04 Review Incorrect Again (' + remaining + ')</button>' : '')
+      + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
+      + '</div></div>';
+    document.getElementById("genBtnText").textContent = "Start Practice";
+    return;
+  }
+  var q = missedReviewQueue[missedReviewIndex];
+  S.current = q;
+  S.qn++;
+  var totalInReview = missedReviewQueue.length;
+  var currentInReview = missedReviewIndex + 1;
+  document.getElementById("genBtnText").textContent = "Next Review (" + currentInReview + "/" + totalInReview + ")";
+  renderQuestion(q);
+  if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
+  setTimeout(function(){
+    var qArea = document.getElementById("qArea");
+    if (qArea) qArea.scrollIntoView({behavior:"smooth", block:"start"});
+  }, 100);
+}
+
+function backToPractice() {
+  missedReviewMode = false;
+  document.getElementById("genBtnText").textContent = "Start Practice";
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">\ud83e\udde0</div><div class="empty-title">Ready to continue?</div><div class="empty-sub">Select a domain and hit Start Practice.</div></div>';
+  renderDomainGrid();
+  updateStats();
+}
+
+// ── SESSION SUMMARY ──
+function showSessionSummary() {
+  if (S.score.t === 0) {
+    alert("No questions answered yet! Start practicing first.");
+    return;
+  }
+
+  var t = S.score.t, c = S.score.c;
+  var pct = Math.round((c / t) * 100);
+  var pctColor = pct >= 75 ? "var(--correct)" : pct >= 50 ? "var(--warning)" : "var(--wrong)";
+
+  // Confidence breakdown
+  var confSure = 0, confEdu = 0, confGuess = 0, confNone = 0;
+  var confSureCorrect = 0, confEduCorrect = 0, confGuessCorrect = 0;
+  for (var i = 0; i < S.confidenceLog.length; i++) {
+    var cl = S.confidenceLog[i];
+    if (cl.confidence === "sure") { confSure++; if (cl.correct) confSureCorrect++; }
+    else if (cl.confidence === "educated") { confEdu++; if (cl.correct) confEduCorrect++; }
+    else if (cl.confidence === "guessing") { confGuess++; if (cl.correct) confGuessCorrect++; }
+    else { confNone++; }
+  }
+
+  // Domain breakdown
+  var domainHtml = "";
+  var weakestDomain = null;
+  var weakestPct = 101;
+  Object.keys(DI).forEach(function(d) {
+    var st = S.ds[d] || {t:0, c:0};
+    var dp = st.t > 0 ? Math.round((st.c / st.t) * 100) : null;
+    var bc = dp === null ? "var(--muted)" : dp >= 75 ? "var(--correct)" : dp >= 50 ? "var(--warning)" : "var(--wrong)";
+    var info = DI[d];
+    if (dp !== null && dp < weakestPct) { weakestPct = dp; weakestDomain = d; }
+    domainHtml += '<div class="summary-domain-row">'
+      + '<span class="summary-domain-label" style="color:' + info.color + '">D' + d + ' ' + info.short + '</span>'
+      + '<div class="summary-domain-track"><div class="summary-domain-fill" style="width:' + (dp || 0) + '%;background:' + bc + '"></div></div>'
+      + '<span class="summary-domain-pct" style="color:' + bc + '">' + (dp !== null ? dp + "%" : "--") + '</span>'
+      + '</div>';
+  });
+
+  // Suggested focus
+  var focusHtml = "";
+  if (weakestDomain && weakestPct < 75) {
+    var wInfo = DI[weakestDomain];
+    focusHtml = '<div class="summary-focus">'
+      + '<span class="summary-focus-icon">' + (weakestPct < 50 ? "\ud83d\udcd5" : "\ud83d\udcd9") + '</span>'
+      + '<span class="summary-focus-text"><strong>Focus next session on Domain ' + weakestDomain + ': ' + wInfo.name + '</strong> \u2014 currently at ' + weakestPct + '%. Target 75%+ for exam readiness.</span>'
+      + '</div>';
+  } else {
+    focusHtml = '<div class="summary-focus"><span class="summary-focus-icon">\u2705</span>'
+      + '<span class="summary-focus-text"><strong>All attempted domains at 75%+!</strong> Keep building coverage across all domains.</span></div>';
+  }
+
+  // Confidence insight
+  var confInsight = "";
+  if (confGuess > 0 && confGuessCorrect > 0) {
+    var luckyPct = Math.round((confGuessCorrect / confGuess) * 100);
+    confInsight = '<div class="summary-focus"><span class="summary-focus-icon">\ud83c\udfb2</span>'
+      + '<span class="summary-focus-text">You got <strong>' + luckyPct + '%</strong> correct on questions you were guessing on. '
+      + (luckyPct > 50 ? 'You might know more than you think!' : 'These are great areas to review deeper.')
+      + '</span></div>';
+  }
+
+  // Missed questions note
+  var missedHtml = "";
+  if (S.missedQuestions.length > 0) {
+    missedHtml = '<div class="summary-focus"><span class="summary-focus-icon">\ud83d\udd04</span>'
+      + '<span class="summary-focus-text"><strong>' + S.missedQuestions.length + ' incorrect answers</strong> in your review queue for spaced repetition.</span></div>';
+  }
+
+  var confCards = '<div class="summary-conf-row">'
+    + '<div class="summary-conf-card"><span class="summary-conf-num" style="color:var(--correct)">' + confSure + '</span><span class="summary-conf-label">Sure</span>'
+    + (confSure > 0 ? '<div style="font-size:10px;color:var(--muted);margin-top:4px">' + Math.round((confSureCorrect/confSure)*100) + '% correct</div>' : '') + '</div>'
+    + '<div class="summary-conf-card"><span class="summary-conf-num" style="color:var(--warning)">' + confEdu + '</span><span class="summary-conf-label">Edu. Guess</span>'
+    + (confEdu > 0 ? '<div style="font-size:10px;color:var(--muted);margin-top:4px">' + Math.round((confEduCorrect/confEdu)*100) + '% correct</div>' : '') + '</div>'
+    + '<div class="summary-conf-card"><span class="summary-conf-num" style="color:var(--wrong)">' + confGuess + '</span><span class="summary-conf-label">Guessing</span>'
+    + (confGuess > 0 ? '<div style="font-size:10px;color:var(--muted);margin-top:4px">' + Math.round((confGuessCorrect/confGuess)*100) + '% correct</div>' : '') + '</div>'
+    + '</div>';
+
+  var modal = document.getElementById("changelogModal");
+  modal.innerHTML = '<div class="summary-overlay" onclick="closeSummary(event)">'
+    + '<div class="summary-modal" onclick="event.stopPropagation()">'
+    + '<div class="summary-title">Session Summary</div>'
+    + '<div class="summary-sub">Your practice session so far</div>'
+    + '<div class="summary-big-score" style="color:' + pctColor + '">' + pct + '%</div>'
+    + '<div class="summary-score-label">' + c + ' of ' + t + ' correct</div>'
+    + '<div class="summary-grid">'
+    + '<div class="summary-stat"><span class="summary-stat-num">' + t + '</span><span class="summary-stat-label">Answered</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num" style="color:var(--correct)">' + c + '</span><span class="summary-stat-label">Correct</span></div>'
+    + '<div class="summary-stat"><span class="summary-stat-num">' + S.streak + '</span><span class="summary-stat-label">Best Streak</span></div>'
+    + '</div>'
+    + '<div class="summary-section-label">Confidence Breakdown</div>'
+    + confCards
+    + '<div class="summary-section-label">Domain Performance</div>'
+    + domainHtml
+    + '<div class="summary-section-label">Recommendations</div>'
+    + focusHtml
+    + confInsight
+    + missedHtml
+    + '<button class="summary-close" onclick="closeSummary()">Back to Practice</button>'
+    + '</div></div>';
+}
+
+function closeSummary(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById("changelogModal").innerHTML = "";
+}
 
 // ── FLAG FEATURE ──
 var FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeC_qbKjnMdW9usvkDHD-ApL_OFjrJ1FyQ7PMMjzjJfaFVa2A/formResponse";
@@ -1597,27 +2251,123 @@ function submitFlag() {
   var qId = q.id || "unknown";
   var qText = q.question.substring(0, 200);
 
-  var params = new URLSearchParams();
-  params.append("entry.1891345476", qId);
-  params.append("entry.1124626728", qText);
-  params.append("entry.1258820406", reason);
-  params.append("entry.585821877", comment || "No comment");
+  // Use hidden iframe method for reliable Google Form submission
+  var iframe = document.createElement("iframe");
+  iframe.name = "flagSubmitFrame";
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
 
-  fetch(FORM_URL + "?" + params.toString(), {
-    method: "GET",
-    mode: "no-cors"
-  }).then(function(){
-    var status = document.getElementById("flagStatus");
-    if (status) {
-      status.innerHTML = '<div class="flag-success">&#9989; Flag submitted! Thank you for your feedback.</div>';
+  var form = document.createElement("form");
+  form.method = "POST";
+  form.action = FORM_URL;
+  form.target = "flagSubmitFrame";
+
+  var fields = {
+    "entry.1891345476": qId,
+    "entry.1124626728": qText,
+    "entry.1258820406": reason,
+    "entry.585821877": comment || "No comment"
+  };
+
+  for (var key in fields) {
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = fields[key];
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+
+  // Clean up after submission
+  setTimeout(function() {
+    document.body.removeChild(form);
+    document.body.removeChild(iframe);
+  }, 2000);
+
+  // Show success immediately (form submits in background)
+  var status = document.getElementById("flagStatus");
+  if (status) {
+    status.innerHTML = '<div class="flag-success">&#9989; Flag submitted! Thank you for your feedback.</div>';
+  }
+  setTimeout(function(){ closeFlagModal(); }, 1500);
+}
+
+
+// ── MOCK EXAM ANSWER KEY ──
+function buildMockAnswerKey(answers) {
+  var html = '';
+  for (var i = 0; i < answers.length; i++) {
+    var a = answers[i];
+    if (!a.q) continue;
+    var qNum = getQuestionNumber(a.q);
+    var info = DI[String(a.q.domain)];
+    var isCorrect = a.ok;
+    var borderColor = isCorrect ? '#a7f3d0' : '#fca5a5';
+    var bgColor = isCorrect ? 'var(--correct-light)' : 'var(--wrong-light)';
+    var statusIcon = isCorrect ? '\u2705' : '\u274c';
+    var userAns = a.chosen || 'Timed out';
+    var correctAns = a.correct;
+
+    html += '<div style="background:' + bgColor + ';border:2px solid ' + borderColor + ';border-radius:12px;padding:14px 16px;margin-bottom:8px">'
+      + '<div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="toggleMockDetail(' + i + ')">'
+      + '<span style="font-size:14px">' + statusIcon + '</span>'
+      + '<span style="font-family:\x27Playfair Display\x27,serif;font-size:14px;font-weight:900;color:' + info.color + '">D' + a.q.domain + ' #' + qNum + '</span>'
+      + '<span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;color:var(--muted)">' + (a.q.subtopic || '') + '</span>'
+      + '<span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
+      + '<span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:10px;font-weight:500">' + (isCorrect ? '' : 'You: <strong style=\"color:var(--wrong)\">' + userAns + '</strong> Correct: <strong style=\"color:var(--correct)\">' + correctAns + '</strong>') + '</span>'
+      + '<span style="font-size:12px;color:var(--muted);transition:transform 0.2s" id="mockChevron' + i + '">\u25bc</span>'
+      + '</span>'
+      + '</div>'
+      + '<div id="mockDetail' + i + '" style="display:none;margin-top:12px">'
+      + '<div style="font-family:\x27Playfair Display\x27,serif;font-size:13px;font-weight:700;line-height:1.7;margin-bottom:10px;color:var(--text)">' + a.q.question + '</div>';
+
+    // Show all 4 options with correct/wrong marking
+    var letters = ['A','B','C','D'];
+    for (var j = 0; j < letters.length; j++) {
+      var l = letters[j];
+      var optText = a.q.options[l] || '';
+      var isThisCorrect = l === correctAns;
+      var isThisChosen = l === a.chosen;
+      var optStyle = isThisCorrect
+        ? 'background:var(--correct-light);border:2px solid #a7f3d0;'
+        : isThisChosen
+          ? 'background:var(--wrong-light);border:2px solid #fca5a5;'
+          : 'background:var(--surface2);border:2px solid var(--border);';
+      var optIcon = isThisCorrect ? '\u2705 ' : isThisChosen && !isThisCorrect ? '\u274c ' : '';
+      html += '<div style="' + optStyle + 'border-radius:10px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px">'
+        + '<span style="font-family:\x27Playfair Display\x27,serif;font-size:13px;font-weight:900;flex-shrink:0;margin-top:1px">' + optIcon + l + '</span>'
+        + '<span style="font-size:12.5px;line-height:1.6;color:var(--text2)">' + optText + '</span>'
+        + '</div>';
     }
-    setTimeout(function(){ closeFlagModal(); }, 1500);
-  }).catch(function(){
-    var status = document.getElementById("flagStatus");
-    if (status) {
-      status.innerHTML = '<div class="flag-success" style="background:var(--wrong-light);color:var(--wrong);border-color:#fca5a5">Could not submit. Please try again.</div>';
+
+    // Explanation
+    if (a.q.correct_explanation) {
+      html += '<div style="font-size:12.5px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:10px;margin-top:8px">'
+        + '<strong style="color:var(--correct)">Why ' + correctAns + ' is correct:</strong> ' + a.q.correct_explanation
+        + '</div>';
     }
-  });
+    if (a.q.framework_ref) {
+      html += '<div style="margin-top:6px"><span style="display:inline-flex;align-items:center;gap:5px;background:var(--d2-light);border:1.5px solid var(--d2-border);border-radius:100px;padding:3px 10px;font-family:\x27JetBrains Mono\x27,monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--d2)">\ud83d\udccb ' + a.q.framework_ref + '</span></div>';
+    }
+
+    html += '</div></div>';
+  }
+  return html;
+}
+
+function toggleMockDetail(i) {
+  var detail = document.getElementById('mockDetail' + i);
+  var chevron = document.getElementById('mockChevron' + i);
+  if (!detail) return;
+  if (detail.style.display === 'none') {
+    detail.style.display = 'block';
+    if (chevron) chevron.style.transform = 'rotate(180deg)';
+  } else {
+    detail.style.display = 'none';
+    if (chevron) chevron.style.transform = 'rotate(0deg)';
+  }
 }
 
 // ── CHANGELOG ──
@@ -1627,27 +2377,53 @@ function showChangelog() {
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\x27s New</div>'
     + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v3.0</div>'
+    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v3.3</div>'
+    + '<ul class="cl-items">'
+    + '<li>Mock Exam Answer Key: expandable review of all questions with full explanations</li>'
+    + '<li>Mock exam results now feed into Weak Spots and domain stats</li>'
+    + '<li>Fixed flag/feedback submission to Google Forms</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v3.2</div>'
+    + '<ul class="cl-items">'
+    + '<li>Session timer: set your own pace (Auto, 15, 30, or 60 min) for the whole domain</li>'
+    + '<li>Renamed Review Missed to Review Incorrect Answers</li>'
+    + '<li>Domain Complete screen when all questions are answered</li>'
+    + '<li>Review Incorrect goes through ALL incorrect answers sequentially</li>'
+    + '<li>Fixed questions recycling after domain completion</li>'
+    + '<li>Fixed question numbers now match original bank position</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v3.1</div>'
+    + '<ul class="cl-items">'
+    + '<li>Spaced repetition: incorrect answers resurface for review</li>'
+    + '<li>Confidence rating: Sure vs Educated Guess vs Guessing</li>'
+    + '<li>Session Summary with report card and recommendations</li>'
+    + '<li>Domain coverage tracking (X/Y questions covered)</li>'
+    + '<li>User onboarding guide for new users</li>'
+    + '<li>Answer options locked until confidence is selected</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v3.0</div>'
     + '<ul class="cl-items">'
     + '<li>200 questions across all 5 domains (was 100)</li>'
     + '<li>Questions weighted by ISACA exam percentages per domain</li>'
-    + '<li>Flag a question feature \u2014 report issues directly to the developer</li>'
-    + '<li>New warm aesthetic redesign with improved readability</li>'
+    + '<li>Flag a question feature \u2014 report issues directly</li>'
+    + '<li>Warm aesthetic redesign</li>'
     + '<li>Answer choices fully randomized across A/B/C/D</li>'
-    + '<li>Changelog section to track all updates</li>'
     + '</ul></div>'
     + '<div class="cl-version">'
     + '<div class="cl-ver-label">v2.0</div>'
     + '<ul class="cl-items">'
     + '<li>Expanded from 50 to 100 questions</li>'
-    + '<li>Shuffled answer choices (fixed "always B" issue)</li>'
+    + '<li>Shuffled answer choices (fixed always B issue)</li>'
     + '<li>Bug fixes for domain selector and timers</li>'
     + '</ul></div>'
     + '<div class="cl-version">'
     + '<div class="cl-ver-label">v1.0 \u2014 Launch</div>'
     + '<ul class="cl-items">'
     + '<li>50 ISACA-style questions, 10 per domain</li>'
-    + '<li>Practice mode with 90-second timer</li>'
+    + '<li>Practice mode with timer</li>'
     + '<li>Mock exam mode (30 questions)</li>'
     + '<li>Bookmarks and Weak Spots tracker</li>'
     + '<li>Session-based, no data collected</li>'
