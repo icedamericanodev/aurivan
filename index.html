@@ -2265,13 +2265,12 @@ function submitFlag() {
   // Build detailed question text with choices and correct answer
   var qNum = getQuestionNumber(q);
   var detailedText = "Q#" + qNum + " [D" + q.domain + "] " + q.question
-    + "\n\nA: " + (q.options.A || "")
-    + "\nB: " + (q.options.B || "")
-    + "\nC: " + (q.options.C || "")
-    + "\nD: " + (q.options.D || "")
-    + "\n\nCorrect Answer: " + q.correct
-    + "\nSubtopic: " + (q.subtopic || "N/A")
-    + "\nDifficulty: " + (q.difficulty || "N/A");
+    + " || A: " + (q.options.A || "")
+    + " || B: " + (q.options.B || "")
+    + " || C: " + (q.options.C || "")
+    + " || D: " + (q.options.D || "")
+    + " || Correct: " + q.correct
+    + " || Subtopic: " + (q.subtopic || "N/A");
 
   var fields = {
     "entry.1891345476": qId + " (D" + q.domain + " #" + qNum + ")",
