@@ -2262,9 +2262,20 @@ function submitFlag() {
   form.action = FORM_URL;
   form.target = "flagSubmitFrame";
 
+  // Build detailed question text with choices and correct answer
+  var qNum = getQuestionNumber(q);
+  var detailedText = "Q#" + qNum + " [D" + q.domain + "] " + q.question
+    + "\n\nA: " + (q.options.A || "")
+    + "\nB: " + (q.options.B || "")
+    + "\nC: " + (q.options.C || "")
+    + "\nD: " + (q.options.D || "")
+    + "\n\nCorrect Answer: " + q.correct
+    + "\nSubtopic: " + (q.subtopic || "N/A")
+    + "\nDifficulty: " + (q.difficulty || "N/A");
+
   var fields = {
-    "entry.1891345476": qId,
-    "entry.1124626728": qText,
+    "entry.1891345476": qId + " (D" + q.domain + " #" + qNum + ")",
+    "entry.1124626728": detailedText,
     "entry.1258820406": reason,
     "entry.585821877": comment || "No comment"
   };
