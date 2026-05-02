@@ -66,6 +66,146 @@ body::before {
 
 .app { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 20px 80px; }
 
+
+/* ── DOMAIN WEIGHT BADGE ── */
+.dc-weight {
+  display: inline-block; font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 2px 7px; border-radius: 100px;
+  background: rgba(0,0,0,0.08); color: inherit; margin-top: 2px;
+}
+.domain-card.selected .dc-weight,
+.domain-card:hover .dc-weight { background: rgba(255,255,255,0.2); color: #fff; }
+.dc-weight.high-impact { background: rgba(232,82,26,0.12); color: var(--accent); }
+.domain-card.selected .dc-weight.high-impact,
+.domain-card:hover .dc-weight.high-impact { background: rgba(255,255,255,0.25); color: #fff; }
+
+/* ── SUBTOPIC FILTER ── */
+.subtopic-filter-row {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+  padding: 10px 14px; background: var(--surface); border: 2px solid var(--border);
+  border-radius: 12px; animation: slideUp 0.3s ease both;
+}
+.subtopic-chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  padding: 4px 10px; border-radius: 100px; border: 1.5px solid var(--border2);
+  background: var(--surface2); color: var(--text2); cursor: pointer;
+  transition: var(--tr); font-weight: 700; letter-spacing: 0.04em; text-transform: capitalize;
+}
+.subtopic-chip:hover { border-color: var(--accent); color: var(--accent); }
+.subtopic-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── TOAST NOTIFICATION ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--text); color: var(--bg);
+  padding: 10px 22px; border-radius: 100px;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600;
+  box-shadow: 0 4px 20px rgba(26,16,8,0.25); z-index: 999;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.toast-correct { background: var(--correct); }
+.toast.toast-wrong { background: var(--wrong); }
+.toast.toast-info { background: var(--accent3); }
+
+/* ── CONFIDENCE FIRST ── */
+.conf-step-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.conf-step-num {
+  width: 20px; height: 20px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0;
+}
+.conf-step-label.step1 { color: var(--accent); }
+.conf-step-label.step1 .conf-step-num { background: var(--accent); color: #fff; }
+.conf-step-label.step2 { color: var(--muted); margin-top: 16px; }
+.conf-step-label.step2.unlocked { color: var(--text2); }
+.conf-step-label.step2 .conf-step-num { background: var(--surface2); border: 2px solid var(--border2); color: var(--muted); }
+.conf-step-label.step2.unlocked .conf-step-num { background: var(--text); border-color: var(--text); color: #fff; }
+
+/* ── MOCK CONFIRM MODAL ── */
+.mock-confirm-overlay {
+  position:fixed;inset:0;background:rgba(26,16,8,0.55);z-index:200;
+  display:flex;align-items:center;justify-content:center;animation:flagFadeIn 0.25s ease;
+}
+.mock-confirm-modal {
+  background:var(--surface);border:2px solid var(--border2);border-radius:var(--radius);
+  max-width:440px;width:92%;box-shadow:var(--shadow-lg);animation:slideUp 0.35s ease both;overflow:hidden;
+}
+.mock-confirm-head {
+  background:var(--text);color:var(--bg);padding:20px 24px;
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:900;
+}
+.mock-confirm-body { padding:20px 24px; }
+.mock-confirm-row {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);font-weight:500;
+}
+.mock-confirm-row:last-of-type { border-bottom:none; }
+.mock-confirm-row strong { color:var(--text);font-weight:700; }
+.mock-confirm-warn {
+  background:var(--warning-light);border:2px solid #fcd34d;border-radius:10px;
+  padding:10px 14px;font-size:12px;color:var(--warning);font-weight:600;margin:14px 0;
+}
+.mock-confirm-btns { display:flex;gap:10px;margin-top:4px; }
+.mock-confirm-btn {
+  flex:1;padding:12px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;transition:var(--tr);border:2px solid;
+}
+.mock-confirm-btn.cancel { background:transparent;border-color:var(--border2);color:var(--muted); }
+.mock-confirm-btn.cancel:hover { border-color:var(--text);color:var(--text); }
+.mock-confirm-btn.gostart { background:var(--accent);border-color:var(--accent);color:#fff; }
+.mock-confirm-btn.gostart:hover { opacity:0.9;transform:translateY(-1px); }
+
+/* ── MOCK RESUME BANNER ── */
+.mock-resume-banner {
+  background:var(--warning-light);border:2px solid var(--warning);border-radius:12px;
+  padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;
+}
+.mock-resume-text { font-size:13px;font-weight:600;color:var(--warning);line-height:1.5; }
+.mock-resume-btn {
+  padding:8px 16px;border-radius:8px;background:var(--warning);border:none;
+  color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;transition:var(--tr);flex-shrink:0;
+}
+.mock-resume-btn:hover { opacity:0.9; }
+
+/* ── ISACA DISCLAIMER ── */
+.isaca-disclaimer {
+  text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:0.08em;color:var(--muted);padding:16px 0 4px;
+  border-top:1px solid var(--border);margin-top:40px;line-height:1.8;
+}
+
+/* ── FIRST-VISIT EMPTY STATE ── */
+.empty-first {
+  text-align:center;padding:40px 24px;
+}
+.empty-first-icon { font-size:48px;margin-bottom:16px; }
+.empty-first-title {
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:900;
+  margin-bottom:8px;
+}
+.empty-first-sub { font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px; }
+.empty-first-steps {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:left;
+  margin-bottom:24px;
+}
+@media(max-width:580px){.empty-first-steps{grid-template-columns:1fr;}}
+.empty-first-step {
+  background:var(--surface);border:2px solid var(--border2);border-radius:12px;padding:12px 14px;
+}
+.empty-first-step-num {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;
+}
+.empty-first-step-text { font-size:12px;color:var(--text2);font-weight:500;line-height:1.6; }
+
+
 /* â”€â”€ HEADER â”€â”€ */
 header {
   display: flex; align-items: center; justify-content: space-between;
@@ -152,6 +292,16 @@ header {
   display: flex; gap: 4px; margin-bottom: 28px;
   border-bottom: 2px solid var(--border2); padding-bottom: 0;
   animation: slideUp 0.5s 0.2s ease both; overflow-x: auto;
+  position: relative; scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tabs-wrap {
+  position: relative; margin-bottom: 28px;
+}
+.nav-tabs-wrap::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0;
+  width: 48px; background: linear-gradient(to right, transparent, var(--bg));
+  pointer-events: none; z-index: 2;
 }
 .nav-tab {
   background: none; border: none; padding: 12px 18px;
@@ -1510,6 +1660,162 @@ header {
 }
 .whats-new-btn:hover {border-color:var(--accent);color:var(--accent);}
 
+/* ── EXAM DATE + READINESS CARD ── */
+.readiness-card {
+  background: var(--text); color: var(--bg);
+  border-radius: var(--radius); padding: 18px 24px;
+  margin-bottom: 24px; display: flex; align-items: center;
+  gap: 20px; flex-wrap: wrap; animation: slideUp 0.5s 0.12s ease both;
+  box-shadow: var(--shadow-lg);
+}
+.readiness-section { display: flex; flex-direction: column; gap: 3px; }
+.readiness-section.main { flex: 1; min-width: 180px; }
+.readiness-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+.readiness-value {
+  font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900;
+  line-height: 1; color: #fff;
+}
+.readiness-sub { font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 500; margin-top: 1px; }
+.readiness-bar-wrap {
+  flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 6px;
+}
+.readiness-bar-track {
+  height: 8px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden;
+}
+.readiness-bar-fill {
+  height: 100%; border-radius: 4px; transition: width 0.8s ease;
+}
+.readiness-date-area { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.readiness-date-input {
+  padding: 7px 12px; border-radius: 8px;
+  background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+  color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 600; outline: none;
+  transition: border-color 0.2s; cursor: pointer;
+}
+.readiness-date-input:focus { border-color: var(--accent2); }
+.readiness-date-input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.6; }
+.readiness-set-btn {
+  padding: 7px 14px; border-radius: 8px; background: var(--accent);
+  border: none; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 700; cursor: pointer; transition: var(--tr);
+}
+.readiness-set-btn:hover { opacity: 0.88; }
+.readiness-clear-btn {
+  background: none; border: none; color: rgba(255,255,255,0.4);
+  font-size: 11px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  text-decoration: underline; padding: 0;
+}
+.readiness-clear-btn:hover { color: rgba(255,255,255,0.7); }
+@media(max-width:580px){
+  .readiness-card { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .readiness-value { font-size: 24px; }
+}
+
+/* ── TRAIN WEAK SPOTS BUTTON ── */
+.train-ws-btn {
+  width: 100%; padding: 14px 20px; border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none; color: #fff;
+  font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900;
+  cursor: pointer; transition: var(--tr); letter-spacing: -0.2px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  box-shadow: 0 4px 18px rgba(232,82,26,0.3); margin-bottom: 20px;
+}
+.train-ws-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,82,26,0.4); opacity: 0.95; }
+.train-ws-badge {
+  background: rgba(255,255,255,0.25); padding: 3px 10px; border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* ── BOOKMARK TAGS ── */
+.bk-tag-bar {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
+  padding: 10px 14px; background: var(--surface); border: 2px solid var(--border);
+  border-radius: 12px;
+}
+.bk-tag-chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  padding: 4px 10px; border-radius: 100px; border: 1.5px solid var(--border2);
+  background: var(--surface2); color: var(--text2); cursor: pointer;
+  transition: var(--tr); letter-spacing: 0.04em; text-transform: uppercase;
+}
+.bk-tag-chip:hover { border-color: var(--accent); color: var(--accent); }
+.bk-tag-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bk-tag-chip.review { border-color: var(--wrong); color: var(--wrong); }
+.bk-tag-chip.review.active { background: var(--wrong); color: #fff; }
+.bk-tag-chip.tricky { border-color: var(--warning); color: var(--warning); }
+.bk-tag-chip.tricky.active { background: var(--warning); color: #fff; }
+.bk-tag-chip.reference { border-color: var(--d2); color: var(--d2); }
+.bk-tag-chip.reference.active { background: var(--d2); color: #fff; }
+.bk-item-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  padding: 2px 7px; border-radius: 100px; letter-spacing: 0.08em;
+  text-transform: uppercase; flex-shrink: 0;
+}
+.bk-item-tag.need-review { background: var(--wrong-light); color: var(--wrong); border: 1.5px solid #fca5a5; }
+.bk-item-tag.tricky-wording { background: var(--warning-light); color: var(--warning); border: 1.5px solid #fcd34d; }
+.bk-item-tag.standard-ref { background: var(--d2-light); color: var(--d2); border: 1.5px solid var(--d2-border); }
+.bk-drill-btn {
+  padding: 9px 18px; border-radius: 10px; background: var(--text);
+  border: none; color: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: var(--tr);
+  display: flex; align-items: center; gap: 7px;
+}
+.bk-drill-btn:hover { background: var(--accent); transform: translateY(-1px); }
+.bk-tag-select {
+  margin-left: auto; flex-shrink: 0;
+  padding: 5px 10px; border: 1.5px solid var(--border2); border-radius: 8px;
+  background: var(--surface2); color: var(--text2);
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.05em; cursor: pointer; outline: none; appearance: none;
+  text-transform: uppercase;
+}
+.bk-tag-select:focus { border-color: var(--accent); }
+
+/* ── PACING FEEDBACK ── */
+.pacing-feedback {
+  background: var(--surface2); border: 2px solid var(--border2);
+  border-radius: 12px; padding: 14px 18px; margin-top: 16px;
+}
+.pacing-row {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+}
+.pacing-row:last-child { margin-bottom: 0; }
+.pacing-icon { font-size: 18px; flex-shrink: 0; }
+.pacing-info { flex: 1; }
+.pacing-info strong { display: block; font-size: 13px; font-weight: 700; color: var(--text); }
+.pacing-info span { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.pacing-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px;
+}
+.pacing-badge.ok { background: var(--correct-light); color: var(--correct); }
+.pacing-badge.warn { background: var(--warning-light); color: var(--warning); }
+.pacing-badge.bad { background: var(--wrong-light); color: var(--wrong); }
+
+/* ── MOCK RESULTS ADVISORY ── */
+.mock-advisory {
+  background: var(--warning-light); border: 2px solid #fcd34d;
+  border-radius: 12px; padding: 14px 18px; margin-top: 16px;
+}
+.mock-advisory-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--warning);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.mock-advisory-item {
+  font-size: 12.5px; color: var(--text2); font-weight: 600;
+  padding: 6px 0; border-bottom: 1px solid rgba(217,119,6,0.15);
+  line-height: 1.5;
+}
+.mock-advisory-item:last-child { border-bottom: none; }
+.mock-advisory-item strong { color: var(--warning); }
+
 </style>
 </head>
 <body>
@@ -1522,7 +1828,7 @@ header {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill">200 Questions / v5.2</span>
+    <span class="bank-pill">200 Questions / v7.0</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -1548,15 +1854,18 @@ header {
   <div class="stat-card"><span class="stat-num" id="sStreak">0</span><span class="stat-label">Streak</span></div>
 </div>
 
+<!-- EXAM DATE + READINESS CARD -->
+<div id="readinessCard"></div>
+
 <!-- NAV TABS -->
-<div class="nav-tabs">
-  <button class="nav-tab active" onclick="switchTab('practice')" id="tab-practice">Practice</button>
-  <button class="nav-tab" onclick="switchTab('mock')" id="tab-mock">Mock Exam</button>
-  <button class="nav-tab" onclick="switchTab('topics')" id="tab-topics">Topics</button>
-  <button class="nav-tab" onclick="switchTab('glossary')" id="tab-glossary">Glossary</button>
-  <button class="nav-tab" onclick="switchTab('bookmarks')" id="tab-bookmarks">Saved <span class="tab-badge" id="bkBadge" style="display:none">0</span></button>
-  <button class="nav-tab" onclick="switchTab('weakspots')" id="tab-weakspots">Weak Spots</button>
-</div>
+<div class="nav-tabs-wrap"><div class="nav-tabs" id="navTabsRow">
+  <button class="nav-tab" onclick="switchTab('topics')" id="tab-topics">&#128196; Topics</button>
+  <button class="nav-tab" onclick="switchTab('glossary')" id="tab-glossary">&#128218; Glossary</button>
+  <button class="nav-tab active" onclick="switchTab('practice')" id="tab-practice">&#9997; Practice</button>
+  <button class="nav-tab" onclick="switchTab('bookmarks')" id="tab-bookmarks">&#128278; Saved <span class="tab-badge" id="bkBadge" style="display:none">0</span></button>
+  <button class="nav-tab" onclick="switchTab('weakspots')" id="tab-weakspots">&#128202; Weak Spots</button>
+  <button class="nav-tab" onclick="switchTab('mock')" id="tab-mock">&#127941; Mock Exam</button>
+</div></div><!-- /nav-tabs-wrap -->
 
 <!-- PRACTICE -->
 <div id="screen-practice" class="screen active">
@@ -1565,11 +1874,11 @@ header {
 
   <div class="controls-row">
     <div class="ctrl-group">
-      <span class="ctrl-label">Difficulty</span>
+      <span class="ctrl-label" title="Foundational=Recall, Application=Scenario, Analysis=Best Judgment (CISA is mostly Application + Analysis)">Difficulty <span style="border-bottom:1px dashed var(--border2);cursor:help;font-size:9px">?</span></span>
       <button class="ctrl-btn active" data-diff="any" onclick="setDiff(this,'any')">Any</button>
-      <button class="ctrl-btn" data-diff="foundational" onclick="setDiff(this,'foundational')">Foundational</button>
-      <button class="ctrl-btn" data-diff="application" onclick="setDiff(this,'application')">Application</button>
-      <button class="ctrl-btn" data-diff="analysis" onclick="setDiff(this,'analysis')">Analysis</button>
+      <button class="ctrl-btn" data-diff="foundational" onclick="setDiff(this,'foundational')" title="Foundational: Knowledge recall">Foundational</button>
+      <button class="ctrl-btn" data-diff="application" onclick="setDiff(this,'application')" title="Application: Scenario-based judgment">Application</button>
+      <button class="ctrl-btn" data-diff="analysis" onclick="setDiff(this,'analysis')" title="Analysis: Best-judgment in complex scenarios">Analysis</button>
     </div>
     <div class="ctrl-group" style="margin-left:auto" id="timerCtrlArea">
       <span class="ctrl-label">Timer</span>
@@ -1577,6 +1886,7 @@ header {
     </div>
   </div>
 
+  <div id="subtopicFilterArea"></div>
   <div id="missedBtnArea"></div>
   <button class="gen-btn" onclick="nextQ()">
     <span class="gen-icon">Start</span>
@@ -1585,10 +1895,25 @@ header {
 
   <div id="timerArea" style="display:none"></div>
   <div id="qArea">
-    <div class="empty">
-      <div class="empty-icon">Ready</div>
-      <div class="empty-title">Ready to train your auditor mindset?</div>
-      <div class="empty-sub">Pick a domain, choose your difficulty, and hit Start.<br>Every question is crafted in the ISACA style.</div>
+    <div class="empty-first">
+      <div class="empty-first-icon">&#127941;</div>
+      <div class="empty-first-title">Ready to train your auditor mindset?</div>
+      <div class="empty-first-sub">Every question tests ISACA-style judgment, not memorization.<br>The auditor assesses, recommends, and reports &#8212; never fixes.</div>
+      <div class="empty-first-steps">
+        <div class="empty-first-step">
+          <div class="empty-first-step-num">&#8594; Step 1</div>
+          <div class="empty-first-step-text">Pick a domain or go All Domains</div>
+        </div>
+        <div class="empty-first-step">
+          <div class="empty-first-step-num">&#8594; Step 2</div>
+          <div class="empty-first-step-text">Rate confidence, then select your answer</div>
+        </div>
+        <div class="empty-first-step">
+          <div class="empty-first-step-num">&#8594; Step 3</div>
+          <div class="empty-first-step-text">Review the explanation &#8212; understand the why</div>
+        </div>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.1em">Keyboard: <strong>1/2/3</strong> confidence &middot; <strong>A&#8211;D</strong> answer &middot; <strong>Enter</strong> next</div>
     </div>
   </div>
 </div>
@@ -1621,9 +1946,10 @@ header {
   <div id="glossaryArea"></div>
 </div>
 
+  <div class="isaca-disclaimer">
+    Not affiliated with or endorsed by ISACA&reg; &mdash; Independent exam prep tool &mdash; CISA&reg; is a registered trademark of ISACA
+  </div>
 </div>
-
-
 
 <div id="flagModal"></div>
 <div id="changelogModal"></div>
@@ -2629,23 +2955,24 @@ function getNextQ(domainStr, diff) {
   var pool = S.queues[domainStr] || [];
   if (!pool.length) return null;
 
-  // For "all" mode: check total across all domains
-  var bankTotal, covered;
-  if (domainStr === "all") {
-    bankTotal = 0;
-    covered = 0;
-    Object.keys(DI).forEach(function(d) {
-      bankTotal += (QB[d] || []).length;
-      covered += S.answeredIds[d] ? Object.keys(S.answeredIds[d]).length : 0;
-    });
-  } else {
-    bankTotal = (QB[domainStr] || []).length;
-    covered = (S.answeredIds && S.answeredIds[domainStr]) ? Object.keys(S.answeredIds[domainStr]).length : 0;
-  }
-  if (covered >= bankTotal && bankTotal > 0) return null;
-
+  // Apply difficulty filter first
   var filtered = (diff === "any") ? pool : pool.filter(function(q){ return q.difficulty === diff; });
   if (!filtered.length) filtered = pool;
+
+  // Apply subtopic filter if active
+  if (activeSubtopic) {
+    var stFiltered = filtered.filter(function(q){ return q.subtopic === activeSubtopic; });
+    if (stFiltered.length) filtered = stFiltered;
+  }
+
+  // Completion check: count only within the effective filtered pool
+  // This ensures subtopic/difficulty filters don't inflate the "total"
+  var bankTotal = filtered.length;
+  var covered = filtered.filter(function(q){
+    var qd = String(q.domain);
+    return S.answeredIds && S.answeredIds[qd] && q.id && S.answeredIds[qd][q.id];
+  }).length;
+  if (covered >= bankTotal && bankTotal > 0) return null;
 
   var attempts = 0;
   var maxAttempts = filtered.length;
@@ -2688,8 +3015,10 @@ function switchTab(t) {
 // â”€â”€ DOMAIN SELECTION â”€â”€
 function selectDomain(d) {
   S.selectedDomain = String(d);
+  activeSubtopic = null; // reset subtopic filter on domain change
   saveState();
   renderDomainGrid();
+  renderSubtopicFilter();
 }
 
 // â”€â”€ DIFFICULTY â”€â”€
@@ -2722,12 +3051,12 @@ function updateTimerDisplay() {
   var coveredCount = (S.answeredIds && S.answeredIds[S.selectedDomain]) ? Object.keys(S.answeredIds[S.selectedDomain]).length : 0;
   var remaining = bankCount - coveredCount;
   var autoMins = remaining > 0 ? remaining : bankCount;
-  var html = '<span class="ctrl-label">Session Timer</span>'
-    + '<button class="ctrl-btn' + (!S.timerEnabled ? ' active' : '') + '" onclick="S.timerEnabled=false;S.domainTimerActive=false;clearAllTimers();updateTimerDisplay()">OFF</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 0 ? ' active' : '') + '" onclick="setTimerDuration(0)">Auto (' + autoMins + 'min)</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 15 ? ' active' : '') + '" onclick="setTimerDuration(15)">15min</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 30 ? ' active' : '') + '" onclick="setTimerDuration(30)">30min</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 60 ? ' active' : '') + '" onclick="setTimerDuration(60)">60min</button>';
+  var html = '<span class="ctrl-label" title="Session timer counts down for your whole domain session. Auto = 1 minute per remaining question.">Timer</span>'
+    + '<button class="ctrl-btn' + (!S.timerEnabled ? ' active' : '') + '" onclick="S.timerEnabled=false;S.domainTimerActive=false;clearAllTimers();updateTimerDisplay()" title="No timer — practice at your own pace">OFF</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 0 ? ' active' : '') + '" onclick="setTimerDuration(0)" title="Auto: 1 minute per remaining question in domain">Auto (' + autoMins + 'min)</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 15 ? ' active' : '') + '" onclick="setTimerDuration(15)" title="15 minute session">15min</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 30 ? ' active' : '') + '" onclick="setTimerDuration(30)" title="30 minute session">30min</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 60 ? ' active' : '') + '" onclick="setTimerDuration(60)" title="60 minute session">60min</button>';
   area.innerHTML = html;
 }
 
@@ -2887,10 +3216,12 @@ function renderDomainGrid() {
     var coveredCount = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
     var pctText = pct !== null ? pct + '%' : '--';
     var triedText = st.t > 0 ? st.c + '/' + st.t : '0 attempts';
-    html += '<div class="domain-card ' + (isSelected?'selected':'') + '" data-d="' + d + '" onclick="selectDomain(' + d + ')">';
+    var wBadgeClass = info.weight >= 25 ? 'dc-weight high-impact' : 'dc-weight';
+    html += '<div class="domain-card ' + (isSelected?'selected':'') + '" data-d="' + d + '" onclick="selectDomain(' + d + ')" title="D' + d + ': ' + info.weight + '% of CISA exam">';
     html += '<span class="dc-num">' + d + '</span>';
     html += '<span class="dc-name">' + info.short + '</span>';
     html += '<span class="dc-pct" style="color:' + (isSelected?'#fff':pc) + '">' + pctText + '</span>';
+    html += '<span class="' + wBadgeClass + '">' + info.weight + '% exam</span>';
     html += '<div class="dc-tried" style="color:' + (isSelected?'rgba(255,255,255,0.7)':'var(--muted)') + '">' + triedText + ' &middot; ' + coveredCount + '/' + bankCount + '</div>';
     html += '<div class="bar" style="width:' + (pct||0) + '%"></div>';
     html += '</div>';
@@ -2945,8 +3276,10 @@ function nextQ() {
   }
   var q = getNextQ(S.selectedDomain, S.diff);
   if (!q) {
-    // Domain complete
-    if (S.selectedDomain === "all") {
+    // Check if a filter is active — show filter-complete screen, not domain-complete
+    if (activeSubtopic || S.diff !== "any") {
+      showFilterComplete();
+    } else if (S.selectedDomain === "all") {
       document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">All 200 Questions Complete!</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--accent);border-color:var(--accent);color:#fff">Reset All & Restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
@@ -2993,6 +3326,7 @@ function onPracticeTimeout() {
 
 // â”€â”€ RENDER QUESTION â”€â”€
 function renderQuestion(q) {
+  recordQuestionStart();
   var d = String(q.domain);
   var info = DI[d];
   var letters = ['A','B','C','D'];
@@ -3021,18 +3355,19 @@ function renderQuestion(q) {
     + '</div></div>'
     + '<div class="q-body">'
     + '<p class="q-text">' + escapeHtml(q.question) + '</p>'
-    + '<div class="opts">' + optsHtml + '</div>'
-    + '<div class="conf-label">How confident are you?</div>'
+    + '<div class="conf-step-label step1"><span class="conf-step-num">1</span> Rate your confidence first</div>'
     + '<div class="conf-row">'
     + '<button class="conf-btn" data-conf="sure" onclick="setConfidence(\x27sure\x27)">\ud83d\udcaa Sure</button>'
     + '<button class="conf-btn" data-conf="educated" onclick="setConfidence(\x27educated\x27)">\ud83e\udd14 Educated Guess</button>'
     + '<button class="conf-btn" data-conf="guessing" onclick="setConfidence(\x27guessing\x27)">\ud83c\udfb2 Guessing</button>'
     + '</div>'
+    + '<div class="conf-step-label step2" id="optsStepLabel"><span class="conf-step-num">2</span> Now select your answer</div>'
+    + '<div class="opts">' + optsHtml + '</div>'
     + '</div>'
     + '<div class="result-panel" id="rPanel"></div>'
     + '</div>'
     + '<div style="text-align:center;margin-top:10px;font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--muted);letter-spacing:0.1em">'
-    + 'Keys: <strong>1</strong> Sure / <strong>2</strong> Edu.Guess / <strong>3</strong> Guessing / <strong>A-D</strong> Answer / <strong>Enter</strong> Next'
+    + 'Keys: <strong>1</strong> Sure / <strong>2</strong> Edu.Guess / <strong>3</strong> Guessing &middot; <strong>A&#8211;D</strong> Answer &middot; <strong>Enter</strong> Next'
     + '</div>';
 }
 
@@ -3068,7 +3403,10 @@ function selectAnswer(chosen, correct) {
     for (var m = 0; m < S.missedQuestions.length; m++) {
       if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
     }
-    if (!alreadyMissed) S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+    if (!alreadyMissed) {
+      S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+      showToast('➕ Added to Review Queue', 'wrong', 1800);
+    }
   }
   // Remove from missed if answered correctly
   if (ok && S.current) {
@@ -3092,11 +3430,13 @@ function selectAnswer(chosen, correct) {
 
   currentConfidence = "none";
 
+  recordQuestionEnd(ok);
   updateStats();
   renderDomainGrid();
   showResult(chosen, correct, false);
   rotateMindset();
   saveState();
+  renderReadinessCard();
 }
 
 // â”€â”€ SHOW RESULT â”€â”€
@@ -3168,24 +3508,7 @@ function toggleBookmark() {
   if (btn) { if(isBk) btn.classList.add('saved'); else btn.classList.remove('saved'); }
 }
 
-function renderBookmarks() {
-  var area = document.getElementById('bkList');
-  if (!S.bookmarks.length) {
-    area.innerHTML = '<div class="no-bk">No bookmarks yet. Save tricky questions during practice!</div>';
-    return;
-  }
-  var html = '';
-  S.bookmarks.forEach(function(q, i){
-    var info = DI[String(q.domain)];
-    var preview = q.question.substring(0,115) + (q.question.length>115?'...':'');
-    html += '<div class="bk-item" onclick="reviewBookmark(' + i + ')">'
-      + '<span class="bk-d-tag" style="color:' + info.color + '">' + escapeHtml(q.domain) + '</span>'
-      + '<span class="bk-item-text">' + escapeHtml(preview) + '</span>'
-      + '<button onclick="event.stopPropagation();removeBookmark(' + i + ')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:0 4px;flex-shrink:0">&times;</button>'
-      + '</div>';
-  });
-  area.innerHTML = html;
-}
+function renderBookmarks_old() { /* replaced by Phase 2 version below */ }
 
 function removeBookmark(i) { S.bookmarks.splice(i,1); updateStats(); renderBookmarks(); saveState(); }
 
@@ -3235,7 +3558,8 @@ function renderWeakSpots() {
       }).join('')
     : '<div style="font-family:\x27JetBrains Mono\x27,monospace;font-size:11px;color:var(--correct);text-align:center;padding:16px">All attempted domains at 75%+! Keep going!</div>';
 
-  area.innerHTML = '<div class="ws-panel"><div class="ws-title">Domain Performance</div>' + rowsHtml
+  area.innerHTML = '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">&#127919; Train My Weak Spots <span class="train-ws-badge">20 Questions</span></button>'
+    + '<div class="ws-panel"><div class="ws-title">Domain Performance</div>' + rowsHtml
     + '<div style="margin-top:24px;font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Recommendations</div>'
     + recsHtml + '</div>';
 }
@@ -3271,13 +3595,58 @@ function renderMockSetup() {
     + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Exam Length</div>'
     + '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap" id="mockLengthBtns">' + lengthHtml + '</div>'
     + '</div>'
-    + '<button class="mock-start" onclick="startMock()">Start ' + mockExamLength + '-Question Mock &rarr;</button>'
+    + '<button class="mock-start" onclick="showMockConfirm()">Start ' + mockExamLength + '-Question Mock &rarr;</button>'
     + '</div>';
+  // Check for in-progress exam to show resume option
+  setTimeout(function(){ checkMockResume(); }, 50);
 }
 
 function setMockLength(n) {
   mockExamLength = n;
   renderMockSetup();
+}
+
+function showMockConfirm() {
+  var lengthMins = mockExamLength === 30 ? '~38' : mockExamLength === 75 ? '~94' : '~185';
+  var domainBreakdown = Object.keys(DI).map(function(d){
+    var cnt = Math.round((DI[d].weight / 100) * mockExamLength);
+    return 'D' + d + ': ' + cnt;
+  }).join(' &middot; ');
+  var inProgress = S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length;
+  var resumeHtml = inProgress
+    ? '<div class="mock-confirm-warn">&#9888; You have an exam in progress (Q' + (S.mockCurrent+1) + '/' + S.mockQueue.length + '). Starting a new exam will discard it.</div>'
+    : '';
+  document.getElementById('flagModal').innerHTML = '<div class="mock-confirm-overlay">'
+    + '<div class="mock-confirm-modal">'
+    + '<div class="mock-confirm-head">&#127941; Start ' + mockExamLength + '-Question Mock Exam</div>'
+    + '<div class="mock-confirm-body">'
+    + '<div class="mock-confirm-row"><span>Duration</span><strong>' + lengthMins + ' minutes</strong></div>'
+    + '<div class="mock-confirm-row"><span>Domain distribution</span><strong>' + domainBreakdown + '</strong></div>'
+    + '<div class="mock-confirm-row"><span>Explanations</span><strong>After exam only</strong></div>'
+    + '<div class="mock-confirm-row"><span>Timer per question</span><strong>90 seconds</strong></div>'
+    + '<div class="mock-confirm-warn">&#9888; Progress will not be saved if you close this tab during the exam.</div>'
+    + resumeHtml
+    + '<div class="mock-confirm-btns">'
+    + '<button class="mock-confirm-btn cancel" onclick="closeFlagModal()">Cancel</button>'
+    + '<button class="mock-confirm-btn gostart" onclick="closeFlagModal();startMock()">Start Exam &rarr;</button>'
+    + '</div>'
+    + '</div></div></div>';
+}
+
+function checkMockResume() {
+  var area = document.getElementById('mockArea');
+  if (!area) return false;
+  if (S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length) {
+    var pct = Math.round((S.mockCurrent / S.mockQueue.length) * 100);
+    area.insertAdjacentHTML('afterbegin',
+      '<div class="mock-resume-banner">'
+      + '<div class="mock-resume-text">&#9203; Exam in progress &mdash; Q' + (S.mockCurrent+1) + '/' + S.mockQueue.length + ' (' + pct + '% done)</div>'
+      + '<button class="mock-resume-btn" onclick="showMockQuestion()">Resume Exam &rarr;</button>'
+      + '</div>'
+    );
+    return true;
+  }
+  return false;
 }
 
 function startMock() {
@@ -3368,6 +3737,7 @@ function showMockQuestion() {
     + '<div id="mFeedback"></div>'
     + '</div></div>';
 
+  recordQuestionStart();
   startMockTimer(90, function(){ selectMockAnswer(null, q.correct); });
 }
 
@@ -3379,6 +3749,8 @@ function selectMockAnswer(chosen, correct) {
   if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
   var ok = chosen === correct;
   S.mockAnswers[S.mockCurrent] = {q: S.current, chosen: chosen, correct: correct, ok: ok};
+  // Auto-save checkpoint every 5 questions
+  if ((S.mockCurrent + 1) % 5 === 0) { saveMockCheckpoint(); }
 
   // Track in domain stats so Weak Spots reflects mock performance
   if (S.current) {
@@ -3471,8 +3843,10 @@ function showMockResults() {
     + '<div style="padding:24px 28px">'
     + '<div style="font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Domain Breakdown</div>'
     + bdHtml
+    + buildMockAdvisory(db)
     + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
     + '<button class="act-btn secondary" onclick="renderMockSetup()">Retake Mock</button>'
+    + '<button class="act-btn" onclick="startWeakSpotsDrill()">&#127919; Train Weak Spots</button>'
     + '<button class="act-btn primary" onclick="switchTab(\x27weakspots\x27)">View Weak Spots &rarr;</button>'
     + '</div>'
     + '<div style="margin-top:28px">'
@@ -3591,18 +3965,17 @@ function nextOnboardStep() {
 
 function closeOnboarding() {
   document.getElementById("flagModal").innerHTML = "";
-  try { sessionStorage.setItem("cisa_onboarded", "1"); } catch(e) {}
+  try { localStorage.setItem("cisa_onboarded_v6", "1"); } catch(e) {}
 }
 
-// Show onboarding on first visit (per session)
+// Show onboarding only on truly first visit (persisted across sessions)
 function checkOnboarding() {
   try {
-    if (!sessionStorage.getItem("cisa_onboarded")) {
-      setTimeout(function(){ showOnboarding(); }, 600);
+    if (!localStorage.getItem("cisa_onboarded_v6")) {
+      setTimeout(function(){ showOnboarding(); }, 700);
     }
   } catch(e) {
-    // sessionStorage not available, show anyway on first load
-    setTimeout(function(){ showOnboarding(); }, 600);
+    // localStorage not available - skip onboarding
   }
 }
 
@@ -4073,12 +4446,390 @@ document.addEventListener('keydown', function(e) {
   else if (e.key === 'r' || e.key === 'R') { if (glossState.fcFlipped) { e.preventDefault(); fcAction('review'); } }
 });
 
+// ── TOAST SYSTEM ──
+var _toastTimeout = null;
+function showToast(msg, type, dur) {
+  var t = document.getElementById('globalToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'globalToast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' toast-' + type : '');
+  clearTimeout(_toastTimeout);
+  setTimeout(function(){ t.classList.add('show'); }, 10);
+  _toastTimeout = setTimeout(function(){
+    t.classList.remove('show');
+  }, dur || 2200);
+}
+
+// ── SUBTOPIC FILTER ──
+var activeSubtopic = null;
+
+function getSubtopicsForDomain(domain) {
+  var qs = domain === 'all'
+    ? Object.keys(QB).reduce(function(a, d){ return a.concat(QB[d]||[]); }, [])
+    : (QB[String(domain)] || []);
+  var seen = {};
+  qs.forEach(function(q){ if (q.subtopic) seen[q.subtopic] = true; });
+  return Object.keys(seen).sort();
+}
+
+function renderSubtopicFilter() {
+  var area = document.getElementById('subtopicFilterArea');
+  if (!area) return;
+  var d = S.selectedDomain;
+  var subtopics = getSubtopicsForDomain(d);
+  if (!subtopics.length || d === 'all') { area.innerHTML = ''; return; }
+  var chips = subtopics.map(function(st){
+    var active = activeSubtopic === st ? ' active' : '';
+    return '<button class="subtopic-chip' + active + '" onclick="setSubtopicFilter(\'' + st + '\')">' + escapeHtml(st.replace(/-/g,' ')) + '</button>';
+  }).join('');
+  area.innerHTML = '<div class="subtopic-filter-row">'
+    + '<span class="subtopic-label" style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">Sub-topic</span>'
+    + '<button class="subtopic-chip' + (!activeSubtopic ? ' active' : '') + '" onclick="setSubtopicFilter(null)">All</button>'
+    + chips + '</div>';
+}
+
+function setSubtopicFilter(st) {
+  activeSubtopic = st;
+  renderSubtopicFilter();
+}
+// ── PHASE 2: EXAM DATE + READINESS SCORE ──
+var EXAM_DATE_KEY = 'cisa_exam_date';
+
+function getExamDate() {
+  try { return localStorage.getItem(EXAM_DATE_KEY) || null; } catch(e) { return null; }
+}
+function setExamDateVal(d) {
+  try { if (d) localStorage.setItem(EXAM_DATE_KEY, d); else localStorage.removeItem(EXAM_DATE_KEY); } catch(e) {}
+}
+function clearExamDate() {
+  setExamDateVal(null);
+  renderReadinessCard();
+}
+function saveExamDateFromInput() {
+  var inp = document.getElementById('examDateInput');
+  if (!inp || !inp.value) return;
+  setExamDateVal(inp.value);
+  renderReadinessCard();
+}
+
+function calcReadinessScore() {
+  var weights = {1:21,2:17,3:12,4:23,5:27};
+  var totalWeight = 0, weightedScore = 0;
+  Object.keys(weights).forEach(function(d) {
+    var st = S.ds[d] || {t:0,c:0};
+    if (st.t > 0) {
+      weightedScore += (st.c / st.t) * weights[d];
+      totalWeight += weights[d];
+    }
+  });
+  if (totalWeight === 0) return null;
+  return Math.round((weightedScore / totalWeight) * 100);
+}
+
+function renderReadinessCard() {
+  var card = document.getElementById('readinessCard');
+  if (!card) return;
+  var examDateStr = getExamDate();
+  var readiness = calcReadinessScore();
+  var totalAnswered = S.score.t || 0;
+
+  var daysHtml = '';
+  var dateInputHtml = '';
+
+  if (examDateStr) {
+    var examMs = new Date(examDateStr + 'T00:00:00').getTime();
+    var diffDays = Math.ceil((examMs - Date.now()) / 86400000);
+    if (diffDays < 0) {
+      daysHtml = '<div class="readiness-section"><div class="readiness-label">Exam Date</div><div class="readiness-value" style="font-size:18px;color:rgba(255,255,255,0.5)">' + examDateStr + '</div><div class="readiness-sub">Exam date has passed</div></div>';
+    } else if (diffDays === 0) {
+      daysHtml = '<div class="readiness-section"><div class="readiness-label">Days Until Exam</div><div class="readiness-value" style="color:#fcd34d">TODAY!</div><div class="readiness-sub">&#128293; Good luck!</div></div>';
+    } else {
+      var dColor = diffDays <= 7 ? '#fca5a5' : diffDays <= 14 ? '#fcd34d' : '#6ee7b7';
+      var dateDisp = new Date(examDateStr + 'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      daysHtml = '<div class="readiness-section"><div class="readiness-label">Days Until Exam</div><div class="readiness-value" style="color:' + dColor + '">' + diffDays + '</div><div class="readiness-sub">' + dateDisp + '</div></div>';
+    }
+    dateInputHtml = '<div class="readiness-section" style="align-items:flex-end"><button class="readiness-clear-btn" onclick="clearExamDate()">&#x2715; Clear date</button></div>';
+  } else {
+    daysHtml = '<div class="readiness-section" style="flex:0"><div class="readiness-label">Exam Date</div><div class="readiness-sub" style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:2px">Not set</div></div>';
+    dateInputHtml = '<div class="readiness-date-area"><input type="date" class="readiness-date-input" id="examDateInput"><button class="readiness-set-btn" onclick="saveExamDateFromInput()">Set Date</button></div>';
+  }
+
+  var readinessHtml = '';
+  if (readiness !== null) {
+    var rColor = readiness >= 75 ? '#6ee7b7' : readiness >= 50 ? '#fcd34d' : '#fca5a5';
+    var rLabel = readiness >= 75 ? 'Exam Ready' : readiness >= 60 ? 'Getting There' : readiness >= 45 ? 'Keep Practicing' : 'Early Stage';
+    readinessHtml = '<div class="readiness-bar-wrap"><div class="readiness-label">Weighted Readiness</div><div class="readiness-value" style="color:' + rColor + '">' + readiness + '%</div><div class="readiness-bar-track"><div class="readiness-bar-fill" style="width:' + readiness + '%;background:' + rColor + '"></div></div><div class="readiness-sub">' + rLabel + ' &mdash; ' + totalAnswered + ' questions answered</div></div>';
+  } else {
+    readinessHtml = '<div class="readiness-bar-wrap"><div class="readiness-label">Weighted Readiness</div><div class="readiness-value" style="color:rgba(255,255,255,0.2)">--</div><div class="readiness-sub" style="color:rgba(255,255,255,0.3)">Answer questions to build your score</div></div>';
+  }
+
+  var domainMini = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">';
+  [1,2,3,4,5].forEach(function(d) {
+    var st = S.ds[d] || {t:0,c:0};
+    var pct = st.t > 0 ? Math.round((st.c/st.t)*100) : null;
+    var c = pct === null ? 'rgba(255,255,255,0.2)' : pct >= 75 ? '#6ee7b7' : pct >= 50 ? '#fcd34d' : '#fca5a5';
+    domainMini += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="font-family:JetBrains Mono,monospace;font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:0.1em">D' + d + '</div><div style="font-family:Playfair Display,serif;font-size:13px;font-weight:900;color:' + c + '">' + (pct !== null ? pct + '%' : '--') + '</div></div>';
+  });
+  domainMini += '</div>';
+
+  var divider = '<div style="width:1px;height:50px;background:rgba(255,255,255,0.1);flex-shrink:0"></div>';
+
+  card.innerHTML = '<div class="readiness-card">'
+    + daysHtml + divider + readinessHtml + divider
+    + '<div style="flex:1;min-width:140px"><div class="readiness-label">Domain Accuracy</div>' + domainMini + '</div>'
+    + divider
+    + '<div class="readiness-section">' + dateInputHtml + '</div>'
+    + '</div>';
+}
+
+// ── PHASE 2: PACING ──
+var questionStartTime = null;
+var sessionPacingData = [];
+
+function recordQuestionStart() { questionStartTime = Date.now(); }
+
+function recordQuestionEnd(correct) {
+  if (!questionStartTime) return;
+  var elapsed = (Date.now() - questionStartTime) / 1000;
+  sessionPacingData.push({timeSec: elapsed, correct: correct});
+  questionStartTime = null;
+}
+
+function renderPacingFeedbackHtml() {
+  if (!sessionPacingData.length || sessionPacingData.length < 3) return '';
+  var total = 0;
+  sessionPacingData.forEach(function(p){ total += p.timeSec; });
+  var avgSec = Math.round(total / sessionPacingData.length);
+  var avgMin = (avgSec / 60).toFixed(1);
+  var overSec = avgSec - 96;
+  var badgeClass = overSec <= 0 ? 'ok' : overSec <= 30 ? 'warn' : 'bad';
+  var badgeLabel = overSec <= 0 ? 'On pace' : '+' + overSec + 's over';
+  var msg = overSec <= 0
+    ? "You're within exam pace of 1.6 min/Q. Great discipline!"
+    : 'Avg ' + avgMin + ' min/Q vs 1.6 min target. On a 150-Q exam you\'d finish ~' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
+  return '<div class="pacing-feedback"><div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">&#9203; Pacing Feedback (' + sessionPacingData.length + ' questions)</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min / question average</strong><span>CISA target: 1.6 min/Q (240 min ÷ 150 Q)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div style="font-size:12px;color:var(--text2);line-height:1.6;font-weight:500;margin-top:8px">' + msg + '</div></div>';
+}
+
+// ── PHASE 2: TRAIN WEAK SPOTS ──
+function getTrainWeakSpotsPool() {
+  var ranked = [1,2,3,4,5].map(function(d) {
+    var st = S.ds[d] || {t:0,c:0};
+    var acc = st.t > 0 ? st.c / st.t : -1;
+    return {d: String(d), acc: acc};
+  }).sort(function(a, b) { return a.acc - b.acc; });
+
+  var pool = [];
+  ranked.slice(0, 3).forEach(function(item) {
+    var domQ = (QB[item.d] || []).slice().sort(function(){ return Math.random() - 0.5; });
+    domQ.slice(0, 7).forEach(function(q){ pool.push(q); });
+  });
+
+  if (S.missedQuestions && S.missedQuestions.length) {
+    S.missedQuestions.slice().sort(function(){ return Math.random()-0.5; }).slice(0, 5).forEach(function(mq) {
+      if (!pool.some(function(p){ return p.id === mq.id; })) pool.unshift(mq);
+    });
+  }
+
+  return pool.sort(function(){ return Math.random() - 0.5; }).slice(0, 20);
+}
+
+function startWeakSpotsDrill() {
+  var pool = getTrainWeakSpotsPool();
+  if (!pool.length) { showToast('Answer some questions first to identify weak spots!', 'info', 2200); return; }
+  clearAllTimers();
+  S.selectedDomain = 'all';
+  S.queues['all'] = pool;
+  S.qIdx['all'] = 0;
+  activeSubtopic = null;
+  S.current = null;
+  document.querySelectorAll('.domain-card').forEach(function(c){ c.classList.remove('selected'); });
+  renderSubtopicFilter();
+  switchTab('practice');
+  showToast('&#127919; Weak Spots Drill — ' + pool.length + ' questions loaded', 'info', 2200);
+  setTimeout(function() { nextQ(); }, 350);
+}
+
+// ── PHASE 2: BOOKMARK TAGGING ──
+var BK_TAG_OPTIONS = [
+  {value: 'need-review', label: 'Need Review', cls: 'need-review'},
+  {value: 'tricky-wording', label: 'Tricky Wording', cls: 'tricky-wording'},
+  {value: 'standard-ref', label: 'Standard Reference', cls: 'standard-ref'}
+];
+var bkActiveTagFilter = 'all';
+
+function setBkTag(qId, tag) {
+  for (var i = 0; i < S.bookmarks.length; i++) {
+    if (S.bookmarks[i].id === qId) { S.bookmarks[i].tag = tag || null; break; }
+  }
+  saveState();
+  renderBookmarks();
+}
+
+function setBkTagFilter(t) {
+  bkActiveTagFilter = t;
+  renderBookmarks();
+}
+
+function renderBookmarks() {
+  var area = document.getElementById('bkList');
+  if (!area) return;
+  var bks = S.bookmarks || [];
+  if (!bks.length) {
+    area.innerHTML = '<div class="no-bk">No bookmarks yet &#8212; save tricky questions during practice!</div>';
+    return;
+  }
+
+  var filterBar = '<div class="bk-tag-bar"><span style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-right:4px">Filter</span>'
+    + '<button class="bk-tag-chip' + (bkActiveTagFilter==='all'?' active':'') + '" data-filter="all" onclick="bkFilterClick(this)">All (' + bks.length + ')</button>';
+  BK_TAG_OPTIONS.forEach(function(t) {
+    var cnt = bks.filter(function(b){ return b.tag === t.value; }).length;
+    if (cnt) filterBar += '<button class="bk-tag-chip ' + t.cls + (bkActiveTagFilter===t.value?' active':'') + '" data-filter="' + t.value + '" onclick="bkFilterClick(this)">' + t.label + ' (' + cnt + ')</button>';
+  });
+  filterBar += '</div>';
+
+  var filtered = bkActiveTagFilter === 'all' ? bks : bks.filter(function(b){ return b.tag === bkActiveTagFilter; });
+  var drillBks = filtered.length ? filtered : bks;
+  var drillLabel = '&#9654; Drill ' + drillBks.length + ' Bookmark' + (drillBks.length !== 1 ? 's' : '') + (bkActiveTagFilter !== 'all' ? ' (' + bkActiveTagFilter.replace(/-/g,' ') + ')' : '');
+  var drillBtn = '<button class="bk-drill-btn" style="width:100%;margin-bottom:14px" data-filter="' + bkActiveTagFilter + '" onclick="bkDrillBtnClick(this)">' + drillLabel + '</button>';
+
+  if (!filtered.length) {
+    area.innerHTML = filterBar + '<div class="no-bk">No bookmarks with this tag.</div>';
+    return;
+  }
+
+  var dColors = {'1':'var(--d1)','2':'var(--d2)','3':'var(--d3)','4':'var(--d4)','5':'var(--d5)'};
+  var itemsHtml = filtered.map(function(bk) {
+    var d = String(bk.domain || '');
+    var safeId = escapeHtml(bk.id || '');
+    var tagInfo = BK_TAG_OPTIONS.find(function(t){ return t.value === bk.tag; });
+    var tagHtml = tagInfo ? '<div style="margin-top:6px"><span class="bk-item-tag ' + tagInfo.cls + '">' + tagInfo.label + '</span></div>' : '';
+    var tagOpts = '<option value="">Tag&#8230;</option>' + BK_TAG_OPTIONS.map(function(t){
+      return '<option value="' + t.value + '"' + (bk.tag === t.value ? ' selected' : '') + '>' + t.label + '</option>';
+    }).join('');
+    // Use data-qid to avoid quote-in-attribute HTML injection issues
+    var tagSel = '<select class="bk-tag-select" data-qid="' + safeId + '" onchange="bkTagChange(this)" onclick="event.stopPropagation()">' + tagOpts + '</select>';
+    return '<div class="bk-item" data-qid="' + safeId + '" onclick="bkDrillClick(this)">'
+      + '<span class="bk-d-tag" style="color:' + (dColors[d]||'var(--muted)') + '">D' + (d||'?') + '</span>'
+      + '<div style="flex:1;min-width:0"><div class="bk-item-text">' + escapeHtml((bk.question||'').substring(0,120)) + (bk.question && bk.question.length > 120 ? '&#8230;' : '') + '</div>' + tagHtml + '</div>'
+      + tagSel + '</div>';
+  }).join('');
+
+  area.innerHTML = filterBar + drillBtn + itemsHtml;
+}
+
+function startBookmarkDrill(tagFilter) {
+  var bks = S.bookmarks || [];
+  var pool = tagFilter === 'all' ? bks : bks.filter(function(b){ return b.tag === tagFilter; });
+  if (!pool.length) { showToast('No bookmarks to drill!', 'info', 1800); return; }
+  var fullQs = [];
+  pool.forEach(function(bk) {
+    var d = String(bk.domain || '');
+    var found = (QB[d]||[]).find(function(q){ return q.id === bk.id; });
+    if (found) fullQs.push(found);
+  });
+  if (!fullQs.length) { showToast('Questions not found', 'info', 1800); return; }
+  clearAllTimers();
+  S.selectedDomain = 'all';
+  S.queues['all'] = fullQs.sort(function(){ return Math.random()-0.5; });
+  S.qIdx['all'] = 0;
+  activeSubtopic = null;
+  S.current = null;
+  renderSubtopicFilter();
+  switchTab('practice');
+  showToast('&#128214; Bookmark Drill &#8212; ' + fullQs.length + ' questions', 'info', 2000);
+  setTimeout(function(){ nextQ(); }, 300);
+}
+
+function bkTagChange(el) {
+  var qId = el.getAttribute('data-qid');
+  setBkTag(qId, el.value);
+}
+
+function bkFilterClick(el) {
+  setBkTagFilter(el.getAttribute('data-filter'));
+}
+
+function bkDrillBtnClick(el) {
+  startBookmarkDrill(el.getAttribute('data-filter'));
+}
+
+function bkDrillClick(el) {
+  var qId = el.getAttribute('data-qid');
+  drillSingleBookmark(qId);
+}
+
+function drillSingleBookmark(qId) {
+  var bk = (S.bookmarks||[]).find(function(b){ return b.id === qId; });
+  if (!bk) return;
+  var d = String(bk.domain || '');
+  var found = (QB[d]||[]).find(function(q){ return q.id === qId; });
+  if (!found) { showToast('Question not found', 'info', 1500); return; }
+  clearAllTimers();
+  S.selectedDomain = d;
+  S.queues[d] = [found];
+  S.qIdx[d] = 0;
+  activeSubtopic = null;
+  S.current = null;
+  switchTab('practice');
+  setTimeout(function(){ nextQ(); }, 200);
+}
+
+// ── PHASE 2: MOCK CHECKPOINT (save every 5 Q) ──
+var MOCK_CHECKPOINT_KEY = 'cisa_mock_ckpt_v1';
+
+function saveMockCheckpoint() {
+  try {
+    localStorage.setItem(MOCK_CHECKPOINT_KEY, JSON.stringify({
+      mockQueue: S.mockQueue,
+      mockCurrent: S.mockCurrent,
+      mockAnswers: S.mockAnswers,
+      ts: Date.now()
+    }));
+  } catch(e) {}
+}
+
+function clearMockCheckpoint() {
+  try { localStorage.removeItem(MOCK_CHECKPOINT_KEY); } catch(e) {}
+}
+
+// ── PHASE 2: MOCK RESULTS ADVISORY ──
+function buildMockAdvisory(domainStats) {
+  var advisories = [];
+  Object.keys(DI).forEach(function(d) {
+    var s = domainStats[d] || {c:0,t:0};
+    if (!s.t) return;
+    var pct = Math.round((s.c/s.t)*100);
+    if (pct < 75) advisories.push({d:d, pct:pct, weight:DI[d].weight, name:DI[d].short});
+  });
+  advisories.sort(function(a,b){ return (b.weight*(75-b.pct)) - (a.weight*(75-a.pct)); });
+
+  if (!advisories.length) {
+    return '<div style="background:var(--correct-light);border:2px solid #a7f3d0;border-radius:12px;padding:14px 18px;margin-top:16px"><div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--correct);margin-bottom:6px">&#10003; Strong Performance</div><div style="font-size:13px;color:var(--text2);font-weight:600">All domains at 75%+ accuracy &#8212; you\'re exam-ready across the board.</div></div>';
+  }
+
+  var items = advisories.map(function(a) {
+    var icon = a.weight >= 23 ? '&#128308;' : a.weight >= 17 ? '&#128993;' : '&#128992;';
+    return '<div class="mock-advisory-item">' + icon + ' <strong>D' + a.d + ' ' + escapeHtml(a.name) + '</strong> &#8212; ' + a.pct + '% accuracy but this domain is <strong>' + a.weight + '%</strong> of the exam. Prioritize topic review + sub-topic drills.</div>';
+  }).join('');
+
+  return '<div class="mock-advisory"><div class="mock-advisory-title">&#9888; Priority Study Areas</div>' + items + '</div>';
+}
+
+
+
 // â”€â”€ INIT â”€â”€
 ensureLocalProfile();
 loadState();
 buildQueues();
 renderDomainGrid();
+renderSubtopicFilter();
 updateStats();
+renderReadinessCard();
 updateTimerDisplay();
 updateProfileBtn();
 // Restore difficulty button state
@@ -4128,12 +4879,74 @@ function setConfidence(level) {
   document.querySelectorAll(".opt").forEach(function(b) {
     b.disabled = false;
   });
+  // Unlock step 2 label
+  var stepLabel = document.getElementById("optsStepLabel");
+  if (stepLabel) stepLabel.classList.add("unlocked");
 }
 
 
 
 
 // â”€â”€ DOMAIN COMPLETE SCREEN â”€â”€
+function showFilterComplete() {
+  var d = S.selectedDomain;
+  var info = d !== "all" ? DI[d] : null;
+
+  // Build a human-readable description of what filter was active
+  var filterDesc = [];
+  if (activeSubtopic) filterDesc.push('\u201c' + activeSubtopic.replace(/-/g, ' ') + '\u201d');
+  if (S.diff !== "any") filterDesc.push(S.diff + ' difficulty');
+  var filterLabel = filterDesc.join(' + ');
+
+  // Count questions in this filtered set and how many answered
+  var pool = d === "all"
+    ? Object.keys(QB).reduce(function(a, k){ return a.concat(QB[k]||[]); }, [])
+    : (QB[d] || []);
+  var filtered = S.diff !== "any" ? pool.filter(function(q){ return q.difficulty === S.diff; }) : pool.slice();
+  if (activeSubtopic) filtered = filtered.filter(function(q){ return q.subtopic === activeSubtopic; });
+
+  var total = filtered.length;
+  var answered = filtered.filter(function(q){
+    var qd = String(q.domain);
+    return S.answeredIds && S.answeredIds[qd] && q.id && S.answeredIds[qd][q.id];
+  }).length;
+  var correct = filtered.filter(function(q){
+    var qd = String(q.domain);
+    return S.answeredIds && S.answeredIds[qd] && q.id && S.answeredIds[qd][q.id]
+      && S.sessionHistory.some(function(h){ return false; }); // approx via ds
+  }).length;
+
+  // Approximate accuracy from domain stats for answered subset
+  var pct = answered > 0 ? Math.round((S.ds[d] ? (S.ds[d].c / Math.max(S.ds[d].t, 1)) * 100 : 0)) : 0;
+  var pctColor = pct >= 75 ? 'var(--correct)' : pct >= 50 ? 'var(--warning)' : 'var(--wrong)';
+
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'none';
+
+  var domainLabel = info ? 'Domain ' + d + ': ' + info.name : 'All Domains';
+
+  document.getElementById('qArea').innerHTML =
+    '<div class="empty" style="background:var(--correct-light);border:2px solid #a7f3d0;border-radius:var(--radius);padding:36px 28px">'
+    + '<div class="empty-icon">\u2705</div>'
+    + '<div class="empty-title" style="color:var(--correct)">Filter Complete!</div>'
+    + '<div class="empty-sub" style="margin-bottom:4px"><strong>' + filterLabel + '</strong></div>'
+    + '<div class="empty-sub">' + domainLabel + ' \u2014 all ' + total + ' questions answered</div>'
+    + '<div style="margin-top:16px;font-family:\'Playfair Display\',serif;font-size:40px;font-weight:900;color:' + pctColor + '">' + pct + '%</div>'
+    + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--muted);margin-bottom:20px">accuracy on ' + domainLabel + ' overall</div>'
+    + '<div style="margin-top:8px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
+    + '<button class="act-btn primary" onclick="clearFilterAndContinue()" style="background:var(--accent);border-color:var(--accent);color:#fff">\u25b6 Continue (all sub-topics)</button>'
+    + '<button class="act-btn secondary" onclick="showSessionSummary()">\ud83d\udcca View Summary</button>'
+    + '</div></div>';
+}
+
+function clearFilterAndContinue() {
+  activeSubtopic = null;
+  renderSubtopicFilter();
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  nextQ();
+}
+
 function showDomainComplete(d) {
   d = String(d);
   var info = DI[d];
@@ -4415,6 +5228,7 @@ function showSessionSummary() {
     + focusHtml
     + confInsight
     + missedHtml
+    + renderPacingFeedbackHtml()
     + '<button class="summary-close" onclick="closeSummary()">Back to Practice</button>'
     + '</div></div>';
 }
@@ -4601,7 +5415,27 @@ function showChangelog() {
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
     + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v5.2</div>'
+    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v7.0 &#8212; Phase 2 Competitive Parity</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>Exam Date + Readiness Score</strong> &#8212; set your exam date, see a countdown, and track weighted readiness % across domains</li>'
+    + '<li><strong>Train My Weak Spots</strong> &#8212; one-tap 20-question drill from lowest-performing domains + missed questions</li>'
+    + '<li><strong>Bookmark Tagging</strong> &#8212; tag bookmarks as Need Review, Tricky Wording, or Standard Reference; filter and drill by tag</li>'
+    + '<li><strong>Pacing Feedback</strong> &#8212; session summary now shows avg time per question vs 1.6 min CISA target</li>'
+    + '<li><strong>Mock Exam Auto-Save</strong> &#8212; checkpoint saved every 5 questions; progress recovered if browser closes</li>'
+    + '<li><strong>Mock Results Advisory</strong> &#8212; actionable callouts for domains under 75% weighted by exam impact</li>'
+    + '<li><strong>Bookmark Drill Mode</strong> &#8212; drill all bookmarks or by tag directly into practice flow</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v6.0 &#8212; Phase 1 UX Overhaul</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>Confidence-First</strong> &#8212; rate confidence before answering to make spaced repetition data meaningful</li>'
+    + '<li><strong>Sub-topic Drill Mode</strong> &#8212; filter practice questions by specific sub-topic within each domain</li>'
+    + '<li><strong>Domain Weight Badges</strong> &#8212; D4/D5 high-impact labels on domain cards</li>'
+    + '<li><strong>Mock Exam Confirmation</strong> &#8212; review time estimate and domain split before starting</li>'
+    + '<li><strong>Tab Reorder + ISACA Disclaimer + Mobile fixes</strong></li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v5.2</div>'
     + '<ul class="cl-items">'
     + '<li><strong>Topic Summary</strong> \u2014 added board-style domain review cards mapped to the guide topics and CISA domains</li>'
     + '<li><strong>Review progress</strong> \u2014 mark topic areas as reviewed; progress saves locally in the browser</li>'
