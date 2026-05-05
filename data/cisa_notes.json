@@ -1,0 +1,1214 @@
+{
+  "title": "CISA Official Review Manual – 28th Edition",
+  "source": "ISACA CISA Official Review Manual (Notes.pdf)",
+  "description": "A structured summary of all 5 CISA domains with concepts, topics, subtopics, real-life scenarios, examples, and key terminologies for exam preparation.",
+  "domains": [
+    {
+      "domain_number": 1,
+      "domain_name": "Information System Auditing Process",
+      "exam_weight": "21%",
+      "summary": "This domain covers how IS audits are planned, executed, and reported. It forms the backbone of the CISA role — understanding audit standards, risk-based planning, types of controls, evidence collection, and communication of audit results.",
+      "real_life_analogy": "Think of an IS audit like a health checkup for a company's IT systems. Just as a doctor follows a structured process — reviewing patient history, running tests, and issuing a report — an IS auditor plans, examines controls, gathers evidence, and delivers findings.",
+      "topics": [
+        {
+          "topic_id": "1.1",
+          "topic_name": "IS Audit Standards, Guidelines, Functions and Codes of Ethics",
+          "subtopics": [
+            {
+              "id": "1.1.1",
+              "name": "ISACA IS Audit and Assurance Standards",
+              "summary": "Mandatory requirements for IS auditing and reporting. Divided into General, Performance, and Reporting standards.",
+              "categories": {
+                "General": "Guiding principles — ethics, independence, objectivity, due care, knowledge and competency.",
+                "Performance": "Conduct of assignments — planning, supervision, risk, evidence gathering.",
+                "Reporting": "Types of reports, communication methods, and information to be communicated."
+              },
+              "key_point": "Standards are MANDATORY. Guidelines provide guidance on HOW to apply standards. Tools & Techniques are examples — not requirements.",
+              "exam_tip": "ISACA tests your ability to APPLY standards, not memorize numbering."
+            },
+            {
+              "id": "1.1.2",
+              "name": "ISACA IS Audit and Assurance Guidelines",
+              "summary": "Provide guidance on how to comply with standards. IS auditors should consider them, use professional judgment, and justify any departure.",
+              "key_point": "Guidelines = guidance. Departure is allowed if professionally justified."
+            },
+            {
+              "id": "1.1.3",
+              "name": "ISACA Code of Professional Ethics",
+              "summary": "Governs professional and personal conduct of ISACA members and certification holders.",
+              "seven_principles": [
+                "Support appropriate standards and compliance.",
+                "Perform duties with objectivity, due diligence and professional care.",
+                "Serve stakeholders lawfully with high standards of conduct.",
+                "Maintain privacy and confidentiality of obtained information.",
+                "Maintain competency and undertake only tasks within your skill set.",
+                "Inform appropriate parties of all significant findings.",
+                "Support professional education of stakeholders."
+              ],
+              "exam_tip": "You don't memorize the ethics code. You understand and APPLY it in scenarios.",
+              "real_life_scenario": "An auditor discovers payroll fraud during an unrelated audit engagement. Ethics require disclosure to appropriate parties even if outside original audit scope."
+            },
+            {
+              "id": "1.1.4",
+              "name": "IT Assurance Framework (ITAF)",
+              "summary": "A comprehensive best-practice reference model that establishes standards for IS auditor roles, knowledge, skills, and conduct.",
+              "key_point": "ITAF is the framework that organizes standards, guidelines, and tools for IS audit."
+            },
+            {
+              "id": "1.1.5",
+              "name": "IS Internal Audit Function",
+              "key_concepts": {
+                "Audit Charter": "A board-approved document that defines the authority, responsibility, and scope of the IS audit function. It is the auditor's permission slip.",
+                "Independence": "Internal audit must report to the audit committee or highest management level to remain independent.",
+                "Resource Management": "IS auditors must continuously update skills due to changing technology. Staff training plans should align with organizational IT direction.",
+                "Outsourcing Audits": "When using external experts, the IS auditor retains professional liability. External experts must be supervised and their work reviewed."
+              },
+              "real_life_scenario": "Imagine a bank's internal audit team that reports directly to the CFO. This creates independence issues because the CFO controls the budget. Best practice: report to the Audit Committee of the Board of Directors.",
+              "exam_tip": "The Audit Charter grants authority. A request from management does NOT."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.2",
+          "topic_name": "Types of Audits, Assessments and Reviews",
+          "subtopics": [
+            {
+              "id": "1.2.0",
+              "name": "Types of Audits",
+              "types": [
+                {
+                  "type": "IS Audit",
+                  "description": "Collects evidence to determine if IS systems are protected, reliable and providing value."
+                },
+                {
+                  "type": "Compliance Audit",
+                  "description": "Tests adherence to specific regulations or standards (e.g., PCI-DSS, GDPR)."
+                },
+                {
+                  "type": "Financial Audit",
+                  "description": "Assesses accuracy of financial reporting. Focuses on financial data integrity."
+                },
+                {
+                  "type": "Operational Audit",
+                  "description": "Evaluates internal control structure in a given process or area."
+                },
+                {
+                  "type": "Integrated Audit",
+                  "description": "Combines financial and operational audit steps. Assesses overall organizational objectives."
+                },
+                {
+                  "type": "Fraud Audit",
+                  "description": "Specialized audit to discover fraudulent activity using data analytics."
+                },
+                {
+                  "type": "Forensic Audit",
+                  "description": "Discovers and follows up on fraud and crime. Produces evidence for law enforcement."
+                },
+                {
+                  "type": "Third-Party Service Audit",
+                  "description": "Audits outsourced financial and business processes to external service providers."
+                },
+                {
+                  "type": "Readiness Assessment",
+                  "description": "Reviews organization's current state before a formal audit. Focuses on control design, not operating effectiveness."
+                }
+              ],
+              "real_life_scenario": "A credit card company hires an external firm to assess whether their payment processing systems comply with PCI-DSS before the official certification audit. This is a Readiness Assessment."
+            },
+            {
+              "id": "1.2.1",
+              "name": "Control Self-Assessment (CSA)",
+              "summary": "A technique where management and staff assess their own internal controls — guided by an IS auditor acting as facilitator.",
+              "primary_objective": "Shift control monitoring responsibility to functional areas to reinforce management ownership of internal controls.",
+              "benefits": [
+                "Early detection of risk",
+                "More effective internal controls",
+                "Increased employee awareness of organizational objectives",
+                "Increased communication between operational and top management",
+                "Reduction in control costs"
+              ],
+              "disadvantages": [
+                "May be mistaken as a replacement for formal audit",
+                "Seen as additional workload",
+                "Failure to act on suggestions damages morale",
+                "Lack of audit knowledge may limit effectiveness"
+              ],
+              "exam_tip": "CSA's KEY benefit = management ownership of internal controls (not fraud detection or cost reduction).",
+              "real_life_scenario": "A manufacturing company conducts quarterly workshops where department managers assess their own procurement controls guided by the internal audit team. The IS auditor acts as facilitator, not as the one doing the testing.",
+              "memory_aid": "CSA = Control ownership by Staff and management. The Auditor Facilitates, not Audits."
+            },
+            {
+              "id": "1.2.2",
+              "name": "Integrated Auditing",
+              "summary": "Combines different audit disciplines (IT + financial + operational) to assess key internal controls with a focus on risk.",
+              "process": [
+                "Identify organizational risk for the area being audited",
+                "Identify relevant key controls",
+                "Review and understand design of key controls",
+                "Test IT system support for key controls",
+                "Test operational effectiveness of management controls",
+                "Issue a combined report with findings"
+              ],
+              "benefit": "One comprehensive audit report covering all audit disciplines."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.3",
+          "topic_name": "Risk-Based Audit Planning",
+          "summary": "Audit resources are deployed to areas representing the GREATEST risk. This requires understanding the organization, its environment, and conducting risk assessments.",
+          "subtopics": [
+            {
+              "id": "1.3.1",
+              "name": "Individual Audit Assignments",
+              "planning_steps": [
+                "Understand organization's mission, objectives, and processes",
+                "Understand governance structure related to audit objectives",
+                "Review prior audit work papers",
+                "Identify applicable policies, standards, and procedures",
+                "Perform a risk analysis",
+                "Set audit scope and objectives",
+                "Develop audit approach and strategy",
+                "Assign personnel resources",
+                "Address engagement logistics",
+                "Identify opportunities for CAATs (Computer-Assisted Audit Techniques)"
+              ]
+            },
+            {
+              "id": "1.3.3",
+              "name": "Audit Risk and Materiality",
+              "types_of_audit_risk": {
+                "Inherent Risk": "Risk that exists WITHOUT considering controls. Exists because of the nature of the business.",
+                "Control Risk": "Risk that a material error exists but WON'T be prevented or detected by internal controls.",
+                "Detection Risk": "Risk that an IS auditor WON'T detect a material error during the audit.",
+                "Overall Audit Risk": "Combination of inherent + control + detection risks."
+              },
+              "materiality": "The relative significance of an issue in the context of the enterprise as a whole. Higher materiality = lower acceptable audit risk.",
+              "real_life_scenario": "An auditor reviewing a bank's trading systems knows trading carries HIGH inherent risk due to its complex nature. They design extensive testing to reduce detection risk.",
+              "exam_tip": "INHERENT risk = no controls considered. CONTROL risk = controls exist but may fail. DETECTION risk = auditor may miss it.",
+              "memory_aid": "I-C-D: Inherent → Control → Detection. Each one is the NEXT line of defense."
+            },
+            {
+              "id": "1.3.4",
+              "name": "Risk Assessment",
+              "summary": "Identifies, quantifies and prioritizes risk to guide management actions and audit planning.",
+              "key_point": "IT MANAGEMENT is responsible for conducting risk assessments. The IS auditor may assist but management owns the process.",
+              "when_performed": "Periodically and whenever significant changes occur (e.g., new system, new regulation, acquisition)."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.4",
+          "topic_name": "Types of Controls and Considerations",
+          "subtopics": [
+            {
+              "id": "1.4.3",
+              "name": "Control Classifications",
+              "by_timing": {
+                "Preventive Controls": "Stop problems BEFORE they occur. Example: access restrictions, data validation.",
+                "Detective Controls": "IDENTIFY and report problems AS they occur. Example: audit logs, intrusion detection.",
+                "Corrective Controls": "MINIMIZE the impact and fix issues AFTER they occur. Example: data backups, disaster recovery."
+              },
+              "by_nature": {
+                "Manual Controls": "Performed by people. Example: supervisor approval of transactions.",
+                "Automated Controls": "Performed by systems. Example: system-enforced password complexity.",
+                "IT-Dependent Manual Controls": "Manual controls relying on IT-generated reports. Example: manager reviews system-generated exception report."
+              },
+              "real_life_scenario": "A bank's ATM: PIN requirement = Preventive. Transaction log = Detective. Backup files if system fails = Corrective.",
+              "exam_tip": "Daily data backup = CORRECTIVE control (restores after incident). It is NOT preventive.",
+              "memory_aid": "P-D-C: PREVENT the crime, DETECT the crime, CORRECT the damage."
+            },
+            {
+              "id": "1.4.4",
+              "name": "Control Relationship to Risk",
+              "key_concept": "Controls reduce risk. Auditors evaluate whether controls are adequately designed and operating effectively to mitigate identified risks."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.5",
+          "topic_name": "Audit Project Management",
+          "subtopics": [
+            {
+              "id": "1.5.3",
+              "name": "Audit Programs",
+              "summary": "A detailed set of audit procedures designed to achieve specific audit objectives within a given audit engagement."
+            },
+            {
+              "id": "1.5.6",
+              "name": "Agile Auditing",
+              "summary": "Applying agile project management principles to audits — shorter cycles, iterative feedback, flexible scope adjustments based on emerging findings."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.6",
+          "topic_name": "Audit Testing and Sampling Methodology",
+          "subtopics": [
+            {
+              "id": "1.6.1",
+              "name": "Compliance vs. Substantive Testing",
+              "compliance_testing": "Tests whether controls are OPERATING as designed. Example: Do users actually need manager approval for system access?",
+              "substantive_testing": "Tests whether the actual DATA and FINANCIAL information are accurate and complete.",
+              "exam_tip": "Compliance = test the control. Substantive = test the data/transaction."
+            },
+            {
+              "id": "1.6.2",
+              "name": "Sampling",
+              "types": {
+                "Statistical Sampling": "Uses probability theory — results can be projected to the population with a quantifiable confidence level.",
+                "Non-Statistical (Judgmental) Sampling": "Based on auditor judgment — results cannot be statistically projected to the full population."
+              },
+              "sampling_risk": "Risk that the sample does NOT represent the entire population accurately."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.7",
+          "topic_name": "Audit Evidence Collection Techniques",
+          "techniques": [
+            "Interviews with management and staff",
+            "Observation of processes and procedures",
+            "Inspection/review of documents and records",
+            "Re-performance of control activities",
+            "Confirmation from third parties",
+            "Analytical procedures (trend analysis, ratio analysis)"
+          ],
+          "key_concept": "Evidence must be SUFFICIENT (enough), RELIABLE (trustworthy), RELEVANT (related to the finding), and USEFUL."
+        },
+        {
+          "topic_id": "1.8",
+          "topic_name": "Audit Data Analytics",
+          "subtopics": [
+            {
+              "id": "1.8.1",
+              "name": "Computer-Assisted Audit Techniques (CAATs)",
+              "summary": "Software tools used by IS auditors to directly access, analyze, and test data from IT systems.",
+              "examples": ["Audit software (ACL, IDEA)", "Spreadsheet analysis", "Test data", "Embedded audit modules"],
+              "real_life_scenario": "An auditor uses CAATs to analyze 100% of vendor payment transactions to detect duplicate payments — something impossible to do manually for large datasets."
+            },
+            {
+              "id": "1.8.2",
+              "name": "Continuous Auditing and Monitoring",
+              "summary": "Automated, ongoing monitoring of transactions and controls rather than periodic point-in-time audits.",
+              "benefit": "Detects anomalies in near real-time instead of months after the fact."
+            },
+            {
+              "id": "1.8.4",
+              "name": "Artificial Intelligence in IS Audit",
+              "summary": "AI and machine learning tools can analyze vast datasets, identify patterns, flag anomalies, and support audit decision-making."
+            }
+          ]
+        },
+        {
+          "topic_id": "1.9",
+          "topic_name": "Reporting and Communication Techniques",
+          "key_concepts": {
+            "Audit Report Structure": "Executive summary, scope, objectives, findings, conclusions, recommendations, and management responses.",
+            "Follow-Up Activities": "IS auditor must follow up to confirm management has implemented recommended corrective actions.",
+            "Audit Documentation": "Work papers that support audit findings, conclusions, and evidence gathered."
+          },
+          "exam_tip": "Audit reports should be timely, objective, clear, concise, constructive, and complete."
+        }
+      ],
+      "key_terminologies": {
+        "IS Audit": "Formal examination of information systems to verify compliance, security, and effectiveness.",
+        "Audit Charter": "Board-approved document defining the IS audit function's authority and scope.",
+        "Inherent Risk": "Risk present without controls being considered.",
+        "Control Risk": "Risk that controls fail to prevent or detect material errors.",
+        "Detection Risk": "Risk that auditors fail to detect existing errors.",
+        "Materiality": "The significance of an issue relative to the whole organization.",
+        "CAATs": "Computer-Assisted Audit Techniques — software tools for audit data analysis.",
+        "CSA": "Control Self-Assessment — management-led assessment of internal controls.",
+        "ITAF": "IT Assurance Framework — ISACA's comprehensive IS audit standards framework.",
+        "Sampling Risk": "Risk that a selected sample does not represent the full population.",
+        "Compliance Testing": "Tests whether controls operate as designed.",
+        "Substantive Testing": "Tests the accuracy and completeness of data/transactions."
+      }
+    },
+    {
+      "domain_number": 2,
+      "domain_name": "Governance and Management of IT",
+      "exam_weight": "17%",
+      "summary": "This domain covers how organizations govern and manage their IT resources. It focuses on IT governance frameworks, risk management, data privacy, IT resource management, and performance monitoring.",
+      "real_life_analogy": "Think of IT governance like the board of directors of a company. They don't run daily operations but set direction, ensure accountability, and make sure IT serves the business strategy.",
+      "topics": [
+        {
+          "topic_id": "2.2",
+          "topic_name": "Organizational Structure, IT Governance and IT Strategy",
+          "subtopics": [
+            {
+              "id": "2.2.1",
+              "name": "Enterprise Governance of Information and Technology (EGIT)",
+              "summary": "A framework ensuring IT activities align with and support business strategy and objectives.",
+              "key_frameworks": ["COBIT (Control Objectives for Information Technologies)", "ITIL (IT Infrastructure Library)", "ISO/IEC 27001 (Information Security Management)", "ISO/IEC 38500 (IT Governance Standard)"],
+              "real_life_scenario": "A hospital's IT department implements COBIT to align IT investments with patient care goals, ensuring electronic health records are secure, available, and compliant with regulations."
+            },
+            {
+              "id": "2.2.4",
+              "name": "Information Security Governance",
+              "summary": "A subset of overall IT governance focused on managing information security risks and ensuring the protection of information assets.",
+              "components": ["Security policies and standards", "Risk management", "Compliance monitoring", "Security awareness training"]
+            },
+            {
+              "id": "2.2.7",
+              "name": "Business Intelligence",
+              "summary": "Tools and technologies that analyze business data to support decision-making.",
+              "examples": ["Dashboards and scorecards", "Data warehouses", "Reporting and analytics tools"]
+            },
+            {
+              "id": "2.2.8",
+              "name": "Organizational Structure",
+              "key_roles": {
+                "Board of Directors": "Ultimate accountability for IT governance.",
+                "CEO": "Responsible for overall organizational strategy.",
+                "CIO": "Manages IT strategy and IT department.",
+                "CISO": "Manages information security strategy.",
+                "IS Auditor": "Provides independent assurance on IT controls and risks."
+              },
+              "segregation_of_duties": "Critical control — no single person should control all stages of a key transaction.",
+              "real_life_scenario": "A bank clerk who enters a payment should NOT also be the one who approves it. Segregation of duties prevents fraud.",
+              "memory_aid": "SoD = Same person cannot DO and CHECK their own work."
+            }
+          ]
+        },
+        {
+          "topic_id": "2.3",
+          "topic_name": "IT Policies, Standards, Procedures and Guidelines",
+          "subtopics": [
+            {
+              "id": "2.3.1",
+              "name": "Policies",
+              "summary": "High-level statements of management intent. WHAT the organization expects.",
+              "example": "The organization shall protect all sensitive customer data in accordance with applicable laws.",
+              "key_point": "Policies are MANDATORY. They are approved by senior management or the board."
+            },
+            {
+              "id": "2.3.2",
+              "name": "Standards",
+              "summary": "Specific requirements that support policies. HOW the organization meets policy intent.",
+              "example": "Passwords must be at least 12 characters with uppercase, numbers, and special characters."
+            },
+            {
+              "id": "2.3.3",
+              "name": "Procedures",
+              "summary": "Step-by-step instructions for implementing standards.",
+              "example": "Step 1: Go to account settings. Step 2: Click 'Change Password'. Step 3: Enter password meeting complexity requirements."
+            },
+            {
+              "id": "2.3.4",
+              "name": "Guidelines",
+              "summary": "Recommended practices — NOT mandatory. Provide flexibility.",
+              "example": "Users are encouraged to use password managers to manage their credentials.",
+              "hierarchy_memory_aid": "P-S-P-G: Policy → Standards → Procedures → Guidelines (from most mandatory to least mandatory)"
+            }
+          ]
+        },
+        {
+          "topic_id": "2.5",
+          "topic_name": "Enterprise Risk Management (ERM)",
+          "summary": "A structured approach to identifying, assessing, and managing risk across the entire enterprise to achieve organizational objectives.",
+          "subtopics": [
+            {
+              "id": "2.5.1",
+              "name": "Developing a Risk Management Program",
+              "components": ["Risk identification", "Risk assessment", "Risk response selection", "Risk monitoring and reporting"]
+            },
+            {
+              "id": "2.5.2",
+              "name": "Risk Management Life Cycle",
+              "phases": {
+                "Risk Identification": "What could go wrong?",
+                "Risk Assessment": "How likely is it? How bad would it be?",
+                "Risk Response": "What do we do about it? (Accept, Avoid, Transfer, Mitigate)",
+                "Risk Monitoring": "Are our responses working?"
+              },
+              "risk_responses": {
+                "Accept": "Acknowledge the risk and take no action (when impact is low).",
+                "Avoid": "Eliminate the activity that creates the risk.",
+                "Transfer": "Shift the risk to another party (e.g., insurance, outsourcing).",
+                "Mitigate": "Implement controls to reduce the likelihood or impact."
+              },
+              "real_life_scenario": "A retailer identifies the risk of a ransomware attack. They mitigate it with endpoint protection and daily backups, transfer some risk with cyber insurance, and accept the residual risk of a minor system downtime.",
+              "memory_aid": "ATMA: Accept, Transfer, Mitigate, Avoid — the 4 risk responses."
+            },
+            {
+              "id": "2.5.3",
+              "name": "Risk Analysis Methods",
+              "methods": {
+                "Qualitative Risk Analysis": "Uses descriptive ratings (High/Medium/Low). Based on judgment and experience. Faster but less precise.",
+                "Quantitative Risk Analysis": "Uses numerical values (e.g., Annual Loss Expectancy). More precise but requires more data and expertise."
+              },
+              "quantitative_formulas": {
+                "ALE": "Annual Loss Expectancy = Single Loss Expectancy (SLE) × Annual Rate of Occurrence (ARO)",
+                "SLE": "Single Loss Expectancy = Asset Value × Exposure Factor",
+                "example": "Server worth $100,000, 30% chance of complete loss, occurs once a year. SLE = $30,000. ALE = $30,000."
+              }
+            }
+          ]
+        },
+        {
+          "topic_id": "2.6",
+          "topic_name": "Data Privacy Program and Principles",
+          "summary": "Frameworks and controls to protect individuals' personal data in compliance with laws like GDPR.",
+          "subtopics": [
+            {
+              "id": "2.6.1",
+              "name": "Privacy Documentation",
+              "key_documents": ["Privacy policy", "Privacy notices", "Data processing agreements", "Records of processing activities (ROPA)"]
+            },
+            {
+              "id": "2.7.1",
+              "name": "Data Inventory and Classification",
+              "classification_levels": ["Public", "Internal Use Only", "Confidential", "Restricted/Secret"],
+              "real_life_scenario": "A hospital classifies patient health records as 'Restricted' — they require encryption at rest, strict access controls, and audit logging of every access."
+            },
+            {
+              "id": "2.7.3",
+              "name": "Data Subject Rights",
+              "rights": ["Right to Access", "Right to Rectification (correction)", "Right to Erasure (right to be forgotten)", "Right to Data Portability", "Right to Object to processing"]
+            }
+          ]
+        },
+        {
+          "topic_id": "2.8",
+          "topic_name": "IT Resource Management",
+          "subtopics": [
+            {
+              "id": "2.8.4",
+              "name": "Human Resource Management",
+              "key_controls": {
+                "Background Checks": "Pre-employment screening to verify credentials and criminal history.",
+                "Mandatory Leave / Job Rotation": "Detects fraud by removing a person from their role temporarily.",
+                "Separation of Duties": "No single person controls all stages of a transaction.",
+                "Termination Procedures": "Immediate revocation of access when an employee leaves.",
+                "NDA (Non-Disclosure Agreement)": "Legally protects confidential information."
+              },
+              "real_life_scenario": "A bank discovers accounting fraud during a mandatory 2-week vacation policy for financial staff. The relief employee flagged duplicate payment entries the original employee had hidden.",
+              "exam_tip": "Mandatory vacation and job rotation = detective controls for fraud."
+            },
+            {
+              "id": "2.8.5",
+              "name": "Enterprise Change Management",
+              "summary": "A formal process to control changes to IT systems to minimize unintended disruptions.",
+              "key_steps": ["Change request submitted", "Impact assessment performed", "Change approved by Change Advisory Board (CAB)", "Change implemented", "Post-implementation review"],
+              "real_life_scenario": "An airline's IT team needs to update the reservation system. Without change management, a poorly tested update could crash bookings. Change management ensures it is tested, approved, and rolled back if it fails."
+            },
+            {
+              "id": "2.8.7",
+              "name": "Information Security Management",
+              "key_frameworks": ["ISO/IEC 27001 — Information Security Management System (ISMS)", "NIST Cybersecurity Framework", "COBIT Security"]
+            }
+          ]
+        },
+        {
+          "topic_id": "2.9",
+          "topic_name": "IT Service Management and Third-Party Governance",
+          "subtopics": [
+            {
+              "id": "2.9.2",
+              "name": "Outsourcing Practices and Strategies",
+              "risks": ["Loss of control over data", "Vendor lock-in", "Compliance and regulatory exposure", "Service quality degradation"],
+              "controls": ["Service Level Agreements (SLAs)", "Right-to-audit clauses", "Security requirements in contracts", "Regular vendor performance reviews"],
+              "real_life_scenario": "A telecom company outsources its call center to a vendor in another country. The IS auditor verifies SLAs, data protection clauses, and performs periodic vendor audits to ensure customer data is protected."
+            },
+            {
+              "id": "2.9.3",
+              "name": "Cloud Governance",
+              "service_models": {
+                "IaaS (Infrastructure as a Service)": "Customer manages OS, apps, and data. Provider manages hardware. Example: AWS EC2.",
+                "PaaS (Platform as a Service)": "Customer manages apps and data. Provider manages the platform. Example: Google App Engine.",
+                "SaaS (Software as a Service)": "Customer only manages data. Provider manages everything else. Example: Salesforce, Microsoft 365."
+              },
+              "deployment_models": ["Public Cloud", "Private Cloud", "Hybrid Cloud", "Community Cloud"],
+              "exam_tip": "In cloud models, the CUSTOMER still owns data privacy responsibility. The provider secures infrastructure but the customer configures security settings."
+            }
+          ]
+        },
+        {
+          "topic_id": "2.10",
+          "topic_name": "IT Performance Monitoring and Reporting",
+          "subtopics": [
+            {
+              "id": "2.10.1",
+              "name": "Key Performance Indicators (KPIs)",
+              "summary": "Metrics that measure HOW WELL the organization is achieving its objectives.",
+              "example": "System uptime: 99.9% availability target."
+            },
+            {
+              "id": "2.10.2",
+              "name": "Key Risk Indicators (KRIs)",
+              "summary": "Metrics that signal INCREASING RISK before an issue occurs.",
+              "example": "Number of failed login attempts per day trending upward = early warning of brute force attack."
+            },
+            {
+              "id": "2.10.3",
+              "name": "Key Control Indicators (KCIs)",
+              "summary": "Metrics that measure the EFFECTIVENESS of specific controls.",
+              "example": "Percentage of patches applied within 30 days of release."
+            }
+          ]
+        }
+      ],
+      "key_terminologies": {
+        "COBIT": "Control Objectives for Information Technologies — IT governance framework by ISACA.",
+        "EGIT": "Enterprise Governance of Information and Technology.",
+        "SLA": "Service Level Agreement — contractual commitment on service performance standards.",
+        "ERM": "Enterprise Risk Management — organization-wide risk management approach.",
+        "ALE": "Annual Loss Expectancy — quantitative measure of yearly risk impact.",
+        "SLE": "Single Loss Expectancy — loss from a single risk event.",
+        "ARO": "Annual Rate of Occurrence — how often a risk event is expected per year.",
+        "SaaS / PaaS / IaaS": "Cloud service models — Software/Platform/Infrastructure as a Service.",
+        "KPI": "Key Performance Indicator — measures goal achievement.",
+        "KRI": "Key Risk Indicator — early warning of increasing risk.",
+        "KCI": "Key Control Indicator — measures control effectiveness.",
+        "Segregation of Duties (SoD)": "No single person controls all stages of a key process to prevent fraud.",
+        "CAB": "Change Advisory Board — approves changes to production IT systems."
+      }
+    },
+    {
+      "domain_number": 3,
+      "domain_name": "Information Systems Acquisition, Development and Implementation",
+      "exam_weight": "12%",
+      "summary": "This domain covers how IT systems are planned, built, acquired, tested, and implemented. It focuses on project management, SDLC controls, application controls, testing methodologies, and change management.",
+      "real_life_analogy": "Think of building a new hospital. You need architects (project managers), building permits (governance), construction phases (SDLC), inspections at each phase, and a final walkthrough before opening. IS auditors inspect at every stage.",
+      "topics": [
+        {
+          "topic_id": "3.1",
+          "topic_name": "Project Governance and Management",
+          "subtopics": [
+            {
+              "id": "3.1.3",
+              "name": "Project Management Roles and Responsibilities",
+              "roles": {
+                "Project Sponsor": "Senior executive who champions the project and provides resources.",
+                "Project Manager": "Responsible for day-to-day project delivery.",
+                "Steering Committee": "Provides oversight and direction for strategic projects.",
+                "IS Auditor": "Provides independent review at key project milestones."
+              }
+            },
+            {
+              "id": "3.1.4",
+              "name": "Project Management Techniques",
+              "techniques": {
+                "Gantt Charts": "Bar charts showing project schedule and task dependencies.",
+                "PERT (Program Evaluation and Review Technique)": "Analyzes time needed to complete tasks with uncertainty.",
+                "Critical Path Method (CPM)": "Identifies the longest sequence of tasks that determines project duration."
+              }
+            }
+          ]
+        },
+        {
+          "topic_id": "3.3",
+          "topic_name": "System Development Methodologies",
+          "subtopics": [
+            {
+              "id": "3.3.2",
+              "name": "SDLC Models",
+              "models": {
+                "Waterfall": "Sequential phases — each must complete before the next begins. Best for well-defined, stable requirements.",
+                "Prototyping": "Build a working model early to gather feedback before full development.",
+                "Agile": "Iterative sprints delivering working software frequently. Best for evolving requirements.",
+                "RAD (Rapid Application Development)": "Speed-focused development using prototypes and user feedback.",
+                "DevOps": "Combines development and operations for continuous delivery with automation."
+              },
+              "exam_tip": "Waterfall = best documented/controlled. Agile = most flexible. ISACA favors control and documentation."
+            },
+            {
+              "id": "3.3.3",
+              "name": "SDLC Phases",
+              "phases": [
+                {
+                  "phase": "Feasibility Study",
+                  "description": "Is the project technically and economically viable?",
+                  "audit_focus": "Business case justification"
+                },
+                {
+                  "phase": "Requirements Definition",
+                  "description": "What does the system need to do?",
+                  "audit_focus": "Completeness and accuracy of requirements"
+                },
+                {
+                  "phase": "System Design",
+                  "description": "How will the system be built?",
+                  "audit_focus": "Security and control requirements built into design"
+                },
+                {
+                  "phase": "Development",
+                  "description": "Writing the actual code.",
+                  "audit_focus": "Secure coding standards and code reviews"
+                },
+                {
+                  "phase": "Testing",
+                  "description": "Verifying the system works as designed.",
+                  "audit_focus": "Test plans, test results, user acceptance testing (UAT)"
+                },
+                {
+                  "phase": "Implementation",
+                  "description": "Going live with the new system.",
+                  "audit_focus": "Migration controls, parallel running, rollback plans"
+                },
+                {
+                  "phase": "Post-Implementation Review",
+                  "description": "Confirming the system delivers expected benefits.",
+                  "audit_focus": "Did the project achieve its objectives?"
+                }
+              ],
+              "real_life_scenario": "A bank develops a new mobile banking app. IS auditors review security requirements in the design phase, check for SQL injection vulnerabilities in development, observe UAT testing, and review post-implementation performance metrics."
+            }
+          ]
+        },
+        {
+          "topic_id": "3.4",
+          "topic_name": "Application Controls",
+          "types": {
+            "Input Controls": "Ensure data entered is valid, complete, and accurate. Example: field validation, check digits.",
+            "Processing Controls": "Ensure data is processed correctly. Example: run-to-run totals, batch controls.",
+            "Output Controls": "Ensure output is complete, accurate, and delivered to authorized recipients."
+          },
+          "real_life_scenario": "An e-commerce platform validates that a customer's credit card number passes Luhn Algorithm check before processing — this is an input control preventing invalid card numbers from entering the system."
+        },
+        {
+          "topic_id": "3.5",
+          "topic_name": "System Readiness and Implementation Testing",
+          "subtopics": [
+            {
+              "id": "3.5.1",
+              "name": "Testing Classifications",
+              "types": {
+                "Unit Testing": "Testing individual code modules in isolation by developers.",
+                "Integration Testing": "Testing how modules work together.",
+                "System Testing": "Testing the complete system against requirements.",
+                "User Acceptance Testing (UAT)": "Business users verify the system meets their needs.",
+                "Regression Testing": "Ensuring new changes do not break existing functionality.",
+                "Penetration Testing": "Simulated attacks to identify security vulnerabilities."
+              }
+            },
+            {
+              "id": "3.5.5",
+              "name": "System Implementation",
+              "strategies": {
+                "Direct Cutover (Big Bang)": "Switch from old to new system immediately. Highest risk.",
+                "Parallel Running": "Run old and new systems simultaneously. Safest but most costly.",
+                "Phased Implementation": "Implement in stages by location or function.",
+                "Pilot Implementation": "Deploy to a limited group first to test before full rollout."
+              },
+              "exam_tip": "Parallel running = SAFEST strategy. Direct cutover = HIGHEST risk but lowest cost."
+            }
+          ]
+        },
+        {
+          "topic_id": "3.8",
+          "topic_name": "Postimplementation Review",
+          "summary": "After a system goes live, an IS auditor evaluates whether it delivers expected benefits, controls are effective, and lessons learned are captured.",
+          "key_questions": ["Did the project stay within budget and timeline?", "Are the controls operating as designed?", "Did the system achieve the planned business benefits?", "Were there unexpected issues?"]
+        }
+      ],
+      "key_terminologies": {
+        "SDLC": "System Development Life Cycle — structured process for building IT systems.",
+        "UAT": "User Acceptance Testing — final testing by business users.",
+        "Agile": "Iterative development methodology delivering working software in short sprints.",
+        "DevOps": "Practice combining development and operations for continuous integration and delivery.",
+        "Parallel Running": "Simultaneously running old and new systems to ensure accuracy.",
+        "Regression Testing": "Testing to ensure new changes don't break existing functionality.",
+        "Penetration Testing": "Authorized simulated attack to find security vulnerabilities.",
+        "Input Controls": "Controls ensuring accuracy and completeness of data entered into a system.",
+        "Change Advisory Board (CAB)": "Committee approving IT system changes.",
+        "Feasibility Study": "Analysis of whether a proposed project is viable."
+      }
+    },
+    {
+      "domain_number": 4,
+      "domain_name": "Information Systems Operations and Business Resilience",
+      "exam_weight": "23%",
+      "summary": "This domain covers the management and monitoring of IT operations, infrastructure, and ensuring systems remain available and can recover from disruptions. It includes IT asset management, incident and problem management, database management, business continuity, and disaster recovery.",
+      "real_life_analogy": "Think of a city's emergency services. Police, fire, and ambulance services run daily operations, but the city also has emergency protocols when disaster strikes — evacuation routes, backup hospitals, and communication plans. This domain covers both normal operations AND emergency preparedness for IT.",
+      "topics": [
+        {
+          "topic_id": "4.1",
+          "topic_name": "IT Infrastructure",
+          "subtopics": [
+            {
+              "id": "4.1.1",
+              "name": "Networking",
+              "key_concepts": {
+                "LAN (Local Area Network)": "Network within a single building/campus.",
+                "WAN (Wide Area Network)": "Network spanning across cities/countries.",
+                "OSI Model": "7-layer model for network communication: Physical, Data Link, Network, Transport, Session, Presentation, Application.",
+                "TCP/IP": "Core communication protocol of the internet.",
+                "DNS (Domain Name System)": "Translates domain names to IP addresses."
+              }
+            }
+          ]
+        },
+        {
+          "topic_id": "4.6",
+          "topic_name": "Systems Availability and Capacity Management",
+          "subtopics": [
+            {
+              "id": "4.6.2",
+              "name": "Operating Systems",
+              "key_controls": ["Access control enforcement", "Audit logging of system events", "Patch management", "Privileged user account management"]
+            },
+            {
+              "id": "4.6.8",
+              "name": "Capacity Management",
+              "summary": "Ensuring IT resources (storage, processing power, network bandwidth) are sufficient to meet current and future demand.",
+              "real_life_scenario": "An e-commerce site plans for 10x normal traffic on Black Friday. Without capacity management, the site crashes under peak load, losing millions in sales."
+            }
+          ]
+        },
+        {
+          "topic_id": "4.7",
+          "topic_name": "Problem and Incident Management",
+          "subtopics": [
+            {
+              "id": "4.7.2",
+              "name": "Process of Incident Handling",
+              "phases": ["Detection & identification", "Containment", "Eradication", "Recovery", "Post-incident review (lessons learned)"],
+              "incident_vs_problem": {
+                "Incident": "An unplanned interruption to an IT service. Example: website is down.",
+                "Problem": "The underlying ROOT CAUSE of one or more incidents. Example: faulty network switch causing repeated outages."
+              },
+              "real_life_scenario": "A company's email server is unresponsive (Incident). Technicians restore it quickly. Later, the Problem Management team investigates and discovers a memory leak in the email server software — the root cause (Problem). They then patch the software permanently.",
+              "memory_aid": "INCIDENT = what happened now. PROBLEM = WHY it keeps happening."
+            }
+          ]
+        },
+        {
+          "topic_id": "4.8",
+          "topic_name": "IT Change, Configuration and Patch Management",
+          "subtopics": [
+            {
+              "id": "4.8.1",
+              "name": "Patch Management",
+              "summary": "Regular updates to software to fix known security vulnerabilities.",
+              "process": ["Identify new patches", "Test patches in non-production environment", "Approve for deployment", "Deploy to production", "Verify successful installation"],
+              "exam_tip": "Unpatched systems are a HIGH RISK finding. Patch management is a preventive control.",
+              "real_life_scenario": "The WannaCry ransomware attack in 2017 exploited a Windows vulnerability that had a patch available for 2 months prior. Organizations that had not applied the patch were devastated."
+            },
+            {
+              "id": "4.8.2",
+              "name": "Release Management",
+              "summary": "Controlled process for moving software changes from development to production environments."
+            },
+            {
+              "id": "4.8.3",
+              "name": "IS Operations",
+              "key_controls": ["Separation of duties between developers and production systems", "Formal change approval process", "Monitoring of production changes", "Emergency change procedures"]
+            }
+          ]
+        },
+        {
+          "topic_id": "4.9",
+          "topic_name": "Operational Log Management",
+          "summary": "Collecting, storing, monitoring, and analyzing logs generated by IT systems.",
+          "types_of_logs": ["Access logs", "Error logs", "Security event logs", "Application transaction logs", "Network traffic logs"],
+          "key_controls": ["Log integrity — logs should not be modifiable by regular users", "Log retention — how long logs are kept", "Log review — regular monitoring for anomalies", "Centralized logging — SIEM (Security Information and Event Management)"],
+          "real_life_scenario": "During a forensic investigation, security analysts use firewall and server logs to trace a data breach back to the exact time, source IP, and accounts accessed — all captured in the audit trail.",
+          "exam_tip": "Logs are DETECTIVE controls. They don't prevent incidents but provide evidence and enable detection."
+        },
+        {
+          "topic_id": "4.11",
+          "topic_name": "Database Management",
+          "subtopics": [
+            {
+              "id": "4.11.1",
+              "name": "DBMS Architecture",
+              "summary": "Database Management System (DBMS) manages databases and controls access to data.",
+              "types": {"Relational (RDBMS)": "Tables with relationships. Example: Oracle, SQL Server, MySQL.", "NoSQL": "Non-relational. Example: MongoDB, Cassandra. Used for unstructured data."}
+            },
+            {
+              "id": "4.11.3",
+              "name": "Database Controls",
+              "controls": ["Database access controls — only authorized users access data", "Data encryption — data at rest and in transit", "Audit trails — log all database access and changes", "Backup and recovery — regular database backups"],
+              "real_life_scenario": "A hospital's patient database has role-based access — doctors see clinical records, billing staff see financial records, and no one can access both. The DBA (Database Administrator) has full access but is separated from clinical operations."
+            }
+          ]
+        },
+        {
+          "topic_id": "4.12",
+          "topic_name": "Business Impact Analysis (BIA)",
+          "summary": "A process to identify and evaluate the potential effects of disruption to critical business operations.",
+          "outputs": ["Critical processes ranked by business impact", "Maximum Tolerable Downtime (MTD)", "Recovery Time Objectives (RTO)", "Recovery Point Objectives (RPO)"],
+          "key_metrics": {
+            "RTO (Recovery Time Objective)": "HOW FAST must we recover after a disruption? (Maximum acceptable downtime)",
+            "RPO (Recovery Point Objective)": "HOW MUCH DATA can we afford to lose? (Maximum acceptable data loss)",
+            "MTD (Maximum Tolerable Downtime)": "The LONGEST an organization can survive without a specific function."
+          },
+          "real_life_scenario": "A bank identifies that online banking is critical and sets RTO = 4 hours (system must be restored within 4 hours) and RPO = 15 minutes (no more than 15 minutes of transaction data can be lost). This determines backup frequency and recovery site requirements.",
+          "comparison_table": {
+            "RTO": {"focus": "TIME to restore operations", "analogy": "How long the store is closed", "determines": "Type of backup site (hot/warm/cold)"},
+            "RPO": {"focus": "DATA loss tolerance", "analogy": "How old the last backup is", "determines": "Backup frequency"}
+          },
+          "exam_tip": "RTO = time. RPO = data. Lower RTO and RPO = more expensive recovery infrastructure.",
+          "memory_aid": "RTO = 'Return To Operations'. RPO = 'Recovery Point (data) Objective'."
+        },
+        {
+          "topic_id": "4.14",
+          "topic_name": "Data Backup, Storage and Restoration",
+          "backup_schemes": {
+            "Full Backup": "Complete copy of all data. Slowest to complete, fastest to restore.",
+            "Incremental Backup": "Only data changed since LAST BACKUP. Fastest to complete, slowest to restore.",
+            "Differential Backup": "Only data changed since LAST FULL BACKUP. Compromise between full and incremental."
+          },
+          "3-2-1 Backup Rule": "3 copies of data, on 2 different media types, with 1 copy offsite.",
+          "exam_tip": "Incremental = smallest backup size. Full = quickest restore. Differential = middle ground."
+        },
+        {
+          "topic_id": "4.15",
+          "topic_name": "Business Continuity Plan (BCP)",
+          "summary": "A plan ensuring critical business functions can continue during and after a major disruption.",
+          "subtopics": [
+            {
+              "id": "4.15.1",
+              "name": "IT Business Continuity Planning",
+              "scope": "Broader than DRP — covers people, processes, facilities, and technology. BCP is the UMBRELLA plan.",
+              "drp_vs_bcp": {
+                "BCP": "Broader — covers entire business operations during a disruption.",
+                "DRP (Disaster Recovery Plan)": "Narrower — focuses specifically on restoring IT systems and data."
+              },
+              "memory_aid": "BCP = Business keeps CONTINUING. DRP = Data and systems Recovering. BCP contains DRP."
+            },
+            {
+              "id": "4.15.3",
+              "name": "Business Continuity Planning Process",
+              "steps": ["Initiation — management commitment and scope definition", "Business Impact Analysis (BIA)", "Recovery strategy selection", "Plan development and documentation", "Training and awareness", "Testing and maintenance"],
+              "testing_types": {
+                "Checklist Review": "Team reviews BCP document for completeness — least thorough.",
+                "Walkthrough/Tabletop Exercise": "Team verbally walks through the plan — no actual systems involved.",
+                "Simulation Test": "A hypothetical scenario is presented and teams respond — no real systems activated.",
+                "Parallel Test": "Backup systems are activated and tested while primary systems remain operational.",
+                "Full Interruption Test": "Primary systems are actually shut down — most thorough but highest risk."
+              },
+              "real_life_scenario": "A financial firm conducts a full interruption test on a Sunday where they actually switch to their disaster recovery site to verify it can handle real transaction loads — the most thorough but riskiest test type.",
+              "exam_tip": "Full interruption test = MOST thorough. Checklist review = LEAST thorough. IS auditors prefer more comprehensive tests."
+            }
+          ],
+          "recovery_sites": {
+            "Hot Site": "Fully equipped and operational. Can take over within HOURS. Most expensive.",
+            "Warm Site": "Partially equipped. Needs hours to days to become operational. Moderate cost.",
+            "Cold Site": "Basic infrastructure only (power, connectivity). Takes days to weeks. Cheapest.",
+            "Mobile Site": "Portable recovery unit that can be deployed anywhere.",
+            "Reciprocal Agreement": "Two organizations agree to use each other's facilities in a disaster — lowest cost, least reliable."
+          },
+          "real_life_scenario": "A bank has a hot site 50km away that mirrors all transactions in real-time. When an earthquake damages their primary data center, operations continue from the hot site within 2 hours.",
+          "memory_aid": "Hot = Hottest (fastest, most expensive). Cold = Coldest (slowest, cheapest)."
+        }
+      ],
+      "key_terminologies": {
+        "RTO": "Recovery Time Objective — maximum acceptable system downtime.",
+        "RPO": "Recovery Point Objective — maximum acceptable data loss.",
+        "MTD": "Maximum Tolerable Downtime — longest the business can survive without a function.",
+        "BCP": "Business Continuity Plan — keeps business running during disruptions.",
+        "DRP": "Disaster Recovery Plan — restores IT systems after a disruption.",
+        "BIA": "Business Impact Analysis — evaluates impact of disruptions on critical processes.",
+        "Hot Site": "Fully equipped backup facility that can be operational within hours.",
+        "Cold Site": "Basic backup facility requiring days/weeks to become operational.",
+        "SIEM": "Security Information and Event Management — centralized log monitoring and analysis.",
+        "DBMS": "Database Management System — software managing database access and storage.",
+        "Patch Management": "Process of applying security updates to software systems.",
+        "Incident": "An unplanned interruption to an IT service.",
+        "Problem": "The root cause of one or more incidents.",
+        "Full Backup": "Complete copy of all data.",
+        "Incremental Backup": "Backs up only data changed since the last backup.",
+        "Differential Backup": "Backs up data changed since the last FULL backup."
+      }
+    },
+    {
+      "domain_number": 5,
+      "domain_name": "Protection of Information Assets",
+      "exam_weight": "27%",
+      "summary": "The LARGEST domain. Covers how organizations protect their information assets through security policies, physical and logical access controls, cryptography, network security, data loss prevention, cloud security, and threat management. This is where cybersecurity meets audit.",
+      "real_life_analogy": "Think of an airport security system. There are physical barriers (fences, secured doors), identity checks (passports, boarding passes), scanning technology (X-ray, metal detectors), monitoring (cameras, staff), and protocols for when something goes wrong. This domain is the 'airport security' for IT systems.",
+      "topics": [
+        {
+          "topic_id": "5.1",
+          "topic_name": "Information Asset Security Policies, Frameworks, Standards and Guidelines",
+          "subtopics": [
+            {
+              "id": "5.1.2",
+              "name": "Information Security Frameworks and Standards",
+              "frameworks": {
+                "ISO/IEC 27001": "International standard for Information Security Management Systems (ISMS). Provides requirements for establishing, implementing, maintaining, and continually improving an ISMS.",
+                "NIST Cybersecurity Framework": "Five core functions: Identify, Protect, Detect, Respond, Recover.",
+                "COBIT 2019": "IT governance and management framework including security controls.",
+                "PCI-DSS": "Payment Card Industry Data Security Standard — required for organizations handling credit card data.",
+                "GDPR": "General Data Protection Regulation — EU law protecting personal data of EU residents."
+              },
+              "exam_tip": "ISO 27001 = certification-based security standard. NIST CSF = voluntary framework. PCI-DSS = required for card payment industry."
+            },
+            {
+              "id": "5.1.3",
+              "name": "Information Security Baselines",
+              "summary": "Minimum security requirements that all systems must meet.",
+              "example": "All servers must have the latest patches installed, antivirus running, and unnecessary services disabled."
+            }
+          ]
+        },
+        {
+          "topic_id": "5.2",
+          "topic_name": "Physical and Environmental Controls",
+          "subtopics": [
+            {
+              "id": "5.2.1",
+              "name": "Environmental Exposures and Controls",
+              "threats_and_controls": {
+                "Fire": "Fire suppression systems (FM-200 for data centers), smoke detectors, fire extinguishers.",
+                "Flooding": "Raised flooring, water sensors, locate data centers away from flood zones.",
+                "Power Failure": "UPS (Uninterruptible Power Supply) for immediate backup, generators for extended outages.",
+                "Temperature": "Precision air conditioning in server rooms, temperature monitoring alerts."
+              },
+              "real_life_scenario": "A data center uses raised flooring, water leak detectors under the floor, FM-200 gas suppression (safe for electronics), and redundant UPS systems to protect against environmental threats."
+            },
+            {
+              "id": "5.2.2",
+              "name": "Physical Access Exposures and Controls",
+              "controls": {
+                "Mantrap (Airlock)": "Two-door controlled entry — a person enters the first door, is authenticated, then the second door opens. Prevents tailgating.",
+                "Biometric Access": "Fingerprint, iris scan, facial recognition — something you ARE.",
+                "Badge/Keycard Access": "Something you HAVE — provides audit trail of entry/exit.",
+                "CCTV": "24/7 monitoring and recording of facility access.",
+                "Security Guards": "Human monitoring, verification, and response capability.",
+                "Clean Desk Policy": "No sensitive documents left visible when workstations are unattended."
+              },
+              "real_life_scenario": "A bank's data center requires badge scan + PIN entry at the perimeter, biometric scan at the server room door, and all entry/exits are logged and reviewed weekly by security.",
+              "exam_tip": "Mantrap = most effective physical control against tailgating/piggybacking."
+            }
+          ]
+        },
+        {
+          "topic_id": "5.3",
+          "topic_name": "Identity and Access Management (IAM)",
+          "summary": "Ensuring the RIGHT people have the RIGHT access to the RIGHT resources at the RIGHT time.",
+          "subtopics": [
+            {
+              "id": "5.3.2",
+              "name": "Authentication, Authorization and Accountability (AAA)",
+              "definitions": {
+                "Authentication": "Verifying WHO you are. Example: username + password, biometrics.",
+                "Authorization": "Determining WHAT you can do after authentication. Example: role-based access.",
+                "Accountability": "Tracking WHAT you did. Example: audit logs of actions taken."
+              },
+              "authentication_factors": {
+                "Something You Know": "Password, PIN, security question.",
+                "Something You Have": "Smart card, hardware token, mobile phone (OTP).",
+                "Something You Are": "Fingerprint, iris scan, facial recognition (biometrics)."
+              },
+              "MFA": "Multi-Factor Authentication — using 2 or more different factor types. Strongest authentication.",
+              "real_life_scenario": "Online banking requires your password (something you know) AND a one-time code sent to your phone (something you have). This is MFA — even if your password is stolen, the attacker cannot log in.",
+              "exam_tip": "MFA = uses factors from DIFFERENT categories. Using 2 passwords = 2-step verification, NOT MFA."
+            },
+            {
+              "id": "5.3.3",
+              "name": "Zero-Trust Architecture",
+              "principle": "NEVER TRUST, ALWAYS VERIFY — even users inside the network must be continuously authenticated and authorized.",
+              "contrast": "Traditional security = trust inside the perimeter. Zero-trust = trust nothing inside or outside by default.",
+              "real_life_scenario": "A company implements Zero Trust where every employee must authenticate to access each application, even from inside the corporate office. Lateral movement by attackers is blocked because they cannot freely access other systems even after breaching one."
+            },
+            {
+              "id": "5.3.4",
+              "name": "Privileged Access Management (PAM)",
+              "summary": "Special controls for administrator and root accounts that have elevated system access.",
+              "controls": ["Just-in-time access — privileged access only when needed", "Session recording — all privileged sessions logged and monitored", "Password vaulting — privileged credentials stored in secure vault", "Dual control — two people required to access critical admin functions"],
+              "exam_tip": "Privileged accounts = highest risk. Must be tightly controlled, monitored, and minimized."
+            },
+            {
+              "id": "5.3.9",
+              "name": "Types of Access Controls",
+              "types": {
+                "DAC (Discretionary Access Control)": "Data owner decides who gets access. Most flexible, least secure. Example: file sharing permissions in Windows.",
+                "MAC (Mandatory Access Control)": "System-enforced based on classification labels. Most secure, least flexible. Used in military/government.",
+                "RBAC (Role-Based Access Control)": "Access based on job role. Most common in enterprises. Example: all managers can approve invoices.",
+                "ABAC (Attribute-Based Access Control)": "Access based on multiple attributes (role + location + time + device). Most granular control."
+              },
+              "exam_tip": "RBAC = most common in business. MAC = most secure. DAC = user-controlled.",
+              "memory_aid": "D-M-R-A: Discretionary → Mandatory → Role-Based → Attribute-Based (least to most control)."
+            }
+          ]
+        },
+        {
+          "topic_id": "5.4",
+          "topic_name": "Network and Endpoint Security",
+          "subtopics": [
+            {
+              "id": "5.4.12",
+              "name": "Firewalls",
+              "summary": "Security devices that control network traffic based on defined rules.",
+              "types": {
+                "Packet Filtering Firewall": "Inspects packet headers (IP, port). Basic — does not inspect content.",
+                "Stateful Inspection Firewall": "Tracks connection state. More intelligent than packet filtering.",
+                "Application Layer Firewall (Proxy)": "Inspects application content. Can detect application-level attacks.",
+                "Next-Generation Firewall (NGFW)": "Combines traditional firewall with DPI, IPS, and application awareness."
+              },
+              "real_life_scenario": "A company's NGFW blocks an employee from accessing a known malware-hosting website, even though the HTTPS connection looks legitimate, because it analyzes the destination's reputation and SSL certificate."
+            },
+            {
+              "id": "5.4.13",
+              "name": "Unified Threat Management (UTM)",
+              "summary": "A single device combining multiple security functions: firewall, IDS/IPS, antivirus, VPN, web filtering."
+            },
+            {
+              "id": "5.4.14",
+              "name": "Network Segmentation",
+              "summary": "Dividing a network into isolated segments to contain breaches and limit lateral movement.",
+              "example": "Separating the HR network from the production server network. If HR is breached, attackers cannot reach servers.",
+              "dmz": "Demilitarized Zone (DMZ) — a network segment between internal trusted network and untrusted internet. Web servers typically placed here.",
+              "real_life_scenario": "A retailer separates customer Wi-Fi from the POS (Point of Sale) network. A malware-infected customer device cannot reach the payment system."
+            },
+            {
+              "id": "5.4.15",
+              "name": "Endpoint Security",
+              "controls": ["Antivirus/Anti-malware", "Host-based firewall", "Data Loss Prevention (DLP) agents", "Mobile Device Management (MDM)", "Patch management", "Disk encryption"],
+              "exam_tip": "Endpoint = any device connecting to the network (laptop, phone, tablet, server). Each endpoint is a potential attack vector."
+            }
+          ]
+        },
+        {
+          "topic_id": "5.5",
+          "topic_name": "Data Loss Prevention (DLP)",
+          "summary": "Technologies and processes that detect and prevent unauthorized transfer of sensitive data outside the organization.",
+          "data_states": {
+            "Data at Rest": "Stored data (databases, files). Controls: encryption, access controls.",
+            "Data in Motion": "Data being transmitted over a network. Controls: TLS/SSL encryption, DLP network sensors.",
+            "Data in Use": "Data being actively processed. Controls: screen watermarks, copy-paste restrictions."
+          },
+          "real_life_scenario": "A financial firm's DLP system detects an employee trying to email a spreadsheet containing 500 credit card numbers to their personal Gmail. The email is blocked and a security alert is generated.",
+          "exam_tip": "DLP's purpose = PREVENT unauthorized data exfiltration. It is a detective AND preventive control."
+        },
+        {
+          "topic_id": "5.6",
+          "topic_name": "Data Encryption",
+          "subtopics": [
+            {
+              "id": "5.6.3",
+              "name": "Symmetric Key Cryptography",
+              "summary": "SAME key used for both encryption and decryption. Fast but key distribution is a challenge.",
+              "examples": ["AES (Advanced Encryption Standard)", "DES (outdated)", "3DES"],
+              "analogy": "A house key — the same key locks and unlocks the door. Problem: how do you give the key to someone else securely?"
+            },
+            {
+              "id": "5.6.4",
+              "name": "Asymmetric Key Cryptography (Public Key)",
+              "summary": "Uses TWO mathematically linked keys — a public key (anyone can have it) and a private key (kept secret).",
+              "how_it_works": "Data encrypted with the PUBLIC key can ONLY be decrypted with the matching PRIVATE key.",
+              "examples": ["RSA", "ECC (Elliptic Curve Cryptography)"],
+              "analogy": "A mailbox — anyone can drop mail in (encrypt with public key), but only you have the key to open it (private key).",
+              "use_cases": ["Secure email (PGP)", "Digital signatures", "HTTPS/TLS", "Key exchange"],
+              "exam_tip": "Symmetric = faster, used for bulk data. Asymmetric = slower, used for key exchange and digital signatures. Most systems use BOTH (hybrid)."
+            },
+            {
+              "id": "5.6.8",
+              "name": "Digital Signatures",
+              "summary": "A cryptographic mechanism that proves authenticity and non-repudiation of a message.",
+              "how_it_works": "Sender encrypts a hash of the message with their PRIVATE key. Receiver decrypts with sender's PUBLIC key to verify it came from the sender.",
+              "provides": ["Authentication — proves who sent it", "Integrity — proves the message wasn't altered", "Non-repudiation — sender cannot deny sending it"],
+              "real_life_scenario": "A CEO digitally signs a PDF contract. The recipient verifies the signature using the CEO's public certificate — confirming the document came from the CEO and was not altered since signing."
+            }
+          ]
+        },
+        {
+          "topic_id": "5.7",
+          "topic_name": "Public Key Infrastructure (PKI)",
+          "summary": "The framework of policies, procedures, hardware, software, and people needed to manage digital certificates and public-private key pairs.",
+          "key_components": {
+            "Certificate Authority (CA)": "Trusted entity that issues and signs digital certificates.",
+            "Registration Authority (RA)": "Verifies identity before the CA issues a certificate.",
+            "Digital Certificate": "Electronic document binding a public key to an identity (like a digital passport).",
+            "Certificate Revocation List (CRL)": "List of certificates that have been revoked before expiration."
+          },
+          "real_life_scenario": "When you visit a banking website and see the padlock icon (HTTPS), the browser has verified the bank's digital certificate was issued by a trusted CA — proving you are connected to the real bank, not an imposter.",
+          "exam_tip": "PKI = the trust framework for digital certificates. CA is the trusted third party."
+        },
+        {
+          "topic_id": "5.8",
+          "topic_name": "Cloud and Virtualized Environments",
+          "subtopics": [
+            {
+              "id": "5.8.1",
+              "name": "Virtualization",
+              "summary": "Creating virtual versions of hardware, storage, or networks — allowing multiple virtual machines (VMs) to run on one physical server.",
+              "key_risk": "VM escape — an attacker in one VM breaking out to access the hypervisor or other VMs.",
+              "key_control": "Hypervisor security, network isolation between VMs, regular patching of virtualization software."
+            },
+            {
+              "id": "5.8.5",
+              "name": "Software-Defined Networking (SDN)",
+              "summary": "Network architecture that separates the control plane (decisions) from the data plane (traffic forwarding), allowing programmatic network management.",
+              "benefit": "More flexible and faster network reconfiguration through software."
+            },
+            {
+              "id": "5.8.6",
+              "name": "Containerization",
+              "summary": "Packaging applications with all their dependencies in lightweight, portable containers (e.g., Docker). More efficient than VMs.",
+              "key_risk": "Containers share the same OS kernel — a kernel vulnerability affects all containers on the host.",
+              "real_life_scenario": "A fintech company deploys their payment processing application in Docker containers. Each container runs in isolation, and security scanning is applied to container images before deployment."
+            }
+          ]
+        }
+      ],
+      "key_terminologies": {
+        "AAA": "Authentication, Authorization, and Accountability — the three pillars of access control.",
+        "MFA": "Multi-Factor Authentication — using two or more different authentication factors.",
+        "IAM": "Identity and Access Management — managing user identities and their access rights.",
+        "DAC": "Discretionary Access Control — owner decides access permissions.",
+        "MAC": "Mandatory Access Control — system-enforced access based on security labels.",
+        "RBAC": "Role-Based Access Control — access based on job role.",
+        "Zero Trust": "Security model assuming no implicit trust for any user or system.",
+        "PAM": "Privileged Access Management — controls for high-privilege accounts.",
+        "Firewall": "Network security device controlling traffic based on rules.",
+        "DMZ": "Demilitarized Zone — network segment between internal and external networks.",
+        "DLP": "Data Loss Prevention — detects and prevents unauthorized data exfiltration.",
+        "Symmetric Encryption": "Same key for encryption and decryption. Faster.",
+        "Asymmetric Encryption": "Public/private key pair. Slower but enables secure key exchange.",
+        "Digital Signature": "Cryptographic proof of message authenticity, integrity, and non-repudiation.",
+        "PKI": "Public Key Infrastructure — framework for managing digital certificates.",
+        "CA (Certificate Authority)": "Trusted entity that issues digital certificates.",
+        "CRL": "Certificate Revocation List — list of invalidated certificates.",
+        "Virtualization": "Running multiple virtual machines on one physical server.",
+        "Containerization": "Lightweight application packaging using shared OS kernel (e.g., Docker).",
+        "IDS/IPS": "Intrusion Detection System / Intrusion Prevention System — monitors and blocks suspicious activity.",
+        "UTM": "Unified Threat Management — multi-function security appliance.",
+        "SIEM": "Security Information and Event Management — centralized security monitoring.",
+        "UPS": "Uninterruptible Power Supply — battery backup for immediate power continuity.",
+        "Mantrap": "Physical double-door controlled entry system preventing tailgating.",
+        "Non-repudiation": "Sender cannot deny sending a message — provided by digital signatures.",
+        "Data at Rest": "Stored data — protected by encryption and access controls.",
+        "Data in Motion": "Data being transmitted — protected by TLS/SSL encryption.",
+        "Data in Use": "Data being actively processed — protected by DRM and access controls."
+      }
+    }
+  ],
+  "cross_domain_connections": [
+    {
+      "connection": "Risk Assessment appears in ALL domains",
+      "note": "Every domain uses risk-based thinking. Domain 1 = audit risk. Domain 2 = enterprise risk. Domain 5 = security risk. ISACA loves risk-based questions."
+    },
+    {
+      "connection": "Controls appear across Domain 1, 3, 4, and 5",
+      "note": "Preventive/Detective/Corrective control types are tested in context across all domains. Always ask: Does this control PREVENT, DETECT, or CORRECT?"
+    },
+    {
+      "connection": "Change Management links Domain 2 and Domain 4",
+      "note": "IT governance (Domain 2) establishes change management policy. Operations (Domain 4) implements it. Auditors (Domain 1) verify it works."
+    },
+    {
+      "connection": "BCP/DRP links Domain 4 and Domain 5",
+      "note": "Business continuity (Domain 4) ensures operations continue. Security controls (Domain 5) protect the recovery infrastructure from attack during a crisis."
+    },
+    {
+      "connection": "Access Controls appear in Domain 4 (database) and Domain 5 (IAM)",
+      "note": "Access control principles are consistent — least privilege, need to know, separation of duties — applied at every layer."
+    }
+  ],
+  "exam_strategy_tips": [
+    "Always choose the answer that is MOST aligned with ISACA's perspective — risk-based, control-focused, and management-accountable.",
+    "When two answers seem correct, choose the one that happens FIRST (e.g., risk assessment before audit planning).",
+    "Management is always RESPONSIBLE for controls. Auditors provide ASSURANCE.",
+    "Preventive controls are preferred over detective or corrective controls.",
+    "When in doubt between two controls, the one that addresses ROOT CAUSE is preferred.",
+    "ISACA questions often have 'trap' answers that are correct in some contexts but not the BEST answer for the specific scenario.",
+    "Read every question for the qualifier: MOST important, FIRST, PRIMARY purpose, BEST, MOST likely — these change the answer.",
+    "IS auditor's primary role = provide ASSURANCE. Secondary role = consultant. Never = management decision maker."
+  ]
+}

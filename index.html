@@ -1092,6 +1092,738 @@ header {
   .topic-study-box.full { grid-column: auto; }
 }
 
+/* ══════════════════════════════════════════
+   NEW TOPICS SECTION — Improved Layout
+   ══════════════════════════════════════════ */
+
+/* Domain selector tabs */
+.new-domain-tabs {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 20px;
+}
+@media(max-width:700px){ .new-domain-tabs { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:420px){ .new-domain-tabs { grid-template-columns: repeat(2,1fr); } }
+
+.new-domain-tab {
+  padding: 12px 8px; border-radius: 12px; border: 2px solid var(--border2);
+  background: var(--surface); cursor: pointer; text-align: center;
+  transition: var(--tr); position: relative; overflow: hidden;
+}
+.new-domain-tab:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.new-domain-tab.active { color: #fff; }
+.new-domain-tab-num {
+  font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900;
+  display: block; line-height: 1;
+}
+.new-domain-tab-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 7.5px;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  display: block; margin-top: 4px; line-height: 1.35; opacity: 0.85;
+}
+.new-domain-tab-weight {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  display: block; margin-top: 5px;
+}
+.new-domain-tab-progress {
+  position: absolute; bottom: 0; left: 0; height: 3px;
+  transition: width 0.5s ease; border-radius: 0 0 10px 10px;
+  background: rgba(255,255,255,0.4);
+}
+
+/* Domain summary banner */
+.new-domain-banner {
+  border-radius: 14px; padding: 18px 22px; margin-bottom: 18px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.new-domain-banner-left { flex: 1; min-width: 0; }
+.new-domain-banner-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.75;
+}
+.new-domain-banner-title {
+  font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900;
+  line-height: 1.15; margin-bottom: 6px;
+}
+.new-domain-banner-meta {
+  font-size: 12px; opacity: 0.8; display: flex; gap: 12px; flex-wrap: wrap;
+}
+.new-domain-banner-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.new-domain-prog-ring { text-align: center; }
+.new-domain-prog-pct {
+  font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900;
+}
+.new-domain-prog-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
+}
+.new-domain-banner-btns { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.new-domain-banner-btn {
+  padding: 8px 14px; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: var(--tr);
+  border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.new-domain-banner-btn:hover { background: rgba(255,255,255,0.28); }
+
+/* Topic search */
+.new-topic-search-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.new-topic-search {
+  flex: 1; padding: 10px 16px 10px 38px; border: 2px solid var(--border2);
+  border-radius: 10px; background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237b84b0' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 13px center;
+  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 500; outline: none; transition: var(--tr);
+}
+.new-topic-search:focus { border-color: var(--accent); background-color: var(--surface); }
+.new-topic-search::placeholder { color: var(--muted); font-weight: 400; }
+.new-topic-search-clear {
+  padding: 10px 14px; border: 2px solid var(--border2); border-radius: 10px;
+  background: var(--surface2); color: var(--muted); cursor: pointer;
+  font-size: 12px; font-weight: 700; transition: var(--tr);
+  font-family: 'Plus Jakarta Sans', sans-serif; white-space: nowrap;
+}
+.new-topic-search-clear:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Chapter accordion */
+.new-chapter-block { margin-bottom: 10px; }
+.new-chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-radius: 12px; border: 2px solid var(--border2);
+  background: var(--surface); cursor: pointer; transition: var(--tr);
+  user-select: none;
+}
+.new-chapter-header:hover { border-color: var(--accent); background: var(--surface2); }
+.new-chapter-header.ch-open {
+  border-radius: 12px 12px 0 0; border-bottom-color: transparent;
+  background: var(--surface2);
+}
+.new-chapter-header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.new-chapter-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+  flex-shrink: 0;
+}
+.new-chapter-title {
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900;
+  color: var(--text); line-height: 1.2;
+}
+.new-chapter-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.new-chapter-stats {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted);
+  text-align: right;
+}
+.new-chapter-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 12px; }
+.new-chapter-header.ch-open .new-chapter-chevron { transform: rotate(180deg); }
+
+.new-chapter-body {
+  border: 2px solid var(--border2); border-top: none;
+  border-radius: 0 0 12px 12px; padding: 10px;
+  background: var(--bg); display: none;
+}
+.new-chapter-body.ch-open { display: block; animation: slideUp 0.2s ease both; }
+
+/* Topic items inside chapter */
+.new-topic-item {
+  border: 1.5px solid var(--border); border-radius: 10px;
+  margin-bottom: 6px; overflow: hidden; background: var(--surface);
+  transition: border-color 0.15s;
+}
+.new-topic-item:last-child { margin-bottom: 0; }
+.new-topic-item:hover { border-color: var(--border2); }
+.new-topic-item.t-done { border-color: #a7f3d0; background: var(--correct-light); }
+.new-topic-item.t-search-match { border-color: var(--accent); }
+
+.new-topic-item-header {
+  display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+  cursor: pointer; transition: background 0.15s;
+}
+.new-topic-item-header:hover { background: var(--surface2); }
+.new-topic-item.t-done .new-topic-item-header { background: transparent; }
+
+.new-topic-item-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--muted); flex-shrink: 0; margin-top: 2px; letter-spacing: 0.05em;
+}
+.new-topic-item-title {
+  font-size: 12.5px; font-weight: 600; color: var(--text2); flex: 1;
+  line-height: 1.5;
+}
+.new-topic-item.t-done .new-topic-item-title { color: var(--correct); }
+.new-topic-item.t-search-match .new-topic-item-title { color: var(--text); }
+
+.new-topic-item-btns { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.new-topic-kp-count {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted);
+  background: var(--surface2); border: 1.5px solid var(--border); border-radius: 100px;
+  padding: 2px 7px; white-space: nowrap;
+}
+.new-topic-toggle {
+  width: 22px; height: 22px; border: 1.5px solid var(--border2);
+  border-radius: 6px; background: var(--surface2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 9px; transition: var(--tr);
+}
+.new-topic-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.new-topic-check {
+  width: 22px; height: 22px; border: 1.5px solid var(--border2);
+  border-radius: 50%; background: var(--surface2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 10px; transition: var(--tr);
+}
+.new-topic-check:hover { border-color: var(--correct); color: var(--correct); }
+.new-topic-item.t-done .new-topic-check {
+  background: var(--correct); border-color: var(--correct); color: #fff;
+}
+
+.new-topic-keypoints {
+  border-top: 1.5px solid var(--border); padding: 10px 12px 12px 32px;
+  background: var(--surface); display: none;
+}
+.new-topic-keypoints.kp-open { display: block; animation: slideUp 0.15s ease both; }
+.new-topic-item.t-done .new-topic-keypoints { background: transparent; }
+.new-topic-kp-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.new-topic-kp-list li {
+  font-size: 12px; line-height: 1.6; color: var(--text2); font-weight: 500;
+  padding-left: 14px; position: relative;
+}
+.new-topic-kp-list li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--accent);
+  font-size: 9px; top: 3px;
+}
+.new-topic-kp-list mark {
+  background: rgba(108,71,255,0.18); color: var(--accent);
+  border-radius: 3px; padding: 0 2px;
+}
+
+/* Overall progress bar at top */
+.new-topics-progress-bar {
+  background: var(--surface); border: 2px solid var(--border);
+  border-radius: 12px; padding: 14px 18px; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 16px;
+}
+.new-topics-prog-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+  flex-shrink: 0;
+}
+.new-topics-prog-track {
+  flex: 1; height: 8px; background: var(--border2); border-radius: 4px; overflow: hidden;
+}
+.new-topics-prog-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.new-topics-prog-num {
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900;
+  color: var(--text); flex-shrink: 0;
+}
+
+/* Loading / empty state for topics */
+.new-topics-loading {
+  text-align: center; padding: 60px 24px; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+}
+.new-topics-loading-spinner {
+  display: inline-block; width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid var(--border2); border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite; margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Sticky practice button */
+.new-topics-sticky-btn {
+  position: sticky; bottom: 16px; left: 0; right: 0;
+  display: flex; justify-content: center; margin-top: 20px; z-index: 10;
+}
+.new-topics-practice-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; border: none; border-radius: 100px;
+  padding: 13px 32px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--tr);
+  box-shadow: 0 4px 20px rgba(108,71,255,0.35);
+  display: flex; align-items: center; gap: 8px;
+}
+.new-topics-practice-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,71,255,0.45); }
+
+
+/* ══════════════════════════════════════════
+   ENHANCED TOPICS — cisa_notes.json powered
+   ══════════════════════════════════════════ */
+
+/* Domain analogy box */
+.notes-analogy-box {
+  margin: 14px 0 0; padding: 12px 16px; background: rgba(255,255,255,0.12);
+  border-radius: 10px; border-left: 3px solid rgba(255,255,255,0.5);
+  font-size: 12px; line-height: 1.65; color: rgba(255,255,255,0.9);
+}
+.notes-analogy-box strong { color: #fff; }
+
+/* Filter row for topics */
+.notes-filter-row {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+  align-items: center;
+}
+.notes-filter-btn {
+  padding: 5px 14px; border-radius: 100px; font-size: 11px; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: var(--tr);
+  border: 2px solid var(--border2); background: var(--surface2); color: var(--text2);
+  letter-spacing: 0.04em;
+}
+.notes-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.notes-filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Topic group (was chapter) */
+.notes-group {
+  margin-bottom: 10px; border-radius: 14px;
+  border: 2px solid var(--border2); overflow: hidden;
+  background: var(--surface); transition: border-color 0.2s;
+}
+.notes-group:hover { border-color: var(--border2); }
+.notes-group.ng-open { border-color: var(--accent); }
+
+.notes-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; cursor: pointer; user-select: none;
+  transition: background 0.15s; gap: 12px;
+}
+.notes-group-header:hover { background: var(--surface2); }
+.notes-group.ng-open .notes-group-header { background: var(--surface2); }
+.notes-group-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+.notes-group-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  padding: 3px 9px; border-radius: 100px; background: var(--topic-color, var(--accent));
+  color: #fff; flex-shrink: 0; letter-spacing: 0.08em;
+}
+.notes-group-title {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--text); line-height: 1.3; min-width: 0;
+}
+.notes-group-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.notes-group-count {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted);
+}
+.notes-group-done-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  padding: 2px 8px; border-radius: 100px; background: var(--correct-light);
+  color: var(--correct);
+}
+.notes-group-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 12px; }
+.notes-group.ng-open .notes-group-chevron { transform: rotate(180deg); }
+
+.notes-group-body {
+  display: none; padding: 8px 10px 10px;
+  background: var(--bg); border-top: 1.5px solid var(--border);
+}
+.notes-group.ng-open .notes-group-body { display: block; animation: slideUp 0.2s ease both; }
+
+/* Subtopic item card */
+.notes-item {
+  border: 1.5px solid var(--border); border-radius: 10px;
+  margin-bottom: 6px; overflow: hidden; background: var(--surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.notes-item:last-child { margin-bottom: 0; }
+.notes-item:hover { border-color: var(--border2); }
+.notes-item.ni-done { border-color: #6ee7b7; background: var(--correct-light); }
+.notes-item.ni-open { border-color: var(--accent); box-shadow: 0 2px 12px rgba(108,71,255,0.12); }
+
+.notes-item-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; cursor: pointer; user-select: none;
+  transition: background 0.12s;
+}
+.notes-item-header:hover { background: var(--surface2); }
+.notes-item.ni-done .notes-item-header:hover { background: rgba(0,0,0,0.04); }
+
+.notes-item-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--muted); flex-shrink: 0; min-width: 32px;
+}
+.notes-item-name {
+  font-size: 13px; font-weight: 600; color: var(--text); flex: 1; line-height: 1.35;
+}
+.notes-item.ni-done .notes-item-name { color: var(--correct); }
+
+.notes-item-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+.notes-item-tags { display: flex; gap: 4px; }
+.notes-item-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 7px; font-weight: 700;
+  padding: 2px 6px; border-radius: 100px; letter-spacing: 0.06em; opacity: 0.9;
+}
+.notes-item-tag.tag-tip { background: #fef3c7; color: #92400e; }
+.notes-item-tag.tag-scenario { background: #dbeafe; color: #1e40af; }
+.notes-item-tag.tag-memory { background: #d1fae5; color: #065f46; }
+[data-theme="dark"] .notes-item-tag.tag-tip { background: #2a1800; color: #fbbf24; }
+[data-theme="dark"] .notes-item-tag.tag-scenario { background: #0d1a30; color: #60a5fa; }
+[data-theme="dark"] .notes-item-tag.tag-memory { background: #002010; color: #34d399; }
+
+.notes-item-toggle {
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border2);
+  background: transparent; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; font-size: 10px; color: var(--muted); transition: var(--tr);
+  flex-shrink: 0;
+}
+.notes-item-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+.notes-item-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--border2); background: transparent;
+  cursor: pointer; font-size: 11px; font-weight: 700; color: transparent;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--tr); flex-shrink: 0;
+}
+.notes-item-check:hover { border-color: var(--correct); }
+.notes-item.ni-done .notes-item-check {
+  background: var(--correct); border-color: var(--correct);
+  color: #fff;
+}
+
+/* Rich detail panel inside subtopic */
+.notes-item-body {
+  display: none; padding: 14px 16px 16px;
+  border-top: 1.5px solid var(--border);
+  background: var(--bg);
+}
+.notes-item.ni-open .notes-item-body { display: block; animation: slideUp 0.15s ease both; }
+
+.notes-summary {
+  font-size: 13px; line-height: 1.7; color: var(--text2);
+  margin-bottom: 12px;
+}
+
+.notes-key-point {
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--d1-light); border-left: 3px solid var(--accent);
+  font-size: 12px; font-weight: 600; color: var(--text);
+  line-height: 1.6; margin-bottom: 10px;
+}
+.notes-key-point-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.notes-exam-tip {
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--warning-light); border-left: 3px solid var(--warning);
+  font-size: 12px; line-height: 1.6; color: var(--text);
+  margin-bottom: 10px;
+}
+.notes-exam-tip-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--warning); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.notes-scenario {
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--d5-light); border-left: 3px solid var(--d5);
+  font-size: 12px; line-height: 1.65; color: var(--text2);
+  margin-bottom: 10px; font-style: italic;
+}
+.notes-scenario-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--d5); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px; font-style: normal;
+}
+
+.notes-memory {
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--d4-light); border-left: 3px solid var(--d4);
+  font-size: 12px; font-weight: 600; line-height: 1.6; color: var(--text);
+  margin-bottom: 10px;
+}
+.notes-memory-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--d4); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.notes-kv-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  margin-bottom: 10px;
+}
+@media(max-width:500px){ .notes-kv-grid { grid-template-columns: 1fr; } }
+.notes-kv-card {
+  background: var(--surface2); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 8px 10px;
+}
+.notes-kv-key {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.notes-kv-val { font-size: 11px; line-height: 1.55; color: var(--text2); }
+
+.notes-bullet-list {
+  list-style: none; display: flex; flex-direction: column; gap: 4px;
+  margin-bottom: 10px;
+}
+.notes-bullet-list li {
+  font-size: 12px; line-height: 1.6; color: var(--text2);
+  padding-left: 14px; position: relative;
+}
+.notes-bullet-list li::before {
+  content: '▸'; position: absolute; left: 0;
+  color: var(--accent); font-size: 9px; top: 3px;
+}
+
+/* Generic labeled fields (auto-rendered for any JSON key) */
+.notes-generic-field {
+  margin-bottom: 10px;
+}
+.notes-generic-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.notes-generic-val {
+  font-size: 12px; line-height: 1.65; color: var(--text2);
+  padding-left: 2px;
+}
+/* Better nested KV inside notes-kv-val */
+.notes-kv-val ul { margin: 4px 0 0 14px; padding: 0; }
+.notes-kv-val li { margin-bottom: 2px; }
+.notes-kv-val strong { color: var(--text); font-weight: 700; }
+
+/* Topic-level summary shown above subtopics */
+.notes-group-summary {
+  padding: 10px 14px; margin-bottom: 10px;
+  background: var(--surface2); border-left: 3px solid var(--accent);
+  border-radius: 6px; font-size: 12px; line-height: 1.65; color: var(--text2);
+  font-style: italic;
+}
+.notes-group-summary-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px; font-style: normal;
+}
+
+/* Domain-level glossary (key_terminologies) */
+.notes-glossary-card {
+  margin-top: 16px; border: 2px solid var(--border2); border-radius: 14px;
+  background: var(--surface); overflow: hidden;
+}
+.notes-glossary-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; cursor: pointer; user-select: none;
+  transition: background 0.15s;
+}
+.notes-glossary-header:hover { background: var(--surface2); }
+.notes-glossary-card.gl-open .notes-glossary-header { background: var(--surface2); }
+.notes-glossary-title {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--text); display: flex; align-items: center; gap: 8px;
+}
+.notes-glossary-count {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted);
+}
+.notes-glossary-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 12px; }
+.notes-glossary-card.gl-open .notes-glossary-chevron { transform: rotate(180deg); }
+.notes-glossary-body {
+  display: none; padding: 8px 18px 18px;
+}
+.notes-glossary-card.gl-open .notes-glossary-body { display: block; animation: slideUp 0.2s ease both; }
+.notes-glossary-item {
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.notes-glossary-item:last-child { border-bottom: none; }
+.notes-glossary-term {
+  font-weight: 700; font-size: 13px; color: var(--accent); margin-bottom: 3px;
+}
+.notes-glossary-def {
+  font-size: 12px; line-height: 1.65; color: var(--text2);
+}
+
+/* Master tips card (cross-domain + exam strategy) */
+.notes-master-card {
+  margin-top: 16px; border: 2px solid var(--accent); border-radius: 14px;
+  background: linear-gradient(135deg, var(--d1-light), var(--d4-light));
+  overflow: hidden;
+}
+.notes-master-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; cursor: pointer; user-select: none;
+}
+.notes-master-title {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--accent); display: flex; align-items: center; gap: 8px;
+}
+.notes-master-chevron { color: var(--accent); transition: transform 0.25s ease; font-size: 12px; }
+.notes-master-card.mc-open .notes-master-chevron { transform: rotate(180deg); }
+.notes-master-body {
+  display: none; padding: 6px 18px 18px;
+}
+.notes-master-card.mc-open .notes-master-body { display: block; animation: slideUp 0.2s ease both; }
+.notes-master-section-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase;
+  margin: 12px 0 8px;
+}
+.notes-master-section-title:first-child { margin-top: 4px; }
+.notes-master-tip {
+  background: var(--surface); border-radius: 8px; padding: 10px 14px;
+  margin-bottom: 8px; font-size: 12px; line-height: 1.65; color: var(--text2);
+  border-left: 3px solid var(--accent);
+}
+.notes-master-tip strong { color: var(--text); }
+.notes-master-tip-num {
+  display: inline-block; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 700; font-size: 10px;
+  text-align: center; line-height: 20px; margin-right: 8px;
+  vertical-align: middle;
+}
+
+
+/* Empty state */
+.notes-empty {
+  text-align: center; padding: 40px 24px; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+}
+
+/* Mark all button */
+.notes-mark-all-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+  padding: 4px 12px; border-radius: 100px;
+  border: 1.5px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.9); cursor: pointer; transition: var(--tr);
+  letter-spacing: 0.04em;
+}
+.notes-mark-all-btn:hover { background: rgba(255,255,255,0.28); }
+
+
+
+/* ═══════════════════════════════════════════════════
+   PHASE 3 — Nova design + Quinn fixes + Sam improvements
+   ═══════════════════════════════════════════════════ */
+
+/* Quinn #4: word-break safety on long terms */
+.notes-kv-key, .notes-kv-val, .notes-glossary-term, .notes-glossary-def {
+  word-break: break-word; overflow-wrap: anywhere;
+}
+
+/* Nova #1: subtle hover lift */
+.notes-item:hover { transform: translateY(-1px); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.notes-group:hover { box-shadow: 0 2px 14px rgba(0,0,0,0.04); }
+.notes-item, .notes-group { transition: transform 0.15s, box-shadow 0.15s, border-color 0.2s; }
+
+/* Nova #6: smooth fill animation on mini progress bar */
+.notes-group-mini-fill { transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Nova #2: content-type icon dots inline with subtopic name */
+.notes-item-icons {
+  display: inline-flex; gap: 3px; margin-right: 6px; vertical-align: middle;
+  font-size: 11px; line-height: 1;
+}
+.notes-item-icon {
+  opacity: 0.65; transition: opacity 0.15s; cursor: help;
+}
+.notes-item:hover .notes-item-icon { opacity: 1; }
+
+/* Nova #5: last-opened indicator dot */
+.notes-item-last-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent2); margin-right: 6px; vertical-align: middle;
+  box-shadow: 0 0 0 0 var(--accent2);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,157,0.4); }
+  50% { box-shadow: 0 0 0 5px rgba(255,107,157,0); }
+}
+
+/* Nova #3: "Practice this topic" inline button at end of body */
+.notes-practice-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px; padding: 9px 16px; border-radius: 100px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; border: none; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 10px rgba(108,71,255,0.25);
+}
+.notes-practice-link:hover {
+  transform: translateY(-1px); box-shadow: 0 4px 16px rgba(108,71,255,0.35);
+}
+
+/* Sam #3: reading time on group header */
+.notes-group-time {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* Sam #1: glossary search */
+.notes-glossary-search-row {
+  margin-bottom: 10px;
+}
+.notes-glossary-search {
+  width: 100%; padding: 9px 14px 9px 34px;
+  border: 1.5px solid var(--border2); border-radius: 8px;
+  background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237b84b0' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center;
+  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; outline: none; transition: var(--tr);
+}
+.notes-glossary-search:focus { border-color: var(--accent); background-color: var(--surface); }
+.notes-glossary-empty {
+  text-align: center; padding: 16px; font-size: 11px; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em;
+}
+
+/* Sam #2: search highlighting */
+.notes-item-body mark, .notes-summary mark, .notes-key-point mark,
+.notes-exam-tip mark, .notes-scenario mark, .notes-memory mark,
+.notes-generic-val mark, .notes-kv-val mark, .notes-bullet-list mark {
+  background: rgba(108,71,255,0.18); color: var(--accent);
+  border-radius: 3px; padding: 0 2px; font-weight: 700;
+}
+
+/* Sam #5: continue-reading pill */
+.notes-continue-pill {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px 10px 12px; margin-bottom: 14px;
+  background: linear-gradient(135deg, var(--d1-light), var(--d2-light));
+  border: 1.5px solid var(--accent); border-radius: 12px;
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+}
+.notes-continue-pill:hover { transform: translateX(2px); box-shadow: var(--shadow); }
+.notes-continue-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: #fff; display: flex; align-items: center;
+  justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+.notes-continue-text { flex: 1; min-width: 0; }
+.notes-continue-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.notes-continue-name {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.notes-continue-arrow {
+  font-size: 16px; color: var(--accent); flex-shrink: 0;
+}
+.notes-continue-dismiss {
+  background: transparent; border: none; color: var(--muted); font-size: 14px;
+  cursor: pointer; padding: 4px 8px;
+}
+.notes-continue-dismiss:hover { color: var(--text); }
+
+/* Quinn #5: keyboard focus styles */
+.notes-item-header:focus-visible,
+.notes-group-header:focus-visible,
+.notes-glossary-header:focus-visible,
+.notes-master-header:focus-visible,
+.notes-domain-summary-card:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* Highlight flash when arriving from continue-reading */
+@keyframes flash-highlight {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(108,71,255,0); }
+  50% { box-shadow: 0 0 0 6px rgba(108,71,255,0.35); }
+}
+.notes-item.flash-highlight { animation: flash-highlight 1.4s ease 1; }
+
+
 .gloss-header {
   background: var(--surface); border: 2px solid var(--border2);
   border-radius: var(--radius); padding: 22px 24px;
@@ -2735,6 +3467,7 @@ var S_DEFAULTS = {
   answeredIds: {},
   glossMastered: {},
   topicReviewed: {},
+  lastOpenedSubtopic: {},
   confidenceLog: [],
   sessionHistory: [],
   activeTab: "practice",
@@ -2841,6 +3574,7 @@ function normalizeImportedState(state) {
   if (!clean.answeredIds || typeof clean.answeredIds !== 'object') clean.answeredIds = {};
   if (!clean.glossMastered || typeof clean.glossMastered !== 'object') clean.glossMastered = {};
   if (!clean.topicReviewed || typeof clean.topicReviewed !== 'object') clean.topicReviewed = {};
+  if (!clean.lastOpenedSubtopic || typeof clean.lastOpenedSubtopic !== 'object') clean.lastOpenedSubtopic = {};
   if (["1","2","3","4","5","all"].indexOf(String(clean.selectedDomain)) === -1) clean.selectedDomain = "1";
   if (["any","foundational","application","analysis"].indexOf(clean.diff) === -1) clean.diff = "any";
   clean.timerEnabled = !!clean.timerEnabled;
@@ -3217,141 +3951,1024 @@ function showSaveError() {
   setTimeout(function(){ if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4000);
 }
 
-var topicState = { domain: "1" };
+// ══════════════════════════════════════════════════════
 
+// ══════════════════════════════════════════════════════
+// TOPICS SECTION — powered by cisa_notes.json (embedded)
+// ══════════════════════════════════════════════════════
+
+// Inline embedded data — no external fetch needed
+// ── DATA LOADING (fetched from data/cisa_notes.json) ──
+// All study content lives in an external JSON file so it can be updated
+// without rebuilding the HTML. The fetch happens lazily — first time the
+// Topics tab is opened — and results are cached in memory.
+var CISA_NOTES_RAW = null;        // populated by fetch on first need
+var CONCEPTS_DATA = null;       // populated from CISA_NOTES_RAW on first load
+var conceptsLoadFailed = false; // becomes true if fetch fails (shows error UI)
+var conceptsLoading = false;    // true during fetch
+
+// UI state for the Topics tab — which domain is selected, what search/filter is active,
+// which groups/items are open, etc.
+var topicState = { domain: "1", search: "", openGroups: {}, openItems: {}, filter: "all" };
+
+// ── NORMALIZE: convert cisa_notes structure to internal format ──
+function buildConceptsData() {
+  if (CONCEPTS_DATA) return CONCEPTS_DATA;
+  // Safe stub if the JSON hasn't loaded yet — keeps callers from crashing
+  if (!CISA_NOTES_RAW) {
+    return { domains: [], cross_domain_connections: [], exam_strategy_tips: [] };
+  }
+  CONCEPTS_DATA = {
+    cross_domain_connections: CISA_NOTES_RAW.cross_domain_connections || [],
+    exam_strategy_tips: CISA_NOTES_RAW.exam_strategy_tips || [],
+    domains: CISA_NOTES_RAW.domains.map(function(d) {
+      return {
+        domain_id: d.domain_number,
+        domain_name: d.domain_name,
+        exam_weight: d.exam_weight,
+        summary: d.summary || "",
+        real_life_analogy: d.real_life_analogy || "",
+        key_terminologies: d.key_terminologies || null,
+        groups: d.topics.map(function(t) {
+          // Capture the topic-level summary so it can be shown above subtopics
+          var groupSummary = (typeof t.summary === 'string') ? t.summary : '';
+          var items = [];
+          if (t.subtopics && t.subtopics.length) {
+            items = t.subtopics.map(function(st) {
+              return { id: st.id, name: st.name, raw: st };
+            });
+          } else {
+            items = [{ id: t.topic_id, name: t.topic_name, raw: t }];
+          }
+          return {
+            group_id: t.topic_id,
+            group_title: t.topic_name,
+            group_summary: groupSummary,
+            items: items
+          };
+        })
+      };
+    })
+  };
+  return CONCEPTS_DATA;
+}
+
+// ── PROGRESS HELPERS ──
 function getTopicReviewedSet() {
   if (!S.topicReviewed || typeof S.topicReviewed !== 'object') S.topicReviewed = {};
   return S.topicReviewed;
 }
 
-function getTopicProgress(domain) {
+function getConceptDomainProgress(domainId) {
+  var data = buildConceptsData();
+  var dom = data.domains.find(function(d){ return d.domain_id === Number(domainId); });
+  if (!dom) return {done:0,total:0,pct:0};
   var reviewed = getTopicReviewedSet();
-  var item = TOPIC_SUMMARY.find(function(d){ return d.domain === String(domain); });
-  if (!item) return {done:0,total:0,pct:0};
-  var total = item.sections.length;
-  var done = item.sections.filter(function(s){ return !!reviewed[s.id]; }).length;
-  return {done:done,total:total,pct:total ? Math.round((done/total)*100) : 0};
-}
-
-function getAllTopicProgress() {
-  var done = 0, total = 0;
-  TOPIC_SUMMARY.forEach(function(d) {
-    var p = getTopicProgress(d.domain);
-    done += p.done; total += p.total;
+  var total = 0, done = 0;
+  dom.groups.forEach(function(g) {
+    g.items.forEach(function(it) { total++; if (reviewed[it.id]) done++; });
   });
-  return {done:done,total:total,pct:total ? Math.round((done/total)*100) : 0};
+  return {done:done, total:total, pct: total ? Math.round((done/total)*100) : 0};
 }
 
-function renderTopicStudyList(items) {
-  return '<ul>' + (items || []).map(function(item){ return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>';
+function getAllConceptProgress() {
+  var data = buildConceptsData();
+  var reviewed = getTopicReviewedSet();
+  var total = 0, done = 0;
+  data.domains.forEach(function(dom) {
+    dom.groups.forEach(function(g) {
+      g.items.forEach(function(it) { total++; if (reviewed[it.id]) done++; });
+    });
+  });
+  return {done:done, total:total, pct: total ? Math.round((done/total)*100) : 0};
 }
 
-function renderTopicTerms(items) {
-  return '<div class="topic-term-row">' + (items || []).map(function(item){ return '<span class="topic-term">' + escapeHtml(item) + '</span>'; }).join('') + '</div>';
+// Legacy aliases
+function getTopicProgress(domain) { return getConceptDomainProgress(Number(domain)); }
+function getAllTopicProgress() { return getAllConceptProgress(); }
+function loadConceptsData(callback) {
+  // Already loaded? Just hand back the cached data
+  if (CISA_NOTES_RAW) { callback(buildConceptsData()); return; }
+  // Already failed? Show the error UI and stop
+  if (conceptsLoadFailed) { renderTopicsError(); return; }
+  // Already in flight? Wait and retry shortly
+  if (conceptsLoading) {
+    setTimeout(function() { loadConceptsData(callback); }, 120);
+    return;
+  }
+  conceptsLoading = true;
+  fetch('data/cisa_notes.json')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' (file may be missing)');
+      return r.json();
+    })
+    .then(function(data) {
+      CISA_NOTES_RAW = data;
+      conceptsLoading = false;
+      callback(buildConceptsData());
+    })
+    .catch(function(err) {
+      conceptsLoading = false;
+      conceptsLoadFailed = true;
+      console.warn('Could not load data/cisa_notes.json:', err);
+      renderTopicsError(err);
+    });
 }
 
-function renderTopics() {
+// Show a clear error state when the JSON cannot be fetched
+function renderTopicsError(err) {
   var area = document.getElementById('topicsArea');
   if (!area) return;
-  var selected = TOPIC_SUMMARY.find(function(d){ return d.domain === topicState.domain; }) || TOPIC_SUMMARY[0];
-  topicState.domain = selected.domain;
-  var all = getAllTopicProgress();
-  var selectedProgress = getTopicProgress(selected.domain);
-  var reviewed = getTopicReviewedSet();
-
-  var domainButtons = TOPIC_SUMMARY.map(function(d) {
-    var info = DI[d.domain];
-    var p = getTopicProgress(d.domain);
-    return '<button class="topic-domain-btn' + (d.domain === selected.domain ? ' active' : '') + '" style="--topic-color:' + info.color + '" onclick="setTopicDomain(\'' + d.domain + '\')">'
-      + '<span class="topic-domain-top"><span>D' + d.domain + '</span><span>' + p.pct + '%</span></span>'
-      + '<span class="topic-domain-name">' + escapeHtml(info.name) + '</span>'
-      + '<span class="topic-mini-bar"><span class="topic-mini-fill" style="width:' + p.pct + '%"></span></span>'
-      + '</button>';
-  }).join('');
-
-  var sections = selected.sections.map(function(s) {
-    var done = !!reviewed[s.id];
-    var detail = TOPIC_STUDY_DETAILS[s.id] || {concepts:[],terms:[],details:[],takeaways:[]};
-    var bulletHtml = s.bullets.map(function(b){ return '<div class="topic-list-item">' + escapeHtml(b) + '</div>'; }).join('');
-    var readMins = estimateReadTime(s);
-    return '<div class="topic-section' + (done ? ' done' : '') + '">'
-      + '<div class="topic-section-head">'
-      + '<div style="display:flex;align-items:center;gap:8px;min-width:0"><div class="topic-section-title">' + escapeHtml(s.title) + '</div><span class="topic-read-time">&#9201; ~' + readMins + ' min</span></div>'
-      + '<button class="topic-check" title="' + (done ? 'Mark not reviewed' : 'Mark reviewed') + '" onclick="toggleTopicReviewed(\'' + s.id + '\')">' + (done ? '&#10003;' : '') + '</button>'
-      + '</div>'
-      + '<div class="topic-section-text">' + escapeHtml(s.summary) + '</div>'
-      + '<div class="topic-study-grid">'
-      + '<div class="topic-study-box"><div class="topic-study-label">Core Concepts</div>' + renderTopicStudyList(detail.concepts) + '</div>'
-      + '<div class="topic-study-box"><div class="topic-study-label">Key Details</div>' + renderTopicStudyList(detail.details) + '</div>'
-      + '<div class="topic-study-box"><div class="topic-study-label">Key Terms</div>' + renderTopicTerms(detail.terms) + '</div>'
-      + '<div class="topic-study-box"><div class="topic-study-label">Key Takeaways</div>' + renderTopicStudyList(detail.takeaways) + '</div>'
-      + '</div>'
-      + '<div class="topic-study-label" style="color:var(--accent);margin-top:4px;">Guide Topic Outline</div>'
-      + '<div class="topic-list">' + bulletHtml + '</div>'
-      + '<div class="topic-exam-note">' + escapeHtml(s.examCue) + '</div>'
-      + '</div>';
-  }).join('');
-
-  var info = DI[selected.domain];
-  area.innerHTML = '<div class="topic-hero">'
-    + '<div class="topic-kicker">ISACA Board Review Mode</div>'
-    + '<div class="topic-title">Review the exam blueprint before you practice.</div>'
-    + '<div class="topic-sub">Use this as a fast domain briefing: read the topic summary, mark each area reviewed, then jump straight into practice questions or a mock exam from the same tool.</div>'
+  var msg = (err && err.message) ? escapeHtml(err.message) : 'Network error';
+  area.innerHTML = '<div style="text-align:center;padding:60px 24px;color:var(--muted)">'
+    + '<div style="font-size:40px;margin-bottom:16px">&#128221;</div>'
+    + '<div style="font-family:Playfair Display,serif;font-size:20px;font-weight:900;color:var(--text);margin-bottom:8px">Topics content not loaded</div>'
+    + '<div style="font-size:13px;line-height:1.7;margin-bottom:20px">'
+    + 'Make sure <code>data/cisa_notes.json</code> exists in your GitHub repo.<br>'
+    + 'Error: <code>' + msg + '</code>'
     + '</div>'
-    + '<div class="topic-progress-row">'
-    + '<div class="topic-progress-card"><span class="topic-progress-num">' + all.done + '/' + all.total + '</span><span class="topic-progress-label">Topics Reviewed</span></div>'
-    + '<div class="topic-progress-card"><span class="topic-progress-num">' + all.pct + '%</span><span class="topic-progress-label">Review Coverage</span></div>'
-    + '<div class="topic-progress-card"><span class="topic-progress-num">D' + selected.domain + '</span><span class="topic-progress-label">' + escapeHtml(info.short) + '</span></div>'
-    + '</div>'
-    + '<div class="topic-shell">'
-    + '<div class="topic-domain-list">' + domainButtons + '</div>'
-    + '<div class="topic-panel" style="--topic-color:' + info.color + '">'
-    + '<div class="topic-panel-head">'
-    + '<div class="topic-panel-meta"><span class="topic-pill">Domain ' + selected.domain + '</span><span class="topic-pill">' + escapeHtml(selected.chapters) + '</span><span class="topic-pill">' + selectedProgress.done + '/' + selectedProgress.total + ' reviewed</span></div>'
-    + '<div class="topic-panel-title">' + escapeHtml(info.name) + '</div>'
-    + '<div class="topic-panel-summary">' + escapeHtml(selected.boardFocus) + '<br><strong>Exam mindset:</strong> ' + escapeHtml(selected.examMindset) + '</div>'
-    + '<div class="topic-actions">'
-    + '<button class="topic-action primary" onclick="startTopicPractice(\'' + selected.domain + '\')">Practice Domain ' + selected.domain + '</button>'
-    + '<button class="topic-action" onclick="switchTab(\'mock\')">Take Mock Exam</button>'
-    + '<button class="topic-action" onclick="markDomainTopics(\'' + selected.domain + '\')">Mark Domain Reviewed</button>'
-    + '<button class="topic-reset-btn" onclick="resetDomainTopicReviews(\'' + selected.domain + '\')" title="Reset all reviewed status for this domain">&#8635; Reset D' + selected.domain + ' Review</button>'
-    + '</div>'
-    + '</div>'
-    + '<div class="topic-body">' + sections + '</div>'
-    + '</div>'
+    + '<button onclick="conceptsLoadFailed=false;renderTopics()" style="padding:10px 24px;border-radius:10px;background:var(--accent);color:#fff;border:none;font-family:Plus Jakarta Sans,sans-serif;font-size:13px;font-weight:700;cursor:pointer">&#8635; Retry</button>'
     + '</div>';
 }
 
+// Quinn #3 helper: recursively flatten any nested raw object into searchable text
+function flattenForSearch(val) {
+  if (val == null) return '';
+  if (typeof val === 'string') return val + ' ';
+  if (typeof val === 'number' || typeof val === 'boolean') return String(val) + ' ';
+  if (Array.isArray(val)) return val.map(flattenForSearch).join(' ');
+  if (typeof val === 'object') return Object.keys(val).map(function(k){ return k + ' ' + flattenForSearch(val[k]); }).join(' ');
+  return '';
+}
+
+// Sam #3 helper: estimate read time at ~200wpm
+function estimateReadMinutes(val) {
+  var text = flattenForSearch(val);
+  var wordCount = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(wordCount / 200));
+}
+
+// ── RENDER RICH SUBTOPIC BODY (schema-agnostic) ──
+// Auto-renders every field in the subtopic raw object, no matter what.
+// Special fields get highlighted boxes; everything else gets a generic labeled card.
+
+// Convert snake_case_key into "Title Case Label"
+function humanLabel(key) {
+  if (!key) return '';
+  return String(key).replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+
+// Render a string value — escapes line breaks
+function renderText(s, searchQ) {
+  var safe = escapeHtml(String(s == null ? '' : s));
+  if (!searchQ) return safe;
+  searchQ.split(/\s+/).filter(Boolean).forEach(function(word) {
+    var esc = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('(' + esc + ')', 'gi');
+    safe = safe.replace(re, '<mark>$1</mark>');
+  });
+  return safe;
+}
+
+// Render any value (string, array, object) inside a KV-card body
+function renderNestedValue(val, searchQ) {
+  if (val == null) return '';
+  if (typeof val === 'string') return renderText(val, searchQ);
+  if (typeof val === 'number' || typeof val === 'boolean') return renderText(val, searchQ);
+  if (Array.isArray(val)) {
+    if (!val.length) return '';
+    if (typeof val[0] === 'string') {
+      return '<ul style="margin:4px 0 0 14px;padding:0">'
+        + val.map(function(v){ return '<li style="margin-bottom:2px">' + renderText(v, searchQ) + '</li>'; }).join('')
+        + '</ul>';
+    }
+    return val.map(function(o){ return '<div style="margin-top:4px">' + renderNestedValue(o, searchQ) + '</div>'; }).join('');
+  }
+  if (typeof val === 'object') {
+    return Object.keys(val).map(function(k){
+      return '<div style="margin-top:3px"><strong style="color:var(--text)">'
+        + escapeHtml(humanLabel(k)) + ':</strong> ' + renderNestedValue(val[k], searchQ) + '</div>';
+    }).join('');
+  }
+  return renderText(val, searchQ);
+}
+
+// Generic render for any (key, val) pair we don't have special handling for
+function renderGenericField(key, val, searchQ) {
+  if (val == null) return '';
+  var label = humanLabel(key);
+
+  if (typeof val === 'string') {
+    if (!val.trim()) return '';
+    return '<div class="notes-generic-field">'
+      + '<div class="notes-generic-label">' + escapeHtml(label) + '</div>'
+      + '<div class="notes-generic-val">' + renderText(val, searchQ) + '</div>'
+      + '</div>';
+  }
+
+  if (Array.isArray(val)) {
+    if (!val.length) return '';
+    var html = '<div class="notes-generic-label" style="margin-top:8px">' + escapeHtml(label) + '</div>';
+    if (typeof val[0] === 'string') {
+      html += '<ul class="notes-bullet-list">'
+        + val.map(function(b){ return '<li>' + renderText(b, searchQ) + '</li>'; }).join('')
+        + '</ul>';
+      return html;
+    }
+    html += '<div class="notes-kv-grid">';
+    val.forEach(function(obj) {
+      var titleKey = ['type','name','phase','connection'].find(function(k){ return obj[k]; });
+      var titleVal = titleKey ? obj[titleKey] : null;
+      html += '<div class="notes-kv-card">';
+      if (titleVal) {
+        html += '<div class="notes-kv-key">' + renderText(String(titleVal), searchQ) + '</div>';
+        html += '<div class="notes-kv-val">';
+        Object.keys(obj).forEach(function(ok) {
+          if (ok === titleKey) return;
+          html += '<div style="margin-bottom:3px"><strong>' + escapeHtml(humanLabel(ok)) + ':</strong> '
+            + renderNestedValue(obj[ok], searchQ) + '</div>';
+        });
+        html += '</div>';
+      } else {
+        Object.keys(obj).forEach(function(ok) {
+          html += '<div class="notes-kv-key">' + escapeHtml(humanLabel(ok)) + '</div>';
+          html += '<div class="notes-kv-val">' + renderNestedValue(obj[ok], searchQ) + '</div>';
+        });
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  if (typeof val === 'object') {
+    var entries = Object.keys(val);
+    if (!entries.length) return '';
+    var html2 = '<div class="notes-generic-label" style="margin-top:8px">' + escapeHtml(label) + '</div>';
+    html2 += '<div class="notes-kv-grid">';
+    entries.forEach(function(k) {
+      html2 += '<div class="notes-kv-card">';
+      html2 += '<div class="notes-kv-key">' + escapeHtml(humanLabel(k)) + '</div>';
+      html2 += '<div class="notes-kv-val">' + renderNestedValue(val[k], searchQ) + '</div>';
+      html2 += '</div>';
+    });
+    html2 += '</div>';
+    return html2;
+  }
+
+  return '';
+}
+
+function renderItemBody(raw, domainId, searchQ) {
+  if (!raw || typeof raw !== 'object') {
+    return '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
+  }
+
+  // Tracker: mark fields as already rendered so generic pass skips them
+  var done = { id:1, name:1, topic_id:1, topic_name:1, subtopics:1 };
+  var html = '';
+
+  // ── 1. Summary at top, no label (the headline of the subtopic) ──
+  if (typeof raw.summary === 'string' && raw.summary.trim()) {
+    html += '<p class="notes-summary">' + renderText(raw.summary, searchQ) + '</p>';
+  }
+  done.summary = 1;
+
+  // ── 2. Highlight boxes (special semantic fields) ──
+  // Format: [field_key, css_class, label_class, icon_html, label_text]
+  var topBoxes = [
+    ['primary_objective', 'notes-key-point', 'notes-key-point-label', '&#127919;', 'Primary Objective'],
+    ['principle',         'notes-key-point', 'notes-key-point-label', '&#9878;',   'Principle'],
+    ['key_point',         'notes-key-point', 'notes-key-point-label', '&#128204;', 'Key Point'],
+    ['key_concept',       'notes-key-point', 'notes-key-point-label', '&#128204;', 'Key Concept'],
+    ['key_concepts_brief','notes-key-point', 'notes-key-point-label', '&#128204;', 'Key Concept'],
+    ['key_risk',          'notes-key-point', 'notes-key-point-label', '&#9888;',   'Key Risk'],
+    ['key_control',       'notes-key-point', 'notes-key-point-label', '&#128274;', 'Key Control'],
+    ['materiality',       'notes-key-point', 'notes-key-point-label', '&#128202;', 'Materiality'],
+    ['scope',             'notes-key-point', 'notes-key-point-label', '&#127919;', 'Scope'],
+    ['benefit',           'notes-key-point', 'notes-key-point-label', '&#10003;',  'Benefit'],
+    ['contrast',          'notes-key-point', 'notes-key-point-label', '&#8644;',   'Contrast'],
+    ['how_it_works',      'notes-key-point', 'notes-key-point-label', '&#9881;',   'How It Works'],
+    ['when_performed',    'notes-key-point', 'notes-key-point-label', '&#128338;', 'When Performed'],
+    ['compliance_testing','notes-key-point', 'notes-key-point-label', '&#10003;',  'Compliance Testing'],
+    ['substantive_testing','notes-key-point','notes-key-point-label', '&#10003;',  'Substantive Testing'],
+    ['sampling_risk',     'notes-key-point', 'notes-key-point-label', '&#9888;',   'Sampling Risk'],
+    ['dmz',               'notes-key-point', 'notes-key-point-label', '&#128737;', 'DMZ'],
+    ['MFA',               'notes-key-point', 'notes-key-point-label', '&#128274;', 'MFA'],
+    ['segregation_of_duties','notes-key-point','notes-key-point-label','&#9878;',  'Segregation of Duties'],
+    ['example',           'notes-key-point', 'notes-key-point-label', '&#128161;', 'Example'],
+    ['analogy',           'notes-scenario',  'notes-scenario-label',  '&#128302;', 'Analogy']
+  ];
+  topBoxes.forEach(function(b) {
+    var k = b[0], cls = b[1], labelCls = b[2], icon = b[3], lbl = b[4];
+    if (typeof raw[k] === 'string' && raw[k].trim()) {
+      html += '<div class="' + cls + '"><div class="' + labelCls + '">' + icon + ' ' + lbl + '</div>'
+            + renderText(raw[k], searchQ) + '</div>';
+      done[k] = 1;
+    }
+  });
+
+  // ── 3. Bottom-priority semantic boxes (rendered LAST, but capture key now) ──
+  var bottomBoxes = [
+    ['real_life_scenario',  'notes-scenario', 'notes-scenario-label', '&#127970;', 'Real-Life Scenario'],
+    ['exam_tip',            'notes-exam-tip', 'notes-exam-tip-label', '&#128221;', 'Exam Tip'],
+    ['memory_aid',          'notes-memory',   'notes-memory-label',   '&#129504;', 'Memory Aid'],
+    ['hierarchy_memory_aid','notes-memory',   'notes-memory-label',   '&#129504;', 'Memory Aid']
+  ];
+
+  // ── 4. Generic pass: render every remaining field by type ──
+  var generic = '';
+  Object.keys(raw).forEach(function(k) {
+    if (done[k]) return;
+    // Skip the bottom boxes for now — they render after all generic content
+    if (bottomBoxes.some(function(b){ return b[0] === k; })) return;
+    generic += renderGenericField(k, raw[k], searchQ);
+    done[k] = 1;
+  });
+  html += generic;
+
+  // ── 5. Bottom boxes (scenarios, exam tips, memory aids appear at the end) ──
+  bottomBoxes.forEach(function(b) {
+    var k = b[0], cls = b[1], labelCls = b[2], icon = b[3], lbl = b[4];
+    if (typeof raw[k] === 'string' && raw[k].trim()) {
+      html += '<div class="' + cls + '"><div class="' + labelCls + '">' + icon + ' ' + lbl + '</div>'
+            + renderText(raw[k], searchQ) + '</div>';
+      done[k] = 1;
+    }
+  });
+
+  // Nova #3: "Practice this topic" CTA button at the end of every body
+  if (domainId) {
+    html += '<button class="notes-practice-link" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">'
+      + '&#9654; Practice questions for Domain ' + domainId + '</button>';
+  }
+  return html || '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
+}
+
+// ── MAIN RENDER ──
+function renderTopics() {
+  var area = document.getElementById('topicsArea');
+  if (!area) return;
+
+  // Not loaded yet? Show spinner and trigger fetch
+  if (!CISA_NOTES_RAW) {
+    if (conceptsLoadFailed) { renderTopicsError(); return; }
+    area.innerHTML = '<div class="new-topics-loading">'
+      + '<div class="new-topics-loading-spinner"></div>'
+      + '<div>Loading study guide content&hellip;</div>'
+      + '</div>';
+    loadConceptsData(function() { renderTopics(); });
+    return;
+  }
+
+  var data = buildConceptsData();
+  var d = parseInt(topicState.domain) || 1;
+  var domainData = data.domains.find(function(x){ return x.domain_id === d; });
+  if (!domainData) return;
+
+  var allProg = getAllConceptProgress();
+  var domProg = getConceptDomainProgress(d);
+  var info = DI[String(d)];
+  var reviewed = getTopicReviewedSet();
+  var searchQ = (topicState.search || '').trim().toLowerCase();
+  var filterMode = topicState.filter || 'all';
+
+  // ── Domain Tabs ──
+  var tabsHtml = data.domains.map(function(dom) {
+    var inf = DI[String(dom.domain_id)];
+    var p = getConceptDomainProgress(dom.domain_id);
+    var isActive = dom.domain_id === d;
+    var tabStyle = isActive ? 'background:' + inf.color + ';border-color:' + inf.color + ';color:#fff' : 'color:' + inf.color;
+    return '<button class="new-domain-tab' + (isActive ? ' active' : '') + '" style="' + tabStyle + '" onclick="setTopicDomain(\'' + dom.domain_id + '\')">'
+      + '<span class="new-domain-tab-num" style="' + (isActive ? '' : 'color:' + inf.color) + '">D' + dom.domain_id + '</span>'
+      + '<span class="new-domain-tab-name">' + escapeHtml(inf.short) + '</span>'
+      + '<span class="new-domain-tab-weight">' + dom.exam_weight + '</span>'
+      + '<div class="new-domain-tab-progress" style="width:' + p.pct + '%;background:' + (isActive ? 'rgba(255,255,255,0.4)' : inf.color) + '"></div>'
+      + '</button>';
+  }).join('');
+
+  // ── Overall Progress Bar ──
+  var progBarHtml = '<div class="new-topics-progress-bar">'
+    + '<span class="new-topics-prog-label">Overall Progress</span>'
+    + '<div class="new-topics-prog-track"><div class="new-topics-prog-fill" style="width:' + allProg.pct + '%;background:var(--correct)"></div></div>'
+    + '<span class="new-topics-prog-num">' + allProg.done + '/' + allProg.total + '</span>'
+    + '</div>';
+
+  // ── Domain Banner ──
+  var totalItems = domainData.groups.reduce(function(a,g){ return a + g.items.length; }, 0);
+  var analogyHtml = domainData.real_life_analogy
+    ? '<div class="notes-analogy-box"><strong>&#128161; Think of it this way:</strong> ' + escapeHtml(domainData.real_life_analogy) + '</div>'
+    : '';
+  var bannerHtml = '<div class="new-domain-banner" style="background:' + info.color + ';color:#fff">'
+    + '<div class="new-domain-banner-left">'
+    + '<div class="new-domain-banner-label">Domain ' + d + ' &mdash; ' + domainData.exam_weight + ' of exam</div>'
+    + '<div class="new-domain-banner-title">' + escapeHtml(domainData.domain_name) + '</div>'
+    + '<div class="new-domain-banner-meta">'
+    + '<span>&#128218; ' + domainData.groups.length + ' topics</span>'
+    + '<span>&#128221; ' + totalItems + ' subtopics</span>'
+    + '<span>&#10003; ' + domProg.done + '/' + totalItems + ' reviewed</span>'
+    + '</div>'
+    + analogyHtml
+    + '<div class="new-domain-banner-btns" style="margin-top:12px">'
+    + '<button class="new-domain-banner-btn" onclick="startTopicPractice(\'' + d + '\')" style="display:flex;align-items:center;gap:5px">&#9654; Practice D' + d + '</button>'
+    + '<button class="notes-mark-all-btn" onclick="markAllDomainTopics(' + d + ')">&#10003; Mark All</button>'
+    + '<button class="notes-mark-all-btn" onclick="resetConceptDomain(' + d + ')">&#8635; Reset</button>'
+    + '</div>'
+    + '</div>'
+    + '<div class="new-domain-prog-ring">'
+    + '<div class="new-domain-prog-pct">' + domProg.pct + '%</div>'
+    + '<div class="new-domain-prog-label">Reviewed</div>'
+    + '</div>'
+    + '</div>';
+
+  // Sam #5: Continue reading pill
+  var continueHtml = '';
+  if (S.lastOpenedSubtopic && S.lastOpenedSubtopic[d] && !topicState.continueDismissed) {
+    var lo = S.lastOpenedSubtopic[d];
+    var found = null;
+    domainData.groups.some(function(g) {
+      var hit = g.items.find(function(it){ return it.id === lo.id; });
+      if (hit) { found = hit; return true; }
+    });
+    if (found) {
+      continueHtml = '<div class="notes-continue-pill" onclick="jumpToSubtopic(\'' + escapeHtml(lo.id) + '\')">'
+        + '<div class="notes-continue-icon">&#9654;</div>'
+        + '<div class="notes-continue-text">'
+        + '<div class="notes-continue-label">Continue reading</div>'
+        + '<div class="notes-continue-name">' + escapeHtml(found.id) + ' &mdash; ' + escapeHtml(found.name) + '</div>'
+        + '</div>'
+        + '<button class="notes-continue-dismiss" onclick="event.stopPropagation();dismissContinueReading()" title="Dismiss">&#10005;</button>'
+        + '<span class="notes-continue-arrow">&rsaquo;</span>'
+        + '</div>';
+    }
+  }
+
+  // -- Domain Summary Card --
+  var summaryOpen = topicState.summaryOpen !== false;
+  var summaryHtml = domainData.summary
+    ? '<div class="notes-domain-summary-card" onclick="toggleDomainSummary()" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDomainSummary();}">'
+      + '<div class="notes-domain-summary-label">&#128218; Domain Overview</div>'
+      + '<div class="notes-domain-summary-text" id="notesSummaryText" style="' + (summaryOpen ? '' : 'display:none') + '">' + escapeHtml(domainData.summary) + '</div>'
+      + '<div class="notes-domain-summary-toggle">' + (summaryOpen ? '&#9650; Hide' : '&#9660; Show') + '</div>'
+      + '</div>'
+    : '';
+
+  // -- Expand/Collapse All row --
+  var expandRowHtml = '<div class="notes-expand-row">'
+    + '<button class="notes-expand-btn" onclick="expandAllGroups()">&#9660; Expand All</button>&nbsp;'
+    + '<button class="notes-expand-btn" onclick="collapseAllGroups()">&#9650; Collapse All</button>'
+    + '</div>';
+
+  // ── Search + Filter ──
+  var searchHtml = '<div class="new-topic-search-row">'
+    + '<input type="text" class="new-topic-search" id="newTopicSearch" placeholder="Search topics and subtopics&hellip;" value="' + escapeHtml(topicState.search || '') + '" oninput="onTopicSearch(this.value)">'
+    + (searchQ ? '<button class="new-topic-search-clear" onclick="onTopicSearch(\'\')">&#10005; Clear</button>' : '')
+    + '</div>'
+    + '<div class="notes-filter-row">'
+    + '<button class="notes-filter-btn' + (filterMode==='all' ? ' active' : '') + '" onclick="setTopicFilter(\'all\')">All</button>'
+    + '<button class="notes-filter-btn' + (filterMode==='unreviewed' ? ' active' : '') + '" onclick="setTopicFilter(\'unreviewed\')">&#9711; To Review</button>'
+    + '<button class="notes-filter-btn' + (filterMode==='reviewed' ? ' active' : '') + '" onclick="setTopicFilter(\'reviewed\')">&#10003; Reviewed</button>'
+    + '</div>';
+
+  // ── Groups (topics from JSON) ──
+  var groupsHtml = domainData.groups.map(function(g) {
+    var gKey = d + '-g-' + g.group_id;
+    var isOpen = topicState.openGroups[gKey] !== false;
+
+    // Filter items
+    var filteredItems = g.items.filter(function(it) {
+      // Filter by review status
+      if (filterMode === 'reviewed' && !reviewed[it.id]) return false;
+      if (filterMode === 'unreviewed' && reviewed[it.id]) return false;
+      // Quinn #3: Search across ALL content fields recursively
+      if (searchQ) {
+        var haystack = (it.name + ' ' + flattenForSearch(it.raw)).toLowerCase();
+        if (!searchQ.split(/\s+/).every(function(w){ return haystack.indexOf(w) !== -1; })) return false;
+      }
+      return true;
+    });
+
+    if (filteredItems.length === 0 && (searchQ || filterMode !== 'all')) return '';
+
+    var gDone = g.items.filter(function(it){ return reviewed[it.id]; }).length;
+    var gTotal = g.items.length;
+    var allDone = gDone === gTotal;
+    var tipCount = g.items.filter(function(it){ return it.raw && it.raw.exam_tip; }).length;
+
+    var lastOpened = (S.lastOpenedSubtopic && S.lastOpenedSubtopic[d]) ? S.lastOpenedSubtopic[d].id : null;
+
+    var itemsHtml = filteredItems.map(function(it) {
+      var isDone = !!reviewed[it.id];
+      var isItemOpen = !!topicState.openItems[it.id];
+      var raw = it.raw;
+      var hasKeyPoint = !!(raw.key_point || raw.key_concept || raw.principle || raw.primary_objective);
+      var hasTip = !!raw.exam_tip;
+      var hasScenario = !!(raw.real_life_scenario || raw.analogy);
+      var hasMemory = !!(raw.memory_aid || raw.hierarchy_memory_aid);
+      var isLastOpened = lastOpened === it.id;
+
+      var icons = '';
+      if (hasKeyPoint) icons += '<span class="notes-item-icon" title="Has key point">&#128204;</span>';
+      if (hasTip) icons += '<span class="notes-item-icon" title="Has exam tip">&#128221;</span>';
+      if (hasScenario) icons += '<span class="notes-item-icon" title="Has real-life scenario">&#127970;</span>';
+      if (hasMemory) icons += '<span class="notes-item-icon" title="Has memory aid">&#129504;</span>';
+      var iconsHtml = icons ? '<span class="notes-item-icons">' + icons + '</span>' : '';
+
+      var tags = '';
+      if (hasTip) tags += '<span class="notes-item-tag tag-tip">TIP</span>';
+      if (hasScenario) tags += '<span class="notes-item-tag tag-scenario">SCEN</span>';
+      if (hasMemory) tags += '<span class="notes-item-tag tag-memory">MEM</span>';
+
+      var matchHighlight = searchQ && filteredItems.length < g.items.length ? ' ni-match' : '';
+      var lastDot = isLastOpened ? '<span class="notes-item-last-dot" title="Last opened"></span>' : '';
+
+      var bodyHtml = isItemOpen ? renderItemBody(raw, String(d), searchQ) : '';
+      var bodyDataAttr = isItemOpen ? ' data-rendered="1"' : '';
+
+      return '<div class="notes-item' + (isDone ? ' ni-done' : '') + (isItemOpen ? ' ni-open' : '') + matchHighlight + '" id="ni-' + escapeHtml(it.id) + '">'
+        + '<div class="notes-item-header" onclick="toggleNotesItem(\'' + escapeHtml(it.id) + '\')" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleNotesItem(\'' + escapeHtml(it.id) + '\');}">'
+        + '<span class="notes-item-id">' + escapeHtml(it.id) + '</span>'
+        + '<span class="notes-item-name">' + lastDot + iconsHtml + escapeHtml(it.name) + '</span>'
+        + '<div class="notes-item-actions" onclick="event.stopPropagation()">'
+        + '<div class="notes-item-tags">' + tags + '</div>'
+        + '<button class="notes-item-toggle" title="' + (isItemOpen ? 'Collapse' : 'Expand') + '" onclick="toggleNotesItem(\'' + escapeHtml(it.id) + '\')">' + (isItemOpen ? '&#9650;' : '&#9660;') + '</button>'
+        + '<button class="notes-item-check" title="' + (isDone ? 'Unmark' : 'Mark reviewed') + '" onclick="toggleConceptReviewed(\'' + escapeHtml(it.id) + '\')">' + (isDone ? '&#10003;' : '') + '</button>'
+        + '</div>'
+        + '</div>'
+        + '<div class="notes-item-body" id="nb-' + escapeHtml(it.id) + '"' + bodyDataAttr + '>'
+        + bodyHtml
+        + '</div>'
+        + '</div>';
+    }).join('');
+
+    var readMin = estimateReadMinutes({ groupSummary: g.group_summary, items: g.items.map(function(i){ return i.raw; }) });
+
+    return '<div class="notes-group' + (isOpen ? ' ng-open' : '') + '" id="ng-' + escapeHtml(gKey) + '">'
+      + '<div class="notes-group-header" onclick="toggleNotesGroup(\'' + escapeHtml(gKey) + '\')" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleNotesGroup(\'' + escapeHtml(gKey) + '\');}">'
+      + '<div class="notes-group-left">'
+      + '<span class="notes-group-id" style="background:' + info.color + '">' + escapeHtml(g.group_id) + '</span>'
+      + '<span class="notes-group-title">' + escapeHtml(g.group_title) + '</span>'
+      + '</div>'
+      + '<div class="notes-group-right">'
+      + '<span class="notes-group-time" title="Estimated reading time">&#128338; ~' + readMin + ' min</span>'
+      + (allDone
+          ? '<span class="notes-group-done-badge">&#10003; Done</span>'
+          : '<span class="notes-group-count">'
+            + '<div class="notes-group-mini-bar"><div class="notes-group-mini-fill" style="width:' + (gTotal ? Math.round((gDone/gTotal)*100) : 0) + '%"></div></div>'
+            + gDone + '/' + gTotal + '</span>')
+      + (tipCount > 0 ? '<span class="notes-group-tip-badge">&#128221; ' + tipCount + '</span>' : '')
+      + '<span class="notes-group-chevron">&#9660;</span>'
+      + '</div>'
+      + '</div>'
+      + '<div class="notes-group-body">'
+      + (isOpen && g.group_summary
+          ? '<div class="notes-group-summary"><div class="notes-group-summary-label">&#128218; About this topic</div>' + escapeHtml(g.group_summary) + '</div>'
+          : '')
+      + (isOpen ? itemsHtml : '')
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  if (!groupsHtml.trim()) {
+    groupsHtml = '<div class="notes-empty">&#128270; No topics match your current filter or search.</div>';
+  }
+
+  // ── Sticky Practice Button ──
+  var stickyBtn = '<div class="new-topics-sticky-btn">'
+    + '<button class="new-topics-practice-btn" onclick="startTopicPractice(\'' + d + '\')">'
+    + '&#9654; Practice Domain ' + d + ' Questions'
+    + '</button>'
+    + '</div>';
+
+  // Glossary + master tips are appended after groups, before the sticky button
+  var glossaryHtml = renderGlossary(domainData);
+  var masterTipsHtml = renderMasterTips();
+
+  area.innerHTML = '<div class="new-domain-tabs">' + tabsHtml + '</div>'
+    + progBarHtml
+    + bannerHtml
+    + summaryHtml
+    + continueHtml
+    + searchHtml
+    + expandRowHtml
+    + '<div id="notesGroupsArea">' + groupsHtml + '</div>'
+    + glossaryHtml
+    + masterTipsHtml
+    + stickyBtn;
+
+  if (searchQ) {
+    var inp = document.getElementById('newTopicSearch');
+    if (inp) { inp.focus(); inp.setSelectionRange(searchQ.length, searchQ.length); }
+  }
+}
+
+
+// ── DOMAIN GLOSSARY (key_terminologies) ──
+function renderGlossary(domainData) {
+  if (!domainData || !domainData.key_terminologies) return '';
+  var terms = domainData.key_terminologies;
+  var allTerms = Object.keys(terms);
+  if (!allTerms.length) return '';
+  var isOpen = !!topicState.glossaryOpen;
+  var glossarySearch = (topicState.glossarySearch || '').trim().toLowerCase();
+
+  var filteredTerms = glossarySearch
+    ? allTerms.filter(function(t) {
+        var hay = (t + ' ' + terms[t]).toLowerCase();
+        return glossarySearch.split(/\s+/).every(function(w){ return hay.indexOf(w) !== -1; });
+      })
+    : allTerms;
+
+  var itemsHtml = filteredTerms.length
+    ? filteredTerms.map(function(term) {
+        return '<div class="notes-glossary-item">'
+          + '<div class="notes-glossary-term">' + renderText(term, glossarySearch) + '</div>'
+          + '<div class="notes-glossary-def">' + renderText(terms[term], glossarySearch) + '</div>'
+          + '</div>';
+      }).join('')
+    : '<div class="notes-glossary-empty">No terms match &ldquo;' + escapeHtml(topicState.glossarySearch || '') + '&rdquo;</div>';
+
+  var searchInputHtml = isOpen
+    ? '<div class="notes-glossary-search-row" onclick="event.stopPropagation()">'
+      + '<input type="text" class="notes-glossary-search" id="notesGlossarySearch" placeholder="Search this glossary&hellip;" value="' + escapeHtml(topicState.glossarySearch || '') + '" oninput="onGlossarySearch(this.value)">'
+      + '</div>'
+    : '';
+
+  return '<div class="notes-glossary-card' + (isOpen ? ' gl-open' : '') + '" id="glossaryCard">'
+    + '<div class="notes-glossary-header" onclick="toggleGlossary()" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleGlossary();}">'
+    + '<div class="notes-glossary-title">&#128218; Domain Glossary &mdash; key terms you must know</div>'
+    + '<div style="display:flex;align-items:center;gap:10px">'
+    + '<span class="notes-glossary-count">' + filteredTerms.length + (glossarySearch ? '/' + allTerms.length : '') + ' terms</span>'
+    + '<span class="notes-glossary-chevron">&#9660;</span>'
+    + '</div>'
+    + '</div>'
+    + '<div class="notes-glossary-body">' + searchInputHtml + itemsHtml + '</div>'
+    + '</div>';
+}
+
+function onGlossarySearch(val) {
+  topicState.glossarySearch = val;
+  renderTopics();
+  setTimeout(function() {
+    var inp = document.getElementById('notesGlossarySearch');
+    if (inp) {
+      inp.focus();
+      inp.setSelectionRange((val||'').length, (val||'').length);
+    }
+  }, 0);
+}
+
+function toggleGlossary() {
+  topicState.glossaryOpen = !topicState.glossaryOpen;
+  var el = document.getElementById('glossaryCard');
+  if (el) {
+    el.classList.toggle('gl-open', !!topicState.glossaryOpen);
+    if (topicState.glossaryOpen) renderTopics();
+  }
+}
+
+// ── MASTER TIPS (cross-domain + exam strategy, top-level) ──
+function renderMasterTips() {
+  var data = buildConceptsData();
+  var connections = data.cross_domain_connections || [];
+  var tips = data.exam_strategy_tips || [];
+  if (!connections.length && !tips.length) return '';
+
+  var isOpen = !!topicState.masterTipsOpen;
+
+  var connHtml = '';
+  if (connections.length) {
+    connHtml = '<div class="notes-master-section-title">&#128279; Cross-Domain Connections</div>';
+    connections.forEach(function(c) {
+      connHtml += '<div class="notes-master-tip">'
+        + '<strong>' + escapeHtml(c.connection || '') + '</strong><br>'
+        + escapeHtml(c.note || '')
+        + '</div>';
+    });
+  }
+
+  var tipsHtml = '';
+  if (tips.length) {
+    tipsHtml = '<div class="notes-master-section-title">&#128221; ISACA Exam Strategy Tips</div>';
+    tips.forEach(function(t, i) {
+      tipsHtml += '<div class="notes-master-tip">'
+        + '<span class="notes-master-tip-num">' + (i + 1) + '</span>'
+        + escapeHtml(t)
+        + '</div>';
+    });
+  }
+
+  return '<div class="notes-master-card' + (isOpen ? ' mc-open' : '') + '" id="masterTipsCard">'
+    + '<div class="notes-master-header" onclick="toggleMasterTips()" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleMasterTips();}">'
+    + '<div class="notes-master-title">&#127942; Master Strategy &mdash; cross-domain & exam mindset</div>'
+    + '<span class="notes-master-chevron">&#9660;</span>'
+    + '</div>'
+    + '<div class="notes-master-body">' + connHtml + tipsHtml + '</div>'
+    + '</div>';
+}
+
+function toggleMasterTips() {
+  topicState.masterTipsOpen = !topicState.masterTipsOpen;
+  var el = document.getElementById('masterTipsCard');
+  if (el) el.classList.toggle('mc-open', !!topicState.masterTipsOpen);
+}
+
+// ── INTERACTIONS ──
 function setTopicDomain(domain) {
   topicState.domain = String(domain);
+  topicState.search = '';
+  topicState.filter = 'all';
+  topicState.openItems = {};
+  renderTopics();
+  var area = document.getElementById('topicsArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setTopicFilter(mode) {
+  topicState.filter = mode;
   renderTopics();
 }
 
-function toggleTopicReviewed(id) {
+function toggleNotesGroup(gKey) {
+  var el = document.getElementById('ng-' + gKey);
+  if (!el) return;
+  var isNowOpen = !el.classList.contains('ng-open');
+  topicState.openGroups[gKey] = isNowOpen;
+  el.classList.toggle('ng-open', isNowOpen);
+  // Lazy-render body on first open
+  if (isNowOpen) {
+    var body = el.querySelector('.notes-group-body');
+    if (body && !body.innerHTML.trim()) {
+      // re-render just this group's items by triggering full render
+      renderTopics();
+    }
+  }
+}
+
+
+function toggleDomainSummary() {
+  topicState.summaryOpen = (topicState.summaryOpen === false) ? true : false;
+  var text = document.getElementById('notesSummaryText');
+  var card = text && text.closest('.notes-domain-summary-card');
+  var tog = card && card.querySelector('.notes-domain-summary-toggle');
+  if (text) text.style.display = (topicState.summaryOpen !== false) ? '' : 'none';
+  if (tog) tog.textContent = (topicState.summaryOpen !== false) ? '▲ Hide' : '▼ Show';
+}
+
+
+function jumpToSubtopic(itemId) {
+  var data = buildConceptsData();
+  var d = parseInt(topicState.domain) || 1;
+  var dom = data.domains.find(function(x){ return x.domain_id === d; });
+  if (!dom) return;
+  var groupKey = null;
+  dom.groups.forEach(function(g) {
+    if (g.items.some(function(it){ return it.id === itemId; })) {
+      groupKey = d + '-g-' + g.group_id;
+    }
+  });
+  if (!groupKey) return;
+  topicState.openGroups[groupKey] = true;
+  topicState.openItems[itemId] = true;
+  renderTopics();
+  setTimeout(function() {
+    var el = document.getElementById('ni-' + itemId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('flash-highlight');
+      setTimeout(function(){ el.classList.remove('flash-highlight'); }, 1500);
+    }
+  }, 50);
+}
+
+function dismissContinueReading() {
+  topicState.continueDismissed = true;
+  var pill = document.querySelector('.notes-continue-pill');
+  if (pill) pill.style.display = 'none';
+}
+
+function expandAllGroups() {
+  var data = buildConceptsData();
+  var d = parseInt(topicState.domain) || 1;
+  var dom = data.domains.find(function(x){ return x.domain_id === d; });
+  if (!dom) return;
+  dom.groups.forEach(function(g) {
+    topicState.openGroups[d + '-g-' + g.group_id] = true;
+  });
+  renderTopics();
+}
+
+function collapseAllGroups() {
+  var data = buildConceptsData();
+  var d = parseInt(topicState.domain) || 1;
+  var dom = data.domains.find(function(x){ return x.domain_id === d; });
+  if (!dom) return;
+  dom.groups.forEach(function(g) {
+    topicState.openGroups[d + '-g-' + g.group_id] = false;
+  });
+  renderTopics();
+}
+
+// Backward-compat aliases for old function names
+function toggleChapter(chKey) { toggleNotesGroup(chKey); }
+
+function toggleNotesItem(itemId) {
+  topicState.openItems[itemId] = !topicState.openItems[itemId];
+  var el = document.getElementById('ni-' + itemId);
+  if (!el) return;
+  var isOpen = !!topicState.openItems[itemId];
+  el.classList.toggle('ni-open', isOpen);
+  // Sam #4: Lazy-render body content only when first opened
+  var body = document.getElementById('nb-' + itemId);
+  if (body && isOpen && !body.dataset.rendered) {
+    var data = buildConceptsData();
+    var d = parseInt(topicState.domain) || 1;
+    var dom = data.domains.find(function(x){ return x.domain_id === d; });
+    if (dom) {
+      var found = null;
+      dom.groups.some(function(g) {
+        var hit = g.items.find(function(it){ return it.id === itemId; });
+        if (hit) { found = hit; return true; }
+      });
+      if (found) {
+        body.innerHTML = renderItemBody(found.raw, d);
+        body.dataset.rendered = '1';
+      }
+    }
+  }
+  var btn = el.querySelector('.notes-item-toggle');
+  if (btn) btn.innerHTML = isOpen ? '&#9650;' : '&#9660;';
+  // Nova #5: Track last-opened per domain
+  if (isOpen) {
+    var dom2 = parseInt(topicState.domain) || 1;
+    if (!S.lastOpenedSubtopic) S.lastOpenedSubtopic = {};
+    var nameEl = el.querySelector('.notes-item-name');
+    S.lastOpenedSubtopic[dom2] = {
+      id: itemId,
+      name: nameEl ? nameEl.textContent : itemId,
+      ts: Date.now()
+    };
+    saveState();
+    // Update last-opened dot in DOM without full re-render
+    var allDots = document.querySelectorAll('.notes-item-last-dot');
+    allDots.forEach(function(dot){ dot.remove(); });
+    var nameSpan = el.querySelector('.notes-item-name');
+    if (nameSpan && !nameSpan.querySelector('.notes-item-last-dot')) {
+      var dot = document.createElement('span');
+      dot.className = 'notes-item-last-dot';
+      dot.title = 'Last opened';
+      nameSpan.insertBefore(dot, nameSpan.firstChild);
+    }
+  }
+}
+
+// Backward-compat
+function toggleTopicOpen(id) { toggleNotesItem(id); }
+
+function onTopicSearch(val) {
+  topicState.search = val;
+  if (val) {
+    var data = buildConceptsData();
+    var d = parseInt(topicState.domain) || 1;
+    var dom = data.domains.find(function(x){ return x.domain_id === d; });
+    if (dom) dom.groups.forEach(function(g) {
+      topicState.openGroups[d + '-g-' + g.group_id] = true;
+    });
+  }
+  renderTopics();
+}
+
+function toggleConceptReviewed(itemId) {
   var reviewed = getTopicReviewedSet();
-  if (reviewed[id]) delete reviewed[id]; else reviewed[id] = Date.now();
+  var wasDone = !!reviewed[itemId];
+  if (wasDone) { delete reviewed[itemId]; } else { reviewed[itemId] = Date.now(); }
+  S.topicReviewed = reviewed;
+  saveState();
+
+  var el = document.getElementById('ni-' + itemId);
+  var isDone = !!reviewed[itemId];
+  if (el) {
+    el.classList.toggle('ni-done', isDone);
+    var btn = el.querySelector('.notes-item-check');
+    if (btn) { btn.innerHTML = isDone ? '&#10003;' : ''; btn.title = isDone ? 'Unmark' : 'Mark reviewed'; }
+  }
+
+  // Update progress displays
+  var d = parseInt(topicState.domain) || 1;
+  var p = getConceptDomainProgress(d);
+  var allP = getAllConceptProgress();
+  var pctEl = document.querySelector('.new-domain-prog-pct');
+  if (pctEl) pctEl.textContent = p.pct + '%';
+  var fillEl = document.querySelector('.new-topics-prog-fill');
+  if (fillEl) fillEl.style.width = allP.pct + '%';
+  var numEl = document.querySelector('.new-topics-prog-num');
+  if (numEl) numEl.textContent = allP.done + '/' + allP.total;
+
+  // Quinn #2: Update the group's mini-bar, count, and done badge in-place
+  var data = buildConceptsData();
+  var dom = data.domains.find(function(x){ return x.domain_id === d; });
+  if (dom) {
+    dom.groups.forEach(function(g) {
+      if (!g.items.some(function(it){ return it.id === itemId; })) return;
+      var gKey = d + '-g-' + g.group_id;
+      var gEl = document.getElementById('ng-' + gKey);
+      if (!gEl) return;
+      var gDone = g.items.filter(function(it){ return reviewed[it.id]; }).length;
+      var gTotal = g.items.length;
+      var gPct = gTotal ? Math.round((gDone/gTotal)*100) : 0;
+      var rightEl = gEl.querySelector('.notes-group-right');
+      if (!rightEl) return;
+      var doneBadge = rightEl.querySelector('.notes-group-done-badge');
+      var countEl = rightEl.querySelector('.notes-group-count');
+      var miniFill = rightEl.querySelector('.notes-group-mini-fill');
+      var tipBadge = rightEl.querySelector('.notes-group-tip-badge');
+      var chevron = rightEl.querySelector('.notes-group-chevron');
+      if (gDone === gTotal && !doneBadge) {
+        // Replace count with done badge
+        if (countEl) countEl.outerHTML = '<span class="notes-group-done-badge">&#10003; Done</span>';
+      } else if (gDone < gTotal && doneBadge) {
+        // Replace done badge with count
+        var newCount = '<span class="notes-group-count">'
+          + '<div class="notes-group-mini-bar"><div class="notes-group-mini-fill" style="width:' + gPct + '%"></div></div>'
+          + gDone + '/' + gTotal + '</span>';
+        doneBadge.outerHTML = newCount;
+      } else if (countEl) {
+        // Just update fill width and count text
+        if (miniFill) miniFill.style.width = gPct + '%';
+        // Replace text (last child) without rebuilding
+        countEl.lastChild.textContent = ' ' + gDone + '/' + gTotal;
+      }
+    });
+  }
+
+  try { renderStudyRec(); } catch(e) {}
+
+  // Nova #4: Domain completion celebration
+  if (isDone && !wasDone && p.done === p.total && p.total > 0) {
+    showToast('&#127881; Domain ' + d + ' complete! ' + p.total + '/' + p.total + ' topics reviewed', 'correct', 3500);
+  } else {
+    showToast(isDone ? '&#10003; Marked reviewed' : 'Unmarked', isDone ? 'correct' : 'info', 1400);
+  }
+}
+
+function markAllDomainTopics(domainId) {
+  var data = buildConceptsData();
+  var dom = data.domains.find(function(d){ return d.domain_id === Number(domainId); });
+  if (!dom) return;
+  var reviewed = getTopicReviewedSet();
+  dom.groups.forEach(function(g) {
+    g.items.forEach(function(it) { reviewed[it.id] = Date.now(); });
+  });
   S.topicReviewed = reviewed;
   saveState();
   renderTopics();
+  showToast('&#10003; All Domain ' + domainId + ' topics marked reviewed', 'correct', 2000);
   try { renderStudyRec(); } catch(e) {}
 }
 
-function markDomainTopics(domain) {
-  var item = TOPIC_SUMMARY.find(function(d){ return d.domain === String(domain); });
-  if (!item) return;
+function resetConceptDomain(domainId) {
+  var data = buildConceptsData();
+  var dom = data.domains.find(function(d){ return d.domain_id === Number(domainId); });
+  if (!dom) return;
   var reviewed = getTopicReviewedSet();
-  item.sections.forEach(function(s){ reviewed[s.id] = Date.now(); });
+  dom.groups.forEach(function(g) {
+    g.items.forEach(function(it) { delete reviewed[it.id]; });
+  });
   S.topicReviewed = reviewed;
   saveState();
   renderTopics();
-  try { renderStudyRec(); } catch(e) {}
+  showToast('Domain ' + domainId + ' progress reset', 'info', 1800);
 }
+
+function resetAllTopicReviews() {
+  S.topicReviewed = {};
+  saveState();
+  renderTopics();
+  showToast('All topic review progress reset', 'info', 1800);
+}
+
+// Backward-compat aliases
+function markDomainTopics(domain) { markAllDomainTopics(Number(domain)); }
+function resetDomainTopicReviews(domain) { resetConceptDomain(Number(domain)); }
+function toggleTopicReviewed(id) { toggleConceptReviewed(id); }
+function renderTopicsFallback() { renderTopics(); } // no longer needed
 
 function startTopicPractice(domain) {
   selectDomain(domain);
   switchTab('practice');
   nextQ();
 }
+
+
+
+// Legacy helpers for TOPIC_SUMMARY-based code (readiness card, study rec)
+function renderTopicStudyList(items) {
+  return '<ul>' + (items || []).map(function(item){ return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>';
+}
+function renderTopicTerms(items) {
+  return '<div class="topic-term-row">' + (items || []).map(function(item){ return '<span class="topic-term">' + escapeHtml(item) + '</span>'; }).join('') + '</div>';
+}
+function toggleTopicReviewed(id) { toggleConceptReviewed(id); }
 
 // â”€â”€ BUILD QUEUES â”€â”€
 function buildQueues() {
@@ -5459,10 +7076,10 @@ function buildStudyRecommendation() {
     daysLeft = Math.ceil((new Date(examDate + 'T00:00:00').getTime() - Date.now()) / 86400000);
   }
 
-  // Count reviewed topics for priority domain
-  var domainTopicData = TOPIC_SUMMARY.find(function(d){ return d.domain === topDomain.d; });
-  var domainTopicsTotal = domainTopicData ? domainTopicData.sections.length : 0;
-  var domainTopicsDone = domainTopicData ? domainTopicData.sections.filter(function(s){ return !!reviewed[s.id]; }).length : 0;
+  // Count reviewed topics for priority domain using new concept data
+  var domainProg = getConceptDomainProgress(Number(topDomain.d));
+  var domainTopicsTotal = domainProg.total;
+  var domainTopicsDone = domainProg.done;
   var topicsUnreviewed = domainTopicsTotal - domainTopicsDone;
 
   // Build headline and steps
@@ -5663,36 +7280,15 @@ function buildMindsetAlertHtml(q, chosenLetter) {
     + '</div>';
 }
 
-// ── #12: DOMAIN REVIEW RESET ──
-function resetDomainTopicReviews(domain) {
-  var reviewed = S.topicReviewed || {};
-  var domainData = TOPIC_SUMMARY.find(function(d){ return d.domain === String(domain); });
-  if (!domainData) return;
-  domainData.sections.forEach(function(s) { delete reviewed[s.id]; });
-  S.topicReviewed = reviewed;
-  saveState();
-  renderTopics();
-  showToast('Domain ' + domain + ' review progress reset', 'info', 1800);
-}
+// ── #12: DOMAIN REVIEW RESET — now handled by resetConceptDomain() alias above ──
 
-function resetAllTopicReviews() {
-  S.topicReviewed = {};
-  saveState();
-  renderTopics();
-  showToast('All topic review progress reset', 'info', 1800);
-}
-
-// ── #13: ESTIMATED READ TIME ──
+// ── #13: ESTIMATED READ TIME (kept for legacy, now unused) ──
 function estimateReadTime(section) {
   var wordCount = 0;
-  // Count words in summary + bullets + exam cue
   var texts = [section.summary || '', section.examCue || ''];
-  section.bullets.forEach(function(b){ texts.push(b); });
-  texts.forEach(function(t){
-    wordCount += t.split(/\s+/).filter(Boolean).length;
-  });
-  // Also factor in study details if available
-  var detail = TOPIC_STUDY_DETAILS[section.id];
+  (section.bullets || []).forEach(function(b){ texts.push(b); });
+  texts.forEach(function(t){ wordCount += t.split(/\s+/).filter(Boolean).length; });
+  var detail = (typeof TOPIC_STUDY_DETAILS !== 'undefined') ? TOPIC_STUDY_DETAILS[section.id] : null;
   if (detail) {
     ['concepts','terms','details','takeaways'].forEach(function(k){
       (detail[k] || []).forEach(function(item){
@@ -6454,6 +8050,13 @@ function toggleDarkMode() {
   document.getElementById('darkToggleBtn').textContent = isDark ? '🌙' : '☀️';
   try { localStorage.setItem('cisa_theme', newTheme); } catch(e){}
 }
+// Eagerly preload notes data on app start so the readiness card,
+// study recommendation, and other consumers have data ready when needed.
+// (Topics tab will use the cached result once available.)
+(function preloadNotes() {
+  try { loadConceptsData(function(){ /* ready */ }); } catch(e){}
+})();
+
 (function initTheme() {
   var saved = 'dark'; // default to dark as requested
   try { saved = localStorage.getItem('cisa_theme') || 'dark'; } catch(e){}
