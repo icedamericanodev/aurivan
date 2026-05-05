@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <!-- Google Analytics -->
@@ -1091,6 +1091,255 @@ header {
   .topic-study-grid { grid-template-columns: 1fr; }
   .topic-study-box.full { grid-column: auto; }
 }
+
+/* ══════════════════════════════════════════
+   NEW TOPICS SECTION — Improved Layout
+   ══════════════════════════════════════════ */
+
+/* Domain selector tabs */
+.new-domain-tabs {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 20px;
+}
+@media(max-width:700px){ .new-domain-tabs { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:420px){ .new-domain-tabs { grid-template-columns: repeat(2,1fr); } }
+
+.new-domain-tab {
+  padding: 12px 8px; border-radius: 12px; border: 2px solid var(--border2);
+  background: var(--surface); cursor: pointer; text-align: center;
+  transition: var(--tr); position: relative; overflow: hidden;
+}
+.new-domain-tab:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.new-domain-tab.active { color: #fff; }
+.new-domain-tab-num {
+  font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900;
+  display: block; line-height: 1;
+}
+.new-domain-tab-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 7.5px;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  display: block; margin-top: 4px; line-height: 1.35; opacity: 0.85;
+}
+.new-domain-tab-weight {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  display: block; margin-top: 5px;
+}
+.new-domain-tab-progress {
+  position: absolute; bottom: 0; left: 0; height: 3px;
+  transition: width 0.5s ease; border-radius: 0 0 10px 10px;
+  background: rgba(255,255,255,0.4);
+}
+
+/* Domain summary banner */
+.new-domain-banner {
+  border-radius: 14px; padding: 18px 22px; margin-bottom: 18px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.new-domain-banner-left { flex: 1; min-width: 0; }
+.new-domain-banner-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.75;
+}
+.new-domain-banner-title {
+  font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900;
+  line-height: 1.15; margin-bottom: 6px;
+}
+.new-domain-banner-meta {
+  font-size: 12px; opacity: 0.8; display: flex; gap: 12px; flex-wrap: wrap;
+}
+.new-domain-banner-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.new-domain-prog-ring { text-align: center; }
+.new-domain-prog-pct {
+  font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900;
+}
+.new-domain-prog-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
+}
+.new-domain-banner-btns { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.new-domain-banner-btn {
+  padding: 8px 14px; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: var(--tr);
+  border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.new-domain-banner-btn:hover { background: rgba(255,255,255,0.28); }
+
+/* Topic search */
+.new-topic-search-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.new-topic-search {
+  flex: 1; padding: 10px 16px 10px 38px; border: 2px solid var(--border2);
+  border-radius: 10px; background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237b84b0' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 13px center;
+  color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 500; outline: none; transition: var(--tr);
+}
+.new-topic-search:focus { border-color: var(--accent); background-color: var(--surface); }
+.new-topic-search::placeholder { color: var(--muted); font-weight: 400; }
+.new-topic-search-clear {
+  padding: 10px 14px; border: 2px solid var(--border2); border-radius: 10px;
+  background: var(--surface2); color: var(--muted); cursor: pointer;
+  font-size: 12px; font-weight: 700; transition: var(--tr);
+  font-family: 'Plus Jakarta Sans', sans-serif; white-space: nowrap;
+}
+.new-topic-search-clear:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Chapter accordion */
+.new-chapter-block { margin-bottom: 10px; }
+.new-chapter-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-radius: 12px; border: 2px solid var(--border2);
+  background: var(--surface); cursor: pointer; transition: var(--tr);
+  user-select: none;
+}
+.new-chapter-header:hover { border-color: var(--accent); background: var(--surface2); }
+.new-chapter-header.ch-open {
+  border-radius: 12px 12px 0 0; border-bottom-color: transparent;
+  background: var(--surface2);
+}
+.new-chapter-header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.new-chapter-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+  flex-shrink: 0;
+}
+.new-chapter-title {
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900;
+  color: var(--text); line-height: 1.2;
+}
+.new-chapter-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.new-chapter-stats {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted);
+  text-align: right;
+}
+.new-chapter-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 12px; }
+.new-chapter-header.ch-open .new-chapter-chevron { transform: rotate(180deg); }
+
+.new-chapter-body {
+  border: 2px solid var(--border2); border-top: none;
+  border-radius: 0 0 12px 12px; padding: 10px;
+  background: var(--bg); display: none;
+}
+.new-chapter-body.ch-open { display: block; animation: slideUp 0.2s ease both; }
+
+/* Topic items inside chapter */
+.new-topic-item {
+  border: 1.5px solid var(--border); border-radius: 10px;
+  margin-bottom: 6px; overflow: hidden; background: var(--surface);
+  transition: border-color 0.15s;
+}
+.new-topic-item:last-child { margin-bottom: 0; }
+.new-topic-item:hover { border-color: var(--border2); }
+.new-topic-item.t-done { border-color: #a7f3d0; background: var(--correct-light); }
+.new-topic-item.t-search-match { border-color: var(--accent); }
+
+.new-topic-item-header {
+  display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+  cursor: pointer; transition: background 0.15s;
+}
+.new-topic-item-header:hover { background: var(--surface2); }
+.new-topic-item.t-done .new-topic-item-header { background: transparent; }
+
+.new-topic-item-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--muted); flex-shrink: 0; margin-top: 2px; letter-spacing: 0.05em;
+}
+.new-topic-item-title {
+  font-size: 12.5px; font-weight: 600; color: var(--text2); flex: 1;
+  line-height: 1.5;
+}
+.new-topic-item.t-done .new-topic-item-title { color: var(--correct); }
+.new-topic-item.t-search-match .new-topic-item-title { color: var(--text); }
+
+.new-topic-item-btns { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.new-topic-kp-count {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted);
+  background: var(--surface2); border: 1.5px solid var(--border); border-radius: 100px;
+  padding: 2px 7px; white-space: nowrap;
+}
+.new-topic-toggle {
+  width: 22px; height: 22px; border: 1.5px solid var(--border2);
+  border-radius: 6px; background: var(--surface2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 9px; transition: var(--tr);
+}
+.new-topic-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.new-topic-check {
+  width: 22px; height: 22px; border: 1.5px solid var(--border2);
+  border-radius: 50%; background: var(--surface2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 10px; transition: var(--tr);
+}
+.new-topic-check:hover { border-color: var(--correct); color: var(--correct); }
+.new-topic-item.t-done .new-topic-check {
+  background: var(--correct); border-color: var(--correct); color: #fff;
+}
+
+.new-topic-keypoints {
+  border-top: 1.5px solid var(--border); padding: 10px 12px 12px 32px;
+  background: var(--surface); display: none;
+}
+.new-topic-keypoints.kp-open { display: block; animation: slideUp 0.15s ease both; }
+.new-topic-item.t-done .new-topic-keypoints { background: transparent; }
+.new-topic-kp-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.new-topic-kp-list li {
+  font-size: 12px; line-height: 1.6; color: var(--text2); font-weight: 500;
+  padding-left: 14px; position: relative;
+}
+.new-topic-kp-list li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--accent);
+  font-size: 9px; top: 3px;
+}
+.new-topic-kp-list mark {
+  background: rgba(108,71,255,0.18); color: var(--accent);
+  border-radius: 3px; padding: 0 2px;
+}
+
+/* Overall progress bar at top */
+.new-topics-progress-bar {
+  background: var(--surface); border: 2px solid var(--border);
+  border-radius: 12px; padding: 14px 18px; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 16px;
+}
+.new-topics-prog-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+  flex-shrink: 0;
+}
+.new-topics-prog-track {
+  flex: 1; height: 8px; background: var(--border2); border-radius: 4px; overflow: hidden;
+}
+.new-topics-prog-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.new-topics-prog-num {
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 900;
+  color: var(--text); flex-shrink: 0;
+}
+
+/* Loading / empty state for topics */
+.new-topics-loading {
+  text-align: center; padding: 60px 24px; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+}
+.new-topics-loading-spinner {
+  display: inline-block; width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid var(--border2); border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite; margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Sticky practice button */
+.new-topics-sticky-btn {
+  position: sticky; bottom: 16px; left: 0; right: 0;
+  display: flex; justify-content: center; margin-top: 20px; z-index: 10;
+}
+.new-topics-practice-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; border: none; border-radius: 100px;
+  padding: 13px 32px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--tr);
+  box-shadow: 0 4px 20px rgba(108,71,255,0.35);
+  display: flex; align-items: center; gap: 8px;
+}
+.new-topics-practice-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,71,255,0.45); }
 
 .gloss-header {
   background: var(--surface); border: 2px solid var(--border2);
@@ -3217,134 +3466,372 @@ function showSaveError() {
   setTimeout(function(){ if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4000);
 }
 
-var topicState = { domain: "1" };
+// ══════════════════════════════════════════════════════
+// IMPROVED TOPICS SECTION — loads from cisa_concepts.json
+// ══════════════════════════════════════════════════════
 
+var topicState = { domain: "1", search: "", openChapters: {}, openTopics: {} };
+var CONCEPTS_DATA = null;
+var conceptsLoading = false;
+var conceptsLoadFailed = false; // prevents infinite retry spinner
+
+// ── LOAD JSON DATA ──
+function loadConceptsData(callback) {
+  if (CONCEPTS_DATA) { callback(CONCEPTS_DATA); return; }
+  if (conceptsLoadFailed) { renderTopicsFallback(); return; }  // don't retry after failure
+  if (conceptsLoading) {
+    setTimeout(function() { loadConceptsData(callback); }, 120);
+    return;
+  }
+  conceptsLoading = true;
+  fetch('data/cisa_concepts.json')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      CONCEPTS_DATA = data;
+      conceptsLoading = false;
+      callback(data);
+    })
+    .catch(function(err) {
+      conceptsLoading = false;
+      conceptsLoadFailed = true;  // mark so we don't spinner-loop
+      console.warn('Could not load cisa_concepts.json — using fallback:', err);
+      renderTopicsFallback();
+    });
+}
+
+// ── PROGRESS HELPERS (now keyed by topic_id from JSON) ──
 function getTopicReviewedSet() {
   if (!S.topicReviewed || typeof S.topicReviewed !== 'object') S.topicReviewed = {};
   return S.topicReviewed;
 }
 
-function getTopicProgress(domain) {
+function getConceptDomainProgress(domainId) {
+  if (!CONCEPTS_DATA) return {done:0,total:0,pct:0};
+  var dom = CONCEPTS_DATA.domains.find(function(d){ return d.domain_id === domainId; });
+  if (!dom) return {done:0,total:0,pct:0};
   var reviewed = getTopicReviewedSet();
-  var item = TOPIC_SUMMARY.find(function(d){ return d.domain === String(domain); });
-  if (!item) return {done:0,total:0,pct:0};
-  var total = item.sections.length;
-  var done = item.sections.filter(function(s){ return !!reviewed[s.id]; }).length;
-  return {done:done,total:total,pct:total ? Math.round((done/total)*100) : 0};
-}
-
-function getAllTopicProgress() {
-  var done = 0, total = 0;
-  TOPIC_SUMMARY.forEach(function(d) {
-    var p = getTopicProgress(d.domain);
-    done += p.done; total += p.total;
+  var total = 0, done = 0;
+  dom.chapters.forEach(function(ch) {
+    ch.topics.forEach(function(t) { total++; if (reviewed[t.topic_id]) done++; });
   });
-  return {done:done,total:total,pct:total ? Math.round((done/total)*100) : 0};
+  return {done:done, total:total, pct: total ? Math.round((done/total)*100) : 0};
 }
 
-function renderTopicStudyList(items) {
-  return '<ul>' + (items || []).map(function(item){ return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>';
+function getAllConceptProgress() {
+  if (!CONCEPTS_DATA) return {done:0,total:0,pct:0};
+  var reviewed = getTopicReviewedSet();
+  var total = 0, done = 0;
+  CONCEPTS_DATA.domains.forEach(function(dom) {
+    dom.chapters.forEach(function(ch) {
+      ch.topics.forEach(function(t) { total++; if (reviewed[t.topic_id]) done++; });
+    });
+  });
+  return {done:done, total:total, pct: total ? Math.round((done/total)*100) : 0};
 }
 
-function renderTopicTerms(items) {
-  return '<div class="topic-term-row">' + (items || []).map(function(item){ return '<span class="topic-term">' + escapeHtml(item) + '</span>'; }).join('') + '</div>';
-}
+// Legacy helpers (kept for backward compat with readiness card etc.)
+function getTopicProgress(domain) { return getConceptDomainProgress(Number(domain)); }
+function getAllTopicProgress() { return getAllConceptProgress(); }
 
+// ── MAIN RENDER ──
 function renderTopics() {
   var area = document.getElementById('topicsArea');
   if (!area) return;
-  var selected = TOPIC_SUMMARY.find(function(d){ return d.domain === topicState.domain; }) || TOPIC_SUMMARY[0];
-  topicState.domain = selected.domain;
-  var all = getAllTopicProgress();
-  var selectedProgress = getTopicProgress(selected.domain);
-  var reviewed = getTopicReviewedSet();
 
-  var domainButtons = TOPIC_SUMMARY.map(function(d) {
-    var info = DI[d.domain];
-    var p = getTopicProgress(d.domain);
-    return '<button class="topic-domain-btn' + (d.domain === selected.domain ? ' active' : '') + '" style="--topic-color:' + info.color + '" onclick="setTopicDomain(\'' + d.domain + '\')">'
-      + '<span class="topic-domain-top"><span>D' + d.domain + '</span><span>' + p.pct + '%</span></span>'
-      + '<span class="topic-domain-name">' + escapeHtml(info.name) + '</span>'
-      + '<span class="topic-mini-bar"><span class="topic-mini-fill" style="width:' + p.pct + '%"></span></span>'
+  // Show spinner while loading
+  if (!CONCEPTS_DATA) {
+    area.innerHTML = '<div class="new-topics-loading">'
+      + '<div class="new-topics-loading-spinner"></div>'
+      + '<div>Loading study guide content&hellip;</div>'
+      + '</div>';
+    loadConceptsData(function() { renderTopics(); });
+    return;
+  }
+
+  var d = parseInt(topicState.domain) || 1;
+  var domainData = CONCEPTS_DATA.domains.find(function(x){ return x.domain_id === d; });
+  if (!domainData) return;
+
+  var allProg = getAllConceptProgress();
+  var domProg = getConceptDomainProgress(d);
+  var info = DI[String(d)];
+  var reviewed = getTopicReviewedSet();
+  var searchQ = (topicState.search || '').trim().toLowerCase();
+
+  // ── Domain Tabs ──
+  var tabsHtml = CONCEPTS_DATA.domains.map(function(dom) {
+    var inf = DI[String(dom.domain_id)];
+    var p = getConceptDomainProgress(dom.domain_id);
+    var isActive = dom.domain_id === d;
+    var tabStyle = isActive
+      ? 'background:' + inf.color + ';border-color:' + inf.color + ';color:#fff'
+      : 'color:' + inf.color;
+    return '<button class="new-domain-tab' + (isActive ? ' active' : '') + '" style="' + tabStyle + '" onclick="setTopicDomain(\'' + dom.domain_id + '\')">'
+      + '<span class="new-domain-tab-num" style="' + (isActive ? '' : 'color:' + inf.color) + '">D' + dom.domain_id + '</span>'
+      + '<span class="new-domain-tab-name">' + escapeHtml(inf.short) + '</span>'
+      + '<span class="new-domain-tab-weight">' + dom.exam_weight + '</span>'
+      + '<div class="new-domain-tab-progress" style="width:' + p.pct + '%"></div>'
       + '</button>';
   }).join('');
 
-  var sections = selected.sections.map(function(s) {
-    var done = !!reviewed[s.id];
-    var detail = TOPIC_STUDY_DETAILS[s.id] || {concepts:[],terms:[],details:[],takeaways:[]};
-    var bulletHtml = s.bullets.map(function(b){ return '<div class="topic-list-item">' + escapeHtml(b) + '</div>'; }).join('');
-    var readMins = estimateReadTime(s);
-    return '<div class="topic-section' + (done ? ' done' : '') + '">'
-      + '<div class="topic-section-head">'
-      + '<div style="display:flex;align-items:center;gap:8px;min-width:0"><div class="topic-section-title">' + escapeHtml(s.title) + '</div><span class="topic-read-time">&#9201; ~' + readMins + ' min</span></div>'
-      + '<button class="topic-check" title="' + (done ? 'Mark not reviewed' : 'Mark reviewed') + '" onclick="toggleTopicReviewed(\'' + s.id + '\')">' + (done ? '&#10003;' : '') + '</button>'
+  // ── Overall Progress Bar ──
+  var progBarHtml = '<div class="new-topics-progress-bar">'
+    + '<span class="new-topics-prog-label">Overall Progress</span>'
+    + '<div class="new-topics-prog-track"><div class="new-topics-prog-fill" style="width:' + allProg.pct + '%;background:var(--correct)"></div></div>'
+    + '<span class="new-topics-prog-num">' + allProg.done + '/' + allProg.total + '</span>'
+    + '</div>';
+
+  // ── Domain Banner ──
+  var bannerHtml = '<div class="new-domain-banner" style="background:' + info.color + ';color:#fff">'
+    + '<div class="new-domain-banner-left">'
+    + '<div class="new-domain-banner-label">Domain ' + d + ' &mdash; ' + domainData.exam_weight + ' of exam</div>'
+    + '<div class="new-domain-banner-title">' + escapeHtml(domainData.domain_name) + '</div>'
+    + '<div class="new-domain-banner-meta">'
+    + '<span>&#128218; ' + domainData.chapters.length + ' chapter' + (domainData.chapters.length !== 1 ? 's' : '') + '</span>'
+    + '<span>&#128221; ' + domainData.chapters.reduce(function(a,c){ return a + c.topics.length; }, 0) + ' topics</span>'
+    + '<span>&#10003; ' + domProg.done + ' reviewed</span>'
+    + '</div>'
+    + '<div class="new-domain-banner-btns" style="margin-top:12px">'
+    + '<button class="new-domain-banner-btn" onclick="startTopicPractice(\'' + d + '\')">&#9654; Practice D' + d + '</button>'
+    + '<button class="new-domain-banner-btn" onclick="markAllDomainTopics(' + d + ')">&#10003; Mark All Reviewed</button>'
+    + '<button class="new-domain-banner-btn" onclick="resetConceptDomain(' + d + ')">&#8635; Reset</button>'
+    + '</div>'
+    + '</div>'
+    + '<div class="new-domain-prog-ring">'
+    + '<div class="new-domain-prog-pct">' + domProg.pct + '%</div>'
+    + '<div class="new-domain-prog-label">Reviewed</div>'
+    + '</div>'
+    + '</div>';
+
+  // ── Search Box ──
+  var searchHtml = '<div class="new-topic-search-row">'
+    + '<input type="text" class="new-topic-search" id="newTopicSearch" placeholder="Search topics and key points&hellip;" value="' + escapeHtml(topicState.search || '') + '" oninput="onTopicSearch(this.value)">'
+    + (searchQ ? '<button class="new-topic-search-clear" onclick="onTopicSearch(\'\')">&#10005; Clear</button>' : '')
+    + '</div>';
+
+  // ── Chapters + Topics ──
+  var chaptersHtml = domainData.chapters.map(function(ch, chIdx) {
+    var chKey = d + '-ch-' + ch.chapter;
+    var isOpen = topicState.openChapters[chKey] !== false; // default open
+
+    // Filter topics by search
+    var filteredTopics = ch.topics.filter(function(t) {
+      if (!searchQ) return true;
+      var haystack = (t.topic + ' ' + (t.key_points || []).join(' ')).toLowerCase();
+      return searchQ.split(/\s+/).every(function(word) { return haystack.indexOf(word) !== -1; });
+    });
+
+    if (searchQ && filteredTopics.length === 0) return ''; // hide chapter if no match
+
+    var chDone = ch.topics.filter(function(t){ return reviewed[t.topic_id]; }).length;
+    var chTotal = ch.topics.length;
+
+    var topicsHtml = filteredTopics.map(function(t, tIdx) {
+      var tKey = t.topic_id;
+      var isDone = !!reviewed[tKey];
+      var isTopicOpen = !!topicState.openTopics[tKey];
+      var kpCount = (t.key_points || []).length;
+
+      // Highlight search matches in key points
+      var kpHtml = (t.key_points || []).map(function(kp) {
+        var text = escapeHtml(kp);
+        if (searchQ) {
+          searchQ.split(/\s+/).filter(Boolean).forEach(function(word) {
+            var re = new RegExp('(' + word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+            text = text.replace(re, '<mark>$1</mark>');
+          });
+        }
+        return '<li>' + text + '</li>';
+      }).join('');
+
+      return '<div class="new-topic-item' + (isDone ? ' t-done' : '') + (searchQ && filteredTopics.length < ch.topics.length ? ' t-search-match' : '') + '" id="ti-' + escapeHtml(tKey) + '">'
+        + '<div class="new-topic-item-header" onclick="toggleTopicOpen(\'' + escapeHtml(tKey) + '\')">'
+        + '<span class="new-topic-item-id">' + escapeHtml(t.topic_id) + '</span>'
+        + '<span class="new-topic-item-title">' + escapeHtml(t.topic) + '</span>'
+        + '<div class="new-topic-item-btns" onclick="event.stopPropagation()">'
+        + '<span class="new-topic-kp-count">' + kpCount + ' pts</span>'
+        + '<button class="new-topic-toggle" title="' + (isTopicOpen ? 'Collapse' : 'Expand key points') + '" onclick="toggleTopicOpen(\'' + escapeHtml(tKey) + '\')">' + (isTopicOpen ? '&#9650;' : '&#9660;') + '</button>'
+        + '<button class="new-topic-check" title="' + (isDone ? 'Unmark reviewed' : 'Mark as reviewed') + '" onclick="toggleConceptReviewed(\'' + escapeHtml(tKey) + '\')">' + (isDone ? '&#10003;' : '') + '</button>'
+        + '</div>'
+        + '</div>'
+        + '<div class="new-topic-keypoints' + (isTopicOpen ? ' kp-open' : '') + '" id="kp-' + escapeHtml(tKey) + '">'
+        + '<ul class="new-topic-kp-list">' + kpHtml + '</ul>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+
+    return '<div class="new-chapter-block">'
+      + '<div class="new-chapter-header' + (isOpen ? ' ch-open' : '') + '" data-chkey="' + chKey + '" onclick="toggleChapter(\'' + chKey + '\')">'
+      + '<div class="new-chapter-header-left">'
+      + '<span class="new-chapter-num">Chapter ' + ch.chapter + '</span>'
+      + '<span class="new-chapter-title">' + escapeHtml(ch.chapter_title) + '</span>'
       + '</div>'
-      + '<div class="topic-section-text">' + escapeHtml(s.summary) + '</div>'
-      + '<div class="topic-study-grid">'
-      + '<div class="topic-study-box"><div class="topic-study-label">Core Concepts</div>' + renderTopicStudyList(detail.concepts) + '</div>'
-      + '<div class="topic-study-box"><div class="topic-study-label">Key Details</div>' + renderTopicStudyList(detail.details) + '</div>'
-      + '<div class="topic-study-box"><div class="topic-study-label">Key Terms</div>' + renderTopicTerms(detail.terms) + '</div>'
-      + '<div class="topic-study-box"><div class="topic-study-label">Key Takeaways</div>' + renderTopicStudyList(detail.takeaways) + '</div>'
+      + '<div class="new-chapter-header-right">'
+      + '<span class="new-chapter-stats">' + chDone + '/' + chTotal + ' reviewed</span>'
+      + '<span class="new-chapter-chevron">&#9660;</span>'
       + '</div>'
-      + '<div class="topic-study-label" style="color:var(--accent);margin-top:4px;">Guide Topic Outline</div>'
-      + '<div class="topic-list">' + bulletHtml + '</div>'
-      + '<div class="topic-exam-note">' + escapeHtml(s.examCue) + '</div>'
+      + '</div>'
+      + '<div class="new-chapter-body' + (isOpen ? ' ch-open' : '') + '" id="' + chKey + '">'
+      + topicsHtml
+      + '</div>'
       + '</div>';
   }).join('');
 
-  var info = DI[selected.domain];
-  area.innerHTML = '<div class="topic-hero">'
-    + '<div class="topic-kicker">ISACA Board Review Mode</div>'
-    + '<div class="topic-title">Review the exam blueprint before you practice.</div>'
-    + '<div class="topic-sub">Use this as a fast domain briefing: read the topic summary, mark each area reviewed, then jump straight into practice questions or a mock exam from the same tool.</div>'
-    + '</div>'
-    + '<div class="topic-progress-row">'
-    + '<div class="topic-progress-card"><span class="topic-progress-num">' + all.done + '/' + all.total + '</span><span class="topic-progress-label">Topics Reviewed</span></div>'
-    + '<div class="topic-progress-card"><span class="topic-progress-num">' + all.pct + '%</span><span class="topic-progress-label">Review Coverage</span></div>'
-    + '<div class="topic-progress-card"><span class="topic-progress-num">D' + selected.domain + '</span><span class="topic-progress-label">' + escapeHtml(info.short) + '</span></div>'
-    + '</div>'
-    + '<div class="topic-shell">'
-    + '<div class="topic-domain-list">' + domainButtons + '</div>'
-    + '<div class="topic-panel" style="--topic-color:' + info.color + '">'
-    + '<div class="topic-panel-head">'
-    + '<div class="topic-panel-meta"><span class="topic-pill">Domain ' + selected.domain + '</span><span class="topic-pill">' + escapeHtml(selected.chapters) + '</span><span class="topic-pill">' + selectedProgress.done + '/' + selectedProgress.total + ' reviewed</span></div>'
-    + '<div class="topic-panel-title">' + escapeHtml(info.name) + '</div>'
-    + '<div class="topic-panel-summary">' + escapeHtml(selected.boardFocus) + '<br><strong>Exam mindset:</strong> ' + escapeHtml(selected.examMindset) + '</div>'
-    + '<div class="topic-actions">'
-    + '<button class="topic-action primary" onclick="startTopicPractice(\'' + selected.domain + '\')">Practice Domain ' + selected.domain + '</button>'
-    + '<button class="topic-action" onclick="switchTab(\'mock\')">Take Mock Exam</button>'
-    + '<button class="topic-action" onclick="markDomainTopics(\'' + selected.domain + '\')">Mark Domain Reviewed</button>'
-    + '<button class="topic-reset-btn" onclick="resetDomainTopicReviews(\'' + selected.domain + '\')" title="Reset all reviewed status for this domain">&#8635; Reset D' + selected.domain + ' Review</button>'
-    + '</div>'
-    + '</div>'
-    + '<div class="topic-body">' + sections + '</div>'
-    + '</div>'
+  if (searchQ && !chaptersHtml.replace(/<[^>]*>/g,'').trim()) {
+    chaptersHtml = '<div style="text-align:center;padding:40px 24px;color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px">No topics match &ldquo;' + escapeHtml(topicState.search) + '&rdquo;</div>';
+  }
+
+  // ── Sticky Practice Button ──
+  var stickyBtn = '<div class="new-topics-sticky-btn">'
+    + '<button class="new-topics-practice-btn" onclick="startTopicPractice(\'' + d + '\')">'
+    + '&#9654; Practice Domain ' + d + ' Questions'
+    + '</button>'
+    + '</div>';
+
+  area.innerHTML = '<div class="new-domain-tabs">' + tabsHtml + '</div>'
+    + progBarHtml
+    + bannerHtml
+    + searchHtml
+    + '<div id="newChaptersArea">' + chaptersHtml + '</div>'
+    + stickyBtn;
+
+  // Restore search focus
+  if (searchQ) {
+    var inp = document.getElementById('newTopicSearch');
+    if (inp) { inp.focus(); inp.setSelectionRange(searchQ.length, searchQ.length); }
+  }
+}
+
+// ── FALLBACK if JSON not found ──
+function renderTopicsFallback() {
+  var area = document.getElementById('topicsArea');
+  if (!area) return;
+  area.innerHTML = '<div style="text-align:center;padding:60px 24px;color:var(--muted)">'
+    + '<div style="font-size:40px;margin-bottom:16px">&#128221;</div>'
+    + '<div style="font-family:Playfair Display,serif;font-size:20px;font-weight:900;color:var(--text);margin-bottom:8px">Topics content not loaded</div>'
+    + '<div style="font-size:13px;line-height:1.7;margin-bottom:20px">Make sure <code>data/cisa_concepts.json</code> is in your GitHub repo.<br>Check the browser console (F12) for the exact error.</div>'
+    + '<button onclick="conceptsLoadFailed=false;renderTopics()" style="padding:10px 24px;border-radius:10px;background:var(--accent);color:#fff;border:none;font-family:Plus Jakarta Sans,sans-serif;font-size:13px;font-weight:700;cursor:pointer">&#8635; Retry</button>'
     + '</div>';
 }
 
+// ── INTERACTIONS ──
 function setTopicDomain(domain) {
   topicState.domain = String(domain);
+  topicState.search = '';
   renderTopics();
 }
 
-function toggleTopicReviewed(id) {
+function toggleChapter(chKey) {
+  var body = document.getElementById(chKey);
+  var header = document.querySelector('.new-chapter-header[data-chkey="' + chKey + '"]');
+  if (!body) return;
+  var isNowOpen = !body.classList.contains('ch-open');
+  topicState.openChapters[chKey] = isNowOpen;
+  body.classList.toggle('ch-open', isNowOpen);
+  if (header) header.classList.toggle('ch-open', isNowOpen);
+}
+
+function toggleTopicOpen(tKey) {
+  topicState.openTopics[tKey] = !topicState.openTopics[tKey];
+  var kpEl = document.getElementById('kp-' + tKey);
+  var tiEl = document.getElementById('ti-' + tKey);
+  if (kpEl) kpEl.classList.toggle('kp-open', !!topicState.openTopics[tKey]);
+  // Update toggle button text
+  if (tiEl) {
+    var btn = tiEl.querySelector('.new-topic-toggle');
+    if (btn) btn.innerHTML = topicState.openTopics[tKey] ? '&#9650;' : '&#9660;';
+  }
+}
+
+function onTopicSearch(val) {
+  topicState.search = val;
+  // Auto-open all chapters when searching
+  if (val && CONCEPTS_DATA) {
+    var d = parseInt(topicState.domain) || 1;
+    var dom = CONCEPTS_DATA.domains.find(function(x){ return x.domain_id === d; });
+    if (dom) dom.chapters.forEach(function(ch) {
+      topicState.openChapters[d + '-ch-' + ch.chapter] = true;
+    });
+  }
+  renderTopics();
+}
+
+function toggleConceptReviewed(topicId) {
   var reviewed = getTopicReviewedSet();
-  if (reviewed[id]) delete reviewed[id]; else reviewed[id] = Date.now();
+  if (reviewed[topicId]) {
+    delete reviewed[topicId];
+  } else {
+    reviewed[topicId] = Date.now();
+  }
+  S.topicReviewed = reviewed;
+  saveState();
+
+  // Update UI in-place (no full re-render for speed)
+  var itemEl = document.getElementById('ti-' + topicId);
+  var isDone = !!reviewed[topicId];
+  if (itemEl) {
+    itemEl.classList.toggle('t-done', isDone);
+    var btn = itemEl.querySelector('.new-topic-check');
+    if (btn) {
+      btn.innerHTML = isDone ? '&#10003;' : '';
+      btn.title = isDone ? 'Unmark reviewed' : 'Mark as reviewed';
+    }
+  }
+  // Update banner progress number
+  var d = parseInt(topicState.domain) || 1;
+  var p = getConceptDomainProgress(d);
+  var allP = getAllConceptProgress();
+  var progPctEl = document.querySelector('.new-domain-prog-pct');
+  if (progPctEl) progPctEl.textContent = p.pct + '%';
+  var progFillEl = document.querySelector('.new-topics-prog-fill');
+  if (progFillEl) progFillEl.style.width = allP.pct + '%';
+  var progNumEl = document.querySelector('.new-topics-prog-num');
+  if (progNumEl) progNumEl.textContent = allP.done + '/' + allP.total;
+
+  try { renderStudyRec(); } catch(e) {}
+  showToast(isDone ? '&#10003; Topic marked reviewed' : 'Unmarked', isDone ? 'correct' : 'info', 1500);
+}
+
+function markAllDomainTopics(domainId) {
+  if (!CONCEPTS_DATA) return;
+  var dom = CONCEPTS_DATA.domains.find(function(d){ return d.domain_id === domainId; });
+  if (!dom) return;
+  var reviewed = getTopicReviewedSet();
+  dom.chapters.forEach(function(ch) {
+    ch.topics.forEach(function(t) { reviewed[t.topic_id] = Date.now(); });
+  });
   S.topicReviewed = reviewed;
   saveState();
   renderTopics();
+  showToast('&#10003; All Domain ' + domainId + ' topics marked reviewed', 'correct', 2000);
   try { renderStudyRec(); } catch(e) {}
 }
 
-function markDomainTopics(domain) {
-  var item = TOPIC_SUMMARY.find(function(d){ return d.domain === String(domain); });
-  if (!item) return;
+function resetConceptDomain(domainId) {
+  if (!CONCEPTS_DATA) return;
+  var dom = CONCEPTS_DATA.domains.find(function(d){ return d.domain_id === domainId; });
+  if (!dom) return;
   var reviewed = getTopicReviewedSet();
-  item.sections.forEach(function(s){ reviewed[s.id] = Date.now(); });
+  dom.chapters.forEach(function(ch) {
+    ch.topics.forEach(function(t) { delete reviewed[t.topic_id]; });
+  });
   S.topicReviewed = reviewed;
   saveState();
   renderTopics();
-  try { renderStudyRec(); } catch(e) {}
+  showToast('Domain ' + domainId + ' review progress reset', 'info', 1800);
+}
+
+// Keep old function names as aliases so other parts of app don't break
+function markDomainTopics(domain) { markAllDomainTopics(Number(domain)); }
+function resetDomainTopicReviews(domain) { resetConceptDomain(Number(domain)); }
+function resetAllTopicReviews() {
+  S.topicReviewed = {};
+  saveState();
+  renderTopics();
+  showToast('All topic review progress reset', 'info', 1800);
 }
 
 function startTopicPractice(domain) {
@@ -3352,6 +3839,15 @@ function startTopicPractice(domain) {
   switchTab('practice');
   nextQ();
 }
+
+// Legacy helpers for TOPIC_SUMMARY-based code (readiness card, study rec)
+function renderTopicStudyList(items) {
+  return '<ul>' + (items || []).map(function(item){ return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>';
+}
+function renderTopicTerms(items) {
+  return '<div class="topic-term-row">' + (items || []).map(function(item){ return '<span class="topic-term">' + escapeHtml(item) + '</span>'; }).join('') + '</div>';
+}
+function toggleTopicReviewed(id) { toggleConceptReviewed(id); }
 
 // â”€â”€ BUILD QUEUES â”€â”€
 function buildQueues() {
@@ -5459,10 +5955,10 @@ function buildStudyRecommendation() {
     daysLeft = Math.ceil((new Date(examDate + 'T00:00:00').getTime() - Date.now()) / 86400000);
   }
 
-  // Count reviewed topics for priority domain
-  var domainTopicData = TOPIC_SUMMARY.find(function(d){ return d.domain === topDomain.d; });
-  var domainTopicsTotal = domainTopicData ? domainTopicData.sections.length : 0;
-  var domainTopicsDone = domainTopicData ? domainTopicData.sections.filter(function(s){ return !!reviewed[s.id]; }).length : 0;
+  // Count reviewed topics for priority domain using new concept data
+  var domainProg = getConceptDomainProgress(Number(topDomain.d));
+  var domainTopicsTotal = domainProg.total;
+  var domainTopicsDone = domainProg.done;
   var topicsUnreviewed = domainTopicsTotal - domainTopicsDone;
 
   // Build headline and steps
@@ -5663,36 +6159,15 @@ function buildMindsetAlertHtml(q, chosenLetter) {
     + '</div>';
 }
 
-// ── #12: DOMAIN REVIEW RESET ──
-function resetDomainTopicReviews(domain) {
-  var reviewed = S.topicReviewed || {};
-  var domainData = TOPIC_SUMMARY.find(function(d){ return d.domain === String(domain); });
-  if (!domainData) return;
-  domainData.sections.forEach(function(s) { delete reviewed[s.id]; });
-  S.topicReviewed = reviewed;
-  saveState();
-  renderTopics();
-  showToast('Domain ' + domain + ' review progress reset', 'info', 1800);
-}
+// ── #12: DOMAIN REVIEW RESET — now handled by resetConceptDomain() alias above ──
 
-function resetAllTopicReviews() {
-  S.topicReviewed = {};
-  saveState();
-  renderTopics();
-  showToast('All topic review progress reset', 'info', 1800);
-}
-
-// ── #13: ESTIMATED READ TIME ──
+// ── #13: ESTIMATED READ TIME (kept for legacy, now unused) ──
 function estimateReadTime(section) {
   var wordCount = 0;
-  // Count words in summary + bullets + exam cue
   var texts = [section.summary || '', section.examCue || ''];
-  section.bullets.forEach(function(b){ texts.push(b); });
-  texts.forEach(function(t){
-    wordCount += t.split(/\s+/).filter(Boolean).length;
-  });
-  // Also factor in study details if available
-  var detail = TOPIC_STUDY_DETAILS[section.id];
+  (section.bullets || []).forEach(function(b){ texts.push(b); });
+  texts.forEach(function(t){ wordCount += t.split(/\s+/).filter(Boolean).length; });
+  var detail = (typeof TOPIC_STUDY_DETAILS !== 'undefined') ? TOPIC_STUDY_DETAILS[section.id] : null;
   if (detail) {
     ['concepts','terms','details','takeaways'].forEach(function(k){
       (detail[k] || []).forEach(function(item){
