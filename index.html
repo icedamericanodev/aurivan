@@ -3967,6 +3967,10 @@ var CONCEPTS_DATA = null;       // populated from CISA_NOTES_RAW on first load
 var conceptsLoadFailed = false; // becomes true if fetch fails (shows error UI)
 var conceptsLoading = false;    // true during fetch
 
+// UI state for the Topics tab — which domain is selected, what search/filter is active,
+// which groups/items are open, etc.
+var topicState = { domain: "1", search: "", openGroups: {}, openItems: {}, filter: "all" };
+
 // ── NORMALIZE: convert cisa_notes structure to internal format ──
 function buildConceptsData() {
   if (CONCEPTS_DATA) return CONCEPTS_DATA;
