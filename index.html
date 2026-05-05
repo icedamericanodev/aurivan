@@ -14,32 +14,73 @@
 <title>CISA Mindset - Exam Prep</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ── LIGHT MODE (default) ── */
 :root {
-  --bg: #fdf6ee;
-  --surface: #fff9f3;
-  --surface2: #fef0e0;
-  --border: #f0dfc8;
-  --border2: #e8cfb0;
-  --text: #1a1008;
-  --text2: #5c3d1e;
-  --muted: #9b7654;
-  --accent: #e8521a;
-  --accent2: #f28c28;
-  --accent3: #2563eb;
+  --bg: #f0f4ff;
+  --surface: #ffffff;
+  --surface2: #e8eeff;
+  --border: #d0d9ff;
+  --border2: #b8c5ff;
+  --text: #0d0f1a;
+  --text2: #2d3460;
+  --muted: #7b84b0;
+  --accent: #6c47ff;
+  --accent2: #ff6b9d;
+  --accent3: #00d4aa;
 
-  --d1: #2563eb; --d1-light: #dbeafe; --d1-border: #93c5fd;
-  --d2: #7c3aed; --d2-light: #ede9fe; --d2-border: #c4b5fd;
-  --d3: #e8521a; --d3-light: #ffedd5; --d3-border: #fdba74;
-  --d4: #059669; --d4-light: #d1fae5; --d4-border: #6ee7b7;
-  --d5: #db2777; --d5-light: #fce7f3; --d5-border: #f9a8d4;
+  /* ── INK: used for dark banner cards (stays dark in BOTH modes) ── */
+  --ink: #12153a;
+  --ink-fg: #ffffff;
+  --ink-muted: rgba(255,255,255,0.5);
 
-  --correct: #059669; --correct-light: #d1fae5;
-  --wrong: #dc2626; --wrong-light: #fee2e2;
-  --warning: #d97706; --warning-light: #fef3c7;
+  --d1: #6c47ff; --d1-light: #ede8ff; --d1-border: #c4b5fd;
+  --d2: #ff6b9d; --d2-light: #ffe4f0; --d2-border: #fda4c8;
+  --d3: #f59e0b; --d3-light: #fef3c7; --d3-border: #fcd34d;
+  --d4: #00d4aa; --d4-light: #d0fdf4; --d4-border: #6ee7d4;
+  --d5: #3b82f6; --d5-light: #dbeafe; --d5-border: #93c5fd;
+
+  --correct: #00c48c; --correct-light: #d0fdf4;
+  --wrong: #ff4d6d; --wrong-light: #ffe0e6;
+  --warning: #f59e0b; --warning-light: #fef3c7;
 
   --radius: 16px; --tr: 0.2s ease;
-  --shadow: 0 2px 12px rgba(100,50,10,0.08);
-  --shadow-lg: 0 8px 32px rgba(100,50,10,0.14);
+  --shadow: 0 2px 16px rgba(108,71,255,0.08);
+  --shadow-lg: 0 8px 40px rgba(108,71,255,0.16);
+  --glow: 0 0 0 3px rgba(108,71,255,0.18);
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --bg: #0e0f1a;
+  --surface: #16192b;
+  --surface2: #1e2138;
+  --border: #2a2e4a;
+  --border2: #373c60;
+  --text: #f0f2ff;
+  --text2: #a0a8d4;
+  --muted: #5a6090;
+  --accent: #8b6dff;
+  --accent2: #ff7eb3;
+  --accent3: #00e6bb;
+
+  /* ── INK stays dark even in dark mode (deepens slightly) ── */
+  --ink: #080a18;
+  --ink-fg: #ffffff;
+  --ink-muted: rgba(255,255,255,0.45);
+
+  --d1: #8b6dff; --d1-light: #1e1a3a; --d1-border: #4a3d8a;
+  --d2: #ff7eb3; --d2-light: #2a1525; --d2-border: #8a3058;
+  --d3: #fbbf24; --d3-light: #241a00; --d3-border: #7a5500;
+  --d4: #00e6bb; --d4-light: #002820; --d4-border: #007055;
+  --d5: #60a5fa; --d5-light: #0d1a30; --d5-border: #1e4a8a;
+
+  --correct: #00e6aa; --correct-light: #002e20;
+  --wrong: #ff6080; --wrong-light: #300018;
+  --warning: #fbbf24; --warning-light: #2a1a00;
+
+  --shadow: 0 2px 20px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+  --glow: 0 0 0 3px rgba(139,109,255,0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -53,15 +94,22 @@ body {
   overflow-x: hidden;
 }
 
-/* warm paper texture overlay */
+/* ambient glow overlay */
 body::before {
   content: '';
   position: fixed; inset: 0;
   background-image:
-    radial-gradient(ellipse at 20% 10%, rgba(232,82,26,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 90%, rgba(37,99,235,0.05) 0%, transparent 50%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    radial-gradient(ellipse at 15% 10%, rgba(108,71,255,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(255,107,157,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0,212,170,0.04) 0%, transparent 60%);
   pointer-events: none; z-index: 0;
+  transition: opacity 0.4s ease;
+}
+[data-theme="dark"] body::before {
+  background-image:
+    radial-gradient(ellipse at 15% 10%, rgba(139,109,255,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(255,126,179,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0,230,187,0.06) 0%, transparent 60%);
 }
 
 .app { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 20px 80px; }
@@ -98,10 +146,10 @@ body::before {
 /* ── TOAST NOTIFICATION ── */
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: var(--text); color: var(--bg);
+  background: var(--ink); color: var(--ink-fg);
   padding: 10px 22px; border-radius: 100px;
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600;
-  box-shadow: 0 4px 20px rgba(26,16,8,0.25); z-index: 999;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 999;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
@@ -124,11 +172,11 @@ body::before {
 .conf-step-label.step2 { color: var(--muted); margin-top: 16px; }
 .conf-step-label.step2.unlocked { color: var(--text2); }
 .conf-step-label.step2 .conf-step-num { background: var(--surface2); border: 2px solid var(--border2); color: var(--muted); }
-.conf-step-label.step2.unlocked .conf-step-num { background: var(--text); border-color: var(--text); color: #fff; }
+.conf-step-label.step2.unlocked .conf-step-num { background: var(--ink); border-color: var(--ink); color: #fff; }
 
 /* ── MOCK CONFIRM MODAL ── */
 .mock-confirm-overlay {
-  position:fixed;inset:0;background:rgba(26,16,8,0.55);z-index:200;
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;
   display:flex;align-items:center;justify-content:center;animation:flagFadeIn 0.25s ease;
 }
 .mock-confirm-modal {
@@ -136,7 +184,7 @@ body::before {
   max-width:440px;width:92%;box-shadow:var(--shadow-lg);animation:slideUp 0.35s ease both;overflow:hidden;
 }
 .mock-confirm-head {
-  background:var(--text);color:var(--bg);padding:20px 24px;
+  background:var(--ink);color:var(--ink-fg);padding:20px 24px;
   font-family:'Playfair Display',serif;font-size:20px;font-weight:900;
 }
 .mock-confirm-body { padding:20px 24px; }
@@ -232,13 +280,13 @@ header {
   font-family: 'JetBrains Mono', monospace; font-size: 10px;
   letter-spacing: 0.1em; text-transform: uppercase;
   padding: 6px 14px; border-radius: 100px;
-  background: var(--text); color: var(--bg);
+  background: var(--ink); color: var(--ink-fg);
   font-weight: 500;
 }
 
 /* â”€â”€ MINDSET STRIP â”€â”€ */
 .mindset-strip {
-  background: var(--text); color: var(--bg);
+  background: var(--ink); color: var(--ink-fg);
   border-radius: 12px; padding: 12px 20px;
   margin-bottom: 32px; display: flex; align-items: center; gap: 14px;
   overflow: hidden; animation: slideUp 0.5s 0.1s ease both;
@@ -408,22 +456,22 @@ header {
 
 /* â”€â”€ GENERATE BTN â”€â”€ */
 .gen-btn {
-  width: 100%; background: var(--text); border: none;
+  width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none;
   border-radius: var(--radius); padding: 18px 28px;
   font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
-  color: var(--bg); cursor: pointer; transition: var(--tr);
+  color: #fff; cursor: pointer; transition: var(--tr);
   display: flex; align-items: center; justify-content: center; gap: 12px;
   margin-bottom: 32px; box-shadow: var(--shadow-lg);
   animation: slideUp 0.5s 0.35s ease both;
   letter-spacing: -0.3px;
 }
-.gen-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(26,16,8,0.25); background: var(--accent); }
+.gen-btn:hover { transform: translateY(-2px); }
 .gen-btn:active { transform: translateY(0); }
 .gen-icon { font-size: 20px; }
 
 /* â”€â”€ TIMER â”€â”€ */
 .timer-wrap {
-  background: var(--text); border-radius: 12px; padding: 12px 20px;
+  background: var(--ink); border-radius: 12px; padding: 12px 20px;
   margin-bottom: 16px; display: flex; align-items: center; gap: 16px;
 }
 .timer-digits {
@@ -593,7 +641,7 @@ header {
   display: flex; align-items: center; gap: 7px; color: var(--text2);
 }
 .act-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
-.act-btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+.act-btn.primary { background: var(--ink); color: var(--ink-fg); border-color: var(--ink); }
 .act-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
 .act-btn.secondary:hover { border-color: var(--warning); color: var(--warning); }
 
@@ -616,7 +664,7 @@ header {
   background: var(--surface2); font-weight: 500;
 }
 .mock-start {
-  background: var(--text); color: var(--bg); border: none;
+  background: var(--ink); color: var(--ink-fg); border: none;
   border-radius: var(--radius); padding: 16px 40px;
   font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900;
   cursor: pointer; transition: var(--tr); letter-spacing: -0.3px;
@@ -628,7 +676,7 @@ header {
   border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg);
 }
 .mock-results-header {
-  background: var(--text); padding: 36px; text-align: center;
+  background: var(--ink); padding: 36px; text-align: center;
 }
 .mock-score {
   font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900;
@@ -805,7 +853,7 @@ header {
 .new-profile-form input::placeholder { color: var(--muted); font-weight: 400; }
 .profile-create-btn {
   width: 100%; padding: 11px; border-radius: 10px;
-  background: var(--text); color: var(--bg); border: none;
+  background: var(--ink); color: var(--ink-fg); border: none;
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700;
   cursor: pointer; transition: var(--tr);
 }
@@ -863,7 +911,7 @@ header {
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 800;
   cursor: pointer; transition: var(--tr);
 }
-.resume-btn.primary { background: var(--text); border-color: var(--text); color: var(--bg); }
+.resume-btn.primary { background: var(--ink); border-color: var(--ink); color: var(--ink-fg); }
 .resume-btn:hover { border-color: var(--accent); color: var(--accent); }
 .resume-btn.primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 @media(max-width:580px){
@@ -873,7 +921,7 @@ header {
 }
 
 .topic-hero {
-  background: var(--text); color: var(--bg);
+  background: var(--ink); color: var(--ink-fg);
   border-radius: var(--radius); padding: 24px;
   margin-bottom: 18px; box-shadow: var(--shadow-lg);
   position: relative; overflow: hidden;
@@ -998,37 +1046,41 @@ header {
   display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-bottom: 12px;
 }
 .topic-list-item {
-  font-size: 12px; line-height: 1.55; color: var(--text2);
-  background: rgba(255,255,255,0.55); border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 9px 10px; font-weight: 600;
+  font-size: 12px; line-height: 1.55; color: var(--text);
+  background: var(--surface2); border: 1.5px solid var(--border2);
+  border-radius: 10px; padding: 9px 12px; font-weight: 600;
+  transition: border-color .18s, background .18s;
+}
+.topic-list-item:hover {
+  background: var(--surface); border-color: var(--accent);
 }
 .topic-study-grid {
   display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px;
   margin: 12px 0;
 }
 .topic-study-box {
-  background: var(--surface); border: 1.5px solid var(--border);
+  background: var(--surface2); border: 1.5px solid var(--border2);
   border-radius: 10px; padding: 12px;
 }
 .topic-study-box.full { grid-column: 1 / -1; }
 .topic-study-label {
   font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 800;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--text2);
   margin-bottom: 8px;
 }
 .topic-study-box ul { margin-left: 16px; display: grid; gap: 6px; }
 .topic-study-box li {
-  font-size: 12px; line-height: 1.55; color: var(--text2); font-weight: 600;
+  font-size: 12px; line-height: 1.55; color: var(--text); font-weight: 600;
 }
 .topic-term-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .topic-term {
-  border-radius: 100px; padding: 4px 8px; background: var(--surface2);
-  border: 1.5px solid var(--border2); color: var(--text2);
+  border-radius: 100px; padding: 4px 10px; background: var(--surface);
+  border: 1.5px solid var(--border2); color: var(--text);
   font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 800;
 }
 .topic-exam-note {
-  border-left: 3px solid var(--topic-color); padding: 10px 12px;
-  background: var(--surface); border-radius: 0 10px 10px 0;
+  border-left: 3px solid var(--topic-color); padding: 10px 14px;
+  background: var(--surface2); border-radius: 0 10px 10px 0;
   font-size: 12.5px; line-height: 1.65; color: var(--text); font-weight: 700;
 }
 @media(max-width:760px){
@@ -1073,7 +1125,7 @@ header {
 }
 .gloss-mode-btn:hover { border-color: var(--accent); color: var(--accent); }
 .gloss-mode-btn.active {
-  background: var(--text); color: var(--bg); border-color: var(--text);
+  background: var(--ink); color: var(--ink-fg); border-color: var(--ink);
 }
 .gloss-filters {
   display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
@@ -1232,7 +1284,7 @@ header {
   display: flex; align-items: center; justify-content: center; gap: 6px;
 }
 .gloss-detail-btn.primary {
-  background: var(--text); color: var(--bg); border-color: var(--text);
+  background: var(--ink); color: var(--ink-fg); border-color: var(--ink);
 }
 .gloss-detail-btn.primary.mastered-btn {
   background: var(--correct); border-color: var(--correct);
@@ -1338,7 +1390,7 @@ header {
 
 /* ONBOARDING */
 .onboard-overlay {
-  position:fixed;inset:0;background:rgba(26,16,8,0.6);z-index:200;
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;
   display:flex;align-items:center;justify-content:center;
   animation:flagFadeIn 0.3s ease;
 }
@@ -1386,7 +1438,7 @@ header {
 }
 .onboard-skip:hover {color:var(--text);}
 .onboard-next {
-  background:var(--text);color:var(--bg);border:none;
+  background:var(--ink);color:var(--ink-fg);border:none;
   border-radius:10px;padding:12px 28px;
   font-family:"Plus Jakarta Sans",sans-serif;font-size:14px;font-weight:700;
   cursor:pointer;transition:var(--tr);display:flex;align-items:center;gap:8px;
@@ -1441,7 +1493,7 @@ header {
 
 /* SESSION SUMMARY MODAL */
 .summary-overlay {
-  position:fixed;inset:0;background:rgba(26,16,8,0.6);z-index:200;
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;
   display:flex;align-items:center;justify-content:center;
   animation:flagFadeIn 0.3s ease;
 }
@@ -1528,7 +1580,7 @@ header {
 }
 .summary-close {
   width:100%;padding:14px;border-radius:10px;margin-top:20px;
-  background:var(--text);color:var(--bg);border:none;
+  background:var(--ink);color:var(--ink-fg);border:none;
   font-family:"Plus Jakarta Sans",sans-serif;font-size:14px;font-weight:700;
   cursor:pointer;transition:var(--tr);
 }
@@ -1560,7 +1612,7 @@ header {
 
 /* FLAG MODAL */
 .flag-overlay {
-  position:fixed;inset:0;background:rgba(26,16,8,0.5);z-index:100;
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;
   display:flex;align-items:center;justify-content:center;
   animation:flagFadeIn 0.2s ease;
 }
@@ -1617,7 +1669,7 @@ header {
 
 /* CHANGELOG */
 .changelog-overlay {
-  position:fixed;inset:0;background:rgba(26,16,8,0.5);z-index:100;
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;
   display:flex;align-items:center;justify-content:center;
   animation:flagFadeIn 0.2s ease;
 }
@@ -1651,7 +1703,7 @@ header {
 .cl-items li::before {content:"\2022";position:absolute;left:0;color:var(--accent);font-weight:900;}
 .cl-close {
   margin-top:20px;width:100%;padding:12px;border-radius:10px;
-  background:var(--text);color:var(--bg);border:none;
+  background:var(--ink);color:var(--ink-fg);border:none;
   font-family:"Plus Jakarta Sans",sans-serif;font-size:13px;font-weight:700;
   cursor:pointer;transition:var(--tr);
 }
@@ -1691,7 +1743,7 @@ header {
 }
 .study-rec-step-num {
   width: 20px; height: 20px; border-radius: 50%;
-  background: var(--text); color: var(--bg); font-size: 10px;
+  background: var(--ink); color: var(--ink-fg); font-size: 10px;
   font-weight: 800; display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 1px;
   font-family: 'JetBrains Mono', monospace;
@@ -1705,7 +1757,7 @@ header {
 }
 .study-rec-btn:hover { border-color: var(--accent); color: var(--accent); }
 .study-rec-btn.primary {
-  background: var(--text); border-color: var(--text); color: var(--bg);
+  background: var(--ink); border-color: var(--ink); color: var(--ink-fg);
 }
 .study-rec-btn.primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 .study-rec-dismiss {
@@ -1760,7 +1812,7 @@ header {
 
 /* ── PWA INSTALL BANNER ── */
 .pwa-banner {
-  display: none; background: var(--text); color: var(--bg);
+  display: none; background: var(--ink); color: var(--ink-fg);
   border-radius: var(--radius); padding: 12px 18px; margin-bottom: 16px;
   align-items: center; gap: 14px; animation: slideUp 0.4s ease;
   flex-wrap: wrap;
@@ -1784,7 +1836,7 @@ header {
 
 /* ── EXAM DATE + READINESS CARD ── */
 .readiness-card {
-  background: var(--text); color: var(--bg);
+  background: var(--ink); color: var(--ink-fg);
   border-radius: var(--radius); padding: 18px 24px;
   margin-bottom: 24px; display: flex; align-items: center;
   gap: 20px; flex-wrap: wrap; animation: slideUp 0.5s 0.12s ease both;
@@ -1883,8 +1935,8 @@ header {
 .bk-item-tag.tricky-wording { background: var(--warning-light); color: var(--warning); border: 1.5px solid #fcd34d; }
 .bk-item-tag.standard-ref { background: var(--d2-light); color: var(--d2); border: 1.5px solid var(--d2-border); }
 .bk-drill-btn {
-  padding: 9px 18px; border-radius: 10px; background: var(--text);
-  border: none; color: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif;
+  padding: 9px 18px; border-radius: 10px; background: var(--ink);
+  border: none; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 12px; font-weight: 700; cursor: pointer; transition: var(--tr);
   display: flex; align-items: center; gap: 7px;
 }
@@ -2008,7 +2060,7 @@ header {
   letter-spacing: 0.02em;
 }
 .notify-btn:hover:not(:disabled) {
-  background: var(--text); transform: translateY(-1px);
+  background: var(--ink); transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(232,82,26,0.25);
 }
 .notify-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -2075,6 +2127,66 @@ header {
   .notify-form-row { flex-direction: column; }
   .notify-btn { width: 100%; }
 }
+/* ── GLOBAL THEME TRANSITION ── */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+/* ── DARK MODE: override hardcoded non-variable colors ── */
+[data-theme="dark"] .tips-card {
+  background: linear-gradient(135deg, #1e1500, #1a1000);
+  border-color: #5a3d00;
+}
+[data-theme="dark"] .mindset-alert {
+  background: linear-gradient(135deg, #1e1500, #1e1200);
+  border-color: #7a5500;
+}
+[data-theme="dark"] .opt:hover:not(:disabled) {
+  background: #1e1a3a; border-color: var(--accent);
+}
+[data-theme="dark"] .profile-card.active-profile { background: #1e1a3a; }
+[data-theme="dark"] .flashcard.flipped { background: #1e1a3a; }
+[data-theme="dark"] .gloss-search {
+  background: var(--surface2); color: var(--text);
+}
+[data-theme="dark"] .notify-input { background: var(--surface2); color: var(--text); }
+[data-theme="dark"] .flag-select, [data-theme="dark"] .flag-input {
+  background: var(--surface2); color: var(--text);
+}
+/* ── ACCENT BUTTON GLOW (dopamine!) ── */
+.gen-btn { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.gen-btn:hover { background: linear-gradient(135deg, var(--accent2), var(--accent)); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(108,71,255,0.35); }
+.train-ws-btn { box-shadow: 0 4px 18px rgba(108,71,255,0.35); }
+.train-ws-btn:hover { box-shadow: 0 8px 32px rgba(108,71,255,0.5); }
+.stat-card::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+/* ── HEADER GRADIENT BAR ── */
+header {
+  border-bottom: 2px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+header::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+}
+/* ── NAV TAB ACTIVE GRADIENT ── */
+.nav-tab.active { 
+  color: var(--accent); 
+  border-bottom-color: var(--accent);
+  background: linear-gradient(180deg, transparent, rgba(108,71,255,0.06));
+}
+/* ── DOMAIN CARD HOVER GLOW ── */
+.domain-card:hover, .domain-card.selected { box-shadow: var(--shadow-lg), 0 0 20px rgba(108,71,255,0.15); }
+[data-theme="dark"] .domain-card:hover, [data-theme="dark"] .domain-card.selected {
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(139,109,255,0.25);
+}
+/* ── CORRECT/WRONG ANIMATIONS ── */
+@keyframes correctPop { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
+.opt.correct { animation: correctPop 0.4s ease; }
+/* ── SCORE GLOW ── */
+.summary-big-score { 
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
 
 </style>
 </head>
@@ -2088,7 +2200,7 @@ header {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill">200 Questions / v8.0</span>
+    <span class="bank-pill">352 Questions / v8.2</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -2096,6 +2208,7 @@ header {
     <button class="whats-new-btn" onclick="showChangelog()">What&#39;s New</button>
     <button class="whats-new-btn" onclick="showSessionSummary()" style="font-size:10px;letter-spacing:0.1em">&#128202; Summary</button>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
+    <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
   </div>
 </header>
 
@@ -3173,7 +3286,7 @@ function renderTopics() {
       + '<div class="topic-study-box"><div class="topic-study-label">Key Terms</div>' + renderTopicTerms(detail.terms) + '</div>'
       + '<div class="topic-study-box"><div class="topic-study-label">Key Takeaways</div>' + renderTopicStudyList(detail.takeaways) + '</div>'
       + '</div>'
-      + '<div class="topic-study-label">Guide Topic Outline</div>'
+      + '<div class="topic-study-label" style="color:var(--accent);margin-top:4px;">Guide Topic Outline</div>'
       + '<div class="topic-list">' + bulletHtml + '</div>'
       + '<div class="topic-exam-note">' + escapeHtml(s.examCue) + '</div>'
       + '</div>';
@@ -3636,7 +3749,7 @@ function nextQ() {
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">All 200 Questions Complete!</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--accent);border-color:var(--accent);color:#fff">Reset All & Restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">All 352 Questions Complete!</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--accent);border-color:var(--accent);color:#fff">Reset All & Restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -4327,51 +4440,7 @@ function showMockResults() {
 
 // â”€â”€ ONBOARDING â”€â”€
 var onboardStep = 0;
-var onboardSteps = [
-  {
-    icon: "\ud83e\udde0",
-    title: "Welcome to CISA Mindset!",
-    desc: "Your free practice app for the ISACA CISA exam. 200 questions across all 5 domains, designed to train you to think like an IS auditor.",
-    features: [
-      {icon: "\ud83d\udcda", text: "<strong>200 ISACA-style questions</strong> covering all 5 CISA domains weighted by actual exam percentages"},
-      {icon: "\u26a1", text: "<strong>Practice Mode</strong> with timer, difficulty filters, and domain focus"},
-      {icon: "\ud83d\udcdd", text: "<strong>Mock Exam</strong> simulating real CISA exam conditions"}
-    ]
-  },
-  {
-    icon: "\ud83c\udfaf",
-    title: "How to Practice",
-    desc: "Pick a domain, choose your difficulty, and start answering. Every question comes with full explanations and exam tips.",
-    features: [
-      {icon: "1\ufe0f\u20e3", text: "<strong>Select a domain</strong> by tapping the colored cards at the top. Each shows your score for that domain."},
-      {icon: "2\ufe0f\u20e3", text: "<strong>Choose difficulty:</strong> Foundational (recall), Application (scenarios), or Analysis (complex judgment)"},
-      {icon: "3\ufe0f\u20e3", text: "<strong>Hit Start Practice</strong> and answer! You get full explanations, framework references, and tips after each question."}
-    ]
-  },
-  {
-    icon: "\ud83d\udee0\ufe0f",
-    title: "Features You Should Know",
-    desc: "These tools help you study smarter and give feedback.",
-    features: [
-      {icon: "\ud83d\udd16", text: "<strong>Bookmark</strong> tricky questions to review later from the Saved tab"},
-      {icon: "\u23f1\ufe0f", text: "<strong>Session timer (set your own pace)</strong> set your own session timer to practice at exam pace. Options: Auto (1 min/question), 15, 30, or 60 minutes."},
-      {icon: "\ud83d\udcc8", text: "<strong>Weak Spots tab</strong> shows which domains need more practice"},
-      {icon: "\u2691", text: "<strong>Flag a question</strong> if you think an answer is wrong or unclear. Your feedback goes directly to the developer!"}
-    ]
-  },
-  {
-    icon: "\ud83d\udd12",
-    title: "Your Privacy",
-    desc: "One last thing before you start:",
-    features: [
-      {icon: "\u2705", text: "<strong>No login required</strong> \u2014 just open and practice"},
-      {icon: "\ud83d\udcbe", text: "<strong>Progress auto-saved</strong> \u2014 your scores, bookmarks, and domain stats persist across sessions"},
-      {icon: "\u2328\ufe0f", text: "<strong>Keyboard shortcuts:</strong> Press <strong>1/2/3</strong> for confidence, <strong>A/B/C/D</strong> to answer, <strong>Enter</strong> for next question"},
-      {icon: "\u2705", text: "<strong>No server data</strong> \u2014 everything stays in your browser's localStorage"}
-    ],
-    privacy: true
-  }
-];
+var ONBOARD_TOTAL = 3;
 
 function showOnboarding() {
   onboardStep = 0;
@@ -4379,51 +4448,110 @@ function showOnboarding() {
 }
 
 function renderOnboardStep() {
-  var step = onboardSteps[onboardStep];
-  var total = onboardSteps.length;
-  var isLast = onboardStep === total - 1;
-
+  var modal = document.getElementById("flagModal");
   var dots = "";
-  for (var i = 0; i < total; i++) {
+  for (var i = 0; i < ONBOARD_TOTAL; i++) {
     dots += '<div class="onboard-dot' + (i === onboardStep ? ' active' : '') + '"></div>';
   }
+  var dotBar = '<div class="onboard-step-indicator">' + dots + '</div>';
+  var html = "";
 
-  var features = "";
-  for (var j = 0; j < step.features.length; j++) {
-    var f = step.features[j];
-    features += '<div class="onboard-feature">'
-      + '<span class="onboard-feature-icon">' + f.icon + '</span>'
-      + '<span class="onboard-feature-text">' + f.text + '</span>'
-      + '</div>';
+  if (onboardStep === 0) {
+    html = '<div class="onboard-overlay">'
+      + '<div class="onboard-modal">'
+      + '<div class="onboard-content">'
+      + dotBar
+      + '<span class="onboard-icon">\ud83e\udde0</span>'
+      + '<div class="onboard-title">Welcome to CISA Mindset!</div>'
+      + '<div class="onboard-desc">Your free practice app for the ISACA CISA exam. 352 questions across all 5 domains, designed to train you to think like an IS auditor.</div>'
+      + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcda</span><span class="onboard-feature-text"><strong>352 ISACA-style questions</strong> across all 5 domains weighted by real exam percentages</span></div>'
+      + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83c\udfaf</span><span class="onboard-feature-text"><strong>Spaced repetition + Weak Spots</strong> so you study what matters most</span></div>'
+      + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcdd</span><span class="onboard-feature-text"><strong>Mock Exam mode</strong> simulating real 150-question CISA conditions</span></div>'
+      + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcbe</span><span class="onboard-feature-text"><strong>Progress saved locally</strong> \u2014 no account, no tracking, everything in your browser</span></div>'
+      + '</div>'
+      + '<div class="onboard-footer">'
+      + '<button class="onboard-skip" onclick="closeOnboarding()">Skip</button>'
+      + '<button class="onboard-next" onclick="nextOnboardStep()">Next \u2192</button>'
+      + '</div>'
+      + '</div></div>';
+
+  } else if (onboardStep === 1) {
+    html = '<div class="onboard-overlay">'
+      + '<div class="onboard-modal">'
+      + '<div class="onboard-content">'
+      + dotBar
+      + '<span class="onboard-icon">\ud83d\udc64</span>'
+      + '<div class="onboard-title">Create Your Profile</div>'
+      + '<div class="onboard-desc">Profiles keep your progress, scores, and bookmarks separate. Great for tracking your journey to exam day.</div>'
+      + '<div style="margin:20px 0 8px;">'
+      + '<input type="text" id="onboardProfileName" placeholder="Your name (e.g. Alex)" maxlength="32"'
+      + ' style="width:100%;box-sizing:border-box;padding:12px 16px;border-radius:12px;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;"'
+      + ' onkeydown="if(event.key===\'Enter\')onboardCreateProfile()">'
+      + '</div>'
+      + '<p style="font-size:12px;color:var(--text2);margin:6px 0 0;text-align:center;">\ud83d\udd12 Stored only in your browser \u2014 nothing sent anywhere</p>'
+      + '</div>'
+      + '<div class="onboard-footer">'
+      + '<button class="onboard-skip" onclick="nextOnboardStep()">Skip for now</button>'
+      + '<button class="onboard-next" onclick="onboardCreateProfile()">Create Profile \u2192</button>'
+      + '</div>'
+      + '</div></div>';
+
+  } else if (onboardStep === 2) {
+    html = '<div class="onboard-overlay">'
+      + '<div class="onboard-modal">'
+      + '<div class="onboard-content">'
+      + dotBar
+      + '<span class="onboard-icon">\ud83d\udcc5</span>'
+      + '<div class="onboard-title">When\u2019s Your Exam?</div>'
+      + '<div class="onboard-desc">Setting your exam date unlocks the Readiness Score and a personalised daily study plan.</div>'
+      + '<div style="margin:20px 0 8px;">'
+      + '<input type="date" id="onboardExamDate"'
+      + ' style="width:100%;box-sizing:border-box;padding:12px 16px;border-radius:12px;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;">'
+      + '</div>'
+      + '<div style="background:var(--surface);border-radius:14px;padding:14px 16px;margin-top:4px;">'
+      + '<p style="margin:0 0 6px;font-size:13px;font-weight:700;color:var(--text);">\u2b50 Recommended first step</p>'
+      + '<p style="margin:0;font-size:13px;color:var(--text2);">Start with <strong>Domain 1 Practice</strong> \u2014 it covers IS Audit Fundamentals, the foundation for every other domain.</p>'
+      + '</div>'
+      + '</div>'
+      + '<div class="onboard-footer">'
+      + '<button class="onboard-skip" onclick="closeOnboarding()">Skip</button>'
+      + '<button class="onboard-next finish" onclick="onboardFinish()">Start Practising \u2192</button>'
+      + '</div>'
+      + '</div></div>';
   }
 
-  var privacyNote = step.privacy
-    ? '<div class="onboard-privacy">\ud83d\udd12 Session-based \u2014 no accounts, no tracking, no data stored.</div>'
-    : '';
+  modal.innerHTML = html;
+  if (onboardStep === 1) {
+    setTimeout(function(){ var el = document.getElementById('onboardProfileName'); if(el) el.focus(); }, 80);
+  }
+}
 
-  var modal = document.getElementById("flagModal");
-  modal.innerHTML = '<div class="onboard-overlay">'
-    + '<div class="onboard-modal">'
-    + '<div class="onboard-content">'
-    + '<div class="onboard-step-indicator">' + dots + '</div>'
-    + '<span class="onboard-icon">' + step.icon + '</span>'
-    + '<div class="onboard-title">' + step.title + '</div>'
-    + '<div class="onboard-desc">' + step.desc + '</div>'
-    + features
-    + privacyNote
-    + '</div>'
-    + '<div class="onboard-footer">'
-    + '<button class="onboard-skip" onclick="closeOnboarding()">Skip</button>'
-    + '<button class="onboard-next' + (isLast ? ' finish' : '') + '" onclick="' + (isLast ? 'closeOnboarding()' : 'nextOnboardStep()') + '">'
-    + (isLast ? 'Start Practicing \u2192' : 'Next \u2192')
-    + '</button>'
-    + '</div>'
-    + '</div></div>';
+function onboardCreateProfile() {
+  var input = document.getElementById('onboardProfileName');
+  var name = input ? input.value.trim() : '';
+  if (name) {
+    var id = createProfile(name);
+    if (id) switchProfile(id);
+  }
+  nextOnboardStep();
+}
+
+function onboardFinish() {
+  var dateInput = document.getElementById('onboardExamDate');
+  if (dateInput && dateInput.value) {
+    setExamDateVal(dateInput.value);
+    try { renderReadinessCard(); } catch(e) {}
+  }
+  closeOnboarding();
+  setTimeout(function() {
+    var d1 = document.querySelector('[data-domain="1"]') || document.querySelector('.domain-card');
+    if (d1) d1.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 400);
 }
 
 function nextOnboardStep() {
   onboardStep++;
-  if (onboardStep >= onboardSteps.length) {
+  if (onboardStep >= ONBOARD_TOTAL) {
     closeOnboarding();
   } else {
     renderOnboardStep();
@@ -4435,7 +4563,6 @@ function closeOnboarding() {
   try { localStorage.setItem("cisa_onboarded_v6", "1"); } catch(e) {}
 }
 
-// Show onboarding only on truly first visit (persisted across sessions)
 function checkOnboarding() {
   try {
     if (!localStorage.getItem("cisa_onboarded_v6")) {
@@ -4866,7 +4993,7 @@ function renderFlashcardArea() {
       + '<button class="flashcard-action-btn know" onclick="fcAction(\'know\')">' + (mastered ? 'Mastered - Next' : 'I Know This - Next') + '</button>';
   } else {
     html += '<button class="flashcard-action-btn skip" onclick="fcAction(\'skip\')">Skip</button>'
-      + '<button class="flashcard-action-btn" onclick="flipFlashcard()" style="background:var(--text);color:var(--bg);border-color:var(--text)">Reveal</button>';
+      + '<button class="flashcard-action-btn" onclick="flipFlashcard()" style="background:var(--ink);color:var(--ink-fg);border-color:var(--ink)">Reveal</button>';
   }
 
   html += '</div>'
@@ -5586,7 +5713,7 @@ function initPWA() {
   if (!('serviceWorker' in navigator)) return;
 
   var swCode = [
-    "var CACHE='cisa-v8';",
+    "var CACHE='cisa-v8-2';",
     "self.addEventListener('install',function(e){",
     "  e.waitUntil(caches.open(CACHE).then(function(c){",
     "    return c.addAll([location.pathname]);",
@@ -6228,7 +6355,22 @@ function showChangelog() {
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
     + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v8.0 &#8212; Phase 3 Differentiation</div>'
+    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v8.2 &#8212; Guided First-Use Onboarding</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>3-Step Guided Onboarding</strong> &#8212; new users are walked through: app overview, profile creation with a name input, and exam date setting with a recommended first action (Domain 1 Practice)</li>'
+    + '<li><strong>Profile created at first visit</strong> &#8212; onboarding hooks into the profile system so progress is saved from question one</li>'
+    + '<li><strong>Exam date saved from onboarding</strong> &#8212; date set in step 3 is immediately reflected in the Readiness Card and daily study plan</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v8.1 &#8212; Dark Mode + Visual Overhaul</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>Dark Mode</strong> &#8212; full dark theme (defaults on) with ☀️/🌙 toggle in the header; preference saved across sessions</li>'
+    + '<li><strong>New Color System</strong> &#8212; vibrant electric violet + hot pink + teal palette replacing the old warm paper tones; ambient glow overlays and gradient buttons for a dopamine-boosting study experience</li>'
+    + '<li><strong>Bug Fix: Invisible text on dark banners</strong> &#8212; all dark card/banner elements (readiness card, timer, mindset strip, topic hero, mock results, generate button, modals) now use a dedicated <code>--ink</code> variable that stays dark in both light and dark mode</li>'
+    + '<li><strong>Question bank count corrected</strong> &#8212; header, onboarding, and completion screen now accurately reflect 352 questions (was incorrectly showing 200)</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v8.0 &#8212; Phase 3 Differentiation</div>'
     + '<ul class="cl-items">'
     + '<li><strong>Daily Study Recommendation</strong> &#8212; personalised 3-step study plan on the dashboard, driven by domain scores, exam date, and reviewed topics</li>'
     + '<li><strong>Auditor Mindset Coaching</strong> &#8212; when you pick the implementer answer, a callout explains the auditor vs. implementer distinction inline</li>'
@@ -6303,6 +6445,22 @@ function closeChangelog(e) {
   if (e && e.target !== e.currentTarget) return;
   document.getElementById("changelogModal").innerHTML = "";
 }
+
+// ── DARK MODE TOGGLE ──
+function toggleDarkMode() {
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var newTheme = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  document.getElementById('darkToggleBtn').textContent = isDark ? '🌙' : '☀️';
+  try { localStorage.setItem('cisa_theme', newTheme); } catch(e){}
+}
+(function initTheme() {
+  var saved = 'dark'; // default to dark as requested
+  try { saved = localStorage.getItem('cisa_theme') || 'dark'; } catch(e){}
+  document.documentElement.setAttribute('data-theme', saved);
+  var btn = document.getElementById('darkToggleBtn');
+  if (btn) btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+})();
 
 // Clean up any old subscribe-state flags from previous app versions
 try { localStorage.removeItem("cisa_notify_subscribed_v1"); } catch (e) {}
