@@ -701,8 +701,9 @@
         "D": "Standards and guidelines are developed to support IT policies. Senior management is not involved in the development of standards, baselines and guidelines."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is B/C/D 'IT policies / procedures / standards' — these all flow FROM the strategic plan. Senior management's role is at the top of the cascade.",
+        "Strategic plans set direction; policies/procedures/standards implement that direction. Senior management owns the direction-setting.",
+        "Cascade: strategic plan (board + senior mgmt) → policies (mgmt) → procedures (operations) → standards/guidelines (subject experts). Senior management belongs at the top."
       ]
     },
     {
@@ -727,7 +728,9 @@
         "D": "The investment plan is not part of the IT plan."
       },
       "tips": [
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is B/C/D 'audit / security / investment plan' — these are sub-plans that align WITH the business plan, not independent of it.",
+        "IT governance's central thesis: IT exists to serve the business. Plans must mirror business plans.",
+        "Pattern: when 'IT plan must be consistent with X' is asked, X is almost always 'business plan' — not any other plan."
       ]
     },
     {
@@ -752,7 +755,9 @@
         "D": "The establishment of acceptable risk levels is a senior business management responsibility. The CSO is responsible for enforcing the decisions of the senior management team unless the CIO is the business process manager."
       },
       "tips": [
-        "Controls flow from policy. Without an approved policy, even strong controls lack enforceability — review the policy first."
+        "Trap is C/D 'CIO / CSO' — these are senior IT/security roles, but acceptable risk is a BUSINESS decision, not an IT one.",
+        "Trap is A 'QA management' — process quality role, not strategic risk decision authority.",
+        "Senior business management owns acceptable risk levels because they own the business outcomes that risk impacts. CIOs/CSOs advise; business management decides."
       ]
     },
     {
@@ -777,7 +782,9 @@
         "D": "The audit committee reports to the board of directors and executes governance-related audits. The audit committee should monitor the implementation of audit recommendations."
       },
       "tips": [
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A 'CEO' — the CEO is part of executive management, but governance is the BOARD's responsibility (CEO reports to board).",
+        "Trap is C 'IT steering committee' — committee enforces governance set by the board, doesn't create it.",
+        "Trap is D 'audit committee' — oversees the audit function, not IT governance broadly. IT governance is a board-level mandate."
       ]
     },
     {
@@ -802,7 +809,9 @@
         "C": "Communication of management's specific expectations for job performance would not necessarily be included in job descriptions."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A/B/C 'instructions / availability / performance expectations' — operational/HR concerns, not control-perspective concerns.",
+        "From a CONTROL perspective, the audit-relevant aspect of job descriptions is who's accountable for what. That maps to access rights and SoD checks.",
+        "Job descriptions audit value: define accountability boundaries that auditors test against actual access and actual behavior."
       ]
     },
     {
@@ -827,7 +836,9 @@
         "D": "Qualifications listed on a resume may be used to demonstrate proficiency but will not indicate the integrity of the candidate employee."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'references' — useful but easy to fabricate or get from friendly sources.",
+        "Trap is C 'bonding' — financial protection if the employee causes loss; doesn't establish integrity upfront.",
+        "Trap is D 'qualifications on resume' — self-reported, often inflated. Background screening is the OBJECTIVE check (criminal, financial, education verification)."
       ]
     },
     {
@@ -852,7 +863,9 @@
         "C": "The employees need to be notified of the termination, but this is not as critical as removing terminated employee access."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A/B 'hand over files / backup work' — important but secondary to security.",
+        "Trap is C 'notify other employees' — communication concern, not security.",
+        "Disabling logical access is the most TIME-CRITICAL action — it stops the disgruntled-employee window of risk immediately. Everything else can wait."
       ]
     },
     {
@@ -877,7 +890,9 @@
         "D": "Although any new software implementation may create support issues, the primary benefit of the EA is ensuring that the IT solutions deliver value to the business. Decreased support costs may be a benefit of the EA, but the lack of IT involvement in this case does not affect the support requirements."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'security controls may not meet requirements' — possible but not the PRIMARY EA risk.",
+        "Trap is B 'application may not meet user requirements' — opposite issue; business unit selected because it fits THEIR needs.",
+        "Trap is D 'support issues' — symptom, not cause. The PRIMARY EA risk is technology drift from enterprise standards."
       ]
     },
     {
@@ -902,7 +917,9 @@
         "D": "Enforcing a rule that all vacations must be taken a week at a time is a management decision but not related to a mandatory vacation policy. The primary reason for mandatory vacations is to detect fraud or errors."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Same theme as d2_001: mandatory vacation = fraud detection, not productivity/quality of life.",
+        "Trap is A/C/D 'quality of life / cross-training / disruption' — all good HR reasons but not the PRIMARY control purpose.",
+        "Mandatory vacation is a fraud-surfacing control. Critical functions get rotated through different hands so anomalies become visible."
       ]
     },
     {
@@ -927,7 +944,10 @@
         "D": "In small organizations, the LAN administrator may also be responsible for security administration over the LAN."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'end-user responsibilities' — small environments often combine these. Acceptable.",
+        "Trap is B 'reporting to end-user manager' — common in distributed/branch operations.",
+        "Trap is D 'LAN security admin' — actually expected; LAN admins typically own LAN security in small orgs.",
+        "Programming is the SoD violation: LAN admin + programmer = ability to modify production code without separate approval."
       ]
     },
     {
@@ -952,7 +972,9 @@
         "D": "A DSS supports semi-structured decision-making tasks."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A/D 'highly structured / structured tasks' — DSS is for SEMI-structured problems where rules alone don't suffice.",
+        "Trap is B 'predetermined criteria' — DSS uses interactive/flexible models, not fixed criteria.",
+        "DSS = data + interactive models for management judgment on semi-structured problems. The 'support' is decision-aiding, not decision-making."
       ]
     },
     {
@@ -977,7 +999,9 @@
         "C": "An organization-defined security policy ensures that help desk personnel do not have access to personnel data, and this is covered under the security policy. The more critical issue is whether the application complied with the security policy."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A/B/C 'downtime metrics / IT vendor management / different country call center' — operational/governance issues but not the PRIMARY data risk.",
+        "When ANY app handles employee records, organization-defined security policies (password rules, encryption, access reviews) MUST apply — even if the app is in the cloud and procured outside IT.",
+        "Shadow IT contracts often skip this control validation. The auditor's GREATEST concern is that data is exposed because security policies didn't carry over to the cloud."
       ]
     },
     {
@@ -1002,7 +1026,9 @@
         "D": "A BSC measures the performance of IT, but the control over IT expenses is not a key requirement for implementing a BSC."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'deliver effective and efficient services' — that's the OUTCOME a BSC measures, not the prerequisite for it.",
+        "Trap is C/D 'business value / cost control' — also outcomes, not prerequisites.",
+        "BSC = a measurement framework. To measure, you need defined KPIs first. Without KPIs, the BSC has nothing to track."
       ]
     },
     {
@@ -1027,7 +1053,9 @@
         "D": "Plans to acquire new hardware and software can be a part of the overall plan but are required only if hardware or software is needed to achieve the organizational goals."
       },
       "tips": [
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A 'low-cost philosophy' — cost matters but isn't the strategic anchor.",
+        "Trap is C 'leading-edge technology' — tech-for-tech's-sake violates governance principles.",
+        "Trap is D 'plans to acquire hardware/software' — too narrow; the IT department needs both long-term (strategic) and short-term (tactical) plans aligned to business goals."
       ]
     },
     {
@@ -1052,7 +1080,9 @@
         "D": "Business objectives correlating to IT goals and objectives are covered by a strategic plan."
       },
       "tips": [
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Short-range plan = tactical. Tactical = projects + integration of IT and business personnel.",
+        "Trap is B/C/D 'mission/vision / strategic scorecard / business-IT correlation' — these are STRATEGIC plan elements, not tactical.",
+        "Pattern: short-range/tactical → operational integration. Long-range/strategic → mission, vision, alignment frameworks."
       ]
     },
     {
@@ -1077,8 +1107,10 @@
         "D": "Evaluating hardware needs is not as critical as allocating resources during short-term planning for the IT department."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is B 'adapting to changing technologies' — strategic concern, longer horizon than short-term.",
+        "Trap is C 'CSAs' — control monitoring activity, not short-term planning.",
+        "Trap is D 'evaluating hardware needs' — could be either short or long term; resource allocation is more universally short-term-relevant.",
+        "Short-term = resource allocation. The auditor checks that scarce resources go where the strategic plan said they should."
       ]
     },
     {
@@ -1103,7 +1135,9 @@
         "C": "Short-term project plans is project-oriented and is a method of implementing a goal but not the goal in itself. The goal is to have better project management-the new system is how to achieve that goal."
       },
       "tips": [
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A/B/C 'software testing / IT needs / project plans' — these are operational artifacts, not strategic objectives.",
+        "Strategic plans contain BUSINESS objectives — what the org wants to achieve in the market. Approved suppliers (D) is a strategic positioning choice.",
+        "Strategic plan vs operational plan: strategic = WHY/WHERE the business is going. Operational = HOW/WHEN it gets there."
       ]
     },
     {
@@ -1128,8 +1162,9 @@
         "C": "Procurement procedures are organizational controls, but not a part of strategic planning."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A 'approved by line management' — approval matters but doesn't validate strategic adequacy.",
+        "Trap is B/C 'stays within budget / complies with procurement' — operational/process concerns, not strategic substance.",
+        "IT strategy's whole purpose is supporting business objectives. Without that link, the strategy is technically valid but strategically empty."
       ]
     },
     {
@@ -1154,7 +1189,9 @@
         "C": "Having staff training is critical but not as critical as ensuring the availability of the source code."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A/B 'backup server with data / loaded with software' — disaster recovery concerns, not vendor failure protection.",
+        "Trap is C 'staff trained' — useful but doesn't help if the proprietary code isn't accessible.",
+        "Proprietary software = vendor lock-in risk. Source code escrow is the canonical contractual protection against vendor failure."
       ]
     },
     {
@@ -1179,8 +1216,10 @@
         "D": "Having sufficient excess capacity to respond to changing directions is important to show flexibility to meet organizational changes but is not in itself a way to ensure that IT is aligned with business goals."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A 'has all personnel and equipment' — resource adequacy, not strategic alignment.",
+        "Trap is C 'efficient use of equipment/personnel' — efficiency, not effectiveness toward business goals.",
+        "Trap is D 'sufficient excess capacity' — flexibility, not alignment.",
+        "Alignment with management strategy is the only direct test of whether IT supports business objectives."
       ]
     },
     {
@@ -1205,7 +1244,9 @@
         "D": "Although a database administrator (DBA) is a very privileged position it is not in conflict with the role of a systems analyst."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A/D 'NA + QA / sysanalyst + DBA' — SoD concerns but lower abuse potential.",
+        "Trap is C 'end users + security admin' — uncommon in real practice but contained risk.",
+        "System admin + application programmer = unlimited abuse: write code, deploy code, hide trail. Highest blast radius among the SoD violations listed."
       ]
     },
     {
@@ -1230,8 +1271,10 @@
         "D": "The failure to implement audit recommendations is a management problem but not as serious as the ability of unauthorized users to make modifications."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Controls flow from policy. Without an approved policy, even strong controls lack enforceability — review the policy first."
+        "Trap is A 'user management coordination' — process concern, not the data risk.",
+        "Trap is B 'user accountability' — concerning but not as severe as actual unauthorized modification.",
+        "Trap is D 'audit recommendations not implemented' — governance gap, not the immediate data risk.",
+        "Without ownership policy, no one decides who can modify what. Result: unauthorized data modification — the most direct data integrity threat."
       ]
     },
     {
@@ -1256,7 +1299,10 @@
         "D": "Employee award programs provide motivation; however, they do not minimize dependency on key individuals."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'staff job evaluation' — performance review, not continuity protection.",
+        "Trap is C 'responsibilities definitions' — defines current roles, doesn't plan for replacement.",
+        "Trap is D 'employee award programs' — retention tool, doesn't address departure risk.",
+        "Succession planning is the canonical answer to 'short-term employee risk' — identify and develop internal successors before the loss occurs."
       ]
     },
     {
@@ -1281,7 +1327,9 @@
         "D": "The main focus of the risk management process is determining potential risk. lS audit objectives focus on IS controls placed to reduce business risk to an acceptable level and whether those controls are effective and function as expected."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'compliance with legal/regulatory' — one outcome of effective IS controls, not the main audit objective.",
+        "Trap is C 'review general controls effectiveness' — too narrow; audit objectives are broader than just general controls.",
+        "Trap is D 'find ways to minimize risk' — that's risk management's job. Audit's job is to confirm controls EXIST and WORK, not to design new mitigations."
       ]
     },
     {
@@ -1306,7 +1354,9 @@
         "D": "Management may agree to or reject an audit finding. The IS auditor cannot be assured that management will act upon an audit finding unless they are aware of its impact; therefore, the auditor must report the risk associated with lack of security awareness."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Awareness gap = unintentional disclosure risk. Employees can't follow rules they don't know.",
+        "Trap is C 'IS audit should provide training' — auditor doesn't deliver operational programs (independence violation).",
+        "Trap is D 'finding will cause management to train' — assumes management's response; audit conclusions describe risk, not predicted reactions."
       ]
     },
     {
@@ -1331,7 +1381,10 @@
         "C": "The security administrator is responsible for implementing, monitoring and enforcing the security rules that management established and authorized."
       },
       "tips": [
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A 'IT department' — implements policy, doesn't approve it.",
+        "Trap is B 'security committee' — works within the policy framework set by board/exec.",
+        "Trap is C 'security administrator' — staff-level role; lacks management authority for enforcement.",
+        "Information security policy = enterprise-wide rule set. Approval requires the highest enterprise authority: top management or the board of directors."
       ]
     },
     {
@@ -1356,8 +1409,9 @@
         "D": "Although performance management issues related to service level agreements can arise from performance indicators that were not correctly defined, the presentation of misleading performance to management is a much more significant risk."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Governance questions trace back to the board / audit committee for accountability and to senior management for execution — the IT steering committee operates inside that frame."
+        "Trap is A 'KPIs not reported' — they would still be reported; the issue is they're meaningless.",
+        "Trap is B/D 'cost overruns / inaccurate SLAs' — possible side effects, not the primary risk.",
+        "Subjective KPIs = misleading performance picture. Management makes decisions on faulty data — that's the central risk of a non-measurable BSC."
       ]
     },
     {
@@ -1382,7 +1436,10 @@
         "D": "A list of the relevant software security features is more detailed than that which should be included in a policy."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'list of key IT resources' — too granular for a policy; belongs in a register or asset inventory.",
+        "Trap is C 'identity of sensitive assets' — same; granular, sits below policy level.",
+        "Trap is D 'software security features' — implementation detail, not policy content.",
+        "Security policy = high-level framework. Includes WHO can authorize access and the BASIS for that authorization. Not a granular asset list."
       ]
     },
     {
@@ -1407,7 +1464,10 @@
         "D": "The fourth step is to analyze the application traffic and create a matrix showing how each type of traffic will be protected."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'cost-benefit analysis' — performed AFTER you know what to protect.",
+        "Trap is C 'identify vulnerabilities' — depends on knowing the apps first.",
+        "Trap is D 'application traffic matrix' — built late in the process, after apps and protections are mapped.",
+        "Firewall policy starts with: what apps/services need to be reachable from outside? That answer drives every subsequent decision."
       ]
     },
     {
@@ -1432,7 +1492,10 @@
         "D": "Changes in decision processes are not a type of risk, but a characteristic of a DSS."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'management control' — that's a CHARACTERISTIC of DSS, not a risk.",
+        "Trap is B 'semi-structured dimensions' — also a defining feature, not a risk.",
+        "Trap is D 'changes in decision processes' — DSS adapts to those, doesn't fail because of them.",
+        "DSS implementation risk: hard to specify upfront how it'll be used. Without clear purpose/usage, the system becomes shelfware."
       ]
     },
     {
