@@ -1,0 +1,186 @@
+{
+  "_meta": {
+    "comment": "Hand-authored tips overriding the converter's auto-generated tips for D3. Same conventions as d1.json / d2.json.",
+    "version": 1
+  },
+
+  "d3_001": [
+    "Trap is B 'project steering committee' — provides oversight and direction, but doesn't review individual deliverables for fitness.",
+    "Trap is C 'senior management' — approves resources and major milestones, but doesn't review deliverables operationally.",
+    "Trap is D 'QA staff' — reviews against quality standards, but the user owns whether the system meets THEIR needs.",
+    "User management owns the system being built. They alone can confirm 'this deliverable matches what we asked for'."
+  ],
+  "d3_002": [
+    "Trap is A 'Gantt chart' — visualizes the schedule but doesn't help PRIORITIZE based on dependency criticality.",
+    "Trap is B 'earned value analysis' — measures progress vs plan, doesn't determine the timeline.",
+    "Trap is D 'function point analysis' — sizes the work, doesn't sequence it.",
+    "PERT identifies the critical path — the sequence of dependent activities determining minimum project duration. That's how priority and timeline get set."
+  ],
+  "d3_003": [
+    "Trap is B 'time management' — the time issue is a SYMPTOM; the cause is functionality exceeding requirements.",
+    "Trap is C 'risk management' — should have caught the scope expansion but isn't the root cause discipline.",
+    "Trap is D 'procurement' — unrelated to scope creep.",
+    "Implementing functionality beyond requirements = scope expansion = scope management failure. Time and cost overruns are downstream consequences."
+  ],
+  "d3_004": [
+    "Trap is B 'system configuration' — too technical for end users; potential security risk.",
+    "Trap is C 'program logic specification' — programmer's territory; users can't validate logic, only outcomes.",
+    "Trap is D 'performance tuning' — technical, requires deep system knowledge.",
+    "End users excel at output testing because they know what 'right' looks like for their job. Comparing inputs to expected outputs is squarely within user competence."
+  ],
+  "d3_005": [
+    "Trap is A 'data accuracy controls' — production data is already accurate.",
+    "Trap is B 'inaccurate test results' — production data tends to make tests MORE realistic, not less.",
+    "Trap is C 'hardware not identical' — environment concern, not data concern.",
+    "Production data in a test environment with weaker access controls = confidentiality breach risk. Programmers may have test environment access they wouldn't have in production — exposing sensitive data."
+  ],
+  "d3_006": [
+    "Trap is A 'cost savings' — parallel running is EXPENSIVE (running two systems for 30 days).",
+    "Trap is B 'hardware compatibility' — verified earlier in the project, not by parallel run.",
+    "Trap is D 'increased resiliency' — true side effect but not the primary advantage of parallel running.",
+    "Parallel running compares new system output to known-good old system output. That's the strongest assurance the new system works correctly — by direct comparison."
+  ],
+  "d3_007": [
+    "Trap is A 'alpha testing' — early-stage testing, internal only.",
+    "Trap is B 'white box testing' — code-aware testing during development, not user testing.",
+    "Trap is C 'regression testing' — validates that fixes didn't break other things, not user-facing.",
+    "Beta testing = late-stage, real users in real conditions. Last verification before release."
+  ],
+  "d3_008": [
+    "Trap is A 'acceptance testing' — final user-facing test, not architectural.",
+    "Trap is B 'system testing' — full system integration, but architectural design is tested earlier.",
+    "Trap is D 'unit testing' — module-level, doesn't test architecture.",
+    "Integration testing exercises the architectural design — how components connect. Unit-tested modules combined according to design = integration test."
+  ],
+  "d3_009": [
+    "ITF runs test transactions WITH live data using a fictitious entity. Tests can run anytime without separate test infrastructure.",
+    "Trap is A 'no need to review transaction source' — false; auditor still needs source verification.",
+    "Trap is C 'validates application AND ensures correct operation' — too broad; ITF is a specific testing approach, not a guarantee.",
+    "Trap is D 'no test data needed' — false; test transactions are still required, just integrated with live processing."
+  ],
+  "d3_010": [
+    "Trap is A 'undocumented project change approvals' — process concern, recoverable.",
+    "Trap is C 'incomplete testing of standard functionality' — manageable through additional UAT.",
+    "Trap is D 'duplicating existing payroll permissions' — operational concern, configurable.",
+    "Faulty data migration in payroll = wrong paychecks. Direct human/financial/legal consequence. Highest-impact risk in the scenario."
+  ],
+  "d3_011": [
+    "Trap is A 'advise on application controls adoption' — designing controls compromises auditor independence.",
+    "Trap is B 'provide future licensing estimates' — auditor doesn't do project budgeting.",
+    "Trap is C 'recommend efficiency improvements' — operational consulting, compromises independence.",
+    "Reviewing test case documentation is audit-appropriate: assess completeness without designing or operating controls. Stays within the audit role."
+  ],
+  "d3_012": [
+    "Trap is A 'UAT' — happens before implementation, not during postimplementation review.",
+    "Trap is C 'activate audit trails' — should already be active; not a postimplementation activity.",
+    "Trap is D 'update EA diagrams' — documentation hygiene, not the primary postimplementation question.",
+    "Postimplementation review answers: did this investment deliver promised value? ROI analysis re-evaluates the original business case against actual outcomes."
+  ],
+  "d3_013": [
+    "Trap is B 'restrict to functional requirements' — ignores nonfunctional (performance, security, usability) which are equally important.",
+    "Trap is C 'automated tests with scripting' — useful tactically but doesn't ensure coverage of important areas.",
+    "Trap is D 'retest only defect fixes' — leaves untouched code untested; coverage gap.",
+    "Risk-based testing: use frequency and importance to allocate scarce test time to highest-risk requirements. Maximizes risk reduction per test hour."
+  ],
+  "d3_014": [
+    "Trap is A 'reliable products guaranteed' — too strong; CMM measures process, not product reliability.",
+    "Trap is B 'efficiency improved' — possible outcome, not what CMM measures.",
+    "Trap is C 'security designed' — separate concern from process maturity.",
+    "CMM evaluates whether the dev organization has STABLE, PREDICTABLE processes. That's the entire point: process maturity, not specific outcomes."
+  ],
+  "d3_015": [
+    "Trap is A/D 'recalculations / reconciliations' — detective controls; don't prevent input errors.",
+    "Trap is C 'run-to-run totals' — detect processing errors, not input errors.",
+    "Limit checks operate at input time, rejecting invalid values before they enter the system. Preventive control closest to the source."
+  ],
+  "d3_016": [
+    "Trap is B 'billing cost allocation' — financial concern, addressable post-rollout.",
+    "Trap is C 'multiple application owners' — common in shared apps; manageable through governance.",
+    "Trap is D 'no training program' — user adoption issue, addressable.",
+    "Without process owners, there's no accountability for operations, monitoring, or authorization decisions. Foundational governance gap that affects all departments."
+  ],
+  "d3_017": [
+    "Trap is B 'security standards met' — checked later in the acquisition process.",
+    "Trap is C 'users involved in implementation' — implementation phase concern, not initial acquisition.",
+    "Trap is D 'meets all user functionality' — too broad; may not be required and may exceed budget.",
+    "Acquisition starts with a clear business case approved by management. Without that, the entire acquisition lacks business justification — everything else is moot."
+  ],
+  "d3_018": [
+    "Trap is A 'noncompliance with software licensing' — SaaS reduces this risk; vendor manages licensing.",
+    "Trap is C 'higher cost from licensing' — SaaS typically REDUCES total cost.",
+    "Trap is D 'higher cost for compatible hardware' — SaaS doesn't require hardware updates.",
+    "SaaS depends entirely on Internet connectivity. Performance and availability follow Internet quality, not the customer's local infrastructure. Most likely day-to-day risk."
+  ],
+  "d3_019": [
+    "Trap is A 'changing user needs' — manageable through change control; not the most common cause.",
+    "Trap is B 'inaccurate growth forecast' — capacity issue, addressable through scaling.",
+    "Trap is C 'hardware concurrency limits' — technical, addressable.",
+    "Inadequate user participation in requirements = systems built to assumed needs, not actual needs. Most fundamental and most common failure mode."
+  ],
+  "d3_020": [
+    "Trap is A 'function point analysis' — sizes the work, doesn't directly estimate duration.",
+    "Trap is C 'rapid application development' — methodology, doesn't estimate.",
+    "Trap is D 'object-oriented system development' — design approach, doesn't estimate.",
+    "PERT estimates duration using best/worst/normal scenarios. Specifically designed for project duration estimation under uncertainty."
+  ],
+  "d3_021": [
+    "Trap is A 'CMM' — assesses process maturity, doesn't help select projects.",
+    "Trap is C 'configuration management' — controls software/hardware versions, not project selection.",
+    "Trap is D 'PMBOK' — body of knowledge for managing projects, not selecting them.",
+    "Portfolio management is purpose-built for project prioritization across the org — comparing initiatives by business value and risk. That's what enables strategic project selection."
+  ],
+  "d3_022": [
+    "Trap is A 'prevent further changes' — too restrictive; changes are valuable when justified.",
+    "Trap is B 'design completion point' — descriptive, not the rationale for the freeze.",
+    "Trap is D 'project management control' — outcome but not the primary purpose.",
+    "Stop point exists to FORCE cost-benefit evaluation of late changes. Without it, scope creep destroys the original business case."
+  ],
+  "d3_023": [
+    "Trap is A 'iterative nature' — characteristic of prototyping, not the change-control complication.",
+    "Trap is C 'emphasis on reports and screens' — focus area, not change-control issue.",
+    "Trap is D 'lack of integrated tools' — tooling gap, addressable.",
+    "Prototyping moves fast — requirements and design change session by session. Documentation and approval can't keep up, undermining traditional change control."
+  ],
+  "d3_024": [
+    "Trap is A 'project progressing as planned' — superficially true (on time, under budget) but ignores team strain.",
+    "Trap is B 'overtime cost tracking' — accounting concern, not project plan concern.",
+    "Trap is C 'programmers slow to earn overtime' — unfair speculation about staff.",
+    "Massive unplanned overtime = the project plan was wrong (under-estimated). The plan is meeting deadlines through team burnout, not realistic scheduling. Investigate."
+  ],
+  "d3_025": [
+    "Trap is B 'production data introduced' — already addressed (sensitive data was scrubbed).",
+    "Trap is C 'specialized training' — operational concern, not test data concern.",
+    "Trap is D 'over budget' — generic project risk, not test deck specific.",
+    "Production data covers normal cases but may MISS edge cases, error conditions, and rare scenarios. Test functionality won't be fully exercised."
+  ],
+  "d3_026": [
+    "Trap is A 'TCO' — important but a SUBSET of the ROI calculation.",
+    "Trap is B 'resources for implementation' — input to the cost side, not the full picture.",
+    "Trap is D 'security cost and complexity' — one cost component.",
+    "Business case = ROI = full benefit/cost picture. ROI is what justifies the acquisition; everything else is an input to ROI."
+  ],
+  "d3_027": [
+    "Trap is A 'no right-to-audit clause' — concerning but addressable through other assurance mechanisms.",
+    "Trap is C 'no source code escrow' — addressable through contractual update.",
+    "Trap is D 'no change management coverage' — operational concern, can be added to contract.",
+    "No business case = the outsourcing decision wasn't strategically evaluated. Risk, value, alternatives, and exit strategies were never assessed. Foundational governance failure."
+  ],
+  "d3_028": [
+    "Trap is B 'don't reduce productivity' — operational concern, secondary to risk mitigation purpose.",
+    "Trap is C 'minimized cost analysis' — backwards; controls should match risk, not minimize cost.",
+    "Trap is D 'detective or corrective' — false dichotomy; preventive controls are also valid.",
+    "Controls exist to mitigate identified RISK. Controls without a corresponding risk are wasteful; controls misaligned to risk are ineffective. Risk drives the requirement."
+  ],
+  "d3_029": [
+    "Trap is A 'console log' — system-level, doesn't capture user transaction details.",
+    "Trap is C 'automated suspense file' — captures errors only, misses successful unauthorized input.",
+    "Trap is D 'user error report' — captures user-reported errors, not unauthorized actions.",
+    "Transaction journal captures every transaction with user attribution. Comparing journal entries to authorized sources surfaces unauthorized inputs."
+  ],
+  "d3_030": [
+    "Trap is A 'prototyping methodology' — one factor, but methodology choice can succeed in good environments and fail in bad ones.",
+    "Trap is B 'external compliance' — important but doesn't drive overall success.",
+    "Trap is D 'software reengineering' — technique, not environment.",
+    "Organizational environment includes: business-IT alignment, process maturity, change control discipline, governance. Same project in different environments has wildly different outcomes."
+  ]
+}
