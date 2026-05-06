@@ -440,6 +440,32 @@ header {
   font-family: 'JetBrains Mono', monospace; font-size: 9px;
   color: var(--muted); transition: color var(--tr);
 }
+.dc-stats {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 2px; transition: color var(--tr);
+}
+.dc-stat-pair { display: inline-flex; align-items: baseline; gap: 4px; }
+.dc-stat-key {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600; opacity: 0.75;
+}
+.dc-stat-val {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 700; color: var(--text);
+}
+.dc-stat-divider {
+  display: inline-block; width: 1px; height: 10px;
+  background: var(--border2); align-self: center;
+}
+.dc-stat-empty {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--muted);
+}
+.domain-card:hover .dc-stat-key,.domain-card.selected .dc-stat-key,
+.domain-card:hover .dc-stat-val,.domain-card.selected .dc-stat-val,
+.domain-card:hover .dc-stat-empty,.domain-card.selected .dc-stat-empty { color: #fff !important; opacity: 1; }
+.domain-card:hover .dc-stat-divider,.domain-card.selected .dc-stat-divider { background: rgba(255,255,255,0.4); }
 .domain-card .bar {
   position: absolute; bottom: 0; left: 0; height: 3px;
   transition: width 0.6s ease; border-radius: 0 0 14px 14px;
@@ -5591,7 +5617,20 @@ function renderDomainGrid() {
     + '<span class="dc-num" style="color:' + (isAllSelected?'#fff':'var(--text)') + ';font-size:18px">All</span>'
     + '<span class="dc-name" style="color:' + (isAllSelected?'rgba(255,255,255,0.7)':'var(--muted)') + '">All Domains</span>'
     + '<span class="dc-pct" style="color:' + (isAllSelected?'#fff':allPc) + '">' + (allPct!==null?allPct+'%':'--') + '</span>'
-    + '<div class="dc-tried" style="color:' + (isAllSelected?'rgba(255,255,255,0.6)':'var(--muted)') + '">' + totalCovered + '/' + totalBank + ' covered</div>'
+    + (function(){
+        var inner;
+        if (totalT === 0 && totalCovered === 0) {
+          inner = '<span class="dc-stat-empty">Tap to begin &middot; ' + totalBank + ' Q</span>';
+        } else {
+          var pairs = [];
+          if (totalT > 0) {
+            pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Score</span><span class="dc-stat-val">' + totalC + '/' + totalT + '</span></span>');
+          }
+          pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Seen</span><span class="dc-stat-val">' + totalCovered + '/' + totalBank + '</span></span>');
+          inner = pairs.join('<span class="dc-stat-divider"></span>');
+        }
+        return '<div class="dc-stats">' + inner + '</div>';
+      })()
     + '<div class="bar" style="width:' + (allPct||0) + '%;background:' + (isAllSelected?'rgba(255,255,255,0.4)':'var(--accent)') + '"></div>'
     + '</div>';
 
@@ -5604,7 +5643,6 @@ function renderDomainGrid() {
     var bankCount = (QB[d]||[]).length;
     var coveredCount = (S.answeredIds && S.answeredIds[d]) ? Object.keys(S.answeredIds[d]).length : 0;
     var pctText = pct !== null ? pct + '%' : '--';
-    var triedText = st.t > 0 ? st.c + '/' + st.t : '0 attempts';
     var wBadgeClass = info.weight >= 25 ? 'dc-weight high-impact' : 'dc-weight';
     html += '<div class="domain-card ' + (isSelected?'selected':'') + '" data-d="' + d + '" onclick="selectDomain(' + d + ')" title="D' + d + ': ' + info.weight + '% of CISA exam">';
     html += '<span class="dc-num">' + d + '</span>';
@@ -5617,7 +5655,18 @@ function renderDomainGrid() {
     } else if (window.QB_LOAD_ERROR && window.QB_LOAD_ERROR[d]) {
       loadingBadge = '<span class="dc-loading dc-load-err" title="Could not load remote bank: ' + escapeHtml(window.QB_LOAD_ERROR[d]) + '">! offline</span>';
     }
-    html += '<div class="dc-tried" style="color:' + (isSelected?'rgba(255,255,255,0.7)':'var(--muted)') + '">' + triedText + ' &middot; ' + coveredCount + '/' + bankCount + ' ' + loadingBadge + '</div>';
+    var statsInner;
+    if (st.t === 0 && coveredCount === 0) {
+      statsInner = '<span class="dc-stat-empty">Tap to begin &middot; ' + bankCount + ' Q</span>';
+    } else {
+      var pairs = [];
+      if (st.t > 0) {
+        pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Score</span><span class="dc-stat-val">' + st.c + '/' + st.t + '</span></span>');
+      }
+      pairs.push('<span class="dc-stat-pair"><span class="dc-stat-key">Seen</span><span class="dc-stat-val">' + coveredCount + '/' + bankCount + '</span></span>');
+      statsInner = pairs.join('<span class="dc-stat-divider"></span>');
+    }
+    html += '<div class="dc-stats">' + statsInner + (loadingBadge ? ' ' + loadingBadge : '') + '</div>';
     html += '<div class="bar" style="width:' + (pct||0) + '%"></div>';
     html += '</div>';
   });
