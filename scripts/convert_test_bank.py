@@ -268,33 +268,68 @@ SUBTOPIC_VOCAB = {
                                        r"developing performance|effectiveness of (?:audit|the) process)\b"),
     ],
     3: [
-        ("SDLC & Development Methodology", r"\b(system development life cycle|SDLC|waterfall|agile|"
+        ("SDLC & Development Methodology", r"\b(system development life cycle|SDLC|waterfall|\bagile\b|"
                                               r"prototyping|rapid application development|RAD|"
-                                              r"object[- ]?oriented|component[- ]based)\b"),
+                                              r"object[- ]?oriented|component[- ]based|"
+                                              r"software development|development process|development life cycle|"
+                                              r"development methodology|standardiz(?:ed|ing) infrastructure|"
+                                              r"function (?:point|of an? IT) steering|service[- ]oriented architecture)\b"),
         ("Project Management", r"\b(project management|project manager|project plan|project sponsor|"
                                   r"project steering|gantt|PERT|critical path|earned value|"
-                                  r"function point|baseline|scope creep)\b"),
+                                  r"function point|baseline|scope creep|"
+                                  r"project portfolio|project initiation|initiation meeting)\b"),
         ("Requirements & Feasibility", r"\b(requirements? definition|requirements? gathering|feasibility study|"
-                                          r"business case|user requirements?|functional requirement)\b"),
+                                          r"business case|user requirements?|functional requirement|"
+                                          r"requirements? phase|requirement.*specification)\b"),
         ("System Testing", r"\b(unit test|system test|integration test|regression test|"
                               r"sociability test|stress test|parallel test|pilot test|"
-                              r"white box|black box|gray box)\b"),
-        ("User Acceptance Testing", r"\b(user acceptance test|UAT|acceptance test|alpha test|beta test)\b"),
-        ("Quality Assurance in Development", r"\b(quality assurance|QA function|software quality|software inspection|"
-                                                r"code review|software metric|capability maturity model|CMM)\b"),
+                              r"white box|black box|gray box|"
+                              r"top[- ]down (?:approach|test)|bottom[- ]up (?:approach|test)|"
+                              r"testing phase|test data|test deck|"
+                              r"functional test|target environment|"
+                              r"software inspection|test coverage|production data for.*test|"
+                              r"intermittent (?:software )?error)\b"),
+        ("User Acceptance Testing", r"\b(user acceptance test|\bUAT\b|acceptance test|alpha test|beta test)\b"),
+        ("Quality Assurance in Development", r"\b(quality assurance|QA function|software quality|"
+                                                r"code review|software metric|capability maturity model|CMM|"
+                                                r"functionality.*evaluat|portability|reliability|efficien|"
+                                                r"software products?)\b"),
         ("Application Controls", r"\b(input control|output control|processing control|edit check|"
                                     r"validation check|range check|reasonableness check|check digit|"
-                                    r"hash total|control total|run[- ]to[- ]run|reconciliation)\b"),
+                                    r"hash total|control total|run[- ]to[- ]run|reconciliation|"
+                                    r"input controls|output controls|"
+                                    r"editing.*validation|input/output|input/output control|"
+                                    r"data validation|data capture|"
+                                    r"detect.*unauthorized input|controls in.*newly developed|"
+                                    r"transaction (?:processing|audit trail)|cyclic redundancy|"
+                                    r"validation of data|integrated test facility|"
+                                    r"input.*data|fingerprint of data)\b"),
         ("System Conversion & Implementation", r"\b(direct cutover|parallel run|phased|pilot implementation|"
-                                                  r"data conversion|data migration|implementation plan)\b"),
-        ("Postimplementation Review", r"\b(post[- ]?implementation|post[- ]?project)\b"),
+                                                  r"data conversion|data migration|implementation plan|"
+                                                  r"new client[- ]?server|major application implementation|"
+                                                  r"recently completed conversion|extended to other departments|"
+                                                  r"go.?live|software package implementation)\b"),
+        ("Postimplementation Review", r"\b(post[- ]?implementation|post[- ]?project|postproject|"
+                                         r"two months after|after.*implementation)\b"),
         ("Software Acquisition & Vendor", r"\b(software acquisition|software vendor|software escrow|"
                                               r"acceptance test plan|request for proposal|RFP|"
-                                              r"software as a service|SaaS)\b"),
+                                              r"software as a service|SaaS|application software package|"
+                                              r"software package|cloud-based application)\b"),
         ("Data Integrity in Applications", r"\b(referential integrity|atomicity|isolation|durability|consistency|"
-                                              r"ACID|data integrity)\b"),
-        ("Business Process Reengineering", r"\b(business process reengineering|BPR|process flowchart)\b"),
-        ("Change Management in Projects", r"\b(change request|change management|change control|baseline)\b"),
+                                              r"ACID|data integrity|"
+                                              r"online transaction processing|integrity of (?:transactions|data)|"
+                                              r"data warehouse|data accuracy)\b"),
+        ("Business Process Reengineering", r"\b(business process reengineering|\bBPR\b|process flowchart|"
+                                              r"reengineering)\b"),
+        ("Change Management in Projects", r"\b(change request|change management|change control|"
+                                              r"scope.*changed|change in scope|\bbaseline\b|baselining)\b"),
+        ("Postimplementation Audit", r"\b(post[- ]?incident review|post.*deployment review|"
+                                        r"audit trail|transaction audit trail)\b"),
+        ("System Integration", r"\b(integrate|integrated|two or more systems|systems are integrated|"
+                                  r"interface)\b"),
+        ("Web & Online Application Development", r"\b(web[- ]?based|online (?:transaction|sales|stock|banking)|"
+                                                    r"transmission control protocol|secure website|coding standards|"
+                                                    r"web application)\b"),
     ],
     4: [
         ("Service Level Management", r"\b(service level agreement|SLA|service level management|SLM|"
