@@ -41,7 +41,7 @@ Questions are designed to test judgment in realistic scenarios, not keyword reca
 
 ## 🚀 Getting Started
 
-Open `CISA_Mindset_v7_0.html` directly in any modern browser — no installation or dependencies required.
+Open `index.html` directly in any modern browser — no installation or dependencies required.
 
 ---
 
