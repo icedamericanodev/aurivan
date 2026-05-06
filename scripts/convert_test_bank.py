@@ -404,20 +404,42 @@ SUBTOPIC_VOCAB = {
                                                  r"factory default|default password|disable.*service)\b"),
     ],
     5: [
-        ("Authentication & Access Control", r"\b(authentication|two[- ]?factor|multifactor|MFA|single sign[- ]?on|SSO|"
-                                                r"password polic|access control|role[- ]based|RBAC|"
+        ("Authentication & Access Control", r"\b(authentication|two[- ]?factor|multifactor|\bMFA\b|single sign[- ]?on|\bSSO\b|"
+                                                r"password polic|access control|role[- ]based|\bRBAC\b|"
                                                 r"discretionary access|mandatory access|privileged access|"
-                                                r"shared (?:account|user))\b"),
+                                                r"shared (?:account|user)|"
+                                                r"logical access|password (?:management|control|expiration|complexity)|"
+                                                r"user authentication|user (?:profile|account|access)|"
+                                                r"unique user accounts|account management|"
+                                                r"account.*sniff|password sniff|inactivity|screen[- ]?saver|"
+                                                r"audit trail.*reliab|compromised credential|reset.*access|"
+                                                r"session (?:lockout|timeout)|access rights?)\b"),
         ("Encryption & Cryptography", r"\b(encrypt|decrypt|cryptograph|symmetric key|asymmetric key|"
-                                          r"public key|private key|AES|DES|RSA|elliptic curve|hash function|"
-                                          r"message digest|cipher)\b"),
+                                          r"public key|private key|\bAES\b|\bDES\b|\bRSA\b|elliptic curve|hash function|"
+                                          r"message digest|cipher|secret key|"
+                                          r"hash sum|checksum|hash total computed|integrity of (?:transmitted|the message)|"
+                                          r"mobile device.*encrypt|database password encryption|"
+                                          r"confidentiality of transmitted|data has not been altered|"
+                                          r"reliability of an application.*audit trail|"
+                                          r"audit trails.*deletion)\b"),
         ("PKI & Digital Signatures", r"\b(public key infrastructure|PKI|certificate authority|certification authority|CA|"
                                          r"digital certificate|digital signature|certificate revocation|CRL|"
                                          r"registration authority)\b"),
-        ("Network Security", r"\b(firewall|intrusion detection|IDS|intrusion prevention|IPS|"
-                                r"demilitarized zone|DMZ|virtual private network|VPN|stateful inspection|"
+        ("Network Security", r"\b(firewall|intrusion detection|\bIDS\b|intrusion prevention|\bIPS\b|"
+                                r"demilitarized zone|\bDMZ\b|virtual private network|\bVPN\b|stateful inspection|"
                                 r"packet filter|proxy server|application gateway|circuit gateway|"
-                                r"router access|access control list|ACL)\b"),
+                                r"router access|access control list|\bACL\b|"
+                                r"local area network|LAN security|LAN administrator|LAN implementation|"
+                                r"telecommunication.*network|telecommunication.*security|"
+                                r"network.*setup|network architecture|network audit|"
+                                r"open[- ]system architecture|interoperability|"
+                                r"line media|coaxial|fiber|fibre|twisted pair|"
+                                r"ports? (?:80|443|filter)|"
+                                r"network performance monitor|network device|gateway|"
+                                r"transmission medium|network port|broadcast|cyclic redundancy|"
+                                r"network diagnostic|protocol analyz|antispam|spam filtering|"
+                                r"\bWAN\b|wide area network|alternative routing|"
+                                r"unauthorized traffic|external attack|hardening.*configuration)\b"),
         ("Wireless & VoIP Security", r"\b(wireless|WLAN|Wi[- ]?Fi|WEP|WPA|war driving|"
                                         r"voice over (?:internet protocol|IP)|VoIP)\b"),
         ("Malware & Endpoint Security", r"\b(malware|virus|antivirus|worm|trojan|ransomware|rootkit|"
@@ -431,21 +453,50 @@ SUBTOPIC_VOCAB = {
                                               r"data breach|breach notification)\b"),
         ("Physical & Environmental Security", r"\b(physical security|access card|badge|man[- ]?trap|"
                                                   r"data center|biometric|fire suppression|halon|"
-                                                  r"carbon dioxide|uninterrupted power|UPS|raised floor|"
-                                                  r"voltage regulator|environmental control)\b"),
+                                                  r"carbon dioxide|uninterrupted power|\bUPS\b|raised floor|"
+                                                  r"voltage regulator|environmental control|"
+                                                  r"electromagnetic emission|terminal emission|"
+                                                  r"power supply|power[- ]line conditioner|surge[- ]protect|"
+                                                  r"alternative power|interruptible power|"
+                                                  r"piggyback|tailgat|shoulder surf|dumpster div)\b"),
         ("Data Protection & Privacy", r"\b(data classification|data protection|data leak|DLP|"
                                           r"privacy|personally identifiable|PII|protected health information|PHI|"
                                           r"data retention|data disposal|sanitiz)\b"),
         ("Security Awareness & Training", r"\b(security awareness|awareness training|security training|"
                                               r"acceptable use|user education)\b"),
         ("Logging & Monitoring", r"\b(audit log|log management|log file|log monitoring|log integrity|"
-                                    r"log retention|SIEM|security log)\b"),
-        ("Penetration Testing & Vulnerability", r"\b(penetration test|pen[- ]?test|vulnerability (?:scan|assessment|test)|"
-                                                    r"red team|blue team|black box|white box|gray box)\b"),
+                                    r"log retention|\bSIEM\b|security log|"
+                                    r"audit trail|reliability of.*audit trail|preserve.*log|"
+                                    r"transaction audit trail|review system log|database log)\b"),
+        ("Penetration Testing & Vulnerability", r"\b(penetration test|pen[- ]?test|vulnerability (?:scan|assessment|test|management)|"
+                                                    r"red team|blue team|black box|white box|gray box|"
+                                                    r"war driving|incident handling.*response|"
+                                                    r"types of penetration|simulates? a real attack|"
+                                                    r"vulnerability assessment tool|war (?:dialing|driving))\b"),
         ("Mobile & Removable Media", r"\b(mobile device|laptop|smart phone|removable media|USB|portable storage|"
                                          r"hard disk|degauss)\b"),
-        ("Web & Application Security", r"\b(web application|web server|secure socket|SSL|TLS|"
-                                           r"hypertext transmission|HTTPS|cookie|session)\b"),
+        ("Web & Application Security", r"\b(web application|web server|secure socket|\bSSL\b|\bTLS\b|"
+                                           r"hypertext transmission|HTTPS|cookie|session|"
+                                           r"browser|application code|hardcoded credential|"
+                                           r"\bDRM\b|digital rights|application security)\b"),
+        ("Information Asset Management", r"\b(information asset owner|data classification|asset classification|"
+                                            r"information classification|classify(?:ing)? information|"
+                                            r"data sensitivity|asset.*owner|data owner)\b"),
+        ("Security Governance", r"\b(security policy|security baseline|security governance|"
+                                   r"information security policy|security framework|"
+                                   r"defined security baseline|adherence to (?:security |the )?policy|"
+                                   r"acceptable use polic|deviation from.*policy|exception.*policy|"
+                                   r"chief information security officer|\bCISO\b|"
+                                   r"security responsibility|security ownership|"
+                                   r"financial application.*concern|"
+                                   r"governance model.*security)\b"),
+        ("Application & System Audit Concerns", r"\b(audit (?:of|the) financial application|"
+                                                    r"audit.*ecommerce|audit.*application|"
+                                                    r"developer.*production|application administrator|"
+                                                    r"audit.*concerned.*group)\b"),
+        ("Network Architecture Audit", r"\b(network setup|network implementation|"
+                                          r"local area network.*review|setup.*network audit|"
+                                          r"network audit|network configuration audit)\b"),
     ],
 }
 
