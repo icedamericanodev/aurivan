@@ -1,0 +1,40 @@
+name: Verify
+
+# This workflow is the second-actor SoD control for the project. It runs the
+# same scripts/verify_repo.sh that the local SessionStart hook runs, but in
+# an environment that no contributor (human or AI) controls — so it can't be
+# silently bypassed. main is protected to require this check before merge.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Repo health (verify_repo.sh)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node (for ESLint via npx)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Cache npx ESLint
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npx-eslint-v8
+
+      - name: Run verify_repo.sh
+        run: bash scripts/verify_repo.sh

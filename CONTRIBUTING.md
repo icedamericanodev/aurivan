@@ -99,8 +99,44 @@ The full technical history lives in git and PR descriptions; What's New is for l
 
 - Feature work happens on `claude/add-cisa-questions-json-1gQSN` (this is the long-lived working branch).
 - Open a PR against `main`.
-- After review and a green `verify_repo.sh`, merge with the standard merge commit.
+- The `Verify` GitHub Actions workflow runs `scripts/verify_repo.sh` on every PR. The PR cannot merge until it passes.
 - Commit messages explain the WHY in the first line and any non-obvious reasoning in the body. Do not paste user-facing changelog copy into the commit message — keep that separation.
+
+## Segregation of duties (SoD) policy
+
+This is a small project where the maintainer and an AI assistant both contribute. The SoD principle the app teaches in D4 ("don't let the same actor prepare AND approve production changes") applies here too. We compensate for the missing human-only review with two layered controls:
+
+### Control 1 — Independent CI check
+`scripts/verify_repo.sh` runs on every PR via `.github/workflows/verify.yml` in an environment no contributor controls. It enforces:
+
+- Tip + question coverage (995/995 across all 5 domains)
+- Domain weights aligned to the ISACA blueprint (D1 18%, D2 18%, D3 12%, D4 26%, D5 26%)
+- ESLint `no-undef` clean on inline JS
+- `APP_VERSION` matches the static header pill text
+
+`main` is protected to require this check green before merge. This catches mechanical regressions; it does not replace human judgment.
+
+### Control 2 — Risk-tiered merge approval
+
+Different change classes require different approvers:
+
+| Change class | Self-merge by AI assistant | Notes |
+|---|---|---|
+| Markdown / docs (README, CONTRIBUTING, CHANGELOG, SECURITY) | ✓ | Pure prose; CI still runs |
+| Tip-override edits (`data/tips_overrides/d{N}.json`) and the regenerated `data/domain{N}.json` they produce | ✓ | Content authoring; CI verifies coverage |
+| Comment-only or whitespace-only changes | ✓ | No behavior change |
+| Version bump (`APP_VERSION`) + matching changelog entry | ✓ | Coordinated single-source-of-truth update |
+| Any change to core question/answer flow (`selectAnswer`, `selectMockAnswer`, `showMockQuestion`, the shuffle helpers, the timer, grading) | **Human merge only** | Highest blast radius — every prior bug here shipped to all users |
+| Data schema or storage format changes (`S` shape, `localStorage` keys, JSON structures) | **Human merge only** | Risk of corrupting saved progress |
+| Security-sensitive code paths (`escapeHtml`, anything reading `localStorage`, anything posting outbound) | **Human merge only** | Privacy/XSS surface |
+| New external runtime dependency, new outbound endpoint, or analytics change | **Human merge only** | Supply-chain and privacy implications |
+| `.github/workflows/*` and `.claude/settings.json` | **Human merge only** | Changing the SoD controls themselves |
+| Mixed PR (touches both sides) | **Human merge only** | Conservative default |
+
+The honor system applies — the AI assistant must self-classify each PR and explicitly note in the PR description which class it belongs to and whether it can self-merge. For uncertain cases, default to human merge.
+
+### Why these specific gates
+The combination directly mirrors ISACA's compensating-controls pattern for small enterprises that can't fully separate development from operations: **independent automated check + documented review of the highest-risk classes**. CI alone misses judgment regressions; pure human-merge for everything makes a one-person project unworkable. This split matches the actual risk distribution.
 
 ## Security issues
 
