@@ -630,6 +630,62 @@ header {
 .opt-exp-letter.wrong { background: var(--wrong-light); color: var(--wrong); }
 .opt-exp-text { font-size: 12.5px; line-height: 1.65; color: var(--text2); }
 
+/* ── REVEAL METADATA ROW (subtopic + framework) ── */
+.reveal-meta-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+}
+
+/* ── TIP CARDS (auto-classified by content) ── */
+.tips-stack { display: flex; flex-direction: column; gap: 10px; }
+.tip-card {
+  position: relative; display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px 14px 18px; border-radius: 12px;
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 12.5px; line-height: 1.6; color: var(--text2);
+  border-left-width: 4px;
+}
+.tip-card .tip-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.05em; opacity: 0.9; flex-shrink: 0;
+  width: 18px; text-align: right; padding-top: 1px;
+}
+.tip-card .tip-icon {
+  font-size: 14px; flex-shrink: 0; line-height: 1.4;
+}
+.tip-card .tip-body { flex: 1; }
+.tip-card .tip-body strong { color: var(--text); font-weight: 700; }
+.tip-card.tip-trap {
+  background: var(--wrong-light); border-color: #fca5a5; border-left-color: var(--wrong);
+}
+.tip-card.tip-trap .tip-num { color: var(--wrong); }
+.tip-card.tip-mindset {
+  background: var(--d2-light); border-color: var(--d2-border); border-left-color: var(--d2);
+}
+.tip-card.tip-mindset .tip-num { color: var(--d2); }
+.tip-card.tip-shortcut {
+  background: var(--warning-light); border-color: #fcd34d; border-left-color: var(--warning);
+}
+.tip-card.tip-shortcut .tip-num { color: var(--warning); }
+.tip-card.tip-neutral {
+  background: var(--surface2); border-color: var(--border2); border-left-color: var(--accent);
+}
+.tip-card.tip-neutral .tip-num { color: var(--accent); }
+
+.tips-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.tips-section-legend {
+  display: flex; gap: 10px; font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.tips-section-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.tips-section-legend .swatch {
+  width: 8px; height: 8px; border-radius: 2px; display: inline-block;
+}
+
+/* Legacy tips-card kept for backward compat with any other render path */
 .tips-card {
   background: linear-gradient(135deg, #fff7ed, #fef3c7);
   border: 2px solid #fcd34d; border-radius: 14px; padding: 18px 20px;
@@ -5709,18 +5765,61 @@ function showResult(chosen, correct, timeout) {
       + '</div>';
   }).join('');
 
-  var tipsHtml = (q.tips||[]).map(function(t){ return '<li>' + escapeHtml(t) + '</li>'; }).join('');
-  var fwHtml = q.framework_ref ? '<span class="fw-tag">&#128204; ' + escapeHtml(q.framework_ref) + '</span>' : '';
+  // Tip cards: auto-classify each tip into trap / mindset / shortcut / neutral
+  // by scanning the tip text for genre cues.
+  var tipsArr = (q.tips || []).filter(function(t){ return t && t.trim(); });
+  var tipsHtml = tipsArr.map(function(t, i){
+    var lower = t.toLowerCase();
+    var kind, icon;
+    if (/\btrap\b|seductive|seducing|tempting/.test(lower)) {
+      kind = 'trap'; icon = '⚠'; // ⚠
+    } else if (/\bisaca\b|standard\s+\d|principle|independence|auditor's job|mindset|"who, what|authority document|own[s|ership]|risk ownership|priority\s|foundational|underlying/.test(lower)) {
+      kind = 'mindset'; icon = '⚖'; // ⚖
+    } else if (/\bexam\b|shortcut|mnemonic|pattern|giveaway|default response|cisa pattern|every time|always|never|when you see|if the question/.test(lower)) {
+      kind = 'shortcut'; icon = '⚡'; // ⚡
+    } else {
+      kind = 'neutral'; icon = '•'; // •
+    }
+    return '<div class="tip-card tip-' + kind + '">'
+      + '<span class="tip-num">' + (i + 1) + '</span>'
+      + '<span class="tip-icon">' + icon + '</span>'
+      + '<span class="tip-body">' + escapeHtml(t) + '</span>'
+      + '</div>';
+  }).join('');
+
+  // Top-of-reveal metadata row: subtopic + difficulty + framework_ref (if any)
+  var dInfo = DI[String(q.domain)] || {};
+  var diffClass = /^[a-z-]+$/.test(q.difficulty || '') ? q.difficulty : 'application';
+  var bloomLabel = q.bloom_level || 'Application';
+  var metaRow = '<div class="reveal-meta-row">'
+    + '<span class="q-tag" style="background:' + (dInfo.color||'#888') + '18;color:' + (dInfo.color||'#888') + ';border:1.5px solid ' + (dInfo.color||'#888') + '40">D' + q.domain + ' &middot; ' + escapeHtml(dInfo.short || '') + '</span>'
+    + (q.subtopic ? '<span class="q-subtopic-tag">' + escapeHtml(q.subtopic) + '</span>' : '')
+    + '<span class="diff-tag ' + diffClass + '">' + escapeHtml(bloomLabel) + '</span>'
+    + (q.framework_ref ? '<span class="fw-tag">&#128204; ' + escapeHtml(q.framework_ref) + '</span>' : '')
+    + '</div>';
+
+  var tipsBlock = tipsArr.length
+    ? '<div class="exp-block">'
+        + '<div class="tips-section-head">'
+          + '<div class="exp-heading" style="margin:0">Exam strategy &mdash; tips</div>'
+          + '<div class="tips-section-legend">'
+            + '<span><span class="swatch" style="background:var(--wrong)"></span>Trap</span>'
+            + '<span><span class="swatch" style="background:var(--d2)"></span>Mindset</span>'
+            + '<span><span class="swatch" style="background:var(--warning)"></span>Shortcut</span>'
+          + '</div>'
+        + '</div>'
+        + '<div class="tips-stack">' + tipsHtml + '</div>'
+      + '</div>'
+    : '';
 
   var mindsetAlertHtml = !ok && !timeout ? buildMindsetAlertHtml(q, chosen) : '';
   p.innerHTML =
     mindsetAlertHtml
     + '<div class="verdict ' + vc + '"><span class="verdict-icon">' + vi + '</span>' + vt + '</div>'
-    + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(q.correct_explanation) + '</p>' + fwHtml + '</div>'
+    + metaRow
+    + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(q.correct_explanation) + '</p></div>'
     + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'
-    + '<div class="exp-block"><div class="exp-heading">Tips and Techniques</div>'
-    + '<div class="tips-card"><div class="tips-head">Exam Strategy</div>'
-    + '<ul class="tips-list">' + tipsHtml + '<li>Remember: ISACA wants the <strong>auditor answer</strong>, not the IT professional answer.</li></ul></div></div>'
+    + tipsBlock
     + '<div class="result-actions">'
     + '<button class="act-btn secondary" onclick="toggleBookmark()">&#128278; Save</button>'
     + '<button class="act-btn secondary" onclick="showFlagModal()" style="border-color:var(--wrong);color:var(--wrong)">&#9873; Flag</button>'
