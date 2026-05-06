@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "comment": "Hand-authored tips that override the converter's auto-generated tips. Keyed by question id (d1_001, d1_002, ...). Each value is an array of 2-4 short tips. Re-running scripts/convert_test_bank.py merges these into data/domain1.json.",
+    "version": 1
+  },
+
+  "d1_001": [
+    "Two-sided trap: A says 'IT will pre-audit' — but IT's continuous monitoring is a control activity, not auditing. D says 'auditor can never audit those systems' — but writing detection scripts isn't the same as designing the control framework.",
+    "CAATs scripts that flag exceptions are a tool, not a control framework. Sharing them doesn't compromise the auditor's ability to test the underlying transactions, business processes, and other controls.",
+    "When IS resources are shared with operations, ask: 'Does the auditor still have independent ways to test what isn't covered by the shared tool?' If yes, sharing is acceptable."
+  ],
+  "d1_002": [
+    "A and D feel reasonable (more complex org → more data; familiar org → less data) but neither DRIVES data collection. They are factors that may inform the audit AFTER scope is set.",
+    "Purpose, objective, and scope are the audit's north star — every downstream decision (sample size, evidence type, time budget) flows from them.",
+    "When you see 'BEST factor for determining the EXTENT' of audit work, look for the option that defines the audit's boundary, not its difficulty or backstory."
+  ],
+  "d1_003": [
+    "Trap is A: management is the auditee. Letting them set scope without an independent risk assessment compromises auditor independence — even if their suggestion turns out to be correct.",
+    "Management may SUGGEST areas of concern; the auditor must independently VALIDATE through risk assessment. Choice C does both — the assessment may well confirm new systems are highest risk.",
+    "Default response when management requests specific scope: thank them, then run a risk assessment. ISACA Standard 1202 makes this mandatory in planning."
+  ],
+  "d1_004": [
+    "Audit risk is the umbrella concept: audit risk = inherent × control × detection. The phrase 'during IS auditing' signals the umbrella term, not one of its components.",
+    "If the question says 'during the audit / undetected', think audit risk. 'Before any controls' → inherent. 'Controls fail' → control. 'Audit procedures fail' → detection.",
+    "ISACA conflates audit risk with material misstatement risk — they're treating the broad 'will I miss something material?' question."
+  ],
+  "d1_005": [
+    "Trap is A 'overlapping': sounds related but means TWO controls covering the same objective. That presupposes you have a primary control — in a SoD failure, the primary control is what's missing.",
+    "Compensating controls answer: 'We can't implement the ideal control — what else reduces this risk?' Small-team SoD failures almost always demand compensating controls.",
+    "Common compensating controls for SoD gaps: enhanced logging + supervisory review, periodic transaction sampling, independent reconciliation, mandatory vacations, job rotation."
+  ],
+  "d1_006": [
+    "Trap is C 'fraud detection': it's a real benefit of CSA but a side-effect, not the primary purpose. Don't confuse outcomes with objectives.",
+    "CSA's core mechanism is shifting CONTROL OWNERSHIP from audit to business management — making line managers responsible for the controls they live with daily. That's why A wins.",
+    "ISACA explicitly distinguishes CSA from internal audit — CSA enhances audit work, it doesn't replace it (immediately rules out D as a 'shift to consultative')."
+  ],
+  "d1_007": [
+    "Trap is D 'customizable': sounds like the most flexible choice and tools sales pitch favorite. But the PRIMARY requirement is data accuracy without performance impact — customization is nice-to-have.",
+    "Auditing tools are 'guests' in production — if the tool degrades the system being audited, the audit itself becomes a business risk and may invalidate the data being captured.",
+    "CAATs evaluation order: 1) accuracy of capture → 2) performance impact → 3) compatibility → 4) flexibility/customization."
+  ],
+  "d1_008": [
+    "Trap is C 'IT knowledge': feels right (“they know our systems!”). That's exactly the conflict — they have existing relationships and may have worked on the very systems they'd now audit.",
+    "Independence is the foundational requirement of any audit role — it overrides all other competencies. Technical knowledge can be acquired; lost independence cannot be restored mid-engagement.",
+    "When hiring auditors from operational areas, the screening question is always: 'Which systems and projects did you work on, and which fall under audit scope today?'"
+  ],
+  "d1_009": [
+    "Trap is A 'CAATs': closely related and effective, but CAATs is a TOOL category. Continuous auditing USES CAATs but adds the real-time + automated reporting layer — the difference matters for 'emerging' risk.",
+    "'Emerging' implies time-sensitive: quarterly assessments (B) are too infrequent, log sampling (C) has lag, ad-hoc CAATs (A) still requires you to RUN them on a schedule.",
+    "CISA pattern: high transaction volume + emerging risk → continuous auditing. Almost never sampling alone."
+  ],
+  "d1_010": [
+    "Two-step distinction: are we testing whether a CONTROL operates correctly (compliance) or whether DATA is accurate (substantive)? 'Were accounts authorized?' is a question about a control — compliance.",
+    "Mnemonic: authorization, approval, segregation → compliance. Balances, totals, monetary values → substantive.",
+    "A and D are sampling METHODS, not test categories — they self-eliminate when the question asks 'which type of testing is this?'"
+  ],
+  "d1_011": [
+    "Trap is C 'control': auditors recommend controls but don't implement them. Detection risk is the only risk auditors directly shape — through their choice of procedures, sample size, and expertise.",
+    "Risk ownership map: inherent (business nature) → control (management) → detection (auditor) → business (executive/strategy).",
+    "Phrase giveaway: 'selection of audit procedures' or 'audit techniques' = detection risk every time."
+  ],
+  "d1_012": [
+    "Trap is A 'review prior findings': feels rigorous and IS part of planning, but it's an INPUT to risk assessment, not a substitute. Prior findings tell you about old issues, not current risk landscape.",
+    "Risk assessment is the foundation that determines scope, resources, sampling, and procedures. Without it, you're auditing by intuition and exposing the function to coverage gaps.",
+    "ISACA Standard 1202 makes risk assessment in planning MANDATORY — not best practice, mandatory. That alone elevates D over the alternatives."
+  ],
+  "d1_013": [
+    "Trap is D 'audit core service and dependencies': feels like the right place to dig in, but you can't audit a system you don't yet understand. SOA is a distributed black-box architecture — you must map first, test second.",
+    "Canonical sequence for any unfamiliar architecture: documentation review → mapping (services to processes) → controls assessment → transaction testing.",
+    "When the question asks for the INITIAL step on a complex system, the answer is almost always 'understand it' — never 'start testing it.'"
+  ],
+  "d1_014": [
+    "Trap is A 'delete all copies': auditors don't perform remediation. This violates independence (auditor performing operational tasks) and oversteps authority.",
+    "Auditor's job: identify → document → report risk to management → recommend prevention. Management decides on remediation, not the auditor.",
+    "Anytime an option has the auditor DOING something operational (deleting, blocking, installing, configuring, fixing), it is almost certainly wrong."
+  ],
+  "d1_015": [
+    "Trap is B 'state audit objectives': engagement-specific objectives live in the engagement letter, not the charter. The charter is organizational, not project-specific.",
+    "The charter is an authority document — it answers 'who, what scope, what authority' for the audit FUNCTION as a whole. Not for individual audits.",
+    "Charter content priority: authority > scope > responsibility > reporting line. Procedures (C) and dynamic technology content (A) belong in audit methodology documents, not the charter."
+  ]
+}

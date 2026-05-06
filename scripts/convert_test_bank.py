@@ -462,12 +462,24 @@ def row_to_question(row: tuple, domain: int, idx: int) -> dict | None:
 def convert_domain(wb, domain: int, write: bool = True) -> dict:
     sheet_name = f"DOMAIN_{domain}"
     ws = wb[sheet_name]
+    # Load any hand-authored tips overrides for this domain
+    override_path = ROOT / "data" / "tips_overrides" / f"d{domain}.json"
+    overrides = {}
+    if override_path.exists():
+        try:
+            overrides = json.loads(override_path.read_text())
+        except json.JSONDecodeError as e:
+            print(f"  WARN: ignoring malformed {override_path}: {e}")
     questions = []
     for i, row in enumerate(ws.iter_rows(values_only=True)):
         if i == 0:
             continue  # header
         q = row_to_question(row, domain, len(questions) + 1)
         if q:
+            # Apply manual override if present
+            manual = overrides.get(q["id"])
+            if manual and isinstance(manual, list) and all(isinstance(t, str) for t in manual):
+                q["tips"] = manual
             questions.append(q)
     out = {
         "domain": domain,
@@ -479,7 +491,9 @@ def convert_domain(wb, domain: int, write: bool = True) -> dict:
     if write:
         out_path = ROOT / "data" / f"domain{domain}.json"
         out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2))
-        print(f"  wrote {out_path}  ({len(questions)} questions)")
+        n_overridden = sum(1 for q in questions if q["id"] in overrides)
+        suffix = f"  ({n_overridden} hand-authored tips)" if n_overridden else ""
+        print(f"  wrote {out_path}  ({len(questions)} questions){suffix}")
     return out
 
 
