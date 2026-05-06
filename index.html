@@ -5594,9 +5594,11 @@ function nextQ() {
 // â”€â”€ PRACTICE TIMEOUT â”€â”€
 function onPracticeTimeout() {
   if (!S.current) return;
+  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
+  var correctDisplay = originalToDisplay(S.current.correct, shuffle);
   document.querySelectorAll('.opt').forEach(function(b){
     b.disabled = true;
-    if (b.dataset.l === S.current.correct) b.classList.add('reveal');
+    if (b.dataset.l === correctDisplay) b.classList.add('reveal');
   });
   var d = String(S.current.domain);
   S.score.t++;
@@ -5617,21 +5619,65 @@ function onPracticeTimeout() {
   S.sessionHistory.push({domain:d,correct:false,confidence:"none",question:S.current.question.substring(0,80)});
   updateStats();
   renderDomainGrid();
-  showResult(null, S.current.correct, true);
+  showResult(null, correctDisplay, true);
   saveState();
 }
 
-// â”€â”€ RENDER QUESTION â”€â”€
+// ── OPTION SHUFFLING ──
+// Every question render gets a random shuffle of A/B/C/D so learners
+// can't memorize answers by position. The shuffle is stored on
+// S.currentShuffle for the lifetime of the question (until "Next" is
+// clicked). All downstream rendering — the verdict, the breakdown, and
+// the tips — translates between display letters (what the user sees)
+// and original letters (what the JSON stores).
+var DISPLAY_LETTERS = ['A','B','C','D'];
+
+function makeShuffleMap() {
+  var arr = DISPLAY_LETTERS.slice();
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;  // e.g. ["C","A","D","B"] — display A shows original C
+}
+
+function originalToDisplay(origLetter, shuffle) {
+  var i = (shuffle || DISPLAY_LETTERS).indexOf(origLetter);
+  return i >= 0 ? DISPLAY_LETTERS[i] : origLetter;
+}
+
+function displayToOriginal(displayLetter, shuffle) {
+  var i = DISPLAY_LETTERS.indexOf(displayLetter);
+  return i >= 0 && shuffle ? shuffle[i] : displayLetter;
+}
+
+// Replace bare A/B/C/D references in tip / explanation text with their
+// shuffled display equivalents. This lets hand-authored tips that say
+// "Trap is C 'IT knowledge'" continue to read correctly when C has
+// been shuffled to display position B.
+function mapLettersInText(text, shuffle) {
+  if (!text || !shuffle) return text;
+  return text.replace(/\b([A-D])\b/g, function(_, ch) {
+    return originalToDisplay(ch, shuffle);
+  });
+}
+
+// ── RENDER QUESTION ──
 function renderQuestion(q) {
   recordQuestionStart();
   var d = String(q.domain);
   var info = DI[d];
-  var letters = ['A','B','C','D'];
   var isBk = S.bookmarks.some(function(b){ return b.id === q.id; });
-  var optsHtml = letters.map(function(l){
-    return '<button class="opt" data-l="' + l + '" onclick="selectAnswer(\'' + l + '\',\'' + q.correct + '\')" disabled>'
-      + '<span class="opt-letter">' + l + '</span>'
-      + '<span>' + escapeHtml(q.options[l]) + '</span>'
+
+  // Fresh shuffle per render. Stored on S.currentShuffle until the next question.
+  S.currentShuffle = makeShuffleMap();
+  var shuffle = S.currentShuffle;
+
+  var optsHtml = DISPLAY_LETTERS.map(function(displayL, idx){
+    var origL = shuffle[idx];
+    return '<button class="opt" data-l="' + displayL + '" onclick="selectAnswer(\'' + displayL + '\')" disabled>'
+      + '<span class="opt-letter">' + displayL + '</span>'
+      + '<span>' + escapeHtml(q.options[origL]) + '</span>'
       + '</button>';
   }).join('');
 
@@ -5669,19 +5715,23 @@ function renderQuestion(q) {
 }
 
 // â”€â”€ SELECT ANSWER â”€â”€
-function selectAnswer(chosen, correct) {
+function selectAnswer(chosen, _ignoredCorrect) {
   if (!S.current) return;
   clearAllTimers();
+  // chosen is a DISPLAY letter — translate to original via the shuffle
+  // map so we can compare to S.current.correct (which is original).
+  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
+  var correctDisplay = originalToDisplay(S.current.correct, shuffle);
   // Hide confidence buttons
   document.querySelectorAll(".conf-btn").forEach(function(b){ b.disabled = true; });
   document.querySelectorAll('.opt').forEach(function(b){
     b.disabled = true;
     var l = b.dataset.l;
-    if (l === correct && l === chosen) b.classList.add('correct');
-    else if (l === chosen && l !== correct) b.classList.add('wrong');
-    else if (l === correct) b.classList.add('reveal');
+    if (l === correctDisplay && l === chosen) b.classList.add('correct');
+    else if (l === chosen && l !== correctDisplay) b.classList.add('wrong');
+    else if (l === correctDisplay) b.classList.add('reveal');
   });
-  var ok = chosen === correct;
+  var ok = chosen === correctDisplay;
   var d = String(S.current.domain);
   S.score.t++;
   if (ok) { S.score.c++; S.streak++; } else { S.streak = 0; }
@@ -5730,19 +5780,21 @@ function selectAnswer(chosen, correct) {
   try { recordQuestionEnd(ok); } catch(e) {}
   updateStats();
   renderDomainGrid();
-  showResult(chosen, correct, false);
+  showResult(chosen, correctDisplay, false);
   rotateMindset();
   saveState();
   renderReadinessCard();
   try { renderStudyRec(); } catch(e) {}
 }
 
-// â”€â”€ SHOW RESULT â”€â”€
+// ── SHOW RESULT ──
+// `correct` here is the DISPLAY letter — callers must translate from
+// the original via originalToDisplay(q.correct, S.currentShuffle).
 function showResult(chosen, correct, timeout) {
   var q = S.current;
   var p = document.getElementById('rPanel');
   if (!p) return;
-  var letters = ['A','B','C','D'];
+  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
   var ok = !timeout && chosen === correct;
   var vc = timeout ? 'timeout' : ok ? 'correct' : 'wrong';
   var vi = timeout ? '&#9200;' : ok ? '&#9989;' : '&#10060;';
@@ -5752,22 +5804,29 @@ function showResult(chosen, correct, timeout) {
       ? 'Correct! That is the ISACA auditor mindset.'
       : 'Correct answer is <strong>' + correct + '</strong>. Review below.';
 
-  var breakdownHtml = letters.map(function(l){
-    var isRight = l === correct;
+  // Breakdown: iterate display order. For each display position, look up
+  // the original letter via the shuffle and pull that option's explanation.
+  var breakdownHtml = DISPLAY_LETTERS.map(function(displayL, idx){
+    var origL = shuffle[idx];
+    var isRight = displayL === correct;
     var expText = isRight
       ? '<strong>CORRECT.</strong> ' + escapeHtml(q.correct_explanation)
-      : (q.wrong_explanations && q.wrong_explanations[l])
-        ? escapeHtml(q.wrong_explanations[l])
+      : (q.wrong_explanations && q.wrong_explanations[origL])
+        ? escapeHtml(q.wrong_explanations[origL])
         : 'This option does not reflect the primary IS auditor priority in this scenario.';
     return '<div class="opt-exp">'
-      + '<span class="opt-exp-letter ' + (isRight?'right':'wrong') + '">' + l + '</span>'
+      + '<span class="opt-exp-letter ' + (isRight?'right':'wrong') + '">' + displayL + '</span>'
       + '<span class="opt-exp-text">' + expText + '</span>'
       + '</div>';
   }).join('');
 
   // Tip cards: auto-classify each tip into trap / mindset / shortcut / neutral
-  // by scanning the tip text for genre cues.
-  var tipsArr = (q.tips || []).filter(function(t){ return t && t.trim(); });
+  // by scanning the tip text for genre cues. Letter references in tips
+  // (e.g. "Trap is C 'IT knowledge'") are translated to the shuffled
+  // display letter via mapLettersInText so they read correctly.
+  var tipsArr = (q.tips || [])
+    .filter(function(t){ return t && t.trim(); })
+    .map(function(t){ return mapLettersInText(t, shuffle); });
   var tipsHtml = tipsArr.map(function(t, i){
     var lower = t.toLowerCase();
     var kind, icon;
@@ -5812,7 +5871,9 @@ function showResult(chosen, correct, timeout) {
       + '</div>'
     : '';
 
-  var mindsetAlertHtml = !ok && !timeout ? buildMindsetAlertHtml(q, chosen) : '';
+  // detectMindsetIssue expects the ORIGINAL letter the user picked, not the display letter.
+  var chosenOrig = chosen ? displayToOriginal(chosen, shuffle) : null;
+  var mindsetAlertHtml = !ok && !timeout ? buildMindsetAlertHtml(q, chosenOrig) : '';
   p.innerHTML =
     mindsetAlertHtml
     + '<div class="verdict ' + vc + '"><span class="verdict-icon">' + vi + '</span>' + vt + '</div>'
@@ -5861,7 +5922,12 @@ function reviewBookmark(i) {
   switchTab('practice');
   clearAllTimers();
   renderQuestion(q);
-  setTimeout(function(){ showResult(null, q.correct, true); }, 100);
+  // renderQuestion populated S.currentShuffle — translate the original
+  // correct letter into its display position for the result panel.
+  setTimeout(function(){
+    var shuffle = S.currentShuffle || DISPLAY_LETTERS;
+    showResult(null, originalToDisplay(q.correct, shuffle), true);
+  }, 100);
 }
 
 // â”€â”€ WEAK SPOTS â”€â”€
@@ -6190,14 +6256,17 @@ function showMockQuestion() {
   var cur = S.mockCurrent + 1;
   var d = String(q.domain);
   var info = DI[d];
-  var letters = ['A','B','C','D'];
   S.current = q;
+  // Per-render shuffle (mock exam shares the same shuffle infrastructure as practice)
+  S.currentShuffle = makeShuffleMap();
+  var shuffle = S.currentShuffle;
   var isFullExam = true; // always 4-hour clock for CISA simulation
 
-  var optsHtml = letters.map(function(l){
-    return '<button class="opt" data-l="' + l + '" onclick="selectMockAnswer(\'' + l + '\',\'' + q.correct + '\')">'
-      + '<span class="opt-letter">' + l + '</span>'
-      + '<span>' + escapeHtml(q.options[l]) + '</span>'
+  var optsHtml = DISPLAY_LETTERS.map(function(displayL, idx){
+    var origL = shuffle[idx];
+    return '<button class="opt" data-l="' + displayL + '" onclick="selectMockAnswer(\'' + displayL + '\')">'
+      + '<span class="opt-letter">' + displayL + '</span>'
+      + '<span>' + escapeHtml(q.options[origL]) + '</span>'
       + '</button>';
   }).join('');
 
@@ -6244,18 +6313,31 @@ function showMockQuestion() {
     // The total exam clock is shared across all 150 questions; only start it once.
     if (!S.mockTotalTimerInt) startMockTotalTimer();
   } else {
-    startMockTimer(90, function(){ selectMockAnswer(null, q.correct); });
+    startMockTimer(90, function(){ selectMockAnswer(null); });
   }
 }
 
 var mockAnswerLock = false; // prevent double-fire race condition
 
-function selectMockAnswer(chosen, correct) {
+function selectMockAnswer(chosen, _ignoredCorrect) {
   if (mockAnswerLock) return; // already answered
   mockAnswerLock = true;
   if (S.mockTimerInt) { clearInterval(S.mockTimerInt); S.mockTimerInt = null; }
-  var ok = chosen === correct;
-  S.mockAnswers[S.mockCurrent] = {q: S.current, chosen: chosen, correct: correct, ok: ok};
+  // chosen is a DISPLAY letter; translate via the shuffle to compare
+  // against the original correct letter stored in the question.
+  var shuffle = S.currentShuffle || DISPLAY_LETTERS;
+  var origChosen = chosen ? displayToOriginal(chosen, shuffle) : null;
+  var ok = origChosen === S.current.correct;
+  // Persist BOTH letters so the post-exam review can render with or
+  // without a shuffle and still know what the candidate clicked.
+  S.mockAnswers[S.mockCurrent] = {
+    q: S.current,
+    chosen: chosen,            // display letter
+    chosenOriginal: origChosen, // original letter (for grading + review)
+    correct: S.current.correct, // original correct letter
+    shuffle: shuffle.slice(),   // snapshot the shuffle used for this question
+    ok: ok
+  };
   // Auto-save checkpoint every 5 questions
   if ((S.mockCurrent + 1) % 5 === 0) { saveMockCheckpoint(); }
 
@@ -8192,8 +8274,13 @@ function buildMockAnswerKey(answers) {
     var borderColor = isCorrect ? '#a7f3d0' : '#fca5a5';
     var bgColor = isCorrect ? 'var(--correct-light)' : 'var(--wrong-light)';
     var statusIcon = isCorrect ? '\u2705' : '\u274c';
+    // a.chosen is the DISPLAY letter the candidate clicked; a.correct is the
+    // ORIGINAL correct letter from the JSON. Translate the original correct
+    // letter to its display position via the snapshotted shuffle so the
+    // review pane shows the same A/B/C/D the candidate saw during the exam.
+    var shuffle = a.shuffle || DISPLAY_LETTERS;
     var userAns = a.chosen || 'Timed out';
-    var correctAns = a.correct;
+    var correctAns = originalToDisplay(a.correct, shuffle);
 
     html += '<div style="background:' + bgColor + ';border:2px solid ' + borderColor + ';border-radius:12px;padding:14px 16px;margin-bottom:8px">'
       + '<div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="toggleMockDetail(' + i + ')">'
@@ -8208,13 +8295,16 @@ function buildMockAnswerKey(answers) {
       + '<div id="mockDetail' + i + '" style="display:none;margin-top:12px">'
       + '<div style="font-family:\x27Playfair Display\x27,serif;font-size:13px;font-weight:700;line-height:1.7;margin-bottom:10px;color:var(--text)">' + escapeHtml(a.q.question) + '</div>';
 
-    // Show all 4 options with correct/wrong marking
-    var letters = ['A','B','C','D'];
-    for (var j = 0; j < letters.length; j++) {
-      var l = letters[j];
-      var optText = a.q.options[l] || '';
-      var isThisCorrect = l === correctAns;
-      var isThisChosen = l === a.chosen;
+    // Show all 4 options in the SAME display order the candidate saw,
+    // mapping each display position back to its original letter for
+    // text lookup. This way the candidate's memory of "I picked B"
+    // lines up with the option labeled B in the review.
+    for (var j = 0; j < DISPLAY_LETTERS.length; j++) {
+      var displayL = DISPLAY_LETTERS[j];
+      var origL = shuffle[j];
+      var optText = a.q.options[origL] || '';
+      var isThisCorrect = displayL === correctAns;
+      var isThisChosen = displayL === a.chosen;
       var optStyle = isThisCorrect
         ? 'background:var(--correct-light);border:2px solid #a7f3d0;'
         : isThisChosen
@@ -8222,7 +8312,7 @@ function buildMockAnswerKey(answers) {
           : 'background:var(--surface2);border:2px solid var(--border);';
       var optIcon = isThisCorrect ? '\u2705 ' : isThisChosen && !isThisCorrect ? '\u274c ' : '';
       html += '<div style="' + optStyle + 'border-radius:10px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px">'
-        + '<span style="font-family:\x27Playfair Display\x27,serif;font-size:13px;font-weight:900;flex-shrink:0;margin-top:1px">' + optIcon + l + '</span>'
+        + '<span style="font-family:\x27Playfair Display\x27,serif;font-size:13px;font-weight:900;flex-shrink:0;margin-top:1px">' + optIcon + displayL + '</span>'
         + '<span style="font-size:12.5px;line-height:1.6;color:var(--text2)">' + escapeHtml(optText) + '</span>'
         + '</div>';
     }
