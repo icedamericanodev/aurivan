@@ -6385,10 +6385,19 @@ function showMockQuestion() {
   // Timer block: total exam clock for 150-Q full simulation, per-question for shorter modes.
   var timerHtml;
   if (isFullExam) {
+    var sLeft = Math.max(0, S.mockTotalSecondsLeft || 0);
+    var sTot = S.mockTotalSecondsTotal || (240 * 60);
+    var hh = Math.floor(sLeft / 3600);
+    var mm = Math.floor((sLeft % 3600) / 60);
+    var ss = sLeft % 60;
+    var initLabel = (hh > 0 ? hh + 'h ' : '') + (mm < 10 && hh > 0 ? '0' : '') + mm + 'm ' + (ss < 10 ? '0' : '') + ss + 's';
+    var initPct = Math.max(0, (sLeft / sTot) * 100);
+    var initCls = sLeft <= 5 * 60 ? 'urgent' : sLeft <= 30 * 60 ? 'warn' : 'ok';
+    var initBg = sLeft <= 5 * 60 ? '#fca5a5' : sLeft <= 30 * 60 ? '#fcd34d' : '#6ee7b7';
     timerHtml =
       '<div class="timer-wrap" style="margin-bottom:16px">'
-      + '<div><div class="timer-digits ok" id="mTotalTD">4h 00m 00s</div><div class="timer-sub">Total Exam Clock &mdash; Full CISA Simulation</div></div>'
-      + '<div class="timer-track"><div class="timer-fill" id="mTotalTF" style="width:100%;background:#6ee7b7"></div></div>'
+      + '<div><div class="timer-digits ' + initCls + '" id="mTotalTD">' + initLabel + '</div><div class="timer-sub">Total Exam Clock &mdash; Full CISA Simulation</div></div>'
+      + '<div class="timer-track"><div class="timer-fill" id="mTotalTF" style="width:' + initPct + '%;background:' + initBg + '"></div></div>'
       + '</div>';
   } else {
     timerHtml =
@@ -8525,7 +8534,15 @@ function showChangelog() {
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
     + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v8.2 &#8212; Guided First-Use Onboarding</div>'
+    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> v8.3 &#8212; Full Tip Coverage + Mock Exam Fixes</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>Hand-authored tips for all 995 questions</strong> &#8212; every question across D1–D5 now carries the trap-naming + mindset/principle + exam-shortcut tip pattern (D1: 164, D2: 164, D3: 120, D4: 263, D5: 284)</li>'
+    + '<li><strong>Tightened subtopic vocabularies</strong> &#8212; D4 and D5 now use focused category labels (Auditing IT Operations, System Configuration & Hardening, Information Asset Management, Security Governance, etc.) instead of the prior "General" bucket</li>'
+    + '<li><strong>Bug Fix: Mock exam answer buttons unresponsive</strong> &#8212; <code>selectMockAnswer</code> referenced an undefined <code>correct</code> variable, throwing on first click and locking subsequent clicks; now resolved via the same display-letter mapping used in practice mode</li>'
+    + '<li><strong>Bug Fix: Mock exam total-clock flicker</strong> &#8212; the 4-hour timer no longer flashes <code>4h 00m 00s</code> between questions; rendered HTML now reflects the live remaining time on every render</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v8.2 &#8212; Guided First-Use Onboarding</div>'
     + '<ul class="cl-items">'
     + '<li><strong>3-Step Guided Onboarding</strong> &#8212; new users are walked through: app overview, profile creation with a name input, and exam date setting with a recommended first action (Domain 1 Practice)</li>'
     + '<li><strong>Profile created at first visit</strong> &#8212; onboarding hooks into the profile system so progress is saved from question one</li>'
