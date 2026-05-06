@@ -332,37 +332,76 @@ SUBTOPIC_VOCAB = {
                                                     r"web application)\b"),
     ],
     4: [
-        ("Service Level Management", r"\b(service level agreement|SLA|service level management|SLM|"
-                                        r"service delivery objective|SDO|service quality)\b"),
+        ("Service Level Management", r"\b(service level agreement|\bSLA\b|service level management|\bSLM\b|"
+                                        r"service delivery objective|\bSDO\b|service quality|"
+                                        r"third[- ]party (?:application|service)|outsourcing contract)\b"),
         ("Capacity & Performance Monitoring", r"\b(capacity (?:management|planning)|performance monitor|"
                                                   r"system performance|response time|server utilization|"
-                                                  r"network performance|bandwidth)\b"),
-        ("Database Management", r"\b(database administrator|DBA|database control|database log|database integrity|"
-                                  r"referential integrity|denormali[sz]ation|database parameter|database backup)\b"),
+                                                  r"network performance|bandwidth|"
+                                                  r"server.*configured|baseline.*system|baseline and monitor)\b"),
+        ("Database Management", r"\b(database administrator|\bDBA\b|database control|database log|database integrity|"
+                                  r"referential integrity|denormali[sz]ation|database parameter|database backup|"
+                                  r"out[- ]of[- ]range data|tables of (?:a |the )?database|"
+                                  r"concurrency control|database environment|"
+                                  r"data integrity controls|distributed accounting|database review)\b"),
         ("Backup & Recovery", r"\b(backup|restore|data backup|incremental backup|differential backup|"
-                                r"full backup|archive|offsite storage|magnetic media|tape)\b"),
-        ("Disaster Recovery Planning", r"\b(disaster recovery|DRP|hot site|warm site|cold site|reciprocal|"
+                                r"full backup|archive|offsite storage|magnetic media|\btape\b|"
+                                r"tape inventory|backup media|backup strategy|"
+                                r"continuous data backup|disk[- ]based snapshots|virtual tape librar)\b"),
+        ("Disaster Recovery Planning", r"\b(disaster recovery|\bDRP\b|hot site|warm site|cold site|reciprocal|"
                                           r"alternate site|mirror(?:ed)? site|recovery strategy|"
-                                          r"recovery point objective|RPO|recovery time objective|RTO|"
-                                          r"maximum tolerable|interruption window)\b"),
-        ("Business Continuity Planning", r"\b(business continuity|BCP|continuity plan|business impact analysis|BIA|"
-                                            r"crisis management|continuity strateg|continuity test)\b"),
+                                          r"recovery point objective|\bRPO\b|recovery time objective|\bRTO\b|"
+                                          r"maximum tolerable|interruption window|"
+                                          r"telecommunication(?:s)? (?:continuity|backup|recovery)|"
+                                          r"information processing facility|\bIPF\b|alternative routing|"
+                                          r"diverse routing|long[- ]haul network|\bdiversity\b)\b"),
+        ("Business Continuity Planning", r"\b(business continuity|\bBCP\b|continuity plan|"
+                                            r"business impact analysis|\bBIA\b|"
+                                            r"crisis management|continuity strateg|continuity test|"
+                                            r"BCP test|continuity (?:plan|process|test|requirements?)|"
+                                            r"resumption of (?:critical )?business)\b"),
         ("Incident & Problem Management", r"\b(incident management|problem management|help desk|"
-                                              r"incident response|exception report|escalation)\b"),
+                                              r"incident response|exception report|escalation|"
+                                              r"problem.*encountered|service disruption|incident.*severity|"
+                                              r"audit.*activities of users)\b"),
         ("Change & Release Management", r"\b(change management|change control|emergency change|"
                                             r"release management|version control|configuration management|"
-                                            r"patch management|software patch)\b"),
+                                            r"patch management|software patch|"
+                                            r"program change|production change|"
+                                            r"software inspection|change request|"
+                                            r"change to.*production|production source|"
+                                            r"vendor[- ]?supplied software|patches? (?:fixing|are released))\b"),
         ("IT Operations & Job Scheduling", r"\b(job schedul|batch job|production schedule|operator log|"
-                                              r"console log|operations support|production environment)\b"),
-        ("System Resilience & High Availability", r"\b(redundan(?:t|cy)|RAID|clustering|failover|"
+                                              r"console log|operations support|production environment|"
+                                              r"job run logs|computer job schedules|"
+                                              r"compares? job run|operations team|operations staff|"
+                                              r"unattended|production print)\b"),
+        ("System Resilience & High Availability", r"\b(redundan(?:t|cy)|\bRAID\b|clustering|failover|"
                                                       r"high availability|fault tolerance|load balanc|"
-                                                      r"diverse routing|alternate routing)\b"),
-        ("End-User Computing", r"\b(end[- ]?user computing|EUC|spreadsheet|user[- ]developed)\b"),
-        ("Cloud Operations", r"\b(cloud (?:service|provider|computing)|software as a service|SaaS|"
-                                r"infrastructure as a service|IaaS|platform as a service|PaaS)\b"),
-        ("Data Quality & Warehousing", r"\b(data warehouse|data mart|metadata|data quality|extract|transform|load|ETL)\b"),
-        ("Data Migration & Integration", r"\b(data migration|data conversion|interface|integration|"
-                                            r"system interface|data mapping)\b"),
+                                                      r"diverse routing|alternate routing|"
+                                                      r"24/?7|highly used.*application|disk mirror|"
+                                                      r"resiliency|continuous availability)\b"),
+        ("End-User Computing", r"\b(end[- ]?user computing|\bEUC\b|spreadsheet|user[- ]developed|"
+                                  r"end users.*develop|distributed program)\b"),
+        ("Cloud Operations", r"\b(cloud (?:service|provider|computing|hosting|infrastructure)|"
+                                r"software as a service|\bSaaS\b|"
+                                r"infrastructure as a service|\bIaaS\b|platform as a service|\bPaaS\b|"
+                                r"cloud[- ]based)\b"),
+        ("Data Quality & Warehousing", r"\b(data warehouse|data mart|metadata|data quality|"
+                                          r"extract|transform|load|\bETL\b|data integrity)\b"),
+        ("Data Migration & Integration", r"\b(data migration|data conversion|"
+                                            r"system interface|data mapping|"
+                                            r"interface(?:s)? between|data flow diagram)\b"),
+        ("Auditing IT Operations", r"\b(post[- ]?implementation review|application maintenance|"
+                                       r"control self[- ]?assessment|\bCSA\b|"
+                                       r"system parameter|programmed control|"
+                                       r"unauthorized|maliciously modified|application controls|"
+                                       r"open[- ]source software|out of scope|software compliance|"
+                                       r"audit.*software development|audit log|fraud detection)\b"),
+        ("System Configuration & Hardening", r"\b(system configuration|database hardening|"
+                                                 r"hardening|configuration changes|"
+                                                 r"system parameters|out[- ]of[- ]band|"
+                                                 r"factory default|default password|disable.*service)\b"),
     ],
     5: [
         ("Authentication & Access Control", r"\b(authentication|two[- ]?factor|multifactor|MFA|single sign[- ]?on|SSO|"
