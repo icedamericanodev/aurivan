@@ -3192,7 +3192,7 @@ header::after {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v8.4</span>
+    <span class="bank-pill" id="versionPill">v8.5</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -3384,8 +3384,17 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v8.4';
+const APP_VERSION = 'v8.5';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
+
+// Feedback is delivered via a Google Form whose responses land in the
+// FEEDBACK_EMAIL inbox (and a Google Sheet) — submitted directly from this
+// page so users never have to leave for their mail app. The mailto: link
+// stays as a manual fallback. Field IDs come from the form's prefilled link.
+const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSd2gMgdW9-4xs5GKZbRQlc19G9-nQI3F66MUu7Lu9sfvUOrTg/formResponse';
+const FEEDBACK_FIELD_TYPE = 'entry.1841479494';
+const FEEDBACK_FIELD_MESSAGE = 'entry.5371025';
+const FEEDBACK_FIELD_DIAG = 'entry.346272382';
 
 // Total questions across all loaded domain banks. Recomputed on demand so
 // async-loaded domains are reflected once they arrive. The known full bank
@@ -8659,9 +8668,16 @@ function showChangelog() {
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
     + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> ' + APP_VERSION + ' &#8212; Feedback + UI Polish</div>'
+    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> ' + APP_VERSION + ' &#8212; Direct Feedback Send</div>'
     + '<ul class="cl-items">'
-    + '<li><strong>Send Feedback</strong> &#8212; new header button opens a modal where you can send general feedback, request features, or report bugs; opens your mail app prefilled and routes to <code>certprep.support@gmail.com</code>. Optional anonymous diagnostic info (app version, browser, screen size) helps with bug reports.</li>'
+    + '<li><strong>One-click feedback send</strong> &#8212; the Feedback modal now submits directly from the page (via a Google Form bound to <code>certprep.support@gmail.com</code>); no need to leave for your mail app</li>'
+    + '<li><strong>Mail-app fallback retained</strong> &#8212; the secondary "Open mail app instead" link prefills the same message as a <code>mailto:</code> for users who prefer their own email client; also shown automatically if the page is offline</li>'
+    + '<li><strong>Inline status feedback</strong> &#8212; the Send button shows a "Sending…" state, then a success toast on completion or an inline error with the mailto fallback if the network drops</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v8.4 &#8212; Feedback + UI Polish</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>Send Feedback (mailto)</strong> &#8212; initial Feedback modal that opened the user\'s mail app prefilled (replaced in v8.5 by direct send)</li>'
     + '<li><strong>Cleaner header version</strong> &#8212; the header pill now shows just the app version (no question count) and is sourced from a single constant so the version always matches this What\'s New entry</li>'
     + '<li><strong>Domain Performance labels</strong> &#8212; cards now show clear <em>Score</em> and <em>Seen</em> stats with a divider, and an explicit "Tap to begin" empty state replaces the cryptic <code>0 attempts &middot; 0/164</code></li>'
     + '<li><strong>Question count corrected to 995</strong> &#8212; onboarding and the bank-complete screen now read live counts instead of the old <code>352</code> placeholder</li>'
@@ -8768,9 +8784,10 @@ function closeChangelog(e) {
 
 // ── FEEDBACK MODAL ──
 // Lightweight client-only feedback flow. The user composes the message in the
-// modal; "Send" assembles a mailto: URL prefilled with the chosen category,
-// the message body, and (if opted-in) anonymous diagnostic context. No data
-// leaves the page until the user explicitly hits Send in their mail client.
+// modal; "Send" POSTs the form to a Google Form (no-cors), so submissions
+// land in the FEEDBACK_EMAIL inbox without the user leaving the page. The
+// mailto: link is kept as a manual fallback for users who prefer their own
+// mail client (and as a safety net if the form POST fails).
 var FEEDBACK_STATE = { type: 'general' };
 function showFeedback() {
   var modal = document.getElementById("feedbackModal");
@@ -8781,7 +8798,7 @@ function showFeedback() {
     + '<div class="cl-title" id="fbTitle">Send Feedback</div>'
     + '<div style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6">'
     + 'Tell us what you love, what feels off, or what you wish this app did. '
-    + 'We read every message sent to <strong>' + escapeHtml(FEEDBACK_EMAIL) + '</strong>.'
+    + 'Sent privately to <strong>' + escapeHtml(FEEDBACK_EMAIL) + '</strong>.'
     + '</div>'
     + '<div class="fb-row">'
     + '<span class="fb-label">What kind of feedback?</span>'
@@ -8800,12 +8817,13 @@ function showFeedback() {
     + 'Include anonymous diagnostic info (app version, browser, screen size). Helps with bug reports.'
     + '</label>'
     + '</div>'
-    + '<div class="fb-helper">Your default mail app will open prefilled — review and send it from there. '
-    + 'Or email <a href="mailto:' + escapeHtml(FEEDBACK_EMAIL) + '">' + escapeHtml(FEEDBACK_EMAIL) + '</a> directly.</div>'
+    + '<div id="fbStatus" class="fb-helper" style="display:none"></div>'
     + '<div class="fb-actions">'
     + '<button type="button" class="fb-btn cancel" onclick="closeFeedback()">Cancel</button>'
-    + '<button type="button" class="fb-btn send" onclick="sendFeedback()">Open Mail App &rarr;</button>'
+    + '<button type="button" class="fb-btn send" id="fbSendBtn" onclick="sendFeedback()">Send Feedback</button>'
     + '</div>'
+    + '<div class="fb-helper" style="margin-top:14px;text-align:center">Prefer your own email? '
+    + '<a href="#" id="fbMailtoLink" onclick="sendFeedbackViaMailto();return false;">Open mail app instead</a>.</div>'
     + '</div></div>';
   setTimeout(function(){
     var ta = document.getElementById('fbMessage');
@@ -8819,25 +8837,20 @@ function setFeedbackType(t) {
     b.classList.toggle('active', b.dataset.type === t);
   });
 }
-function sendFeedback() {
+// Reads the current modal state and returns { type, msg, diag } or null if
+// the message is empty (also flashes the textarea border red in that case).
+function _readFeedbackForm() {
   var msgEl = document.getElementById('fbMessage');
   var diagEl = document.getElementById('fbDiag');
   var msg = msgEl ? (msgEl.value || '').trim() : '';
   if (!msg) {
     if (msgEl) { msgEl.focus(); msgEl.style.borderColor = 'var(--wrong)'; }
-    return;
+    return null;
   }
-  var type = FEEDBACK_STATE.type || 'general';
-  var subjectMap = {
-    general: 'CISA Mindset feedback',
-    feature: 'CISA Mindset feature request',
-    bug:     'CISA Mindset bug report'
-  };
-  var subject = subjectMap[type];
-  var bodyParts = [msg, '', '---'];
+  var diag = '';
   if (diagEl && diagEl.checked) {
     var dpr = window.devicePixelRatio ? window.devicePixelRatio.toFixed(2) : '1';
-    var diag = [
+    diag = [
       'App version: ' + APP_VERSION,
       'User agent: ' + (navigator.userAgent || 'unknown'),
       'Language: ' + (navigator.language || 'unknown'),
@@ -8846,18 +8859,63 @@ function sendFeedback() {
       'Theme: ' + (document.documentElement.getAttribute('data-theme') || 'light'),
       'Sent: ' + new Date().toISOString()
     ].join('\n');
-    bodyParts.push(diag);
   } else {
-    bodyParts.push('App version: ' + APP_VERSION);
+    diag = 'App version: ' + APP_VERSION;
   }
-  var body = bodyParts.join('\n');
+  return { type: FEEDBACK_STATE.type || 'general', msg: msg, diag: diag };
+}
+function sendFeedback() {
+  var data = _readFeedbackForm();
+  if (!data) return;
+  var btn = document.getElementById('fbSendBtn');
+  var status = document.getElementById('fbStatus');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  if (status) { status.style.display = 'none'; }
+  var body = new URLSearchParams();
+  body.append(FEEDBACK_FIELD_TYPE, data.type);
+  body.append(FEEDBACK_FIELD_MESSAGE, data.msg);
+  body.append(FEEDBACK_FIELD_DIAG, data.diag);
+  // Google Forms responses don't expose CORS headers, so we use no-cors and
+  // treat any non-network-error resolution as success. Network errors (offline,
+  // DNS failure) reject and are surfaced with a graceful mailto fallback.
+  fetch(FEEDBACK_FORM_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString()
+  }).then(function(){
+    closeFeedback();
+    if (typeof showToast === 'function') {
+      showToast('Thanks for the feedback — sent!', 'success', 2600);
+    }
+  }).catch(function(err){
+    if (btn) { btn.disabled = false; btn.textContent = 'Send Feedback'; }
+    if (status) {
+      status.style.display = 'block';
+      status.style.color = 'var(--wrong)';
+      status.innerHTML = 'Couldn\'t send (you may be offline). '
+        + '<a href="#" onclick="sendFeedbackViaMailto();return false;">Open mail app instead</a>.';
+    }
+    console.error('Feedback POST failed:', err);
+  });
+}
+function sendFeedbackViaMailto() {
+  var data = _readFeedbackForm();
+  if (!data) return;
+  var subjectMap = {
+    general: 'CISA Mindset feedback',
+    feature: 'CISA Mindset feature request',
+    bug:     'CISA Mindset bug report'
+  };
+  var subject = subjectMap[data.type] || subjectMap.general;
+  var body = data.msg + '\n\n---\n' + data.diag;
   var mailto = 'mailto:' + encodeURIComponent(FEEDBACK_EMAIL)
     + '?subject=' + encodeURIComponent(subject)
     + '&body=' + encodeURIComponent(body);
   window.location.href = mailto;
   closeFeedback();
   if (typeof showToast === 'function') {
-    showToast('Thanks! Your mail app should be opening now.', 'success', 2400);
+    showToast('Opening your mail app — finish sending from there.', 'info', 2400);
   }
 }
 function closeFeedback(e) {
