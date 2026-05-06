@@ -391,5 +391,336 @@
     "Trap is B 'consider security controls' — important but a SUBSET of feasibility.",
     "Trap is D 'consult audit department' — secondary input.",
     "Feasibility study + cost-benefit demonstrates the proposal CAN work AND IS worth doing. That's what management needs to make an informed decision."
+  ],
+
+  "d3_066": [
+    "Trap is B 'transferred between environments' — that's PORTABILITY.",
+    "Trap is C 'maintain performance under stated conditions' — that's RELIABILITY.",
+    "Trap is D 'performance vs resources used' — that's EFFICIENCY.",
+    "Functionality = the FUNCTIONS the system performs and their specified properties. Other quality attributes describe how well functions perform; functionality is WHICH functions exist."
+  ],
+  "d3_067": [
+    "Trap is A 'increased maintenance' — operational concern, not the immediate audit concern.",
+    "Trap is B 'improper testing documentation' — process concern, secondary.",
+    "Trap is D 'delays in problem resolution' — possible but not the primary risk.",
+    "QA tests against quality standards; UAT tests against user needs. Combined, users may pressure QA to accept programs that meet THEIR needs but fail QA standards. Independent QA pressure check is lost."
+  ],
+  "d3_068": [
+    "Trap is A 'internal auditor' — that's the role, not the QA improvement contribution.",
+    "Trap is B 'reviewer' — describes audit activity, not QA improvement role.",
+    "Trap is C 'workshop facilitator' — possible activity, not the broader role.",
+    "When helping improve QA (vs auditing it), the IS auditor consults — providing expertise and guidance without operating QA themselves. Maintains independence while adding value."
+  ],
+  "d3_069": [
+    "Trap is A 'OS compatible with hardware' — that's a hardware/OS relationship, not application-OS.",
+    "Trap is B 'OS update schedule' — operations concern, not acquisition fit.",
+    "Trap is C 'OS has latest versions' — patching concern, not application compatibility.",
+    "Application acquisition's OS concern: does the application work with the OS we have or are about to have? Past or future OS plans matter; the version cadence doesn't."
+  ],
+  "d3_070": [
+    "Trap is A 'long weekend Friday cutover' — common practice; tight window manageable.",
+    "Trap is B 'data representation different' — UX concern, addressable through training.",
+    "Trap is D 'printing defects 5 weeks out' — concerning but recoverable before launch.",
+    "Direct cutover with legacy decommissioning = no fallback path. If the new system fails, operations halt. Migration projects need parallel operation or phased cutover for safety."
+  ],
+  "d3_071": [
+    "Trap is A 'parallel testing' — runs old + new with same data, doesn't test environmental impact.",
+    "Trap is B 'pilot testing' — limited rollout, doesn't test environmental compatibility comprehensively.",
+    "Trap is C 'interface/integration testing' — tests between components within the system.",
+    "Sociability testing answers: does this system COEXIST peacefully with the other systems in production? Tests interactions with the broader environment, not internal components."
+  ],
+  "d3_072": [
+    "Trap is A 'report and leave to auditee' — passive; auditor should advocate for resolution.",
+    "Trap is B 'attempt to resolve' — auditor doesn't fix; that's a SoD violation.",
+    "Trap is D 'ignore lacks evidence' — defeatist; intermittent doesn't mean unverifiable.",
+    "When auditor sees an unresolved error at testing-phase end, the response is to ESCALATE — push for resolution before the system goes live. Reporting alone doesn't drive action."
+  ],
+  "d3_073": [
+    "Trap is A 'removal of manual steps' — automation reduces some risks (errors), increases others.",
+    "Trap is B 'inadequate procedure manuals' — control weakness, addressable through documentation.",
+    "Trap is D 'unresolved compliance issues' — important but specific, not the GREATEST risk to controls effectiveness.",
+    "Collusion between employees defeats SoD-based controls. When colluding parties cooperate to bypass checks, even well-designed controls fail. Hardest to detect."
+  ],
+  "d3_074": [
+    "Trap is A 'pilot' — limited rollout, low-risk testing approach.",
+    "Trap is B 'parallel' — safest; runs both systems together.",
+    "Trap is D 'phased' — graduated rollout, manageable risk.",
+    "Direct cutover = immediate switch with no rollback path. If the new system fails, operations halt. Highest-risk conversion strategy by far."
+  ],
+  "d3_075": [
+    "Trap is A 'unit testing' — individual modules; doesn't test inter-module connections.",
+    "Trap is C 'sociability testing' — tests interactions with EXTERNAL systems, not internal modules.",
+    "Trap is D 'QA testing' — quality assurance approach, not specific to inter-module connections.",
+    "Two modules being LINKED requires integration testing — verifying the connection passes data correctly between them. That's integration testing's specific job."
+  ],
+  "d3_076": [
+    "Trap is B 'evaluate interface testing' — testing already happened pre-implementation.",
+    "Trap is C 'review detailed design documentation' — design phase artifact, less relevant post-implementation.",
+    "Trap is D 'evaluate system testing' — also pre-implementation activity.",
+    "Postimplementation review focuses on PRODUCTION configuration — particularly access controls, which determine ongoing security. First check: was security mapped correctly?"
+  ],
+  "d3_077": [
+    "Trap is A 'UAT' — pre-deployment validation; doesn't confirm production operation.",
+    "Trap is B 'project risk assessment' — planning phase activity, not operational confirmation.",
+    "Trap is D 'management approval' — administrative, doesn't validate operation.",
+    "Postimplementation review evaluates whether deployed system operates as designed AND delivers expected value. Specifically designed for this question."
+  ],
+  "d3_078": [
+    "Trap is A 'isolation' — concurrent transactions don't interfere with each other.",
+    "Trap is B 'consistency' — database remains in valid state across transactions.",
+    "Trap is D 'durability' — committed transactions survive system failure.",
+    "Atomicity = all-or-nothing. Either every step of the transaction completes, or none of them do. Partial completion is impossible."
+  ],
+  "d3_079": [
+    "Trap is B 'addresses customer requirements' — important but not the audit focus.",
+    "Trap is C 'meets performance goals' — operational concern, secondary.",
+    "Trap is D 'supports SoD' — one type of control, broader controls matter.",
+    "BPR can streamline processes but easily strips out controls in the name of efficiency. Auditor's PRIMARY concern: have the key controls been preserved or properly redesigned in the new process?"
+  ],
+  "d3_080": [
+    "Trap is B 'logging customer orders' — record-keeping, doesn't ensure correct production.",
+    "Trap is C 'hash totals in transmission' — verifies transmission accuracy, not production accuracy.",
+    "Trap is D 'production supervisor approves' — preventive control, but doesn't verify post-production accuracy.",
+    "End-to-end verification: produced products match orders. Direct comparison from order entry to production output. Catches errors anywhere in the chain."
+  ],
+  "d3_081": [
+    "Trap is A 'systems receiving output only' — half the picture.",
+    "Trap is B 'systems sending output only' — also half.",
+    "Trap is D 'interfaces only' — too narrow; output controls in the source system matter too.",
+    "When two systems integrate, output of one becomes input of another. Both ends need controls — sending side validates output quality; receiving side validates input. Controls must exist on BOTH systems."
+  ],
+  "d3_082": [
+    "Trap is A 'transaction valid for card type' — business rule check, after card validation.",
+    "Trap is C 'within credit limit' — financial check, after card validation.",
+    "Trap is D 'not lost or stolen' — fraud check, after card identification.",
+    "Initial validation = does this card EXIST? Format check + database lookup. Without confirming the card itself is valid, downstream checks (limit, type, fraud) are meaningless."
+  ],
+  "d3_083": [
+    "Trap is B 'manual code comparison' — slow, error-prone, not scalable.",
+    "Trap is C 'regression testing in preproduction' — verifies functionality, doesn't enforce code identity.",
+    "Trap is D 'management approval' — administrative; doesn't prevent unauthorized code from being moved.",
+    "Release management software automates the move from test to production with no manual intervention. Tested code = released code, by tool design. Compensating control for SoD failure."
+  ],
+  "d3_084": [
+    "Trap is A 'stringent contract management' — process discipline, doesn't prevent specification gaps.",
+    "Trap is C 'cultural and political awareness' — important but operational, not technical-success driver.",
+    "Trap is D 'postimplementation review' — too late; review can't fix offshore-development gaps.",
+    "Offshore = remote, less interactive. Detailed specifications fill the gap that proximity normally provides. Without them, assumptions diverge and the deliverable misses requirements."
+  ],
+  "d3_085": [
+    "Trap is A 'project budget' — important but doesn't determine whether more people shorten duration.",
+    "Trap is C 'remaining task length' — affected BY adding people, not the analysis target.",
+    "Trap is D 'personnel on other tasks' — operational concern.",
+    "Adding people to a project may NOT shorten duration if they aren't on the critical path. Brooks' Law: 'adding manpower to a late project makes it later'. Critical path drives the answer."
+  ],
+  "d3_086": [
+    "Trap is A 'independent review of audit work' — quality assurance, doesn't optimize resources.",
+    "Trap is C 'global auditing standards' — guidelines for HOW to audit, not optimization.",
+    "Trap is D 'risk-based audit approach' — focusing tactic, not multi-audit optimization.",
+    "Integrated audit combines multiple audit types into one engagement — financial + IS + operational + compliance. Shared scope, shared work, shared findings. Significant resource savings AND quality improvements."
+  ],
+  "d3_087": [
+    "Trap is A 'not suitable for prototyping/RAD' — false; time boxing is COMMON in prototyping/RAD.",
+    "Trap is B 'eliminates quality process' — false; quality process is preserved within time boxes.",
+    "Trap is D 'separates system and UAT' — false; time boxing doesn't separate test types.",
+    "Time box management: fixed time, fixed cost, variable scope. Within each time box, the team delivers what fits. Strong cost/time control by design."
+  ],
+  "d3_088": [
+    "Trap is B 'time pressures' — agile or RAD better suit time pressure.",
+    "Trap is C 'object-oriented approach' — paradigm-independent; waterfall doesn't require/exclude OO.",
+    "Trap is D 'new technology' — waterfall is poor for new technology because requirements often change.",
+    "Waterfall = stable requirements, predictable environment, sequential phases. Best when you KNOW what you need upfront and the environment won't shift."
+  ],
+  "d3_089": [
+    "Trap is A 'enough data per test case' — quantity, not quality.",
+    "Trap is C 'completing on schedule' — time concern, not data concern.",
+    "Trap is D 'random sample of actual data' — random may miss critical edge cases.",
+    "Test data must REPRESENT actual processing — valid data, invalid data, edge cases, error conditions. Realistic distribution of conditions matters more than volume or randomness."
+  ],
+  "d3_090": [
+    "Trap is A 'project information' — single-project view, doesn't show controls across multiple projects.",
+    "Trap is B 'policy documents' — define rules but don't show actual project status.",
+    "Trap is D 'program organization' — describes structure, not control effectiveness.",
+    "Multi-project oversight requires PORTFOLIO information — owners, schedules, statuses, costs across all projects. That's where multi-project controls become observable."
+  ],
+  "d3_091": [
+    "Trap is B 'until project approved' — too short; business case is referenced throughout development.",
+    "Trap is C 'until user acceptance' — also too short.",
+    "Trap is D 'until production' — still too short.",
+    "Business case is a reference document for the SYSTEM'S ENTIRE LIFECYCLE — informing maintenance decisions, retirement decisions, new investment comparisons. Outlives the project."
+  ],
+  "d3_092": [
+    "Trap is B 'brute force attack' — targets passwords, unrelated to coding standards.",
+    "Trap is C 'DDoS attack' — network attack, unrelated to code quality.",
+    "Trap is D 'war dialing attack' — modem-era reconnaissance, irrelevant.",
+    "Buffer overflow exploits poorly-written code that doesn't validate input lengths. Web apps without coding standards or code reviews are particularly vulnerable to buffer overflows."
+  ],
+  "d3_093": [
+    "Trap is A 'bottom-up testing' — tests modules first, interfaces last; opposite of question's requirement.",
+    "Trap is B 'sociability testing' — tests external systems, not internal interfaces.",
+    "Trap is D 'system testing' — overall functionality test, not interface-focused.",
+    "Top-down testing exercises high-level functions first, then drills into modules. Interface errors surface immediately because interfaces are tested before underlying modules."
+  ],
+  "d3_094": [
+    "Trap is A 'not concerned, compensating controls exist' — assumes; auditor must verify, not assume.",
+    "Trap is C 'overrides referred to senior management' — over-engineering; supervisory review is sufficient.",
+    "Trap is D 'recommend overrides not be permitted' — overrides are policy-allowed; auditor doesn't unilaterally restrict policy.",
+    "If overrides are policy-allowed, they need OPERATIONAL CONTROL: automatic logging + independent review. That's how the override capability stays governed."
+  ],
+  "d3_095": [
+    "Trap is A 'as close to writing' — close, but the principle is broader.",
+    "Trap is B 'primarily at project start' — too narrow; project-start governance isn't enough.",
+    "Trap is D 'mainly at project close-down' — way too late; lessons-learned can't fix THIS project.",
+    "Continuous quality management with testing-driven defect detection minimizes total project cost. The earlier defects are found, the cheaper to fix; testing throughout (not just at end) keeps defect cost low."
+  ],
+  "d3_096": [
+    "Trap is A 'shortest activity time' — irrelevant; time on critical path matters.",
+    "Trap is C 'longest possible completion time' — confused; you want to SHORTEN, not lengthen.",
+    "Trap is D 'shortest slack time' — slack means non-critical; you want zero-slack activities.",
+    "Critical path activities have ZERO SLACK — any delay there delays the project. Paying premium to compress critical-path activities is the only way to shorten the project. Other activities have slack absorbing changes already."
+  ],
+  "d3_097": [
+    "Trap is A 'report ineffective project management' — premature conclusion without analysis.",
+    "Trap is B 'recommend changing PM' — overstep; auditor doesn't make personnel decisions.",
+    "Trap is C 'review IT governance structure' — too broad; the audit is about THIS project.",
+    "Audit response to over-budget/over-time: review business case + project management to understand WHY. Recommendations come AFTER understanding."
+  ],
+  "d3_098": [
+    "Trap is B 'bounds checking' — surface-detectable in either environment.",
+    "Trap is C 'input validation' — also visible in test environments.",
+    "Trap is D 'pointer manipulation' — code-readable issue, visible regardless of environment.",
+    "Race conditions are TIMING bugs. Test environments with logging/tracing tools change timing — slower, instrumented. Race conditions appear in production at full speed but hide in instrumented test."
+  ],
+  "d3_099": [
+    "Trap is A 'direct cutover' — least redundant; no fallback.",
+    "Trap is B 'pilot study' — partial rollout, limited redundancy.",
+    "Trap is C 'phased approach' — gradual but eventually replaces; not fully redundant.",
+    "Parallel run = both systems operate simultaneously. Maximum redundancy: if new fails, old takes over. Most expensive but safest."
+  ],
+  "d3_100": [
+    "Trap is A 'test data for critical applications' — operational test artifact, not requirements deliverable.",
+    "Trap is B 'detailed test plans' — operational document, downstream of requirements.",
+    "Trap is C 'QA test specifications' — also downstream of requirements.",
+    "UAT specifications belong in requirements definition because users define what they need AND how it'll be tested. Same conversation, same phase."
+  ],
+  "d3_101": [
+    "Trap is A 'assess post-release downtime risk' — ongoing concern, not post-project review.",
+    "Trap is C 'verify controls working' — pre-release activity (UAT/postimplementation).",
+    "Trap is D 'ensure test data deleted' — operational cleanup, narrow.",
+    "Post-project review = lessons learned for FUTURE projects. The point is institutional learning, not validating the current project's outcomes."
+  ],
+  "d3_102": [
+    "Trap is B 'resources determined' — operational concern, addressable later.",
+    "Trap is C 'technical deliverables identified' — definition concern, secondary.",
+    "Trap is D 'external contracts complete' — administrative, secondary.",
+    "Project initiation must establish complexity and risk understanding upfront. Without that, planning is built on assumptions. Risk and complexity awareness drives every later decision."
+  ],
+  "d3_103": [
+    "Trap is A 'major deployment after PoC' — risky; PoC doesn't validate production scale.",
+    "Trap is B 'prototyping + one-phase deployment' — combines rapid + risky deployment.",
+    "Trap is D 'simulate before deployment' — useful but doesn't replace phased rollout.",
+    "Large complex infrastructure = phased deployment. Each phase teaches the next; rollback is feasible if a phase fails. Risk distributed over time."
+  ],
+  "d3_104": [
+    "Trap is A 'discontinue project' — drastic; analysis comes first.",
+    "Trap is C 'return to sponsor for re-approval' — bureaucratic; doesn't address the underlying problem.",
+    "Trap is D 'complete and update later' — proceeds with invalid business case; backwards.",
+    "Update business case + identify corrective actions = data-driven decision support. Lets management decide whether to continue, pivot, or stop based on current reality."
+  ],
+  "d3_105": [
+    "Trap is B 'testing before all programs complete' — bottom-up advantage; tests modules as ready.",
+    "Trap is C 'more effective than other approaches' — too strong; depends on context.",
+    "Trap is D 'errors in critical modules detected sooner' — that's BOTTOM-UP's specific advantage.",
+    "Top-down tests the system architecturally. Major function and interface tests run early, surfacing integration errors before deep module testing wastes effort."
+  ],
+  "d3_106": [
+    "Trap is A 'conceptual design specs' — earlier-phase artifact, not testing-phase focus.",
+    "Trap is B 'vendor contract' — administrative, not testing-phase technical concern.",
+    "Trap is D 'change requests' — process artifact, not testing focus.",
+    "Testing phase produces error reports. Auditor reviews error reports to verify: are errors being identified accurately? Is resolution happening? That's the testing-phase audit."
+  ],
+  "d3_107": [
+    "Trap is A 'increase system testing time' — addresses symptoms, not root cause; defects propagate before reaching system test.",
+    "Trap is C 'increase development staff' — adding people doesn't reduce defects per person.",
+    "Trap is D 'sign-off on deliverables' — administrative, doesn't catch defects.",
+    "Software inspections (formal reviews) catch defects EARLY in code/design. Cheaper to fix than testing-found defects. Cost-effective per-defect-prevented."
+  ],
+  "d3_108": [
+    "Trap is B 'accept PM position' — abandons audit responsibility.",
+    "Trap is C 'wait for risk manager' — passive; risks accumulate during the wait.",
+    "Trap is D 'review risk after requirements phase' — too late; risks should be managed from the start.",
+    "Risk identification and contingency planning are CHEAPER and MORE EFFECTIVE early than late. Auditor must advocate for proactive risk management even when PM resists."
+  ],
+  "d3_109": [
+    "Trap is A 'reduce storage' — opposite; audit trails INCREASE storage.",
+    "Trap is C 'help auditor trace' — useful side effect, not the main purpose.",
+    "Trap is D 'capacity planning' — operational use, not the main purpose.",
+    "Audit trails establish ACCOUNTABILITY: who did what, when. Tracing transactions through the system maps responsibility. That's the foundational purpose."
+  ],
+  "d3_110": [
+    "Trap is A 'project sponsor' — provides resources and removes obstacles, but doesn't oversee day-to-day progress.",
+    "Trap is B 'system development team' — executes, not oversees.",
+    "Trap is D 'user project team' — represents users, not project oversight.",
+    "Project steering committee = oversight body for project progress. Reviews status, approves changes, ensures alignment. Specifically designed for this responsibility."
+  ],
+  "d3_111": [
+    "Trap is A 'IS auditor' — independence violation; auditor can't sign off operationally.",
+    "Trap is B 'DBA' — technical role, doesn't validate business correctness of data.",
+    "Trap is C 'project manager' — manages the project, doesn't own data quality.",
+    "Data owner has the only AUTHORITY to confirm data accuracy and completeness. Going live with bad data = data owner's accountability."
+  ],
+  "d3_112": [
+    "Trap is B 'arithmetic characteristics' — numeric properties, but data structure matters more.",
+    "Trap is C 'functional characteristics of processes' — process concern, not data migration.",
+    "Trap is D 'process efficiency' — performance concern, not data quality.",
+    "Migration's central challenge: same data, different schema. Semantic mapping ensures meaning is preserved across schemas (a 'customer' in old system means same as 'customer' in new). Without semantic correlation, data is technically migrated but semantically broken."
+  ],
+  "d3_113": [
+    "Trap is B 'system users' — involved later in requirements and UAT.",
+    "Trap is C 'system designers' — involved in design phase.",
+    "Trap is D 'system builders' — involved in development phase.",
+    "Initiation = funding, sponsorship, mandate. System owners (sponsors) provide all three. Without them, the project doesn't start."
+  ],
+  "d3_114": [
+    "Trap is B 'reduce budget' — premature; no analysis yet.",
+    "Trap is C 'complete ahead of schedule' — premature; depends on actual progress.",
+    "Trap is D 'apply savings to scope expansion' — backwards; assumes savings without analysis.",
+    "1/6 budget at 6 months ≠ on track. Could mean: ahead of schedule, OR behind schedule and not spending. Compare progress to schedule first; cost without progress context is meaningless."
+  ],
+  "d3_115": [
+    "Trap is A 'manage unrestricted data types' — data abstraction, not the major component-based advantage.",
+    "Trap is B 'complex relationship modeling' — modeling capability, not development advantage.",
+    "Trap is C 'meet changing environment demands' — agility benefit, but not the major advantage.",
+    "Component-based development supports MULTIPLE development environments via standardized component interfaces. Components built in one environment can compose with components from others."
+  ],
+  "d3_116": [
+    "Trap is A 'operates with other system parts' — that's sociability testing.",
+    "Trap is B 'functional effectiveness without internal structure' — that's BLACK box testing.",
+    "Trap is D 'tightly controlled virtual environment' — sandbox testing.",
+    "White box = code-aware testing. Tester sees the code structure and tests specific logic paths. Catches procedural errors invisible to black-box testing."
+  ],
+  "d3_117": [
+    "Trap is A 'development phase' — too late for planning; should be designed already.",
+    "Trap is C 'testing phase' — way too late.",
+    "Trap is D 'deployment phase' — much too late; implementation is happening.",
+    "Implementation method affects design (HW choices, integration points, conversion strategy). Design-phase implementation planning ensures design supports the chosen deployment approach."
+  ],
+  "d3_118": [
+    "Trap is A 'use of CMM' — process maturity model, doesn't fit agile's iterative philosophy.",
+    "Trap is B 'task-level monitoring' — agile uses outcome (sprint) monitoring, not micromanaged task tracking.",
+    "Trap is C 'extensive use of dev tools' — agile is people-and-iteration-centric, not tool-centric.",
+    "Agile's distinguishing practice: post-iteration reviews (retrospectives) where the team learns and adjusts. Continuous improvement IS agile."
+  ],
+  "d3_119": [
+    "Trap is A 'daily totals aggregated' — detects volume mismatch but not specific transaction loss.",
+    "Trap is C 'duplicate transaction detection' — catches duplicates, not missing transactions.",
+    "Trap is D 'time stamp synchronization' — useful for correlation, doesn't ensure completeness.",
+    "Numerical sequences make GAPS visible. Missing transaction = missing sequence number = automatically detected. Best completeness control for high-volume transaction environments."
+  ],
+  "d3_120": [
+    "Trap is B 'fix highest-severity defects' — narrow scope; ignores risk that fixes break other things.",
+    "Trap is C 'eliminate dev testing, go to UAT' — bypassing dev testing creates massive UAT load and risk.",
+    "Trap is D 'automate defect tracking tool' — process improvement, doesn't reduce testing risk.",
+    "Pilot with reduced functionality limits scope of test, allowing focused testing in compressed time AND reducing user-facing risk. Can expand scope post-launch as testing catches up."
   ]
 }
