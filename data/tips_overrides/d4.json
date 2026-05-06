@@ -725,5 +725,306 @@
     "Trap is B 'report to senior management' — premature without confirmation.",
     "Trap is D 'draft an SLA' — auditor doesn't draft business agreements.",
     "Auditor's first job: understand current state. Confirm what the verbal agreement actually says with both parties. Then evaluate adequacy. Recommendations follow understanding."
+  ],
+
+  "d4_121": [
+    "Trap is A 'concurrent access' — performance/locking concern; denormalization may even reduce contention.",
+    "Trap is B 'deadlocks' — locking concern; denormalization typically reduces multi-table locking.",
+    "Trap is C 'unauthorized access' — access control concern; unrelated to schema design.",
+    "Denormalization stores duplicate data across tables. Update one copy, miss another = inconsistent data. Without strong update controls, integrity erodes."
+  ],
+  "d4_122": [
+    "Trap is A 'UAT' — pre-release validation, not baseline recording.",
+    "Trap is B 'backup and recovery' — preserves data, not configuration baselines.",
+    "Trap is C 'incident management' — handles disruptions, not version recording.",
+    "Configuration management tracks WHAT was deployed, including baselines. Automated tools record release versions for rollback. Foundational for change control."
+  ],
+  "d4_123": [
+    "Trap is A 'compare to standards' — checks adequacy on paper, not effectiveness.",
+    "Trap is C 'review emergency procedures' — examines documents, not actual performance.",
+    "Trap is D 'review offsite storage' — physical/environmental check, not BCP effectiveness.",
+    "Test results = empirical evidence. Did the BCP actually work? What failed? What worked? Tests are the only objective measure of effectiveness."
+  ],
+  "d4_124": [
+    "Trap is B 'adequacy' — assessed by reviewing plans against standards, not interviewing.",
+    "Trap is C 'effectiveness' — assessed via test results.",
+    "Trap is D 'response ability' — assessed through actual exercises.",
+    "Stakeholder understanding tests CLARITY. If stakeholders can articulate their roles and responsibilities, the BCP communicates clearly. Confused stakeholders = unclear plan."
+  ],
+  "d4_125": [
+    "Trap is A 'BCP maintenance responsibility' — operational concern, comes after strategy.",
+    "Trap is B 'recovery site provider' — implementation detail, follows strategy.",
+    "Trap is D 'key personnel responsibilities' — assignment, follows strategy.",
+    "BIA quantifies criticality and recovery timelines. Strategy decides HOW to recover (hot/warm/cold/reciprocal/cloud) based on those numbers. Strategy choice is BIA-driven."
+  ],
+  "d4_126": [
+    "Trap is A 'response initiated too early' — opposite; vague threshold causes hesitation, not premature action.",
+    "Trap is C 'crisis underestimated' — possible but downstream of activation delay.",
+    "Trap is D 'BCP too rigid' — vagueness creates flexibility, not rigidity.",
+    "Without a defined trigger, decision-makers hesitate. Should we activate? Is it bad enough? Time wasted = more damage. Clear thresholds enable quick activation when warranted."
+  ],
+  "d4_127": [
+    "Trap is B 'full simulation' — premature; review adequacy first.",
+    "Trap is C 'train and educate' — operational, follows BCP review.",
+    "Trap is D 'notify critical contacts' — emergency action, not annual maintenance.",
+    "Annual risk assessment may surface new risks the BCP doesn't address. Review BCP adequacy first; update before testing or training. Plan must reflect current risk landscape."
+  ],
+  "d4_128": [
+    "Trap is A 'authentication controls' — confidentiality, not transaction integrity.",
+    "Trap is B 'data normalization' — design optimization, not transactional integrity.",
+    "Trap is C 'access log controls' — detective audit trail, not integrity.",
+    "Commitment and rollback controls implement atomicity: transaction completes fully or doesn't happen. Database stays consistent across the transaction boundary. Foundational for OLTP integrity."
+  ],
+  "d4_129": [
+    "Trap is A 'permanent table-space allocation' — storage layout, not query performance.",
+    "Trap is B 'commitment/rollback' — transactional, not query throttling.",
+    "Trap is D 'access log controls' — detective auditing, not performance.",
+    "User spool limits cap how much space individual queries can consume. Without limits, one bad query can starve others. Time-of-day performance pattern often comes from heavy users running unconstrained queries."
+  ],
+  "d4_130": [
+    "Trap is B 'segregated environment + restricted developer time' — operationally complex; doesn't address the post-release approval gap.",
+    "Trap is C 'emergency change process with secondary approval' — pre-approval would defeat 'emergency' nature.",
+    "Trap is D 'strict access controls' — preventive but means emergency changes can't happen at all.",
+    "Emergency changes by definition skip pre-approval. Compensating control: rigorous post-release approval and documentation. Captures what was done; ensures justification exists."
+  ],
+  "d4_131": [
+    "Trap is A 'remove all threats' — impossible; threats can't all be eliminated.",
+    "Trap is C 'optimize RTO' — comes after determining baseline resilience.",
+    "Trap is D 'minimize recovery cost' — efficiency goal, follows from resilience design.",
+    "DRP strategy starts with: can we make the infrastructure naturally resilient? Diverse routing, redundancy, geographic distribution prevent disasters from happening. Built-in resilience is cheaper than recovery."
+  ],
+  "d4_132": [
+    "Trap is A 'DRP needs revision' — true but recoverable through document update.",
+    "Trap is B 'transactional data may be lost' — backup-related, addressable.",
+    "Trap is C 'vendor unfamiliar with policies' — operational training issue.",
+    "Application owners weren't informed = they couldn't assess whether new resolution time meets their critical-system needs. Decision made unilaterally about systems with business owners — governance failure."
+  ],
+  "d4_133": [
+    "Trap is A 'daily data backup to remote site' — daily lag = up to 24 hours of data loss.",
+    "Trap is C 'hard disk mirroring local server' — local; doesn't survive data center disaster.",
+    "Trap is D 'real-time backup to local SAN' — local; same vulnerability as the data center.",
+    "Real-time replication to a REMOTE site = up-to-second data preserved at geographically separate location. Survives data center disaster with no data loss."
+  ],
+  "d4_134": [
+    "Trap is B 'cost increases' — opposite; longer RTO allows cheaper recovery (cold site, slower restore).",
+    "Trap is C 'cold site cannot be used' — opposite; longer RTO ENABLES cold sites.",
+    "Trap is D 'backup frequency increases' — RTO is about recovery time, not backup frequency.",
+    "RTO = time the business can wait for recovery. Longer RTO = business is more tolerant of disruption = higher disaster tolerance. Direct relationship."
+  ],
+  "d4_135": [
+    "Trap is A 'annual loss expectancy' — financial measure, not downtime.",
+    "Trap is B 'service delivery objective' — describes service level during recovery, not duration.",
+    "Trap is C 'orphan data quantity' — data quality concern, not downtime measure.",
+    "Maximum tolerable outage (MTO) = the absolute maximum the business can endure. RTO must be ≤ MTO. MTO is the foundational input for downtime decisions."
+  ],
+  "d4_136": [
+    "Trap is A 'background checks on personnel' — HR control, doesn't verify maintenance work.",
+    "Trap is B 'escort service personnel' — physical control, doesn't verify maintenance happened.",
+    "Trap is C 'noncritical processing times' — scheduling control.",
+    "Independent verification of maintenance work = objective assurance that maintenance was actually performed. Vendor reports alone are self-attestation; independent verification catches gaps."
+  ],
+  "d4_137": [
+    "Trap is A 'virtual tape libraries' — improves tape backup but typically scheduled, not granular.",
+    "Trap is B 'disk-based snapshots' — scheduled snapshots, time-interval granularity.",
+    "Trap is D 'disk-to-tape backup' — slower medium, scheduled.",
+    "Continuous data backup captures every change as it happens. Restore point can be any moment in time = maximum granularity. Required when RPO must be very low."
+  ],
+  "d4_138": [
+    "Trap is A 'higher disaster tolerance' — opposite; lower RTO = lower tolerance.",
+    "Trap is C 'reduced interruptions' — recovery speed doesn't reduce interruption frequency.",
+    "Trap is D 'more permissive data loss' — that's RPO concern, not RTO.",
+    "Faster recovery = more expensive infrastructure (hot sites, real-time replication, dedicated capacity). The cost curve rises sharply for very low RTOs."
+  ],
+  "d4_139": [
+    "Trap is A 'support model not approved by senior management' — governance gap, not the central problem.",
+    "Trap is B 'SLA resolution time unrealistic' — possible cause but not necessarily the issue.",
+    "Trap is C 'inadequate resources' — capacity concern, not prioritization design.",
+    "Support model design determines how incidents get prioritized. Faulty design = consistent prioritization errors = SLA failures across many incidents. Systemic cause."
+  ],
+  "d4_140": [
+    "Trap is A 'weekly full + daily incremental' — restore involves replaying daily increments; slow.",
+    "Trap is B 'daily full backup' — operationally infeasible for large databases.",
+    "Trap is C 'clustered servers' — high availability but not backup; failure of cluster = no backup.",
+    "Mirrored hard disks = real-time data duplication. Both disks have current data; loss of one disk doesn't lose data. Best for large always-online databases."
+  ],
+  "d4_141": [
+    "Trap is B 'roles in crisis management' — staffing concern, not security level.",
+    "Trap is C 'security resource requirements' — operational, not the BCP gap.",
+    "Trap is D 'change management procedures' — process, not the recovery security level.",
+    "BCP must specify the LEVEL of security required during recovery. Otherwise, recovery shortcuts may compromise confidentiality. Define security expectations before declaring recovery complete."
+  ],
+  "d4_142": [
+    "Trap is A 'event error log' — useful but symptomatic; configuration issue may not show in errors.",
+    "Trap is B 'DR test plan' — describes what to test, doesn't diagnose performance.",
+    "Trap is C 'DRP itself' — too broad; doesn't isolate performance.",
+    "Performance differences between primary and DR sites usually trace to configuration differences. Comparing configurations finds the discrepancy that's slowing the DR site."
+  ],
+  "d4_143": [
+    "Trap is A 'backup time increases' — operational concern, manageable.",
+    "Trap is B 'backup costs increase' — financial concern, predictable.",
+    "Trap is C 'storage costs increase' — same; predictable financial impact.",
+    "Uncontrolled storage growth means recovery TIME grows. Eventually, recovery exceeds RTO; the system can't be recovered fast enough. Strategic capacity gap."
+  ],
+  "d4_144": [
+    "Trap is B 'one-minute interruption, no data loss' — RTO=0 means no interruption tolerated.",
+    "Trap is C 'interruption of one minute or more' — same; RTO=0 forbids interruption.",
+    "Trap is D 'data loss AND interruption longer than one minute' — both forbidden.",
+    "RTO=0 means processing must continue without break. RPO=1 minute means up to 1 minute of data can be lost. Continuous processing + small recoverable data window."
+  ],
+  "d4_145": [
+    "Trap is A 'limited test window' — manageable through phased testing throughout the year.",
+    "Trap is C 'shutdown procedures take longer than planned' — process issue, addressable.",
+    "Trap is D 'same employees test, plan not used' — concerning but plan still works.",
+    "Defective backup systems = recovery is impossible regardless of plan quality. Defeats the purpose of backup. Most serious test finding because it means real recovery would fail."
+  ],
+  "d4_146": [
+    "Trap is B 'server inventory' — should be linked to change management; not as time-sensitive as people.",
+    "Trap is C 'roles and responsibilities' — relatively stable; less frequent changes.",
+    "Trap is D 'declaration procedures' — designed once; doesn't change frequently.",
+    "Personnel turnover is constant. Contact info goes stale fastest. In a real disaster, outdated phone numbers = inability to reach key people. Most urgent maintenance item."
+  ],
+  "d4_147": [
+    "Trap is A 'IT operations sustains operations' — partially tested through usage simulation.",
+    "Trap is B 'resources sustain transaction load' — tested through intensive usage.",
+    "Trap is C 'connectivity meets response time' — tested through usage.",
+    "4-hour intensive test simulates business workload but DOESN'T fully verify the workflow. Real disasters expose workflow gaps that usage tests miss. Live test gives PARTIAL — not complete — assurance."
+  ],
+  "d4_148": [
+    "Trap is A 'minimum operating requirements' — capacity concern, not data preservation.",
+    "Trap is C 'mean time between failures' — reliability metric, not recovery point.",
+    "Trap is D 'acceptable time for recovery' — that's RTO, not RPO.",
+    "RPO directly measures acceptable data loss in time. Defines how recent the recovered data must be. Foundational input for backup strategy and RPO selection."
+  ],
+  "d4_149": [
+    "Trap is A 'service level objective' — service-quality goal, not data-preservation interval.",
+    "Trap is B 'RTO' — recovery time, not data preservation.",
+    "Trap is C 'RPO' — close, but RPO is the data-loss target; backups may need to be more frequent to meet it.",
+    "MAO = absolute maximum downtime tolerable. Backups must complete more often than this; if backup interval > MAO, the org can't recover within tolerance window. Hard ceiling."
+  ],
+  "d4_150": [
+    "Trap is A 'issue analysis' — comes after reporting.",
+    "Trap is B 'exception ranking' — comes after reporting.",
+    "Trap is D 'root cause analysis' — comes after analysis.",
+    "Problem management starts with VISIBILITY. Exception reports identify what went wrong. Without reports, problems don't enter the management process. Reporting is step one."
+  ],
+  "d4_151": [
+    "Trap is A 'daily backup' — doesn't help during the day; downtime occurs.",
+    "Trap is B 'offsite storage' — protects data, doesn't ensure availability.",
+    "Trap is D 'periodic testing' — verifies recovery, doesn't prevent downtime.",
+    "Mirroring = real-time copy with automatic failover. If primary fails, secondary takes over instantly. Foundation of 24/7 availability."
+  ],
+  "d4_152": [
+    "Trap is A 'performance improvement' — RAID 1 doesn't improve write performance.",
+    "Trap is B 'user authentication' — RAID has nothing to do with authentication.",
+    "Trap is D 'confidentiality' — RAID doesn't encrypt or hide data.",
+    "RAID 1 = disk mirroring. Same data on two disks. Disk failure doesn't lose data; the second disk continues. Availability is RAID 1's primary purpose."
+  ],
+  "d4_153": [
+    "Trap is B 'same protection level as data center' — desirable but not the most important criterion.",
+    "Trap is C 'outsourced to third party' — operational choice, not selection criterion.",
+    "Trap is D 'surveillance capabilities' — security feature, secondary.",
+    "Offsite storage's PURPOSE is to protect against the same disaster that hits the data center. Physical separation + different risk exposure = the offsite location actually serves its function."
+  ],
+  "d4_154": [
+    "Trap is B 'after the last transaction' — last transaction may not have committed; would skip it.",
+    "Trap is C 'first transaction after latest checkpoint' — checkpoint logic for forward recovery, not before-image.",
+    "Trap is D 'last transaction before latest checkpoint' — too far back; redo more than necessary.",
+    "Before-image recovery: the last transaction in the dump may not have committed. Restart BEFORE it to ensure data integrity. Conservative choice; redo if necessary."
+  ],
+  "d4_155": [
+    "Trap is A 'system software parameters' — configuration management, applies to all systems.",
+    "Trap is C 'grandfather-father-son backups' — backup rotation strategy, applies to all systems.",
+    "Trap is D 'data offsite' — offsite storage, applies to all systems.",
+    "Online systems have continuous transactions. Periodic transaction log dumps capture what's happened since the last full backup. Without log dumps, online systems lose recent transactions in recovery."
+  ],
+  "d4_156": [
+    "Trap is B 'paper tests' — discussion only; no actual simulation.",
+    "Trap is C 'full operational tests' — most thorough but expensive and disruptive.",
+    "Trap is D 'actual service disruption' — disruptive; tests in real conditions but at high risk.",
+    "Preparedness tests simulate the entire DR scenario in phases at relatively low cost. Effective at finding gaps without the disruption of full operational testing. Best efficiency per insight."
+  ],
+  "d4_157": [
+    "Trap is A 'database integrity checks' — runs periodically; doesn't address mid-transaction failures.",
+    "Trap is B 'validation checks' — input validation, not transactional integrity.",
+    "Trap is C 'input controls' — processing controls, not transaction completion.",
+    "Database commits + rollbacks ensure transaction atomicity: either complete and persist, or roll back. Mid-processing halt triggers rollback; integrity preserved."
+  ],
+  "d4_158": [
+    "Trap is A 'validated daily backups' — protects against loss but not against modification.",
+    "Trap is B 'change management procedures' — controls intentional changes, doesn't prevent unauthorized modification.",
+    "Trap is C 'data dictionary maintenance' — metadata documentation, not integrity.",
+    "Data warehouse stores HISTORICAL data for analysis. Read-only restriction prevents any modification = preserves integrity by design. No write means no integrity violations."
+  ],
+  "d4_159": [
+    "Trap is A 'hourly backups offsite' — up to 1 hour of transactions could be lost.",
+    "Trap is B 'daily backups offsite' — up to 24 hours could be lost.",
+    "Trap is C 'capture to multiple storage devices' — local redundancy; doesn't protect against site disaster.",
+    "Real-time offsite transmission = transactions exist at offsite location simultaneously with primary. Site disaster doesn't cause transaction loss. Maximum availability assurance."
+  ],
+  "d4_160": [
+    "Trap is A 'upgrade to RAID 5' — better RAID; still doesn't survive disasters.",
+    "Trap is B 'increase onsite backup frequency' — onsite; same disaster impact.",
+    "Trap is D 'establish cold site' — recovery facility, but no data without offsite backups.",
+    "RAID protects against disk failure, not site disasters. Eliminating offsite backups eliminates the only disaster-recovery data path. Reinstate offsite immediately; RAID is complementary, not a substitute."
+  ],
+  "d4_161": [
+    "Trap is A 'physical security measures' — operational concern, generally specified.",
+    "Trap is B 'total subscribers' — useful info but doesn't constrain availability.",
+    "Trap is D 'references' — qualitative, not contractual specification.",
+    "Recovery sites have limited capacity. If too many subscribers invoke recovery simultaneously, site can't serve them all. Contract must specify subscriber limits AND priorities to ensure availability when needed."
+  ],
+  "d4_162": [
+    "Trap is A 'ISP-generated downtime reports' — vendor self-reporting; biased.",
+    "Trap is B 'failover utilization report' — secondary view; failover isn't downtime.",
+    "Trap is C 'bandwidth utilization' — capacity metric, not availability.",
+    "Internally-generated downtime reports = independent measurement. Compare to ISP reports for verification. Trust but verify; internal data is the verification baseline."
+  ],
+  "d4_163": [
+    "Trap is A 'BCP testing' — testing concern, not requirements.",
+    "Trap is C 'transaction flowchart' — design artifact, narrow.",
+    "Trap is D 'application meets user needs' — UAT concern.",
+    "Integrating BCP into project management surfaces continuity requirements early. Result: applications designed FROM THE START to support recovery. Comprehensive requirements coverage."
+  ],
+  "d4_164": [
+    "Trap is A 'audit trails accurate' — detective control, doesn't prevent unauthorized changes.",
+    "Trap is B 'adequate training' — capability, doesn't enforce SoD.",
+    "Trap is C 'background checks' — preventive HR control.",
+    "Privileged accounts + supervisory approval = SoD enforcement. The privileged person makes the change; the supervisor confirms it was authorized. Separates execution from authorization."
+  ],
+  "d4_165": [
+    "Trap is A 'longest RTO' — slowest application drives recovery; critical apps wouldn't recover in time.",
+    "Trap is C 'mean RTO' — averaging masks the critical-app constraint.",
+    "Trap is D 'independent of RTO' — false; server availability impacts all hosted apps.",
+    "Multi-app server recovery is bound by the SHORTEST RTO. The most critical app sets the recovery deadline; faster RTO = stricter constraint. Server inherits the strictest requirement."
+  ],
+  "d4_166": [
+    "Trap is A 'standards + monitor compliance' — preventive control.",
+    "Trap is B 'authorized personnel update only' — preventive access control.",
+    "Trap is C 'concurrent access controls' — preventive control.",
+    "Restore procedures = corrective control. They restore the database to a known-good state from before the corruption. Fixes the damage; doesn't prevent it."
+  ],
+  "d4_167": [
+    "Trap is B 'onsite fireproof safe' — same site as data center; same disaster impact.",
+    "Trap is C 'real-time replication, hot site 500m away' — too close; one disaster could affect both.",
+    "Trap is D 'daily backup, warm site 70km' — warm site = activation delay; daily backup = up to 24 hours data loss.",
+    "Daily backup offsite + hot site 140km away = data preservation + ready recovery + sufficient geographic separation. Best balance of cost and protection."
+  ],
+  "d4_168": [
+    "Trap is A 'recovery team available' — staffing concern, not procedure effectiveness.",
+    "Trap is C 'inventory of backup media' — operational tracking, not effectiveness.",
+    "Trap is D 'media restored at alternate site' — partial; restoration without meeting RTO is failure.",
+    "RTO measurement = empirical evidence of effectiveness. Did the recovery actually meet business-defined targets? RTO met = procedures work as designed."
+  ],
+  "d4_169": [
+    "Trap is A 'warm site' — over-provisioned; high RTO doesn't need warm capabilities.",
+    "Trap is B 'hot site' — way over-provisioned for high RTO scenarios.",
+    "Trap is D 'mobile recovery site' — situational; not the typical sensitive-system answer.",
+    "High RTO = lots of recovery time available = cheapest viable option. Cold site has lowest cost; sufficient when business can wait for recovery to complete."
+  ],
+  "d4_170": [
+    "Trap is A 'restoration' — comes after containment; trying to restore in an uncontained incident risks reinfection.",
+    "Trap is B 'documentation' — important for forensics, but containment takes priority.",
+    "Trap is D 'monitoring' — useful but doesn't stop the spread.",
+    "Containment FIRST: stop the spread, isolate the affected systems, prevent further damage. Without containment, the incident grows. Stop the bleeding before treating the wound."
   ]
 }
