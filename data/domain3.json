@@ -865,7 +865,9 @@
         "C": "To validate the data after they have been transmitted is not a valid control."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A/B 'central site after / during application run' — already past the cost of bad transmission; data quality should be enforced earlier.",
+        "Trap is C 'remote site after transmission' — paradoxical; if you're going to validate at the remote site, do it BEFORE wasting bandwidth.",
+        "Validate at the source, before transmission. Catches errors with minimum cost — no wasted bandwidth, no central-site processing of bad data, no later cleanup."
       ]
     },
     {
@@ -890,7 +892,9 @@
         "D": "The investment plan is important to set out project priorities, but secondary to the importance of reviewing the business plan."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A/D 'IT budget / investment plan' — financial constraints, derived from business plan.",
+        "Trap is B 'existing IT environment' — current state, doesn't drive future selection.",
+        "Project portfolio prioritization is a strategic exercise. The business plan is the ultimate filter — projects must serve business strategy first; budget and environment are constraints, not drivers."
       ]
     },
     {
@@ -915,7 +919,10 @@
         "C": "Software quality assurance and code reviews are used to determine whether development standards are maintained."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'meets customer requirements' — that's UAT or system testing.",
+        "Trap is B 'operate in target environment' — that's sociability/deployment testing.",
+        "Trap is C 'development standards maintained' — quality assurance, not regression.",
+        "Regression testing's specific job: verify that changes didn't BREAK previously-working functionality. Re-running prior tests catches new errors introduced by changes."
       ]
     },
     {
@@ -940,7 +947,10 @@
         "C": "A clerical procedure can be used to summarize and compare inputs and outputs; however, an automated process is less susceptible to error."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'validation controls' — catch invalid input but don't track totals end-to-end.",
+        "Trap is B 'internal credibility checks' — sniff-test for plausibility, doesn't catch loss.",
+        "Trap is C 'clerical procedures' — manual, error-prone, doesn't scale.",
+        "Automated systems balancing: total inputs = total outputs. Discrepancy = lost transaction, automatically flagged for investigation. Best for multi-source/multi-format processing."
       ]
     },
     {
@@ -965,7 +975,10 @@
         "D": "Conducting an impact study can identify a lack of resources, such as the project team lacking the skills necessary to make the change; however, this is only part of the impact on the overall timelines and cost to the project due to the change."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'regression test failures' — possible side effect, not the primary scope-change concern.",
+        "Trap is C 'users not agreeing' — adoption issue, secondary.",
+        "Trap is D 'team skills' — capability concern, secondary.",
+        "Scope changes shift duration and cost — that's why impact studies exist. Without one, the project commits to changes whose true cost is unknown."
       ]
     },
     {
@@ -990,7 +1003,10 @@
         "D": "The management of agile software development is different from conventional development approaches in that leaders act as facilitators and allow team members to determine how to manage their own resources to get each sprint completed. Because the team members are performing the work, they are in a good position to understand how much time/effort is required to complete a sprint."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'features not extensively documented' — agile prefers minimal documentation; this is by design.",
+        "Trap is C 'continual re-planning' — agile core practice; iterative re-planning is expected.",
+        "Trap is D 'team manages own resources' — agile self-organization principle.",
+        "Agile's non-negotiable: each iteration produces SHIPPABLE code. Proof-of-concept and unfinished code violate the iteration principle and undermine agile's value proposition."
       ]
     },
     {
@@ -1015,7 +1031,10 @@
         "D": "In a duplicate check, new or fresh transactions are matched to those previously entered to ensure that they are not already in the system."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'range check' — catches values outside allowed range, not order errors.",
+        "Trap is C 'validity check' — catches invalid values, not transposition.",
+        "Trap is D 'duplicate check' — catches duplicates, different problem.",
+        "Check digit is mathematically computed from the original digits. Transposing digits changes the computed value, exposing the error. Designed for transposition/transcription detection."
       ]
     },
     {
@@ -1040,7 +1059,10 @@
         "D": "Reviewing change requests may be a good idea, but this is more important if the application is perceived to have a problem."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'user feedback documented' — useful but doesn't validate system controls.",
+        "Trap is B 'cost benefits measured' — financial review, secondary in two months.",
+        "Trap is D 'subsequent change requests' — quality indicator, indirect.",
+        "Postimplementation control review tests whether built-in controls are working as designed. Management's 'went well' assumption needs INDEPENDENT verification — that's the auditor's value-add."
       ]
     },
     {
@@ -1065,7 +1087,10 @@
         "D": "Inadequate controls are most likely present in situations in which information security is not duly considered from the beginning of system development; they are not a risk that can be adequately addressed by software baselining."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'sign-off delays' — process inconvenience, downstream of scope creep.",
+        "Trap is B 'software integrity violations' — different control problem.",
+        "Trap is D 'inadequate controls' — possible but indirect.",
+        "Without baselining, requirements continue evolving without formal cost-benefit evaluation. Result: SCOPE CREEP — the project keeps growing past its original justification."
       ]
     },
     {
@@ -1090,7 +1115,10 @@
         "C": "Evaluating the reconciliation controls helps to ensure data integrity; however, it is more important to understand the data flows of the application to ensure that the reconciliation controls are located in the correct place."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is A 'user access' — important but follows architectural understanding.",
+        "Trap is B 'change request process' — process review, comes after understanding flow.",
+        "Trap is C 'reconciliation controls' — placement depends on data flow understanding.",
+        "Data flow diagram first. Until the auditor understands HOW data moves between components, they can't evaluate WHERE controls should sit or whether they're effective."
       ]
     },
     {
@@ -1115,7 +1143,10 @@
         "C": "The licensing policy should be reviewed to ensure proper licensing but only after the purchasing procedures are checked."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is A 'compatibility testing' — late-cycle technical concern.",
+        "Trap is B 'gap analysis' — useful but premature without process verification.",
+        "Trap is C 'licensing review' — operational follow-up.",
+        "Acquisition deviating from procedures = procedure compliance issue first. Verify whether the deviation was authorized before evaluating the technical merits."
       ]
     },
     {
@@ -1140,7 +1171,10 @@
         "D": "Unit testing examines the individual units or components of the software. A failure here is expensive and requires re-work of the modules but is not as expensive as a problem found just prior to implementation. System, integration and unit testing are all performed by the developers at various stages of development; the impact of failure is comparatively less for each than failure at the acceptance testing stage."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'system testing' — earlier stage; failures here can be fixed before deployment.",
+        "Trap is C 'integration testing' — earlier; modules can be reworked.",
+        "Trap is D 'unit testing' — earliest; cheapest to fix.",
+        "Acceptance testing is the LAST checkpoint before go-live. Failure here delays deployment and forces emergency rework, often disrupting business plans tied to the launch date."
       ]
     },
     {
@@ -1165,7 +1199,10 @@
         "D": "A standardized infrastructure may simplify testing of changes, but it does not reduce the need for such testing."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'increased security' — possible but standardization isn't security-driven.",
+        "Trap is C 'reduced infrastructure investment' — opposite; standardization may require initial investment.",
+        "Trap is D 'no testing of future changes' — overstated; testing is still required.",
+        "Standardization reduces operational complexity: fewer platforms to support, common tooling, easier patching/monitoring. Cost-effectiveness is the most direct benefit."
       ]
     },
     {
@@ -1190,7 +1227,10 @@
         "D": "Data warehouses may contain sensitive information or can be used to research sensitive information, so the security of the data warehouse is important. However, this is not the primary concern of the designer."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'transaction speed' — important but warehouses prioritize query/analysis, not transaction speed.",
+        "Trap is C 'data volatility' — characteristic, not design driver.",
+        "Trap is D 'system vulnerability' — security concern, not design factor.",
+        "Metadata describes what's in the warehouse — without it, queries can't reliably interpret the data. Quality metadata is foundational for analytical use."
       ]
     },
     {
@@ -1215,7 +1255,10 @@
         "D": "It is not advisable to do stress testing in a production environment. Additionally, if only test data are used, there is no certainty that the system was stress tested adequately."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'test environment with test data' — small-volume data won't reveal capacity issues.",
+        "Trap is B 'production environment with live workloads' — risk of breaking production.",
+        "Trap is D 'production with test data' — production environment good but test data won't stress it.",
+        "Stress testing's purpose: confirm system handles real production load. Use a test environment (safe) with production-realistic workloads (meaningful)."
       ]
     },
     {
@@ -1240,7 +1283,10 @@
         "C": "For gap minimization, a specific requirements analysis framework should be in place and then applied; however, a gap may be found between the design and the as-built system that can lead to system functionality not meeting requirements. This will be identified during user acceptance testing. Process ownership alone does not have the capability to minimize requirement gaps."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'tracking completion' — measurement, not design driver.",
+        "Trap is B 'optimize UAT cost' — secondary benefit.",
+        "Trap is C 'minimize requirements gap' — outcome of process owner involvement, not the reason for it.",
+        "Process owners know the business processes the system must support. Without them, design risks being technically correct but business-misaligned."
       ]
     },
     {
@@ -1265,7 +1311,10 @@
         "D": "During the implementation phase, the IS auditor may check whether the controls have been enabled; however, this is not the time to assess the control requirements."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'lab testing phase' — too late; system is being tested.",
+        "Trap is B 'before user acceptance' — also too late; testing already happening.",
+        "Trap is D 'implementation phase' — far too late.",
+        "IS auditor reviewing control specifications during requirements gathering = maximum influence with minimum disruption. Earlier = cheaper to fix."
       ]
     },
     {
@@ -1290,7 +1339,10 @@
         "D": "Risk management is a never-ending process, so project planning cannot wait until all risk has been identified."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'after early planning' — vague; planning IS where phases get defined.",
+        "Trap is C 'during work, based on risk' — emergent planning misses early phase definition.",
+        "Trap is D 'after risk identification + auditor recommendations' — too constrained; project planning shouldn't wait on auditors.",
+        "Phases and deliverables defined upfront enables tracking, resource allocation, and milestone management. Without early definition, projects drift without measurable progress."
       ]
     },
     {
@@ -1315,7 +1367,10 @@
         "D": "Ensuring that the system works is a primary objective for the information systems (IS) auditor, but, in this case, because the project planning was a failure, the IS auditor should focus on the reasons for, and impact of, the failure."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'cost benefits' — relevant but doesn't address WHY phase 1 went over.",
+        "Trap is B 'control balances' — operational verification, not the strategic learning.",
+        "Trap is D 'system objectives achieved' — success measurement, not learning.",
+        "Phase 1's problems likely affect phase 2+. Reviewing impact of those changes gives forward-looking insight — what to mitigate before next phase repeats the same mistakes."
       ]
     },
     {
@@ -1340,7 +1395,10 @@
         "D": "Programming errors should be found during testing, not at the time of implementation."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'multiple software versions' — version control issue, manageable.",
+        "Trap is B 'source/object code mismatch' — change control issue, eventually surfaces.",
+        "Trap is D 'programming errors' — software quality concern, present in all systems.",
+        "Incorrect parameters at go-live = immediate failure or vulnerability. Common with packages because parameters are often invisible until exercised in production."
       ]
     },
     {
@@ -1365,7 +1423,10 @@
         "D": "Prototyping often leads to functions or extras being added to the system that were not originally intended."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'strong internal controls' — opposite; prototyping often UNDER-emphasizes controls.",
+        "Trap is C 'simpler change control' — opposite; change control is HARDER with prototyping.",
+        "Trap is D 'no extra functions' — opposite; prototyping invites scope creep.",
+        "Prototyping's actual benefit: rapid feedback loops with users → faster delivery, better fit, lower wrong-system risk. Quality and control are tradeoffs, not advantages."
       ]
     },
     {
@@ -1390,7 +1451,10 @@
         "D": "An incident may be used to emphasize the importance of incident response, but that is not the intention of the post-incident review."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'harden the network' — operational outcome, narrow.",
+        "Trap is C 'highlight importance to management' — political objective, secondary.",
+        "Trap is D 'employee awareness' — training outcome, secondary.",
+        "Post-incident review's PRIMARY purpose: improve internal controls. Each incident teaches what controls failed; the review converts that into control improvements."
       ]
     },
     {
@@ -1415,7 +1479,10 @@
         "C": "The results can be tested using normal routines, but that is not a significant advantage of using sanitized live data."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'all transaction types included' — depends on what live data was sanitized.",
+        "Trap is B 'every error condition tested' — live data won't necessarily exercise all errors.",
+        "Trap is C 'no special routines for results' — incorrect; results still need analysis.",
+        "Sanitized live data preserves real-world transaction patterns — frequencies, distributions, edge cases. More realistic than synthetic test data, safer than raw production."
       ]
     },
     {
@@ -1440,7 +1507,10 @@
         "D": "Using a copy of production data may not test all functionality, but this is not as serious as the risk of disclosure of sensitive data."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'users prefer contrived data' — possible but not the audit concern.",
+        "Trap is C 'error handling not proven' — testing concern, not the primary audit concern.",
+        "Trap is D 'full functionality not tested' — coverage concern, secondary.",
+        "Production data in test environments without sanitization = sensitive data exposure to people who normally wouldn't have access. Privacy/regulatory risk."
       ]
     },
     {
@@ -1465,7 +1535,10 @@
         "C": "Program interfaces with files are tested for errors during system testing."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'cost-effectiveness' — financial test, not parallel testing's purpose.",
+        "Trap is B 'unit and system testing' — earlier-stage tests, not parallel.",
+        "Trap is C 'program interface errors' — technical concern, addressable in unit/integration test.",
+        "Parallel testing runs old and new systems with the same data. Output comparison reveals whether the new system meets user requirements — by direct comparison to the known-good old system."
       ]
     },
     {
@@ -1490,7 +1563,10 @@
         "D": "A dataflow diagram is used to map the progress of data through a system and examine logic, error handling and data management."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'rules' — production rule systems, different structure.",
+        "Trap is C 'semantic nets' — graph-based knowledge representation, not questionnaire-based.",
+        "Trap is D 'dataflow diagrams' — process modeling tool, not knowledge representation.",
+        "Decision trees encode 'if X then Y else Z' branching as a tree. Questionnaires walking users through choices map directly to this structure."
       ]
     },
     {
@@ -1515,7 +1591,10 @@
         "D": "Bottom-up testing tests individual components and major functions and processing is not adequately tested until systems and integration testing is completed."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'interface errors detected earlier' — that's TOP-DOWN's advantage.",
+        "Trap is B 'confidence achieved earlier' — top-down builds confidence in the architecture earlier.",
+        "Trap is D 'major functions tested earlier' — also top-down.",
+        "Bottom-up tests atomic units first — programs, modules. Critical-module errors surface immediately, before they cascade through the system. Defect cost lower when caught early at unit level."
       ]
     },
     {
@@ -1540,7 +1619,10 @@
         "D": "User acceptance testing (UAT) should be completed prior to implementation."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'feasibility study' — too early; user requirements not yet defined.",
+        "Trap is C 'implementation planning' — too late; UAT plans should be ready by then.",
+        "Trap is D 'postimplementation review' — way too late; UAT happens before implementation.",
+        "Requirements definition is when users articulate what they need. UAT plans get authored alongside, asking 'how will we test that requirement?' Same time, same conversation."
       ]
     },
     {
@@ -1565,7 +1647,10 @@
         "D": "The use of object-oriented design may speed up the system development life cycle (SDLC) for future projects through the reuse of modules, but object-oriented design does not speed up develfment of the initial project."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'improves performance' — abstraction can ADD overhead, not improve performance.",
+        "Trap is C 'enhances control effectiveness' — control depends on design, not paradigm.",
+        "Trap is D 'speeds up SDLC' — initial OO design takes longer; speed comes later via reuse.",
+        "Object-oriented design's signature benefit: encapsulation enables modules to be reused across projects. That's where the long-term productivity gains come from."
       ]
     },
     {
@@ -1590,7 +1675,10 @@
         "D": "Third-party agreements are too detailed for this phase. They would only be outlined, and any cost or performance implications would be shown."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'encryption algorithm format' — implementation detail, downstream of feasibility.",
+        "Trap is B 'detailed internal control procedures' — also detailed; feasibility is high-level.",
+        "Trap is D 'trusted third-party agreement' — operational detail.",
+        "Communication protocols drive feasibility — they determine hardware/software requirements, costs, and integration complexity. Without protocol clarity, the feasibility study can't estimate."
       ]
     },
     {
@@ -1615,7 +1703,10 @@
         "D": "It is appropriate to have the code documented and reviewed, but, unless the acceptance testir,ig.is completed, there is no guarantee that the system will work correctly and meet user requirements."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'finish writing user manuals' — documentation; can follow implementation.",
+        "Trap is C 'add last-minute enhancements' — exactly what to AVOID under time pressure.",
+        "Trap is D 'documented and reviewed code' — process discipline; secondary to functional verification.",
+        "UAT is the only test that confirms the system actually works for users. Skipping UAT under time pressure = high risk of go-live failure. Documentation can wait; functional validation can't."
       ]
     },
     {
@@ -1640,7 +1731,10 @@
         "D": "Continuous improvement and monitoring plans are steps within a BPR project."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'pre-BPR flowcharts' — historical context, not the audit subject.",
+        "Trap is C 'BPR project plans' — process documentation, not control implementation.",
+        "Trap is D 'continuous improvement plans' — forward-looking, doesn't validate current controls.",
+        "Post-BPR flowcharts show the NEW process. Auditor checks that key controls were preserved or properly redesigned in the new process — the actual deliverable to validate."
       ]
     },
     {
@@ -1665,7 +1759,10 @@
         "D": "White box testing involves a detailed review of the behavior of program code. It is a quality assurance technique suited to simpler applications during the design and building stage of development."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'PERT' — estimates project DURATION, not size of effort.",
+        "Trap is C 'source lines of code' — old technique, doesn't scale to complex systems.",
+        "Trap is D 'white box testing' — testing technique, not estimation.",
+        "Function point analysis quantifies system size by counting inputs, outputs, queries, files, and interfaces. Specifically designed for development effort estimation."
       ]
     },
     {
@@ -1690,7 +1787,10 @@
         "D": "Prototyping is a valid method of ensuring that the system will meet business requirements."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'users manage acceptance testing' — appropriate; users own UAT.",
+        "Trap is C 'not all functions in initial release' — phased delivery is acceptable.",
+        "Trap is D 'prototyping for requirements confirmation' — valid technique.",
+        "Quality plan defines how the project ensures deliverables meet quality standards. Without it, quality is undefined and unmeasurable. Critical contractual deliverable."
       ]
     },
     {
@@ -1715,7 +1815,10 @@
         "D": "Although the person preparing the business case may consult with the organization audit department, this is situational and not necessary to include in the business case."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'discuss a single solution' — premature; alternatives should be considered.",
+        "Trap is B 'consider security controls' — important but a SUBSET of feasibility.",
+        "Trap is D 'consult audit department' — secondary input.",
+        "Feasibility study + cost-benefit demonstrates the proposal CAN work AND IS worth doing. That's what management needs to make an informed decision."
       ]
     },
     {
