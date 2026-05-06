@@ -6327,6 +6327,7 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
   // against the original correct letter stored in the question.
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
   var origChosen = chosen ? displayToOriginal(chosen, shuffle) : null;
+  var correct = originalToDisplay(S.current.correct, shuffle);
   var ok = origChosen === S.current.correct;
   // Persist BOTH letters so the post-exam review can render with or
   // without a shuffle and still know what the candidate clicked.
