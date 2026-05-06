@@ -12,6 +12,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CISA Mindset - Exam Prep</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236c47ff%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ff6b9d%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Cpath%20d%3D%22M9%2016%20L14%2021%20L23%2011%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236c47ff%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ff6b9d%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Cpath%20d%3D%22M9%2016%20L14%2021%20L23%2011%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── LIGHT MODE (default) ── */
@@ -4541,7 +4544,7 @@ function renderTopics() {
     + '</div>';
 
   // Glossary + master tips are appended after groups, before the sticky button
-  var glossaryHtml = renderGlossary(domainData);
+  var glossaryHtml = renderDomainGlossary(domainData);
   var masterTipsHtml = renderMasterTips();
 
   area.innerHTML = '<div class="new-domain-tabs">' + tabsHtml + '</div>'
@@ -4564,7 +4567,7 @@ function renderTopics() {
 
 
 // ── DOMAIN GLOSSARY (key_terminologies) ──
-function renderGlossary(domainData) {
+function renderDomainGlossary(domainData) {
   if (!domainData || !domainData.key_terminologies) return '';
   var terms = domainData.key_terminologies;
   var allTerms = Object.keys(terms);
@@ -4595,7 +4598,7 @@ function renderGlossary(domainData) {
     : '';
 
   return '<div class="notes-glossary-card' + (isOpen ? ' gl-open' : '') + '" id="glossaryCard">'
-    + '<div class="notes-glossary-header" onclick="toggleGlossary()" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleGlossary();}">'
+    + '<div class="notes-glossary-header" onclick="toggleDomainGlossary()" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDomainGlossary();}">'
     + '<div class="notes-glossary-title">&#128218; Domain Glossary &mdash; key terms you must know</div>'
     + '<div style="display:flex;align-items:center;gap:10px">'
     + '<span class="notes-glossary-count">' + filteredTerms.length + (glossarySearch ? '/' + allTerms.length : '') + ' terms</span>'
@@ -4618,7 +4621,7 @@ function onGlossarySearch(val) {
   }, 0);
 }
 
-function toggleGlossary() {
+function toggleDomainGlossary() {
   topicState.glossaryOpen = !topicState.glossaryOpen;
   var el = document.getElementById('glossaryCard');
   if (el) {
@@ -4905,9 +4908,9 @@ function toggleConceptReviewed(itemId) {
 
   // Nova #4: Domain completion celebration
   if (isDone && !wasDone && p.done === p.total && p.total > 0) {
-    showToast('&#127881; Domain ' + d + ' complete! ' + p.total + '/' + p.total + ' topics reviewed', 'correct', 3500);
+    showToast('🎉 Domain ' + d + ' complete! ' + p.total + '/' + p.total + ' topics reviewed', 'correct', 3500);
   } else {
-    showToast(isDone ? '&#10003; Marked reviewed' : 'Unmarked', isDone ? 'correct' : 'info', 1400);
+    showToast(isDone ? '✓ Marked reviewed' : 'Unmarked', isDone ? 'correct' : 'info', 1400);
   }
 }
 
@@ -4922,7 +4925,7 @@ function markAllDomainTopics(domainId) {
   S.topicReviewed = reviewed;
   saveState();
   renderTopics();
-  showToast('&#10003; All Domain ' + domainId + ' topics marked reviewed', 'correct', 2000);
+  showToast('✓ All Domain ' + domainId + ' topics marked reviewed', 'correct', 2000);
   try { renderStudyRec(); } catch(e) {}
 }
 
@@ -4968,7 +4971,6 @@ function renderTopicStudyList(items) {
 function renderTopicTerms(items) {
   return '<div class="topic-term-row">' + (items || []).map(function(item){ return '<span class="topic-term">' + escapeHtml(item) + '</span>'; }).join('') + '</div>';
 }
-function toggleTopicReviewed(id) { toggleConceptReviewed(id); }
 
 // â”€â”€ BUILD QUEUES â”€â”€
 function buildQueues() {
@@ -6867,7 +6869,7 @@ function startWeakSpotsDrill() {
   document.querySelectorAll('.domain-card').forEach(function(c){ c.classList.remove('selected'); });
   renderSubtopicFilter();
   switchTab('practice');
-  showToast('&#127919; Weak Spots Drill — ' + pool.length + ' questions loaded', 'info', 2200);
+  showToast('🎯 Weak Spots Drill — ' + pool.length + ' questions loaded', 'info', 2200);
   setTimeout(function() { nextQ(); }, 350);
 }
 
@@ -6958,7 +6960,7 @@ function startBookmarkDrill(tagFilter) {
   S.current = null;
   renderSubtopicFilter();
   switchTab('practice');
-  showToast('&#128214; Bookmark Drill &#8212; ' + fullQs.length + ' questions', 'info', 2000);
+  showToast('📖 Bookmark Drill — ' + fullQs.length + ' questions', 'info', 2000);
   setTimeout(function(){ nextQ(); }, 300);
 }
 
