@@ -1896,17 +1896,86 @@ header {
 .notes-item.flash-highlight { animation: flash-highlight 1.4s ease 1; }
 
 
-.gloss-header {
+.gloss-hero {
+  background: linear-gradient(135deg, var(--ink), #2b1a0e);
+  color: var(--ink-fg);
+  border-radius: var(--radius);
+  padding: 28px 30px;
+  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.gloss-hero::before {
+  content: ''; position: absolute; inset: auto -60px -90px auto;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: rgba(232,82,26,0.18); pointer-events: none;
+}
+.gloss-hero::after {
+  content: ''; position: absolute; inset: -30px auto auto -50px;
+  width: 140px; height: 140px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); pointer-events: none;
+}
+.gloss-hero-left { flex: 1; min-width: 0; position: relative; z-index: 1; }
+.gloss-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 10px;
+}
+.gloss-hero .gloss-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 900;
+  line-height: 1.05; margin-bottom: 10px;
+  color: #fff; letter-spacing: -0.01em;
+}
+.gloss-hero .gloss-sub {
+  max-width: 560px;
+  font-size: 13.5px; line-height: 1.7;
+  color: rgba(255,255,255,0.78); font-weight: 500;
+  margin-bottom: 0;
+}
+.gloss-hero-right {
+  position: relative; z-index: 1; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.gloss-progress-ring {
+  position: relative; width: 96px; height: 96px;
+  display: flex; align-items: center; justify-content: center;
+}
+.gloss-progress-ring svg { display: block; }
+.gloss-progress-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.gloss-progress-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 900;
+  color: #fff; line-height: 1;
+}
+.gloss-progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-top: 4px;
+}
+.gloss-mastered-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+}
+@media (max-width: 580px) {
+  .gloss-hero { padding: 22px 20px; flex-direction: column; align-items: flex-start; }
+  .gloss-hero .gloss-title { font-size: 26px; }
+  .gloss-hero-right { align-self: center; }
+}
+
+.gloss-toolbar {
   background: var(--surface); border: 2px solid var(--border2);
-  border-radius: var(--radius); padding: 22px 24px;
-  margin-bottom: 16px;
-}
-.gloss-title {
-  font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900;
-  margin-bottom: 4px; letter-spacing: -0.01em;
-}
-.gloss-sub {
-  font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 18px;
+  border-radius: var(--radius); padding: 16px 18px;
+  margin-bottom: 16px; box-shadow: var(--shadow);
 }
 .gloss-search-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
 .gloss-search {
@@ -1956,26 +2025,67 @@ header {
 .gloss-chip.d5.active { background: #db2777; border-color: #db2777; }
 
 .gloss-count {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-  margin: 14px 0 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  margin: 6px 0 12px; display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
 }
+.gloss-count strong { color: var(--text); font-weight: 900; }
+.gloss-count-clear {
+  background: none; border: 1.5px solid var(--border2); border-radius: 100px;
+  padding: 3px 10px; font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; transition: var(--tr);
+}
+.gloss-count-clear:hover { border-color: var(--accent); color: var(--accent); }
+
+/* A-Z letter index */
+.gloss-letter-index {
+  display: flex; flex-wrap: wrap; gap: 3px;
+  background: var(--surface); border: 2px solid var(--border2);
+  border-radius: 12px; padding: 10px 12px; margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.gloss-letter {
+  flex: 1; min-width: 22px; padding: 5px 4px; border-radius: 6px;
+  background: transparent; border: none; cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800;
+  color: var(--muted); transition: var(--tr); text-align: center;
+  letter-spacing: 0.05em;
+}
+.gloss-letter:hover { background: var(--surface2); color: var(--accent); }
+.gloss-letter.has { color: var(--text); }
+.gloss-letter.has:hover { background: var(--accent); color: #fff; }
+.gloss-letter:disabled { opacity: 0.3; cursor: default; }
 
 .gloss-list {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 .gloss-card {
   background: var(--surface); border: 2px solid var(--border2);
-  border-radius: 14px; padding: 16px 18px; cursor: pointer;
+  border-left-width: 4px;
+  border-radius: 14px; padding: 16px 18px 16px 16px; cursor: pointer;
   transition: var(--tr); position: relative;
   display: flex; flex-direction: column; gap: 6px;
 }
+.gloss-card.dl1 { border-left-color: var(--d1); }
+.gloss-card.dl2 { border-left-color: var(--d2); }
+.gloss-card.dl3 { border-left-color: var(--d3); }
+.gloss-card.dl4 { border-left-color: var(--d4); }
+.gloss-card.dl5 { border-left-color: var(--d5); }
+.gloss-card.dl0 { border-left-color: var(--border2); }
 .gloss-card:hover {
   border-color: var(--accent); transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
 }
 .gloss-card.mastered { background: var(--correct-light); border-color: #a7f3d0; }
+.gloss-card.mastered.dl1,
+.gloss-card.mastered.dl2,
+.gloss-card.mastered.dl3,
+.gloss-card.mastered.dl4,
+.gloss-card.mastered.dl5,
+.gloss-card.mastered.dl0 { border-left-color: var(--correct); }
 .gloss-card.mastered .gloss-card-term { color: var(--correct); }
 .gloss-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .gloss-card-term {
@@ -6776,23 +6886,43 @@ function renderGlossary() {
 
   var totalCount = GLOSS.length;
   var masteredCount = Object.keys(getMasteredSet()).length;
+  var pct = totalCount ? Math.round((masteredCount / totalCount) * 100) : 0;
+  var ringR = 40;
+  var ringDash = 2 * Math.PI * ringR;
+  var ringOffset = ringDash * (1 - pct / 100);
 
-  var header = '<div class="gloss-header">'
-    + '<div class="gloss-title">Glossary</div>'
-    + '<div class="gloss-sub">'
-    +   '<strong>' + totalCount + '</strong> official ISACA terms / '
-    +   '<strong>' + masteredCount + '</strong> mastered / '
-    +   'Search, filter by domain, or study with flashcards.'
-    + '</div>'
+  var hero = '<div class="gloss-hero">'
+    +   '<div class="gloss-hero-left">'
+    +     '<div class="gloss-eyebrow">Vocabulary Lab</div>'
+    +     '<div class="gloss-title">Glossary</div>'
+    +     '<div class="gloss-sub">Master the language of information systems audit. Curated terms across audit, governance, development, operations and security &mdash; search a definition, filter by domain, or drill yourself with flashcards.</div>'
+    +   '</div>'
+    +   '<div class="gloss-hero-right">'
+    +     '<div class="gloss-progress-ring" role="img" aria-label="' + pct + '% of terms mastered">'
+    +       '<svg viewBox="0 0 96 96" width="96" height="96">'
+    +         '<circle cx="48" cy="48" r="' + ringR + '" stroke="rgba(255,255,255,0.15)" stroke-width="7" fill="none"/>'
+    +         '<circle cx="48" cy="48" r="' + ringR + '" stroke="var(--accent2)" stroke-width="7" fill="none" stroke-linecap="round" '
+    +           'stroke-dasharray="' + ringDash.toFixed(2) + '" stroke-dashoffset="' + ringOffset.toFixed(2) + '" '
+    +           'transform="rotate(-90 48 48)" style="transition: stroke-dashoffset 0.6s ease"/>'
+    +       '</svg>'
+    +       '<div class="gloss-progress-inner">'
+    +         '<div class="gloss-progress-pct">' + pct + '%</div>'
+    +         '<div class="gloss-progress-label">Mastered</div>'
+    +       '</div>'
+    +     '</div>'
+    +     '<div class="gloss-mastered-count">' + masteredCount + ' learned</div>'
+    +   '</div>'
+    + '</div>';
 
+  var toolbar = '<div class="gloss-toolbar">'
     + '<div class="gloss-search-row">'
     +   '<input type="text" class="gloss-search" id="glossSearch" '
     +     'placeholder="Search by term, acronym, or definition&hellip;" '
     +     'value="' + escHtml(glossState.search) + '" '
     +     'oninput="onGlossSearch(this.value)">'
     +   '<div class="gloss-mode-btns">'
-    +     '<button class="gloss-mode-btn' + (glossState.view==='browse'?' active':'') + '" onclick="setGlossView(\'browse\')">Browse</button>'
-    +     '<button class="gloss-mode-btn' + (glossState.view==='flashcards'?' active':'') + '" onclick="setGlossView(\'flashcards\')">Flashcards</button>'
+    +     '<button class="gloss-mode-btn' + (glossState.view==='browse'?' active':'') + '" onclick="setGlossView(\'browse\')">&#128269; Browse</button>'
+    +     '<button class="gloss-mode-btn' + (glossState.view==='flashcards'?' active':'') + '" onclick="setGlossView(\'flashcards\')">&#127919; Flashcards</button>'
     +   '</div>'
     + '</div>'
 
@@ -6813,6 +6943,8 @@ function renderGlossary() {
     + '</div>'
     + '</div>';
 
+  var header = hero + toolbar;
+
   if (glossState.view === 'flashcards') {
     area.innerHTML = header + renderFlashcardArea();
   } else {
@@ -6822,20 +6954,48 @@ function renderGlossary() {
 
 function renderGlossList() {
   var filtered = getFilteredTerms();
-  var html = '<div class="gloss-count">Showing ' + filtered.length + ' / ' + GLOSS.length + ' terms</div>';
-
-  if (filtered.length === 0) {
-    return html + '<div class="gloss-empty">No terms match your filters.</div>';
-  }
+  var hasFilters = glossState.search || glossState.domain !== 'all' || glossState.showMastered !== 'all';
+  var countLabel = filtered.length === 1 ? 'term' : 'terms';
+  var countHtml = '<div class="gloss-count">'
+    + '<span><strong>' + filtered.length + '</strong> ' + countLabel + (hasFilters ? ' matched' : '') + '</span>'
+    + (hasFilters ? '<button class="gloss-count-clear" onclick="clearGlossFilters()">Clear filters</button>' : '')
+    + '</div>';
 
   // Sort alphabetically
   filtered.sort(function(a, b){ return a.term.localeCompare(b.term); });
 
-  html += '<div class="gloss-list">';
+  // Build set of present first letters for A-Z index
+  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var present = {};
+  filtered.forEach(function(t){
+    var c = (t.term || '').charAt(0).toUpperCase();
+    if (c >= 'A' && c <= 'Z') present[c] = true;
+  });
+  var letterIndex = '<div class="gloss-letter-index">';
+  letters.forEach(function(L){
+    var has = !!present[L];
+    letterIndex += '<button class="gloss-letter' + (has ? ' has' : '') + '" '
+      + (has ? 'onclick="jumpToLetter(\'' + L + '\')"' : 'disabled')
+      + ' aria-label="Jump to ' + L + '">' + L + '</button>';
+  });
+  letterIndex += '</div>';
+
+  if (filtered.length === 0) {
+    return countHtml + '<div class="gloss-empty">No terms match your filters.<br><br>'
+      + '<button class="gloss-count-clear" onclick="clearGlossFilters()">Reset filters</button>'
+      + '</div>';
+  }
+
+  var html = letterIndex + countHtml + '<div class="gloss-list">';
+  var lastLetter = '';
   filtered.forEach(function(t){
     var mastered = isMastered(t.id);
     var dInfo = GLOSS_DOMAINS[t.domain] || GLOSS_DOMAINS[0];
-    html += '<div class="gloss-card' + (mastered ? ' mastered' : '') + '" onclick="showGlossDetail(' + t.id + ')">'
+    var letter = (t.term || '').charAt(0).toUpperCase();
+    var anchorAttr = (letter !== lastLetter && letter >= 'A' && letter <= 'Z')
+      ? ' id="gloss-letter-' + letter + '"' : '';
+    if (anchorAttr) lastLetter = letter;
+    html += '<div class="gloss-card dl' + t.domain + (mastered ? ' mastered' : '') + '"' + anchorAttr + ' onclick="showGlossDetail(' + t.id + ')">'
       + '<button class="gloss-card-master-btn" onclick="event.stopPropagation();toggleMasteredCard(' + t.id + ')" title="' + (mastered ? 'Unmark mastered' : 'Mark as mastered') + '">' + (mastered ? '&#10003;' : '') + '</button>'
       + '<div class="gloss-card-top">'
       +   '<div class="gloss-card-term">' + highlightSearch(t.term, glossState.search) + '</div>'
@@ -6849,6 +7009,18 @@ function renderGlossList() {
   });
   html += '</div>';
   return html;
+}
+
+function jumpToLetter(L) {
+  var el = document.getElementById('gloss-letter-' + L);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearGlossFilters() {
+  glossState.search = '';
+  glossState.domain = 'all';
+  glossState.showMastered = 'all';
+  renderGlossary();
 }
 
 function showGlossDetail(id) {
@@ -6981,7 +7153,7 @@ function renderFlashcardArea() {
 
   var html = '<div class="flashcard-area">'
     + '<div class="flashcard-progress">Card ' + (glossState.fcIndex + 1) + ' of ' + deck.length
-    +   ' &nbsp;/&nbsp; ' + Object.keys(getMasteredSet()).length + ' / ' + GLOSS.length + ' mastered'
+    +   ' &nbsp;&middot;&nbsp; ' + Object.keys(getMasteredSet()).length + ' learned'
     + '</div>'
     + '<div class="flashcard' + (flipped ? ' flipped' : '') + '" onclick="flipFlashcard()">'
     +   '<span class="flashcard-side-label">' + (flipped ? 'Definition' : 'Term') + '</span>'
