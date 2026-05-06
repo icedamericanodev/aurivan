@@ -3127,6 +3127,14 @@ const DI = {
   "5":{name:'Protection of Information Assets',short:'Info Protection',color:'#db2777',weight:26},
 };
 
+// Mock-exam blueprint:
+//   Domain mix follows DI.weight (official CISA: 18/18/12/26/26).
+//   Difficulty mix mirrors a typical CISA exam: ~30% Analysis,
+//   ~55% Application, ~15% Foundational. Tweak in one place.
+const MOCK_TOTAL = 150;
+const MOCK_DIFFICULTY_MIX = { analysis: 0.30, application: 0.55, foundational: 0.15 };
+const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / Application', foundational: 'Easy / Foundational' };
+
 // Domains loaded asynchronously from data/domain*.json (start with D1).
 // QB starts empty for these; UI re-renders once the bank arrives.
 const REMOTE_DOMAINS = {
@@ -5803,96 +5811,201 @@ function renderWeakSpots() {
 // â”€â”€ MOCK EXAM â”€â”€
 var mockExamLength = 150; // fixed: full CISA simulation
 
+// ── BLUEPRINT-AWARE MOCK ALLOCATOR ──
+// Plans a 150-question exam where:
+//   • domain shares match DI.weight (18/18/12/26/26)
+//   • difficulty mix matches MOCK_DIFFICULTY_MIX (30/55/15)
+// Falls back gracefully if a (domain, tier) cell is short on questions:
+// shortfall is redistributed first to other tiers within the same domain
+// (preserves domain weighting), then to other domains within the same
+// tier (preserves difficulty mix), then to anywhere available.
+function planMockAllocation(total) {
+  total = total || MOCK_TOTAL;
+  var domainKeys = Object.keys(DI);
+  var tiers = ['analysis', 'application', 'foundational'];
+
+  // Per-(domain, tier) availability from the loaded QB
+  var avail = {};
+  domainKeys.forEach(function(d){
+    avail[d] = {};
+    var pool = QB[d] || [];
+    tiers.forEach(function(t){
+      avail[d][t] = pool.filter(function(q){ return q.difficulty === t; }).length;
+    });
+  });
+
+  // Domain target = round(weight/100 * total), then fix any rounding drift
+  var totalWeight = 0;
+  domainKeys.forEach(function(d){ totalWeight += DI[d].weight; });
+  var domainTarget = {};
+  var assigned = 0;
+  domainKeys.forEach(function(d){
+    domainTarget[d] = Math.floor((DI[d].weight / totalWeight) * total);
+    assigned += domainTarget[d];
+  });
+  // Distribute remainder by largest fractional part
+  var fracs = domainKeys.map(function(d){
+    return { d: d, f: (DI[d].weight / totalWeight) * total - domainTarget[d] };
+  }).sort(function(a, b){ return b.f - a.f; });
+  for (var i = 0; i < total - assigned; i++) {
+    domainTarget[fracs[i % fracs.length].d]++;
+  }
+
+  // Within each domain target, split by difficulty mix and clamp to availability
+  var plan = {};
+  var shortfall = {};
+  domainKeys.forEach(function(d){
+    plan[d] = {};
+    var dt = domainTarget[d];
+    var raw = {
+      analysis: dt * MOCK_DIFFICULTY_MIX.analysis,
+      application: dt * MOCK_DIFFICULTY_MIX.application,
+      foundational: dt * MOCK_DIFFICULTY_MIX.foundational
+    };
+    var floored = {};
+    var sum = 0;
+    tiers.forEach(function(t){ floored[t] = Math.floor(raw[t]); sum += floored[t]; });
+    var tFracs = tiers.map(function(t){ return { t: t, f: raw[t] - floored[t] }; })
+      .sort(function(a, b){ return b.f - a.f; });
+    for (var j = 0; j < dt - sum; j++) floored[tFracs[j % tFracs.length].t]++;
+    // Clamp to availability and record any shortfall
+    tiers.forEach(function(t){
+      var want = floored[t];
+      var got = Math.min(want, avail[d][t]);
+      plan[d][t] = got;
+      if (want > got) {
+        shortfall[d] = (shortfall[d] || 0) + (want - got);
+      }
+    });
+  });
+
+  // Pass 1: redistribute shortfall to other tiers within the same domain
+  domainKeys.forEach(function(d){
+    if (!shortfall[d]) return;
+    tiers.forEach(function(t){
+      if (!shortfall[d]) return;
+      var room = avail[d][t] - plan[d][t];
+      if (room <= 0) return;
+      var move = Math.min(room, shortfall[d]);
+      plan[d][t] += move;
+      shortfall[d] -= move;
+    });
+  });
+
+  // Pass 2: redistribute remaining shortfall to other domains, preferring
+  // the same difficulty tier so the mix stays close to target.
+  function totalAssigned() {
+    var n = 0;
+    domainKeys.forEach(function(d){ tiers.forEach(function(t){ n += plan[d][t]; }); });
+    return n;
+  }
+  var stillShort = total - totalAssigned();
+  // Try same-tier first
+  for (var ti = 0; ti < tiers.length && stillShort > 0; ti++) {
+    var t = tiers[ti];
+    domainKeys.forEach(function(d){
+      if (stillShort <= 0) return;
+      var room = avail[d][t] - plan[d][t];
+      if (room <= 0) return;
+      var move = Math.min(room, stillShort);
+      plan[d][t] += move;
+      stillShort -= move;
+    });
+  }
+
+  return { plan: plan, domainTarget: domainTarget, total: totalAssigned(), avail: avail };
+}
+
 function renderMockSetup() {
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
-  var chipsHtml = Object.keys(DI).map(function(d){
+
+  // If any domain bank is still being fetched, show a loading card
+  // instead of a half-baked plan. The fetch handler re-renders this tab.
+  if (Object.keys(window.QB_LOADING || {}).length > 0) {
+    document.getElementById('mockArea').innerHTML =
+      '<div class="mock-setup-card">'
+      + '<div class="mock-title">CISA Full Exam Simulation</div>'
+      + '<div class="mock-sub">Fetching all 5 domain banks…</div>'
+      + '<div style="text-align:center;padding:32px"><div style="font-size:36px;animation:dcLoadingPulse 1.4s ease-in-out infinite">⟳</div></div>'
+      + '</div>';
+    return;
+  }
+
+  var domainKeys = Object.keys(DI);
+  var planRes = planMockAllocation(MOCK_TOTAL);
+  var plan = planRes.plan;
+  var actualTotal = planRes.total;
+
+  var aTotal = 0, mTotal = 0, fTotal = 0;
+  domainKeys.forEach(function(d){
+    aTotal += plan[d].analysis;
+    mTotal += plan[d].application;
+    fTotal += plan[d].foundational;
+  });
+
+  // Domain chips: show the planned count + the official weight
+  var chipsHtml = domainKeys.map(function(d){
     var i = DI[d];
-    var analysisCount = (QB[d]||[]).filter(function(q){ return q.difficulty === 'analysis'; }).length;
-    return '<div class="mock-chip"><span style="color:' + i.color + ';font-weight:700">D' + d + '</span> ' + i.weight + '%<br><span style="font-size:9px;opacity:0.7">' + analysisCount + ' hard/expert</span></div>';
+    var domTotal = plan[d].analysis + plan[d].application + plan[d].foundational;
+    return '<div class="mock-chip">'
+      + '<span style="color:' + i.color + ';font-weight:700">D' + d + '</span> ' + i.weight + '%'
+      + '<br><span style="font-size:9px;opacity:0.7">' + domTotal + ' Q · '
+      + plan[d].analysis + 'A/' + plan[d].application + 'M/' + plan[d].foundational + 'F</span>'
+      + '</div>';
   }).join('');
 
-  var totalAnalysis = 0, totalApp = 0, totalFnd = 0;
-  Object.keys(DI).forEach(function(d){
-    totalAnalysis += (QB[d]||[]).filter(function(q){ return q.difficulty === 'analysis'; }).length;
-    totalApp += (QB[d]||[]).filter(function(q){ return q.difficulty === 'application'; }).length;
-    totalFnd += (QB[d]||[]).filter(function(q){ return q.difficulty === 'foundational'; }).length;
-  });
-  var needed = Math.max(0, 150 - totalAnalysis);
-  var fromApp = Math.min(needed, totalApp);
-  var fromFnd = Math.max(0, needed - fromApp);
+  function statTile(color, value, label) {
+    var bg = color ? color + '-light' : 'surface2';
+    var bd = color ? color + '-border' : 'border2';
+    var fg = color ? color : 'text';
+    return '<div style="background:var(--' + bg + ');border:2px solid var(--' + bd + ');border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
+      + '<div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:var(--' + fg + ')">' + value + '</div>'
+      + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--' + (color ? fg : 'muted') + ');margin-top:2px">' + label + '</div>'
+      + '</div>';
+  }
+
+  var aPct = Math.round(MOCK_DIFFICULTY_MIX.analysis * 100);
+  var mPct = Math.round(MOCK_DIFFICULTY_MIX.application * 100);
+  var fPct = Math.round(MOCK_DIFFICULTY_MIX.foundational * 100);
 
   document.getElementById('mockArea').innerHTML =
     '<div class="mock-setup-card">'
     + '<div class="mock-title">CISA Full Exam Simulation</div>'
-    + '<div class="mock-sub">150 questions &middot; 4-hour timed exam &middot; CISA domain weights<br><strong style="color:var(--accent)">Hard &amp; Expert questions only &mdash; no explanations until the end.</strong></div>'
+    + '<div class="mock-sub">' + actualTotal + ' questions · 4-hour timed exam · official 18/18/12/26/26 domain weights<br>'
+    + '<strong style="color:var(--accent)">Difficulty mix matches the real exam: ~' + aPct + '% Analysis · ~' + mPct + '% Application · ~' + fPct + '% Foundational</strong>'
+    + '</div>'
     + '<div class="mock-chips">' + chipsHtml + '</div>'
     + '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">'
-    + '<div style="background:var(--surface2);border:2px solid var(--border2);border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-    + '<div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:var(--text)">150</div>'
-    + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:2px">Questions</div>'
+    + statTile(null, actualTotal, 'Questions')
+    + statTile(null, '4h', '240 min clock')
+    + statTile('--d5', aTotal, 'Hard / Analysis')
+    + statTile('--d3', mTotal, 'Mod / Application')
+    + statTile('--d1', fTotal, 'Easy / Foundational')
     + '</div>'
-    + '<div style="background:var(--surface2);border:2px solid var(--border2);border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-    + '<div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:var(--text)">4h</div>'
-    + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:2px">240 min clock</div>'
-    + '</div>'
-    + '<div style="background:var(--d5-light);border:2px solid var(--d5-border);border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-    + '<div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:var(--d5)">' + totalAnalysis + '</div>'
-    + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--d5);margin-top:2px">Hard/Expert</div>'
-    + '</div>'
-    + (fromApp > 0 ? '<div style="background:var(--d3-light);border:2px solid var(--d3-border);border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-    + '<div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:var(--d3)">' + fromApp + '</div>'
-    + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--d3);margin-top:2px">Moderate fill</div>'
-    + '</div>' : '')
-    + (fromFnd > 0 ? '<div style="background:var(--d1-light);border:2px solid var(--d1-border);border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-    + '<div style="font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:var(--d1)">' + fromFnd + '</div>'
-    + '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--d1);margin-top:2px">Easy fill</div>'
-    + '</div>' : '')
-    + '</div>'
-    + '<button class="mock-start" onclick="showMockConfirm()">Begin CISA Simulation &rarr;</button>'
+    + '<button class="mock-start" onclick="showMockConfirm()">Begin CISA Simulation →</button>'
     + '</div>';
   setTimeout(function(){ checkMockResume(); }, 50);
 }
 
 function showMockConfirm() {
-  var totalWeight = 0;
-  Object.keys(DI).forEach(function(d){ totalWeight += DI[d].weight; });
   var domainKeys = Object.keys(DI);
+  var planRes = planMockAllocation(MOCK_TOTAL);
+  var plan = planRes.plan;
+  var actualQ = planRes.total;
 
-  // Compute tier counts for display (mirrors startMock logic)
-  function allocPreview(target, getCap) {
-    var counts = {};
-    var assigned = 0;
-    domainKeys.forEach(function(d){
-      var want = Math.floor((DI[d].weight / totalWeight) * target);
-      counts[d] = Math.min(want, getCap(d));
-      assigned += counts[d];
-    });
-    var rem = target - assigned;
-    var fracs = domainKeys.map(function(d){
-      return {d:d, f:(DI[d].weight/totalWeight)*target - counts[d]};
-    }).sort(function(a,b){ return b.f-a.f; });
-    for(var i=0;i<rem;i++){
-      var item=fracs[i%fracs.length];
-      if(counts[item.d]<getCap(item.d)) counts[item.d]++;
-    }
-    return counts;
-  }
-
-  var aC = allocPreview(150, function(d){ return (QB[d]||[]).filter(function(q){ return q.difficulty==='analysis'; }).length; });
-  var aTotal = domainKeys.reduce(function(s,d){ return s+aC[d]; }, 0);
-  var mC = allocPreview(Math.max(0, 150-aTotal), function(d){ return (QB[d]||[]).filter(function(q){ return q.difficulty==='application'; }).length; });
-  var mTotal = domainKeys.reduce(function(s,d){ return s+mC[d]; }, 0);
-  var fC = allocPreview(Math.max(0, 150-aTotal-mTotal), function(d){ return (QB[d]||[]).filter(function(q){ return q.difficulty==='foundational'; }).length; });
-  var fTotal = domainKeys.reduce(function(s,d){ return s+fC[d]; }, 0);
-  var actualQ = aTotal + mTotal + fTotal;
+  var aTotal = 0, mTotal = 0, fTotal = 0;
+  domainKeys.forEach(function(d){
+    aTotal += plan[d].analysis;
+    mTotal += plan[d].application;
+    fTotal += plan[d].foundational;
+  });
 
   var domainBreakdown = domainKeys.map(function(d){
-    return 'D'+d+': '+(aC[d]+mC[d]+fC[d]);
+    var dt = plan[d].analysis + plan[d].application + plan[d].foundational;
+    return 'D' + d + ': ' + dt + ' (' + DI[d].weight + '%)';
   }).join(' &middot; ');
 
-  var tierNote = aTotal+' Hard/Expert';
-  if(mTotal>0) tierNote += ' + '+mTotal+' Moderate';
-  if(fTotal>0) tierNote += ' + '+fTotal+' Foundational';
+  var tierNote = aTotal + ' Analysis &middot; ' + mTotal + ' Application &middot; ' + fTotal + ' Foundational';
 
   var inProgress = S.mockQueue && S.mockQueue.length > 0 && S.mockCurrent < S.mockQueue.length;
   var resumeHtml = inProgress
@@ -5939,77 +6052,29 @@ function startMock() {
   S.mockAnswers = [];
   S.mockCurrent = 0;
   mockAnswerLock = false;
-  var targetTotal = 150;
 
-  var totalWeight = 0;
-  Object.keys(DI).forEach(function(d){ totalWeight += DI[d].weight; });
-  var domainKeys = Object.keys(DI);
+  // Don't let the user start an exam while a domain bank is still fetching —
+  // that would silently drop those questions from the simulation.
+  if (Object.keys(window.QB_LOADING || {}).length > 0) {
+    showToast && showToast('⏳ Question banks still loading — try again in a moment', 'info', 2200);
+    renderMockSetup();
+    return;
+  }
 
   function shuffle(arr){ for(var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; } return arr; }
 
-  // Helper: weighted allocation across domains with per-domain caps
-  function allocate(target, getCap) {
-    var counts = {};
-    var assigned = 0;
-    // Floor pass
-    domainKeys.forEach(function(d){
-      var want = Math.floor((DI[d].weight / totalWeight) * target);
-      counts[d] = Math.min(want, getCap(d));
-      assigned += counts[d];
-    });
-    // Distribute remainder by largest fractional part, respecting caps
-    var rem = target - assigned;
-    var fracs = domainKeys.map(function(d){
-      return {d:d, f:(DI[d].weight / totalWeight)*target - counts[d]};
-    }).sort(function(a,b){ return b.f - a.f; });
-    for(var i=0; i<rem; i++){
-      var item = fracs[i % fracs.length];
-      if(counts[item.d] < getCap(item.d)){
-        counts[item.d]++;
-      }
-    }
-    return counts;
-  }
+  var planRes = planMockAllocation(MOCK_TOTAL);
+  var plan = planRes.plan;
 
-  // Tier 1 — analysis (hard + expert). Fill as much of 150 as possible.
-  var analysisCounts = allocate(targetTotal, function(d){
-    return (QB[d]||[]).filter(function(q){ return q.difficulty==='analysis'; }).length;
+  Object.keys(DI).forEach(function(d){
+    var pool = (QB[d] || []);
+    var aPool = shuffle(pool.filter(function(q){ return q.difficulty === 'analysis'; }));
+    var mPool = shuffle(pool.filter(function(q){ return q.difficulty === 'application'; }));
+    var fPool = shuffle(pool.filter(function(q){ return q.difficulty === 'foundational'; }));
+    aPool.slice(0, plan[d].analysis).forEach(function(q){ S.mockQueue.push(q); });
+    mPool.slice(0, plan[d].application).forEach(function(q){ S.mockQueue.push(q); });
+    fPool.slice(0, plan[d].foundational).forEach(function(q){ S.mockQueue.push(q); });
   });
-  var analysisTotal = 0;
-  domainKeys.forEach(function(d){ analysisTotal += analysisCounts[d]; });
-
-  // Tier 2 — application (moderate). Fill whatever analysis couldn't cover.
-  var remaining1 = targetTotal - analysisTotal;
-  var applicationCounts = {}, applicationTotal = 0;
-  domainKeys.forEach(function(d){ applicationCounts[d] = 0; });
-  if(remaining1 > 0){
-    applicationCounts = allocate(remaining1, function(d){
-      return (QB[d]||[]).filter(function(q){ return q.difficulty==='application'; }).length;
-    });
-    domainKeys.forEach(function(d){ applicationTotal += applicationCounts[d]; });
-  }
-
-  // Tier 3 — foundational (easy). Fill any still-remaining gap.
-  var remaining2 = remaining1 - applicationTotal;
-  var foundationalCounts = {};
-  domainKeys.forEach(function(d){ foundationalCounts[d] = 0; });
-  if(remaining2 > 0){
-    foundationalCounts = allocate(remaining2, function(d){
-      return (QB[d]||[]).filter(function(q){ return q.difficulty==='foundational'; }).length;
-    });
-  }
-
-  // Pick questions from each tier per domain
-  domainKeys.forEach(function(d){
-    var pool = (QB[d]||[]);
-    var aPool = shuffle(pool.filter(function(q){ return q.difficulty==='analysis'; }));
-    var mPool = shuffle(pool.filter(function(q){ return q.difficulty==='application'; }));
-    var fPool = shuffle(pool.filter(function(q){ return q.difficulty==='foundational'; }));
-    aPool.slice(0, analysisCounts[d]).forEach(function(q){ S.mockQueue.push(q); });
-    mPool.slice(0, applicationCounts[d]).forEach(function(q){ S.mockQueue.push(q); });
-    fPool.slice(0, foundationalCounts[d]).forEach(function(q){ S.mockQueue.push(q); });
-  });
-
   shuffle(S.mockQueue);
 
   // Always 4-hour clock
@@ -6044,7 +6109,7 @@ function showMockQuestion() {
   if (isFullExam) {
     timerHtml =
       '<div class="timer-wrap" style="margin-bottom:16px">'
-      + '<div><div class="timer-digits ok" id="mTotalTD">4h 00m 00s</div><div class="timer-sub">Total Exam Clock &mdash; Hard &amp; Expert CISA Simulation</div></div>'
+      + '<div><div class="timer-digits ok" id="mTotalTD">4h 00m 00s</div><div class="timer-sub">Total Exam Clock &mdash; Full CISA Simulation</div></div>'
       + '<div class="timer-track"><div class="timer-fill" id="mTotalTF" style="width:100%;background:#6ee7b7"></div></div>'
       + '</div>';
   } else {
@@ -6057,7 +6122,7 @@ function showMockQuestion() {
 
   document.getElementById('mockArea').innerHTML =
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
-    + '<span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase">CISA Simulation &mdash; Hard &amp; Expert</span>'
+    + '<span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase">CISA Simulation &mdash; Blueprint Mix</span>'
     + '<span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:11px;color:var(--muted)">Q' + cur + ' of ' + tot + '</span>'
     + '</div>'
     + '<div style="height:6px;background:var(--border2);border-radius:3px;margin-bottom:20px;overflow:hidden">'
