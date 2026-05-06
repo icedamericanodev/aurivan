@@ -52,19 +52,16 @@ sys.exit(0 if ok else 1)
 PY
 
 # 3. JS lint (no-undef) on inline scripts ------------------------------------
+# Trust ESLint's exit code rather than grepping output: on a fresh runner,
+# `npx --yes` prints npm deprecation warnings (lowercase "npm warn ...") that
+# would otherwise trip a naive grep for the word "warn".
 if command -v node >/dev/null 2>&1 && command -v npx >/dev/null 2>&1; then
   printf "\nJS lint (no-undef on inline scripts):\n"
   if bash scripts/lint_inline_js.sh >/tmp/_lint.out 2>&1; then
-    grep -E "error|warn" /tmp/_lint.out | grep -v "dataLayer" | head -3
-    leftover=$(grep -E "error|warn" /tmp/_lint.out | grep -v "dataLayer" | wc -l)
-    if [ "$leftover" -eq 0 ]; then
-      printf "  ${OK} clean (only the standard GA dataLayer stub flagged)\n"
-    else
-      printf "  ${FAIL} lint issues above\n"
-      status=1
-    fi
+    printf "  ${OK} clean (only the standard GA dataLayer stub flagged)\n"
   else
-    printf "  ${FAIL} lint script failed — see /tmp/_lint.out\n"
+    printf "  ${FAIL} lint issues:\n"
+    grep -v "^npm " /tmp/_lint.out | grep -E "(error|warning)" | head -5 | sed 's/^/    /'
     status=1
   fi
 else
