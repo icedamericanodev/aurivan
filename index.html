@@ -3192,7 +3192,7 @@ header::after {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v8.5</span>
+    <span class="bank-pill" id="versionPill">v8.6</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -3384,7 +3384,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v8.5';
+const APP_VERSION = 'v8.6';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -4349,10 +4349,15 @@ function buildConceptsData() {
     cross_domain_connections: CISA_NOTES_RAW.cross_domain_connections || [],
     exam_strategy_tips: CISA_NOTES_RAW.exam_strategy_tips || [],
     domains: CISA_NOTES_RAW.domains.map(function(d) {
+      // Force the exam weight to match DI (the canonical source of truth)
+      // so the Topics UI never drifts from the rest of the app even if
+      // cisa_notes.json carries a stale value.
+      var canonical = DI[String(d.domain_number)];
+      var canonicalWeight = canonical ? (canonical.weight + '%') : d.exam_weight;
       return {
         domain_id: d.domain_number,
         domain_name: d.domain_name,
-        exam_weight: d.exam_weight,
+        exam_weight: canonicalWeight,
         summary: d.summary || "",
         real_life_analogy: d.real_life_analogy || "",
         key_terminologies: d.key_terminologies || null,
@@ -7795,7 +7800,7 @@ function buildStudyRecommendation() {
     icon = '&#127891;';
     headline = 'Welcome! Start with the audit mindset.';
     steps = [
-      'Read the Topics tab — start with Domain 1 (Audit Process, 21% of the exam)',
+      'Read the Topics tab — start with Domain 1 (Audit Process, ' + DI["1"].weight + '% of the exam)',
       'Answer 10 practice questions to calibrate your baseline',
       'Check your Weak Spots tab to see where to focus'
     ];
@@ -8668,7 +8673,14 @@ function showChangelog() {
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
     + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> ' + APP_VERSION + ' &#8212; Direct Feedback Send</div>'
+    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> ' + APP_VERSION + ' &#8212; Domain Weights Aligned to ISACA Blueprint</div>'
+    + '<ul class="cl-items">'
+    + '<li><strong>Consistent domain weights everywhere</strong> &#8212; D1 18%, D2 18%, D3 12%, D4 26%, D5 26% across the practice cards, mock-exam blueprint, topics tab, weak-spot recommendations, and onboarding copy. Old values (21/17/12/23/27) in <code>cisa_notes.json</code> are corrected, and the topics renderer now sources weights from the same canonical <code>DI</code> object so future drift is impossible.</li>'
+    + '<li><strong>Onboarding step text</strong> &#8212; the welcome step now reads the live D1 weight instead of the hardcoded 21%</li>'
+    + '<li><strong>Data hygiene</strong> &#8212; orphan <code>cisa_concepts.json</code> file also corrected for consistency</li>'
+    + '</ul></div>'
+    + '<div class="cl-version">'
+    + '<div class="cl-ver-label">v8.5 &#8212; Direct Feedback Send</div>'
     + '<ul class="cl-items">'
     + '<li><strong>One-click feedback send</strong> &#8212; the Feedback modal now submits directly from the page (via a Google Form bound to <code>certprep.support@gmail.com</code>); no need to leave for your mail app</li>'
     + '<li><strong>Mail-app fallback retained</strong> &#8212; the secondary "Open mail app instead" link prefills the same message as a <code>mailto:</code> for users who prefer their own email client; also shown automatically if the page is offline</li>'
