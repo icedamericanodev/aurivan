@@ -193,31 +193,79 @@ SUBTOPIC_VOCAB = {
     2: [
         ("IT Governance & Strategy", r"\b(IT governance|enterprise governance|board of directors|steering committee|"
                                        r"strategic plan|strategic alignment|IT strategy|business strategy|"
-                                       r"governance framework)\b"),
+                                       r"governance framework|IT plan|short[- ]?term planning|long[- ]?term planning|"
+                                       r"tactical plan|investment portfolio|annual plan|"
+                                       r"corporate governance|implementing.*governance|"
+                                       r"IT[- ]related framework|IT framework)\b"),
         ("IT Risk Management", r"\b(risk management|risk assessment|risk register|risk appetite|risk tolerance|"
-                                r"risk treatment|risk transfer|risk mitigation|risk avoidance|risk acceptance)\b"),
+                                r"risk treatment|risk transfer|risk mitigation|risk avoidance|risk acceptance|"
+                                r"risk profile|risk analysis|residual risk|"
+                                r"security risk|measures of (?:security )?risk|"
+                                r"types of risk|impact.*risk|examples? of (?:vulnerab|threat)|"
+                                r"unencrypted data transmissions|poor choice of password|"
+                                r"vulnerab|threat\b|errors in audit procedures|"
+                                r"distributed control|SCADA)\b"),
         ("Policies, Standards & Procedures", r"\b(security polic|information security polic|policy framework|"
                                                 r"standards? and procedures|operational polic|acceptable use|"
-                                                r"organizational polic)\b"),
+                                                r"organizational polic|email polic|firewall polic|"
+                                                r"approval of (?:the )?polic|policy approval|"
+                                                r"policy definition|access control polic|operational polic|"
+                                                r"\bIT polic|organizational policies|"
+                                                r"policy is\b|policies have not been|policy review|"
+                                                r"policy ownership|frequency of policy|policy reviewed|"
+                                                r"information security program|security program|"
+                                                r"establishing.*security|"
+                                                r"unique user accounts|password polic)\b"),
         ("Enterprise Architecture", r"\b(enterprise architecture|EA framework|technical architecture|"
-                                       r"current state|future state|to-be|as-is)\b"),
+                                       r"current state|future state|to-be|as-is|business process driven|"
+                                       r"data warehouse|data integration|"
+                                       r"merger.*organizations|legacy applications|"
+                                       r"replaced by a new|application portfolio|"
+                                       r"product profitability|standardiz(?:ed|ation)|"
+                                       r"reports? on product|finance and marketing)\b"),
         ("Quality Management", r"\b(quality management|QMS|quality system|continuous improvement|"
-                                  r"performance metric|balanced scorecard|BSC|key performance indicator)\b"),
+                                  r"performance metric|balanced scorecard|BSC|key performance indicator|KPI)\b"),
         ("Outsourcing & Third-Party Management", r"\b(outsourc|service provider|third[- ]party|vendor|"
-                                                    r"service level agreement|SLA|escrow|right[- ]to[- ]audit)\b"),
+                                                    r"service level agreement|SLA|escrow|right[- ]to[- ]audit|"
+                                                    r"reciprocal agreement|cloud (?:provider|service|computing)|"
+                                                    r"software as a service|SaaS|offshore|"
+                                                    r"external IT service|management of external|"
+                                                    r"contract.*IT (?:facilities|services))\b"),
         ("HR & Personnel Policies", r"\b(mandatory vacation|background check|job description|"
                                        r"separation of duties|cross[- ]?train|succession plan|termination|exit interview|"
-                                       r"non[- ]?disclosure|secondary employment)\b"),
-        ("Project Portfolio & Investment", r"\b(project portfolio|investment portfolio|portfolio management|"
-                                              r"return on investment|ROI|cost[- ]benefit|business case)\b"),
-        ("Roles & Responsibilities", r"\b(chief information officer|CIO|chief information security officer|CISO|"
-                                        r"chief risk officer|data owner|data custodian|process owner|RACI)\b"),
+                                       r"non[- ]?disclosure|secondary employment|employee resign|integrity of new staff|"
+                                       r"new staff|vacation polic|short[- ]?term employees|hiring|recruit|"
+                                       r"required vacations?|job rotations?|"
+                                       r"individuals perform more than one role|small IT department|"
+                                       r"perform more than one role)\b"),
+        ("Project Portfolio & Investment", r"\b(project portfolio|portfolio management|"
+                                              r"return on investment|ROI|cost[- ]benefit|business case|"
+                                              r"strategic IT initiative|IT investment)\b"),
+        ("Roles & Responsibilities", r"\b(chief information officer|\bCIO\b|chief information security officer|CISO|"
+                                        r"chief risk officer|chief executive officer|CEO|"
+                                        r"\bdata owner|\bdata custodian|\bdata steward|process owner|RACI|"
+                                        r"organizational chart|reporting structure|reporting line|"
+                                        r"approval authority|approval responsibility|approving the policy|"
+                                        r"approve.*polic|board responsibility|management responsibility|"
+                                        r"establishing.*acceptable risk|acceptable risk level|"
+                                        r"responsibility for|responsible for)\b"),
         ("Asset Management & Classification", r"\b(asset classification|information asset|data classification|"
-                                                  r"data ownership)\b"),
-        ("Performance Measurement", r"\b(performance measurement|KPI|metric|scorecard|maturity model|"
-                                       r"capability maturity)\b"),
+                                                  r"data ownership|critical asset|sensitive (?:data|information)|"
+                                                  r"classifying.*levels|level of protection)\b"),
         ("Insurance & Compliance", r"\b(insurance|fidelity|errors and omissions|business interruption|"
-                                      r"regulatory|compliance requirement|legal requirement)\b"),
+                                      r"regulatory|compliance requirement|legal requirement|statutory|"
+                                      r"privacy law|data protection law|GDPR|cross[- ]border|"
+                                      r"comply with privacy)\b"),
+        ("Decision Support & Tools", r"\b(decision support|DSS|software escrow|enterprise resource planning|"
+                                        r"ERP|expert system|knowledge base)\b"),
+        ("Audit & Independence in Governance", r"\b(due professional care|professional care|professional ethics|"
+                                                  r"information systems? \(IS\) auditor (?:should|is|finds|reviews|"
+                                                  r"observes|discovers|notes)|"
+                                                  r"control objectives are useful|FIRST reference when performing|"
+                                                  r"data analytics|audit procedures)\b"),
+        ("Performance Measurement", r"\b(performance measurement|\bKPI|metric|scorecard|maturity model|"
+                                       r"capability maturity|performance metrics|"
+                                       r"developing performance|effectiveness of (?:audit|the) process)\b"),
     ],
     3: [
         ("SDLC & Development Methodology", r"\b(system development life cycle|SDLC|waterfall|agile|"
