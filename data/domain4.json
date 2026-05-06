@@ -1006,7 +1006,10 @@
         "D": "Denormalization may require some changes to the calls between databases and applications but should not cause application malfunctions."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'loss of confidentiality' — confidentiality is access-control concern, not denormalization.",
+        "Trap is C 'unauthorized accesses' — unrelated to denormalization.",
+        "Trap is D 'application malfunctions' — denormalization is transparent to applications.",
+        "Denormalization stores the same data in multiple tables to speed reads. The cost: increased redundancy. Updates must propagate to all copies; storage grows."
       ]
     },
     {
@@ -1031,7 +1034,10 @@
         "D": "The audit should find that all scheduled jobs were run and that any exceptions were documented. This is not a violation."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'emergency changes growing' — concerning but separate process issue.",
+        "Trap is B 'jobs not on time' — operational issue, addressable.",
+        "Trap is D 'only scheduled jobs ran' — that's the desired state, not a concern.",
+        "Operator overrides bypass scheduled controls — could change data or programs without authorization. Compromises integrity AND audit trail. Most serious operations finding."
       ]
     },
     {
@@ -1056,7 +1062,10 @@
         "D": "Normalization is used to design the database and is not necessarily related to database migration."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'timing of cutover' — operational concern, addressable.",
+        "Trap is C 'authorization level of users' — access control concern, separate from migration.",
+        "Trap is D 'normalization of data' — design concern, addressable through schema work.",
+        "Database migration's PRIMARY risk: data integrity. If data is corrupted, lost, or transformed incorrectly during migration, business operations fail. Integrity verification is essential."
       ]
     },
     {
@@ -1081,7 +1090,10 @@
         "D": "Quality controls, such as edits, ensure the accuracy, completeness, and consistency of data maintained in the database."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'restrict updating to authorized users' — that's access control, not concurrency.",
+        "Trap is C 'prevent unauthorized disclosure' — confidentiality control.",
+        "Trap is D 'accuracy/completeness/consistency' — broader integrity concept.",
+        "Concurrency control specifically handles SIMULTANEOUS updates. Without it, two transactions modifying the same data can corrupt each other (lost updates, dirty reads). Locks and timestamps maintain integrity."
       ]
     },
     {
@@ -1106,7 +1118,10 @@
         "D": "Rollback and roll-forward database features ensure recovery from an abnormal disruption. They ensure the integrity of the transaction that was being processed at the time of disruption, but do not provide assurance on the integrity of the contents of the database."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'audit log procedures' — detective; logs activities but doesn't ensure integrity directly.",
+        "Trap is C 'query/access time checks' — performance concern, not integrity.",
+        "Trap is D 'rollback/roll-forward' — recovery feature, fixes problems after the fact.",
+        "Table link/reference checks verify referential integrity — relationships between tables remain consistent. Detects orphaned records, broken links, or invalid references. Direct integrity verification."
       ]
     },
     {
@@ -1131,7 +1146,10 @@
         "D": "Proxy server troubleshooting is used for troubleshooting purposes, and managing a proxy is only a small part of network management."
       },
       "tips": [
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is B 'topological mappings' — documentation tool, not management.",
+        "Trap is C 'monitoring tools' — operational tool, not foundational management.",
+        "Trap is D 'proxy server troubleshooting' — narrow operational task.",
+        "Configuration + change management = the foundation of network management. Defines how the network is built (configuration) and how it changes safely (change management). Everything else operates within this framework."
       ]
     },
     {
@@ -1156,7 +1174,10 @@
         "D": "The implementation of a field check is not as effective as a validity check that verifies that all password criteria have been met."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'size check' — verifies length within range, not format quality.",
+        "Trap is B 'hash total' — used for batch totals, not individual password format.",
+        "Trap is D 'field check' — generic data type check, less specific.",
+        "Validity check verifies password meets complexity rules (length, character mix, dictionary exclusion, etc.). Most relevant programmed control for password management."
       ]
     },
     {
@@ -1181,8 +1202,10 @@
         "D": "The difference in security infrastructures, although a risk, is not insurmountable."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is B 'resources unavailable' — possible but addressable through capacity planning.",
+        "Trap is C 'cannot live test' — practical limitation, manageable.",
+        "Trap is D 'different security' — addressable through agreement terms.",
+        "Reciprocal agreements assume the partner's hardware/software match yours. Time passes, both organizations evolve, configurations diverge. The agreement gradually becomes useless without active maintenance — and rarely gets it."
       ]
     },
     {
@@ -1207,7 +1230,10 @@
         "D": "A network monitoring tool can violate confidentiality by allowing a network administrator to observe nonencrypted traffic. This requires careful protection and policies regarding the use of network monitoring tools."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'integrity' — network monitoring detects but doesn't ensure integrity.",
+        "Trap is C 'completeness' — measured at application level, not network.",
+        "Trap is D 'confidentiality' — encryption concern, not monitoring.",
+        "Network performance monitoring identifies bottlenecks, congestion, failures. Acting on monitoring data keeps the network AVAILABLE. Direct relationship: monitoring → availability."
       ]
     },
     {
@@ -1232,8 +1258,10 @@
         "D": "The support and stability of the archiving solution manufacturer is secondary to the need to ensure a retention policy. Vendor support does not directly affect the completeness and accuracy of the archived email."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is B 'storage capacity' — operational concern, manageable.",
+        "Trap is C 'user awareness' — process concern, separate.",
+        "Trap is D 'manufacturer support' — vendor concern.",
+        "Email retention policy aligned with business AND regulatory requirements is foundational. Without it, the archive may keep too much (storage cost, privacy risk) or too little (legal exposure). Policy drives everything."
       ]
     },
     {
@@ -1258,8 +1286,10 @@
         "D": "Declining to deal with vendors does not take care of the flaw and may severely limit service options."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed.",
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is B 'new software version with all fixes' — vendor controls release timing; can't demand on-demand.",
+        "Trap is C 'install immediately' — risky; patches can break things.",
+        "Trap is D 'decline to deal with vendors' — overreaction; all software has vulnerabilities.",
+        "Patch impact assessment first: does this patch affect us? Will it break anything in our environment? Risk-based decision drives whether and when to install."
       ]
     },
     {
@@ -1284,8 +1314,10 @@
         "C": "Protecting all source and object code-even in development-s a good practice. However, this will not ensure the synchronization of source and object code."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is A 'release-to-release reports' — useful but specific to release events.",
+        "Trap is B 'library control software' — controls changes but doesn't verify synchronization.",
+        "Trap is C 'restricted access' — preventive but doesn't verify match.",
+        "Date/time-stamp comparison directly verifies that source and object code came from the same compilation. Most direct synchronization check."
       ]
     },
     {
@@ -1310,7 +1342,10 @@
         "D": "The use of a normal user account does not have sufficient privileges to make changes on the database."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'shared DBA account' — no individual accountability.",
+        "Trap is C 'server administrative account' — different role; SoD concern and no DB-specific accountability.",
+        "Trap is D 'user account' — insufficient privileges for emergency DB changes.",
+        "Named account = individual accountability. Even for emergency changes, the audit trail must identify WHO made each change. Shared accounts make accountability impossible."
       ]
     },
     {
@@ -1335,7 +1370,10 @@
         "D": "Open-source software does not inherently lack quality. Like any software code, it should be tested for reliability and should be part of the normal SDLC process. This is not more of a concern than licensing compliance."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'client did not pay' — open-source is free; non-issue.",
+        "Trap is C 'security vulnerabilities' — true but applies to all software.",
+        "Trap is D 'unreliable for commercial use' — overstated; many enterprise systems use open-source successfully.",
+        "Open-source licenses (GPL, MIT, BSD, Apache, AGPL, etc.) have very different requirements. Some require sharing modifications; some restrict commercial use; some require attribution. License compliance is a real legal risk."
       ]
     },
     {
@@ -1360,7 +1398,10 @@
         "D": "Users should not be able to make changes. Logging only provides information on changes made but does not limit changes to only those who were authorized."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'DBA account only' — doesn't address the after-hours abbreviated process.",
+        "Trap is B 'normal user account changes' — normal users shouldn't make DB changes.",
+        "Trap is D 'normal user account + log' — see above; user shouldn't be making DB changes.",
+        "After-hours DBA access + log + next-day review = compensating controls preserve emergency capability while maintaining audit trail. Logged DBA changes get reviewed for appropriateness."
       ]
     },
     {
@@ -1385,8 +1426,10 @@
         "D": "Ensuring that only appropriate staff can migrate changes into production is a key control process but, alone, does not verify compliance."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is A 'review software migration records' — depends on recordkeeping; could miss changes never recorded.",
+        "Trap is C 'review change control documentation' — paper review; doesn't verify actual changes.",
+        "Trap is D 'restrict migration access' — preventive control, not a compliance test.",
+        "Identifying actual changes from system data, then verifying each had approval = the substance of compliance testing. Catches both unauthorized changes AND changes that bypassed paperwork."
       ]
     },
     {
@@ -1411,7 +1454,10 @@
         "D": "Risk acceptance occurs when an organization decides to accept the risk as it is and to do nothing to mitigate or transfer it."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'transfer' — would be insurance or full outsourcing of recovery; not a reciprocal pact.",
+        "Trap is C 'avoidance' — would mean discontinuing the activity; opposite of contingency planning.",
+        "Trap is D 'acceptance' — would mean no controls; reciprocal IS a control.",
+        "Reciprocal agreement = each org provides recovery capacity for the other. That's risk MITIGATION (reducing impact), not transfer (paying someone else's premium) or other treatment."
       ]
     },
     {
@@ -1436,7 +1482,10 @@
         "D": "Reviewing executable and source code integrity is an ineffective control, because the source code was changed back to the original and will agree with the current executable."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'comparing source code' — won't detect; the source was restored.",
+        "Trap is C 'comparing object code' — same; restoration covers tracks.",
+        "Trap is D 'reviewing executable/source integrity' — restored integrity matches original.",
+        "System logs capture ACTIVITY in real time — the modification, the data change, the restoration. Even when code is restored, the activity record persists as the trail."
       ]
     },
     {
@@ -1461,7 +1510,10 @@
         "C": "The service delivery objective (SDO) is directly related to the business needs. SDO is the level of services to be reached during the alternate process mode until the normal situation is restored."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'interruption window' — duration of operations gap, not data loss.",
+        "Trap is B 'RTO' — time to recovery, not data preservation.",
+        "Trap is C 'SDO' — service level during recovery, not data preservation.",
+        "RPO defines acceptable data loss in time. If critical data wasn't retained, the RPO was set wrong (too lax) or controls didn't enforce it. Direct connection to data preservation."
       ]
     },
     {
@@ -1486,7 +1538,10 @@
         "D": "IT management is interested in ensuring that systems are operating at optimal capacity, but their primary obligation is to ensure that IT is meeting the service level requirements of the business."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'identify hardware needs' — outcome of monitoring, not primary purpose.",
+        "Trap is B 'determine future capacity' — also outcome.",
+        "Trap is D 'optimal capacity operation' — efficiency goal, secondary to SLA compliance.",
+        "Capacity monitoring's PRIMARY purpose: ensure SLA compliance with the business. The business contracted for performance; IT's job is to deliver what was promised."
       ]
     },
     {
@@ -1511,7 +1566,10 @@
         "D": "Although a business continuity plan (BCP) is likely to be circulated throughout an organization, the IS DRP will usually be a technical document and only relevant to IS and communication staff."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'tested every six months' — frequency varies by business needs.",
+        "Trap is C 'approved by CEO' — usually approved by CIO or steering committee.",
+        "Trap is D 'communicated to every department head' — communication is necessary but not the primary auditor verification.",
+        "DRP must remain CURRENT to be effective. Systems change, people change, processes change. An out-of-date DRP is worse than no DRP — false confidence. Regular review and update is foundational."
       ]
     },
     {
@@ -1536,7 +1594,10 @@
         "D": "Last-mile circuit protection is a redundant combination oflocal carrier T-ls (E-ls in Europe), microwave and/or coaxial cable access to the local communications loop. This enables the facility to have access during a local carrier communication disaster. Alternate local-carrier routing is also used."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'alternative routing' — different ROUTES, not split/duplicate cables.",
+        "Trap is C 'long-haul network diversity' — long-distance carrier diversity.",
+        "Trap is D 'last-mile circuit protection' — specifically the local loop.",
+        "Diverse routing = same data on physically different cables. If one cable is cut, the other carries traffic. Specifically split/duplicate cable terminology."
       ]
     },
     {
@@ -1561,8 +1622,10 @@
         "D": "An information security policy does not address recovery procedures."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is B 'RPO' — informs backup frequency, not recovery procedures.",
+        "Trap is C 'MTO' — maximum time before unrecoverable; informs RTO.",
+        "Trap is D 'security policy' — too broad; doesn't drive recovery procedures.",
+        "RTO (recovery time objective) directly drives recovery procedures: how fast must this be back? Determines hot/warm/cold site choice, backup strategy, staffing, etc. Procedure design follows RTO."
       ]
     },
     {
@@ -1587,8 +1650,10 @@
         "D": "Removal of backups from the data center is not an appropriate action because it can delay the evacuation of personnel. Most organizations have copies of backups in off site storage to mitigate the risk of data loss for this type of disaster."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'notify fire department' — alarms typically auto-notify; secondary to evacuation.",
+        "Trap is B 'activate fire suppression' — automatic systems; manual activation comes after evacuation.",
+        "Trap is D 'remove backups' — backups can be replaced; people cannot. Backups are stored offsite anyway.",
+        "Life safety FIRST. Always. In any emergency, evacuation of personnel takes absolute priority over equipment, data, or property. Foundational principle."
       ]
     },
     {
@@ -1613,7 +1678,10 @@
         "D": "A copy of DR policies can be requested to review their adequacy; however, this will only be useful if the vendor is contractually required to provide DR services."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'plan an audit of cloud vendor' — premature; first verify the contractual basis.",
+        "Trap is C 'review independent auditor report' — also premature; depends on contractual rights.",
+        "Trap is D 'request DRP from vendor' — vendor isn't obligated to share without contract terms.",
+        "Vendor responsibility for DR exists ONLY IF the contract specifies it. Without contractual DR commitment, the customer remains accountable. Verify contract language first."
       ]
     },
     {
@@ -1638,8 +1706,10 @@
         "D": "If the servers at the hot site are capable of running the programs that are required in a disaster recovery situation, the precise capabilities of the servers at the hot site is not a major risk. It is necessary to ensure that software configuration and settings match the servers at the main site, but it is not unusual for newer and more powerful servers to exist at the main site for everyday production use while the standby servers are less powerful."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'shared accounts at hot site' — security concern but recoverable.",
+        "Trap is C 'physical security less robust' — concerning but compensating controls exist.",
+        "Trap is D 'specifications differ' — manageable through testing.",
+        "Disk space data not current = at recovery time, may not have enough storage to run. System fails to start, recovery is delayed or impossible. Hidden capacity gap."
       ]
     },
     {
@@ -1664,7 +1734,10 @@
         "D": "Restriction of access to parameters ensures that only authorized staff can access the parameters; however, if the parameters are set incorrectly, restricting access will still have an adverse impact."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'audit trail of changes' — detective control, important but not the primary review concern.",
+        "Trap is C 'authorized and documented' — process control, also detective.",
+        "Trap is D 'restricted access' — preventive control.",
+        "System parameters balance security AND performance. Too tight = performance degrades; too loose = security risk. The PRIMARY parameter review concern is whether the balance is appropriate."
       ]
     },
     {
@@ -1689,7 +1762,10 @@
         "D": "A duplicate IPF is a dedicated, fully developed recovery site that can back up critical applications."
       },
       "tips": [
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is B 'warm site' — has equipment but not fully operational.",
+        "Trap is C 'dial-up site' — connectivity, not facility.",
+        "Trap is D 'duplicate processing facility' — fully operational mirror.",
+        "Cold site = empty space ready to receive equipment. No computers, no comms, just utilities and physical infrastructure. Cheapest, slowest activation."
       ]
     },
     {
@@ -1714,7 +1790,10 @@
         "D": "A DRP should reduce the cost that could result from a disaster."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is B 'increase recovery time AND cost' — opposite of optimization.",
+        "Trap is C 'reduce time but increase cost' — partial; both should reduce.",
+        "Trap is D 'no effect' — defeats the purpose of optimization.",
+        "An optimized DRP balances and REDUCES both recovery time and recovery cost through careful planning. Pre-positioning resources, contracted facilities, tested procedures all save time AND money."
       ]
     },
     {
@@ -1739,8 +1818,10 @@
         "C": "Synchronous updates of the data and standby active systems in a hot site meet the RPO and RTO requirements but are costlier than a warm site solution."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'hot site 8 hours, async backup' — async fails RPO=zero; some data loss.",
+        "Trap is B 'distributed databases async' — async = data loss.",
+        "Trap is C 'synchronous + standby active hot site' — meets RPO/RTO but expensive.",
+        "RPO=0 requires synchronous data copy (no loss). RTO=72 hrs allows warm site (cheaper than hot). Synchronous data + warm site = cost-effective combo meeting both requirements."
       ]
     },
     {
@@ -1765,8 +1846,10 @@
         "D": "The installation of duplex communication links is only appropriate if the failure is limited to the communication link."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'reciprocal agreement' — depends on partner availability; high risk for critical processor.",
+        "Trap is B 'alternate processor in same location' — same site = same disaster impact.",
+        "Trap is D 'duplex communication links' — addresses link failure, not processor failure.",
+        "Alternate processor at another network node = geographic and equipment redundancy. Best contingency for critical communications processor."
       ]
     },
     {
@@ -1791,8 +1874,10 @@
         "C": "A disaster recovery plan must be kept up-to-date through a regular maintenance and review schedule, but this is not as important as testing."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'DRP exists' — having a plan ≠ readiness.",
+        "Trap is B 'customer references' — third-party endorsement, not direct evidence.",
+        "Trap is C 'maintenance processes' — process exists ≠ effective recovery.",
+        "Test results = real evidence. Did the DRP actually work? What problems surfaced? Tests are the only objective measure of recovery readiness."
       ]
     },
     {
@@ -1817,7 +1902,10 @@
         "D": "Backing up database logs to magnetic media does not adequately protect the availability and integrity of the database logs."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'remove DBA permissions' — DBAs need access for legitimate work.",
+        "Trap is C 'critical changes formally approved' — process control, doesn't address log integrity.",
+        "Trap is D 'backup logs to magnetic media' — preserves logs but DBA could compromise media.",
+        "Centralized log server with restricted access enforces log integrity. DBAs can do their job; their activity is recorded somewhere they can't tamper. SoD-compliant monitoring."
       ]
     },
     {
@@ -1842,7 +1930,10 @@
         "C": "Although alternate service providers can be used if a vendor goes out of business, having access to the source code via a software escrow agreement is more important."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'system portability' — concern but specific to migration scenarios.",
+        "Trap is B 'operational documentation' — addressable through documentation requests.",
+        "Trap is C 'alternate service provider list' — operational concern.",
+        "For critical third-party apps, software escrow protects the customer if the vendor fails. Without escrow, vendor failure could permanently end software availability. Existential risk for the customer."
       ]
     },
     {
@@ -1867,8 +1958,10 @@
         "C": "The walk-through of the plan should only be done after the asset inventory has been updated."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'verify hot site compatibility' — important but follows inventory update.",
+        "Trap is B 'review implementation report' — operational, narrow.",
+        "Trap is C 'walk-through DRP' — testing activity, follows inventory update.",
+        "DRP relies on accurate IT asset inventory. Hardware replacement changes the inventory. Update first; everything downstream depends on accurate inventory."
       ]
     },
     {
@@ -1893,8 +1986,10 @@
         "C": "Insurance coverage should be adequate to cover costs but is not as important as having the data backup."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is A 'hot site contracted' — facility availability without data is useless.",
+        "Trap is B 'BCP manual current' — documentation without data is useless.",
+        "Trap is C 'insurance adequate' — financial protection without data is useless.",
+        "Data backups are FOUNDATIONAL. Without data, no recovery is possible regardless of plans, sites, or insurance. Most critical disaster recovery audit subject."
       ]
     },
     {
@@ -1919,7 +2014,10 @@
         "C": "A downtime report identifies the elapsed time when a computer is not operating correctly because of machine failure but is not useful in determining optimal server configurations."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'benchmark test results' — comparison data, not utilization.",
+        "Trap is B 'server logs' — too detailed; need utilization summary.",
+        "Trap is C 'downtime reports' — availability, not capacity.",
+        "Server utilization data shows actual capacity use. Underutilized = wasted resources; overutilized = performance risk. Right-sizing decisions flow from utilization data."
       ]
     },
     {
@@ -1944,7 +2042,10 @@
         "D": "A walk-through is a test involving a simulated disaster situation that tests the preparedness and understanding of management and staff rather than the actual resources."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'paper test' — discusses plan, doesn't simulate.",
+        "Trap is B 'post-test' — that's an after-test review, not a test type.",
+        "Trap is D 'walk-through' — discusses plan elements, doesn't use actual resources.",
+        "Preparedness test simulates a system crash AND uses real resources to verify procedures work. Cost-effective because it's localized; tests partial recovery rather than full disaster simulation."
       ]
     },
     {
@@ -1969,8 +2070,10 @@
         "D": "A hot site is an alternate site ready to take over business operations within a few hours of any business interruption and is not a method for backing up data."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is B 'electronic vaulting' — periodic batch transfer; not real-time.",
+        "Trap is C 'hard-disk mirroring' — same-site mirror; doesn't protect against site disaster.",
+        "Trap is D 'hot site provisioning' — facility, not data transfer method.",
+        "Airline reservations = real-time, can't lose any transaction. Shadow file processing maintains live duplicates at the offsite location, processing concurrently. Highest data protection for live systems."
       ]
     },
     {
@@ -1995,8 +2098,10 @@
         "C": "The audits may not contain the required information about application criticality or may not have been done recently."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'interview programmers' — knows technical, not business criticality.",
+        "Trap is B 'gap analysis' — comparison, not criticality.",
+        "Trap is C 'recent application audits' — audit findings, not criticality assessment.",
+        "BIA is purpose-designed to determine business criticality of each application/process. Quantifies impact of loss; ranks by business need. Foundational input to recovery planning."
       ]
     },
     {

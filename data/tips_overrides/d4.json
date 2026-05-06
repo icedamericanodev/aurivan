@@ -213,5 +213,246 @@
     "Trap is B 'standby onsite' — same site = same disaster impact.",
     "Trap is C 'duplex communication links' — addresses link failure, not processor failure.",
     "Standby processor at ANOTHER network node = geographically separate redundancy. Survives processor failure AND site disasters. Best comprehensive DRP solution for the central processor."
+  ],
+
+  "d4_036": [
+    "Trap is A 'loss of confidentiality' — confidentiality is access-control concern, not denormalization.",
+    "Trap is C 'unauthorized accesses' — unrelated to denormalization.",
+    "Trap is D 'application malfunctions' — denormalization is transparent to applications.",
+    "Denormalization stores the same data in multiple tables to speed reads. The cost: increased redundancy. Updates must propagate to all copies; storage grows."
+  ],
+  "d4_037": [
+    "Trap is A 'emergency changes growing' — concerning but separate process issue.",
+    "Trap is B 'jobs not on time' — operational issue, addressable.",
+    "Trap is D 'only scheduled jobs ran' — that's the desired state, not a concern.",
+    "Operator overrides bypass scheduled controls — could change data or programs without authorization. Compromises integrity AND audit trail. Most serious operations finding."
+  ],
+  "d4_038": [
+    "Trap is B 'timing of cutover' — operational concern, addressable.",
+    "Trap is C 'authorization level of users' — access control concern, separate from migration.",
+    "Trap is D 'normalization of data' — design concern, addressable through schema work.",
+    "Database migration's PRIMARY risk: data integrity. If data is corrupted, lost, or transformed incorrectly during migration, business operations fail. Integrity verification is essential."
+  ],
+  "d4_039": [
+    "Trap is A 'restrict updating to authorized users' — that's access control, not concurrency.",
+    "Trap is C 'prevent unauthorized disclosure' — confidentiality control.",
+    "Trap is D 'accuracy/completeness/consistency' — broader integrity concept.",
+    "Concurrency control specifically handles SIMULTANEOUS updates. Without it, two transactions modifying the same data can corrupt each other (lost updates, dirty reads). Locks and timestamps maintain integrity."
+  ],
+  "d4_040": [
+    "Trap is A 'audit log procedures' — detective; logs activities but doesn't ensure integrity directly.",
+    "Trap is C 'query/access time checks' — performance concern, not integrity.",
+    "Trap is D 'rollback/roll-forward' — recovery feature, fixes problems after the fact.",
+    "Table link/reference checks verify referential integrity — relationships between tables remain consistent. Detects orphaned records, broken links, or invalid references. Direct integrity verification."
+  ],
+  "d4_041": [
+    "Trap is B 'topological mappings' — documentation tool, not management.",
+    "Trap is C 'monitoring tools' — operational tool, not foundational management.",
+    "Trap is D 'proxy server troubleshooting' — narrow operational task.",
+    "Configuration + change management = the foundation of network management. Defines how the network is built (configuration) and how it changes safely (change management). Everything else operates within this framework."
+  ],
+  "d4_042": [
+    "Trap is A 'size check' — verifies length within range, not format quality.",
+    "Trap is B 'hash total' — used for batch totals, not individual password format.",
+    "Trap is D 'field check' — generic data type check, less specific.",
+    "Validity check verifies password meets complexity rules (length, character mix, dictionary exclusion, etc.). Most relevant programmed control for password management."
+  ],
+  "d4_043": [
+    "Trap is B 'resources unavailable' — possible but addressable through capacity planning.",
+    "Trap is C 'cannot live test' — practical limitation, manageable.",
+    "Trap is D 'different security' — addressable through agreement terms.",
+    "Reciprocal agreements assume the partner's hardware/software match yours. Time passes, both organizations evolve, configurations diverge. The agreement gradually becomes useless without active maintenance — and rarely gets it."
+  ],
+  "d4_044": [
+    "Trap is A 'integrity' — network monitoring detects but doesn't ensure integrity.",
+    "Trap is C 'completeness' — measured at application level, not network.",
+    "Trap is D 'confidentiality' — encryption concern, not monitoring.",
+    "Network performance monitoring identifies bottlenecks, congestion, failures. Acting on monitoring data keeps the network AVAILABLE. Direct relationship: monitoring → availability."
+  ],
+  "d4_045": [
+    "Trap is B 'storage capacity' — operational concern, manageable.",
+    "Trap is C 'user awareness' — process concern, separate.",
+    "Trap is D 'manufacturer support' — vendor concern.",
+    "Email retention policy aligned with business AND regulatory requirements is foundational. Without it, the archive may keep too much (storage cost, privacy risk) or too little (legal exposure). Policy drives everything."
+  ],
+  "d4_046": [
+    "Trap is B 'new software version with all fixes' — vendor controls release timing; can't demand on-demand.",
+    "Trap is C 'install immediately' — risky; patches can break things.",
+    "Trap is D 'decline to deal with vendors' — overreaction; all software has vulnerabilities.",
+    "Patch impact assessment first: does this patch affect us? Will it break anything in our environment? Risk-based decision drives whether and when to install."
+  ],
+  "d4_047": [
+    "Trap is A 'release-to-release reports' — useful but specific to release events.",
+    "Trap is B 'library control software' — controls changes but doesn't verify synchronization.",
+    "Trap is C 'restricted access' — preventive but doesn't verify match.",
+    "Date/time-stamp comparison directly verifies that source and object code came from the same compilation. Most direct synchronization check."
+  ],
+  "d4_048": [
+    "Trap is B 'shared DBA account' — no individual accountability.",
+    "Trap is C 'server administrative account' — different role; SoD concern and no DB-specific accountability.",
+    "Trap is D 'user account' — insufficient privileges for emergency DB changes.",
+    "Named account = individual accountability. Even for emergency changes, the audit trail must identify WHO made each change. Shared accounts make accountability impossible."
+  ],
+  "d4_049": [
+    "Trap is A 'client did not pay' — open-source is free; non-issue.",
+    "Trap is C 'security vulnerabilities' — true but applies to all software.",
+    "Trap is D 'unreliable for commercial use' — overstated; many enterprise systems use open-source successfully.",
+    "Open-source licenses (GPL, MIT, BSD, Apache, AGPL, etc.) have very different requirements. Some require sharing modifications; some restrict commercial use; some require attribution. License compliance is a real legal risk."
+  ],
+  "d4_050": [
+    "Trap is A 'DBA account only' — doesn't address the after-hours abbreviated process.",
+    "Trap is B 'normal user account changes' — normal users shouldn't make DB changes.",
+    "Trap is D 'normal user account + log' — see above; user shouldn't be making DB changes.",
+    "After-hours DBA access + log + next-day review = compensating controls preserve emergency capability while maintaining audit trail. Logged DBA changes get reviewed for appropriateness."
+  ],
+  "d4_051": [
+    "Trap is A 'review software migration records' — depends on recordkeeping; could miss changes never recorded.",
+    "Trap is C 'review change control documentation' — paper review; doesn't verify actual changes.",
+    "Trap is D 'restrict migration access' — preventive control, not a compliance test.",
+    "Identifying actual changes from system data, then verifying each had approval = the substance of compliance testing. Catches both unauthorized changes AND changes that bypassed paperwork."
+  ],
+  "d4_052": [
+    "Trap is A 'transfer' — would be insurance or full outsourcing of recovery; not a reciprocal pact.",
+    "Trap is C 'avoidance' — would mean discontinuing the activity; opposite of contingency planning.",
+    "Trap is D 'acceptance' — would mean no controls; reciprocal IS a control.",
+    "Reciprocal agreement = each org provides recovery capacity for the other. That's risk MITIGATION (reducing impact), not transfer (paying someone else's premium) or other treatment."
+  ],
+  "d4_053": [
+    "Trap is A 'comparing source code' — won't detect; the source was restored.",
+    "Trap is C 'comparing object code' — same; restoration covers tracks.",
+    "Trap is D 'reviewing executable/source integrity' — restored integrity matches original.",
+    "System logs capture ACTIVITY in real time — the modification, the data change, the restoration. Even when code is restored, the activity record persists as the trail."
+  ],
+  "d4_054": [
+    "Trap is A 'interruption window' — duration of operations gap, not data loss.",
+    "Trap is B 'RTO' — time to recovery, not data preservation.",
+    "Trap is C 'SDO' — service level during recovery, not data preservation.",
+    "RPO defines acceptable data loss in time. If critical data wasn't retained, the RPO was set wrong (too lax) or controls didn't enforce it. Direct connection to data preservation."
+  ],
+  "d4_055": [
+    "Trap is A 'identify hardware needs' — outcome of monitoring, not primary purpose.",
+    "Trap is B 'determine future capacity' — also outcome.",
+    "Trap is D 'optimal capacity operation' — efficiency goal, secondary to SLA compliance.",
+    "Capacity monitoring's PRIMARY purpose: ensure SLA compliance with the business. The business contracted for performance; IT's job is to deliver what was promised."
+  ],
+  "d4_056": [
+    "Trap is A 'tested every six months' — frequency varies by business needs.",
+    "Trap is C 'approved by CEO' — usually approved by CIO or steering committee.",
+    "Trap is D 'communicated to every department head' — communication is necessary but not the primary auditor verification.",
+    "DRP must remain CURRENT to be effective. Systems change, people change, processes change. An out-of-date DRP is worse than no DRP — false confidence. Regular review and update is foundational."
+  ],
+  "d4_057": [
+    "Trap is A 'alternative routing' — different ROUTES, not split/duplicate cables.",
+    "Trap is C 'long-haul network diversity' — long-distance carrier diversity.",
+    "Trap is D 'last-mile circuit protection' — specifically the local loop.",
+    "Diverse routing = same data on physically different cables. If one cable is cut, the other carries traffic. Specifically split/duplicate cable terminology."
+  ],
+  "d4_058": [
+    "Trap is B 'RPO' — informs backup frequency, not recovery procedures.",
+    "Trap is C 'MTO' — maximum time before unrecoverable; informs RTO.",
+    "Trap is D 'security policy' — too broad; doesn't drive recovery procedures.",
+    "RTO (recovery time objective) directly drives recovery procedures: how fast must this be back? Determines hot/warm/cold site choice, backup strategy, staffing, etc. Procedure design follows RTO."
+  ],
+  "d4_059": [
+    "Trap is A 'notify fire department' — alarms typically auto-notify; secondary to evacuation.",
+    "Trap is B 'activate fire suppression' — automatic systems; manual activation comes after evacuation.",
+    "Trap is D 'remove backups' — backups can be replaced; people cannot. Backups are stored offsite anyway.",
+    "Life safety FIRST. Always. In any emergency, evacuation of personnel takes absolute priority over equipment, data, or property. Foundational principle."
+  ],
+  "d4_060": [
+    "Trap is A 'plan an audit of cloud vendor' — premature; first verify the contractual basis.",
+    "Trap is C 'review independent auditor report' — also premature; depends on contractual rights.",
+    "Trap is D 'request DRP from vendor' — vendor isn't obligated to share without contract terms.",
+    "Vendor responsibility for DR exists ONLY IF the contract specifies it. Without contractual DR commitment, the customer remains accountable. Verify contract language first."
+  ],
+  "d4_061": [
+    "Trap is A 'shared accounts at hot site' — security concern but recoverable.",
+    "Trap is C 'physical security less robust' — concerning but compensating controls exist.",
+    "Trap is D 'specifications differ' — manageable through testing.",
+    "Disk space data not current = at recovery time, may not have enough storage to run. System fails to start, recovery is delayed or impossible. Hidden capacity gap."
+  ],
+  "d4_062": [
+    "Trap is B 'audit trail of changes' — detective control, important but not the primary review concern.",
+    "Trap is C 'authorized and documented' — process control, also detective.",
+    "Trap is D 'restricted access' — preventive control.",
+    "System parameters balance security AND performance. Too tight = performance degrades; too loose = security risk. The PRIMARY parameter review concern is whether the balance is appropriate."
+  ],
+  "d4_063": [
+    "Trap is B 'warm site' — has equipment but not fully operational.",
+    "Trap is C 'dial-up site' — connectivity, not facility.",
+    "Trap is D 'duplicate processing facility' — fully operational mirror.",
+    "Cold site = empty space ready to receive equipment. No computers, no comms, just utilities and physical infrastructure. Cheapest, slowest activation."
+  ],
+  "d4_064": [
+    "Trap is B 'increase recovery time AND cost' — opposite of optimization.",
+    "Trap is C 'reduce time but increase cost' — partial; both should reduce.",
+    "Trap is D 'no effect' — defeats the purpose of optimization.",
+    "An optimized DRP balances and REDUCES both recovery time and recovery cost through careful planning. Pre-positioning resources, contracted facilities, tested procedures all save time AND money."
+  ],
+  "d4_065": [
+    "Trap is A 'hot site 8 hours, async backup' — async fails RPO=zero; some data loss.",
+    "Trap is B 'distributed databases async' — async = data loss.",
+    "Trap is C 'synchronous + standby active hot site' — meets RPO/RTO but expensive.",
+    "RPO=0 requires synchronous data copy (no loss). RTO=72 hrs allows warm site (cheaper than hot). Synchronous data + warm site = cost-effective combo meeting both requirements."
+  ],
+  "d4_066": [
+    "Trap is A 'reciprocal agreement' — depends on partner availability; high risk for critical processor.",
+    "Trap is B 'alternate processor in same location' — same site = same disaster impact.",
+    "Trap is D 'duplex communication links' — addresses link failure, not processor failure.",
+    "Alternate processor at another network node = geographic and equipment redundancy. Best contingency for critical communications processor."
+  ],
+  "d4_067": [
+    "Trap is A 'DRP exists' — having a plan ≠ readiness.",
+    "Trap is B 'customer references' — third-party endorsement, not direct evidence.",
+    "Trap is C 'maintenance processes' — process exists ≠ effective recovery.",
+    "Test results = real evidence. Did the DRP actually work? What problems surfaced? Tests are the only objective measure of recovery readiness."
+  ],
+  "d4_068": [
+    "Trap is A 'remove DBA permissions' — DBAs need access for legitimate work.",
+    "Trap is C 'critical changes formally approved' — process control, doesn't address log integrity.",
+    "Trap is D 'backup logs to magnetic media' — preserves logs but DBA could compromise media.",
+    "Centralized log server with restricted access enforces log integrity. DBAs can do their job; their activity is recorded somewhere they can't tamper. SoD-compliant monitoring."
+  ],
+  "d4_069": [
+    "Trap is A 'system portability' — concern but specific to migration scenarios.",
+    "Trap is B 'operational documentation' — addressable through documentation requests.",
+    "Trap is C 'alternate service provider list' — operational concern.",
+    "For critical third-party apps, software escrow protects the customer if the vendor fails. Without escrow, vendor failure could permanently end software availability. Existential risk for the customer."
+  ],
+  "d4_070": [
+    "Trap is A 'verify hot site compatibility' — important but follows inventory update.",
+    "Trap is B 'review implementation report' — operational, narrow.",
+    "Trap is C 'walk-through DRP' — testing activity, follows inventory update.",
+    "DRP relies on accurate IT asset inventory. Hardware replacement changes the inventory. Update first; everything downstream depends on accurate inventory."
+  ],
+  "d4_071": [
+    "Trap is A 'hot site contracted' — facility availability without data is useless.",
+    "Trap is B 'BCP manual current' — documentation without data is useless.",
+    "Trap is C 'insurance adequate' — financial protection without data is useless.",
+    "Data backups are FOUNDATIONAL. Without data, no recovery is possible regardless of plans, sites, or insurance. Most critical disaster recovery audit subject."
+  ],
+  "d4_072": [
+    "Trap is A 'benchmark test results' — comparison data, not utilization.",
+    "Trap is B 'server logs' — too detailed; need utilization summary.",
+    "Trap is C 'downtime reports' — availability, not capacity.",
+    "Server utilization data shows actual capacity use. Underutilized = wasted resources; overutilized = performance risk. Right-sizing decisions flow from utilization data."
+  ],
+  "d4_073": [
+    "Trap is A 'paper test' — discusses plan, doesn't simulate.",
+    "Trap is B 'post-test' — that's an after-test review, not a test type.",
+    "Trap is D 'walk-through' — discusses plan elements, doesn't use actual resources.",
+    "Preparedness test simulates a system crash AND uses real resources to verify procedures work. Cost-effective because it's localized; tests partial recovery rather than full disaster simulation."
+  ],
+  "d4_074": [
+    "Trap is B 'electronic vaulting' — periodic batch transfer; not real-time.",
+    "Trap is C 'hard-disk mirroring' — same-site mirror; doesn't protect against site disaster.",
+    "Trap is D 'hot site provisioning' — facility, not data transfer method.",
+    "Airline reservations = real-time, can't lose any transaction. Shadow file processing maintains live duplicates at the offsite location, processing concurrently. Highest data protection for live systems."
+  ],
+  "d4_075": [
+    "Trap is A 'interview programmers' — knows technical, not business criticality.",
+    "Trap is B 'gap analysis' — comparison, not criticality.",
+    "Trap is C 'recent application audits' — audit findings, not criticality assessment.",
+    "BIA is purpose-designed to determine business criticality of each application/process. Quantifies impact of loss; ranks by business need. Foundational input to recovery planning."
   ]
 }
