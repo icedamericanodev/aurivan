@@ -2635,12 +2635,25 @@ header {
   background:var(--accent);color:#fff;padding:2px 8px;border-radius:100px;
   font-size:9px;letter-spacing:0.1em;
 }
-.cl-items {list-style:none;display:flex;flex-direction:column;gap:5px;}
+.cl-items {list-style:none;display:flex;flex-direction:column;gap:8px;}
 .cl-items li {
-  font-size:13px;color:var(--text2);padding-left:16px;position:relative;
+  font-size:13px;color:var(--text2);
   line-height:1.6;font-weight:500;
+  display:flex;gap:8px;align-items:flex-start;
 }
-.cl-items li::before {content:"\2022";position:absolute;left:0;color:var(--accent);font-weight:900;}
+.cl-cat {
+  display:inline-block;flex-shrink:0;
+  font-family:"JetBrains Mono",monospace;
+  font-size:8.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:4px;
+  margin-top:2px;line-height:1;
+}
+.cl-cat.new      {background:rgba(108,71,255,0.13);color:var(--accent);}
+.cl-cat.improved {background:rgba(0,168,134,0.14);color:#047857;}
+.cl-cat.fixed    {background:rgba(220,38,38,0.10);color:#be185d;}
+[data-theme="dark"] .cl-cat.new      {background:rgba(139,109,255,0.22);color:#c4b5fd;}
+[data-theme="dark"] .cl-cat.improved {background:rgba(52,211,153,0.18);color:#6ee7b7;}
+[data-theme="dark"] .cl-cat.fixed    {background:rgba(244,114,182,0.18);color:#f9a8d4;}
 .cl-close {
   margin-top:20px;width:100%;padding:12px;border-radius:10px;
   background:var(--ink);color:var(--ink-fg);border:none;
@@ -3192,7 +3205,7 @@ header::after {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v8.6</span>
+    <span class="bank-pill" id="versionPill">v8.7</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -3384,7 +3397,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v8.6';
+const APP_VERSION = 'v8.7';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8667,124 +8680,139 @@ function toggleMockDetail(i) {
 }
 
 // â”€â”€ CHANGELOG â”€â”€
+// ── WHAT'S NEW DATA ──
+// User-facing changelog. Entries are grouped by category (new / improved /
+// fixed) so the UI renders colored chips and learners can scan quickly.
+// One short sentence per item; no code symbols or internals. Add new
+// releases at the TOP of this array; the first entry gets the LATEST badge.
+const CHANGELOG = [
+  {
+    version: APP_VERSION,
+    title: "Cleaner What's New",
+    items: [
+      { cat: 'improved', text: "What's New now groups updates by New, Improved, and Fixed for easier scanning. Older entries are simplified and free of jargon." }
+    ]
+  },
+  {
+    version: 'v8.6',
+    title: 'Accurate exam blueprint weights',
+    items: [
+      { cat: 'improved', text: 'Domain weights now match the current ISACA blueprint everywhere — D1 18%, D2 18%, D3 12%, D4 26%, D5 26%.' }
+    ]
+  },
+  {
+    version: 'v8.5',
+    title: 'Send feedback in one click',
+    items: [
+      { cat: 'new', text: 'Send feedback right from the app — no need to leave for your mail client.' },
+      { cat: 'improved', text: '"Open mail app instead" remains as a one-click fallback for those who prefer their own email.' }
+    ]
+  },
+  {
+    version: 'v8.4',
+    title: 'Cleaner header + clearer Domain Performance',
+    items: [
+      { cat: 'new', text: 'Send Feedback button added to the header so suggestions and bug reports take seconds.' },
+      { cat: 'improved', text: 'Header pill now shows just the app version; question count moved into onboarding.' },
+      { cat: 'improved', text: 'Domain Performance cards label each number ("Score" and "Seen") instead of cryptic dual fractions.' }
+    ]
+  },
+  {
+    version: 'v8.3',
+    title: 'Tips for every question + mock exam fixes',
+    items: [
+      { cat: 'new', text: 'Every question across all 5 domains now includes pattern-recognition tips — trap-naming, mindset/principle, and exam-day shortcut.' },
+      { cat: 'improved', text: 'Subtopic categories tightened in D4 and D5 for sharper drill-down filtering.' },
+      { cat: 'fixed', text: 'Mock exam answer buttons are responsive again.' },
+      { cat: 'fixed', text: 'Mock exam timer stays continuous between questions.' }
+    ]
+  },
+  {
+    version: 'v8.2',
+    title: 'Guided first-use onboarding',
+    items: [
+      { cat: 'new', text: 'First-time users are walked through a 3-step setup: overview, profile, and exam date.' },
+      { cat: 'new', text: 'A recommended first action appears right after onboarding so you know where to start.' }
+    ]
+  },
+  {
+    version: 'v8.1',
+    title: 'Dark mode + visual refresh',
+    items: [
+      { cat: 'new', text: 'Dark mode (defaults on) with a sun/moon toggle in the header — preference saves across sessions.' },
+      { cat: 'improved', text: 'New color system across the app for a more focused study feel.' },
+      { cat: 'fixed', text: 'Several text-readability issues on dark banners.' }
+    ]
+  },
+  {
+    version: 'v8.0',
+    title: 'Daily plan + auditor mindset',
+    items: [
+      { cat: 'new', text: 'Personalized 3-step daily study plan on the dashboard, driven by your domain scores and exam date.' },
+      { cat: 'new', text: 'Auditor-vs-implementer coaching — when you pick the implementer answer, a callout explains the difference inline.' },
+      { cat: 'new', text: 'Install the app to your home screen (PWA) and study offline.' },
+      { cat: 'improved', text: 'Each topic now shows an estimated reading time.' }
+    ]
+  },
+  {
+    version: 'v7.0',
+    title: 'Exam date + readiness score',
+    items: [
+      { cat: 'new', text: 'Set your exam date and see a weighted readiness score across domains.' },
+      { cat: 'new', text: 'Train My Weak Spots — one-tap 20-question drill from your weakest domains.' },
+      { cat: 'new', text: 'Bookmark tagging and bookmark drill mode.' },
+      { cat: 'improved', text: 'Pacing feedback during sessions and auto-save during mock exams.' }
+    ]
+  },
+  {
+    version: 'v6.0',
+    title: 'UX overhaul',
+    items: [
+      { cat: 'new', text: 'Rate your confidence before answering, for smarter spaced repetition.' },
+      { cat: 'new', text: 'Drill into specific sub-topics within each domain.' },
+      { cat: 'improved', text: 'High-impact domain badges (D4/D5) and a mock exam confirmation step before you begin.' }
+    ]
+  },
+  {
+    version: 'v5.x',
+    title: 'Topics, profiles, export/import',
+    items: [
+      { cat: 'new', text: 'Topic Summary tab with board-style review cards.' },
+      { cat: 'new', text: 'Multiple profiles — separate progress per study cycle or per person.' },
+      { cat: 'new', text: 'Export and import your progress as a JSON file.' },
+      { cat: 'fixed', text: 'Several modal, timer, and race-condition issues.' }
+    ]
+  },
+  {
+    version: 'v4.0 and earlier',
+    title: 'Foundations',
+    items: [
+      { cat: 'new', text: 'Local persistence, mock exams, weak spots, bookmarks, spaced repetition, all 5 domains, and configurable session timers.' }
+    ]
+  }
+];
+
 function showChangelog() {
   var modal = document.getElementById("changelogModal");
+  var catLabels = { 'new': 'New', 'improved': 'Improved', 'fixed': 'Fixed' };
+  var versionsHtml = CHANGELOG.map(function(entry, idx) {
+    var label = idx === 0
+      ? '<span class="cl-latest">LATEST</span> ' + escapeHtml(entry.version)
+      : escapeHtml(entry.version);
+    if (entry.title) label += ' &mdash; ' + escapeHtml(entry.title);
+    var itemsHtml = (entry.items || []).map(function(it) {
+      var cat = (it.cat === 'new' || it.cat === 'improved' || it.cat === 'fixed') ? it.cat : 'improved';
+      return '<li><span class="cl-cat ' + cat + '">' + catLabels[cat] + '</span><span>' + escapeHtml(it.text) + '</span></li>';
+    }).join('');
+    return '<div class="cl-version">'
+      + '<div class="cl-ver-label">' + label + '</div>'
+      + '<ul class="cl-items">' + itemsHtml + '</ul>'
+      + '</div>';
+  }).join('');
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeChangelog(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label"><span class="cl-latest">LATEST</span> ' + APP_VERSION + ' &#8212; Domain Weights Aligned to ISACA Blueprint</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Consistent domain weights everywhere</strong> &#8212; D1 18%, D2 18%, D3 12%, D4 26%, D5 26% across the practice cards, mock-exam blueprint, topics tab, weak-spot recommendations, and onboarding copy. Old values (21/17/12/23/27) in <code>cisa_notes.json</code> are corrected, and the topics renderer now sources weights from the same canonical <code>DI</code> object so future drift is impossible.</li>'
-    + '<li><strong>Onboarding step text</strong> &#8212; the welcome step now reads the live D1 weight instead of the hardcoded 21%</li>'
-    + '<li><strong>Data hygiene</strong> &#8212; orphan <code>cisa_concepts.json</code> file also corrected for consistency</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v8.5 &#8212; Direct Feedback Send</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>One-click feedback send</strong> &#8212; the Feedback modal now submits directly from the page (via a Google Form bound to <code>certprep.support@gmail.com</code>); no need to leave for your mail app</li>'
-    + '<li><strong>Mail-app fallback retained</strong> &#8212; the secondary "Open mail app instead" link prefills the same message as a <code>mailto:</code> for users who prefer their own email client; also shown automatically if the page is offline</li>'
-    + '<li><strong>Inline status feedback</strong> &#8212; the Send button shows a "Sending…" state, then a success toast on completion or an inline error with the mailto fallback if the network drops</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v8.4 &#8212; Feedback + UI Polish</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Send Feedback (mailto)</strong> &#8212; initial Feedback modal that opened the user\'s mail app prefilled (replaced in v8.5 by direct send)</li>'
-    + '<li><strong>Cleaner header version</strong> &#8212; the header pill now shows just the app version (no question count) and is sourced from a single constant so the version always matches this What\'s New entry</li>'
-    + '<li><strong>Domain Performance labels</strong> &#8212; cards now show clear <em>Score</em> and <em>Seen</em> stats with a divider, and an explicit "Tap to begin" empty state replaces the cryptic <code>0 attempts &middot; 0/164</code></li>'
-    + '<li><strong>Question count corrected to 995</strong> &#8212; onboarding and the bank-complete screen now read live counts instead of the old <code>352</code> placeholder</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v8.3 &#8212; Full Tip Coverage + Mock Exam Fixes</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Hand-authored tips for all 995 questions</strong> &#8212; every question across D1–D5 now carries the trap-naming + mindset/principle + exam-shortcut tip pattern (D1: 164, D2: 164, D3: 120, D4: 263, D5: 284)</li>'
-    + '<li><strong>Tightened subtopic vocabularies</strong> &#8212; D4 and D5 now use focused category labels (Auditing IT Operations, System Configuration & Hardening, Information Asset Management, Security Governance, etc.) instead of the prior "General" bucket</li>'
-    + '<li><strong>Bug Fix: Mock exam answer buttons unresponsive</strong> &#8212; <code>selectMockAnswer</code> referenced an undefined <code>correct</code> variable, throwing on first click and locking subsequent clicks; now resolved via the same display-letter mapping used in practice mode</li>'
-    + '<li><strong>Bug Fix: Mock exam total-clock flicker</strong> &#8212; the 4-hour timer no longer flashes <code>4h 00m 00s</code> between questions; rendered HTML now reflects the live remaining time on every render</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v8.2 &#8212; Guided First-Use Onboarding</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>3-Step Guided Onboarding</strong> &#8212; new users are walked through: app overview, profile creation with a name input, and exam date setting with a recommended first action (Domain 1 Practice)</li>'
-    + '<li><strong>Profile created at first visit</strong> &#8212; onboarding hooks into the profile system so progress is saved from question one</li>'
-    + '<li><strong>Exam date saved from onboarding</strong> &#8212; date set in step 3 is immediately reflected in the Readiness Card and daily study plan</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v8.1 &#8212; Dark Mode + Visual Overhaul</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Dark Mode</strong> &#8212; full dark theme (defaults on) with ☀️/🌙 toggle in the header; preference saved across sessions</li>'
-    + '<li><strong>New Color System</strong> &#8212; vibrant electric violet + hot pink + teal palette replacing the old warm paper tones; ambient glow overlays and gradient buttons for a dopamine-boosting study experience</li>'
-    + '<li><strong>Bug Fix: Invisible text on dark banners</strong> &#8212; all dark card/banner elements (readiness card, timer, mindset strip, topic hero, mock results, generate button, modals) now use a dedicated <code>--ink</code> variable that stays dark in both light and dark mode</li>'
-    + '<li><strong>Question bank count corrected</strong> &#8212; header, onboarding, and completion screen now accurately reflect 352 questions (was incorrectly showing 200)</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v8.0 &#8212; Phase 3 Differentiation</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Daily Study Recommendation</strong> &#8212; personalised 3-step study plan on the dashboard, driven by domain scores, exam date, and reviewed topics</li>'
-    + '<li><strong>Auditor Mindset Coaching</strong> &#8212; when you pick the implementer answer, a callout explains the auditor vs. implementer distinction inline</li>'
-    + '<li><strong>Domain Review Reset</strong> &#8212; reset reviewed status for a domain in the Topics tab for second-pass study cycles</li>'
-    + '<li><strong>Estimated Read Time</strong> &#8212; each topic section now shows an estimated reading time badge</li>'
-    + '<li><strong>PWA / Offline Support</strong> &#8212; install to home screen and study without internet</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v7.0 &#8212; Phase 2 Competitive Parity</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Exam Date + Readiness Score</strong> &#8212; countdown + weighted readiness % across domains</li>'
-    + '<li><strong>Train My Weak Spots</strong> &#8212; one-tap 20-question drill from lowest-performing domains</li>'
-    + '<li><strong>Bookmark Tagging + Drill Mode</strong> &#8212; tag, filter, and drill bookmarks by category</li>'
-    + '<li><strong>Pacing Feedback + Mock Auto-Save + Results Advisory</strong></li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v6.0 &#8212; Phase 1 UX Overhaul</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Confidence-First</strong> &#8212; rate confidence before answering to make spaced repetition data meaningful</li>'
-    + '<li><strong>Sub-topic Drill Mode</strong> &#8212; filter practice questions by specific sub-topic within each domain</li>'
-    + '<li><strong>Domain Weight Badges</strong> &#8212; D4/D5 high-impact labels on domain cards</li>'
-    + '<li><strong>Mock Exam Confirmation</strong> &#8212; review time estimate and domain split before starting</li>'
-    + '<li><strong>Tab Reorder + ISACA Disclaimer + Mobile fixes</strong></li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v5.2</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Topic Summary</strong> \u2014 added board-style domain review cards mapped to the guide topics and CISA domains</li>'
-    + '<li><strong>Review progress</strong> \u2014 mark topic areas as reviewed; progress saves locally in the browser</li>'
-    + '<li><strong>Study-to-practice flow</strong> \u2014 jump from each domain summary directly into practice or a mock exam</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v5.1</div>'
-    + '<ul class="cl-items">'
-    + '<li><strong>Profile System</strong> \u2014 create named profiles; progress persists per profile across sessions</li>'
-    + '<li><strong>Export / Import progress</strong> \u2014 download your progress as a JSON file and restore on any device</li>'
-    + '<li><strong>Multiple profiles</strong> \u2014 study mode, exam week, or share the app with a friend</li>'
-    + '<li>Fixed: mock exam double-answer race condition</li>'
-    + '<li>Fixed: timer interval leak on rapid tab switching</li>'
-    + '<li>Fixed: Escape key now correctly closes all modals</li>'
-    + '<li>Security: HTML injection protection on all user-supplied input</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v4.0</div>'
-    + '<ul class="cl-items">'
-    + '<li>localStorage persistence, All Domains mode, keyboard shortcuts, configurable mock exam (30/75/150 Q)</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v3.3</div>'
-    + '<ul class="cl-items">'
-    + '<li>Mock Exam Answer Key: expandable review of all questions with full explanations</li>'
-    + '<li>Mock exam results now feed into Weak Spots and domain stats</li>'
-    + '<li>Fixed flag/feedback submission to Google Forms</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v3.2</div>'
-    + '<ul class="cl-items">'
-    + '<li>Session timer: set your own pace (Auto, 15, 30, or 60 min) for the whole domain</li>'
-    + '<li>Domain Complete screen when all questions are answered</li>'
-    + '<li>Review Incorrect goes through ALL incorrect answers sequentially</li>'
-    + '</ul></div>'
-    + '<div class="cl-version">'
-    + '<div class="cl-ver-label">v3.1 \u2014 v1.0</div>'
-    + '<ul class="cl-items">'
-    + '<li>Spaced repetition, confidence rating, session summary, onboarding, mock exam, bookmarks, weak spots</li>'
-    + '</ul></div>'
+    + versionsHtml
     + '<button class="cl-close" onclick="closeChangelog()">Got it!</button>'
     + '</div></div>';
 }
