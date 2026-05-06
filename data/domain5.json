@@ -26,7 +26,10 @@
         "D": "Stealth commanding is the hijacking of a web server by the installation of unauthorized code. Although the use of hidden forms may increase the risk of server compromise, the most common server exploits involve vulnerabilities of the server operating system or web server."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'cross-site scripting' — different attack; XSS modifies pages on victim browsers, not via hidden field tampering.",
+        "Trap is C 'cookie poisoning' — cookies are different from hidden form fields.",
+        "Trap is D 'stealth commanding' — server-side intrusion, not client-side field manipulation.",
+        "Hidden form fields = client-controlled data sent unmodified to server. Attackers intercept and modify before submission. Parameter tampering exploits this trust boundary."
       ]
     },
     {
@@ -51,7 +54,10 @@
         "D": "Check digits are used to detect an error in a numeric field such as an account number and is usually related to a transposition or transcribing error."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'reasonableness check' — input validation, not transmission integrity.",
+        "Trap is B 'parity bits' — basic error detection, weak compared to hashes.",
+        "Trap is D 'check digits' — designed for transposition errors in numeric fields, not full file integrity.",
+        "Hash values produce a fingerprint that changes with any data alteration. Sender computes hash, receiver computes hash of received data, compares. Mismatch = data changed in transit."
       ]
     },
     {
@@ -76,7 +82,10 @@
         "D": "Audit trails are used to track transactions for various purposes, not just for audit. The use of audit trails for information systems (IS) auditors is valid; however, it is not the primary reason."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'improve response time' — opposite; audit trails ADD overhead.",
+        "Trap is C 'improve operational efficiency' — also opposite.",
+        "Trap is D 'help auditors track' — too narrow; many stakeholders use audit trails.",
+        "Audit trails establish ACCOUNTABILITY: who did what, when, with what result. Foundational for security investigations, compliance, dispute resolution."
       ]
     },
     {
@@ -101,7 +110,10 @@
         "D": "A packet filtering router operates at a network level and cannot see a transaction."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'IDS' — detects network attacks, not transaction patterns.",
+        "Trap is C 'stateful firewall' — inspects packets, not transaction history.",
+        "Trap is D 'packet filter' — basic network traffic control.",
+        "Data mining analyzes historical patterns to detect anomalies. Sudden change in cardholder behavior (location, amount, frequency) suggests fraud. Pattern recognition is data mining's specialty."
       ]
     },
     {
@@ -126,8 +138,10 @@
         "D": "Activity logging has two weaknesses in this scenario-it is a detective control (not a preventive one), and the attacker who already gained privileged access can modify logs or disable them."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'secure physical location' — protects against physical access, not logical compromise.",
+        "Trap is B 'boot password' — narrow; doesn't address running OS vulnerabilities.",
+        "Trap is D 'activity logging' — detective; doesn't prevent compromise.",
+        "Hardening = comprehensive security configuration: patches, disabled services, strict permissions, removed defaults. Foundational preventive approach to OS integrity."
       ]
     },
     {
@@ -152,7 +166,10 @@
         "D": "A virtual local area network (VLAN) is a functionality of some switches that allows them to control traffic between different ports even though they are in the same physical local access network. Nevertheless, they do not effectively deal with authorized versus unauthorized traffic."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'routers' — connect networks; don't enforce security policies between them.",
+        "Trap is C 'layer 2 switches' — basic traffic separation; no security policy enforcement.",
+        "Trap is D 'VLANs' — logical separation, but doesn't enforce policies between segments.",
+        "Firewalls enforce explicit allow/deny policies between network segments. Purpose-built for unauthorized traffic prevention. Other tools support; firewalls enforce."
       ]
     },
     {
@@ -177,7 +194,10 @@
         "D": "Because the GSM network is being used rather than a wireless LAN, it is not possible to configure settings for multifactor authentication over the wireless link. However, in other technology configurations, multi factor authentication is recommended because it will better protect against unauthorized access than single-factor authentication."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'stop using until encryption enabled' — VPN already provides encryption.",
+        "Trap is C 'MAC filtering' — applies to enterprise WiFi, not GSM.",
+        "Trap is D 'multifactor over wireless' — VPN handles authentication; GSM doesn't expose authentication choice.",
+        "GSM has built-in encryption + the VPN adds another layer. Combined = adequate confidentiality. No additional control needed; this is properly configured remote access."
       ]
     },
     {
@@ -202,8 +222,10 @@
         "D": "Switching off the monitor is not a solution, because the monitor can simply be switched on."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'proximity authentication' — proximity cards expensive; password screen saver covers most use cases.",
+        "Trap is C 'session termination at intervals' — disruptive to active users.",
+        "Trap is D 'blank monitor' — doesn't authenticate when monitor wakes; not security control.",
+        "Password-protected screen saver = automatic logical lock when user steps away. Industry-standard, low-cost, low-friction. Best minimization for unattended access."
       ]
     },
     {
@@ -228,8 +250,10 @@
         "C": "Although controls regarding password complexity are important, two-factor authentication methods or techniques most effectively reduce the risk of stolen or compromised credentials."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'host IDS' — detective; doesn't prevent unauthorized access.",
+        "Trap is B 'password expiration and lockout' — preventive but defeated by guessing or stolen passwords.",
+        "Trap is C 'password complexity' — same; defeated by phishing or theft.",
+        "2FA = something you know + something you have/are. Even if password is compromised, attacker lacks second factor. Strongest preventive control for privileged access."
       ]
     },
     {
@@ -254,8 +278,10 @@
         "D": "Protecting the enterprise's servers through good passwords is good practice, but it is still necessary to isolate the network being used by the consultants. If the consultants can access the rest of the network, they can use password cracking tools against other corporate machines."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'encryption on access point' — protects wireless traffic, not segregation from corporate.",
+        "Trap is C 'antivirus on consultant laptops' — endpoint protection; doesn't prevent network access.",
+        "Trap is D 'strong passwords on corporate servers' — defense, but consultant network shouldn't even REACH corporate servers.",
+        "Separate VLAN for guest/consultant network = network-level isolation. Their traffic CAN'T reach corporate servers regardless of credentials. Architectural prevention."
       ]
     },
     {
@@ -280,7 +306,10 @@
         "C": "If a stored procedure contains a security sensitive function, such as encrypting data, it can be a requirement to encrypt the stored procedure. However, this is less critical than ensuring initialization parameters are correct."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'restrict DBA access to HR data' — operational practice, often necessary for DBAs to do their job.",
+        "Trap is B 'encrypt logs' — addresses log confidentiality, narrow concern.",
+        "Trap is C 'encrypt stored procedures' — addresses code confidentiality, narrow concern.",
+        "Database initialization parameters control authentication, remote access, audit policies, and many security-critical settings. Frequent gap; important to verify configuration security beyond surface controls."
       ]
     },
     {
@@ -305,7 +334,10 @@
         "D": "Although it is also important to assess all relevant evidence, it is more important to maintain the chain of custody, which ensures the integrity of evidence."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'maintain impartiality' — important but evidence integrity is more critical for legal use.",
+        "Trap is B 'maintain independence' — same; foundational but not the central focus.",
+        "Trap is D 'assess all relevant evidence' — analysis, secondary to preserving evidence.",
+        "Forensic evidence may be used in legal proceedings. Improperly handled evidence is INADMISSIBLE — destroys case regardless of content. Chain of custody and evidence integrity are paramount."
       ]
     },
     {
@@ -330,8 +362,10 @@
         "D": "Single sign-on (SSO) is an access control technology that is used to manage access to multiple systems, networks and applications. This control is not specific enough for this question."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'mandatory' — military/government style; rigid, classification-based.",
+        "Trap is C 'discretionary' — owner decides; not need-to-know.",
+        "Trap is D 'SSO' — convenience feature, not access model.",
+        "Role-based access control = access tied to job function. Need-to-know enforced through role definitions. Best fit for business application access by job function."
       ]
     },
     {
@@ -356,7 +390,10 @@
         "D": "Frequent backups of audit logs does not prevent the logs from being deleted."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'track actions in separate log' — detective only.",
+        "Trap is B 'disable write access' — would prevent legitimate logging.",
+        "Trap is D 'periodic backup' — recovery measure, doesn't prevent deletion.",
+        "Restricting view/delete rights to limited personnel = preventive control. Fewer people can delete; limits potential for unauthorized deletion. Direct control over the threat."
       ]
     },
     {
@@ -381,8 +418,10 @@
         "C": "A limited number of internet protocol (IP) addresses can be addressed through network address translation or by increasing the number oflP addresses assigned to a particular subnet."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'most employees use laptops' — DHCP works for laptops; no concern.",
+        "Trap is B 'packet filtering firewall' — security control, not DHCP concern.",
+        "Trap is C 'IP space < PCs' — DHCP can use lease management to handle this.",
+        "Unrestricted network port access lets ANY connected device receive a DHCP-assigned IP and join the network. Unauthorized devices get full network access automatically. Foundational physical security gap."
       ]
     },
     {
@@ -407,7 +446,10 @@
         "D": "Management supervision of DBA activities is used to detect which DBA activities were not authorized."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'exception reports' — detective control.",
+        "Trap is C 'review of access logs' — detective.",
+        "Trap is D 'management supervision' — administrative; harder to enforce consistently.",
+        "Separation of duties prevents the DBA from acting outside authorized roles. Built into account/role design = preventive enforcement. Other controls detect after the fact."
       ]
     },
     {
@@ -432,7 +474,10 @@
         "C": "Although inappropriate content can result, the damage caused by malware can be widespread and severe for the enterprise."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'storage media for stealing data' — possible but not primary risk.",
+        "Trap is B 'driver crashes user PC' — operational, not security.",
+        "Trap is C 'inappropriate photographs' — HR concern, narrow.",
+        "ANY USB-connected device may carry malware (factory-installed, prior infection). Photo frame infects the work PC; malware spreads to corporate network. Foundational removable-media risk."
       ]
     },
     {
@@ -457,7 +502,10 @@
         "D": "Preserve the machine in a forensically sound condition and do not make any changes to it except to disconnect it from the network. Otherwise, evidence would be destroyed by powering off the PC or updating the software on the PC. Information stored in temporary files, network connection information, programs loaded into memory and other information may be lost."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is A 'contact law enforcement' — premature; preserve evidence first.",
+        "Trap is B 'ensure no data compromise' — vague; concrete action needed.",
+        "Trap is D 'update antivirus' — running antivirus on infected machine may destroy evidence.",
+        "Disconnect from network = contains the threat (no further data exfiltration) AND preserves evidence (no remote tampering). Standard incident response first action."
       ]
     },
     {
@@ -482,7 +530,10 @@
         "D": "Digital watermarking is used to protect intellectual property rights for documents rather than to protect the confidentiality of email."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'adequate to protect confidentiality' — wrong; signatures don't encrypt.",
+        "Trap is C 'gather more information' — already enough; signatures fundamentally can't provide confidentiality.",
+        "Trap is D 'recommend digital watermarking' — different control; protects IP, not communication confidentiality.",
+        "Digital signatures = authentication + integrity + non-repudiation. Email content visible to anyone intercepting. Doesn't address the confidentiality finding; encryption needed for that."
       ]
     },
     {
@@ -507,8 +558,10 @@
         "C": "A dial-up line is fairly secure because it is a private connection, but it is too slow to be considered for most commercial applications today."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'broadband digital' — shared infrastructure with others.",
+        "Trap is B 'baseband network' — shared/local topology.",
+        "Trap is C 'dialup' — shared phone network; subject to interception.",
+        "Dedicated lines = exclusive use, no shared infrastructure. No external entry points to intercept. Strongest line-level security, though most expensive."
       ]
     },
     {
@@ -533,7 +586,10 @@
         "D": "Checking for compliance is only done after the IS auditor is assured that the policies, standards and procedures are aligned with the legal requirements."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is A 'review IT infrastructure' — implementation review, follows requirements understanding.",
+        "Trap is B 'organizational policies' — internal policies must comply with external law; law comes first.",
+        "Trap is D 'adherence to policies' — testing, follows policy review.",
+        "Privacy compliance starts with applicable law (GDPR, HIPAA, CCPA, etc.). Policies and procedures must align with law. Auditor's first step: understand the legal landscape."
       ]
     },
     {
@@ -558,8 +614,10 @@
         "D": "An intrusion detection system will detect intrusions but will not prevent unauthorized individuals from accessing the network."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'change password weekly' — operational improvement, doesn't isolate networks.",
+        "Trap is B 'stateful firewall' — security control, but networks still connected.",
+        "Trap is D 'IDS in wireless' — detective; doesn't prevent enterprise reach.",
+        "Physical separation = guest network has no path to enterprise network. No firewall rules to misconfigure, no shared infrastructure to exploit. Architectural isolation."
       ]
     },
     {
@@ -584,8 +642,10 @@
         "D": "The users list is reviewed after the acceptance test report."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'node list' — inventory; useful but follows architecture understanding.",
+        "Trap is B 'acceptance test report' — implementation evidence, follows architecture.",
+        "Trap is D 'users list' — implementation detail.",
+        "Network diagram shows topology, segments, single points of failure, security choke points. Auditor needs architecture understanding before reviewing operational details. Foundation first."
       ]
     },
     {
@@ -610,7 +670,10 @@
         "D": "Although reviewing logs may be a good compensating control, the more important course of action is to determine if policies are being followed."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'document as exception' — premature; need to know if it's a violation first.",
+        "Trap is C 'recommend identical settings' — assumes equality is correct without policy basis.",
+        "Trap is D 'recommend periodic log review' — detective control, doesn't address the configuration question.",
+        "Differential settings may be policy-allowed (developers may need flexibility). Auditor's first step: check policy. If allowed, document and move on; if violation, document as a finding."
       ]
     },
     {
@@ -635,7 +698,10 @@
         "D": "Restricting internet protocol (IP) addresses might be appropriate for some types of web applications but is not the best solution because a new customer cannot place an order until the firewall rules were changed to allow the customer to connect."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'block ports 80/443 at firewall' — would block all web traffic; defeats purpose.",
+        "Trap is B 'read-only files on servers' — operational concern, doesn't address application security.",
+        "Trap is D 'whitelist customer IPs' — impractical for public web app.",
+        "Web application security review = systematic vulnerability assessment of the application. SQL injection, XSS, CSRF, authentication flaws all surfaced. Comprehensive vulnerability discovery."
       ]
     },
     {
@@ -660,7 +726,10 @@
         "D": "External testing refers to a test where an external penetration tester launches attacks on the target's network perimeter from outside the target network (typically from the Internet)."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'blind testing' — tester limited info, target knows.",
+        "Trap is B 'targeted testing' — both sides aware and cooperating.",
+        "Trap is D 'external testing' — describes attack origin, not awareness level.",
+        "Double-blind = neither tester nor target's IR team aware. Tests both attack effectiveness AND target's incident response. Most realistic simulation of actual attack."
       ]
     },
     {
@@ -685,7 +754,10 @@
         "D": "The design of the network and the proper implementation ofVLANs are more critical than ensuring that all devices are protected by emergency power."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'buffers at endpoints' — performance, not security.",
+        "Trap is C 'end-to-end encryption' — adds complexity; VLAN provides equivalent isolation cheaper.",
+        "Trap is D 'emergency backup power' — availability, not security.",
+        "Segregating VoIP via VLAN isolates voice traffic from data traffic. Network-based attacks against the data network don't reach VoIP. Eavesdropping prevented through isolation."
       ]
     },
     {
@@ -710,8 +782,10 @@
         "D": "A man-in-the-middle attack is a form of active eavesdropping where the attacker intercepts a computerized conversation between two parties and then allows the conversation to continue by relaying the appropriate data to both parties, while simultaneously monitoring the same data passing through the attacker's conduit. This type of attack does not register as an attack originating from the payroll server, but, instead, it might be designed to hijack an authorized connection between a workstation and the payroll server."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'DoS attack' — exhausts resources, doesn't typically use spoofed internal IPs.",
+        "Trap is C 'port scanning' — reconnaissance; usually external IPs.",
+        "Trap is D 'man-in-the-middle' — relays traffic, not impersonates internal IP.",
+        "External traffic with internal IP source = attempting to bypass firewall by claiming internal identity. Spoofing IP addresses to gain access privileges only available to internal hosts."
       ]
     },
     {
@@ -736,7 +810,10 @@
         "D": "secure shell (SSH) is a protocol that is used to establish a secure, encrypted, command-line shell session, typically for remote logon. Although SSH encrypts data transmitted during a session, SSH cannot encrypt data at rest, including data on USB drives. As a result, SSH is not appropriate for this scenario."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'DES' — broken; no longer secure.",
+        "Trap is B 'MD5' — hashing function, not encryption.",
+        "Trap is D 'SSH' — network protocol, not encryption algorithm.",
+        "AES = Advanced Encryption Standard. NIST-approved, military-grade, computationally infeasible to break. Strongest of these options for data-at-rest encryption."
       ]
     },
     {
@@ -761,7 +838,10 @@
         "D": "Social engineering, which involves gathering sensitive information to launch an attack, can be exercised over any kind of telephony."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'equipment failure' — addressable through redundancy.",
+        "Trap is C 'toll fraud' — financial concern, narrow.",
+        "Trap is D 'social engineering' — attack vector, not infrastructure risk.",
+        "VoIP shares network with data. DDoS against data network = simultaneous voice outage. Sole means of voice = no fallback. Most significant infrastructure risk for the dependency model."
       ]
     },
     {
@@ -786,8 +866,10 @@
         "D": "Although client software utilities do exist to block inappropriate content, installing and maintaining additional software on a large number of PCs is less effective than controlling the access from a single, centralized proxy server."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'reverse proxy' — protects internal services from external traffic; opposite direction.",
+        "Trap is C 'firewall with access rules' — port-level; can't filter by URL/content.",
+        "Trap is D 'client software utilities' — endpoint controls, easily bypassed.",
+        "Content-filtering proxy intercepts outbound traffic, evaluates against URL/content rules, blocks unauthorized destinations. Centralized, comprehensive web access control."
       ]
     },
     {
@@ -812,8 +894,10 @@
         "D": "Although untested CGIs can cause the end-user web application to be compromised, this is not likely to significantly impact system integrity."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'system unavailability' — possible but not the highest-priority CGI risk.",
+        "Trap is B 'malware exposure' — secondary; CGI-specific risks more concerning.",
+        "Trap is D 'system integrity' — possible outcome but unauthorized access comes first.",
+        "Untested CGI scripts on Internet-facing servers = direct attack vector. Common vulnerabilities: input validation, command injection, file inclusion. Unauthorized access to private systems is the typical CGI exploit outcome."
       ]
     },
     {
@@ -838,7 +922,10 @@
         "D": "Encryption is a good control for data security but is not appropriate to use for all communication links due to cost and complexity."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'wireless mobile devices not password-protected' — endpoint concern, secondary.",
+        "Trap is C 'no outbound web proxy' — operational gap, addressable.",
+        "Trap is D 'no encryption on all links' — depends on link type and data.",
+        "Default passwords on network devices = full administrative access available to any attacker who looks up the documentation. Foundational security failure; full network compromise possible."
       ]
     },
     {
@@ -863,8 +950,10 @@
         "D": "A patch management process helps secure servers and may prohibit unauthorized disclosure of data; however, it does not affect the privacy of the data."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'data retention/backup/recovery' — operational, secondary to disposal.",
+        "Trap is C 'network and IDS' — security infrastructure, narrow.",
+        "Trap is D 'patch management' — operational security, narrow.",
+        "When relationship ends, what happens to your data? Without contractual return/destruction clause, data may persist indefinitely with the provider. Foundational data lifecycle concern for cloud privacy."
       ]
     },
     {
@@ -889,8 +978,10 @@
         "D": "Deleting these user IDs after the work is completed is necessary, but if not automated, the deletion could be overlooked. The access should only be granted at the level of work required."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'access matches SLA' — too vague; SLA may not specify time limits.",
+        "Trap is C 'admin access for limited period' — too privileged for vendors typically.",
+        "Trap is D 'IDs deleted when work complete' — manual process; risk of forgetting.",
+        "Expiration-dated user accounts based on services = automatic privilege termination. No manual cleanup needed; access expires by design. Best vendor access lifecycle control."
       ]
     },
     {
