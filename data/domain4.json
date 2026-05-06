@@ -6186,7 +6186,10 @@
         "C": "The business manager, not the information systems (IS) manager, determines priorities for system recovery."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'all IS processes' — recovery prioritization is the point; not everything recovers immediately.",
+        "Trap is B 'all financial applications' — too narrow and not necessarily aligned with criticality.",
+        "Trap is C 'designated by IS manager' — IS doesn't own business priorities.",
+        "Business management owns the criticality assessment. They know what hurts most when systems fail. DRP recovers in their priority order, not IT's preference."
       ]
     },
     {
@@ -6211,7 +6214,10 @@
         "D": "Testing the hardware when the site is established is essential, but regular testing of the actual backup data is necessary to ensure that the operation will continue to perform as planned."
       },
       "tips": [
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is A 'site near primary' — same disaster impact; bad for DR.",
+        "Trap is B 'most advanced hardware' — newest isn't necessarily compatible with primary.",
+        "Trap is D 'hardware tested when installed' — point-in-time check, doesn't ensure ongoing capacity.",
+        "Primary site workload changes; alternate site capacity must keep pace. Continuous workload monitoring ensures backup capacity remains adequate. Without it, alternate site quietly outgrows its sufficiency."
       ]
     },
     {
@@ -6236,8 +6242,10 @@
         "D": "The costs of a DRP are fairly predictable and consistent."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is B 'decrease' — DRP adds testing, maintenance, alternate facilities; can't be cheaper.",
+        "Trap is C 'remain the same' — DRP requires investment.",
+        "Trap is D 'unpredictable' — predictably increases.",
+        "DRP is insurance: pay ongoing premium (testing, maintenance, redundancy) to reduce future loss. Cost increases predictably; the value is risk reduction, not cost minimization."
       ]
     },
     {
@@ -6262,8 +6270,10 @@
         "D": "Appointing recovery teams with defined personnel, roles and hierarchy will come after performing a BIA."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'develop recovery strategy' — strategy depends on BIA findings.",
+        "Trap is C 'map systems' — inventory follows BIA's identification of critical systems.",
+        "Trap is D 'appoint recovery teams' — organization follows from understanding what to recover.",
+        "BIA quantifies what matters: critical processes, RTO, RPO. Without this foundation, every later step lacks direction. BIA is always the first DRP step."
       ]
     },
     {
@@ -6288,7 +6298,10 @@
         "D": "After selecting a strategy, a specific BCP can be developed, tested and implemented."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'test and maintain plan' — late-stage activity, requires plan to exist.",
+        "Trap is B 'develop specific plan' — close, but strategies precede plans.",
+        "Trap is D 'implement plan' — implementation requires strategy and plan.",
+        "BIA → Strategies → Plan → Test → Maintain. Strategies define HOW to recover (hot/warm/cold/reciprocal). Plan operationalizes the chosen strategy."
       ]
     },
     {
@@ -6313,7 +6326,10 @@
         "D": "A system test is an integrated test used to test a new IT system but is not appropriate for a BCP."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'pilot' — typically used for software rollouts, not BCP testing.",
+        "Trap is C 'unit' — software testing concept.",
+        "Trap is D 'system' — software testing concept.",
+        "Paper test (desk check) walks through BCP scenarios with major players. Identifies gaps and assumptions. Foundational BCP test method; appropriate for early-stage validation."
       ]
     },
     {
@@ -6338,8 +6354,10 @@
         "D": "Identification of resources required for business resumption occur after the identification of critical business processes."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'risk like single points of failure' — relevant but downstream of process identification.",
+        "Trap is B 'threats to processes' — also downstream.",
+        "Trap is D 'resources for resumption' — operational input, follows process identification.",
+        "BIA starts by identifying critical business processes. Without that foundation, you can't assess threats, risks, resources, or priorities. Process identification is step one."
       ]
     },
     {
@@ -6364,8 +6382,10 @@
         "D": "An audit does not necessarily improve the quality of the BCP."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'circulated to interested parties' — distribution helps awareness, not effectiveness.",
+        "Trap is C 'approved by senior management' — governance approval, doesn't ensure plan quality.",
+        "Trap is D 'audit by external IS auditor' — verification, doesn't build effectiveness in.",
+        "User departments know their business processes — their priorities, dependencies, criticality. Their involvement ensures the BCP reflects business reality, not IT assumptions."
       ]
     },
     {
@@ -6390,8 +6410,10 @@
         "C": "Minimizing the loss to an organization is a secondary objective of a business continuity and disaster recovery plan. The first priority is always life safety."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'safeguard IS assets' — important but human life takes priority.",
+        "Trap is B 'continuity of operations' — important but human life takes priority.",
+        "Trap is C 'minimize loss' — financial concern; human life takes priority.",
+        "Human life is invaluable. Every BCP/DRP decision starts with: are people safe? Equipment, data, operations all come second. Universal principle."
       ]
     },
     {
@@ -6416,7 +6438,10 @@
         "D": "It may not be possible to define a sequence in which plans have to be implemented because it may be dependent on the nature of disaster, criticality, recovery time, etc."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is B 'integrate into single plan' — not always feasible for complex orgs.",
+        "Trap is C 'each plan dependent on others' — circular dependencies create risk.",
+        "Trap is D 'sequence of implementation defined' — operational concern, not foundational.",
+        "Multi-plan environments need consistency between plans. Conflicting recovery approaches, contradictory priorities, mismatched timelines = chaos in actual disaster. Consistency is foundational."
       ]
     },
     {
@@ -6441,7 +6466,10 @@
         "D": "The role that gap analysis can play in a BCP is to identify deficiencies in a plan but not to gain an understanding of the business."
       },
       "tips": [
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'BCP self-audit' — measures BCP, doesn't build understanding.",
+        "Trap is B 'resource recovery analysis' — narrow technical focus.",
+        "Trap is D 'gap analysis' — comparison to a target, doesn't build initial understanding.",
+        "Risk assessment systematically examines business processes and their threats. Direct path to understanding business processes. Foundational input for BCP development."
       ]
     },
     {
@@ -6466,8 +6494,10 @@
         "C": "The lack of detailed steps should be documented, but their absence does not mean a lack of recovery if someone has invoked the BCP."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'levels based on scope not duration' — definition concern, addressable.",
+        "Trap is B 'low-level disaster vs incident unclear' — terminology concern, addressable.",
+        "Trap is C 'recovery steps not detailed' — content gap, addressable.",
+        "Without designated authority to declare a disaster, the BCP never activates. Every other concern is moot if the plan never starts. Authority gap is foundational."
       ]
     },
     {
@@ -6492,8 +6522,10 @@
         "D": "Communication during a crisis is always a challenge, but the call tree is not as important as ensuring life safety first."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is B 'recovery priorities' — important but life safety comes first.",
+        "Trap is C 'backup storages' — operational, after life safety.",
+        "Trap is D 'call tree' — communication, after life safety.",
+        "Same building, multiple departments = potential conflicting evacuation plans. People run different ways, blocking exits, missing accountability. Evacuation reconciliation = life safety priority. Always first."
       ]
     },
     {
@@ -6518,8 +6550,10 @@
         "D": "Making a BCP available on an enterprise's intranet does not guarantee that personnel will be able to access, read or understand it."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'stored in secure offsite facility' — protection of plan documents, doesn't ensure execution.",
+        "Trap is B 'approved by senior management' — governance, doesn't ensure execution.",
+        "Trap is D 'available through intranet' — accessibility, doesn't ensure understanding.",
+        "BCP works only if people know about it AND understand their roles. Communication to relevant personnel = activation capability. Without it, the plan exists only on paper."
       ]
     },
     {
@@ -6544,8 +6578,10 @@
         "D": "The regulatory compliance requirements may help establish the recovery time objective (RTO) requirements."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Recovery decisions (RTO, RPO, hot vs warm site) flow from the business impact analysis — never pick a recovery strategy before the BIA is done."
+        "Trap is A 'assurance to stakeholders' — communication outcome, not the management goal.",
+        "Trap is B 'establish alternate site for RTO' — implementation detail.",
+        "Trap is D 'meet regulatory compliance' — compliance benefit, not the primary objective.",
+        "BCP's PRIMARY objective: manage risk during recovery from disruption. Reduce impact, restore services, protect operations. Risk management is the operational purpose."
       ]
     },
     {
@@ -6570,7 +6606,10 @@
         "C": "Enforcing separation of duties primarily ensures that a single individual does not have the authority to both create and approve a transaction; this is not considered to be a method to detect errors, but a method to help prevent errors."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'edit checks' — preventive at input, doesn't detect processing errors.",
+        "Trap is B 'data entry screens' — input control, not processing detection.",
+        "Trap is C 'separation of duties' — fraud prevention, not error detection.",
+        "Hash totals computed before and after processing detect any data change during processing. Mismatch = error. Direct error detection at processing layer."
       ]
     },
     {
@@ -6595,7 +6634,10 @@
         "D": "Accurate transformation routines are important but would not change inaccurate data into quality (accurate) data."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'credibility of source' — trust assessment, doesn't directly determine accuracy.",
+        "Trap is C 'extraction process accuracy' — protects extraction; can't fix bad source data.",
+        "Trap is D 'transformation accuracy' — protects transformation; can't fix bad source data.",
+        "Garbage in = garbage out. Source data accuracy is foundational. Even perfect extraction and transformation produce bad data warehouse if source is bad. Quality starts at the source."
       ]
     },
     {
@@ -6620,7 +6662,10 @@
         "D": "A warning message alerts the clerk in case the change was being made in error but does not prevent the clerk from entering an unauthorized rate change."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'weekly exception report reviewed by manager' — detective, after the fact.",
+        "Trap is C 'clerk enters approval code' — clerk approving own work; SoD violation.",
+        "Trap is D 'warning message to clerk' — alert without enforcement; clerk can ignore.",
+        "Manager approval code BEFORE processing = preventive SoD enforcement. Out-of-range change cannot proceed without independent authorization. Real-time control prevents unauthorized rates."
       ]
     },
     {
@@ -6645,7 +6690,10 @@
         "D": "There is no documentation benefit in using web services."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'secure communication' — additional layer required for security; not inherent to web services.",
+        "Trap is B 'improved performance' — adds overhead vs direct integration.",
+        "Trap is D 'enhanced documentation' — depends on practice, not the architecture.",
+        "Web services use standard protocols (HTTP, JSON, SOAP) regardless of platform. Java app can talk to .NET service to mainframe to Python. Interoperability across heterogeneous environments is the killer feature."
       ]
     },
     {
@@ -6670,7 +6718,10 @@
         "D": "End-user computing systems normally increase flexibility and responsiveness to management's information requests because the system is being developed directly by the user community."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'increased dev/maintenance costs' — opposite; EUC typically reduces costs.",
+        "Trap is C 'increased dev time' — opposite; EUC speeds development.",
+        "Trap is D 'impaired decision-making from poor responsiveness' — opposite; EUC improves responsiveness.",
+        "EUC bypasses formal IT controls: testing, documentation, version control, change management. Result: applications without quality assurance, prone to errors. Foundational EUC risk."
       ]
     },
     {
@@ -6695,7 +6746,10 @@
         "D": "Tracing and tagging is used to test application systems and controls but is not a preventive control that can avoid out-of-range data."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'log table updates' — detective, doesn't prevent.",
+        "Trap is C 'before/after image reporting' — detective.",
+        "Trap is D 'tracing and tagging' — testing technique, not preventive control.",
+        "Integrity constraints in the database REJECT invalid data. Out-of-range data never enters. Database-enforced preventive control at the source."
       ]
     },
     {
@@ -6720,7 +6774,10 @@
         "D": "Remote access to the backup database does not impact availability."
       },
       "tips": [
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is A 'confidentiality' — public data; not a major concern.",
+        "Trap is C 'backups of overseas DB' — important but doesn't address availability.",
+        "Trap is D 'remote access to backup' — limited scope.",
+        "Public-access database needs HIGH AVAILABILITY. Hardware failures abroad = unfixed delays = users can't access. Availability is the dominant concern in this scenario."
       ]
     },
     {
@@ -6745,7 +6802,10 @@
         "D": "Comparing the control totals does not imply that the records are complete or that individual values are accurate."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'hash totals before/after' — verifies overall integrity, not individual balances.",
+        "Trap is B 'same record count' — quantity, not balance correctness.",
+        "Trap is D 'control totals' — overall sums, not individual balance verification.",
+        "Sample testing of individual balances directly verifies migration correctness for those records. Statistical sampling covers the migration breadth at acceptable cost."
       ]
     },
     {
@@ -6770,8 +6830,10 @@
         "D": "File updating and maintenance authorization is a control procedure to update the stored data and ensure accuracy and security of stored data. This does provide evidence regarding the individuals who update the stored data; however, it is not effective in the given situation to determine transactions posted to an account."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is A 'one-for-one checking' — verifies individual records, slow for many exceptions.",
+        "Trap is B 'data file security' — access controls, doesn't speed exception research.",
+        "Trap is D 'updating authorization' — authorization control, doesn't speed research.",
+        "Transaction logs capture WHO, WHEN, WHAT, WHERE for each transaction. Filtering logs surfaces exception details quickly. Detective control with diagnostic value."
       ]
     },
     {
@@ -6796,7 +6858,10 @@
         "D": "Ensuring that data entered are within a predetermined range of values is a range check."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'predetermined amounts' — that's a limit check.",
+        "Trap is C 'reasonable limits' — that's a reasonableness check.",
+        "Trap is D 'predetermined range' — that's a range check.",
+        "Check digits are mathematically computed from data digits. Transposed digits change the math; check digit doesn't match. Specifically designed for transposition error detection."
       ]
     },
     {
@@ -6821,7 +6886,10 @@
         "C": "Degaussing is highly effective but offers less assurance than physical destruction."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'overwriting' — works for functional disks; damaged disk may not be writable.",
+        "Trap is B 'low-level formatting' — same; requires functioning disk.",
+        "Trap is C 'degaussing' — works but not 100% certain on all media types.",
+        "Physical destruction = absolute certainty. Damaged disk + destruction = no recoverable data, no future risk. Maximum-assurance disposal for damaged media containing sensitive data."
       ]
     },
     {
@@ -6846,7 +6914,10 @@
         "D": "The security administrator may lead investigations and is responsible for implementing and maintaining information security policy, but not for authorizing data access."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'data custodian' — implements access decisions, doesn't authorize them.",
+        "Trap is B 'application administrator' — manages the application, not who can access data.",
+        "Trap is D 'security administrator' — implements security, doesn't decide access rights.",
+        "Data owner has business authority over the data. They know who needs access for what. Authorization is owner's call; custodian/admin/security implements."
       ]
     },
     {
@@ -6871,7 +6942,10 @@
         "D": "Granting user authorizations is the responsibility of the data owner, not the DBA, and access to production data is not generally associated with user access authorizations."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'accept as common practice' — DBA access is common but still needs control review.",
+        "Trap is C 'recommend immediate revocation' — overreaction without assessment.",
+        "Trap is D 'review user access by DBA' — narrow; misses the DBA's own access concern.",
+        "DBA having production data access is common operational reality. Auditor's job: assess the COMPENSATING controls (logging, monitoring, supervisory review) that mitigate the inherent SoD concern."
       ]
     },
     {
@@ -6896,8 +6970,10 @@
         "C": "Erasing or deleting magnetic media does not remove the information; this method simply changes a file's indexing information."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "RTO measures downtime tolerance; RPO measures data-loss tolerance. Lower numbers cost more — match them to business criticality, not gut feel."
+        "Trap is A 'degaussing' — works for magnetic media but residual magnetism may persist; less certain than destruction.",
+        "Trap is B 'defragmenting' — disk optimization, doesn't remove data.",
+        "Trap is C 'erasing' — file pointers removed; data still recoverable.",
+        "Physical destruction = unrecoverable. For confidential information, destruction is the only method that absolutely guarantees no recovery. Highest assurance disposal."
       ]
     },
     {
@@ -6922,7 +6998,10 @@
         "D": "Logging user access is important, but it is only a detective control that does not provide adequate protection to sensitive information."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is B 'strong passwords' — authentication, doesn't restrict authorized users from sensitive data.",
+        "Trap is C 'subject-specific databases' — organizational, doesn't restrict access within databases.",
+        "Trap is D 'log user access' — detective; access happens before logging.",
+        "Column/row-level permissions = fine-grained access. User can query the data warehouse but only sees columns/rows they're authorized for. Sensitive data hidden in plain sight from unauthorized queries."
       ]
     },
     {
@@ -6947,7 +7026,10 @@
         "D": "The requestor's immediate supervisor may share the responsibility for approving user access to a business application system; however, the final responsibility should go to the information owner."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'security administrator' — implements access decisions.",
+        "Trap is C 'IT security manager' — manages security function, doesn't decide who accesses what.",
+        "Trap is D 'requestor's supervisor' — supervisor approval is a step, but not the authorizing authority.",
+        "Data owner = business authority over information assets. They authorize access based on business need. Owner responsibility is foundational data governance."
       ]
     },
     {
@@ -6972,7 +7054,10 @@
         "D": "Separating database and application servers may help with better administration or even in implementing access controls but does not address the accountability issues."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'two-factor authentication' — strong identity, doesn't track activity.",
+        "Trap is C 'table views' — limits visibility, doesn't enforce accountability.",
+        "Trap is D 'separate database/application servers' — architecture, not accountability.",
+        "Log management = systematic capture, retention, and review of who-did-what-when. Reviewable record of all sensitive data access. Accountability requires audit trail."
       ]
     },
     {
@@ -6997,7 +7082,10 @@
         "D": "System storage performance may be a concern due to the volume of data. However, the bigger issue is that the information is protected."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'availability' — typical web server concern but not the audit priority for stored customer data.",
+        "Trap is B 'integrity' — important but secondary to confidentiality for customer data.",
+        "Trap is D 'system storage performance' — operational, not security.",
+        "Customer master data on Internet-facing web server = exposed to compromise. Six-month retention = larger attack target window. Confidentiality = primary concern."
       ]
     },
     {
@@ -7022,8 +7110,10 @@
         "D": "The IT organizational chart helps the IS auditor to understand the process flow, which is useful during audit planning but is not the most helpful in defining the scope of the audit."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is B 'control catalog' — useful for control testing, not scope definition.",
+        "Trap is C 'risk register' — useful for prioritization, not comprehensive scope.",
+        "Trap is D 'IT organizational chart' — staffing structure, not system scope.",
+        "EA documentation maps all IT systems and their relationships. For change management audit covering ALL operational systems, EA is the comprehensive scope source. System inventory + dependencies = scope foundation."
       ]
     },
     {
@@ -7048,7 +7138,10 @@
         "D": "Communication infrastructure interface is an interface between the application platform and the communication infrastructure."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'message queue interface' — specific async pattern, not general communication.",
+        "Trap is C 'remote procedure call' — specific synchronous pattern.",
+        "Trap is D 'communication infrastructure interface' — vague, not specific architectural pattern.",
+        "API = standardized contract for inter-component communication. Defines methods, parameters, return values. Foundation of distributed system architecture."
       ]
     },
     {
@@ -7073,7 +7166,10 @@
         "D": "Java database connectivity is a Java API that provides methods for connecting to and interacting with a database using the Java programming language, but it is specific to Java and not a general-purpose interface."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'SQL' — query LANGUAGE, not interface.",
+        "Trap is C 'object-relational mapping' — abstraction layer, often built on top of API.",
+        "Trap is D 'Java database connectivity' — specific to Java; less general than API.",
+        "API = the interface concept itself. RDBMS APIs allow any application to issue commands. SQL flows through the API; the API is the interface."
       ]
     },
     {
@@ -7098,7 +7194,10 @@
         "C": "A circuit-level gateway is a telecommunication gateway for transferring data from different networks but is not designed specifically for accessing cloud-based infrastructure or service providers."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'SNMP' — network management protocol, not cloud access.",
+        "Trap is B 'remote procedure call' — older inter-process pattern.",
+        "Trap is C 'circuit-level gateway' — firewall component.",
+        "Cloud services expose REST/GraphQL/SOAP APIs for programmatic access. Applications use APIs to provision, configure, query, and consume cloud resources. API is the cloud's primary access mechanism."
       ]
     },
     {
@@ -7123,7 +7222,10 @@
         "D": "Having a security officer review logs daily may be tiresome, time-consuming and impractical for enterprises with a large volume of logs. Automated systems may ease the work of detecting incidents."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'archive logs indefinitely' — storage cost without proportional value.",
+        "Trap is C 'collect ALL logs' — overwhelming; not all logs valuable.",
+        "Trap is D 'security manager reviews daily' — manual review can't scale to enterprise volumes.",
+        "Automated tools collect, normalize, analyze, and retain logs at scale. SIEM/log management platforms detect patterns humans can't. Scale + speed of automation is the key benefit."
       ]
     },
     {
@@ -7148,7 +7250,10 @@
         "C": "Version control systems offer access controls so developers cannot arbitrarily access code libraries and make untraceable changes. It is complementary to tracking code changes."
       },
       "tips": [
-        "Production changes require: documented request → impact analysis → approval → tested change → back-out plan → post-change verification. Skipping any step is a finding."
+        "Trap is A 'manage code complexity' — partial benefit, not the key.",
+        "Trap is B 'collaboration with developers' — partial benefit.",
+        "Trap is C 'limits accessibility' — opposite; version control increases collaboration access.",
+        "Version control's defining feature: every change tracked, every version retrievable, any change reversible. Foundation of safe code modification. Without it, recovering from bad changes is hard or impossible."
       ]
     },
     {
@@ -7173,8 +7278,10 @@
         "D": "Computer operator logs are manually entered by the operator during operations; these logs may or may not identify specific problems with applications."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Treat symptoms only after you've identified the root cause — quick fixes without root-cause analysis tend to recur and mask deeper issues."
+        "Trap is A 'OS logs' — system-level events, not application execution problems.",
+        "Trap is B 'incident reports' — formal records, lag behind issues.",
+        "Trap is D 'computer operator logs' — operator activities, not application execution.",
+        "Exception reports are PURPOSE-BUILT to flag application execution problems. Automated, timely, application-specific. Direct visibility into application issues."
       ]
     },
     {
@@ -7199,7 +7306,10 @@
         "D": "Audit trails are more useful for ensuring appropriate processing of a transaction and they may not identify problems in processing."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'early warnings of risk' — possible benefit, but not the primary value.",
+        "Trap is B 'detecting operational problems' — IS auditor concern, narrow.",
+        "Trap is D 'audit trails for transactions' — compliance benefit, narrow.",
+        "Operational logs reveal IT infrastructure health: CPU, memory, network, application performance, error rates, response times. Foundation of capacity planning, performance tuning, reliability engineering."
       ]
     },
     {
@@ -7224,7 +7334,10 @@
         "D": "Application logs provide errors encountered during application execution."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'operator reports' — operational records, not conversion-specific.",
+        "Trap is C 'control totals' — verify sums, not error identification.",
+        "Trap is D 'application logs' — system events, not conversion errors specifically.",
+        "Exception reports list errors during automated conversion: failed records, rejected data, transformation issues. Direct visibility into what didn't convert successfully."
       ]
     },
     {
@@ -7249,7 +7362,10 @@
         "D": "Addressing false positives during the initial periods of implementation can be addressed by appropriate planning and implementing tools in a phased manner."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'multiple log formats' — addressable through normalization.",
+        "Trap is C 'storage cost' — manageable through retention policies and tiered storage.",
+        "Trap is D 'false-positive alerts' — tuning challenge, addressable over time.",
+        "IT infrastructure complexity = many sources, many formats, many semantics, many integration points. Logging across complex environments is fundamentally hard; addressing complexity is foundational challenge."
       ]
     }
   ]

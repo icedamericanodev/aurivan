@@ -1327,5 +1327,264 @@
     "Trap is C 'paper test' — discussion-only, doesn't use actual resources.",
     "Trap is D 'regression test' — software testing concept, not DRP.",
     "Preparedness test simulates DR scenario in phases using actual resources. Cost-effective: localized testing rather than full disaster simulation. Real evidence at moderate cost."
+  ],
+
+  "d4_221": [
+    "Trap is A 'all IS processes' — recovery prioritization is the point; not everything recovers immediately.",
+    "Trap is B 'all financial applications' — too narrow and not necessarily aligned with criticality.",
+    "Trap is C 'designated by IS manager' — IS doesn't own business priorities.",
+    "Business management owns the criticality assessment. They know what hurts most when systems fail. DRP recovers in their priority order, not IT's preference."
+  ],
+  "d4_222": [
+    "Trap is A 'site near primary' — same disaster impact; bad for DR.",
+    "Trap is B 'most advanced hardware' — newest isn't necessarily compatible with primary.",
+    "Trap is D 'hardware tested when installed' — point-in-time check, doesn't ensure ongoing capacity.",
+    "Primary site workload changes; alternate site capacity must keep pace. Continuous workload monitoring ensures backup capacity remains adequate. Without it, alternate site quietly outgrows its sufficiency."
+  ],
+  "d4_223": [
+    "Trap is B 'decrease' — DRP adds testing, maintenance, alternate facilities; can't be cheaper.",
+    "Trap is C 'remain the same' — DRP requires investment.",
+    "Trap is D 'unpredictable' — predictably increases.",
+    "DRP is insurance: pay ongoing premium (testing, maintenance, redundancy) to reduce future loss. Cost increases predictably; the value is risk reduction, not cost minimization."
+  ],
+  "d4_224": [
+    "Trap is A 'develop recovery strategy' — strategy depends on BIA findings.",
+    "Trap is C 'map systems' — inventory follows BIA's identification of critical systems.",
+    "Trap is D 'appoint recovery teams' — organization follows from understanding what to recover.",
+    "BIA quantifies what matters: critical processes, RTO, RPO. Without this foundation, every later step lacks direction. BIA is always the first DRP step."
+  ],
+  "d4_225": [
+    "Trap is A 'test and maintain plan' — late-stage activity, requires plan to exist.",
+    "Trap is B 'develop specific plan' — close, but strategies precede plans.",
+    "Trap is D 'implement plan' — implementation requires strategy and plan.",
+    "BIA → Strategies → Plan → Test → Maintain. Strategies define HOW to recover (hot/warm/cold/reciprocal). Plan operationalizes the chosen strategy."
+  ],
+  "d4_226": [
+    "Trap is A 'pilot' — typically used for software rollouts, not BCP testing.",
+    "Trap is C 'unit' — software testing concept.",
+    "Trap is D 'system' — software testing concept.",
+    "Paper test (desk check) walks through BCP scenarios with major players. Identifies gaps and assumptions. Foundational BCP test method; appropriate for early-stage validation."
+  ],
+  "d4_227": [
+    "Trap is A 'risk like single points of failure' — relevant but downstream of process identification.",
+    "Trap is B 'threats to processes' — also downstream.",
+    "Trap is D 'resources for resumption' — operational input, follows process identification.",
+    "BIA starts by identifying critical business processes. Without that foundation, you can't assess threats, risks, resources, or priorities. Process identification is step one."
+  ],
+  "d4_228": [
+    "Trap is A 'circulated to interested parties' — distribution helps awareness, not effectiveness.",
+    "Trap is C 'approved by senior management' — governance approval, doesn't ensure plan quality.",
+    "Trap is D 'audit by external IS auditor' — verification, doesn't build effectiveness in.",
+    "User departments know their business processes — their priorities, dependencies, criticality. Their involvement ensures the BCP reflects business reality, not IT assumptions."
+  ],
+  "d4_229": [
+    "Trap is A 'safeguard IS assets' — important but human life takes priority.",
+    "Trap is B 'continuity of operations' — important but human life takes priority.",
+    "Trap is C 'minimize loss' — financial concern; human life takes priority.",
+    "Human life is invaluable. Every BCP/DRP decision starts with: are people safe? Equipment, data, operations all come second. Universal principle."
+  ],
+  "d4_230": [
+    "Trap is B 'integrate into single plan' — not always feasible for complex orgs.",
+    "Trap is C 'each plan dependent on others' — circular dependencies create risk.",
+    "Trap is D 'sequence of implementation defined' — operational concern, not foundational.",
+    "Multi-plan environments need consistency between plans. Conflicting recovery approaches, contradictory priorities, mismatched timelines = chaos in actual disaster. Consistency is foundational."
+  ],
+  "d4_231": [
+    "Trap is A 'BCP self-audit' — measures BCP, doesn't build understanding.",
+    "Trap is B 'resource recovery analysis' — narrow technical focus.",
+    "Trap is D 'gap analysis' — comparison to a target, doesn't build initial understanding.",
+    "Risk assessment systematically examines business processes and their threats. Direct path to understanding business processes. Foundational input for BCP development."
+  ],
+  "d4_232": [
+    "Trap is A 'levels based on scope not duration' — definition concern, addressable.",
+    "Trap is B 'low-level disaster vs incident unclear' — terminology concern, addressable.",
+    "Trap is C 'recovery steps not detailed' — content gap, addressable.",
+    "Without designated authority to declare a disaster, the BCP never activates. Every other concern is moot if the plan never starts. Authority gap is foundational."
+  ],
+  "d4_233": [
+    "Trap is B 'recovery priorities' — important but life safety comes first.",
+    "Trap is C 'backup storages' — operational, after life safety.",
+    "Trap is D 'call tree' — communication, after life safety.",
+    "Same building, multiple departments = potential conflicting evacuation plans. People run different ways, blocking exits, missing accountability. Evacuation reconciliation = life safety priority. Always first."
+  ],
+  "d4_234": [
+    "Trap is A 'stored in secure offsite facility' — protection of plan documents, doesn't ensure execution.",
+    "Trap is B 'approved by senior management' — governance, doesn't ensure execution.",
+    "Trap is D 'available through intranet' — accessibility, doesn't ensure understanding.",
+    "BCP works only if people know about it AND understand their roles. Communication to relevant personnel = activation capability. Without it, the plan exists only on paper."
+  ],
+  "d4_235": [
+    "Trap is A 'assurance to stakeholders' — communication outcome, not the management goal.",
+    "Trap is B 'establish alternate site for RTO' — implementation detail.",
+    "Trap is D 'meet regulatory compliance' — compliance benefit, not the primary objective.",
+    "BCP's PRIMARY objective: manage risk during recovery from disruption. Reduce impact, restore services, protect operations. Risk management is the operational purpose."
+  ],
+  "d4_236": [
+    "Trap is A 'edit checks' — preventive at input, doesn't detect processing errors.",
+    "Trap is B 'data entry screens' — input control, not processing detection.",
+    "Trap is C 'separation of duties' — fraud prevention, not error detection.",
+    "Hash totals computed before and after processing detect any data change during processing. Mismatch = error. Direct error detection at processing layer."
+  ],
+  "d4_237": [
+    "Trap is B 'credibility of source' — trust assessment, doesn't directly determine accuracy.",
+    "Trap is C 'extraction process accuracy' — protects extraction; can't fix bad source data.",
+    "Trap is D 'transformation accuracy' — protects transformation; can't fix bad source data.",
+    "Garbage in = garbage out. Source data accuracy is foundational. Even perfect extraction and transformation produce bad data warehouse if source is bad. Quality starts at the source."
+  ],
+  "d4_238": [
+    "Trap is B 'weekly exception report reviewed by manager' — detective, after the fact.",
+    "Trap is C 'clerk enters approval code' — clerk approving own work; SoD violation.",
+    "Trap is D 'warning message to clerk' — alert without enforcement; clerk can ignore.",
+    "Manager approval code BEFORE processing = preventive SoD enforcement. Out-of-range change cannot proceed without independent authorization. Real-time control prevents unauthorized rates."
+  ],
+  "d4_239": [
+    "Trap is A 'secure communication' — additional layer required for security; not inherent to web services.",
+    "Trap is B 'improved performance' — adds overhead vs direct integration.",
+    "Trap is D 'enhanced documentation' — depends on practice, not the architecture.",
+    "Web services use standard protocols (HTTP, JSON, SOAP) regardless of platform. Java app can talk to .NET service to mainframe to Python. Interoperability across heterogeneous environments is the killer feature."
+  ],
+  "d4_240": [
+    "Trap is B 'increased dev/maintenance costs' — opposite; EUC typically reduces costs.",
+    "Trap is C 'increased dev time' — opposite; EUC speeds development.",
+    "Trap is D 'impaired decision-making from poor responsiveness' — opposite; EUC improves responsiveness.",
+    "EUC bypasses formal IT controls: testing, documentation, version control, change management. Result: applications without quality assurance, prone to errors. Foundational EUC risk."
+  ],
+  "d4_241": [
+    "Trap is A 'log table updates' — detective, doesn't prevent.",
+    "Trap is C 'before/after image reporting' — detective.",
+    "Trap is D 'tracing and tagging' — testing technique, not preventive control.",
+    "Integrity constraints in the database REJECT invalid data. Out-of-range data never enters. Database-enforced preventive control at the source."
+  ],
+  "d4_242": [
+    "Trap is A 'confidentiality' — public data; not a major concern.",
+    "Trap is C 'backups of overseas DB' — important but doesn't address availability.",
+    "Trap is D 'remote access to backup' — limited scope.",
+    "Public-access database needs HIGH AVAILABILITY. Hardware failures abroad = unfixed delays = users can't access. Availability is the dominant concern in this scenario."
+  ],
+  "d4_243": [
+    "Trap is A 'hash totals before/after' — verifies overall integrity, not individual balances.",
+    "Trap is B 'same record count' — quantity, not balance correctness.",
+    "Trap is D 'control totals' — overall sums, not individual balance verification.",
+    "Sample testing of individual balances directly verifies migration correctness for those records. Statistical sampling covers the migration breadth at acceptable cost."
+  ],
+  "d4_244": [
+    "Trap is A 'one-for-one checking' — verifies individual records, slow for many exceptions.",
+    "Trap is B 'data file security' — access controls, doesn't speed exception research.",
+    "Trap is D 'updating authorization' — authorization control, doesn't speed research.",
+    "Transaction logs capture WHO, WHEN, WHAT, WHERE for each transaction. Filtering logs surfaces exception details quickly. Detective control with diagnostic value."
+  ],
+  "d4_245": [
+    "Trap is B 'predetermined amounts' — that's a limit check.",
+    "Trap is C 'reasonable limits' — that's a reasonableness check.",
+    "Trap is D 'predetermined range' — that's a range check.",
+    "Check digits are mathematically computed from data digits. Transposed digits change the math; check digit doesn't match. Specifically designed for transposition error detection."
+  ],
+  "d4_246": [
+    "Trap is A 'overwriting' — works for functional disks; damaged disk may not be writable.",
+    "Trap is B 'low-level formatting' — same; requires functioning disk.",
+    "Trap is C 'degaussing' — works but not 100% certain on all media types.",
+    "Physical destruction = absolute certainty. Damaged disk + destruction = no recoverable data, no future risk. Maximum-assurance disposal for damaged media containing sensitive data."
+  ],
+  "d4_247": [
+    "Trap is A 'data custodian' — implements access decisions, doesn't authorize them.",
+    "Trap is B 'application administrator' — manages the application, not who can access data.",
+    "Trap is D 'security administrator' — implements security, doesn't decide access rights.",
+    "Data owner has business authority over the data. They know who needs access for what. Authorization is owner's call; custodian/admin/security implements."
+  ],
+  "d4_248": [
+    "Trap is A 'accept as common practice' — DBA access is common but still needs control review.",
+    "Trap is C 'recommend immediate revocation' — overreaction without assessment.",
+    "Trap is D 'review user access by DBA' — narrow; misses the DBA's own access concern.",
+    "DBA having production data access is common operational reality. Auditor's job: assess the COMPENSATING controls (logging, monitoring, supervisory review) that mitigate the inherent SoD concern."
+  ],
+  "d4_249": [
+    "Trap is A 'degaussing' — works for magnetic media but residual magnetism may persist; less certain than destruction.",
+    "Trap is B 'defragmenting' — disk optimization, doesn't remove data.",
+    "Trap is C 'erasing' — file pointers removed; data still recoverable.",
+    "Physical destruction = unrecoverable. For confidential information, destruction is the only method that absolutely guarantees no recovery. Highest assurance disposal."
+  ],
+  "d4_250": [
+    "Trap is B 'strong passwords' — authentication, doesn't restrict authorized users from sensitive data.",
+    "Trap is C 'subject-specific databases' — organizational, doesn't restrict access within databases.",
+    "Trap is D 'log user access' — detective; access happens before logging.",
+    "Column/row-level permissions = fine-grained access. User can query the data warehouse but only sees columns/rows they're authorized for. Sensitive data hidden in plain sight from unauthorized queries."
+  ],
+  "d4_251": [
+    "Trap is B 'security administrator' — implements access decisions.",
+    "Trap is C 'IT security manager' — manages security function, doesn't decide who accesses what.",
+    "Trap is D 'requestor's supervisor' — supervisor approval is a step, but not the authorizing authority.",
+    "Data owner = business authority over information assets. They authorize access based on business need. Owner responsibility is foundational data governance."
+  ],
+  "d4_252": [
+    "Trap is B 'two-factor authentication' — strong identity, doesn't track activity.",
+    "Trap is C 'table views' — limits visibility, doesn't enforce accountability.",
+    "Trap is D 'separate database/application servers' — architecture, not accountability.",
+    "Log management = systematic capture, retention, and review of who-did-what-when. Reviewable record of all sensitive data access. Accountability requires audit trail."
+  ],
+  "d4_253": [
+    "Trap is A 'availability' — typical web server concern but not the audit priority for stored customer data.",
+    "Trap is B 'integrity' — important but secondary to confidentiality for customer data.",
+    "Trap is D 'system storage performance' — operational, not security.",
+    "Customer master data on Internet-facing web server = exposed to compromise. Six-month retention = larger attack target window. Confidentiality = primary concern."
+  ],
+  "d4_254": [
+    "Trap is B 'control catalog' — useful for control testing, not scope definition.",
+    "Trap is C 'risk register' — useful for prioritization, not comprehensive scope.",
+    "Trap is D 'IT organizational chart' — staffing structure, not system scope.",
+    "EA documentation maps all IT systems and their relationships. For change management audit covering ALL operational systems, EA is the comprehensive scope source. System inventory + dependencies = scope foundation."
+  ],
+  "d4_255": [
+    "Trap is A 'message queue interface' — specific async pattern, not general communication.",
+    "Trap is C 'remote procedure call' — specific synchronous pattern.",
+    "Trap is D 'communication infrastructure interface' — vague, not specific architectural pattern.",
+    "API = standardized contract for inter-component communication. Defines methods, parameters, return values. Foundation of distributed system architecture."
+  ],
+  "d4_256": [
+    "Trap is B 'SQL' — query LANGUAGE, not interface.",
+    "Trap is C 'object-relational mapping' — abstraction layer, often built on top of API.",
+    "Trap is D 'Java database connectivity' — specific to Java; less general than API.",
+    "API = the interface concept itself. RDBMS APIs allow any application to issue commands. SQL flows through the API; the API is the interface."
+  ],
+  "d4_257": [
+    "Trap is A 'SNMP' — network management protocol, not cloud access.",
+    "Trap is B 'remote procedure call' — older inter-process pattern.",
+    "Trap is C 'circuit-level gateway' — firewall component.",
+    "Cloud services expose REST/GraphQL/SOAP APIs for programmatic access. Applications use APIs to provision, configure, query, and consume cloud resources. API is the cloud's primary access mechanism."
+  ],
+  "d4_258": [
+    "Trap is B 'archive logs indefinitely' — storage cost without proportional value.",
+    "Trap is C 'collect ALL logs' — overwhelming; not all logs valuable.",
+    "Trap is D 'security manager reviews daily' — manual review can't scale to enterprise volumes.",
+    "Automated tools collect, normalize, analyze, and retain logs at scale. SIEM/log management platforms detect patterns humans can't. Scale + speed of automation is the key benefit."
+  ],
+  "d4_259": [
+    "Trap is A 'manage code complexity' — partial benefit, not the key.",
+    "Trap is B 'collaboration with developers' — partial benefit.",
+    "Trap is C 'limits accessibility' — opposite; version control increases collaboration access.",
+    "Version control's defining feature: every change tracked, every version retrievable, any change reversible. Foundation of safe code modification. Without it, recovering from bad changes is hard or impossible."
+  ],
+  "d4_260": [
+    "Trap is A 'OS logs' — system-level events, not application execution problems.",
+    "Trap is B 'incident reports' — formal records, lag behind issues.",
+    "Trap is D 'computer operator logs' — operator activities, not application execution.",
+    "Exception reports are PURPOSE-BUILT to flag application execution problems. Automated, timely, application-specific. Direct visibility into application issues."
+  ],
+  "d4_261": [
+    "Trap is A 'early warnings of risk' — possible benefit, but not the primary value.",
+    "Trap is B 'detecting operational problems' — IS auditor concern, narrow.",
+    "Trap is D 'audit trails for transactions' — compliance benefit, narrow.",
+    "Operational logs reveal IT infrastructure health: CPU, memory, network, application performance, error rates, response times. Foundation of capacity planning, performance tuning, reliability engineering."
+  ],
+  "d4_262": [
+    "Trap is A 'operator reports' — operational records, not conversion-specific.",
+    "Trap is C 'control totals' — verify sums, not error identification.",
+    "Trap is D 'application logs' — system events, not conversion errors specifically.",
+    "Exception reports list errors during automated conversion: failed records, rejected data, transformation issues. Direct visibility into what didn't convert successfully."
+  ],
+  "d4_263": [
+    "Trap is B 'multiple log formats' — addressable through normalization.",
+    "Trap is C 'storage cost' — manageable through retention policies and tiered storage.",
+    "Trap is D 'false-positive alerts' — tuning challenge, addressable over time.",
+    "IT infrastructure complexity = many sources, many formats, many semantics, many integration points. Logging across complex environments is fundamentally hard; addressing complexity is foundational challenge."
   ]
 }
