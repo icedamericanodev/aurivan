@@ -5206,8 +5206,10 @@
         "C": "Activity monitoring is a detective control and does not prevent data from leaving the network."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'encrypted mail' — protects content in transit; doesn't stop sending sensitive data out.",
+        "Trap is B 'training' — preventive but doesn't enforce; humans still err.",
+        "Trap is C 'activity monitoring' — detective; sees it after it leaves.",
+        "DLP inspects outbound email and blocks sensitive content from being sent — direct technical remediation for the exact behavior observed. Training/monitoring help, but DLP enforces at the boundary. BEST control for confidential-data exfiltration."
       ]
     },
     {
@@ -5232,7 +5234,10 @@
         "D": "A network security scanner identifies vulnerabilities but does not remediate them."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'IDS' — detects and alerts; does not block.",
+        "Trap is B 'honeypot' — diverts and observes; doesn't block.",
+        "Trap is D 'security scanner' — finds vulnerabilities; doesn't block attacks.",
+        "IPS = Intrusion PREVENTION = inline blocking of detected attacks. The 'P' is the differentiator from IDS. Memorize: IPS prevents/blocks, IDS only detects."
       ]
     },
     {
@@ -5257,7 +5262,10 @@
         "D": "Shutting down the server can potentially erase information that might be needed for a forensic investigation or to develop a strategy to prevent future similar attacks."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is B 'fail-safe mode' — alters state, may destroy evidence.",
+        "Trap is C 'disconnect from network' — contains the attack but loses volatile evidence.",
+        "Trap is D 'shut down' — destroys volatile memory immediately, evidence lost.",
+        "Volatile memory (RAM) holds attacker tools, processes, network connections — capture FIRST before any state-changing action. Forensic priority: collect volatile evidence before containment. Order of volatility principle."
       ]
     },
     {
@@ -5282,8 +5290,10 @@
         "C": "Phishing attacks can be mounted in various ways, often through email; strong two-factor authentication cannot mitigate most types of phishing attacks."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'IDS' — detects malicious traffic, not phishing emails.",
+        "Trap is B 'security assessment' — identifies vulnerabilities; doesn't change user behavior.",
+        "Trap is C 'strong auth' — defends post-credential-theft, not against the trick itself.",
+        "Phishing exploits human judgment — user education is the only control that addresses the root cause. Tech controls help, but humans are the target. BEST phishing mitigation = train the target."
       ]
     },
     {
@@ -5308,8 +5318,10 @@
         "D": "Ensuring that management signs off on termination paperwork is important, but not as critical as terminating access to the IT systems."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'exit interview' — HR formality.",
+        "Trap is B 'handover for continuity' — operational, not security-critical.",
+        "Trap is D 'sign termination paperwork' — administrative.",
+        "Terminating logical access for a key developer with knowledge/grudge potential is the MOST important — prevents sabotage or data theft via retained credentials. Access removal at exit = top exam priority. Insider risk peaks at separation."
       ]
     },
     {
@@ -5334,7 +5346,10 @@
         "C": "Denial-of-service occurs when a computer connected to the Internet is flooded with data and/or requests that must be processed. This is an active attack."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'message modification' — active attack; alters data.",
+        "Trap is B 'masquerading' — active attack; impersonates.",
+        "Trap is C 'DoS' — active attack; disrupts service.",
+        "Traffic analysis — observing patterns/volumes without altering traffic — is passive. Active = changes something; passive = only observes. Memorize: only one passive option will appear among actives."
       ]
     },
     {
@@ -5359,7 +5374,10 @@
         "D": "Technology may facilitate social engineering, but it is fundamentally about obtaining human trust."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'computer error' — machines aren't tricked, people are.",
+        "Trap is C 'expertise' — attacker may use any skill level.",
+        "Trap is D 'technology' — social engineering bypasses tech, exploits humans.",
+        "Social engineering succeeds through judgment errors — humans make wrong trust decisions. Root cause is human reasoning failure. Tech can't fix bad judgment."
       ]
     },
     {
@@ -5384,7 +5402,10 @@
         "D": "A host-based IDS would be installed on the web server, but a network-based IDS would not."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'local network' — too far inside; misses external attacks.",
+        "Trap is B 'outside firewall' — would be overwhelmed by Internet noise.",
+        "Trap is D 'on the host' — host-based, not network-based.",
+        "DMZ placement lets the IDS see traffic that has passed the firewall but is heading to public-facing servers — the right zone for monitoring real threats to the website. Network-based IDS goes where the meaningful traffic is filtered. DMZ = standard placement."
       ]
     },
     {
@@ -5409,7 +5430,10 @@
         "D": "Because the VMs are only used in a development environment and not in production, it may not be necessary to include VMs in the disaster recovery plan."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'physical resources' — capacity planning, not avail/conf.",
+        "Trap is C 'admin training' — operational, not control.",
+        "Trap is D 'VM in DR plan' — availability piece but narrower than hardening.",
+        "Hardened server configuration is the foundation — VM hosts run multiple guests, so any unhardened surface compromises both availability and confidentiality across all VMs. Hypervisor/host hardening = root of trust. MOST important VM control."
       ]
     },
     {
@@ -5434,8 +5458,10 @@
         "D": "Hash functions do not encrypt data."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'identification' — identity claim, not hash function.",
+        "Trap is C 'authorization' — permission decisions, not hashing.",
+        "Trap is D 'encryption' — reversible; hashes are one-way.",
+        "Hash functions support authentication — message integrity, password verification, digital signatures all use hashes to confirm authenticity. Hashes verify, not encrypt. Most common auditor encounter is in auth flows."
       ]
     },
     {
@@ -5460,7 +5486,10 @@
         "D": "Denying incoming traffic to internal hosts prevents legitimate traffic."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'incoming spoofed source' — defends YOU, not against being amplifier.",
+        "Trap is C 'IP options set' — old hardening but not amplification-specific.",
+        "Trap is D 'incoming to critical hosts' — internal protection, not amplification.",
+        "Egress filtering — drop outgoing packets with non-internal source addresses — prevents your network being used as DDoS amplifier (your hosts can't spoof external sources). Egress source-validation = anti-amplification. BCP38."
       ]
     },
     {
@@ -5485,7 +5514,10 @@
         "D": "A rapid exit may be necessary in some circumstances (e.g., a fire)."
       },
       "tips": [
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is B 'toxic gases' — that's HVAC/positive pressure, not mantraps.",
+        "Trap is C 'starve fire of oxygen' — that's gas suppression.",
+        "Trap is D 'rapid movement' — physical effect, but PRIMARY purpose is access control.",
+        "Mantrap (two doors with interlock) lets one authorized person enter at a time — directly preventing piggybacking/tailgating. Single-person verified entry. The defining mantrap purpose."
       ]
     },
     {
@@ -5510,7 +5542,10 @@
         "C": "A SaaS provider does not normally have onsite support for the enterprise."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'workstation upgrades' — typically not required for SaaS.",
+        "Trap is B 'higher long-term cost' — financial concern, not audit-control concern.",
+        "Trap is C 'no onsite support' — SaaS by nature is remote-supported.",
+        "Undefined incident-handling procedures with the SaaS provider create gaps when breaches occur — who responds, who notifies, what data is preserved. Cloud incidents need contractual clarity. Top SaaS audit concern."
       ]
     },
     {
@@ -5535,8 +5570,10 @@
         "D": "The substitution of another person's private key would not work because the digital signature would be validated with the original user's public key."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is B 'forge with another's private key' — implies stealing the private key, not this scheme's risk.",
+        "Trap is C 'public key substitution' — public keys are public; substitution attacks have other defenses.",
+        "Trap is D 'private key substitution' — possible but the password compromise is the easier and primary vector.",
+        "Storing private key on disk protected only by a password means a compromised password = full impersonation via signature. The password is the single point of failure. MOST significant risk in this scheme."
       ]
     },
     {
@@ -5561,8 +5598,10 @@
         "D": "Computer equipment needs to be protected against water. However, a raised floor does not prevent damage to the machines in the event of overhead water pipe leakage."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is B 'static electricity' — raised floor doesn't prevent static.",
+        "Trap is C 'earthquake shock' — raised floor offers no seismic protection.",
+        "Trap is D 'water flood' — raised floor under-area can actually pool water (sometimes good, sometimes bad).",
+        "Raised floor protects cabling routed underneath from being walked on, kicked, or damaged. Wires under = wires safe. Primary purpose of computer-room raised flooring."
       ]
     },
     {
@@ -5587,7 +5626,10 @@
         "D": "It is good practice to set an expiration date for a password. However, this might not be practical for an ID automatically logged in from the program. Often, this type of password is set not to expire."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'card swipe' — physical second factor; doesn't enforce data segregation within app.",
+        "Trap is C 'user inputs ID/password each transaction' — operationally infeasible.",
+        "Trap is D 'expiration on embedded password' — rotates secret but doesn't restrict per-user.",
+        "RBAC within the application restricts what each authenticated user can do with the shared DB connection — efficient because permissions live at the app/role layer. Single embedded credential is okay if app enforces user-level RBAC. Practical answer for shared-credential designs."
       ]
     },
     {
@@ -5612,8 +5654,10 @@
         "D": "An intrusion detection system (IDS) is not required for a penetration test."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'tools used' — practitioner's choice.",
+        "Trap is B 'auditor certifications' — qualifications matter but not most important pre-test.",
+        "Trap is D 'IDS enabled' — operational concern; doesn't authorize the test.",
+        "Permission from the data owner (in writing) is mandatory — pen-tests without authorization are illegal/unauthorized intrusion. Legal authorization first, technical execution second. ALWAYS the answer for 'most important' pre-test step."
       ]
     },
     {
@@ -5638,7 +5682,10 @@
         "D": "Improved regulatory compliance is a benefit; however, achieving a cost reduction is a greater benefit."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'accurate inventory' — byproduct, not greatest benefit.",
+        "Trap is C 'reduced unauthorized access' — outcome, but cost/control efficiency is broader.",
+        "Trap is D 'regulatory compliance' — secondary benefit.",
+        "Classification lets you apply expensive controls only where data warrants them — overall control cost decreases while control effectiveness improves. Risk-proportionate spending. BIG benefit: efficiency."
       ]
     },
     {
@@ -5663,7 +5710,10 @@
         "C": "The strength of the encryption algorithm may improve data confidentiality; however, this does not necessarily prevent data from being modified."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'time stamped independently' — useful but not the integrity proof.",
+        "Trap is B 'recorded by multiple systems' — redundancy, not integrity.",
+        "Trap is C 'encrypted strongly' — confidentiality, not court-admissibility.",
+        "Courts require evidence integrity — proof the log hasn't been altered (hashes, chain of custody). Verified integrity = admissible. Without integrity verification, evidence is challenged."
       ]
     },
     {
@@ -5688,7 +5738,10 @@
         "D": "Roles and responsibilities are articulated based on strategies, policies, processes and procedures."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is B 'processes and procedures' — execution layer, downstream of strategy.",
+        "Trap is C 'functions and services' — operational layer.",
+        "Trap is D 'roles and responsibilities' — organizational, downstream of strategy.",
+        "IT governance starts with strategies and policies — they set direction; everything else follows. Quality strategy/policy → quality everything below. Top-of-pyramid first."
       ]
     },
     {
@@ -5713,8 +5766,10 @@
         "D": "Inputting validation checks on web forms is important to ensure that attackers do not compromise the website, but transaction monitoring is the best control."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'SSL' — protects in transit, not against fraudulent legitimate-looking transactions.",
+        "Trap is C 'password complexity' — prevents some account takeover, not the fraud itself.",
+        "Trap is D 'input validation' — prevents bad data, not fraudulent intent.",
+        "Transaction monitoring detects unusual patterns (amount, location, frequency) — the actual control against fraudulent payments. Behavioral/analytical detection. Standard answer for online-payment fraud."
       ]
     },
     {
@@ -5739,8 +5794,10 @@
         "C": "The PIN does not need to be random if it is secret."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'don't leave tokens' — important but token alone is one factor.",
+        "Trap is B 'token in laptop bag' — same as above.",
+        "Trap is C 'random PIN, no repeats' — content rule, less critical than not exposing it.",
+        "Writing down the PIN turns 2FA into 1FA — anyone who steals the token also gets the PIN. PIN must remain in user's head. Defeats two-factor protection if violated."
       ]
     },
     {
@@ -5765,8 +5822,10 @@
         "D": "Having multiple administrators is a good idea, but not the most important for successful deployment."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'frequent log review' — operational; doesn't ensure correct deployment.",
+        "Trap is C 'training local admin' — important but post-deployment.",
+        "Trap is D 'sharing admin duties' — SoD, not deployment success.",
+        "Testing and validating rule base before going live is the linchpin — a misconfigured firewall is worse than no firewall (false sense of security). Validate in lab before activating. MOST important deployment factor."
       ]
     },
     {
@@ -5791,8 +5850,10 @@
         "D": "Logging the entry attempts is important, but not as important as ensuring that a lost or stolen badge is disabled as quickly as possible."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is A 'tamper-resistant readers' — physical hardening, secondary.",
+        "Trap is B 'badge system backups' — availability of system, not access control.",
+        "Trap is D 'log all attempts' — detective.",
+        "Promptly deactivating lost/stolen badges prevents unauthorized physical entry — the most important operational control for a badge-entry system. Stale active badges = open door for thieves. Process discipline > technology."
       ]
     },
     {
@@ -5817,8 +5878,10 @@
         "D": "A misconfigured or poorly implemented VPN gateway can be subject to attack, but if it is located in a secure subnet, then the risk is reduced."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'logon spoofing' — defended by strong auth/MFA.",
+        "Trap is C 'sniffing/decryption' — VPN encrypts; well-defended.",
+        "Trap is D 'gateway compromise' — possible but not 'most prevalent.'",
+        "Remote VPN brings home/personal endpoints onto the corporate network — if those endpoints are infected, malware spreads inward via the trusted tunnel. Endpoint hygiene risk = most common VPN issue. The 'sick laptop on the couch' problem."
       ]
     },
     {
@@ -5843,7 +5906,10 @@
         "D": "A digital signature does not ensure message confidentiality."
       },
       "tips": [
-        "Asymmetric crypto: encrypt with the recipient's public key (confidentiality), sign with the sender's private key (authenticity + non-repudiation)."
+        "Trap is A 'OTP generator' — different mechanism (token auth).",
+        "Trap is B 'provides encryption' — signatures don't encrypt; they sign.",
+        "Trap is D 'message confidentiality' — signatures provide authenticity, not secrecy.",
+        "Digital signatures validate the source — sender's private key signs, anyone with public key verifies origin. Authenticity, integrity, nonrepudiation — NOT confidentiality. The defining trio."
       ]
     },
     {
@@ -5868,7 +5934,10 @@
         "D": "When attackers have gained access and possibly infected the victim with a rootkit, they delete audit logs and take other steps to hide their tracks."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is B 'gain access' — comes after recon.",
+        "Trap is C 'deny services' — late stage, often goal.",
+        "Trap is D 'evade detection' — concurrent with later phases.",
+        "Reconnaissance/information gathering is FIRST — attackers map targets, find vulnerabilities, then exploit. Attack methodology starts with knowing what's there. Step 1 of every attack chain."
       ]
     },
     {
@@ -5893,8 +5962,10 @@
         "D": "Blocking the use of social media through network controls is not an effective control, because users may access these services through other means, such as mobile phones and home computers."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'AUP signature' — formality; doesn't change behavior.",
+        "Trap is C 'monitor social media' — detective, post-exposure.",
+        "Trap is D 'block access' — bypassable on personal devices/home networks.",
+        "Awareness training changes user behavior on what to share — controls disclosure regardless of platform or device. Tech controls can't follow users home. Education = sustained mitigation."
       ]
     },
     {
@@ -5919,7 +5990,10 @@
         "D": "Antivirus software reduces the impact of possible viruses; however, unauthorized users would still be able to access the enterprise network, which is the biggest risk."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'IPS deployed' — IPS doesn't replace network segregation.",
+        "Trap is C 'SSO implemented' — authentication, doesn't address network access risk.",
+        "Trap is D 'antivirus' — endpoint, not network access control.",
+        "If conference-room ports lead to an isolated/segregated network, no enterprise resources are reachable — the risk is neutralized. Segmentation eliminates the unauthorized-access concern. Network design solution."
       ]
     },
     {
@@ -5944,8 +6018,10 @@
         "D": "All changes made should be recorded, but the most important concern is to ensure that the changes are reversed at the end of the test."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'report confidentiality' — important but post-test.",
+        "Trap is B 'find all weaknesses' — never possible; not the operational concern.",
+        "Trap is D 'logging changes' — useful but secondary.",
+        "Restoring systems to their original state after the test prevents persistent compromise from leftover testing artifacts (planted files, modified configs). Cleanup = production safety. The test must not become a real breach."
       ]
     },
     {
@@ -5970,7 +6046,10 @@
         "D": "It is possible that security requirements will change over time based on new threats or vulnerabilities, but if critical controls are missing, this points toward a faulty design that was based on incomplete requirements."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is A 'developer training' — possible cause but symptom-level.",
+        "Trap is B 'admin disabled controls' — investigation later.",
+        "Trap is D 'requirements no longer valid' — different scenario.",
+        "Verify whether security requirements were specified in the project plan FIRST — root-cause check. Missing controls likely trace to missing requirements. Always trace to requirements before assigning blame."
       ]
     },
     {
@@ -5995,7 +6074,10 @@
         "D": "Virtual local area network (VLAN) configurations are not intended to compensate for a compromise of the firewall. They are an architectural good practice."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'personal firewall' — host-level last resort, after other layers.",
+        "Trap is B 'antivirus' — malware-specific, narrower.",
+        "Trap is D 'VLAN config' — network segmentation, less directly defensive than IDS detection of intrusion.",
+        "Once the firewall is breached, the IDS is the next defense layer — detecting intrusion that got past the perimeter. Defense in depth: firewall → IDS → host controls. Standard layering question."
       ]
     },
     {
@@ -6020,8 +6102,10 @@
         "C": "The use of intrusion detection/intrusion prevention systems cannot mitigate pharming attacks because they do not prevent manipulation of DNS records."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'user/password policies' — protect login, not URL/DNS routing.",
+        "Trap is B 'awareness' — helps but pharming bypasses user-visible cues.",
+        "Trap is C 'IDS/IPS' — perimeter defense, doesn't fix DNS poisoning.",
+        "Pharming redirects users via poisoned DNS (or hosts file) to fake banking sites — DNS server hardening (DNSSEC, secure config) is the direct defense. Attack the attack vector. DNS = the pharming choke point."
       ]
     },
     {
@@ -6046,8 +6130,10 @@
         "D": "Increasing the length of authentication strings will not prevent man-in-the-middle or session hijacking attacks."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'better algorithm' — strengthens crypto, not the protocol weakness.",
+        "Trap is C 'frequent password changes' — challenge-response uses session secrets, not user passwords.",
+        "Trap is D 'longer auth strings' — incremental.",
+        "Session hijacking (replay/intercept of the response) is the main weakness — adding anti-hijacking measures (timestamps, sequence numbers, mutual auth) most directly secures challenge-response. Address the protocol's actual attack surface. Tactical fit."
       ]
     },
     {
@@ -6072,7 +6158,10 @@
         "D": "Using dynamic testing that runs against live code can result in missed conditions due to sections of code not being exposed to typical usage."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'gray box' — partial knowledge; doesn't guarantee full path coverage.",
+        "Trap is C 'black box' — no internals; can't reach all paths.",
+        "Trap is D 'dynamic' — runtime testing; doesn't ensure path coverage.",
+        "White-box testing uses source code knowledge to design tests covering every code path including error handlers. Path coverage = white-box specialty. Memorize: 'every code path' = white box."
       ]
     },
     {
@@ -6097,7 +6186,10 @@
         "D": "Packet headers and trailers alone do not ensure that the content has not been altered, because an attacker can alter the data and the trailer."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'device + origin auth' — proves who, not what wasn't altered.",
+        "Trap is B 'wireless IDS/IPS' — detection/prevention of attacks, not integrity proof.",
+        "Trap is D 'packet headers/trailers' — addressing/framing, not integrity check.",
+        "Cryptographic hashes detect any alteration in transit — recipient recomputes hash and compares. Hash mismatch = altered. Integrity = hashes (HMAC, etc.). Direct definitional answer."
       ]
     },
     {
@@ -6122,8 +6214,10 @@
         "C": "Disabling open broadcast of service set identifiers is not an effective access control, because many tools can detect a wireless access point that is not broadcasting."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'WEP' — broken cipher; obsolete.",
+        "Trap is B 'MAC filtering' — easily spoofed; weak.",
+        "Trap is C 'disable SSID broadcast' — security through obscurity.",
+        "WPA2 (with strong key) is the modern minimum-acceptable wireless security — strong encryption and authentication. WEP/MAC/SSID-hiding all defeated. WPA2 (or WPA3) = the answer."
       ]
     },
     {
@@ -6148,7 +6242,10 @@
         "D": "A firewall is often set up as the endpoint for a virtual private network (VPN)."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'implicit deny last' — best practice; correct configuration.",
+        "Trap is C 'allow/deny rules' — that's the firewall's job.",
+        "Trap is D 'VPN endpoint' — common, valid use.",
+        "Default OS settings = unhardened = exploitable services, default credentials, open ports underneath the firewall application. Software firewall is only as strong as the OS hosting it. Hardening must precede deployment."
       ]
     },
     {
@@ -6173,8 +6270,10 @@
         "D": "Configuring an IPS can take months of learning what is and what is not acceptable behavior, but this does not require specialized expertise."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'too many alerts' — IDS problem, not IPS-blocking risk.",
+        "Trap is B 'performance loss' — operational, not the GREATEST risk.",
+        "Trap is D 'specialized expertise' — staffing concern.",
+        "IPS blocks inline — false positives cause legitimate critical traffic to be dropped, taking down systems/services. Availability impact from false positives is the IPS-specific top risk. The price of inline prevention."
       ]
     },
     {
@@ -6199,8 +6298,10 @@
         "D": "Subscribers reporting key compromises to the CA is not a risk because reporting this to the CA enables the CA to take appropriate action."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'no RA for compromise reports' — operational gap but secondary.",
+        "Trap is C 'cert contains public key' — that's correct/by design.",
+        "Trap is D 'report compromises to CA' — correct procedure.",
+        "Stale CRL means revoked (compromised) certificates are still trusted by relying parties — direct authentication failure. Fresh CRL is essential to revocation working. MOST significant verification risk."
       ]
     },
     {
@@ -6225,7 +6326,10 @@
         "D": "The certificate (certification) authority (CA) issues certificates that link the public key with its owner. The CA does not compute digests of the messages to be communicated between the sender and receiver."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'sender only' — sender computes to sign, but verification needs receiver to recompute.",
+        "Trap is B 'receiver only' — sender must compute first to sign.",
+        "Trap is D 'CA' — CA issues certs, doesn't compute message digests.",
+        "Sender computes digest to sign with private key; receiver recomputes digest and compares to decrypted signature. Both ends compute the digest — that's how integrity is verified. Symmetric computation."
       ]
     },
     {
@@ -6250,7 +6354,10 @@
         "C": "Using a portable document format protects the integrity of the content but not necessarily authorship."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'shared secret password' — symmetric secret; doesn't prove origin uniquely.",
+        "Trap is B 'encrypt with receiver's public key' — confidentiality, not origin.",
+        "Trap is C 'PDF format' — packaging, not authentication.",
+        "Digital signature with sender's private key — only sender holds that key, so verification with sender's public key proves origin. Private-key signing = origin authentication. Definitional answer."
       ]
     },
     {
@@ -6275,8 +6382,10 @@
         "D": "Although a multifactor authentication (MFA) technique is preferred, a single-factor authentication method should be adequate if properly implemented."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'no login screen' — guest networks may be open by design.",
+        "Trap is C 'guests not isolated from each other' — concern but lateral guest-to-guest is less than guest-to-production.",
+        "Trap is D 'single-factor auth' — guest networks rarely need MFA.",
+        "Not segregating guest from production network is the GREATEST concern — visitors can reach internal corporate resources directly. Whole point of guest network is segregation. Failure of fundamental design."
       ]
     },
     {
@@ -6301,7 +6410,10 @@
         "D": "Triple DES (3DES) is a valid encryption method; however, AES is a stronger and more recent encryption algorithm."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'SHA-256' — hash, not encryption (passwords stored as hashes don't 'encrypt').",
+        "Trap is C 'SSH' — channel/protocol, not at-rest encryption.",
+        "Trap is D '3DES' — legacy; weaker and slower than AES.",
+        "AES is the current standard for symmetric encryption — strongest among the listed encryption options for storing/encrypting database passwords. AES > 3DES; SHA is hashing. Modern symmetric standard."
       ]
     },
     {
@@ -6326,7 +6438,10 @@
         "D": "A waterfall model is a software development methodology and not a reason for performing a C&A process."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'data encrypted ready to store' — operational, not C&A purpose.",
+        "Trap is C 'tested on different platforms' — portability, not security.",
+        "Trap is D 'waterfall phases' — methodology, not C&A.",
+        "Certification = technical security evaluation (does it meet security requirements?); accreditation = management acceptance to operate. C&A confirms security compliance via technical evaluation. Memorize: certification → technical, accreditation → management decision."
       ]
     },
     {
@@ -6351,7 +6466,10 @@
         "D": "In masquerading, the intruder presents an identity other than the original identity. This is an active attack."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'eavesdropping' — listening to plaintext; encrypted data foils this.",
+        "Trap is B 'spoofing' — identity attack, not info gathering.",
+        "Trap is D 'masquerading' — impersonation, not pattern analysis.",
+        "Traffic analysis examines metadata (volumes, timing, parties) to infer info even when content is encrypted. Encryption hides what; it doesn't hide that. Direct attack on encrypted networks."
       ]
     },
     {
@@ -6376,8 +6494,10 @@
         "D": "Data availability is a measure of how often enterprise data are available to be used by authorized parties and does not have the highest priority."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'integrity' — important but interface auth is the trust foundation.",
+        "Trap is B 'confidentiality' — secondary depending on data.",
+        "Trap is D 'availability' — operational, not interface-trust.",
+        "Across system interfaces, knowing the data really came from the claimed system (data authentication) is critical — wrong source = corrupted commerce. Authentication of inter-system messages is the exchange's foundation. Most critical for B2B/system-to-system."
       ]
     },
     {
@@ -6402,8 +6522,10 @@
         "D": "Failure-to-enroll rate (FER) is an aggregate measure of FRR."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is A 'highest EER' — highest = WORST.",
+        "Trap is C 'FRR = FAR' — that IS the EER definition; not by itself the 'most effective' marker.",
+        "Trap is D 'FRR = FER' — distractor; mixes unrelated metrics.",
+        "Lowest EER = lowest crossover error rate = MOST effective biometric system overall. EER is the single comparison metric; lower wins. Memorize: low EER = good system."
       ]
     },
     {
@@ -6428,7 +6550,10 @@
         "D": "Both a magnetic card and a proximity badge are examples of something a user has, so these are not adequate for two-factor authentication."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'unique ID + password' — both 'know' factors; single factor.",
+        "Trap is C 'iris + fingerprint' — both 'are' factors; single factor.",
+        "Trap is D 'magstrip + proximity card' — both 'have' factors; single factor.",
+        "Smart card (have) + PIN (know) = two DIFFERENT factor types = true 2FA. Two factors must be from DIFFERENT categories (know/have/are). Classic 2FA pattern."
       ]
     },
     {
@@ -6453,8 +6578,10 @@
         "D": "System failure of the card programming device would normally not mean that the readers do not function anymore. It means that no new cards can be issued, so this option is minor compared to the threat of improper identification."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is B 'cards not labeled with org name' — labeling lost cards aids adversaries finding building.",
+        "Trap is C 'separate departments cause lead time' — operational nuisance.",
+        "Trap is D '3-week replacement' — availability concern, not access control.",
+        "Generic cards + sign-in without ID proof means anyone claiming to be cleaning staff can enter — accountability and authentication both fail. Identity verification at entry is the basic control. MOST concerning physical-access weakness."
       ]
     },
     {
