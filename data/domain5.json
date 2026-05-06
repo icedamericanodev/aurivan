@@ -1006,8 +1006,10 @@
         "C": "Shared user IDs do not necessarily have easily guessed passwords."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'unauthorized user gains access' — possible risk but accountability is the broader issue.",
+        "Trap is B 'time-consuming management' — operational concern, not security.",
+        "Trap is C 'easily guessed passwords' — separate issue from sharing.",
+        "Shared accounts = no single person owns actions taken with that ID. Audit logs show 'this account did X' without identifying the human. Accountability impossibility is the foundational SoD concern."
       ]
     },
     {
@@ -1032,8 +1034,10 @@
         "D": "The biometric risk analysis should be reperformed periodically, but an analysis performed three years ago is not necessarily a cause for concern."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'admin access via VPN' — VPN provides encryption; manageable.",
+        "Trap is B 'scanners not in restricted areas' — physical security concern, addressable.",
+        "Trap is D '3-year-old risk analysis' — staleness concern, addressable.",
+        "Biometric data transmitted unencrypted = capture and replay attacks possible. Regulated data context = compliance violation. Foundational integrity/confidentiality gap."
       ]
     },
     {
@@ -1058,8 +1062,10 @@
         "C": "The log files themselves are the main evidence that an unauthorized change was made, which is a sufficient detective control. Protecting the log files from modification requires preventive controls, such as securely writing the logs."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'adequate supervision' — administrative; defeats by collusion.",
+        "Trap is B 'retain log backups' — recovery, doesn't prevent tampering.",
+        "Trap is C 'detect changes' — detective, possibly after damage.",
+        "WORM (write once read many) drives physically prevent log modification after writing. Even admin can't alter what's been written. Hardware-enforced integrity."
       ]
     },
     {
@@ -1084,7 +1090,10 @@
         "D": "Periodic review of changing data files is related to a change control process."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'field-level user authorization' — application-level concern, not OS access.",
+        "Trap is C 'data communication access logs' — network logs, not OS access.",
+        "Trap is D 'changing data files' — application change tracking, not OS access.",
+        "OS access is logged via user activity logs. Periodic review of these logs identifies inappropriate access patterns. Standard OS access control verification."
       ]
     },
     {
@@ -1109,8 +1118,10 @@
         "D": "If the power and telephone equipment are separated, this is not a significant risk."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'cabling disorganized' — operational hygiene, not critical security.",
+        "Trap is C 'phones use LAN cable' — that's NORMAL for VoIP (PoE).",
+        "Trap is D 'wiring closet has power lines' — needs separation but common practice.",
+        "VoIP phones get power over Ethernet from LAN switches. No UPS on switches = power failure kills all phones, including emergency calls. Life-safety implication. Highest concern."
       ]
     },
     {
@@ -1135,8 +1146,10 @@
         "D": "There may be business requirements, such as the use of contractors that requires them to have system access, so this may not be a concern."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'shared passwords' — concerning but localized account issue.",
+        "Trap is C 'redundant logon IDs' — may have valid business reasons.",
+        "Trap is D 'third-party admin access' — may be required and managed.",
+        "Unencrypted passwords over remote access = passwords visible to anyone monitoring the untrusted network. Captured passwords enable attacker access to all the systems. Foundational remote access risk."
       ]
     },
     {
@@ -1161,8 +1174,10 @@
         "D": "Although changing the password annually is a concern, the risk is not as great as exposing the data to unauthorized individuals outside the organization."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'no encryption for outgoing email' — concerning but blanket encryption may be impractical.",
+        "Trap is C 'screen saver disabled' — local concern, narrow.",
+        "Trap is D 'annual password change' — operational concern, addressable.",
+        "Reliance on humans typing markers (PHI) to trigger encryption = high failure rate. One forgotten marker = unencrypted PHI in transit = HIPAA violation. Should be automated by content detection."
       ]
     },
     {
@@ -1187,7 +1202,10 @@
         "D": "Provision of physical and logical security for data is the responsibility of the security administrator."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'implement security in apps' — implementation, custodian's role.",
+        "Trap is C 'implement access rules' — implementation, custodian/security role.",
+        "Trap is D 'physical/logical security' — implementation, custodian's role.",
+        "Owner DEFINES requirements (criticality/sensitivity classification). Custodian IMPLEMENTS protection per owner's classification. Owner's foundational responsibility is classification."
       ]
     },
     {
@@ -1212,7 +1230,10 @@
         "D": "Impersonation attacks involve an error in the identification of a privileged user. The scenario given is not an example of this exploit."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'race condition' — timing-related code bug; different mechanism.",
+        "Trap is C 'buffer overflow' — memory exploitation; different mechanism.",
+        "Trap is D 'impersonation' — identity-based attack; different mechanism.",
+        "User invoked task scheduler (which runs with admin) to launch restricted apps = used a privileged process to gain higher access than their account allows. Definition of privilege escalation."
       ]
     },
     {
@@ -1237,7 +1258,10 @@
         "C": "Although not having valid backups is a concern, the more important concern is a lack of a chain of custody policy. Data breach evidence is not normally retrieved from backups."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'no incident reporting awareness' — process gap, but data preservation comes first.",
+        "Trap is B 'log servers not separate' — architectural concern, secondary.",
+        "Trap is C 'inconsistent backups' — recovery concern, secondary.",
+        "Without chain of custody policy, evidence handling is inconsistent. Inadmissible evidence destroys breach case regardless of investigation quality. Foundational legal preservation requirement."
       ]
     },
     {
@@ -1262,8 +1286,10 @@
         "C": "Although an information systems (IS) auditor may consult with data owners regarding whether this access is allowed normally, the IS auditor should not rely on the auditee to determine whether this is an issue."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'recommend mandatory access' — overkill for low-risk app; expensive change.",
+        "Trap is B 'report to upper management' — DAC modification IS the DAC model.",
+        "Trap is C 'check with data owners' — DAC operates at owner level by design.",
+        "Discretionary Access Control (DAC) = owner controls access. Owner changing access controls = expected DAC behavior. Not a finding; characteristic of the model."
       ]
     },
     {
@@ -1288,7 +1314,10 @@
         "C": "Most electromagnetic emissions are low level and do not pose a significant health risk."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'damage storage media' — extremely rare; emissions weak for damage.",
+        "Trap is B 'disrupt processor' — unlikely; emissions don't usually interfere with own equipment.",
+        "Trap is C 'health effects' — typical electronic equipment, well below health limits.",
+        "TEMPEST attacks: emissions can be detected and reconstructed by sophisticated equipment. Screen content visible from outside the building. Confidentiality risk through electromagnetic leakage."
       ]
     },
     {
@@ -1313,7 +1342,10 @@
         "D": "The security administrator is often responsible for user-facing issues, such as managing user roles, profiles and settings. This requires the administrator to have more than read-only access."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'access control tables' — security admins UPDATE these; need write access.",
+        "Trap is C 'logging options' — admins CONFIGURE logging; need write.",
+        "Trap is D 'user profiles' — admins MANAGE profiles; need write.",
+        "Security log files = audit trail. Read-only access for admins prevents tampering with their own activity records. Foundational SoD for security personnel."
       ]
     },
     {
@@ -1338,7 +1370,10 @@
         "D": "The librarians enforce the access control procedures they have been given but do not determine who gets access."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'programmers' — implement applications, don't authorize access.",
+        "Trap is C 'system analysts' — design systems, don't authorize access.",
+        "Trap is D 'librarians' — manage code/data inventory, don't authorize access.",
+        "Data owners have business authority over data. They authorize access based on need-to-know. Security officer assists with implementation; owner makes the access decision."
       ]
     },
     {
@@ -1363,7 +1398,10 @@
         "D": "Input for a data dictionary is prepared from the results of the data classification process."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is B 'criticality analysis' — performed AFTER ownership established (owner does it).",
+        "Trap is C 'define access rules' — depends on classification, which depends on ownership.",
+        "Trap is D 'data dictionary' — metadata exercise; not classification.",
+        "Without identified owner, no one has authority to classify. Owner = first appointment. Then owner classifies, defines access, oversees protection."
       ]
     },
     {
@@ -1388,8 +1426,10 @@
         "D": "The biometric stores sensitive personal information, so the storage must be secure."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is B 'identification' — happens AFTER enrollment.",
+        "Trap is C 'verification' — happens AFTER enrollment.",
+        "Trap is D 'storage' — happens during enrollment but enrollment is the broader process.",
+        "Enrollment = capturing biometric template for the user. Foundational; everything else depends on it. Auditor reviews enrollment process for accuracy and security."
       ]
     },
     {
@@ -1414,7 +1454,10 @@
         "D": "Trojan horses are computer programs that pretend to supplant a real program; thus, the functionality of the program is not authorized and is usually malicious in nature."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'sniffers' — uses tools.",
+        "Trap is C 'back doors' — uses tools.",
+        "Trap is D 'Trojan horses' — uses tools (malware).",
+        "Social engineering exploits human psychology directly. Conversation, manipulation, deception. No tools needed; the human is the vulnerability."
       ]
     },
     {
@@ -1439,7 +1482,10 @@
         "C": "Data and time stamps should be recorded in the logs to enable the reconstruction and correlation of events on multiple systems."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'user IDs in audit trail' — that's WHAT audit trails should record.",
+        "Trap is B 'admin has read-only' — appropriate; preserves integrity.",
+        "Trap is C 'date/time stamps' — that's WHAT audit trails should record.",
+        "Modifiable audit trail = unreliable evidence. If users can correct errors by changing the trail, it no longer documents what actually happened. Audit trail integrity requires immutability."
       ]
     },
     {
@@ -1464,7 +1510,10 @@
         "D": "An IS auditor should not make changes to the system being audited; ensuring the deletion of the virus is a management responsibility."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'observe response mechanism' — passive observation; secondary to action.",
+        "Trap is B 'clear the virus' — auditor doesn't perform remediation.",
+        "Trap is D 'ensure deletion' — same; not auditor's role.",
+        "Auditor's role: identify and report. Inform appropriate personnel immediately so they can respond. Operational response is theirs; auditor's job is escalation."
       ]
     },
     {
@@ -1489,8 +1538,10 @@
         "C": "The access control list is not done without a meaningful classification of resources."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'classify resources' — comes after inventory; can't classify what you don't know about.",
+        "Trap is B 'label resources' — same; comes after.",
+        "Trap is C 'create ACL' — operational implementation, comes after foundational steps.",
+        "Inventory = know what you have. Foundation for classification, ownership assignment, control selection. Without inventory, nothing else is possible."
       ]
     },
     {
@@ -1515,7 +1566,10 @@
         "D": "Using two firewalls in parallel to check different types of incoming traffic provides redundancy but is only a single security mechanism and, therefore, no different than having a single firewall checking all traffic."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'two firewalls in series' — depth of similar controls; doesn't protect against same attack class.",
+        "Trap is C 'no physical signs' — security through obscurity, not depth.",
+        "Trap is D 'two firewalls in parallel' — same as A; similar controls.",
+        "Defense-in-depth = layered DIFFERENT controls. Firewall (network) + logical access (host) = if one fails, the other catches it. Different control types provide independent protection layers."
       ]
     },
     {
@@ -1540,8 +1594,10 @@
         "D": "The data owner does not usually manage updates to the authorization tables."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'staff implements + owner approves' — backwards order; approval should precede implementation.",
+        "Trap is C 'jointly create and update' — IS manager doesn't have business authority over data.",
+        "Trap is D 'owner creates tables' — operational tasks aren't owner's job.",
+        "Best procedure: owner authorizes (decision), administrator implements (execution). Clear SoD: business authority + technical execution. Standard access management workflow."
       ]
     },
     {
@@ -1566,8 +1622,10 @@
         "D": "Intrusion detection systems (IDSs) are used to detect irregular or abnormal traffic patterns."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'physical security' — addresses physical attacks, not social engineering.",
+        "Trap is C 'email monitoring' — detective, not preventive against social engineering.",
+        "Trap is D 'IDS' — network attacks, not human manipulation.",
+        "Social engineering exploits human awareness gaps. Training builds awareness, helps employees recognize manipulation tactics. Direct address of the root cause."
       ]
     },
     {
@@ -1592,7 +1650,10 @@
         "D": "Impersonation refers to someone acting as an employee in an attempt to retrieve desired information."
       },
       "tips": [
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'piggybacking' — physical access following authorized person; different attack.",
+        "Trap is B 'dumpster diving' — physical document recovery; different attack.",
+        "Trap is D 'impersonation' — identity attack; different defense.",
+        "Shoulder surfing = observing screens. Auto-locked screen prevents observers from seeing data when user steps away. Direct mitigation of the threat."
       ]
     },
     {
@@ -1617,8 +1678,10 @@
         "D": "Security awareness training does not enforce compliance."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'change policy' — policy is fine; need enforcement.",
+        "Trap is B 'periodic password changes' — different control; doesn't enforce complexity.",
+        "Trap is D 'awareness training' — administrative; users may not comply.",
+        "Automated password management tool = system enforces complexity. Users CAN'T pick non-compliant passwords. Technical enforcement removes human compliance gap."
       ]
     },
     {
@@ -1643,7 +1706,10 @@
         "C": "Parsing is the process of splitting up a continuous stream of characters for analytical purposes and is widely applied in the design of programming languages or in data entry editing."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'digitalized signatures' — scanned signature images, not DRM.",
+        "Trap is B 'hashing' — integrity, used in DRM but not the central technology.",
+        "Trap is C 'parsing' — text processing, not DRM-specific.",
+        "Steganography hides information within other media (watermarks in images/video). DRM uses watermarks to identify unauthorized copies. Native DRM technology."
       ]
     },
     {
@@ -1668,7 +1734,10 @@
         "D": "Impersonation refers to an unauthorized person acting as an employee, trying to retrieve the desired information. Some forms of social engineering attacks can join an impersonation attack and piggybacking, but this information security policy does not address the impersonation attack."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'shoulder surfing' — observing screens, different attack.",
+        "Trap is C 'dumpster diving' — physical recovery, different attack.",
+        "Trap is D 'impersonation' — identity attack, different mechanism.",
+        "Piggybacking = unauthorized person follows authorized person through controlled access. Each person reading badge at every door = no piggyback opportunity. Direct mitigation."
       ]
     },
     {
@@ -1693,7 +1762,10 @@
         "D": "The shutdown of an application can be initiated through terminals or microcomputers connected directly (online) or indirectly (dial-up line) to the computer. Only individuals knowing the high-level logon ID and password can initiate the shutdown process, which is effective if there are proper access controls."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'piggybacking' — preventable through mantraps, badge readers, awareness.",
+        "Trap is B 'viruses' — preventable through antivirus, patching.",
+        "Trap is D 'unauthorized application shutdown' — preventable through access controls.",
+        "Data diddling = changing data BEFORE entry. Occurs outside the system; no system-based preventive control catches it. Detective controls only (validation, reconciliation)."
       ]
     },
     {
@@ -1718,7 +1790,10 @@
         "D": "Disclosure is important but not of primary concern to the information systems (IS) auditor in a forensic investigation."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'analysis' — comes after preservation.",
+        "Trap is B 'evaluation' — comes after preservation.",
+        "Trap is D 'disclosure' — communication step, comes after preservation.",
+        "Forensic chain: preserve → analyze → evaluate → report. Without preservation, evidence may be inadmissible. Foundational forensic principle."
       ]
     },
     {
@@ -1743,7 +1818,10 @@
         "D": "Issuance and distribution of the subscriber certificate are functions of the subscriber certificate life cycle management, which the CA must perform."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'revocation/suspension' — CA's core responsibility; not delegated.",
+        "Trap is B 'CA public key generation' — CA's foundational task; not delegated.",
+        "Trap is D 'issuing certificates' — CA's primary function; not delegated.",
+        "Registration Authority (RA) verifies entity identity and links to public key. CA can delegate this to RAs while retaining certificate issuance and lifecycle management."
       ]
     },
     {
@@ -1768,7 +1846,10 @@
         "D": "A negative acknowledgment is a penetration technique that capitalizes on a potential weakness in an operating system that does not handle asynchronous interrupts properly, leaving the system in an unprotected state during such interrupts."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'brute force' — credential cracking, not service denial.",
+        "Trap is C 'leapfrog' — pivots through hosts, not DoS.",
+        "Trap is D 'negative acknowledgment' — protocol-level, not DoS.",
+        "Ping of death = oversized ping packet crashes target system. Specific DoS technique exploiting packet handling vulnerability. Classic example of malformed-packet DoS."
       ]
     },
     {
@@ -1793,7 +1874,10 @@
         "D": "Both ECC and RSA offer message integrity controls."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is B 'support digital signatures' — both ECC and RSA support.",
+        "Trap is C 'simpler key distribution' — same; both face similar key distribution challenges.",
+        "Trap is D 'message integrity' — both achieve same integrity through hashing.",
+        "ECC's key advantage: smaller keys provide same security strength as larger RSA keys. Smaller keys = faster computation. Same security at lower computational cost."
       ]
     },
     {
@@ -1818,8 +1902,10 @@
         "D": "A virtual private network (VPN) is a generic term for a communications tunnel that can provide confidentiality, integrity and authentication (reliability). A VPN can operate at different levels of the Open Systems Interconnection stack and may not always be used in conjunction with encryption. SSL can be called a type of VPN."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'IDS' — detection, not prevention or confidentiality.",
+        "Trap is C 'PKI' — supports TLS but not standalone control.",
+        "Trap is D 'VPN' — network-level; TLS is application-level for ecommerce.",
+        "TLS provides confidentiality + integrity + authentication for application traffic. Direct ecommerce protection: secure HTTPS sessions with verified server identity."
       ]
     },
     {
@@ -1844,7 +1930,10 @@
         "D": "Vulnerability testing can help to ensure the security of web applications; however, the best preventive control is developer education because building secure applications from the start is more effective."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'password masking' — UI feature, narrow scope.",
+        "Trap is C 'use of encryption' — protects data, doesn't prevent code vulnerabilities.",
+        "Trap is D 'vulnerability testing' — detective; finds bugs after they're written.",
+        "Developer training prevents vulnerabilities from being written in the first place. Cheaper, more effective than finding and fixing afterward. Preventive control at the source."
       ]
     },
     {
@@ -1869,7 +1958,10 @@
         "D": "Because malware can enter an enterprise through many different methods, only checking for malware at the perimeter is not enough to protect the enterprise."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'server-based only' — narrow; misses endpoints.",
+        "Trap is C 'workstation-based only' — narrow; misses servers.",
+        "Trap is D 'perimeter-based only' — narrow; misses internal threats.",
+        "Enterprise-wide antivirus = layered defense across all entry points. Perimeter + servers + endpoints = comprehensive coverage. Best for interconnected environments."
       ]
     },
     {
@@ -1894,8 +1986,10 @@
         "D": "Computers on the network that are at the enterprise's remote offices, perhaps with different information systems (IS) and security employees who have different ideas about security, are higher risk than computers in the main office or backup site but have less risk than home computers."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'enterprise internal network' — already managed network.",
+        "Trap is B 'backup site' — also managed network.",
+        "Trap is D 'remote offices' — managed network locations.",
+        "Third-party employee homes = unmanaged environment. Personal computers, family use, varied security posture. Highest risk endpoints connecting via VPN to enterprise network."
       ]
     },
     {
@@ -1920,8 +2014,10 @@
         "D": "In general, correctness is not related to digital signatures. A digital signature guarantee data integrity, however, it cannot ensure correctness of signed data."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Asymmetric crypto: encrypt with the recipient's public key (confidentiality), sign with the sender's private key (authenticity + non-repudiation)."
+        "Trap is A 'confidentiality' — encryption provides confidentiality, not signatures.",
+        "Trap is C 'availability' — different security objective.",
+        "Trap is D 'correctness' — too vague; integrity is precise term.",
+        "Digital signatures cryptographically guarantee that signed data hasn't been altered. Single bit change invalidates signature. Direct integrity guarantee."
       ]
     },
     {
@@ -1946,7 +2042,10 @@
         "D": "Because email spoofing alters the email header, it is an active attack."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'masquerading' — modifies/inserts traffic; active.",
+        "Trap is C 'denial-of-service' — disrupts service; active.",
+        "Trap is D 'email spoofing' — sends forged messages; active.",
+        "Passive attack = OBSERVATION without modification. Traffic analysis monitors patterns without altering. No traces of modification, but reveals communication relationships."
       ]
     },
     {
@@ -1971,7 +2070,10 @@
         "D": "Although having procedures in place to recover lost data is important, it is critical to ensure that evidence is protected to ensure follow-up and investigation."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is B 'breach notification' — important but evidence preservation enables effective response.",
+        "Trap is C 'escalation to external agencies' — depends on evidence quality.",
+        "Trap is D 'data recovery' — operational concern, secondary.",
+        "Chain of custody preserves evidence integrity. Without it, evidence is inadmissible. Most important consideration for incident management with potential legal consequences."
       ]
     },
     {
@@ -1996,7 +2098,10 @@
         "C": "The file size to retain biometric information varies depending on the type of biometric solution selected. This is not an accuracy measure."
       },
       "tips": [
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is A 'system response time' — performance metric, not accuracy.",
+        "Trap is B 'registration time' — process duration, not accuracy.",
+        "Trap is C 'input file size' — storage metric, not accuracy.",
+        "Biometric accuracy measures: FAR (false accept), FRR (false reject), CER (cross-error). FAR is the primary security metric — how often the system accepts the wrong person."
       ]
     },
     {

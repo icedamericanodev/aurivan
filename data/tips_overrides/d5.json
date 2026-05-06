@@ -213,5 +213,246 @@
     "Trap is C 'admin access for limited period' — too privileged for vendors typically.",
     "Trap is D 'IDs deleted when work complete' — manual process; risk of forgetting.",
     "Expiration-dated user accounts based on services = automatic privilege termination. No manual cleanup needed; access expires by design. Best vendor access lifecycle control."
+  ],
+
+  "d5_036": [
+    "Trap is A 'unauthorized user gains access' — possible risk but accountability is the broader issue.",
+    "Trap is B 'time-consuming management' — operational concern, not security.",
+    "Trap is C 'easily guessed passwords' — separate issue from sharing.",
+    "Shared accounts = no single person owns actions taken with that ID. Audit logs show 'this account did X' without identifying the human. Accountability impossibility is the foundational SoD concern."
+  ],
+  "d5_037": [
+    "Trap is A 'admin access via VPN' — VPN provides encryption; manageable.",
+    "Trap is B 'scanners not in restricted areas' — physical security concern, addressable.",
+    "Trap is D '3-year-old risk analysis' — staleness concern, addressable.",
+    "Biometric data transmitted unencrypted = capture and replay attacks possible. Regulated data context = compliance violation. Foundational integrity/confidentiality gap."
+  ],
+  "d5_038": [
+    "Trap is A 'adequate supervision' — administrative; defeats by collusion.",
+    "Trap is B 'retain log backups' — recovery, doesn't prevent tampering.",
+    "Trap is C 'detect changes' — detective, possibly after damage.",
+    "WORM (write once read many) drives physically prevent log modification after writing. Even admin can't alter what's been written. Hardware-enforced integrity."
+  ],
+  "d5_039": [
+    "Trap is B 'field-level user authorization' — application-level concern, not OS access.",
+    "Trap is C 'data communication access logs' — network logs, not OS access.",
+    "Trap is D 'changing data files' — application change tracking, not OS access.",
+    "OS access is logged via user activity logs. Periodic review of these logs identifies inappropriate access patterns. Standard OS access control verification."
+  ],
+  "d5_040": [
+    "Trap is B 'cabling disorganized' — operational hygiene, not critical security.",
+    "Trap is C 'phones use LAN cable' — that's NORMAL for VoIP (PoE).",
+    "Trap is D 'wiring closet has power lines' — needs separation but common practice.",
+    "VoIP phones get power over Ethernet from LAN switches. No UPS on switches = power failure kills all phones, including emergency calls. Life-safety implication. Highest concern."
+  ],
+  "d5_041": [
+    "Trap is A 'shared passwords' — concerning but localized account issue.",
+    "Trap is C 'redundant logon IDs' — may have valid business reasons.",
+    "Trap is D 'third-party admin access' — may be required and managed.",
+    "Unencrypted passwords over remote access = passwords visible to anyone monitoring the untrusted network. Captured passwords enable attacker access to all the systems. Foundational remote access risk."
+  ],
+  "d5_042": [
+    "Trap is A 'no encryption for outgoing email' — concerning but blanket encryption may be impractical.",
+    "Trap is C 'screen saver disabled' — local concern, narrow.",
+    "Trap is D 'annual password change' — operational concern, addressable.",
+    "Reliance on humans typing markers (PHI) to trigger encryption = high failure rate. One forgotten marker = unencrypted PHI in transit = HIPAA violation. Should be automated by content detection."
+  ],
+  "d5_043": [
+    "Trap is A 'implement security in apps' — implementation, custodian's role.",
+    "Trap is C 'implement access rules' — implementation, custodian/security role.",
+    "Trap is D 'physical/logical security' — implementation, custodian's role.",
+    "Owner DEFINES requirements (criticality/sensitivity classification). Custodian IMPLEMENTS protection per owner's classification. Owner's foundational responsibility is classification."
+  ],
+  "d5_044": [
+    "Trap is A 'race condition' — timing-related code bug; different mechanism.",
+    "Trap is C 'buffer overflow' — memory exploitation; different mechanism.",
+    "Trap is D 'impersonation' — identity-based attack; different mechanism.",
+    "User invoked task scheduler (which runs with admin) to launch restricted apps = used a privileged process to gain higher access than their account allows. Definition of privilege escalation."
+  ],
+  "d5_045": [
+    "Trap is A 'no incident reporting awareness' — process gap, but data preservation comes first.",
+    "Trap is B 'log servers not separate' — architectural concern, secondary.",
+    "Trap is C 'inconsistent backups' — recovery concern, secondary.",
+    "Without chain of custody policy, evidence handling is inconsistent. Inadmissible evidence destroys breach case regardless of investigation quality. Foundational legal preservation requirement."
+  ],
+  "d5_046": [
+    "Trap is A 'recommend mandatory access' — overkill for low-risk app; expensive change.",
+    "Trap is B 'report to upper management' — DAC modification IS the DAC model.",
+    "Trap is C 'check with data owners' — DAC operates at owner level by design.",
+    "Discretionary Access Control (DAC) = owner controls access. Owner changing access controls = expected DAC behavior. Not a finding; characteristic of the model."
+  ],
+  "d5_047": [
+    "Trap is A 'damage storage media' — extremely rare; emissions weak for damage.",
+    "Trap is B 'disrupt processor' — unlikely; emissions don't usually interfere with own equipment.",
+    "Trap is C 'health effects' — typical electronic equipment, well below health limits.",
+    "TEMPEST attacks: emissions can be detected and reconstructed by sophisticated equipment. Screen content visible from outside the building. Confidentiality risk through electromagnetic leakage."
+  ],
+  "d5_048": [
+    "Trap is A 'access control tables' — security admins UPDATE these; need write access.",
+    "Trap is C 'logging options' — admins CONFIGURE logging; need write.",
+    "Trap is D 'user profiles' — admins MANAGE profiles; need write.",
+    "Security log files = audit trail. Read-only access for admins prevents tampering with their own activity records. Foundational SoD for security personnel."
+  ],
+  "d5_049": [
+    "Trap is B 'programmers' — implement applications, don't authorize access.",
+    "Trap is C 'system analysts' — design systems, don't authorize access.",
+    "Trap is D 'librarians' — manage code/data inventory, don't authorize access.",
+    "Data owners have business authority over data. They authorize access based on need-to-know. Security officer assists with implementation; owner makes the access decision."
+  ],
+  "d5_050": [
+    "Trap is B 'criticality analysis' — performed AFTER ownership established (owner does it).",
+    "Trap is C 'define access rules' — depends on classification, which depends on ownership.",
+    "Trap is D 'data dictionary' — metadata exercise; not classification.",
+    "Without identified owner, no one has authority to classify. Owner = first appointment. Then owner classifies, defines access, oversees protection."
+  ],
+  "d5_051": [
+    "Trap is B 'identification' — happens AFTER enrollment.",
+    "Trap is C 'verification' — happens AFTER enrollment.",
+    "Trap is D 'storage' — happens during enrollment but enrollment is the broader process.",
+    "Enrollment = capturing biometric template for the user. Foundational; everything else depends on it. Auditor reviews enrollment process for accuracy and security."
+  ],
+  "d5_052": [
+    "Trap is B 'sniffers' — uses tools.",
+    "Trap is C 'back doors' — uses tools.",
+    "Trap is D 'Trojan horses' — uses tools (malware).",
+    "Social engineering exploits human psychology directly. Conversation, manipulation, deception. No tools needed; the human is the vulnerability."
+  ],
+  "d5_053": [
+    "Trap is A 'user IDs in audit trail' — that's WHAT audit trails should record.",
+    "Trap is B 'admin has read-only' — appropriate; preserves integrity.",
+    "Trap is C 'date/time stamps' — that's WHAT audit trails should record.",
+    "Modifiable audit trail = unreliable evidence. If users can correct errors by changing the trail, it no longer documents what actually happened. Audit trail integrity requires immutability."
+  ],
+  "d5_054": [
+    "Trap is A 'observe response mechanism' — passive observation; secondary to action.",
+    "Trap is B 'clear the virus' — auditor doesn't perform remediation.",
+    "Trap is D 'ensure deletion' — same; not auditor's role.",
+    "Auditor's role: identify and report. Inform appropriate personnel immediately so they can respond. Operational response is theirs; auditor's job is escalation."
+  ],
+  "d5_055": [
+    "Trap is A 'classify resources' — comes after inventory; can't classify what you don't know about.",
+    "Trap is B 'label resources' — same; comes after.",
+    "Trap is C 'create ACL' — operational implementation, comes after foundational steps.",
+    "Inventory = know what you have. Foundation for classification, ownership assignment, control selection. Without inventory, nothing else is possible."
+  ],
+  "d5_056": [
+    "Trap is A 'two firewalls in series' — depth of similar controls; doesn't protect against same attack class.",
+    "Trap is C 'no physical signs' — security through obscurity, not depth.",
+    "Trap is D 'two firewalls in parallel' — same as A; similar controls.",
+    "Defense-in-depth = layered DIFFERENT controls. Firewall (network) + logical access (host) = if one fails, the other catches it. Different control types provide independent protection layers."
+  ],
+  "d5_057": [
+    "Trap is B 'staff implements + owner approves' — backwards order; approval should precede implementation.",
+    "Trap is C 'jointly create and update' — IS manager doesn't have business authority over data.",
+    "Trap is D 'owner creates tables' — operational tasks aren't owner's job.",
+    "Best procedure: owner authorizes (decision), administrator implements (execution). Clear SoD: business authority + technical execution. Standard access management workflow."
+  ],
+  "d5_058": [
+    "Trap is B 'physical security' — addresses physical attacks, not social engineering.",
+    "Trap is C 'email monitoring' — detective, not preventive against social engineering.",
+    "Trap is D 'IDS' — network attacks, not human manipulation.",
+    "Social engineering exploits human awareness gaps. Training builds awareness, helps employees recognize manipulation tactics. Direct address of the root cause."
+  ],
+  "d5_059": [
+    "Trap is A 'piggybacking' — physical access following authorized person; different attack.",
+    "Trap is B 'dumpster diving' — physical document recovery; different attack.",
+    "Trap is D 'impersonation' — identity attack; different defense.",
+    "Shoulder surfing = observing screens. Auto-locked screen prevents observers from seeing data when user steps away. Direct mitigation of the threat."
+  ],
+  "d5_060": [
+    "Trap is A 'change policy' — policy is fine; need enforcement.",
+    "Trap is B 'periodic password changes' — different control; doesn't enforce complexity.",
+    "Trap is D 'awareness training' — administrative; users may not comply.",
+    "Automated password management tool = system enforces complexity. Users CAN'T pick non-compliant passwords. Technical enforcement removes human compliance gap."
+  ],
+  "d5_061": [
+    "Trap is A 'digitalized signatures' — scanned signature images, not DRM.",
+    "Trap is B 'hashing' — integrity, used in DRM but not the central technology.",
+    "Trap is C 'parsing' — text processing, not DRM-specific.",
+    "Steganography hides information within other media (watermarks in images/video). DRM uses watermarks to identify unauthorized copies. Native DRM technology."
+  ],
+  "d5_062": [
+    "Trap is B 'shoulder surfing' — observing screens, different attack.",
+    "Trap is C 'dumpster diving' — physical recovery, different attack.",
+    "Trap is D 'impersonation' — identity attack, different mechanism.",
+    "Piggybacking = unauthorized person follows authorized person through controlled access. Each person reading badge at every door = no piggyback opportunity. Direct mitigation."
+  ],
+  "d5_063": [
+    "Trap is A 'piggybacking' — preventable through mantraps, badge readers, awareness.",
+    "Trap is B 'viruses' — preventable through antivirus, patching.",
+    "Trap is D 'unauthorized application shutdown' — preventable through access controls.",
+    "Data diddling = changing data BEFORE entry. Occurs outside the system; no system-based preventive control catches it. Detective controls only (validation, reconciliation)."
+  ],
+  "d5_064": [
+    "Trap is A 'analysis' — comes after preservation.",
+    "Trap is B 'evaluation' — comes after preservation.",
+    "Trap is D 'disclosure' — communication step, comes after preservation.",
+    "Forensic chain: preserve → analyze → evaluate → report. Without preservation, evidence may be inadmissible. Foundational forensic principle."
+  ],
+  "d5_065": [
+    "Trap is A 'revocation/suspension' — CA's core responsibility; not delegated.",
+    "Trap is B 'CA public key generation' — CA's foundational task; not delegated.",
+    "Trap is D 'issuing certificates' — CA's primary function; not delegated.",
+    "Registration Authority (RA) verifies entity identity and links to public key. CA can delegate this to RAs while retaining certificate issuance and lifecycle management."
+  ],
+  "d5_066": [
+    "Trap is A 'brute force' — credential cracking, not service denial.",
+    "Trap is C 'leapfrog' — pivots through hosts, not DoS.",
+    "Trap is D 'negative acknowledgment' — protocol-level, not DoS.",
+    "Ping of death = oversized ping packet crashes target system. Specific DoS technique exploiting packet handling vulnerability. Classic example of malformed-packet DoS."
+  ],
+  "d5_067": [
+    "Trap is B 'support digital signatures' — both ECC and RSA support.",
+    "Trap is C 'simpler key distribution' — same; both face similar key distribution challenges.",
+    "Trap is D 'message integrity' — both achieve same integrity through hashing.",
+    "ECC's key advantage: smaller keys provide same security strength as larger RSA keys. Smaller keys = faster computation. Same security at lower computational cost."
+  ],
+  "d5_068": [
+    "Trap is B 'IDS' — detection, not prevention or confidentiality.",
+    "Trap is C 'PKI' — supports TLS but not standalone control.",
+    "Trap is D 'VPN' — network-level; TLS is application-level for ecommerce.",
+    "TLS provides confidentiality + integrity + authentication for application traffic. Direct ecommerce protection: secure HTTPS sessions with verified server identity."
+  ],
+  "d5_069": [
+    "Trap is A 'password masking' — UI feature, narrow scope.",
+    "Trap is C 'use of encryption' — protects data, doesn't prevent code vulnerabilities.",
+    "Trap is D 'vulnerability testing' — detective; finds bugs after they're written.",
+    "Developer training prevents vulnerabilities from being written in the first place. Cheaper, more effective than finding and fixing afterward. Preventive control at the source."
+  ],
+  "d5_070": [
+    "Trap is A 'server-based only' — narrow; misses endpoints.",
+    "Trap is C 'workstation-based only' — narrow; misses servers.",
+    "Trap is D 'perimeter-based only' — narrow; misses internal threats.",
+    "Enterprise-wide antivirus = layered defense across all entry points. Perimeter + servers + endpoints = comprehensive coverage. Best for interconnected environments."
+  ],
+  "d5_071": [
+    "Trap is A 'enterprise internal network' — already managed network.",
+    "Trap is B 'backup site' — also managed network.",
+    "Trap is D 'remote offices' — managed network locations.",
+    "Third-party employee homes = unmanaged environment. Personal computers, family use, varied security posture. Highest risk endpoints connecting via VPN to enterprise network."
+  ],
+  "d5_072": [
+    "Trap is A 'confidentiality' — encryption provides confidentiality, not signatures.",
+    "Trap is C 'availability' — different security objective.",
+    "Trap is D 'correctness' — too vague; integrity is precise term.",
+    "Digital signatures cryptographically guarantee that signed data hasn't been altered. Single bit change invalidates signature. Direct integrity guarantee."
+  ],
+  "d5_073": [
+    "Trap is B 'masquerading' — modifies/inserts traffic; active.",
+    "Trap is C 'denial-of-service' — disrupts service; active.",
+    "Trap is D 'email spoofing' — sends forged messages; active.",
+    "Passive attack = OBSERVATION without modification. Traffic analysis monitors patterns without altering. No traces of modification, but reveals communication relationships."
+  ],
+  "d5_074": [
+    "Trap is B 'breach notification' — important but evidence preservation enables effective response.",
+    "Trap is C 'escalation to external agencies' — depends on evidence quality.",
+    "Trap is D 'data recovery' — operational concern, secondary.",
+    "Chain of custody preserves evidence integrity. Without it, evidence is inadmissible. Most important consideration for incident management with potential legal consequences."
+  ],
+  "d5_075": [
+    "Trap is A 'system response time' — performance metric, not accuracy.",
+    "Trap is B 'registration time' — process duration, not accuracy.",
+    "Trap is C 'input file size' — storage metric, not accuracy.",
+    "Biometric accuracy measures: FAR (false accept), FRR (false reject), CER (cross-error). FAR is the primary security metric — how often the system accepts the wrong person."
   ]
 }
