@@ -1,0 +1,217 @@
+{
+  "_meta": {
+    "comment": "Hand-authored tips overriding the converter's auto-generated tips for D4. Same conventions as d1.json/d2.json/d3.json.",
+    "version": 1
+  },
+
+  "d4_001": [
+    "Trap is A 'references' — useful due diligence but not the contractual commitment.",
+    "Trap is B 'physical security' — operational concern, ideally validated via SLA terms.",
+    "Trap is D 'background checks' — operational, narrow scope.",
+    "SLA is the contractual instrument that translates expectations into enforceable performance terms. Audit value: provider can be held accountable to documented commitments."
+  ],
+  "d4_002": [
+    "Trap is A 'quality control' — focuses on inspecting outputs; CSA is broader.",
+    "Trap is B 'quality assessment' — measures quality, doesn't ensure it.",
+    "Trap is C 'quality planning' — designs how quality will be achieved; CSA is operational.",
+    "Quality assurance = systematic activities that ensure quality requirements are met. CSA institutionalizes assurance by making business owners responsible for ongoing control evaluation."
+  ],
+  "d4_003": [
+    "Trap is B 'penalty payments' — important but not as foundational as audit access.",
+    "Trap is C 'service level reports' — measurement, doesn't permit verification.",
+    "Trap is D 'limitation of liability' — legal protection, doesn't enable audit.",
+    "Right-to-audit is the IS auditor's primary tool for outsourced services. Without it, the auditor cannot verify controls, performance, or compliance — defeating the audit's purpose."
+  ],
+  "d4_004": [
+    "Trap is A 'not documented in IT records' — bookkeeping issue, addressable.",
+    "Trap is B 'users not trained' — operational concern, training gap.",
+    "Trap is D 'license expiring in 15 days' — administrative, addressable.",
+    "Software not on the approved list = unvetted security/legal risk. Could be unlicensed, vulnerable, or incompatible. Most serious compliance and security concern."
+  ],
+  "d4_005": [
+    "Trap is A 'data ownership retained' — that's the customer's preferred term, not a risk.",
+    "Trap is C 'bulk data withdrawal undefined' — exit-strategy concern, manageable.",
+    "Trap is D 'customer responsible for backup' — clear allocation, not a risk.",
+    "Provider reserved access to PHI = HIPAA/regulatory exposure. Provider personnel may access protected health information for 'operations' but the customer owns the regulatory risk. GREATEST concern in healthcare cloud."
+  ],
+  "d4_006": [
+    "Trap is A 'hot site by the business' — costly; large investment for limited budget.",
+    "Trap is B 'commercial cold site' — third-party costs add up; many sites needed.",
+    "Trap is D 'third-party hot site' — still costly per site.",
+    "Multiple offices in one region = built-in mutual recovery capability. Each office serves as recovery site for another at minimal incremental cost. Best fit for distributed orgs with budget constraints."
+  ],
+  "d4_007": [
+    "Trap is A 'field definition' — describes individual fields, not relationships.",
+    "Trap is B 'master table definition' — single table, doesn't show inter-table integrity.",
+    "Trap is C 'composite keys' — primary key construct within a table.",
+    "Foreign keys enforce referential integrity by linking rows across tables. Reviewing foreign key structure verifies that relationships between tables are consistently maintained."
+  ],
+  "d4_008": [
+    "Trap is B 'denormalize tables' — performance optimization, not security.",
+    "Trap is C 'encrypt stored procedures' — protects code, doesn't address default vulnerabilities.",
+    "Trap is D 'change service port' — security through obscurity, low effectiveness.",
+    "Default configurations (default passwords, services, permissions) are publicly documented. Attackers know them. Changing defaults is the foundational hardening step before everything else."
+  ],
+  "d4_009": [
+    "Trap is A 'database changes per change management' — that's the DBA's job.",
+    "Trap is C 'sizing tablespace, table joins' — DBA expertise area.",
+    "Trap is D 'backup and recovery' — DBA responsibility for database recovery.",
+    "OS patching is sysadmin work, not DBA. DBA installing OS patches = SoD violation; DBA controls both database AND underlying OS, with no independent oversight."
+  ],
+  "d4_010": [
+    "Trap is A 'warm site' — over-provisioned for noncritical systems.",
+    "Trap is B 'mobile site' — situational, not the most reasonable for noncritical.",
+    "Trap is C 'hot site' — significantly more expensive, used for critical systems.",
+    "Cold site = empty space + utilities. Cheapest, longest activation time. Appropriate for systems where extended downtime is acceptable."
+  ],
+  "d4_011": [
+    "Trap is A 'authorized at all times' — addresses approval, not availability impact.",
+    "Trap is B 'UAT performed' — addresses functionality, not availability.",
+    "Trap is D 'capacity planning per project' — operational good practice but specific to capacity, not change-related availability.",
+    "Test plans + procedures followed = changes don't break production. Skipping testing is the #1 cause of change-induced outages. Availability flows from disciplined testing."
+  ],
+  "d4_012": [
+    "Trap is A 'identify key controls' — possible side effect, not the primary purpose.",
+    "Trap is B 'highlight high-level data definitions' — vocabulary, not flow.",
+    "Trap is D 'step-by-step generation details' — too granular; that's a process diagram.",
+    "Data flow diagrams answer: where does data come from, where does it go, where does it stop? Visual map of paths and storage. Foundational for understanding system architecture."
+  ],
+  "d4_013": [
+    "Trap is A 'downtime decreases as RPO increases' — RPO doesn't drive downtime cost.",
+    "Trap is C 'recovery costs independent of time' — false; recovery costs DECREASE with longer time available.",
+    "Trap is D 'recovery costs only short-term' — false; long-term planning controls recovery cost.",
+    "Downtime costs (lost revenue, idle staff, customer impact) accumulate with every hour. The longer the outage, the higher the cost. DRP design must minimize this duration."
+  ],
+  "d4_014": [
+    "Trap is A 'include management statement' — shifts responsibility but doesn't validate the concern.",
+    "Trap is C 'include in audit report' — premature; finding not yet validated.",
+    "Trap is D 'discuss with senior management' — escalation without evidence.",
+    "Auditor concern + management denial = need independent verification through testing. Don't report unconfirmed findings; gather evidence first."
+  ],
+  "d4_015": [
+    "Trap is A 'assessor' — auditor evaluates controls, but CSA flips that to business ownership.",
+    "Trap is B 'participant' — auditor not directly participating; preserves independence.",
+    "Trap is D 'manager' — operational role, compromises independence.",
+    "CSA = business owns control assessment. Auditor's role is to facilitate the business's self-assessment process — provide guidance, not perform the assessment."
+  ],
+  "d4_016": [
+    "Trap is B 'contact list' — useful but useless without backup data.",
+    "Trap is C 'replacement data center' — provides hardware but no data without backups.",
+    "Trap is D 'defined RTO' — target without backups can't be met.",
+    "Backup data is the irreplaceable foundation of recovery. Hardware can be procured, contacts can be reached, but lost data cannot be reconstructed without backups. Most critical DRP element."
+  ],
+  "d4_017": [
+    "Trap is A 'monitoring service levels' — output of monitoring, not the monitoring itself.",
+    "Trap is B 'data for capacity planning' — use of data, not the monitoring focus.",
+    "Trap is D 'forecasting performance' — secondary use, not primary monitoring focus.",
+    "Continuous monitoring's primary value: ACCURATE feedback on capacity. Without accuracy, planning fails, service levels drift, forecasts are wrong. Accuracy is the foundation."
+  ],
+  "d4_018": [
+    "Trap is B 'IT management' — knows technical impact, not business impact.",
+    "Trap is C 'senior business management' — strategic view, but process owners know operational criticality.",
+    "Trap is D 'industry experts' — external benchmarks, not the org's specific reality.",
+    "BIA measures business impact of system loss. Process owners run the processes that depend on the systems — they know what hurts most when systems fail. Best source for criticality."
+  ],
+  "d4_019": [
+    "Trap is A 'no DRP testing' — concerning but the plan may still be sound.",
+    "Trap is B 'no hot site' — strategic choice based on RTO/RPO, not necessarily wrong.",
+    "Trap is D 'project manager left' — personnel risk, addressable through documentation.",
+    "BIA conducted but not used = the plan was built without business input. The DRP may recover the wrong systems first or miss critical ones. Foundational design failure."
+  ],
+  "d4_020": [
+    "Trap is B 'reduce testing + back-out plan' — back-out doesn't compensate for skipped testing.",
+    "Trap is C 'delay patching' — security risk; vulnerabilities exposed longer.",
+    "Trap is D 'rely on vendor testing' — vendor doesn't know your environment; their testing isn't sufficient.",
+    "Testing patches before deployment is non-negotiable. Patches can break systems and introduce new bugs. Continuing the process — even under strain — is correct; the answer is to find more resources, not skip testing."
+  ],
+  "d4_021": [
+    "Trap is A 'service adjustment took a day' — operational metric, may meet SLA.",
+    "Trap is B 'logs complex' — review difficulty, not SLA quality issue.",
+    "Trap is D 'updated annually' — may be appropriate, not necessarily a concern.",
+    "SLA without KPIs = unmeasurable performance commitment. Provider can't be held accountable to vague targets. KPIs make commitments operational and verifiable."
+  ],
+  "d4_022": [
+    "Trap is B 'BCP doesn't document remote systems' — documentation gap, addressable.",
+    "Trap is C 'security not in test plan' — narrow concern.",
+    "Trap is D 'backups not tested' — important but narrow; the broader recovery process matters more.",
+    "Without testing, recovery process for remote sites is theoretical. Quality issues, missing dependencies, integration gaps go undiscovered until disaster strikes. Testing surfaces problems while they're fixable."
+  ],
+  "d4_023": [
+    "Trap is A 'utilization reports' — measure usage, not availability.",
+    "Trap is B 'hardware error reports' — error frequency, not uptime metric.",
+    "Trap is C 'system logs' — granular events, not summary uptime.",
+    "Availability reports specifically measure system uptime — direct match to SLA uptime requirements. Other reports require interpretation; availability reports are the answer."
+  ],
+  "d4_024": [
+    "Trap is A 'system log analysis' — captures activity but doesn't validate authorization.",
+    "Trap is C 'forensic analysis' — incident response, not change verification.",
+    "Trap is D 'analytical review' — pattern analysis, not authorization check.",
+    "Compliance testing = does what happened match what was authorized? Comparing change tickets to actual production changes verifies the change management process worked."
+  ],
+  "d4_025": [
+    "Trap is A 'redesign change management' — premature without root cause.",
+    "Trap is C 'stop migrations' — overreaction without analysis.",
+    "Trap is D 'document and present' — incomplete; needs root cause first.",
+    "Audit finding requires understanding WHY, not just WHAT. Root cause analysis distinguishes 'process flaw' from 'one-time deviation' from 'training gap'. Recommendations follow analysis."
+  ],
+  "d4_026": [
+    "Trap is A 'geographically dispersed' — that's RESILIENT, not a concern.",
+    "Trap is C 'hot site ready' — readiness is good, not a concern.",
+    "Trap is D 'diverse routing' — also resilient, not a concern.",
+    "Clustering in one site = single point of failure for the entire cluster. Natural disaster, fire, or facility outage takes down the whole HA setup. Defeats the purpose of high availability."
+  ],
+  "d4_027": [
+    "Trap is B 'resumption costs' — costs of restarting; lower with longer recovery time (more planning).",
+    "Trap is C 'recovery costs' — also lower for longer recovery (less expensive solutions feasible).",
+    "Trap is D 'walk-through costs' — testing cost, unrelated to recovery duration.",
+    "Longer downtime = more lost revenue, customers, productivity. Plan B with 8-month recovery accumulates 4x the downtime costs of Plan A's 2-month recovery."
+  ],
+  "d4_028": [
+    "Trap is B 'vendor reliability figures' — vendor self-reported data, less reliable.",
+    "Trap is C 'maintenance log' — records what was done, not what it prevented.",
+    "Trap is D 'maintenance schedule' — plan, not actual results.",
+    "System downtime log measures the OUTCOME of preventive maintenance: did it prevent downtime? Direct evidence of program effectiveness."
+  ],
+  "d4_029": [
+    "Trap is A 'vendor weekly report' — vendor self-reported, biased.",
+    "Trap is C 'log user-reported outages' — users may not report; incomplete data.",
+    "Trap is D 'third-party weekly reports' — useful but expensive and indirect.",
+    "Online polling tool independently measures availability — same metric SaaS vendor reports, but verified directly. Independent + automated + continuous = best monitoring."
+  ],
+  "d4_030": [
+    "Trap is A 'data unreadable until date' — file IS readable; date controls deletion.",
+    "Trap is C 'backups not retained after date' — opposite; retention date PROTECTS retention.",
+    "Trap is D 'differentiate same-name datasets' — that's a different metadata concern.",
+    "Retention date = preservation guarantee. File cannot be deleted, overwritten, or destroyed before the retention date passes. Ensures regulatory and legal retention compliance."
+  ],
+  "d4_031": [
+    "Trap is A 'online monitor' — monitors transmission accuracy, not network packets broadly.",
+    "Trap is B 'downtime report' — summary tool, not diagnostic.",
+    "Trap is C 'help desk report' — incident summary, not network diagnostic.",
+    "Protocol analyzer captures and decodes network packets in real time. Tells you exactly what's flowing on the wire — most powerful network diagnostic tool."
+  ],
+  "d4_032": [
+    "Trap is A 'problem management' — incident-driven, not change-rollback.",
+    "Trap is B 'software development procedures' — too broad; rollback is specific.",
+    "Trap is D 'incident management' — handles disruption events, not planned rollback.",
+    "Back-out procedures: documented steps to UNDO a change. Critical when an upgrade fails or causes problems. Required element of change management."
+  ],
+  "d4_033": [
+    "Trap is A 'unresolved calls' — escalation triggers exist for this; not necessarily a problem.",
+    "Trap is B 'no dedicated line' — communication channel issue, manageable.",
+    "Trap is D 'IM down 6 months' — operational tool gap, addressable.",
+    "Closing tickets without user confirmation = users don't know status of their issues. Trust in help desk erodes. Service-oriented function violates its core purpose."
+  ],
+  "d4_034": [
+    "Trap is A 'protect data integrity' — testing doesn't directly protect data.",
+    "Trap is B 'eliminate need for plans' — testing doesn't eliminate planning.",
+    "Trap is D 'documentation current' — side effect of testing, not the main purpose.",
+    "Testing offsite facilities ensures they're STILL COMPATIBLE with current production environment. Hardware/software change over time; without testing, the contingency facility may not actually work when needed."
+  ],
+  "d4_035": [
+    "Trap is A 'offsite daily backups' — protects data but doesn't restore EFT processing.",
+    "Trap is B 'standby onsite' — same site = same disaster impact.",
+    "Trap is C 'duplex communication links' — addresses link failure, not processor failure.",
+    "Standby processor at ANOTHER network node = geographically separate redundancy. Survives processor failure AND site disasters. Best comprehensive DRP solution for the central processor."
+  ]
+}
