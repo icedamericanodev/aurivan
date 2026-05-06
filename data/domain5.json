@@ -6606,7 +6606,10 @@
         "D": "Data reconstruction from shredded hard disks is impossible, especially when the scrap is mixed with other metal parts. If the transport can be secured and the destruction can be proved as described in the option, this is a valid method of disposal."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'overwritten not reformatted' — overwriting at sector level IS sanitization; format adds nothing.",
+        "Trap is C 'hole punch through platters' — physical destruction; effective.",
+        "Trap is D 'escorted shredding' — controlled physical destruction.",
+        "Logical delete + format does NOT erase data — files are still recoverable via forensic tools. Greatest concern because hard disks leave the org with recoverable sensitive data. Format ≠ wipe. Classic disposal misconception."
       ]
     },
     {
@@ -6631,8 +6634,10 @@
         "D": "Updating or revising the baseline configuration is not associated with requests for deviations."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'reject because policy' — rigid; fails business need.",
+        "Trap is B 'approve exception' — bypasses risk analysis.",
+        "Trap is D 'revise OS baseline' — premature; baseline shouldn't change for one app.",
+        "Risk-based exceptions: assess risk of the deviation, identify compensating controls, then decide. Risk analysis precedes decision. Standard exception-management pattern."
       ]
     },
     {
@@ -6657,8 +6662,10 @@
         "D": "A proxy server is incorrect because a proxy server services the request of its clients by forwarding requests to other servers. Many people incorrectly use proxy server as a synonym of web proxy server even though not all web proxy servers have content filtering capabilities."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'stateful firewall' — connection-level rules; doesn't classify content.",
+        "Trap is C 'cache server' — performance, not policy.",
+        "Trap is D 'proxy' — channel for traffic; only filters when paired with content rules.",
+        "Web content filters classify URLs/categories and block forbidden sites — purpose-built for the policy described. The right tool for the job. Direct match between technology and policy."
       ]
     },
     {
@@ -6683,7 +6690,10 @@
         "D": "The continuity of operations plan addresses the subset of enterprise missions that are deemed most critical and contains procedures to sustain these functions at an alternate site for a short time period."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'IT contingency' — broader IT recovery, not attack-specific.",
+        "Trap is C 'BCP' — business-level continuity.",
+        "Trap is D 'continuity of operations' — government/large-org continuity.",
+        "Incident Response Plan specifically addresses unauthorized activity — detect, contain, eradicate, recover. Attack-specific lifecycle. Memorize: IRP = attacks; BCP/DRP = business/IT-wide outages."
       ]
     },
     {
@@ -6708,7 +6718,10 @@
         "C": "Authenticity of the message is provided by the digital signature."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'confidentiality' — encryption, not hashing.",
+        "Trap is B 'nonrepudiation' — digital signature, not hash alone.",
+        "Trap is C 'authenticity' — needs sender verification, not just hash.",
+        "Recomputing the hash on receipt and comparing proves data wasn't altered in transit — integrity. Hash = integrity. Memorize the one-line mapping."
       ]
     },
     {
@@ -6733,7 +6746,10 @@
         "D": "Users failing to understand the threat is not a serious concern."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is B 'forward the alert' — minor information-leak risk.",
+        "Trap is C 'individual solutions' — uncoordinated remediation, secondary concern.",
+        "Trap is D 'fail to understand' — miscommunication, not actionable harm.",
+        "Detailed threat descriptions can be reverse-engineered into attack playbooks by malicious insiders or recipients — the GREATEST concern. CSIRT info should be sanitized for general distribution. Need-to-know for sensitive details."
       ]
     },
     {
@@ -6758,7 +6774,10 @@
         "D": "The number of penetration tests measures the effectiveness of the security team and the patch management process, but not the effectiveness of the CSIRT."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'vulnerabilities patched' — patch management metric, not IR effectiveness.",
+        "Trap is C 'apps protected' — coverage, not response effectiveness.",
+        "Trap is D 'pen tests successful' — testing metric.",
+        "Financial impact per incident is the outcome metric — effective response = lower per-incident cost. Faster, better response → less damage. Outcome-based KPI for IR."
       ]
     },
     {
@@ -6783,7 +6802,10 @@
         "D": "Audit deliverables are the output of the audit and not something to be used in the initial planning."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'prior audit reports' — input but doesn't define current scope.",
+        "Trap is B 'business strategy' — context, not driver.",
+        "Trap is D 'audit deliverables' — outputs, not setting objectives.",
+        "Risk assessment reports drive what to audit and how deeply — risk-based auditing's foundation. Risk → priority → scope/objectives. Most directly establishes audit objectives and coverage."
       ]
     },
     {
@@ -6808,7 +6830,10 @@
         "D": "Policies are a preventive control to lay out the rules about loading the software but will not detect the actual occurrence."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'diskless workstations' — preventive infrastructure, not detection.",
+        "Trap is C 'antivirus' — detects malware, not licensed-vs-unlicensed software.",
+        "Trap is D 'instant dismissal policy' — policy, not detection.",
+        "Periodic hard-drive checks (software inventory scans) reveal what's actually installed — direct identification of illegal software. Verify the concern empirically. Detective control fits the validation question."
       ]
     },
     {
@@ -6833,8 +6858,10 @@
         "C": "Message digest algorithms are a way to design hashing functions to verify the integrity of the message/ data. Message digest algorithms do not provide confidentiality or nonrepudiation."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'symmetric encryption' — confidentiality only; no nonrepudiation.",
+        "Trap is B 'digital signatures' — integrity + nonrepudiation; not confidentiality.",
+        "Trap is C 'message digest' — integrity only.",
+        "Digital certificates within a PKI bundle public-key encryption (confidentiality), signing (integrity), and identity binding (nonrepudiation). Full PKI = all three properties. Comprehensive secure-email solution."
       ]
     },
     {
@@ -6859,8 +6886,10 @@
         "D": "If password expiration is not automated, it is most likely that employees will not change their passwords regularly. However, this is not as serious as passwords being shared, and the use of shared login credentials by administrators is a more severe risk."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'no lockout after 5' — bad but reusable shared admin creds is worse.",
+        "Trap is B 'password reuse in window' — policy gap, secondary.",
+        "Trap is D 'no automated expiration' — operational gap, secondary.",
+        "Shared admin credentials destroy accountability for the highest-privilege accounts — can't tell who did what at root. Privileged shared accounts = top auth concern. Worst combo: high power + no attribution."
       ]
     },
     {
@@ -6885,7 +6914,10 @@
         "C": "Unused ports should generally be disabled to increase security."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'no significant risk' — wrong; SoD violation present.",
+        "Trap is B 'soft zoning risk' — admin says hard zoning; not the issue.",
+        "Trap is C 'disabling unused ports' — that's good practice.",
+        "SAN admin implemented, tested, documented, AND is sole admin — total lack of SoD and oversight. One person controls everything = greatest risk. Concentration of duty without independent review."
       ]
     },
     {
@@ -6910,7 +6942,10 @@
         "D": "Loss of data at the spooler level only requires reprinting."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'operators read sensitive data' — concern, but printing copies is broader breach.",
+        "Trap is B 'data amended' — controls usually exist on spool integrity.",
+        "Trap is D 'output lost in failure' — availability, lower than confidentiality.",
+        "Unauthorized print copies = uncontrolled hardcopy distribution of sensitive reports outside organization. Once printed, no audit trail or recall. MOST serious spool exposure."
       ]
     },
     {
@@ -6935,7 +6970,10 @@
         "D": "Preventing legal issues is important, but not the primary reason for filtering."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'maximize performance' — productivity, secondary.",
+        "Trap is C 'enterprise image' — reputational, secondary.",
+        "Trap is D 'prevent legal issues' — compliance side-benefit.",
+        "Web/email filters block viruses, malicious sites, and inappropriate content — PRIMARY security/operational purpose. Protection > productivity > reputation. The technical security purpose dominates."
       ]
     },
     {
@@ -6960,7 +6998,10 @@
         "D": "A circuit gateway is based on a proxy or program that acts as an intermediary between external and internal accesses. This means that, during an external access, instead of opening a single connection to the internal server, two connections are established-one from the external server to the proxy (which conforms the circuit-gateway) and one from the proxy to the internal server. OSI Layers 3 and 4 (IP and Transmission Control Protocol) and some general features from higher protocols are used to perform these tasks."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'screening router' — network-layer filtering only.",
+        "Trap is B 'packet filter' — header-level rules; coarse.",
+        "Trap is D 'circuit gateway' — session-level control; not application-aware.",
+        "Application gateway / proxy understands application protocols (HTTP, FTP, SMTP) — can enforce fine-grained content rules. Layer-7 = highest granularity. Memorize: application gateway = most control."
       ]
     },
     {
@@ -6985,7 +7026,10 @@
         "D": "Less-detail reporting requires additional tools or analysis to determine the existence and severity of vulnerabilities."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'differential' — scoping/diff report, not a risk type.",
+        "Trap is B 'false-positive' — wastes time, not the most serious.",
+        "Trap is D 'less detail' — usability issue.",
+        "False negatives miss real vulnerabilities — provide false confidence in security posture. Undetected weakness = exploited weakness. Always more dangerous than false positive."
       ]
     },
     {
@@ -7010,7 +7054,10 @@
         "C": "Blocking the protocol helps to slow the spread, but also prohibits any software that uses it from working between segments."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'patch immediately' — depends on vendor; gap during the wait.",
+        "Trap is B 'block at perimeter' — internal hosts can still infect each other.",
+        "Trap is C 'block between segments' — partial; same-segment spread continues.",
+        "Stopping the vulnerable services entirely removes the worm's attack surface — most reliable until patches are applied. No service = nothing to exploit. Compensating control during patch lag."
       ]
     },
     {
@@ -7035,7 +7082,10 @@
         "C": "A message encrypted with the sender's private key cannot be decrypted using the recipient's private key."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'sender's private then sender's public' — that's signing, not confidentiality.",
+        "Trap is B 'recipient's private encrypt' — private keys never encrypt outgoing for confidentiality.",
+        "Trap is C 'sender's private encrypt' — that's signing.",
+        "Confidentiality = encrypt with recipient's PUBLIC key, decrypt with recipient's PRIVATE key. Only the recipient (private-key holder) can read it. Memorize: public-key encrypt = confidentiality."
       ]
     },
     {
@@ -7060,8 +7110,10 @@
         "D": "A circuit level gateway, such as a Socket Secure server, will protect users by acting as a proxy but is not the best defense for a network."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'application gateway' — single device, single layer.",
+        "Trap is C 'packet filter router' — basic, not best.",
+        "Trap is D 'circuit-level gateway' — single layer.",
+        "Screened subnet (DMZ with two firewalls) provides layered defense — outside firewall, DMZ, inside firewall. Multiple barriers = best Internet protection. Defense-in-depth architecture."
       ]
     },
     {
@@ -7086,7 +7138,10 @@
         "D": "Neural networks make no assumption about the shape of any curve relating variables to the output."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'inherently linear' — neural networks are nonlinear.",
+        "Trap is B 'small training data' — actually need LARGE training sets.",
+        "Trap is D 'assumes curve shape' — opposite; no shape assumptions.",
+        "Neural networks excel where many input variables interact in complex nonlinear ways — fraud detection's hallmark. Multi-variable pattern recognition. Right fit for fraud's complexity."
       ]
     },
     {
@@ -7111,8 +7166,10 @@
         "D": "The use of the Blowfish algorithm consumes too much processing power."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is B 'DES' — obsolete; weak.",
+        "Trap is C 'AES' — strong but more compute/key-size for equivalent security.",
+        "Trap is D 'Blowfish' — less efficient on mobile than ECC.",
+        "Elliptic Curve Cryptography provides equivalent security with shorter keys — ideal for mobile devices' limited compute/battery. Strong + efficient = mobile fit. Standard mobile-crypto answer."
       ]
     },
     {
@@ -7137,8 +7194,10 @@
         "C": "A message encrypted with a receiver's private key can be decrypted by anyone using the receiver's public key."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'digest with sender's private' — that's signing.",
+        "Trap is B 'session with sender's public' — wrong key direction.",
+        "Trap is C 'message with receiver's private' — private key never encrypts inbound.",
+        "Encrypt the session key with the receiver's PUBLIC key — only the receiver can decrypt to obtain the session key, then use it for symmetric encryption of bulk data. Hybrid encryption pattern. Same logic as d5_253."
       ]
     },
     {
@@ -7163,7 +7222,10 @@
         "D": "The shredders may not be properly used if users are not aware of proper security techniques."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'shred bins in copy rooms' — partial coverage; misses other docs.",
+        "Trap is C 'media disposal policy' — paper, not the policy domain.",
+        "Trap is D 'shredders in offices' — partial; behavior must support use.",
+        "Awareness training teaches employees what to shred and why — drives behavior change at the root. Without awareness, shredders go unused. Awareness = behavior; equipment = capability. Behavior wins."
       ]
     },
     {
@@ -7188,8 +7250,10 @@
         "C": "It is prudent to block all inbound traffic to an extranet unless permitted."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'SSL for admin' — secure remote admin is good practice.",
+        "Trap is B 'updated policies' — good practice.",
+        "Trap is C 'inbound block by default' — good practice (deny-by-default).",
+        "Firewall installed on default-OS configuration leaves the underlying OS exploitable — attacker bypasses firewall by attacking the host. Hardened OS is prerequisite. Same theme as d5_223."
       ]
     },
     {
@@ -7214,9 +7278,10 @@
         "D": "Installing Simple Network Management Protocol (SNMP) on wireless access points can open up security vulnerabilities. If SNMP is required at all, then SNMP v3, which has stronger authentication mechanisms than earlier versions, should be deployed."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is B 'SSID with org name' — broadcasting org name aids attackers.",
+        "Trap is C 'WEP' — broken/obsolete.",
+        "Trap is D 'SNMP' — monitoring; not security.",
+        "Physically securing access points prevents tampering, factory resets, and unauthorized cable taps — physical compromise undermines all logical controls. Physical security is foundational. Choose the only intact-defense option."
       ]
     },
     {
@@ -7241,7 +7306,10 @@
         "D": "Database administrators (DBA) are required to implement changes to data structures. This is required for reorganization of the database to allow for additions, modifications or deletions of fields or tables in the database."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'admins skipping change control on patches' — bad practice but not direct fraud.",
+        "Trap is C 'ops changing batch schedules' — operational issue.",
+        "Trap is D 'DBA changing structures' — DBA's job (with controls).",
+        "Application programmers changing PRODUCTION DATA = SoD violation enabling fraud (alter records, hide tracks). Dev access to prod data = textbook fraud risk. Highest fraud-likelihood combo."
       ]
     },
     {
@@ -7266,7 +7334,10 @@
         "D": "Tracing accountability is of minimal concern compared to the compromise of sensitive data."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'forget to encrypt' — process risk, secondary to credential exposure.",
+        "Trap is B 'creds via email' — concern but split across separate emails reduces single-point compromise.",
+        "Trap is D 'shared FTP user ID' — accountability gap.",
+        "Consulting firm personnel can access the FTP repository with sensitive financial data — third-party insider risk is the GREATEST concern. Outsider becomes insider via support role. Provider personnel = trust risk."
       ]
     },
     {
@@ -7291,7 +7362,10 @@
         "D": "Hosting the website as part of the enterprise is impractical. The client will accept the program if the parameters are established to do so."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'firewall exists' — firewall doesn't validate code legitimacy.",
+        "Trap is B 'secure web connection' — protects transit, not source authenticity.",
+        "Trap is D 'host site is enterprise' — origin assumption, not signed-source verification.",
+        "Active code is reasonable only when its source is authenticated (signed code from trusted publisher). Trust based on code-signing, not transport or location. Authenticity of executable origin = the gating control."
       ]
     },
     {
@@ -7316,8 +7390,10 @@
         "C": "A block sum check is a form of parity checking and has a low level of reliability."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'parity' — single-bit error detection only; misses bursts.",
+        "Trap is B 'echo check' — round-trip; basic.",
+        "Trap is C 'block sum' — better than parity, weaker than CRC for bursts.",
+        "Cyclic Redundancy Check (CRC) detects burst errors via polynomial division — designed exactly for this. Standard burst-error detector in network frames. Memorize: CRC = burst errors."
       ]
     },
     {
@@ -7342,8 +7418,10 @@
         "D": "Coaxial cable can be monitored with relative ease."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'copper wire' — easy to tap inductively.",
+        "Trap is B 'shielded twisted pair' — shielding helps but still tappable.",
+        "Trap is D 'coaxial' — tappable.",
+        "Fiber-optic cables transmit light — can't be passively tapped without breaking the cable (which is detectable). Physical-tap resistant. BEST wired-media security choice."
       ]
     },
     {
@@ -7368,8 +7446,10 @@
         "D": "Recent attacks may indicate problems with the firewall but will not ensure that it is correctly configured."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'interview admin' — verbal claim, not evidence.",
+        "Trap is C 'review procedures' — what should happen, not what does.",
+        "Trap is D 'review device logs' — operational events, not configuration state.",
+        "Examining the actual parameter settings is direct evidence of compliance vs. policy. Inspect the real config. Verify ≠ trust statements or procedures. Audit inspects the artifact."
       ]
     },
     {
@@ -7394,8 +7474,10 @@
         "D": "VoIP telephone systems use the LAN infrastructure of an enterprise for comm uni cation, so the personnel who support and maintain that infrastructure are now responsible for the data and voice network by default. Therefore, this is not a concern."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure.",
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'shared equipment' — by VoIP design; not the greatest concern.",
+        "Trap is C 'voice not encrypted on LAN' — concern but secondary.",
+        "Trap is D 'same support team' — operational.",
+        "Without UPS on Ethernet switches, a power blip kills both data AND voice — call center loses all phone capability. VoIP makes power = phones. Availability of voice now depends on data infrastructure power."
       ]
     },
     {
@@ -7420,8 +7502,10 @@
         "D": "Standby servers will not provide continuity if a link is severed."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'full backup daily' — recovery, not continuity.",
+        "Trap is C 'repair contract' — reactive, not preventive.",
+        "Trap is D 'duplicate at each server' — host-level, not WAN.",
+        "Built-in alternative routing reroutes traffic around link failures automatically — sustains WAN connectivity during outages. Path redundancy = continuity. WAN-level continuity answer."
       ]
     },
     {
@@ -7446,7 +7530,10 @@
         "C": "Because the SLA normally specifies uptime requirements, the means used to achieve those goals (which include the specific disaster recovery plan capabilities of the provider) are typically not reviewed in-depth by the customer, nor are they typically specified in an SLA."
       },
       "tips": [
-        "GREATEST risk/concern questions reward the option with the broadest blast radius, irreversibility, or regulatory exposure."
+        "Trap is A 'strict SLA' — that's a positive.",
+        "Trap is B 'no unlimited audit right' — common; manageable with sample/pooled audits.",
+        "Trap is C 'no DR plan in SLA' — concern but data-residency tops it for HR data.",
+        "HR/PII data spread across multiple cities/countries triggers cross-border data-protection law conflicts (GDPR, sovereignty, transfer restrictions). Jurisdictional risk for personal data. GREATEST cloud-PII concern."
       ]
     },
     {
@@ -7471,7 +7558,10 @@
         "D": "Scalability is the strength of cloud computing through the ability to adjust service levels according to changing business circumstances. Therefore, this is not the best option."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'availability' — lock-in doesn't directly affect uptime.",
+        "Trap is C 'agility' — speed/flexibility, broader.",
+        "Trap is D 'scalability' — growth capacity, separate from lock-in.",
+        "Lock-in clauses prevent moving workloads/data to another provider — removing them protects portability. Portability = freedom to migrate. Direct lock-in inverse."
       ]
     },
     {
@@ -7496,7 +7586,10 @@
         "D": "Polymorphism is the principle of creating different objects that will behave differently depending on the input. This is not a security feature."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'inheritance' — reuse of class properties, not security.",
+        "Trap is B 'dynamic warehousing' — distractor.",
+        "Trap is D 'polymorphism' — multiple forms, not security.",
+        "Encapsulation hides internal data behind defined interfaces — directly enhances security by enforcing access controls at the object boundary. Hide data = protect data. OO security primitive."
       ]
     },
     {
@@ -7521,7 +7614,10 @@
         "D": "If the peak traffic load is a rare one-off occurrence or if traffic can be reengineered to transfer at other time frames, then user education may be an option. Further investigation will be required."
       },
       "tips": [
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is B 'capacity adequate' — 96% routinely is dangerous; bursts will saturate.",
+        "Trap is C 'replace immediately' — premature without traffic-pattern analysis.",
+        "Trap is D 'tell users to reduce' — user-blame, not engineering response.",
+        "96% peak suggests imminent saturation under any spike — analyze patterns to determine if saturation/loss occurs and when. Investigate before deciding action. Audit-style 'gather data first' response."
       ]
     },
     {
@@ -7546,8 +7642,10 @@
         "D": "Standby power provides an alternative power source in the event of an energy failure but does not address the problem of a server failure."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "In any physical/safety scenario, life safety is always the first priority — system, asset and data concerns come after."
+        "Trap is A 'redundant pathways' — network continuity, not server failure.",
+        "Trap is C 'dial backup lines' — comm backup, not server.",
+        "Trap is D 'standby power' — power continuity, not server failure.",
+        "Server clustering shares load and fails-over automatically when a node fails — direct mitigation for server failure impact. Cluster member down = others carry load. Server-level continuity answer."
       ]
     },
     {
@@ -7572,7 +7670,10 @@
         "C": "Although the time stamp on an email may not be accurate, this is not a significant issue."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'transaction omission/duplication' — handled by app-level controls.",
+        "Trap is B 'data transition' — irrelevant to time sync.",
+        "Trap is C 'email timestamps' — minor benefit.",
+        "Synchronized clocks let log events from different systems be correlated chronologically — the bedrock of incident investigation/forensics. Without sync, can't reconstruct timeline. MAIN reason for time sync (NTP)."
       ]
     },
     {
@@ -7597,8 +7698,10 @@
         "D": "Identification of which subcomponent is being used inappropriately can only be known after reviewing and understanding the topology and a good practice for deployment of the device in the network."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Security controls layer: prevent → detect → respond → recover. Don't pick a single control where the question implies multiple layers are needed."
+        "Trap is A 'good practices for type' — preceded by importance.",
+        "Trap is B 'missing components' — assessment, after importance.",
+        "Trap is D 'subcomponents used appropriately' — detailed review, after importance.",
+        "Identifying importance/criticality of devices in the topology FIRST establishes what to focus on — risk-based scoping. Critical device → deeper review. Scope by criticality before drilling into config."
       ]
     },
     {
@@ -7623,8 +7726,10 @@
         "C": "If it is a highly mission-critical information system, it may be nice to run the system with a dual log mode. Having logs in two different storage devices will primarily contribute to the assurance of the availability of log information, rather than maintaining its integrity."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Access decisions default to least privilege and need-to-know — the data owner authorizes; the custodian implements; the auditor verifies."
+        "Trap is A 'admin-only access' — confidentiality, not integrity.",
+        "Trap is B 'log at OS layer' — same system as firewall; integrity at risk if firewall is compromised.",
+        "Trap is C 'dual log to separate storage' — duplication, but local.",
+        "Sending logs to a dedicated remote (third-party) log server immediately means compromised firewall can't tamper with already-shipped logs. Off-system = tamper-evident. Standard log-integrity pattern (SIEM)."
       ]
     },
     {
@@ -7649,7 +7754,10 @@
         "D": "The IS auditor can make suggestions to the audited entity to use appropriate patches or switch over to safer browsers, and then the IS auditor can follow up on the action taken."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'no on-site assessment' — concern, manageable via certifications/reports.",
+        "Trap is C 'different jurisdictions' — addressable contractually.",
+        "Trap is D 'older browser' — client-side issue, not provider gap.",
+        "SLA silence on breach responsibility means, at the worst moment, no one is contractually responsible — major liability gap. Breach response is THE key cloud term. Definitional cloud-audit concern."
       ]
     },
     {
@@ -7674,7 +7782,10 @@
         "D": "File security controls cannot be used to provide assurance that proper data files are being used and cannot allow for automatic checking."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'version usage' — manual tracking, not automated.",
+        "Trap is C 'parity' — bit-level integrity, not file identity.",
+        "Trap is D 'file security' — access control, not file-correctness.",
+        "File header records contain metadata identifying the file (date, version, source) — system reads header automatically to confirm correct file. Self-identifying input. Standard automated check."
       ]
     },
     {
@@ -7699,7 +7810,10 @@
         "C": "Encryption adequacy is driven by the sensitivity of the data to be protected and algorithms that determine how long it will take to break a specific encryption method."
       },
       "tips": [
-        "Confidentiality requires encryption at rest AND in transit — picking only one usually leaves an exploitable gap."
+        "Trap is A 'input accuracy' — data validation, not transmission.",
+        "Trap is B 'downloaded program integrity' — hash checks for that.",
+        "Trap is C 'encryption adequacy' — cryptographic strength, not CRC.",
+        "CRC validates that transmitted data arrived without corruption — transmission validity. Memorize: CRC = transmission validity / burst-error detection."
       ]
     },
     {
@@ -7724,7 +7838,10 @@
         "D": "Although implementing virtual local area networks (VLANs) may be a good practice for ensuring adequate performance, in this case, the issue may be related to misconfigurations or equipment malfunction."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation)."
+        "Trap is B 'increase bandwidth' — premature; root cause unknown.",
+        "Trap is C 'baseline + QoS' — useful but after root cause known.",
+        "Trap is D 'VLAN segment' — design change, premature.",
+        "Use a protocol analyzer + review LAN error logs FIRST to diagnose root cause — random slowness can be many things (errors, broadcast storms, malware). Diagnose before remediating. First-principle troubleshooting."
       ]
     },
     {
@@ -7749,7 +7866,10 @@
         "D": "Requiring a third party to do the changes may not be practical in a small enterprise where another person with adequate expertise may not be available."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'automated logging' — detective, useful but doesn't verify approval.",
+        "Trap is B 'add staff' — not feasible for small enterprise.",
+        "Trap is D 'access controls preventing modifications' — would block the legitimate need.",
+        "Procedures verifying only APPROVED changes go to production = compensating control for missing SoD in small orgs. Independent review/approval substitutes for separation. Standard small-enterprise SoD compensation."
       ]
     },
     {
@@ -7774,7 +7894,10 @@
         "D": "Not all systems require a place in the audit plan; some noncritical systems may rank higher than critical systems. Critical systems impacting the business should get priority in the audit plan when a risk-based approach is taken."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'inventory and categorize' — early step, but ranking drives the plan.",
+        "Trap is B 'assess risk' — input.",
+        "Trap is C 'identify critical systems' — input.",
+        "Ranking systems by risk and deciding priority/resources/schedule/frequency IS the audit plan — translates risk into actionable plan. Plan is the output of risk-based approach. MOST important step in PLAN development."
       ]
     },
     {
@@ -7799,7 +7922,10 @@
         "C": "Identifying residual risk not in line with risk appetite is an outcome of the risk-based audit, but not the main benefit."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is A 'links to ERM' — benefit but not the main one.",
+        "Trap is B 'classification/reporting' — secondary.",
+        "Trap is C 'identify residual risk' — partial scope.",
+        "Risk-based audit's MAIN benefit is providing the board with assurance that risk management is effectively keeping risk within appetite. Ultimate assurance to governance. Top-of-house benefit."
       ]
     },
     {
@@ -7824,7 +7950,10 @@
         "D": "Limitations on the achievement of audit objectives should be disclosed in the audit results and reporting, and a possible irregularity should be disclosed to the appropriate enterprise authorities."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'violated laws' — disclosure to authorities required only if known unlawful and based on evidence.",
+        "Trap is C 'not violated — committed to disclose' — incomplete duty; suspected fraud must be reported, not deferred.",
+        "Trap is D 'not violated — lack of evidence' — auditor still must report SUSPECTED fraud.",
+        "Auditing standards require auditors to report SUSPECTED fraud to appropriate authorities/management, not to defer to QA review. Suspicion + evidence-gathering must escalate. Standard duty-to-report rule."
       ]
     }
   ]
