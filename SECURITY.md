@@ -1,50 +1,72 @@
 # Security Policy
 
-## Supported Versions
-
-| Version | Supported |
-|---------|-----------|
-| 7.0 (latest) | ✅ |
-| 6.0 | ❌ |
-| 5.2 | ❌ |
-| 5.1 | ❌ |
-| 4.0 | ❌ |
-| 3.3 | ❌ |
-| 3.2 | ❌ |
-| 3.1 – 1.0 | ❌ |
-
-Only the latest release (v7.0) is actively maintained and receives security updates.
-
-## Reporting a Vulnerability
-
-CISA Prep is a client-side, single-file HTML application with no backend, no user accounts, and no data transmission beyond anonymous Google Analytics.
-
-If you discover a security issue (e.g. XSS in the HTML file, malicious script injection, or data exposure), please report it responsibly:
-
-1. **Do not open a public GitHub issue** for security vulnerabilities
-2. **Email us directly** at jungkook.jimin04191994@gmail.com
-3. Alternatively, open a [private security advisory](../../security/advisories/new) on GitHub
-4. Include a clear description of the issue, steps to reproduce, and potential impact
-
-## Reporting General Issues & Bugs
-
-For non-security bugs, feature requests, or general feedback:
-
-- **Email:** jungkook.jimin04191994@gmail.com
-- **GitHub:** [github.com/laladev-ai](https://github.com/laladev-ai)
-- **GitHub Issues:** [Open an issue](https://github.com/laladev-ai/cisa-prep/issues/new)
-
-## What to Expect
-
-- You'll receive an acknowledgment within **48 hours**
-- A fix or patch will be assessed and released within **7 days** for confirmed issues
-- You'll be credited in the release notes if you wish
-
 ## Scope
 
-Since this is a static, offline-capable study tool:
-- There is **no server**, no API, and no database
-- **No personally identifiable information** is collected or stored
-- Session data (progress, bookmarks) lives only in your browser's local memory
+CISA Mindset is a **fully client-side, single-file HTML application**. It has:
 
-Thank you for helping keep this tool safe for exam candidates! 🔐
+- No backend server
+- No database
+- No user accounts or authentication
+- No personally identifiable information collected or stored
+- No cookies (other than what your browser/CDN may set)
+
+All progress (scores, bookmarks, profiles) lives in your browser's `localStorage` and never leaves your device — except in two cases:
+
+1. **Feedback you choose to send** through the in-app Feedback button, which posts to a Google Form bound to `certprep.support@gmail.com`.
+2. **Anonymous Google Analytics page-view metrics** if your browser permits.
+
+## Supported version
+
+Only the latest version of the app (whatever is on `main` at any given time) is maintained. Because the entire app ships as a single file, "supported versions" doesn't really apply — there's no patch back-port story. If you find a security issue, we fix it on `main` and ship.
+
+## Threat model
+
+In scope for security reports:
+
+- **HTML/JS injection** via question bank, tips, glossary, or any other JSON content rendered into the DOM
+- **XSS** through user-supplied input (profile names, feedback, bookmark notes, etc.)
+- **Supply-chain risk** from any new third-party dependency (today: ESLint via npx for local linting, Google Forms / Analytics for runtime services)
+- **Data exfiltration** — anything that would leak `localStorage` contents to a third party
+- **Privacy regressions** — anything that starts collecting more than the analytics described above
+
+Out of scope:
+
+- Browser-level vulnerabilities (file these with the browser vendor)
+- Findings against the Google Forms / Google Analytics / Google Sheets services themselves (file these with Google)
+- Issues that require an attacker to already have full control of the user's device or network
+
+## Reporting a vulnerability
+
+Please **do not** open a public GitHub issue for security findings. Instead:
+
+1. Open a [private security advisory](https://github.com/laladev-ai/cisa-prep/security/advisories/new) on this repository, **or**
+2. Email **`certprep.support@gmail.com`** with the subject line `Security report — CISA Mindset`.
+
+Include:
+
+- A clear description of the issue
+- Steps to reproduce
+- Affected page/feature and (if possible) the commit SHA you tested against
+- Your assessment of impact and severity
+
+You'll get an acknowledgment within **48 hours** and, for confirmed issues, a fix on `main` within **7 days** (often much faster for a single-file app). You'll be credited in the [CHANGELOG](CHANGELOG.md) if you'd like.
+
+## Reporting non-security bugs
+
+For non-security bugs and feature requests, the easiest path is:
+
+- Click **Feedback** in the app header → category **Bug** or **Feature**
+- Or open a regular [GitHub issue](https://github.com/laladev-ai/cisa-prep/issues/new)
+
+## Privacy summary
+
+| Data | Where it goes | When |
+|---|---|---|
+| Progress, bookmarks, profiles | Your browser's localStorage | Always (never leaves device) |
+| Feedback messages | `certprep.support@gmail.com` (via Google Form) | Only when you click Send |
+| Anonymous page-view metrics | Google Analytics | If your browser permits |
+| Question content | Loaded from the same origin as the page | On page load |
+
+No question response data, scores, or personally identifiable information is transmitted off-device.
+
+Thank you for helping keep this tool safe for exam candidates.

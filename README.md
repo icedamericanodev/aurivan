@@ -1,58 +1,87 @@
-# 🎯 CISA Prep
+# CISA Mindset
 
-An independent, AI-assisted exam prep tool built to train the **CISA auditor mindset** — not just memorization, but ISACA-style judgment and scenario-based reasoning.
+An independent, free CISA exam prep app built to train the **auditor mindset** — ISACA-style judgment and scenario-based reasoning, not memorization. Hand-authored tips on every question explain the trap, the principle, and the exam-day shortcut.
 
-> ⚠️ Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.
+> Not affiliated with or endorsed by ISACA®. CISA® is a registered trademark of ISACA.
 
----
+## What's inside
 
-## ✨ Features
+- **995 questions** across all 5 CISA domains, weighted to the current ISACA blueprint
+- **Hand-authored tips** on every question — trap-naming, mindset/principle, and exam-day shortcut
+- **Practice mode** with confidence rating and sub-topic drill-down
+- **Mock exam** with the full 4-hour clock and ISACA-style blueprint mix
+- **Topics tab** with study summaries, real-life analogies, and key terminology per domain
+- **Weak spots** that auto-track your lowest-scoring areas
+- **Readiness score** weighted by exam blueprint, with a personalized 3-step daily study plan
+- **Bookmarks**, **profiles**, **export/import progress**, **dark mode**, **PWA / offline support**
+- **In-app feedback** that goes straight to the maintainer
 
-- **✏️ Practice Mode** — Domain-filtered question drills across all 5 CISA domains, with three difficulty tiers: Foundational, Application, and Analysis
-- **📖 Topics** — Structured study notes organized by domain and subtopic, each with exam cues and mindset guidance
-- **📚 Glossary** — Searchable term definitions scoped to each domain
-- **📊 Weak Spots** — Automatically tracks your lowest-scoring areas so you know exactly where to focus
-- **🏆 Mock Exam** — Timed, full-length simulated exam experience
-- **🔖 Bookmarks** — Save tricky questions to revisit during review sessions
+## Domain coverage
 
----
+| # | Domain | Weight | Questions |
+|---|---|---|---|
+| 1 | Information Systems Auditing Process | 18% | 164 |
+| 2 | Governance & Management of IT | 18% | 164 |
+| 3 | Information Systems Acquisition, Development & Implementation | 12% | 120 |
+| 4 | Information Systems Operations & Business Resilience | 26% | 263 |
+| 5 | Protection of Information Assets | 26% | 284 |
 
-## 🗂️ CISA Domains Covered
-
-| # | Domain |
-|---|--------|
-| 1 | Information Systems Auditing Process |
-| 2 | Governance & Management of IT |
-| 3 | Information Systems Acquisition, Development & Implementation |
-| 4 | Information Systems Operations & Business Resilience |
-| 5 | Protection of Information Assets |
-
----
-
-## 🧠 The Auditor Mindset
+## The auditor mindset
 
 Every question is framed around the core ISACA principle:
 
 > *The auditor assesses, recommends, and reports — never fixes.*
 
-Questions are designed to test judgment in realistic scenarios, not keyword recall.
+Questions test judgment in realistic scenarios, not keyword recall. The hand-authored tips make the implicit explicit: which option is the seductive trap, which principle is being tested, and what shortcut works on exam day.
 
----
+## Run it
 
-## 🚀 Getting Started
+No install, no build, no backend. Just open `index.html` in a modern browser.
 
-Open `CISA_Mindset_v7_0.html` directly in any modern browser — no installation or dependencies required.
+For a proper local preview that won't choke on `file://` security restrictions:
 
----
+```bash
+python3 -m http.server 8000
+# then open http://localhost:8000/
+```
 
-## 🛠️ Built With
+For development workflows, see **[CONTRIBUTING.md](CONTRIBUTING.md)** and the AI-assistant project memory in **[CLAUDE.md](CLAUDE.md)**.
 
-- Vanilla HTML, CSS & JavaScript
-- Single-file, fully offline-capable
-- Google Analytics for usage insights
+## Project structure
 
----
+```
+cisa-prep/
+├── index.html                       # The entire app (HTML + CSS + JS)
+├── data/
+│   ├── domain{1..5}.json            # Generated question banks
+│   ├── tips_overrides/d{1..5}.json  # Hand-authored tips (source of truth)
+│   ├── cisa_notes.json              # Topics-tab content
+│   └── glossary.json                # Glossary content
+├── scripts/
+│   ├── convert_test_bank.py         # Regenerates domain*.json from xlsm + tip overrides
+│   ├── verify_repo.sh               # Repo health check (run via SessionStart hook)
+│   └── lint_inline_js.sh            # Lints the inline JS in index.html
+├── CLAUDE.md                        # Project memory for AI assistants
+├── CONTRIBUTING.md                  # How to contribute
+├── CHANGELOG.md                     # Canonical release history
+├── SECURITY.md                      # Security disclosure policy
+└── README.md
+```
 
-## 📄 License
+## Tech stack
 
-For personal study use only. All exam content is independently authored for educational purposes.
+- Vanilla HTML, CSS, and inline JavaScript — single file, no framework, no bundler, no `npm install`
+- Question banks are static JSON loaded asynchronously per domain
+- localStorage for progress; no backend, no accounts, no PII
+- Optional Google Analytics
+- Optional PWA install (offline-capable)
+
+## Feedback
+
+Click **Feedback** in the header to send a message — it lands directly in the maintainer's inbox, no mail-app required. Categories: General / Feature / Bug. You can include anonymous diagnostic info to speed up bug fixes.
+
+You can also email **certprep.support@gmail.com** directly.
+
+## License & disclaimer
+
+For personal study use. All exam content is independently authored for educational purposes. CISA® and ISACA® are registered trademarks of their owners; this project is not affiliated with or endorsed by ISACA.

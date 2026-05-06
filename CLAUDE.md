@@ -17,7 +17,12 @@ work without rediscovering the layout.
 | `data/cisa_concepts.json` | Orphan file kept in sync for hygiene; not loaded by the app |
 | `data/glossary.json` | Glossary tab data |
 | `scripts/convert_test_bank.py` | Idempotent converter: xlsm + tips overrides → `data/domain{N}.json` |
+| `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
+| `scripts/lint_inline_js.sh` | Extracts inline `<script>` blocks from `index.html` and runs ESLint `no-undef` |
 | `.claude/settings.json` | Permission allowlist + SessionStart validation hook |
+| `CONTRIBUTING.md` | Human-facing version of this file (workflows, code style, PR rules) |
+| `CHANGELOG.md` | Canonical user-facing release history (mirrors the in-app What's New) |
+| `SECURITY.md` | Disclosure policy + privacy summary |
 
 ## Hard rules
 
