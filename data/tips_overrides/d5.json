@@ -1,0 +1,1713 @@
+{
+  "_meta": {
+    "comment": "Hand-authored tips overriding the converter's auto-generated tips for D5. Same conventions as d1.json/d2.json/d3.json/d4.json.",
+    "version": 1
+  },
+
+  "d5_001": [
+    "Trap is B 'cross-site scripting' — different attack; XSS modifies pages on victim browsers, not via hidden field tampering.",
+    "Trap is C 'cookie poisoning' — cookies are different from hidden form fields.",
+    "Trap is D 'stealth commanding' — server-side intrusion, not client-side field manipulation.",
+    "Hidden form fields = client-controlled data sent unmodified to server. Attackers intercept and modify before submission. Parameter tampering exploits this trust boundary."
+  ],
+  "d5_002": [
+    "Trap is A 'reasonableness check' — input validation, not transmission integrity.",
+    "Trap is B 'parity bits' — basic error detection, weak compared to hashes.",
+    "Trap is D 'check digits' — designed for transposition errors in numeric fields, not full file integrity.",
+    "Hash values produce a fingerprint that changes with any data alteration. Sender computes hash, receiver computes hash of received data, compares. Mismatch = data changed in transit."
+  ],
+  "d5_003": [
+    "Trap is A 'improve response time' — opposite; audit trails ADD overhead.",
+    "Trap is C 'improve operational efficiency' — also opposite.",
+    "Trap is D 'help auditors track' — too narrow; many stakeholders use audit trails.",
+    "Audit trails establish ACCOUNTABILITY: who did what, when, with what result. Foundational for security investigations, compliance, dispute resolution."
+  ],
+  "d5_004": [
+    "Trap is A 'IDS' — detects network attacks, not transaction patterns.",
+    "Trap is C 'stateful firewall' — inspects packets, not transaction history.",
+    "Trap is D 'packet filter' — basic network traffic control.",
+    "Data mining analyzes historical patterns to detect anomalies. Sudden change in cardholder behavior (location, amount, frequency) suggests fraud. Pattern recognition is data mining's specialty."
+  ],
+  "d5_005": [
+    "Trap is A 'secure physical location' — protects against physical access, not logical compromise.",
+    "Trap is B 'boot password' — narrow; doesn't address running OS vulnerabilities.",
+    "Trap is D 'activity logging' — detective; doesn't prevent compromise.",
+    "Hardening = comprehensive security configuration: patches, disabled services, strict permissions, removed defaults. Foundational preventive approach to OS integrity."
+  ],
+  "d5_006": [
+    "Trap is B 'routers' — connect networks; don't enforce security policies between them.",
+    "Trap is C 'layer 2 switches' — basic traffic separation; no security policy enforcement.",
+    "Trap is D 'VLANs' — logical separation, but doesn't enforce policies between segments.",
+    "Firewalls enforce explicit allow/deny policies between network segments. Purpose-built for unauthorized traffic prevention. Other tools support; firewalls enforce."
+  ],
+  "d5_007": [
+    "Trap is B 'stop using until encryption enabled' — VPN already provides encryption.",
+    "Trap is C 'MAC filtering' — applies to enterprise WiFi, not GSM.",
+    "Trap is D 'multifactor over wireless' — VPN handles authentication; GSM doesn't expose authentication choice.",
+    "GSM has built-in encryption + the VPN adds another layer. Combined = adequate confidentiality. No additional control needed; this is properly configured remote access."
+  ],
+  "d5_008": [
+    "Trap is B 'proximity authentication' — proximity cards expensive; password screen saver covers most use cases.",
+    "Trap is C 'session termination at intervals' — disruptive to active users.",
+    "Trap is D 'blank monitor' — doesn't authenticate when monitor wakes; not security control.",
+    "Password-protected screen saver = automatic logical lock when user steps away. Industry-standard, low-cost, low-friction. Best minimization for unattended access."
+  ],
+  "d5_009": [
+    "Trap is A 'host IDS' — detective; doesn't prevent unauthorized access.",
+    "Trap is B 'password expiration and lockout' — preventive but defeated by guessing or stolen passwords.",
+    "Trap is C 'password complexity' — same; defeated by phishing or theft.",
+    "2FA = something you know + something you have/are. Even if password is compromised, attacker lacks second factor. Strongest preventive control for privileged access."
+  ],
+  "d5_010": [
+    "Trap is A 'encryption on access point' — protects wireless traffic, not segregation from corporate.",
+    "Trap is C 'antivirus on consultant laptops' — endpoint protection; doesn't prevent network access.",
+    "Trap is D 'strong passwords on corporate servers' — defense, but consultant network shouldn't even REACH corporate servers.",
+    "Separate VLAN for guest/consultant network = network-level isolation. Their traffic CAN'T reach corporate servers regardless of credentials. Architectural prevention."
+  ],
+  "d5_011": [
+    "Trap is A 'restrict DBA access to HR data' — operational practice, often necessary for DBAs to do their job.",
+    "Trap is B 'encrypt logs' — addresses log confidentiality, narrow concern.",
+    "Trap is C 'encrypt stored procedures' — addresses code confidentiality, narrow concern.",
+    "Database initialization parameters control authentication, remote access, audit policies, and many security-critical settings. Frequent gap; important to verify configuration security beyond surface controls."
+  ],
+  "d5_012": [
+    "Trap is A 'maintain impartiality' — important but evidence integrity is more critical for legal use.",
+    "Trap is B 'maintain independence' — same; foundational but not the central focus.",
+    "Trap is D 'assess all relevant evidence' — analysis, secondary to preserving evidence.",
+    "Forensic evidence may be used in legal proceedings. Improperly handled evidence is INADMISSIBLE — destroys case regardless of content. Chain of custody and evidence integrity are paramount."
+  ],
+  "d5_013": [
+    "Trap is A 'mandatory' — military/government style; rigid, classification-based.",
+    "Trap is C 'discretionary' — owner decides; not need-to-know.",
+    "Trap is D 'SSO' — convenience feature, not access model.",
+    "Role-based access control = access tied to job function. Need-to-know enforced through role definitions. Best fit for business application access by job function."
+  ],
+  "d5_014": [
+    "Trap is A 'track actions in separate log' — detective only.",
+    "Trap is B 'disable write access' — would prevent legitimate logging.",
+    "Trap is D 'periodic backup' — recovery measure, doesn't prevent deletion.",
+    "Restricting view/delete rights to limited personnel = preventive control. Fewer people can delete; limits potential for unauthorized deletion. Direct control over the threat."
+  ],
+  "d5_015": [
+    "Trap is A 'most employees use laptops' — DHCP works for laptops; no concern.",
+    "Trap is B 'packet filtering firewall' — security control, not DHCP concern.",
+    "Trap is C 'IP space < PCs' — DHCP can use lease management to handle this.",
+    "Unrestricted network port access lets ANY connected device receive a DHCP-assigned IP and join the network. Unauthorized devices get full network access automatically. Foundational physical security gap."
+  ],
+  "d5_016": [
+    "Trap is A 'exception reports' — detective control.",
+    "Trap is C 'review of access logs' — detective.",
+    "Trap is D 'management supervision' — administrative; harder to enforce consistently.",
+    "Separation of duties prevents the DBA from acting outside authorized roles. Built into account/role design = preventive enforcement. Other controls detect after the fact."
+  ],
+  "d5_017": [
+    "Trap is A 'storage media for stealing data' — possible but not primary risk.",
+    "Trap is B 'driver crashes user PC' — operational, not security.",
+    "Trap is C 'inappropriate photographs' — HR concern, narrow.",
+    "ANY USB-connected device may carry malware (factory-installed, prior infection). Photo frame infects the work PC; malware spreads to corporate network. Foundational removable-media risk."
+  ],
+  "d5_018": [
+    "Trap is A 'contact law enforcement' — premature; preserve evidence first.",
+    "Trap is B 'ensure no data compromise' — vague; concrete action needed.",
+    "Trap is D 'update antivirus' — running antivirus on infected machine may destroy evidence.",
+    "Disconnect from network = contains the threat (no further data exfiltration) AND preserves evidence (no remote tampering). Standard incident response first action."
+  ],
+  "d5_019": [
+    "Trap is B 'adequate to protect confidentiality' — wrong; signatures don't encrypt.",
+    "Trap is C 'gather more information' — already enough; signatures fundamentally can't provide confidentiality.",
+    "Trap is D 'recommend digital watermarking' — different control; protects IP, not communication confidentiality.",
+    "Digital signatures = authentication + integrity + non-repudiation. Email content visible to anyone intercepting. Doesn't address the confidentiality finding; encryption needed for that."
+  ],
+  "d5_020": [
+    "Trap is A 'broadband digital' — shared infrastructure with others.",
+    "Trap is B 'baseband network' — shared/local topology.",
+    "Trap is C 'dialup' — shared phone network; subject to interception.",
+    "Dedicated lines = exclusive use, no shared infrastructure. No external entry points to intercept. Strongest line-level security, though most expensive."
+  ],
+  "d5_021": [
+    "Trap is A 'review IT infrastructure' — implementation review, follows requirements understanding.",
+    "Trap is B 'organizational policies' — internal policies must comply with external law; law comes first.",
+    "Trap is D 'adherence to policies' — testing, follows policy review.",
+    "Privacy compliance starts with applicable law (GDPR, HIPAA, CCPA, etc.). Policies and procedures must align with law. Auditor's first step: understand the legal landscape."
+  ],
+  "d5_022": [
+    "Trap is A 'change password weekly' — operational improvement, doesn't isolate networks.",
+    "Trap is B 'stateful firewall' — security control, but networks still connected.",
+    "Trap is D 'IDS in wireless' — detective; doesn't prevent enterprise reach.",
+    "Physical separation = guest network has no path to enterprise network. No firewall rules to misconfigure, no shared infrastructure to exploit. Architectural isolation."
+  ],
+  "d5_023": [
+    "Trap is A 'node list' — inventory; useful but follows architecture understanding.",
+    "Trap is B 'acceptance test report' — implementation evidence, follows architecture.",
+    "Trap is D 'users list' — implementation detail.",
+    "Network diagram shows topology, segments, single points of failure, security choke points. Auditor needs architecture understanding before reviewing operational details. Foundation first."
+  ],
+  "d5_024": [
+    "Trap is B 'document as exception' — premature; need to know if it's a violation first.",
+    "Trap is C 'recommend identical settings' — assumes equality is correct without policy basis.",
+    "Trap is D 'recommend periodic log review' — detective control, doesn't address the configuration question.",
+    "Differential settings may be policy-allowed (developers may need flexibility). Auditor's first step: check policy. If allowed, document and move on; if violation, document as a finding."
+  ],
+  "d5_025": [
+    "Trap is A 'block ports 80/443 at firewall' — would block all web traffic; defeats purpose.",
+    "Trap is B 'read-only files on servers' — operational concern, doesn't address application security.",
+    "Trap is D 'whitelist customer IPs' — impractical for public web app.",
+    "Web application security review = systematic vulnerability assessment of the application. SQL injection, XSS, CSRF, authentication flaws all surfaced. Comprehensive vulnerability discovery."
+  ],
+  "d5_026": [
+    "Trap is A 'blind testing' — tester limited info, target knows.",
+    "Trap is B 'targeted testing' — both sides aware and cooperating.",
+    "Trap is D 'external testing' — describes attack origin, not awareness level.",
+    "Double-blind = neither tester nor target's IR team aware. Tests both attack effectiveness AND target's incident response. Most realistic simulation of actual attack."
+  ],
+  "d5_027": [
+    "Trap is B 'buffers at endpoints' — performance, not security.",
+    "Trap is C 'end-to-end encryption' — adds complexity; VLAN provides equivalent isolation cheaper.",
+    "Trap is D 'emergency backup power' — availability, not security.",
+    "Segregating VoIP via VLAN isolates voice traffic from data traffic. Network-based attacks against the data network don't reach VoIP. Eavesdropping prevented through isolation."
+  ],
+  "d5_028": [
+    "Trap is A 'DoS attack' — exhausts resources, doesn't typically use spoofed internal IPs.",
+    "Trap is C 'port scanning' — reconnaissance; usually external IPs.",
+    "Trap is D 'man-in-the-middle' — relays traffic, not impersonates internal IP.",
+    "External traffic with internal IP source = attempting to bypass firewall by claiming internal identity. Spoofing IP addresses to gain access privileges only available to internal hosts."
+  ],
+  "d5_029": [
+    "Trap is A 'DES' — broken; no longer secure.",
+    "Trap is B 'MD5' — hashing function, not encryption.",
+    "Trap is D 'SSH' — network protocol, not encryption algorithm.",
+    "AES = Advanced Encryption Standard. NIST-approved, military-grade, computationally infeasible to break. Strongest of these options for data-at-rest encryption."
+  ],
+  "d5_030": [
+    "Trap is A 'equipment failure' — addressable through redundancy.",
+    "Trap is C 'toll fraud' — financial concern, narrow.",
+    "Trap is D 'social engineering' — attack vector, not infrastructure risk.",
+    "VoIP shares network with data. DDoS against data network = simultaneous voice outage. Sole means of voice = no fallback. Most significant infrastructure risk for the dependency model."
+  ],
+  "d5_031": [
+    "Trap is B 'reverse proxy' — protects internal services from external traffic; opposite direction.",
+    "Trap is C 'firewall with access rules' — port-level; can't filter by URL/content.",
+    "Trap is D 'client software utilities' — endpoint controls, easily bypassed.",
+    "Content-filtering proxy intercepts outbound traffic, evaluates against URL/content rules, blocks unauthorized destinations. Centralized, comprehensive web access control."
+  ],
+  "d5_032": [
+    "Trap is A 'system unavailability' — possible but not the highest-priority CGI risk.",
+    "Trap is B 'malware exposure' — secondary; CGI-specific risks more concerning.",
+    "Trap is D 'system integrity' — possible outcome but unauthorized access comes first.",
+    "Untested CGI scripts on Internet-facing servers = direct attack vector. Common vulnerabilities: input validation, command injection, file inclusion. Unauthorized access to private systems is the typical CGI exploit outcome."
+  ],
+  "d5_033": [
+    "Trap is A 'wireless mobile devices not password-protected' — endpoint concern, secondary.",
+    "Trap is C 'no outbound web proxy' — operational gap, addressable.",
+    "Trap is D 'no encryption on all links' — depends on link type and data.",
+    "Default passwords on network devices = full administrative access available to any attacker who looks up the documentation. Foundational security failure; full network compromise possible."
+  ],
+  "d5_034": [
+    "Trap is A 'data retention/backup/recovery' — operational, secondary to disposal.",
+    "Trap is C 'network and IDS' — security infrastructure, narrow.",
+    "Trap is D 'patch management' — operational security, narrow.",
+    "When relationship ends, what happens to your data? Without contractual return/destruction clause, data may persist indefinitely with the provider. Foundational data lifecycle concern for cloud privacy."
+  ],
+  "d5_035": [
+    "Trap is A 'access matches SLA' — too vague; SLA may not specify time limits.",
+    "Trap is C 'admin access for limited period' — too privileged for vendors typically.",
+    "Trap is D 'IDs deleted when work complete' — manual process; risk of forgetting.",
+    "Expiration-dated user accounts based on services = automatic privilege termination. No manual cleanup needed; access expires by design. Best vendor access lifecycle control."
+  ],
+
+  "d5_036": [
+    "Trap is A 'unauthorized user gains access' — possible risk but accountability is the broader issue.",
+    "Trap is B 'time-consuming management' — operational concern, not security.",
+    "Trap is C 'easily guessed passwords' — separate issue from sharing.",
+    "Shared accounts = no single person owns actions taken with that ID. Audit logs show 'this account did X' without identifying the human. Accountability impossibility is the foundational SoD concern."
+  ],
+  "d5_037": [
+    "Trap is A 'admin access via VPN' — VPN provides encryption; manageable.",
+    "Trap is B 'scanners not in restricted areas' — physical security concern, addressable.",
+    "Trap is D '3-year-old risk analysis' — staleness concern, addressable.",
+    "Biometric data transmitted unencrypted = capture and replay attacks possible. Regulated data context = compliance violation. Foundational integrity/confidentiality gap."
+  ],
+  "d5_038": [
+    "Trap is A 'adequate supervision' — administrative; defeats by collusion.",
+    "Trap is B 'retain log backups' — recovery, doesn't prevent tampering.",
+    "Trap is C 'detect changes' — detective, possibly after damage.",
+    "WORM (write once read many) drives physically prevent log modification after writing. Even admin can't alter what's been written. Hardware-enforced integrity."
+  ],
+  "d5_039": [
+    "Trap is B 'field-level user authorization' — application-level concern, not OS access.",
+    "Trap is C 'data communication access logs' — network logs, not OS access.",
+    "Trap is D 'changing data files' — application change tracking, not OS access.",
+    "OS access is logged via user activity logs. Periodic review of these logs identifies inappropriate access patterns. Standard OS access control verification."
+  ],
+  "d5_040": [
+    "Trap is B 'cabling disorganized' — operational hygiene, not critical security.",
+    "Trap is C 'phones use LAN cable' — that's NORMAL for VoIP (PoE).",
+    "Trap is D 'wiring closet has power lines' — needs separation but common practice.",
+    "VoIP phones get power over Ethernet from LAN switches. No UPS on switches = power failure kills all phones, including emergency calls. Life-safety implication. Highest concern."
+  ],
+  "d5_041": [
+    "Trap is A 'shared passwords' — concerning but localized account issue.",
+    "Trap is C 'redundant logon IDs' — may have valid business reasons.",
+    "Trap is D 'third-party admin access' — may be required and managed.",
+    "Unencrypted passwords over remote access = passwords visible to anyone monitoring the untrusted network. Captured passwords enable attacker access to all the systems. Foundational remote access risk."
+  ],
+  "d5_042": [
+    "Trap is A 'no encryption for outgoing email' — concerning but blanket encryption may be impractical.",
+    "Trap is C 'screen saver disabled' — local concern, narrow.",
+    "Trap is D 'annual password change' — operational concern, addressable.",
+    "Reliance on humans typing markers (PHI) to trigger encryption = high failure rate. One forgotten marker = unencrypted PHI in transit = HIPAA violation. Should be automated by content detection."
+  ],
+  "d5_043": [
+    "Trap is A 'implement security in apps' — implementation, custodian's role.",
+    "Trap is C 'implement access rules' — implementation, custodian/security role.",
+    "Trap is D 'physical/logical security' — implementation, custodian's role.",
+    "Owner DEFINES requirements (criticality/sensitivity classification). Custodian IMPLEMENTS protection per owner's classification. Owner's foundational responsibility is classification."
+  ],
+  "d5_044": [
+    "Trap is A 'race condition' — timing-related code bug; different mechanism.",
+    "Trap is C 'buffer overflow' — memory exploitation; different mechanism.",
+    "Trap is D 'impersonation' — identity-based attack; different mechanism.",
+    "User invoked task scheduler (which runs with admin) to launch restricted apps = used a privileged process to gain higher access than their account allows. Definition of privilege escalation."
+  ],
+  "d5_045": [
+    "Trap is A 'no incident reporting awareness' — process gap, but data preservation comes first.",
+    "Trap is B 'log servers not separate' — architectural concern, secondary.",
+    "Trap is C 'inconsistent backups' — recovery concern, secondary.",
+    "Without chain of custody policy, evidence handling is inconsistent. Inadmissible evidence destroys breach case regardless of investigation quality. Foundational legal preservation requirement."
+  ],
+  "d5_046": [
+    "Trap is A 'recommend mandatory access' — overkill for low-risk app; expensive change.",
+    "Trap is B 'report to upper management' — DAC modification IS the DAC model.",
+    "Trap is C 'check with data owners' — DAC operates at owner level by design.",
+    "Discretionary Access Control (DAC) = owner controls access. Owner changing access controls = expected DAC behavior. Not a finding; characteristic of the model."
+  ],
+  "d5_047": [
+    "Trap is A 'damage storage media' — extremely rare; emissions weak for damage.",
+    "Trap is B 'disrupt processor' — unlikely; emissions don't usually interfere with own equipment.",
+    "Trap is C 'health effects' — typical electronic equipment, well below health limits.",
+    "TEMPEST attacks: emissions can be detected and reconstructed by sophisticated equipment. Screen content visible from outside the building. Confidentiality risk through electromagnetic leakage."
+  ],
+  "d5_048": [
+    "Trap is A 'access control tables' — security admins UPDATE these; need write access.",
+    "Trap is C 'logging options' — admins CONFIGURE logging; need write.",
+    "Trap is D 'user profiles' — admins MANAGE profiles; need write.",
+    "Security log files = audit trail. Read-only access for admins prevents tampering with their own activity records. Foundational SoD for security personnel."
+  ],
+  "d5_049": [
+    "Trap is B 'programmers' — implement applications, don't authorize access.",
+    "Trap is C 'system analysts' — design systems, don't authorize access.",
+    "Trap is D 'librarians' — manage code/data inventory, don't authorize access.",
+    "Data owners have business authority over data. They authorize access based on need-to-know. Security officer assists with implementation; owner makes the access decision."
+  ],
+  "d5_050": [
+    "Trap is B 'criticality analysis' — performed AFTER ownership established (owner does it).",
+    "Trap is C 'define access rules' — depends on classification, which depends on ownership.",
+    "Trap is D 'data dictionary' — metadata exercise; not classification.",
+    "Without identified owner, no one has authority to classify. Owner = first appointment. Then owner classifies, defines access, oversees protection."
+  ],
+  "d5_051": [
+    "Trap is B 'identification' — happens AFTER enrollment.",
+    "Trap is C 'verification' — happens AFTER enrollment.",
+    "Trap is D 'storage' — happens during enrollment but enrollment is the broader process.",
+    "Enrollment = capturing biometric template for the user. Foundational; everything else depends on it. Auditor reviews enrollment process for accuracy and security."
+  ],
+  "d5_052": [
+    "Trap is B 'sniffers' — uses tools.",
+    "Trap is C 'back doors' — uses tools.",
+    "Trap is D 'Trojan horses' — uses tools (malware).",
+    "Social engineering exploits human psychology directly. Conversation, manipulation, deception. No tools needed; the human is the vulnerability."
+  ],
+  "d5_053": [
+    "Trap is A 'user IDs in audit trail' — that's WHAT audit trails should record.",
+    "Trap is B 'admin has read-only' — appropriate; preserves integrity.",
+    "Trap is C 'date/time stamps' — that's WHAT audit trails should record.",
+    "Modifiable audit trail = unreliable evidence. If users can correct errors by changing the trail, it no longer documents what actually happened. Audit trail integrity requires immutability."
+  ],
+  "d5_054": [
+    "Trap is A 'observe response mechanism' — passive observation; secondary to action.",
+    "Trap is B 'clear the virus' — auditor doesn't perform remediation.",
+    "Trap is D 'ensure deletion' — same; not auditor's role.",
+    "Auditor's role: identify and report. Inform appropriate personnel immediately so they can respond. Operational response is theirs; auditor's job is escalation."
+  ],
+  "d5_055": [
+    "Trap is A 'classify resources' — comes after inventory; can't classify what you don't know about.",
+    "Trap is B 'label resources' — same; comes after.",
+    "Trap is C 'create ACL' — operational implementation, comes after foundational steps.",
+    "Inventory = know what you have. Foundation for classification, ownership assignment, control selection. Without inventory, nothing else is possible."
+  ],
+  "d5_056": [
+    "Trap is A 'two firewalls in series' — depth of similar controls; doesn't protect against same attack class.",
+    "Trap is C 'no physical signs' — security through obscurity, not depth.",
+    "Trap is D 'two firewalls in parallel' — same as A; similar controls.",
+    "Defense-in-depth = layered DIFFERENT controls. Firewall (network) + logical access (host) = if one fails, the other catches it. Different control types provide independent protection layers."
+  ],
+  "d5_057": [
+    "Trap is B 'staff implements + owner approves' — backwards order; approval should precede implementation.",
+    "Trap is C 'jointly create and update' — IS manager doesn't have business authority over data.",
+    "Trap is D 'owner creates tables' — operational tasks aren't owner's job.",
+    "Best procedure: owner authorizes (decision), administrator implements (execution). Clear SoD: business authority + technical execution. Standard access management workflow."
+  ],
+  "d5_058": [
+    "Trap is B 'physical security' — addresses physical attacks, not social engineering.",
+    "Trap is C 'email monitoring' — detective, not preventive against social engineering.",
+    "Trap is D 'IDS' — network attacks, not human manipulation.",
+    "Social engineering exploits human awareness gaps. Training builds awareness, helps employees recognize manipulation tactics. Direct address of the root cause."
+  ],
+  "d5_059": [
+    "Trap is A 'piggybacking' — physical access following authorized person; different attack.",
+    "Trap is B 'dumpster diving' — physical document recovery; different attack.",
+    "Trap is D 'impersonation' — identity attack; different defense.",
+    "Shoulder surfing = observing screens. Auto-locked screen prevents observers from seeing data when user steps away. Direct mitigation of the threat."
+  ],
+  "d5_060": [
+    "Trap is A 'change policy' — policy is fine; need enforcement.",
+    "Trap is B 'periodic password changes' — different control; doesn't enforce complexity.",
+    "Trap is D 'awareness training' — administrative; users may not comply.",
+    "Automated password management tool = system enforces complexity. Users CAN'T pick non-compliant passwords. Technical enforcement removes human compliance gap."
+  ],
+  "d5_061": [
+    "Trap is A 'digitalized signatures' — scanned signature images, not DRM.",
+    "Trap is B 'hashing' — integrity, used in DRM but not the central technology.",
+    "Trap is C 'parsing' — text processing, not DRM-specific.",
+    "Steganography hides information within other media (watermarks in images/video). DRM uses watermarks to identify unauthorized copies. Native DRM technology."
+  ],
+  "d5_062": [
+    "Trap is B 'shoulder surfing' — observing screens, different attack.",
+    "Trap is C 'dumpster diving' — physical recovery, different attack.",
+    "Trap is D 'impersonation' — identity attack, different mechanism.",
+    "Piggybacking = unauthorized person follows authorized person through controlled access. Each person reading badge at every door = no piggyback opportunity. Direct mitigation."
+  ],
+  "d5_063": [
+    "Trap is A 'piggybacking' — preventable through mantraps, badge readers, awareness.",
+    "Trap is B 'viruses' — preventable through antivirus, patching.",
+    "Trap is D 'unauthorized application shutdown' — preventable through access controls.",
+    "Data diddling = changing data BEFORE entry. Occurs outside the system; no system-based preventive control catches it. Detective controls only (validation, reconciliation)."
+  ],
+  "d5_064": [
+    "Trap is A 'analysis' — comes after preservation.",
+    "Trap is B 'evaluation' — comes after preservation.",
+    "Trap is D 'disclosure' — communication step, comes after preservation.",
+    "Forensic chain: preserve → analyze → evaluate → report. Without preservation, evidence may be inadmissible. Foundational forensic principle."
+  ],
+  "d5_065": [
+    "Trap is A 'revocation/suspension' — CA's core responsibility; not delegated.",
+    "Trap is B 'CA public key generation' — CA's foundational task; not delegated.",
+    "Trap is D 'issuing certificates' — CA's primary function; not delegated.",
+    "Registration Authority (RA) verifies entity identity and links to public key. CA can delegate this to RAs while retaining certificate issuance and lifecycle management."
+  ],
+  "d5_066": [
+    "Trap is A 'brute force' — credential cracking, not service denial.",
+    "Trap is C 'leapfrog' — pivots through hosts, not DoS.",
+    "Trap is D 'negative acknowledgment' — protocol-level, not DoS.",
+    "Ping of death = oversized ping packet crashes target system. Specific DoS technique exploiting packet handling vulnerability. Classic example of malformed-packet DoS."
+  ],
+  "d5_067": [
+    "Trap is B 'support digital signatures' — both ECC and RSA support.",
+    "Trap is C 'simpler key distribution' — same; both face similar key distribution challenges.",
+    "Trap is D 'message integrity' — both achieve same integrity through hashing.",
+    "ECC's key advantage: smaller keys provide same security strength as larger RSA keys. Smaller keys = faster computation. Same security at lower computational cost."
+  ],
+  "d5_068": [
+    "Trap is B 'IDS' — detection, not prevention or confidentiality.",
+    "Trap is C 'PKI' — supports TLS but not standalone control.",
+    "Trap is D 'VPN' — network-level; TLS is application-level for ecommerce.",
+    "TLS provides confidentiality + integrity + authentication for application traffic. Direct ecommerce protection: secure HTTPS sessions with verified server identity."
+  ],
+  "d5_069": [
+    "Trap is A 'password masking' — UI feature, narrow scope.",
+    "Trap is C 'use of encryption' — protects data, doesn't prevent code vulnerabilities.",
+    "Trap is D 'vulnerability testing' — detective; finds bugs after they're written.",
+    "Developer training prevents vulnerabilities from being written in the first place. Cheaper, more effective than finding and fixing afterward. Preventive control at the source."
+  ],
+  "d5_070": [
+    "Trap is A 'server-based only' — narrow; misses endpoints.",
+    "Trap is C 'workstation-based only' — narrow; misses servers.",
+    "Trap is D 'perimeter-based only' — narrow; misses internal threats.",
+    "Enterprise-wide antivirus = layered defense across all entry points. Perimeter + servers + endpoints = comprehensive coverage. Best for interconnected environments."
+  ],
+  "d5_071": [
+    "Trap is A 'enterprise internal network' — already managed network.",
+    "Trap is B 'backup site' — also managed network.",
+    "Trap is D 'remote offices' — managed network locations.",
+    "Third-party employee homes = unmanaged environment. Personal computers, family use, varied security posture. Highest risk endpoints connecting via VPN to enterprise network."
+  ],
+  "d5_072": [
+    "Trap is A 'confidentiality' — encryption provides confidentiality, not signatures.",
+    "Trap is C 'availability' — different security objective.",
+    "Trap is D 'correctness' — too vague; integrity is precise term.",
+    "Digital signatures cryptographically guarantee that signed data hasn't been altered. Single bit change invalidates signature. Direct integrity guarantee."
+  ],
+  "d5_073": [
+    "Trap is B 'masquerading' — modifies/inserts traffic; active.",
+    "Trap is C 'denial-of-service' — disrupts service; active.",
+    "Trap is D 'email spoofing' — sends forged messages; active.",
+    "Passive attack = OBSERVATION without modification. Traffic analysis monitors patterns without altering. No traces of modification, but reveals communication relationships."
+  ],
+  "d5_074": [
+    "Trap is B 'breach notification' — important but evidence preservation enables effective response.",
+    "Trap is C 'escalation to external agencies' — depends on evidence quality.",
+    "Trap is D 'data recovery' — operational concern, secondary.",
+    "Chain of custody preserves evidence integrity. Without it, evidence is inadmissible. Most important consideration for incident management with potential legal consequences."
+  ],
+  "d5_075": [
+    "Trap is A 'system response time' — performance metric, not accuracy.",
+    "Trap is B 'registration time' — process duration, not accuracy.",
+    "Trap is C 'input file size' — storage metric, not accuracy.",
+    "Biometric accuracy measures: FAR (false accept), FRR (false reject), CER (cross-error). FAR is the primary security metric — how often the system accepts the wrong person."
+  ],
+
+  "d5_076": [
+    "Trap is A 'document controls' — comes after risk understanding.",
+    "Trap is B 'test controls' — comes after risk and documentation.",
+    "Trap is C 'evaluate environment vs policy' — comes after risk understanding.",
+    "Risk understanding drives audit scope, depth, and priorities. Without it, the auditor can't tell which controls matter most. Foundation of risk-based audit approach."
+  ],
+  "d5_077": [
+    "Trap is A 'strategies, policies, standards' — supporting context, not the central focus.",
+    "Trap is B 'laws and regulations' — compliance context, not process focus.",
+    "Trap is C 'organizational structure' — describes who, not what they do.",
+    "Business process-driven EA centers on UNDERSTANDING WHAT THE BUSINESS DOES. Core value-adding processes + supporting processes = the business in operational terms. Foundation for IT alignment."
+  ],
+  "d5_078": [
+    "Trap is A 'environmental review' — facility/physical concerns; not router-specific.",
+    "Trap is C 'business continuity' — recovery focus; not security configuration.",
+    "Trap is D 'data integrity' — data-level concern; routers operate at network level.",
+    "Router ACLs control network traffic flow. Security domain. Network security review evaluates routing configuration, ACLs, port restrictions, and traffic flow controls."
+  ],
+  "d5_079": [
+    "Trap is A 'analyzer' — analyzes data after collection.",
+    "Trap is B 'admin console' — management interface.",
+    "Trap is C 'user interface' — human interaction.",
+    "Sensors collect data: network packets, system events, file changes. They feed analyzers. Foundational data collection role in IDS architecture."
+  ],
+  "d5_080": [
+    "Trap is A 'provides public/private key set' — possible service but not the most significant.",
+    "Trap is C 'authoritative source for employee identity' — HR systems do this; PKI works with identity not authoritative for it.",
+    "Trap is D 'authoritative authentication source' — too broad; PKI is one of many authentication mechanisms.",
+    "PKI's foundational function: cryptographically binding subscriber identity to a public key via a digital certificate. The trust chain enables everything else PKI does."
+  ],
+  "d5_081": [
+    "Trap is B 'define encryption algorithm' — algorithm specified separately, not in the digest.",
+    "Trap is C 'confirm originator identity' — that's the signature itself, not the digest.",
+    "Trap is D 'enable digital transmission' — encoding concern, not signature purpose.",
+    "Message digest is a fixed-length hash of the message. Recipient recomputes hash; mismatch = altered message. Direct integrity verification through cryptographic fingerprint."
+  ],
+  "d5_082": [
+    "Trap is A 'registration authority' — verifies identity, doesn't manage lifecycle.",
+    "Trap is C 'CRL' — list of revoked certificates, output of CA management.",
+    "Trap is D 'certification practice statement' — policy document, not the manager.",
+    "CA (certificate authority) issues, manages, revokes, renews certificates. Lifecycle owner. Other PKI components are tools and outputs of CA management."
+  ],
+  "d5_083": [
+    "Trap is B 'digital signature with RSA' — provides integrity/authenticity, not encryption.",
+    "Trap is C 'digital certificates with RSA' — identity verification, not full encryption.",
+    "Trap is D 'TCP services' — network protocol, not security.",
+    "IPsec tunnel mode encrypts the entire IP packet (headers + payload) and authenticates with cryptographic mechanisms. Comprehensive transport-level protection over untrusted networks."
+  ],
+  "d5_084": [
+    "Trap is A 'signer public + receiver private' — backwards.",
+    "Trap is C 'both public' — public-only doesn't enable signing.",
+    "Trap is D 'both private' — private keys are personal; receiver doesn't have signer's private key.",
+    "Signer signs with private key (only they have it). Receiver verifies with signer's public key (anyone has it). Asymmetric foundation: only the holder of private key can produce verifiable signature."
+  ],
+  "d5_085": [
+    "Trap is A 'data integrity' — different feature; signed data hasn't been altered.",
+    "Trap is B 'authentication' — different feature; sender identity verified.",
+    "Trap is D 'replay protection' — different feature; prevents reuse of captured signatures.",
+    "Nonrepudiation = signer cannot later deny signing. Cryptographic proof that only the signer's private key could have produced the signature. Specific to denial prevention."
+  ],
+  "d5_086": [
+    "Trap is A 'dump memory to file' — preserves volatile evidence; appropriate first step.",
+    "Trap is B 'generate disk images' — preserves disk evidence; appropriate.",
+    "Trap is D 'remove from network' — isolates without destroying state.",
+    "Reboot DESTROYS volatile evidence: memory contents, running processes, network connections, open files. Most damaging action during evidence collection. Never reboot before capturing volatile state."
+  ],
+  "d5_087": [
+    "Trap is A 'expired certificates' — concerning but identifiable; users get warnings.",
+    "Trap is C 'same cert for multiple sites' — operational practice, addressable.",
+    "Trap is D '56-bit certificates' — weak crypto; addressable through upgrade.",
+    "Self-signed certificates bypass the CA trust chain entirely. Anyone can create one, including attackers. Users may be conditioned to accept warnings, opening MITM opportunities. Foundational PKI compromise."
+  ],
+  "d5_088": [
+    "Trap is A 'authorized procedures for IDs' — preventive control, not detective.",
+    "Trap is B 'auto logoff after inactivity' — preventive, not detective.",
+    "Trap is C 'auto logoff after failed attempts' — preventive lockout, not detective.",
+    "Monitoring failed logon attempts identifies intrusion attempts in progress. Detection requires active review; without monitoring, attempts go unnoticed. Direct intrusion detection mechanism."
+  ],
+  "d5_089": [
+    "Trap is B 'write-once log monitoring' — detective control, doesn't prevent unauthorized access.",
+    "Trap is C 'similar ID format' — naming convention, not access control.",
+    "Trap is D 'wireless encryption' — protects traffic but not access lifecycle.",
+    "Daily-expiring renewable ID = automatic access termination. Vendor must request continued access daily; vendor leaves and access naturally lapses. Best lifecycle control for short-term external access."
+  ],
+  "d5_090": [
+    "Trap is A 'maintain access logs' — detective; logs activity after access.",
+    "Trap is C 'protect stored data' — confidentiality at rest, separate from access decisions.",
+    "Trap is D 'identify accessing terminals' — accountability after access.",
+    "Authentication + authorization at the gate = preventive control. Access decision happens BEFORE resources are touched. Foundational telecommunication access control."
+  ],
+  "d5_091": [
+    "Trap is A 'shut down system' — destroys evidence; operational disruption.",
+    "Trap is C 'suspend suspect accounts' — auditor doesn't have this authority.",
+    "Trap is D 'investigate independently' — auditor isn't the incident response team.",
+    "Auditor reports to management; management owns incident response. Reporting initiates the proper process with authorized decision-makers. Stay in audit role; escalate appropriately."
+  ],
+  "d5_092": [
+    "Trap is A 'both keys public' — symmetric model, not public key.",
+    "Trap is B 'private encrypt + public decrypt' — that's signing, not encryption.",
+    "Trap is D 'both private' — defeats purpose of public key system.",
+    "Public key encryption: public key encrypts (anyone can do it), private key decrypts (only the holder can). Confidentiality through asymmetric key pair."
+  ],
+  "d5_093": [
+    "Trap is B 'data wrapping' — informal term; not VPN-specific technique.",
+    "Trap is C 'data transformation' — generic processing, not security.",
+    "Trap is D 'data hashing' — integrity, not VPN security mechanism.",
+    "VPN security = encapsulation (tunneling). Original packet encrypted and wrapped in another packet. Tunnel mode provides security across untrusted networks."
+  ],
+  "d5_094": [
+    "Trap is B 'callback modems' — narrow control; doesn't protect data in transit.",
+    "Trap is C 'message authentication' — integrity/auth, doesn't protect confidentiality.",
+    "Trap is D 'dedicated leased lines' — physical isolation, expensive.",
+    "Encryption protects data confidentiality regardless of transmission medium. Most economical and most effective control against interception. Foundational confidentiality control."
+  ],
+  "d5_095": [
+    "Trap is A 'act as another party' — that's spoofing/impersonation.",
+    "Trap is B 'modify transaction contents' — that's tampering, not sniffing.",
+    "Trap is D 'billing system problems' — financial impact, indirect consequence.",
+    "Password sniffing captures credentials in transit. Captured passwords enable attacker to log in as that user. Direct path to gaining access to systems with proprietary information."
+  ],
+  "d5_096": [
+    "Trap is A 'proxy server' — content filtering; one component, narrow scope.",
+    "Trap is B 'firewall installation' — perimeter control; one component.",
+    "Trap is C 'DMZ' — network segmentation; one component.",
+    "VPN provides encrypted tunnel + authentication + remote access for diverse subsystems. Comprehensive remote access security control. Other options are pieces; VPN is the integrated solution."
+  ],
+  "d5_097": [
+    "Trap is A 'biometric + customer's public key' — biometrics aren't typical digital signatures.",
+    "Trap is C 'hash + customer's public key' — wrong direction; private key signs.",
+    "Trap is D 'scanned signature + public key' — image, not cryptographic signature.",
+    "Digital signature = hash of message encrypted with sender's PRIVATE key. Recipient decrypts with sender's PUBLIC key, compares to recomputed hash. Customer signs with their private key."
+  ],
+  "d5_098": [
+    "Trap is B 'users list' — implementation detail.",
+    "Trap is C 'application lists' — implementation detail.",
+    "Trap is D 'backup procedures' — recovery concern, not network audit.",
+    "Wiring/schematic diagram shows the network topology, devices, segments, security boundaries. Foundation for understanding what to audit. First essential document."
+  ],
+  "d5_099": [
+    "Trap is A 'programmers access source code in UAT' — appropriate for testing.",
+    "Trap is B 'documented secondary controls' — good practice, not a concern.",
+    "Trap is C 'security officer doesn't authorize all changes' — depends on policy.",
+    "Programmers + production database = SoD violation. Code authors can manipulate production data without independent oversight. Foundational SoD concern in financial application."
+  ],
+  "d5_100": [
+    "Trap is A 'communication of events' — outcome, not the central purpose.",
+    "Trap is B 'contain DRP costs' — financial concern, narrow.",
+    "Trap is C 'customer notification' — secondary concern.",
+    "IRP minimizes incident impact through structured response. Faster identification, faster containment, faster recovery = less duration, less damage. Direct purpose: minimize impact."
+  ],
+  "d5_101": [
+    "Trap is B 'sender's public, receiver's private' — backwards on both.",
+    "Trap is C 'receiver's private, sender's public' — backwards on both.",
+    "Trap is D 'receiver's public, sender's private' — partially right but encrypts with sender's private (which signs, doesn't encrypt).",
+    "Authenticity = sign with sender's private key (only they have it). Confidentiality = encrypt with receiver's public key (only receiver can decrypt). Both objectives in one operation."
+  ],
+  "d5_102": [
+    "Trap is B 'remote access server' — provides access, not protection from hacking.",
+    "Trap is C 'proxy server' — narrower; web traffic specific.",
+    "Trap is D 'port scanning' — testing tool, not protection.",
+    "Application-level gateway = deep inspection of application traffic. Filters by content, command, and context. Most thorough protection for critical Internet-connected systems."
+  ],
+  "d5_103": [
+    "Trap is B 'dedicated line' — secure but expensive; not economical.",
+    "Trap is C 'leased line' — same; expensive.",
+    "Trap is D 'ISDN' — older technology, expensive.",
+    "VPN over Internet = secure (encryption + authentication) AND economical (uses existing Internet). Best balance of security and cost for SMB private network connectivity."
+  ],
+  "d5_104": [
+    "Trap is B 'users keep passwords confidential' — good security practice; reduces risk.",
+    "Trap is C 'terminals with password protection in insecure locations' — protected by password.",
+    "Trap is D 'small clusters under supervision' — good security model.",
+    "Open network connection points = unauthorized devices can plug in and access network. With known credentials, full network access. Direct unauthorized access vector."
+  ],
+  "d5_105": [
+    "Trap is B 'enforce security policies' — VPN doesn't enforce policies; it secures connections.",
+    "Trap is C 'detect misuse' — different function; that's IDS.",
+    "Trap is D 'regulating access' — that's access control, not VPN.",
+    "VPN encrypts traffic to hide it from sniffers on untrusted networks. Even if traffic is captured, it's unintelligible. Direct anti-sniffing function through encryption + tunneling."
+  ],
+  "d5_106": [
+    "Trap is A 'confidentiality + integrity' — confidentiality requires encryption, not signatures.",
+    "Trap is B 'security + nonrepudiation' — security too vague.",
+    "Trap is D 'confidentiality + nonrepudiation' — same; signatures don't encrypt.",
+    "Digital signatures cryptographically prove integrity (data unchanged) AND nonrepudiation (sender can't deny). Don't provide confidentiality (anyone can read; encryption needed for that)."
+  ],
+  "d5_107": [
+    "Trap is A 'CA not geographically dispersed' — CA centralization is normal.",
+    "Trap is B 'customers transact from any device' — flexibility, not weakness.",
+    "Trap is C 'CA has multiple subcenters' — operational redundancy, not weakness.",
+    "Enterprise owning its own CA = self-signing without independent third-party verification. No external trust anchor; impersonation risk. Customers can't verify legitimately. Foundational PKI weakness."
+  ],
+  "d5_108": [
+    "Trap is A 'digital signatures' — verify integrity but require trusted public key first.",
+    "Trap is B 'asymmetric cryptography' — broader concept, not the identity verification mechanism.",
+    "Trap is D 'message authentication code' — symmetric; both parties share the secret.",
+    "Digital certificates issued by trusted CA establish sender identity. Recipient validates certificate via certificate chain. Foundation of trusted identity in PKI."
+  ],
+  "d5_109": [
+    "Trap is A 'review training program' — paper review; doesn't measure effectiveness.",
+    "Trap is B 'ask security admin' — biased source.",
+    "Trap is D 'review security reminders' — content review, not effectiveness measurement.",
+    "Effectiveness = whether employees actually know/practice security. Direct measurement: ask the employees. Sample interviews reveal real awareness levels."
+  ],
+  "d5_110": [
+    "Trap is A 'report to IS audit' — important but secondary to immediate password change.",
+    "Trap is B 'change DBA account name' — disruptive; password change is sufficient.",
+    "Trap is C 'suspend DBA account' — disrupts DBA operations; password change preserves access.",
+    "Stolen laptop with passwords = passwords compromised. Immediate change closes the window. Time-critical action; everything else can wait."
+  ],
+  "d5_111": [
+    "Trap is B 'internal network design' — affects performance, not DoS susceptibility primarily.",
+    "Trap is C 'router system updates' — patching; addresses known vulnerabilities, not configuration.",
+    "Trap is D 'audit testing' — review activities, not direct DoS contributor.",
+    "Router config + rules control traffic flow. Misconfigurations allow flood traffic, allow spoofed addresses, lack rate limiting. Foundational DoS-enabling weakness."
+  ],
+  "d5_112": [
+    "Trap is B 'message authentication codes' — integrity, not confidentiality.",
+    "Trap is C 'hash function' — integrity, not encryption.",
+    "Trap is D 'digital signature certificates' — authentication, not encryption.",
+    "TLS uses symmetric encryption for data confidentiality (faster than asymmetric). Asymmetric keys negotiate the symmetric session key. Symmetric encryption does the actual data confidentiality work."
+  ],
+  "d5_113": [
+    "Trap is B 'authenticate user' — that's user authentication, different role.",
+    "Trap is C 'prevent hacking' — too broad; certificate is identity, not security solution.",
+    "Trap is D 'same as digital certificate' — true but website cert is specific instance.",
+    "Website certificate authenticates the SITE to the visitor. Verifies the user is connecting to the legitimate site, not an impostor. Phishing/MITM defense through identity verification."
+  ],
+  "d5_114": [
+    "Trap is B 'evaluate authorization' — comes after entry points known.",
+    "Trap is C 'assess identification/authorization' — comes after entry points known.",
+    "Trap is D 'evaluate domain server config' — narrow; one component of access.",
+    "Network access control review starts with: WHERE can someone enter? Identifying entry points scopes the review. Without that map, the review may miss attack surfaces."
+  ],
+  "d5_115": [
+    "Trap is B 'learning vendor protocols' — operational learning curve.",
+    "Trap is C 'updating signatures' — routine maintenance.",
+    "Trap is D 'blocking eligible connections' — that's misconfiguration; addressable.",
+    "False positives = legitimate activity flagged as attack. Investigators waste time on non-incidents; real attacks may be ignored due to alert fatigue. Foundational IDS operational challenge."
+  ],
+  "d5_116": [
+    "Trap is B 'developers gain elevated production access' — VM admin tools don't bypass guest OS auth.",
+    "Trap is C 'affect production performance' — possible but addressable through resource controls.",
+    "Trap is D 'install unapproved apps' — addressable through software policies.",
+    "VM admin console allows creating/destroying VMs. Developers could de-provision production VMs by mistake or maliciously. Foundational risk of broad VM admin access."
+  ],
+  "d5_117": [
+    "Trap is A 'developers update access to production data' — concerning but bounded by use case.",
+    "Trap is C 'change control knows app password' — appropriate for change deployment.",
+    "Trap is D 'no strong passwords' — concerning but narrow.",
+    "Debugging tool in production = developer can step through code AND modify variables/data live. Direct, untraceable production data manipulation. Foundational SoD violation through tooling."
+  ],
+  "d5_118": [
+    "Trap is A 'IDS reports incidents' — detective control, not awareness.",
+    "Trap is B 'mandate passwords' — technical control, not awareness.",
+    "Trap is C 'user log system' — detective monitoring, not awareness.",
+    "Awareness program = training + reminders + reinforcement. Regular training builds and maintains awareness. Foundational awareness mechanism."
+  ],
+  "d5_119": [
+    "Trap is B 'network IDS' — detection only; rootkit installs before detection.",
+    "Trap is C 'firewall' — perimeter; doesn't prevent compromise on web-facing server.",
+    "Trap is D 'OS patching' — closes known vulnerabilities; can't prevent zero-days.",
+    "Host-based IPS prevents unauthorized changes on the host. Rootkit installation requires file changes; HIPS blocks them. Direct prevention at the affected layer."
+  ],
+  "d5_120": [
+    "Trap is A 'provide secure communication' — that's a USE of certificates, not CA's role.",
+    "Trap is B 'host repository with secret keys' — CA stores public keys, never private/secret keys.",
+    "Trap is C 'trusted intermediary' — CA verifies identity; intermediary role describes communication, not identity.",
+    "CA's primary role: verify entity identity AND issue certificate binding identity to public key. Trust originates here; everything else builds on this verification."
+  ],
+  "d5_121": [
+    "Trap is A 'targeted testing' — both sides aware, cooperating; doesn't test surprise response.",
+    "Trap is B 'internal testing' — origin location, not awareness.",
+    "Trap is D 'external testing' — origin location, not awareness.",
+    "Double-blind testing keeps the target's IR team unaware. Real-time response to unexpected attack tested. Direct evaluation of incident handling capability under realistic surprise conditions."
+  ],
+  "d5_122": [
+    "Trap is A 'alert appropriate staff' — happens after logging.",
+    "Trap is C 'close firewall-2' — premature reactive action without confirmation.",
+    "Trap is D 'close firewall-1' — premature reactive action.",
+    "IDS first action: log the event. Logs preserve evidence for investigation; alerts and actions follow based on event analysis. Logging is foundational and instantaneous."
+  ],
+  "d5_123": [
+    "Trap is B 'default password on analog phone switch' — VoIP doesn't use analog switches.",
+    "Trap is C 'VLANs without encryption' — VLANs separate but encryption not required for L2.",
+    "Trap is D 'packet sniffer access' — software tools don't enable ARP attacks alone.",
+    "ARP cache poisoning makes Ethernet switches forward packets to wrong destinations. Some switches respond by flooding directed traffic to all ports. VoIP packets become observable. Direct eavesdropping enabler."
+  ],
+  "d5_124": [
+    "Trap is B 'between Internet and firewall' — sees pre-firewall traffic; not specifically post-firewall undetected attacks.",
+    "Trap is C 'between Internet and web server' — bypass scenario, narrow.",
+    "Trap is D 'between web server and firewall' — wrong location for detecting attacks past firewall.",
+    "Network IDS between firewall and internal network sees traffic that PASSED through the firewall. Attacks the firewall couldn't recognize and let through become visible to the IDS. Direct detection of firewall blind spots."
+  ],
+  "d5_125": [
+    "Trap is A 'EPO button cover missing' — risk of accidental power-off, addressable.",
+    "Trap is B 'fire suppression maintenance' — concerning but addressable.",
+    "Trap is C 'no security cameras' — surveillance gap, addressable.",
+    "Blocked emergency exit = life-safety risk. People can't escape during emergency. Always highest priority; equipment, data, security all secondary to human safety."
+  ],
+  "d5_126": [
+    "Trap is A 'understanding technical controls' — useful but doesn't drive classification.",
+    "Trap is C 'use of DLP tool' — technology, not classification capability.",
+    "Trap is D 'understanding access needs' — drives access decisions, not classification.",
+    "Classification policy/standards define HOW to classify (criteria, levels, treatment). Owner training on these enables consistent classification across the org. Knowledge prerequisite for classification work."
+  ],
+  "d5_127": [
+    "Trap is A 'detailed logging' — detective only; doesn't prevent unauthorized modification.",
+    "Trap is C 'strong password policy' — addresses login, not authorization.",
+    "Trap is D 'regular access review' — detective; reviews after the fact.",
+    "Common access profile = no SoD; everyone can do everything. Customizing profiles per job = preventive control. System enforces what each user can do. Foundational access design fix."
+  ],
+  "d5_128": [
+    "Trap is B 'cost analysis' — financial concern, not security.",
+    "Trap is C 'vendor reputation' — qualitative, not security-specific.",
+    "Trap is D 'performance impact' — operational concern.",
+    "Data classification drives applicable laws (GDPR, HIPAA, CCPA), encryption requirements, location restrictions, retention rules. Foundational security consideration for cloud-bound data."
+  ],
+  "d5_129": [
+    "Trap is A 'key distribution center' — Kerberos infrastructure; not for small groups.",
+    "Trap is B 'certificate authority' — formal third-party trust; overkill for small group.",
+    "Trap is D 'Kerberos' — large-scale enterprise infrastructure.",
+    "Web of trust = decentralized trust through mutual signing. PGP-style. Suitable for small, communicating groups where members can vouch for each other. Lightweight model for limited scale."
+  ],
+  "d5_130": [
+    "Trap is B 'appoint cyber forensics' — typically pre-arranged; activated through team.",
+    "Trap is C 'execute BCP' — broader plan; incident response activates first.",
+    "Trap is D 'preserve evidence' — done by the activated team.",
+    "Activate the team that already exists with procedures, authority, and tools. They contain, investigate, recover, and preserve evidence. Activation is the trigger for all coordinated response."
+  ],
+  "d5_131": [
+    "Trap is A 'war dialing' — older technique; targets phone modems, not wireless.",
+    "Trap is B 'social engineering' — human-based, not wireless-specific.",
+    "Trap is D 'password cracking' — credential attack, not wireless discovery.",
+    "War driving = driving with wireless equipment to discover networks. Maps wireless coverage, signal strength, encryption status. Reveals branch office wireless security from outside the building."
+  ],
+  "d5_132": [
+    "Trap is B 'signature-based' — known patterns; rarely false positives but misses novel attacks.",
+    "Trap is C 'neural network' — adaptive; tunable to reduce false positives over time.",
+    "Trap is D 'host-based' — IDS deployment location, not detection method.",
+    "Statistical IDS flags deviations from baseline. Normal activity has variance (busy days, special events). Variance triggers false positives until baseline tunes. Foundational tradeoff of behavior-based detection."
+  ],
+  "d5_133": [
+    "Trap is B 'integrity if main power interrupted' — UPS/generator role, not voltage regulator.",
+    "Trap is C 'immediate power if main lost' — UPS role, not voltage regulator.",
+    "Trap is D 'long-term fluctuations' — different equipment for sustained issues.",
+    "Voltage regulators smooth out short-term spikes and dips in incoming power. Protect equipment from surge damage. Specific function: voltage stability."
+  ],
+  "d5_134": [
+    "Trap is A 'implementation' — comes after baseline is sufficient.",
+    "Trap is B 'compliance' — measures against baseline; baseline must be adequate first.",
+    "Trap is C 'documentation' — formality; sufficiency is substance.",
+    "If the baseline itself is inadequate, complete compliance with it still leaves gaps. Auditor first verifies the baseline meets security requirements. Foundation must be sound before auditing operational alignment."
+  ],
+  "d5_135": [
+    "Trap is B 'surge protection' — handles voltage spikes, not power reductions.",
+    "Trap is C 'alternative power supplies' — backup for outages, not short reductions.",
+    "Trap is D 'interruptible power' — that's UPS for outages.",
+    "Power-line conditioners smooth out short-term peaks AND valleys in power supply. Address brief reductions (brownouts) by conditioning the power flow. Direct fit for short-term reduction protection."
+  ],
+  "d5_136": [
+    "Trap is A 'halon and ozone' — environmental concern, not life safety.",
+    "Trap is C 'CO2 ineffective on paper' — secondary effectiveness issue.",
+    "Trap is D 'remove documentation' — housekeeping, not the highest risk.",
+    "Both CO2 and halon displace oxygen — using either in a windowless closed room threatens human life by suffocation. Life safety always trumps property/environmental issues. HIGHEST priority is the safety-of-life finding."
+  ],
+  "d5_137": [
+    "Trap is B 'BCP cannot test access' — irrelevant to physical access risk.",
+    "Trap is C 'cards easily duplicated' — true but not the primary card-key risk in practice.",
+    "Trap is D 'removing access is complex' — administrative inconvenience, not a risk.",
+    "Tailgating (piggybacking) is the classic card-key control failure: an authorized open door admits anyone walking behind. Card readers can't enforce one-person-per-swipe without mantraps/turnstiles. Top physical-control risk on the exam."
+  ],
+  "d5_138": [
+    "Trap is B 'EER' — overall accuracy measure, not high-security focus.",
+    "Trap is C 'FRR' — inconvenience risk (rejecting valid users), not security risk.",
+    "Trap is D 'FIR' — distractor; not the standard security-focused metric.",
+    "FAR (false acceptance) lets unauthorized people in — the security failure. For 'extremely high security,' FAR is the metric to minimize even at the cost of FRR. FAR = security; FRR = usability."
+  ],
+  "d5_139": [
+    "Trap is B 'system administrators' — they need it for their job.",
+    "Trap is C 'business users' — typically have only application-level access.",
+    "Trap is D 'information security team' — oversight role, expected access.",
+    "Application developers with full production database access break SoD between development and operations — they could change live data, hide fraud, or test in production. Classic SoD violation. Expected answer for 'most concern.'"
+  ],
+  "d5_140": [
+    "Trap is A 'FRR' — single dimension of accuracy.",
+    "Trap is B 'FAR' — single dimension of accuracy.",
+    "Trap is D 'estimated error rate' — distractor; not a real biometric metric.",
+    "EER (equal error rate / cross-over rate) is where FAR equals FRR — the BEST overall quantitative measure because lower EER = better device overall. Single number summarizing accuracy. Memorize: EER = best overall."
+  ],
+  "d5_141": [
+    "Trap is B 'visitor badges' — identification, not access control.",
+    "Trap is C 'visitors sign in' — accountability log, not control.",
+    "Trap is D 'spot-checks' — sampling, not consistent.",
+    "Escorting visitors at all times is the only control that physically prevents them from going anywhere unauthorized. Continuous supervision beats identification or logging. MOST effective for sensitive areas like data centers."
+  ],
+  "d5_142": [
+    "Trap is B 'issues the certificate' — that's the certificate authority (CA), not the RA.",
+    "Trap is C 'digitally signs message' — that's the user/sender, not the RA.",
+    "Trap is D 'registers signed messages' — distractor; not an RA function.",
+    "Registration Authority verifies the identity/information of the certificate requester before forwarding to the CA. RA = identity vetting; CA = certificate issuing. Memorize the split: RA verifies, CA issues."
+  ],
+  "d5_143": [
+    "Trap is A 'MAC restriction' — MAC addresses can be spoofed; not encryption.",
+    "Trap is B 'static keys' — easier to compromise; once known, all sessions exposed.",
+    "Trap is D 'encrypted storage on device' — protects data at rest, not in transit.",
+    "Dynamic encryption keys (per-session) provide forward secrecy — even if one key is compromised, other sessions remain protected. Best practice for WLAN confidentiality. Think WPA2/WPA3 vs WEP."
+  ],
+  "d5_144": [
+    "Trap is A 'bastion host' — hardened gateway, not security-strengthening intel.",
+    "Trap is B 'IDS' — detects known attacks, doesn't reveal new attacker techniques.",
+    "Trap is D 'IPS' — blocks attacks, doesn't gather intelligence on attacker behavior.",
+    "Honeypots are decoy systems that capture attacker tools, techniques, and procedures — providing proactive intelligence to harden real systems. IDS/IPS react; honeypots gather forward-looking intel. Most relevant for proactive strengthening."
+  ],
+  "d5_145": [
+    "Trap is A 'walk-through review' — talk-through, less effective than hands-on practice.",
+    "Trap is C 'user awareness training' — helps prevention, not response improvement.",
+    "Trap is D 'documenting responses' — records what happened, doesn't improve future response.",
+    "Simulation exercises (tabletops, live drills) repeatedly stress-test the IR team and uncover real procedural gaps — driving long-term improvement. Practice beats reading. Mirrors real BCP/DRP testing principle."
+  ],
+  "d5_146": [
+    "Trap is A 'high false-positives' — annoying but doesn't miss real attacks.",
+    "Trap is C 'performance downgrade' — operational concern, not security gap.",
+    "Trap is D 'default settings' — concern but not the worst.",
+    "Low coverage means real attacks pass undetected — the IDS is blind to portions of traffic. False negatives are worse than false positives. Detection failure > nuisance."
+  ],
+  "d5_147": [
+    "Trap is A 'logic bombs' — triggered by conditions on infected systems, not DDoS.",
+    "Trap is B 'phishing site' — credential harvesting, not DDoS.",
+    "Trap is C 'spyware' — surveillance, not coordinated flood attacks.",
+    "Botnets — networks of compromised hosts under attacker C2 — generate the distributed traffic that defines DDoS. The 'D' in DDoS literally requires distributed attackers = bots. Direct definitional answer."
+  ],
+  "d5_148": [
+    "Trap is B 'confidentiality' — that's encryption, not signatures.",
+    "Trap is C 'workload on gateways' — true side-effect but not the purpose/benefit.",
+    "Trap is D 'reduce bandwidth' — incorrect; signatures add minimal overhead.",
+    "Digital signatures verify sender identity and message integrity — flagging email from unauthorized/spoofed senders. Signatures = authenticity; encryption = confidentiality. Don't conflate."
+  ],
+  "d5_149": [
+    "Trap is A 'connectionless integrity' — AH provides this too.",
+    "Trap is B 'data origin authentication' — AH provides this too.",
+    "Trap is C 'antireplay' — AH provides this too.",
+    "ESP's distinguishing feature over AH is confidentiality (encryption of payload). AH only authenticates; ESP authenticates AND encrypts. ESP wins when you need data hidden, not just verified."
+  ],
+  "d5_150": [
+    "Trap is A 'port scanning' — applies to wired too; not WLAN-specific.",
+    "Trap is B 'back door' — application/code-level risk; not wireless-specific.",
+    "Trap is C 'man-in-the-middle' — possible but war-driving is the wireless-specific addition.",
+    "War driving — physically searching for unsecured WLANs from outside — is uniquely enabled by adopting wireless. Physical perimeter no longer contains the attack surface. The new wireless-only risk."
+  ],
+  "d5_151": [
+    "Trap is A 'virus infection' — possible but secondary; controlled by AV.",
+    "Trap is C 'network performance' — bandwidth concern, not security.",
+    "Trap is D 'unauthorized software' — license/policy issue, not data risk.",
+    "P2P file sharing exposes designated folders to external peers — confidential data unintentionally shared with the world is the GREATEST concern. Data leakage / breach risk. Unauthorized sharing = the headline P2P risk."
+  ],
+  "d5_152": [
+    "Trap is B 'authentication' — important but not VoIP-specific primary concern.",
+    "Trap is C 'voice privacy' — VPN tunneling already provides confidentiality.",
+    "Trap is D 'data confidentiality' — VPN handles; not the new VoIP issue.",
+    "VoIP demands real-time, low-latency packet delivery — quality of service (QoS) and reliability are the PRIMARY VPN-tunneling concern because tunneling adds overhead/jitter. Voice is delay-sensitive; data is not."
+  ],
+  "d5_153": [
+    "Trap is A 'rule-based' — patterns may match legitimate mail; false positives common.",
+    "Trap is C 'heuristic' — guesses based on traits; high false-positive rate.",
+    "Trap is D 'statistic-based' — Bayesian; depends on training, false-positives possible.",
+    "Checksum-based filtering computes hashes of known spam — only matches identical messages. Lowest false positives because matches are exact. Tradeoff: misses variants (high false negatives)."
+  ],
+  "d5_154": [
+    "Trap is A 'CRL' — list of revoked certificates; the output, not the procedure document.",
+    "Trap is C 'certificate policy' — high-level rules for what certs are good for.",
+    "Trap is D 'PKI disclosure statement' — summary for relying parties.",
+    "Certification Practice Statement (CPS) describes operational procedures of the CA — including how compromised keys are revoked. CP = what; CPS = how. The 'how-to' document for revocation."
+  ],
+  "d5_155": [
+    "Trap is B 'brute force' — guessing iteratively; not residual data.",
+    "Trap is C 'cryptographic' — algorithm/key attacks.",
+    "Trap is D 'mimic' — synthesizing fake biometric; different from replaying captured data.",
+    "Replay attack reuses captured biometric data (fingerprint smudge, residual sensor data) to authenticate later. Replaying recorded credential = replay. Classic exam pattern for biometric residual data."
+  ],
+  "d5_156": [
+    "Trap is B 'document in audit report' — premature; need to evaluate first.",
+    "Trap is C 'recommend procedure update' — premature; analysis comes first.",
+    "Trap is D 'discuss with senior management' — escalation before fact-finding.",
+    "Auditor first determines whether compensating controls (logging, monitoring, review) mitigate the privileged-access risk. Excessive privilege isn't always a finding if compensated. Investigate before reporting."
+  ],
+  "d5_157": [
+    "Trap is A 'DoS' — disrupts availability; doesn't bypass auth.",
+    "Trap is C 'key logging' — captures one factor (password); 2FA defends against this.",
+    "Trap is D 'brute force' — too slow against rate-limiting and account lockout.",
+    "MITM intercepts the entire 2FA exchange in real time — relaying both factors to the legitimate site (real-time phishing/proxy). 2FA's known weakness. The classic 2FA-defeating attack."
+  ],
+  "d5_158": [
+    "Trap is B 'encryption' — provides confidentiality, not sender identity.",
+    "Trap is C 'compression' — size reduction, not authentication.",
+    "Trap is D 'password protection' — protects file access, not sender identity.",
+    "Digital signatures bind message to sender's private key — recipient verifies sender identity using sender's public key. Signature = authentication; encryption = confidentiality. Memorize the split."
+  ],
+  "d5_159": [
+    "Trap is A 'SSO' — convenience for already-authenticated users; doesn't strengthen auth.",
+    "Trap is B 'password complexity' — single factor; insufficient over Internet.",
+    "Trap is D 'IP restriction' — easily spoofed; not authentication of users.",
+    "MFA (something you know + have/are) provides strong authentication of remote users over untrusted Internet. Single-factor over the Internet is insufficient for outsourced production support. Best assurance of authorized identity."
+  ],
+  "d5_160": [
+    "Trap is A 'secret key encryption' — needs key exchange/management framework.",
+    "Trap is B 'dynamic IP/port' — obscurity, not security.",
+    "Trap is C 'hash functions' — provide integrity, not confidentiality.",
+    "VPN tunnel provides encrypted, authenticated, integrity-protected channel for all traffic between sites — the standard secure-transmission control. Bundle of confidentiality + integrity + authentication. Best transmission-security answer."
+  ],
+  "d5_161": [
+    "Trap is A 'restrict access to confidential files' — that's access control, not DLP.",
+    "Trap is B 'destruction attempts' — DLP focuses on exfiltration, not destruction.",
+    "Trap is C 'block external access in' — that's a firewall, not DLP.",
+    "DLP monitors and controls confidential data leaving the network (egress) — email, USB, cloud upload. PRIMARY purpose is preventing data exfiltration. 'Data loss' = data leaving."
+  ],
+  "d5_162": [
+    "Trap is A 'post-implementation testing' — detective, after the fact.",
+    "Trap is C 'user requirements validation' — happens upstream, doesn't control deployment.",
+    "Trap is D 'UAT' — happens before deployment; doesn't control programmer access.",
+    "Registering and reviewing changes pushed by programmers creates an audit trail with management oversight — compensating control when SoD isn't possible in small enterprise. Detective-with-review compensates for missing SoD. Standard small-org control."
+  ],
+  "d5_163": [
+    "Trap is B 'increased latency' — UDP is faster than TCP, not slower.",
+    "Trap is C 'no broadcast' — UDP supports broadcast/multicast.",
+    "Trap is D 'error correction slows it' — UDP has no error correction.",
+    "UDP is connectionless: no sequencing, no guaranteed delivery — packets may arrive out of order or not at all. TCP guarantees order; UDP does not. Classic TCP/UDP exam contrast."
+  ],
+  "d5_164": [
+    "Trap is A 'two-factor authentication' — proves who, not what they did.",
+    "Trap is B 'digital certificate' — identity, not activity tracking.",
+    "Trap is D 'SSO' — convenience, doesn't track actions.",
+    "Audit trails record user actions on sensitive data — the only control that establishes accountability for what users actually did. Authentication = identity; audit trail = accountability for actions. Memorize the split."
+  ],
+  "d5_165": [
+    "Trap is B 'not suitable for small networks' — incorrect; static IPs are fine for small.",
+    "Trap is C 'auto-IP to anyone' — that's what DHCP DOES; disabling it stops that.",
+    "Trap is D 'increases WEP risk' — false; unrelated.",
+    "Disabling DHCP forces would-be intruders to manually configure correct IP/subnet/gateway — extra hurdle reducing casual unauthorized access. Defense in depth, weak but real. Obscurity supplementing authentication."
+  ],
+  "d5_166": [
+    "Trap is B 'all signed policy' — formality; doesn't measure awareness.",
+    "Trap is C 'attended a session' — attendance, not learning.",
+    "Trap is D 'in job descriptions' — documentation, not behavior.",
+    "Behavior change — employees actively reporting incidents — is the outcome that proves awareness has translated into vigilance. Effectiveness = behavior, not paperwork. Output measure beats input/activity."
+  ],
+  "d5_167": [
+    "Trap is B 'VLAN segmentation' — logical separation; bypassable via misconfiguration.",
+    "Trap is C 'dedicated router' — routes between networks; doesn't truly separate.",
+    "Trap is D 'firewall between' — filters; possible to misconfigure or bypass.",
+    "Two physically separate (air-gapped) networks provide the strongest separation — no electronic path exists for cross-network attack. When segregating sensitive from general-purpose, physical wins. Highest assurance level."
+  ],
+  "d5_168": [
+    "Trap is B 'controls for all assets' — over-broad; not all assets need same controls.",
+    "Trap is C 'assist risk assessment' — secondary use, not primary control objective.",
+    "Trap is D 'identify insurable assets' — financial, not control purpose.",
+    "Classification establishes guidelines — what level of access controls each tier requires (public, internal, confidential, secret). PRIMARY control purpose = drive proportionate protection. Classification → controls."
+  ],
+  "d5_169": [
+    "Trap is A 'evaluate encryption' — too narrow; comes after scoping access points.",
+    "Trap is C 'identity management' — comes after defining where access happens.",
+    "Trap is D 'application access controls' — comes after network-level scoping.",
+    "Identifying network access points FIRST defines the audit scope — where users/devices can connect. Without knowing entry points, can't evaluate downstream controls. Top-down audit approach."
+  ],
+  "d5_170": [
+    "Trap is B 'broadcast destination' — different attack (smurf-style), not spoofing.",
+    "Trap is C 'reset flag' — TCP control flag, not spoofing-related.",
+    "Trap is D 'OSPF/dynamic routing' — routing config, not spoofing indicator.",
+    "Source routing lets the sender dictate the packet path — used by attackers to bypass filters and force return traffic to a spoofed source. Drop source-routed packets to defeat IP spoofing. Standard hardening rule."
+  ],
+  "d5_171": [
+    "Trap is B 'firewall IP allow' — IPs can be spoofed; not strongest.",
+    "Trap is C 'two-factor auth' — protects credentials but Telnet still cleartext.",
+    "Trap is D 'nonstandard port' — security through obscurity.",
+    "Point-to-point leased line removes Internet exposure entirely — private dedicated circuit. Strongest security = no public network involved. Air-gap-equivalent at network level."
+  ],
+  "d5_172": [
+    "Trap is A 'monitor failed attempts' — detective, after compromise attempt.",
+    "Trap is B 'review log files' — detective.",
+    "Trap is C 'deactivate unused accounts' — good practice but not the SSO-specific risk.",
+    "SSO multiplies the value of a single password — one credential unlocks everything. Strong password policy is the MOST important preventive compensating control. SSO amplifies password risk."
+  ],
+  "d5_173": [
+    "Trap is A 'sensors outside firewall' — by design for early warning.",
+    "Trap is C 'signature-based weak vs new' — known limitation; expected.",
+    "Trap is D 'detect encrypted traffic' — IDS limitation; expected.",
+    "Behavior-based IDS with many false positives causes alert fatigue — real attacks get ignored. Tunable problem; needs immediate attention. Most concerning operational issue for the auditor."
+  ],
+  "d5_174": [
+    "Trap is A 'encrypts transmission' — that's the cipher/protocol, not directory server.",
+    "Trap is C 'password policy' — user authentication system, not PKI directory.",
+    "Trap is D 'stores CRLs' — possible function but secondary; primary is publishing certs.",
+    "Directory server publishes user public-key certificates so applications can find and use them for encryption/signature verification. Like a phone book for certificates. Core PKI distribution component."
+  ],
+  "d5_175": [
+    "Trap is A 'wet pipe' — risk to electronics but standard with proper design.",
+    "Trap is B 'rented rack space' — operational/contractual issue, not greatest.",
+    "Trap is D '10-min UPS' — short but standard for bridge to generator.",
+    "CO2 fire suppression in occupied NOC threatens human life by oxygen displacement — operations staff present makes this the GREATEST concern. Life safety > equipment protection. Same theme as d5_136."
+  ],
+  "d5_176": [
+    "Trap is A 'IT strategies and policies' — outputs of governance, not the focus.",
+    "Trap is B 'IT processes and procedures' — process maturity, not governance.",
+    "Trap is D 'IT standards and frameworks' — tools used by governance.",
+    "Capability/maturity modeling primarily targets IT governance — measuring how well IT is governed across processes and accountability. Maturity models = governance maturity. Top-of-stack focus."
+  ],
+  "d5_177": [
+    "Trap is A 'updating metadata' — administrative housekeeping.",
+    "Trap is B 'reviewing existing access' — review, but approval is the upstream gap.",
+    "Trap is D 'removing terminated users' — handled by HR/IAM workflow.",
+    "Without an owner, no one is responsible for approving who joins the security group — access decisions become orphaned. Owner = approval authority. PRIMARY accountability gap is unauthorized addition of users."
+  ],
+  "d5_178": [
+    "Trap is A 'measure current maturity' — output of using the model, not the goal.",
+    "Trap is B 'prioritize improvements' — downstream use.",
+    "Trap is C 'gain management commitment' — benefit, not primary goal.",
+    "Maturity models exist to enable stakeholders to identify strengths AND areas for improvement — the foundational purpose. Diagnostic tool for gap analysis. PRIMARY = stakeholder visibility into where to invest."
+  ],
+  "d5_179": [
+    "Trap is B 'preventing DoS' — IDS detects, doesn't prevent; IPS does.",
+    "Trap is C 'identifying messages to quarantine' — that's an antivirus/email function.",
+    "Trap is D 'minimizing rejection errors' — irrelevant; IDS doesn't reject traffic.",
+    "Placement (network architecture location) determines what traffic the IDS can see — wrong placement = blind spots. Visibility before tuning. Most important install-time decision."
+  ],
+  "d5_180": [
+    "Trap is A 'senior mgmt awareness' — leadership awareness, not program-wide.",
+    "Trap is C 'adequate funding' — input, not effectiveness measure.",
+    "Trap is D 'no incidents' — absence of evidence ≠ effectiveness.",
+    "Job descriptions with security accountability statements operationalize awareness — every employee knows what they're responsible for. Embedded in role definition = sustained awareness. BEST adequacy criterion."
+  ],
+  "d5_181": [
+    "Trap is B 'encryption' — confidentiality, not authorization proof.",
+    "Trap is C 'authentication' — identifies but doesn't tie to a specific transaction.",
+    "Trap is D 'integrity' — proves not altered, not who authorized.",
+    "Nonrepudiation — via digital signature with private key — proves the customer authorized the specific transaction and can't deny it. Signature = nonrepudiation = authorization proof. Direct PKI mapping."
+  ],
+  "d5_182": [
+    "Trap is A 'fine-grained' — admin overhead too high for VoIP at scale.",
+    "Trap is C 'ACLs' — flat lists; hard to maintain.",
+    "Trap is D 'network/service-level' — too coarse for application-level user actions.",
+    "Role-based access control (RBAC) groups users by function — VoIP users, admins, operators — making management scalable and aligned with job duties. Best balance of granularity and maintainability. Standard answer for 'large enterprise security management.'"
+  ],
+  "d5_183": [
+    "Trap is A 'unauthorized user with shared ID' — possible but downstream of accountability.",
+    "Trap is B 'time consuming' — operational nuisance, not greatest risk.",
+    "Trap is D 'passwords easily guessed' — separate password-policy issue.",
+    "Shared accounts destroy individual accountability — can't tie an action to a specific person. Audit trail becomes useless. The defining shared-account risk on the exam."
+  ],
+  "d5_184": [
+    "Trap is A 'access control servers' — auth function, not perimeter DoS defense.",
+    "Trap is C 'backbone gateways' — handle routing, not VoIP-specific session control.",
+    "Trap is D 'IDS' — detects, doesn't prevent; not the VoIP perimeter.",
+    "Session Border Controllers (SBCs) sit at the VoIP network edge — providing rate limiting, topology hiding, and DoS protection for SIP/RTP. VoIP equivalent of a firewall at the perimeter. Secure SBC = secure VoIP edge."
+  ],
+  "d5_185": [
+    "Trap is A 'password encryption' — protects in transit, not against impersonation.",
+    "Trap is B 'specific terminal' — inconvenient and bypassable for online banking.",
+    "Trap is D 'periodic log review' — detective, after-the-fact.",
+    "MFA — something you know + something you have/are — defeats credential-only impersonation that drives identity theft. Two factors block single-credential compromise. BEST identity-theft defense for online banking."
+  ],
+  "d5_186": [
+    "Trap is A 'encrypted mail' — protects content in transit; doesn't stop sending sensitive data out.",
+    "Trap is B 'training' — preventive but doesn't enforce; humans still err.",
+    "Trap is C 'activity monitoring' — detective; sees it after it leaves.",
+    "DLP inspects outbound email and blocks sensitive content from being sent — direct technical remediation for the exact behavior observed. Training/monitoring help, but DLP enforces at the boundary. BEST control for confidential-data exfiltration."
+  ],
+  "d5_187": [
+    "Trap is A 'IDS' — detects and alerts; does not block.",
+    "Trap is B 'honeypot' — diverts and observes; doesn't block.",
+    "Trap is D 'security scanner' — finds vulnerabilities; doesn't block attacks.",
+    "IPS = Intrusion PREVENTION = inline blocking of detected attacks. The 'P' is the differentiator from IDS. Memorize: IPS prevents/blocks, IDS only detects."
+  ],
+  "d5_188": [
+    "Trap is B 'fail-safe mode' — alters state, may destroy evidence.",
+    "Trap is C 'disconnect from network' — contains the attack but loses volatile evidence.",
+    "Trap is D 'shut down' — destroys volatile memory immediately, evidence lost.",
+    "Volatile memory (RAM) holds attacker tools, processes, network connections — capture FIRST before any state-changing action. Forensic priority: collect volatile evidence before containment. Order of volatility principle."
+  ],
+  "d5_189": [
+    "Trap is A 'IDS' — detects malicious traffic, not phishing emails.",
+    "Trap is B 'security assessment' — identifies vulnerabilities; doesn't change user behavior.",
+    "Trap is C 'strong auth' — defends post-credential-theft, not against the trick itself.",
+    "Phishing exploits human judgment — user education is the only control that addresses the root cause. Tech controls help, but humans are the target. BEST phishing mitigation = train the target."
+  ],
+  "d5_190": [
+    "Trap is A 'exit interview' — HR formality.",
+    "Trap is B 'handover for continuity' — operational, not security-critical.",
+    "Trap is D 'sign termination paperwork' — administrative.",
+    "Terminating logical access for a key developer with knowledge/grudge potential is the MOST important — prevents sabotage or data theft via retained credentials. Access removal at exit = top exam priority. Insider risk peaks at separation."
+  ],
+  "d5_191": [
+    "Trap is A 'message modification' — active attack; alters data.",
+    "Trap is B 'masquerading' — active attack; impersonates.",
+    "Trap is C 'DoS' — active attack; disrupts service.",
+    "Traffic analysis — observing patterns/volumes without altering traffic — is passive. Active = changes something; passive = only observes. Memorize: only one passive option will appear among actives."
+  ],
+  "d5_192": [
+    "Trap is A 'computer error' — machines aren't tricked, people are.",
+    "Trap is C 'expertise' — attacker may use any skill level.",
+    "Trap is D 'technology' — social engineering bypasses tech, exploits humans.",
+    "Social engineering succeeds through judgment errors — humans make wrong trust decisions. Root cause is human reasoning failure. Tech can't fix bad judgment."
+  ],
+  "d5_193": [
+    "Trap is A 'local network' — too far inside; misses external attacks.",
+    "Trap is B 'outside firewall' — would be overwhelmed by Internet noise.",
+    "Trap is D 'on the host' — host-based, not network-based.",
+    "DMZ placement lets the IDS see traffic that has passed the firewall but is heading to public-facing servers — the right zone for monitoring real threats to the website. Network-based IDS goes where the meaningful traffic is filtered. DMZ = standard placement."
+  ],
+  "d5_194": [
+    "Trap is B 'physical resources' — capacity planning, not avail/conf.",
+    "Trap is C 'admin training' — operational, not control.",
+    "Trap is D 'VM in DR plan' — availability piece but narrower than hardening.",
+    "Hardened server configuration is the foundation — VM hosts run multiple guests, so any unhardened surface compromises both availability and confidentiality across all VMs. Hypervisor/host hardening = root of trust. MOST important VM control."
+  ],
+  "d5_195": [
+    "Trap is B 'identification' — identity claim, not hash function.",
+    "Trap is C 'authorization' — permission decisions, not hashing.",
+    "Trap is D 'encryption' — reversible; hashes are one-way.",
+    "Hash functions support authentication — message integrity, password verification, digital signatures all use hashes to confirm authenticity. Hashes verify, not encrypt. Most common auditor encounter is in auth flows."
+  ],
+  "d5_196": [
+    "Trap is B 'incoming spoofed source' — defends YOU, not against being amplifier.",
+    "Trap is C 'IP options set' — old hardening but not amplification-specific.",
+    "Trap is D 'incoming to critical hosts' — internal protection, not amplification.",
+    "Egress filtering — drop outgoing packets with non-internal source addresses — prevents your network being used as DDoS amplifier (your hosts can't spoof external sources). Egress source-validation = anti-amplification. BCP38."
+  ],
+  "d5_197": [
+    "Trap is B 'toxic gases' — that's HVAC/positive pressure, not mantraps.",
+    "Trap is C 'starve fire of oxygen' — that's gas suppression.",
+    "Trap is D 'rapid movement' — physical effect, but PRIMARY purpose is access control.",
+    "Mantrap (two doors with interlock) lets one authorized person enter at a time — directly preventing piggybacking/tailgating. Single-person verified entry. The defining mantrap purpose."
+  ],
+  "d5_198": [
+    "Trap is A 'workstation upgrades' — typically not required for SaaS.",
+    "Trap is B 'higher long-term cost' — financial concern, not audit-control concern.",
+    "Trap is C 'no onsite support' — SaaS by nature is remote-supported.",
+    "Undefined incident-handling procedures with the SaaS provider create gaps when breaches occur — who responds, who notifies, what data is preserved. Cloud incidents need contractual clarity. Top SaaS audit concern."
+  ],
+  "d5_199": [
+    "Trap is B 'forge with another's private key' — implies stealing the private key, not this scheme's risk.",
+    "Trap is C 'public key substitution' — public keys are public; substitution attacks have other defenses.",
+    "Trap is D 'private key substitution' — possible but the password compromise is the easier and primary vector.",
+    "Storing private key on disk protected only by a password means a compromised password = full impersonation via signature. The password is the single point of failure. MOST significant risk in this scheme."
+  ],
+  "d5_200": [
+    "Trap is B 'static electricity' — raised floor doesn't prevent static.",
+    "Trap is C 'earthquake shock' — raised floor offers no seismic protection.",
+    "Trap is D 'water flood' — raised floor under-area can actually pool water (sometimes good, sometimes bad).",
+    "Raised floor protects cabling routed underneath from being walked on, kicked, or damaged. Wires under = wires safe. Primary purpose of computer-room raised flooring."
+  ],
+  "d5_201": [
+    "Trap is A 'card swipe' — physical second factor; doesn't enforce data segregation within app.",
+    "Trap is C 'user inputs ID/password each transaction' — operationally infeasible.",
+    "Trap is D 'expiration on embedded password' — rotates secret but doesn't restrict per-user.",
+    "RBAC within the application restricts what each authenticated user can do with the shared DB connection — efficient because permissions live at the app/role layer. Single embedded credential is okay if app enforces user-level RBAC. Practical answer for shared-credential designs."
+  ],
+  "d5_202": [
+    "Trap is A 'tools used' — practitioner's choice.",
+    "Trap is B 'auditor certifications' — qualifications matter but not most important pre-test.",
+    "Trap is D 'IDS enabled' — operational concern; doesn't authorize the test.",
+    "Permission from the data owner (in writing) is mandatory — pen-tests without authorization are illegal/unauthorized intrusion. Legal authorization first, technical execution second. ALWAYS the answer for 'most important' pre-test step."
+  ],
+  "d5_203": [
+    "Trap is A 'accurate inventory' — byproduct, not greatest benefit.",
+    "Trap is C 'reduced unauthorized access' — outcome, but cost/control efficiency is broader.",
+    "Trap is D 'regulatory compliance' — secondary benefit.",
+    "Classification lets you apply expensive controls only where data warrants them — overall control cost decreases while control effectiveness improves. Risk-proportionate spending. BIG benefit: efficiency."
+  ],
+  "d5_204": [
+    "Trap is A 'time stamped independently' — useful but not the integrity proof.",
+    "Trap is B 'recorded by multiple systems' — redundancy, not integrity.",
+    "Trap is C 'encrypted strongly' — confidentiality, not court-admissibility.",
+    "Courts require evidence integrity — proof the log hasn't been altered (hashes, chain of custody). Verified integrity = admissible. Without integrity verification, evidence is challenged."
+  ],
+  "d5_205": [
+    "Trap is B 'processes and procedures' — execution layer, downstream of strategy.",
+    "Trap is C 'functions and services' — operational layer.",
+    "Trap is D 'roles and responsibilities' — organizational, downstream of strategy.",
+    "IT governance starts with strategies and policies — they set direction; everything else follows. Quality strategy/policy → quality everything below. Top-of-pyramid first."
+  ],
+  "d5_206": [
+    "Trap is B 'SSL' — protects in transit, not against fraudulent legitimate-looking transactions.",
+    "Trap is C 'password complexity' — prevents some account takeover, not the fraud itself.",
+    "Trap is D 'input validation' — prevents bad data, not fraudulent intent.",
+    "Transaction monitoring detects unusual patterns (amount, location, frequency) — the actual control against fraudulent payments. Behavioral/analytical detection. Standard answer for online-payment fraud."
+  ],
+  "d5_207": [
+    "Trap is A 'don't leave tokens' — important but token alone is one factor.",
+    "Trap is B 'token in laptop bag' — same as above.",
+    "Trap is C 'random PIN, no repeats' — content rule, less critical than not exposing it.",
+    "Writing down the PIN turns 2FA into 1FA — anyone who steals the token also gets the PIN. PIN must remain in user's head. Defeats two-factor protection if violated."
+  ],
+  "d5_208": [
+    "Trap is A 'frequent log review' — operational; doesn't ensure correct deployment.",
+    "Trap is C 'training local admin' — important but post-deployment.",
+    "Trap is D 'sharing admin duties' — SoD, not deployment success.",
+    "Testing and validating rule base before going live is the linchpin — a misconfigured firewall is worse than no firewall (false sense of security). Validate in lab before activating. MOST important deployment factor."
+  ],
+  "d5_209": [
+    "Trap is A 'tamper-resistant readers' — physical hardening, secondary.",
+    "Trap is B 'badge system backups' — availability of system, not access control.",
+    "Trap is D 'log all attempts' — detective.",
+    "Promptly deactivating lost/stolen badges prevents unauthorized physical entry — the most important operational control for a badge-entry system. Stale active badges = open door for thieves. Process discipline > technology."
+  ],
+  "d5_210": [
+    "Trap is B 'logon spoofing' — defended by strong auth/MFA.",
+    "Trap is C 'sniffing/decryption' — VPN encrypts; well-defended.",
+    "Trap is D 'gateway compromise' — possible but not 'most prevalent.'",
+    "Remote VPN brings home/personal endpoints onto the corporate network — if those endpoints are infected, malware spreads inward via the trusted tunnel. Endpoint hygiene risk = most common VPN issue. The 'sick laptop on the couch' problem."
+  ],
+  "d5_211": [
+    "Trap is A 'OTP generator' — different mechanism (token auth).",
+    "Trap is B 'provides encryption' — signatures don't encrypt; they sign.",
+    "Trap is D 'message confidentiality' — signatures provide authenticity, not secrecy.",
+    "Digital signatures validate the source — sender's private key signs, anyone with public key verifies origin. Authenticity, integrity, nonrepudiation — NOT confidentiality. The defining trio."
+  ],
+  "d5_212": [
+    "Trap is B 'gain access' — comes after recon.",
+    "Trap is C 'deny services' — late stage, often goal.",
+    "Trap is D 'evade detection' — concurrent with later phases.",
+    "Reconnaissance/information gathering is FIRST — attackers map targets, find vulnerabilities, then exploit. Attack methodology starts with knowing what's there. Step 1 of every attack chain."
+  ],
+  "d5_213": [
+    "Trap is B 'AUP signature' — formality; doesn't change behavior.",
+    "Trap is C 'monitor social media' — detective, post-exposure.",
+    "Trap is D 'block access' — bypassable on personal devices/home networks.",
+    "Awareness training changes user behavior on what to share — controls disclosure regardless of platform or device. Tech controls can't follow users home. Education = sustained mitigation."
+  ],
+  "d5_214": [
+    "Trap is A 'IPS deployed' — IPS doesn't replace network segregation.",
+    "Trap is C 'SSO implemented' — authentication, doesn't address network access risk.",
+    "Trap is D 'antivirus' — endpoint, not network access control.",
+    "If conference-room ports lead to an isolated/segregated network, no enterprise resources are reachable — the risk is neutralized. Segmentation eliminates the unauthorized-access concern. Network design solution."
+  ],
+  "d5_215": [
+    "Trap is A 'report confidentiality' — important but post-test.",
+    "Trap is B 'find all weaknesses' — never possible; not the operational concern.",
+    "Trap is D 'logging changes' — useful but secondary.",
+    "Restoring systems to their original state after the test prevents persistent compromise from leftover testing artifacts (planted files, modified configs). Cleanup = production safety. The test must not become a real breach."
+  ],
+  "d5_216": [
+    "Trap is A 'developer training' — possible cause but symptom-level.",
+    "Trap is B 'admin disabled controls' — investigation later.",
+    "Trap is D 'requirements no longer valid' — different scenario.",
+    "Verify whether security requirements were specified in the project plan FIRST — root-cause check. Missing controls likely trace to missing requirements. Always trace to requirements before assigning blame."
+  ],
+  "d5_217": [
+    "Trap is A 'personal firewall' — host-level last resort, after other layers.",
+    "Trap is B 'antivirus' — malware-specific, narrower.",
+    "Trap is D 'VLAN config' — network segmentation, less directly defensive than IDS detection of intrusion.",
+    "Once the firewall is breached, the IDS is the next defense layer — detecting intrusion that got past the perimeter. Defense in depth: firewall → IDS → host controls. Standard layering question."
+  ],
+  "d5_218": [
+    "Trap is A 'user/password policies' — protect login, not URL/DNS routing.",
+    "Trap is B 'awareness' — helps but pharming bypasses user-visible cues.",
+    "Trap is C 'IDS/IPS' — perimeter defense, doesn't fix DNS poisoning.",
+    "Pharming redirects users via poisoned DNS (or hosts file) to fake banking sites — DNS server hardening (DNSSEC, secure config) is the direct defense. Attack the attack vector. DNS = the pharming choke point."
+  ],
+  "d5_219": [
+    "Trap is A 'better algorithm' — strengthens crypto, not the protocol weakness.",
+    "Trap is C 'frequent password changes' — challenge-response uses session secrets, not user passwords.",
+    "Trap is D 'longer auth strings' — incremental.",
+    "Session hijacking (replay/intercept of the response) is the main weakness — adding anti-hijacking measures (timestamps, sequence numbers, mutual auth) most directly secures challenge-response. Address the protocol's actual attack surface. Tactical fit."
+  ],
+  "d5_220": [
+    "Trap is B 'gray box' — partial knowledge; doesn't guarantee full path coverage.",
+    "Trap is C 'black box' — no internals; can't reach all paths.",
+    "Trap is D 'dynamic' — runtime testing; doesn't ensure path coverage.",
+    "White-box testing uses source code knowledge to design tests covering every code path including error handlers. Path coverage = white-box specialty. Memorize: 'every code path' = white box."
+  ],
+  "d5_221": [
+    "Trap is A 'device + origin auth' — proves who, not what wasn't altered.",
+    "Trap is B 'wireless IDS/IPS' — detection/prevention of attacks, not integrity proof.",
+    "Trap is D 'packet headers/trailers' — addressing/framing, not integrity check.",
+    "Cryptographic hashes detect any alteration in transit — recipient recomputes hash and compares. Hash mismatch = altered. Integrity = hashes (HMAC, etc.). Direct definitional answer."
+  ],
+  "d5_222": [
+    "Trap is A 'WEP' — broken cipher; obsolete.",
+    "Trap is B 'MAC filtering' — easily spoofed; weak.",
+    "Trap is C 'disable SSID broadcast' — security through obscurity.",
+    "WPA2 (with strong key) is the modern minimum-acceptable wireless security — strong encryption and authentication. WEP/MAC/SSID-hiding all defeated. WPA2 (or WPA3) = the answer."
+  ],
+  "d5_223": [
+    "Trap is A 'implicit deny last' — best practice; correct configuration.",
+    "Trap is C 'allow/deny rules' — that's the firewall's job.",
+    "Trap is D 'VPN endpoint' — common, valid use.",
+    "Default OS settings = unhardened = exploitable services, default credentials, open ports underneath the firewall application. Software firewall is only as strong as the OS hosting it. Hardening must precede deployment."
+  ],
+  "d5_224": [
+    "Trap is A 'too many alerts' — IDS problem, not IPS-blocking risk.",
+    "Trap is B 'performance loss' — operational, not the GREATEST risk.",
+    "Trap is D 'specialized expertise' — staffing concern.",
+    "IPS blocks inline — false positives cause legitimate critical traffic to be dropped, taking down systems/services. Availability impact from false positives is the IPS-specific top risk. The price of inline prevention."
+  ],
+  "d5_225": [
+    "Trap is A 'no RA for compromise reports' — operational gap but secondary.",
+    "Trap is C 'cert contains public key' — that's correct/by design.",
+    "Trap is D 'report compromises to CA' — correct procedure.",
+    "Stale CRL means revoked (compromised) certificates are still trusted by relying parties — direct authentication failure. Fresh CRL is essential to revocation working. MOST significant verification risk."
+  ],
+  "d5_226": [
+    "Trap is A 'sender only' — sender computes to sign, but verification needs receiver to recompute.",
+    "Trap is B 'receiver only' — sender must compute first to sign.",
+    "Trap is D 'CA' — CA issues certs, doesn't compute message digests.",
+    "Sender computes digest to sign with private key; receiver recomputes digest and compares to decrypted signature. Both ends compute the digest — that's how integrity is verified. Symmetric computation."
+  ],
+  "d5_227": [
+    "Trap is A 'shared secret password' — symmetric secret; doesn't prove origin uniquely.",
+    "Trap is B 'encrypt with receiver's public key' — confidentiality, not origin.",
+    "Trap is C 'PDF format' — packaging, not authentication.",
+    "Digital signature with sender's private key — only sender holds that key, so verification with sender's public key proves origin. Private-key signing = origin authentication. Definitional answer."
+  ],
+  "d5_228": [
+    "Trap is A 'no login screen' — guest networks may be open by design.",
+    "Trap is C 'guests not isolated from each other' — concern but lateral guest-to-guest is less than guest-to-production.",
+    "Trap is D 'single-factor auth' — guest networks rarely need MFA.",
+    "Not segregating guest from production network is the GREATEST concern — visitors can reach internal corporate resources directly. Whole point of guest network is segregation. Failure of fundamental design."
+  ],
+  "d5_229": [
+    "Trap is A 'SHA-256' — hash, not encryption (passwords stored as hashes don't 'encrypt').",
+    "Trap is C 'SSH' — channel/protocol, not at-rest encryption.",
+    "Trap is D '3DES' — legacy; weaker and slower than AES.",
+    "AES is the current standard for symmetric encryption — strongest among the listed encryption options for storing/encrypting database passwords. AES > 3DES; SHA is hashing. Modern symmetric standard."
+  ],
+  "d5_230": [
+    "Trap is B 'data encrypted ready to store' — operational, not C&A purpose.",
+    "Trap is C 'tested on different platforms' — portability, not security.",
+    "Trap is D 'waterfall phases' — methodology, not C&A.",
+    "Certification = technical security evaluation (does it meet security requirements?); accreditation = management acceptance to operate. C&A confirms security compliance via technical evaluation. Memorize: certification → technical, accreditation → management decision."
+  ],
+  "d5_231": [
+    "Trap is A 'eavesdropping' — listening to plaintext; encrypted data foils this.",
+    "Trap is B 'spoofing' — identity attack, not info gathering.",
+    "Trap is D 'masquerading' — impersonation, not pattern analysis.",
+    "Traffic analysis examines metadata (volumes, timing, parties) to infer info even when content is encrypted. Encryption hides what; it doesn't hide that. Direct attack on encrypted networks."
+  ],
+  "d5_232": [
+    "Trap is A 'integrity' — important but interface auth is the trust foundation.",
+    "Trap is B 'confidentiality' — secondary depending on data.",
+    "Trap is D 'availability' — operational, not interface-trust.",
+    "Across system interfaces, knowing the data really came from the claimed system (data authentication) is critical — wrong source = corrupted commerce. Authentication of inter-system messages is the exchange's foundation. Most critical for B2B/system-to-system."
+  ],
+  "d5_233": [
+    "Trap is A 'highest EER' — highest = WORST.",
+    "Trap is C 'FRR = FAR' — that IS the EER definition; not by itself the 'most effective' marker.",
+    "Trap is D 'FRR = FER' — distractor; mixes unrelated metrics.",
+    "Lowest EER = lowest crossover error rate = MOST effective biometric system overall. EER is the single comparison metric; lower wins. Memorize: low EER = good system."
+  ],
+  "d5_234": [
+    "Trap is B 'unique ID + password' — both 'know' factors; single factor.",
+    "Trap is C 'iris + fingerprint' — both 'are' factors; single factor.",
+    "Trap is D 'magstrip + proximity card' — both 'have' factors; single factor.",
+    "Smart card (have) + PIN (know) = two DIFFERENT factor types = true 2FA. Two factors must be from DIFFERENT categories (know/have/are). Classic 2FA pattern."
+  ],
+  "d5_235": [
+    "Trap is B 'cards not labeled with org name' — labeling lost cards aids adversaries finding building.",
+    "Trap is C 'separate departments cause lead time' — operational nuisance.",
+    "Trap is D '3-week replacement' — availability concern, not access control.",
+    "Generic cards + sign-in without ID proof means anyone claiming to be cleaning staff can enter — accountability and authentication both fail. Identity verification at entry is the basic control. MOST concerning physical-access weakness."
+  ],
+  "d5_236": [
+    "Trap is A 'overwritten not reformatted' — overwriting at sector level IS sanitization; format adds nothing.",
+    "Trap is C 'hole punch through platters' — physical destruction; effective.",
+    "Trap is D 'escorted shredding' — controlled physical destruction.",
+    "Logical delete + format does NOT erase data — files are still recoverable via forensic tools. Greatest concern because hard disks leave the org with recoverable sensitive data. Format ≠ wipe. Classic disposal misconception."
+  ],
+  "d5_237": [
+    "Trap is A 'reject because policy' — rigid; fails business need.",
+    "Trap is B 'approve exception' — bypasses risk analysis.",
+    "Trap is D 'revise OS baseline' — premature; baseline shouldn't change for one app.",
+    "Risk-based exceptions: assess risk of the deviation, identify compensating controls, then decide. Risk analysis precedes decision. Standard exception-management pattern."
+  ],
+  "d5_238": [
+    "Trap is A 'stateful firewall' — connection-level rules; doesn't classify content.",
+    "Trap is C 'cache server' — performance, not policy.",
+    "Trap is D 'proxy' — channel for traffic; only filters when paired with content rules.",
+    "Web content filters classify URLs/categories and block forbidden sites — purpose-built for the policy described. The right tool for the job. Direct match between technology and policy."
+  ],
+  "d5_239": [
+    "Trap is B 'IT contingency' — broader IT recovery, not attack-specific.",
+    "Trap is C 'BCP' — business-level continuity.",
+    "Trap is D 'continuity of operations' — government/large-org continuity.",
+    "Incident Response Plan specifically addresses unauthorized activity — detect, contain, eradicate, recover. Attack-specific lifecycle. Memorize: IRP = attacks; BCP/DRP = business/IT-wide outages."
+  ],
+  "d5_240": [
+    "Trap is A 'confidentiality' — encryption, not hashing.",
+    "Trap is B 'nonrepudiation' — digital signature, not hash alone.",
+    "Trap is C 'authenticity' — needs sender verification, not just hash.",
+    "Recomputing the hash on receipt and comparing proves data wasn't altered in transit — integrity. Hash = integrity. Memorize the one-line mapping."
+  ],
+  "d5_241": [
+    "Trap is B 'forward the alert' — minor information-leak risk.",
+    "Trap is C 'individual solutions' — uncoordinated remediation, secondary concern.",
+    "Trap is D 'fail to understand' — miscommunication, not actionable harm.",
+    "Detailed threat descriptions can be reverse-engineered into attack playbooks by malicious insiders or recipients — the GREATEST concern. CSIRT info should be sanitized for general distribution. Need-to-know for sensitive details."
+  ],
+  "d5_242": [
+    "Trap is B 'vulnerabilities patched' — patch management metric, not IR effectiveness.",
+    "Trap is C 'apps protected' — coverage, not response effectiveness.",
+    "Trap is D 'pen tests successful' — testing metric.",
+    "Financial impact per incident is the outcome metric — effective response = lower per-incident cost. Faster, better response → less damage. Outcome-based KPI for IR."
+  ],
+  "d5_243": [
+    "Trap is A 'prior audit reports' — input but doesn't define current scope.",
+    "Trap is B 'business strategy' — context, not driver.",
+    "Trap is D 'audit deliverables' — outputs, not setting objectives.",
+    "Risk assessment reports drive what to audit and how deeply — risk-based auditing's foundation. Risk → priority → scope/objectives. Most directly establishes audit objectives and coverage."
+  ],
+  "d5_244": [
+    "Trap is A 'diskless workstations' — preventive infrastructure, not detection.",
+    "Trap is C 'antivirus' — detects malware, not licensed-vs-unlicensed software.",
+    "Trap is D 'instant dismissal policy' — policy, not detection.",
+    "Periodic hard-drive checks (software inventory scans) reveal what's actually installed — direct identification of illegal software. Verify the concern empirically. Detective control fits the validation question."
+  ],
+  "d5_245": [
+    "Trap is A 'symmetric encryption' — confidentiality only; no nonrepudiation.",
+    "Trap is B 'digital signatures' — integrity + nonrepudiation; not confidentiality.",
+    "Trap is C 'message digest' — integrity only.",
+    "Digital certificates within a PKI bundle public-key encryption (confidentiality), signing (integrity), and identity binding (nonrepudiation). Full PKI = all three properties. Comprehensive secure-email solution."
+  ],
+  "d5_246": [
+    "Trap is A 'no lockout after 5' — bad but reusable shared admin creds is worse.",
+    "Trap is B 'password reuse in window' — policy gap, secondary.",
+    "Trap is D 'no automated expiration' — operational gap, secondary.",
+    "Shared admin credentials destroy accountability for the highest-privilege accounts — can't tell who did what at root. Privileged shared accounts = top auth concern. Worst combo: high power + no attribution."
+  ],
+  "d5_247": [
+    "Trap is A 'no significant risk' — wrong; SoD violation present.",
+    "Trap is B 'soft zoning risk' — admin says hard zoning; not the issue.",
+    "Trap is C 'disabling unused ports' — that's good practice.",
+    "SAN admin implemented, tested, documented, AND is sole admin — total lack of SoD and oversight. One person controls everything = greatest risk. Concentration of duty without independent review."
+  ],
+  "d5_248": [
+    "Trap is A 'operators read sensitive data' — concern, but printing copies is broader breach.",
+    "Trap is B 'data amended' — controls usually exist on spool integrity.",
+    "Trap is D 'output lost in failure' — availability, lower than confidentiality.",
+    "Unauthorized print copies = uncontrolled hardcopy distribution of sensitive reports outside organization. Once printed, no audit trail or recall. MOST serious spool exposure."
+  ],
+  "d5_249": [
+    "Trap is B 'maximize performance' — productivity, secondary.",
+    "Trap is C 'enterprise image' — reputational, secondary.",
+    "Trap is D 'prevent legal issues' — compliance side-benefit.",
+    "Web/email filters block viruses, malicious sites, and inappropriate content — PRIMARY security/operational purpose. Protection > productivity > reputation. The technical security purpose dominates."
+  ],
+  "d5_250": [
+    "Trap is A 'screening router' — network-layer filtering only.",
+    "Trap is B 'packet filter' — header-level rules; coarse.",
+    "Trap is D 'circuit gateway' — session-level control; not application-aware.",
+    "Application gateway / proxy understands application protocols (HTTP, FTP, SMTP) — can enforce fine-grained content rules. Layer-7 = highest granularity. Memorize: application gateway = most control."
+  ],
+  "d5_251": [
+    "Trap is A 'differential' — scoping/diff report, not a risk type.",
+    "Trap is B 'false-positive' — wastes time, not the most serious.",
+    "Trap is D 'less detail' — usability issue.",
+    "False negatives miss real vulnerabilities — provide false confidence in security posture. Undetected weakness = exploited weakness. Always more dangerous than false positive."
+  ],
+  "d5_252": [
+    "Trap is A 'patch immediately' — depends on vendor; gap during the wait.",
+    "Trap is B 'block at perimeter' — internal hosts can still infect each other.",
+    "Trap is C 'block between segments' — partial; same-segment spread continues.",
+    "Stopping the vulnerable services entirely removes the worm's attack surface — most reliable until patches are applied. No service = nothing to exploit. Compensating control during patch lag."
+  ],
+  "d5_253": [
+    "Trap is A 'sender's private then sender's public' — that's signing, not confidentiality.",
+    "Trap is B 'recipient's private encrypt' — private keys never encrypt outgoing for confidentiality.",
+    "Trap is C 'sender's private encrypt' — that's signing.",
+    "Confidentiality = encrypt with recipient's PUBLIC key, decrypt with recipient's PRIVATE key. Only the recipient (private-key holder) can read it. Memorize: public-key encrypt = confidentiality."
+  ],
+  "d5_254": [
+    "Trap is B 'application gateway' — single device, single layer.",
+    "Trap is C 'packet filter router' — basic, not best.",
+    "Trap is D 'circuit-level gateway' — single layer.",
+    "Screened subnet (DMZ with two firewalls) provides layered defense — outside firewall, DMZ, inside firewall. Multiple barriers = best Internet protection. Defense-in-depth architecture."
+  ],
+  "d5_255": [
+    "Trap is A 'inherently linear' — neural networks are nonlinear.",
+    "Trap is B 'small training data' — actually need LARGE training sets.",
+    "Trap is D 'assumes curve shape' — opposite; no shape assumptions.",
+    "Neural networks excel where many input variables interact in complex nonlinear ways — fraud detection's hallmark. Multi-variable pattern recognition. Right fit for fraud's complexity."
+  ],
+  "d5_256": [
+    "Trap is B 'DES' — obsolete; weak.",
+    "Trap is C 'AES' — strong but more compute/key-size for equivalent security.",
+    "Trap is D 'Blowfish' — less efficient on mobile than ECC.",
+    "Elliptic Curve Cryptography provides equivalent security with shorter keys — ideal for mobile devices' limited compute/battery. Strong + efficient = mobile fit. Standard mobile-crypto answer."
+  ],
+  "d5_257": [
+    "Trap is A 'digest with sender's private' — that's signing.",
+    "Trap is B 'session with sender's public' — wrong key direction.",
+    "Trap is C 'message with receiver's private' — private key never encrypts inbound.",
+    "Encrypt the session key with the receiver's PUBLIC key — only the receiver can decrypt to obtain the session key, then use it for symmetric encryption of bulk data. Hybrid encryption pattern. Same logic as d5_253."
+  ],
+  "d5_258": [
+    "Trap is B 'shred bins in copy rooms' — partial coverage; misses other docs.",
+    "Trap is C 'media disposal policy' — paper, not the policy domain.",
+    "Trap is D 'shredders in offices' — partial; behavior must support use.",
+    "Awareness training teaches employees what to shred and why — drives behavior change at the root. Without awareness, shredders go unused. Awareness = behavior; equipment = capability. Behavior wins."
+  ],
+  "d5_259": [
+    "Trap is A 'SSL for admin' — secure remote admin is good practice.",
+    "Trap is B 'updated policies' — good practice.",
+    "Trap is C 'inbound block by default' — good practice (deny-by-default).",
+    "Firewall installed on default-OS configuration leaves the underlying OS exploitable — attacker bypasses firewall by attacking the host. Hardened OS is prerequisite. Same theme as d5_223."
+  ],
+  "d5_260": [
+    "Trap is B 'SSID with org name' — broadcasting org name aids attackers.",
+    "Trap is C 'WEP' — broken/obsolete.",
+    "Trap is D 'SNMP' — monitoring; not security.",
+    "Physically securing access points prevents tampering, factory resets, and unauthorized cable taps — physical compromise undermines all logical controls. Physical security is foundational. Choose the only intact-defense option."
+  ],
+  "d5_261": [
+    "Trap is B 'admins skipping change control on patches' — bad practice but not direct fraud.",
+    "Trap is C 'ops changing batch schedules' — operational issue.",
+    "Trap is D 'DBA changing structures' — DBA's job (with controls).",
+    "Application programmers changing PRODUCTION DATA = SoD violation enabling fraud (alter records, hide tracks). Dev access to prod data = textbook fraud risk. Highest fraud-likelihood combo."
+  ],
+  "d5_262": [
+    "Trap is A 'forget to encrypt' — process risk, secondary to credential exposure.",
+    "Trap is B 'creds via email' — concern but split across separate emails reduces single-point compromise.",
+    "Trap is D 'shared FTP user ID' — accountability gap.",
+    "Consulting firm personnel can access the FTP repository with sensitive financial data — third-party insider risk is the GREATEST concern. Outsider becomes insider via support role. Provider personnel = trust risk."
+  ],
+  "d5_263": [
+    "Trap is A 'firewall exists' — firewall doesn't validate code legitimacy.",
+    "Trap is B 'secure web connection' — protects transit, not source authenticity.",
+    "Trap is D 'host site is enterprise' — origin assumption, not signed-source verification.",
+    "Active code is reasonable only when its source is authenticated (signed code from trusted publisher). Trust based on code-signing, not transport or location. Authenticity of executable origin = the gating control."
+  ],
+  "d5_264": [
+    "Trap is A 'parity' — single-bit error detection only; misses bursts.",
+    "Trap is B 'echo check' — round-trip; basic.",
+    "Trap is C 'block sum' — better than parity, weaker than CRC for bursts.",
+    "Cyclic Redundancy Check (CRC) detects burst errors via polynomial division — designed exactly for this. Standard burst-error detector in network frames. Memorize: CRC = burst errors."
+  ],
+  "d5_265": [
+    "Trap is A 'copper wire' — easy to tap inductively.",
+    "Trap is B 'shielded twisted pair' — shielding helps but still tappable.",
+    "Trap is D 'coaxial' — tappable.",
+    "Fiber-optic cables transmit light — can't be passively tapped without breaking the cable (which is detectable). Physical-tap resistant. BEST wired-media security choice."
+  ],
+  "d5_266": [
+    "Trap is B 'interview admin' — verbal claim, not evidence.",
+    "Trap is C 'review procedures' — what should happen, not what does.",
+    "Trap is D 'review device logs' — operational events, not configuration state.",
+    "Examining the actual parameter settings is direct evidence of compliance vs. policy. Inspect the real config. Verify ≠ trust statements or procedures. Audit inspects the artifact."
+  ],
+  "d5_267": [
+    "Trap is A 'shared equipment' — by VoIP design; not the greatest concern.",
+    "Trap is C 'voice not encrypted on LAN' — concern but secondary.",
+    "Trap is D 'same support team' — operational.",
+    "Without UPS on Ethernet switches, a power blip kills both data AND voice — call center loses all phone capability. VoIP makes power = phones. Availability of voice now depends on data infrastructure power."
+  ],
+  "d5_268": [
+    "Trap is B 'full backup daily' — recovery, not continuity.",
+    "Trap is C 'repair contract' — reactive, not preventive.",
+    "Trap is D 'duplicate at each server' — host-level, not WAN.",
+    "Built-in alternative routing reroutes traffic around link failures automatically — sustains WAN connectivity during outages. Path redundancy = continuity. WAN-level continuity answer."
+  ],
+  "d5_269": [
+    "Trap is A 'strict SLA' — that's a positive.",
+    "Trap is B 'no unlimited audit right' — common; manageable with sample/pooled audits.",
+    "Trap is C 'no DR plan in SLA' — concern but data-residency tops it for HR data.",
+    "HR/PII data spread across multiple cities/countries triggers cross-border data-protection law conflicts (GDPR, sovereignty, transfer restrictions). Jurisdictional risk for personal data. GREATEST cloud-PII concern."
+  ],
+  "d5_270": [
+    "Trap is A 'availability' — lock-in doesn't directly affect uptime.",
+    "Trap is C 'agility' — speed/flexibility, broader.",
+    "Trap is D 'scalability' — growth capacity, separate from lock-in.",
+    "Lock-in clauses prevent moving workloads/data to another provider — removing them protects portability. Portability = freedom to migrate. Direct lock-in inverse."
+  ],
+  "d5_271": [
+    "Trap is A 'inheritance' — reuse of class properties, not security.",
+    "Trap is B 'dynamic warehousing' — distractor.",
+    "Trap is D 'polymorphism' — multiple forms, not security.",
+    "Encapsulation hides internal data behind defined interfaces — directly enhances security by enforcing access controls at the object boundary. Hide data = protect data. OO security primitive."
+  ],
+  "d5_272": [
+    "Trap is B 'capacity adequate' — 96% routinely is dangerous; bursts will saturate.",
+    "Trap is C 'replace immediately' — premature without traffic-pattern analysis.",
+    "Trap is D 'tell users to reduce' — user-blame, not engineering response.",
+    "96% peak suggests imminent saturation under any spike — analyze patterns to determine if saturation/loss occurs and when. Investigate before deciding action. Audit-style 'gather data first' response."
+  ],
+  "d5_273": [
+    "Trap is A 'redundant pathways' — network continuity, not server failure.",
+    "Trap is C 'dial backup lines' — comm backup, not server.",
+    "Trap is D 'standby power' — power continuity, not server failure.",
+    "Server clustering shares load and fails-over automatically when a node fails — direct mitigation for server failure impact. Cluster member down = others carry load. Server-level continuity answer."
+  ],
+  "d5_274": [
+    "Trap is A 'transaction omission/duplication' — handled by app-level controls.",
+    "Trap is B 'data transition' — irrelevant to time sync.",
+    "Trap is C 'email timestamps' — minor benefit.",
+    "Synchronized clocks let log events from different systems be correlated chronologically — the bedrock of incident investigation/forensics. Without sync, can't reconstruct timeline. MAIN reason for time sync (NTP)."
+  ],
+  "d5_275": [
+    "Trap is A 'good practices for type' — preceded by importance.",
+    "Trap is B 'missing components' — assessment, after importance.",
+    "Trap is D 'subcomponents used appropriately' — detailed review, after importance.",
+    "Identifying importance/criticality of devices in the topology FIRST establishes what to focus on — risk-based scoping. Critical device → deeper review. Scope by criticality before drilling into config."
+  ],
+  "d5_276": [
+    "Trap is A 'admin-only access' — confidentiality, not integrity.",
+    "Trap is B 'log at OS layer' — same system as firewall; integrity at risk if firewall is compromised.",
+    "Trap is C 'dual log to separate storage' — duplication, but local.",
+    "Sending logs to a dedicated remote (third-party) log server immediately means compromised firewall can't tamper with already-shipped logs. Off-system = tamper-evident. Standard log-integrity pattern (SIEM)."
+  ],
+  "d5_277": [
+    "Trap is A 'no on-site assessment' — concern, manageable via certifications/reports.",
+    "Trap is C 'different jurisdictions' — addressable contractually.",
+    "Trap is D 'older browser' — client-side issue, not provider gap.",
+    "SLA silence on breach responsibility means, at the worst moment, no one is contractually responsible — major liability gap. Breach response is THE key cloud term. Definitional cloud-audit concern."
+  ],
+  "d5_278": [
+    "Trap is B 'version usage' — manual tracking, not automated.",
+    "Trap is C 'parity' — bit-level integrity, not file identity.",
+    "Trap is D 'file security' — access control, not file-correctness.",
+    "File header records contain metadata identifying the file (date, version, source) — system reads header automatically to confirm correct file. Self-identifying input. Standard automated check."
+  ],
+  "d5_279": [
+    "Trap is A 'input accuracy' — data validation, not transmission.",
+    "Trap is B 'downloaded program integrity' — hash checks for that.",
+    "Trap is C 'encryption adequacy' — cryptographic strength, not CRC.",
+    "CRC validates that transmitted data arrived without corruption — transmission validity. Memorize: CRC = transmission validity / burst-error detection."
+  ],
+  "d5_280": [
+    "Trap is B 'increase bandwidth' — premature; root cause unknown.",
+    "Trap is C 'baseline + QoS' — useful but after root cause known.",
+    "Trap is D 'VLAN segment' — design change, premature.",
+    "Use a protocol analyzer + review LAN error logs FIRST to diagnose root cause — random slowness can be many things (errors, broadcast storms, malware). Diagnose before remediating. First-principle troubleshooting."
+  ],
+  "d5_281": [
+    "Trap is A 'automated logging' — detective, useful but doesn't verify approval.",
+    "Trap is B 'add staff' — not feasible for small enterprise.",
+    "Trap is D 'access controls preventing modifications' — would block the legitimate need.",
+    "Procedures verifying only APPROVED changes go to production = compensating control for missing SoD in small orgs. Independent review/approval substitutes for separation. Standard small-enterprise SoD compensation."
+  ],
+  "d5_282": [
+    "Trap is A 'inventory and categorize' — early step, but ranking drives the plan.",
+    "Trap is B 'assess risk' — input.",
+    "Trap is C 'identify critical systems' — input.",
+    "Ranking systems by risk and deciding priority/resources/schedule/frequency IS the audit plan — translates risk into actionable plan. Plan is the output of risk-based approach. MOST important step in PLAN development."
+  ],
+  "d5_283": [
+    "Trap is A 'links to ERM' — benefit but not the main one.",
+    "Trap is B 'classification/reporting' — secondary.",
+    "Trap is C 'identify residual risk' — partial scope.",
+    "Risk-based audit's MAIN benefit is providing the board with assurance that risk management is effectively keeping risk within appetite. Ultimate assurance to governance. Top-of-house benefit."
+  ],
+  "d5_284": [
+    "Trap is B 'violated laws' — disclosure to authorities required only if known unlawful and based on evidence.",
+    "Trap is C 'not violated — committed to disclose' — incomplete duty; suspected fraud must be reported, not deferred.",
+    "Trap is D 'not violated — lack of evidence' — auditor still must report SUSPECTED fraud.",
+    "Auditing standards require auditors to report SUSPECTED fraud to appropriate authorities/management, not to defer to QA review. Suspicion + evidence-gathering must escalate. Standard duty-to-report rule."
+  ]
+}

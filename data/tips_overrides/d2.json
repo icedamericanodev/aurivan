@@ -1,0 +1,942 @@
+{
+  "_meta": {
+    "comment": "Hand-authored tips that override the converter's auto-generated tips for D2. Same conventions as d1.json: bare A/B/C/D references in tip text are translated through the per-render shuffle by mapLettersInText() at render time, so 'Trap is C' renders correctly even after the options are reordered.",
+    "version": 1
+  },
+
+  "d2_001": [
+    "Trap is A 'cross-training' — happens during vacation but not the PRIMARY reason; that's an HR development goal.",
+    "Trap is B 'morale' or D 'reduce errors' — secondary effects, not the actual control objective.",
+    "Mandatory vacation = fraud detective control. When the regular employee is gone, anomalies in their work surface to the substitute. Vacation policy = fraud surfacing."
+  ],
+  "d2_002": [
+    "Trap is A 'ignore because employees follow' — never. Following unapproved policies still leaves them legally unenforceable.",
+    "Trap is B/C 'recommend approval / emphasize importance' — premature; auditor reports first, recommendations come after.",
+    "Auditor's lifecycle: report → recommend. Approval is management's call after the auditor surfaces the deficiency."
+  ],
+  "d2_003": [
+    "Trap is B/C 'risk monitored / planning controls' — operational concerns, downstream of strategic alignment.",
+    "Trap is D 'metrics reported' — measurement matters but only if the projects deliver business value in the first place.",
+    "CISA principle: every IT investment earns its place by aligning with business strategy. 'PRIMARY consideration for IT projects' = strategic alignment, every time."
+  ],
+  "d2_004": [
+    "Trap is A/B/D 'job rotations / exit interviews / NDAs' — desirable but not as critical to logical/physical security.",
+    "Termination without checklist = unauthorized access risk + asset loss + sabotage potential. Highest immediate security risk among HR control gaps.",
+    "Ranked HR control criticality: termination > NDA > separation > vacation > rotation > exit interview. Termination is where the most damage can happen quickly."
+  ],
+  "d2_005": [
+    "Trap is A/C/D 'assurance objectives / risk identification / enablers' — all downstream of stakeholder requirements.",
+    "Stakeholder requirements DRIVE everything: scope, success criteria, risk priorities, technology choices.",
+    "Governance = managing stakeholder needs through structured decisions. Without knowing stakeholders, governance has no anchor."
+  ],
+  "d2_006": [
+    "Trap is A 'misuse of corporate resources' — a possible side effect, but conflicts of interest is the broader risk being controlled.",
+    "Trap is D 'theft' — too narrow; conflicts of interest captures theft + fraud + competing interests + IP leakage in one umbrella.",
+    "Conflict of interest covers: working for a competitor, leaking IP, divided loyalty, biased decisions. Secondary employment policies target this whole category."
+  ],
+  "d2_007": [
+    "Trap is A/B 'not updated / no revision history' — concerning hygiene issues but not as serious as wrong-approver.",
+    "Approver matters: a security admin is staff-level, not management. Policy approved by non-management lacks legal/enforcement weight.",
+    "CISA principle: policies need MANAGEMENT (preferably board/exec) approval to have authority. Wrong approver = no authority = unenforceable."
+  ],
+  "d2_008": [
+    "Trap is B 'eliminate risk' — risk can never be eliminated; only managed to acceptable level. ISACA always uses 'reasonable', never 'eliminate'.",
+    "Trap is C 'detect errors/fraud' — outcome, not the purpose of due care.",
+    "Trap is D 'sufficient evidence' — necessary but downstream of due care. Due care drives the auditor's STANDARD of work."
+  ],
+  "d2_009": [
+    "Trap is D 'create CRO role' — adding a role doesn't address the broader accountability gap.",
+    "Trap is A 'review strategic alignment' — alignment review doesn't fix WHO is responsible.",
+    "Trap is C 'periodic audits' — detective; the issue needs a preventive accountability framework, not more audits."
+  ],
+  "d2_010": [
+    "Trap is A 'verify compliance' — can't measure compliance without knowing the standard you're measuring against.",
+    "Standards define the bar. Audit measures against standards. No standards → no benchmark → no audit.",
+    "CISA pattern: any 'review' starts with knowing the criteria. Always: criteria first, evaluation second."
+  ],
+  "d2_011": [
+    "Trap is A 'recommend faster completion' — auditor doesn't dictate project speed.",
+    "Trap is C 'recommend Zachmann framework' — specific tool recommendation outside auditor's role; would compromise independence.",
+    "Trap is D 'rescope to include separate project' — auditor doesn't expand scope arbitrarily. EA without future state = incomplete; report the incompleteness."
+  ],
+  "d2_012": [
+    "The auditor evaluating MANAGEMENT's risk assessment looks first at the threat-vulnerability mapping — the foundation of any assessment.",
+    "Trap is A/B 'controls in place / effectiveness' — controls only matter AFTER you know what they're protecting against.",
+    "Trap is C 'monitoring mechanism' — monitoring is downstream of risk identification."
+  ],
+  "d2_013": [
+    "Trap is B 'security controls implemented' — EA may inform security but it's not security's deliverable.",
+    "Trap is C 'developer responsiveness' — EA constrains developers (toward standards), doesn't accelerate them.",
+    "Trap is D 'business unit autonomy' — opposite of EA's purpose; EA STANDARDIZES, not autonomizes. EA helps invest wisely by aligning tech choices with strategy."
+  ],
+  "d2_014": [
+    "Trap is A 'recover from disaster' — disaster recovery has its own backups; escrow isn't for that.",
+    "Trap is B 'reload software' — that's normal vendor support, not escrow.",
+    "Trap is D 'auditor accesses code' — auditor doesn't need escrow; code review is via different paths. Escrow = source code held by trusted third party as insurance against vendor failure."
+  ],
+  "d2_015": [
+    "Trap is A/B 'complexity / communication' — surface-level reading; the chart says more about authority structure.",
+    "Trap is D 'network connections' — that's the network diagram, not the org chart.",
+    "Org chart's audit value: shows who has authority over whom (relevant to SoD assessment), who approves whom, where reporting lines create independence concerns."
+  ],
+  "d2_016": [
+    "Risk transfer (insurance, outsourcing, contracts) shares the financial/operational consequence with another party.",
+    "Trap is B 'tolerating' — accepting risk doesn't share it; you absorb it entirely.",
+    "Trap is C/D 'terminating / treating' — terminating eliminates the activity; treating manages it. Neither shares."
+  ],
+  "d2_017": [
+    "Trap is D 'spend time defining exact loss amount' — futile if the data isn't there. Time-wasting trap.",
+    "When numbers aren't available, switch to qualitative scales (Low/Medium/High or 1-5 weights). Both qualitative and quantitative are valid risk analysis approaches.",
+    "CISA pattern: quantitative methods fail → qualitative methods bridge the gap. The point is to ASSESS risk, not perfect it."
+  ],
+  "d2_018": [
+    "Trap is A 'comply with good practices' — good practices may not match the org's needs; continuous improvement is what defines QMS.",
+    "Trap is C/D 'updates / KPIs defined' — existence isn't enough. QMS REQUIRES continuous monitoring of improvement targets.",
+    "QMS = systems that drive AND measure quality improvement over time. Static compliance ≠ QMS."
+  ],
+  "d2_019": [
+    "Trap is A 'inadequate funding' — funding may exist but be misallocated; not the strategic concern.",
+    "Trap is B 'SDLC violation' — process concern, not the strategic concern.",
+    "Trap is C 'not formally approved' — restates the issue, doesn't name the consequence. Steering committee approval = strategic alignment; without it, projects scatter the org's effort."
+  ],
+  "d2_020": [
+    "Trap is B 'embedding accountability' — supports value delivery but doesn't deliver it directly.",
+    "Trap is C 'positive ROI' — outcome of value delivery, not the driver.",
+    "Trap is D 'risk management process' — protects value, doesn't create it. Strategic alignment is THE primary value delivery mechanism in IT governance."
+  ],
+  "d2_021": [
+    "The auditor reviews vendor BCP to ensure agreed service levels can be sustained when things go wrong.",
+    "Trap is B 'financial stability' — separate due diligence; not what BCP shows.",
+    "Trap is D 'test the BCP' — auditors don't test the vendor's BCP during feasibility; they review the plan's adequacy for service continuity."
+  ],
+  "d2_022": [
+    "A policy without enabling mechanisms is unenforceable. Compliance requires technical means and process support.",
+    "Trap is B 'alignment to strategy' — important strategically but doesn't make day-to-day compliance easier.",
+    "Trap is D 'regulatory compliance objectives' — defines what to comply with, not how. Implementation needs the mechanisms to be in place first."
+  ],
+  "d2_023": [
+    "Without senior management driving IT strategy, IT and business drift apart. Misalignment is the fundamental risk.",
+    "Trap is A 'investment lack' — possible side effect, but misalignment is the deeper issue.",
+    "Trap is B/D 'methodology / contract control' — operational concerns, downstream of strategic misalignment."
+  ],
+  "d2_024": [
+    "Trap is A 'vendor change control' — operational, not steering committee work.",
+    "Trap is B 'separation of duties' — IT operations governance, not steering committee scope.",
+    "Trap is D 'liaising between IT and users' — too operational; steering is strategic. Steering committee = strategic project approval + budget oversight + alignment monitoring."
+  ],
+  "d2_025": [
+    "Policies must be living documents with senior management ownership. Stale + unowned = governance breakdown at the foundation.",
+    "Trap is B/C/D 'patching policy / mission review / asset protection policy' — important gaps but the FOUNDATION is missing senior policy review.",
+    "CISA pattern: governance health check starts with whether policies are alive (reviewed, owned, current) — content gaps come second."
+  ],
+
+  "d2_026": [
+    "Trap is B/C/D 'IT policies / procedures / standards' — these all flow FROM the strategic plan. Senior management's role is at the top of the cascade.",
+    "Strategic plans set direction; policies/procedures/standards implement that direction. Senior management owns the direction-setting.",
+    "Cascade: strategic plan (board + senior mgmt) → policies (mgmt) → procedures (operations) → standards/guidelines (subject experts). Senior management belongs at the top."
+  ],
+  "d2_027": [
+    "Trap is B/C/D 'audit / security / investment plan' — these are sub-plans that align WITH the business plan, not independent of it.",
+    "IT governance's central thesis: IT exists to serve the business. Plans must mirror business plans.",
+    "Pattern: when 'IT plan must be consistent with X' is asked, X is almost always 'business plan' — not any other plan."
+  ],
+  "d2_028": [
+    "Trap is C/D 'CIO / CSO' — these are senior IT/security roles, but acceptable risk is a BUSINESS decision, not an IT one.",
+    "Trap is A 'QA management' — process quality role, not strategic risk decision authority.",
+    "Senior business management owns acceptable risk levels because they own the business outcomes that risk impacts. CIOs/CSOs advise; business management decides."
+  ],
+  "d2_029": [
+    "Trap is A 'CEO' — the CEO is part of executive management, but governance is the BOARD's responsibility (CEO reports to board).",
+    "Trap is C 'IT steering committee' — committee enforces governance set by the board, doesn't create it.",
+    "Trap is D 'audit committee' — oversees the audit function, not IT governance broadly. IT governance is a board-level mandate."
+  ],
+  "d2_030": [
+    "Trap is A/B/C 'instructions / availability / performance expectations' — operational/HR concerns, not control-perspective concerns.",
+    "From a CONTROL perspective, the audit-relevant aspect of job descriptions is who's accountable for what. That maps to access rights and SoD checks.",
+    "Job descriptions audit value: define accountability boundaries that auditors test against actual access and actual behavior."
+  ],
+  "d2_031": [
+    "Trap is B 'references' — useful but easy to fabricate or get from friendly sources.",
+    "Trap is C 'bonding' — financial protection if the employee causes loss; doesn't establish integrity upfront.",
+    "Trap is D 'qualifications on resume' — self-reported, often inflated. Background screening is the OBJECTIVE check (criminal, financial, education verification)."
+  ],
+  "d2_032": [
+    "Trap is A/B 'hand over files / backup work' — important but secondary to security.",
+    "Trap is C 'notify other employees' — communication concern, not security.",
+    "Disabling logical access is the most TIME-CRITICAL action — it stops the disgruntled-employee window of risk immediately. Everything else can wait."
+  ],
+  "d2_033": [
+    "Trap is A 'security controls may not meet requirements' — possible but not the PRIMARY EA risk.",
+    "Trap is B 'application may not meet user requirements' — opposite issue; business unit selected because it fits THEIR needs.",
+    "Trap is D 'support issues' — symptom, not cause. The PRIMARY EA risk is technology drift from enterprise standards."
+  ],
+  "d2_034": [
+    "Same theme as d2_001: mandatory vacation = fraud detection, not productivity/quality of life.",
+    "Trap is A/C/D 'quality of life / cross-training / disruption' — all good HR reasons but not the PRIMARY control purpose.",
+    "Mandatory vacation is a fraud-surfacing control. Critical functions get rotated through different hands so anomalies become visible."
+  ],
+  "d2_035": [
+    "Trap is A 'end-user responsibilities' — small environments often combine these. Acceptable.",
+    "Trap is B 'reporting to end-user manager' — common in distributed/branch operations.",
+    "Trap is D 'LAN security admin' — actually expected; LAN admins typically own LAN security in small orgs.",
+    "Programming is the SoD violation: LAN admin + programmer = ability to modify production code without separate approval."
+  ],
+  "d2_036": [
+    "Trap is A/D 'highly structured / structured tasks' — DSS is for SEMI-structured problems where rules alone don't suffice.",
+    "Trap is B 'predetermined criteria' — DSS uses interactive/flexible models, not fixed criteria.",
+    "DSS = data + interactive models for management judgment on semi-structured problems. The 'support' is decision-aiding, not decision-making."
+  ],
+  "d2_037": [
+    "Trap is A/B/C 'downtime metrics / IT vendor management / different country call center' — operational/governance issues but not the PRIMARY data risk.",
+    "When ANY app handles employee records, organization-defined security policies (password rules, encryption, access reviews) MUST apply — even if the app is in the cloud and procured outside IT.",
+    "Shadow IT contracts often skip this control validation. The auditor's GREATEST concern is that data is exposed because security policies didn't carry over to the cloud."
+  ],
+  "d2_038": [
+    "Trap is A 'deliver effective and efficient services' — that's the OUTCOME a BSC measures, not the prerequisite for it.",
+    "Trap is C/D 'business value / cost control' — also outcomes, not prerequisites.",
+    "BSC = a measurement framework. To measure, you need defined KPIs first. Without KPIs, the BSC has nothing to track."
+  ],
+  "d2_039": [
+    "Trap is A 'low-cost philosophy' — cost matters but isn't the strategic anchor.",
+    "Trap is C 'leading-edge technology' — tech-for-tech's-sake violates governance principles.",
+    "Trap is D 'plans to acquire hardware/software' — too narrow; the IT department needs both long-term (strategic) and short-term (tactical) plans aligned to business goals."
+  ],
+  "d2_040": [
+    "Short-range plan = tactical. Tactical = projects + integration of IT and business personnel.",
+    "Trap is B/C/D 'mission/vision / strategic scorecard / business-IT correlation' — these are STRATEGIC plan elements, not tactical.",
+    "Pattern: short-range/tactical → operational integration. Long-range/strategic → mission, vision, alignment frameworks."
+  ],
+  "d2_041": [
+    "Trap is B 'adapting to changing technologies' — strategic concern, longer horizon than short-term.",
+    "Trap is C 'CSAs' — control monitoring activity, not short-term planning.",
+    "Trap is D 'evaluating hardware needs' — could be either short or long term; resource allocation is more universally short-term-relevant.",
+    "Short-term = resource allocation. The auditor checks that scarce resources go where the strategic plan said they should."
+  ],
+  "d2_042": [
+    "Trap is A/B/C 'software testing / IT needs / project plans' — these are operational artifacts, not strategic objectives.",
+    "Strategic plans contain BUSINESS objectives — what the org wants to achieve in the market. Approved suppliers (D) is a strategic positioning choice.",
+    "Strategic plan vs operational plan: strategic = WHY/WHERE the business is going. Operational = HOW/WHEN it gets there."
+  ],
+  "d2_043": [
+    "Trap is A 'approved by line management' — approval matters but doesn't validate strategic adequacy.",
+    "Trap is B/C 'stays within budget / complies with procurement' — operational/process concerns, not strategic substance.",
+    "IT strategy's whole purpose is supporting business objectives. Without that link, the strategy is technically valid but strategically empty."
+  ],
+  "d2_044": [
+    "Trap is A/B 'backup server with data / loaded with software' — disaster recovery concerns, not vendor failure protection.",
+    "Trap is C 'staff trained' — useful but doesn't help if the proprietary code isn't accessible.",
+    "Proprietary software = vendor lock-in risk. Source code escrow is the canonical contractual protection against vendor failure."
+  ],
+  "d2_045": [
+    "Trap is A 'has all personnel and equipment' — resource adequacy, not strategic alignment.",
+    "Trap is C 'efficient use of equipment/personnel' — efficiency, not effectiveness toward business goals.",
+    "Trap is D 'sufficient excess capacity' — flexibility, not alignment.",
+    "Alignment with management strategy is the only direct test of whether IT supports business objectives."
+  ],
+  "d2_046": [
+    "Trap is A/D 'NA + QA / sysanalyst + DBA' — SoD concerns but lower abuse potential.",
+    "Trap is C 'end users + security admin' — uncommon in real practice but contained risk.",
+    "System admin + application programmer = unlimited abuse: write code, deploy code, hide trail. Highest blast radius among the SoD violations listed."
+  ],
+  "d2_047": [
+    "Trap is A 'user management coordination' — process concern, not the data risk.",
+    "Trap is B 'user accountability' — concerning but not as severe as actual unauthorized modification.",
+    "Trap is D 'audit recommendations not implemented' — governance gap, not the immediate data risk.",
+    "Without ownership policy, no one decides who can modify what. Result: unauthorized data modification — the most direct data integrity threat."
+  ],
+  "d2_048": [
+    "Trap is B 'staff job evaluation' — performance review, not continuity protection.",
+    "Trap is C 'responsibilities definitions' — defines current roles, doesn't plan for replacement.",
+    "Trap is D 'employee award programs' — retention tool, doesn't address departure risk.",
+    "Succession planning is the canonical answer to 'short-term employee risk' — identify and develop internal successors before the loss occurs."
+  ],
+  "d2_049": [
+    "Trap is A 'compliance with legal/regulatory' — one outcome of effective IS controls, not the main audit objective.",
+    "Trap is C 'review general controls effectiveness' — too narrow; audit objectives are broader than just general controls.",
+    "Trap is D 'find ways to minimize risk' — that's risk management's job. Audit's job is to confirm controls EXIST and WORK, not to design new mitigations."
+  ],
+  "d2_050": [
+    "Awareness gap = unintentional disclosure risk. Employees can't follow rules they don't know.",
+    "Trap is C 'IS audit should provide training' — auditor doesn't deliver operational programs (independence violation).",
+    "Trap is D 'finding will cause management to train' — assumes management's response; audit conclusions describe risk, not predicted reactions."
+  ],
+  "d2_051": [
+    "Trap is A 'IT department' — implements policy, doesn't approve it.",
+    "Trap is B 'security committee' — works within the policy framework set by board/exec.",
+    "Trap is C 'security administrator' — staff-level role; lacks management authority for enforcement.",
+    "Information security policy = enterprise-wide rule set. Approval requires the highest enterprise authority: top management or the board of directors."
+  ],
+  "d2_052": [
+    "Trap is A 'KPIs not reported' — they would still be reported; the issue is they're meaningless.",
+    "Trap is B/D 'cost overruns / inaccurate SLAs' — possible side effects, not the primary risk.",
+    "Subjective KPIs = misleading performance picture. Management makes decisions on faulty data — that's the central risk of a non-measurable BSC."
+  ],
+  "d2_053": [
+    "Trap is A 'list of key IT resources' — too granular for a policy; belongs in a register or asset inventory.",
+    "Trap is C 'identity of sensitive assets' — same; granular, sits below policy level.",
+    "Trap is D 'software security features' — implementation detail, not policy content.",
+    "Security policy = high-level framework. Includes WHO can authorize access and the BASIS for that authorization. Not a granular asset list."
+  ],
+  "d2_054": [
+    "Trap is A 'cost-benefit analysis' — performed AFTER you know what to protect.",
+    "Trap is C 'identify vulnerabilities' — depends on knowing the apps first.",
+    "Trap is D 'application traffic matrix' — built late in the process, after apps and protections are mapped.",
+    "Firewall policy starts with: what apps/services need to be reachable from outside? That answer drives every subsequent decision."
+  ],
+  "d2_055": [
+    "Trap is A 'management control' — that's a CHARACTERISTIC of DSS, not a risk.",
+    "Trap is B 'semi-structured dimensions' — also a defining feature, not a risk.",
+    "Trap is D 'changes in decision processes' — DSS adapts to those, doesn't fail because of them.",
+    "DSS implementation risk: hard to specify upfront how it'll be used. Without clear purpose/usage, the system becomes shelfware."
+  ],
+
+  "d2_056": [
+    "Trap is B 'management support' — necessary but not sufficient. Approval without assimilation = paper policy.",
+    "Trap is C 'punitive enforcement' — discouraging but creates compliance theater, not understanding.",
+    "Trap is D 'security officer enforces via tools' — enforcement matters but the policy is only as effective as how well users INTERNALIZE it.",
+    "Successful security policy requires people to understand WHY the rules exist, not just what they are. Assimilation drives behavior; tools only catch deviations."
+  ],
+  "d2_057": [
+    "Trap is A/C 'recovery / rebuilding' — IT operational concerns, not policy concerns.",
+    "Trap is D 'reuse' — operational efficiency, not a comprehensive policy issue.",
+    "Email retention is the central legal/compliance issue: regulatory mandates (financial, health, legal hold) make retention the must-have policy element. Policies define WHAT to keep and FOR HOW LONG."
+  ],
+  "d2_058": [
+    "Trap is A 'cost analysis' — one input to risk analysis, not the most important consideration.",
+    "Trap is B 'security risk of current technology' — too narrow; new tech brings new risks beyond the old.",
+    "Trap is C 'compatibility' — operational concern, not strategic.",
+    "Major technology investments require formal risk analysis presented to BUSINESS management for review and risk acceptance. That's the governance principle."
+  ],
+  "d2_059": [
+    "Trap is A 'feasibility study' — a technique used by the steering committee, not the primary BENEFIT of having one.",
+    "Trap is C 'security controls enforced' — operational, not strategic.",
+    "Trap is D 'standard methodology implemented' — process detail.",
+    "Steering committee's PRIMARY benefit: forcing IT investment decisions to align with business requirements (not IT priorities or vendor preferences)."
+  ],
+  "d2_060": [
+    "Trap is B 'best practices' — not always universally applicable; control objectives are about purpose, not best practice.",
+    "Trap is C 'techniques for securing information' — that's how, not why.",
+    "Trap is D 'security policy' — too narrow; control objectives apply to all controls, not just security.",
+    "Control objective = the desired RESULT or PURPOSE. Auditors test whether the implemented control actually achieves that purpose."
+  ],
+  "d2_061": [
+    "Trap is A 'standards manual' — document deliverable, but follows the policy.",
+    "Trap is B 'comprehensive control review by IS auditor' — would precede program design? No, the auditor doesn't establish programs.",
+    "Trap is D 'access control software' — implementation detail, far downstream.",
+    "Security program initial step: management commitment expressed as a policy statement. Without policy, there's nothing for the program to implement."
+  ],
+  "d2_062": [
+    "Trap is A 'paying invoices' — finance task, not IT management.",
+    "Trap is B 'systems design with provider' — depending on contract, may be relevant. Not the most important.",
+    "Trap is C 'renegotiating fees' — periodic, not the central function.",
+    "Outsourcing inverts the org chart for that function — IT management retains accountability without operational control. Performance monitoring is the only way to discharge that accountability."
+  ],
+  "d2_063": [
+    "Trap is A 'viability study' — gives a current snapshot but doesn't protect against future failure.",
+    "Trap is C 'financial evaluation' — same; informational, not protective.",
+    "Trap is D 'contractual agreement for enhancements' — only valuable if the vendor is still around.",
+    "Source code escrow is the canonical hedge against vendor failure, especially for critical apps from young vendors. Even if the vendor folds, the customer can maintain the software."
+  ],
+  "d2_064": [
+    "Trap is A 'hardware configuration' — vendor's operational detail, contracts focus on outcomes not means.",
+    "Trap is B 'access control software' — operational tooling choice.",
+    "Trap is D 'application development methodology' — vendor's internal practice.",
+    "IP ownership is the contract's central commercial issue: who owns the data, the customizations, the derivative works? Without explicit terms, default rules vary by jurisdiction and may surprise both parties."
+  ],
+  "d2_065": [
+    "Trap is B 'contract may be terminated' — possible legal consequence, but the audit concern is the data exposure.",
+    "Trap is C 'sub-provider not subject to audit' — concerning but secondary; even an unaudited provider can protect data IF the controls are right.",
+    "Trap is D 'outsourcer approaches sub-provider directly' — commercial concern, not security.",
+    "Cross-border subcontracting introduces multi-jurisdictional privacy law exposure. Confidential data in a chain of providers is a data protection risk on every link."
+  ],
+  "d2_066": [
+    "Trap is B 'integration of proprietary components' — opposite of open systems; that's CLOSED system territory.",
+    "Trap is C 'volume discounts' — purchasing strategy, not architectural benefit.",
+    "Trap is D 'economies of scale' — secondary effect of the interoperability.",
+    "Open systems = public interface standards = vendor-independence. The defining benefit is mixing components from different vendors."
+  ],
+  "d2_067": [
+    "Trap is A 'destruction policy' — opposite direction; destroying emails reduces evidence availability.",
+    "Trap is B 'security policy' — covers confidentiality/integrity, not retention/retrieval.",
+    "Trap is D 'audit policy' — about audit activities, not email lifecycle.",
+    "Legal evidence requires retrievable records. An archive policy ensures email is preserved, organized, and recoverable when subpoena or compliance inquiry arrives."
+  ],
+  "d2_068": [
+    "Trap is A 'business plans' — risk management informs business plans but isn't their primary input.",
+    "Trap is B 'audit charters' — charters are organizational, not risk-driven outputs.",
+    "Trap is D 'software design decisions' — too granular; risk informs security policy first, then policy informs design.",
+    "Risk management → security policy → security architecture → controls. The output of risk management is policy decisions about acceptable risk and required controls."
+  ],
+  "d2_069": [
+    "Trap is A 'immediately report risk to CIO/CEO' — premature; vulnerabilities alone don't equal risk.",
+    "Trap is B 'examine apps in development' — different audit, different scope.",
+    "Trap is D 'check budget' — operational concern.",
+    "Risk = (asset value) × (vulnerability) × (threat × likelihood). After identifying assets and vulnerabilities, the next required input is threat and likelihood. Then risk can be calculated."
+  ],
+  "d2_070": [
+    "Trap is A/B/C 'project approval / IT plan / status reporting to board' — these are CORE steering committee responsibilities, not concerns.",
+    "Determining business goals is SENIOR MANAGEMENT'S job, not the steering committee's.",
+    "Steering committee's role is to translate business goals (set elsewhere) into IT priorities. If they're setting the goals themselves, the cart is before the horse."
+  ],
+  "d2_071": [
+    "Trap is A 'monthly status reports' — vendor-provided, subject to bias and selective reporting.",
+    "Trap is B 'periodic meetings with IT manager' — useful but indirect; the IT manager isn't auditing the vendor.",
+    "Trap is D 'performance parameters in contract' — necessary precondition, but doesn't ensure adherence.",
+    "Periodic independent audit of the vendor is the only objective verification of contract adherence. The other options are vendor-controlled or indirect."
+  ],
+  "d2_072": [
+    "Trap is A 'PM process maturity' — operational metric, not strategic input.",
+    "Trap is B 'regulatory environment' — context, not decision-making input.",
+    "Trap is C 'past audit findings' — historical, useful as a check but not the primary driver.",
+    "Portfolio analysis lets you see all candidate initiatives compared side-by-side: cost, benefit, risk, alignment. That's what enables strategic decision-making."
+  ],
+  "d2_073": [
+    "Trap is A 'prevent unauthorized disclosure' — confidentiality concern, but access policy is broader.",
+    "Trap is C 'minimize impact of incident' — incident response domain, not access policy.",
+    "Trap is D 'continuity of business after disaster' — BCP domain, not access policy.",
+    "Access control policy primarily ensures SoD: that no single person can complete a transaction that should require multiple parties (preventing fraud, errors, abuse)."
+  ],
+  "d2_074": [
+    "Trap is A 'minimize errors' — outcome of optimization, not the objective itself.",
+    "Trap is B 'gather data' — necessary input, not the objective.",
+    "Trap is C 'establish baselines' — prerequisite for optimization, not the goal.",
+    "Performance measurement's purpose is OPTIMIZATION — understanding what's happening so resources, processes, and outcomes can be improved over time."
+  ],
+  "d2_075": [
+    "Trap is B 'baseline security following good practices' — baseline = floor, not strategic alignment output.",
+    "Trap is C 'institutionalized solutions' — value delivery domain, not strategic alignment.",
+    "Trap is D 'understanding risk exposure' — risk management domain.",
+    "Strategic alignment in security: enterprise requirements drive security requirements. Security exists to protect business value, not for its own sake."
+  ],
+  "d2_076": [
+    "Trap is B 'users not required to read' — concerning but not the GREATEST concern.",
+    "Trap is C 'no procedures' — gap but addressable.",
+    "Trap is D 'not updated in over a year' — staleness risk but timeframe-dependent.",
+    "Information security policy MUST be driven by BUSINESS objectives, not IT objectives. Reverse direction = misaligned protection priorities; that's the most fundamental failure."
+  ],
+  "d2_077": [
+    "Trap is A 'supplier and partner risk managed' — risk management practice, not strategic alignment.",
+    "Trap is B 'knowledge base in place' — value delivery practice.",
+    "Trap is C 'structure for sharing business information' — also value delivery.",
+    "Strategic alignment = top management actively bridging business and technology. The mediation role is what aligns."
+  ],
+  "d2_078": [
+    "Trap is A 'risk acceptable for IT management' — risk acceptance is a BUSINESS decision, not IT's.",
+    "Trap is B 'business strategy derived from IT strategy' — backwards; business drives IT, not the reverse.",
+    "Trap is C 'IT governance separate from overall governance' — opposite of effective governance; they must be integrated.",
+    "Effective IT governance EXTENDS organizational strategies into IT — IT becomes a tool of the organization's broader objectives."
+  ],
+  "d2_079": [
+    "Trap is B 'past actual loss experience' — historical, may not reflect new threats or controls.",
+    "Trap is C 'published loss statistics from comparable organizations' — others' losses don't predict yours; different control environment.",
+    "Trap is D 'control weaknesses from audit reports' — point-in-time, narrow.",
+    "Risk assessment requires forward-looking threat × vulnerability analysis — not historical loss data alone. Existing assets/projects are the universe; threats and vulns are the variables."
+  ],
+  "d2_080": [
+    "Trap is A 'restrict physical access' — physical control, doesn't address the SoD logical risk.",
+    "Trap is C 'background checks' — preventive at hiring time, doesn't compensate for ongoing SoD gaps.",
+    "Trap is D 'auto-lock sessions' — addresses unauthorized access by passersby, not SoD violations by authorized users.",
+    "Compensating control for SoD failures: detective monitoring of activity logs. If you can't separate roles, monitor what those combined-role people do."
+  ],
+  "d2_081": [
+    "Trap is B 'implemented as part of risk assessment' — backwards; policy informs risk assessment, not the other way.",
+    "Trap is C 'compliance with all policies' — doesn't follow from top-down approach alone.",
+    "Trap is D 'reviewed periodically' — review schedule is independent of derivation approach.",
+    "Top-down policy = corporate policy → divisional → operational. Each level inherits from above, ensuring consistency. Bottom-up creates fragmented, contradictory policies."
+  ],
+  "d2_082": [
+    "Trap is A/B 'single-person dependency / inadequate succession' — issues that cross-training PREVENTS, not creates.",
+    "Trap is D 'disruption of operations' — also issues cross-training PREVENTS.",
+    "Cross-training's risk: when employees know all parts of a system, they have the OPPORTUNITY for unilateral fraud or error without natural detection. Cross-training has to be paired with monitoring."
+  ],
+  "d2_083": [
+    "Trap is A 'minimizing costs' — not the audit's primary concern; the contract sets cost terms.",
+    "Trap is B 'prohibit subcontracting' — operational concern, not the audit's primary objective.",
+    "Trap is C 'knowledge transfer evaluation' — useful but not the central question.",
+    "Audit's primary concern with outsourced services: are the contracted services being delivered as specified? Performance against contract is the deliverable."
+  ],
+  "d2_084": [
+    "Trap is A 'time zones' — manageable through process design.",
+    "Trap is B 'telecom cost' — predictable, factors into ROI.",
+    "Trap is D 'detailed specifications' — true but a workable challenge.",
+    "Privacy laws (GDPR, HIPAA, country-specific) often PROHIBIT cross-border PII transfer. That's a hard legal constraint, not a workable challenge."
+  ],
+  "d2_085": [
+    "Trap is B 'latest version' — may not always be desirable; some orgs prefer stable older versions.",
+    "Trap is C 'no open-source software' — outdated thinking; open-source is widely used.",
+    "Trap is D 'after-hours support' — operational, not risk-driven.",
+    "Approved software list is a risk management artifact — vendors come and go, vulnerabilities are discovered, business conditions change. Periodic risk assessment keeps the list relevant."
+  ],
+  "d2_086": [
+    "Trap is A 'aligned with industry good practices' — useful but secondary; organizations need policies suited to their context, not generic ones.",
+    "Trap is B 'approved by board / senior management' — governance hygiene, not the development focus.",
+    "Trap is D 'direction for procedures' — outcome of policy, not its development goal.",
+    "Information security policies must BALANCE business need with security risk. Too restrictive = business friction; too permissive = data exposure."
+  ],
+  "d2_087": [
+    "Trap is B 'relative value to the business' — one input to risk assessment, not the full picture.",
+    "Trap is C 'vulnerability assessment results' — also one input.",
+    "Trap is D 'cost of controls' — comes after risk-based protection levels are determined.",
+    "Risk assessment combines asset value, threats, vulnerabilities, and likelihood — providing the complete picture for protection decisions. No single component substitutes for the full assessment."
+  ],
+  "d2_088": [
+    "Trap is A 'cost-effective' — desirable outcome but not the board's PRIMARY responsibility.",
+    "Trap is B 'forward-thinking and innovative' — desirable but again not the central oversight role.",
+    "Trap is D 'priority level assigned' — operational governance, not board level.",
+    "Board's IT governance responsibility is alignment — making sure IT serves business strategy. Cost, innovation, prioritization all flow from that alignment."
+  ],
+  "d2_089": [
+    "Trap is A 'IT scorecard' — measurement tool, used after governance is in place.",
+    "Trap is C 'risk assessment' — informs governance but not the foundation.",
+    "Trap is D 'security policy' — one output of governance, not the prerequisite.",
+    "IT governance exists to support business strategies. Step 1: identify what the business strategies ARE. Without that, governance has nothing to align toward."
+  ],
+  "d2_090": [
+    "Trap is A 'CSAs' — control monitoring tool, doesn't bridge IT-business strategy gap.",
+    "Trap is B 'BIA' — risk planning tool, focused on impact not alignment.",
+    "Trap is D 'business process reengineering' — operational improvement, not governance alignment.",
+    "Balanced scorecard's distinct value: it measures multi-dimensional performance (financial + customer + internal + learning), connecting IT activities to business outcomes."
+  ],
+
+  "d2_091": [
+    "Trap is A 'compliance with master contract' — contract terms set targets but don't measure them.",
+    "Trap is C 'BCP test results' — relevant for continuity assurance, not general SLA compliance.",
+    "Trap is D 'independent audit reports' — provide assurance but at point-in-time, not continuous SLA reference.",
+    "KPIs are the live measurements that compare actual vs SLA. They're the operational link between contract terms and reality."
+  ],
+  "d2_092": [
+    "Trap is A 'avoidance' — would mean stopping the activity entirely (no daily backup), which isn't what's happening.",
+    "Trap is B 'transfer' — would mean shifting accountability to a third party (e.g., outsourcing backups).",
+    "Trap is D 'acceptance' — would mean tolerating the risk without controls. Sign-off IS a control.",
+    "Adding a control (sign-off) to reduce a risk = mitigation. The risk persists but is reduced through compensating procedure."
+  ],
+  "d2_093": [
+    "Trap is B 'threats' — threats EXPLOIT vulnerabilities; the password/encryption issues are the WEAKNESSES being exploited.",
+    "Trap is C 'probabilities' — probability is a measure of likelihood, not a thing.",
+    "Trap is D 'impacts' — impact is the consequence when a threat succeeds, not the weakness itself.",
+    "Risk vocab map: vulnerability (weakness) ← threat (event) → impact (consequence). Poor passwords/unencrypted lines = vulnerabilities."
+  ],
+  "d2_094": [
+    "Trap is A 'audit clause' — important but secondary to whether the services even meet business needs.",
+    "Trap is B 'SLA with KPIs' — measurement framework, depends on the underlying service definition.",
+    "Trap is D 'transition support at termination' — exit planning, not first-priority current-state assessment.",
+    "Auditing outsourcing starts with: are these services delivering what the business actually needs? Contract details and audit access matter, but business alignment comes first."
+  ],
+  "d2_095": [
+    "Trap is A 'enterprise data model' — describes data structure, not investment effectiveness.",
+    "Trap is C 'IT organizational structure' — shows reporting lines, not investment outcomes.",
+    "Trap is D 'historical financials' — shows past costs, not investment effectiveness.",
+    "BSC measures multi-dimensional IT performance, including investment outcomes — a balanced view of cost AND value, AND alignment, AND innovation."
+  ],
+  "d2_096": [
+    "Trap is B 'periodic renegotiation not specified' — concern but normal contracts evolve as relationships mature.",
+    "Trap is C 'contract fails to cover every action' — exhaustive contracts are impossible; gaps are normal.",
+    "Trap is D 'similar activities to multiple vendors' — multi-sourcing is a valid risk reduction strategy.",
+    "Outsourcing core competencies = strategic mistake. The org loses what differentiates it from competitors. Auditors flag this because it threatens long-term competitive position."
+  ],
+  "d2_097": [
+    "Trap is A 'completed on time and accurate' — process discipline, not the audit value-add.",
+    "Trap is B 'automate process and examine large data' — describes the mechanism, not the outcome.",
+    "Trap is C 'improve quality and decrease human intervention' — operational benefit, not audit outcome.",
+    "Data analytics' core audit value: detecting CONTROL ISSUES that traditional sampling misses — anomalies, patterns, exceptions across full populations. That's the risk-based audit purpose."
+  ],
+  "d2_098": [
+    "Same theme as d2_001 and d2_034: vacation/rotation = fraud-detection control.",
+    "Trap is A 'cross-training' — happens during, not the control purpose.",
+    "Trap is B/D 'morale / employee benefit' — HR motivations, not control objectives.",
+    "Mandatory time-away surfaces irregular activity that the regular employee was hiding. Detective control for fraud."
+  ],
+  "d2_099": [
+    "Trap is A 'state-of-the-art technology' — tactical concern, not strategic.",
+    "Trap is B 'operational controls' — implementation detail, not strategic.",
+    "Trap is D 'project management practices' — process detail, not strategic content.",
+    "IT mission and vision = the strategic anchor. Without them articulated, the strategic plan has no narrative for what IT exists to do."
+  ],
+  "d2_100": [
+    "Trap is A 'hire a second DBA' — small org constraint makes this impractical.",
+    "Trap is B 'remove DBA root access' — would prevent the DBA from doing their job.",
+    "Trap is C 'log to removable media' — DBA could intercept or alter the media.",
+    "Forwarding logs to a server the DBA can't access creates a tamper-evident record. SoD is enforced through inability to cover one's tracks."
+  ],
+  "d2_101": [
+    "Capture + verify by the same user = no segregation. The verifier has no independent perspective.",
+    "Trap is B 'capture and send' — separate function from verification; legitimate role combination.",
+    "Trap is C 'verify others + send own' — verification is independent of own messages; acceptable.",
+    "Trap is D 'capture and verify others' messages, send own' — verifying OTHERS' messages is independent oversight; acceptable. Self-verification (option A) is the SoD violation."
+  ],
+  "d2_102": [
+    "Trap is A 'implemented procedures' — derive from policy, not the reference point.",
+    "Trap is C 'internal standards' — also subordinate to policy.",
+    "Trap is D 'documented practices' — describe what's happening, not the authority.",
+    "Hierarchy: policy (top) → standard → procedure → practice (bottom). Audit always starts at the top — the authoritative document — and works down."
+  ],
+  "d2_103": [
+    "Trap is A 'limitation of liability' — contract/legal protection, not investment protection.",
+    "Trap is B 'service level requirements' — performance protection, not asset protection.",
+    "Trap is D 'version control' — operational practice, not contractual safeguard.",
+    "Software escrow protects the long-term investment: if the vendor disappears, the customer can still maintain and modify the software. Critical for enterprise systems."
+  ],
+  "d2_104": [
+    "Trap is B 'accountability' — necessary supporting practice, not the most important objective.",
+    "Trap is C 'value realization' — outcome of governance, follows from alignment.",
+    "Trap is D 'enhancing ROI' — financial outcome, follows from alignment.",
+    "IT governance's most important objective: aligning IT with business. Everything else (accountability, value, ROI) flows from that alignment."
+  ],
+  "d2_105": [
+    "Trap is A 'all network risk' — too narrow; risk extends beyond network to applications, data, users, processes.",
+    "Trap is B 'tracked over time against IT strategic plan' — useful but secondary to comprehensive coverage.",
+    "Trap is D 'identify vulnerability tolerances' — outcome of measurement, not the measurement itself.",
+    "Security risk measurement must be COMPREHENSIVE — the entire IT environment, not subsets. Partial coverage = blind spots."
+  ],
+  "d2_106": [
+    "Trap is B 'reduce IT costs' — possible outcome, not the ultimate purpose.",
+    "Trap is C/D 'decentralize / centralize control' — structural choices, both can be valid; not the purpose.",
+    "IT governance's ULTIMATE purpose: getting OPTIMAL value from IT, where optimal = aligned with business strategy + reasonable cost + managed risk."
+  ],
+  "d2_107": [
+    "Trap is A 'payment terms' — typically in master agreement, not SLA.",
+    "Trap is C 'indemnification' — legal protection, not service measurement.",
+    "Trap is D 'default resolution' — applies after default, doesn't ensure performance.",
+    "SLA's central element: measurable performance commitments. Uptime is the most universal measurable performance term and represents the SLA's core value."
+  ],
+  "d2_108": [
+    "Trap is B 'control business operations' — too operational; that's management's job.",
+    "Trap is C 'align IT with business' — that's IT governance, a SUBSET of corporate governance.",
+    "Trap is D 'implement good practices' — outcome of governance, not the primary objective.",
+    "Corporate governance = strategic direction-setting at the enterprise level. IT alignment is one of many governance concerns; strategic direction is the umbrella."
+  ],
+  "d2_109": [
+    "Trap is B 'understand exposures and consequences' — comes AFTER understanding the threat/vulnerability/risk profile.",
+    "Trap is C 'determine priorities based on consequences' — also comes after.",
+    "Trap is D 'risk mitigation strategy' — final step, can't be designed without first understanding the risk landscape.",
+    "Risk management starts with understanding what risks the org faces. Threat/vulnerability/risk profile is the foundation; everything else builds on it."
+  ],
+  "d2_110": [
+    "Trap is B 'standard set of practices' — implementation tactic, not the value-delivery objective.",
+    "Trap is C 'standards-based solution' — same; tactic.",
+    "Trap is D 'continuous improvement culture' — process orientation, not the value objective.",
+    "Value delivery in security governance: optimize security spend so it actively SUPPORTS business objectives (not just minimizes risk in isolation)."
+  ],
+  "d2_111": [
+    "Trap is B 'strategic alignment' — connects IT to business but doesn't itself create transparency.",
+    "Trap is C 'value delivery' — execution of strategy, doesn't create transparency about cost/value/risk.",
+    "Trap is D 'resource management' — optimizes resources, doesn't measure cost/value/risk for stakeholders.",
+    "Performance measurement = transparency. KPIs and metrics make the cost/value/risk picture visible to stakeholders. That's how transparency is achieved."
+  ],
+  "d2_112": [
+    "Trap is A 'process maturity' — useful input but not the priority driver.",
+    "Trap is B 'performance indicators' — measurement framework, not priority driver.",
+    "Trap is D 'assurance reports' — historical view, not forward priority driver.",
+    "Business risk drives governance priorities. High-risk areas get governance attention first; low-risk areas can wait."
+  ],
+  "d2_113": [
+    "Trap is A 'IT strategy committee' — supports board-level governance, doesn't own it.",
+    "Trap is B 'CIO' — implements governance set by board, doesn't own ultimate responsibility.",
+    "Trap is C 'audit committee' — oversees audit function specifically, not all of IT governance.",
+    "Board of directors owns enterprise governance, including IT governance. They delegate execution but retain accountability."
+  ],
+  "d2_114": [
+    "Trap is B 'execute software testing' — operational task, not CISO domain.",
+    "Trap is C 'granting/revoking user access' — sysadmin/IAM domain, not CISO.",
+    "Trap is D 'approving access to data and applications' — data owner / business owner, not CISO.",
+    "CISO's role: ensure security policy and controls are adequate. Periodic policy review and evaluation is core to that responsibility."
+  ],
+  "d2_115": [
+    "Trap is A/B 'review board / security unit' — structural elements, useful but not the most critical success factor.",
+    "Trap is D 'security process owner' — operational role, important but downstream of executive sponsorship.",
+    "Executive sponsorship is the make-or-break factor. With it, resources flow and obstacles clear; without it, the program stalls regardless of structure."
+  ],
+  "d2_116": [
+    "Trap is B/C 'reduce hardware cost / approved suppliers list' — operational/procurement detail, not strategic content.",
+    "Trap is D 'technical architecture for perimeter security' — too granular for strategic plan.",
+    "Strategic IT plan content: assessment of the application portfolio's fit with business objectives. That's the strategic question — does our tech support our business?"
+  ],
+  "d2_117": [
+    "Trap is A 'developing security procedures' — derive from policy, not vice versa.",
+    "Trap is C 'access control methodology' — implementation detail, downstream of policy.",
+    "Trap is D 'roles and responsibilities' — derive from policy framework.",
+    "Security architecture cascade: policy → architecture → procedures → controls. Policy is the foundation; everything else flows from it."
+  ],
+  "d2_118": [
+    "Trap is A 'BSC for performance' — measurement framework, doesn't drive selection.",
+    "Trap is B 'user satisfaction in KPIs' — one dimension, not the selection driver.",
+    "Trap is D 'modify yearly process' — process change without principle change is insufficient.",
+    "Project portfolio alignment = selecting based on business benefit + risk. That's what ties projects to strategic priorities. Other practices support but don't drive selection."
+  ],
+  "d2_119": [
+    "Trap is A 'alignment with audit recommendations' — audit recommendations are inputs, not the security program's purpose.",
+    "Trap is C 'CISO recommendations implemented' — CISO advises; the program EXECUTES management's risk decisions.",
+    "Trap is D 'reduce IT security cost' — possible outcome but not the primary benefit.",
+    "Security program's primary benefit in governance: management actively manages security risk — assessing, mitigating, monitoring residual risk. That's risk governance in action."
+  ],
+  "d2_120": [
+    "Trap is A/D 'risk reduction / risk mitigation' — both lower risk including compliance risk.",
+    "Trap is C 'risk avoidance' — eliminates the activity creating the risk, including compliance exposure.",
+    "Risk transfer (insurance, outsourcing) typically addresses FINANCIAL risk but doesn't transfer COMPLIANCE risk — regulators still hold the original org responsible for compliance regardless of who operates the function."
+  ],
+  "d2_121": [
+    "Same as d2_032: when an employee with sensitive access leaves, REVOKE ACCESS FIRST. Time-critical to prevent exfiltration.",
+    "Trap is A 'exit interview' — important but can wait.",
+    "Trap is B 'succession plans' — operational continuity, not security urgency.",
+    "Trap is D 'review job history' — useful for context, not time-critical."
+  ],
+  "d2_122": [
+    "Trap is A 'staff background checks' — important but periodic; not the audit access concern.",
+    "Trap is C 'cost reductions reporting' — financial concern, not assurance concern.",
+    "Trap is D 'staff turnover/training' — operational reporting.",
+    "Audit access (or independent reports) is the auditor's GREATEST concern with outsourcing. Without it, the auditor cannot verify control effectiveness — defeating the audit's purpose."
+  ],
+  "d2_123": [
+    "Trap is A 'UAT for all reports' — addresses production issues but not data definition consistency.",
+    "Trap is C 'standard software tools' — addresses tooling but not the underlying data ownership issue.",
+    "Trap is D 'management signs off on requirements' — formality without addressing root cause.",
+    "Different departments using different product definitions = data governance failure. Root cause: no enterprise data governance enforcing common definitions. Fix the governance, not the symptoms."
+  ],
+  "d2_124": [
+    "Trap is A 'CSA' — control monitoring, not project prioritization.",
+    "Trap is B 'IS audit' — assurance activity, not prioritization tool.",
+    "Trap is D 'business risk assessment' — input to portfolio analysis but not the full prioritization.",
+    "Investment portfolio analysis enables direct comparison: cost, benefit, risk, alignment. Each project earns or loses its place based on portfolio-relative merit."
+  ],
+  "d2_125": [
+    "Trap is A 'claims to meet standards' — claims aren't verification.",
+    "Trap is C 'good market reputation' — reputation lags actual current practice.",
+    "Trap is D 'complies with org security policies' — claim, needs verification.",
+    "External security review = independent verification of controls. With customer credit data, the auditor needs OBJECTIVE assurance, not vendor claims."
+  ],
+  "d2_126": [
+    "Trap is A 'PMO with external consultants' — staffing model, manageable.",
+    "Trap is C 'inefficient resource allocation during familiarization' — temporary, expected during integration.",
+    "Trap is D 'business process change creates training need' — manageable change management issue.",
+    "Multiple independent merger projects without portfolio coordination = duplicated effort, contradictory architectures, missed dependencies. Resource conflicts and architectural drift are unavoidable without portfolio integration."
+  ],
+  "d2_127": [
+    "Trap is A 'create department + external experts' — overkill for medium org; expensive and slow.",
+    "Trap is B 'use industry standards to subdivide existing risk' — administrative cleanup, doesn't add real risk management practice.",
+    "Trap is C 'no recommendation needed' — neglects the gap; risk management is essential.",
+    "For medium orgs, regular risk management meetings provide the right scale: existing IT staff identify and assess risk regularly, feeding into broader org risk management. Right-sized practice."
+  ],
+  "d2_128": [
+    "Trap is B 'magnitude of impact only' — half the equation; without likelihood, you can't prioritize.",
+    "Trap is C 'likelihood only' — other half; without impact, you can't justify resources.",
+    "Trap is D 'collective judgment' — qualitative assessment style; the question asks for QUANTITATIVE.",
+    "Quantitative risk = likelihood × impact. Both factors must be estimated numerically. The product gives the dollar-equivalent risk for prioritization."
+  ],
+  "d2_129": [
+    "Trap is A 'committee meetings include sub-IS manager' — communication mechanism, doesn't verify controls.",
+    "Trap is B 'management reviews weekly reports' — vendor self-reports, subject to bias.",
+    "Trap is C 'permission from gov agent' — legal/contractual concern, not assurance of control effectiveness.",
+    "Periodic INDEPENDENT audit of the subcontractor is the only objective verification of confidentiality control effectiveness — when government data is involved, this rigor is essential."
+  ],
+  "d2_130": [
+    "Trap is B 'no infosec SME review pre-signing' — concern but post-signing audit access can compensate.",
+    "Trap is C 'guidelines not approved by board' — governance gap, but doesn't eliminate audit ability.",
+    "Trap is D 'no performance evaluation procedures' — operational gap, addressable.",
+    "Right-to-audit clause is the auditor's foundational tool for outsourced services. Without it, the auditor has no contractual basis to verify controls — the audit becomes impossible."
+  ],
+
+  "d2_131": [
+    "Trap is A 'threat landscape' — input to risk assessment, but the policy is calibrated to risk APPETITE, not raw threat.",
+    "Trap is B 'prior incidents' — historical data, useful but not the driver.",
+    "Trap is C 'emerging technologies' — context for policy updates, not the design anchor.",
+    "Risk appetite = how much risk the org will accept. Security policy must align to that appetite, not chase every possible threat. Without appetite as anchor, policies become either too strict or too lax."
+  ],
+  "d2_132": [
+    "Trap is A 'use cloud for low-risk' — operational suggestion outside auditor's role.",
+    "Trap is B 'revise compliance enforcement' — compliance enforcement is fine; the issue is the underlying decision.",
+    "Trap is D 'postpone procedures' — auditor doesn't postpone security work.",
+    "When senior management decides to underinvest in security, they must FORMALLY accept the residual risk. The auditor's job: surface the decision, document the acceptance. Management owns the consequence."
+  ],
+  "d2_133": [
+    "Trap is A 'business interruption' — covers loss of profit during disruption, not employee fraud.",
+    "Trap is C 'errors and omissions' — covers professional liability/mistakes, not fraud.",
+    "Trap is D 'extra expense' — covers costs of operating during disruption.",
+    "Fidelity coverage is purpose-built for fraud-by-employees. Distinct insurance product specifically for dishonest employee acts."
+  ],
+  "d2_134": [
+    "Trap is B/C 'inherent / control risk' — these are about the audit subject's risk, not the auditor's procedures.",
+    "Trap is D 'business risk' — about the org's overall risk, not the auditor's procedures.",
+    "Detection risk = the risk that the AUDIT misses something material. Procedural errors directly cause this; the other risks exist independent of audit quality."
+  ],
+  "d2_135": [
+    "Trap is B 'financial cost' — too narrow; classification considers more than monetary value.",
+    "Trap is C 'potential threats' — threats are environmental; classification is about asset value/sensitivity to the business.",
+    "Trap is D 'cost of insurance' — downstream of classification, not the classification driver.",
+    "Asset classification is calibrated to potential LOSS — what the business loses if the asset is compromised. Loss includes financial, reputation, regulatory, operational impacts."
+  ],
+  "d2_136": [
+    "Trap is A 'all risk mitigated effectively' — too aggressive; mitigation depends on cost-benefit.",
+    "Trap is B 'residual risk is zero' — impossible; residual risk always exists after controls.",
+    "Trap is D 'uses established framework' — useful but doesn't ensure risk is identified.",
+    "Strategy starts with identification + ranking. Without that foundation, everything else is built on sand. The auditor's primary interest is whether the foundation is in place."
+  ],
+  "d2_137": [
+    "Trap is A 'latest 3rd-party audit report' — point-in-time view; doesn't ensure continuity.",
+    "Trap is B 'latest internal audit report' — internal reports are vendor self-assessment, less reliable.",
+    "Trap is C 'agrees to implement controls' — agreement without contractual enforcement is fragile.",
+    "Contractual commitment to ANNUAL external audit reports = continuous assurance. Today's compliance doesn't predict tomorrow's; the auditor needs ongoing visibility, locked into the contract."
+  ],
+  "d2_138": [
+    "Trap is B 'ROI not measured' — concerning but downstream of governance involvement.",
+    "Trap is C 'inconsistent chargeback' — operational gap, not foundational concern.",
+    "Trap is D 'risk appetite not quantified' — concerning but addressable through engagement.",
+    "Without senior management involvement, IT governance is governance in name only. Resources, priorities, accountability all depend on senior leadership engagement; without it, the framework is empty."
+  ],
+  "d2_139": [
+    "Trap is B 'annual loss expectancy' — one input to cost-benefit analysis, not the full method.",
+    "Trap is C 'compare cost of controls vs cost of business systems' — partial; ignores benefits.",
+    "Trap is D 'BIA' — assesses impact of disruption, doesn't decide on control investment.",
+    "Cost-benefit analysis weighs control investment against benefit (risk reduction). Standard method for control selection decisions."
+  ],
+  "d2_140": [
+    "Trap is A 'deliver immediate contract' — short-term focus, misses ongoing dependency.",
+    "Trap is B 'similar financial standing' — irrelevant; vendor's finances should support delivery.",
+    "Trap is C 'financial obligations creating liability' — concern about the vendor's debts, but long-term viability is the broader question.",
+    "Critical apps create long-term vendor dependency. Vendor must be financially viable for the duration of the dependency, not just the immediate contract."
+  ],
+  "d2_141": [
+    "Trap is A 'blanket legal statement' — unenforceable platitude.",
+    "Trap is C 'annual senior management sign-off' — governance hygiene but doesn't ensure legal validity.",
+    "Trap is D 'most restrictive regulations' — overcompliance is expensive and may conflict with business reality.",
+    "Periodic SME review keeps policies current with evolving law and regulation. Compliance is a moving target; expert review tracks the changes."
+  ],
+  "d2_142": [
+    "Trap is A 'cost-benefit analysis for controls' — important but downstream of business communication.",
+    "Trap is B 'global standards framework' — adoption tactic, not the most important consideration.",
+    "Trap is C 'approval process for risk response' — governance step, downstream of communication.",
+    "Risk management's effectiveness depends on business decision-makers understanding the risk. IT-jargon risk reports get dismissed; business-terms risk reports get acted on."
+  ],
+  "d2_143": [
+    "Trap is A 'sign-off on enterprise security policies' — outsourced employees may not even read enterprise policies.",
+    "Trap is C 'mandatory training for all users' — the org can't enforce training on third-party employees.",
+    "Trap is D 'modify policies for third parties' — compromises the policy's authority.",
+    "Indemnity clause makes the service provider FINANCIALLY LIABLE for policy violations by their employees. That contractual financial exposure motivates the provider to enforce on their end."
+  ],
+  "d2_144": [
+    "Trap is A 'have current configuration approved' — doesn't fix the violation; just legitimizes it.",
+    "Trap is B 'audit trail for shared accounts' — shared accounts can't establish accountability regardless of audit trail.",
+    "Trap is D 'amend policy to allow shared accounts' — weakens controls to match reality; backwards.",
+    "Individual user accounts are foundational for accountability. The recommendation is to FIX THE GAP by implementing them, not work around it."
+  ],
+  "d2_145": [
+    "Trap is A 'cross-training' — happens during, not the purpose.",
+    "Trap is B 'morale' — secondary HR benefit, not the control purpose.",
+    "Trap is D 'cost-saving' — financial side effect, not the control purpose.",
+    "Mandatory vacation = fraud-detection control. When the regular employee is gone, irregularities they were hiding surface to the substitute. Pattern: vacation policy = fraud surfacing."
+  ],
+  "d2_146": [
+    "Trap is A 'doesn't exceed IT budget' — operational constraint, not strategic alignment.",
+    "Trap is B 'aligned with investment strategy' — close but investment strategy is itself derived from business plan.",
+    "Trap is C 'approved by IT steering committee' — governance step, not the alignment test.",
+    "Project portfolio's strategic value comes from delivering business goals. Alignment with business plan IS the alignment test; everything else is operational support."
+  ],
+  "d2_147": [
+    "Trap is A 'due diligence' — point-in-time check; doesn't protect against future failure.",
+    "Trap is B 'quarterly audit of vendor facilities' — operational verification, expensive, doesn't address vendor failure risk.",
+    "Trap is D 'high penalty clause' — penalty contracts can't be collected from a defunct vendor.",
+    "Source code escrow is the canonical hedge against startup vendor failure. Even if the vendor folds, the customer maintains software access — the investment is preserved."
+  ],
+  "d2_148": [
+    "Trap is A 'CLO' — provides legal context, doesn't set risk appetite.",
+    "Trap is B 'security management' — implements within risk appetite, doesn't set it.",
+    "Trap is C 'audit committee' — oversees governance, doesn't set risk appetite.",
+    "Risk appetite is a strategic decision tied to business mission and objectives. The board owns strategic decisions; risk appetite is a board-level commitment."
+  ],
+  "d2_149": [
+    "Trap is B 'BA writes requirements + tests' — common in small orgs; manageable.",
+    "Trap is C 'IT manager + sysadmin' — combined role, common, manageable with logging.",
+    "Trap is D 'DBA + backups' — technical role overlap, manageable.",
+    "Developers in production = open door to unauthorized code, untested changes, hidden modifications. Developers should write code; a separate party should promote to production. This SoD is foundational."
+  ],
+  "d2_150": [
+    "Strategy committee = strategy and direction. Steering committee = execution and prioritization.",
+    "Trap is B 'aligning IT to business objectives' — strategy committee work.",
+    "Trap is C 'advising on compliance risk' — strategy committee work.",
+    "Trap is D 'promoting IT governance practices' — strategy committee work.",
+    "Steering committee approves project plans and budgets — operational governance. Strategy committee sets the direction the steering committee operates within."
+  ],
+  "d2_151": [
+    "Trap is A 'maturity model' — assesses current state, doesn't drive alignment.",
+    "Trap is C 'control objectives' — operational, derive from goals.",
+    "Trap is D 'RACI chart' — clarifies responsibilities, doesn't enable alignment.",
+    "Goals and metrics: business goals → IT goals → measurable metrics. The cascade IS strategic alignment in operating form."
+  ],
+  "d2_152": [
+    "Trap is A 'mix of departments and staff levels' — too operational; steering committees are senior-level.",
+    "Trap is B 'ensure security policies executed' — operational responsibility, not steering.",
+    "Trap is D 'briefed by vendor' — vendor-driven agenda compromises independence.",
+    "Steering committee accountability runs to the board. Documented minutes + board reports keep the governance loop closed."
+  ],
+  "d2_153": [
+    "Trap is A 'documenting policies' — implementation deliverable, not success driver.",
+    "Trap is C 'industry best practices' — externally derived; may not fit the org.",
+    "Trap is D 'oversight committee' — structure without business representation is hollow.",
+    "Business representation in the IT framework ensures the framework SERVES the business, not just IT's preferences. Without business voices, IT frameworks become IT-centric and lose alignment."
+  ],
+  "d2_154": [
+    "Trap is A 'data steward' — provides oversight/quality role, doesn't own data.",
+    "Trap is B 'data custodian' — implements protection per owner's direction.",
+    "Trap is D 'data controller' — privacy law term, related to processing decisions, not classification ownership.",
+    "Data ownership ladder: owner (decides) → custodian (implements) → user (consumes). Owner has ultimate accountability for classification and protection."
+  ],
+  "d2_155": [
+    "Trap is B 'monitoring terminals/sensors/actuators' — important operational components but not the highest-risk audit target.",
+    "Trap is C 'TCO assessment' — financial, not security/operational risk.",
+    "Trap is D 'usability for engineers' — UX concern, not risk-based audit priority.",
+    "SCADA systems' historic vulnerabilities (Stuxnet) came through communication interfaces. Risk-based audit prioritizes the attack surface — communication architecture and connectivity."
+  ],
+  "d2_156": [
+    "Trap is A 'suspend the user's access' — auditor's not authorized to suspend access.",
+    "Trap is C 'merge two roles' — would WORSEN SoD by removing the role separation entirely.",
+    "Trap is D 'record finding in audit report' — premature; SoD violations may have compensating controls.",
+    "When SoD violation is observed, the auditor checks for COMPENSATING CONTROLS first. Logs, supervisory review, periodic reconciliation may already mitigate the risk. Only after that's confirmed insufficient does it become a finding."
+  ],
+  "d2_157": [
+    "Trap is A 'business case for IT systems' — too narrow; EA is broader than business cases.",
+    "Trap is B 'manage IT risk and compliance' — outcome of EA, not the primary objective.",
+    "Trap is C 'efficient use of IT resources' — outcome, not primary objective.",
+    "EA's primary objective: align IT with business strategy. From that alignment flow risk management, efficient resource use, and informed decision-making."
+  ],
+  "d2_158": [
+    "Trap is A 'IDS' — detects intrusions, not stored sensitive data.",
+    "Trap is C 'IPS' — prevents intrusions, not data discovery.",
+    "Trap is D 'TLS' — protects data in transit, not stored data.",
+    "DLP is purpose-built for finding sensitive data on endpoints/storage AND for monitoring its movement. It's the right tool for 'sensitive data with inappropriate authorization' detection."
+  ],
+  "d2_159": [
+    "Trap is A 'prevent any data loss' — no system prevents 100% of incidents; absolute claims are wrong.",
+    "Trap is B 'detect and respond' — partial; DLP is preventive AND detective.",
+    "Trap is D 'encrypt to prevent unauthorized access' — encryption is one component; DLP is broader.",
+    "DLP MITIGATES (reduces) data loss risk through layered controls. Eliminating risk is impossible; mitigation to acceptable level is the realistic goal."
+  ],
+  "d2_160": [
+    "Trap is A 'single administrator' — bottleneck and SoD concern, not effectiveness factor.",
+    "Trap is C 'effectiveness of policies and procedures' — important but DLP can't enforce policies it isn't configured to enforce.",
+    "Trap is D 'effectiveness of encryption' — one technology component, not the DLP's overall effectiveness.",
+    "DLP is only as effective as its configuration. Misconfigured DLP creates false sense of security — appears to be protecting data while missing the actual leak vectors."
+  ],
+  "d2_161": [
+    "Trap is A 'block all external sites and email' — overcorrects; breaks legitimate business; doesn't address root cause.",
+    "Trap is B 'encrypt all sensitive data' — addresses external attackers, not employee accidental disclosure.",
+    "Trap is D 'strict access controls' — addresses unauthorized access, not authorized employees making mistakes.",
+    "ACCIDENTAL data loss = human error. Best mitigation = AWARENESS. Training employees to recognize risks and follow handling procedures addresses the actual cause."
+  ],
+  "d2_162": [
+    "Trap is B 'enforce software accreditation' — preventive, but already-installed crypto miners aren't caught by future controls.",
+    "Trap is C 'awareness workshops' — preventive education, doesn't detect ongoing violations.",
+    "Trap is D 'monitor application logs' — application logs may not capture crypto mining (resource-level activity, not application-level).",
+    "Crypto miners have a distinct fingerprint: high CPU/GPU utilization. Resource-utilization monitoring catches them; application logs miss them."
+  ],
+  "d2_163": [
+    "Trap is A 'risk and compliance' — important but a single dimension.",
+    "Trap is B 'key IT processes' — IT-centric view; metrics should connect to business.",
+    "Trap is C 'business contribution including financials' — important but customer requirements are even more central.",
+    "Performance metrics anchor on what matters most: meeting customer requirements. From there, processes, financials, and compliance become measurable in customer-relevant terms."
+  ],
+  "d2_164": [
+    "Trap is A 'use EA as main info source' — EA is one source; auditor needs multiple sources for evidence.",
+    "Trap is B 'use EA requirements as audit criteria' — circular; criteria should be enterprise objectives, not EA itself.",
+    "Trap is D 'review EA documentation for conformity' — paper review only; doesn't verify reality matches EA.",
+    "EA audit's purpose: verify that DEPLOYED systems align with EA AND meet enterprise objectives. Both halves matter — EA conformity AND business value delivery."
+  ]
+}

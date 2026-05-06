@@ -1,0 +1,830 @@
+{
+  "_meta": {
+    "comment": "Hand-authored tips that override the converter's auto-generated tips. Keyed by question id (d1_001, d1_002, ...). Each value is an array of 2-4 short tips. Re-running scripts/convert_test_bank.py merges these into data/domain1.json.",
+    "version": 1
+  },
+
+  "d1_001": [
+    "Two-sided trap: A says 'IT will pre-audit' — but IT's continuous monitoring is a control activity, not auditing. D says 'auditor can never audit those systems' — but writing detection scripts isn't the same as designing the control framework.",
+    "CAATs scripts that flag exceptions are a tool, not a control framework. Sharing them doesn't compromise the auditor's ability to test the underlying transactions, business processes, and other controls.",
+    "When IS resources are shared with operations, ask: 'Does the auditor still have independent ways to test what isn't covered by the shared tool?' If yes, sharing is acceptable."
+  ],
+  "d1_002": [
+    "A and D feel reasonable (more complex org → more data; familiar org → less data) but neither DRIVES data collection. They are factors that may inform the audit AFTER scope is set.",
+    "Purpose, objective, and scope are the audit's north star — every downstream decision (sample size, evidence type, time budget) flows from them.",
+    "When you see 'BEST factor for determining the EXTENT' of audit work, look for the option that defines the audit's boundary, not its difficulty or backstory."
+  ],
+  "d1_003": [
+    "Trap is A: management is the auditee. Letting them set scope without an independent risk assessment compromises auditor independence — even if their suggestion turns out to be correct.",
+    "Management may SUGGEST areas of concern; the auditor must independently VALIDATE through risk assessment. Choice C does both — the assessment may well confirm new systems are highest risk.",
+    "Default response when management requests specific scope: thank them, then run a risk assessment. ISACA Standard 1202 makes this mandatory in planning."
+  ],
+  "d1_004": [
+    "Audit risk is the umbrella concept: audit risk = inherent × control × detection. The phrase 'during IS auditing' signals the umbrella term, not one of its components.",
+    "If the question says 'during the audit / undetected', think audit risk. 'Before any controls' → inherent. 'Controls fail' → control. 'Audit procedures fail' → detection.",
+    "ISACA conflates audit risk with material misstatement risk — they're treating the broad 'will I miss something material?' question."
+  ],
+  "d1_005": [
+    "Trap is A 'overlapping': sounds related but means TWO controls covering the same objective. That presupposes you have a primary control — in a SoD failure, the primary control is what's missing.",
+    "Compensating controls answer: 'We can't implement the ideal control — what else reduces this risk?' Small-team SoD failures almost always demand compensating controls.",
+    "Common compensating controls for SoD gaps: enhanced logging + supervisory review, periodic transaction sampling, independent reconciliation, mandatory vacations, job rotation."
+  ],
+  "d1_006": [
+    "Trap is C 'fraud detection': it's a real benefit of CSA but a side-effect, not the primary purpose. Don't confuse outcomes with objectives.",
+    "CSA's core mechanism is shifting CONTROL OWNERSHIP from audit to business management — making line managers responsible for the controls they live with daily. That's why A wins.",
+    "ISACA explicitly distinguishes CSA from internal audit — CSA enhances audit work, it doesn't replace it (immediately rules out D as a 'shift to consultative')."
+  ],
+  "d1_007": [
+    "Trap is D 'customizable': sounds like the most flexible choice and tools sales pitch favorite. But the PRIMARY requirement is data accuracy without performance impact — customization is nice-to-have.",
+    "Auditing tools are 'guests' in production — if the tool degrades the system being audited, the audit itself becomes a business risk and may invalidate the data being captured.",
+    "CAATs evaluation order: 1) accuracy of capture → 2) performance impact → 3) compatibility → 4) flexibility/customization."
+  ],
+  "d1_008": [
+    "Trap is C 'IT knowledge': feels right (“they know our systems!”). That's exactly the conflict — they have existing relationships and may have worked on the very systems they'd now audit.",
+    "Independence is the foundational requirement of any audit role — it overrides all other competencies. Technical knowledge can be acquired; lost independence cannot be restored mid-engagement.",
+    "When hiring auditors from operational areas, the screening question is always: 'Which systems and projects did you work on, and which fall under audit scope today?'"
+  ],
+  "d1_009": [
+    "Trap is A 'CAATs': closely related and effective, but CAATs is a TOOL category. Continuous auditing USES CAATs but adds the real-time + automated reporting layer — the difference matters for 'emerging' risk.",
+    "'Emerging' implies time-sensitive: quarterly assessments (B) are too infrequent, log sampling (C) has lag, ad-hoc CAATs (A) still requires you to RUN them on a schedule.",
+    "CISA pattern: high transaction volume + emerging risk → continuous auditing. Almost never sampling alone."
+  ],
+  "d1_010": [
+    "Two-step distinction: are we testing whether a CONTROL operates correctly (compliance) or whether DATA is accurate (substantive)? 'Were accounts authorized?' is a question about a control — compliance.",
+    "Mnemonic: authorization, approval, segregation → compliance. Balances, totals, monetary values → substantive.",
+    "A and D are sampling METHODS, not test categories — they self-eliminate when the question asks 'which type of testing is this?'"
+  ],
+  "d1_011": [
+    "Trap is C 'control': auditors recommend controls but don't implement them. Detection risk is the only risk auditors directly shape — through their choice of procedures, sample size, and expertise.",
+    "Risk ownership map: inherent (business nature) → control (management) → detection (auditor) → business (executive/strategy).",
+    "Phrase giveaway: 'selection of audit procedures' or 'audit techniques' = detection risk every time."
+  ],
+  "d1_012": [
+    "Trap is A 'review prior findings': feels rigorous and IS part of planning, but it's an INPUT to risk assessment, not a substitute. Prior findings tell you about old issues, not current risk landscape.",
+    "Risk assessment is the foundation that determines scope, resources, sampling, and procedures. Without it, you're auditing by intuition and exposing the function to coverage gaps.",
+    "ISACA Standard 1202 makes risk assessment in planning MANDATORY — not best practice, mandatory. That alone elevates D over the alternatives."
+  ],
+  "d1_013": [
+    "Trap is D 'audit core service and dependencies': feels like the right place to dig in, but you can't audit a system you don't yet understand. SOA is a distributed black-box architecture — you must map first, test second.",
+    "Canonical sequence for any unfamiliar architecture: documentation review → mapping (services to processes) → controls assessment → transaction testing.",
+    "When the question asks for the INITIAL step on a complex system, the answer is almost always 'understand it' — never 'start testing it.'"
+  ],
+  "d1_014": [
+    "Trap is A 'delete all copies': auditors don't perform remediation. This violates independence (auditor performing operational tasks) and oversteps authority.",
+    "Auditor's job: identify → document → report risk to management → recommend prevention. Management decides on remediation, not the auditor.",
+    "Anytime an option has the auditor DOING something operational (deleting, blocking, installing, configuring, fixing), it is almost certainly wrong."
+  ],
+  "d1_015": [
+    "Trap is B 'state audit objectives': engagement-specific objectives live in the engagement letter, not the charter. The charter is organizational, not project-specific.",
+    "The charter is an authority document — it answers 'who, what scope, what authority' for the audit FUNCTION as a whole. Not for individual audits.",
+    "Charter content priority: authority > scope > responsibility > reporting line. Procedures (C) and dynamic technology content (A) belong in audit methodology documents, not the charter."
+  ],
+
+  "d1_016": [
+    "Two traps: B 'report to audit committee' jumps past diagnosis; D 'recommend the owner fix it' violates independence before scope is even understood.",
+    "Auditors investigate before they recommend: scope the issue (how many, which managers, what type of access) before escalating or proposing fixes.",
+    "CISA pattern: 'small number found' + 'something off' = perform additional analysis FIRST. Almost never 'report' or 'recommend fix' as the first step."
+  ],
+  "d1_017": [
+    "Attribute sampling = compliance ('does the control exist / fire?'). Variable/stratified/difference = substantive ('how much, how often, by what amount').",
+    "Mnemonic: Attribute → Adherence (compliance). Variable → Value (substantive).",
+    "Whenever the question is whether a control was applied (a yes/no question), the sampling method is attribute sampling. Always."
+  ],
+  "d1_018": [
+    "Trap is D 'create additional sample data' — fabricating audit evidence is a major ethics violation. Auditors test what's there, not what they wish was there.",
+    "Trap is B 'report the finding' — premature; lack of available changes isn't itself a finding without further work. Adapt the test approach instead.",
+    "When the original test approach can't deliver assurance, change the approach (with audit management approval). Document why and what alternative was used."
+  ],
+  "d1_019": [
+    "Trap is D 'consulting on good practices' — discussing principles doesn't impair independence; designing or building specific application controls does.",
+    "Trap is C 'project team member without operational responsibilities' — observation/attendance without operational role is allowed, just disclose.",
+    "The line is at HANDS-ON BUILD. Discuss principles → fine. Sit in meetings → fine. Implement, code, configure → independence impaired."
+  ],
+  "d1_020": [
+    "Continuous audit's value isn't reduced effort — it's reduced LAG between event and audit response. Real-time monitoring → real-time correction.",
+    "Continuous audit shifts the audit cycle from periodic snapshots to ongoing surveillance, making issues actionable while still relevant to the business.",
+    "Continuous audit doesn't displace responsibility for control monitoring (rules out C); that always stays with management/security."
+  ],
+  "d1_021": [
+    "Trap is A 'ensuring compliance with development methods' — that's QA's job. Doing QA's job doesn't impair QA. Correcting code DOES (now QA approves their own corrections).",
+    "QA's role is to inspect and report — not to fix. Same independence principle as audit.",
+    "Anytime someone validates AND corrects the same artifact, you have a separation-of-duties failure."
+  ],
+  "d1_022": [
+    "The other three (skill sets, test steps, time allotted) are downstream of risk identification. You can't allocate skills/time/tests until you know WHERE risk lives.",
+    "Risk-based audit planning is the audit profession's central operating principle — every other planning decision is in service of it.",
+    "ISACA Standard 1202 mandates risk identification as the foundation of audit planning, not an optional good practice."
+  ],
+  "d1_023": [
+    "Trap is A 'control design testing' — design testing answers 'is the control conceived correctly?', not 'is it operating effectively?'. Operational effectiveness needs substantive evidence.",
+    "Trap is C 'documentation inspection' — documents may say one thing, the actual operation another. Documentation review by itself is weak evidence.",
+    "Substantive testing examines the actual transactions and records produced — the most direct evidence of whether the control is doing its job."
+  ],
+  "d1_024": [
+    "Same answer pattern as the planning-extent question (d1_002): data collection extent is set by audit purpose and scope, never by auditor familiarity, auditee evidence ability, or data availability.",
+    "If evidence is hard to find, the auditor finds an alternative method, not a smaller sample. Difficulty doesn't shrink scope.",
+    "Recurring CISA pattern: 'extent of audit work' ALWAYS ties back to audit scope/purpose, never to the convenience or familiarity of the people involved."
+  ],
+  "d1_025": [
+    "Trap is B 'definite assurance' — definite/absolute is impossible in audit; CISA always uses 'reasonable'.",
+    "Trap is C/D 'all items' — covering all items isn't realistic or even desirable; the goal is coverage of MATERIAL items.",
+    "Audit always works with reasonable assurance + materiality. Anytime you see 'definite', 'absolute', or 'all items' in an option, eliminate it immediately."
+  ],
+  "d1_026": [
+    "Trap is D 'request the IDs be removed' — auditor doesn't get to request operational changes. They report; management decides.",
+    "Trap is A 'inform audit committee' — premature; document and report through normal channels first.",
+    "Auditor lifecycle: identify → document → report risk → recommend → defer remediation to management. Steps 4+ skip ahead, step 1 (D) is operational interference."
+  ],
+  "d1_027": [
+    "Compliance tests answer 'does the control work as intended?'. They don't measure efficiency (A) — that's a management metric, not an audit one.",
+    "Trap is C 'integrity of data controls' — that's substantive testing's territory. Compliance is about CONTROL operation, substantive is about DATA accuracy.",
+    "Mnemonic: Compliance → Conformance to design. Substantive → Substance/data accuracy."
+  ],
+  "d1_028": [
+    "Trap is C 'integrated test facility' — ITF tests current processing as it happens, not historical retroactive analysis. The question asks about LAST YEAR's data.",
+    "Trap is D 'embedded audit module' — same issue: forward-looking, not retroactive.",
+    "Generalized audit software is the right tool for retroactive analysis of large historical datasets — it can recompute, stratify, and identify duplicates without modifying production."
+  ],
+  "d1_029": [
+    "Trap is A 'create the procedures' — auditor writing the documentation is a textbook independence violation.",
+    "Trap is B 'end the audit' — lack of documentation is a finding, not a stop signal. The audit's purpose is to identify risk; absence of documentation IS risk to surface.",
+    "Auditors test what exists, including informal/undocumented practices. Then report the documentation gap as a finding so management can address it."
+  ],
+  "d1_030": [
+    "The risk analysis loop: identify assets → identify threats + impacts → evaluate existing controls → assess residual risk → recommend additional controls. The question places you between threat identification and risk calculation.",
+    "Trap is C 'disclose to management' — premature; disclosure happens after the analysis is complete, not mid-flow.",
+    "Risk = (threat × impact) MODERATED by existing controls. You can't quantify residual risk until you know what existing controls already mitigate."
+  ],
+  "d1_031": [
+    "Reliability hierarchy: independent third-party > auditor's own work > internal system-generated > management assertion > internet/general data.",
+    "Trap is B 'line management assurance' — single weakest evidence type because management has direct interest in the audit outcome.",
+    "The key word is 'independent' — the more disconnected the evidence source from the auditee's interest, the more reliable it is."
+  ],
+  "d1_032": [
+    "Trap is B 'only preventive and detective relevant' — corrective controls matter too; they reduce damage even when prevention fails.",
+    "Trap is C 'corrective = compensating' — different concepts. Compensating substitutes for missing primary controls; corrective fixes problems after detection.",
+    "Controls operate at specific points in data flow (input, processing, output). Their collective effectiveness depends on which points are covered and which are gap."
+  ],
+  "d1_033": [
+    "Trap is D 'testing user access rights' — system access is necessary but not sufficient. Real SoD failures often happen through workarounds, shared credentials, or informal task delegation that don't show up in access tables.",
+    "Trap is B 'org chart' — describes intended structure, not actual practice.",
+    "Observation reveals what people ACTUALLY do; interviews reveal what they THINK they do. Together they detect the gap between formal access and actual behavior."
+  ],
+  "d1_034": [
+    "Trap is A 'obtain management approval of corrective action' — corrective action plan ownership belongs to management, but approval is not the auditor's role.",
+    "Trap is C 'assist management in implementation' — implementation assistance violates auditor independence.",
+    "The closing meeting is the auditor's last chance to validate facts before publishing the report. Errors caught here protect both auditor and auditee."
+  ],
+  "d1_035": [
+    "Trap is B 'authorizations' — authorization happens at transaction time, not at reconciliation time.",
+    "Trap is A 'vouching' — vouching matches recorded transactions to source documents (record → source). Tracing matches source documents to records (source → record). Reconciliation needs the upward direction.",
+    "Mnemonic: Tracing follows the journey forward (source → destination). Vouching looks backward (record → original source)."
+  ],
+  "d1_036": [
+    "Trap is C 'dated screenshot from sysadmin' — admin can modify settings before screenshotting. Trap is A 'admin spreadsheet' — same risk + manual transcription error.",
+    "Evidence reliability key: who handled it? If the auditee handled it, it's tampered until proven otherwise.",
+    "The auditor should pull configuration data directly whenever possible. Auditor-acquired evidence ≥ third-party evidence > auditee-provided evidence."
+  ],
+  "d1_037": [
+    "Trap is B 'authenticity' — checksums detect corruption/tampering but don't prove sender identity. Authenticity needs digital signatures or MACs.",
+    "Mnemonic: Checksum = Change detection. Doesn't authenticate, doesn't authorize, just integrity.",
+    "Layered EDI controls: integrity (checksum/hash) + authenticity (signature) + authorization (transaction limits) + nonrepudiation (full PKI). Each requires its own mechanism."
+  ],
+  "d1_038": [
+    "Tests performed under audit standards beat third-party letters because letters are subject to interpretation and not always conducted under formal audit methodology.",
+    "Trap is D 'confirmation letter from outside source' — would be #1 if not for the explicit option of an external auditor's tests. Procedures > assertions.",
+    "Subtle CISA pattern: when the choice is between 'auditor-conducted procedure' and 'third-party signed letter', the procedure wins."
+  ],
+  "d1_039": [
+    "Trap is A 'EDI trading partner agreements' — agreements are legal protection, not technical prevention. Contracts don't stop unauthorized packets.",
+    "Trap is D 'program change control' — applies to system changes, not to runtime transaction authentication.",
+    "Unauthorized transactions = authentication failure. When 'unauthorized' is the symptom, look for authentication-strengthening options first."
+  ],
+  "d1_040": [
+    "Trap is B 'reports with sign-off' — a signature without follow-up evidence proves only that someone touched the report, not that they reviewed exceptions.",
+    "Effective review = look at exceptions + take action. The presence of action items is the operational evidence.",
+    "CISA pattern for control effectiveness: a control that 'fires' but has no follow-up is a control that doesn't work — verify the follow-up loop, not just the trigger."
+  ],
+  "d1_041": [
+    "Functional acknowledgments are EDI-native — they confirm that the receiving system parsed and accepted the structure. That's the data mapping audit trail.",
+    "Trap is A 'key verification' — used in encryption and data entry validation, not in EDI data mapping.",
+    "Trap is B 'one-for-one checking' — verifies completeness of transmission, not the correctness of the mapping."
+  ],
+  "d1_042": [
+    "Same as d1_017: authorization compliance → attribute sampling. The value of the PO doesn't matter, just whether it followed the matrix rule.",
+    "Trap is A or B 'variable/stratified mean per unit' — these examine value distribution. Authorization is binary (yes/no) → attribute.",
+    "The matrix gives a rule. Compliance with a rule = attribute sampling. Monetary impact = variable sampling. Almost never confused once you learn the cue."
+  ],
+  "d1_043": [
+    "Trap is A 'review source code' — code review can identify potential errors but doesn't confirm what the system actually does in practice.",
+    "Trap is B 'recreate program logic' — duplicating logic is risky; the auditor's reimplementation may have its own bugs.",
+    "Black-box testing with known inputs and predetermined expected outputs is the cleanest way to verify any calculation — auditor doesn't need to understand HOW it computes, only WHETHER it computes correctly."
+  ],
+  "d1_044": [
+    "Application control review's purpose is risk assessment — what can go wrong, and how bad would it be.",
+    "Trap is A or D 'efficiency / optimization' — those are operational metrics, not audit objectives.",
+    "Trap is C 'business processes served' — that's an audit prerequisite (understanding scope), not the focus of the controls evaluation."
+  ],
+  "d1_045": [
+    "Trap is B/C 'do not include because resolved' — the audit report must reflect the period audited, not a snapshot at publication time.",
+    "Including the finding + the corrective action protects the auditee (shows responsiveness) AND ensures the issue is documented for future audits.",
+    "CISA pattern: the audit report is a permanent record of conditions found during fieldwork. Discoveries don't disappear because they were quickly fixed."
+  ],
+  "d1_046": [
+    "Discovery sampling answers: 'has at least one occurrence of [event] happened?' — perfect for fraud screening (you only need to find one to expose a pattern).",
+    "Trap is D 'probability-proportional-to-size' — used when financial value matters; fraud screening is about occurrence, not value.",
+    "Trap is A 'stop-or-go' — used to limit sample size when expected exception rate is very low; not specifically fraud-tuned."
+  ],
+  "d1_047": [
+    "The strategy phase identifies WHAT to focus on (areas, systems, processes). That requires knowing where threats meet vulnerabilities.",
+    "Trap is A 'controls in place' — that's an output of the audit, not an input to the strategy.",
+    "Risk-based strategy precedes audit; controls testing is what the audit does. Don't confuse the planning input with the audit deliverable."
+  ],
+  "d1_048": [
+    "Trap is A 'sign release form' — confrontational and outside auditor authority.",
+    "Trap is D 'accept auditee position' — caves on professional judgment; auditee disagreement isn't grounds for retraction.",
+    "The auditor's job in disputes is to clarify the risk so the auditee fully understands what's at stake — then management can make an informed decision about acceptance vs. remediation."
+  ],
+  "d1_049": [
+    "Trap is A 'schedule and monitor time' — operational, downstream of planning.",
+    "Trap is B 'train staff on technology' — staff capability is enabling, not the FIRST step.",
+    "Risk-based planning is the only thing that ensures audit resources go to high-value targets. Without it, you're optimizing the wrong thing."
+  ],
+  "d1_050": [
+    "Trap is C 'include in report with comments' — premature; the auditor should first verify their own evidence before locking it into the report.",
+    "Trap is A 'retest the control' — retesting is downstream of evidence revalidation. If the evidence is sound, retesting may be unnecessary.",
+    "CISA disputes 101: when challenged, the auditor first verifies they have it right, then either confirms the finding or revises it. Never both publishes AND verifies in parallel."
+  ],
+
+  "d1_051": [
+    "Trap is B 'avoid sampling risk' — sampling risk exists in BOTH statistical and judgmental sampling. Statistical lets you QUANTIFY it, not eliminate it.",
+    "Trap is C 'GAS unavailable' — statistical sampling is independent of the tool used; method choice is driven by the testing objective.",
+    "Statistical sampling's distinguishing feature is mathematical precision: it lets you calculate exactly how confident you are. Judgmental sampling can't."
+  ],
+  "d1_052": [
+    "Trap is A 'revise per management feedback' — auditor doesn't revise findings just because the auditee pushes back. The IDS and firewall are different controls and don't address the monitoring gap.",
+    "Trap is B/C 'retract because IDS/firewall in place' — the question states monitoring is inadequate. Other controls existing doesn't substitute for the missing one.",
+    "The auditor considers management's input but doesn't auto-retract. Document the finding and capture management's response separately in the report."
+  ],
+  "d1_053": [
+    "Trap is C 'compare checks to input forms' — checks reflect processed amounts, not what was input. Comparing processed → input loses visibility into the bank's transformations.",
+    "Trap is D 'reconcile checks with output reports' — both are bank-side outputs; reconciling outputs with outputs only confirms the bank is internally consistent, not that they processed YOUR data correctly.",
+    "End-to-end accuracy = compare INPUT (your data) to OUTPUT (bank reports). Same logic as substantive testing of any outsourced calculation."
+  ],
+  "d1_054": [
+    "EDI's defining characteristic is automated electronic interaction with no human authentication step. That makes authorization the foundational control — without it, all downstream controls operate on potentially fraudulent data.",
+    "Trap is D 'deletion or manipulation' — also serious, but logging detects this. The authorization gap is more fundamental: it's prevention vs detection.",
+    "CISA pattern: 'GREATEST risk in EDI' is almost always 'unauthorized transactions'. Authentication and authorization are EDI's weakest link."
+  ],
+  "d1_055": [
+    "Trap is D 'minimize audit resources' — resource efficiency is a benefit, not the primary goal of planning.",
+    "Trap is B/C 'collect evidence / specify tests' — these are outputs of the planning process, not its goal.",
+    "ISACA Standards mandate that planning must address audit objectives. Everything else (sampling, evidence, time) flows from that anchor."
+  ],
+  "d1_056": [
+    "Trap is C 'all material weaknesses identified' — professional judgment can't guarantee this; reasonable assurance is the standard, not exhaustive identification.",
+    "Trap is B 'deficiencies will be corrected' — correction is management's responsibility, not the auditor's.",
+    "Professional judgment shapes the audit's evidence-gathering strategy: what's enough, what's relevant, what's reliable. The 'sufficient' bar is judgment-driven."
+  ],
+  "d1_057": [
+    "Trap is A 'bar code readers' or B 'movement authorized' — these test CONTROLS (compliance), not the actual inventory state (substantive).",
+    "Trap is D 'check receipts/issues recorded' — same: testing the control over recording, not the records' accuracy itself.",
+    "Substantive = examining actual data/asset directly. Physical count IS the substantive test for any inventory."
+  ],
+  "d1_058": [
+    "Trap is D 'encrypt orders' — encryption protects in transit, doesn't authenticate sender or validate order legitimacy.",
+    "Trap is A 'acknowledge receipt' — confirms transmission, not authenticity. Anyone can acknowledge anyone's order.",
+    "Authenticity = sender identity + content validity. Both must be verified. Contracts give the second-layer check (does this match what we agreed to?)."
+  ],
+  "d1_059": [
+    "Trap is A 'conclude inadequate controls' — premature; one inconsistent interview is a flag, not a conclusion.",
+    "Trap is D 'suspend the audit' — gathering MORE evidence is the appropriate response, not less.",
+    "When inquiry contradicts documentation, substantive testing is the tiebreaker. Look at actual transactions/records to see who's right."
+  ],
+  "d1_060": [
+    "Recommending a specific product creates an appearance of vendor bias and compromises objectivity, even if no commercial relationship exists.",
+    "Trap is B 'organizational independence' — that's about reporting structure within the audit org, not external vendor neutrality.",
+    "Auditors recommend categories of solutions and required functionality; they don't endorse specific products."
+  ],
+  "d1_061": [
+    "Trap is C 'identify control weakness' — too far ahead. Walk-throughs are scoping/discovery, not testing.",
+    "Trap is D 'develop risk assessment' — risk assessment uses business understanding as input, but the walk-through itself is the input.",
+    "Audit sequence: walk-through (understand) → risk assessment → scoping → testing → reporting. Each builds on the previous."
+  ],
+  "d1_062": [
+    "The value of automated comparison is INDEPENDENCE from IS personnel — auditor doesn't have to ask 'what changed?'; the tool reveals it directly.",
+    "Trap is B 'detect change between copy and run' — incidentally true, but not the primary purpose of using the tool.",
+    "CISA pattern: when the question describes an audit tool, the answer is usually 'objective, independent verification' — that's the value tools add beyond manual inquiry."
+  ],
+  "d1_063": [
+    "Trap is A 'overlooked issues' — the meeting isn't a comprehensive scope review; that should be done earlier.",
+    "Trap is C/D 'feedback on procedures / presentation structure' — these are quality assurance concerns, not the meeting's primary purpose.",
+    "Closing meetings exist to align on the findings BEFORE publication — getting auditee buy-in or surfacing factual disputes while there's still time to resolve."
+  ],
+  "d1_064": [
+    "Trap is D 'review code migration procedures' — procedural review tells you what SHOULD have happened, not what DID happen.",
+    "Trap is A 'test data run' — verifies that the program produces correct output, not whether unauthorized changes were made.",
+    "Code comparison directly measures the ground truth: did the production code change between two snapshots? Procedures and outputs only indirectly reveal this."
+  ],
+  "d1_065": [
+    "Trap is A 'IS management statements' — supplementary, not foundational. Statements without supporting evidence are weak.",
+    "Trap is B 'work papers of other auditors' — useful but should be validated independently before being relied on.",
+    "ISACA IS Audit and Assurance Reporting Standards require sufficient and appropriate evidence — that's the foundation of audit credibility."
+  ],
+  "d1_066": [
+    "Trap is B/D 'efficiency' — efficiency is downstream of effectiveness; the structural problem is what threatens the QA function's purpose.",
+    "QA reporting to project management creates pressure to release defective products to meet schedule. Independence from PM is fundamental.",
+    "Same independence principle as audit: anyone whose work you're checking shouldn't be your boss."
+  ],
+  "d1_067": [
+    "Trap is A 'audit committee' — the committee oversees the audit function, doesn't dictate report contents (would compromise auditor independence).",
+    "Trap is D 'CEO' — would convert audit into management's reporting tool, gutting independence.",
+    "The auditor decides what goes in the report. Senior leaders may push back, but the report is the auditor's professional product."
+  ],
+  "d1_068": [
+    "Trap is C 'access rights' — access rights are about who can read the file; encryption is about whether unauthorized readers CAN read it once they have it. Different control layer.",
+    "Trap is A 'audit trail of versioning' — versioning is integrity, not confidentiality. Different security objective.",
+    "CIA mapping: encryption → confidentiality (and tamper-resistance). Access controls → confidentiality (preventive). Audit logs → accountability/integrity."
+  ],
+  "d1_069": [
+    "Trap is A 'regulatory compliance' — secondary; following regulations doesn't replace the audit's epistemic purpose.",
+    "Trap is C 'complete coverage' — coverage is downstream; you collect evidence to support conclusions, not to fill checklists.",
+    "Audit conclusions must be defensible. Sufficient + appropriate evidence is the only thing that makes them so."
+  ],
+  "d1_070": [
+    "Trap is B/C 'report to audit committee / management' — premature; need more evidence first to avoid false alarms.",
+    "Trap is D 'consult external legal counsel' — way premature and outside auditor authority.",
+    "Fraud indicators trigger ESCALATION OF AUDIT WORK, not immediate escalation up the chain. Verify before you alarm."
+  ],
+  "d1_071": [
+    "Trap is A 'effective preventive control' — logging doesn't prevent anything; it records.",
+    "Trap is B 'valid detective control' — would be true IF logs were reviewed. Generation alone isn't a control.",
+    "CISA principle: logging without review is a non-control. Generation + review = detective control."
+  ],
+  "d1_072": [
+    "Same as d1_015: the charter is organizational, not engagement-specific.",
+    "Trap is A/B 'engagement plans / objectives' — these belong in engagement letters, not the charter.",
+    "Trap is C 'training plan' — operational, owned by the audit director, not the charter."
+  ],
+  "d1_073": [
+    "Trap is C 'compliance testing' — compliance tests examine whether controls were applied, not whether data is duplicated.",
+    "Trap is A 'attribute sampling' — sampling examines a SUBSET; duplicate detection needs full population coverage.",
+    "Duplicate detection over a full file is a CAATs job — automated comparison across all records, not sampling."
+  ],
+  "d1_074": [
+    "Trap is A 'threat assessment' — threats are AGAINST something. You need the something first.",
+    "Trap is B/D 'data classification / criticality' — both require knowing WHAT's being classified.",
+    "Risk management starts with: what assets do I have? Then: what threats apply? Then: what's at stake?"
+  ],
+  "d1_075": [
+    "Same as d1_054: in EDI, authorization is the weak link.",
+    "Trap is D 'nonvalidated batch totals' — also a risk, but downstream of authorization. If unauthorized transactions are in the batch, valid totals are still a problem.",
+    "EDI security pyramid: authorization > integrity > nonrepudiation > confidentiality. Address the foundation first."
+  ],
+  "d1_076": [
+    "CAATs is an umbrella term — the answer when the question asks for breadth across data sources.",
+    "Trap is A 'SQL' — only works on relational databases; can't access flat files, mainframe records, or proprietary formats.",
+    "When the question emphasizes 'diverse software environments', CAATs wins because of its tool-neutral, format-agnostic nature."
+  ],
+  "d1_077": [
+    "The question's twist is 'exceptions for specific users' — that's a population characteristic. Stratified sampling lets you target user populations independently.",
+    "Trap is D 'systematic' — fixed-interval sampling can miss user-specific patterns if interval doesn't align with user distribution.",
+    "When a population has DIFFERENT subgroups with different risk profiles, stratify. When uniform risk, simple random or systematic."
+  ],
+  "d1_078": [
+    "Trap is A 'decline' — too aggressive. Disclosure + alternative arrangements may suffice.",
+    "Trap is B 'inform after completing' — completely backwards. Disclosure is preventive, not retrospective.",
+    "Self-audit conflicts must surface BEFORE engagement starts so audit management can decide on safeguards (different auditor, peer review, scope limits)."
+  ],
+  "d1_079": [
+    "Trap is D 'preserve evidence of criminal activity' — preservation is part of the process, not its purpose. Forensics also covers civil disputes, not just crime.",
+    "Trap is A 'fraud investigations' — too narrow; forensics is broader than fraud (incident response, IP theft, data breach).",
+    "Forensic = methodical evidence handling. Purpose is systematic capture, analysis, and reporting (often for legal proceedings)."
+  ],
+  "d1_080": [
+    "Trap is A 'issue audit finding' — premature on a single observation. Could be isolated.",
+    "Trap is B 'seek explanation from management' — useful, but only after you've confirmed the pattern.",
+    "CISA pattern: a single observation is NEVER enough to issue a finding. Expand the sample to determine if it's systemic or isolated."
+  ],
+  "d1_081": [
+    "Trap is A 'hire additional staff' — not always feasible in small orgs; the question explicitly mentions this constraint.",
+    "Trap is C 'log changes to development libraries' — detective only after the fact in development; doesn't prevent unauthorized production changes.",
+    "Compensating control for SoD failure: independent verification that production changes were properly approved BEFORE release. Same risk-reducing effect as full SoD."
+  ],
+  "d1_082": [
+    "Trap is A 'identify systems and controls' — too early; you need business context to know which systems matter.",
+    "Trap is B 'list controls from program' — that's downstream of understanding what processes need protecting.",
+    "Risk-based audit starts where the business does: with strategy and operating model. Technology comes second."
+  ],
+  "d1_083": [
+    "Trap is C 'note control deficiency' — premature; the diagram is being updated, not absent. No deficiency without a real gap.",
+    "Trap is A 'expand scope' — knee-jerk; first determine if these devices matter to the audit objectives.",
+    "Risk-based scoping decisions consider impact on objectives. New finding doesn't automatically mean new scope."
+  ],
+  "d1_084": [
+    "System-generated > human-generated. Sysadmin spreadsheets and HR docs both have human handling and tampering risk.",
+    "Trap is D 'observations onsite' — useful but subjective and limited to what's observed live.",
+    "Reliability hierarchy applied: auditor pulls system-generated data directly = strongest objective evidence."
+  ],
+  "d1_085": [
+    "Trap is A 'audit trails with date/time' — captures WHEN, not WHAT. Need transaction-level detail.",
+    "Trap is C 'user account administration' — administration metadata, not actual activity records.",
+    "When SoD fails, compensating control needs to capture activity at the granularity that would normally be checked. Transaction-level logs do this; metadata-only logs don't."
+  ],
+  "d1_086": [
+    "Self-audit is a textbook independence violation. Even if technical work is fine, the appearance of conflict undermines audit credibility.",
+    "Trap is B/C/D — these are skill/competence concerns, all secondary to the independence concern.",
+    "Independence > competence. Skill gaps can be filled with training; lost independence cannot be restored mid-engagement."
+  ],
+  "d1_087": [
+    "Trap is A 'communicate results' — too vague; communication isn't itself the OBJECTIVE.",
+    "Trap is D 'identify compensating controls' — that's audit work, not the discussion's purpose.",
+    "The findings discussion is the FACT-CHECK + REMEDIATION-START step. Two purposes: confirm accuracy, propose action."
+  ],
+  "d1_088": [
+    "Trap is C 'facilitating training' — training delivery is education, not framework design. Doesn't compromise independence.",
+    "Trap is B 'advising on techniques' — advice on principles is acceptable; designing controls is not.",
+    "The line again: design and build → impaired. Advise, train, audit → fine."
+  ],
+  "d1_089": [
+    "Trap is A 'stakeholders incorrectly identified' — operational, fixable.",
+    "Trap is B 'cost overruns' — efficiency concern, not effectiveness.",
+    "Without objectives, the audit has no compass — and the worst outcome is missing critical risk that goes unaudited."
+  ],
+  "d1_090": [
+    "Trap is D 'heuristic scanning' — virus detection technique, not log analysis.",
+    "Trap is B 'embedded data collection' — captures data, doesn't analyze for anomalies.",
+    "Anomaly detection = pattern variance from baseline. Trend/variance tools are purpose-built for this."
+  ],
+  "d1_091": [
+    "Trap is B 'don't report because out of scope' — material findings are reported regardless of scope.",
+    "Trap is D 'cease audit until resolved' — auditor can't halt operations or audits over a finding.",
+    "Trap is A 'inform IT manager + recommend solutions' — verbal only is weak; the finding must be formally reported. Recommending specific solutions also touches on independence."
+  ],
+  "d1_092": [
+    "Continuous audit / automated monitoring requires aligning all key controls — that alignment naturally exposes redundancies.",
+    "Trap is D 'testing controls for effectiveness' — finds weak controls, not redundant ones.",
+    "Process redesign (automation) is the systematic way to surface duplicated controls; ad-hoc testing won't."
+  ],
+  "d1_093": [
+    "Same pattern as d1_074: assets first, then threats/risk.",
+    "Trap is A 'review data classification' — already requires the assets to exist.",
+    "Trap is D 'cost-benefit analysis' — last step, after risk is calculated and controls are proposed."
+  ],
+  "d1_094": [
+    "Trap is C 'inform senior management' — premature; need auditee agreement first to avoid disputes downstream.",
+    "Trap is B 'determine mitigation' — that's management's job, not auditor's first action.",
+    "Findings must be confirmed with auditee BEFORE escalation. Gets buy-in and surfaces factual disputes early."
+  ],
+  "d1_095": [
+    "Trap is C 'replacement for audits' — CSA enhances, doesn't replace audit.",
+    "Trap is D 'management relinquishes control responsibility' — opposite of CSA's intent (it INCREASES management's control involvement).",
+    "CSA's main value: it's a high-frequency, low-cost way for the business to surface risk that audit then validates."
+  ],
+  "d1_096": [
+    "Trap is A 'prioritize risk' — circular; you can't prioritize before identifying. The question literally asks what comes BEFORE ranking.",
+    "Audit universe = the inventory of things that COULD be audited. You can't rank what you haven't enumerated.",
+    "Pattern: any annual planning question starts with universe definition, then risk identification, then ranking."
+  ],
+  "d1_097": [
+    "Same independence principle as d1_088 and d1_019: designing controls and then auditing them is a conflict.",
+    "Trap is D 'conducting vulnerability assessment' — that IS audit work, not a conflict.",
+    "Trap is A/C 'training / advising' — non-design activities are acceptable."
+  ],
+  "d1_098": [
+    "Trap is A 'most valuable assets' — too narrow; assets serve processes, but processes are what you're auditing.",
+    "Trap is B 'audit resources' — too far ahead; you allocate resources after knowing what controls to test.",
+    "After process identification: identify control objectives → assess existing controls → test → report. Don't skip ahead to resources."
+  ],
+  "d1_099": [
+    "Trap is B 'corporate standards' — internal, can't override law.",
+    "Trap is C/D 'good practices / org policies' — both yield to legal mandates.",
+    "Hierarchy of audit constraints: law > regulation > corporate standard > policy > good practice. Statutory always wins."
+  ],
+  "d1_100": [
+    "Trap is A 'remove the auditor' — only required by some statutes; not always necessary if disclosure is made.",
+    "Trap is B 'cancel engagement' — extreme; disclosure usually suffices to address the conflict.",
+    "Trap is D 'restore independence' — independence cannot be restored mid-engagement; disclosure to the client is the proper recourse."
+  ],
+
+  "d1_101": [
+    "Trap is D 'walk-through' — walk-through is best for understanding process flow but reperformance specifically tests whether the control performs as designed.",
+    "Trap is A/B 'interview / inquiry' — these gather information but don't test the control. Reperformance actually executes the control to validate it.",
+    "For automated controls especially, reperformance gives the strongest design evidence because the auditor independently produces results matching what the control should produce."
+  ],
+  "d1_102": [
+    "Trap is A 'management concerns' — those are inputs, not the goal. Audit isn't a management consultancy.",
+    "Trap is D 'develop audit program' — the program is downstream of risk assessment, not its purpose.",
+    "Risk assessment in planning ensures audit attention goes to MATERIAL items — that's the materiality principle in action."
+  ],
+  "d1_103": [
+    "Trap is A 'risk statement with business impact' — useful but follows from validated findings.",
+    "Trap is C/D 'recommendations / remediation' — these come AFTER findings are confirmed, not before.",
+    "Findings must be evidence-backed first. Without traceable evidence, audit conclusions can't withstand challenge from senior leadership."
+  ],
+  "d1_104": [
+    "Same as d1_017, d1_042: yes/no compliance question = attribute sampling.",
+    "Trap is C 'stop-or-go' — used when expected exception rate is very low; not the primary tool for counting compliance failures.",
+    "The 'number of POs not approved' is a count of compliance failures = attribute sampling."
+  ],
+  "d1_105": [
+    "CAATs make audit-collected data inherently more reliable because the auditor controls the collection.",
+    "Trap is A/C/D 'usefulness/relevance/adequacy' — these depend on the audit objective, not the data collection method.",
+    "CAATs primarily improves reliability through auditor-direct collection, removing the auditee-handling step that introduces tampering risk."
+  ],
+  "d1_106": [
+    "Same theme as d1_022, d1_012: risk assessment is the foundation of audit planning.",
+    "Trap is B 'defining audit scope' — scope is determined BY risk assessment, not before it.",
+    "Trap is A/C 'audit program / information owners' — these come after risk assessment establishes the priorities."
+  ],
+  "d1_107": [
+    "Audits ARE projects: scope, schedule, resources, deliverables, stakeholders. Project management skill is the umbrella.",
+    "Trap is D 'attention to detail' — necessary but operational, not strategic.",
+    "Project management skills cover audit constraint navigation; pure attention to detail doesn't address resource/schedule/scope tradeoffs."
+  ],
+  "d1_108": [
+    "Trap is B 'replaces audit' — CSA never replaces audit. Just enhances.",
+    "Trap is C/D 'reduces workload / resources' — partial side effects, not the major benefit.",
+    "CSA is high-frequency, business-driven, so risks surface in real-time vs annual audit cycle. Speed of detection is the major benefit."
+  ],
+  "d1_109": [
+    "Inherent risk = the natural risk before controls are applied. Number of users = scope of impact = inherent risk dimension.",
+    "Trap is D 'residual risk' — residual is what REMAINS after controls; the question asks why risk is HIGH from the start.",
+    "Number of users affected = exposure breadth = inherent risk dimension."
+  ],
+  "d1_110": [
+    "Trap is A/B 'report to management / committee' — premature on a 'potential' finding.",
+    "CISA pattern: 'potential finding' = needs validation. Confirm before reporting.",
+    "Auditor credibility depends on never presenting unconfirmed findings as confirmed."
+  ],
+  "d1_111": [
+    "Trap is A 'board of directors' — full board is too high-level; the audit committee is the board's delegate for audit oversight.",
+    "Trap is C 'executive management' — would compromise audit independence (the audit oversight body must be independent of management).",
+    "Audit committee is the board-level body specifically responsible for audit oversight, including the charter."
+  ],
+  "d1_112": [
+    "Walk-through covers all the others (inquiry, observation, inspection, reperformance) for a process review.",
+    "Trap is D 'reperformance' — for end-to-end process understanding, walk-through is broader.",
+    "When the question is about evaluating a PROCESS (not a single control), walk-through is the canonical technique."
+  ],
+  "d1_113": [
+    "Same as d1_057: physical comparison of actual data = substantive testing.",
+    "Trap is C 'analytical' — analytical compares ratios/trends; physical comparison is substantive.",
+    "Trap is B/D 'compliance / control testing' — those test controls. Comparing physical to records = substantive."
+  ],
+  "d1_114": [
+    "Trap is A 'impact' — impact is the consequence of an exploit, not the gap itself.",
+    "Trap is D 'threat' — threats EXPLOIT vulnerabilities; absence of controls IS the vulnerability.",
+    "Risk vocabulary: threat (event), vulnerability (weakness), impact (consequence). Risk = function of all three."
+  ],
+  "d1_115": [
+    "Trap is A 'do not report' — material non-compliance with documented procedures must be reported.",
+    "Trap is B/D 'recommend physical counts / new system' — premature; the issue is procedure non-compliance, not procedure inadequacy.",
+    "The auditor reports DEVIATIONS from documented procedures — improvement recommendations come AFTER understanding why the deviation happened."
+  ],
+  "d1_116": [
+    "The condition is a SoD concern that needs to be reported, not analyzed or remediated by the auditor.",
+    "Trap is A 'recommend compensating controls' — premature; auditor reports first, management decides on remediation.",
+    "Same independence principle: developer + QA on related work is SoD violation. Report and let management address."
+  ],
+  "d1_117": [
+    "Procedures embed SoD, dual control, and approval limits — that's where financial risk is addressed in wire transfer systems.",
+    "Trap is A 'privileged access' — only one piece of the picture; misses the transactional control framework.",
+    "Trap is C 'fraud monitoring' — detective control; the preventive controls in procedures are the primary defense against financial loss."
+  ],
+  "d1_118": [
+    "When historical evidence is strong, you can accept lower confidence (more inherent risk acceptance) → smaller sample.",
+    "Trap is C/D 'higher confidence with larger sample' — that's for high-risk environments, not strong-control ones.",
+    "Sampling math intuition: confidence ↑ → sample ↑. Strong controls justify confidence ↓ → sample ↓."
+  ],
+  "d1_119": [
+    "ISACA, IIA, IFA professional standards mandate supervision of audit staff regardless of staff experience.",
+    "Trap is A 'internal quality requirements' — they reflect professional standards, not the source of the requirement.",
+    "Supervision isn't about staff competence — it's a profession-wide requirement that protects audit quality."
+  ],
+  "d1_120": [
+    "Observation directly verifies that two people are present during the operation.",
+    "Trap is A 'transaction logs' — logs may show two user IDs but don't confirm two PEOPLE were involved (one person could log in as both).",
+    "Trap is B 'reperformance' — testing the operation yourself doesn't validate the dual-control aspect."
+  ],
+  "d1_121": [
+    "When controls are weak, you can't rely on them. Substantive testing examines actual data directly to compensate.",
+    "Trap is C 'compliance' — compliance tests verify control effectiveness; if controls are already known weak, compliance testing won't help.",
+    "Risk model: weak controls (control risk high) → can't rely on controls → substantive testing required to compensate."
+  ],
+  "d1_122": [
+    "The initiation meeting establishes mutual understanding of what's in/out of scope.",
+    "Trap is D 'collect evidence' — way too early; that's fieldwork, not initiation.",
+    "Trap is B/C 'identify resources / select methodology' — those are audit team's internal decisions, not client meeting topics."
+  ],
+  "d1_123": [
+    "Same as d1_015, d1_072: charter establishes the audit function's mandate — purpose, responsibility, authority, accountability.",
+    "Trap is A 'organizational structure' — that's an HR/governance document, not the charter.",
+    "The charter answers 'what authority does audit have to act?' — that's the foundational question."
+  ],
+  "d1_124": [
+    "Trap is A 'technology architecture' — important but secondary; business context drives audit priorities.",
+    "Trap is D 'continuous monitoring' — that's ongoing operations, not audit understanding.",
+    "Audit always starts with business — what does this system DO for the business? That determines what to test and how deeply."
+  ],
+  "d1_125": [
+    "Trap is D 'evaluate org structure' — shows formal structure, not actual practice.",
+    "Trap is B 'review IT job descriptions' — descriptions may be outdated or not reflect actual duties.",
+    "IT managers know who actually does what — direct discussion gives the real picture vs documents which describe intent."
+  ],
+  "d1_126": [
+    "Approval before action = prevention. Manager approves before transaction processes.",
+    "Trap is A 'detective' — detective finds problems after the fact; approval prevents the problem from occurring.",
+    "Mnemonic: BEFORE → preventive. AFTER → detective. CORRECT after detection → corrective."
+  ],
+  "d1_127": [
+    "Trap is A 'expand scope' — scope expansion needs authorization and may not be appropriate for minor issues.",
+    "Trap is C 'work with DBAs to correct' — auditor doesn't fix; reports the observation.",
+    "CISA pattern: any audit observation (regardless of scope) gets reported. Scope determines depth of investigation, not whether to mention."
+  ],
+  "d1_128": [
+    "The system FIXES out-of-date PCs before allowing connection. Fixing = corrective.",
+    "Trap is C 'compensating' — would apply if it substituted for a missing control. This IS the primary control.",
+    "Trap is D 'detective' — detective only identifies; this acts on the identification. Detection + correction = corrective."
+  ],
+  "d1_129": [
+    "Trap is D 'rely on management testing' — management self-testing doesn't replace independent audit.",
+    "Trap is A/B 'control design / operational testing' — not the question; the question is what to do with limited resources.",
+    "Risk-based prioritization is the right answer to resource constraints — concentrate where impact is greatest."
+  ],
+  "d1_130": [
+    "Reperformance with same inputs and predetermined results is the gold standard for calculation correctness.",
+    "Trap is B/C/D 'walk-through / observation / documentation' — these don't independently verify the math.",
+    "CISA pattern: when 'effectiveness of calculation' is the test, reperformance wins."
+  ],
+  "d1_131": [
+    "Trap is A 'process owners identify key controls' — process owners know controls but may not know cross-functional importance.",
+    "Senior management has the strategic view of what matters most to the business — they own the prioritization.",
+    "Risk-based planning starts with business process criticality — and senior management owns that picture."
+  ],
+  "d1_132": [
+    "Trap is D 'perform an access review' — auditor doesn't do operational work; reports the deficiency.",
+    "Trap is B 'discuss with provider' — premature; report through the proper channel (IT management) first.",
+    "Material contract violations get reported in the audit report — that's the auditor's role."
+  ],
+  "d1_133": [
+    "Same as d1_070: indicators ≠ conclusion. More work needed before reporting fraud.",
+    "Trap is A/B 'communicate / escalate' — premature; analyze first.",
+    "Trap is C 'report to authorities' — way too early; need professional evaluation first to avoid false accusations."
+  ],
+  "d1_134": [
+    "Same as d1_074, d1_093: assets are the foundation of risk assessment. Identification + ranking comes first.",
+    "Trap is A/B/D 'threats / vulnerabilities / breach effects' — all are downstream of asset identification.",
+    "Pattern: every risk assessment chain starts with assets. Memorize: assets first, always."
+  ],
+  "d1_135": [
+    "Badge entry stops unauthorized access at the door. Preventive control.",
+    "Trap is A 'security guard' — guards are deterrent (visible discouragement); badge system is the actual access prevention.",
+    "Trap is B/D 'IDS / fire suppression' — detective and corrective, respectively."
+  ],
+  "d1_136": [
+    "Trap is C 'limited employee participation' — the OPPOSITE of CSA.",
+    "Trap is D 'policy-driven' — that's traditional audit; CSA is people-driven.",
+    "CSA = broadening control ownership across the business. Look for the option that emphasizes participation and stakeholder involvement."
+  ],
+  "d1_137": [
+    "Trap is A 'censure deputy CEO' — outside auditor authority; punishment isn't the auditor's role.",
+    "Trap is C 'approve existing plan and circulate' — approving a 2-year-old untested plan is reckless.",
+    "The right action assigns ownership + sets a deadline. Definite responsibility + time limit = workable recovery from this situation."
+  ],
+  "d1_138": [
+    "Trap is B/D 'cancel / postpone audit' — auditor doesn't halt the audit for findings; reports them.",
+    "Trap is C 'audit only DRP-covered systems' — ignores the gap, defeats the audit's purpose.",
+    "Continue audit + flag gap is the standard pattern when scope is incomplete."
+  ],
+  "d1_139": [
+    "GAS filters and analyzes large datasets — exactly what threshold monitoring needs.",
+    "Trap is B 'integrated test facility' — tests current processing, not threshold monitoring.",
+    "Trap is C/D 'regression / snapshot' — not threshold-monitoring tools."
+  ],
+  "d1_140": [
+    "CSA is structured, formal, documented assessment of controls — the most thorough ongoing maintenance mechanism.",
+    "Trap is A 'exception reporting' — reactive only, not proactive maintenance.",
+    "Trap is B/D 'manager oversight / peer reviews' — informal, less reliable than CSA's structured approach."
+  ],
+  "d1_141": [
+    "CSA's defining feature: shifting control ownership from audit to management. Without that shift, CSA fails.",
+    "Trap is C 'stringent control policy' — that's traditional control approach, not CSA.",
+    "CSA is fundamentally about empowering business management — not about audit (D), not about staff managers (B)."
+  ],
+  "d1_142": [
+    "Table lookup PREVENTS invalid data from entering — input validation as prevention.",
+    "Trap is A 'transaction logs' — detective control.",
+    "Trap is B/D 'before-after image / tracing' — detective/audit techniques, not preventive controls."
+  ],
+  "d1_143": [
+    "Embedded audit module = continuous evidence collection during processing. That's its purpose.",
+    "Trap is C 'identify fraudulent transactions' — a use case enabled by evidence collection, not the primary objective.",
+    "Trap is D 'increase efficiency' — side effect, not goal."
+  ],
+  "d1_144": [
+    "The 'high availability' + 'multinational retail' setup signals high-volume environment where fraud detection speed matters most.",
+    "Trap is A 'preventive controls enforced' — continuous audit is detective, not preventive.",
+    "Trap is C 'errors corrected' — auditors don't correct; management does. Continuous audit only enables faster detection."
+  ],
+  "d1_145": [
+    "Observation + log = direct evidence of the control firing AND being recorded.",
+    "Trap is B/C/D 'manual / interviews' — secondary; describe intent, not actual behavior.",
+    "Direct observation > indirect description for control effectiveness."
+  ],
+  "d1_146": [
+    "Check digit is mathematically designed for transposition detection (swapping digits invalidates the check).",
+    "Trap is A/B 'range / validity' — these check value plausibility, not order accuracy.",
+    "Trap is C 'duplicate' — different error type entirely."
+  ],
+  "d1_147": [
+    "Annual plan = resource allocation across the year's audits.",
+    "Trap is B 'reduce audit risk' — that's outcome, not purpose.",
+    "Trap is C/D 'training / cost minimization' — operational concerns, not the plan's main purpose."
+  ],
+  "d1_148": [
+    "Same as d1_111: audit committee is the board-level audit governance body that approves the charter.",
+    "Trap is C 'audit steering committee' — steering committees execute, not approve charters.",
+    "Trap is A/B 'CFO / CEO' — executive management can't approve their own oversight body's authority document."
+  ],
+  "d1_149": [
+    "Trap is A 'high-impact addressed' — close, but materiality (impact + probability) is the precise concept.",
+    "Trap is B/D 'efficient resource allocation / management concerns' — secondary outcomes, not the primary purpose.",
+    "CISA distinguishes 'high-impact' from 'material' — material includes both impact AND probability of occurrence."
+  ],
+  "d1_150": [
+    "Trap is D 'discuss with auditee's manager' — confrontational and bypasses internal audit governance.",
+    "Trap is B 'retest the control' — premature; first consult internally to align on response.",
+    "Trap is C 'elevate the risk' — doesn't resolve the disagreement; just moves it up. Discuss with audit manager first."
+  ],
+  "d1_151": [
+    "Data owner accountability spans the entire data life cycle — creation → use → archival → destruction.",
+    "Trap is A 'creating regular backups' — operational task, often delegated to custodians.",
+    "Trap is D 'risk assessment / implementing controls' — owners DEFINE requirements; custodians and security teams IMPLEMENT."
+  ],
+  "d1_152": [
+    "Risk-based response again: prioritize highest-value areas with the available skilled resources.",
+    "Trap is C 'refuse to conduct audit' — overreaction; partial audit beats no audit if scope is communicated.",
+    "Trap is D 'extend timelines for training' — generally not feasible to retrain on the fly."
+  ],
+  "d1_153": [
+    "CSA captures management's recent self-evaluation of the process — most current view of risk and current state.",
+    "Trap is A 'IT employee interviews' — too narrow; sample bias and limited scope.",
+    "Trap is C 'past audit reports' — historical, may not reflect current state."
+  ],
+  "d1_154": [
+    "Risk-based planning calibrates testing depth to controls strength. Without knowing the controls, you can't plan testing.",
+    "Trap is B 'previous audit findings' — useful but historical.",
+    "Trap is D 'resource availability' — operational constraint, not strategic input."
+  ],
+  "d1_155": [
+    "Information gathering precedes everything: business understanding, prior audits, current state.",
+    "Trap is A/B/D 'understand controls / compliance / substantive tests' — all downstream activities.",
+    "CISA always starts audits with information gathering and planning. Concrete activities (testing) come later."
+  ],
+  "d1_156": [
+    "Trap is A 'change scope to exclude' — reduces audit value and may miss critical scope coverage.",
+    "Trap is C 'refuse audit' — overreaction; experts can fill the competency gap.",
+    "Trap is D 'proceed without skills' — violates professional ethics; competence is required by ISACA standards."
+  ],
+  "d1_157": [
+    "Audit plans must be updated when scope changes are needed — with proper approval from audit management.",
+    "Trap is A 'inform cloud provider directly' — wrong path; client authorizes provider interaction, not auditor.",
+    "Trap is B 'ignore cloud backup' — assumes verbatim copy; auditors verify, don't assume."
+  ],
+  "d1_158": [
+    "Logs reveal whether controls are firing as intended — if logs show gaps, substantive testing is warranted.",
+    "Trap is A 'control documentation' — paper exercise; doesn't show actual control operation.",
+    "Trap is C/D 'system specs / data flow diagrams' — design artifacts, not operational evidence."
+  ],
+  "d1_159": [
+    "Data analytics enables population-level analysis impossible with manual sampling.",
+    "Trap is B 'eliminate testing/sampling' — analytics enhances, doesn't replace.",
+    "Trap is C/D 'reduce scope / add work' — analytics expands capability, not workload."
+  ],
+  "d1_160": [
+    "Trap is B/C 'consult sysadmin / developer to fix' — auditor doesn't direct remediation.",
+    "Trap is A 'document in audit report' — too slow for an active zero-day exposure.",
+    "Active critical vulnerability needs management notification immediately to enable response — but management decides remediation, not the auditor."
+  ],
+  "d1_161": [
+    "CSA can mistakenly substitute for audit — auditor must verify other controls exist and aren't being neglected.",
+    "Trap is A 'actively participate' — auditor would lose independence acting in the assessed function.",
+    "Trap is D 'recuse citing redundancy' — CSA doesn't replace audit, so audit role isn't redundant."
+  ],
+  "d1_162": [
+    "Integrated audit's value is connecting IT findings to business consequences — speaks management's language.",
+    "Trap is A 'perform IT audits independently' — defeats the integration purpose.",
+    "Trap is B 'prioritize by complexity' — wrong driver; risk and business impact drive priority."
+  ],
+  "d1_163": [
+    "QA programs provide the measurement framework for the audit function itself — a basis for evaluating effectiveness/efficiency.",
+    "Trap is A/C/D — all are activities OF a QA program, not its primary objective.",
+    "The objective IS providing the basis for measurement — that's what 'QA program' fundamentally means in process improvement."
+  ],
+  "d1_164": [
+    "Without executive sponsorship, QA programs starve for resources and lose authority.",
+    "Trap is A/B/C 'systematic approach / clear objectives / continuous improvement' — implementation tactics, not the success factor.",
+    "CISA pattern: any program/initiative success ALWAYS depends on senior management commitment first."
+  ]
+}
