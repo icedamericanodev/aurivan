@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(git ls-files:*)",
+      "Bash(python3 scripts/convert_test_bank.py:*)",
+      "Bash(python3 -c:*)",
+      "Bash(bash scripts/lint_inline_js.sh)",
+      "Bash(bash scripts/verify_repo.sh)",
+      "Bash(node --version)",
+      "Bash(npx --version)",
+      "Bash(npx --yes --package=eslint@8 -- eslint:*)",
+      "Bash(jq:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/verify_repo.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
