@@ -431,7 +431,9 @@
         "D": "The IS auditor must first determine the root cause and impact of the findings and does not have enough information to recommend fixing the workflow issues."
       },
       "tips": [
-        "When in doubt about findings, document and report to management first — never act unilaterally to fix, escalate to regulators, or notify the audit committee prematurely."
+        "Two traps: B 'report to audit committee' jumps past diagnosis; D 'recommend the owner fix it' violates independence before scope is even understood.",
+        "Auditors investigate before they recommend: scope the issue (how many, which managers, what type of access) before escalating or proposing fixes.",
+        "CISA pattern: 'small number found' + 'something off' = perform additional analysis FIRST. Almost never 'report' or 'recommend fix' as the first step."
       ]
     },
     {
@@ -456,8 +458,9 @@
         "D": "Difference estimation sampling examines measure deviations and extraordinary items and is not a good way to measure compliance."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Compliance testing → attribute sampling. Substantive testing → variable sampling. Fraud screening → discovery sampling."
+        "Attribute sampling = compliance ('does the control exist / fire?'). Variable/stratified/difference = substantive ('how much, how often, by what amount').",
+        "Mnemonic: Attribute → Adherence (compliance). Variable → Value (substantive).",
+        "Whenever the question is whether a control was applied (a yes/no question), the sampling method is attribute sampling. Always."
       ]
     },
     {
@@ -482,8 +485,9 @@
         "D": "It is not appropriate for an IS auditor to create sample data for the purpose of the audit."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Trap is D 'create additional sample data' — fabricating audit evidence is a major ethics violation. Auditors test what's there, not what they wish was there.",
+        "Trap is B 'report the finding' — premature; lack of available changes isn't itself a finding without further work. Adapt the test approach instead.",
+        "When the original test approach can't deliver assurance, change the approach (with audit management approval). Document why and what alternative was used."
       ]
     },
     {
@@ -508,7 +512,9 @@
         "D": "An IS auditor's independence is not impaired by providing advice on known good practices."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is D 'consulting on good practices' — discussing principles doesn't impair independence; designing or building specific application controls does.",
+        "Trap is C 'project team member without operational responsibilities' — observation/attendance without operational role is allowed, just disclose.",
+        "The line is at HANDS-ON BUILD. Discuss principles → fine. Sit in meetings → fine. Implement, code, configure → independence impaired."
       ]
     },
     {
@@ -533,8 +539,9 @@
         "D": "The use of continuous audit is not based on the complexity or number of systems being monitored."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Continuous audit's value isn't reduced effort — it's reduced LAG between event and audit response. Real-time monitoring → real-time correction.",
+        "Continuous audit shifts the audit cycle from periodic snapshots to ongoing surveillance, making issues actionable while still relevant to the business.",
+        "Continuous audit doesn't displace responsibility for control monitoring (rules out C); that always stays with management/security."
       ]
     },
     {
@@ -559,7 +566,9 @@
         "D": "Checking the code to ensure proper documentation is a valid QA function."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'ensuring compliance with development methods' — that's QA's job. Doing QA's job doesn't impair QA. Correcting code DOES (now QA approves their own corrections).",
+        "QA's role is to inspect and report — not to fix. Same independence principle as audit.",
+        "Anytime someone validates AND corrects the same artifact, you have a separation-of-duties failure."
       ]
     },
     {
@@ -584,8 +593,9 @@
         "D": "The time allotted for an audit is determined during the planning process based on the areas to be audited and is primarily based on the requirement for conducting an appropriate audit."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Risk-based audit planning always starts with risk assessment — operational considerations (resources, schedule, management preference) come after."
+        "The other three (skill sets, test steps, time allotted) are downstream of risk identification. You can't allocate skills/time/tests until you know WHERE risk lives.",
+        "Risk-based audit planning is the audit profession's central operating principle — every other planning decision is in service of it.",
+        "ISACA Standard 1202 mandates risk identification as the foundation of audit planning, not an optional good practice."
       ]
     },
     {
@@ -610,7 +620,9 @@
         "D": "Performing tests on risk prevention is considered compliance testing. This type of testing is used to determine whether policies are adhered to."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices."
+        "Trap is A 'control design testing' — design testing answers 'is the control conceived correctly?', not 'is it operating effectively?'. Operational effectiveness needs substantive evidence.",
+        "Trap is C 'documentation inspection' — documents may say one thing, the actual operation another. Documentation review by itself is weak evidence.",
+        "Substantive testing examines the actual transactions and records produced — the most direct evidence of whether the control is doing its job."
       ]
     },
     {
@@ -635,7 +647,9 @@
         "C": "Collecting all the required evidence is a required element of an IS audit, and the scope of the audit should not be limited by the auditee's ability to find relevant evidence. If evidence is not readily available, the auditor must ensure that other forms of audit are considered to ensure compliance in the area that is subject to audit."
       },
       "tips": [
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Same answer pattern as the planning-extent question (d1_002): data collection extent is set by audit purpose and scope, never by auditor familiarity, auditee evidence ability, or data availability.",
+        "If evidence is hard to find, the auditor finds an alternative method, not a smaller sample. Difficulty doesn't shrink scope.",
+        "Recurring CISA pattern: 'extent of audit work' ALWAYS ties back to audit scope/purpose, never to the convenience or familiarity of the people involved."
       ]
     },
     {
@@ -660,7 +674,9 @@
         "D": "Sufficient assurance that all items will be covered is not as important as ensuring that the audit will cover all material items."
       },
       "tips": [
-        "Risk-based audit planning always starts with risk assessment — operational considerations (resources, schedule, management preference) come after."
+        "Trap is B 'definite assurance' — definite/absolute is impossible in audit; CISA always uses 'reasonable'.",
+        "Trap is C/D 'all items' — covering all items isn't realistic or even desirable; the goal is coverage of MATERIAL items.",
+        "Audit always works with reasonable assurance + materiality. Anytime you see 'definite', 'absolute', or 'all items' in an option, eliminate it immediately."
       ]
     },
     {
@@ -685,8 +701,9 @@
         "D": "It is not the role of an IS auditor to request the removal of IDs from the system."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "When in doubt about findings, document and report to management first — never act unilaterally to fix, escalate to regulators, or notify the audit committee prematurely."
+        "Trap is D 'request the IDs be removed' — auditor doesn't get to request operational changes. They report; management decides.",
+        "Trap is A 'inform audit committee' — premature; document and report through normal channels first.",
+        "Auditor lifecycle: identify → document → report risk → recommend → defer remediation to management. Steps 4+ skip ahead, step 1 (D) is operational interference."
       ]
     },
     {
@@ -711,7 +728,9 @@
         "D": "Determining the reasonableness of financial reporting controls is a very narrow answer because it is limited to financial reporting. It meets the objective of determining whether the controls are reasonable but does not ensure that the control is working correctly and thereby supporting management expectations and objectives."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Compliance tests answer 'does the control work as intended?'. They don't measure efficiency (A) — that's a management metric, not an audit one.",
+        "Trap is C 'integrity of data controls' — that's substantive testing's territory. Compliance is about CONTROL operation, substantive is about DATA accuracy.",
+        "Mnemonic: Compliance → Conformance to design. Substantive → Substance/data accuracy."
       ]
     },
     {
@@ -736,8 +755,9 @@
         "D": "An embedded audit module can enable the IS auditor to evaluate a process and gather audit evidence, but it does not detect errors for a previous period."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Trap is C 'integrated test facility' — ITF tests current processing as it happens, not historical retroactive analysis. The question asks about LAST YEAR's data.",
+        "Trap is D 'embedded audit module' — same issue: forward-looking, not retroactive.",
+        "Generalized audit software is the right tool for retroactive analysis of large historical datasets — it can recompute, stratify, and identify duplicates without modifying production."
       ]
     },
     {
@@ -762,7 +782,9 @@
         "C": "Because there are no documented procedures, there is no basis against which to test compliance."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'create the procedures' — auditor writing the documentation is a textbook independence violation.",
+        "Trap is B 'end the audit' — lack of documentation is a finding, not a stop signal. The audit's purpose is to identify risk; absence of documentation IS risk to surface.",
+        "Auditors test what exists, including informal/undocumented practices. Then report the documentation gap as a finding so management can address it."
       ]
     },
     {
@@ -787,7 +809,9 @@
         "C": "Upon completion of a risk assessment, an information systems (IS) auditor should describe and discuss with management the threats and potential impacts on the assets, and recommendations for addressing the risk. However, this action cannot be done until the controls are identified and the likelihood of the threat is calculated."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "The risk analysis loop: identify assets → identify threats + impacts → evaluate existing controls → assess residual risk → recommend additional controls. The question places you between threat identification and risk calculation.",
+        "Trap is C 'disclose to management' — premature; disclosure happens after the analysis is complete, not mid-flow.",
+        "Risk = (threat × impact) MODERATED by existing controls. You can't quantify residual risk until you know what existing controls already mitigate."
       ]
     },
     {
@@ -812,8 +836,9 @@
         "D": "Ratio analysis can identify trends and deviations from a baseline but is not reliable evidence."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Reliability hierarchy: independent third-party > auditor's own work > internal system-generated > management assertion > internet/general data.",
+        "Trap is B 'line management assurance' — single weakest evidence type because management has direct interest in the audit outcome.",
+        "The key word is 'independent' — the more disconnected the evidence source from the auditee's interest, the more reliable it is."
       ]
     },
     {
@@ -838,7 +863,9 @@
         "D": "The existence and function of controls are important but not the classification."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'only preventive and detective relevant' — corrective controls matter too; they reduce damage even when prevention fails.",
+        "Trap is C 'corrective = compensating' — different concepts. Compensating substitutes for missing primary controls; corrective fixes problems after detection.",
+        "Controls operate at specific points in data flow (input, processing, output). Their collective effectiveness depends on which points are covered and which are gap."
       ]
     },
     {
@@ -863,8 +890,9 @@
         "D": "Testing of user rights provides information about the rights users have within the information systems but does not provide complete information about the functions they perform. Observation is a better option because user rights can be changed between audits."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Trap is D 'testing user access rights' — system access is necessary but not sufficient. Real SoD failures often happen through workarounds, shared credentials, or informal task delegation that don't show up in access tables.",
+        "Trap is B 'org chart' — describes intended structure, not actual practice.",
+        "Observation reveals what people ACTUALLY do; interviews reveal what they THINK they do. Together they detect the gap between formal access and actual behavior."
       ]
     },
     {
@@ -889,8 +917,9 @@
         "D": "Rating the audit findings provides guidance to management for allocating resources to the high-risk items first."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed."
+        "Trap is A 'obtain management approval of corrective action' — corrective action plan ownership belongs to management, but approval is not the auditor's role.",
+        "Trap is C 'assist management in implementation' — implementation assistance violates auditor independence.",
+        "The closing meeting is the auditor's last chance to validate facts before publishing the report. Errors caught here protect both auditor and auditee."
       ]
     },
     {
@@ -915,7 +944,9 @@
         "C": "Correction entries should be reviewed during a reconciliation; however, they are nol1llally done by an individual other than the person entrusted to do reconciliations and are not as important as tracing."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'authorizations' — authorization happens at transaction time, not at reconciliation time.",
+        "Trap is A 'vouching' — vouching matches recorded transactions to source documents (record → source). Tracing matches source documents to records (source → record). Reconciliation needs the upward direction.",
+        "Mnemonic: Tracing follows the journey forward (source → destination). Vouching looks backward (record → original source)."
       ]
     },
     {
@@ -940,8 +971,9 @@
         "D": "The annual review provided by a business owner may not reflect current information."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Trap is C 'dated screenshot from sysadmin' — admin can modify settings before screenshotting. Trap is A 'admin spreadsheet' — same risk + manual transcription error.",
+        "Evidence reliability key: who handled it? If the auditee handled it, it's tampered until proven otherwise.",
+        "The auditor should pull configuration data directly whenever possible. Auditor-acquired evidence ≥ third-party evidence > auditee-provided evidence."
       ]
     },
     {
@@ -966,7 +998,9 @@
         "D": "Nonrepudiation can be ensured by using digital signatures."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Trap is B 'authenticity' — checksums detect corruption/tampering but don't prove sender identity. Authenticity needs digital signatures or MACs.",
+        "Mnemonic: Checksum = Change detection. Doesn't authenticate, doesn't authorize, just integrity.",
+        "Layered EDI controls: integrity (checksum/hash) + authenticity (signature) + authorization (transaction limits) + nonrepudiation (full PKI). Each requires its own mechanism."
       ]
     },
     {
@@ -991,8 +1025,9 @@
         "D": "An independent test performed by an IS auditor should always be considered a more reliable source of evidence than a confirmation letter from a third party, because a letter is subjective and may not have been generated as a part of an authoritative audit or conform to audit standards."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Tests performed under audit standards beat third-party letters because letters are subject to interpretation and not always conducted under formal audit methodology.",
+        "Trap is D 'confirmation letter from outside source' — would be #1 if not for the explicit option of an external auditor's tests. Procedures > assertions.",
+        "Subtle CISA pattern: when the choice is between 'auditor-conducted procedure' and 'third-party signed letter', the procedure wins."
       ]
     },
     {
@@ -1017,8 +1052,9 @@
         "D": "Change control procedures do not resolve the issue of unauthorized transactions."
       },
       "tips": [
-        "Independence: an auditor reports and recommends — never fixes, never approves operationally, and never audits work they themselves designed.",
-        "When in doubt about findings, document and report to management first — never act unilaterally to fix, escalate to regulators, or notify the audit committee prematurely."
+        "Trap is A 'EDI trading partner agreements' — agreements are legal protection, not technical prevention. Contracts don't stop unauthorized packets.",
+        "Trap is D 'program change control' — applies to system changes, not to runtime transaction authentication.",
+        "Unauthorized transactions = authentication failure. When 'unauthorized' is the symptom, look for authentication-strengthening options first."
       ]
     },
     {
@@ -1043,8 +1079,9 @@
         "D": "Management's confirmation of effectiveness of the control suffers from lack of independencemanagement might be biased toward the effectiveness of the controls put in place."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Trap is B 'reports with sign-off' — a signature without follow-up evidence proves only that someone touched the report, not that they reviewed exceptions.",
+        "Effective review = look at exceptions + take action. The presence of action items is the operational evidence.",
+        "CISA pattern for control effectiveness: a control that 'fires' but has no follow-up is a control that doesn't work — verify the follow-up loop, not just the trigger."
       ]
     },
     {
@@ -1069,7 +1106,9 @@
         "C": "Manual recalculations are used to verify that the processing is correct but do not map data."
       },
       "tips": [
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Functional acknowledgments are EDI-native — they confirm that the receiving system parsed and accepted the structure. That's the data mapping audit trail.",
+        "Trap is A 'key verification' — used in encryption and data entry validation, not in EDI data mapping.",
+        "Trap is B 'one-for-one checking' — verifies completeness of transmission, not the correctness of the mapping."
       ]
     },
     {
@@ -1094,8 +1133,9 @@
         "D": "Unstratified mean per unit is used in variable sampling."
       },
       "tips": [
-        "MOST/PRIMARY questions ask which option carries the largest impact or coverage — rule out partial or downstream choices.",
-        "Compliance testing → attribute sampling. Substantive testing → variable sampling. Fraud screening → discovery sampling."
+        "Same as d1_017: authorization compliance → attribute sampling. The value of the PO doesn't matter, just whether it followed the matrix rule.",
+        "Trap is A or B 'variable/stratified mean per unit' — these examine value distribution. Authorization is binary (yes/no) → attribute.",
+        "The matrix gives a rule. Compliance with a rule = attribute sampling. Monetary impact = variable sampling. Almost never confused once you learn the cue."
       ]
     },
     {
@@ -1120,8 +1160,9 @@
         "D": "Flowcharting and analysis of source code are not effective methods to address the accuracy of individual tax calculations."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Watch for separation-of-duties violations: the same actor authorizing AND executing, designing AND testing, or developing AND deploying."
+        "Trap is A 'review source code' — code review can identify potential errors but doesn't confirm what the system actually does in practice.",
+        "Trap is B 'recreate program logic' — duplicating logic is risky; the auditor's reimplementation may have its own bugs.",
+        "Black-box testing with known inputs and predetermined expected outputs is the cleanest way to verify any calculation — auditor doesn't need to understand HOW it computes, only WHETHER it computes correctly."
       ]
     },
     {
@@ -1146,7 +1187,9 @@
         "D": "One area to be reviewed may be the efficiency and optimization of the application, but this is not the area being reviewed in this audit."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these."
+        "Application control review's purpose is risk assessment — what can go wrong, and how bad would it be.",
+        "Trap is A or D 'efficiency / optimization' — those are operational metrics, not audit objectives.",
+        "Trap is C 'business processes served' — that's an audit prerequisite (understanding scope), not the focus of the controls evaluation."
       ]
     },
     {
@@ -1171,7 +1214,9 @@
         "D": "The audit report should contain the finding and resolution, and this can be mentioned in the final meeting. The audit report should list all relevant findings and the response from management."
       },
       "tips": [
-        "When in doubt about findings, document and report to management first — never act unilaterally to fix, escalate to regulators, or notify the audit committee prematurely."
+        "Trap is B/C 'do not include because resolved' — the audit report must reflect the period audited, not a snapshot at publication time.",
+        "Including the finding + the corrective action protects the auditee (shows responsiveness) AND ensures the issue is documented for future audits.",
+        "CISA pattern: the audit report is a permanent record of conditions found during fieldwork. Discoveries don't disappear because they were quickly fixed."
       ]
     },
     {
@@ -1196,8 +1241,9 @@
         "D": "Probability-proportional-to-size sampling is typically associated with cluster sampling when there are groups within a sample. The question does not indicate that an IS auditor is searching for a threshold of fraud."
       },
       "tips": [
-        "ISACA's BEST answer balances control effectiveness, risk reduction, and auditor independence — eliminate options that compromise any of these.",
-        "Compliance testing → attribute sampling. Substantive testing → variable sampling. Fraud screening → discovery sampling."
+        "Discovery sampling answers: 'has at least one occurrence of [event] happened?' — perfect for fraud screening (you only need to find one to expose a pattern).",
+        "Trap is D 'probability-proportional-to-size' — used when financial value matters; fraud screening is about occurrence, not value.",
+        "Trap is A 'stop-or-go' — used to limit sample size when expected exception rate is very low; not specifically fraud-tuned."
       ]
     },
     {
@@ -1222,7 +1268,9 @@
         "D": "A gap analysis is normally done to compare the actual state to an expected or desirable state."
       },
       "tips": [
-        "Risk-based audit planning always starts with risk assessment — operational considerations (resources, schedule, management preference) come after."
+        "The strategy phase identifies WHAT to focus on (areas, systems, processes). That requires knowing where threats meet vulnerabilities.",
+        "Trap is A 'controls in place' — that's an output of the audit, not an input to the strategy.",
+        "Risk-based strategy precedes audit; controls testing is what the audit does. Don't confuse the planning input with the audit deliverable."
       ]
     },
     {
@@ -1247,7 +1295,9 @@
         "D": "The IS auditor must be professional, competent and independent. They must not just accept an explanation or argument from management, unless the process used to generate the finding was flawed."
       },
       "tips": [
-        "When in doubt about findings, document and report to management first — never act unilaterally to fix, escalate to regulators, or notify the audit committee prematurely."
+        "Trap is A 'sign release form' — confrontational and outside auditor authority.",
+        "Trap is D 'accept auditee position' — caves on professional judgment; auditee disagreement isn't grounds for retraction.",
+        "The auditor's job in disputes is to clarify the risk so the auditee fully understands what's at stake — then management can make an informed decision about acceptance vs. remediation."
       ]
     },
     {
@@ -1272,8 +1322,9 @@
         "D": "Monitoring audits and initiating cost controls does not ensure the effective use of audit resources."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Risk-based audit planning always starts with risk assessment — operational considerations (resources, schedule, management preference) come after."
+        "Trap is A 'schedule and monitor time' — operational, downstream of planning.",
+        "Trap is B 'train staff on technology' — staff capability is enabling, not the FIRST step.",
+        "Risk-based planning is the only thing that ensures audit resources go to high-value targets. Without it, you're optimizing the wrong thing."
       ]
     },
     {
@@ -1298,8 +1349,9 @@
         "C": "Before putting a disputed finding or management response in the audit report, the IS auditor should take care to review the evidence that is used in the finding to ensure audit accuracy."
       },
       "tips": [
-        "When a question asks for the FIRST step, look for the foundational action that enables every later step (planning before execution, risk assessment before scope, identification before evaluation).",
-        "Evidence reliability ranks: auditor-generated > independent third-party > internal system-generated > management assertion. Pick the most objective source."
+        "Trap is C 'include in report with comments' — premature; the auditor should first verify their own evidence before locking it into the report.",
+        "Trap is A 'retest the control' — retesting is downstream of evidence revalidation. If the evidence is sound, retesting may be unnecessary.",
+        "CISA disputes 101: when challenged, the auditor first verifies they have it right, then either confirms the finding or revises it. Never both publishes AND verifies in parallel."
       ]
     },
     {
