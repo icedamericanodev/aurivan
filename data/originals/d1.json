@@ -6,5 +6,320 @@
   "domain": 1,
   "domain_name": "Information Systems Auditing Process",
   "weight": 18,
-  "questions": []
+  "questions": [
+    {
+      "id": "d1_001",
+      "domain": 1,
+      "subtopic": "Audit Charter & Authority",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A new IS audit function is being established at a regional retail bank. The CIO drafts the audit charter and asks the head of internal audit to \"tweak it\" before going live. What should the auditor's PRIMARY concern be?",
+      "options": {
+        "A": "The charter should have been drafted from scratch by the audit team",
+        "B": "The charter is being driven by the CIO rather than approved by the audit committee",
+        "C": "The charter has not been reviewed by external legal counsel",
+        "D": "The charter does not yet specify the audit team's reporting structure"
+      },
+      "correct": "B",
+      "key_concept": "The audit charter establishes the audit function's authority and must be approved at a level (board / audit committee) that protects independence from operational management.",
+      "pre_read": "Identify three things in the stem: (1) who drafted the document, (2) who is being asked to approve or finalize it, (3) where in the org chart that approval sits relative to the audit function. Charter authority and independence flow from the approver, not the drafter.",
+      "correct_explanation": "An IS audit function's charter must be approved by the audit committee or equivalent governance body at a level above operational IT management. When the CIO drives the document and the auditor is reduced to \"tweaking\" it, the audit function is implicitly subordinate to the entity it audits — that's a structural independence problem regardless of how good the wording is. The standard remediation is for the audit committee to formally approve the charter.",
+      "wrong_explanations": {
+        "A": "Drafting style isn't the principle. Either party can draft as long as the right body approves the final document; the issue here is approval level, not authorship.",
+        "C": "External counsel review is reasonable but not the charter's defining property. Approval level is.",
+        "D": "Reporting structure is part of the charter content, but the issue here is who's authorizing the charter, not what it says about reporting lines."
+      },
+      "tips": [
+        "Trap is A — \"draft from scratch\" sounds rigorous but it's a process choice, not the independence principle.",
+        "Charter independence is a function of who APPROVES, not who AUTHORS. The audit committee is the standard approver.",
+        "Exam-day shortcut: when a stem describes operational management driving the audit charter, the answer is almost always elevation to the audit committee."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1001 (Audit Charter); ITAF section 1001",
+      "related_concepts": ["Audit committee oversight", "Organizational independence", "Three lines of defense"],
+      "_provenance": "Authored from concept: 'audit charter authority and approval level defines independence'. Public source: ISACA IT Audit Standard 1001. All scenario specifics (regional retail bank, CIO drafting, 'tweak it' framing) invented for this question."
+    },
+    {
+      "id": "d1_002",
+      "domain": 1,
+      "subtopic": "Personal Independence (Self-Review)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a SaaS company is assigned to audit the new identity-and-access-management (IAM) deployment. The auditor previously worked as the lead engineer on the IAM project before transferring to the audit team six months ago. What is the MOST appropriate action?",
+      "options": {
+        "A": "Proceed with the audit but disclose the prior involvement in the audit report",
+        "B": "Decline the audit assignment and have a different auditor assume the engagement",
+        "C": "Limit the audit scope to areas the auditor was not directly involved in",
+        "D": "Have a peer auditor independently review all audit conclusions before issuance"
+      },
+      "correct": "B",
+      "key_concept": "An auditor who previously implemented or operated a system cannot independently audit that system; self-review impairs both objectivity and the perception of independence.",
+      "pre_read": "Look in the stem for two things: (1) the auditor's prior role on whatever is being audited, and (2) the time gap between that role and the audit engagement. ISACA's general guidance is that prior direct involvement creates a self-review threat that's typically remediated by reassignment, not by disclosure or scope limitation.",
+      "correct_explanation": "Self-review is one of the textbook independence threats. The auditor cannot be expected to objectively assess their own prior work, regardless of how much time has passed or how thorough the disclosure is. The cleanest remediation is reassigning the engagement to a colleague without prior involvement. Disclosure, scope limitation, and peer review treat the symptom but leave the structural conflict in place — and they expose both the auditor and the audited entity to reputational risk if findings are challenged later.",
+      "wrong_explanations": {
+        "A": "Disclosing in the report is necessary but insufficient. Disclosure documents a conflict; it doesn't resolve one. The conflict still affects the auditor's objectivity.",
+        "C": "Limiting scope to areas the auditor wasn't directly involved in creates a fragmented audit. Prior involvement may have shaped decisions that ripple into other areas, and the fragmentation itself signals weakness.",
+        "D": "Peer review is a compensating control but doesn't remove the underlying conflict. The original auditor's judgment is still embedded in the engagement."
+      },
+      "tips": [
+        "Trap is A — disclosure is appealing because it's \"transparent,\" but disclosure documents a conflict, it doesn't resolve one.",
+        "Self-review is the most common independence threat. The default remediation is reassignment, not workarounds.",
+        "Exam-day shortcut: when the stem describes an auditor with prior implementation involvement, the answer is almost always reassignment unless the prior involvement was explicitly outside the audit scope."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1003 (Professional Independence); ITAF Performance Standards on Independence; ISACA Code of Professional Ethics",
+      "related_concepts": ["Self-review threat", "Organizational independence", "Personal independence"],
+      "_provenance": "Authored from concept: 'self-review threat — auditor previously involved in implementation'. Public source: ISACA IT Audit Standard 1003. All scenario specifics (SaaS, IAM project, six-month gap) invented for this question."
+    },
+    {
+      "id": "d1_003",
+      "domain": 1,
+      "subtopic": "Risk-Based Audit Planning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The Chief Audit Executive at a government agency is finalizing next year's IS audit plan. The IS audit team has historically rotated through all major systems on a three-year cycle. The CAE asks the IS audit lead for the BEST approach to selecting which systems to audit next year.",
+      "options": {
+        "A": "Continue the three-year rotation to ensure every system is covered evenly over time",
+        "B": "Audit the systems that had the most findings in the prior year",
+        "C": "Audit the systems with the highest residual risk based on a fresh risk assessment",
+        "D": "Audit the newest systems that have not yet been audited at all"
+      },
+      "correct": "C",
+      "key_concept": "Risk-based audit planning selects audit subjects by the residual risk to the organization, refreshed each cycle — not by rotation, prior-finding counts, or recency alone.",
+      "pre_read": "Identify whether the stem implies a rotation-based or risk-based approach. Rotation-based language (\"we cycle every X years,\" \"ensure coverage\") usually contrasts with risk-based language (\"highest risk,\" \"most likely to fail,\" \"greatest impact\"). Modern ISACA-aligned answers favor risk-based.",
+      "correct_explanation": "Modern audit standards explicitly favor risk-based audit planning over fixed rotation. Rotation gives even coverage but ignores changes in the risk landscape: a system that was low-risk three years ago may be high-risk today due to new regulations, increased data sensitivity, or recent control failures. Selecting based on the highest residual risk from a fresh assessment ensures audit resources go where they matter most. Prior-finding counts and system age are signals that feed into the risk assessment, but they're not the selection criterion themselves.",
+      "wrong_explanations": {
+        "A": "Three-year rotation provides coverage but ignores risk changes. A high-risk system in year 2 of its rotation could go unaudited while audit resources are spent on a stable system.",
+        "B": "Prior-finding counts are a useful input to the risk assessment but not the selection criterion. A system with no prior findings could still be the highest-risk candidate due to recent changes.",
+        "D": "Newness is a risk factor but only one of many. A new system with strong controls might be lower-risk than an old system showing degradation."
+      },
+      "tips": [
+        "Trap is A — rotation feels fair and disciplined but it's the pre-modern audit approach. ISACA explicitly favors risk-based.",
+        "Risk-based planning sources from a fresh risk assessment, not from prior years' findings or rotation calendars.",
+        "Exam-day shortcut: any audit-planning question framed as \"rotation vs risk-based\" almost always answers risk-based."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); IIA International Standards 2010 (Planning)",
+      "related_concepts": ["Audit universe", "Residual risk", "Audit frequency"],
+      "_provenance": "Authored from concept: 'risk-based audit planning vs rotation'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (government agency, three-year rotation history, CAE) invented for this question."
+    },
+    {
+      "id": "d1_004",
+      "domain": 1,
+      "subtopic": "Audit Evidence Reliability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a hospital is testing whether the electronic health record (EHR) system enforces password complexity rules. Which of the following provides the MOST reliable evidence that the rule is operating as designed?",
+      "options": {
+        "A": "The IT manager's signed attestation that the rule is configured correctly",
+        "B": "A screenshot of the system's password policy configuration page provided by IT",
+        "C": "The auditor's direct observation of attempting to set a non-compliant password and seeing it rejected",
+        "D": "A vendor-supplied compliance report confirming the rule is enabled in the product"
+      },
+      "correct": "C",
+      "key_concept": "Direct observation by the auditor of a control operating produces the most reliable form of audit evidence; representations and documents are inherently weaker because they depend on someone else's claim.",
+      "pre_read": "Order the options by the auditor's direct involvement in producing the evidence: did the auditor observe it themselves, or did someone else hand them a representation? The most direct, auditor-produced evidence is almost always the answer.",
+      "correct_explanation": "ISACA's evidence-reliability hierarchy puts direct auditor observation at the top because it eliminates the risk that a third party (whether benign or malicious) is misrepresenting the system's behavior. A signed attestation depends on management's truthfulness; a screenshot depends on the IT team's accuracy in capturing the right view; a vendor report describes the vendor's claim about the product, not its operation in this specific configuration. Only when the auditor types a non-compliant password and watches the system reject it has the auditor observed the control operating in the moment.",
+      "wrong_explanations": {
+        "A": "Management attestations are management representations — the weakest form of evidence. They're acceptable as starting points but not as primary evidence of control operation.",
+        "B": "Screenshots provided by IT are internal documents subject to selection bias (was this captured in a special test environment?) and tampering. Better than attestation, weaker than direct observation.",
+        "D": "Vendor reports are external but describe the vendor's claim about the product, not the operation in this specific environment. They miss configuration drift and customization."
+      },
+      "tips": [
+        "Trap is A — signed attestations look formal and accountable but they're representations, not evidence of operation.",
+        "Audit evidence reliability descends from \"auditor observed it directly\" → \"external corroboration\" → \"internal documents\" → \"management says so.\"",
+        "Exam-day shortcut: when one option mentions the auditor doing something themselves, that option usually wins on reliability grounds."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Evidence",
+      "related_concepts": ["Evidence hierarchy", "Direct observation", "Management representations"],
+      "_provenance": "Authored from concept: 'evidence reliability — direct observation vs representation'. Public source: ISACA IT Audit Standard 1205. All scenario specifics (hospital, EHR, password complexity) invented for this question."
+    },
+    {
+      "id": "d1_005",
+      "domain": 1,
+      "subtopic": "Compliance vs Substantive Testing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a manufacturing firm is reviewing a critical production-scheduling system. The auditor wants to determine whether the system's automated approval workflow is correctly enforcing the four-eye principle on schedule changes. Which type of testing is MOST appropriate?",
+      "options": {
+        "A": "Substantive testing of all production-schedule changes from the last quarter",
+        "B": "Compliance testing of a sample of schedule changes to confirm the workflow enforced approval",
+        "C": "Substantive testing of high-value schedule changes only",
+        "D": "Inquiry-based testing through interviews with production planners"
+      },
+      "correct": "B",
+      "key_concept": "Compliance testing verifies that controls are operating; substantive testing verifies the accuracy of underlying data. The four-eye principle is a control, so testing it requires compliance testing.",
+      "pre_read": "Identify whether the question is asking the auditor to verify that a CONTROL is operating (compliance) or that the underlying DATA is accurate (substantive). Verbs in the stem are the giveaway: \"enforcing,\" \"operating,\" \"approval workflow\" → control. \"Accuracy,\" \"valuation,\" \"completeness\" → data.",
+      "correct_explanation": "The auditor's stated objective is to confirm the four-eye principle (the workflow's approval requirement) is being enforced — that's a question about whether the control is operating, which is the definition of compliance testing. Substantive testing would verify whether the actual schedule values were correct, which is a different question. Compliance testing typically uses sampling because the goal is to confirm the control's reliability, not to verify every transaction.",
+      "wrong_explanations": {
+        "A": "Substantive testing of all changes verifies data accuracy, not control operation. It also misallocates effort by trying to answer the wrong question.",
+        "C": "Restricting to high-value changes biases the test against catching control failures on routine changes — exactly where four-eye violations are most likely to slip through.",
+        "D": "Inquiry produces management representations, the weakest form of evidence. It might confirm what planners believe is happening but doesn't test the workflow's actual operation."
+      },
+      "tips": [
+        "Trap is A — \"test everything\" sounds rigorous but it's substantive when compliance is what's needed.",
+        "Compliance = control operation; Substantive = data accuracy. Pick by what the auditor's objective is.",
+        "Exam-day shortcut: when the stem mentions a workflow, approval rule, or four-eye principle, it's a control test (compliance)."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Testing",
+      "related_concepts": ["Compliance testing", "Substantive testing", "Sampling", "Four-eye principle"],
+      "_provenance": "Authored from concept: 'compliance vs substantive testing — testing a workflow control'. Public source: ISACA IT Audit Standard 1205. All scenario specifics (manufacturing, production scheduling, four-eye approval) invented for this question."
+    },
+    {
+      "id": "d1_006",
+      "domain": 1,
+      "subtopic": "Audit Report Addressee",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at an e-commerce company has discovered that customer payment-card data is being stored unencrypted in a development database, with the development team having read access for over a year. The auditor wants to communicate the finding formally. To WHOM should the auditor address the formal report?",
+      "options": {
+        "A": "The development team manager only, since they are closest to the issue",
+        "B": "The CISO, since this is a security-relevant finding",
+        "C": "The Data Protection Officer, since this involves customer data",
+        "D": "The audit committee with copies to executive management responsible for the affected systems"
+      },
+      "correct": "D",
+      "key_concept": "Formal audit findings are reported to the audit committee and to executive management responsible for remediation; severity drives which other audiences are CC'd, but the audit committee is the institutional reporting line.",
+      "pre_read": "Identify whether the question is about WHO produces the report, WHOM the report is addressed to (the institutional audience), or WHO must respond. The audit committee is the institutional audience for formal audit reports; severity may add other audiences but doesn't replace the committee.",
+      "correct_explanation": "Formal audit reports are addressed to the audit committee or equivalent governance body — they're the institutional audience that hires the audit function and oversees its findings. Executive management responsible for the affected systems receives the report so they can develop remediation plans. The CISO, DPO, and development manager are likely operational stakeholders who would also be involved, but they're not the primary report audience. Going only to a single specialist bypasses the governance-level visibility that severe findings require.",
+      "wrong_explanations": {
+        "A": "The development team manager is the operational owner who must remediate, but they're not the formal-report audience. Reporting only to them risks the finding being suppressed or de-prioritized.",
+        "B": "The CISO is a relevant stakeholder for security findings but isn't the formal-report audience. Reporting only to a single executive bypasses governance visibility.",
+        "C": "The DPO is relevant for customer-data issues but again is one stakeholder, not the institutional audience."
+      },
+      "tips": [
+        "Trap is B — CISO sounds right because it's a security issue, but security findings still flow through the audit-committee reporting line.",
+        "Formal audit reports go to the audit committee. Specialist roles (CISO, DPO) may be CC'd but aren't the addressee.",
+        "Exam-day shortcut: when asked \"to whom\" for a formal audit report, the answer is almost always the audit committee or audit committee + responsible executive."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); IIA International Standards 2440 (Disseminating Results)",
+      "related_concepts": ["Audit committee", "Reporting structure", "Severity escalation"],
+      "_provenance": "Authored from concept: 'formal audit report addressee — to whom'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (e-commerce, dev database PCI exposure, year-long access) invented for this question."
+    },
+    {
+      "id": "d1_007",
+      "domain": 1,
+      "subtopic": "Materiality + Compensating-Control Failure",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "A regional telecom provider has 12 million subscribers and approximately $2B in annual revenue. The IS audit team is planning the next audit cycle and is debating which billing-system controls to deep-test. The internal control matrix shows that the new automated billing-dispute resolution module processes about 3,000 disputes per month. The dispute amounts average $35 each but range up to $50,000 in unusual cases. A separate finance-side reconciliation control is supposed to independently review the monthly dispute aggregate against subscriber payments — but the operations team has noted that the reconciliation has only been performed in 4 of the last 12 months. The CFO believes the dispute module is \"well-managed\" because no major customer complaints have surfaced.",
+      "question": "How should the IS auditor MOST appropriately frame the audit scope for this module?",
+      "options": {
+        "A": "Test only the high-value disputes (over $5,000) since the average dispute is immaterial",
+        "B": "Skip the module since the finance-side reconciliation provides assurance",
+        "C": "Plan a full audit of the module on the basis that the compensating reconciliation is not operating",
+        "D": "Defer the audit pending CFO sign-off, given his stated comfort with the module"
+      },
+      "correct": "C",
+      "key_concept": "Materiality and risk are integrated — when a primary control's compensating control isn't operating, the auditor cannot assume the residual risk is low even if individual transaction values look immaterial.",
+      "pre_read": "For multi-fact materiality questions, separate the facts into three columns: (1) what the primary control does, (2) what the compensating control does, (3) what evidence shows about either operating. The materiality decision is made against residual risk after all known control failures are accounted for, not against average transaction value alone.",
+      "correct_explanation": "The CFO's comfort and the low average dispute amount suggest the module is immaterial, but the auditor must look at the full risk picture. The finance-side reconciliation is the compensating control that gives the dispute module its assurance — and it has only operated in 4 of the last 12 months. With the compensating control failing 67% of the time, the residual risk to the billing process is much higher than transaction averages suggest, especially given the upper range ($50,000 disputes) and the volume (3,000/month). The right scope is a full audit. Limiting by transaction value (A) misses the systemic exposure; skipping on a failed compensating control (B) is a non-sequitur; and deferring to CFO comfort (D) is also an independence concern — audit scope shouldn't depend on management approval, especially when the data contradicts the management view.",
+      "wrong_explanations": {
+        "A": "Limiting to high-value disputes ignores that systemic control failures show up in routine transactions too. The aggregate exposure across 3,000/month low-value disputes can exceed any single high-value one, and a control failure doesn't respect transaction size.",
+        "B": "Relying on the reconciliation as the assurance mechanism only works if the reconciliation is actually operating. The fact that it ran only 4 of 12 months means it's not providing the assurance management thinks it is.",
+        "D": "Deferring to CFO comfort is an independence concern — audit scope shouldn't depend on management approval — and it ignores the data point that contradicts his stated comfort: the failed compensating control."
+      },
+      "tips": [
+        "Trap is A — the average dispute amount is small but materiality isn't averaged; aggregate residual risk after control failures is what matters.",
+        "When a compensating control isn't operating, the controls it was supposed to compensate for are effectively unmonitored. Treat materiality as if the primary control were also unmonitored.",
+        "Exam-day shortcut: any time a stem says \"compensating control was implemented\" + \"reconciliation only performed N of 12 months,\" materiality has flipped — full audit usually wins."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1204 (Materiality); ITAF Performance Standards on Materiality and Risk",
+      "related_concepts": ["Materiality", "Compensating controls", "Residual risk", "Auditor independence"],
+      "_provenance": "Authored from concept: 'materiality with failed compensating control — when low-value transactions still warrant audit'. Public source: ISACA IT Audit Standard 1204. All scenario specifics (telecom, 12M subscribers, dispute module, 4-of-12-months reconciliation, CFO posture) invented for this question."
+    },
+    {
+      "id": "d1_008",
+      "domain": 1,
+      "subtopic": "Compensating Control with SoD Breakdown",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an electric utility is reviewing privileged access controls for the SCADA system that manages grid operations. The control matrix specifies that all privileged sessions must be reviewed within 24 hours of session end, by a person other than the session holder. The utility has implemented this through a SOAR-based workflow: each session triggers a ticket assigned to a peer engineer, who must close the ticket with their review notes. The auditor's testing reveals: (1) 100% of sessions over the past three months have generated tickets, (2) 96% of tickets have been closed with review notes, (3) on inspection, 41% of the closed tickets contain only the boilerplate text \"Reviewed — no anomalies\" with no specific session details, (4) 12% of those generic-text tickets were closed by the same engineer who held the session. The CIO notes that the 96% close rate is \"well above our 90% target.\"",
+      "question": "Which finding should the auditor flag as the GREATEST risk?",
+      "options": {
+        "A": "The 4% of tickets that remain unclosed",
+        "B": "The 12% of generic-closed tickets where the reviewer was the session holder",
+        "C": "The 41% of closed tickets containing only boilerplate review text",
+        "D": "The fact that the utility set its closure target at only 90% rather than 100%"
+      },
+      "correct": "B",
+      "key_concept": "When a compensating control's design includes a separation-of-duties element (review by another person), violations of that SoD element produce false assurance that's worse than the underlying risk being unmitigated.",
+      "pre_read": "For multi-finding scenarios, ask: which finding is the SYSTEMIC failure that makes other findings worse, vs. which are localized issues? The systemic finding is usually the answer. Look specifically for breakdowns in the design intent of the control, not just operational inefficiency.",
+      "correct_explanation": "All four findings are real, but they have different blast radii. The 4% unclosed tickets (A) and the 41% boilerplate reviews (C) are control-effectiveness issues — the control runs but its review quality is weak. The 90% target (D) is a design issue worth flagging but is policy-level. The 12% where the session holder reviewed their own session (B) is most severe because it eliminates the separation-of-duties element that makes the compensating control meaningful in the first place. Without SoD, the control isn't a control — it's a self-attestation. The fact that those 12% are sitting inside the closed-and-reviewed bucket means the 96% closure rate provides false assurance: the CIO believes the control is working when in fact it has no SoD at all in those cases.",
+      "wrong_explanations": {
+        "A": "Unclosed tickets are detectable and create their own follow-up signal. The risk is bounded by the 4% rate and is operationally remediable through follow-up.",
+        "C": "Boilerplate reviews are a quality-of-control issue and degrade the value of the review, but a peer engineer who actually looked and saw nothing has still preserved the SoD. The review was thin, not absent.",
+        "D": "Setting closure at 90% is a policy weakness but is open and observable to management. It's a design conversation, not a finding that creates false assurance about the SCADA system itself."
+      },
+      "tips": [
+        "Trap is C — 41% boilerplate is the loudest individual finding but it doesn't break the control's design; the SoD-violation finding does.",
+        "A compensating control's review-by-another-person element is what makes it compensating. If that's violated, the whole compensating function collapses.",
+        "Exam-day shortcut: when one finding describes self-review or self-approval inside what's supposed to be a peer-review control, that's almost always the answer — even if other findings have higher percentages."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1203 (Performance and Supervision); COBIT MEA02; NIST SP 800-53 AC-6 (Least Privilege) + AU-6 (Audit Review)",
+      "related_concepts": ["Compensating controls", "Separation of duties", "False assurance", "Control effectiveness"],
+      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question."
+    },
+    {
+      "id": "d1_009",
+      "domain": 1,
+      "subtopic": "Sampling Approach Selection",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a large university is auditing the financial-aid disbursement system. The system processes about 85,000 disbursements per academic year across grants, scholarships, and federal loans. The auditor's risk assessment indicates: (1) the disbursement-approval control is automated and has historically had a near-zero failure rate, (2) the eligibility-determination control involves human review and has had several reported errors in past audits, (3) federal grants make up only 8% of the disbursements but 42% of the dollar volume, (4) the audit committee has asked for high confidence on the eligibility-determination control given recent regulatory inquiries, (5) the system has full transaction logs available for analytics-based testing.",
+      "question": "Which sampling approach is MOST appropriate for the eligibility-determination control?",
+      "options": {
+        "A": "Random sampling across all 85,000 disbursements with a fixed sample size of 60",
+        "B": "Stratified sampling that gives extra weight to federal grants (the highest-dollar segment)",
+        "C": "Statistical attribute sampling sized to achieve a high confidence level for the eligibility-determination control specifically",
+        "D": "Judgmental sampling of high-risk disbursements identified by the auditor's experience"
+      },
+      "correct": "C",
+      "key_concept": "Sampling approach is selected based on what the auditor needs to project and at what confidence level — not on transaction count alone. When high confidence on a specific control is required, statistical attribute sampling sized for that confidence level is the standard answer.",
+      "pre_read": "Identify three things in the stem: (1) what control is being tested, (2) what confidence level is required, (3) what the population looks like. Match those to the sampling approach that produces statistically defensible projections at the required confidence.",
+      "correct_explanation": "The audit committee has asked for high confidence on the eligibility-determination control given regulatory exposure. Statistical attribute sampling lets the auditor size a sample that produces a defensible confidence interval for that specific control's failure rate. A fixed sample size of 60 (A) is conventional but doesn't tie to a confidence target. Stratifying by dollar value (B) is appropriate for substantive testing of values, not for compliance testing of a control's operation; the eligibility-determination control operates on every record regardless of dollar value, and dollar-weighted sampling biases the test against low-dollar errors. Judgmental sampling (D) doesn't produce statistical projections — which is what's needed for the audit committee's confidence requirement and the regulatory inquiry.",
+      "wrong_explanations": {
+        "A": "A fixed sample size of 60 is a conventional figure but doesn't tie back to a confidence level. The audit committee asked for high confidence, which requires sample sizing from the confidence-level requirement, not a fixed number.",
+        "B": "Stratifying by dollar value is appropriate when the value of transactions varies the impact of errors (substantive testing). Here we're testing a binary control (eligibility correctly determined or not), and dollar-weighted sampling biases against low-dollar populations where errors are equally likely.",
+        "D": "Judgmental sampling produces auditor-experience-based selection, which is fast but doesn't yield statistical projections. The audit committee and regulators expect projectable conclusions, which judgmental sampling doesn't provide."
+      },
+      "tips": [
+        "Trap is B — \"high-dollar segment\" sounds like it should drive sampling, but only for substantive testing of values. Compliance testing of a control needs random/statistical sampling.",
+        "High-confidence requirements + projectable conclusions = statistical attribute sampling. Match sample size to confidence target.",
+        "Exam-day shortcut: any time the stem mentions audit-committee confidence requirements or regulatory exposure for a specific control, statistical attribute sampling is almost always the answer."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Sampling; AICPA AU-C 530 (Audit Sampling)",
+      "related_concepts": ["Statistical sampling", "Stratified sampling", "Compliance vs substantive testing", "Sampling risk"],
+      "_provenance": "Authored from concept: 'sampling approach selection for high-confidence compliance testing'. Public source: ISACA IT Audit Standard 1205 + ITAF performance standards. All scenario specifics (university, financial aid, 85K disbursements, regulatory inquiry, 8%/42% split) invented for this question."
+    },
+    {
+      "id": "d1_010",
+      "domain": 1,
+      "subtopic": "Fraud Indicators — Auditor's First Action",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an insurance company is conducting a routine review of claims-processing workflows. While testing a sample of claim adjustments, the auditor notices a pattern: 14 high-value claims (each over $200,000) were processed in the last 90 days using an emergency-override workflow that's intended for genuine claims-adjuster unavailability. All 14 were initiated by the same senior adjuster, all 14 were approved within 2 minutes by the same supervisor, and all 14 went to claimants whose names share unusual matching patterns (e.g., similar middle names, addresses in the same three ZIP codes). The auditor has not yet documented the finding or discussed it with anyone.",
+      "question": "What should the auditor do FIRST?",
+      "options": {
+        "A": "Confront the senior adjuster and supervisor to gather their explanation before formalizing anything",
+        "B": "Expand the sample to all emergency-override claims in the last 12 months to gauge the full pattern",
+        "C": "Document the observations factually and escalate to the CAE / appropriate governance level per the audit function's fraud-response procedure",
+        "D": "Quietly continue the routine audit while collecting more evidence to avoid alerting the suspects"
+      },
+      "correct": "C",
+      "key_concept": "When an IS auditor identifies indicators of potential fraud, the FIRST step is to document factually and escalate per the established fraud-response procedure — not to investigate independently or confront the suspects.",
+      "pre_read": "When the stem describes a pattern that strongly suggests fraud (collusion indicators, unusual approval timing, claimant relationship anomalies), shift the question from \"audit testing\" to \"fraud-response.\" The first action in fraud-response procedures is escalation, not investigation.",
+      "correct_explanation": "The pattern described — same adjuster initiating, same supervisor approving within 2 minutes, claimants with matching attributes — has the textbook signature of collusive fraud. The IS auditor's role is not to investigate fraud independently; that responsibility sits with the CAE, internal investigations team, legal, or external forensics depending on the organization. Documenting factually and escalating preserves evidence integrity, protects the auditor from being drawn into an investigation they're not equipped to run, and prevents the suspects from being tipped off. Expanding the sample (B) is reasonable later but not first — escalation comes before scope expansion to ensure proper authorization. The fraud-response procedure exists exactly to handle these cases.",
+      "wrong_explanations": {
+        "A": "Confronting the suspects tips them off, gives them opportunity to destroy or alter records, and exposes the auditor to interference. Auditors don't run interrogations.",
+        "B": "Sample expansion is a sound investigative step but not the first step. Expansion before escalation can also alter the audit's posture without authorization, and it doesn't address the immediate need to engage the right investigatory resources.",
+        "D": "\"Quietly continue while collecting more evidence\" is the worst option: it both delays escalation (evidence may be destroyed) and risks the auditor losing their objectivity by becoming the de facto investigator without authority."
+      },
+      "tips": [
+        "Trap is B — sample expansion sounds rigorous but it's a substantive step that comes after escalation, not before.",
+        "Auditors detect, document, and escalate fraud indicators. Investigation is someone else's job (forensics, legal, CAE).",
+        "Exam-day shortcut: any time the stem describes auditor-discovered fraud indicators and asks \"what FIRST,\" the answer is almost always document + escalate per the fraud-response procedure."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularity and Illegal Acts); IIA International Standards 1210.A2 (Fraud Knowledge); ISA 240 (The Auditor's Responsibilities Relating to Fraud)",
+      "related_concepts": ["Fraud response procedure", "Auditor's role in fraud detection", "Evidence preservation", "Escalation chain"],
+      "_provenance": "Authored from concept: 'auditor's first response to suspected fraud — document and escalate, not investigate'. Public source: ISACA IT Audit Standard 1207. All scenario specifics (insurance, claims-adjuster collusion pattern, $200K threshold, 14 claims) invented for this question."
+    }
+  ]
 }
