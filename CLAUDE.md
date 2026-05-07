@@ -12,7 +12,6 @@ work without rediscovering the layout.
 | `index.html` | The entire app — HTML, CSS, and inline JS in one file (~8.7k lines) |
 | `data/domain{1..5}.json` | **Generated.** Per-domain question banks. Don't edit by hand. |
 | `data/tips_overrides/d{1..5}.json` | **Hand-authored.** Per-question tips, keyed by question ID. Source of truth for tips. |
-| `data/cisa qa test bank.xlsm` | The original ISACA-style question bank source spreadsheet |
 | `data/cisa_notes.json` | Topics-tab content (summaries, analogies, key terms per domain) |
 | `data/cisa_concepts.json` | Orphan file kept in sync for hygiene; not loaded by the app |
 | `data/glossary.json` | Glossary tab data |
@@ -27,8 +26,9 @@ work without rediscovering the layout.
 ## Hard rules
 
 1. **Never edit `data/domain{N}.json` directly.** They are generated. Edit
-   `data/tips_overrides/d{N}.json` (for tips) or the source xlsm (for
-   questions), then regenerate via the converter.
+   `data/tips_overrides/d{N}.json` for tips, then regenerate via
+   `scripts/convert_test_bank.py`. The source spreadsheet is not in this
+   repo (gitignored as `*.xlsm`); contact the maintainer if you need it.
 2. **`DI` in `index.html` is the canonical source of truth for domain
    weights, names, colors.** Everything else (cisa_notes.json, UI copy)
    either reads from it or is overridden from it at load time.
@@ -99,8 +99,9 @@ for d,e in counts.items():
   in tips.
 - **No new dependencies.** This app loads from `file://` and over plain
   HTTP; we keep it framework-free, no npm install, no bundler.
-- **Don't re-add the `352 questions` string.** The bank size is now 995
-  and may grow; use `getTotalBankSize()` in JS for any user-facing count.
+- **Don't surface the total question count in user-facing copy.** The
+  bank size is intentionally not advertised in the app; use generic
+  phrasing ("practice questions across all 5 domains") instead.
 
 ## Branching + GitHub
 

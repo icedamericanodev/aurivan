@@ -25,7 +25,7 @@ If you have Claude Code on the web set up for this repo, this runs automatically
 
 1. **Never edit `data/domain{1..5}.json` directly.** They are regenerated. Edit:
    - `data/tips_overrides/d{1..5}.json` for tips, then re-run the converter
-   - The source xlsm for new questions
+   - The source spreadsheet (kept off-repo) for new questions
 2. **`DI` in `index.html` is the canonical source of truth for domain weights, names, and colors.** Never hardcode weight strings — read `DI[d].weight`. The Topics renderer overrides `cisa_notes.json` weights with `DI` values at load time so drift is impossible.
 3. **Single source of truth for the version: `APP_VERSION` in `index.html`.** The header pill text, the LATEST badge in What's New, and the static pill HTML all read from this constant. `verify_repo.sh` enforces consistency.
 4. **No new runtime dependencies.** This app loads from `file://` and over plain HTTP. We keep it framework-free, no bundler, no transpile. Dev-only tools (ESLint via `npx`) are fine.
@@ -51,6 +51,11 @@ If you have Claude Code on the web set up for this repo, this runs automatically
    ```bash
    python3 scripts/convert_test_bank.py 4
    ```
+
+   Note: the build-time source spreadsheet for the question bank is not
+   redistributed in this repo (gitignored as `*.xlsm`). The converter
+   needs it locally for new questions or wording changes; tip-only edits
+   work without it once `data/domain{N}.json` already exists.
 
 3. Stage **both** the override file and the regenerated `data/domain4.json` in the same commit.
 
@@ -109,7 +114,7 @@ This is a small project where the maintainer and an AI assistant both contribute
 ### Control 1 — Independent CI check
 `scripts/verify_repo.sh` runs on every PR via `.github/workflows/verify.yml` in an environment no contributor controls. It enforces:
 
-- Tip + question coverage (995/995 across all 5 domains)
+- Tip + question coverage (every question has 3+ tips across all 5 domains)
 - Domain weights aligned to the ISACA blueprint (D1 18%, D2 18%, D3 12%, D4 26%, D5 26%)
 - ESLint `no-undef` clean on inline JS
 - `APP_VERSION` matches the static header pill text

@@ -3205,7 +3205,7 @@ header::after {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v8.7</span>
+    <span class="bank-pill" id="versionPill">v8.8</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -3397,7 +3397,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v8.7';
+const APP_VERSION = 'v8.8';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -3408,17 +3408,6 @@ const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSd2gMgdW9-4x
 const FEEDBACK_FIELD_TYPE = 'entry.1841479494';
 const FEEDBACK_FIELD_MESSAGE = 'entry.5371025';
 const FEEDBACK_FIELD_DIAG = 'entry.346272382';
-
-// Total questions across all loaded domain banks. Recomputed on demand so
-// async-loaded domains are reflected once they arrive. The known full bank
-// size is 995 (D1=164, D2=164, D3=120, D4=263, D5=284) — fall back to that
-// while banks are still loading so the UI never reads as zero.
-function getTotalBankSize() {
-  if (typeof QB === 'undefined' || !QB) return 995;
-  var n = 0;
-  Object.keys(QB).forEach(function(d){ n += (QB[d] || []).length; });
-  return n > 0 ? n : 995;
-}
 
 // Domains loaded asynchronously from data/domain*.json (start with D1).
 // QB starts empty for these; UI re-renders once the bank arrives.
@@ -5834,7 +5823,7 @@ function nextQ() {
     if (activeSubtopic || S.diff !== "any") {
       showFilterComplete();
     } else if (S.selectedDomain === "all") {
-      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">All ' + getTotalBankSize() + ' Questions Complete!</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--accent);border-color:var(--accent);color:#fff">Reset All & Restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button></div></div>';
+      document.getElementById('qArea').innerHTML = '<div class="empty"><div class="empty-icon">Done</div><div class="empty-title">Bank Complete!</div><div class="empty-sub">You have answered every question in the bank. Impressive!</div><div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="act-btn primary" onclick="resetAllDomains()" style="background:var(--accent);border-color:var(--accent);color:#fff">Reset All & Restart</button><button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button></div></div>';
     } else {
       showDomainComplete(S.selectedDomain);
     }
@@ -6740,8 +6729,8 @@ function renderOnboardStep() {
       + dotBar
       + '<span class="onboard-icon">\ud83e\udde0</span>'
       + '<div class="onboard-title">Welcome to CISA Mindset!</div>'
-      + '<div class="onboard-desc">Your free practice app for the ISACA CISA exam. ' + getTotalBankSize() + ' questions across all 5 domains, designed to train you to think like an IS auditor.</div>'
-      + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcda</span><span class="onboard-feature-text"><strong>' + getTotalBankSize() + ' ISACA-style questions</strong> across all 5 domains weighted by real exam percentages</span></div>'
+      + '<div class="onboard-desc">Your free practice app for the ISACA CISA exam, designed to train you to think like an IS auditor.</div>'
+      + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcda</span><span class="onboard-feature-text"><strong>Practice questions across all 5 domains</strong> weighted by real exam percentages</span></div>'
       + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83c\udfaf</span><span class="onboard-feature-text"><strong>Spaced repetition + Weak Spots</strong> so you study what matters most</span></div>'
       + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcdd</span><span class="onboard-feature-text"><strong>Mock Exam mode</strong> simulating real 150-question CISA conditions</span></div>'
       + '<div class="onboard-feature"><span class="onboard-feature-icon">\ud83d\udcbe</span><span class="onboard-feature-text"><strong>Progress saved locally</strong> \u2014 no account, no tracking, everything in your browser</span></div>'
@@ -8688,6 +8677,13 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Quieter onboarding and bank-complete copy',
+    items: [
+      { cat: 'improved', text: 'Onboarding and bank-complete screens now read more naturally without unnecessary numerical noise.' }
+    ]
+  },
+  {
+    version: 'v8.7',
     title: "Cleaner What's New",
     items: [
       { cat: 'improved', text: "What's New now groups updates by New, Improved, and Fixed for easier scanning. Older entries are simplified and free of jargon." }

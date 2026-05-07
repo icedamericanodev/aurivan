@@ -6,7 +6,7 @@ An independent, free CISA exam prep app built to train the **auditor mindset** �
 
 ## What's inside
 
-- **995 questions** across all 5 CISA domains, weighted to the current ISACA blueprint
+- **Practice questions across all 5 CISA domains**, weighted to the current ISACA blueprint
 - **Hand-authored tips** on every question — trap-naming, mindset/principle, and exam-day shortcut
 - **Practice mode** with confidence rating and sub-topic drill-down
 - **Mock exam** with the full 4-hour clock and ISACA-style blueprint mix
@@ -18,13 +18,13 @@ An independent, free CISA exam prep app built to train the **auditor mindset** �
 
 ## Domain coverage
 
-| # | Domain | Weight | Questions |
-|---|---|---|---|
-| 1 | Information Systems Auditing Process | 18% | 164 |
-| 2 | Governance & Management of IT | 18% | 164 |
-| 3 | Information Systems Acquisition, Development & Implementation | 12% | 120 |
-| 4 | Information Systems Operations & Business Resilience | 26% | 263 |
-| 5 | Protection of Information Assets | 26% | 284 |
+| # | Domain | Weight |
+|---|---|---|
+| 1 | Information Systems Auditing Process | 18% |
+| 2 | Governance & Management of IT | 18% |
+| 3 | Information Systems Acquisition, Development & Implementation | 12% |
+| 4 | Information Systems Operations & Business Resilience | 26% |
+| 5 | Protection of Information Assets | 26% |
 
 ## The auditor mindset
 
@@ -53,12 +53,12 @@ For development workflows, see **[CONTRIBUTING.md](CONTRIBUTING.md)** and the AI
 cisa-prep/
 ├── index.html                       # The entire app (HTML + CSS + JS)
 ├── data/
-│   ├── domain{1..5}.json            # Generated question banks
+│   ├── domain{1..5}.json            # Question banks loaded by the app
 │   ├── tips_overrides/d{1..5}.json  # Hand-authored tips (source of truth)
 │   ├── cisa_notes.json              # Topics-tab content
 │   └── glossary.json                # Glossary content
 ├── scripts/
-│   ├── convert_test_bank.py         # Regenerates domain*.json from xlsm + tip overrides
+│   ├── convert_test_bank.py         # Build-time converter (source not redistributed)
 │   ├── verify_repo.sh               # Repo health check (run via SessionStart hook)
 │   └── lint_inline_js.sh            # Lints the inline JS in index.html
 ├── CLAUDE.md                        # Project memory for AI assistants
