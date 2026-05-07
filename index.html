@@ -86,6 +86,40 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,109,255,0.35); }
+    .cta.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      margin-left: 8px;
+    }
+    .cta.secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: none;
+    }
+    .email-block {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .email-block code {
+      display: inline-block;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 14px;
+      color: var(--text);
+      padding: 2px 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      user-select: all;
+    }
+    @media (max-width: 480px) {
+      .cta.secondary { margin-left: 0; margin-top: 10px; display: block; }
+    }
     footer {
       margin-top: 32px;
       padding-top: 18px;
@@ -122,7 +156,13 @@
       <strong>Expected back:</strong> a few weeks to a few months. We'd rather take the time and ship something we're proud of than rush a half-rebuild.
     </div>
     <p>Want to know when we're live? Email us with the subject line <strong>"Notify me"</strong> and we'll let you know the moment the new bank is ready.</p>
-    <a class="cta" href="mailto:certprep.support@gmail.com?subject=Notify%20me&body=Please%20let%20me%20know%20when%20CISA%20Mindset%20is%20back%20online.">Email &ldquo;Notify me&rdquo; →</a>
+    <div>
+      <a class="cta" href="mailto:certprep.support@gmail.com?subject=Notify%20me&body=Please%20let%20me%20know%20when%20CISA%20Mindset%20is%20back%20online.">Open mail app →</a>
+      <a class="cta secondary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=certprep.support@gmail.com&amp;su=Notify%20me&amp;body=Please%20let%20me%20know%20when%20CISA%20Mindset%20is%20back%20online." target="_blank" rel="noopener">Use Gmail web</a>
+    </div>
+    <div class="email-block">
+      Or copy and paste: <code>certprep.support@gmail.com</code>
+    </div>
     <p style="margin-top: 28px;">Until then, thanks for studying with us. Good luck with your CISA prep — the auditor mindset travels with you.</p>
     <footer>
       <span>certprep.support@gmail.com</span>

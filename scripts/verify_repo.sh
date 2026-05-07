@@ -69,6 +69,10 @@ else
 fi
 
 # 4. Version-pill <-> APP_VERSION consistency -------------------------------
+# During the maintenance phase, both values are empty (no APP_VERSION constant
+# in the trimmed-down maintenance index.html, no version pill). The empty=empty
+# case is treated as consistent and passes silently. Once the relaunched app
+# ships, APP_VERSION is restored and this check guards against drift again.
 js_ver=$(grep -oE "const APP_VERSION = '[^']+'" index.html | head -1 | sed -E "s/.*'([^']+)'/\1/")
 html_ver=$(grep -oE 'id="versionPill">[^<]+' index.html | head -1 | sed -E 's/.*>([^<]+)/\1/')
 printf "\nVersion consistency: APP_VERSION=%s  pill=%s  " "$js_ver" "$html_ver"
@@ -76,6 +80,15 @@ if [ "$js_ver" = "$html_ver" ]; then
   printf "${OK}\n"
 else
   printf "${FAIL} (mismatch — JS overrides at runtime, but please sync the static text)\n"
+  status=1
+fi
+
+# 5. Originals (rebuild content) schema validation --------------------------
+# The new bank lives under data/originals/ during the rebuild and is validated
+# against the schema in RELAUNCH_CHECKLIST.md. Empty banks are valid (the
+# scaffolding state); the validator only fails on actual schema violations.
+printf "\n"
+if ! python3 scripts/validate_originals.py; then
   status=1
 fi
 
