@@ -2550,6 +2550,737 @@
         "Litigation support"
       ],
       "_provenance": "Authored from concept: 'forensic-specialist engagement decision - shift IS auditor to coordination role when indicators exceed routine-audit threshold and team lacks forensic competencies'. Public source: ISACA Standard 1207 + ACFE Fraud Examiners Manual. All scenario specifics (publicly traded telecom carrier, wholesale-billing, four documented patterns, wrongful-termination suit context) invented for this question. Distinct from d1_010 (first-action) and d1_069 (triangle-indicator identification)."
+    },
+    {
+      "id": "d1_071",
+      "domain": 1,
+      "subtopic": "Audit Programs (Definition)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following BEST describes the PRIMARY purpose of an audit program?",
+      "options": {
+        "A": "A documented schedule listing the audit team's training and continuing-education hours over the fiscal year",
+        "B": "A documented set of audit procedures and steps designed to obtain sufficient appropriate evidence in support of the engagement's objectives",
+        "C": "A high-level governance document that establishes the audit function's authority and reporting line to the audit committee",
+        "D": "A summary of audit findings and management responses produced at the end of each engagement"
+      },
+      "correct": "B",
+      "key_concept": "An audit program is the engagement-level work plan: the documented set of procedures the audit team will execute to gather evidence. It is distinct from the audit charter (governance), training records (HR), and the audit report (deliverable).",
+      "pre_read": "For audit-program questions, distinguish engagement-level work plans from governance documents and from outputs. The program describes what the team will do; the charter authorizes the function; the report communicates results.",
+      "correct_explanation": "ISACA IT Audit Standard 1201 (Engagement Planning) and ITAF Performance Standards on Engagement Planning establish that an audit program is the documented set of audit procedures designed to obtain sufficient appropriate evidence to support the engagement's objectives. It typically includes the testing approach, sample sizes, specific procedures by area, and assignment of responsibility. Option A confuses the audit program with HR records. Option C confuses it with the audit charter, which is the function-level governance document. Option D confuses it with the audit report, which is the engagement output, not the work plan.",
+      "wrong_explanations": {
+        "A": "Training and CPE records are HR-functional artifacts, not audit-program content. The audit program defines audit procedures, not training schedules.",
+        "C": "The audit charter is the function-level governance document approved by the board; it precedes and authorizes the audit program but is not the program itself.",
+        "D": "The audit report is the engagement output that communicates findings and conclusions. The audit program is the input plan that drives the work, not the output that summarizes it."
+      },
+      "tips": [
+        "Trap is C — \"governance document\" sounds important and audit-related, but that is the charter, not the program.",
+        "Audit program = engagement-level documented procedures. Charter = function-level governance. Report = engagement-level deliverable.",
+        "Exam-day shortcut: any audit-program definition question is answered by the option naming documented procedures designed to obtain sufficient appropriate evidence."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); ITAF Performance Standards on Engagement Planning",
+      "related_concepts": [
+        "Audit program",
+        "Engagement planning",
+        "Audit procedures",
+        "Sufficient appropriate evidence"
+      ],
+      "_provenance": "Authored from concept: 'audit program foundational definition - documented engagement-level procedures, distinguished from charter / training / report'. Public source: ISACA IT Audit Standard 1201. No legacy bank consulted."
+    },
+    {
+      "id": "d1_072",
+      "domain": 1,
+      "subtopic": "Audit Work Papers (Definition)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of audit work papers?",
+      "options": {
+        "A": "To serve as the public-facing record of the audit, distributed to external stakeholders such as regulators",
+        "B": "To document the evidence gathered, the procedures performed, and the conclusions reached, providing the support for the audit report",
+        "C": "To track auditee responses and remediation commitments captured during the exit conference",
+        "D": "To list the planned audit engagements for the upcoming fiscal year, prioritized by risk"
+      },
+      "correct": "B",
+      "key_concept": "Audit work papers are the internal evidentiary record of the engagement. They link evidence to procedures to conclusions and provide the substantive support for everything in the audit report. They are not public-facing, not the management-response register, and not the annual plan.",
+      "pre_read": "For work-paper questions, anchor on \"internal evidentiary record\". Work papers support the report; they are not the report, not the plan, and not the response register.",
+      "correct_explanation": "ISACA IT Audit Standard 1208 (Audit Documentation) and ITAF Performance Standards on Documentation establish that audit work papers document the evidence gathered, procedures performed, and conclusions reached during an engagement, providing the support for the audit report. They are confidential internal records, retained per professional and regulatory requirements. Option A misidentifies work papers as public-facing — they are not. Option C describes the management-response register, which is a separate artifact. Option D describes the annual audit plan, which is a function-level document.",
+      "wrong_explanations": {
+        "A": "Work papers are confidential internal records. The audit report is the public-facing artifact distributed to stakeholders; work papers support the report but are not themselves distributed.",
+        "C": "Management-response tracking is captured in a separate register or in the report's response sections. Work papers document the auditor's evidence, not the auditee's responses.",
+        "D": "The annual audit plan is a function-level prioritization of engagements. Work papers are engagement-level evidentiary records, not the plan."
+      },
+      "tips": [
+        "Trap is A — \"public-facing record\" sounds intuitive but work papers are confidential and internal.",
+        "Work papers = internal evidentiary record linking evidence + procedures + conclusions. Three things, in order.",
+        "Exam-day shortcut: work-paper questions are answered by the option naming documentation of evidence + procedures + conclusions as support for the audit report."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1208 (Audit Documentation); ITAF Performance Standards on Documentation",
+      "related_concepts": [
+        "Audit work papers",
+        "Audit documentation",
+        "Sufficient appropriate evidence",
+        "Audit report support"
+      ],
+      "_provenance": "Authored from concept: 'audit work papers foundational definition - internal evidentiary record supporting the audit report'. Public source: ISACA IT Audit Standard 1208. No legacy bank consulted."
+    },
+    {
+      "id": "d1_073",
+      "domain": 1,
+      "subtopic": "Control Self-Assessment (Definition & Objectives)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY objective of Control Self-Assessment (CSA)?",
+      "options": {
+        "A": "To replace independent audits in environments where management has direct knowledge of the controls",
+        "B": "To engage business-process owners and operational management in evaluating the effectiveness of controls in their own areas, complementing independent audit work",
+        "C": "To outsource the evaluation of internal controls entirely to an external assessment provider",
+        "D": "To produce audit findings without involving the IS audit function or its standards-based methodology"
+      },
+      "correct": "B",
+      "key_concept": "CSA engages business-process owners in evaluating controls in their own areas, leveraging local knowledge while complementing — never replacing — independent audit work. Replacement, outsourcing, and bypassing the audit function are all misuses.",
+      "pre_read": "For CSA questions, watch for \"replaces audit\" or \"bypasses methodology\" distractors — both signal CSA misuse. The right answer always names CSA as a complementary technique that engages process owners.",
+      "correct_explanation": "ISACA IT Audit Standard guidance on CSA and ITAF Performance Standards establish that CSA's primary objective is to engage business-process owners and operational management in the evaluation of controls within their own areas, leveraging the local knowledge they possess that the audit team may not have. CSA outputs feed into and complement independent audit work; they do not replace it. Option A is the textbook misuse — CSA cannot replace independent audit, particularly where regulatory or assurance obligations demand independent evaluation. Option C confuses CSA with outsourced audit, which is a different sourcing model entirely. Option D mischaracterizes CSA as bypassing audit methodology, when in fact CSA is a methodology used by the audit function alongside traditional procedures.",
+      "wrong_explanations": {
+        "A": "Replacing independent audit with CSA is the most common CSA misuse. Independence cannot be delegated to those being assessed; CSA complements but does not substitute.",
+        "C": "Outsourcing the entire control evaluation is a different sourcing decision (and a costly one). CSA leverages internal personnel — process owners — not external providers.",
+        "D": "CSA is a structured methodology developed and applied by the audit function. It does not bypass standards; it operates within them."
+      },
+      "tips": [
+        "Trap is A — \"replaces independent audit\" is the textbook CSA misuse. CSA always complements; it never replaces.",
+        "CSA = engaging process owners in controls evaluation, alongside independent audit work. Two key words: engage + complement.",
+        "Exam-day shortcut: any CSA-definition question is answered by the option that names process-owner engagement and complementary (not replacement) role."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on Control Self-Assessment; ITAF Performance Standards on Audit Techniques",
+      "related_concepts": [
+        "Control Self-Assessment",
+        "Process-owner engagement",
+        "Complementary audit techniques",
+        "Auditor independence"
+      ],
+      "_provenance": "Authored from concept: 'CSA foundational definition - engaging process owners as a complementary technique, not replacement'. Public source: ISACA IT Audit Standards on CSA. No legacy bank consulted."
+    },
+    {
+      "id": "d1_074",
+      "domain": 1,
+      "subtopic": "Risk-Based Audit Planning (Definition)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY characteristic of risk-based audit planning?",
+      "options": {
+        "A": "Audit engagements are scheduled in alphabetical order of business-unit name to ensure unbiased coverage",
+        "B": "Audit engagement frequency and depth are determined by the assessed risk of each area in the audit universe",
+        "C": "Audit engagements are scheduled to occur on a strict three-year rotation regardless of changes in the risk environment",
+        "D": "Audit engagements are selected based on auditee preferences and availability to maintain a positive working relationship"
+      },
+      "correct": "B",
+      "key_concept": "Risk-based audit planning allocates audit effort proportional to assessed risk: higher-risk areas get more frequent and deeper audits; lower-risk areas get less. Alphabetical, fixed-rotation, and preference-driven approaches all violate the risk-based principle.",
+      "pre_read": "For risk-based-planning questions, watch for fixed-cadence, preference-driven, or arbitrary-ordering distractors. The right answer always ties engagement frequency and depth to assessed risk.",
+      "correct_explanation": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning) and ITAF Performance Standards on Risk Assessment establish that risk-based audit planning allocates audit effort across the audit universe based on assessed risk. Higher-risk areas receive more frequent and more in-depth engagements; lower-risk areas receive less. The risk assessment is updated at least annually to reflect changes in the environment. Option A is arbitrary; alphabetical ordering ignores risk entirely. Option C is fixed-rotation, which similarly ignores changing risk levels — a previously low-risk area that becomes high-risk needs an audit sooner than a fixed rotation would provide. Option D surrenders audit independence; auditee preference is a contributing input but cannot drive the plan.",
+      "wrong_explanations": {
+        "A": "Alphabetical ordering is purely administrative and ignores risk altogether. It treats all areas as equal-priority, which directly contradicts the risk-based principle.",
+        "C": "Fixed-rotation planning is rigid and unresponsive. It cannot accelerate audits on emerging high-risk areas (e.g., a new system rollout, a regulatory change) and may waste effort on areas that have stabilized.",
+        "D": "Auditee preference is an input the auditor may consider for scheduling logistics, but it cannot drive engagement selection. Surrendering selection to preference compromises independence."
+      },
+      "tips": [
+        "Trap is C — \"fixed three-year rotation\" sounds disciplined but it ignores changing risk and is the opposite of risk-based.",
+        "Risk-based = effort proportional to risk. Higher risk = more frequent + deeper audits.",
+        "Exam-day shortcut: any risk-based-planning question is answered by the option that ties engagement frequency and depth to assessed risk."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ITAF Performance Standards on Risk Assessment",
+      "related_concepts": [
+        "Risk-based audit planning",
+        "Audit universe",
+        "Engagement frequency",
+        "Audit-effort allocation"
+      ],
+      "_provenance": "Authored from concept: 'risk-based audit planning foundational definition - effort allocation proportional to assessed risk, not alphabetical / fixed-rotation / preference-driven'. Public source: ISACA IT Audit Standard 1202. No legacy bank consulted."
+    },
+    {
+      "id": "d1_075",
+      "domain": 1,
+      "subtopic": "Sampling — Stratified Sampling Mechanics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a wholesale-distribution company is testing inventory-adjustment transactions over a 12-month period. The transactions vary widely in dollar amount and exhibit different error-rate patterns: large adjustments ($25,000+) are infrequent and rarely err; medium adjustments ($1,000-$25,000) are frequent with moderate error rates; small adjustments (< $1,000) are very frequent with higher error rates. The auditor wants to design an efficient sample. Which sampling approach is MOST appropriate?",
+      "options": {
+        "A": "Simple random sampling across the entire population so every transaction has equal selection probability",
+        "B": "Stratified sampling, splitting the population by transaction size into separate strata and sampling each stratum independently with sample sizes calibrated to each stratum's variability and error-rate pattern",
+        "C": "Systematic sampling using a fixed interval starting from a random transaction at the beginning of the period",
+        "D": "Judgmental sampling targeting only the largest 50 transactions to maximize coverage of dollar value"
+      },
+      "correct": "B",
+      "key_concept": "Stratified sampling improves efficiency when the population has identifiable sub-groups with different variability or error-rate patterns. Each stratum is sampled independently, with sample sizes calibrated to each stratum's characteristics — yielding a tighter overall conclusion at lower total sample size than simple random across the whole population.",
+      "pre_read": "For sampling-design questions, ask whether the population has identifiable sub-groups with different characteristics. If yes, stratified sampling typically dominates simple random. If no, simpler designs (random, systematic) suffice.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling identify stratified sampling as the appropriate technique when the population has identifiable sub-groups with different variability, dollar-value distribution, or error-rate patterns. By splitting the population into strata and sampling each independently, the auditor can calibrate sample sizes to each stratum's characteristics — testing more aggressively where errors are likely and less in lower-risk strata. Option A treats all transactions identically, which is less efficient when variability differs by stratum. Option C (systematic) does not address the stratum-specific variability. Option D (judgmental) is non-statistical, cannot be projected to the population, and ignores the small/medium adjustments that have higher error rates.",
+      "wrong_explanations": {
+        "A": "Simple random ignores the stratum structure. The auditor would need a much larger overall sample to achieve the same conclusion precision that stratified sampling delivers more efficiently.",
+        "C": "Systematic sampling is appropriate when the population is uniform and orderable, but it doesn't address the stratum-specific differences in variability and error rates.",
+        "D": "Judgmental sampling is non-statistical — the auditor cannot project results to the population. And targeting only the largest items misses the small adjustments where error rates are highest."
+      },
+      "tips": [
+        "Trap is A — \"equal probability\" sounds fair but is inefficient when strata have different characteristics.",
+        "Stratified sampling = split population by characteristic, sample each stratum independently. Best when sub-groups differ in variability or error rate.",
+        "Exam-day shortcut: when the stem describes a population with clearly different sub-groups (size, variability, error pattern), stratified sampling is the answer."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530 (analogous)",
+      "related_concepts": [
+        "Stratified sampling",
+        "Sample-size determination",
+        "Population variability",
+        "Statistical sampling"
+      ],
+      "_provenance": "Authored from concept: 'stratified sampling - splits population by characteristic, calibrates sample size per stratum, more efficient than simple random when sub-groups differ'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (wholesale distribution, inventory adjustments, three size tiers) invented for this question."
+    },
+    {
+      "id": "d1_076",
+      "domain": 1,
+      "subtopic": "Audit QA — Internal Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit director at a regional bank holding company is designing the internal portion of the audit function's quality-assurance and improvement program (QAIP). The function performs roughly 40 engagements per year. What is the MOST important characteristic of a well-designed internal QA program?",
+      "options": {
+        "A": "Annual external review by a different firm each year, with no internal monitoring activity in between",
+        "B": "Periodic engagement-level reviews of completed audits combined with ongoing monitoring of supervision, work-paper quality, and conformance with standards across all engagements",
+        "C": "Quarterly self-rating by each auditor of their own work quality, aggregated to produce the function's QA score",
+        "D": "Reliance solely on external assessment results, with no internal quality activity initiated by the audit director"
+      },
+      "correct": "B",
+      "key_concept": "An internal QA program combines two activities: periodic engagement-level reviews (looking back at completed audits in depth) and ongoing monitoring (looking at every engagement at a lighter level for supervision and standards conformance). External assessment fills the periodic-independent-review role; internal QA fills everything in between.",
+      "pre_read": "For internal-QA-design questions, watch for distractors that conflate internal QA with external assessment, that rely on self-rating alone, or that defer all quality activity to external parties. Internal QA has two parts: periodic engagement reviews + ongoing monitoring.",
+      "correct_explanation": "IIA International Standards 1311 (Internal Assessments) and 1300-series QAIP guidance establish that internal QA combines two activities: (1) periodic internal review of completed engagements, performed by personnel not involved in the engagement, examining work-paper quality and conformance with standards; and (2) ongoing monitoring of supervision, work-paper review documentation, and standards conformance across all engagements as they proceed. Option A confuses internal QA with external assessment (which is a separate component, every 5 years). Option C relies on self-rating, which lacks the independence that QAIP requires. Option D abdicates the audit director's responsibility for ongoing internal quality.",
+      "wrong_explanations": {
+        "A": "Annual external review is over-engineered and substitutes for the internal monitoring activity that QAIP requires. Internal monitoring is continuous; external assessment is periodic (>= every 5 years).",
+        "C": "Self-rating by the auditor whose work is being assessed lacks the independence that quality assurance requires. The reviewer must not be involved in the engagement under review.",
+        "D": "Sole reliance on external assessment leaves a five-year gap between independent reviews. Internal monitoring fills that gap and is required by professional standards."
+      },
+      "tips": [
+        "Trap is C — \"self-rating\" sounds like an internal QA activity but it lacks the independence requirement.",
+        "Internal QA = periodic engagement reviews (in-depth, by uninvolved personnel) + ongoing monitoring (lighter, across all engagements). Two activities.",
+        "Exam-day shortcut: internal-QA-design questions are answered by the option naming both periodic engagement reviews AND ongoing monitoring."
+      ],
+      "framework_ref": "IIA International Standard 1311 (Internal Assessments); IIA 1300-series QAIP guidance; ITAF General Standards on Quality",
+      "related_concepts": [
+        "Internal quality assurance",
+        "Engagement-level QA review",
+        "Ongoing monitoring",
+        "QAIP"
+      ],
+      "_provenance": "Authored from concept: 'internal QA program design - periodic engagement reviews + ongoing monitoring, distinct from external assessment'. Public source: IIA Standard 1311. All scenario specifics (regional bank holding company, 40 engagements/year) invented for this question."
+    },
+    {
+      "id": "d1_077",
+      "domain": 1,
+      "subtopic": "Audit QA — Peer Review (Engagement vs Program)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An audit manager at a public-accounting firm is establishing a peer-review process within the IS audit practice. The manager must decide between two peer-review approaches: engagement-level peer review (one auditor reviews another's completed engagement file) and program-level peer review (an external firm reviews the practice's overall QAIP). What is the MOST important distinction the manager should communicate to the team?",
+      "options": {
+        "A": "Engagement-level peer review evaluates the work on a specific audit; program-level peer review evaluates the audit practice's QAIP, methodology, and consistency across many engagements — they answer different questions and both are needed",
+        "B": "Engagement-level peer review is voluntary and program-level peer review is mandatory, so the team should focus only on program-level review",
+        "C": "The two approaches are interchangeable, so the team should adopt whichever is cheaper to administer",
+        "D": "Engagement-level peer review is performed by external firms only, while program-level peer review is performed internally"
+      },
+      "correct": "A",
+      "key_concept": "Engagement-level peer review evaluates a specific audit's work quality; program-level peer review evaluates the practice's overall QAIP and methodology. They answer different questions at different scopes and both are needed in a mature QA program.",
+      "pre_read": "For peer-review questions, distinguish the scope: engagement (one audit) vs program (the practice's overall QA). Distractors that conflate the two, claim only one is needed, or invert who performs which are wrong.",
+      "correct_explanation": "Engagement-level peer review answers \"was this specific audit's work performed to the standards?\" — typically performed by an internal reviewer not involved in the engagement, focusing on work papers, conclusions, and conformance. Program-level peer review answers \"is the practice's QAIP itself effective?\" — typically performed by an external firm or independent assessor, focusing on methodology, training, supervision, and consistency across engagements. Both are needed in a mature QA program because they answer different questions at different scopes. Option B mischaracterizes the mandatory/voluntary status. Option C ignores the scope difference. Option D inverts the typical performer for each.",
+      "wrong_explanations": {
+        "B": "Both engagement-level review (per IIA 1311 / Standard 1010) and program-level review (per IIA 1312 / external assessment) have professional-standards backing. Treating engagement-level as voluntary misreads the standards.",
+        "C": "Cost-based selection ignores the scope difference. Engagement and program reviews answer different questions; substituting one for the other leaves a quality gap.",
+        "D": "The typical pattern is opposite: engagement-level review is usually performed internally (by an uninvolved peer auditor), and program-level review is usually performed externally (by an independent assessor). Inverting these breaks both designs."
+      },
+      "tips": [
+        "Trap is C — treating the two approaches as interchangeable misses the scope difference. They are not substitutes.",
+        "Engagement-level = one audit, internal reviewer. Program-level = the practice's QAIP, external assessor. Different scopes, different questions.",
+        "Exam-day shortcut: peer-review questions are answered by the option that names both levels and explains they answer different questions."
+      ],
+      "framework_ref": "IIA International Standards 1311 (Internal) and 1312 (External Assessments); ITAF General Standards on Quality; AICPA Peer Review Standards (analogous in public accounting practice)",
+      "related_concepts": [
+        "Peer review",
+        "Engagement-level QA",
+        "Program-level QA",
+        "External assessment"
+      ],
+      "_provenance": "Authored from concept: 'peer review - engagement-level (one audit, internal) vs program-level (QAIP, external) distinguished by scope and reviewer'. Public source: IIA Standards 1311/1312 + AICPA Peer Review Standards. All scenario specifics (public accounting firm, IS audit practice context) invented for this question."
+    },
+    {
+      "id": "d1_078",
+      "domain": 1,
+      "subtopic": "Communicating Audit Results — Follow-up Communication Cadence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a federal health-services agency has issued an audit report identifying a critical finding (medication-records access control), three high findings, and four moderate findings. Management has provided initial remediation commitments with target dates over the next 18 months. What is the MOST appropriate cadence for follow-up communication on these findings?",
+      "options": {
+        "A": "One follow-up review immediately before the next annual audit cycle, with no interim communication",
+        "B": "A risk-tiered cadence — more frequent verification on the critical finding (e.g., 30-60 days), structured periodic reviews on high findings, and lighter verification on moderate findings, with each follow-up communicated to the audit committee",
+        "C": "Identical quarterly follow-ups on all eight findings regardless of severity, to keep the cadence simple to administer",
+        "D": "No follow-up at all; remediation is management's responsibility and the audit function should not duplicate management's tracking"
+      },
+      "correct": "B",
+      "key_concept": "Follow-up cadence is risk-tiered: critical findings get aggressive near-term verification, high findings get structured periodic review, moderate findings get lighter verification. Same-cadence-for-all and no-follow-up both misallocate audit attention.",
+      "pre_read": "For follow-up cadence questions, watch for one-size-fits-all (same cadence for all) and abdication (no follow-up) distractors. The right answer always tiers cadence by severity and ties to audit-committee communication.",
+      "correct_explanation": "ISACA IT Audit Standard 1402 (Follow-up Activities) and ITAF Performance Standards on Follow-up establish that audit follow-up cadence should be risk-tiered, with frequency and depth of verification proportional to the severity of the finding. A critical-severity finding (such as the medication-records access control here) warrants near-term follow-up (often 30-60 days) to verify remediation progress, with audit-committee communication on status. High-severity findings warrant structured periodic reviews. Moderate findings warrant lighter verification, sometimes consolidated into the next-cycle audit. Option A defers all verification too long. Option C ignores severity, wasting effort on moderate findings while underweighting critical ones. Option D abdicates the audit function's verification responsibility.",
+      "wrong_explanations": {
+        "A": "Deferring all verification to the next annual cycle leaves a critical finding open for up to a year. The criticality of the finding warrants near-term verification, not annual-cycle waiting.",
+        "C": "Identical-cadence-for-all wastes verification effort on moderate findings while under-verifying critical ones. The risk-tiered approach allocates attention proportional to severity.",
+        "D": "Audit follow-up is not duplication of management's tracking — it is independent verification that committed remediation has occurred and is operating effectively. The audit function owns this verification responsibility."
+      },
+      "tips": [
+        "Trap is C — identical cadence sounds simple to administer but it misallocates attention. Severity drives cadence.",
+        "Follow-up cadence = critical (30-60 days) > high (periodic) > moderate (lighter / next cycle). Tiered by severity.",
+        "Exam-day shortcut: follow-up cadence questions are answered by the option that names risk-tiered cadence and audit-committee communication on critical-finding progress."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); ITAF Performance Standards on Follow-up",
+      "related_concepts": [
+        "Audit follow-up",
+        "Risk-tiered cadence",
+        "Remediation verification",
+        "Audit-committee communication"
+      ],
+      "_provenance": "Authored from concept: 'follow-up communication cadence - tiered by severity, with critical findings receiving near-term verification'. Public source: ISACA Standard 1402. All scenario specifics (federal health-services agency, medication-records access, 8 findings across 4 severities, 18-month remediation horizon) invented for this question."
+    },
+    {
+      "id": "d1_079",
+      "domain": 1,
+      "subtopic": "Communicating Audit Results — Tone Calibration for Sensitive Findings",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a private-equity firm is finalizing the audit report for an audit of the firm's deal-data-room platform. The audit identified findings including weak access controls, undocumented changes, and one finding involving a partner-level employee who repeatedly accessed deal data outside their assigned scope. The auditor is calibrating the report's tone for the partner-level finding. What is the MOST appropriate approach?",
+      "options": {
+        "A": "Soften the language to avoid embarrassing the partner, given the seniority of the individual and the importance of the working relationship",
+        "B": "Maintain factual, evidence-based, professional language for all findings — the partner-level finding is described with the same factual rigor as any other finding, without sensationalism but without dilution",
+        "C": "Anonymize the partner-level finding by removing all individual-identifying details so that no specific person can be identified from the report",
+        "D": "Move the partner-level finding to a separate confidential addendum addressed only to the audit-committee chair, so the main report can be distributed broadly without naming the individual or specifying the conduct"
+      },
+      "correct": "B",
+      "key_concept": "Audit-report tone is calibrated by professionalism, not by the seniority of the individual involved. Findings are factual, evidence-based, and proportional to severity — not softened for relationship reasons or sensationalized for severity reasons.",
+      "pre_read": "For tone-calibration questions, watch for soften-for-seniority and over-escalate distractors. The right answer always preserves factual rigor and proportionality regardless of who is involved.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting) and ITAF Performance Standards on Communication of Results establish that audit reports must be objective, factual, and based on evidence regardless of whose conduct the finding concerns. The partner's seniority is irrelevant to how the finding is described — softening would compromise the report's integrity, and sensationalizing would compromise its professionalism. Option A surrenders auditor independence; the auditor cannot adjust facts for seniority. Option C may be appropriate in narrow contexts (e.g., separate confidential annex for personnel-identifying details that don't change substance) but removing all individual-identifying details from the main report can render the finding ambiguous and is not the default. Option D similarly mishandles the finding by splitting it into a confidential-addendum design — letting distribution decisions drive content dilutes the report's integrity. The right answer keeps factual rigor in the main report regardless of who is involved.",
+      "wrong_explanations": {
+        "A": "Softening for seniority is the textbook auditor-independence violation. Findings are facts, not negotiables based on the working relationship.",
+        "C": "Anonymizing the finding can render it ambiguous and may undermine remediation. While there are contexts where personnel-identifying details belong in a confidential annex, the default in the main report is factual specificity.",
+        "D": "Splitting the finding into a confidential addendum may seem like a balanced compromise — but it dilutes the report's integrity by letting distribution choices drive content. If the finding is real and meaningful, it belongs in the main report described with the same factual rigor as any other finding. Confidential annexes have legitimate uses (e.g., personnel-identifying details that don't change the substantive finding), but using them to soften the main report's impact compromises the report's value."
+      },
+      "tips": [
+        "Trap is A — \"soften for seniority\" feels diplomatic but is an independence violation.",
+        "Tone calibration = factual, evidence-based, proportional. Seniority of subject is irrelevant to how findings are described.",
+        "Exam-day shortcut: tone-calibration questions are answered by the option that maintains factual rigor regardless of who is involved."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Communication of Results; ISACA Code of Professional Ethics (Independence)",
+      "related_concepts": [
+        "Audit-report tone",
+        "Factual reporting",
+        "Auditor independence",
+        "Sensitive findings"
+      ],
+      "_provenance": "Authored from concept: 'tone calibration for sensitive findings - factual rigor preserved regardless of subject seniority'. Public source: ISACA Standard 1401 + Code of Professional Ethics. All scenario specifics (private-equity firm, deal-data-room platform, partner-level employee out-of-scope access) invented for this question. Distinct from d1_050 severity-rating dynamics."
+    },
+    {
+      "id": "d1_080",
+      "domain": 1,
+      "subtopic": "AI/ML — Algorithmic Auditability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a legal-tech SaaS company is auditing the company's AI-powered contract-clause-classification model. The audit's objective includes evaluating whether the model is auditable — whether the auditor can verify what the model does and why for any given contract. What is the MOST important characteristic of an auditable AI/ML model?",
+      "options": {
+        "A": "The model is trained on the largest available dataset, regardless of whether the data sources are documented",
+        "B": "The model's decisions are reproducible (same input yields same output, given the same model version) and explainable (the auditor can trace why a specific decision was reached at a level appropriate to the use case)",
+        "C": "The model is the most accurate available for the use case, even if its inner workings are proprietary and undocumented",
+        "D": "The model uses the same algorithm as the industry leader, regardless of whether the company has access to the training-data lineage"
+      },
+      "correct": "B",
+      "key_concept": "Algorithmic auditability rests on two pillars: reproducibility (same input + same model version yields same output) and explainability (the auditor can trace why a decision was reached at a level appropriate to the use case's risk and regulatory context).",
+      "pre_read": "For AI/ML auditability questions, the two pillars are reproducibility and explainability. Distractors that emphasize accuracy alone, dataset size alone, or industry-standard algorithm without traceability all miss the auditability dimension.",
+      "correct_explanation": "ISACA's \"Auditing Artificial Intelligence\" IT Audit and Assurance Program and the NIST AI Risk Management Framework establish that algorithmic auditability requires both reproducibility (a given input under a specific model version reliably produces the same output, so the auditor can re-run and verify) and explainability (the auditor can trace why a specific decision was reached, at a depth appropriate to the use case's risk profile). Without reproducibility, the auditor cannot verify the model's behavior at any point in time. Without explainability, the auditor cannot evaluate whether the model's reasoning is sound or biased. Option A mistakes data volume for auditability. Option C mistakes accuracy for auditability — a highly accurate but undocumented model is the textbook \"black box\" the auditor cannot evaluate. Option D mistakes algorithm choice for auditability — the same algorithm in two organizations can be auditable in one and unauditable in the other depending on lineage and explainability.",
+      "wrong_explanations": {
+        "A": "Dataset size is a separate concern (representativeness, statistical power) and is not the same as auditability. A large undocumented dataset makes the model less auditable, not more.",
+        "C": "A highly accurate proprietary black-box model is the canonical hard-to-audit case. Accuracy is a model-quality property; auditability is about whether the auditor can verify and explain the model's behavior.",
+        "D": "Industry-standard algorithm choice does not confer auditability. Two implementations of the same algorithm can have very different levels of traceability, lineage documentation, and explainability."
+      },
+      "tips": [
+        "Trap is C — \"highly accurate proprietary model\" sounds like a strong audit subject, but black-box-ness is exactly the auditability failure mode.",
+        "Auditable AI/ML = reproducibility + explainability. Two pillars, both required.",
+        "Exam-day shortcut: AI/ML auditability questions are answered by the option that names reproducibility AND explainability together."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); NIST AI Risk Management Framework (AI RMF 1.0); ITAF guidance on AI in IS Audit",
+      "related_concepts": [
+        "Algorithmic auditability",
+        "Reproducibility",
+        "Explainability",
+        "Black-box risk",
+        "Model lineage"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML algorithmic auditability - reproducibility plus explainability as the two pillars'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (legal-tech SaaS, contract-clause-classification model) invented for this question."
+    },
+    {
+      "id": "d1_081",
+      "domain": 1,
+      "subtopic": "Control Objectives — General Control Methods",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a copper-mining company is evaluating general controls (as distinct from application-specific controls) over the company's IT environment. Which of the following is MOST representative of a general IT control?",
+      "options": {
+        "A": "An automated check in the ore-grading application that rejects sample weights below 0 grams or above the maximum the assay equipment can produce",
+        "B": "Logical access provisioning policies that govern user-account lifecycle, password complexity, and access-revocation timelines across all of the company's IT systems",
+        "C": "A business-process control requiring two signatures on capital-equipment purchases over $100,000",
+        "D": "A specific input-validation rule in the truck-dispatch system that ensures destination codes match approved haul routes"
+      },
+      "correct": "B",
+      "key_concept": "General IT controls operate across the IT environment as a whole — access management, change management, operations, and physical/environmental controls. Application-specific controls operate within a specific application's transaction processing.",
+      "pre_read": "For general-vs-application-control questions, ask the scope: is this control applied across the IT environment (general) or within a specific application's processing (application)? Boundary-crossing controls (access provisioning, change management) are general; transaction-validation rules are application-specific.",
+      "correct_explanation": "ISACA Risk IT Framework and ITAF Performance Standards on Application Audits distinguish general IT controls from application controls. General controls are those that operate across the IT environment as a whole — access management policies, change management, IT operations, physical/environmental — and provide the foundation that allows application-specific controls to be relied upon. Option B (logical access provisioning across all systems) is a textbook general IT control because it spans the whole environment. Options A and D describe application-specific input-validation rules. Option C describes a business-process control (purchase authorization) operating outside the IT environment.",
+      "wrong_explanations": {
+        "A": "Input-validation in a specific application (ore-grading) is an application control, not a general control. It operates within one application's transaction processing.",
+        "C": "Two-signature authorization for capital-equipment purchases is a business-process control, not an IT control. It operates outside the IT environment.",
+        "D": "Destination-code validation in the truck-dispatch system is application-specific. The control's scope is one application's transaction validation, which is the definition of an application control rather than a general control."
+      },
+      "tips": [
+        "Trap is A or D — both look like \"IT controls\" because they sit in IT systems, but they are application-specific transaction-validation rules, not general controls.",
+        "General IT controls = environment-wide (access mgmt, change mgmt, ops, physical). Application controls = within one application's processing.",
+        "Exam-day shortcut: general-control questions are answered by the option that names a control spanning multiple systems or the IT environment as a whole."
+      ],
+      "framework_ref": "ITAF Performance Standards on Application Audits; COBIT 2019 DSS05 (Managed Security Services) and DSS06 (Managed Business Process Controls); ISACA CISA Review Manual on General vs Application Controls",
+      "related_concepts": [
+        "General IT controls",
+        "Application controls",
+        "Access management",
+        "Change management",
+        "Control classification"
+      ],
+      "_provenance": "Authored from concept: 'general IT controls vs application controls - environment-wide scope vs application-specific scope'. Public source: ISACA Risk IT + ITAF. All scenario specifics (copper-mining, ore-grading, truck-dispatch, capital-equipment purchases) invented for this question."
+    },
+    {
+      "id": "d1_082",
+      "domain": 1,
+      "subtopic": "Control Objectives — IS Control Objectives Sub-area",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at an aerospace manufacturer is documenting the IS control objectives for the company's product-lifecycle-management (PLM) system, which holds engineering designs subject to International Traffic in Arms Regulations (ITAR). What is the MOST important characteristic of well-stated IS control objectives?",
+      "options": {
+        "A": "Each control objective is broad enough to cover the entire system in a single statement, simplifying audit-program design",
+        "B": "Each control objective is specific, measurable, and traceable to a business risk or regulatory requirement, so that controls can be designed and tested against it",
+        "C": "Each control objective lists every control that has ever been suggested for the system, regardless of whether it is implemented",
+        "D": "Each control objective is identical to the corresponding control objective at the company's largest competitor, ensuring industry-standard practice"
+      },
+      "correct": "B",
+      "key_concept": "Well-stated IS control objectives are specific, measurable, and traceable to a business risk or regulatory requirement. Each objective answers \"what must this system ensure?\" in a way that lets controls be designed and tested against it.",
+      "pre_read": "For IS control-objective questions, watch for too-broad, kitchen-sink, or copy-from-competitor distractors. Well-stated objectives are SMART-like (specific, measurable, traceable) and tied to a defensible source (risk or regulation).",
+      "correct_explanation": "ISACA Risk IT Framework, COBIT 2019 (which structures objectives at the management-objective level), and ITAF Performance Standards on Application Audits all emphasize that IS control objectives must be specific enough to be testable, measurable enough to evaluate effectiveness, and traceable to a business risk or regulatory requirement that justifies the control. For an ITAR-regulated PLM system, each control objective should trace to a specific ITAR requirement (e.g., access restrictions on technical data) or to a specific business risk (e.g., unauthorized export). Option A produces objectives too vague to design controls against. Option C confuses objectives (what to achieve) with controls (how to achieve them). Option D treats industry-standard as a substitute for risk-and-regulation traceability, which it is not.",
+      "wrong_explanations": {
+        "A": "Broad single-statement objectives cannot be tested. The auditor needs specificity to design audit procedures and evaluate effectiveness against each objective.",
+        "C": "Objectives describe what must be achieved; controls describe how. Listing every suggested control conflates the two and produces a document that is neither a clean objective list nor a clean control list.",
+        "D": "Copying objectives from a competitor ignores the company's own risk profile and regulatory context. ITAR-specific objectives at an aerospace manufacturer differ from what a non-ITAR competitor would document."
+      },
+      "tips": [
+        "Trap is C — \"comprehensive list of every suggested control\" sounds thorough but conflates objectives with controls. Different artifacts.",
+        "Well-stated IS control objectives = specific + measurable + traceable to risk or regulation. Three properties.",
+        "Exam-day shortcut: IS-control-objective questions are answered by the option that names specificity, measurability, and traceability."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COBIT 2019 (Management Objectives); ITAF Performance Standards on Application Audits",
+      "related_concepts": [
+        "IS control objectives",
+        "Control objectives vs controls",
+        "Risk traceability",
+        "Regulatory traceability"
+      ],
+      "_provenance": "Authored from concept: 'IS control objectives - specific, measurable, traceable to risk or regulation, distinct from listing controls'. Public source: ISACA Risk IT + COBIT 2019. All scenario specifics (aerospace manufacturer, PLM system, ITAR regulatory context) invented for this question."
+    },
+    {
+      "id": "d1_083",
+      "domain": 1,
+      "subtopic": "CAATs as Continuous Online Audit Approach",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a brokerage firm is designing CAATs (Computer-Assisted Audit Techniques) to operate as a continuous online audit approach over the firm's order-routing system, which processes hundreds of thousands of trades per day. What is the MOST important characteristic of CAATs deployed as a continuous online audit?",
+      "options": {
+        "A": "The CAATs run on a separate, isolated environment using monthly extracts of production data, ensuring no impact on the production system",
+        "B": "The CAATs operate against live or near-live production data with minimal latency, surface anomalies for the audit team in near-real-time, and avoid degrading production-system performance",
+        "C": "The CAATs are executed manually by the audit team after each trading day's close, providing same-day-close-of-business analysis",
+        "D": "The CAATs are run only during the annual audit cycle, since continuous operation introduces unacceptable production risk"
+      },
+      "correct": "B",
+      "key_concept": "Continuous online CAATs operate against live or near-live production data with minimal latency, surface anomalies in near-real-time for the audit team, and are designed not to degrade production-system performance. Monthly-extract or annual-cycle approaches are batch CAATs, not continuous online.",
+      "pre_read": "For continuous-online-CAAT questions, the three characteristics are: (1) live or near-live data, (2) near-real-time anomaly surfacing, (3) non-degradation of production. Anything that delays or batches the analysis is not continuous online.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on CAATs and Continuous Auditing establish that CAATs deployed as a continuous online audit approach operate against live or near-live production data with minimal latency, surfacing anomalies for the audit team in near-real-time. The design must minimize production-system impact through techniques like read-only replicas, parallel evaluation modules, or non-blocking inline checks. Option A describes monthly-extract batch CAATs, not continuous online. Option C describes after-close manual CAATs (same-day close, but not continuous). Option D abandons the continuous-online benefit entirely. The brokerage scenario specifically benefits from continuous online because order-routing anomalies often need detection in near-real-time to be actionable.",
+      "wrong_explanations": {
+        "A": "Monthly-extract CAATs are batch CAATs, not continuous online. They cannot surface anomalies in near-real-time, which is the defining characteristic.",
+        "C": "Same-day close-of-business analysis is closer to continuous than monthly batch but still not online — anomalies during the trading day cannot be acted upon until end-of-day.",
+        "D": "Annual-cycle CAATs are the most batch-style approach. Refusing continuous operation because of production-risk concerns gives up the technique's main benefit; the right answer is to design CAATs that avoid degrading production rather than to abandon continuous deployment."
+      },
+      "tips": [
+        "Trap is A — \"monthly extracts on isolated environment\" sounds safe and CAAT-ish, but it is batch CAATs, not continuous online.",
+        "Continuous online CAATs = live data + near-real-time anomaly surfacing + non-degradation. Three properties, all required.",
+        "Exam-day shortcut: continuous-online-CAAT questions are answered by the option that names all three properties together."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on CAATs and Continuous Auditing",
+      "related_concepts": [
+        "Computer-Assisted Audit Techniques",
+        "Continuous online audit",
+        "Real-time anomaly detection",
+        "Production-system impact"
+      ],
+      "_provenance": "Authored from concept: 'CAATs as continuous online approach - live data + near-real-time + non-degradation, distinct from batch CAATs'. Public source: ITAF Tools and Techniques on CAATs. All scenario specifics (brokerage firm, order-routing, hundreds of thousands of trades/day) invented for this question."
+    },
+    {
+      "id": "d1_084",
+      "domain": 1,
+      "subtopic": "Fraud — Evidence Handling and Chain of Custody",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a heavy-construction engineering firm has discovered evidence during an audit that suggests possible bid-rigging by an estimating manager. The auditor anticipates that the matter may eventually result in litigation. What is the MOST important consideration when handling the evidence during the audit?",
+      "options": {
+        "A": "Make working copies of all suspicious documents and emails so the audit team can analyze them flexibly, with originals stored in the audit team's standard work-paper archive",
+        "B": "Establish and maintain chain-of-custody documentation for each piece of original evidence — recording who collected it, when, where, who has had access since, and where it has been stored — in a manner that preserves admissibility in any future proceeding",
+        "C": "Forward the suspicious documents to management's legal counsel immediately and let them handle all preservation and documentation",
+        "D": "Hold the evidence informally in the auditor's personal files until the audit committee decides whether to escalate"
+      },
+      "correct": "B",
+      "key_concept": "When fraud evidence may end up in litigation, chain-of-custody documentation is essential — it preserves admissibility by establishing that the evidence has not been tampered with, who has handled it, and where it has been stored from the moment of collection.",
+      "pre_read": "For fraud-evidence questions, watch for distractors that involve handling evidence informally, making working copies of originals, or delegating preservation to other parties. The right answer always names chain-of-custody documentation.",
+      "correct_explanation": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts) and ITAF Performance Standards on Fraud Risk establish that when audit evidence may eventually be used in litigation or regulatory proceedings, chain-of-custody documentation is essential. Each piece of original evidence requires a record of who collected it, when, where, who has handled it since, and where it has been stored — at all times preserving the integrity of the original. Option A mishandles the originals by treating them as working copies; once the original is opened in a non-controlled way, admissibility may be compromised. Option C abdicates the auditor's preservation responsibility — internal counsel can advise on next steps but the auditor must preserve the evidence in the meantime. Option D holds evidence informally in personal files, which is a textbook chain-of-custody failure.",
+      "wrong_explanations": {
+        "A": "Working-copy creation is appropriate for analysis but only after the originals have been preserved with chain-of-custody. Treating the originals as flexible work-paper artifacts compromises admissibility.",
+        "C": "Internal counsel can advise on the matter, but the auditor cannot delegate evidence preservation. The auditor who collected the evidence is responsible for its chain of custody until formally transferred.",
+        "D": "Personal files of the auditor do not constitute proper evidence storage. The evidence must be in a controlled, access-logged location from the moment of collection."
+      },
+      "tips": [
+        "Trap is A — \"work papers archive\" sounds like proper handling but for litigation-bound evidence, chain-of-custody is the controlling discipline, not work-paper retention.",
+        "Chain of custody = who collected, when, where, who has handled, where stored. Five elements, documented from the moment of collection.",
+        "Exam-day shortcut: any fraud-evidence-handling question with possible litigation implications is answered by the option that names chain-of-custody documentation."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); ITAF Performance Standards on Fraud Risk; ACFE Fraud Examiners Manual on Evidence Handling",
+      "related_concepts": [
+        "Chain of custody",
+        "Fraud evidence handling",
+        "Evidence preservation",
+        "Admissibility"
+      ],
+      "_provenance": "Authored from concept: 'fraud evidence handling - chain of custody for litigation-bound evidence, distinct from standard work-paper retention'. Public source: ISACA Standard 1207 + ACFE Fraud Examiners Manual. All scenario specifics (heavy-construction engineering, estimating manager, suspected bid-rigging) invented for this question."
+    },
+    {
+      "id": "d1_085",
+      "domain": 1,
+      "subtopic": "AI/ML — Challenger-Model Testing",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an autonomous-vehicle company is auditing the production AI/ML model that classifies pedestrian and cyclist signals at intersections. The audit's objective is to evaluate the model's ongoing performance and detect drift. The data-science team proposes that the audit team rely solely on the production model's self-reported confidence scores and weekly accuracy metrics, arguing that the production model has been validated to industry standards and external review would be redundant. The auditor is considering a challenger-model approach: deploying an independent reference model (built by the audit team or by an external party) against the same input data and comparing the production model's outputs to the challenger's outputs to identify systematic deviations.",
+      "question": "Which of the following BEST describes when a challenger-model approach is appropriate, and why the data-science team's proposal is INSUFFICIENT?",
+      "options": {
+        "A": "The data-science team is correct — self-reported confidence scores and accuracy metrics are sufficient when the production model has been validated to industry standards. A challenger model is unnecessary overhead.",
+        "B": "A challenger-model approach is appropriate when the production model is high-stakes (safety-critical here) and self-reported metrics cannot independently detect systematic bias, drift, or correlated failures. The data-science team's proposal is insufficient because the production model evaluates itself, providing no independent perspective.",
+        "C": "A challenger model should fully replace the production model in the audit's evaluation, since the audit team's challenger is by definition more independent than any production model.",
+        "D": "Challenger models are only appropriate when the production model has already failed in production; they are not part of preventive audit work."
+      },
+      "correct": "B",
+      "key_concept": "Challenger-model testing provides an independent reference against which the production model is evaluated. It is most appropriate for high-stakes models where self-reported metrics cannot detect systematic bias, drift, or correlated failures. It complements — does not replace — the production model.",
+      "pre_read": "For challenger-model questions, evaluate two things: (1) is the production model high-stakes? (2) can self-reported metrics independently detect the failure modes the audit cares about? When the answer is high-stakes + can't-self-detect, a challenger model is the right approach.",
+      "correct_explanation": "ISACA \"Auditing Artificial Intelligence\" guidance and the NIST AI Risk Management Framework both describe challenger-model testing as a key audit technique for high-stakes AI/ML systems where the model's self-reported metrics cannot provide independent assurance. A model that evaluates its own performance has no way to detect systematic biases (where the model is consistently wrong in a particular way), drift (where the model's behavior changes as data shifts), or correlated failures (where the model's failures cluster in conditions that the self-reporting metrics happen not to weight). Deploying an independent challenger gives the auditor a comparison point that surfaces these failure modes. Option A accepts self-reported metrics as sufficient, which is the textbook over-reliance failure. Option C overstates the challenger's role — challenger models complement the production model, they don't replace it. Option D treats challenger testing as reactive only, missing its preventive value.",
+      "wrong_explanations": {
+        "A": "Self-reported metrics from the production model are not independent. A model that is systematically biased will not surface that bias in its own confidence scores, because the scores are calibrated to the same biased decisions. External validation (challenger or otherwise) is required.",
+        "C": "Challenger models are reference points, not replacements. The audit's job is to evaluate the production model that is actually deployed; the challenger provides comparison data, not a substitute.",
+        "D": "Challenger testing is preventive — its value is in surfacing systematic issues before production failure. Treating it as reactive misses the preventive function and effectively delays risk surfacing."
+      },
+      "tips": [
+        "Trap is A — \"validated to industry standards\" sounds reassuring but does not substitute for independent evaluation in production.",
+        "Challenger model = independent reference against which production is compared. Used for high-stakes AI where self-reporting cannot detect bias / drift / correlated failures.",
+        "Exam-day shortcut: high-stakes AI + self-reported-only-metrics from the data-science team = challenger-model approach is appropriate."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); NIST AI Risk Management Framework (AI RMF 1.0); ITAF guidance on AI in IS Audit",
+      "related_concepts": [
+        "Challenger model",
+        "AI/ML model validation",
+        "Independent evaluation",
+        "Model drift",
+        "Systematic bias detection"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML challenger-model testing - independent reference for high-stakes systems where self-reporting cannot detect systematic failures'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (autonomous-vehicle company, pedestrian/cyclist classification, data-science team proposal) invented for this question."
+    },
+    {
+      "id": "d1_086",
+      "domain": 1,
+      "subtopic": "Sampling — Multi-objective Sampling Design",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a freight-rail company is designing the sampling approach for an audit of the rail-yard's car-routing system. The audit has three objectives executed within one engagement: (1) determine whether the dual-approval control on routing changes is operating effectively (a yes/no question per change order — the second approver must be different from the first); (2) estimate the dollar value of any incorrect freight charges resulting from routing errors over the audit period; and (3) confirm that all routing changes affecting hazardous-materials cars went through the additional hazmat-officer approval, with zero acceptable error tolerance for that population. The audit's bandwidth allows for one well-designed sampling approach but the auditor is questioning whether one sample can serve all three objectives.",
+      "question": "Which sampling approach BEST satisfies the three objectives within the constraints of the engagement?",
+      "options": {
+        "A": "One stratified random sample across all routing changes, with the strata calibrated to satisfy all three objectives simultaneously",
+        "B": "Three separately-designed samples — attribute sampling for objective 1 (dual-approval control), variable / monetary-unit sampling for objective 2 (dollar estimation), and 100% testing of the hazmat-cars sub-population for objective 3 (zero-tolerance) — recognizing that one sample design cannot serve all three objectives well",
+        "C": "One judgmental sample of the largest 50 routing changes, since dollar value and hazmat status both correlate with size",
+        "D": "Skip sampling entirely and rely on management's representations for objectives 1 and 3, performing only ad-hoc analysis for objective 2"
+      },
+      "correct": "B",
+      "key_concept": "Different audit objectives require different sampling techniques and different populations. A single sample rarely serves multiple distinct objectives well. Recognizing this and designing separately is the analytical maturity the question tests.",
+      "pre_read": "For multi-objective sampling questions, ask whether the objectives test the same thing (one sample suffices) or different things (separate designs needed). Compliance + substantive + zero-tolerance are three distinct test types and rarely can be combined cleanly into one sample.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling establish that sampling design follows from the audit objective, and different objectives often require different designs and populations. In this scenario: objective 1 is a compliance test of a control (yes/no per change order), best served by attribute sampling on the population of all routing changes. Objective 2 is a substantive estimation of dollar error, best served by variable or monetary-unit sampling on the population of charged amounts. Objective 3 has zero error tolerance and a defined sub-population (hazmat-cars), which means 100% testing of that sub-population is the right approach — sampling cannot guarantee zero-error detection. Option A understates the design problem — calibrating one stratified sample to serve compliance + substantive + zero-tolerance simultaneously produces a sample that under-serves at least one objective. Option C is non-statistical and ignores objectives 1 and 3 entirely. Option D abandons audit independence by relying on management's representations.",
+      "wrong_explanations": {
+        "A": "One stratified sample cannot serve compliance + substantive + zero-tolerance objectives well. The strata that optimize for one objective are usually wrong for another. Recognizing this is the analytical maturity the question tests.",
+        "C": "Judgmental sampling of the largest 50 changes is non-statistical (cannot project to the population), ignores the dual-approval control entirely (objective 1), and may miss hazmat changes that are smaller (objective 3).",
+        "D": "Reliance on management's representations is an independence violation. The audit cannot conclude on objectives 1 and 3 without independent procedures."
+      },
+      "tips": [
+        "Trap is A — \"one stratified sample\" sounds elegant but multi-objective audits usually need multi-design sampling.",
+        "Sampling design follows from objective. Different objectives = different designs. When zero-tolerance is in scope, 100% testing of that sub-population is required.",
+        "Exam-day shortcut: when an engagement has compliance + substantive + zero-tolerance objectives, the answer is three separate designs (attribute + variable + 100%)."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530 (analogous)",
+      "related_concepts": [
+        "Multi-objective sampling design",
+        "Attribute sampling",
+        "Variable sampling",
+        "100% testing",
+        "Zero-tolerance populations"
+      ],
+      "_provenance": "Authored from concept: 'multi-objective sampling design - separate designs for separate objectives, with 100% testing for zero-tolerance sub-populations'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (freight rail, car-routing, dual approval, dollar estimation, hazmat-cars sub-population) invented for this question."
+    },
+    {
+      "id": "d1_087",
+      "domain": 1,
+      "subtopic": "Independence — Threat-and-Safeguard Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a regional public utility has been assigned to lead the audit of the customer-billing system. Three facts are relevant: (1) the auditor's spouse works in the utility's customer-service department but does not interact with the billing system or the audit team; (2) the auditor served as a paid IT-security consultant to the utility three years ago, advising on perimeter-firewall configuration unrelated to the billing system; (3) the audit committee is aware of fact (1) but not fact (2). The auditor is deciding how to handle the engagement under ISACA's independence requirements.",
+      "question": "Applying threat-and-safeguard analysis, which response is MOST appropriate?",
+      "options": {
+        "A": "Decline the engagement entirely — both facts create independence threats and the only safe response is total recusal from any audit at the utility",
+        "B": "Disclose both facts to the audit committee, evaluate the threats (familiarity from fact 1 is low because the spouse is unrelated to the audited area; self-review from fact 2 is also low because the prior consulting was unrelated and three years ago) and apply safeguards (formal documentation of the disclosure, audit-committee review, ongoing supervision), proceeding only if the committee accepts the residual risk",
+        "C": "Proceed with the engagement without disclosing fact 2, since the prior consulting was three years ago and unrelated to the billing system",
+        "D": "Disclose only fact 1 since the audit committee already knows about it, and avoid mentioning fact 2 to keep the engagement scope simple"
+      },
+      "correct": "B",
+      "key_concept": "Independence threats are evaluated at the engagement level via threat-and-safeguard analysis: identify each threat, assess severity, apply safeguards, document. Total recusal is over-cautious when threats are low-severity. Selective disclosure is independence violation.",
+      "pre_read": "For independence questions, watch for total-recusal (over-cautious), proceed-without-disclosure (under-cautious), and selective-disclosure (independence-violating) distractors. The right answer always includes full disclosure + threat-and-safeguard evaluation + committee acceptance.",
+      "correct_explanation": "ISACA Code of Professional Ethics and ITAF General Standards on Independence establish that auditor independence is evaluated at the engagement level using a threat-and-safeguard framework. The auditor identifies each potential threat (familiarity, self-review, advocacy, intimidation, self-interest), assesses its severity, applies safeguards, and proceeds only if residual risk is acceptable to the audit committee. Fact 1 is a familiarity threat — but the spouse's unrelated role and the audit team's separation from her department make it low-severity, addressable by disclosure and supervision. Fact 2 is a self-review threat — but three years' time and unrelated subject matter (perimeter firewall vs billing system) make it low-severity, also addressable by disclosure and ongoing supervision. Option A is over-cautious — total recusal is appropriate only when threats cannot be reduced to acceptable level by safeguards. Options C and D are independence violations: incomplete disclosure renders any safeguard determination invalid.",
+      "wrong_explanations": {
+        "A": "Total recusal is the response when threats are severe and cannot be reduced by safeguards. Both threats here are low-severity (unrelated, time-distanced) and can be addressed through disclosure and supervision. Recusing reduces the function's capacity unnecessarily.",
+        "C": "Proceeding without disclosing fact 2 is an independence violation regardless of how low the threat is. The auditor cannot decide unilaterally that a threat is too low to disclose; the audit committee must be informed and accept the residual risk.",
+        "D": "Selective disclosure (revealing fact 1 because it's already known, hiding fact 2 because it is convenient) is the textbook independence violation. Disclosure must be complete; the committee then evaluates."
+      },
+      "tips": [
+        "Trap is A — \"decline the engagement\" sounds maximally safe but is over-cautious when threats are low-severity. Recusal is the last resort.",
+        "Independence framework: identify threat -> assess severity -> apply safeguards -> document -> committee accepts residual. Five steps.",
+        "Exam-day shortcut: independence questions are answered by the option that names full disclosure + threat-and-safeguard evaluation + committee acceptance."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor's Professional Independence); ISACA IT Audit Standard 1002 (Organizational Independence); ISACA Code of Professional Ethics (Independence); ITAF General Standards on Independence",
+      "related_concepts": [
+        "Auditor independence",
+        "Threat-and-safeguard analysis",
+        "Familiarity threat",
+        "Self-review threat",
+        "Audit-committee acceptance"
+      ],
+      "_provenance": "Authored from concept: 'independence threat-and-safeguard - low-severity threats addressable by disclosure plus safeguards, distinct from total-recusal response to severe threats'. Public source: ISACA Code of Professional Ethics + Standard 1002. All scenario specifics (regional public utility, customer-billing audit, spouse role, three-year-old consulting) invented for this question. Distinct from d1_002 self-review angle."
+    },
+    {
+      "id": "d1_088",
+      "domain": 1,
+      "subtopic": "Integrated Audit — Scope Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a semiconductor manufacturer is deciding the scope of an integrated audit of the wafer-fabrication production-control system. The system includes IT components (the production-control application, integration to ERP, sensor-data feeds from manufacturing equipment), operational components (production scheduling, in-process quality control, yield optimization), and financial-reporting components (work-in-process inventory valuation, scrap accounting). Three options are on the table: (1) IS-audit-only scope covering IT components; (2) operational-audit-only scope covering production scheduling and quality; (3) integrated scope covering IT + operational + financial-reporting components in a single coordinated engagement.",
+      "question": "Which scope decision is MOST appropriate, and what is the key risk of choosing a narrower scope?",
+      "options": {
+        "A": "Option 1 (IS-audit-only) — IS audits should always remain narrowly scoped to IT components to maintain technical depth, and other audit types should be performed separately as their own engagements",
+        "B": "Option 3 (integrated scope) — the IT, operational, and financial-reporting components are interdependent (an IT control failure could cascade to inventory misstatement), so an integrated audit produces conclusions that recognize cross-domain risk; the key risk of a narrower scope is missing risks at the seams between IT, operations, and financial reporting",
+        "C": "Option 2 (operational-audit-only) — operational concerns dominate semiconductor production, so an operational-audit-only scope is sufficient and IT and financial-reporting components can be handled by ad-hoc procedures",
+        "D": "All three should be performed sequentially in three separate engagements, even if it means duplicating fieldwork at each component boundary, so each audit type retains its specialist focus"
+      },
+      "correct": "B",
+      "key_concept": "Integrated audits combine IT, operational, and financial-reporting scope into one coordinated engagement, surfacing risks at the seams between domains that single-discipline audits miss. The key risk of a narrower scope is failing to detect interdependencies that are themselves the highest-risk areas.",
+      "pre_read": "For integrated-audit-scope questions, ask whether the components have cross-domain interdependencies. When IT failures cascade to financial misstatement (or vice versa), integrated scope is the right answer; siloed audits create blind spots at the seams.",
+      "correct_explanation": "ITAF Performance Standards on Integrated Auditing and ISACA IT Audit Standard 1201 (Engagement Planning) establish that integrated auditing is appropriate when the audit subject has interdependent IT, operational, and financial-reporting components. In the wafer-fabrication scenario, an IT control failure (e.g., loss of integrity in sensor-data feeds) can cascade through operations (incorrect yield calculations) into financial reporting (misvalued WIP inventory and scrap). An integrated audit examines these cascades; siloed IS-only or operational-only audits miss them. Option A treats IS audit as inherently narrow, which is contrary to the integrated-audit concept. Option C dismisses cross-domain risk by labeling the engagement operational-only. Option D wastes fieldwork by duplicating work at component boundaries instead of coordinating across them. The integrated approach delivers higher-quality conclusions at lower total effort.",
+      "wrong_explanations": {
+        "A": "IS audit is not inherently narrow-scope. Modern integrated auditing recognizes that IT components are interdependent with operations and financial reporting, and the audit scope must follow the risk, not a discipline boundary.",
+        "C": "Operational-only scope misses IT and financial-reporting risks entirely. \"Ad-hoc procedures\" at the component boundaries is exactly the gap that integrated auditing is designed to close.",
+        "D": "Three separate sequential engagements duplicate fieldwork at component boundaries (each audit reviews the boundary documents in its own scope) and lose the cross-domain perspective that comes from one team examining the seams. Integrated scope is more efficient and produces stronger conclusions."
+      },
+      "tips": [
+        "Trap is A — \"IS audits should remain narrowly scoped\" is a discipline-purity argument that misses the integrated-audit value proposition.",
+        "Integrated audit = IT + operational + financial-reporting in one coordinated engagement, surfacing seam risks. The seams between domains are where the highest risks often live.",
+        "Exam-day shortcut: when components are interdependent (IT cascade -> operations -> financial reporting), integrated scope is the right answer."
+      ],
+      "framework_ref": "ITAF Performance Standards on Integrated Auditing; ISACA IT Audit Standard 1201 (Engagement Planning); IIA Practice Guide on Integrated Auditing",
+      "related_concepts": [
+        "Integrated auditing",
+        "Cross-domain risk",
+        "Audit scope decision",
+        "Component interdependency"
+      ],
+      "_provenance": "Authored from concept: 'integrated audit scope decision - integrated when components are interdependent, narrower scope creates seam-risk blind spots'. Public source: ITAF + ISACA Standard 1201 + IIA Practice Guide. All scenario specifics (semiconductor manufacturer, wafer fabrication, three component domains) invented for this question. Distinct from d1_017 application angle."
+    },
+    {
+      "id": "d1_089",
+      "domain": 1,
+      "subtopic": "Audit Committee — Escalation Timing Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a cooperative bank has identified a critical-severity finding during fieldwork on the core-banking system: a privileged-access vulnerability that could allow unauthorized fund transfers if exploited. Five facts shape the escalation decision: (1) the vulnerability exists today and remains exploitable until remediated; (2) management has acknowledged the finding and committed to remediation within 30 days; (3) the next regularly scheduled audit-committee meeting is in 45 days; (4) the audit director's standard practice is to communicate findings via the formal audit report at the meeting following completion of fieldwork; (5) the bank's regulator requires notification of any \"material control weakness\" within 5 business days of discovery, but the bank's general counsel is not yet certain whether this finding meets that bar.",
+      "question": "What is the MOST appropriate escalation approach for the audit director?",
+      "options": {
+        "A": "Wait for the regular audit-committee meeting in 45 days and present the finding as part of the standard audit report, since management has already committed to remediation",
+        "B": "Escalate to the audit-committee chair immediately on a between-meetings basis, communicate the criticality and the regulatory-notification question, and coordinate with general counsel on the regulator-notification timing — the criticality and the regulatory exposure both warrant escalation that does not wait for the regular cadence",
+        "C": "Defer all escalation to general counsel and let counsel decide whether and when to notify the audit committee, since the regulatory notification is a legal matter",
+        "D": "Email the entire audit committee with a copy to all senior management at once, since the urgency justifies bypassing the chair-first protocol"
+      },
+      "correct": "B",
+      "key_concept": "Critical-severity findings with regulatory exposure warrant immediate between-meetings escalation to the audit-committee chair. Waiting for the regular cadence is appropriate for non-critical findings; bypassing the chair to email everyone at once damages governance discipline; deferring entirely to counsel abdicates the audit director's escalation responsibility.",
+      "pre_read": "For escalation-timing questions, three signals warrant between-meetings escalation: critical severity, regulatory exposure, ongoing exploitable risk. When two or more apply, escalate to the chair on a between-meetings basis and coordinate parallel work-streams (counsel, management remediation).",
+      "correct_explanation": "ITAF Performance Standards on Communication and ISACA IT Audit Standard 1401 (Reporting) establish that critical-severity findings, particularly those with regulatory exposure, warrant escalation outside the regular audit-committee cadence. The five-step path is: (1) escalate to the audit-committee chair on a between-meetings basis, (2) communicate the criticality and any regulatory-notification considerations, (3) coordinate with general counsel on regulatory-notification timing, (4) ensure management's remediation is on track, (5) report formally at the next scheduled meeting. Option A defers escalation 45 days for an actively exploitable critical finding, which exposes the cooperative bank's depositors to ongoing risk and may breach the regulator's 5-business-day notification window. Option C abdicates the audit director's responsibility — counsel advises on legal aspects but the audit director owns the escalation decision. Option D bypasses the chair and copies senior management on a sensitive matter, breaking the governance protocol that the audit committee oversees the audit function.",
+      "wrong_explanations": {
+        "A": "Forty-five-day wait for an actively exploitable critical finding is unacceptable. The regulator's 5-business-day window (if applicable) makes the wait potentially non-compliant; the criticality alone makes it imprudent regardless of regulator status.",
+        "C": "General counsel advises on legal matters (regulator-notification interpretation, litigation risk) but does not own the audit-committee escalation decision. The audit director is responsible for escalating critical findings to the audit committee on a timely basis.",
+        "D": "Bypassing the audit-committee chair and copying senior management at once damages governance discipline. The audit-committee chair leads the committee; bringing critical findings to the chair first preserves that structure. Senior management is informed by the chair if the matter requires their involvement."
+      },
+      "tips": [
+        "Trap is A — \"wait for the regular meeting\" sounds disciplined but criticality + regulatory exposure both override regular cadence.",
+        "Between-meetings escalation = chair first, parallel work-streams (counsel, remediation), formal report at next meeting. Don't bypass the chair.",
+        "Exam-day shortcut: critical-severity + regulatory-exposure + ongoing-risk = immediate between-meetings escalation to the audit-committee chair."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Communication of Results; IIA International Standards 2060 (Reporting to Senior Management and the Board)",
+      "related_concepts": [
+        "Audit-committee escalation",
+        "Between-meetings communication",
+        "Regulatory notification",
+        "Critical-severity findings"
+      ],
+      "_provenance": "Authored from concept: 'audit-committee escalation timing - critical severity + regulatory exposure warrant between-meetings escalation to chair, with parallel work-streams'. Public source: ISACA Standard 1401 + IIA 2060. All scenario specifics (cooperative bank, core-banking privileged-access vulnerability, regulator 5-business-day notification window, 45-day meeting cadence) invented for this question. Distinct from d1_016 application angle."
+    },
+    {
+      "id": "d1_090",
+      "domain": 1,
+      "subtopic": "External Expert — Inadequate Work Scenario",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an agricultural-technology company engaged a specialist data-engineering firm to evaluate the integrity of the company's satellite-imagery-derived crop-yield prediction model — work that exceeded the audit team's own technical depth. The auditor evaluated the firm's competence, objectivity, and the relevance of their work before engagement (per Standard 1206) and accepted them. After receiving the firm's report, the auditor identifies four problems: (1) the firm's report does not document its methodology in sufficient detail for the auditor to evaluate the work's quality; (2) two of the firm's stated conclusions appear to contradict each other on the question of model drift; (3) the firm performed no review of the training-data lineage despite the auditor's engagement letter explicitly requesting it; (4) the firm has now invoiced for the engagement and pressed for sign-off so they can issue the invoice formally. The auditor must decide how to handle this.",
+      "question": "Which response is MOST appropriate, and what is the key reasoning under ISACA Standard 1206?",
+      "options": {
+        "A": "Accept the firm's report as delivered, since the auditor evaluated competence and objectivity before engagement and the firm is now established; relying on the firm now is consistent with the original decision",
+        "B": "Reject the report as inadequate for reliance, communicate specific deficiencies to the firm in writing, withhold sign-off on the invoice pending remediation or scope re-negotiation, and escalate to the audit director if remediation cannot be achieved; reasoning: the auditor remains responsible for the audit conclusion regardless of the expert's involvement, and signing off on inadequate work would compromise that responsibility",
+        "C": "Sign off on the invoice to maintain the working relationship for future engagements and document the deficiencies as lessons-learned for next time",
+        "D": "Replace the firm immediately with a different specialist and refuse to communicate the specific deficiencies to the original firm, since they have already demonstrated they cannot deliver"
+      },
+      "correct": "B",
+      "key_concept": "Accepting an external expert's work before engagement does not commit the auditor to accepting whatever they deliver. The auditor remains responsible for the audit conclusion and must reject inadequate work, communicate specific deficiencies, and not sign off on invoices until the work meets the engagement-letter requirements.",
+      "pre_read": "For external-expert-inadequate-work questions, watch for distractors that conflate pre-engagement evaluation with delivery acceptance, that prioritize relationship preservation over audit quality, or that immediately replace without communicating deficiencies. The right answer protects the audit conclusion and follows due process with the expert.",
+      "correct_explanation": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts) and ITAF Performance Standards on External Experts establish that the auditor remains responsible for the audit conclusion regardless of how much work is delegated to an expert. The pre-engagement evaluation of competence, objectivity, and relevance is necessary but not sufficient — the auditor must also evaluate the expert's actual deliverable for adequacy and reject it if it falls short. The four problems in this scenario (insufficient methodology documentation, contradictory conclusions, missing scope, invoice pressure) all signal an inadequate deliverable that cannot support the auditor's conclusion as-is. Option A confuses pre-engagement acceptance with delivery acceptance — they are separate decisions. Option C sacrifices audit quality for relationship preservation, which is the textbook independence-related failure. Option D leaps directly to replacement without giving the firm the opportunity to remediate, which is inefficient and damages the professional relationship without cause when remediation might still be possible.",
+      "wrong_explanations": {
+        "A": "Pre-engagement acceptance of an expert (Standard 1206) addresses competence, objectivity, and relevance going in; it does not commit the auditor to accept whatever the expert delivers. Delivery acceptance is a separate decision based on the actual work product.",
+        "C": "Signing off on inadequate work to preserve the working relationship is a textbook surrender of audit quality. The audit's conclusion will rest on this expert's work; signing off on it as-delivered means signing off on a conclusion the auditor cannot defend.",
+        "D": "Immediate replacement without communicating deficiencies is inefficient and damages the professional relationship without cause. The firm should be given specific, written feedback and a chance to remediate; replacement is the option if remediation cannot be achieved, not the first move."
+      },
+      "tips": [
+        "Trap is A — \"the auditor accepted them up front, so accept the deliverable\" conflates two separate decisions. Pre-engagement acceptance is about reliance suitability; delivery acceptance is about work-product adequacy.",
+        "Auditor responsibility doesn't transfer to the expert. Auditor signs the conclusion. Inadequate expert work = auditor must reject and remediate or replace.",
+        "Exam-day shortcut: external-expert inadequate-work questions are answered by the option that names rejection + specific written communication + invoice withholding + escalation if needed."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ITAF Performance Standards on External Experts",
+      "related_concepts": [
+        "Using other experts",
+        "Auditor responsibility for conclusion",
+        "External-expert deliverable evaluation",
+        "Engagement-letter scope"
+      ],
+      "_provenance": "Authored from concept: 'external expert inadequate work - auditor remains responsible for conclusion, must reject inadequate deliverable and communicate specifics, not sign off on invoice'. Public source: ISACA Standard 1206. All scenario specifics (ag-tech company, satellite-imagery crop-yield model, four specific problems, invoice pressure) invented for this question. Distinct from d1_032 pre-reliance evaluation angle."
     }
   ]
 }
