@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d2.json`.
 
-**Last updated:** after D2 batch 2 (d2_011..d2_020). Total D2 questions authored: 20 of 180.
+**Last updated:** after D2 batch 3 (d2_021..d2_030). Total D2 questions authored: 30 of 180. **Foundational tier launches in this batch.**
 
 ## Part A — IT Governance
 
@@ -36,7 +36,7 @@
 | 2.2.3 | Audit's Role in EGIT — Three Lines Model | d2_002 (Three Lines), d2_009 (audit role boundaries) |
 | 2.2.4 | Information Security Governance — Effective | d2_006 (board accountability) |
 | 2.2.5 | Information Systems Strategy | d2_004 (IT-business alignment) |
-| 2.2.6 | Strategic Planning | (uncovered) |
+| 2.2.6 | Strategic Planning | d2_023 (foundational — strategic vs tactical), d2_024 (application — strategic plan components) |
 | 2.2.7 | Business Intelligence | (uncovered) |
 | 2.2.8 | Organizational Structure — IT Steering Committee | d2_003 |
 | 2.2.8 | Organizational Structure — Senior Mgmt and Boards | (uncovered) |
@@ -68,7 +68,7 @@
 | TOC | Subsection | Covered by |
 |---|---|---|
 | 2.5.1 | Developing a Risk Management Program | (uncovered) |
-| 2.5.2 | Risk Management Life Cycle (Identify → Assess → Respond → Monitor) | d2_007 (lifecycle gap analysis) |
+| 2.5.2 | Risk Management Life Cycle (Identify → Assess → Respond → Monitor) | d2_007 (lifecycle gap analysis), d2_021 (foundational — risk register), d2_022 (foundational — treatment options) |
 | 2.5.3 | Risk Analysis Methods (Qualitative / Semi / Quantitative) | (uncovered) |
 
 ### 2.6 Data Privacy Program and Principles
@@ -76,7 +76,7 @@
 | TOC | Subsection | Covered by |
 |---|---|---|
 | 2.6.1 | Privacy Documentation | (uncovered) |
-| 2.6.2 | Audit Process | (uncovered) |
+| 2.6.2 | Audit Process — Multi-Regulation Privacy Audit | d2_029 (analysis) |
 
 ### 2.7 Data Governance and Classification
 
@@ -84,7 +84,7 @@
 |---|---|---|
 | 2.7.1 | Data Inventory and Classification | (uncovered) |
 | 2.7.2 | Legal Purpose, Consent, Legitimate Interest | (uncovered) |
-| 2.7.3 | Data Subject Rights — Transborder Data Flow | (uncovered) |
+| 2.7.3 | Data Subject Rights — Transborder Data Flow | d2_030 (analysis — Schrems II, SCCs+TIAs, UK-GDPR) |
 
 ## Part B — IT Management
 
@@ -93,12 +93,12 @@
 | TOC | Subsection | Covered by |
 |---|---|---|
 | 2.8.1 | Value of IT | (uncovered) |
-| 2.8.2 | IT Portfolio Management | (uncovered) |
+| 2.8.2 | IT Portfolio Management | d2_026 (run/grow/transform tier discipline) |
 | 2.8.3 | IT Management Practices | (uncovered) |
 | 2.8.4 | Human Resource Management (recruiting, training, performance, succession) | (uncovered) |
 | 2.8.5 | Enterprise Change Management | (uncovered) |
 | 2.8.6 | Financial Management Practices | (uncovered) |
-| 2.8.7 | Information Security Management | (uncovered) |
+| 2.8.7 | Information Security Management | d2_025 (8-element program structure) |
 
 ### 2.9 IT Vendor Management
 
@@ -109,7 +109,7 @@
 | 2.9.3 | Cloud Governance | (uncovered) |
 | 2.9.4 | Governance in Outsourcing | (uncovered) |
 | 2.9.5 | Capacity and Growth Planning | (uncovered) |
-| 2.9.6 | Third-Party Service Delivery Management | (uncovered) |
+| 2.9.6 | Third-Party Service Delivery Management | d2_027 (5-mechanism integrated mgmt) |
 
 ### 2.10 IT Performance Monitoring and Reporting
 
@@ -119,7 +119,7 @@
 | 2.10.2 | Key Risk Indicators (KRIs) | (uncovered) |
 | 2.10.3 | Key Control Indicators (KCIs) | (uncovered) |
 | 2.10.4 | Performance Optimization (Critical Success Factors) | (uncovered) |
-| 2.10.5 | Approaches and Techniques (Six Sigma, Agile, IT Balanced Scorecard) | (uncovered) |
+| 2.10.5 | Approaches and Techniques (Six Sigma, Agile, IT Balanced Scorecard) | d2_028 (method-fit selection) |
 
 ### 2.11 Quality Assurance and Quality Management of IT
 
@@ -137,14 +137,14 @@
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after D2 batch 2 | Gap |
+| Tier | Target (180) | Authored after D2 batch 3 | Gap |
 |---|---|---|---|
-| Foundational | 18 (10%) | 0 | -18 |
-| Application | 90 (50%) | 12 | -78 |
-| Analysis | 72 (40%) | 8 | -64 |
-| **Total** | **180** | **20** | **-160** |
+| Foundational | 18 (10%) | 3 | -15 |
+| Application | 90 (50%) | 17 | -73 |
+| Analysis | 72 (40%) | 10 | -62 |
+| **Total** | **180** | **30** | **-150** |
 
-Mirrors D1 batch 1-2 cadence. Foundational tier launches in batch 3 or 4 onward (D1 pattern: foundational started at batch 6 of 13). At ~10/batch, doubling to 20/batch from batch 4 onward (per the user's confirmed plan).
+Foundational tier launched at batch 3 (D1 pattern: foundational at D1 batch 6; D2 launching at batch 3 because of the smaller bank context — fewer earlier batches needed before foundational becomes priority). At ~10/batch, doubling to 20/batch from batch 4 onward (per user's confirmed plan).
 
 ## High-priority depth targets for batch 2 and beyond
 

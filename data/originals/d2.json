@@ -751,6 +751,381 @@
         "Reporting accuracy"
       ],
       "_provenance": "Authored from concept: 'IT QA program effectiveness evaluation - capacity + leading indicators + reporting accuracy, distinct from favorable-metric-only / total-failure / single-dimension fixes'. Public source: ITAF QA + COBIT 2019 BAI03. All scenario specifics (aerospace contractor, four QA program observations) invented for this question."
+    },
+    {
+      "id": "d2_021",
+      "domain": 2,
+      "subtopic": "IT Risk Register — Definition and Purpose",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of an IT risk register?",
+      "options": {
+        "A": "A list of all completed remediation actions taken to address IT risks during the current fiscal year, with completion dates and the staff member responsible for each remediation effort",
+        "B": "A structured catalog of identified IT risks with their attributes — likelihood, impact, current controls, residual risk, owner, and response status — supporting prioritization, response decisions, and ongoing monitoring across the lifecycle",
+        "C": "An audit-only document maintained separately from management and used only during the annual audit, since the register's purpose is to support audit's independent evaluation of risks",
+        "D": "A regulatory filing required by industry-specific regulations (e.g., financial-services and healthcare) and submitted annually to the relevant regulator with attestation by the CRO"
+      },
+      "correct": "B",
+      "key_concept": "An IT risk register is a structured catalog of identified risks with their attributes (likelihood, impact, controls, residual, owner, response status) that supports the entire risk-management lifecycle. It is not a remediation log, an audit-only document, or a regulatory filing.",
+      "pre_read": "For risk-register questions, anchor on \"structured catalog of identified risks with attributes that support lifecycle decisions\". Watch for distractors that confuse the register with a remediation log, an audit document, or a regulatory artifact.",
+      "correct_explanation": "ISACA Risk IT Framework and ISO/IEC 31000:2018 establish that an IT risk register is the structured artifact through which the risk-management program operates. Each register entry typically captures: (1) risk identification — what the risk is and how it could materialize; (2) likelihood and impact — assessment results, qualitative or quantitative; (3) current controls — what's in place to address the risk now; (4) residual risk — the level after current controls; (5) owner — who is accountable for managing the risk; (6) response status — what's planned (accept/reduce/transfer/avoid) and the implementation state. The register supports prioritization, response decisions, and ongoing monitoring across the risk-management lifecycle. Option A confuses the register with a remediation log (one specific dimension). Option C makes it an audit-only artifact, which contradicts the risk-management discipline (the register is management's tool that audit reviews). Option D treats it as a regulatory filing, which is not the register's purpose.",
+      "wrong_explanations": {
+        "A": "A remediation log captures completed actions but is one dimension of the register's content, not the register itself. The register's purpose is broader: identification, assessment, ownership, and ongoing monitoring of all identified risks. Candidates who pick this answer often confuse the lifecycle's response stage with the entire register; the register supports all four lifecycle stages, not just response.",
+        "C": "Treating the risk register as audit-only inverts who owns it. The risk register is management's tool for managing risk; the audit function reviews it as part of governance evaluation. If the audit function maintained its own separate register, management's decisions wouldn't be visible to it. Candidates who pick this answer often confuse audit's review responsibility with audit ownership; review is independent evaluation, not custody.",
+        "D": "Risk registers are internal management artifacts, not regulatory filings. Some regulations (e.g., financial-services and healthcare) may require risk-management programs and may inspect registers, but the register itself is not a filing. Candidates who pick this answer may be conflating regulatory inspection with regulatory submission; inspection happens on internal artifacts, but the register exists for internal use first."
+      },
+      "tips": [
+        "Trap is A — \"remediation actions completed\" sounds register-like but is one dimension (response status), not the whole register.",
+        "Risk register = structured catalog with 6 attributes per entry: identification + likelihood/impact + controls + residual + owner + response status. Memorize the six.",
+        "Exam-day shortcut: any risk-register definition question is answered by the option that names the structured catalog with attributes supporting lifecycle decisions — not single-dimension or audit-only or regulatory framings."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "IT risk register",
+        "Risk-management lifecycle",
+        "Residual risk",
+        "Risk owner",
+        "Risk attributes"
+      ],
+      "_provenance": "Authored from concept: 'IT risk register foundational definition - structured catalog with 6 attributes supporting lifecycle decisions, distinct from remediation log / audit-only / regulatory filing'. Public source: ISACA Risk IT + ISO 31000. Foundational tier launches in D2 batch 3 (mirrors D1 pattern: foundational at D1 batch 6)."
+    },
+    {
+      "id": "d2_022",
+      "domain": 2,
+      "subtopic": "Risk Treatment Options — Accept / Reduce / Transfer / Avoid",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which set MOST accurately describes the four standard risk-treatment options?",
+      "options": {
+        "A": "Accept (do not act because cost-benefit doesn't justify response or residual is within tolerance); Reduce (deploy controls that lower likelihood, impact, or both); Transfer (shift financial impact to a third party via insurance or contract); Avoid (eliminate the activity that creates the risk)",
+        "B": "Detect (identify when risk events occur); Respond (react after the event materializes); Document (record what happened during incidents); Report (escalate findings to leadership) — the four post-event treatment options used in mature programs",
+        "C": "Quantify (assign dollar values to risks); Prioritize (rank risks by likelihood and impact); Schedule (plan response timelines); Track (monitor progress against the plan) — the four standard treatment options under modern frameworks",
+        "D": "Identify (catalog risks across the universe); Assess (rate likelihood and impact); Respond (act on assessed risks); Monitor (track residual risk) — the four risk-treatment lifecycle stages organizations follow"
+      },
+      "correct": "A",
+      "key_concept": "Standard risk-treatment options are accept / reduce / transfer / avoid. Each represents a distinct strategic response to an identified, assessed risk. Other lifecycle steps (identification, assessment, monitoring) are stages that surround treatment, not treatment options themselves.",
+      "pre_read": "For risk-treatment-option questions, anchor on the four standard responses (accept / reduce / transfer / avoid). Watch for distractors that mix treatment options with other lifecycle stages (identify, assess, monitor) or with post-event actions (detect, respond, document, report).",
+      "correct_explanation": "ISACA Risk IT Framework, ISO/IEC 31000:2018, and the IIA Risk Management standards all establish four standard risk-treatment options: (1) Accept — the organization chooses not to act because the cost of response exceeds the expected benefit, or because residual risk is already within risk tolerance. Acceptance is a deliberate choice with documented rationale. (2) Reduce (Mitigate) — deploy controls that lower the likelihood of occurrence, the impact if it occurs, or both. Most controls deployed against IT risk fall under this option. (3) Transfer (Share) — shift financial impact to a third party through insurance, contractual indemnification, or outsourcing. Transfer addresses financial impact but not always operational impact. (4) Avoid — eliminate the activity that creates the risk. Avoidance forgoes the activity's benefits along with its risks. Option B describes post-event actions (detect/respond/document/report), which are response activities, not treatment options. Option C confuses treatment with quantification and tracking activities. Option D names the four stages of the risk-management lifecycle (identify/assess/respond/monitor) — these surround treatment but aren't treatment options themselves.",
+      "wrong_explanations": {
+        "B": "Detect/Respond/Document/Report are post-event activities (incident response). Treatment options are pre-event strategic choices about how to address an identified risk before it materializes. Candidates who pick this answer often confuse incident response with risk treatment; the two are different — treatment decides what to do about a risk; incident response is what happens when a risk materializes.",
+        "C": "Quantify/Prioritize/Schedule/Track are activities that support a risk-management program but are not treatment options. They describe how a program operates, not how risks get addressed. Candidates who pick this answer may be confusing operational tactics with strategic options; treatment is the strategic level, not the operational level.",
+        "D": "Identify/Assess/Respond/Monitor are the four stages of the risk-management lifecycle. Treatment is what happens within the Respond stage. Confusing the lifecycle stages with the treatment options is the most common mistake; if you remember 'lifecycle has stages, response stage has treatment options,' you'll keep them separated."
+      },
+      "tips": [
+        "Trap is D — \"identify/assess/respond/monitor\" is the lifecycle, not treatment options. Treatment is what happens within respond.",
+        "Treatment options: ACCEPT (don't act, residual within tolerance) / REDUCE (controls lower likelihood or impact) / TRANSFER (shift financial impact) / AVOID (eliminate the activity). Memorize the four.",
+        "Exam-day shortcut: any treatment-option question is answered by the option that names accept/reduce/transfer/avoid — not the lifecycle, not incident response, not operational tactics."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; IIA Risk Management Standards",
+      "related_concepts": [
+        "Risk treatment",
+        "Accept / Reduce / Transfer / Avoid",
+        "Risk-management lifecycle",
+        "Risk tolerance",
+        "Strategic risk response"
+      ],
+      "_provenance": "Authored from concept: 'risk treatment options foundational - the four standard responses (accept/reduce/transfer/avoid), distinct from incident response (detect/respond/document/report) and lifecycle stages (identify/assess/respond/monitor)'. Public source: ISACA Risk IT + ISO 31000. Distinct from D1 d1_033 (which covered the same options at application tier with a scenario)."
+    },
+    {
+      "id": "d2_023",
+      "domain": 2,
+      "subtopic": "Strategic Planning vs Tactical Planning in IT",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST distinguishes IT strategic planning from IT tactical planning?",
+      "options": {
+        "A": "Strategic planning sets only the IT budget envelope each year; tactical planning sets only the IT staffing level for the next quarter — the distinction is by which input variable each plan controls",
+        "B": "Strategic planning is performed by the IT department alone (since it sets technology direction); tactical planning is performed by business units alone (since it concerns business priorities) — the distinction is authorship",
+        "C": "Strategic planning sets long-term direction and resource allocation aligned with enterprise strategy (typically 3-5 year horizon); tactical planning translates that direction into shorter-term initiatives, projects, and operational decisions (typically 1-year horizon)",
+        "D": "Strategic and tactical planning are interchangeable terms for the same activity (IT planning at the management level); the labels are used arbitrarily and reflect organizational preference rather than substantive difference"
+      },
+      "correct": "C",
+      "key_concept": "IT strategic planning sets long-term direction (3-5 years) aligned with enterprise strategy; IT tactical planning translates strategy into 1-year initiatives, projects, and operational decisions. The distinction is by horizon and granularity — not by input variable, author, or label.",
+      "pre_read": "For strategic-vs-tactical questions, the distinguishing axis is horizon and granularity. Strategic = long-term direction; tactical = shorter-term execution. Watch for distractors that distinguish by who authors the plan, what variable it controls, or that treat them as interchangeable.",
+      "correct_explanation": "COBIT 2019 (specifically APO02 — Managed Strategy and APO05 — Managed Portfolio) and ISACA EGIT guidance establish that IT planning operates at multiple horizons: (1) Strategic planning — sets long-term direction (typically 3-5 years), aligns IT resource allocation with enterprise strategy, identifies major capability investments, and establishes the framework for IT-business alignment. The audience is executive leadership and the board. (2) Tactical planning — translates the strategic direction into specific shorter-term initiatives (typically 1-year horizon), projects, and operational decisions. The audience is mid-management and project teams. Both are needed; strategic without tactical is aspirational; tactical without strategic is incremental work without direction. Option A reduces the distinction to single-variable control (budget vs staffing), missing the broader scope of each. Option B incorrectly assigns ownership to IT-only or business-only — both planning types involve cross-functional input. Option D treats the terms as interchangeable, missing the meaningful distinction.",
+      "wrong_explanations": {
+        "A": "Strategic planning sets more than budget (capabilities, sourcing posture, technology direction); tactical planning sets more than staffing (specific projects, milestones, operational decisions). Reducing each to one variable misrepresents both. Candidates who pick this answer may be thinking of specific examples; the broader scope of each plan type is what distinguishes them.",
+        "B": "Both strategic and tactical IT planning involve cross-functional input. Strategic planning is led by IT but reflects business priorities (otherwise it's not aligned); tactical planning translates strategy into IT execution but coordinates with business units. Treating either as single-function authorship is incorrect. Candidates who pick this answer may be assigning planning by department; both types span departments.",
+        "D": "The two terms describe meaningfully different activities at different horizons with different audiences. Treating them as interchangeable produces governance confusion: when leadership asks for 'the strategic plan,' they expect long-term direction; when they ask for 'the tactical plan,' they expect this year's initiatives. Conflating the two leaves both unsatisfied."
+      },
+      "tips": [
+        "Trap is A — \"strategic = budget, tactical = staffing\" reduces both to single variables. Both span more than one variable.",
+        "Strategic = long-term (3-5 yr) direction aligned with enterprise strategy. Tactical = 1-yr translation into initiatives/projects/operational decisions. Horizon + granularity.",
+        "Exam-day shortcut: any strategic-vs-tactical question is answered by the option that names the horizon difference (3-5 yr vs 1 yr) and granularity difference (direction vs specific initiatives)."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); COBIT 2019 APO05 (Managed Portfolio); ISACA EGIT Framework",
+      "related_concepts": [
+        "IT strategic planning",
+        "IT tactical planning",
+        "Planning horizon",
+        "IT-business alignment",
+        "Strategic-to-tactical translation"
+      ],
+      "_provenance": "Authored from concept: 'strategic vs tactical IT planning foundational - horizon and granularity distinction, distinct from single-variable / single-author / interchangeable framings'. Public source: COBIT 2019 APO02/APO05. Foundational tier."
+    },
+    {
+      "id": "d2_024",
+      "domain": 2,
+      "subtopic": "IT Strategic Plan — Components",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at an international hospitality chain is reviewing the company's 5-year IT strategic plan. Which set of components is MOST important for a defensible IT strategic plan?",
+      "options": {
+        "A": "A list of every technology vendor the IT organization currently uses, with renewal dates, contract values, and the renegotiation history; vendor management is the foundation of strategy execution",
+        "B": "Vision and mission aligned to enterprise strategy, current-state and target-state capability assessment, prioritized investment roadmap, sourcing and capability strategy, governance and accountability structure, and KPIs to measure progress",
+        "C": "A detailed project list for the next fiscal year only, since annual planning is the practical level at which IT strategy is actually executed by IT teams and visible to business leadership",
+        "D": "An organization chart showing every IT staff role and reporting relationship across the IT organization; organizational structure determines what IT can deliver, so the org chart is the strategic plan"
+      },
+      "correct": "B",
+      "key_concept": "An IT strategic plan integrates six components: vision/mission alignment + current-vs-target capability assessment + prioritized investment roadmap + sourcing strategy + governance structure + measurable KPIs. Vendor lists, single-year project lists, and org charts are inputs or outputs of the plan, not the plan itself.",
+      "pre_read": "For IT-strategic-plan questions, the right shape is integrated multi-component (vision + capability + roadmap + sourcing + governance + KPIs). Distractors that elevate one input (vendors, projects, org chart) over the integrated plan all miss the strategic dimension.",
+      "correct_explanation": "COBIT 2019 APO02 (Managed Strategy) and ISACA EGIT guidance establish that an IT strategic plan integrates six core components: (1) vision and mission statements explicitly aligned to enterprise strategy — so IT direction supports enterprise direction; (2) current-state assessment (where IT capabilities are today) and target-state assessment (where they need to be at horizon end); (3) prioritized investment roadmap showing what gets funded in what sequence; (4) sourcing and capability strategy (build vs buy vs partner) reflecting the company's strategic capability choices; (5) governance and accountability structure showing who decides what; (6) KPIs to measure progress against strategic objectives. All six work together — missing any one weakens the plan. Option A elevates vendor management (an input) to the entire plan. Option C reduces the 5-year strategic plan to a 1-year project list, conflating tactical with strategic. Option D treats org chart (one component of the governance structure) as the entire plan.",
+      "wrong_explanations": {
+        "A": "A vendor list is operational reference data that informs the sourcing strategy (component 4), but it isn't the strategic plan. Strategic planning operates at the level of capability and direction; vendor specifics support strategy execution but don't constitute it. Why this distractor is seductive: vendor lists are concrete and tangible artifacts — candidates often pick the most concrete-looking option because abstract frameworks feel less real. Catch yourself when a distractor feels reassuring because it's specific; specificity isn't the same as strategic. The plan is the integrated framework; vendor data is one input.",
+        "C": "A 1-year project list is the tactical plan that translates strategic direction into execution. The strategic plan operates at a 3-5-year horizon and sets the direction the project list translates. Reducing strategy to projects loses the direction-setting purpose. Candidates who pick this answer often confuse tactical execution with strategic direction; both are needed but they operate at different levels.",
+        "D": "An org chart shows organizational structure (one element of governance, component 5), but it isn't the strategic plan. Org charts are static descriptions of current relationships; strategic plans set forward-looking direction with measurable progress. Why this distractor is seductive: org charts feel like governance, and governance is one of the six components — so candidates who half-remember the framework over-extend governance to mean the entire plan. The same concreteness bias as the vendor-list trap: tangible artifacts feel safer than integrated frameworks even when the question asks for the framework."
+      },
+      "tips": [
+        "Trap is C — \"detailed project list for next fiscal year\" is the tactical plan, not the strategic plan. Different horizons.",
+        "Strategic plan = 6 integrated components: vision/mission + capability assessment + roadmap + sourcing + governance + KPIs. All six required.",
+        "Exam-day shortcut: any IT-strategic-plan-component question is answered by the option that names the integrated multi-component framework — not single inputs or tactical artifacts."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); ISACA EGIT Framework; ITAF Performance Standards on IT Strategy",
+      "related_concepts": [
+        "IT strategic plan",
+        "Capability assessment",
+        "Investment roadmap",
+        "Sourcing strategy",
+        "Strategic KPIs"
+      ],
+      "_provenance": "Authored from concept: 'IT strategic plan components - 6 integrated elements distinct from vendor list / project list / org chart'. Public source: COBIT 2019 APO02. All scenario specifics (international hospitality chain, 5-year plan) invented for this question."
+    },
+    {
+      "id": "d2_025",
+      "domain": 2,
+      "subtopic": "Information Security Management — Program Structure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional savings bank is evaluating the information-security-management program. The bank has a CISO and a security operations team but no formal program structure. What is the MOST critical structural element of an information-security-management program?",
+      "options": {
+        "A": "A comprehensive list of all security tools and technologies the bank has purchased over the past five years, with their licensing costs, vendor relationships, and renewal dates for each product",
+        "B": "A security strategy aligned to business strategy, supported by formal security architecture, risk-based control framework, defined roles and responsibilities, security operations capability, awareness and training program, incident-response capability, and metrics that report to governance",
+        "C": "A single comprehensive security policy document covering every possible security topic across the bank, distributed to all employees during onboarding and acknowledged annually as part of compliance attestation",
+        "D": "A regulatory-compliance attestation issued by an external auditor, confirming the bank meets all applicable security regulations including GLBA, PCI-DSS, and state-level cybersecurity disclosure rules"
+      },
+      "correct": "B",
+      "key_concept": "An information-security-management program is structurally an integrated framework: strategy aligned with business + architecture + risk-based controls + roles/responsibilities + operations + training + incident response + metrics. Tool lists, single-policy documents, and external attestations are inputs or outputs, not the program structure.",
+      "pre_read": "For ISM-program questions, the right shape is multi-element integrated framework. Distractors that elevate tools, single policies, or attestations to program level all miss the structural integration.",
+      "correct_explanation": "ISACA Information Security Management guidance, ISO/IEC 27001:2022, and NIST Cybersecurity Framework v2.0 establish that an information-security-management program comprises eight core structural elements working together: (1) security strategy aligned to business strategy — what security the business needs and why; (2) formal security architecture — how security capabilities are organized; (3) risk-based control framework — controls calibrated to identified risks (not blanket implementation); (4) defined roles and responsibilities — who owns what security accountability; (5) security operations capability — SOC, monitoring, vulnerability management, incident detection; (6) awareness and training program — workforce understanding of security obligations; (7) incident-response capability — preparation, detection, response, recovery; (8) metrics that report to governance — board-level visibility into security posture. Option A reduces the program to tooling, missing strategy/architecture/operations/people. Option C reduces it to a policy, missing operational and capability dimensions. Option D treats attestation (an output that validates a program) as the program itself.",
+      "wrong_explanations": {
+        "A": "A tool list is operational reference data, not program structure. The program decides what risks need addressing; the tools are bought to address them. Listing tools without the surrounding strategy, architecture, operations, and people is the most common security-program mistake — buying tools without a program. Candidates who pick this answer often confuse tools-deployed with program-mature.",
+        "C": "A single policy document is the policy layer (one element of the framework, supporting roles/responsibilities and awareness). Without architecture, operations, training, incident response, and metrics, the policy can't actually be operationalized. Candidates who pick this answer often confuse documenting intent with executing capability; the program is execution capability, not just policy.",
+        "D": "External attestation validates that a program meets specific compliance criteria. The attestation is an output of having a program — and a narrow output focused on compliance, not full security posture. Treating the attestation as the program itself substitutes a downstream artifact for the upstream framework. Candidates who pick this answer may be conflating compliance proof with security maturity; they're related but distinct."
+      },
+      "tips": [
+        "Trap is A — \"tools and technologies list\" is the most common security-program mistake. Tools without a program is just tooling debt.",
+        "ISM program = 8 integrated elements: strategy + architecture + risk-based controls + roles + operations + training + IR + metrics. All eight required.",
+        "Exam-day shortcut: any ISM-program question is answered by the option that names the multi-element integrated framework with strategy and operations both present."
+      ],
+      "framework_ref": "ISACA Information Security Management guidance; ISO/IEC 27001:2022; NIST Cybersecurity Framework v2.0",
+      "related_concepts": [
+        "Information security management",
+        "Security strategy",
+        "Security architecture",
+        "Risk-based controls",
+        "Security operations",
+        "Security metrics"
+      ],
+      "_provenance": "Authored from concept: 'information security management program structure - 8 integrated elements (strategy/architecture/controls/roles/operations/training/IR/metrics), distinct from tool list / single policy / attestation'. Public source: ISO/IEC 27001:2022 + NIST CSF v2.0 + ISACA. All scenario specifics (regional savings bank) invented for this question."
+    },
+    {
+      "id": "d2_026",
+      "domain": 2,
+      "subtopic": "IT Portfolio Management — Investment-Tier Discipline",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a metropolitan transit authority is evaluating IT portfolio management. The IT director has organized investments into three tiers: 'run the business' (keeping current systems operating), 'grow the business' (extending capabilities), and 'transform the business' (strategic shifts). Which approach is MOST appropriate for managing the three tiers under portfolio discipline?",
+      "options": {
+        "A": "Treat all three tiers as a single funding pool, allocate funding to whoever submits the most compelling business case in any given year, regardless of tier — this approach maximizes meritocratic resource allocation",
+        "B": "Allocate the entire IT budget to tier 1 (run the business) since operations must come first, and only fund tier 2 or tier 3 projects from any leftover budget remaining after run-the-business is fully funded",
+        "C": "Set target allocation ranges per tier (typically 60-65% run, 20-25% grow, 10-15% transform) reflecting strategic posture; review each tier with appropriate criteria — tier 1 by reliability/cost, tier 2 by ROI/business case, tier 3 by strategic fit and option value",
+        "D": "Eliminate the three-tier structure entirely and treat all IT investments identically using a single business-case template, since tiering creates artificial distinctions that complicate decision-making and slow approvals"
+      },
+      "correct": "C",
+      "key_concept": "IT portfolio management uses tier-specific target allocation ranges (run / grow / transform) reflecting strategic posture, with tier-appropriate evaluation criteria. Single-pool, run-only-funded, and tier-elimination approaches all miss the strategic discipline.",
+      "pre_read": "For IT-portfolio-management questions, watch for distractors that pool everything, fund only run-the-business, or eliminate tiering entirely. The right answer always names target allocation ranges plus tier-appropriate evaluation criteria.",
+      "correct_explanation": "COBIT 2019 APO05 (Managed Portfolio) and ISACA Portfolio Management guidance establish that IT portfolio management operates with tier-specific discipline. The three-tier structure (run / grow / transform) — popularized in IT-investment governance literature and adopted by most mature IT organizations — recognizes that different investment types serve different purposes and need different evaluation criteria: (1) Run-the-business — keeps current capabilities operating; evaluated by reliability, cost-efficiency, and risk-management criteria; typically 60-75% of IT budget. (2) Grow-the-business — extends or enhances capabilities; evaluated by ROI, business-case strength, and demand-side priority; typically 15-30% of budget. (3) Transform-the-business — strategic shifts that change what the company can do; evaluated by strategic fit and option value, with higher tolerance for uncertain ROI; typically 5-15% of budget. Setting target allocation ranges reflecting strategic posture, then evaluating each tier with appropriate criteria, is the discipline. Option A's single-pool ignores the structural difference; transform projects can't compete with run projects on ROI alone. Option B's run-only funding starves growth and transformation. Option D's tier-elimination treats different investment types as equivalent.",
+      "wrong_explanations": {
+        "A": "Single-pool funding means transform projects compete against run projects on ROI/business-case alone — but transform projects' value is in strategic option-value and uncertain future ROI, not near-term return. Run projects almost always win such head-to-head comparisons, and transform projects get starved. The portfolio degrades into run-only over time. Candidates who pick this answer may be valuing simplicity, but the simplicity costs strategic capability.",
+        "B": "Run-only funding (with leftover for grow/transform) means the company never funds growth or transformation when the budget is tight — which is most years. The portfolio becomes purely defensive and the company falls behind. Candidates who pick this answer may be optimizing for short-term reliability, but the portfolio's purpose is to balance reliability with growth.",
+        "D": "Treating all investments identically removes the strategic-posture lens. Run-the-business reliability questions and transform-the-business strategic-bet questions need different evaluation criteria. Tiering isn't artificial — it reflects genuinely different investment characteristics. Candidates who pick this answer may be reacting against bureaucracy, but tiering is the discipline that prevents reactive funding decisions."
+      },
+      "tips": [
+        "Trap is A — \"single pool, most compelling business case wins\" sounds meritocratic but starves transformation.",
+        "IT portfolio = three tiers (run / grow / transform) with target allocation ranges + tier-appropriate evaluation criteria. Three tiers, three criteria sets.",
+        "Exam-day shortcut: any IT-portfolio-tier question is answered by the option that names target allocation ranges with tier-specific evaluation criteria."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA Portfolio Management guidance; ITAF Performance Standards on IT Investment",
+      "related_concepts": [
+        "IT portfolio management",
+        "Run / Grow / Transform tiers",
+        "Target allocation ranges",
+        "Tier-specific evaluation criteria",
+        "IT investment governance"
+      ],
+      "_provenance": "Authored from concept: 'IT portfolio tier discipline - run/grow/transform with target allocation + tier-appropriate criteria, distinct from single-pool / run-only / tier-elimination'. Public source: COBIT 2019 APO05. All scenario specifics (metropolitan transit authority) invented for this question."
+    },
+    {
+      "id": "d2_027",
+      "domain": 2,
+      "subtopic": "Third-Party Service Delivery Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a logistics 3PL (third-party logistics) provider is evaluating how the company manages its own outsourced IT-services providers. What is the MOST important characteristic of effective third-party service-delivery management?",
+      "options": {
+        "A": "A single annual contract review meeting where the company and the provider review the previous year's performance and renegotiate terms for the upcoming year; no formal monitoring mechanisms operate between the annual reviews",
+        "B": "Ongoing SLA monitoring with documented review cadence; structured change-management process for service modifications; periodic risk and security re-assessments; defined escalation paths for service issues; and contractual right-to-audit with periodic exercise",
+        "C": "Full reliance on the provider's own SOC 2 Type 2 attestation; the company conducts no independent monitoring or assessment beyond reviewing the annual SOC 2 report and providing the report to internal auditors",
+        "D": "Quarterly executive relationship-building meetings focused on strengthening partnership and trust between the two companies' senior leadership; no operational performance review beyond the relationship dimension"
+      },
+      "correct": "B",
+      "key_concept": "Third-party service-delivery management combines ongoing SLA monitoring + structured change management + periodic risk/security re-assessment + escalation paths + contractual right-to-audit with periodic exercise. Annual-only review, SOC-only reliance, and relationship-only management all miss core elements.",
+      "pre_read": "For third-party-service-management questions, the right shape is integrated multi-element ongoing management. Distractors that reduce it to annual cadence, single-attestation reliance, or relationship-only all miss critical elements.",
+      "correct_explanation": "COBIT 2019 APO10 (Managed Vendors), ISACA Vendor Management guidance, and ITAF Performance Standards on Third-Party Service Delivery establish that effective management of outsourced IT services combines five integrated mechanisms: (1) Ongoing SLA monitoring with documented review cadence — typically monthly operational review and quarterly executive review; (2) Structured change-management process — when the provider proposes service modifications (technology refresh, process change, sub-contractor change), the company reviews and approves; (3) Periodic risk and security re-assessments — typically annually for major providers, including re-assessment of the provider's controls and any changes since the last assessment; (4) Defined escalation paths — issues route through predefined channels with clear severity levels and response timelines; (5) Contractual right-to-audit with periodic exercise — the right exists in the contract AND the company actually exercises it (right unexercised may erode). Option A's annual-only review provides no in-between visibility. Option C's full reliance on the provider's SOC report substitutes provider-controlled attestation for the company's own due diligence. Option D's relationship-only approach skips the operational substance.",
+      "wrong_explanations": {
+        "A": "Annual-only review provides no operational visibility between meetings. Service degradation, SLA breaches, and change risks accumulate unmonitored for up to a year. Candidates who pick this answer may be optimizing for governance overhead, but the cost of unmonitored degradation typically exceeds the cost of ongoing monitoring.",
+        "C": "SOC 2 Type 2 reports are valuable but they describe what the provider attested to in the SOC scope — which may not match the company's specific contract and risks. Full reliance substitutes provider-controlled attestation for the company's own due diligence. Candidates who pick this answer may be confusing reliance with replacement; SOC reports inform monitoring but don't replace it.",
+        "D": "Relationship and trust matter but they don't substitute for operational performance review. A provider can be a great relationship partner AND a poor performer; without operational measurement, the company can't tell. Candidates who pick this answer may be valuing soft factors, but the audit's question is about service-delivery management, not relationship management."
+      },
+      "tips": [
+        "Trap is C — \"rely on SOC 2 attestation\" substitutes provider-controlled attestation for the company's own oversight.",
+        "Third-party SDM = SLA monitoring + change management + risk re-assessment + escalation paths + right-to-audit. Five elements, all required.",
+        "Exam-day shortcut: any third-party-SDM question is answered by the option that names ongoing monitoring with documented cadence and contractual right-to-audit exercised."
+      ],
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISACA Vendor Management guidance; ITAF Performance Standards on Third-Party Service Delivery",
+      "related_concepts": [
+        "Third-party service delivery",
+        "SLA monitoring",
+        "Vendor risk re-assessment",
+        "Right to audit",
+        "Outsourced service management"
+      ],
+      "_provenance": "Authored from concept: 'third-party service delivery management - 5 integrated mechanisms, distinct from annual-only / SOC-only-reliance / relationship-only'. Public source: COBIT 2019 APO10. All scenario specifics (logistics 3PL) invented for this question."
+    },
+    {
+      "id": "d2_028",
+      "domain": 2,
+      "subtopic": "Six Sigma vs Agile vs IT Balanced Scorecard — Method Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a precision-instruments manufacturer is evaluating which IT performance-improvement methodology is BEST suited to a specific situation: the IT operations team needs to reduce defects in a high-volume change-deployment process where small variation matters and root causes are unclear. Which methodology is MOST appropriate for this specific situation?",
+      "options": {
+        "A": "Agile / Scrum — its iterative-sprints discipline is the right fit for any IT operational improvement, since iteration produces faster results than analytical methods",
+        "B": "IT Balanced Scorecard — its multi-perspective measurement (financial, customer, internal-process, learning) provides the structure needed to identify and reduce defects",
+        "C": "Lean — its waste-elimination focus is the universal solution for any defect-reduction problem, and Lean is generally faster to deploy than other methods",
+        "D": "Six Sigma — its DMAIC discipline (Define, Measure, Analyze, Improve, Control) and statistical-variation-reduction focus is purpose-built for high-volume processes where small variation matters and root-cause analysis is needed"
+      },
+      "correct": "D",
+      "key_concept": "Method selection follows from the situation: Six Sigma fits high-volume processes with small-variation impact and unclear root causes (DMAIC + statistical analysis). Agile fits iterative product/project work. Balanced Scorecard fits multi-perspective measurement. Lean fits waste elimination. Each method has a fit profile.",
+      "pre_read": "For methodology-selection questions, watch for distractors that universalize one method. Methods have fit profiles: Six Sigma (high-volume, variation, root cause), Agile (iterative work), Balanced Scorecard (measurement structure), Lean (waste). Match to situation.",
+      "correct_explanation": "ITAF Performance Standards on Performance Optimization and ISACA Performance Management guidance establish that performance-improvement methodologies have specific fit profiles: (1) Six Sigma — DMAIC framework with strong statistical-analysis tools (cause-and-effect diagrams, hypothesis testing, statistical process control). Best fit when the process is high-volume, small variation matters, and root causes are unclear or contested. The change-deployment scenario described matches all three criteria. (2) Agile / Scrum — iterative work delivery with short cycles. Best fit for product/project work where requirements evolve. Not designed for defect-reduction in operational processes. (3) IT Balanced Scorecard — multi-perspective measurement framework. Best fit when the question is what to measure, not how to reduce defects in a specific process. (4) Lean — waste-elimination focus with strong workflow-mapping tools. Best fit when the problem is wasted effort/time/resource, less so when the problem is variation in a controlled process. The change-deployment scenario fits Six Sigma's profile precisely. Option A treats Agile as universally applicable, missing its product/project-work fit. Option B treats Balanced Scorecard as a defect-reduction tool, which it isn't. Option C treats Lean as universal, missing its waste-elimination focus.",
+      "wrong_explanations": {
+        "A": "Agile is purpose-built for iterative product/project delivery where requirements evolve through customer feedback. The change-deployment scenario is a controlled operational process — not iterative product development. Forcing Agile onto operational defect reduction usually produces sprints with no clear definition of done. Candidates who pick this answer may be applying Agile's brand-recognition to a context that doesn't fit.",
+        "B": "Balanced Scorecard is a measurement framework — it tells you what to measure across financial, customer, internal-process, and learning perspectives. It doesn't solve defect-reduction; it tells you whether your defect rate is moving the right direction relative to other perspectives. The scenario asks about reducing defects, not measuring them across perspectives. Candidates who pick this answer may be confusing measurement structure with improvement methodology.",
+        "C": "Lean focuses on waste elimination through workflow mapping. It's powerful when the problem is wasted effort/time. The change-deployment scenario isn't primarily about waste — it's about variation in a process where small variation matters. Six Sigma's statistical-variation focus fits better than Lean's waste focus. Candidates who pick this answer may be oversimplifying — both are improvement methods, but they target different problems."
+      },
+      "tips": [
+        "Trap is A — \"Agile fits any IT improvement\" is method-creep. Agile is for iterative product/project work, not operational defect reduction.",
+        "Method-fit cheat sheet: Six Sigma = high-volume + variation + root cause unclear. Agile = iterative requirements. Balanced Scorecard = multi-perspective measurement. Lean = waste elimination.",
+        "Exam-day shortcut: when the stem mentions high-volume process + small variation + root-cause analysis, the answer is Six Sigma (DMAIC)."
+      ],
+      "framework_ref": "ITAF Performance Standards on Performance Optimization; ISACA Performance Management guidance; COBIT 2019 APO11 (Managed Quality)",
+      "related_concepts": [
+        "Six Sigma",
+        "DMAIC",
+        "Agile / Scrum",
+        "IT Balanced Scorecard",
+        "Lean",
+        "Method-fit selection"
+      ],
+      "_provenance": "Authored from concept: 'method selection across Six Sigma / Agile / Balanced Scorecard / Lean - method-fit by situation, distinct from Agile-universal / BSC-as-improvement / Lean-universal'. Public source: ITAF + COBIT 2019 APO11. All scenario specifics (precision-instruments manufacturer, change-deployment defects) invented for this question."
+    },
+    {
+      "id": "d2_029",
+      "domain": 2,
+      "subtopic": "Privacy Audit Process — Multi-Regulation Scenario",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a global travel-booking platform is preparing an audit of the company's privacy program. The audit subject processes personal data subject to multiple regulatory regimes simultaneously: GDPR for EU travelers; CCPA/CPRA for California travelers; PIPEDA for Canadian travelers; LGPD for Brazilian travelers; and a patchwork of state-level US laws beyond California. Some requirements overlap; some conflict (e.g., GDPR's data-minimization principle conflicts with US laws that require longer retention for certain transaction types). The auditor must design the audit's approach.",
+      "question": "Which audit approach is MOST appropriate for this multi-regulation privacy audit?",
+      "options": {
+        "A": "Audit only against GDPR since it is the strictest privacy regulation; the company will pass other regulations (CCPA/CPRA for California, PIPEDA for Canada, LGPD for Brazil, US state-level laws) automatically by passing GDPR — strictness covers all",
+        "B": "Audit against each regulation separately in five parallel audit streams, producing five separate audit reports with no cross-regulation integration; let the company reconcile any overlapping requirements or regulation conflicts itself after delivery",
+        "C": "Map each regulatory requirement to the company's controls; audit overlap-controls once with regulation-tagged findings; flag conflicts (e.g., GDPR data-minimization vs US retention rules) for legal interpretation rather than auditing them; audit regulation-specific controls per regulation; produce one integrated report with regulation-tagged findings",
+        "D": "Skip the privacy audit entirely until the company adopts a single global privacy standard and applies it uniformly to all jurisdictions; auditing during the current multi-regulation patchwork produces inconsistent conclusions and confuses stakeholders"
+      },
+      "correct": "C",
+      "key_concept": "Multi-regulation privacy audit uses control-to-requirement mapping to identify overlaps (audit once) and conflicts (flag for legal). Audit the integrated control set with regulation tagging in findings. Single-regulation-only, parallel-no-integration, and skip-until-standardized are all inadequate.",
+      "pre_read": "For multi-regulation privacy-audit questions, anchor on \"control-to-requirement mapping with overlaps audited once and conflicts flagged for legal\". Watch for distractors that pick one regulation, fully separate the audits, or skip pending standardization.",
+      "correct_explanation": "ITAF Performance Standards on Privacy Audits, ISACA Privacy guidance, and IIA Practice Guide on Multi-Jurisdictional Audits establish that privacy audits in multi-regulation environments require integrated mapping. The right approach: (1) Map each regulatory requirement to the company's specific controls — which control satisfies which requirement under which regulation. (2) Identify overlaps — controls that satisfy multiple regulations simultaneously (e.g., access logging satisfies GDPR Article 30, CCPA, PIPEDA, LGPD); these are audited once with the finding tagged for each regulation. (3) Identify conflicts — situations where regulations require incompatible behavior (e.g., GDPR data-minimization vs US tax-record-retention requirements, GDPR right-to-erasure vs anti-money-laundering retention). The auditor flags these conflicts for legal interpretation rather than auditing them — audit cannot resolve regulatory conflicts; legal counsel determines the company's compliance posture. (4) Audit regulation-specific controls (controls that satisfy only one regulation) per regulation. (5) Produce one integrated audit report with regulation-tagged findings. Option A picks GDPR as 'strictest' — but strictness varies by topic (CCPA's notice requirements may be stricter than GDPR in some areas). Option B fragments the audit, missing efficiency from overlap-controls and producing inconsistent conclusions. Option D defers indefinitely — the regulatory landscape never standardizes.",
+      "wrong_explanations": {
+        "A": "GDPR is strict on some dimensions (lawful basis, data-subject rights) but not necessarily on every dimension. CCPA/CPRA has specific notice requirements that GDPR doesn't impose. PIPEDA has unique consent rules. LGPD has Brazilian-specific data-controller requirements. Auditing against GDPR alone misses regulation-specific requirements other regulations impose. Candidates who pick this answer may be applying a 'strictest = covers all' heuristic that doesn't hold in privacy law.",
+        "B": "Parallel separate audits ignore the overlap pattern (~70% of privacy controls satisfy multiple regulations). Auditing the same control five times under five reports is wasteful AND can produce inconsistent conclusions if reviewers vary across streams. Candidates who pick this answer may be optimizing for clean per-regulation conclusions but at high cost in efficiency and consistency.",
+        "D": "The privacy regulatory landscape will not standardize globally; multi-regulation processing is the permanent state for international companies. Skipping the audit until standardization is indefinite postponement — and the company faces real privacy obligations now, not at some hypothetical future harmonization point. The transferable principle: audits operate on current obligations, not aspirational future-state regulatory environments. Whenever a stem offers 'wait for X to be resolved before auditing,' the answer is almost always to audit against current obligations and treat the unresolved issue as a documented limitation."
+      },
+      "tips": [
+        "Two seductive traps here: A (\"GDPR is strictest, audit only GDPR\") misreads the privacy regulatory landscape — strictness varies by topic, not regulation. B (\"five parallel separate audits\") sounds rigorous but ignores that ~70% of privacy controls satisfy multiple regulations.",
+        "Multi-regulation privacy audit: map controls to requirements + audit overlap-controls once + flag conflicts for legal + audit regulation-specific controls per regulation + integrated report with regulation tagging.",
+        "Exam-day shortcut: any multi-regulation audit question is answered by the option naming control-to-requirement mapping with overlap-once + conflicts-flagged-for-legal — not strictest-covers-all and not parallel-no-integration."
+      ],
+      "framework_ref": "ITAF Performance Standards on Privacy Audits; ISACA Privacy guidance; GDPR (EU 2016/679); CCPA/CPRA; PIPEDA; LGPD; IIA Practice Guide on Multi-Jurisdictional Audits",
+      "related_concepts": [
+        "Multi-regulation privacy audit",
+        "Control-to-requirement mapping",
+        "Regulatory conflict",
+        "Overlap controls",
+        "Integrated audit reporting"
+      ],
+      "_provenance": "Authored from concept: 'multi-regulation privacy audit - control-to-requirement mapping with overlaps audited once + conflicts flagged for legal + integrated report with regulation tagging, distinct from GDPR-only / parallel-no-integration / skip-until-standardized'. Public source: ITAF Privacy Audits + GDPR/CCPA/PIPEDA/LGPD. All scenario specifics (global travel-booking platform, five regulatory regimes) invented for this question."
+    },
+    {
+      "id": "d2_030",
+      "domain": 2,
+      "subtopic": "Transborder Data Flow — Multi-Jurisdiction Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an edtech SaaS company is auditing the company's transborder data-flow practices. Five facts are documented: (1) the company stores student personal data in a US-based primary data center and replicates it to an EU-based secondary data center for resilience; (2) the company's largest customer base is K-12 schools in the EU, which require GDPR-compliant processing; (3) the US has been removed from the EU adequacy list; (4) the company uses Standard Contractual Clauses (SCCs) but has not performed transfer-impact assessments (TIAs) for any of its US-EU data flows; (5) the company is also expanding into the UK and considering whether UK-GDPR's separate adequacy framework applies. The auditor must evaluate the transborder-flow posture and recommend the audit's finding.",
+      "question": "Which audit conclusion BEST handles the transborder-data-flow situation?",
+      "options": {
+        "A": "Conclude that the SCCs alone are sufficient for the company's US-EU transfers since SCCs are the EU's standard mechanism for transferring personal data outside the EU; transfer-impact assessments (TIAs) are an optional enhancement not formally required by GDPR or by the EDPB's post-2020 guidance",
+        "B": "Three findings of varying severity: MEDIUM for missing transfer-impact assessments (TIAs are required post-Schrems II per EDPB guidance, not optional); MEDIUM for unevaluated UK-GDPR adequacy framework (UK-EU and US-UK transfers need separate analysis); LOW for the EU secondary data center (it reduces but does not eliminate transborder-transfer risk because primary remains US-based)",
+        "C": "Conclude that all transborder-flow concerns will be fully resolved when the EU-US Data Privacy Framework (DPF) replaces the current SCC-based mechanism for the company's US-EU flows, so no current audit finding is needed while the DPF continues to gain broader adoption among EU regulators",
+        "D": "Conclude that the company should immediately stop all US-EU data flows until full GDPR adequacy is restored to the United States, regardless of the operational impact on the company's K-12 school customers in the EU; cessation eliminates the transfer risk entirely"
+      },
+      "correct": "B",
+      "key_concept": "Transborder data flow under post-Schrems II GDPR requires SCCs PLUS transfer-impact assessments (not SCCs alone). UK-GDPR has separate adequacy considerations. Multi-finding conclusion captures the layered concerns. Single-mechanism reliance, future-state deferral, and immediate-cessation are all inadequate.",
+      "pre_read": "For transborder-data-flow questions post-Schrems II, the right shape is SCCs + TIAs + jurisdiction-specific analysis (UK-GDPR separate from EU-GDPR). Watch for distractors that rely on SCCs alone, defer to future regulatory frameworks, or recommend immediate cessation.",
+      "correct_explanation": "GDPR Articles 44-50 (Transfers of Personal Data to Third Countries), the Schrems II ruling (CJEU 2020), the EDPB's guidance on transfer impact assessments, and the UK-GDPR's separate adequacy framework establish a layered transborder-flow framework. After Schrems II, Standard Contractual Clauses (SCCs) alone are not sufficient — the data exporter must also perform a transfer impact assessment (TIA) evaluating whether the destination country's law provides equivalent protection. The US's removal from the EU adequacy list and the existence of US surveillance laws (FISA Section 702, Executive Order 12333) means TIAs are mandatory for US transfers, not optional. The audit's finding should be layered: (1) Missing TIAs are a regulatory non-compliance — MEDIUM severity because the company has SCCs in place but has not completed the second mandatory step. (2) UK-GDPR has a separate adequacy framework following Brexit; the UK has been granted EU adequacy but UK-US transfers operate under different rules than EU-US transfers — MEDIUM severity for the UK expansion because new flows need the UK-specific analysis. (3) The secondary EU data center reduces but does not eliminate the issue because the primary remains US-based — LOW severity. Option A treats SCCs as sufficient, missing the post-Schrems II requirement for TIAs. Option C defers to a future framework (EU-US DPF), but the company must comply with current law now. Option D's immediate cessation is over-correction and operationally untenable.",
+      "wrong_explanations": {
+        "A": "Post-Schrems II, SCCs alone are not sufficient for transfers to non-adequate countries. The CJEU ruled that data exporters must verify on a case-by-case basis whether the destination country's law provides equivalent protection — that's the transfer impact assessment (TIA). The EDPB's guidance documents the TIA requirement explicitly. Treating SCCs as standalone solution ignores six years of post-Schrems II regulatory development. Candidates who pick this answer may be working from pre-2020 SCC understanding.",
+        "C": "The EU-US Data Privacy Framework (DPF) was adopted in 2023 but has been challenged and may not survive future court rulings (Schrems III is anticipated). Companies cannot defer current GDPR compliance to a future framework that may or may not hold. The audit's job is to evaluate current compliance, not future-state speculation. Candidates who pick this answer may be hoping the DPF closes the issue, but the audit operates on current law.",
+        "D": "Immediate cessation of US-EU data flows is operationally infeasible for an edtech SaaS with EU schools as customers. The right path is to perform TIAs, document the assessment, and apply supplementary measures where TIAs identify gaps (encryption, pseudonymization, additional contractual terms). Cessation is the response only if TIAs identify gaps that supplementary measures cannot close. Candidates who pick this answer may be overreacting; cessation is last resort, not first response."
+      },
+      "tips": [
+        "Trap is A — \"SCCs are the standard mechanism, TIAs are optional\" misreads post-Schrems II requirements. Both are required.",
+        "Transborder data flow post-Schrems II = SCCs + TIAs + jurisdiction-specific (EU-GDPR vs UK-GDPR). Layered framework, layered findings.",
+        "Exam-day shortcut: any post-Schrems II transborder question is answered by the option naming SCCs + TIAs together with jurisdiction-specific analysis."
+      ],
+      "framework_ref": "GDPR Articles 44-50 (Transfers); Schrems II ruling (CJEU 2020); EDPB Recommendations on Supplementary Measures (06/2020); UK-GDPR (post-Brexit); EU-US Data Privacy Framework (2023, contested)",
+      "related_concepts": [
+        "Transborder data flow",
+        "Standard Contractual Clauses (SCCs)",
+        "Transfer Impact Assessment (TIA)",
+        "Schrems II",
+        "UK-GDPR",
+        "Adequacy decisions"
+      ],
+      "_provenance": "Authored from concept: 'transborder data flow post-Schrems II - SCCs + TIAs + jurisdiction-specific analysis (UK-GDPR separate from EU-GDPR), distinct from SCCs-alone / DPF-deferral / immediate-cessation'. Public source: GDPR + Schrems II + EDPB guidance + UK-GDPR. All scenario specifics (edtech SaaS, US primary + EU secondary, K-12 schools, UK expansion) invented for this question."
     }
   ]
 }
