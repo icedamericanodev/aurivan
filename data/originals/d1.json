@@ -1819,6 +1819,371 @@
         "Management interference"
       ],
       "_provenance": "Authored from concept: 'exit-conference dynamics — holding the line on severity ratings without over-escalating'. Public source: ISACA IT Audit Standard 1401 + Code of Professional Ethics. All scenario specifics (global manufacturing, plant-floor SCADA audit, 12 findings split by severity, GM chief of staff request) invented for this question."
+    },
+    {
+      "id": "d1_051",
+      "domain": 1,
+      "subtopic": "ISACA IS Audit and Assurance Standards (Definition & Authority)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Within the ITAF framework, which statement BEST describes the role of the ISACA IS Audit and Assurance Standards?",
+      "options": {
+        "A": "Practical procedures, templates, and example workflows that audit teams may adapt to specific engagements",
+        "B": "Mandatory minimum requirements that establish what an IS audit engagement must include and how it must be conducted",
+        "C": "Advisory commentary on how to apply professional judgment in specific audit scenarios, recommended but not required",
+        "D": "Reference summaries of common audit findings published annually by ISACA's research division"
+      },
+      "correct": "B",
+      "key_concept": "ISACA IS Audit and Assurance Standards are the mandatory authority layer of ITAF. They establish minimum requirements for IS audits and must be followed; Guidelines explain how to apply them; Tools and Techniques provide adaptable practical aids.",
+      "pre_read": "For ITAF-layer questions, anchor on the verb associated with each layer: Standards = must, Guidelines = should/recommended, Tools and Techniques = may/adapt. Mismatching the verb to the layer is the most common trap.",
+      "correct_explanation": "The ITAF framework explicitly designates Standards as the mandatory layer — the minimum requirements that every IS audit engagement must satisfy. Guidelines and Tools and Techniques are advisory and adaptable, respectively, but they cannot substitute for Standards. Option A describes Tools and Techniques. Option C describes Guidelines. Option D describes a publication-summary product, which is not the role of Standards. Recognizing the mandatory authority of Standards is foundational to understanding ITAF and to defending audit conclusions when they are challenged.",
+      "wrong_explanations": {
+        "A": "Describes the Tools and Techniques layer of ITAF, which provides adaptable practical aids. That is a different layer from Standards.",
+        "C": "Describes Guidelines, which are recommended advisory guidance on how to apply Standards. Guidelines are not themselves mandatory and are not Standards.",
+        "D": "ISACA does not designate Standards as findings summaries. This conflates Standards with informational publications."
+      },
+      "tips": [
+        "Trap is C — Guidelines and Standards both sound authoritative, but only Standards are mandatory. Read the verb (must vs should).",
+        "ITAF layering: Standards (must), Guidelines (should), Tools and Techniques (may). Memorize the verbs.",
+        "Exam-day shortcut: the only ITAF layer that is mandatory is Standards. If a question asks what is required, the answer is Standards."
+      ],
+      "framework_ref": "ITAF (Information Technology Assurance Framework) — Standards layer authority",
+      "related_concepts": [
+        "ITAF framework",
+        "ISACA Standards",
+        "ISACA Guidelines",
+        "ITAF Tools and Techniques",
+        "Mandatory vs advisory authority"
+      ],
+      "_provenance": "Authored from concept: 'ISACA IS Audit and Assurance Standards definition — mandatory authority within ITAF'. Public source: publicly published ITAF framework structure. No legacy bank consulted."
+    },
+    {
+      "id": "d1_052",
+      "domain": 1,
+      "subtopic": "Audit Charter (Definition & Purpose)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which of the following BEST describes the PRIMARY purpose of an audit charter?",
+      "options": {
+        "A": "To document the auditor's findings at the conclusion of each individual audit engagement",
+        "B": "To formally establish the IS audit function's authority, responsibility, and scope, approved by the board or its audit committee",
+        "C": "To track the audit team's continuing-professional-education hours and certifications across the fiscal year",
+        "D": "To list the planned audit engagements and their scheduled completion dates for the upcoming year"
+      },
+      "correct": "B",
+      "key_concept": "The audit charter is the foundational governance document for the IS audit function. It establishes authority, responsibility, and scope and is approved at the highest governance level — separating it from operational artifacts like findings, plans, or training records.",
+      "pre_read": "For audit-charter questions, distinguish governance documents from operational documents. The charter is governance (board-approved, defines authority); plans, training records, and findings are operational outputs.",
+      "correct_explanation": "ISACA IT Audit Standard 1001 (Audit Charter) and ITAF General Standards establish that the audit charter is the foundational governance document for the IS audit function. It defines what the function may do (authority), what it must do (responsibility), and where it may operate (scope), and it is approved by the board or audit committee to give the function the standing it needs to operate independently. Standard 1002 (Organizational Independence) is closely related — independence depends on a properly authorized charter — but 1001 is the charter standard itself. Option A confuses the charter with audit reports. Option C confuses it with HR/CPE tracking. Option D confuses it with the annual audit plan, which is operationally derived from the charter but is not the charter itself.",
+      "wrong_explanations": {
+        "A": "Findings are an output of an individual engagement, captured in audit reports — not in the charter, which is the governance document for the function as a whole.",
+        "C": "CPE and certification tracking is HR-functional record-keeping. The charter is concerned with the function's authority and standing, not with individual training records.",
+        "D": "The audit plan is derived from the charter (which gives the function its mandate) but is a separate operational artifact, typically refreshed annually."
+      },
+      "tips": [
+        "Trap is D — \"the audit charter\" sounds operational, but it's the governance document, not the annual plan.",
+        "Charter = authority + responsibility + scope, board-approved. Annual plan = which engagements, derived from the charter.",
+        "Exam-day shortcut: charter questions are answered by the option that names authority/responsibility/scope and board-level approval."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1001 (Audit Charter); ISACA IT Audit Standard 1002 (Organizational Independence); ITAF General Standards on the Audit Charter",
+      "related_concepts": [
+        "Audit charter",
+        "Organizational independence",
+        "Audit function authority",
+        "Audit committee oversight"
+      ],
+      "_provenance": "Authored from concept: 'audit charter foundational definition — governance document approved at board level'. Public source: ISACA IT Audit Standard 1001 (Audit Charter). No legacy bank consulted."
+    },
+    {
+      "id": "d1_053",
+      "domain": 1,
+      "subtopic": "Sampling Risk — Type I vs Type II",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor concludes from a sample that a control is operating effectively when, in fact, the control is NOT operating effectively across the population. Which type of sampling risk does this represent?",
+      "options": {
+        "A": "The risk of incorrect rejection — concluding from the sample that the control is failing when it is actually operating",
+        "B": "The risk of incorrect acceptance — concluding from the sample that the control is operating when it is actually failing",
+        "C": "Detection risk — the risk that the audit procedures fail to detect a misstatement that has occurred",
+        "D": "Inherent risk — the risk that arises from the nature of the audited area before any controls are considered"
+      },
+      "correct": "B",
+      "key_concept": "Sampling risk is the chance that the sample does not represent the population. It comes in two directions: incorrect rejection (the auditor wrongly concludes failure) and incorrect acceptance (the auditor wrongly concludes effectiveness). Incorrect acceptance is the more dangerous direction because the audit issues an unwarranted clean opinion.",
+      "pre_read": "For sampling-risk questions, identify the direction of error before mapping to the term. \"Concluded effective when actually failing\" = incorrect acceptance. \"Concluded failing when actually effective\" = incorrect rejection. Detection and inherent risks are different categories of audit risk, not sampling-specific.",
+      "correct_explanation": "The scenario describes a false-positive conclusion of effectiveness — the sample led the auditor to accept the control as operating when in fact it was not. This is the textbook definition of incorrect acceptance (sometimes called \"beta risk\" or \"Type II\" in statistical-sampling literature). Option A describes the inverse — incorrect rejection — which is also a sampling risk but the opposite direction. Options C and D are real components of audit risk in the broader audit-risk model (Inherent × Control × Detection ≈ Audit Risk) but are not specifically sampling risk. Distinguishing the two directions of sampling risk and separating sampling risk from the broader audit-risk model is foundational.",
+      "wrong_explanations": {
+        "A": "Describes the inverse direction. Incorrect rejection means concluding failure when the control is actually operating — that's the opposite of what the scenario describes.",
+        "C": "Detection risk is part of the broader audit-risk model (the risk that audit procedures miss a misstatement) but it is not specifically sampling risk. A sample that is too small or non-representative is one cause of detection risk, but the term itself is broader.",
+        "D": "Inherent risk is the risk arising from the nature of the audited area before controls are considered. It is independent of sampling and is part of the audit-risk model, not sampling risk."
+      },
+      "tips": [
+        "Trap is A — auditors easily flip the direction of incorrect acceptance vs incorrect rejection. Read \"actually failing\" carefully.",
+        "Two directions of sampling risk: incorrect acceptance (worse — issued a clean opinion) and incorrect rejection (better — wasted effort but no false assurance).",
+        "Exam-day shortcut: \"concluded operating when actually failing\" = incorrect acceptance. The dangerous direction."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530 (analogous)",
+      "related_concepts": [
+        "Sampling risk",
+        "Incorrect acceptance",
+        "Incorrect rejection",
+        "Audit risk model"
+      ],
+      "_provenance": "Authored from concept: 'sampling-risk definition — incorrect acceptance vs incorrect rejection vs broader audit-risk components'. Public source: ITAF Tools and Techniques on Sampling. No legacy bank consulted."
+    },
+    {
+      "id": "d1_054",
+      "domain": 1,
+      "subtopic": "Audit Phase — Reporting Phase Discipline",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a North American passenger airline carrier has completed fieldwork on an audit of the operations-control center's flight-tracking and weather-routing systems. The audit team is now in the reporting phase. What is the MOST important discipline of the audit team during this phase?",
+      "options": {
+        "A": "Reach final conclusions, validate findings factually with management, and produce a report whose form fits the intended audience",
+        "B": "Continue gathering additional evidence in case management raises new questions during draft review",
+        "C": "Begin scoping next year's audit assignments while the current engagement context is still fresh",
+        "D": "Distribute the draft report to all auditees so they can pre-approve content before the formal exit conference"
+      },
+      "correct": "A",
+      "key_concept": "The reporting phase produces the audit's communication artifact. Its discipline is to lock conclusions, validate factual basis with management, and tailor the report to the audience — not to keep collecting evidence, scope next year's work, or surrender independence by pre-approving content.",
+      "pre_read": "For audit-phase questions, identify the phase's defining discipline. Reporting is about communication: closing the conclusions, validating facts, packaging for the audience. Re-opening evidence collection or pre-approving findings violates phase discipline.",
+      "correct_explanation": "The reporting phase is where the audit converts evidence and analysis into a communication artifact for stakeholders. Its disciplines are: (1) finalize conclusions, (2) factually validate findings with management (without negotiating their substance), and (3) tailor the report's form to the intended audience. Option B blurs reporting back into fieldwork — once reporting begins, additional evidence collection signals an incomplete fieldwork phase. Option C is an opportunistic distraction that pulls focus from the current deliverable. Option D is an independence violation: pre-approval of report content by auditees crosses from factual validation into permission-seeking, which compromises the auditor's professional independence.",
+      "wrong_explanations": {
+        "B": "Continuing to collect evidence during reporting indicates incomplete fieldwork. The right answer to \"new questions\" is to acknowledge the gap and either close it via supplemental procedures (re-opening fieldwork formally) or scope the limitation in the report — not to blur the phases.",
+        "C": "Scoping next year's work is a planning-phase activity for the next engagement. Doing it during the current engagement's reporting phase fragments attention and risks rushing the current report.",
+        "D": "Pre-approval by auditees is a textbook independence violation. Factual validation is appropriate (\"did this happen?\"), but content approval is not (\"may we issue this conclusion?\")."
+      },
+      "tips": [
+        "Trap is B — \"keep collecting evidence\" sounds responsive but signals fieldwork didn't actually finish. Phases have edges for a reason.",
+        "Reporting phase = lock + validate facts + tailor form. Not collect evidence, not negotiate conclusions, not pre-approve.",
+        "Exam-day shortcut: when the stem says the team \"is in the reporting phase\", answer with the option that closes the audit responsibly without re-opening earlier phases."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Reporting",
+      "related_concepts": [
+        "Audit phases",
+        "Reporting phase",
+        "Factual validation with management",
+        "Audit independence"
+      ],
+      "_provenance": "Authored from concept: 'reporting-phase discipline — closing conclusions and tailoring the report, not re-opening fieldwork or surrendering independence'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (passenger airline carrier, operations-control center, flight-tracking + weather-routing) invented for this question."
+    },
+    {
+      "id": "d1_055",
+      "domain": 1,
+      "subtopic": "Management of the IS Audit Function",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit director at a regional credit union is establishing the management approach for the credit union's IS audit function. The function is small (3 auditors) and reports to the audit committee. The director must address resourcing, supervision, professional development, work allocation, and quality monitoring. Which approach BEST reflects sound management of an IS audit function?",
+      "options": {
+        "A": "Delegate all management responsibilities to a single senior auditor to minimize overhead in a small function",
+        "B": "Establish formal processes for audit planning, resource allocation, supervision, professional development, and ongoing quality monitoring proportional to the function's size and risk profile",
+        "C": "Outsource all IS audit work to an external firm, since a 3-person function cannot match an external provider's breadth",
+        "D": "Focus on executing the audit plan; defer professional development and quality monitoring until the function grows beyond five auditors"
+      },
+      "correct": "B",
+      "key_concept": "Sound management of the IS audit function requires the full set of management processes (planning, resourcing, supervision, development, QA) proportional to the function's size. Small does not exempt the function from any of them — it just scales them appropriately.",
+      "pre_read": "For audit-function management questions, watch for options that drop a management responsibility (\"defer QA\", \"delegate everything\") or replace the function (\"outsource it all\"). The correct answer keeps all responsibilities present, scaled to the function.",
+      "correct_explanation": "ITAF General Standards (proficiency, due care, documentation) and ISACA IT Audit Standards on the IS audit function require the function to have formal processes for planning, resource allocation, supervision, professional development, and quality monitoring. These cannot be selectively dropped — they scale with the function but they all must be present. Option A delegates governance responsibilities that the director must retain. Option C confuses outsourcing the work with managing the function (someone still has to manage the relationship and integrate results). Option D defers QA and development based on a size threshold, which directly violates ITAF General Standards on QA and proficiency.",
+      "wrong_explanations": {
+        "A": "Delegating all management responsibilities to a single senior auditor concentrates governance in one person, removing checks and balances that even small functions need. Director-level governance cannot be delegated.",
+        "C": "Outsourcing the work is a sourcing decision, not a function-management approach. Even a fully outsourced engagement requires internal management of the relationship, scope-setting, and acceptance of results — that's the management of the function.",
+        "D": "Deferring QA and professional development until the function is larger directly violates ITAF General Standards. QA and proficiency apply at every size; the depth scales but the requirement does not."
+      },
+      "tips": [
+        "Trap is A — \"single senior auditor\" sounds efficient for a small function but it concentrates all governance in one person, which is structurally unsound.",
+        "All management processes must be present and scaled to size; none of them is optional. Watch for distractors that defer or skip one.",
+        "Exam-day shortcut: function-management questions are answered by the option that names the full set of processes (plan, resource, supervise, develop, monitor) scaled to the function."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1005 (Due Professional Care); Standard 1006 (Proficiency); Standard 1208 (Audit Documentation); ITAF General Standards on the IS Audit Function",
+      "related_concepts": [
+        "Management of the IS audit function",
+        "Audit-function governance",
+        "Quality monitoring",
+        "Professional development"
+      ],
+      "_provenance": "Authored from concept: 'management of the IS audit function — full set of management processes scaled to function size, not selectively dropped'. Public source: ITAF General Standards. All scenario specifics (regional credit union, 3-auditor function, audit-committee reporting line) invented for this question."
+    },
+    {
+      "id": "d1_056",
+      "domain": 1,
+      "subtopic": "Individual Audit Assignment Scoping",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager at a global streaming-media company has been assigned to audit the content-licensing workflow. The annual audit plan identified this as a high-priority risk-based assignment. What is the MOST important consideration when scoping this individual audit assignment?",
+      "options": {
+        "A": "Maximum coverage of every system that touches content-licensing, since the assignment is high priority in the audit plan",
+        "B": "Defining the assignment's specific objectives, scope boundaries, and timeframe based on the risks identified in the audit plan and the engagement's stated purpose",
+        "C": "Aligning scope to the previous year's audit of a similar workflow, to ensure year-over-year comparability of findings",
+        "D": "Letting auditees define the scope so the audit reflects what management believes is most important to examine"
+      },
+      "correct": "B",
+      "key_concept": "Scoping an individual assignment is about translating the audit plan's risk identification into specific objectives, boundaries, and a timeframe — not about maximizing coverage, copying last year, or letting auditees set the scope.",
+      "pre_read": "For assignment-scoping questions, watch for the four classic distractor patterns: maximum coverage, prior-year copy-paste, auditee-defined, or auditor-convenience-driven. The right answer ties scope to risk + objectives + boundaries + timeframe.",
+      "correct_explanation": "ISACA IT Audit Standard 1201 (Engagement Planning) requires that each individual audit assignment have defined objectives, scope, and timeframe, derived from the risk-based annual audit plan and the specific engagement's purpose. Option A conflates priority with coverage — high priority does not mean unlimited scope. Option C anchors scope to the past, ignoring current risks. Option D surrenders independence; scope is the auditor's professional decision, informed by but not delegated to auditees. The correct discipline is the deliberate translation of plan-level risk into engagement-level objectives, boundaries, and timeframe.",
+      "wrong_explanations": {
+        "A": "High priority justifies the assignment's place in the plan but does not justify unbounded scope. Scope is bounded by objectives, risks, and audit-cycle constraints regardless of priority.",
+        "C": "Prior-year scoping is a starting reference but not the basis for current scope. Risks evolve; the workflow may have changed; and scope-by-comparability ignores current-year risk assessment.",
+        "D": "Auditee-defined scope crosses the independence line. Auditees can inform the auditor of their views and concerns, but scope is the auditor's professional decision."
+      },
+      "tips": [
+        "Trap is A — \"high priority = full coverage\" inflates scope and dilutes audit quality. Priority is about plan placement, not unbounded reach.",
+        "Scope-setting is risk-driven and bounded: objectives + boundaries + timeframe. Anything else is a distractor.",
+        "Exam-day shortcut: scoping questions are answered by the option that names objectives + boundaries + timeframe and ties them to plan-level risk."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); ITAF Performance Standards on Engagement Scope",
+      "related_concepts": [
+        "Engagement planning",
+        "Individual audit assignment",
+        "Scope definition",
+        "Risk-based audit planning"
+      ],
+      "_provenance": "Authored from concept: 'scoping an individual audit assignment — risk-driven, bounded, auditor-decided'. Public source: ISACA IT Audit Standard 1201. All scenario specifics (global streaming-media company, content-licensing workflow) invented for this question."
+    },
+    {
+      "id": "d1_057",
+      "domain": 1,
+      "subtopic": "AI/ML Audit Risk and Considerations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a defense contractor is auditing the company's AI-powered tool for triaging cybersecurity alerts. The audit team is identifying audit risks specific to AI/ML systems. Which of the following is MOST distinctive of AI/ML audit risk and should receive special audit attention?",
+      "options": {
+        "A": "Standard application change-management risk — code changes to the AI tool's runtime environment could be released without proper approval",
+        "B": "Model risk — opaque or evolving model behavior, training-data bias, and the difficulty of producing auditable evidence for model decisions",
+        "C": "Network-bandwidth risk — AI inference workload could saturate the corporate network during peak triage hours",
+        "D": "Storage-capacity risk — AI training datasets are large and may exceed the storage budget allocated to the security function"
+      },
+      "correct": "B",
+      "key_concept": "AI/ML audit risk is distinctive because of model behavior: opacity, drift, training-data bias, and the challenge of producing auditable evidence for individual decisions. Standard IT risks (change management, bandwidth, storage) are real but not AI-specific.",
+      "pre_read": "For AI/ML audit-risk questions, separate AI-distinctive risks (model opacity, drift, bias, explainability) from generic IT risks (change management, capacity, performance). The right answer names what is unique about AI, not what is common to all systems.",
+      "correct_explanation": "AI/ML systems introduce risks that traditional IT systems do not: models that behave unpredictably as data shifts (drift), bias that propagates from training data into production decisions, opacity that makes individual decisions hard to explain or audit, and an evidence problem where the model's logic is not human-readable. ITAF guidance on AI in IS audit and ISACA's AI-audit research call out model risk and explainability as the distinctive concerns. Options A, C, and D are real risks but apply equally to non-AI applications — they are not the audit-distinctive concerns the question asks for. Auditing AI-specific risks requires techniques like training-data review, bias testing, model-explainability reviews, and challenger-model comparisons that don't apply to standard applications.",
+      "wrong_explanations": {
+        "A": "Change-management risk applies to every application, not just AI/ML. The audit-distinctive AI risk is in the model itself, not in how its runtime is deployed.",
+        "C": "Network-bandwidth risk is an infrastructure-capacity concern that applies to any high-volume application. It is not AI-distinctive.",
+        "D": "Storage-capacity risk is a budget and capacity concern. It does not address what makes AI different from other systems from an audit perspective."
+      },
+      "tips": [
+        "Trap is A — \"change management\" sounds technical and AI-relevant, but it's not what's distinctive about AI risk. Distinctive = model itself.",
+        "AI-distinctive risk = model opacity + drift + training-data bias + explainability. Generic IT risks are distractors.",
+        "Exam-day shortcut: AI/ML audit-risk questions are answered by the option that names the model itself (behavior, bias, explainability), not its surrounding infrastructure."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); ITAF guidance on AI in IS Audit; NIST AI Risk Management Framework (AI RMF 1.0)",
+      "related_concepts": [
+        "AI/ML audit risk",
+        "Model risk",
+        "Training-data bias",
+        "Model explainability",
+        "Algorithmic auditability"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML audit risk distinctiveness — model itself vs surrounding infrastructure'. Public source: ITAF AI guidance + NIST AI RMF. All scenario specifics (defense contractor, AI alert-triage tool) invented for this question."
+    },
+    {
+      "id": "d1_058",
+      "domain": 1,
+      "subtopic": "Business Process Applications and Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a direct-to-consumer e-commerce company is auditing the order-fulfillment process. The order-management application enforces several business-process controls (order-validation rules, address-verification calls, payment-method validation, fraud-screening rules) before an order is committed. The auditor is evaluating the adequacy of these application controls. What is the MOST important consideration?",
+      "options": {
+        "A": "Whether the controls are coded to perform efficiently at peak shopping volumes, regardless of business intent",
+        "B": "Whether the application controls are aligned to the specific business-process risks they are designed to mitigate, and whether they operate consistently across the population of transactions",
+        "C": "Whether the controls match the application vendor's recommended best-practice configurations",
+        "D": "Whether the controls are simple enough that operations staff can understand them without IT support"
+      },
+      "correct": "B",
+      "key_concept": "Application-control adequacy is judged on alignment to business-process risk and consistent operation across the population. Performance, vendor defaults, and simplicity are operational properties that may matter for other reasons but are not the test of control adequacy.",
+      "pre_read": "For application-control adequacy questions, anchor on two dimensions: (1) does the control address the specific business-process risk, and (2) does it operate consistently across the population? Performance, vendor recommendations, and simplicity are operational properties, not adequacy tests.",
+      "correct_explanation": "Adequacy of business-process application controls is evaluated by linking each control to the specific business-process risk it is designed to mitigate (a risk-control mapping) and by testing whether the control operates consistently across the relevant transaction population. ISACA's Risk IT Framework and ITAF Performance Standards on application audits both emphasize this two-dimensional evaluation. Option A measures performance, which is operational and not the question of whether the control mitigates the right risks. Option C uses vendor defaults as the standard, which may not match the company's specific risk profile. Option D measures usability — relevant for training but not for control adequacy.",
+      "wrong_explanations": {
+        "A": "Performance under peak load is an operational property of the control. A high-performing control that is not aligned to a real risk is still inadequate from an audit perspective.",
+        "C": "Vendor recommendations reflect generalized best practices, not the company's specific risk profile. The company's controls should be calibrated to its risks, not to the vendor's defaults.",
+        "D": "Simplicity is a usability property. A simple control that does not address the right risks, or that fails consistency tests, is inadequate."
+      },
+      "tips": [
+        "Trap is C — \"vendor best practices\" sounds defensible but vendors don't know the company's specific risk profile. Tailoring matters more than defaults.",
+        "Application-control adequacy = risk alignment + consistent operation across the population. Performance, vendor defaults, simplicity are operational properties, not adequacy.",
+        "Exam-day shortcut: application-control questions are answered by the option that ties control to risk and tests consistency across transactions."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ITAF Performance Standards on Application Audits; COBIT 2019 DSS06 (Managed Business Process Controls)",
+      "related_concepts": [
+        "Application controls",
+        "Business-process controls",
+        "Risk-control alignment",
+        "Control adequacy"
+      ],
+      "_provenance": "Authored from concept: 'business-process application-control adequacy — risk alignment + consistent operation, not performance/vendor/simplicity'. Public source: ISACA Risk IT + ITAF. All scenario specifics (DTC e-commerce, order-management application, four illustrative controls) invented for this question."
+    },
+    {
+      "id": "d1_059",
+      "domain": 1,
+      "subtopic": "CSA Deployment Decision (When to Use)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a large oil-and-gas company is advising the audit director on whether to deploy Control Self-Assessment (CSA) workshops in the upstream-operations division. Five facts are relevant: (1) the division has 14 distinct operating sites, each with site-specific controls and limited central visibility; (2) site management has expressed enthusiasm for participating in their own control assessment; (3) the audit function has limited bandwidth and can field two auditors for the division this cycle; (4) the division has experienced no recent material control failures, but the auditor recognizes that absence of failure is not evidence of control effectiveness; (5) regulatory exposure is high and externally reviewed annually.",
+      "question": "Which of the following BEST describes when CSA is appropriate to deploy in this scenario, and what limitation must the auditor remain aware of?",
+      "options": {
+        "A": "CSA is appropriate — distributed sites, engaged management, and limited audit bandwidth fit the CSA profile. Limitation: CSA does not replace the auditor's independent assessment, especially where regulatory exposure is material",
+        "B": "CSA is inappropriate here — only traditional auditor-led audits are accepted by external regulators, and CSA results have no professional standing",
+        "C": "CSA should fully replace the audit-function review, since site management is closer to the controls and is engaged in the process",
+        "D": "CSA should be deployed only at the largest three of the 14 sites, since the audit team's bandwidth limits how many CSA workshops can be properly facilitated"
+      },
+      "correct": "A",
+      "key_concept": "CSA is a complementary technique that fits scenarios with distributed operations, engaged local management, and audit-bandwidth constraints. It does not replace the auditor's independent assessment, especially where regulatory exposure is material.",
+      "pre_read": "For CSA-deployment questions, evaluate two things: (1) does the scenario fit the CSA profile (distributed, engaged, bandwidth-constrained)? (2) does the answer preserve the auditor's independent role? The correct answer says yes to both.",
+      "correct_explanation": "CSA is well-suited to this scenario: 14 distributed sites with limited central visibility, engaged site management, and a bandwidth-constrained audit function are textbook CSA conditions. Site personnel have the local knowledge to identify control weaknesses that a 2-person audit team could not surface across 14 sites in one cycle. However, the limitation is critical: CSA does not replace the auditor's independent assessment — and in regulated environments, the auditor's independent view is what regulators and the audit committee rely on. Option A captures both the fit and the limitation. Option B mischaracterizes CSA as having no professional standing — CSA is widely accepted as a complementary technique. Option C is the seductive trap of letting management's engagement and proximity replace independent assurance; this is the exact failure mode that makes CSA dangerous if misapplied. Option D arbitrarily limits CSA to three sites, which forfeits the technique's main benefit (distributed coverage) without solving the bandwidth problem at the other 11 sites.",
+      "wrong_explanations": {
+        "B": "CSA is a recognized complementary audit technique with professional standing. Regulators routinely accept CSA results as one input alongside independent audit work; they only reject CSA as the sole basis for assurance in regulated environments.",
+        "C": "Replacing the independent audit with CSA is a textbook independence violation. CSA leverages local knowledge but cannot provide the independent view the audit function exists to provide. Regulatory exposure makes this trap especially costly.",
+        "D": "Limiting CSA to three sites loses the core benefit (broad coverage of distributed sites) without addressing the bandwidth problem at the other 11. If CSA is appropriate, deploy it broadly with proper facilitation; if facilitation capacity is the constraint, the answer is to invest in CSA training, not to artificially limit deployment."
+      },
+      "tips": [
+        "Trap is C — \"engaged management close to the controls\" sounds like a strong case for CSA replacing the audit, but that's the textbook independence violation.",
+        "CSA is complementary, not replacement. Two questions every time: does it fit (distributed + engaged + bandwidth) AND does it preserve the auditor's independent role?",
+        "Exam-day shortcut: any answer that says CSA \"replaces\" the audit is wrong. Any answer that names the complementary fit + the independence-preservation limitation is the right shape."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on CSA; ITAF Performance Standards on Audit Techniques; IIA Practice Guide on Control Self-Assessment",
+      "related_concepts": [
+        "Control Self-Assessment",
+        "Auditor independence",
+        "Distributed operations audit",
+        "Complementary audit techniques"
+      ],
+      "_provenance": "Authored from concept: 'CSA deployment decision — fit + limitation; complementary not replacement'. Public source: ISACA Standards on CSA + IIA CSA Practice Guide. All scenario specifics (oil-and-gas upstream operations, 14 sites, 2-auditor bandwidth, annual regulatory review) invented for this question."
+    },
+    {
+      "id": "d1_060",
+      "domain": 1,
+      "subtopic": "ITAF Layer Selection (Standards / Guidelines / Tools and Techniques)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a large public research university is preparing for an audit of the research-data-management environment, which spans grants administration, IRB-controlled human-subjects research data, and high-performance computing clusters used by multiple research groups. The auditor wants to consult ISACA-published guidance and is choosing among the three layers of ITAF: Standards, Guidelines, and Tools and Techniques. The auditor's specific stated need is: a practical example workflow plus an adaptable checklist they can tailor to scope and execute the audit, given the niche environment that does not match a typical commercial-IT scenario.",
+      "question": "Which ITAF layer is MOST appropriate for the auditor's stated need, and how does it relate to the other two layers?",
+      "options": {
+        "A": "Standards — they provide mandatory minimum requirements; for any audit, Standards are the right starting point regardless of the specific need",
+        "B": "Guidelines — they explain how to apply the Standards in specific contexts and are recommended; the auditor should rely on them for advisory commentary, but they generally don't provide step-by-step workflows",
+        "C": "Tools and Techniques — they provide practical procedures, templates, and example workflows that audit teams may adapt to specific engagements; this is the layer that matches the auditor's stated need for an adaptable workflow plus checklist",
+        "D": "The auditor should consult external (non-ISACA) audit-firm methodologies, since ITAF does not address niche environments such as research-data management"
+      },
+      "correct": "C",
+      "key_concept": "Match the ITAF layer to the auditor's stated need. Standards = minimum requirements (must), Guidelines = advisory commentary (should), Tools and Techniques = adaptable workflows and templates (may). Workflows and checklists live in Tools and Techniques.",
+      "pre_read": "For ITAF-layer-selection questions, decode the auditor's need: requirement (Standards), advisory commentary (Guidelines), or adaptable practical aid (Tools and Techniques). The verbs \"adapt\", \"workflow\", \"template\", \"checklist\" all point to Tools and Techniques.",
+      "correct_explanation": "ITAF organizes its content into three layers with different purposes. Standards (mandatory) state what every audit must include but do not provide step-by-step workflows. Guidelines (advisory) explain how to apply Standards in context but generally take the form of commentary rather than adaptable templates. Tools and Techniques (practical) provide the example workflows, audit programs, templates, and checklists that audit teams may adapt to specific engagements — exactly what the auditor stated they need. Option A correctly identifies Standards as mandatory but misreads the auditor's need (which is about practical aids, not requirements). Option B is closer but stops short — Guidelines are advisory commentary, not the workflow-and-checklist artifact the auditor wants. Option D incorrectly dismisses ITAF; Tools and Techniques is broad and adaptable to many environments, including niche ones.",
+      "wrong_explanations": {
+        "A": "Standards are mandatory but they do not provide the practical workflow + checklist the auditor needs. Reading Standards alone leaves the auditor with what is required but not how to execute it. The auditor needs to consult Standards (for the must) and Tools and Techniques (for the adaptable how) — and the question asks for the layer that fits the stated need.",
+        "B": "Guidelines explain how to apply Standards but typically take the form of advisory commentary on principles, not adaptable workflows or checklists. They are useful but they are not the artifact the auditor specifically asked for.",
+        "D": "Tools and Techniques is broad and includes adaptable artifacts that can be tailored to niche environments. Dismissing ITAF because the environment is niche misreads the layer's adaptability."
+      },
+      "tips": [
+        "Trap is B — Guidelines and Tools and Techniques both sound \"helpful\". The distinguishing feature is the artifact form: commentary (Guidelines) vs adaptable workflow/checklist (Tools and Techniques).",
+        "Match the verbs: must = Standards, should = Guidelines, may adapt = Tools and Techniques. Workflows and templates always live in Tools and Techniques.",
+        "Exam-day shortcut: when the auditor asks for an adaptable workflow, template, or checklist, the answer is Tools and Techniques."
+      ],
+      "framework_ref": "ITAF (Information Technology Assurance Framework) — three-layer structure (Standards, Guidelines, Tools and Techniques)",
+      "related_concepts": [
+        "ITAF framework",
+        "ITAF Tools and Techniques",
+        "ISACA Standards",
+        "ISACA Guidelines",
+        "Audit program templates"
+      ],
+      "_provenance": "Authored from concept: 'ITAF layer selection — match the auditor's stated need (workflow + checklist) to Tools and Techniques'. Public source: publicly published ITAF framework structure. All scenario specifics (public research university, research-data-management environment, IRB + HPC scope) invented for this question."
     }
   ]
 }

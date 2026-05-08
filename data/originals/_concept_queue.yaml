@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 50
+  authored_total: 60
   authored_mix:
-    foundational: 0
-    application:  30
-    analysis:     20
+    foundational: 3
+    application:  35
+    analysis:     22
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -89,28 +89,47 @@ domain_1:
     - { id: d1_049, subtopic: "Sampling — Attribute vs Variable Selection",                   toc_ref: "1.6.2"  }
     - { id: d1_050, subtopic: "Communicating Audit Results — Severity Calibration",           toc_ref: "1.9.1"  }
 
+    # Batch 6 (d1_051..d1_060) — first foundational tier + closes 3 real TOC gaps (1.1.1, 1.3.1, 1.5.2 Reporting)
+    - { id: d1_051, subtopic: "ISACA IS Audit and Assurance Standards (Definition & Authority)", toc_ref: "1.1.1"  }
+    - { id: d1_052, subtopic: "Audit Charter (Definition & Purpose)",                            toc_ref: "1.1.5"  }
+    - { id: d1_053, subtopic: "Sampling Risk — Type I vs Type II",                               toc_ref: "1.6.2"  }
+    - { id: d1_054, subtopic: "Audit Phase — Reporting Phase Discipline",                        toc_ref: "1.5.2"  }
+    - { id: d1_055, subtopic: "Management of the IS Audit Function",                             toc_ref: "1.1.5"  }
+    - { id: d1_056, subtopic: "Individual Audit Assignment Scoping",                             toc_ref: "1.3.1"  }
+    - { id: d1_057, subtopic: "AI/ML Audit Risk and Considerations",                             toc_ref: "1.8.4"  }
+    - { id: d1_058, subtopic: "Business Process Applications and Controls",                      toc_ref: "1.4.2"  }
+    - { id: d1_059, subtopic: "CSA Deployment Decision (When to Use)",                           toc_ref: "1.2.1"  }
+    - { id: d1_060, subtopic: "ITAF Layer Selection (Standards / Guidelines / Tools and Techniques)", toc_ref: "1.1.4" }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
+    #
+    # NOTE: After batch 6, all 46 leaf TOC subsections have at least one question.
+    # Future batches add DEPTH (multiple angles per exam-heavy subsection) rather
+    # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
+    # coverage map and high-priority depth targets.
 
-    # High priority — uncovered TOC areas
-    - { subtopic: "Management of the IS Audit Function",                    toc_ref: "1.1.5",   priority: high,
-        notes: "Resourcing/operations of the audit function; distinct from d1_039 capability-gap angle." }
-    - { subtopic: "Foundational warmup — basic definitions (multi-question)",toc_ref: "various",priority: high,
-        notes: "We're at 0/18 foundational after batch 5. Next batch should include a meaningful foundational allocation (e.g., 3-5 of 10) to start closing the gap." }
+    # High priority — depth on exam-heavy subsections
+    - { subtopic: "Foundational warmup — additional basic definitions",     toc_ref: "various", priority: high,
+        notes: "We're at 3/18 foundational after batch 6. Continue including 2-3 foundational items per batch until the gap closes." }
+    - { subtopic: "Sampling — stratified / monetary-unit-sampling mechanics",toc_ref: "1.6.2", priority: high,
+        notes: "Sampling is a heavy exam topic. d1_009/019/049/053 cover approach, sampling risk (foundational + scenario), attribute-vs-variable. Room for stratification logic, MUS mechanics." }
+    - { subtopic: "Fraud, Irregularities & Illegal Acts (deeper)",          toc_ref: "1.5.5", priority: high,
+        notes: "d1_010 covers first-action. Need fraud-triangle indicators, when to engage forensic specialists, evidence-handling under fraud conditions." }
+    - { subtopic: "Audit Quality Assurance — external assessment / peer review", toc_ref: "1.10.2", priority: medium,
+        notes: "d1_030 covers QA program parent. Room for external assessment cadence, peer-review design, internal QA program structure." }
 
   remaining_unplanned:
-    # Areas already covered but with capacity for additional questions at deeper angles
-    - { subtopic: "Sampling — stratified / monetary-unit-sampling deeper",   toc_ref: "1.6.2", priority: medium,
-        notes: "d1_009, d1_019, d1_049 cover approach, sampling risk, attribute-vs-variable selection. Room for stratification logic, MUS mechanics." }
-    - { subtopic: "Fraud, Irregularities & Illegal Acts (deeper)",            toc_ref: "1.5.5", priority: medium,
-        notes: "d1_010 covers first-action. Deeper questions on warning signs, fraud-triangle indicators, etc." }
-    - { subtopic: "Communicating Audit Results (deeper, beyond severity)",    toc_ref: "1.9.1", priority: medium,
+    # Other depth opportunities — picked when above queued_next is exhausted
+    - { subtopic: "Communicating Audit Results — beyond severity",          toc_ref: "1.9.1", priority: medium,
         notes: "d1_006 addressee, d1_016 escalation, d1_050 severity calibration. Room for tone, exit-conference dynamics beyond severity, follow-up-comm cadence." }
-    - { subtopic: "Audit Phase — Reporting phase discipline",                 toc_ref: "1.5.2", priority: medium,
-        notes: "d1_040 planning depth, d1_041 fieldwork discipline. Could round out with a reporting-phase question." }
-    - { subtopic: "ITAF Tools and Techniques layer (vs Standards/Guidelines)",toc_ref: "1.1.4", priority: low,
-        notes: "d1_021 covers ITAF generally, d1_045 covers Standards vs Guidelines. Tools and Techniques is the third layer — optional question." }
+    - { subtopic: "AI/ML — Algorithmic auditability + training-data review", toc_ref: "1.8.4", priority: medium,
+        notes: "d1_018 parent, d1_057 audit risk. Room for algorithmic auditability, training-data review techniques, challenger-model testing." }
+    - { subtopic: "Control Objectives — IS-Specific Controls / General Control Methods", toc_ref: "1.4.2", priority: medium,
+        notes: "d1_034 parent, d1_058 BP-applications sub. Sub-areas (IS Control Objectives, General Control Methods, IS-Specific Controls) still mostly inferred." }
+    - { subtopic: "Continuous Auditing — CAATs as continuous online approach",toc_ref: "1.8.1", priority: low,
+        notes: "d1_026 covers CAATs broadly, d1_013 distinguishes continuous auditing vs monitoring. Room for the continuous-online sub-bullet." }
 
 domain_2:
   target_total: 180
