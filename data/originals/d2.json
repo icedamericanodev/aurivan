@@ -376,6 +376,381 @@
         "Governance discipline"
       ],
       "_provenance": "Authored from concept: 'auditing IT governance structure - synthesis finding when documented governance and operational practice diverge across multiple dimensions AND self-correction mechanism is also broken'. Public source: COBIT 2019 EDM + ITAF Performance Standards on IT Governance. All scenario specifics (state university IT system, four divergence observations) invented for this question."
+    },
+    {
+      "id": "d2_011",
+      "domain": 2,
+      "subtopic": "Risk Management Program — Components",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a mid-cap energy company is evaluating a proposal to establish a formal IT risk-management program. The CRO has produced a draft program document. Which set of components is MOST essential for a defensible IT risk-management program?",
+      "options": {
+        "A": "Risk identification only — a comprehensive risk register that catalogs every conceivable IT-related risk across the enterprise without further structure",
+        "B": "Risk governance (charter, ownership, accountability), risk identification (register), risk assessment methodology, risk response framework, and ongoing monitoring + reporting cadence",
+        "C": "Risk-response controls only — a comprehensive set of preventive and detective controls deployed across the IT environment without explicit risk-identification process",
+        "D": "Risk insurance and transfer agreements — financial-risk-transfer mechanisms with no internal risk-identification or response framework"
+      },
+      "correct": "B",
+      "key_concept": "An IT risk-management program requires five core components working together: governance (who's accountable), identification (what risks), assessment (how severe), response (what we do about it), and monitoring/reporting (is it working?). Single-component programs (identification-only, controls-only, insurance-only) are not defensible programs.",
+      "pre_read": "For risk-management-program questions, watch for distractors that elevate one component over the others. A program needs all five (governance + identification + assessment + response + monitoring); single-component answers are wrong.",
+      "correct_explanation": "ISACA Risk IT Framework and ISO/IEC 31000:2018 establish that an IT risk-management program comprises five integrated components: (1) Risk governance — charter, ownership, accountability across the Three Lines Model; (2) Risk identification — risk register populated through structured workshops, threat analysis, and ongoing intake; (3) Risk assessment methodology — likelihood/impact analysis (qualitative, semi-quantitative, or quantitative depending on the area); (4) Risk response framework — accept/reduce/transfer/avoid decisions with documented rationale; (5) Ongoing monitoring + reporting cadence — KRIs tracked, residual risk reviewed, board-level reporting on schedule. Option A produces an inert risk register that the company doesn't act on. Option C deploys controls without knowing what risks they address. Option D outsources risk to insurance without identifying what risks the company carries.",
+      "wrong_explanations": {
+        "A": "A risk register without governance, assessment, response, or monitoring is a list — not a program. Identification is a starting point but identification alone provides no risk reduction.",
+        "C": "Controls without identification produce defense in arbitrary directions. Without knowing what risks the company faces, controls can be over-deployed in low-risk areas and absent in high-risk areas.",
+        "D": "Insurance transfers financial impact but doesn't reduce operational risk. Many IT risks (data breach, regulatory non-compliance, reputation damage) cannot be fully insured, and identification is required to know what to insure."
+      },
+      "tips": [
+        "Trap is A — \"comprehensive risk register\" sounds substantial but identification alone is a list, not a program.",
+        "Risk-mgmt program = 5 components: governance + identification + assessment + response + monitoring. All five required.",
+        "Exam-day shortcut: any \"essential components of a risk-management program\" question is answered by the option naming all five together."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "Risk-management program",
+        "Risk governance",
+        "Risk identification",
+        "Risk response framework",
+        "Risk monitoring and reporting"
+      ],
+      "_provenance": "Authored from concept: 'IT risk-management program components - five integrated elements (governance + identification + assessment + response + monitoring), distinct from identification-only / controls-only / insurance-only'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (mid-cap energy company, CRO draft program) invented for this question."
+    },
+    {
+      "id": "d2_012",
+      "domain": 2,
+      "subtopic": "Risk Analysis Methods — Qualitative vs Quantitative Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional REIT is evaluating which risk-analysis method to apply to IT risks. The CIO wants to use only quantitative methods (FAIR-style dollar-loss modeling) for all IT risks because \"numbers are more rigorous than ratings.\" The auditor must respond. What is the MOST important consideration when selecting between qualitative, semi-quantitative, and quantitative methods?",
+      "options": {
+        "A": "Method choice follows from available data and analytical objective: quantitative needs sufficient data to support credible probability estimates; qualitative leverages judgment when data is sparse; semi-quantitative combines them based on which risks have data and which don't",
+        "B": "Quantitative methods are always more rigorous than qualitative methods and should be applied universally to all IT risks regardless of data availability, since dollar values are inherently more objective than ratings and the precision of quantitative output is what stakeholders need",
+        "C": "Qualitative methods should be applied universally to all IT risks since they are simpler and faster to execute, regardless of whether quantitative data could support more precise estimates; the simplicity of qualitative output is more important than precision",
+        "D": "The method choice doesn't materially affect the audit conclusion as long as the chosen methodology is consistently applied across all risks; consistency in method outweighs fit-for-purpose, and the analytical objective is secondary to consistency"
+      },
+      "correct": "A",
+      "key_concept": "Risk-analysis method selection follows from data availability and analytical objective. Quantitative needs data; qualitative leverages judgment; semi-quantitative combines them. Universal application of any single method is the wrong answer because it ignores fit-for-purpose.",
+      "pre_read": "For risk-analysis method-selection questions, watch for distractors that universalize one method (always quantitative, always qualitative). The right answer always names data availability and objective as the deciding factors.",
+      "correct_explanation": "ISACA Risk IT Framework, ISO/IEC 31000:2018, and FAIR Institute guidance all establish that risk-analysis method choice follows from two factors: (1) available data — quantitative methods (e.g., FAIR's loss-event-frequency × loss-magnitude with explicit probability distributions) require sufficient historical data to support credible probability estimates; without that data, quantitative output is precise-looking but spurious; (2) analytical objective — board-level financial-impact reporting may justify the cost of quantitative analysis on top risks; risk-prioritization across the universe may be served better by faster qualitative methods. Semi-quantitative methods combine both — applying quantitative where data exists and qualitative where it doesn't. Option B's universal-quantitative ignores data-availability constraints. Option C's universal-qualitative wastes the value quantitative methods bring on data-rich risks. Option D's consistency-over-fit produces output that doesn't serve the audit/management objective.",
+      "wrong_explanations": {
+        "B": "Quantitative methods produce credible estimates only when historical data supports the probability distributions. Without data, quantitative output is false precision — numbers that look rigorous but rest on assumptions the data doesn't support.",
+        "C": "Qualitative methods are simpler but less precise. Where quantitative data exists and the objective demands precision (e.g., board financial-impact reporting on the company's top risks), qualitative is leaving value on the table.",
+        "D": "Consistency for its own sake produces output that doesn't fit purpose. A universal-qualitative analysis can't support board financial-impact reporting; a universal-quantitative analysis on data-sparse risks produces spurious precision."
+      },
+      "tips": [
+        "Trap is B — \"quantitative is always more rigorous\" oversimplifies; quantitative requires data the qualitative method doesn't.",
+        "Method selection: data-rich + precision-needed = quantitative; data-sparse + judgment-rich = qualitative; mixed = semi-quantitative. Fit-for-purpose, not universal.",
+        "Exam-day shortcut: any risk-method-selection question is answered by the option naming data availability and analytical objective as the criteria."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; FAIR (Factor Analysis of Information Risk)",
+      "related_concepts": [
+        "Qualitative risk analysis",
+        "Quantitative risk analysis",
+        "Semi-quantitative methods",
+        "FAIR",
+        "Method selection criteria"
+      ],
+      "_provenance": "Authored from concept: 'risk-analysis method selection - data + objective, semi-quantitative as middle ground, distinct from universal-quantitative / universal-qualitative / consistency-over-fit'. Public source: ISACA Risk IT + ISO 31000 + FAIR. All scenario specifics (regional REIT, CIO universal-quantitative proposal) invented for this question. Distinct from D1 d1_097 (which applied quant-vs-qual to a port authority's audit risk-assessment context)."
+    },
+    {
+      "id": "d2_013",
+      "domain": 2,
+      "subtopic": "Data Privacy Program Design — Core Elements",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a consumer-genomics company is evaluating the company's data-privacy program. The company processes genetic data subject to HIPAA, GDPR, GINA, and state-level privacy laws. Which set of program elements is MOST essential for a defensible privacy program?",
+      "options": {
+        "A": "A privacy notice published on the company website plus a designated privacy officer who responds to data-subject requests as they arrive — these visible privacy elements together constitute the privacy program",
+        "B": "Encryption of all stored genetic data at rest plus access controls limiting employee access to need-to-know — these technical controls collectively constitute the privacy program because they protect the data",
+        "C": "Privacy governance, data inventory, lawful-basis documentation, data-subject-rights mechanisms, breach response, vendor contracts, training, and ongoing monitoring — eight integrated elements operating together as a defensible privacy program",
+        "D": "A single comprehensive privacy policy document covering all applicable regulations (HIPAA, GDPR, GINA, state laws), distributed to all employees, with no separate operational mechanisms beyond the policy itself"
+      },
+      "correct": "C",
+      "key_concept": "A defensible privacy program comprises governance + data inventory + lawful-basis documentation + data-subject-rights mechanisms + breach response + vendor contracts + training + monitoring. Single-element programs (notice-only, encryption-only, policy-only) are not defensible.",
+      "pre_read": "For privacy-program questions, watch for distractors that reduce the program to one element (notice, technical control, policy). The right answer always names the integrated multi-element framework.",
+      "correct_explanation": "GDPR Article 5 (Principles), GDPR Article 24 (Responsibility of the Controller), HIPAA Privacy Rule (45 CFR 164 Subpart E), GINA, and ISACA Privacy guidance establish that a defensible data-privacy program comprises: (1) Privacy governance — designated DPO or privacy officer, documented accountability across functions; (2) Data inventory and classification — what personal data is processed, where, by whom, for what purposes; (3) Lawful-basis documentation per regulation (consent, contract, legitimate interest, legal obligation under GDPR; HIPAA permitted-uses-and-disclosures; etc.); (4) Data-subject-rights mechanisms — access, correction, erasure, portability, objection; (5) Breach-response procedures — detection, notification timelines (72-hour for GDPR), remediation; (6) Vendor/processor contracts with privacy terms (DPAs under GDPR, BAAs under HIPAA); (7) Training and awareness — workforce understanding of privacy obligations; (8) Ongoing monitoring + audit. Option A reduces the program to surface-level elements. Option B treats privacy as a technical-control problem. Option D treats privacy as a documentation problem.",
+      "wrong_explanations": {
+        "A": "A privacy notice and reactive officer are the visible surface of a privacy program but not the program itself. Without inventory, lawful-basis documentation, breach response, vendor controls, training, and monitoring, the program lacks the operational mechanisms regulators expect.",
+        "B": "Encryption and access controls are necessary technical controls but not sufficient as a privacy program. Privacy is a governance discipline that requires lawful basis, data-subject rights, vendor management, and other elements technical controls don't provide.",
+        "D": "A single policy document without operational mechanisms (data inventory, breach response, training, monitoring) cannot function as a privacy program. Policies state intent; operational mechanisms execute it."
+      },
+      "tips": [
+        "Trap is B — \"encryption and access controls are the privacy program\" reduces a governance discipline to a technical-control set.",
+        "Privacy program = 8 elements: governance + inventory + lawful basis + data-subject rights + breach response + vendor contracts + training + monitoring.",
+        "Exam-day shortcut: privacy-program-design questions are answered by the option that names the integrated multi-element framework."
+      ],
+      "framework_ref": "GDPR Articles 5 and 24 (EU Regulation 2016/679); HIPAA Privacy Rule (45 CFR Part 164 Subpart E); GINA (Genetic Information Nondiscrimination Act); ISACA Privacy guidance",
+      "related_concepts": [
+        "Data privacy program",
+        "Data Protection Officer (DPO)",
+        "Lawful basis",
+        "Data-subject rights",
+        "Privacy by design",
+        "GDPR compliance"
+      ],
+      "_provenance": "Authored from concept: 'data privacy program design - 8 integrated elements (governance, inventory, lawful basis, rights, breach, vendors, training, monitoring), distinct from notice-only / encryption-only / policy-only'. Public source: GDPR + HIPAA + GINA + ISACA Privacy. All scenario specifics (consumer-genomics company, multi-regulation context) invented for this question."
+    },
+    {
+      "id": "d2_014",
+      "domain": 2,
+      "subtopic": "Cloud Governance — Shared Responsibility Model",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a media-streaming platform is evaluating the company's cloud-governance posture. The platform runs on a major IaaS provider plus several SaaS services. Which approach BEST describes the cloud Shared Responsibility Model?",
+      "options": {
+        "A": "The cloud provider is responsible for all security and compliance of customer data and workloads, since the provider operates the infrastructure, hires the security staff, and certifies its operating environment to industry standards",
+        "B": "Responsibility splits between provider and customer based on the service model (IaaS / PaaS / SaaS); customer is always responsible for data classification, access management, and configuration; the exact line varies per provider and per service",
+        "C": "The customer is fully responsible for all security and compliance regardless of which service model (IaaS / PaaS / SaaS) they consume, since the customer owns the data and contractually accepts all responsibility",
+        "D": "The Shared Responsibility Model is identical across cloud providers and across service models; customers can assume the same provider/customer boundary regardless of whether they use AWS, Azure, GCP, an IaaS, PaaS, or SaaS service"
+      },
+      "correct": "B",
+      "key_concept": "Cloud Shared Responsibility Model splits security/compliance responsibility between provider and customer based on service model (IaaS / PaaS / SaaS). The exact boundary varies per provider and service; customer is always responsible for data classification, access, and configuration.",
+      "pre_read": "For cloud-governance questions, watch for distractors that put all responsibility on one party (provider or customer) or treat the model as universal. The right answer always names the service-model-dependent split.",
+      "correct_explanation": "Cloud Security Alliance (CSA) Cloud Controls Matrix, NIST SP 800-145 (cloud service models), AWS/Azure/GCP shared-responsibility documentation, and ISACA Cloud guidance establish the Shared Responsibility Model. The split varies by service model: IaaS — provider secures the physical infrastructure, hypervisor, and host OS; customer secures the guest OS, network configuration, applications, data, and identity. SaaS — provider secures most of the stack including the application; customer secures data classification, access management, configuration of the SaaS service, and integration with other systems. PaaS sits between. The exact responsibility boundary varies per provider and per service (e.g., AWS S3 has different responsibilities than AWS Lambda). Option A puts all responsibility on the provider, which doesn't match contractual reality and produces customer compliance failures. Option C puts all responsibility on the customer, which ignores what the provider actually delivers. Option D treats the model as universal, which fails when customers assume one provider's boundary applies to another.",
+      "wrong_explanations": {
+        "A": "Cloud providers do not assume all responsibility. Their service contracts explicitly disclaim responsibility for customer data classification, access management, application security, and configuration. Customer compliance failures often stem from assuming the provider covers what the contract says is the customer's responsibility.",
+        "C": "Customers don't have control over the physical infrastructure, hypervisor, or host OS in IaaS — those are provider-managed. Treating customer as fully responsible misallocates effort to areas the customer cannot control.",
+        "D": "The Shared Responsibility Model varies materially across providers and across services within a provider. Assuming the AWS S3 boundary applies to AWS Lambda or to Azure Blob Storage produces compliance gaps."
+      },
+      "tips": [
+        "Trap is A — \"provider responsible for everything\" is the customer's misunderstanding that produces compliance failures.",
+        "Shared Responsibility = service-model-dependent (IaaS / PaaS / SaaS) + provider-and-service-specific. Always read the actual contract.",
+        "Exam-day shortcut: cloud-governance questions are answered by the option that names service-model-dependent split with customer always responsible for data classification, access, and configuration."
+      ],
+      "framework_ref": "Cloud Security Alliance Cloud Controls Matrix (CCM); NIST SP 800-145 (Cloud Service Models); ISACA Cloud guidance; CSA Security, Trust, Assurance, and Risk (STAR) Registry",
+      "related_concepts": [
+        "Shared Responsibility Model",
+        "IaaS / PaaS / SaaS",
+        "Cloud governance",
+        "Customer-responsible controls",
+        "Cloud Service Provider (CSP)"
+      ],
+      "_provenance": "Authored from concept: 'cloud governance Shared Responsibility Model - service-model-dependent split with provider and customer responsibilities, distinct from provider-everything / customer-everything / universal-boundary'. Public source: CSA CCM + NIST SP 800-145. All scenario specifics (media-streaming platform, IaaS + SaaS) invented for this question."
+    },
+    {
+      "id": "d2_015",
+      "domain": 2,
+      "subtopic": "KPIs vs KRIs vs KCIs — Distinction",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a freight-logistics company is reviewing the IT performance-monitoring program. Management uses Key Performance Indicators (KPIs), Key Risk Indicators (KRIs), and Key Control Indicators (KCIs) but applies them inconsistently. Which statement BEST describes the distinction among the three?",
+      "options": {
+        "A": "The three terms (KPIs, KRIs, KCIs) are interchangeable labels for the same concept (measured indicators of organizational operations) and the choice of label is a matter of organizational preference and reporting tradition",
+        "B": "KPIs measure financial outcomes, KRIs measure operational outcomes, and KCIs measure regulatory compliance — the distinction among the three indicator types is by which output category they apply to",
+        "C": "KPIs are leading indicators (predicting future performance), KRIs are lagging indicators (reflecting past events), and KCIs are real-time indicators (showing current state) — the distinction is by their timing characteristics",
+        "D": "KPIs measure achievement of objectives (how the function is performing); KRIs measure level or change of risk exposure (signal that risk is rising); KCIs measure whether specific controls are operating effectively. Three different questions, three different audiences"
+      },
+      "correct": "D",
+      "key_concept": "KPIs / KRIs / KCIs are distinguished by what they measure: KPIs = objective achievement; KRIs = risk exposure level/change; KCIs = control operating effectiveness. They serve different decisions and report to different audiences.",
+      "pre_read": "For KPI / KRI / KCI questions, the distinction is by what each measures — not by category, timing, or interchangeability. Watch for distractors that treat them as the same or differentiate them by the wrong axis.",
+      "correct_explanation": "ISACA Risk IT Framework and ITAF Performance Standards on Performance Monitoring distinguish three indicator types: (1) KPIs (Key Performance Indicators) measure the achievement of objectives — e.g., system uptime against an SLA target, transaction throughput against capacity target, project-on-time-delivery rate. They tell management how well the function is performing. (2) KRIs (Key Risk Indicators) measure the level or change of risk exposure — e.g., increase in privileged-account requests, rate of failed authentication attempts, vendor-incident rate. They signal that risk is rising before the risk event materializes. (3) KCIs (Key Control Indicators) measure whether specific controls are operating effectively — e.g., percentage of access reviews completed on time, percentage of critical patches applied within SLA, exception-approval rate. They tell management whether the control framework is working. The three serve different decisions: KPIs inform performance management; KRIs inform risk decisions; KCIs inform control-environment evaluation. Option A treats them as interchangeable — they're not. Option B differentiates by output category (financial / operational / compliance), which is incorrect. Option C differentiates by timing (leading / lagging / real-time), which is also incorrect.",
+      "wrong_explanations": {
+        "A": "Treating the three as interchangeable produces inconsistent reporting where the same indicator gets labeled KPI, KRI, or KCI depending on who's reporting. Audiences then can't tell what they're looking at.",
+        "B": "Output category (financial / operational / compliance) is not the distinction. A financial KPI, a financial KRI, and a financial KCI are all valid indicator types — the distinction is by what they measure (objective achievement / risk / control), not by what category the topic falls into.",
+        "C": "Timing (leading / lagging / real-time) is not the primary distinction. Each of the three indicator types can include leading, lagging, and real-time examples — KRIs are often leading indicators of risk, but the timing axis isn't what defines them."
+      },
+      "tips": [
+        "Trap is A — \"interchangeable\" is the most common practitioner mistake. The three serve different decisions for different audiences.",
+        "KPI = objective achievement. KRI = risk level/change. KCI = control operating effectiveness. Three different questions, three different indicators.",
+        "Exam-day shortcut: KPI vs KRI vs KCI questions are answered by the option that distinguishes them by what each measures."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ITAF Performance Standards on Performance Monitoring; COBIT 2019 Performance Management",
+      "related_concepts": [
+        "Key Performance Indicator (KPI)",
+        "Key Risk Indicator (KRI)",
+        "Key Control Indicator (KCI)",
+        "Performance monitoring",
+        "Risk monitoring"
+      ],
+      "_provenance": "Authored from concept: 'KPI vs KRI vs KCI distinction - by what each measures (objective achievement / risk exposure / control effectiveness), not by category / timing / interchangeable'. Public source: ISACA Risk IT + COBIT 2019. All scenario specifics (freight-logistics company, inconsistent application) invented for this question."
+    },
+    {
+      "id": "d2_016",
+      "domain": 2,
+      "subtopic": "Data Governance — Classification Approach",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a national bank is evaluating the data-classification program. The bank has data spanning customer financial records (regulated under GLBA), employee PII (regulated under various state laws), public marketing material, and internal operational data. What is the MOST important characteristic of an effective data-classification approach?",
+      "options": {
+        "A": "Classify all data at the highest sensitivity level (e.g., 'Restricted') to ensure maximum protection across the entire data estate, since over-protection is always safer than under-protection and avoids classification errors",
+        "B": "A small number of classification levels (e.g., Public / Internal / Confidential / Restricted) tied to specific handling requirements (storage, access, transmission, retention); each data type classified once at the right level; automated tooling enforces handling controls",
+        "C": "Classify each data record individually with custom protection rules tailored to the specific use case, business context, and regulatory requirements applicable to that exact record at that exact time",
+        "D": "Avoid formal classification entirely and rely on individual employee judgment to handle data appropriately based on the context of each interaction with each data element"
+      },
+      "correct": "B",
+      "key_concept": "Effective data classification = small number of levels tied to specific handling requirements, classified by data type at the right level, with automated tooling enforcing handling controls. Over-classify-everything, classify-each-record, and judgment-based-only all break the discipline.",
+      "pre_read": "For data-classification questions, watch for distractors that maximize classification (over-protect-everything), atomize it (record-by-record), or skip it (judgment-only). The right answer always names a small number of levels tied to handling requirements.",
+      "correct_explanation": "ISACA Data Governance guidance, ISO/IEC 27001:2022 (Information Classification), and NIST SP 800-60 (Data Categorization) establish that effective data classification has these characteristics: (1) a small number of classification levels (typically 3-5, e.g., Public / Internal / Confidential / Restricted) — too few levels can't differentiate; too many levels create operational confusion; (2) each level tied to specific handling requirements (storage encryption, access restrictions, transmission controls, retention rules) — so 'Restricted' isn't just a label but maps to concrete behaviors; (3) classification by data type at the right level — based on regulatory sensitivity (GLBA for financial records, GDPR/HIPAA for PHI/PII) and business sensitivity (trade secrets, M&A material); (4) automated tooling enforcing handling controls where possible — DLP, access-management, encryption-at-rest defaults — to avoid relying on individual judgment for every interaction. Option A's over-classification produces operational friction (encrypted-everything is unworkable for marketing material) and dilutes the meaning of high classifications. Option C's per-record classification is operationally infeasible. Option D's judgment-only approach is the textbook governance failure.",
+      "wrong_explanations": {
+        "A": "Over-classifying everything as 'Restricted' makes handling burdensome (encryption, access requests, transmission controls) for data that doesn't need it. It also dilutes the meaning of 'Restricted' so genuinely sensitive data isn't differentiated.",
+        "C": "Per-record classification with custom rules is operationally infeasible at scale. Classification works because data types share handling requirements; treating every record as unique destroys the efficiency gain.",
+        "D": "Judgment-based-only handling produces inconsistency across employees, audit trails that can't show consistent treatment, and regulatory exposure when individual judgments don't match obligations. Formal classification is required."
+      },
+      "tips": [
+        "Trap is A — \"classify everything as highest sensitivity\" sounds maximally safe but is operationally unworkable and dilutes meaning.",
+        "Classification = small number of levels + handling requirements per level + classify by data type + automated tooling. Four properties.",
+        "Exam-day shortcut: data-classification questions are answered by the option naming a small number of levels with specific handling requirements."
+      ],
+      "framework_ref": "ISACA Data Governance guidance; ISO/IEC 27001:2022 (Information Classification); NIST SP 800-60 (Data Categorization); GLBA (Gramm-Leach-Bliley Act)",
+      "related_concepts": [
+        "Data classification",
+        "Classification levels",
+        "Handling requirements",
+        "Data Loss Prevention (DLP)",
+        "Regulatory sensitivity"
+      ],
+      "_provenance": "Authored from concept: 'data classification - small number of levels tied to handling requirements, classified by type with automated tooling, distinct from over-classify / per-record / judgment-only'. Public source: ISO/IEC 27001:2022 + NIST SP 800-60 + ISACA. All scenario specifics (national bank, GLBA + state PII + marketing + operational) invented for this question."
+    },
+    {
+      "id": "d2_017",
+      "domain": 2,
+      "subtopic": "Outsourcing Decision — Multi-Factor Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a mid-size discrete-parts manufacturer is advising on a proposed outsourcing decision: the company is considering outsourcing its IT help-desk and Tier-1 support to a managed-services provider. Five facts shape the decision: (1) current internal cost is approximately $1.4M/year (8 staff including benefits and overhead); (2) the proposed outsourcer's quote is $1.1M/year for equivalent capacity, with 3-year contract minimum; (3) help-desk staff have institutional knowledge of the company's legacy ERP that took 18-24 months to build; (4) the outsourcer is a reputable firm but operates from offshore locations with potential data-residency implications under recent state privacy laws; (5) the company's CIO would also lose her direct reporting line to first-tier IT support, reducing her real-time view of user issues. The auditor must assess whether the cost savings justify the decision.",
+      "question": "Which assessment BEST evaluates the outsourcing decision across the relevant factors?",
+      "options": {
+        "A": "Recommend outsourcing — the $300K/year cost saving (~21% of current cost) is material, and the contractual SLA can be designed to address all other concerns including knowledge transfer requirements, data-residency provisions, and the CIO's reduced reporting visibility",
+        "B": "Recommend that the decision NOT be made on cost alone; surface the full set of factors — cost saving (~21%), institutional-knowledge loss (18-24 months to rebuild), data-residency exposure under offshore operation, loss of CIO's direct reporting line, and 3-year contract minimum reducing flexibility — and let the decision-maker weigh them",
+        "C": "Recommend against outsourcing — the institutional knowledge loss alone (18-24 months to rebuild for ERP-specific knowledge) outweighs the cost saving, and the auditor should advise terminating the proposed decision before any contract is signed",
+        "D": "The auditor has no role in this decision since outsourcing is purely a management decision, not an audit matter; the auditor should recuse from any input and let management proceed without analytical support, since recusal preserves independence"
+      },
+      "correct": "B",
+      "key_concept": "The auditor's role in an outsourcing decision is to surface all relevant factors so the decision-maker sees them, not to make the decision. Cost-only recommendation, knowledge-only veto, and full recusal all miss the auditor's actual role.",
+      "pre_read": "For outsourcing-decision questions, the auditor surfaces factors and supports the decision-maker. Watch for distractors that have the auditor recommend (or veto) the decision, or fully recuse. The right answer always preserves the auditor's analytical role with the decision-maker's authority.",
+      "correct_explanation": "ITAF Performance Standards on IT Vendor Management, ISACA's Outsourcing Practices guidance, and IIA Practice Guide on Internal Audit's Role in Major Decisions establish that the auditor's role in an outsourcing decision is to surface the full set of relevant factors so the decision-maker (typically the CIO with executive committee or board approval) sees them, evaluates trade-offs, and makes the decision. The five-factor analysis applies here: (a) cost saving — $300K/year is real but proportionally small (~21% of current cost); (b) institutional knowledge — 18-24 months of build-up that's hard to recover if outsourcing fails; (c) data residency — offshore operations may create compliance exposure depending on user-data flows under recent state privacy laws; (d) reporting-line impact — CIO's situational awareness reduces, with downstream effects on issue detection; (e) contract flexibility — 3-year minimum reduces ability to reverse if the relationship doesn't work. Option A makes the decision based on cost alone, exceeding the auditor's role and missing the other factors. Option C makes the decision based on knowledge alone, again exceeding the auditor's role. Option D abdicates the analytical role entirely, missing the value the auditor adds.",
+      "wrong_explanations": {
+        "A": "Recommending outsourcing based on the $300K saving ignores the four other factors (knowledge, data residency, reporting line, contract minimum). The auditor's role is to surface the full set, not to make a cost-only recommendation.",
+        "C": "Vetoing the decision based on institutional knowledge alone ignores the cost saving and the other factors that the decision-maker should weigh. The auditor surfaces; the decision-maker decides.",
+        "D": "Full recusal abandons the analytical role the auditor adds. Outsourcing decisions are decision-makers' responsibility, but the auditor's analysis of factors is exactly the input that helps decision-makers see what they might otherwise miss."
+      },
+      "tips": [
+        "Trap is A — \"$300K saving, recommend outsourcing\" makes a cost-only decision, exceeding the auditor's role.",
+        "Auditor's role in major decisions: surface factors + analyze trade-offs + support decision-maker. Not recommend, not veto, not recuse.",
+        "Exam-day shortcut: any audit-input-into-management-decision question is answered by the option that surfaces factors without making the decision."
+      ],
+      "framework_ref": "ITAF Performance Standards on IT Vendor Management; ISACA Outsourcing Practices guidance; IIA Practice Guide on Internal Audit's Role in Major Decisions",
+      "related_concepts": [
+        "Outsourcing decision analysis",
+        "Auditor's role in major decisions",
+        "Multi-factor cost-benefit",
+        "Institutional knowledge",
+        "Data residency"
+      ],
+      "_provenance": "Authored from concept: 'outsourcing decision - auditor surfaces multi-factor analysis (cost + knowledge + data residency + reporting line + contract flexibility) for decision-maker, distinct from cost-only-recommend / knowledge-only-veto / full-recusal'. Public source: ITAF + IIA Practice Guide. All scenario specifics (mid-size manufacturer, IT help-desk outsourcing, five specific facts) invented for this question."
+    },
+    {
+      "id": "d2_018",
+      "domain": 2,
+      "subtopic": "IT HR Management — Mandatory Vacation + Succession in Fraud-Risk Roles",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an agricultural cooperative is evaluating IT HR controls. Four observations concern fraud-risk-sensitive IT roles: (1) the database administrator (DBA) for the financial-system database has not taken any vacation longer than 3 days in the past 4 years and refuses cross-training with another administrator; (2) the senior network engineer is the only person who knows the configuration of the cooperative's grain-trading network; the engineer is approaching retirement age but has no documented succession plan; (3) the cybersecurity manager rotates through the security operations center along with three other staff, all cross-trained, with mandatory 2-week annual vacations enforced; (4) the help-desk team has no formal succession planning, but the work is documented and any staff can perform any function. The auditor must rank the observations by fraud-risk severity.",
+      "question": "Which observation represents the MOST significant fraud risk warranting the auditor's strongest finding?",
+      "options": {
+        "A": "Observation 1 — DBA with no extended vacation in 4 years AND refusal to cross-train AND access to the financial-system database is the textbook fraud-scheme-protection pattern; this combination is more severe than the succession-only or operational-risk concerns in the other observations",
+        "B": "Observation 2 — the senior network engineer's approaching retirement without a documented succession plan; the loss of his unique knowledge of the grain-trading network configuration would create operational risk for the cooperative",
+        "C": "Observation 3 — the cybersecurity manager's rotation through the SOC suggests insufficient single-point accountability for security and the cross-training pattern dilutes individual expertise",
+        "D": "Observation 4 — the help-desk team's lack of formal succession planning creates organizational risk even though the work is documented and any staff member can perform any function"
+      },
+      "correct": "A",
+      "key_concept": "Fraud-risk patterns in IT roles: refusal to take extended vacation + refusal to cross-train + single-point access to financial-system data is the textbook scheme-protection pattern. Succession-only and operational-risk concerns are real but lower-severity than fraud indicators.",
+      "pre_read": "For IT HR fraud-risk questions, look for the no-extended-vacation + refusal-to-cross-train + financial-system-access combination. Single elements (succession risk, operational risk) are real concerns but lower severity.",
+      "correct_explanation": "ACFE Fraud Examiners Manual, ISACA Fraud Risk Management guidance, and ITAF Performance Standards on IT HR Controls establish that mandatory-vacation and cross-training policies exist specifically because they disrupt fraud schemes. An employee perpetrating a fraudulent scheme typically must maintain continuous control over the records they're manipulating; an extended absence forces them to either yield control (allowing the scheme to be discovered by their replacement) or fail to do so (raising other red flags). Refusal of cross-training signals that the individual is protecting their unique access. The combination — no extended vacation in 4 years AND refusal to cross-train AND access to the financial-system database (Observation 1) — is the textbook pattern for an active or planned fraud scheme. Observation 2 (network engineer succession) is a real operational concern but operational, not fraud. Observation 3 (security-team rotation with cross-training and mandatory vacations) is the GOOD pattern, not a problem. Observation 4 (help-desk succession) is real but lowest-severity.",
+      "wrong_explanations": {
+        "B": "Network engineer's pending retirement without succession plan is a real knowledge-management concern but it's about operational continuity, not fraud. The cooperative risks losing the engineer's knowledge but no fraud indicator is present.",
+        "C": "The cybersecurity manager's role rotation IS the good pattern — cross-trained staff with mandatory vacations is exactly the fraud-prevention design that's missing in Observation 1. This option treats a strength as a weakness.",
+        "D": "Help-desk succession risk is the lowest-severity observation. The work is documented and cross-functional; the operational risk is contained."
+      },
+      "tips": [
+        "Trap is C — \"role rotation suggests no accountability\" mistakes the GOOD pattern for a problem. Cross-training + mandatory vacation is fraud prevention, not weakness.",
+        "Fraud-risk pattern in IT roles: no extended vacation + refusal to cross-train + financial-system access = textbook scheme-protection.",
+        "Exam-day shortcut: when stem describes IT staff with no extended vacations + cross-training refusal + financial-system access, the answer is fraud-risk severity."
+      ],
+      "framework_ref": "ACFE Fraud Examiners Manual; ISACA Fraud Risk Management guidance; ITAF Performance Standards on IT HR Controls; ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts)",
+      "related_concepts": [
+        "Mandatory vacation",
+        "Cross-training",
+        "Fraud-risk pattern",
+        "IT HR controls",
+        "Succession planning"
+      ],
+      "_provenance": "Authored from concept: 'IT HR fraud-risk pattern - DBA with no extended vacation + refusal to cross-train + financial-system access as textbook scheme-protection, distinct from succession-only / role-rotation-as-weakness / help-desk-succession'. Public source: ACFE Fraud Examiners Manual + ISACA Fraud Risk Management. All scenario specifics (agricultural cooperative, four IT HR observations) invented for this question."
+    },
+    {
+      "id": "d2_019",
+      "domain": 2,
+      "subtopic": "Enterprise Change Management — Failed Acquisition Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a retail-pharmacy chain is auditing the company's enterprise change-management program 18 months after the acquisition of a smaller regional pharmacy chain. Five facts document the integration's status: (1) the acquired chain's IT systems were supposed to be merged into the parent's IT environment within 12 months; at month 18, only 60% of systems are merged; (2) staff from the acquired chain report that they were not consulted on integration design; multiple key managers from the acquired chain have left in the past 6 months; (3) a planned consolidation of the customer-loyalty programs has been postponed three times due to data-quality issues that weren't surfaced during pre-acquisition diligence; (4) IT spending on integration is 80% over the original budget with no clear end date; (5) the parent's enterprise-change-management board reports the integration is 'on track' to the board, despite the operational metrics. The auditor must synthesize the audit's conclusion.",
+      "question": "Which conclusion BEST captures the enterprise-change-management failure pattern?",
+      "options": {
+        "A": "The integration is mostly on track — 60% complete at month 18 is normal for an acquisition this size given typical post-acquisition friction, and the operational issues are routine variation that will resolve as the merger matures further into year 2",
+        "B": "The integration's primary problem is the 80% budget overrun (Fact 4); fixing the budget control through tighter cost discipline and approval thresholds will resolve the schedule slippage, people issues, and reporting accuracy concerns over time",
+        "C": "The five facts together indicate a multi-dimensional ECM failure (schedule, people, due-diligence, cost, governance reporting); the most significant single finding is the governance-reporting disconnect (Fact 5 — 'on track' despite operational metrics) because broken reporting disables the system's ability to course-correct",
+        "D": "The acquisition should be unwound entirely since the integration has clearly failed across multiple dimensions; the company should reverse the deal, separate the acquired entity, and write off the integration investment to date as a sunk cost"
+      },
+      "correct": "C",
+      "key_concept": "Multi-dimensional enterprise-change-management failure: schedule + people + due-diligence + cost + governance-reporting-disconnect. The most significant single finding is governance-reporting disconnect because it disables course correction across all other dimensions.",
+      "pre_read": "For enterprise-change-management failure synthesis questions, watch for distractors that pick one dimension or treat the situation as normal. The right answer surfaces the multi-dimensional failure AND identifies governance-reporting disconnect as the most severe single element (because broken reporting blocks correction).",
+      "correct_explanation": "COBIT 2019 BAI05 (Managed Organizational Change) and ISACA Enterprise Change Management guidance establish that enterprise change management has multiple interdependent dimensions: schedule, people-side change, due-diligence quality, cost discipline, and governance reporting. The retail-pharmacy scenario shows failures across all five: (a) schedule — 60% complete at month 18 vs 100% target at month 12 (Fact 1); (b) people-side neglected — staff weren't consulted, key personnel leaving (Fact 2); (c) due-diligence gaps — data-quality issues unsurfaced pre-deal (Fact 3); (d) cost discipline broken — 80% over budget (Fact 4); (e) governance-reporting disconnect — 'on track' reporting despite operational metrics showing otherwise (Fact 5). The most significant single finding is Fact 5 because broken governance reporting disables the organization's ability to intervene — the board can't correct what it isn't told is failing. The other four are recoverable IF the governance system can see them; broken reporting means they accumulate. Option A treats the situation as normal, missing the failure pattern entirely. Option B picks one dimension (cost) and assumes fixing it resolves the rest, which it won't. Option D over-corrects — unwinding an acquisition is rarely feasible and isn't the audit's recommendation.",
+      "wrong_explanations": {
+        "A": "60% complete at 18 months vs 100% target at 12 months, 80% budget overrun, key personnel departures, postponed consolidations, AND governance reporting that says 'on track' — this is not normal post-acquisition friction. It's a multi-dimensional failure pattern.",
+        "B": "Cost discipline is one of five broken dimensions. Fixing the budget control doesn't address schedule slippage, people-side change neglect, due-diligence gaps, or governance-reporting disconnect.",
+        "D": "Unwinding an acquisition is rarely feasible after 18 months of integration effort. The audit's recommendation is to surface the failure pattern, escalate the governance-reporting disconnect, and support remediation — not to unwind the deal."
+      },
+      "tips": [
+        "Trap is B — \"the budget overrun is the problem\" picks one dimension, missing the multi-dimensional failure.",
+        "ECM failure synthesis: schedule + people + due-diligence + cost + governance reporting. Five dimensions; broken reporting is the most severe because it disables correction.",
+        "Exam-day shortcut: when stem describes governance reporting saying 'on track' while operational metrics show failure, that disconnect is the most significant finding."
+      ],
+      "framework_ref": "COBIT 2019 BAI05 (Managed Organizational Change); ISACA Enterprise Change Management guidance; ITAF Performance Standards on Change Management",
+      "related_concepts": [
+        "Enterprise change management",
+        "Acquisition integration",
+        "People-side change",
+        "Governance reporting disconnect",
+        "Multi-dimensional failure"
+      ],
+      "_provenance": "Authored from concept: 'enterprise change management multi-dimensional failure - schedule + people + due-diligence + cost + governance-reporting disconnect, with reporting disconnect as most severe single finding because it disables correction'. Public source: COBIT 2019 BAI05 + ISACA ECM. All scenario specifics (retail-pharmacy chain, 18-month post-acquisition status, five specific facts) invented for this question."
+    },
+    {
+      "id": "d2_020",
+      "domain": 2,
+      "subtopic": "Quality Assurance — IT QA Program Effectiveness",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an aerospace contractor is evaluating the effectiveness of the company's IT QA program. Four observations document the QA program's recent operation: (1) the QA team has identified an average of 47 defects per software release in the past year, with a 92% remediation-before-release rate; (2) the QA team's funding was cut by 30% in the most recent budget cycle and three QA staff positions were eliminated; (3) post-release defects (defects discovered by users in production) have increased 40% over the same period, with three customer-impacting incidents in the past quarter; (4) the QA director reports to the CIO; the CIO presents QA results to the board annually as 'QA functioning effectively.' The auditor must synthesize the QA program's effectiveness conclusion.",
+      "question": "Which conclusion BEST evaluates the QA program's effectiveness?",
+      "options": {
+        "A": "The QA program is effective — the 92% pre-release remediation rate is a strong indicator of program quality and the post-release issues represent normal software-quality variation that any release process produces, regardless of capacity changes",
+        "B": "The QA program shows a deteriorating effectiveness pattern: the 92% pre-release rate masks the underlying capacity reduction, which is now showing in the 40% post-release defect increase and customer-impacting incidents; the 'functioning effectively' reporting to the board is misleading and disables course correction",
+        "C": "The QA program is failing entirely — the 40% post-release defect increase indicates the program should be terminated and replaced with a new quality function staffed differently and reporting outside the IT organization to preserve independence",
+        "D": "The QA program is fine; the only issue is the budget cut, which should be reversed to restore the previous staffing level, and the program will then return to its prior performance once capacity is back at the original level"
+      },
+      "correct": "B",
+      "key_concept": "QA effectiveness evaluation requires looking at trends and leading indicators, not point-in-time metrics alone. Capacity reduction, post-release defect increase, and misleading reporting together indicate a deteriorating program with two distinct findings (capacity + reporting accuracy).",
+      "pre_read": "For QA-program-effectiveness questions, watch for distractors that look at one metric (pre-release rate, post-release defects) and miss the trend. The right answer always synthesizes capacity changes, leading indicators, and reporting accuracy.",
+      "correct_explanation": "ITAF Performance Standards on Quality Assurance and ISACA Quality Management guidance establish that QA program effectiveness is evaluated through multiple dimensions: capacity adequacy, leading indicators (defect trends in both pre-release and post-release), and reporting accuracy to governance. The aerospace-contractor scenario shows: pre-release remediation rate 92% (looks good in isolation); capacity reduction (30% budget cut, 3 staff eliminated — Fact 2); leading indicator deterioration (40% post-release defect increase, 3 customer-impacting incidents — Fact 3); reporting disconnect (CIO presents 'functioning effectively' to the board despite the deterioration — Fact 4). Together these indicate a deteriorating program: the 92% pre-release rate masks the underlying capacity reduction, which is now showing in post-release defects. The board sees 'functioning effectively' and therefore can't course-correct. The audit's findings are two: (a) capacity restoration needed; (b) reporting accuracy needed. Option A picks the 92% pre-release rate in isolation. Option C over-corrects to program termination. Option D picks one dimension (budget) and ignores the reporting issue.",
+      "wrong_explanations": {
+        "A": "92% pre-release remediation looked good but is a trailing indicator from when the team had full capacity. The post-release defect increase (40%) is the leading indicator showing the program's effectiveness is deteriorating. Picking the favorable metric in isolation misses the trend.",
+        "C": "Program termination is over-correction. The QA program is deteriorating, not failed. Capacity restoration and reporting accuracy correction are the right interventions; termination would lose the existing capability.",
+        "D": "Budget reversal alone misses the reporting issue. Even if capacity is restored, the board won't know to support the restoration if reporting continues to say 'functioning effectively.' Both findings need addressing."
+      },
+      "tips": [
+        "Trap is A — \"92% pre-release rate is strong\" picks one favorable metric and misses the deteriorating trend in post-release defects.",
+        "QA effectiveness = capacity + leading indicators (post-release defects) + reporting accuracy. Three dimensions, two findings (capacity + reporting).",
+        "Exam-day shortcut: when stem describes a favorable point-in-time metric alongside capacity reduction and increasing post-release issues, the program is deteriorating, not effective."
+      ],
+      "framework_ref": "ITAF Performance Standards on Quality Assurance; ISACA Quality Management guidance; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "IT QA program effectiveness",
+        "Pre-release vs post-release defects",
+        "Leading vs trailing indicators",
+        "QA capacity",
+        "Reporting accuracy"
+      ],
+      "_provenance": "Authored from concept: 'IT QA program effectiveness evaluation - capacity + leading indicators + reporting accuracy, distinct from favorable-metric-only / total-failure / single-dimension fixes'. Public source: ITAF QA + COBIT 2019 BAI03. All scenario specifics (aerospace contractor, four QA program observations) invented for this question."
     }
   ]
 }

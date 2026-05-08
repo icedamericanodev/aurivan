@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d2.json`.
 
-**Last updated:** after D2 batch 1 (d2_001..d2_010). Total D2 questions authored: 10 of 180.
+**Last updated:** after D2 batch 2 (d2_011..d2_020). Total D2 questions authored: 20 of 180.
 
 ## Part A — IT Governance
 
@@ -16,6 +16,16 @@
 |---|---|---|
 | 2.1.1 | Impact of Laws, Regulations, and Industry Standards on IS Audit | (uncovered) |
 | 2.1.2 | Governance, Risk and Compliance | d2_005 (GRC integration) |
+| 2.5.1 | Developing a Risk Management Program | d2_011 (5-component program) |
+| 2.5.3 | Risk Analysis Methods (Qualitative / Semi-Quantitative / Quantitative) | d2_012 (method selection) |
+| 2.6 | Data Privacy Program and Principles | d2_013 (8-element program design) |
+| 2.7.1 | Data Inventory and Classification | d2_016 (classification approach) |
+| 2.8.4 | Human Resource Management — IT-specific (mandatory vacation, succession, fraud-risk roles) | d2_018 (analysis — fraud-risk patterns) |
+| 2.8.5 | Enterprise Change Management | d2_019 (analysis — failed acquisition integration) |
+| 2.9.2 | Outsourcing Practices and Strategies | d2_017 (analysis — multi-factor decision) |
+| 2.9.3 | Cloud Governance — Shared Responsibility Model | d2_014 (responsibility split by service model) |
+| 2.10.1-3 | KPIs / KRIs / KCIs distinction | d2_015 (what each measures) |
+| 2.11.1 | Quality Assurance — IT QA Program Effectiveness | d2_020 (analysis — capacity + leading indicators + reporting) |
 
 ### 2.2 Organizational Structure, IT Governance and IT Strategy
 
@@ -127,14 +137,14 @@
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after D2 batch 1 | Gap |
+| Tier | Target (180) | Authored after D2 batch 2 | Gap |
 |---|---|---|---|
 | Foundational | 18 (10%) | 0 | -18 |
-| Application | 90 (50%) | 6 | -84 |
-| Analysis | 72 (40%) | 4 | -68 |
-| **Total** | **180** | **10** | **-170** |
+| Application | 90 (50%) | 12 | -78 |
+| Analysis | 72 (40%) | 8 | -64 |
+| **Total** | **180** | **20** | **-160** |
 
-Mirrors D1 batch 1 cadence. Foundational tier launches in later batches (D1 pattern: foundational starts at batch 6 of 13).
+Mirrors D1 batch 1-2 cadence. Foundational tier launches in batch 3 or 4 onward (D1 pattern: foundational started at batch 6 of 13). At ~10/batch, doubling to 20/batch from batch 4 onward (per the user's confirmed plan).
 
 ## High-priority depth targets for batch 2 and beyond
 
