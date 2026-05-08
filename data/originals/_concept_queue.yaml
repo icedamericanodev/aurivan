@@ -243,8 +243,80 @@ domain_1:
 
 domain_2:
   target_total: 180
-  status: not_started
-  notes: "Authoring begins after D1 reaches a meaningful coverage milestone (likely 100+ questions)."
+  target_mix:
+    foundational: 18
+    application:  90
+    analysis:     72
+  status: in_progress
+
+  authored_total: 10
+  authored_mix:
+    foundational: 0
+    application:  6
+    analysis:     4
+
+  covered:
+    # Batch 1 (d2_001..d2_010) — first D2 batch; 6 application + 4 analysis; mirrors D1 batch 1 cadence
+    - { id: d2_001, subtopic: "Enterprise Governance of Information and Technology (EGIT) — Definition", toc_ref: "2.2.1" }
+    - { id: d2_002, subtopic: "Three Lines Model — Roles and Boundaries",                                toc_ref: "2.2.3" }
+    - { id: d2_003, subtopic: "IT Steering Committee — Composition and Responsibility",                  toc_ref: "2.2.8" }
+    - { id: d2_004, subtopic: "IT Strategy — Alignment with Business Strategy",                          toc_ref: "2.2.5" }
+    - { id: d2_005, subtopic: "Governance, Risk, Compliance (GRC) — Integration",                       toc_ref: "2.1.2" }
+    - { id: d2_006, subtopic: "Information Security Governance — Board Accountability",                  toc_ref: "2.2.4" }
+    - { id: d2_007, subtopic: "Risk Management Lifecycle — Identify / Assess / Respond / Monitor",       toc_ref: "2.5.2" }
+    - { id: d2_008, subtopic: "Separation of Duties Within IT — Practical SoD Design",                   toc_ref: "2.2.8" }
+    - { id: d2_009, subtopic: "Audit's Role in EGIT — Independent Evaluation",                           toc_ref: "2.2.3" }
+    - { id: d2_010, subtopic: "Auditing IT Governance Structure and Implementation",                     toc_ref: "2.2.9" }
+
+  queued_next:
+    # Candidate concepts for D2 batch 2, in rough priority order.
+    # Foundational tier launches in batches 3-4 onward (mirrors D1 pattern).
+
+    # High priority — exam-heavy areas, currently uncovered
+    - { subtopic: "Developing a Risk Management Program",                  toc_ref: "2.5.1",  priority: high,
+        notes: "Standing up an IT risk-management program; supports d2_007 lifecycle." }
+    - { subtopic: "Risk Analysis Methods (Qualitative / Semi / Quantitative)", toc_ref: "2.5.3", priority: high,
+        notes: "Method selection for risk analysis." }
+    - { subtopic: "Data Privacy Program Design",                           toc_ref: "2.6",    priority: high,
+        notes: "High-frequency exam topic." }
+    - { subtopic: "Cloud Governance",                                      toc_ref: "2.9.3",  priority: high,
+        notes: "High-frequency exam topic given current trends." }
+    - { subtopic: "KPIs vs KRIs vs KCIs — distinguishing indicator types", toc_ref: "2.10.1-3", priority: high,
+        notes: "Application-tier distinction; foundational definitions to follow in later batches." }
+    - { subtopic: "Data Governance and Classification",                    toc_ref: "2.7.1",  priority: high,
+        notes: "Classification approach + data inventory." }
+
+    # Medium priority
+    - { subtopic: "Outsourcing Practices and Strategies",                  toc_ref: "2.9.2",  priority: medium,
+        notes: "Sourcing decision trade-offs (cost / risk / control)." }
+    - { subtopic: "HR Management — IT-specific sub-bullets",               toc_ref: "2.8.4",  priority: medium,
+        notes: "Mandatory vacation, succession planning, performance review for IT roles." }
+    - { subtopic: "Quality Assurance — IT QA program design",              toc_ref: "2.11.1", priority: medium,
+        notes: "QA program structure for IT delivery." }
+    - { subtopic: "Enterprise Change Management",                          toc_ref: "2.8.5",  priority: medium,
+        notes: "Org-wide change management distinct from IT change management (D1 d1_104)." }
+
+  remaining_unplanned:
+    # Lower-priority depth opportunities for later batches
+    - { subtopic: "Strategic Planning",                                    toc_ref: "2.2.6",  priority: low }
+    - { subtopic: "Business Intelligence",                                 toc_ref: "2.2.7",  priority: low }
+    - { subtopic: "Roles and Responsibilities — Senior Mgmt and Boards",  toc_ref: "2.2.8",  priority: low }
+    - { subtopic: "Data Ownership",                                        toc_ref: "2.2.8",  priority: low }
+    - { subtopic: "Network Management",                                    toc_ref: "2.2.8",  priority: low }
+    - { subtopic: "Compensating Controls for Lack of SoD",                 toc_ref: "2.2.8",  priority: low }
+    - { subtopic: "IT Policies — InfoSec Policy Review",                   toc_ref: "2.3.1",  priority: low }
+    - { subtopic: "IT Standards / Procedures / Guidelines distinctions",   toc_ref: "2.3.2-4",priority: low }
+    - { subtopic: "Enterprise Architecture Considerations",                toc_ref: "2.4",    priority: low }
+    - { subtopic: "Data Subject Rights — Transborder Data Flow",           toc_ref: "2.7.3",  priority: medium }
+    - { subtopic: "Value of IT",                                           toc_ref: "2.8.1",  priority: low }
+    - { subtopic: "IT Portfolio Management",                               toc_ref: "2.8.2",  priority: low }
+    - { subtopic: "Financial Management — Cost Allocation, Budgets, Capitalization", toc_ref: "2.8.6", priority: low }
+    - { subtopic: "Information Security Management",                       toc_ref: "2.8.7",  priority: medium }
+    - { subtopic: "Capacity and Growth Planning",                          toc_ref: "2.9.5",  priority: low }
+    - { subtopic: "Third-Party Service Delivery Management",               toc_ref: "2.9.6",  priority: medium }
+    - { subtopic: "Six Sigma / Agile / Balanced Scorecard — method selection", toc_ref: "2.10.5", priority: medium }
+    - { subtopic: "Operational Excellence",                                toc_ref: "2.11.3", priority: low }
+    - { subtopic: "Impact of Laws/Regulations on IS Audit",                toc_ref: "2.1.1",  priority: medium }
 
 domain_3:
   target_total: 120

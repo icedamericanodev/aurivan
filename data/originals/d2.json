@@ -6,5 +6,376 @@
   "domain": 2,
   "domain_name": "Governance and Management of IT",
   "weight": 18,
-  "questions": []
+  "questions": [
+    {
+      "id": "d2_001",
+      "domain": 2,
+      "subtopic": "Enterprise Governance of Information and Technology (EGIT) — Definition",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional bank is briefing the new board on Enterprise Governance of Information and Technology (EGIT). Which statement BEST describes the PRIMARY scope of EGIT?",
+      "options": {
+        "A": "An operational framework for the IT department's day-to-day technology decisions, separate from the enterprise's overall governance",
+        "B": "An integral part of enterprise governance, ensuring that IT investments and operations support and align with the enterprise's strategy and objectives, with accountability resting at the board level",
+        "C": "A regulatory requirement applicable only to financial-services and healthcare entities, not to other sectors",
+        "D": "A subset of the IT change-management process that controls how technology changes are introduced into production"
+      },
+      "correct": "B",
+      "key_concept": "EGIT is part of enterprise governance — not a separate IT discipline. It ensures IT supports enterprise strategy, with board-level accountability. EGIT's scope is enterprise-wide, not departmental, regulatory-only, or change-management-specific.",
+      "pre_read": "For EGIT-definition questions, anchor on \"part of enterprise governance + IT supports business strategy + board-level accountability\". Distractors that confine EGIT to IT operations, regulatory mandate, or a narrow process all miss the enterprise scope.",
+      "correct_explanation": "ISACA's COBIT 2019 framework and ITAF guidance define EGIT as the system by which IT-related decisions are made and oversight is exercised, integrated with overall enterprise governance. EGIT ensures alignment between IT investments and enterprise strategy, with the board ultimately accountable for ensuring that the enterprise's IT-related decisions support stakeholder value. Option A separates EGIT from enterprise governance, which contradicts the integration principle. Option C limits EGIT to regulated sectors, which is incorrect — EGIT is a governance discipline applicable to any organization that uses IT, regardless of sector. Option D conflates EGIT (enterprise-level governance) with change management (an operational IT-management practice).",
+      "wrong_explanations": {
+        "A": "Treating EGIT as separate from enterprise governance defeats its purpose. EGIT is integrated WITH enterprise governance precisely because IT decisions are inseparable from business strategy in modern organizations.",
+        "C": "EGIT is not a regulatory requirement — it's a governance discipline. Regulated sectors may have specific IT-governance compliance obligations, but EGIT itself applies to any organization using IT.",
+        "D": "Change management is one IT-management practice (Domain 2 covers change management under 2.8.5). EGIT operates at the enterprise level, not at the change-process level."
+      },
+      "tips": [
+        "Trap is C — \"regulatory requirement only for X sectors\" sounds plausible but EGIT applies to any organization using IT.",
+        "EGIT = enterprise-level governance integrated with overall enterprise governance, board-accountable, alignment-focused.",
+        "Exam-day shortcut: any EGIT-definition question is answered by the option that names enterprise scope, board accountability, and IT-business alignment."
+      ],
+      "framework_ref": "COBIT 2019 (Governance Framework); ITAF General Standards on IT Governance; ISACA EGIT Framework",
+      "related_concepts": [
+        "Enterprise Governance of IT",
+        "COBIT 2019",
+        "Board accountability",
+        "IT-business alignment"
+      ],
+      "_provenance": "Authored from concept: 'EGIT definition - integrated enterprise governance with board accountability, IT-business alignment'. Public source: COBIT 2019. All scenario specifics (regional bank, new board briefing) invented for this question. First D2 question."
+    },
+    {
+      "id": "d2_002",
+      "domain": 2,
+      "subtopic": "Three Lines Model — Roles and Boundaries",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a health-insurance company is explaining the Three Lines Model to the audit committee. Which statement BEST describes the boundaries between the three lines?",
+      "options": {
+        "A": "First line = operational management owning and managing risks in their own areas; Second line = risk-management and compliance functions providing expertise, support, and oversight (but not independence); Third line = internal audit providing independent assurance to the governing body",
+        "B": "First line = internal audit performing operational testing; Second line = compliance functions; Third line = the board of directors accepting all final risk decisions",
+        "C": "All three lines report to internal audit, which acts as the single point of accountability for the entire risk-management framework",
+        "D": "The Three Lines Model is interchangeable with the COSO Internal Control Framework's five components and the terms can be used synonymously"
+      },
+      "correct": "A",
+      "key_concept": "Three Lines Model: first line = operational management owning risks; second line = risk/compliance functions (support, oversight, NOT independence); third line = internal audit (independent assurance to governing body). Each line has a distinct role and accountability.",
+      "pre_read": "For Three Lines Model questions, the right shape is \"first owns + second supports + third independently assures\". Distractors that invert the lines, conflate with COSO, or have audit own everything all miss the model.",
+      "correct_explanation": "The IIA's Three Lines Model (formally adopted in 2020, replacing the older Three Lines of Defense terminology) defines three distinct accountabilities: First line = operational management responsible for owning and managing risks in their own areas (the people doing the work and managing it daily). Second line = risk-management, compliance, and similar functions providing expertise, support, monitoring, and oversight — these functions assist the first line but are NOT independent of management. Third line = internal audit providing independent and objective assurance to the governing body about the effectiveness of risk management, control, and governance. Option B inverts the model dramatically. Option C makes internal audit accountable for everything, which destroys the independence first/second/third line model is designed to preserve. Option D conflates the Three Lines Model (a governance/accountability framework) with COSO Internal Control (a control-design framework) — they are complementary but distinct.",
+      "wrong_explanations": {
+        "B": "Internal audit is the third line, not the first. The board is the governing body that the third line reports to, not a 'final risk decision' line. This option inverts the model entirely.",
+        "C": "Internal audit's independence depends on NOT having operational accountability. Making audit accountable for the first and second lines' work would eliminate the independent assurance the third line provides.",
+        "D": "Three Lines Model = governance/accountability across three roles. COSO Internal Control = five components (control environment, risk assessment, control activities, information and communication, monitoring). Different frameworks, complementary not interchangeable."
+      },
+      "tips": [
+        "Trap is C — \"audit owns everything\" sounds rigorous but it eliminates the independence the third line is designed to provide.",
+        "Three Lines = own (operational mgmt) + support (risk/compliance) + assure independently (audit). Three roles, three distinct accountabilities.",
+        "Exam-day shortcut: any Three Lines Model question is answered by the option that names operational ownership for first, support/oversight for second, and independent assurance for third."
+      ],
+      "framework_ref": "IIA Three Lines Model (2020); COBIT 2019",
+      "related_concepts": [
+        "Three Lines Model",
+        "Operational risk ownership",
+        "Risk and compliance functions",
+        "Independent assurance"
+      ],
+      "_provenance": "Authored from concept: 'Three Lines Model - three distinct accountabilities (own / support / independently assure), distinct from inverted-roles / audit-owns-all / COSO-conflation'. Public source: IIA Three Lines Model (2020). All scenario specifics (health-insurance company, audit committee briefing) invented for this question."
+    },
+    {
+      "id": "d2_003",
+      "domain": 2,
+      "subtopic": "IT Steering Committee — Composition and Responsibility",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a mid-size discrete-parts manufacturer is reviewing the company's IT Steering Committee. Which approach BEST describes a properly designed IT Steering Committee?",
+      "options": {
+        "A": "Composed entirely of IT department members so technical expertise drives every decision",
+        "B": "Composed entirely of business-unit leaders with no IT representation, so business priorities aren't filtered through technical perspective",
+        "C": "Cross-functional composition combining senior IT leadership AND senior business-unit representation, with executive sponsorship; responsible for setting IT strategic direction, prioritizing IT investments, and ensuring IT-business alignment",
+        "D": "Run by external consultants with rotating company representation, so the committee maintains independent perspective"
+      },
+      "correct": "C",
+      "key_concept": "IT Steering Committee = cross-functional (IT + business-unit + executive sponsorship), responsible for IT strategic direction, investment prioritization, and IT-business alignment. IT-only or business-only compositions defeat the alignment purpose; external-consultant-run defeats the governance purpose.",
+      "pre_read": "For IT Steering Committee questions, the right shape is \"cross-functional + executive sponsorship + strategy/investment/alignment responsibility\". Distractors that go single-perspective (IT-only or business-only) or hand off to externals all miss the alignment purpose.",
+      "correct_explanation": "COBIT 2019 and ISACA EGIT guidance establish that an effective IT Steering Committee combines: (1) senior IT leadership (CIO and direct reports) — providing technical perspective on feasibility, architecture, and capability; (2) senior business-unit representation (line-of-business heads or designated executives) — providing demand-side perspective on business priorities and value; (3) executive sponsorship (typically a CEO/COO-level chair) — providing authority to make and enforce decisions across silos. The committee's responsibility is IT strategic direction, prioritizing IT investments to align with enterprise strategy, and ensuring IT-business alignment. Option A's IT-only composition produces decisions that may be technically optimal but business-disconnected. Option B's business-only composition produces decisions that may be infeasible or misallocated. Option D's external-consultant-run committee abdicates the company's governance accountability.",
+      "wrong_explanations": {
+        "A": "IT-only steering committees produce decisions that optimize for technical correctness but may not address business priority. The committee's purpose is alignment, which requires both perspectives.",
+        "B": "Business-only steering committees produce decisions disconnected from technical feasibility, architecture constraints, and capacity realities. Business priorities still need to be filterable through implementation reality.",
+        "D": "External consultants can advise the committee, but running the committee externally abdicates the company's own governance accountability. The committee's authority comes from internal executive ownership, not external advisory."
+      },
+      "tips": [
+        "Trap is A — \"IT department drives technical decisions\" sounds operationally clean but defeats the alignment purpose.",
+        "IT Steering Committee = cross-functional (IT + business + executive) + responsible for strategy, investment, alignment.",
+        "Exam-day shortcut: IT Steering Committee questions are answered by the option that names cross-functional composition with executive sponsorship and IT-business alignment responsibility."
+      ],
+      "framework_ref": "COBIT 2019 EDM Domain (Evaluate, Direct, Monitor); ITAF Performance Standards on IT Governance; ISACA EGIT Framework",
+      "related_concepts": [
+        "IT Steering Committee",
+        "Cross-functional composition",
+        "IT-business alignment",
+        "Executive sponsorship"
+      ],
+      "_provenance": "Authored from concept: 'IT Steering Committee - cross-functional composition with executive sponsorship, responsible for strategy/investment/alignment, distinct from IT-only / business-only / external-consultant-run'. Public source: COBIT 2019 + ISACA EGIT. All scenario specifics (mid-size discrete-parts manufacturer) invented for this question."
+    },
+    {
+      "id": "d2_004",
+      "domain": 2,
+      "subtopic": "IT Strategy — Alignment with Business Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a retail e-commerce company is evaluating the IT strategy. Management has produced a 3-year IT strategy document focused on technology investments and capability roadmaps. The auditor's primary concern is whether the IT strategy properly aligns with the business strategy. What is the MOST important characteristic of an aligned IT strategy?",
+      "options": {
+        "A": "The IT strategy is the most technically ambitious roadmap available, regardless of whether the business has expressed those priorities",
+        "B": "The IT strategy explicitly maps each major IT investment and capability initiative to a specific business objective or business-strategy element, with measurable success criteria; gaps where IT investments don't trace to business objectives, or business objectives lack IT enablement, are surfaced and addressed",
+        "C": "The IT strategy is identical to the business strategy, with no IT-specific elements that would distinguish the two",
+        "D": "The IT strategy is set independently by the CIO and presented to business leadership for information, not approval"
+      },
+      "correct": "B",
+      "key_concept": "IT-business strategy alignment requires explicit mapping of IT investments to business objectives, with measurable success criteria and gap surfacing. Technical ambition alone, identical IT/business strategy, and CIO-only authoring all miss the alignment discipline.",
+      "pre_read": "For IT-strategy alignment questions, watch for distractors that prioritize technology for its own sake, conflate IT and business strategies, or remove business-leadership approval. The right answer always names explicit mapping with measurable criteria.",
+      "correct_explanation": "COBIT 2019 APO02 (Managed Strategy) and ISACA EGIT guidance establish that an aligned IT strategy explicitly maps each major IT investment and capability initiative to a specific business objective or business-strategy element. The mapping makes alignment auditable: gaps in either direction (IT investments without traceable business-objective support, or business objectives without IT enablement) are surfaced and addressed. Measurable success criteria allow ongoing evaluation of whether alignment is being achieved in execution, not just in planning. Option A's technical-ambition-driven strategy is the textbook misalignment failure — building capabilities the business didn't ask for. Option C conflates the two strategies; the IT strategy is distinct (it has technology, capability, and capacity-specific elements) but mapped to business objectives. Option D's CIO-only authoring without business-leadership approval bypasses the alignment-validation step.",
+      "wrong_explanations": {
+        "A": "Technical ambition alone is misalignment. An ambitious roadmap that doesn't trace to business objectives is over-investment in capabilities the enterprise won't use.",
+        "C": "IT strategy is distinct from business strategy. The two are mapped (IT investments to business objectives) but not identical — the IT strategy has technology, architecture, and capability-roadmap content that's IT-specific.",
+        "D": "CIO-only authoring without business-leadership approval skips the alignment-validation step. Business leaders must agree the mapped IT investments support their objectives, or the alignment claim is unsupported."
+      },
+      "tips": [
+        "Trap is A — \"most technically ambitious\" sounds like quality but is actually the textbook misalignment failure.",
+        "IT-business alignment = explicit mapping + measurable success criteria + gap surfacing in both directions. Three properties.",
+        "Exam-day shortcut: IT-strategy alignment questions are answered by the option naming explicit IT-investment-to-business-objective mapping."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); ITAF Performance Standards on IT Governance; ISACA EGIT Framework",
+      "related_concepts": [
+        "IT strategy",
+        "IT-business alignment",
+        "Strategic mapping",
+        "Capability roadmap"
+      ],
+      "_provenance": "Authored from concept: 'IT strategy alignment - explicit mapping of IT investments to business objectives with measurable success criteria, distinct from technical-ambition / identical-strategies / CIO-only-authoring'. Public source: COBIT 2019 APO02. All scenario specifics (retail e-commerce, 3-year IT strategy) invented for this question."
+    },
+    {
+      "id": "d2_005",
+      "domain": 2,
+      "subtopic": "Governance, Risk, Compliance (GRC) — Integration",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a global pharmaceutical company is evaluating the company's Governance, Risk, and Compliance (GRC) integration. Three departments operate independently: governance is run by the corporate-secretary's office, risk is run by the chief risk officer's team, and compliance is run by the chief compliance officer. The auditor identifies inefficiencies and gaps. Which approach BEST describes an integrated GRC posture?",
+      "options": {
+        "A": "Merge all three departments into a single 'GRC' department under one executive, with shared staff and unified reporting, to eliminate the inefficiency of three parallel functions",
+        "B": "Keep all three departments fully independent with no shared platforms or coordinated forums, since each function's specialized expertise (governance design, risk assessment, compliance obligations) shouldn't be diluted by integration",
+        "C": "Consolidate all GRC responsibility under internal audit since audit already evaluates governance, risk, and compliance during engagements, and centralizing avoids duplicate effort across the three functions",
+        "D": "Maintain functional separation while integrating processes, technology platforms, and data: shared risk taxonomy, common GRC platform, coordinated governance forums, and clear handoffs between the three functions"
+      },
+      "correct": "D",
+      "key_concept": "Integrated GRC maintains functional separation while integrating processes, technology, and data — shared risk taxonomy, common platform, coordinated forums, clear handoffs. Full merger eliminates specialization; full independence creates gaps; consolidation under audit destroys independence.",
+      "pre_read": "For GRC-integration questions, watch for distractors that fully merge the functions, fully separate them, or consolidate under audit. The right answer always names process/technology/data integration with maintained functional separation.",
+      "correct_explanation": "ISACA Risk IT Framework, OCEG GRC Capability Model, and ITAF guidance on GRC integration establish that mature GRC posture maintains the three functions' specialized expertise (each requires distinct skills and authorities) while integrating their operating mechanisms: (1) shared risk taxonomy across all three functions so terminology is consistent; (2) common GRC technology platform (e.g., risk-and-control matrix, issue-tracking system, attestation platform) reducing duplicate data entry and providing executive-level visibility; (3) coordinated governance forums (e.g., quarterly GRC committee) where the three functions align on priorities, share findings, and avoid working at cross-purposes; (4) clear handoffs (governance designs the framework, risk assesses what could go wrong, compliance tracks specific obligations). Option A's full merger eliminates the specialized expertise each function brings. Option B's full independence is the current state the auditor is criticizing — uncoordinated functions produce gaps and duplications. Option C consolidates under audit, which destroys audit's independence (audit cannot evaluate governance/risk/compliance if it owns them).",
+      "wrong_explanations": {
+        "A": "Full merger eliminates the specialized authorities and expertise each function carries. Governance, risk, and compliance require different competencies; merging produces a department that does none of the three deeply.",
+        "B": "Full independence is the current state — and the auditor has identified gaps and inefficiencies. Independence is appropriate for individual functions but coordination across functions is what GRC integration is designed to provide.",
+        "C": "Consolidating GRC under internal audit destroys audit's independence. Audit evaluates governance/risk/compliance; if audit owns them, there's no independent evaluation."
+      },
+      "tips": [
+        "Trap is A — \"merge into a single GRC department\" sounds like integration but eliminates the specialization each function brings.",
+        "GRC integration = functional separation + process/technology/data integration + shared taxonomy + coordinated forums + clear handoffs.",
+        "Exam-day shortcut: GRC-integration questions are answered by the option naming process and technology integration WITHOUT eliminating functional separation."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; OCEG GRC Capability Model; ITAF Performance Standards on Governance, Risk, and Compliance",
+      "related_concepts": [
+        "Governance, Risk, Compliance",
+        "GRC integration",
+        "Functional separation",
+        "Shared risk taxonomy",
+        "GRC technology platform"
+      ],
+      "_provenance": "Authored from concept: 'GRC integration - functional separation maintained while integrating processes/technology/data, distinct from full-merger / full-independence / consolidation-under-audit'. Public source: ISACA Risk IT + OCEG GRC. All scenario specifics (global pharma, three independent GRC departments) invented for this question."
+    },
+    {
+      "id": "d2_006",
+      "domain": 2,
+      "subtopic": "Information Security Governance — Board Accountability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a B2B SaaS platform is reviewing the company's information-security-governance posture. The board has historically delegated all information-security matters to the CISO. The auditor must evaluate whether this delegation is appropriate. Which statement BEST describes the board's accountability for information-security governance?",
+      "options": {
+        "A": "Once the board has hired a competent CISO, board accountability for information-security governance is fully discharged",
+        "B": "The board retains overall accountability for information-security governance — even when execution is delegated to the CISO and management. Board accountability includes ensuring the security strategy aligns with business strategy, periodically reviewing security risk and posture, ensuring resources are sufficient, and overseeing major security incidents and decisions",
+        "C": "Information security is an operational matter that the board should not engage with, since board members typically lack technical security expertise",
+        "D": "Information-security governance accountability rests with the CFO because security investments affect the financial budget"
+      },
+      "correct": "B",
+      "key_concept": "Board accountability for information-security governance is non-delegable. Execution delegates to CISO/management; accountability stays at board level. Board ensures alignment, reviews posture, ensures resources, oversees major decisions.",
+      "pre_read": "For board-accountability questions, watch for distractors that delegate accountability away (to CISO, CFO, or 'operations'). The right answer always preserves board-level accountability with execution delegated to management.",
+      "correct_explanation": "ISACA's Information Security Governance guidance, NIST Cybersecurity Framework v2.0 (which added the Govern function specifically to formalize this), and ITAF establish that the board retains overall accountability for information-security governance. While execution is appropriately delegated to a competent CISO and management, accountability stays at the board level. Board responsibilities include: (1) ensuring the security strategy aligns with the business strategy; (2) periodically reviewing security risk posture and material changes; (3) ensuring sufficient resources are allocated to security; (4) overseeing major security incidents and decisions (e.g., breach response, major investment trade-offs); (5) holding management accountable for security outcomes. Option A confuses delegation of execution with delegation of accountability — they are different. Option C abdicates board engagement, which violates governance principles. Option D misassigns security accountability to the CFO based on a budget connection that doesn't establish governance accountability.",
+      "wrong_explanations": {
+        "A": "Hiring a competent CISO discharges the board's hiring duty, not its governance accountability. Accountability for outcomes stays at the board level even when execution is delegated.",
+        "C": "Boards govern through review, oversight, and questions — they don't need to be technical experts. Many boards engage technical advisors to support their security oversight role; abdication is not the answer.",
+        "D": "The CFO's role is financial governance. Security investments affect the budget, but security governance is not a CFO responsibility — it's a board-level accountability with the CISO executing."
+      },
+      "tips": [
+        "Trap is A — \"hired a competent CISO, accountability discharged\" confuses execution delegation with accountability delegation. Different things.",
+        "Board accountability for InfoSec governance: aligned strategy + periodic review + resource sufficiency + major decision oversight. Non-delegable.",
+        "Exam-day shortcut: any board-accountability question is answered by the option that preserves board accountability with execution delegated."
+      ],
+      "framework_ref": "NIST Cybersecurity Framework v2.0 (Govern Function); ISACA Information Security Governance guidance; ITAF General Standards on Governance",
+      "related_concepts": [
+        "Information security governance",
+        "Board accountability",
+        "Delegation of execution vs accountability",
+        "CISO role",
+        "NIST CSF Govern function"
+      ],
+      "_provenance": "Authored from concept: 'board accountability for information-security governance - non-delegable, execution delegates to CISO, accountability stays at board level'. Public source: NIST CSF v2.0 + ISACA InfoSec Governance. All scenario specifics (B2B SaaS platform, board delegating all to CISO) invented for this question."
+    },
+    {
+      "id": "d2_007",
+      "domain": 2,
+      "subtopic": "Risk Management Lifecycle — Identify / Assess / Respond / Monitor",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a regional telecom carrier is evaluating the IT risk-management program. Five facts are documented: (1) the company's IT risk register lists ~140 risks, identified through annual workshops, but the most recent identification cycle was 18 months ago; (2) risk assessment is performed using a 5x5 likelihood-impact heat map, with ratings agreed in workshops but no quantitative analysis; (3) risk response is documented for the top-20 risks (mostly 'reduce' with planned controls), but the remaining 120 risks have no documented response; (4) monitoring is performed via quarterly risk-committee meetings, but the committee reviews only the top-20 risks and rarely revisits the long tail; (5) reporting to the board occurs annually as a single status update covering top-20 risks. The auditor must evaluate the program's lifecycle maturity.",
+      "question": "Applying the IT risk-management lifecycle (Identify -> Assess -> Respond -> Monitor / Report), which observation represents the MOST significant lifecycle gap that warrants the auditor's strongest finding?",
+      "options": {
+        "A": "Fact 1 — annual identification cycle delayed to 18 months, suggesting risk identification is not timely",
+        "B": "Facts 3 and 4 combined — 120 of 140 identified risks have no documented response AND are not actively monitored, meaning the program identifies risks the company then takes no responsive action on; this breaks the lifecycle's response and monitor stages and represents the most significant gap",
+        "C": "Fact 2 — heat map without quantitative analysis, suggesting the assessment method is too subjective",
+        "D": "Fact 5 — annual board reporting cadence, suggesting the board doesn't have frequent enough visibility"
+      },
+      "correct": "B",
+      "key_concept": "The risk-management lifecycle's value comes from its end-to-end execution. Identifying risks but not responding to or monitoring them is the most significant gap because it represents wasted identification effort and unaddressed exposure. Other lifecycle weaknesses (timing, method, reporting frequency) are real but secondary.",
+      "pre_read": "For risk-management-lifecycle questions, evaluate which gap most undermines the lifecycle's purpose. Identifying risks without responding is the textbook lifecycle break — the program produces awareness without action.",
+      "correct_explanation": "ISACA Risk IT Framework and the IT Risk Management Lifecycle (Identify -> Assess -> Respond -> Monitor / Report) establish that the lifecycle's value depends on end-to-end execution. The telecom scenario documents a program where risks are identified (140 risks) and assessed (heat-map-rated) but 120 of 140 (86%) have no documented response and no active monitoring. This breaks the Respond and Monitor stages of the lifecycle and represents the most significant gap because: (1) identification effort produced output the company doesn't act on; (2) the long tail of risks accumulates exposure that goes unaddressed; (3) without monitoring, even the assessment ratings on the long tail become stale. Fact 1 (delayed identification cycle) is a real timing issue but secondary — at least the risks are eventually identified. Fact 2 (heat map without quantitative analysis) is a method-quality issue but acceptable for many risks; quantitative analysis is needed for some but not all. Fact 5 (annual board reporting) is reporting cadence — important but the board can act on what it sees; the larger problem is what's not surfaced because it's not monitored. The combined Facts 3+4 problem is the lifecycle break.",
+      "wrong_explanations": {
+        "A": "An 18-month identification cycle is delayed but the risks are eventually identified. The bigger issue is what happens to those identified risks — and Facts 3+4 show many of them go unresponded and unmonitored.",
+        "C": "Heat-map-only assessment is a method-quality concern but acceptable for many risks (especially when quantitative data is sparse). The bigger issue is whether the assessed risks get responded to and monitored.",
+        "D": "Annual board reporting is a cadence issue. But what the board sees comes from what's monitored; if 120 risks aren't monitored, they don't reach the board regardless of cadence. The lifecycle break (Facts 3+4) is the upstream problem."
+      },
+      "tips": [
+        "Trap is A — \"identification timing\" feels significant but it's the upstream stage. Lifecycle breaks downstream (response, monitor) are usually more significant.",
+        "Lifecycle = Identify -> Assess -> Respond -> Monitor / Report. The most significant gap is wherever the lifecycle BREAKS, not where it's slow or imperfect.",
+        "Exam-day shortcut: identifying risks without responding to them is always a more significant gap than identifying-with-delay or assessing-imperfectly."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; COBIT 2019 EDM03 (Ensured Risk Optimization)",
+      "related_concepts": [
+        "Risk-management lifecycle",
+        "Identify-Assess-Respond-Monitor",
+        "Risk register",
+        "Risk response documentation",
+        "Risk monitoring"
+      ],
+      "_provenance": "Authored from concept: 'risk-management lifecycle - response and monitor stages broken when 86% of identified risks have no response, more significant than identification timing or assessment method'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (regional telecom, 140 risks, top-20 only responded/monitored, annual board reporting) invented for this question."
+    },
+    {
+      "id": "d2_008",
+      "domain": 2,
+      "subtopic": "Separation of Duties Within IT — Practical SoD Design",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a community bank is reviewing the IT department's separation-of-duties (SoD) design. The department has 8 IT staff members. Current role assignments: (1) the IT manager has database administrator privileges, system administrator privileges on the core-banking servers, and the ability to modify production code; (2) two developers can deploy their own code to production via an automated deployment pipeline they themselves configured; (3) one operations staff member has both data-center physical access and the ability to grant or revoke logical access for any user, including themselves; (4) the help-desk staff have read-only access only. The auditor must identify the most significant SoD violation.",
+      "question": "Which observation represents the MOST significant SoD violation, considering both the access concentration and the toxic-combination risk?",
+      "options": {
+        "A": "Observation 1 — the IT manager's combined privileges (DBA + system admin + production code modification) create a toxic combination where one individual can both implement and approve changes, compromising the bank's ability to detect unauthorized modifications to financial-data systems",
+        "B": "Observation 2 — developers deploying their own code via an automated pipeline they configured",
+        "C": "Observation 3 — operations staff with both physical access and logical-access-management authority including self-grant",
+        "D": "Observation 4 — help-desk staff with read-only access (this is appropriately restricted)"
+      },
+      "correct": "A",
+      "key_concept": "SoD-within-IT toxic-combination analysis: concentration of multiple incompatible privileges in one individual is the most significant violation, especially when those privileges span design, implementation, and approval of changes to financial-data systems.",
+      "pre_read": "For SoD-within-IT questions, look for toxic combinations — single individuals with privileges across the design/implement/approve cycle, or with both physical and logical access concentrated. The most significant violation usually combines multiple incompatible privileges affecting financial-data systems.",
+      "correct_explanation": "ISACA IT Audit Standards on Separation of Duties Within IT and COBIT 2019 establish that SoD-within-IT analyzes toxic combinations of privileges — combinations that allow a single individual to compromise control integrity. Observation 1 documents the IT manager with: DBA privileges (can modify data directly), system admin privileges on core-banking servers (can modify configurations including audit logging), AND production code modification (can introduce or alter business logic). This concentration is the textbook 'one-person-can-end-to-end-modify' toxic combination, especially serious for a bank's core-banking system where financial data integrity depends on the controls' independence. Observation 2 (developers deploying their own code through a pipeline they configured) is also a SoD violation but lower-severity because the pipeline can be reviewed and the code is at least visible in version control. Observation 3 (operations staff with physical + logical access management including self-grant) is serious but affects access management rather than data/system modification. Observation 4 (help-desk read-only access) is appropriate.",
+      "wrong_explanations": {
+        "B": "Developer-deployed code through self-configured pipelines is a SoD violation but lower-severity because (a) code changes are visible in version control and (b) the pipeline configuration itself can be reviewed. The IT manager's privileges combine to allow data-level changes that bypass version control entirely.",
+        "C": "Operations staff with physical + logical-access authority is a serious concentration affecting access management. But the IT manager's privileges in Observation 1 affect the data and system layer directly — the system that financial data depends on. The data-layer concentration is more significant.",
+        "D": "Help-desk read-only access is appropriately restricted and is not a SoD violation. The auditor's concern is the violations, not the appropriately-designed roles."
+      },
+      "tips": [
+        "Trap is C — concentration of physical + logical access feels alarming, but data/system modification capability (Observation 1) directly affects the integrity of the financial data systems.",
+        "SoD toxic-combination analysis: design + implement + approve in one person = most severe. Especially for financial-data systems.",
+        "Exam-day shortcut: SoD-within-IT questions are answered by the option that names the broadest combination affecting the most-sensitive system."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on Separation of Duties Within IT; COBIT 2019 DSS06 (Managed Business Process Controls); ITAF Performance Standards on SoD",
+      "related_concepts": [
+        "Separation of Duties Within IT",
+        "Toxic combinations",
+        "DBA privileges",
+        "System administration",
+        "Production code modification"
+      ],
+      "_provenance": "Authored from concept: 'SoD within IT toxic combination analysis - DBA + system admin + code modification in one person on core-banking system as most severe, distinct from developer-self-deployment / physical-plus-logical-access / read-only'. Public source: ISACA IT Audit Standards + COBIT 2019. All scenario specifics (community bank, 8 IT staff, four observation patterns) invented for this question."
+    },
+    {
+      "id": "d2_009",
+      "domain": 2,
+      "subtopic": "Audit's Role in EGIT — Independent Evaluation of Governance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a publicly-traded insurer is mid-engagement on an audit of the company's EGIT effectiveness. The CEO has asked the audit director to play three roles concurrently: (1) provide independent evaluation of EGIT effectiveness (the audit's planned role); (2) advise the IT Steering Committee on EGIT design improvements during the engagement; (3) sit on the IT Steering Committee as a permanent member to provide ongoing governance input. The audit director must respond.",
+      "question": "Which response BEST navigates the EGIT-audit-role boundaries?",
+      "options": {
+        "A": "Accept all three roles, since the audit director's expertise is most valuable when applied broadly across evaluation, advisory, and ongoing governance input",
+        "B": "Accept the first and third roles as natural extensions of the audit director's expertise, but decline the second (mid-engagement advisory) since it creates an immediate conflict with the in-flight engagement",
+        "C": "Accept only the first role (independent evaluation, the audit's planned scope) and decline the second and third — both create self-review threats that cannot be reduced by safeguards in this scenario",
+        "D": "Decline all three roles to avoid any possible appearance of conflict and refer the audit committee to an external EGIT specialist"
+      },
+      "correct": "C",
+      "key_concept": "Audit's role in EGIT is independent evaluation. Mid-engagement advisory creates immediate self-review threat. Permanent committee membership creates ongoing self-review threat. Both must be declined; alternatives exist (post-engagement advisory with recusal; external advisor for committee).",
+      "pre_read": "For audit-role-in-EGIT questions, the right shape is \"independent evaluation only + decline advisory and committee roles + offer alternatives that preserve independence\". Distractors that accept all roles, accept some, or decline all miss the calibrated boundary.",
+      "correct_explanation": "ISACA Code of Professional Ethics, ITAF General Standards on Independence, and the IIA Three Lines Model establish that internal audit is the third line — providing INDEPENDENT assurance to the governing body. Roles that compromise that independence cannot be accepted, even when the auditor's expertise would be valuable. The CEO's three-role request creates two distinct independence threats: (1) Mid-engagement advisory on EGIT design — this is an immediate self-review threat; the auditor would later be auditing the design they advised on. (2) Permanent IT Steering Committee membership — this is an ongoing self-review threat; every subsequent EGIT audit would be reviewing committee decisions the auditor participated in. Acceptable alternatives that preserve audit independence: (a) post-engagement advisory only, with explicit recusal from any future audit of the advised area; (b) external advisor (a non-auditor with EGIT expertise) provides ongoing committee input. Option A accepts all three, breaking independence at multiple levels. Option B accepts the third role (permanent committee membership) which is the more severe ongoing threat. Option D over-corrects — declining the first role abandons the audit's actual function.",
+      "wrong_explanations": {
+        "A": "Accepting all three roles compromises audit independence at multiple levels. The self-review threats are real and unmitigatable through safeguards in this scenario; the only response is to decline incompatible roles.",
+        "B": "This option declines the mid-engagement advisory (correctly) but accepts permanent committee membership. Permanent membership creates the more severe ONGOING threat — every future audit reviews the auditor's own committee participation. The third role is at least as problematic as the second.",
+        "D": "Declining all three roles abandons the audit's actual function. The first role (independent evaluation of EGIT) is the audit's planned scope and a legitimate audit responsibility — declining it doesn't preserve independence, it abandons the audit."
+      },
+      "tips": [
+        "Trap is B — declining mid-engagement advisory is correct but accepting permanent committee membership is the bigger ongoing threat.",
+        "EGIT audit role = independent evaluation only. Decline advisory + committee membership; offer alternatives (post-engagement advisory with recusal; external advisor for committee).",
+        "Exam-day shortcut: any audit-role-in-EGIT question is answered by the option that names independent evaluation only AND declines roles creating self-review threats."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics (Independence); ITAF General Standards on Independence; ISACA IT Audit Standard 1003 (Auditor's Professional Independence); IIA Three Lines Model (2020)",
+      "related_concepts": [
+        "Audit's role in EGIT",
+        "Self-review threat",
+        "Independent evaluation",
+        "Permanent committee membership",
+        "Three Lines Model"
+      ],
+      "_provenance": "Authored from concept: 'audit role in EGIT - independent evaluation only, decline mid-engagement advisory (immediate self-review) and permanent committee membership (ongoing self-review), offer alternatives'. Public source: ISACA Code of Professional Ethics + IIA Three Lines + Standard 1003. All scenario specifics (publicly-traded insurer, CEO requesting three concurrent roles) invented for this question."
+    },
+    {
+      "id": "d2_010",
+      "domain": 2,
+      "subtopic": "Auditing IT Governance Structure and Implementation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit manager at a state-university IT system is auditing the IT governance structure and its implementation. Four observations document the gap between the documented governance and the actual operating practice: (1) the IT Governance Charter (written 4 years ago) calls for an IT Steering Committee meeting quarterly; in practice, the committee has met only twice in the past 12 months and once in the prior year; (2) the charter documents a portfolio-prioritization process for IT investments; in practice, IT investments are approved by the CIO unilaterally based on annual budget allocations; (3) the charter documents a quarterly board-level IT-risk review; in practice, the board has reviewed IT risk only annually for the past 3 years; (4) the charter documents an annual review-and-update cycle for itself; in practice, the charter has not been updated in 4 years. The audit manager must synthesize the audit's conclusion.",
+      "question": "Which conclusion BEST captures what the four observations together indicate about the IT governance structure?",
+      "options": {
+        "A": "The IT Governance Charter is well-designed; the four implementation gaps are operational issues that don't reflect on the charter itself, since the charter's design has not changed",
+        "B": "Documented governance and operational practice have diverged across all four observations; the gap is itself a finding (governance on paper but not in practice), and the unmet charter-update cycle means the system has no self-correction mechanism",
+        "C": "The four observations are independent operational issues that should be reported separately to the relevant area owners, since they affect different aspects of IT governance and don't share a common cause",
+        "D": "The IT Governance Charter should be discarded entirely and replaced with a new framework, since the documented governance has clearly failed to take hold in operational practice"
+      },
+      "correct": "B",
+      "key_concept": "Auditing IT governance structure means evaluating both the design (charter) AND the implementation (practice). Divergence between the two is the central finding; failure of the self-correction mechanism (charter-update cycle) explains why the gap persists. Charter-only or practice-only views miss this synthesis.",
+      "pre_read": "For audit-of-IT-governance-structure questions, look for divergence between documented governance and operational practice. The synthesis finding is that the structure exists on paper but not in practice, AND identify whether the self-correction mechanism is also broken.",
+      "correct_explanation": "ISACA's COBIT 2019 (Evaluate, Direct, Monitor domain) and ITAF Performance Standards on IT Governance Audits establish that auditing IT governance evaluates BOTH design (the charter and documented framework) AND implementation (operational practice). The four observations together show consistent divergence between documented governance and operational practice across multiple dimensions: meeting cadence (1), investment-decision process (2), board-level risk review (3), and the charter's own update cycle (4). The synthesis finding is twofold: (a) governance exists on paper but not in practice — the charter no longer reflects how IT is actually governed; (b) the failure of Observation 4 (charter not updated in 4 years) is structurally important — it means the governance system has no self-correction mechanism. Without a working charter-update cycle, the gap between documented and actual governance has no built-in path to close. Option A treats the charter as well-designed and the practice as unrelated — but the charter's own update cycle is one of the failed observations. Option C treats the observations as independent — but they share a common cause (no functioning governance discipline) and should be reported together. Option D over-corrects — discarding the charter doesn't fix anything; restoring the charter's relevance through update + enforcement is the path.",
+      "wrong_explanations": {
+        "A": "The charter cannot be 'well-designed' if its own update cycle (Observation 4) hasn't been honored for 4 years. The failure to review and update is a charter-design failure as much as an operational one.",
+        "C": "The four observations share a common cause: governance discipline has lapsed across multiple dimensions. Reporting them as independent issues misses the synthesis insight (no functioning governance system) and fragments the recommendation.",
+        "D": "Discarding the charter abandons the design layer entirely. The right path is to restore charter relevance through update (revising it to reflect current practices the company actually wants to follow) AND restoring enforcement (meeting cadence, investment process, board reviews)."
+      },
+      "tips": [
+        "Trap is C — \"report each observation separately\" misses the common cause and the synthesis insight. Four governance failures suggest a governance-system problem, not four unrelated operational issues.",
+        "Audit-of-governance-structure: design + implementation + self-correction mechanism. Divergence at all three is a structural finding.",
+        "Exam-day shortcut: when documented governance and operational practice diverge across multiple dimensions, the synthesis finding is governance-on-paper-not-in-practice + broken self-correction."
+      ],
+      "framework_ref": "COBIT 2019 EDM Domain (Evaluate, Direct, Monitor); ISACA IT Audit Standards on IT Governance Audits; ITAF Performance Standards on Audit of IT Governance",
+      "related_concepts": [
+        "Auditing IT governance structure",
+        "Design vs implementation",
+        "Charter divergence",
+        "Self-correction mechanism",
+        "Governance discipline"
+      ],
+      "_provenance": "Authored from concept: 'auditing IT governance structure - synthesis finding when documented governance and operational practice diverge across multiple dimensions AND self-correction mechanism is also broken'. Public source: COBIT 2019 EDM + ITAF Performance Standards on IT Governance. All scenario specifics (state university IT system, four divergence observations) invented for this question."
+    }
+  ]
 }
