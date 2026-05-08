@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d1.json`.
 
-**Last updated:** after batch 12 (d1_151..d1_170). Total D1 questions authored: 170 of 180 (94%). **Foundational tier at 18/18 — target met. Final batch 13 (10 questions) closes to 180.**
+**Last updated:** after batch 13 (d1_171..d1_180). Total D1 questions authored: **180 of 180 (100%) — DOMAIN 1 COMPLETE.** Final mix: 18 foundational + 90 application + 72 analysis exactly meets the 10/50/40 target distribution.
 
 ## Part A — Planning
 
@@ -201,14 +201,14 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after batch 12 | Gap |
+| Tier | Target (180) | Authored after batch 13 | Gap |
 |---|---|---|---|
 | Foundational | 18 (10%) | 18 | **0 — TARGET MET** |
-| Application | 90 (50%) | 85 | -5 |
-| Analysis | 72 (40%) | 67 | -5 |
-| **Total** | **180** | **170** | **-10** |
+| Application | 90 (50%) | 90 | **0 — TARGET MET** |
+| Analysis | 72 (40%) | 72 | **0 — TARGET MET** |
+| **Total** | **180** | **180** | **0 — D1 COMPLETE** |
 
-D1 is at **94%**. Final batch 13 (10 questions: 5 application + 5 analysis) closes the remaining gap to reach 180.
+**Domain 1 is complete.** Final tier mix exactly matches the 10/50/40 target distribution. After PR #35 merges, the project moves to Domain 2 (target: 180 questions).
 
 ## Batch 13 plan (final batch, 10 questions to close to 180)
 

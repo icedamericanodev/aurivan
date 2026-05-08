@@ -6267,6 +6267,379 @@
         "Standards-body conflict"
       ],
       "_provenance": "Authored from concept: 'conflict between IIA Standards and ISACA ITAF - apply the more rigorous (conservative approach satisfies both), document, report, distinct from pick-lenient / abandon-both / favor-one-categorically'. Public source: IIA IPPF + ISACA ITAF. All scenario specifics (non-bank financial-services firm, dual-standard commitment, procedural-cadence conflict) invented for this question. Distinct from d1_021/045/051/060/091/121 ITAF/Standards questions and d1_087/105/125 independence questions."
+    },
+    {
+      "id": "d1_171",
+      "domain": 1,
+      "subtopic": "Audit Reporting — Distribution and Restricted-Use Considerations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a state attorney-general's office is preparing the distribution plan for an audit report on the office's case-management system. The report contains findings about access-control weaknesses that, if widely distributed, could be exploited. What is the MOST important consideration for the report's distribution and use restrictions?",
+      "options": {
+        "A": "Distribute the report broadly to all employees of the office to maximize transparency, regardless of the access-control sensitivities",
+        "B": "Distribute the report only to those who need to know to act on it (audit committee, executive leadership, the responsible operations leader, legal counsel) and include explicit restricted-use language stating the report is intended solely for those recipients and is not to be redistributed; the access-control-weakness details warrant the restriction because broad distribution could enable exploitation",
+        "C": "Withhold the report entirely until the access-control weaknesses are remediated, since distributing the report itself creates risk",
+        "D": "Distribute the full report publicly online so external stakeholders can verify the office's transparency"
+      },
+      "correct": "B",
+      "key_concept": "Audit report distribution is calibrated to the recipients' need-to-know and restricted-use language is included when the content is sensitive. Broad distribution, withholding entirely, and public posting all violate this discipline.",
+      "pre_read": "For audit-report distribution questions, watch for distractors that go too broad (transparency-driven), too narrow (withhold-until-remediated), or public-posting. The right answer always names need-to-know recipients and restricted-use language.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting) and ITAF Performance Standards on Communication of Results establish that audit-report distribution should be calibrated to the recipients' need-to-know and that sensitive content warrants explicit restricted-use language. The right approach: (1) limit distribution to those who must act on the report — audit committee, executive leadership, the responsible operations leader, legal counsel; (2) include restricted-use language stating the report is intended solely for those recipients and is not for redistribution; (3) consider whether sensitive content (access-control weakness details that could enable exploitation) requires further restriction such as redaction of specific exploitable details. Option A's broad distribution converts the audit report into an exploitation map. Option C withholds entirely, blocking the recipients who must act on the findings. Option D's public posting creates the worst-case exploitation risk and confuses transparency (the audit's existence) with disclosure (the audit's specific findings).",
+      "wrong_explanations": {
+        "A": "Broad distribution of access-control-weakness details enables exploitation. \"Transparency\" of audit-finding details is not the same as transparency of the audit's existence; the latter is appropriate, the former is dangerous.",
+        "C": "Withholding the report blocks the audit committee, leadership, and operations leader from acting on the findings. The report must be distributed to those who can act; restriction calibrates who, not whether.",
+        "D": "Public posting of access-control-weakness details is the worst-case exploitation enabler. Some audit reports may be public (general operational findings) but exploitable specifics require restriction."
+      },
+      "tips": [
+        "Trap is A — \"transparency through broad distribution\" confuses the audit's existence with the finding's specific details.",
+        "Distribution = need-to-know recipients + restricted-use language + sensitive-content protection. Three properties.",
+        "Exam-day shortcut: distribution-and-restricted-use questions are answered by the option naming need-to-know recipients with explicit restricted-use language."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Communication of Results",
+      "related_concepts": [
+        "Audit-report distribution",
+        "Restricted-use language",
+        "Need-to-know discipline",
+        "Sensitive-content protection"
+      ],
+      "_provenance": "Authored from concept: 'audit-report distribution and restricted-use - need-to-know recipients plus restricted-use language plus sensitive-content protection, distinct from broad-distribution / withhold / public-posting'. Public source: ISACA Standard 1401. All scenario specifics (state attorney-general office, case-management system audit, access-control-weakness findings) invented for this question."
+    },
+    {
+      "id": "d1_172",
+      "domain": 1,
+      "subtopic": "Audit Evidence — Computer-Output Evidence (System-Generated Reports)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional grocery chain is using a system-generated report (computer-output evidence from the inventory-management system) to support audit conclusions about inventory accuracy. What is the MOST important step before relying on the system-generated report as audit evidence?",
+      "options": {
+        "A": "Accept the system-generated report at face value, since the system produces it consistently and the auditor doesn't need to evaluate the report's reliability",
+        "B": "Evaluate the reliability of the report by testing the controls over the system that generated it (logical access, change management, processing integrity), or by independently reproducing the report from underlying transaction data using auditor-controlled procedures (e.g., GAS), and document the basis for relying on the report's accuracy",
+        "C": "Have management approve the report's accuracy in writing and rely on management's attestation as the basis for audit reliance",
+        "D": "Discard system-generated reports as audit evidence entirely, since they are produced by the audited system and inherently unreliable"
+      },
+      "correct": "B",
+      "key_concept": "Computer-output evidence requires reliability evaluation: testing controls over the generating system OR independently reproducing the report. Face-value acceptance, management attestation alone, and categorical rejection all violate the discipline.",
+      "pre_read": "For computer-output evidence questions, the right shape is \"evaluate reliability through control-testing or independent reproduction\". Distractors that accept face-value, rely on management attestation, or reject all reports miss the discipline.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Evidence establish that computer-output evidence (system-generated reports, queries, downloads) requires reliability evaluation before audit reliance. The two paths to establish reliability: (1) test controls over the generating system — logical access (who can modify the underlying data or report logic), change management (whether report logic has changed during the audit period), processing integrity (whether the system processes data correctly); (2) independently reproduce the report from underlying transaction data using auditor-controlled procedures such as Generalized Audit Software (GAS), comparing the auditor's reproduction to the system-generated report. Either path produces documented reliance basis. Option A accepts face-value, missing both the control evaluation and the reproduction option. Option C relies on management attestation alone, which is not audit evidence in the same sense (it transfers reliance to the audited party). Option D's categorical rejection of computer-output evidence ignores its everyday utility when properly evaluated.",
+      "wrong_explanations": {
+        "A": "Face-value acceptance bypasses the auditor's responsibility to evaluate evidence reliability. System consistency does not equal evidence reliability — a consistently-broken system produces consistently-wrong reports.",
+        "C": "Management attestation transfers reliance to the audited party, who has incentives to attest favorably. Audit evidence requires independent verification, not management's representation.",
+        "D": "Categorical rejection of system-generated reports would eliminate a vast portion of audit-evidence sources in modern practice. Properly-evaluated computer-output evidence is among the most reliable evidence types."
+      },
+      "tips": [
+        "Trap is A — \"system produces it consistently\" conflates consistency with reliability. Different things.",
+        "Computer-output evidence reliability = control-testing on the generating system OR independent reproduction (GAS). Two paths, document either.",
+        "Exam-day shortcut: computer-output evidence questions are answered by the option naming control-testing or independent reproduction with documented reliance basis."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Evidence; ITAF Tools and Techniques on Audit Data Analytics",
+      "related_concepts": [
+        "Computer-output evidence",
+        "System-generated reports",
+        "Reliability evaluation",
+        "Independent reproduction",
+        "Generalized Audit Software"
+      ],
+      "_provenance": "Authored from concept: 'computer-output evidence reliability - control-testing on generating system OR independent reproduction, distinct from face-value / management-attestation / categorical-rejection'. Public source: ISACA Standard 1205. All scenario specifics (regional grocery chain, inventory-management system) invented for this question. Distinct from d1_004/095/102/133/134 prior evidence questions."
+    },
+    {
+      "id": "d1_173",
+      "domain": 1,
+      "subtopic": "Continuous Auditing — Cost-Benefit Threshold for Deployment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit director at an agricultural cooperative is evaluating whether to deploy continuous auditing to a specific business area. The CA system would cost approximately $400K to deploy plus $80K/year ongoing. What is the MOST important consideration when applying a cost-benefit threshold to the CA deployment decision?",
+      "options": {
+        "A": "Deploy CA wherever it is technically feasible, regardless of cost-benefit considerations, since continuous auditing is the modern standard",
+        "B": "Evaluate the area's risk profile, transaction volume, anomaly-detection value, and audit-effort substitution potential against the CA deployment and ongoing costs; deploy CA where benefits (early anomaly detection, reduced periodic-audit effort, improved control assurance) exceed costs over a defensible time horizon, and pass on areas where the threshold isn't met",
+        "C": "Deploy CA only in the lowest-risk areas to minimize disruption to higher-risk audits",
+        "D": "Skip CA entirely since periodic auditing has worked historically and CA introduces deployment cost"
+      },
+      "correct": "B",
+      "key_concept": "CA deployment follows a cost-benefit threshold combining risk profile, transaction volume, anomaly-detection value, and audit-effort substitution potential, evaluated against deployment + ongoing costs. Universal-deployment, low-risk-only, and avoid-CA are all wrong responses to the threshold question.",
+      "pre_read": "For CA cost-benefit threshold questions, anchor on \"benefits over costs over a defensible time horizon\". Distractors that deploy universally, restrict to low-risk, or skip CA all miss the threshold-evaluation discipline.",
+      "correct_explanation": "ITAF Tools and Techniques on Continuous Auditing and ISACA IT Audit Standards establish that CA deployment decisions follow cost-benefit threshold analysis. The benefits side combines: (1) area's risk profile — higher risk areas justify more CA investment; (2) transaction volume — high-volume areas amplify CA's anomaly-detection value; (3) anomaly-detection value — areas with patterns CA can identify; (4) audit-effort substitution potential — CA can reduce periodic audit effort by providing ongoing assurance. The cost side combines deployment + ongoing costs. CA is deployed where benefits exceed costs over a defensible time horizon (typically 3-5 years). Option A's universal deployment ignores the cost side. Option C inverts risk-priority. Option D refuses to evaluate the threshold at all.",
+      "wrong_explanations": {
+        "A": "Universal CA deployment ignores cost-benefit. Some areas don't justify the CA investment because their risk profile, volume, or anomaly-pattern value is too low.",
+        "C": "Deploying CA only in low-risk areas inverts the priority. CA's value is highest in high-risk, high-volume areas; restricting to low-risk wastes the technique on areas where it provides minimal value.",
+        "D": "Refusing to deploy CA because periodic auditing has worked historically misses the cost-benefit case. Periodic auditing's success doesn't establish that CA wouldn't add value at lower long-run cost."
+      },
+      "tips": [
+        "Trap is A — \"deploy CA universally\" sounds modern but ignores cost-benefit. Threshold matters.",
+        "CA cost-benefit threshold = (risk + volume + anomaly value + audit-effort substitution) > (deployment + ongoing) over time horizon.",
+        "Exam-day shortcut: CA cost-benefit questions are answered by the option naming risk-profile + volume + anomaly value + cost evaluation against threshold."
+      ],
+      "framework_ref": "ITAF Tools and Techniques on Continuous Auditing; ISACA IT Audit Standards on Audit Data Analytics",
+      "related_concepts": [
+        "Continuous-auditing deployment",
+        "Cost-benefit threshold",
+        "Risk-volume-value evaluation",
+        "Audit-effort substitution"
+      ],
+      "_provenance": "Authored from concept: 'CA cost-benefit threshold for deployment - risk + volume + anomaly value + audit-effort substitution evaluated against deployment + ongoing costs over time horizon, distinct from universal / low-risk-only / skip-CA'. Public source: ITAF Tools and Techniques on Continuous Auditing. All scenario specifics (agricultural cooperative, $400K + $80K/year deployment costs) invented for this question. Distinct from d1_013/046/083/092/110/130/145/148/161 prior CA questions."
+    },
+    {
+      "id": "d1_174",
+      "domain": 1,
+      "subtopic": "AI/ML — Model Retirement Evidence Preservation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a home-improvement retail chain is reviewing the company's process for retiring an AI/ML demand-forecasting model that is being replaced by a new model. What is the MOST important audit consideration regarding model retirement?",
+      "options": {
+        "A": "Once a model is retired and no longer in production, the audit's interest in it ends and no specific retirement procedures are required",
+        "B": "The retirement process should preserve evidence sufficient to: (1) reconstruct the retired model's decisions for any business or regulatory inquiry that arises about decisions made while the model was in production (model version, training data lineage, decision logs); (2) document the rationale for retirement (what the new model addresses that the old one didn't); (3) ensure no integration paths still depend on the retired model after the cutover",
+        "C": "Retire the model immediately and delete all associated data, records, and documentation to free up storage and minimize complexity",
+        "D": "Keep the retired model running indefinitely alongside the new one, since model continuity preserves evidence"
+      },
+      "correct": "B",
+      "key_concept": "AI/ML model retirement requires evidence preservation (model version, training data lineage, decision logs sufficient to reconstruct production decisions), rationale documentation, and integration-path verification. Immediate-deletion, evidence-preservation-by-keeping-model-running, and skip-retirement-procedures all miss the discipline.",
+      "pre_read": "For model-retirement questions, the right shape is \"preserve evidence to reconstruct decisions + document rationale + verify integration cutover\". Distractors that delete immediately, keep models indefinitely, or skip procedures all violate the discipline.",
+      "correct_explanation": "ISACA \"Auditing Artificial Intelligence\" guidance, NIST AI Risk Management Framework, and ITAF Performance Standards on Documentation establish that AI/ML model retirement requires specific procedures preserving the auditor's and regulator's ability to reconstruct production decisions. The retirement process: (1) preserves evidence — model version, training data lineage, decision logs sufficient to reconstruct any production decision the retired model made (regulatory or litigation inquiries can arise years after retirement); (2) documents the retirement rationale — what the new model addresses that the old one didn't, what the transition plan covers; (3) verifies no integration paths still depend on the retired model after cutover (testing for dangling dependencies). Option A treats retirement as an end-of-audit-interest event, missing the post-retirement evidentiary obligations. Option C deletes everything immediately, eliminating the evidence the auditor (and others) may need later. Option D keeps the model running indefinitely as evidence-preservation, which costs operationally and creates parallel-system risk.",
+      "wrong_explanations": {
+        "A": "Retired models can be the subject of inquiry years after retirement (regulatory questions, litigation, customer complaints about historical decisions). The audit's interest extends through the evidence-preservation period, not just while the model is in production.",
+        "C": "Immediate deletion eliminates the evidence the auditor and others may need to reconstruct production decisions. Storage and complexity costs are real but vastly outweighed by the inability to answer post-retirement questions.",
+        "D": "Keeping the retired model running indefinitely as evidence-preservation is operationally costly and creates parallel-system risk (which model is authoritative for which decisions). Evidence preservation is achieved through documented archives, not by keeping production systems running."
+      },
+      "tips": [
+        "Trap is A — \"retired = end of audit interest\" misses post-retirement evidentiary obligations.",
+        "Model retirement = preserve evidence + document rationale + verify integration cutover. Three elements.",
+        "Exam-day shortcut: model-retirement questions are answered by the option naming evidence preservation sufficient to reconstruct production decisions."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); NIST AI Risk Management Framework (AI RMF 1.0); ITAF Performance Standards on Documentation; ISACA IT Audit Standard 1208 (Audit Documentation)",
+      "related_concepts": [
+        "AI/ML model retirement",
+        "Evidence preservation",
+        "Decision reconstruction",
+        "Model version archive",
+        "Integration cutover verification"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML model retirement evidence preservation - preserve evidence sufficient to reconstruct production decisions + document rationale + verify integration cutover, distinct from end-audit-interest / immediate-deletion / keep-running-indefinitely'. Public source: ISACA Auditing AI program + NIST AI RMF + ISACA Standard 1208. All scenario specifics (home-improvement retail chain, demand-forecasting model retirement) invented for this question. Distinct from d1_018/057/066/080/085/108/119/144/162 prior AI/ML questions."
+    },
+    {
+      "id": "d1_175",
+      "domain": 1,
+      "subtopic": "Audit Programs — Tools and Techniques Template Adaptation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager at a fintech savings app (operating in partnership with a chartered bank, with KYC/CIP under FinCEN 31 CFR Part 1020 applied through the partner bank's program) is preparing the audit program for an audit of the deposit-account-opening workflow. The manager wants to leverage an ITAF Tools and Techniques template for application audits. What is the MOST important consideration when adapting an ITAF template to the specific engagement?",
+      "options": {
+        "A": "Use the ITAF template as-is without modification, since templates are designed to be authoritative across all engagements",
+        "B": "Adapt the template to the engagement's specific risks, controls, and scope: keep the template's structural discipline (objectives + procedures + evidence-gathering steps); modify procedures to fit the deposit-account-opening workflow's specific controls (KYC/CIP under FinCEN rules, account-funding controls, fraud-screening); add procedures for fintech-specific risks (real-time identity verification, third-party-data-broker integration); and document the rationale for each adaptation so the program is defensible and reviewable",
+        "C": "Discard the ITAF template entirely and write a custom audit program from scratch, since templates are too generic to be useful",
+        "D": "Use the template as-is for compliance areas and write custom procedures only for technical areas, treating the two as fundamentally different audit types"
+      },
+      "correct": "B",
+      "key_concept": "ITAF Tools and Techniques templates are designed to be adapted: keep structural discipline, modify procedures to fit engagement-specific controls and scope, add engagement-specific risks, document adaptation rationale. As-is, discard, or partial-use approaches all miss the adaptation discipline.",
+      "pre_read": "For ITAF-template-adaptation questions, the right shape is \"keep structure + modify procedures + add specifics + document rationale\". Distractors that use as-is, discard, or partially apply miss the design.",
+      "correct_explanation": "ITAF Tools and Techniques is explicitly designed for adaptation. The framework provides templates (audit programs, procedures, evidence-gathering checklists) at a generic level that audit teams adapt to specific engagements. The discipline: (1) keep the template's structural discipline — objectives, procedures, evidence-gathering steps — because the structure is what makes the audit defensible and reviewable; (2) modify procedures to fit the engagement-specific controls (KYC/CIP under FinCEN rules for the deposit-account context, account-funding controls, fraud-screening); (3) add procedures for engagement-specific risks (fintech-specific real-time identity verification, third-party-data-broker integration); (4) document the adaptation rationale so the program is defensible and reviewable. Option A's as-is use ignores engagement specifics, producing a program that doesn't match the actual controls and risks. Option C discards the template's structural value, requiring the audit team to reinvent structure for every engagement. Option D's split approach treats compliance and technical as separate audit types when they're integrated in the same engagement.",
+      "wrong_explanations": {
+        "A": "Templates designed for adaptation lose their value when used as-is. The fintech-specific controls (KYC/CIP, account-funding, fraud-screening) are not in a generic template; they require engagement-specific adaptation.",
+        "C": "Discarding the template means re-deriving structure (objectives, procedures, evidence) for every engagement. The template's structural value is the time-tested audit-program design; adapting is more efficient than rebuilding.",
+        "D": "Compliance and technical areas are integrated in the same engagement (the deposit-account-opening workflow has both compliance — KYC/CIP — and technical — fraud-screening logic — controls). Splitting the approach fragments the audit and may create coverage gaps at the boundary."
+      },
+      "tips": [
+        "Trap is A — \"templates are authoritative as-is\" misses that ITAF templates are designed for adaptation.",
+        "ITAF template adaptation = keep structure + modify procedures + add specifics + document rationale. Four elements.",
+        "Exam-day shortcut: template-adaptation questions are answered by the option naming structural-discipline preservation with engagement-specific procedure modification."
+      ],
+      "framework_ref": "ITAF Tools and Techniques (Information Technology Assurance Framework); ISACA IT Audit Standard 1201 (Engagement Planning); FinCEN regulations 31 CFR Part 1020 (KYC/CIP for financial institutions)",
+      "related_concepts": [
+        "Audit-program template",
+        "ITAF Tools and Techniques",
+        "Template adaptation",
+        "Engagement-specific procedures",
+        "Audit-program defensibility"
+      ],
+      "_provenance": "Authored from concept: 'ITAF template adaptation - keep structure + modify procedures + add specifics + document rationale, distinct from as-is / discard / partial-use'. Public source: ITAF Tools and Techniques. All scenario specifics (fintech savings app, deposit-account-opening workflow, KYC/CIP/fraud-screening) invented for this question. Distinct from d1_011 (audit programs scenario) and d1_071 (audit programs foundational definition)."
+    },
+    {
+      "id": "d1_176",
+      "domain": 1,
+      "subtopic": "Risk Assessment — Quantifying Intangible Risks (Reputation, Brand)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a major motion-picture studio is contributing to the studio's risk assessment. Three risks under evaluation are intangible: (1) brand reputation damage from a hypothetical leak of unreleased movie content; (2) creative-talent attrition risk if the studio's IT systems frequently fail and disrupt production; (3) IP-rights-confusion risk if the studio's rights-management database is corrupted and rights ownership becomes ambiguous. None of these have direct dollar values; all could materially affect the studio's competitive position and financial performance over time. The audit director must contribute a quantification approach.",
+      "question": "Which approach BEST quantifies these intangible risks for risk-assessment purposes?",
+      "options": {
+        "A": "Decline to quantify intangible risks and treat them as outside the risk-assessment scope, focusing only on tangible-loss risks",
+        "B": "Apply structured quantification techniques: (1) translate each intangible risk to financial-impact equivalents using indirect indicators (historical brand-reputation damage estimates from peer-company data; talent-attrition cost = recruitment + onboarding + opportunity cost of disrupted productions; IP-rights-confusion cost = legal fees + lost-licensing revenue + dispute-resolution costs); (2) estimate likelihood ranges with explicit assumption documentation; (3) layer the quantitative estimates with qualitative assessment for the remaining intangible dimensions; and document the quantification approach so the methodology is reviewable",
+        "C": "Quantify all intangible risks at $0 since they cannot be directly measured, effectively excluding them from priority-tiering",
+        "D": "Quantify all intangible risks at the same arbitrary dollar amount (e.g., $10M each) to ensure they all rank as high-priority regardless of actual differences in impact"
+      },
+      "correct": "B",
+      "key_concept": "Intangible risks can be quantified through indirect indicators (peer-company data, cost components, opportunity costs), with explicit assumptions and qualitative layering. Decline-to-quantify, $0-default, and arbitrary-equal-amount all violate disciplined risk assessment.",
+      "pre_read": "For intangible-risk quantification questions, watch for distractors that decline, default to $0, or assign arbitrary uniform amounts. The right answer always uses indirect indicators with documented assumptions and qualitative layering.",
+      "correct_explanation": "ISACA Risk IT Framework, ISO/IEC 31000:2018, and FAIR (Factor Analysis of Information Risk) all provide structured approaches to intangible-risk quantification. The discipline: (1) translate each intangible risk to financial-impact equivalents using indirect indicators — peer-company data for reputation damage (e.g., disclosed brand-impact estimates from similar past incidents in the industry); component-cost analysis for talent attrition (recruitment costs + onboarding + lost productivity + production-disruption opportunity costs); legal-and-licensing analysis for IP-rights confusion (legal fees + lost-licensing revenue + dispute-resolution); (2) estimate likelihood ranges with explicit assumption documentation (the quantification's defensibility comes from documented assumptions, not from precise point estimates); (3) layer quantitative estimates with qualitative assessment for the remaining intangible dimensions (some aspects of reputation are genuinely beyond financial translation); (4) document the methodology for reviewability. Option A's decline-to-quantify excludes material risks from priority-tiering. Option C's $0-default ranks intangibles below all tangible risks regardless of actual importance. Option D's arbitrary uniform amount assigns equal weight to risks that genuinely differ in impact.",
+      "wrong_explanations": {
+        "A": "Declining to quantify intangible risks excludes material risks from the priority-tiering exercise. Reputation damage, talent attrition, and IP-rights confusion materially affect the studio; treating them as out-of-scope is a major risk-assessment failure.",
+        "C": "Defaulting to $0 ranks intangible risks below all tangible risks, regardless of actual importance. A $0 reputation-damage estimate ranks below a $1K hardware-replacement cost, which is obviously wrong.",
+        "D": "Assigning arbitrary uniform amounts ($10M each) makes all intangible risks indistinguishable from each other, missing genuine differences in impact. Brand reputation damage from a movie leak is structurally different from IP-rights confusion."
+      },
+      "tips": [
+        "Trap is A — \"intangible, can't quantify\" excludes material risks from priority-tiering.",
+        "Intangible risk quantification: indirect indicators + documented assumptions + qualitative layering. Three elements.",
+        "Exam-day shortcut: intangible-risk quantification questions are answered by the option naming structured quantification through indirect indicators with documented assumptions."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; FAIR (Factor Analysis of Information Risk); ITAF Performance Standards on Risk Assessment",
+      "related_concepts": [
+        "Intangible risk quantification",
+        "Indirect indicators",
+        "Brand reputation",
+        "Talent attrition",
+        "IP-rights risk"
+      ],
+      "_provenance": "Authored from concept: 'intangible risk quantification - indirect indicators + documented assumptions + qualitative layering, distinct from decline / $0-default / arbitrary-uniform'. Public source: FAIR + ISO 31000 + ISACA Risk IT. All scenario specifics (motion-picture studio, three intangible risks) invented for this question. Distinct from d1_037/097/106/147 prior risk-assessment questions."
+    },
+    {
+      "id": "d1_177",
+      "domain": 1,
+      "subtopic": "Audit Engagement — Three-Way Coordination (Internal, External, Regulator)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a defense subcontractor is mid-engagement on an audit of the company's CMMC (Cybersecurity Maturity Model Certification) compliance posture. Three audit-related parties are concurrently active: (1) the internal-audit team running the CMMC compliance audit; (2) the company's external CPA firm conducting the annual financial-statement audit, which has limited intersection with CMMC controls; (3) a CMMC Third-Party Assessor Organization (C3PAO), accredited by the Cyber AB, conducting the formal CMMC certification assessment under contract with the Department of Defense. The audit director must coordinate across the three parties without violating any party's independence.",
+      "question": "Which coordination approach BEST navigates the three-way dynamic?",
+      "options": {
+        "A": "Treat the three parties as completely independent with no coordination, since coordination would compromise independence",
+        "B": "Coordinate carefully through documented protocols: (1) maintain each party's independent reporting line (internal audit to audit committee, external CPA to financial-statement-users, C3PAO to DoD); (2) share appropriate information through audit-committee-authorized channels (e.g., test-area mapping to avoid duplicate testing of the same CMMC controls); (3) preserve confidentiality boundaries (internal-audit findings flow to the audit committee, not directly to external parties unless audit-committee-authorized); (4) document the coordination plan; (5) recognize that the C3PAO's certification work has its own defined scope and coordination doesn't make C3PAO findings shared with internal audit by default",
+        "C": "Have the internal-audit team perform all audit work and provide findings to the external CPA and C3PAO so they don't need to test the same controls",
+        "D": "Cancel the internal-audit CMMC engagement entirely and rely on the C3PAO's certification work alone"
+      },
+      "correct": "B",
+      "key_concept": "Three-way audit coordination preserves each party's independent reporting line while sharing appropriate information through documented protocols. Treating parties as fully independent ignores efficient coordination; consolidating to one party's work eliminates independent perspectives.",
+      "pre_read": "For multi-party coordination questions, anchor on \"each party's independent reporting line preserved + appropriate information sharing through documented protocols\". Distractors that fully isolate, consolidate, or eliminate parties all miss the discipline.",
+      "correct_explanation": "ISACA IT Audit Standards, IIA Standard 1110 (Organizational Independence), PCAOB AS 2605 (Consideration of the Internal Audit Function), and CMMC certification protocols establish that multi-party audit coordination preserves independence while enabling efficient information sharing. The right approach: (1) maintain each party's independent reporting line — internal audit to audit committee, external CPA to financial-statement-users, C3PAO to DoD — because each party serves a different stakeholder; (2) share appropriate information through audit-committee-authorized channels — test-area mapping (e.g., which CMMC controls each party will test, avoiding duplicate testing) is appropriate sharing; (3) preserve confidentiality boundaries — internal-audit findings flow to the audit committee, not directly to external parties unless audit-committee-authorized; (4) document the coordination plan; (5) recognize that the C3PAO's work has its own defined scope (CMMC certification under DoD contract), and coordination doesn't make C3PAO findings shared with internal audit by default. Option A's no-coordination produces duplicate testing and missed efficiencies. Option C consolidates work and eliminates independent perspectives. Option D abandons internal-audit's role.",
+      "wrong_explanations": {
+        "A": "No-coordination produces duplicate testing across the three parties (each tests the same CMMC controls separately), inefficient use of audit resources, and gaps where each party assumes the other tested an area. Coordination through documented protocols preserves independence.",
+        "C": "Having internal audit perform all work and share with external CPA and C3PAO eliminates the independent perspectives those parties bring. Each party's role is structurally important; consolidating destroys the value.",
+        "D": "Canceling the internal-audit engagement abandons the audit-committee's need for independent assurance over CMMC compliance. The C3PAO's certification has a different audience (DoD) and a different scope; it doesn't substitute for internal-audit's audit-committee assurance."
+      },
+      "tips": [
+        "Trap is A — \"no coordination preserves independence\" misses that coordination through documented protocols also preserves independence.",
+        "Three-way coordination = independent reporting lines + documented information sharing + confidentiality boundaries + coordination plan + scope-recognition.",
+        "Exam-day shortcut: multi-party coordination questions are answered by the option naming independent reporting lines AND documented coordination protocols."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on the IS Audit Function; IIA International Standard 1110 (Organizational Independence); PCAOB AS 2605 (Consideration of the Internal Audit Function); DoD CMMC (Cybersecurity Maturity Model Certification) Program",
+      "related_concepts": [
+        "Three-way audit coordination",
+        "Independent reporting lines",
+        "Test-area mapping",
+        "Confidentiality boundaries",
+        "CMMC certification"
+      ],
+      "_provenance": "Authored from concept: 'three-way audit coordination - internal audit + external CPA + regulator-appointed assessor with independent reporting lines, documented sharing, and confidentiality boundaries, distinct from no-coordination / consolidate / eliminate'. Public source: ISACA + IIA 1110 + PCAOB AS 2605 + DoD CMMC. All scenario specifics (defense subcontractor, CMMC, internal audit + external CPA + C3PAO) invented for this question. Distinct from d1_032/090/149 prior using-external-experts and external-coordination questions."
+    },
+    {
+      "id": "d1_178",
+      "domain": 1,
+      "subtopic": "Sampling — Confidence-Level Adjustment Scenario",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a rideshare-logistics arm is performing a substantive sample of driver-payment transactions. The original sample was designed at 95% confidence with a tolerable error of $50K. Mid-engagement, the audit committee asks the auditor to increase the engagement's confidence level to 99% because the company is preparing for an IPO and external-auditor reliance requires higher confidence on substantive testing. The auditor must respond.",
+      "question": "Which response BEST handles the confidence-level adjustment?",
+      "options": {
+        "A": "Reject the audit-committee's request since the sample was designed at 95% and changing the design mid-engagement is improper",
+        "B": "Recognize that increasing confidence from 95% to 99% requires a larger sample (roughly 50-70% additional sample items, depending on the specific design); communicate the resource implication to the audit committee (additional fieldwork time, additional cost); confirm the audit committee accepts the resource impact; expand the sample appropriately and re-evaluate the conclusion at the higher confidence level; document the design change and the rationale",
+        "C": "Accept the audit-committee's request and re-state the conclusion at 99% confidence using the existing sample, since adjusting confidence is a calculation rather than a sampling change",
+        "D": "Accept the request but reduce the tolerable error proportionally, keeping the original sample size but tightening the threshold for accepting individual deviations"
+      },
+      "correct": "B",
+      "key_concept": "Increasing the confidence level requires a larger sample. The auditor recognizes the resource implication, communicates it, confirms audit-committee acceptance, expands the sample, and documents the change. Refusing the request, claiming calculation-only adjustment, or shifting to tolerable-error tightening all violate sampling discipline.",
+      "pre_read": "For confidence-level-adjustment questions, the right shape is \"larger sample + resource communication + audit-committee acceptance + sample expansion + documentation\". Distractors that refuse, recompute existing data, or substitute parameters all miss the design implication.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling establish that confidence level is a sample-design parameter that drives required sample size. Increasing confidence from 95% to 99% (i.e., from a 5% beta risk to a 1% beta risk) requires a larger sample, typically 50-70% more sample items depending on the specific design. The right response: (1) recognize the resource implication; (2) communicate to the audit committee (additional fieldwork time, additional cost); (3) confirm the audit committee accepts the resource impact (since the audit-committee initiated the request); (4) expand the sample appropriately, drawing additional items under the original design; (5) re-evaluate the conclusion at the higher confidence level; (6) document the design change and rationale. Option A's refusal misreads the audit-committee's authority — confidence-level adjustment is appropriate when stakeholders' assurance needs change (IPO is a textbook trigger). Option C's calculation-only adjustment is statistically invalid — the existing sample doesn't support 99% confidence. Option D's tolerable-error tightening changes a different parameter and produces a different conclusion (it doesn't increase confidence at the original tolerable error).",
+      "wrong_explanations": {
+        "A": "Sample design can be appropriately adjusted mid-engagement when stakeholder assurance needs change (the IPO context shifts requirements). Refusing the audit-committee's request misreads the committee's authority over engagement parameters.",
+        "C": "Re-stating the conclusion at 99% using the existing 95%-designed sample is statistically invalid. The sample doesn't have the items required to support 99% confidence; you can't get there through recomputation.",
+        "D": "Tightening tolerable error doesn't increase confidence — it changes a different parameter. The auditor would end up with a sample that supports a tighter conclusion at 95% confidence, not the original conclusion at 99%."
+      },
+      "tips": [
+        "Trap is C — \"recompute at higher confidence\" is statistically invalid. Confidence requires sample size.",
+        "Confidence-level adjustment: larger sample + resource communication + audit-committee acceptance + sample expansion + documentation.",
+        "Exam-day shortcut: when confidence is increased mid-engagement, the answer always involves expanding the sample (not recomputing or substituting other parameters)."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530",
+      "related_concepts": [
+        "Confidence-level adjustment",
+        "Sample-size determination",
+        "Beta risk",
+        "Mid-engagement design change",
+        "Audit-committee parameter authority"
+      ],
+      "_provenance": "Authored from concept: 'sampling confidence-level adjustment - larger sample required, communicate resource implication, document the design change, distinct from refuse / recompute-only / substitute-tolerable-error'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (rideshare logistics, driver-payment substantive sample, IPO-driven confidence increase) invented for this question. Distinct from d1_009/019/049/053/064/075/086/107/114/116/128/143/160 prior sampling questions."
+    },
+    {
+      "id": "d1_179",
+      "domain": 1,
+      "subtopic": "Risk-Based Audit Planning — Industry-Overlay Considerations",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a regional hospital system is establishing the annual audit plan. The hospital system operates in a sector with multiple overlapping risk drivers: (1) clinical-care risks (patient-safety, malpractice exposure); (2) HIPAA compliance for PHI; (3) Medicare-Medicaid reimbursement integrity (CMS audits); (4) state-level licensing regulations; (5) ongoing cybersecurity threat targeting healthcare. The director is considering whether industry-overlay considerations should change the plan beyond what a generic risk-based audit plan would produce.",
+      "question": "Which approach BEST integrates industry-overlay considerations into risk-based audit planning?",
+      "options": {
+        "A": "Use a generic risk-based audit plan and ignore industry-overlay considerations, since risk-based methodology is universally applicable",
+        "B": "Apply the generic risk-based methodology AND layer industry-overlay considerations: identify sector-specific risk drivers (HIPAA, CMS reimbursement, state licensing, healthcare-targeted cyber threats); ensure the audit plan covers each driver at appropriate depth proportional to its risk weight in the specific sector; calibrate engagement frequency to sector-specific cadence (e.g., HIPAA breach-risk areas may warrant more-frequent audits than non-regulated areas); align with sector-standard frameworks where applicable (HITRUST CSF, OCR-recognized assessments) for cross-recognition value",
+        "C": "Apply industry-overlay considerations exclusively and abandon generic risk-based methodology, since industry overlays are more relevant",
+        "D": "Apply both methodologies in fully separate parallel plans and run two audit programs"
+      },
+      "correct": "B",
+      "key_concept": "Industry-overlay considerations layer onto generic risk-based audit planning, not replace it. Sector-specific drivers (HIPAA, CMS, state licensing, sector-cyber-threats) are integrated with engagement frequency, depth, and framework alignment. Generic-only ignores sector specifics; industry-only loses risk-based discipline; parallel plans waste resources.",
+      "pre_read": "For industry-overlay questions, the right shape is \"layer industry-specifics on top of generic risk-based methodology\". Distractors that ignore industry, abandon generic, or run parallel plans all miss the layering.",
+      "correct_explanation": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning) and ITAF Performance Standards on Audit Planning establish that risk-based audit planning provides a generic methodology that must be adapted to sector-specific risk drivers. The healthcare-system scenario illustrates a multi-overlay context: HIPAA, CMS reimbursement, state licensing, sector-cyber-threats, and clinical-care risks all overlay the generic IT risk profile. The right approach: (1) apply generic risk-based methodology — risk universe, risk-tiering, engagement frequency calibration; (2) layer industry-overlay considerations — sector-specific risk drivers identified and weighted, sector-specific engagement frequency calibration (HIPAA breach-risk areas may warrant more frequent audits than non-regulated areas), sector-standard framework alignment (HITRUST CSF, OCR-recognized assessments) for cross-recognition value. Option A ignores sector specifics that materially affect risk weighting. Option C abandons generic methodology, losing the risk-based discipline. Option D runs two plans, doubling effort without doubling value.",
+      "wrong_explanations": {
+        "A": "Generic risk-based methodology is the foundation but doesn't capture sector-specific drivers. HIPAA breach risk and CMS reimbursement risk are materially different from generic IT risks; ignoring them misses critical audit areas.",
+        "C": "Abandoning generic risk-based methodology in favor of industry-overlay loses the risk-based discipline that enables consistent prioritization within the audit universe. Industry overlay is layered, not substituted.",
+        "D": "Two parallel plans double effort without doubling value. Industry overlay should integrate into a single coherent audit plan, not run as a separate parallel plan."
+      },
+      "tips": [
+        "Trap is A — \"risk-based is universal\" oversimplifies. Industry-overlay calibrates risk weights for the specific sector.",
+        "Industry-overlay = generic risk-based methodology + sector-specific drivers + sector-specific cadence + sector-standard framework alignment.",
+        "Exam-day shortcut: industry-overlay questions are answered by the option that layers sector specifics on top of generic risk-based methodology."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ITAF Performance Standards on Audit Planning; HITRUST CSF (Common Security Framework); HIPAA Security Rule (45 CFR Part 164)",
+      "related_concepts": [
+        "Industry-overlay risk planning",
+        "Sector-specific risk drivers",
+        "Engagement frequency calibration",
+        "Sector-standard frameworks",
+        "HITRUST CSF"
+      ],
+      "_provenance": "Authored from concept: 'industry-overlay risk-based planning - layer sector-specific drivers on generic methodology, distinct from generic-only / industry-only / parallel-plans'. Public source: ISACA Standard 1202 + HITRUST CSF + HIPAA. All scenario specifics (regional hospital system, five overlapping risk drivers) invented for this question. Distinct from d1_003/056/074/100/127/142/167 prior planning questions."
+    },
+    {
+      "id": "d1_180",
+      "domain": 1,
+      "subtopic": "Audit Phases — Engagement-Conclusion Synthesis with Limitation Disclosure",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a nonprofit-housing cooperative is concluding an end-to-end audit engagement of the tenant-services system. The engagement encompassed all three audit phases (planning, fieldwork, reporting) and produced a substantive volume of evidence. Three engagement-level facts shape the conclusion: (1) the audit identified findings across multiple severity tiers (one critical, three high, four moderate, two low); (2) one specific area (a vendor-managed payment-processing module) could not be fully audited due to vendor refusal to provide certain logs, creating a defined scope limitation; (3) management has provided remediation commitments for most findings but disputes one moderate finding's classification. The audit director must synthesize the engagement conclusion in the audit report.",
+      "question": "Which conclusion-synthesis approach is MOST appropriate?",
+      "options": {
+        "A": "Issue an unmodified clean opinion since most findings are non-critical and management has committed to remediation",
+        "B": "Synthesize the engagement conclusion explicitly addressing all three engagement-level facts: (1) state the auditor's overall conclusion clearly, with severity-tiered findings summarized; (2) explicitly disclose the scope limitation on the vendor-managed payment-processing module, including what could not be audited and the basis for the limitation; (3) include management's response and the disputed moderate finding's classification rationale; (4) state any qualifications to the audit conclusion arising from the scope limitation; and ensure the report's structure makes each element traceable to its evidentiary basis",
+        "C": "Issue a disclaimer of opinion citing the scope limitation, even though the rest of the engagement was completed normally",
+        "D": "Omit the scope-limitation disclosure to keep the report concise and easier for the audit committee to act on"
+      },
+      "correct": "B",
+      "key_concept": "End-to-end engagement-conclusion synthesis explicitly addresses overall conclusion + severity-tiered findings + scope-limitation disclosure with basis + management response and disputes + traceability. Unmodified-when-not-warranted, disclaimer-when-rest-of-audit-OK, and omission-of-limitations all violate the synthesis discipline.",
+      "pre_read": "For end-to-end conclusion-synthesis questions, the right shape is \"overall conclusion + severity-tiered findings + scope-limitation disclosure with basis + management response + traceability\". Distractors that under-modify, over-modify, or omit limitations all miss the disciplined synthesis.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting), ITAF Performance Standards on Communication of Results, and the cumulative discipline of all three audit phases (Standard 1201 Planning, Standard 1203 Performance and Supervision, Standard 1401 Reporting) establish that end-to-end engagement-conclusion synthesis brings together every engagement-level fact into a coherent conclusion. The right approach: (1) state the overall conclusion clearly with severity-tiered findings summarized (one critical, three high, four moderate, two low); (2) explicitly disclose the scope limitation on the vendor-managed payment-processing module, including what could not be audited (which logs, what time period) and the basis for the limitation (vendor refusal to provide certain logs); (3) include management's response and the disputed moderate finding's classification rationale; (4) state any qualifications to the audit conclusion arising from the scope limitation (the conclusion is qualified with respect to the scope limitation); (5) structure the report so each element is traceable to its evidentiary basis (per d1_122 cross-referencing). Option A's unmodified clean opinion is wrong given the critical finding and the scope limitation. Option C's disclaimer over-modifies — disclaimer is for situations where the auditor cannot obtain sufficient evidence to form an opinion, not for a defined scope limitation in a single area. Option D's omission of scope-limitation disclosure is dishonest reporting.",
+      "wrong_explanations": {
+        "A": "Unmodified clean opinions don't fit engagements with critical findings AND a defined scope limitation. The opinion must reflect the actual audit results, including the limitation's effect on what the auditor could conclude about the vendor-managed module.",
+        "C": "Disclaimer of opinion is reserved for situations where the auditor cannot obtain sufficient evidence to form ANY opinion. In this scenario, the rest of the audit completed normally; the scope limitation affects only the vendor-managed payment-processing module. A qualified opinion (modified for the specific limitation) is the right level.",
+        "D": "Omitting scope-limitation disclosure misrepresents the audit's actual coverage. The audit committee must know what was and wasn't audited to evaluate the conclusion's reliability and to consider whether additional procedures (e.g., direct engagement with the vendor) are needed."
+      },
+      "tips": [
+        "Trap is A — \"most findings are non-critical, so clean opinion\" ignores the critical finding and the scope limitation.",
+        "End-to-end synthesis = overall conclusion + severity-tiered findings + scope-limitation disclosure with basis + management response + traceability. Five elements.",
+        "Exam-day shortcut: end-to-end conclusion-synthesis questions are answered by the option that explicitly addresses all engagement-level facts including scope limitations."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); Standard 1201 (Engagement Planning); Standard 1203 (Performance and Supervision); ITAF Performance Standards on Communication of Results",
+      "related_concepts": [
+        "Engagement-conclusion synthesis",
+        "Scope-limitation disclosure",
+        "Severity-tiered findings",
+        "Qualified opinion (modified)",
+        "End-to-end audit conclusion"
+      ],
+      "_provenance": "Authored from concept: 'end-to-end engagement-conclusion synthesis - overall conclusion + severity-tiered findings + scope-limitation disclosure + management response + traceability, distinct from unmodified-when-warranted-modified / disclaimer-overuse / omit-limitations'. Public source: ISACA Standards 1201/1203/1401 + ITAF. All scenario specifics (nonprofit-housing cooperative, tenant-services audit, three engagement-level facts) invented for this question. Distinct from d1_036/109/150/168 prior reporting and synthesis questions. THIS IS THE FINAL D1 QUESTION (d1_180/180)."
     }
   ]
 }

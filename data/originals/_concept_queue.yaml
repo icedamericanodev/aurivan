@@ -22,11 +22,12 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 170
+  status: COMPLETE
+  authored_total: 180
   authored_mix:
     foundational: 18
-    application:  85
-    analysis:     67
+    application:  90
+    analysis:     72
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -223,40 +224,22 @@ domain_1:
     - { id: d1_169, subtopic: "Audit QA — Repeat-Finding Pattern Across Years",                  toc_ref: "1.10.2" }
     - { id: d1_170, subtopic: "Internal Audit Function — IIA Standards vs ISACA ITAF Conflict",  toc_ref: "1.1.5"  }
 
-  queued_next:
-    # Candidate concepts for upcoming batches, in rough priority order.
-    # Authoring order is final at batch-author time, not here.
-    #
-    # NOTE: After batch 6, all 46 leaf TOC subsections have at least one question.
-    # Future batches add DEPTH (multiple angles per exam-heavy subsection) rather
-    # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
-    # coverage map and high-priority depth targets.
+    # Batch 13 (d1_171..d1_180) — FINAL D1 batch; 5 application + 5 analysis; D1 = 180/180 (COMPLETE)
+    - { id: d1_171, subtopic: "Audit Reporting — Distribution and Restricted-Use Considerations",toc_ref: "1.9.1"  }
+    - { id: d1_172, subtopic: "Audit Evidence — Computer-Output Evidence",                       toc_ref: "1.7"    }
+    - { id: d1_173, subtopic: "Continuous Auditing — Cost-Benefit Threshold for Deployment",     toc_ref: "1.8.2"  }
+    - { id: d1_174, subtopic: "AI/ML — Model Retirement Evidence Preservation",                  toc_ref: "1.8.4"  }
+    - { id: d1_175, subtopic: "Audit Programs — Tools and Techniques Template Adaptation",       toc_ref: "1.5.3"  }
+    - { id: d1_176, subtopic: "Risk Assessment — Quantifying Intangible Risks",                  toc_ref: "1.3.4"  }
+    - { id: d1_177, subtopic: "Three-Way Audit Coordination (Internal, External, Regulator)",    toc_ref: "1.1.5"  }
+    - { id: d1_178, subtopic: "Sampling — Confidence-Level Adjustment Scenario",                 toc_ref: "1.6.2"  }
+    - { id: d1_179, subtopic: "Risk-Based Audit Planning — Industry-Overlay Considerations",     toc_ref: "1.3.1"  }
+    - { id: d1_180, subtopic: "Audit Phases — Engagement-Conclusion Synthesis with Limitation Disclosure", toc_ref: "1.5.2" }
 
-    # Final batch 13 plan (10 questions: 5 application + 5 analysis) to close 170 -> 180.
-    # All major TOC areas have substantial depth; batch 13 fills targeted residual angles.
-    - { subtopic: "Audit Reporting — Distribution and Restricted-Use considerations", toc_ref: "1.9.1", priority: high,
-        notes: "Final-batch candidate: distribution lists, restricted-use language, third-party reliance limits." }
-    - { subtopic: "Audit Evidence — Computer-output evidence (electronic reports)", toc_ref: "1.7", priority: high,
-        notes: "Final-batch candidate: testing reliability of system-generated reports as audit evidence." }
-    - { subtopic: "Continuous Auditing — Cost-benefit threshold for CA deployment", toc_ref: "1.8.2", priority: medium,
-        notes: "Final-batch candidate: when does CA's cost exceed its value; thresholds for deciding to deploy." }
-    - { subtopic: "Risk Assessment — Quantifying intangible risks (reputation, brand)", toc_ref: "1.3.4", priority: medium,
-        notes: "Final-batch candidate: methods for assigning quantitative measures to intangible risk dimensions." }
-    - { subtopic: "AI/ML — Model retirement evidence preservation", toc_ref: "1.8.4", priority: medium,
-        notes: "Final-batch candidate: what evidence to preserve when an AI/ML model is retired." }
-
-  remaining_unplanned:
-    # Lower-priority residual angles - fill if batch-13 spots remain after the high/medium picks above
-    - { subtopic: "Audit Engagement — Three-way coordination (internal, external, regulator)", toc_ref: "1.1.5", priority: low,
-        notes: "d1_032/090/149 cover internal-vs-external. Three-way coordination with regulator added is a residual angle." }
-    - { subtopic: "Sampling — Confidence-level adjustment scenario", toc_ref: "1.6.2", priority: low,
-        notes: "13 sampling questions cover most angles. Confidence-level adjustment mid-engagement is a residual angle." }
-    - { subtopic: "Audit Phases — Engagement-conclusion synthesis with limitation disclosure", toc_ref: "1.5.2", priority: low,
-        notes: "d1_054/120/150/165 cover phase angles. Synthesis with explicit limitation disclosure is a residual angle." }
-    - { subtopic: "Risk-Based Audit Planning — Industry-overlay considerations", toc_ref: "1.3.1", priority: low,
-        notes: "d1_056/074/100/127/142/167 cover universe and planning angles. Industry-overlay (sector-specific risk profiles) is a residual angle." }
-    - { subtopic: "Audit Programs — Tools and Techniques template adaptation", toc_ref: "1.5.3", priority: low,
-        notes: "d1_011/071 cover scenario + foundational. Specific T&T template adaptation scenario remains." }
+  queued_next: []
+  remaining_unplanned: []
+  # Domain 1 COMPLETE at 180/180 (after batch 13). All concepts authored.
+  # Final mix: 18 foundational + 90 application + 72 analysis (10/50/40 target met exactly).
 
 domain_2:
   target_total: 180
