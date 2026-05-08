@@ -2184,6 +2184,372 @@
         "Audit program templates"
       ],
       "_provenance": "Authored from concept: 'ITAF layer selection — match the auditor's stated need (workflow + checklist) to Tools and Techniques'. Public source: publicly published ITAF framework structure. All scenario specifics (public research university, research-data-management environment, IRB + HPC scope) invented for this question."
+    },
+    {
+      "id": "d1_061",
+      "domain": 1,
+      "subtopic": "Compliance vs Substantive Testing (Definition)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST distinguishes compliance testing from substantive testing in IS audit?",
+      "options": {
+        "A": "Both test the same target — controls — but at different points in the audit cycle",
+        "B": "Compliance testing evaluates whether controls are operating as designed (a yes/no question about the control); substantive testing evaluates the accuracy and completeness of underlying transactions or data",
+        "C": "Compliance testing applies only to regulated industries; substantive testing applies to all engagements regardless of regulation",
+        "D": "Compliance testing is a type of computer-assisted audit technique; substantive testing is a manual review technique"
+      },
+      "correct": "B",
+      "key_concept": "Compliance testing tests the control (is it operating?). Substantive testing tests the data or transactions themselves (are they accurate, complete, and authorized?). The distinction is what is being tested, not when or by whom.",
+      "pre_read": "For compliance-vs-substantive questions, separate the test target from the test method. Target = control ➜ compliance test. Target = transaction/data ➜ substantive test. CAATs and manual review are methods that can apply to either.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Engagement Conduct distinguish compliance testing from substantive testing by what each test evaluates. Compliance tests answer \"is this control operating as designed?\" — the outcome is yes/no per control instance. Substantive tests answer \"is the underlying transaction or data accurate, complete, and authorized?\" — the outcome typically quantifies error or confirms correctness in the population. Option A blurs the distinction by claiming the same target. Option C invents a regulatory boundary that does not exist; both test types are used in any audit. Option D conflates test type with method; CAATs and manual procedures can each be used for compliance OR substantive testing.",
+      "wrong_explanations": {
+        "A": "The two test types have different targets. Compliance tests the control; substantive tests the transaction or data. Treating them as testing \"the same target at different times\" misses the foundational distinction.",
+        "C": "There is no regulated-vs-unregulated distinction in the test-type definitions. Both compliance and substantive testing are used across all engagement contexts.",
+        "D": "Test type (compliance vs substantive) and test method (CAATs vs manual) are independent dimensions. A CAAT can perform either type; a manual procedure can perform either type."
+      },
+      "tips": [
+        "Trap is A — \"both test controls\" sounds like a unifying explanation but it erases the actual distinction.",
+        "Compliance tests the control. Substantive tests the data or transaction. Read the stem for the test target.",
+        "Exam-day shortcut: when the stem mentions \"is the control operating?\" the answer is compliance; when the stem mentions \"is the amount/balance/transaction correct?\" the answer is substantive."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Engagement Conduct",
+      "related_concepts": [
+        "Compliance testing",
+        "Substantive testing",
+        "Test type vs test method",
+        "Audit evidence"
+      ],
+      "_provenance": "Authored from concept: 'compliance vs substantive testing — distinguished by test target (control vs transaction/data), not by industry or method'. Public source: ISACA IT Audit Standard 1205. No legacy bank consulted."
+    },
+    {
+      "id": "d1_062",
+      "domain": 1,
+      "subtopic": "Audit Risk Model Components (IR x CR x DR)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "An IS auditor is explaining the components of audit risk to a new audit team member. Which combination BEST represents the components of the audit-risk model?",
+      "options": {
+        "A": "Inherent risk x Control risk x Detection risk approximately equals Audit risk",
+        "B": "Strategic risk x Operational risk x Compliance risk approximately equals Audit risk",
+        "C": "Likelihood x Impact approximately equals Audit risk",
+        "D": "Sampling risk x Non-sampling risk approximately equals Audit risk"
+      },
+      "correct": "A",
+      "key_concept": "Audit risk decomposes into Inherent risk (the nature of the area before controls), Control risk (the chance that controls fail to prevent or detect a misstatement), and Detection risk (the chance that audit procedures fail to find a misstatement that has occurred). The auditor controls only Detection risk via sample size and procedure rigor.",
+      "pre_read": "Distinguish the audit-risk model (IR x CR x DR, used to plan engagement effort) from enterprise-risk categories (strategic, operational, compliance) and from risk-prioritization arithmetic (likelihood x impact). They look similar in form but answer different questions.",
+      "correct_explanation": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning) and ITAF Performance Standards on Risk Assessment establish the audit-risk model: Audit Risk approximately equals Inherent Risk x Control Risk x Detection Risk. The auditor cannot directly change inherent or control risk (those are properties of the audited area and its existing controls); the auditor changes detection risk by adjusting sample size, procedure rigor, and the use of CAATs. Option B lists enterprise-risk categories, which are useful for ERM but not the audit-risk model. Option C is the risk-prioritization formula used to rank risks during planning, not the audit-risk model. Option D names two components of detection risk (sampling and non-sampling) but is not the model itself.",
+      "wrong_explanations": {
+        "B": "Strategic, operational, and compliance risks are enterprise-risk categories used in ERM. They describe types of business risk, not the components the auditor balances when planning audit procedures.",
+        "C": "Likelihood x Impact is the risk-prioritization formula used to rank risks during the audit-planning phase. It answers \"which risks deserve the most attention?\" — not \"how do I balance audit effort across the components of audit risk?\"",
+        "D": "Sampling risk and non-sampling risk are two sub-components of detection risk. The audit-risk model has three parents (IR, CR, DR), not two."
+      },
+      "tips": [
+        "Trap is C — \"likelihood x impact\" feels right because it is the other major risk formula, but it is for prioritization, not the audit-risk model.",
+        "Audit risk = IR x CR x DR. Auditor changes only DR (sample size, procedure rigor). Memorize the three letters.",
+        "Exam-day shortcut: any audit-risk-model question is answered by the option that contains \"inherent\", \"control\", and \"detection\" together."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ITAF Performance Standards on Risk Assessment",
+      "related_concepts": [
+        "Audit risk model",
+        "Inherent risk",
+        "Control risk",
+        "Detection risk",
+        "Sampling risk"
+      ],
+      "_provenance": "Authored from concept: 'audit-risk model components (IR x CR x DR) distinguished from enterprise-risk categories and prioritization formula'. Public source: ISACA IT Audit Standard 1202. No legacy bank consulted."
+    },
+    {
+      "id": "d1_063",
+      "domain": 1,
+      "subtopic": "Internal Controls — Definition (Reasonable Assurance)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of internal controls?",
+      "options": {
+        "A": "To eliminate all risk to the organization across operations, reporting, and compliance",
+        "B": "To provide reasonable assurance regarding the achievement of objectives in the categories of operations, reporting, and compliance",
+        "C": "To replace external audits with internally-managed assurance activities",
+        "D": "To document management's policies for use during regulatory inspections"
+      },
+      "correct": "B",
+      "key_concept": "Internal controls provide reasonable — not absolute — assurance of objective achievement across operations, reporting, and compliance. The reasonable-assurance qualifier and the three objective categories together define the COSO-grounded purpose.",
+      "pre_read": "Watch for the word \"eliminate\" or \"absolute\" in distractors — internal controls never eliminate risk, they reduce it to a tolerable level. The right answer always says \"reasonable assurance\" and lists the three COSO objective categories.",
+      "correct_explanation": "The COSO Internal Control - Integrated Framework defines internal control as a process designed to provide reasonable assurance regarding the achievement of objectives in three categories: operations (effectiveness and efficiency), reporting (reliability), and compliance (with applicable laws and regulations). \"Reasonable\" is doing significant work in the definition: controls cannot eliminate risk, they reduce it to a level acceptable to the entity. Option A overpromises with \"eliminate all risk,\" which is impossible by design. Option C confuses internal control with audit; controls and audits are complementary, not substitutes. Option D reduces controls to documentation, which is a small subset of what controls actually are.",
+      "wrong_explanations": {
+        "A": "\"Eliminate all risk\" is impossible — every control has cost-benefit limits and inherent design weaknesses. The defining qualifier is \"reasonable assurance\", not elimination.",
+        "C": "Internal control is the entity's first line of defense; external audit is independent assurance over financial statements (or other subject matter). They are complementary functions, not substitutes.",
+        "D": "Documentation is one element of a control environment, not the purpose of internal control. Controls are processes that operate, not just documents that exist."
+      },
+      "tips": [
+        "Trap is A — \"eliminate all risk\" is the seductive overstatement. Controls reduce risk; they do not eliminate it.",
+        "Memorize the COSO definition: reasonable assurance, three objective categories (operations, reporting, compliance).",
+        "Exam-day shortcut: any internal-controls definition question is answered by the option containing \"reasonable assurance\" and the three categories."
+      ],
+      "framework_ref": "COSO Internal Control - Integrated Framework (2013); ISACA IT Audit Standards on Internal Controls",
+      "related_concepts": [
+        "Internal control",
+        "Reasonable assurance",
+        "COSO framework",
+        "Control objectives"
+      ],
+      "_provenance": "Authored from concept: 'internal controls definition - reasonable assurance, three objective categories per COSO'. Public source: COSO Internal Control - Integrated Framework (2013). No legacy bank consulted."
+    },
+    {
+      "id": "d1_064",
+      "domain": 1,
+      "subtopic": "Sampling — Monetary-Unit Sampling Mechanics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a biotech R&D company is performing a substantive test of clinical-trial reimbursement transactions. Individual transaction amounts range from $50 to $250,000, and the auditor needs to estimate the dollar value of any over-billings in the population. The auditor is considering monetary-unit sampling (MUS). Why is MUS MOST appropriate for this engagement?",
+      "options": {
+        "A": "MUS gives every transaction an equal probability of selection regardless of dollar value, ensuring statistical fairness across the population",
+        "B": "MUS biases sample selection toward higher-dollar items in proportion to their dollar size, which fits substantive testing where over-billings on larger items have proportionally larger impact on the audit conclusion",
+        "C": "MUS is the easiest sampling technique to compute by hand, so it is the right choice when specialized audit-sampling software is unavailable",
+        "D": "MUS produces a yes/no answer per sampled item, simplifying the auditor's reporting to management"
+      },
+      "correct": "B",
+      "key_concept": "Monetary-unit sampling treats every dollar in the population as a sampling unit. The probability of an item being selected is proportional to its dollar value, which is exactly what is needed when over-billings on large items matter more to the conclusion than over-billings on small items.",
+      "pre_read": "Match the sampling technique to the engagement objective. MUS specifically over-samples large items, which fits substantive testing where dollar-error matters. Equal-probability and yes/no-output are descriptions of other techniques, not MUS.",
+      "correct_explanation": "MUS treats each dollar in the population as a sampling unit, so an item with 100 dollars in it has 100 chances of being selected and an item with 1 dollar in it has 1 chance. The probability of selection is therefore proportional to dollar value. For substantive tests where the auditor needs to estimate the dollar value of error in a population with a wide value range, this is exactly the right design — large items are more likely to be tested, and large errors are therefore more likely to be detected. Option A describes random (simple-random) sampling, not MUS. Option C is wrong on two counts: MUS computation is mathematically nontrivial, and the choice of technique should be driven by the objective, not by software convenience. Option D describes attribute sampling, not MUS.",
+      "wrong_explanations": {
+        "A": "Equal-probability selection describes simple random sampling. MUS deliberately weights selection by dollar value because that matches the substantive-test objective.",
+        "C": "MUS calculation requires sample-size formulas, projection of misstatement, and tainting calculations — it is not the easiest technique to compute by hand. And technique selection follows the audit objective, not the convenience of available software.",
+        "D": "Yes/no per-item output is the hallmark of attribute sampling, used for compliance testing of controls. MUS produces dollar-error estimates with confidence intervals."
+      },
+      "tips": [
+        "Trap is A — \"equal probability of selection\" sounds fair and rigorous, but MUS is intentionally biased toward larger items because that is what substantive testing needs.",
+        "MUS = each dollar is a sampling unit, so probability of selection is proportional to value. The math follows from this.",
+        "Exam-day shortcut: when the stem describes a wide-value-range population and asks for dollar-error estimation, the answer is MUS, and the reason is dollar-proportional selection."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530 (analogous)",
+      "related_concepts": [
+        "Monetary-unit sampling",
+        "Probability proportional to size (PPS) sampling",
+        "Substantive testing",
+        "Sample-size determination"
+      ],
+      "_provenance": "Authored from concept: 'MUS mechanics - dollar-proportional probability of selection, fits substantive testing'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (biotech R&D, clinical-trial reimbursements, $50-$250K range) invented for this question."
+    },
+    {
+      "id": "d1_065",
+      "domain": 1,
+      "subtopic": "Audit Quality Assurance — External Assessment Cadence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An audit director at an international nonprofit aid organization is establishing the quality-assurance and improvement program for the IS audit function. The director is defining the cadence and approach for external quality assessments of the function. Which approach BEST satisfies typical professional standards (IIA / ISACA) for external quality assessment?",
+      "options": {
+        "A": "Annual external quality assessment, rotated to a different external firm each year so assessment perspectives stay varied",
+        "B": "External quality assessment at least once every five years, conducted by a qualified, independent external assessor or assessment team",
+        "C": "External quality assessment only when the audit function fails an internal review or receives a complaint from the audit committee",
+        "D": "Self-assessment certified by the audit director annually, with no external party involved unless requested by donors"
+      },
+      "correct": "B",
+      "key_concept": "Professional standards (IIA Standard 1312, mirrored by ISACA QAIP guidance) require an external quality assessment of the audit function at least once every five years, performed by a qualified independent external assessor. Annual external is over-engineered; reactive-only is non-compliant; self-assessment alone does not satisfy the external requirement.",
+      "pre_read": "For QA-program cadence questions, anchor on the standard's required minimum (every 5 years for external). Distractors typically push toward annual (over-engineered) or never (non-compliant) — both are wrong.",
+      "correct_explanation": "IIA International Standard 1312 (External Assessments), which ISACA's QA and improvement program guidance mirrors, requires an external quality assessment of the audit function at least once every five years, performed by a qualified, independent external assessor or assessment team. Internal monitoring continues annually between external assessments. Option A imposes an annual external cadence that exceeds the requirement and is rarely justified by cost-benefit. Option C makes external assessment reactive, which violates the preventive intent of QAIP — assessments are meant to surface issues before failures, not after. Option D substitutes self-assessment for the external requirement, which the standard explicitly does not allow.",
+      "wrong_explanations": {
+        "A": "Annual external assessment is not required by the standard and rarely cost-justified. Internal monitoring fills the years between external assessments.",
+        "C": "Reactive external-only assessment misreads the preventive intent of QAIP. The standard requires periodic external assessment regardless of whether something has gone wrong.",
+        "D": "Self-assessment is part of a QAIP but does not substitute for the external requirement. Donors or stakeholders may also have specific assurance needs, but the baseline standard requires external assessment."
+      },
+      "tips": [
+        "Trap is A — \"annual external\" sounds rigorous but exceeds what the standard requires and is rarely cost-justified. Five years is the floor, not annual.",
+        "QAIP cadence: internal monitoring continuous, external assessment >= every 5 years. Memorize the cadence.",
+        "Exam-day shortcut: any question about external-assessment cadence is answered by the option that names the 5-year minimum and an independent external assessor."
+      ],
+      "framework_ref": "IIA International Standard 1312 (External Assessments); ISACA QA and Improvement Program guidance; ITAF General Standards on Quality",
+      "related_concepts": [
+        "Quality assurance and improvement program",
+        "External quality assessment",
+        "Internal monitoring",
+        "QAIP cadence"
+      ],
+      "_provenance": "Authored from concept: 'external-quality-assessment cadence - at least every 5 years per IIA Standard 1312, conducted by qualified independent external assessor'. Public source: IIA Standard 1312. All scenario specifics (international nonprofit aid organization, donor context) invented for this question."
+    },
+    {
+      "id": "d1_066",
+      "domain": 1,
+      "subtopic": "AI/ML — Training-Data Review Techniques",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a payments-fintech company is auditing the AI-driven fraud-detection model that scores every transaction in real time. Management retrains the model quarterly on a labeled training dataset. The auditor is reviewing the training-data lifecycle. What is the MOST important audit consideration?",
+      "options": {
+        "A": "Whether the training-data files are stored on the lowest-cost storage tier to optimize infrastructure spend",
+        "B": "Whether the training data is representative of the production transaction population, free from systemic bias, and labeled by a process that is itself documented and auditable",
+        "C": "Whether the training-data files use the same naming convention as production data files, for ease of identification by operations staff",
+        "D": "Whether the training-data refresh cadence is daily rather than quarterly, so the model reflects the most recent fraud patterns"
+      },
+      "correct": "B",
+      "key_concept": "AI/ML model quality is fundamentally driven by training-data quality. The audit-distinctive considerations are representativeness, freedom from systemic bias, and an auditable labeling process. Storage cost and naming conventions are operational; refresh cadence is a management design choice, not the audit consideration.",
+      "pre_read": "For AI/ML training-data questions, the audit-distinctive concerns are population representativeness, bias, and labeling-process auditability. Operational storage and ops-team-convenience considerations are distractors.",
+      "correct_explanation": "ISACA's \"Auditing Artificial Intelligence\" IT Audit and Assurance Program and the NIST AI Risk Management Framework both identify training-data quality as the dominant determinant of model behavior. The audit-distinctive considerations are: (1) representativeness — does the training data reflect the production population, including edge cases? (2) freedom from systemic bias — does the data avoid skewing decisions against any class of transactions or customers? (3) labeling-process auditability — is there evidence of how labels were assigned, by whom, and with what quality controls? Option A is an infrastructure-cost consideration, not an audit consideration. Option C is operational convenience. Option D is a management cadence decision; daily retraining has its own risks (model instability, label-lag, infrastructure cost) and is not automatically better than quarterly.",
+      "wrong_explanations": {
+        "A": "Storage-tier cost is an infrastructure-budget consideration, not an audit consideration. The auditor cares about data quality and lineage, not the storage medium.",
+        "C": "File-naming conventions help operations staff but do not affect model quality. This is a housekeeping consideration, not an audit one.",
+        "D": "Refresh cadence is a management design decision with its own trade-offs. Daily retraining can introduce instability, label-lag, and infrastructure cost; quarterly is a reasonable choice for many use cases. The auditor's job is to review whether the chosen cadence is appropriate — not to insist on a specific cadence."
+      },
+      "tips": [
+        "Trap is D — \"daily refresh = better\" sounds responsive to fast-changing fraud patterns, but cadence is a management trade-off, not the audit's primary concern.",
+        "AI/ML audit-distinctive concerns on training data = representativeness + bias + labeling auditability. Operational concerns are distractors.",
+        "Exam-day shortcut: training-data review questions are answered by the option that names representativeness, bias, and auditable labeling together."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); NIST AI Risk Management Framework (AI RMF 1.0)",
+      "related_concepts": [
+        "AI/ML training-data review",
+        "Model risk",
+        "Training-data bias",
+        "Labeling-process auditability",
+        "Model representativeness"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML training-data review - representativeness, bias, labeling auditability vs operational infrastructure considerations'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (payments fintech, real-time fraud-detection model, quarterly retrain cadence) invented for this question."
+    },
+    {
+      "id": "d1_067",
+      "domain": 1,
+      "subtopic": "Control Objectives — IS-Specific Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a mid-size U.S. city's IT department is evaluating IS-specific controls (as distinct from general-business controls) over the city's permit-issuance system. Which of the following is MOST representative of an IS-specific control?",
+      "options": {
+        "A": "The city's procurement policy that requires three competitive quotes for IT purchases over $10,000",
+        "B": "Logical access controls that restrict permit-issuance system functionality to authorized personnel based on assigned roles, enforced by the application's access-control module",
+        "C": "The annual budget approval by city council that allocates funding to the IT department for system maintenance",
+        "D": "The city's overall code of ethics that applies to all employees regardless of role"
+      },
+      "correct": "B",
+      "key_concept": "IS-specific controls are operationalized within information systems — logical access, system configuration enforcement, automated input validation, audit logging. General-business controls (procurement, budgeting, codes of ethics) apply to the organization as a whole and are not IS-specific.",
+      "pre_read": "For IS-specific-vs-general-business-control questions, ask where the control is enforced. If the control sits in or is enforced by an information system, it is IS-specific. If it is a policy or process that applies organization-wide, it is general-business.",
+      "correct_explanation": "ISACA Risk IT Framework and ITAF Performance Standards distinguish IS-specific controls (operationalized within information systems) from general-business controls (organization-wide policies and processes). Option B describes logical access controls — restricting system functionality by role, enforced by the application's access-control module — which is a textbook IS-specific control. Options A, C, and D all describe general-business controls: procurement policy applies to all purchases, budget approval applies to all departments, and a code of ethics applies to all employees. None of those are operationalized within or enforced by a specific information system, so they are not IS-specific.",
+      "wrong_explanations": {
+        "A": "Procurement policy is a general-business control applying to all purchases above the threshold. It is not IS-specific because it does not depend on or operate within an information system.",
+        "C": "Budget approval is a general-governance control applying to the organization's spending. It is not enforced by an information system and is not IS-specific.",
+        "D": "Code of ethics applies to all employees regardless of role or system. It is a general-business control, not an IS-specific one."
+      },
+      "tips": [
+        "Trap is A — procurement policy sounds IT-related because it is about IT purchases, but the control itself (three quotes) is general-business policy, not IS-specific.",
+        "IS-specific = enforced within or by an information system. General-business = organization-wide policy or process. Ask where the control lives.",
+        "Exam-day shortcut: when distinguishing IS-specific from general-business, the right answer always involves something the system itself enforces (access control, validation, logging)."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ITAF Performance Standards on Application Audits; COBIT 2019 DSS05 (Managed Security Services) and DSS06 (Managed Business Process Controls)",
+      "related_concepts": [
+        "IS-specific controls",
+        "General-business controls",
+        "Logical access controls",
+        "Control classification"
+      ],
+      "_provenance": "Authored from concept: 'IS-specific controls vs general-business controls - distinguished by where the control is enforced'. Public source: ISACA Risk IT Framework + ITAF. All scenario specifics (mid-size U.S. city, permit-issuance system) invented for this question."
+    },
+    {
+      "id": "d1_068",
+      "domain": 1,
+      "subtopic": "Communicating Audit Results — Exit Conference Purpose",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a global hotel chain is preparing for the exit conference following an audit of the property-management system. The audit identified findings spread across moderate-to-low severity, with no critical findings. Beyond communicating the findings themselves, what is the MOST important purpose of the exit conference?",
+      "options": {
+        "A": "To allow each auditee to formally sign off on each finding so the audit committee can be assured of management agreement before the report issues",
+        "B": "To validate facts with management, give management an opportunity to provide additional context, and capture management's planned remediation actions and timeline",
+        "C": "To negotiate down any finding that management disputes so the final report contains only undisputed items, preserving the working relationship",
+        "D": "To discuss the audit team's performance during the engagement and gather feedback for the auditor's annual performance review"
+      },
+      "correct": "B",
+      "key_concept": "The exit conference's purpose is to validate facts, capture context, and document remediation plans — not to obtain auditee sign-off (independence violation), negotiate findings away (independence violation), or solicit performance feedback (out of scope).",
+      "pre_read": "For exit-conference purpose questions, watch for sign-off, negotiate-away, and feedback distractors. The correct answer always names factual validation + remediation capture, with management context as input not as veto power.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting) and ITAF Performance Standards on Communication of Results establish the exit conference as the forum for: (1) validating that the auditor's facts are correct (auditee can correct factual errors), (2) giving management the opportunity to provide context the auditor may not have had, and (3) capturing management's planned remediation actions and timeline so they can be reflected in the report. Option A confuses fact-validation with sign-off; sign-off implies management approval, which is an independence violation. Option C is the textbook surrender of audit independence — findings reflect facts and professional judgment, not negotiability. Option D is out of scope; performance feedback for the auditor is collected through other channels, not the exit conference.",
+      "wrong_explanations": {
+        "A": "Sign-off implies management approval of the findings, which the auditor cannot accept without compromising independence. Management can validate facts and disagree with conclusions, but cannot \"sign off\" on whether the audit issues findings.",
+        "C": "Negotiating findings away based on dispute alone is an independence violation. If the auditor's facts are wrong, the finding gets corrected; if management simply disagrees with the conclusion, that disagreement is captured in the report alongside the finding, not used to remove the finding.",
+        "D": "Auditor performance review is a management-of-the-audit-function activity, not an exit-conference purpose. Conflating the two would create perverse incentives for auditors to soften findings to get better ratings."
+      },
+      "tips": [
+        "Trap is A — \"sign off\" sounds rigorous but is an independence violation. Validation of facts is fine; approval of findings is not.",
+        "Exit conference = validate facts + capture context + document remediation. Three jobs, in that order.",
+        "Exam-day shortcut: any exit-conference purpose question is answered by the option that names factual validation and remediation capture, without any approval/sign-off language."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Communication of Results",
+      "related_concepts": [
+        "Exit conference",
+        "Communicating audit results",
+        "Audit independence",
+        "Remediation planning"
+      ],
+      "_provenance": "Authored from concept: 'exit-conference purpose - factual validation + remediation capture, NOT sign-off or negotiation'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (global hotel chain, property-management-system audit) invented for this question. Distinct from d1_050 which addresses severity-rating-specific dynamics."
+    },
+    {
+      "id": "d1_069",
+      "domain": 1,
+      "subtopic": "Fraud Triangle — Indicator Identification",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a regional grocery retail chain is evaluating findings from an audit of the head-office finance team. During fieldwork, the auditor documents four observations: (1) the accounts-payable clerk has been with the company for 19 years and has become the only staff member who knows the supplier-master-setup process; the clerk has declined to take vacation for four consecutive years and resists cross-training requests; (2) the same clerk recently complained openly to colleagues about being passed over for promotion three times in five years and feeling underpaid for the workload; (3) the company's whistleblower hotline is operated by an external vendor, but the audit committee has not received or reviewed any reports from it for 18 months; (4) AP override-approval thresholds were last recalibrated seven years ago, despite significant inflation in supplier-invoice amounts since then.",
+      "question": "Applying the fraud-triangle model (pressure, opportunity, rationalization), which observation provides the STRONGEST single fraud-triangle indicator that warrants the auditor's expanded inquiry?",
+      "options": {
+        "A": "Observation 1 — long tenure, sole knowledge of supplier-master setup, no vacation in four years, resistance to cross-training (opportunity indicator)",
+        "B": "Observation 2 — openly expressed dissatisfaction about pay and promotions over the past five years (pressure indicator)",
+        "C": "Observation 3 — whistleblower hotline reports unreviewed for 18 months by the audit committee",
+        "D": "Observation 4 — AP override-approval thresholds not recalibrated for seven years"
+      },
+      "correct": "A",
+      "key_concept": "All three fraud-triangle vertices (pressure, opportunity, rationalization) matter, but opportunity is the most actionable and most directly observable for the auditor — and the cluster of opportunity indicators in Observation 1 (sole knowledge + no vacation + no cross-training) is a textbook concentrated-control-failure pattern that fraud-examination literature identifies as high-risk.",
+      "pre_read": "For fraud-triangle questions, separate triangle indicators (pressure, opportunity, rationalization at the individual level) from governance/control-design weaknesses (which are real concerns but operate at the organizational level). Then among triangle indicators, opportunity tends to be the most actionable for the auditor.",
+      "correct_explanation": "The fraud-triangle model identifies three conditions that together enable fraud: pressure (motivation), opportunity (the means), and rationalization (the justification). All three matter, but opportunity is the most actionable and most directly observable for an auditor. Observation 1 clusters multiple opportunity indicators that fraud-examination literature consistently flags: sole knowledge of a sensitive process (no segregation of duties), no vacation for years (preventing detection that often surfaces during fill-in coverage), and resistance to cross-training (preserving the sole-knowledge position). Together these constitute the strongest single concentrated indicator. Observation 2 is a real pressure indicator and supports expanded inquiry, but pressure alone — without opportunity — rarely produces fraud. Observations 3 and 4 are real governance and control-design weaknesses but operate at the organizational level, not as triangle indicators about a specific individual or activity.",
+      "wrong_explanations": {
+        "B": "Observation 2 is a real pressure indicator and would absolutely factor into the auditor's expanded inquiry. But pressure indicators alone, without an accompanying opportunity, rarely produce fraud — and the cluster of opportunity indicators in Observation 1 is more actionable.",
+        "C": "An unreviewed whistleblower hotline is a serious governance weakness (the audit committee is missing a key escalation channel) but it is not a fraud-triangle indicator at the individual level. It is a separate finding that should also be raised.",
+        "D": "Stale override thresholds are a control-design weakness — the operating effectiveness of the override control is degraded by inflation. This is also a separate finding, but it is a control-design issue, not a fraud-triangle indicator."
+      },
+      "tips": [
+        "Trap is C or D — both are real concerns (governance weakness and control-design weakness), but neither is a fraud-triangle indicator at the individual level. Don't conflate organizational-level findings with triangle indicators.",
+        "Among triangle vertices, opportunity is the most actionable for the auditor — and concentrations of opportunity indicators (sole knowledge + no vacation + no cross-training) are textbook red flags.",
+        "Exam-day shortcut: when a stem cluster includes \"no vacation\" + \"sole knowledge\" + \"resistance to cross-training\", the answer involves an opportunity indicator."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); ITAF Performance Standards on Fraud Risk; Cressey's Fraud Triangle (foundational forensic-audit literature); ACFE Report to the Nations",
+      "related_concepts": [
+        "Fraud triangle",
+        "Opportunity indicators",
+        "Pressure indicators",
+        "Segregation of duties",
+        "Mandatory vacation policy"
+      ],
+      "_provenance": "Authored from concept: 'fraud-triangle indicator identification - opportunity cluster (sole knowledge, no vacation, no cross-training) as strongest single indicator vs pressure or governance/control-design weaknesses'. Public source: ISACA Standard 1207 + Cressey's fraud triangle (public forensic literature) + ACFE. All scenario specifics (regional grocery retail, AP clerk pattern, four observations) invented for this question."
+    },
+    {
+      "id": "d1_070",
+      "domain": 1,
+      "subtopic": "Forensic Specialist Engagement Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a publicly traded telecom carrier has discovered patterns during a routine audit of the wholesale-billing system that suggest possible fraudulent activity. Four facts are documented: (1) recurring billing exceptions on a specific high-volume customer account that consistently fall just below the manual-review threshold; (2) the account's contract was modified six times in 18 months by the same sales rep, with each modification reducing rates and increasing volume commitments; (3) a former employee who handled the account has filed a wrongful-termination suit alleging they were fired for raising compliance concerns; (4) the IS auditor is not a certified forensic accountant and the audit team does not include forensic-investigative specialists. The audit committee asks the auditor whether to expand the routine audit's procedures or engage external forensic specialists.",
+      "question": "Which response is MOST appropriate, and what is the key reasoning?",
+      "options": {
+        "A": "Expand the routine audit by adding more substantive testing of the customer account, since the IS auditor has full system access and can complete the work faster than onboarding an external party",
+        "B": "Engage external forensic specialists, with the IS auditor's role shifting to coordination and evidence preservation; reasoning: the indicators meet the threshold for fraud-suspicion procedures, and forensic specialists have chain-of-custody, investigative-interview, and litigation-support competencies the IS audit team does not have",
+        "C": "Suspend all audit activity on the wholesale-billing system and refer the matter to law enforcement immediately, since the wrongful-termination suit creates legal exposure that the audit team cannot manage",
+        "D": "Continue the routine audit as planned and address the patterns in next year's audit cycle, since none of the individual indicators is conclusive evidence of fraud and a routine audit is not the appropriate place to investigate suspected fraud"
+      },
+      "correct": "B",
+      "key_concept": "When fraud indicators rise above the routine-audit threshold, the appropriate response is to engage forensic specialists with the IS auditor shifting to coordination and evidence preservation — not to expand the routine audit, refer prematurely to law enforcement, or defer to next cycle.",
+      "pre_read": "For forensic-engagement-decision questions, evaluate two things: (1) do the indicators rise above the routine-audit threshold (cluster of pressure + opportunity + concealment patterns)? and (2) does the audit team have the forensic competencies needed (chain of custody, investigative interviewing, litigation support)? When the answer is yes-and-no, engage specialists.",
+      "correct_explanation": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts) requires the auditor to recognize when suspicion of fraud rises above the routine-audit threshold and when the engagement requires competencies beyond the IS audit team. The pattern in this scenario clusters multiple indicators: just-below-threshold gaming (concealment), repeated contract modifications by a single rep (opportunity), and a wrongful-termination suit alleging compliance concerns (corroboration from outside the audit). Together these meet the threshold for suspected fraud. Engaging forensic specialists is appropriate because they bring chain-of-custody discipline (essential if the matter eventually leads to litigation), investigative-interview competencies, and forensic-accounting skills that a standard IS audit team does not have. Option A overestimates what system access alone can deliver; system access is not the same as forensic-investigation competencies. Option C is over-escalation — referring to law enforcement is not the auditor's first move; that is a board/audit-committee/legal-counsel decision after forensic work has clarified the matter. Option D is under-reaction; deferring to next cycle when the indicators are this strong allows evidence destruction and potentially exposes the audit committee to claims of negligence.",
+      "wrong_explanations": {
+        "A": "System access enables data extraction but does not provide chain-of-custody discipline, investigative-interview skills, or litigation-support credentials. An IS auditor without forensic credentials performing a fraud investigation may damage evidentiary integrity.",
+        "C": "Referring directly to law enforcement is not the auditor's first action when fraud is suspected. The proper path is: forensic specialists -> findings -> board/audit-committee/legal-counsel decision on referral. Bypassing that path can prejudice the matter and is outside the auditor's authority.",
+        "D": "Deferring to next cycle when indicators are this strong creates two failure modes: evidence may be destroyed in the meantime, and the audit committee may be on the hook for not acting on what the auditor surfaced. Routine vs forensic is a function of the indicators, not the audit calendar."
+      },
+      "tips": [
+        "Trap is A — \"I have system access, I can do this myself\" misreads the gap. System access is not forensic competency.",
+        "Forensic-engagement decision = (indicators above threshold) AND (team lacks needed competencies). Both must be true for the answer to be \"engage specialists\".",
+        "Exam-day shortcut: when fraud indicators cluster (concealment + opportunity + corroborating outside signal), the answer involves external forensic specialists with the IS auditor in a coordination role."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); ITAF Performance Standards on Fraud Risk; ACFE Fraud Examiners Manual",
+      "related_concepts": [
+        "Fraud-suspicion procedures",
+        "Forensic specialist engagement",
+        "Chain of custody",
+        "Auditor coordination role",
+        "Litigation support"
+      ],
+      "_provenance": "Authored from concept: 'forensic-specialist engagement decision - shift IS auditor to coordination role when indicators exceed routine-audit threshold and team lacks forensic competencies'. Public source: ISACA Standard 1207 + ACFE Fraud Examiners Manual. All scenario specifics (publicly traded telecom carrier, wholesale-billing, four documented patterns, wrongful-termination suit context) invented for this question. Distinct from d1_010 (first-action) and d1_069 (triangle-indicator identification)."
     }
   ]
 }

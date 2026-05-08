@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 60
+  authored_total: 70
   authored_mix:
-    foundational: 3
-    application:  35
-    analysis:     22
+    foundational: 6
+    application:  40
+    analysis:     24
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -101,6 +101,18 @@ domain_1:
     - { id: d1_059, subtopic: "CSA Deployment Decision (When to Use)",                           toc_ref: "1.2.1"  }
     - { id: d1_060, subtopic: "ITAF Layer Selection (Standards / Guidelines / Tools and Techniques)", toc_ref: "1.1.4" }
 
+    # Batch 7 (d1_061..d1_070) — continued foundational tier + depth on sampling/QA/AI/IS-controls/exit-conference/fraud
+    - { id: d1_061, subtopic: "Compliance vs Substantive Testing (Definition)",                  toc_ref: "1.6.1"  }
+    - { id: d1_062, subtopic: "Audit Risk Model Components (IR x CR x DR)",                      toc_ref: "1.3.3"  }
+    - { id: d1_063, subtopic: "Internal Controls — Definition (Reasonable Assurance)",           toc_ref: "1.4.1"  }
+    - { id: d1_064, subtopic: "Sampling — Monetary-Unit Sampling Mechanics",                     toc_ref: "1.6.2"  }
+    - { id: d1_065, subtopic: "Audit Quality Assurance — External Assessment Cadence",           toc_ref: "1.10.2" }
+    - { id: d1_066, subtopic: "AI/ML — Training-Data Review Techniques",                         toc_ref: "1.8.4"  }
+    - { id: d1_067, subtopic: "Control Objectives — IS-Specific Controls",                       toc_ref: "1.4.2"  }
+    - { id: d1_068, subtopic: "Communicating Audit Results — Exit Conference Purpose",           toc_ref: "1.9.1"  }
+    - { id: d1_069, subtopic: "Fraud Triangle — Indicator Identification",                       toc_ref: "1.5.5"  }
+    - { id: d1_070, subtopic: "Forensic Specialist Engagement Decision",                         toc_ref: "1.5.5"  }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
@@ -110,26 +122,26 @@ domain_1:
     # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
     # coverage map and high-priority depth targets.
 
-    # High priority — depth on exam-heavy subsections
+    # High priority — depth on exam-heavy subsections (refreshed after batch 7)
     - { subtopic: "Foundational warmup — additional basic definitions",     toc_ref: "various", priority: high,
-        notes: "We're at 3/18 foundational after batch 6. Continue including 2-3 foundational items per batch until the gap closes." }
-    - { subtopic: "Sampling — stratified / monetary-unit-sampling mechanics",toc_ref: "1.6.2", priority: high,
-        notes: "Sampling is a heavy exam topic. d1_009/019/049/053 cover approach, sampling risk (foundational + scenario), attribute-vs-variable. Room for stratification logic, MUS mechanics." }
-    - { subtopic: "Fraud, Irregularities & Illegal Acts (deeper)",          toc_ref: "1.5.5", priority: high,
-        notes: "d1_010 covers first-action. Need fraud-triangle indicators, when to engage forensic specialists, evidence-handling under fraud conditions." }
-    - { subtopic: "Audit Quality Assurance — external assessment / peer review", toc_ref: "1.10.2", priority: medium,
-        notes: "d1_030 covers QA program parent. Room for external assessment cadence, peer-review design, internal QA program structure." }
+        notes: "We're at 6/18 foundational after batch 7. Continue including 2-3 foundational items per batch until the gap closes (~6 more batches)." }
+    - { subtopic: "Sampling — stratified sampling mechanics",                toc_ref: "1.6.2", priority: high,
+        notes: "MUS covered in d1_064; stratified is the remaining major sub-technique. Sample-size formulas, stratification rationale." }
+    - { subtopic: "Audit QA — internal QA program design / peer review",     toc_ref: "1.10.2", priority: high,
+        notes: "External cadence covered in d1_065. Internal QA program structure (the program itself, design choices) and peer-review mechanics still uncovered." }
+    - { subtopic: "Communicating Audit Results — follow-up comm cadence + tone for sensitive findings", toc_ref: "1.9.1", priority: medium,
+        notes: "d1_006/d1_016/d1_050/d1_068 cover addressee, escalation, severity, exit-conference purpose. Room for tone calibration and follow-up cadence." }
 
   remaining_unplanned:
     # Other depth opportunities — picked when above queued_next is exhausted
-    - { subtopic: "Communicating Audit Results — beyond severity",          toc_ref: "1.9.1", priority: medium,
-        notes: "d1_006 addressee, d1_016 escalation, d1_050 severity calibration. Room for tone, exit-conference dynamics beyond severity, follow-up-comm cadence." }
-    - { subtopic: "AI/ML — Algorithmic auditability + training-data review", toc_ref: "1.8.4", priority: medium,
-        notes: "d1_018 parent, d1_057 audit risk. Room for algorithmic auditability, training-data review techniques, challenger-model testing." }
-    - { subtopic: "Control Objectives — IS-Specific Controls / General Control Methods", toc_ref: "1.4.2", priority: medium,
-        notes: "d1_034 parent, d1_058 BP-applications sub. Sub-areas (IS Control Objectives, General Control Methods, IS-Specific Controls) still mostly inferred." }
+    - { subtopic: "AI/ML — Algorithmic auditability and challenger-model testing", toc_ref: "1.8.4", priority: medium,
+        notes: "d1_018/d1_057/d1_066 cover parent + audit risk + training-data. Algorithmic auditability is the remaining angle." }
+    - { subtopic: "Control Objectives — IS Control Objectives sub-area / General Control Methods sub-area", toc_ref: "1.4.2", priority: medium,
+        notes: "d1_034/d1_058/d1_067 cover parent + BP applications + IS-specific. The other two sub-areas remain." }
     - { subtopic: "Continuous Auditing — CAATs as continuous online approach",toc_ref: "1.8.1", priority: low,
         notes: "d1_026 covers CAATs broadly, d1_013 distinguishes continuous auditing vs monitoring. Room for the continuous-online sub-bullet." }
+    - { subtopic: "Fraud — Evidence handling and chain of custody",          toc_ref: "1.5.5", priority: low,
+        notes: "d1_010/d1_069/d1_070 cover first-action + triangle + forensic engagement. Evidence-handling/chain-of-custody is the remaining fraud angle." }
 
 domain_2:
   target_total: 180
