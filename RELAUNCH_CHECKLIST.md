@@ -77,11 +77,12 @@ Concept descriptions can come from public sources: `data/cisa_notes.json` summar
 
 ### Per question, I produce JSON matching the schema below.
 
-### After authoring
+### After authoring (two-stage review)
 
-1. You spot-check: scenario realism, correct-answer defensibility, distractor plausibility, no echo of source bank wording
-2. You approve, edit, or reject
-3. On approval, batch is committed to `data/originals/d{N}.json` and merged via PR D_n
+1. **AI pre-review** — invoke the `cisa-exam-reviewer` subagent (defined in `.claude/agents/cisa-exam-reviewer.md`) on the freshly authored batch. The reviewer agent acts as an ISACA CISA exam developer expert, checking correct-answer integrity, framework-citation precision, distractor quality, scenario realism, pedagogical fields, and schema compliance. The author applies any FIX REQUIRED items before showing the batch to the human.
+2. **Human spot-check** — you do final-quality review: anything the reviewer agent missed, judgment calls on which of two defensible answers is best, real-world-experience checks the AI can't make. This is shorter than before because mechanical errors have already been filtered.
+3. You approve, edit, or reject.
+4. On approval, batch is committed to `data/originals/d{N}.json` and merged via PR D_n.
 
 ## Question schema
 

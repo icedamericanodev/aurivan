@@ -74,6 +74,22 @@ bash scripts/verify_repo.sh
 
 You should see `Repo health: ALL CHECKS PASSED`. If not, fix what it tells you to fix before opening a PR.
 
+### AI-assisted question authoring workflow (during the rebuild phase)
+
+When authoring batches of questions for `data/originals/d{N}.json`, follow a two-stage review:
+
+1. **AI pre-review.** After authoring a batch and committing the draft, invoke the `cisa-exam-reviewer` subagent (defined in `.claude/agents/cisa-exam-reviewer.md`). It acts as an ISACA CISA exam developer expert and verifies:
+   - Correct-answer integrity (especially that the marked answer is best, not just defensible)
+   - Framework-citation precision (ISACA Standard numbers, COBIT objectives, NIST publications)
+   - Distractor quality and scenario realism
+   - Pedagogical fields (`key_concept`, `pre_read`, `tips`)
+   - Schema compliance (via `validate_originals.py`)
+2. **Apply FIX REQUIRED items** from the reviewer's report.
+3. **Human spot-check** by the maintainer — final-quality review on top of the cleaned batch.
+4. On approval, open the batch PR.
+
+The pre-review agent catches the kinds of errors the maintainer was historically catching during spot-check (notably framework citation errors), letting human review focus on judgment calls rather than mechanical errors.
+
 ## Code style
 
 - **One file, vanilla JS.** No frameworks, no transpile. ES2020 syntax is fine.
