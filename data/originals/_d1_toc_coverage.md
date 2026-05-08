@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d1.json`.
 
-**Last updated:** after batch 8 (d1_071..d1_090). Total D1 questions authored: 90 of 180. **Halfway to D1 target.**
+**Last updated:** after batch 9 (d1_091..d1_110). Total D1 questions authored: 110 of 180. **Past the halfway point at 61%.**
 
 ## Part A — Planning
 
@@ -15,14 +15,15 @@
 | TOC | Subsection | Covered by |
 |---|---|---|
 | 1.1.1 | ISACA IS Audit and Assurance Standards | d1_051 (foundational definition) |
+| 1.1.4 | ITAF | d1_021 (parent), d1_060 (Tools and Techniques layer scenario), d1_091 (Tools and Techniques foundational definition) |
 | 1.1.2 | ISACA IS Audit and Assurance Guidelines | d1_045 |
 | 1.1.3 | ISACA Code of Professional Ethics | d1_031 |
-| 1.1.4 | ITAF | d1_021 (parent), d1_060 (Tools and Techniques layer) |
 | 1.1.5 | IS Internal Audit Function — Audit Charter | d1_001 (authority scenario), d1_052 (foundational definition) |
 | 1.1.5 | IS Internal Audit Function — Management of the IS Audit Function | d1_055 |
 | 1.1.5 | IS Internal Audit Function — IS Audit Resource Management | d1_039 |
 | 1.1.5 | IS Internal Audit Function — Personal Independence (Self-Review) | d1_002 |
 | 1.1.5 | IS Internal Audit Function — Independence (Threat-and-Safeguard Analysis) | d1_087 (analysis) |
+| 1.1.5 | IS Internal Audit Function — Independence (Self-Interest Threat Severity Differentiation Mid-Engagement) | d1_105 (analysis) |
 | 1.1.5 | IS Internal Audit Function — Using the Services of Other Auditors and Experts (pre-reliance) | d1_032 |
 | 1.1.5 | IS Internal Audit Function — External Expert Inadequate Work (post-delivery) | d1_090 (analysis) |
 
@@ -30,19 +31,20 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 1.2.1 | Control Self-Assessment | d1_020 (limitations), d1_059 (deployment decision), d1_073 (foundational definition) |
+| 1.2.1 | Control Self-Assessment | d1_020 (limitations), d1_059 (deployment decision), d1_073 (foundational definition + objectives) |
 | 1.2.2 | Integrated Auditing | d1_017 (application), d1_088 (analysis — scope decision) |
 
 ### 1.3 Risk-Based Audit Planning
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 1.3.1 | Individual Audit Assignments | d1_056 (scoping application), d1_074 (foundational risk-based-planning definition) |
+| 1.3.1 | Individual Audit Assignments | d1_056 (scoping application), d1_074 (foundational risk-based-planning definition), d1_100 (audit universe definition + maintenance) |
 | 1.3.2 | Effect of Laws and Regulations on IS Audit Planning | d1_022 |
 | 1.3.3 | Audit Risk and Materiality (scenario) | d1_007 |
 | 1.3.3 | Audit Risk Model Components (foundational definition) | d1_062 |
-| 1.3.4 | Risk Assessment | d1_037 |
-| 1.3.5 | IS Audit Risk Assessment Techniques | d1_027 |
+| 1.3.3 | Materiality (foundational definition) | d1_094 |
+| 1.3.4 | Risk Assessment | d1_037, d1_106 (analysis — mid-cycle update decision) |
+| 1.3.5 | IS Audit Risk Assessment Techniques | d1_027, d1_097 (quantitative vs qualitative trade-offs) |
 | 1.3.6 | Risk Analysis | d1_033 (Risk Treatment Options) |
 
 Also: d1_003 covers the broader concept of risk-based audit planning at the function level, supporting 1.3 generally.
@@ -53,11 +55,11 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 |---|---|---|
 | 1.4.1 | Internal Controls (scenario) | d1_023 |
 | 1.4.1 | Internal Controls — Definition (foundational, reasonable assurance) | d1_063 |
-| 1.4.2 | Control Objectives and Control Measures | d1_034 (parent), d1_058 (Business Process Applications), d1_067 (IS-Specific Controls), d1_081 (General Control Methods), d1_082 (IS Control Objectives sub-area) |
+| 1.4.2 | Control Objectives and Control Measures | d1_034 (parent), d1_058 (Business Process Applications), d1_067 (IS-Specific Controls), d1_081 (General Control Methods), d1_082 (IS Control Objectives sub-area), d1_104 (IT General Controls — Change Management) |
 | 1.4.3 | Control Classifications | d1_008, d1_012 |
 | 1.4.4 | Control Relationship to Risk | d1_047 |
 | 1.4.5 | Prescriptive Controls and Frameworks | d1_038 |
-| 1.4.6 | Evaluation of the Control Environment | d1_028 |
+| 1.4.6 | Evaluation of the Control Environment | d1_028 (parent), d1_098 (independent vs management monitoring) |
 
 ## Part B — Execution
 
@@ -75,6 +77,7 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.5.5 | Fraud Triangle — Indicator Identification (analysis) | d1_069 |
 | 1.5.5 | Forensic Specialist Engagement Decision (analysis) | d1_070 |
 | 1.5.5 | Fraud — Evidence Handling and Chain of Custody | d1_084 |
+| 1.5.5 | Fraud — Interview Techniques in Suspected Fraud | d1_096 |
 | 1.5.6 | Agile Auditing | d1_029 |
 
 ### 1.6 Audit Testing and Sampling Methodology
@@ -83,6 +86,7 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 |---|---|---|
 | 1.6.1 | Compliance Versus Substantive Testing (scenario) | d1_005 |
 | 1.6.1 | Compliance vs Substantive Testing — Definition (foundational) | d1_061 |
+| 1.6.1 | Substantive Testing — Analytical Procedures | d1_103 |
 | 1.6.2 | Sampling — Approach Selection | d1_009 |
 | 1.6.2 | Sampling — Sampling Risk (foundational definition) | d1_053 |
 | 1.6.2 | Sampling — Sampling Risk and Conclusion (scenario) | d1_019 |
@@ -90,12 +94,15 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.6.2 | Sampling — Monetary-Unit Sampling Mechanics | d1_064 |
 | 1.6.2 | Sampling — Stratified Sampling Mechanics | d1_075 |
 | 1.6.2 | Sampling — Multi-objective Sampling Design (analysis) | d1_086 |
+| 1.6.2 | Sampling — Misstatement Projection (analysis) | d1_107 |
 
 ### 1.7 Audit Evidence Collection Techniques
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 1.7 | Audit Evidence Reliability | d1_004 |
+| 1.7 | Audit Evidence — Reliability principle | d1_004 |
+| 1.7 | Audit Evidence — Types and Reliability Ranking | d1_095 |
+| 1.7 | Audit Evidence — Sufficiency vs Appropriateness | d1_102 |
 | 1.7.1 | Interviewing and Observing Personnel | d1_025 |
 
 ### 1.8 Audit Data Analytics
@@ -105,12 +112,15 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.8.1 | Computer-Assisted Audit Techniques | d1_026 (parent) |
 | 1.8.1 | CAATs as Continuous Online Audit Approach | d1_083 |
 | 1.8.2 | Continuous Auditing and Monitoring | d1_013 |
+| 1.8.2 | Continuous Auditing — Foundational Definition | d1_092 |
 | 1.8.3 | Continuous Auditing Techniques | d1_046 |
+| 1.8.3 | Continuous Auditing — Architecture Trade-offs (analysis) | d1_110 |
 | 1.8.4 | Artificial Intelligence in IS Audit (parent) | d1_018 |
 | 1.8.4 | AI/ML — Audit Risk and Considerations | d1_057 |
 | 1.8.4 | AI/ML — Training-Data Review Techniques | d1_066 |
 | 1.8.4 | AI/ML — Algorithmic Auditability | d1_080 |
 | 1.8.4 | AI/ML — Challenger-Model Testing (analysis) | d1_085 |
+| 1.8.4 | AI/ML — Drift Detection (analysis) | d1_108 |
 
 ### 1.9 Reporting and Communication Techniques
 
@@ -123,9 +133,11 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.9.2 | Audit Report Objectives | d1_042 |
 | 1.9.3 | Audit Report Structure and Contents | d1_035 |
 | 1.9.4 | Audit Documentation (Lifecycle / Retention) | d1_043 |
+| 1.9.4 | Audit Documentation — Originals vs Summary Retention | d1_101 |
 | 1.9.5 | Follow-Up Activities | d1_015 (scenario) |
 | 1.9.5 | Follow-Up Communication Cadence (risk-tiered) | d1_078 |
 | 1.9.6 | Types of IS Audit Reports / Opinion Types | d1_036 |
+| 1.9.6 | Modified Opinion Decision (analysis) | d1_109 |
 
 ### 1.10 Quality Assurance and Improvement of the Audit Process
 
@@ -133,12 +145,14 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 |---|---|---|
 | 1.10.1 | Audit Committee Oversight / Escalation | d1_016 (application) |
 | 1.10.1 | Audit Committee — Escalation Timing Decision (analysis) | d1_089 |
+| 1.10.1 | Audit Committee — Foundational Definition (board-level, independent directors) | d1_093 |
 | 1.10.2 | Audit Quality Assurance (program parent) | d1_030 |
 | 1.10.2 | Audit Quality Assurance — External Assessment Cadence | d1_065 |
 | 1.10.2 | Audit Quality Assurance — Internal Program Design | d1_076 |
 | 1.10.2 | Audit Quality Assurance — Peer Review (Engagement vs Program) | d1_077 |
 | 1.10.3 | Audit Team Training and Development | d1_044 |
-| 1.10.4 | Monitoring (ongoing QA) | d1_048 |
+| 1.10.4 | Monitoring (ongoing QA — failure analysis) | d1_048 |
+| 1.10.4 | Monitoring — Design Depth (cadence/scope/coverage) | d1_099 |
 
 ## Coverage summary
 
@@ -149,25 +163,25 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after batch 8 | Gap |
+| Tier | Target (180) | Authored after batch 9 | Gap |
 |---|---|---|---|
-| Foundational | 18 (10%) | 10 | -8 |
-| Application | 90 (50%) | 50 | -40 |
-| Analysis | 72 (40%) | 30 | -42 |
-| **Total** | **180** | **90** | **-90** |
+| Foundational | 18 (10%) | 14 | -4 |
+| Application | 90 (50%) | 60 | -30 |
+| Analysis | 72 (40%) | 36 | -36 |
+| **Total** | **180** | **110** | **-70** |
 
-D1 is **at the halfway point** (90/180). Foundational tier is at 10/18 (56%) — closing well after batch 8 added 4 more foundational items. At ~20 questions per batch with the current mix (4F+10A+6An), D1 reaches its 180 target around batch 12-13.
+D1 is **past the halfway point at 61%**. Foundational tier is at 14/18 (78%) — needs only 4 more across remaining batches. At ~20 questions per batch with the current mix, D1 reaches its 180 target around batch 12-13.
 
 ## High-priority depth targets for future batches
 
-After batch 8, the queued_next list has been substantially worked. Updated priorities:
+After batch 9, most exam-heavy subsections have substantial depth. Updated priorities:
 
-1. **Foundational tier — close the remaining 8** — d1_071 (Audit Programs), d1_072 (Work Papers), d1_073 (CSA), d1_074 (Risk-Based Planning) added in batch 8. Still need: ITAF Tools and Techniques definition, Continuous Auditing definition, Audit Committee definition, Materiality definition, Integrated Audit definition, sampling-precision definitions, Substantive-test type definitions, Audit Charter contents (distinct from d1_052 purpose).
-2. **1.5.5 Fraud — interview techniques in suspected fraud** — d1_010/d1_069/d1_070/d1_084 cover first-action + triangle indicators + forensic engagement + evidence handling. Interview techniques during fraud investigation is the remaining angle.
-3. **1.7 Audit Evidence — types and reliability** — d1_004 covers reliability, d1_025 interviewing. Room for evidence types (documentary, observational, testimonial, analytical) and the relative reliability of each.
-4. **1.3.5 IS Audit Risk Assessment Techniques — quantitative vs qualitative trade-offs** — d1_027 covers mixed-data; depth on quantitative-vs-qualitative method selection remains.
-5. **1.4.6 Evaluation of the Control Environment — independent evaluation vs management monitoring** — d1_028 covers the parent; sub-areas (management monitoring vs independent evaluation, distinct activities) remain.
-6. **1.10.4 Monitoring (Ongoing QA Monitoring) — depth angles** — d1_048 covers monitoring failure; the design of ongoing monitoring activities (cadence, scope, coverage) is a deeper angle.
+1. **Foundational tier — close the remaining 4** — d1_091 (ITAF Tools and Techniques), d1_092 (Continuous Auditing), d1_093 (Audit Committee), d1_094 (Materiality) added in batch 9. Still need: Integrated Audit definition (1.2.2), Substantive-test type definition (1.6.1), Audit Charter contents distinct from purpose (1.1.5), Sampling — population/precision definitions (1.6.2). At 2-3 foundational per batch, closes by ~batch 11.
+2. **1.4.6 Evaluation of the Control Environment — Management Monitoring sub-area** — d1_028 (parent), d1_098 (independent vs management monitoring) cover it; specific management-monitoring techniques (e.g., COSO Component 5 Monitoring Activities specifics) are a remaining depth angle.
+3. **1.8.4 AI/ML — Adversarial scenarios** — d1_018/d1_057/d1_066/d1_080/d1_085/d1_108 cover parent + risk + training-data + auditability + challenger + drift. Adversarial robustness / prompt-injection (for LLM-based systems) is an emerging gap.
+4. **1.6.2 Sampling — population definition / precision setting** — d1_009/d1_019/d1_049/d1_053/d1_064/d1_075/d1_086/d1_107 cover approach, sampling risk, attribute-vs-variable, MUS, stratified, multi-objective, projection. Precision-setting and population-definition mechanics are remaining sub-areas.
+5. **1.2.2 Integrated Auditing — definition + sub-area depth** — d1_017 (application), d1_088 (analysis scope decision). Still room for an integrated-auditing definition (foundational) and additional sub-areas.
+6. **1.5.5 Fraud — Reporting suspected fraud (channels, timing)** — d1_010/d1_069/d1_070/d1_084/d1_096 cover first-action, triangle, forensic engagement, evidence handling, interview technique. Reporting channels and timing for suspected fraud (when to report to whom) is a remaining angle.
 
 ## Maintenance instructions for the next session
 

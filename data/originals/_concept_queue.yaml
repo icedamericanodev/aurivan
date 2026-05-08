@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 90
+  authored_total: 110
   authored_mix:
-    foundational: 10
-    application:  50
-    analysis:     30
+    foundational: 14
+    application:  60
+    analysis:     36
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -135,6 +135,28 @@ domain_1:
     - { id: d1_089, subtopic: "Audit Committee — Escalation Timing Decision",                    toc_ref: "1.10.1" }
     - { id: d1_090, subtopic: "External Expert — Inadequate Work Scenario",                      toc_ref: "1.1.5"  }
 
+    # Batch 9 (d1_091..d1_110) — past halfway (110/180); 4F + 10A + 6An; foundational tier 14/18
+    - { id: d1_091, subtopic: "ITAF Tools and Techniques (Definition)",                          toc_ref: "1.1.4"  }
+    - { id: d1_092, subtopic: "Continuous Auditing (Definition)",                                toc_ref: "1.8.2"  }
+    - { id: d1_093, subtopic: "Audit Committee (Definition + Composition)",                      toc_ref: "1.10.1" }
+    - { id: d1_094, subtopic: "Materiality (Definition)",                                        toc_ref: "1.3.3"  }
+    - { id: d1_095, subtopic: "Audit Evidence — Types and Reliability Ranking",                  toc_ref: "1.7"    }
+    - { id: d1_096, subtopic: "Fraud — Interview Techniques in Suspected Fraud",                 toc_ref: "1.5.5"  }
+    - { id: d1_097, subtopic: "Risk Assessment — Quantitative vs Qualitative Trade-offs",        toc_ref: "1.3.5"  }
+    - { id: d1_098, subtopic: "Control Environment — Independent vs Management Monitoring",      toc_ref: "1.4.6"  }
+    - { id: d1_099, subtopic: "Ongoing QA Monitoring — Design Depth",                            toc_ref: "1.10.4" }
+    - { id: d1_100, subtopic: "Audit Universe — Definition and Maintenance",                     toc_ref: "1.3.1"  }
+    - { id: d1_101, subtopic: "Audit Documentation — Originals vs Summary Retention",            toc_ref: "1.9.4"  }
+    - { id: d1_102, subtopic: "Audit Evidence — Sufficiency vs Appropriateness",                 toc_ref: "1.7"    }
+    - { id: d1_103, subtopic: "Substantive Testing — Analytical Procedures",                     toc_ref: "1.6.1"  }
+    - { id: d1_104, subtopic: "IT General Controls — Change Management",                         toc_ref: "1.4.2"  }
+    - { id: d1_105, subtopic: "Independence — Self-Interest Threat Severity Differentiation Mid-Engagement", toc_ref: "1.1.5"  }
+    - { id: d1_106, subtopic: "Risk Assessment — Mid-Cycle Update Decision",                     toc_ref: "1.3.4"  }
+    - { id: d1_107, subtopic: "Sampling — Misstatement Projection",                              toc_ref: "1.6.2"  }
+    - { id: d1_108, subtopic: "AI/ML — Drift Detection Scenario",                                toc_ref: "1.8.4"  }
+    - { id: d1_109, subtopic: "Audit Reporting — Modified Opinion Decision",                     toc_ref: "1.9.6"  }
+    - { id: d1_110, subtopic: "Continuous Auditing — Architecture Trade-offs",                   toc_ref: "1.8.3"  }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
@@ -144,24 +166,24 @@ domain_1:
     # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
     # coverage map and high-priority depth targets.
 
-    # High priority — refreshed after batch 8 (which closed many medium-priority items at depth)
-    - { subtopic: "Foundational warmup — remaining 8 definitions to close 10/18 -> 18/18 gap", toc_ref: "various", priority: high,
-        notes: "Candidates: ITAF Tools and Techniques definition (1.1.4), Continuous Auditing definition (1.8.2), Audit Committee definition (1.10.1), Materiality definition (1.3.3), Integrated Audit definition (1.2.2), sampling-precision definition (1.6.2), Substantive-test type definition (1.6.1), Audit Charter contents (distinct from d1_052 purpose, 1.1.5)." }
-    - { subtopic: "Audit Evidence — types and reliability ranking",          toc_ref: "1.7", priority: high,
-        notes: "d1_004 covers reliability principle, d1_025 covers interviewing. Room for evidence types (documentary, observational, testimonial, analytical) and the relative reliability of each." }
-    - { subtopic: "Fraud — Interview techniques in suspected fraud",         toc_ref: "1.5.5", priority: medium,
-        notes: "d1_010/d1_069/d1_070/d1_084 cover first-action + triangle + forensic engagement + evidence handling. Interview techniques during fraud investigation is the remaining angle." }
-    - { subtopic: "Risk-Assessment Techniques — quantitative vs qualitative trade-offs", toc_ref: "1.3.5", priority: medium,
-        notes: "d1_027 covers mixed-data; depth on quantitative-vs-qualitative method selection remains." }
+    # High priority — refreshed after batch 9
+    - { subtopic: "Foundational tier — remaining 4 definitions to close 14/18 -> 18/18 gap", toc_ref: "various", priority: high,
+        notes: "Candidates: Integrated Audit definition (1.2.2), Substantive-test type definition (1.6.1), Audit Charter contents distinct from d1_052 purpose (1.1.5), Sampling — population/precision definitions (1.6.2). At 2 foundational per batch, closes by ~batch 11." }
+    - { subtopic: "Fraud — Reporting Suspected Fraud (channels, timing)", toc_ref: "1.5.5", priority: high,
+        notes: "d1_010/d1_069/d1_070/d1_084/d1_096 cover first-action + triangle + forensic engagement + evidence handling + interview. Reporting channels (audit committee vs management vs external counsel) and timing remain." }
+    - { subtopic: "Sampling — population definition + precision setting", toc_ref: "1.6.2", priority: high,
+        notes: "8 sampling questions in the bank now; precision-setting (acceptable risk levels, tolerable error) and population-definition mechanics are the remaining sub-areas." }
 
   remaining_unplanned:
     # Other depth opportunities — picked when above queued_next is exhausted
-    - { subtopic: "Control Environment Evaluation — independent vs management monitoring", toc_ref: "1.4.6", priority: medium,
-        notes: "d1_028 covers the parent. Sub-areas (management monitoring vs independent evaluation) still uncovered." }
-    - { subtopic: "Ongoing QA Monitoring — design depth (cadence, scope, coverage)", toc_ref: "1.10.4", priority: medium,
-        notes: "d1_048 covers monitoring failure (analysis). Design-depth question on cadence / scope / coverage of ongoing monitoring activities remains." }
-    - { subtopic: "Continuous Auditing — Continuous Monitoring distinction expanded", toc_ref: "1.8.2", priority: low,
-        notes: "d1_013 covers the distinction. Deeper treatment with specific use cases remains." }
+    - { subtopic: "Integrated Auditing — definition + additional sub-areas", toc_ref: "1.2.2", priority: medium,
+        notes: "d1_017 (application) and d1_088 (analysis scope decision). Foundational definition + other sub-area angles remain." }
+    - { subtopic: "Control Environment — Management Monitoring sub-area", toc_ref: "1.4.6", priority: medium,
+        notes: "d1_028 (parent) and d1_098 (independent vs management). COSO Component 5 monitoring-activity specifics remain." }
+    - { subtopic: "AI/ML — Adversarial robustness / prompt-injection (LLMs)", toc_ref: "1.8.4", priority: medium,
+        notes: "Six AI/ML questions cover parent + risk + training-data + auditability + challenger + drift. LLM-specific adversarial scenarios are an emerging gap." }
+    - { subtopic: "Audit Phases — Reporting Phase deeper communication tactics", toc_ref: "1.5.2", priority: low,
+        notes: "d1_040 + d1_041 + d1_054 cover the three phases at the discipline level. Deeper communication tactics during reporting phase remain." }
     - { subtopic: "ITAF Standards — Specific Standard purposes (1001, 1005, 1006, etc.)", toc_ref: "1.1.1", priority: low,
         notes: "d1_051 covers Standards as a layer; specific-Standard-by-purpose questions could deepen this area." }
 
