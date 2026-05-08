@@ -21,6 +21,30 @@ bash scripts/verify_repo.sh
 
 If you have Claude Code on the web set up for this repo, this runs automatically on every session start via the `SessionStart` hook in `.claude/settings.json`.
 
+### Optional but recommended — install the pre-commit hook
+
+```bash
+bash scripts/install_hooks.sh
+```
+
+After install, every `git commit` runs `verify_repo.sh` first and aborts the commit if it fails. This is faster feedback than the GitHub Actions CI — issues surface locally before the commit lands. Emergency bypass: `git commit --no-verify` (but expect CI to fail downstream).
+
+### The concept queue
+
+`data/originals/_concept_queue.yaml` is the living planning doc for the question-bank rebuild. It tracks:
+
+- **Covered concepts** — already authored, with question IDs and TOC references
+- **Queued concepts** — planned for upcoming batches, in priority order
+- **Remaining unplanned** — areas that still need attention but aren't yet in a specific batch plan
+
+Update it as part of every batch PR:
+
+1. Move authored concepts from `queued_next` → `covered` (with the new question IDs)
+2. Add new candidate concepts to `queued_next` based on remaining TOC gaps
+3. Bump the `authored_total` and `authored_mix` counters in the relevant domain
+
+This file is read by humans for cross-session continuity and by future contributors (human or AI) to know what's next without re-deriving from the JSON.
+
 ## Hard rules
 
 1. **Never edit `data/domain{1..5}.json` directly.** They are regenerated. Edit:

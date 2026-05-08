@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Project pre-commit hook — runs verify_repo.sh before allowing the commit.
+# Installed via scripts/install_hooks.sh as a symlink at .git/hooks/pre-commit.
+#
+# This is a faster feedback loop than the GitHub Actions CI: catches
+# schema/lint/coverage issues locally before the commit lands, instead
+# of after the push when CI runs.
+#
+# To bypass in an emergency (NOT recommended): commit with --no-verify.
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+# Run verify_repo.sh, capturing output. On failure, surface the output
+# and block the commit. On success, emit only the trailing status line
+# so the commit flow stays quiet.
+out=/tmp/_pre_commit_$$.out
+trap 'rm -f "$out"' EXIT
+
+if bash scripts/verify_repo.sh > "$out" 2>&1; then
+  tail -1 "$out"
+  exit 0
+fi
+
+echo "✗ Pre-commit check failed — verify_repo.sh did not pass."
+echo
+cat "$out"
+echo
+echo "Fix the issues above, then re-stage and commit."
+echo "(Emergency bypass: git commit --no-verify — but expect CI to fail.)"
+exit 1
