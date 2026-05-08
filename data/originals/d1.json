@@ -4762,6 +4762,757 @@
         "Real-time escalation"
       ],
       "_provenance": "Authored from concept: 'continuous-auditing detected-anomaly escalation - audit detects and escalates to authorized decision-maker (compliance), audit does not unilaterally take operational action'. Public source: ITAF Tools and Techniques + ISACA Standard 1207. All scenario specifics (high-frequency trading firm, 1,200 trades in 3 minutes, $14M exposure, senior MD trader, compliance meeting) invented for this question. Distinct from d1_046 technique selection, d1_083 continuous-online application, d1_110 architecture trade-offs."
+    },
+    {
+      "id": "d1_131",
+      "domain": 1,
+      "subtopic": "CSA — Workshop Facilitation Discipline",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager at a Big-Four advisory firm is preparing to facilitate a CSA workshop with the operations leadership of a client manufacturing site. The workshop will identify control weaknesses in the production-scheduling process. What is the MOST important facilitation discipline for the auditor to apply?",
+      "options": {
+        "A": "Lead the workshop by presenting the auditor's pre-prepared list of likely control weaknesses, then invite participants to confirm or deny each item",
+        "B": "Structure the workshop to elicit participants' own assessments of control effectiveness through open-ended questions, capture their observations and concerns, document evidence of consensus and dissent, and avoid steering toward auditor-preconceived conclusions",
+        "C": "Allow the workshop to be unstructured and free-flowing so participants can speak freely, with no facilitation framework or documentation discipline",
+        "D": "Conduct the workshop entirely as a one-on-one interview format, asking each participant individually rather than as a group"
+      },
+      "correct": "B",
+      "key_concept": "CSA workshop facilitation elicits participants' own assessments through open-ended questions and structured documentation. The auditor facilitates without steering — the value comes from participants' local knowledge surfaced under structured discipline, not from the auditor confirming preconceived conclusions.",
+      "pre_read": "For CSA workshop questions, the right shape is \"facilitator elicits, doesn't lead\". Distractors that have the auditor pre-list weaknesses, run unstructured discussion, or convert the workshop to one-on-one interviews all break the CSA premise.",
+      "correct_explanation": "ISACA IT Audit Standards on CSA and IIA Practice Guide on Control Self-Assessment establish that CSA workshops elicit participants' own assessments of controls in their areas — not the auditor's pre-formed conclusions. The facilitation discipline includes: (1) open-ended questions that allow participants to articulate their views, (2) structured capture of observations + areas of consensus + areas of dissent, (3) avoidance of auditor-steering toward pre-determined answers, (4) documentation that supports later evaluation by the audit team. Option A inverts the model — pre-presenting auditor conclusions and asking confirmation defeats the participant-elicitation purpose. Option C abandons facilitation discipline entirely. Option D loses the group-dynamic value of CSA (participants triangulate their views, surface different perspectives) by running as individual interviews.",
+      "wrong_explanations": {
+        "A": "Pre-presenting auditor-formed conclusions and asking participants to confirm-or-deny is anchoring bias by design. The CSA premise is that participants surface what the auditor wouldn't otherwise see; if the auditor leads with conclusions, participants will tend to confirm.",
+        "C": "Unstructured workshops produce inconsistent documentation, missed evidence, and conclusions that cannot be defended later. Facilitation discipline (open-ended questions + structured capture) is required.",
+        "D": "Individual interviews lose the group-triangulation value of CSA. Workshop participants challenge each other's views; that dynamic is what CSA is designed to leverage. Individual interviews are a different technique."
+      },
+      "tips": [
+        "Trap is A — \"pre-listed weaknesses, confirm or deny\" sounds efficient but it's anchoring bias and defeats CSA's purpose.",
+        "CSA workshop = facilitator elicits + structured capture + no steering + group dynamic. Four elements.",
+        "Exam-day shortcut: CSA-facilitation questions are answered by the option naming open-ended elicitation and structured documentation without auditor-steering."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on Control Self-Assessment; ITAF Performance Standards on Audit Techniques; IIA Practice Guide on Control Self-Assessment",
+      "related_concepts": [
+        "CSA workshop facilitation",
+        "Open-ended elicitation",
+        "Anchoring bias",
+        "Group-dynamic value",
+        "Facilitator role"
+      ],
+      "_provenance": "Authored from concept: 'CSA workshop facilitation discipline - elicits participants own assessments through open-ended questions, structured capture, no steering'. Public source: ISACA Standards on CSA + IIA Practice Guide. All scenario specifics (Big-Four advisory firm, manufacturing client production-scheduling) invented for this question. Distinct from d1_020 (limitations), d1_059 (deployment decision), d1_073 (definition)."
+    },
+    {
+      "id": "d1_132",
+      "domain": 1,
+      "subtopic": "CSA — Results Integration into Audit Conclusions",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit director at a regional credit union has received CSA workshop results from the loan-origination department's self-assessment. The CSA results indicate that the department considers its segregation-of-duties controls strong, but the auditor's independent walkthrough during the same engagement identified gaps the department did not note. How should the audit director MOST appropriately integrate the CSA results into the audit's conclusions?",
+      "options": {
+        "A": "Use the CSA results as the primary basis for the audit's conclusion on segregation of duties, since the department has direct knowledge of its own controls",
+        "B": "Treat the CSA results as one input among several — they inform what the audit team examines and surface participant perspectives — but the auditor's independent procedures and findings remain the basis for the audit's conclusion; document the divergence between CSA and independent findings as part of the audit's analysis",
+        "C": "Discard the CSA results entirely once the auditor's independent walkthrough produces different findings, since CSA is unreliable when it diverges from independent work",
+        "D": "Ask the department to re-run the CSA until their results align with the auditor's findings"
+      },
+      "correct": "B",
+      "key_concept": "CSA results are one input that the auditor integrates with independent procedures. The auditor's own work remains the basis for the audit's conclusion, especially when divergence exists. Discarding CSA, replacing audit work with CSA, or coercing CSA results to align all break the integration discipline.",
+      "pre_read": "For CSA-results-integration questions, anchor on \"CSA is one input; auditor's independent work is the conclusion's basis\". Distractors that elevate CSA above independent work, discard CSA entirely, or coerce alignment all violate the discipline.",
+      "correct_explanation": "ISACA IT Audit Standards on CSA establish that CSA is a complementary technique that surfaces participant perspectives and informs what the auditor examines, but it does not replace the auditor's independent procedures and conclusions. When CSA results diverge from independent findings (as in this scenario), the auditor's findings are the conclusion's basis; the divergence itself is an analytical observation worth documenting (it tells the auditor that participants did not see what the auditor saw — which has implications for control awareness, training, or potential management bias). Option A elevates CSA above independent audit work, which contradicts the complementary role. Option C discards useful input — the divergence has analytical value. Option D coerces CSA to align with audit findings, which destroys CSA's diagnostic value.",
+      "wrong_explanations": {
+        "A": "CSA gives participants' views, but participants are also the audited party. Their assessment can be biased (intentionally or unintentionally) and their visibility into their own controls may be limited. The auditor's independent procedures are more reliable for the audit conclusion.",
+        "C": "Discarding CSA when it diverges loses the analytical value of the divergence. The fact that participants do not see what the auditor sees is itself a finding — it suggests possible control-awareness gaps, training gaps, or bias that the audit should address.",
+        "D": "Coercing CSA results to align is an independence violation against the participants. CSA's value comes from participants expressing their genuine views; pressuring them to match the auditor's findings destroys the technique."
+      },
+      "tips": [
+        "Trap is A — \"department has direct knowledge\" elevates CSA above independent work. CSA is one input; auditor's work is the conclusion.",
+        "CSA results integration = one input + independent work is the basis + divergence is an analytical observation. Three elements.",
+        "Exam-day shortcut: CSA-integration questions are answered by the option that names independent procedures as conclusion basis with CSA as input."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on Control Self-Assessment; ITAF Performance Standards on Audit Techniques; IIA Practice Guide on Control Self-Assessment",
+      "related_concepts": [
+        "CSA results integration",
+        "Complementary audit techniques",
+        "Auditor independence",
+        "Divergence as observation"
+      ],
+      "_provenance": "Authored from concept: 'CSA results integration - CSA as one input, auditor independent procedures as conclusion basis, divergence as analytical observation'. Public source: ISACA CSA standards + IIA Practice Guide. All scenario specifics (regional credit union, loan-origination CSA workshop) invented for this question. Distinct from d1_020/059/073/131."
+    },
+    {
+      "id": "d1_133",
+      "domain": 1,
+      "subtopic": "Audit Evidence — Electronic Evidence Integrity",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a cloud-SaaS provider is collecting electronic evidence (database extracts, system logs, configuration exports) for an audit. To rely on the electronic evidence in the audit conclusion, what is the MOST important integrity consideration?",
+      "options": {
+        "A": "The evidence file is the smallest possible size to minimize storage cost",
+        "B": "The evidence is extracted and stored in a manner that preserves and demonstrates integrity — including capture under controlled conditions, hash-value or other tamper-evident verification, secure storage with access controls, and a documented chain from system-of-record to work paper",
+        "C": "The evidence is converted to a proprietary format that only the audit team can read",
+        "D": "The evidence is shared with the audited business unit so they can verify the contents before the auditor analyzes it"
+      },
+      "correct": "B",
+      "key_concept": "Electronic evidence integrity requires controlled capture, tamper-evident verification (hash values), secure storage with access controls, and a documented chain from system-of-record to work paper. Storage size, proprietary format, and pre-analysis sharing with the auditee are not integrity controls.",
+      "pre_read": "For electronic-evidence-integrity questions, the right shape is \"controlled capture + tamper-evident verification + secure storage + documented chain\". Distractors that focus on cost, format, or auditee-sharing all miss the integrity dimension.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Evidence establish that electronic evidence reliability depends on integrity preservation throughout collection, storage, and analysis. The required controls include: (1) capture under controlled conditions (auditor-supervised extract, defined point-in-time, repeatable procedure), (2) tamper-evident verification such as hash values computed at extraction and re-verified at use, (3) secure storage with access controls limiting modification, and (4) a documented chain from system-of-record through extraction to work-paper inclusion. Option A is cost-driven and unrelated to integrity. Option C imposes a format constraint that does not address integrity (and may make the evidence harder to verify). Option D pre-sharing with the auditee compromises integrity by creating a tampering opportunity before audit analysis.",
+      "wrong_explanations": {
+        "A": "File size is a storage-cost consideration unrelated to evidence integrity. Smaller files are not inherently more reliable; integrity comes from controlled capture and tamper-evident verification.",
+        "C": "Proprietary format does not establish integrity. The format is independent from whether the content has been tampered with. Open formats with hash verification are typically more reliable than proprietary formats without verification.",
+        "D": "Sharing evidence with the auditee before analysis creates a tampering opportunity and compromises chain-of-custody. Evidence is collected and analyzed by the auditor; sharing for verification happens through controlled procedures, not by handing files to the auditee."
+      },
+      "tips": [
+        "Trap is D — \"share with auditee for verification\" sounds collaborative but creates tampering opportunity and breaks chain.",
+        "Electronic evidence integrity = controlled capture + hash verification + secure storage + documented chain. Four elements.",
+        "Exam-day shortcut: electronic-evidence questions are answered by the option naming hash-value or other tamper-evident verification with controlled capture."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Evidence; ITAF Tools and Techniques on Audit Data Analytics",
+      "related_concepts": [
+        "Electronic evidence",
+        "Hash-value verification",
+        "Chain of custody (electronic)",
+        "Evidence integrity",
+        "Controlled extraction"
+      ],
+      "_provenance": "Authored from concept: 'electronic evidence integrity - controlled capture, hash verification, secure storage, documented chain'. Public source: ISACA Standard 1205. All scenario specifics (cloud-SaaS provider, database extracts and system logs) invented for this question. Distinct from d1_004 reliability principle, d1_095 reliability ranking, d1_102 sufficiency vs appropriateness."
+    },
+    {
+      "id": "d1_134",
+      "domain": 1,
+      "subtopic": "Audit Evidence — Third-Party Confirmation (Positive vs Negative)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a manufacturer is performing accounts-receivable confirmations as part of an integrated audit. The auditor must choose between positive confirmation (the third party is asked to respond whether the balance is correct or not) and negative confirmation (the third party is asked to respond only if the balance is incorrect). Which approach is MOST appropriate when the auditor assesses high inherent risk and high control risk on the AR balance, and the receivables are concentrated in a small number of large customers?",
+      "options": {
+        "A": "Positive confirmation — required when assessed risk is high or when confirmation responses cannot be presumed; the auditor needs an affirmative response from each party to support a high-quality audit conclusion",
+        "B": "Negative confirmation — sufficient because the population is small and concentrated and prior-year response rates were high; non-response can be treated as agreement",
+        "C": "Skip confirmations entirely — confirmations are an optional procedure that can be replaced with reliance on management's representations when receivables are concentrated",
+        "D": "Send positive confirmations to half the population and negative confirmations to the other half, to balance response rates with audit cost"
+      },
+      "correct": "A",
+      "key_concept": "Positive confirmation is required when inherent + control risk is high, when individual items are large, or when confirmation responses cannot be presumed reliable. Negative confirmation is acceptable only when risk is low, items are individually immaterial, and high response rates are expected.",
+      "pre_read": "For confirmation-type questions, watch for distractors that recommend negative when risk is high, skip confirmations entirely, or split between types arbitrarily. The right answer always matches confirmation type to risk and population characteristics.",
+      "correct_explanation": "AICPA AU-C 505 (External Confirmations) and ISACA IT Audit Standard 1205 (Evidence) establish that confirmation type follows from risk assessment and population characteristics. Positive confirmation requires affirmative response (whether balance is correct or not) and is required when (a) inherent + control risk is high, (b) individual items are large, or (c) the auditor cannot reasonably presume non-response means agreement. Negative confirmation requires response only if balance is incorrect — silence is presumed agreement — and is acceptable only when risk is low, items are individually immaterial, and high response rates are expected. The scenario has high IR + high CR + concentrated large customers, all of which favor positive confirmation. Option B inverts the rule. Option C abandons audit evidence entirely. Option D splits arbitrarily without aligning to risk or item size.",
+      "wrong_explanations": {
+        "B": "Even with high prior-year response rates, negative confirmation cannot provide reliable evidence in a high-risk concentrated population because non-response cannot be presumed agreement when risk is high. The size and concentration arguments seduce candidates who half-remember AU-C 505's conditions; the high-risk override defeats them. The auditor needs affirmative responses.",
+        "C": "Skipping confirmations and relying on management's representations is an independence violation and an evidence-gathering failure. Confirmations are required to corroborate management's AR reports.",
+        "D": "Splitting between types without risk-and-size criteria produces inconsistent evidence quality. The two confirmation types serve different scenarios; arbitrary split doesn't fit either."
+      },
+      "tips": [
+        "Trap is B — \"negative is sufficient because population is small\" inverts the rule. High risk = positive, regardless of population size.",
+        "Positive confirmation = high risk OR large items OR can't presume non-response is agreement. Negative confirmation = low risk + small items + high response expected. Match by criteria.",
+        "Exam-day shortcut: when stem mentions high IR + high CR or large concentrated items, the answer is positive confirmation."
+      ],
+      "framework_ref": "AICPA AU-C 505 (External Confirmations); ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Evidence",
+      "related_concepts": [
+        "Third-party confirmation",
+        "Positive confirmation",
+        "Negative confirmation",
+        "Confirmation-type selection",
+        "Risk-driven evidence design"
+      ],
+      "_provenance": "Authored from concept: 'positive vs negative confirmation - positive required for high risk + large items, negative acceptable only for low risk + small items + high response expected'. Public source: AICPA AU-C 505 + ISACA Standard 1205. All scenario specifics (manufacturer AR audit, concentrated large customers, high IR/CR) invented for this question."
+    },
+    {
+      "id": "d1_135",
+      "domain": 1,
+      "subtopic": "Prescriptive Frameworks — Cross-Walking NIST CSF and ISO 27001",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a cybersecurity managed-services provider is auditing a client that operates in both U.S. federal-contractor (NIST CSF aligned) and EU enterprise (ISO/IEC 27001 certified) markets. The auditor needs to evaluate whether the client's single control framework satisfies both NIST CSF and ISO 27001 simultaneously. What is the MOST important consideration when cross-walking the two frameworks?",
+      "options": {
+        "A": "If the client is ISO 27001 certified, NIST CSF compliance is automatic since the standards are equivalent",
+        "B": "Establish a documented control-mapping that shows for each NIST CSF subcategory and each ISO 27001 Annex A control, which client control(s) satisfy the requirement; identify gaps where one framework requires what the other does not, and address them explicitly; recognize that the frameworks have different orientations (CSF outcomes-based, ISO process-based) and different scopes",
+        "C": "Audit only against NIST CSF since it is more recent and assume ISO 27001 compliance follows automatically",
+        "D": "Use whichever framework's requirements are easier to satisfy in any given area, ignoring the other framework's requirements where they exceed the easier one"
+      },
+      "correct": "B",
+      "key_concept": "Framework cross-walking requires documented control mapping covering both frameworks' requirements, gap identification where they differ, and recognition that they have different orientations and scopes. \"Equivalent\", \"one supersedes the other\", and \"easier-of-the-two\" are all wrong simplifications.",
+      "pre_read": "For framework-cross-walking questions, anchor on \"documented mapping + gap identification + framework-orientation difference\". Distractors that treat frameworks as equivalent, automatically derived, or substitutable all miss the rigor required.",
+      "correct_explanation": "Framework cross-walking is a documented analytical exercise. NIST CSF (v2.0, 2024) and ISO/IEC 27001:2022 cover overlapping but distinct ground: CSF is outcomes-oriented (Identify / Protect / Detect / Respond / Recover / Govern functions) and ISO 27001 is process-oriented (ISMS requirements + Annex A controls). A control-mapping documents, for each requirement in each framework, which of the client's controls satisfies it. Gap identification surfaces requirements one framework imposes that the other does not (e.g., ISO 27001's ISMS-process requirements vs CSF's outcome-focus). Recognition of orientation differences prevents oversimplified equivalence claims. Option A claims equivalence between frameworks that are not equivalent. Option C abandons one framework's requirements entirely. Option D cherry-picks the easier requirement, leaving the harder one's gaps unaddressed.",
+      "wrong_explanations": {
+        "A": "ISO 27001 and NIST CSF are not equivalent. They overlap substantially but have different orientations (process vs outcome) and different specific requirements. ISO certification does not automatically establish CSF alignment.",
+        "C": "Auditing against only one framework when both apply leaves the client exposed on the other framework's requirements. Cross-walking is necessary precisely because the two are not equivalent.",
+        "D": "Cherry-picking the easier requirement undermines compliance with the harder framework. If ISO 27001 requires a control NIST CSF doesn't, that control is still required for ISO compliance."
+      },
+      "tips": [
+        "Trap is A — \"ISO certified, so CSF compliant\" is the equivalence shortcut that doesn't actually hold.",
+        "Framework cross-walking = control mapping + gap identification + orientation-difference recognition. Three components.",
+        "Exam-day shortcut: framework-cross-walking questions are answered by the option naming documented mapping AND gap identification, not equivalence shortcuts."
+      ],
+      "framework_ref": "NIST Cybersecurity Framework v2.0 (2024); ISO/IEC 27001:2022 Information Security Management Systems; ISACA Risk IT Framework; ITAF Performance Standards on Application Audits",
+      "related_concepts": [
+        "Framework cross-walking",
+        "NIST CSF",
+        "ISO 27001",
+        "Control mapping",
+        "Gap identification"
+      ],
+      "_provenance": "Authored from concept: 'framework cross-walking NIST CSF and ISO 27001 - documented mapping plus gap identification plus orientation-difference recognition'. Public source: NIST CSF v2.0 + ISO/IEC 27001:2022. All scenario specifics (cybersecurity MSP, dual U.S./EU client) invented for this question. Distinct from d1_038 (DFARS+NIS2 prescriptive framework scenario)."
+    },
+    {
+      "id": "d1_136",
+      "domain": 1,
+      "subtopic": "Prescriptive Frameworks — Cross-Walking SOX and COBIT",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a publicly-traded retail chain is supporting a SOX 404 IT-controls audit. Management is operating its IT-control environment using COBIT 2019 as the framework. What is the MOST appropriate way to relate COBIT 2019 to SOX 404 IT-controls testing?",
+      "options": {
+        "A": "Use COBIT alone for SOX 404 testing since COBIT is comprehensive and includes all SOX-relevant controls",
+        "B": "Use SOX 404 alone and ignore COBIT, since SOX is the regulatory requirement and COBIT is internal-management-only",
+        "C": "Map COBIT 2019 management objectives (especially DSS, BAI, APO process areas) to specific SOX 404 IT-general-control areas (access management, change management, IT operations, data integrity) — using COBIT to design and operate controls and SOX 404 to define audit scope and reporting",
+        "D": "Apply COBIT and SOX requirements simultaneously to every transaction in the population, regardless of whether they apply"
+      },
+      "correct": "C",
+      "key_concept": "SOX 404 and COBIT 2019 serve complementary roles: COBIT provides a framework for designing and operating IT controls; SOX 404 defines the audit's scope and reporting requirements over financial-statement-relevant IT controls. The right approach maps COBIT process areas (especially DSS, BAI, APO) to SOX-relevant IT-general-control areas.",
+      "pre_read": "For SOX/COBIT cross-walking, the right shape is \"COBIT for design + SOX for scope and reporting, with mapping between them\". Distractors that use one alone or apply both indiscriminately miss the role distinction.",
+      "correct_explanation": "Sarbanes-Oxley Section 404 mandates management's assessment and external auditor attestation over internal control over financial reporting (ICFR), which includes IT general controls supporting financial-reporting systems. COBIT 2019 provides a comprehensive IT governance and management framework. The cross-walking discipline maps COBIT's management objectives (especially DSS — Deliver Service and Support, BAI — Build Acquire Implement, APO — Align Plan Organize) to SOX 404 IT-general-control categories (access management, change management, IT operations, data integrity). COBIT provides the design and operational framework; SOX 404 defines audit scope (only financially-relevant IT controls) and reporting (annual ICFR assessment). Option A applies COBIT without recognizing SOX's scope-defining role. Option B abandons COBIT, losing the framework value. Option D applies both simultaneously without recognizing their complementary roles.",
+      "wrong_explanations": {
+        "A": "COBIT is comprehensive but not all of COBIT's coverage is SOX-relevant. SOX 404 audit scope is bounded to financial-reporting-relevant IT controls; using COBIT alone misses this scope discipline.",
+        "B": "Ignoring COBIT means abandoning the framework that helps design and operate the IT controls being audited. SOX 404 defines what to audit; COBIT helps explain how the controls should be structured.",
+        "D": "Applying both frameworks indiscriminately to every transaction is operationally infeasible and wastes effort. The right approach maps COBIT's relevant process areas to SOX's required IT-general-control areas."
+      },
+      "tips": [
+        "Trap is A — \"COBIT is comprehensive\" is true but it doesn't address SOX scope discipline.",
+        "SOX/COBIT roles: COBIT for design + SOX for scope and reporting. Map COBIT DSS/BAI/APO areas to SOX IT-general-control categories.",
+        "Exam-day shortcut: SOX/COBIT cross-walking questions are answered by the option naming COBIT for design and SOX for scope, with mapping between them."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act Section 404 (Management Assessment of Internal Controls); COBIT 2019 (Management Objectives across DSS, BAI, APO domains); PCAOB AS 2201 (An Audit of Internal Control Over Financial Reporting That Is Integrated with an Audit of Financial Statements)",
+      "related_concepts": [
+        "SOX 404",
+        "COBIT 2019",
+        "ICFR",
+        "IT general controls",
+        "Framework cross-walking"
+      ],
+      "_provenance": "Authored from concept: 'SOX/COBIT cross-walking - COBIT for design and operation, SOX for audit scope and reporting, mapping between'. Public source: SOX Section 404 + COBIT 2019 + PCAOB AS 2201. All scenario specifics (publicly-traded retail chain, SOX 404 ICFR audit, COBIT-managed IT environment) invented for this question."
+    },
+    {
+      "id": "d1_137",
+      "domain": 1,
+      "subtopic": "Audit Team Training — Engagement-Specific Competency-Gap Diagnosis",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager at an oil-services contractor has been assigned a new audit of the company's industrial-control-system (ICS) cybersecurity. The audit team consists of three IT auditors with strong general-IT skills but no ICS-specific experience. What is the MOST important step the manager should take to address the engagement-specific competency gap?",
+      "options": {
+        "A": "Begin the engagement with the existing team and rely on the team learning ICS specifics during fieldwork",
+        "B": "Diagnose the specific ICS-competency gap (e.g., IEC 62443 standards knowledge, OT-network protocols, safety-instrumented-system controls), then address it through targeted approaches such as bringing in an ICS specialist (per Standard 1206 — Using the Work of Other Experts), targeted training before fieldwork, or co-sourcing with an ICS-experienced firm — and document the chosen approach",
+        "C": "Reassign the engagement to a different audit team that already has ICS experience, even if it disrupts the function's overall workload",
+        "D": "Skip the audit entirely since the team lacks ICS experience"
+      },
+      "correct": "B",
+      "key_concept": "Engagement-specific competency gaps are diagnosed (specific gap identified) and addressed through targeted approaches: external expert (Standard 1206), targeted training, or co-sourcing. Beginning fieldwork without remediation, full reassignment, or skipping the audit are all wrong responses.",
+      "pre_read": "For engagement-specific competency-gap questions, the right shape is \"diagnose specific gap + targeted remediation\". Distractors that proceed without remediation, reassign entirely, or skip all violate the discipline.",
+      "correct_explanation": "ITAF General Standard 1006 (Proficiency) and ISACA IT Audit Standard 1206 (Using the Work of Other Experts) establish that audit teams must have, collectively, the competencies needed for the engagement. When an engagement-specific gap exists (here: ICS-specific cybersecurity), the discipline is: (1) diagnose the specific gap (what knowledge / skill is needed that the team lacks — IEC 62443, OT protocols, safety-instrumented systems), (2) choose a targeted remediation approach (external expert under Standard 1206; pre-fieldwork training; co-sourcing with an experienced firm), (3) document the chosen approach. Option A proceeds without remediation, which means the audit's conclusions on ICS-specific concerns will be unreliable. Option C is over-corrective when targeted remediation is available. Option D abandons the engagement when remediation is available.",
+      "wrong_explanations": {
+        "A": "Learning ICS specifics during fieldwork is not a remediation strategy — it is a quality-degradation strategy. ICS-specific knowledge gaps need to be addressed before the audit produces conclusions about ICS controls.",
+        "C": "Full reassignment disrupts the function's workload and is unnecessary when targeted remediation (specialist, training, co-sourcing) can address the gap with the existing team.",
+        "D": "Skipping the audit is unacceptable — ICS cybersecurity is a high-risk area for an oil-services contractor. The discipline is to address the competency gap, not abandon the audit."
+      },
+      "tips": [
+        "Trap is A — \"learn during fieldwork\" sounds practical but produces unreliable conclusions on the area where the team lacks competence.",
+        "Competency gap diagnosis = specific gap identified + targeted remediation (expert / training / co-sourcing) + documented approach.",
+        "Exam-day shortcut: engagement-specific competency questions are answered by the option naming diagnosis + targeted remediation, not full reassignment or proceed-as-is."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1006 (Proficiency); ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ITAF General Standards on Proficiency",
+      "related_concepts": [
+        "Engagement-specific competency",
+        "Competency-gap diagnosis",
+        "Using the work of other experts",
+        "Targeted training",
+        "Co-sourcing"
+      ],
+      "_provenance": "Authored from concept: 'engagement-specific competency gap diagnosis - identify specific gap, target remediation through expert / training / co-sourcing'. Public source: ISACA Standards 1006 + 1206. All scenario specifics (oil-services contractor, ICS cybersecurity audit, three-IT-auditor team without ICS experience) invented for this question. Distinct from d1_044 (function-level training plan)."
+    },
+    {
+      "id": "d1_138",
+      "domain": 1,
+      "subtopic": "Effect of Laws and Regulations — Sector-Specific Cases (HIPAA + Finance)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a multi-state hospital chain is auditing a system that processes both protected health information (PHI, subject to HIPAA) and patient financial data (subject to GLBA — Gramm-Leach-Bliley Act because the hospital extends in-house financing). The two regulatory regimes have overlapping but distinct requirements. What is the MOST appropriate audit approach?",
+      "options": {
+        "A": "Audit only against HIPAA, since healthcare regulations supersede financial regulations for healthcare entities",
+        "B": "Audit only against GLBA, since financial-data regulations are stricter and HIPAA compliance follows automatically",
+        "C": "Audit against both regulations explicitly, document where each regulation imposes requirements not imposed by the other (PHI confidentiality controls per HIPAA Privacy Rule; financial-data safeguards under GLBA Safeguards Rule), and identify any conflicts requiring legal interpretation",
+        "D": "Defer the audit until federal regulators provide unified guidance for healthcare entities that also extend financing"
+      },
+      "correct": "C",
+      "key_concept": "Sector-overlap regulatory cases require auditing against both regimes explicitly, documenting requirement differences, and identifying conflicts. Treating one as superseding, deferring to unified guidance, or assuming automatic compliance all violate the regulatory discipline.",
+      "pre_read": "For sector-overlap regulatory questions, anchor on \"audit against both, document differences, identify conflicts\". Distractors that elevate one regulation, defer to non-existent unified guidance, or assume automatic compliance all miss the dual-regime obligation.",
+      "correct_explanation": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning) and ITAF Performance Standards on Regulatory Compliance establish that when an audit subject is governed by multiple regulatory regimes, each regime's requirements must be evaluated. HIPAA Privacy Rule imposes specific PHI confidentiality and access controls; GLBA Safeguards Rule imposes financial-data security requirements that overlap but include distinct elements (e.g., risk-assessment-and-program-update cadence under GLBA's Safeguards Rule, business-associate-agreement requirements under HIPAA). Where requirements overlap, the auditor evaluates against the stricter standard; where they conflict (rare but possible), legal interpretation is sought. Option A treats HIPAA as superseding GLBA, ignoring GLBA's separate jurisdictional reach. Option B inverts the same error. Option D defers to non-existent unified guidance and effectively abandons the audit.",
+      "wrong_explanations": {
+        "A": "Healthcare regulations do not supersede financial regulations for healthcare entities that extend financing. GLBA applies to entities engaged in financial activities, regardless of their primary industry.",
+        "B": "GLBA does not automatically establish HIPAA compliance. The two have different scopes (HIPAA focuses on PHI confidentiality and integrity; GLBA focuses on customer-financial-data security).",
+        "D": "There is no unified federal guidance combining HIPAA and GLBA for hospitals that extend financing. Deferring waiting for such guidance is effectively abandoning the audit."
+      },
+      "tips": [
+        "Trap is A or B — \"one supersedes the other\" simplifies the regulatory landscape inappropriately. Both apply when the entity is in scope for both.",
+        "Sector overlap = audit both, document differences, identify conflicts, escalate conflicts to legal. Four steps.",
+        "Exam-day shortcut: regulatory-overlap questions are answered by the option that audits against both regimes explicitly with gap and conflict identification."
+      ],
+      "framework_ref": "HIPAA Privacy Rule (45 CFR Part 164); GLBA Safeguards Rule (16 CFR Part 314); ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ITAF Performance Standards on Regulatory Compliance",
+      "related_concepts": [
+        "Sector-specific regulation",
+        "HIPAA",
+        "GLBA",
+        "Regulatory overlap",
+        "Multi-regime compliance"
+      ],
+      "_provenance": "Authored from concept: 'sector-overlap regulatory audit - audit both regimes explicitly, document differences, identify conflicts, escalate to legal'. Public source: HIPAA + GLBA + ISACA Standard 1202. All scenario specifics (multi-state hospital chain extending in-house financing) invented for this question. Distinct from d1_022 (parent regulatory effect on planning)."
+    },
+    {
+      "id": "d1_139",
+      "domain": 1,
+      "subtopic": "Audit Committee — Financial-Expert Composition (SEC Rules)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at an SEC-registered ETF management company is reviewing the audit committee's composition under SEC and SOX requirements. Which characteristic is MOST critical for the audit committee composition under these rules?",
+      "options": {
+        "A": "All audit-committee members must hold a CPA or CISA designation",
+        "B": "At least one audit-committee member must be designated an \"audit committee financial expert\" per SOX Section 407 / SEC rules, with documented qualifications, OR the company must disclose why no member meets the criteria",
+        "C": "The audit committee must be composed entirely of company executives to ensure deep operational knowledge",
+        "D": "The audit committee must have an even number of members so voting tied results are impossible"
+      },
+      "correct": "B",
+      "key_concept": "SEC and SOX require at least one audit-committee \"financial expert\" with documented qualifications, OR explicit disclosure of why no member qualifies. The financial-expert requirement is met by criteria including financial-statement understanding, internal-control-over-financial-reporting experience, and audit-committee experience.",
+      "pre_read": "For audit-committee composition questions, anchor on \"at least one financial expert per SOX 407 / SEC rules with documented qualifications, OR disclosure of absence\". Distractors that require professional designations, executive composition, or arbitrary numerical structure all miss the regulatory requirement.",
+      "correct_explanation": "Sarbanes-Oxley Act Section 407 and SEC implementing rules (17 CFR Part 229.407) require that public companies disclose whether at least one audit-committee member qualifies as an \"audit committee financial expert\" — and if no member qualifies, explain why. The SEC criteria for financial expert include: understanding of GAAP and financial statements; experience preparing, auditing, analyzing, or evaluating financial statements; experience with internal controls and procedures over financial reporting; understanding of audit committee functions. Option A imposes a CPA/CISA requirement that exceeds what the rule requires. Option C inverts the structural requirement — audit committees must be independent (Section 301), so executive-only composition is the opposite of compliance. Option D's even-number requirement is fabricated.",
+      "wrong_explanations": {
+        "A": "SOX/SEC do not require a CPA or CISA designation. The financial-expert criterion is functional (experience and understanding), not credential-based.",
+        "C": "SOX Section 301 requires audit-committee members to be independent (not executive-officers of the company). Executive composition is the opposite of the independence requirement.",
+        "D": "SOX/SEC do not specify an even or odd number of audit-committee members. The minimum size depends on the listing-exchange rules (typically at least 3 independent directors), not an even/odd rule."
+      },
+      "tips": [
+        "Trap is A — \"CPA / CISA required\" sounds rigorous but the rule is functional, not credential-based.",
+        "Audit committee composition under SOX/SEC: at least one financial expert OR disclosed absence + all members independent + minimum exchange-listing size.",
+        "Exam-day shortcut: audit-committee composition questions are answered by the option naming the financial-expert requirement under SOX 407 / SEC rules."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act Section 407 (Disclosure of Audit Committee Financial Expert); SEC Regulation S-K Item 407(d)(5) (17 CFR § 229.407(d)(5)); Sarbanes-Oxley Act Section 301 (Audit Committee Requirements)",
+      "related_concepts": [
+        "Audit committee composition",
+        "SOX Section 407",
+        "Financial expert",
+        "Audit committee independence",
+        "SEC disclosure"
+      ],
+      "_provenance": "Authored from concept: 'audit committee financial-expert composition under SOX 407 + SEC rules - at least one expert OR disclosed absence, criteria functional not credential-based'. Public source: SOX Sections 301 + 407 + SEC Regulation S-K. All scenario specifics (SEC-registered ETF management company) invented for this question. Distinct from d1_016/089/093."
+    },
+    {
+      "id": "d1_140",
+      "domain": 1,
+      "subtopic": "Agile Auditing — Sprint Design and Retrospectives",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager at a gaming-software startup is leading the function's first agile audit engagement. The engagement is decomposed into 2-week sprints and the team is planning the retrospective discipline. Which approach BEST applies agile auditing's sprint and retrospective discipline?",
+      "options": {
+        "A": "Sprints with no retrospectives — the audit team should focus on audit work, not process discussions",
+        "B": "Each 2-week sprint produces a defined audit increment (specific procedures completed, evidence gathered, findings drafted), each sprint ends with a retrospective that captures what worked, what didn't, and what the team will change in the next sprint, and retrospective outcomes feed back into engagement planning",
+        "C": "Sprints with retrospectives held only at engagement end, since per-sprint retrospectives are too frequent and disrupt audit work",
+        "D": "Sprints with retrospectives held privately by the manager only, without team input, since the manager has the authority to decide process changes"
+      },
+      "correct": "B",
+      "key_concept": "Agile auditing sprints produce defined increments and end with team retrospectives that capture lessons and feed forward. Skipping retrospectives, deferring to engagement end, or running them manager-privately all break the agile premise.",
+      "pre_read": "For agile-auditing sprint questions, the right shape is \"sprint with defined increment + team retrospective + feed-forward\". Distractors that skip retrospectives, defer them, or make them private all violate agile principles.",
+      "correct_explanation": "ITAF Performance Standards on Agile Auditing and IIA Practice Guide on Agile Auditing establish that agile auditing applies sprint-based delivery with: (1) each sprint producing a defined audit increment (specific procedures completed, evidence gathered, findings drafted, or other tangible delivery), (2) each sprint ending with a retrospective where the team discusses what worked, what didn't, and what to change in the next sprint, (3) retrospective outcomes feeding into the next sprint's plan. The retrospective is a team activity, not a manager-private one, because lessons-learned require all perspectives. Option A skips retrospectives entirely, eliminating the iterative-improvement value of agile. Option C defers retrospectives to engagement-end, which means the team cannot adjust within the engagement. Option D excludes the team from retrospectives, breaking the team-driven agile premise.",
+      "wrong_explanations": {
+        "A": "Skipping retrospectives eliminates the iterative-improvement value of agile auditing. Agile's premise is that frequent feedback enables better outcomes; without retrospectives, agile collapses to short-sprint waterfall.",
+        "C": "Deferring retrospectives to engagement-end loses the within-engagement adjustment value. The team cannot apply lessons to the current engagement if retrospectives wait until the engagement is over.",
+        "D": "Manager-private retrospectives substitute hierarchical decision-making for team-driven improvement. Agile principles assume the team's collective insight produces better outcomes than the manager's solo judgment."
+      },
+      "tips": [
+        "Trap is C — \"retrospectives at engagement end\" sounds operationally efficient but loses the within-engagement adjustment value.",
+        "Agile sprint = defined increment + team retrospective + feed-forward. Each sprint, each retrospective, each forward-feed.",
+        "Exam-day shortcut: agile-auditing sprint questions are answered by the option naming defined increments + team retrospectives + feed-forward."
+      ],
+      "framework_ref": "ITAF Performance Standards on Agile Auditing; IIA Practice Guide on Agile Auditing",
+      "related_concepts": [
+        "Agile auditing",
+        "Sprint design",
+        "Retrospective",
+        "Iterative improvement",
+        "Audit increment"
+      ],
+      "_provenance": "Authored from concept: 'agile auditing sprint and retrospective discipline - defined increment + team retrospective + feed-forward'. Public source: ITAF Agile Auditing + IIA Practice Guide. All scenario specifics (gaming-software startup, first agile engagement, 2-week sprints) invented for this question. Distinct from d1_029 (parent agile-auditing concept)."
+    },
+    {
+      "id": "d1_141",
+      "domain": 1,
+      "subtopic": "Fraud — Investigation Lifecycle Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a regional bank trust department has completed the first stage of suspected-fraud investigation: documenting indicators and preserving evidence under chain-of-custody. The audit committee, with general counsel concurring, has authorized engaging a forensic-accounting firm to perform the investigative work. The auditor's role now shifts. Three facts shape the handoff: (1) the forensic firm will conduct interviews and detailed transaction analysis; (2) law-enforcement referral is being considered but has not yet been made; (3) external counsel has joined the matter and has asserted attorney-work-product privilege over the forensic firm's work product. The IS auditor must understand how their role integrates with forensic, legal, and audit-committee responsibilities through the investigation lifecycle.",
+      "question": "Which response BEST describes the IS auditor's role and integration discipline through the remaining lifecycle?",
+      "options": {
+        "A": "The IS auditor remains the primary investigator and continues performing detailed analysis in parallel with the forensic firm",
+        "B": "The IS auditor's role shifts to coordination, evidence preservation, and supporting the forensic firm's work without independently conducting interviews or analysis; the auditor reports to the audit committee through the audit director, coordinates with general counsel on privilege boundaries, and preserves audit work-product separately from forensic work-product covered by privilege",
+        "C": "The IS auditor exits the engagement entirely once the forensic firm engages, since forensic and audit roles are mutually exclusive",
+        "D": "The IS auditor takes over external-counsel coordination, since the auditor has the most context on the matter"
+      },
+      "correct": "B",
+      "key_concept": "Through the fraud-investigation lifecycle, the IS auditor's role shifts from primary investigator to coordinator + evidence preserver + audit-committee channel. The auditor does NOT take over forensic work, exit entirely, or take over counsel coordination. Privilege boundaries are managed by counsel, not audit.",
+      "pre_read": "For fraud-investigation lifecycle questions, the IS auditor's roles by stage: discovery → coordination + evidence preservation → audit-committee reporting + privilege-boundary respect. Distractors that have the auditor continue primary investigation, exit entirely, or take over legal coordination all break the role boundaries.",
+      "correct_explanation": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts), ITAF Performance Standards on Fraud Risk, and ACFE Fraud Examiners Manual establish that the IS auditor's role through a fraud-investigation lifecycle shifts as forensic and legal resources engage. After initial discovery and evidence preservation under chain-of-custody, the IS auditor: (1) shifts to coordination — supporting forensic work, providing context, granting access — without independently conducting forensic interviews or analysis (forensic firms have specialized methodology and chain-of-custody discipline that the audit team does not replicate); (2) preserves audit work-product separately from forensic work-product covered by attorney-work-product privilege (privilege boundaries are critical and managed by counsel, not audit); (3) reports to the audit committee through the audit director, maintaining the audit reporting line; (4) coordinates with counsel on privilege boundaries and the regulatory-notification timing. Option A keeps the auditor as primary investigator, which duplicates and potentially conflicts with the forensic firm's work. Option C exits the auditor entirely, losing the audit-committee reporting channel. Option D has the auditor take over counsel coordination, which is outside the auditor's authority and competence.",
+      "wrong_explanations": {
+        "A": "Parallel investigation by the IS auditor and the forensic firm creates duplicate effort, potential conflict between the two analyses, and chain-of-custody complications. The auditor supports the forensic work, doesn't compete with it.",
+        "C": "Full auditor exit loses the audit-committee reporting channel and the audit's continuing role in evaluating control implications of the fraud. The auditor remains engaged in a different role, not exits.",
+        "D": "Counsel coordination is the audit-director's responsibility (or general counsel's directly), not the IS auditor's. Taking over counsel coordination exceeds the auditor's authority."
+      },
+      "tips": [
+        "Trap is A — \"continue primary investigation\" duplicates forensic work and creates conflict. Coordinator role, not investigator role.",
+        "Fraud lifecycle roles: discovery (auditor) → forensic work (forensic firm with audit support) → reporting (audit committee through audit director with counsel-managed privilege).",
+        "Exam-day shortcut: fraud-investigation lifecycle questions are answered by the option that names the auditor's coordination + evidence-preservation + reporting role."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); ITAF Performance Standards on Fraud Risk; ACFE Fraud Examiners Manual on Investigation Coordination",
+      "related_concepts": [
+        "Fraud-investigation lifecycle",
+        "Auditor coordination role",
+        "Attorney-work-product privilege",
+        "Evidence preservation",
+        "Audit-committee reporting line"
+      ],
+      "_provenance": "Authored from concept: 'fraud investigation lifecycle integration - auditor shifts to coordination + evidence preservation + audit-committee reporting once forensic firm engages, NOT continued primary investigation / full exit / counsel takeover'. Public source: ISACA Standard 1207 + ACFE Fraud Examiners Manual. All scenario specifics (regional bank trust department, audit-committee-authorized forensic engagement, attorney-work-product privilege) invented for this question. Distinct from d1_010/069/070/084/096/115."
+    },
+    {
+      "id": "d1_142",
+      "domain": 1,
+      "subtopic": "Audit Universe — Multi-Entity Organization Definition",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a pharmaceutical conglomerate is establishing the audit universe for the company, which has 15 subsidiaries operating under 4 distinct regulatory regimes (FDA in the U.S., EMA in the EU, PMDA in Japan, Health Canada in Canada) plus a central corporate-services subsidiary providing shared IT services to all 15. Subsidiaries vary in size (largest contributes 35% of revenue; smallest contributes 0.4%), risk profile, and IT-systems integration with corporate. The director must define the audit universe at appropriate granularity.",
+      "question": "Which approach is MOST appropriate for defining the audit universe in this multi-entity structure?",
+      "options": {
+        "A": "One unit per subsidiary in the audit universe, with the central corporate-services subsidiary treated as just another subsidiary",
+        "B": "Audit universe entities defined at appropriate granularity recognizing structural complexity: each subsidiary mapped with its specific regulatory regime + business processes; the central corporate-services subsidiary's shared IT services mapped as cross-cutting auditable entities; the largest revenue contributors and highest-risk regulatory regimes flagged as recurring-engagement-priority; smaller subsidiaries grouped into a rotational coverage cycle; and the universe refreshed at least annually",
+        "C": "One single \"company-wide\" entity since all subsidiaries are part of the same conglomerate",
+        "D": "Audit universe matched to the legal-entity structure exactly, with no recognition of cross-cutting shared services"
+      },
+      "correct": "B",
+      "key_concept": "Multi-entity audit universes need granularity that reflects structural complexity: per-subsidiary entries with regulatory-regime mapping, cross-cutting shared-service entries, priority-tiering by revenue and risk, and rotational coverage for smaller entities. Single-unit-per-subsidiary, single-company-wide, or legal-entity-only approaches all miss the complexity.",
+      "pre_read": "For multi-entity audit universe questions, the right shape is \"granularity that reflects structural complexity + cross-cutting entries for shared services + priority tiering + rotational coverage + annual refresh\". Distractors that go too coarse, too granular without prioritization, or miss cross-cutting services all break the discipline.",
+      "correct_explanation": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning) and ITAF Performance Standards on Audit Planning establish that the audit universe must reflect the organization's structural complexity at appropriate granularity. For a multi-entity organization with 15 subsidiaries across 4 regulatory regimes plus shared corporate services, the universe entries should: (1) cover each subsidiary with its specific regulatory regime + business processes (recognizing that regulatory regime materially affects audit scope), (2) include cross-cutting entries for shared corporate-services subsidiary's IT services (an audit of these affects all 15 subsidiaries), (3) tier priority by revenue contribution + risk profile + regulatory regime stringency, (4) rotational-coverage smaller subsidiaries to maintain coverage at acceptable cost, (5) refresh at least annually. Option A treats subsidiaries identically and misses the cross-cutting shared-services dimension. Option C is too coarse and loses the per-entity audit cycles entirely. Option D mirrors legal structure but misses cross-cutting shared services that don't map to single legal entities.",
+      "wrong_explanations": {
+        "A": "Treating all 15 subsidiaries as identical entities ignores the size and risk-profile differences (largest is 35% of revenue; smallest is 0.4%). And missing the cross-cutting shared-services entry leaves a critical audit area unrepresented.",
+        "C": "A single company-wide entity collapses 15 subsidiaries with 4 distinct regulatory regimes into one — losing the per-regime audit-scope discipline. The audit universe must support engagement-level planning, which requires entity-level granularity.",
+        "D": "Legal-entity-exact mapping doesn't capture cross-cutting shared services that span multiple legal entities. The shared corporate-services subsidiary provides IT services to all 15; auditing it requires a cross-cutting entity in the universe."
+      },
+      "tips": [
+        "Trap is A — \"one unit per subsidiary\" feels organized but misses size/risk priorities and cross-cutting services.",
+        "Multi-entity universe = subsidiary entries + shared-service cross-cutting entries + priority tiering + rotational coverage + annual refresh.",
+        "Exam-day shortcut: multi-entity audit-universe questions are answered by the option naming structural-complexity-reflecting granularity AND cross-cutting shared-service entries."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ITAF Performance Standards on Audit Planning",
+      "related_concepts": [
+        "Audit universe",
+        "Multi-entity organization",
+        "Cross-cutting shared services",
+        "Priority tiering",
+        "Rotational coverage"
+      ],
+      "_provenance": "Authored from concept: 'audit universe definition for multi-entity organization - structural-complexity-reflecting granularity, cross-cutting shared services, priority tiering, rotational coverage'. Public source: ISACA Standard 1202. All scenario specifics (pharma conglomerate, 15 subsidiaries, 4 regulatory regimes, shared corporate-services) invented for this question. Distinct from d1_100 (audit universe single-org foundational application)."
+    },
+    {
+      "id": "d1_143",
+      "domain": 1,
+      "subtopic": "Sampling — Selection Between Equally-Defensible Techniques",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a cargo airline is designing the substantive sampling for a test of cargo-billing transactions over 12 months. The population characteristics: 240,000 transactions, a wide dollar range ($50 to $180,000), and a known stratification by cargo-type (general / hazardous / temperature-controlled / oversized) with different error-rate patterns by stratum. The audit objective is to estimate the dollar value of any billing errors. Two sampling techniques appear defensible: (1) Monetary-Unit Sampling (MUS) on the entire population, leveraging dollar-proportional selection; (2) Stratified sampling by cargo-type with appropriate per-stratum design.",
+      "question": "Which technique is MOST appropriate, and why does the choice matter even though both are defensible?",
+      "options": {
+        "A": "MUS on the entire population — the dollar-proportional selection naturally weights toward larger items, which is appropriate for substantive testing; stratification adds complexity without commensurate benefit when MUS already biases toward dollar-significance",
+        "B": "Stratified sampling by cargo-type — the known stratum-specific error patterns mean stratified sampling produces a more efficient sample (smaller per-stratum samples calibrated to per-stratum variability) and supports stratum-level conclusions in addition to the overall conclusion; this advantage matters for an audit that wants to know not just total error but which cargo type drives the error",
+        "C": "Both techniques are equally appropriate — the auditor can pick either with no consequences for the audit conclusion",
+        "D": "Neither — judgmental sampling targeting only the largest transactions is more efficient than statistical sampling for this engagement"
+      },
+      "correct": "B",
+      "key_concept": "When a population has known structural strata with different error-rate patterns, stratified sampling typically dominates MUS because (a) per-stratum design optimizes sample size to per-stratum variability, and (b) stratified sampling supports both overall and per-stratum conclusions. MUS is best when no clear stratum structure exists.",
+      "pre_read": "For sampling-technique selection between equally-defensible techniques, the deciding factor is usually population structure: known strata with different patterns favor stratified; uniform population favors MUS. Distractors that claim equivalence or recommend judgmental override the structural fit.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling establish that technique selection follows from population characteristics and audit objectives. When the population has known structural strata with different error-rate patterns (here: cargo-type strata with documented different error patterns), stratified sampling's advantages are: (1) per-stratum design calibrates sample size to each stratum's variability, producing a more efficient overall sample than MUS would for the same conclusion precision, (2) stratified sampling supports stratum-level conclusions in addition to overall conclusions — useful when the audit wants to identify which stratum drives error, and (3) the stratum structure is a known feature of the population, so leveraging it is a free efficiency gain. MUS would still be appropriate if the population had no clear stratum structure. Option A undersells stratified sampling's structural advantage. Option C treats them as equivalent, missing the structural-fit difference. Option D recommends judgmental sampling, which is non-statistical and cannot project to the population.",
+      "wrong_explanations": {
+        "A": "MUS's dollar-proportional selection is a real strength but it is a single-dimension optimization. Stratified sampling combines per-stratum optimization with overall + per-stratum conclusion support, which is structurally a better fit for this population.",
+        "C": "Treating the two as equivalent misses the structural-fit dimension. Population structure (known strata with different patterns) materially favors stratified sampling. The two are not equally appropriate; one is more appropriate.",
+        "D": "Judgmental sampling targeting only the largest transactions is non-statistical and cannot project to the population. The audit objective is to estimate dollar value of errors in the population, which requires statistical sampling."
+      },
+      "tips": [
+        "Trap is C — \"both equally appropriate\" misses the structural-fit difference. Known strata favor stratified; uniform population favors MUS.",
+        "Sampling-technique selection: known strata with different patterns + want per-stratum conclusions = stratified. Uniform population + dollar emphasis = MUS.",
+        "Exam-day shortcut: when stem describes a population with known strata structures and different per-stratum patterns, the answer is stratified sampling."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530 (analogous)",
+      "related_concepts": [
+        "Stratified sampling",
+        "Monetary-unit sampling",
+        "Per-stratum design",
+        "Population structure",
+        "Sampling-technique selection"
+      ],
+      "_provenance": "Authored from concept: 'sampling-technique selection between equally-defensible techniques - structural-fit deciding factor, stratified for known-strata-with-different-patterns'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (cargo airline, 240,000 transactions, four cargo-type strata) invented for this question. Distinct from d1_009/019/049/053/064/075/086/107/114/116/128 prior sampling angles."
+    },
+    {
+      "id": "d1_144",
+      "domain": 1,
+      "subtopic": "AI/ML — Full Lifecycle Audit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at an HR-tech AI screening platform (the platform recommends candidate-shortlists to enterprise customers using ML) is scoping a full-lifecycle audit covering all stages: training-data acquisition + curation, model training + validation, model deployment + integration, ongoing monitoring + drift detection, and model retirement / replacement. Five stage-level concerns are documented: (1) training-data sources include public datasets that may contain bias toward certain demographics; (2) validation uses a held-out test set but production demographic distributions differ; (3) deployment uses a tool-call interface to customer ATS systems; (4) ongoing monitoring tracks model accuracy but not drift; (5) the prior model was retired three months ago without documented evidence preservation.",
+      "question": "Which scoping approach BEST addresses the full lifecycle and the specific stage concerns?",
+      "options": {
+        "A": "Audit only training-data acquisition + curation, since training-data quality drives all downstream issues",
+        "B": "Audit each lifecycle stage with stage-specific procedures: training-data review for bias and lineage; validation review for representativeness gap (held-out vs production demographics); deployment review for tool-call authorization and integration security; monitoring review for drift detection adequacy and accuracy-vs-drift confusion; retirement review for evidence preservation; and integrate stage-level findings into an overall lifecycle assurance conclusion",
+        "C": "Audit only ongoing monitoring + drift detection, since production-stage issues are the most actionable",
+        "D": "Audit only model retirement / replacement, since the prior retirement is a known issue"
+      },
+      "correct": "B",
+      "key_concept": "Full-lifecycle AI/ML audit scope covers each stage with stage-specific procedures, integrates findings into a lifecycle-level conclusion, and addresses stage-specific concerns explicitly. Single-stage scoping misses cross-stage interactions and risks that emerge only when the full lifecycle is examined.",
+      "pre_read": "For AI/ML lifecycle audit scoping questions, the right shape is \"each stage with stage-specific procedures + lifecycle-integration conclusion\". Distractors that focus on single stages all miss cross-stage interactions.",
+      "correct_explanation": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program) and the NIST AI Risk Management Framework establish that AI/ML audit scope must cover the full lifecycle because risks emerge at each stage and interact across stages. The HR-tech scenario's documented concerns map to specific stages: training-data bias (stage 1), validation-representativeness gap (stage 2), tool-call deployment risks (stage 3), monitoring tracks accuracy-but-not-drift (stage 4), retirement without evidence preservation (stage 5). Each stage requires stage-specific procedures: training-data lineage and bias review; validation-set representativeness check; deployment tool-call authorization and integration security testing; monitoring design review (does it actually catch drift, not just accuracy?); retirement evidence-preservation review (the prior 3-month retirement is a control failure to document). The findings integrate into a lifecycle-level conclusion. Option A focuses only on training-data, missing four other stages with their own concerns. Option C focuses only on monitoring, missing upstream sources of risk. Option D focuses only on retirement, missing the operating model's lifecycle dynamics.",
+      "wrong_explanations": {
+        "A": "Training-data quality is critical but doesn't determine all downstream behavior. Validation gaps, deployment vulnerabilities, monitoring blind spots, and retirement-evidence failures occur even with good training data.",
+        "C": "Ongoing monitoring is the most production-relevant stage but auditing only there misses how upstream choices (data, validation, deployment) shape the production model. The auditor needs the full picture.",
+        "D": "Retirement / replacement is one stage. Auditing only there misses the four other stages that affect the model's actual behavior."
+      },
+      "tips": [
+        "Trap is A — \"training data drives everything\" oversimplifies the lifecycle. Each stage has its own risks.",
+        "AI/ML lifecycle audit = each stage with stage-specific procedures + lifecycle-integration conclusion.",
+        "Exam-day shortcut: AI/ML lifecycle audit questions are answered by the option that audits each stage and integrates the findings."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); NIST AI Risk Management Framework (AI RMF 1.0); ITAF guidance on AI in IS Audit",
+      "related_concepts": [
+        "AI/ML lifecycle",
+        "Training-data audit",
+        "Validation audit",
+        "Deployment audit",
+        "Drift monitoring",
+        "Model retirement"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML full-lifecycle audit scope - each stage with stage-specific procedures, integration into lifecycle conclusion'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (HR-tech AI screening, five stage-level concerns) invented for this question. Distinct from d1_018/057/066/080/085/108/119 individual-stage AI questions."
+    },
+    {
+      "id": "d1_145",
+      "domain": 1,
+      "subtopic": "Continuous Auditing — Implementation Roadmap (Migration from Periodic)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a regional electric utility is leading the function's migration from a periodic-audit model (one engagement per major area per year) to a hybrid continuous-auditing-plus-periodic model. The function has 8 staff, ~20 high-priority systems, and limited automation. The director is designing a 24-month implementation roadmap. Four candidate sequencing approaches are on the table: (A) start with the highest-risk system and build out, (B) start with the most-instrumented system to maximize early wins, (C) attempt full continuous auditing across all 20 systems simultaneously, (D) defer continuous auditing entirely until automation tooling is in place.",
+      "question": "Which sequencing approach is MOST appropriate, and what staging principle guides the decision?",
+      "options": {
+        "A": "Approach A (highest-risk first) — risk-based prioritization always wins and the function should start where audit value is highest",
+        "B": "Approach B (most-instrumented system first, with risk-based expansion as instrumentation extends) — staged implementation with early wins from already-instrumented systems builds team capability and demonstrates value, then expand by combining risk priority with instrumentation readiness; this balances risk-prioritization with operational feasibility",
+        "C": "Approach C (full simultaneous deployment across all 20 systems) — covers everything at once and avoids staged-rollout risk",
+        "D": "Approach D (defer until automation is in place) — eliminates implementation risk by waiting"
+      },
+      "correct": "B",
+      "key_concept": "Continuous-auditing migration roadmaps balance risk-prioritization with operational feasibility (instrumentation, team capability, automation maturity). Pure highest-risk-first ignores feasibility; pure simultaneous-deployment ignores staging discipline; deferring ignores the migration itself.",
+      "pre_read": "For continuous-auditing migration questions, the right shape is \"staged: feasibility-leading early, risk-led expansion. Distractors that go pure-risk-first, simultaneous everywhere, or deferral all miss staging principles.",
+      "correct_explanation": "ITAF Tools and Techniques on Continuous Auditing and ISACA IT Audit Standard 1202 (Risk Assessment in Planning) establish that continuous-auditing implementation balances risk-prioritization with operational feasibility. The roadmap discipline is: (1) Phase 1 (early wins) — start with the most-instrumented systems where the function can build CA capability with low implementation risk; the team learns CA techniques on systems where the data infrastructure already exists. (2) Phase 2 (risk-led expansion) — once team capability and CA tooling mature, extend coverage to higher-risk systems even if instrumentation is incomplete (instrumentation can be added). (3) Phase 3 (full hybrid coverage) — high-risk + medium-risk systems covered by CA; low-risk systems remain on periodic. Option A starts with highest-risk regardless of instrumentation, which can fail at the implementation level when team capability is still nascent and instrumentation is missing. Option C attempts all 20 simultaneously, exceeding team capacity and producing shallow CA across the board. Option D defers entirely, abandoning the migration premise.",
+      "wrong_explanations": {
+        "A": "Highest-risk-first ignores instrumentation and team-capability constraints. CA on a high-risk system without instrumentation produces operational failure regardless of how much risk it carries. Risk-prioritization without feasibility is incomplete.",
+        "C": "Full simultaneous deployment across 20 systems with 8 staff exceeds capacity. The team cannot build deep CA capability in 20 places at once; they would deliver shallow CA everywhere, which provides false assurance.",
+        "D": "Deferring continuous auditing until automation is in place means continuous auditing never starts (automation needs CA experience to design well). The right approach is to begin CA with the existing tooling and improve automation iteratively."
+      },
+      "tips": [
+        "Trap is A — \"highest-risk first\" sounds disciplined but ignores feasibility constraints that determine implementation success.",
+        "CA migration roadmap = feasibility-led early wins + risk-led expansion + capability iteration. Three phases.",
+        "Exam-day shortcut: CA-migration questions are answered by the option that names staged implementation balancing risk and feasibility."
+      ],
+      "framework_ref": "ITAF Tools and Techniques on Continuous Auditing; ISACA IT Audit Standard 1202 (Risk Assessment in Planning)",
+      "related_concepts": [
+        "Continuous-auditing migration",
+        "Implementation roadmap",
+        "Risk-prioritization vs feasibility",
+        "Instrumentation maturity",
+        "Team-capability building"
+      ],
+      "_provenance": "Authored from concept: 'continuous-auditing implementation roadmap - feasibility-led early wins plus risk-led expansion, distinct from pure-risk-first / simultaneous-everywhere / defer'. Public source: ITAF Tools and Techniques on Continuous Auditing. All scenario specifics (regional electric utility, 8 staff, 20 systems, 24-month roadmap) invented for this question. Distinct from d1_013/046/092/110/130 prior CA questions."
+    },
+    {
+      "id": "d1_146",
+      "domain": 1,
+      "subtopic": "Whistleblower Allegation — Integration into Audit Conclusions",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a state pension fund is mid-engagement on an audit of investment-performance-reporting controls. The audit committee receives a whistleblower allegation from an anonymous source claiming that a senior portfolio manager has been overstating performance metrics through selective use of benchmarks. The allegation has not been substantiated. The audit director must decide how the allegation interacts with the in-flight audit. Four facts are relevant: (1) the audit's planned scope already includes performance-reporting controls but at a sample-based level; (2) the whistleblower allegation, if substantiated, would constitute a material misstatement; (3) the audit committee has authorized the auditor to consider the allegation in scoping; (4) general counsel has advised that the allegation must be treated confidentially and not communicated to the named portfolio manager.",
+      "question": "Which response BEST integrates the whistleblower allegation into the audit's procedures and conclusions?",
+      "options": {
+        "A": "Ignore the allegation since it is unsubstantiated and would prejudice the audit's objectivity",
+        "B": "Expand the audit's scope on the named area (performance-reporting and specifically the benchmark-selection controls) using procedures designed to address the allegation's specific claims (e.g., examining benchmark-selection rationale, comparing reported performance to industry-standard benchmarks, sampling beyond the planned sample on the relevant period); maintain confidentiality per counsel; document the expansion's connection to the allegation in a confidential annex; and integrate findings into the audit conclusion only if the procedures produce evidence that supports them",
+        "C": "Suspend the audit, declare the matter outside audit scope, and refer it directly to law enforcement",
+        "D": "Communicate the allegation to the named portfolio manager and seek their explanation directly"
+      },
+      "correct": "B",
+      "key_concept": "Whistleblower allegations during an in-flight audit warrant scope expansion focused on the allegation's specific claims, with maintained confidentiality, documented connection in a confidential annex, and findings integrated into the audit conclusion only when supported by procedures. Ignoring, suspending-and-referring, or direct-confrontation are all wrong.",
+      "pre_read": "For whistleblower-integration questions, the right shape is \"scope expansion targeted at the specific claims + confidentiality + confidential-annex documentation + findings only when supported\". Distractors that ignore, suspend, or confront the named individual all violate the integration discipline.",
+      "correct_explanation": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts) and ITAF Performance Standards on Fraud Risk establish that an in-flight audit can incorporate whistleblower allegations through targeted scope expansion. The discipline includes: (1) expand scope on the named area with procedures specifically designed to address the allegation's claims (benchmark-selection rationale review; performance-vs-benchmark comparison; expanded sampling on the relevant period); (2) maintain confidentiality per counsel — the allegation is not shared with the named individual to avoid tipping off; (3) document the expansion's connection to the allegation in a confidential annex separate from the main work papers, so the connection is preserved without exposing the allegation broadly; (4) integrate findings into the audit conclusion only when the auditor's procedures produce supporting evidence (the allegation alone does not establish a finding). Option A ignores valuable directional information that, while unsubstantiated, points to a specific area for expanded procedures. Option C suspends the audit and refers prematurely; the audit's role is to evaluate, not to refer unsubstantiated allegations to law enforcement. Option D's direct confrontation tips off the named individual and may constitute obstruction.",
+      "wrong_explanations": {
+        "A": "Ignoring an unsubstantiated allegation that, if substantiated, would constitute material misstatement is a quality failure. The auditor's role is to expand procedures to evaluate, not to dismiss directional information.",
+        "C": "Suspending the audit and referring directly to law enforcement is over-escalation. The allegation is unsubstantiated; the audit's role is to evaluate first, with referral occurring after evidence supports the allegation. Premature law-enforcement referral can prejudice both the audit and any subsequent investigation.",
+        "D": "Direct communication with the named portfolio manager is tipping off and may constitute obstruction. Counsel's advice (and standard practice) is to maintain confidentiality during evaluation."
+      },
+      "tips": [
+        "Trap is A — \"unsubstantiated, so ignore\" dismisses directional information that targeted procedures could evaluate.",
+        "Whistleblower integration: scope expansion + confidentiality + confidential annex + findings only when supported. Four elements.",
+        "Exam-day shortcut: whistleblower-integration questions are answered by the option that expands scope with targeted procedures while maintaining confidentiality."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); ITAF Performance Standards on Fraud Risk; ISACA IT Audit Standard 1401 (Reporting)",
+      "related_concepts": [
+        "Whistleblower allegation",
+        "Audit-scope expansion",
+        "Confidentiality during evaluation",
+        "Confidential annex",
+        "Allegation evaluation"
+      ],
+      "_provenance": "Authored from concept: 'whistleblower allegation integration into audit conclusions - targeted scope expansion plus confidentiality plus confidential-annex documentation plus findings-only-when-supported, distinct from ignore / suspend / confront'. Public source: ISACA Standards 1207 + 1401. All scenario specifics (state pension fund, in-flight audit, benchmark-selection allegation against named portfolio manager) invented for this question. Distinct from d1_115 (fraud reporting outbound channels)."
+    },
+    {
+      "id": "d1_147",
+      "domain": 1,
+      "subtopic": "Risk Assessment — Method Choice (Heat Map vs FAIR vs ISO 31000)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at an enterprise SaaS company is evaluating which risk-assessment method to apply to the company's IT-risk register. Three methods are under consideration: (1) Heat Map — a 5x5 likelihood-vs-impact grid with qualitative ratings, simple to communicate to executives; (2) FAIR (Factor Analysis of Information Risk) — a quantitative model that produces dollar-loss-exposure ranges with explicit probability distributions; (3) ISO 31000 — a principles-based framework that the organization tailors to its own scoring approach. The company has a CISO who wants quantitative dollar-risk modeling for board presentations; a CRO who values structured qualitative ratings for cross-organization comparability; and an audit committee that wants principles-based defensibility for regulators. The director must choose the method (or methods) that BEST serves the engagement.",
+      "question": "Which selection approach is MOST appropriate?",
+      "options": {
+        "A": "Heat Map only — simplest to communicate and the audit committee will understand it best",
+        "B": "Layered method use: ISO 31000 as the principles-based defensibility framework that governs the assessment process; FAIR as the quantitative method for the highest-priority risks where dollar-loss modeling adds value (CISO use case); heat-map as the qualitative-rating layer for cross-organization comparability and executive communication (CRO use case); each method's outputs documented and reconciled, with the choice rationale documented for regulators",
+        "C": "FAIR only — quantitative methods are always more rigorous and dominate qualitative methods",
+        "D": "Pick whichever method is fastest to implement, regardless of stakeholder needs or defensibility"
+      },
+      "correct": "B",
+      "key_concept": "Risk-assessment methods can be layered: ISO 31000 for principles-based process governance; FAIR for quantitative dollar-risk on priority risks; heat maps for qualitative cross-organization comparability and executive communication. Each method serves a stakeholder; layering with documented reconciliation is the mature approach.",
+      "pre_read": "For risk-assessment-method-selection questions, the right shape is \"layered method use serving distinct stakeholders, with reconciliation\". Distractors that pick a single method or speed-driven selection all miss the multi-stakeholder reality.",
+      "correct_explanation": "ISACA Risk IT Framework, ISO/IEC 31000 Risk Management, FAIR Institute documentation, and ITAF Performance Standards on Risk Assessment establish that risk-assessment methods serve different purposes and can be layered. ISO 31000 is principles-based and provides the assessment-process framework that gives regulators defensibility. FAIR is quantitative and produces dollar-loss-exposure ranges that support board-level financial-impact reporting (the CISO's need). Heat maps are qualitative and support cross-organization comparability and executive simplification (the CRO's need). A mature risk-assessment approach uses each where it adds value: ISO 31000 governs the process; FAIR runs on the highest-priority risks where dollar modeling matters; heat maps provide the qualitative layer for executive and cross-organization views. Documentation reconciles outputs across methods. Option A picks the simplest method without serving the CISO's quantitative need or the audit committee's defensibility need. Option C declares FAIR universally superior, ignoring that FAIR is computationally heavy and not appropriate for every risk. Option D abandons stakeholder-needs analysis entirely.",
+      "wrong_explanations": {
+        "A": "Heat Map only is a single-stakeholder solution (audit committee). The CISO's quantitative need and the CRO's structured-comparability need are unmet, and the audit committee's regulator-defensibility need is also undermet (heat maps alone are not principles-based).",
+        "C": "FAIR is rigorous for risks where dollar-loss modeling adds value, but FAIR is computationally heavy and not appropriate for every risk. Applying FAIR to every risk wastes effort on risks where simpler methods suffice.",
+        "D": "Speed-driven method selection ignores the actual needs of stakeholders and the defensibility requirements. Method selection follows from stakeholder needs and defensibility, not implementation speed."
+      },
+      "tips": [
+        "Trap is A — \"simplest = best\" ignores the multi-stakeholder reality. Heat Map alone underserves three of the four stakeholders.",
+        "Layered methods: ISO 31000 (process), FAIR (quantitative on priorities), Heat Map (qualitative comparability). Each for its purpose.",
+        "Exam-day shortcut: risk-assessment-method-selection questions are answered by the option naming layered method use with documented reconciliation."
+      ],
+      "framework_ref": "ISO/IEC 31000:2018 Risk Management; FAIR (Factor Analysis of Information Risk) Institute; ISACA Risk IT Framework; ITAF Performance Standards on Risk Assessment",
+      "related_concepts": [
+        "Risk-assessment methods",
+        "Heat map",
+        "FAIR",
+        "ISO 31000",
+        "Layered method use"
+      ],
+      "_provenance": "Authored from concept: 'risk-assessment method choice - layered use serving distinct stakeholder needs (ISO 31000 process / FAIR quantitative / heat map qualitative), with reconciliation'. Public source: ISO 31000 + FAIR + ISACA Risk IT. All scenario specifics (enterprise SaaS company, CISO + CRO + audit committee stakeholders) invented for this question. Distinct from d1_037 (prioritization scenario), d1_097 (quant vs qual binary), d1_106 (mid-cycle update)."
+    },
+    {
+      "id": "d1_148",
+      "domain": 1,
+      "subtopic": "SOX Context — Continuous Monitoring vs Continuous Auditing Applied",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a SOX-registered REIT is reviewing the company's continuous-controls program for SOX 404 ICFR. Management asserts that their continuous-monitoring system (real-time tracking of journal-entry approvals, system-access reviews, and transaction-exception alerts) provides both management's monitoring AND the audit function's continuous auditing. The audit director must evaluate this assertion's appropriateness for SOX 404 purposes. Three facts are relevant: (1) the continuous-monitoring system is operated by the IT operations team reporting to the CIO; (2) the audit function reviews summary outputs of the monitoring system but does not run independent CA procedures; (3) the SOX 404 external auditor will be evaluating the company's ICFR design and operating effectiveness.",
+      "question": "Which response BEST evaluates management's assertion under SOX 404?",
+      "options": {
+        "A": "Management's assertion is correct — continuous monitoring covers both management's responsibility and audit's responsibility, eliminating duplication",
+        "B": "Management's assertion conflates two distinct activities: continuous monitoring is management's activity (CIO-operated, providing management's COSO-Component-5 monitoring); continuous auditing is the audit function's activity (independently designed, operated, and used to support audit conclusions). For SOX 404 purposes, the external auditor evaluates BOTH management's monitoring AND the audit function's procedures separately; collapsing them undermines the audit function's independence and weakens the external-auditor reliance posture; the audit function should design and operate its own CA procedures, separate from management's monitoring system",
+        "C": "Management's assertion is correct because the audit function reviewing summary outputs constitutes independent audit",
+        "D": "The audit function should disband its CA program entirely and rely fully on management's continuous monitoring, since the systems are duplicative"
+      },
+      "correct": "B",
+      "key_concept": "Continuous monitoring (management's activity) and continuous auditing (audit's activity) are distinct under COSO and SOX 404. Collapsing them undermines audit independence and external-auditor reliance. Audit must design and operate its own CA procedures separate from management's monitoring system.",
+      "pre_read": "For SOX 404 + continuous monitoring vs continuous auditing questions, the right shape is \"distinct activities, both required, audit's CA must be independent of management's monitoring\". Distractors that conflate, accept conflation, or eliminate audit's CA all break the discipline.",
+      "correct_explanation": "Sarbanes-Oxley Act Section 404, COSO Internal Control - Integrated Framework (2013), and PCAOB AS 2201 establish that management and auditors have distinct responsibilities over internal control. Management is responsible for designing, operating, and monitoring controls (COSO Component 5: Monitoring Activities); the audit function (internal) and the external auditor are responsible for independent evaluation. Continuous monitoring is management's activity — operated by the operations team, providing management's view of control performance. Continuous auditing is the audit function's activity — independently designed, separately operated, and used to support audit conclusions. The two cannot collapse without eliminating audit independence. For SOX 404, the external auditor evaluates both management's monitoring (as part of ICFR design and operation) and the internal-audit function's procedures (when relying on internal-audit work per AS 2605). Treating management's CM as audit's CA undermines the external-auditor reliance and weakens the SOX 404 posture. Option A accepts the conflation. Option C treats summary-review as independent CA, which it isn't (the audit function isn't designing or operating the procedures). Option D eliminates the audit function's own CA, surrendering the audit's independent role.",
+      "wrong_explanations": {
+        "A": "Treating management's continuous monitoring as both management's and audit's activity collapses the independence boundary that SOX, COSO, and PCAOB AS 2201 all require. The two activities serve different purposes and report to different stakeholders.",
+        "C": "Reviewing summary outputs of management's monitoring system is not the same as designing and operating independent CA procedures. The audit function is not exercising its own judgment on the design or operation of the procedures, only reviewing what management produces.",
+        "D": "Eliminating the audit function's own CA leaves the audit function dependent on management's monitoring for everything, which is the textbook surrender of independence. Even when management's monitoring is excellent, the audit function must have its own independent procedures."
+      },
+      "tips": [
+        "Trap is A — \"eliminates duplication\" sounds efficient but it eliminates independence, which is the entire point of having both activities.",
+        "SOX/COSO discipline: management's CM is COSO Component 5 (management activity); audit's CA is independent (audit activity). Both required, not substitutable.",
+        "Exam-day shortcut: SOX 404 + CM/CA questions are answered by the option that names the two as distinct activities with audit's CA being independently designed and operated."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act Section 404 (Management Assessment of Internal Controls); COSO Internal Control - Integrated Framework (2013) Component 5 (Monitoring Activities); PCAOB AS 2201 (An Audit of Internal Control Over Financial Reporting); PCAOB AS 2605 (Consideration of the Internal Audit Function)",
+      "related_concepts": [
+        "SOX 404",
+        "COSO Component 5",
+        "Continuous monitoring",
+        "Continuous auditing",
+        "Audit independence",
+        "External-auditor reliance"
+      ],
+      "_provenance": "Authored from concept: 'SOX 404 continuous monitoring vs continuous auditing - distinct activities both required, audit CA must be independent of management CM'. Public source: SOX 404 + COSO 2013 + PCAOB AS 2201/2605. All scenario specifics (SOX-registered REIT, CIO-operated continuous monitoring, audit-function summary review only) invented for this question. Distinct from d1_013 (definition-distinction); this question adds applied SOX context."
+    },
+    {
+      "id": "d1_149",
+      "domain": 1,
+      "subtopic": "External Auditor Coordination — Integrated Audit Boundaries",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a pre-IPO SaaS company is coordinating with the company's external CPA firm in preparation for the first SOX 404 audit. The external auditor is performing an integrated audit (financial-statement audit + ICFR audit). Four coordination questions arise: (1) which IT controls the internal-audit team has tested; (2) what work-paper format the external auditor will accept; (3) whether the external auditor can rely on internal-audit's IT-control testing; (4) what direct-report and confidentiality boundaries apply between the internal-audit function and the external CPA firm. The director must navigate the coordination boundaries.",
+      "question": "Which approach BEST navigates the integrated-audit coordination boundaries?",
+      "options": {
+        "A": "The internal-audit function should report directly to the external CPA firm, with all work-papers transferred to them at engagement end, since the external firm has the regulatory responsibility",
+        "B": "The internal-audit function maintains its own reporting line to the audit committee, coordinates with the external CPA firm through documented protocols (test-area mapping, work-paper format alignment, reliance-letter discipline per PCAOB AS 2605), and preserves confidentiality boundaries (internal-audit reports to the audit committee, not to external auditors directly); the external auditor decides on reliance per their independent judgment per AS 2605",
+        "C": "The two functions should operate completely independently with no coordination, since coordination would compromise either function's independence",
+        "D": "The internal-audit director should request that the external CPA firm pre-approve all internal-audit procedures, ensuring no friction at year-end"
+      },
+      "correct": "B",
+      "key_concept": "External-internal auditor coordination preserves each function's independence: internal audit reports to the audit committee; external auditor reports to the company's stakeholders. Coordination through documented protocols (PCAOB AS 2605 reliance discipline) is appropriate; merging reporting lines or eliminating coordination both break the model.",
+      "pre_read": "For external-internal-auditor coordination questions, the right shape is \"each function maintains its independent reporting line, coordination through documented protocols (AS 2605), external auditor decides on reliance independently\". Distractors that merge functions, eliminate coordination, or have one approve the other all break the boundaries.",
+      "correct_explanation": "PCAOB AS 2605 (Consideration of the Internal Audit Function), ISACA IT Audit Standards, and IIA International Standards establish the discipline for external-internal auditor coordination. Each function maintains its own reporting line: internal audit reports to the audit committee (per IIA Standard 1110 and SOX 301); external auditor reports to the audit committee and ultimately the company's stakeholders. Coordination occurs through documented protocols: (1) test-area mapping (which IT controls each function will test, avoiding duplication); (2) work-paper format alignment (sufficient for the external auditor's review under AS 2605 if relying on internal-audit work); (3) reliance-letter discipline (the external auditor decides whether to rely on internal-audit work based on their independent assessment of competence, objectivity, and quality of work — internal audit cannot demand reliance); (4) confidentiality boundaries (internal-audit findings flow to the audit committee, not directly to external auditors except through audit-committee-authorized channels). Option A merges the reporting lines, breaking internal-audit's independence. Option C eliminates coordination, which produces duplicate work and missed coverage. Option D inverts the relationship — external auditors don't pre-approve internal-audit procedures (that would compromise both independence and external-auditor responsibility).",
+      "wrong_explanations": {
+        "A": "Internal audit reporting to the external CPA firm collapses the internal-audit function's independent reporting to the audit committee. Internal audit's reporting line is to the audit committee per IIA Standard 1110 and SOX 301; external CPA firms are different stakeholders with different responsibilities.",
+        "C": "Complete non-coordination produces duplicate testing (both functions test the same controls inefficiently) and gaps (neither function tests areas the other assumed they would). Coordination through documented protocols is appropriate and required by AS 2605.",
+        "D": "External-auditor pre-approval of internal-audit procedures inverts the relationship: external auditors evaluate internal-audit work for reliance purposes; they don't pre-approve internal-audit procedures (which would compromise both functions' independence)."
+      },
+      "tips": [
+        "Trap is A — \"transfer everything to the external CPA firm\" merges reporting lines and breaks internal-audit's independence.",
+        "Coordination model: each function with its own reporting line + documented protocols (AS 2605) + external auditor decides reliance independently.",
+        "Exam-day shortcut: external-internal coordination questions are answered by the option naming separate reporting lines + AS 2605 reliance discipline."
+      ],
+      "framework_ref": "PCAOB AS 2605 (Consideration of the Internal Audit Function); IIA International Standard 1110 (Organizational Independence); Sarbanes-Oxley Act Section 301 (Audit Committee Reporting Line); ISACA IT Audit Standards on the IS Audit Function",
+      "related_concepts": [
+        "External-auditor coordination",
+        "Internal-audit independence",
+        "AS 2605 reliance",
+        "Audit-committee reporting line",
+        "Coordination protocols"
+      ],
+      "_provenance": "Authored from concept: 'external-internal auditor coordination - each function with its own reporting line plus documented protocols (AS 2605) plus external decides reliance, distinct from merge-reporting / no-coordination / external-pre-approval'. Public source: PCAOB AS 2605 + IIA 1110 + SOX 301. All scenario specifics (pre-IPO SaaS company, first SOX 404 audit, external CPA firm coordination) invented for this question. Distinct from d1_032/090 (using external experts for audit work)."
+    },
+    {
+      "id": "d1_150",
+      "domain": 1,
+      "subtopic": "Audit Phases — End-to-End Engagement Design Synthesis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a multi-state non-profit (Medicaid-managed-care service organization) is designing an end-to-end audit engagement for the eligibility-and-enrollment system. The audit must satisfy multiple stakeholder expectations across all three phases: planning (risk-based scoping for a complex regulatory environment), fieldwork (evidence collection and supervised execution given the team's size), and reporting (communication to the audit committee, the Medicaid regulator, and the organization's mission-alignment governance committee). Five design constraints are documented: (1) the organization has limited audit-budget capacity; (2) the regulatory environment imposes strict timelines on Medicaid-fraud findings; (3) the Medicaid regulator's reporting expectations include both findings and remediation-plan disclosures; (4) the mission-alignment committee values community-impact framing; (5) the audit committee values risk-based prioritization.",
+      "question": "Which end-to-end engagement design BEST integrates the three audit phases with the multiple stakeholder expectations?",
+      "options": {
+        "A": "Phase-isolated design: planning serves the audit committee; fieldwork serves the audit team; reporting serves the Medicaid regulator only",
+        "B": "Phase-integrated design: planning produces a risk-prioritized scope that satisfies the audit committee, with regulatory-timeline-aware milestones for Medicaid-fraud-finding handling; fieldwork applies risk-tiered procedures with supervised execution that allows the team's size to be effective; reporting produces a single coherent report with audience-tailored sections (audit committee on prioritization, regulator on findings + remediation-plan disclosure, mission-alignment committee on community-impact framing) and aligned conclusions across all sections",
+        "C": "Phase-fragmented design: each phase optimized independently of the others, with stakeholder-specific deliverables in each phase even when they conflict",
+        "D": "Phase-collapsed design: condense all three phases into a single sprint to save audit-budget time"
+      },
+      "correct": "B",
+      "key_concept": "End-to-end engagement design integrates the three audit phases (planning + fieldwork + reporting) with multiple stakeholder expectations. Each phase has its discipline; the integration binds them into a coherent engagement that serves all audiences without compromising any.",
+      "pre_read": "For end-to-end engagement design questions, the right shape is \"phase-integrated with stakeholder-tailored sections in reporting + aligned conclusions across phases\". Distractors that isolate, fragment, or collapse phases all miss the integration value.",
+      "correct_explanation": "ISACA IT Audit Standard 1201 (Engagement Planning), Standard 1203 (Performance and Supervision), Standard 1401 (Reporting), and ITAF Performance Standards on Engagement Conduct establish the disciplines of each phase. End-to-end engagement design integrates them: (1) Planning phase — risk-prioritized scope satisfying the audit committee + regulatory-timeline-aware milestones for Medicaid-fraud-finding handling. (2) Fieldwork phase — risk-tiered procedures (deeper procedures on higher-priority risks) + supervised execution that makes the team's size effective. (3) Reporting phase — a single coherent report with audience-tailored sections (per d1_120 multi-audience reporting): audit-committee section on prioritization, Medicaid-regulator section on findings + remediation, mission-alignment-committee section on community-impact framing — with conclusions aligned across all sections. Option A isolates phases by stakeholder, missing that all stakeholders care about coherent conclusions. Option C fragments deliverables, producing conflicting messages. Option D collapses phases into a sprint, eliminating phase-specific disciplines that protect audit quality.",
+      "wrong_explanations": {
+        "A": "Phase-isolation by stakeholder misses that each stakeholder benefits from all three phases. The audit committee benefits from risk-based planning, supervised fieldwork, and coherent reporting — not just from the planning phase. Same for other stakeholders.",
+        "C": "Phase-fragmentation produces conflicting deliverables and conclusions across stakeholders. The audit committee gets one story; the regulator gets another; the mission-alignment committee gets a third — none of which can be reconciled. Audit value collapses.",
+        "D": "Collapsing phases into a sprint eliminates the disciplines that each phase provides: planning's risk-based scoping, fieldwork's supervised execution, reporting's audience-tailored communication. Sprints in agile auditing complement the phases; they don't replace them."
+      },
+      "tips": [
+        "Trap is A — \"each phase serves one stakeholder\" misses that each stakeholder benefits from the integrated whole.",
+        "End-to-end engagement = phase-integrated + stakeholder-tailored reporting sections + aligned conclusions across phases.",
+        "Exam-day shortcut: end-to-end engagement questions are answered by the option that integrates phases AND tailors reporting to multiple audiences with aligned conclusions."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); Standard 1203 (Performance and Supervision); Standard 1401 (Reporting); ITAF Performance Standards on Engagement Conduct",
+      "related_concepts": [
+        "End-to-end engagement design",
+        "Phase integration",
+        "Multi-stakeholder reporting",
+        "Risk-tiered procedures",
+        "Aligned conclusions"
+      ],
+      "_provenance": "Authored from concept: 'end-to-end engagement design synthesis - phase-integrated planning + supervised fieldwork + audience-tailored reporting with aligned conclusions, distinct from phase-isolated / fragmented / collapsed approaches'. Public source: ISACA Standards 1201/1203/1401 + ITAF. All scenario specifics (multi-state non-profit Medicaid managed-care, eligibility-enrollment audit, multi-stakeholder reporting expectations) invented for this question. Distinct from d1_040/041/054/120 individual-phase questions."
     }
   ]
 }

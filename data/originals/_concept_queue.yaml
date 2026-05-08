@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 130
+  authored_total: 150
   authored_mix:
     foundational: 18
-    application:  70
-    analysis:     42
+    application:  80
+    analysis:     52
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -179,6 +179,28 @@ domain_1:
     - { id: d1_129, subtopic: "Audit Reporting — Disagreement with Management Position",         toc_ref: "1.9.1"  }
     - { id: d1_130, subtopic: "Continuous Auditing — Decision to Suspend Production",            toc_ref: "1.8.3"  }
 
+    # Batch 11 (d1_131..d1_150) — 0F + 10A + 10An; D1 = 150/180 (83%)
+    - { id: d1_131, subtopic: "CSA — Workshop Facilitation Discipline",                          toc_ref: "1.2.1"  }
+    - { id: d1_132, subtopic: "CSA — Results Integration into Audit Conclusions",                toc_ref: "1.2.1"  }
+    - { id: d1_133, subtopic: "Audit Evidence — Electronic Evidence Integrity",                  toc_ref: "1.7"    }
+    - { id: d1_134, subtopic: "Audit Evidence — Third-Party Confirmation (positive vs negative)", toc_ref: "1.7"    }
+    - { id: d1_135, subtopic: "Prescriptive Frameworks — NIST CSF + ISO 27001 Cross-Walk",       toc_ref: "1.4.5"  }
+    - { id: d1_136, subtopic: "Prescriptive Frameworks — SOX + COBIT Cross-Walk",                toc_ref: "1.4.5"  }
+    - { id: d1_137, subtopic: "Audit Team Training — Engagement-Specific Competency Gap",        toc_ref: "1.10.3" }
+    - { id: d1_138, subtopic: "Effect of Laws and Regulations — Sector-Overlap (HIPAA + GLBA)",  toc_ref: "1.3.2"  }
+    - { id: d1_139, subtopic: "Audit Committee — Financial-Expert Composition (SOX 407)",        toc_ref: "1.10.1" }
+    - { id: d1_140, subtopic: "Agile Auditing — Sprint Design + Retrospectives",                 toc_ref: "1.5.6"  }
+    - { id: d1_141, subtopic: "Fraud — Investigation Lifecycle Integration",                     toc_ref: "1.5.5"  }
+    - { id: d1_142, subtopic: "Audit Universe — Multi-Entity Organization Definition",           toc_ref: "1.3.1"  }
+    - { id: d1_143, subtopic: "Sampling — Selection Between Equally-Defensible Techniques",      toc_ref: "1.6.2"  }
+    - { id: d1_144, subtopic: "AI/ML — Full Lifecycle Audit",                                    toc_ref: "1.8.4"  }
+    - { id: d1_145, subtopic: "Continuous Auditing — Implementation Roadmap",                    toc_ref: "1.8.2"  }
+    - { id: d1_146, subtopic: "Whistleblower Allegation — Integration into Audit Conclusions",   toc_ref: "1.5.5"  }
+    - { id: d1_147, subtopic: "Risk Assessment — Method Choice (Heat Map vs FAIR vs ISO 31000)", toc_ref: "1.3.4"  }
+    - { id: d1_148, subtopic: "SOX Context — Continuous Monitoring vs Continuous Auditing",      toc_ref: "1.8.2"  }
+    - { id: d1_149, subtopic: "External Auditor Coordination — Integrated Audit Boundaries",     toc_ref: "1.1.5"  }
+    - { id: d1_150, subtopic: "Audit Phases — End-to-End Engagement Design Synthesis",           toc_ref: "1.5.2"  }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
@@ -188,29 +210,27 @@ domain_1:
     # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
     # coverage map and high-priority depth targets.
 
-    # High priority — refreshed after batch 10. Foundational tier CLOSED (18/18).
-    # Remaining gap: 50 questions = 20 application + 30 analysis. Future batches shift to 0F/10A/10An mix.
-    - { subtopic: "CSA — Workshop facilitation + results integration",        toc_ref: "1.2.1", priority: high,
-        notes: "d1_020/059/073 cover limitations + deployment + definition. Workshop facilitation discipline and CSA-results integration into audit conclusions remain." }
-    - { subtopic: "Audit Evidence — Specialized types (electronic integrity, third-party confirmation)", toc_ref: "1.7", priority: high,
-        notes: "d1_004/025/095/102 cover principle + types + sufficiency-vs-appropriateness. Electronic-evidence integrity assertions and third-party-confirmation (positive vs negative) remain." }
-    - { subtopic: "Prescriptive Frameworks — Cross-walking (NIST CSF / ISO 27001 / SOX)", toc_ref: "1.4.5", priority: high,
-        notes: "d1_038 covers DFARS+NIS2. Cross-walking between common frameworks is a high-priority depth angle." }
-    - { subtopic: "Fraud — Investigation lifecycle integration", toc_ref: "1.5.5", priority: medium,
-        notes: "d1_010/069/070/084/096/115 cover individual stages. Integration across the lifecycle (handing off from audit to forensic to legal) remains." }
+    # High priority — refreshed after batch 11. Remaining gap: 30 questions = 10 application + 20 analysis.
+    # Future batches: batch 12 (~5A + ~15An = 20), batch 13 (~5A + ~5An = 10).
+    - { subtopic: "Control Environment — COSO Component 5 monitoring-activity specifics", toc_ref: "1.4.6", priority: high,
+        notes: "d1_028/098/118 cover parent + independent-vs-management + management sub-area. COSO Component 5 specifics (separate evaluations vs ongoing evaluations) remain." }
+    - { subtopic: "CAATs — GAS sub-area + ITF sub-area", toc_ref: "1.8.1", priority: high,
+        notes: "d1_026/083 cover parent + continuous-online. Generalized audit software (GAS) sub-area and CAATs vs ITF (integrated test facility) sub-area remain." }
+    - { subtopic: "Control Relationship to Risk — Multi-control mapping (defense in depth)", toc_ref: "1.4.4", priority: high,
+        notes: "d1_047 covers single-control to single-risk. Multi-control mapping to a single risk and single-control mapping to multiple risks remain." }
+    - { subtopic: "Ongoing QA Monitoring — Specific monitoring techniques", toc_ref: "1.10.4", priority: medium,
+        notes: "d1_048/099 cover failure-analysis + design-depth. Automated work-paper review, supervision-sampling techniques remain." }
 
   remaining_unplanned:
-    # Other depth opportunities for batches 11-13
-    - { subtopic: "Agile Auditing — Sub-area depth", toc_ref: "1.5.6", priority: medium,
-        notes: "d1_029 covers parent only. Sub-areas (sprint design, retrospectives, agile-vs-traditional comparison) remain." }
-    - { subtopic: "Audit Team Training — Engagement-specific competency gap diagnosis", toc_ref: "1.10.3", priority: medium,
-        notes: "d1_044 covers function-level. Engagement-specific competency gap diagnosis is a depth angle." }
-    - { subtopic: "Effect of Laws and Regulations — Sector-specific cases", toc_ref: "1.3.2", priority: medium,
-        notes: "d1_022 covers parent. Sector-specific cases (HIPAA + finance, GDPR + global ops, sector-overlay) remain." }
-    - { subtopic: "Audit Committee — Composition specifics, financial-expert requirements", toc_ref: "1.10.1", priority: low,
-        notes: "d1_016/089/093 cover escalation, timing, definition. SEC/SOX-required financial-expert specifics remain." }
-    - { subtopic: "Ongoing QA Monitoring — Specific monitoring techniques", toc_ref: "1.10.4", priority: low,
-        notes: "d1_048/099 cover failure analysis + design depth. Specific monitoring techniques (e.g., automated work-paper review, supervision sampling) remain." }
+    # Other depth opportunities for batches 12-13
+    - { subtopic: "Control Classifications — Sub-area depth", toc_ref: "1.4.3", priority: medium,
+        notes: "d1_008/012 cover classification basics. Specific classifications (preventive vs detective vs corrective; manual vs automated; key vs non-key) at depth remain." }
+    - { subtopic: "Risk Treatment — Specific scenarios applied", toc_ref: "1.3.6", priority: medium,
+        notes: "d1_033/124 cover treatment options + selection. Specific industry-treatment-pattern scenarios remain." }
+    - { subtopic: "Audit Programs — Adapting Tools and Techniques templates", toc_ref: "1.5.3", priority: low,
+        notes: "d1_011/071 cover scenario + foundational. Specific Tools-and-Techniques template-adaptation scenarios remain." }
+    - { subtopic: "Audit Reporting — Special-purpose reports (regulatory, due-diligence)", toc_ref: "1.9.6", priority: low,
+        notes: "d1_036/109 cover opinion-types + modified-opinion. Special-purpose reports (regulatory filings, M&A due-diligence) remain." }
 
 domain_2:
   target_total: 180
