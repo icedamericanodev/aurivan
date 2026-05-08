@@ -1088,6 +1088,372 @@
         "False assurance"
       ],
       "_provenance": "Authored from concept: 'audit QA program weaknesses — self-assessment without independent review = false assurance'. Public source: IIA International Standards 1300 and 1312. All scenario specifics (global consulting firm, 12-year stale external review, 8-year self-assessment, 3-4 minor findings averages) invented for this question."
+    },
+    {
+      "id": "d1_031",
+      "domain": 1,
+      "subtopic": "Code of Professional Ethics — Integrity",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit manager at a public accounting firm becomes aware that their team's draft audit report contains a finding that could substantially harm a client's business. The client's CFO calls the audit manager privately and offers to \"make sure your firm wins our advisory contract next year\" if the finding is removed. Which provision of the ISACA Code of Professional Ethics is MOST directly violated by complying with the CFO's offer?",
+      "options": {
+        "A": "The requirement to perform services with due professional care",
+        "B": "The requirement to maintain integrity and refrain from acts discreditable to the profession",
+        "C": "The requirement to support the implementation of appropriate professional standards",
+        "D": "The requirement to maintain professional competence and continue learning"
+      },
+      "correct": "B",
+      "key_concept": "The ISACA Code of Professional Ethics requires integrity above all else. Removing a substantive audit finding in exchange for future business is a textbook integrity violation — an act discreditable to the audit profession.",
+      "pre_read": "For ethics-violation questions, identify the SPECIFIC behavior described and match it to the most directly violated provision. Quid-pro-quo arrangements that compromise audit conclusions are integrity violations, not competence or due-care issues — those are about quality, not honesty.",
+      "correct_explanation": "Removing a substantive audit finding because of a financial inducement is the textbook violation of integrity. The Code of Professional Ethics requires members to maintain integrity and refrain from acts that would discredit the profession. Due professional care (A) and competence (D) speak to quality of work; appropriate standards (C) speaks to following methodology. None of those captures the corruption of conclusions for personal/firm gain — that's an integrity violation.",
+      "wrong_explanations": {
+        "A": "Due professional care is about the quality and rigor of audit work, not about the corruption of conclusions for personal gain. The behavior described is not a care/quality issue; it's an integrity issue.",
+        "C": "Supporting professional standards is about adhering to methodology and frameworks. The CFO's offer doesn't ask the auditor to deviate from methodology — it asks them to corrupt the conclusion. That's integrity, not standards-adherence.",
+        "D": "Professional competence is about maintaining skill and knowledge. The auditor's competence isn't compromised by removing a finding; their integrity is."
+      },
+      "tips": [
+        "Trap is A — \"due professional care\" sounds like the right ethical bucket but it's about work quality, not honesty.",
+        "Quid-pro-quo arrangements that compromise audit conclusions = integrity violation, every time.",
+        "Exam-day shortcut: when a stem describes corrupting an audit conclusion in exchange for personal/firm benefit, the answer is the integrity provision."
+      ],
+      "framework_ref": "ISACA Code of Professional Ethics (Integrity); ITAF General Standards on Professional Ethics",
+      "related_concepts": [
+        "Integrity",
+        "Auditor independence",
+        "Conflict of interest",
+        "Acts discreditable to the profession"
+      ],
+      "_provenance": "Authored from concept: 'integrity violation — removing audit findings for financial inducement'. Public source: ISACA Code of Professional Ethics. All scenario specifics (public accounting firm, CFO advisory-contract offer) invented for this question."
+    },
+    {
+      "id": "d1_032",
+      "domain": 1,
+      "subtopic": "Using the Work of Other Experts",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a cybersecurity SaaS company is auditing the cryptographic controls of the customer-data encryption layer. The auditor lacks deep cryptographic expertise and engages an external cryptographer to evaluate the encryption design. Before relying on the cryptographer's findings, what is the IS auditor's MOST important step?",
+      "options": {
+        "A": "Have the cryptographer sign a non-disclosure agreement covering the engagement",
+        "B": "Verify the cryptographer's competence, objectivity, and the relevance of their work to the audit's objectives",
+        "C": "Pay the cryptographer's fee in full upfront to ensure their commitment to the engagement",
+        "D": "Have the cryptographer report directly to the audit committee, bypassing the IS auditor"
+      },
+      "correct": "B",
+      "key_concept": "When using the work of an external expert, the IS auditor must evaluate the expert's competence, objectivity, and the relevance of their work — the IS auditor remains responsible for the audit conclusion and cannot delegate that responsibility to the expert.",
+      "pre_read": "For \"using other experts\" questions, identify the auditor's residual responsibility: the auditor doesn't outsource the conclusion, only the technical work. Verifying the expert's competence and objectivity is what lets the auditor responsibly rely on their work.",
+      "correct_explanation": "ISACA Standard 1206 (Using the Work of Other Experts) requires the IS auditor to evaluate the expert's competence, objectivity, and the relevance of the expert's work to the audit's objectives before relying on it. The auditor remains responsible for the audit conclusion regardless of whose work supports it. NDA (A) is a contractual matter, not the audit-quality control. Pre-payment (C) is a commercial decision unrelated to audit reliance. Bypassing the auditor (D) defeats the purpose — the IS auditor must integrate the expert's work into the audit conclusion, which requires staying in the loop.",
+      "wrong_explanations": {
+        "A": "An NDA is standard contracting practice but doesn't address the audit-quality question of whether the expert's work can be relied upon. Confidentiality is separate from competence and objectivity.",
+        "C": "Payment terms are a commercial matter, not an audit-quality control. Paying upfront doesn't make the work more reliable; verifying competence and objectivity does.",
+        "D": "The IS auditor must integrate the expert's work into the audit conclusion. Bypassing the auditor breaks the chain of responsibility — the auditor signs the audit conclusion, so they need to evaluate and integrate the expert's findings."
+      },
+      "tips": [
+        "Trap is A — NDA sounds like a control but it's contracting, not audit reliance.",
+        "Using an expert ≠ delegating the audit conclusion. The auditor still owns the conclusion and must verify the expert is reliable.",
+        "Exam-day shortcut: any \"using other experts\" question is answered by the option about evaluating competence + objectivity + relevance of work."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ITAF Performance Standards",
+      "related_concepts": [
+        "Using other experts",
+        "Auditor responsibility",
+        "Reliance on third-party work",
+        "Competence and objectivity assessment"
+      ],
+      "_provenance": "Authored from concept: 'using the work of other experts — verifying competence, objectivity, relevance'. Public source: ISACA IT Audit Standard 1206. All scenario specifics (cybersecurity SaaS, cryptographic controls, external cryptographer) invented for this question."
+    },
+    {
+      "id": "d1_033",
+      "domain": 1,
+      "subtopic": "Risk Treatment Options",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At an auto manufacturer, the IT risk register identifies a risk: a critical legacy ERP component has a known vulnerability, but patching requires a 4-day production line outage costing approximately $40M in lost output. After analysis, management decides not to apply the patch and to formally document this decision in the risk register, signed off by the CIO. Which risk treatment option BEST describes management's documented decision?",
+      "options": {
+        "A": "Risk avoidance — management is avoiding the patching outage",
+        "B": "Risk acceptance — management is consciously deciding to accept the residual risk given the cost",
+        "C": "Risk mitigation — the existing controls are mitigating the risk",
+        "D": "Risk transfer — the production cost would be transferred to operations"
+      },
+      "correct": "B",
+      "key_concept": "Risk treatment options are: avoid, accept, mitigate (reduce), or transfer. A formal management decision to NOT take action on a known risk, documented and signed off, is risk acceptance — not avoidance, mitigation, or transfer.",
+      "pre_read": "For risk-treatment-classification questions, identify the action management is taking: removing the activity = avoid; reducing likelihood/impact through controls = mitigate; shifting to a third party = transfer; consciously choosing to live with the residual = accept. The conscious-decision-with-sign-off pattern is acceptance.",
+      "correct_explanation": "Risk acceptance is a formal management decision to live with a known residual risk, typically because the cost of treatment exceeds the benefit. The CIO sign-off and documentation in the risk register are the markers of formal acceptance. Avoidance (A) means stopping the activity entirely, which isn't happening here. Mitigation (C) means actively reducing the risk through new controls; management isn't doing that — they're deciding NOT to act. Transfer (D) means shifting the risk to another party (insurance, contract); not the case here.",
+      "wrong_explanations": {
+        "A": "Avoidance means eliminating the risk by stopping the activity. The auto manufacturer isn't stopping the use of the legacy ERP; they're continuing to use it with the known vulnerability. That's not avoidance.",
+        "C": "Mitigation requires the organization to actively reduce the risk through new or improved controls. Management's decision here is the opposite — to NOT act. Existing controls may already mitigate the risk, but the decision being classified is the not-patching decision.",
+        "D": "Transfer means moving the risk to another party (insurance, contractual indemnification, outsourcing). The financial impact of the production outage isn't being transferred to anyone; management is choosing to keep the unpatched system in place, which is acceptance, not transfer."
+      },
+      "tips": [
+        "Trap is A — \"avoiding the outage\" sounds like avoidance but classification follows the RISK action, not the cost action. They're not avoiding the underlying vulnerability risk; they're accepting it.",
+        "Acceptance is a formal, conscious decision with documentation and sign-off. Without those, it's just inaction.",
+        "Exam-day shortcut: when a stem describes management deciding NOT to act on a known risk + formal documentation/sign-off, the answer is acceptance."
+      ],
+      "framework_ref": "ISO/IEC 31000 Risk Management; COBIT 2019 (APO12 Managed Risk); ITAF Performance Standards on Risk Treatment",
+      "related_concepts": [
+        "Risk treatment options",
+        "Risk acceptance",
+        "Risk register",
+        "Residual risk"
+      ],
+      "_provenance": "Authored from concept: 'risk acceptance — formal management decision not to act with sign-off'. Public source: ISO/IEC 31000 + COBIT 2019. All scenario specifics (auto manufacturer, legacy ERP vulnerability, 4-day outage, $40M cost) invented for this question."
+    },
+    {
+      "id": "d1_034",
+      "domain": 1,
+      "subtopic": "Control Objectives and Measures",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "At an edtech company, an IS auditor is reviewing the change management framework. The framework has a stated control objective: \"All production code changes are reviewed and approved by an authorized peer before deployment.\" The auditor observes a specific control measure: \"Pull requests must receive at least one approving review from a designated reviewer before merge to the main branch.\" Which of the following BEST describes the relationship between the control objective and the control measure?",
+      "options": {
+        "A": "The control objective and the control measure are the same thing, just stated at different levels of detail",
+        "B": "The control objective is what the control aims to achieve; the control measure is the specific action implemented to achieve it",
+        "C": "The control measure replaces the control objective once the technology is implemented",
+        "D": "The control objective applies to all systems uniformly; the control measure is system-specific and unrelated"
+      },
+      "correct": "B",
+      "key_concept": "Control objectives state what the control aims to achieve (the desired state); control measures (or activities) are the specific actions implemented to achieve that objective. Different organizations may use different measures to achieve the same objective.",
+      "pre_read": "For control-objective vs control-measure questions, identify which is the WHAT (objective — the goal/desired state) and which is the HOW (measure — the implementation). The objective is technology-agnostic; the measure is the specific implementation.",
+      "correct_explanation": "Control objectives describe the desired control outcome — for instance, \"all production code changes are peer-reviewed.\" Control measures are the specific actions or mechanisms implemented to achieve that objective — for instance, \"pull requests require at least one approving review in GitHub.\" Different organizations might implement the same objective with different measures (a manual code-review meeting, an automated approval workflow in a different VCS, a paired-programming model). Saying objectives and measures are the same (A) loses the distinction; saying measures replace objectives (C) is wrong because objectives persist as the goal; saying they're unrelated (D) misses that measures exist BECAUSE of objectives.",
+      "wrong_explanations": {
+        "A": "The objective and the measure are NOT the same. The objective describes the goal (peer review of changes); the measure describes the specific implementation (pull request approvals in GitHub). They differ in level of abstraction and technology-specificity.",
+        "C": "Control measures don't replace control objectives once implemented. The objective persists as the standard the measure is being judged against. If a future audit finds the measure isn't operating, the auditor returns to the objective to evaluate alternatives.",
+        "D": "Control objectives and measures are explicitly related — measures exist BECAUSE of objectives. Saying they're unrelated misses the entire point of the framework."
+      },
+      "tips": [
+        "Trap is A — \"same thing at different detail\" is appealing because both describe the same control area, but the objective-vs-measure distinction is fundamental.",
+        "Objective = goal (technology-agnostic); Measure = implementation (technology-specific).",
+        "Exam-day shortcut: any question contrasting control objectives and measures is answered by the option that distinguishes goal from implementation."
+      ],
+      "framework_ref": "COBIT 2019 (Control Objectives and Practices); COSO Internal Control – Integrated Framework; ITAF Performance Standards on Control Evaluation",
+      "related_concepts": [
+        "Control objectives",
+        "Control measures",
+        "Control activities",
+        "Implementation specificity"
+      ],
+      "_provenance": "Authored from concept: 'control objective vs control measure — goal vs implementation'. Public source: COBIT 2019 + COSO Internal Control – Integrated Framework. All scenario specifics (edtech company, pull request approval workflow) invented for this question."
+    },
+    {
+      "id": "d1_035",
+      "domain": 1,
+      "subtopic": "Audit Report Structure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a property-technology (proptech) company is finalizing the audit report for the new tenant-payment-processing system. The audit committee has asked for a report that \"executives, the audit committee, and operational management can each get value from.\" Which of the following report structures BEST serves these audiences?",
+      "options": {
+        "A": "A single narrative document with all findings and detail in one continuous flow, no section breaks",
+        "B": "An executive summary at the top, followed by scope/objectives/methodology, detailed findings with ratings and recommendations, conclusions, and management response",
+        "C": "A spreadsheet of findings only, with no narrative or executive context",
+        "D": "Separate independent reports tailored to each audience, with no shared structure"
+      },
+      "correct": "B",
+      "key_concept": "A standard IS audit report has a layered structure that lets different audiences access information at different levels of depth — executive summary for leadership, scope/methodology for context, detailed findings for action, conclusions and management response for closure.",
+      "pre_read": "For audit-report-structure questions, look for the option that serves multiple audiences in a single layered document. Single flat narratives, raw spreadsheets, and separate-reports-per-audience all break the layered-access principle.",
+      "correct_explanation": "A standard IS audit report has a layered structure: executive summary (leadership reads this), scope and objectives (provides context), methodology (shows how the audit was conducted), detailed findings with ratings and recommendations (operational management uses these), conclusions (summary judgment), and management response (closes the loop). This structure lets different audiences access the depth they need without forcing everyone through the entire document. Continuous narrative (A) makes information hard to find; spreadsheet-only (C) lacks the context to interpret findings; separate independent reports (D) creates inconsistency and additional work without serving the multi-audience goal.",
+      "wrong_explanations": {
+        "A": "A single continuous narrative makes information hard to extract — executives shouldn't have to read 50 pages to find the bottom line, and operational managers shouldn't have to decode prose to find their action items.",
+        "C": "Findings without context (executive summary, scope, methodology) leave readers unable to interpret what they're seeing. The report needs the surrounding structure to make findings actionable.",
+        "D": "Separate independent reports create inconsistency, duplicate work, and missed context. A single layered report serves all audiences without these problems."
+      },
+      "tips": [
+        "Trap is D — \"tailored per audience\" sounds responsive but creates inconsistency. The layered single-report approach serves all audiences in one document.",
+        "Layered audit report = executive summary at top, then context, then findings, then conclusions, then management response.",
+        "Exam-day shortcut: report-structure questions are answered by the option describing the standard layered structure with executive summary leading."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Audit Reporting",
+      "related_concepts": [
+        "Audit report structure",
+        "Executive summary",
+        "Layered communication",
+        "Multi-audience reporting"
+      ],
+      "_provenance": "Authored from concept: 'audit report structure — layered for multi-audience access'. Public source: ISACA IT Audit Standard 1401. All scenario specifics (proptech, tenant-payment-processing system) invented for this question."
+    },
+    {
+      "id": "d1_036",
+      "domain": 1,
+      "subtopic": "Types of IS Audit Reports / Opinion Types",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional stock exchange has completed the annual audit of the trading-platform's IT controls. The audit identified two significant control weaknesses (a delayed user-deactivation process and inconsistent privileged-access reviews) but found that other major control areas were operating effectively, and no scope limitations were encountered. The auditor must select an audit-opinion type for the report. Which is MOST appropriate?",
+      "options": {
+        "A": "Unmodified opinion — controls are operating effectively overall",
+        "B": "Qualified (modified) opinion — controls are operating effectively except for the specific noted weaknesses",
+        "C": "Adverse opinion — controls are not operating effectively",
+        "D": "Disclaimer of opinion — the auditor cannot form an opinion"
+      },
+      "correct": "B",
+      "key_concept": "Audit opinion types map to the magnitude and pervasiveness of findings: unmodified (no significant issues), qualified/modified (significant but limited issues), adverse (controls not effective overall), disclaimer (cannot form an opinion due to scope limitation).",
+      "pre_read": "For opinion-type questions, classify the findings: any significant issues? → not unmodified. Are issues limited or pervasive? → qualified vs adverse. Could the auditor complete the work? → not a disclaimer. Two significant but limited weaknesses with otherwise-effective controls = qualified.",
+      "correct_explanation": "Two significant findings means the unmodified opinion (A) doesn't fit — that requires no significant issues. The other major control areas being effective means the issues aren't pervasive enough for an adverse opinion (C); adverse is reserved for controls not operating effectively overall. There's no scope limitation, so disclaimer (D) doesn't apply. The right opinion is qualified (or \"modified\") — controls are operating effectively except for the noted weaknesses. The qualification names the specific exceptions, which is what makes this opinion type useful for partial-effectiveness conclusions.",
+      "wrong_explanations": {
+        "A": "Unmodified opinion is for audits with no significant findings. Two significant control weaknesses mean an unmodified opinion would be misleading — readers would conclude the controls are uniformly effective.",
+        "C": "Adverse opinion is for situations where controls are NOT operating effectively overall. Here the other major areas are effective; adverse would overstate the negative finding.",
+        "D": "Disclaimer of opinion applies when the auditor cannot form an opinion due to scope limitations or evidence sufficiency issues. Here the auditor has completed the work and reached a conclusion — a disclaimer would be inappropriate."
+      },
+      "tips": [
+        "Trap is A — \"some controls are effective\" tempts toward unmodified, but ANY significant finding generally requires qualification.",
+        "Opinion ladder: unmodified (clean) → qualified (specific exceptions) → adverse (overall failure) → disclaimer (couldn't conclude).",
+        "Exam-day shortcut: \"significant findings + other areas effective + no scope limitation\" = qualified opinion."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Audit Reports; ISA 705 (Modifications to the Opinion)",
+      "related_concepts": [
+        "Audit opinion types",
+        "Unmodified opinion",
+        "Qualified opinion",
+        "Adverse opinion",
+        "Disclaimer of opinion"
+      ],
+      "_provenance": "Authored from concept: 'audit opinion types — qualified for limited but significant findings'. Public source: ISACA IT Audit Standard 1401 + ISA 705. All scenario specifics (regional stock exchange, trading platform, two specific control weaknesses) invented for this question."
+    },
+    {
+      "id": "d1_037",
+      "domain": 1,
+      "subtopic": "Risk Assessment / Risk Prioritization",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor is conducting risk assessment for the next audit cycle at a global ride-share platform. The auditor has identified four risks across the audit universe: (1) unauthorized access to driver-and-rider PII — high likelihood given recent industry-wide breaches, very high impact due to GDPR-style regulations across operating regions, (2) unscheduled platform downtime affecting peak-hour rides — medium likelihood, medium impact quantifiable in lost revenue, (3) algorithmic-pricing controversy — low likelihood, very high reputational impact with class-action lawsuit potential, (4) third-party-payment-processor outage — low likelihood, high direct-financial impact, mitigated by an existing failover provider. The audit committee has asked the auditor to prioritize these risks for next year's audit cycle.",
+      "question": "Which risk should the auditor MOST appropriately rank as the highest priority for the next audit cycle?",
+      "options": {
+        "A": "Risk 1 — unauthorized PII access (combined high likelihood × very high impact, with regulatory exposure)",
+        "B": "Risk 2 — platform downtime (most quantifiable financial impact)",
+        "C": "Risk 3 — algorithmic-pricing controversy (highest worst-case reputational impact)",
+        "D": "Risk 4 — payment-processor outage (highest direct-financial impact when triggered)"
+      },
+      "correct": "A",
+      "key_concept": "Risk-based audit prioritization uses likelihood × impact to rank risks. The highest-likelihood, highest-impact risk wins, especially when reinforced by regulatory exposure that compounds the impact dimension.",
+      "pre_read": "For risk-prioritization questions with multiple risks, calculate likelihood × impact for each. The trap is risks with very-high impact-only OR very-high likelihood-only — both are reasoned away by their other dimension. Combined high-on-both wins.",
+      "correct_explanation": "Standard risk-based prioritization scores likelihood × impact. Risk 1 has high likelihood AND very high impact, plus regulatory exposure that compounds impact further — the combined score is highest. Risk 3 has very high reputational impact but low likelihood, which weights it down to a lower score. Risk 2 (medium × medium) and Risk 4 (low × high with mitigation) are lower than Risk 1 by both dimensions or have effective mitigation. The CFO-style trap of picking on impact-only (C) or financial-only (B, D) misses the foundational likelihood × impact equation that drives audit prioritization.",
+      "wrong_explanations": {
+        "B": "Quantifiability of financial impact is useful for reporting but isn't the prioritization criterion. Risk 2's medium-medium combined score is lower than Risk 1's high-very high.",
+        "C": "Worst-case reputational impact alone doesn't drive prioritization — likelihood must be considered. Low likelihood pulls Risk 3's combined score below Risk 1's.",
+        "D": "Direct-financial impact when triggered is one dimension. Likelihood (low) and effective mitigation (failover) both pull Risk 4's residual risk below Risk 1."
+      },
+      "tips": [
+        "Trap is C — \"highest worst-case impact\" feels like the dramatic answer, but likelihood is the other half of the equation. Low-likelihood very-high-impact loses to high-likelihood very-high-impact.",
+        "Risk = likelihood × impact, applied to residual risk (after existing controls). Always combine both dimensions.",
+        "Exam-day shortcut: risk-prioritization questions are answered by the option with the highest combined score, not the one with the highest single dimension."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ITAF Performance Standards on Risk Assessment; ISO/IEC 31000 Risk Management",
+      "related_concepts": [
+        "Risk-based audit planning",
+        "Likelihood × impact",
+        "Residual risk",
+        "Risk prioritization"
+      ],
+      "_provenance": "Authored from concept: 'risk prioritization — combined likelihood and impact, not single-dimension'. Public source: ISACA IT Audit Standard 1202 + ISO/IEC 31000. All scenario specifics (global ride-share platform, four specific risks, ratings of each) invented for this question."
+    },
+    {
+      "id": "d1_038",
+      "domain": 1,
+      "subtopic": "Prescriptive Controls and Frameworks",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a semiconductor manufacturer is helping the IT organization choose a prescriptive control framework for their cybersecurity program. Constraints: (1) the company is a US Federal contractor for defense applications, subject to DFARS 252.204-7012 and CMMC requirements, (2) the company also operates manufacturing facilities in the EU subject to the NIS2 directive, (3) management wants a single comprehensive framework for global use to simplify compliance reporting, (4) the existing IT team is small (12 people) with limited bandwidth for framework adoption. The IT organization is considering: NIST SP 800-171 (DFARS-aligned), ISO/IEC 27001 (international, EU-recognized), CIS Controls (lighter weight, US-centric), or COBIT 2019 (governance-focused, broad).",
+      "question": "Which framework approach is MOST appropriate given the constraints?",
+      "options": {
+        "A": "NIST SP 800-171 alone — DFARS compliance is the federal contract priority",
+        "B": "ISO/IEC 27001 alone — internationally recognized and EU-aligned",
+        "C": "NIST SP 800-171 + ISO/IEC 27001 mapped together — recognizing that DFARS requires NIST while NIS2 is best served by ISO 27001",
+        "D": "CIS Controls alone — the team is small and CIS is lighter weight"
+      },
+      "correct": "C",
+      "key_concept": "Prescriptive control frameworks are chosen for fit to the regulatory and operating environment. When operations span multiple jurisdictions with different mandatory frameworks, single-framework approaches miss compliance — multi-framework with explicit mappings is the realistic answer.",
+      "pre_read": "For prescriptive-framework questions, identify the regulatory/operational drivers: each driver may mandate or favor a specific framework. Single-framework answers fail when drivers point to different frameworks. Look for an option that addresses ALL drivers with a coordinated approach.",
+      "correct_explanation": "DFARS 252.204-7012 and CMMC explicitly require NIST SP 800-171 for federal defense contractors. NIS2 in the EU is outcome-based and does not mandate a specific framework, but ISO/IEC 27001 is widely accepted by EU regulators and maps cleanly to NIS2's risk-management and incident-handling requirements, making it the practical choice. Picking just NIST (A) leaves NIS2 compliance incomplete; picking just ISO (B) leaves DFARS/CMMC compliance incomplete; picking CIS Controls (D) doesn't satisfy either mandatory framework. The realistic answer is multi-framework with explicit cross-mapping — many organizations maintain a master control set that traces to both standards. The team size constraint is real but doesn't override regulatory mandates; it's a reason to invest in cross-mapping tooling rather than to skip a framework.",
+      "wrong_explanations": {
+        "A": "NIST SP 800-171 alone satisfies DFARS/CMMC but doesn't address NIS2 compliance for the EU manufacturing facilities. The company would be incomplete on its EU obligations.",
+        "B": "ISO/IEC 27001 alone is recognized in the EU but doesn't satisfy DFARS 252.204-7012, which explicitly requires NIST SP 800-171 controls for federal defense contracts. The company would lose its DOD contract eligibility.",
+        "D": "CIS Controls is lighter weight but doesn't satisfy DFARS (which requires NIST) or align with NIS2 (which favors ISO 27001). It would leave the company non-compliant on both regulatory regimes."
+      },
+      "tips": [
+        "Trap is A — \"DFARS is the federal contract priority\" sounds like single-framework reasoning, but the EU operations are a separate compliance regime with separate framework expectations.",
+        "When operating across regulatory jurisdictions, single-framework answers usually fail. Multi-framework with mappings is the realistic answer.",
+        "Exam-day shortcut: when stem describes operations under multiple regulatory regimes (DFARS + NIS2, or HIPAA + PCI, etc.), the answer is almost always multi-framework with cross-mapping."
+      ],
+      "framework_ref": "NIST SP 800-171; ISO/IEC 27001; DFARS 252.204-7012; EU NIS2 Directive; ITAF Performance Standards on Framework Selection",
+      "related_concepts": [
+        "Prescriptive frameworks",
+        "Regulatory mapping",
+        "Multi-framework approach",
+        "DFARS / CMMC",
+        "NIS2"
+      ],
+      "_provenance": "Authored from concept: 'multi-framework approach when operating across regulatory regimes'. Public source: NIST SP 800-171, ISO/IEC 27001, DFARS, NIS2 (all public regulatory documents). All scenario specifics (semiconductor manufacturer, 12-person IT team, US defense + EU facilities) invented for this question."
+    },
+    {
+      "id": "d1_039",
+      "domain": 1,
+      "subtopic": "IS Audit Resource Management",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "The CAE at an investment management firm is planning the next year's audit cycle. Resource constraints: (1) the IS audit team has 6 auditors with strong financial-systems experience but limited cloud-infrastructure expertise, (2) 60% of the planned audits next year involve the firm's new cloud-based portfolio-management platform on AWS and Snowflake, (3) the budget allows for either hiring 2 cloud-experienced auditors (estimated 12-month onboarding to be productive) OR engaging a third-party cloud-audit specialty firm for the cloud-related engagements, (4) the audit committee has expressed mild preference for in-house capability building, (5) regulatory examiners may visit within 9 months and want to see strong cloud-control documentation.",
+      "question": "Which resource approach is MOST appropriate?",
+      "options": {
+        "A": "Hire 2 cloud-experienced auditors and have them shadow this cycle's cloud audits, using the engagements as a learning vehicle for the rest of the team",
+        "B": "Engage a third-party cloud-audit specialty firm for this cycle, then evaluate hiring once the team has co-worked alongside the specialists and observed cloud-audit practice",
+        "C": "Defer all cloud-related audits until the team has been trained to handle them in-house",
+        "D": "Have the existing financial-systems-experienced auditors learn cloud auditing on-the-fly during the engagements"
+      },
+      "correct": "B",
+      "key_concept": "When audit resource gaps and external constraints conflict (team capability gap + tight regulatory deadline + audit-committee preference), the right approach is the one that delivers high-quality audits in the available window while preserving the option to build capability later.",
+      "pre_read": "For resource-management questions with conflicting constraints, identify which constraint is hardest (regulatory deadline is usually hardest because it can't be moved by audit decisions). Match the approach to the hardest constraint, then preserve options for softer constraints.",
+      "correct_explanation": "The 9-month regulatory window is the hardest constraint — it can't be moved. The 12-month onboarding for new hires (A) means new auditors aren't productive in time for the regulatory visit, leaving the team using inexperienced cloud auditors on critical audits or the existing team learning on-the-fly (D, which produces poor-quality audits). Deferring (C) is unacceptable — 60% of the planned audits would be skipped. Engaging a specialty firm for this cycle (B) produces high-quality audits within the regulatory window; the team can co-work alongside specialists and learn from observation; and after this cycle the CAE can make a more informed hiring decision based on what was actually needed. The audit committee's \"mild preference\" for in-house is honored over time, not at the expense of regulatory readiness.",
+      "wrong_explanations": {
+        "A": "12-month onboarding for new hires means they aren't productive in time for the 9-month regulatory visit. This option gambles on shadowing being enough; in practice, shadowing produces co-auditors, not lead auditors, on a cloud platform the team doesn't yet understand.",
+        "C": "Deferring 60% of the planned audits is unacceptable. The cloud platform is operationally critical, and skipping the audits creates a worse regulatory posture (no documentation, no assurance) than partial coverage with specialists.",
+        "D": "Existing financial-systems auditors learning cloud on-the-fly produces poor-quality audits — exactly the wrong response to a regulatory deadline. The risk of missed cloud-specific control failures is high, and the regulator is likely to notice."
+      },
+      "tips": [
+        "Trap is A — \"in-house capability building\" sounds aligned with the audit committee's preference but the regulatory deadline doesn't accommodate 12-month onboarding.",
+        "Hardest constraint usually wins. Regulatory deadlines beat staffing preferences.",
+        "Exam-day shortcut: when the stem combines a tight regulatory window with a capability gap, the answer is almost always engaging specialists for the immediate cycle while preserving the longer-term hiring option."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1006 (Proficiency); IIA International Standards 1210 (Proficiency); ITAF Performance Standards on Resource Management",
+      "related_concepts": [
+        "IS audit resource management",
+        "Auditor proficiency",
+        "Use of specialists",
+        "Capability gap"
+      ],
+      "_provenance": "Authored from concept: 'audit resource management with capability gap and regulatory deadline'. Public source: ISACA IT Audit Standard 1006 + IIA International Standards 1210. All scenario specifics (investment management firm, 6-auditor team, AWS/Snowflake platform, 12-month onboarding, 9-month regulatory window) invented for this question."
+    },
+    {
+      "id": "d1_040",
+      "domain": 1,
+      "subtopic": "Audit Phases — Planning Depth",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a theme park operator is planning the audit of a new ticketing-and-access-control system covering multiple parks. The system: (1) processes approximately 3 million ticket transactions per peak weekend across 6 parks, (2) integrates with the parks' physical access gates (turnstiles), the food and merchandise POS systems, and the customer mobile app, (3) was implemented 4 months ago with a rolling deployment across parks, (4) has had 3 high-severity production incidents in the last 60 days, all related to the access-control integration, (5) the CFO has asked for the audit results within a tight 8-week window so the next quarterly board meeting can be informed. The auditor is scoping the planning phase.",
+      "question": "Which approach to the planning phase is MOST appropriate?",
+      "options": {
+        "A": "A short, lightweight planning phase (1 week) since the system is recent and well-documented; spend most time on fieldwork",
+        "B": "A thorough planning phase (3 weeks) covering risk assessment of all 6 parks, integration interfaces, and root-cause review of the 3 incidents — the planning depth determines fieldwork efficiency",
+        "C": "Skip the planning phase and start directly with substantive fieldwork given the time constraint",
+        "D": "Conduct planning across all 6 parks in parallel during fieldwork to compress the timeline"
+      },
+      "correct": "B",
+      "key_concept": "Planning depth determines fieldwork efficiency. When a system has integration complexity, recent incidents, and tight timelines, investing more in planning (not less) is what makes fieldwork hit its window.",
+      "pre_read": "For audit-planning-depth questions under time pressure, the trap is to short-cut planning to leave more time for fieldwork. The correct intuition is that thorough planning makes fieldwork efficient — under-planning leads to fieldwork that misses key risks and re-work.",
+      "correct_explanation": "An 8-week window for an audit covering 6 parks, multiple integrations, and 3 recent incidents is achievable ONLY if planning is thorough enough that fieldwork hits the right risks the first time. A 1-week lightweight planning (A) under-scopes the complexity — by week 4 of fieldwork, the auditor will discover integration risks they should have identified upfront. Skipping planning (C) is the worst option; substantive fieldwork without planning produces unstructured work and unactionable findings. Parallel planning during fieldwork (D) means the auditor doesn't know what to look for at the start of fieldwork. A 3-week planning phase covering risk assessment, integration mapping, and incident root-cause review front-loads the discovery so the remaining 5 weeks of fieldwork are targeted and efficient.",
+      "wrong_explanations": {
+        "A": "A 1-week planning phase under-scopes the complexity (6 parks, 3 integration types, 3 recent incidents). By the time the auditor is mid-fieldwork, they'll be discovering risks that should have shaped the audit's scope from day one.",
+        "C": "Substantive fieldwork without planning is the textbook anti-pattern — the auditor doesn't know what risks to test, what controls to evaluate, or what evidence to collect. Findings will be incomplete and unactionable.",
+        "D": "Parallel planning during fieldwork sounds like a time saver but means the auditor enters fieldwork without knowing the scope, the key risks, or the evidence needed. Re-work is inevitable, and the 8-week window evaporates."
+      },
+      "tips": [
+        "Trap is A — \"short planning to save time for fieldwork\" is the most natural shortcut. It's also the most reliable way to miss the audit window.",
+        "Planning depth determines fieldwork efficiency. Front-loading discovery is what makes tight deadlines achievable.",
+        "Exam-day shortcut: when stem combines complex audit subject + tight deadline, the answer is invest MORE in planning, not less."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); ITAF Performance Standards on Audit Planning; IIA International Standards 2200 (Engagement Planning)",
+      "related_concepts": [
+        "Audit phases",
+        "Planning phase depth",
+        "Engagement planning",
+        "Audit timeline management"
+      ],
+      "_provenance": "Authored from concept: 'planning depth determines fieldwork efficiency under tight deadlines'. Public source: ISACA IT Audit Standard 1201 + IIA International Standards 2200. All scenario specifics (theme park, 6-park rollout, 3M weekend transactions, 3 recent incidents, 8-week CFO window) invented for this question."
     }
   ]
 }
