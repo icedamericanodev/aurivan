@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 110
+  authored_total: 130
   authored_mix:
-    foundational: 14
-    application:  60
-    analysis:     36
+    foundational: 18
+    application:  70
+    analysis:     42
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -157,6 +157,28 @@ domain_1:
     - { id: d1_109, subtopic: "Audit Reporting — Modified Opinion Decision",                     toc_ref: "1.9.6"  }
     - { id: d1_110, subtopic: "Continuous Auditing — Architecture Trade-offs",                   toc_ref: "1.8.3"  }
 
+    # Batch 10 (d1_111..d1_130) — closes foundational tier at 18/18 (target met); D1 = 130/180 (72%)
+    - { id: d1_111, subtopic: "Integrated Audit (Definition)",                                   toc_ref: "1.2.2"  }
+    - { id: d1_112, subtopic: "Substantive Testing (Definition)",                                toc_ref: "1.6.1"  }
+    - { id: d1_113, subtopic: "Audit Charter — Contents",                                        toc_ref: "1.1.5"  }
+    - { id: d1_114, subtopic: "Sampling — Population Definition",                                toc_ref: "1.6.2"  }
+    - { id: d1_115, subtopic: "Fraud — Reporting Suspected Fraud (Channels and Timing)",         toc_ref: "1.5.5"  }
+    - { id: d1_116, subtopic: "Sampling — Precision Setting",                                    toc_ref: "1.6.2"  }
+    - { id: d1_117, subtopic: "Integrated Audit — Audit-Team Composition",                       toc_ref: "1.2.2"  }
+    - { id: d1_118, subtopic: "Control Environment — Management Monitoring Sub-Area",            toc_ref: "1.4.6"  }
+    - { id: d1_119, subtopic: "AI/ML — Adversarial Robustness / Prompt Injection (LLM)",         toc_ref: "1.8.4"  }
+    - { id: d1_120, subtopic: "Audit Phases — Reporting Phase Communication Tactics",            toc_ref: "1.5.2"  }
+    - { id: d1_121, subtopic: "ITAF Standards — Specific Standard Purposes",                     toc_ref: "1.1.1"  }
+    - { id: d1_122, subtopic: "Audit Documentation — Cross-References",                          toc_ref: "1.9.4"  }
+    - { id: d1_123, subtopic: "ITGC — Logical Access (Provisioning, Review, Deprovisioning)",    toc_ref: "1.4.2"  }
+    - { id: d1_124, subtopic: "Risk Analysis — Treatment Selection (Multi-Control Trade-offs)",  toc_ref: "1.3.6"  }
+    - { id: d1_125, subtopic: "Audit Independence — Long Tenure Threat",                         toc_ref: "1.1.5"  }
+    - { id: d1_126, subtopic: "Audit Risk Model — Setting Detection Risk Given High IR x CR",    toc_ref: "1.3.3"  }
+    - { id: d1_127, subtopic: "Audit Plan Adjustment — Resource Constraint Mid-Year",            toc_ref: "1.3.1"  }
+    - { id: d1_128, subtopic: "Sampling — Sample Re-Design when Initial Insufficient",           toc_ref: "1.6.2"  }
+    - { id: d1_129, subtopic: "Audit Reporting — Disagreement with Management Position",         toc_ref: "1.9.1"  }
+    - { id: d1_130, subtopic: "Continuous Auditing — Decision to Suspend Production",            toc_ref: "1.8.3"  }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
@@ -166,26 +188,29 @@ domain_1:
     # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
     # coverage map and high-priority depth targets.
 
-    # High priority — refreshed after batch 9
-    - { subtopic: "Foundational tier — remaining 4 definitions to close 14/18 -> 18/18 gap", toc_ref: "various", priority: high,
-        notes: "Candidates: Integrated Audit definition (1.2.2), Substantive-test type definition (1.6.1), Audit Charter contents distinct from d1_052 purpose (1.1.5), Sampling — population/precision definitions (1.6.2). At 2 foundational per batch, closes by ~batch 11." }
-    - { subtopic: "Fraud — Reporting Suspected Fraud (channels, timing)", toc_ref: "1.5.5", priority: high,
-        notes: "d1_010/d1_069/d1_070/d1_084/d1_096 cover first-action + triangle + forensic engagement + evidence handling + interview. Reporting channels (audit committee vs management vs external counsel) and timing remain." }
-    - { subtopic: "Sampling — population definition + precision setting", toc_ref: "1.6.2", priority: high,
-        notes: "8 sampling questions in the bank now; precision-setting (acceptable risk levels, tolerable error) and population-definition mechanics are the remaining sub-areas." }
+    # High priority — refreshed after batch 10. Foundational tier CLOSED (18/18).
+    # Remaining gap: 50 questions = 20 application + 30 analysis. Future batches shift to 0F/10A/10An mix.
+    - { subtopic: "CSA — Workshop facilitation + results integration",        toc_ref: "1.2.1", priority: high,
+        notes: "d1_020/059/073 cover limitations + deployment + definition. Workshop facilitation discipline and CSA-results integration into audit conclusions remain." }
+    - { subtopic: "Audit Evidence — Specialized types (electronic integrity, third-party confirmation)", toc_ref: "1.7", priority: high,
+        notes: "d1_004/025/095/102 cover principle + types + sufficiency-vs-appropriateness. Electronic-evidence integrity assertions and third-party-confirmation (positive vs negative) remain." }
+    - { subtopic: "Prescriptive Frameworks — Cross-walking (NIST CSF / ISO 27001 / SOX)", toc_ref: "1.4.5", priority: high,
+        notes: "d1_038 covers DFARS+NIS2. Cross-walking between common frameworks is a high-priority depth angle." }
+    - { subtopic: "Fraud — Investigation lifecycle integration", toc_ref: "1.5.5", priority: medium,
+        notes: "d1_010/069/070/084/096/115 cover individual stages. Integration across the lifecycle (handing off from audit to forensic to legal) remains." }
 
   remaining_unplanned:
-    # Other depth opportunities — picked when above queued_next is exhausted
-    - { subtopic: "Integrated Auditing — definition + additional sub-areas", toc_ref: "1.2.2", priority: medium,
-        notes: "d1_017 (application) and d1_088 (analysis scope decision). Foundational definition + other sub-area angles remain." }
-    - { subtopic: "Control Environment — Management Monitoring sub-area", toc_ref: "1.4.6", priority: medium,
-        notes: "d1_028 (parent) and d1_098 (independent vs management). COSO Component 5 monitoring-activity specifics remain." }
-    - { subtopic: "AI/ML — Adversarial robustness / prompt-injection (LLMs)", toc_ref: "1.8.4", priority: medium,
-        notes: "Six AI/ML questions cover parent + risk + training-data + auditability + challenger + drift. LLM-specific adversarial scenarios are an emerging gap." }
-    - { subtopic: "Audit Phases — Reporting Phase deeper communication tactics", toc_ref: "1.5.2", priority: low,
-        notes: "d1_040 + d1_041 + d1_054 cover the three phases at the discipline level. Deeper communication tactics during reporting phase remain." }
-    - { subtopic: "ITAF Standards — Specific Standard purposes (1001, 1005, 1006, etc.)", toc_ref: "1.1.1", priority: low,
-        notes: "d1_051 covers Standards as a layer; specific-Standard-by-purpose questions could deepen this area." }
+    # Other depth opportunities for batches 11-13
+    - { subtopic: "Agile Auditing — Sub-area depth", toc_ref: "1.5.6", priority: medium,
+        notes: "d1_029 covers parent only. Sub-areas (sprint design, retrospectives, agile-vs-traditional comparison) remain." }
+    - { subtopic: "Audit Team Training — Engagement-specific competency gap diagnosis", toc_ref: "1.10.3", priority: medium,
+        notes: "d1_044 covers function-level. Engagement-specific competency gap diagnosis is a depth angle." }
+    - { subtopic: "Effect of Laws and Regulations — Sector-specific cases", toc_ref: "1.3.2", priority: medium,
+        notes: "d1_022 covers parent. Sector-specific cases (HIPAA + finance, GDPR + global ops, sector-overlay) remain." }
+    - { subtopic: "Audit Committee — Composition specifics, financial-expert requirements", toc_ref: "1.10.1", priority: low,
+        notes: "d1_016/089/093 cover escalation, timing, definition. SEC/SOX-required financial-expert specifics remain." }
+    - { subtopic: "Ongoing QA Monitoring — Specific monitoring techniques", toc_ref: "1.10.4", priority: low,
+        notes: "d1_048/099 cover failure analysis + design depth. Specific monitoring techniques (e.g., automated work-paper review, supervision sampling) remain." }
 
 domain_2:
   target_total: 180
