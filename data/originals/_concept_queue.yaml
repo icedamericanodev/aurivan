@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 40
+  authored_total: 50
   authored_mix:
     foundational: 0
-    application:  24
-    analysis:     16
+    application:  30
+    analysis:     20
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -77,40 +77,40 @@ domain_1:
     - { id: d1_039, subtopic: "IS Audit Resource Management",               toc_ref: "1.1.5" }
     - { id: d1_040, subtopic: "Audit Phases — Planning Depth",              toc_ref: "1.5.2" }
 
+    # Batch 5 (d1_041..d1_050)
+    - { id: d1_041, subtopic: "Audit Phase — Fieldwork Discipline",                          toc_ref: "1.5.2"  }
+    - { id: d1_042, subtopic: "Audit Report Objectives (vs Structure)",                       toc_ref: "1.9.2"  }
+    - { id: d1_043, subtopic: "Audit Documentation Lifecycle (Retention & Access)",           toc_ref: "1.9.4"  }
+    - { id: d1_044, subtopic: "Audit Team Training and Development",                          toc_ref: "1.10.3" }
+    - { id: d1_045, subtopic: "ISACA Audit Standards vs Guidelines (ITAF)",                   toc_ref: "1.1.2"  }
+    - { id: d1_046, subtopic: "Continuous Auditing Techniques",                               toc_ref: "1.8.3"  }
+    - { id: d1_047, subtopic: "Control Relationship to Risk",                                 toc_ref: "1.4.4"  }
+    - { id: d1_048, subtopic: "Audit Function Ongoing Monitoring (vs QA Program)",            toc_ref: "1.10.4" }
+    - { id: d1_049, subtopic: "Sampling — Attribute vs Variable Selection",                   toc_ref: "1.6.2"  }
+    - { id: d1_050, subtopic: "Communicating Audit Results — Severity Calibration",           toc_ref: "1.9.1"  }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
 
     # High priority — uncovered TOC areas
-    - { subtopic: "Audit Phase — Fieldwork specifics",                      toc_ref: "1.5.2",   priority: high,
-        notes: "Distinct from planning (d1_040). Focus on fieldwork discipline, supervision, evidence collection during execution." }
-    - { subtopic: "Audit Report Objectives (vs Structure)",                 toc_ref: "1.9.2",   priority: high,
-        notes: "Distinct from d1_035 structure. What the report aims to convey vs. how it's organized." }
-    - { subtopic: "Audit Documentation (deeper than work papers)",          toc_ref: "1.9.4",   priority: high,
-        notes: "Documentation lifecycle, retention, access controls — not the work-paper-quality angle of d1_014." }
-    - { subtopic: "Control Relationship to Risk",                           toc_ref: "1.4.4",   priority: high,
-        notes: "How controls map to specific risks they address; risk-control matrix concept." }
-    - { subtopic: "Audit Team Training and Development",                    toc_ref: "1.10.3",  priority: high,
-        notes: "Competency frameworks, CPE, role-based skill development for the audit function." }
-    - { subtopic: "Audit Monitoring (ongoing QA monitoring)",               toc_ref: "1.10.4",  priority: high,
-        notes: "Distinct from d1_030's QA program — this is the ongoing monitoring activity." }
     - { subtopic: "Management of the IS Audit Function",                    toc_ref: "1.1.5",   priority: high,
         notes: "Resourcing/operations of the audit function; distinct from d1_039 capability-gap angle." }
-    - { subtopic: "Continuous Auditing Techniques (deeper)",                toc_ref: "1.8.3",   priority: medium,
-        notes: "Specific techniques (transaction matching, embedded audit modules, etc.); deeper than d1_013 distinction." }
-    - { subtopic: "ISACA Audit Guidelines (vs Standards)",                  toc_ref: "1.1.2",   priority: medium,
-        notes: "Distinguishing Guidelines from the mandatory Standards layer of ITAF." }
-    - { subtopic: "Foundational warmup — basic definitions (multi-question)",toc_ref: "various",priority: medium,
-        notes: "We're at 0/18 foundational. Need a small batch of recall-level questions (definitions, basic identification)." }
+    - { subtopic: "Foundational warmup — basic definitions (multi-question)",toc_ref: "various",priority: high,
+        notes: "We're at 0/18 foundational after batch 5. Next batch should include a meaningful foundational allocation (e.g., 3-5 of 10) to start closing the gap." }
 
   remaining_unplanned:
     # Areas already covered but with capacity for additional questions at deeper angles
-    - { subtopic: "Sampling — different sub-techniques (variable, stratified)", toc_ref: "1.6.2", priority: medium,
-        notes: "We have d1_009 (approach selection) and d1_019 (sampling risk). Room for variable vs attribute sampling." }
+    - { subtopic: "Sampling — stratified / monetary-unit-sampling deeper",   toc_ref: "1.6.2", priority: medium,
+        notes: "d1_009, d1_019, d1_049 cover approach, sampling risk, attribute-vs-variable selection. Room for stratification logic, MUS mechanics." }
     - { subtopic: "Fraud, Irregularities & Illegal Acts (deeper)",            toc_ref: "1.5.5", priority: medium,
         notes: "d1_010 covers first-action. Deeper questions on warning signs, fraud-triangle indicators, etc." }
-    - { subtopic: "Communicating Audit Results (deeper)",                     toc_ref: "1.9.1", priority: medium,
-        notes: "d1_006 covers addressee, d1_016 escalation. Deeper questions on tone, severity calibration, exit conferences." }
+    - { subtopic: "Communicating Audit Results (deeper, beyond severity)",    toc_ref: "1.9.1", priority: medium,
+        notes: "d1_006 addressee, d1_016 escalation, d1_050 severity calibration. Room for tone, exit-conference dynamics beyond severity, follow-up-comm cadence." }
+    - { subtopic: "Audit Phase — Reporting phase discipline",                 toc_ref: "1.5.2", priority: medium,
+        notes: "d1_040 planning depth, d1_041 fieldwork discipline. Could round out with a reporting-phase question." }
+    - { subtopic: "ITAF Tools and Techniques layer (vs Standards/Guidelines)",toc_ref: "1.1.4", priority: low,
+        notes: "d1_021 covers ITAF generally, d1_045 covers Standards vs Guidelines. Tools and Techniques is the third layer — optional question." }
 
 domain_2:
   target_total: 180
