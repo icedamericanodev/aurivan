@@ -5513,6 +5513,760 @@
         "Aligned conclusions"
       ],
       "_provenance": "Authored from concept: 'end-to-end engagement design synthesis - phase-integrated planning + supervised fieldwork + audience-tailored reporting with aligned conclusions, distinct from phase-isolated / fragmented / collapsed approaches'. Public source: ISACA Standards 1201/1203/1401 + ITAF. All scenario specifics (multi-state non-profit Medicaid managed-care, eligibility-enrollment audit, multi-stakeholder reporting expectations) invented for this question. Distinct from d1_040/041/054/120 individual-phase questions."
+    },
+    {
+      "id": "d1_151",
+      "domain": 1,
+      "subtopic": "COSO Component 5 — Separate Evaluations vs Ongoing Evaluations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a municipal water utility is reviewing management's monitoring activities under COSO Internal Control - Integrated Framework Component 5 (Monitoring Activities). Management performs both ongoing evaluations (built into operating processes) and separate evaluations (periodic standalone reviews). What is the MOST important characteristic distinguishing the two types?",
+      "options": {
+        "A": "Ongoing evaluations are operationally embedded in the regular activities (e.g., supervisor exception review, automated control-failure alerts, KPI dashboards), while separate evaluations are periodic standalone reviews (e.g., annual self-assessment, dedicated control-environment review) that step back and examine controls at a point in time",
+        "B": "Ongoing evaluations are performed by the audit function only, while separate evaluations are performed by management only",
+        "C": "Ongoing evaluations cover only IT controls, while separate evaluations cover only business-process controls",
+        "D": "Ongoing evaluations are required by COSO, while separate evaluations are optional and rarely used in practice"
+      },
+      "correct": "A",
+      "key_concept": "COSO Component 5 distinguishes ongoing evaluations (operationally embedded, continuous) from separate evaluations (periodic, standalone, stepping back to examine controls). Both are management activities; both are required for a complete monitoring environment.",
+      "pre_read": "For COSO Component 5 questions, the right shape is \"both types together — ongoing embedded + separate periodic\". Distractors that assign one to audit-only, segregate by control type, or mark one as optional all miss the design.",
+      "correct_explanation": "COSO Internal Control - Integrated Framework (2013) Component 5 (Monitoring Activities) explicitly defines two complementary monitoring approaches. Ongoing evaluations are built into operating processes — supervisor exception reviews, automated control-failure alerts, KPI dashboards, real-time exception monitoring. Separate evaluations are periodic standalone reviews that step back from operations to examine controls — annual self-assessment, dedicated control-environment reviews, separate testing of key controls. Both are management-performed (Component 5 is management's monitoring activity, distinct from independent evaluation by an audit function). The mature monitoring environment combines both: ongoing for early signal-detection, separate for periodic in-depth examination. Option B incorrectly assigns ongoing to audit (audit's continuous-auditing is a separate concept). Option C invents a control-type segregation that doesn't exist in Component 5. Option D mischaracterizes separate evaluations as optional — both are required for a complete Component 5.",
+      "wrong_explanations": {
+        "B": "Both ongoing and separate evaluations are management activities under COSO Component 5. Audit's continuous auditing is a different concept performed by the audit function, not the same as ongoing evaluations.",
+        "C": "COSO Component 5 does not segregate evaluation types by control type (IT vs business process). Both ongoing and separate evaluations cover the full control environment.",
+        "D": "Both types are required for a complete Component 5 monitoring environment. Separate evaluations provide periodic in-depth examination that ongoing-only monitoring cannot replicate."
+      },
+      "tips": [
+        "Trap is B — \"audit performs ongoing\" confuses COSO Component 5 (management activity) with continuous auditing (audit function activity).",
+        "COSO Component 5 = ongoing evaluations (embedded, continuous) + separate evaluations (periodic, standalone). Both, not either-or.",
+        "Exam-day shortcut: Component 5 monitoring questions are answered by the option that names both ongoing-embedded and separate-periodic activities."
+      ],
+      "framework_ref": "COSO Internal Control - Integrated Framework (2013) Component 5 (Monitoring Activities); ISACA IT Audit Standards on Internal Controls; ITAF Performance Standards on the Control Environment",
+      "related_concepts": [
+        "COSO Component 5",
+        "Ongoing evaluations",
+        "Separate evaluations",
+        "Management monitoring",
+        "Control-environment review"
+      ],
+      "_provenance": "Authored from concept: 'COSO Component 5 - ongoing evaluations (embedded) vs separate evaluations (periodic), both management activities'. Public source: COSO 2013 Component 5. All scenario specifics (municipal water utility) invented for this question. Distinct from d1_028 (parent), d1_098 (independent vs management framing), d1_118 (management monitoring sub-area)."
+    },
+    {
+      "id": "d1_152",
+      "domain": 1,
+      "subtopic": "CAATs — Generalized Audit Software (GAS)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a community college system is using Generalized Audit Software (GAS) such as ACL or IDEA to test the tuition-billing transaction file. Which characteristic BEST describes the appropriate use of GAS in IS audit?",
+      "options": {
+        "A": "GAS is used to write and deploy operational software for the audited system, replacing the system's native processing logic",
+        "B": "GAS is used to extract, analyze, and test transaction data independent of the audited system's native processing — the auditor reads the data into the GAS tool and applies audit-defined queries, computations, and tests, producing audit evidence that is independent of the system's reports",
+        "C": "GAS is used to generate fictitious test transactions inserted into production processing for audit testing",
+        "D": "GAS is the same as CAATs and the two terms can be used interchangeably without distinction"
+      },
+      "correct": "B",
+      "key_concept": "Generalized Audit Software (GAS) is one type of CAAT — used to extract and analyze transaction data independent of the audited system. It does not replace operational software, does not insert test transactions (that's ITF), and is a sub-category of CAATs (not equivalent).",
+      "pre_read": "For GAS questions, anchor on \"extract-and-analyze independent of the audited system\". Distractors that confuse GAS with operational software, ITF, or treat GAS as synonymous with CAATs all miss the specific purpose.",
+      "correct_explanation": "ITAF Tools and Techniques on Computer-Assisted Audit Techniques (CAATs) and ISACA IT Audit Standards establish that Generalized Audit Software (GAS) — exemplified by ACL and IDEA — is a specific category of CAAT used to extract, read, query, and analyze transaction data independent of the audited system's native processing. The auditor reads data into the GAS tool and applies audit-defined queries (e.g., duplicates, gaps, threshold tests, statistical analyses), producing audit evidence independent of system-generated reports. Option A confuses GAS with operational system development. Option C describes Integrated Test Facility (ITF), which is a different CAAT. Option D incorrectly treats GAS as synonymous with CAATs — GAS is one type of CAAT among several (CAATs include GAS, ITF, embedded audit modules, snapshot, parallel simulation, etc.).",
+      "wrong_explanations": {
+        "A": "GAS is an audit tool, not operational software. The auditor uses GAS to analyze transaction data; operational systems run on their native software, not GAS.",
+        "C": "Inserting fictitious transactions into production is the Integrated Test Facility (ITF) approach, not GAS. The two are different CAAT categories with different uses.",
+        "D": "GAS is one type of CAAT. CAATs is the broader category that includes GAS, ITF, embedded audit modules, parallel simulation, and snapshot techniques. Not interchangeable."
+      },
+      "tips": [
+        "Trap is D — \"GAS = CAATs\" oversimplifies. GAS is one CAAT type; CAATs is broader.",
+        "GAS = extract + analyze transaction data independent of audited system. Audit-defined queries, audit-tool computation, audit evidence.",
+        "Exam-day shortcut: GAS questions are answered by the option naming \"extract and analyze independent of audited system\"."
+      ],
+      "framework_ref": "ITAF Tools and Techniques on CAATs; ISACA IT Audit Standards on Audit Data Analytics; ISACA \"Audit Data Analytics\" guidance",
+      "related_concepts": [
+        "Generalized Audit Software",
+        "ACL / IDEA",
+        "CAATs",
+        "Independent data analysis",
+        "Audit data analytics"
+      ],
+      "_provenance": "Authored from concept: 'GAS sub-area of CAATs - extract-and-analyze independent of audited system, distinct from operational software / ITF / CAATs-broadly'. Public source: ITAF Tools and Techniques on CAATs. All scenario specifics (community college system, tuition-billing transactions) invented for this question. Distinct from d1_026 (CAATs parent), d1_083 (continuous online CAATs)."
+    },
+    {
+      "id": "d1_153",
+      "domain": 1,
+      "subtopic": "CAATs — Integrated Test Facility (ITF)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a savings & loan association is using an Integrated Test Facility (ITF) to test the loan-origination application's credit-decision controls. What is the MOST important characteristic of ITF that distinguishes it from other CAATs?",
+      "options": {
+        "A": "ITF involves creating fictitious entities (test customers, test loans) within the production system and processing test transactions through them; the auditor pre-defines expected outcomes and verifies actual outcomes match, providing direct evidence that production processing logic operates as designed — distinguishing it from external-data-analysis CAATs like GAS",
+        "B": "ITF is the same as Generalized Audit Software and produces the same evidence",
+        "C": "ITF replaces the production system entirely with an audit-managed test environment for the duration of testing",
+        "D": "ITF is performed only after a control failure has been detected, as a forensic investigation technique"
+      },
+      "correct": "A",
+      "key_concept": "ITF creates fictitious entities within the production system and runs test transactions through them; the auditor compares expected vs actual outcomes to verify production processing logic. Distinct from external-data CAATs (GAS), full-system replacement, and forensic investigation.",
+      "pre_read": "For ITF questions, the distinguishing feature is \"fictitious entities in production + pre-defined expected outcomes + actual-vs-expected comparison\". Distractors that conflate with GAS, replace production, or treat ITF as forensic-only all miss this.",
+      "correct_explanation": "ITAF Tools and Techniques on CAATs and ISACA IT Audit Standards establish that Integrated Test Facility (ITF) is a CAAT in which the auditor creates fictitious entities (test customers, test loans, test products) within the production system and processes test transactions through them. The auditor pre-defines expected outcomes (what the production processing logic should produce) and verifies actual outcomes match. ITF provides direct evidence that production processing logic operates as designed — a different evidence quality than external-data CAATs like GAS, which analyze data independent of the system. ITF requires careful design to ensure fictitious entities don't affect production reports (typically segregated by entity-type flags). Option B confuses ITF with GAS — they are different CAATs with different purposes and different evidence types. Option C overstates ITF — it doesn't replace production, it adds fictitious entities to production. Option D restricts ITF to forensic use; it is a planned audit technique, not solely a forensic one.",
+      "wrong_explanations": {
+        "B": "GAS analyzes transaction data outside the system; ITF runs test transactions through the system. Different CAATs, different evidence types. They are not interchangeable.",
+        "C": "ITF doesn't replace production. It creates fictitious entities WITHIN production and processes test transactions through them. The production system continues running normally for real entities.",
+        "D": "ITF is a planned audit technique used regularly as part of substantive or compliance testing, not a reactive forensic-only procedure."
+      },
+      "tips": [
+        "Trap is B — confusing ITF with GAS misses the different evidence types each produces.",
+        "ITF = fictitious entities in production + pre-defined expectations + actual-vs-expected comparison. Three elements.",
+        "Exam-day shortcut: ITF questions are answered by the option naming fictitious entities in production with expected-actual outcome comparison."
+      ],
+      "framework_ref": "ITAF Tools and Techniques on CAATs; ISACA IT Audit Standards on Audit Data Analytics",
+      "related_concepts": [
+        "Integrated Test Facility",
+        "CAATs",
+        "Test transactions",
+        "Expected vs actual outcomes",
+        "Production-embedded testing"
+      ],
+      "_provenance": "Authored from concept: 'ITF sub-area of CAATs - fictitious entities in production with pre-defined expected outcomes, distinct from GAS / full-replacement / forensic-only'. Public source: ITAF Tools and Techniques on CAATs. All scenario specifics (savings & loan association, loan-origination credit-decision controls) invented for this question. Distinct from d1_026 (CAATs parent), d1_046 (continuous auditing technique selection), d1_083 (continuous online CAATs), d1_152 (GAS sub-area)."
+    },
+    {
+      "id": "d1_154",
+      "domain": 1,
+      "subtopic": "Ongoing QA Monitoring — Automated Work-Paper Review",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS audit director at an art-museum endowment fund is implementing an automated work-paper review tool as part of the function's ongoing QA monitoring. The tool will scan completed work papers for compliance with documentation standards (sign-off completeness, cross-reference completeness, attached-evidence presence). What is the MOST important consideration when relying on this tool's output as evidence of QA monitoring?",
+      "options": {
+        "A": "The tool's output replaces all human QA review, freeing the audit director from any manual examination of work-paper quality",
+        "B": "The tool addresses mechanical / structural compliance (sign-offs, cross-references, attachments) but does not evaluate the substantive quality of audit conclusions, evidence sufficiency, or judgment-based aspects of work papers; human QA review remains required for the substantive dimensions",
+        "C": "The tool's output is sufficient evidence of QA monitoring as long as it scans every work paper without exception",
+        "D": "The tool should be configured to scan only those work papers where the audit director has individual concerns, to minimize tool overhead"
+      },
+      "correct": "B",
+      "key_concept": "Automated work-paper review tools address mechanical compliance (sign-offs, cross-references, attachments) but cannot evaluate substantive quality (audit conclusions, evidence sufficiency, judgment). Human QA review remains required for substantive dimensions. Tool + human review is the right combination.",
+      "pre_read": "For automated QA-tool questions, watch for distractors that elevate tool output to replace human review or restrict it to flagged-only scope. The right answer always names the tool's mechanical scope and the continued need for human substantive review.",
+      "correct_explanation": "ISACA QAIP guidance and IIA Standard 1311 (Internal Assessments) establish that QA monitoring activities can be automated for mechanical-compliance dimensions but cannot replace human review for substantive dimensions. Automated tools scanning for sign-off completeness, cross-reference completeness, and attached-evidence presence add efficiency at the mechanical level. They cannot evaluate whether the audit conclusions are supported, whether evidence is sufficient, or whether professional judgment was exercised appropriately. The mature design combines: (1) automated tool scanning every work paper for mechanical compliance, (2) human QA reviewer examining sampled work papers for substantive quality. Option A elevates the tool to replace all human review, missing the substantive dimension entirely. Option C overstates the tool's evidentiary value — full coverage of mechanical aspects doesn't establish substantive quality. Option D restricts the tool to flagged-only scope, losing its main efficiency value (scanning all work papers consistently).",
+      "wrong_explanations": {
+        "A": "Automated tools cannot evaluate substantive audit-quality dimensions (conclusion-support, evidence sufficiency, judgment). Replacing human review entirely with automated scanning leaves these dimensions unmonitored.",
+        "C": "Universal mechanical-scanning is good but it doesn't establish substantive quality. Mechanical compliance is necessary but not sufficient for QA assurance.",
+        "D": "Restricting the tool to director-flagged work papers loses the tool's main efficiency advantage (consistent scanning across all engagements). The tool's value is in universal coverage, not selective application."
+      },
+      "tips": [
+        "Trap is A — \"replaces human review\" overstates automated tools. Mechanical only; substantive needs human judgment.",
+        "Tool + human review = mechanical compliance (tool, all work papers) + substantive quality (human, sampled). Combination, not replacement.",
+        "Exam-day shortcut: automated QA-tool questions are answered by the option that names mechanical scope AND continued human substantive review."
+      ],
+      "framework_ref": "ISACA QAIP guidance; IIA International Standard 1311 (Internal Assessments); ITAF General Standards on Quality",
+      "related_concepts": [
+        "Automated work-paper review",
+        "QA monitoring",
+        "Mechanical vs substantive review",
+        "QAIP",
+        "Audit-tool integration"
+      ],
+      "_provenance": "Authored from concept: 'automated work-paper review tool - mechanical compliance scope, human substantive review remains required'. Public source: IIA Standard 1311 + ISACA QAIP. All scenario specifics (art-museum endowment fund) invented for this question. Distinct from d1_048 (monitoring failure), d1_076 (internal program design), d1_099 (design depth)."
+    },
+    {
+      "id": "d1_155",
+      "domain": 1,
+      "subtopic": "Control Classifications — Preventive vs Detective vs Corrective",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a wholesale auto-parts distributor is classifying the company's IT controls. Which set of examples BEST illustrates the preventive / detective / corrective classification?",
+      "options": {
+        "A": "Preventive: monthly access-review reports listing out-of-policy access; Detective: deny-by-default access policy at provisioning; Corrective: nightly system backup",
+        "B": "Preventive: deny-by-default access policy at provisioning (stops the unauthorized access before it happens); Detective: monthly access-review reports listing out-of-policy access (detects after-the-fact); Corrective: process to revoke access and remediate any data accessed (responds to detected issues)",
+        "C": "Preventive: post-incident remediation procedure; Detective: pre-deployment code review; Corrective: anti-malware signature update",
+        "D": "All three classifications are interchangeable and the labels don't materially affect audit conclusions"
+      },
+      "correct": "B",
+      "key_concept": "Preventive controls stop issues before they occur (deny-by-default, segregation of duties, training). Detective controls find issues after they occur (access reviews, exception reports, log monitoring). Corrective controls respond to detected issues (revoke access, restore from backup, patch). The three categories work together.",
+      "pre_read": "For preventive/detective/corrective classification, anchor on the timing relative to the issue: prevent BEFORE, detect AFTER OCCURRENCE, correct AFTER DETECTION. Distractors that swap timing or treat the classifications as interchangeable miss the point.",
+      "correct_explanation": "ISACA IT Audit Standards on Control Classifications and COBIT 2019 establish three control categories distinguished by their timing relative to a control event: Preventive controls operate before the event (deny-by-default access, segregation-of-duties enforcement, mandatory training, input-validation rules) — they stop unauthorized or erroneous activity before it occurs. Detective controls operate after the event but before consequences (monthly access-review reports listing out-of-policy access, exception reports, intrusion-detection alerts, reconciliations) — they find issues that have occurred but provide opportunity to correct. Corrective controls respond to detected issues (revoke access, restore from backup, patch the vulnerability, recover from incident) — they remediate after detection. Option A swaps the timings (preventive ↔ detective). Option C scrambles the examples across categories. Option D dismisses the classification entirely, missing the audit-design value.",
+      "wrong_explanations": {
+        "A": "The example for preventive in this option (monthly access-review reports) is actually detective. The example for detective (deny-by-default at provisioning) is actually preventive. The classification has been swapped.",
+        "C": "Post-incident remediation is corrective, not preventive. Pre-deployment code review is preventive, not detective. The examples are mismatched to their categories.",
+        "D": "The classifications materially affect audit conclusions because the right combination of preventive + detective + corrective controls provides defense in depth. Treating them as interchangeable misses the design intent."
+      },
+      "tips": [
+        "Trap is A — swapping preventive and detective examples is a classic exam confusion.",
+        "Timing test: prevent BEFORE, detect AFTER OCCURRENCE, correct AFTER DETECTION. Three discrete moments.",
+        "Exam-day shortcut: when classifying controls, ask \"when relative to the event does this operate?\" Before = preventive; after but before consequences = detective; after detection = corrective."
+      ],
+      "framework_ref": "ISACA IT Audit Standards on Control Classifications; COBIT 2019; ITAF Performance Standards on Application Audits",
+      "related_concepts": [
+        "Preventive controls",
+        "Detective controls",
+        "Corrective controls",
+        "Defense in depth",
+        "Control timing"
+      ],
+      "_provenance": "Authored from concept: 'control classifications preventive vs detective vs corrective - timing-based distinction'. Public source: ISACA IT Audit Standards + COBIT 2019. All scenario specifics (wholesale auto-parts distributor) invented for this question. Distinct from d1_008/012 (classification basics)."
+    },
+    {
+      "id": "d1_156",
+      "domain": 1,
+      "subtopic": "Control Relationship to Risk — Multi-Control Defense in Depth",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a cable-TV provider is evaluating defense-in-depth for the customer-payment-information risk (unauthorized access to stored payment data). The company employs five layered controls: (1) network segmentation isolating the payment-data segment; (2) encryption-at-rest of the payment-data store; (3) role-based access controls limiting access to payment-data-handling roles; (4) detective monitoring with alerts on access from outside expected workflow; (5) incident-response procedures triggered by alerts. The auditor wants to evaluate whether the multi-control mapping provides defense in depth.",
+      "question": "Which evaluation BEST applies multi-control defense-in-depth analysis?",
+      "options": {
+        "A": "All five controls together provide adequate protection, regardless of how the layers interact, since the count of controls is high",
+        "B": "Defense in depth requires that the controls be both independently effective AND complementary in coverage, addressing different failure modes (preventive layer for unauthorized access at boundary; detective layer to catch what prevention missed; corrective layer to respond once detected) — the auditor evaluates each layer's design AND the layers' combined coverage of failure modes, identifying any gap where a failure mode exists that no layer addresses",
+        "C": "The auditor should test only the strongest single control and rely on its effectiveness alone, since one excellent control is more reliable than five mediocre ones",
+        "D": "The auditor should test each control independently with no cross-control evaluation, treating each as a separate audit"
+      },
+      "correct": "B",
+      "key_concept": "Defense in depth requires both individual control effectiveness AND complementary coverage of failure modes. Single-control reliance, cross-control fragmentation, and count-based evaluation all miss the design intent. The auditor evaluates each layer + the combined coverage.",
+      "pre_read": "For defense-in-depth questions, anchor on \"independent effectiveness + complementary coverage of failure modes\". Distractors that count layers, isolate to one layer, or fragment evaluation all miss the integration.",
+      "correct_explanation": "ISACA Risk IT Framework and ITAF Performance Standards on Control Evaluation establish that defense-in-depth requires the multi-control set to satisfy two distinct properties: (1) each layer must be independently effective at its specific function (preventive at preventing, detective at detecting, corrective at correcting); (2) the layers must collectively cover the relevant failure modes — no failure mode should escape all layers. The auditor evaluates: at the layer level, whether each control operates effectively as designed; at the combined level, whether the layers' coverage maps to the universe of failure modes. Gaps where no layer covers a failure mode are findings even if individual layers are excellent. Option A counts layers without evaluating effectiveness or coverage. Option C reduces to single-control reliance, abandoning the defense-in-depth premise. Option D treats each control independently, losing the integration view that defense-in-depth requires.",
+      "wrong_explanations": {
+        "A": "Layer count is not an adequate measure of defense-in-depth. Five ineffective layers provide less protection than two effective ones; what matters is independent effectiveness and combined coverage.",
+        "C": "Reliance on a single control violates defense-in-depth fundamentally. The premise of defense-in-depth is that no single control is perfect, so multiple layers reduce the probability of an end-to-end failure.",
+        "D": "Independent testing of each control without cross-control evaluation misses the integration question. Defense-in-depth is more than the sum of parts; the auditor must evaluate the parts AND the whole."
+      },
+      "tips": [
+        "Trap is A — \"five controls = enough\" counts layers but ignores effectiveness and coverage.",
+        "Defense-in-depth = individual effectiveness + complementary coverage of failure modes. Two properties, both required.",
+        "Exam-day shortcut: defense-in-depth questions are answered by the option naming layer effectiveness AND combined failure-mode coverage."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ITAF Performance Standards on Control Evaluation; NIST SP 800-53 (Defense in Depth Concept)",
+      "related_concepts": [
+        "Defense in depth",
+        "Multi-control mapping",
+        "Failure-mode coverage",
+        "Layer effectiveness",
+        "Control integration"
+      ],
+      "_provenance": "Authored from concept: 'multi-control defense in depth - individual effectiveness plus complementary failure-mode coverage'. Public source: ISACA Risk IT + NIST SP 800-53. All scenario specifics (cable-TV provider, five-layer payment-information defense) invented for this question. Distinct from d1_047 (single-control to risk mapping)."
+    },
+    {
+      "id": "d1_157",
+      "domain": 1,
+      "subtopic": "Communicating Audit Results — Multi-Stakeholder Conflict",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a research-university hospital has issued an audit report on the medical-records access controls. Three stakeholder responses arrive within two weeks: (1) hospital management agrees with the findings but disputes the severity rating on one item; (2) the board of trustees requests a deeper presentation focused on patient-safety implications; (3) the academic-medicine research-oversight committee, which uses the records for research, asks for narrowed findings that exclude research-access activities to avoid \"unfairly characterizing the academic mission\". The audit director must navigate the multi-stakeholder dynamic.",
+      "question": "Which response BEST handles the multi-stakeholder conflict?",
+      "options": {
+        "A": "Issue three separate versions of the report, each tailored to one stakeholder's preferences, even if the conclusions diverge across versions",
+        "B": "Maintain the single coherent audit report with the auditor's professional-judgment-based findings and severity ratings; respond to each stakeholder appropriately — engage management on factual basis of the disputed severity, present to the board with patient-safety implications context, and decline the research-oversight committee's request to exclude research-access activities (the audit's coverage is determined by the audit objective, not by stakeholder framing preferences)",
+        "C": "Modify the report to satisfy the most-influential stakeholder (the board of trustees) and accept that other stakeholders may disagree",
+        "D": "Withdraw the report and re-issue after consensus is reached among all three stakeholders"
+      },
+      "correct": "B",
+      "key_concept": "Multi-stakeholder conflict in audit reporting requires maintaining the single coherent report with the auditor's professional findings while engaging each stakeholder appropriately. Audit objectivity cannot be sacrificed to accommodate stakeholder preferences for coverage exclusion or severity adjustment.",
+      "pre_read": "For multi-stakeholder conflict questions, watch for distractors that fragment the report, satisfy one stakeholder over others, or withhold the report pending consensus. The right answer maintains report integrity while engaging stakeholders appropriately.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting), ITAF Performance Standards on Communication of Results, and the ISACA Code of Professional Ethics (Independence) establish that the audit report reflects the auditor's professional judgment based on evidence. Multi-stakeholder dynamics are normal, but they cannot drive: (a) coverage exclusions (declining the research-oversight committee's request to exclude research-access activities is correct because audit coverage follows the audit objective, not stakeholder framing), (b) severity adjustments without factual basis (engaging management on the disputed severity is appropriate, but adjustment requires factual evidence, not management preference), (c) presentation framing exclusively for one stakeholder (presenting to the board with patient-safety context is appropriate; modifying the underlying findings is not). Option A fragments the report, producing inconsistent conclusions across versions. Option C surrenders independence to one stakeholder. Option D uses consensus as a gating condition, which surrenders the audit's reporting independence.",
+      "wrong_explanations": {
+        "A": "Separate report versions produce inconsistent conclusions across stakeholders and undermine the audit's coherence. The report is one artifact; tailoring is appropriate at the section level (audience-targeted summaries), not at the version level.",
+        "C": "Modifying findings to satisfy the most-influential stakeholder is the textbook surrender of audit independence. The auditor's findings reflect evidence, not stakeholder influence.",
+        "D": "Withdrawal pending consensus uses consensus as a precondition for issuing the audit's findings. The auditor's role is to issue findings based on evidence; stakeholder consensus is not required and waiting for it surrenders independence."
+      },
+      "tips": [
+        "Trap is C — \"satisfy the most-influential stakeholder\" surrenders independence. Findings reflect evidence, not influence.",
+        "Multi-stakeholder = single coherent report + appropriate engagement per stakeholder + decline coverage / severity adjustments without factual basis.",
+        "Exam-day shortcut: multi-stakeholder conflict questions are answered by the option that maintains report integrity while engaging each stakeholder appropriately."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Communication of Results; ISACA Code of Professional Ethics (Independence)",
+      "related_concepts": [
+        "Multi-stakeholder communication",
+        "Audit independence",
+        "Coverage exclusion requests",
+        "Severity adjustment",
+        "Stakeholder engagement"
+      ],
+      "_provenance": "Authored from concept: 'multi-stakeholder conflict in audit reporting - single coherent report plus appropriate per-stakeholder engagement, decline pressure for coverage / severity adjustments without factual basis'. Public source: ISACA Standard 1401 + Code of Professional Ethics. All scenario specifics (research-university hospital, three stakeholder responses) invented for this question. Distinct from d1_006/016/050/068/079/120/129 prior reporting questions."
+    },
+    {
+      "id": "d1_158",
+      "domain": 1,
+      "subtopic": "Risk Treatment — Specific Scenario Applied",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a commercial-bakery chain has identified a risk in the customer-loyalty-program system: unauthorized point redemption due to weak fraud-detection in the rewards-redemption workflow. The expected annual loss is $850K. Management has identified four mitigation options: (1) Accept — reserve the $850K in operating expense and continue with current controls; (2) Reduce — deploy enhanced fraud-detection ML at $1.2M one-time + $300K/year ongoing, projected to reduce expected loss to $80K/year; (3) Transfer — purchase rewards-fraud insurance at $620K/year that covers losses above $200K deductible; (4) Avoid — discontinue the loyalty program entirely, eliminating both the $850K loss exposure AND the $4.5M/year customer-retention value the program produces.",
+      "question": "Which treatment selection is MOST defensible from a residual-risk and cost-benefit perspective?",
+      "options": {
+        "A": "Option 1 (Accept) — reserving $850K is cheapest in year 1",
+        "B": "Option 2 (Reduce) — net cost is $1.2M one-time + $300K/year, with annual loss reduction of $770K (from $850K to $80K); year-2 onward the savings ($770K) exceeds ongoing cost ($300K) by $470K, with break-even on the $1.2M one-time investment in approximately 2.5 years; this is the most defensible long-run treatment given the ongoing nature of the risk",
+        "C": "Option 3 (Transfer) — purchasing insurance at $620K/year transfers the financial exposure",
+        "D": "Option 4 (Avoid) — discontinuing the program eliminates the risk entirely"
+      },
+      "correct": "B",
+      "key_concept": "Risk treatment selection requires explicit cost-benefit analysis covering one-time costs, ongoing costs, expected loss reduction, break-even period, and residual risk. The right treatment maximizes long-run value, not year-1 simplicity or single-dimension optimization.",
+      "pre_read": "For risk-treatment selection questions, the right approach combines cost-benefit math with residual-risk evaluation. Distractors that pick by year-1 cost, single-dimension cost, or eliminate-the-program-too all miss the long-run analysis.",
+      "correct_explanation": "ISACA Risk IT Framework and ISO/IEC 31000 establish that risk treatment selection follows from cost-benefit analysis covering: (a) one-time costs, (b) ongoing costs, (c) expected loss reduction, (d) break-even period, and (e) residual risk. Walking through each option: Accept ($850K/year reserved indefinitely, no risk reduction); Reduce ($1.2M one-time + $300K/year ongoing, expected loss reduced to $80K/year, net annual benefit from year 2 onward ≈ $470K, break-even on the one-time investment ≈ 2.5 years); Transfer ($620K/year, no risk reduction, financial exposure shifted but $200K deductible per occurrence remains); Avoid (eliminates $850K loss exposure but also eliminates $4.5M/year of customer-retention value, net opportunity cost ≈ $3.65M/year). Reduce dominates on the long-run cost-benefit math. Option A is the year-1-cheapest fallacy. Option C trades one cash flow for another without reducing the underlying risk. Option D destroys substantial business value to eliminate a relatively contained risk.",
+      "wrong_explanations": {
+        "A": "Accepting at $850K/year is the year-1-cheapest fallacy. Compounded over 5 years that's $4.25M with no risk reduction; Reduce delivers reduction at substantially lower long-run cost.",
+        "C": "Insurance transfers financial exposure but doesn't reduce the underlying risk. With a $200K deductible per occurrence, the company still bears partial exposure; with $620K/year ongoing premium, this exceeds Reduce's ongoing cost without producing risk reduction.",
+        "D": "Discontinuing the program eliminates a $850K/year risk but also eliminates $4.5M/year of customer-retention value — a net business-value destruction of $3.65M/year. Avoid is appropriate when the value of the activity is less than the risk; here the value substantially exceeds the risk."
+      },
+      "tips": [
+        "Trap is A — \"cheapest year 1\" ignores compounding and risk reduction. Long-run cost-benefit decides.",
+        "Treatment selection math: one-time + ongoing + loss-reduction + break-even + residual risk. Five dimensions, evaluate together.",
+        "Exam-day shortcut: when multiple treatments are presented with explicit cost numbers, calculate break-even and net annual cost; the long-run optimum usually wins."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 Risk Management; ITAF Performance Standards on Risk Assessment",
+      "related_concepts": [
+        "Risk treatment selection",
+        "Cost-benefit analysis",
+        "Break-even analysis",
+        "Residual risk",
+        "Opportunity cost"
+      ],
+      "_provenance": "Authored from concept: 'risk treatment specific scenario applied - cost-benefit math with one-time + ongoing + loss-reduction + break-even + residual'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (commercial bakery, customer-loyalty program, four-option cost-benefit) invented for this question. Distinct from d1_033 (treatment options definition) and d1_124 (multi-control trade-offs)."
+    },
+    {
+      "id": "d1_159",
+      "domain": 1,
+      "subtopic": "Audit Charter — Modification Scenario",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a regional pension fund is approached by the audit committee chair, who proposes modifying the audit charter to give the audit function an additional responsibility: \"acting as a consultative resource to operations leadership on control design questions before controls are implemented.\" The chair's reasoning is that the audit function's expertise would be valuable to operations, and the consultative role would improve control design upfront. The audit director must evaluate the proposed modification.",
+      "question": "Which response BEST evaluates the proposed charter modification?",
+      "options": {
+        "A": "Accept the modification as written — additional responsibilities to the audit function increase its value to the organization",
+        "B": "The proposed modification creates an independence threat: if the audit function consults on control design before implementation, then later auditing those same controls creates a self-review threat (auditing one's own consultative work). Decline the modification as proposed; alternatives could include limited consultative input with strict scope boundaries (advisory at the design stage with disclosure and recusal from later audits of the same controls), or routing operations' control-design questions to a different advisory function. Document the analysis and present alternatives to the audit committee",
+        "C": "Accept the modification but redirect all consultative requests to a single junior auditor, since junior audit staff have less independence at risk",
+        "D": "Decline any modification of the audit charter, since charter modifications are inherently improper"
+      },
+      "correct": "B",
+      "key_concept": "Audit charter modifications must be evaluated for independence implications. Adding consultative responsibilities creates a self-review threat when the audit function later audits the same area. The right response identifies the threat, declines the modification as proposed, and offers alternatives with appropriate scope boundaries.",
+      "pre_read": "For charter-modification questions, watch for distractors that accept additional responsibilities without independence analysis, decline all modifications categorically, or assign sensitive work to junior staff. The right answer evaluates independence implications and offers boundaried alternatives.",
+      "correct_explanation": "ISACA IT Audit Standard 1003 (Auditor's Professional Independence), Standard 1001 (Audit Charter), and ITAF General Standards on Independence establish that audit-charter responsibilities must preserve auditor independence. Adding consultative responsibilities to the audit function creates a structural problem: if the audit function consults on control design at time T, then audits those controls at time T+1, the audit function is auditing its own prior recommendations — the textbook self-review threat. The right response identifies the threat (decline the modification as proposed), then offers alternatives that could allow some consultative value with scope boundaries (e.g., limited advisory at design stage with disclosure and explicit recusal from audits of the consulted controls; or routing operations to a different advisory function). Document the analysis and present alternatives to the audit committee for an informed decision. Option A accepts the modification without independence analysis. Option C \"redirects to junior staff\" doesn't address the structural independence threat — junior staff face the same threat. Option D categorically declines all charter modifications, which is over-corrective; charter modifications are sometimes appropriate when properly designed.",
+      "wrong_explanations": {
+        "A": "Adding consultative responsibilities without independence analysis creates a self-review threat the audit function cannot adequately mitigate after the fact. Charter modifications should be evaluated for independence implications before acceptance.",
+        "C": "Redirecting to junior staff doesn't address the structural threat. The audit function as a whole carries the independence obligation; assigning consultative work to junior staff creates the same threat at the function level.",
+        "D": "Categorical declination is over-corrective. Charter modifications can be appropriate when properly designed (e.g., adding clarification of scope, refining the reporting line). The auditor's job is to evaluate the specific modification, not refuse all changes."
+      },
+      "tips": [
+        "Trap is A — \"more responsibilities = more value\" ignores the independence implications.",
+        "Charter modifications: evaluate independence implications first; design alternatives with scope boundaries; document analysis; audit committee decides informed.",
+        "Exam-day shortcut: charter modifications adding consultative responsibilities are answered by the option that names self-review threat and offers boundaried alternatives."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1003 (Auditor's Professional Independence); ISACA IT Audit Standard 1001 (Audit Charter); ISACA Code of Professional Ethics; ITAF General Standards on Independence",
+      "related_concepts": [
+        "Audit-charter modification",
+        "Self-review threat",
+        "Consultative role",
+        "Independence preservation",
+        "Charter governance"
+      ],
+      "_provenance": "Authored from concept: 'audit charter modification scenario - identify independence threat (self-review), decline as proposed, offer boundaried alternatives'. Public source: ISACA Standards 1001 + 1003 + Code of Professional Ethics. All scenario specifics (regional pension fund, audit-committee-chair proposing consultative responsibility) invented for this question. Distinct from d1_001/052/113 prior charter questions."
+    },
+    {
+      "id": "d1_160",
+      "domain": 1,
+      "subtopic": "Sampling — Combined Attribute and Substantive in One Engagement",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at an aerospace parts manufacturer is designing the sampling for an audit of the supplier-invoice-approval system. The engagement has two objectives: (1) test whether the dual-approval control (supplier invoices > $50K require two approvers) is operating effectively — a yes/no compliance question; (2) estimate the dollar value of any unauthorized payments in the population — a substantive estimation question. The auditor wants to design an efficient sample plan that addresses both objectives without performing two separate sampling exercises if avoidable.",
+      "question": "Which sample-design approach is MOST appropriate?",
+      "options": {
+        "A": "One attribute sample on the population, using the same items for both compliance testing AND substantive testing, since the items overlap",
+        "B": "Design two sampling exercises with shared item-selection where it makes statistical sense: an attribute sample for the compliance objective with a sample size calibrated to the dual-approval control's tolerable deviation rate; a separate variable / monetary-unit sample for the substantive objective with a sample size calibrated to materiality; reuse items across the two samples where overlap occurs naturally to reduce work, but recognize the two samples have different design objectives and may differ in size and selection logic",
+        "C": "One judgmental sample of the largest 30 invoices, used for both objectives, since judgmental sampling is faster",
+        "D": "Skip statistical sampling and rely on management's representations for both objectives"
+      },
+      "correct": "B",
+      "key_concept": "Combined attribute and substantive testing in one engagement requires two sampling exercises with appropriate shared item-selection where statistically valid. One sample serving both objectives leaves at least one objective inadequately served; judgmental shortcuts and reliance on management representations are independence violations.",
+      "pre_read": "For combined attribute + substantive sampling questions, the right shape is \"two designs with shared selection where valid\". Distractors that use one sample for both, replace with judgment, or skip sampling all violate the integrated discipline.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling establish that different audit objectives require different sample designs. The compliance objective (dual-approval operating effectively) needs an attribute sample sized to the tolerable deviation rate. The substantive objective (estimating unauthorized payment dollars) needs a variable or monetary-unit sample sized to materiality. The two designs differ structurally — attribute samples typically over-sample by occurrence (every transaction has equal selection chance), while MUS over-samples by dollar value (each dollar has selection chance). Where the two samples' selections overlap naturally, the auditor reuses the items to reduce duplicate work; but this reuse cannot drive the design — each design follows its own objective's statistical requirements. Option A uses one design for both, which means one objective will be inadequately served (typically the substantive). Option C uses non-statistical judgmental sampling, which cannot project to the population. Option D abandons audit independence.",
+      "wrong_explanations": {
+        "A": "One attribute sample sized to compliance testing typically under-samples the substantive testing's needs (variable / MUS sampling demands different sample sizes for given materiality). Using one sample for both objectives compromises one of them.",
+        "C": "Judgmental sampling cannot project to the population; the substantive objective's dollar-value estimate requires statistical sampling. Speed cannot substitute for the technique that fits the objective.",
+        "D": "Reliance on management's representations bypasses both audit objectives. The auditor needs independent evidence; management's representations are not audit evidence in the same sense."
+      },
+      "tips": [
+        "Trap is A — \"one sample for both\" sounds efficient but sacrifices at least one objective.",
+        "Combined sampling: two designs (attribute for compliance, variable/MUS for substantive) + shared selection where valid + each design follows its objective's needs.",
+        "Exam-day shortcut: combined attribute + substantive questions are answered by the option naming separate designs with shared selection where natural."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530",
+      "related_concepts": [
+        "Combined attribute and substantive testing",
+        "Multi-objective sampling",
+        "Sample-design integration",
+        "Item-selection sharing"
+      ],
+      "_provenance": "Authored from concept: 'combined attribute and substantive sampling in one engagement - two designs with shared selection where valid, distinct from one-sample-for-both / judgmental-shortcut / management-representations'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (aerospace parts manufacturer, supplier-invoice-approval system, dual-approval threshold, dollar-value substantive estimation) invented for this question. Distinct from d1_086 (multi-objective scenario including 100% testing for zero-tolerance), d1_143 (selection between equally-defensible techniques)."
+    },
+    {
+      "id": "d1_161",
+      "domain": 1,
+      "subtopic": "Continuous Auditing — Anomaly Investigation Depth",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a cryptocurrency exchange operates a continuous-auditing system that has detected an anomaly in the trading-fees-revenue stream. Specifically, fees collected on a particular trading pair (a USD-stablecoin pair) appear to deviate by ~6% from the expected fees implied by published fee schedules, over a 3-week window. The deviation is small per-trade (~0.06% of fee value) but consistent. The auditor must decide the appropriate investigation depth.",
+      "question": "Which investigation approach is MOST appropriate?",
+      "options": {
+        "A": "Treat the 6% deviation as a noise-level fluctuation and document the observation without further procedures, since the per-trade impact is small",
+        "B": "Investigate the deviation as a substantive concern: the consistency over 3 weeks suggests a systematic cause, not random noise; the per-trade deviation aggregated over the trading pair's volume is material in dollar terms; possible causes include fee-schedule misconfiguration, rounding-logic errors, fee-distribution-channel skim, or unrecorded promotional fee waivers; design targeted procedures to identify the cause and quantify the financial impact, escalating to operations leadership if the cause appears intentional",
+        "C": "Immediately suspend trading on the affected pair until the deviation is fully resolved",
+        "D": "Refer the matter to law enforcement immediately since deviations from expected fee revenue may indicate financial crime"
+      },
+      "correct": "B",
+      "key_concept": "CA-detected anomalies are investigated by combining the consistency-of-pattern and aggregate-financial-impact dimensions. Small per-unit deviations can be material in aggregate; consistent-over-time patterns suggest systematic causes worth investigating. Documentation-only, immediate suspension, and direct law-enforcement referral all misallocate the response.",
+      "pre_read": "For CA-anomaly investigation depth questions, two key dimensions: (1) is the pattern consistent or random? (2) is the aggregate impact material? When both \"yes\", systematic investigation is warranted. Distractors that document-and-move-on, suspend operations, or escalate to law enforcement all skip the investigation step.",
+      "correct_explanation": "ITAF Tools and Techniques on Continuous Auditing and ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts) establish that CA-detected anomalies are investigated through combined pattern-consistency and aggregate-impact analysis. The cryptocurrency-exchange scenario presents both signals: 3-week consistency suggests a systematic cause (random noise typically does not persist for that long with that consistency); per-trade deviation aggregated over the trading pair's volume is materially significant in dollar terms even at 0.06% per trade. Possible causes the auditor should investigate: fee-schedule misconfiguration, rounding-logic errors in fee computation, unauthorized fee-distribution-channel skim (a fraud indicator), or unrecorded promotional fee waivers (a reporting-completeness issue). The right response is to design targeted investigation procedures and quantify financial impact, escalating to operations leadership (and potentially the audit committee) if the cause appears intentional. Option A documents and moves on, missing the systematic-cause investigation. Option C suspends trading without diagnosis, which over-reacts to a financial deviation that hasn't been confirmed as fraud. Option D escalates to law enforcement before the cause is even known.",
+      "wrong_explanations": {
+        "A": "Per-trade deviation can look like noise in isolation but the consistency over 3 weeks with material aggregate impact contradicts the noise hypothesis. Documenting-and-moving-on misses the systematic cause that warrants investigation.",
+        "C": "Immediate trading-suspension on a specific pair is a major operational decision typically reserved for compliance/risk-management with confirmed material concerns. CA-detected deviation, even consistent and material, doesn't yet justify operational suspension.",
+        "D": "Direct law-enforcement referral before cause is identified is premature. The deviation could be misconfiguration, error, or fraud; the auditor's job is to investigate to determine which, then escalate appropriately."
+      },
+      "tips": [
+        "Trap is A — \"per-trade is small, so it's noise\" ignores aggregate impact and consistency-over-time.",
+        "CA-anomaly investigation: pattern consistency + aggregate impact = systematic cause; investigate to find cause; escalate based on what the cause is.",
+        "Exam-day shortcut: CA-anomaly questions are answered by the option that proportions investigation depth to the consistency and aggregate-impact dimensions."
+      ],
+      "framework_ref": "ITAF Tools and Techniques on Continuous Auditing; ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); ISACA \"Auditing Cryptocurrency Operations\" guidance",
+      "related_concepts": [
+        "CA-detected anomaly",
+        "Pattern consistency",
+        "Aggregate-impact analysis",
+        "Systematic cause investigation",
+        "Investigation depth calibration"
+      ],
+      "_provenance": "Authored from concept: 'CA anomaly investigation depth - pattern consistency plus aggregate impact drives investigation depth, distinct from document-and-move-on / suspend-operations / direct-law-enforcement-referral'. Public source: ITAF Tools and Techniques + ISACA Standard 1207. All scenario specifics (cryptocurrency exchange, trading-fees revenue deviation, 6% over 3 weeks) invented for this question. Distinct from d1_046/083/092/110/130/145/148 prior CA questions."
+    },
+    {
+      "id": "d1_162",
+      "domain": 1,
+      "subtopic": "AI/ML — Vendor Model Audit (Third-Party AI)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a national retail chain is auditing the company's customer-segmentation system, which uses an AI/ML model provided by an external vendor (the vendor licenses the model to the retailer). Three constraints are documented: (1) the vendor will not disclose the model's training data or detailed architecture, citing trade-secret protection; (2) the model is hosted in the vendor's cloud and accessed via API; (3) the vendor has provided a SOC 2 Type 2 report covering the vendor's general control environment, but no AI-specific attestation. The audit director must design the audit's approach.",
+      "question": "Which audit approach BEST balances the constraints with the auditor's responsibility?",
+      "options": {
+        "A": "Conclude that the vendor model cannot be audited and exclude it from the audit's scope",
+        "B": "Design an audit approach that combines: (1) reliance on the SOC 2 Type 2 report for the vendor's general control environment (with appropriate evaluation of the SOC 2 scope and conclusions); (2) negotiated transparency for the audit's specific needs (e.g., aggregated training-data demographics, performance metrics by sub-population, model-update notification cadence) — even if full disclosure is refused; (3) testing the model's outputs against the company's own data (output integrity, bias indicators, drift detection); (4) contractual review of the vendor agreement for audit-rights and service-level provisions; document the limitations explicitly in the audit conclusion",
+        "C": "Demand full vendor disclosure of the training data and architecture, refusing to proceed with the audit until the vendor complies",
+        "D": "Conclude that the SOC 2 Type 2 report alone is sufficient evidence and conduct no additional audit procedures"
+      },
+      "correct": "B",
+      "key_concept": "Vendor AI/ML model audits require a layered approach: SOC 2 reliance with scope evaluation; negotiated transparency for specific audit needs; output-integrity testing using the company's own data; contractual audit-rights review; explicit limitation disclosure. Pure exclusion, demanding full disclosure, or sole SOC 2 reliance all miss the layered design.",
+      "pre_read": "For vendor AI/ML audit questions, the right shape is \"layered: SOC 2 + negotiated transparency + output testing + contractual review + documented limitations\". Distractors that exclude entirely, demand full disclosure, or rely solely on one input miss the layered design.",
+      "correct_explanation": "ISACA \"Auditing Artificial Intelligence\" guidance, ISACA IT Audit Standard 1206 (Using the Work of Other Experts) applied to SOC 2 report reliance, and ITAF Performance Standards on Third-Party Audit Reports establish that vendor AI/ML audits combine multiple input layers because no single layer provides full assurance. The layered approach: (1) SOC 2 Type 2 reliance — useful for general controls (security, availability, confidentiality) with explicit evaluation of the SOC 2's scope and conclusion strength; (2) negotiated transparency — within the trade-secret constraints, auditors negotiate access to aggregated training-data demographics, performance metrics by sub-population, model-update notification cadence; (3) output-integrity testing — the auditor tests model outputs against the company's own data, evaluating output integrity, bias indicators (different outputs for similar inputs), and drift detection; (4) contractual review — vendor agreement is reviewed for audit-rights, service-level provisions, breach-notification, and exit clauses; (5) documented limitations — the audit conclusion explicitly notes what could and could not be evaluated. Option A excludes the model entirely, leaving the company without assurance over a critical system. Option C demands full disclosure that vendors typically won't provide; this approach is impractical and doesn't fit reality. Option D relies solely on the SOC 2 report, which doesn't address AI-specific concerns (training-data quality, bias, drift).",
+      "wrong_explanations": {
+        "A": "Excluding the vendor model from audit scope leaves the company without assurance over a system that affects customer segmentation, marketing, and revenue. The company has assurance obligations regardless of the vendor's disclosure constraints.",
+        "C": "Demanding full vendor disclosure (training data, architecture) is unrealistic; vendors won't disclose trade secrets. The audit must work within the realistic constraints, layering multiple inputs.",
+        "D": "SOC 2 Type 2 reports cover general control environment, not AI-specific concerns. Sole SOC 2 reliance leaves training-data, bias, and drift uncovered."
+      },
+      "tips": [
+        "Trap is A — \"can't be audited, exclude\" abdicates the assurance role. Vendor models are auditable through layered approaches.",
+        "Vendor AI audit = SOC 2 reliance + negotiated transparency + output testing + contractual review + documented limitations. Five layers.",
+        "Exam-day shortcut: vendor AI/ML audit questions are answered by the option that names the layered approach with explicit limitation disclosure."
+      ],
+      "framework_ref": "ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ITAF Performance Standards on Third-Party Audit Reports (SOC 2)",
+      "related_concepts": [
+        "Vendor AI/ML model audit",
+        "SOC 2 Type 2 reliance",
+        "Negotiated transparency",
+        "Output-integrity testing",
+        "Audit-rights contractual review"
+      ],
+      "_provenance": "Authored from concept: 'vendor AI/ML model audit - layered approach (SOC 2 + transparency + output + contract + limitations), distinct from exclude / demand-full / sole-SOC-reliance'. Public source: ISACA Auditing AI program + ISACA Standard 1206 + ITAF SOC 2 reliance guidance. All scenario specifics (national retail chain, customer-segmentation vendor AI, vendor cloud-hosted with SOC 2) invented for this question. Distinct from d1_018/057/066/080/085/108/119/144 prior AI/ML questions."
+    },
+    {
+      "id": "d1_163",
+      "domain": 1,
+      "subtopic": "Negative-Finding Management Self-Assessment Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a state professional-licensing agency is concluding an audit of the licensee-discipline-tracking system. Two separate inputs to the conclusion: (1) management's quarterly self-assessment of controls reports that all controls operated effectively in the audit period; (2) the auditor's independent procedures identified two control failures (one access-management deficiency and one data-validation gap), neither of which appeared in management's self-assessment. The audit director must address the divergence in the audit report.",
+      "question": "Which approach BEST integrates the divergence into the audit conclusion?",
+      "options": {
+        "A": "Issue the audit report citing only the auditor's findings, omit reference to management's self-assessment, and let management explain the divergence privately",
+        "B": "Issue the audit report citing the auditor's findings as the audit conclusion (the auditor's independent work prevails), AND explicitly discuss the divergence between the auditor's findings and management's self-assessment as a separate observation about management's monitoring effectiveness — because failure to surface known control failures in self-assessment is itself a finding about the effectiveness of management's monitoring system",
+        "C": "Modify the auditor's findings to align with management's self-assessment, since management has direct knowledge of operations",
+        "D": "Issue two separate reports — one citing the auditor's findings, the other citing management's self-assessment — and let stakeholders reconcile"
+      },
+      "correct": "B",
+      "key_concept": "Divergence between audit findings and management self-assessment is itself an observation about management-monitoring effectiveness. The audit report cites auditor's findings as the conclusion AND discusses the divergence as a separate finding on monitoring. Omitting the divergence, aligning to management, or fragmenting reports all miss this analytical opportunity.",
+      "pre_read": "For audit-vs-self-assessment divergence questions, anchor on \"divergence is itself a finding about monitoring effectiveness\". Distractors that omit, align, or fragment all miss the analytical value of the divergence.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting), Standard 1208 (Audit Documentation), and the COSO Internal Control - Integrated Framework establish that audit-vs-self-assessment divergence is an audit-quality opportunity. The auditor's independent findings prevail as the audit conclusion. Beyond that, the divergence itself — management's self-assessment failing to surface control failures the auditor independently identified — is a separate observation about management's monitoring effectiveness. The right report cites the audit findings AND discusses the divergence as a finding about monitoring (management's self-assessment system did not catch what the auditor caught, suggesting either monitoring-design weakness, monitoring-execution weakness, or possibly management bias). Option A omits the divergence entirely, missing the secondary finding. Option C aligns auditor findings to management's self-assessment, which surrenders the auditor's professional judgment. Option D fragments into separate reports, producing inconsistent conclusions across documents.",
+      "wrong_explanations": {
+        "A": "Omitting the divergence misses a finding about management's monitoring effectiveness. The fact that management's self-assessment didn't surface what the auditor surfaced is itself diagnostic.",
+        "C": "Aligning to management's self-assessment when the auditor's independent procedures produced different findings surrenders professional judgment and misrepresents the audit's actual conclusions.",
+        "D": "Two separate reports produce inconsistent conclusions across documents and confuse stakeholders. The audit report is one artifact; the divergence is reported within it."
+      },
+      "tips": [
+        "Trap is A — \"omit divergence to keep relationship clean\" loses a finding about monitoring effectiveness.",
+        "Divergence handling: auditor findings prevail + divergence itself as monitoring-effectiveness finding. Two outputs in one report.",
+        "Exam-day shortcut: audit-vs-self-assessment divergence questions are answered by the option that surfaces the divergence as a separate monitoring-effectiveness finding."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Communication of Results; COSO Internal Control - Integrated Framework (2013) Component 5",
+      "related_concepts": [
+        "Audit-vs-self-assessment divergence",
+        "Management monitoring effectiveness",
+        "Independent findings",
+        "Audit-conclusion integrity",
+        "Negative-finding integration"
+      ],
+      "_provenance": "Authored from concept: 'audit-vs-self-assessment divergence as a finding about monitoring effectiveness, distinct from omit / align / fragment'. Public source: ISACA Standard 1401 + COSO 2013 Component 5. All scenario specifics (state professional-licensing agency, audit findings vs management quarterly self-assessment) invented for this question. Distinct from d1_098/118/151 management-monitoring questions."
+    },
+    {
+      "id": "d1_164",
+      "domain": 1,
+      "subtopic": "Audit Documentation — Litigation-Hold Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a food-and-beverage distributor receives notice from general counsel of a litigation hold: the company is being sued by a former customer over alleged contract-term violations, and all documents potentially related to the customer relationship — including any audit work papers — must be preserved. The audit director must respond. Three related facts: (1) the audit team has work papers from a 3-year-ago audit that referenced the customer relationship in a contract-monitoring procedure; (2) the audit-records retention schedule would normally call for those work papers to be destroyed in 6 months under the standard 5-year retention; (3) the audit team has its own ongoing audit that includes a different aspect of the same customer's account.",
+      "question": "Which response BEST addresses the litigation-hold under audit-documentation discipline?",
+      "options": {
+        "A": "Destroy the 3-year-old work papers per the standard retention schedule, since the litigation hold doesn't apply retroactively",
+        "B": "Suspend the standard retention schedule for any audit documentation potentially related to the customer relationship — including the 3-year-old work papers and any current-engagement work papers touching the customer's account; coordinate with general counsel to confirm scope of the hold; preserve electronic and paper documents under access controls; document the hold's application; and continue the current engagement with awareness that its work papers will also fall under the hold once they reference the customer",
+        "C": "Refuse the litigation hold on the grounds that audit documentation is privileged and not subject to legal-hold requirements",
+        "D": "Transfer all potentially related documents to general counsel's office and disengage the audit function from the matter entirely"
+      },
+      "correct": "B",
+      "key_concept": "Litigation holds suspend the standard retention schedule for documents potentially related to the litigation. The audit function preserves the documents under coordination with counsel, applies the hold to current as well as historical materials, and documents the hold's application. Standard retention, refusing the hold, and full transfer to counsel all violate the discipline.",
+      "pre_read": "For litigation-hold response questions, anchor on \"suspend retention + coordinate with counsel + apply to current and historical + document the hold\". Distractors that follow standard retention, refuse the hold, or fully delegate all break the discipline.",
+      "correct_explanation": "ISACA IT Audit Standard 1208 (Audit Documentation), ITAF Performance Standards on Documentation, and legal e-discovery requirements (Federal Rules of Civil Procedure Rule 37) establish that litigation holds override standard retention schedules. When notice of litigation hold is received, the audit function: (1) suspends the standard retention schedule for any audit documentation potentially related to the matter; (2) coordinates with general counsel on the precise scope of the hold (which engagements, which time periods, which document types); (3) preserves electronic and paper documents under access controls (preventing unauthorized modification or deletion); (4) applies the hold prospectively as well as retrospectively (current-engagement work papers also become subject to the hold once they reference the customer); (5) documents the hold's application explicitly. Option A follows the standard retention schedule, which would result in spoliation of evidence — a serious legal sanction risk. Option C refuses the hold based on a misunderstanding of audit-documentation status (audit documentation is generally NOT privileged absent specific attorney-work-product circumstances; even when privilege might apply, the privilege determination is made by counsel, not the audit director). Option D over-delegates by disengaging the audit function entirely; the audit director must continue managing audit operations while honoring the hold.",
+      "wrong_explanations": {
+        "A": "Following the standard retention schedule when a litigation hold is in place creates a spoliation-of-evidence risk under FRCP Rule 37 and similar rules. The hold must override the retention schedule.",
+        "C": "Audit documentation is generally not privileged absent specific attorney-work-product circumstances. Refusing a litigation hold misunderstands both legal-hold obligations and the privilege framework. Privilege determinations are counsel's responsibility, not the audit director's.",
+        "D": "Transferring documents to general counsel and disengaging entirely abdicates the audit function's continuing responsibility. The audit director must continue managing audit operations while complying with the hold."
+      },
+      "tips": [
+        "Trap is C — \"audit privilege\" misunderstands legal-hold obligations. Audit work is generally not privileged.",
+        "Litigation hold response: suspend retention + coordinate with counsel + apply prospectively and retrospectively + document the hold.",
+        "Exam-day shortcut: litigation-hold questions are answered by the option that suspends standard retention and coordinates with counsel."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1208 (Audit Documentation); ITAF Performance Standards on Documentation; Federal Rules of Civil Procedure Rule 37 (Failure to Make Disclosures or to Cooperate in Discovery — Sanctions, including spoliation)",
+      "related_concepts": [
+        "Litigation hold",
+        "Document retention",
+        "Spoliation of evidence",
+        "Legal coordination",
+        "Audit documentation under hold"
+      ],
+      "_provenance": "Authored from concept: 'litigation hold response - suspend retention + coordinate with counsel + apply prospectively and retrospectively + document, distinct from standard retention / refuse / full delegation'. Public source: ISACA Standard 1208 + FRCP Rule 37. All scenario specifics (food-and-beverage distributor, former-customer litigation, 3-year-old work papers, ongoing audit) invented for this question. Distinct from d1_043/101/122 prior documentation questions."
+    },
+    {
+      "id": "d1_165",
+      "domain": 1,
+      "subtopic": "Audit Phases — Stop-Work Decision Mid-Engagement",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a regional logistics carrier is mid-fieldwork on an audit of the dispatch-management system when three serious facts emerge: (1) the audit team's primary point of contact in operations has been dismissed for cause unrelated to the audit; (2) the auditor's evidence-gathering reveals that operations management may have provided inaccurate information during planning, materially affecting the audit's risk assessment; (3) the audit committee chair has just informed the audit director that the audit committee has scheduled an emergency meeting next week to discuss \"governance concerns\" at the company. The audit director must decide whether to stop work, continue, or pause.",
+      "question": "Which response BEST handles the stop-work decision?",
+      "options": {
+        "A": "Continue the audit at the original scope and pace; mid-engagement disruptions are normal and should not affect the audit's planned execution",
+        "B": "Stop work on the active fieldwork, document the rationale (loss of primary contact, evidence of inaccurate planning information, audit-committee emergency meeting), report the situation to the audit committee with options (resume after stabilization, expand scope to include the governance concerns, or terminate the engagement and re-plan), and let the audit committee make the informed decision; preserve all evidence under chain-of-custody during the pause",
+        "C": "Continue at reduced pace and quietly investigate the operations-information-accuracy issue without notifying the audit committee, since the audit committee's concerns are unrelated",
+        "D": "Terminate the engagement entirely without further procedures and refer all concerns to general counsel"
+      },
+      "correct": "B",
+      "key_concept": "Mid-engagement stop-work decisions are appropriate when material new information emerges (loss of contact, evidence of misinformation, governance concerns). The right response is to stop work, document, present options to the audit committee, and let them decide informed. Continuing as-if-nothing-happened, quietly investigating, or terminating without options all violate the discipline.",
+      "pre_read": "For mid-engagement stop-work questions, watch for distractors that continue normally, quietly investigate, or terminate without options. The right answer always involves stop + document + report-with-options + audit-committee-decision.",
+      "correct_explanation": "ISACA IT Audit Standard 1201 (Engagement Planning), Standard 1203 (Performance and Supervision), ITAF Performance Standards on Engagement Conduct, and Standard 1207 (Irregularities and Illegal Acts) establish that material new information mid-engagement triggers a stop-work-and-evaluate response. The three facts in the scenario together signal: (a) the audit's planning assumptions may be invalid (inaccurate planning information), (b) evidence-gathering integrity may be compromised (loss of primary contact), and (c) broader governance concerns may be at play (emergency audit-committee meeting). The right response: (1) stop active fieldwork; (2) document the rationale and the new information; (3) report to the audit committee with explicit options (resume after stabilization, expand scope to include governance concerns, terminate and re-plan); (4) let the audit committee make the informed decision; (5) preserve all evidence under chain-of-custody during the pause. Option A continues at original scope despite material new information, which produces an audit conclusion that may rest on invalidated assumptions. Option C quietly investigates without audit-committee notification, which violates the audit-committee reporting line and obscures the governance concerns. Option D terminates without options, abandoning the engagement when stabilization-and-resume might be appropriate.",
+      "wrong_explanations": {
+        "A": "Continuing at original scope assumes the new information doesn't affect the audit. But loss of primary contact + inaccurate planning info + audit-committee emergency meeting together signal that the planning assumptions may be invalid; an audit on invalid assumptions produces a flawed conclusion.",
+        "C": "Quietly investigating without audit-committee notification violates the audit-committee reporting line. The audit committee's emergency meeting suggests they should know about the audit's situation; concealing it is a governance violation.",
+        "D": "Terminating without options denies the audit committee the chance to choose stabilization-and-resume, which might be the right path. Termination is one option among several; presenting the options is the discipline."
+      },
+      "tips": [
+        "Trap is A — \"continue at original scope\" ignores material new information that may invalidate planning assumptions.",
+        "Stop-work response: stop + document + report-with-options + audit-committee-decides + preserve-evidence. Five steps.",
+        "Exam-day shortcut: mid-engagement stop-work questions are answered by the option that stops work, documents, presents options, and lets the audit committee decide."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); Standard 1203 (Performance and Supervision); Standard 1207 (Irregularities and Illegal Acts); ITAF Performance Standards on Engagement Conduct",
+      "related_concepts": [
+        "Stop-work decision",
+        "Mid-engagement disruption",
+        "Audit-committee reporting",
+        "Engagement options",
+        "Evidence preservation during pause"
+      ],
+      "_provenance": "Authored from concept: 'mid-engagement stop-work decision when material new information emerges - stop + document + report with options + audit committee decides + preserve evidence'. Public source: ISACA Standards 1201/1203/1207. All scenario specifics (regional logistics carrier, dispatch-management audit, three concurrent disruption facts) invented for this question. Distinct from d1_106 (mid-cycle update for plan), d1_127 (resource constraint plan adjustment), d1_165 stop-work specifics."
+    },
+    {
+      "id": "d1_166",
+      "domain": 1,
+      "subtopic": "Audit Resource Management — Engagement-Level Budget Reduction",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a small consulting firm is mid-engagement on an audit of a client's HR-onboarding system when the firm's CFO informs the director that the engagement budget must be reduced by 30% effective immediately, due to firm-wide cost pressure. The audit team has completed approximately 50% of planned procedures and identified some preliminary findings but has not yet performed substantive testing. The director must adapt.",
+      "question": "Which response BEST handles the engagement-level budget reduction?",
+      "options": {
+        "A": "Cut substantive testing entirely, keep only compliance testing of high-risk controls, and issue a report that omits substantive conclusions",
+        "B": "Re-prioritize remaining procedures by risk: keep substantive testing on the highest-risk areas (where the audit's value is most concentrated); reduce or skip lower-risk substantive procedures; document the budget-driven scope reduction explicitly in the audit report including any limitations on the audit conclusion; communicate the budget impact to the client; and brief the audit director's leadership on the implications for audit-quality consistency",
+        "C": "Continue at the original scope and pace, with the director personally absorbing the over-budget effort to maintain quality",
+        "D": "Issue the audit report immediately based on the 50% completed procedures, treating the unfinished work as outside the audit's responsibility"
+      },
+      "correct": "B",
+      "key_concept": "Engagement-level budget reductions require risk-based re-prioritization that preserves the audit's quality on high-risk areas, with explicit documentation of scope reduction and limitation disclosure. Cutting substantive entirely, absorbing personally, and stopping at 50% all violate the discipline.",
+      "pre_read": "For engagement-budget reduction questions, watch for distractors that cut categorically, hide the cut, or stop work without disclosure. The right answer always involves risk-based re-prioritization + explicit limitation disclosure.",
+      "correct_explanation": "ISACA IT Audit Standard 1201 (Engagement Planning), Standard 1401 (Reporting), and ITAF Performance Standards establish that engagement-level resource reductions require disciplined re-prioritization without compromising the audit conclusion's integrity. The right response: (1) re-prioritize remaining procedures by risk — keep substantive testing on high-risk areas where audit value concentrates; (2) reduce or skip lower-risk procedures; (3) document the budget-driven scope reduction explicitly in the audit report, including any limitation on the audit conclusion; (4) communicate budget impact to the client (so the client understands what the engagement will and won't deliver); (5) brief the audit director's leadership on implications for audit-quality consistency across other engagements. Option A cuts substantive testing entirely and omits substantive conclusions; this produces a report that doesn't fulfill the engagement's stated objectives. Option C absorbs the over-budget effort personally; this hides the budget pressure from the client and from leadership, and creates personal-burnout risk. Option D issues the report at 50% completion, which under-fulfills the engagement and likely violates the engagement letter's commitments.",
+      "wrong_explanations": {
+        "A": "Cutting substantive testing entirely produces a report that lacks substantive conclusions. The risk-based re-prioritization keeps substantive testing on high-risk areas while reducing lower-risk procedures — preserving the audit's value where it concentrates.",
+        "C": "Personally absorbing over-budget effort hides the budget pressure from stakeholders (client, leadership) and creates burnout risk. Resource reductions need to be visible to enable informed decisions about audit-quality investments.",
+        "D": "Issuing at 50% completion under-fulfills the engagement letter and produces a report that the audit conclusion doesn't actually support. The discipline is to re-prioritize remaining work to produce a defensible conclusion within the new budget, not to stop early."
+      },
+      "tips": [
+        "Trap is C — \"absorb personally to maintain quality\" hides budget pressure and creates burnout. Budget reductions need visibility.",
+        "Engagement-budget reduction: risk-based re-prioritization + explicit limitation disclosure + client + leadership communication.",
+        "Exam-day shortcut: budget-reduction questions are answered by the option that re-prioritizes by risk and discloses limitations explicitly."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1201 (Engagement Planning); Standard 1401 (Reporting); ITAF Performance Standards on Engagement Resource Management",
+      "related_concepts": [
+        "Engagement-level budget reduction",
+        "Risk-based re-prioritization",
+        "Limitation disclosure",
+        "Audit-quality preservation",
+        "Resource visibility"
+      ],
+      "_provenance": "Authored from concept: 'engagement-level budget reduction - risk-based re-prioritization plus explicit limitation disclosure plus client and leadership communication, distinct from cut-substantive-entirely / absorb-personally / stop-at-50'. Public source: ISACA Standards 1201 + 1401 + ITAF. All scenario specifics (small consulting firm, HR-onboarding audit, 30% mid-engagement budget cut) invented for this question. Distinct from d1_039 (function-level resource management) and d1_127 (function-level mid-cycle resource constraint)."
+    },
+    {
+      "id": "d1_167",
+      "domain": 1,
+      "subtopic": "Risk-Based Planning — Cyber-Incident Triggered Scope Expansion",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a healthcare insurer is mid-cycle when the company experiences a confirmed cyber incident: ransomware encrypted approximately 15% of internal file shares, the incident-response team contained the spread within 4 hours, and operations resumed within 24 hours. The audit committee chair asks the audit director whether the audit plan should be expanded to include a post-incident audit of the cyber-incident response and the underlying control environment. Three related facts: (1) the company's annual audit plan does not currently include a cyber-incident-response audit; (2) the audit team has limited cyber-incident-response expertise; (3) the regulator (state insurance commissioner) has been notified per legal requirements but has not yet taken any action.",
+      "question": "Which response BEST handles the cyber-incident-triggered scope-expansion decision?",
+      "options": {
+        "A": "Decline scope expansion since the audit plan was approved at the start of the year and changing it mid-cycle is improper",
+        "B": "Expand the audit plan to include a post-incident audit, but design the engagement carefully: scope to (a) the incident-response actions taken (timeline, communication, remediation), (b) the underlying control failure that allowed the ransomware to encrypt the file shares (preventive control evaluation), and (c) the regulator-notification compliance; address the team's limited cyber-IR expertise through co-sourcing with a specialized firm or engaging an external expert under Standard 1206; brief the audit committee on the expansion, the resource implications, and the timeline; and document the trigger explicitly in the audit plan modification",
+        "C": "Expand the audit plan but conduct the engagement entirely with the existing internal team despite their limited cyber-IR expertise, to keep cost low",
+        "D": "Refer the matter entirely to the regulator and conduct no internal audit work"
+      },
+      "correct": "B",
+      "key_concept": "Cyber-incident-triggered scope expansion is appropriate when the incident is material and reveals control concerns. The expansion requires careful engagement design (scope, expertise, communication) and audit-committee briefing. Decline categorically, proceed without expertise, or full external referral all miss the disciplined response.",
+      "pre_read": "For cyber-incident scope-expansion questions, the right shape is \"expand carefully + design engagement + address expertise gap + brief committee + document trigger\". Distractors that decline categorically, proceed without expertise, or refer externally all break the discipline.",
+      "correct_explanation": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning), Standard 1206 (Using the Work of Other Experts), and ITAF Performance Standards establish that material cyber incidents trigger scope-expansion evaluation. The healthcare-insurer scenario presents a material event (15% of file shares encrypted, regulator notified). The right response: (1) expand the audit plan to include a post-incident audit; (2) carefully design the engagement scope — incident-response actions (timeline, communication, remediation), underlying control failure that allowed the encryption, regulator-notification compliance; (3) address the cyber-IR expertise gap through co-sourcing or external expert engagement under Standard 1206 (the audit team's competency is required for the engagement); (4) brief the audit committee on the expansion, resource implications, and timeline; (5) document the trigger explicitly in the audit plan modification. Option A declines categorically, missing material new information that warrants risk-plan adjustment. Option C proceeds without addressing the expertise gap, producing a shallow conclusion. Option D refers entirely to the regulator, abandoning the audit function's role.",
+      "wrong_explanations": {
+        "A": "Audit plans are revised when material new information emerges. A confirmed cyber incident that affected 15% of file shares is exactly the kind of material event that triggers plan revision; categorical refusal violates risk-based audit planning.",
+        "C": "Proceeding without addressing the cyber-IR expertise gap produces a shallow conclusion. Standard 1206 (Using the Work of Other Experts) provides the path: engage external expertise under proper conditions to fill the gap, then incorporate their work into the audit conclusion.",
+        "D": "Full referral to the regulator abandons the audit function's role. The regulator has its own oversight responsibility; the audit committee has a separate need for independent assurance from the audit function."
+      },
+      "tips": [
+        "Trap is A — \"plan was approved, can't change\" misreads the standards. Plans revise when material new information emerges.",
+        "Cyber-incident scope expansion: design engagement + address expertise + brief committee + document trigger.",
+        "Exam-day shortcut: post-incident scope-expansion questions are answered by the option that expands carefully with co-sourcing for expertise gap."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1202 (Risk Assessment in Planning); ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ITAF Performance Standards",
+      "related_concepts": [
+        "Cyber-incident audit",
+        "Scope expansion mid-cycle",
+        "Co-sourcing expertise",
+        "Audit plan modification",
+        "Post-incident audit design"
+      ],
+      "_provenance": "Authored from concept: 'cyber-incident triggered scope expansion - careful engagement design + co-sourcing for expertise + audit-committee brief + documented trigger'. Public source: ISACA Standards 1202 + 1206 + ITAF. All scenario specifics (healthcare insurer, ransomware on 15% of file shares, regulator notification) invented for this question. Distinct from d1_106 (mid-cycle update for plan general), d1_127 (resource-constraint adjustment), d1_137 (engagement-specific competency-gap diagnosis)."
+    },
+    {
+      "id": "d1_168",
+      "domain": 1,
+      "subtopic": "Audit Reporting — Special-Purpose Report (Regulatory Filing Support)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a pre-merger SaaS company is preparing a special-purpose audit report to support the company's regulatory filing for the merger. The regulator has specific requirements: a representation on the company's IT-control environment effectiveness as of a specific date, with attestation that the audit covers the full IT-control environment relevant to the merger transaction. Three constraints: (1) the standard annual audit report covers the company's IT controls but not in the format the regulator requires; (2) the regulator's required attestation language differs from the company's standard audit-report language; (3) the merger filing deadline is 6 weeks away.",
+      "question": "Which approach BEST handles the special-purpose-report request?",
+      "options": {
+        "A": "Submit the standard annual audit report as-is, since it covers the IT-control environment, even though the format and attestation language don't match the regulator's requirements",
+        "B": "Design a special-purpose audit report tailored to the regulator's specific requirements: scope and procedures aligned to the regulator's specific control areas; attestation language matching the regulator's required wording; effective date set to the date the regulator requires; perform any additional procedures needed beyond what the standard annual audit covered; document the special-purpose nature of the engagement in both the engagement letter and the audit report; and have the audit director and engagement partner sign the report under the special-purpose framework",
+        "C": "Decline the special-purpose request and tell the company to use the standard annual audit report or hire a different auditor",
+        "D": "Issue a special-purpose report based on the standard annual audit work without performing any additional procedures, simply re-formatting the existing report to match the regulator's required format"
+      },
+      "correct": "B",
+      "key_concept": "Special-purpose audit reports require designing the engagement specifically for the special purpose: scope tailored to the regulator's requirements, attestation language matching the required wording, additional procedures performed beyond standard work as needed, special-purpose nature documented, and proper sign-off. Submit-standard-as-is, decline, or re-format-without-procedures all miss the discipline.",
+      "pre_read": "For special-purpose-report questions, the right shape is \"design specifically + match required language + perform additional procedures + document special-purpose nature\". Distractors that submit standard, decline, or re-format-only all break the special-purpose framework.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting), ITAF Performance Standards on Special-Purpose Reports, and AICPA SSAE 18 / AT-C Section 205 (Examination Engagements, with foundational AT-C 105 concepts) establish that special-purpose audit reports require engagements designed specifically for the special purpose. The right discipline: (1) scope and procedures aligned to the regulator's specific control areas (which may be a subset, superset, or differently-organized than standard scope); (2) attestation language matching the regulator's required wording (the language has legal significance); (3) effective date set to the date the regulator requires; (4) additional procedures performed beyond standard annual audit work as needed; (5) special-purpose nature documented in the engagement letter and audit report; (6) proper sign-off under the special-purpose framework. Option A submits the standard report despite format and language mismatches, which fails the regulator's requirements. Option C declines the request, abandoning the company's compliance need. Option D re-formats without additional procedures, claiming the special-purpose attestation without actually doing the work required to support it.",
+      "wrong_explanations": {
+        "A": "Submitting the standard annual audit report despite format and language mismatches fails the regulator's requirements. The merger filing requires the specific format and language; submitting non-conforming report risks regulatory rejection.",
+        "C": "Declining the special-purpose request abandons the company's regulatory filing need. The audit function's role includes supporting regulatory filings within the discipline of special-purpose engagements.",
+        "D": "Re-formatting the standard report without performing any additional procedures claims an attestation the auditor cannot support — the standard procedures didn't address the regulator's specific requirements. This is essentially fraudulent attestation."
+      },
+      "tips": [
+        "Trap is A — \"standard report covers IT controls, so submit as-is\" misses format and language requirements that the regulator demands.",
+        "Special-purpose report: scope tailored + language matching + effective date + additional procedures + special-purpose documented + proper sign-off.",
+        "Exam-day shortcut: special-purpose-report questions are answered by the option that designs the engagement specifically for the regulator's requirements with additional procedures as needed."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ITAF Performance Standards on Special-Purpose Reports; AICPA SSAE 18 / AT-C Section 205 (Examination Engagements) and the foundational AT-C Section 105",
+      "related_concepts": [
+        "Special-purpose audit report",
+        "Regulatory filing support",
+        "Attestation language",
+        "Additional procedures",
+        "Engagement letter"
+      ],
+      "_provenance": "Authored from concept: 'special-purpose audit report - engagement designed specifically for regulator requirements, distinct from submit-standard / decline / re-format-only'. Public source: ISACA Standard 1401 + ITAF + AICPA SSAE 18. All scenario specifics (pre-merger SaaS company, regulatory filing, 6-week deadline) invented for this question. Distinct from d1_036 (opinion-types overview), d1_109 (modified opinion decision)."
+    },
+    {
+      "id": "d1_169",
+      "domain": 1,
+      "subtopic": "Audit QA — Repeat-Finding Pattern Across Years",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS audit director at a credit-card processor is reviewing the function's recent QA monitoring outputs and identifies a pattern: a specific finding type (\"weak access-review documentation\") has appeared in the audit reports of three different annual cycles for the same business unit. Each year, management has accepted the finding and committed to remediation, but the same finding has re-appeared. The director must address the pattern.",
+      "question": "Which response BEST addresses the repeat-finding pattern?",
+      "options": {
+        "A": "Continue issuing the same finding each year, since the audit's role is to identify findings regardless of whether they recur",
+        "B": "Investigate the repeat-finding pattern as a separate analytical observation: why has remediation failed for three consecutive years? Possible causes include underlying control-design weakness (the remediation approach doesn't address the root cause), management commitment-without-execution (management commits but doesn't follow through), audit-finding wording that's too narrow (the wording doesn't capture the systemic issue), or operational-change impact (each year's remediation is undone by the next year's operational changes); design targeted procedures to identify the root cause; report the pattern explicitly in the current audit and escalate to the audit committee for remediation accountability; and consider whether the audit's repeat-finding handling itself needs adjustment",
+        "C": "Stop issuing the finding since it has been issued three times and management has acknowledged it",
+        "D": "Re-classify the finding as low-severity since it has not produced material consequences in three years"
+      },
+      "correct": "B",
+      "key_concept": "Repeat-finding patterns are analytical observations about remediation failure. The right response identifies root causes (control design / management commitment / finding wording / operational impact), targets procedures, escalates to the audit committee, and considers adjusting the audit's repeat-finding handling. Continuing as-is, stopping, or re-classifying all miss the analytical opportunity.",
+      "pre_read": "For repeat-finding pattern questions, the right shape is \"investigate root cause + design procedures + escalate + reconsider audit handling\". Distractors that ignore the repetition, stop issuing, or downgrade severity all miss the analytical value.",
+      "correct_explanation": "ISACA IT Audit Standard 1402 (Follow-up Activities), ITAF Performance Standards on Quality Assurance, and IIA Standards on Monitoring Progress establish that repeat findings across years are themselves observations worth analyzing. A finding that recurs three times despite management commitment indicates remediation failure; the audit's value comes from understanding why and surfacing it. The right response: (1) investigate the root cause — possibilities include underlying control-design weakness (remediation doesn't address the root), management commitment-without-execution, audit-finding wording too narrow, or operational-change impact; (2) design targeted procedures to identify the actual cause; (3) report the pattern explicitly in the current audit (not just as another instance of the same finding) and escalate to the audit committee for remediation accountability; (4) consider whether the audit's repeat-finding handling itself needs adjustment (e.g., elevating to a different severity, requiring board-level remediation commitment, etc.). Option A continues mechanically, missing the pattern's diagnostic value. Option C stops issuing the finding, which means the unresolved control issue continues unaddressed. Option D re-classifies to low severity based on absence of material consequences, which ignores that the consequences may have just not materialized yet.",
+      "wrong_explanations": {
+        "A": "Mechanically continuing the same finding each year misses the diagnostic value of the repetition. The pattern is itself an observation about why remediation isn't working.",
+        "C": "Stopping the finding because management acknowledged it doesn't address whether the underlying issue is actually fixed. Three years of recurrence without remediation suggests it isn't.",
+        "D": "Re-classifying to low severity based on absence-of-consequences confuses 'no consequences yet' with 'low severity'. The control weakness exists; consequences may emerge in year four or beyond."
+      },
+      "tips": [
+        "Trap is C — \"management acknowledged, so stop issuing\" stops the observation but doesn't fix the underlying issue.",
+        "Repeat-finding response: investigate root cause + design procedures + escalate to audit committee + adjust audit handling.",
+        "Exam-day shortcut: repeat-finding pattern questions are answered by the option that investigates remediation failure as a separate observation."
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); ITAF Performance Standards on Quality Assurance; IIA International Standard 2500 (Monitoring Progress)",
+      "related_concepts": [
+        "Repeat-finding pattern",
+        "Remediation failure",
+        "Root-cause analysis",
+        "Audit-finding wording",
+        "Audit-committee escalation"
+      ],
+      "_provenance": "Authored from concept: 'repeat-finding pattern as analytical observation about remediation failure - investigate root cause + escalate + adjust audit handling, distinct from continue-mechanically / stop / re-classify'. Public source: ISACA Standard 1402 + IIA Standard 2500. All scenario specifics (credit-card processor, weak access-review documentation pattern across three years) invented for this question. Distinct from d1_015/078 (follow-up activities)."
+    },
+    {
+      "id": "d1_170",
+      "domain": 1,
+      "subtopic": "Internal Audit Function — Conflict Between IIA Standards and ISACA ITAF",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "scenario_context": "An IS auditor at a non-bank financial-services firm is part of a function that is committed to both IIA International Professional Practices Framework (IPPF) and ISACA IT Audit and Assurance Standards / ITAF. On a specific engagement, the auditor identifies a situation where the two standards apparently conflict on a procedural detail (the IIA standard recommends one cadence for engagement-supervision review documentation; the ISACA ITAF standard recommends a slightly different cadence). The audit director must navigate the conflict.",
+      "question": "Which response BEST handles the apparent conflict between IIA Standards and ISACA ITAF?",
+      "options": {
+        "A": "Pick whichever standard is more lenient, since following either standard satisfies the function's commitment",
+        "B": "Apply the more rigorous of the two standards (the conservative approach), since following the more demanding requirement satisfies both standards simultaneously, AND document the conflict observation for future cross-standard alignment review by both ISACA and IIA professional bodies if the conflict appears systemic; report to the audit committee the function's approach and any patterns of conflict",
+        "C": "Stop following both standards and create a custom internal procedure, since following two potentially-conflicting standards is operationally impractical",
+        "D": "Follow IIA standards exclusively for engagement-supervision matters and ignore ITAF on this point, since IIA specializes in internal audit"
+      },
+      "correct": "B",
+      "key_concept": "When two professional standards bodies apparently conflict, the conservative approach is to apply the more rigorous of the two (which satisfies both), document the conflict, and report. Picking the lenient one, abandoning both, or favoring one body categorically all violate the function's dual commitment.",
+      "pre_read": "For multi-standard conflict questions, the right shape is \"apply the more rigorous + document the conflict + report to committee\". Distractors that pick lenient, abandon both, or favor one body categorically all break the dual-commitment discipline.",
+      "correct_explanation": "ISACA IT Audit Standards on Professional Practice (the function's commitment to professional standards), IIA International Professional Practices Framework (IPPF), and ITAF General Standards on Compliance with Multiple Frameworks establish that when two standards bodies apparently conflict on a procedural detail, the conservative approach satisfies both: applying the more rigorous of the two requirements automatically satisfies the less demanding one. The audit director: (1) applies the more rigorous standard for the specific procedural detail; (2) documents the conflict observation for future review (the two bodies typically work to align over time, and pattern observations from member firms inform that alignment); (3) reports to the audit committee the function's approach (so the audit committee understands how the function navigates dual-standard commitments); (4) considers whether the conflict appears systemic and warrants formal feedback to the standards bodies. Option A picks the more lenient standard, which violates the more rigorous body's requirement. Option C abandons both standards and creates a custom procedure, which abandons the function's professional-standards commitment. Option D categorically favors one body, which violates the dual-commitment.",
+      "wrong_explanations": {
+        "A": "Picking the more lenient standard violates the more rigorous body's requirement. Following either standard does NOT satisfy the function's commitment to BOTH standards; it only satisfies one.",
+        "C": "Abandoning both standards and creating a custom procedure abandons the function's professional-standards commitment entirely. Custom procedures don't carry the recognition or peer-review backing that professional standards do.",
+        "D": "Categorically favoring IIA over ISACA (or vice versa) violates the dual commitment the function has made. The function committed to both; conflict resolution applies the more rigorous, not the preferred body."
+      },
+      "tips": [
+        "Trap is D — \"IIA specializes in internal audit, follow IIA\" ignores the dual commitment the function made.",
+        "Multi-standard conflict: apply the more rigorous + document + report. Conservative approach satisfies both.",
+        "Exam-day shortcut: multi-standard conflict questions are answered by the option that applies the more rigorous standard with documentation."
+      ],
+      "framework_ref": "IIA International Professional Practices Framework (IPPF); ISACA IT Audit and Assurance Standards / ITAF; ISACA Code of Professional Ethics; ITAF General Standards on Compliance with Multiple Frameworks",
+      "related_concepts": [
+        "Multi-standard commitment",
+        "IIA IPPF",
+        "ISACA ITAF",
+        "Conservative approach",
+        "Standards-body conflict"
+      ],
+      "_provenance": "Authored from concept: 'conflict between IIA Standards and ISACA ITAF - apply the more rigorous (conservative approach satisfies both), document, report, distinct from pick-lenient / abandon-both / favor-one-categorically'. Public source: IIA IPPF + ISACA ITAF. All scenario specifics (non-bank financial-services firm, dual-standard commitment, procedural-cadence conflict) invented for this question. Distinct from d1_021/045/051/060/091/121 ITAF/Standards questions and d1_087/105/125 independence questions."
     }
   ]
 }

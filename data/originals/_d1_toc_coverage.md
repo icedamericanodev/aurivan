@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d1.json`.
 
-**Last updated:** after batch 11 (d1_131..d1_150). Total D1 questions authored: 150 of 180 (83%). **Foundational tier at 18/18 — target met.**
+**Last updated:** after batch 12 (d1_151..d1_170). Total D1 questions authored: 170 of 180 (94%). **Foundational tier at 18/18 — target met. Final batch 13 (10 questions) closes to 180.**
 
 ## Part A — Planning
 
@@ -26,6 +26,9 @@
 | 1.1.5 | IS Internal Audit Function — Independence (Self-Interest Threat Severity Differentiation Mid-Engagement) | d1_105 (analysis) |
 | 1.1.5 | IS Internal Audit Function — Independence (Long-Tenure Familiarity Threat) | d1_125 (analysis) |
 | 1.1.5 | IS Internal Audit Function — External Auditor Coordination (AS 2605 reliance) | d1_149 (analysis) |
+| 1.1.5 | IS Internal Audit Function — Audit Charter Modification Scenario | d1_159 (analysis) |
+| 1.1.5 | IS Internal Audit Function — Engagement-Level Budget Reduction | d1_166 (analysis) |
+| 1.1.5 | IS Internal Audit Function — IIA Standards vs ISACA ITAF Conflict | d1_170 (analysis) |
 | 1.1.5 | IS Internal Audit Function — Using the Services of Other Auditors and Experts (pre-reliance) | d1_032 |
 | 1.1.5 | IS Internal Audit Function — External Expert Inadequate Work (post-delivery) | d1_090 (analysis) |
 
@@ -40,7 +43,7 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 1.3.1 | Individual Audit Assignments | d1_056 (scoping application), d1_074 (foundational risk-based-planning definition), d1_100 (audit universe definition + maintenance), d1_127 (analysis — resource-constraint plan adjustment), d1_142 (analysis — multi-entity universe) |
+| 1.3.1 | Individual Audit Assignments | d1_056 (scoping application), d1_074 (foundational risk-based-planning definition), d1_100 (audit universe definition + maintenance), d1_127 (analysis — resource-constraint plan adjustment), d1_142 (analysis — multi-entity universe), d1_167 (analysis — cyber-incident scope expansion) |
 | 1.3.2 | Effect of Laws and Regulations on IS Audit Planning | d1_022 (parent), d1_138 (sector-overlap HIPAA + GLBA) |
 | 1.3.3 | Audit Risk and Materiality (scenario) | d1_007 |
 | 1.3.3 | Audit Risk Model Components (foundational definition) | d1_062 |
@@ -48,7 +51,7 @@
 | 1.3.3 | Audit Risk Model Applied — Setting Detection Risk (analysis) | d1_126 |
 | 1.3.4 | Risk Assessment | d1_037, d1_106 (mid-cycle update), d1_147 (method choice heat-map vs FAIR vs ISO 31000) |
 | 1.3.5 | IS Audit Risk Assessment Techniques | d1_027, d1_097 (quantitative vs qualitative trade-offs) |
-| 1.3.6 | Risk Analysis | d1_033 (Risk Treatment Options), d1_124 (Treatment Selection multi-control trade-offs) |
+| 1.3.6 | Risk Analysis | d1_033 (Risk Treatment Options), d1_124 (Treatment Selection multi-control trade-offs), d1_158 (Risk Treatment specific scenario applied) |
 
 Also: d1_003 covers the broader concept of risk-based audit planning at the function level, supporting 1.3 generally.
 
@@ -59,10 +62,10 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.4.1 | Internal Controls (scenario) | d1_023 |
 | 1.4.1 | Internal Controls — Definition (foundational, reasonable assurance) | d1_063 |
 | 1.4.2 | Control Objectives and Control Measures | d1_034 (parent), d1_058 (Business Process Applications), d1_067 (IS-Specific Controls), d1_081 (General Control Methods), d1_082 (IS Control Objectives sub-area), d1_104 (ITGC — Change Management), d1_123 (ITGC — Logical Access) |
-| 1.4.3 | Control Classifications | d1_008, d1_012 |
-| 1.4.4 | Control Relationship to Risk | d1_047 |
+| 1.4.3 | Control Classifications | d1_008, d1_012, d1_155 (Preventive / Detective / Corrective sub-types) |
+| 1.4.4 | Control Relationship to Risk | d1_047 (single-control mapping), d1_156 (multi-control defense in depth) |
 | 1.4.5 | Prescriptive Controls and Frameworks | d1_038 (DFARS+NIS2), d1_135 (NIST CSF + ISO 27001 cross-walk), d1_136 (SOX + COBIT cross-walk) |
-| 1.4.6 | Evaluation of the Control Environment | d1_028 (parent), d1_098 (independent vs management monitoring), d1_118 (management monitoring sub-area depth) |
+| 1.4.6 | Evaluation of the Control Environment | d1_028 (parent), d1_098 (independent vs management monitoring), d1_118 (management monitoring sub-area depth), d1_151 (COSO Component 5 separate vs ongoing evaluations) |
 
 ## Part B — Execution
 
@@ -75,6 +78,7 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.5.2 | Audit Phases — Fieldwork/Documentation | d1_041 |
 | 1.5.2 | Audit Phases — Reporting/Follow Up | d1_054 (phase discipline), d1_120 (reporting-phase communication tactics) |
 | 1.5.2 | Audit Phases — End-to-End Engagement Design Synthesis | d1_150 (analysis) |
+| 1.5.2 | Audit Phases — Stop-Work Decision Mid-Engagement | d1_165 (analysis) |
 | 1.5.3 | Audit Programs | d1_011 (scenario), d1_071 (foundational definition) |
 | 1.5.4 | Audit Work Papers | d1_014 (scenario), d1_072 (foundational definition) |
 | 1.5.5 | Fraud — Auditor's First Action | d1_010 |
@@ -107,6 +111,7 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.6.2 | Sampling — Precision Setting (Acceptable Risk + Tolerable Error) | d1_116 |
 | 1.6.2 | Sampling — Sample Re-Design when Initial Insufficient (analysis) | d1_128 |
 | 1.6.2 | Sampling — Selection Between Equally-Defensible Techniques (analysis) | d1_143 |
+| 1.6.2 | Sampling — Combined Attribute and Substantive in One Engagement (analysis) | d1_160 |
 
 ### 1.7 Audit Evidence Collection Techniques
 
@@ -125,6 +130,8 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 |---|---|---|
 | 1.8.1 | Computer-Assisted Audit Techniques | d1_026 (parent) |
 | 1.8.1 | CAATs as Continuous Online Audit Approach | d1_083 |
+| 1.8.1 | CAATs — Generalized Audit Software (GAS) sub-area | d1_152 |
+| 1.8.1 | CAATs — Integrated Test Facility (ITF) sub-area | d1_153 |
 | 1.8.2 | Continuous Auditing and Monitoring | d1_013 |
 | 1.8.2 | Continuous Auditing — Foundational Definition | d1_092 |
 | 1.8.2 | Continuous Auditing — Implementation Roadmap (migration from periodic) | d1_145 (analysis) |
@@ -132,6 +139,7 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.8.3 | Continuous Auditing Techniques | d1_046 |
 | 1.8.3 | Continuous Auditing — Architecture Trade-offs (analysis) | d1_110 |
 | 1.8.3 | Continuous Auditing — Decision to Suspend Production on Detected Anomaly (analysis) | d1_130 |
+| 1.8.3 | Continuous Auditing — Anomaly Investigation Depth (analysis) | d1_161 |
 | 1.8.4 | Artificial Intelligence in IS Audit (parent) | d1_018 |
 | 1.8.4 | AI/ML — Audit Risk and Considerations | d1_057 |
 | 1.8.4 | AI/ML — Training-Data Review Techniques | d1_066 |
@@ -140,6 +148,7 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.8.4 | AI/ML — Drift Detection (analysis) | d1_108 |
 | 1.8.4 | AI/ML — Adversarial Robustness / Prompt Injection (LLM-based) | d1_119 |
 | 1.8.4 | AI/ML — Full Lifecycle Audit (analysis) | d1_144 |
+| 1.8.4 | AI/ML — Vendor Model Audit (Third-Party AI) (analysis) | d1_162 |
 
 ### 1.9 Reporting and Communication Techniques
 
@@ -150,15 +159,19 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.9.1 | Communicating Audit Results — Exit Conference Purpose (broader) | d1_068 |
 | 1.9.1 | Communicating Audit Results — Tone Calibration for Sensitive Findings | d1_079 |
 | 1.9.1 | Communicating Audit Results — Auditor-Management Disagreement (analysis) | d1_129 |
+| 1.9.1 | Communicating Audit Results — Multi-Stakeholder Conflict (analysis) | d1_157 |
+| 1.9.1 | Communicating Audit Results — Negative-Finding Self-Assessment Integration (analysis) | d1_163 |
 | 1.9.2 | Audit Report Objectives | d1_042 |
 | 1.9.3 | Audit Report Structure and Contents | d1_035 |
 | 1.9.4 | Audit Documentation (Lifecycle / Retention) | d1_043 |
 | 1.9.4 | Audit Documentation — Originals vs Summary Retention | d1_101 |
 | 1.9.4 | Audit Documentation — Cross-References (Work Papers ↔ Findings ↔ Evidence) | d1_122 |
+| 1.9.4 | Audit Documentation — Litigation-Hold Response (analysis) | d1_164 |
 | 1.9.5 | Follow-Up Activities | d1_015 (scenario) |
 | 1.9.5 | Follow-Up Communication Cadence (risk-tiered) | d1_078 |
 | 1.9.6 | Types of IS Audit Reports / Opinion Types | d1_036 |
 | 1.9.6 | Modified Opinion Decision (analysis) | d1_109 |
+| 1.9.6 | Special-Purpose Report (Regulatory Filing) (analysis) | d1_168 |
 
 ### 1.10 Quality Assurance and Improvement of the Audit Process
 
@@ -173,9 +186,11 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 | 1.10.2 | Audit Quality Assurance — External Assessment Cadence | d1_065 |
 | 1.10.2 | Audit Quality Assurance — Internal Program Design | d1_076 |
 | 1.10.2 | Audit Quality Assurance — Peer Review (Engagement vs Program) | d1_077 |
+| 1.10.2 | Audit Quality Assurance — Repeat-Finding Pattern Across Years (analysis) | d1_169 |
 | 1.10.3 | Audit Team Training and Development | d1_044 (function-level), d1_137 (engagement-specific competency-gap diagnosis) |
 | 1.10.4 | Monitoring (ongoing QA — failure analysis) | d1_048 |
 | 1.10.4 | Monitoring — Design Depth (cadence/scope/coverage) | d1_099 |
+| 1.10.4 | Monitoring — Automated Work-Paper Review | d1_154 |
 
 ## Coverage summary
 
@@ -186,27 +201,34 @@ Also: d1_003 covers the broader concept of risk-based audit planning at the func
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after batch 11 | Gap |
+| Tier | Target (180) | Authored after batch 12 | Gap |
 |---|---|---|---|
 | Foundational | 18 (10%) | 18 | **0 — TARGET MET** |
-| Application | 90 (50%) | 80 | -10 |
-| Analysis | 72 (40%) | 52 | -20 |
-| **Total** | **180** | **150** | **-30** |
+| Application | 90 (50%) | 85 | -5 |
+| Analysis | 72 (40%) | 67 | -5 |
+| **Total** | **180** | **170** | **-10** |
 
-D1 is at **83%**. Foundational tier remains closed at 18/18. Remaining gap is 30 questions across application (-10) and analysis (-20). At ~20 questions per batch, D1 reaches 180 at batch 12 + a smaller batch 13 (or batch 12 = 170, batch 13 = 10 to close).
+D1 is at **94%**. Final batch 13 (10 questions: 5 application + 5 analysis) closes the remaining gap to reach 180.
 
-## High-priority depth targets for batches 12-13 (closing 30 questions: -10A, -20An)
+## Batch 13 plan (final batch, 10 questions to close to 180)
 
-After batch 11, most exam-heavy subsections have substantial depth. Foundational tier closed; remaining gap is 30 questions. Future batches shift to **0 foundational + ~5 application + ~10-15 analysis** to close the analysis-heavy gap.
+After batch 12, the gap is small (-5 application, -5 analysis). Batch 13 should close the remaining 10 questions with a balanced mix. Candidates:
 
-Remaining priorities:
+**Application (5):**
+- Audit Reporting — Distribution and Restricted-Use considerations (1.9.1)
+- Risk-Based Audit Planning — Industry-overlay considerations (1.3.1)
+- Audit Evidence — Computer-output evidence (electronic reports) (1.7)
+- Continuous Auditing — Cost-benefit threshold for CA deployment (1.8.2)
+- Audit Programs — Tools and Techniques template adaptation (1.5.3)
 
-1. **Analysis-tier synthesis questions** — analysis tier has the largest remaining gap (-20). Future analysis questions can synthesize across multiple TOC areas (e.g., end-to-end audit-engagement analysis, compound regulatory + technical scenarios).
-2. **1.4.6 Control Environment — COSO Component 5 monitoring-activity specifics** — d1_028/098/118 cover parent + independent-vs-management + management sub-area. COSO Component 5 specifics (separate evaluations vs ongoing evaluations) remain.
-3. **1.10.4 Ongoing QA Monitoring — Specific monitoring techniques** — d1_048/099 cover failure-analysis + design-depth. Automated work-paper review, supervision-sampling techniques remain.
-4. **1.8.1 CAATs — Additional sub-areas** — d1_026/083 cover parent + continuous-online-CAATs. Generalized audit software (GAS) sub-area, CAATs vs ITF (integrated test facility) sub-area remain.
-5. **1.4.4 Control Relationship to Risk — Multi-control mapping** — d1_047 covers single-control. Multi-control mapping to a single risk (defense-in-depth) and single-control mapping to multiple risks remain.
-6. **1.4.3 Control Classifications — Sub-area depth** — d1_008/012 cover classification basics. Specific classifications (preventive vs detective vs corrective; manual vs automated; key vs non-key) at depth remain.
+**Analysis (5):**
+- Audit Engagement — Three-way coordination (internal, external, regulator) (1.1.5)
+- Risk Assessment — Quantifying intangible risks (reputation, brand) (1.3.4)
+- Sampling — Confidence-level adjustment scenario (1.6.2)
+- AI/ML — Model retirement evidence preservation (1.8.4)
+- Audit Phases — Engagement-conclusion synthesis with limitation disclosure (1.5.2)
+
+After batch 13, D1 = 180/180 and the domain is complete.
 
 Other depth opportunities for batches 11-13:
 - 1.5.6 Agile Auditing sub-area depth (d1_029 parent only)

@@ -22,11 +22,11 @@ domain_1:
     application:  90
     analysis:     72
 
-  authored_total: 150
+  authored_total: 170
   authored_mix:
     foundational: 18
-    application:  80
-    analysis:     52
+    application:  85
+    analysis:     67
 
   covered:
     # Batch 1 (d1_001..d1_010)
@@ -201,6 +201,28 @@ domain_1:
     - { id: d1_149, subtopic: "External Auditor Coordination — Integrated Audit Boundaries",     toc_ref: "1.1.5"  }
     - { id: d1_150, subtopic: "Audit Phases — End-to-End Engagement Design Synthesis",           toc_ref: "1.5.2"  }
 
+    # Batch 12 (d1_151..d1_170) — 5 application + 15 analysis; D1 = 170/180 (94%)
+    - { id: d1_151, subtopic: "COSO Component 5 — Separate vs Ongoing Evaluations",              toc_ref: "1.4.6"  }
+    - { id: d1_152, subtopic: "CAATs — Generalized Audit Software (GAS)",                        toc_ref: "1.8.1"  }
+    - { id: d1_153, subtopic: "CAATs — Integrated Test Facility (ITF)",                          toc_ref: "1.8.1"  }
+    - { id: d1_154, subtopic: "Ongoing QA Monitoring — Automated Work-Paper Review",             toc_ref: "1.10.4" }
+    - { id: d1_155, subtopic: "Control Classifications — Preventive vs Detective vs Corrective", toc_ref: "1.4.3"  }
+    - { id: d1_156, subtopic: "Control Relationship to Risk — Multi-Control Defense in Depth",   toc_ref: "1.4.4"  }
+    - { id: d1_157, subtopic: "Communicating Audit Results — Multi-Stakeholder Conflict",        toc_ref: "1.9.1"  }
+    - { id: d1_158, subtopic: "Risk Treatment — Specific Scenario Applied",                      toc_ref: "1.3.6"  }
+    - { id: d1_159, subtopic: "Audit Charter — Modification Scenario",                           toc_ref: "1.1.5"  }
+    - { id: d1_160, subtopic: "Sampling — Combined Attribute and Substantive in One Engagement", toc_ref: "1.6.2"  }
+    - { id: d1_161, subtopic: "Continuous Auditing — Anomaly Investigation Depth",               toc_ref: "1.8.3"  }
+    - { id: d1_162, subtopic: "AI/ML — Vendor Model Audit (Third-Party AI)",                     toc_ref: "1.8.4"  }
+    - { id: d1_163, subtopic: "Communicating Audit Results — Negative-Finding Self-Assessment Integration", toc_ref: "1.9.1" }
+    - { id: d1_164, subtopic: "Audit Documentation — Litigation-Hold Response",                  toc_ref: "1.9.4"  }
+    - { id: d1_165, subtopic: "Audit Phases — Stop-Work Decision Mid-Engagement",                toc_ref: "1.5.2"  }
+    - { id: d1_166, subtopic: "Audit Resource Management — Engagement-Level Budget Reduction",   toc_ref: "1.1.5"  }
+    - { id: d1_167, subtopic: "Risk-Based Planning — Cyber-Incident Triggered Scope Expansion",  toc_ref: "1.3.1"  }
+    - { id: d1_168, subtopic: "Audit Reporting — Special-Purpose Report (Regulatory Filing)",    toc_ref: "1.9.6"  }
+    - { id: d1_169, subtopic: "Audit QA — Repeat-Finding Pattern Across Years",                  toc_ref: "1.10.2" }
+    - { id: d1_170, subtopic: "Internal Audit Function — IIA Standards vs ISACA ITAF Conflict",  toc_ref: "1.1.5"  }
+
   queued_next:
     # Candidate concepts for upcoming batches, in rough priority order.
     # Authoring order is final at batch-author time, not here.
@@ -210,27 +232,31 @@ domain_1:
     # than fill leaf gaps. See data/originals/_d1_toc_coverage.md for the full
     # coverage map and high-priority depth targets.
 
-    # High priority — refreshed after batch 11. Remaining gap: 30 questions = 10 application + 20 analysis.
-    # Future batches: batch 12 (~5A + ~15An = 20), batch 13 (~5A + ~5An = 10).
-    - { subtopic: "Control Environment — COSO Component 5 monitoring-activity specifics", toc_ref: "1.4.6", priority: high,
-        notes: "d1_028/098/118 cover parent + independent-vs-management + management sub-area. COSO Component 5 specifics (separate evaluations vs ongoing evaluations) remain." }
-    - { subtopic: "CAATs — GAS sub-area + ITF sub-area", toc_ref: "1.8.1", priority: high,
-        notes: "d1_026/083 cover parent + continuous-online. Generalized audit software (GAS) sub-area and CAATs vs ITF (integrated test facility) sub-area remain." }
-    - { subtopic: "Control Relationship to Risk — Multi-control mapping (defense in depth)", toc_ref: "1.4.4", priority: high,
-        notes: "d1_047 covers single-control to single-risk. Multi-control mapping to a single risk and single-control mapping to multiple risks remain." }
-    - { subtopic: "Ongoing QA Monitoring — Specific monitoring techniques", toc_ref: "1.10.4", priority: medium,
-        notes: "d1_048/099 cover failure-analysis + design-depth. Automated work-paper review, supervision-sampling techniques remain." }
+    # Final batch 13 plan (10 questions: 5 application + 5 analysis) to close 170 -> 180.
+    # All major TOC areas have substantial depth; batch 13 fills targeted residual angles.
+    - { subtopic: "Audit Reporting — Distribution and Restricted-Use considerations", toc_ref: "1.9.1", priority: high,
+        notes: "Final-batch candidate: distribution lists, restricted-use language, third-party reliance limits." }
+    - { subtopic: "Audit Evidence — Computer-output evidence (electronic reports)", toc_ref: "1.7", priority: high,
+        notes: "Final-batch candidate: testing reliability of system-generated reports as audit evidence." }
+    - { subtopic: "Continuous Auditing — Cost-benefit threshold for CA deployment", toc_ref: "1.8.2", priority: medium,
+        notes: "Final-batch candidate: when does CA's cost exceed its value; thresholds for deciding to deploy." }
+    - { subtopic: "Risk Assessment — Quantifying intangible risks (reputation, brand)", toc_ref: "1.3.4", priority: medium,
+        notes: "Final-batch candidate: methods for assigning quantitative measures to intangible risk dimensions." }
+    - { subtopic: "AI/ML — Model retirement evidence preservation", toc_ref: "1.8.4", priority: medium,
+        notes: "Final-batch candidate: what evidence to preserve when an AI/ML model is retired." }
 
   remaining_unplanned:
-    # Other depth opportunities for batches 12-13
-    - { subtopic: "Control Classifications — Sub-area depth", toc_ref: "1.4.3", priority: medium,
-        notes: "d1_008/012 cover classification basics. Specific classifications (preventive vs detective vs corrective; manual vs automated; key vs non-key) at depth remain." }
-    - { subtopic: "Risk Treatment — Specific scenarios applied", toc_ref: "1.3.6", priority: medium,
-        notes: "d1_033/124 cover treatment options + selection. Specific industry-treatment-pattern scenarios remain." }
-    - { subtopic: "Audit Programs — Adapting Tools and Techniques templates", toc_ref: "1.5.3", priority: low,
-        notes: "d1_011/071 cover scenario + foundational. Specific Tools-and-Techniques template-adaptation scenarios remain." }
-    - { subtopic: "Audit Reporting — Special-purpose reports (regulatory, due-diligence)", toc_ref: "1.9.6", priority: low,
-        notes: "d1_036/109 cover opinion-types + modified-opinion. Special-purpose reports (regulatory filings, M&A due-diligence) remain." }
+    # Lower-priority residual angles - fill if batch-13 spots remain after the high/medium picks above
+    - { subtopic: "Audit Engagement — Three-way coordination (internal, external, regulator)", toc_ref: "1.1.5", priority: low,
+        notes: "d1_032/090/149 cover internal-vs-external. Three-way coordination with regulator added is a residual angle." }
+    - { subtopic: "Sampling — Confidence-level adjustment scenario", toc_ref: "1.6.2", priority: low,
+        notes: "13 sampling questions cover most angles. Confidence-level adjustment mid-engagement is a residual angle." }
+    - { subtopic: "Audit Phases — Engagement-conclusion synthesis with limitation disclosure", toc_ref: "1.5.2", priority: low,
+        notes: "d1_054/120/150/165 cover phase angles. Synthesis with explicit limitation disclosure is a residual angle." }
+    - { subtopic: "Risk-Based Audit Planning — Industry-overlay considerations", toc_ref: "1.3.1", priority: low,
+        notes: "d1_056/074/100/127/142/167 cover universe and planning angles. Industry-overlay (sector-specific risk profiles) is a residual angle." }
+    - { subtopic: "Audit Programs — Tools and Techniques template adaptation", toc_ref: "1.5.3", priority: low,
+        notes: "d1_011/071 cover scenario + foundational. Specific T&T template adaptation scenario remains." }
 
 domain_2:
   target_total: 180
