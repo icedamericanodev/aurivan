@@ -987,10 +987,10 @@
       "scenario_context": "An IS auditor is evaluating the IT control environment at an aerospace defense contractor. Observations from fieldwork: (1) the CEO has publicly committed to security excellence and signs all annual security policies, (2) the CIO position has been filled three times in the last 24 months, with each predecessor leaving under contentious circumstances, (3) employee surveys (made available by HR) show 60% of IT staff disagree with the statement \"I feel I can report security concerns without retaliation,\" (4) the formal control framework documentation (policies, procedures, training records) is comprehensive and recently updated, (5) actual incident-response data shows 70% of security incidents are reported only after external discovery — by a regulator, customer, or third party.",
       "question": "Based on these observations, which is the auditor's GREATEST concern about the control environment?",
       "options": {
-        "A": "The CIO turnover indicates leadership instability that affects IT control execution",
-        "B": "The combination of 60% retaliation-fear among staff and 70% post-external-discovery incident reporting indicates a control-environment culture that is fundamentally undermining incident detection and reporting",
-        "C": "The CEO signing policies is performative and doesn't demonstrate true control-environment commitment",
-        "D": "The formal documentation being comprehensive doesn't compensate for cultural weaknesses elsewhere"
+        "A": "The CIO turnover indicates leadership instability that affects IT control execution and creates uncertainty about the control environment's tone-at-the-top",
+        "B": "The 60% retaliation-fear and 70% post-external-discovery reporting rate indicate a control-environment culture that fundamentally undermines incident detection and reporting",
+        "C": "The CEO signing policies is performative and doesn't demonstrate true control-environment commitment beyond surface-level governance ceremony for stakeholder optics",
+        "D": "The formal documentation being comprehensive doesn't compensate for cultural weaknesses elsewhere; documentation discipline is one input among several to control-environment assessment"
       },
       "correct": "B",
       "key_concept": "The control environment is the foundation of all other controls. When cultural factors (retaliation fear, late incident reporting) demonstrate the environment isn't supporting control execution, even well-designed individual controls fail to operate effectively — people don't operate controls they're afraid to operate.",
@@ -2811,10 +2811,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a federal health-services agency has issued an audit report identifying a critical finding (medication-records access control), three high findings, and four moderate findings. Management has provided initial remediation commitments with target dates over the next 18 months. What is the MOST appropriate cadence for follow-up communication on these findings?",
       "options": {
-        "A": "One follow-up review immediately before the next annual audit cycle, with no interim communication",
-        "B": "A risk-tiered cadence — more frequent verification on the critical finding (e.g., 30-60 days), structured periodic reviews on high findings, and lighter verification on moderate findings, with each follow-up communicated to the audit committee",
-        "C": "Identical quarterly follow-ups on all eight findings regardless of severity, to keep the cadence simple to administer",
-        "D": "No follow-up at all; remediation is management's responsibility and the audit function should not duplicate management's tracking"
+        "A": "One follow-up review immediately before the next annual audit cycle, with no interim communication or escalation between the issue date and that single review",
+        "B": "A risk-tiered cadence — more frequent verification on the critical finding (30-60 days), structured periodic reviews on high findings, and lighter verification on moderate findings, with audit-committee communication",
+        "C": "Identical quarterly follow-ups on all eight findings regardless of severity, to keep the verification cadence simple to administer for audit and operations staff",
+        "D": "No follow-up at all; remediation is management's responsibility and the audit function should not duplicate management's tracking of remediation status"
       },
       "correct": "B",
       "key_concept": "Follow-up cadence is risk-tiered: critical findings get aggressive near-term verification, high findings get structured periodic review, moderate findings get lighter verification. Same-cadence-for-all and no-follow-up both misallocate audit attention.",
@@ -3104,8 +3104,8 @@
       "scenario_context": "An IS auditor at a freight-rail company is designing the sampling approach for an audit of the rail-yard's car-routing system. The audit has three objectives executed within one engagement: (1) determine whether the dual-approval control on routing changes is operating effectively (a yes/no question per change order — the second approver must be different from the first); (2) estimate the dollar value of any incorrect freight charges resulting from routing errors over the audit period; and (3) confirm that all routing changes affecting hazardous-materials cars went through the additional hazmat-officer approval, with zero acceptable error tolerance for that population. The audit's bandwidth allows for one well-designed sampling approach but the auditor is questioning whether one sample can serve all three objectives.",
       "question": "Which sampling approach BEST satisfies the three objectives within the constraints of the engagement?",
       "options": {
-        "A": "One stratified random sample across all routing changes, with the strata calibrated to satisfy all three objectives simultaneously",
-        "B": "Three separately-designed samples — attribute sampling for objective 1 (dual-approval control), variable / monetary-unit sampling for objective 2 (dollar estimation), and 100% testing of the hazmat-cars sub-population for objective 3 (zero-tolerance) — recognizing that one sample design cannot serve all three objectives well",
+        "A": "One stratified random sample across all routing changes, with the strata calibrated to satisfy all three audit objectives simultaneously through clever stratification design",
+        "B": "Three separately-designed samples — attribute for the dual-approval control, variable/MUS for the dollar estimation, and 100% testing of the hazmat-cars sub-population — since one design cannot serve all three",
         "C": "One judgmental sample of the largest 50 routing changes, since dollar value and hazmat status both correlate with size",
         "D": "Skip sampling entirely and rely on management's representations for objectives 1 and 3, performing only ad-hoc analysis for objective 2"
       },
@@ -3255,7 +3255,7 @@
       "question": "Which response is MOST appropriate, and what is the key reasoning under ISACA Standard 1206?",
       "options": {
         "A": "Accept the firm's report as delivered, since the auditor evaluated competence and objectivity before engagement and the firm is now established; relying on the firm now is consistent with the original decision",
-        "B": "Reject the report as inadequate for reliance, communicate specific deficiencies to the firm in writing, withhold sign-off on the invoice pending remediation or scope re-negotiation, and escalate to the audit director if remediation cannot be achieved; reasoning: the auditor remains responsible for the audit conclusion regardless of the expert's involvement, and signing off on inadequate work would compromise that responsibility",
+        "B": "Reject the report as inadequate for reliance, communicate deficiencies in writing, withhold invoice sign-off pending remediation, and escalate; the auditor remains responsible for the audit conclusion under Standard 1206",
         "C": "Sign off on the invoice to maintain the working relationship for future engagements and document the deficiencies as lessons-learned for next time",
         "D": "Replace the firm immediately with a different specialist and refuse to communicate the specific deficiencies to the original firm, since they have already demonstrated they cannot deliver"
       },
@@ -3327,10 +3327,10 @@
       "bloom_level": "Foundational",
       "question": "Which statement BEST describes the PRIMARY characteristic of continuous auditing?",
       "options": {
-        "A": "An audit performed once per quarter, on a recurring schedule, by the audit team",
+        "A": "An audit performed once per quarter, on a recurring schedule, by the audit team using traditional periodic procedures and reporting",
         "B": "An audit approach in which the audit team performs procedures on transactions or controls on an ongoing basis, often using technology, with results available shortly after activity occurs",
-        "C": "An audit performed continuously by the operations team in place of independent audit work",
-        "D": "An audit performed only after a control failure, to investigate root cause"
+        "C": "An audit performed continuously by the operations team in place of independent audit work, with operations self-certifying the control posture",
+        "D": "An audit performed only after a control failure has been identified, as a forensic investigation technique to recreate the failure for evidence preservation"
       },
       "correct": "B",
       "key_concept": "Continuous auditing performs audit procedures on an ongoing basis with results shortly after activity. It is distinct from periodic auditing (less frequent), continuous monitoring (management's activity), and reactive investigation.",
@@ -3880,7 +3880,7 @@
       "question": "Which projection approach is MOST appropriate under monetary-unit-sampling discipline?",
       "options": {
         "A": "Total the dollar amount of the three found misstatements ($200 + $50 + $150 = $400) and report this as the population misstatement",
-        "B": "Apply the taint percentages of each found misstatement to the dollar values of the sampling intervals containing those items, then sum (and add basic-precision and incremental-precision factors per MUS projection rules) to produce an upper limit on misstatement; the projection generally produces a number larger than the simple sum of found misstatements",
+        "B": "Apply the taint percentages of found misstatements to the dollar values of their sampling intervals, sum, and add basic and incremental precision factors per MUS projection rules",
         "C": "Discard the under-bill misstatement entirely from the projection because it is in the opposite direction from the over-bills",
         "D": "Project by multiplying the simple sum of found misstatements ($400) by the ratio of population size to sample size (18,400 / 100 = 184), reporting $73,600 as the misstatement"
       },
@@ -3918,7 +3918,7 @@
       "question": "Apply drift-detection reasoning to determine the MOST appropriate audit conclusion.",
       "options": {
         "A": "The data-science team is correct — internal accuracy on test data is stable, so the model is operating as designed and no audit concern is warranted",
-        "B": "The rising radiologist override rate (especially the last-six-months acceleration), combined with the shift in patient demographic profile and the lack of model retraining since deployment, is consistent with concept drift or covariate shift; internal accuracy on a frozen test set does not detect drift in production data, so the auditor should report this as a finding and recommend retraining and ongoing drift monitoring",
+        "B": "The rising override rate, demographic shift, and lack of retraining indicate concept or covariate drift; internal accuracy on a frozen test set cannot detect drift in production data, so report and recommend retraining",
         "C": "The audit team should suspend the audit and refer the matter to clinical-safety officers, since AI/ML drift in healthcare is a clinical-safety issue outside the auditor's competence",
         "D": "The auditor should accept the model's stable internal accuracy and address the override-rate rise as a separate radiologist-training issue, since the model itself has not changed"
       },
@@ -3956,7 +3956,7 @@
       "question": "Which opinion type is MOST appropriate, given the facts?",
       "options": {
         "A": "An unmodified (clean) opinion, since management has acknowledged the weaknesses and disagreement on magnitude is normal in audits",
-        "B": "A qualified opinion describing the material control weaknesses and the magnitude dispute, noting the auditor's substantive-testing-supported estimate, and stating that controls are operating effectively except for the qualified area; this preserves the auditor's professional judgment in the face of management's pushback",
+        "B": "A qualified opinion describing the material control weaknesses and the magnitude dispute, noting the auditor's substantive-testing-supported estimate, and stating controls are otherwise effective",
         "C": "An adverse opinion declaring the entire control environment ineffective, given management's refusal to remediate",
         "D": "A disclaimer of opinion declining to express any conclusion, since management's refusal to remediate creates uncertainty about future control effectiveness"
       },
@@ -4066,10 +4066,10 @@
       "bloom_level": "Foundational",
       "question": "Which statement BEST describes the PRIMARY purpose of substantive testing in an IS audit?",
       "options": {
-        "A": "To evaluate whether internal controls are operating as designed by testing the control's execution",
-        "B": "To detect misstatements in transactions, balances, or data — by directly examining the underlying records or analytical relationships — and to estimate the magnitude of any errors found",
-        "C": "To document the audit team's work for future quality-assurance reviews",
-        "D": "To verify the accuracy of the audit charter against organizational policy documents"
+        "A": "To evaluate whether internal controls are operating as designed by testing the control's execution and reporting on operating effectiveness",
+        "B": "To detect misstatements in transactions, balances, or data by directly examining the underlying records or analytical relationships, and to estimate the magnitude of errors found",
+        "C": "To document the audit team's work for future quality-assurance reviews and external assessments by independent peers under IIA Standard 1312",
+        "D": "To verify the accuracy of the audit charter against organizational policy documents and confirm alignment with the audit committee's expectations"
       },
       "correct": "B",
       "key_concept": "Substantive testing examines the underlying transactions, balances, or data to detect and quantify misstatements. It targets the data itself, not the controls. Compliance testing targets controls; QA documentation targets work-paper review; charter verification targets governance.",
@@ -4139,9 +4139,9 @@
       "bloom_level": "Foundational",
       "question": "In an IS audit sampling design, which statement BEST describes the auditor's task in defining the population?",
       "options": {
-        "A": "The auditor selects the population based on convenience and ease of access, regardless of relevance to the audit objective",
-        "B": "The auditor defines the population precisely to align with the audit objective — including all items the audit's conclusion will apply to, and excluding items outside the conclusion's scope — and verifies the population is complete before sampling",
-        "C": "The auditor accepts the population as defined by management without independent verification of completeness",
+        "A": "The auditor selects the population based on convenience and ease of access, regardless of relevance to the audit objective or completeness of the chosen subset",
+        "B": "The auditor defines the population precisely to align with the audit objective, includes all items the conclusion will apply to and excludes items outside scope, and verifies completeness before sampling",
+        "C": "The auditor accepts the population as defined by management without independent verification of completeness or alignment with the audit objective",
         "D": "The auditor defines the population only after the sample has been drawn, since sample selection inherently determines what the population was"
       },
       "correct": "B",
@@ -4360,7 +4360,7 @@
       "question": "An IS auditor at a regional airport authority is in the reporting phase of an audit covering both the access-control system (technical audience) and revenue-leakage analysis (financial-audience-focused). The audit director is calibrating the report's communication tactics across the multiple audiences. Which approach is MOST appropriate?",
       "options": {
         "A": "Issue a single technical report at the deepest level of detail to all audiences; less-technical readers should consult the technical staff for interpretation",
-        "B": "Structure the report with a tailored executive summary appropriate for senior leadership, technical detail in dedicated sections for the technical audiences, and a financial-leakage section calibrated for financial audiences — recognizing that audiences differ in technical depth and what information is decision-relevant for them",
+        "B": "Structure the report with a tailored executive summary, technical detail in dedicated sections for technical audiences, and a financial-leakage section calibrated for financial audiences",
         "C": "Issue separate reports for each audience to avoid mixed messaging, even at the cost of fragmented communication and inconsistent conclusions across reports",
         "D": "Calibrate the report to the lowest-technical-skill audience throughout, omitting all technical detail so no reader is overwhelmed"
       },
@@ -4545,7 +4545,7 @@
       "question": "Which response BEST applies threat-and-safeguard analysis to the long-tenure threat?",
       "options": {
         "A": "No action needed — the family-office is private and not subject to mandatory rotation, the auditor has not committed any specific independence breach, and the trust the family-office has in the auditor is itself a positive characteristic",
-        "B": "Long tenure is a familiarity threat to independence regardless of whether mandatory rotation applies; the firm's 7-year tenure policy has been ignored for 4 years; safeguards (rotation now, or independent engagement-quality review by an uninvolved senior with rotation in 1-2 years) are required, and continuing without safeguards over the firm's own policy is a meaningful independence and quality-management failure",
+        "B": "Long tenure is a familiarity threat regardless of mandatory rotation; the firm's 7-year policy has been ignored for 4 years; safeguards (rotation now or independent quality review) are required",
         "C": "Mandatory dismissal of the auditor for cause, since 11-year tenure on a single client constitutes per-se independence violation",
         "D": "Continue without action but document the 11-year tenure in the audit work papers as a disclosure"
       },
@@ -4583,7 +4583,7 @@
       "question": "Given Audit Risk approximately equals Inherent Risk x Control Risk x Detection Risk, what detection-risk level and corresponding audit-effort response is MOST appropriate?",
       "options": {
         "A": "Set detection risk HIGH — since IR and CR are already high, the auditor cannot meaningfully reduce overall audit risk and should accept higher audit risk and lower audit effort",
-        "B": "Set detection risk LOW — the auditor must compensate for high IR x CR with extensive substantive procedures, larger sample sizes, and possibly the use of an external specialist on the revenue-recognition methodology — to bring overall audit risk to the LOW target",
+        "B": "Set detection risk LOW — compensate for high IR x CR through extensive substantive procedures, larger samples, and possibly an external specialist to bring overall audit risk to LOW",
         "C": "Set detection risk MEDIUM — average detection effort is sufficient regardless of IR and CR levels",
         "D": "Set detection risk based on the audit-team's available time and budget, irrespective of the IR and CR levels"
       },
@@ -4621,7 +4621,7 @@
       "question": "Which response is MOST appropriate, and how does it preserve the plan's risk-based discipline?",
       "options": {
         "A": "Cancel all remaining engagements and report to the audit committee that no audits will be performed for the rest of the year given the resource constraint",
-        "B": "Re-prioritize the remaining engagements by risk, attempt to deliver the highest-risk engagements at the original scope, scale down or defer lower-risk engagements, document the changes and the rationale, and brief the audit committee on the revised plan and the residual gap — preserving risk-based discipline by ensuring the highest risks are still audited",
+        "B": "Re-prioritize remaining engagements by risk, deliver the highest-risk engagements at the original scope, defer lower-risk engagements, document changes, and brief the audit committee on the revised plan",
         "C": "Continue all 7 remaining engagements at reduced depth (e.g., halving sample sizes, skipping substantive testing) so all are still ostensibly performed, even though the depth degradation creates audit-quality risk",
         "D": "Outsource the entire remaining plan to an external firm at full cost, regardless of budget impact, to maintain the original engagement schedule"
       },
@@ -4809,7 +4809,7 @@
       "question": "An IS audit director at a regional credit union has received CSA workshop results from the loan-origination department's self-assessment. The CSA results indicate that the department considers its segregation-of-duties controls strong, but the auditor's independent walkthrough during the same engagement identified gaps the department did not note. How should the audit director MOST appropriately integrate the CSA results into the audit's conclusions?",
       "options": {
         "A": "Use the CSA results as the primary basis for the audit's conclusion on segregation of duties, since the department has direct knowledge of its own controls",
-        "B": "Treat the CSA results as one input among several — they inform what the audit team examines and surface participant perspectives — but the auditor's independent procedures and findings remain the basis for the audit's conclusion; document the divergence between CSA and independent findings as part of the audit's analysis",
+        "B": "Treat the CSA results as one input among several — they inform examination scope and surface participant perspectives — but independent procedures remain the basis for the audit's conclusion",
         "C": "Discard the CSA results entirely once the auditor's independent walkthrough produces different findings, since CSA is unreliable when it diverges from independent work",
         "D": "Ask the department to re-run the CSA until their results align with the auditor's findings"
       },
@@ -4844,9 +4844,9 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a cloud-SaaS provider is collecting electronic evidence (database extracts, system logs, configuration exports) for an audit. To rely on the electronic evidence in the audit conclusion, what is the MOST important integrity consideration?",
       "options": {
-        "A": "The evidence file is the smallest possible size to minimize storage cost",
-        "B": "The evidence is extracted and stored in a manner that preserves and demonstrates integrity — including capture under controlled conditions, hash-value or other tamper-evident verification, secure storage with access controls, and a documented chain from system-of-record to work paper",
-        "C": "The evidence is converted to a proprietary format that only the audit team can read",
+        "A": "The evidence file is the smallest possible size to minimize storage cost on the audit team's evidence-management infrastructure",
+        "B": "The evidence is extracted and stored to preserve and demonstrate integrity, including controlled capture, hash or tamper-evident verification, and a documented chain from source to work paper",
+        "C": "The evidence is converted to a proprietary format that only the audit team can read, ensuring no other party can tamper with the evidence afterward",
         "D": "The evidence is shared with the audited business unit so they can verify the contents before the auditor analyzes it"
       },
       "correct": "B",
@@ -5066,10 +5066,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at an SEC-registered ETF management company is reviewing the audit committee's composition under SEC and SOX requirements. Which characteristic is MOST critical for the audit committee composition under these rules?",
       "options": {
-        "A": "All audit-committee members must hold a CPA or CISA designation",
-        "B": "At least one audit-committee member must be designated an \"audit committee financial expert\" per SOX Section 407 / SEC rules, with documented qualifications, OR the company must disclose why no member meets the criteria",
-        "C": "The audit committee must be composed entirely of company executives to ensure deep operational knowledge",
-        "D": "The audit committee must have an even number of members so voting tied results are impossible"
+        "A": "All audit-committee members must hold a CPA or CISA professional designation as a baseline qualification under SEC corporate-governance guidance",
+        "B": "At least one audit-committee member must be designated an audit committee financial expert per SOX Section 407, OR the company must disclose why no member meets the criteria",
+        "C": "The audit committee must be composed entirely of company executives to ensure deep operational knowledge of the company's IT and financial systems",
+        "D": "The audit committee must have an even number of members so voting tied results trigger automatic referral to the full board for resolution"
       },
       "correct": "B",
       "key_concept": "SEC and SOX require at least one audit-committee \"financial expert\" with documented qualifications, OR explicit disclosure of why no member qualifies. The financial-expert requirement is met by criteria including financial-statement understanding, internal-control-over-financial-reporting experience, and audit-committee experience.",
@@ -5104,7 +5104,7 @@
       "question": "An IS audit manager at a gaming-software startup is leading the function's first agile audit engagement. The engagement is decomposed into 2-week sprints and the team is planning the retrospective discipline. Which approach BEST applies agile auditing's sprint and retrospective discipline?",
       "options": {
         "A": "Sprints with no retrospectives — the audit team should focus on audit work, not process discussions",
-        "B": "Each 2-week sprint produces a defined audit increment (specific procedures completed, evidence gathered, findings drafted), each sprint ends with a retrospective that captures what worked, what didn't, and what the team will change in the next sprint, and retrospective outcomes feed back into engagement planning",
+        "B": "Each sprint produces a defined audit increment, ends with a retrospective capturing what worked and what to change, and retrospective outcomes feed back into engagement planning",
         "C": "Sprints with retrospectives held only at engagement end, since per-sprint retrospectives are too frequent and disrupt audit work",
         "D": "Sprints with retrospectives held privately by the manager only, without team input, since the manager has the authority to decide process changes"
       },
@@ -5218,7 +5218,7 @@
       "question": "Which technique is MOST appropriate, and why does the choice matter even though both are defensible?",
       "options": {
         "A": "MUS on the entire population — the dollar-proportional selection naturally weights toward larger items, which is appropriate for substantive testing; stratification adds complexity without commensurate benefit when MUS already biases toward dollar-significance",
-        "B": "Stratified sampling by cargo-type — the known stratum-specific error patterns mean stratified sampling produces a more efficient sample (smaller per-stratum samples calibrated to per-stratum variability) and supports stratum-level conclusions in addition to the overall conclusion; this advantage matters for an audit that wants to know not just total error but which cargo type drives the error",
+        "B": "Stratified sampling by cargo-type — known stratum-specific error patterns enable smaller per-stratum samples calibrated to per-stratum variability and support stratum-level conclusions in addition to overall",
         "C": "Both techniques are equally appropriate — the auditor can pick either with no consequences for the audit conclusion",
         "D": "Neither — judgmental sampling targeting only the largest transactions is more efficient than statistical sampling for this engagement"
       },
@@ -5295,7 +5295,7 @@
       "question": "Which sequencing approach is MOST appropriate, and what staging principle guides the decision?",
       "options": {
         "A": "Approach A (highest-risk first) — risk-based prioritization always wins and the function should start where audit value is highest",
-        "B": "Approach B (most-instrumented system first, with risk-based expansion as instrumentation extends) — staged implementation with early wins from already-instrumented systems builds team capability and demonstrates value, then expand by combining risk priority with instrumentation readiness; this balances risk-prioritization with operational feasibility",
+        "B": "Approach B (most-instrumented-first with risk-based expansion) — staged implementation builds team capability and demonstrates value, then expands by combining risk priority with instrumentation readiness",
         "C": "Approach C (full simultaneous deployment across all 20 systems) — covers everything at once and avoids staged-rollout risk",
         "D": "Approach D (defer until automation is in place) — eliminates implementation risk by waiting"
       },
@@ -6313,7 +6313,7 @@
       "question": "An IS auditor at a regional grocery chain is using a system-generated report (computer-output evidence from the inventory-management system) to support audit conclusions about inventory accuracy. What is the MOST important step before relying on the system-generated report as audit evidence?",
       "options": {
         "A": "Accept the system-generated report at face value, since the system produces it consistently and the auditor doesn't need to evaluate the report's reliability",
-        "B": "Evaluate the reliability of the report by testing the controls over the system that generated it (logical access, change management, processing integrity), or by independently reproducing the report from underlying transaction data using auditor-controlled procedures (e.g., GAS), and document the basis for relying on the report's accuracy",
+        "B": "Evaluate the report by testing controls over the generating system (access, change, processing integrity), or independently reproduce it via auditor-controlled procedures, and document the basis for reliance",
         "C": "Have management approve the report's accuracy in writing and rely on management's attestation as the basis for audit reliance",
         "D": "Discard system-generated reports as audit evidence entirely, since they are produced by the audited system and inherently unreliable"
       },
