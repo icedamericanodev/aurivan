@@ -4861,9 +4861,9 @@
         "D": "Cyber-insurance policy terms differ materially across carriers — exclusions, retention structures, sublimits per coverage area (forensics, business interruption, ransomware, regulatory fines). Treating it as commoditized typically produces under-coverage in the loss areas the firm is actually exposed to."
       },
       "tips": [
-        "Trap is A — \"maximum coverage\" sounds cautious but isn't calibrated to actual exposure; produces premiums that don't match risk-reduction value.",
+        "Trap is A — \"maximum coverage = maximum protection\" inverts the actual logic; uncalibrated coverage drives premium cost without matching the firm's exposure profile.",
         "Cyber insurance design = coverage calibrated to risk + exclusion scrutiny + retention matching absorption + IR/breach alignment. Four properties.",
-        "Exam-day shortcut: cyber insurance questions are answered by the option naming calibration + exclusion + retention + IR alignment, not maximum/minimum extremes or any-low-premium."
+        "Exam-day shortcut: when the stem says 'cyber insurance value' or 'risk transfer effectiveness,' answer involves CALIBRATION (to exposure) and EXCLUSION SCRUTINY — not premium minimization or coverage maximization."
       ],
       "framework_ref": "ISACA Cyber Insurance guidance; FAIR (Factor Analysis of Information Risk); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
@@ -4933,7 +4933,7 @@
         "D": "Industry-sector-based tiering paints with too broad a brush. Within a sector, vendors range from low-risk (general-business SaaS) to critical-tier (core operating systems). Sector is a context, not a tier criterion."
       },
       "tips": [
-        "Trap is C — \"ACV alone\" feels economically rational but mis-tiers low-spend high-criticality vendors.",
+        "Trap is C or D — C (ACV alone feels economically rational but mis-tiers low-spend high-criticality vendors) and D (sector tiering feels regulatory-aware but paints with too broad a brush). Both are single-factor; vendor risk is multi-factor.",
         "Vendor tier criteria = data sensitivity + business criticality + regulatory + geographic/concentration + documented thresholds. Multi-factor analysis.",
         "Exam-day shortcut: vendor tiering questions are answered by the option naming multi-factor criteria, not size / ACV / sector alone."
       ],
@@ -5078,7 +5078,7 @@
         "D": "Industry benchmarks are useful context but don't capture the firm's specific quality maturity. A firm at 6% quality investment may need more (if quality is poor) or less (if mature); the benchmark alone doesn't tell."
       },
       "tips": [
-        "Trap is C — \"track testing costs\" focuses on the visible activity but misses prevention, which often yields better quality ROI.",
+        "Trap is C — 'track testing costs' anchors on the visible activity (testing) and misses prevention, which the COQ framework specifically shows yields better ROI than detection-after-the-fact.",
         "Cost of Quality = Prevention + Appraisal + Internal Failure + External Failure. Four categories. Increasing P+A typically reduces IF+EF more than the increase.",
         "Exam-day shortcut: Cost of Quality questions are answered by the option naming the four categories, not single-bucket or benchmark-only."
       ],
@@ -5365,14 +5365,14 @@
       "correct": "B",
       "key_concept": "Multi-pressure portfolio rebalance = quantify each pressure's risk-adjusted business impact + prioritize regulatory-mandatory first + appetite-exceeding cyber second + measurable revenue-protection competitive third + absorb cost-reduction by reducing lower-priority RUN/GROW + analysis-backed allocation with explicit trade-offs. Defer-all, approve-all-with-budget-increase, and reject-all all fail.",
       "pre_read": "Multi-pressure portfolio rebalance questions test whether you recognize the integrated quantitative approach (impact analysis + tier prioritization + cost absorption + explicit trade-offs).",
-      "correct_explanation": "COBIT 2019 APO05 (Managed Portfolio) and ISACA IT Portfolio Management guidance establish that multi-pressure portfolio rebalance requires integrated quantitative analysis rather than sequential ad-hoc decisions. The right approach: (1) quantify each pressure's risk-adjusted business impact (regulatory non-compliance cost = expected fines + remediation cost; competitive market-share loss = expected revenue impact × market-share trajectory; cost-reduction trade-offs = which RUN/GROW reductions are feasible without operational degradation; cyber-exposure analysis = expected loss given peer-incident frequency and the bank's specific posture); (2) construct rebalanced portfolio prioritizing regulatory-mandatory items first (non-discretionary) — covers the $8M FFIEC items; (3) cyber items where exposure exceeds appetite second — covers $6M CISO ask if quantitative analysis confirms appetite breach; (4) competitive items where market-share defense yields measurable revenue protection third — funds part of the $12M CEO ask up to the analytically-justified amount; (5) absorb the cost-reduction target by reducing lower-priority RUN and GROW initiatives — preserves higher-priority allocations; (6) present analysis-backed allocation to the executive committee with explicit trade-offs (what gets deferred, why, and what risks the deferrals carry). Option A's defer-all ignores time-sensitive regulatory deadlines and competitive pressure. Option C's approve-all with budget increase abandons portfolio discipline and may exceed the bank's overall capacity. Option D's reject-all with current-budget operation ignores the legitimacy of the pressures.",
+      "correct_explanation": "COBIT 2019 APO05 (Managed Portfolio) and ISACA IT Portfolio Management guidance establish that multi-pressure portfolio rebalance requires integrated quantitative analysis rather than sequential ad-hoc decisions. The right approach: (1) quantify each pressure's risk-adjusted business impact (regulatory non-compliance cost = expected fines + remediation cost; competitive market-share loss = expected revenue impact × market-share trajectory; cost-reduction trade-offs = which RUN/GROW reductions are feasible without operational degradation; cyber-exposure analysis = expected loss given peer-incident frequency and the bank's specific posture); (2) construct rebalanced portfolio prioritizing regulatory-mandatory items first (non-discretionary, especially when deadlines are near — covers the $8M FFIEC items); (3) cyber items where exposure exceeds appetite (which may rank above non-deadline regulatory items when appetite breach is severe) — covers $6M CISO ask if quantitative analysis confirms appetite breach; (4) competitive items where market-share defense yields measurable revenue protection third — funds part of the $12M CEO ask up to the analytically-justified amount; (5) absorb the cost-reduction target by reducing lower-priority RUN and GROW initiatives — preserves higher-priority allocations; (6) present analysis-backed allocation to the executive committee with explicit trade-offs (what gets deferred, why, and what risks the deferrals carry). Option A's defer-all ignores time-sensitive regulatory deadlines and competitive pressure. Option C's approve-all with budget increase abandons portfolio discipline and may exceed the bank's overall capacity. Option D's reject-all with current-budget operation ignores the legitimacy of the pressures.",
       "wrong_explanations": {
         "A": "Deferring four time-sensitive pressures (FFIEC examination prep, competitor's product launch, breach risk, cost commitment) until next year's budget abandons time-sensitive responses. The pressures must be addressed in the current cycle.",
         "C": "Approving all four asks raises IT budget by 25% — that may exceed the bank's overall capacity (and the cost-reduction commitment to fund non-IT priorities). Approve-all sacrifices portfolio discipline and external commitments.",
         "D": "Rejecting all four pressures while requiring leaders to operate within the existing budget ignores the legitimacy of the pressures (regulatory mandate, competitive defense, cyber risk, cost commitment). Portfolio discipline includes responding to material change, not refusing to acknowledge it."
       },
       "tips": [
-        "Trap is C — \"approve all asks by raising budget 25%\" feels responsive but abandons portfolio discipline and may exceed capacity.",
+        "Trap is A or C — A (defer-all sounds like execution discipline but ignores time-sensitive deadlines) and C (approve-all-with-budget-increase sounds responsive but abandons portfolio discipline). Both are non-analytical; the answer is integrated quantitative analysis with explicit trade-offs.",
         "Multi-pressure rebalance = quantify each pressure's risk-adjusted impact + prioritize regulatory-mandatory + cyber-exceeding-appetite + measurable revenue-protection + absorb cost target by reducing lower-priority RUN/GROW.",
         "Exam-day shortcut: multi-pressure portfolio questions are answered by integrated quantitative analysis with explicit trade-offs, not defer-all / approve-all / reject-all."
       ],
