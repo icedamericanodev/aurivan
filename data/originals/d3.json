@@ -250,7 +250,7 @@
         "D": "Deployment audit logs are produced by release-management tooling. The RTM is built during requirements/design/test and traces requirements to evidence; it doesn't track deployments."
       },
       "tips": [
-        "Trap is D — \"change-history log\" sounds traceability-ish but it's the deployment-audit log, not the RTM. RTM traces requirements, not deployments.",
+        "Trap is A or D — A confuses RTM with QA-compliance documentation, D confuses it with deployment audit logs. Both substitute unrelated artifacts for the requirement-to-evidence linkage.",
         "RTM = REQUIREMENTS to DESIGN to CODE to TESTS to ACCEPTANCE EVIDENCE, bidirectional. That's the only definition.",
         "Exam-day shortcut: any RTM question is answered by the option naming bidirectional linkage from requirement to evidence."
       ],
@@ -286,9 +286,9 @@
         "C": "Unilateral PO sizing replaces team consensus (the basis of agile estimation) with one perspective. The team that does the work should size the work."
       },
       "tips": [
-        "Trap is A — \"convert to hours\" sounds rigorous but it kills the entire purpose of story points (relative, not absolute).",
+        "Trap is A or B — A (\"convert to hours\") kills the relative-sizing abstraction; B (\"reset velocity each release\") sounds disciplined but wastes the empirical history. Both feel rigorous but each destroys a different velocity property.",
         "Velocity = empirical + team-specific + multi-sprint stabilization. Don't reset, don't convert, don't unilateralize.",
-        "Exam-day shortcut: any agile-velocity question with \"convert to hours\" as an option has named the trap; the right answer keeps the story-point abstraction."
+        "Exam-day shortcut: any agile-velocity question whose options promise hour-precision or fresh-start resets has named the traps; the right answer preserves the empirical, relative abstraction."
       ],
       "framework_ref": "Scrum Guide 2020; DORA / Accelerate (DevOps Research and Assessment); ISACA Software Audit guidance",
       "related_concepts": [
@@ -306,7 +306,7 @@
       "subtopic": "DevOps — CI/CD Pipeline Quality Gates",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Which control GREATEST strengthens a CI/CD pipeline's quality assurance for production-bound builds?",
+      "question": "Which control MOST strengthens a CI/CD pipeline's quality assurance for production-bound builds?",
       "options": {
         "A": "A weekly manager review of all merged commits combined with monthly retrospectives on team velocity and quality.",
         "B": "Automated quality gates enforcing unit-test pass, SAST scan clean, and signed approval before any production deployment.",
@@ -471,9 +471,9 @@
         "D": "Producing the PIR template is a process-owner task. The CAB participates in PIR for failed changes but doesn't produce templates."
       },
       "tips": [
-        "Trap is C — \"personally executing high-risk deployments\" sounds like CAB ownership but it's an SoD violation; CAB authorizes, change implementer executes.",
+        "Trap is A — \"authoring the implementation plan\" sounds like CAB ownership of significant changes, but the change submitter authors the plan; the CAB only reviews and authorizes it.",
         "CAB = review + authorize significant changes. Risk, impact, readiness. Not execute, not author, not template.",
-        "Exam-day shortcut: any CAB question is answered by the option naming REVIEW and AUTHORIZE; execution-flavored options are wrong."
+        "Exam-day shortcut: any CAB question is answered by the option naming REVIEW and AUTHORIZE; execution- or authoring-flavored options are wrong."
       ],
       "framework_ref": "ITIL 4 (Change Enablement); ISACA Change Management guidance; COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
@@ -573,7 +573,7 @@
       "correct": "D",
       "key_concept": "PIR's primary focus = benefits realization. Did the project deliver the value claimed in the business case? Budget reporting, UAT, and regression planning are different activities (closeout finance, pre-release verification, ongoing maintenance).",
       "pre_read": "For PIR questions, anchor on \"benefits realization vs business case.\" PIR happens AFTER deployment, focuses on realized value, not on operational deliverables.",
-      "correct_explanation": "ISACA Val IT Framework and COBIT 2019 BAI05 (Managed Organizational Change) and BAI07 (Managed IT Change Acceptance and Transitioning) establish the PIR as the post-deployment review whose primary focus is benefits realization: comparing the realized benefits and outcomes (financial, operational, strategic) against those promised in the business case to verify that the project actually delivered the value used to justify it. Option A describes a financial-closeout activity, useful but narrower than PIR. Option B describes pre-deployment UAT, which happens BEFORE go-live, not after. Option C describes ongoing maintenance regression testing, an operational activity unrelated to the PIR. The PIR is a strategic, post-deployment review of value delivery.",
+      "correct_explanation": "ISACA Val IT Framework, COBIT 2019 EDM02 (Ensured Benefits Delivery), and COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning) establish the PIR as the post-deployment review whose primary focus is benefits realization: comparing the realized benefits and outcomes (financial, operational, strategic) against those promised in the business case to verify that the project actually delivered the value used to justify it. EDM02 anchors benefits realization in governance; BAI07's post-implementation review practice operationalizes it at the project level. Option A describes a financial-closeout activity, useful but narrower than PIR. Option B describes pre-deployment UAT, which happens BEFORE go-live, not after. Option C describes ongoing maintenance regression testing, an operational activity unrelated to the PIR. The PIR is a strategic, post-deployment review of value delivery.",
       "wrong_explanations": {
         "A": "Budget-vs-actual reporting is a financial closeout activity. Useful, but narrow; PIR addresses the broader question of whether the spend produced the promised value.",
         "B": "UAT happens BEFORE go-live, not in the post-implementation review. PIR is a post-deployment review of realized outcomes.",
@@ -584,7 +584,7 @@
         "PIR primary focus = realized benefits vs business case. Did it deliver the value? Everything else is secondary.",
         "Exam-day shortcut: any PIR question is answered by the option naming benefits-realization or business-case validation."
       ],
-      "framework_ref": "ISACA Val IT Framework; COBIT 2019 BAI05 (Managed Organizational Change); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Post-implementation review",
         "PIR",
@@ -592,7 +592,7 @@
         "Val IT",
         "Business case"
       ],
-      "_provenance": "Authored from concept: 'PIR benefits realization per ISACA Val IT and COBIT 2019 BAI05/BAI07'. Public sources: ISACA Val IT, COBIT 2019."
+      "_provenance": "Authored from concept: 'PIR benefits realization per ISACA Val IT and COBIT 2019 EDM02/BAI07'. Public sources: ISACA Val IT, COBIT 2019."
     },
     {
       "id": "d3_017",
@@ -678,7 +678,7 @@
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "Which position MOST appropriately reflects sound conversion-governance principles given the unresolved variance?",
-      "scenario_context": "A regional retail bank (320 branches, 2.4M retail customers) has scheduled a core-banking-platform cutover for a 36-hour Saturday window. Sunday at hour 22, post-cutover reconciliation reports an unexpected $4.7M variance in deposit balances across 18,000 accounts. Root cause is unknown. Branches open in 9 hours. The cutover playbook contains a documented fallback plan to revert to the legacy system, last tested 90 days ago. The CIO is reluctant to invoke fallback citing branch-customer disruption and regulator notifications. The technology committee chair convenes an emergency call and asks the IS auditor for a position before branches open.",
+      "scenario_context": "A regional retail bank (320 branches, 2.4M retail customers) has scheduled a core-banking-platform cutover for a 36-hour Saturday window. By Sunday at 22:00 local time, post-cutover reconciliation reports an unexpected $4.7M variance in deposit balances across 18,000 accounts. Root cause is unknown. Branches open Monday at 09:00. The cutover playbook contains a documented fallback plan to revert to the legacy system, last tested 90 days ago. The CIO is reluctant to invoke fallback citing branch-customer disruption and regulator notifications. The technology committee chair convenes an emergency call and asks the IS auditor for a position before branches open.",
       "options": {
         "A": "Proceed to Monday open on the new platform; investigate the variance using production data while branches transact normally.",
         "B": "Lock all 18,000 affected accounts on the new platform and proceed; resolve variance with manual workarounds during the week.",
@@ -695,9 +695,9 @@
         "D": "Clearing variance to suspense without root cause is a textbook bad pattern: it makes the books balance while the underlying issue persists and may grow. Auditors do not recommend this without root cause and a remediation plan."
       },
       "tips": [
-        "Trap is A — \"proceed and investigate\" feels active and forward-looking but it transfers untested integrity risk to operating customers; fallback is the safer choice.",
+        "Trap is A or D — A (\"proceed and investigate\") feels operationally active; D (\"clear variance to suspense\") feels accounting-disciplined. Each represents a different pressure-response pattern, but both transfer untested integrity risk forward.",
         "Cutover variance + unknown cause + tested fallback = INVOKE FALLBACK. Customer disruption is bounded; integrity risk is not.",
-        "Exam-day shortcut: cutover-failure questions favor the option that uses the documented fallback when root cause is unknown; proceed-anyway options are typically traps."
+        "Exam-day shortcut: cutover-failure questions favor the option that uses the documented fallback when root cause is unknown; proceed-anyway and clear-to-suspense options are typically traps."
       ],
       "framework_ref": "ISACA Data Migration guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); NIST SP 800-34 (Contingency Planning Guide)",
       "related_concepts": [
