@@ -376,6 +376,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - ISACA M&A IT Due Diligence guidance
 - ITIL 4 Incident Management
 - OCC Bulletin 2017-21 (Mergers and Acquisitions)
+- OCC Comptroller's Licensing Manual — Business Combinations
 - GDPR Article 3 (Territorial Scope)
 - GDPR Article 12 (Information and Modalities for Exercise of Rights)
 - GDPR Article 15 (Right of Access)
