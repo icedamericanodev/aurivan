@@ -155,10 +155,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a manufacturing firm is reviewing a critical production-scheduling system. The auditor wants to determine whether the system's automated approval workflow is correctly enforcing the four-eye principle on schedule changes. Which type of testing is MOST appropriate?",
       "options": {
-        "A": "Substantive testing of all production-schedule changes from the last quarter",
+        "A": "Substantive testing of all production-schedule changes from the last quarter to verify each transaction's impact on production output",
         "B": "Compliance testing of a sample of schedule changes to confirm the workflow enforced approval",
-        "C": "Substantive testing of high-value schedule changes only",
-        "D": "Inquiry-based testing through interviews with production planners"
+        "C": "Substantive testing of high-value schedule changes only, focusing on transactions affecting the highest-revenue product lines for the period",
+        "D": "Inquiry-based testing through interviews with production planners about their adherence to the approval workflow during the audit period"
       },
       "correct": "B",
       "key_concept": "Compliance testing verifies that controls are operating; substantive testing verifies the accuracy of underlying data. The four-eye principle is a control, so testing it requires compliance testing.",
@@ -1024,9 +1024,9 @@
       "scenario_context": "An IS audit team at a fast-growing fintech online lending platform is planning the next audit engagement for the new credit-scoring engine. Key facts the auditor has gathered: (1) the engine's underlying machine-learning model is retrained monthly with new transaction data, and the model's behavior shifts measurably between retrains, (2) the engineering team works in 2-week sprints and ships changes weekly, (3) the audit committee has expressed interest in \"earlier assurance updates rather than waiting for a year-end audit report,\" (4) traditional audit cycles (annual, plan-fieldwork-report) at this organization have averaged 14 weeks per engagement, (5) the audit team has not previously used agile audit methods.",
       "question": "Based on these facts, which audit approach is MOST appropriate for this engagement?",
       "options": {
-        "A": "Traditional 14-week audit cycle to maintain consistency with the audit team's established methodology",
+        "A": "Traditional 14-week audit cycle to maintain consistency with the audit team's established methodology and existing planning approach",
         "B": "Agile audit approach with shorter sprints and continuous deliverables, aligning with the engineering team's cadence and the committee's request for earlier assurance",
-        "C": "Defer the engagement until the credit-scoring engine stabilizes",
+        "C": "Defer the engagement until the credit-scoring engine stabilizes and a more conventional audit cycle becomes feasible",
         "D": "Delegate the engagement to an external auditor since the internal team has not used agile methods"
       },
       "correct": "B",
@@ -1352,10 +1352,10 @@
       "scenario_context": "An IS auditor at a semiconductor manufacturer is helping the IT organization choose a prescriptive control framework for their cybersecurity program. Constraints: (1) the company is a US Federal contractor for defense applications, subject to DFARS 252.204-7012 and CMMC requirements, (2) the company also operates manufacturing facilities in the EU subject to the NIS2 directive, (3) management wants a single comprehensive framework for global use to simplify compliance reporting, (4) the existing IT team is small (12 people) with limited bandwidth for framework adoption. The IT organization is considering: NIST SP 800-171 (DFARS-aligned), ISO/IEC 27001 (international, EU-recognized), CIS Controls (lighter weight, US-centric), or COBIT 2019 (governance-focused, broad).",
       "question": "Which framework approach is MOST appropriate given the constraints?",
       "options": {
-        "A": "NIST SP 800-171 alone — DFARS compliance is the federal contract priority",
-        "B": "ISO/IEC 27001 alone — internationally recognized and EU-aligned",
+        "A": "NIST SP 800-171 alone — DFARS compliance is the federal contract priority and EU markets follow standard practice",
+        "B": "ISO/IEC 27001 alone — internationally recognized, EU-aligned, and broader in scope than US-specific frameworks",
         "C": "NIST SP 800-171 + ISO/IEC 27001 mapped together — recognizing that DFARS requires NIST while NIS2 is best served by ISO 27001",
-        "D": "CIS Controls alone — the team is small and CIS is lighter weight"
+        "D": "CIS Controls alone — the team is small and CIS Controls is lighter weight than other framework options"
       },
       "correct": "C",
       "key_concept": "Prescriptive control frameworks are chosen for fit to the regulatory and operating environment. When operations span multiple jurisdictions with different mandatory frameworks, single-framework approaches miss compliance — multi-framework with explicit mappings is the realistic answer.",
@@ -1429,8 +1429,8 @@
       "options": {
         "A": "A short, lightweight planning phase (1 week) since the system is recent and well-documented; spend most time on fieldwork",
         "B": "A thorough planning phase (3 weeks) covering risk assessment of all 6 parks, integration interfaces, and root-cause review of the 3 incidents — the planning depth determines fieldwork efficiency",
-        "C": "Skip the planning phase and start directly with substantive fieldwork given the time constraint",
-        "D": "Conduct planning across all 6 parks in parallel during fieldwork to compress the timeline"
+        "C": "Skip the planning phase and start directly with substantive fieldwork given the time constraint imposed by the audit committee's reporting deadline",
+        "D": "Conduct planning across all 6 parks in parallel during fieldwork to compress the timeline and deliver findings on the audit committee's deadline"
       },
       "correct": "B",
       "key_concept": "Planning depth determines fieldwork efficiency. When a system has integration complexity, recent incidents, and tight timelines, investing more in planning (not less) is what makes fieldwork hit its window.",
@@ -2084,8 +2084,8 @@
       "options": {
         "A": "Whether the controls are coded to perform efficiently at peak shopping volumes, regardless of business intent",
         "B": "Whether the application controls are aligned to the specific business-process risks they are designed to mitigate, and whether they operate consistently across the population of transactions",
-        "C": "Whether the controls match the application vendor's recommended best-practice configurations",
-        "D": "Whether the controls are simple enough that operations staff can understand them without IT support"
+        "C": "Whether the controls match the application vendor's recommended best-practice configurations as published in the vendor's official documentation",
+        "D": "Whether the controls are simple enough that operations staff can understand them without IT-support involvement during routine processing exceptions"
       },
       "correct": "B",
       "key_concept": "Application-control adequacy is judged on alignment to business-process risk and consistent operation across the population. Performance, vendor defaults, and simplicity are operational properties that may matter for other reasons but are not the test of control adequacy.",
@@ -2266,10 +2266,10 @@
       "bloom_level": "Foundational",
       "question": "Which statement BEST describes the PRIMARY purpose of internal controls?",
       "options": {
-        "A": "To eliminate all risk to the organization across operations, reporting, and compliance",
+        "A": "To eliminate all risk to the organization across operations, reporting, and compliance dimensions through preventive control design",
         "B": "To provide reasonable assurance regarding the achievement of objectives in the categories of operations, reporting, and compliance",
-        "C": "To replace external audits with internally-managed assurance activities",
-        "D": "To document management's policies for use during regulatory inspections"
+        "C": "To replace external audits with internally-managed assurance activities that satisfy regulatory requirements without independent assessment",
+        "D": "To document management's policies for use during regulatory inspections and external-auditor evidence-gathering procedures"
       },
       "correct": "B",
       "key_concept": "Internal controls provide reasonable — not absolute — assurance of objective achievement across operations, reporting, and compliance. The reasonable-assurance qualifier and the three objective categories together define the COSO-grounded purpose.",
@@ -2703,10 +2703,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a wholesale-distribution company is testing inventory-adjustment transactions over a 12-month period. The transactions vary widely in dollar amount and exhibit different error-rate patterns: large adjustments ($25,000+) are infrequent and rarely err; medium adjustments ($1,000-$25,000) are frequent with moderate error rates; small adjustments (< $1,000) are very frequent with higher error rates. The auditor wants to design an efficient sample. Which sampling approach is MOST appropriate?",
       "options": {
-        "A": "Simple random sampling across the entire population so every transaction has equal selection probability",
+        "A": "Simple random sampling across the entire population so every transaction has equal selection probability regardless of its dollar size or stratum",
         "B": "Stratified sampling, splitting the population by transaction size into separate strata and sampling each stratum independently with sample sizes calibrated to each stratum's variability and error-rate pattern",
         "C": "Systematic sampling using a fixed interval starting from a random transaction at the beginning of the period",
-        "D": "Judgmental sampling targeting only the largest 50 transactions to maximize coverage of dollar value"
+        "D": "Judgmental sampling targeting only the largest 50 transactions to maximize coverage of dollar value while keeping the sample size manageable"
       },
       "correct": "B",
       "key_concept": "Stratified sampling improves efficiency when the population has identifiable sub-groups with different variability or error-rate patterns. Each stratum is sampled independently, with sample sizes calibrated to each stratum's characteristics — yielding a tighter overall conclusion at lower total sample size than simple random across the whole population.",
@@ -2775,10 +2775,10 @@
       "bloom_level": "Application",
       "question": "An audit manager at a public-accounting firm is establishing a peer-review process within the IS audit practice. The manager must decide between two peer-review approaches: engagement-level peer review (one auditor reviews another's completed engagement file) and program-level peer review (an external firm reviews the practice's overall QAIP). What is the MOST important distinction the manager should communicate to the team?",
       "options": {
-        "A": "Engagement-level peer review evaluates the work on a specific audit; program-level peer review evaluates the audit practice's QAIP, methodology, and consistency across many engagements — they answer different questions and both are needed",
+        "A": "Engagement-level peer review evaluates work on a specific audit; program-level peer review evaluates the practice's QAIP, methodology, and consistency — both needed for different questions",
         "B": "Engagement-level peer review is voluntary and program-level peer review is mandatory, so the team should focus only on program-level review",
-        "C": "The two approaches are interchangeable, so the team should adopt whichever is cheaper to administer",
-        "D": "Engagement-level peer review is performed by external firms only, while program-level peer review is performed internally"
+        "C": "The two approaches are interchangeable so the team should adopt whichever is cheaper to administer in the firm's QA program structure",
+        "D": "Engagement-level peer review is performed by external firms only, while program-level peer review is performed internally by senior staff in rotation"
       },
       "correct": "A",
       "key_concept": "Engagement-level peer review evaluates a specific audit's work quality; program-level peer review evaluates the practice's overall QAIP and methodology. They answer different questions at different scopes and both are needed in a mature QA program.",
@@ -2884,7 +2884,7 @@
       "question": "An IS auditor at a legal-tech SaaS company is auditing the company's AI-powered contract-clause-classification model. The audit's objective includes evaluating whether the model is auditable — whether the auditor can verify what the model does and why for any given contract. What is the MOST important characteristic of an auditable AI/ML model?",
       "options": {
         "A": "The model is trained on the largest available dataset, regardless of whether the data sources are documented",
-        "B": "The model's decisions are reproducible (same input yields same output, given the same model version) and explainable (the auditor can trace why a specific decision was reached at a level appropriate to the use case)",
+        "B": "The model's decisions are reproducible (same input yields same output for the same version) and explainable (the auditor can trace why a specific decision was reached)",
         "C": "The model is the most accurate available for the use case, even if its inner workings are proprietary and undocumented",
         "D": "The model uses the same algorithm as the industry leader, regardless of whether the company has access to the training-data lineage"
       },
@@ -3030,7 +3030,7 @@
       "question": "An IS auditor at a heavy-construction engineering firm has discovered evidence during an audit that suggests possible bid-rigging by an estimating manager. The auditor anticipates that the matter may eventually result in litigation. What is the MOST important consideration when handling the evidence during the audit?",
       "options": {
         "A": "Make working copies of all suspicious documents and emails so the audit team can analyze them flexibly, with originals stored in the audit team's standard work-paper archive",
-        "B": "Establish and maintain chain-of-custody documentation for each piece of original evidence — recording who collected it, when, where, who has had access since, and where it has been stored — in a manner that preserves admissibility in any future proceeding",
+        "B": "Establish and maintain chain-of-custody documentation for each piece of evidence — recording who collected it, when, where, and storage history — to preserve admissibility in any future proceeding",
         "C": "Forward the suspicious documents to management's legal counsel immediately and let them handle all preservation and documentation",
         "D": "Hold the evidence informally in the auditor's personal files until the audit committee decides whether to escalate"
       },
@@ -3181,7 +3181,7 @@
       "question": "Which scope decision is MOST appropriate, and what is the key risk of choosing a narrower scope?",
       "options": {
         "A": "Option 1 (IS-audit-only) — IS audits should always remain narrowly scoped to IT components to maintain technical depth, and other audit types should be performed separately as their own engagements",
-        "B": "Option 3 (integrated scope) — the IT, operational, and financial-reporting components are interdependent (an IT control failure could cascade to inventory misstatement), so an integrated audit produces conclusions that recognize cross-domain risk; the key risk of a narrower scope is missing risks at the seams between IT, operations, and financial reporting",
+        "B": "Option 3 (integrated scope) — IT, operational, and financial-reporting components are interdependent, so an integrated audit recognizes cross-domain risk; narrower scope misses risks at the seams",
         "C": "Option 2 (operational-audit-only) — operational concerns dominate semiconductor production, so an operational-audit-only scope is sufficient and IT and financial-reporting components can be handled by ad-hoc procedures",
         "D": "All three should be performed sequentially in three separate engagements, even if it means duplicating fieldwork at each component boundary, so each audit type retains its specialist focus"
       },
@@ -3218,7 +3218,7 @@
       "question": "What is the MOST appropriate escalation approach for the audit director?",
       "options": {
         "A": "Wait for the regular audit-committee meeting in 45 days and present the finding as part of the standard audit report, since management has already committed to remediation",
-        "B": "Escalate to the audit-committee chair immediately on a between-meetings basis, communicate the criticality and the regulatory-notification question, and coordinate with general counsel on the regulator-notification timing — the criticality and the regulatory exposure both warrant escalation that does not wait for the regular cadence",
+        "B": "Escalate immediately on a between-meetings basis to the audit-committee chair, communicate the criticality and regulatory-notification question, and coordinate with counsel on regulator timing",
         "C": "Defer all escalation to general counsel and let counsel decide whether and when to notify the audit committee, since the regulatory notification is a legal matter",
         "D": "Email the entire audit committee with a copy to all senior management at once, since the urgency justifies bypassing the chair-first protocol"
       },
@@ -3363,10 +3363,10 @@
       "bloom_level": "Foundational",
       "question": "Which statement BEST describes the PRIMARY role of the audit committee?",
       "options": {
-        "A": "An operational committee composed of management, responsible for executing day-to-day controls",
+        "A": "An operational committee composed of management responsible for executing day-to-day controls and reporting performance results to the board",
         "B": "A board-level committee composed of independent directors, responsible for oversight of the audit function, internal controls, financial reporting, and the relationship with external auditors",
-        "C": "A committee of staff auditors that reviews the work of senior auditors before report issuance",
-        "D": "A regulatory body that conducts external audits of public companies on behalf of investors"
+        "C": "A committee of staff auditors that reviews the work of senior auditors before report issuance to ensure quality and methodological consistency",
+        "D": "A regulatory body that conducts external audits of public companies on behalf of investors and financial-statement users worldwide"
       },
       "correct": "B",
       "key_concept": "The audit committee is a board-level oversight committee composed of independent directors. It oversees the audit function (internal and external), internal controls, financial reporting, and audit-related compliance. It is not an operational committee, not a peer-review group, and not a regulator.",
@@ -3473,7 +3473,7 @@
       "question": "An IS auditor at an online gaming platform suspects, based on system evidence, that a senior product manager has been involved in click-fraud manipulation that distorts ad-revenue reporting. The auditor has been authorized to conduct a fact-finding interview with the manager. What is the MOST important consideration when conducting this interview?",
       "options": {
         "A": "Conduct the interview alone with the manager to maintain confidentiality and avoid alarming the subject prematurely",
-        "B": "Have a second qualified interviewer present, document every question and response contemporaneously, allow the subject to provide a free-form narrative before specific questions, and avoid leading questions that could bias responses",
+        "B": "Have a second qualified interviewer present, document every question and response contemporaneously, allow free-form narrative before specific questions, and avoid leading questions",
         "C": "Open the interview with directly accusatory questions to put pressure on the subject and produce a confession",
         "D": "Hold the interview at the manager's desk during peak business hours so other employees can observe and corroborate"
       },
@@ -3510,7 +3510,7 @@
       "question": "An IS auditor at a port authority is conducting risk assessment for the next audit cycle covering the port's terminal-operations system. Data on past control failures is sparse (only two recorded incidents in five years), but operational subject-matter expertise is rich (multiple long-tenured terminal operators with deep domain knowledge). The auditor must choose between quantitative and qualitative risk-assessment techniques. What is the MOST appropriate choice and why?",
       "options": {
         "A": "Quantitative-only — assign frequency probabilities and dollar-impact estimates to each risk so the assessment is precise and defensible to the audit committee",
-        "B": "Qualitative-only, supplemented by structured workshop facilitation with the long-tenured operators — quantitative methods cannot produce reliable probability estimates from two incidents in five years, while structured qualitative methods leverage the available subject-matter expertise rigorously",
+        "B": "Qualitative-only with structured workshop facilitation by long-tenured operators — quantitative methods cannot produce reliable probability estimates from two incidents in five years",
         "C": "Quantitative for all high-priority risks, qualitative for all low-priority risks, with no overlap between the two methods",
         "D": "Skip formal risk assessment entirely and rely on the audit committee's prior-year priorities to drive engagement selection"
       },
@@ -3547,7 +3547,7 @@
       "question": "An IS auditor at a small-molecule biopharma R&D company is evaluating the company's control environment over GMP-relevant systems. The CFO points out that management performs monthly control-monitoring reviews and asks whether the IS audit's independent evaluation is duplicative. What is the MOST appropriate response from the auditor?",
       "options": {
         "A": "Agree with the CFO — management's monthly monitoring reviews are sufficient and the audit team should focus on other areas to avoid duplication",
-        "B": "Explain that management's monthly monitoring is the management-control-monitoring component of internal control (management's own activity), while independent evaluation by the IS audit function provides external assurance over whether the control environment is operating; the two activities are complementary and serve different purposes",
+        "B": "Management's monthly monitoring is the management-control-monitoring component of internal control, while independent IS audit evaluation provides external assurance — complementary purposes",
         "C": "Agree to skip independent evaluation in years when management monitoring has not surfaced issues, since the absence of issues is itself evidence of control effectiveness",
         "D": "Refuse to perform any independent evaluation, since the GMP-regulator's inspection program already covers the control environment"
       },
@@ -3694,7 +3694,7 @@
       "question": "An IS auditor at a luxury fashion brand is concluding fieldwork on an audit of the e-commerce returns-fraud controls. The auditor has collected a large volume of transaction-level evidence (sufficiency is high), but on review notices that much of the evidence comes from a single source (the returns-management application's logs). What evaluation should the auditor perform before concluding?",
       "options": {
         "A": "No further evaluation needed — the volume of evidence is high, so sufficiency is established and the conclusion can rest on it",
-        "B": "Evaluate whether the evidence is also appropriate — relevant to the audit objective AND reliable in source. High volume of evidence from a single source can satisfy sufficiency without satisfying appropriateness, and both are required for the conclusion",
+        "B": "Evaluate whether the evidence is also appropriate — relevant to the audit objective AND reliable in source — both required for the audit conclusion",
         "C": "Discard half of the transaction-level evidence to reduce review effort, since high volume is not necessary",
         "D": "Substitute oral confirmation from the returns-management team in place of transaction-level evidence, since they have the most direct knowledge"
       },
@@ -3766,10 +3766,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a quick-service-restaurant (QSR) chain is testing the IT general controls over change management for the point-of-sale (POS) system. Which of the following is the MOST important characteristic to test in a well-designed change-management control?",
       "options": {
-        "A": "Whether changes are deployed during peak business hours to maximize developer responsiveness",
+        "A": "Whether changes are deployed during peak business hours to maximize developer responsiveness when issues arise during the rollout",
         "B": "Whether each change is authorized, tested, approved by appropriate authority, and deployed using a controlled process that segregates the requestor / developer / approver / deployer roles",
         "C": "Whether the change-management system is hosted on the same infrastructure as the POS system, simplifying the technology footprint",
-        "D": "Whether developers can bypass the change-management process for changes they personally classify as low-risk"
+        "D": "Whether developers can bypass the change-management process for changes they personally classify as low-risk based on their own engineering judgment"
       },
       "correct": "B",
       "key_concept": "Change-management controls require: authorization + testing + approval + segregation of requestor/developer/approver/deployer roles. The four roles must not be combined, and a change that skips any of them is a control failure.",
@@ -3994,7 +3994,7 @@
       "question": "Which architecture is MOST appropriate, and how does it balance the five design factors?",
       "options": {
         "A": "Architecture A (embedded audit modules inline) — best latency and best coverage; manage production-impact concerns by careful instrumentation and the auditor-staffing concern through tuning of alert thresholds",
-        "B": "Architecture B (near-real-time read-only replica) — provides near-real-time detection without inline production-processing risk; coverage is full because audit rules run against every transaction on the replica; staffing concerns addressed through alert-threshold tuning and PII-field redaction at the replica boundary; this architecture balances all five factors better than A or C",
+        "B": "Architecture B (near-real-time read-only replica) provides full coverage without inline production-processing risk; staffing concerns addressed through alert-threshold tuning and PII redaction",
         "C": "Architecture C (periodic CAATs batch on hourly extracts) — eliminates production-impact concerns entirely; latency is at most one hour, which the auditor should accept rather than chase the lower-latency designs",
         "D": "All three architectures should be deployed simultaneously to maximize coverage, with auditor-staffing concerns addressed by hiring more staff"
       },
@@ -4176,7 +4176,7 @@
       "question": "An IS auditor at a money-services bureau (a FinCEN-regulated entity) has identified evidence during fieldwork that strongly suggests employees in the wire-transfer department have been involved in structured-transaction violations to evade reporting thresholds. The audit director is deciding the reporting path. Which approach is MOST appropriate for reporting suspected fraud of this nature?",
       "options": {
         "A": "Report the suspicion only in the final audit report at the next audit-committee meeting, since fraud reporting is part of the standard audit process",
-        "B": "Escalate immediately on a between-meetings basis to the audit-committee chair and to general counsel; coordinate with counsel on regulatory-notification requirements (FinCEN SAR filing within statutory windows); preserve evidence under chain-of-custody; and do not communicate with the suspected individuals until counsel advises",
+        "B": "Escalate immediately on a between-meetings basis to the audit-committee chair and counsel; coordinate on FinCEN SAR filing windows; preserve evidence; do not communicate with suspected individuals",
         "C": "Report the suspicion to the wire-transfer department's manager so they can investigate internally and then update the audit team on findings",
         "D": "Refer the matter to law enforcement immediately and bypass internal escalation entirely, since regulatory violations are law-enforcement matters"
       },
@@ -4213,7 +4213,7 @@
       "question": "An IS auditor at a wholesale food distributor is designing a substantive test of the shipping-fee transaction population. The auditor must set the precision parameters: the acceptable risk of incorrect acceptance and the tolerable error. Which approach is MOST appropriate?",
       "options": {
         "A": "Set acceptable risk and tolerable error to the values used last year, regardless of changes in the audit's risk profile or population size",
-        "B": "Calibrate acceptable risk of incorrect acceptance based on the assessed inherent and control risk for the audited area (lower acceptable risk when IR × CR is high), and set tolerable error based on materiality for the financial-statement assertion involved",
+        "B": "Calibrate acceptable risk of incorrect acceptance based on assessed inherent and control risk (lower acceptable risk when IR x CR is high), and set tolerable error based on materiality",
         "C": "Set acceptable risk to 50% as a default and tolerable error to half of the population's total dollar value",
         "D": "Allow the audited business unit to suggest the precision parameters, then accept their suggestion to maintain the working relationship"
       },
@@ -5634,7 +5634,7 @@
       "question": "An IS audit director at an art-museum endowment fund is implementing an automated work-paper review tool as part of the function's ongoing QA monitoring. The tool will scan completed work papers for compliance with documentation standards (sign-off completeness, cross-reference completeness, attached-evidence presence). What is the MOST important consideration when relying on this tool's output as evidence of QA monitoring?",
       "options": {
         "A": "The tool's output replaces all human QA review, freeing the audit director from any manual examination of work-paper quality",
-        "B": "The tool addresses mechanical / structural compliance (sign-offs, cross-references, attachments) but does not evaluate the substantive quality of audit conclusions, evidence sufficiency, or judgment-based aspects of work papers; human QA review remains required for the substantive dimensions",
+        "B": "The tool addresses mechanical compliance (sign-offs, cross-references, attachments) but does not evaluate the substantive quality of conclusions or evidence sufficiency; human QA review remains required",
         "C": "The tool's output is sufficient evidence of QA monitoring as long as it scans every work paper without exception",
         "D": "The tool should be configured to scan only those work papers where the audit director has individual concerns, to minimize tool overhead"
       },
