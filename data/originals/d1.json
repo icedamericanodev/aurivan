@@ -3143,7 +3143,7 @@
       "question": "Applying threat-and-safeguard analysis, which response is MOST appropriate?",
       "options": {
         "A": "Decline the engagement entirely — both facts create independence threats and the only safe response is total recusal from any audit at the utility",
-        "B": "Disclose both facts to the audit committee, evaluate the threats (familiarity from fact 1 is low because the spouse is unrelated to the audited area; self-review from fact 2 is also low because the prior consulting was unrelated and three years ago) and apply safeguards (formal documentation of the disclosure, audit-committee review, ongoing supervision), proceeding only if the committee accepts the residual risk",
+        "B": "Disclose both facts to the audit committee, evaluate threats (low family-familiarity from fact 1; low self-review from fact 2 given lapse and unrelated scope) and apply documentation + supervision safeguards",
         "C": "Proceed with the engagement without disclosing fact 2, since the prior consulting was three years ago and unrelated to the billing system",
         "D": "Disclose only fact 1 since the audit committee already knows about it, and avoid mentioning fact 2 to keep the engagement scope simple"
       },
@@ -3805,7 +3805,7 @@
       "question": "Apply threat-and-safeguard analysis to determine the MOST appropriate response.",
       "options": {
         "A": "Both facts are immaterial because neither directly involves the audited subject (the tax-calculation engine), so the engagement should proceed without modification",
-        "B": "The brother's role at a competitor (fact 1) is a low-severity self-interest threat addressable by disclosure and supervision; the verbally-accepted internal-transfer offer (fact 2) is a high-severity self-interest threat that compromises the auditor's independence on this engagement and warrants reassignment of the auditor (and re-performance of any of their work that has not yet been independently reviewed)",
+        "B": "The brother fact is a low-severity self-interest threat addressable by disclosure and supervision; the verbally-accepted internal-transfer offer is a high-severity threat warranting reassignment",
         "C": "Both facts warrant immediate dismissal of the auditor for cause, with no opportunity to remediate",
         "D": "Both facts are equivalent in severity and both are addressable by disclosure plus enhanced supervision, with no reassignment required"
       },
@@ -4323,7 +4323,7 @@
       "question": "An IS auditor at a retail bank is auditing the bank's customer-service chatbot, which is built on a large language model (LLM) and has access to customer-account information through a tool-call interface. The audit's risk register includes prompt-injection attacks (where adversarial text in user input attempts to override the system's instructions or extract data). What is the MOST important audit consideration for prompt-injection adversarial robustness?",
       "options": {
         "A": "Whether the LLM model itself is the most accurate available, since high accuracy implies prompt-injection resistance",
-        "B": "Whether the system applies layered defenses — input sanitization, output filtering, tool-call authorization checks at each invocation, prompt-architecture isolation between system instructions and user input, and ongoing red-team testing — recognizing that the LLM cannot be relied upon as the sole defense",
+        "B": "Whether the system applies layered defenses (input sanitization, output filtering, tool-call authorization checks, prompt-architecture isolation, ongoing red-team testing) since the LLM alone is not sufficient",
         "C": "Whether the LLM has been trained on a dataset that excludes prompt-injection examples, so it has not learned how to be manipulated",
         "D": "Whether the LLM provider has self-certified prompt-injection resistance in their public documentation"
       },
@@ -4432,10 +4432,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a regional grocery chain is finalizing the work papers for an audit of the back-end inventory-replenishment system. The audit director's review checklist requires \"complete cross-references between work papers, findings in the audit report, and supporting evidence\". What is the MOST important purpose of this cross-referencing discipline?",
       "options": {
-        "A": "To make the work papers attractive for visual presentation in audit-committee meetings",
-        "B": "To allow an experienced reviewer (internal QA, external assessor, regulator) to trace any finding in the audit report back to its supporting evidence and the procedures performed, and to allow any piece of evidence to be linked to the finding it supports",
+        "A": "To make the work papers attractive for visual presentation in audit-committee meetings and senior-management briefings on engagement results",
+        "B": "To allow an experienced reviewer (internal QA, external assessor, regulator) to trace any finding back to its supporting evidence and procedures performed, and the reverse direction",
         "C": "To reduce the volume of work papers by allowing the auditor to consolidate similar items into single referenced records",
-        "D": "To enable the audit team to reuse work-paper content in future engagements without re-performing the underlying procedures"
+        "D": "To enable the audit team to reuse work-paper content in future engagements without re-performing the underlying audit procedures or evidence collection"
       },
       "correct": "B",
       "key_concept": "Cross-referencing connects findings ↔ work papers ↔ evidence so any finding can be traced back to its support, and any piece of evidence can be linked to the finding it supports. This bidirectional traceability is the discipline's purpose.",
@@ -4506,9 +4506,9 @@
       "bloom_level": "Application",
       "question": "An IS audit director at a warehouse-robotics company has identified a high-impact, medium-likelihood risk: robotic-arm collision causing inventory damage. Management has identified four possible treatments: (1) accept (the cost of mitigation exceeds expected loss); (2) reduce (deploy collision-avoidance sensors at $3M capital cost, reducing likelihood from medium to low); (3) transfer (purchase additional insurance at $400K/year, no likelihood reduction); (4) avoid (cease using robotic arms in this warehouse area, eliminating both productivity gain and risk). What is the MOST important consideration when the auditor evaluates management's selection?",
       "options": {
-        "A": "Whether management chose the treatment with the lowest dollar cost regardless of risk-reduction effectiveness",
-        "B": "Whether management's selected treatment is appropriately aligned to the risk's characteristics and the entity's risk tolerance — recognizing that reduce / transfer / avoid each have different effects on likelihood, impact, and residual risk, and acceptance is appropriate only when the residual risk is within tolerance",
-        "C": "Whether management chose the most technologically sophisticated treatment regardless of cost-effectiveness",
+        "A": "Whether management chose the treatment with the lowest dollar cost regardless of its risk-reduction effectiveness or alignment with the entity's risk tolerance posture",
+        "B": "Whether management's selected treatment is appropriately aligned to the risk's characteristics and the entity's risk tolerance, recognizing that each treatment option has different residual-risk implications",
+        "C": "Whether management chose the most technologically sophisticated treatment regardless of cost-effectiveness or whether the residual risk falls within the entity's stated tolerance",
         "D": "Whether the audit team agrees with management's choice and would have made the same selection in management's position"
       },
       "correct": "B",
@@ -4659,7 +4659,7 @@
       "question": "Which response is MOST appropriate when the initial sample is statistically insufficient to support the auditor's planned conclusion?",
       "options": {
         "A": "Accept the original sample's results as-is and conclude that the population's deviation rate is at least 8.3%, reporting this as the audit conclusion",
-        "B": "Extend the sample with additional items drawn under the original sampling design, re-evaluate the cumulative results, and adjust the audit conclusion based on the larger sample; OR if the deviation rate suggests the original design was fundamentally mismatched, re-design the sample (e.g., switch to a different technique or stratify the population) and document the rationale; both paths preserve audit conclusion validity",
+        "B": "Extend the sample with additional items under the original design and re-evaluate; OR if the deviation rate suggests the design was mismatched, re-design (different technique or stratification) with documented rationale",
         "C": "Discard the initial sample's findings entirely and start over with a fresh sample, ignoring the deviations already identified",
         "D": "Conclude that the population's controls are completely failing without further procedures, since 8.3% deviation exceeds the 3% acceptable rate"
       },
@@ -4919,7 +4919,7 @@
       "question": "An IS auditor at a cybersecurity managed-services provider is auditing a client that operates in both U.S. federal-contractor (NIST CSF aligned) and EU enterprise (ISO/IEC 27001 certified) markets. The auditor needs to evaluate whether the client's single control framework satisfies both NIST CSF and ISO 27001 simultaneously. What is the MOST important consideration when cross-walking the two frameworks?",
       "options": {
         "A": "If the client is ISO 27001 certified, NIST CSF compliance is automatic since the standards are equivalent",
-        "B": "Establish a documented control-mapping that shows for each NIST CSF subcategory and each ISO 27001 Annex A control, which client control(s) satisfy the requirement; identify gaps where one framework requires what the other does not, and address them explicitly; recognize that the frameworks have different orientations (CSF outcomes-based, ISO process-based) and different scopes",
+        "B": "Establish a documented control-mapping showing which client control(s) satisfy each CSF subcategory and ISO Annex A control, identify gaps, and address them explicitly given the frameworks' different orientations",
         "C": "Audit only against NIST CSF since it is more recent and assume ISO 27001 compliance follows automatically",
         "D": "Use whichever framework's requirements are easier to satisfy in any given area, ignoring the other framework's requirements where they exceed the easier one"
       },
@@ -4955,10 +4955,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a publicly-traded retail chain is supporting a SOX 404 IT-controls audit. Management is operating its IT-control environment using COBIT 2019 as the framework. What is the MOST appropriate way to relate COBIT 2019 to SOX 404 IT-controls testing?",
       "options": {
-        "A": "Use COBIT alone for SOX 404 testing since COBIT is comprehensive and includes all SOX-relevant controls",
-        "B": "Use SOX 404 alone and ignore COBIT, since SOX is the regulatory requirement and COBIT is internal-management-only",
-        "C": "Map COBIT 2019 management objectives (especially DSS, BAI, APO process areas) to specific SOX 404 IT-general-control areas (access management, change management, IT operations, data integrity) — using COBIT to design and operate controls and SOX 404 to define audit scope and reporting",
-        "D": "Apply COBIT and SOX requirements simultaneously to every transaction in the population, regardless of whether they apply"
+        "A": "Use COBIT alone for SOX 404 testing since COBIT is comprehensive and includes all SOX-relevant controls within its management objectives and process-area structure",
+        "B": "Use SOX 404 alone and ignore COBIT, since SOX is the regulatory requirement and COBIT is internal-management-only with no role in regulatory audit",
+        "C": "Map COBIT 2019 management objectives (especially DSS, BAI, APO process areas) to specific SOX 404 IT-general-control areas (access, change, operations, data integrity) for design and audit scope",
+        "D": "Apply COBIT and SOX requirements simultaneously to every transaction in the population, regardless of whether the requirements apply to that transaction class"
       },
       "correct": "C",
       "key_concept": "SOX 404 and COBIT 2019 serve complementary roles: COBIT provides a framework for designing and operating IT controls; SOX 404 defines the audit's scope and reporting requirements over financial-statement-relevant IT controls. The right approach maps COBIT process areas (especially DSS, BAI, APO) to SOX-relevant IT-general-control areas.",
@@ -5029,10 +5029,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a multi-state hospital chain is auditing a system that processes both protected health information (PHI, subject to HIPAA) and patient financial data (subject to GLBA — Gramm-Leach-Bliley Act because the hospital extends in-house financing). The two regulatory regimes have overlapping but distinct requirements. What is the MOST appropriate audit approach?",
       "options": {
-        "A": "Audit only against HIPAA, since healthcare regulations supersede financial regulations for healthcare entities",
-        "B": "Audit only against GLBA, since financial-data regulations are stricter and HIPAA compliance follows automatically",
-        "C": "Audit against both regulations explicitly, document where each regulation imposes requirements not imposed by the other (PHI confidentiality controls per HIPAA Privacy Rule; financial-data safeguards under GLBA Safeguards Rule), and identify any conflicts requiring legal interpretation",
-        "D": "Defer the audit until federal regulators provide unified guidance for healthcare entities that also extend financing"
+        "A": "Audit only against HIPAA, since healthcare regulations supersede financial regulations for healthcare-sector entities and GLBA compliance follows automatically",
+        "B": "Audit only against GLBA, since financial-data regulations are stricter and HIPAA compliance follows automatically when GLBA controls are operating",
+        "C": "Audit against both regulations explicitly, document where each imposes requirements not imposed by the other (PHI confidentiality per HIPAA Privacy Rule; financial-data safeguards under GLBA), and identify conflicts",
+        "D": "Defer the audit until federal regulators provide unified guidance for healthcare entities that also extend financing or operate in mixed regulatory regimes"
       },
       "correct": "C",
       "key_concept": "Sector-overlap regulatory cases require auditing against both regimes explicitly, documenting requirement differences, and identifying conflicts. Treating one as superseding, deferring to unified guidance, or assuming automatic compliance all violate the regulatory discipline.",
@@ -5142,9 +5142,9 @@
       "question": "Which response BEST describes the IS auditor's role and integration discipline through the remaining lifecycle?",
       "options": {
         "A": "The IS auditor remains the primary investigator and continues performing detailed analysis in parallel with the forensic firm",
-        "B": "The IS auditor's role shifts to coordination, evidence preservation, and supporting the forensic firm's work without independently conducting interviews or analysis; the auditor reports to the audit committee through the audit director, coordinates with general counsel on privilege boundaries, and preserves audit work-product separately from forensic work-product covered by privilege",
+        "B": "The IS auditor's role shifts to coordination, evidence preservation, and supporting the forensic firm without independent interviews or analysis; report through the audit director and coordinate with counsel",
         "C": "The IS auditor exits the engagement entirely once the forensic firm engages, since forensic and audit roles are mutually exclusive",
-        "D": "The IS auditor takes over external-counsel coordination, since the auditor has the most context on the matter"
+        "D": "The IS auditor takes over external-counsel coordination from the audit director since the auditor has the most operational context on the matter being investigated"
       },
       "correct": "B",
       "key_concept": "Through the fraud-investigation lifecycle, the IS auditor's role shifts from primary investigator to coordinator + evidence preserver + audit-committee channel. The auditor does NOT take over forensic work, exit entirely, or take over counsel coordination. Privilege boundaries are managed by counsel, not audit.",
@@ -5448,7 +5448,7 @@
       "question": "Which approach BEST navigates the integrated-audit coordination boundaries?",
       "options": {
         "A": "The internal-audit function should report directly to the external CPA firm, with all work-papers transferred to them at engagement end, since the external firm has the regulatory responsibility",
-        "B": "The internal-audit function maintains its own reporting line to the audit committee, coordinates with the external CPA firm through documented protocols (test-area mapping, work-paper format alignment, reliance-letter discipline per PCAOB AS 2605), and preserves confidentiality boundaries (internal-audit reports to the audit committee, not to external auditors directly); the external auditor decides on reliance per their independent judgment per AS 2605",
+        "B": "The internal-audit function maintains its own audit-committee reporting line, coordinates through documented protocols per PCAOB AS 2605, and preserves confidentiality boundaries between the two audit teams",
         "C": "The two functions should operate completely independently with no coordination, since coordination would compromise either function's independence",
         "D": "The internal-audit director should request that the external CPA firm pre-approve all internal-audit procedures, ensuring no friction at year-end"
       },
@@ -5522,7 +5522,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a municipal water utility is reviewing management's monitoring activities under COSO Internal Control - Integrated Framework Component 5 (Monitoring Activities). Management performs both ongoing evaluations (built into operating processes) and separate evaluations (periodic standalone reviews). What is the MOST important characteristic distinguishing the two types?",
       "options": {
-        "A": "Ongoing evaluations are operationally embedded in the regular activities (e.g., supervisor exception review, automated control-failure alerts, KPI dashboards), while separate evaluations are periodic standalone reviews (e.g., annual self-assessment, dedicated control-environment review) that step back and examine controls at a point in time",
+        "A": "Ongoing evaluations are operationally embedded in regular activities (supervisor exception review, automated alerts, KPI dashboards), while separate evaluations are periodic standalone reviews",
         "B": "Ongoing evaluations are performed by the audit function only, while separate evaluations are performed by management only",
         "C": "Ongoing evaluations cover only IT controls, while separate evaluations cover only business-process controls",
         "D": "Ongoing evaluations are required by COSO, while separate evaluations are optional and rarely used in practice"
@@ -5560,9 +5560,9 @@
       "question": "An IS auditor at a community college system is using Generalized Audit Software (GAS) such as ACL or IDEA to test the tuition-billing transaction file. Which characteristic BEST describes the appropriate use of GAS in IS audit?",
       "options": {
         "A": "GAS is used to write and deploy operational software for the audited system, replacing the system's native processing logic",
-        "B": "GAS is used to extract, analyze, and test transaction data independent of the audited system's native processing — the auditor reads the data into the GAS tool and applies audit-defined queries, computations, and tests, producing audit evidence that is independent of the system's reports",
-        "C": "GAS is used to generate fictitious test transactions inserted into production processing for audit testing",
-        "D": "GAS is the same as CAATs and the two terms can be used interchangeably without distinction"
+        "B": "GAS extracts, analyzes, and tests transaction data independent of the audited system's native processing; the auditor applies audit-defined queries to data read into the tool, producing independent evidence",
+        "C": "GAS is used to generate fictitious test transactions inserted into production processing for audit testing of the system's transaction handling logic",
+        "D": "GAS is the same as CAATs and the two terms can be used interchangeably without distinction in audit work papers or reporting"
       },
       "correct": "B",
       "key_concept": "Generalized Audit Software (GAS) is one type of CAAT — used to extract and analyze transaction data independent of the audited system. It does not replace operational software, does not insert test transactions (that's ITF), and is a sub-category of CAATs (not equivalent).",
@@ -5596,10 +5596,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a savings & loan association is using an Integrated Test Facility (ITF) to test the loan-origination application's credit-decision controls. What is the MOST important characteristic of ITF that distinguishes it from other CAATs?",
       "options": {
-        "A": "ITF involves creating fictitious entities (test customers, test loans) within the production system and processing test transactions through them; the auditor pre-defines expected outcomes and verifies actual outcomes match, providing direct evidence that production processing logic operates as designed — distinguishing it from external-data-analysis CAATs like GAS",
-        "B": "ITF is the same as Generalized Audit Software and produces the same evidence",
-        "C": "ITF replaces the production system entirely with an audit-managed test environment for the duration of testing",
-        "D": "ITF is performed only after a control failure has been detected, as a forensic investigation technique"
+        "A": "ITF involves creating fictitious entities within the production system and processing test transactions through them; the auditor pre-defines expected outcomes and verifies actual outcomes match",
+        "B": "ITF is the same as Generalized Audit Software and produces the same evidence by reading transaction data into an external analytical tool",
+        "C": "ITF replaces the production system entirely with an audit-managed test environment for the duration of testing, halting production processing during the audit window",
+        "D": "ITF is performed only after a control failure has been detected, as a forensic investigation technique to recreate the failure for evidence preservation"
       },
       "correct": "A",
       "key_concept": "ITF creates fictitious entities within the production system and runs test transactions through them; the auditor compares expected vs actual outcomes to verify production processing logic. Distinct from external-data CAATs (GAS), full-system replacement, and forensic investigation.",
@@ -5670,10 +5670,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a wholesale auto-parts distributor is classifying the company's IT controls. Which set of examples BEST illustrates the preventive / detective / corrective classification?",
       "options": {
-        "A": "Preventive: monthly access-review reports listing out-of-policy access; Detective: deny-by-default access policy at provisioning; Corrective: nightly system backup",
-        "B": "Preventive: deny-by-default access policy at provisioning (stops the unauthorized access before it happens); Detective: monthly access-review reports listing out-of-policy access (detects after-the-fact); Corrective: process to revoke access and remediate any data accessed (responds to detected issues)",
-        "C": "Preventive: post-incident remediation procedure; Detective: pre-deployment code review; Corrective: anti-malware signature update",
-        "D": "All three classifications are interchangeable and the labels don't materially affect audit conclusions"
+        "A": "Preventive: monthly access-review reports listing out-of-policy access; Detective: deny-by-default access policy at provisioning; Corrective: nightly system backup of production data",
+        "B": "Preventive: deny-by-default access policy at provisioning; Detective: monthly access-review reports surfacing out-of-policy access; Corrective: process to revoke access and remediate exposed data",
+        "C": "Preventive: post-incident remediation procedure; Detective: pre-deployment code review of changes; Corrective: anti-malware signature update applied to endpoints",
+        "D": "All three classifications are interchangeable and the labels don't materially affect audit conclusions about the IT-control environment's effectiveness"
       },
       "correct": "B",
       "key_concept": "Preventive controls stop issues before they occur (deny-by-default, segregation of duties, training). Detective controls find issues after they occur (access reviews, exception reports, log monitoring). Corrective controls respond to detected issues (revoke access, restore from backup, patch). The three categories work together.",
@@ -5709,7 +5709,7 @@
       "question": "Which evaluation BEST applies multi-control defense-in-depth analysis?",
       "options": {
         "A": "All five controls together provide adequate protection, regardless of how the layers interact, since the count of controls is high",
-        "B": "Defense in depth requires that the controls be both independently effective AND complementary in coverage, addressing different failure modes (preventive layer for unauthorized access at boundary; detective layer to catch what prevention missed; corrective layer to respond once detected) — the auditor evaluates each layer's design AND the layers' combined coverage of failure modes, identifying any gap where a failure mode exists that no layer addresses",
+        "B": "Defense in depth requires controls to be both independently effective AND complementary in coverage of failure modes; the auditor evaluates each layer's design and the layers' combined coverage",
         "C": "The auditor should test only the strongest single control and rely on its effectiveness alone, since one excellent control is more reliable than five mediocre ones",
         "D": "The auditor should test each control independently with no cross-control evaluation, treating each as a separate audit"
       },
@@ -5974,7 +5974,7 @@
       "question": "Which approach BEST integrates the divergence into the audit conclusion?",
       "options": {
         "A": "Issue the audit report citing only the auditor's findings, omit reference to management's self-assessment, and let management explain the divergence privately",
-        "B": "Issue the audit report citing the auditor's findings as the audit conclusion (the auditor's independent work prevails), AND explicitly discuss the divergence between the auditor's findings and management's self-assessment as a separate observation about management's monitoring effectiveness — because failure to surface known control failures in self-assessment is itself a finding about the effectiveness of management's monitoring system",
+        "B": "Issue the report citing the auditor's findings as the conclusion, AND explicitly discuss the divergence as a separate observation about management's monitoring effectiveness",
         "C": "Modify the auditor's findings to align with management's self-assessment, since management has direct knowledge of operations",
         "D": "Issue two separate reports — one citing the auditor's findings, the other citing management's self-assessment — and let stakeholders reconcile"
       },
@@ -6088,7 +6088,7 @@
       "question": "Which response BEST handles the engagement-level budget reduction?",
       "options": {
         "A": "Cut substantive testing entirely, keep only compliance testing of high-risk controls, and issue a report that omits substantive conclusions",
-        "B": "Re-prioritize remaining procedures by risk: keep substantive testing on the highest-risk areas (where the audit's value is most concentrated); reduce or skip lower-risk substantive procedures; document the budget-driven scope reduction explicitly in the audit report including any limitations on the audit conclusion; communicate the budget impact to the client; and brief the audit director's leadership on the implications for audit-quality consistency",
+        "B": "Re-prioritize remaining procedures by risk: keep substantive testing on highest-risk areas, reduce or skip lower-risk procedures, document the scope reduction in the report, and brief leadership",
         "C": "Continue at the original scope and pace, with the director personally absorbing the over-budget effort to maintain quality",
         "D": "Issue the audit report immediately based on the 50% completed procedures, treating the unfinished work as outside the audit's responsibility"
       },
@@ -6350,9 +6350,9 @@
       "question": "An IS audit director at an agricultural cooperative is evaluating whether to deploy continuous auditing to a specific business area. The CA system would cost approximately $400K to deploy plus $80K/year ongoing. What is the MOST important consideration when applying a cost-benefit threshold to the CA deployment decision?",
       "options": {
         "A": "Deploy CA wherever it is technically feasible, regardless of cost-benefit considerations, since continuous auditing is the modern standard",
-        "B": "Evaluate the area's risk profile, transaction volume, anomaly-detection value, and audit-effort substitution potential against the CA deployment and ongoing costs; deploy CA where benefits (early anomaly detection, reduced periodic-audit effort, improved control assurance) exceed costs over a defensible time horizon, and pass on areas where the threshold isn't met",
-        "C": "Deploy CA only in the lowest-risk areas to minimize disruption to higher-risk audits",
-        "D": "Skip CA entirely since periodic auditing has worked historically and CA introduces deployment cost"
+        "B": "Evaluate the area's risk profile, transaction volume, and audit-effort substitution potential against deployment and ongoing cost; deploy where benefits exceed cost over a defensible horizon",
+        "C": "Deploy CA only in the lowest-risk areas to minimize disruption to higher-risk audits and avoid retraining the team on new analytical approaches",
+        "D": "Skip CA entirely since periodic auditing has worked historically and CA introduces deployment cost without commensurate value at the cooperative's transaction volume"
       },
       "correct": "B",
       "key_concept": "CA deployment follows a cost-benefit threshold combining risk profile, transaction volume, anomaly-detection value, and audit-effort substitution potential, evaluated against deployment + ongoing costs. Universal-deployment, low-risk-only, and avoid-CA are all wrong responses to the threshold question.",
@@ -6423,7 +6423,7 @@
       "question": "An IS audit manager at a fintech savings app (operating in partnership with a chartered bank, with KYC/CIP under FinCEN 31 CFR Part 1020 applied through the partner bank's program) is preparing the audit program for an audit of the deposit-account-opening workflow. The manager wants to leverage an ITAF Tools and Techniques template for application audits. What is the MOST important consideration when adapting an ITAF template to the specific engagement?",
       "options": {
         "A": "Use the ITAF template as-is without modification, since templates are designed to be authoritative across all engagements",
-        "B": "Adapt the template to the engagement's specific risks, controls, and scope: keep the template's structural discipline (objectives + procedures + evidence-gathering steps); modify procedures to fit the deposit-account-opening workflow's specific controls (KYC/CIP under FinCEN rules, account-funding controls, fraud-screening); add procedures for fintech-specific risks (real-time identity verification, third-party-data-broker integration); and document the rationale for each adaptation so the program is defensible and reviewable",
+        "B": "Adapt the template to engagement-specific risks and controls: keep structural discipline, modify procedures for the workflow's specific controls, add fintech-specific risk procedures, document each adaptation",
         "C": "Discard the ITAF template entirely and write a custom audit program from scratch, since templates are too generic to be useful",
         "D": "Use the template as-is for compliance areas and write custom procedures only for technical areas, treating the two as fundamentally different audit types"
       },
@@ -6537,7 +6537,7 @@
       "question": "Which response BEST handles the confidence-level adjustment?",
       "options": {
         "A": "Reject the audit-committee's request since the sample was designed at 95% and changing the design mid-engagement is improper",
-        "B": "Recognize that increasing confidence from 95% to 99% requires a larger sample (roughly 50-70% additional sample items, depending on the specific design); communicate the resource implication to the audit committee (additional fieldwork time, additional cost); confirm the audit committee accepts the resource impact; expand the sample appropriately and re-evaluate the conclusion at the higher confidence level; document the design change and the rationale",
+        "B": "Recognize that 95% to 99% confidence requires a larger sample (roughly 50-70% more items); communicate the resource impact, confirm acceptance, expand the sample, and re-evaluate at higher confidence",
         "C": "Accept the audit-committee's request and re-state the conclusion at 99% confidence using the existing sample, since adjusting confidence is a calculation rather than a sampling change",
         "D": "Accept the request but reduce the tolerable error proportionally, keeping the original sample size but tightening the threshold for accepting individual deviations"
       },
