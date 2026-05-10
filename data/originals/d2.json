@@ -1853,6 +1853,734 @@
         "Sector-overlap audit design"
       ],
       "_provenance": "Authored from concept: 'Impact of Laws and Regulations on IS Audit - sector-overlap mapping, distinct from mega-audit / external-deferral / selective-focus'. Public source: ITAF Standard 1202 + ISACA Audit Universe guidance. All scenario specifics (diversified holding company with 5 regulated lines + corporate IT shared services) invented for this question."
+    },
+    {
+      "id": "d2_051",
+      "domain": 2,
+      "subtopic": "Key Control Indicator (KCI) — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines a Key Control Indicator (KCI)?",
+      "options": {
+        "A": "A metric that reports whether a defined control is operating as designed and producing its intended effect over the measurement period",
+        "B": "A leading metric that signals an increasing exposure to a defined risk before the risk fully materializes in the organization",
+        "C": "A metric that demonstrates how effectively the organization is achieving a defined business or IT strategic objective during the period",
+        "D": "A metric that reports the volume of staff hours consumed by a process during a given measurement and reporting period"
+      },
+      "correct": "A",
+      "key_concept": "A KCI measures control HEALTH — whether a control is operating as designed and producing its intended effect. KPIs measure objective achievement; KRIs measure risk exposure trends; volume metrics measure activity inputs.",
+      "pre_read": "KPI/KRI/KCI definition questions test whether you can match each metric type to its specific purpose: KPI = achievement, KRI = exposure, KCI = control. Distractors swap one purpose for another.",
+      "correct_explanation": "ISACA Risk IT Framework and COBIT 2019 define a KCI as a metric that reports the operational health of a control activity — whether it is operating as designed and producing its intended effect. KCI examples include the percentage of access reviews completed on schedule, the rate of patches applied within their target window, and the number of failed logins triggering account-lockout. Option B describes a Key Risk Indicator (KRI) — leading exposure metric. Option C describes a Key Performance Indicator (KPI) — objective-achievement metric. Option D describes raw activity volume, which is an input measure rather than a control measure.",
+      "wrong_explanations": {
+        "B": "This describes a KRI — leading risk-exposure metric, not a control-health metric. KRIs and KCIs share a 'three-letter K-something-I' surface form but have different purposes: risk vs control.",
+        "C": "This describes a KPI — objective-achievement metric. KPIs measure 'are we hitting the goal?' while KCIs measure 'is this control working?' — different scope, different stakeholders, different escalation path.",
+        "D": "Volume metrics report raw activity (hours, transactions). They are input measures, not indicators of control performance. A control that runs many times can still be ineffective; a KCI must measure effectiveness, not frequency."
+      },
+      "tips": [
+        "Trap is C — \"how effectively achieving an objective\" sounds control-related but is the KPI definition, not KCI.",
+        "KCI = control health. KPI = objective achievement. KRI = risk exposure. Volume = activity input. Memorize the four-purpose taxonomy.",
+        "Exam-day shortcut: a KCI question is answered by the option that names operating-as-designed / control-effectiveness — not achievement, exposure, or volume."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COBIT 2019 (Performance Management)",
+      "related_concepts": [
+        "Key Control Indicator",
+        "Control performance",
+        "Control effectiveness",
+        "Performance management"
+      ],
+      "_provenance": "Authored from concept: 'KCI definition - measures control health, distinct from KRI (risk) / KPI (achievement) / volume (activity)'. Public source: ISACA Risk IT + COBIT 2019. Closes KPI/KRI/KCI foundational definition trio (d2_031, d2_032, d2_051). Distinct from d2_015 (KPI/KRI/KCI distinction at application tier)."
+    },
+    {
+      "id": "d2_052",
+      "domain": 2,
+      "subtopic": "Risk Appetite vs Risk Tolerance vs Risk Capacity",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST distinguishes risk appetite from risk tolerance?",
+      "options": {
+        "A": "Risk appetite is set by operational management daily; risk tolerance is set by the board annually for compliance reporting purposes only",
+        "B": "Risk appetite is the broad amount of risk an organization is willing to pursue; risk tolerance is the acceptable variation from appetite for a specific risk category",
+        "C": "Risk appetite and risk tolerance are interchangeable terms used by different frameworks for the same single concept of risk acceptance and risk treatment",
+        "D": "Risk appetite reports realized loss after the fact; risk tolerance forecasts future loss using probabilistic modeling and Monte Carlo simulation runs"
+      },
+      "correct": "B",
+      "key_concept": "Risk appetite = broad willingness to pursue risk for objectives (set by board/executive). Risk tolerance = acceptable variation from appetite at a specific objective/risk-category level. Risk capacity = maximum the organization could absorb without failing. Three distinct concepts, often confused.",
+      "pre_read": "Risk appetite/tolerance/capacity questions test whether you can distinguish broad-vs-specific levels of risk acceptance and the body that sets each. Distractors typically conflate the terms or invert the responsibility level.",
+      "correct_explanation": "COSO ERM and ISO 31000 establish a three-tier hierarchy. Risk APPETITE is a high-level statement of how much risk an organization is willing to accept in pursuit of its objectives — set by the board and senior leadership. Risk TOLERANCE is the acceptable level of variation from appetite for a specific objective or risk category — set at the management level within the appetite envelope. Risk CAPACITY is the maximum risk the organization could absorb without becoming unable to operate (often a regulatory or balance-sheet constraint). Option A inverts the levels. Option C collapses three distinct concepts into one. Option D confuses the concepts with realized-loss reporting and forecasting techniques.",
+      "wrong_explanations": {
+        "A": "This inverts the hierarchy: appetite is BOARD-level (broad), tolerance is MANAGEMENT-level (specific). The 'set daily by operational management' framing also contradicts how risk appetite is meant to be a stable, board-endorsed statement.",
+        "C": "Appetite, tolerance, and capacity are three distinct concepts. Treating them as interchangeable destroys the hierarchy that lets management cascade board-level risk willingness into operational risk-acceptance decisions.",
+        "D": "Realized-loss reporting and forecasting are activities; appetite and tolerance are stated risk-acceptance levels. The two are connected (forecasts inform appetite-setting) but they are not the same construct."
+      },
+      "tips": [
+        "Trap is C — \"interchangeable terms\" feels safe when concepts overlap, but appetite/tolerance/capacity are three distinct levels with different setters.",
+        "Appetite = broad willingness (board). Tolerance = specific variation from appetite (management). Capacity = absorption limit (regulator/balance sheet).",
+        "Exam-day shortcut: appetite-vs-tolerance questions are answered by the option that names broad-vs-specific levels and identifies who sets each."
+      ],
+      "framework_ref": "COSO ERM (2017); ISO 31000:2018 (Risk Management); ISACA Risk IT Framework",
+      "related_concepts": [
+        "Risk appetite",
+        "Risk tolerance",
+        "Risk capacity",
+        "Risk acceptance hierarchy"
+      ],
+      "_provenance": "Authored from concept: 'Risk Appetite vs Tolerance vs Capacity - three-tier hierarchy, distinct from inverted/interchangeable/realized-loss framings'. Public source: COSO ERM 2017 + ISO 31000:2018."
+    },
+    {
+      "id": "d2_053",
+      "domain": 2,
+      "subtopic": "Cloud Service Models — IaaS / PaaS / SaaS Distinction",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST distinguishes IaaS, PaaS, and SaaS in NIST's cloud service-model definitions?",
+      "options": {
+        "A": "IaaS, PaaS, and SaaS are interchangeable marketing terms with no technical or governance differences between them across providers",
+        "B": "IaaS provides only physical hardware; PaaS provides only the data center; SaaS provides only the network connection between user and provider",
+        "C": "IaaS provides compute, storage, and networking primitives; PaaS adds the operating system, runtime, and middleware; SaaS adds the application — each model shifts more responsibility from customer to provider",
+        "D": "IaaS is exclusively for development; PaaS is exclusively for testing; SaaS is exclusively for end-user production with no overlap permitted across stages"
+      },
+      "correct": "C",
+      "key_concept": "Per NIST SP 800-145, IaaS provides infrastructure primitives (compute, storage, network); PaaS adds the platform layer (OS, runtime, middleware); SaaS adds the application. Each model shifts more responsibility from customer to provider — driving the shared-responsibility split.",
+      "pre_read": "Cloud service model questions test whether you can map IaaS/PaaS/SaaS to the layers each provider operates and the resulting responsibility split. Distractors typically confuse layers, fabricate use-case constraints, or treat the terms as marketing equivalents.",
+      "correct_explanation": "NIST SP 800-145 (The NIST Definition of Cloud Computing) defines the three service models by what the provider operates and what the customer retains. IaaS: provider operates the compute/storage/networking infrastructure; customer manages OS, runtime, middleware, applications, and data. PaaS: provider adds the OS/runtime/middleware platform; customer manages applications and data. SaaS: provider operates the application stack; customer manages data and identity within the application. Each model shifts more responsibility from customer to provider — and this shift drives the shared-responsibility model that governs cloud security and audit. Option A erases meaningful technical and governance distinctions. Option B mis-describes each layer. Option D fabricates lifecycle-stage constraints that do not exist.",
+      "wrong_explanations": {
+        "A": "IaaS, PaaS, and SaaS are formal NIST definitions, not marketing equivalents. The shared-responsibility implications (who patches the OS, who configures the runtime, who manages identity) differ materially across the three.",
+        "B": "Hardware-only / data-center-only / network-only is not how NIST defines the layers. IaaS is compute+storage+network primitives, not 'just hardware'. PaaS adds OS/runtime/middleware, not 'just the data center'.",
+        "D": "There is no NIST or ISACA constraint binding IaaS to development, PaaS to testing, or SaaS to production. Production-grade IaaS is common (most major SaaS providers run on public IaaS), and dev/test on SaaS is also common."
+      },
+      "tips": [
+        "Trap is A — \"interchangeable marketing terms\" sounds dismissive-of-jargon savvy, but NIST defines these formally and the responsibility split matters.",
+        "IaaS = infrastructure primitives. PaaS adds OS/runtime. SaaS adds the application. Each step shifts responsibility provider-ward.",
+        "Exam-day shortcut: cloud-service-model questions are answered by the option that names what each provider operates and how responsibility shifts."
+      ],
+      "framework_ref": "NIST SP 800-145 (The NIST Definition of Cloud Computing); CSA Security Guidance v4.0",
+      "related_concepts": [
+        "IaaS",
+        "PaaS",
+        "SaaS",
+        "NIST cloud definitions",
+        "Shared responsibility model"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Service Models IaaS/PaaS/SaaS - layer-by-layer NIST distinction, distinct from interchangeable / mis-layered / lifecycle-bound framings'. Public source: NIST SP 800-145. Distinct from d2_014 (shared responsibility model at application tier)."
+    },
+    {
+      "id": "d2_054",
+      "domain": 2,
+      "subtopic": "IT Steering Committee — Definition and Purpose",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines the PRIMARY purpose of an IT Steering Committee?",
+      "options": {
+        "A": "An IT-only forum that ratifies the CIO's technical decisions before they are communicated to the rest of the organization for implementation",
+        "B": "A cross-functional senior-management body that prioritizes IT investments, sets IT strategic direction, and ensures IT activities align with enterprise strategy",
+        "C": "An external advisory board composed of independent industry experts hired to validate the IT department's annual technology roadmap",
+        "D": "A monthly operational status meeting where help-desk metrics, incident counts, and project schedules are reviewed by IT middle management"
+      },
+      "correct": "B",
+      "key_concept": "IT Steering Committee = cross-functional senior-management body responsible for IT investment prioritization, strategic direction, and IT-business alignment. Not IT-only, not external, not operational status.",
+      "pre_read": "IT Steering Committee definition questions test whether you can identify the cross-functional + senior + alignment-focused nature. Distractors narrow it to IT-only, externalize it, or downgrade it to operational reporting.",
+      "correct_explanation": "COBIT 2019 and ISACA EGIT guidance define the IT Steering Committee as a cross-functional senior-management body whose purpose is to prioritize IT investments, set IT strategic direction, and ensure IT activities align with enterprise strategy. Membership typically combines senior IT leadership (CIO and direct reports) with senior business-unit representation, under executive sponsorship (often a CEO/COO chair). Option A makes it IT-only — defeats the alignment purpose. Option C externalizes it — abdicates internal accountability. Option D downgrades it to operational reporting — wrong altitude.",
+      "wrong_explanations": {
+        "A": "An IT-only steering committee produces decisions that may be technically optimal but business-disconnected. The whole point of a steering committee is the cross-functional perspective.",
+        "C": "External advisory boards can advise; they cannot make and enforce IT investment and strategy decisions on behalf of the organization. That's an internal governance role.",
+        "D": "Operational status reviews happen at the management layer; the steering committee operates at the strategic/governance layer. The two have different memberships, different cadences, and different decision rights."
+      },
+      "tips": [
+        "Trap is D — \"monthly operational status\" feels committee-like but operates at the wrong altitude (operational, not strategic).",
+        "IT Steering Committee = senior + cross-functional + investment/strategy/alignment focus.",
+        "Exam-day shortcut: IT Steering Committee definition questions are answered by the option that names cross-functional senior leadership focused on alignment and investment."
+      ],
+      "framework_ref": "COBIT 2019 (Governance and Management Roles); ISACA EGIT Framework",
+      "related_concepts": [
+        "IT Steering Committee",
+        "Cross-functional governance",
+        "IT investment prioritization",
+        "IT-business alignment"
+      ],
+      "_provenance": "Authored from concept: 'IT Steering Committee foundational definition - cross-functional senior alignment body, distinct from d2_003 (application tier) which addressed proper composition design'. Public source: COBIT 2019 + ISACA EGIT."
+    },
+    {
+      "id": "d2_055",
+      "domain": 2,
+      "subtopic": "HR Management — IT-specific Training Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a multinational manufacturer is reviewing the IT department's training program. Which design feature MOST strongly supports IT staff competence over time?",
+      "options": {
+        "A": "Annual one-day mandatory training delivered in a single all-hands format, identical content for every IT role and skill level",
+        "B": "Role-based competency framework with individual skill-gap assessments, training plans tied to gaps, and periodic re-assessment of competence",
+        "C": "Training delivered only when an incident reveals a knowledge gap, so training time tracks observed operational issues rather than forecasts",
+        "D": "Vendor-led product certifications counted as the entirety of the training program, since vendor materials are always current and authoritative"
+      },
+      "correct": "B",
+      "key_concept": "Effective IT training programs combine role-based competency frameworks, individual gap assessments, gap-targeted training plans, and re-assessment cadence. One-size-fits-all, incident-only, and vendor-only models all leave material competency gaps.",
+      "pre_read": "HR/training questions test whether you can recognize a structured, individualized, refreshable training discipline. Distractors propose one-size-fits-all, reactive, or single-source programs.",
+      "correct_explanation": "COBIT 2019 APO07 (Managed Human Resources) and ISACA IT Workforce Management guidance establish that effective IT training programs are built on role-based competency frameworks (defining what each role needs), individual gap assessments (identifying where each person sits relative to the framework), training plans targeted to identified gaps, and periodic re-assessment so competence keeps pace with role changes and technology evolution. Option A's one-size-fits-all approach guarantees that some staff are over-trained on irrelevant content while others are under-trained on critical skills. Option C's incident-only approach is reactive, covering only failures already realized. Option D's vendor-only model misses internal practices, governance, and emerging-technology areas not covered by any vendor.",
+      "wrong_explanations": {
+        "A": "Identical training for every role and skill level wastes the time of staff who already know the material and underserves staff who need depth. Role-based + individualized is the recognized standard.",
+        "C": "Incident-driven training is necessary as a feedback loop but insufficient as the entire program. It leaves the organization training only for failure modes that have already happened, not for emerging risks or skill gaps that have not yet caused incidents.",
+        "D": "Vendor certifications cover vendor products, not internal processes, governance, audit, ethics, or vendor-agnostic skills. A program that is exclusively vendor-led is structurally incomplete."
+      },
+      "tips": [
+        "Trap is A or D — A masquerades as compliance rigor (\"mandatory annual all-hands\" with identical content for every role); D (\"vendor certifications counted as the entirety\") sounds authoritative but misses governance, ethics, and internal-practice areas no vendor covers.",
+        "Training program design = role-based framework + individual gap assessment + targeted plans + re-assessment cadence.",
+        "Exam-day shortcut: training-design questions are answered by the option that names role-based plus individualized plus refreshable."
+      ],
+      "framework_ref": "COBIT 2019 APO07 (Managed Human Resources); ISACA IT Workforce Management guidance",
+      "related_concepts": [
+        "IT training program",
+        "Competency framework",
+        "Skill-gap assessment",
+        "Role-based training"
+      ],
+      "_provenance": "Authored from concept: 'IT-specific HR training program design - role-based + individualized + refreshable, distinct from d2_018 (fraud-risk HR controls) and d1_044 (audit team training)'. Public source: COBIT 2019 APO07."
+    },
+    {
+      "id": "d2_056",
+      "domain": 2,
+      "subtopic": "Outsourcing Strategies — Onshore vs Near-shore vs Offshore",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank is comparing onshore, near-shore, and offshore options for its application-development outsourcing. Which factor MOST strongly favors near-shore over offshore for this decision?",
+      "options": {
+        "A": "Lowest possible labor cost per developer, since cost minimization is the governing factor in any outsourcing decision regardless of context",
+        "B": "Identical regulatory and language environment to the parent organization's home jurisdiction, eliminating the need for any contract or governance adaptation",
+        "C": "Closer time-zone overlap, smaller cultural/language gap, and easier travel for in-person collaboration than offshore — at lower cost than onshore",
+        "D": "Complete elimination of cross-border data-transfer concerns, since near-shore arrangements are by definition exempt from data-protection regulations"
+      },
+      "correct": "C",
+      "key_concept": "Near-shore's strategic value is the BALANCE of cost (lower than onshore) with collaboration friction (lower than offshore — closer time zones, similar culture, easier travel). It is not free of data-transfer concerns and is not regulatorily identical to onshore.",
+      "pre_read": "Outsourcing-strategy geography questions test whether you can map onshore/near-shore/offshore to their cost-vs-collaboration trade-offs. Distractors typically claim cost-only, regulatory-equivalence, or exemption from cross-border concerns.",
+      "correct_explanation": "ISACA Outsourcing Strategy guidance and IT Sourcing literature distinguish the three geographic models on cost-vs-collaboration-friction. Onshore: highest cost, lowest collaboration friction (same time zone, same culture, same regulatory environment). Offshore: lowest cost, highest collaboration friction (large time-zone gap, larger cultural and language gap, longer travel). Near-shore: middle ground — closer time zones than offshore, smaller cultural/language gap, easier travel — at lower cost than onshore. Option A reduces the decision to cost alone, which is rarely correct in outsourcing analysis. Option B claims regulatory and language equivalence — only true between very specific jurisdiction pairs, not as a general property of near-shore. Option D fabricates a regulatory exemption that does not exist.",
+      "wrong_explanations": {
+        "A": "Cost-minimization-only is a common candidate trap. Real sourcing decisions weigh cost against collaboration friction, control, regulatory complexity, and concentration risk. Lowest cost is rarely the BEST answer.",
+        "B": "Near-shore does not generally mean identical regulatory or language environment. It means CLOSER than offshore on those dimensions. The 'no contract or governance adaptation needed' claim is unrealistic.",
+        "D": "Cross-border data-transfer concerns apply to any movement of personal data across jurisdictional boundaries. Near-shore arrangements often DO cross data-protection regimes (e.g., US to Mexico, Germany to Poland) and require the same governance machinery as offshore."
+      },
+      "tips": [
+        "Trap is A — \"lowest possible labor cost\" sounds like the obvious driver but is rarely the BEST answer in CISA-style outsourcing questions.",
+        "Onshore vs near-shore vs offshore = cost-vs-collaboration-friction trade-off. Near-shore is the middle ground.",
+        "Exam-day shortcut: geography-of-outsourcing questions are answered by the option that names cost AND collaboration friction together."
+      ],
+      "framework_ref": "ISACA IT Outsourcing Strategy guidance; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Onshore outsourcing",
+        "Near-shore outsourcing",
+        "Offshore outsourcing",
+        "Outsourcing geography"
+      ],
+      "_provenance": "Authored from concept: 'Outsourcing geography - cost-vs-collaboration trade-off near-shore as middle ground, distinct from d2_017 (multi-factor outsourcing decision) and d2_041 (in-house retention drivers)'. Public source: ISACA IT Outsourcing Strategy guidance."
+    },
+    {
+      "id": "d2_057",
+      "domain": 2,
+      "subtopic": "Cloud Risk Management — Beyond Shared Responsibility",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is evaluating a financial services firm's cloud risk-management program. Beyond the shared-responsibility model, which control MOST strengthens the firm's ongoing risk posture across its cloud footprint?",
+      "options": {
+        "A": "Annual contract review by procurement to confirm that the cloud provider's standard terms and conditions remain unchanged year over year",
+        "B": "A continuous control-evidence pipeline: SOC 2 / ISO 27001 reports, real-time security telemetry from the cloud platform, and recurring config-drift assessments against an approved baseline",
+        "C": "A single point-in-time penetration test conducted before the original cloud migration, accepted as the basis for ongoing security assurance",
+        "D": "Trust that the cloud provider's marketing security collateral and certifications eliminate the need for any independent assurance activities"
+      },
+      "correct": "B",
+      "key_concept": "Cloud risk management beyond shared-responsibility requires CONTINUOUS evidence: third-party assurance reports (SOC 2 / ISO 27001), real-time security telemetry from the cloud platform, and recurring config-drift assessments. Annual procurement review, point-in-time pen tests, and provider trust are insufficient.",
+      "pre_read": "Cloud risk-management questions test whether you recognize the shift from periodic, point-in-time assurance to continuous evidence-driven assurance in cloud environments. Distractors propose periodic, single-source, or trust-based models.",
+      "correct_explanation": "ISACA Cloud Risk Management guidance, CSA Cloud Controls Matrix, and FFIEC Cloud Computing examination procedures establish that cloud environments demand continuous, multi-source evidence collection: third-party assurance reports (SOC 2 Type II, ISO 27001 certifications) provide independent assurance over the provider; security telemetry from the cloud platform itself (CloudTrail, security findings, configuration management data) provides operational visibility; recurring config-drift assessments compare current configuration to an approved baseline and flag deviations. Together these provide ongoing, not point-in-time, assurance. Option A's annual procurement review addresses contract terms only, not operational risk. Option C's point-in-time pen test ages out quickly in a continuously-changing cloud environment. Option D's reliance on provider marketing collateral is not assurance — it's brand trust.",
+      "wrong_explanations": {
+        "A": "Contract review addresses agreement terms and pricing. It does not provide visibility into ongoing operational risk — configuration drift, vulnerability emergence, identity sprawl, control failures.",
+        "C": "Point-in-time penetration tests have a short shelf life in cloud environments where configurations change continuously. By the time the report is written, the environment has often already moved on.",
+        "D": "Provider marketing materials and unverified certifications are brand assurance, not control assurance. Independent third-party reports (SOC 2, ISO 27001) and customer-side telemetry are the actual assurance instruments."
+      },
+      "tips": [
+        "Trap is C — \"penetration test before migration\" feels rigorous but ages out quickly in a cloud environment where config changes daily.",
+        "Cloud risk mgmt = third-party assurance + platform telemetry + config-drift assessments, all continuous.",
+        "Exam-day shortcut: cloud-risk-management questions are answered by the option that names continuous, multi-source evidence — not periodic, single-source, or trust-based assurance."
+      ],
+      "framework_ref": "ISACA Cloud Risk Management guidance; CSA Cloud Controls Matrix; FFIEC Cloud Computing booklet; COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Cloud risk management",
+        "Continuous assurance",
+        "SOC 2 reports",
+        "Configuration drift"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Risk Management beyond shared-responsibility - continuous evidence pipeline, distinct from d2_014 (shared-responsibility split) and d2_049 (data ownership in cloud)'. Public source: ISACA Cloud Risk Management + CSA CCM + FFIEC."
+    },
+    {
+      "id": "d2_058",
+      "domain": 2,
+      "subtopic": "Risk Management Program Stand-up — Governance Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is consulting a mid-size insurer that is standing up its first formal IT risk-management program. Which element MOST strongly supports the program's long-term sustainability?",
+      "options": {
+        "A": "Documenting a one-time risk register at program launch and treating it as a static reference for the next several years of risk discussions",
+        "B": "Establishing risk-management governance with a defined cadence, accountable owner, board-approved appetite/tolerance, integration with strategic planning, and a feedback loop from incidents",
+        "C": "Outsourcing the risk-management program entirely to an external consultancy that owns the risk register and convenes the risk reviews on the firm's behalf",
+        "D": "Selecting the most sophisticated quantitative risk modeling software on the market as the program's centerpiece, with all decisions flowing from its calculations"
+      },
+      "correct": "B",
+      "key_concept": "Sustainable risk programs need GOVERNANCE: defined cadence, accountable owner, board-approved appetite/tolerance, integration with strategy, and an incident feedback loop. Static registers, full outsourcing, and tool-centric programs are common standup failure modes.",
+      "pre_read": "Risk-program stand-up questions test whether you can identify the governance scaffolding that lets a program operate continuously. Distractors propose one-time artifacts, full outsourcing, or tool-as-program substitutes.",
+      "correct_explanation": "ISACA Risk IT Framework and COSO ERM (2017) establish that sustainable risk-management programs rest on governance scaffolding: a defined operating cadence (when reviews happen), an accountable owner (typically the CRO or equivalent), board-approved risk appetite and tolerance (sets the envelope within which the program operates), integration with strategic planning (so risk informs strategy and vice versa), and a feedback loop from incidents (so newly-realized risks update the model). Option A produces a static document that goes stale within months — risk programs must be living. Option C externalizes ownership; outsourcing a program defeats the internal accountability that makes risk management meaningful. Option D treats software as the program — software is a tool, not the discipline.",
+      "wrong_explanations": {
+        "A": "A one-time risk register is a snapshot. Without governance to refresh it (review cadence, ownership, integration with planning), it becomes a stale document that nobody trusts within a year.",
+        "C": "External consultancies can advise on program design and methodology, but they cannot own the program. Internal accountability — the risk owner who is on the hook when something goes wrong — is the core governance asset.",
+        "D": "Sophisticated quantitative tools are valuable inputs but not substitutes for governance. A program can have great math and still fail because no one is accountable for acting on the math."
+      },
+      "tips": [
+        "Trap is A — \"document the risk register at launch\" sounds like good documentation hygiene but a static register defeats the program's continuity.",
+        "Risk program stand-up = governance scaffolding (cadence + owner + appetite + integration + feedback). Five elements, not one tool or document.",
+        "Exam-day shortcut: risk-program-design questions are answered by the option that names governance discipline — not single artifacts, full outsourcing, or tool-as-program substitutes."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COSO ERM (2017); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk management program",
+        "Risk governance",
+        "Risk appetite cascade",
+        "Program sustainability"
+      ],
+      "_provenance": "Authored from concept: 'Risk Mgmt Program standup governance design - cadence + owner + appetite + integration + feedback, distinct from d2_011 (5-component program structure) and d2_007 (risk lifecycle gap analysis)'. Public source: ISACA Risk IT + COSO ERM 2017."
+    },
+    {
+      "id": "d2_059",
+      "domain": 2,
+      "subtopic": "Senior Management and Boards — IT Governance Roles",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is assessing IT governance roles at a publicly-traded company. Which division of responsibility BEST represents the standard separation between the board and senior management for IT governance?",
+      "options": {
+        "A": "The board operates IT day-to-day; senior management evaluates IT performance once per year for the annual report disclosure",
+        "B": "The board and senior management share identical IT-governance responsibilities, with no formal distinction in their accountability or scope",
+        "C": "The board manages individual IT projects directly; senior management ratifies the board's project decisions before implementation by the IT department",
+        "D": "The board EVALUATES, DIRECTS, and MONITORS (EDM governance domain); senior management PLANS, BUILDS, RUNS, and MONITORS (the APO/BAI/DSS/MEA management domains) — distinct, complementary accountabilities"
+      },
+      "correct": "D",
+      "key_concept": "Board governance role: Evaluate, Direct, Monitor (EDM in COBIT 2019). Management role: Plan, Build, Run, and Monitor (the APO/BAI/DSS/MEA domains). The split is structural — boards govern, management manages — and the two are distinct, not interchangeable, not inverted.",
+      "pre_read": "Board-vs-management questions test whether you can recognize COBIT 2019's structural split between the EDM domain (governance) and the APO/BAI/DSS/MEA domains (management). Distractors invert, collapse, or fabricate role assignments.",
+      "correct_explanation": "COBIT 2019 makes the governance-vs-management distinction explicit and structural. The governance role — Evaluate, Direct, Monitor (EDM) — is held by the board (or governing body): evaluate stakeholder needs, direct management toward chosen outcomes, monitor that direction is being followed. The management role — Plan, Build, Run, and Monitor (the APO/BAI/DSS/MEA domains) — is held by senior management: plan strategy, build capability, run operations, monitor results. Option A inverts the levels and abdicates governance to once-yearly disclosure. Option B collapses two distinct roles into one. Option C inverts both levels (boards do not run individual projects; management does not ratify board decisions). Only Option D states the recognized split.",
+      "wrong_explanations": {
+        "A": "Boards do not run IT day-to-day; that is management's role. And once-yearly disclosure is reporting, not governance. This option inverts both levels and reduces governance to compliance theater.",
+        "B": "Identical responsibilities defeat the purpose of having two layers. The whole point of governance vs management is the separation — the board oversees so that management can manage with appropriate direction.",
+        "C": "Boards do not manage individual projects. Operational project decisions belong to management. The board sets direction and monitors; the implementation belongs below."
+      },
+      "tips": [
+        "Trap is A — \"board for day-to-day\" sounds like attentive governance but the board's role is direction, not operations.",
+        "Board = EDM (Evaluate, Direct, Monitor). Management = Plan, Build, Run, Monitor (APO/BAI/DSS/MEA). Two distinct accountabilities.",
+        "Exam-day shortcut: board-vs-management questions are answered by the option that names governance for the board and management for senior management — and keeps them DISTINCT, not collapsed."
+      ],
+      "framework_ref": "COBIT 2019 (Governance vs Management); ISACA EGIT Framework",
+      "related_concepts": [
+        "Board governance",
+        "Senior management",
+        "EDM domain",
+        "Governance vs management"
+      ],
+      "_provenance": "Authored from concept: 'Senior Mgmt and Boards IT governance roles - COBIT 2019 EDM (board) vs APO/BAI/DSS/MEA (management) split, distinct from d2_006 (InfoSec governance board accountability)'. Public source: COBIT 2019."
+    },
+    {
+      "id": "d2_060",
+      "domain": 2,
+      "subtopic": "IT Org Structure — RACI / Function Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing IT organizational design at a mid-size logistics company. Which design feature MOST strongly supports clear accountability across IT functions?",
+      "options": {
+        "A": "A documented RACI chart for each IT function that names a single Accountable role per outcome and avoids assigning Accountable to multiple roles for the same outcome",
+        "B": "A flat organizational structure where every IT staff member reports directly to the CIO regardless of company size or specialization area",
+        "C": "Frequent reorganizations driven by quarterly leadership preferences, so the structure remains responsive to whatever priorities are most salient that quarter",
+        "D": "A RACI chart that assigns Accountable to two or three different roles per outcome, since shared accountability is more rigorous than single accountability"
+      },
+      "correct": "A",
+      "key_concept": "Effective RACI design names ONE Accountable per outcome (multiple Accountables defeat accountability), with appropriate Responsible/Consulted/Informed roles around it. Flat-to-CIO doesn't scale; constant reorgs destabilize execution.",
+      "pre_read": "IT org design questions test whether you can recognize the single-Accountable principle of RACI. Distractors propose shared accountability, flat structures, or reorg churn.",
+      "correct_explanation": "ISACA IT Organization guidance and COBIT 2019 APO01 (Managed I&T Management Framework) establish that RACI charts assign exactly ONE Accountable per outcome — the role that owns the result and answers for it. Multiple Responsible roles can collaborate on producing the work, but Accountable must be singular or accountability evaporates ('shared accountability' often means no one is accountable). Option B's flat-to-CIO structure does not scale beyond very small organizations and creates a span-of-control problem that degrades decision quality. Option C's frequent reorgs make ownership unstable — staff cannot build expertise or relationships in roles that change quarterly. Option D explicitly violates the single-Accountable principle.",
+      "wrong_explanations": {
+        "B": "Flat structures work in very small organizations (fewer than ~10 people) but break down quickly as the team grows. The CIO cannot maintain decision quality across dozens of direct reports.",
+        "C": "Reorgs have value when the structure is genuinely misaligned, but quarterly reorgs destabilize ownership and prevent staff from developing the deep expertise that comes from time in role.",
+        "D": "This is the most common RACI design error. 'Shared accountability' sounds collaborative but in practice means no one is accountable — when something goes wrong, each Accountable role can point to the others. Singular Accountable is the recognized principle."
+      },
+      "tips": [
+        "Trap is D — \"shared accountability is more rigorous\" feels collaborative but inverts the RACI principle (singular Accountable, plural Responsible).",
+        "RACI design = ONE Accountable per outcome. Plural Responsible is fine; plural Accountable is the failure mode.",
+        "Exam-day shortcut: RACI/org-design questions are answered by the option that names singular Accountable and a stable structure — not shared accountability or churn."
+      ],
+      "framework_ref": "COBIT 2019 APO01 (Managed I&T Management Framework); ISACA IT Organization guidance",
+      "related_concepts": [
+        "RACI matrix",
+        "IT organization design",
+        "Singular accountability",
+        "Function ownership"
+      ],
+      "_provenance": "Authored from concept: 'IT Org Structure RACI design - singular Accountable principle, distinct from d2_008 (SoD toxic combination identification)'. Public source: COBIT 2019 APO01."
+    },
+    {
+      "id": "d2_061",
+      "domain": 2,
+      "subtopic": "Network Management — Governance and Audit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing network management at a hospital network. Which control set BEST supports network governance from an audit perspective?",
+      "options": {
+        "A": "A single firewall configuration document, last updated three years ago, with no change-tracking and no current review of allowed traffic flows",
+        "B": "Documented network architecture with segmentation rules, change management for ACL/firewall rules, baseline configuration for network devices, and periodic review of allowed traffic flows",
+        "C": "Trust in the network team's expertise alone, with no formal documentation since experienced engineers know the environment and can answer questions on demand",
+        "D": "Strict reliance on a single network monitoring tool's dashboards as the sole evidence of network governance, regardless of underlying configuration discipline"
+      },
+      "correct": "B",
+      "key_concept": "Network management governance from an audit perspective requires architecture documentation, change management for rule sets, baseline configurations, and periodic review of allowed flows. Stale documentation, tribal-knowledge-only, and tool-dashboard-only approaches all leave material gaps.",
+      "pre_read": "Network management questions test whether you recognize the multi-element control set: documentation + change management + baselines + flow review. Distractors propose stale, tribal, or tool-only models.",
+      "correct_explanation": "ISACA Network Management guidance and COBIT 2019 DSS05 (Managed Security Services) establish that auditable network governance requires (1) documented architecture including segmentation logic; (2) change management discipline for ACL/firewall/routing-rule modifications; (3) baseline configurations for network devices so deviations are detectable; (4) periodic review of allowed traffic flows so 'temporary' rules don't accumulate indefinitely. Option A's stale single document with no change tracking is a classic finding — rules accumulate over years without anyone reviewing whether they're still needed. Option C's tribal-knowledge model fails when the experienced engineer leaves. Option D's tool-dashboard-only model gives operational visibility but no governance evidence (configuration discipline, change records, periodic review).",
+      "wrong_explanations": {
+        "A": "Three-year-stale documentation with no change tracking is exactly the pattern that produces the 'rule accumulation' problem common in long-running networks. Auditors expect both currency and change history.",
+        "C": "Tribal-knowledge-only network management fails the bus-factor test (what happens when the engineer leaves?) and provides no auditable evidence of governance discipline.",
+        "D": "Monitoring dashboards provide operational telemetry. They do not document architecture, do not constitute change records, do not establish baselines. Tool-only is necessary but not sufficient."
+      },
+      "tips": [
+        "Trap is C — \"trust in the network team\" feels efficient when staff are competent but creates audit and continuity risks.",
+        "Network management = architecture doc + change mgmt for rules + device baselines + periodic flow review. Four elements together.",
+        "Exam-day shortcut: network-governance questions are answered by the option that names multi-element discipline — not stale, tribal, or tool-only models."
+      ],
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); ISACA Network Management guidance",
+      "related_concepts": [
+        "Network architecture",
+        "Firewall change management",
+        "Configuration baselines",
+        "Traffic flow review"
+      ],
+      "_provenance": "Authored from concept: 'Network Management governance and audit - architecture + change mgmt + baselines + flow review, no prior question on this 2.2.8 sub-bullet'. Public source: COBIT 2019 DSS05."
+    },
+    {
+      "id": "d2_062",
+      "domain": 2,
+      "subtopic": "Risk Analysis — Semi-Quantitative Method Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A financial services firm has detailed loss data for some IT risks but only narrative judgment for others. Which risk-analysis method BEST fits this mixed evidence base?",
+      "options": {
+        "A": "Pure qualitative analysis using high/medium/low ratings only, since narrative judgment is the only reliable input across the firm's risk universe",
+        "B": "Semi-quantitative analysis using calibrated scales (e.g., 1-5 with defined dollar bands) that accommodate quantitative inputs where loss data exists and judgment-based inputs elsewhere",
+        "C": "Pure quantitative analysis using Monte Carlo simulation across every risk in the universe, regardless of whether loss data is available for that specific risk",
+        "D": "Skip formal risk analysis entirely and rely on each business unit's intuition, since formal methods are too rigid for firms with mixed evidence"
+      },
+      "correct": "B",
+      "key_concept": "Semi-quantitative analysis bridges qualitative and quantitative methods using calibrated scales — most appropriate when evidence quality is mixed across the risk universe. Pure qualitative loses precision where data exists; pure quantitative requires data the organization may lack; intuition-only abandons rigor.",
+      "pre_read": "Risk-analysis-method-selection questions test whether you can match the method to the available evidence. Distractors propose extremes (pure qualitative, pure quantitative, or no formal method).",
+      "correct_explanation": "ISACA Risk Analysis guidance, ISO 31010, and COBIT 2019 APO12 (Managed Risk) recognize three method families: qualitative (narrative-only ratings), quantitative (full statistical/probabilistic), and semi-quantitative (calibrated scales that accommodate both). When a firm has detailed loss data for some risks and narrative judgment for others, semi-quantitative is the recognized fit: calibrated scales (1-5 with defined dollar bands and defined likelihood thresholds) translate both kinds of evidence onto a common axis, allowing comparison across the risk universe. Option A's pure qualitative discards the precision available where loss data exists. Option C's pure quantitative requires data the organization does not have for many risks, leading either to fabricated inputs or to ignoring those risks. Option D abandons formal analysis altogether — not a defensible position.",
+      "wrong_explanations": {
+        "A": "When loss data is available, pure qualitative discards the precision it offers. The firm has calibrated dollar evidence for some risks; reducing them to high/medium/low loses information.",
+        "C": "Pure quantitative analysis requires sufficient loss data for every risk under analysis. When data is sparse for some risks, the method either invents inputs (false precision) or ignores those risks (coverage gaps). Neither is acceptable.",
+        "D": "Skipping formal analysis abandons the discipline that risk-management programs are built on. Mixed evidence is a reason to pick semi-quantitative, not a reason to abandon analysis."
+      },
+      "tips": [
+        "Trap is A — \"pure qualitative\" feels safe when evidence is mixed but discards available precision.",
+        "Mixed evidence base → semi-quantitative. Calibrated scales bridge narrative judgment and dollar data on a common axis.",
+        "Exam-day shortcut: risk-analysis-method questions are answered by matching the method to the evidence quality — semi-quant when evidence is mixed."
+      ],
+      "framework_ref": "ISO 31010:2019 (Risk Assessment Techniques); ISACA Risk Analysis guidance; COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk analysis methods",
+        "Qualitative analysis",
+        "Quantitative analysis",
+        "Semi-quantitative analysis"
+      ],
+      "_provenance": "Authored from concept: 'Risk Analysis semi-quantitative method - mixed-evidence fit, distinct from d2_012 (qualitative vs quantitative selection at higher level)'. Public source: ISO 31010:2019."
+    },
+    {
+      "id": "d2_063",
+      "domain": 2,
+      "subtopic": "Privacy Program — Operationalization (Rollout)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing the rollout of a privacy program at a healthcare technology firm. Which rollout approach BEST supports sustained operationalization beyond the initial program design?",
+      "options": {
+        "A": "Publish the privacy policy on the intranet and assume employees will follow it without further communication, training, or operational integration",
+        "B": "Embed privacy controls into existing operations (DSAR in ticketing, breach in IR, RoPA in change mgmt) with named privacy stewards in each business unit",
+        "C": "Rely entirely on the DPO function to enforce privacy across the organization, with no business-unit-level privacy responsibilities or domain visibility",
+        "D": "Wait for a regulatory inquiry to drive operationalization, since regulator-driven actions tend to receive the most internal attention and resourcing"
+      },
+      "correct": "B",
+      "key_concept": "Privacy program rollout succeeds when controls are EMBEDDED in existing operational processes (DSAR in ticketing, breach in IR, RoPA in change mgmt) with named stewards in each business unit. Standalone publishing, DPO-only enforcement, and regulatory-prompt-driven activation are common rollout failure modes.",
+      "pre_read": "Privacy-program rollout questions test whether you recognize that operationalization requires embedding privacy into existing operational processes, not bolt-on standalone enforcement. Distractors propose publish-and-pray, DPO-only, or reactive models.",
+      "correct_explanation": "ISACA Privacy Program guidance and IAPP CIPP/CIPM bodies of knowledge establish that privacy programs operationalize successfully when controls are embedded in the operational processes the business already runs: data subject access request (DSAR) handling integrates with support ticketing; breach response integrates with incident response; RoPA updates integrate with change management; vendor privacy reviews integrate with TPRM. Named privacy stewards in each business unit own ongoing compliance for their domain, supported by the DPO. Option A's publish-and-pray model is the most common privacy-rollout failure. Option C's DPO-only enforcement does not scale and leaves business-unit-level privacy decisions unowned. Option D is purely reactive and exposes the organization to regulatory action that could have been prevented.",
+      "wrong_explanations": {
+        "A": "Publishing a policy and assuming compliance is one of the most common privacy-program failure modes. Operationalization requires embedding privacy into the processes the business actually runs.",
+        "C": "DPOs cannot personally execute privacy at scale across a multi-thousand-person organization. They advise, monitor, and escalate; embedded stewards in each business unit handle day-to-day compliance.",
+        "D": "Regulator-driven activation is reactive — the organization has already failed to operationalize. By the time the inquiry arrives, the cost of the failure (legal exposure, public scrutiny, internal disruption) is higher than the cost of proactive operationalization."
+      },
+      "tips": [
+        "Trap is A — \"publish the policy on the intranet\" sounds like clear communication but is the most common privacy-rollout failure mode (publish-and-pray). C (DPO-only enforcement) is the runner-up trap; the DPO advises, embedded stewards execute.",
+        "Privacy operationalization = embed controls in existing processes (DSAR in ticketing, breach in IR, RoPA in change mgmt) + business-unit stewards.",
+        "Exam-day shortcut: privacy-program-rollout questions are answered by the option that names embedding into operational processes — not publishing, single-function enforcement, or reactive activation."
+      ],
+      "framework_ref": "ISACA Privacy Program guidance; IAPP CIPP/CIPM bodies of knowledge; GDPR Article 24 (controller responsibility)",
+      "related_concepts": [
+        "Privacy program operationalization",
+        "Privacy stewardship",
+        "DSAR handling",
+        "Breach response integration"
+      ],
+      "_provenance": "Authored from concept: 'Privacy Program rollout/operationalization - embedded controls + stewards, distinct from d2_013 (privacy program 8-element design) and d2_029 (multi-regulation privacy audit)'. Public source: ISACA Privacy Program guidance + IAPP."
+    },
+    {
+      "id": "d2_064",
+      "domain": 2,
+      "subtopic": "Information Security Management — Operational Running",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A retailer's CISO is reviewing how the InfoSec management program operates day-to-day after its initial design. Which operational discipline MOST strongly supports sustained program effectiveness?",
+      "options": {
+        "A": "An annual ISMS internal audit conducted in isolation from the day-to-day risk register, incident log, and KCI dashboard maintained by the security team",
+        "B": "Quarterly external penetration tests conducted in isolation, with findings filed for compliance evidence but not tied back to the program's risk treatment plan",
+        "C": "An integrated operating cadence: risk register reviewed monthly, KCIs reported with KRIs to leadership, incidents feeding the risk register, and ISMS audits informed by all three",
+        "D": "Reactive operations only — work the security backlog when an incident reveals a gap, since proactive investment in routine operations rarely pays off measurably in budget cycles"
+      },
+      "correct": "C",
+      "key_concept": "InfoSec program operations require an INTEGRATED cadence: risk register review, KCI/KRI reporting to leadership, incidents feeding the register, and ISMS audits informed by all three. Isolated annual audits, isolated pen tests, and reactive-only models leave material gaps.",
+      "pre_read": "InfoSec program operational discipline questions test whether you recognize the integration across risk register, KCI/KRI reporting, incidents, and ISMS audits. Distractors isolate one element or revert to reactive-only.",
+      "correct_explanation": "ISACA Information Security Management guidance and ISO/IEC 27001:2022 establish that an effective ISMS operates as an integrated system: the risk register is reviewed monthly (not annually), KCIs (control health) and KRIs (exposure) are reported jointly to leadership, incidents update the risk register so newly-realized risks adjust the model, and ISMS internal audits draw on all three sources. Option A's isolation-from-other-data ISMS audit becomes a paperwork exercise that doesn't see the data the program actually generates. Option B's pen tests filed for compliance evidence is the classic 'shelf-ware' failure — findings don't feed back into the treatment plan. Option D's reactive-only model is exactly the pattern that produces incidents that should have been prevented.",
+      "wrong_explanations": {
+        "A": "Audits in isolation from the program's operational data miss the very signals (incidents, KCI degradation, risk-register updates) that should be informing the audit's risk-based scope and scoping decisions.",
+        "B": "Pen-test reports filed for compliance evidence without integration into the risk treatment plan are 'shelf-ware'. The findings should drive specific remediation tracked in the risk register, not just exist as a report on a shelf.",
+        "D": "Reactive-only InfoSec operations means waiting for incidents to reveal control gaps. By the time the gap is revealed, exposure has already been realized; the model is fundamentally insufficient for any non-trivial threat environment."
+      },
+      "tips": [
+        "Trap is B — \"quarterly external pen tests\" sounds rigorous but pen-test results that aren't tied to the risk treatment plan are shelf-ware, not operational discipline.",
+        "InfoSec ops cadence = monthly risk register + joint KCI/KRI reporting + incidents into register + ISMS audits using all three.",
+        "Exam-day shortcut: InfoSec-operations questions are answered by the option that names integrated cadence — not isolated activities or reactive-only models."
+      ],
+      "framework_ref": "ISO/IEC 27001:2022; ISACA Information Security Management guidance; COBIT 2019 APO13 (Managed Security)",
+      "related_concepts": [
+        "ISMS operations",
+        "Risk register cadence",
+        "KCI/KRI integration",
+        "Incident-to-risk feedback"
+      ],
+      "_provenance": "Authored from concept: 'InfoSec Mgmt operational running - integrated cadence, distinct from d2_025 (8-element program structure) and d2_006 (board accountability)'. Public source: ISO/IEC 27001:2022 + ISACA InfoSec Mgmt guidance."
+    },
+    {
+      "id": "d2_065",
+      "domain": 2,
+      "subtopic": "Operational Excellence — Framework Selection",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which approach BEST fits this organization's operational-excellence ambition?",
+      "scenario_context": "An IS auditor at a regional logistics company is consulting on an Operational Excellence initiative. The CEO wants the IT delivery organization to become 'best-in-class' on cost, quality, and speed while maintaining regulatory discipline. The current IT organization runs on a heterogeneous portfolio: ITIL 4 service management for infrastructure, Scaled Agile (SAFe) for application development, ISO 9001 for the regulated systems group, and Six Sigma was attempted in 2019 but lapsed. Three approaches are on the table: (1) pick one framework (e.g., Lean) and apply it everywhere; (2) layer multiple frameworks under a unified Operational Excellence strategy; (3) defer Operational Excellence until each existing framework matures independently.",
+      "options": {
+        "A": "Pick Lean as the single Operational Excellence framework and apply it uniformly across infrastructure, application development, and regulated-systems delivery work",
+        "B": "Layer complementary frameworks under a single OpEx strategy: ITIL 4 for service mgmt, SAFe for delivery, ISO 9001 for regulated quality, Lean/Six Sigma applied selectively",
+        "C": "Defer Operational Excellence until each existing framework matures independently, since attempting to unify before maturity will produce coordination overhead that slows delivery",
+        "D": "Replace all current frameworks with a single Operational Excellence framework chosen by the CEO and apply it from day one, accepting short-term cross-functional disruption"
+      },
+      "correct": "B",
+      "key_concept": "Operational Excellence in heterogeneous IT organizations requires a LAYERED strategy that respects domain-specific frameworks (ITIL for service mgmt, SAFe for delivery, ISO for regulated quality) while applying improvement disciplines (Lean, Six Sigma) where variation is measurable — under a single OpEx governance forum that ties the layers together.",
+      "pre_read": "Operational-excellence framework-selection questions test whether you can recognize that mature IT organizations need layered frameworks rather than a single-framework imposition or framework-replacement. Distractors propose single-framework, defer-until-mature, or rip-and-replace approaches.",
+      "correct_explanation": "ISACA Operational Excellence guidance and the EFQM Model recognize that mature, heterogeneous IT delivery organizations achieve OpEx through a layered approach. Each domain-specific framework addresses a real concern: ITIL 4 for service-management discipline, SAFe (or equivalent) for scaled agile delivery, ISO 9001 for regulated-systems quality. Improvement disciplines (Lean for waste reduction, Six Sigma for variation reduction) are applied selectively where they fit. The unifying element is an OpEx strategy and governance forum that aligns the layers, prevents conflicting metrics, and channels improvement effort toward enterprise outcomes. Option A's single-Lean approach forces a method ill-suited to several domains (regulated systems' quality demands ISO; complex agile delivery isn't a Lean fit). Option C defers progress and misses the integration that distinguishes mature organizations. Option D's rip-and-replace destroys functioning capability and creates cross-domain disruption.",
+      "wrong_explanations": {
+        "A": "Lean is one improvement discipline, not a complete operational-excellence framework. Forcing Lean uniformly destroys ITIL's service-management discipline, SAFe's delivery cadence, and ISO 9001's regulated quality framework. Single-framework imposition in heterogeneous contexts is a known anti-pattern.",
+        "C": "'Defer until mature' rationalizes inaction. The whole point of Operational Excellence as an organizational strategy is to align improvement across domains while each domain matures — not to wait for some indeterminate future when all domains have somehow matured independently.",
+        "D": "Rip-and-replace destroys functioning capability. Each existing framework was adopted because it solved a real problem; replacing them all simultaneously creates coordination disruption far in excess of the integration benefit."
+      },
+      "tips": [
+        "Trap is A — \"pick one framework and apply it everywhere\" sounds like consistency but forces methods into domains they don't fit.",
+        "Operational Excellence in heterogeneous IT = layered domain-specific frameworks + selective improvement disciplines + unifying OpEx governance.",
+        "Exam-day shortcut: operational-excellence questions in heterogeneous contexts are answered by the layered/integrated option, not the single-framework or replacement option."
+      ],
+      "framework_ref": "ISACA Operational Excellence guidance; EFQM Model (2020); ITIL 4; SAFe; ISO 9001:2015",
+      "related_concepts": [
+        "Operational Excellence",
+        "Layered framework strategy",
+        "ITIL 4",
+        "SAFe",
+        "ISO 9001"
+      ],
+      "_provenance": "Authored from concept: 'Operational Excellence framework selection - layered strategy distinct from d2_048 (Quality Mgmt framework selection at smaller scale) and d2_028 (Six Sigma/Agile/BSC method-fit selection)'. Public source: ISACA OpEx + EFQM Model 2020."
+    },
+    {
+      "id": "d2_066",
+      "domain": 2,
+      "subtopic": "Multi-Jurisdiction Privacy Program Scaling",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What should the IS auditor recommend FIRST to address the privacy-scaling complexity in this scenario?",
+      "scenario_context": "A B2C SaaS company that started in California is now operating in 14 jurisdictions: California (CCPA/CPRA), Virginia (CDPA), Colorado (CPA), Texas (TDPSA), the EU (GDPR), the UK (UK-GDPR), Canada (PIPEDA), Brazil (LGPD), India (DPDPA), Singapore (PDPA), Australia (Privacy Act + APPs), Japan (APPI), South Korea (PIPA), and South Africa (POPIA). The privacy team has been keeping per-jurisdiction notices, consent flows, DSAR handling, retention rules, and cross-border transfer mechanisms. The Chief Privacy Officer reports the team is overwhelmed by jurisdiction-specific exception handling and is asking for a sustainable design.",
+      "options": {
+        "A": "Build a separate privacy program for each jurisdiction, since each regulator expects a tailored compliance posture and there is no defensible global privacy approach across regimes",
+        "B": "Default to the strictest single regulation (typically GDPR) and apply it uniformly worldwide, since meeting the strictest standard automatically satisfies all weaker standards everywhere",
+        "C": "Pick the most permissive regulation (typically CCPA) and apply it uniformly worldwide to minimize friction, since the company can update later if specific regulators challenge anything",
+        "D": "Build a global baseline meeting strictest-common requirements (data subject rights, lawful basis, ~72h breach notification, retention discipline, transfer mechanisms) plus a jurisdiction-specific exception layer mapped through a control library"
+      },
+      "correct": "D",
+      "key_concept": "Multi-jurisdiction privacy programs scale through a GLOBAL BASELINE plus a jurisdiction-specific EXCEPTION LAYER, mapped through a control library. Per-jurisdiction silos don't scale; strictest-uniform overshoots in some cases and undershoots in others (no single regulation is strictest on every dimension); most-permissive-uniform invites enforcement.",
+      "pre_read": "Multi-jurisdiction privacy questions test whether you can design a baseline-plus-exception model. Distractors propose per-jurisdiction silos (don't scale), strictest-everywhere (oversimplifies), or most-permissive-everywhere (creates exposure).",
+      "correct_explanation": "ISACA Privacy Program guidance, the IAPP global privacy body of knowledge, and the EDPB+ICO multi-jurisdiction enforcement track record establish that multi-jurisdiction privacy at scale uses a global baseline plus a jurisdiction-specific exception layer. The baseline meets the STRICTEST COMMON requirements across the regulations the firm operates under: data subject rights (access, deletion, portability), lawful-basis discipline, breach notification within ~72 hours (GDPR-aligned), retention discipline, and lawful cross-border transfer mechanisms. The exception layer handles jurisdiction-specific deltas: Brazil LGPD's specific consent rules, India DPDPA's notice requirements, China PIPL's specific transfer-mechanism requirements, and so on. The whole is operationalized through a privacy control library that maps each control to each jurisdiction's specific requirement, so additions (new jurisdiction) and changes (regulator updates) can be absorbed without rebuilding the program. Option A's per-jurisdiction silos are exactly the unsustainable pattern the scenario describes. Option B's 'GDPR is strictest' assumption is wrong on several axes (e.g., Brazil LGPD's consent rules are stricter than GDPR in some cases). Option C's most-permissive-uniform invites direct enforcement.",
+      "wrong_explanations": {
+        "A": "The scenario describes a privacy team already overwhelmed by per-jurisdiction handling. Doubling down on the very pattern that's failing is not the answer. Per-jurisdiction silos don't scale; the privacy team's pain is the evidence.",
+        "B": "GDPR is not strictest on every axis. Brazil's LGPD has stricter consent requirements in some cases; China's PIPL has stricter transfer-mechanism requirements; India's DPDPA has specific notice requirements not in GDPR. 'Default to strictest' as a slogan obscures this — there is no single strictest regulation.",
+        "C": "Picking the most permissive standard and applying it uniformly creates direct enforcement exposure in jurisdictions where the company's behavior falls short. This is the highest-risk option and is sometimes proposed only by candidates who haven't seen multi-jurisdiction enforcement actions."
+      },
+      "tips": [
+        "Trap is B — \"default to GDPR, the strictest\" is the most popular wrong answer because it sounds rigorous, but it's wrong on the fact (GDPR isn't strictest on every dimension).",
+        "Multi-jurisdiction privacy = global baseline + jurisdiction-specific exception layer + control library mapping each control to each jurisdiction.",
+        "Exam-day shortcut: multi-jurisdiction privacy questions are answered by the option that names baseline-plus-exception with a control library — not silo, strictest-everywhere, or permissive-everywhere."
+      ],
+      "framework_ref": "ISACA Privacy Program guidance; IAPP CIPP/CIPM body of knowledge; GDPR; CCPA/CPRA; LGPD; PIPL; PIPEDA; UK-GDPR",
+      "related_concepts": [
+        "Multi-jurisdiction privacy",
+        "Privacy baseline",
+        "Exception layer",
+        "Control library mapping"
+      ],
+      "_provenance": "Authored from concept: 'Multi-jurisdiction privacy program scaling - baseline + exceptions + control library, distinct from d2_029 (multi-regulation privacy AUDIT) and d2_030 (transborder data flow specific decision)'. Public source: ISACA Privacy Program + IAPP."
+    },
+    {
+      "id": "d2_067",
+      "domain": 2,
+      "subtopic": "Cloud Migration Risk — Lift-and-Shift vs Refactor",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the IS auditor's BEST recommendation for sequencing this cloud migration?",
+      "scenario_context": "A regional manufacturer is migrating its application portfolio from on-premises to public cloud. The portfolio comprises 80 applications: 30 stable legacy systems with low feature velocity but heavy compliance dependencies, 20 actively-developed customer-facing applications with high feature velocity, 15 commercial-off-the-shelf (COTS) applications managed by vendors, and 15 candidates for retirement (rationalization opportunities). Three migration strategies are debated: (1) lift-and-shift everything to compress timeline; (2) refactor everything to extract maximum cloud-native value; (3) retire-replace-refactor-rehost-rebuild on a per-application basis ('6 Rs' framework).",
+      "options": {
+        "A": "Lift-and-shift the entire portfolio in a single 12-month wave, accepting that some applications will not realize cloud-native value but treating speed as primary",
+        "B": "Apply per-application 6 Rs decisions: Retire the 15 retirement candidates first; Rehost the 30 stable legacy systems; Refactor the 20 high-velocity apps; Repurchase COTS via SaaS",
+        "C": "Refactor every application before migration to ensure full cloud-native value, even if this requires a 5-year program timeline and significant additional investment across the portfolio",
+        "D": "Defer the entire migration until cloud cost models, security postures, and compliance frameworks have stabilized further in the industry over the next 3-5 years globally"
+      },
+      "correct": "B",
+      "key_concept": "Cloud migration of a heterogeneous portfolio requires a per-application decision via the 6 Rs framework (Retire, Retain, Rehost, Replatform, Refactor, Repurchase). Retire first to reduce scope; rehost stable systems; refactor high-velocity systems; reassess COTS via SaaS. Single-strategy approaches (lift everything, refactor everything, defer everything) all leave material value on the table or destroy risk discipline.",
+      "pre_read": "Cloud migration analysis questions test whether you can recognize that heterogeneous portfolios need per-application decisions. Distractors propose single-strategy approaches that ignore the heterogeneity.",
+      "correct_explanation": "ISACA Cloud Computing guidance, AWS/Azure/GCP migration playbooks, and Gartner's cloud migration framework all converge on the '6 Rs' approach for heterogeneous portfolios: each application gets a per-application decision based on its characteristics. Retire the 15 rationalization candidates first — every application not migrated reduces scope, cost, and risk. Rehost (lift-and-shift) the 30 stable legacy systems — they have low feature velocity, so refactoring would not pay back. Refactor the 20 high-velocity customer-facing applications — they will benefit from cloud-native scale, deployment frequency, and resilience patterns; the refactor cost pays back in feature velocity. Reassess COTS via SaaS — many vendor-managed applications have SaaS equivalents that eliminate the migration entirely. Sequence the waves to minimize concurrent risk (don't refactor and rehost in the same wave for the same business unit). Option A's lift-everything sacrifices cloud-native value for the high-velocity applications. Option C's refactor-everything wastes investment on stable systems where it won't pay back. Option D's defer abandons the migration entirely.",
+      "wrong_explanations": {
+        "A": "Lift-and-shifting everything is a common 'compress the timeline' move that produces an expensive cloud bill with limited cloud-native value for the applications that needed it most (the actively-developed ones). The portfolio is heterogeneous; a uniform strategy ignores that heterogeneity.",
+        "C": "Refactoring everything wastes effort on stable systems where the refactor cost will not pay back in feature velocity or operational benefit. It also extends timelines into multi-year territory that exposes the program to leadership change and budget cuts.",
+        "D": "Deferring 3-5 years exposes the company to on-premises infrastructure costs, end-of-support hardware, and competitive disadvantage versus cloud-native peers. 'Wait for the industry to stabilize' is rationalization, not strategy."
+      },
+      "tips": [
+        "Trap is A — \"compress the timeline with lift-and-shift\" feels disciplined but sacrifices cloud-native value where it matters most (actively-developed apps).",
+        "Heterogeneous cloud migration = 6 Rs per-application: Retire / Retain / Rehost / Replatform / Refactor / Repurchase. Memorize the framework.",
+        "Exam-day shortcut: cloud-migration questions involving heterogeneous portfolios are answered by the option that names per-application decisions, not single-strategy approaches."
+      ],
+      "framework_ref": "ISACA Cloud Computing guidance; Gartner Cloud Migration Framework; AWS/Azure 6 Rs; NIST SP 800-145",
+      "related_concepts": [
+        "6 Rs cloud migration framework",
+        "Lift and shift",
+        "Refactor",
+        "Cloud portfolio rationalization"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Migration Risk - 6 Rs framework for heterogeneous portfolios, distinct from d2_014 (shared responsibility) and d2_017 (outsourcing decision multi-factor)'. Public source: ISACA Cloud Computing + Gartner."
+    },
+    {
+      "id": "d2_068",
+      "domain": 2,
+      "subtopic": "IT Investment Portfolio — Mid-Year Rebalance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which approach BEST addresses the mid-year portfolio rebalance pressure described?",
+      "scenario_context": "A retailer's IT portfolio was approved at year start with 45% allocated to RUN (keep the lights on), 35% to GROW (improve existing capability), and 20% to TRANSFORM (new strategic capability). Mid-year, two pressures arrive: (1) a board-level cost-reduction mandate requires removing 12% from the IT budget for the second half; (2) a regulatory deadline (PCI DSS v4.0) requires unplanned spend that wasn't in the original portfolio. The CIO must rebalance and asks the IS auditor for governance guidance.",
+      "options": {
+        "A": "Apply the 12% cut uniformly across RUN, GROW, and TRANSFORM, since uniform cuts are the fairest treatment across portfolio categories and avoid prioritization conversations",
+        "B": "Cut TRANSFORM (lowest near-term operational risk), preserve RUN (lights-on), absorb the PCI v4.0 spend within GROW with documented exception, board reauthorization, and re-rebalance trigger",
+        "C": "Cut RUN to fund TRANSFORM and the PCI work, since strategic capability and regulatory compliance are higher priority than maintenance of existing systems and operational platforms",
+        "D": "Defer both pressures: keep the portfolio unchanged, request that the board waive the 12% cut, and request that the regulator extend the PCI DSS v4.0 deadline indefinitely"
+      },
+      "correct": "B",
+      "key_concept": "Cost-pressure portfolio rebalance preserves RUN (lights-on), cuts TRANSFORM (lowest near-term operational risk), and absorbs unplanned regulatory spend in GROW with documented exception + board reauthorization. Uniform cuts ignore category priority; cutting RUN damages operations; deferral abdicates accountability.",
+      "pre_read": "IT portfolio rebalance questions test whether you can apply category-specific cut logic (preserve RUN, accept TRANSFORM cuts, absorb regulatory exceptions in GROW). Distractors propose uniform cuts, RUN cuts, or deferral.",
+      "correct_explanation": "ISACA IT Portfolio Management guidance and COBIT 2019 APO05 (Managed Portfolio) establish that portfolio rebalances under cost pressure should preserve portfolio structure, not flatten it. RUN funds the operational capability the business already depends on — cutting it produces immediate operational risk and breaks lights-on commitments. TRANSFORM is strategic capability whose payoff is in 18-36 months — deferring or cutting it produces strategic but not operational consequences. Therefore the conventional cost-pressure rebalance cuts TRANSFORM first, preserves RUN, and absorbs unplanned regulatory spend (PCI DSS v4.0) within GROW (or as a documented exception) with board-level reauthorization. The decision must include a documented exception process for the regulatory deadline, an explicit re-rebalance trigger if conditions change, and clear board-level reauthorization. Option A's uniform cuts treat all categories as equal, which they are not — RUN's failure mode is operational, while TRANSFORM's is strategic. Option C cuts RUN to fund TRANSFORM — backwards (TRANSFORM yields long-term value while cutting RUN produces immediate damage). Option D defers and asks for waivers from both the board and the regulator — likely to fail and abandons accountability.",
+      "wrong_explanations": {
+        "A": "Uniform cuts across RUN/GROW/TRANSFORM treat the categories as equal-priority, which they are not. RUN's failure mode is immediate operational damage; TRANSFORM's failure mode is strategic but not operational. The cut order should reflect this asymmetry.",
+        "C": "Cutting RUN to fund TRANSFORM is backwards. TRANSFORM produces value in 18-36 months; cutting RUN produces immediate operational damage. The conventional cost-pressure cut order is TRANSFORM first, then GROW (selectively), then RUN only as a last resort.",
+        "D": "Deferring both pressures requires the board to waive its own cost mandate and the regulator to extend a deadline. Both are unlikely. More fundamentally, deferral abdicates the CIO's accountability to govern the portfolio under the actual constraints."
+      },
+      "tips": [
+        "Trap is A — \"uniform cuts are fairest\" sounds equitable but treats RUN and TRANSFORM as equal-priority, which they are not (RUN is lights-on; TRANSFORM is strategic).",
+        "Cost-pressure portfolio rebalance order: TRANSFORM first, then selective GROW, RUN only as last resort. Regulatory exceptions go to GROW with documented authorization.",
+        "Exam-day shortcut: portfolio-rebalance questions are answered by the option that preserves operational capability (RUN) and treats strategic projects (TRANSFORM) as the cuttable category."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA IT Portfolio Management guidance",
+      "related_concepts": [
+        "IT investment portfolio",
+        "Run/Grow/Transform",
+        "Portfolio rebalancing",
+        "Cost-pressure response"
+      ],
+      "_provenance": "Authored from concept: 'IT Investment Portfolio mid-year rebalance under dual pressure - preserve RUN cut TRANSFORM, distinct from d2_026 (run/grow/transform tier discipline at planning level)'. Public source: COBIT 2019 APO05."
+    },
+    {
+      "id": "d2_069",
+      "domain": 2,
+      "subtopic": "InfoSec Governance — EGIT / Risk / Quality Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What should the IS auditor recommend FIRST to integrate these governance functions?",
+      "scenario_context": "An IS auditor at a large hospital network finds three parallel governance structures: an EGIT committee meeting quarterly; an enterprise risk committee meeting monthly with separate IT-risk reporting; an InfoSec governance committee meeting separately on InfoSec posture. Each committee maintains its own scorecard, its own risk register, and its own meeting minutes. Each committee has overlapping membership but no formal coordination, integrated agenda, or shared accountability. The board complains that it sees three different views of 'how IT is doing' that often contradict each other.",
+      "options": {
+        "A": "Establish an integrated governance forum unifying EGIT, enterprise risk, and InfoSec under a single agenda with shared scorecard, register, cadence, escalation, while preserving distinct decision rights",
+        "B": "Eliminate two of the three committees entirely (consolidating into the strongest one), regardless of what governance domains are lost in the consolidation across the organization",
+        "C": "Maintain all three committees as separate structures and require each to send a delegate to a fourth coordination committee that meets quarterly to reconcile their separate decisions",
+        "D": "Replace all three committees with a single InfoSec-led committee, since InfoSec is the most regulated and visible IT governance area and other domains can be subsumed under its broader scope"
+      },
+      "correct": "A",
+      "key_concept": "InfoSec governance must integrate with EGIT and enterprise risk under a unified agenda, scorecard, register, and reporting — while preserving distinct decision rights for each domain. Eliminating two of three committees loses governance coverage; adding a fourth coordination committee adds overhead; subsuming under InfoSec mis-prioritizes one domain.",
+      "pre_read": "InfoSec/EGIT/risk integration questions test whether you can recognize the unify-agenda-while-preserving-decision-rights pattern. Distractors propose elimination, fourth-committee coordination, or single-domain absorption.",
+      "correct_explanation": "ISACA Information Security Governance guidance and COBIT 2019 EDM03 (Ensured Risk Optimization) establish that InfoSec governance should integrate with EGIT and enterprise risk through a unified mechanism, not parallel structures. The integration includes shared scorecard (one view of IT and InfoSec performance), shared risk register (no parallel registers that contradict each other), shared meeting cadence (one rhythm rather than three), shared escalation paths (one route to the board), and integrated reporting (one consolidated view that the board can act on). Distinct decision rights remain — InfoSec-specific decisions stay under the InfoSec governance domain, but the agenda is unified and the outputs are reconciled. Option B's elimination loses governance coverage in whatever domains the eliminated committees owned. Option C's fourth coordination committee adds overhead without solving the underlying coordination problem. Option D's InfoSec-led replacement subsumes EGIT and enterprise risk under InfoSec, mis-prioritizing one domain over the others.",
+      "wrong_explanations": {
+        "B": "Eliminating two of three committees loses governance coverage in those domains. The correct integration preserves all three governance functions but unifies their cadence, scorecards, registers, and reporting — not eliminates them.",
+        "C": "Adding a fourth committee to coordinate the existing three creates more coordination overhead, not less. The board's complaint is that it sees three contradictory views; adding a fourth committee that meets quarterly does not resolve the contradiction at the source.",
+        "D": "Subsuming EGIT and enterprise risk under InfoSec elevates one governance domain over the others. EGIT covers IT investment, strategy, and value; enterprise risk covers all risks (not just InfoSec). Subsuming everything under InfoSec damages the broader governance scope."
+      },
+      "tips": [
+        "Trap is C — \"add a coordination committee\" sounds like a coordination fix but adds overhead and doesn't solve the contradiction at the source.",
+        "InfoSec/EGIT/risk integration = unified agenda + shared scorecard + shared register + shared cadence + integrated reporting + preserved decision rights.",
+        "Exam-day shortcut: governance-integration questions are answered by the option that names unification with preserved decision rights — not elimination, additional layers, or single-domain absorption."
+      ],
+      "framework_ref": "COBIT 2019 EDM03 (Ensured Risk Optimization); ISACA Information Security Governance guidance; ISO/IEC 27014 (Governance of Information Security)",
+      "related_concepts": [
+        "InfoSec governance integration",
+        "EGIT integration",
+        "Enterprise risk integration",
+        "Unified governance forum"
+      ],
+      "_provenance": "Authored from concept: 'InfoSec Governance EGIT/Risk/Quality integration - unified agenda + preserved decision rights, distinct from d2_006 (board accountability) and d2_046 (IT mgmt practices integration synthesis)'. Public source: COBIT 2019 EDM03 + ISO/IEC 27014."
+    },
+    {
+      "id": "d2_070",
+      "domain": 2,
+      "subtopic": "Risk Treatment — Multi-Option Application Scenario",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which combination of risk treatments BEST addresses the scenario's specific risks?",
+      "scenario_context": "A regional bank's risk register shows three IT risks the board is treating this quarter. Risk 1: an unsupported version of a core banking middleware product; impact = high; likelihood = high; the vendor has confirmed there will be no further patches. Risk 2: a low-likelihood/low-impact risk that the bank's website might be DDoS'd by a small protest group on a single day; cost-to-mitigate exceeds expected loss by ~10x. Risk 3: a high-impact risk of cyber-incident loss exceeding the firm's loss-absorbing capacity, which would trigger regulatory action. The CRO asks an IS auditor for a treatment recommendation tied to each specific risk.",
+      "options": {
+        "A": "Treat all three risks identically by accepting them all, since formal acceptance with documentation is sufficient for risks that the board has reviewed and signed off on",
+        "B": "Treat all three risks identically by mitigating them all, since mitigation is the most rigorous treatment and rigor is always the right answer in financial-services regulated contexts",
+        "C": "Risk 1 → REDUCE/AVOID (cannot accept high/high unpatched); Risk 2 → ACCEPT (reduction cost exceeds expected loss); Risk 3 → TRANSFER (cyber insurance) plus REDUCE for the regulatory dimension",
+        "D": "Transfer all three risks to insurers, since insurance coverage is the most efficient form of risk treatment and removes the bank's exposure entirely regardless of risk type or magnitude"
+      },
+      "correct": "C",
+      "key_concept": "Risk treatment is per-risk, not uniform. Match treatment to risk profile: mitigate/avoid for high-likelihood high-impact unpatched risks; accept where mitigation cost exceeds expected loss; transfer (insurance) plus mitigation where loss could exceed capacity. Uniform accept, uniform mitigate, and uniform transfer are all wrong in heterogeneous risk universes.",
+      "pre_read": "Risk-treatment-application questions test whether you can match each treatment option (Accept, Reduce/Mitigate, Transfer, Avoid) to the specific risk profile. Distractors propose uniform treatments across heterogeneous risks.",
+      "correct_explanation": "ISACA Risk IT Framework, COSO ERM (2017), and ISO 31000:2018 establish that risk treatment must be matched to each risk's profile — not applied uniformly. Risk 1 (high impact, high likelihood, unpatched) cannot be accepted (the magnitude is too large) and cannot be transferred alone (insurance does not cover the operational reality of running unpatched core software). It must be mitigated (upgrade or replace the middleware) or avoided (decommission and replace with a supported product). Risk 2 (low/low, mitigation cost ~10x expected loss) is the textbook ACCEPT case — formal acceptance with documentation; mitigating wastes resources. Risk 3 (loss could exceed capacity, regulatory consequence) requires TRANSFER (cyber insurance covers loss) plus mitigation (insurance does not cover the regulatory action — only loss reimbursement). Each risk gets the treatment that fits its profile. Option A's uniform accept is wrong on Risks 1 and 3 (high impact). Option B's uniform mitigate wastes resources on Risk 2. Option D's uniform transfer fails because insurance does not cover all forms of consequence (operational, regulatory).",
+      "wrong_explanations": {
+        "A": "Accepting all three is wrong on Risks 1 (high-impact unpatched core banking) and 3 (loss exceeding capacity + regulatory action). Acceptance is appropriate only when expected loss is within tolerance and mitigation cost exceeds expected loss — true for Risk 2, false for the others.",
+        "B": "Mitigating all three wastes resources on Risk 2 (mitigation cost is ~10x expected loss). Mitigation is rigorous but not always cost-effective; ISACA's risk treatment framework explicitly includes Accept as a valid treatment when mitigation is uneconomic.",
+        "D": "Transferring all three to insurers is wrong on Risks 1 (insurance does not cover operational reality of running unpatched core software) and on Risk 3's regulatory dimension (insurance covers loss reimbursement, not regulatory consequences). Transfer is one tool, not a universal answer."
+      },
+      "tips": [
+        "Trap is B — \"mitigate all\" sounds like the rigorous default but mitigating where mitigation cost exceeds expected loss is poor risk management.",
+        "Risk treatment is per-risk: match treatment to risk profile (Accept low/low, Mitigate/Avoid high/high, Transfer where appropriate). The four treatments are tools, not defaults.",
+        "Exam-day shortcut: risk-treatment scenario questions are answered by the option that names different treatments for different risks — not options that apply one treatment to all."
+      ],
+      "framework_ref": "ISO 31000:2018 (Risk Management); ISACA Risk IT Framework; COSO ERM (2017); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk treatment",
+        "Accept/Mitigate/Transfer/Avoid",
+        "Per-risk treatment selection",
+        "Risk treatment economics"
+      ],
+      "_provenance": "Authored from concept: 'Risk Treatment multi-option application scenario - per-risk treatment matching, distinct from d2_022 (foundational treatment options definition) and d2_007 (risk lifecycle gap analysis)'. Public source: ISO 31000:2018 + ISACA Risk IT."
     }
   ]
 }
