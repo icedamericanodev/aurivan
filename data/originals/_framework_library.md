@@ -370,6 +370,16 @@ acceptable when the reference is to the broader topical body of guidance.
 - ISACA Information Security Awareness guidance
 - ISACA IT Service Management guidance
 - ISACA Cloud Cost Governance guidance
+- ISACA Cloud Governance guidance
+- ISACA Cloud Architecture guidance
+- ISACA Compliance Management guidance
+- ISACA M&A IT Due Diligence guidance
+- ITIL 4 Incident Management
+- OCC Bulletin 2017-21 (Mergers and Acquisitions)
+- GDPR Article 3 (Territorial Scope)
+- GDPR Article 12 (Information and Modalities for Exercise of Rights)
+- GDPR Article 15 (Right of Access)
+- GDPR Article 5 (Principles)
 - ISACA Outsourcing Risk Assessment guidance
 - FinOps Foundation Framework
 - PMI Standard for Program Management

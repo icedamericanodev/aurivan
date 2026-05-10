@@ -4035,6 +4035,735 @@
         "Crisis team"
       ],
       "_provenance": "Authored from concept: 'Crisis communication during major IT incident - audience-tailored coordinated approach, complements d2_105 (incident response governance escalation)'. Public source: NIST SP 800-61 + ISACA. All scenario specifics (hospital EHR ransomware, six audience-types) invented for this question."
+    },
+    {
+      "id": "d2_111",
+      "domain": 2,
+      "subtopic": "IT Investment Business Case Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a mid-size insurer is reviewing a proposed business case for a $20M data-modernization investment. Which element MOST strongly supports an evidence-based investment decision?",
+      "options": {
+        "A": "A vendor-prepared TCO model showing a 3-year payback assuming the vendor's recommended configuration without independent validation by the customer's finance team",
+        "B": "Quantified business benefits tied to specific business outcomes, capability gaps the investment closes, validated cost projections, alternative-evaluation, and post-investment success criteria with measurable KPIs",
+        "C": "An impressive technology demonstration by the engineering team showing the proposed solution working at small scale, supplemented by industry-analyst praise for the chosen vendor",
+        "D": "Approval signatures from each functional VP indicating their support, with implementation funded immediately upon receiving the last required signature regardless of analytical depth"
+      },
+      "correct": "B",
+      "key_concept": "Evidence-based business case requires quantified benefits + specific outcome linkage + capability-gap framing + validated costs + alternative evaluation + measurable post-investment criteria. Vendor-prepared TCO, demos, and signature collection are not substitutes.",
+      "pre_read": "IT business case questions test whether you recognize the multi-element evidence-based pattern. Distractors substitute vendor analysis, demos, or signature collection for analytical depth.",
+      "correct_explanation": "COBIT 2019 APO05 (Managed Portfolio) and ISACA IT Investment Management guidance establish that evidence-based business cases require: (1) quantified business benefits tied to specific business outcomes (revenue enabled, cost avoided, risk reduced); (2) capability gaps the investment closes (linking the investment to a strategic gap rather than to vendor pitches); (3) validated cost projections (independent of vendor TCO models); (4) alternative-evaluation showing the proposed solution beats competing options; (5) post-investment success criteria with measurable KPIs that can be tracked after deployment. Option A delegates analysis to the vendor's interest. Option C substitutes spectacle for analysis. Option D substitutes process for substance — signatures don't validate the underlying analysis.",
+      "wrong_explanations": {
+        "A": "Vendor-prepared TCO models reflect the vendor's interest in winning the deal, not the customer's interest in evidence-based decisions. Independent validation by the customer's finance team is a baseline, not optional.",
+        "C": "Demos at small scale don't predict production-scale performance, cost, or value. Industry-analyst praise reflects past customer experiences, not the business case for THIS customer's specific decision.",
+        "D": "Signatures don't validate analysis. The signatures should follow analytical rigor; treating signatures AS the analytical rigor inverts the proper sequence and produces poor decisions."
+      },
+      "tips": [
+        "Trap is A — \"vendor-prepared TCO model\" feels efficient (let the vendor do the math) but reflects the vendor's interest, not customer-side analytical rigor.",
+        "Evidence-based business case = quantified benefits + outcome linkage + capability gaps + validated costs + alternative evaluation + measurable post-investment KPIs.",
+        "Exam-day shortcut: business-case questions are answered by the option naming multi-element analytical rigor, not vendor-supplied analysis or process-only signatures."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA IT Portfolio Management guidance",
+      "related_concepts": [
+        "IT investment",
+        "Business case",
+        "APO05",
+        "Benefits realization"
+      ],
+      "_provenance": "Authored from concept: 'IT investment business case multi-element analytical depth, complements d2_026 (R/G/T tier discipline), d2_068 (mid-year rebalance), d2_088 (under regulatory uncertainty)'. Public source: COBIT 2019 APO05."
+    },
+    {
+      "id": "d2_112",
+      "domain": 2,
+      "subtopic": "Risk Register Tooling and Workflow Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing the design of a new risk register tool at a regional bank. Which design feature MOST strongly supports the register's effectiveness over time?",
+      "options": {
+        "A": "Workflow that captures each risk's lifecycle state (identified → assessed → treated → monitored → closed), with stage-transition controls, named owner per stage, and audit-trail of changes for each risk record",
+        "B": "A static spreadsheet maintained by the risk team manually, with no workflow controls or audit trail since the simplicity reduces overhead and adoption friction",
+        "C": "An entirely automated tool that scrapes incident logs and threat-intelligence feeds to populate the register, removing the need for human risk-identification effort across the organization",
+        "D": "A complex hierarchical database with 50+ fields per risk record, requiring extensive data entry but providing comprehensive analytical capability for risk professionals"
+      },
+      "correct": "A",
+      "key_concept": "Risk register tooling effectiveness = lifecycle state model + stage-transition controls + named owners + audit-trail. Spreadsheet-only loses audit trail and discipline; full automation removes human judgment; over-complexity destroys adoption.",
+      "pre_read": "Risk register tooling questions test whether you recognize the lifecycle-state-with-controls pattern. Distractors substitute manual spreadsheets, full automation, or over-complex schemas.",
+      "correct_explanation": "ISACA Risk IT Framework establishes that effective risk register tooling captures the risk lifecycle as a state machine: identified, assessed, treated, monitored, closed (with named owners per stage and stage-transition controls so each transition is reviewed and approved). Audit trail of changes preserves accountability and enables post-hoc analysis when risk treatments fail. Option B's spreadsheet loses workflow discipline and audit trail; risks get edited without traceability. Option C's full automation removes human judgment that risk identification requires (many risks emerge from non-systematic sources — interviews, observation, scenario analysis). Option D's over-complex schema kills adoption — risk teams stop using over-complex tools and revert to ad-hoc tracking.",
+      "wrong_explanations": {
+        "B": "Spreadsheets become unauditable risk registers within months as edits accumulate without traceability. The 'simplicity' is illusory — investigators after a risk event cannot reconstruct what was known when.",
+        "C": "Full automation captures incident-driven risks but misses risks that emerge from interviews, scenario analysis, regulatory horizon-scanning, and stakeholder concerns. Human judgment is essential to risk identification.",
+        "D": "Over-complex schemas kill adoption. Real risk teams stop entering data when entry takes too long, and the register becomes a fictionally-comprehensive tool that captures less than a simpler tool would."
+      },
+      "tips": [
+        "Trap is B — \"spreadsheet for simplicity\" feels operationally pragmatic but loses audit trail and workflow discipline that mature programs need.",
+        "Risk register tooling = lifecycle state + stage-transition controls + named owners + audit trail. Four properties together.",
+        "Exam-day shortcut: risk-register-tooling questions are answered by the option naming lifecycle workflow with audit trail, not spreadsheet-only or full automation."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk register",
+        "Risk lifecycle",
+        "Workflow tooling",
+        "APO12"
+      ],
+      "_provenance": "Authored from concept: 'Risk register tooling lifecycle workflow design, complements d2_021 (foundational risk register definition)'. Public source: ISACA Risk IT."
+    },
+    {
+      "id": "d2_113",
+      "domain": 2,
+      "subtopic": "Compliance Program — Multi-Regulation Operationalization",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A regional bank is operationalizing a compliance program covering FFIEC, GLBA, BSA/AML, CCPA, and applicable state regulations. Which design BEST supports sustained compliance across the multi-regulation environment?",
+      "options": {
+        "A": "Hire one compliance officer per regulation with separate teams, accepting overhead in exchange for deep regulation-specific expertise across the firm's compliance posture",
+        "B": "Outsource compliance entirely to a managed compliance services provider, transferring all regulation-specific expertise and decision-making to the provider's specialist team",
+        "C": "Apply only the strictest single regulation across all data and processes, accepting that meeting the most stringent standard satisfies all weaker standards by construction",
+        "D": "Build an integrated compliance program with a unified control library mapped to each regulation's specific requirements, named compliance officers per domain, regulation-specific testing cadences, and central compliance committee governance"
+      },
+      "correct": "D",
+      "key_concept": "Multi-regulation compliance = integrated program with unified control library + per-regulation mapping + named officers per domain + regulation-specific testing cadences + central committee governance. Per-regulation siloed teams waste effort; strictest-uniform fails; full outsourcing transfers activity not accountability.",
+      "pre_read": "Multi-regulation compliance questions test whether you recognize the integrated-with-mapping pattern. Distractors propose per-regulation silos, strictest-uniform, or full outsourcing.",
+      "correct_explanation": "ISACA Compliance Management guidance and FFIEC examination practice establish that multi-regulation compliance scales through integration: a unified control library captures controls once and maps each control to the regulation(s) it satisfies; named compliance officers per domain (privacy, financial, BSA/AML) provide expert ownership; regulation-specific testing cadences match each regulator's expectations; central compliance committee governance ensures cross-regulation coordination and conflict resolution. Option A's per-regulation siloed teams duplicate effort and miss cross-regulation control efficiencies. Option C's strictest-uniform fails because no single regulation is strictest on every dimension (GLBA Safeguards Rule is stricter on encryption than CCPA; CCPA is stricter on consumer rights than GLBA). Option B's full outsourcing transfers activity but accountability remains with the bank.",
+      "wrong_explanations": {
+        "A": "Per-regulation siloed teams duplicate effort (the same control may satisfy 4 regulations; siloed teams test it 4 times) and miss cross-regulation efficiencies. Integration with mapping is the recognized practice for multi-regulation environments.",
+        "C": "No single regulation is strictest on every dimension. GLBA Safeguards Rule has specific encryption requirements that CCPA does not; CCPA has specific consumer-rights requirements that GLBA does not. Strictest-uniform misses the dimensions where each regulation is uniquely strict.",
+        "B": "Outsourcing transfers compliance activity but the bank remains accountable to regulators. Examiners will ask the bank's officers about the bank's compliance posture; 'the MSP handles it' is not an acceptable answer to BSA/AML or FFIEC inquiry."
+      },
+      "tips": [
+        "Trap is C — \"apply strictest single regulation everywhere\" is a popular wrong answer because it sounds disciplined but it's wrong on the fact (no single regulation is strictest on every dimension).",
+        "Multi-regulation compliance = unified control library + per-regulation mapping + named officers per domain + per-regulation testing cadences + central committee governance.",
+        "Exam-day shortcut: multi-regulation compliance questions are answered by the integrated-with-mapping option, not silos / strictest-uniform / full outsourcing."
+      ],
+      "framework_ref": "FFIEC IT Examination Handbook; ISACA Compliance Management guidance; COBIT 2019 MEA03 (Managed Compliance with External Requirements)",
+      "related_concepts": [
+        "Compliance program",
+        "Multi-regulation mapping",
+        "Control library",
+        "MEA03"
+      ],
+      "_provenance": "Authored from concept: 'Compliance program multi-regulation operationalization - integrated with mapping, complements d2_050 (multi-sector regulatory mapping audit-design analysis) and d2_005 (GRC integration)'. Public source: FFIEC + COBIT 2019 MEA03."
+    },
+    {
+      "id": "d2_114",
+      "domain": 2,
+      "subtopic": "IT Governance Committee Structure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a healthcare network is reviewing the structure of IT governance committees. Beyond the IT Steering Committee, which committee structure MOST strongly supports comprehensive IT governance?",
+      "options": {
+        "A": "A single all-purpose IT committee that handles strategy, architecture, risk, security, and operations decisions in one weekly meeting to maximize coordination across topics",
+        "B": "Three committees with overlapping membership but no defined charters, allowing each committee to evolve organically based on whatever topics emerge in any given quarter",
+        "C": "A purpose-distinct committee structure: IT Steering Committee (strategy/investment), IT Risk Committee (risk decisions), Architecture Review Board (technical-design decisions), and Change Advisory Board (operational change) — with clear charters, decision rights, and escalation paths",
+        "D": "All decisions handled directly by the CIO with no formal committees, citing the principle of single accountability and the elimination of decision-making delay through committee structure"
+      },
+      "correct": "C",
+      "key_concept": "Comprehensive IT governance uses purpose-distinct committees with clear charters, decision rights, and escalation paths: IT Steering (strategy/investment), IT Risk (risk decisions), Architecture Review Board (technical-design), Change Advisory Board (operational change). All-purpose-single, charter-less-organic, and no-committees-at-all all fail.",
+      "pre_read": "IT governance committee questions test whether you recognize the purpose-distinct multi-committee pattern. Distractors propose single-all-purpose, undefined-organic, or no-committee structures.",
+      "correct_explanation": "COBIT 2019 establishes that IT governance committees should be purpose-distinct, with each committee having a clear charter, defined decision rights, and explicit escalation paths. Typical IT governance committee architecture: (1) IT Steering Committee — strategic direction and investment prioritization (covered by d2_003/d2_054); (2) IT Risk Committee — risk-decision authority within the board's risk appetite; (3) Architecture Review Board (ARB) — technical-design decisions with architecture-standard governance; (4) Change Advisory Board (CAB) — operational change governance. Each committee has its own membership, cadence, and decision rights. Option A's single-all-purpose committee lacks the differentiated decision rights needed at each governance layer. Option B's charter-less committees produce inconsistent decisions. Option D's no-committee model concentrates all decisions in one person, which doesn't scale and lacks cross-functional input.",
+      "wrong_explanations": {
+        "A": "All-purpose single committees have ill-defined decision rights — strategy decisions, technical-design decisions, and operational-change decisions all require different members, expertise, and cadences. Combining them into one body produces poor decisions on each.",
+        "B": "Charter-less committees produce inconsistent decisions across time and personnel. The committee's role drifts; members lose clarity on what authority the committee has; decisions get made and unmade as committee composition changes.",
+        "D": "CIO-only decision-making creates a span-of-control problem (one person cannot evaluate strategy, risk, architecture, and change at appropriate depth) and lacks cross-functional input that good IT governance requires."
+      },
+      "tips": [
+        "Trap is A — \"single all-purpose IT committee\" sounds coordination-friendly but fails on differentiated decision rights.",
+        "IT governance committee structure = IT Steering + IT Risk + Architecture Review Board + Change Advisory Board, each with clear charter + decision rights + escalation paths.",
+        "Exam-day shortcut: IT governance committee questions are answered by the option naming purpose-distinct committees with defined charters, not single-committee or no-committee structures."
+      ],
+      "framework_ref": "COBIT 2019 (Governance and Management Roles); ISACA EGIT Framework",
+      "related_concepts": [
+        "IT governance committees",
+        "Architecture Review Board",
+        "Change Advisory Board",
+        "IT Risk Committee"
+      ],
+      "_provenance": "Authored from concept: 'IT governance committee structure beyond IT Steering Committee - purpose-distinct multi-committee architecture, complements d2_003/d2_054 (steering committee specifics)'. Public source: COBIT 2019."
+    },
+    {
+      "id": "d2_115",
+      "domain": 2,
+      "subtopic": "Outsourcing Exit Strategy — Proactive Planning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional credit union is reviewing the design of new outsourcing contracts. Which exit-strategy element MOST strongly protects the credit union's long-term interests when entering an outsourcing relationship?",
+      "options": {
+        "A": "Pre-negotiated exit terms documented at contract signing: data return formats and timelines, transition assistance commitments, source-code escrow if applicable, knowledge-transfer obligations, and exit-fee structure",
+        "B": "Trust that termination clauses standard in the vendor's master services agreement will be sufficient if the relationship ever needs to end, without contract-specific exit terms",
+        "C": "Avoid documenting exit terms entirely so the relationship is not 'pre-positioned for failure', accepting that exit considerations would be addressed if and when termination becomes necessary",
+        "D": "Include only data-return clauses since data is the primary asset; everything else can be re-procured from a different vendor at termination if circumstances require it"
+      },
+      "correct": "A",
+      "key_concept": "Outsourcing exit strategy must be pre-negotiated AT contract signing: data return formats/timelines + transition assistance + source-code escrow (where applicable) + knowledge-transfer + exit-fee structure. Standard MSA termination clauses, no-exit-terms-at-all, and data-only approaches all leave material gaps.",
+      "pre_read": "Outsourcing exit-strategy questions test whether you recognize that exit terms must be negotiated UPFRONT, not at termination. Distractors propose trust-in-standard-clauses, no-planning, or partial-coverage.",
+      "correct_explanation": "ISACA Outsourcing Governance guidance and OCC Bulletin 2013-29 (Third-Party Relationships) establish that outsourcing exit strategy must be pre-negotiated at contract signing because the customer's leverage is highest before signing. The exit-strategy elements: (1) data return formats and timelines (file formats, channels, schedules, custody chain); (2) transition assistance commitments (vendor must support migration to a new provider for a defined period); (3) source-code escrow if the vendor provides custom-developed software; (4) knowledge-transfer obligations (documentation, training); (5) exit-fee structure (predictable cost, not extracted at vendor's discretion). Option B's reliance on standard MSA terms produces vendor-favorable terms because vendor MSAs are written for vendor benefit. Option C's 'don't pre-position for failure' is a misunderstanding; documenting exit terms is risk management, not pessimism. Option D's data-only coverage leaves transition assistance, knowledge transfer, and predictable exit cost ungoverned.",
+      "wrong_explanations": {
+        "C": "Documenting exit terms is sound risk management, not 'pre-positioning for failure'. The customer's leverage is highest before signing; trying to negotiate exit terms at termination is far harder and yields worse outcomes.",
+        "D": "Data return is necessary but not sufficient. Without transition assistance and knowledge transfer, the customer will struggle to onboard a replacement vendor; without exit-fee predictability, the vendor can extract maximum value at exit.",
+        "B": "Vendor MSA termination clauses are written by the vendor's lawyers for the vendor's benefit. They typically include short termination-notice periods favoring the vendor, data-return windows that benefit the vendor, and exit fees that benefit the vendor. Customer-specific exit terms must be negotiated."
+      },
+      "tips": [
+        "Trap is C — \"don't pre-position for failure\" sounds collaborative but reflects misunderstanding of exit-planning as risk management vs negative thinking.",
+        "Outsourcing exit strategy = pre-negotiated AT signing + data return + transition assistance + source-code escrow + knowledge transfer + exit-fee structure.",
+        "Exam-day shortcut: outsourcing exit-strategy questions are answered by the option naming pre-negotiated multi-element terms, not standard MSA reliance or partial coverage."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); ISACA Outsourcing Governance guidance; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Outsourcing exit strategy",
+        "Source-code escrow",
+        "Transition assistance",
+        "APO10"
+      ],
+      "_provenance": "Authored from concept: 'Outsourcing exit strategy proactive planning at contract signing - distinct from d2_106 (vendor offboarding execution at relationship end)'. Public source: OCC Bulletin 2013-29 + ISACA Outsourcing Governance."
+    },
+    {
+      "id": "d2_116",
+      "domain": 2,
+      "subtopic": "Data Loss Prevention (DLP) Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a defense contractor is reviewing the new Data Loss Prevention (DLP) program. Which program design feature MOST strongly supports DLP effectiveness?",
+      "options": {
+        "A": "Block-only enforcement at all egress channels (email, web upload, USB, cloud sync) regardless of business context, accepting workflow disruption as the cost of strong protection",
+        "B": "Inventory-only DLP that detects sensitive data in motion but takes no enforcement action, allowing the security team to observe data flows without disrupting business workflow",
+        "C": "Risk-based DLP design: data classification first (DLP enforces what's classified), tuned policies per channel (email, endpoint, cloud), exception/override workflow with logging, ongoing tuning based on false-positive analysis, and integration with incident response",
+        "D": "Single-vendor enterprise DLP suite installed and configured to vendor defaults, since vendor defaults reflect industry best practices and customization adds operational burden"
+      },
+      "correct": "C",
+      "key_concept": "DLP program design = data classification (foundation) + tuned policies per channel + exception/override workflow with logging + ongoing tuning based on false-positive analysis + IR integration. Block-only-everywhere, inventory-only, and vendor-defaults all fail.",
+      "pre_read": "DLP program design questions test whether you recognize the multi-element risk-based pattern. Distractors propose extreme enforcement (block-only or inventory-only) or vendor-defaults.",
+      "correct_explanation": "ISACA Data Protection guidance, NIST SP 800-53 (Data Loss Prevention controls), and CSA guidance on DLP establish that effective DLP programs require: (1) data classification as foundation — DLP enforces what's classified, so without classification DLP has no anchor; (2) tuned policies per channel (email DLP differs from endpoint DLP differs from cloud-DLP); (3) exception/override workflow with logging — business needs occasionally require exceptions, and unauthorized override attempts produce signal; (4) ongoing tuning based on false-positive analysis (DLP starts noisy and converges through tuning); (5) integration with incident response so DLP alerts trigger IR processes. Option A's block-everything-everywhere produces workflow chaos, drives shadow IT, and degrades trust in the program. Option B's inventory-only doesn't prevent data loss; it just documents loss. Option D's vendor defaults aren't tuned to the company's specific data classification or channels.",
+      "wrong_explanations": {
+        "A": "Block-only-everywhere disrupts legitimate workflows and drives staff to find workarounds (shadow IT, personal email forwarding, unsanctioned cloud). The program's apparent strength produces actual weakness through behavioral evasion.",
+        "D": "Vendor defaults reflect generic-customer assumptions, not the defense contractor's specific classification scheme, channel mix, or threat model. Customization to the company's actual environment is essential.",
+        "B": "Inventory-only is detection without prevention. Incidents continue to occur; DLP just documents them. For sensitive data (defense contractor classified data), prevention is required, not just observation."
+      },
+      "tips": [
+        "Trap is A — \"block-only everywhere\" sounds maximally protective but produces workflow chaos and behavioral evasion.",
+        "DLP program = classification (foundation) + tuned policies per channel + exception workflow + ongoing tuning + IR integration. Five elements together.",
+        "Exam-day shortcut: DLP program design questions are answered by the option naming risk-based multi-element design, not block-only / inventory-only / vendor-default."
+      ],
+      "framework_ref": "NIST SP 800-53 (Security and Privacy Controls); CSA Cloud Controls Matrix; ISACA Data Governance guidance",
+      "related_concepts": [
+        "Data Loss Prevention",
+        "DLP",
+        "Data classification",
+        "False-positive tuning"
+      ],
+      "_provenance": "Authored from concept: 'DLP program design - risk-based multi-element approach, no prior D2 coverage'. Public source: NIST SP 800-53 + CSA + ISACA Data Governance."
+    },
+    {
+      "id": "d2_117",
+      "domain": 2,
+      "subtopic": "Third-Party AI/ML Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An insurer is integrating a third-party AI fraud-detection model into its claims-processing workflow. Which governance approach MOST strongly addresses the third-party AI risk?",
+      "options": {
+        "A": "Trust the vendor's model documentation since the vendor is the AI specialist and the insurer should defer to the vendor's expertise on model design and validation methodology",
+        "B": "Avoid third-party AI entirely and build any AI capability internally, since outsourced AI introduces risks that internally-developed systems do not have at all",
+        "C": "Apply the same governance treatment as any traditional vendor-supplied software, since AI/ML systems are functionally just another category of software with no special governance considerations",
+        "D": "Layered governance: vendor-AI risk assessment (training data, model design, validation), contractual transparency rights (model cards, performance metrics, incident notification), independent challenger testing on the insurer's data, ongoing monitoring of model outputs against expected patterns, and exit/replaceability planning"
+      },
+      "correct": "D",
+      "key_concept": "Third-party AI/ML governance = vendor-AI risk assessment + contractual transparency rights + independent challenger testing on customer's data + ongoing output monitoring + exit/replaceability planning. Vendor-trust, software-treated-equally, and full-internal-build all fail.",
+      "pre_read": "Third-party AI/ML governance questions test whether you recognize that AI vendors require GREATER governance depth than traditional software vendors. Distractors propose trust-vendor, treat-as-software, or avoid-third-party-AI.",
+      "correct_explanation": "NIST AI Risk Management Framework (AI RMF 1.0) and ISACA Auditing Artificial Intelligence guidance establish that third-party AI/ML systems require governance depth beyond traditional software vendors because: (1) the vendor's training data, model architecture, and validation methodology are typically opaque to the customer; (2) the model's behavior on the customer's specific data may diverge from vendor benchmarks; (3) drift, bias, and edge-case failures are systemic risks not present in deterministic software. Effective governance: vendor-AI risk assessment (training data sources, model design choices, validation methodology), contractual transparency rights (model cards, performance metrics by sub-population, incident-notification cadence), independent challenger testing on the customer's data, ongoing monitoring of outputs against expected patterns, and exit/replaceability planning. Option A's vendor-trust ignores asymmetric incentive — the vendor's interest is selling more, not surfacing model limitations. Option C's same-as-software ignores AI-specific risks. Option B's full internal build sacrifices the legitimate value of specialist vendors.",
+      "wrong_explanations": {
+        "A": "Vendors have asymmetric incentive — they're motivated to sell more, not to surface model limitations. The customer's interest requires independent assessment, not deferral to the vendor's marketing.",
+        "C": "AI/ML systems have specific risks (drift, bias, training-data dependence, model opacity) that traditional software does not. Treating them as ordinary software misses these risks systematically.",
+        "B": "Full internal build sacrifices specialist vendor capabilities (training data scale, R&D investment, accumulated model improvements). The right governance allows third-party AI use with appropriate guardrails, not blanket avoidance."
+      },
+      "tips": [
+        "Trap is A — \"trust the vendor's documentation\" defers to the party with the asymmetric incentive (vendor wants to sell, not disclose limitations).",
+        "Third-party AI governance = vendor-AI risk assessment + contractual transparency rights + independent challenger testing on customer data + ongoing output monitoring + exit planning.",
+        "Exam-day shortcut: third-party AI governance questions are answered by the option naming layered AI-specific governance, not vendor-trust / software-equality / full-internal-build."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Third-party AI",
+        "Vendor AI governance",
+        "Challenger testing",
+        "AI RMF"
+      ],
+      "_provenance": "Authored from concept: 'Third-party AI/ML governance application - layered approach, complements d2_036 (IT-VMO structure) and d2_099 (vendor onboarding)'. Public source: NIST AI RMF + ISACA Auditing AI."
+    },
+    {
+      "id": "d2_118",
+      "domain": 2,
+      "subtopic": "Vendor Concentration Risk",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a multi-bank holding company finds that 60% of the company's IT operations spend goes to a single cloud provider, with 40% of total IT services concentrated in three vendors. Which response BEST addresses the concentration risk?",
+      "options": {
+        "A": "Treat concentration as inevitable consolidation savings benefit, accepting concentration risk as the cost of negotiated rate efficiencies and not pursuing diversification because it would forfeit those savings",
+        "B": "Quantify the concentration risk (single-vendor failure scenarios, regulatory-disruption scenarios, geopolitical exposure), evaluate whether the resulting risk profile aligns with appetite, and design mitigations (multi-cloud architecture, contract diversification, exit-readiness, contingency planning) where the risk exceeds tolerance",
+        "C": "Force immediate diversification across all 3 cloud providers (AWS, Azure, GCP) and 5+ vendors per service category, regardless of cost, complexity, or operational disruption that the diversification would create",
+        "D": "Defer the concentration analysis until the company experiences a vendor-concentration incident, since pre-incident analysis tends to overestimate risks that may not materialize within the planning horizon"
+      },
+      "correct": "B",
+      "key_concept": "Vendor concentration risk = quantify scenarios + assess against appetite + design mitigations where risk exceeds tolerance (multi-cloud + contract diversification + exit-readiness + contingency planning). Acceptance-by-default, forced-diversification, and wait-for-incident all fail.",
+      "pre_read": "Vendor concentration questions test whether you recognize the quantify-then-mitigate-to-appetite pattern. Distractors propose acceptance, blanket diversification, or reactive deferral.",
+      "correct_explanation": "OCC Bulletin 2013-29, FFIEC examination guidance on third-party relationships, and ISACA IT Vendor Management establish that vendor concentration risk requires quantification against the firm's risk appetite, then targeted mitigation where appetite is exceeded. Quantification: single-vendor failure scenarios (what if AWS has a 24-hour outage), regulatory-disruption scenarios (what if a regulator restricts cross-border data flows affecting the vendor), geopolitical exposure (sanctions, sanctions-style restrictions). Mitigations where risk exceeds appetite: multi-cloud architecture (workload portability across providers), contract diversification (distribute concentration risk by service category), exit-readiness (validated migration path), contingency planning (operational alternatives during disruption). Option A treats concentration as a fixed cost-benefit acceptance without scenario analysis. Option C's forced multi-vendor across the board sacrifices economic and operational sense. Option D's wait-for-incident is the textbook risk-management failure mode.",
+      "wrong_explanations": {
+        "A": "Concentration savings are real but concentration risk is also real; both should be quantified and weighed. Accepting concentration without analysis is risk management by default rather than by decision.",
+        "C": "Forced diversification across all providers sacrifices economies of scale, operational simplicity, and architectural coherence. Diversification is a tool to apply where concentration risk exceeds appetite, not a blanket policy.",
+        "D": "Wait-for-incident is reactive risk management; the loss has occurred before the analysis happens. Pre-incident scenario analysis is exactly what risk management exists to do."
+      },
+      "tips": [
+        "Trap is A — \"concentration is consolidation savings\" treats concentration as one-sided benefit ignoring the risk side of the trade-off.",
+        "Vendor concentration risk = quantify scenarios + assess against appetite + targeted mitigations where appetite is exceeded. Three-step process.",
+        "Exam-day shortcut: concentration-risk questions are answered by the option naming quantification-against-appetite-then-mitigation, not blanket acceptance / blanket diversification / deferral."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC IT Examination Handbook; ISACA IT Vendor Management guidance; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Vendor concentration risk",
+        "Single-vendor exposure",
+        "Multi-cloud",
+        "Contract diversification"
+      ],
+      "_provenance": "Authored from concept: 'Vendor concentration risk quantify-then-mitigate, no prior D2 coverage'. Public source: OCC Bulletin 2013-29 + FFIEC."
+    },
+    {
+      "id": "d2_119",
+      "domain": 2,
+      "subtopic": "Cloud Center of Excellence (CCoE) Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a media company is reviewing the Cloud Center of Excellence (CCoE) at the company. Which CCoE function MOST strongly supports cloud governance maturity?",
+      "options": {
+        "A": "Centralized cloud-resource provisioning where the CCoE personally provisions every cloud resource for every team, eliminating any decentralized provisioning regardless of urgency",
+        "B": "CCoE as enabling function: cloud-architecture standards, reusable infrastructure-as-code modules, cloud-cost guardrails, security baselines, training and self-service enablement, with each business unit owning its own consumption within the guardrails",
+        "C": "Pure consulting function with no decision authority — CCoE advises any team that asks but has no authority over architecture standards, security baselines, or cost discipline across the cloud footprint",
+        "D": "Sole responsibility for cloud security across the enterprise, with CCoE security team becoming the single defense for any cloud-hosted workload regardless of business-unit ownership"
+      },
+      "correct": "B",
+      "key_concept": "Effective CCoE = enabling function: architecture standards + reusable IaC modules + cost guardrails + security baselines + training/self-service + business-unit ownership within guardrails. Centralized provisioning bottlenecks; pure consulting lacks authority; sole-security-owner concentrates defense inappropriately.",
+      "pre_read": "CCoE governance questions test whether you recognize the enabling-function-with-guardrails pattern. Distractors propose centralized-provisioning, pure-consulting, or sole-security-owner.",
+      "correct_explanation": "ISACA Cloud Governance guidance and AWS/Azure/GCP CCoE patterns establish that effective CCoE operates as an enabling function rather than a centralized gatekeeper. Core functions: (1) cloud-architecture standards (reference patterns, multi-account design, network architecture); (2) reusable infrastructure-as-code modules (Terraform/CloudFormation modules teams can adopt rather than re-invent); (3) cloud-cost guardrails (tagging policies, budget limits, anomaly alerting); (4) security baselines (CIS-aligned configurations, default-deny policies, automated compliance checks); (5) training and self-service enablement so business units can move fast within the guardrails. Each business unit owns its own consumption and operations within the guardrails — this preserves engineering velocity while ensuring consistency. Option A's centralized provisioning creates a bottleneck. Option C's pure-consulting-no-authority means standards aren't enforced. Option D's sole-security-owner is a span-of-control problem and removes business-unit accountability for the security of their own workloads.",
+      "wrong_explanations": {
+        "A": "Centralized provisioning creates a bottleneck — every cloud resource creation request waits for CCoE capacity. Engineering velocity drops, and teams find workarounds (shadow accounts, requests inflated to capture capacity for later). The CCoE-as-bottleneck is a known anti-pattern.",
+        "C": "Pure consulting without decision authority means architecture standards become suggestions and security baselines become recommendations. Without enforcement, drift accumulates and the CCoE's value becomes ceremonial.",
+        "D": "CCoE-owns-all-cloud-security is a span-of-control problem. A handful of CCoE security engineers cannot keep pace with cloud-hosted workload growth across the enterprise. Shared accountability with business units is the scaling pattern."
+      },
+      "tips": [
+        "Trap is A — \"centralized provisioning eliminates decentralized risk\" feels like control but creates bottlenecks that drive workarounds.",
+        "CCoE = enabling function: architecture standards + reusable IaC + cost guardrails + security baselines + training/self-service + BU ownership within guardrails.",
+        "Exam-day shortcut: CCoE governance questions are answered by the enabling-function option, not centralized-gatekeeper / pure-consulting / sole-security-owner."
+      ],
+      "framework_ref": "ISACA Cloud Governance guidance; CSA Cloud Controls Matrix; COBIT 2019 APO13 (Managed Security)",
+      "related_concepts": [
+        "Cloud Center of Excellence",
+        "Cloud governance",
+        "Infrastructure as Code",
+        "Security baselines"
+      ],
+      "_provenance": "Authored from concept: 'Cloud Center of Excellence governance - enabling function pattern, complements d2_087 (multi-cloud governance synthesis) and d2_100 (FinOps)'. Public source: ISACA Cloud Governance + CSA CCM."
+    },
+    {
+      "id": "d2_120",
+      "domain": 2,
+      "subtopic": "IT Incident Classification and Prioritization",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing an IT incident management framework at a regional bank. Which classification scheme MOST strongly supports consistent prioritization across the IT operations team?",
+      "options": {
+        "A": "Severity matrix combining business-impact dimension (revenue impact, customer impact, regulatory exposure, safety) with technical-urgency dimension (active spread, contained, recovering) — with explicit examples and defined response SLAs per severity tier",
+        "B": "Single severity scale (low/medium/high/critical) defined by the on-call engineer's subjective judgment at the time of incident detection, with no documented criteria",
+        "C": "Technology-only classification (database/application/network/security) with no impact dimension, since the technology category determines which team responds and that's what classification is for",
+        "D": "First-come-first-served queue with no classification at all, since prioritization decisions inevitably introduce subjectivity that the IT team cannot reliably apply consistently"
+      },
+      "correct": "A",
+      "key_concept": "Effective incident classification = severity matrix combining business-impact dimension (revenue/customer/regulatory/safety) with technical-urgency dimension (spreading/contained/recovering), explicit examples, and defined response SLAs per tier. Subjective-only, technology-only, and FIFO-no-classification all fail.",
+      "pre_read": "Incident classification questions test whether you recognize the multi-dimensional matrix with examples-and-SLAs pattern. Distractors propose subjective, technology-only, or no-classification approaches.",
+      "correct_explanation": "ISACA IT Service Management guidance, ITIL 4 Incident Management, and FFIEC examination practice establish that effective incident classification combines two dimensions: (1) business-impact dimension covering revenue impact, customer impact, regulatory exposure, and safety implications — this dimension determines stakeholder communication and escalation; (2) technical-urgency dimension covering whether the incident is actively spreading, contained, or recovering — this dimension determines the operational response intensity. The severity tier (combining both dimensions) carries explicit examples (so different on-call engineers classify the same incident the same way) and defined response SLAs per tier (acknowledgment time, status-update cadence, escalation triggers, executive-notification thresholds). Option B's subjective single-scale produces inconsistent classification across engineers. Option C's technology-only ignores business impact (a database issue can be critical for a financial system or trivial for an internal report). Option D abandons classification entirely.",
+      "wrong_explanations": {
+        "C": "Technology category determines who responds but not how urgently. A network issue might be critical (loss of trading-system connectivity) or trivial (slow Wi-Fi in a conference room). Classification needs the impact dimension to differentiate.",
+        "D": "First-come-first-served means a low-impact ticket blocks attention from a critical incident if the low one arrived first. Classification exists exactly to avoid this failure mode.",
+        "B": "Subjective single-scale produces inconsistent classification — the same incident gets classified differently by different on-call engineers, undermining response cadence and escalation logic. Documented criteria are essential."
+      },
+      "tips": [
+        "Trap is B — \"on-call engineer's subjective judgment\" feels operationally simple but produces inconsistent classification across engineers.",
+        "Incident classification = business-impact dimension + technical-urgency dimension + explicit examples + defined response SLAs per tier. Four elements.",
+        "Exam-day shortcut: incident classification questions are answered by the option naming multi-dimensional matrix with examples + SLAs, not single-scale or technology-only."
+      ],
+      "framework_ref": "ITIL 4 Incident Management; ISACA IT Service Management guidance; FFIEC IT Examination Handbook",
+      "related_concepts": [
+        "Incident classification",
+        "Severity matrix",
+        "ITIL 4",
+        "Response SLAs"
+      ],
+      "_provenance": "Authored from concept: 'IT incident classification multi-dimensional severity matrix - complements d2_105 (incident response escalation analysis) and d2_110 (crisis communication)'. Public source: ITIL 4 + FFIEC."
+    },
+    {
+      "id": "d2_121",
+      "domain": 2,
+      "subtopic": "Regulatory Horizon Scanning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A bank operates across multiple US states and the EU. Which approach to regulatory horizon scanning MOST strongly supports proactive compliance posture?",
+      "options": {
+        "A": "Wait until each new regulation is finalized and effective, then engage compliance and legal to design a response within the implementation window the regulator provides",
+        "B": "Rely on the company's external counsel to inform leadership of any regulations they consider material, with no internal horizon-scanning function or systematic monitoring across all regulators in scope",
+        "C": "Subscribe to regulatory tracking services across the company's regulatory perimeter, designate compliance owners per regulator who monitor proposed rules and consultations, brief leadership periodically on emerging regulations expected to affect the firm, and integrate horizon scanning into strategic planning",
+        "D": "Apply the most stringent emerging regulation across all jurisdictions preemptively as soon as any draft is published, accepting unnecessary stringency in jurisdictions where the regulation may not finalize as drafted"
+      },
+      "correct": "C",
+      "key_concept": "Regulatory horizon scanning = subscribed tracking services across regulatory perimeter + named compliance owners per regulator + periodic leadership briefings + integration with strategic planning. Wait-until-finalized, external-counsel-only, and preemptive-overreach all fail.",
+      "pre_read": "Regulatory horizon scanning questions test whether you recognize the systematic-multi-element approach. Distractors propose reactive waiting, single-source reliance, or preemptive-overreach.",
+      "correct_explanation": "ISACA Compliance Management guidance and FFIEC examination practice establish that regulatory horizon scanning is a systematic discipline: (1) regulatory tracking services across the company's regulatory perimeter (e.g., proposed rules, consultations, enforcement trends); (2) named compliance owners per regulator who own active monitoring of their regulator's proposed rules and consultations; (3) periodic leadership briefings on emerging regulations expected to affect the firm — frequency calibrated to regulatory pace and firm exposure; (4) integration with strategic planning so emerging regulations shape technology, product, and market strategy. Option A's wait-until-finalized produces last-minute scrambles and missed compliance windows. Option B's external-counsel-only is single-source and reactive — counsel typically alerts on serious threats, not on horizon-scanning depth. Option D's preemptive-overreach applies stringency that may not survive the rule-making process and creates internal compliance debt that's hard to unwind.",
+      "wrong_explanations": {
+        "A": "Wait-until-finalized produces last-minute implementation scrambles and risks missing the implementation window entirely. Proactive horizon scanning gives the firm time to design considered responses.",
+        "D": "Preemptive application of draft regulations creates internal compliance debt — when the draft changes (which it usually does in rule-making), the firm has either over-built (and needs to scale back) or under-built (because the final differs).",
+        "B": "External counsel typically alerts the company to serious threats, not to broad horizon-scanning depth. The firm needs systematic monitoring across all regulators in scope, not just lawyer-flagged crises."
+      },
+      "tips": [
+        "Trap is A — \"wait until finalized\" is a classic reactive failure mode that produces last-minute compliance scrambles.",
+        "Regulatory horizon scanning = tracking services + named owners per regulator + periodic leadership briefings + integration with strategic planning.",
+        "Exam-day shortcut: horizon-scanning questions are answered by the systematic-multi-element option, not reactive / single-source / preemptive-overreach."
+      ],
+      "framework_ref": "FFIEC IT Examination Handbook; ISACA Compliance Management guidance; COBIT 2019 MEA03 (Managed Compliance with External Requirements)",
+      "related_concepts": [
+        "Regulatory horizon scanning",
+        "Compliance program",
+        "Emerging regulations",
+        "MEA03"
+      ],
+      "_provenance": "Authored from concept: 'Regulatory horizon scanning proactive compliance, complements d2_113 (compliance program operationalization)'. Public source: FFIEC + ISACA Compliance Management."
+    },
+    {
+      "id": "d2_122",
+      "domain": 2,
+      "subtopic": "Multi-Jurisdiction GDPR/CCPA Conflict Resolution",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST resolves the data-subject-rights conflict in this scenario?",
+      "scenario_context": "An e-commerce company operates in both California (CCPA) and the EU (GDPR). A consumer is a resident of California but is currently traveling in the EU when they submit a data-subject-rights request. The request is for both deletion (CCPA right + GDPR Article 17) and access to processing details (GDPR Article 15 + CCPA right to know). The consumer has previously opted out of the company's loyalty program data sharing under CCPA but consented to GDPR-grounded marketing communications. The privacy team is debating: which regulation's specific timeline and scope rules apply, and how to satisfy the request consistently.",
+      "options": {
+        "A": "Treat the request under whichever regulation has the shorter response timeline (GDPR's 1-month default vs CCPA's 45 days) and the broader scope, accepting that the broader regulation's compliance satisfies the narrower",
+        "B": "Decline the request and ask the consumer to resubmit when they return to California, since dual-regulation handling is administratively burdensome and the consumer's actual residence determines which single regulation applies",
+        "C": "Apply CCPA only since the consumer is a California resident, ignoring the EU location since residence determines applicable law for personal-data rights regardless of where the request is submitted from",
+        "D": "Apply both regulations concurrently: respond within the shorter timeline (1 month under GDPR), satisfy the union of access/deletion obligations, honor each regulation's prior consent decisions, document dual-regulation handling, and respond with explicit dual-basis reference"
+      },
+      "correct": "D",
+      "key_concept": "Dual-regulation data-subject-rights handling = shorter timeline + union of access/deletion obligations + honor each regulation's prior consent decisions + dual-regulation documentation + explicit response references both bases. Single-regulation-only choices, residence-only application, and decline-and-resubmit all fail.",
+      "pre_read": "Multi-jurisdiction privacy rights conflict questions test whether you recognize the both-apply-with-union pattern. Distractors propose single-regulation simplification, residence-only, or decline.",
+      "correct_explanation": "GDPR Article 3 (Territorial Scope) extends to processing the data of subjects in the EU when offering goods/services or monitoring behavior, regardless of the data subject's residence. CCPA applies based on California residency. When both apply (a California resident in the EU using a service offered in the EU), both regulations apply concurrently to the request. The right approach: (1) respond within the shorter of the two timelines — GDPR's 1 month is shorter than CCPA's 45 days for most cases; (2) satisfy the union of access and deletion obligations (whichever regulation grants more specific access rights or scope); (3) honor each regulation's prior consent decisions independently — CCPA opt-out for sharing and GDPR consent for marketing are not in conflict; (4) document the dual-regulation handling for audit; (5) respond to the consumer referencing both regulatory bases. Option A's broader-regulation-satisfies-narrower assumption is generally true in practice but requires explicit verification per dimension. Option C's residence-only ignores GDPR Article 3's extraterritorial scope. Option B's decline-and-resubmit isn't supported by either regulation.",
+      "wrong_explanations": {
+        "A": "The 'broader regulation satisfies narrower' framing works in many cases but requires explicit verification per dimension. Each regulation has unique scope dimensions (CCPA's right to opt-out of sale isn't in GDPR; GDPR's restriction-of-processing right isn't in CCPA). Concurrent application is more defensible than substitutive.",
+        "C": "GDPR Article 3 (Territorial Scope) extends to data subjects in the EU when offering goods/services or monitoring behavior, regardless of residence. The California-resident-in-EU case has both regulations applying.",
+        "B": "Neither regulation supports declining a properly-submitted request because the consumer is traveling. The company must process the request under the regulations that apply to the processing it conducts."
+      },
+      "tips": [
+        "Trap is C — \"residence determines applicable law\" is intuitive but ignores GDPR's territorial scope extension to data subjects in the EU regardless of residence.",
+        "Dual-regulation handling = shorter timeline + union of obligations + honor each regulation's prior consent + dual-regulation documentation + explicit dual-basis response.",
+        "Exam-day shortcut: cross-jurisdiction privacy-rights questions are answered by the both-apply-concurrently option, not single-regulation / residence-only / decline-and-resubmit."
+      ],
+      "framework_ref": "GDPR Article 3 (Territorial Scope); GDPR Article 12 (Information and Modalities for Exercise of Rights); GDPR Article 15 (Right of Access); GDPR Article 17 (Right to Erasure); CCPA/CPRA",
+      "related_concepts": [
+        "Multi-jurisdiction privacy",
+        "GDPR territorial scope",
+        "Data subject rights",
+        "CCPA"
+      ],
+      "_provenance": "Authored from concept: 'Multi-jurisdiction GDPR/CCPA data-subject-rights conflict synthesis - both-apply-with-union, complements d2_066 (multi-jurisdiction privacy program scaling) and d2_107 (GDPR vs SOX)'. Public source: GDPR Articles 3/12/15/17 + CCPA. All scenario specifics (CA resident in EU, dual request, prior consent decisions) invented for this question."
+    },
+    {
+      "id": "d2_123",
+      "domain": 2,
+      "subtopic": "IT Outsourcing Concentration Risk Synthesis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the IS auditor's BEST recommendation to address the concentration risk pattern described?",
+      "scenario_context": "A regional bank has gradually concentrated its IT outsourcing over a 5-year period: 75% of cloud spend at one provider, the same provider's database services backing 60% of customer-facing applications, the same provider's identity service used for 100% of customer authentication, and the same provider's CDN handling all customer-facing traffic. The provider has been reliable but recent industry events (a peer cloud provider's 12-hour outage, geopolitical sanctions affecting a different provider's regional services) have made the board uncomfortable. The CRO asks the IS auditor for an integrated recommendation across the bank's outsourcing strategy.",
+      "options": {
+        "A": "Maintain the current concentration since the provider has been reliable, accepting that diversification would forfeit the negotiated rate efficiency and operational simplicity the concentration provides today",
+        "B": "Conduct integrated concentration-risk analysis across all four service categories, quantify failure-scenario exposure, develop tiered mitigations (multi-cloud-ready / contract diversification / exit-readiness / contingency) aligned to risk-appetite tolerance with board approval",
+        "C": "Force immediate full diversification: split each of the four service categories evenly across three providers within 12 months regardless of cost, complexity, or operational disruption that the diversification would create",
+        "D": "Migrate everything to an entirely different cloud provider as a wholesale move, since the current provider's concentration is the problem and switching providers eliminates the concentration with that provider"
+      },
+      "correct": "B",
+      "key_concept": "Concentration-risk synthesis = integrated analysis across service categories + failure-scenario quantification + tiered mitigations (multi-cloud-ready / contract diversification / exit-readiness / contingency) aligned to appetite + board approval. Maintain-current, force-diversification, and wholesale-switch all fail.",
+      "pre_read": "Outsourcing concentration risk synthesis questions test whether you recognize integrated tiered-mitigation aligned to appetite as the right approach. Distractors propose acceptance, blanket diversification, or wholesale switch.",
+      "correct_explanation": "OCC Bulletin 2013-29, FFIEC examination guidance, and ISACA IT Vendor Management establish that outsourcing concentration risk requires integrated analysis (across all service categories with the concentrated provider) and tiered mitigations aligned to risk appetite. The integrated analysis: identify all services concentrated at the provider, quantify the exposure for each disruption mode (outage, regulatory restriction, geopolitical sanctions, vendor financial distress), assess against appetite, design tiered mitigations: multi-cloud-ready architecture for the highest-impact services (workload portability, abstraction layers); contract diversification for services where multi-provider operation is feasible; exit-readiness for services where rapid migration would be needed (documented migration paths, validated periodically); contingency plans for short-duration disruption (manual procedures, alternate channels). The mitigation depth scales to where the risk profile exceeds appetite. Board approval ensures the residual concentration is consciously accepted within appetite. Option A treats reliability-to-date as predictive, ignoring the geopolitical/regulatory disruption modes that the recent industry events demonstrated. Option C's blanket diversification sacrifices economics without analyzing where it actually matters. Option D's wholesale switch is a forklift change that doesn't address the underlying concentration discipline.",
+      "wrong_explanations": {
+        "A": "Reliability-to-date doesn't predict disruption modes the industry has just demonstrated (peer cloud 12-hour outage, geopolitical sanctions). Concentration creates exposure that didn't exist at lower concentration even if the provider remains reliable on its own performance.",
+        "C": "Forced full diversification across three providers in 12 months ignores cost-benefit per service category. The right approach mitigates where appetite is exceeded, not blanket; some services may be appropriate to leave concentrated if the appetite supports it.",
+        "D": "Wholesale switch to a different provider is a forklift change with major operational disruption and doesn't address the underlying concentration discipline — the company would still be concentrated, just at a different provider."
+      },
+      "tips": [
+        "Trap is A — \"provider has been reliable\" treats past reliability as predictive when recent industry events demonstrate disruption modes that aren't about provider reliability.",
+        "Concentration-risk synthesis = integrated analysis + scenario quantification + tiered mitigations aligned to appetite + board approval. Four steps together.",
+        "Exam-day shortcut: concentration-risk synthesis questions are answered by integrated-tiered-mitigation-to-appetite, not maintain-current / force-diversify / wholesale-switch."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC IT Examination Handbook; ISACA IT Vendor Management guidance; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Concentration risk synthesis",
+        "Multi-cloud architecture",
+        "Exit-readiness",
+        "Contract diversification"
+      ],
+      "_provenance": "Authored from concept: 'IT outsourcing concentration risk integrated analysis - distinct from d2_118 (concentration application tier). Public source: OCC Bulletin 2013-29 + FFIEC. All scenario specifics (75%/60%/100% concentration across four services) invented for this question."
+    },
+    {
+      "id": "d2_124",
+      "domain": 2,
+      "subtopic": "Strategic Plan Execution Mid-Cycle Pivot",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the strategic plan execution status described?",
+      "scenario_context": "A retailer's 3-year IT strategy was approved 18 months ago with three pillars: (1) cloud migration (60% complete, on track), (2) customer data platform (10% complete, vendor delays and architectural rework), (3) AI/ML initiatives (announced 6 months ago, not yet underway, leadership has shifted on which use cases to prioritize). The company's competitive environment has materially changed: a major competitor was acquired, the regulator announced new data-residency requirements affecting the cloud architecture, and a new AI/ML capability emerged that wasn't available at strategy approval. The CIO asks the IS auditor for guidance on whether to continue the existing strategy, pivot, or restart.",
+      "options": {
+        "A": "Conduct a structured mid-cycle review: maintain on-track elements, correct struggling elements, reset scope where capabilities/requirements have changed, with board endorsement and traceable rationale",
+        "B": "Continue the existing 3-year strategy unchanged for the remaining 18 months since changing direction mid-cycle creates governance churn and signals weak commitment to leadership and staff",
+        "C": "Discard the existing strategy entirely and start over with a fresh 3-year strategy, since the multiple material changes invalidate the original assumptions and a clean slate produces a more coherent direction across the three pillars",
+        "D": "Defer all strategic decisions to the next annual strategy refresh 6 months from now, addressing all material changes together with appropriate stakeholder alignment time during the regular planning cycle"
+      },
+      "correct": "A",
+      "key_concept": "Mid-cycle strategy pivot = structured review preserving on-track elements + correcting struggling elements + resetting scope where capabilities/requirements have changed materially + board endorsement with traceable rationale. Continue-unchanged ignores material change; full restart destroys continuity; defer-to-annual misses time-sensitive elements.",
+      "pre_read": "Mid-cycle strategy pivot questions test whether you recognize structured pivot preserving the unaffected core. Distractors propose continue-unchanged, full restart, or defer.",
+      "correct_explanation": "COBIT 2019 APO02 (Managed Strategy) and ISACA EGIT guidance establish that material changes (competitive disruption, regulatory shift, technology paradigm shift) trigger a structured mid-cycle strategy review — neither rigid continuation nor full restart. The right pivot: maintain elements that remain on-track and remain strategically valid (cloud migration is foundational, on-track, and the data-residency requirement reinforces rather than replaces it); correct struggling elements with explicit corrective action (the customer data platform's architectural and vendor issues need targeted intervention, not abandonment); reset scope where capabilities or requirements have changed materially (the AI/ML pillar should be re-scoped given the new capabilities and updated priorities); address regulatory changes that affect the strategy explicitly (new data-residency requirements may shape both cloud architecture and customer data platform); revise the strategy with board endorsement, traceable rationale documentation, and updated milestones. Option B's continuation ignores three material changes. Option C's full restart destroys 60% completion of the on-track cloud migration and the value-creation in progress. Option D's defer-to-annual misses time-sensitive regulatory deadlines.",
+      "wrong_explanations": {
+        "C": "Full restart abandons the cloud migration's 60% completion and the customer data platform's foundation (which is salvageable through corrective action, not restart). Restart trades execution progress for the illusion of clean-slate coherence.",
+        "D": "Defer-to-annual misses the regulatory deadline and the competitive window. Strategies operate continuously between formal refreshes; mid-cycle changes are part of normal governance, not exceptions.",
+        "B": "Continuing unchanged through three material changes (competitor acquisition, regulatory shift, new AI capability) is governance failure, not governance discipline. Strategies must respond to material change with structured discipline."
+      },
+      "tips": [
+        "Trap is B — \"continue unchanged for stability\" sounds disciplined but ignores three material changes (competitive, regulatory, technology).",
+        "Mid-cycle strategy pivot = preserve on-track + correct struggling + reset where capabilities changed + board endorsement with traceable rationale.",
+        "Exam-day shortcut: strategy mid-cycle questions are answered by structured pivot preserving the unaffected core, not continuation / restart / defer."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); ISACA EGIT Framework",
+      "related_concepts": [
+        "Strategy mid-cycle pivot",
+        "APO02",
+        "Strategic planning",
+        "Material change response"
+      ],
+      "_provenance": "Authored from concept: 'Strategic plan execution mid-cycle pivot - distinct from d2_085 (single-trigger update synthesis at lower complexity)'. Public source: COBIT 2019 APO02. All scenario specifics (retailer 3-pillar strategy, three material changes, mixed-progress pillars) invented for this question."
+    },
+    {
+      "id": "d2_125",
+      "domain": 2,
+      "subtopic": "Vendor Breach Response Coordination",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response approach BEST coordinates the vendor-breach situation described?",
+      "scenario_context": "An IS auditor at a regional health insurer learns that a critical SaaS vendor (handling member benefits administration) has been breached. The vendor's notification (T+12 hours): unknown number of records exposed, scope still being investigated, vendor is not yet able to confirm whether the insurer's data was specifically affected. The insurer's contractual SLA requires vendor breach notification within 24 hours and provides specific remediation rights. HIPAA Breach Notification Rule has 60-day timeline (insurer to HHS Secretary, individuals if 500+ affected, media if 500+). The insurer's CISO asks the IS auditor for coordination guidance.",
+      "options": {
+        "A": "Wait for the vendor to complete its investigation and provide definitive scope before taking any insurer-side action, since premature response risks misinforming members and regulators based on facts that may change",
+        "B": "Take over the vendor's incident investigation by sending the insurer's IR team to the vendor's premises, since the insurer cannot rely on the vendor's investigation given the contractual stakes involved in the breach",
+        "C": "Activate insurer-side IR immediately: enforce contractual notification rights, assess HIPAA obligations against current info (60-day clock starts at insurer's discovery), coordinate with counsel, plan member communication, and document the timeline",
+        "D": "Communicate immediately to all members that their data may have been exposed in a vendor breach, since prompt transparency is the most patient-trust-preserving approach regardless of investigation status"
+      },
+      "correct": "C",
+      "key_concept": "Vendor breach response coordination = activate insurer-side IR + enforce contractual rights + assess insurer's HIPAA obligations against current info + counsel coordination + planned member-communication approach + documentation. Wait-for-vendor delays insurer's clock; takeover-investigation oversteps; immediate-blanket-communication is premature.",
+      "pre_read": "Vendor breach coordination questions test whether you recognize that the insurer must act on its own clock based on its own information, while coordinating with the vendor. Distractors propose waiting, overstepping, or premature blanket communication.",
+      "correct_explanation": "HIPAA Breach Notification Rule (45 CFR §§ 164.400–414) and ISACA Vendor Risk Management guidance establish that the insurer (covered entity) has its own breach-notification obligations distinct from the vendor's (business associate). The 60-day clock under HIPAA starts at the insurer's discovery (or when the insurer should reasonably have known) — not at the vendor's investigation completion. The right coordination: (1) activate insurer-side incident response immediately upon learning of the vendor's breach; (2) enforce contractual notification rights (demand specific data-exposure assessment, evidence of remediation, root-cause analysis); (3) assess insurer-side HIPAA notification obligations against current information — even with uncertain scope, the insurer must analyze whether notification is required and when; (4) coordinate with general counsel on regulatory and notification strategy (privileged communications, regulatory engagement, public-statement strategy); (5) plan member-communication approach with PR/counsel review (timing, channels, content tailored to actual exposure); (6) document the coordination timeline for audit trail and post-incident review. Option A's wait-for-vendor delays the insurer's clock unilaterally — a regulator would view this as failure to exercise reasonable diligence. Option B's investigation takeover oversteps the contractual relationship and may compromise the vendor's ability to investigate. Option D's blanket immediate communication risks misinforming members and damaging the insurer's response credibility if scope changes later.",
+      "wrong_explanations": {
+        "A": "The HIPAA breach-notification clock starts at the covered entity's discovery, not at the vendor's investigation completion. Waiting for the vendor delays the insurer's clock unilaterally and exposes the insurer to regulatory risk for failure to act on its own knowledge.",
+        "D": "Blanket immediate communication risks misinforming members. Without specific exposure information, the communication has to be vague ('your data may have been involved') which damages credibility if scope is later confirmed as smaller — and may also exceed HIPAA's notification thresholds and trigger media-notification requirements prematurely.",
+        "B": "The insurer cannot take over the vendor's investigation under standard SaaS contracts. The right approach is to enforce contractual rights (demand information, exercise audit rights), not to send the insurer's team to the vendor's premises uninvited."
+      },
+      "tips": [
+        "Trap is A — \"wait for the vendor's investigation\" feels prudent but the insurer's HIPAA clock starts at the insurer's discovery, not the vendor's.",
+        "Vendor breach coordination = activate insurer-side IR + enforce contractual rights + assess insurer's HIPAA obligations + counsel coordination + planned member communication + documentation.",
+        "Exam-day shortcut: vendor-breach coordination questions are answered by the insurer-side IR with contractual enforcement option, not waiting / overstepping / premature blanket communication."
+      ],
+      "framework_ref": "HIPAA Breach Notification Rule (45 CFR §§ 164.400-414); NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA IT Vendor Management guidance",
+      "related_concepts": [
+        "Vendor breach response",
+        "HIPAA breach notification",
+        "Business associate",
+        "Incident coordination"
+      ],
+      "_provenance": "Authored from concept: 'Vendor breach response coordination - covered entity vs business associate clock, complements d2_105 (incident response governance escalation) and d2_110 (crisis communication)'. Public source: HIPAA Breach Notification Rule + NIST SP 800-61. All scenario specifics (regional health insurer, T+12h, vendor scope unknown) invented for this question."
+    },
+    {
+      "id": "d2_126",
+      "domain": 2,
+      "subtopic": "Data Classification + Retention + Privacy Multi-Control Synthesis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the IS auditor's BEST recommendation for the new data-discipline architecture?",
+      "scenario_context": "A FinTech company is rolling out a new customer-data architecture. The CISO has proposed a flat 'all customer data is sensitive' approach. The CDO has proposed a flat 'all data retained 7 years for regulatory compliance' approach. The CPO has proposed a flat 'all collection requires explicit consent' approach. The CFO has proposed minimum spend on data discipline since the company is pre-IPO and prioritizing growth. The CEO asks the IS auditor for an integrated recommendation across data classification, retention, and privacy that's defensible to auditors and regulators while supporting the business.",
+      "options": {
+        "A": "Adopt the CISO's all-sensitive approach since it provides maximum security posture, accepting the operational overhead and the inability to differentiate data treatment across the customer data lifecycle",
+        "B": "Adopt all four leaders' positions in full — all data sensitive AND all data retained 7 years AND all collection consented AND minimum spend — since each leader is right within their domain and their combined approach reflects deep expertise",
+        "C": "Adopt the CDO's flat 7-year retention since it satisfies all known regulatory minimums and avoids the complexity of category-by-category retention, accepting the GDPR storage-limitation principle violation as a manageable risk",
+        "D": "Implement integrated discipline: tiered classification + per-category retention aligned to specific regulations + per-purpose privacy controls with appropriate lawful basis + cost-effective implementation + cross-functional governance"
+      },
+      "correct": "D",
+      "key_concept": "Integrated data discipline = tiered classification (foundation) + per-category retention aligned to regulatory minimums/maximums + per-purpose privacy controls with appropriate lawful basis + cost-effective implementation prioritizing high-risk + cross-functional governance. Flat-uniform-everything-sensitive, flat-7-year, and combine-all-four-positions all fail.",
+      "pre_read": "Multi-control data discipline synthesis questions test whether you recognize integrated tiered-by-purpose approach. Distractors propose flat uniform extremes or combination of all positions.",
+      "correct_explanation": "ISACA Data Governance guidance, IAPP privacy-program design, and DAMA-DMBOK establish that effective data discipline integrates classification, retention, and privacy as related-but-distinct disciplines. Classification is the foundation (without it, downstream disciplines have no anchor) — tiered sensitivity (public/internal/confidential/restricted) drives access controls, encryption, and handling rules. Retention is per-category, aligned to specific regulatory requirements (some categories have 6-year HIPAA minimums; some have 7-year SOX minimums; some have GDPR 'no longer than necessary' maximums; flat uniform retention violates one or another). Privacy is per-purpose with appropriate lawful basis (not all consent — many uses defensibly rest on contract, legitimate interests, or legal obligation). Cost-effective implementation prioritizes high-risk areas (where exposure is largest, controls are concentrated) rather than uniform investment. Cross-functional governance (data governance committee with CISO/CDO/CPO/legal) keeps the disciplines integrated as they evolve. Option A's all-sensitive approach is uniform-most-conservative, which is over-engineering for low-risk data and may violate GDPR data-minimization. Option C's flat 7-year violates GDPR storage limitation. Option B's combine-all-four is internally inconsistent (consent-only and minimum-spend are in tension; all-7-year and all-consent are in tension).",
+      "wrong_explanations": {
+        "A": "All-data-sensitive overstates the risk profile of low-sensitivity data (e.g., public-facing marketing assets) and produces operational overhead that doesn't align to risk. It also may violate GDPR data-minimization and over-collection principles.",
+        "C": "GDPR Article 5(1)(e) (Storage Limitation) explicitly forbids retaining personal data longer than necessary for the purpose. Flat 7-year retention violates this for any personal data not subject to a 7-year retention obligation. Mass GDPR violation is not a 'manageable risk'.",
+        "B": "Combining all four positions in full is internally inconsistent (consent-only conflicts with legitimate-interests use cases; all-7-year conflicts with GDPR storage limitation; minimum-spend conflicts with the operational requirements of all-sensitive). The disciplines must be integrated thoughtfully, not stacked from each leader's domain in full."
+      },
+      "tips": [
+        "Trap is C — \"flat 7-year for all data\" sounds compliance-conservative but violates GDPR storage limitation for any personal data not subject to that obligation.",
+        "Integrated data discipline = classification (foundation) + per-category retention + per-purpose privacy controls + cost-effective prioritization + cross-functional governance.",
+        "Exam-day shortcut: multi-control data discipline questions are answered by the integrated tiered-by-purpose option, not flat-uniform extremes."
+      ],
+      "framework_ref": "GDPR Article 5 (Principles); ISACA Data Governance guidance; DAMA-DMBOK 2nd Edition; IAPP CIPP/CIPM bodies of knowledge",
+      "related_concepts": [
+        "Data discipline integration",
+        "Data classification",
+        "Retention",
+        "Privacy controls"
+      ],
+      "_provenance": "Authored from concept: 'Data discipline multi-control synthesis - tiered-per-purpose approach, complements d2_098 (multi-regulation retention design) and d2_063 (privacy operationalization)'. Public source: GDPR Article 5 + ISACA Data Governance + DAMA-DMBOK. All scenario specifics (FinTech rollout, four leader positions in tension) invented for this question."
+    },
+    {
+      "id": "d2_127",
+      "domain": 2,
+      "subtopic": "Risk Treatment Trade-Offs Across Multiple Risks",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What treatment approach BEST handles the multi-risk trade-off described?",
+      "scenario_context": "An IS auditor at a regional retailer is reviewing risk-treatment proposals from the CISO. Three risks are competing for the same $1M treatment budget: Risk 1 — POS-system downtime risk during peak holiday season (impact $1.5M, likelihood medium-high without treatment); Risk 2 — customer-data breach via third-party JavaScript on the checkout page (impact $2-4M with regulatory exposure, likelihood low-medium); Risk 3 — ransomware on internal corporate systems (impact $5M+, likelihood medium given peer-industry incidents). The CISO proposes treating Risk 1 fully ($600K), Risk 2 partially ($300K), Risk 3 with $100K of basic controls. The CRO is uncomfortable. The CIO asks the IS auditor for guidance.",
+      "options": {
+        "A": "Approve the CISO's proposed allocation since the CISO is the security expert and the allocation reflects domain expertise the IS auditor should defer to",
+        "B": "Recommend analytical re-evaluation: quantify each risk's expected loss + treatment effectiveness ($/% reduction), compare expected-loss reduction per dollar, evaluate against appetite, and revise allocation with rationale and CRO sign-off",
+        "C": "Accept all three risks since the $1M budget is insufficient to fully treat any of the highest-impact risks (Risk 3 at $5M+ impact would require multi-million treatment), so partial treatment is essentially acceptance with extra cost",
+        "D": "Reject the CISO's allocation and demand the CISO re-propose with full treatment of Risk 3 (highest impact) regardless of likelihood or treatment effectiveness, since impact-only ranking is the most defensible criterion"
+      },
+      "correct": "B",
+      "key_concept": "Risk treatment across multiple risks = expected-loss × treatment-effectiveness analysis ($/% reduction) + expected-loss-reduction-per-dollar comparison + appetite analysis + treatment economics + revised allocation with rationale and CRO sign-off. Defer-to-CISO, blanket acceptance, and impact-only ranking all fail.",
+      "pre_read": "Multi-risk treatment trade-off questions test whether you recognize the analytical re-evaluation pattern (expected-loss × effectiveness, per-dollar reduction, appetite alignment). Distractors propose deferral, acceptance, or impact-only ranking.",
+      "correct_explanation": "ISO 31000:2018, ISACA Risk IT Framework, and FAIR analysis establish that multi-risk treatment trade-offs require analytical comparison rather than expert deferral. The right approach: (1) quantify each risk's expected loss as impact × likelihood (with ranges); (2) quantify treatment effectiveness as $/% reduction (does the $600K treatment reduce Risk 1 expected loss by $600K? More? Less?); (3) compute expected-loss reduction per treatment dollar to compare alternatives; (4) evaluate against risk appetite — which risk most exceeds appetite? appetite-exceeding risks have priority over more-comfortable risks; (5) consider treatment economics — some treatments produce ongoing reductions (architectural improvements that benefit multiple periods), others are one-time; (6) revise the allocation toward the option with the strongest expected-loss reduction per dollar that aligns with appetite. The CISO's allocation may be right or wrong; the test is analytical rigor, not deference. Option A defers without analysis. Option C abandons treatment because it can't achieve perfection — but partial treatment can produce material expected-loss reduction. Option D's impact-only ranking ignores likelihood and treatment effectiveness; treating a low-likelihood high-impact risk fully may produce less expected-loss reduction than treating a high-likelihood medium-impact risk partially.",
+      "wrong_explanations": {
+        "A": "Defer-to-the-CISO's allocation skips the analytical work that the IS auditor's role requires. The CISO may be right or wrong; the auditor's role is to verify the analysis, not defer to expertise.",
+        "C": "Partial treatment produces material expected-loss reduction even when full treatment is unaffordable. Treating Risk 1 partially ($300K) might reduce Risk 1 expected loss by $400K — that's still a positive expected-value treatment. Abandoning treatment because perfection is unaffordable wastes the budget.",
+        "D": "Impact-only ranking ignores likelihood and treatment effectiveness. A $5M-impact risk with low likelihood and expensive treatment may produce less expected-loss reduction per dollar than a $1.5M-impact risk with medium-high likelihood and effective treatment. Risk treatment is a per-dollar optimization, not an impact-ranking exercise."
+      },
+      "tips": [
+        "Trap is D — \"impact-only ranking, treat highest-impact first\" is intuitive but ignores likelihood and treatment effectiveness; per-dollar reduction is the right axis.",
+        "Multi-risk treatment trade-off = expected-loss × effectiveness + per-dollar reduction comparison + appetite + treatment economics + revised allocation with rationale.",
+        "Exam-day shortcut: multi-risk treatment questions are answered by analytical re-evaluation with per-dollar reduction analysis, not deferral / acceptance / impact-only."
+      ],
+      "framework_ref": "ISO 31000:2018 (Risk Management); ISACA Risk IT Framework; FAIR (Factor Analysis of Information Risk); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Multi-risk treatment",
+        "Expected-loss reduction",
+        "FAIR analysis",
+        "Risk economics"
+      ],
+      "_provenance": "Authored from concept: 'Risk treatment trade-offs across multiple risks - per-dollar expected-loss reduction analysis, complements d2_089 (constrained-budget tiered prioritization) and d2_070 (multi-option treatment scenario)'. Public source: ISO 31000:2018 + ISACA Risk IT + FAIR. All scenario specifics (regional retailer, three competing risks, $1M budget, holiday-season urgency) invented for this question."
+    },
+    {
+      "id": "d2_128",
+      "domain": 2,
+      "subtopic": "Acquisition Target IT Due Diligence",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which IT due diligence approach is MOST appropriate for the acquisition described?",
+      "scenario_context": "A regional bank is evaluating acquiring a mid-size FinTech (200 employees, cloud-native, customer base of 500K). Initial business review is favorable. The IT due diligence window is 6 weeks. Constraints: limited target-side cooperation given competitive sensitivity, target's IT documentation is sparse, target uses a non-standard tech stack, target has had two minor security incidents in the past 18 months publicly disclosed. The CIO asks the IS auditor for due diligence guidance covering scope, depth, risk assessment, and integration planning. The board's deal-decision committee meets in 4 weeks and expects the auditor's findings to inform their go/no-go vote.",
+      "options": {
+        "A": "Risk-based IT due diligence: tier-1 deep dive on regulatory-critical systems, incident root-cause review, architecture/integration risk, concentration assessment, integration cost/timeline, deal-breaker criteria, and daily progress reviews",
+        "B": "Conduct surface-level due diligence focused on the major system inventory and the target's stated security posture, deferring deeper analysis until post-acquisition when full access is available and the target's cooperation is required",
+        "C": "Treat the target's security incidents as deal-breakers regardless of root cause or remediation, since prior incidents indicate a security culture deficit that is unlikely to improve through acquisition",
+        "D": "Defer the IT due diligence entirely to the M&A consulting firm engaged for the broader transaction, since their expertise covers IT due diligence as part of the comprehensive transaction-advisory scope"
+      },
+      "correct": "A",
+      "key_concept": "Acquisition IT due diligence = tier-1 deep dive on regulatory-critical systems + incident root-cause review + technical architecture + concentration assessment + integration cost/timeline + clear deal-breaker criteria + daily progress reviews. Surface-only / incident-as-deal-breaker / consultant-only all fail.",
+      "pre_read": "Acquisition IT due diligence questions test whether you recognize risk-based depth-by-criticality with deal-breaker criteria. Distractors propose surface-level / blanket-incident-rejection / consultant-deferral.",
+      "correct_explanation": "ISACA M&A IT Due Diligence guidance and OCC Bulletin 2017-21 (Bank Acquisitions) establish that effective IT due diligence for an acquisition is risk-based and depth-by-criticality. Tier-1 deep dive on regulatory-critical systems (BSA/AML, KYC, customer authentication, transaction processing) — these are non-negotiable for a bank acquirer. Security-incident root-cause review for the two prior incidents (was each remediated? do they indicate a pattern? what controls have changed since?). Technical architecture assessment focusing on integration risk (where will the FinTech's stack interface with the bank's? what tech debt will integration inherit?) and tech-debt indicators (system age, vendor support status, code quality). Vendor and key-personnel concentration assessment (single points of failure in vendor relationships or key engineers). Integration cost and timeline estimate (informs deal valuation). Clear deal-breaker criteria (what would cause the bank to walk away?). Daily progress reviews to coordinate the 6-week window and avoid late surprises. Findings classified for deal-decision purposes (red/yellow/green per area). Option B's surface-only defers material risk to post-acquisition when leverage is gone. Option C's blanket-incident-rejection is impact-only thinking that ignores root cause and remediation. Option D's consultant-only outsources due diligence judgment to a third party with less context on the bank's specific risk appetite.",
+      "wrong_explanations": {
+        "C": "Two minor security incidents in 18 months don't automatically indicate a security-culture deficit. Many companies have incidents; the question is root cause and remediation maturity. Blanket rejection treats prior incidents as fatal flaws when they may be manageable risks.",
+        "D": "M&A consulting firms provide valuable input but cannot substitute for the bank's own due diligence judgment. The bank knows its risk appetite, integration capacity, and strategic context better than any consultant. Consultant-led DD without bank-side judgment produces deals that fit the consultant's playbook, not the bank's needs.",
+        "B": "Surface-level due diligence in the pre-acquisition window squanders the bank's leverage. Once the deal closes, the bank inherits whatever issues the surface-level review missed — at significantly worse cost than discovering them pre-deal."
+      },
+      "tips": [
+        "Trap is B — \"surface-level + defer to post-acquisition\" feels efficient but squanders the bank's pre-deal leverage.",
+        "Acquisition IT DD = tier-1 regulatory-critical deep dive + incident root-cause review + architecture/integration risk + concentration + cost-timeline + deal-breaker criteria + daily reviews.",
+        "Exam-day shortcut: acquisition IT due diligence questions are answered by risk-based depth-by-criticality with deal-breaker criteria, not surface / blanket-rejection / consultant-only."
+      ],
+      "framework_ref": "OCC Bulletin 2017-21 (Mergers and Acquisitions); ISACA M&A IT Due Diligence guidance; FFIEC IT Examination Handbook",
+      "related_concepts": [
+        "Acquisition due diligence",
+        "M&A IT",
+        "Integration risk",
+        "Deal-breaker criteria"
+      ],
+      "_provenance": "Authored from concept: 'Acquisition target IT due diligence depth-by-criticality, complements d2_104 (failed M&A integration synthesis at post-deal stage)'. Public source: OCC Bulletin 2017-21 + ISACA M&A. All scenario specifics (regional bank, mid-size FinTech, six-week window, prior incidents) invented for this question."
+    },
+    {
+      "id": "d2_129",
+      "domain": 2,
+      "subtopic": "Cloud Cost vs Availability Trade-Off Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which architectural recommendation BEST balances the cost-availability trade-off described?",
+      "scenario_context": "A SaaS company offers an analytics platform with mixed customer tiers: Enterprise customers pay $50K-500K/year and have 99.99% availability SLAs; Mid-Market customers pay $10K-50K and have 99.9% SLAs; Self-Serve customers pay $50-500/month with no SLA. The current architecture is single-region and provides ~99.95% availability across all tiers. Cloud spend is high. The CTO asks the IS auditor whether the company should: (a) move to multi-region active-active for all tiers (high cost), (b) move to multi-region for Enterprise only with the others on single-region (operational complexity), (c) stay single-region but improve operational practices (no-cost option, may not meet Enterprise SLA over time), or (d) something else.",
+      "options": {
+        "A": "Move all tiers to multi-region active-active, since uniform architecture simplifies operations and the highest SLA tier requires it; the cost increase is the cost of doing business at the Enterprise scale",
+        "B": "Stay single-region with improved operational practices since the current 99.95% availability is close to all tier SLAs and improvement of operations would close the gap without the cost increase of multi-region",
+        "C": "Tier-based architecture matching availability investment to revenue: multi-region active-active for Enterprise (high SLA + revenue), multi-region active-passive for Mid-Market, single-region with operational improvements for Self-Serve, with tier routing",
+        "D": "Move to multi-region active-passive for all tiers since active-passive is significantly cheaper than active-active and provides multi-region availability adequate for any tier"
+      },
+      "correct": "C",
+      "key_concept": "Cost-availability trade-off = tier-based architecture matching investment to revenue and SLA commitments + multi-region active-active (high SLA + high revenue) + multi-region active-passive (mid SLA + mid revenue) + single-region (no SLA + low revenue) + tier-routing + per-tier operational runbooks + explicit cost-per-availability analysis. Uniform-everything-multi-region, stay-single-region-everywhere, and one-mode-everywhere all fail.",
+      "pre_read": "Cost-availability trade-off questions test whether you recognize tier-based architecture matching investment to commitments. Distractors propose uniform extremes (all-multi-region or all-single-region) or single-architecture-everywhere.",
+      "correct_explanation": "ISACA Cloud Architecture guidance and SRE-discipline literature establish that effective cost-availability trade-offs use tier-based architecture matching investment to revenue and SLA commitments. The right design: Enterprise tier ($50K-500K ACV with 99.99% SLA) warrants multi-region active-active — the cost is justified by the revenue and SLA commitment. Mid-Market tier ($10K-50K ACV with 99.9% SLA) uses multi-region active-passive — significantly cheaper than active-active, meets 99.9% with appropriate failover discipline. Self-Serve tier ($50-500/month, no SLA) uses single-region with improved operational practices — no SLA commitment means no architectural investment beyond what's operationally appropriate. Customer-tier routing ensures each customer experiences the appropriate architecture. Per-tier operational runbooks support each tier's response patterns. Explicit cost-per-availability analysis demonstrates the trade-off explicitly to leadership. Option A's uniform multi-region active-active is over-engineering for the Self-Serve tier. Option B's stay-single-region puts the Enterprise SLA at risk and forfeits the company's ability to credibly commit to higher SLAs. Option D's all-tier active-passive over-engineers Self-Serve and may not satisfy Enterprise-tier 99.99% in active-passive mode (active-passive has higher RTO than active-active).",
+      "wrong_explanations": {
+        "A": "Uniform multi-region active-active for all tiers, including Self-Serve customers paying $50/month, is over-engineering — the cost-per-customer for Self-Serve cannot support multi-region active-active spend. Tier-based architecture is the recognized pattern for mixed customer SLAs.",
+        "D": "Multi-region active-passive has higher RTO than active-active (failover takes minutes), which may not satisfy 99.99% SLA depending on the failover frequency. For Self-Serve, active-passive over-engineers the SLA-free tier.",
+        "B": "99.95% from improved single-region operations cannot reliably meet 99.99% Enterprise SLA. The Enterprise SLA implies ~52 minutes downtime per year; 99.95% implies ~4.4 hours. Improved operations cannot close that gap without multi-region architecture."
+      },
+      "tips": [
+        "Trap is A — \"uniform multi-region for all tiers simplifies operations\" sounds clean but over-engineers the no-SLA tier and forces the company to spend cloud cost on customers who don't pay for it.",
+        "Cost-availability trade-off = tier-based architecture matching investment to revenue and SLA + active-active (high) + active-passive (mid) + single-region + tier-routing + per-tier runbooks.",
+        "Exam-day shortcut: cost-availability trade-off questions are answered by tier-based architecture, not uniform extremes."
+      ],
+      "framework_ref": "ISACA Cloud Architecture guidance; CSA Cloud Controls Matrix; COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "related_concepts": [
+        "Cloud architecture",
+        "Tier-based design",
+        "Active-active vs active-passive",
+        "Cost-per-availability"
+      ],
+      "_provenance": "Authored from concept: 'Cloud cost vs availability trade-off tier-based architecture, complements d2_045 (capacity planning) and d2_087 (multi-cloud governance)'. Public source: ISACA Cloud Architecture + SRE discipline. All scenario specifics (SaaS analytics platform, three customer tiers, mixed SLAs) invented for this question."
+    },
+    {
+      "id": "d2_130",
+      "domain": 2,
+      "subtopic": "Information Security Strategy Alignment with Business Strategy Synthesis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST aligns the InfoSec strategy with the business strategy described?",
+      "scenario_context": "An IS auditor at a healthcare technology company is reviewing the new InfoSec strategy proposed by the CISO. The business strategy emphasizes: (1) accelerating product-development velocity to capture market share, (2) expanding internationally including EU and UK, (3) acquiring smaller competitors over the next 18 months. The CISO's proposed InfoSec strategy is the typical generic 'protect-detect-respond' framework with no explicit linkage to the three business strategy elements. The CEO has asked the IS auditor whether the InfoSec strategy is appropriate.",
+      "options": {
+        "A": "Approve the CISO's strategy as proposed since 'protect-detect-respond' is the universally-applicable InfoSec framework that doesn't need to be customized to specific business strategy",
+        "B": "Defer the InfoSec strategy approval until the next business-strategy refresh in 12 months, since aligning InfoSec to a business strategy that may itself shift is poor sequencing",
+        "C": "Reject the CISO's strategy entirely and recommend a complete rewrite from scratch, since the lack of business-strategy alignment is fundamental and incremental revision cannot address such a basic flaw",
+        "D": "Revise the strategy explicitly aligning each business pillar: speed-supporting controls (DevSecOps) for velocity; international privacy and compliance for international expansion; M&A security integration playbook for acquisitions, with measurable success criteria per pillar"
+      },
+      "correct": "D",
+      "key_concept": "InfoSec strategy alignment = revise CISO's strategy to map each business pillar to specific InfoSec capabilities (velocity → DevSecOps; international → GDPR/UK-GDPR/regional; M&A → security integration playbook), with measurable success criteria per pillar. Approve-generic, full-rewrite, and defer-to-next-business-cycle all fail.",
+      "pre_read": "InfoSec strategy alignment questions test whether you recognize that InfoSec strategy must map to business strategy pillars with specific capabilities. Distractors propose generic-acceptance, full-rewrite, or deferral.",
+      "correct_explanation": "ISACA Information Security Governance guidance and COBIT 2019 EDM01/APO13 establish that InfoSec strategy must align to business strategy as a derivative — InfoSec is not a standalone discipline but a function of what the business is doing. The right alignment maps each business pillar to specific InfoSec capabilities: (1) Velocity pillar → DevSecOps integration, security-as-code, automated security testing in CI/CD, security training that doesn't slow developers, threat modeling at design stage rather than as a late gate; (2) International expansion pillar → GDPR and UK-GDPR compliance program operationalization, regional data residency analysis, encryption requirements per region, supervisory authority engagement strategy, regional language and cultural adaptation of awareness programs; (3) Acquisition pillar → M&A security integration playbook covering target due diligence (integrating with d2_128 patterns), integration security controls, post-acquisition security uplift planning, M&A-specific incident response considerations. Each strategy pillar carries measurable success criteria tied to specific business outcomes. Option A's generic protect-detect-respond is necessary but not sufficient — it doesn't translate the business strategy into InfoSec capabilities. Option C's full-rewrite throws away the framework foundation that's reusable. Option B's defer abandons strategic alignment for 12 months while the business pursues three new directions without InfoSec strategy support.",
+      "wrong_explanations": {
+        "A": "Generic 'protect-detect-respond' is the foundation of any InfoSec program but it doesn't translate the business strategy into specific InfoSec capabilities. The CISO's strategy is effectively a framework without an opinion on what the company specifically needs.",
+        "C": "Full-rewrite throws away the framework foundation. The CISO's protect-detect-respond is correct as a foundation; the issue is that it lacks the business-alignment layer above it. Adding the alignment layer through revision is more efficient and preserves the foundational work.",
+        "B": "Deferring InfoSec strategy by 12 months while the business pursues velocity, international expansion, and acquisitions means InfoSec is reactive throughout — discovering each business move and trying to support it after the fact. Strategy must evolve alongside business strategy, not lag by 12 months."
+      },
+      "tips": [
+        "Trap is A — \"protect-detect-respond is universally applicable\" treats the framework as the strategy when it's actually the foundation; the strategy must add business alignment above the framework.",
+        "InfoSec strategy alignment = map each business pillar to specific InfoSec capabilities (velocity → DevSecOps; international → multi-region privacy; M&A → security integration) + measurable success criteria.",
+        "Exam-day shortcut: InfoSec strategy alignment questions are answered by the option naming explicit business-pillar to InfoSec-capability mapping, not generic-acceptance / full-rewrite / deferral."
+      ],
+      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO13 (Managed Security); ISACA Information Security Governance guidance; ISO/IEC 27014 (Governance of Information Security)",
+      "related_concepts": [
+        "InfoSec strategy alignment",
+        "Business-IT alignment",
+        "DevSecOps",
+        "Security strategy"
+      ],
+      "_provenance": "Authored from concept: 'Information Security strategy alignment with business strategy synthesis - business-pillar to InfoSec-capability mapping, complements d2_006 (board accountability) and d2_069 (InfoSec governance integration with EGIT)'. Public source: COBIT 2019 EDM01/APO13 + ISACA InfoSec Governance + ISO/IEC 27014. All scenario specifics (healthcare tech company, three business pillars, generic CISO strategy) invented for this question."
     }
   ]
 }
