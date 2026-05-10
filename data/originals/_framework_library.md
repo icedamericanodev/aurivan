@@ -514,3 +514,35 @@ The library is intentionally permissive on parenthetical sub-references like
 "(...) and (...)" — the linter validates the leading framework name + the
 top-level objective code, and accepts trailing detail (e.g., COBIT 2019 APO12
 sub-references like "(Managed Risk) and APO12.03").
+
+## Batch 10 additions
+- ISACA Security Operations guidance
+- NITTF Insider Threat Program guidance
+- NIST SP 800-150 (Guide to Cyber Threat Information Sharing)
+- NIST SP 800-218 (Secure Software Development Framework)
+- Executive Order 14028 (Improving the Nation's Cybersecurity)
+- ISACA Open Source Software guidance
+- IEC 62443 (Industrial Automation and Control Systems Security)
+- NIST SP 800-82 (Guide to OT Security)
+- ISACA Industrial Cybersecurity guidance
+- NIST SP 800-207 (Zero Trust Architecture)
+- CISA Zero Trust Maturity Model
+- ISACA Threat Intelligence guidance
+- ISO/IEC 27035 (Information security incident management)
+- OWASP API Security Top 10
+- CSA API Security Guidelines
+- ISACA API Governance guidance
+- NIST SP 800-63 (Digital Identity Guidelines)
+- ISACA Identity and Access Management guidance
+- ISACA Privileged Access guidance
+- CIS Critical Security Controls
+- ISACA Insider Threat guidance
+- NIST SP 800-53 AT-2(2)
+- NIST SP 800-53 AC-6 (Least Privilege)
+- ISACA Crisis Communication guidance
+- CISA Ransomware Guidance
+- FBI Ransomware Advisories
+- ISO/IEC 30300 (Records Management)
+- ISACA Information Governance guidance
+- ARMA Generally Accepted Recordkeeping Principles (GARP)
+- CSA Zero Trust Framework

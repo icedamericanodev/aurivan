@@ -5495,6 +5495,735 @@
         "Strategic security objectives"
       ],
       "_provenance": "Authored from concept: 'InfoSec strategy refresh after major breach - comprehensive multi-dimensional integration, complements d2_130 (InfoSec strategy alignment with business strategy) and d2_143 (strategic plan vs unanticipated breach)'. Public source: COBIT 2019 EDM01/APO13 + NIST CSF v2.0. All scenario specifics (health-tech, 5M records, $40M response, four root causes) invented for this question."
+    },
+    {
+      "id": "d2_151",
+      "domain": 2,
+      "subtopic": "SOAR — Security Orchestration, Automation, Response Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional bank is reviewing a new SOAR (Security Orchestration, Automation, and Response) deployment. Which governance design feature MOST strongly supports SOAR's value while managing automation risk?",
+      "options": {
+        "A": "Automate every detected incident with no human review, since maximum automation maximizes the SOAR investment's ROI and human review introduces delay",
+        "B": "Tiered automation: tier-1 routine alerts (phishing triage, log enrichment) fully automated; tier-2 intermediate (containment actions, ticket creation) auto-executed with audit logging; tier-3 high-impact (account disable, network isolation) automation-assisted with required human approval",
+        "C": "Manual operation only — use SOAR as an alert-aggregation tool but require human execution of every response action regardless of routine nature",
+        "D": "Automate based on alert volume rather than alert severity, since high-volume routine alerts produce more value per automation than rare high-severity alerts"
+      },
+      "correct": "B",
+      "key_concept": "SOAR governance = tiered automation: routine fully-automated, intermediate auto-executed-with-logging, high-impact automation-assisted-with-human-approval. All-auto, all-manual, and volume-based all fail.",
+      "pre_read": "SOAR governance questions test whether you recognize the tiered approach. Distractors propose extremes (all-auto, all-manual) or wrong axis (volume not severity).",
+      "correct_explanation": "ISACA Security Operations guidance and SANS Incident Response practice establish that SOAR value comes from tiered automation matching response intensity to incident severity. Tier 1 — routine alerts (phishing triage, log enrichment, IOC lookups) — fully automated since misclassification cost is low and volume is high. Tier 2 — intermediate (containment actions, ticket creation, evidence preservation) — auto-executed with full audit logging so the action is reviewable post-fact. Tier 3 — high-impact (account disable, network isolation, executive privilege revocation) — automation-assisted but requires human approval before execution given the operational and reputational impact. Option A's all-auto produces costly false-positive actions on tier-3 events. Option C's all-manual loses SOAR's primary value (consistent rapid response on routine high-volume alerts). Option D's volume-based axis ignores severity entirely.",
+      "wrong_explanations": {
+        "A": "All-auto-everything produces costly false-positive actions on tier-3 events: incorrectly disabled executive accounts, incorrectly isolated production segments. The cost of one tier-3 false-positive can exceed the savings from a year of routine automation.",
+        "C": "All-manual loses SOAR's primary value — consistent rapid response on routine high-volume alerts. The investment doesn't justify operational benefit if humans execute every response.",
+        "D": "Volume is correlated with severity but not equivalent. High-volume alerts include both routine (good automation candidate) and high-severity (poor automation candidate). The right axis is severity-driven tiering."
+      },
+      "tips": [
+        "Trap is A — \"automate everything for max ROI\" sounds rational but tier-3 false-positives can cost more than a year of routine automation savings.",
+        "SOAR governance = tier 1 (routine) full auto + tier 2 (intermediate) auto with logging + tier 3 (high-impact) automation-assisted with human approval. Severity-driven tiering.",
+        "Exam-day shortcut: SOAR governance questions are answered by tiered automation tied to severity, not all-auto / all-manual / volume-based."
+      ],
+      "framework_ref": "ISACA Security Operations guidance; NIST SP 800-61 (Computer Security Incident Handling Guide); COBIT 2019 APO13 (Managed Security)",
+      "related_concepts": [
+        "SOAR",
+        "Security automation",
+        "Tiered response",
+        "Incident response"
+      ],
+      "_provenance": "Authored from concept: 'SOAR governance tiered automation - severity-driven tiers, no prior D2 coverage'. Public source: ISACA Security Operations + NIST SP 800-61."
+    },
+    {
+      "id": "d2_152",
+      "domain": 2,
+      "subtopic": "Zero Trust Architecture — Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a financial-services firm is reviewing the firm's Zero Trust architecture program. Which governance approach BEST supports Zero Trust principles in practice?",
+      "options": {
+        "A": "Layered Zero Trust governance: strong identity (MFA + risk-based authentication), micro-segmentation, continuous verification, least-privilege, encryption everywhere, with NIST SP 800-207 maturity measurement",
+        "B": "Replace the existing perimeter security investment with Zero Trust products from a single vendor's marketing claims, accepting that vendor consolidation simplifies the architecture",
+        "C": "Buy a Zero Trust Network Access (ZTNA) product and consider Zero Trust complete, since ZTNA is the dominant Zero Trust technology and replacing VPN with ZTNA achieves the architectural shift",
+        "D": "Rename existing security controls 'Zero Trust' for marketing purposes, since most contemporary security controls already align loosely with Zero Trust principles"
+      },
+      "correct": "A",
+      "key_concept": "Zero Trust governance = layered: strong identity + micro-segmentation + continuous verification + least-privilege + encryption everywhere + maturity measurement via NIST SP 800-207. Single-vendor marketing, ZTNA-only-equals-ZT, and rename-existing-controls all fail.",
+      "pre_read": "Zero Trust governance questions test whether you recognize the multi-element layered architecture. Distractors substitute single-vendor / single-product / rebranding for the comprehensive design.",
+      "correct_explanation": "NIST SP 800-207 (Zero Trust Architecture) and CISA Zero Trust Maturity Model establish Zero Trust as a layered architectural shift: (1) strong identity — MFA, risk-based authentication, identity governance; (2) micro-segmentation per workload — prevents lateral movement; (3) continuous verification — every request authenticated and authorized, not just at perimeter; (4) least-privilege access — minimum necessary entitlements per principal per resource; (5) encryption everywhere — in-transit and at-rest; (6) maturity measurement using a recognized framework (NIST SP 800-207, CISA Maturity Model) so the firm can track progress objectively. Option B substitutes vendor consolidation for architectural depth. Option C confuses ZTNA (one technology) with Zero Trust (an architectural model). Option D substitutes rebranding for substantive change.",
+      "wrong_explanations": {
+        "B": "Single-vendor Zero Trust marketing typically over-promises. Real Zero Trust requires multi-product architecture (identity, network, workload, data) with integration; no single vendor covers all dimensions equally well.",
+        "C": "ZTNA replaces VPN with identity-aware access, which is one Zero Trust capability. But Zero Trust as architecture requires identity, micro-segmentation, continuous verification, and least-privilege across all resources — not just network access.",
+        "D": "Rebranding existing controls without changing them produces marketing-Zero-Trust without the actual architectural shift. Real Zero Trust requires breaking the perimeter-trust model fundamentally, which existing controls typically don't do."
+      },
+      "tips": [
+        "Trap is C — \"ZTNA = Zero Trust\" is widespread but conflates one technology with an architectural model.",
+        "Zero Trust governance = identity + micro-segmentation + continuous verification + least-privilege + encryption + maturity measurement (NIST SP 800-207).",
+        "Exam-day shortcut: Zero Trust questions are answered by the layered-architecture option, not single-vendor / single-product / rebranding."
+      ],
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); CISA Zero Trust Maturity Model; ISACA Information Security Governance guidance",
+      "related_concepts": [
+        "Zero Trust",
+        "ZTNA",
+        "Micro-segmentation",
+        "NIST SP 800-207"
+      ],
+      "_provenance": "Authored from concept: 'Zero Trust architecture governance - layered approach, no prior D2 coverage'. Public source: NIST SP 800-207 + CISA Zero Trust Maturity Model."
+    },
+    {
+      "id": "d2_153",
+      "domain": 2,
+      "subtopic": "Threat Intelligence Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing the threat intelligence program at a healthcare network. Which design feature MOST strongly supports the program's operational value?",
+      "options": {
+        "A": "Subscribe to multiple commercial threat-intelligence feeds and forward all threat indicators to the SIEM regardless of context or relevance to the firm's environment",
+        "B": "Rely on the security team's reading of news articles and blog posts about emerging threats, since formal threat-intelligence subscriptions add cost without commensurate value",
+        "C": "Build an entirely internal threat intelligence team that produces all threat intelligence from scratch, avoiding external feeds entirely to ensure the firm's threat-intelligence approach is independent",
+        "D": "Operationalized program: collection from relevant sources (commercial feeds + ISAC + government advisories + internal telemetry), prioritization by firm-specific relevance, integration into detection, leadership briefing on strategic threats, feedback loop from incidents"
+      },
+      "correct": "D",
+      "key_concept": "Threat intelligence program = collect from relevant sources + prioritize by firm-specific relevance + integrate into detection + brief leadership on strategic threats + feedback loop from incidents. All-feeds-no-context, blog-only, and full-internal-build all fail.",
+      "pre_read": "Threat intelligence questions test whether you recognize the multi-source operationalized approach with relevance filtering and feedback. Distractors propose feed-overload, informal sources, or full-internal.",
+      "correct_explanation": "ISACA Threat Intelligence guidance and FAIR-TI methodology establish that effective threat intelligence programs require: (1) collection from relevant sources — commercial feeds (Recorded Future, Mandiant), ISAC participation (FS-ISAC, H-ISAC for healthcare), government advisories (CISA, FBI Flash), internal telemetry (incident learnings, EDR observations); (2) prioritization by relevance to the firm's threat model and assets — not all indicators apply equally; (3) integration into detection — SIEM rules, EDR signatures, network blocks; (4) leadership briefing on strategic threats — campaigns targeting the sector, major shifts in threat-actor TTPs; (5) feedback loop from incidents to refine source selection. Option A's all-feeds-into-SIEM produces alert flooding. Option B's blog-only is informal and unauditable. Option C's full-internal-build wastes resources reinventing what commercial and ISAC sources already provide.",
+      "wrong_explanations": {
+        "A": "Forwarding all threat indicators to the SIEM regardless of relevance produces alert flooding. The SIEM team can't distinguish high-relevance threats from low-relevance noise, undermining detection effectiveness.",
+        "B": "Blog and news articles are useful situational awareness but don't provide structured indicators (IOCs) the firm can integrate into detection. Formal feeds and ISAC sharing are needed for operational integration.",
+        "C": "Full-internal-build wastes resources reinventing what commercial and ISAC sources already provide. Effective programs combine internal context with external coverage."
+      },
+      "tips": [
+        "Trap is A — \"subscribe to multiple feeds and forward all indicators\" produces alert flooding rather than detection effectiveness.",
+        "Threat intelligence program = relevant sources + firm-specific prioritization + detection integration + strategic briefing + incident feedback loop.",
+        "Exam-day shortcut: threat intelligence questions are answered by the operationalized multi-source option with relevance filtering."
+      ],
+      "framework_ref": "ISACA Threat Intelligence guidance; NIST SP 800-150 (Guide to Cyber Threat Information Sharing); ISO/IEC 27035 (Information security incident management)",
+      "related_concepts": [
+        "Threat intelligence",
+        "ISAC",
+        "IOC",
+        "Cyber Threat Sharing"
+      ],
+      "_provenance": "Authored from concept: 'Threat intelligence program design - operationalized multi-source, no prior D2 coverage'. Public source: NIST SP 800-150 + ISO/IEC 27035."
+    },
+    {
+      "id": "d2_154",
+      "domain": 2,
+      "subtopic": "IT-OT Convergence Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at an oil-and-gas company is reviewing IT-OT (Information Technology - Operational Technology) convergence governance. Which approach BEST handles the unique IT-OT risk profile?",
+      "options": {
+        "A": "Apply IT security controls to OT systems uniformly, since security best-practice should apply consistently regardless of system type",
+        "B": "Keep OT systems entirely air-gapped from IT networks, since OT security relies fundamentally on network isolation and any IT-OT integration creates unacceptable risk",
+        "C": "Treat OT as outside IT governance scope, since OT has its own engineering culture and applying IT governance disrupts operational technology decisions made by safety-aware engineers",
+        "D": "IT-OT-aware governance: safety-first prioritization (Safety > Availability > Confidentiality, opposite of IT), legacy-system reality, patching constraints, IT-OT segmentation per IEC 62443 zone-conduit model"
+      },
+      "correct": "D",
+      "key_concept": "IT-OT governance = safety-first prioritization (Safety > Availability > Confidentiality, opposite of IT) + legacy-system reality (decade-scale lifecycles) + patching constraints + IT-OT segmentation per IEC 62443 zone-conduit model. Uniform-IT-controls, full-air-gap, and outside-IT-governance all fail.",
+      "pre_read": "IT-OT convergence questions test whether you recognize OT's distinct risk profile (safety-first, legacy lifecycle, patching constraints) and the IEC 62443 framework. Distractors propose IT-uniform / air-gap / scope-exclusion.",
+      "correct_explanation": "IEC 62443 (Industrial Communication Networks — IT Security for Industrial Automation and Control Systems), NIST SP 800-82 (Guide to OT Security), and ISACA Industrial Cybersecurity guidance establish that IT-OT convergence governance must recognize OT's distinct risk profile: (1) safety-first prioritization — Safety > Availability > Confidentiality (opposite of IT's Confidentiality > Integrity > Availability); (2) legacy-system reality — OT systems have decade-scale lifecycles, can't be replaced like IT; (3) patching constraints — cannot patch live process control without operational shutdown; (4) IT-OT segmentation per IEC 62443 zone-conduit model with monitored crossings (specific zones for safety-instrumented systems, basic process control, supervisory control). Option A's uniform IT controls disrupts OT operations. Option B's full air-gap is increasingly impractical (modern OT requires data exchange for operations, predictive maintenance, regulatory reporting). Option C's scope-exclusion abdicates governance over critical infrastructure.",
+      "wrong_explanations": {
+        "A": "IT controls (e.g., aggressive patching, password rotation) can disrupt OT operations and even create safety issues. OT requires controls calibrated to its operational reality, not IT controls applied uniformly.",
+        "B": "Full air-gap is increasingly impractical. Modern OT requires data exchange for operations, predictive maintenance, regulatory reporting, and remote monitoring. Air-gap-as-only-control was viable historically; today it's a legacy mindset that doesn't match operational requirements.",
+        "C": "Treating OT as outside IT governance abdicates oversight over critical infrastructure where safety incidents can be catastrophic. Effective governance recognizes OT's distinct nature while maintaining oversight."
+      },
+      "tips": [
+        "Trap is B — \"full air-gap\" is the legacy OT security approach that doesn't match modern operational requirements (data exchange, remote monitoring).",
+        "IT-OT governance = safety-first (S>A>C, opposite of IT) + legacy lifecycle + patching constraints + IEC 62443 zone-conduit segmentation.",
+        "Exam-day shortcut: IT-OT questions are answered by the option naming OT's distinct profile + IEC 62443, not IT-uniform / air-gap / scope-exclusion."
+      ],
+      "framework_ref": "IEC 62443 (Industrial Automation and Control Systems Security); NIST SP 800-82 (Guide to OT Security); ISACA Industrial Cybersecurity guidance",
+      "related_concepts": [
+        "IT-OT convergence",
+        "IEC 62443",
+        "Industrial cybersecurity",
+        "Safety-first"
+      ],
+      "_provenance": "Authored from concept: 'IT-OT convergence governance - distinct OT profile + IEC 62443, no prior D2 coverage'. Public source: IEC 62443 + NIST SP 800-82."
+    },
+    {
+      "id": "d2_155",
+      "domain": 2,
+      "subtopic": "Open-Source Software Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a fintech is reviewing the firm's open-source software (OSS) governance. Which program element MOST strongly supports OSS risk management?",
+      "options": {
+        "A": "Block all open-source software use, since open-source carries supply-chain risk that proprietary alternatives don't have",
+        "B": "OSS governance program: SCA in CI/CD identifying dependencies, SBOM-based vulnerability tracking, license compliance per dependency, OSPO governing approved-list policy and contributions",
+        "C": "Trust the development team's judgment on open-source selection without central oversight, since developers know their tools best and central governance creates bottlenecks",
+        "D": "Rely on the OSS community's security review for any open-source library used, since active community review catches vulnerabilities before they affect downstream consumers"
+      },
+      "correct": "B",
+      "key_concept": "OSS governance = SCA in CI/CD + SBOM-based vulnerability tracking + license compliance + OSPO governing approved-list and contributions. Block-all, no-oversight, and community-trust all fail.",
+      "pre_read": "OSS governance questions test whether you recognize the multi-element supply-chain approach (SCA + SBOM + license + OSPO). Distractors propose blanket-block, no-oversight, or community-trust.",
+      "correct_explanation": "NIST SP 800-218 (Secure Software Development Framework), Executive Order 14028 (Improving the Nation's Cybersecurity), and ISACA Open Source Software guidance establish that effective OSS governance requires: (1) Software Composition Analysis (SCA) integrated in CI/CD pipelines to identify all OSS dependencies (direct and transitive); (2) Software Bill of Materials (SBOM) maintained and used for continuous vulnerability tracking against new CVE disclosures; (3) license-compliance review per dependency (GPL, AGPL, MIT, Apache 2.0 — compatibility with the firm's product licensing); (4) Open Source Program Office (OSPO) governing approved-list policy, contribution guidelines, and security-incident response for OSS issues. Option A's blanket-block is impractical (modern software stacks rely heavily on OSS). Option C's no-oversight invites supply-chain incidents like SolarWinds and Log4j. Option D's community-trust assumes review depth that doesn't always exist (Heartbleed and Log4j were both in widely-used libraries with apparent community oversight).",
+      "wrong_explanations": {
+        "A": "Modern software stacks depend on OSS extensively (often 70-90% of a typical application). Blanket-block is impractical and would prevent the firm from competing on delivery velocity.",
+        "C": "No-oversight invited Log4j's impact (vulnerable library shipped widely without inventory) and SolarWinds (supply-chain compromise undetected). Central governance with multi-tool support is the recognized standard.",
+        "D": "Community review depth varies widely — Heartbleed (OpenSSL) and Log4j were both in libraries with apparent community oversight that didn't catch the issues. Community review is one input, not the whole governance."
+      },
+      "tips": [
+        "Trap is A — \"block all open-source\" is operationally infeasible and treats OSS as if it could be removed from modern development.",
+        "OSS governance = SCA in CI/CD + SBOM-based CVE tracking + license compliance + OSPO with approved-list policy.",
+        "Exam-day shortcut: OSS questions are answered by the multi-element governance option, not block-all / no-oversight / community-trust."
+      ],
+      "framework_ref": "NIST SP 800-218 (Secure Software Development Framework); Executive Order 14028 (Improving the Nation's Cybersecurity); ISACA Open Source Software guidance",
+      "related_concepts": [
+        "Open-source governance",
+        "SBOM",
+        "SCA",
+        "OSPO"
+      ],
+      "_provenance": "Authored from concept: 'OSS governance - multi-element supply-chain approach, no prior D2 coverage'. Public source: NIST SP 800-218 + EO 14028."
+    },
+    {
+      "id": "d2_156",
+      "domain": 2,
+      "subtopic": "API Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a SaaS company is reviewing API governance for the company's customer-facing API platform. Which governance program element MOST strongly supports API security and operational integrity?",
+      "options": {
+        "A": "API governance program: discovery+inventory (catalog all APIs including shadow), design-time security specs, runtime protection (gateway, rate limiting, threat detection), ongoing testing (DAST, fuzz, pen), change management for API versioning",
+        "B": "Allow each engineering team to deploy APIs independently with no central governance, since central API governance slows engineering velocity and the API platform is just engineering infrastructure",
+        "C": "Manual security review of each API at quarterly cadence by the security team, with no automated discovery, no runtime protection, and no continuous testing",
+        "D": "Single API gateway product covering all APIs, since gateway-based protection is the dominant API security approach and additional governance layers are redundant"
+      },
+      "correct": "A",
+      "key_concept": "API governance = discovery+inventory + design-time security + runtime protection (gateway+rate limiting+detection+schema) + ongoing testing (DAST+fuzz+pen) + change management for versioning. No-governance, manual-quarterly, and gateway-only all fail.",
+      "pre_read": "API governance questions test whether you recognize the multi-layer program: discovery + design + runtime + testing + change. Distractors propose no governance, periodic-only, or gateway-only.",
+      "correct_explanation": "ISACA API Governance guidance, OWASP API Security Top 10, and CSA API Security Guidelines establish that effective API governance requires multiple integrated layers: (1) API discovery and inventory — catalog all APIs including shadow APIs that engineering teams may have deployed outside official processes; (2) design-time security — authentication mechanisms, authorization model, input validation specs documented at API design; (3) runtime protection — API gateway, rate limiting, threat detection, schema validation in production; (4) ongoing testing — DAST, fuzz testing, periodic penetration testing; (5) change management for API versioning so customer-facing changes don't break consumers. Option B's no-central-governance produces shadow APIs and inconsistent security postures. Option C's manual-quarterly cadence misses 90% of changes and introduces stale review. Option D's gateway-only ignores design, testing, and versioning dimensions.",
+      "wrong_explanations": {
+        "B": "No-central-governance produces shadow APIs (deployed outside official process), inconsistent authentication mechanisms across the API portfolio, and security incidents that spread because there's no central inventory.",
+        "C": "Manual quarterly review can't keep up with continuous deployment (typical SaaS deploys multiple times per day). The review becomes stale before it's complete and misses 90%+ of changes.",
+        "D": "Gateway-only protection misses design-time issues (authentication design flaws), testing gaps (vulnerability discovery), and versioning discipline (breaking-change management). Gateway is one element of the multi-layer approach."
+      },
+      "tips": [
+        "Trap is D — \"single API gateway covers everything\" reduces a multi-layer discipline to one product.",
+        "API governance = discovery+inventory + design-time security + runtime protection + ongoing testing + change-management for versioning.",
+        "Exam-day shortcut: API governance questions are answered by the multi-layer option, not no-governance / quarterly / gateway-only."
+      ],
+      "framework_ref": "OWASP API Security Top 10; CSA API Security Guidelines; ISACA API Governance guidance",
+      "related_concepts": [
+        "API governance",
+        "API gateway",
+        "Shadow APIs",
+        "OWASP API Top 10"
+      ],
+      "_provenance": "Authored from concept: 'API governance multi-layer program, no prior D2 coverage'. Public source: OWASP API Security Top 10 + CSA."
+    },
+    {
+      "id": "d2_157",
+      "domain": 2,
+      "subtopic": "Identity Governance and Administration (IGA)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional bank is reviewing the firm's IGA (Identity Governance and Administration) program. Which IGA program element MOST strongly supports access governance over the workforce identity lifecycle?",
+      "options": {
+        "A": "Allow each application owner to manage their own access independently, since application owners know their access patterns better than central IGA can",
+        "B": "IGA program: Joiner/Mover/Leaver lifecycle automation + access certification campaigns + role engineering + SoD analytics + privileged-access integration + identity analytics for risk-scoring",
+        "C": "Provision all users with maximum access at hire and revoke only on departure, since this minimizes operational friction and most users will need access to most things eventually",
+        "D": "Manual quarterly access reviews by the IT team without automation, since manual review provides depth that automated certifications miss"
+      },
+      "correct": "B",
+      "key_concept": "IGA program = Joiner/Mover/Leaver lifecycle automation + access certification + role engineering + SoD analytics + privileged-access integration + identity analytics. Application-owner-only, max-access-at-hire, and manual-quarterly all fail.",
+      "pre_read": "IGA program questions test whether you recognize the multi-element identity-lifecycle approach. Distractors propose distributed ownership, max-permissions, or manual-only review.",
+      "correct_explanation": "ISACA Identity and Access Management guidance and NIST SP 800-63 establish that effective IGA programs require multiple integrated elements: (1) Joiner/Mover/Leaver lifecycle automation — provisioning at hire, role-change updates at job-change, deprovisioning at departure; (2) access certification campaigns — periodic recertification by managers and resource owners with risk-prioritized scoping; (3) role engineering — role-based access aligned to job functions, not ad-hoc per-person grants; (4) SoD analytics — automated detection of toxic role combinations; (5) privileged-access integration — IGA scope includes admin and service accounts, not just business users; (6) identity analytics for risk-scoring — machine-learning identifies anomalous entitlements. Option A produces inconsistent access patterns and SoD gaps. Option C (max-access-at-hire) is the textbook over-provisioning failure mode. Option D's manual-quarterly fails at scale (a bank with 5K employees has thousands of access entitlements that humans can't review effectively quarterly).",
+      "wrong_explanations": {
+        "A": "Decentralized application-owner access management produces inconsistent patterns across the firm — different applications have different review cadences, different SoD enforcement, different role definitions. Central IGA is the recognized practice.",
+        "D": "Manual quarterly review fails at enterprise scale. A bank with 5K employees and thousands of entitlements per application can't be reviewed by a small IT team manually. Automated analytics with focused human review of anomalies is the scaling pattern.",
+        "C": "Max-access-at-hire violates least-privilege fundamentally. Users accumulate unneeded permissions over time as they change roles, creating massive SoD violations and audit findings."
+      },
+      "tips": [
+        "Trap is C — \"max access at hire\" is operationally tempting (no friction) but violates least-privilege and accumulates SoD violations rapidly.",
+        "IGA = Joiner/Mover/Leaver automation + certification + role engineering + SoD analytics + privileged-access + identity analytics. Six elements together.",
+        "Exam-day shortcut: IGA questions are answered by the multi-element lifecycle option, not distributed / max-access / manual-only."
+      ],
+      "framework_ref": "NIST SP 800-63 (Digital Identity Guidelines); ISACA Identity and Access Management guidance; COBIT 2019 DSS05 (Managed Security Services)",
+      "related_concepts": [
+        "IGA",
+        "Joiner/Mover/Leaver",
+        "Access certification",
+        "Role engineering"
+      ],
+      "_provenance": "Authored from concept: 'IGA program multi-element lifecycle approach, no prior D2 coverage'. Public source: NIST SP 800-63 + ISACA IAM guidance."
+    },
+    {
+      "id": "d2_158",
+      "domain": 2,
+      "subtopic": "Privileged Access Management (PAM) Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a financial-services firm is reviewing the PAM program design for privileged-account management. Which design element MOST strongly supports PAM program effectiveness?",
+      "options": {
+        "A": "Disable all privileged accounts and require everyone to use only standard user accounts, since privileged accounts are the highest-risk attack target and elimination is the safest approach",
+        "B": "Trust IT staff with privileged accounts as a matter of role, providing them their privileged credentials at hire without time-limited issuance or session monitoring",
+        "C": "Use a single shared admin password for the IT team's convenience and rotate it annually, since shared credentials reduce credential proliferation and annual rotation is industry standard",
+        "D": "PAM program: privileged-account inventory (human admin + service accounts + emergency 'fire-call' accounts), credential vaulting with automatic rotation, just-in-time privilege elevation, session recording for high-impact administrative work, and continuous monitoring of privileged-session anomalies"
+      },
+      "correct": "D",
+      "key_concept": "PAM program = privileged-account inventory + credential vaulting with auto-rotation + just-in-time elevation + session recording for high-impact + continuous anomaly monitoring. Eliminate-all, trust-without-controls, and shared-credentials all fail.",
+      "pre_read": "PAM program questions test whether you recognize the multi-element technical-and-procedural approach. Distractors propose elimination (impractical), trust-only (no control), or shared (audit nightmare).",
+      "correct_explanation": "ISACA Privileged Access guidance, NIST SP 800-53 control AC-6 (Least Privilege), and CIS Benchmarks establish PAM program elements: (1) privileged-account inventory covering human admin accounts, service accounts (often the largest population), and emergency 'fire-call' accounts; (2) credential vaulting with automatic rotation — credentials checked out as needed, rotated after use; (3) just-in-time privilege elevation — users start with standard access and elevate only when needed for specific tasks; (4) session recording for high-impact administrative work — provides forensic trail for any incident; (5) continuous monitoring of privileged-session anomalies — analytics catch unusual privileged actions. Option A's eliminate-all is impractical (some operations require privileged access). Option B's trust-without-controls produces no audit trail and concentrates risk in IT staff. Option C's shared admin password violates accountability principles fundamentally — actions can't be traced to individual actors.",
+      "wrong_explanations": {
+        "A": "Eliminating all privileged accounts is impractical — some operations (system administration, emergency response, vendor access) require privileged access. The right approach is governance over privileged access, not elimination.",
+        "B": "Trust-without-controls means no audit trail of what privileged users do. When an incident occurs, the firm can't reconstruct what happened. Trust + controls (vaulting, JIT, recording, monitoring) is the standard.",
+        "C": "Shared admin passwords violate accountability fundamentally. If an incident occurs, the firm can't identify which IT-team member took the action. Annual rotation doesn't fix the basic problem of shared credentials."
+      },
+      "tips": [
+        "Trap is C — \"single shared admin password rotated annually\" feels operationally simple but destroys accountability and creates audit nightmares.",
+        "PAM program = inventory + vaulting with auto-rotation + JIT elevation + session recording + continuous anomaly monitoring. Five elements together.",
+        "Exam-day shortcut: PAM program questions are answered by the multi-element technical-and-procedural option, not eliminate-all / trust-only / shared."
+      ],
+      "framework_ref": "NIST SP 800-53 AC-6 (Least Privilege); ISACA Privileged Access guidance; CIS Critical Security Controls",
+      "related_concepts": [
+        "PAM",
+        "Privileged access",
+        "Just-in-time access",
+        "Session recording"
+      ],
+      "_provenance": "Authored from concept: 'PAM program design - multi-element technical-and-procedural, complements d2_037 (compensating controls for SoD lack)'. Public source: NIST SP 800-53 + ISACA Privileged Access."
+    },
+    {
+      "id": "d2_159",
+      "domain": 2,
+      "subtopic": "Insider Threat Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a defense contractor is reviewing the new insider threat program. Which program element MOST strongly supports insider threat detection while respecting employee privacy?",
+      "options": {
+        "A": "Surveil all employees comprehensively (keystroke logging, full email monitoring, screen recording) since maximum visibility maximizes insider-threat detection capability",
+        "B": "Insider threat program: behavioral analytics on system telemetry (UEBA), access-pattern anomalies, HR-coordination for high-risk indicators, formal investigation protocol with HR/legal/IR/counsel coordination, work-system-only privacy-protective scope",
+        "C": "Trust all employees implicitly and rely on perimeter security to handle external threats, since insider-threat programs damage trust and produce false positives",
+        "D": "Limit the program to monitoring email content for confidential-data exfiltration, since email is the most likely insider-threat channel and other monitoring is excessive"
+      },
+      "correct": "B",
+      "key_concept": "Insider threat program = UEBA on system telemetry + access-pattern anomalies + HR coordination on high-risk indicators + formal investigation protocol (HR/legal/IR/counsel) + work-system-only privacy-protective scope. Comprehensive surveillance, trust-everyone, and email-only all fail.",
+      "pre_read": "Insider threat program questions test whether you recognize behavioral analytics + HR coordination + formal protocol + privacy-protective scope. Distractors propose surveillance, trust, or single-channel.",
+      "correct_explanation": "NITTF (National Insider Threat Task Force) guidance, NIST SP 800-53 AT-2(2), and ISACA Insider Threat guidance establish program elements: (1) behavioral analytics on system telemetry (User and Entity Behavior Analytics — UEBA) — detect access-pattern deviations from baseline; (2) access-pattern anomalies — unusual data access volumes or timing, large downloads pre-departure, access to systems outside the user's role; (3) HR-coordination for high-risk indicators — pending resignation, performance issues, financial distress (per appropriate privacy controls); (4) formal investigation protocol with HR + legal + IR + counsel coordination — investigation outcomes need legal review before any action; (5) clear privacy-protective scope — work-systems only, not personal devices or activities outside work. Option A's comprehensive surveillance violates privacy norms and labor law in many jurisdictions. Option C's trust-only model misses the established insider threat (often more damaging than external attacks). Option D's email-only misses the broader behavioral picture.",
+      "wrong_explanations": {
+        "A": "Comprehensive surveillance (keystroke logging, screen recording, full email content monitoring) violates privacy norms, labor law in many jurisdictions, and produces a corporate culture of distrust that damages retention and engagement.",
+        "C": "Insider threats are real and often more damaging than external attacks (trusted access + system knowledge). Trust-only ignores established threat data; perimeter security cannot address insider misuse.",
+        "D": "Email-only monitoring misses the broader behavioral picture — access patterns, login timing, data download volumes, system-use anomalies. Insider threats often surface in non-email indicators."
+      },
+      "tips": [
+        "Trap is A — \"surveil all employees comprehensively\" maximizes detection but violates privacy norms and produces a distrust culture.",
+        "Insider threat program = UEBA + access-pattern anomalies + HR coordination + formal investigation protocol + work-system-only privacy-protective scope.",
+        "Exam-day shortcut: insider threat questions are answered by the multi-element + privacy-protective option, not surveillance / trust / single-channel."
+      ],
+      "framework_ref": "NITTF Insider Threat Program guidance; NIST SP 800-53 AT-2(2); ISACA Insider Threat guidance",
+      "related_concepts": [
+        "Insider threat",
+        "UEBA",
+        "Behavioral analytics",
+        "Privacy-protective monitoring"
+      ],
+      "_provenance": "Authored from concept: 'Insider threat program design - behavioral analytics + privacy protection, no prior D2 coverage'. Public source: NITTF + NIST SP 800-53."
+    },
+    {
+      "id": "d2_160",
+      "domain": 2,
+      "subtopic": "Third-Party Continuous Monitoring",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a mid-size insurer is reviewing how the firm continuously monitors its critical third-party vendors between formal annual reviews. Which monitoring approach MOST strongly supports timely detection of vendor risk changes?",
+      "options": {
+        "A": "Continuous monitoring layered: external security ratings + financial-health monitoring + news/media monitoring + SOC report cadence beyond annual + operational metrics review against SLAs + thresholds for re-tier-and-re-due-diligence triggers",
+        "B": "Annual review cycle only — monitor vendors comprehensively once per year and treat the year between reviews as 'the SLA period' with no additional monitoring",
+        "C": "Wait for vendor-side notification of any material change, since vendors are contractually obligated to notify customers of material events affecting service",
+        "D": "Trust the vendor's annual SOC 2 Type 2 report as the comprehensive monitoring artifact, since SOC 2 covers all material control areas and additional monitoring is redundant"
+      },
+      "correct": "A",
+      "key_concept": "Third-party continuous monitoring = external security ratings + financial-health + news/media + SOC report cadence beyond annual + operational metrics + re-tier triggers. Annual-only, vendor-self-notification, and SOC-only all fail.",
+      "pre_read": "Continuous monitoring questions test whether you recognize the multi-source approach with thresholds. Distractors propose annual-only, vendor-self-notification, or SOC-only.",
+      "correct_explanation": "OCC Bulletin 2013-29, FFIEC Outsourcing Technology Services booklet, and ISACA IT Vendor Management guidance establish that critical-tier vendor monitoring requires multi-source continuous coverage: (1) external security ratings (BitSight, SecurityScorecard, etc.) — quantified cyber-posture trend; (2) financial-health monitoring (D&B reports, credit ratings, news) — distress signals; (3) news/media monitoring — incidents, executive turnover, regulatory action, M&A activity; (4) SOC report cadence beyond annual where vendor risk warrants (e.g., bridge letters between annual reports); (5) periodic operational metrics review against SLAs (monthly or quarterly); (6) re-tier-and-re-due-diligence triggers (material change requires re-running due diligence, not waiting for the next annual cycle). Option B's annual-only leaves 11 months of unmonitored vendor risk. Option C's vendor-self-notification is unreliable (vendors don't always notify or may delay). Option D's SOC-only misses financial health, breach incidents not yet in SOC scope, and operational SLA performance.",
+      "wrong_explanations": {
+        "B": "Annual-only monitoring leaves 11 months of unmonitored risk. Vendor financial distress, breaches, leadership departures, or M&A activity all happen between annual reviews.",
+        "C": "Vendors don't always notify customers of material changes — sometimes due to legal advice, sometimes due to embarrassment, sometimes due to internal disorganization. Customer-side independent monitoring is the recognized practice.",
+        "D": "SOC 2 reports cover the prior period's controls in scope. They miss financial-health changes, post-report-period breaches, and operational SLA performance during the current period. Multi-source continuous monitoring is needed."
+      },
+      "tips": [
+        "Trap is C — \"vendor will notify\" trusts the vendor's incentive to disclose; not a sound basis for monitoring.",
+        "Third-party continuous monitoring = external security ratings + financial-health + news/media + SOC cadence + operational metrics + re-tier triggers.",
+        "Exam-day shortcut: continuous monitoring questions are answered by the multi-source option, not annual-only / vendor-self-notification / SOC-only."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC Outsourcing Technology Services booklet; ISACA IT Vendor Management guidance",
+      "related_concepts": [
+        "Continuous third-party monitoring",
+        "Security ratings",
+        "Vendor risk indicators",
+        "Re-tier triggers"
+      ],
+      "_provenance": "Authored from concept: 'Third-party continuous monitoring - multi-source ongoing approach, complements d2_036/d2_099/d2_135 (vendor onboarding/tiering/governance)'. Public source: OCC Bulletin 2013-29 + FFIEC."
+    },
+    {
+      "id": "d2_161",
+      "domain": 2,
+      "subtopic": "SLA Enforcement and Service Credits",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing the firm's process for enforcing SLA service-credit provisions when vendors miss commitments. Which enforcement approach MOST strongly supports the firm's contractual interests?",
+      "options": {
+        "A": "Structured SLA enforcement: independent measurement of SLA performance against contracted methodology, formal credit-claim process when SLAs are missed (with calculation methodology), escalation path when vendors dispute claims, periodic review of SLA-credit history to inform renewal decisions",
+        "B": "Wait for the vendor to proactively offer service credits when they miss SLAs, since trustworthy vendors monitor their own SLA performance and offer credits unprompted",
+        "C": "Avoid invoking service credits even when SLAs are missed, since exercising contractual remedies damages the vendor relationship and the SLA's existence is sufficient deterrent",
+        "D": "Convert all SLA service credits to performance-improvement bonuses paid to the vendor when they exceed SLAs, since positive reinforcement produces better vendor behavior than penalties"
+      },
+      "correct": "A",
+      "key_concept": "SLA enforcement = independent measurement + formal credit-claim process + escalation path for disputes + periodic review informing renewal. Avoid-invoking, wait-for-vendor, and bonus-conversion all fail.",
+      "pre_read": "SLA enforcement questions test whether you recognize structured measurement-claim-escalation. Distractors propose avoid-conflict, vendor-self-monitoring, or inverting penalties to bonuses.",
+      "correct_explanation": "ISACA IT Service Management guidance and COBIT 2019 APO09 (Managed Service Agreements) establish that effective SLA enforcement requires structured discipline: (1) independent measurement of SLA performance against contracted methodology — customer-side measurement, not vendor-self-reported; (2) formal credit-claim process when SLAs are missed — written claim with calculation methodology, supporting evidence; (3) escalation path when vendors dispute claims — typically vendor-side reviewer, then joint vendor-customer escalation, then arbitration or contract-termination as last resort; (4) periodic review of SLA-credit history to inform renewal decisions — chronic misses signal a renewal-or-replacement decision. Option C's avoid-invoking concedes the firm's contractual leverage and signals that SLAs are decorative. Option B's wait-for-vendor relies on vendor self-monitoring and disclosure — unreliable. Option D's bonus-conversion eliminates the penalty mechanism that makes SLAs credible commitments.",
+      "wrong_explanations": {
+        "B": "Vendors rarely proactively offer service credits — even trustworthy vendors typically wait for customer-side claims because crediting reduces their revenue. The firm must measure independently and claim formally.",
+        "D": "Replacing penalties with bonuses removes the credible commitment mechanism. Contracts work because there are consequences for breach; replacing consequences with rewards eliminates the incentive structure that drives SLA compliance.",
+        "C": "Avoiding invocation of service credits signals to vendors that SLAs are decorative rather than enforceable. The deterrent value of an SLA depends on enforcement; un-enforced SLAs are quickly recognized by vendors and ignored."
+      },
+      "tips": [
+        "Trap is C — \"avoid invoking credits to preserve relationship\" sacrifices contractual leverage and signals SLAs are decorative.",
+        "SLA enforcement = independent measurement + formal claim process + escalation path + periodic review informing renewal.",
+        "Exam-day shortcut: SLA enforcement questions are answered by the structured-discipline option, not avoid-conflict / wait-for-vendor / bonus-conversion."
+      ],
+      "framework_ref": "COBIT 2019 APO09 (Managed Service Agreements); ITIL 4; ISACA IT Service Management guidance",
+      "related_concepts": [
+        "SLA enforcement",
+        "Service credits",
+        "APO09",
+        "Vendor performance management"
+      ],
+      "_provenance": "Authored from concept: 'SLA enforcement and service credits - structured discipline, complements d2_079 (vendor SLA design) and d2_083 (APO09 service agreements)'. Public source: COBIT 2019 APO09."
+    },
+    {
+      "id": "d2_162",
+      "domain": 2,
+      "subtopic": "Multi-Cloud Zero-Trust Identity Convergence",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What governance approach BEST handles the multi-cloud identity-and-Zero-Trust convergence described?",
+      "scenario_context": "A media company operates across three cloud providers (AWS, Azure, GCP). Each cloud has its own native identity service (AWS IAM, Azure AD, Google IAM); each business unit has different SaaS subscriptions; the firm has chosen to migrate to Zero Trust over 18 months; an existing IGA platform manages workforce identity for HR-driven provisioning to on-premises systems. Engineering teams are bypassing IGA for cloud-native access; security finds growing entitlement sprawl in cloud accounts; the CISO wants unified identity governance and Zero Trust enforcement across the cloud footprint.",
+      "options": {
+        "A": "Federated identity to single IdP across clouds + IGA extended to cloud entitlements + Zero Trust enforcement layer + cross-cloud entitlement and SoD analytics, with IGA as system of record for all identity changes",
+        "B": "Maintain separate identity governance per cloud since the clouds have native identity services that work well within their own domains; let each engineering team manage cloud-native access independently",
+        "C": "Force all cloud access through a VPN-based perimeter, since perimeter-based access with MFA satisfies Zero Trust principles and avoids the complexity of cloud-native identity governance",
+        "D": "Wait for cloud providers to converge on a unified identity standard before investing in identity governance changes, since the cloud-identity ecosystem is rapidly evolving and current investments may not last"
+      },
+      "correct": "A",
+      "key_concept": "Multi-cloud identity + Zero Trust = federated IdP + IGA extended to cloud entitlements + Zero Trust enforcement layer (continuous verification, conditional access, JIT elevation) + cross-cloud entitlement and SoD analytics, with IGA as system of record. Per-cloud-separate, VPN-perimeter, and wait-for-convergence all fail.",
+      "pre_read": "Multi-cloud identity convergence questions test whether you recognize the integrated approach (federation + IGA extension + Zero Trust enforcement + analytics). Distractors propose separation, perimeter, or deferral.",
+      "correct_explanation": "NIST SP 800-207 (Zero Trust Architecture), ISACA IAM guidance, and CSA Zero Trust Framework establish that effective multi-cloud identity governance requires: (1) federated identity to a single IdP across clouds — workforce users authenticate once and access multiple clouds; (2) IGA extended to cloud entitlements — coverage of cloud IAM roles in each cloud, SaaS provisioning via SCIM, periodic access certification spanning all clouds; (3) Zero Trust enforcement layer — continuous verification per request, conditional access policies, just-in-time privilege elevation rather than standing access; (4) cross-cloud entitlement analytics — detect entitlement sprawl, anomalous grants, accumulated privilege; (5) cross-cloud SoD analytics — detect toxic combinations spanning clouds (someone with admin in AWS and admin in Azure that shouldn't combine); (6) IGA as system of record — all identity/entitlement changes flow through IGA regardless of which cloud they target. Option B's per-cloud-separate produces entitlement sprawl exactly as the scenario describes. Option C's VPN perimeter is the legacy model Zero Trust is designed to replace. Option D's wait-for-convergence delays the firm's stated 18-month Zero Trust commitment.",
+      "wrong_explanations": {
+        "B": "Per-cloud-separate identity governance produces exactly the entitlement sprawl the scenario describes. Each cloud's native identity tools manage that cloud well; cross-cloud governance requires a unifying layer above them.",
+        "C": "VPN-based perimeter access is the legacy model Zero Trust is specifically designed to replace. 'MFA at the VPN' is not Zero Trust — Zero Trust requires continuous verification per request, not gating at one point.",
+        "D": "Wait-for-convergence delays the firm's stated 18-month Zero Trust commitment and lets entitlement sprawl continue. Cloud providers won't converge on a unified identity standard within the firm's planning horizon."
+      },
+      "tips": [
+        "Trap is C — \"VPN with MFA satisfies Zero Trust\" is a common misconception; perimeter-based gating is exactly what Zero Trust replaces.",
+        "Multi-cloud identity + Zero Trust = federated IdP + IGA extension to cloud + ZT enforcement layer (verification + conditional + JIT) + cross-cloud entitlement and SoD analytics + IGA as system of record.",
+        "Exam-day shortcut: multi-cloud identity questions are answered by federated + IGA-extended + ZT-enforcement, not per-cloud / VPN-perimeter / wait."
+      ],
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); ISACA Identity and Access Management guidance; CSA Zero Trust Framework",
+      "related_concepts": [
+        "Multi-cloud identity",
+        "Zero Trust",
+        "IGA cloud extension",
+        "Cross-cloud SoD"
+      ],
+      "_provenance": "Authored from concept: 'Multi-cloud identity + Zero Trust convergence, complements d2_087 (multi-cloud governance), d2_152 (Zero Trust governance app), d2_157 (IGA application)'. Public source: NIST SP 800-207 + CSA + ISACA IAM. All scenario specifics (3-cloud media company, IGA bypass, entitlement sprawl) invented for this question."
+    },
+    {
+      "id": "d2_163",
+      "domain": 2,
+      "subtopic": "AI/ML Governance Failure Scenario",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What governance response BEST addresses the AI failure pattern described?",
+      "scenario_context": "A health-insurer's AI claims-triaging model has been in production for 14 months. Recent regulatory inquiry identified concerns: (1) the model was trained on historical claims data that under-represents certain demographics; (2) production performance metrics show divergent denial rates across demographic groups; (3) explainability has been treated as 'too technical for the business' and not integrated into claims-handler workflow; (4) no formal challenger model has been operated; (5) drift monitoring has been performance-only, not bias-and-drift across sub-populations. The CEO wants a governance response.",
+      "options": {
+        "A": "Defend the existing model since 14 months of production performance demonstrates effectiveness, treating the regulatory inquiry as an examination of process rather than substance",
+        "B": "Disable the model entirely and revert to manual claims triaging while the firm conducts a multi-year overhaul, accepting the operational disruption as the cost of avoiding ongoing regulatory exposure",
+        "C": "Outsource the AI governance response to the model vendor, since the vendor built the model and bears responsibility for fixing it; the insurer's role is contract management",
+        "D": "Comprehensive AI governance response: immediate (independent bias audit + demographic-segmented monitoring + challenger model); medium-term (training-data review, explainability in workflow, bias remediation protocol); strategic (AI governance policy + audit integration)"
+      },
+      "correct": "D",
+      "key_concept": "AI failure governance response = immediate (bias audit + demographic monitoring + challenger model) + medium-term (training-data review + explainability integration + bias remediation protocol) + strategic (AI governance policy + ongoing monitoring + audit integration). Defend, disable-and-revert, and vendor-only-responsibility all fail.",
+      "pre_read": "AI failure governance questions test whether you recognize the staged response (immediate + medium-term + strategic). Distractors propose defense, full revert, or vendor-deferral.",
+      "correct_explanation": "NIST AI Risk Management Framework (AI RMF 1.0) and ISACA Auditing Artificial Intelligence guidance establish that AI failure governance response should be staged: (1) IMMEDIATE — commission independent bias audit, introduce demographic-segmented performance monitoring, start formal challenger-model program (so a parallel model can challenge the production model's outputs); (2) MEDIUM-TERM — revisit training-data representativeness with documented sampling methodology, build explainability into claims-handler workflow (so users understand model rationale), establish formal bias remediation protocol; (3) STRATEGIC — revise AI governance policy to require pre-deployment bias auditing for high-impact AI, ongoing demographic-segmented monitoring, and challenger models; integrate AI governance into the firm's risk and audit functions for ongoing oversight. Option A defends a model with documented bias issues. Option B disables operations during a multi-year overhaul that's not necessary. Option C treats AI failure as the vendor's responsibility — the firm bears the regulatory and operational accountability regardless of who built the model.",
+      "wrong_explanations": {
+        "A": "Production performance over 14 months that diverges across demographics is exactly the bias signal regulators are concerned about. Defending the model rather than addressing the bias produces both regulatory escalation and ongoing harm to under-represented populations.",
+        "B": "Multi-year overhaul with manual triaging during the wait is operationally disruptive and may not be necessary. The right response is to address bias while maintaining service through bias remediation, monitoring, and challenger models.",
+        "C": "The firm bears regulatory and operational accountability for the model's outcomes regardless of who built it. Vendor relationships are part of governance but don't transfer accountability. The insurer must own the response, with vendor cooperation."
+      },
+      "tips": [
+        "Trap is A — \"defend the model based on 14 months of production\" misreads the demographic-divergence signal as performance evidence rather than bias evidence.",
+        "AI failure governance = staged response: immediate (audit + monitoring + challenger) + medium-term (data + explainability + remediation) + strategic (policy + audit integration).",
+        "Exam-day shortcut: AI failure governance questions are answered by staged response, not defend / disable / vendor-only."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "AI governance",
+        "Algorithmic bias",
+        "Challenger models",
+        "Demographic monitoring"
+      ],
+      "_provenance": "Authored from concept: 'AI/ML governance failure scenario - staged response, complements d2_117 (third-party AI governance application)'. Public source: NIST AI RMF + ISACA Auditing AI. All scenario specifics (health-insurer claims-triaging AI, 14 months production, five named issues) invented for this question."
+    },
+    {
+      "id": "d2_164",
+      "domain": 2,
+      "subtopic": "Data Residency Conflict — EU/US Customer Data",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What governance approach BEST handles the data-residency conflict described?",
+      "scenario_context": "A SaaS company has US enterprise customers requiring data stored on US infrastructure (concerns about non-US legal access) and EU enterprise customers requiring data stored on EU infrastructure (Schrems II, GDPR). A new EU customer wants to use a feature that requires real-time integration with the customer's US-based parent company's data — putting US and EU customer data in active processing together. The CISO and CPO must reconcile the conflicting requirements. The customer-success team wants to close the deal in 4 weeks; the customer's procurement requires data-residency commitments in writing.",
+      "options": {
+        "A": "Reject the deal since the data flow violates customer-stated US-residency commitments, accepting the lost revenue as the cost of strict residency compliance",
+        "B": "Accept the deal with vague residency language in the contract, hoping the conflict won't surface and the customer's procurement will accept whatever the firm writes",
+        "C": "Use the existing US infrastructure for both customers since the EU customer agreed to the integration, and cite Schrems II as no longer relevant given the EU-US Data Privacy Framework",
+        "D": "Structured solution: technical-architecture options (anonymization, on-prem staging, customer-controlled keys), customer engagement on options, contractual residency commitments matched to architecture, SCCs+TIAs where transfers necessary, CISO/CPO joint sign-off"
+      },
+      "correct": "D",
+      "key_concept": "Data residency conflict = structured solution: technical-architecture options (anonymization, on-prem staging, customer-controlled keys) + customer engagement on options + contractual commitments matched to chosen architecture + SCCs+TIAs where transfers necessary + CISO/CPO sign-off. Reject-deal, vague-language, and ignore-Schrems-II all fail.",
+      "pre_read": "Data residency conflict questions test whether you recognize the multi-option technical+contractual approach. Distractors propose rejection, vague language, or current-framework-misreading.",
+      "correct_explanation": "GDPR Articles 44-50, Schrems II, EDPB Recommendations on Supplementary Measures (06/2020), and the EU-US Data Privacy Framework (2023, contested) collectively establish that data residency conflicts are best resolved through structured technical+contractual solutions. The right approach: (1) technical-architecture options — on-premises data-staging at the customer's parent location (avoids residency conflict by not transferring), anonymization/pseudonymization that allows non-residency processing without transferring identifiable data, customer-controlled encryption keys that satisfy customer concerns even if processing crosses regions; (2) customer engagement covering the technical options' privacy-residency implications transparently; (3) explicit contractual residency commitments matched to the chosen architecture; (4) SCCs+TIAs where cross-border transfer is unavoidable; (5) CISO and CPO joint sign-off so both technical and privacy perspectives are committed. Option A rejects-deal without exploring solutions; Option B's vague language is a recipe for future dispute; Option C mis-reads Schrems II's current status — the EU-US DPF is contested in court and Schrems-II-style concerns persist.",
+      "wrong_explanations": {
+        "A": "Reject-deal abandons revenue without exploring technical solutions that may address both customers' requirements. Anonymization, on-prem staging, and customer-controlled keys are real options that often resolve residency conflicts.",
+        "B": "Vague residency language is a recipe for future dispute. Customer procurement teams typically reject vague terms; if they accept, the firm has set up a future regulatory or contractual problem.",
+        "C": "The EU-US Data Privacy Framework (2023) is contested in court and does not override Schrems-II-style concerns. Citing the DPF as 'making Schrems II irrelevant' misreads the current legal landscape and would be challenged by sophisticated EU customer procurement."
+      },
+      "tips": [
+        "Trap is C — \"EU-US DPF makes Schrems II irrelevant\" misreads the current legal landscape; the DPF is contested and Schrems-II-style concerns persist.",
+        "Data residency conflict = technical-architecture options (anonymization / on-prem staging / customer-controlled keys) + contractual commitments matched to architecture + SCCs+TIAs where needed + CISO/CPO sign-off.",
+        "Exam-day shortcut: data residency conflict questions are answered by structured technical+contractual options, not reject / vague / DPF-misreading."
+      ],
+      "framework_ref": "GDPR Articles 44-50 (Transfers); Schrems II ruling (CJEU 2020); EDPB Recommendations on Supplementary Measures (06/2020); EU-US Data Privacy Framework (2023, contested)",
+      "related_concepts": [
+        "Data residency",
+        "Schrems II",
+        "Customer-controlled encryption",
+        "Anonymization"
+      ],
+      "_provenance": "Authored from concept: 'Data residency conflict EU/US customer data - structured technical+contractual approach, complements d2_142 (multi-cloud sovereignty) and d2_122 (multi-jurisdiction GDPR/CCPA)'. Public source: GDPR + Schrems II + EDPB 06/2020. All scenario specifics (SaaS, US/EU customer mix, real-time integration deal) invented for this question."
+    },
+    {
+      "id": "d2_165",
+      "domain": 2,
+      "subtopic": "Privacy + Security + Compliance Integrated Audit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What audit-design approach BEST addresses the integrated audit described?",
+      "scenario_context": "An IS auditor at a regional health insurer is planning an integrated audit covering privacy (HIPAA Privacy Rule), security (HIPAA Security Rule + state cyber regulations), and compliance (state-insurance regulations) in one audit cycle. Some controls satisfy multiple regulations (e.g., access controls cover Security Rule + Privacy Rule + state cyber); other controls are regulation-specific. The audit committee wants comprehensive coverage with efficient execution. The audit team has 8 weeks and 4 auditors. The state insurance regulator's examination cycle aligns with HIPAA OCR audit cadence; coordinated reporting reduces re-work but only if the team plans for it.",
+      "options": {
+        "A": "Conduct three separate audits sequentially (privacy first, security second, compliance third), since each domain has its own discipline and shared coverage creates confusion",
+        "B": "Conduct one consolidated audit treating all three domains as a single 'compliance audit' with one combined report, since consolidation maximizes efficiency",
+        "C": "Integrated audit: shared-control testing once with assertions per regulation, regulation-specific testing where unique, coordinated reporting (one report with regulator-specific sections), risk-based prioritization, team coordination",
+        "D": "Defer the audit until the audit team has 16 weeks available, since the 8-week window is insufficient for comprehensive coverage across three regulatory domains"
+      },
+      "correct": "C",
+      "key_concept": "Integrated audit = multi-domain test plan with shared-control testing (once for multiple regulations) + regulation-specific testing where unique + coordinated reporting (one report with regulator-specific sections) + risk-based prioritization + team coordination with sub-team specialization. Three-separate-audits is wasteful; one-consolidated-audit conflates regulators; defer abandons audit committee timeline.",
+      "pre_read": "Integrated audit design questions test whether you recognize the shared-vs-specific test-plan structure with coordinated reporting. Distractors propose three-separate, one-consolidated, or deferral.",
+      "correct_explanation": "ITAF Standard 1202 (Risk Assessment in Planning), IIA Standard 2010 (Planning), and ISACA Audit Universe guidance establish that integrated audits balance efficiency (shared-control testing) with regulator-specific assertion satisfaction. The right design: (1) shared-control testing — controls satisfying multiple regulations tested once with the testing framed to satisfy each regulation's specific assertion (access controls tested once, with assertions mapped to HIPAA Security Rule § 164.312, HIPAA Privacy Rule § 164.508, and state cyber rule); (2) regulation-specific testing — controls unique to one regulation tested separately; (3) coordinated reporting — one comprehensive report with regulation-specific sections supporting each regulator's expected format (a HIPAA section, a state-cyber section, a state-insurance section); (4) risk-based prioritization — highest-risk controls tested deepest; (5) team-coordination plan with sub-team specialization (privacy lead, security lead, compliance lead) reporting into integrated audit management. Option A's three-separate audits duplicates testing of shared controls. Option B's one-consolidated produces a report no regulator's expected format. Option D's defer abandons the audit committee's timeline.",
+      "wrong_explanations": {
+        "A": "Three separate sequential audits duplicates testing of shared controls (access controls would be tested three times with three separate sample frames). Inefficient and creates inconsistent findings.",
+        "B": "One-consolidated 'compliance audit' produces a report that doesn't match any regulator's expected format. HIPAA expects HIPAA-specific testing language; state insurance expects state-specific. Consolidation is right at the testing layer, not the reporting layer.",
+        "D": "Deferring to the next year abandons the audit committee's timeline and may exceed regulatory examination windows. Effective integrated audit design produces comprehensive coverage in the 8-week window through shared-control testing efficiency."
+      },
+      "tips": [
+        "Trap is B — \"one consolidated compliance audit\" maximizes efficiency at the testing layer but produces reports no regulator wants.",
+        "Integrated audit = shared-control testing once (with assertions per regulation) + regulation-specific testing where unique + coordinated reporting (one report, regulator-specific sections) + risk-based + team coordination.",
+        "Exam-day shortcut: integrated audit questions are answered by the shared-vs-specific structure with coordinated reporting, not separate / consolidated / defer."
+      ],
+      "framework_ref": "ITAF Standard 1202 (Risk Assessment in Planning); IIA International Standard 2010 (Planning); ISACA Audit Universe guidance",
+      "related_concepts": [
+        "Integrated audit",
+        "Shared-control testing",
+        "Multi-regulation audit",
+        "ITAF 1202"
+      ],
+      "_provenance": "Authored from concept: 'Privacy + Security + Compliance integrated audit, complements d2_050 (multi-sector regulatory mapping audit-design)'. Public source: ITAF 1202 + IIA 2010. All scenario specifics (health insurer, three domains, 8-week window, 4 auditors) invented for this question."
+    },
+    {
+      "id": "d2_166",
+      "domain": 2,
+      "subtopic": "Vendor Multi-Incident Pattern Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What governance response BEST addresses the multi-incident vendor pattern described?",
+      "scenario_context": "A retailer's critical SaaS POS vendor has had four notable incidents in the past 18 months: (1) 6-hour outage on Black Friday (peak revenue impact); (2) data breach exposing 500K customer records (now resolved with remediation); (3) chronic SLA misses on response time (12 of last 18 months below committed thresholds); (4) executive turnover including the CTO and CISO (raising governance concerns). The retailer's vendor management forum has historically addressed each incident in isolation. The CRO asks the IS auditor for guidance on whether the pattern warrants a different response than the individual incidents have triggered.",
+      "options": {
+        "A": "Continue addressing each incident individually since each has been remediated through standard incident-response processes and the SLA misses are tracked separately through standard performance management",
+        "B": "Declare the relationship un-salvageable and accelerate vendor exit immediately, since four notable incidents in 18 months demonstrates the vendor cannot be trusted regardless of individual remediation",
+        "C": "Integrated multi-incident pattern analysis: characterize the pattern across the four incidents, re-evaluate vendor risk tier vs oversight intensity, develop tiered response options (escalated governance + contractual remediation + parallel alternate evaluation + exit-readiness), present findings to audit committee",
+        "D": "Defer pattern analysis until a fifth incident occurs, since pattern analysis with four data points is statistically weak and additional incidents would clarify whether a true pattern exists"
+      },
+      "correct": "C",
+      "key_concept": "Multi-incident pattern analysis = characterize pattern across incidents (not individual) + re-evaluate vendor risk tier vs oversight intensity + tiered response options (escalated governance + contractual remediation + parallel alternate evaluation + exit-readiness) + analytical findings to audit committee + risk-appetite-tied recommendation + operational continuity. Continue-individual, exit-now, and wait-for-fifth all fail.",
+      "pre_read": "Vendor multi-incident pattern questions test whether you recognize the integrated analysis that aggregates incidents into a pattern view. Distractors propose individual-handling, immediate-exit, or deferral.",
+      "correct_explanation": "OCC Bulletin 2013-29, FFIEC Outsourcing Technology Services booklet, and ISACA IT Vendor Management guidance establish that multi-incident vendor patterns warrant integrated analysis rather than individual incident handling. The right response: (1) characterize the pattern across the four incidents — Black Friday outage signals capacity/reliability gap, data breach signals security gap, chronic SLA misses signal performance discipline gap, executive turnover signals governance instability — together suggesting deeper governance/control issues, not bad luck; (2) re-evaluate vendor risk tier and whether current oversight intensity matches the actual risk profile; (3) develop tiered response options — escalated governance (board-level engagement, monthly executive reviews), contractual remediation (SLA-credit pursuit on the SLA misses, breach-related contractual remedies), parallel evaluation of alternate vendors (so the retailer has options), exit-readiness validation (test that exit is feasible if needed); (4) present analytical findings to the audit committee and CRO with explicit recommendation tied to risk-appetite tolerance; (5) preserve operational continuity while implementing the chosen response. Option A's continue-individual misses the pattern. Option B's exit-now disrupts operations during retail's peak preparation. Option D's wait-for-fifth lets exposure continue.",
+      "wrong_explanations": {
+        "A": "Continuing to address each incident individually misses the pattern that the four incidents collectively reveal. Individual remediation can resolve each event without addressing the underlying governance issues that produced four events in 18 months.",
+        "B": "Immediate exit is operationally disruptive (POS systems are critical to retail operations) and may not be necessary if the vendor can be remediated under escalated governance. Exit should be one option in the tiered response, not the immediate response.",
+        "D": "Wait-for-fifth-incident is risk avoidance dressed as analytical rigor. Four incidents in 18 months across capacity, security, performance, and governance is sufficient signal for pattern analysis. Waiting for additional exposure is irresponsible."
+      },
+      "tips": [
+        "Trap is A — \"continue addressing incidents individually\" misses the pattern signal across four events spanning multiple control domains.",
+        "Multi-incident pattern analysis = characterize pattern + re-evaluate risk tier + tiered response options (escalated governance / contractual remediation / parallel alternate / exit-readiness) + audit committee findings + risk-appetite recommendation.",
+        "Exam-day shortcut: vendor multi-incident questions are answered by integrated pattern analysis with tiered response, not individual / exit-now / wait."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC Outsourcing Technology Services booklet; ISACA IT Vendor Management guidance",
+      "related_concepts": [
+        "Multi-incident pattern",
+        "Vendor risk re-tier",
+        "Exit-readiness",
+        "Tiered response"
+      ],
+      "_provenance": "Authored from concept: 'Vendor multi-incident pattern analysis - integrated pattern view with tiered response, complements d2_106/d2_125/d2_146 (vendor offboarding/breach response/managed services transition)'. Public source: OCC Bulletin 2013-29 + FFIEC. All scenario specifics (retailer POS vendor, four named incidents over 18 months) invented for this question."
+    },
+    {
+      "id": "d2_167",
+      "domain": 2,
+      "subtopic": "IT Investment During Distressed Financial Period",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles IT investment governance during the distressed period described?",
+      "scenario_context": "A regional bank is in financial distress: Q3 results showed material credit losses; the board has approved a cost-reduction program targeting 18% expense reduction across functions including IT; capital markets are uncertain and the bank's stock has dropped 35%. The CIO must reduce IT operating spend while: (1) maintaining regulatory compliance obligations (FFIEC IT examination prep continues); (2) protecting customer-facing critical systems' availability; (3) preserving the bank's ability to recover when the distressed period ends; (4) satisfying the cost-reduction commitment. The audit committee wants the IS auditor's perspective.",
+      "options": {
+        "A": "Apply uniform 18% cuts across all IT areas (compute, security, vendor, projects, headcount) since uniformity is the simplest implementation and avoids difficult prioritization conversations",
+        "B": "Differential cuts: preserve 100% regulatory and customer-critical operations, reduce moderate-priority RUN by 20-25%, defer 60% of TRANSFORM, eliminate discretionary, renegotiate vendor contracts, freeze hiring, preserve recovery-readiness, with risk-acceptance documentation to audit committee",
+        "C": "Cut customer-critical operations equally with everything else, since financial distress means everyone shares the burden and customer-experience cuts demonstrate the bank's commitment to recovery",
+        "D": "Refuse to cut IT spend and request that the cost-reduction target be applied entirely to non-IT functions, since IT is foundational to the bank's recovery and cutting IT during distress is short-sighted"
+      },
+      "correct": "B",
+      "key_concept": "IT investment under financial distress = cut deeply on lower-priority + preserve 100% regulatory/customer-critical + reduce moderate-priority RUN 20-25% + defer 60% TRANSFORM + eliminate discretionary + renegotiate vendor + freeze hiring + recovery-readiness preservation + risk-accepted documentation to audit committee. Uniform-cut, equal-customer-cut, and refuse-to-cut all fail.",
+      "pre_read": "Distressed-period IT investment questions test whether you recognize differential prioritization preserving critical operations and recovery readiness. Distractors propose uniform cuts, equal-customer cuts, or refusal.",
+      "correct_explanation": "ISACA IT Portfolio Management guidance and FFIEC examination practice establish that IT investment governance during distressed periods requires differential cuts that preserve critical operations and recovery readiness. The right approach: (1) preserve 100% of regulatory-compliance and customer-critical operations spend — non-discretionary categories that can't be cut without operational or regulatory failure; (2) reduce moderate-priority RUN by 20-25% — operationally feasible reductions on services where some degradation is acceptable; (3) defer 60% of TRANSFORM initiatives — strategic but not time-critical; (4) eliminate discretionary projects entirely; (5) renegotiate vendor contracts where the bank has leverage (volume reductions, term extensions for credits); (6) freeze hiring; (7) explicit recovery-readiness preservation — don't cut so deeply that the bank can't ramp back up when conditions improve; (8) present the prioritization with risk-acceptance documentation to the audit committee so the board signs off on the cuts and the residual risks. Option A's uniform cuts hit critical operations equally with discretionary, producing operational failures during distress. Option C's equal-customer-cut destroys customer experience exactly when retention matters most. Option D's refuse-to-cut abandons the cost commitment that may be necessary for the bank's survival.",
+      "wrong_explanations": {
+        "A": "Uniform 18% cuts across IT areas hits regulatory-compliance and customer-critical equally with discretionary projects. Customer-facing systems and FFIEC compliance can't be cut by 18% without producing material operational or regulatory failure.",
+        "C": "Cutting customer-critical operations during financial distress destroys customer experience exactly when the bank most needs to retain customers. Distress is when customer trust matters most; cuts there accelerate the distress.",
+        "D": "Refuse-to-cut may not survive board review during a 35% stock drop and material credit losses. The CIO must operate within the cost-reduction commitment; the question is HOW to cut, not whether."
+      },
+      "tips": [
+        "Trap is A — \"uniform cuts are simplest\" hits critical operations equally with discretionary, producing operational/regulatory failures.",
+        "Distressed-period IT investment = preserve 100% regulatory/customer-critical + reduce moderate RUN 20-25% + defer 60% TRANSFORM + eliminate discretionary + vendor renegotiation + hiring freeze + recovery-readiness + audit committee documentation.",
+        "Exam-day shortcut: distressed-period IT questions are answered by differential prioritization preserving critical operations and recovery readiness."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); COBIT 2019 APO06 (Managed Budget and Costs); ISACA IT Portfolio Management guidance; FFIEC IT Examination Handbook",
+      "related_concepts": [
+        "Distressed-period IT",
+        "Differential prioritization",
+        "Recovery readiness",
+        "APO05"
+      ],
+      "_provenance": "Authored from concept: 'IT investment during distressed financial period - differential prioritization, complements d2_068/d2_147 (mid-year and multi-pressure portfolio rebalance)'. Public source: COBIT 2019 APO05/APO06 + FFIEC. All scenario specifics (regional bank in distress, 18% cut target, 35% stock drop) invented for this question."
+    },
+    {
+      "id": "d2_168",
+      "domain": 2,
+      "subtopic": "Ransomware Customer-Data Crisis Communication",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What crisis communication approach BEST handles the ransomware-customer-data scenario described?",
+      "scenario_context": "A retailer has been hit by ransomware. At T+72 hours, the IR team has confirmed: (1) ransomware encrypted internal systems but customer transaction data was preserved on a separate database; (2) however, the threat actor's ransom note claims to have exfiltrated 4 million customer records prior to encryption; (3) forensic analysis cannot yet confirm whether exfiltration actually occurred — the threat actor's claim could be a bluff or could be real; (4) the firm has a strong customer-trust brand that has historically been a competitive advantage. The CEO needs to decide on customer communication during the active investigation.",
+      "options": {
+        "A": "Communicate immediately to all 4M customers that their data has been compromised, since transparency is the strongest brand-protection move and customers will appreciate the proactive disclosure regardless of investigation status",
+        "B": "Stay silent until the investigation conclusively confirms or rules out exfiltration, since premature communication could be inaccurate and damage credibility if the threat actor's claim turns out to be a bluff",
+        "C": "Structured tiered communication: base-message acknowledging incident and active investigation, counsel coordination on regulatory notification windows, FBI engagement per CISA guidance, proactive communication to audit committee/institutional customers/regulators with current facts, tiered customer communication ready when conclusive",
+        "D": "Pay the ransom immediately to ensure the data is not exposed, since ransom payment is faster than investigation and protects customer trust at cost the firm can absorb"
+      },
+      "correct": "C",
+      "key_concept": "Ransomware customer-data crisis communication = base-message acknowledging incident + active investigation + counsel coordination on notification windows + law enforcement (FBI per CISA) + proactive communication to audit committee/institutional customers/regulators with current facts + tiered customer communication ready when investigation conclusive + customer-trust monitoring. Communicate-immediately-to-all-4M, stay-silent, and pay-ransom all fail.",
+      "pre_read": "Ransomware crisis communication questions test whether you recognize structured tiered communication during active investigation — not extreme positions on transparency vs silence.",
+      "correct_explanation": "FBI ransomware advisories, CISA guidance, NIST SP 800-61 (Computer Security Incident Handling Guide), and ISACA Crisis Communication establish that ransomware response with claimed-but-unconfirmed exfiltration requires structured tiered communication: (1) base-message acknowledging the incident, the threat-actor claim, and active investigation — establishes truthful position; (2) counsel coordination on regulatory notification windows — GLBA + state breach laws have specific timing that starts at knowledge; (3) law enforcement engagement (FBI per CISA guidance, plus state law enforcement) — both for investigation support and for the firm's posture in regulatory and litigation contexts; (4) proactive communication to audit committee, key institutional customers, and regulators with current facts including explicit unknowns — these stakeholders need to make their own decisions; (5) tiered customer communication ready to deploy when investigation provides definitive answers — communications are pre-drafted but not deployed until they can be accurate; (6) customer-trust monitoring during the investigation period via NPS, social-media sentiment, or specific customer outreach. Option A's communicate-immediately-to-4M risks announcing exfiltration that didn't occur — a bluff response damages credibility. Option B's stay-silent violates regulatory notification windows and abandons trust-building communication with audit committee/regulators. Option D's pay-ransom violates US Treasury OFAC guidance, often funds further criminal activity, and provides no guarantee of data deletion.",
+      "wrong_explanations": {
+        "A": "Communicating to 4M customers based on an unconfirmed claim risks announcing an exfiltration that didn't actually occur. If the claim is a bluff, the firm has unnecessarily damaged customer trust. Tiered communication ready when investigation confirms is the right balance.",
+        "B": "Silence violates regulatory notification windows that started at knowledge of the incident — even unconfirmed claim activates notification obligations to certain stakeholders. Silence also abandons the proactive communication to audit committee, regulators, and institutional customers who need information to make their own decisions.",
+        "D": "US Treasury OFAC guidance discourages ransom payments (some payments to sanctioned entities are illegal). Payment also doesn't guarantee data deletion — many threat actors retain or re-sell data after payment. Payment-as-communication-strategy is rarely sound."
+      },
+      "tips": [
+        "Trap is A — \"transparency means tell all 4M immediately\" risks announcing an exfiltration that may not have occurred (bluff) and damaging trust unnecessarily.",
+        "Ransomware claimed-but-unconfirmed exfiltration = base-message + counsel-coordinated notification + FBI engagement + proactive audit committee/regulator communication + tiered customer communication ready when conclusive + customer-trust monitoring.",
+        "Exam-day shortcut: ransomware crisis communication questions are answered by structured tiered communication with active investigation, not extreme positions or ransom payment."
+      ],
+      "framework_ref": "FBI Ransomware Advisories; CISA Ransomware Guidance; NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Crisis Communication guidance",
+      "related_concepts": [
+        "Ransomware response",
+        "Crisis communication",
+        "Exfiltration claim",
+        "OFAC ransom guidance"
+      ],
+      "_provenance": "Authored from concept: 'Ransomware customer-data crisis communication, complements d2_110 (crisis communication during major IT incident) and d2_125 (vendor breach response coordination)'. Public source: FBI/CISA/NIST SP 800-61 + ISACA Crisis Communication. All scenario specifics (retailer ransomware, 4M records claimed exfiltrated, T+72h status) invented for this question."
+    },
+    {
+      "id": "d2_169",
+      "domain": 2,
+      "subtopic": "Strategic Shift from On-Premises to Cloud Governance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What governance approach BEST handles the on-premises-to-cloud strategic shift described?",
+      "scenario_context": "A regional manufacturer's CIO has approved a 5-year strategic shift moving 80% of IT operations from on-premises to cloud (currently 100% on-prem). The shift will be staged: cloud-foundation first (12 months), application migrations year 2-4, on-premises decommissioning year 5. Existing IT governance (control framework, policies, audit procedures, risk management) was built for on-prem operations. The audit committee asks the IS auditor for guidance on governance evolution. The board's audit committee has emphasized that governance must evolve in lockstep with technology shift to avoid gaps; auditors and regulators will examine the firm's posture year by year.",
+      "options": {
+        "A": "Continue using existing on-prem-focused governance throughout the 5 years and update it after the migration is complete, since governance changes are disruptive and stability through transformation is valuable",
+        "B": "Replace existing governance entirely on Day 1 with cloud-native governance, since the firm is committing to cloud and operating under hybrid governance during the 5 years creates complexity",
+        "C": "Stage governance evolution in parallel with technology shift: Year 1 cloud governance baseline alongside on-prem; Years 2-4 extend cloud governance and reduce on-prem as workloads migrate; Year 5 sunset on-prem-specific components; throughout update audit/risk/control framework to reflect actual posture",
+        "D": "Outsource all cloud governance to a managed cloud-services provider, since cloud governance requires expertise the firm doesn't have and outsourcing eliminates the need to evolve internal governance"
+      },
+      "correct": "C",
+      "key_concept": "On-prem-to-cloud governance evolution = staged: Year 1 (cloud governance baseline alongside on-prem), Year 2-4 (extend cloud + reduce on-prem as migrations occur), Year 5 (sunset on-prem-specific, retain hybrid where on-prem remains); throughout: update audit procedures + risk register + control framework + integrate cloud controls into overall framework. Continue-on-prem-governance, replace-Day-1, and outsource-cloud-governance all fail.",
+      "pre_read": "Strategic shift governance questions test whether you recognize staged evolution paralleling the technology shift. Distractors propose status-quo, all-at-once-replacement, or outsourcing.",
+      "correct_explanation": "ISACA Cloud Governance guidance and COBIT 2019 establish that strategic technology shifts require parallel governance evolution. The right staging: Year 1 (cloud-foundation) — establish cloud governance baseline (CCoE for cloud-architecture standards, cloud control framework, cloud-aware policies addressing shared-responsibility / data residency / FinOps, FinOps discipline) operating alongside existing on-prem governance; Year 2-4 (migrations) — extend cloud governance to migrated workloads as they migrate, reduce on-prem-governance scope as workloads decommission, ensure transitions don't leave control gaps; Year 5 — sunset on-prem-specific governance components, retain hybrid elements for any remaining on-prem (the 20% not migrating); throughout — continuously update audit procedures, risk register, and control framework to reflect each year's actual posture; integrate cloud-specific controls into the firm's overall control framework (don't operate parallel uncoordinated frameworks). Option A's continue-on-prem-governance produces governance gaps as cloud workloads come online without cloud-aware governance. Option B's replace-Day-1 abandons governance for the 99% on-prem operations during the 12-month foundation period. Option D's outsource-cloud-governance transfers activity but accountability remains.",
+      "wrong_explanations": {
+        "A": "Continuing on-prem-focused governance through 5 years of cloud migration produces governance gaps. Year-1 cloud workloads operate without cloud-aware governance (FinOps, shared-responsibility, data residency). Year-3 hybrid operations have no governance bridging the two environments.",
+        "B": "Replacing all governance on Day 1 abandons the on-prem governance that still serves 99% of operations during Year 1's cloud-foundation period. Hybrid governance during transition isn't complexity to avoid — it's the necessary state for staged migration.",
+        "D": "Outsourcing cloud governance transfers activity to the MSP but the firm retains accountability for the cloud control posture. Auditors and regulators ask the firm's officers about governance, not the MSP. The firm must own cloud governance, with vendor cooperation."
+      },
+      "tips": [
+        "Trap is A — \"continue existing governance for stability\" produces governance gaps as cloud workloads come online without cloud-aware controls.",
+        "On-prem-to-cloud governance evolution = Year 1 cloud baseline alongside on-prem + Year 2-4 extend cloud reduce on-prem + Year 5 sunset on-prem-specific + continuous audit/risk/control updates + integrate into overall framework.",
+        "Exam-day shortcut: strategic-shift governance questions are answered by staged evolution paralleling the technology shift, not status-quo / replace-Day-1 / outsource."
+      ],
+      "framework_ref": "ISACA Cloud Governance guidance; COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); ISACA Cloud Risk Management guidance",
+      "related_concepts": [
+        "Strategic shift governance",
+        "On-prem-to-cloud",
+        "CCoE",
+        "Hybrid governance"
+      ],
+      "_provenance": "Authored from concept: 'Strategic shift from on-premises to cloud - staged governance evolution, complements d2_087/d2_119/d2_169 (multi-cloud governance, CCoE, etc)'. Public source: ISACA Cloud Governance + COBIT 2019. All scenario specifics (regional manufacturer 5-year shift, 80% target, year-by-year stages) invented for this question."
+    },
+    {
+      "id": "d2_170",
+      "domain": 2,
+      "subtopic": "Information Governance Maturity Uplift",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST supports the information governance maturity uplift described?",
+      "scenario_context": "An IS auditor at a multinational manufacturer is consulting on information governance (IG) maturity. Current state: data is duplicated across systems, classification is inconsistent, retention policies vary by department, privacy program is reactive (per-incident response rather than embedded), records management is paper-era discipline being misapplied to digital records. The CIO and CDO want a 24-month maturity-uplift program. The combined organization has 35K employees across 18 countries and 6 lines of business. The audit committee asks the IS auditor for a structured uplift approach.",
+      "options": {
+        "A": "Conduct a comprehensive 'big bang' transformation in year 1, completing all elements (governance, classification, retention, privacy, records management) simultaneously across all 18 countries to maximize change momentum",
+        "B": "Defer the uplift indefinitely since the current state is functional and uplift creates organizational friction without proportionate value at the firm's scale and complexity",
+        "C": "Phased uplift: Phase 1 (months 1-6) governance foundation; Phase 2 (7-12) operationalize core disciplines; Phase 3 (13-18) extend and integrate with analytics; Phase 4 (19-24) institutionalize with continuous improvement; throughout — country-specific adaptation across the 18 jurisdictions",
+        "D": "Outsource the entire IG uplift to a Big-Four consulting firm, since IG maturity uplift requires specialized expertise the firm doesn't have and outsourcing accelerates delivery"
+      },
+      "correct": "C",
+      "key_concept": "IG maturity uplift = phased: Phase 1 governance foundation (steering committee + IG roles + policy + classification) + Phase 2 operationalize core disciplines (retention + privacy + records management modernization) + Phase 3 extend/integrate (analytics + ongoing measurement) + Phase 4 institutionalize (continuous improvement) + country-specific adaptation throughout. Big-bang, defer, and outsource-everything all fail.",
+      "pre_read": "IG maturity uplift questions test whether you recognize phased multi-element approach with country-specific adaptation. Distractors propose all-at-once, status-quo, or wholesale outsourcing.",
+      "correct_explanation": "ISACA Information Governance guidance, ISO/IEC 30300 (Records Management), and DAMA-DMBOK establish that IG maturity uplift requires phased multi-element approach: Phase 1 (governance foundation) — IG steering committee with cross-functional representation, defined IG roles including CDO authority, IG policy framework, data classification baseline rolled out enterprise-wide; Phase 2 (operationalize core disciplines) — consistent retention by data category aligned to regulatory requirements (GDPR retention, SOX retention, etc.), privacy program embedded in business processes (Privacy by Design at SDLC, vendor due diligence integrating privacy assessment), records-management modernization adapting paper-era discipline to digital-era reality; Phase 3 (extend and integrate) — records-management integrated into operations, privacy embedded in product development from idea stage, IG analytics for ongoing maturity measurement; Phase 4 (institutionalize) — IG embedded in business decisions, periodic maturity assessment using established frameworks (ARMA Generally Accepted Recordkeeping Principles, EDRM IGRM), continuous improvement; throughout — country-specific adaptation respecting regulatory and cultural differences (GDPR in EU, CCPA in California, PIPL in China, LGPD in Brazil, etc.). Option A's big-bang fails for the firm's scale (35K employees, 18 countries cannot transform simultaneously). Option B's defer ignores the documented dysfunction. Option D's outsource-everything transfers activity but the cultural change required must be owned internally.",
+      "wrong_explanations": {
+        "A": "Big-bang transformation across 35K employees and 18 countries simultaneously fails at scale. Country-specific regulatory adaptation alone (GDPR + CCPA + PIPL + LGPD + others) can't be parallelized into 12 months. Phased approach respecting scale is the recognized pattern.",
+        "B": "Current state is documented as dysfunctional (data duplication, inconsistent classification, varying retention, reactive privacy, misapplied paper-era records management). Defer-indefinitely abandons the dysfunction and exposes the firm to regulatory and operational risks.",
+        "D": "Big-Four consulting can execute parts of the uplift but the cultural change must be owned internally. External consultants don't have the relationships, context, or sustained engagement that 24-month transformation requires across 18 countries."
+      },
+      "tips": [
+        "Trap is A — \"big bang transformation in year 1\" sounds like maximum momentum but fails at the firm's scale (35K, 18 countries).",
+        "IG maturity uplift = Phase 1 governance foundation + Phase 2 core disciplines + Phase 3 extend/integrate + Phase 4 institutionalize, with country-specific adaptation throughout.",
+        "Exam-day shortcut: IG maturity questions are answered by phased multi-element approach with country-specific adaptation, not big-bang / defer / outsource-everything."
+      ],
+      "framework_ref": "ISO/IEC 30300 (Records Management); ISACA Information Governance guidance; DAMA-DMBOK 2nd Edition; ARMA Generally Accepted Recordkeeping Principles (GARP)",
+      "related_concepts": [
+        "Information governance maturity",
+        "Phased uplift",
+        "Multi-country adaptation",
+        "DAMA-DMBOK"
+      ],
+      "_provenance": "Authored from concept: 'Information governance maturity uplift across multinational organization - phased approach, complements d2_098/d2_126/d2_063 (data discipline elements)'. Public source: ISO/IEC 30300 + ISACA IG guidance + DAMA-DMBOK + ARMA GARP. All scenario specifics (multinational manufacturer, 35K employees, 18 countries, 6 LOBs, current-state dysfunctions) invented for this question."
     }
   ]
 }
