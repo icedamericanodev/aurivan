@@ -3308,6 +3308,733 @@
         "Root cause analysis"
       ],
       "_provenance": "Authored from concept: 'Auditing IT Governance Implementation analysis - design-implementation gap synthesis, complements d2_010 (governance design vs implementation divergence at lower complexity)'. Public source: ITAF 1202 + COBIT 2019 EDM01. All scenario specifics (manufacturing conglomerate four-finding pattern) invented for this question."
+    },
+    {
+      "id": "d2_091",
+      "domain": 2,
+      "subtopic": "Risk Management Program — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines an enterprise IT Risk Management Program?",
+      "options": {
+        "A": "A one-time annual exercise where the IT department lists known threats and submits the list to senior leadership for review",
+        "B": "A continuous, structured discipline through which the enterprise identifies, assesses, treats, and monitors IT risks against board-approved appetite and tolerance levels",
+        "C": "A purely technical activity owned by the security team that uses scanning tools to detect and remediate vulnerabilities across the technology estate",
+        "D": "A regulatory compliance checklist that the IT department fills out quarterly to demonstrate alignment with industry frameworks to external auditors"
+      },
+      "correct": "B",
+      "key_concept": "An IT Risk Management Program is a continuous, structured discipline covering identify-assess-treat-monitor across the lifecycle, governed by board-approved appetite and tolerance. It is not a one-time exercise, a security-team-only activity, or a compliance checklist.",
+      "pre_read": "Risk-management-program definition questions test whether you recognize the continuous, structured, board-governed nature. Distractors substitute one-time, function-specific, or compliance-driven framings.",
+      "correct_explanation": "ISACA Risk IT Framework, COSO ERM (2017), and ISO 31000:2018 define an enterprise risk management program as a continuous, structured discipline covering the four lifecycle stages (identify, assess, treat, monitor) operated against board-approved risk appetite and tolerance. The program engages multiple functions — risk, security, compliance, business, audit — and produces ongoing risk-informed decisions, not just an annual report. Option A reduces it to a snapshot. Option C narrows it to security tooling. Option D treats it as a regulatory artifact rather than a governance discipline.",
+      "wrong_explanations": {
+        "A": "An annual exercise produces a snapshot that goes stale within months. Risk programs are continuous; the lifecycle (identify-assess-treat-monitor) operates throughout the year, not once.",
+        "C": "Vulnerability scanning is one input to risk management, but the program covers the broader risk universe (operational, strategic, compliance, third-party). Security tooling alone misses the rest.",
+        "D": "Compliance checklists are downstream artifacts, not the program itself. The program drives WHY controls exist; checklists merely confirm they exist."
+      },
+      "tips": [
+        "Trap is C — \"security team using scanning tools\" feels like risk management to non-specialists but the program is enterprise-wide and discipline-based, not tool-based.",
+        "Risk Management Program = continuous + structured + lifecycle (identify-assess-treat-monitor) + board-governed appetite/tolerance. Four properties.",
+        "Exam-day shortcut: any risk-management-program definition question is answered by the option that names continuous + lifecycle + governance discipline."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COSO ERM (2017); ISO 31000:2018 (Risk Management); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk Management Program",
+        "Risk lifecycle",
+        "Risk appetite",
+        "Risk governance"
+      ],
+      "_provenance": "Authored from concept: 'Risk Management Program foundational definition - continuous + structured + lifecycle, distinct from d2_011 (program components) and d2_058 (program standup governance design)'. Public source: ISACA Risk IT + COSO ERM + ISO 31000."
+    },
+    {
+      "id": "d2_092",
+      "domain": 2,
+      "subtopic": "Lawful Basis for Processing — GDPR Article 6 Categories",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which list correctly enumerates the six lawful bases for processing personal data under GDPR Article 6?",
+      "options": {
+        "A": "Consent; contract; legal obligation; vital interests; public interest task; legitimate interests",
+        "B": "Encryption; pseudonymization; data minimization; purpose limitation; storage limitation; accuracy",
+        "C": "Identify; protect; detect; respond; recover; govern — drawn from the NIST Cybersecurity Framework's six functions",
+        "D": "Confidentiality; integrity; availability; authenticity; non-repudiation; accountability"
+      },
+      "correct": "A",
+      "key_concept": "GDPR Article 6 enumerates exactly six lawful bases: (a) consent, (b) contract, (c) legal obligation, (d) vital interests, (e) public interest task, (f) legitimate interests. Every personal-data processing activity must rely on one of these bases.",
+      "pre_read": "Article 6 lawful-basis questions test recall of the six. Distractors substitute privacy-by-design principles, NIST CSF functions, or CIA-triad attributes — all from related but distinct frameworks.",
+      "correct_explanation": "GDPR Article 6 enumerates six lawful bases for processing: (a) consent of the data subject for one or more specific purposes; (b) processing necessary for performance of a contract with the data subject; (c) processing necessary for compliance with a legal obligation; (d) processing necessary to protect vital interests of the data subject or another natural person; (e) processing necessary for performance of a task carried out in the public interest or in the exercise of official authority; (f) processing necessary for purposes of legitimate interests pursued by the controller or a third party (with a balancing test). Option B lists GDPR Article 5 principles. Option C lists NIST CSF functions. Option D lists information-security attributes — all relevant frameworks but not Article 6.",
+      "wrong_explanations": {
+        "B": "These are GDPR Article 5 principles (lawfulness/fairness/transparency, purpose limitation, data minimization, accuracy, storage limitation, integrity-and-confidentiality, accountability) — different obligation from Article 6 lawful bases.",
+        "C": "Identify/Protect/Detect/Respond/Recover/Govern is the NIST Cybersecurity Framework's six core functions (with Govern added in v2.0). Useful framework but not GDPR.",
+        "D": "Confidentiality/integrity/availability/authenticity/non-repudiation/accountability are information-security attributes (CIA triad plus extensions). Not lawful bases under privacy law."
+      },
+      "tips": [
+        "Trap is C — \"Identify/Protect/Detect/Respond/Recover\" is NIST CSF, not GDPR. Article 6 names lawful bases, not security functions.",
+        "GDPR Article 6 = consent + contract + legal obligation + vital interests + public interest + legitimate interests. Memorize all six.",
+        "Exam-day shortcut: GDPR Article 6 questions are answered by the option that names the six bases — not Article 5 principles, NIST CSF, or CIA attributes."
+      ],
+      "framework_ref": "GDPR Article 6 (Lawfulness of Processing); EDPB Guidelines on Article 6",
+      "related_concepts": [
+        "GDPR Article 6",
+        "Lawful basis",
+        "Consent",
+        "Legitimate interests"
+      ],
+      "_provenance": "Authored from concept: 'GDPR Article 6 lawful-basis enumeration foundational - six categories recall, complements d2_040 (application - matching basis to use case)'. Public source: GDPR Article 6."
+    },
+    {
+      "id": "d2_093",
+      "domain": 2,
+      "subtopic": "Service Level Agreement (SLA) — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines a Service Level Agreement (SLA) in IT service management?",
+      "options": {
+        "A": "An informal email exchange between IT and the business unit confirming general expectations about service quality and availability over time",
+        "B": "A contract clause that limits the service provider's total liability to a fixed dollar amount regardless of the magnitude of any service failure",
+        "C": "A documented commitment between a service provider and a customer specifying measurable service-level targets, measurement methodology, and remedies for non-performance",
+        "D": "An internal IT operations runbook describing how the IT team responds to incidents affecting customer-facing systems during business hours"
+      },
+      "correct": "C",
+      "key_concept": "An SLA is a documented commitment specifying measurable targets, measurement methodology, and remedies for non-performance — between a service provider and a customer. Informal expectations, liability caps, and operational runbooks are different artifacts.",
+      "pre_read": "SLA definition questions test whether you can recognize the documented + measurable + with-remedies nature. Distractors substitute informal arrangements, contract limits, or operational documentation for the SLA.",
+      "correct_explanation": "ISACA IT Service Management guidance, ITIL 4, and COBIT 2019 APO09 (Managed Service Agreements) define an SLA as a formally documented agreement between a service provider and a customer that specifies (1) measurable service-level targets (e.g., 99.9% availability, 4-hour response time), (2) measurement methodology (which clock starts when, what counts as downtime), and (3) remedies for non-performance (service credits, escalation rights, termination triggers). Option A's informal email lacks the documented + measurable + remediable structure. Option B describes a liability-cap clause, which is one provision but not the SLA itself. Option D describes an internal runbook — operational documentation, not a service-provider-customer agreement.",
+      "wrong_explanations": {
+        "A": "Informal email confirms expectations but doesn't define measurable targets or remedies. SLAs require formal documentation with specific commitments and consequences for failure.",
+        "B": "Liability caps are common SLA provisions but they are not the SLA's defining feature. The SLA defines the service expectation; the cap is one of many remedy-related terms.",
+        "D": "Operational runbooks describe how IT executes its work internally. They do not constitute an external commitment between provider and customer with measurable targets and remedies."
+      },
+      "tips": [
+        "Trap is B — \"contract clause limiting liability\" sounds SLA-like but liability caps are one provision, not the SLA's definition.",
+        "SLA = documented commitment + measurable targets + measurement methodology + remedies for non-performance. Four elements.",
+        "Exam-day shortcut: SLA definition questions are answered by the option that names documented + measurable + with remedies — not informal, single-clause, or runbook framings."
+      ],
+      "framework_ref": "COBIT 2019 APO09 (Managed Service Agreements); ITIL 4; ISACA IT Service Management guidance",
+      "related_concepts": [
+        "Service Level Agreement",
+        "Service-level targets",
+        "APO09",
+        "Service management"
+      ],
+      "_provenance": "Authored from concept: 'SLA foundational definition - documented commitment + measurable + remediable, complements d2_079 (vendor SLA design) and d2_083 (APO09 service agreements multi-element)'. Public source: COBIT 2019 APO09 + ITIL 4."
+    },
+    {
+      "id": "d2_094",
+      "domain": 2,
+      "subtopic": "Risk Management Program — Component Maturity Assessment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional credit union is assessing the maturity of the firm's IT risk management program. Which evaluation MOST strongly indicates the program is OPERATING at a mature level?",
+      "options": {
+        "A": "The firm has produced a risk register listing all known risks with documented owners assigned to each, refreshed once at program launch",
+        "B": "The firm operates a continuous lifecycle (identify-assess-treat-monitor) with risk-informed decisions visibly shaping investment, project, and operational choices",
+        "C": "The firm has hired a Chief Risk Officer with industry-recognized credentials and extensive experience leading risk programs at peer financial institutions",
+        "D": "The firm has selected a risk management software platform from a leading vendor and configured it to support the firm's risk-management workflow"
+      },
+      "correct": "B",
+      "key_concept": "Risk-program maturity is OPERATIONAL (lifecycle running, decisions shaped by risk) — not artifact-based (register exists), staffing-based (CRO hired), or tool-based (software selected). The behavior in decisions is the maturity signal.",
+      "pre_read": "Risk-program maturity questions test whether you can distinguish OPERATIONAL maturity (decisions shaped by risk) from artifact maturity (documents exist), staffing (people hired), or tooling (software bought). Distractors substitute the easier signals for the harder one.",
+      "correct_explanation": "ISACA Risk IT Framework and COSO ERM (2017) establish that risk-program maturity is best measured by OPERATIONAL behavior: the lifecycle is running continuously, risk-informed decisions are visibly shaping investment, project, and operational choices, the program adapts as the risk environment changes. A static register, a hired CRO, or a deployed tool can all exist without changing how the firm decides anything — the program would be 'present' but not 'operating'. The maturity signal is whether decisions look different than they would without the program.",
+      "wrong_explanations": {
+        "A": "A risk register at program launch is an artifact, not a maturity signal. The register can be present and stale; mature programs refresh it continuously through the lifecycle.",
+        "C": "Hiring a senior CRO is necessary but not sufficient. Many organizations hire credentialed CROs whose programs nonetheless fail to influence decisions. Staffing alone is leading-indicator at best.",
+        "D": "Software selection is even more removed from maturity. Programs can run with spreadsheets and still be mature; programs can have premium software and remain immature."
+      },
+      "tips": [
+        "Trap is A — \"risk register at program launch with documented owners\" feels like maturity but is an artifact, not operating behavior.",
+        "Risk-program maturity = decisions visibly shaped by risk (operational behavior), not artifacts/staffing/tools alone.",
+        "Exam-day shortcut: risk-program maturity questions are answered by the option that names continuous lifecycle + decision-influence."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COSO ERM (2017); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk program maturity",
+        "Risk-informed decisions",
+        "Lifecycle operation",
+        "Operational maturity"
+      ],
+      "_provenance": "Authored from concept: 'Risk Management Program maturity assessment - operational behavior over artifact/staffing/tool, complements d2_011 (program structure) and d2_058 (standup design)'. Public source: ISACA Risk IT."
+    },
+    {
+      "id": "d2_095",
+      "domain": 2,
+      "subtopic": "Enterprise Change Management — Stakeholder Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a manufacturer is reviewing a major enterprise change (rollout of a new ERP across 12 plants). Which stakeholder-management practice MOST strongly supports change adoption?",
+      "options": {
+        "A": "Communicate the change once via an all-hands email when the rollout begins and rely on plant managers to cascade information to affected staff at their discretion",
+        "B": "Identify stakeholder groups with a structured analysis (RACI, impact assessment), tailor communication and engagement to each group, and maintain two-way feedback channels throughout the change",
+        "C": "Push the change through quickly with minimal stakeholder communication so resistance has less time to organize, then address concerns retroactively after the new system is live",
+        "D": "Outsource the change-management activities entirely to the ERP vendor, since the vendor has experience with similar deployments at peer manufacturers in adjacent industries"
+      },
+      "correct": "B",
+      "key_concept": "Effective enterprise change management requires structured stakeholder analysis, tailored communication per group, and two-way feedback throughout — not single-broadcast communication, suppression, or vendor-only execution.",
+      "pre_read": "Stakeholder-management questions test whether you recognize the structured + tailored + two-way pattern. Distractors propose one-shot communication, deliberate suppression, or vendor outsourcing.",
+      "correct_explanation": "COBIT 2019 BAI05 (Managed Organizational Change) and ISACA Enterprise Change Management guidance establish that effective stakeholder management for major change requires (1) structured stakeholder identification (RACI, impact assessment, influence-interest mapping), (2) tailored communication and engagement per stakeholder group (executive, plant manager, end-user, IT, training), and (3) two-way feedback channels so resistance is surfaced early and addressed. Option A's one-shot email guarantees the rollout will encounter unaddressed resistance. Option C's deliberate suppression compounds resistance and creates trust deficit. Option D's full outsourcing transfers ACTIVITY but the cultural change must be owned internally.",
+      "wrong_explanations": {
+        "A": "One all-hands email at rollout cannot drive adoption across 12 plants. Major change requires sustained, multi-channel engagement before, during, and after rollout.",
+        "C": "Suppressing communication to limit organized resistance is a textbook anti-pattern. It creates surprise, breeds trust deficit, and produces worse adoption outcomes than transparent engagement.",
+        "D": "Vendors can support change-management activities but cannot own them. The cultural and behavioral change must be driven by people the affected staff trust — internal leaders, not external consultants."
+      },
+      "tips": [
+        "Trap is C — \"push through quickly with minimal communication\" sounds decisive but produces worse adoption outcomes than transparent engagement.",
+        "Stakeholder management for major change = structured identification + tailored engagement per group + two-way feedback. Three elements.",
+        "Exam-day shortcut: change-stakeholder questions are answered by the option naming structured + tailored + two-way."
+      ],
+      "framework_ref": "COBIT 2019 BAI05 (Managed Organizational Change); ISACA Enterprise Change Management guidance",
+      "related_concepts": [
+        "Enterprise change management",
+        "Stakeholder analysis",
+        "BAI05",
+        "Change adoption"
+      ],
+      "_provenance": "Authored from concept: 'Enterprise Change Management stakeholder discipline - structured/tailored/two-way, distinct from d2_019 (failed M&A integration analysis)'. Public source: COBIT 2019 BAI05."
+    },
+    {
+      "id": "d2_096",
+      "domain": 2,
+      "subtopic": "Data Inventory — Refresh and Drift Detection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a healthcare technology firm is reviewing how the data inventory is kept current. Which mechanism MOST strongly supports inventory accuracy over time?",
+      "options": {
+        "A": "Annual all-hands survey asking each business unit to report any data assets they have created or retired since the prior year's submission",
+        "B": "Reliance on the IT asset database alone, since hardware and software assets implicitly indicate where data lives across the enterprise",
+        "C": "Trust that business units will proactively notify the data governance team whenever new data flows are introduced or existing flows materially change",
+        "D": "Continuous discovery scans paired with named data stewards, integration with change management at the point new assets are created, and periodic reconciliation against business reality"
+      },
+      "correct": "D",
+      "key_concept": "Data inventory accuracy requires CONTINUOUS mechanisms: discovery scans + named stewards + change-management integration at creation + periodic reconciliation. Annual surveys decay; IT asset proxy under-counts; passive notification fails.",
+      "pre_read": "Data-inventory-currency questions test whether you recognize that accuracy requires continuous + multi-mechanism approaches. Distractors propose periodic, single-source, or passive mechanisms.",
+      "correct_explanation": "ISACA Data Governance guidance and DAMA-DMBOK establish that sustained data inventory accuracy requires multiple integrated mechanisms: continuous discovery scans (catch what stewardship misses), named data stewards in each business unit (own ongoing accuracy for their domain), integration with change management so new data flows are inventoried at creation rather than discovered later, and periodic reconciliation against business reality (interviews, sample audits) to catch drift the automated and steward mechanisms missed. Option A's annual survey produces a snapshot that decays within months. Option B uses IT assets as a proxy that systematically under-counts (a single application can hold many distinct data subjects). Option C's passive notification fails reliably — busy business units forget to notify, especially for smaller flows.",
+      "wrong_explanations": {
+        "A": "Annual surveys decay quickly between surveys. Modern data flows change weekly; an annual cadence guarantees the inventory is months out of date most of the year.",
+        "B": "IT asset databases catalog hardware and software, not data. A single application can host many distinct data subjects; the asset database catalog systematically under-counts data assets.",
+        "C": "Passive notification depends on business units remembering to notify. Busy operational teams reliably forget, especially for incremental changes that they don't perceive as significant — but which matter for the inventory."
+      },
+      "tips": [
+        "Trap is A — \"annual all-hands survey\" feels disciplined but produces snapshots that go stale quickly.",
+        "Data inventory currency = continuous discovery + stewards + change-management integration + periodic reconciliation. Four mechanisms together.",
+        "Exam-day shortcut: data-inventory-currency questions are answered by the option naming continuous + multi-mechanism."
+      ],
+      "framework_ref": "ISACA Data Governance guidance; DAMA-DMBOK 2nd Edition; COBIT 2019 APO14 (Managed Data)",
+      "related_concepts": [
+        "Data inventory",
+        "Inventory drift",
+        "Data discovery",
+        "Data stewardship"
+      ],
+      "_provenance": "Authored from concept: 'Data Inventory refresh and drift detection - continuous mechanisms, complements d2_016 (classification approach) and d2_076 (initial inventory build methodology)'. Public source: ISACA Data Governance + DAMA-DMBOK."
+    },
+    {
+      "id": "d2_097",
+      "domain": 2,
+      "subtopic": "Privacy by Design — SDLC Integration",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SaaS firm is integrating privacy by design into its SDLC. Which integration approach MOST strongly aligns with GDPR Article 25 expectations?",
+      "options": {
+        "A": "Conduct a single privacy review at launch and fix any identified privacy issues post-launch through a normal bug-tracking process",
+        "B": "Embed privacy requirements at each SDLC stage: requirements gathering, architecture, development, testing, and deployment — with stage-specific gating criteria and DPO involvement on high-risk features",
+        "C": "Require legal sign-off before any feature ships but defer all privacy considerations until the legal team raises specific objections during their pre-launch review",
+        "D": "Apply privacy controls only to features explicitly identified as processing 'sensitive personal data', accepting that other features need no specific privacy attention"
+      },
+      "correct": "B",
+      "key_concept": "Privacy by Design at SDLC requires stage-by-stage integration (requirements through deployment) with stage-specific criteria and DPO involvement on high-risk features. Single-point reviews, legal-only gating, and selective coverage all leave material gaps.",
+      "pre_read": "Privacy-by-design SDLC integration questions test whether you recognize the multi-stage embedded approach. Distractors substitute single-point review, legal-only gating, or partial coverage.",
+      "correct_explanation": "GDPR Article 25 and EDPB Guidelines 4/2019 require Privacy by Design — privacy considerations integrated into processing operations from the design stage, not bolted on post-launch. The SDLC integration: requirements gathering identifies privacy implications and defines lawful-basis approach; architecture incorporates privacy controls (encryption, access, minimization); development implements with privacy-aware patterns; testing validates privacy properties (DSAR functionality, retention, consent flows); deployment with DPIA where required for high-risk features. Stage-specific gating criteria prevent privacy-deficient features from advancing. DPO involvement on high-risk features ensures expert review where it matters. Option A's post-launch fixing is exactly what 'by design' is meant to prevent. Option C makes legal review a single late-stage gate. Option D's selective coverage misses cases where lower-sensitivity data still requires privacy controls.",
+      "wrong_explanations": {
+        "A": "Post-launch privacy fixes are reactive, not 'by design'. Article 25 explicitly requires privacy considerations integrated FROM THE DESIGN STAGE — fixing post-launch is the failure mode the requirement is designed to prevent.",
+        "C": "Legal-only sign-off late in the cycle catches obvious issues but misses the design-level decisions that drive privacy posture (data flows, consent UX, retention defaults). Privacy must be in the design, not just in the review.",
+        "D": "Privacy controls apply broadly, not only to 'sensitive' categories. Even non-sensitive personal data (email, IP) requires lawful-basis discipline, retention limits, and access controls under GDPR."
+      },
+      "tips": [
+        "Trap is A — \"single privacy review at launch + fix post-launch\" is the canonical 'bolt-on' anti-pattern Article 25 was written to prevent. By design means at design, not after.",
+        "Privacy by Design SDLC = stage-by-stage embed (requirements through deployment) + stage-gating + DPO involvement on high-risk features.",
+        "Exam-day shortcut: privacy-by-design questions are answered by the option naming embedded multi-stage integration, not single-point or selective approaches."
+      ],
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); EDPB Guidelines 4/2019 (Article 25 Data Protection by Design and by Default)",
+      "related_concepts": [
+        "Privacy by Design",
+        "GDPR Article 25",
+        "SDLC integration",
+        "DPIA"
+      ],
+      "_provenance": "Authored from concept: 'Privacy by Design SDLC integration - multi-stage embed with gating, complements d2_086 (Privacy by Design vs Default decision) and d2_084 (DPIA for high-risk processing)'. Public source: GDPR Article 25 + EDPB Guidelines 4/2019."
+    },
+    {
+      "id": "d2_098",
+      "domain": 2,
+      "subtopic": "Data Retention Policy — Multi-Regulation Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A diversified holding company operates across healthcare (HIPAA), financial services (GLBA, SOX), and EU markets (GDPR). Which approach to data retention design BEST handles the multi-regulation complexity?",
+      "options": {
+        "A": "Set a single uniform retention period across all data types matching the longest applicable retention requirement for any regulation, accepting some unnecessary retention",
+        "B": "Set the shortest retention period across all data types, accepting some compliance gaps but minimizing storage cost and privacy risk",
+        "C": "Define retention by data category with regulation-specific minimums (HIPAA 6 years; SOX 7 years; GDPR 'no longer than necessary') and maximums where applicable, supported by classification and a documented basis per category",
+        "D": "Defer retention design to the IT operations team and configure storage-platform retention policies based on whatever defaults the platform vendor recommends for general-business use"
+      },
+      "correct": "C",
+      "key_concept": "Multi-regulation retention design uses category-specific periods aligned to each regulation's minimum and maximum requirements, with classification-driven application and documented basis per category. Uniform-longest over-retains; uniform-shortest under-complies; vendor defaults ignore the regulatory mandate.",
+      "pre_read": "Multi-regulation retention questions test whether you can recognize category-specific design rather than uniform extreme. Distractors substitute uniform-longest, uniform-shortest, or vendor-default for the regulation-aware design.",
+      "correct_explanation": "ISACA Data Governance guidance and IAPP retention-design best practice establish that multi-regulation retention requires category-specific periods. HIPAA requires 6 years for medical records (45 CFR § 164.530); SOX Section 802 / 17 CFR 210.2-06 requires 7 years for audit and review records; GDPR requires 'no longer than necessary' for the lawful purpose (Article 5(1)(e)) — and explicitly forbids over-retention. Each regulation has minimums for some categories and maximums for others. Effective design: classify data by category, map each category to its applicable regulation(s), set retention to satisfy minimums while respecting maximums, and document the basis. Option A's uniform-longest violates GDPR's 'no longer than necessary' principle. Option B's uniform-shortest fails to meet HIPAA/SOX minimums. Option D abdicates regulatory analysis to vendor defaults.",
+      "wrong_explanations": {
+        "A": "GDPR Article 5(1)(e) explicitly forbids retaining personal data longer than necessary for the purpose. Setting all retention to the longest period (e.g., 7-year SOX) violates GDPR for any personal data not subject to that retention requirement.",
+        "B": "HIPAA's 6-year minimum and SOX's 7-year minimum are mandatory. A uniform short retention (e.g., 1 year) creates direct compliance gaps in healthcare and financial services that regulators will examine and penalize.",
+        "D": "Vendor defaults reflect general-business assumptions, not the firm's specific multi-regulation environment. Configuring retention based on defaults guarantees the firm violates one or more regulations on different data categories."
+      },
+      "tips": [
+        "Trap is A — \"uniform longest retention\" sounds compliance-conservative but violates GDPR's 'no longer than necessary' principle.",
+        "Multi-regulation retention = category-specific periods + minimums-maximums per regulation + documented basis. Three elements.",
+        "Exam-day shortcut: multi-regulation retention questions are answered by the option naming category-specific design tied to each regulation's specific requirements."
+      ],
+      "framework_ref": "GDPR Article 5(1)(e) (Storage Limitation); HIPAA 45 CFR § 164.530; Sarbanes-Oxley Act Section 802 (Records Retention); 17 CFR 210.2-06 (Retention of Audit and Review Records); ISACA Data Governance guidance",
+      "related_concepts": [
+        "Data retention",
+        "Multi-regulation design",
+        "GDPR storage limitation",
+        "HIPAA retention"
+      ],
+      "_provenance": "Authored from concept: 'Data retention policy multi-regulation design - category-specific approach, no prior coverage'. Public source: GDPR Article 5(1)(e) + HIPAA + SOX + ISACA Data Governance."
+    },
+    {
+      "id": "d2_099",
+      "domain": 2,
+      "subtopic": "Vendor Onboarding Due Diligence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a community bank is reviewing the vendor-onboarding due-diligence process for a new cloud-hosted core banking provider. Which due-diligence depth is MOST appropriate for this vendor risk tier?",
+      "options": {
+        "A": "Risk-tiered due diligence: financial health review, SOC 2 Type 2 evaluation, security architecture review, business continuity assessment, regulatory compliance verification (FFIEC), references, and contractual right-to-audit",
+        "B": "Single vendor questionnaire emailed to the provider's sales team with multiple-choice answers about security and compliance posture",
+        "C": "Reliance on the provider's marketing materials and public cybersecurity certifications listed on their website, supplemented by general industry reputation",
+        "D": "Defer all due diligence until after contract signing, then assess the provider's actual posture during the first 90 days of operation"
+      },
+      "correct": "A",
+      "key_concept": "Critical-tier vendor due diligence (cloud-hosted core banking) requires multi-element depth: financial, SOC 2, security architecture, BCM, regulatory, references, audit rights. Survey-only, marketing-trust, and post-contract assessment are all insufficient for high-risk vendors.",
+      "pre_read": "Vendor due-diligence questions test whether you can match diligence depth to vendor risk tier. Distractors propose superficial, trust-based, or deferred approaches that fail for high-risk tiers.",
+      "correct_explanation": "ISACA IT Vendor Management guidance, FFIEC Outsourcing Technology Services booklet, and OCC Bulletin 2013-29 establish that due diligence depth should match vendor risk tier. For a critical-tier vendor (cloud-hosted core banking — directly handles customer assets and regulatory data), required diligence elements include: (1) financial health review (will the vendor remain viable through the contract); (2) SOC 2 Type 2 evaluation (validates control environment over operating period); (3) security architecture review (does the architecture meet the bank's security requirements); (4) business continuity and disaster recovery assessment (RTO/RPO alignment); (5) regulatory compliance verification (FFIEC examination history, exam findings); (6) reference checks with peer institutions; (7) contractual right-to-audit. Option B's email survey produces self-reported claims with no validation. Option C's marketing-and-reputation reliance has zero independent verification. Option D's post-contract assessment is too late — by then the vendor has the bank's data.",
+      "wrong_explanations": {
+        "B": "Email questionnaires produce self-reported claims from the vendor's sales team with no validation. A core banking provider's actual security posture cannot be confirmed by checkbox responses.",
+        "C": "Marketing materials and public certifications are designed to attract customers, not validate posture. A SOC 2 Type 2 report read in detail is qualitatively different from a 'we have SOC 2' marketing claim.",
+        "D": "Post-contract assessment is too late. The bank has already committed funds and data to the vendor; if the assessment reveals deficiencies, the bank's options are limited to costly remediation or even costlier termination."
+      },
+      "tips": [
+        "Trap is B — \"single questionnaire to sales team\" is real-world common at lower-tier vendors and feels efficient, but for critical-tier vendors (core banking) it leaves controls unvalidated. Match diligence depth to risk tier, not to convenience.",
+        "Critical-tier vendor due diligence = financial + SOC 2 + security architecture + BCM + regulatory + references + audit rights. Seven elements.",
+        "Exam-day shortcut: vendor-due-diligence questions are answered by matching diligence depth to vendor risk tier — critical tier requires multi-element validation."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC Outsourcing Technology Services booklet; ISACA IT Vendor Management guidance; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Vendor onboarding",
+        "Due diligence",
+        "Vendor risk tiering",
+        "APO10"
+      ],
+      "_provenance": "Authored from concept: 'Vendor onboarding due diligence depth-by-tier - critical tier elements, complements d2_036 (IT-VMO structure) and d2_099 vendor governance forum'. Public source: OCC Bulletin 2013-29 + FFIEC."
+    },
+    {
+      "id": "d2_100",
+      "domain": 2,
+      "subtopic": "Cloud Cost / FinOps Discipline",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a media company is reviewing cloud cost governance after a 40% year-over-year cloud spend increase. Which FinOps practice MOST strongly supports cloud cost discipline going forward?",
+      "options": {
+        "A": "Cap monthly cloud spend at the prior year's average and refuse any cost above that ceiling regardless of business demand or capacity needs",
+        "B": "Apply the FinOps framework's Inform-Optimize-Operate phases: tagging and cost-allocation visibility, optimization (rightsizing, reserved capacity, autoscaling), and ongoing operating discipline with named accountability",
+        "C": "Negotiate aggressive volume discounts with the cloud provider once per year and manage cost solely through the negotiated rate, accepting whatever consumption occurs",
+        "D": "Centralize all cloud-resource provisioning under the CIO's office to eliminate decentralized spending and slow down resource creation across the engineering team"
+      },
+      "correct": "B",
+      "key_concept": "FinOps discipline = Inform (visibility via tagging and cost allocation) + Optimize (rightsizing, reserved capacity, autoscaling) + Operate (ongoing accountability with named owners). Hard caps, rate-only negotiation, and CIO-centralization all fail.",
+      "pre_read": "Cloud-cost-governance questions test whether you recognize the FinOps three-phase framework. Distractors propose hard caps, rate-only negotiation, or centralization approaches that don't engage the consumption-shaping mechanisms.",
+      "correct_explanation": "The FinOps Foundation framework (industry standard) and ISACA Cloud Cost Governance guidance establish that cloud cost discipline requires three integrated phases. Inform: comprehensive tagging, cost allocation across business units and projects, dashboards giving each consumer visibility into their actual cost. Optimize: rightsizing (matching instance size to actual usage), reserved capacity / savings plans for predictable workloads, autoscaling for variable workloads, deletion of unused resources. Operate: ongoing operating discipline with named accountability per business unit, regular review forums, and continuous improvement. Option A's hard cap blocks legitimate growth. Option C's rate-only approach addresses negotiated rate but ignores the larger cost driver (consumption volume). Option D's centralization slows down engineering velocity and pushes cost decisions away from those who should own them.",
+      "wrong_explanations": {
+        "A": "Hard caps based on prior-year average block legitimate growth. Cloud costs reflect business activity; a hard cap forces engineering teams to either degrade service or work around the cap, neither of which produces good outcomes.",
+        "C": "Rate negotiation addresses the unit cost of resources but does not affect consumption volume. A 20% rate discount on 40% more consumption still produces a higher bill. The bigger cost driver is consumption.",
+        "D": "Centralizing cloud provisioning creates a bottleneck that slows engineering velocity. Modern cloud cost discipline distributes accountability rather than centralizing approval — engineers should own their cloud cost the way they own their code."
+      },
+      "tips": [
+        "Trap is A — \"cap spend at prior-year average\" sounds disciplined but blocks legitimate growth and forces workarounds.",
+        "FinOps = Inform (visibility) + Optimize (rightsizing/reserved/autoscale) + Operate (accountability). Three phases together.",
+        "Exam-day shortcut: cloud-cost-governance questions are answered by the option naming the FinOps three-phase framework, not caps or centralization."
+      ],
+      "framework_ref": "FinOps Foundation Framework; ISACA Cloud Cost Governance guidance; COBIT 2019 APO06 (Managed Budget and Costs)",
+      "related_concepts": [
+        "FinOps",
+        "Cloud cost governance",
+        "Cost allocation",
+        "APO06"
+      ],
+      "_provenance": "Authored from concept: 'Cloud cost FinOps discipline - three-phase framework, complements d2_043 (chargeback design) and d2_087 (multi-cloud governance)'. Public source: FinOps Foundation."
+    },
+    {
+      "id": "d2_101",
+      "domain": 2,
+      "subtopic": "Information Security Awareness Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional law firm is reviewing the InfoSec awareness program after a phishing-driven ransomware incident. Which program design MOST strongly improves staff resilience?",
+      "options": {
+        "A": "Annual mandatory online training delivered to all staff in a single session, with completion tracked but no measurement of behavior change or actual phishing resistance",
+        "B": "Targeted training only for IT staff and senior leadership, since they handle the most sensitive systems and are the highest-priority defenders against attacks",
+        "C": "Continuous awareness program with role-based content, simulated phishing campaigns with feedback, just-in-time micro-learning, metrics tied to behavior, and lessons feeding into program updates",
+        "D": "Focus the program on technical countermeasures (email filters, endpoint protection) since technical controls are more reliable than user behavior in stopping attacks"
+      },
+      "correct": "C",
+      "key_concept": "Effective InfoSec awareness = continuous + role-based + simulated phishing with feedback + just-in-time micro-learning + behavior metrics + lessons feeding back. Annual one-shot, role-restricted, or technical-only programs all fail.",
+      "pre_read": "InfoSec awareness program design questions test whether you recognize the continuous + behavior-focused + multi-mechanism approach. Distractors propose one-shot, role-limited, or technical-only programs.",
+      "correct_explanation": "ISACA Information Security Awareness guidance and NIST SP 800-50 establish that effective InfoSec awareness requires multiple integrated mechanisms operating continuously: role-based content (executives, IT staff, end-users have different threat exposure and need tailored content); simulated phishing campaigns with feedback (measure and improve actual resistance, not just knowledge); just-in-time micro-learning (short reinforcing content delivered in the flow of work); behavior metrics (click rates on simulated phishing, reported suspicious emails, completed challenges) tied to program effectiveness; lessons-learned feedback so the program adapts as threats evolve. Option A's annual one-shot is widely shown to produce minimal behavior change. Option B's IT-and-leadership-only ignores end-users — the most-targeted vector. Option D's technical-only stance ignores that determined attackers eventually penetrate technical controls; user behavior is the second line.",
+      "wrong_explanations": {
+        "A": "Annual one-shot training has the worst ROI in security awareness. Studies consistently show behavior change requires reinforcement over time, simulated practice, and just-in-time learning. Annual training is compliance theater.",
+        "B": "End-users are the highest-volume attack target precisely because they have access to email, customer data, and operational systems. Excluding them from awareness training leaves the largest attack surface untrained.",
+        "D": "Technical controls reduce attack volume but determined attackers eventually find ways through. User behavior is the second line of defense; technical-only programs ignore the human element that ultimately decides incident outcomes."
+      },
+      "tips": [
+        "Trap is A — \"annual mandatory online training with completion tracking\" feels rigorous but is widely-validated as insufficient for behavior change.",
+        "InfoSec awareness program = continuous + role-based + simulated phishing + just-in-time micro-learning + behavior metrics + feedback. Six mechanisms together.",
+        "Exam-day shortcut: awareness-program questions are answered by the option naming continuous + behavior-focused + multi-mechanism."
+      ],
+      "framework_ref": "NIST SP 800-50 (Building an Information Technology Security Awareness Program); ISACA Information Security Awareness guidance; COBIT 2019 APO13 (Managed Security)",
+      "related_concepts": [
+        "Security awareness",
+        "Phishing simulation",
+        "Behavior change",
+        "Just-in-time training"
+      ],
+      "_provenance": "Authored from concept: 'InfoSec Awareness program design - continuous behavior-focused approach, complements d2_064 (InfoSec mgmt operations) and d2_006 (board accountability)'. Public source: NIST SP 800-50."
+    },
+    {
+      "id": "d2_102",
+      "domain": 2,
+      "subtopic": "Business Continuity vs Disaster Recovery — Governance Distinction",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional bank is reviewing the firm's continuity program. Which statement BEST distinguishes Business Continuity (BC) from Disaster Recovery (DR) at the governance level?",
+      "options": {
+        "A": "BC and DR are interchangeable terms used by different frameworks for the same activity of restoring operations after a disruption",
+        "B": "BC is the broader business-process discipline (functions, dependencies, alternative procedures, communication, recovery time priorities); DR is the IT-systems-specific subset (technology recovery, data restoration, RTO/RPO)",
+        "C": "BC is owned exclusively by the IT department; DR is owned exclusively by the operations or facilities department, with no overlap or coordination required",
+        "D": "BC applies only to operational disruptions lasting more than 24 hours; DR applies only to disruptions lasting less than 24 hours, regardless of cause"
+      },
+      "correct": "B",
+      "key_concept": "Business Continuity is the BROADER business-process discipline (functions, dependencies, alternatives, communication); Disaster Recovery is the IT-systems-specific subset (RTO/RPO, data restoration, technology recovery). DR is a component of BC, not a synonym or unrelated discipline.",
+      "pre_read": "BC-vs-DR questions test whether you recognize the broader-vs-subset relationship. Distractors substitute interchangeable, function-owner, or duration-based distinctions.",
+      "correct_explanation": "ISACA Business Continuity guidance, ISO 22301 (Business Continuity Management), and NIST SP 800-34 establish that BC and DR are distinct but related disciplines. Business Continuity is the broader business-process-level discipline: identifying critical business functions and their dependencies, defining alternative procedures (manual workarounds, alternate sites, alternate vendors), communication plans, and recovery time priorities aligned to business impact. Disaster Recovery is the IT-systems-specific subset: technology infrastructure recovery, data restoration, application failover, RTO (Recovery Time Objective) and RPO (Recovery Point Objective) per system. DR exists to support BC — when business functions need IT systems back, DR delivers them. Option A collapses the distinction. Option C splits ownership in a way that doesn't match practice. Option D fabricates a duration-based criterion that doesn't exist.",
+      "wrong_explanations": {
+        "A": "BC and DR are not interchangeable. BC covers business processes broadly (functions, dependencies, alternatives, communication); DR covers IT systems specifically. Treating them as the same conflates the broader discipline with one of its components.",
+        "C": "BC is typically owned at a senior business level (often the CFO, COO, or BCM officer) because it covers business functions across the enterprise. DR is typically owned by IT but in coordination with BC. The 'IT-only BC, ops-only DR' split inverts the actual ownership.",
+        "D": "There is no recognized 24-hour duration criterion. BC and DR distinguish by SCOPE (business processes vs IT systems), not by duration. Both apply to disruptions of any length."
+      },
+      "tips": [
+        "Trap is A — \"interchangeable terms\" feels safe when concepts overlap but BC and DR have a specific broader-vs-subset relationship.",
+        "BC = broader business-process discipline. DR = IT-systems subset. DR supports BC; the two are distinct but related.",
+        "Exam-day shortcut: BC-vs-DR questions are answered by the option naming the scope distinction (business processes vs IT systems), not interchangeable, ownership-split, or duration-based framings."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity guidance",
+      "related_concepts": [
+        "Business Continuity",
+        "Disaster Recovery",
+        "RTO",
+        "RPO"
+      ],
+      "_provenance": "Authored from concept: 'BC vs DR governance distinction - broader-vs-subset relationship, no prior D2 coverage'. Public source: ISO 22301 + NIST SP 800-34."
+    },
+    {
+      "id": "d2_103",
+      "domain": 2,
+      "subtopic": "Audit Committee Charter — Composition Requirements",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a SEC-registered company is reviewing the audit committee's charter for compliance with NYSE listing standards and SOX requirements. Which composition requirement BEST reflects the regulatory minimum?",
+      "options": {
+        "A": "Composed entirely of company executives to ensure deep operational knowledge of the company's IT and financial systems used in audit committee work",
+        "B": "Minimum three members, all independent directors per NYSE 303A.07, at least one designated 'audit committee financial expert' per SOX Section 407, with disclosed qualifications",
+        "C": "At least one member designated as the audit committee chair, with the other members appointed at the chair's discretion regardless of independence or expertise",
+        "D": "All members must hold a CPA designation as a baseline qualification for service on the audit committee, regardless of their other professional expertise"
+      },
+      "correct": "B",
+      "key_concept": "SEC-registered audit committee = minimum 3 members + all independent (NYSE 303A.07) + at least one financial expert per SOX Section 407 with disclosed qualifications. Executive composition, chair-discretion appointments, and CPA-only requirements all fail to match the actual rules.",
+      "pre_read": "Audit-committee-composition questions test recall of the SEC/SOX/NYSE minimums. Distractors substitute executive composition, chair-discretion, or fabricated CPA-only requirements.",
+      "correct_explanation": "NYSE Listed Company Manual Section 303A.07 (and equivalent NASDAQ Rule 5605(c)) require audit committee members to be independent directors. SOX Section 407 (implemented through SEC Item 407(d)(5)) requires at least one member to be designated as an 'audit committee financial expert' with disclosed qualifications, OR the company must disclose why no member meets the criteria. The minimum committee size is three members under NYSE 303A.07. Option A's executive composition violates independence. Option C's chair-discretion appointments ignore independence requirements. Option D's CPA-only requirement is fabricated — the financial-expert designation can be earned through CPA, audit-firm experience, financial leadership at significant companies, or comparable experience.",
+      "wrong_explanations": {
+        "A": "Executives are by definition not independent — they have employment relationships with the company. NYSE 303A.07 specifically requires audit committee members to be INDEPENDENT, which excludes executives.",
+        "C": "Chair-discretion appointment without independence requirements would let the chair pack the committee with executives or other non-independent members. The independence requirement is a fundamental governance protection.",
+        "D": "There is no CPA-only requirement. The financial-expert designation under SOX Section 407 can be earned through multiple paths: CPA, audit-firm experience, financial leadership, or comparable experience. Many financial experts are not CPAs."
+      },
+      "tips": [
+        "Trap is D — \"all members must hold CPA\" feels rigorous but is fabricated; SOX Section 407's financial-expert can be earned through multiple paths.",
+        "SEC audit committee composition = ≥3 members + all independent (NYSE 303A.07) + at least 1 financial expert (SOX 407). Three requirements together.",
+        "Exam-day shortcut: SEC audit-committee questions are answered by the option naming independence + financial-expert + minimum size."
+      ],
+      "framework_ref": "Sarbanes-Oxley Act Section 407 (Financial Expert Disclosure); NYSE Listed Company Manual Section 303A.07; SEC Item 407(d)(5)",
+      "related_concepts": [
+        "Audit committee",
+        "SOX Section 407",
+        "Independent directors",
+        "Financial expert"
+      ],
+      "_provenance": "Authored from concept: 'Audit Committee composition under SEC/SOX/NYSE - regulatory minimums, complements d1_139 (financial-expert specifics)'. Public source: SOX Section 407 + NYSE 303A.07."
+    },
+    {
+      "id": "d2_104",
+      "domain": 2,
+      "subtopic": "Enterprise Change Management — Failed M&A IT Integration Synthesis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the IS auditor's BEST recommendation to address the M&A IT-integration failure described?",
+      "scenario_context": "A regional retailer acquired a smaller competitor 18 months ago. The integration was led by an IT-only team with a deadline-driven approach: legacy ERP cut over to the parent's ERP in a single weekend, retail POS systems consolidated within 3 months. Eighteen months later: the acquired entity's revenue has dropped 12%, two major customer-segment leaders have resigned, the IT team's first-year savings target was missed by $4M, and an internal post-mortem identifies multiple unmitigated risks the integration team did not surface to leadership. The CFO asks an IS auditor for guidance on what should change in the company's approach to future acquisitions.",
+      "options": {
+        "A": "Maintain the current IT-led, deadline-driven approach since the integration is technically complete; future acquisitions should pursue the same speed-prioritized methodology",
+        "B": "Require future M&A IT integrations to follow a structured enterprise-change methodology with cross-functional leadership, phased cutover validated by business outcomes, and explicit go/no-go gates",
+        "C": "Outsource future integrations entirely to a Big-Four advisory firm whose name credentials would have prevented the failure modes the post-mortem identified",
+        "D": "Cancel future acquisitions until the company can develop integration capability, since the failure indicates the company is structurally unable to execute M&A successfully"
+      },
+      "correct": "B",
+      "key_concept": "Successful M&A IT integration requires: structured enterprise-change methodology + IT integrated with business-process change + stakeholder engagement + risk-tracked program governance + cross-functional leadership + phased cutover validated by business outcomes + go/no-go gates. IT-only deadline-driven approaches systematically fail; outsourcing or cancellation are not the answer.",
+      "pre_read": "M&A integration failure analysis questions test whether you can recognize the multi-element enterprise-change discipline. Distractors propose continuing the failed pattern, full outsourcing, or cancellation.",
+      "correct_explanation": "ISACA Enterprise Change Management guidance and COBIT 2019 BAI05 (Managed Organizational Change) establish that successful M&A IT integration requires multiple integrated elements: a structured enterprise-change methodology (not just project management), explicit integration of IT components with business-process change and stakeholder engagement, risk-tracked program governance with active escalation paths, cross-functional integration leadership (not IT-only), phased cutover validated by business outcomes (revenue, customer retention, operational metrics) rather than purely technical milestones, and explicit go/no-go gates between phases that allow course correction. The scenario's failure pattern (IT-led, deadline-driven, single-weekend cutover, no business-outcome validation, unmitigated risks not surfaced) is the classic IT-only integration anti-pattern. Option A perpetuates the failure. Option C transfers blame to outsourcing without changing the underlying discipline. Option D abandons growth strategy because of one execution failure.",
+      "wrong_explanations": {
+        "A": "Continuing the failed pattern guarantees future failures. The scenario's specific outcomes (revenue drop, leader resignations, risks not surfaced) are direct consequences of the IT-only deadline-driven approach.",
+        "C": "Outsourcing to a Big-Four firm transfers the activity but does not change the underlying disciplines. The advisory firm would still need cross-functional leadership, business-outcome validation, and go/no-go gates — the same elements the company should build internally.",
+        "D": "M&A is a legitimate growth strategy. Cancelling all future acquisitions because of one execution failure abandons strategic options instead of fixing the integration discipline."
+      },
+      "tips": [
+        "Trap is C — \"outsource to Big-Four\" feels like a credentialed solution but transfers activity without changing the underlying disciplines that produced the failure.",
+        "M&A IT integration = enterprise-change methodology + IT-and-business-process integration + cross-functional leadership + business-outcome validation + go/no-go gates.",
+        "Exam-day shortcut: M&A integration analysis questions are answered by the option naming the multi-element enterprise-change discipline."
+      ],
+      "framework_ref": "COBIT 2019 BAI05 (Managed Organizational Change); ISACA Enterprise Change Management guidance; PMI Standard for Program Management",
+      "related_concepts": [
+        "M&A integration",
+        "Enterprise change management",
+        "Business-outcome validation",
+        "BAI05"
+      ],
+      "_provenance": "Authored from concept: 'Enterprise Change Management failed M&A integration synthesis - multi-element discipline distinct from d2_019 (failed acquisition integration analysis at lower complexity)'. Public source: COBIT 2019 BAI05. All scenario specifics (regional retailer, 18-month post-acquisition state, four specific outcomes) invented for this question."
+    },
+    {
+      "id": "d2_105",
+      "domain": 2,
+      "subtopic": "InfoSec Incident Response Governance — Escalation Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which escalation approach is MOST appropriate at the 4-hour mark in this scenario?",
+      "scenario_context": "An IS auditor is observing the InfoSec function during a live incident. At 02:00, the SOC detected ransomware-like activity on a production payment-processing system. By 04:00 (T+2h), the incident response team has confirmed encryption on 7 servers, contained the spread, but cannot yet determine whether customer payment data was exfiltrated before encryption. The CISO is on-site coordinating. PCI DSS notification windows are tight (within 'reasonable time'); state breach-notification laws have specific timing thresholds. The incident-response runbook requires CEO and audit-committee-chair notification at certain trigger thresholds. At 06:00 (T+4h), the team is still investigating exfiltration; the CISO is asked: when and what to escalate.",
+      "options": {
+        "A": "Wait until exfiltration is confirmed or ruled out before any escalation, since premature notification to leadership and regulators could create unnecessary alarm and complicate the technical investigation in progress",
+        "B": "Escalate immediately to the CEO and audit-committee chair with a structured update: scope, current containment, exfiltration status (still investigating), regulatory-notification timeline awareness (PCI DSS, state laws), and resource needs — recognizing that leadership and counsel have decisions to make in parallel with the technical investigation",
+        "C": "Notify regulators (FinCEN, state attorneys general) immediately to ensure full compliance with all notification windows, regardless of whether the company has determined what facts to communicate to them",
+        "D": "Escalate only to the CIO at this point and defer notification of the CEO and audit-committee chair until the team can present a fully resolved incident with a complete narrative and lessons learned"
+      },
+      "correct": "B",
+      "key_concept": "Major incident escalation = immediate structured update to CEO and audit-committee chair when scope is material and notification windows are tight, with current scope/containment/exfiltration status/regulatory timeline awareness/resource needs. Wait-until-resolved, regulator-first, or CIO-only-defer all create governance failures.",
+      "pre_read": "Incident-response escalation questions test whether you recognize that material incidents trigger leadership escalation while investigation continues — not after. Distractors propose waiting, premature regulator notification, or insufficient escalation.",
+      "correct_explanation": "NIST SP 800-61 (Computer Security Incident Handling Guide), ISACA Incident Response guidance, and FFIEC Incident Response examination procedures establish that material incidents trigger immediate structured escalation to CEO and audit-committee chair while investigation continues — not after. The escalation must be structured (not panicked): scope (what's affected), current containment status, exfiltration status (with explicit acknowledgment of unknowns), regulatory-notification timeline awareness (PCI DSS, state breach-notification laws have varying thresholds — typically 'without unreasonable delay' once knowledge is established), resource needs. The reason: leadership and counsel have parallel decisions to make (regulator engagement timing, customer communication, insurer notification, public statements, counsel direction) that cannot wait for technical resolution. Option A's wait-until-resolved violates regulatory windows that may have already started. Option C's regulator-first communication without internal coordination produces fragmented messaging and may violate counsel-protected attorney-client privilege opportunities. Option D's CIO-only-defer leaves the CEO and audit-committee chair unable to make their decisions.",
+      "wrong_explanations": {
+        "A": "Regulatory notification windows often start at 'knowledge of the incident', not at 'incident resolved'. Waiting until exfiltration is confirmed could exceed PCI DSS or state-law windows. Escalation must happen alongside investigation, not after.",
+        "C": "Regulator notification before internal coordination produces fragmented messaging, may violate counsel-led process for privileged communications, and risks the company communicating facts that change as investigation continues. Counsel should coordinate the regulatory communication, not the technical team unilaterally.",
+        "D": "CIO-only-defer leaves the CEO and audit-committee chair without information to make their decisions (insurer notification, customer communication, public statements). Material incidents require leadership awareness in real time, not after-action reports."
+      },
+      "tips": [
+        "Trap is A — \"wait until exfiltration is confirmed\" sounds prudent but violates regulatory windows and prevents leadership from making parallel decisions.",
+        "Major incident escalation = immediate + structured update to CEO and audit-committee chair + regulatory timeline awareness + resource needs. Five elements.",
+        "Exam-day shortcut: incident escalation questions are answered by the option that names immediate structured escalation while investigation continues, not wait-until-resolved or regulator-first."
+      ],
+      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Incident Response guidance; FFIEC Incident Response examination procedures; PCI DSS",
+      "related_concepts": [
+        "Incident response",
+        "Escalation",
+        "Regulatory notification",
+        "Crisis governance"
+      ],
+      "_provenance": "Authored from concept: 'InfoSec Incident Response governance escalation - immediate structured update during investigation, no prior D2 coverage of incident response governance'. Public source: NIST SP 800-61 + ISACA + FFIEC. All scenario specifics (T+2h ransomware on payment processing, exfiltration unknown) invented for this question."
+    },
+    {
+      "id": "d2_106",
+      "domain": 2,
+      "subtopic": "Vendor Offboarding — End of Relationship",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the vendor offboarding described?",
+      "scenario_context": "A SaaS provider for a regional bank's customer-onboarding workflow has been notified by the bank that the contract will not be renewed (12 months notice, expires in 9 months). The bank is migrating to a different SaaS provider with stricter data-residency controls. During the offboarding period: the bank requires continued service operation; the vendor's customer-success team has become unresponsive; an incident occurred 60 days ago that revealed unauthorized vendor-employee access to bank data (now remediated); contract clauses require data return and deletion at termination. The CIO asks an IS auditor for offboarding governance guidance.",
+      "options": {
+        "A": "Document the offboarding plan: continued-service through termination, structured data return, verified data deletion, incident-related contractual remedies, transition risk management, and post-termination dispute readiness",
+        "B": "Take a hands-off approach during the remaining 9 months since the relationship is ending anyway, accepting that the unresponsive customer-success team makes meaningful engagement impractical",
+        "C": "Terminate the contract immediately for cause based on the prior incident, regardless of the resulting service disruption to the bank's customer-onboarding workflow during transition",
+        "D": "Quietly let the contract lapse without invoking data-return clauses or deletion requirements, since the new provider will have its own data and the legacy data is likely to be lost in the transition anyway"
+      },
+      "correct": "A",
+      "key_concept": "Vendor offboarding requires structured plan: continued-service through termination + data return + verified data deletion + incident remedies + transition risk management + post-termination readiness. Hands-off, premature termination, and lapse-without-execution are all failure modes.",
+      "pre_read": "Vendor offboarding questions test whether you can recognize the multi-element structured approach. Distractors propose passivity, premature termination, or compliance shortcuts.",
+      "correct_explanation": "ISACA IT Vendor Management guidance and COBIT 2019 APO10 (Managed Vendors) establish that vendor offboarding requires structured execution across multiple dimensions. (1) Continued-service obligations through termination — the vendor remains contractually obligated to deliver service to the SLA through the contract's end date; the bank should monitor and enforce. (2) Structured data return per contract terms — formats, channels, schedules, custody. (3) Verified data deletion — written attestation or third-party audit of deletion confirmed; contract may require specific verification. (4) Incident-related contractual remedies pursuit — the prior unauthorized-access incident may trigger contract remedies (credits, indemnification, liability) that should be pursued during offboarding rather than abandoned. (5) Transition risk management to the new provider — including data quality checks during migration. (6) Post-termination readiness — preserving documentation, evidence, and contacts in case dispute or litigation arises. Option B's hands-off approach abandons the bank's contractual rights. Option C's premature termination disrupts the bank's own operations. Option D's compliance lapse exposes the bank to data-protection violations.",
+      "wrong_explanations": {
+        "B": "Hands-off offboarding abandons contractual rights (continued service, data return, deletion verification, remedies). The bank's leverage during the wind-down is greatest in the months before termination — not after.",
+        "C": "Termination-for-cause is a contractual remedy, not punishment for unresponsiveness. Exercising it 9 months early would disrupt the bank's customer-onboarding operations during transition without offsetting benefit; the contract terminates on schedule anyway. Pursue the prior-incident remedies through structured offboarding, not through accelerated termination.",
+        "D": "Letting the contract lapse without invoking data-return and deletion clauses violates the bank's data-protection commitments to its customers and regulators. Vendor data deletion must be verified, not assumed."
+      },
+      "tips": [
+        "Trap is B — \"hands-off since the relationship is ending\" sounds resigned but abandons contractual rights and sets up post-termination disputes.",
+        "Vendor offboarding = service continuity (operations) + data discipline (return + verified deletion) + remedies + transition + post-termination readiness. Six dimensions in three groups.",
+        "Exam-day shortcut: vendor-offboarding questions are answered by the option naming the structured multi-dimensional approach, not passivity or shortcuts."
+      ],
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISACA IT Vendor Management guidance; ISACA Outsourcing Governance guidance",
+      "related_concepts": [
+        "Vendor offboarding",
+        "Data return",
+        "Deletion verification",
+        "APO10"
+      ],
+      "_provenance": "Authored from concept: 'Vendor offboarding when relationship ends badly - structured multi-dimensional approach, complements d2_036 (IT-VMO structure) and d2_042 (governance forum)'. Public source: COBIT 2019 APO10. All scenario specifics (regional bank, 9-month wind-down, prior incident) invented for this question."
+    },
+    {
+      "id": "d2_107",
+      "domain": 2,
+      "subtopic": "Data Retention Conflict — GDPR vs SOX",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to resolving the conflict described in this scenario?",
+      "scenario_context": "A US-headquartered company with EU operations receives a GDPR Article 17 erasure request from an EU customer. The customer's purchase history includes transactions that fall within the SOX 7-year retention requirement for financial records (the customer made a $50K purchase 3 years ago). The privacy team wants to honor the erasure request immediately to comply with GDPR's response timeline (1 month, extensible to 3). The finance team objects, citing SOX retention obligations. Legal counsel is consulted but the privacy team escalates to the CIO for a resolution before the GDPR clock expires. The CIO asks the IS auditor for guidance.",
+      "options": {
+        "A": "Honor the GDPR erasure request immediately by deleting all transaction records, since GDPR is the more recent and more stringent regulation and SOX retention requirements yield to it on a case-by-case basis",
+        "B": "Deny the erasure request entirely, since SOX retention obligations override individual privacy rights for any record that falls within the 7-year retention window regardless of the request's basis",
+        "C": "Apply GDPR Article 17(3)(e) (legal claims) and (b) (legal obligation) exemptions: retain SOX-relevant records with restricted access for the remainder of the 7-year period, erase data outside SOX scope, and respond explaining the partial fulfillment",
+        "D": "Refer the request to the supervisory authority (EU data protection regulator) for resolution, since the cross-jurisdictional conflict is beyond the company's authority to resolve and requires regulatory direction"
+      },
+      "correct": "C",
+      "key_concept": "GDPR Article 17(3) provides explicit exemptions to erasure including (e) establishment/exercise/defence of legal claims and (b) compliance with a legal obligation. The right approach: retain SOX-relevant records under these exemptions with restricted access, erase data outside SOX scope, and respond to the data subject explaining the partial fulfillment and basis. Honor-immediately violates SOX; deny-entirely violates GDPR; supervisory-authority referral abdicates internal duty.",
+      "pre_read": "GDPR-vs-SOX retention conflict questions test whether you know GDPR Article 17(3) exemptions allow retention for legal obligations. Distractors propose extreme positions or abdication.",
+      "correct_explanation": "GDPR Article 17 (Right to Erasure) is not absolute. Article 17(3) provides explicit exemptions where erasure does not apply, most relevantly here (e) processing necessary for the establishment, exercise or defence of legal claims (which encompasses retention required to support evidentiary obligations under non-EU regulators and litigation), and (b) compliance with a legal obligation under Union or Member State law (with EDPB and supervisory practice extending the legal-obligation analysis to non-EU obligations supported by appropriate balancing). SOX Section 802 / 17 CFR 210.2-06 requires 7-year retention for audit and review records, which the controller can defend under 17(3)(e) and the broader Article 6 lawful-basis analysis. The correct approach: (1) retain SOX-relevant transaction records for the remainder of the 7-year retention period, with restricted access (the data is now retained under a different lawful basis than the original marketing/analytics processing — access should be narrowed accordingly); (2) erase data clearly outside SOX retention scope (marketing preferences, behavioral analytics, ancillary records) per the data subject's request; (3) respond to the data subject within the GDPR timeline explaining what was erased, what was retained, and the legal basis for retention. Option A violates SOX. Option B violates GDPR (the request must be evaluated, not summarily denied). Option D abdicates the controller's duty to make the decision.",
+      "wrong_explanations": {
+        "A": "GDPR does not override SOX retention for SOX-relevant records. Article 17(3)(e) exempts processing necessary for legal claims and 17(3)(b) covers legal obligations — both can be invoked to preserve SOX-required records. Honoring erasure of SOX-relevant records exposes the company to SOX violations.",
+        "B": "Denying the erasure request entirely violates GDPR. The request must be evaluated; non-SOX-scope data (marketing, behavioral, ancillary) can be erased and the response must explain the partial fulfillment with legal basis. Wholesale denial without analysis is itself a GDPR violation.",
+        "D": "The supervisory authority does not adjudicate individual requests. The controller is responsible for evaluating the request against Article 17 exemptions and responding to the data subject. Referring to the regulator abdicates the controller's duty under GDPR."
+      },
+      "tips": [
+        "Trap is A — \"GDPR overrides SOX, honor erasure immediately\" is intuitive but ignores Article 17(3)(e) (legal claims) and 17(3)(b) (legal obligation) exemptions that preserve SOX retention.",
+        "GDPR-SOX retention conflict = retain SOX-scope under Article 17(3)(e)/(b) with restricted access, erase non-SOX-scope, respond to data subject with clear explanation.",
+        "Exam-day shortcut: GDPR erasure conflict questions are answered by Article 17(3) exemptions allowing retention for legal obligations, not blanket compliance with one regulation over the other."
+      ],
+      "framework_ref": "GDPR Article 17 (Right to Erasure); GDPR Article 17(3) (Erasure Exemptions); Sarbanes-Oxley Act Section 802 (Records Retention); 17 CFR 210.2-06 (Retention of Audit and Review Records)",
+      "related_concepts": [
+        "GDPR Article 17",
+        "Right to erasure",
+        "Legal-obligation exemption",
+        "SOX retention"
+      ],
+      "_provenance": "Authored from concept: 'GDPR right-to-erasure vs SOX retention conflict - Article 17(3) legal-obligation exemption, distinct from d2_098 (multi-regulation retention design)'. Public source: GDPR Article 17 + SOX. All scenario specifics (3-year-old $50K purchase, GDPR clock expiring) invented for this question."
+    },
+    {
+      "id": "d2_108",
+      "domain": 2,
+      "subtopic": "Risk Treatment Mid-Cycle — Newly Emerged Risk",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the newly emerged risk described in this scenario?",
+      "scenario_context": "An insurance company's IT risk register was approved by the board 4 months ago (the standard quarterly cadence). Mid-cycle, a new risk has emerged that was not anticipated at approval: a critical SaaS vendor announced that one of its data center locations will undergo unplanned migration in 90 days, with a 4-hour expected outage window during business hours. The risk is high-impact (the affected SaaS supports policy underwriting; an outage during business hours could halt new-policy issuance) and was not in the approved register. The CRO asks the IS auditor whether and how to update treatment mid-cycle.",
+      "options": {
+        "A": "Wait until the next quarterly risk-register update (in 8 weeks) to formally treat the risk, since mid-cycle changes create governance churn and the risk-management calendar should not be disrupted by every newly emerged risk",
+        "B": "Add the new risk to the register mid-cycle with documented treatment (vendor negotiation, manual workarounds, business-leader communication), board notification at the next meeting, and explicit between-update governance documentation",
+        "C": "Accept the risk without treatment since it is short-duration (4 hours) and one-time, and the cost of pre-positioning workarounds exceeds the expected operational impact during a single 4-hour outage window",
+        "D": "Escalate to the board immediately for an emergency board meeting to approve a special risk-treatment budget, since any newly emerged risk requires board-level authorization regardless of magnitude or treatment cost"
+      },
+      "correct": "B",
+      "key_concept": "Mid-cycle risk treatment for newly emerged risk = add to register with documented treatment + board notification at next meeting + explicit between-update governance documentation. Wait-for-cadence delays response; accept-without-treatment is wrong for high-impact; emergency-board-meeting overshoots for treatable risk.",
+      "pre_read": "Mid-cycle risk-emergence questions test whether you can recognize that risk programs must operate continuously, not on a fixed cadence. Distractors propose calendar-rigidity, blanket acceptance, or governance-overreach.",
+      "correct_explanation": "ISACA Risk IT Framework establishes that risk management is a continuous discipline, not a calendar-bound activity. Newly emerged risks (between scheduled register updates) must be treated as they arise — with appropriate governance proportional to the risk's magnitude. For this scenario: the risk is high-impact but treatable through standard mechanisms (vendor negotiation, manual workarounds, communication). The right approach: (1) add the risk to the register mid-cycle with documented treatment plan; (2) execute treatment (vendor engagement, workaround preparation, business-leader communication); (3) notify the board at the next regular meeting (no special meeting needed for treatable risk); (4) document explicitly that the risk was added between scheduled updates with rationale. Option A's wait-for-cadence approach lets a treatable high-impact risk go untreated for 8 weeks. Option C's blanket acceptance ignores that the risk is high-impact during business hours. Option D's emergency board meeting is appropriate for risks requiring extraordinary authorization, not for risks treatable through standard mechanisms.",
+      "wrong_explanations": {
+        "A": "Risk programs operate continuously, not on the quarterly calendar. Waiting 8 weeks to treat a high-impact treatable risk produces unnecessary exposure during the wait period and signals the program is calendar-rigid rather than risk-responsive.",
+        "C": "Accepting a high-impact risk during business hours (policy underwriting halted for 4 hours) without treatment ignores that vendor negotiation could shift the window to off-hours and that workarounds could substantially reduce the impact.",
+        "D": "Emergency board meetings are reserved for risks requiring extraordinary authorization (typically catastrophic risks, regulatory crises, major financial exposure). A treatable mid-cycle risk handled through standard mechanisms doesn't warrant special-meeting governance overreach."
+      },
+      "tips": [
+        "Trap is A — \"wait for next quarterly update\" sounds disciplined but lets high-impact treatable risks go untreated for weeks.",
+        "Mid-cycle risk emergence = add to register + execute treatment + notify board at next regular meeting + document between-update addition. Four elements.",
+        "Exam-day shortcut: mid-cycle risk questions are answered by the option that names continuous treatment with proportional governance — not calendar-rigid waits, blanket acceptance, or emergency overreach."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; COBIT 2019 APO12 (Managed Risk); ISO 31000:2018 (Risk Management)",
+      "related_concepts": [
+        "Risk treatment mid-cycle",
+        "Risk register update",
+        "Continuous risk management",
+        "APO12"
+      ],
+      "_provenance": "Authored from concept: 'Risk Treatment mid-cycle for newly emerged risk - continuous discipline with proportional governance, complements d2_007 (lifecycle gap analysis) and d2_022 (treatment options foundational)'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (insurance company SaaS migration window) invented for this question."
+    },
+    {
+      "id": "d2_109",
+      "domain": 2,
+      "subtopic": "Cloud Cost Overrun — Root Cause Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the IS auditor's BEST recommendation to address the underlying causes of the cloud cost overrun?",
+      "scenario_context": "An IS auditor is investigating a 60% year-over-year cloud spend increase at a media-streaming company. The CFO is concerned and the engineering team's initial explanation is 'we've been growing fast'. Investigation reveals: (1) revenue grew 25% (not 60%); (2) tagging compliance is 40% (most cloud resources have no business-unit attribution); (3) reserved-capacity utilization is 12% (the company committed to 3-year reservations that aren't being used); (4) idle resources (running but no traffic) account for 20% of compute spend; (5) some teams provision oversized instances 'just in case', citing past performance incidents. The engineering VP wants to address cost; the CFO wants to know what changed.",
+      "options": {
+        "A": "Apply unit-economics with FinOps discipline: rebuild tagging discipline first, then rightsize idle and oversized resources, recommit reserved capacity to actual usage, decompose growth vs waste, with named accountability per business unit",
+        "B": "Negotiate a deeper enterprise discount with the cloud provider, since a 25% rate reduction would offset most of the spend increase and avoid the engineering disruption that operational changes would cause",
+        "C": "Migrate the company's workloads to a different cloud provider, since the existing provider's pricing model is clearly unsustainable for the company's growth pattern",
+        "D": "Cap engineering team cloud spend at the prior-year level and require any cost above that to require CIO sign-off, forcing teams to live within the cap regardless of business impact"
+      },
+      "correct": "A",
+      "key_concept": "Cloud cost overrun root cause analysis requires unit-economics + FinOps discipline applied per driver: tagging first (visibility precondition), then rightsizing, reserved-capacity rebalancing, growth-vs-waste decomposition, and named accountability. Negotiate-only addresses rate not consumption; migration just defers the issue; hard caps block growth.",
+      "pre_read": "Cloud cost overrun analysis questions test whether you can recognize that consumption-side governance (visibility + per-driver action + accountability) addresses the underlying causes. Distractors substitute rate-only, migration, or hard-cap responses.",
+      "correct_explanation": "FinOps Foundation framework and ISACA Cloud Cost Governance guidance establish that cloud cost overruns rooted in operational discipline failures require operational fixes, not rate-only or migration responses. The scenario reveals five distinct drivers: tagging gap (40% compliance prevents per-unit allocation), reserved-capacity miscalibration (12% utilization on 3-year reservations is bleeding cash), idle resources (20% of compute), oversizing (engineer-driven 'just in case' provisioning), and true growth (which is real but smaller than the headline number). The right approach: (1) rebuild tagging discipline first — visibility is a precondition for any per-driver action; (2) rightsize idle and oversized resources; (3) recommit reserved capacity based on actual usage patterns; (4) decompose true growth from waste from over-provisioning; (5) name accountability per business unit so each team owns its consumption. Option B's rate negotiation addresses unit cost but not the consumption drivers — would still leave 60% spend with a deeper discount mathematically improving but not the root cause. Option C's migration moves the same problems to a different provider. Option D's hard cap blocks growth and forces engineering teams into cost-cutting decisions instead of fixing the underlying disciplines.",
+      "wrong_explanations": {
+        "B": "A 25% rate discount on consumption that is itself 60% over forecast still leaves the company materially overspending. Negotiated rate addresses one variable; the larger variable (consumption) is unaddressed and worsens over time without operational fixes.",
+        "C": "Migrating to a different cloud provider transfers the same operational disciplines (tagging, rightsizing, reserved capacity) to a new vendor. The drivers don't disappear with provider change; they migrate. Provider migration is a major undertaking that wouldn't address the actual drivers.",
+        "D": "Hard caps force engineering teams to cut without changing the underlying disciplines. Teams will work around caps (delayed launches, degraded service) rather than addressing the operational drivers (idle resources, oversizing, reservation miscalibration). Caps treat symptoms, not causes."
+      },
+      "tips": [
+        "Trap is B — \"negotiate deeper rate discount\" feels like a CFO-friendly response but addresses only the unit cost variable while consumption drivers continue worsening.",
+        "Cloud cost root-cause analysis = tagging visibility (first) + rightsizing + reserved-capacity rebalancing + growth-vs-waste decomposition + per-team accountability.",
+        "Exam-day shortcut: cloud cost analysis questions are answered by the option naming consumption-side discipline (FinOps), not rate negotiation, migration, or hard caps."
+      ],
+      "framework_ref": "FinOps Foundation Framework; ISACA Cloud Cost Governance guidance; COBIT 2019 APO06 (Managed Budget and Costs)",
+      "related_concepts": [
+        "Cloud cost overrun",
+        "FinOps",
+        "Tagging discipline",
+        "Reserved capacity"
+      ],
+      "_provenance": "Authored from concept: 'Cloud cost overrun root cause analysis - per-driver FinOps discipline, complements d2_100 (FinOps three-phase framework application) and d2_087 (multi-cloud governance)'. Public source: FinOps Foundation. All scenario specifics (media-streaming company, 60% spend vs 25% revenue, five quantified drivers) invented for this question."
+    },
+    {
+      "id": "d2_110",
+      "domain": 2,
+      "subtopic": "Crisis Communication during Major IT Incident",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the crisis communication described in this scenario?",
+      "scenario_context": "A regional hospital network's electronic health record (EHR) system has been down for 6 hours due to a ransomware attack. Affected: patient registration, medication ordering, lab results, imaging. Manual procedures are in place but are slower. The CEO is asking about communication: patients in waiting rooms; staff who don't know what to tell patients; physicians who need clinical decision support; the regulator (state health department) that has 24-hour notification windows; the media (a local reporter has called twice); and insurers. The CIO asks the IS auditor for a structured approach.",
+      "options": {
+        "A": "Stay silent across all audiences until the IT team has restored service, since communicating during the incident creates risk of misstatements that would later require corrections and could complicate the technical investigation",
+        "B": "Communicate identical messaging to all audiences (patients, staff, regulator, media, insurers) for consistency, since differentiated messaging risks creating contradictory versions that could be exploited later",
+        "C": "Coordinate audience-tailored fact-based communication with explicit decision rights: patient signage, staff briefing, physician clinical alternatives, regulator notification within window, media response via PR + counsel, and insurer per contract — all crisis-team coordinated",
+        "D": "Defer all external communication (patients, regulator, media, insurers) to legal counsel for months while the technical investigation completes, since premature communication of unverified facts creates legal exposure"
+      },
+      "correct": "C",
+      "key_concept": "Crisis communication = audience-tailored fact-based messaging coordinated through a crisis team with explicit decision rights per audience: patients (signage + staff scripts), staff (briefing + manual procedures), physicians (clinical alternatives), regulator (within window with current facts), media (PR + counsel), insurers (contractual). Stay-silent fails patients/regulators; identical-messaging-all is impractical; counsel-only-defer fails operational audiences.",
+      "pre_read": "Crisis communication during a major IT incident tests whether you can recognize audience-tailored coordinated communication with crisis-team decision rights. Distractors propose silence, uniform messaging, or wholesale legal deferral.",
+      "correct_explanation": "ISACA Incident Response guidance, NIST SP 800-61, and crisis-management best practice (e.g., ICS — Incident Command System) establish that effective crisis communication during a major incident requires audience-tailored, fact-based messaging coordinated through a crisis-management team with explicit decision rights per audience. Each audience has distinct information needs: patients in waiting rooms need to know expected wait times and that manual procedures are in place; staff need talking points and procedural guidance for handling patient interactions; physicians need clinical decision-support alternatives so patient care continues safely; the regulator needs notification within the statutory window with current facts (acknowledging unknowns explicitly); media response must go through PR with legal-counsel review to control message and preserve any privileged communications; insurers have contractual notification requirements. The crisis team coordinates the sequencing (regulators may need notification before media; staff need briefing before patients see signage) and ensures consistency across audiences while preserving audience-appropriate detail. Option A's silence fails patients (operational impact happening now), regulators (24-hour window may have already started), and physicians (patient safety). Option B's identical messaging assumes media-appropriate language is also patient-appropriate (it isn't) and ignores regulator-specific informational requirements. Option D's wholesale deferral fails the operational audiences entirely.",
+      "wrong_explanations": {
+        "A": "Silence during an incident leaves patients confused, staff without guidance, physicians without clinical alternatives, and may exceed regulator notification windows. The incident is happening; communication must happen alongside response, not after.",
+        "B": "Identical messaging across all audiences is impractical because different audiences have different information needs and consume information through different channels. Patient signage is not media-appropriate; regulator notifications have specific statutory content requirements that media-friendly language cannot satisfy.",
+        "D": "Wholesale legal deferral of all external communication for months fails operational audiences (patients, staff, physicians) who need information now to operate safely. Counsel should review the regulator notification, media response, and insurer communication — but not block patient signage and staff briefings."
+      },
+      "tips": [
+        "Trap is A — \"stay silent until service restored\" sounds risk-averse but fails patients, staff, physicians, and may exceed regulatory notification windows.",
+        "Crisis communication = audience-tailored + fact-based + coordinated through crisis team + explicit decision rights per audience. Four elements.",
+        "Exam-day shortcut: crisis-communication questions are answered by the option naming audience-tailored coordinated communication with crisis-team decision rights, not silence, uniform messaging, or wholesale legal deferral."
+      ],
+      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Incident Response guidance; HIPAA Breach Notification Rule",
+      "related_concepts": [
+        "Crisis communication",
+        "Incident response",
+        "Audience-tailored messaging",
+        "Crisis team"
+      ],
+      "_provenance": "Authored from concept: 'Crisis communication during major IT incident - audience-tailored coordinated approach, complements d2_105 (incident response governance escalation)'. Public source: NIST SP 800-61 + ISACA. All scenario specifics (hospital EHR ransomware, six audience-types) invented for this question."
     }
   ]
 }

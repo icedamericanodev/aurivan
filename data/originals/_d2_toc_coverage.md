@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d2.json`.
 
-**Last updated:** after D2 batch 6 (d2_071..d2_090) — third 20-question D2 batch, FIRST authored under strict author-linter regime. Total D2 questions authored: 90 of 180 (50%).
+**Last updated:** after D2 batch 7 (d2_091..d2_110) — fourth 20-question D2 batch; foundational tier closed at 18/18. Total D2 questions authored: 110 of 180 (61%).
 
 ## Part A — IT Governance
 
@@ -66,7 +66,7 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 2.5.1 | Developing a Risk Management Program | (uncovered) |
+| 2.5.1 | Developing a Risk Management Program | d2_091 (foundational — program definition), d2_094 (program maturity assessment) |
 | 2.5.2 | Risk Management Life Cycle (Identify → Assess → Respond → Monitor) | d2_007 (lifecycle gap analysis), d2_021 (foundational — risk register), d2_022 (foundational — treatment options), d2_070 (analysis — multi-option treatment scenario), d2_089 (analysis — risk treatment under budget constraints) |
 | 2.5.3 | Risk Analysis Methods (Qualitative / Semi / Quantitative) | d2_012 (qual vs quant), d2_062 (semi-quantitative method selection), d2_080 (FAIR quantitative application) |
 
@@ -95,7 +95,7 @@
 | 2.8.2 | IT Portfolio Management | d2_026 (run/grow/transform tier discipline), d2_068 (analysis — mid-year rebalance), d2_088 (analysis — investment under regulatory uncertainty) |
 | 2.8.3 | IT Management Practices | d2_046 (analysis — silo synthesis vs integrated practices) |
 | 2.8.4 | Human Resource Management (recruiting, training, performance, succession) | d2_018 (fraud-risk HR controls), d2_055 (training program design — role-based + individualized) |
-| 2.8.5 | Enterprise Change Management | (uncovered) |
+| 2.8.5 | Enterprise Change Management | d2_095 (stakeholder mgmt), d2_104 (analysis — failed M&A integration synthesis) |
 | 2.8.6 | Financial Management Practices | d2_043 (chargeback design — transparency + traceability + consumer-influence) |
 | 2.8.7 | Information Security Management | d2_025 (8-element program structure), d2_064 (operational running — integrated cadence) |
 
@@ -136,16 +136,16 @@
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after D2 batch 6 | Gap |
+| Tier | Target (180) | Authored after D2 batch 7 | Gap |
 |---|---|---|---|
-| Foundational | 18 (10%) | 15 | -3 |
-| Application | 90 (50%) | 47 | -43 |
-| Analysis | 72 (40%) | 28 | -44 |
-| **Total** | **180** | **90** | **-90** |
+| Foundational | 18 (10%) | **18** | **target met** |
+| Application | 90 (50%) | 57 | -33 |
+| Analysis | 72 (40%) | 35 | -37 |
+| **Total** | **180** | **110** | **-70** |
 
-Batch 6 was the third 20-question D2 batch (4F + 10A + 6An), and the **first batch authored under the strict author-linter regime**. The linter caught 4 parity errors + 9 warnings on the first run; all were fixed in one pass before invoking Stage 1 reviewer. Workflow validation: ~30 min/batch saved on post-hoc fixes vs prior batches.
+Foundational tier closed at 18/18 with batch 7 (d2_091, d2_092, d2_093). Remaining batches focus on Application + Analysis only.
 
-D2 progress: 90/180 (50%). At 20/batch, D2 closes in ~5 more batches (90 + 4×20 = 170, plus a final smaller batch to land at 180).
+D2 progress: 110/180 (61%). At 20/batch, D2 closes in ~3.5 more batches (110 + 3×20 = 170, plus a final smaller batch to land at 180).
 
 ## High-priority depth targets for batch 5 and beyond
 

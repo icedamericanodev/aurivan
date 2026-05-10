@@ -361,6 +361,18 @@ acceptable when the reference is to the broader topical body of guidance.
 - ITIL 4 Capacity and Performance Management
 - ITIL 4
 - SAFe
+- ISO 22301 (Business Continuity Management)
+- NIST SP 800-34 (Contingency Planning Guide)
+- NIST SP 800-50 (Building an Information Technology Security Awareness Program)
+- NIST SP 800-61 (Computer Security Incident Handling Guide)
+- ISACA Business Continuity guidance
+- ISACA Incident Response guidance
+- ISACA Information Security Awareness guidance
+- ISACA IT Service Management guidance
+- ISACA Cloud Cost Governance guidance
+- ISACA Outsourcing Risk Assessment guidance
+- FinOps Foundation Framework
+- PMI Standard for Program Management
 - EFQM Model (2020)
 - FAIR (Factor Analysis of Information Risk)
 - The Open Group O-RT/O-RA standards
@@ -386,9 +398,21 @@ acceptable when the reference is to the broader topical body of guidance.
 - Sarbanes-Oxley Act Section 301 (Audit Committee Requirements)
 - Sarbanes-Oxley Act Section 404 (Management Assessment of Internal Controls)
 - Sarbanes-Oxley Act Section 407 (Financial Expert Disclosure)
+- Sarbanes-Oxley Act Section 802 (Records Retention)
+- Sarbanes-Oxley Act Section 802 (Criminal Penalties for Altering Documents)
+- 17 CFR 210.2-06 (Retention of Audit and Review Records)
+- SEC Rule 17 CFR 210.2-06
 - HIPAA
 - HIPAA Privacy Rule
 - HIPAA Security Rule
+- HIPAA Breach Notification Rule
+- HIPAA 45 CFR § 164.530
+- FFIEC Outsourcing Technology Services booklet
+- FFIEC Incident Response examination procedures
+- OCC Bulletin 2013-29 (Third-Party Relationships)
+- NYSE Listed Company Manual Section 303A.07
+- SEC Item 407(d)(5)
+- EDPB Guidelines on Article 6
 - GLBA Safeguards Rule
 - GLBA (Gramm-Leach-Bliley Act)
 - FFIEC IT Examination Handbook
@@ -424,6 +448,9 @@ acceptable when the reference is to the broader topical body of guidance.
 - GDPR Article 25 (Privacy by Design and Default)
 - EDPB Guidelines 4/2019 (Article 25 Data Protection by Design and by Default)
 - EDPB Guidelines 248/2017 (DPIA)
+- GDPR Article 5(1)(e) (Storage Limitation)
+- GDPR Article 17 (Right to Erasure)
+- GDPR Article 17(3) (Erasure Exemptions)
 - GDPR Article 30 (Records of Processing Activities)
 - GDPR Article 35 (Data Protection Impact Assessment)
 - GDPR Articles 5 and 24 (EU Regulation 2016/679)
