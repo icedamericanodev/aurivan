@@ -249,11 +249,11 @@ domain_2:
     analysis:     72
   status: in_progress
 
-  authored_total: 30
+  authored_total: 50
   authored_mix:
-    foundational: 3
-    application:  17
-    analysis:     10
+    foundational: 7
+    application:  27
+    analysis:     16
 
   covered:
     # Batch 1 (d2_001..d2_010) — first D2 batch; 6 application + 4 analysis; mirrors D1 batch 1 cadence
@@ -292,9 +292,31 @@ domain_2:
     - { id: d2_029, subtopic: "Privacy Audit Process — Multi-Regulation Scenario",                       toc_ref: "2.6.2" }
     - { id: d2_030, subtopic: "Transborder Data Flow — Multi-Jurisdiction Decision",                     toc_ref: "2.7.3" }
 
+    # Batch 4 (d2_031..d2_050) — first 20-question D2 batch; 4F + 10A + 6An; all 20 hit previously-uncovered TOC areas
+    - { id: d2_031, subtopic: "Key Performance Indicator (KPI) — Definition (foundational)",            toc_ref: "2.10.1" }
+    - { id: d2_032, subtopic: "Key Risk Indicator (KRI) — Definition (foundational)",                    toc_ref: "2.10.2" }
+    - { id: d2_033, subtopic: "Enterprise Architecture (EA) — Definition (foundational)",                toc_ref: "2.4" }
+    - { id: d2_034, subtopic: "IT Policy Hierarchy — Standard vs Guideline (foundational)",              toc_ref: "2.3.2-4" }
+    - { id: d2_035, subtopic: "Good Practices for EGIT — COBIT 2019 Governance System Principles",       toc_ref: "2.2.2" }
+    - { id: d2_036, subtopic: "Vendor and Outsourcer Management — IT Organization Structure (IT-VMO)",   toc_ref: "2.2.8" }
+    - { id: d2_037, subtopic: "Compensating Controls for Lack of SoD",                                    toc_ref: "2.2.8" }
+    - { id: d2_038, subtopic: "InfoSec Policy Review — Cadence and Triggers",                             toc_ref: "2.3.1" }
+    - { id: d2_039, subtopic: "Privacy Documentation — Records of Processing Activities (RoPA)",         toc_ref: "2.6.1" }
+    - { id: d2_040, subtopic: "Legal Basis for Processing — GDPR Article 6 (consent or LegitInt+LIA)",   toc_ref: "2.7.2" }
+    - { id: d2_041, subtopic: "Sourcing Practices — In-House Retention Drivers",                          toc_ref: "2.9.1" }
+    - { id: d2_042, subtopic: "Governance in Outsourcing — Vendor Governance Forum / SMO",                toc_ref: "2.9.4" }
+    - { id: d2_043, subtopic: "Financial Management Practices — IT Chargeback Design",                    toc_ref: "2.8.6" }
+    - { id: d2_044, subtopic: "Business Intelligence Governance — Dashboard Integrity",                   toc_ref: "2.2.7" }
+    - { id: d2_045, subtopic: "Capacity and Growth Planning — Multi-Factor Decision",                     toc_ref: "2.9.5" }
+    - { id: d2_046, subtopic: "IT Management Practices — Integration Synthesis",                          toc_ref: "2.8.3" }
+    - { id: d2_047, subtopic: "Performance Optimization — KPI / CSF Disconnect",                          toc_ref: "2.10.4" }
+    - { id: d2_048, subtopic: "Quality Management — Framework Selection (ISO + TQM + Six Sigma)",         toc_ref: "2.11.2" }
+    - { id: d2_049, subtopic: "Data Ownership vs Custodianship in Cloud Transition",                      toc_ref: "2.2.8" }
+    - { id: d2_050, subtopic: "Impact of Laws and Regulations on IS Audit — Sector-Overlap",              toc_ref: "2.1.1" }
+
   queued_next:
-    # Candidate concepts for D2 batch 2, in rough priority order.
-    # Foundational tier launches in batches 3-4 onward (mirrors D1 pattern).
+    # Candidate concepts for D2 batch 5, in rough priority order.
+    # After batch 4, 28 of ~50 leaf TOC subsections covered; remaining authoring focuses on depth + uncovered subsections.
 
     # High priority — exam-heavy areas, currently uncovered
     - { subtopic: "Developing a Risk Management Program",                  toc_ref: "2.5.1",  priority: high,
