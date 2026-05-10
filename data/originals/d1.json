@@ -264,19 +264,19 @@
       "scenario_context": "An IS auditor at an electric utility is reviewing privileged access controls for the SCADA system that manages grid operations. The control matrix specifies that all privileged sessions must be reviewed within 24 hours of session end, by a person other than the session holder. The utility has implemented this through a SOAR-based workflow: each session triggers a ticket assigned to a peer engineer, who must close the ticket with their review notes. The auditor's testing reveals: (1) 100% of sessions over the past three months have generated tickets, (2) 96% of tickets have been closed with review notes, (3) on inspection, 41% of the closed tickets contain only the boilerplate text \"Reviewed — no anomalies\" with no specific session details, (4) 12% of those generic-text tickets were closed by the same engineer who held the session. The CIO notes that the 96% close rate is \"well above our 90% target.\"",
       "question": "Which finding should the auditor flag as the GREATEST risk?",
       "options": {
-        "A": "The 4% of tickets that remain unclosed",
-        "B": "The 12% of generic-closed tickets where the reviewer was the session holder",
+        "A": "The 12% of generic-closed tickets where the reviewer was the session holder",
+        "B": "The 4% of tickets that remain unclosed",
         "C": "The 41% of closed tickets containing only boilerplate review text",
         "D": "The fact that the utility set its closure target at only 90% rather than 100%"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "When a compensating control's design includes a separation-of-duties element (review by another person), violations of that SoD element produce false assurance that's worse than the underlying risk being unmitigated.",
       "pre_read": "For multi-finding scenarios, ask: which finding is the SYSTEMIC failure that makes other findings worse, vs. which are localized issues? The systemic finding is usually the answer. Look specifically for breakdowns in the design intent of the control, not just operational inefficiency.",
       "correct_explanation": "All four findings are real, but they have different blast radii. The 4% unclosed tickets (A) and the 41% boilerplate reviews (C) are control-effectiveness issues — the control runs but its review quality is weak. The 90% target (D) is a design issue worth flagging but is policy-level. The 12% where the session holder reviewed their own session (B) is most severe because it eliminates the separation-of-duties element that makes the compensating control meaningful in the first place. Without SoD, the control isn't a control — it's a self-attestation. The fact that those 12% are sitting inside the closed-and-reviewed bucket means the 96% closure rate provides false assurance: the CIO believes the control is working when in fact it has no SoD at all in those cases.",
       "wrong_explanations": {
-        "A": "Unclosed tickets are detectable and create their own follow-up signal. The risk is bounded by the 4% rate and is operationally remediable through follow-up.",
         "C": "Boilerplate reviews are a quality-of-control issue and degrade the value of the review, but a peer engineer who actually looked and saw nothing has still preserved the SoD. The review was thin, not absent.",
-        "D": "Setting closure at 90% is a policy weakness but is open and observable to management. It's a design conversation, not a finding that creates false assurance about the SCADA system itself."
+        "D": "Setting closure at 90% is a policy weakness but is open and observable to management. It's a design conversation, not a finding that creates false assurance about the SCADA system itself.",
+        "B": "Unclosed tickets are detectable and create their own follow-up signal. The risk is bounded by the 4% rate and is operationally remediable through follow-up."
       },
       "tips": [
         "Trap is C — 41% boilerplate is the loudest individual finding but it doesn't break the control's design; the SoD-violation finding does.",
@@ -699,21 +699,21 @@
       "question": "Which of the following is the IS auditor's GREATEST concern about the current CSA implementation?",
       "options": {
         "A": "The 12 access-control incidents indicate widespread fraud across the university",
-        "B": "CSA is being used as a substitute for audit-led assurance, despite the gap between self-reported and actual control effectiveness",
-        "C": "The departments lack IT specialists, which means CSA results are unreliable and require external validation",
+        "B": "The departments lack IT specialists, which means CSA results are unreliable and require external validation",
+        "C": "CSA is being used as a substitute for audit-led assurance, despite the gap between self-reported and actual control effectiveness",
         "D": "The audit team should reduce or eliminate CSA in favor of traditional audit procedures"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "CSA is a complement to audit-led assurance, not a substitute. When the auditor reduces independent testing on the strength of self-reports, and self-reports diverge from actual control effectiveness, the assurance posture is fundamentally compromised — even if individual CSA findings are useful.",
       "pre_read": "For CSA scenarios, look for evidence of (1) divergence between self-reported and actual control state, (2) reliance posture by the audit function, (3) lack of independent validation. The systemic risk is the audit function over-relying on self-reports, not the self-reports themselves being imperfect.",
       "correct_explanation": "CSA is valuable as a tool for engaging business units in control thinking and surfacing concerns the audit team might not see. It is not a substitute for independent audit-led assurance. The scenario shows the classic CSA failure mode: self-reports say 90% \"all effective,\" reality says 12 confirmed incidents (so the self-reports are unreliable), and the audit function has reduced its independent testing on the strength of those reports. The result is that nobody is providing genuine assurance: the departments aren't qualified to self-assess accurately, and the audit team has stepped back. This is the systemic failure. The lack of IT specialists (C) is a contributing cause — but B captures the broader risk. Eliminating CSA (D) overcorrects; CSA still has value as a complementary tool. The 12 incidents (A) are not necessarily fraud — they're the symptom that exposes the assurance gap.",
       "wrong_explanations": {
         "A": "Twelve confirmed access-control incidents could be process failures, misconfiguration, or training gaps — not necessarily fraud. The relevance of the number is that it contradicts the self-reported \"effective\" claim, exposing the CSA assurance gap.",
-        "C": "Lack of IT specialists is a real concern and a contributing cause — but it's narrower than B. Even with IT specialists, CSA wouldn't be a substitute for independent audit testing; the structural issue is the over-reliance, of which expertise is one input.",
-        "D": "Eliminating CSA throws out a useful tool. The right response is to restore audit-led independent testing alongside CSA, not to abandon CSA entirely."
+        "D": "Eliminating CSA throws out a useful tool. The right response is to restore audit-led independent testing alongside CSA, not to abandon CSA entirely.",
+        "B": "Lack of IT specialists is a real concern and a contributing cause — but it's narrower than B. Even with IT specialists, CSA wouldn't be a substitute for independent audit testing; the structural issue is the over-reliance, of which expertise is one input."
       },
       "tips": [
-        "Trap is C — \"departments lack IT specialists\" is the loud individual cause but it's a contributing factor, not the systemic risk.",
+        "Trap is B — \"departments lack IT specialists\" is the loud individual cause but it's a contributing factor, not the systemic risk.",
         "CSA is a complement to audit, not a substitute. When the audit function reduces independent testing because of CSA, and CSA self-reports are unreliable, the assurance gap is the deepest concern.",
         "Exam-day shortcut: when a CSA scenario describes the audit team \"relying on\" or \"treating CSA as covering\" their assurance needs, the answer is almost always about that over-reliance posture, not about the CSA mechanics themselves."
       ],
@@ -1098,18 +1098,18 @@
       "question": "An IS audit manager at a public accounting firm becomes aware that their team's draft audit report contains a finding that could substantially harm a client's business. The client's CFO calls the audit manager privately and offers to \"make sure your firm wins our advisory contract next year\" if the finding is removed. Which provision of the ISACA Code of Professional Ethics is MOST directly violated by complying with the CFO's offer?",
       "options": {
         "A": "The requirement to perform services with due professional care",
-        "B": "The requirement to maintain integrity and refrain from acts discreditable to the profession",
+        "B": "The requirement to maintain professional competence and continue learning",
         "C": "The requirement to support the implementation of appropriate professional standards",
-        "D": "The requirement to maintain professional competence and continue learning"
+        "D": "The requirement to maintain integrity and refrain from acts discreditable to the profession"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "The ISACA Code of Professional Ethics requires integrity above all else. Removing a substantive audit finding in exchange for future business is a textbook integrity violation — an act discreditable to the audit profession.",
       "pre_read": "For ethics-violation questions, identify the SPECIFIC behavior described and match it to the most directly violated provision. Quid-pro-quo arrangements that compromise audit conclusions are integrity violations, not competence or due-care issues — those are about quality, not honesty.",
       "correct_explanation": "Removing a substantive audit finding because of a financial inducement is the textbook violation of integrity. The Code of Professional Ethics requires members to maintain integrity and refrain from acts that would discredit the profession. Due professional care (A) and competence (D) speak to quality of work; appropriate standards (C) speaks to following methodology. None of those captures the corruption of conclusions for personal/firm gain — that's an integrity violation.",
       "wrong_explanations": {
         "A": "Due professional care is about the quality and rigor of audit work, not about the corruption of conclusions for personal gain. The behavior described is not a care/quality issue; it's an integrity issue.",
         "C": "Supporting professional standards is about adhering to methodology and frameworks. The CFO's offer doesn't ask the auditor to deviate from methodology — it asks them to corrupt the conclusion. That's integrity, not standards-adherence.",
-        "D": "Professional competence is about maintaining skill and knowledge. The auditor's competence isn't compromised by removing a finding; their integrity is."
+        "B": "Professional competence is about maintaining skill and knowledge. The auditor's competence isn't compromised by removing a finding; their integrity is."
       },
       "tips": [
         "Trap is A — \"due professional care\" sounds like the right ethical bucket but it's about work quality, not honesty.",
@@ -1499,22 +1499,22 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a state Department of Motor Vehicles is preparing the final audit report on the agency's identity-verification controls. The report will be issued to the agency director and the legislative oversight committee. Which statement BEST describes the PRIMARY objective of the audit report?",
       "options": {
-        "A": "To follow a standard sequence of executive summary, scope, methodology, findings, and recommendations across all audit reports",
-        "B": "To communicate findings, conclusions, and recommendations in a way that allows stakeholders to make informed decisions about the audited area",
+        "A": "To communicate findings, conclusions, and recommendations in a way that allows stakeholders to make informed decisions about the audited area",
+        "B": "To follow a standard sequence of executive summary, scope, methodology, findings, and recommendations across all audit reports",
         "C": "To document the audit team's work in sufficient detail for a future quality-assurance review by independent assessors",
         "D": "To establish a permanent record of management's response to each finding for follow-up tracking and audit-committee review"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "The audit report exists to inform stakeholder decision-making. Structure, work documentation, and management responses serve that objective — they are not the objective themselves.",
       "pre_read": "Watch for \"objective\" vs \"structure\" framing. Objectives describe purpose (why the report exists); structure describes form (how it's organized). The trap is dressing structure up as purpose.",
       "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting) and ITAF Performance Standards establish that the purpose of the audit report is to communicate the audit's results to the intended stakeholders so they can make informed decisions, allocate remediation resources, and exercise their oversight responsibilities. Structure (A) is a means, not a purpose. QA documentation (C) is a separate work-paper concern, not the report's purpose. Management responses (D) are a useful inclusion but not the reason the report exists — the report exists even before any management response is captured.",
       "wrong_explanations": {
-        "A": "Standard sectioning is the form the report takes, not its purpose. A perfectly structured report that fails to inform decision-making has missed its objective.",
         "C": "QA-review documentation lives in the work papers, not in the report. The report is for stakeholders, not for QA reviewers.",
-        "D": "Capturing management responses is a useful practice, but the report's purpose precedes any response — it exists to communicate the auditor's findings to those who need them."
+        "D": "Capturing management responses is a useful practice, but the report's purpose precedes any response — it exists to communicate the auditor's findings to those who need them.",
+        "B": "Standard sectioning is the form the report takes, not its purpose. A perfectly structured report that fails to inform decision-making has missed its objective."
       },
       "tips": [
-        "Trap is A — the standard sectioning is structure, not purpose. \"Following the standard structure\" is never the answer to a \"primary objective\" question.",
+        "Trap is B — the standard sectioning is structure, not purpose. \"Following the standard structure\" is never the answer to a \"primary objective\" question.",
         "Objective questions ask why; structure questions ask how. Read the stem keyword carefully.",
         "Exam-day shortcut: any report-objective question is answered by the option that mentions informing stakeholders or supporting decision-making."
       ],
@@ -1974,18 +1974,18 @@
       "question": "An IS audit director at a regional credit union is establishing the management approach for the credit union's IS audit function. The function is small (3 auditors) and reports to the audit committee. The director must address resourcing, supervision, professional development, work allocation, and quality monitoring. Which approach BEST reflects sound management of an IS audit function?",
       "options": {
         "A": "Delegate all management responsibilities to a single senior auditor to minimize overhead in a small function",
-        "B": "Establish formal processes for audit planning, resource allocation, supervision, professional development, and ongoing quality monitoring proportional to the function's size and risk profile",
-        "C": "Outsource all IS audit work to an external firm, since a 3-person function cannot match an external provider's breadth",
+        "B": "Outsource all IS audit work to an external firm, since a 3-person function cannot match an external provider's breadth",
+        "C": "Establish formal processes for audit planning, resource allocation, supervision, professional development, and ongoing quality monitoring proportional to the function's size and risk profile",
         "D": "Focus on executing the audit plan; defer professional development and quality monitoring until the function grows beyond five auditors"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Sound management of the IS audit function requires the full set of management processes (planning, resourcing, supervision, development, QA) proportional to the function's size. Small does not exempt the function from any of them — it just scales them appropriately.",
       "pre_read": "For audit-function management questions, watch for options that drop a management responsibility (\"defer QA\", \"delegate everything\") or replace the function (\"outsource it all\"). The correct answer keeps all responsibilities present, scaled to the function.",
-      "correct_explanation": "ITAF General Standards (proficiency, due care, documentation) and ISACA IT Audit Standards on the IS audit function require the function to have formal processes for planning, resource allocation, supervision, professional development, and quality monitoring. These cannot be selectively dropped — they scale with the function but they all must be present. Option A delegates governance responsibilities that the director must retain. Option C confuses outsourcing the work with managing the function (someone still has to manage the relationship and integrate results). Option D defers QA and development based on a size threshold, which directly violates ITAF General Standards on QA and proficiency.",
+      "correct_explanation": "ITAF General Standards (proficiency, due care, documentation) and ISACA IT Audit Standards on the IS audit function require the function to have formal processes for planning, resource allocation, supervision, professional development, and quality monitoring. These cannot be selectively dropped — they scale with the function but they all must be present. Option A delegates governance responsibilities that the director must retain. Option B confuses outsourcing the work with managing the function (someone still has to manage the relationship and integrate results). Option D defers QA and development based on a size threshold, which directly violates ITAF General Standards on QA and proficiency.",
       "wrong_explanations": {
         "A": "Delegating all management responsibilities to a single senior auditor concentrates governance in one person, removing checks and balances that even small functions need. Director-level governance cannot be delegated.",
-        "C": "Outsourcing the work is a sourcing decision, not a function-management approach. Even a fully outsourced engagement requires internal management of the relationship, scope-setting, and acceptance of results — that's the management of the function.",
-        "D": "Deferring QA and professional development until the function is larger directly violates ITAF General Standards. QA and proficiency apply at every size; the depth scales but the requirement does not."
+        "D": "Deferring QA and professional development until the function is larger directly violates ITAF General Standards. QA and proficiency apply at every size; the depth scales but the requirement does not.",
+        "B": "Outsourcing the work is a sourcing decision, not a function-management approach. Even a fully outsourced engagement requires internal management of the relationship, scope-setting, and acceptance of results — that's the management of the function."
       },
       "tips": [
         "Trap is A — \"single senior auditor\" sounds efficient for a small function but it concentrates all governance in one person, which is structurally unsound.",
@@ -2303,18 +2303,18 @@
       "question": "An IS auditor at a biotech R&D company is performing a substantive test of clinical-trial reimbursement transactions. Individual transaction amounts range from $50 to $250,000, and the auditor needs to estimate the dollar value of any over-billings in the population. The auditor is considering monetary-unit sampling (MUS). Why is MUS MOST appropriate for this engagement?",
       "options": {
         "A": "MUS gives every transaction an equal probability of selection regardless of dollar value, ensuring statistical fairness across the population",
-        "B": "MUS biases sample selection toward higher-dollar items in proportion to their dollar size, which fits substantive testing where over-billings on larger items have proportionally larger impact on the audit conclusion",
+        "B": "MUS produces a yes/no answer per sampled item, simplifying the auditor's reporting to management about each tested transaction's compliance status",
         "C": "MUS is the easiest sampling technique to compute by hand, so it is the right choice when specialized audit-sampling software is unavailable",
-        "D": "MUS produces a yes/no answer per sampled item, simplifying the auditor's reporting to management about each tested transaction's compliance status"
+        "D": "MUS biases sample selection toward higher-dollar items in proportion to their dollar size, which fits substantive testing where over-billings on larger items have proportionally larger impact on the audit conclusion"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "Monetary-unit sampling treats every dollar in the population as a sampling unit. The probability of an item being selected is proportional to its dollar value, which is exactly what is needed when over-billings on large items matter more to the conclusion than over-billings on small items.",
       "pre_read": "Match the sampling technique to the engagement objective. MUS specifically over-samples large items, which fits substantive testing where dollar-error matters. Equal-probability and yes/no-output are descriptions of other techniques, not MUS.",
-      "correct_explanation": "MUS treats each dollar in the population as a sampling unit, so an item with 100 dollars in it has 100 chances of being selected and an item with 1 dollar in it has 1 chance. The probability of selection is therefore proportional to dollar value. For substantive tests where the auditor needs to estimate the dollar value of error in a population with a wide value range, this is exactly the right design — large items are more likely to be tested, and large errors are therefore more likely to be detected. Option A describes random (simple-random) sampling, not MUS. Option C is wrong on two counts: MUS computation is mathematically nontrivial, and the choice of technique should be driven by the objective, not by software convenience. Option D describes attribute sampling, not MUS.",
+      "correct_explanation": "MUS treats each dollar in the population as a sampling unit, so an item with 100 dollars in it has 100 chances of being selected and an item with 1 dollar in it has 1 chance. The probability of selection is therefore proportional to dollar value. For substantive tests where the auditor needs to estimate the dollar value of error in a population with a wide value range, this is exactly the right design — large items are more likely to be tested, and large errors are therefore more likely to be detected. Option A describes random (simple-random) sampling, not MUS. Option C is wrong on two counts: MUS computation is mathematically nontrivial, and the choice of technique should be driven by the objective, not by software convenience. Option B describes attribute sampling, not MUS.",
       "wrong_explanations": {
         "A": "Equal-probability selection describes simple random sampling. MUS deliberately weights selection by dollar value because that matches the substantive-test objective.",
         "C": "MUS calculation requires sample-size formulas, projection of misstatement, and tainting calculations — it is not the easiest technique to compute by hand. And technique selection follows the audit objective, not the convenience of available software.",
-        "D": "Yes/no per-item output is the hallmark of attribute sampling, used for compliance testing of controls. MUS produces dollar-error estimates with confidence intervals."
+        "B": "Yes/no per-item output is the hallmark of attribute sampling, used for compliance testing of controls. MUS produces dollar-error estimates with confidence intervals."
       },
       "tips": [
         "Trap is A — \"equal probability of selection\" sounds fair and rigorous, but MUS is intentionally biased toward larger items because that is what substantive testing needs.",
@@ -2703,22 +2703,22 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a wholesale-distribution company is testing inventory-adjustment transactions over a 12-month period. The transactions vary widely in dollar amount and exhibit different error-rate patterns: large adjustments ($25,000+) are infrequent and rarely err; medium adjustments ($1,000-$25,000) are frequent with moderate error rates; small adjustments (< $1,000) are very frequent with higher error rates. The auditor wants to design an efficient sample. Which sampling approach is MOST appropriate?",
       "options": {
-        "A": "Simple random sampling across the entire population so every transaction has equal selection probability regardless of its dollar size or stratum",
-        "B": "Stratified sampling, splitting the population by transaction size into separate strata and sampling each stratum independently with sample sizes calibrated to each stratum's variability and error-rate pattern",
+        "A": "Stratified sampling, splitting the population by transaction size into separate strata and sampling each stratum independently with sample sizes calibrated to each stratum's variability and error-rate pattern",
+        "B": "Simple random sampling across the entire population so every transaction has equal selection probability regardless of its dollar size or stratum",
         "C": "Systematic sampling using a fixed interval starting from a random transaction at the beginning of the period",
         "D": "Judgmental sampling targeting only the largest 50 transactions to maximize coverage of dollar value while keeping the sample size manageable"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "Stratified sampling improves efficiency when the population has identifiable sub-groups with different variability or error-rate patterns. Each stratum is sampled independently, with sample sizes calibrated to each stratum's characteristics — yielding a tighter overall conclusion at lower total sample size than simple random across the whole population.",
       "pre_read": "For sampling-design questions, ask whether the population has identifiable sub-groups with different characteristics. If yes, stratified sampling typically dominates simple random. If no, simpler designs (random, systematic) suffice.",
-      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling identify stratified sampling as the appropriate technique when the population has identifiable sub-groups with different variability, dollar-value distribution, or error-rate patterns. By splitting the population into strata and sampling each independently, the auditor can calibrate sample sizes to each stratum's characteristics — testing more aggressively where errors are likely and less in lower-risk strata. Option A treats all transactions identically, which is less efficient when variability differs by stratum. Option C (systematic) does not address the stratum-specific variability. Option D (judgmental) is non-statistical, cannot be projected to the population, and ignores the small/medium adjustments that have higher error rates.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling identify stratified sampling as the appropriate technique when the population has identifiable sub-groups with different variability, dollar-value distribution, or error-rate patterns. By splitting the population into strata and sampling each independently, the auditor can calibrate sample sizes to each stratum's characteristics — testing more aggressively where errors are likely and less in lower-risk strata. Option B treats all transactions identically, which is less efficient when variability differs by stratum. Option C (systematic) does not address the stratum-specific variability. Option D (judgmental) is non-statistical, cannot be projected to the population, and ignores the small/medium adjustments that have higher error rates.",
       "wrong_explanations": {
-        "A": "Simple random ignores the stratum structure. The auditor would need a much larger overall sample to achieve the same conclusion precision that stratified sampling delivers more efficiently.",
         "C": "Systematic sampling is appropriate when the population is uniform and orderable, but it doesn't address the stratum-specific differences in variability and error rates.",
-        "D": "Judgmental sampling is non-statistical — the auditor cannot project results to the population. And targeting only the largest items misses the small adjustments where error rates are highest."
+        "D": "Judgmental sampling is non-statistical — the auditor cannot project results to the population. And targeting only the largest items misses the small adjustments where error rates are highest.",
+        "B": "Simple random ignores the stratum structure. The auditor would need a much larger overall sample to achieve the same conclusion precision that stratified sampling delivers more efficiently."
       },
       "tips": [
-        "Trap is A — \"equal probability\" sounds fair but is inefficient when strata have different characteristics.",
+        "Trap is B — \"equal probability\" sounds fair but is inefficient when strata have different characteristics.",
         "Stratified sampling = split population by characteristic, sample each stratum independently. Best when sub-groups differ in variability or error rate.",
         "Exam-day shortcut: when the stem describes a population with clearly different sub-groups (size, variability, error pattern), stratified sampling is the answer."
       ],
@@ -2958,21 +2958,21 @@
       "question": "An IS auditor at an aerospace manufacturer is documenting the IS control objectives for the company's product-lifecycle-management (PLM) system, which holds engineering designs subject to International Traffic in Arms Regulations (ITAR). What is the MOST important characteristic of well-stated IS control objectives?",
       "options": {
         "A": "Each control objective is broad enough to cover the entire system in a single statement, simplifying audit-program design",
-        "B": "Each control objective is specific, measurable, and traceable to a business risk or regulatory requirement, so that controls can be designed and tested against it",
-        "C": "Each control objective lists every control that has ever been suggested for the system, regardless of whether it is implemented",
+        "B": "Each control objective lists every control that has ever been suggested for the system, regardless of whether it is implemented",
+        "C": "Each control objective is specific, measurable, and traceable to a business risk or regulatory requirement, so that controls can be designed and tested against it",
         "D": "Each control objective is identical to the corresponding control objective at the company's largest competitor, ensuring industry-standard practice"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Well-stated IS control objectives are specific, measurable, and traceable to a business risk or regulatory requirement. Each objective answers \"what must this system ensure?\" in a way that lets controls be designed and tested against it.",
       "pre_read": "For IS control-objective questions, watch for too-broad, kitchen-sink, or copy-from-competitor distractors. Well-stated objectives are SMART-like (specific, measurable, traceable) and tied to a defensible source (risk or regulation).",
-      "correct_explanation": "ISACA Risk IT Framework, COBIT 2019 (which structures objectives at the management-objective level), and ITAF Performance Standards on Application Audits all emphasize that IS control objectives must be specific enough to be testable, measurable enough to evaluate effectiveness, and traceable to a business risk or regulatory requirement that justifies the control. For an ITAR-regulated PLM system, each control objective should trace to a specific ITAR requirement (e.g., access restrictions on technical data) or to a specific business risk (e.g., unauthorized export). Option A produces objectives too vague to design controls against. Option C confuses objectives (what to achieve) with controls (how to achieve them). Option D treats industry-standard as a substitute for risk-and-regulation traceability, which it is not.",
+      "correct_explanation": "ISACA Risk IT Framework, COBIT 2019 (which structures objectives at the management-objective level), and ITAF Performance Standards on Application Audits all emphasize that IS control objectives must be specific enough to be testable, measurable enough to evaluate effectiveness, and traceable to a business risk or regulatory requirement that justifies the control. For an ITAR-regulated PLM system, each control objective should trace to a specific ITAR requirement (e.g., access restrictions on technical data) or to a specific business risk (e.g., unauthorized export). Option A produces objectives too vague to design controls against. Option B confuses objectives (what to achieve) with controls (how to achieve them). Option D treats industry-standard as a substitute for risk-and-regulation traceability, which it is not.",
       "wrong_explanations": {
         "A": "Broad single-statement objectives cannot be tested. The auditor needs specificity to design audit procedures and evaluate effectiveness against each objective.",
-        "C": "Objectives describe what must be achieved; controls describe how. Listing every suggested control conflates the two and produces a document that is neither a clean objective list nor a clean control list.",
-        "D": "Copying objectives from a competitor ignores the company's own risk profile and regulatory context. ITAR-specific objectives at an aerospace manufacturer differ from what a non-ITAR competitor would document."
+        "D": "Copying objectives from a competitor ignores the company's own risk profile and regulatory context. ITAR-specific objectives at an aerospace manufacturer differ from what a non-ITAR competitor would document.",
+        "B": "Objectives describe what must be achieved; controls describe how. Listing every suggested control conflates the two and produces a document that is neither a clean objective list nor a clean control list."
       },
       "tips": [
-        "Trap is C — \"comprehensive list of every suggested control\" sounds thorough but conflates objectives with controls. Different artifacts.",
+        "Trap is B — \"comprehensive list of every suggested control\" sounds thorough but conflates objectives with controls. Different artifacts.",
         "Well-stated IS control objectives = specific + measurable + traceable to risk or regulation. Three properties.",
         "Exam-day shortcut: IS-control-objective questions are answered by the option that names specificity, measurability, and traceability."
       ],
@@ -3328,18 +3328,18 @@
       "question": "Which statement BEST describes the PRIMARY characteristic of continuous auditing?",
       "options": {
         "A": "An audit performed once per quarter, on a recurring schedule, by the audit team using traditional periodic procedures and reporting",
-        "B": "An audit approach in which the audit team performs procedures on transactions or controls on an ongoing basis, often using technology, with results available shortly after activity occurs",
+        "B": "An audit performed only after a control failure has been identified, as a forensic investigation technique to recreate the failure for evidence preservation",
         "C": "An audit performed continuously by the operations team in place of independent audit work, with operations self-certifying the control posture",
-        "D": "An audit performed only after a control failure has been identified, as a forensic investigation technique to recreate the failure for evidence preservation"
+        "D": "An audit approach in which the audit team performs procedures on transactions or controls on an ongoing basis, often using technology, with results available shortly after activity occurs"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "Continuous auditing performs audit procedures on an ongoing basis with results shortly after activity. It is distinct from periodic auditing (less frequent), continuous monitoring (management's activity), and reactive investigation.",
       "pre_read": "For continuous-auditing questions, watch for distractors that confuse it with periodic auditing (one quarterly), continuous monitoring (management activity), or reactive investigation. The key word is \"ongoing\" combined with \"audit team\" and \"results available shortly after activity\".",
-      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Continuous Auditing establish that continuous auditing is an audit approach where the audit team performs procedures on transactions or controls on an ongoing (often near-real-time or daily) basis, typically supported by automation and CAATs. Results are available shortly after the activity occurs, enabling early identification of control or transaction issues. Option A confuses continuous auditing with quarterly periodic auditing — quarterly is still periodic, not continuous. Option C describes continuous monitoring (management's responsibility), which is distinct from continuous auditing (audit's responsibility). Option D describes reactive investigation, not a planned audit approach.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Continuous Auditing establish that continuous auditing is an audit approach where the audit team performs procedures on transactions or controls on an ongoing (often near-real-time or daily) basis, typically supported by automation and CAATs. Results are available shortly after the activity occurs, enabling early identification of control or transaction issues. Option A confuses continuous auditing with quarterly periodic auditing — quarterly is still periodic, not continuous. Option C describes continuous monitoring (management's responsibility), which is distinct from continuous auditing (audit's responsibility). Option B describes reactive investigation, not a planned audit approach.",
       "wrong_explanations": {
         "A": "Quarterly is periodic auditing, not continuous. Continuous means ongoing, with results available shortly after activity — not on a quarterly calendar.",
         "C": "Continuous auditing is the audit function's activity. Continuous monitoring is what management does to oversee its own controls. The two are distinct and complementary, not substitutes.",
-        "D": "Reactive root-cause investigation after a control failure is a different activity (often forensic). Continuous auditing is preventive and ongoing, not triggered by failures."
+        "B": "Reactive root-cause investigation after a control failure is a different activity (often forensic). Continuous auditing is preventive and ongoing, not triggered by failures."
       },
       "tips": [
         "Trap is C — \"continuous monitoring\" sounds like the same thing but it's management's activity, not audit's.",
@@ -3693,22 +3693,22 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a luxury fashion brand is concluding fieldwork on an audit of the e-commerce returns-fraud controls. The auditor has collected a large volume of transaction-level evidence (sufficiency is high), but on review notices that much of the evidence comes from a single source (the returns-management application's logs). What evaluation should the auditor perform before concluding?",
       "options": {
-        "A": "No further evaluation needed — the volume of evidence is high, so sufficiency is established and the conclusion can rest on it",
-        "B": "Evaluate whether the evidence is also appropriate — relevant to the audit objective AND reliable in source — both required for the audit conclusion",
+        "A": "Evaluate whether the evidence is also appropriate — relevant to the audit objective AND reliable in source — both required for the audit conclusion",
+        "B": "No further evaluation needed — the volume of evidence is high, so sufficiency is established and the conclusion can rest on it",
         "C": "Discard half of the transaction-level evidence to reduce review effort, since high volume is not necessary",
         "D": "Substitute oral confirmation from the returns-management team in place of transaction-level evidence, since they have the most direct knowledge"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "Audit evidence must be both sufficient (enough volume) AND appropriate (relevant + reliable). Volume alone does not satisfy appropriateness, and a high-volume single-source body of evidence can leave appropriateness unaddressed.",
       "pre_read": "For evidence-evaluation questions, the two-dimensional test is sufficiency + appropriateness. Sufficiency = quantity. Appropriateness = relevance + reliability. Distractors that collapse the two into one or skip one are wrong.",
-      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Evidence establish that audit evidence must be both sufficient (adequate quantity to support conclusions) and appropriate (relevant to the audit objective AND reliable in its source). The two are distinct dimensions and both are required. In this scenario, the auditor has high volume from a single source — that satisfies sufficiency but does not by itself satisfy appropriateness, because reliability depends on having corroborating evidence from independent sources where possible. Option A treats sufficiency as the only test, which is a textbook error. Option C reduces volume without addressing the appropriateness gap. Option D substitutes oral confirmation, which generally has lower reliability than the transactional evidence already collected.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Evidence establish that audit evidence must be both sufficient (adequate quantity to support conclusions) and appropriate (relevant to the audit objective AND reliable in its source). The two are distinct dimensions and both are required. In this scenario, the auditor has high volume from a single source — that satisfies sufficiency but does not by itself satisfy appropriateness, because reliability depends on having corroborating evidence from independent sources where possible. Option B treats sufficiency as the only test, which is a textbook error. Option C reduces volume without addressing the appropriateness gap. Option D substitutes oral confirmation, which generally has lower reliability than the transactional evidence already collected.",
       "wrong_explanations": {
-        "A": "Sufficiency alone does not establish that evidence supports a conclusion. High volume from a single source can leave appropriateness unaddressed; the auditor must evaluate both dimensions.",
         "C": "Reducing volume does not address the source-concentration problem. The right response is to seek corroborating evidence from independent sources, not to discard the evidence already collected.",
-        "D": "Oral confirmation is generally less reliable than transactional evidence (see the evidence-reliability hierarchy). Substituting lower-reliability evidence for the existing higher-reliability evidence does not improve appropriateness."
+        "D": "Oral confirmation is generally less reliable than transactional evidence (see the evidence-reliability hierarchy). Substituting lower-reliability evidence for the existing higher-reliability evidence does not improve appropriateness.",
+        "B": "Sufficiency alone does not establish that evidence supports a conclusion. High volume from a single source can leave appropriateness unaddressed; the auditor must evaluate both dimensions."
       },
       "tips": [
-        "Trap is A — \"high volume = enough\" collapses two dimensions into one. Sufficiency and appropriateness are both required.",
+        "Trap is B — \"high volume = enough\" collapses two dimensions into one. Sufficiency and appropriateness are both required.",
         "Sufficiency = quantity. Appropriateness = relevance + reliability. Two separate evaluations.",
         "Exam-day shortcut: when the stem describes high volume from a single source, the answer always names appropriateness evaluation as the missing step."
       ],
@@ -4067,18 +4067,18 @@
       "question": "Which statement BEST describes the PRIMARY purpose of substantive testing in an IS audit?",
       "options": {
         "A": "To evaluate whether internal controls are operating as designed by testing the control's execution and reporting on operating effectiveness",
-        "B": "To detect misstatements in transactions, balances, or data by directly examining the underlying records or analytical relationships, and to estimate the magnitude of errors found",
-        "C": "To document the audit team's work for future quality-assurance reviews and external assessments by independent peers under IIA Standard 1312",
+        "B": "To document the audit team's work for future quality-assurance reviews and external assessments by independent peers under IIA Standard 1312",
+        "C": "To detect misstatements in transactions, balances, or data by directly examining the underlying records or analytical relationships, and to estimate the magnitude of errors found",
         "D": "To verify the accuracy of the audit charter against organizational policy documents and confirm alignment with the audit committee's expectations"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Substantive testing examines the underlying transactions, balances, or data to detect and quantify misstatements. It targets the data itself, not the controls. Compliance testing targets controls; QA documentation targets work-paper review; charter verification targets governance.",
       "pre_read": "For substantive-test questions, anchor on \"target = data/transactions, output = detect and quantify misstatements\". Distractors that target controls (compliance testing) or governance documents are wrong.",
-      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Substantive Testing establish that substantive testing's purpose is to detect misstatements in transactions, balances, or underlying data — by direct examination, recomputation, confirmation, or analytical procedures — and to estimate the magnitude of any errors found. Option A describes compliance testing, which targets controls (yes/no per control). Option C describes audit-documentation purpose, which is QA-related. Option D describes a governance-verification activity that is not substantive testing. Substantive testing is one of the two core audit testing types (alongside compliance testing) and is essential when the auditor needs to support conclusions about the data itself.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Performance Standards on Substantive Testing establish that substantive testing's purpose is to detect misstatements in transactions, balances, or underlying data — by direct examination, recomputation, confirmation, or analytical procedures — and to estimate the magnitude of any errors found. Option A describes compliance testing, which targets controls (yes/no per control). Option B describes audit-documentation purpose, which is QA-related. Option D describes a governance-verification activity that is not substantive testing. Substantive testing is one of the two core audit testing types (alongside compliance testing) and is essential when the auditor needs to support conclusions about the data itself.",
       "wrong_explanations": {
         "A": "Describes compliance testing, which targets the control. Substantive testing targets the underlying data or transactions.",
-        "C": "Audit work-paper documentation supports QA review, but documenting work is not the purpose of substantive testing — substantive testing's purpose is detecting and quantifying misstatements.",
-        "D": "Charter verification is a separate governance activity. Substantive testing is engagement-level evidence-gathering on transactions or data, not a governance check."
+        "D": "Charter verification is a separate governance activity. Substantive testing is engagement-level evidence-gathering on transactions or data, not a governance check.",
+        "B": "Audit work-paper documentation supports QA review, but documenting work is not the purpose of substantive testing — substantive testing's purpose is detecting and quantifying misstatements."
       },
       "tips": [
         "Trap is A — \"evaluate controls\" feels like the right family of activity but it's compliance testing, not substantive.",
@@ -4286,21 +4286,21 @@
       "question": "An IS auditor at a meal-delivery service is evaluating management's monitoring activities (the management-monitoring sub-area of the control environment, distinct from independent evaluation by the audit function). Which of the following BEST describes a properly designed management-monitoring activity?",
       "options": {
         "A": "Annual review of all controls by the CEO with no documentation of findings, remediation, or follow-up tracking through the year",
-        "B": "Ongoing supervisory review of control performance by management (e.g., transaction-exception reviews, KPI dashboards, management self-assessment), with documented results, identified issues, and remediation tracking",
+        "B": "Quarterly attestation by the audit director that controls are operating effectively, replacing management's monitoring responsibility entirely",
         "C": "Daily inspection of every transaction by the audit committee chair before the transaction is finalized in the operational system",
-        "D": "Quarterly attestation by the audit director that controls are operating effectively, replacing management's monitoring responsibility entirely"
+        "D": "Ongoing supervisory review of control performance by management (e.g., transaction-exception reviews, KPI dashboards, management self-assessment), with documented results, identified issues, and remediation tracking"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "Management monitoring is ongoing supervisory review by management of its own controls, with documented results and remediation tracking. CEO-only annual review is too sparse and undocumented; audit-committee-chair daily inspection is structurally wrong; audit-director attestation is independence transfer not management monitoring.",
       "pre_read": "For management-monitoring questions, anchor on \"management's ongoing supervisory review of its own controls\". Distractors that delegate to executives without documentation, escalate to the audit committee for daily activity, or replace management's role with audit-director attestation all violate the discipline.",
-      "correct_explanation": "COSO Internal Control - Integrated Framework (2013) Component 5 (Monitoring Activities) and ISACA IT Audit Standards establish that management-monitoring activities are ongoing supervisory reviews of controls performed by management itself — transaction-exception reviews, KPI dashboards, periodic management self-assessment — with documented results, identified issues, and remediation tracking. Option A is too sparse (annual) and undocumented (no findings or remediation). Option C structurally inverts the responsibility — the audit committee oversees management, it does not perform management's daily monitoring. Option D transfers management's responsibility to the audit director, which violates the auditor's independence (the auditor cannot attest on behalf of management; the auditor evaluates management's attestations).",
+      "correct_explanation": "COSO Internal Control - Integrated Framework (2013) Component 5 (Monitoring Activities) and ISACA IT Audit Standards establish that management-monitoring activities are ongoing supervisory reviews of controls performed by management itself — transaction-exception reviews, KPI dashboards, periodic management self-assessment — with documented results, identified issues, and remediation tracking. Option A is too sparse (annual) and undocumented (no findings or remediation). Option C structurally inverts the responsibility — the audit committee oversees management, it does not perform management's daily monitoring. Option B transfers management's responsibility to the audit director, which violates the auditor's independence (the auditor cannot attest on behalf of management; the auditor evaluates management's attestations).",
       "wrong_explanations": {
         "A": "Annual review by the CEO with no documentation is structurally inadequate. Monitoring requires ongoing cadence and documented results — the documentation is itself a control output.",
         "C": "The audit committee oversees management's monitoring activities; it does not perform those activities itself. Daily transaction inspection by the audit committee chair is a structural mismatch.",
-        "D": "The audit function evaluates management's controls. It does not perform management's monitoring or attest on management's behalf. Replacing management's responsibility with audit-director attestation is an independence transfer that breaks the COSO model."
+        "B": "The audit function evaluates management's controls. It does not perform management's monitoring or attest on management's behalf. Replacing management's responsibility with audit-director attestation is an independence transfer that breaks the COSO model."
       },
       "tips": [
-        "Trap is D — \"audit director attests\" sounds like a clean separation but it transfers management's responsibility to audit, breaking independence.",
+        "Trap is B — \"audit director attests\" sounds like a clean separation but it transfers management's responsibility to audit, breaking independence.",
         "Management monitoring = management's ongoing supervisory review + documentation + remediation tracking. Three elements.",
         "Exam-day shortcut: management-monitoring questions are answered by the option naming management's own ongoing review with documentation."
       ],
@@ -4658,22 +4658,22 @@
       "scenario_context": "An IS auditor at a medical-device manufacturer designed a substantive test of warranty-claim transactions using attribute sampling. The initial sample of 60 items found 5 deviations against an acceptable expected error rate of 3% (the auditor's pre-defined sample-size formula assumed an expected 2% error rate). The actual 5/60 deviation rate is 8.3%, which is statistically inconsistent with the original sample-design assumptions. The auditor is deciding how to respond. Three options are under consideration: extend the sample, switch sampling technique, or accept the original sample's results and report the higher-than-expected error rate as the conclusion.",
       "question": "Which response is MOST appropriate when the initial sample is statistically insufficient to support the auditor's planned conclusion?",
       "options": {
-        "A": "Accept the original sample's results as-is and conclude that the population's deviation rate is at least 8.3%, reporting this as the audit conclusion",
-        "B": "Extend the sample with additional items under the original design and re-evaluate; OR if the deviation rate suggests the design was mismatched, re-design (different technique or stratification) with documented rationale",
+        "A": "Extend the sample with additional items under the original design and re-evaluate; OR if the deviation rate suggests the design was mismatched, re-design (different technique or stratification) with documented rationale",
+        "B": "Accept the original sample's results as-is and conclude that the population's deviation rate is at least 8.3%, reporting this as the audit conclusion",
         "C": "Discard the initial sample's findings entirely and start over with a fresh sample, ignoring the deviations already identified",
         "D": "Conclude that the population's controls are completely failing without further procedures, since 8.3% deviation exceeds the 3% acceptable rate"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "When the initial sample is statistically insufficient, the auditor's options are extending the sample under the original design (if the design assumptions can still hold with more data) or re-designing (if the design was fundamentally mismatched). Both must be documented; original findings are not discarded.",
       "pre_read": "For sample-re-design questions, watch for distractors that conclude prematurely (8.3% > 3% so we're done), discard prior findings, or treat the result as terminal without further procedures. The right answer always preserves the data already gathered and applies appropriate next steps.",
-      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling establish that when an initial sample produces results inconsistent with sample-design assumptions, the auditor has two valid paths: (1) extend the sample by drawing additional items under the original design, accumulating the results, and re-evaluating; this works when the original design's assumptions can still hold with more data, and is the more common response when the deviation rate is moderately above the assumed rate. (2) re-design the sample if the deviation rate suggests the original design was fundamentally mismatched (e.g., switch from attribute to MUS, stratify the population, change the sampling unit); this is appropriate when extending the original sample would not address the underlying design problem. Both paths preserve the audit conclusion's statistical validity. Option A jumps to a population-level conclusion from an insufficient sample, which is statistically invalid. Option C discards prior findings, which loses information and misallocates effort. Option D leaps to a control-failure conclusion without further procedures, which is conclusory rather than evidence-based.",
+      "correct_explanation": "ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling establish that when an initial sample produces results inconsistent with sample-design assumptions, the auditor has two valid paths: (1) extend the sample by drawing additional items under the original design, accumulating the results, and re-evaluating; this works when the original design's assumptions can still hold with more data, and is the more common response when the deviation rate is moderately above the assumed rate. (2) re-design the sample if the deviation rate suggests the original design was fundamentally mismatched (e.g., switch from attribute to MUS, stratify the population, change the sampling unit); this is appropriate when extending the original sample would not address the underlying design problem. Both paths preserve the audit conclusion's statistical validity. Option B jumps to a population-level conclusion from an insufficient sample, which is statistically invalid. Option C discards prior findings, which loses information and misallocates effort. Option D leaps to a control-failure conclusion without further procedures, which is conclusory rather than evidence-based.",
       "wrong_explanations": {
-        "A": "An 8.3% deviation rate from a 60-item sample with 5 deviations does not statistically support a population-level conclusion of \"at least 8.3%\". The sample design assumed 2% expected error; the actual rate exceeds the design's range and the sample is insufficient.",
         "C": "Discarding the initial sample's findings ignores real evidence the auditor has already gathered. The deviations are real; the question is what additional procedures bring statistical validity.",
-        "D": "\"Controls completely failing\" is a much stronger conclusion than 8.3% supports. The actual deviation rate is high but not catastrophic; the auditor needs more data (extended sample) or a different design (re-designed sample) to support a defensible conclusion."
+        "D": "\"Controls completely failing\" is a much stronger conclusion than 8.3% supports. The actual deviation rate is high but not catastrophic; the auditor needs more data (extended sample) or a different design (re-designed sample) to support a defensible conclusion.",
+        "B": "An 8.3% deviation rate from a 60-item sample with 5 deviations does not statistically support a population-level conclusion of \"at least 8.3%\". The sample design assumed 2% expected error; the actual rate exceeds the design's range and the sample is insufficient."
       },
       "tips": [
-        "Trap is A — \"the data shows 8.3%, conclude 8.3%\" is statistically invalid when sample-design assumptions are exceeded.",
+        "Trap is B — \"the data shows 8.3%, conclude 8.3%\" is statistically invalid when sample-design assumptions are exceeded.",
         "Sample re-design options: extend (under original design) OR re-design (different technique). Both preserve prior findings; never discard.",
         "Exam-day shortcut: when initial sample design is exceeded, the answer is extend or re-design with documentation, not premature conclusion."
       ],
@@ -4919,18 +4919,18 @@
       "question": "An IS auditor at a cybersecurity managed-services provider is auditing a client that operates in both U.S. federal-contractor (NIST CSF aligned) and EU enterprise (ISO/IEC 27001 certified) markets. The auditor needs to evaluate whether the client's single control framework satisfies both NIST CSF and ISO 27001 simultaneously. What is the MOST important consideration when cross-walking the two frameworks?",
       "options": {
         "A": "If the client is ISO 27001 certified, NIST CSF compliance is automatic since the standards are equivalent",
-        "B": "Establish a documented control-mapping showing which client control(s) satisfy each CSF subcategory and ISO Annex A control, identify gaps, and address them explicitly given the frameworks' different orientations",
-        "C": "Audit only against NIST CSF since it is more recent and assume ISO 27001 compliance follows automatically",
+        "B": "Audit only against NIST CSF since it is more recent and assume ISO 27001 compliance follows automatically",
+        "C": "Establish a documented control-mapping showing which client control(s) satisfy each CSF subcategory and ISO Annex A control, identify gaps, and address them explicitly given the frameworks' different orientations",
         "D": "Use whichever framework's requirements are easier to satisfy in any given area, ignoring the other framework's requirements where they exceed the easier one"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Framework cross-walking requires documented control mapping covering both frameworks' requirements, gap identification where they differ, and recognition that they have different orientations and scopes. \"Equivalent\", \"one supersedes the other\", and \"easier-of-the-two\" are all wrong simplifications.",
       "pre_read": "For framework-cross-walking questions, anchor on \"documented mapping + gap identification + framework-orientation difference\". Distractors that treat frameworks as equivalent, automatically derived, or substitutable all miss the rigor required.",
-      "correct_explanation": "Framework cross-walking is a documented analytical exercise. NIST CSF (v2.0, 2024) and ISO/IEC 27001:2022 cover overlapping but distinct ground: CSF is outcomes-oriented (Identify / Protect / Detect / Respond / Recover / Govern functions) and ISO 27001 is process-oriented (ISMS requirements + Annex A controls). A control-mapping documents, for each requirement in each framework, which of the client's controls satisfies it. Gap identification surfaces requirements one framework imposes that the other does not (e.g., ISO 27001's ISMS-process requirements vs CSF's outcome-focus). Recognition of orientation differences prevents oversimplified equivalence claims. Option A claims equivalence between frameworks that are not equivalent. Option C abandons one framework's requirements entirely. Option D cherry-picks the easier requirement, leaving the harder one's gaps unaddressed.",
+      "correct_explanation": "Framework cross-walking is a documented analytical exercise. NIST CSF (v2.0, 2024) and ISO/IEC 27001:2022 cover overlapping but distinct ground: CSF is outcomes-oriented (Identify / Protect / Detect / Respond / Recover / Govern functions) and ISO 27001 is process-oriented (ISMS requirements + Annex A controls). A control-mapping documents, for each requirement in each framework, which of the client's controls satisfies it. Gap identification surfaces requirements one framework imposes that the other does not (e.g., ISO 27001's ISMS-process requirements vs CSF's outcome-focus). Recognition of orientation differences prevents oversimplified equivalence claims. Option A claims equivalence between frameworks that are not equivalent. Option B abandons one framework's requirements entirely. Option D cherry-picks the easier requirement, leaving the harder one's gaps unaddressed.",
       "wrong_explanations": {
         "A": "ISO 27001 and NIST CSF are not equivalent. They overlap substantially but have different orientations (process vs outcome) and different specific requirements. ISO certification does not automatically establish CSF alignment.",
-        "C": "Auditing against only one framework when both apply leaves the client exposed on the other framework's requirements. Cross-walking is necessary precisely because the two are not equivalent.",
-        "D": "Cherry-picking the easier requirement undermines compliance with the harder framework. If ISO 27001 requires a control NIST CSF doesn't, that control is still required for ISO compliance."
+        "D": "Cherry-picking the easier requirement undermines compliance with the harder framework. If ISO 27001 requires a control NIST CSF doesn't, that control is still required for ISO compliance.",
+        "B": "Auditing against only one framework when both apply leaves the client exposed on the other framework's requirements. Cross-walking is necessary precisely because the two are not equivalent."
       },
       "tips": [
         "Trap is A — \"ISO certified, so CSF compliant\" is the equivalence shortcut that doesn't actually hold.",
@@ -5371,18 +5371,18 @@
       "question": "Which selection approach is MOST appropriate?",
       "options": {
         "A": "Heat Map only — simplest to communicate and the audit committee will understand it best",
-        "B": "Layer methods by use case: ISO 31000 as defensibility framework, FAIR for quantitative loss modeling, heat-map for executive communication",
+        "B": "Pick whichever method is fastest to implement regardless of stakeholder needs, regulatory defensibility, or quantitative-modeling fit for the highest-priority risks",
         "C": "FAIR only — quantitative methods are always more rigorous and dominate qualitative methods regardless of executive-communication needs",
-        "D": "Pick whichever method is fastest to implement regardless of stakeholder needs, regulatory defensibility, or quantitative-modeling fit for the highest-priority risks"
+        "D": "Layer methods by use case: ISO 31000 as defensibility framework, FAIR for quantitative loss modeling, heat-map for executive communication"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "Risk-assessment methods can be layered: ISO 31000 for principles-based process governance; FAIR for quantitative dollar-risk on priority risks; heat maps for qualitative cross-organization comparability and executive communication. Each method serves a stakeholder; layering with documented reconciliation is the mature approach.",
       "pre_read": "For risk-assessment-method-selection questions, the right shape is \"layered method use serving distinct stakeholders, with reconciliation\". Distractors that pick a single method or speed-driven selection all miss the multi-stakeholder reality.",
-      "correct_explanation": "ISACA Risk IT Framework, ISO/IEC 31000 Risk Management, FAIR Institute documentation, and ITAF Performance Standards on Risk Assessment establish that risk-assessment methods serve different purposes and can be layered. ISO 31000 is principles-based and provides the assessment-process framework that gives regulators defensibility. FAIR is quantitative and produces dollar-loss-exposure ranges that support board-level financial-impact reporting (the CISO's need). Heat maps are qualitative and support cross-organization comparability and executive simplification (the CRO's need). A mature risk-assessment approach uses each where it adds value: ISO 31000 governs the process; FAIR runs on the highest-priority risks where dollar modeling matters; heat maps provide the qualitative layer for executive and cross-organization views. Documentation reconciles outputs across methods. Option A picks the simplest method without serving the CISO's quantitative need or the audit committee's defensibility need. Option C declares FAIR universally superior, ignoring that FAIR is computationally heavy and not appropriate for every risk. Option D abandons stakeholder-needs analysis entirely.",
+      "correct_explanation": "ISACA Risk IT Framework, ISO/IEC 31000 Risk Management, FAIR Institute documentation, and ITAF Performance Standards on Risk Assessment establish that risk-assessment methods serve different purposes and can be layered. ISO 31000 is principles-based and provides the assessment-process framework that gives regulators defensibility. FAIR is quantitative and produces dollar-loss-exposure ranges that support board-level financial-impact reporting (the CISO's need). Heat maps are qualitative and support cross-organization comparability and executive simplification (the CRO's need). A mature risk-assessment approach uses each where it adds value: ISO 31000 governs the process; FAIR runs on the highest-priority risks where dollar modeling matters; heat maps provide the qualitative layer for executive and cross-organization views. Documentation reconciles outputs across methods. Option A picks the simplest method without serving the CISO's quantitative need or the audit committee's defensibility need. Option C declares FAIR universally superior, ignoring that FAIR is computationally heavy and not appropriate for every risk. Option B abandons stakeholder-needs analysis entirely.",
       "wrong_explanations": {
         "A": "Heat Map only is a single-stakeholder solution (audit committee). The CISO's quantitative need and the CRO's structured-comparability need are unmet, and the audit committee's regulator-defensibility need is also undermet (heat maps alone are not principles-based).",
         "C": "FAIR is rigorous for risks where dollar-loss modeling adds value, but FAIR is computationally heavy and not appropriate for every risk. Applying FAIR to every risk wastes effort on risks where simpler methods suffice.",
-        "D": "Speed-driven method selection ignores the actual needs of stakeholders and the defensibility requirements. Method selection follows from stakeholder needs and defensibility, not implementation speed."
+        "B": "Speed-driven method selection ignores the actual needs of stakeholders and the defensibility requirements. Method selection follows from stakeholder needs and defensibility, not implementation speed."
       },
       "tips": [
         "Trap is A — \"simplest = best\" ignores the multi-stakeholder reality. Heat Map alone underserves three of the four stakeholders.",
@@ -5784,22 +5784,22 @@
       "scenario_context": "An IS auditor at a commercial-bakery chain has identified a risk in the customer-loyalty-program system: unauthorized point redemption due to weak fraud-detection in the rewards-redemption workflow. The expected annual loss is $850K. Management has identified four mitigation options: (1) Accept — reserve the $850K in operating expense and continue with current controls; (2) Reduce — deploy enhanced fraud-detection ML at $1.2M one-time + $300K/year ongoing, projected to reduce expected loss to $80K/year; (3) Transfer — purchase rewards-fraud insurance at $620K/year that covers losses above $200K deductible; (4) Avoid — discontinue the loyalty program entirely, eliminating both the $850K loss exposure AND the $4.5M/year customer-retention value the program produces.",
       "question": "Which treatment selection is MOST defensible from a residual-risk and cost-benefit perspective?",
       "options": {
-        "A": "Option 1 (Accept) — reserving $850K for expected loss is the cheapest year-1 outlay since no controls or insurance premiums are required upfront",
-        "B": "Option 2 (Reduce) — annual loss reduction of $770K significantly exceeds the $300K ongoing cost, with break-even on the $1.2M one-time investment in approximately 2.5 years",
+        "A": "Option 2 (Reduce) — annual loss reduction of $770K significantly exceeds the $300K ongoing cost, with break-even on the $1.2M one-time investment in approximately 2.5 years",
+        "B": "Option 1 (Accept) — reserving $850K for expected loss is the cheapest year-1 outlay since no controls or insurance premiums are required upfront",
         "C": "Option 3 (Transfer) — purchasing insurance at $620K/year transfers the financial exposure but leaves the underlying control weakness operationally unaddressed",
         "D": "Option 4 (Avoid) — discontinuing the customer-loyalty program eliminates the risk entirely but forfeits all program revenue and customer-retention benefits"
       },
-      "correct": "B",
+      "correct": "A",
       "key_concept": "Risk treatment selection requires explicit cost-benefit analysis covering one-time costs, ongoing costs, expected loss reduction, break-even period, and residual risk. The right treatment maximizes long-run value, not year-1 simplicity or single-dimension optimization.",
       "pre_read": "For risk-treatment selection questions, the right approach combines cost-benefit math with residual-risk evaluation. Distractors that pick by year-1 cost, single-dimension cost, or eliminate-the-program-too all miss the long-run analysis.",
-      "correct_explanation": "ISACA Risk IT Framework and ISO/IEC 31000 establish that risk treatment selection follows from cost-benefit analysis covering: (a) one-time costs, (b) ongoing costs, (c) expected loss reduction, (d) break-even period, and (e) residual risk. Walking through each option: Accept ($850K/year reserved indefinitely, no risk reduction); Reduce ($1.2M one-time + $300K/year ongoing, expected loss reduced to $80K/year, net annual benefit from year 2 onward ≈ $470K, break-even on the one-time investment ≈ 2.5 years); Transfer ($620K/year, no risk reduction, financial exposure shifted but $200K deductible per occurrence remains); Avoid (eliminates $850K loss exposure but also eliminates $4.5M/year of customer-retention value, net opportunity cost ≈ $3.65M/year). Reduce dominates on the long-run cost-benefit math. Option A is the year-1-cheapest fallacy. Option C trades one cash flow for another without reducing the underlying risk. Option D destroys substantial business value to eliminate a relatively contained risk.",
+      "correct_explanation": "ISACA Risk IT Framework and ISO/IEC 31000 establish that risk treatment selection follows from cost-benefit analysis covering: (a) one-time costs, (b) ongoing costs, (c) expected loss reduction, (d) break-even period, and (e) residual risk. Walking through each option: Accept ($850K/year reserved indefinitely, no risk reduction); Reduce ($1.2M one-time + $300K/year ongoing, expected loss reduced to $80K/year, net annual benefit from year 2 onward ≈ $470K, break-even on the one-time investment ≈ 2.5 years); Transfer ($620K/year, no risk reduction, financial exposure shifted but $200K deductible per occurrence remains); Avoid (eliminates $850K loss exposure but also eliminates $4.5M/year of customer-retention value, net opportunity cost ≈ $3.65M/year). Reduce dominates on the long-run cost-benefit math. Option B is the year-1-cheapest fallacy. Option C trades one cash flow for another without reducing the underlying risk. Option D destroys substantial business value to eliminate a relatively contained risk.",
       "wrong_explanations": {
-        "A": "Accepting at $850K/year is the year-1-cheapest fallacy. Compounded over 5 years that's $4.25M with no risk reduction; Reduce delivers reduction at substantially lower long-run cost.",
         "C": "Insurance transfers financial exposure but doesn't reduce the underlying risk. With a $200K deductible per occurrence, the company still bears partial exposure; with $620K/year ongoing premium, this exceeds Reduce's ongoing cost without producing risk reduction.",
-        "D": "Discontinuing the program eliminates a $850K/year risk but also eliminates $4.5M/year of customer-retention value — a net business-value destruction of $3.65M/year. Avoid is appropriate when the value of the activity is less than the risk; here the value substantially exceeds the risk."
+        "D": "Discontinuing the program eliminates a $850K/year risk but also eliminates $4.5M/year of customer-retention value — a net business-value destruction of $3.65M/year. Avoid is appropriate when the value of the activity is less than the risk; here the value substantially exceeds the risk.",
+        "B": "Accepting at $850K/year is the year-1-cheapest fallacy. Compounded over 5 years that's $4.25M with no risk reduction; Reduce delivers reduction at substantially lower long-run cost."
       },
       "tips": [
-        "Trap is A — \"cheapest year 1\" ignores compounding and risk reduction. Long-run cost-benefit decides.",
+        "Trap is B — \"cheapest year 1\" ignores compounding and risk reduction. Long-run cost-benefit decides.",
         "Treatment selection math: one-time + ongoing + loss-reduction + break-even + residual risk. Five dimensions, evaluate together.",
         "Exam-day shortcut: when multiple treatments are presented with explicit cost numbers, calculate break-even and net annual cost; the long-run optimum usually wins."
       ],
@@ -6164,18 +6164,18 @@
       "question": "Which approach BEST handles the special-purpose-report request?",
       "options": {
         "A": "Submit the standard annual audit report as-is, since it covers the IT-control environment, even though the format and attestation language don't match the regulator's requirements",
-        "B": "Design a special-purpose report tailored to the regulator's specific requirements: scope, attestation language, effective date, and any additional procedures beyond the standard annual audit",
-        "C": "Decline the special-purpose request and tell the company to use the standard annual audit report or hire a different auditor",
+        "B": "Decline the special-purpose request and tell the company to use the standard annual audit report or hire a different auditor",
+        "C": "Design a special-purpose report tailored to the regulator's specific requirements: scope, attestation language, effective date, and any additional procedures beyond the standard annual audit",
         "D": "Issue a special-purpose report based on the standard annual audit work without performing any additional procedures, simply re-formatting the existing report to match the regulator's required format"
       },
-      "correct": "B",
+      "correct": "C",
       "key_concept": "Special-purpose audit reports require designing the engagement specifically for the special purpose: scope tailored to the regulator's requirements, attestation language matching the required wording, additional procedures performed beyond standard work as needed, special-purpose nature documented, and proper sign-off. Submit-standard-as-is, decline, or re-format-without-procedures all miss the discipline.",
       "pre_read": "For special-purpose-report questions, the right shape is \"design specifically + match required language + perform additional procedures + document special-purpose nature\". Distractors that submit standard, decline, or re-format-only all break the special-purpose framework.",
-      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting), ITAF Performance Standards on Special-Purpose Reports, and AICPA SSAE 18 / AT-C Section 205 (Examination Engagements, with foundational AT-C 105 concepts) establish that special-purpose audit reports require engagements designed specifically for the special purpose. The right discipline: (1) scope and procedures aligned to the regulator's specific control areas (which may be a subset, superset, or differently-organized than standard scope); (2) attestation language matching the regulator's required wording (the language has legal significance); (3) effective date set to the date the regulator requires; (4) additional procedures performed beyond standard annual audit work as needed; (5) special-purpose nature documented in the engagement letter and audit report; (6) proper sign-off under the special-purpose framework. Option A submits the standard report despite format and language mismatches, which fails the regulator's requirements. Option C declines the request, abandoning the company's compliance need. Option D re-formats without additional procedures, claiming the special-purpose attestation without actually doing the work required to support it.",
+      "correct_explanation": "ISACA IT Audit Standard 1401 (Reporting), ITAF Performance Standards on Special-Purpose Reports, and AICPA SSAE 18 / AT-C Section 205 (Examination Engagements, with foundational AT-C 105 concepts) establish that special-purpose audit reports require engagements designed specifically for the special purpose. The right discipline: (1) scope and procedures aligned to the regulator's specific control areas (which may be a subset, superset, or differently-organized than standard scope); (2) attestation language matching the regulator's required wording (the language has legal significance); (3) effective date set to the date the regulator requires; (4) additional procedures performed beyond standard annual audit work as needed; (5) special-purpose nature documented in the engagement letter and audit report; (6) proper sign-off under the special-purpose framework. Option A submits the standard report despite format and language mismatches, which fails the regulator's requirements. Option B declines the request, abandoning the company's compliance need. Option D re-formats without additional procedures, claiming the special-purpose attestation without actually doing the work required to support it.",
       "wrong_explanations": {
         "A": "Submitting the standard annual audit report despite format and language mismatches fails the regulator's requirements. The merger filing requires the specific format and language; submitting non-conforming report risks regulatory rejection.",
-        "C": "Declining the special-purpose request abandons the company's regulatory filing need. The audit function's role includes supporting regulatory filings within the discipline of special-purpose engagements.",
-        "D": "Re-formatting the standard report without performing any additional procedures claims an attestation the auditor cannot support — the standard procedures didn't address the regulator's specific requirements. This is essentially fraudulent attestation."
+        "D": "Re-formatting the standard report without performing any additional procedures claims an attestation the auditor cannot support — the standard procedures didn't address the regulator's specific requirements. This is essentially fraudulent attestation.",
+        "B": "Declining the special-purpose request abandons the company's regulatory filing need. The audit function's role includes supporting regulatory filings within the discipline of special-purpose engagements."
       },
       "tips": [
         "Trap is A — \"standard report covers IT controls, so submit as-is\" misses format and language requirements that the regulator demands.",
@@ -6386,18 +6386,18 @@
       "question": "An IS auditor at a home-improvement retail chain is reviewing the company's process for retiring an AI/ML demand-forecasting model that is being replaced by a new model. What is the MOST important audit consideration regarding model retirement?",
       "options": {
         "A": "Once a model is retired and no longer in production, the audit's interest in it ends and no specific retirement procedures are required",
-        "B": "Preserve evidence sufficient to reconstruct the retired model's decisions for future inquiry, document retirement rationale, and confirm no integration paths leave the old model partially active",
+        "B": "Keep the retired model running indefinitely alongside the new one, since model continuity preserves evidence",
         "C": "Retire the model immediately and delete all associated data, records, and documentation to free up storage and minimize complexity",
-        "D": "Keep the retired model running indefinitely alongside the new one, since model continuity preserves evidence"
+        "D": "Preserve evidence sufficient to reconstruct the retired model's decisions for future inquiry, document retirement rationale, and confirm no integration paths leave the old model partially active"
       },
-      "correct": "B",
+      "correct": "D",
       "key_concept": "AI/ML model retirement requires evidence preservation (model version, training data lineage, decision logs sufficient to reconstruct production decisions), rationale documentation, and integration-path verification. Immediate-deletion, evidence-preservation-by-keeping-model-running, and skip-retirement-procedures all miss the discipline.",
       "pre_read": "For model-retirement questions, the right shape is \"preserve evidence to reconstruct decisions + document rationale + verify integration cutover\". Distractors that delete immediately, keep models indefinitely, or skip procedures all violate the discipline.",
-      "correct_explanation": "ISACA \"Auditing Artificial Intelligence\" guidance, NIST AI Risk Management Framework, and ITAF Performance Standards on Documentation establish that AI/ML model retirement requires specific procedures preserving the auditor's and regulator's ability to reconstruct production decisions. The retirement process: (1) preserves evidence — model version, training data lineage, decision logs sufficient to reconstruct any production decision the retired model made (regulatory or litigation inquiries can arise years after retirement); (2) documents the retirement rationale — what the new model addresses that the old one didn't, what the transition plan covers; (3) verifies no integration paths still depend on the retired model after cutover (testing for dangling dependencies). Option A treats retirement as an end-of-audit-interest event, missing the post-retirement evidentiary obligations. Option C deletes everything immediately, eliminating the evidence the auditor (and others) may need later. Option D keeps the model running indefinitely as evidence-preservation, which costs operationally and creates parallel-system risk.",
+      "correct_explanation": "ISACA \"Auditing Artificial Intelligence\" guidance, NIST AI Risk Management Framework, and ITAF Performance Standards on Documentation establish that AI/ML model retirement requires specific procedures preserving the auditor's and regulator's ability to reconstruct production decisions. The retirement process: (1) preserves evidence — model version, training data lineage, decision logs sufficient to reconstruct any production decision the retired model made (regulatory or litigation inquiries can arise years after retirement); (2) documents the retirement rationale — what the new model addresses that the old one didn't, what the transition plan covers; (3) verifies no integration paths still depend on the retired model after cutover (testing for dangling dependencies). Option A treats retirement as an end-of-audit-interest event, missing the post-retirement evidentiary obligations. Option C deletes everything immediately, eliminating the evidence the auditor (and others) may need later. Option B keeps the model running indefinitely as evidence-preservation, which costs operationally and creates parallel-system risk.",
       "wrong_explanations": {
         "A": "Retired models can be the subject of inquiry years after retirement (regulatory questions, litigation, customer complaints about historical decisions). The audit's interest extends through the evidence-preservation period, not just while the model is in production.",
         "C": "Immediate deletion eliminates the evidence the auditor and others may need to reconstruct production decisions. Storage and complexity costs are real but vastly outweighed by the inability to answer post-retirement questions.",
-        "D": "Keeping the retired model running indefinitely as evidence-preservation is operationally costly and creates parallel-system risk (which model is authoritative for which decisions). Evidence preservation is achieved through documented archives, not by keeping production systems running."
+        "B": "Keeping the retired model running indefinitely as evidence-preservation is operationally costly and creates parallel-system risk (which model is authoritative for which decisions). Evidence preservation is achieved through documented archives, not by keeping production systems running."
       },
       "tips": [
         "Trap is A — \"retired = end of audit interest\" misses post-retirement evidentiary obligations.",
