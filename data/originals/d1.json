@@ -951,8 +951,8 @@
       "question": "Which risk-assessment approach is MOST appropriate for the auditor to apply across these three systems?",
       "options": {
         "A": "Quantitative risk assessment (probability × impact) for all three systems, using extrapolation where historical data is sparse",
-        "B": "Qualitative risk assessment (high/medium/low) for all three systems to maintain consistency across the audit universe",
-        "C": "A hybrid approach — quantitative for system 1 (where 5 years of data supports it), qualitative for systems 2 and 3 (where data is sparse or absent)",
+        "B": "Qualitative risk assessment (high/medium/low) for all three systems to maintain consistency across the audit universe regardless of data availability",
+        "C": "Hybrid approach — quantitative for system 1 (5 years of data supports it), qualitative for systems 2 and 3 where data is sparse or absent",
         "D": "Defer the risk assessment for systems 2 and 3 until they have a year of operational data"
       },
       "correct": "C",
@@ -1277,10 +1277,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a regional stock exchange has completed the annual audit of the trading-platform's IT controls. The audit identified two significant control weaknesses (a delayed user-deactivation process and inconsistent privileged-access reviews) but found that other major control areas were operating effectively, and no scope limitations were encountered. The auditor must select an audit-opinion type for the report. Which is MOST appropriate?",
       "options": {
-        "A": "Unmodified opinion — controls are operating effectively overall",
+        "A": "Unmodified opinion — controls are operating effectively overall, with no identified deficiencies in the IT-control environment",
         "B": "Qualified (modified) opinion — controls are operating effectively except for the specific noted weaknesses",
-        "C": "Adverse opinion — controls are not operating effectively",
-        "D": "Disclaimer of opinion — the auditor cannot form an opinion"
+        "C": "Adverse opinion — controls are not operating effectively in any material respect across the audited population",
+        "D": "Disclaimer of opinion — the auditor cannot form an opinion due to insufficient evidence or significant scope limitation"
       },
       "correct": "B",
       "key_concept": "Audit opinion types map to the magnitude and pervasiveness of findings: unmodified (no significant issues), qualified/modified (significant but limited issues), adverse (controls not effective overall), disclaimer (cannot form an opinion due to scope limitation).",
@@ -1316,9 +1316,9 @@
       "question": "Which risk should the auditor MOST appropriately rank as the highest priority for the next audit cycle?",
       "options": {
         "A": "Risk 1 — unauthorized PII access (combined high likelihood × very high impact, with regulatory exposure)",
-        "B": "Risk 2 — platform downtime (most quantifiable financial impact)",
-        "C": "Risk 3 — algorithmic-pricing controversy (highest worst-case reputational impact)",
-        "D": "Risk 4 — payment-processor outage (highest direct-financial impact when triggered)"
+        "B": "Risk 2 — platform downtime, since this is the most quantifiable financial impact and produces the cleanest measurable loss",
+        "C": "Risk 3 — algorithmic-pricing controversy, since this carries the highest worst-case reputational impact for the company",
+        "D": "Risk 4 — payment-processor outage, since this produces the highest direct-financial impact when triggered during peak shopping windows"
       },
       "correct": "A",
       "key_concept": "Risk-based audit prioritization uses likelihood × impact to rank risks. The highest-likelihood, highest-impact risk wins, especially when reinforced by regulatory exposure that compounds the impact dimension.",
@@ -1499,10 +1499,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a state Department of Motor Vehicles is preparing the final audit report on the agency's identity-verification controls. The report will be issued to the agency director and the legislative oversight committee. Which statement BEST describes the PRIMARY objective of the audit report?",
       "options": {
-        "A": "To follow a standard sequence of executive summary, scope, methodology, findings, and recommendations",
+        "A": "To follow a standard sequence of executive summary, scope, methodology, findings, and recommendations across all audit reports",
         "B": "To communicate findings, conclusions, and recommendations in a way that allows stakeholders to make informed decisions about the audited area",
-        "C": "To document the audit team's work in sufficient detail for a future quality-assurance review",
-        "D": "To establish a permanent record of management's response to each finding"
+        "C": "To document the audit team's work in sufficient detail for a future quality-assurance review by independent assessors",
+        "D": "To establish a permanent record of management's response to each finding for follow-up tracking and audit-committee review"
       },
       "correct": "B",
       "key_concept": "The audit report exists to inform stakeholder decision-making. Structure, work documentation, and management responses serve that objective — they are not the objective themselves.",
@@ -1535,10 +1535,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a pharmaceutical company is finalizing audit documentation following an audit of clinical-trial data integrity. The audit identified material weaknesses that may be subject to FDA inspection. The audit director is establishing retention and access controls for the audit documentation. What is the MOST important consideration?",
       "options": {
-        "A": "Convenience of audit team members in retrieving documentation for future audits of the same area",
+        "A": "Convenience of audit team members in retrieving documentation for future audits of the same area or similar engagements",
         "B": "Compliance with regulatory and ISACA retention requirements applicable to the audit subject, with controls that protect documentation from unauthorized modification or deletion",
-        "C": "Minimizing storage cost given the volume of documentation generated by the engagement",
-        "D": "Maintaining all documentation in original paper format to preserve authenticity for any future regulator review"
+        "C": "Minimizing storage cost given the volume of documentation generated by the engagement, particularly for analytics-heavy audits",
+        "D": "Maintaining all documentation in original paper format to preserve authenticity for any future regulator review or litigation request"
       },
       "correct": "B",
       "key_concept": "Audit documentation must be retained per applicable regulatory and professional requirements and protected from tampering. Convenience, cost minimization, and format choice are subordinate to those requirements.",
@@ -1754,10 +1754,10 @@
       "scenario_context": "An IS auditor at a SaaS retail-marketplace platform is testing the platform's automated price-rules engine. Management has represented that 100% of pricing rules are reviewed by a second independent reviewer before activation. The auditor has two objectives for the engagement: Objective 1 — determine whether the second-reviewer control is operating as designed across the population of activated rules; Objective 2 — estimate the dollar value of any mis-priced active rules currently affecting merchant revenue, so that finance can quantify potential remediation. The auditor is selecting between attribute sampling, variable (monetary-unit) sampling, and other techniques.",
       "question": "Which sampling approach BEST satisfies both objectives in the same engagement?",
       "options": {
-        "A": "Attribute sampling for both objectives — simpler to design and more efficient to execute",
+        "A": "Attribute sampling for both objectives — simpler to design and more efficient to execute on a single sample frame",
         "B": "Attribute sampling for Objective 1 (compliance with the second-reviewer control) and variable (monetary-unit) sampling for Objective 2 (dollar estimation of mis-priced rules)",
-        "C": "Variable sampling for both objectives — provides more information per sampled item",
-        "D": "Stop-or-go sampling for both objectives — minimizes sample size and audit effort"
+        "C": "Variable sampling for both objectives — provides more information per sampled item and supports both deviation and dollar conclusions",
+        "D": "Stop-or-go sampling for both objectives — minimizes sample size and audit effort by enabling early termination on clean items"
       },
       "correct": "B",
       "key_concept": "Sampling technique follows the testing objective. Compliance/yes-no testing of a control uses attribute sampling; substantive estimation of monetary error uses variable (often monetary-unit) sampling. The two objectives require different techniques in the same engagement.",
@@ -2158,7 +2158,7 @@
       "options": {
         "A": "Standards — they provide mandatory minimum requirements; for any audit, Standards are the right starting point regardless of the specific need",
         "B": "Guidelines — they explain how to apply the Standards in specific contexts and are recommended; the auditor should rely on them for advisory commentary, but they generally don't provide step-by-step workflows",
-        "C": "Tools and Techniques — they provide practical procedures, templates, and example workflows that audit teams may adapt to specific engagements; this is the layer that matches the auditor's stated need for an adaptable workflow plus checklist",
+        "C": "Tools and Techniques — they provide practical procedures, templates, and example workflows that audit teams may adapt to specific engagements, matching the auditor's adaptable-workflow need",
         "D": "The auditor should consult external (non-ISACA) audit-firm methodologies, since ITAF does not address niche environments such as research-data management"
       },
       "correct": "C",
@@ -2194,7 +2194,7 @@
       "question": "Which statement BEST distinguishes compliance testing from substantive testing in IS audit?",
       "options": {
         "A": "Both test the same target — controls — but at different points in the audit cycle",
-        "B": "Compliance testing evaluates whether controls are operating as designed (a yes/no question about the control); substantive testing evaluates the accuracy and completeness of underlying transactions or data",
+        "B": "Compliance testing evaluates whether controls are operating as designed (yes/no on the control); substantive testing evaluates the accuracy and completeness of transactions or data",
         "C": "Compliance testing applies only to regulated industries; substantive testing applies to all engagements regardless of regulation",
         "D": "Compliance testing is a type of computer-assisted audit technique; substantive testing is a manual review technique"
       },
@@ -2305,7 +2305,7 @@
         "A": "MUS gives every transaction an equal probability of selection regardless of dollar value, ensuring statistical fairness across the population",
         "B": "MUS biases sample selection toward higher-dollar items in proportion to their dollar size, which fits substantive testing where over-billings on larger items have proportionally larger impact on the audit conclusion",
         "C": "MUS is the easiest sampling technique to compute by hand, so it is the right choice when specialized audit-sampling software is unavailable",
-        "D": "MUS produces a yes/no answer per sampled item, simplifying the auditor's reporting to management"
+        "D": "MUS produces a yes/no answer per sampled item, simplifying the auditor's reporting to management about each tested transaction's compliance status"
       },
       "correct": "B",
       "key_concept": "Monetary-unit sampling treats every dollar in the population as a sampling unit. The probability of an item being selected is proportional to its dollar value, which is exactly what is needed when over-billings on large items matter more to the conclusion than over-billings on small items.",
@@ -2631,10 +2631,10 @@
       "bloom_level": "Foundational",
       "question": "Which statement BEST describes the PRIMARY objective of Control Self-Assessment (CSA)?",
       "options": {
-        "A": "To replace independent audits in environments where management has direct knowledge of the controls",
+        "A": "To replace independent audits in environments where management has direct knowledge of the controls and their day-to-day operation",
         "B": "To engage business-process owners and operational management in evaluating the effectiveness of controls in their own areas, complementing independent audit work",
-        "C": "To outsource the evaluation of internal controls entirely to an external assessment provider",
-        "D": "To produce audit findings without involving the IS audit function or its standards-based methodology"
+        "C": "To outsource the evaluation of internal controls entirely to an external assessment provider on a recurring basis",
+        "D": "To produce audit findings without involving the IS audit function or its standards-based methodology and supervisory discipline"
       },
       "correct": "B",
       "key_concept": "CSA engages business-process owners in evaluating controls in their own areas, leveraging local knowledge while complementing — never replacing — independent audit work. Replacement, outsourcing, and bypassing the audit function are all misuses.",
@@ -3067,7 +3067,7 @@
       "question": "Which of the following BEST describes when a challenger-model approach is appropriate, and why the data-science team's proposal is INSUFFICIENT?",
       "options": {
         "A": "The data-science team is correct — self-reported confidence scores and accuracy metrics are sufficient when the production model has been validated to industry standards. A challenger model is unnecessary overhead.",
-        "B": "A challenger-model approach is appropriate when the production model is high-stakes (safety-critical here) and self-reported metrics cannot independently detect systematic bias, drift, or correlated failures. The data-science team's proposal is insufficient because the production model evaluates itself, providing no independent perspective.",
+        "B": "A challenger-model approach is appropriate when the production model is high-stakes and self-reported metrics cannot independently detect systematic bias, drift, or correlated failures",
         "C": "A challenger model should fully replace the production model in the audit's evaluation, since the audit team's challenger is by definition more independent than any production model.",
         "D": "Challenger models are only appropriate when the production model has already failed in production; they are not part of preventive audit work."
       },
@@ -3402,7 +3402,7 @@
         "A": "The total dollar value of all transactions in the audited population, regardless of relevance to audit conclusions",
         "B": "The threshold at which a misstatement, weakness, or finding could reasonably be expected to influence the decisions or judgments of the report's intended users",
         "C": "The dollar value below which the auditor will not perform any testing in any audit engagement",
-        "D": "The standardized regulatory amount that all audits must use to determine sample sizes"
+        "D": "The standardized regulatory amount that all audits must use to determine sample sizes regardless of the audit's specific objectives"
       },
       "correct": "B",
       "key_concept": "Materiality is the threshold at which a misstatement or finding could reasonably influence the decisions of the report's intended users. It is judgment-based and engagement-specific, not a fixed dollar amount or regulatory standard.",
@@ -3620,7 +3620,7 @@
       "question": "An IS audit director at a multinational conglomerate operating in 23 countries across 8 lines of business is establishing the audit universe for the IT audit function. Which approach BEST describes a properly defined and maintained audit universe?",
       "options": {
         "A": "A list of every individual IT system across all 23 countries and 8 lines of business, fully enumerated and updated daily",
-        "B": "A structured catalog of auditable entities (business processes, systems, programs, regulatory regimes, geographies) at an appropriate level of granularity, mapped to risk attributes and refreshed at least annually to reflect organizational and risk-environment changes",
+        "B": "A structured catalog of auditable entities (business processes, systems, programs, regulatory regimes) at appropriate granularity, mapped to risk and refreshed at least annually",
         "C": "A static high-level summary of major business divisions, set once at the function's establishment and not modified as the organization evolves",
         "D": "A dynamic feed of ticketing-system data showing which systems have had recent incidents, used as the basis for engagement selection without separate maintenance"
       },
@@ -3657,7 +3657,7 @@
       "question": "An IS auditor at an aircraft maintenance, repair, and overhaul (MRO) provider has completed an audit of the airworthiness-records system. The audit collected substantial evidence including original printouts of digital signatures, screen captures of system configurations, copies of regulator communications, and the auditor's analysis spreadsheets. The audit director is establishing what to retain and how. Which approach is MOST appropriate?",
       "options": {
         "A": "Retain only summary documents (the audit report and a one-page evidence index) since detail-level evidence is voluminous and slow to access",
-        "B": "Retain the original evidence and the auditor's analysis at a level that supports the audit conclusions, with controls protecting integrity, in compliance with regulatory and ISACA retention requirements applicable to the audit subject",
+        "B": "Retain original evidence and the auditor's analysis at a level supporting the conclusions, with controls protecting integrity, in compliance with regulatory and ISACA retention requirements",
         "C": "Retain everything indefinitely on local storage at the audit team's offices to ensure accessibility for any future review",
         "D": "Forward all detail-level evidence to the audited business unit for retention, since they are responsible for their own records"
       },
@@ -3843,7 +3843,7 @@
       "question": "Which response is MOST appropriate, and which two of the four developments warrant the strongest case for mid-cycle update?",
       "options": {
         "A": "No mid-cycle update — the annual risk assessment is the planning anchor and changing it mid-cycle creates churn; address all four developments at the next annual refresh",
-        "B": "Mid-cycle update is appropriate; the strongest cases are development 1 (acquisition tripled universe) and development 3 (new regulatory rule with a 9-month window); developments 2 and 4 are relevant context but address through ongoing monitoring rather than full risk-assessment refresh",
+        "B": "Mid-cycle update is appropriate; strongest cases are the acquisition (tripled universe) and the new regulatory rule (9-month window); other developments addressed through ongoing monitoring rather than refresh",
         "C": "Full re-do of the risk assessment from scratch; the mid-cycle update should treat all four developments equally and reset the entire universe and engagement plan",
         "D": "Mid-cycle update only on development 4 (CFO retirement); the other three are within the existing audit plan's coverage"
       },
@@ -4102,10 +4102,10 @@
       "bloom_level": "Foundational",
       "question": "Which set of elements is MOST representative of the standard contents of an IS audit charter?",
       "options": {
-        "A": "The detailed audit-program procedures, sample sizes, and testing techniques used by the audit function",
+        "A": "The detailed audit-program procedures, sample sizes, and testing techniques used by the audit function during fieldwork",
         "B": "Statements of the audit function's authority, responsibility, scope, reporting line to the audit committee, independence provisions, and the process for charter modification",
-        "C": "The annual audit-engagement schedule, including specific start dates and completion targets for each engagement",
-        "D": "Records of the audit team's continuing-education completions and certification statuses"
+        "C": "The annual audit-engagement schedule, including specific start dates and completion targets for each engagement in the cycle",
+        "D": "Records of the audit team's continuing-education completions and certification statuses across all team members for the year"
       },
       "correct": "B",
       "key_concept": "The audit charter contains the function-level governance elements: authority, responsibility, scope, reporting line, independence provisions, and modification process. It is not the audit program (engagement-level), not the annual plan (operational), and not HR records.",
@@ -4250,7 +4250,7 @@
       "question": "An IS audit director at a global airline operations company is launching an integrated audit of the flight-crew-scheduling system. The audit will span IT components (the scheduling application, integrations to payroll), operational components (crew assignment, fatigue-rule compliance), and financial-reporting components (payroll-accrual reporting). The director is selecting the audit team. Which composition is MOST appropriate?",
       "options": {
         "A": "An IT-audit team only — IT auditors can learn the operational and financial-reporting elements during fieldwork",
-        "B": "A team that combines IT-audit, operational-audit, and financial-audit skills — either through staff with cross-discipline experience or through a co-staffed team — with a single accountable engagement leader who coordinates across the disciplines",
+        "B": "A team combining IT-audit, operational-audit, and financial-audit skills — through cross-discipline staff or co-staffing — with a single accountable engagement leader",
         "C": "Three separate teams (one IT, one operational, one financial) operating in parallel without coordination, to preserve each discipline's specialist focus",
         "D": "An external audit firm engaged at full cost to perform the entire integrated audit, since internal teams cannot match cross-discipline expertise"
       },
@@ -4285,10 +4285,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a meal-delivery service is evaluating management's monitoring activities (the management-monitoring sub-area of the control environment, distinct from independent evaluation by the audit function). Which of the following BEST describes a properly designed management-monitoring activity?",
       "options": {
-        "A": "Annual review of all controls by the CEO with no documentation of findings or remediation",
+        "A": "Annual review of all controls by the CEO with no documentation of findings, remediation, or follow-up tracking through the year",
         "B": "Ongoing supervisory review of control performance by management (e.g., transaction-exception reviews, KPI dashboards, management self-assessment), with documented results, identified issues, and remediation tracking",
-        "C": "Daily inspection of every transaction by the audit committee chair before the transaction is finalized",
-        "D": "Quarterly attestation by the audit director that controls are operating effectively, replacing management's responsibility"
+        "C": "Daily inspection of every transaction by the audit committee chair before the transaction is finalized in the operational system",
+        "D": "Quarterly attestation by the audit director that controls are operating effectively, replacing management's monitoring responsibility entirely"
       },
       "correct": "B",
       "key_concept": "Management monitoring is ongoing supervisory review by management of its own controls, with documented results and remediation tracking. CEO-only annual review is too sparse and undocumented; audit-committee-chair daily inspection is structurally wrong; audit-director attestation is independence transfer not management monitoring.",
@@ -4470,7 +4470,7 @@
       "question": "An IS auditor at an online travel-booking platform is testing the IT general controls over logical access for the booking-and-payments system. Which characteristic is MOST important in a well-designed logical-access control?",
       "options": {
         "A": "Provisioning is automated based on the user's job title alone, with no manager approval, to minimize friction at hire",
-        "B": "Provisioning is authorized based on least privilege, periodic access review verifies continued business need, deprovisioning is timely on role change or separation, and segregation-of-duties checks prevent toxic combinations",
+        "B": "Provisioning authorized on least privilege, periodic access review verifies continued business need, deprovisioning is timely on role change, and SoD checks prevent toxic combinations",
         "C": "All employees receive identical baseline access regardless of role, so no employee feels under-privileged compared to peers",
         "D": "Deprovisioning is performed annually as part of the year-end audit, since interim deprovisioning creates HR friction"
       },
@@ -4697,7 +4697,7 @@
       "question": "Which approach is MOST appropriate for handling the auditor-management disagreement in the report?",
       "options": {
         "A": "Defer to management's severity rating in the report to maintain the working relationship, and note the auditor's original disagreement only in private communication with the audit committee",
-        "B": "Issue the report with the auditor's high-severity finding as the auditor's professional judgment, include management's position and rationale, note that management has not accepted the recommended remediation, and leave the audit committee to evaluate the disagreement",
+        "B": "Issue the report with the auditor's high-severity finding as professional judgment, include management's position and rationale, and leave the audit committee to evaluate the disagreement",
         "C": "Withhold the report entirely until management agrees to the severity rating, since unresolved disagreement creates unprofessional ambiguity",
         "D": "Compromise on a medium-severity rating in the report to acknowledge both perspectives and avoid airing the disagreement publicly"
       },
@@ -4735,7 +4735,7 @@
       "question": "Which response is MOST appropriate, and how does it balance the audit's role with the firm's operational and compliance responsibilities?",
       "options": {
         "A": "Trigger the automated trading-halt immediately on the trader's account — the anomaly is severe enough to warrant immediate stop-loss, and the audit function should act decisively when CA detects a critical anomaly",
-        "B": "Page on-call compliance leadership AND flag the session for human review simultaneously, providing complete CA-detected information to compliance — recognizing that the audit function's role is detection and escalation, while the trading-halt decision is compliance's responsibility (with operational consequences only compliance is authorized to make)",
+        "B": "Page on-call compliance leadership AND flag the session for human review simultaneously; the audit function's role is detection and escalation, while the trading-halt decision is compliance's responsibility",
         "C": "Wait for the compliance meeting to end (~30 min) before any escalation, since interrupting compliance without complete analysis would be unprofessional",
         "D": "Send an email to the trader directly asking for explanation, since the trader is a senior MD with contrarian strategies and the situation may have a legitimate explanation"
       },
@@ -4772,7 +4772,7 @@
       "question": "An IS audit manager at a Big-Four advisory firm is preparing to facilitate a CSA workshop with the operations leadership of a client manufacturing site. The workshop will identify control weaknesses in the production-scheduling process. What is the MOST important facilitation discipline for the auditor to apply?",
       "options": {
         "A": "Lead the workshop by presenting the auditor's pre-prepared list of likely control weaknesses, then invite participants to confirm or deny each item",
-        "B": "Structure the workshop to elicit participants' own assessments of control effectiveness through open-ended questions, capture their observations and concerns, document evidence of consensus and dissent, and avoid steering toward auditor-preconceived conclusions",
+        "B": "Structure the workshop to elicit participants' own control-effectiveness assessments through open-ended questions, capture observations and dissent, and avoid steering toward preconceived conclusions",
         "C": "Allow the workshop to be unstructured and free-flowing so participants can speak freely, with no facilitation framework or documentation discipline",
         "D": "Conduct the workshop entirely as a one-on-one interview format, asking each participant individually rather than as a group"
       },
