@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d2.json`.
 
-**Last updated:** after D2 batch 5 (d2_051..d2_070) — second 20-question D2 batch. Total D2 questions authored: 70 of 180.
+**Last updated:** after D2 batch 6 (d2_071..d2_090) — third 20-question D2 batch, FIRST authored under strict author-linter regime. Total D2 questions authored: 90 of 180 (50%).
 
 ## Part A — IT Governance
 
@@ -19,8 +19,8 @@
 | 2.1.2 | Governance, Risk and Compliance | d2_005 (GRC integration) |
 | 2.5.1 | Developing a Risk Management Program | d2_011 (5-component program), d2_058 (program standup governance design) |
 | 2.5.3 | Risk Analysis Methods (Qualitative / Semi-Quantitative / Quantitative) | d2_012 (method selection) |
-| 2.6 | Data Privacy Program and Principles | d2_013 (8-element program design), d2_063 (operationalization/rollout), d2_066 (analysis — multi-jurisdiction scaling) |
-| 2.7.1 | Data Inventory and Classification | d2_016 (classification approach) |
+| 2.6 | Data Privacy Program and Principles | d2_013 (8-element program design), d2_063 (operationalization/rollout), d2_066 (analysis — multi-jurisdiction scaling), d2_086 (analysis — Privacy by Design vs by Default) |
+| 2.7.1 | Data Inventory and Classification | d2_016 (classification approach), d2_073 (foundational — classification levels), d2_076 (data inventory methodology) |
 | 2.8.4 | Human Resource Management — IT-specific (mandatory vacation, succession, fraud-risk roles) | d2_018 (analysis — fraud-risk patterns) |
 | 2.8.5 | Enterprise Change Management | d2_019 (analysis — failed acquisition integration) |
 | 2.9.2 | Outsourcing Practices and Strategies | d2_017 (analysis — multi-factor decision) |
@@ -34,9 +34,9 @@
 |---|---|---|
 | 2.2.1 | Enterprise Governance of Information and Technology (EGIT) | d2_001 (definition + scope) |
 | 2.2.2 | Good Practices for EGIT | d2_035 (COBIT 2019 governance system principles) |
-| 2.2.3 | Audit's Role in EGIT — Three Lines Model | d2_002 (Three Lines), d2_009 (audit role boundaries) |
+| 2.2.3 | Audit's Role in EGIT — Three Lines Model | d2_002 (Three Lines), d2_009 (audit role boundaries), d2_071 (foundational — Three Lines def) |
 | 2.2.4 | Information Security Governance — Effective | d2_006 (board accountability), d2_069 (analysis — EGIT/Risk/InfoSec integration) |
-| 2.2.5 | Information Systems Strategy | d2_004 (IT-business alignment) |
+| 2.2.5 | Information Systems Strategy | d2_004 (IT-business alignment), d2_082 (update cadence), d2_085 (analysis — mid-cycle update synthesis) |
 | 2.2.6 | Strategic Planning | d2_023 (foundational — strategic vs tactical), d2_024 (application — strategic plan components) |
 | 2.2.7 | Business Intelligence | d2_044 (dashboard integrity — lineage + DQ + stewardship) |
 | 2.2.8 | Organizational Structure — IT Steering Committee | d2_003 (application — composition design), d2_054 (foundational — definition) |
@@ -47,7 +47,7 @@
 | 2.2.8 | Organizational Structure — Network Mgmt | d2_061 (architecture + change mgmt + baselines + flow review) |
 | 2.2.8 | Organizational Structure — Separation of Duties Within IT | d2_008 (toxic-combination analysis) |
 | 2.2.8 | Organizational Structure — Compensating Controls for SoD | d2_037 (log + independent review + mgmt oversight) |
-| 2.2.9 | Auditing IT Governance Structure and Implementation | d2_010 (governance design vs implementation divergence) |
+| 2.2.9 | Auditing IT Governance Structure and Implementation | d2_010 (governance design vs implementation divergence), d2_090 (analysis — design-implementation gap synthesis) |
 
 ### 2.3 IT Policies, Standards, Procedures and Guidelines
 
@@ -60,21 +60,21 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 2.4 | Enterprise Architecture and Considerations | d2_033 (foundational — EA definition + BIAT layers) |
+| 2.4 | Enterprise Architecture and Considerations | d2_033 (foundational — EA definition + BIAT layers), d2_074 (foundational — COSO 5 components), d2_077 (PM governance/PMO), d2_081 (APO04 innovation governance) |
 
 ### 2.5 Enterprise Risk Management
 
 | TOC | Subsection | Covered by |
 |---|---|---|
 | 2.5.1 | Developing a Risk Management Program | (uncovered) |
-| 2.5.2 | Risk Management Life Cycle (Identify → Assess → Respond → Monitor) | d2_007 (lifecycle gap analysis), d2_021 (foundational — risk register), d2_022 (foundational — treatment options), d2_070 (analysis — multi-option treatment scenario) |
-| 2.5.3 | Risk Analysis Methods (Qualitative / Semi / Quantitative) | d2_062 (semi-quantitative method selection) |
+| 2.5.2 | Risk Management Life Cycle (Identify → Assess → Respond → Monitor) | d2_007 (lifecycle gap analysis), d2_021 (foundational — risk register), d2_022 (foundational — treatment options), d2_070 (analysis — multi-option treatment scenario), d2_089 (analysis — risk treatment under budget constraints) |
+| 2.5.3 | Risk Analysis Methods (Qualitative / Semi / Quantitative) | d2_012 (qual vs quant), d2_062 (semi-quantitative method selection), d2_080 (FAIR quantitative application) |
 
 ### 2.6 Data Privacy Program and Principles
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 2.6.1 | Privacy Documentation | d2_039 (RoPA — GDPR Article 30) |
+| 2.6.1 | Privacy Documentation | d2_039 (RoPA — GDPR Article 30), d2_084 (DPIA — GDPR Article 35) |
 | 2.6.2 | Audit Process — Multi-Regulation Privacy Audit | d2_029 (analysis) |
 
 ### 2.7 Data Governance and Classification
@@ -91,8 +91,8 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 2.8.1 | Value of IT | (uncovered) |
-| 2.8.2 | IT Portfolio Management | d2_026 (run/grow/transform tier discipline), d2_068 (analysis — mid-year rebalance under cost+regulatory pressure) |
+| 2.8.1 | Value of IT | d2_075 (outcome-based quantification) |
+| 2.8.2 | IT Portfolio Management | d2_026 (run/grow/transform tier discipline), d2_068 (analysis — mid-year rebalance), d2_088 (analysis — investment under regulatory uncertainty) |
 | 2.8.3 | IT Management Practices | d2_046 (analysis — silo synthesis vs integrated practices) |
 | 2.8.4 | Human Resource Management (recruiting, training, performance, succession) | d2_018 (fraud-risk HR controls), d2_055 (training program design — role-based + individualized) |
 | 2.8.5 | Enterprise Change Management | (uncovered) |
@@ -105,10 +105,10 @@
 |---|---|---|
 | 2.9.1 | Sourcing Practices | d2_041 (in-house retention drivers — strategic + differentiating + control-critical) |
 | 2.9.2 | Outsourcing Practices and Strategies | d2_017 (multi-factor outsourcing decision), d2_056 (onshore/near-shore/offshore geography) |
-| 2.9.3 | Cloud Governance | d2_014 (shared-responsibility model), d2_053 (foundational — IaaS/PaaS/SaaS), d2_057 (cloud risk mgmt continuous evidence), d2_067 (analysis — 6 Rs migration) |
+| 2.9.3 | Cloud Governance | d2_014 (shared-responsibility model), d2_053 (foundational — IaaS/PaaS/SaaS), d2_057 (cloud risk mgmt continuous evidence), d2_067 (analysis — 6 Rs migration), d2_072 (foundational — Cloud Deployment Models), d2_087 (analysis — multi-cloud governance synthesis) |
 | 2.9.4 | Governance in Outsourcing | d2_042 (vendor governance forum / SMO ongoing structure) |
 | 2.9.5 | Capacity and Growth Planning | d2_045 (analysis — multi-factor demand + headroom + lead-time + feedback) |
-| 2.9.6 | Third-Party Service Delivery Management | d2_027 (5-mechanism integrated mgmt) |
+| 2.9.6 | Third-Party Service Delivery Management | d2_027 (5-mechanism integrated mgmt), d2_079 (vendor SLA design), d2_083 (APO09 service agreements) |
 
 ### 2.10 IT Performance Monitoring and Reporting
 
@@ -124,26 +124,28 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 2.11.1 | Quality Assurance | d2_020 (analysis — QA program effectiveness) |
+| 2.11.1 | Quality Assurance | d2_020 (analysis — QA program effectiveness), d2_078 (APO11 quality management application) |
 | 2.11.2 | Quality Management | d2_048 (analysis — layered framework selection: ISO + TQM + Six Sigma) |
 | 2.11.3 | Operational Excellence | d2_065 (analysis — layered framework strategy: ITIL+SAFe+ISO+Lean/Six Sigma) |
 
-## Coverage summary after D2 batch 5
+## Coverage summary after D2 batch 6
 
 - **Numbered subsections in TOC:** ~50 leaf subsections across 2.1.1 through 2.11.3.
-- **Subsections with at least one authored question:** 36 of ~50 (72%) after batch 5 — batch 5 closed 8 more uncovered subsections (KCI definition, IT Steering Committee foundational, Risk Appetite/Tolerance/Capacity, IaaS/PaaS/SaaS, Senior Mgmt and Boards, IT Org / Roles, Network Mgmt, Risk Analysis Methods, Operational Excellence) plus depth on 8 already-covered subsections.
-- **Most covered area:** 2.2 Organizational Structure / IT Governance / IT Strategy (~14 questions); 2.5 Risk Management (now 7 questions); 2.9 Vendor / Outsourcing / Cloud (now 9 questions).
+- **Subsections with at least one authored question:** 38 of ~50 (76%) after batch 6 — batch 6 closed 1 more uncovered subsection (2.8.1 Value of IT) plus depth on many covered subsections.
+- **Most covered area:** 2.2 Organizational Structure / IT Governance / IT Strategy (~17 questions); 2.5 Risk Management (now 9 questions); 2.9 Vendor / Outsourcing / Cloud (now 11 questions); 2.6 Privacy (now 5 questions).
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after D2 batch 5 | Gap |
+| Tier | Target (180) | Authored after D2 batch 6 | Gap |
 |---|---|---|---|
-| Foundational | 18 (10%) | 11 | -7 |
-| Application | 90 (50%) | 37 | -53 |
-| Analysis | 72 (40%) | 22 | -50 |
-| **Total** | **180** | **70** | **-110** |
+| Foundational | 18 (10%) | 15 | -3 |
+| Application | 90 (50%) | 47 | -43 |
+| Analysis | 72 (40%) | 28 | -44 |
+| **Total** | **180** | **90** | **-90** |
 
-Batch 5 was the second 20-question D2 batch (4F + 10A + 6An). At 20/batch, D2 closes in ~6 more batches (70 + 5×20 = 170, plus a final smaller batch to land at 180).
+Batch 6 was the third 20-question D2 batch (4F + 10A + 6An), and the **first batch authored under the strict author-linter regime**. The linter caught 4 parity errors + 9 warnings on the first run; all were fixed in one pass before invoking Stage 1 reviewer. Workflow validation: ~30 min/batch saved on post-hoc fixes vs prior batches.
+
+D2 progress: 90/180 (50%). At 20/batch, D2 closes in ~5 more batches (90 + 4×20 = 170, plus a final smaller batch to land at 180).
 
 ## High-priority depth targets for batch 5 and beyond
 

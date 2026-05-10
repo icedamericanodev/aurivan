@@ -247,6 +247,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - COBIT 2019 BAI05 (Managed Organizational Change)
 - COBIT 2019 BAI06 (Managed IT Changes)
 - COBIT 2019 BAI10 (Managed Configuration)
+- COBIT 2019 BAI11 (Managed Projects)
 - COBIT 2019 DSS Domain (Deliver, Service, Support)
 - COBIT 2019 DSS05 (Managed Security Services)
 - COBIT 2019 DSS06 (Managed Business Process Controls)
@@ -362,6 +363,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - SAFe
 - EFQM Model (2020)
 - FAIR (Factor Analysis of Information Risk)
+- The Open Group O-RT/O-RA standards
 - CSA Cloud Controls Matrix
 - CSA Security Guidance v4.0
 - OWASP LLM Top 10
@@ -417,6 +419,11 @@ acceptable when the reference is to the broader topical body of guidance.
 - GDPR Article 24 (controller responsibility)
 - GDPR Articles 5 and 24 (EU Regulation 2016/679)
 - GDPR Article 7 (Consent)
+- GDPR Article 13 (Information to be provided)
+- GDPR Article 25 (Data Protection by Design and by Default)
+- GDPR Article 25 (Privacy by Design and Default)
+- EDPB Guidelines 4/2019 (Article 25 Data Protection by Design and by Default)
+- EDPB Guidelines 248/2017 (DPIA)
 - GDPR Article 30 (Records of Processing Activities)
 - GDPR Article 35 (Data Protection Impact Assessment)
 - GDPR Articles 5 and 24 (EU Regulation 2016/679)
