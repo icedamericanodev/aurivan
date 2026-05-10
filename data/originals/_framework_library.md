@@ -568,4 +568,37 @@ sub-references like "(Managed Risk) and APO12.03").
 - Edelman Trust Barometer methodology
 - Harvard Negotiation Project (Getting to Yes)
 - CISA Software Bill of Materials guidance
+
+## D3 batch 1 additions
+- PMBOK Guide 7th Edition
+- PRINCE2 (Projects in Controlled Environments)
+- PMI Standard for Project Risk Management
+- ISO/IEC 12207 (Software Life Cycle Processes)
+- NIST SP 800-160 Vol 1 (Systems Security Engineering)
+- ISTQB Foundation Level Syllabus
+- ISO/IEC 29119 (Software Testing)
+- IEEE 828 (Configuration Management in Systems and Software Engineering)
+- IEEE 830 (Recommended Practice for Software Requirements Specifications)
+- IEEE 1061 (Software Quality Metrics Methodology)
+- ISO/IEC 25010 (Software Product Quality Model)
+- ISO/IEC 29100 (Privacy Framework)
+- Scrum Guide 2020
+- DORA / Accelerate (DevOps Research and Assessment)
+- ITIL 4 Service Configuration Management
+- ISACA Val IT Framework
+- ISACA IT Investment guidance
+- ISACA Software Audit guidance
+- ISACA Application Controls guidance
+- ISACA Data Migration guidance
+- ISACA Project Audit guidance
+- ISACA Configuration Management guidance
+- ISACA UAT Audit guidance
+- ISACA Code Escrow guidance
+- OWASP SAMM (Software Assurance Maturity Model)
+- BSIMM (Building Security In Maturity Model)
+- NIST SP 800-218 (SSDF v1.1)
+- COBIT 2019 BAI02 (Managed Requirements Definition)
+- COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)
+- COBIT 2019 BAI08 (Managed Knowledge)
+- COBIT 2019 BAI09 (Managed Assets)
 - SLSA (Supply-chain Levels for Software Artifacts) framework

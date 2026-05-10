@@ -511,7 +511,60 @@ domain_2:
 
 domain_3:
   target_total: 120
-  status: not_started
+  target_mix:
+    foundational: 12
+    application:  60
+    analysis:     48
+
+  status: in_progress
+  authored_total: 20
+  authored_mix:
+    foundational: 4
+    application:  12
+    analysis:     4
+
+  covered:
+    # Batch 1 (d3_001..d3_020) — 4F + 12A + 4An; broad TOC coverage to launch
+    - { id: d3_001, subtopic: "Project Charter & Sponsor Authority",                  toc_ref: "3.1.1" }
+    - { id: d3_002, subtopic: "SDLC Phases — Definitions",                            toc_ref: "3.3.1" }
+    - { id: d3_003, subtopic: "Software Testing Levels — Definitions",                toc_ref: "3.5.1" }
+    - { id: d3_004, subtopic: "Configuration Management — CI Definition",             toc_ref: "3.6.1" }
+    - { id: d3_005, subtopic: "Project Risk Escalation Criteria",                     toc_ref: "3.1.4" }
+    - { id: d3_006, subtopic: "Business Case — NPV vs Payback",                       toc_ref: "3.2.2" }
+    - { id: d3_007, subtopic: "Requirements Traceability Matrix",                     toc_ref: "3.4.2" }
+    - { id: d3_008, subtopic: "Agile — Story-Point Sizing & Velocity",                toc_ref: "3.3.3" }
+    - { id: d3_009, subtopic: "DevOps — CI/CD Pipeline Quality Gates",                toc_ref: "3.3.5" }
+    - { id: d3_010, subtopic: "Test Data Management — De-identification",             toc_ref: "3.5.4" }
+    - { id: d3_011, subtopic: "Static Application Security Testing (SAST) Controls",  toc_ref: "3.4.5" }
+    - { id: d3_012, subtopic: "Data Conversion — Reconciliation Controls",            toc_ref: "3.7.3" }
+    - { id: d3_013, subtopic: "Release Management — CAB Approval",                    toc_ref: "3.6.3" }
+    - { id: d3_014, subtopic: "Quality — Defect Density Metrics",                     toc_ref: "3.5.6" }
+    - { id: d3_015, subtopic: "Vendor SDLC — Source Code Escrow",                     toc_ref: "3.4.7" }
+    - { id: d3_016, subtopic: "Post-Implementation Review — Benefits Realization",    toc_ref: "3.8.1" }
+    - { id: d3_017, subtopic: "SDLC Methodology Selection — Regulated vs Agile",      toc_ref: "3.3.2" }
+    - { id: d3_018, subtopic: "Failed UAT — Auditor Escalation",                      toc_ref: "3.5.5" }
+    - { id: d3_019, subtopic: "Data Conversion Fallback During Cutover",              toc_ref: "3.7.5" }
+    - { id: d3_020, subtopic: "Major Release Governance Under Regulatory Deadline",   toc_ref: "3.6.5" }
+
+  queued_next: []
+
+  remaining_unplanned:
+    # Batches 2-6 to be planned; representative placeholders
+    - { subtopic: "Earned Value Management (EVM)",                        toc_ref: "3.1.6", priority: medium }
+    - { subtopic: "Function Point Analysis",                              toc_ref: "3.2.4", priority: medium }
+    - { subtopic: "Threat Modeling (STRIDE/DREAD)",                       toc_ref: "3.4.4", priority: high }
+    - { subtopic: "Mutation / Boundary-Value Testing",                    toc_ref: "3.5.2", priority: medium }
+    - { subtopic: "DAST / IAST / RASP",                                   toc_ref: "3.5.7", priority: high }
+    - { subtopic: "Container Security & Image Signing",                   toc_ref: "3.6.4", priority: high }
+    - { subtopic: "Infrastructure-as-Code Drift Detection",               toc_ref: "3.6.6", priority: high }
+    - { subtopic: "Big-Bang vs Phased Cutover Strategies",                toc_ref: "3.7.1", priority: high }
+    - { subtopic: "Parallel Run Reconciliation Tolerance",                toc_ref: "3.7.2", priority: medium }
+    - { subtopic: "Software Bill of Materials (SBOM)",                    toc_ref: "3.4.6", priority: high }
+    - { subtopic: "Open-Source License Governance",                       toc_ref: "3.4.8", priority: medium }
+    - { subtopic: "AI/ML Model Lifecycle (MLOps)",                        toc_ref: "3.3.7", priority: high }
+    - { subtopic: "Low-Code/No-Code Governance",                          toc_ref: "3.3.8", priority: medium }
+    - { subtopic: "Site Reliability Engineering (SRE) — Error Budgets",   toc_ref: "3.6.7", priority: medium }
+    - { subtopic: "API Versioning & Contract Testing",                    toc_ref: "3.4.9", priority: medium }
 
 domain_4:
   target_total: 260

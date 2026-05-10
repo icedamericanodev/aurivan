@@ -6,5 +6,746 @@
   "domain": 3,
   "domain_name": "Information Systems Acquisition, Development and Implementation",
   "weight": 12,
-  "questions": []
+  "questions": [
+    {
+      "id": "d3_001",
+      "domain": 3,
+      "subtopic": "Project Charter & Sponsor Authority",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of a project charter?",
+      "options": {
+        "A": "A work breakdown structure decomposing every deliverable into tasks needed to execute the project end to end.",
+        "B": "A formal document that authorizes the project, names the sponsor, and grants the project manager authority over resources.",
+        "C": "A risk register cataloging identified project threats, opportunities, and corresponding response strategies for execution.",
+        "D": "A communication plan defining stakeholder reporting cadence, format, and escalation paths during project execution."
+      },
+      "correct": "B",
+      "key_concept": "Project charter = authorization. It names the sponsor, scopes the work at high level, and grants the PM authority over resources. WBS, risk register, and communication plan are subsequent planning artifacts produced AFTER the charter authorizes the project.",
+      "pre_read": "For project-charter questions, anchor on three words: AUTHORIZE + SPONSOR + AUTHORITY. Distractors that name detailed planning artifacts (WBS, risk register, communication plan) describe later deliverables, not the charter itself.",
+      "correct_explanation": "PMBOK Guide 7th Edition and PRINCE2 both define the project charter as the authorizing document that brings the project into formal existence. The charter names the project sponsor, defines high-level scope and objectives, identifies key stakeholders, and grants the project manager the authority to apply organizational resources to project activities. Without a charter, the PM has no formal authority. Option A confuses the charter with the work breakdown structure, which is a planning artifact developed AFTER the charter authorizes the project. Option C describes the risk register, also a planning artifact under PMBOK's risk knowledge area and updated throughout the project lifecycle. Option D describes the communication management plan, again a planning artifact. The charter precedes all three and authorizes the work that produces them.",
+      "wrong_explanations": {
+        "A": "The work breakdown structure decomposes deliverables into tasks; it is built during planning AFTER the charter authorizes the project. The charter is a high-level authorizing document, not a task-level plan.",
+        "C": "A risk register is a planning artifact maintained throughout the project lifecycle. The charter may reference initial high-level risks, but the risk register itself is not the charter's primary purpose.",
+        "D": "The communication management plan is a planning artifact specifying stakeholder reporting cadence and format. The charter authorizes the project; the communication plan operationalizes stakeholder engagement."
+      },
+      "tips": [
+        "Trap is A — WBS sounds like \"the project document\" but it's a planning artifact. Charter AUTHORIZES; WBS PLANS the authorized work.",
+        "Project charter = authorize + sponsor + PM authority. Memorize those three anchors and any charter question becomes mechanical.",
+        "Exam-day shortcut: when a question asks about \"the document that creates the project,\" the answer is the charter. When it asks about decomposing tasks, it's the WBS."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; PRINCE2 (Projects in Controlled Environments); ISACA Project Management guidance",
+      "related_concepts": [
+        "Project charter",
+        "Project sponsor",
+        "Project authority",
+        "PMBOK",
+        "PRINCE2"
+      ],
+      "_provenance": "Authored from concept: 'Project charter as authorizing document granting PM authority — PMBOK 7E and PRINCE2 definitions'. Public sources: PMBOK 7E, PRINCE2. Foundational definition; no scenario specifics. First D3 question."
+    },
+    {
+      "id": "d3_002",
+      "domain": 3,
+      "subtopic": "SDLC Phases — Definitions",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which sequence BEST represents the standard software development life cycle (SDLC) phases?",
+      "options": {
+        "A": "Requirements, design, development, testing, deployment, then maintenance — each phase delivers artifacts that feed the next.",
+        "B": "Design, requirements, development, deployment, testing, then maintenance — design precedes requirements to set scope upfront.",
+        "C": "Requirements, deployment, development, testing, design, then maintenance — deployment defines integration constraints first.",
+        "D": "Development, requirements, design, testing, deployment, then maintenance — code prototypes drive requirements refinement."
+      },
+      "correct": "A",
+      "key_concept": "Standard SDLC sequence: requirements → design → development → testing → deployment → maintenance. Each phase produces artifacts that feed the next; control gates separate phases. Iterative and agile methodologies preserve the same activities while compressing or overlapping the phases.",
+      "pre_read": "For SDLC-sequence questions, anchor on the canonical order: requirements first, design second, code third, test fourth, deploy fifth, maintain last. Distractors swap pairs (design before requirements, code before requirements, deploy before development).",
+      "correct_explanation": "ISO/IEC 12207 (Software Life Cycle Processes) and NIST SP 800-160 Vol 1 establish requirements, design, development (implementation), testing (verification/validation), deployment (transition), and maintenance (operation/support) as the standard SDLC phases. Each phase produces deliverables that feed the next: requirements define WHAT; design defines HOW; development produces the code; testing verifies correctness; deployment transitions the system to production; maintenance sustains it. Option B places design before requirements, which is incoherent because design must satisfy requirements that have not yet been documented. Option C places deployment before development, which cannot occur because there is nothing to deploy until code exists. Option D places development before requirements, the same error as B (you cannot build to undefined requirements except as a throwaway prototype, which is not the standard SDLC).",
+      "wrong_explanations": {
+        "B": "Design before requirements is incoherent. Design must satisfy documented requirements; reversing the order produces design that doesn't trace to business need.",
+        "C": "Deployment before development is impossible because there is nothing to deploy until code exists. The sequence has been deliberately reordered to be wrong.",
+        "D": "Development before requirements is the same error as B. While prototyping is a legitimate technique, prototype-to-discover-requirements is not the standard SDLC sequence; it's an iterative variant within the requirements phase."
+      },
+      "tips": [
+        "Trap is B — putting design before requirements sounds plausible if you think \"design is more concrete\" but the SDLC is requirements-driven, not design-driven.",
+        "Standard SDLC = requirements → design → develop → test → deploy → maintain. Memorize this canonical sequence; agile compresses it but preserves the activities.",
+        "Exam-day shortcut: any SDLC-sequence question is answered by the option starting with REQUIREMENTS. If the option doesn't start there, it's wrong."
+      ],
+      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); ISACA Software Audit guidance",
+      "related_concepts": [
+        "SDLC",
+        "Software life cycle",
+        "ISO/IEC 12207",
+        "Phase gates"
+      ],
+      "_provenance": "Authored from concept: 'Canonical SDLC phase order from ISO/IEC 12207 and NIST SP 800-160'. Public sources: ISO/IEC 12207, NIST SP 800-160 Vol 1. Foundational sequence question."
+    },
+    {
+      "id": "d3_003",
+      "domain": 3,
+      "subtopic": "Software Testing Levels — Definitions",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option CORRECTLY pairs each software testing level with its PRIMARY scope?",
+      "options": {
+        "A": "Unit tests verify business workflows; integration tests check single functions; UAT validates code coverage thresholds.",
+        "B": "Unit tests cover end-to-end transactions; system tests target single modules; UAT confirms code-quality metrics.",
+        "C": "Unit tests validate single modules; integration tests verify interactions between modules; UAT confirms business needs are met.",
+        "D": "Unit tests confirm business needs; integration tests measure code coverage; UAT validates module interface contracts."
+      },
+      "correct": "C",
+      "key_concept": "Testing levels by scope: UNIT = single module; INTEGRATION = interactions between modules; SYSTEM = whole system; UAT = business acceptance. Each level builds on the previous; all four are needed for full coverage.",
+      "pre_read": "For testing-level questions, memorize the scope of each: smaller-to-larger (unit → integration → system → UAT). Distractors typically swap two levels' scopes; spot the swap.",
+      "correct_explanation": "ISTQB Foundation Level Syllabus and ISO/IEC 29119 (Software Testing) define unit testing as the verification of individual software modules in isolation, integration testing as the verification of interactions between modules, system testing as end-to-end testing of the integrated system against requirements, and user acceptance testing (UAT) as the validation that the system meets business needs and is ready for production use. Option A swaps unit and integration scopes (claims unit covers workflows when it covers single modules) and misdescribes UAT as a code-coverage check. Option B reverses unit and system scopes and again misdescribes UAT. Option D inverts the scopes most dramatically, claiming unit confirms business needs (which is UAT's job) and UAT validates interface contracts (which is integration's job).",
+      "wrong_explanations": {
+        "A": "Unit tests do NOT verify business workflows; they verify single modules. Integration tests do NOT check single functions; they check interactions between modules. UAT does NOT validate code coverage; it confirms business acceptance.",
+        "B": "Unit tests do NOT cover end-to-end transactions; that's system or UAT scope. System tests do NOT target single modules; that's unit scope. UAT does NOT confirm code-quality metrics.",
+        "D": "Unit tests do NOT confirm business needs; that's UAT scope. Integration tests do NOT measure code coverage; coverage is a unit-test metric. UAT does NOT validate interface contracts; that's integration scope."
+      },
+      "tips": [
+        "Trap is A or B — both swap the scope of unit and integration tests. Anchor on UNIT = single module to spot the swap.",
+        "Testing levels build smaller-to-larger: unit (one piece) → integration (pieces talking) → system (whole) → UAT (business acceptance).",
+        "Exam-day shortcut: UAT always = business acceptance. If an option says UAT measures code coverage or interface contracts, it's wrong."
+      ],
+      "framework_ref": "ISTQB Foundation Level Syllabus; ISO/IEC 29119 (Software Testing); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Unit testing",
+        "Integration testing",
+        "System testing",
+        "User acceptance testing",
+        "ISTQB"
+      ],
+      "_provenance": "Authored from concept: 'Software testing levels and their scopes per ISTQB and ISO/IEC 29119'. Public sources: ISTQB Foundation Level Syllabus, ISO/IEC 29119."
+    },
+    {
+      "id": "d3_004",
+      "domain": 3,
+      "subtopic": "Configuration Management — Configuration Item Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines a configuration item (CI) in software configuration management?",
+      "options": {
+        "A": "Any defect logged during testing that requires correction before the configuration baseline is approved for release.",
+        "B": "A network device, server, or workstation enrolled in the asset register and tracked through the change-management process.",
+        "C": "A user account granted permission to modify production configuration files under change-management approval workflows.",
+        "D": "An identified artifact (code module, document, design, build) under formal change control as part of the product baseline."
+      },
+      "correct": "D",
+      "key_concept": "Configuration item = any artifact under formal change control as part of the product baseline. CIs include code modules, design documents, requirements specs, build artifacts, and test plans. Network assets in a CMDB are a related but distinct concept (asset items, not software CIs).",
+      "pre_read": "For CI-definition questions, anchor on \"identified artifact + under formal change control + part of baseline.\" Distractors that name defects, network assets, or user accounts confuse CIs with related but different concepts.",
+      "correct_explanation": "IEEE 828 (Configuration Management in Systems and Software Engineering) and ISO/IEC 12207 define a configuration item as any work product or artifact that is identified, treated as a single entity, and placed under formal configuration control as part of the product baseline. Examples include source code modules, design documents, requirements specifications, test plans, build outputs, and even configuration files themselves. Option A describes a defect, which is a finding logged during testing — defects are tracked through defect-management processes, not configuration management. Option B describes asset register entries (often called CIs in the ITIL service-asset-and-configuration sense), but the question asks about software CIs in software configuration management, where CIs are work products, not physical assets. Option C describes access rights, not a configuration item.",
+      "wrong_explanations": {
+        "A": "A defect is a finding logged during testing, tracked through defect-management workflows. Defects may trigger changes to CIs but are not themselves CIs.",
+        "B": "ITIL uses \"configuration item\" to refer to assets in the CMDB (servers, network devices). The question is specifically about software configuration management (per IEEE 828 and ISO/IEC 12207), where CIs are work products like code modules and design documents.",
+        "C": "User accounts are access management entities, not configuration items. While account changes may be controlled, the account itself is not a software CI under IEEE 828."
+      },
+      "tips": [
+        "Trap is B — \"network device tracked in the asset register\" is the ITIL-CMDB sense of CI; the question asks the software-config sense (IEEE 828) where CIs are work products like code and design docs.",
+        "Software CI = identified artifact + under formal change control + part of the product baseline. Defects, accounts, and physical assets are NOT software CIs.",
+        "Exam-day shortcut: software config management = CIs are work products (code, design, build). Service config management (ITIL) = CIs are physical/logical assets."
+      ],
+      "framework_ref": "IEEE 828 (Configuration Management in Systems and Software Engineering); ISO/IEC 12207 (Software Life Cycle Processes); ITIL 4 Service Configuration Management; ISACA Configuration Management guidance",
+      "related_concepts": [
+        "Configuration item",
+        "Configuration management",
+        "Baseline",
+        "IEEE 828"
+      ],
+      "_provenance": "Authored from concept: 'CI definition per IEEE 828 software-config-management sense'. Public sources: IEEE 828, ISO/IEC 12207."
+    },
+    {
+      "id": "d3_005",
+      "domain": 3,
+      "subtopic": "Project Risk Escalation Criteria",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor reviews a major program's risk register. Which criterion BEST justifies escalating a project risk to the project sponsor?",
+      "options": {
+        "A": "The risk owner has assigned a target response date within the next two reporting periods, ensuring active management.",
+        "B": "The risk's residual exposure exceeds the project tolerance threshold or affects authority outside the PM's mandate.",
+        "C": "The risk has been re-rated higher in the most recent assessment cycle, regardless of residual exposure or response status.",
+        "D": "The mitigation plan involves a vendor with whom the project does not yet have a signed master agreement."
+      },
+      "correct": "B",
+      "key_concept": "Escalation criteria = residual exposure beyond tolerance OR authority required exceeds PM mandate. Re-rating, target dates, and vendor status are operational signals that may inform the assessment but are not by themselves escalation triggers.",
+      "pre_read": "For escalation questions, anchor on two triggers: (1) residual risk beyond defined tolerance, (2) authority required exceeds PM mandate. Distractors propose normal operational events as escalation triggers.",
+      "correct_explanation": "PMI Standard for Project Risk Management and ISACA Project Management guidance both establish that risks are escalated to the sponsor or steering committee when (a) the residual exposure exceeds the project's pre-agreed tolerance threshold (the threshold approved in the project charter or risk-management plan), or (b) the risk response requires authority that exceeds the project manager's mandate (e.g., adding scope, breaching budget, decisions affecting other portfolios). Option A is a standard tracking activity, not an escalation trigger; assigning a target date is normal management. Option C uses re-rating alone as a trigger, which is incorrect — a risk may be re-rated higher but still remain within tolerance or within PM authority. Option D describes vendor procurement status, which is a procurement-management item, not by itself a sponsor-escalation trigger.",
+      "wrong_explanations": {
+        "A": "Assigning a target response date is normal risk-management activity, not an escalation event. The PM and risk owner manage active responses without sponsor involvement.",
+        "C": "Re-rating alone is not a trigger; the rating may rise but still remain within tolerance and within PM authority. The escalation trigger is the residual position relative to tolerance and authority, not a rating change.",
+        "D": "Vendor signed-agreement status is a procurement-management concern. The PM resolves procurement issues through normal vendor processes; sponsor escalation occurs only if the issue exceeds PM authority or breaches project tolerance."
+      },
+      "tips": [
+        "Trap is C — \"re-rated higher\" sounds like it should trigger escalation, but the trigger is residual position vs tolerance / authority limit, not the rating change itself.",
+        "Escalation = residual beyond tolerance OR authority beyond PM mandate. Memorize those two; they're the only two valid triggers.",
+        "Exam-day shortcut: any escalation question with an answer that names \"tolerance threshold\" or \"authority limit\" is almost always correct."
+      ],
+      "framework_ref": "PMI Standard for Project Risk Management; PMBOK Guide 7th Edition; ISACA Project Management guidance",
+      "related_concepts": [
+        "Risk escalation",
+        "Risk tolerance",
+        "Project sponsor",
+        "PM authority",
+        "Risk register"
+      ],
+      "_provenance": "Authored from concept: 'Project risk escalation criteria — tolerance threshold and authority limit per PMI Standard for Project Risk Management'. Public sources: PMI Standard, PMBOK 7E."
+    },
+    {
+      "id": "d3_006",
+      "domain": 3,
+      "subtopic": "Business Case — NPV vs Payback",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies preferring net present value (NPV) over payback period as the PRIMARY investment metric?",
+      "options": {
+        "A": "A long-horizon program where time value of money and post-payback cash flows materially affect the investment decision.",
+        "B": "A short-cycle pilot where rapid recovery of upfront cost is the dominant funding constraint and decision driver.",
+        "C": "An operational refresh where total cost of ownership over the asset's useful life is the only consideration.",
+        "D": "A regulatory program where the spend is mandatory and financial return on investment cannot meaningfully be calculated."
+      },
+      "correct": "A",
+      "key_concept": "NPV is preferred when time value of money matters and post-payback cash flows are material. Payback is preferred when liquidity and quick recovery dominate. Each metric answers a different question; they are complements, not substitutes.",
+      "pre_read": "For NPV-vs-payback questions, anchor on what each metric measures: NPV considers all cash flows over the horizon discounted to present value; payback measures only how fast the upfront cost is recovered.",
+      "correct_explanation": "ISACA Val IT Framework and ISACA IT Investment guidance treat NPV as the preferred PRIMARY metric for capital budgeting decisions where (a) the investment horizon is long enough that the time value of money matters, and (b) cash flows continue beyond the payback point and contribute to value. Payback period is appropriate as a SECONDARY metric or as a primary metric when liquidity is the dominant constraint (the firm needs to recover cash quickly). Option B describes the case where payback is preferred (short-cycle pilot, liquidity-driven). Option C describes total cost of ownership — a different concept that focuses on cost, not value, and is appropriate for cost comparisons but not primarily for investment-decision metrics. Option D describes a mandatory regulatory program where neither NPV nor payback drives the decision; the spend is required regardless of financial return.",
+      "wrong_explanations": {
+        "B": "Short-cycle, liquidity-driven decisions are exactly the case where payback period is appropriate; NPV adds little value when the horizon is short.",
+        "C": "Total cost of ownership measures cost over the asset's life, not the value of cash flows. It's a different metric framework, used for cost comparison rather than investment-decision selection.",
+        "D": "Mandatory regulatory spend is a compliance decision, not an NPV-driven decision. The metric the question asks about (NPV vs payback) doesn't drive mandatory programs."
+      },
+      "tips": [
+        "Trap is B — \"short-cycle pilot, fast recovery\" is the exact case where payback wins, not NPV. NPV's strength is the long horizon plus post-payback cash flows.",
+        "NPV considers ALL cash flows discounted to present; payback considers ONLY recovery time. Pick NPV when post-payback flows matter.",
+        "Exam-day shortcut: NPV = long horizon + time value matters; payback = short cycle + liquidity matters. Match the scenario to the metric."
+      ],
+      "framework_ref": "ISACA Val IT Framework; ISACA IT Investment guidance; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
+      "related_concepts": [
+        "Net present value",
+        "Payback period",
+        "Capital budgeting",
+        "Val IT",
+        "IT investment"
+      ],
+      "_provenance": "Authored from concept: 'NPV vs payback metric selection per ISACA Val IT'. Public sources: ISACA Val IT Framework, COBIT 2019."
+    },
+    {
+      "id": "d3_007",
+      "domain": 3,
+      "subtopic": "Requirements Traceability Matrix",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control does a requirements traceability matrix (RTM) PRIMARILY provide during system development?",
+      "options": {
+        "A": "Assurance that every developer follows the documented coding standard for the chosen programming language consistently.",
+        "B": "Verification that the project schedule's critical path remains aligned with the latest approved budget revision.",
+        "C": "Bidirectional linkage from each requirement to its design, code, test cases, and acceptance evidence.",
+        "D": "A change-history log of all production deployments performed against the application during the release cycle."
+      },
+      "correct": "C",
+      "key_concept": "RTM provides bidirectional linkage: requirement → design → code → tests → acceptance evidence. It supports completeness checks (every requirement is built and tested) and impact analysis (every change traces back to affected requirements). Coding standards, schedules, and deployment logs are different controls.",
+      "pre_read": "For RTM questions, anchor on \"bidirectional traceability from requirement to evidence.\" Distractors propose unrelated artifacts (coding standards, schedules, deployment logs) as the RTM's primary function.",
+      "correct_explanation": "IEEE 830 (Recommended Practice for Software Requirements Specifications) and ISACA Software Audit guidance establish the RTM as a control that provides bidirectional linkage from each requirement to its design element, code module, test case(s), and acceptance evidence. The RTM enables three controls: (1) completeness — every requirement has been designed, built, and tested; (2) impact analysis — when a requirement changes, the matrix shows what design, code, and tests are affected; (3) audit evidence — the matrix demonstrates that the delivered system satisfies the documented requirements. Option A describes coding-standard adherence (a code-review and SAST control, not RTM). Option B describes schedule-budget alignment (a project-management control). Option D describes deployment audit logs (a release-management control).",
+      "wrong_explanations": {
+        "A": "Coding-standard adherence is enforced through code review and static analysis (SAST), not the RTM. The RTM is requirement-driven, not code-style-driven.",
+        "B": "Schedule-budget alignment is a project-management control, supported by EVM (earned value management) and schedule-baseline tracking, not the RTM.",
+        "D": "Deployment audit logs are produced by release-management tooling. The RTM is built during requirements/design/test and traces requirements to evidence; it doesn't track deployments."
+      },
+      "tips": [
+        "Trap is D — \"change-history log\" sounds traceability-ish but it's the deployment-audit log, not the RTM. RTM traces requirements, not deployments.",
+        "RTM = REQUIREMENTS to DESIGN to CODE to TESTS to ACCEPTANCE EVIDENCE, bidirectional. That's the only definition.",
+        "Exam-day shortcut: any RTM question is answered by the option naming bidirectional linkage from requirement to evidence."
+      ],
+      "framework_ref": "IEEE 830 (Recommended Practice for Software Requirements Specifications); ISACA Software Audit guidance; ISACA Application Controls guidance",
+      "related_concepts": [
+        "Requirements traceability matrix",
+        "RTM",
+        "Requirements management",
+        "Bidirectional traceability"
+      ],
+      "_provenance": "Authored from concept: 'RTM bidirectional traceability per IEEE 830 and ISACA Software Audit guidance'. Public sources: IEEE 830, ISACA guidance."
+    },
+    {
+      "id": "d3_008",
+      "domain": 3,
+      "subtopic": "Agile — Story-Point Sizing & Velocity",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice BEST supports reliable agile velocity forecasting across multiple sprints?",
+      "options": {
+        "A": "Convert story points to staff-hour estimates so the team commits to fixed delivery dates per sprint cycle.",
+        "B": "Reset velocity to zero at the start of each release to avoid carry-over bias from prior sprints' estimates.",
+        "C": "Have the product owner unilaterally set story-point values to ensure consistency across the backlog over time.",
+        "D": "Use relative sizing within the team and let velocity stabilize over several sprints before forecasting commitments."
+      },
+      "correct": "D",
+      "key_concept": "Velocity stabilizes after several sprints with consistent team and relative sizing. Hours conversion defeats the relative-sizing purpose. Velocity reset wastes signal. Unilateral PO sizing replaces team consensus with one perspective. Use empirical, team-relative sizing.",
+      "pre_read": "For velocity-forecasting questions, anchor on \"empirical, team-relative, multi-sprint stabilization.\" Distractors propose hour conversion (defeats abstraction), velocity reset (wastes signal), or unilateral sizing (defeats team consensus).",
+      "correct_explanation": "Scrum Guide 2020 and DORA / Accelerate research establish that velocity is an empirical, team-specific signal that stabilizes after several sprints when (a) the team is stable, (b) sizing is relative (story points, not hours), and (c) the team itself participates in sizing. Option A converts story points to hours, defeating the relative-sizing abstraction; story points represent relative effort/complexity/uncertainty, not absolute time. Option B resets velocity to zero, which wastes the empirical history that makes velocity useful; carry-over isn't bias, it's signal. Option C has the product owner unilaterally size, which replaces team consensus with one perspective and produces brittle estimates. Option D follows the canonical Scrum/agile guidance: relative sizing within the team, with velocity stabilizing over several sprints before being used for forecasting commitments.",
+      "wrong_explanations": {
+        "A": "Converting points to hours defeats relative sizing, which is the entire purpose of story points (abstract from individual variation, focus on relative complexity).",
+        "B": "Velocity reset wastes the empirical history that gives velocity its forecasting value. Velocity carry-over is signal, not bias; it represents the team's actual delivery capacity.",
+        "C": "Unilateral PO sizing replaces team consensus (the basis of agile estimation) with one perspective. The team that does the work should size the work."
+      },
+      "tips": [
+        "Trap is A — \"convert to hours\" sounds rigorous but it kills the entire purpose of story points (relative, not absolute).",
+        "Velocity = empirical + team-specific + multi-sprint stabilization. Don't reset, don't convert, don't unilateralize.",
+        "Exam-day shortcut: any agile-velocity question with \"convert to hours\" as an option has named the trap; the right answer keeps the story-point abstraction."
+      ],
+      "framework_ref": "Scrum Guide 2020; DORA / Accelerate (DevOps Research and Assessment); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Story points",
+        "Velocity",
+        "Agile",
+        "Scrum",
+        "Relative sizing"
+      ],
+      "_provenance": "Authored from concept: 'Velocity forecasting requires team-relative sizing and multi-sprint stabilization per Scrum Guide and DORA research'. Public sources: Scrum Guide 2020, DORA / Accelerate."
+    },
+    {
+      "id": "d3_009",
+      "domain": 3,
+      "subtopic": "DevOps — CI/CD Pipeline Quality Gates",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control GREATEST strengthens a CI/CD pipeline's quality assurance for production-bound builds?",
+      "options": {
+        "A": "A weekly manager review of all merged commits combined with monthly retrospectives on team velocity and quality.",
+        "B": "Automated quality gates enforcing unit-test pass, SAST scan clean, and signed approval before any production deployment.",
+        "C": "An end-of-quarter penetration test that defers any gate failures to the next available release window for remediation.",
+        "D": "Developer self-attestation that all known defects have been resolved before pushing the build to the production target."
+      },
+      "correct": "B",
+      "key_concept": "Quality gates = automated, enforced, build-failing checks at the right point in the pipeline. Periodic manager reviews, end-of-quarter pen tests, and self-attestation are weak controls because they're after-the-fact, infrequent, or unsupervised.",
+      "pre_read": "For CI/CD-gate questions, anchor on \"automated + enforced + build-failing + at the right point.\" Distractors propose periodic reviews, late-stage testing, or self-attestation as substitutes.",
+      "correct_explanation": "NIST SP 800-218 (SSDF v1.1) and DORA / Accelerate research establish automated quality gates as the foundational CI/CD control: unit-test pass, SAST scan clean (no high-severity findings), and signed deployment approval enforced at the pipeline level so that any build failing the gates cannot reach production. Option A relies on manager review and retrospectives, which are valuable but operate AFTER the fact and cannot prevent a bad build from reaching production. Option C defers issues to a quarterly cadence, which is far too slow for a CI/CD pipeline that may deploy daily or more often. Option D relies on developer self-attestation, which is the weakest control form (no independent verification) and contradicts the entire point of a pipeline (automated, enforced).",
+      "wrong_explanations": {
+        "A": "Manager review and retrospectives are after-the-fact controls; they don't prevent a defective build from reaching production. Quality gates must be IN the pipeline, not adjacent to it.",
+        "C": "End-of-quarter pen testing is far too infrequent for a CI/CD pipeline that may deploy many times per day. By the time the test runs, weeks of defective builds may already be in production.",
+        "D": "Self-attestation has no independent verification. A developer claiming \"defects resolved\" is not a control; it's a statement. Automated gates verify objectively and consistently."
+      },
+      "tips": [
+        "Trap is D — \"developer self-attestation\" feels collaborative but it's the weakest possible CI/CD control (no verification).",
+        "CI/CD quality gate = automated + enforced + build-failing. Manual reviews and self-attestation are not gates.",
+        "Exam-day shortcut: any CI/CD-quality question is answered by the option naming AUTOMATED gates that BLOCK production on failure."
+      ],
+      "framework_ref": "NIST SP 800-218 (SSDF v1.1); DORA / Accelerate (DevOps Research and Assessment); OWASP SAMM (Software Assurance Maturity Model)",
+      "related_concepts": [
+        "CI/CD",
+        "Quality gates",
+        "DevOps",
+        "SAST",
+        "Deployment pipeline"
+      ],
+      "_provenance": "Authored from concept: 'CI/CD quality gates per NIST SSDF and DORA research'. Public sources: NIST SP 800-218, DORA / Accelerate."
+    },
+    {
+      "id": "d3_010",
+      "domain": 3,
+      "subtopic": "Test Data Management — De-identification",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST effectively protects production-derived test data when populating non-production environments?",
+      "options": {
+        "A": "Apply deterministic data masking and pseudonymization before extraction so test environments hold no recoverable PII.",
+        "B": "Allow developers to copy production data on request, provided they sign an annual confidentiality acknowledgement form.",
+        "C": "Restore the previous month's production backup nightly to keep the test database current, realistic, and synchronized.",
+        "D": "Encrypt the test database at rest while keeping production identifiers intact for debugging and reproduction continuity."
+      },
+      "correct": "A",
+      "key_concept": "Mask/pseudonymize BEFORE extraction so non-prod never holds production PII. Confidentiality acknowledgements, encrypted-but-identified test data, and direct production restores all leave PII exposed in lower environments.",
+      "pre_read": "For test-data-protection questions, anchor on \"mask before extraction\" — non-prod should never hold production PII in identifiable form. Distractors propose access controls or encryption as substitutes for de-identification.",
+      "correct_explanation": "GDPR Article 25 (Data Protection by Design and by Default), ISO/IEC 29100 (Privacy Framework), and ISACA Application Controls guidance all establish that test environments should not contain production PII in recoverable form. Deterministic masking (consistent substitution preserving referential integrity) and pseudonymization applied BEFORE extraction ensure that non-prod copies cannot leak identifiable data. Option B's confidentiality acknowledgement is an administrative control that doesn't prevent the underlying exposure (developers still have access to PII). Option C makes things worse by routinely copying full production data into a less-controlled environment. Option D encrypts at rest but leaves identifiers intact in memory and at runtime; developers querying the database still see PII. Only masking-before-extraction prevents the exposure at the source.",
+      "wrong_explanations": {
+        "B": "Acknowledgement-only is an administrative control without technical enforcement. Developers still have access to PII; the only protection is their good behavior, which is not a control.",
+        "C": "Routinely restoring production into test environments is the OPPOSITE of de-identification — it deliberately copies PII into less-controlled environments, increasing exposure rather than reducing it.",
+        "D": "Encryption at rest protects against storage-media theft but not against database queries by developers who have legitimate test-environment access. PII visible to test users is exposed PII."
+      },
+      "tips": [
+        "Trap is B — \"signed confidentiality acknowledgement\" sounds like a formal control but it's just an admin overlay; the PII is still in non-prod and accessible.",
+        "Test data protection = MASK BEFORE EXTRACTION. Encryption, access controls, and acknowledgements don't substitute for de-identification.",
+        "Exam-day shortcut: any test-data question is answered by the option naming masking/pseudonymization that prevents PII from EVER reaching the lower environment."
+      ],
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 29100 (Privacy Framework); ISACA Application Controls guidance",
+      "related_concepts": [
+        "Test data management",
+        "Data masking",
+        "Pseudonymization",
+        "GDPR Article 25",
+        "Privacy by design"
+      ],
+      "_provenance": "Authored from concept: 'Test data masking before extraction per GDPR Article 25 and ISO/IEC 29100'. Public sources: GDPR, ISO/IEC 29100, ISACA Application Controls guidance."
+    },
+    {
+      "id": "d3_011",
+      "domain": 3,
+      "subtopic": "Static Application Security Testing (SAST) Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice BEST integrates static application security testing (SAST) into the development workflow?",
+      "options": {
+        "A": "Run SAST scans only at major release boundaries to avoid disrupting ongoing developer work between releases.",
+        "B": "Restrict SAST findings to the security team, who triage and forward only critical items to development for fix.",
+        "C": "Run SAST on each pull request and fail the build for high-severity findings until remediated or formally risk-accepted.",
+        "D": "Run SAST quarterly on the production code base to confirm long-term trend adherence to baseline thresholds."
+      },
+      "correct": "C",
+      "key_concept": "SAST is most effective when run on every pull request with build-failure on high-severity findings — shift-left, fast feedback, developer ownership of fixes. Late or infrequent SAST is much less effective and treats security as separate.",
+      "pre_read": "For SAST-integration questions, anchor on \"shift-left + every PR + build-failure on high severity.\" Distractors propose late-stage scans, security-team-only ownership, or quarterly cadences.",
+      "correct_explanation": "OWASP SAMM and BSIMM both establish shift-left SAST integration as the mature practice: scan on every pull request, surface findings to developers immediately, and fail the build for high-severity findings unless the risk is formally accepted by an authorized owner. NIST SP 800-218 (SSDF v1.1) reinforces this with the practice 'PW.7 Review and/or Analyze Human-Readable Code' as a shift-left activity. Option A's release-boundary scans accumulate weeks of unaddressed findings, which become expensive to remediate. Option B's security-team-only model creates a bottleneck and removes developer ownership of code quality. Option D's quarterly cadence is far too slow and treats security as audit, not engineering.",
+      "wrong_explanations": {
+        "A": "Release-boundary scans accumulate weeks of unaddressed findings and treat security as a release-gate afterthought rather than a continuous practice. Cost to fix increases sharply post-merge.",
+        "B": "Security-team-only triage creates a bottleneck and removes developer ownership. Developers must see and own their findings; security teams triage exceptions and policy, not every finding.",
+        "D": "Quarterly cadence is audit, not engineering. By the time issues surface, weeks of vulnerable code may already be in production. Shift-left means continuous, not periodic."
+      },
+      "tips": [
+        "Trap is A — \"only at major release boundaries\" feels efficient but accumulates findings to expensive late-stage cost; shift-left wins.",
+        "SAST = shift-left + every PR + build-failing high-severity gate. That's the mature pattern; everything else is degraded.",
+        "Exam-day shortcut: any SAST-integration question is answered by the option naming PER-PR scans with build-fail gates for high severity."
+      ],
+      "framework_ref": "OWASP SAMM (Software Assurance Maturity Model); BSIMM (Building Security In Maturity Model); NIST SP 800-218 (SSDF v1.1)",
+      "related_concepts": [
+        "SAST",
+        "Shift-left security",
+        "OWASP SAMM",
+        "BSIMM",
+        "DevSecOps"
+      ],
+      "_provenance": "Authored from concept: 'SAST shift-left per OWASP SAMM, BSIMM, and NIST SSDF'. Public sources: OWASP SAMM, BSIMM, NIST SP 800-218."
+    },
+    {
+      "id": "d3_012",
+      "domain": 3,
+      "subtopic": "Data Conversion — Reconciliation Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control PRIMARILY confirms data integrity when converting from a legacy system to a new platform?",
+      "options": {
+        "A": "User acceptance testing of the new system's user interface across all major business workflows after cutover.",
+        "B": "Regression testing of the legacy system to confirm it continues to operate during the cutover window itself.",
+        "C": "Performance benchmarking of the new platform under projected production transaction volumes after cutover.",
+        "D": "Record-count and control-total reconciliation between source and target with documented variance investigation."
+      },
+      "correct": "D",
+      "key_concept": "Data integrity in conversion = record-count + control-total reconciliation between source and target, with formal variance investigation. UAT verifies the UI works; regression verifies the legacy survives; performance verifies throughput. None of those verify that data converted accurately.",
+      "pre_read": "For data-conversion-integrity questions, anchor on \"counts + control totals + variance investigation.\" Distractors propose UI testing, performance testing, or legacy regression as substitutes.",
+      "correct_explanation": "ISACA Data Migration guidance and ISACA Application Controls guidance establish reconciliation as the primary data-integrity control during conversion: compute record counts and control totals (key-field sums, hash-totals, financial subtotals) on both source and target, compare, and formally investigate any variances before cutover sign-off. Option A's UAT confirms the UI works on the new system but doesn't verify the underlying data converted correctly. Option B's legacy regression confirms the old system survives the conversion event but says nothing about new-system data integrity. Option C's performance benchmarking confirms throughput but ignores correctness — fast and wrong is still wrong. Only reconciliation directly verifies that what was in the source matches what is in the target.",
+      "wrong_explanations": {
+        "A": "UI testing verifies the new system's screens and workflows work; it doesn't verify underlying data converted correctly. A wrong balance can display perfectly through a working UI.",
+        "B": "Legacy regression verifies the old system still works during cutover. Useful, but says nothing about whether the data on the NEW system is correct.",
+        "C": "Performance benchmarking measures throughput, not correctness. Fast-but-incorrect data is still incorrect; performance and integrity are independent."
+      },
+      "tips": [
+        "Trap is A — UAT \"of the user interface\" sounds comprehensive but it tests the surface, not the underlying data correctness.",
+        "Data conversion integrity = COUNTS + CONTROL TOTALS + variance investigation. Everything else verifies different things.",
+        "Exam-day shortcut: any data-conversion question is answered by the option naming reconciliation between source and target."
+      ],
+      "framework_ref": "ISACA Data Migration guidance; ISACA Application Controls guidance; ISO/IEC 12207 (Software Life Cycle Processes)",
+      "related_concepts": [
+        "Data conversion",
+        "Reconciliation",
+        "Control totals",
+        "Record counts",
+        "Data migration"
+      ],
+      "_provenance": "Authored from concept: 'Data conversion reconciliation per ISACA Data Migration and Application Controls guidance'. Public sources: ISACA guidance."
+    },
+    {
+      "id": "d3_013",
+      "domain": 3,
+      "subtopic": "Release Management — Change Advisory Board (CAB)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which decision BEST belongs to a change advisory board (CAB) under ITIL 4 change enablement?",
+      "options": {
+        "A": "Authoring the technical implementation plan for each change request submitted to the CAB by development teams.",
+        "B": "Reviewing and authorizing significant changes by assessing risk, impact, and readiness before scheduling deployment.",
+        "C": "Personally executing high-risk production deployments to ensure command of operational details across all teams.",
+        "D": "Coding the post-implementation review template for each completed change to standardize lessons-learned capture."
+      },
+      "correct": "B",
+      "key_concept": "CAB = governance body that REVIEWS and AUTHORIZES significant changes — risk, impact, readiness — before deployment. Authoring plans, executing deployments, and producing templates are operational tasks for change-management staff, not the CAB.",
+      "pre_read": "For CAB-role questions, anchor on \"review + authorize significant changes\" with focus on risk, impact, and readiness. Distractors propose execution or authoring tasks that belong to operational staff.",
+      "correct_explanation": "ITIL 4 Change Enablement defines the CAB as a governance body that reviews and authorizes significant changes by assessing risk, business and technical impact, and operational readiness before the change is scheduled for deployment. The CAB does not execute changes, does not author technical implementation plans, and does not produce procedural templates — those are operational tasks performed by change-management staff or the change implementer. Option A confuses CAB review with implementation-plan authoring (the change submitter authors the plan; the CAB reviews it). Option C confuses governance with execution (CAB members do not personally deploy changes). Option D confuses governance with documentation (templates are produced by the change-management process owner, not the CAB).",
+      "wrong_explanations": {
+        "A": "The change submitter (development or operations team) authors the implementation plan. The CAB reviews and authorizes; it doesn't author the underlying plan.",
+        "C": "CAB members are governance reviewers, not deployment executors. Mixing the two violates separation of duties and confuses oversight with operations.",
+        "D": "Producing the PIR template is a process-owner task. The CAB participates in PIR for failed changes but doesn't produce templates."
+      },
+      "tips": [
+        "Trap is C — \"personally executing high-risk deployments\" sounds like CAB ownership but it's an SoD violation; CAB authorizes, change implementer executes.",
+        "CAB = review + authorize significant changes. Risk, impact, readiness. Not execute, not author, not template.",
+        "Exam-day shortcut: any CAB question is answered by the option naming REVIEW and AUTHORIZE; execution-flavored options are wrong."
+      ],
+      "framework_ref": "ITIL 4 (Change Enablement); ISACA Change Management guidance; COBIT 2019 BAI06 (Managed IT Changes)",
+      "related_concepts": [
+        "Change Advisory Board",
+        "CAB",
+        "ITIL 4",
+        "Change enablement",
+        "Change authorization"
+      ],
+      "_provenance": "Authored from concept: 'CAB role per ITIL 4 Change Enablement and COBIT 2019 BAI06'. Public sources: ITIL 4, COBIT 2019."
+    },
+    {
+      "id": "d3_014",
+      "domain": 3,
+      "subtopic": "Quality — Defect Density Metrics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which interpretation of a sudden RISE in defect density per thousand lines of code (KLOC) is MOST plausible?",
+      "options": {
+        "A": "Either testing rigor improved (more defects discovered) or product quality declined; root-cause review is required.",
+        "B": "The project is definitively over budget because defect density correlates linearly with project cost overruns.",
+        "C": "Code complexity has fallen, since denser defects imply tighter and more compact source modules in production.",
+        "D": "Developer productivity has improved, because more defects per line of code indicates greater code throughput."
+      },
+      "correct": "A",
+      "key_concept": "Defect density rising can mean better testing OR worse quality — root cause investigation distinguishes which. Linking it directly to budget, code complexity, or productivity is wrong; defect density measures defects per KLOC, not those other dimensions.",
+      "pre_read": "For defect-density questions, anchor on \"two valid interpretations: better detection OR worse quality\" and the need to investigate which. Distractors equate density rise with unrelated dimensions.",
+      "correct_explanation": "ISO/IEC 25010 (Software Product Quality Model) and IEEE 1061 (Software Quality Metrics Methodology) both define defect density (defects per thousand lines of code) as a quality indicator that requires interpretation. A rise can mean either (a) testing rigor improved and is finding latent defects that were always present, or (b) product quality genuinely declined (bad code, regressions, scope churn). Both are valid hypotheses; root-cause review (e.g., looking at where defects originated, when they were introduced, what testing was applied) distinguishes which. Option B incorrectly links density to budget — there's no linear correlation; over-budget projects can have stable density and on-budget projects can have rising density. Option C inverts the interpretation; code complexity rises with denser defects, not falls. Option D confuses defects (negative) with productivity (positive) — more defects per line is not 'throughput.'",
+      "wrong_explanations": {
+        "B": "There's no linear correlation between defect density and budget. Many factors drive cost (scope, schedule, vendor) independent of defect rate.",
+        "C": "More defects per line generally suggests MORE complex or worse code, not less. Higher complexity correlates with higher defect density, not lower.",
+        "D": "Defects are negative; more defects per line is not 'throughput.' Productivity is measured separately (e.g., function points delivered, story-point velocity), not by defect rate."
+      },
+      "tips": [
+        "Trap is C or D — both interpret rising defects as positive (denser code or higher productivity). Neither is correct; rising density is at best ambiguous, at worst bad.",
+        "Defect density = defects/KLOC. A rise has two valid interpretations: better detection OR worse quality. Investigate to distinguish.",
+        "Exam-day shortcut: any defect-density question with \"definitively means X\" is wrong unless X is \"requires investigation.\""
+      ],
+      "framework_ref": "ISO/IEC 25010 (Software Product Quality Model); IEEE 1061 (Software Quality Metrics Methodology); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Defect density",
+        "Software quality metrics",
+        "ISO/IEC 25010",
+        "IEEE 1061"
+      ],
+      "_provenance": "Authored from concept: 'Defect density interpretation requires root-cause review per ISO/IEC 25010 and IEEE 1061'. Public sources: ISO/IEC 25010, IEEE 1061."
+    },
+    {
+      "id": "d3_015",
+      "domain": 3,
+      "subtopic": "Vendor SDLC — Source Code Escrow",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies a software code-escrow arrangement with a third-party agent?",
+      "options": {
+        "A": "An internal application is being refactored, and the team wants offsite source-code backup for resilience purposes.",
+        "B": "A vendor-supplied COTS package is widely deployed across the industry with a long-term, financially stable supplier.",
+        "C": "A business-critical custom-developed package is sourced from a single vendor whose continued operation is uncertain.",
+        "D": "A vendor open-sourced their product on a public repository, eliminating concerns about long-term source access."
+      },
+      "correct": "C",
+      "key_concept": "Code escrow protects against vendor failure for business-critical, custom-developed software. It's not for internal backup, not needed for stable widely-used COTS, and unnecessary for open-source code that's already public.",
+      "pre_read": "For escrow-justification questions, anchor on \"business-critical + custom + single-vendor + uncertain continuity.\" All four conditions matter; absent one, escrow may not be the right control.",
+      "correct_explanation": "ISACA Code Escrow guidance and ISACA Vendor Management guidance establish that source code escrow is appropriate when (1) the software is business-critical (loss of access materially impacts the firm), (2) it is custom-developed (no other source is available), (3) it is sourced from a single vendor (no alternate supplier), and (4) the vendor's continued operation is uncertain (financial distress, geopolitical risk, M&A uncertainty). Option C names all four conditions. Option A describes internal source code, which is already accessible to the firm; offsite backup is a different control (BC/DR). Option B describes a stable, widely-deployed COTS package — escrow adds little value because the vendor's failure is unlikely and alternative sourcing exists. Option D describes open-source code, which is permanently public; escrow is redundant.",
+      "wrong_explanations": {
+        "A": "Internal source code is already in the firm's possession. The control needed is offsite backup or geographic redundancy (BC/DR), not third-party escrow.",
+        "B": "A widely-deployed, stable COTS package faces minimal vendor-failure risk; escrow's cost outweighs its value, and alternative sourcing (other licensees, market) reduces dependency.",
+        "D": "Open-source code is already public and immutable on the repository. Escrow adds nothing because the source is already accessible to the firm."
+      },
+      "tips": [
+        "Trap is A — \"offsite source-code backup\" sounds like escrow but it's BC/DR for code you ALREADY have. Escrow protects code you DON'T have access to today.",
+        "Code escrow = business-critical + custom + single-vendor + uncertain continuity. Need ALL FOUR; absent one, escrow may not be right.",
+        "Exam-day shortcut: any escrow question with \"open-source\" or \"internal\" code in the option is wrong; escrow is for vendor-only custom code."
+      ],
+      "framework_ref": "ISACA Code Escrow guidance; ISACA Vendor Management guidance; ISACA IT Outsourcing guidance",
+      "related_concepts": [
+        "Source code escrow",
+        "Vendor management",
+        "Continuity",
+        "Custom software"
+      ],
+      "_provenance": "Authored from concept: 'Code escrow justification per ISACA Code Escrow and Vendor Management guidance'. Public sources: ISACA guidance."
+    },
+    {
+      "id": "d3_016",
+      "domain": 3,
+      "subtopic": "Post-Implementation Review — Benefits Realization",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which activity is the PRIMARY focus of a post-implementation review (PIR)?",
+      "options": {
+        "A": "Documenting how project funds were spent against the approved budget by phase and category for finance.",
+        "B": "Conducting a final UAT cycle to confirm the system meets functional requirements before stakeholder sign-off.",
+        "C": "Producing a regression-test plan to be executed during the next operational maintenance window after release.",
+        "D": "Comparing realized benefits and outcomes against the business case to verify value delivery as approved."
+      },
+      "correct": "D",
+      "key_concept": "PIR's primary focus = benefits realization. Did the project deliver the value claimed in the business case? Budget reporting, UAT, and regression planning are different activities (closeout finance, pre-release verification, ongoing maintenance).",
+      "pre_read": "For PIR questions, anchor on \"benefits realization vs business case.\" PIR happens AFTER deployment, focuses on realized value, not on operational deliverables.",
+      "correct_explanation": "ISACA Val IT Framework and COBIT 2019 BAI05 (Managed Organizational Change) and BAI07 (Managed IT Change Acceptance and Transitioning) establish the PIR as the post-deployment review whose primary focus is benefits realization: comparing the realized benefits and outcomes (financial, operational, strategic) against those promised in the business case to verify that the project actually delivered the value used to justify it. Option A describes a financial-closeout activity, useful but narrower than PIR. Option B describes pre-deployment UAT, which happens BEFORE go-live, not after. Option C describes ongoing maintenance regression testing, an operational activity unrelated to the PIR. The PIR is a strategic, post-deployment review of value delivery.",
+      "wrong_explanations": {
+        "A": "Budget-vs-actual reporting is a financial closeout activity. Useful, but narrow; PIR addresses the broader question of whether the spend produced the promised value.",
+        "B": "UAT happens BEFORE go-live, not in the post-implementation review. PIR is a post-deployment review of realized outcomes.",
+        "C": "Regression-test planning is an ongoing maintenance activity, not a PIR focus. PIR evaluates value delivery, not test planning."
+      },
+      "tips": [
+        "Trap is B — \"final UAT cycle\" sounds like a wrap-up activity but UAT is pre-deployment; PIR is post-deployment value review.",
+        "PIR primary focus = realized benefits vs business case. Did it deliver the value? Everything else is secondary.",
+        "Exam-day shortcut: any PIR question is answered by the option naming benefits-realization or business-case validation."
+      ],
+      "framework_ref": "ISACA Val IT Framework; COBIT 2019 BAI05 (Managed Organizational Change); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "Post-implementation review",
+        "PIR",
+        "Benefits realization",
+        "Val IT",
+        "Business case"
+      ],
+      "_provenance": "Authored from concept: 'PIR benefits realization per ISACA Val IT and COBIT 2019 BAI05/BAI07'. Public sources: ISACA Val IT, COBIT 2019."
+    },
+    {
+      "id": "d3_017",
+      "domain": 3,
+      "subtopic": "SDLC Methodology Selection — Regulated vs Agile",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which methodology recommendation BEST balances delivery agility with audit and regulatory traceability for the engagement?",
+      "scenario_context": "A mid-sized health-insurance carrier (12 million members across 7 US states) has chartered a 24-month project to replace its claims-adjudication platform. Regulatory requirements include HIPAA, state insurance department filings, and annual SOC 1 attestation over financial controls. The CIO favors a Scrum-only delivery model based on her prior fintech start-up experience. The PMO director worries about audit traceability and proposes a hybrid: scaled agile for delivery, but with formal stage-gates, signed requirements baselines, and traceability artifacts at each gate. The CIO escalated the conflict to the steering committee. The IS auditor is asked to assess methodology fit before the committee meets.",
+      "options": {
+        "A": "Adopt pure Scrum without formal stage-gates because empirical control eliminates the need for traceability artifacts in regulated builds.",
+        "B": "Adopt a hybrid that pairs scaled agile delivery with stage-gate baselines, signed-off RTM, and gated change control over scope.",
+        "C": "Adopt strict waterfall to maximize traceability, since agile cannot satisfy regulator expectations for evidence over the full delivery.",
+        "D": "Defer the decision until external counsel issues a written opinion on whether agile is permissible in regulated build environments."
+      },
+      "correct": "B",
+      "key_concept": "Regulated agile = hybrid: scaled-agile delivery + stage-gate baselines + signed RTM + gated change control. Pure Scrum loses traceability; strict waterfall loses agility; deferring loses time. The hybrid satisfies both delivery and audit requirements.",
+      "pre_read": "For regulated-methodology questions, anchor on \"hybrid that preserves agility while adding traceability artifacts.\" Pure-pole answers (pure Scrum or strict waterfall) almost always lose; the right answer combines both.",
+      "correct_explanation": "ISACA Software Audit guidance, COBIT 2019 BAI02 (Managed Requirements Definition), and ISACA Project Management guidance all support hybrid agile-stage-gate models for regulated environments. The hybrid satisfies delivery agility (incremental development, frequent feedback, scaled-agile coordination) while preserving audit traceability (signed requirements baselines at each stage gate, RTM updated and frozen per gate, gated change control over scope and significant design choices). Option A's pure Scrum loses the traceability that HIPAA, state filings, and SOC 1 attestation require — empirical control alone doesn't produce signed evidence. Option C's strict waterfall over-corrects: it satisfies traceability but eliminates the agility the firm needs for a 24-month effort, and modern regulators do not require waterfall. Option D's deferral wastes time; counsel can opine on regulatory permissibility, but the methodology choice is an IT-governance decision, not a legal one.",
+      "wrong_explanations": {
+        "A": "Pure Scrum without stage-gates does not produce the signed, gated artifacts that HIPAA, state insurance filings, and SOC 1 attestation require. Empirical control is necessary but not sufficient for audit evidence.",
+        "C": "Strict waterfall is not required by regulators and unnecessarily sacrifices agility. Modern regulators accept agile and hybrid models when traceability is preserved through gates and signed baselines.",
+        "D": "Methodology selection is an IT-governance decision, not a legal opinion. Counsel can advise on regulatory permissibility, but the decision belongs to the steering committee informed by audit and PMO input. Deferral wastes time."
+      },
+      "tips": [
+        "Trap is A — \"pure Scrum, empirical control eliminates traceability\" sounds principled but in regulated builds the auditor needs signed evidence, not just empirical confidence.",
+        "Regulated agile = hybrid: agile delivery + stage-gate baselines + signed RTM + gated change control. That's the durable pattern.",
+        "Exam-day shortcut: regulated SDLC questions almost always have a hybrid answer that combines two approaches; pure poles usually lose."
+      ],
+      "framework_ref": "ISACA Software Audit guidance; COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "Hybrid agile",
+        "Stage gates",
+        "RTM",
+        "Regulated SDLC",
+        "HIPAA",
+        "SOC 1"
+      ],
+      "_provenance": "Authored from concept: 'Regulated SDLC methodology selection — hybrid agile-stage-gate per ISACA Software Audit guidance'. Public sources: ISACA guidance, COBIT 2019. Scenario specifics (health insurer, 12M members, 7 states, 24-month) invented for this question."
+    },
+    {
+      "id": "d3_018",
+      "domain": 3,
+      "subtopic": "Failed UAT — Auditor Escalation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation MOST appropriately addresses the partial UAT pass rate four weeks before scheduled go-live?",
+      "scenario_context": "A multinational manufacturer (operations in 14 countries, ~$3B annual revenue) is in week 18 of a 22-week ERP cutover. UAT cycle 2 just concluded: 47% of test cases passed, 31% failed, 22% blocked by environment defects. Go-live is scheduled in 4 weeks. The program director has proposed accepting the partial pass rate, deferring failed test cases to a 'Phase 2' release after cutover, and publishing release notes acknowledging known issues. The CFO is pressing to meet year-end financial close on the new ERP. The IS auditor was invited as observer to the steering committee. The audit committee has formally asked the auditor for a recommendation before the next steering meeting.",
+      "options": {
+        "A": "Recommend deferring go-live until cycle-3 UAT meets the pre-agreed exit criteria, with steering committee documented rationale for any deviation.",
+        "B": "Endorse the proposed Phase-2 deferral because business pressure to close on schedule outweighs the residual UAT risk to the firm.",
+        "C": "Direct development to ship known-failed test cases to production with a remediation roadmap for the next sprint cycle.",
+        "D": "Re-scope UAT to exclude the failing test cases, allowing the existing pass rate to satisfy the original UAT exit criteria."
+      },
+      "correct": "A",
+      "key_concept": "Auditor recommendation = defer go-live until exit criteria met, with documented rationale for any deviation. Endorsing pressure-driven deferral, shipping known failures, or re-scoping UAT to mask failures all violate audit independence and project governance.",
+      "pre_read": "For failed-UAT escalation questions, anchor on \"exit criteria are exit criteria.\" The auditor recommends defer-until-criteria-met, with steering-committee documented rationale if they choose to override. The auditor doesn't endorse pressure-driven shortcuts.",
+      "correct_explanation": "ISACA Project Audit guidance, ISACA UAT Audit guidance, and ITAF Performance Standards establish that UAT exit criteria, once approved, are the gating control for go-live. An IS auditor's appropriate recommendation when exit criteria are not met is to defer go-live until cycle-3 (or further) UAT achieves the agreed pass rate AND the blocked cases are unblocked, with the steering committee formally documenting any decision to deviate from the criteria along with rationale and risk acceptance. Option B endorses a pressure-driven deferral that bypasses controls — auditors don't endorse business-pressure overrides; they document them. Option C ships known failures to production, which is the worst outcome (operational risk, regulatory risk for some industries). Option D re-scopes UAT to exclude failures, which is a textbook defective-control pattern (changing the test to match the pass rate). Only A preserves project governance.",
+      "wrong_explanations": {
+        "B": "Endorsing pressure-driven deferral compromises audit independence. Auditors document business pressure and the trade-offs, but recommendations should reflect control discipline; the steering committee owns the deviation decision and its risk acceptance.",
+        "C": "Shipping known-failed test cases to production transfers risk to operations, customers, or regulators. Phase 2 \"remediation\" without ever returning to acceptance criteria is a textbook control-failure pattern.",
+        "D": "Re-scoping UAT to exclude failures is the textbook defective-control pattern: change the test until the result is acceptable. Auditors call this out, never recommend it."
+      },
+      "tips": [
+        "Trap is B — \"business pressure outweighs residual risk\" sounds pragmatic but it's exactly the override an auditor must NOT endorse; the auditor documents pressure, the steering committee decides.",
+        "Failed UAT = defer until criteria met, with steering documenting any deviation. Auditor doesn't bend the criteria; the criteria stay fixed.",
+        "Exam-day shortcut: failed-UAT auditor recommendations always preserve the criteria; they never endorse re-scoping the test or shipping known failures."
+      ],
+      "framework_ref": "ISACA Project Audit guidance; ISACA UAT Audit guidance; ISACA IT Audit Standard 1204 (Materiality); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "UAT",
+        "Exit criteria",
+        "Audit independence",
+        "Go-live decision",
+        "Project governance"
+      ],
+      "_provenance": "Authored from concept: 'Auditor recommendation on partial UAT pass rate per ISACA Project Audit and UAT Audit guidance'. Public sources: ISACA guidance, COBIT 2019. Scenario specifics (manufacturer, 14 countries, $3B, 22-week cutover, 47/31/22 split) invented for this question."
+    },
+    {
+      "id": "d3_019",
+      "domain": 3,
+      "subtopic": "Data Conversion Fallback During Cutover",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which position MOST appropriately reflects sound conversion-governance principles given the unresolved variance?",
+      "scenario_context": "A regional retail bank (320 branches, 2.4M retail customers) has scheduled a core-banking-platform cutover for a 36-hour Saturday window. Sunday at hour 22, post-cutover reconciliation reports an unexpected $4.7M variance in deposit balances across 18,000 accounts. Root cause is unknown. Branches open in 9 hours. The cutover playbook contains a documented fallback plan to revert to the legacy system, last tested 90 days ago. The CIO is reluctant to invoke fallback citing branch-customer disruption and regulator notifications. The technology committee chair convenes an emergency call and asks the IS auditor for a position before branches open.",
+      "options": {
+        "A": "Proceed to Monday open on the new platform; investigate the variance using production data while branches transact normally.",
+        "B": "Lock all 18,000 affected accounts on the new platform and proceed; resolve variance with manual workarounds during the week.",
+        "C": "Invoke the documented fallback plan because the variance exceeds tolerance and root cause is unknown before branch open.",
+        "D": "Authorize a manual journal entry to clear the variance against suspense and proceed; reconcile during the next month-end close."
+      },
+      "correct": "C",
+      "key_concept": "Cutover with unresolved material variance + unknown root cause + documented fallback = invoke fallback. Proceeding-and-investigating, locking accounts, and journal-clearing all transfer untested integrity risk to operating customers.",
+      "pre_read": "For cutover-with-variance questions, anchor on \"material variance + unknown root cause + tested fallback exists = invoke fallback.\" The cost of fallback (customer disruption, regulator notification) is real but bounded; the cost of proceeding with unknown root cause is unbounded.",
+      "correct_explanation": "ISACA Data Migration guidance, COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning), and NIST SP 800-34 (Contingency Planning Guide) all support invoking the documented fallback plan when (a) post-cutover variance exceeds tolerance, (b) root cause is unknown, and (c) the fallback plan is documented and recently tested. The variance ($4.7M across 18,000 accounts) is material; the root cause is unknown, meaning the firm cannot quantify exposure or scope; and the fallback was tested 90 days ago (within a defensible window). Option A 'proceeds and investigates' but exposes customers to potentially incorrect balances at branch open. Option B 'locks and proceeds' creates immediate customer-service failures and may not actually scope the issue (the 18,000 known-affected accounts may be the surface of a larger problem). Option D's journal entry to suspense without root cause is the textbook bad pattern: it makes the books balance without understanding the underlying issue.",
+      "wrong_explanations": {
+        "A": "Proceeding with branch open while variance is unresolved exposes customers to potentially incorrect balances. The cost (customer trust, regulator scrutiny if errors surface to customers) is unbounded compared to bounded fallback cost.",
+        "B": "Locking 18,000 accounts creates immediate customer-service failures (deposits, withdrawals, transfers all blocked) and assumes the 18,000 known-affected accounts represent the full scope, which is not established.",
+        "D": "Clearing variance to suspense without root cause is a textbook bad pattern: it makes the books balance while the underlying issue persists and may grow. Auditors do not recommend this without root cause and a remediation plan."
+      },
+      "tips": [
+        "Trap is A — \"proceed and investigate\" feels active and forward-looking but it transfers untested integrity risk to operating customers; fallback is the safer choice.",
+        "Cutover variance + unknown cause + tested fallback = INVOKE FALLBACK. Customer disruption is bounded; integrity risk is not.",
+        "Exam-day shortcut: cutover-failure questions favor the option that uses the documented fallback when root cause is unknown; proceed-anyway options are typically traps."
+      ],
+      "framework_ref": "ISACA Data Migration guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); NIST SP 800-34 (Contingency Planning Guide)",
+      "related_concepts": [
+        "Data conversion",
+        "Fallback plan",
+        "Cutover",
+        "Reconciliation variance",
+        "Contingency planning"
+      ],
+      "_provenance": "Authored from concept: 'Cutover fallback when reconciliation variance unresolved per ISACA Data Migration and COBIT 2019 BAI07'. Public sources: ISACA guidance, COBIT 2019, NIST SP 800-34. Scenario specifics (regional bank, 320 branches, 2.4M customers, $4.7M variance, 18,000 accounts, 90-day-tested fallback) invented for this question."
+    },
+    {
+      "id": "d3_020",
+      "domain": 3,
+      "subtopic": "Major Release Governance Under Regulatory Deadline",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST balances regulatory deadline pressure against release-governance discipline for the engagement?",
+      "scenario_context": "A federally chartered insurer (national operations, ~5,000 employees) has a major regulatory release due in 5 weeks to comply with new state insurance commissioner reporting rules effective on a fixed date. The release passes SAST and unit tests, but two of nine UAT scenarios for new regulatory reports remain blocked: scenario 4 (multi-state premium roll-up) and scenario 7 (reinsurance offset). Development claims the blockers are non-regulatory and proposes proceeding to production with the failures excluded from in-scope reporting. The compliance officer disagrees. The CISO and PMO escalate to the steering committee. The IS auditor is asked for a recommendation before the next steering meeting.",
+      "options": {
+        "A": "Endorse production deployment with the two blocked scenarios excluded from go-live, since the deadline supersedes UAT exit criteria.",
+        "B": "Halt the release entirely until both scenarios pass, even if the regulatory deadline is missed and penalties accrue against the firm.",
+        "C": "Proceed with manual workarounds for the two scenarios and remediate after deadline; treat the workarounds as a permanent control.",
+        "D": "Decompose scope into a deadline-essential subset that fully passes UAT plus a follow-on release for the blocked scenarios with documented risk acceptance."
+      },
+      "correct": "D",
+      "key_concept": "Regulatory deadline + blocked UAT = decompose scope into deadline-essential subset (fully tested) + follow-on release for blockers (with documented risk acceptance). Excluding scenarios silently, halting entirely, or making workarounds permanent all fail.",
+      "pre_read": "For deadline-vs-quality questions, anchor on \"decompose scope.\" Find what's truly mandatory by the deadline, fully test that subset, and schedule a follow-on release for the rest with formal risk acceptance. Pure halt and pure proceed are usually wrong.",
+      "correct_explanation": "ISACA Project Audit guidance, COBIT 2019 BAI06 (Managed IT Changes) and BAI07 (Managed IT Change Acceptance and Transitioning), and ITIL 4 Change Enablement support a scope-decomposition approach when a hard deadline collides with incomplete testing. The right pattern: identify the deadline-essential subset (what is truly required to satisfy the regulatory rule on the effective date), fully test and deploy that subset, and schedule a follow-on release for the remaining blocked scenarios with formal risk acceptance from the appropriate authority. Option A excludes blocked scenarios silently — the regulatory effective date may actually require those reports, and 'development claims' is not a sufficient basis for in-scope determination. Option B halts entirely, which incurs regulator penalties without proportional benefit (the deadline-essential subset could have shipped). Option C makes manual workarounds permanent, which is a control-failure pattern (workarounds become permanent only when nothing forces remediation).",
+      "wrong_explanations": {
+        "A": "Excluding blocked scenarios based on 'development claims' that they're non-regulatory is insufficient. The compliance officer's disagreement signals that the in-scope determination is unsettled; auditor recommendations should not preempt that determination.",
+        "B": "Halting entirely incurs regulator penalties on the deadline date for parts that could have shipped. Pure halt fails to optimize for the dual objective (regulatory compliance + tested quality).",
+        "C": "Manual workarounds-as-permanent-control is a textbook bad pattern. Workarounds are temporary by design; treating them as permanent eliminates the incentive to remediate and introduces operational fragility."
+      },
+      "tips": [
+        "Trap is A — \"deadline supersedes UAT\" sounds like decisive leadership but it's exactly the override that produces production incidents on day 1; the auditor doesn't endorse silent scope exclusion.",
+        "Hard deadline + blocked UAT = decompose scope. Deadline-essential subset (fully tested) + follow-on release (risk-accepted). Both halves matter.",
+        "Exam-day shortcut: deadline-vs-quality questions favor the option that decomposes scope; pure-halt and pure-proceed are almost always wrong."
+      ],
+      "framework_ref": "ISACA Project Audit guidance; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); ITIL 4 (Change Enablement)",
+      "related_concepts": [
+        "Release governance",
+        "Regulatory deadline",
+        "Scope decomposition",
+        "Risk acceptance",
+        "Change enablement"
+      ],
+      "_provenance": "Authored from concept: 'Scope decomposition under regulatory deadline pressure per ISACA Project Audit guidance and COBIT 2019 BAI06/BAI07'. Public sources: ISACA guidance, COBIT 2019, ITIL 4. Scenario specifics (federally chartered insurer, 5,000 employees, 5-week deadline, 2 of 9 blocked scenarios, scenario 4 premium roll-up, scenario 7 reinsurance offset) invented for this question."
+    }
+  ]
 }
