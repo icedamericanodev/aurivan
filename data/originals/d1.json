@@ -5332,10 +5332,10 @@
       "scenario_context": "An IS auditor at a state pension fund is mid-engagement on an audit of investment-performance-reporting controls. The audit committee receives a whistleblower allegation from an anonymous source claiming that a senior portfolio manager has been overstating performance metrics through selective use of benchmarks. The allegation has not been substantiated. The audit director must decide how the allegation interacts with the in-flight audit. Four facts are relevant: (1) the audit's planned scope already includes performance-reporting controls but at a sample-based level; (2) the whistleblower allegation, if substantiated, would constitute a material misstatement; (3) the audit committee has authorized the auditor to consider the allegation in scoping; (4) general counsel has advised that the allegation must be treated confidentially and not communicated to the named portfolio manager.",
       "question": "Which response BEST integrates the whistleblower allegation into the audit's procedures and conclusions?",
       "options": {
-        "A": "Ignore the allegation since it is unsubstantiated and would prejudice the audit's objectivity",
-        "B": "Expand the audit's scope on the named area (performance-reporting and specifically the benchmark-selection controls) using procedures designed to address the allegation's specific claims (e.g., examining benchmark-selection rationale, comparing reported performance to industry-standard benchmarks, sampling beyond the planned sample on the relevant period); maintain confidentiality per counsel; document the expansion's connection to the allegation in a confidential annex; and integrate findings into the audit conclusion only if the procedures produce evidence that supports them",
-        "C": "Suspend the audit, declare the matter outside audit scope, and refer it directly to law enforcement",
-        "D": "Communicate the allegation to the named portfolio manager and seek their explanation directly"
+        "A": "Ignore the allegation since it is unsubstantiated, anonymous, and would prejudice the audit's objectivity if integrated into ongoing engagement procedures",
+        "B": "Expand the audit scope on the named area with procedures designed to address the specific claims, maintain confidentiality per counsel, and integrate findings into conclusions only if evidence supports them",
+        "C": "Suspend the audit, declare the matter outside audit scope, and refer it directly to law enforcement authorities for independent investigation",
+        "D": "Communicate the allegation to the named portfolio manager and seek their explanation directly before deciding whether to expand the audit's scope further"
       },
       "correct": "B",
       "key_concept": "Whistleblower allegations during an in-flight audit warrant scope expansion focused on the allegation's specific claims, with maintained confidentiality, documented connection in a confidential annex, and findings integrated into the audit conclusion only when supported by procedures. Ignoring, suspending-and-referring, or direct-confrontation are all wrong.",
@@ -5409,7 +5409,7 @@
       "question": "Which response BEST evaluates management's assertion under SOX 404?",
       "options": {
         "A": "Management's assertion is correct — continuous monitoring covers both management's responsibility and audit's responsibility, eliminating duplication",
-        "B": "Management's assertion conflates two distinct activities: continuous monitoring is management's activity (CIO-operated, providing management's COSO-Component-5 monitoring); continuous auditing is the audit function's activity (independently designed, operated, and used to support audit conclusions). For SOX 404 purposes, the external auditor evaluates BOTH management's monitoring AND the audit function's procedures separately; collapsing them undermines the audit function's independence and weakens the external-auditor reliance posture; the audit function should design and operate its own CA procedures, separate from management's monitoring system",
+        "B": "Management's assertion conflates two distinct activities: continuous monitoring is management's COSO-Component-5 activity, while continuous auditing is the audit function's independent procedure",
         "C": "Management's assertion is correct because the audit function reviewing summary outputs constitutes independent audit",
         "D": "The audit function should disband its CA program entirely and rely fully on management's continuous monitoring, since the systems are duplicative"
       },
@@ -5784,10 +5784,10 @@
       "scenario_context": "An IS auditor at a commercial-bakery chain has identified a risk in the customer-loyalty-program system: unauthorized point redemption due to weak fraud-detection in the rewards-redemption workflow. The expected annual loss is $850K. Management has identified four mitigation options: (1) Accept — reserve the $850K in operating expense and continue with current controls; (2) Reduce — deploy enhanced fraud-detection ML at $1.2M one-time + $300K/year ongoing, projected to reduce expected loss to $80K/year; (3) Transfer — purchase rewards-fraud insurance at $620K/year that covers losses above $200K deductible; (4) Avoid — discontinue the loyalty program entirely, eliminating both the $850K loss exposure AND the $4.5M/year customer-retention value the program produces.",
       "question": "Which treatment selection is MOST defensible from a residual-risk and cost-benefit perspective?",
       "options": {
-        "A": "Option 1 (Accept) — reserving $850K is cheapest in year 1",
-        "B": "Option 2 (Reduce) — net cost is $1.2M one-time + $300K/year, with annual loss reduction of $770K (from $850K to $80K); year-2 onward the savings ($770K) exceeds ongoing cost ($300K) by $470K, with break-even on the $1.2M one-time investment in approximately 2.5 years; this is the most defensible long-run treatment given the ongoing nature of the risk",
-        "C": "Option 3 (Transfer) — purchasing insurance at $620K/year transfers the financial exposure",
-        "D": "Option 4 (Avoid) — discontinuing the program eliminates the risk entirely"
+        "A": "Option 1 (Accept) — reserving $850K for expected loss is the cheapest year-1 outlay since no controls or insurance premiums are required upfront",
+        "B": "Option 2 (Reduce) — annual loss reduction of $770K significantly exceeds the $300K ongoing cost, with break-even on the $1.2M one-time investment in approximately 2.5 years",
+        "C": "Option 3 (Transfer) — purchasing insurance at $620K/year transfers the financial exposure but leaves the underlying control weakness operationally unaddressed",
+        "D": "Option 4 (Avoid) — discontinuing the customer-loyalty program eliminates the risk entirely but forfeits all program revenue and customer-retention benefits"
       },
       "correct": "B",
       "key_concept": "Risk treatment selection requires explicit cost-benefit analysis covering one-time costs, ongoing costs, expected loss reduction, break-even period, and residual risk. The right treatment maximizes long-run value, not year-1 simplicity or single-dimension optimization.",
@@ -5823,7 +5823,7 @@
       "question": "Which response BEST evaluates the proposed charter modification?",
       "options": {
         "A": "Accept the modification as written — additional responsibilities to the audit function increase its value to the organization",
-        "B": "The proposed modification creates an independence threat: if the audit function consults on control design before implementation, then later auditing those same controls creates a self-review threat (auditing one's own consultative work). Decline the modification as proposed; alternatives could include limited consultative input with strict scope boundaries (advisory at the design stage with disclosure and recusal from later audits of the same controls), or routing operations' control-design questions to a different advisory function. Document the analysis and present alternatives to the audit committee",
+        "B": "Decline the modification as proposed since pre-implementation consulting creates a self-review threat for later audit of the same controls; offer alternatives with disclosure and recusal boundaries",
         "C": "Accept the modification but redirect all consultative requests to a single junior auditor, since junior audit staff have less independence at risk",
         "D": "Decline any modification of the audit charter, since charter modifications are inherently improper"
       },
@@ -5860,10 +5860,10 @@
       "scenario_context": "An IS auditor at an aerospace parts manufacturer is designing the sampling for an audit of the supplier-invoice-approval system. The engagement has two objectives: (1) test whether the dual-approval control (supplier invoices > $50K require two approvers) is operating effectively — a yes/no compliance question; (2) estimate the dollar value of any unauthorized payments in the population — a substantive estimation question. The auditor wants to design an efficient sample plan that addresses both objectives without performing two separate sampling exercises if avoidable.",
       "question": "Which sample-design approach is MOST appropriate?",
       "options": {
-        "A": "One attribute sample on the population, using the same items for both compliance testing AND substantive testing, since the items overlap",
-        "B": "Design two sampling exercises with shared item-selection where it makes statistical sense: an attribute sample for the compliance objective with a sample size calibrated to the dual-approval control's tolerable deviation rate; a separate variable / monetary-unit sample for the substantive objective with a sample size calibrated to materiality; reuse items across the two samples where overlap occurs naturally to reduce work, but recognize the two samples have different design objectives and may differ in size and selection logic",
-        "C": "One judgmental sample of the largest 30 invoices, used for both objectives, since judgmental sampling is faster",
-        "D": "Skip statistical sampling and rely on management's representations for both objectives"
+        "A": "Use one combined attribute-substantive sample, since the engagement covers both objectives and a single sample reduces the audit team's selection effort",
+        "B": "Design two sampling exercises with separate sample sizes (attribute for compliance, variable for substantive) and reuse items across samples where natural overlap occurs to reduce duplicate work",
+        "C": "Skip sampling for the substantive objective entirely, since the attribute-test results provide sufficient indirect coverage of dollar-misstatement risk",
+        "D": "Use a single 100-item judgmental sample for both objectives, since judgmental selection is more flexible than statistical methods for mixed-objective engagements"
       },
       "correct": "B",
       "key_concept": "Combined attribute and substantive testing in one engagement requires two sampling exercises with appropriate shared item-selection where statistically valid. One sample serving both objectives leaves at least one objective inadequately served; judgmental shortcuts and reliance on management representations are independence violations.",
@@ -5935,10 +5935,10 @@
       "scenario_context": "An IS auditor at a national retail chain is auditing the company's customer-segmentation system, which uses an AI/ML model provided by an external vendor (the vendor licenses the model to the retailer). Three constraints are documented: (1) the vendor will not disclose the model's training data or detailed architecture, citing trade-secret protection; (2) the model is hosted in the vendor's cloud and accessed via API; (3) the vendor has provided a SOC 2 Type 2 report covering the vendor's general control environment, but no AI-specific attestation. The audit director must design the audit's approach.",
       "question": "Which audit approach BEST balances the constraints with the auditor's responsibility?",
       "options": {
-        "A": "Conclude that the vendor model cannot be audited and exclude it from the audit's scope",
-        "B": "Design an audit approach that combines: (1) reliance on the SOC 2 Type 2 report for the vendor's general control environment (with appropriate evaluation of the SOC 2 scope and conclusions); (2) negotiated transparency for the audit's specific needs (e.g., aggregated training-data demographics, performance metrics by sub-population, model-update notification cadence) — even if full disclosure is refused; (3) testing the model's outputs against the company's own data (output integrity, bias indicators, drift detection); (4) contractual review of the vendor agreement for audit-rights and service-level provisions; document the limitations explicitly in the audit conclusion",
+        "A": "Conclude that the vendor model cannot be audited and exclude it from the audit's scope, since the vendor refuses to disclose proprietary training data and architecture",
+        "B": "Combine reliance on the SOC 2 Type 2 report with negotiated transparency for audit-specific needs, output testing on the company's own data, and a contractual review of audit rights",
         "C": "Demand full vendor disclosure of the training data and architecture, refusing to proceed with the audit until the vendor complies",
-        "D": "Conclude that the SOC 2 Type 2 report alone is sufficient evidence and conduct no additional audit procedures"
+        "D": "Conclude that the SOC 2 Type 2 report alone is sufficient evidence and conduct no additional audit procedures over the model's outputs against the company's own data"
       },
       "correct": "B",
       "key_concept": "Vendor AI/ML model audits require a layered approach: SOC 2 reliance with scope evaluation; negotiated transparency for specific audit needs; output-integrity testing using the company's own data; contractual audit-rights review; explicit limitation disclosure. Pure exclusion, demanding full disclosure, or sole SOC 2 reliance all miss the layered design.",
@@ -6126,7 +6126,7 @@
       "question": "Which response BEST handles the cyber-incident-triggered scope-expansion decision?",
       "options": {
         "A": "Decline scope expansion since the audit plan was approved at the start of the year and changing it mid-cycle is improper",
-        "B": "Expand the audit plan to include a post-incident audit, but design the engagement carefully: scope to (a) the incident-response actions taken (timeline, communication, remediation), (b) the underlying control failure that allowed the ransomware to encrypt the file shares (preventive control evaluation), and (c) the regulator-notification compliance; address the team's limited cyber-IR expertise through co-sourcing with a specialized firm or engaging an external expert under Standard 1206; brief the audit committee on the expansion, the resource implications, and the timeline; and document the trigger explicitly in the audit plan modification",
+        "B": "Expand the audit plan to include a post-incident audit covering the response actions, the underlying control failure, and regulator-notification compliance, with co-sourcing for cyber-IR expertise",
         "C": "Expand the audit plan but conduct the engagement entirely with the existing internal team despite their limited cyber-IR expertise, to keep cost low",
         "D": "Refer the matter entirely to the regulator and conduct no internal audit work"
       },
@@ -6202,9 +6202,9 @@
       "question": "Which response BEST addresses the repeat-finding pattern?",
       "options": {
         "A": "Continue issuing the same finding each year, since the audit's role is to identify findings regardless of whether they recur",
-        "B": "Investigate the repeat-finding pattern as a separate analytical observation: why has remediation failed for three consecutive years? Possible causes include underlying control-design weakness (the remediation approach doesn't address the root cause), management commitment-without-execution (management commits but doesn't follow through), audit-finding wording that's too narrow (the wording doesn't capture the systemic issue), or operational-change impact (each year's remediation is undone by the next year's operational changes); design targeted procedures to identify the root cause; report the pattern explicitly in the current audit and escalate to the audit committee for remediation accountability; and consider whether the audit's repeat-finding handling itself needs adjustment",
-        "C": "Stop issuing the finding since it has been issued three times and management has acknowledged it",
-        "D": "Re-classify the finding as low-severity since it has not produced material consequences in three years"
+        "B": "Investigate the repeat pattern as a separate analytical observation, identify the root cause behind three years of failed remediation, and escalate the pattern to the audit committee for accountability",
+        "C": "Stop issuing the finding since it has been issued three times, management has acknowledged it, and continuing to flag it provides diminishing audit value",
+        "D": "Re-classify the finding as low-severity since it has not produced material business consequences in three years and the recurrence reflects acceptable residual risk"
       },
       "correct": "B",
       "key_concept": "Repeat-finding patterns are analytical observations about remediation failure. The right response identifies root causes (control design / management commitment / finding wording / operational impact), targets procedures, escalates to the audit committee, and considers adjusting the audit's repeat-finding handling. Continuing as-is, stopping, or re-classifying all miss the analytical opportunity.",
@@ -6499,7 +6499,7 @@
       "question": "Which coordination approach BEST navigates the three-way dynamic?",
       "options": {
         "A": "Treat the three parties as completely independent with no coordination, since coordination would compromise independence",
-        "B": "Coordinate carefully through documented protocols: (1) maintain each party's independent reporting line (internal audit to audit committee, external CPA to financial-statement-users, C3PAO to DoD); (2) share appropriate information through audit-committee-authorized channels (e.g., test-area mapping to avoid duplicate testing of the same CMMC controls); (3) preserve confidentiality boundaries (internal-audit findings flow to the audit committee, not directly to external parties unless audit-committee-authorized); (4) document the coordination plan; (5) recognize that the C3PAO's certification work has its own defined scope and coordination doesn't make C3PAO findings shared with internal audit by default",
+        "B": "Coordinate through documented protocols that preserve each party's independent reporting line and confidentiality boundaries while sharing test-area mapping through audit-committee-authorized channels",
         "C": "Have the internal-audit team perform all audit work and provide findings to the external CPA and C3PAO so they don't need to test the same controls",
         "D": "Cancel the internal-audit CMMC engagement entirely and rely on the C3PAO's certification work alone"
       },
@@ -6575,7 +6575,7 @@
       "question": "Which approach BEST integrates industry-overlay considerations into risk-based audit planning?",
       "options": {
         "A": "Use a generic risk-based audit plan and ignore industry-overlay considerations, since risk-based methodology is universally applicable",
-        "B": "Apply the generic risk-based methodology AND layer industry-overlay considerations: identify sector-specific risk drivers (HIPAA, CMS reimbursement, state licensing, healthcare-targeted cyber threats); ensure the audit plan covers each driver at appropriate depth proportional to its risk weight in the specific sector; calibrate engagement frequency to sector-specific cadence (e.g., HIPAA breach-risk areas may warrant more-frequent audits than non-regulated areas); align with sector-standard frameworks where applicable (HITRUST CSF, OCR-recognized assessments) for cross-recognition value",
+        "B": "Apply generic risk-based methodology layered with industry-overlay considerations: sector-specific risk drivers, proportional depth, sector-specific cadence, and alignment with sector-standard frameworks",
         "C": "Apply industry-overlay considerations exclusively and abandon generic risk-based methodology, since industry overlays are more relevant",
         "D": "Apply both methodologies in fully separate parallel plans and run two audit programs"
       },
