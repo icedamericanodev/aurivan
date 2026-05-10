@@ -360,7 +360,19 @@ acceptable when the reference is to the broader topical body of guidance.
 - TOGAF 9.2
 - ITIL 4 Capacity and Performance Management
 - ITIL 4
+- ITIL 4 (Change Enablement)
 - SAFe
+- AICPA SSAE 18 AT-C 105 (Concepts Common to All Attestation Engagements)
+- AICPA SSAE 18 AT-C 205 (Examination Engagements)
+- AICPA Trust Services Criteria
+- ISACA Cyber Insurance guidance
+- ISACA Audit Committee guidance
+- ISACA IT Outsourcing guidance
+- ISO 9004
+- Crosby Quality is Free
+- Juran Quality Handbook
+- Prosci ADKAR Model
+- Kotter 8 Steps
 - ISO 22301 (Business Continuity Management)
 - NIST SP 800-34 (Contingency Planning Guide)
 - NIST SP 800-50 (Building an Information Technology Security Awareness Program)

@@ -4764,6 +4764,737 @@
         "Security strategy"
       ],
       "_provenance": "Authored from concept: 'Information Security strategy alignment with business strategy synthesis - business-pillar to InfoSec-capability mapping, complements d2_006 (board accountability) and d2_069 (InfoSec governance integration with EGIT)'. Public source: COBIT 2019 EDM01/APO13 + ISACA InfoSec Governance + ISO/IEC 27014. All scenario specifics (healthcare tech company, three business pillars, generic CISO strategy) invented for this question."
+    },
+    {
+      "id": "d2_131",
+      "domain": 2,
+      "subtopic": "SOC 1 vs SOC 2 vs SOC 3 — Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional bank is evaluating which SOC report to require from a critical SaaS vendor. Which SOC report MOST appropriately addresses the bank's audit objective of evaluating the vendor's controls over security, availability, and confidentiality?",
+      "options": {
+        "A": "SOC 1 Type 2 — covers internal controls over financial reporting at the vendor; appropriate for ICFR-relevant subservice organizations (e.g., payroll processors, transfer agents)",
+        "B": "SOC 2 Type 2 — covers Trust Services Criteria (security, availability, processing integrity, confidentiality, privacy) over a period of time, with detailed test results suitable for audit reliance",
+        "C": "SOC 3 — a public summary version of the SOC 2 report, intended for general use; high-level rather than test-detailed, appropriate for marketing rather than audit",
+        "D": "An ad-hoc internal-audit report from the vendor's own internal-audit function, since direct vendor-side reporting captures the most current control state available"
+      },
+      "correct": "B",
+      "key_concept": "SOC 2 Type 2 covers Trust Services Criteria over a period (security, availability, processing integrity, confidentiality, privacy) with detailed test results — the right report for security/availability/confidentiality audit reliance. SOC 1 is ICFR-only; SOC 3 is summary; vendor internal-audit reports lack independence.",
+      "pre_read": "SOC report selection questions test whether you can match the audit objective to the SOC report scope. SOC 1 = ICFR; SOC 2 = TSC; SOC 3 = public summary; Type 1 = point-in-time; Type 2 = period.",
+      "correct_explanation": "AICPA SSAE 18 establishes three SOC report types. SOC 1 covers internal controls over financial reporting (ICFR) at a service organization — appropriate when the service organization processes financial transactions that affect a customer's ICFR (payroll, transfer agency). SOC 2 covers Trust Services Criteria — security, availability, processing integrity, confidentiality, privacy — across the categories the customer requires. Type 2 covers a period (typically 6-12 months) with detailed test results, supporting audit reliance. Type 1 is point-in-time and supports planning rather than reliance. SOC 3 is a public summary version of SOC 2 designed for general distribution and marketing, lacking the detailed test results auditors need. Option A is correct for a different audit objective (ICFR). Option C is too high-level for audit reliance. Option D lacks independence — the vendor's internal-audit reports cannot substitute for an independent CPA examination.",
+      "wrong_explanations": {
+        "A": "SOC 1 covers ICFR-relevant controls. The bank's stated objective is security/availability/confidentiality, which SOC 1 doesn't address. Picking SOC 1 here would produce a report that doesn't answer the audit question.",
+        "C": "SOC 3 is a public summary intended for marketing use. It states the SOC 2 conclusion without providing the detailed test results auditors need to evaluate the strength of the underlying examination.",
+        "D": "Vendor internal-audit reports are not independent of vendor management and don't carry the AICPA examination standards. SOC reports are CPA-issued under SSAE 18; vendor-internal reports are not equivalent and cannot be relied upon by a third-party customer."
+      },
+      "tips": [
+        "Trap is C — \"SOC 3 sounds higher-numbered and might cover more\" but SOC 3 is a SUMMARY of SOC 2, not a deeper version.",
+        "SOC 1 = ICFR. SOC 2 = Trust Services Criteria. SOC 3 = public summary. Type 1 = point-in-time. Type 2 = period of operation.",
+        "Exam-day shortcut: SOC report questions are answered by matching the customer's audit objective to the report's scope (financial reporting → SOC 1; security/availability → SOC 2)."
+      ],
+      "framework_ref": "AICPA SSAE 18 AT-C 105 (Concepts Common to All Attestation Engagements); AICPA SSAE 18 AT-C 205 (Examination Engagements); AICPA Trust Services Criteria",
+      "related_concepts": [
+        "SOC 1",
+        "SOC 2",
+        "SOC 3",
+        "Trust Services Criteria",
+        "SSAE 18"
+      ],
+      "_provenance": "Authored from concept: 'SOC report selection - matching audit objective to report scope, complements d2_057 (cloud risk continuous evidence with SOC 2)'. Public source: AICPA SSAE 18 + Trust Services Criteria."
+    },
+    {
+      "id": "d2_132",
+      "domain": 2,
+      "subtopic": "ISO/IEC 27001 Certification Path — Operationalization",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A SaaS company is pursuing ISO/IEC 27001 certification to satisfy enterprise-customer requirements. Which approach BEST operationalizes the certification effort?",
+      "options": {
+        "A": "Build a real ISMS aligned to ISO/IEC 27001 (scope, risk assessment, Annex A controls with SoA, internal audit, management review), then engage an accredited certification body for Stage 1/Stage 2/surveillance audits",
+        "B": "Hire a consultant to write the documentation needed to pass the certification audit, then maintain the documentation as the primary ISMS artifact since the certifier examines documentation rather than operational practice",
+        "C": "Self-certify by stating ISO/IEC 27001 alignment publicly, since accredited-certification adds cost and time without proportional customer-visible value over claimed alignment",
+        "D": "Adopt a different framework (e.g., SOC 2) and tell customers it's equivalent to ISO/IEC 27001, since both frameworks address security controls and customers may not distinguish them carefully"
+      },
+      "correct": "A",
+      "key_concept": "ISO/IEC 27001 certification requires a real operating ISMS: scope definition, risk assessment, Annex A control selection with SoA, internal audit, management review, then accredited Stage 1/Stage 2/surveillance audits. Documentation-only, self-certification, and substitution are all illegitimate.",
+      "pre_read": "ISO 27001 certification questions test whether you recognize the requirement for a REAL operating ISMS rather than documentation theater. Distractors propose paper-only, self-cert, or substitution.",
+      "correct_explanation": "ISO/IEC 27001:2022 requires the certified organization to operate a real Information Security Management System (ISMS), not merely document one. The certification path: define ISMS scope, conduct risk assessment, select Annex A controls (with a Statement of Applicability documenting which controls apply and why), implement controls operationally, conduct internal audit, conduct management review, and engage an accredited certification body (e.g., BSI, DNV, TÜV) for Stage 1 (documentation review), Stage 2 (operational audit), and ongoing surveillance audits. Option B's documentation-only ISMS fails the Stage 2 audit, which examines operational practice. Option C's self-certification is meaningless — customers verify certification via the certifier's registry. Option D's substitution misrepresents to customers; SOC 2 and ISO 27001 are not equivalent, and customers' procurement teams typically know the difference.",
+      "wrong_explanations": {
+        "B": "Documentation alone fails the Stage 2 operational audit. Certifiers examine whether the ISMS actually operates — interviewing staff, sampling control evidence, observing practice. Documentation-without-practice is detected and produces a non-conformity finding rather than certification.",
+        "C": "Self-certification has no third-party validation. Customers verifying ISO 27001 status query the certification body's public registry. A self-cert claim that's not in the registry is recognized immediately as not real certification.",
+        "D": "SOC 2 and ISO 27001 are not equivalent. SOC 2 is a US-CPA examination of Trust Services Criteria; ISO 27001 is a global certification of an ISMS against the standard's specific requirements. Customers' procurement teams typically distinguish them and may require both."
+      },
+      "tips": [
+        "Trap is C — \"self-certify and claim alignment\" feels efficient but customers verify against the certification body's registry; self-cert claims are detected.",
+        "ISO 27001 = real ISMS + accredited Stage 1/Stage 2/surveillance audit cycle. Documentation alone fails Stage 2.",
+        "Exam-day shortcut: ISO 27001 certification questions are answered by the option naming a real operating ISMS plus accredited audit, not paper-only or self-cert."
+      ],
+      "framework_ref": "ISO/IEC 27001:2022; ISACA Information Security Management guidance",
+      "related_concepts": [
+        "ISO/IEC 27001 certification",
+        "ISMS",
+        "Statement of Applicability",
+        "Stage 1/Stage 2 audit"
+      ],
+      "_provenance": "Authored from concept: 'ISO/IEC 27001 certification operationalization - real ISMS vs documentation-only, no prior D2 coverage'. Public source: ISO/IEC 27001:2022."
+    },
+    {
+      "id": "d2_133",
+      "domain": 2,
+      "subtopic": "Cyber Insurance Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a mid-size manufacturer is reviewing the proposed cyber-insurance program. Which design feature MOST strongly supports the program's value as a risk-transfer mechanism?",
+      "options": {
+        "A": "Maximum policy coverage limit purchased regardless of actual risk exposure, accepting higher premiums in exchange for the highest possible payout if an incident occurs in the policy period",
+        "B": "Minimum policy coverage limit to keep premiums low, accepting that the firm self-funds any loss above the policy limit out of operating capital regardless of magnitude",
+        "C": "Coverage calibrated to the firm's risk profile (loss exposure analysis), with attention to exclusions (war / criminal acts / known prior incidents), retention level matched to absorption capacity, and policy alignment with the firm's incident-response and breach-notification capabilities",
+        "D": "Single broad-coverage policy from any insurer offering the lowest premium, since cyber insurance is largely commoditized and policy terms are similar across carriers"
+      },
+      "correct": "C",
+      "key_concept": "Cyber insurance value = coverage calibrated to risk profile + attention to exclusions + retention matched to absorption + alignment with IR/breach-notification capability. Maximum-everywhere and minimum-everywhere are extremes that ignore calibration; any-low-premium ignores material policy-term differences.",
+      "pre_read": "Cyber insurance design questions test whether you recognize that calibration to risk profile and policy-term scrutiny matter more than premium minimization or coverage maximization.",
+      "correct_explanation": "ISACA Cyber Insurance guidance and risk-management literature establish that cyber insurance value depends on policy design fit, not just coverage limits. Effective design: (1) coverage calibrated to the firm's risk profile based on loss-exposure analysis (FAIR or equivalent quantitative methods); (2) careful examination of policy exclusions — war exclusions, criminal-acts exclusions, prior-known-incident exclusions, and the increasingly important nation-state-attribution exclusions can reduce coverage substantially; (3) retention level matched to the firm's absorption capacity (too-low retention drives premium up; too-high retention exceeds the firm's ability to absorb a sub-policy loss); (4) policy alignment with the firm's incident-response and breach-notification capabilities (some policies require specific IR firms or specific notification timing — non-compliance voids coverage). Option A maximizes coverage without calibration. Option B minimizes premium without analyzing absorption. Option D treats cyber insurance as commoditized when policy terms differ materially across carriers.",
+      "wrong_explanations": {
+        "A": "Maximum coverage may be over-engineered for the firm's actual exposure and produces premiums that don't match the risk reduction value. Calibration to risk profile is more value-effective than buying maximum capacity.",
+        "B": "Minimum coverage may exceed the firm's absorption capacity in a major incident, leaving the firm financially exposed exactly when the policy was supposed to provide protection. Retention must match absorption capacity.",
+        "D": "Cyber-insurance policy terms differ materially across carriers — exclusions, retention structures, sublimits per coverage area (forensics, business interruption, ransomware, regulatory fines). Treating it as commoditized typically produces under-coverage in the loss areas the firm is actually exposed to."
+      },
+      "tips": [
+        "Trap is A — \"maximum coverage\" sounds cautious but isn't calibrated to actual exposure; produces premiums that don't match risk-reduction value.",
+        "Cyber insurance design = coverage calibrated to risk + exclusion scrutiny + retention matching absorption + IR/breach alignment. Four properties.",
+        "Exam-day shortcut: cyber insurance questions are answered by the option naming calibration + exclusion + retention + IR alignment, not maximum/minimum extremes or any-low-premium."
+      ],
+      "framework_ref": "ISACA Cyber Insurance guidance; FAIR (Factor Analysis of Information Risk); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Cyber insurance",
+        "Risk transfer",
+        "Policy exclusions",
+        "Retention level"
+      ],
+      "_provenance": "Authored from concept: 'Cyber insurance program design - calibration to risk profile, no prior D2 coverage'. Public source: ISACA Cyber Insurance guidance + FAIR."
+    },
+    {
+      "id": "d2_134",
+      "domain": 2,
+      "subtopic": "IT Investment Portfolio — Board Reporting Dashboard",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing the IT investment portfolio dashboard the CIO presents to the board quarterly. Which design feature MOST strongly supports board-level oversight of IT investments?",
+      "options": {
+        "A": "A detailed project-level Gantt chart for every active IT project, with task-level dependencies and resource assignments visible to enable board members to drill into operational detail",
+        "B": "A single roll-up KPI showing aggregate project on-time-on-budget performance, since condensing all portfolio status into one number provides the simplest board-level signal",
+        "C": "A 'all green' status report submitted by IT leadership showing every project as on-track, ensuring the board sees positive momentum across the portfolio without ambiguity",
+        "D": "Portfolio view structured by RUN/GROW/TRANSFORM categorization with status, business-outcome alignment, run-rate burn, exception-flagged risks, and financial-vs-realized-benefit tracking — at altitude appropriate for board-level decisions"
+      },
+      "correct": "D",
+      "key_concept": "Board-level IT portfolio dashboard = RUN/GROW/TRANSFORM structure + status + business-outcome alignment + financial run-rate + exception-flagged risks + financial-vs-benefit tracking, at board altitude. Project-level Gantt is wrong altitude; single roll-up is too thin; all-green is dishonesty.",
+      "pre_read": "Board-level IT portfolio reporting questions test whether you recognize that the right dashboard altitude is portfolio category + business outcome + exception, not operational project detail or single-number summary.",
+      "correct_explanation": "COBIT 2019 EDM02 (Ensured Benefits Delivery) and ISACA IT Portfolio Management guidance establish that board-level IT investment reporting should provide portfolio-altitude oversight: structured by RUN/GROW/TRANSFORM (so the board sees the strategic balance), with status per category, business-outcome alignment per major investment (each transformation initiative tied to a specific business outcome with measurable progress), run-rate financial burn against budget, exception-flagged risks (so the board sees what's NOT on track without the noise of what is), and financial-vs-realized-benefit tracking (committed financial vs realized business benefit). Option A's project-level Gantt is operational altitude — appropriate for an IT steering committee, not the board. Option B's single roll-up KPI hides material variation across categories. Option C's 'all-green' is dishonest reporting that destroys board trust when reality emerges.",
+      "wrong_explanations": {
+        "A": "Project-level Gantt is operational altitude. Board members are not project managers; they're allocators of capital and risk. Operational detail at board level wastes board time and obscures the strategic signal.",
+        "B": "Single-number KPIs hide variation across portfolio categories. A green roll-up could mask serious TRANSFORM failures behind successful RUN performance — exactly when the board most needs to know.",
+        "C": "'All green' status reports destroy board trust when reality emerges (when a transformation initiative fails or a regulatory deadline is missed). Honest reporting with exception flagging is the recognized practice."
+      },
+      "tips": [
+        "Trap is C — \"all green status report\" sounds reassuring but is dishonest reporting that destroys board trust when reality emerges.",
+        "Board-level IT portfolio dashboard = RUN/GROW/TRANSFORM + status + business-outcome alignment + run-rate + exception flagging + benefit tracking.",
+        "Exam-day shortcut: board reporting questions are answered by the option naming portfolio-altitude with categorical structure and exception flagging."
+      ],
+      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 APO05 (Managed Portfolio); ISACA IT Portfolio Management guidance",
+      "related_concepts": [
+        "IT portfolio dashboard",
+        "Board reporting",
+        "RUN/GROW/TRANSFORM",
+        "Exception reporting"
+      ],
+      "_provenance": "Authored from concept: 'IT investment portfolio board reporting dashboard, complements d2_026 (R/G/T tier discipline at planning level) and d2_068 (mid-year rebalance)'. Public source: COBIT 2019 EDM02/APO05."
+    },
+    {
+      "id": "d2_135",
+      "domain": 2,
+      "subtopic": "Vendor Risk-Tier Criteria — Depth",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a regional bank is reviewing vendor-tier criteria. Which set of criteria MOST appropriately classifies vendors into risk tiers?",
+      "options": {
+        "A": "Vendor size (revenue, headcount) alone, since larger vendors have more resources to manage risk and smaller vendors have higher risk by default",
+        "B": "Multi-factor criteria: data sensitivity handled, business criticality, regulatory implications, geographic and concentration considerations, with documented thresholds for tier 1/2/3/4",
+        "C": "Annual contract value alone, since higher-spend vendors warrant more attention and lower-spend vendors are inherently lower risk regardless of what they do",
+        "D": "The vendor's industry sector (financial-services / healthcare / general), since sector-based tiering captures regulatory implications without requiring detailed analysis"
+      },
+      "correct": "B",
+      "key_concept": "Vendor tier criteria = multi-factor: data sensitivity + business criticality + regulatory implications + geographic/concentration + documented tier thresholds. Single-factor approaches (size, ACV, sector) systematically miss material risk dimensions.",
+      "pre_read": "Vendor tier criteria questions test whether you recognize that vendor risk is multi-dimensional. Distractors propose single-factor approaches that produce mis-tiering.",
+      "correct_explanation": "OCC Bulletin 2013-29, FFIEC examination guidance, and ISACA IT Vendor Management establish that vendor tier criteria must be multi-factor: (1) data sensitivity handled — does the vendor handle PII, PHI, financial data, intellectual property, or trade secrets; (2) criticality to business operations — would a vendor outage materially impact the bank's ability to operate; (3) regulatory implications — does the vendor's work fall within HIPAA, GLBA, PCI DSS, BSA/AML scope; (4) geographic and concentration considerations — cross-border exposure, geopolitical risk, multi-tenant concentration. Documented tier thresholds (Tier 1 critical, Tier 2 high, Tier 3 moderate, Tier 4 low) translate the multi-factor analysis into tier assignments that drive due-diligence depth, contract requirements, and ongoing monitoring intensity. Option A's size-only ignores what the vendor actually does. Option C's ACV-only mis-tiers low-spend high-criticality vendors. Option D's sector-only ignores the actual scope of work.",
+      "wrong_explanations": {
+        "A": "Vendor size doesn't determine risk profile. A small vendor handling sensitive PHI may pose higher risk than a large vendor handling commodity services. Size is one input among several, not the determinant.",
+        "C": "Annual contract value correlates loosely with risk but doesn't capture criticality (a $50K vendor may be on the bank's critical path) or data sensitivity (a $50K vendor handling PHI may exceed a $5M vendor handling marketing services).",
+        "D": "Industry-sector-based tiering paints with too broad a brush. Within a sector, vendors range from low-risk (general-business SaaS) to critical-tier (core operating systems). Sector is a context, not a tier criterion."
+      },
+      "tips": [
+        "Trap is C — \"ACV alone\" feels economically rational but mis-tiers low-spend high-criticality vendors.",
+        "Vendor tier criteria = data sensitivity + business criticality + regulatory + geographic/concentration + documented thresholds. Multi-factor analysis.",
+        "Exam-day shortcut: vendor tiering questions are answered by the option naming multi-factor criteria, not size / ACV / sector alone."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC IT Examination Handbook; ISACA IT Vendor Management guidance",
+      "related_concepts": [
+        "Vendor tiering",
+        "Vendor risk criteria",
+        "Critical-tier vendors",
+        "OCC 2013-29"
+      ],
+      "_provenance": "Authored from concept: 'Vendor risk-tier criteria depth - multi-factor approach, complements d2_036 (IT-VMO structure) and d2_099 (vendor onboarding)'. Public source: OCC Bulletin 2013-29 + FFIEC."
+    },
+    {
+      "id": "d2_136",
+      "domain": 2,
+      "subtopic": "IT-Business Alignment Metrics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is evaluating how the CIO measures IT-business alignment. Which metric set BEST captures alignment in measurable terms?",
+      "options": {
+        "A": "Direct linkage metrics: percentage of IT investments tied to specific business objectives, business-stakeholder satisfaction with IT delivery, business-outcome metrics achieved through IT capabilities, and IT-business joint planning cadence",
+        "B": "IT department efficiency metrics (cost per ticket, project on-time delivery, system availability) since efficient IT execution is sufficient to demonstrate business alignment",
+        "C": "Aggregate count of business stakeholders the CIO meets with monthly, since alignment comes from relationship management and meeting frequency captures the relationship dimension well",
+        "D": "Headcount ratio of IT to non-IT staff, since lean IT functions demonstrate well-aligned operations and over-staffed IT functions indicate misalignment with the business"
+      },
+      "correct": "A",
+      "key_concept": "IT-business alignment metrics = direct linkage: % of investments tied to objectives + stakeholder satisfaction + business outcomes achieved through IT + joint planning cadence. Efficiency metrics, meeting count, and headcount ratio all measure proxies, not alignment itself.",
+      "pre_read": "Alignment metric questions test whether you recognize that direct alignment metrics measure linkage, while efficiency / activity / headcount metrics measure proxies.",
+      "correct_explanation": "COBIT 2019 EDM02 (Ensured Benefits Delivery) and ISACA EGIT guidance establish that IT-business alignment is measured through direct linkage metrics: (1) percentage of IT investments tied to specific business objectives (traceability from each major investment to a business goal it enables); (2) business-stakeholder satisfaction with IT delivery (regularly surveyed business leaders' assessment of IT's responsiveness, predictability, and value-add); (3) business-outcome metrics achieved through IT capabilities (revenue enabled, cost avoided, risk reduced, productivity gained — tied to specific IT investments); (4) IT-business joint planning cadence (frequency and depth of joint planning between IT and business leaders). Option B measures efficient IT execution but doesn't measure whether the execution serves business needs. Option C measures activity (meeting count), not outcomes. Option D measures cost structure, not alignment.",
+      "wrong_explanations": {
+        "B": "IT can be efficient and misaligned simultaneously — efficiently delivering things the business doesn't need. Efficiency metrics are necessary but not sufficient for alignment measurement.",
+        "C": "Meeting count is activity, not alignment. The CIO can have many meetings with business stakeholders that don't produce alignment, and few high-quality meetings that produce strong alignment. Frequency alone doesn't capture quality.",
+        "D": "Headcount ratio reflects cost structure decisions, which are driven by sourcing strategy and business model — not by alignment. Different industries and stages of digitization warrant different ratios."
+      },
+      "tips": [
+        "Trap is B — \"efficiency metrics demonstrate alignment\" treats efficient execution as if it implied alignment, but IT can be efficient and misaligned at the same time.",
+        "Alignment metrics = % investments tied to objectives + stakeholder satisfaction + business outcomes via IT + joint planning cadence. Direct linkage, not proxies.",
+        "Exam-day shortcut: alignment questions are answered by the option naming direct linkage metrics, not efficiency / activity / headcount proxies."
+      ],
+      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); ISACA EGIT Framework",
+      "related_concepts": [
+        "IT-business alignment",
+        "Alignment metrics",
+        "EDM02",
+        "Business outcomes"
+      ],
+      "_provenance": "Authored from concept: 'IT-business alignment metrics - direct linkage measures, complements d2_004 (IT-business strategy alignment application)'. Public source: COBIT 2019 EDM02."
+    },
+    {
+      "id": "d2_137",
+      "domain": 2,
+      "subtopic": "Information Security KPI Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "A regional bank's CISO is designing the information security KPI portfolio. Which KPI design feature MOST strongly supports executive-level security governance?",
+      "options": {
+        "A": "Volume metrics only (total alerts triggered, incidents detected, vulnerabilities found), since volume captures the security team's overall activity level and effort",
+        "B": "Single composite score combining all security dimensions into one number, since executives prefer simple metrics and a single score is easiest to track over time at the board level",
+        "C": "Outcome-aligned KPIs tied to security objectives: control coverage (%), control effectiveness (KCI rates), risk-exposure trends (KRI rates), incident severity distribution, regulatory-finding cadence — with thresholds for executive escalation",
+        "D": "Industry-benchmark percentiles only, since comparing the bank to peer institutions provides the most defensible context for executive security discussions"
+      },
+      "correct": "C",
+      "key_concept": "InfoSec KPIs = outcome-aligned: control coverage + control effectiveness (KCI) + risk-exposure trends (KRI) + incident severity distribution + regulatory-finding cadence + escalation thresholds. Volume-only, composite-only, and benchmark-only all fail.",
+      "pre_read": "InfoSec KPI design questions test whether you recognize that effective KPIs combine control coverage, effectiveness, risk exposure, and incident severity with executive thresholds.",
+      "correct_explanation": "ISACA Information Security Governance guidance and NIST CSF v2.0 (Govern function) establish that effective InfoSec KPIs are outcome-aligned and multi-dimensional: control coverage percentage (do we have controls in place where needed?), control effectiveness via KCI rates (are controls operating as designed?), risk-exposure trends via KRI rates (is exposure rising or falling?), incident severity distribution (what's our actual experience?), regulatory-finding cadence (what are regulators surfacing?). Each KPI has thresholds for executive escalation so the executive sees alerts when something needs decision-level attention. Option A's volume-only metrics report activity, not effectiveness — high alert volume could indicate either strong detection or alert noise. Option B's composite score hides component variation — a green composite can mask material weakness in one dimension. Option D's benchmark-only ignores the bank's specific risk profile and context.",
+      "wrong_explanations": {
+        "A": "Volume metrics report activity. High alert volume could indicate strong detection (good), excessive false positives (bad), or alert flooding obscuring real signals (very bad). Volume alone doesn't distinguish.",
+        "B": "Composite scores combine dimensions that should remain visible. A green composite can hide a critical-tier control gap if other dimensions are strong. Executives need component visibility to make decisions.",
+        "D": "Benchmark percentiles are useful context but don't capture the bank's specific risk profile. A bank above the industry median may still be below its own risk-appetite target; a bank below may still be above tolerance for its specific situation."
+      },
+      "tips": [
+        "Trap is B — \"single composite score\" feels executive-friendly but hides component variation that executives need to see.",
+        "InfoSec KPI design = control coverage + control effectiveness (KCI) + risk-exposure trends (KRI) + incident severity + regulatory findings + escalation thresholds. Multi-dimensional + outcome-aligned.",
+        "Exam-day shortcut: InfoSec KPI questions are answered by the option naming outcome-aligned multi-dimensional KPIs with executive thresholds."
+      ],
+      "framework_ref": "NIST Cybersecurity Framework v2.0 (Govern Function); ISACA Information Security Governance guidance; COBIT 2019 APO13 (Managed Security)",
+      "related_concepts": [
+        "InfoSec KPIs",
+        "KCI",
+        "KRI",
+        "NIST CSF Govern",
+        "APO13"
+      ],
+      "_provenance": "Authored from concept: 'Information Security KPI design - outcome-aligned multi-dimensional, complements d2_031/d2_032/d2_051 (KPI/KRI/KCI definitions) and d2_064 (InfoSec ops)'. Public source: NIST CSF v2.0 + ISACA InfoSec Governance."
+    },
+    {
+      "id": "d2_138",
+      "domain": 2,
+      "subtopic": "Audit Committee Cadence — IT Topics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is helping the audit committee chair structure the committee's annual cadence for IT topics. Which scheduling approach MOST appropriately balances oversight depth with efficient committee time?",
+      "options": {
+        "A": "Schedule a single comprehensive IT update at one meeting per year, covering all IT topics in depth so the committee gets the full annual picture in one sitting",
+        "B": "Defer all IT topics to the audit-committee chair's individual conversations with the CIO, freeing committee meeting time for financial topics that the broader committee evaluates collectively",
+        "C": "Defer all IT topics to the full board, since IT governance falls under broader corporate governance and the audit committee's narrower scope shouldn't include IT",
+        "D": "Layered annual schedule: regular every-meeting IT-risk and incident summary; quarterly IT-program update (strategy, portfolio, financials); semi-annual deep-dive on a rotating IT topic (security, privacy, vendor risk, BCP/DR); annual IT-audit-plan review with the CAE"
+      },
+      "correct": "D",
+      "key_concept": "Audit committee IT cadence = layered annual schedule: every-meeting IT-risk summary + quarterly IT-program update + semi-annual deep-dive on rotating topic + annual IT-audit-plan review. Single-meeting, individual-conversations, and full-board-defer all fail.",
+      "pre_read": "Audit committee cadence questions test whether you recognize that IT oversight requires layered scheduling — frequent at-a-glance + periodic depth + annual planning. Distractors propose single-event, informal, or scope-deferred approaches.",
+      "correct_explanation": "ISACA Audit Committee guidance and IIA International Standards 2060 (Reporting to Senior Management and the Board) establish that effective audit-committee oversight of IT requires a layered cadence: (1) regular every-meeting IT-risk and incident summary (typically quarterly with the audit committee's regular cadence) — keeps the committee continuously aware of risk posture and material incidents; (2) quarterly IT-program update covering strategy progress, portfolio status, financial run-rate; (3) semi-annual deep-dive rotating across IT topics (security, privacy, vendor risk, business continuity / DR) — provides depth on one topic per six months without trying to cover everything every meeting; (4) annual IT-audit-plan review with the Chief Audit Executive — establishes the audit function's IT coverage for the coming year. Option A's single comprehensive meeting can't be deep enough on multiple topics in one sitting. Option B's individual-conversations bypasses the collective committee role. Option C's full-board-defer ignores the audit committee's specific oversight responsibility for IT risk and audit.",
+      "wrong_explanations": {
+        "A": "A single annual comprehensive meeting can't provide adequate depth on security, privacy, vendor risk, BCP, and the IT audit plan all at once. Layered scheduling provides depth where it matters with continuous awareness elsewhere.",
+        "B": "Individual chair-CIO conversations bypass the collective committee judgment. The committee's value comes from multiple members evaluating IT topics together; deferring to one-on-one conversations strips that out.",
+        "C": "Audit committees specifically have IT oversight responsibility under SOX and equivalent regimes — that's why ISACA Audit Committee guidance addresses IT topic cadence. Deferring all IT to the full board abdicates the audit committee's specific responsibility."
+      },
+      "tips": [
+        "Trap is A — \"single comprehensive meeting\" feels efficient but can't provide adequate depth across all IT topics in one sitting.",
+        "Audit committee IT cadence = every-meeting risk summary + quarterly program update + semi-annual deep-dive on rotating topic + annual audit-plan review.",
+        "Exam-day shortcut: audit-committee cadence questions are answered by the option naming layered scheduling, not single-event / informal / scope-deferred."
+      ],
+      "framework_ref": "IIA International Standard 2060 (Reporting to Senior Management and the Board); ISACA Audit Committee guidance; COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "related_concepts": [
+        "Audit committee cadence",
+        "IT oversight",
+        "IIA Standard 2060",
+        "Layered governance"
+      ],
+      "_provenance": "Authored from concept: 'Audit committee cadence with IT topics - layered annual schedule, complements d2_103 (audit committee composition) and d2_138-d2_142 governance committee structure'. Public source: IIA Standard 2060 + ISACA Audit Committee guidance."
+    },
+    {
+      "id": "d2_139",
+      "domain": 2,
+      "subtopic": "Quality Cost Analysis (Cost of Quality)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor at a medical-device manufacturer is reviewing the IT delivery quality program's cost analysis. Which quality-cost categorization MOST appropriately structures the program's quality investment decisions?",
+      "options": {
+        "A": "Track only total quality program spend without categorizing, since granular categorization adds overhead without supporting decision-making at the executive level",
+        "B": "Cost of Quality model: Prevention costs (training, design review) + Appraisal costs (testing, audit) + Internal failure costs (rework) + External failure costs (production defects, regulatory consequences)",
+        "C": "Track only direct testing costs since testing is the visible quality activity and other quality investments are difficult to measure precisely",
+        "D": "Track quality investment as a single percentage of overall IT spend, comparing it to industry benchmarks regardless of the firm's specific risk profile or quality maturity"
+      },
+      "correct": "B",
+      "key_concept": "Cost of Quality model: Prevention + Appraisal + Internal Failure + External Failure. The four categories enable decisions about where to invest more (prevention/appraisal) to reduce total quality cost (often dominated by external failure). Single-bucket and benchmark-only approaches miss the structural insight.",
+      "pre_read": "Cost of Quality questions test whether you know the four categories and how they interact. The classic finding: increasing prevention/appraisal investment reduces total cost by reducing internal/external failure costs.",
+      "correct_explanation": "Crosby's and Juran's Cost of Quality framework, ISO 9004, and ISACA Quality Management guidance establish four cost categories. Prevention costs (P): training, design review, SDLC discipline, threat modeling — investments to prevent defects before they occur. Appraisal costs (A): testing, audit, peer review — investments to detect defects after they occur but before customer exposure. Internal failure costs (IF): rework, defect remediation in development — costs of detecting defects internally. External failure costs (EF): production incidents, customer impact, regulatory consequences, reputation damage — costs of defects that reach customers. The classic insight: increasing P+A typically reduces IF+EF more than P+A increases — total quality cost decreases. The categorization enables decisions about where to invest. Option A's single-bucket loses the structural insight. Option C's testing-only ignores prevention. Option D's benchmark-only ignores the firm's specific quality maturity.",
+      "wrong_explanations": {
+        "A": "Single-bucket spending tracking loses the structural insight that prevention investments often reduce failure costs more than they cost. Without categorization, the firm can't make 'invest more here to save more there' decisions.",
+        "C": "Testing-only ignores prevention, which is typically more cost-effective than detection. The Cost of Quality framework specifically demonstrates that prevention investment yields better ROI than detection-after-the-fact.",
+        "D": "Industry benchmarks are useful context but don't capture the firm's specific quality maturity. A firm at 6% quality investment may need more (if quality is poor) or less (if mature); the benchmark alone doesn't tell."
+      },
+      "tips": [
+        "Trap is C — \"track testing costs\" focuses on the visible activity but misses prevention, which often yields better quality ROI.",
+        "Cost of Quality = Prevention + Appraisal + Internal Failure + External Failure. Four categories. Increasing P+A typically reduces IF+EF more than the increase.",
+        "Exam-day shortcut: Cost of Quality questions are answered by the option naming the four categories, not single-bucket or benchmark-only."
+      ],
+      "framework_ref": "ISO 9004; ISACA Quality Management guidance; Crosby Quality is Free; Juran Quality Handbook",
+      "related_concepts": [
+        "Cost of Quality",
+        "PAF model",
+        "Quality investment",
+        "ISO 9004"
+      ],
+      "_provenance": "Authored from concept: 'Quality cost analysis Prevention/Appraisal/Failure model, complements d2_020 (QA program effectiveness) and d2_048 (quality framework selection)'. Public source: ISO 9004 + Crosby + Juran."
+    },
+    {
+      "id": "d2_140",
+      "domain": 2,
+      "subtopic": "Cross-Border Data Transfer — Audit Procedures",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is auditing a SaaS company's cross-border data-transfer compliance under GDPR. Which audit procedure set MOST appropriately tests the firm's transfer mechanisms?",
+      "options": {
+        "A": "Verify documented mechanisms (SCCs+TIAs, adequacy decisions, BCRs), test sample transfer flows for actual implementation, and review supplementary measures where SCCs are insufficient",
+        "B": "Audit only the firm's privacy policy text, since the policy describes transfers and policy review is the most efficient audit approach",
+        "C": "Audit only the firm's transfer-mechanism inventory list, accepting the inventory as evidence without sampling actual data flows or testing implementation",
+        "D": "Audit only customer consent forms, since data subject consent is the strongest legal basis for transfer and other mechanisms are subordinate to consent"
+      },
+      "correct": "A",
+      "key_concept": "Cross-border transfer audit = verify documented mechanisms (SCCs+TIAs, adequacy decisions, BCRs) + test sample flows for actual implementation + review supplementary measures. Policy-only, inventory-only, and consent-only approaches all miss material gaps.",
+      "pre_read": "Cross-border transfer audit questions test whether you recognize the multi-element approach combining documentation review and operational testing.",
+      "correct_explanation": "GDPR Articles 44-50, EDPB Recommendations on Supplementary Measures (06/2020), and Schrems II ruling establish that cross-border transfer audit must verify both documented mechanisms and operational implementation. (1) Documented mechanisms: SCCs (Standard Contractual Clauses, the new 2021 modules) with completed Transfer Impact Assessments demonstrating that the destination country's laws don't undermine the SCCs; adequacy decisions for countries the EU has formally recognized; BCRs (Binding Corporate Rules) for intra-group transfers. (2) Test sample transfer flows for actual implementation — does data actually flow only via the mechanisms claimed, or do shadow flows exist (CRM connectors, marketing tools, analytics)? (3) Supplementary measures where SCCs are insufficient — encryption, pseudonymization, contractual additions per EDPB 06/2020. Option B's policy-only review skips operational verification. Option C's inventory-only doesn't test whether the inventory matches reality. Option D's consent-only ignores that consent is rarely the appropriate transfer mechanism for ongoing business operations.",
+      "wrong_explanations": {
+        "B": "Privacy policies describe what the firm intends; transfer audit tests what the firm actually does. Policy review is necessary but not sufficient.",
+        "C": "Inventory lists describe what the firm thinks it has; sampling actual flows tests whether the inventory matches reality. Shadow flows (CRM connectors, marketing tools) often exist outside the inventory.",
+        "D": "Consent under GDPR Article 6(1)(a) is rarely appropriate for ongoing business operations because it can be withdrawn at any time. SCCs, adequacy decisions, and BCRs are the typical mechanisms for sustained cross-border operations."
+      },
+      "tips": [
+        "Trap is D — \"consent is the strongest legal basis\" inverts the practical reality; consent is rarely appropriate for sustained operations because it's withdrawable.",
+        "Cross-border transfer audit = mechanism verification (SCCs+TIAs, adequacy, BCRs) + sample flow testing + supplementary-measures review. Multi-element.",
+        "Exam-day shortcut: cross-border transfer audit questions are answered by the option naming documentation + operational testing + supplementary measures."
+      ],
+      "framework_ref": "GDPR Articles 44-50 (Transfers); EDPB Recommendations on Supplementary Measures (06/2020); Schrems II ruling (CJEU 2020); Standard Contractual Clauses (SCCs)",
+      "related_concepts": [
+        "Cross-border transfer",
+        "SCCs",
+        "Transfer Impact Assessment",
+        "Supplementary measures"
+      ],
+      "_provenance": "Authored from concept: 'Cross-border data transfer audit procedures - multi-element approach, complements d2_030 (transborder decision analysis)'. Public source: GDPR + EDPB 06/2020 + Schrems II."
+    },
+    {
+      "id": "d2_141",
+      "domain": 2,
+      "subtopic": "IT Change Management vs Enterprise Change Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IS auditor is reviewing change-management discipline at a mid-size manufacturer. Which statement BEST distinguishes IT change management from enterprise change management?",
+      "options": {
+        "A": "IT change management and enterprise change management are interchangeable terms used by different practitioners for the same activity of governing organizational change",
+        "B": "IT change management replaces enterprise change management at organizations with high IT-investment ratios, since IT changes typically dominate the change portfolio anyway",
+        "C": "IT change management governs technical changes (releases, infrastructure) using ITIL discipline; enterprise change management governs organizational/people change using OCM disciplines (ADKAR, Kotter) — distinct, complementary",
+        "D": "Enterprise change management replaces IT change management, since the broader discipline subsumes the narrower; running both creates redundant governance overhead"
+      },
+      "correct": "C",
+      "key_concept": "IT change management = technical changes (ITIL-aligned, CAB, change records, RFC); Enterprise change management = organizational/people change (ADKAR, Kotter, stakeholder, communication, training). Distinct disciplines, complementary scope. Major IT initiatives need BOTH.",
+      "pre_read": "Change management distinction questions test whether you can distinguish the technical (ITIL) discipline from the organizational (OCM) discipline. Distractors collapse them or substitute one for the other.",
+      "correct_explanation": "ITIL 4 (Change Enablement) and OCM frameworks (ADKAR, Kotter's 8 Steps, Prosci) establish two distinct change disciplines. IT change management governs technical changes — releases, infrastructure modifications, configuration changes, code deployments — using ITIL-aligned discipline (Change Advisory Board, change records, Request for Change forms, Standard/Normal/Emergency change classification, change calendar). Enterprise change management (also called Organizational Change Management or OCM) governs organizational/people change — workforce change, process change, culture change, role changes accompanying technology rollouts — using OCM disciplines (ADKAR's Awareness/Desire/Knowledge/Ability/Reinforcement model; Kotter's 8 Steps; Prosci's methodology). The two are complementary: a major IT initiative (e.g., ERP rollout) needs IT change management for the technical implementation AND enterprise change management for the organizational transition. Option A collapses the distinction. Option B substitutes one for the other. Option D inverts the substitution.",
+      "wrong_explanations": {
+        "A": "Treating the two as interchangeable misses material disciplines. ITIL change management cannot govern organizational transition; ADKAR cannot govern technical change records. Each discipline serves a distinct purpose.",
+        "B": "IT change management can't substitute for enterprise change management because ITIL doesn't address stakeholder analysis, communication strategy, training design, or behavioral reinforcement that organizational change requires.",
+        "D": "Enterprise change management addresses organizational dimensions but doesn't govern technical change records, RFCs, or CAB approval. ITIL provides the technical-change governance OCM doesn't address."
+      },
+      "tips": [
+        "Trap is A — \"interchangeable terms\" feels safe when concepts overlap but ITIL change management and OCM are materially distinct disciplines.",
+        "IT change management = technical (ITIL, CAB, RFC). Enterprise change management = organizational/people (ADKAR, Kotter). Major initiatives need BOTH.",
+        "Exam-day shortcut: change-management questions distinguishing the two are answered by the option naming distinct disciplines with complementary scope."
+      ],
+      "framework_ref": "ITIL 4 (Change Enablement); Prosci ADKAR Model; Kotter 8 Steps; ISACA Enterprise Change Management guidance",
+      "related_concepts": [
+        "IT change management",
+        "Enterprise change management",
+        "ITIL Change Enablement",
+        "ADKAR"
+      ],
+      "_provenance": "Authored from concept: 'IT change management vs enterprise change management distinction, complements d2_095 (enterprise CM stakeholder management) and d2_104 (failed M&A integration)'. Public source: ITIL 4 + Prosci + Kotter."
+    },
+    {
+      "id": "d2_142",
+      "domain": 2,
+      "subtopic": "Multi-Cloud Governance Under Regulatory Data Sovereignty",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST addresses the data-sovereignty pressure across the multi-cloud architecture described?",
+      "scenario_context": "A SaaS company operates three cloud providers across customer regions (AWS in North America, Azure in Europe, GCP in Asia-Pacific). Regulatory pressure has intensified: EU customers cite Schrems II concerns about US-headquartered providers; emerging APAC regulations (China PIPL, India DPDPA) require local data residency for certain processing; some EU regulators are signaling preference for European cloud capacity (e.g., GAIA-X, sovereign cloud). A major EU customer threatens to terminate contracts unless data residency is provably maintained inside EU jurisdiction. The CIO asks the IS auditor for a multi-cloud governance recommendation.",
+      "options": {
+        "A": "Migrate all EU customer data to a sovereign-cloud provider in the EU regardless of cost or feature parity, accepting the disruption to current Azure-EU operations",
+        "B": "Maintain current multi-cloud with documented residency per region (SCCs+TIAs where data crosses borders, supplementary measures, customer commitments, ongoing regulatory monitoring), plus exit-readiness for sovereign-cloud migration if mandated",
+        "C": "Standardize on a single global cloud provider with the broadest regional presence, since multi-cloud creates governance complexity that data-sovereignty pressure makes untenable",
+        "D": "Defer the data-sovereignty question until regulators issue final binding rules, since current pressure is from customer concerns and emerging regulations rather than enforced requirements"
+      },
+      "correct": "B",
+      "key_concept": "Multi-cloud data-sovereignty governance = documented residency per region + SCCs+TIAs where transfers occur + supplementary measures + customer-facing residency commitments + ongoing monitoring + exit-readiness plan for sovereign-cloud migration. Migrate-everything-now, single-provider-consolidation, and defer-until-mandates all fail.",
+      "pre_read": "Data-sovereignty multi-cloud questions test whether you recognize the comprehensive approach: current operations supported by transfer mechanisms + readiness for sovereign-cloud migration if mandated.",
+      "correct_explanation": "Schrems II ruling, EDPB Recommendations on Supplementary Measures (06/2020), GDPR Articles 44-50, and emerging regulations (PIPL, DPDPA, GAIA-X considerations) collectively establish that multi-cloud data-sovereignty governance must address current operations AND prepare for future regulatory shifts. Effective approach: (1) documented data residency per customer region (EU customers on Azure-EU regions, North America on AWS-NA, APAC on GCP-AP); (2) Standard Contractual Clauses with Transfer Impact Assessments where data crosses borders (e.g., EU customer support managed from US); (3) supplementary measures (encryption keys held by the customer or in EU, pseudonymization); (4) customer-facing residency commitments documented in contracts so customers can verify their compliance posture; (5) ongoing monitoring of regulatory and customer-cloud-preference shifts (EU sovereign-cloud capacity is increasing; some regulators may eventually mandate it); (6) exit-readiness plan for sovereign-cloud migration if the regulatory or customer landscape mandates the move. Option A's immediate sovereign-cloud migration may not be necessary today (Schrems II is addressable through SCCs + supplementary measures) and disrupts operations. Option C's single-global-provider consolidation typically increases sovereignty exposure rather than reducing it. Option D's defer-until-mandates lets customer attrition happen unaddressed.",
+      "wrong_explanations": {
+        "A": "Immediate sovereign-cloud migration may not be necessary today. Schrems II is addressable through SCCs + supplementary measures + Transfer Impact Assessments. Migrating everything to sovereign-cloud is appropriate IF the regulatory or customer landscape mandates it; doing it preemptively sacrifices feature parity, performance, and operational continuity for a pressure that may be addressable through governance.",
+        "C": "Single-global-cloud-provider consolidation typically INCREASES sovereignty exposure because the provider's home jurisdiction (US for AWS/Azure/GCP) becomes the governing data jurisdiction for all data. Multi-cloud with regional residency is generally better for sovereignty than single-cloud.",
+        "D": "Customer attrition is happening now (the major EU customer is threatening termination). Deferring until regulators issue binding rules abandons customer relationships that drive immediate revenue, even before the regulatory question resolves."
+      },
+      "tips": [
+        "Trap is A — \"migrate to sovereign cloud immediately\" feels regulatory-cautious but sacrifices feature parity and operational continuity for a pressure addressable through governance.",
+        "Multi-cloud data sovereignty = documented residency per region + SCCs+TIAs + supplementary measures + customer commitments + ongoing monitoring + exit-readiness for sovereign-cloud migration.",
+        "Exam-day shortcut: data-sovereignty multi-cloud questions are answered by the comprehensive governance option, not migrate-now / consolidate / defer."
+      ],
+      "framework_ref": "GDPR Articles 44-50 (Transfers); EDPB Recommendations on Supplementary Measures (06/2020); Schrems II ruling (CJEU 2020); PIPL (China); DPDPA (India)",
+      "related_concepts": [
+        "Data sovereignty",
+        "Multi-cloud governance",
+        "Schrems II",
+        "Sovereign cloud"
+      ],
+      "_provenance": "Authored from concept: 'Multi-cloud governance under data sovereignty pressure - comprehensive approach, complements d2_087 (multi-cloud governance) and d2_030 (transborder decision)'. Public source: GDPR + EDPB 06/2020 + Schrems II + PIPL + DPDPA. All scenario specifics (3-cloud SaaS, EU customer threat, GAIA-X reference) invented for this question."
+    },
+    {
+      "id": "d2_143",
+      "domain": 2,
+      "subtopic": "Strategic Plan vs Unanticipated Major Breach",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What strategic-plan adjustment BEST handles the post-breach situation described?",
+      "scenario_context": "A regional retailer's 3-year IT strategy was approved 8 months ago. Three weeks ago, a major breach exposed 2 million customer records via a previously-unidentified vulnerability in a third-party JavaScript library on the e-commerce checkout. Regulatory inquiries from multiple state AGs have begun; class-action litigation is anticipated; customer-trust metrics have dropped materially. The CISO has asked for a $25M security investment over 3 years (not in the current strategy). The CEO asks the IS auditor for guidance on strategic-plan adjustment.",
+      "options": {
+        "A": "Continue the existing 3-year strategy unchanged since strategic plans should be stable through near-term shocks, with the breach response handled through incident-management channels separate from strategy",
+        "B": "Defer all strategic-plan changes until regulatory inquiries resolve and litigation outcomes clarify, since making strategic decisions during the immediate post-breach period risks reactive overcorrection",
+        "C": "Conduct structured mid-cycle update integrating breach lessons (third-party JS supply-chain risk, vulnerability mgmt, monitoring), rebalance portfolio to absorb security investment, customer-trust as strategic objective, board endorsement with traceable rationale",
+        "D": "Approve the CISO's $25M ask immediately and adjust the rest of the strategy later, since security investment is the urgent need and other adjustments can wait until the strategic refresh in 28 months"
+      },
+      "correct": "C",
+      "key_concept": "Post-breach strategic adjustment = structured mid-cycle update integrating breach lessons + portfolio rebalance to absorb security investment + customer-trust recovery as strategic objective + regulatory/litigation as strategic considerations + board endorsement with traceable rationale. Continue-unchanged ignores material change; defer ignores urgent customer/regulatory pressure; approve-then-adjust-later mis-sequences governance.",
+      "pre_read": "Post-breach strategic-plan adjustment questions test whether you recognize structured mid-cycle integration of multi-dimensional impact (security + trust + regulatory + litigation). Distractors propose continue / defer / unilateral approval.",
+      "correct_explanation": "COBIT 2019 APO02 (Managed Strategy) and ISACA EGIT guidance establish that material events (a major breach with regulatory and customer consequences) trigger structured mid-cycle strategy update — not continuation, deferral, or unilateral budget approval. The right adjustment integrates: (1) breach lessons in the strategic security investment plan (third-party JS supply-chain governance, vulnerability-management depth, monitoring effectiveness improvements); (2) portfolio rebalance to absorb the $25M security investment by deferring lower-priority initiatives that can wait; (3) customer-trust recovery as an explicit strategic objective with measurable success criteria (NPS recovery, customer-retention, brand metrics); (4) regulatory-engagement and litigation-readiness as strategic considerations (potential consent decrees, regulatory commitments may shape future strategy); (5) board endorsement with traceable rationale documentation so the strategic shift carries governance authority. Option A's continuation ignores material change. Option B's defer ignores urgent regulatory and customer pressure. Option D's approve-then-adjust-later mis-sequences governance — strategy must remain coherent rather than being patched piecemeal.",
+      "wrong_explanations": {
+        "A": "A breach exposing 2 million records with regulatory inquiries and litigation is exactly the material change strategic plans should respond to. Treating it as 'incident management separate from strategy' ignores the strategic implications (customer trust, regulatory commitments, security-investment magnitude).",
+        "B": "Deferring strategic adjustment until regulatory and litigation outcomes resolve takes 12-24+ months. The customer-trust recovery and security-investment decisions cannot wait. Strategic decisions during major incidents must proceed alongside the incident response, not after.",
+        "D": "Approving $25M without rebalancing the rest of the strategy creates incoherence — the firm now has a strategy that doesn't budget for the new investment. Strategic governance requires coherent integration, not piecemeal approvals."
+      },
+      "tips": [
+        "Trap is A — \"strategy should be stable through near-term shocks\" sounds disciplined but ignores material change with strategic implications.",
+        "Post-breach strategic update = breach-lessons integrated + portfolio rebalanced + customer-trust as strategic objective + regulatory/litigation considerations + board endorsement.",
+        "Exam-day shortcut: post-breach strategy questions are answered by structured mid-cycle update integrating multi-dimensional impact, not continuation / defer / piecemeal."
+      ],
+      "framework_ref": "COBIT 2019 APO02 (Managed Strategy); COBIT 2019 APO13 (Managed Security); ISACA Information Security Governance guidance",
+      "related_concepts": [
+        "Strategic plan adjustment",
+        "Post-breach response",
+        "APO02",
+        "Customer trust recovery"
+      ],
+      "_provenance": "Authored from concept: 'Strategic plan vs unanticipated breach - structured mid-cycle update with multi-dimensional integration, complements d2_085/d2_124 (other strategy mid-cycle scenarios)'. Public source: COBIT 2019 APO02. All scenario specifics (regional retailer, 8-month-old strategy, 2M records, $25M ask) invented for this question."
+    },
+    {
+      "id": "d2_144",
+      "domain": 2,
+      "subtopic": "Risk Register Prioritization with Conflicting Executive Views",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the prioritization conflict described?",
+      "scenario_context": "A regional bank's risk register has 14 high-priority risks. The executive committee is in conflict: the CFO wants priority on financial-reporting risks (SOX-relevant); the CISO wants priority on cyber-exposure risks (recent peer-bank ransomware incidents); the COO wants priority on operational-availability risks (recent core-banking outage); the Chief Risk Officer (CRO) wants priority on regulatory-compliance risks (anticipated FFIEC examination findings). Each leader has cited compelling rationale for their priority set. The board's audit committee wants a recommendation. The CRO asks the IS auditor for analytical guidance.",
+      "options": {
+        "A": "Defer to whichever executive has the strongest political position in the firm, since prioritization conflicts ultimately resolve through organizational dynamics rather than analysis",
+        "B": "Apply quantitative analysis: compute expected loss per risk against board-approved appetite, factor regulatory-mandatory items as non-discretionary, identify appetite-exceeding exposure as priority, and present analytical ranking with explicit deviation rationale",
+        "C": "Average the four executive priorities to produce a balanced top-priority list, since each leader has compelling rationale and giving each viewpoint equal weight produces the most acceptable outcome",
+        "D": "Defer all prioritization to the audit committee directly, since the executive conflict cannot be resolved internally and the audit committee has the authority to settle the dispute"
+      },
+      "correct": "B",
+      "key_concept": "Risk register prioritization under conflict = quantitative analysis (expected loss × appetite) + regulatory-mandatory as non-discretionary + appetite-exceeding exposure as priority + analytical ranking with explicit rationale for deviations. Politics-only, average-weights, and committee-deferral all fail.",
+      "pre_read": "Risk prioritization conflict questions test whether you recognize that analytical methods (expected loss + appetite + regulatory-mandate) produce defensible prioritization that political processes alone cannot.",
+      "correct_explanation": "ISACA Risk IT Framework, ISO 31000:2018, and COBIT 2019 APO12 (Managed Risk) establish that risk register prioritization under conflicting executive views requires analytical resolution: (1) compute expected loss (impact × likelihood) for each of the 14 risks using consistent methodology — this gives a comparable analytical baseline; (2) measure each risk against board-approved risk appetite — risks exceeding appetite have priority over risks within appetite, regardless of executive politics; (3) factor in regulatory-mandatory items as non-discretionary (FFIEC examination prep, SOX-relevant deadlines) — these consume priority slots regardless of expected-loss ranking; (4) identify exposure that exceeds appetite as priority-treatment candidates; (5) present an analytically-derived prioritized list to the executive committee, with explicit rationale for any deviations from analytical ranking (e.g., regulatory-mandatory promotion). The analysis converts political conflict into a defensible discussion. Option A's politics-only outcome doesn't survive board scrutiny. Option C's average-weights produces compromise that's not aligned with risk reality. Option D's audit-committee-deferral skips the executive committee's responsibility to recommend.",
+      "wrong_explanations": {
+        "A": "Politics-only prioritization doesn't survive board scrutiny. The audit committee will ask 'how did you prioritize?' and 'whoever pushed hardest' is not an acceptable answer. Analytical method is the defensible response.",
+        "C": "Averaging four leader priorities produces a compromise that may not align with actual risk exposure. A risk that's high-priority for one leader and low for the other three averages to medium — but the analytical reality may be high or low, not medium.",
+        "D": "Skipping the executive committee's responsibility and pushing prioritization directly to the audit committee abdicates the executive layer's role in risk governance. The audit committee oversees executive recommendations, not prioritization in the first instance."
+      },
+      "tips": [
+        "Trap is C — \"average the four executive priorities\" sounds balanced but produces compromise that's not aligned with actual risk exposure.",
+        "Risk prioritization under conflict = expected-loss analysis + appetite alignment + regulatory-mandatory non-discretionary + analytical ranking + explicit deviation rationale.",
+        "Exam-day shortcut: risk-prioritization-conflict questions are answered by analytical method, not political resolution / averaging / committee-deferral."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISO 31000:2018 (Risk Management); COBIT 2019 APO12 (Managed Risk)",
+      "related_concepts": [
+        "Risk register prioritization",
+        "Risk appetite",
+        "Expected-loss analysis",
+        "Executive conflict resolution"
+      ],
+      "_provenance": "Authored from concept: 'Risk register prioritization under conflicting executive views - analytical method, complements d2_127 (multi-risk treatment trade-offs)'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (regional bank, 14 risks, four executive views) invented for this question."
+    },
+    {
+      "id": "d2_145",
+      "domain": 2,
+      "subtopic": "Privacy Program Rollout in M&A Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST integrates the privacy programs in this M&A scenario?",
+      "scenario_context": "A US health-tech company is acquiring a European health-tech company. Privacy programs differ materially: the US firm is HIPAA-anchored with limited GDPR experience; the EU firm is GDPR-mature with limited HIPAA familiarity. The target close date is in 8 weeks. Day-1 considerations: data flows between the entities, joint-customer engagement, combined-product roadmap, integrated workforce. The combined entity will operate in both regulatory regimes. The Chief Privacy Officer asks the IS auditor for an integration-program design. The combined entity's CFO emphasizes that any privacy-program disruption could affect customer-retention metrics that materially influence post-merger valuation.",
+      "options": {
+        "A": "Adopt the US firm's HIPAA-anchored program across the combined entity since the acquirer's program is the surviving framework and the EU firm's GDPR maturity can be subordinated to HIPAA's specific health-data discipline",
+        "B": "Adopt the EU firm's GDPR-mature program across the combined entity since GDPR is generally stricter and meeting GDPR satisfies HIPAA discipline for health data with limited additional effort",
+        "C": "Build integrated combined-program: preserve each regime's specific requirements (HIPAA for US PHI, GDPR for EU data), unified data-governance baseline, cross-training, dual-officer governance, joint-customer flow mapping, 12-18 month operational integration with separate Day-1 compliance",
+        "D": "Defer privacy-program integration until 12 months post-close, since immediate integration would slow the deal and the firms can operate separate programs indefinitely as long as data flows are minimized"
+      },
+      "correct": "C",
+      "key_concept": "M&A privacy integration = preserve each regime's requirements + unified data-governance baseline covering both + cross-training + dual-officer governance + joint-customer flow mapping + 12-18 month operational integration with separate Day-1 compliance. Adopt-acquirer-only and adopt-target-only both fail; defer abandons Day-1 compliance.",
+      "pre_read": "M&A privacy integration questions test whether you recognize that combined entities operating across regimes need integrated programs serving both, not substitution of one for the other.",
+      "correct_explanation": "GDPR (EU) and HIPAA (US) impose distinct requirements that don't substitute for each other. HIPAA's specific PHI handling (Privacy Rule, Security Rule, Breach Notification Rule, BAA discipline) addresses health data in the US context with US-specific requirements (state breach-notification laws, HHS enforcement). GDPR's territorial scope, Articles 5-7 principles, lawful-basis discipline, data-subject-rights timelines, and Articles 44-50 transfer mechanisms apply to EU personal data regardless of sector. The combined entity operating in both regions must operationalize BOTH regimes for their respective data populations. Effective M&A privacy integration: (1) preserve and operationalize each regime's specific requirements; (2) design a unified data-governance baseline (data classification, lawful basis, retention policies, transfer mechanisms) that meets the strictest common requirements; (3) cross-train staff on both regimes; (4) establish dual-DPO/Privacy-Officer governance with clear scope; (5) map joint-customer flows to ensure both regimes' obligations are met; (6) plan operational integration over 12-18 months while maintaining separate Day-1 compliance for each regime's customer base. Option A's HIPAA-only fails GDPR for EU customers. Option B's GDPR-only fails HIPAA-specific requirements (BAA, HHS Breach Notification Rule). Option D's defer abandons Day-1 compliance for joint customers and exposes the combined entity to immediate regulatory risk.",
+      "wrong_explanations": {
+        "A": "HIPAA-only fails GDPR for EU customers — GDPR's data-subject rights, lawful-basis discipline, and Articles 44-50 transfer requirements don't have HIPAA equivalents. Adopting HIPAA-only means EU customers immediately have GDPR violations.",
+        "B": "GDPR-only fails HIPAA-specific requirements: Business Associate Agreements (BAAs), HIPAA's Breach Notification Rule (60-day window with specific HHS reporting), state-specific breach-notification laws, and HHS enforcement. GDPR is broader on individual rights but doesn't replicate HIPAA's specific operational discipline for health data.",
+        "D": "Defer-12-months ignores Day-1 compliance for joint customers (customers using services from both entities post-close). Privacy obligations attach immediately at close, not after 12-month integration window."
+      },
+      "tips": [
+        "Trap is B — \"GDPR is stricter, satisfies HIPAA\" oversimplifies; HIPAA has specific operational requirements (BAAs, Breach Notification Rule, state laws) that GDPR doesn't replicate.",
+        "M&A privacy integration = preserve each regime + unified governance baseline + cross-training + dual-officer governance + joint-customer flow mapping + Day-1 compliance.",
+        "Exam-day shortcut: M&A privacy questions across distinct regimes are answered by the integrated-both option, not adopt-acquirer-only / adopt-target-only / defer."
+      ],
+      "framework_ref": "GDPR; HIPAA Privacy Rule; HIPAA Security Rule; HIPAA Breach Notification Rule; ISACA Privacy Program guidance; IAPP CIPP/CIPM bodies of knowledge",
+      "related_concepts": [
+        "M&A privacy integration",
+        "GDPR + HIPAA",
+        "Cross-regime privacy",
+        "Day-1 compliance"
+      ],
+      "_provenance": "Authored from concept: 'Privacy program rollout in M&A integration - cross-regime architecture, complements d2_063 (privacy operationalization) and d2_104 (failed M&A IT integration)'. Public source: GDPR + HIPAA + ISACA Privacy Program. All scenario specifics (US-EU health-tech merger, 8-week close) invented for this question."
+    },
+    {
+      "id": "d2_146",
+      "domain": 2,
+      "subtopic": "Vendor Managed Services Transition",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What transition approach BEST supports the managed-services migration described?",
+      "scenario_context": "A retailer is transitioning its IT operations from in-house staff to a managed-services provider (MSP). The transition covers infrastructure operations, service desk, and application support — totaling 80 staff impacted (60 transitioning to the MSP, 20 retained internally for governance, 0 layoffs). The MSP claims a 90-day full-transition timeline with steady-state cost reduction of 30%. The retailer's CIO has limited managed-services transition experience. The audit committee asks the IS auditor for transition-risk guidance covering operational continuity, knowledge transfer, governance retention, and contractual protection.",
+      "options": {
+        "A": "Accept the MSP's 90-day timeline since experienced MSPs have honed transition methodology and the timeline pressure forces both parties to maintain momentum through the transition",
+        "B": "Phase the transition over 6-12 months: parallel-run period with retailer staff alongside MSP, staged service-area handover (lower-risk first), retained-governance team's playbook, contractual protections (transition assistance, exit-readiness), risk-tier each area with go/no-go gates",
+        "C": "Reduce the retained-internal team to a minimum (5 staff) since the MSP's value is comprehensive service delivery and over-retention duplicates the MSP's responsibilities",
+        "D": "Accept full MSP responsibility from Day 1 with no parallel-run period, since the MSP claims readiness and parallel-run extends cost; rely on contractual SLAs for any transition gaps"
+      },
+      "correct": "B",
+      "key_concept": "Managed-services transition = phased over 6-12 months + parallel-run period + staged handover (lower-risk first) + retained-governance team's playbook + contractual protections + risk-tier per service area with go/no-go gates. Aggressive 90-day timelines, minimal-retained-team, and Day-1-full-handover all fail.",
+      "pre_read": "Managed-services transition questions test whether you recognize that effective transition requires phased timeline + parallel-run + staged handover + retained governance, not aggressive timeline + minimal oversight.",
+      "correct_explanation": "ISACA IT Outsourcing guidance and OCC Bulletin 2013-29 establish that managed-services transition risk is best managed through phased structure rather than aggressive timelines. The right transition: (1) phase over 6-12 months rather than 90 days — provides time for knowledge transfer, runbook validation, and operational stabilization; (2) parallel-run period where retailer staff work alongside MSP staff — knowledge transfer through joint operation rather than documentation alone; (3) staged service-area handover starting with lower-risk areas (infrastructure and service desk before application support) to build MSP competence and confidence before higher-risk handover; (4) retained-governance team's playbook for ongoing MSP oversight — SLA monitoring, dispute escalation, change-management coordination; (5) contractual protections including transition assistance, knowledge-transfer obligations, SLA ramp-up provisions, and exit-readiness from Day 1; (6) risk-tier each service area's transition with explicit go/no-go gates that allow course correction. Option A's 90-day acceptance trusts the MSP's claim against the retailer's transition risk. Option C's minimal-retained-team eliminates the governance capability the retailer needs to manage the MSP relationship. Option D's Day-1-full-handover skips the parallel-run that knowledge transfer typically requires.",
+      "wrong_explanations": {
+        "A": "MSP claims of 90-day full transition reflect the MSP's confidence in their methodology, not the retailer's risk profile. The retailer's interest is in low-risk transition; the MSP's interest is in fast revenue recognition. These don't align; the retailer's interest should drive the timeline.",
+        "C": "Minimal-retained-team eliminates the governance capability the retailer needs to manage the MSP relationship. SLA monitoring, dispute escalation, and change-management coordination require sustained internal capacity. Cost-cutting on the retained team is false economy.",
+        "D": "Day-1-full-handover with no parallel-run skips the practical knowledge transfer that runbooks alone cannot capture (tribal knowledge, undocumented workarounds, escalation patterns). SLA-based reliance on contractual protections doesn't substitute for operational continuity."
+      },
+      "tips": [
+        "Trap is A — \"experienced MSPs have honed transition methodology\" defers to the MSP's interest; the retailer's transition risk profile should drive the timeline.",
+        "Managed-services transition = phased 6-12 months + parallel-run + staged handover (lower-risk first) + retained-governance + contractual protections + go/no-go gates per service area.",
+        "Exam-day shortcut: MSP transition questions are answered by the phased option with parallel-run + staged handover, not aggressive timeline / minimal retained / Day-1 full handover."
+      ],
+      "framework_ref": "OCC Bulletin 2013-29 (Third-Party Relationships); ISACA IT Outsourcing guidance; COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Managed services transition",
+        "Parallel-run",
+        "Staged handover",
+        "APO10"
+      ],
+      "_provenance": "Authored from concept: 'Vendor managed services transition - phased structure with parallel-run, complements d2_106 (vendor offboarding at relationship end) and d2_146 transition pattern'. Public source: OCC Bulletin 2013-29 + ISACA IT Outsourcing. All scenario specifics (retailer transitioning 80 staff, MSP 90-day claim) invented for this question."
+    },
+    {
+      "id": "d2_147",
+      "domain": 2,
+      "subtopic": "IT Investment Portfolio Rebalance Under Multi-Pressure",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which portfolio rebalance approach BEST handles the multi-pressure scenario?",
+      "scenario_context": "A regional bank's IT investment portfolio (RUN 50% / GROW 35% / TRANSFORM 15%) is under simultaneous pressure: (1) regulatory — anticipated FFIEC examination findings will likely require $8M of new compliance investment; (2) competitive — a fintech competitor's recent product launch is taking market share, the CEO wants $12M of accelerated digital-transformation investment; (3) cost — the CFO has asked for 15% IT cost reduction overall to fund a separate non-IT priority; (4) cyber — a recent peer-bank breach is prompting the CISO to request $6M additional security investment. The combined ask exceeds the bank's available IT capacity. The CIO asks the IS auditor for analytical guidance.",
+      "options": {
+        "A": "Defer all four pressure responses until next year's budget cycle, since attempting to address all four simultaneously creates risk of poor execution across all initiatives",
+        "B": "Apply integrated portfolio analysis quantifying each pressure's risk-adjusted impact: prioritize regulatory-mandatory first, cyber-exceeding-appetite second, measurable revenue-protection competitive third, absorb cost-reduction by reducing lower-priority RUN/GROW initiatives, with explicit trade-offs documented",
+        "C": "Approve all four asks in full by raising the IT budget by 25%, since each ask is legitimate and the firm should fund what's needed to remain competitive and compliant",
+        "D": "Reject all four asks and require each leader to operate within current budget, since portfolio discipline means living within the approved plan and external pressures don't justify reopening it"
+      },
+      "correct": "B",
+      "key_concept": "Multi-pressure portfolio rebalance = quantify each pressure's risk-adjusted business impact + prioritize regulatory-mandatory first + appetite-exceeding cyber second + measurable revenue-protection competitive third + absorb cost-reduction by reducing lower-priority RUN/GROW + analysis-backed allocation with explicit trade-offs. Defer-all, approve-all-with-budget-increase, and reject-all all fail.",
+      "pre_read": "Multi-pressure portfolio rebalance questions test whether you recognize the integrated quantitative approach (impact analysis + tier prioritization + cost absorption + explicit trade-offs).",
+      "correct_explanation": "COBIT 2019 APO05 (Managed Portfolio) and ISACA IT Portfolio Management guidance establish that multi-pressure portfolio rebalance requires integrated quantitative analysis rather than sequential ad-hoc decisions. The right approach: (1) quantify each pressure's risk-adjusted business impact (regulatory non-compliance cost = expected fines + remediation cost; competitive market-share loss = expected revenue impact × market-share trajectory; cost-reduction trade-offs = which RUN/GROW reductions are feasible without operational degradation; cyber-exposure analysis = expected loss given peer-incident frequency and the bank's specific posture); (2) construct rebalanced portfolio prioritizing regulatory-mandatory items first (non-discretionary) — covers the $8M FFIEC items; (3) cyber items where exposure exceeds appetite second — covers $6M CISO ask if quantitative analysis confirms appetite breach; (4) competitive items where market-share defense yields measurable revenue protection third — funds part of the $12M CEO ask up to the analytically-justified amount; (5) absorb the cost-reduction target by reducing lower-priority RUN and GROW initiatives — preserves higher-priority allocations; (6) present analysis-backed allocation to the executive committee with explicit trade-offs (what gets deferred, why, and what risks the deferrals carry). Option A's defer-all ignores time-sensitive regulatory deadlines and competitive pressure. Option C's approve-all with budget increase abandons portfolio discipline and may exceed the bank's overall capacity. Option D's reject-all with current-budget operation ignores the legitimacy of the pressures.",
+      "wrong_explanations": {
+        "A": "Deferring four time-sensitive pressures (FFIEC examination prep, competitor's product launch, breach risk, cost commitment) until next year's budget abandons time-sensitive responses. The pressures must be addressed in the current cycle.",
+        "C": "Approving all four asks raises IT budget by 25% — that may exceed the bank's overall capacity (and the cost-reduction commitment to fund non-IT priorities). Approve-all sacrifices portfolio discipline and external commitments.",
+        "D": "Rejecting all four pressures while requiring leaders to operate within the existing budget ignores the legitimacy of the pressures (regulatory mandate, competitive defense, cyber risk, cost commitment). Portfolio discipline includes responding to material change, not refusing to acknowledge it."
+      },
+      "tips": [
+        "Trap is C — \"approve all asks by raising budget 25%\" feels responsive but abandons portfolio discipline and may exceed capacity.",
+        "Multi-pressure rebalance = quantify each pressure's risk-adjusted impact + prioritize regulatory-mandatory + cyber-exceeding-appetite + measurable revenue-protection + absorb cost target by reducing lower-priority RUN/GROW.",
+        "Exam-day shortcut: multi-pressure portfolio questions are answered by integrated quantitative analysis with explicit trade-offs, not defer-all / approve-all / reject-all."
+      ],
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); COBIT 2019 APO12 (Managed Risk); ISACA IT Portfolio Management guidance",
+      "related_concepts": [
+        "Portfolio rebalance",
+        "Multi-pressure",
+        "RUN/GROW/TRANSFORM",
+        "APO05"
+      ],
+      "_provenance": "Authored from concept: 'IT investment portfolio rebalance under simultaneous regulatory + competitive + cost + cyber pressure - integrated analysis, complements d2_068 (mid-year rebalance under cost pressure)'. Public source: COBIT 2019 APO05. All scenario specifics (regional bank, four named pressures with dollar amounts) invented for this question."
+    },
+    {
+      "id": "d2_148",
+      "domain": 2,
+      "subtopic": "Cloud Security Incident Affecting Multiple Business Lines",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What incident-response approach BEST coordinates the multi-business-line cloud incident described?",
+      "scenario_context": "A diversified financial-services firm uses one cloud provider for multiple business lines (retail banking, commercial banking, wealth management, insurance underwriting). At T+0, the cloud provider announces a critical security vulnerability affecting their compute service; an active exploit is publicly known; provider patches will take 24-48 hours to deploy. Each business line has different exposure: retail banking processes customer transactions; commercial banking handles wire transfers; wealth management has trading systems; insurance has claims processing. Each business line has its own CISO function reporting to the firm's enterprise CISO. The CEO asks the IS auditor for guidance on enterprise-level incident coordination during the patching window.",
+      "options": {
+        "A": "Each business line's CISO handles their own response autonomously since the business lines have different exposures and independent response avoids coordination overhead during a time-sensitive incident",
+        "B": "Wait for the cloud provider's patches before taking any business-line-specific action, since the provider is the source of the vulnerability and customer-side action is only meaningful once the patch is available",
+        "C": "Activate enterprise-level coordination through enterprise CISO: cross-business-line exposure assessment, coordinated mitigation, aligned customer/regulator communication, consolidated provider engagement, post-incident review with shared lessons — preserving each line's tactical autonomy",
+        "D": "Engage external counsel and refuse to discuss the incident with any internal stakeholders or regulators until counsel completes a privilege analysis, since cross-business-line discussions risk waiving privileged communications"
+      },
+      "correct": "C",
+      "key_concept": "Enterprise-level incident coordination = activate enterprise CISO oversight + cross-business-line exposure assessment + coordinated mitigation + aligned customer/regulator communication + consolidated provider engagement + shared post-incident review + preserve tactical autonomy. Autonomous-per-line, wait-for-patch, and counsel-only-defer all fail.",
+      "pre_read": "Multi-business-line cloud incident questions test whether you recognize that enterprise-level coordination preserves consistency while allowing tactical autonomy. Distractors propose autonomy-only, passivity, or wholesale legal deferral.",
+      "correct_explanation": "ISACA Information Security Governance and NIST SP 800-61 establish that enterprise-level incidents (cloud-provider vulnerability affecting multiple business lines) require enterprise-level coordination through the enterprise CISO. The right structure: (1) cross-business-line exposure assessment — which workloads run on the affected service, what's the impact tier per business line; (2) coordinated mitigation where applicable (transaction-amount limits during the patching window for retail/commercial banking; trading-system monitoring for wealth management; additional fraud-detection thresholds for insurance) — these are firm-level decisions; (3) customer and regulator communication strategy aligned across business lines so the firm speaks with one voice (per-line independent communications produce confusion and regulatory questions about firm-level governance); (4) provider engagement with consolidated firm voice so the provider responds to the firm's integrated escalation rather than four separate ones; (5) post-incident review with shared lessons learned across business lines; (6) preserve each business line's tactical autonomy on operations specific to their workloads (the retail-banking CISO knows retail-banking better than the enterprise CISO). Option A's autonomous-per-line produces inconsistent customer communication, fragmented provider engagement, and inconsistent regulatory posture. Option B's wait-for-patch ignores customer-side mitigations. Option D's counsel-only blocks operational coordination during the active threat.",
+      "wrong_explanations": {
+        "A": "Autonomous-per-line response produces inconsistent customer communication (different messages from different business lines confuse customers), fragmented provider engagement (the provider gets four parallel asks instead of one consolidated one), and inconsistent regulatory posture (regulators see different stories from different parts of the firm).",
+        "B": "Customer-side mitigations matter during the 24-48 hour patching window: transaction-amount limits, additional monitoring, traffic routing where possible, fraud-threshold adjustments. Waiting for the provider's patch ignores everything the firm can do to reduce exposure during the wait.",
+        "D": "Counsel review of communications is appropriate but doesn't replace operational incident response. Refusing to discuss the incident with internal stakeholders or regulators until counsel completes privilege analysis blocks the operational coordination the situation requires."
+      },
+      "tips": [
+        "Trap is A — \"each business line CISO handles their own response autonomously\" sounds operationally efficient but produces fragmented customer/regulator/provider engagement.",
+        "Multi-business-line cloud incident = enterprise CISO coordination + exposure assessment + coordinated mitigation + aligned communication + consolidated provider engagement + shared lessons + tactical autonomy preserved.",
+        "Exam-day shortcut: enterprise incident coordination questions are answered by structured cross-line coordination with preserved tactical autonomy, not autonomy-only / wait / counsel-defer."
+      ],
+      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Information Security Governance guidance; ISACA Incident Response guidance",
+      "related_concepts": [
+        "Enterprise incident coordination",
+        "Multi-business-line response",
+        "Cloud-provider vulnerability",
+        "Provider engagement"
+      ],
+      "_provenance": "Authored from concept: 'Cloud security incident affecting multiple business lines - enterprise coordination, complements d2_105 (incident response governance escalation) and d2_125 (vendor breach response)'. Public source: NIST SP 800-61 + ISACA Information Security Governance. All scenario specifics (diversified financial-services firm, four business lines on shared cloud, 24-48h patch window) invented for this question."
+    },
+    {
+      "id": "d2_149",
+      "domain": 2,
+      "subtopic": "Quality Program Implementation Across Global Delivery",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST implements the global quality program described?",
+      "scenario_context": "A multinational technology firm has IT delivery operations in 7 countries with materially different cultures, regulatory contexts, language groups, and process maturity (some regions ISO 9001 certified, others informal). The CIO wants a unified quality program across all regions to support a global service-level commitment to customers. The Chief Quality Officer warns that uniform implementation typically fails in multi-region delivery — different regions have different historical practices and cultural norms. The IS auditor is asked for an implementation approach. A recent customer escalation cited inconsistent quality across regions; the COO has elevated the program to a Tier-1 strategic initiative requiring quarterly board updates.",
+      "options": {
+        "A": "Mandate uniform implementation across all 7 regions with the same templates, processes, and metrics regardless of regional context, since uniformity is the definition of a unified program",
+        "B": "Allow each region to operate independently with their existing practices, since regional autonomy respects local context and forced uniformity will fail",
+        "C": "Implement integrated global program: globally-consistent objectives and metrics, regional flexibility in HOW each is achieved, preserve regional certifications, cross-regional sharing forum, phased 18-24 month implementation with maturity uplift in lower-maturity regions",
+        "D": "Outsource the global quality program to a multinational consulting firm, since cross-regional implementation requires expertise the firm doesn't have and external execution avoids the cultural-friction issues internally"
+      },
+      "correct": "C",
+      "key_concept": "Global quality program = globally-consistent objectives and metrics + regional flexibility in HOW (process, language, culture) + preserve regional certifications + cross-regional sharing forum + phased 18-24 month implementation with lower-maturity uplift. Uniform-mandate-everywhere, regional-autonomy-only, and full-outsourcing all fail.",
+      "pre_read": "Global quality program questions test whether you recognize the dual-layer approach: globally-consistent outcomes + regional flexibility in implementation. Distractors propose uniformity / autonomy / outsourcing.",
+      "correct_explanation": "ISO 9001 multi-site certification practice, ISACA Quality Management guidance, and global program-management literature establish that global quality programs succeed through dual-layer design. Globally consistent layer: objectives (what quality outcomes the firm commits to globally), metrics framework (how quality is measured consistently across regions so the global picture is comparable), governance forum (where cross-regional issues are raised and addressed). Regionally flexible layer: how each region achieves the objectives — process design adapted to local language, cultural norms, and existing practices; preservation of regional certifications (ISO 9001 in regions that have it) as compliant ways to achieve the global objectives; recognition that lower-maturity regions need uplift over 18-24 months while continuing to deliver, not immediate uniform conversion. The forum supports cross-regional sharing of practices so high-maturity regions help lower-maturity regions accelerate. Option A's uniform mandate fails because regional contexts (language, regulatory, cultural) make uniform process implementation produce poorer outcomes than locally-adapted equivalents. Option B's regional autonomy fails the global service-level commitment because regional outcomes are inconsistent. Option D's full outsourcing transfers ownership but creates dependence on the external firm and doesn't address the cultural-friction issues — it just relocates them.",
+      "wrong_explanations": {
+        "A": "Uniform implementation across 7 regions with materially different contexts fails because regional adaptations are needed for language, cultural norms, regulatory differences, and existing practice momentum. The program's apparent strength produces actual weakness through regional resistance.",
+        "B": "Regional-autonomy-only fails the global service-level commitment because outcomes vary by region. Customers experiencing the firm globally see inconsistent quality, undermining the global brand and SLA commitments.",
+        "D": "Outsourcing global quality program implementation transfers activity but the cultural change must be owned internally. External consultants don't have the relationships, context, or sustained engagement that regional adaptation requires. The cultural-friction issues don't disappear with outsourcing; they just become someone else's failure to solve."
+      },
+      "tips": [
+        "Trap is A — \"uniform implementation across all regions\" sounds disciplined but produces resistance and poorer outcomes than locally-adapted equivalents.",
+        "Global quality program = globally consistent (objectives + metrics + governance forum) + regionally flexible (process + language + culture) + preserve regional certifications + phased uplift.",
+        "Exam-day shortcut: global quality program questions are answered by dual-layer (consistent outcomes + flexible implementation), not uniform / autonomy / outsourcing."
+      ],
+      "framework_ref": "ISO 9001:2015 (Multi-Site Certification); ISACA Quality Management guidance; EFQM Model (2020)",
+      "related_concepts": [
+        "Global quality program",
+        "Multi-site ISO 9001",
+        "Regional adaptation",
+        "Quality governance forum"
+      ],
+      "_provenance": "Authored from concept: 'Global quality program implementation across regional contexts - dual-layer design, complements d2_048 (quality framework selection) and d2_065 (operational excellence framework selection)'. Public source: ISO 9001:2015 + ISACA Quality Management. All scenario specifics (7-country technology firm with mixed maturity) invented for this question."
+    },
+    {
+      "id": "d2_150",
+      "domain": 2,
+      "subtopic": "Information Security Strategy Refresh After Major Breach",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST refreshes the InfoSec strategy after the major breach described?",
+      "scenario_context": "A health-tech company suffered a major breach 4 months ago: 5 million records exposed, regulator investigation underway, $40M in breach-response costs to date, customer-trust metrics down materially, class-action filed. The post-incident review identified multiple root causes: vulnerability-management gaps, MFA not enforced for some admin accounts, insufficient monitoring of third-party integrations, inadequate IR practice. The CISO has been asked to refresh the InfoSec strategy. The CEO asks the IS auditor for guidance on strategy-refresh approach beyond the immediate post-incident remediation. A consent decree with the lead regulator is anticipated within 6 months, expected to mandate specific security commitments that the strategy refresh must accommodate.",
+      "options": {
+        "A": "Continue the existing InfoSec strategy unchanged since the strategy framework was sound; the breach reflected execution gaps in implementation rather than strategy weaknesses",
+        "B": "Conduct comprehensive strategy refresh: address each root cause as strategic capability gap, reset risk appetite/tolerance, rebuild customer-trust strategy, reset regulatory engagement, integrate breach lessons into awareness, align security investment, tie objectives to business outcomes, with board endorsement and 18-month roadmap",
+        "C": "Replace the entire InfoSec strategy with a vendor's pre-built 'breach-response' framework purchased after the incident, since the breach demonstrated the firm's strategy was inadequate and a vendor framework provides external validation",
+        "D": "Defer InfoSec strategy refresh until the regulator investigation concludes (12-18 months) since the regulator's findings will shape any strategy refresh and acting before that wastes effort"
+      },
+      "correct": "B",
+      "key_concept": "Post-breach InfoSec strategy refresh = each root cause as strategic capability gap + reset risk appetite/tolerance + rebuild customer-trust strategy + reset regulatory-engagement + integrate breach lessons into awareness + align security investment + tie to business-outcome metrics + board endorsement + 18-month roadmap. Continue-unchanged, vendor-framework-replacement, and defer all fail.",
+      "pre_read": "Post-breach InfoSec strategy refresh questions test whether you recognize the comprehensive multi-dimensional integration. Distractors propose continuation, replacement, or deferral.",
+      "correct_explanation": "COBIT 2019 EDM01 / APO13, NIST CSF v2.0, and ISACA Information Security Governance guidance establish that post-breach InfoSec strategy refresh integrates multiple dimensions beyond immediate remediation. The right approach: (1) address each root cause as a strategic capability gap — vulnerability-management maturity goal, identity-and-access governance goal, third-party-integration governance goal, IR practice/exercise goal; (2) reset risk appetite and tolerance levels — the demonstrated breach reality requires recalibrating what the firm considers acceptable risk; (3) rebuild customer-trust strategy with measurable objectives — trust recovery is now an explicit strategic objective with NPS, retention, brand metrics; (4) reset regulatory-engagement approach — ongoing demonstration of posture rather than regulatory-event-driven engagement; (5) integrate breach lessons into security-awareness program — make the breach a permanent training case; (6) align security investment with the new strategic capability gaps — funding follows strategic priorities; (7) tie strategic security objectives to business-outcome metrics — security strategy embedded in business strategy; (8) board endorsement and 18-month implementation roadmap. Option A's continue-unchanged ignores demonstrated capability gaps. Option C's vendor-framework-replacement misunderstands strategy refresh — the firm needs strategy adapted to its specific context, not a generic vendor framework. Option D's defer abandons customer-trust recovery and active capability uplift for 12-18 months.",
+      "wrong_explanations": {
+        "A": "Treating the breach as 'execution gaps' rather than 'strategic capability gaps' under-responds to the demonstrated reality. The breach revealed material capability deficits that the strategy must address explicitly, not implicitly through better execution of the existing strategy.",
+        "C": "Vendor pre-built 'breach-response' frameworks are generic and don't address the firm's specific context (its industry, threat model, operational maturity). Replacing the firm's strategy with a vendor framework substitutes external generic content for context-specific judgment.",
+        "D": "Deferring 12-18 months for the regulator investigation to conclude abandons customer-trust recovery and active capability uplift during the most critical period (immediately post-breach). The regulator's findings can refine the strategy refresh later; they shouldn't block it."
+      },
+      "tips": [
+        "Trap is A — \"strategy framework was sound; breach was execution gaps\" under-responds to demonstrated capability gaps that the strategy should explicitly address.",
+        "Post-breach InfoSec strategy refresh = root causes as capability gaps + reset risk appetite + customer-trust strategy + reset regulatory engagement + integrate lessons into awareness + align investment + tie to business outcomes + board endorsement + 18-month roadmap.",
+        "Exam-day shortcut: post-breach strategy refresh questions are answered by comprehensive multi-dimensional integration, not continue-unchanged / vendor-framework / defer."
+      ],
+      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO13 (Managed Security); NIST Cybersecurity Framework v2.0; ISACA Information Security Governance guidance",
+      "related_concepts": [
+        "Post-breach strategy refresh",
+        "Capability gap analysis",
+        "Customer-trust recovery",
+        "Strategic security objectives"
+      ],
+      "_provenance": "Authored from concept: 'InfoSec strategy refresh after major breach - comprehensive multi-dimensional integration, complements d2_130 (InfoSec strategy alignment with business strategy) and d2_143 (strategic plan vs unanticipated breach)'. Public source: COBIT 2019 EDM01/APO13 + NIST CSF v2.0. All scenario specifics (health-tech, 5M records, $40M response, four root causes) invented for this question."
     }
   ]
 }
