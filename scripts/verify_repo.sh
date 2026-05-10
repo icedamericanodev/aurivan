@@ -92,6 +92,20 @@ if ! python3 scripts/validate_originals.py; then
   status=1
 fi
 
+# 6. Originals lint — mechanical quality checks (parity, citations, tips,
+# precision-words, scenario_context length). Reports counts; does NOT fail
+# the build on legacy debt (D1 was authored pre-parity-discipline). New
+# batches should run with --batch --strict for hard enforcement.
+printf "\nOriginals lint (parity + citations + tips):\n"
+lint_out=$(python3 scripts/lint_originals.py 2>&1 || true)
+errors_count=$(echo "$lint_out" | grep -c "^    ✗" || true)
+warnings_count=$(echo "$lint_out" | grep -c "^    ⚠" || true)
+if [ "$errors_count" -eq 0 ] && [ "$warnings_count" -eq 0 ]; then
+  printf "  ${OK} clean\n"
+else
+  printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
+fi
+
 # Summary --------------------------------------------------------------------
 echo
 if [ $status -eq 0 ]; then
