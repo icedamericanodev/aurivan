@@ -4993,7 +4993,7 @@
       "question": "An IS audit manager at an oil-services contractor has been assigned a new audit of the company's industrial-control-system (ICS) cybersecurity. The audit team consists of three IT auditors with strong general-IT skills but no ICS-specific experience. What is the MOST important step the manager should take to address the engagement-specific competency gap?",
       "options": {
         "A": "Begin the engagement with the existing team and rely on the team learning ICS specifics during fieldwork",
-        "B": "Diagnose the specific ICS-competency gap (e.g., IEC 62443 standards knowledge, OT-network protocols, safety-instrumented-system controls), then address it through targeted approaches such as bringing in an ICS specialist (per Standard 1206 — Using the Work of Other Experts), targeted training before fieldwork, or co-sourcing with an ICS-experienced firm — and document the chosen approach",
+        "B": "Diagnose the specific ICS-competency gap (IEC 62443, OT protocols, SIS controls), then address through expert engagement under Standard 1206, targeted training, or ICS-experienced co-sourcing",
         "C": "Reassign the engagement to a different audit team that already has ICS experience, even if it disrupts the function's overall workload",
         "D": "Skip the audit entirely since the team lacks ICS experience"
       },
@@ -5180,8 +5180,8 @@
       "question": "Which approach is MOST appropriate for defining the audit universe in this multi-entity structure?",
       "options": {
         "A": "One unit per subsidiary in the audit universe, with the central corporate-services subsidiary treated as just another subsidiary",
-        "B": "Audit universe entities defined at appropriate granularity recognizing structural complexity: each subsidiary mapped with its specific regulatory regime + business processes; the central corporate-services subsidiary's shared IT services mapped as cross-cutting auditable entities; the largest revenue contributors and highest-risk regulatory regimes flagged as recurring-engagement-priority; smaller subsidiaries grouped into a rotational coverage cycle; and the universe refreshed at least annually",
-        "C": "One single \"company-wide\" entity since all subsidiaries are part of the same conglomerate",
+        "B": "Define the audit universe at appropriate granularity: each subsidiary mapped to its specific regulatory regime + processes, with shared corporate-services as cross-cutting auditable entities",
+        "C": "One single 'company-wide' entity since all subsidiaries are part of the same conglomerate and consolidated audit reporting simplifies stakeholder communication",
         "D": "Audit universe matched to the legal-entity structure exactly, with no recognition of cross-cutting shared services"
       },
       "correct": "B",
@@ -5255,10 +5255,10 @@
       "scenario_context": "An IS audit director at an HR-tech AI screening platform (the platform recommends candidate-shortlists to enterprise customers using ML) is scoping a full-lifecycle audit covering all stages: training-data acquisition + curation, model training + validation, model deployment + integration, ongoing monitoring + drift detection, and model retirement / replacement. Five stage-level concerns are documented: (1) training-data sources include public datasets that may contain bias toward certain demographics; (2) validation uses a held-out test set but production demographic distributions differ; (3) deployment uses a tool-call interface to customer ATS systems; (4) ongoing monitoring tracks model accuracy but not drift; (5) the prior model was retired three months ago without documented evidence preservation.",
       "question": "Which scoping approach BEST addresses the full lifecycle and the specific stage concerns?",
       "options": {
-        "A": "Audit only training-data acquisition + curation, since training-data quality drives all downstream issues",
-        "B": "Audit each lifecycle stage with stage-specific procedures: training-data review for bias and lineage; validation review for representativeness gap (held-out vs production demographics); deployment review for tool-call authorization and integration security; monitoring review for drift detection adequacy and accuracy-vs-drift confusion; retirement review for evidence preservation; and integrate stage-level findings into an overall lifecycle assurance conclusion",
-        "C": "Audit only ongoing monitoring + drift detection, since production-stage issues are the most actionable",
-        "D": "Audit only model retirement / replacement, since the prior retirement is a known issue"
+        "A": "Audit only training-data acquisition and curation, since training-data quality drives all downstream issues that emerge later in the AI/ML lifecycle",
+        "B": "Audit each lifecycle stage with stage-specific procedures (training-data, validation, deployment, monitoring, retirement), and integrate stage findings into a coherent end-to-end conclusion",
+        "C": "Audit only ongoing monitoring and drift detection, since production-stage issues are the most actionable findings the audit can deliver to operations",
+        "D": "Audit only model retirement and replacement, since the prior retirement is the only known issue and earlier-stage controls are management's responsibility"
       },
       "correct": "B",
       "key_concept": "Full-lifecycle AI/ML audit scope covers each stage with stage-specific procedures, integrates findings into a lifecycle-level conclusion, and addresses stage-specific concerns explicitly. Single-stage scoping misses cross-stage interactions and risks that emerge only when the full lifecycle is examined.",
@@ -5371,9 +5371,9 @@
       "question": "Which selection approach is MOST appropriate?",
       "options": {
         "A": "Heat Map only — simplest to communicate and the audit committee will understand it best",
-        "B": "Layered method use: ISO 31000 as the principles-based defensibility framework that governs the assessment process; FAIR as the quantitative method for the highest-priority risks where dollar-loss modeling adds value (CISO use case); heat-map as the qualitative-rating layer for cross-organization comparability and executive communication (CRO use case); each method's outputs documented and reconciled, with the choice rationale documented for regulators",
-        "C": "FAIR only — quantitative methods are always more rigorous and dominate qualitative methods",
-        "D": "Pick whichever method is fastest to implement, regardless of stakeholder needs or defensibility"
+        "B": "Layer methods by use case: ISO 31000 as defensibility framework, FAIR for quantitative loss modeling, heat-map for executive communication",
+        "C": "FAIR only — quantitative methods are always more rigorous and dominate qualitative methods regardless of executive-communication needs",
+        "D": "Pick whichever method is fastest to implement regardless of stakeholder needs, regulatory defensibility, or quantitative-modeling fit for the highest-priority risks"
       },
       "correct": "B",
       "key_concept": "Risk-assessment methods can be layered: ISO 31000 for principles-based process governance; FAIR for quantitative dollar-risk on priority risks; heat maps for qualitative cross-organization comparability and executive communication. Each method serves a stakeholder; layering with documented reconciliation is the mature approach.",
@@ -5486,7 +5486,7 @@
       "question": "Which end-to-end engagement design BEST integrates the three audit phases with the multiple stakeholder expectations?",
       "options": {
         "A": "Phase-isolated design: planning serves the audit committee; fieldwork serves the audit team; reporting serves the Medicaid regulator only",
-        "B": "Phase-integrated design: planning produces a risk-prioritized scope that satisfies the audit committee, with regulatory-timeline-aware milestones for Medicaid-fraud-finding handling; fieldwork applies risk-tiered procedures with supervised execution that allows the team's size to be effective; reporting produces a single coherent report with audience-tailored sections (audit committee on prioritization, regulator on findings + remediation-plan disclosure, mission-alignment committee on community-impact framing) and aligned conclusions across all sections",
+        "B": "Phase-integrated design where planning produces risk-prioritized scope satisfying stakeholders, fieldwork applies risk-tiered procedures within team capacity, and reporting produces audience-tailored sections",
         "C": "Phase-fragmented design: each phase optimized independently of the others, with stakeholder-specific deliverables in each phase even when they conflict",
         "D": "Phase-collapsed design: condense all three phases into a single sprint to save audit-budget time"
       },
@@ -5747,9 +5747,9 @@
       "question": "Which response BEST handles the multi-stakeholder conflict?",
       "options": {
         "A": "Issue three separate versions of the report, each tailored to one stakeholder's preferences, even if the conclusions diverge across versions",
-        "B": "Maintain the single coherent audit report with the auditor's professional-judgment-based findings and severity ratings; respond to each stakeholder appropriately — engage management on factual basis of the disputed severity, present to the board with patient-safety implications context, and decline the research-oversight committee's request to exclude research-access activities (the audit's coverage is determined by the audit objective, not by stakeholder framing preferences)",
+        "B": "Maintain the single coherent report with the auditor's findings and severity ratings, engage each stakeholder appropriately on factual basis, and decline scope-reduction requests that compromise audit coverage",
         "C": "Modify the report to satisfy the most-influential stakeholder (the board of trustees) and accept that other stakeholders may disagree",
-        "D": "Withdraw the report and re-issue after consensus is reached among all three stakeholders"
+        "D": "Withdraw the report and re-issue after consensus is reached among all three stakeholders to avoid issuing findings that any party disputes"
       },
       "correct": "B",
       "key_concept": "Multi-stakeholder conflict in audit reporting requires maintaining the single coherent report with the auditor's professional findings while engaging each stakeholder appropriately. Audit objectivity cannot be sacrificed to accommodate stakeholder preferences for coverage exclusion or severity adjustment.",
@@ -5898,7 +5898,7 @@
       "question": "Which investigation approach is MOST appropriate?",
       "options": {
         "A": "Treat the 6% deviation as a noise-level fluctuation and document the observation without further procedures, since the per-trade impact is small",
-        "B": "Investigate the deviation as a substantive concern: the consistency over 3 weeks suggests a systematic cause, not random noise; the per-trade deviation aggregated over the trading pair's volume is material in dollar terms; possible causes include fee-schedule misconfiguration, rounding-logic errors, fee-distribution-channel skim, or unrecorded promotional fee waivers; design targeted procedures to identify the cause and quantify the financial impact, escalating to operations leadership if the cause appears intentional",
+        "B": "Investigate as a substantive concern: 3-week consistency suggests systematic cause not noise; identify possible causes (fee misconfiguration, rounding, skim, unrecorded waivers) and design targeted procedures",
         "C": "Immediately suspend trading on the affected pair until the deviation is fully resolved",
         "D": "Refer the matter to law enforcement immediately since deviations from expected fee revenue may indicate financial crime"
       },
@@ -6012,7 +6012,7 @@
       "question": "Which response BEST addresses the litigation-hold under audit-documentation discipline?",
       "options": {
         "A": "Destroy the 3-year-old work papers per the standard retention schedule, since the litigation hold doesn't apply retroactively",
-        "B": "Suspend the standard retention schedule for any audit documentation potentially related to the customer relationship — including the 3-year-old work papers and any current-engagement work papers touching the customer's account; coordinate with general counsel to confirm scope of the hold; preserve electronic and paper documents under access controls; document the hold's application; and continue the current engagement with awareness that its work papers will also fall under the hold once they reference the customer",
+        "B": "Suspend retention for any work papers potentially related to the customer relationship, coordinate with general counsel on hold scope, and preserve documents under access controls",
         "C": "Refuse the litigation hold on the grounds that audit documentation is privileged and not subject to legal-hold requirements",
         "D": "Transfer all potentially related documents to general counsel's office and disengage the audit function from the matter entirely"
       },
@@ -6050,7 +6050,7 @@
       "question": "Which response BEST handles the stop-work decision?",
       "options": {
         "A": "Continue the audit at the original scope and pace; mid-engagement disruptions are normal and should not affect the audit's planned execution",
-        "B": "Stop work on the active fieldwork, document the rationale (loss of primary contact, evidence of inaccurate planning information, audit-committee emergency meeting), report the situation to the audit committee with options (resume after stabilization, expand scope to include the governance concerns, or terminate the engagement and re-plan), and let the audit committee make the informed decision; preserve all evidence under chain-of-custody during the pause",
+        "B": "Stop work, document the rationale, report the situation to the audit committee with options (resume, expand scope, or terminate), and let the committee make the informed decision",
         "C": "Continue at reduced pace and quietly investigate the operations-information-accuracy issue without notifying the audit committee, since the audit committee's concerns are unrelated",
         "D": "Terminate the engagement entirely without further procedures and refer all concerns to general counsel"
       },
@@ -6164,7 +6164,7 @@
       "question": "Which approach BEST handles the special-purpose-report request?",
       "options": {
         "A": "Submit the standard annual audit report as-is, since it covers the IT-control environment, even though the format and attestation language don't match the regulator's requirements",
-        "B": "Design a special-purpose audit report tailored to the regulator's specific requirements: scope and procedures aligned to the regulator's specific control areas; attestation language matching the regulator's required wording; effective date set to the date the regulator requires; perform any additional procedures needed beyond what the standard annual audit covered; document the special-purpose nature of the engagement in both the engagement letter and the audit report; and have the audit director and engagement partner sign the report under the special-purpose framework",
+        "B": "Design a special-purpose report tailored to the regulator's specific requirements: scope, attestation language, effective date, and any additional procedures beyond the standard annual audit",
         "C": "Decline the special-purpose request and tell the company to use the standard annual audit report or hire a different auditor",
         "D": "Issue a special-purpose report based on the standard annual audit work without performing any additional procedures, simply re-formatting the existing report to match the regulator's required format"
       },
@@ -6239,8 +6239,8 @@
       "scenario_context": "An IS auditor at a non-bank financial-services firm is part of a function that is committed to both IIA International Professional Practices Framework (IPPF) and ISACA IT Audit and Assurance Standards / ITAF. On a specific engagement, the auditor identifies a situation where the two standards apparently conflict on a procedural detail (the IIA standard recommends one cadence for engagement-supervision review documentation; the ISACA ITAF standard recommends a slightly different cadence). The audit director must navigate the conflict.",
       "question": "Which response BEST handles the apparent conflict between IIA Standards and ISACA ITAF?",
       "options": {
-        "A": "Pick whichever standard is more lenient, since following either standard satisfies the function's commitment",
-        "B": "Apply the more rigorous of the two standards (the conservative approach), since following the more demanding requirement satisfies both standards simultaneously, AND document the conflict observation for future cross-standard alignment review by both ISACA and IIA professional bodies if the conflict appears systemic; report to the audit committee the function's approach and any patterns of conflict",
+        "A": "Pick whichever standard is more lenient, since following either standard alone satisfies the function's commitment to follow its applicable professional guidance",
+        "B": "Apply the more rigorous of the two standards (conservative approach satisfies both) and document the conflict observation for cross-standard alignment review",
         "C": "Stop following both standards and create a custom internal procedure, since following two potentially-conflicting standards is operationally impractical",
         "D": "Follow IIA standards exclusively for engagement-supervision matters and ignore ITAF on this point, since IIA specializes in internal audit"
       },
@@ -6277,7 +6277,7 @@
       "question": "An IS auditor at a state attorney-general's office is preparing the distribution plan for an audit report on the office's case-management system. The report contains findings about access-control weaknesses that, if widely distributed, could be exploited. What is the MOST important consideration for the report's distribution and use restrictions?",
       "options": {
         "A": "Distribute the report broadly to all employees of the office to maximize transparency, regardless of the access-control sensitivities",
-        "B": "Distribute the report only to those who need to know to act on it (audit committee, executive leadership, the responsible operations leader, legal counsel) and include explicit restricted-use language stating the report is intended solely for those recipients and is not to be redistributed; the access-control-weakness details warrant the restriction because broad distribution could enable exploitation",
+        "B": "Distribute only to those needing to know to act (audit committee, executive leadership, responsible operator, counsel) with explicit restricted-use language preventing redistribution",
         "C": "Withhold the report entirely until the access-control weaknesses are remediated, since distributing the report itself creates risk",
         "D": "Distribute the full report publicly online so external stakeholders can verify the office's transparency"
       },
@@ -6386,7 +6386,7 @@
       "question": "An IS auditor at a home-improvement retail chain is reviewing the company's process for retiring an AI/ML demand-forecasting model that is being replaced by a new model. What is the MOST important audit consideration regarding model retirement?",
       "options": {
         "A": "Once a model is retired and no longer in production, the audit's interest in it ends and no specific retirement procedures are required",
-        "B": "The retirement process should preserve evidence sufficient to: (1) reconstruct the retired model's decisions for any business or regulatory inquiry that arises about decisions made while the model was in production (model version, training data lineage, decision logs); (2) document the rationale for retirement (what the new model addresses that the old one didn't); (3) ensure no integration paths still depend on the retired model after the cutover",
+        "B": "Preserve evidence sufficient to reconstruct the retired model's decisions for future inquiry, document retirement rationale, and confirm no integration paths leave the old model partially active",
         "C": "Retire the model immediately and delete all associated data, records, and documentation to free up storage and minimize complexity",
         "D": "Keep the retired model running indefinitely alongside the new one, since model continuity preserves evidence"
       },
@@ -6461,7 +6461,7 @@
       "question": "Which approach BEST quantifies these intangible risks for risk-assessment purposes?",
       "options": {
         "A": "Decline to quantify intangible risks and treat them as outside the risk-assessment scope, focusing only on tangible-loss risks",
-        "B": "Apply structured quantification techniques: (1) translate each intangible risk to financial-impact equivalents using indirect indicators (historical brand-reputation damage estimates from peer-company data; talent-attrition cost = recruitment + onboarding + opportunity cost of disrupted productions; IP-rights-confusion cost = legal fees + lost-licensing revenue + dispute-resolution costs); (2) estimate likelihood ranges with explicit assumption documentation; (3) layer the quantitative estimates with qualitative assessment for the remaining intangible dimensions; and document the quantification approach so the methodology is reviewable",
+        "B": "Apply structured quantification: translate intangibles to financial-impact equivalents using indirect indicators, estimate likelihood with explicit confidence ranges, and document inputs for board review",
         "C": "Quantify all intangible risks at $0 since they cannot be directly measured, effectively excluding them from priority-tiering",
         "D": "Quantify all intangible risks at the same arbitrary dollar amount (e.g., $10M each) to ensure they all rank as high-priority regardless of actual differences in impact"
       },
@@ -6613,7 +6613,7 @@
       "question": "Which conclusion-synthesis approach is MOST appropriate?",
       "options": {
         "A": "Issue an unmodified clean opinion since most findings are non-critical and management has committed to remediation",
-        "B": "Synthesize the engagement conclusion explicitly addressing all three engagement-level facts: (1) state the auditor's overall conclusion clearly, with severity-tiered findings summarized; (2) explicitly disclose the scope limitation on the vendor-managed payment-processing module, including what could not be audited and the basis for the limitation; (3) include management's response and the disputed moderate finding's classification rationale; (4) state any qualifications to the audit conclusion arising from the scope limitation; and ensure the report's structure makes each element traceable to its evidentiary basis",
+        "B": "Synthesize the engagement conclusion explicitly addressing the overall judgment, the disclosed scope limitation on the vendor-managed module, and management's response to disputed findings",
         "C": "Issue a disclaimer of opinion citing the scope limitation, even though the rest of the engagement was completed normally",
         "D": "Omit the scope-limitation disclosure to keep the report concise and easier for the audit committee to act on"
       },
