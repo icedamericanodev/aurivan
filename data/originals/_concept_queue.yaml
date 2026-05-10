@@ -247,13 +247,13 @@ domain_2:
     foundational: 18
     application:  90
     analysis:     72
-  status: in_progress
+  status: COMPLETE
 
-  authored_total: 170
+  authored_total: 180
   authored_mix:
     foundational: 18
     application:  90
-    analysis:     62
+    analysis:     72
 
   covered:
     # Batch 1 (d2_001..d2_010) — first D2 batch; 6 application + 4 analysis; mirrors D1 batch 1 cadence
@@ -446,9 +446,22 @@ domain_2:
     - { id: d2_169, subtopic: "Strategic Shift from On-Premises to Cloud Governance",                             toc_ref: "2.2.5" }
     - { id: d2_170, subtopic: "Information Governance Maturity Uplift",                                           toc_ref: "2.7.1" }
 
-  queued_next:
-    # Candidate concepts for D2 batch 11 (FINAL — 10 An questions to close at 180).
-    # After batch 10: 170/180; gap is 0F + 0A + 10An.
+    # Batch 11 (d2_171..d2_180) — FINAL D2 batch; 10 analysis questions; closes D2 at 180/180
+    - { id: d2_171, subtopic: "Cyber Resilience Strategy — Beyond IR",                                           toc_ref: "2.8.7" }
+    - { id: d2_172, subtopic: "Supply-Chain Attack Detection and Response",                                       toc_ref: "2.9.6" }
+    - { id: d2_173, subtopic: "Privacy Regulator Enforcement Investigation Response",                              toc_ref: "2.6.2" }
+    - { id: d2_174, subtopic: "Quantum Computing Readiness — Cryptographic Migration",                            toc_ref: "2.8.7" }
+    - { id: d2_175, subtopic: "Audit Function Restructuring",                                                    toc_ref: "2.2.9" }
+    - { id: d2_176, subtopic: "Customer Trust Recovery After Major Incident",                                     toc_ref: "2.8.7" }
+    - { id: d2_177, subtopic: "IT Carve-Out During Divestiture",                                                  toc_ref: "2.8.5" }
+    - { id: d2_178, subtopic: "Strategic Vendor Renegotiation Under Material Change",                             toc_ref: "2.9.6" }
+    - { id: d2_179, subtopic: "ESG Governance — Technology and Climate Disclosure",                              toc_ref: "2.2.4" }
+    - { id: d2_180, subtopic: "End-to-End Domain 2 Synthesis — Governance and Management Integration",            toc_ref: "2.2.1" }
+
+  queued_next: []
+  remaining_unplanned: []
+  # Domain 2 COMPLETE at 180/180 (after batch 11). All concepts authored.
+  # Final mix: 18 foundational + 90 application + 72 analysis (10/50/40 target met exactly).
 
     # High priority — exam-heavy areas, currently uncovered
     - { subtopic: "Developing a Risk Management Program",                  toc_ref: "2.5.1",  priority: high,

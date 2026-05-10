@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d2.json`.
 
-**Last updated:** after D2 batch 10 (d2_151..d2_170) — seventh 20-question D2 batch (11A + 9An). Total D2 questions authored: 170 of 180 (94%). One closing batch of ~10 questions left.
+**Last updated:** after D2 batch 11 (d2_171..d2_180) — FINAL D2 batch (10 An questions). Total D2 questions authored: **180 of 180 — D2 COMPLETE**.
 
 ## Part A — IT Governance
 
@@ -136,14 +136,14 @@
 
 ## Difficulty mix tracking
 
-| Tier | Target (180) | Authored after D2 batch 10 | Gap |
+| Tier | Target (180) | Authored after D2 batch 11 (FINAL) | Status |
 |---|---|---|---|
 | Foundational | 18 (10%) | **18** | **target met** |
 | Application | 90 (50%) | **90** | **target met** |
-| Analysis | 72 (40%) | 62 | -10 |
-| **Total** | **180** | **170** | **-10** |
+| Analysis | 72 (40%) | **72** | **target met** |
+| **Total** | **180** | **180** | **D2 COMPLETE** |
 
-D2 progress: 170/180 (94%). Application tier closed at 90/90 with batch 10. Final batch 11 (10 An questions) brings D2 to 180/180 (target).
+**D2 status: COMPLETE.** All three tiers met target exactly (10/50/40 mix). 180/180 questions authored across 11 batches.
 
 ## High-priority depth targets for batch 5 and beyond
 

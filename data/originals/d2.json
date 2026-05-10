@@ -6224,6 +6224,376 @@
         "DAMA-DMBOK"
       ],
       "_provenance": "Authored from concept: 'Information governance maturity uplift across multinational organization - phased approach, complements d2_098/d2_126/d2_063 (data discipline elements)'. Public source: ISO/IEC 30300 + ISACA IG guidance + DAMA-DMBOK + ARMA GARP. All scenario specifics (multinational manufacturer, 35K employees, 18 countries, 6 LOBs, current-state dysfunctions) invented for this question."
+    },
+    {
+      "id": "d2_171",
+      "domain": 2,
+      "subtopic": "Cyber Resilience Strategy — Beyond IR",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST advances cyber resilience for the firm described?",
+      "scenario_context": "A regional bank's CISO has presented a cyber-resilience proposal beyond the firm's existing incident-response capability. Current state: solid IR program (NIST SP 800-61 aligned), tested annually; backups operational; basic continuity planning. The CISO argues resilience is now broader: operational resilience under sustained disruption, business-process continuity through degraded-mode operations, recovery from destructive incidents (ransomware that destroys backups), and demonstrated regulatory resilience expectations (FFIEC, OCC, Federal Reserve operational resilience guidance). The audit committee asks the IS auditor for guidance. The OCC's recent supervisory letters cited operational-resilience as a material gap area for mid-size banks; the audit committee chair has prioritized this on the next quarter agenda.",
+      "options": {
+        "A": "Treat existing IR as sufficient since it's NIST SP 800-61 aligned and tested annually; cyber-resilience is a marketing rebrand of incident response without adding material capability",
+        "B": "Build a comprehensive cyber-resilience program: degraded-mode operations playbooks per critical service + immutable/air-gapped backup tiers + regulatory-aligned resilience testing + cross-disciplinary governance + measurable RTO/RPO objectives per service",
+        "C": "Outsource resilience to a specialist firm offering cyber-resilience-as-a-service, since resilience requires expertise the bank doesn't have and outsourcing simplifies the operational complexity",
+        "D": "Defer resilience investment until regulators mandate specific requirements, since current FFIEC/OCC/Federal-Reserve guidance is principles-based without specific mandatory controls"
+      },
+      "correct": "B",
+      "key_concept": "Cyber resilience = degraded-mode operations playbooks + immutable/air-gapped backup tiers + regulatory-aligned resilience testing + cross-disciplinary governance + measurable resilience objectives. Treat-IR-as-sufficient, full-outsource, and defer-until-mandated all fail.",
+      "pre_read": "Cyber resilience questions test whether you recognize the multi-element shift beyond incident response. Distractors propose IR-equivalence, full-outsource, or deferral.",
+      "correct_explanation": "ISACA Cyber Resilience guidance, Federal Reserve SR 20-15 (Operational Resilience), FFIEC Architecture Principles, and Bank of England operational resilience principles establish that cyber resilience extends beyond traditional IR through: (1) degraded-mode operations playbooks per critical business service — what does the firm do when systems are partially unavailable; (2) immutable and air-gapped backup tiers protecting against destructive attacks (ransomware that targets and destroys online backups); (3) regulatory-aligned resilience testing including severe-but-plausible scenario exercises and business-service mapping per FFIEC and Federal Reserve guidance; (4) cross-disciplinary governance integrating IT + business + communications + legal; (5) measurable resilience objectives tied to recovery time/recovery point targets per service. Option A treats IR as sufficient when resilience addresses different scope (sustained disruption, degraded-mode, destructive recovery). Option C's full outsourcing transfers activity but resilience requires firm-specific business-process knowledge. Option D ignores active regulatory expectations.",
+      "wrong_explanations": {
+        "A": "Cyber resilience is broader than IR. IR addresses incident response; resilience addresses operational continuity through sustained disruption, degraded-mode operations, and recovery from destructive attacks. NIST SP 800-61 IR doesn't cover these dimensions.",
+        "C": "Resilience requires firm-specific business-process knowledge. A specialist firm doesn't know which business services are critical to the bank's customers, which degraded-mode operations are acceptable, or what the firm's recovery priorities are. Outsourcing transfers activity but not the contextual judgment.",
+        "D": "FFIEC, OCC, and Federal Reserve guidance is principles-based but creates active examination expectations. Banks that defer until mandatory specific controls arrive will face supervisory criticism in current examinations."
+      },
+      "tips": [
+        "Trap is A — \"IR is sufficient\" treats cyber resilience as an IR rebrand when it's actually broader scope (degraded-mode + destructive recovery + sustained disruption).",
+        "Cyber resilience = degraded-mode playbooks + immutable/air-gapped backups + resilience testing + cross-disciplinary governance + measurable RTO/RPO objectives.",
+        "Exam-day shortcut: cyber resilience questions are answered by the multi-element option beyond IR, not IR-equivalence / outsource / defer."
+      ],
+      "framework_ref": "Federal Reserve SR 20-15 (Operational Resilience); FFIEC IT Examination Handbook; ISACA Cyber Resilience guidance; NIST SP 800-61 (Computer Security Incident Handling Guide)",
+      "related_concepts": [
+        "Cyber resilience",
+        "Operational resilience",
+        "Degraded-mode operations",
+        "Destructive recovery"
+      ],
+      "_provenance": "Authored from concept: 'Cyber resilience strategy beyond IR - multi-element scope, complements d2_105 (IR governance) and d2_148 (multi-business-line cloud incident)'. Public source: Federal Reserve SR 20-15 + FFIEC + ISACA Cyber Resilience. All scenario specifics (regional bank, current-state IR, regulatory landscape) invented for this question."
+    },
+    {
+      "id": "d2_172",
+      "domain": 2,
+      "subtopic": "Supply-Chain Attack Detection and Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What governance approach BEST handles the supply-chain compromise scenario?",
+      "scenario_context": "A SaaS platform discovers that one of its build-time dependencies has been compromised — a malicious update was published 3 days ago and ingested into the firm's CI/CD pipeline. The compromise was disclosed by the dependency maintainer publicly. The firm's last 3 production deployments included the affected dependency. Customer-facing impact unknown. The CISO must decide on response covering technical remediation, customer communication, regulatory notification, and longer-term supply-chain governance. The firm's customer base includes financial-services and healthcare clients with regulatory notification obligations that may extend to the firm's incidents affecting them.",
+      "options": {
+        "A": "Treat as major incident: technical (forensics + IOC + clean deployment + persistence hunt); communication (customer notification + supply-chain transparency); regulatory (state breach + sector obligations); governance uplift (SBOM + SCA + supply-chain detection + signed builds)",
+        "B": "Roll back the last 3 deployments to the previous version that didn't include the affected dependency, communicate the rollback as routine maintenance, and treat the incident as resolved without further action",
+        "C": "Continue normal operations since the compromise was caught quickly and the firm's last deployments were within 3 days; further analysis is unnecessary given the limited time window",
+        "D": "Sue the dependency maintainer for damages caused by their failure to prevent the compromise, since legal action establishes accountability and protects the firm's interests"
+      },
+      "correct": "A",
+      "key_concept": "Supply-chain compromise response = treat as major incident with technical (forensics + IOC + clean deployment + persistence hunt) + communication (customer notification + transparency) + regulatory (breach laws + sector obligations) + governance uplift (SBOM/SCA + supply-chain detection + signed builds). Rollback-and-move-on, normal-operations, and sue-maintainer all fail.",
+      "pre_read": "Supply-chain attack questions test whether you recognize the major-incident multi-element response. Distractors propose minimization, normal operations, or legal-only.",
+      "correct_explanation": "Following SolarWinds, Log4j, and the broader 2020s pattern of supply-chain compromises, NIST SP 800-218 (Secure Software Development Framework), Executive Order 14028, and CISA guidance establish that supply-chain compromises require major-incident response: (1) technical — forensic analysis on production looking for indicators of compromise, identifying any customer-data exposure, deploying clean version, threat-hunting for persistence (the malicious dependency may have established persistence beyond the immediate code); (2) communication — customer notification per applicable breach-notification regulations, with transparency about the supply-chain origin (customers can then assess their own exposure); (3) regulatory — state breach laws + sector-specific obligations (HIPAA, GLBA, PCI DSS); (4) governance uplift — improved SBOM, SCA in CI/CD, supply-chain detection capabilities (signature verification, anomaly detection on dependencies), dependency pinning, signed-builds adoption (SLSA framework). Option B's rollback-and-move-on misses persistence and customer-impact assessment. Option C ignores the established threat-actor pattern of dwelling beyond the immediate compromise. Option D's sue-maintainer is downstream of incident response, not the primary response.",
+      "wrong_explanations": {
+        "C": "3-day windows are sufficient for sophisticated supply-chain attackers to establish persistence and exfiltrate data. The SolarWinds attackers maintained persistence for many months after initial compromise. Time-elapsed-was-short is not a valid basis for skipping incident response.",
+        "D": "Legal action against the maintainer (often an open-source individual or small project) is downstream of incident response and rarely produces material recovery. The primary response is incident handling and supply-chain governance uplift; legal is a secondary consideration.",
+        "B": "Rolling back deployment doesn't address whether the malicious dependency established persistence (callback channels, secondary payloads), whether customer data was exfiltrated during the 3-day window, or whether the firm's broader supply-chain governance has gaps. Rollback is one element, not the entire response."
+      },
+      "tips": [
+        "Trap is B — \"rollback and treat as resolved\" misses persistence, customer-impact assessment, and the supply-chain governance uplift the incident exposes.",
+        "Supply-chain compromise = major-incident response: technical (forensics + IOC + clean deployment + persistence hunt) + communication + regulatory + governance uplift (SBOM/SCA + signed builds + supply-chain detection).",
+        "Exam-day shortcut: supply-chain attack questions are answered by major-incident multi-element response, not minimization / normal-ops / legal-only."
+      ],
+      "framework_ref": "NIST SP 800-218 (Secure Software Development Framework); Executive Order 14028 (Improving the Nation's Cybersecurity); CISA Software Bill of Materials guidance; SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "related_concepts": [
+        "Supply-chain attack",
+        "SBOM",
+        "SLSA framework",
+        "Dependency compromise"
+      ],
+      "_provenance": "Authored from concept: 'Supply-chain attack detection and response - major-incident multi-element, complements d2_155 (OSS governance application)'. Public source: NIST SP 800-218 + EO 14028 + CISA SBOM. All scenario specifics (SaaS platform, compromised dependency 3 days ago, last 3 deployments) invented for this question."
+    },
+    {
+      "id": "d2_173",
+      "domain": 2,
+      "subtopic": "Privacy Regulator Enforcement Investigation Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the privacy investigation described?",
+      "scenario_context": "A SaaS company receives notice from a European data-protection supervisory authority (DPA) opening a formal investigation into the firm's data-processing practices. The notice is broad: data subjects' complaints over a 6-month period, possible Article 5 (principles), Article 6 (lawful basis), Article 13/14 (transparency), and Article 32 (security) violations. The DPA requests specific evidence within 30 days. The CEO asks the IS auditor for response governance covering preservation, evidence assembly, internal investigation, external counsel coordination, and customer/employee communication. The firm's customer base includes major EU multinationals whose own privacy programs depend on the firm's compliance posture; reputation effects extend beyond the immediate fine.",
+      "options": {
+        "A": "Provide all requested evidence to the DPA without legal review, since cooperation accelerates resolution and over-scoping the response demonstrates good faith",
+        "B": "Refuse to cooperate with the DPA on grounds of attorney-client privilege, since any disclosure could be used against the firm in subsequent litigation",
+        "C": "Coordinated response governance: legal counsel + evidence preservation/litigation hold + counsel-led internal investigation + structured DPA cooperation + customer/employee communication strategy + leadership updates + decision-log",
+        "D": "Pay an estimated fine immediately to settle the investigation before findings, since prompt settlement minimizes both the fine and the publicity that prolonged investigations attract"
+      },
+      "correct": "C",
+      "key_concept": "Privacy investigation response governance = legal counsel + evidence preservation/litigation hold + counsel-led internal investigation + structured DPA cooperation + customer/employee communication strategy + leadership updates + decision-log. Cooperate-without-counsel, refuse-to-cooperate, and pay-fine-immediately all fail.",
+      "pre_read": "Privacy regulator investigation questions test whether you recognize the structured counsel-led response. Distractors propose blind cooperation, non-cooperation, or premature settlement.",
+      "correct_explanation": "GDPR Article 31 (cooperation with supervisory authority), EDPB Guidelines 06/2022 (calculation of administrative fines), and ISACA Privacy Investigation guidance establish that responses to formal privacy regulator investigations require structured counsel-led governance: (1) immediate legal-counsel engagement so investigation work-product is privileged; (2) evidence preservation including litigation hold across email, systems, and documents — preventing routine deletion of potentially-relevant data; (3) counsel-led internal investigation paralleling the DPA timeline to understand the firm's actual posture; (4) structured DPA cooperation — responsive, accurate, counsel-reviewed disclosures meeting the 30-day deadline; (5) customer/employee communication strategy with counsel review (premature communication can prejudice the investigation or trigger class-action filings); (6) senior leadership regular updates so the CEO and audit committee can make informed decisions; (7) explicit decision-log for actions affected by the investigation. Option A's blind cooperation foregoes privilege and may produce inaccurate disclosures that trigger expanded investigation. Option B's refuse-to-cooperate triggers escalation and likely Article 83 fines. Option D's pay-fine-immediately is impractical (DPA fines come at investigation conclusion, not negotiated upfront) and forfeits defenses.",
+      "wrong_explanations": {
+        "A": "Blind cooperation without legal review forgoes attorney-client privilege over the investigation work-product. Disclosures made without counsel review can contain inaccuracies, technical misstatements, or strategic missteps that expand the DPA's scope or trigger class-action litigation.",
+        "B": "Refusing to cooperate with a supervisory authority triggers escalation, likely Article 83 fines (administrative fines up to 4% of global turnover for serious infringements), and reputational damage. Cooperation is required; counsel-led structured cooperation is the right form.",
+        "D": "DPAs don't accept pre-investigation fine payment as settlement. Fines come at investigation conclusion based on Article 83 criteria. Pre-emptive payment is impractical and would forfeit material defenses (mitigating factors per Article 83(2)) the firm may have."
+      },
+      "tips": [
+        "Trap is A — \"cooperate fully without counsel review\" forgoes privilege and risks inaccurate disclosures that expand investigation scope.",
+        "Privacy investigation response = legal counsel + evidence preservation + counsel-led internal investigation + structured DPA cooperation + communication strategy + leadership updates + decision-log.",
+        "Exam-day shortcut: privacy regulator investigation questions are answered by structured counsel-led response, not blind-cooperate / refuse / pay-immediately."
+      ],
+      "framework_ref": "GDPR Article 31 (Cooperation with the Supervisory Authority); GDPR Article 83 (General Conditions for Imposing Administrative Fines); EDPB Guidelines 06/2022; ISACA Privacy Investigation guidance",
+      "related_concepts": [
+        "Privacy investigation",
+        "DPA cooperation",
+        "GDPR Article 31",
+        "Litigation hold"
+      ],
+      "_provenance": "Authored from concept: 'Privacy regulator enforcement investigation response - structured counsel-led, complements d2_165 (privacy/security/compliance integrated audit) and d2_122 (multi-jurisdiction GDPR/CCPA)'. Public source: GDPR Article 31/83 + EDPB 06/2022. All scenario specifics (SaaS firm, 6-month complaint window, four GDPR articles, 30-day deadline) invented for this question."
+    },
+    {
+      "id": "d2_174",
+      "domain": 2,
+      "subtopic": "Quantum Computing Readiness — Cryptographic Migration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles cryptographic-migration planning for the firm described?",
+      "scenario_context": "A multinational bank's CIO is reviewing post-quantum cryptography (PQC) readiness. NIST has finalized the first PQC standards (CRYSTALS-Kyber for KEM, CRYSTALS-Dilithium for signatures, SPHINCS+ for hash-based signatures). Threat landscape: cryptographically-relevant quantum computers may not exist for 5-15 years, but 'harvest-now-decrypt-later' attacks against current encryption are already documented. The bank operates on conventional cryptography (RSA, ECC, AES). The audit committee asks the IS auditor for migration-planning guidance. Major financial-services regulators including the Federal Reserve and FFIEC have begun signaling expectations for crypto-agility roadmaps in supervisory examinations.",
+      "options": {
+        "A": "Defer cryptographic migration entirely until quantum computers are demonstrated capability, since PQC standards are new, current cryptography is adequate, and migration is operationally disruptive",
+        "B": "Cryptographic-agility planning: cryptographic inventory + risk-tier by data sensitivity (HNDL focus) + hybrid-classical-PQC migration starting highest-risk + vendor engagement + library/API updates + multi-year staged rollout aligned to NIST timeline",
+        "C": "Convert all cryptography to PQC immediately across all applications and stored data, since 'harvest-now-decrypt-later' attacks make any delay risky and fast migration captures the security benefit promptly",
+        "D": "Wait for vendors to handle the migration since the bank's cryptography largely runs in vendor-supplied software (cloud, SaaS, infrastructure), and vendors will update when needed"
+      },
+      "correct": "B",
+      "key_concept": "PQC migration = cryptographic agility: inventory + risk-tier + hybrid-classical-PQC migration starting with highest-risk + vendor engagement + library/API updates as standards mature + multi-year staged rollout. Defer-until-quantum, immediate-conversion-everywhere, and wait-for-vendors all fail.",
+      "pre_read": "PQC readiness questions test whether you recognize the cryptographic-agility staged approach. Distractors propose deferral, immediate-conversion, or vendor-deferral.",
+      "correct_explanation": "NIST SP 800-208 (Stateful Hash-Based Signature Schemes), NIST PQC standardization (FIPS 203/204/205 finalized 2024), and CISA Post-Quantum Cryptography Initiative establish that effective PQC migration uses cryptographic agility staged over multiple years: (1) cryptographic inventory — where the firm uses cryptography across applications, infrastructure, vendor APIs, IoT/OT, stored data; without inventory the firm can't migrate; (2) risk-tier by data sensitivity and 'harvest-now-decrypt-later' relevance — long-confidentiality data (records that must remain secret for decades) is highest priority; (3) hybrid-classical-PQC migration starting with highest-risk areas — running both algorithms in parallel during transition reduces risk of either single algorithm failing; (4) vendor-engagement — cloud providers, SaaS, infrastructure vendors all have PQC roadmaps the bank should coordinate with; (5) library-and-API updates as standards mature — TLS, identity protocols, code-signing all need updates; (6) multi-year staged rollout aligned to NIST timeline (mandatory federal use ~2030-2035) and industry coordination. Option A's defer-until-quantum ignores harvest-now-decrypt-later. Option C's immediate-conversion is operationally infeasible (PQC libraries are still maturing; performance impact is significant). Option D's wait-for-vendors abdicates the bank's accountability for its data confidentiality.",
+      "wrong_explanations": {
+        "A": "Harvest-now-decrypt-later attacks against current encryption are documented threat-actor activity. Long-confidentiality data (records that must remain secret for decades) is being collected today by adversaries planning to decrypt later when quantum capability arrives. Defer-until-quantum surrenders this data class.",
+        "C": "Immediate-conversion-everywhere is operationally infeasible. PQC libraries are still maturing, performance impact is significant (signature sizes 10-100x larger, computational cost higher), and rapid conversion risks introducing new vulnerabilities through implementation errors. Cryptographic agility staged over years is the recognized approach.",
+        "D": "Vendor-only-handling abdicates the bank's accountability for its own data confidentiality. The bank uses cryptography in many places vendors don't control (custom applications, internal protocols, key management). The bank must own the migration with vendor cooperation."
+      },
+      "tips": [
+        "Trap is A — \"defer until quantum is demonstrated\" ignores harvest-now-decrypt-later attacks already being conducted against long-confidentiality data.",
+        "PQC migration = cryptographic agility staged over years: inventory + risk-tier (HNDL focus) + hybrid migration + vendor engagement + library updates + multi-year staged rollout.",
+        "Exam-day shortcut: PQC migration questions are answered by cryptographic-agility staged approach, not defer / convert-everything / wait-for-vendors."
+      ],
+      "framework_ref": "NIST PQC Standards (FIPS 203/204/205); NIST SP 800-208 (Stateful Hash-Based Signature Schemes); CISA Post-Quantum Cryptography Initiative",
+      "related_concepts": [
+        "Post-quantum cryptography",
+        "Cryptographic agility",
+        "Harvest-now-decrypt-later",
+        "Hybrid classical-PQC"
+      ],
+      "_provenance": "Authored from concept: 'Quantum computing readiness cryptographic migration - cryptographic agility staged approach, no prior D2 coverage'. Public source: NIST PQC Standards + CISA PQC Initiative. All scenario specifics (multinational bank, current crypto stack, threat landscape) invented for this question."
+    },
+    {
+      "id": "d2_175",
+      "domain": 2,
+      "subtopic": "Audit Function Restructuring",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What restructuring approach BEST supports the audit function's evolution described?",
+      "scenario_context": "A regional health-insurer's CAE is restructuring the audit function over 18 months. Current state: 35 auditors organized by audit type (financial, IT, operational, compliance); skill mix biased toward financial/operational with limited IT/data/cyber expertise; coverage gaps in AI/ML, cloud, third-party, and emerging-tech areas; audit-committee dissatisfaction with the function's responsiveness to current risk. The CAE's options include skill-based reorganization, agile-audit operating model, audit-as-a-service from external firms, or hybrid arrangements. The audit-committee chair has signaled that continued performance shortfalls may lead to external review of the audit function itself, raising the stakes on the restructuring decision.",
+      "options": {
+        "A": "Maintain current structure since reorganization disrupts ongoing audits and the audit committee's specific dissatisfaction can be addressed through individual engagement adjustments without structural change",
+        "B": "Outsource the entire audit function to a Big-Four firm, since external firms have the broader skill mix the function lacks and outsourcing simplifies management",
+        "C": "Phased audit-function evolution: targeted hiring/upskilling for skill gaps + risk-based reorganization (cross-functional teams aligned to top risks) + agile-audit operating model + co-sourcing for specialized capability + audit-committee engagement strategy + success metrics",
+        "D": "Eliminate the audit function entirely and rely on the firm's external auditor and regulators for assurance, since their assessments cover the firm's risk areas without internal audit's overhead"
+      },
+      "correct": "C",
+      "key_concept": "Audit function restructuring = phased: targeted hiring/upskilling + risk-based reorganization (cross-functional teams aligned to risks) + agile-audit operating model for emerging areas + co-sourcing for specialized capability + audit-committee engagement strategy + explicit success metrics. Maintain-current, full-outsource, and eliminate-function all fail.",
+      "pre_read": "Audit function restructuring questions test whether you recognize the phased multi-element evolution. Distractors propose status-quo, full outsourcing, or elimination.",
+      "correct_explanation": "IIA International Standards 1300-1330 (Quality Assurance and Improvement Program), ISACA Audit Function Management guidance, and CAE survey practice establish that audit function restructuring requires phased multi-element evolution: (1) targeted hiring/upskilling for IT/data/cyber/cloud/AI gaps — addresses the skill-mix imbalance; (2) reorganization to risk-based audit teams aligned to top firm risks (rather than audit-type silos that reflect financial-vs-IT-vs-operational distinctions less relevant to modern risk) — produces holistic audits of complex risks; (3) agile-audit operating model for emerging-risk areas with shorter sprints and continuous deliverables — responsive to fast-moving risks (per d1_140 / d2_146 governance disciplines); (4) co-sourcing arrangements for specialized areas where building internal capability isn't cost-effective (deep cloud-security audit, AI audit may use external specialists); (5) audit-committee engagement strategy with quarterly transparency on the function's evolution; (6) explicit success metrics tied to coverage, responsiveness, and impact. Option A's maintain-current ignores the audit committee's documented dissatisfaction. Option B's full-outsource sacrifices the institutional knowledge internal audit accumulates. Option D's eliminate-function ignores internal audit's distinct value (independent assurance to the audit committee that external auditor and regulators don't provide).",
+      "wrong_explanations": {
+        "A": "Maintaining current structure ignores the documented audit-committee dissatisfaction and the coverage gaps in AI/ML, cloud, third-party, and emerging-tech areas. Status-quo doesn't address structural issues.",
+        "B": "Full-outsourcing sacrifices the institutional knowledge internal audit accumulates over time about the firm's specific risks, processes, and remediation history. External firms rotate staff and don't build the same depth. Co-sourcing for specialized areas is the right balance.",
+        "D": "Internal audit provides independent assurance to the audit committee with depth and continuity that external auditors and regulators don't provide. External auditors focus on financial-statement assertions; regulators focus on regulatory compliance; neither covers the operational-and-strategic risk picture internal audit addresses."
+      },
+      "tips": [
+        "Trap is B — \"outsource the entire function to Big-Four\" sacrifices institutional knowledge and continuity for skill-mix breadth that's better achieved through co-sourcing.",
+        "Audit function restructuring = targeted hiring/upskilling + risk-based teams + agile model for emerging + co-sourcing for specialized + audit-committee engagement + success metrics.",
+        "Exam-day shortcut: audit-function restructuring questions are answered by phased multi-element evolution, not maintain / outsource / eliminate."
+      ],
+      "framework_ref": "IIA International Standards 1300-1330 (Quality Assurance and Improvement Program); ISACA Audit Function Management guidance",
+      "related_concepts": [
+        "Audit function restructuring",
+        "Risk-based audit teams",
+        "Agile audit",
+        "Co-sourcing"
+      ],
+      "_provenance": "Authored from concept: 'Audit function restructuring - phased multi-element evolution, complements d2_009 (audit role boundaries), d2_010 (governance audit), d2_165 (integrated audit)'. Public source: IIA Standards 1300-1330. All scenario specifics (regional health insurer, 35 auditors, current-state mix, audit-committee dissatisfaction) invented for this question."
+    },
+    {
+      "id": "d2_176",
+      "domain": 2,
+      "subtopic": "Customer Trust Recovery After Major Incident",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST supports customer-trust recovery after the incident described?",
+      "scenario_context": "A SaaS company experienced a major incident 6 months ago: 8M customer records exposed via vulnerability in third-party JS library; regulatory consent decree imposed; class-action settled; customer-trust metrics down 40% (NPS dropped from 65 to 39); customer-retention metrics show 18% churn vs 8% historical baseline. The firm has executed all immediate IR actions; the question now is sustained trust recovery. The CEO asks the IS auditor for a trust-recovery program design. The firm operates in a competitive SaaS market where alternate providers actively recruit displaced customers; trust loss converts directly to competitor wins absent active recovery.",
+      "options": {
+        "A": "Apologize once publicly, return to normal operations, and let time heal customer perceptions, since over-emphasizing the past incident keeps it salient longer than necessary",
+        "B": "Trust-recovery program: visible verifiable security investments (third-party ratings + certifications + transparency) + product changes addressing root causes + regular communication on improvements + customer-success engagement + measurable trust metrics + 18-24 month timeline + C-suite accountability",
+        "C": "Offer all affected customers significant pricing discounts as compensation, since financial concessions are the most direct trust-recovery action and customers will appreciate immediate financial value",
+        "D": "Trust-recovery program: verifiable security investments + product changes addressing root causes + regular communication on improvements + customer-success engagement + measurable trust metrics + 18-24 month timeline + C-suite accountability"
+      },
+      "correct": "D",
+      "key_concept": "Customer trust recovery = visible security investments customers can verify (ratings, certifications, transparency) + product changes addressing root causes + regular customer communication on improvements + customer-success engagement at-risk accounts + measurable trust metrics + 18-24 month timeline with milestones + C-suite accountability. Apologize-once-and-time-heals, pricing-discounts-only, and market-pivot all fail.",
+      "pre_read": "Trust recovery questions test whether you recognize the multi-element measurable program. Distractors propose passive recovery, financial-only, or pivot-away.",
+      "correct_explanation": "ISACA Customer Trust Recovery guidance, Edelman Trust Barometer methodology, and post-incident corporate-recovery research establish that effective trust recovery requires multi-element measurable program: (1) visible security investments customers can verify — third-party security ratings (BitSight, SecurityScorecard, UpGuard), public SOC 2 / ISO 27001 / PCI DSS certifications, transparency reports detailing security improvements; customer-verifiable evidence is more credible than corporate communication; (2) product changes addressing the specific incident root causes — the third-party JS library vulnerability requires SBOM, SCA, signed-builds, supply-chain governance changes (per d2_172); (3) regular customer communication on security improvements without re-traumatizing the original incident — focus on what the firm has done, not what happened; (4) customer-success engagement with at-risk accounts — high-churn-risk accounts get personalized engagement; (5) measurable trust metrics (NPS, retention, expansion) tracked monthly — measurement enables management; (6) explicit 18-24 month trust-recovery timeline with milestones — recovery is gradual, not instant; (7) C-suite accountability for trust-recovery objectives — without senior accountability, trust recovery competes against other priorities and loses. Option A's apologize-once-and-time-heals lets churn continue at 18% (vs 8% baseline) for an unbounded period. Option C's pricing-discounts-only doesn't address the root cause of trust loss. Option B's market-pivot abandons the customer base and starts over, which is more expensive than trust recovery.",
+      "wrong_explanations": {
+        "A": "18% churn vs 8% baseline is a 125% increase that won't self-resolve. Time-heals only works for low-impact incidents; major incidents require active trust recovery to prevent permanent customer-base erosion.",
+        "C": "Pricing discounts compensate for the past but don't rebuild trust in the firm's future security posture. Customers continue to lose trust if visible security improvements don't accompany the financial concession.",
+        "B": "Market pivot abandons the customer base the firm has invested in acquiring. Building a new customer base in a different segment is typically more expensive than trust recovery in the existing segment, especially when the incident's narrative doesn't disappear when the firm pivots."
+      },
+      "tips": [
+        "Trap is A — \"apologize once and time heals\" lets elevated churn (18% vs 8% baseline) continue for an unbounded period.",
+        "Customer trust recovery = visible verifiable security investments + product changes addressing root causes + regular communication on improvements + customer-success engagement + measurable trust metrics + 18-24 month timeline + C-suite accountability.",
+        "Exam-day shortcut: trust recovery questions are answered by the multi-element measurable program, not passive / financial-only / pivot."
+      ],
+      "framework_ref": "ISACA Customer Trust Recovery guidance; Edelman Trust Barometer methodology; ISACA Information Security Governance guidance",
+      "related_concepts": [
+        "Customer trust recovery",
+        "Post-incident communication",
+        "Verifiable security investments",
+        "Trust metrics"
+      ],
+      "_provenance": "Authored from concept: 'Customer trust recovery after major incident - multi-element measurable program, complements d2_143/d2_150 (post-breach strategy refresh) and d2_168 (ransomware crisis communication)'. Public source: ISACA Customer Trust Recovery + Edelman Trust Barometer. All scenario specifics (SaaS company, 6 months post-incident, specific metrics, JS library origin) invented for this question."
+    },
+    {
+      "id": "d2_177",
+      "domain": 2,
+      "subtopic": "IT Carve-Out During Divestiture",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What approach BEST handles the IT carve-out described?",
+      "scenario_context": "A diversified holding company is divesting a business unit (insurance subsidiary) to a private-equity buyer. The deal closes in 9 months. Current state: the insurance subsidiary uses shared corporate IT services (identity, email, ERP, network, security operations center, application portfolio with shared data). Post-close, the insurance subsidiary must operate independently OR under a Transition Services Agreement (TSA). The deal team wants short TSA period (6 months) to clean-break quickly. The CIO asks the IS auditor for IT-carve-out governance covering data separation, system separation, identity/access transition, and TSA structure.",
+      "options": {
+        "A": "Defer all IT separation work until post-close and let the buyer's IT team handle the separation, since pre-close work risks leaking deal information and the buyer should drive their own setup",
+        "B": "Complete a clean-break separation by close — fully isolate insurance-subsidiary data, systems, identities, and infrastructure with no TSA, accepting the operational disruption as the cost of clean separation",
+        "C": "IT carve-out program: data inventory and separation plan + system separation strategy per application + identity/access transition + TSA structure with scoped services and SLAs + pricing transparency + separation testing before close + cutover plan + deal-team coordination",
+        "D": "Run all corporate IT services for the divested entity indefinitely under a long-term services contract, since the holding company has the operational capability and it's economically simpler than separation"
+      },
+      "correct": "C",
+      "key_concept": "IT carve-out program = data inventory + system separation strategy per application + identity/access transition + TSA structure with scoped services and SLAs + pricing transparency + separation testing before close + cutover plan + deal-team coordination + confidentiality. Defer-to-buyer, clean-break-no-TSA, and run-indefinitely all fail.",
+      "pre_read": "IT carve-out questions test whether you recognize the multi-element divestiture-IT discipline. Distractors propose deferral, no-TSA, or no-separation.",
+      "correct_explanation": "ISACA M&A IT Due Diligence guidance and divestiture-program practice establish that IT carve-outs require structured multi-element programs: (1) data inventory and separation plan — which data follows the divestiture, which stays with the holding company, governed by data-ownership and regulatory considerations (e.g., HIPAA-relevant insurance data); (2) system separation strategy per application — clone (full copy for the divested entity), cutover (the divested entity gets the existing system, holding company replaces), or replace (both entities get new instances); (3) identity/access transition — provisioning new identities for the divested entity's workforce, deprovisioning shared access at close, customer-access transition; (4) TSA structure with clearly-scoped services — which corporate services run for how long with what SLAs and what exit triggers (typically 6-18 months for IT TSAs); (5) pricing transparency — TSA pricing per service so the divested entity knows what it's paying for; (6) separation testing before close — verify the separation actually works before the deal closes; (7) explicit cutover plan for end-of-TSA — the entity must be standalone-capable when the TSA expires; (8) deal-team coordination and confidentiality preservation — IT work must support the deal without leaking deal information. Option A's defer-to-buyer leaves the divested entity unable to operate at close. Option B's clean-break-no-TSA produces operational disruption and risks deal failure. Option D's run-indefinitely creates ongoing entanglement that defeats divestiture purpose.",
+      "wrong_explanations": {
+        "A": "Deferring IT separation to the buyer post-close leaves the divested entity unable to operate at close. The buyer expects an operational entity at close, supported by TSA where transition can't be complete by then. Pre-close planning is required.",
+        "B": "Clean-break-no-TSA produces operational disruption that can derail the deal. Most IT carve-outs require 6-18 months of TSA support because applications, data, and integrations can't be cleanly separated in 9 months. Insisting on no-TSA risks deal-breaking operational issues.",
+        "D": "Running corporate IT services indefinitely defeats the divestiture purpose (the holding company is exiting the business; ongoing IT entanglement keeps the holding company tied to the divested entity's operations). It also creates buyer-private-equity concerns about ongoing dependence on the seller."
+      },
+      "tips": [
+        "Trap is B — \"clean-break-no-TSA at close\" sounds disciplined but produces operational disruption that can derail deals; TSAs are standard in IT carve-outs.",
+        "IT carve-out = data inventory + system separation per application + identity/access transition + TSA scoped + pricing transparency + separation testing + cutover plan + deal-team coordination.",
+        "Exam-day shortcut: IT carve-out questions are answered by the structured multi-element program, not defer / no-TSA / run-indefinitely."
+      ],
+      "framework_ref": "ISACA M&A IT Due Diligence guidance; OCC Comptroller's Licensing Manual — Business Combinations; COBIT 2019 BAI05 (Managed Organizational Change)",
+      "related_concepts": [
+        "IT carve-out",
+        "Transition Services Agreement",
+        "Divestiture IT",
+        "M&A IT"
+      ],
+      "_provenance": "Authored from concept: 'IT carve-out during divestiture - structured multi-element program, complements d2_104 (failed M&A IT integration synthesis) and d2_128 (acquisition target IT due diligence)'. Public source: ISACA M&A IT Due Diligence + OCC Licensing Manual. All scenario specifics (holding company divesting insurance subsidiary, 9-month timeline, 6-month TSA preference) invented for this question."
+    },
+    {
+      "id": "d2_178",
+      "domain": 2,
+      "subtopic": "Strategic Vendor Renegotiation Under Material Change",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What renegotiation approach BEST handles the strategic-vendor situation described?",
+      "scenario_context": "A retailer's 5-year strategic vendor (cloud infrastructure, year 3 of contract) has announced a 35% price increase at next renewal. The retailer's options: accept the increase, renegotiate, switch providers, or hybrid. Constraints: the cloud workload is deeply integrated with retailer-specific tooling (3-year migration estimated to switch); the vendor has been operationally reliable; the retailer has significant data egress (switching cost is high); industry pricing shows the vendor's increase is 15% above peer average. The CFO and CIO must decide. The audit committee asks the IS auditor for governance guidance.",
+      "options": {
+        "A": "Accept the 35% increase since switching is impractical (3-year migration), the vendor is reliable, and continued partnership is operationally simpler than negotiation conflict",
+        "B": "Switch providers immediately to a competitor offering better pricing, since the 35% increase exceeds peer average and the firm should not subsidize an above-market vendor",
+        "C": "Structured renegotiation: market-pricing analysis + BATNA development (validated migration plan) + negotiation strategy (multi-year for pricing relief, tier optimization, reserved capacity, egress terms) + parallel limited migration to signal credibility + deal preserving relationship + exit-readiness",
+        "D": "Structured renegotiation: market-pricing analysis + BATNA development + multi-year-for-pricing-relief + tier optimization + reserved capacity + egress terms + parallel limited migration + deal preserving relationship + exit-readiness"
+      },
+      "correct": "D",
+      "key_concept": "Strategic vendor renegotiation = market-pricing analysis + BATNA development (validated migration plan, alternate-provider quotes as leverage) + negotiation strategy (multi-year commitment for pricing relief, service-tier optimization, reserved capacity, egress terms) + parallel limited migration to signal credibility + deal structure preserving relationship while addressing pricing + exit-readiness if renegotiation fails + audit committee briefing. Accept-quietly, switch-immediately, and refuse-to-renegotiate all fail.",
+      "pre_read": "Strategic vendor renegotiation questions test whether you recognize the multi-element BATNA-driven approach. Distractors propose passive acceptance, premature switching, or refusal-to-engage.",
+      "correct_explanation": "Harvard Negotiation Project, ISACA IT Vendor Management, and FFIEC vendor-renegotiation practice establish that effective strategic vendor renegotiation under material change requires structured multi-element approach: (1) market-pricing analysis — peer benchmarks (the 15% peer-average gap is leverage), alternate-provider quotes used as credible leverage; (2) BATNA (Best Alternative to Negotiated Agreement) development — validated migration plan to alternate provider so the threat is credible (a vendor knows when the customer can actually leave vs when leaving is theoretical); (3) negotiation strategy — multi-year commitment in exchange for price relief, service-tier optimization (some workloads on lower-tier services), reserved capacity restructuring, renegotiated egress terms (egress lock-in is the leverage source); (4) parallel limited migration of select workloads to alternate provider — de-risks position and signals credibility; (5) deal structure preserving multi-year relationship while addressing pricing concern — relationship continuation has value but not at any price; (6) exit-readiness if renegotiation fails — willingness to walk is the negotiation's foundation; (7) audit committee briefing on the strategy. Option A's accept-quietly forfeits the leverage the firm has. Option B's switch-immediately wastes the strategic-vendor relationship and incurs 3-year migration costs unnecessarily. Option C's refuse-to-renegotiate is timid and accepts above-market pricing.",
+      "wrong_explanations": {
+        "A": "35% above the prior contract and 15% above peer average is significant. Accepting without renegotiation forfeits leverage the firm has (BATNA development, peer benchmarks, multi-year commitment value). Operational simplicity isn't worth the cost premium.",
+        "B": "Immediate switching incurs 3-year migration costs and operational disruption that may not be necessary if renegotiation succeeds. Switching is the BATNA, not the first move; using BATNA for leverage is more efficient than executing it immediately.",
+        "C": "Refuse-to-renegotiate accepts a 35% increase the firm could have negotiated down. Vendor relationships are economic relationships; renegotiation is normal in long-term contracts and doesn't damage operational relationships when conducted professionally."
+      },
+      "tips": [
+        "Trap is A — \"accept quietly because switching is impractical\" forfeits the leverage the firm has (BATNA, peer pricing, multi-year-commitment value).",
+        "Strategic vendor renegotiation = market analysis + BATNA development + negotiation strategy (multi-year for pricing, tier optimization, reserved capacity, egress) + parallel limited migration + deal preservation + exit-readiness + audit committee briefing.",
+        "Exam-day shortcut: vendor renegotiation under material change is answered by structured BATNA-driven approach, not accept / switch / refuse."
+      ],
+      "framework_ref": "ISACA IT Vendor Management guidance; FFIEC IT Examination Handbook; COBIT 2019 APO10 (Managed Vendors); Harvard Negotiation Project (Getting to Yes)",
+      "related_concepts": [
+        "Strategic vendor renegotiation",
+        "BATNA",
+        "Multi-year commitment",
+        "Vendor lock-in"
+      ],
+      "_provenance": "Authored from concept: 'Strategic vendor renegotiation under material change - structured BATNA-driven approach, complements d2_036/d2_042/d2_115/d2_135 (vendor governance application questions)'. Public source: Harvard Negotiation + ISACA IT Vendor Management + FFIEC. All scenario specifics (retailer cloud vendor 35% increase, 15% above peer, year-3-of-5 contract) invented for this question."
+    },
+    {
+      "id": "d2_179",
+      "domain": 2,
+      "subtopic": "ESG Governance — Technology and Climate Disclosure",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What ESG governance approach BEST addresses the technology-and-climate disclosure described?",
+      "scenario_context": "A multinational manufacturer with a technology-intensive business is preparing climate-related and broader ESG disclosures under emerging requirements (CSRD in EU, SEC climate-disclosure rules in US, similar regimes in APAC). Disclosure scope includes IT-energy consumption, data-center emissions, supply-chain emissions, technology-enabled climate adaptation. The CSO and CIO must coordinate the governance covering data accuracy, third-party assurance, public-disclosure consistency, and integration with existing IT governance. The audit committee asks the IS auditor for guidance. The firm's investor base includes ESG-focused institutional investors who actively assess disclosure quality; reputational consequences of inconsistent disclosures extend beyond regulatory fines.",
+      "options": {
+        "A": "Treat ESG disclosure as a sustainability-team responsibility separate from IT governance, since ESG and IT are different domains and integration creates unnecessary complexity",
+        "B": "Integrated ESG-and-IT governance: data quality for ESG metrics (Scope 2/3) + integration with existing IT governance + third-party assurance readiness + cross-jurisdiction consistency + audit-committee oversight",
+        "C": "Outsource ESG disclosure preparation entirely to the firm's sustainability-consulting partner, since ESG expertise is specialized and outsourcing simplifies the disclosure process across multiple regulatory jurisdictions",
+        "D": "Disclose only the minimum required by each jurisdiction, since voluntary disclosure beyond regulatory minimums creates legal risk without proportionate benefit and minimum-compliance is the most defensible posture"
+      },
+      "correct": "B",
+      "key_concept": "ESG and IT governance integration = data collection/quality for ESG metrics (Scope 2 IT energy + Scope 3 supply chain) + integration with existing IT governance (CCoE/FinOps/VM) + third-party assurance readiness + public-disclosure consistency + ESG-aware IT investment + audit-committee oversight with financial-reporting rigor. Treat-as-separate, full-outsource, and minimum-disclosure all fail.",
+      "pre_read": "ESG-IT governance questions test whether you recognize the integrated approach. Distractors propose separation, full outsourcing, or minimum compliance.",
+      "correct_explanation": "ISACA ESG Governance guidance, ISSB IFRS S2 (Climate-related Disclosures), CSRD (Corporate Sustainability Reporting Directive), and SEC Climate Disclosure Rules establish that effective ESG-and-IT governance requires integrated approach: (1) data-collection and quality discipline for ESG metrics — Scope 2 emissions (purchased electricity, including data centers and IT operations) and Scope 3 emissions (supply chain, including IT vendors, software, hardware lifecycle) require operational data that lives in IT systems; (2) integration with existing IT governance — CCoE provides cloud-region selection that affects emissions, FinOps cost data approximates energy proxy, vendor management captures Scope-3 supply-chain data; (3) third-party assurance readiness — CSRD requires limited assurance initially, transitioning to reasonable assurance; data quality must support assurance; (4) public-disclosure consistency across jurisdictions — multiple regimes have differing requirements but must produce internally-consistent disclosures; (5) ESG-aware decision-making in IT investment — technology choices (cloud region, hardware refresh, vendor selection) have climate implications that should be visible at decision time; (6) audit-committee oversight of ESG accuracy with the same rigor as financial reporting — disclosure errors carry similar legal exposure. Option A treats domains as separate when ESG metrics live in IT systems. Option C abdicates accountability the firm bears regardless of who prepares disclosures. Option D's minimum-disclosure may be operationally tempting but fails to anticipate jurisdictional convergence and stakeholder expectations.",
+      "wrong_explanations": {
+        "A": "ESG metrics (Scope 2 IT energy, Scope 3 supply chain) live in IT systems and processes. Treating ESG as separate from IT governance produces data quality issues and disconnects ESG decision-making from IT decisions that drive emissions.",
+        "C": "Sustainability-consulting partners can support ESG disclosure but the firm bears regulatory accountability for disclosure accuracy. Audit committees and senior leadership must own ESG governance with the same rigor as financial governance, regardless of who prepares the disclosures.",
+        "D": "Multiple-jurisdiction ESG regimes are converging (CSRD, SEC, ISSB-aligned regimes in APAC). Minimum-per-jurisdiction disclosure produces inconsistency that creates more legal risk than aligned cross-jurisdictional disclosure. Stakeholder expectations also exceed regulatory minimums."
+      },
+      "tips": [
+        "Trap is A — \"ESG is sustainability-team responsibility separate from IT\" produces data-quality issues because ESG metrics live in IT systems.",
+        "ESG and IT governance = data collection/quality for ESG metrics + integration with existing IT governance + third-party assurance readiness + cross-jurisdiction consistency + ESG-aware IT investment + audit-committee financial-reporting-rigor oversight.",
+        "Exam-day shortcut: ESG-and-IT governance questions are answered by the integrated approach with audit-committee rigor, not separate / outsourced / minimum-disclosure."
+      ],
+      "framework_ref": "ISSB IFRS S2 (Climate-related Disclosures); CSRD (Corporate Sustainability Reporting Directive); SEC Climate Disclosure Rules; ISACA ESG Governance guidance; GHG Protocol Corporate Standard",
+      "related_concepts": [
+        "ESG governance",
+        "Climate disclosure",
+        "Scope 2/3 emissions",
+        "Third-party assurance"
+      ],
+      "_provenance": "Authored from concept: 'ESG governance technology and climate disclosure - integrated approach, no prior D2 coverage'. Public source: ISSB IFRS S2 + CSRD + SEC + ISACA ESG. All scenario specifics (multinational manufacturer, three-jurisdiction regimes, Scope 2/3 IT-related metrics) invented for this question."
+    },
+    {
+      "id": "d2_180",
+      "domain": 2,
+      "subtopic": "End-to-End Domain 2 Synthesis — Governance and Management Integration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What integrated governance approach BEST handles the comprehensive scenario described?",
+      "scenario_context": "A regional health-services company is undergoing transformative change: (1) digital-first strategic shift; (2) AI/ML capabilities being rolled out across clinical-decision-support, claims, and operations; (3) cloud migration in progress; (4) new regulatory landscape (state cyber regulations, HIPAA OCR enforcement focus, evolving FTC AI rules); (5) cybersecurity threat environment intensified (peer healthcare ransomware incidents); (6) M&A activity targeting smaller regional providers. The CEO is concerned that piecemeal governance across IT, security, privacy, risk, audit, and compliance may not coordinate well across the simultaneous changes. The board's audit committee asks for the IS auditor's perspective on integrated governance.",
+      "options": {
+        "A": "Build integrated governance: preserve specialist functions + unifying framework (COBIT + EGIT + COSO ERM + NIST CSF Govern) + cross-function governance forum + integrated KPIs/KRIs + cross-function escalation paths + board-level unified oversight",
+        "B": "Replace all governance functions with a single 'integrated governance team' reporting to the CEO, since unification eliminates coordination overhead and creates one accountable governance voice",
+        "C": "Maintain current siloed governance functions (IT, security, privacy, risk, audit, compliance) since each has distinct expertise and integration introduces coordination overhead the firm cannot support efficiently",
+        "D": "Outsource all integrated governance to a Big-Four consulting firm, since cross-function governance requires expertise the firm doesn't have internally and outsourcing simplifies coordination among the specialist functions"
+      },
+      "correct": "A",
+      "key_concept": "Integrated governance = preserve specialist functions with distinct mandates + unifying governance framework (COBIT + EGIT + COSO ERM + NIST CSF Govern) + cross-function governance forum + integrated KPIs/KRIs + aligned strategic objectives + cross-function escalation paths + board-level unified oversight. Maintain-silos, single-team-replacement, and full-outsource all fail.",
+      "pre_read": "End-to-end Domain 2 synthesis questions test whether you recognize integrated governance preserving specialization while adding unifying mechanisms. Distractors propose pure silos, total replacement, or full outsourcing.",
+      "correct_explanation": "COBIT 2019 (with its EDM/APO domains as the integrated governance system), ISACA EGIT Framework, COSO ERM (2017), and NIST Cybersecurity Framework v2.0 (Govern function added in 2024) collectively establish that effective integrated governance preserves specialist functions while adding unifying mechanisms. The right approach: (1) preserve specialist functions — IT (CIO), security (CISO), privacy (CPO/DPO), risk (CRO), audit (CAE), compliance (CCO) — each has distinct expertise the firm needs; (2) establish a unifying governance framework that maps how functions interact — COBIT 2019 governance + management objectives, ISACA EGIT, COSO ERM components, NIST CSF Govern function; (3) create a cross-function governance forum where CIO + CISO + CPO + CRO + CAE + CCO meet periodically to address cross-cutting issues (a single AI/ML rollout simultaneously touches all six functions); (4) integrate KPIs and KRIs across functions reporting jointly to the audit committee — siloed reports produce contradictions the board can't reconcile; (5) align strategic objectives across functions so initiatives are jointly owned where they cross domains; (6) define escalation paths for cross-function decisions; (7) board-level unified oversight providing the accountability layer above specialist functions. Option C's siloed functions can't coordinate across the simultaneous transformations the scenario describes. Option B's single-team-replacement loses specialist depth. Option D's full-outsourcing transfers activity but the firm bears accountability.",
+      "wrong_explanations": {
+        "B": "Single-team-replacement loses specialist depth. The CISO has distinct expertise from the CPO; the CRO has distinct mandate from the CAE; collapsing them into one team produces neither generalist judgment nor specialist depth. Specialization plus integration is the right balance.",
+        "D": "Full-outsourcing of integrated governance to a consulting firm transfers activity but the firm bears regulatory and operational accountability. The CEO will be asked by regulators, customers, and investors about governance; 'we outsourced it to consulting' is not an acceptable answer.",
+        "C": "Six simultaneous transformations (digital-first, AI/ML, cloud, regulatory, threat, M&A) each cross multiple governance functions. Pure-silo governance produces inconsistent decisions across the transformations and miss-cross-function issues. Integration with preserved specialization is the recognized practice."
+      },
+      "tips": [
+        "Trap is C — \"maintain siloed functions for specialist expertise\" misses that simultaneous cross-cutting transformations require integration to coordinate decisions across functions.",
+        "Integrated governance = preserve specialist functions + unifying framework (COBIT + EGIT + COSO ERM + NIST CSF Govern) + cross-function forum + integrated KPIs/KRIs + aligned strategic objectives + cross-function escalation + board-level unified oversight.",
+        "Exam-day shortcut: end-to-end governance synthesis questions are answered by integrated-while-specialist-preserving option, not silos / single-team / outsource."
+      ],
+      "framework_ref": "COBIT 2019 (Governance and Management Framework); ISACA EGIT Framework; COSO ERM (2017); NIST Cybersecurity Framework v2.0 (Govern Function)",
+      "related_concepts": [
+        "Integrated governance",
+        "EGIT",
+        "Cross-function coordination",
+        "End-to-end Domain 2 synthesis"
+      ],
+      "_provenance": "Authored from concept: 'End-to-end Domain 2 governance synthesis - integrated approach with preserved specialization, capstone for D2 covering cross-function coordination'. Public source: COBIT 2019 + ISACA EGIT + COSO ERM + NIST CSF v2.0. All scenario specifics (regional health-services company, six simultaneous transformations) invented for this question. FINAL D2 question; D2 closes at 180/180 with this question."
     }
   ]
 }

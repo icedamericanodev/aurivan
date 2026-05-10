@@ -546,3 +546,26 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Information Governance guidance
 - ARMA Generally Accepted Recordkeeping Principles (GARP)
 - CSA Zero Trust Framework
+
+## D2 batch 11 additions
+- GHG Protocol Corporate Standard
+- ISSB IFRS S2 (Climate-related Disclosures)
+- CSRD (Corporate Sustainability Reporting Directive)
+- SEC Climate Disclosure Rules
+- ISACA ESG Governance guidance
+- Federal Reserve SR 20-15 (Operational Resilience)
+- ISACA Cyber Resilience guidance
+- ISACA Privacy Investigation guidance
+- ISACA Customer Trust Recovery guidance
+- ISACA Audit Function Management guidance
+- IIA International Standards 1300-1330 (Quality Assurance and Improvement Program)
+- GDPR Article 31 (Cooperation with the Supervisory Authority)
+- GDPR Article 83 (General Conditions for Imposing Administrative Fines)
+- EDPB Guidelines 06/2022
+- NIST PQC Standards (FIPS 203/204/205)
+- NIST SP 800-208 (Stateful Hash-Based Signature Schemes)
+- CISA Post-Quantum Cryptography Initiative
+- Edelman Trust Barometer methodology
+- Harvard Negotiation Project (Getting to Yes)
+- CISA Software Bill of Materials guidance
+- SLSA (Supply-chain Levels for Software Artifacts) framework
