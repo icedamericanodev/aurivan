@@ -6,5 +6,733 @@
   "domain": 4,
   "domain_name": "Information Systems Operations and Business Resilience",
   "weight": 26,
-  "questions": []
+  "questions": [
+    {
+      "id": "d4_001",
+      "domain": 4,
+      "subtopic": "OSI vs TCP/IP Reference Model — Layer Mapping",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the relationship between the OSI Reference Model and TCP/IP Reference Model?",
+      "options": {
+        "A": "OSI has 4 layers; TCP/IP has 7 layers; the TCP/IP application layer maps to OSI session, presentation, and application layers combined.",
+        "B": "OSI has 7 layers; TCP/IP has 4 (link, internet, transport, application); TCP/IP application maps to OSI session, presentation, and application layers.",
+        "C": "OSI and TCP/IP are functionally identical models with different naming conventions and operate at exactly the same layer abstractions.",
+        "D": "OSI is the only modern model in operational use; TCP/IP was a precursor that has been entirely superseded by OSI in production networks."
+      },
+      "correct": "B",
+      "key_concept": "OSI = 7 layers (Physical, Data Link, Network, Transport, Session, Presentation, Application). TCP/IP = 4 layers (Link, Internet, Transport, Application). TCP/IP's Application layer maps to OSI's top three. TCP/IP is the practical Internet model; OSI is the conceptual reference.",
+      "pre_read": "For OSI vs TCP/IP questions, memorize: OSI=7 layers, TCP/IP=4 layers. TCP/IP's Application combines OSI's Session+Presentation+Application. TCP/IP is operationally dominant; OSI is the conceptual reference.",
+      "correct_explanation": "OSI Reference Model (ISO/IEC 7498-1) defines 7 layers: Physical, Data Link, Network, Transport, Session, Presentation, Application. The TCP/IP Reference Model defines 4 layers: Link (combining OSI Physical + Data Link), Internet (OSI Network), Transport (OSI Transport), and Application (combining OSI Session + Presentation + Application). TCP/IP is the practical Internet protocol stack codified across RFC 791 (IP), RFC 793 (TCP), and many others; OSI provides a conceptual reference that is widely taught but never fully implemented in production. Option A inverts the layer counts. Option C ignores the structural difference (different layer counts). Option D contradicts reality — TCP/IP is the operational Internet stack; OSI is a conceptual reference.",
+      "wrong_explanations": {
+        "A": "The layer counts are inverted. OSI has 7 layers, not 4; TCP/IP has 4 layers, not 7. This is a classic memorization-trap distractor.",
+        "C": "The two models have different structural layer counts (7 vs 4) and group functions differently. Calling them \"functionally identical\" misses the entire point of comparing them.",
+        "D": "TCP/IP is the OPERATIONAL Internet stack; OSI is a conceptual reference model that's never fully implemented in production networks. The statement reverses reality."
+      },
+      "tips": [
+        "Trap is A — \"OSI 4, TCP/IP 7\" inverts the layer counts. Memorize: OSI=7 (Please Do Not Throw Sausage Pizza Away); TCP/IP=4 (Link, Internet, Transport, Application).",
+        "OSI = 7 conceptual layers. TCP/IP = 4 operational layers. TCP/IP Application = OSI Session+Presentation+Application. TCP/IP runs the Internet.",
+        "Exam-day shortcut: when asked about OSI/TCP/IP layer mapping, the correct option always names OSI=7 and TCP/IP=4 with TCP/IP Application combining OSI's top three."
+      ],
+      "framework_ref": "OSI Reference Model (ISO/IEC 7498-1); TCP/IP Reference Model; RFC 791 (Internet Protocol); RFC 793 (Transmission Control Protocol)",
+      "related_concepts": [
+        "OSI Reference Model",
+        "TCP/IP",
+        "Network layers",
+        "ISO/IEC 7498-1"
+      ],
+      "_provenance": "Authored from concept: 'OSI 7-layer vs TCP/IP 4-layer model comparison per ISO/IEC 7498-1 and RFC 791/793'. Public sources: ISO/IEC 7498-1, IETF RFCs. First D4 question."
+    },
+    {
+      "id": "d4_002",
+      "domain": 4,
+      "subtopic": "Job Scheduling Software — PRIMARY Function",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY function of job scheduling software in IT operations?",
+      "options": {
+        "A": "Automate the execution of production jobs at defined times or events, manage dependencies between jobs, and report on job outcomes.",
+        "B": "Replace human operators entirely so that no IT operations staff need to be on call for production-batch failures or recovery procedures.",
+        "C": "Generate backup copies of all production data nightly and verify backup integrity through automated checksumming and restoration tests.",
+        "D": "Monitor network bandwidth utilization across all production servers and reroute traffic when capacity thresholds are exceeded continuously."
+      },
+      "correct": "A",
+      "key_concept": "Job scheduling software = automate execution + manage dependencies + report outcomes. Common tools: cron (Unix), Windows Task Scheduler, enterprise schedulers (Control-M, Autosys, Stonebranch). Distractors substitute backup, network monitoring, or operator-replacement framings.",
+      "pre_read": "For job-scheduling questions, anchor on \"automate execution + dependencies + outcome reporting.\" Distractors substitute unrelated operations functions (backup, network monitoring) or overreach (replace all operators).",
+      "correct_explanation": "ISACA Job Scheduling Audit guidance and ITIL 4 Service Configuration Management establish that job scheduling software automates the execution of production jobs (batch processes, ETL jobs, report generation, file transfers) at defined times (e.g., 03:00 daily) or events (e.g., after upstream job completes), manages dependencies between jobs (job B runs only if job A succeeds), and reports on job outcomes (success, failure, duration) for operations review. Common examples include cron (Unix), Windows Task Scheduler, and enterprise schedulers (Control-M, Autosys, Stonebranch). Option B overreaches — schedulers reduce but don't eliminate operator involvement (failures, exceptions, and recoveries still need humans). Option C describes backup software. Option D describes network monitoring / traffic shaping tools.",
+      "wrong_explanations": {
+        "B": "Schedulers reduce operator workload but don't eliminate it. Failed jobs, exceptional conditions, and recovery procedures still require operator response; schedulers automate ROUTINE execution, not all operations.",
+        "C": "Backup is a separate function performed by backup software (Commvault, Veeam, NetBackup) or built-in backup features of databases / OSes. Schedulers may TRIGGER backup jobs but don't perform backup themselves.",
+        "D": "Network monitoring / bandwidth management is a separate function performed by NMS / NPM tools (SolarWinds, Datadog, etc.). Schedulers run jobs; they don't monitor networks."
+      },
+      "tips": [
+        "Trap is C or D — both substitute a different operations function for job scheduling. C substitutes backup; D substitutes network monitoring. Schedulers may TRIGGER backup or networking actions but don't PERFORM either; they're separate tool categories.",
+        "Job scheduler = automate execution + dependencies + outcome reporting. Three properties. Not backup, not networking, not full operator replacement.",
+        "Exam-day shortcut: any job-scheduling question is answered by the option naming automation, dependency management, and outcome reporting together."
+      ],
+      "framework_ref": "ISACA Job Scheduling Audit guidance; ITIL 4 Service Configuration Management; ISO/IEC 20000-1:2018 (Service Management System)",
+      "related_concepts": [
+        "Job scheduling",
+        "Cron",
+        "Control-M",
+        "Batch processing"
+      ],
+      "_provenance": "Authored from concept: 'Job scheduling PRIMARY function per ISACA Job Scheduling Audit guidance and ITIL 4'. Public sources: ISACA, ITIL 4. Common examples: cron, Windows Task Scheduler, Control-M, Autosys."
+    },
+    {
+      "id": "d4_003",
+      "domain": 4,
+      "subtopic": "Service Level Agreement (SLA) — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines a service level agreement (SLA)?",
+      "options": {
+        "A": "A technical specification document describing exactly how each service component is implemented internally for the supplier.",
+        "B": "An informal commitment from the IT department about how quickly issues will be resolved when customers escalate them.",
+        "C": "A documented agreement between service provider and customer specifying service-quality targets, measurement, and consequences of breach.",
+        "D": "A pricing schedule that lists each service feature with its corresponding subscription cost charged to the customer monthly."
+      },
+      "correct": "C",
+      "key_concept": "SLA = documented agreement + service-quality targets + measurement + consequences. It binds provider and customer with measurable commitments. Technical specifications, informal commitments, and pricing schedules are different artifacts.",
+      "pre_read": "For SLA-definition questions, anchor on \"documented + targets + measurement + consequences.\" Distractors substitute technical specs, informal commitments, or pricing for the agreement-with-consequences structure.",
+      "correct_explanation": "ITIL 4 Service Level Management practice and ISO/IEC 20000-1:2018 (Service Management System) define a service level agreement as a documented agreement between a service provider and customer that specifies service-quality targets (availability, response time, throughput), measurement methods (how the targets are measured), and consequences of breach (service credits, escalation paths, exit rights). The agreement binds both parties with measurable commitments. Option A confuses SLA with technical design documentation. Option B confuses SLA with informal commitment (which is precisely what SLAs replace). Option D confuses SLA with pricing schedule or product catalog.",
+      "wrong_explanations": {
+        "A": "Technical specifications describe IMPLEMENTATION. SLAs describe COMMITMENTS to the customer about outcomes (availability, response time) regardless of implementation. The two artifacts serve different audiences and purposes.",
+        "B": "Informal commitments lack measurement methods and consequences. SLAs exist precisely to make commitments measurable, documented, and enforceable.",
+        "D": "Pricing schedules describe COST. SLAs describe SERVICE QUALITY commitments. Both may be in the same contract but answer different questions (what does it cost vs what quality is committed)."
+      },
+      "tips": [
+        "Trap is B — \"informal commitment from IT\" matches what many candidates have actually experienced in their orgs but it's the OPPOSITE of an SLA; SLAs are documented, measured, and enforceable.",
+        "SLA = DOCUMENTED + TARGETS + MEASUREMENT + CONSEQUENCES. Four properties; missing any means it's not an SLA, it's a commitment.",
+        "Exam-day shortcut: any SLA-definition question is answered by the option naming DOCUMENTED commitments with measurable targets and breach consequences."
+      ],
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); ISACA Service Level Management guidance",
+      "related_concepts": [
+        "SLA",
+        "Service Level Management",
+        "ITIL 4",
+        "Service Catalog"
+      ],
+      "_provenance": "Authored from concept: 'SLA definition per ITIL 4 Service Level Management and ISO/IEC 20000-1:2018'. Public sources: ITIL 4, ISO/IEC 20000-1."
+    },
+    {
+      "id": "d4_004",
+      "domain": 4,
+      "subtopic": "Business Impact Analysis (BIA) — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of a business impact analysis (BIA)?",
+      "options": {
+        "A": "Identify all cyber threats facing the organization and rank them by likelihood of materializing during the next twelve months.",
+        "B": "Document the organization's full IT asset inventory with software versions, hardware specifications, and vendor support contracts.",
+        "C": "Conduct an annual financial audit of the organization's IT-related budget allocation and identify potential cost-reduction opportunities.",
+        "D": "Identify critical business processes, quantify the impact of disruption over time, and establish recovery priorities and objectives (RTO/RPO)."
+      },
+      "correct": "D",
+      "key_concept": "BIA = identify critical processes + quantify disruption impact over time + establish recovery priorities + RTO/RPO. It is the foundational input to BCP and DRP. Threat analysis, asset inventory, and financial audit are different activities.",
+      "pre_read": "For BIA-definition questions, anchor on \"critical processes + impact quantification + recovery priorities + RTO/RPO.\" BIA is the foundational input to BCP and DRP; distractors substitute threat analysis, asset inventory, or financial audit.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management), NIST SP 800-34 (Contingency Planning Guide), and ISACA BIA guidance all establish that a business impact analysis identifies critical business processes, quantifies the impact of their disruption over time (financial, operational, regulatory, reputational), and establishes recovery priorities and objectives — primarily Recovery Time Objective (RTO: maximum tolerable downtime) and Recovery Point Objective (RPO: maximum tolerable data loss). BIA is the foundational analysis that drives BCP and DRP investments. Option A describes threat analysis or risk assessment (different activity). Option B describes IT asset management (covered in 4.2). Option C describes financial audit (unrelated to business resilience).",
+      "wrong_explanations": {
+        "A": "Threat / risk analysis identifies WHAT could happen. BIA assumes disruption has happened and quantifies its IMPACT. Different inputs, different outputs; both feed BCP but serve different purposes.",
+        "B": "IT asset inventory catalogs technology assets. BIA addresses business PROCESSES and their criticality. Asset inventory may be a BIA input (which assets support which processes) but BIA is not about cataloging assets.",
+        "C": "Financial audit reviews budget and spending. BIA reviews business-process criticality and disruption impact. The two answer different questions and feed different decisions."
+      },
+      "tips": [
+        "Trap is A — \"identify cyber threats and rank by likelihood\" sounds resilience-related but it's risk analysis, not BIA; BIA assumes disruption has happened and quantifies impact over time.",
+        "BIA = CRITICAL PROCESSES + IMPACT QUANTIFICATION + RECOVERY PRIORITIES + RTO/RPO. Four properties; BIA is the foundational input to BCP and DRP.",
+        "Exam-day shortcut: any BIA question is answered by the option naming PROCESS CRITICALITY + RTO/RPO; threat analysis, asset inventory, and financial audit are different activities."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA BIA guidance",
+      "related_concepts": [
+        "BIA",
+        "RTO",
+        "RPO",
+        "Business continuity",
+        "ISO 22301"
+      ],
+      "_provenance": "Authored from concept: 'BIA PRIMARY purpose per ISO 22301 and NIST SP 800-34'. Public sources: ISO 22301, NIST SP 800-34."
+    },
+    {
+      "id": "d4_005",
+      "domain": 4,
+      "subtopic": "LAN/WAN Security Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST protects a corporate LAN against unauthorized device connections at the network edge?",
+      "options": {
+        "A": "Configure WPA3 on all wireless access points and assume wired ports cannot be physically accessed by unauthorized personnel.",
+        "B": "Implement IEEE 802.1X network access control on all wired and wireless ports, requiring authentication before any network access.",
+        "C": "Rely on building physical security to prevent unauthorized devices from being plugged into wall network ports.",
+        "D": "Restrict network access to specific MAC addresses on each switch port, since MAC filtering uniquely identifies authorized devices reliably."
+      },
+      "correct": "B",
+      "key_concept": "LAN/WAN edge security = IEEE 802.1X network access control (NAC) on all wired and wireless ports, requiring authentication before network access. WPA3-only ignores wired ports; physical-security-only is bypassed by insider threats; MAC filtering is trivially spoofed.",
+      "pre_read": "For LAN/WAN edge security questions, anchor on \"802.1X NAC on ALL ports + authentication before access.\" Wireless-only, physical-security-only, and MAC-filtering answers each have well-known weaknesses.",
+      "correct_explanation": "IEEE 802.1X (Network Access Control) and ISACA Network Management guidance establish 802.1X port-based authentication as the canonical control for LAN/WAN edge security: every port (wired and wireless) requires the connecting device to authenticate (typically via RADIUS) before being granted network access. Devices that cannot authenticate go to a remediation VLAN or are denied entirely. Option A protects wireless but leaves wired ports unprotected (an insider with physical access can plug in unauthorized devices). Option C's physical-security-only is bypassed by anyone with legitimate building access. Option D's MAC filtering is trivially defeated by MAC spoofing (any modern OS allows configurable MAC addresses).",
+      "wrong_explanations": {
+        "A": "WPA3 on wireless leaves wired ports unprotected. Insiders with physical access can plug in unauthorized devices to wall ports; 802.1X protects both axes.",
+        "C": "Physical security alone is bypassed by anyone with legitimate building access (employees, contractors, cleaners). Network-layer authentication doesn't depend on physical access controls.",
+        "D": "MAC filtering is trivially defeated by MAC spoofing. Modern operating systems allow users to configure their MAC address; an attacker observes a legitimate MAC and impersonates it."
+      },
+      "tips": [
+        "Trap is D — \"MAC filtering uniquely identifies devices\" sounds technical and authoritative but MAC addresses are TRIVIALLY SPOOFED; this is a common interview-trap belief that hasn't been true for decades.",
+        "LAN/WAN edge security = 802.1X NAC on ALL ports + authentication required. Wireless-only, physical-only, and MAC-filtering each have well-known weaknesses.",
+        "Exam-day shortcut: any LAN edge-security question is answered by the option naming 802.1X port-based authentication; wireless-only, physical-only, and MAC-filtering answers all have documented bypasses."
+      ],
+      "framework_ref": "IEEE 802.1X (Network Access Control); ISACA Network Management guidance; NIST SP 800-53 (Information Security Controls)",
+      "related_concepts": [
+        "802.1X",
+        "Network Access Control",
+        "NAC",
+        "MAC filtering"
+      ],
+      "_provenance": "Authored from concept: 'LAN/WAN edge security via 802.1X per IEEE 802.1X and ISACA Network Management guidance'. Public sources: IEEE, ISACA."
+    },
+    {
+      "id": "d4_006",
+      "domain": 4,
+      "subtopic": "Proxy Server Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST appropriately governs use of a forward proxy server for outbound web traffic?",
+      "options": {
+        "A": "Authenticate users at the proxy, apply URL/content filtering, log all requests, and inspect HTTPS via authorized TLS interception where permitted.",
+        "B": "Allow all outbound web traffic to bypass the proxy whenever performance issues are observed, prioritizing user experience over policy.",
+        "C": "Configure the proxy as transparent only, with no authentication or filtering, since users will route around any visible controls.",
+        "D": "Block all outbound web traffic except to a fixed whitelist of 10 domains and require manual approval for any additional destinations."
+      },
+      "correct": "A",
+      "key_concept": "Forward proxy controls = authenticate users + URL/content filtering + log all requests + HTTPS inspection where permitted. Bypass-when-slow defeats the proxy; transparent-no-auth eliminates accountability; 10-domain-whitelist is operationally untenable.",
+      "pre_read": "For forward-proxy controls, anchor on \"authenticate + filter + log + inspect HTTPS where permitted.\" Distractors propose bypass, transparent-only, or extreme-whitelist that each fail a different control objective.",
+      "correct_explanation": "ISACA Proxy Server guidance and NIST SP 800-53 establish four-element forward-proxy control: (1) AUTHENTICATE users at the proxy (per-user accountability for outbound traffic); (2) URL/CONTENT FILTERING against policy (malicious sites, phishing, data-exfiltration destinations); (3) LOG ALL REQUESTS for audit and forensics; (4) HTTPS INSPECTION via authorized TLS interception WHERE POLICY AND LAW PERMIT (some jurisdictions and use cases prohibit inspection; explicit policy and user disclosure are required). Option B's bypass-when-slow defeats the proxy. Option C's transparent-no-auth eliminates accountability. Option D's 10-domain whitelist is operationally untenable for normal business and creates pressure to bypass.",
+      "wrong_explanations": {
+        "B": "Bypass-when-slow defeats the proxy's security purpose. Performance issues should be addressed via capacity / architecture, not by abandoning the control during issues.",
+        "C": "Transparent proxy with no auth eliminates per-user accountability. Logs show source IP only, which may map to many users; investigations cannot identify the actor.",
+        "D": "10-domain whitelist is operationally untenable for normal business operations (most firms access hundreds to thousands of legitimate domains). It also creates strong pressure to bypass the control, weakening security overall."
+      },
+      "tips": [
+        "Trap is B or D — both create bypass pressure that weakens security. B (\"bypass when slow\") yields to operational pressure; D (\"10-domain whitelist\") creates pressure to bypass by blocking legitimate work. Both produce the same outcome (proxy circumvented) via different paths.",
+        "Forward proxy controls = AUTHENTICATE + FILTER + LOG + INSPECT HTTPS where permitted. Four elements; missing any compromises a different control objective.",
+        "Exam-day shortcut: any forward-proxy question is answered by the option naming authentication + filtering + logging together; bypass, transparent-only, or extreme-whitelist answers all fail."
+      ],
+      "framework_ref": "ISACA Proxy Server guidance; ISACA Network Management guidance; NIST SP 800-53 (Information Security Controls)",
+      "related_concepts": [
+        "Forward proxy",
+        "URL filtering",
+        "TLS interception",
+        "Outbound web traffic"
+      ],
+      "_provenance": "Authored from concept: 'Forward proxy controls per ISACA Proxy Server guidance and NIST SP 800-53'. Public sources: ISACA, NIST."
+    },
+    {
+      "id": "d4_007",
+      "domain": 4,
+      "subtopic": "USB Mass Storage Devices — Risk Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST manages risk introduced by USB mass storage devices in an enterprise environment?",
+      "options": {
+        "A": "Allow all USB mass storage devices freely; modern operating systems include sufficient built-in protections against any USB-borne malware.",
+        "B": "Disable all USB ports physically on every endpoint via epoxy or hardware locks to eliminate the threat vector entirely from the start.",
+        "C": "Deploy USB device-control policies via endpoint management: allow approved encrypted devices, block unapproved, log all USB activity.",
+        "D": "Rely on antivirus scans of attached USB devices alone to detect any malicious content before users access files on those devices."
+      },
+      "correct": "C",
+      "key_concept": "USB device-control = endpoint-policy enforcement: allow approved encrypted devices + block unapproved + log all activity. Free-allow accepts the threat; epoxy-all-ports defeats legitimate business use; AV-only misses non-malware risks (data exfiltration, unencrypted PII).",
+      "pre_read": "For USB device-control questions, anchor on \"endpoint policy: approved encrypted only + block unapproved + log all.\" Free-allow and epoxy-all-ports are extremes; AV-only addresses only malware.",
+      "correct_explanation": "ISACA Removable Media guidance, NIST SP 800-53 MP family (Media Protection controls), and NIST SP 800-53 establish endpoint USB device-control as the appropriate approach: deploy endpoint management policies that (1) allow only approved encrypted USB devices (corporate-issued and registered, with hardware encryption); (2) block unapproved devices (any non-registered device is blocked at the OS layer); (3) log all USB activity (device VID/PID, file transfers, mount/unmount) for audit and forensics. Option A's free-allow accepts the threat vector (malware, data exfiltration, accidental data loss). Option B's epoxy-all-ports defeats legitimate business use (presentations, vendor-supplied media) and breaks devices that need USB (keyboards, peripherals). Option D's AV-only addresses malware but misses data-exfiltration risk and accidental PII transfer to personal devices.",
+      "wrong_explanations": {
+        "A": "Modern OSes have built-in protections but USB still presents data-exfiltration, accidental-PII-transfer, and persistent-malware risks. Free-allow accepts these without compensating controls.",
+        "B": "Physically disabling all USB ports defeats legitimate business use (keyboards, mice, presentations, corporate-issued storage). The control is more restrictive than necessary; targeted device-policy provides better balance.",
+        "D": "AV scans detect malware but miss data-exfiltration (employee copying PII to personal device) and accidental-loss (unencrypted device left in airport). USB control needs more than malware detection."
+      },
+      "tips": [
+        "Trap is B — \"epoxy all USB ports\" sounds rigorous but it defeats legitimate business needs (keyboards, mice, corporate USB) and is operationally untenable; targeted policy is the right control.",
+        "USB device-control = ALLOW APPROVED ENCRYPTED + BLOCK UNAPPROVED + LOG ALL. Three elements; missing any creates a different exposure (malware, exfiltration, or accountability gap).",
+        "Exam-day shortcut: any USB device-control question is answered by the option naming POLICY ENFORCEMENT via endpoint management; free-allow, physical-disable-all, and AV-only answers each fail."
+      ],
+      "framework_ref": "ISACA Removable Media guidance; NIST SP 800-53 MP family (Media Protection controls); NIST SP 800-53 (Information Security Controls)",
+      "related_concepts": [
+        "USB device control",
+        "Removable media",
+        "Endpoint management",
+        "Data exfiltration"
+      ],
+      "_provenance": "Authored from concept: 'USB device-control per ISACA Removable Media guidance and NIST SP 800-114'. Public sources: ISACA, NIST."
+    },
+    {
+      "id": "d4_008",
+      "domain": 4,
+      "subtopic": "Wireless Network — Security Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST protects an enterprise wireless network against unauthorized access?",
+      "options": {
+        "A": "Hide the SSID (Service Set Identifier) so that unauthorized users cannot see the wireless network in their available-networks list.",
+        "B": "Enable WEP encryption (Wired Equivalent Privacy) to ensure that all wireless traffic is encrypted at the protocol level.",
+        "C": "Restrict access via MAC address filtering, allowing only known device MAC addresses to connect to the wireless network.",
+        "D": "Deploy WPA3-Enterprise with 802.1X authentication tied to corporate identity directory, with strong key management and EAP-TLS."
+      },
+      "correct": "D",
+      "key_concept": "Enterprise wireless security = WPA3-Enterprise + 802.1X authentication tied to identity directory + EAP-TLS. SSID hiding is trivially defeated; WEP is broken (deprecated 2004); MAC filtering is trivially spoofed.",
+      "pre_read": "For enterprise wireless security, anchor on \"WPA3-Enterprise + 802.1X + identity-tied authentication + EAP-TLS.\" Distractors propose deprecated or trivially-defeated controls (SSID hiding, WEP, MAC filtering).",
+      "correct_explanation": "WPA3 (Wi-Fi Protected Access 3), IEEE 802.11, IEEE 802.1X (Network Access Control), and NIST SP 800-97 (Wireless Network Security) establish WPA3-Enterprise with 802.1X authentication tied to corporate identity directory as the canonical enterprise wireless control. WPA3-Enterprise supports an optional 192-bit security mode (CNSA-aligned, GCMP-256 / HMAC-SHA384) with EAP-TLS (mutual certificate authentication) for the strongest assurance; standard WPA3-Enterprise uses AES-CCMP 128. Option A's SSID hiding is trivially defeated (broadcast probes still expose the SSID to anyone scanning). Option B's WEP was broken in 2001 and deprecated in 2004; using it is worse than no encryption because it provides false confidence. Option C's MAC filtering is trivially defeated by MAC spoofing.",
+      "wrong_explanations": {
+        "A": "SSID hiding is trivially defeated. Any wireless scanner sees probe requests / responses that include the SSID; \"hidden\" networks are visible to anyone scanning.",
+        "B": "WEP was broken in 2001 (Fluhrer-Mantin-Shamir attack) and deprecated by Wi-Fi Alliance in 2004. Using WEP is worse than no encryption because it provides false confidence in protection that doesn't exist.",
+        "C": "MAC filtering is trivially defeated by MAC spoofing. It provides a minor speed bump against casual users but no real security against any motivated attacker."
+      },
+      "tips": [
+        "Trap is C — \"MAC address filtering allows known devices\" sounds restrictive and authoritative but MAC addresses are trivially spoofed; this misconception is decades-old but persistent.",
+        "Enterprise wireless = WPA3-Enterprise + 802.1X + identity-tied + EAP-TLS. SSID hiding, WEP, and MAC filtering are all defeated or deprecated.",
+        "Exam-day shortcut: any enterprise wireless question is answered by the option naming WPA3-Enterprise with 802.1X; WEP, MAC filtering, and SSID-hiding answers reflect outdated misconceptions."
+      ],
+      "framework_ref": "WPA3 (Wi-Fi Protected Access 3); IEEE 802.11 (Wireless LAN Standards); IEEE 802.1X (Network Access Control); NIST SP 800-97 (Wireless Network Security)",
+      "related_concepts": [
+        "WPA3",
+        "802.1X",
+        "EAP-TLS",
+        "Wireless security",
+        "MAC filtering"
+      ],
+      "_provenance": "Authored from concept: 'Enterprise wireless security per WPA3 and IEEE 802.1X with EAP-TLS'. Public sources: Wi-Fi Alliance, IEEE, NIST."
+    },
+    {
+      "id": "d4_009",
+      "domain": 4,
+      "subtopic": "IT Asset Management — Lifecycle",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST governs the full lifecycle of IT assets in an enterprise environment?",
+      "options": {
+        "A": "Maintain a spreadsheet of major IT assets updated annually during the budgeting cycle to support depreciation calculations.",
+        "B": "Implement an ITAM program: discovery + inventory + assignment + maintenance + secure disposal with verifiable data destruction.",
+        "C": "Rely on procurement records to track IT assets, since purchase orders capture all relevant lifecycle information needed.",
+        "D": "Allow each business unit to manage its own IT assets independently to maximize accountability and reduce central overhead."
+      },
+      "correct": "B",
+      "key_concept": "ITAM lifecycle = discovery + inventory + assignment + maintenance + secure disposal with verifiable data destruction. Annual-spreadsheet is stale and misses minor assets; procurement-records-only miss in-use lifecycle events; business-unit-independent produces inconsistency and gaps.",
+      "pre_read": "For ITAM-lifecycle questions, anchor on \"full lifecycle: discovery + inventory + assignment + maintenance + secure disposal.\" Distractors propose stale tracking, partial coverage, or decentralized chaos.",
+      "correct_explanation": "ISACA IT Asset Management guidance and ITIL 4 Service Configuration Management establish full-lifecycle ITAM as the appropriate approach: (1) DISCOVERY (automated scanning to find assets on the network); (2) INVENTORY (record asset details, owner, location, software, configuration); (3) ASSIGNMENT (each asset has a named owner and user); (4) MAINTENANCE (firmware/OS/software updates, hardware refresh, license compliance); (5) SECURE DISPOSAL (data destruction verified per NIST SP 800-88 or DoD 5220.22-M, with certificates of destruction). Option A's annual-spreadsheet is too infrequent (assets change daily) and misses minor assets (USB drives, mobile devices). Option C's procurement-only misses in-use lifecycle events (transfers, software changes, retirement). Option D's business-unit-independent produces inconsistency, gaps (assets unassigned), and disposal-risk (one BU's poor disposal practice exposes the whole firm).",
+      "wrong_explanations": {
+        "A": "Annual spreadsheet is too stale (assets change daily) and typically misses minor assets that nonetheless carry data (USB drives, mobile devices, peripherals). ITAM needs continuous discovery and update.",
+        "C": "Procurement records capture acquisition but miss in-use events (transfers between users, software changes, hardware modifications, retirement, disposal). Lifecycle requires tracking after acquisition.",
+        "D": "Business-unit-independent ITAM produces inconsistency and gaps. Central oversight is needed for cross-BU asset transfers, consistent disposal practices, and enterprise-wide license compliance."
+      },
+      "tips": [
+        "Trap is A — \"annual spreadsheet during budgeting\" matches the reality of many smaller orgs but it's stale and incomplete; modern ITAM needs continuous discovery.",
+        "ITAM = DISCOVERY + INVENTORY + ASSIGNMENT + MAINTENANCE + SECURE DISPOSAL. Five elements; missing any creates a gap in the lifecycle.",
+        "Exam-day shortcut: any ITAM-lifecycle question is answered by the option naming the FULL FIVE-ELEMENT PROGRAM; spreadsheet, procurement-only, and decentralized answers each fail differently."
+      ],
+      "framework_ref": "ISACA IT Asset Management guidance; ITIL 4 Service Configuration Management; NIST SP 800-88 (Media Sanitization)",
+      "related_concepts": [
+        "ITAM",
+        "Asset lifecycle",
+        "Asset disposal",
+        "Secure data destruction"
+      ],
+      "_provenance": "Authored from concept: 'ITAM full-lifecycle per ISACA IT Asset Management guidance and ITIL 4 Service Configuration Management'. Public sources: ISACA, ITIL 4."
+    },
+    {
+      "id": "d4_010",
+      "domain": 4,
+      "subtopic": "System Interfaces — Risk and Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST addresses risk introduced by automated data interfaces between systems?",
+      "options": {
+        "A": "Reconciliation controls (record counts, control totals, hash checks) at the receiver plus exception handling and alerting on mismatches.",
+        "B": "Trust that the sending system has already validated data integrity; receiver-side verification is unnecessary duplication of effort.",
+        "C": "Run interfaces only weekly to limit the volume of data crossing system boundaries and reduce overall integration complexity.",
+        "D": "Encrypt all interface traffic exclusively; encryption alone provides sufficient assurance about data accuracy and completeness."
+      },
+      "correct": "A",
+      "key_concept": "System interface controls = reconciliation at receiver (record counts + control totals + hash checks) + exception handling + alerting. Trust-the-sender accepts integrity failures; weekly-only-interfaces sacrifices business value; encryption-only addresses confidentiality not integrity.",
+      "pre_read": "For system-interface controls, anchor on \"receiver-side reconciliation + exception handling + alerting.\" Trust, frequency-reduction, and encryption-only each address different (insufficient) dimensions.",
+      "correct_explanation": "ISACA System Interfaces guidance, ISACA Application Controls guidance, and COBIT 2019 BAI03 (Managed Solutions Identification and Build) establish receiver-side reconciliation as the canonical interface control: (1) RECORD COUNTS (number of records expected vs received); (2) CONTROL TOTALS (sum of key fields — financial totals, transaction counts); (3) HASH CHECKS (cryptographic verification of file content); (4) EXCEPTION HANDLING (what happens when reconciliation fails — automated retry, escalation, fallback); (5) ALERTING (proactive notification when mismatches occur). Option B's trust-the-sender accepts the receiver's exposure to any sender-side error (bug, partial transmission, corruption). Option C's weekly-only reduces volume but sacrifices business value (real-time integrations exist for business reasons). Option D's encryption-only addresses confidentiality during transmission but doesn't verify data accuracy / completeness.",
+      "wrong_explanations": {
+        "B": "Trust-the-sender accepts the receiver's exposure to any error in the sender (software bug, partial transmission, network corruption, malicious tampering). The receiver must independently verify.",
+        "C": "Weekly-only interfaces reduce data volume but sacrifice business value. Many integrations exist for real-time or near-real-time business reasons (order processing, payment authorization, fraud detection). Frequency reduction is the wrong axis.",
+        "D": "Encryption protects CONFIDENTIALITY (data in transit can't be read) but doesn't verify ACCURACY or COMPLETENESS. The receiver still needs reconciliation to know the data arrived correctly."
+      },
+      "tips": [
+        "Trap is B — \"trust the sender's validation\" is a common assumption in well-tested interfaces but it accepts the receiver's exposure to sender-side errors; independent receiver-side verification is needed.",
+        "System interface controls = RECONCILIATION + EXCEPTION HANDLING + ALERTING. Three elements; missing any leaves a different exposure (integrity, automation, or visibility).",
+        "Exam-day shortcut: any system-interface question is answered by the option naming RECEIVER-SIDE RECONCILIATION; trust, frequency-reduction, and encryption-only answers each fail."
+      ],
+      "framework_ref": "ISACA System Interfaces guidance; ISACA Application Controls guidance; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "System interfaces",
+        "Reconciliation controls",
+        "Control totals",
+        "Hash checks"
+      ],
+      "_provenance": "Authored from concept: 'System interface controls per ISACA System Interfaces guidance and Application Controls guidance'. Public sources: ISACA, COBIT 2019."
+    },
+    {
+      "id": "d4_011",
+      "domain": 4,
+      "subtopic": "End-User Computing (EUC) — Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST appropriately addresses risk from end-user computing (EUC) applications in financial reporting?",
+      "options": {
+        "A": "Allow end users full freedom to build EUC applications; IT involvement defeats the productivity benefit of end-user computing entirely.",
+        "B": "Migrate all EUC applications to formal IT systems regardless of risk; EUC applications should not exist in any financially-significant context.",
+        "C": "Apply risk-tiered controls: inventory + version control + change review + access restriction + key-control testing for material EUC applications.",
+        "D": "Restrict EUC application creation to a single department; centralizing creation reduces governance overhead and oversight requirements."
+      },
+      "correct": "C",
+      "key_concept": "EUC controls = risk-tiered: inventory + version control + change review + access restriction + key-control testing for material EUC. Free-allow loses control; migrate-everything is impractical; restrict-to-one-department concentrates without controlling.",
+      "pre_read": "For EUC questions, anchor on \"risk-tiered controls for material EUC.\" The challenge is identifying which EUC matters (financial reporting, regulatory) and applying controls proportional to materiality, not all-or-nothing.",
+      "correct_explanation": "ISACA End-User Computing guidance, COBIT 2019 BAI03 (Managed Solutions Identification and Build), and SOX Section 404 (Internal Controls over Financial Reporting) establish risk-tiered EUC controls: (1) INVENTORY (identify EUC applications used for financial reporting, regulatory submissions, or material business decisions); (2) VERSION CONTROL (track changes to spreadsheets / Access databases / scripts); (3) CHANGE REVIEW (material changes go through review before use); (4) ACCESS RESTRICTION (read/edit permissions match data sensitivity); (5) KEY-CONTROL TESTING (formulas, macros, lookups tested when changed). The risk-tiering means immaterial EUC (a team's task list) needs no controls; material EUC (a financial-close spreadsheet) needs full controls. Option A free-allow accepts SOX-Material Weakness risk. Option B migrate-everything is operationally impractical (millions of spreadsheets) and unnecessary for low-risk EUC. Option D restricts WHO can create EUC but doesn't reduce risk from EUC that does exist.",
+      "wrong_explanations": {
+        "A": "Free-allow accepts SOX Material Weakness risk for financial-reporting EUC. The reason EUC controls exist is that historical SOX failures (London Whale, others) traced to spreadsheet errors with no controls.",
+        "B": "Migrate-everything is operationally impractical (orgs typically have thousands of business-relevant spreadsheets) and unnecessary for non-material EUC. Risk-tiering applies controls where they matter.",
+        "D": "Restricting WHO can create EUC reduces who can introduce risk but doesn't control the EUC that exists or is created. The control problem is governance of EUC, not creation permissions."
+      },
+      "tips": [
+        "Trap is A or B — opposing biases. A (freedom-bias) matches engineering autonomy culture and ignores SOX Material Weakness risk; B (formalization-bias) matches financial-services audit culture and is operationally impractical. Risk-tiering sits between.",
+        "EUC controls = INVENTORY + VERSION + CHANGE REVIEW + ACCESS + KEY-CONTROL TESTING for MATERIAL EUC. Risk-tiered, not all-or-nothing.",
+        "Exam-day shortcut: any EUC question is answered by the option naming RISK-TIERED governance; free-allow and migrate-everything answers are extremes that miss the materiality dimension."
+      ],
+      "framework_ref": "ISACA End-User Computing guidance; COBIT 2019 BAI03 (Managed Solutions Identification and Build); SOX Section 404 (Internal Controls over Financial Reporting)",
+      "related_concepts": [
+        "End-user computing",
+        "EUC",
+        "SOX material weakness",
+        "Spreadsheet controls"
+      ],
+      "_provenance": "Authored from concept: 'EUC risk-tiered controls per ISACA End-User Computing guidance and SOX Section 404'. Public sources: ISACA, SOX."
+    },
+    {
+      "id": "d4_012",
+      "domain": 4,
+      "subtopic": "Shadow IT — Identification and Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST addresses shadow IT in a modern enterprise environment?",
+      "options": {
+        "A": "Strictly prohibit all shadow IT through aggressive policy enforcement; identify and shut down any unauthorized service or tool found.",
+        "B": "Ignore shadow IT; modern business teams need agility, and IT's traditional discovery-and-shutdown approach destroys business value.",
+        "C": "Migrate all shadow IT to IT-sanctioned alternatives immediately upon discovery, regardless of business value or user adoption.",
+        "D": "Apply a tiered response: discover via CASB and network telemetry, assess risk, sanction valuable low-risk services, formally migrate high-risk ones."
+      },
+      "correct": "D",
+      "key_concept": "Shadow IT governance = tiered response: discover (CASB + network telemetry) + assess risk + SANCTION low-risk valuable services + MIGRATE high-risk ones. Strict-prohibit destroys business value; ignore accepts unknown risk; migrate-everything is wasteful.",
+      "pre_read": "For shadow-IT governance questions, anchor on \"discover + assess + sanction OR migrate based on risk.\" Strict-prohibit and ignore are extremes; migrate-everything misses the discrimination between high- and low-risk.",
+      "correct_explanation": "ISACA Shadow IT Governance guidance, CSA Cloud Controls Matrix, and ISACA Cloud Governance guidance establish a tiered response to shadow IT: (1) DISCOVER through cloud access security broker (CASB) tools, network telemetry, and expense-report analysis to identify what's actually in use; (2) ASSESS RISK per service (data sensitivity, regulatory exposure, security posture, vendor stability); (3) SANCTION valuable low-risk services (bring them under IT support, security review, SSO integration) — converting shadow into sanctioned IT; (4) MIGRATE high-risk services to approved alternatives. Option A's strict-prohibit destroys business value when shadow IT often emerges because IT-sanctioned options are inadequate. Option B's ignore accepts unknown risk (data exfiltration, compliance violations, vendor instability). Option C's migrate-everything is wasteful — many shadow services are valuable and worth sanctioning.",
+      "wrong_explanations": {
+        "A": "Strict-prohibit destroys business value. Shadow IT often emerges because users have legitimate needs that IT-sanctioned tools don't meet; aggressive enforcement without offering alternatives drives further hiding.",
+        "B": "Ignore accepts unknown risk. Shadow IT can carry data exfiltration risk, compliance violations (GDPR data processors not under contract), and vendor instability. Discovery and assessment are essential.",
+        "C": "Migrate-everything is wasteful. Many shadow services are valuable and low-risk; sanctioning them (bringing under IT support, SSO, security review) is more efficient than forcing migration to inferior alternatives."
+      },
+      "tips": [
+        "Trap is A — \"strictly prohibit and shut down\" matches traditional IT control culture but it drives shadow IT further into hiding and destroys business value; modern governance is tiered.",
+        "Shadow IT governance = DISCOVER + ASSESS + SANCTION (low-risk valuable) + MIGRATE (high-risk). Tiered response by risk, not blanket prohibition.",
+        "Exam-day shortcut: any shadow-IT question is answered by the option naming TIERED RESPONSE based on risk and value; prohibit-all and ignore-all answers are extremes that fail differently."
+      ],
+      "framework_ref": "ISACA Shadow IT Governance guidance; CSA Cloud Controls Matrix; ISACA Cloud Governance guidance",
+      "related_concepts": [
+        "Shadow IT",
+        "CASB",
+        "Cloud governance",
+        "Sanctioned IT"
+      ],
+      "_provenance": "Authored from concept: 'Shadow IT tiered governance per ISACA Shadow IT Governance guidance and CSA CCM'. Public sources: ISACA, CSA."
+    },
+    {
+      "id": "d4_013",
+      "domain": 4,
+      "subtopic": "Operating System — Periodic Reviews",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which review activity BEST supports ongoing operating system security and integrity?",
+      "options": {
+        "A": "Quarterly review of OS version against approved baselines, patch compliance, configuration drift, privileged accounts, and audit log integrity.",
+        "B": "Annual review of OS license compliance only; security and integrity reviews are the responsibility of the security team, not operations.",
+        "C": "Continuous monitoring of OS CPU utilization with no review of configuration, patch status, or privileged access changes since deployment.",
+        "D": "Review the OS once at deployment and trust the OS to maintain itself thereafter through automatic updates and built-in integrity features."
+      },
+      "correct": "A",
+      "key_concept": "OS reviews = periodic (quarterly): version vs baseline + patch compliance + configuration drift + privileged accounts + audit log integrity. Annual-license-only ignores security; CPU-only misses configuration; review-once-trust-thereafter accepts drift.",
+      "pre_read": "For OS-review questions, anchor on \"version + patches + configuration + privileged accounts + audit logs.\" Distractors propose license-only, performance-only, or no-ongoing-review.",
+      "correct_explanation": "ISACA OS Audit guidance and ISACA Information Systems Audit and Assurance Standards establish that periodic OS reviews should cover: (1) VERSION against approved baselines (no unapproved version drift); (2) PATCH COMPLIANCE (current patches applied per policy); (3) CONFIGURATION DRIFT (hardening configurations remain in place); (4) PRIVILEGED ACCOUNT review (who has admin/root, when was last review); (5) AUDIT LOG INTEGRITY (logs being generated, retained, and protected against tampering). Quarterly cadence is typical for material systems; high-risk systems may warrant monthly review. Option B's annual-license-only ignores all security dimensions. Option C's CPU-only is performance monitoring, not security review. Option D's review-once accepts drift between deployment and the next audit (often many years).",
+      "wrong_explanations": {
+        "B": "Annual license review addresses licensing compliance but ignores patch status, configuration drift, privileged access, and audit log integrity — all of which materially affect security and audit readiness.",
+        "C": "CPU utilization monitoring addresses performance / capacity, not security. OSes can have unpatched vulnerabilities, configuration drift, and audit log tampering with normal CPU utilization.",
+        "D": "Review-once at deployment misses configuration drift over time, accumulating unpatched vulnerabilities, and privileged-account additions. OSes need ongoing review to catch drift."
+      },
+      "tips": [
+        "Trap is C — \"continuous CPU monitoring\" sounds like rigorous monitoring but it's performance-focused, not security-focused; OS REVIEWS need security/integrity coverage.",
+        "OS reviews = VERSION + PATCHES + CONFIGURATION + PRIVILEGED ACCOUNTS + AUDIT LOG INTEGRITY. Five dimensions; missing any leaves a security gap.",
+        "Exam-day shortcut: any OS-review question is answered by the option naming MULTI-DIMENSIONAL review (version, patches, config, accounts, logs); license-only and performance-only answers each fail."
+      ],
+      "framework_ref": "ISACA OS Audit guidance; NIST SP 800-53 (Information Security Controls); ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "OS review",
+        "Patch compliance",
+        "Configuration drift",
+        "Privileged access"
+      ],
+      "_provenance": "Authored from concept: 'OS periodic reviews per ISACA OS Audit guidance and NIST SP 800-53'. Public sources: ISACA, NIST SP 800-53."
+    },
+    {
+      "id": "d4_014",
+      "domain": 4,
+      "subtopic": "Capacity Management — Practice",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic BEST distinguishes proactive capacity management from reactive capacity response?",
+      "options": {
+        "A": "Forecasted demand modeling + utilization trend monitoring + planned capacity additions BEFORE thresholds are reached at any point in time.",
+        "B": "Adding capacity only after performance complaints are received from users and triaged by the help desk for any business impact assessment.",
+        "C": "Maintaining 100% capacity utilization at all times to maximize the return on infrastructure investment for the firm's IT spending.",
+        "D": "Ignoring capacity entirely because modern cloud platforms scale infinitely on demand without any planning or forecasting overhead."
+      },
+      "correct": "A",
+      "key_concept": "Proactive capacity management = forecasted demand + utilization trend monitoring + planned additions BEFORE thresholds. Reactive (after-complaints) accepts user impact; 100%-utilization eliminates headroom; ignore-because-cloud assumes infinite elasticity without limits.",
+      "pre_read": "For capacity-management questions, anchor on \"forecasted demand + trends + planned additions BEFORE thresholds.\" Reactive, 100%-utilization, and ignore-because-cloud answers each have known failure modes.",
+      "correct_explanation": "ISACA Capacity Management guidance, ITIL 4 Capacity and Performance Management, and COBIT 2019 BAI04 (Managed Availability and Capacity) establish proactive capacity management: (1) FORECASTED DEMAND MODELING (business volume projections, seasonal patterns, planned launches); (2) UTILIZATION TREND MONITORING (continuous metrics with trend analysis); (3) PLANNED CAPACITY ADDITIONS BEFORE thresholds (e.g., add capacity when sustained utilization exceeds 70%, well before 100%). This prevents user impact. Option B's reactive accepts that users will experience problems before action is taken. Option C's 100%-utilization eliminates headroom for variance, peak loads, and incident recovery. Option D's ignore-because-cloud is dangerous — cloud platforms have quota limits, capacity-reservation deadlines, and cost implications that require planning.",
+      "wrong_explanations": {
+        "B": "Reactive capacity management lets users experience performance issues before action is taken. By the time complaints are triaged, business impact has already occurred. Proactive management prevents the impact.",
+        "C": "100% utilization eliminates headroom for variance (normal traffic fluctuations), peak loads (Black Friday, month-end close), and incident recovery (failover capacity). The cost saving is illusory because incidents become more frequent and severe.",
+        "D": "Cloud platforms are not infinitely elastic. Quota limits, reservation deadlines, region-specific capacity constraints, and cost implications all require planning. Cloud changes capacity management; it doesn't eliminate it."
+      },
+      "tips": [
+        "Trap is B or D — opposing biases. B (\"react to complaints\") matches what many organizations actually do (experience bias); D (\"cloud scales infinitely\") matches vendor marketing (narrative bias). Both abandon proactive forecast and trend monitoring.",
+        "Proactive capacity = FORECAST + TRENDS + PLANNED ADDITIONS BEFORE THRESHOLDS. Three properties; missing any makes it reactive.",
+        "Exam-day shortcut: any capacity-management question is answered by the option naming FORECAST + MONITOR + PLAN BEFORE; reactive, max-utilization, and cloud-infinite answers all fail differently."
+      ],
+      "framework_ref": "ISACA Capacity Management guidance; ITIL 4 Capacity and Performance Management; COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "related_concepts": [
+        "Capacity management",
+        "Proactive monitoring",
+        "Utilization trends",
+        "ITIL 4"
+      ],
+      "_provenance": "Authored from concept: 'Proactive capacity management per ISACA Capacity Management guidance and ITIL 4'. Public sources: ISACA, ITIL 4, COBIT 2019."
+    },
+    {
+      "id": "d4_015",
+      "domain": 4,
+      "subtopic": "Incident Handling Process",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which sequence BEST describes the standard incident-handling process under ITIL 4?",
+      "options": {
+        "A": "Identify root cause → fix root cause → resolve incident → restore service → document outcome → close ticket → notify users.",
+        "B": "Detect issue → ignore for 24 hours to confirm persistence → escalate if still occurring → assign to development team for fix only.",
+        "C": "Detect/log incident → categorize and prioritize → diagnose and resolve → restore service → close incident; pursue root cause via problem management separately.",
+        "D": "Wait for users to report issues → assign tickets to whoever is available → fix issues as time permits → archive tickets after resolution naturally."
+      },
+      "correct": "C",
+      "key_concept": "Incident handling (ITIL 4) = detect/log + categorize/prioritize + diagnose/resolve + restore service + close. Root cause is a SEPARATE Problem Management activity. Incident is about service restoration; Problem is about prevention.",
+      "pre_read": "For incident-handling questions, anchor on \"detect + categorize + diagnose + restore + close,\" with root cause being SEPARATE problem management. Distractors conflate incident with problem or describe weak processes.",
+      "correct_explanation": "ITIL 4 Incident Management practice and ISACA Incident Management guidance distinguish incident management from problem management: INCIDENT management restores service as quickly as possible (1. detect/log, 2. categorize/prioritize, 3. diagnose/resolve, 4. restore service, 5. close). PROBLEM management addresses root cause separately (often AFTER service is restored) to prevent recurrence. Option A inverts the order (root cause BEFORE service restoration) — this is the problem-management bias that delays restoration. Option B describes a weak process (ignore-and-hope). Option D describes informal triage. The key insight: in incident management, RESTORE SERVICE FIRST, then investigate root cause separately.",
+      "wrong_explanations": {
+        "A": "Fixing root cause before restoring service is the problem-management bias that delays user impact recovery. Incident management restores service first (using workarounds if needed), then problem management addresses root cause in parallel or after.",
+        "B": "Waiting 24 hours to confirm persistence accepts user impact for that period. Incidents should be handled promptly; persistence is a question for problem management, not initial response.",
+        "D": "Informal triage with no categorization, prioritization, or process produces inconsistent responses, missed SLA commitments, and no learning. ITIL 4 incident management requires structured handling."
+      },
+      "tips": [
+        "Trap is A — \"identify root cause then fix\" sounds rigorous but it's PROBLEM management; INCIDENT management restores service first, then root cause is pursued separately.",
+        "Incident handling = DETECT + CATEGORIZE + DIAGNOSE + RESTORE + CLOSE. Root cause is SEPARATE problem management. Service restoration is the incident-management priority.",
+        "Exam-day shortcut: any incident-handling question is answered by the option naming SERVICE RESTORATION FIRST with root cause as a separate problem-management activity."
+      ],
+      "framework_ref": "ITIL 4 Incident Management practice; ITIL 4 Problem Management practice; ISACA Incident Management guidance",
+      "related_concepts": [
+        "Incident management",
+        "Problem management",
+        "ITIL 4",
+        "Service restoration"
+      ],
+      "_provenance": "Authored from concept: 'Incident vs problem management per ITIL 4 Incident Management and Problem Management practices'. Public sources: ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_016",
+      "domain": 4,
+      "subtopic": "Help Desk — Effectiveness Measurement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST measures help desk effectiveness from an IS audit perspective?",
+      "options": {
+        "A": "Volume of tickets handled per agent per day; the highest-volume agents are by definition the most effective in their role.",
+        "B": "Customer satisfaction survey only; user perception is the only meaningful measure of help desk effectiveness for the organization.",
+        "C": "Cost per ticket only; lower cost per ticket directly indicates a more efficient and therefore more effective help desk operation.",
+        "D": "First-call resolution rate + average resolution time + SLA compliance + customer satisfaction + recurring-ticket trends."
+      },
+      "correct": "D",
+      "key_concept": "Help desk effectiveness = first-call resolution + average resolution time + SLA compliance + customer satisfaction + recurring-ticket trends. Single metrics (volume, satisfaction-only, cost-only) are gameable or one-dimensional; multi-dimensional measurement captures effectiveness.",
+      "pre_read": "For help-desk effectiveness questions, anchor on \"multi-dimensional metrics.\" Single-metric answers (volume, satisfaction, cost) are gameable; effectiveness requires balanced metrics.",
+      "correct_explanation": "ITIL 4 Service Desk practice and ISACA Help Desk Audit guidance establish multi-dimensional help-desk effectiveness measurement: (1) FIRST-CALL RESOLUTION RATE (how often issues are resolved on the first contact without escalation); (2) AVERAGE RESOLUTION TIME (how long incidents take to resolve, by priority); (3) SLA COMPLIANCE (percentage of incidents resolved within commitment); (4) CUSTOMER SATISFACTION (post-resolution survey); (5) RECURRING-TICKET TRENDS (which categories are growing, indicating underlying problems). Option A volume-per-agent is easily gamed (close tickets without resolution; open low-quality tickets). Option B satisfaction-only is one-dimensional (a user can be satisfied with a slow resolution if expectations were managed). Option C cost-only optimizes for cost reduction at the expense of quality (long hold times, low first-call resolution).",
+      "wrong_explanations": {
+        "A": "Ticket volume per agent is easily gamed (close without resolution, prematurely close, encourage repeat tickets). It measures activity, not effectiveness. High-volume agents may be the LEAST effective if they close without truly resolving.",
+        "B": "Customer satisfaction alone is one-dimensional. Users may be satisfied with slow resolution if expectations were managed, or dissatisfied with quick resolution due to communication style. Satisfaction is necessary but not sufficient.",
+        "C": "Cost per ticket optimization can drive cost-cutting that degrades quality (longer hold times, lower agent training, automation that frustrates users). Cost matters but not in isolation."
+      },
+      "tips": [
+        "Trap is A or B — A (\"volume per agent\") matches how many help desks are actually managed and is highly gameable (close without resolution); B (\"satisfaction only\") sounds user-centric but is one-dimensional. Both substitute single metrics for balanced measurement.",
+        "Help desk effectiveness = FIRST-CALL RESOLUTION + AVERAGE RESOLUTION TIME + SLA COMPLIANCE + SATISFACTION + RECURRING-TICKET TRENDS. Five dimensions; single metrics are gameable.",
+        "Exam-day shortcut: any help-desk-effectiveness question is answered by the option naming MULTI-DIMENSIONAL metrics; single-metric answers are gameable or one-dimensional."
+      ],
+      "framework_ref": "ITIL 4 Service Desk practice; ITIL 4 Incident Management practice; ISACA Help Desk Audit guidance",
+      "related_concepts": [
+        "Help desk",
+        "First-call resolution",
+        "SLA compliance",
+        "Service desk metrics"
+      ],
+      "_provenance": "Authored from concept: 'Help desk multi-dimensional effectiveness per ITIL 4 Service Desk practice and ISACA Help Desk Audit guidance'. Public sources: ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_017",
+      "domain": 4,
+      "subtopic": "Major Outage with Multiple Incident Overlap",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST coordinates the multi-incident situation during the active outage?",
+      "scenario_context": "A B2B SaaS provider (1.6M end users, 24/7 service) experienced a major outage 90 minutes ago. Three concurrent incidents are active: (a) primary database cluster failure affecting all customers; (b) authentication service degradation affecting new logins (existing sessions continue); (c) suspicious lateral movement detected by the SOC in a non-production environment that may or may not be related. Tier-3 engineering is responding to the database; the SOC is investigating the lateral movement; the authentication team is responding to its incident. The CISO and CIO are debating consolidation. The IS auditor was paged for governance perspective during the active incident.",
+      "options": {
+        "A": "Let each team handle its own incident independently; consolidation introduces coordination overhead that slows individual incident response significantly.",
+        "B": "Convene an incident command structure with a single incident commander, separate workstreams per incident, and coordinated communications and decisions.",
+        "C": "Pause all incidents to investigate whether they are connected before continuing any individual incident response activity for any of the three.",
+        "D": "Treat the database failure as the only material incident and de-prioritize authentication and SOC investigations until database is restored."
+      },
+      "correct": "B",
+      "key_concept": "Multi-incident overlap = single incident commander + separate workstreams + coordinated communications and decisions. Independent-handling produces conflicting decisions; pause-all is impractical during outage; deprioritize-others ignores potential connections.",
+      "pre_read": "For multi-incident overlap questions, anchor on \"incident command structure: ONE commander, MANY workstreams, COORDINATED communications.\" Independent and pause-all extremes both fail.",
+      "correct_explanation": "ITIL 4 Incident Management practice, NIST SP 800-61 (Computer Security Incident Handling Guide), and ISACA Outage Response guidance establish incident command structure for multi-incident situations: (1) SINGLE INCIDENT COMMANDER with authority over all concurrent workstreams; (2) SEPARATE WORKSTREAMS per incident (database team, auth team, SOC) maintaining their own response while reporting up; (3) COORDINATED COMMUNICATIONS (one external message; internal status shared across teams); (4) DECISIONS made at the commander level when they affect multiple workstreams (e.g., declaring connection between auth degradation and lateral movement). Option A independent-handling produces conflicting decisions (database team takes auth-affecting action without coordination). Option C pause-all is impractical when services are actively impaired; coordination doesn't require pause. Option D deprioritize-others ignores potential connections (lateral movement may be related; auth degradation may indicate broader compromise).",
+      "wrong_explanations": {
+        "A": "Independent-handling produces conflicting decisions and missed connections. The database team's recovery actions may affect authentication; the SOC's containment may affect database access. A single commander resolves coordination conflicts.",
+        "C": "Pause-all is impractical when services are actively impaired. Coordination doesn't require pause; teams continue their workstreams under unified command. Pause prolongs user impact.",
+        "D": "Deprioritize-others assumes the database failure is unrelated to authentication degradation and lateral movement. This may not be true (compromised credentials could cause both); investigation must continue."
+      },
+      "tips": [
+        "Trap is A — \"let each team handle independently\" matches engineering autonomy culture but it produces conflicting decisions and missed connections; multi-incident situations need unified command.",
+        "Multi-incident response = INCIDENT COMMAND: ONE commander + MANY workstreams + COORDINATED communications + DECISIONS at commander level. Four properties.",
+        "Exam-day shortcut: any multi-incident question is answered by the option naming INCIDENT COMMAND STRUCTURE; independent-handling, pause-all, and deprioritize answers each fail differently."
+      ],
+      "framework_ref": "ITIL 4 Incident Management practice; NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Outage Response guidance",
+      "related_concepts": [
+        "Multi-incident response",
+        "Incident command",
+        "Outage coordination",
+        "ITIL 4"
+      ],
+      "_provenance": "Authored from concept: 'Multi-incident overlap response per ITIL 4 Incident Management and NIST SP 800-61'. Public sources: ITIL 4, NIST SP 800-61. Scenario specifics (B2B SaaS, 1.6M users, 90 minutes elapsed, 3 concurrent incidents — database + auth + lateral movement) invented for this question."
+    },
+    {
+      "id": "d4_018",
+      "domain": 4,
+      "subtopic": "Shadow IT Discovery During Audit Engagement",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the shadow-IT discoveries the audit has surfaced?",
+      "scenario_context": "An IS audit at a 4,500-employee financial services firm discovered 73 active SaaS services in use by business teams that were not in the IT-sanctioned services catalog. Estimated annual cost: $2.1M (paid through corporate credit cards / expense reports). Categories include: (a) 28 collaboration/productivity tools; (b) 12 marketing-analytics platforms processing customer PII; (c) 8 file-sharing services storing client data; (d) 25 miscellaneous productivity utilities. The CIO is alarmed by the volume; the CFO is concerned about cost and contract risk; the business teams report the tools meet legitimate needs that IT-sanctioned alternatives don't. The audit committee asked the IS auditor for a remediation recommendation framework.",
+      "options": {
+        "A": "Apply tiered remediation: discover all + risk-rank + sanction valuable low-risk + migrate high-risk PII/client-data services + address business needs IT-sanctioned tools don't meet.",
+        "B": "Immediately disable all 73 services through aggressive policy enforcement; business teams must use IT-sanctioned alternatives regardless of any current functionality gaps.",
+        "C": "Accept the current state and document the services in an inventory; business teams have legitimate needs and IT-sanctioned alternatives are inadequate for the work they do.",
+        "D": "Migrate all 73 services to formal IT-managed alternatives over the next 30 days regardless of business value, cost, or current contract terms with vendors."
+      },
+      "correct": "A",
+      "key_concept": "Shadow IT discovery remediation = tiered: discover all + risk-rank + SANCTION valuable low-risk + MIGRATE high-risk PII/client-data + ADDRESS business needs IT-sanctioned tools don't meet. Disable-all destroys business value; accept-all ignores PII/client-data risk; migrate-all-30-days is wasteful and infeasible.",
+      "pre_read": "For shadow-IT remediation questions, anchor on \"tiered: discover + risk-rank + sanction/migrate based on risk + address root cause (IT-tool inadequacy).\" Disable-all, accept-all, and migrate-all extremes each fail differently.",
+      "correct_explanation": "ISACA Shadow IT Governance guidance, OCC Bulletin 2013-29 (Third-Party Relationships), and CSA Cloud Controls Matrix establish tiered shadow-IT remediation: (1) DISCOVER all instances (this audit has done that — 73 services identified); (2) RISK-RANK per service (PII processing, client-data storage, financial regulation exposure, vendor risk); (3) SANCTION valuable low-risk services (the 25 utilities and 28 collaboration tools likely fall here — bring under IT support and SSO); (4) MIGRATE high-risk services (the 12 marketing analytics processing PII and 8 file-sharing storing client data — these require formal vendor risk review, GLBA/GDPR compliance verification, and either contractual remediation or migration); (5) ADDRESS THE ROOT CAUSE — business teams adopted these services because IT-sanctioned tools didn't meet needs; engage business teams to identify gaps and add to the sanctioned catalog. Option B disable-all destroys business value and drives further hiding. Option C accept-all ignores PII/client-data regulatory exposure. Option D migrate-all-30-days is operationally infeasible for 73 services and wasteful for the low-risk ones.",
+      "wrong_explanations": {
+        "B": "Disabling all 73 services destroys business value and drives further hiding. Business teams will find alternative ways (personal accounts, free tiers) that are LESS visible than the current state. Aggressive enforcement without offering alternatives makes the problem worse.",
+        "C": "Accept-current-state ignores material regulatory exposure: 12 marketing-analytics services processing PII (GLBA, GDPR, state privacy laws) and 8 file-sharing services storing client data (fiduciary data protection obligations). These cannot be left ungoverned.",
+        "D": "Migrate-all-30-days is operationally infeasible for 73 services (vendor research, contract negotiation, user training, data migration). It's also wasteful for the low-risk ones (utilities, collaboration tools) that could be sanctioned and brought under management without migration."
+      },
+      "tips": [
+        "Trap is B or D — opposite-direction overreactions. B disables everything; D migrates everything. The right answer is tiered by risk: sanction low-risk, migrate high-risk, address root cause.",
+        "Shadow IT remediation = DISCOVER + RISK-RANK + SANCTION (low-risk) + MIGRATE (high-risk PII/client-data) + ADDRESS root cause (catalog gaps). Five elements.",
+        "Exam-day shortcut: any shadow-IT remediation question is answered by the option naming TIERED REMEDIATION by risk; disable-all and migrate-all are both extremes that fail."
+      ],
+      "framework_ref": "ISACA Shadow IT Governance guidance; OCC Bulletin 2013-29 (Third-Party Relationships); CSA Cloud Controls Matrix",
+      "related_concepts": [
+        "Shadow IT",
+        "Tiered remediation",
+        "Sanctioned IT",
+        "Third-party risk"
+      ],
+      "_provenance": "Authored from concept: 'Shadow IT discovery remediation per ISACA Shadow IT Governance guidance'. Public sources: ISACA, OCC, CSA. Scenario specifics (4.5K-employee FS firm, 73 services, $2.1M annual cost, 28+12+8+25 split, CIO/CFO/business positions) invented for this question."
+    },
+    {
+      "id": "d4_019",
+      "domain": 4,
+      "subtopic": "SLA Breach Root Cause Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which approach BEST guides the SLA-breach analysis and remediation for the engagement?",
+      "scenario_context": "A B2B platform's quarterly SLA review reveals systematic breach of the 99.9% availability commitment: actual availability over 3 months is 98.8%, against a commitment of 99.9% (~2.2 hours allowed downtime vs 26 hours actual over the 2,160-hour window). Customer service credits are being paid. Root cause analysis is contested: (a) operations attributes it to inadequate capacity provisioned by infrastructure; (b) infrastructure attributes it to insufficient testing by development; (c) development attributes it to scope creep imposed by product management; (d) product management attributes it to inadequate communication of business needs to engineering. The CTO is frustrated by cross-team blame. The IS auditor was asked to advise on root cause analysis governance.",
+      "options": {
+        "A": "Endorse the operations team's capacity-attribution; performance issues during peak load are the most common SLA breach cause and likely the primary factor here.",
+        "B": "Endorse the product management's communication-attribution; cross-functional gaps are typically the deepest root cause and addressing them resolves downstream issues automatically.",
+        "C": "Apply structured root cause analysis: facts (incident timeline + telemetry) + multiple contributing factors + systemic patterns + cross-team accountability for shared remediation.",
+        "D": "Defer the analysis until each team has separately conducted its own retrospective and produced findings about its own contribution to the breach for review."
+      },
+      "correct": "C",
+      "key_concept": "SLA breach root cause = structured analysis: facts (timeline + telemetry) + multiple contributing factors + systemic patterns + cross-team accountability. Single-team attributions (operations / product) miss multi-factor reality; deferred-per-team analysis loses cross-team accountability.",
+      "pre_read": "For SLA breach analysis questions, anchor on \"structured RCA with multiple contributing factors and cross-team accountability.\" Single-team attributions reflect blame culture; deferred analysis loses systemic visibility.",
+      "correct_explanation": "ISACA SLA Breach Analysis guidance, ITIL 4 Problem Management practice, and NIST SP 800-61 (Computer Security Incident Handling Guide) establish structured root cause analysis for SLA breach: (1) FACTS — incident timeline, telemetry, change records, alerts, customer impact reports; (2) MULTIPLE CONTRIBUTING FACTORS — most outages have several contributing factors (capacity + scope creep + insufficient testing + communication can all be simultaneously true); (3) SYSTEMIC PATTERNS — are the same factors recurring across multiple incidents; (4) CROSS-TEAM ACCOUNTABILITY — remediation actions span operations, infrastructure, development, and product, with each accepting their part. Option A endorses one team's view without facts. Option B endorses another team's view without facts. Option D deferred-per-team analysis loses cross-team accountability — each team will minimize its contribution.",
+      "wrong_explanations": {
+        "A": "Endorsing operations-team capacity-attribution without facts assumes the cause without evidence. Capacity is one possible factor; structured analysis may reveal multiple factors. Endorsing one team's view feeds blame culture.",
+        "B": "Endorsing product-management communication-attribution has the same problem inverted. Cross-functional gaps may be a factor but structured analysis identifies multiple factors based on facts, not stakeholder preferences.",
+        "D": "Per-team retrospectives lose cross-team accountability. Each team will minimize its contribution and emphasize others' shortcomings. Structured RCA brings teams together to map the full causal chain."
+      },
+      "tips": [
+        "Trap is A or B — opposing single-team attributions that both reflect blame culture rather than evidence-based analysis. The right answer is structured RCA with multiple contributing factors.",
+        "SLA breach RCA = FACTS + MULTIPLE CONTRIBUTING FACTORS + SYSTEMIC PATTERNS + CROSS-TEAM ACCOUNTABILITY. Four elements; single-team attributions miss multi-factor reality.",
+        "Exam-day shortcut: any SLA-breach analysis question is answered by the option naming STRUCTURED RCA with MULTIPLE FACTORS; single-team attributions and deferred analysis are bias or evasion."
+      ],
+      "framework_ref": "ISACA SLA Breach Analysis guidance; ITIL 4 Problem Management practice; NIST SP 800-61 (Computer Security Incident Handling Guide)",
+      "related_concepts": [
+        "SLA breach",
+        "Root cause analysis",
+        "ITIL 4",
+        "Problem management"
+      ],
+      "_provenance": "Authored from concept: 'SLA breach structured RCA per ISACA SLA Breach Analysis guidance and ITIL 4 Problem Management'. Public sources: ISACA, ITIL 4, NIST. Scenario specifics (B2B platform, 99.9% commit vs 98.8% actual, 26 vs 2.2 hours downtime over 90-day 2,160-hour window, 4 cross-team attributions) invented for this question."
+    },
+    {
+      "id": "d4_020",
+      "domain": 4,
+      "subtopic": "BIA-Driven RTO/RPO Decision Conflict",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the RTO/RPO conflict between business and IT during BIA validation?",
+      "scenario_context": "A regional bank completed its BIA. The retail-banking line of business claims RTO of 1 hour and RPO of 5 minutes for the core deposit system, citing customer-experience and regulator expectations. IT infrastructure estimates that meeting those targets requires investment of $18M in active-active architecture across two data centers — versus the current $4M asynchronous replication achieving RTO 4 hours and RPO 30 minutes. The CFO is pushing back on the $14M increment. The chief risk officer raises operational-resilience regulator scrutiny. The IS auditor was asked to advise on the BIA validation governance before the executive committee meets to approve RTO/RPO targets.",
+      "options": {
+        "A": "Endorse the retail-banking line's 1-hour/5-minute RTO/RPO; customer experience and regulator expectations justify any required infrastructure investment to meet the commitment.",
+        "B": "Endorse IT's current capability (4-hour/30-minute) and inform retail banking that targets must match infrastructure investment; budget constraints are non-negotiable from this point.",
+        "C": "Defer the RTO/RPO decision indefinitely until regulator gives explicit numeric targets; without regulator-mandated numbers, the bank cannot defensibly justify any specific commitment.",
+        "D": "Apply structured validation: quantify business impact at each RTO/RPO option, regulator-expectation analysis, cost-benefit at each option, document residual risk acceptance at the chosen target."
+      },
+      "correct": "D",
+      "key_concept": "BIA RTO/RPO conflict = structured validation: business impact quantification at each option + regulator-expectation analysis + cost-benefit + documented residual risk acceptance. Single-stakeholder endorsement reflects bias; defer-to-regulator abandons the decision.",
+      "pre_read": "For BIA RTO/RPO conflict questions, anchor on \"structured validation with quantified business impact, regulator analysis, and explicit residual-risk acceptance.\" Single-stakeholder endorsements reflect bias; defer is abdication.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management), NIST SP 800-34 (Contingency Planning Guide), ISACA BIA guidance, and ISACA BIA Conflict Resolution guidance establish structured BIA validation when business and IT disagree on RTO/RPO: (1) QUANTIFY BUSINESS IMPACT at each RTO/RPO option (what is the actual loss at 1-hour vs 4-hour RTO? include direct revenue loss, customer attrition modeling, regulatory penalty exposure); (2) REGULATOR-EXPECTATION ANALYSIS (FFIEC, Federal Reserve operational-resilience guidance, state banking regulators); (3) COST-BENEFIT at each option ($14M investment for 3-hour RTO reduction — what's the net present value); (4) RESIDUAL RISK ACCEPTANCE explicitly documented by the appropriate authority (CRO or board level) at the chosen target. Option A endorses business-line view without cost-benefit analysis. Option B endorses IT view without business-impact analysis. Option C defer-to-regulator is abdication — regulators typically don't specify numeric targets but assess whether the firm's targets are reasonable given its profile.",
+      "wrong_explanations": {
+        "A": "Endorsing the retail line's 1-hour/5-minute target without cost-benefit analysis assumes any investment is justified. The $14M increment may not produce proportional risk reduction; structured analysis is needed.",
+        "B": "Endorsing IT's current capability inverts the bias: cost constraint drives the target without business-impact quantification. Both sides need to engage the multi-factor analysis.",
+        "C": "Defer-to-regulator is abdication. Regulators typically don't issue specific numeric RTO/RPO requirements; instead they assess whether the firm's TARGETS and CAPABILITIES are reasonable given its risk profile. Waiting for a number that won't come delays the decision indefinitely."
+      },
+      "tips": [
+        "Trap is A or B — opposing single-stakeholder endorsements (business line vs IT). Both reflect bias. The right answer is structured cost-benefit with documented residual-risk acceptance.",
+        "BIA RTO/RPO conflict = STRUCTURED VALIDATION: business impact at each option + regulator analysis + cost-benefit + residual-risk acceptance. Four elements.",
+        "Exam-day shortcut: any BIA RTO/RPO conflict question is answered by the option naming STRUCTURED VALIDATION with cost-benefit; single-stakeholder endorsements and defer-to-regulator answers each fail."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA BIA guidance; ISACA BIA Conflict Resolution guidance",
+      "related_concepts": [
+        "BIA",
+        "RTO",
+        "RPO",
+        "Cost-benefit analysis",
+        "Residual risk acceptance"
+      ],
+      "_provenance": "Authored from concept: 'BIA RTO/RPO conflict structured validation per ISO 22301, NIST SP 800-34, and ISACA BIA guidance'. Public sources: ISO 22301, NIST, ISACA. Scenario specifics (regional bank, retail-banking 1-hour/5-minute target, current 4-hour/30-minute, $14M increment, CFO/CRO positions) invented for this question."
+    }
+  ]
 }

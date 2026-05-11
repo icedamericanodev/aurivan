@@ -750,3 +750,45 @@ sub-references like "(Managed Risk) and APO12.03").
 - Scrum@Scale
 - SOX Section 302 (Quarterly Certification)
 - NIST SP 800-37 (Risk Management Framework)
+
+## D4 batch 1 additions
+- OSI Reference Model (ISO/IEC 7498-1)
+- TCP/IP Reference Model
+- RFC 791 (Internet Protocol)
+- RFC 793 (Transmission Control Protocol)
+- RFC 768 (User Datagram Protocol)
+- ITIL 4 Service Level Management practice
+- ITIL 4 Incident Management practice
+- ITIL 4 Problem Management practice
+- ITIL 4 Service Desk practice
+- ITIL 4 Service Configuration Management practice
+- ISO/IEC 20000-1:2018 (Service Management System)
+- ISACA Service Level Management guidance
+- ISACA Job Scheduling Audit guidance
+- ISACA IT Asset Management guidance
+- ISACA Hardware Lifecycle guidance
+- ISACA Wireless Security guidance
+- ISACA Removable Media guidance
+- ISACA Shadow IT Governance guidance
+- ISACA End-User Computing guidance
+- ISACA Help Desk Audit guidance
+- ISACA Capacity Management guidance
+- ISACA OS Audit guidance
+- ISACA System Interfaces guidance
+- ISACA Incident Management guidance
+- ISACA BIA guidance
+- ISACA Proxy Server guidance
+- ISACA Outage Response guidance
+- ISACA SLA Breach Analysis guidance
+- ISACA BIA Conflict Resolution guidance
+- NIST SP 800-46 (Telework / Remote Access)
+- NIST SP 800-97 (Wireless Network Security)
+- NIST SP 800-114 (Mobile Devices and Removable Media)
+- IEEE 802.11 (Wireless LAN Standards)
+- IEEE 802.1X (Network Access Control)
+- WPA3 (Wi-Fi Protected Access 3)
+- NIST SP 800-88 (Media Sanitization)
+- SOX Section 404 (Internal Controls over Financial Reporting)
+- CSA Cloud Security Alliance Cloud Controls Matrix (CCM)
+- ISACA Information Systems Audit and Assurance Standards
+- NIST SP 800-53 MP family (Media Protection controls)

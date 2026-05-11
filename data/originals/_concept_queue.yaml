@@ -684,7 +684,69 @@ domain_3:
 
 domain_4:
   target_total: 260
-  status: not_started
+  target_mix:
+    foundational: 26
+    application:  130
+    analysis:     104
+
+  status: in_progress
+  authored_total: 20
+  authored_mix:
+    foundational: 4
+    application:  12
+    analysis:     4
+
+  covered:
+    # Batch 1 (d4_001..d4_020) — 4F + 12A + 4An; broad TOC launch
+    - { id: d4_001, subtopic: "OSI vs TCP/IP Reference Model — Layer Mapping",       toc_ref: "4.1.1" }
+    - { id: d4_002, subtopic: "Job Scheduling Software — PRIMARY Function",          toc_ref: "4.3.1" }
+    - { id: d4_003, subtopic: "Service Level Agreement (SLA) — Definition",          toc_ref: "4.10.1" }
+    - { id: d4_004, subtopic: "Business Impact Analysis (BIA) — Definition",         toc_ref: "4.12" }
+    - { id: d4_005, subtopic: "LAN/WAN Security Controls (802.1X NAC)",              toc_ref: "4.1.1" }
+    - { id: d4_006, subtopic: "Proxy Server Controls",                               toc_ref: "4.1.3" }
+    - { id: d4_007, subtopic: "USB Mass Storage Devices — Risk Management",          toc_ref: "4.1.4" }
+    - { id: d4_008, subtopic: "Wireless Network — Security Controls (WPA3-Enterprise)", toc_ref: "4.1.5" }
+    - { id: d4_009, subtopic: "IT Asset Management — Lifecycle",                     toc_ref: "4.2" }
+    - { id: d4_010, subtopic: "System Interfaces — Risk and Controls",               toc_ref: "4.4" }
+    - { id: d4_011, subtopic: "End-User Computing (EUC) — Controls",                 toc_ref: "4.5.1" }
+    - { id: d4_012, subtopic: "Shadow IT — Identification and Governance",           toc_ref: "4.5.2" }
+    - { id: d4_013, subtopic: "Operating System — Periodic Reviews",                 toc_ref: "4.6.2" }
+    - { id: d4_014, subtopic: "Capacity Management — Practice",                      toc_ref: "4.6.8" }
+    - { id: d4_015, subtopic: "Incident Handling Process",                           toc_ref: "4.7.2" }
+    - { id: d4_016, subtopic: "Help Desk — Effectiveness Measurement",               toc_ref: "4.7.4" }
+    - { id: d4_017, subtopic: "Major Outage with Multiple Incident Overlap",         toc_ref: "4.7.2" }
+    - { id: d4_018, subtopic: "Shadow IT Discovery During Audit Engagement",         toc_ref: "4.5.2" }
+    - { id: d4_019, subtopic: "SLA Breach Root Cause Analysis",                      toc_ref: "4.10.2" }
+    - { id: d4_020, subtopic: "BIA-Driven RTO/RPO Decision Conflict",                toc_ref: "4.12" }
+
+  queued_next: []
+
+  remaining_unplanned:
+    # Batches 2-13 to be planned; representative placeholders
+    - { subtopic: "Hardware components / architectures",                 toc_ref: "4.1.2", priority: medium }
+    - { subtopic: "Hardware maintenance + reviews",                      toc_ref: "4.1.6", priority: medium }
+    - { subtopic: "NAT, IP, converged protocols",                        toc_ref: "4.1.1", priority: medium }
+    - { subtopic: "Access control software",                             toc_ref: "4.6.3", priority: high }
+    - { subtopic: "Source code management",                              toc_ref: "4.6.7", priority: high }
+    - { subtopic: "Patch management",                                    toc_ref: "4.8.1", priority: high }
+    - { subtopic: "Release management",                                  toc_ref: "4.8.2", priority: high }
+    - { subtopic: "Log types + SIEM",                                    toc_ref: "4.9",   priority: high }
+    - { subtopic: "DBMS architecture + structures",                      toc_ref: "4.11",  priority: high }
+    - { subtopic: "Database controls + reviews",                         toc_ref: "4.11.3", priority: high }
+    - { subtopic: "BIA criticality classification",                      toc_ref: "4.12.1", priority: high }
+    - { subtopic: "System resilience (apps, networks)",                  toc_ref: "4.13",  priority: high }
+    - { subtopic: "Backup schemes (full/incremental/differential)",      toc_ref: "4.14.3", priority: high }
+    - { subtopic: "3-2-1 backup strategy",                               toc_ref: "4.14.3", priority: high }
+    - { subtopic: "Cloud backup",                                        toc_ref: "4.14.2", priority: high }
+    - { subtopic: "BCP planning, components, policy",                    toc_ref: "4.15",  priority: high }
+    - { subtopic: "Pandemic planning",                                   toc_ref: "4.15.2", priority: medium }
+    - { subtopic: "BCP testing types and results",                       toc_ref: "4.15.9", priority: high }
+    - { subtopic: "BCP audit (offsite, contracts, insurance)",           toc_ref: "4.15.11", priority: high }
+    - { subtopic: "RTO / RPO / MTTR definitions",                        toc_ref: "4.16.1", priority: high }
+    - { subtopic: "DR recovery strategies + alternatives",               toc_ref: "4.16.2", priority: high }
+    - { subtopic: "DR plan development + scenarios",                     toc_ref: "4.16.4", priority: high }
+    - { subtopic: "DR testing types + results",                          toc_ref: "4.16.5", priority: high }
+    - { subtopic: "Invoking DR plans",                                   toc_ref: "4.16.6", priority: high }
 
 domain_5:
   target_total: 260
