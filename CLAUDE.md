@@ -105,11 +105,34 @@ for d,e in counts.items():
 
 ## Branching + GitHub
 
-- Feature work happens on `claude/add-cisa-questions-json-1gQSN`.
+- Feature work happens on the session-designated `claude/add-cisa-questions-json-*` branch.
 - Open PR against `main` via the GitHub MCP, then merge once verified.
 - Commit messages explain the WHY in the first line and any non-obvious
   reasoning in the body. Don't mention internal symbol names in user-
   facing changelog entries (those go to the git log instead).
+
+### Post-merge branch hygiene (CRITICAL — avoids recurring squash-merge conflicts)
+
+PRs are merged via **squash-merge**, which collapses N feature-branch commits
+into 1 commit on main. The feature branch retains the original N commits, so
+its next push diverges from main and the next PR will conflict on the same
+files (typically `d{N}.json`, `_concept_queue.yaml`, `_bank_index.md`,
+`_framework_library.md`, `_d{N}_toc_coverage.md`).
+
+**After every PR merge to main**, before starting the next batch:
+
+```bash
+git fetch origin main
+git reset --hard origin/main
+git push origin <feature-branch> --force-with-lease
+```
+
+This re-bases the feature branch on the squashed main, so subsequent commits
+fast-forward cleanly and the next PR opens without conflict. The `--force-with-lease`
+is safe because all branch content has just been merged to main via the PR.
+
+If this step is skipped, the merge-conflict-take-ours dance from PR #78,
+PR #79, and PR #80 will recur on every subsequent PR.
 
 ## What's New (changelog) style
 

@@ -689,12 +689,12 @@ domain_4:
     application:  130
     analysis:     104
 
-  status: in_progress
-  authored_total: 240
+  status: complete
+  authored_total: 260
   authored_mix:
     foundational: 26
     application:  130
-    analysis:     84
+    analysis:     104
 
   covered:
     # Batch 1 (d4_001..d4_020) — 4F + 12A + 4An; broad TOC launch
@@ -961,6 +961,28 @@ domain_4:
     - { id: d4_239, subtopic: "Payment Processor Downstream Impact (Analysis)",        toc_ref: "4.13.1" }
     - { id: d4_240, subtopic: "Board Cyber-Literacy Gap During Incident (Analysis)",   toc_ref: "4.15.11" }
 
+    # Batch 13 (d4_241..d4_260) — 0F + 0A + 20An — FINAL D4 BATCH; closes D4 at 260/260
+    - { id: d4_241, subtopic: "Quantum-Safe Cryptography Migration Mid-Ransomware (Analysis)", toc_ref: "4.13.1" }
+    - { id: d4_242, subtopic: "Bug-Bounty Disclosure Dispute (Analysis)",              toc_ref: "4.8.1" }
+    - { id: d4_243, subtopic: "Sustained Vendor Outage Triggering BCP Invocation (Analysis)", toc_ref: "4.16.6" }
+    - { id: d4_244, subtopic: "Insurance Fraud Detected During Incident (Analysis)",   toc_ref: "4.15.8" }
+    - { id: d4_245, subtopic: "Cross-Border Employee Monitoring & GDPR Art 88 (Analysis)", toc_ref: "4.11.3" }
+    - { id: d4_246, subtopic: "Major Data Center Physical Security Breach (Analysis)", toc_ref: "4.1.6" }
+    - { id: d4_247, subtopic: "Generative AI Inadvertent Data Exposure (Analysis)",    toc_ref: "4.11.3" }
+    - { id: d4_248, subtopic: "Mass Account Takeover Credential Stuffing (Analysis)",  toc_ref: "4.6.3" }
+    - { id: d4_249, subtopic: "Backup Encryption Key Loss (Analysis)",                 toc_ref: "4.14.2" }
+    - { id: d4_250, subtopic: "Whistleblower on Inadequate Controls (Analysis)",       toc_ref: "4.15.11" }
+    - { id: d4_251, subtopic: "Russia Exit Sanctions Data Sovereignty (Analysis)",     toc_ref: "4.11.3" }
+    - { id: d4_252, subtopic: "DR Site in Active War Zone Region (Analysis)",          toc_ref: "4.16.2" }
+    - { id: d4_253, subtopic: "Outsourced SOC Missed Incident (Analysis)",             toc_ref: "4.7.2" }
+    - { id: d4_254, subtopic: "IT Acquisition Earnings-Affecting Miss (Analysis)",     toc_ref: "4.8.2" }
+    - { id: d4_255, subtopic: "EOS OS for Legacy Reasons (Analysis)",                  toc_ref: "4.6.2" }
+    - { id: d4_256, subtopic: "Public S3 Bucket Researcher Disclosure (Analysis)",     toc_ref: "4.2" }
+    - { id: d4_257, subtopic: "Severity-1 During Executive Offsite (Analysis)",        toc_ref: "4.7.2" }
+    - { id: d4_258, subtopic: "DBA Deleted Production Data — Mistake or Malice (Analysis)", toc_ref: "4.11.3" }
+    - { id: d4_259, subtopic: "SLA Dispute Arbitration Mid-Recovery (Analysis)",       toc_ref: "4.10.1" }
+    - { id: d4_260, subtopic: "Operations Governance Maturity Capstone (Analysis)",    toc_ref: "4.15.10" }
+
   queued_next: []
 
   remaining_unplanned:
@@ -992,4 +1014,59 @@ domain_4:
 
 domain_5:
   target_total: 260
-  status: not_started
+  target_mix:
+    foundational: 26
+    application:  130
+    analysis:     104
+
+  status: in_progress
+  authored_total: 40
+  authored_mix:
+    foundational: 8
+    application:  24
+    analysis:     8
+
+  covered:
+    # Batch 1 (d5_001..d5_020) — 5.1 Info Security Frameworks + 5.3 Physical/Environmental
+    - { id: d5_001, subtopic: "Information Security Policy — Characteristics",         toc_ref: "5.1" }
+    - { id: d5_002, subtopic: "Frameworks — ISO/IEC 27001 vs NIST CSF",                 toc_ref: "5.1" }
+    - { id: d5_003, subtopic: "Environmental Controls — Scope",                         toc_ref: "5.3" }
+    - { id: d5_004, subtopic: "Physical Access Controls — Categories",                  toc_ref: "5.3" }
+    - { id: d5_005, subtopic: "Information Security Policy Lifecycle",                  toc_ref: "5.1" }
+    - { id: d5_006, subtopic: "Security Standards Selection (multi-framework)",         toc_ref: "5.1" }
+    - { id: d5_007, subtopic: "Information Security Baselines",                         toc_ref: "5.1" }
+    - { id: d5_008, subtopic: "Access Standards — Canonical Principles",                toc_ref: "5.1" }
+    - { id: d5_009, subtopic: "Environmental Exposure Assessment",                      toc_ref: "5.3" }
+    - { id: d5_010, subtopic: "Fire Suppression System Selection",                      toc_ref: "5.3" }
+    - { id: d5_011, subtopic: "Mission-Critical Power Design",                          toc_ref: "5.3" }
+    - { id: d5_012, subtopic: "Physical Access Audit Scope",                            toc_ref: "5.3" }
+    - { id: d5_013, subtopic: "Visitor Management Governance",                          toc_ref: "5.3" }
+    - { id: d5_014, subtopic: "Anti-Tailgating Controls",                               toc_ref: "5.3" }
+    - { id: d5_015, subtopic: "CCTV Monitoring Program",                                toc_ref: "5.3" }
+    - { id: d5_016, subtopic: "Data Center Physical Security Audit",                    toc_ref: "5.3" }
+    - { id: d5_017, subtopic: "Sustained Power Outage (Analysis)",                      toc_ref: "5.3" }
+    - { id: d5_018, subtopic: "Physical Breach via Cleaning Crew (Analysis)",           toc_ref: "5.3" }
+    - { id: d5_019, subtopic: "HVAC Failure — Surgical Shutdown (Analysis)",            toc_ref: "5.3" }
+    - { id: d5_020, subtopic: "Post-Acquisition Physical Security Harmonization (Analysis)", toc_ref: "5.3" }
+
+    # Batch 2 (d5_021..d5_040) — 5.2 Privacy Principles + 5.4 Identity and Access Management
+    - { id: d5_021, subtopic: "Privacy Principles — Foundations (GAPP/OECD/GDPR)",      toc_ref: "5.2" }
+    - { id: d5_022, subtopic: "Data Subject Rights — Catalog",                           toc_ref: "5.2" }
+    - { id: d5_023, subtopic: "IAM Lifecycle — Stages",                                  toc_ref: "5.4" }
+    - { id: d5_024, subtopic: "Authentication Factor Categories",                        toc_ref: "5.4" }
+    - { id: d5_025, subtopic: "Privacy Impact Assessment (DPIA) Triggers",               toc_ref: "5.2" }
+    - { id: d5_026, subtopic: "Cross-Border Transfer Mechanisms (DPF/SCCs/BCRs)",        toc_ref: "5.2" }
+    - { id: d5_027, subtopic: "Privacy by Design — Implementation",                      toc_ref: "5.2" }
+    - { id: d5_028, subtopic: "Consent Management Lifecycle",                            toc_ref: "5.2" }
+    - { id: d5_029, subtopic: "Data Minimization Implementation",                        toc_ref: "5.2" }
+    - { id: d5_030, subtopic: "Privileged Access Management (PAM)",                      toc_ref: "5.4" }
+    - { id: d5_031, subtopic: "Federated Identity (SAML/OIDC) Audit Scope",              toc_ref: "5.4" }
+    - { id: d5_032, subtopic: "Just-In-Time (JIT) Access Provisioning",                  toc_ref: "5.4" }
+    - { id: d5_033, subtopic: "Service-Account Management",                              toc_ref: "5.4" }
+    - { id: d5_034, subtopic: "Access Recertification — Cadence and Scope",              toc_ref: "5.4" }
+    - { id: d5_035, subtopic: "Identity Proofing — NIST 800-63A IAL Levels",             toc_ref: "5.4" }
+    - { id: d5_036, subtopic: "MFA Implementation — NIST 800-63B AAL Levels",            toc_ref: "5.4" }
+    - { id: d5_037, subtopic: "Privacy Regulator Investigation — First Action (Analysis, single-focus)",  toc_ref: "5.2" }
+    - { id: d5_038, subtopic: "Post-M&A IAM Consolidation (Analysis)",                   toc_ref: "5.4" }
+    - { id: d5_039, subtopic: "Privileged Credential Leak — Immediate Containment (Analysis, single-focus)", toc_ref: "5.4" }
+    - { id: d5_040, subtopic: "Post-CJEU EU Transfer Cessation Response (Analysis)",     toc_ref: "5.2" }

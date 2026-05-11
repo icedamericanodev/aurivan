@@ -8242,7 +8242,7 @@
         "C": "Provisioning capacity for everyone is expensive and doesn't fix the root architectural issue (no tenant isolation); recurring pattern with each large customer."
       },
       "tips": [
-        "Trap is C \u2014 \"provision more shared infrastructure\" addresses one symptom but the root architectural issue (no isolation between tenants) recurs with the next large customer; cell-based or dedicated-tier separation is the real fix.",
+        "Trap is A or C \u2014 A (hard rate limits on the large customer) damages the $14M relationship without giving them an option to pay; C (provision more shared infrastructure) is expensive and doesn't fix the architectural concentration. Commercial conversation + cell-based isolation is the substantive fix.",
         "Noisy-neighbor SLA breach = quotas + capacity + commercial + SLA credits + architectural review + product controls + customer-success + audit committee. Eight elements.",
         "Exam-day shortcut: any noisy-neighbor multi-tenant scenario is answered by MULTI-TRACK with commercial conversation; hard-limit-only, renegotiate-only, capacity-only framings each fail."
       ],
@@ -8356,7 +8356,7 @@
         "D": "Adding budget assumes the problem is resources; the data-migration complexity and acquired-staff retention issues won't necessarily resolve with more money."
       },
       "tips": [
-        "Trap is A \u2014 \"declare integration complete despite gaps\" satisfies the executive sponsor's resource pressure but leaves regulatory exposure (state tax compliance gap) and operational debt; auditor's role is to surface ground truth.",
+        "Trap is A or D \u2014 A (declare complete despite gaps) satisfies the executive sponsor's resource pressure; D (accelerate with budget) sounds proactive but assumes the problem is resources, not the underlying integration approach. Honest current-state + cost-benefit + hybrid-or-divest decision is the substantive response.",
         "Acquisition integration extending = honest assessment + cost-benefit + risk + recommendation + audit committee + restructured roadmap + accountability + post-mortem + hybrid/continue/divest decision. Nine elements.",
         "Exam-day shortcut: any acquisition-extending-beyond-window scenario is answered by HONEST ASSESSMENT + cost-benefit OPTIONS to leadership; declare-complete, extend-as-is, accelerate framings each miss the decision."
       ],
@@ -8425,7 +8425,7 @@
       "correct": "A",
       "key_concept": "IoT fleet compromise = immediate isolation (DNS/firewall) + firmware update or physical replacement + coordinated customer notification + credential rotation + regulatory engagement (CISA + ISAOs) + supply-chain liability + product roadmap + reimbursement framework. Eight tracks.",
       "pre_read": "For IoT-fleet-compromise scenarios, anchor on \"immediate isolation + remediation per sensor + coordinated customer notification + regulatory.\" OTA-only, customer-only, replace-all framings each fail.",
-      "correct_explanation": "NIST SP 800-213 (IoT Device Cybersecurity Capability Core Baseline), CISA Industrial Control Systems Cybersecurity guidance, and ISACA's Cloud Computing Management Audit/Assurance Program establish eight-track response: (1) IMMEDIATE SENSOR ISOLATION FROM C2 \u2014 DNS sinkhole of known C2 domains, customer-side firewall rules blocking outbound to actor infrastructure; preserves devices in operational state while preventing further beaconing; (2) FIRMWARE UPDATE for ACCESSIBLE SENSORS + PHYSICAL REPLACEMENT for remote/inaccessible \u2014 OTA is faster where connectivity allows; physical replacement is required where OTA isn't feasible; (3) COORDINATED CUSTOMER NOTIFICATION \u2014 47 customers each have their own incident response posture; some are critical-infrastructure (water utility) with specific notification obligations; coordinated rollout prevents inconsistent messaging; (4) CREDENTIAL ROTATION for FIRMWARE-UPDATE INFRASTRUCTURE \u2014 the GitHub-exposed credentials need rotation + all systems they accessed need review; (5) REGULATORY ENGAGEMENT \u2014 CISA (national infrastructure), sector-specific ISAOs (Oil & Natural Gas ISAC, WaterISAC); proactive disclosure preferred over discovery; (6) SUPPLY-CHAIN LIABILITY ASSESSMENT \u2014 general counsel reviews customer contracts, warranty obligations, indemnification; (7) PRODUCT ROADMAP \u2014 secure-by-design firmware, signed updates, hardware security modules, vulnerability disclosure program; (8) POST-INCIDENT: customer reimbursement framework, future deployment governance. Option B (OTA-only) doesn't address remote/inaccessible sensors. Option C (customer-driven) abdicates the manufacturer's responsibility for product safety. Option D (replace 280K) over-corrects ($235M+ cost) when only 14K are confirmed compromised.",
+      "correct_explanation": "NIST SP 800-213 (IoT Device Cybersecurity Guidance) and NISTIR 8259A (IoT Device Cybersecurity Capability Core Baseline), CISA Industrial Control Systems Cybersecurity guidance, and ISACA's Cloud Computing Management Audit/Assurance Program establish eight-track response: (1) IMMEDIATE SENSOR ISOLATION FROM C2 \u2014 DNS sinkhole of known C2 domains, customer-side firewall rules blocking outbound to actor infrastructure; preserves devices in operational state while preventing further beaconing; (2) FIRMWARE UPDATE for ACCESSIBLE SENSORS + PHYSICAL REPLACEMENT for remote/inaccessible \u2014 OTA is faster where connectivity allows; physical replacement is required where OTA isn't feasible; (3) COORDINATED CUSTOMER NOTIFICATION \u2014 47 customers each have their own incident response posture; some are critical-infrastructure (water utility) with specific notification obligations; coordinated rollout prevents inconsistent messaging; (4) CREDENTIAL ROTATION for FIRMWARE-UPDATE INFRASTRUCTURE \u2014 the GitHub-exposed credentials need rotation + all systems they accessed need review; (5) REGULATORY ENGAGEMENT \u2014 CISA (national infrastructure), sector-specific ISAOs (Oil & Natural Gas ISAC, WaterISAC); proactive disclosure preferred over discovery; (6) SUPPLY-CHAIN LIABILITY ASSESSMENT \u2014 general counsel reviews customer contracts, warranty obligations, indemnification; (7) PRODUCT ROADMAP \u2014 secure-by-design firmware, signed updates, hardware security modules, vulnerability disclosure program; (8) POST-INCIDENT: customer reimbursement framework, future deployment governance. Option B (OTA-only) doesn't address remote/inaccessible sensors. Option C (customer-driven) abdicates the manufacturer's responsibility for product safety. Option D (replace 280K) over-corrects ($235M+ cost) when only 14K are confirmed compromised.",
       "wrong_explanations": {
         "B": "OTA-only doesn't address remote/inaccessible sensors; some sensors require physical replacement, and uniform OTA approach ignores the connectivity constraint.",
         "C": "Customer-only response abdicates manufacturer's product safety responsibility; coordinated firmware update + manufacturer-led customer notification is the standard.",
@@ -8436,7 +8436,7 @@
         "IoT fleet compromise = isolation + firmware/replacement + customer notification + credential rotation + regulatory + supply-chain liability + product roadmap + reimbursement. Eight tracks.",
         "Exam-day shortcut: any IoT-fleet-compromise scenario is answered by IMMEDIATE ISOLATION + tier-appropriate remediation + coordinated notification; OTA-only, customer-driven, replace-all framings each fail."
       ],
-      "framework_ref": "NIST SP 800-213 (IoT Device Cybersecurity Capability Core Baseline); CISA Industrial Control Systems Cybersecurity Guidance; NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); IEC 62443 (Industrial Cybersecurity); ISACA Cloud Computing Management Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-213 (IoT Device Cybersecurity Guidance); NISTIR 8259A (IoT Device Cybersecurity Capability Core Baseline); CISA Industrial Control Systems Cybersecurity Guidance; NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); IEC 62443 (Industrial Cybersecurity); ISACA Cloud Computing Management Audit/Assurance Program",
       "related_concepts": [
         "IoT fleet management",
         "C2 sinkhole",
@@ -8470,7 +8470,7 @@
         "D": "Full outsourcing is impractical for in-flight acquisition integration + 4-month regulatory exam preparation; targeted outsourcing of specific functions is more appropriate."
       },
       "tips": [
-        "Trap is A \u2014 \"comply with CFO directive as given\" abdicates the CIO's risk-advisory role; the right response is documented advocacy + risk-based execution if cuts proceed.",
+        "Trap is A or C \u2014 A (comply with CFO directive as given) abdicates the CIO's risk-advisory role; C (refuse to implement) creates governance crisis without resolution. The right governance is documented advocacy through audit committee + risk-based execution if cuts proceed.",
         "Workforce reduction + IT = document risk + alternatives + audit committee + knowledge capture + automation + outsource targeted + succession plans + hire-back agreements + burnout monitoring. Multi-element.",
         "Exam-day shortcut: any workforce-reduction-vs-IT-continuity scenario is answered by DOCUMENTED ADVOCACY + risk-based execution + audit committee; comply, refuse, outsource-everything framings each fail."
       ],
@@ -8508,7 +8508,7 @@
         "D": "External validation is excessive precondition for action when disparate impact is already visible in the data; suspend/review while validation proceeds in parallel."
       },
       "tips": [
-        "Trap is B \u2014 \"continue using the model while remediation proceeds\" accepts ongoing ECOA violations; the right response is immediate suspension OR human-review-for-each-decision.",
+        "Trap is B \u2014 \"continue while remediating\" accepts ongoing ECOA violations and is the canonical too-cautious answer. Note also: A (suspension only) is the safe textbook response but under-delivers \u2014 multi-track requires proactive CFPB disclosure + 38K customer remediation + governance gap + model improvements + counsel, not suspension alone.",
         "AI/ML bias = suspension/review + proactive CFPB + customer remediation + governance gap + counsel + model improvements + board briefing + public comms. Eight tracks.",
         "Exam-day shortcut: any AI/ML-bias-in-production scenario is answered by IMMEDIATE SUSPENSION + proactive regulator + customer remediation; continue, suspend-only, external-only framings each fail."
       ],
@@ -8548,7 +8548,7 @@
       "tips": [
         "Trap is A \u2014 \"defer the upgrade to support tax audit\" violates BOD 22-01 federal directive with fixed deadline; competing obligations are best managed by transparent stakeholder coordination, not by sacrificing one.",
         "Audit + upgrade conflict = engage authority + propose delayed start + confirm BOD 22-01 + audit access plan + coordinated comm + document + audit committee + improvements. Eight tracks.",
-        "Exam-day shortcut: any competing-regulatory scenario is answered by ENGAGE STAKEHOLDER + propose compromise; defer-one, proceed-without-coord, cancel framings each fail."
+        "Exam-day shortcut: when the stem names two specific compliance deadlines that conflict AND one has a formal extension/exception process (CISA BOD 22-01, FDA emergency authorization, etc.), the answer involves PURSUING THE EXTENSION + transparent counterparty coordination \u2014 not sacrificing one obligation for the other."
       ],
       "framework_ref": "CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); IRS / State Tax Authority Audit Procedures; ISACA IT Audit Standards on Communication of Results; NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
       "related_concepts": [
@@ -8656,7 +8656,7 @@
       "correct_explanation": "AICPA SOC for Cybersecurity Reporting Framework, AICPA Trust Services Criteria, and ISACA's IT Audit Standard 1206 (Using the Work of Other Experts) establish seven-element response: (1) CLARIFY THE SOC FOR CYBERSECURITY SCOPE \u2014 important distinction: SOC for Cybersecurity reports cover the SUBJECT ENTITY's cybersecurity program; the MSSP's report covers the MSSP's program, NOT the firm's; (2) USE for VENDOR RELIANCE ONLY \u2014 the MSSP's SOC supports the firm's reliance on the MSSP's services and controls, particularly Complementary User-Entity Controls (CUECs) the firm must operate; (3) FIRM-LEVEL CYBERSECURITY EVIDENCE \u2014 separate audit evidence needed: firm's own SOC for Cybersecurity (if pursued), internal audit assessment, third-party penetration testing, control attestation, AICPA Cybersecurity Risk Management Reporting; (4) EDUCATE CISO AND AUDIT COMMITTEE on the distinction \u2014 common misunderstanding; SOC reports don't automatically cover what the firm thinks they cover; (5) RECOMMEND FIRM-LEVEL CYBERSECURITY ASSESSMENT \u2014 if not already conducted; (6) COORDINATED AUDIT PLAN \u2014 covering both vendor reliance (MSSP SOC) and firm-level controls; (7) DOCUMENT THE ASSESSMENT \u2014 supports audit work papers. Option A misreads scope. Option B (request firm SOC) is one element. Option D (defer-to-CISO) abdicates audit independence.",
       "wrong_explanations": {
         "A": "The MSSP's unmodified SOC opinion covers MSSP's controls, not the firm's program; treating it as firm-evidence misreads scope and provides false assurance.",
-        "B": "Requesting firm's own SOC is one element; the underlying issue is distinguishing vendor-reliance evidence from firm-program evidence and educating the CISO/committee.",
+        "B": "Requesting the firm's own SOC for Cybersecurity is one tool but it doesn't surface the substantive error here. The CISO has committed a CATEGORY ERROR (mistaking vendor-program evidence for firm-program evidence); the right intervention is to teach the distinction, then evaluate what firm-level evidence is needed (which may or may not require a firm SOC report).",
         "D": "Deferring to CISO's judgment when the underlying assertion (MSSP SOC = firm cybersecurity evidence) is substantively incorrect abdicates audit independence."
       },
       "tips": [
@@ -8732,8 +8732,8 @@
       "correct_explanation": "ISACA IT Vendor Management Audit/Assurance Program, UCC (Uniform Commercial Code) on material breach, state insurance regulator vendor management requirements, and best practices in vendor transitions establish nine-track response: (1) COORDINATED LEGAL REVIEW \u2014 termination provisions, grounds for cause vs convenience; material breach by vendor (8 SLA misses + data security incident) may constitute cause and void early-termination penalty; (2) PARALLEL: REPLACEMENT VENDOR SELECTION AND CONTRACT NEGOTIATION \u2014 start now, not after current contract ends; (3) TRANSITION SERVICES AGREEMENT (TSA) NEGOTIATION with current vendor \u2014 preserves operational continuity during transition; sometimes voluntary cooperation despite hostile termination; (4) NEGOTIATION ON TERMINATION TERMS \u2014 material breach grounds, leverage from vendor's financial distress (they may negotiate to avoid bankruptcy risks), reasonable termination period for operational continuity; (5) OPERATIONAL RISK CONTINUITY \u2014 backup data, knowledge capture, staff retention through transition; (6) REGULATOR NOTIFICATION \u2014 state insurance commissioners require notification of material vendor changes; (7) CUSTOMER IMPACT ANALYSIS AND COMMUNICATIONS \u2014 claims-processing affects every claim filed; (8) PARALLEL: INSURANCE CLAIMS for vendor-caused losses \u2014 both errors and omissions and cyber-insurance angles; (9) AUDIT COMMITTEE + BOARD BRIEFING \u2014 material relationship change. Option B (pay penalty) overlooks material-breach voiding. Option C (wait out) accepts ongoing risk. Option D (accept as stated) doesn't negotiate.",
       "wrong_explanations": {
         "B": "Paying $35M penalty without contesting overlooks material-breach grounds (8 SLA misses + data incident); legal analysis and negotiation come before payment.",
-        "C": "Waiting out the contract accepts ongoing operational risk from a financially-distressed vendor with security incident; the risk grows over time, not diminishes.",
-        "D": "Accepting 18-month termination as stated doesn't negotiate; material breach by vendor may shorten the period and void the penalty."
+        "C": "Waiting out the contract accepts ongoing operational risk from a financially-distressed vendor with active SLA misses; the vendor's deterioration likely accelerates (NASDAQ delisting threat, layoffs), so waiting compounds rather than resolves exposure.",
+        "D": "Accepting the 18-month period and $35M penalty as stated forfeits material-breach leverage (8 SLA misses + data-security incident likely constitute cause); the firm pays for a clean exit it may legally not owe, and signals weak vendor management for future renewals."
       },
       "tips": [
         "Trap is B \u2014 \"pay the $35M early-termination penalty\" overlooks that material breach by vendor (8 SLA misses + data incident) may void the penalty; negotiation and legal analysis come before payment.",
@@ -8812,7 +8812,7 @@
         "D": "Immediate switching to backup processor ignores the 24-hour ETA from current processor and the 2-4 week realistic switching time; parallel preparation makes sense, immediate switch doesn't."
       },
       "tips": [
-        "Trap is A \u2014 \"halt all card transactions until processor restores\" eliminates the BCP-documented manual workaround that exists for this scenario; documented manual procedures with PCI controls are compliant.",
+        "Trap is B \u2014 \"continue BCP-documented manual workarounds without enhancement\" sounds correct because the BCP was designed for this, but BCP-documented does NOT equal PCI-DSS-defensible; manual procedures need ENHANCED PCI compliance procedures (tokenization-equivalent practices, immediate destruction of paper imprints) for QSA assessment.",
         "Payment processor downstream = processor communication + manual with PCI + guest comms + parallel backup + PCI documentation + financial tracking + goodwill + insurance + post-incident redundancy. Nine tracks.",
         "Exam-day shortcut: any payment-processor-downstream scenario is answered by MAINTAIN MANUAL WITH PCI + parallel backup + customer comms; halt-cards, BCP-only, immediate-switch framings each fail."
       ],
@@ -8863,6 +8863,766 @@
         "Pre-incident drills"
       ],
       "_provenance": "Authored from concept: 'Board cyber-literacy gap during active breach'. Public sources: SEC, NACD, ISACA. Scenario specifics (publicly-traded retailer $3.8B, 340K customer records breached, hour 16, board-level briefing 4 hours, 1 of 9 directors with technical background) invented."
+    },
+    {
+      "id": "d4_241",
+      "domain": 4,
+      "subtopic": "Quantum-Safe Cryptography Migration Mid-Ransomware (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the CISO?",
+      "scenario_context": "A federal contractor ($1.9B revenue) is hour 12 of a ransomware response. Forensic analysis: data has been exfiltrated but is encrypted with AES-256 + RSA-2048 (the firm's own production encryption). The threat actor is demanding $14M ransom. Two complications: (1) NIST published its first post-quantum cryptography standards (FIPS 203/204/205) recently, and (2) intelligence reporting suggests this threat actor is harvesting RSA-2048-encrypted data for future quantum decryption ('harvest now, decrypt later'). The firm's planned PQC migration was scheduled for 24-36 months. The CISO is weighing immediate response vs accelerated PQC adoption.",
+      "options": {
+        "A": "IR per established plan + NO RANSOM (FBI/OFAC + harvest-now persistence) + accelerate PQC migration + crypto-agility audit + FBI/CISA engagement + customer notification + board briefing.",
+        "B": "Pay the $14M ransom to limit exfiltration exposure; rapid resolution outweighs harvest-now risk that is years away from materializing.",
+        "C": "Defer the PQC migration as planned (24-36 months); current AES-256 is quantum-resistant and only RSA needs replacement which is well-known.",
+        "D": "Replace encryption with one-time-pads for all new data; OTPs are the only theoretically quantum-secure cipher available."
+      },
+      "correct": "A",
+      "key_concept": "Quantum harvest-now-decrypt-later + ransomware = IR per plan + NO RANSOM + accelerate PQC migration + crypto-agility audit + FBI/CISA engagement + customer notification + board briefing. Seven tracks.",
+      "pre_read": "For quantum-harvest-now scenarios, anchor on \"accelerated PQC migration for high-sensitivity data + crypto-agility.\" Pay-ransom, defer-PQC, and exotic-cipher framings each fail.",
+      "correct_explanation": "NIST FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA) \u2014 published 2024 \u2014 establish the first NIST-approved post-quantum cryptographic standards. CISA's 'Quantum-Readiness: Migration to Post-Quantum Cryptography' guide and the cryptographic agility principles in NIST SP 800-208 establish seven-track response: (1) IR per established plan; (2) NO RANSOM (FBI Internet Crime Complaint Center and OFAC sanctions risk apply, and payment doesn't remediate the harvest-now-decrypt-later exposure); (3) ACCELERATE PQC MIGRATION for high-sensitivity data \u2014 adopt hybrid classical+PQC scheme as transitional; (4) CRYPTO-AGILITY AUDIT \u2014 confirm the firm can rotate algorithms without rebuilding systems; (5) FBI/CISA ENGAGEMENT on harvest-now pattern \u2014 NSA Cybersecurity Information Sheet on PQC migration; (6) CUSTOMER NOTIFICATION with PQC-migration timeline; transparency on the quantum-risk acceleration; (7) BOARD BRIEFING \u2014 quantum risk is a material strategic risk requiring governance awareness. Option B violates FBI/OFAC and ignores quantum-harvest persistence. Option C misreads quantum vulnerability of asymmetric protocols. Option D is operationally infeasible.",
+      "wrong_explanations": {
+        "B": "Payment violates FBI/OFAC guidance AND doesn't prevent harvest-now decrypt-later: the attacker keeps the exfiltrated ciphertext regardless of payment, with future quantum-decrypt capability.",
+        "C": "AES-256 is symmetric and considered quantum-resistant at 128-bit security level, but RSA-2048 protecting the firm's hybrid encryption IS quantum-vulnerable; the 24-36 month timeline assumes no active harvesting threat \u2014 which intelligence now indicates exists.",
+        "D": "One-time-pads require keys as long as the data and perfect key distribution \u2014 operationally infeasible at enterprise scale. NIST PQC standards (FIPS 203/204/205) are the practical path."
+      },
+      "tips": [
+        "Trap is C \u2014 \"AES-256 is quantum-resistant; only RSA needs replacement\" misses that the firm's hybrid encryption uses RSA-2048 for key exchange; the entire data flow is vulnerable until PQC replaces the asymmetric layer.",
+        "Quantum harvest-now-decrypt-later + ransomware = IR + NO RANSOM + accelerate PQC + crypto-agility audit + FBI/CISA + customer notification + board briefing. Seven tracks.",
+        "Exam-day shortcut: any quantum-harvest scenario is answered by ACCELERATED PQC + crypto-agility + NO RANSOM; pay-ransom, defer-PQC, exotic-cipher framings each fail."
+      ],
+      "framework_ref": "NIST FIPS 203 (ML-KEM); NIST FIPS 204 (ML-DSA); NIST FIPS 205 (SLH-DSA); NIST SP 800-208 (Stateful Hash-Based Signature Schemes); CISA Quantum-Readiness Guide; NSA Cybersecurity Information Sheet (CSI) on Post-Quantum Cryptography",
+      "related_concepts": [
+        "Post-quantum cryptography",
+        "FIPS 203/204/205",
+        "Harvest-now-decrypt-later",
+        "Crypto-agility",
+        "Hybrid classical+PQC"
+      ],
+      "_provenance": "Authored from concept: 'Quantum harvest-now ransomware scenario'. Public sources: NIST, CISA, NSA. Scenario specifics (federal contractor $1.9B, hour 12 of ransomware, AES-256+RSA-2048, $14M ransom, 24-36 month planned PQC migration, intel on harvest pattern) invented."
+    },
+    {
+      "id": "d4_242",
+      "domain": 4,
+      "subtopic": "Bug-Bounty Disclosure Dispute (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief security officer?",
+      "scenario_context": "A SaaS company ($420M ARR) operates a bug-bounty program. A researcher submitted a finding 47 days ago \u2014 a vulnerability that could leak customer data via an API gateway misconfiguration. The firm validated the finding, classified as 'high' severity, paid the bounty ($8K), and committed to remediation 'within 90 days' per the firm's policy. At day 47 the firm has not yet remediated. The researcher has now publicly disclosed the vulnerability on social media with technical details \u2014 citing the firm's slowness. Researcher's disclosure is consistent with their bug-bounty terms but creates immediate exposure. Active exploitation likely within hours.",
+      "options": {
+        "A": "Threaten the researcher with legal action under CFAA; the public disclosure has caused active harm.",
+        "B": "Emergency mitigation + prioritize remediation + coordinate with researcher + customer notification + governance review + post-incident.",
+        "C": "Withhold customer notification until the permanent fix is deployed; premature disclosure creates panic.",
+        "D": "Disable the affected API gateway entirely; that eliminates exploitation while permanent fix is developed."
+      },
+      "correct": "B",
+      "key_concept": "Bug-bounty disclosure dispute = emergency mitigation + prioritize remediation + coordinate with researcher + customer notification + program governance review + public communications + post-incident review. Seven tracks.",
+      "pre_read": "For bug-bounty disclosure-dispute scenarios, anchor on \"emergency mitigation + transparent customer comms + bounty governance review.\" Threaten-researcher, withhold-notification, disable-everything framings each fail.",
+      "correct_explanation": "OWASP Bug Bounty Best Practices, and CFAA / Department of Justice Guidance on Good-Faith Security Research establish seven-track response: (1) EMERGENCY MITIGATION (rate limit on the misconfigured endpoint, WAF rule blocking the exploitation pattern, additional monitoring); (2) PRIORITIZE PERMANENT REMEDIATION above other work \u2014 the 47-day delay caused the disclosure; (3) COORDINATE WITH THE RESEARCHER to understand disclosure scope and possibly delay full technical details if cooperation is feasible; preserve researcher relationships; (4) CUSTOMER NOTIFICATION \u2014 transparent disclosure of researcher's public disclosure + firm's remediation timeline; this is consistent with GDPR Art 32-34 and state breach-notification frameworks; (5) BUG-BOUNTY PROGRAM GOVERNANCE REVIEW \u2014 SLA tracking, prioritization gaps that allowed 47-day delay; (6) PUBLIC COMMUNICATIONS STRATEGY coordinated with comms team; (7) POST-INCIDENT REVIEW of the 47-day delay \u2014 process gap, capacity gap, or governance gap. Option A invokes CFAA against good-faith researcher \u2014 DoJ guidance explicitly protects bug-bounty researchers; threats backfire on firm. Option C withholds notification when disclosure is already public. Option D over-disables.",
+      "wrong_explanations": {
+        "A": "CFAA legal threats against good-faith researchers in a registered bug-bounty program backfire badly \u2014 researcher community trust collapses; firm loses future-bounty pipeline; reputational damage compounds the technical issue.",
+        "C": "Customers are entitled to know about an active high-severity vulnerability with public disclosure; withholding notification while the researcher's disclosure is already public produces worse trust outcome and may breach GDPR/state breach-notification timing.",
+        "D": "Disabling the entire API gateway likely produces widespread customer outage; targeted mitigation (rate limit + WAF + monitoring) bounds risk while preserving service."
+      },
+      "tips": [
+        "Trap is A \u2014 \"threaten the researcher with CFAA action\" backfires badly with the researcher community and is contradicted by DoJ guidance on good-faith security research; firm loses bounty pipeline AND reputation.",
+        "Bug-bounty disclosure dispute = emergency mitigation + prioritize remediation + coordinate with researcher + customer notification + governance review + public comms + post-incident. Seven tracks.",
+        "Exam-day shortcut: any bug-bounty-public-disclosure scenario is answered by EMERGENCY MITIGATION + transparent customer comms; legal-threats, withhold-notification, disable-everything framings each fail."
+      ],
+      "framework_ref": "ISACA Information Security Management Audit/Assurance Program; OWASP Bug Bounty Best Practices; Department of Justice Guidance on Good-Faith Security Research (May 2022); CFAA 18 USC \u00a71030; ISO/IEC 29147 (Vulnerability Disclosure)",
+      "related_concepts": [
+        "Coordinated vulnerability disclosure",
+        "CFAA safe harbor",
+        "Bug bounty SLA",
+        "Researcher relationships",
+        "ISO/IEC 29147"
+      ],
+      "_provenance": "Authored from concept: 'Bug-bounty public disclosure dispute'. Public sources: ISACA, OWASP, DoJ, ISO/IEC. Scenario specifics (SaaS $420M ARR, 47-day delay, $8K bounty, high-severity API gateway misconfiguration, researcher public disclosure with technical details) invented."
+    },
+    {
+      "id": "d4_243",
+      "domain": 4,
+      "subtopic": "Sustained Vendor Outage Triggering BCP Invocation (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief operating officer?",
+      "scenario_context": "A community bank ($3.6B in assets) relies on a core-banking vendor for transaction processing. The vendor has been offline for 26 hours due to a regional power outage at their primary data center. Vendor ETA for restoration is 'within 12-24 hours' (cumulative 38-50 hours total). Bank operations: customer transactions queued (deposits, ACH, wires); branch operations using paper-and-manual procedures; online banking partially functional; FDIC has been informed at hour 4. Vendor has a contractual SLA of 99.5% (allows ~3.7 hours/month outage). The COO is weighing: continue waiting; activate the BCP-defined alternate processing arrangement; manual operations indefinitely; engage FDIC for regulatory accommodation.",
+      "options": {
+        "A": "Continue waiting for vendor restoration; BCP invocation is operationally expensive and the vendor ETA is 'within 24 hours.'",
+        "B": "Maintain manual operations indefinitely until vendor restores; staff have demonstrated capability under manual procedures.",
+        "C": "Activate BCP + vendor escalation + proactive FDIC + customer comms + manual oversight + forensic + post-incident review.",
+        "D": "Engage FDIC immediately for a regulatory holiday/accommodation; sustained core-banking outage warrants regulator-led pause."
+      },
+      "correct": "C",
+      "key_concept": "Vendor outage exceeding BCP threshold = ACTIVATE BCP + vendor escalation + proactive FDIC + customer comms + manual procedure oversight + forensic preservation + post-incident vendor concentration review. Seven tracks.",
+      "pre_read": "For sustained-vendor-outage scenarios, anchor on \"activate BCP per established criteria + proactive regulator + alternate processing.\" Continue-waiting, manual-indefinitely, regulator-holiday framings each fail.",
+      "correct_explanation": "FFIEC Business Continuity Management Booklet, FDIC Cybersecurity Examination Procedures, and ISO 22301 Clause 8.4.2 (Activation) establish seven-track response: (1) ACTIVATE BCP \u2014 26 hours sustained outage exceeds vendor SLA (which allows ~3.7 hours/month) AND exceeds standard BCP-defined invocation thresholds for core-banking systems (typically 4-8 hours); the alternate processing arrangement defined in BCP should be invoked; (2) ESCALATE WITH VENDOR for accurate ETA \u2014 vendor estimates have already been inaccurate; (3) PROACTIVE FDIC NOTIFICATION \u2014 FDIC was informed at hour 4; supervisory expectations include ongoing updates on extended outages; (4) CUSTOMER COMMUNICATIONS \u2014 branch and online; transparent expectations; (5) MANUAL PROCEDURES AUDIT/OVERSIGHT \u2014 extended manual operations require heightened oversight; control degradation under staff fatigue; (6) FORENSIC PRESERVATION \u2014 vendor's incident response documentation supports later vendor-management decisions; (7) POST-INCIDENT \u2014 vendor concentration review (single core-banking dependency is a material concentration), alternate processing readiness validation. Option A defers a structural decision. Option B accepts ongoing risk. Option D misunderstands regulatory accommodation scope.",
+      "wrong_explanations": {
+        "A": "Continued waiting accepts unbounded duration risk \u2014 the vendor's 'within 24 hours' has been inaccurate (26 hours elapsed of original 12-24 estimate); BCP invocation criteria are defined precisely to remove waiting bias.",
+        "B": "Indefinite manual operations at a $3.6B bank produce operational risk (transaction backlog, reconciliation gaps, control degradation as staff fatigue accumulates); BCP-defined alternate processing is the structured response.",
+        "D": "Regulatory holiday/accommodation requests are rare and usually involve formal Federal Reserve / FDIC declaration of widespread disruption; for a single-vendor outage, the firm activates its own BCP rather than requesting industry-wide accommodation."
+      },
+      "tips": [
+        "Trap is A \u2014 \"continue waiting for vendor restoration\" relies on vendor estimates already proven inaccurate; BCP invocation criteria exist precisely to remove waiting-bias.",
+        "Sustained vendor outage = activate BCP + vendor escalation + proactive FDIC + customer comms + manual oversight + forensic preservation + post-incident review. Seven tracks.",
+        "Exam-day shortcut: when the stem reports a VENDOR ETA that has ALREADY SLIPPED past its initial estimate (e.g., 'within 24 hours' was given hours ago and the outage continues) AND the outage exceeds the documented BCP invocation threshold, the answer ALWAYS involves BCP ACTIVATION \u2014 vendor estimates are no longer reliable evidence for waiting."
+      ],
+      "framework_ref": "FFIEC Business Continuity Management Booklet; FDIC Cybersecurity Examination Procedures; ISO 22301 Clause 8.4.2 (Activation); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023)",
+      "related_concepts": [
+        "BCP invocation thresholds",
+        "Core-banking vendor concentration",
+        "Alternate processing arrangement",
+        "Regulatory holiday",
+        "Manual procedure oversight"
+      ],
+      "_provenance": "Authored from concept: 'Sustained vendor outage BCP invocation'. Public sources: FFIEC, FDIC, ISO. Scenario specifics (community bank $3.6B, core-banking vendor 26-hour outage, vendor ETA inaccurate, BCP-defined alternate processing) invented."
+    },
+    {
+      "id": "d4_244",
+      "domain": 4,
+      "subtopic": "Insurance Fraud Detected During Incident Investigation (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief financial officer?",
+      "scenario_context": "A manufacturer ($580M revenue) is in week 3 of cyber-insurance claim recovery from a $22M ransomware incident. The cyber insurance carrier's forensic firm uncovered: (1) the firm's own claim documentation includes inflated business-interruption losses (~30% over forensically-verified amount); (2) one of the firm's controllers (responsible for the claim submission) has financial connections to the forensic-services vendor the firm hired post-incident (potential self-dealing); (3) some recovery expenses billed to the claim weren't directly incident-related. The carrier has not yet acted on the findings but informed the CFO confidentially. The CFO is weighing how to handle this.",
+      "options": {
+        "A": "Suspend the controller and revise the claim quietly; the carrier's findings haven't been formally raised and a discreet correction avoids broader exposure.",
+        "B": "Negotiate with the carrier to reduce the claim amount to verified figures; that resolves the immediate financial discrepancy without admission.",
+        "C": "Fire the controller for cause; the self-dealing breach justifies immediate termination without further investigation.",
+        "D": "Independent counsel + audit + suspend controller from claims + investigation + revise claim + self-disclose to carrier + coordinated counsel + board briefing + COI controls."
+      },
+      "correct": "D",
+      "key_concept": "Insurance fraud detected = independent counsel + audit + suspend controller from claim activities + investigation + revise claim + self-disclose to carrier + coordinated counsel + board briefing + post-incident COI controls. Nine tracks.",
+      "pre_read": "For insurance-fraud-detected scenarios, anchor on \"independent counsel + suspend-not-terminate + investigate + self-disclose + coordinated counsel.\" Quiet-revision, negotiate-only, fire-immediately framings each fail.",
+      "correct_explanation": "ISACA Fraud Risk Management Audit/Assurance Program, state insurance fraud statutes, 18 USC \u00a71341/1343 (Mail/Wire Fraud), and Federal Sentencing Guidelines establish nine-track response: (1) IMMEDIATELY ENGAGE INDEPENDENT LEGAL COUNSEL + AUDIT FIRM to assess findings under attorney-client privilege; (2) SUSPEND THE CONTROLLER from claim activities \u2014 preserves investigation integrity without terminating before evidence is preserved; (3) THOROUGH INTERNAL INVESTIGATION of the controller's relationship with the forensic vendor \u2014 interview, document review, financial-flow analysis; (4) REVISE THE INSURANCE CLAIM to reflect verified amounts \u2014 voluntary correction is mitigation; (5) SELF-DISCLOSE TO THE CARRIER PROACTIVELY \u2014 voluntary disclosure is treated favorably by carriers (and often required under policy good-faith provisions); (6) COORDINATED COUNSEL on potential fraud-related exposure \u2014 state insurance fraud laws (most states have specific cyber-insurance fraud statutes); federal mail/wire fraud (18 USC \u00a71341/1343); (7) BOARD / AUDIT COMMITTEE BRIEFING \u2014 material control failure (related-party self-dealing, claim inflation, internal-control breakdown); (8) POST-INCIDENT: VENDOR-CONFLICT-OF-INTEREST CONTROLS \u2014 post-incident vendor selection processes; CLAIM GOVERNANCE REVIEW \u2014 review-and-approve workflows for claim submissions. Option A invites federal fraud charges. Option B doesn't address the fraud dimension. Option C destroys investigation.",
+      "wrong_explanations": {
+        "A": "Quietly revising the claim while the carrier has documented inflated amounts produces multiple legal exposures: state insurance fraud laws often have NO de-minimis threshold; federal mail/wire fraud applies once the claim was submitted; auditor independence is compromised by concealment.",
+        "B": "Negotiating without acknowledgment of the underlying findings doesn't resolve the controller's self-dealing pattern or the firm's responsibility under SOX 302/404 (CEO/CFO certification of internal controls). The carrier's findings will surface in regulatory or litigation contexts.",
+        "C": "Firing the controller without investigation: (a) destroys evidence and witness availability for the substantive fraud investigation, (b) creates wrongful-termination litigation exposure, (c) doesn't address claim-revision or self-disclosure obligations."
+      },
+      "tips": [
+        "Trap is A \u2014 \"quietly revise the claim\" invites federal mail/wire fraud charges (18 USC \u00a71341/1343) because the inflated claim was already submitted; concealment compounds the original issue.",
+        "Insurance fraud detected = independent counsel + suspend + investigation + revise + self-disclose + coordinated counsel + board + COI controls. Nine tracks.",
+        "Exam-day shortcut: any insurance-fraud-detected scenario is answered by INDEPENDENT INVESTIGATION + self-disclosure; quiet-revision, simple-negotiation, fire-fast framings each fail."
+      ],
+      "framework_ref": "ISACA Fraud Risk Management Audit/Assurance Program; 18 USC \u00a71341 (Mail Fraud); 18 USC \u00a71343 (Wire Fraud); State Insurance Fraud Statutes; Federal Sentencing Guidelines (Organizational Sentencing); SOX Sections 302, 404, 906",
+      "related_concepts": [
+        "Mail/wire fraud",
+        "Related-party self-dealing",
+        "Voluntary self-disclosure mitigation",
+        "Claim governance",
+        "Forensic vendor COI"
+      ],
+      "_provenance": "Authored from concept: 'Insurance claim fraud detected during incident response'. Public sources: ISACA, federal statutes. Scenario specifics (manufacturer $580M, $22M ransomware claim, ~30% inflation, controller self-dealing with forensic vendor) invented."
+    },
+    {
+      "id": "d4_245",
+      "domain": 4,
+      "subtopic": "Cross-Border Employee Monitoring & GDPR Article 88 (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief privacy officer?",
+      "scenario_context": "A multinational technology firm ($820M ARR) is implementing employee-monitoring software (screen recording during work hours; keystroke analysis for productivity; email content review for IP protection). Implementation covers: US employees (Workforce: 1,200), EU employees (640 in Germany, France, Netherlands), UK employees (280), India employees (340). EU employee works councils have raised objections. German Works Council Constitution Act (BetrVG) requires co-determination. India IT Act applies to IT-services contracts but employee monitoring is less restrictive. The Chief Privacy Officer is weighing implementation approach across these jurisdictions.",
+      "options": {
+        "A": "Stop pending compliance review + GDPR Art 88 + national law + works council + national guidance + DPIA + least-intrusive-means + proportionality + transparency + board briefing.",
+        "B": "Implement uniformly across all jurisdictions with single privacy notice; uniformity simplifies global HR systems and reduces compliance complexity.",
+        "C": "Implement in US and India first (less restrictive); defer EU/UK implementation 6 months while compliance work proceeds; phased rollout balances business need and compliance.",
+        "D": "Implement everywhere but with technical opt-out for EU/UK employees; technical workaround preserves business intent while accommodating regulation."
+      },
+      "correct": "A",
+      "key_concept": "Cross-border employee monitoring = stop pending compliance review + GDPR Art 88 + national law analysis + works council co-determination + CNIL/ICO/national guidance + DPIA + least-intrusive-means + proportionality + transparency + board briefing. Ten tracks.",
+      "pre_read": "For cross-border employee-monitoring scenarios, anchor on \"jurisdiction-by-jurisdiction with works council and DPIA.\" Uniform-global, phased-priority, technical-opt-out framings each fail.",
+      "correct_explanation": "GDPR Article 88 (Processing in the Context of Employment), German Works Council Constitution Act (Betriebsverfassungsgesetz, BetrVG \u00a787), French CNIL Employee Monitoring Guidance, UK ICO Employee Monitoring Code (2023), and Indian IT Act establish ten-track jurisdiction-specific implementation: (1) STOP IMPLEMENTATION pending compliance review \u2014 implementing while uncertain creates ongoing violations; (2) GDPR ARTICLE 88 + NATIONAL EMPLOYMENT LAW ANALYSIS \u2014 Article 88 allows member states to set more specific rules for employment processing; national law adds requirements beyond GDPR baseline; (3) EU/GERMAN WORKS COUNCIL CO-DETERMINATION \u2014 BetrVG \u00a787 requires works council agreement for data-processing changes; absent agreement, can go to conciliation board; (4) FRENCH CNIL GUIDANCE + collective bargaining; (5) UK ICO EMPLOYEE MONITORING CODE \u2014 2023 guidance on transparency, proportionality, lawful basis; (6) DPIA per jurisdiction \u2014 Article 35 high-risk processing trigger; (7) LEAST-INTRUSIVE-MEANS ASSESSMENT for each monitoring type \u2014 screen recording, keystroke analysis, email content review have different intrusiveness; (8) PROPORTIONALITY AND NECESSITY documentation \u2014 Article 5(1)(c) data minimization; (9) EMPLOYEE TRANSPARENCY AND NOTICE \u2014 Article 13/14; (10) BOARD BRIEFING \u2014 cross-jurisdictional risk is material. Options B/C/D each fail multiple jurisdictional requirements.",
+      "wrong_explanations": {
+        "B": "Single global privacy notice fails GDPR Article 88's requirement for employee-specific national-law provisions, ignores works-council co-determination requirements (Germany BetrVG \u00a787), and fails the proportionality and necessity tests under EU and UK employment law.",
+        "C": "Implementing US/India first creates documented evidence of business-need-driven monitoring that complicates the eventual EU/UK rollout (regulators view late EU/UK rollouts as evidence the monitoring isn't necessity-driven); phased rollouts produce worse outcomes than coordinated implementation.",
+        "D": "Technical opt-out doesn't satisfy GDPR Article 88 + national requirements \u2014 works councils don't have an opt-out option (they have co-determination authority); proportionality, necessity, and DPIA remain firm obligations regardless of individual opt-out."
+      },
+      "tips": [
+        "Trap is B \u2014 \"implement uniformly with single privacy notice\" fails GDPR Article 88's national-law requirement and ignores works-council co-determination authority that doesn't have a privacy-notice equivalent.",
+        "Cross-border employee monitoring = stop pending review + GDPR Art 88 + national law + works council + national guidance + DPIA + least-intrusive + proportionality + transparency + board. Ten tracks.",
+        "Exam-day shortcut: any cross-border-employee-monitoring scenario is answered by JURISDICTION-BY-JURISDICTION implementation with works council + DPIA; uniform-global, phased-priority, technical-opt-out framings each fail."
+      ],
+      "framework_ref": "EU GDPR Article 88 (Processing in the Context of Employment); German Works Council Constitution Act (Betriebsverfassungsgesetz, BetrVG \u00a787); French CNIL Employee Monitoring Guidance; UK ICO Employee Monitoring Code (2023); EU GDPR Articles 5, 13, 14, 35 (Principles, Information, DPIA)",
+      "related_concepts": [
+        "GDPR Article 88",
+        "Works council co-determination (BetrVG)",
+        "CNIL Employee Monitoring Guidance",
+        "UK ICO Employee Monitoring Code",
+        "DPIA"
+      ],
+      "_provenance": "Authored from concept: 'Cross-border employee monitoring multi-jurisdiction'. Public sources: EU GDPR, German labor law, French CNIL, UK ICO. Scenario specifics (multinational tech firm $820M ARR, ~2,460 employees across US/EU/UK/India, multi-modality monitoring, works council objections) invented."
+    },
+    {
+      "id": "d4_246",
+      "domain": 4,
+      "subtopic": "Major Data Center Physical Security Breach (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief security officer?",
+      "scenario_context": "A colocation data center provider's vendor SOC report (firm received a copy as part of vendor due diligence) reports a physical security breach at the facility the firm's critical servers reside in: (1) two individuals tailgated into the data center through a service entrance 3 weeks ago; (2) they spent ~40 minutes in the facility; (3) they accessed (or had opportunity to access) racks including the firm's equipment; (4) breach was detected by post-event log review of badge access (which showed unaccompanied entries that shouldn't have been possible); (5) the colo provider has installed additional badge controls and is conducting forensic investigation; (6) the firm's equipment showed no evidence of tampering per remote diagnostics. The CSO is weighing response.",
+      "options": {
+        "A": "Trust the colo provider's report that no tampering occurred; their forensic findings are authoritative for their facility.",
+        "B": "Demand vendor forensics + independent on-site inspection + forensic imaging + log review + credential/key rotation + compliance disclosure + insurance + post-incident review.",
+        "C": "Migrate immediately to a different colocation provider; the breach demonstrates the current provider's controls are inadequate.",
+        "D": "Wait for the colo provider's full forensic investigation to conclude; premature action duplicates work and may create conflicting findings."
+      },
+      "correct": "B",
+      "key_concept": "Major colo physical security breach = demand vendor forensics + independent on-site inspection + forensic imaging + log review + credential/key rotation + compliance disclosure assessment + insurance notification + post-incident review. Eight tracks.",
+      "pre_read": "For colo-physical-security-breach scenarios, anchor on \"independent verification + forensic imaging + credential rotation + compliance disclosure.\" Trust-vendor, immediate-migration, wait-only framings each fail.",
+      "correct_explanation": "ISO/IEC 27001 Annex A.11 (Physical and Environmental Security), HHS HIPAA Security Rule (45 CFR \u00a7164.310 Physical Safeguards), PCI DSS v4.0 Requirement 9 (Restrict Physical Access), and ISACA's Data Center Audit/Assurance Program establish eight-track response: (1) DEMAND DETAILED FORENSIC FINDINGS from colo provider \u2014 what the intruders accessed, what was photographed, what timing; (2) INDEPENDENT ON-SITE INSPECTION of the firm's racks \u2014 verify physical state (cables, drives, USB ports, console access, side-channel devices); chain-of-custody documentation; (3) FORENSIC IMAGING of firm's servers \u2014 baseline against trusted state; some hardware implants only manifest on next boot or under specific conditions; (4) REVIEW ALL LOGS for the period \u2014 server, network, application \u2014 for anomalous activity; (5) CREDENTIAL AND KEY ROTATION \u2014 physical access to a server can reveal passwords in memory, console credentials, KVM-attached devices; rotate broadly; (6) COMPLIANCE/REGULATORY DISCLOSURE \u2014 HIPAA breach notification (if PHI on affected systems), PCI DSS impact (if cardholder data), contractual customer notification, state breach-notification triggers; (7) CYBER INSURANCE CARRIER NOTIFICATION; (8) POST-INCIDENT \u2014 tenant security review at colo (badge controls, escort policies, third-party-access procedures) + DR site readiness validation. Options A, C, D each represent insufficient or premature responses.",
+      "wrong_explanations": {
+        "A": "Vendor's authority over their facility doesn't substitute for the firm's verification of the firm's own equipment integrity; remote diagnostics show no tampering AT THE LOGICAL LAYER but physical tampering (hardware implants, USB devices, console access) requires direct verification.",
+        "C": "Immediate migration creates immediate operational risk (untested move during a security incident); migration may be the right outcome but requires careful planning, parallel running, and orderly transition rather than panic move.",
+        "D": "Waiting for the colo provider's investigation accepts continued unknown-state operation for weeks; the firm's responsibility to its customers and regulators doesn't pause for vendor investigations."
+      },
+      "tips": [
+        "Trap is A \u2014 \"trust the colo provider's report that no tampering occurred\" delegates verification when physical tampering (hardware implants, USB devices, KVM attacks) requires direct inspection by the firm's own team.",
+        "Colo physical security breach = demand forensics + independent inspection + forensic imaging + log review + credential rotation + compliance disclosure + insurance + post-incident review. Eight tracks.",
+        "Exam-day shortcut: any colo-physical-breach scenario is answered by INDEPENDENT VERIFICATION + forensic imaging + credential rotation; trust-vendor, panic-migration, wait-only framings each fail."
+      ],
+      "framework_ref": "ISO/IEC 27001 Annex A.11 (Physical and Environmental Security); HHS HIPAA Security Rule 45 CFR \u00a7164.310 (Physical Safeguards); PCI DSS v4.0 Requirement 9 (Restrict Physical Access to Cardholder Data); ISACA Data Center Audit/Assurance Program; ISO/IEC 27037 (Digital Evidence)",
+      "related_concepts": [
+        "Colocation tenant security",
+        "Tailgating breach",
+        "Hardware implants",
+        "Forensic imaging",
+        "Chain-of-custody at colo"
+      ],
+      "_provenance": "Authored from concept: 'Major colocation physical security breach response'. Public sources: ISO/IEC, HHS, PCI SSC, ISACA. Scenario specifics (colo SOC report disclosed breach, 2 tailgaters 40 minutes, 3 weeks ago, firm's equipment present) invented."
+    },
+    {
+      "id": "d4_247",
+      "domain": 4,
+      "subtopic": "Generative AI Inadvertently Exposing Customer Data (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief technology officer?",
+      "scenario_context": "A B2B SaaS company ($340M ARR) deployed an internal generative-AI tool (custom-trained on the firm's documentation including code, customer support tickets, internal wikis). 8 weeks post-deployment, the security team discovers: (1) the model was trained on customer support tickets that contain PII (names, email, phone, sometimes payment card last-4); (2) employees can prompt the tool to recall specific customer data; (3) one employee was demonstrating the tool to a vendor when it surfaced a customer's email + phone + recent ticket history; (4) the vendor screen-recorded the demo; (5) approximately 230,000 customer support tickets are in the training corpus; (6) the tool is used by ~140 employees daily. The CTO is weighing response.",
+      "options": {
+        "A": "Issue a corrective system patch that filters PII from the model's responses; the underlying training data can remain and behavioral controls handle the exposure.",
+        "B": "Notify all 230K customers immediately as a breach; broad notification preserves trust and is required under most state laws.",
+        "C": "Disable tool + vendor coordination on screen recording + data inventory + customer impact + breach notification + retrain with redaction + AI governance + board + NIST AI RMF.",
+        "D": "Wait for the vendor to confirm the screen recording was deleted; the actual disclosure is bounded to that single incident."
+      },
+      "correct": "C",
+      "key_concept": "Gen-AI inadvertent data exposure = disable tool + vendor coordination on screen recording + data inventory + customer impact assessment + breach notification analysis + retrain with proper redaction + governance review + board briefing + NIST AI RMF. Nine tracks.",
+      "pre_read": "For gen-AI inadvertent-data-exposure scenarios, anchor on \"disable tool + retrain + targeted notification + AI governance.\" Filter-only, mass-notify-all, wait-for-vendor framings each fail.",
+      "correct_explanation": "NIST AI Risk Management Framework 1.0, ISO/IEC 42001 (AI Management Systems), GDPR Articles 33 and 34 (Breach Notification), and ISACA's Auditing Artificial Intelligence Audit Program establish nine-track response: (1) IMMEDIATELY DISABLE THE AI TOOL \u2014 stop further exposure; (2) VENDOR COORDINATION on screen recording retrieval + NDA on observed customer data; (3) DATA-INVENTORY ANALYSIS \u2014 PII categories in training corpus, retention status, regulatory implications; (4) CUSTOMER IMPACT ASSESSMENT \u2014 what specific PII exposed in the demo, what's in the corpus that could be re-exposed via jailbreak; (5) BREACH NOTIFICATION ANALYSIS \u2014 GDPR Articles 33 and 34 (72-hour to supervisory authority + notification to data subjects); state breach laws (most cover support-ticket PII); contractual customer notification; (6) RETRAIN THE MODEL with proper PII REDACTION \u2014 pre-training data cleansing; differential-privacy training; (7) GOVERNANCE REVIEW \u2014 how did the tool deploy without privacy review; AI development lifecycle gaps; (8) BOARD / AUDIT COMMITTEE BRIEFING; (9) NIST AI RMF COMPLIANCE ASSESSMENT \u2014 risk-management framework for AI systems. Option A relies on filters that bypass via prompt engineering. Option B mass-notifies without assessment. Option D waits while exposure continues.",
+      "wrong_explanations": {
+        "A": "Output filters can be bypassed via prompt engineering (jailbreaking); the model retains the training data in its weights; deletion of training data requires retraining. Filters provide weaker assurance than retraining.",
+        "B": "Notifying 230K customers without proper investigation of which customers are actually at risk creates panic, wastes notification capacity, and may be premature; targeted notification of confirmed affected customers + general transparency for the broader customer base is the standard approach.",
+        "D": "Vendor confirmation doesn't address the structural issue (the tool retains the data; 140 employees use it daily; future demonstrations or jailbreaks can re-expose); waiting accepts ongoing exposure."
+      },
+      "tips": [
+        "Trap is A \u2014 \"output filters handle the exposure\" relies on prompt-injection-vulnerable filters; the model retains training data in weights, and jailbreak techniques bypass filters. Retraining is the structural fix.",
+        "Gen-AI inadvertent exposure = disable + vendor coordination + data inventory + impact assessment + breach notification + retrain + governance + board + AI RMF. Nine tracks.",
+        "Exam-day shortcut: any gen-AI-data-exposure scenario is answered by DISABLE + retrain + targeted notification; filter-only, mass-notify, wait-only framings each fail."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework 1.0; ISO/IEC 42001 (AI Management Systems); EU GDPR Articles 33 (Breach Notification to Supervisory Authority), 34 (Breach Notification to Data Subjects); ISACA Auditing Artificial Intelligence Audit Program; State breach-notification laws",
+      "related_concepts": [
+        "Gen-AI training data leakage",
+        "Prompt injection / jailbreak",
+        "Differential privacy training",
+        "NIST AI RMF",
+        "AI governance lifecycle"
+      ],
+      "_provenance": "Authored from concept: 'Generative AI training-corpus inadvertent data exposure'. Public sources: NIST, ISO/IEC, EU GDPR, ISACA. Scenario specifics (B2B SaaS $340M ARR, internal gen-AI, 230K customer tickets in corpus, 8-week deployment, vendor demo screen-recording) invented."
+    },
+    {
+      "id": "d4_248",
+      "domain": 4,
+      "subtopic": "Mass Account Takeover via Credential Stuffing (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief security officer?",
+      "scenario_context": "An e-commerce platform ($1.2B revenue, 8.4M registered users) is in hour 6 of a major credential-stuffing attack: (1) attacker is using credentials leaked from an unrelated breach (third-party); (2) authentication system shows ~14% of attempted logins succeed (consistent with credential-reuse rate); (3) confirmed account takeover at ~62,000 accounts so far; (4) attackers are making fraudulent purchases ($840K confirmed losses, growing $50K/hour); (5) the firm doesn't mandate MFA (opt-in adoption is 18%); (6) WAF rules are blocking the source IPs but attacker is rotating through 12,000 residential-proxy IPs. The CSO is weighing rate-limiting, MFA mandate, account freeze, and authentication-source diversification.",
+      "options": {
+        "A": "Implement an account-wide forced password reset; that invalidates all leaked credentials immediately.",
+        "B": "Block all login attempts from the 12,000 IP addresses identified; that stops the attack at the network layer.",
+        "C": "Wait for the attacker to exhaust their credential list; the 14% success rate will degrade as cracked credentials are consumed.",
+        "D": "Bot detection + per-username rate-limit + emergency MFA + account suspension + customer comms + card networks + mandatory MFA + passkeys."
+      },
+      "correct": "D",
+      "key_concept": "Credential-stuffing attack = bot detection + rate-limiting + emergency MFA + account suspension + customer comms + card-network coordination + law enforcement + post-incident mandatory MFA + passkey rollout. Nine tracks.",
+      "pre_read": "For credential-stuffing-attack scenarios, anchor on \"bot detection + rate-limiting per username + emergency MFA + passkey rollout.\" Mass-reset, IP-blocking-only, wait-out framings each fail.",
+      "correct_explanation": "OWASP Top 10 (Identification and Authentication Failures), NIST SP 800-63B (Authentication and Lifecycle Management), CISA Joint Cybersecurity Advisories on credential stuffing, and ISACA's Identity and Access Management Audit/Assurance Program establish nine-track response: (1) ADVANCED BOT DETECTION \u2014 behavioral analytics, device fingerprinting, machine-learning classifiers; beyond IP-based blocking; (2) AUTOMATIC RATE-LIMITING PER USERNAME \u2014 per-account thresholds prevent volume attacks even from rotated IPs; (3) EMERGENCY MFA MANDATE for high-risk transactions \u2014 purchases above threshold; not full account-MFA but transaction-MFA; (4) SUSPEND CONFIRMED-COMPROMISED ACCOUNTS with friendly reactivation flow \u2014 protects customers and the firm; (5) CUSTOMER COMMUNICATIONS + PASSWORD RESET CAMPAIGN \u2014 for affected and at-risk customers; (6) COORDINATE WITH CARD NETWORKS on fraud chargeback \u2014 Visa, Mastercard, AmEx have credential-stuffing fraud procedures; (7) LAW ENFORCEMENT ENGAGEMENT \u2014 FBI Internet Crime Complaint Center; cross-border attackers; (8) POST-INCIDENT: MANDATORY MFA ROLLOUT \u2014 opt-in at 18% is the root cause; (9) PASSKEY/WEBAUTHN ROLLOUT \u2014 phishing-resistant, credential-stuffing-resistant authentication. Options A, B, C each fail to address the structural issue.",
+      "wrong_explanations": {
+        "A": "Account-wide forced password reset for 8.4M users produces massive customer-support burden, transactional disruption, and doesn't address the root cause (lack of MFA + credential reuse); attackers immediately re-test new passwords if compromise pattern continues.",
+        "B": "IP-based blocking is the attacker's expected challenge \u2014 they rotate through 12,000 residential proxies; new proxies will emerge. Network-layer blocking is necessary but insufficient.",
+        "C": "Waiting accepts $50K/hour in growing fraud losses and customer-impact compounding; passive response is not an option at the velocity reported."
+      },
+      "tips": [
+        "Trap is A \u2014 \"account-wide forced password reset\" for 8.4M users produces massive support burden without fixing the root cause (no MFA, credential reuse); attackers re-test as customers update passwords.",
+        "Credential-stuffing = bot detection + rate-limiting + emergency MFA + account suspension + customer comms + card networks + law enforcement + mandatory MFA + passkeys. Nine tracks.",
+        "Exam-day shortcut: any credential-stuffing scenario is answered by BOT DETECTION + per-username rate-limiting + MFA mandate + passkey rollout; mass-reset, IP-only, wait framings each fail."
+      ],
+      "framework_ref": "OWASP Top 10 2021 (A07 Identification and Authentication Failures); NIST SP 800-63B (Authentication and Lifecycle Management); CISA Joint Cybersecurity Advisories on Credential Stuffing; ISACA Identity and Access Management Audit/Assurance Program; FIDO Alliance WebAuthn Specifications",
+      "related_concepts": [
+        "Credential stuffing",
+        "Behavioral bot detection",
+        "WebAuthn / Passkeys",
+        "Per-username rate-limiting",
+        "Transaction-MFA"
+      ],
+      "_provenance": "Authored from concept: 'Mass credential-stuffing attack response'. Public sources: OWASP, NIST, CISA, ISACA, FIDO. Scenario specifics (e-commerce $1.2B 8.4M users, hour 6, 14% success rate, 62K compromised accounts, $50K/hour growing fraud, 18% MFA opt-in) invented."
+    },
+    {
+      "id": "d4_249",
+      "domain": 4,
+      "subtopic": "Backup Encryption Key Loss (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief technology officer?",
+      "scenario_context": "A regional hospital network ($1.4B revenue, 7 hospitals) discovers that its backup encryption keys have been lost. The keys: (1) protected the firm's offsite backup tapes for the past 7 years; (2) covered 4.8 PB of patient records, financial data, and operational backups; (3) were stored on a dedicated HSM (Hardware Security Module) that suffered a catastrophic failure 5 days ago; (4) the HSM's backup-key escrow procedure was theoretical (never tested) and the escrowed keys are encrypted with another key the firm cannot locate; (5) backup data without keys = cryptographically erased; (6) operational impact: the firm has 90-day live backups + the now-inaccessible 7 years of archive. The CTO is weighing how to proceed.",
+      "options": {
+        "A": "HSM vendor recovery options + external specialists + preserve artifacts + regulatory/compliance impact + regulator comm + documentation + KMS reformulation + hardware redundancy + escrow testing.",
+        "B": "Disclose the loss as a regulatory matter and write off the 7-year archive as unrecoverable; honest accounting prevents future fraud-allegations.",
+        "C": "Attempt cryptographic brute-force on a subset of the most critical archived backups; modern cloud compute can sometimes recover weak keys.",
+        "D": "Retain the encrypted backups indefinitely in case future cryptanalysis (quantum, etc.) breaks the encryption; preserve the data for possible future recovery."
+      },
+      "correct": "A",
+      "key_concept": "Backup encryption key loss = HSM vendor recovery options + external specialists + preserve artifacts + regulatory/compliance impact + regulator communication + documentation + KMS reformulation + post-incident hardware redundancy + escrow testing. Nine tracks.",
+      "pre_read": "For backup-encryption-key-loss scenarios, anchor on \"vendor recovery options + external specialists + KMS reformulation.\" Write-off, brute-force, store-forever framings each fail.",
+      "correct_explanation": "NIST SP 800-57 Part 1 (Key Management), NIST SP 800-111 (Storage Encryption), HHS HIPAA Security Rule (45 CFR \u00a7164.316 Documentation and Retention), and ISACA's IT Audit Standards on Information Security establish nine-track response: (1) IMMEDIATELY CONTACT THE HSM VENDOR \u2014 some HSMs (e.g., Thales Luna, AWS CloudHSM, Entrust nShield product families) have vendor-side recovery procedures even when documented as one-way; vendor relationship matters; (2) EXTERNAL HSM SPECIALISTS + CRYPTOGRAPHY CONSULTANTS \u2014 specialized firms may have non-obvious recovery techniques; (3) PRESERVE ALL HSM-RELATED ARTIFACTS \u2014 logs, configurations, key-derivation materials, anything that could feed reconstruction; (4) REGULATORY AND COMPLIANCE IMPACT \u2014 HIPAA records-retention (6 years; healthcare-specific subsets may be longer), state retention requirements, civil litigation implications; (5) REGULATOR COMMUNICATION \u2014 state health department, OCR (HHS Office for Civil Rights); proactive disclosure preferred; (6) DOCUMENT THE LOSS for forensic and insurance purposes; (7) KEY MANAGEMENT REFORMULATION \u2014 proper escrow with TESTED recovery (the firm's escrow procedure was 'theoretical, never tested' \u2014 that's the root governance gap); (8) POST-INCIDENT: HARDWARE REDUNDANCY (HSM cluster with synchronization), ESCROW TESTING CADENCE (annual), KMS architecture review. Options B, C, D each represent insufficient or wasteful responses.",
+      "wrong_explanations": {
+        "B": "Premature 'unrecoverable' declaration forecloses vendor-recovery options and external specialist work that may succeed; honest accounting is the right ultimate posture but premature declaration sacrifices recovery options.",
+        "C": "AES-256 and modern asymmetric encryption are cryptographically secure against brute-force \u2014 there's no practical attack path. Spending resources on brute-force wastes time and money without recovery prospects.",
+        "D": "Retaining encrypted-but-unusable backups indefinitely creates ongoing storage cost without retrieval capability; future cryptanalysis is speculative; data-retention obligations require accessibility, not encrypted-storage."
+      },
+      "tips": [
+        "Trap is B \u2014 \"disclose as unrecoverable and write off\" prematurely forecloses vendor-recovery and external-specialist options; the right posture is exhaust recovery options before declaring unrecoverable.",
+        "Backup encryption key loss = vendor recovery + external specialists + preserve artifacts + regulatory impact + regulator comm + documentation + KMS reformulation + redundancy + escrow testing. Nine tracks.",
+        "Exam-day shortcut: any backup-encryption-key-loss scenario is answered by EXHAUST RECOVERY OPTIONS + KMS reformulation; write-off, brute-force, store-forever framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 (Recommendation for Key Management); NIST SP 800-111 (Guide to Storage Encryption Technologies); HHS HIPAA Security Rule 45 CFR \u00a7164.316 (Documentation and Retention); FIPS 140-3 (Security Requirements for Cryptographic Modules); ISO/IEC 11770-2 (Key Management)",
+      "related_concepts": [
+        "HSM catastrophic failure",
+        "Key escrow testing",
+        "Cryptographic erasure (unintended)",
+        "HIPAA retention 6 years",
+        "FIPS 140-3"
+      ],
+      "_provenance": "Authored from concept: 'Backup encryption key loss recovery and governance'. Public sources: NIST, HHS, ISO/IEC, FIPS. Scenario specifics (regional hospital $1.4B, HSM failure 5 days ago, 4.8 PB across 7 years, theoretical-only escrow) invented."
+    },
+    {
+      "id": "d4_250",
+      "domain": 4,
+      "subtopic": "Whistleblower Report on Inadequate Controls (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief audit executive?",
+      "scenario_context": "A publicly-traded firm ($1.6B revenue) received an anonymous whistleblower report alleging: (1) the company's CFO directed staff to override SOX controls during the year-end close (specifically, by-passing required approvals for $4.2M in journal entries); (2) the override is being concealed in management's representation letter to the external auditor; (3) the whistleblower is willing to provide internal emails as evidence but only if anonymity is preserved; (4) the SEC's Office of the Whistleblower has been informed in parallel (whistleblower mentioned this). The chief audit executive is weighing how to handle the report internally.",
+      "options": {
+        "A": "Discuss the allegations with the CFO to gather their side before further action; due process for the accused is paramount.",
+        "B": "Preserve evidence + independent investigation + Audit Committee direct-line + anonymity + suspend (not terminate) + external auditor + chain-of-custody + board + SEC cooperation.",
+        "C": "Wait for SEC's investigation to proceed; SEC has investigative authority and resources that internal investigation duplicates.",
+        "D": "Terminate the CFO immediately to demonstrate the firm's commitment to SOX compliance; swift action sends the right message to staff and regulators."
+      },
+      "correct": "B",
+      "key_concept": "Whistleblower allegation = preserve evidence + independent investigation + Audit Committee chair direct-line + whistleblower anonymity + suspend CFO from SOX decisions + external auditor coordination + chain-of-custody + board review + cooperative SEC engagement + post-investigation hardening. Ten tracks.",
+      "pre_read": "For whistleblower-on-SOX-controls scenarios, anchor on \"evidence preservation + independent investigation + Audit Committee direct-line + anonymity preservation.\" Confront-accused, wait-SEC, terminate-fast framings each fail.",
+      "correct_explanation": "SEC Whistleblower Program (Dodd-Frank Section 922; 17 CFR \u00a7240.21F), SOX Sections 301 (audit committee whistleblower procedures), 806 (whistleblower retaliation prohibition), 1107 (anti-retaliation criminal penalties), and the Sarbanes-Oxley anti-retaliation regulations establish ten-track response: (1) IMMEDIATELY PRESERVE ALL EVIDENCE + INDEPENDENT INVESTIGATION \u2014 external counsel under attorney-client privilege + forensic accountants for the $4.2M journal entries; (2) AUDIT COMMITTEE CHAIR NOTIFICATION via SOX 301 direct-line authority \u2014 the Audit Committee chair has authority independent of executive management; (3) PRESERVE WHISTLEBLOWER ANONYMITY \u2014 SEC + state whistleblower protections; even internal disclosure of identity may constitute retaliation; (4) SUSPEND CFO from SOX-impacting decisions pending investigation \u2014 not termination, suspension preserves investigation integrity; (5) EXTERNAL AUDITOR COORDINATION on management-representation letter implications \u2014 material misstatement in MRL is a separate finding; (6) CHAIN-OF-CUSTODY documentation for evidence \u2014 supports SEC enforcement and litigation; (7) BOARD / AUDIT COMMITTEE FORMAL REVIEW; (8) COOPERATIVE SEC ENGAGEMENT \u2014 voluntary disclosure with investigation results is favored under SEC Enforcement Manual; (9) POST-INVESTIGATION: SOX CONTROL FRAMEWORK HARDENING + WHISTLEBLOWER-PROGRAM-HANDLING REVIEW. Options A, C, D each destroy investigation integrity in different ways.",
+      "wrong_explanations": {
+        "A": "Discussing with the accused before evidence preservation produces evidence destruction (emails deleted, witnesses coordinated, document trail altered); the chain-of-custody and investigation integrity are destroyed.",
+        "C": "Waiting for SEC investigation passes years of investigation time during which the firm bears compliance failures, allows management to continue affected positions, and produces worse SEC enforcement outcomes (uncooperative firm posture).",
+        "D": "Premature termination (a) destroys investigation witness availability, (b) signals to the SEC and other regulators that internal due-process was bypassed (potentially undermining SEC's enforcement and triggering wrongful-termination litigation), (c) doesn't address the underlying SOX-control failures."
+      },
+      "tips": [
+        "Trap is A \u2014 \"discuss with CFO to gather their side before further action\" produces evidence destruction; the suspect should never be informed of evidence preservation before evidence is preserved.",
+        "Whistleblower SOX allegation = evidence preservation + independent investigation + Audit Committee direct-line + anonymity + suspend (not terminate) + external auditor + chain-of-custody + board + SEC cooperation + post-investigation hardening. Ten tracks.",
+        "Exam-day shortcut: any whistleblower-on-management scenario is answered by EVIDENCE PRESERVATION + INDEPENDENT INVESTIGATION + Audit Committee direct-line; confront-first, wait-SEC, terminate-fast framings each fail."
+      ],
+      "framework_ref": "SEC Whistleblower Program (Dodd-Frank Section 922; 17 CFR \u00a7240.21F); SOX Sections 301 (Audit Committee), 806 (Whistleblower Protection), 1107 (Retaliation); PCAOB AS 2110 (Identifying and Assessing Risks); ISACA Internal Audit Code of Ethics; ISACA IT Audit Standards on Communication of Results",
+      "related_concepts": [
+        "Whistleblower anonymity preservation",
+        "SOX 301 audit committee direct-line",
+        "Independent investigation",
+        "Chain-of-custody at firm",
+        "Cooperative SEC engagement"
+      ],
+      "_provenance": "Authored from concept: 'Whistleblower allegation against CFO investigation'. Public sources: SEC, SOX, PCAOB, ISACA. Scenario specifics (publicly-traded $1.6B, CFO directed override $4.2M journal entries, anonymous whistleblower with email evidence, SEC parallel notification) invented."
+    },
+    {
+      "id": "d4_251",
+      "domain": 4,
+      "subtopic": "Geographic Data Sovereignty \u2014 Russia Exit Sanctions (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief privacy officer?",
+      "scenario_context": "A multinational software firm ($580M ARR) is winding down operations in Russia following sanctions imposed by US Office of Foreign Assets Control (OFAC) + EU sanctions in response to geopolitical events. Wind-down complications: (1) firm has Russian customers with data stored in Russian data centers (Russian Data Localization Law required local storage); (2) firm has Russian employees with personnel data in HR systems; (3) Russian regulators (Roskomnadzor) have rules on data export from Russia; (4) US OFAC has explicit prohibition on certain services to specific sectors; (5) firm must wind down within 90 days per new corporate policy; (6) data deletion creates customer-impact, retention creates sanctions and Roskomnadzor exposure. The CPO is weighing the wind-down path.",
+      "options": {
+        "A": "Delete all Russian data immediately to demonstrate sanctions compliance; data deletion eliminates the data-sovereignty risk.",
+        "B": "Maintain Russian operations indefinitely until sanctions are lifted; suspended operations reduce sanctions exposure without data complications.",
+        "C": "OFAC + EU sanctions + Russian counsel + data catalog + customer extraction + Roskomnadzor notification + SDN screening + employee data + chain-of-custody.",
+        "D": "Transfer all Russian data to the firm's US headquarters; consolidate the data outside Russia for orderly access while wind-down proceeds."
+      },
+      "correct": "C",
+      "key_concept": "Russia sanctions wind-down + data sovereignty = US OFAC + EU sanctions + Russian counsel + data catalog + customer extraction + Russian Data Localization compliance during wind-down + Roskomnadzor notification + SDN screening + employee data + chain-of-custody + post-wind-down audit. Ten tracks.",
+      "pre_read": "For Russia sanctions-driven wind-down scenarios, anchor on \"coordinated multi-jurisdiction counsel + structured wind-down with regulatory clearance.\" Immediate-deletion, maintain-suspended, transfer-to-US framings each fail.",
+      "correct_explanation": "US OFAC Sanctions Regulations (31 CFR Chapter V; Specially Designated Nationals list), EU Sanctions Framework, Russian Federal Law on Personal Data (152-FZ, Data Localization), Russian Foreign Agent Registry, Roskomnadzor regulations, and ISACA's IT Vendor Management Audit/Assurance Program establish ten-track coordinated wind-down: (1) US SANCTIONS COUNSEL (OFAC) + EU SANCTIONS COUNSEL + RUSSIAN COUNSEL separately \u2014 each jurisdiction has different requirements; (2) CATALOG ALL RUSSIAN DATA \u2014 customer data, employee data, contract data, payment data, intellectual property; (3) COORDINATE WITH RUSSIAN CUSTOMERS for data extraction/return \u2014 where permissible under OFAC; some sectors prohibited; (4) COMPLIANCE WITH RUSSIAN DATA LOCALIZATION during wind-down \u2014 premature deletion violates Russian law; (5) ROSKOMNADZOR NOTIFICATION per Russian export rules; (6) OFAC SDN-LIST SCREENING for any data transfers \u2014 customers, employees, payment counter-parties; (7) EMPLOYEE DATA per Russian labor law + GDPR \u2014 Russian employees with EU citizenship trigger GDPR; (8) DOCUMENT CHAIN-OF-CUSTODY for all destruction/transfer; (9) POST-WIND-DOWN audit committee briefing on regulatory completeness. Options A, B, D each fail on different jurisdictional dimensions.",
+      "wrong_explanations": {
+        "A": "Immediate deletion may violate (a) Russian Data Localization requirements for the wind-down period, (b) employment data preservation obligations under Russian labor law, (c) customer contract obligations (some customers have ongoing data needs), and (d) chain-of-custody requirements for litigation or regulatory inquiry. Deletion is the eventual outcome but requires structured procedure.",
+        "B": "Maintaining operations doesn't comply with the firm's corporate wind-down decision and may itself violate sanctions (OFAC requires winding-down within prescribed periods); 'suspended' operations are not exempt from compliance obligations.",
+        "D": "Transferring data to US violates Russian data export prohibitions (Roskomnadzor) AND may violate OFAC if the data movement involves SDN-listed parties or sectors; consolidation outside Russia requires Russian and US sanctions clearance."
+      },
+      "tips": [
+        "Trap is D \u2014 \"transfer all Russian data to US headquarters\" violates Russian data export prohibitions (Roskomnadzor) AND may violate OFAC sanctions on transfer participants; data centralization requires Russian + US clearance.",
+        "Russia wind-down = OFAC + EU + Russian counsel + data catalog + customer extraction + localization compliance + Roskomnadzor + SDN screening + employee data + chain-of-custody + audit. Ten tracks.",
+        "Exam-day shortcut: any geographic-sovereignty-during-sanctions scenario is answered by COORDINATED MULTI-JURISDICTION counsel + structured wind-down; immediate-deletion, maintain-as-is, transfer-out framings each fail."
+      ],
+      "framework_ref": "US OFAC Sanctions Regulations (31 CFR Chapter V); EU Sanctions Framework; Russian Federal Law on Personal Data (152-FZ, Data Localization); Roskomnadzor Cross-Border Transfer Rules; EU GDPR Article 49 (Derogations for Specific Situations); ISACA IT Vendor Management Audit/Assurance Program",
+      "related_concepts": [
+        "OFAC SDN list",
+        "Russian Data Localization Law 152-FZ",
+        "Roskomnadzor",
+        "Sanctions wind-down period",
+        "Multi-jurisdiction data wind-down"
+      ],
+      "_provenance": "Authored from concept: 'Russia exit data sovereignty during sanctions'. Public sources: OFAC, EU, Russian Federation, ISACA. Scenario specifics (multinational software $580M ARR, Russia wind-down 90 days, Russian customers and employees, Russian DCs) invented."
+    },
+    {
+      "id": "d4_252",
+      "domain": 4,
+      "subtopic": "DR Site Located in Active-War-Zone Region (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief operating officer?",
+      "scenario_context": "A financial services firm ($2.4B revenue) has its DR site located in Eastern Europe (chosen 8 years ago for cost efficiency). Recent geopolitical events: (1) the region has experienced military escalation, with infrastructure attacks affecting power and telecommunications; (2) the firm's DR vendor reports it remains operational but bandwidth is degraded and there's regional risk; (3) firm's primary site is in Western Europe, unaffected; (4) sanctions on regional financial infrastructure complicate continued operations; (5) firm has 3-year contract remaining with the DR vendor; (6) alternate DR sites are available but switching takes 4-6 months. The COO is weighing risk of continued reliance vs immediate alternative establishment.",
+      "options": {
+        "A": "Continue with the current DR site through contract term and reassess at renewal; the vendor reports operations continue.",
+        "B": "Immediately terminate the DR contract and migrate; the war-zone risk overrides contractual obligations.",
+        "C": "Maintain dual DR sites (current + new) for the 4-6 month transition and switch primary DR designation; preserves continuity during transition.",
+        "D": "Risk assessment + vendor coordination + parallel alternative + staged transition + regulatory engagement + interim BCP + board briefing + DR site selection review."
+      },
+      "correct": "D",
+      "key_concept": "War-zone DR site = risk assessment + vendor coordination + parallel alternative + staged transition with concurrent operations + regulatory engagement + interim BCP + board briefing + DR site selection review. Eight tracks.",
+      "pre_read": "For DR-site-in-war-zone scenarios, anchor on \"risk assessment + parallel alternative + staged transition + regulatory.\" Continue-as-is, immediate-termination, dual-sites-only framings each fail.",
+      "correct_explanation": "ISO 22301 (BCMS), ISACA's Business Continuity Audit/Assurance Program, FFIEC Business Continuity Management Booklet, and US/EU sanctions guidance establish eight-track response: (1) IMMEDIATE RISK ASSESSMENT \u2014 operational (bandwidth degradation, infrastructure attacks), political (sanctions exposure, regional instability), regulatory (financial supervisor expectations), sanctions (any sanctioned parties involved in transit, services, or staffing); (2) COORDINATE WITH DR VENDOR \u2014 current operational state, contingency plans, vendor's own staff safety, evacuation plans; (3) PARALLEL EVALUATION of alternative DR sites \u2014 formal RFI/RFP; not committing yet but preparing options; (4) STAGED TRANSITION PLAN \u2014 concurrent operations during 4-6 month transition; not gap-and-replace; (5) REGULATORY ENGAGEMENT \u2014 financial supervisor on BCP material changes; some regulators require notification; (6) INTERIM BCP MODIFICATIONS \u2014 extended RTO/RPO for the transition period; alternative-arrangements documentation; (7) BOARD / AUDIT COMMITTEE BRIEFING \u2014 material BCP risk; (8) POST-EVENT REVIEW \u2014 DR site selection criteria should have weighed geopolitical risk; methodology improvement for future. Options A, B, C each represent partial or wrong responses.",
+      "wrong_explanations": {
+        "A": "'Continues operations' from a war-zone vendor is operationally unreliable \u2014 infrastructure degradation can rapidly cascade to total loss; reliance on a war-zone DR site for financial-services BCP is material risk that cannot wait for contract renewal.",
+        "B": "Immediate termination without transition leaves the firm without DR capability for 4-6 months; financial services BCP requires continuous DR readiness, not gap-and-replace.",
+        "C": "Dual sites during transition is one element of the answer but misses the multi-track risk assessment, regulatory engagement, board briefing, and contract management dimensions; partial answer."
+      },
+      "tips": [
+        "Trap is A \u2014 \"continue with the current DR site through contract term\" is candidate-seductive for cost-anchored thinking and operational-stability bias; the war-zone risk profile makes operational stability illusory. C (dual sites during transition) is one element of the right answer but misses regulatory and governance dimensions.",
+        "War-zone DR site = risk assessment + vendor coordination + parallel alternative + staged transition + regulatory + interim BCP + board + selection review. Eight tracks.",
+        "Exam-day shortcut: any war-zone-DR scenario is answered by RISK ASSESSMENT + parallel alternative + staged transition with regulatory engagement; continue-as-is, immediate-termination, dual-sites-only framings each fail."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management Systems); ISACA Business Continuity Audit/Assurance Program; FFIEC Business Continuity Management Booklet; US OFAC Sanctions Regulations (31 CFR Chapter V); ISO 22320 (Emergency Management)",
+      "related_concepts": [
+        "Geopolitical risk in BCP site selection",
+        "DR vendor war-zone operations",
+        "Staged DR transition",
+        "Financial supervisor BCP notification",
+        "Material BCP change"
+      ],
+      "_provenance": "Authored from concept: 'DR site located in active war-zone region'. Public sources: ISO, ISACA, FFIEC, OFAC. Scenario specifics (financial services $2.4B, DR site Eastern Europe selected 8 years ago, recent military escalation, 3-year contract remaining, 4-6 month switching time) invented."
+    },
+    {
+      "id": "d4_253",
+      "domain": 4,
+      "subtopic": "Outsourced SOC Missed Incident (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief information security officer?",
+      "scenario_context": "A specialty retailer ($720M revenue) outsources Security Operations Center (SOC) to a Managed Detection and Response (MDR) provider. A customer informs the firm that customer payment data has been observed on a dark-web marketplace. Investigation: (1) the data appears to originate from the firm; (2) a credit card breach occurred 5 weeks ago; (3) the MDR provider's logs show events that should have triggered alerts, but no alert was raised; (4) ~62,000 customer card records appear leaked; (5) PCI DSS QSA assessment is in 8 weeks; (6) the MDR contract is in year 2 of a 3-year $4.8M/year agreement. The CISO is weighing how to handle the MDR relationship and the broader incident.",
+      "options": {
+        "A": "IR per PCI + independent forensics + MDR contract review + QSA notification + state/customer breach notification + insurance + MDR relationship + post-incident.",
+        "B": "Terminate the MDR contract for cause and assume internal SOC operations; the breach demonstrates fundamental MDR failure.",
+        "C": "Wait for the MDR's own incident review before action; the MDR will provide their own analysis of the missed alerts.",
+        "D": "Demand the MDR pay liquidated damages and continue the contract; the contract's penalty terms provide remedy without disruption."
+      },
+      "correct": "A",
+      "key_concept": "Outsourced SOC missed-incident = IR per PCI + independent forensics + MDR contract review + PCI DSS QSA notification + state/customer breach notification + insurance + MDR relationship evaluation + post-incident contract review. Eight tracks.",
+      "pre_read": "For outsourced-SOC-missed-incident scenarios, anchor on \"IR per PCI + independent forensics + parallel MDR evaluation + QSA notification.\" Terminate-immediately, wait-for-MDR, liquidated-damages-only framings each fail.",
+      "correct_explanation": "PCI DSS v4.0 Requirement 12.10 (Incident Response), Visa Account Information Security (AIS) Program, Mastercard Site Data Protection (SDP) Program, and ISACA's Outsourced Security Operations Audit Program establish eight-track response: (1) IMMEDIATE INCIDENT RESPONSE per PCI DSS Req 12.10 + card-brand forensic procedures (Visa, Mastercard, AmEx have specific incident reporting); (2) ENGAGE INDEPENDENT FORENSICS \u2014 not through MDR provider; independent assessment of what happened and how MDR missed it; (3) MDR CONTRACT PERFORMANCE REVIEW \u2014 breach notification per contractual SLA, performance metrics, breach-of-contract claims; (4) PCI DSS QSA NOTIFICATION \u2014 the breach affects the upcoming QSA assessment; pre-assessment disclosure is treated favorably; (5) STATE BREACH-NOTIFICATION + CUSTOMER-NOTIFICATION process \u2014 state laws may have 30-60 day notification deadlines from discovery; (6) CYBER INSURANCE CARRIER NOTIFICATION; (7) MDR VENDOR RELATIONSHIP EVALUATION \u2014 continue but escalate, terminate, or supplement with internal SOC (run parallel to ongoing operations); (8) POST-INCIDENT: contractual review of MDR commitments + alerting governance review. Options B, C, D each represent insufficient or premature responses.",
+      "wrong_explanations": {
+        "B": "Immediate termination + assumption of internal SOC during active incident response creates additional operational risk (untrained internal team during a major breach response); termination may be the eventual outcome but should follow ordered transition.",
+        "C": "Relying on the MDR's own incident review of their own failure has structural credibility issues; independent investigation is necessary; the firm's responsibility to its customers and PCI DSS doesn't pause for vendor self-investigation.",
+        "D": "Liquidated damages alone don't make affected customers whole, don't address the underlying SOC capability gap, and don't prepare the firm for the PCI DSS QSA assessment that's 8 weeks away."
+      },
+      "tips": [
+        "Trap is B \u2014 \"terminate the MDR contract for cause and assume internal SOC\" reads as the decisive accountability move and feels like the right governance response to vendor failure. The flaw: termination DURING active incident response leaves the firm without surge SOC capacity at the worst possible moment AND creates worse customer-impact outcomes than coordinated escalation. Termination may be the eventual outcome but follows ordered transition.",
+        "Outsourced SOC missed-incident = IR per PCI + independent forensics + MDR contract review + PCI DSS QSA + state/customer breach notification + insurance + MDR relationship + post-incident review. Eight tracks.",
+        "Exam-day shortcut: any outsourced-SOC-missed-incident scenario is answered by IR PER PCI + INDEPENDENT FORENSICS + parallel MDR evaluation; terminate-fast, wait-MDR, damages-only framings each fail."
+      ],
+      "framework_ref": "PCI DSS v4.0 Requirement 12.10 (Incident Response); Visa Account Information Security (AIS) Program; Mastercard Site Data Protection (SDP) Program; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code \u00a71798.82); ISACA IT Vendor Management Audit/Assurance Program",
+      "related_concepts": [
+        "Outsourced MDR governance",
+        "Card-brand forensic procedures",
+        "PCI DSS QSA pre-assessment disclosure",
+        "Independent forensics vs vendor self-review",
+        "MDR contract breach"
+      ],
+      "_provenance": "Authored from concept: 'Outsourced SOC missed incident'. Public sources: PCI SSC, Visa, Mastercard, ISACA. Scenario specifics (specialty retailer $720M, MDR provider 2 of 3 years $4.8M/year, ~62K card records leaked, PCI DSS QSA in 8 weeks) invented."
+    },
+    {
+      "id": "d4_254",
+      "domain": 4,
+      "subtopic": "IT Acquisition Earnings-Affecting Milestone Failure (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief financial officer?",
+      "scenario_context": "A publicly-traded technology firm ($1.2B revenue) acquired a competitor 11 months ago and announced to investors at the time that the IT integration synergies of $42M annually would materialize in Q4 of this year. Current status: (1) integration is significantly behind schedule; (2) only ~25% of the planned synergies are achievable in Q4 (~$10M, not $42M); (3) ~$14M of the planned synergies require additional 9-12 months of work; (4) the remaining synergies may not materialize at all due to architectural changes that emerged during integration; (5) the upcoming Q4 earnings call will include guidance on synergies; (6) the SEC December 2023 cybersecurity rule (Item 1.05) creates additional disclosure precedent for material operational matters. The CFO is weighing the guidance approach for Q4 earnings.",
+      "options": {
+        "A": "Disclose only the achievable $10M synergy in Q4 guidance; the rest will materialize in future quarters and shouldn't be disclosed prematurely.",
+        "B": "External auditor + counsel + IR + accurate revised guidance + materiality + audit committee + roadmap update + accountability + lessons + SEC documentation.",
+        "C": "Continue announcing the $42M synergy goal with statements of confidence; reset disclosure if Q4 actuals fall short.",
+        "D": "Withdraw all synergy guidance and refuse to provide forward statements; uncertainty justifies opting out of guidance entirely."
+      },
+      "correct": "B",
+      "key_concept": "Earnings-affecting integration miss = external auditor + counsel + IR coordination + accurate revised disclosure + materiality determination + audit committee + integration roadmap update + accountability framework + lessons learned + SEC documentation. Ten tracks.",
+      "pre_read": "For earnings-affecting integration-miss scenarios, anchor on \"transparent revised guidance with materiality determination + audit committee approval.\" Disclose-only-achievable, project-as-before, withdraw-everything framings each fail.",
+      "correct_explanation": "SEC Rule 10b-5 (Securities Fraud), SOX Sections 302/404/906, SEC Regulation S-K Items 303 (MD&A), 105 (Risk Factors), 106 (Cybersecurity), PCAOB AS 2410 (Related Parties), and the SEC's Plain English Disclosure Guidance establish ten-track response: (1) EXTERNAL AUDITOR + SECURITIES COUNSEL + INVESTOR RELATIONS COORDINATION on guidance language and timing; (2) ACCURATE DISCLOSURE \u2014 $10M materialized, $14M deferred 9-12 months, ~$18M at risk; clear, specific, sourced numbers; (3) MATERIALITY DETERMINATION per SEC Item 1.05 + general Reg S-K \u2014 synergy shortfall is likely material at the $32M difference scale; (4) AUDIT COMMITTEE + BOARD APPROVAL of disclosure language \u2014 substantive guidance requires governance; (5) INTEGRATION ROADMAP UPDATE with realistic timeline; (6) MANAGEMENT ACCOUNTABILITY FRAMEWORK for integration leadership; (7) FUTURE-ACQUISITION LESSONS-LEARNED \u2014 pre-announcement diligence + integration planning improvements; (8) DOCUMENT for SEC filings and possible follow-up. Options A, C, D each create securities-law exposure of different types.",
+      "wrong_explanations": {
+        "A": "Disclosing only the achievable $10M without acknowledging the larger $42M commitment may be characterized as misleading by omission under SEC Rule 10b-5; the prior $42M commitment is in the market and requires substantive update.",
+        "C": "Continuing to project $42M when management knows only $10M is achievable is the canonical SEC enforcement pattern (knowing or reckless misstatement); creates 10b-5 liability and personal CFO/CEO exposure under SOX \u00a7906.",
+        "D": "Withdrawing all guidance is the regulator-disfavored 'silent treatment' that creates information vacuum and analyst speculation; transparent revised guidance is the standard response."
+      },
+      "tips": [
+        "Trap is C \u2014 \"continue announcing the $42M synergy goal with confidence statements\" while management knows only $10M is achievable is the canonical SEC enforcement pattern (knowing/reckless misstatement) creating 10b-5 liability.",
+        "Earnings-affecting integration miss = external auditor + counsel + IR + accurate revised guidance + materiality + audit committee + roadmap update + accountability + lessons learned + SEC documentation. Ten tracks.",
+        "Exam-day shortcut: any earnings-affecting-miss scenario is answered by TRANSPARENT REVISED GUIDANCE + materiality determination + audit committee approval; disclose-only-good, project-as-before, withdraw-all framings each fail."
+      ],
+      "framework_ref": "SEC Rule 10b-5 (Securities Fraud); SOX Sections 302, 404, 906; SEC Regulation S-K Items 303 (MD&A), 105 (Risk Factors); SEC Plain English Disclosure Guidance; PCAOB AS 2410 (Related Parties)",
+      "related_concepts": [
+        "Material misstatement by omission",
+        "SEC Rule 10b-5",
+        "Revised guidance disclosure",
+        "Audit committee approval of disclosure",
+        "SOX 906 certification"
+      ],
+      "_provenance": "Authored from concept: 'Earnings-affecting integration milestone miss'. Public sources: SEC, SOX, PCAOB. Scenario specifics (publicly-traded tech $1.2B, $42M synergy announced 11 months ago, $10M achievable, $18M at risk, Q4 earnings call pending) invented."
+    },
+    {
+      "id": "d4_255",
+      "domain": 4,
+      "subtopic": "System Running Unsupported OS for Legacy Reasons (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief technology officer?",
+      "scenario_context": "A manufacturer ($430M revenue) operates an aging production-control system on Windows Server 2008 (end-of-support since January 2020). Investigation: (1) the system controls a specialty manufacturing process with no modern equivalent; (2) replacing the system requires capital expenditure of ~$8M and 18 months of validation testing; (3) the system has no internet access (isolated by air-gap and DMZ); (4) compensating controls in place: dedicated network segment, no internet, EDR with custom rules, manual change control; (5) it has been operating 5+ years past EOS without incident; (6) recent regulator examination (FDA medical device adjacent) raised concerns about the EOS status; (7) cyber insurance carrier is renewal-time and asking about EOS systems. The CTO is weighing how to handle this finding.",
+      "options": {
+        "A": "Replace the system immediately with $8M CAPEX urgent request; the regulator concerns and insurance renewal justify expedited replacement.",
+        "B": "Continue operations with no changes; the system has been operating safely for 5+ years and additional action is unnecessary.",
+        "C": "Compensating controls documentation + risk acceptance with audit committee + accurate insurance disclosure + regulator engagement + accelerated remediation + monitoring + SOX 404 + lessons.",
+        "D": "Conceal the EOS status from regulators and insurance carriers; the compensating controls effectively mitigate the risk and disclosure creates problems without benefit."
+      },
+      "correct": "C",
+      "key_concept": "EOS system managed continuation = compensating controls documentation + risk acceptance + audit committee + accurate insurance disclosure + regulator engagement + accelerated remediation + monitoring + SOX 404 documentation + lessons learned. Nine tracks.",
+      "pre_read": "For EOS-OS-legacy scenarios, anchor on \"managed continuation with documented compensating controls + accurate disclosure + remediation roadmap.\" Immediate-replace, status-quo, concealment framings each fail.",
+      "correct_explanation": "ISACA's Risk Management Framework, NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems), and FDA Quality System Regulation (21 CFR Part 820) establish nine-track response: (1) DOCUMENT COMPENSATING CONTROLS \u2014 air-gap, DMZ, dedicated network, EDR custom rules, manual change control; quantify their effectiveness; (2) RISK ACCEPTANCE WITH AUDIT COMMITTEE APPROVAL \u2014 material residual risk requires governance acceptance; (3) ACCURATE INSURANCE DISCLOSURE \u2014 EOS status + compensating controls; failure to disclose may void policy; (4) REGULATOR ENGAGEMENT \u2014 FDA on compensating controls + 18-month remediation timeline; transparency is mitigation; (5) ACCELERATED REMEDIATION PLANNING \u2014 $8M CAPEX + 18-month plan; not immediate (which skips validation) but accelerated; (6) ONGOING RISK MONITORING \u2014 monthly review of compensating control effectiveness; new threats to EOS systems require continuous reassessment; (7) DOCUMENT for SOX 404 \u2014 internal control over financial reporting may require disclosure of dependence on EOS technology; (8) LESSONS for IT roadmap planning \u2014 EOS prevention process. Options A, B, D each fail in different ways.",
+      "wrong_explanations": {
+        "A": "Immediate $8M replacement skips the 18-month validation testing required for the specialty manufacturing process \u2014 failed validation could halt production entirely and trigger regulatory issues worse than the EOS status; speed without validation is reckless.",
+        "B": "Continuing with no changes ignores both regulator concerns (FDA may escalate) and insurance carrier disclosure requirements (insurance is contingent on accurate risk representation); 'safe so far' is not a defensible position with active regulator concerns.",
+        "D": "Concealment from regulators violates examination integrity (likely producing finding upgrades when discovered); concealment from insurance carriers may void coverage entirely (most cyber insurance applications have specific EOS questions; misrepresentation voids the policy)."
+      },
+      "tips": [
+        "Trap is D \u2014 \"conceal EOS status from regulators and insurance\" is catastrophic; insurance applications have specific EOS questions and misrepresentation voids coverage; regulators discover and escalate.",
+        "EOS system managed continuation = compensating controls + risk acceptance + audit committee + insurance disclosure + regulator engagement + accelerated remediation + monitoring + SOX 404 + lessons learned. Nine tracks.",
+        "Exam-day shortcut: any EOS-legacy-system scenario is answered by MANAGED CONTINUATION with documented compensating + disclosure + remediation roadmap; immediate-replace, status-quo, concealment framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations); FDA Quality System Regulation (21 CFR Part 820); SOX Sections 302, 404; ISACA Risk Management Audit/Assurance Program; ISO 31000 (Risk Management)",
+      "related_concepts": [
+        "End-of-support (EOS) systems",
+        "Compensating controls documentation",
+        "Insurance misrepresentation",
+        "FDA QSR validation",
+        "Risk acceptance governance"
+      ],
+      "_provenance": "Authored from concept: 'EOS system managed continuation with regulator concerns'. Public sources: NIST, FDA, ISACA. Scenario specifics (manufacturer $430M, Windows Server 2008 5+ years past EOS, $8M CAPEX + 18-month replacement, FDA regulator concerns) invented."
+    },
+    {
+      "id": "d4_256",
+      "domain": 4,
+      "subtopic": "Public S3 Bucket Researcher Disclosure (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief technology officer?",
+      "scenario_context": "A security researcher contacted a SaaS company ($380M ARR) reporting that an S3 bucket containing internal documentation is publicly accessible. Investigation: (1) the bucket was created 14 months ago for a beta product launch; (2) intended to be public for the launch but was supposed to be made private post-launch; (3) the post-launch privatization was forgotten; (4) the bucket contains: product roadmaps, customer email lists (~28,000 customers), internal Slack export archives (sensitive business discussions), source code for the beta product; (5) the researcher discovered it via web-scanning tools; (6) no evidence of broader exploitation; (7) the researcher is offering to delete their copy in exchange for a bug bounty payment. The CTO is weighing the response.",
+      "options": {
+        "A": "Pay the researcher the requested bug-bounty without further engagement; settling discreetly minimizes downstream disclosure.",
+        "B": "Threaten the researcher with CFAA legal action; their access to the bucket was unauthorized once intended purpose was complete.",
+        "C": "Disclose to customers immediately as a breach; transparency is the priority response.",
+        "D": "Immediate privatization + researcher engagement + data-impact analysis + regulatory disclosure + cloud governance review + CSPM + board briefing."
+      },
+      "correct": "D",
+      "key_concept": "Public S3 bucket researcher report = immediate privatization + researcher engagement + data-impact analysis + regulatory disclosure analysis + cloud governance review + CSPM + board briefing. Seven tracks.",
+      "pre_read": "For public-S3-bucket-researcher-report scenarios, anchor on \"immediate privatization + researcher engagement + data-impact analysis + governance review.\" Pay-and-settle, CFAA-threat, immediate-customer-notify framings each fail.",
+      "correct_explanation": "AWS S3 Security Best Practices, CSA Cloud Controls Matrix, ISACA's Cloud Computing Management Audit/Assurance Program, ISO/IEC 29147 (Vulnerability Disclosure), and DOJ Good-Faith Security Research Policy (2022) establish seven-track response: (1) IMMEDIATELY MAKE BUCKET PRIVATE + revoke public links + audit other buckets for similar issues; (2) ENGAGE RESEARCHER WITH BUG-BOUNTY + NDA \u2014 preserve good-faith security research relationships; bug-bounty payment + NDA on data observed; (3) DATA-IMPACT ANALYSIS \u2014 28K customer emails may trigger breach notification (state laws + GDPR Art 33 for EU customers); internal Slack = trade-secret exposure; source code = IP exposure; (4) REGULATORY DISCLOSURE ANALYSIS \u2014 state breach laws, GDPR, contractual customer notification; (5) CLOUD CONFIGURATION GOVERNANCE REVIEW \u2014 how the privatization step failed (no automation, no monitoring, no review); (6) POST-INCIDENT: CSPM (Cloud Security Posture Management) \u2014 Prisma Cloud, Wiz, AWS Config Rules with auto-remediation; (7) BOARD / AUDIT COMMITTEE BRIEFING. Options A, B, C each represent incomplete responses.",
+      "wrong_explanations": {
+        "A": "Bug-bounty payment alone without making the bucket private, without verifying researcher's deletion, without customer notification, and without governance review leaves the bucket publicly accessible and the firm exposed to further discovery and additional researchers.",
+        "B": "CFAA threats against a security researcher reporting a configuration error backfire badly: the researcher accessed publicly-available content; treating that as unauthorized access creates legal risk for the firm AND reputational damage in the security community.",
+        "C": "Customer disclosure without first understanding the scope, completing the privatization, and engaging the researcher with NDA produces premature disclosure that may exceed what's required by law and creates panic."
+      },
+      "tips": [
+        "Trap is B \u2014 \"threaten the researcher with CFAA action\" for accessing a publicly-available bucket backfires legally (publicly-available content isn't unauthorized access) and reputationally (security community trust collapses).",
+        "Public S3 researcher report = immediate privatization + researcher engagement + data-impact analysis + regulatory disclosure + cloud governance + CSPM + board briefing. Seven tracks.",
+        "Exam-day shortcut: any public-cloud-misconfig-researcher scenario is answered by IMMEDIATE PRIVATIZATION + researcher engagement + analysis + governance; pay-settle, CFAA-threat, immediate-customer framings each fail."
+      ],
+      "framework_ref": "AWS S3 Security Best Practices; Cloud Security Alliance (CSA) Cloud Controls Matrix; ISO/IEC 29147 (Vulnerability Disclosure); DOJ Good-Faith Security Research Policy (May 2022); ISACA Cloud Computing Management Audit/Assurance Program; State breach-notification laws",
+      "related_concepts": [
+        "Public cloud misconfiguration",
+        "Good-faith security research",
+        "CSPM (Cloud Security Posture Management)",
+        "Bucket-level access control",
+        "DOJ CFAA safe harbor"
+      ],
+      "_provenance": "Authored from concept: 'Public S3 bucket researcher disclosure'. Public sources: AWS, CSA, ISO/IEC, DOJ, ISACA. Scenario specifics (SaaS $380M ARR, 14-month-old bucket, 28K customer emails + internal Slack + source code, researcher web-scan discovery) invented."
+    },
+    {
+      "id": "d4_257",
+      "domain": 4,
+      "subtopic": "Severity-1 Incident During Executive Offsite (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief operating officer?",
+      "scenario_context": "A SaaS company ($820M ARR) is in hour 3 of a Severity-1 incident (customer-facing API completely down; 4,200 customers affected; $180K/hour revenue loss). Complication: the entire C-suite (CEO, CFO, CTO, CISO) is at a corporate offsite in a remote location with limited connectivity (satellite phone only; no video conferencing). Operations team is led by a VP of Engineering. The VP is escalating decisions to the C-suite via satellite phone but each call takes 20-30 minutes and decisions are delayed. The VP is weighing whether to make independent decisions vs continuing satellite-phone escalation.",
+      "options": {
+        "A": "Invoke incident command + pre-established delegation + regular check-ins + decision rights matrix + decision documentation + post-incident review + customer comms.",
+        "B": "Continue satellite-phone escalation for all decisions; executive authority is paramount and the VP shouldn't make decisions without explicit approval.",
+        "C": "Have the VP make all decisions independently until C-suite is back; the speed of incident response outweighs governance formality.",
+        "D": "Pause incident response until C-suite returns from offsite; the gravity of the decisions requires their direct involvement."
+      },
+      "correct": "A",
+      "key_concept": "Sev-1 during executive offsite = incident command structure + pre-established delegation + regular check-ins + decision rights matrix + decision documentation + post-incident delegation review + customer communications + lessons learned. Eight tracks.",
+      "pre_read": "For Sev-1-during-executive-offsite scenarios, anchor on \"invoke incident command with pre-established delegation authority + regular check-ins.\" Continue-escalation, full-autonomy, pause-response framings each fail.",
+      "correct_explanation": "FEMA Incident Command System (ICS), NIST SP 800-61 (Computer Security Incident Handling), ITIL 4 Incident Management, and ISACA's IT Operations Audit/Assurance Program establish eight-track response: (1) INVOKE INCIDENT COMMAND STRUCTURE \u2014 VP as Incident Commander reporting to COO; clear hierarchy; (2) PRE-ESTABLISHED DELEGATION OF DECISION AUTHORITY \u2014 Incident Commander roles have defined authority per BCP/IR plan; this isn't new authority granted, it's pre-defined; (3) REGULAR CHECK-INS with offsite C-suite via satellite phone (every 30-60 min) \u2014 coordination without bottleneck; (4) DECISION RIGHTS MATRIX per BCP \u2014 VP makes technical-recovery decisions; specific commercial decisions (acquisition, contract changes), regulatory decisions, communications above defined threshold escalate; (5) DOCUMENT DECISIONS AND CHAIN-OF-COMMAND for post-incident review; (6) POST-INCIDENT: review delegation framework (was this anticipated?), authority matrix updates; (7) COORDINATE WITH CUSTOMER-FACING TEAMS + customer communications + status pages; (8) POST-INCIDENT LESSONS LEARNED \u2014 executive-offsite-during-incident is a foreseeable scenario that warrants pre-planning. Options B, C, D each represent rigid or chaotic approaches.",
+      "wrong_explanations": {
+        "B": "Satellite-phone-only decisions at 20-30 minutes/call extends incident impact unnecessarily; pre-established delegation authority is precisely designed for these situations; the executive escalation is not the right path when authority can be appropriately delegated.",
+        "C": "VP-only decisions without coordinated executive engagement misses opportunities for input on commercial/regulatory dimensions and creates accountability gaps; pre-established delegation gives the VP appropriate scope but maintains executive coordination.",
+        "D": "Pausing incident response loses $180K/hour and damages customer relationships; incident commander authority is precisely designed to handle situations without full executive presence."
+      },
+      "tips": [
+        "Trap is B or D \u2014 B (satellite-phone escalation for all decisions) sounds like proper governance but extends incident impact unnecessarily; D (pause incident response) sacrifices $180K/hour with no operational reason. Incident command structure with PRE-ESTABLISHED DELEGATION is precisely designed for these situations.",
+        "Sev-1 during executive offsite = incident command + pre-established delegation + regular check-ins + decision rights matrix + decision documentation + post-incident review + customer comms + lessons learned. Eight tracks.",
+        "Exam-day shortcut: any Sev-1-during-executive-offsite scenario is answered by INCIDENT COMMAND WITH PRE-ESTABLISHED DELEGATION; continue-escalation, full-autonomy, pause-response framings each fail."
+      ],
+      "framework_ref": "FEMA Incident Command System (ICS); NIST SP 800-61 (Computer Security Incident Handling Guide); ITIL 4 Incident Management; ISO 22301 (Business Continuity Management); ISACA IT Operations Audit/Assurance Program",
+      "related_concepts": [
+        "Incident command authority",
+        "Pre-established delegation",
+        "Decision rights matrix",
+        "Executive offsite continuity",
+        "Post-incident delegation review"
+      ],
+      "_provenance": "Authored from concept: 'Severity-1 incident during executive offsite'. Public sources: FEMA, NIST, AXELOS, ISO. Scenario specifics (SaaS $820M ARR, hour 3 of customer-facing API outage, 4,200 customers, $180K/hour loss, C-suite at remote offsite) invented."
+    },
+    {
+      "id": "d4_258",
+      "domain": 4,
+      "subtopic": "DBA Deleted Production Data \u2014 Mistake or Malice (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief information security officer?",
+      "scenario_context": "A B2B SaaS provider ($420M ARR) is hour 2 of an incident: a DBA deleted approximately 2.4M customer records from a production database. The DBA claims a typo (intended to delete 240 test records but executed the deletion without specifying the correct WHERE clause). Investigation considerations: (1) the DBA has been with the firm 8 years, top performer, no prior issues; (2) the deletion command was executed during off-hours (03:00); (3) the DBA was on-call but not assigned to any change; (4) data recovery from backup is in progress (estimated 8-12 hours); (5) the DBA has personal financial stress (recently divorced, daughter's college tuition due); (6) the DBA appeared genuinely distressed when reporting the error. The CISO must determine whether to treat this as accident or intentional and how to respond.",
+      "options": {
+        "A": "Treat as accident; the DBA's 8-year tenure and apparent distress make malicious intent unlikely.",
+        "B": "Data recovery + parallel investigation + suspend + external forensics + customer impact + board + access controls.",
+        "C": "Terminate the DBA immediately; the magnitude of damage justifies dismissal regardless of intent.",
+        "D": "Defer all action until data recovery completes; the recovery is the priority and investigation is secondary."
+      },
+      "correct": "B",
+      "key_concept": "Production data deletion = data recovery + parallel investigation + suspend DBA (not terminate) + external forensics/employment counsel/HR + customer impact + breach notification + board notification + post-incident controls + employee wellness. Nine tracks.",
+      "pre_read": "For production-data-deletion-DBA scenarios, anchor on \"parallel data recovery + structured investigation + suspend (not terminate) + post-incident controls.\" Accident-assumption, terminate-fast, defer-investigation framings each fail.",
+      "correct_explanation": "ISACA's Insider Threat Audit guidance, NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program), Carnegie Mellon CERT Insider Threat Center, and SOX 302/404 frameworks establish nine-track response: (1) IMMEDIATE DATA RECOVERY \u2014 priority workstream; 8-12 hour estimate; (2) PARALLEL STRUCTURED INCIDENT INVESTIGATION \u2014 interview DBA (separate session from incident response), technical-evidence review (audit logs, command history, recent activity, exfiltration indicators, persistence indicators); (3) SUSPEND DBA FROM PRODUCTION ACCESS pending investigation \u2014 not termination; preserves investigation integrity and HR/employment law posture; (4) ENGAGE EXTERNAL FORENSICS + employment counsel + HR \u2014 multi-disciplinary; the personal stress factor matters for HR/employment outcome and possible legal action; (5) CUSTOMER-IMPACT ANALYSIS \u2014 at-rest deletion may have impacted customer experience (data unavailable for hours); breach notification analysis (likely not a breach since data wasn't exfiltrated, but customer impact triggers contractual notification); (6) BOARD / AUDIT COMMITTEE NOTIFICATION \u2014 material control failure; (7) POST-INCIDENT: PRIVILEGED-ACCESS CONTROLS + CHANGE-MANAGEMENT GAPS + technical safeguards (require approval for DELETE on production, time-locked windows, dual-control for destructive operations); (8) EMPLOYEE WELLNESS/SUPPORT process for stressed staff \u2014 preventive for similar future situations.",
+      "wrong_explanations": {
+        "A": "Treating as accident without investigation accepts the DBA's narrative without forensic verification; intent matters for: (a) HR/employment outcome, (b) whether to pursue civil/criminal action, (c) what other actions the DBA may have taken (e.g., parallel exfiltration), (d) similar future risks (training vs counseling vs termination).",
+        "C": "Immediate termination without investigation: (a) destroys investigation witness availability, (b) may produce wrongful-termination litigation if intent was indeed accidental, (c) doesn't address whether DBA performed other actions (exfiltration, persistence), (d) sets harsh precedent for accidental errors.",
+        "D": "Deferring investigation until recovery completes loses critical evidence (audit logs may roll off, witness memories degrade, DBA may take additional actions if access remains); investigation must run in parallel with recovery."
+      },
+      "tips": [
+        "Trap is A \u2014 \"treat as accident\" accepts the DBA's narrative without forensic verification; intent matters for HR outcome, possible exfiltration evidence, and similar-future-risk assessment.",
+        "Production data deletion = parallel recovery + structured investigation + suspend + external forensics/counsel/HR + customer impact + breach analysis + board + post-incident controls + wellness. Nine tracks.",
+        "Exam-day shortcut: any production-data-deletion-by-trusted-employee scenario is answered by PARALLEL INVESTIGATION + suspend (not terminate); accept-as-accident, terminate-fast, defer-investigation framings each fail."
+      ],
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); Carnegie Mellon CERT Insider Threat Center; SOX Sections 302, 404; ISO/IEC 27001 Annex A.9 (Access Control)",
+      "related_concepts": [
+        "Insider threat investigation",
+        "Dual-control for destructive operations",
+        "Privileged-access management",
+        "Mistake-vs-malice forensics",
+        "Employee wellness in insider risk"
+      ],
+      "_provenance": "Authored from concept: 'DBA deleted production data \u2014 accident or intentional'. Public sources: ISACA, NIST, CERT. Scenario specifics (B2B SaaS $420M ARR, 2.4M records deleted, 8-year tenure DBA, off-hours, personal financial stress) invented."
+    },
+    {
+      "id": "d4_259",
+      "domain": 4,
+      "subtopic": "SLA Dispute Escalates to Arbitration Mid-Recovery (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief financial officer?",
+      "scenario_context": "A retail bank ($6.8B in assets) has a critical core-banking vendor in active SLA breach (currently 78 hours into an outage). Mid-recovery (hour 50), the bank's general counsel informs the CFO that the vendor has formally invoked the contract's arbitration provision over a separate dispute (the vendor is alleging the bank withheld $4.2M in payments based on prior performance disputes). The arbitration filing was filed at 11pm Friday \u2014 the day before the current outage. Now the bank faces: (1) ongoing operational impact from current outage; (2) arbitration filing requires response within 30 days; (3) the vendor's posture suggests deteriorating relationship; (4) banking regulators monitoring the situation; (5) customer impact is escalating; (6) replacement vendor switching takes 6-9 months. The CFO is weighing strategy.",
+      "options": {
+        "A": "Pause arbitration response and focus on operational recovery; the 30-day arbitration window is sufficient to address after recovery.",
+        "B": "Settle the arbitration immediately to preserve the vendor relationship; the operational outage demonstrates dependency on the vendor.",
+        "C": "Operational recovery + separate arbitration track under independent counsel + regulator engagement + documentation + alternative-vendor DD + executive briefing + customer notification.",
+        "D": "Terminate the contract for cause based on the ongoing outage; the contract breach voids any arbitration claim."
+      },
+      "correct": "C",
+      "key_concept": "SLA arbitration mid-recovery = operational recovery (priority) + separate arbitration response under independent counsel + operational/legal coordination + regulator engagement + documentation for both tracks + alternative vendor due diligence + executive briefing + customer/regulator notification. Eight tracks.",
+      "pre_read": "For SLA-arbitration-mid-recovery scenarios, anchor on \"separate but coordinated operational + arbitration tracks under independent counsel.\" Pause-arbitration, settle-quickly, terminate-now framings each fail.",
+      "correct_explanation": "Federal Arbitration Act, AAA (American Arbitration Association) Commercial Rules, ISACA's IT Vendor Management Audit/Assurance Program, FFIEC Vendor Management Booklet, and corporate-litigation best practices establish eight-track response: (1) IMMEDIATE PRIORITY on OPERATIONAL RECOVERY \u2014 the current outage is the primary operational concern; (2) SEPARATE ARBITRATION RESPONSE TRACK under INDEPENDENT COUNSEL \u2014 operational and legal teams are separate; arbitration deadlines must be met regardless of operational situation; (3) OPERATIONAL/LEGAL COORDINATION \u2014 communications, decisions, document-management are separate channels but coordinated; (4) BANKING REGULATOR COORDINATION \u2014 supervisors monitor vendor disputes for banking-stability implications; (5) DOCUMENT EVERYTHING for BOTH operational recovery (the outage) AND arbitration evidence (prior performance disputes, payment-withholding context); (6) ALTERNATIVE-VENDOR DUE DILIGENCE \u2014 long-lead activity (6-9 months); not yet decision-time but option-preservation; (7) EXECUTIVE COMMITTEE + BOARD BRIEFING \u2014 operational + legal dimensions; (8) CUSTOMER COMMUNICATIONS + REGULATOR NOTIFICATION per contractual and supervisory expectations. Options A, B, D each represent strategic errors that compound the bank's exposure.",
+      "wrong_explanations": {
+        "A": "Pausing arbitration response while operational recovery continues risks default judgment if the 30-day deadline is missed; the vendor's strategic timing (filing the day before the outage) may be designed precisely to overwhelm the bank's response capacity; ignoring arbitration concedes ground.",
+        "B": "Settling the arbitration before understanding the dispute substance + during a vendor outage produces (a) bad settlement terms because the bank is under operational pressure, (b) signals to the vendor that aggressive tactics succeed, (c) doesn't address the operational issues.",
+        "D": "Termination for cause requires substantial procedural foundation (contractual notice, opportunity-to-cure, etc.); declaring termination during the outage without proper procedure creates additional litigation exposure on top of the existing arbitration; termination is a separate decision from the current operational crisis."
+      },
+      "tips": [
+        "Trap is A \u2014 \"pause arbitration response and focus on recovery\" risks default judgment if 30-day deadline is missed; vendor's strategic timing may be designed to overwhelm bank's response capacity.",
+        "SLA arbitration mid-recovery = operational recovery + separate arbitration track + legal coordination + regulator + documentation + vendor due diligence + executive briefing + customer/regulator notification. Eight tracks.",
+        "Exam-day shortcut: any arbitration-during-vendor-crisis scenario is answered by SEPARATE COORDINATED TRACKS under independent counsel; pause-arbitration, settle-fast, terminate-immediate framings each fail."
+      ],
+      "framework_ref": "Federal Arbitration Act 9 USC \u00a71; AAA (American Arbitration Association) Commercial Arbitration Rules; FFIEC Business Continuity Management Booklet; ISACA IT Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "related_concepts": [
+        "Arbitration response timeline",
+        "Default judgment risk",
+        "Vendor strategic litigation timing",
+        "Operational/legal separation",
+        "Banking regulator vendor monitoring"
+      ],
+      "_provenance": "Authored from concept: 'SLA arbitration filed during vendor outage'. Public sources: FAA, AAA, FFIEC, ISACA. Scenario specifics (retail bank $6.8B, core-banking vendor 78-hour outage, arbitration filed previous Friday 11pm, $4.2M alleged withholding, 6-9 month replacement) invented."
+    },
+    {
+      "id": "d4_260",
+      "domain": 4,
+      "subtopic": "Operations Governance Maturity \u2014 D4 Capstone (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST recommendation the IS auditor should give the chief audit executive at the conclusion of the year-long Operations & Resilience audit program?",
+      "scenario_context": "Following a comprehensive year-long audit of the firm's Operations & Resilience domain ($3.2B revenue financial services firm), the CAE is preparing to brief the audit committee. Findings: (1) IT operations maturity is moderately strong but with gaps in change governance and capacity planning; (2) cybersecurity operations have strong tools but underdeveloped threat-hunting; (3) BCP/DR is well-documented but exercise depth is insufficient; (4) cloud governance is fragmented across business units; (5) vendor management has solid controls for critical vendors but gaps for tier-2 vendors; (6) the firm faces upcoming regulatory examinations in 6 months. The CAE must structure the audit committee briefing.",
+      "options": {
+        "A": "Present each finding individually with management responses; comprehensive coverage demonstrates audit rigor.",
+        "B": "Focus the briefing on the most severe findings; the audit committee has limited time and should focus on the critical issues.",
+        "C": "Present the audit findings as a list with risk ratings; standardized risk-rating approach is the audit committee's expected format.",
+        "D": "Cross-domain maturity + prioritized findings + remediation roadmap + regulatory exam alignment + management response + cross-functional dependencies + board governance + follow-up cycle."
+      },
+      "correct": "D",
+      "key_concept": "Year-long Operations & Resilience audit conclusion = cross-domain maturity assessment + prioritized findings + remediation roadmap + regulatory exam alignment + management response framework + cross-functional dependencies + board governance recommendations + follow-up audit cycle + lessons learned. Nine tracks.",
+      "pre_read": "For year-long-audit-conclusion scenarios, anchor on \"cross-domain maturity + prioritized roadmap + regulatory alignment + board governance recommendations.\" Finding-by-finding, severity-only, risk-rated-list framings each fail at the strategic level.",
+      "correct_explanation": "ISACA's Comprehensive Audit Methodology, IIA Standards on Internal Audit (especially Standard 2440 Disseminating Results), COBIT 2019 EDM02 (Ensured Benefits Delivery) and MEA02 (Managed Internal Control), and audit-committee best practices establish nine-track briefing structure: (1) CROSS-DOMAIN MATURITY ASSESSMENT across IT ops, cyber, BCP/DR, cloud, vendor management \u2014 current state against industry benchmark using maturity model (e.g., COBIT 2019 5-level scale); (2) PRIORITIZED FINDINGS + REMEDIATION ROADMAP with timelines, owners, milestones \u2014 not a list but a structured plan; (3) REGULATORY EXAMINATION PREPARATION \u2014 6-month horizon; alignment of findings with examiner focus areas; gives audit committee actionable prep view; (4) MANAGEMENT RESPONSE FRAMEWORK \u2014 agreed actions, escalation procedures, tracking metrics; not just acceptance/rejection but operational integration; (5) CROSS-FUNCTIONAL DEPENDENCIES \u2014 many findings span multiple domains (e.g., change governance gaps affect both IT ops and BCP/DR); cross-cutting view; (6) BOARD-LEVEL GOVERNANCE RECOMMENDATIONS \u2014 committee structure, reporting cadence (quarterly vs annual), oversight depth (operational vs strategic); (7) FOLLOW-UP AUDIT CYCLE STRUCTURE \u2014 when each area receives next audit; risk-based cycle; (8) LESSONS-LEARNED AND CONTINUOUS-IMPROVEMENT FRAMEWORK \u2014 what worked in this audit cycle, what to improve next cycle. Options A, B, C each represent tactical-level reporting that doesn't match the strategic audience.",
+      "wrong_explanations": {
+        "A": "Finding-by-finding presentation produces 60+ items for audit committee review; loses the cross-domain pattern (many findings interconnect), prevents prioritization discussion, and doesn't position the audit committee for strategic-level governance recommendations.",
+        "B": "Severity-only focus loses the cross-domain pattern AND misses the regulatory-examination preparation framework that audit committees increasingly need; severity-only is reactive, not strategic.",
+        "C": "Risk-rated list format is necessary for documentation but insufficient for executive briefing; doesn't capture cross-domain patterns, doesn't provide forward-looking strategic recommendations, and doesn't surface board-governance implications."
+      },
+      "tips": [
+        "Trap is A \u2014 \"present each finding individually\" creates 60+ items for audit committee review; loses cross-domain patterns, prevents prioritization discussion, and doesn't position the committee for strategic recommendations.",
+        "Year-long audit conclusion = cross-domain maturity + prioritized findings + remediation roadmap + regulatory alignment + management response + cross-functional dependencies + board governance + follow-up cycle + lessons learned. Nine tracks.",
+        "Exam-day shortcut: any year-long-audit-conclusion or capstone scenario is answered by STRATEGIC CROSS-DOMAIN view with maturity + roadmap + regulatory alignment; finding-by-finding, severity-only, list-format framings each fail."
+      ],
+      "framework_ref": "ISACA Internal Audit Code of Ethics; IIA Standards on Internal Audit (2440 Disseminating Results, 2450 Overall Opinions); COBIT 2019 EDM02 (Ensured Benefits Delivery), MEA02 (Managed Internal Control); ISO 19011 (Guidelines for Auditing Management Systems); ISACA IT Audit Standards on Reporting",
+      "related_concepts": [
+        "Cross-domain maturity assessment",
+        "Audit committee briefing structure",
+        "Regulatory examination alignment",
+        "Multi-year audit cycle",
+        "Strategic-level governance recommendations"
+      ],
+      "_provenance": "Authored from concept: 'D4 capstone \u2014 year-long Operations & Resilience audit conclusion'. Public sources: ISACA, IIA, COBIT, ISO. Scenario specifics (financial services $3.2B, year-long Operations & Resilience audit, multi-domain findings, 6-month examination horizon) invented."
     }
   ]
 }

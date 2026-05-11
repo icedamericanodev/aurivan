@@ -1171,3 +1171,163 @@ sub-references like "(Managed Risk) and APO12.03").
 - US Federal Rules of Civil Procedure on Subpoenas
 - Uniform Commercial Code (Material Breach Doctrine)
 - VISA / Mastercard / AmEx Incident Response Procedures
+
+## D4 batch 13 additions (FINAL D4 batch)
+- 17 CFR §240.21F)
+- 18 USC §1341 (Mail Fraud)
+- 18 USC §1343 (Wire Fraud)
+- AAA (American Arbitration Association) Commercial Arbitration Rules
+- AWS S3 Security Best Practices
+- CFAA 18 USC §1030
+- CISA Joint Cybersecurity Advisories on Credential Stuffing
+- CISA Quantum-Readiness Guide
+- COBIT 2019 EDM02 (Ensured Benefits Delivery), MEA02 (Managed Internal Control)
+- DOJ Good-Faith Security Research Policy (May 2022)
+- Department of Justice Guidance on Good-Faith Security Research (May 2022)
+- EU GDPR Article 49 (Derogations for Specific Situations)
+- EU GDPR Article 88 (Processing in the Context of Employment)
+- EU GDPR Articles 33 (Breach Notification to Supervisory Authority), 34 (Breach Notification to Data Subjects)
+- EU GDPR Articles 5, 13, 14, 35 (Principles, Information, DPIA)
+- EU Sanctions Framework
+- FDA Quality System Regulation (21 CFR Part 820)
+- FIDO Alliance WebAuthn Specifications
+- Federal Arbitration Act 9 USC §1
+- Federal Sentencing Guidelines (Organizational Sentencing)
+- French CNIL Employee Monitoring Guidance
+- German Works Council Constitution Act (Betriebsverfassungsgesetz, BetrVG §87)
+- HHS HIPAA Security Rule 45 CFR §164.310 (Physical Safeguards)
+- HHS HIPAA Security Rule 45 CFR §164.316 (Documentation and Retention)
+- IIA Standards on Internal Audit (2440 Disseminating Results, 2450 Overall Opinions)
+- ISACA Auditing Artificial Intelligence Audit Program
+- ISACA Data Center Audit/Assurance Program
+- ISACA Fraud Risk Management Audit/Assurance Program
+- ISACA Internal Audit Code of Ethics
+- ISACA Risk Management Audit/Assurance Program
+- ISO 22320 (Emergency Management)
+- ISO 31000 (Risk Management)
+- ISO/IEC 11770-2 (Key Management)
+- ISO/IEC 27001 Annex A.11 (Physical and Environmental Security)
+- ISO/IEC 27001 Annex A.9 (Access Control)
+- ISO/IEC 27037 (Digital Evidence)
+- ISO/IEC 29147 (Vulnerability Disclosure)
+- ISO/IEC 42001 (AI Management Systems)
+- Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023)
+- Mastercard Site Data Protection (SDP) Program
+- NIST FIPS 203 (ML-KEM)
+- NIST FIPS 204 (ML-DSA)
+- NIST FIPS 205 (SLH-DSA)
+- NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations)
+- NSA Cybersecurity Information Sheet (CSI) on Post-Quantum Cryptography
+- OWASP Bug Bounty Best Practices
+- OWASP Top 10 2021 (A07 Identification and Authentication Failures)
+- PCAOB AS 2110 (Identifying and Assessing Risks)
+- PCAOB AS 2410 (Related Parties)
+- PCI DSS v4.0 Requirement 9 (Restrict Physical Access to Cardholder Data)
+- Roskomnadzor Cross-Border Transfer Rules
+- Russian Federal Law on Personal Data (152-FZ, Data Localization)
+- SEC Plain English Disclosure Guidance
+- SEC Regulation S-K Items 303 (MD&A), 105 (Risk Factors)
+- SEC Rule 10b-5 (Securities Fraud)
+- SEC Whistleblower Program (Dodd-Frank Section 922
+- SOX Sections 301 (Audit Committee), 806 (Whistleblower Protection), 1107 (Retaliation)
+- SOX Sections 302, 404
+- State Insurance Fraud Statutes
+- State breach-notification laws
+- UK ICO Employee Monitoring Code (2023)
+- US OFAC Sanctions Regulations (31 CFR Chapter V)
+- Visa Account Information Security (AIS) Program
+- NIST SP 800-213 (IoT Device Cybersecurity Guidance)
+- NISTIR 8259A (IoT Device Cybersecurity Capability Core Baseline)
+- ASHRAE TC 9.9 (Mission Critical Facilities)
+- ASIS International Physical Security Standards
+- CIS Benchmarks
+- CIS Controls v8
+- CIS Controls v8 Implementation Groups
+- DISA Security Technical Implementation Guides (STIGs)
+- Executive Order 13636 (Improving Critical Infrastructure Cybersecurity)
+- FBI Internet Crime Complaint Center
+- IEEE 446 (Recommended Practice for Emergency and Standby Power Systems)
+- ISACA CISA Review Manual, 28th Edition, Chapter 5 Section 5.2.1
+- ISACA CISA Review Manual, 28th Edition, Chapter 5 Section 5.2.2
+- ISACA Information Security Management Audit/Assurance Program
+- ISO/IEC 27001:2022 Annex A.5.1 (Policies for information security)
+- ISO/IEC 27001:2022 Annex A.7 (Physical Controls)
+- ISO/IEC 27001:2022 Annex A.9 (Access Control)
+- ISO/IEC 27001:2022 Clause 5.2 (Policy)
+- ISO/IEC 27005:2022 (Information Security Risk Management)
+- Montreal Protocol on Substances that Deplete the Ozone Layer
+- NFPA 110 (Standard for Emergency and Standby Power Systems)
+- NFPA 12 (Standard on Carbon Dioxide Extinguishing Systems)
+- NFPA 2001 (Standard on Clean Agent Fire Extinguishing Systems)
+- NFPA 75 (Standard for the Fire Protection of Information Technology Equipment)
+- NIST Cybersecurity Framework (CSF) v2.0 (NIST CSF v2.0)
+- NIST Cybersecurity Framework (NIST CSF) v2.0 (February 2024)
+- NIST SP 800-100 (Information Security Handbook)
+- NIST SP 800-12 Rev 1 (An Introduction to Information Security)
+- NIST SP 800-14 (Generally Accepted Principles and Practices for Securing IT Systems)
+- NIST SP 800-30 Rev 1 (Guide for Conducting Risk Assessments)
+- NIST SP 800-53 Rev 5 (PE family — Physical and Environmental Protection)
+- NIST SP 800-53 Rev 5 PE-2 (Physical Access Authorizations), PE-3 (Physical Access Control), PE-6 (Monitoring Physical Access)
+- NIST SP 800-53 Rev 5 PE-3 (Physical Access Control)
+- NIST SP 800-53 Rev 5 PE-6 (Monitoring Physical Access)
+- NIST SP 800-53B (Control Baselines for Information Systems)
+- TIA-942 (Telecommunications Infrastructure Standard for Data Centers)
+- Uptime Institute Operational Sustainability Standards
+- Uptime Institute Tier Standard
+- Uptime Institute Tier Standard: Topology
+- COBIT 2019 Framework: Introduction and Methodology
+- ISO/IEC 27001:2022 Annex A.5.15–A.5.18 (Access control, identity management, authentication, access rights) and A.8.2–A.8.5 (Technical access controls)
+- 2021 Standard Contractual Clauses Commission Decision
+- ABA Model Rule 3.4 (Fairness to Opposing Party and Counsel)
+- ACC Sample Litigation Hold Policy
+- Brazil LGPD (Lei Geral de Proteção de Dados)
+- CIS Controls v8 Control 5 (Account Management)
+- CIS Controls v8 Control 6 (Access Control Management)
+- CISA Fact Sheet on Phishing-Resistant MFA (October 2022)
+- CJEU Schrems II Judgment (C-311/18)
+- California Consumer Privacy Act (CCPA) / California Privacy Rights Act (CPRA)
+- Cavoukian, Privacy by Design — The 7 Foundational Principles (2009)
+- EDPB Guidelines 05/2020 on consent
+- EDPB Guidelines 4/2019 on Article 25
+- EDPB Guidelines on DPIA (WP 248)
+- FFIEC BSA/AML Examination Manual (Customer Identification Program)
+- FIDO Alliance FIDO2/WebAuthn Specifications
+- FIDO Alliance Specifications (FIDO2/WebAuthn)
+- GAPP (Generally Accepted Privacy Principles)
+- GDPR Article 30 (Records of processing activities)
+- GDPR Article 33 (Notification of a personal data breach)
+- GDPR Article 5 (Principles relating to processing of personal data)
+- GDPR Article 5(1)(c) (Data minimisation)
+- GDPR Article 58 (Powers of supervisory authorities)
+- GDPR Article 7 (Conditions for consent)
+- GDPR Articles 15-22 (Data Subject Rights)
+- GDPR Chapter V Articles 44-50
+- GDPR Chapter V Articles 44-50 (Transfers of personal data to third countries)
+- GDPR Recital 32
+- HIPAA Security Rule §164.312 (Technical Safeguards)
+- IAB Transparency and Consent Framework v2.2
+- IETF RFC 6749 (OAuth 2.0)
+- OpenID Connect Core 1.0 (OpenID Foundation specification)
+- ISACA Incident Management Audit/Assurance Program
+- ISO/IEC 27001:2022 Annex A.5.16 (Identity management)
+- ISO/IEC 27001:2022 Annex A.5.18 (Access rights)
+- ISO/IEC 27001:2022 Annex A.8.2 (Privileged access rights)
+- ISO/IEC 27701:2019 (Privacy Information Management)
+- ISO/IEC 29100:2011 (Privacy framework)
+- Microsoft Entra ID Migration Guidance
+- NIST Privacy Framework v1.0
+- NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Applications)
+- NIST SP 800-53 Rev 5 (PT family — PII Processing and Transparency)
+- NIST SP 800-53 Rev 5 AC-2(7) (Privileged User Accounts)
+- NIST SP 800-53 Rev 5 IA-2 (Identification and Authentication)
+- NIST SP 800-53 Rev 5 IR-4 (Incident Handling)
+- NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)
+- NIST SP 800-63-3 (Digital Identity Guidelines)
+- NIST SP 800-63A (Digital Identity Guidelines: Enrollment and Identity Proofing)
+- NIST SP 800-63B (Digital Identity Guidelines: Authentication and Lifecycle Management)
+- NIST SP 800-63B (Phishing-resistant MFA)
+- NIST SP 800-63C (Federation and Assertions)
+- OASIS SAML 2.0 Core
+- OECD Privacy Guidelines (2013)
+- Okta Migration Best Practices
+- ePrivacy Directive (2002/58/EC)
