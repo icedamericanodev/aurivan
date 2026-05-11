@@ -4405,6 +4405,152 @@
         "Root-cause review"
       ],
       "_provenance": "Authored from concept: 'Cross-system referential integrity loss per ISACA Referential Integrity guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (B2B platform, 3 systems CRM/billing/support, 3% record inconsistency / 720 records, 4-month silent sync failure, 4 billing disputes + 2 support escalations traced) invented for this question. FINAL D3 QUESTION — D3 closes at 120/120."
+    },
+    {
+      "id": "d3_121",
+      "domain": 3,
+      "subtopic": "Project Management Office (PMO) — PRIMARY Function",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY function of a project management office (PMO)?",
+      "options": {
+        "A": "Direct execution of all project activities across the organization, replacing individual project managers and delivery teams.",
+        "B": "Establish project standards, provide methodology, support PMs, and consolidate portfolio reporting to executive leadership.",
+        "C": "Approve every project budget request and operational decision made by individual project managers throughout the project lifecycle.",
+        "D": "Audit projects after closure to identify failures and assign blame to project managers responsible for any schedule or cost variance."
+      },
+      "correct": "B",
+      "key_concept": "PMO = establish standards + provide methodology + support PMs + consolidate portfolio reporting. It enables project management; it doesn't execute projects, approve every decision, or audit for blame. PMO types: supportive, controlling, directive (PMBOK), but the PRIMARY function across all types is enabling project success.",
+      "pre_read": "For PMO questions, anchor on \"standards + methodology + PM support + portfolio reporting.\" Distractors propose execution-substitute, approval-bottleneck, or audit-for-blame roles that misread the PMO's purpose.",
+      "correct_explanation": "PMBOK Guide 7th Edition and ISACA Project Management guidance define the project management office (PMO) as an organizational structure that standardizes project-related governance and facilitates the sharing of resources, methodologies, tools, and techniques. PMBOK identifies three PMO types — supportive (low control, advice and templates), controlling (medium control, compliance with framework), and directive (high control, PMs report into PMO) — but across all three, the PRIMARY function is enabling project management capability: standards, methodology, PM support, and consolidated portfolio reporting. Option A confuses PMO with central execution (the PMO supports PMs; it does not replace them). Option C confuses PMO with budget-approval authority (typically the steering committee or sponsor role). Option D confuses PMO with audit (post-closure review is the lessons-learned activity, not a blame exercise).",
+      "wrong_explanations": {
+        "A": "PMO does not execute projects. It enables PMs to execute by providing standards, templates, methodology, and PM development. Direct execution would consolidate project work into one office, defeating the purpose.",
+        "C": "Budget approval is typically the steering committee or sponsor's authority, not the PMO's. The PMO may facilitate the approval process but doesn't make the approval decision itself.",
+        "D": "Post-closure review is the lessons-learned activity (covered in d3_044), not a blame exercise. The PMO may host lessons-learned processes but doesn't function as an audit-for-blame organization."
+      },
+      "tips": [
+        "Trap is A — \"PMO directs all projects\" sounds authoritative and matches the literal expansion of 'office' but it confuses PMO with central execution; PMO ENABLES PMs, doesn't replace them.",
+        "PMO function = STANDARDS + METHODOLOGY + PM SUPPORT + PORTFOLIO REPORTING. Four elements; PMO types (supportive/controlling/directive) vary in control intensity but share these functions.",
+        "Exam-day shortcut: any PMO question is answered by the option naming ENABLEMENT of project management (standards, methodology, support); execute-everything, approve-everything, and audit-for-blame answers misread the role."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; PMI Standard for Program Management; ISACA Project Management guidance",
+      "related_concepts": [
+        "PMO",
+        "Project management office",
+        "PMBOK",
+        "PMO types"
+      ],
+      "_provenance": "Authored from concept: 'PMO PRIMARY function per PMBOK 7E and ISACA Project Management guidance'. Public sources: PMBOK 7E, PMI Standard for Program Management. Gap-closing question for D3 TOC section 3.1.6."
+    },
+    {
+      "id": "d3_122",
+      "domain": 3,
+      "subtopic": "Software Development Methods — Prototyping Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies prototyping over a fully-specified waterfall approach for a system development project?",
+      "options": {
+        "A": "A system whose requirements are uncertain or evolving, where users can refine needs by interacting with a working prototype.",
+        "B": "A system whose requirements are fully understood at the start and need to be delivered to a hard regulatory deadline.",
+        "C": "A regulated build requiring signed traceability artifacts at each gate to satisfy external audit and regulator requirements.",
+        "D": "A large-scale system where the cost of throwaway prototype code would dominate the cost of the final delivered system."
+      },
+      "correct": "A",
+      "key_concept": "Prototyping is appropriate when requirements are uncertain and user interaction refines them. Waterfall is appropriate when requirements are stable and traceability is essential. Each method optimizes for a different requirements-certainty profile.",
+      "pre_read": "For SDLC-method selection questions, anchor on \"requirements certainty as the key signal.\" Prototyping suits uncertain/evolving requirements; waterfall suits stable/specified requirements; iterative/agile suits the middle. Match method to certainty profile.",
+      "correct_explanation": "ISACA Software Audit guidance, ISO/IEC 12207 (Software Life Cycle Processes), and PMBOK Guide 7th Edition all establish that software development method selection should follow requirements certainty: prototyping (including evolutionary prototyping and throwaway prototyping) is appropriate when requirements are uncertain or evolving and users need to interact with working software to refine their needs. Option B describes the case where waterfall is appropriate (fully specified requirements, hard deadline, no requirements-discovery needed). Option C describes regulated stage-gated builds, which require signed traceability artifacts at each gate — incompatible with throwaway prototyping (the hybrid agile-stage-gate approach covered in d3_017 is the appropriate response). Option D's scale-cost argument is real but addressed via evolutionary prototyping (the prototype becomes the production system) or by limiting prototyping to specific subsystems; it's not a categorical disqualifier.",
+      "wrong_explanations": {
+        "B": "Fully-understood requirements with a hard regulatory deadline favor waterfall (or hybrid agile with strict gates). Prototyping's value comes from requirements DISCOVERY; if requirements are already known, prototyping adds cost without producing requirements value.",
+        "C": "Regulated builds requiring signed traceability artifacts need a method that produces signed artifacts at each stage gate. Throwaway prototyping doesn't produce gate-signed artifacts; a hybrid agile-stage-gate approach is the appropriate response.",
+        "D": "Throwaway prototyping cost can be substantial, but evolutionary prototyping (the prototype becomes the production system) and selective prototyping (specific subsystems only) address this. The scale-cost argument is a refinement, not a categorical disqualifier."
+      },
+      "tips": [
+        "Trap is B — \"fully understood requirements + hard deadline\" sounds like an efficient project profile that should be 'just use prototyping for speed,' but prototyping is for requirements DISCOVERY, not delivery speed; waterfall fits stable-requirements scenarios.",
+        "Prototyping = REQUIREMENTS UNCERTAIN + USER INTERACTION REFINES needs. Waterfall = REQUIREMENTS STABLE + TRACEABILITY NEEDED. Method follows requirements profile.",
+        "Exam-day shortcut: any SDLC-method-selection question is answered by reading the requirements-certainty signal; method follows the profile, not preferences."
+      ],
+      "framework_ref": "ISACA Software Audit guidance; ISO/IEC 12207 (Software Life Cycle Processes); PMBOK Guide 7th Edition",
+      "related_concepts": [
+        "Prototyping",
+        "Waterfall",
+        "Evolutionary development",
+        "Requirements certainty"
+      ],
+      "_provenance": "Authored from concept: 'Prototyping vs waterfall selection per ISACA Software Audit guidance and ISO/IEC 12207'. Public sources: ISO/IEC 12207, ISACA guidance, PMBOK 7E. Gap-closing question for D3 TOC section 3.3.5 (Software Development Methods — Prototyping/Evolutionary Development)."
+    },
+    {
+      "id": "d3_123",
+      "domain": 3,
+      "subtopic": "System Development Tools — CASE / Code Generators / 4GLs",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST addresses risk introduced by code-generator and 4GL tools in application development?",
+      "options": {
+        "A": "Avoid using code generators and 4GLs entirely; hand-written code is more auditable and inherently safer for any application context.",
+        "B": "Allow developers to use any generator output without review since the tools have been validated by their vendors initially.",
+        "C": "Treat generated code as source under same controls (review, test, configuration management) while validating generator output patterns.",
+        "D": "Convert all generator output to hand-written code immediately after generation to ensure full developer ownership of the application."
+      },
+      "correct": "C",
+      "key_concept": "Generator/4GL output must be treated as source code: same SDLC controls (review, test, config management) plus validation of generator output patterns to ensure the generated code meets quality and security expectations. Avoid-entirely, vendor-validation-only, and convert-to-hand-code each fail differently.",
+      "pre_read": "For code-generator/4GL questions, anchor on \"generated code is source code with extra validation needed.\" Avoid-entirely loses productivity value; vendor-validation-only skips firm-specific review; convert-to-hand-code defeats the productivity benefit.",
+      "correct_explanation": "ISACA Software Audit guidance and ISO/IEC 12207 (Software Life Cycle Processes) establish that code produced by Computer-Aided Software Engineering (CASE) tools, code generators, and Fourth-Generation Language (4GL) compilers must be treated as source code subject to the same SDLC controls: code review (for security and design quality), automated testing (the generated code may have bugs the generator introduces), and configuration management (versioned, traceable). Additionally, the GENERATOR ITSELF is a control point — validating that generator output patterns meet quality and security expectations (e.g., does the generator produce SQL-injection-safe data-access code; does it handle edge cases consistently) prevents systematic flaws from propagating across all generated artifacts. Option A's avoid-entirely forgoes the productivity value of these tools. Option B's vendor-validation-only is the textbook anti-pattern (the firm's specific use context matters; vendor validation doesn't substitute for firm-level review). Option D's convert-to-hand-code defeats the productivity benefit.",
+      "wrong_explanations": {
+        "A": "Avoid-entirely forgoes the productivity benefits of CASE tools, code generators, and 4GLs. Properly governed, these tools accelerate delivery substantially; the right answer is governance, not avoidance.",
+        "B": "Vendor validation of the tool itself doesn't substitute for review of generator OUTPUT in the firm's specific use context. Different inputs produce different outputs; firm-level review is required.",
+        "D": "Converting generator output to hand-written code defeats the productivity purpose. The generator's value comes from continued use (regeneration when requirements change); converting to hand-code freezes the artifact and abandons the generator."
+      },
+      "tips": [
+        "Trap is B — \"vendor validation is sufficient\" is the textbook anti-pattern that treats the tool's general validity as a substitute for firm-specific code review of generated output.",
+        "Generated code = TREAT AS SOURCE: review + test + config management + validate generator output patterns. Same SDLC discipline as hand-written code.",
+        "Exam-day shortcut: any code-generator/4GL/CASE-tool question is answered by the option naming GENERATED CODE TREATED AS SOURCE; avoid-entirely and vendor-validation-only answers each fail differently."
+      ],
+      "framework_ref": "ISACA Software Audit guidance; ISO/IEC 12207 (Software Life Cycle Processes); ISACA Application Controls guidance",
+      "related_concepts": [
+        "CASE tools",
+        "Code generators",
+        "4GL",
+        "System development tools"
+      ],
+      "_provenance": "Authored from concept: 'Code generator / 4GL governance per ISACA Software Audit guidance and ISO/IEC 12207'. Public sources: ISACA, ISO/IEC 12207. Gap-closing question for D3 TOC section 3.3.6 (System Development Tools and Productivity Aids)."
+    },
+    {
+      "id": "d3_124",
+      "domain": 3,
+      "subtopic": "Certification / Accreditation in Regulated Builds",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the certification/accreditation decision for this regulated banking platform release?",
+      "scenario_context": "A federally chartered bank is preparing a major banking-platform release for production deployment. Regulatory requirements include FFIEC examination expectations, OCC oversight, and the bank's internal SOC 1 controls framework. The platform processes consumer financial data subject to GLBA. The release has passed development testing and is in pre-deployment review. Three positions on certification/accreditation are debated: (a) skip formal certification — passing tests is sufficient; (b) require a formal certification package documenting controls, residual risk, and accreditation decision; (c) delegate certification to the development team. The compliance officer and CISO are aligned but the CIO is concerned about the certification timeline impact. The IS auditor was asked to advise on certification governance before the steering committee meets.",
+      "options": {
+        "A": "Skip formal certification — passing development and integration tests demonstrates the platform is ready, and the certification package adds bureaucratic overhead without proportional value.",
+        "B": "Delegate certification to the development team, who know the platform best; independent certification by audit or compliance is duplicative effort for a well-tested platform.",
+        "C": "Defer certification until after production deployment and customer feedback; pre-deployment certification cannot predict actual production behavior accurately enough to justify the timeline.",
+        "D": "Require a formal certification package: documented controls evidence, residual-risk acceptance, independent review, and accreditation decision by an authorized authority before deployment."
+      },
+      "correct": "D",
+      "key_concept": "Regulated certification/accreditation = formal package: controls evidence + residual-risk acceptance + independent review + accreditation by authorized authority. Skip-certification ignores regulatory expectations; delegate-to-developers breaks independence; defer-to-post-deployment ignores the gating control purpose.",
+      "pre_read": "For certification/accreditation questions in regulated environments, anchor on \"formal package + independent review + accreditation by authority before deployment.\" Distractors propose extremes (skip, delegate, defer) that each break a different control dimension.",
+      "correct_explanation": "FFIEC IT Examination Handbook, OCC Bulletin 2017-21 (Mergers and Acquisitions) and broader OCC guidance, NIST SP 800-37 (Risk Management Framework — Authorization), and ISACA Software Audit guidance establish that regulated platform releases require formal certification and accreditation (C&A) before production deployment: (1) CONTROLS EVIDENCE — documented testing of controls (technical, administrative, physical) against applicable framework requirements; (2) RESIDUAL-RISK ACCEPTANCE — documented analysis of risks the controls do not fully address, with explicit acceptance by an authorized risk owner; (3) INDEPENDENT REVIEW — the certification is performed by a party other than the development team (typically internal audit, compliance, or external assessor); (4) ACCREDITATION DECISION — an authorized authority (CISO, designated accreditation official) signs the authorization to operate based on the certification. Option A's skip-certification ignores FFIEC/OCC examination expectations that banks demonstrate formal controls governance. Option B's delegate-to-developers breaks the independence requirement (developers cannot independently certify their own work). Option C's defer-to-post-deployment ignores that C&A is a GATING control before deployment, not a post-hoc verification.",
+      "wrong_explanations": {
+        "A": "Skip-certification ignores FFIEC and OCC examination expectations that banks demonstrate formal C&A governance for material platform releases. Testing passes show the platform works; C&A demonstrates that controls and residual risks are documented and accepted.",
+        "B": "Delegating certification to the development team breaks independence — developers cannot independently certify their own work. Independent review (by audit, compliance, or external assessor) is the entire point of formal C&A.",
+        "C": "Deferring certification to post-deployment treats C&A as a verification rather than a gating control. The purpose of pre-deployment C&A is to ensure controls and residual risk are explicitly documented and accepted BEFORE production exposure, not after."
+      },
+      "tips": [
+        "Trap is A — \"skip formal certification; passing tests is sufficient\" matches engineering instinct to ship-when-tested but ignores FFIEC/OCC examination expectations for documented controls governance in regulated platforms.",
+        "Regulated C&A = CONTROLS EVIDENCE + RESIDUAL-RISK ACCEPTANCE + INDEPENDENT REVIEW + ACCREDITATION by authority. Four elements; skip/delegate/defer each break a different one.",
+        "Exam-day shortcut: any regulated-certification question is answered by the option naming FORMAL PACKAGE with INDEPENDENT REVIEW before deployment; skip-because-tested, delegate-to-developers, and defer-to-post-deployment answers each fail differently."
+      ],
+      "framework_ref": "FFIEC IT Examination Handbook; NIST SP 800-37 (Risk Management Framework); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Certification",
+        "Accreditation",
+        "Authorization to operate",
+        "C&A",
+        "FFIEC"
+      ],
+      "_provenance": "Authored from concept: 'Regulated certification/accreditation per FFIEC IT Examination Handbook and NIST SP 800-37'. Public sources: FFIEC, NIST SP 800-37, ISACA. Gap-closing question for D3 TOC section 3.7.5 (Certification/Accreditation). Scenario specifics (federally chartered bank, FFIEC + OCC + GLBA + SOC 1 regulatory context, three positions debated, CIO timeline concern) invented for this question."
     }
   ]
 }
