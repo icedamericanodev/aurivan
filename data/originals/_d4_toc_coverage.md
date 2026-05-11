@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d4.json`.
 
-**Last updated:** after D4 batch 5 (d4_081..d4_100) — 100 of 260 questions authored (38%).
+**Last updated:** after D4 batch 6 (d4_101..d4_120) — 120 of 260 questions authored (46%).
 
 ## Part A — Information Systems Operations
 
@@ -17,8 +17,8 @@
 | 4.1.1 | Networking — LAN/WAN security (802.1X NAC) | d4_005 (application) |
 | 4.1.1 | Networking — TCP/IP vs OSI Reference Model | d4_001 (foundational — layer mapping) |
 | 4.1.1 | Networking — Network Administration and Control | covered by d4_005, d4_021 |
-| 4.1.1 | Networking — Converged Protocols | _pending_ |
-| 4.1.1 | Networking — Internet Protocol Networking | covered by d4_021 (NAT) |
+| 4.1.1 | Networking — Converged Protocols | d4_101 (foundational — iSCSI/FCoE/MPLS/VoIP) |
+| 4.1.1 | Networking — Internet Protocol Networking | d4_021 (NAT), d4_102 (foundational — IPv4 vs IPv6) |
 | 4.1.1 | Networking — Network Address Translation (NAT) | d4_021 (foundational — NAT definition) |
 | 4.1.2 | Computer Hardware Components and Architectures | d4_022 (foundational — categorization) |
 | 4.1.3 | Common Enterprise Devices (Proxy Servers) | d4_006 (application — proxy controls) |
@@ -46,8 +46,8 @@
 | TOC | Subsection | Covered by |
 |---|---|---|
 | 4.4 | System Interfaces — Risk and Controls (consolidated) | d4_010 (application — receiver-side reconciliation) |
-| 4.4.1 | Risk Associated With System Interfaces | covered by d4_010 |
-| 4.4.2 | Controls Associated With System Interfaces | covered by d4_010 |
+| 4.4.1 | Risk Associated With System Interfaces | d4_111 (application — sender/network/middleware/receiver/end-to-end) |
+| 4.4.2 | Controls Associated With System Interfaces | d4_112 (application — multi-control stack), d4_119 (analysis — cascade-into-close) |
 
 ### 4.5 End-User Computing and Shadow IT
 
@@ -96,10 +96,10 @@
 |---|---|---|
 | 4.9.1 | Types of Logs | d4_035 (application — types and coverage) |
 | 4.9.2 | Log Management — Data Collection | covered by d4_035 |
-| 4.9.2 | Log Management — Generating Alerts | covered by d4_036 |
+| 4.9.2 | Log Management — Generating Alerts | d4_036, d4_105 (application — SIEM tuning governance) |
 | 4.9.2 | Log Management — Storing and Protecting Logs | covered by d4_035 |
-| 4.9.2 | Log Management — Analyzing Log Data | covered by d4_036 |
-| 4.9.2 | Log Management — Reporting Concerns | _pending_ |
+| 4.9.2 | Log Management — Analyzing Log Data | d4_036, d4_107 (application — UEBA vs rules-based) |
+| 4.9.2 | Log Management — Reporting Concerns | d4_106 (application — retention + reporting triggers), d4_118 (analysis — SEC exam gap) |
 | 4.9.2 | Log Management — SIEM Integration | d4_036 (application — SIEM integration) |
 
 ### 4.10 IT Service Level Management
@@ -114,14 +114,14 @@
 
 | TOC | Subsection | Covered by |
 |---|---|---|
-| 4.11.1 | DBMS Architecture (Metadata) | d4_054 (application — metadata/data dictionary) |
+| 4.11.1 | DBMS Architecture (Metadata) | d4_054 (application), d4_108 (application — metadata governance ISO/IEC 11179) |
 | 4.11.2 | Database Structure — Hierarchical | covered by d4_056 |
 | 4.11.2 | Database Structure — Network | covered by d4_056 |
 | 4.11.2 | Database Structure — Relational (RDBMS) | d4_042 (application — vs NoSQL) |
 | 4.11.2 | Database Structure — Object-Oriented (OODBMS) | covered by d4_056 |
 | 4.11.2 | Database Structure — NoSQL | d4_042 (application), d4_055 (application — when appropriate) |
 | 4.11.2 | Database Structure — Legacy Models | d4_056 (application — audit considerations) |
-| 4.11.3 | Database Controls | d4_047 (application — multi-element coverage), d4_058 (analysis — performance vs availability) |
+| 4.11.3 | Database Controls | d4_047 (application — multi-element), d4_058 (analysis — perf vs availability), d4_103 (foundational — ACID), d4_109 (application — TDE vs app-level), d4_110 (application — RPO alignment), d4_117 (analysis — legacy DB corruption) |
 | 4.11.4 | Database Reviews | d4_048 (application — audit scope) |
 
 ## Part B — Business Resilience
@@ -174,12 +174,12 @@
 | 4.15.8 | Components of BCP — Key Decision-Making Personnel | d4_091 (application), d4_100 (analysis — succession) |
 | 4.15.8 | Components of BCP — Backup of Required Supplies | d4_092 (application — supplies governance) |
 | 4.15.8 | Components of BCP — Insurance | d4_093 (application — insurance) |
-| 4.15.9 | Plan Testing — Specifications | _pending_ |
-| 4.15.9 | Plan Testing — Test Execution | _pending_ |
-| 4.15.9 | Plan Testing — Documentation of Results | _pending_ |
-| 4.15.9 | Plan Testing — Results Analysis | _pending_ |
+| 4.15.9 | Plan Testing — Specifications | d4_113 (application — nine-element specs) |
+| 4.15.9 | Plan Testing — Test Execution | d4_114 (application — improvisation governance) |
+| 4.15.9 | Plan Testing — Documentation of Results | d4_116 (application — full lifecycle documentation) |
+| 4.15.9 | Plan Testing — Results Analysis | d4_115 (application — structured per objective) |
 | 4.15.9 | Plan Testing — Plan Maintenance | d4_094 (application — maintenance lifecycle) |
-| 4.15.10 | BCM Good Practices | _pending_ |
+| 4.15.10 | BCM Good Practices | d4_104 (foundational — BCI six PPs) |
 | 4.15.11 | Auditing BCP — Reviewing the Plan | d4_097 (analysis — regulator exam findings) |
 | 4.15.11 | Auditing BCP — Evaluation of Offsite Storage | _pending_ |
 | 4.15.11 | Auditing BCP — Interviewing Key Personnel | _pending_ |
@@ -201,7 +201,7 @@
 | 4.16.4 | Development of DRP — Organization and Responsibilities | d4_089 (application — roles) |
 | 4.16.5 | DR Testing Methods — Types of Tests | d4_081 (foundational — test spectrum), d4_095 (analysis — mid-test failure) |
 | 4.16.5 | DR Testing — Testing | covered by d4_081 |
-| 4.16.5 | DR Testing — Test Results | _pending_ |
+| 4.16.5 | DR Testing — Test Results | d4_116 (application — documentation), d4_120 (analysis — post-failover forensic artifacts) |
 | 4.16.6 | Invoking Disaster Recovery Plans | d4_096 (analysis — invocation under exec absence) |
 
 ---
@@ -210,12 +210,12 @@
 
 | Tier | Authored | Target |
 |---|---|---|
-| Foundational | 16 | 26 |
-| Application | 60 | 130 |
-| Analysis | 24 | 104 |
-| **Total** | **100** | **260** |
+| Foundational | 20 | 26 |
+| Application | 72 | 130 |
+| Analysis | 28 | 104 |
+| **Total** | **120** | **260** |
 
-**D4 status:** in_progress; batches 1-5 (d4_001..d4_100) authored. 160/260 questions remaining across 8 batches.
+**D4 status:** in_progress; batches 1-6 (d4_001..d4_120) authored. 140/260 questions remaining across 7 batches.
 
 ## D4 batch plan (cadence)
 

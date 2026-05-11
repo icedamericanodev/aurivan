@@ -844,6 +844,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Insurance Gap Analysis guidance
 - ISACA Alternative Processing Contract guidance
 - ISACA Key Personnel Succession guidance
+- Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)
 - FFIEC Business Continuity Management Booklet
 - NAIC Cybersecurity Insurance Guidance
 - BCI Good Practice Guidelines
@@ -883,3 +884,53 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Hardware Refresh Decision guidance
 - ISACA Recurring Problem Trend guidance
 - ISACA Heterogeneous Release Coordination guidance
+
+## D4 batch 6 additions
+- 45 CFR §164.316 (HIPAA Security Rule)
+- BCI Good Practice Guidelines PP6 (Validation)
+- CIS Controls v8 Safeguard 8.11 (Conduct Audit Log Reviews)
+- DAMA Data Management Body of Knowledge (DMBOK)
+- DRII Professional Practice 9
+- FINRA Rule 4511 (General Requirements)
+- Gartner UEBA Market Guide
+- HHS HIPAA Breach Notification Rule (45 CFR §§ 164.400-414)
+- HSCC Healthcare and Public Health Sector Coordinating Council guidance
+- Härder & Reuter (1983) ACID Formalization
+- INCITS T11 (FCoE specifications)
+- ISACA Database Management Audit/Assurance Program
+- ISACA IT Application Controls Audit/Assurance Program
+- ISO 22301 (Security and Resilience — Business Continuity Management Systems)
+- ISO 22301 Clause 8.4 (Business Continuity Procedures)
+- ISO 22301 Clause 8.5 (Exercise Programme)
+- ISO 22301 Clause 9.1 (Performance Evaluation)
+- ISO 22313 (BCMS Guidance)
+- ISO/IEC 11179 (Metadata Registries)
+- ISO/IEC 27001 Annex A.13 (Communications Security)
+- ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)
+- ISO/IEC 27040 (Information Technology — Security Techniques — Storage Security)
+- ISO/IEC 9075 (SQL Standard)
+- MITRE ATT&CK Detection Engineering
+- MITRE D3FEND
+- NAIC Model Audit Rule (statutory financial reporting)
+- NIST SP 800-111 (Guide to Storage Encryption Technologies)
+- NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6)
+- NIST SP 800-189 (Resilient Interdomain Traffic Exchange)
+- NIST SP 800-53 Rev 5 SI-7 (Software, Firmware, and Information Integrity)
+- NIST SP 800-57 Part 1 (Recommendation for Key Management)
+- NIST SP 800-84 (Guide to Test, Training, and Exercise Programs)
+- NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response)
+- NIST SP 800-95 (Guide to Secure Web Services)
+- PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting)
+- PCI DSS v4.0 Requirement 10
+- PCI DSS v4.0 Requirement 3 (Protect Stored Account Data)
+- RFC 1519 (CIDR)
+- RFC 3031 (MPLS Architecture)
+- RFC 3261 (SIP for VoIP)
+- RFC 3720 (iSCSI Protocol)
+- RFC 8200 (Internet Protocol Version 6 Specification)
+- NIST SP 800-58 (Security Considerations for Voice Over IP Systems)
+- SEC Enforcement Manual
+- SEC Form 8-K Item 4.02
+- SEC Rule 17a-4
+- SEC Seaboard Report (2001) Voluntary Disclosure Framework
+- SOX Sections 302, 404, 906
