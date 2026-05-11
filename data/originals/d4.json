@@ -2910,6 +2910,719 @@
         "Cyber resilience"
       ],
       "_provenance": "Authored from concept: 'DDoS active response per ISACA DDoS Response guidance and NIST SP 800-184'. Public sources: ISACA, NIST. Scenario specifics (e-commerce, 8.4M customers, 21:30 attack, 340 Gbps multi-vector, four existing protections, 25-min cloud DDoS propagation, CISO/CIO on call) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback — incident response scenario rather than stakeholder conflict."
+    },
+    {
+      "id": "d4_081",
+      "domain": 4,
+      "subtopic": "DR Test Types — Spectrum",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST distinguishes the four standard DR test types from lowest to highest disruption?",
+      "options": {
+        "A": "Walkthrough → tabletop → simulation → parallel → full-interruption; each progressively more disruptive but more thorough at validating recovery capability.",
+        "B": "Tabletop → simulation → parallel → full-interruption (disruptive) — lowest to highest disruption with progressively richer test of recovery capability.",
+        "C": "Live-fire → simulated → documented → planned, ordered by realism in descending order of risk to production operations across the program.",
+        "D": "DR tests are interchangeable in scope and rigor; the choice between them depends on auditor preference rather than substantive testing properties."
+      },
+      "correct": "B",
+      "key_concept": "DR test types lowest-to-highest disruption: Tabletop (discussion) → Simulation (mock recovery activities) → Parallel (run recovery alongside production) → Full-interruption (switch production to recovery). Each tests progressively more, with progressively more risk to operations.",
+      "pre_read": "For DR test type questions, anchor on the canonical four-step spectrum: tabletop → simulation → parallel → full-interruption. Each progressively richer test with progressively more disruption risk.",
+      "correct_explanation": "ISACA DR Test Types guidance, NIST SP 800-34 (Contingency Planning Guide), and DRII Professional Practices establish the canonical DR test spectrum: (1) TABLETOP — discussion-based walkthrough of the plan, team members verbalize what they would do; lowest disruption; tests plan understanding and gaps; (2) SIMULATION — team performs mock recovery activities at the recovery site without actually transitioning production; tests procedural readiness; (3) PARALLEL — recovery systems are activated and run alongside production without switching customer traffic; tests recovery system functionality; (4) FULL-INTERRUPTION — production is actually transitioned to recovery; highest realism, highest risk. Option A's walkthrough as a separate first step is sometimes used but not in the canonical four-type spectrum (walkthrough is usually a tabletop variant). Option C inverts the spectrum (lists live-fire as 'highest realism, descending risk'). Option D denies the substantive differences entirely.",
+      "wrong_explanations": {
+        "A": "Adding a separate \"walkthrough\" step before tabletop produces a 5-type spectrum not commonly used. The canonical four are tabletop, simulation, parallel, full-interruption. Walkthrough is typically considered a tabletop variant.",
+        "C": "The descending order is inverted. Live-fire is the MOST disruptive (full-interruption); documented review is the LEAST disruptive (tabletop). The four-type spectrum runs ascending in disruption, not descending.",
+        "D": "DR test types have substantively different scope and rigor. Tabletop and full-interruption test fundamentally different things (plan understanding vs actual recovery capability); they are not interchangeable."
+      },
+      "tips": [
+        "Trap is A — adding a separate \"walkthrough\" step before tabletop sounds thorough but it's typically a tabletop variant; the canonical four are tabletop → simulation → parallel → full-interruption.",
+        "DR test spectrum (low → high disruption): TABLETOP → SIMULATION → PARALLEL → FULL-INTERRUPTION. Four types; progressively richer test with progressively more disruption.",
+        "Exam-day shortcut: any DR-test-type question is answered by the option naming the four canonical types in ascending disruption order."
+      ],
+      "framework_ref": "ISACA DR Test Types guidance; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "related_concepts": [
+        "DR testing",
+        "Tabletop",
+        "Simulation",
+        "Parallel test",
+        "Full-interruption test"
+      ],
+      "_provenance": "Authored from concept: 'DR test type spectrum per NIST SP 800-34 and DRII Professional Practices'. Public sources: NIST, DRII."
+    },
+    {
+      "id": "d4_082",
+      "domain": 4,
+      "subtopic": "Alternative Processing Sites — Beyond Hot/Warm/Cold",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST describes reciprocal, mobile, and mirrored alternative processing site arrangements?",
+      "options": {
+        "A": "Reciprocal = mutual agreement with another organization; Mobile = trailers/containers with equipment; Mirrored = continuously synchronized identical site.",
+        "B": "Reciprocal = vendor-managed cloud failover; Mobile = portable laptops for executives; Mirrored = backup tapes stored at the offsite library facility.",
+        "C": "Reciprocal, mobile, and mirrored are interchangeable terms for hot-site arrangements with different vendor relationships and cost structures.",
+        "D": "Reciprocal = annual rotation between two production sites; Mobile = quarterly relocation of staff; Mirrored = duplicate backup copies stored locally."
+      },
+      "correct": "A",
+      "key_concept": "Reciprocal = mutual agreement with another organization to host the other's operations during disruption. Mobile = trailers/containers that can be deployed to the firm's site or alternate location. Mirrored = continuously synchronized identical site (active-active or active-passive with continuous replication).",
+      "pre_read": "For alternative site arrangement questions, anchor on three distinct types beyond hot/warm/cold: RECIPROCAL (mutual agreement), MOBILE (deployable units), MIRRORED (continuously synchronized).",
+      "correct_explanation": "ISACA Alternative Site Types guidance, NIST SP 800-34 (Contingency Planning Guide), and DRII Professional Practices establish three site arrangements that complement the hot/warm/cold spectrum: (1) RECIPROCAL — mutual agreement between two organizations to host each other's critical operations during disruption (less common today; works best when the two orgs have non-competing operations and similar IT environments); (2) MOBILE — pre-positioned trailers, shipping containers, or modular data centers with equipment that can be deployed to the firm's site or an alternate location; useful when the disruption is localized and a fixed alternate site isn't economical; (3) MIRRORED — continuously synchronized identical site (active-active or active-passive with sub-second replication); highest cost but near-zero RTO and RPO. Option B fabricates definitions. Option C calls them interchangeable, which is wrong. Option D fabricates definitions.",
+      "wrong_explanations": {
+        "B": "The definitions are wrong. Reciprocal isn't vendor-managed cloud failover (it's mutual agreement between two organizations). Mobile isn't portable laptops (it's trailers/containers). Mirrored isn't backup tapes (it's continuously synchronized site).",
+        "C": "Reciprocal, mobile, and mirrored have substantively different capabilities and cost structures. They're complementary site arrangements, not vendor-branding for hot sites.",
+        "D": "The definitions are fabricated. Reciprocal isn't site rotation. Mobile isn't staff relocation. Mirrored isn't local backup copies."
+      },
+      "tips": [
+        "Trap is C — \"interchangeable terms for hot sites\" matches a common conflation but each is a substantively different arrangement; reciprocal, mobile, and mirrored each serve distinct purposes.",
+        "Reciprocal = mutual agreement. Mobile = deployable units. Mirrored = continuously synchronized site. Three distinct arrangements beyond hot/warm/cold.",
+        "Exam-day shortcut: any alternative-site question naming reciprocal/mobile/mirrored is answered by the option matching each to its canonical meaning."
+      ],
+      "framework_ref": "ISACA Alternative Site Types guidance; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "related_concepts": [
+        "Reciprocal agreement",
+        "Mobile recovery site",
+        "Mirrored site",
+        "DR site types"
+      ],
+      "_provenance": "Authored from concept: 'Alternative processing site arrangements per NIST SP 800-34 and DRII'. Public sources: NIST, DRII, ISACA."
+    },
+    {
+      "id": "d4_083",
+      "domain": 4,
+      "subtopic": "RTO/RPO Alignment with BIA Criticality",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST aligns RTO and RPO targets across the application portfolio with BIA criticality tiers?",
+      "options": {
+        "A": "Set a single RTO and RPO across all applications regardless of criticality; uniform targets simplify operational management of the recovery program.",
+        "B": "Let each application owner set their own RTO and RPO targets independently; application owners know their needs best for their specific systems.",
+        "C": "Map each BIA criticality tier to a published RTO/RPO band; each application inherits its tier's band based on the BIA classification with documented exceptions.",
+        "D": "Set the most aggressive RTO and RPO achievable across all applications; faster recovery is always better and cost is secondary to availability."
+      },
+      "correct": "C",
+      "key_concept": "RTO/RPO alignment with BIA = map each BIA criticality tier to a published RTO/RPO band, each application inherits its tier's band, documented exceptions allowed. Uniform-all-apps wastes investment; per-owner-independent fragments; most-aggressive-everywhere over-invests.",
+      "pre_read": "For RTO/RPO alignment questions, anchor on \"map criticality tier to RTO/RPO band + tier-based inheritance + documented exceptions.\" Uniform, per-owner, and most-aggressive answers each fail differently.",
+      "correct_explanation": "ISACA BIA guidance, NIST SP 800-34 (Contingency Planning Guide), and ISO 22301 (Business Continuity Management) establish that RTO/RPO targets should follow BIA criticality tiering: (1) MAP EACH TIER TO A PUBLISHED RTO/RPO BAND (e.g., Tier 1: RTO ≤ 4h, RPO ≤ 15 min; Tier 2: RTO ≤ 24h, RPO ≤ 4h; Tier 3: RTO ≤ 72h, RPO ≤ 24h; Tier 4: RTO ≤ 1 week, RPO ≤ 7 days); (2) EACH APPLICATION INHERITS its tier's band based on BIA classification (so the conversation is at the tier level, not per-application); (3) DOCUMENTED EXCEPTIONS allowed (some applications need targets outside their tier band; explicit business justification and approval). Option A uniform-everywhere over-invests on low-criticality and under-invests on high-criticality. Option B per-owner-independent fragments the portfolio. Option D most-aggressive ignores cost-benefit at the portfolio level.",
+      "wrong_explanations": {
+        "A": "Uniform RTO/RPO ignores BIA criticality. Tier-1 systems (mission-critical, regulatory) and Tier-4 systems (internal tools) shouldn't have the same recovery investment; uniform treatment misallocates resources.",
+        "B": "Per-owner-independent produces inconsistent portfolio targets. Some application owners set aggressive targets (over-investment); others set lax targets (under-investment). Portfolio-level consistency requires tier-based alignment.",
+        "D": "Most-aggressive across all applications wastes capital. Tier-4 applications don't require 4-hour RTO; over-provisioning recovery for low-criticality systems is operational and capital waste."
+      },
+      "tips": [
+        "Trap is B — \"each application owner sets their own targets\" matches autonomy culture but produces inconsistent portfolio investment; tier-based bands with exceptions is the discipline.",
+        "RTO/RPO alignment = TIER-BASED BANDS + INHERITANCE + DOCUMENTED EXCEPTIONS. Three properties; portfolio consistency with flexibility where justified.",
+        "Exam-day shortcut: any RTO/RPO-alignment question is answered by the option naming TIER-BASED BANDS with exceptions; uniform, per-owner, and most-aggressive answers each fail."
+      ],
+      "framework_ref": "ISACA BIA guidance; NIST SP 800-34 (Contingency Planning Guide); ISO 22301 (Business Continuity Management)",
+      "related_concepts": [
+        "RTO/RPO alignment",
+        "Criticality tiering",
+        "Portfolio recovery"
+      ],
+      "_provenance": "Authored from concept: 'RTO/RPO alignment with BIA criticality tiers per NIST SP 800-34 and ISO 22301'. Public sources: NIST, ISO."
+    },
+    {
+      "id": "d4_084",
+      "domain": 4,
+      "subtopic": "Contractual Provisions for Alternative Processing Recovery",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST defines the required contractual provisions for an alternative processing site (recovery vendor)?",
+      "options": {
+        "A": "A simple handshake agreement with the recovery vendor; contract complexity slows activation when an actual disaster occurs and is unnecessary overhead.",
+        "B": "Cost terms only; the vendor provides standard recovery services and detailed terms are unnecessary because all recovery contracts follow industry conventions.",
+        "C": "Only the SLA on RTO/RPO performance; if those are met, other contractual details don't materially affect the recovery program's effectiveness.",
+        "D": "Activation criteria + capacity guarantees + SLA on RTO/RPO + access controls + insurance/liability + multi-tenant fair use + termination/exit provisions."
+      },
+      "correct": "D",
+      "key_concept": "Recovery vendor contractual provisions = activation criteria + capacity guarantees + RTO/RPO SLA + access controls + insurance/liability + multi-tenant fair use + termination/exit. Handshake fails legally; cost-only lacks operational terms; SLA-only misses access/fair-use.",
+      "pre_read": "For recovery-vendor contractual questions, anchor on multi-element provisions: activation + capacity + SLA + access + insurance + fair-use + termination. Single-element or informal approaches each fail.",
+      "correct_explanation": "ISACA Alternative Processing Contract guidance, OCC Bulletin 2013-29 (Third-Party Relationships), and FFIEC Business Continuity Management Booklet establish seven-element recovery vendor contractual provisions: (1) ACTIVATION CRITERIA (when can the firm activate, what notification, what triggers); (2) CAPACITY GUARANTEES (committed compute, storage, network capacity available at activation); (3) SLA on RTO/RPO PERFORMANCE (vendor commits to specific recovery times); (4) ACCESS CONTROLS (who from the firm gets access during recovery; security around vendor staff); (5) INSURANCE AND LIABILITY (what the vendor covers if SLA is missed, vendor errors cause data loss); (6) MULTI-TENANT FAIR USE (the vendor likely serves multiple customers — what happens if multiple customers activate simultaneously; queueing, priority, contention); (7) TERMINATION AND EXIT (contract end, vendor switching, data return). Option A handshake fails legally and operationally. Option B cost-only lacks operational guarantees. Option C SLA-only misses access controls and fair-use.",
+      "wrong_explanations": {
+        "A": "Handshake agreements provide no legal recourse if the vendor fails to deliver during an actual disaster. Contract terms are necessary precisely for the moments when informal agreements fail.",
+        "B": "Cost terms without operational guarantees mean the vendor can charge but isn't bound to deliver. Recovery contracts need both commercial AND operational terms.",
+        "C": "SLA alone misses multi-tenant fair use (when multiple customers activate, who gets priority), access controls (firm's staff at the vendor site), and termination/exit (data return when the contract ends)."
+      },
+      "tips": [
+        "Trap is C — \"SLA on RTO/RPO is sufficient\" sounds focused on the right metric but misses fair-use contention (multiple customers activating simultaneously), access controls, and exit provisions.",
+        "Recovery vendor contract = ACTIVATION + CAPACITY + SLA + ACCESS + INSURANCE + FAIR USE + TERMINATION. Seven elements.",
+        "Exam-day shortcut: any recovery-contract question is answered by the option naming MULTI-ELEMENT PROVISIONS; handshake, cost-only, or SLA-only answers each fail."
+      ],
+      "framework_ref": "ISACA Alternative Processing Contract guidance; OCC Bulletin 2013-29 (Third-Party Relationships); FFIEC Business Continuity Management Booklet",
+      "related_concepts": [
+        "Recovery vendor contract",
+        "Multi-tenant fair use",
+        "Activation criteria",
+        "Capacity guarantees"
+      ],
+      "_provenance": "Authored from concept: 'Alternative processing contractual provisions per OCC Bulletin 2013-29 and FFIEC BCM Booklet'. Public sources: OCC, FFIEC, ISACA."
+    },
+    {
+      "id": "d4_085",
+      "domain": 4,
+      "subtopic": "Procuring Alternative Hardware for Recovery",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST manages alternative-hardware procurement for disaster recovery?",
+      "options": {
+        "A": "Procure alternative hardware only after a disaster occurs; pre-procurement ties up capital and modern supply chains can deliver quickly when needed.",
+        "B": "Pre-positioned hardware + vendor priority-replacement agreements + standardized configurations + tested procurement playbook + inventory verification.",
+        "C": "Standardize all production hardware to a single vendor so alternative hardware procurement is simple and predictable across the recovery program.",
+        "D": "Accept whatever hardware is available at disaster time; supply-chain flexibility is more important than pre-positioning for modern recovery operations."
+      },
+      "correct": "B",
+      "key_concept": "Alternative-hardware procurement = pre-positioned hardware + vendor priority-replacement agreements + standardized configurations + tested procurement playbook + inventory verification. Procure-after-disaster has lead-time risk; single-vendor concentration trades risk; accept-what's-available defeats planning.",
+      "pre_read": "For alternative-hardware questions, anchor on \"pre-positioned + vendor agreements + standardization + playbook + verification.\" Procure-after-disaster fails on lead-time; single-vendor creates concentration risk.",
+      "correct_explanation": "NIST SP 800-34 (Contingency Planning Guide) and ISACA Hardware Lifecycle guidance establish five-element alternative-hardware procurement: (1) PRE-POSITIONED HARDWARE — critical components stocked at recovery sites or with vendor for priority shipment; (2) VENDOR PRIORITY-REPLACEMENT AGREEMENTS — contractual commitments for expedited delivery during emergencies (typically 24-72 hours); (3) STANDARDIZED CONFIGURATIONS — production hardware standardized to a few models so replacements are interchangeable; (4) TESTED PROCUREMENT PLAYBOOK — documented activation procedure with named vendor contacts, account numbers, shipping addresses; (5) INVENTORY VERIFICATION — periodic check that pre-positioned hardware matches the inventory and is operational. Option A procure-after-disaster fails on lead-time (commodity hardware can take days, specialized equipment weeks). Option C single-vendor concentration creates vendor-failure risk and limits negotiating leverage. Option D accept-what's-available abandons planning.",
+      "wrong_explanations": {
+        "A": "Modern supply chains can be fast for commodity hardware but disaster scenarios often coincide with supply-chain disruption (regional disasters affect everyone's vendors). Pre-positioning is the only way to guarantee availability.",
+        "C": "Single-vendor concentration solves one problem (standardization) but creates a worse one (vendor failure or quality issues affect entire DR capability). Multi-vendor with standardized configurations is better.",
+        "D": "Accept-what's-available abandons the recovery planning that BIA and BCP investment are designed to support. Quality of recovery depends on appropriate hardware, not just any hardware."
+      },
+      "tips": [
+        "Trap is A — \"modern supply chains deliver quickly\" matches normal-conditions thinking but disaster scenarios often have correlated supply-chain disruption; pre-positioning is the planning answer.",
+        "Alt-hardware procurement = PRE-POSITIONED + VENDOR AGREEMENTS + STANDARDIZATION + PLAYBOOK + INVENTORY VERIFICATION. Five elements.",
+        "Exam-day shortcut: any alternative-hardware question is answered by the option naming MULTI-ELEMENT pre-positioning; procure-after or accept-what's-available answers fail on lead-time."
+      ],
+      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISACA Hardware Lifecycle guidance; ISACA DRP Audit Program",
+      "related_concepts": [
+        "Alternative hardware",
+        "Priority replacement",
+        "Pre-positioning"
+      ],
+      "_provenance": "Authored from concept: 'Alternative-hardware procurement per NIST SP 800-34 and ISACA Hardware Lifecycle guidance'. Public sources: NIST, ISACA."
+    },
+    {
+      "id": "d4_086",
+      "domain": 4,
+      "subtopic": "IT DRP Contents — Required Sections",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST describes the required contents of an IT disaster recovery plan (IT DRP)?",
+      "options": {
+        "A": "Scope/objectives + roles + activation criteria + recovery procedures + alternate-site/vendor info + communication plan + appendices (contacts, configs).",
+        "B": "Only the technical recovery procedures; non-technical content belongs in the BCP, not the IT DRP, which should focus on what IT operations need.",
+        "C": "Only the contact list of key personnel; in a disaster, the team needs to know who to call, and detailed procedures are best invented in the moment.",
+        "D": "A copy of the production system documentation; if the production environment is documented, the team can reconstruct recovery procedures from it."
+      },
+      "correct": "A",
+      "key_concept": "IT DRP contents = scope/objectives + roles + activation criteria + recovery procedures + alternate-site/vendor info + communication plan + appendices (contacts, configs). Procedures-only misses governance; contacts-only abandons procedures; production-docs-only assumes invention.",
+      "pre_read": "For IT DRP contents questions, anchor on the canonical sections: scope + roles + activation + procedures + alternate-site + communication + appendices.",
+      "correct_explanation": "NIST SP 800-34 (Contingency Planning Guide), ISACA DRP Contents guidance, and ISACA DRP Audit Program establish required IT DRP sections: (1) SCOPE AND OBJECTIVES (what systems, what recovery posture); (2) ROLES AND RESPONSIBILITIES (who does what during recovery; named roles with named individuals); (3) ACTIVATION CRITERIA (when does the DRP activate; who authorizes); (4) RECOVERY PROCEDURES (step-by-step technical procedures for each system); (5) ALTERNATE-SITE AND VENDOR INFORMATION (where recovery happens, vendor contacts, contract activation); (6) COMMUNICATION PLAN (internal team, customers, regulators, vendors); (7) APPENDICES (contact lists, configuration baselines, software inventories, network diagrams). Option B procedures-only misses governance elements (who, when, where). Option C contacts-only is dangerously thin. Option D production-docs-only assumes the team can invent procedures under pressure.",
+      "wrong_explanations": {
+        "B": "Procedures-only misses governance: who has authority to activate, who plays which role, who communicates with whom. Procedures execute within a governance framework; the framework needs documenting.",
+        "C": "Contacts-only abandons the entire recovery procedure to in-the-moment invention. Under disaster pressure, teams need documented step-by-step procedures, not just phone numbers.",
+        "D": "Production documentation describes how the system normally runs, not how to recover it. Recovery procedures are distinct from production documentation and must be specifically authored and tested."
+      },
+      "tips": [
+        "Trap is B — \"only technical recovery procedures\" matches an engineering-focused view but DRP needs governance (roles, activation, communication) and appendices (contacts, configs) for any effective execution.",
+        "IT DRP contents = SCOPE + ROLES + ACTIVATION + PROCEDURES + ALTERNATE-SITE + COMMUNICATION + APPENDICES. Seven sections.",
+        "Exam-day shortcut: any IT-DRP-contents question is answered by the option naming MULTI-SECTION plan; procedures-only, contacts-only, or production-docs-only answers each fail."
+      ],
+      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISACA DRP Contents guidance; ISACA DRP Audit Program",
+      "related_concepts": [
+        "IT DRP",
+        "DRP contents",
+        "Recovery procedures",
+        "Activation criteria"
+      ],
+      "_provenance": "Authored from concept: 'IT DRP contents per NIST SP 800-34 and ISACA DRP Audit Program'. Public sources: NIST, ISACA."
+    },
+    {
+      "id": "d4_087",
+      "domain": 4,
+      "subtopic": "IT DRP Scenarios — What to Plan For",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST defines the scope of disaster scenarios an IT DRP should address?",
+      "options": {
+        "A": "Plan only for natural disasters (earthquakes, hurricanes, floods); cyber and operational disruptions are addressed by other plans, not the DRP.",
+        "B": "Plan only for the most likely single scenario; planning for multiple scenarios introduces unnecessary complexity that obscures the most important plan.",
+        "C": "Spectrum of disruption: localized hardware failure → regional natural disaster → cyber attack (ransomware) → pandemic + workforce → supply-chain failure.",
+        "D": "Plan only for unprecedented black-swan events; common disruptions should be handled by routine incident management without specialized DRP activation."
+      },
+      "correct": "C",
+      "key_concept": "IT DRP scenarios = spectrum from local (hardware failure) to regional (natural disaster) to cyber (ransomware) to workforce (pandemic) to supply-chain (vendor failure). Natural-only misses cyber and operational; single-scenario plans inadequately; black-swan-only ignores common disruptions.",
+      "pre_read": "For DRP scenario questions, anchor on \"spectrum from local to regional to cyber to workforce to supply-chain.\" Single-category or single-likelihood approaches miss material risk.",
+      "correct_explanation": "NIST SP 800-34 (Contingency Planning Guide), ISACA DR Scenarios guidance, and ISO 22301 establish that IT DRP should address a spectrum of disruption types: (1) LOCALIZED HARDWARE FAILURE (single server, rack, or system component); (2) REGIONAL NATURAL DISASTER (earthquake, hurricane, flood — affects the data center or region); (3) CYBER ATTACK including RANSOMWARE (destructive attacks on data and operations); (4) PANDEMIC + WORKFORCE (mass absenteeism affecting recovery capability — addressed in d4_079); (5) SUPPLY-CHAIN FAILURE (key vendor or component unavailable). Each scenario invokes different aspects of the DRP (location, technical, workforce, vendor); the plan must address the spectrum. Option A natural-only misses cyber (often the highest-frequency disruption). Option B single-most-likely-scenario plans for one and is unprepared for others. Option D black-swan-only ignores the common disruptions that actually happen.",
+      "wrong_explanations": {
+        "A": "Natural disasters are one scenario class. Cyber attacks (especially ransomware) are increasingly the most likely disruption for many enterprises; excluding them from the DRP leaves a material gap.",
+        "B": "Planning for the single most-likely scenario produces a plan that fails on every other scenario. DRP must be robust across the disruption spectrum.",
+        "D": "Black-swan-only ignores the disruptions that actually happen (hardware failures, ransomware, regional natural disasters). Routine incident management doesn't substitute for DRP coverage of these scenarios."
+      },
+      "tips": [
+        "Trap is A — \"only natural disasters\" matches a historical disaster-recovery framing but excludes cyber (now often the highest-frequency disruption); modern DRP covers the full spectrum.",
+        "DRP scenarios = LOCAL (hardware) + REGIONAL (natural) + CYBER (ransomware) + WORKFORCE (pandemic) + SUPPLY-CHAIN. Five scenario classes.",
+        "Exam-day shortcut: any DRP-scenario-scope question is answered by the option naming the FULL SPECTRUM; single-category answers each fail."
+      ],
+      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISACA DR Scenarios guidance; ISO 22301 (Business Continuity Management)",
+      "related_concepts": [
+        "DRP scenarios",
+        "Ransomware DR",
+        "Pandemic continuity"
+      ],
+      "_provenance": "Authored from concept: 'IT DRP scenario spectrum per NIST SP 800-34 and ISO 22301'. Public sources: NIST, ISO."
+    },
+    {
+      "id": "d4_088",
+      "domain": 4,
+      "subtopic": "Recovery Procedures — Structure and Properties",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST structures recovery procedures within the IT DRP?",
+      "options": {
+        "A": "Write procedures in narrative paragraphs; readable prose helps the team understand context better than terse step-by-step instructions during recovery.",
+        "B": "Reference the production runbook with no DRP-specific procedures; if the system normally runs from the runbook, recovery follows the same instructions.",
+        "C": "Maintain procedures in the heads of senior IT staff; documentation goes stale and the team that lived through previous incidents knows what to do.",
+        "D": "Step-by-step procedures per system + prerequisites + expected outcomes + verification steps + rollback options + tested in tabletop and simulation exercises."
+      },
+      "correct": "D",
+      "key_concept": "Recovery procedures = step-by-step per system + prerequisites + expected outcomes + verification + rollback options + tested in tabletop/simulation. Narrative is too imprecise; production-runbook lacks recovery-specific context; tribal knowledge fails under pressure.",
+      "pre_read": "For recovery-procedure questions, anchor on \"step-by-step + prerequisites + expected outcomes + verification + rollback + tested.\" Narrative, production-only, and tribal-knowledge approaches each fail.",
+      "correct_explanation": "ISACA Recovery Procedures guidance, NIST SP 800-34 (Contingency Planning Guide), and DRII Professional Practices establish six-element structure for recovery procedures: (1) STEP-BY-STEP per system (numbered actions, not narrative); (2) PREREQUISITES (what must be in place before this procedure executes); (3) EXPECTED OUTCOMES (what success looks like at each step); (4) VERIFICATION STEPS (how to confirm each step succeeded); (5) ROLLBACK OPTIONS (what to do if a step fails); (6) TESTED in tabletop AND simulation exercises (per d4_081 spectrum). Option A narrative-paragraphs is too imprecise for execution under disaster pressure. Option B production-runbook lacks recovery-specific context (the goal is to restore from a non-running state, which differs from normal operation). Option C tribal-knowledge fails when those people are unavailable (illness, departure, the disaster itself affecting them).",
+      "wrong_explanations": {
+        "A": "Narrative paragraphs are imprecise. Under disaster pressure (sleep-deprived team, ambient stress, parallel decisions) execution must follow numbered steps with clear verification; narrative invites interpretation errors.",
+        "B": "Production runbooks describe how the system runs normally. Recovery procedures describe how to RESTORE from a non-running state — different starting conditions, different procedures.",
+        "C": "Tribal knowledge fails when those staff are unavailable. The disaster itself may affect them (regional event), or they may have departed. Procedures must be documented and executable by any qualified team member."
+      },
+      "tips": [
+        "Trap is B — \"reference production runbook\" sounds efficient (don't duplicate) but production runbooks describe normal operation, not recovery from disrupted state; the two procedures differ.",
+        "Recovery procedures = STEP-BY-STEP + PREREQUISITES + EXPECTED OUTCOMES + VERIFICATION + ROLLBACK + TESTED. Six elements.",
+        "Exam-day shortcut: any recovery-procedure question is answered by the option naming MULTI-ELEMENT step-by-step procedures; narrative or shortcut answers each fail."
+      ],
+      "framework_ref": "ISACA Recovery Procedures guidance; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "related_concepts": [
+        "Recovery procedures",
+        "Step-by-step procedures",
+        "Tabletop testing"
+      ],
+      "_provenance": "Authored from concept: 'Recovery procedure structure per NIST SP 800-34 and DRII Professional Practices'. Public sources: NIST, DRII."
+    },
+    {
+      "id": "d4_089",
+      "domain": 4,
+      "subtopic": "DRP Organization and Responsibilities",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST organizes roles and responsibilities within the disaster recovery plan?",
+      "options": {
+        "A": "Assign all recovery responsibilities to the CIO; centralized accountability ensures clear decision authority during the high-pressure recovery period.",
+        "B": "Define named roles (incident commander, recovery team leads, communications, business liaison) with PRIMARY + ALTERNATE individuals for each role + decision authority.",
+        "C": "Let staff self-organize during recovery; teams that know each other will figure out roles dynamically based on who is available at activation.",
+        "D": "Assign roles based on calendar availability during the recovery period; whoever isn't on PTO at activation time takes responsibility for their function."
+      },
+      "correct": "B",
+      "key_concept": "DRP roles = named roles (incident commander, recovery team leads, communications, business liaison) + PRIMARY + ALTERNATE individuals per role + decision authority. CIO-centralization creates SPOF; self-organize fails under pressure; calendar-based ignores skill match.",
+      "pre_read": "For DRP-roles questions, anchor on \"named roles + primary + alternate per role + decision authority.\" Centralization, self-organize, and calendar-based each fail.",
+      "correct_explanation": "ISACA DR Responsibilities guidance, NIST SP 800-34 (Contingency Planning Guide), and DRII Professional Practices establish four-element DRP role structure: (1) NAMED ROLES — incident commander (overall authority), recovery team leads (per system or function), communications lead (internal + external messaging), business liaison (connects IT recovery to business operations); (2) PRIMARY individuals (named persons in the role); (3) ALTERNATE individuals (named persons who step in if primary is unavailable — disaster may affect anyone, especially those at the affected site); (4) DECISION AUTHORITY (what each role can decide without escalation — pre-delegated authority to enable fast action). Option A CIO-centralization creates single-point-of-failure (CIO may be unreachable during the disaster). Option C self-organize fails under pressure (each person assumes someone else is doing the critical work). Option D calendar-based ignores skill match (the available person may not be qualified for the role they take on).",
+      "wrong_explanations": {
+        "A": "Centralizing all responsibility on the CIO creates a single point of failure. CIO may be unavailable (illness, the disaster affects them, they're traveling). Pre-delegated authority across named roles enables fast action regardless of any single person.",
+        "C": "Self-organization fails under disaster pressure. Each person assumes someone else is handling the critical work; gaps emerge that wouldn't exist in calmer conditions. Named roles with documented authority prevent this.",
+        "D": "Calendar-based role assignment may match the wrong person to a role they're unqualified for. Recovery team leads need specific technical and decision skills; whoever happens to be available may not have them."
+      },
+      "tips": [
+        "Trap is A — \"centralize all responsibility on the CIO\" sounds decisive but creates single-point-of-failure; the CIO may be unreachable during the disaster, and pre-delegated authority across named roles enables fast action.",
+        "DRP roles = NAMED ROLES + PRIMARY + ALTERNATE per role + DECISION AUTHORITY. Four properties; pre-delegation enables fast action.",
+        "Exam-day shortcut: any DRP-roles question is answered by the option naming NAMED ROLES with PRIMARY + ALTERNATE; centralization and self-organize answers each fail."
+      ],
+      "framework_ref": "ISACA DR Responsibilities guidance; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "related_concepts": [
+        "DRP roles",
+        "Incident commander",
+        "Alternate assignments",
+        "Pre-delegated authority"
+      ],
+      "_provenance": "Authored from concept: 'DRP role assignment per NIST SP 800-34 and DRII Professional Practices'. Public sources: NIST, DRII."
+    },
+    {
+      "id": "d4_090",
+      "domain": 4,
+      "subtopic": "BCP Development — Detailed Steps",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which sequence BEST represents the detailed steps for developing a business continuity plan?",
+      "options": {
+        "A": "Sponsor + scope → BIA + criticality → strategy selection → write plan (procedures + roles + comms) → resource provisioning → training → testing → maintenance.",
+        "B": "Buy a commercial BCP template + customize names/logos → file with audit; this approach saves the cost of full BCP development for small organizations.",
+        "C": "Hire external consultants to deliver the full BCP; in-house teams lack the specialized expertise required for proper continuity planning.",
+        "D": "Skip BCP development entirely and rely on insurance coverage; insurance-based recovery is faster than self-built BCP for most disruption scenarios."
+      },
+      "correct": "A",
+      "key_concept": "BCP development = sponsor/scope + BIA/criticality + strategy selection + write plan + resource provisioning + training + testing + maintenance. Template-customize is superficial; consultant-only abdicates ownership; insurance-only ignores operational continuity.",
+      "pre_read": "For BCP development questions, anchor on the eight-step sequence: sponsor → BIA → strategy → write → provision → train → test → maintain.",
+      "correct_explanation": "ISACA BCP Development guidance, ISO 22301 (Business Continuity Management), DRII Professional Practices, and BCI Good Practice Guidelines establish detailed BCP development steps: (1) SPONSOR AND SCOPE (executive sponsorship secured; scope defined — which units, which geographies, which scenarios); (2) BIA AND CRITICALITY (impact analysis per d4_004 and d4_070); (3) STRATEGY SELECTION (recovery strategies per d4_074 matched to tiers); (4) WRITE THE PLAN (procedures, roles, communications, escalation); (5) RESOURCE PROVISIONING (alternate sites, vendor contracts per d4_084, hardware per d4_085); (6) TRAINING (staff awareness, role-specific drills); (7) TESTING (per d4_081 spectrum); (8) MAINTENANCE (review, update, lessons-learned integration). Option B template-customize is superficial — the BCP must reflect the firm's actual operations. Option C consultant-only delivers a plan but no organizational capability. Option D insurance-only is financial-recovery-only and doesn't restore operations.",
+      "wrong_explanations": {
+        "B": "Customizing a template produces a plan that doesn't reflect the firm's actual operations, dependencies, criticalities, or recovery options. BIA and strategy selection are firm-specific.",
+        "C": "Consultants can support BCP development but the firm must own the plan, its content, and the organizational capability to execute it. Consultant-only produces a document, not a capability.",
+        "D": "Insurance recovers FINANCIAL loss but doesn't restore OPERATIONS. The firm still needs operational recovery during the disruption period; insurance proceeds arrive after, not during."
+      },
+      "tips": [
+        "Trap is B — \"buy a commercial template and customize\" feels efficient but it produces a plan disconnected from the firm's actual operations; BIA and strategy selection are firm-specific.",
+        "BCP development = SPONSOR/SCOPE + BIA + STRATEGY + WRITE + PROVISION + TRAIN + TEST + MAINTAIN. Eight steps; sequential dependencies.",
+        "Exam-day shortcut: any BCP-development question is answered by the option naming the FULL SEQUENCE from sponsor through maintenance; template, consultant, or insurance shortcuts each fail."
+      ],
+      "framework_ref": "ISACA BCP Development guidance; ISO 22301 (Business Continuity Management); DRII Professional Practices; BCI Good Practice Guidelines",
+      "related_concepts": [
+        "BCP development",
+        "BCP lifecycle",
+        "BIA-driven planning"
+      ],
+      "_provenance": "Authored from concept: 'BCP development detailed steps per ISO 22301, DRII, and BCI'. Public sources: ISO, DRII, BCI."
+    },
+    {
+      "id": "d4_091",
+      "domain": 4,
+      "subtopic": "BCP Components — Key Decision-Making Personnel",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST identifies key decision-making personnel for the business continuity plan?",
+      "options": {
+        "A": "Include all senior executives by title; broad coverage ensures decision authority is available regardless of which executive is reachable at activation.",
+        "B": "Designate one named person per decision area; clarity comes from single accountability rather than distributing authority across multiple individuals.",
+        "C": "Identify decision areas (operations, communications, finance, legal, HR) + primary + alternate per area + decision authority + contact info + skills documentation.",
+        "D": "Let the team improvise decision-making at activation time; pre-assigned decision authorities introduce bureaucracy that slows down disaster response activities."
+      },
+      "correct": "C",
+      "key_concept": "BCP key decision-makers = decision areas (ops, comms, finance, legal, HR) + primary + alternate per area + decision authority + contact info + skills documentation. Title-based broad coverage lacks specificity; single-named-person creates SPOF; improvise approaches fail under pressure.",
+      "pre_read": "For BCP key-personnel questions, anchor on \"decision areas + primary + alternate + authority + contact + skills.\" Title-broad, single-named, and improvise approaches each fail.",
+      "correct_explanation": "ISACA BCP Components guidance, ISO 22301 (Business Continuity Management), and DRII Professional Practices establish six-element identification of key decision-makers: (1) DECISION AREAS — operations (technical recovery), communications (internal + external messaging), finance (emergency spending authority), legal (regulatory, contracts), HR (workforce, family support); (2) PRIMARY person per area; (3) ALTERNATE per area (the disaster may affect anyone, especially those at the affected site); (4) DECISION AUTHORITY scope per role (what each can decide without escalation, including pre-approved spending limits for emergency purchases); (5) CONTACT INFO including multiple channels (work, personal, family); (6) SKILLS DOCUMENTATION (what each person is qualified to decide; alternates may not be a true 1:1 substitute for all decisions). Option A title-based-broad-coverage produces ambiguity about who actually decides. Option B single-named-person creates single-point-of-failure. Option D improvise-at-activation fails under disaster pressure.",
+      "wrong_explanations": {
+        "A": "Including all senior executives by title produces ambiguity. When the moment requires a financial decision, multiple executives have notional authority but no one knows who actually decides. Specific area assignment with named primary/alternate is essential.",
+        "B": "Single-named-person creates single-point-of-failure. Disasters often affect the people closest to the affected systems; the named decision-maker may be unavailable. Primary + alternate provides redundancy.",
+        "D": "Improvise-at-activation fails under disaster pressure. Decision authorities are needed in the first minutes/hours; ambiguity about who decides delays critical actions. Pre-delegation enables fast response."
+      },
+      "tips": [
+        "Trap is A — \"all senior executives by title\" sounds inclusive but produces ambiguity about who actually decides; named primary + alternate per decision area is the discipline.",
+        "BCP key personnel = DECISION AREAS + PRIMARY + ALTERNATE + AUTHORITY + CONTACT + SKILLS. Six elements.",
+        "Exam-day shortcut: any BCP-key-personnel question is answered by the option naming DECISION AREAS with PRIMARY/ALTERNATE per area; broad-coverage and improvise answers fail."
+      ],
+      "framework_ref": "ISACA BCP Components guidance; ISO 22301 (Business Continuity Management); DRII Professional Practices",
+      "related_concepts": [
+        "BCP key personnel",
+        "Decision authority",
+        "Pre-delegation"
+      ],
+      "_provenance": "Authored from concept: 'BCP key decision-making personnel per ISO 22301 and DRII'. Public sources: ISO, DRII."
+    },
+    {
+      "id": "d4_092",
+      "domain": 4,
+      "subtopic": "BCP — Backup of Required Supplies",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST manages the backup of required supplies for business continuity?",
+      "options": {
+        "A": "Order supplies only when needed during a disaster; supply chains can deliver quickly when the firm is willing to pay expedited shipping rates.",
+        "B": "Stockpile every conceivable supply in large quantities at every site; over-provisioning prevents any supply shortage during any disruption scenario.",
+        "C": "Trust that suppliers will continue normal operations during a disaster; supplier reliability is a contractual matter, not a BCP planning concern at all.",
+        "D": "Inventory critical supplies (paper, forms, ID materials, emergency kits) + reorder thresholds + alternative suppliers + offsite storage of pre-printed forms."
+      },
+      "correct": "D",
+      "key_concept": "Backup of required supplies = inventory of critical supplies + reorder thresholds + alternative suppliers + offsite storage of pre-printed forms. Order-when-needed has lead-time risk; stockpile-everything wastes capital; trust-suppliers ignores disruption.",
+      "pre_read": "For BCP-supplies questions, anchor on \"inventory + thresholds + alternative suppliers + offsite storage.\" Order-when-needed and stockpile-everything are extremes.",
+      "correct_explanation": "ISACA Backup Supplies Resilience guidance and ISO 22301 (Business Continuity Management) establish four-element supply backup: (1) INVENTORY OF CRITICAL SUPPLIES (consumables specific to operations — paper forms for manual processing if IT is down, ID materials, emergency kits, fuel for generators, etc.); (2) REORDER THRESHOLDS (when stocks fall below the threshold, replenishment triggers automatically); (3) ALTERNATIVE SUPPLIERS (so a primary-supplier disruption doesn't compound the disaster); (4) OFFSITE STORAGE of pre-printed forms and other supplies (so the disaster site disruption doesn't eliminate the supply stockpile). Option A order-when-needed fails on lead-time (especially during regional disasters when many firms need the same supplies). Option B stockpile-everything wastes capital and creates storage and expiration issues. Option C trust-suppliers assumes the supplier is unaffected by the same disruption affecting the firm.",
+      "wrong_explanations": {
+        "A": "Order-when-needed fails during regional disasters when many firms compete for the same supplies and shipping is disrupted. Pre-positioned inventory eliminates the lead-time risk.",
+        "B": "Stockpile-everything wastes capital and creates secondary problems (storage space, expiration of perishable items, obsolescence as forms change). Critical-supply inventory with thresholds is more targeted.",
+        "C": "Suppliers may be affected by the same disruption affecting the firm (regional disaster, pandemic, geopolitical event). Alternative suppliers and pre-positioned inventory protect against supplier-side disruption."
+      },
+      "tips": [
+        "Trap is A — \"order supplies when needed\" matches normal-conditions thinking but regional disasters disrupt supply chains for everyone simultaneously; pre-positioning is the planning answer.",
+        "Backup supplies = INVENTORY + REORDER THRESHOLDS + ALTERNATIVE SUPPLIERS + OFFSITE STORAGE. Four elements.",
+        "Exam-day shortcut: any BCP-supplies question is answered by the option naming MULTI-ELEMENT inventory management; order-when-needed and trust-suppliers answers each fail."
+      ],
+      "framework_ref": "ISACA Backup Supplies Resilience guidance; ISO 22301 (Business Continuity Management); BCI Good Practice Guidelines",
+      "related_concepts": [
+        "Supply backup",
+        "Reorder thresholds",
+        "Alternative suppliers"
+      ],
+      "_provenance": "Authored from concept: 'Backup of required supplies per ISO 22301 and BCI Good Practice Guidelines'. Public sources: ISO, BCI."
+    },
+    {
+      "id": "d4_093",
+      "domain": 4,
+      "subtopic": "BCP Insurance Considerations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST integrates insurance with the business continuity program?",
+      "options": {
+        "A": "Maintain general business insurance and assume BCP-specific coverage is included; standard policies typically cover business-interruption losses adequately.",
+        "B": "Combination: business interruption + cyber liability + property + key-person + D&O + extra-expense, with periodic gap analysis, alignment to BIA-quantified risks.",
+        "C": "Maximize insurance coverage and skip BCP planning; full insurance coverage substitutes for operational continuity capability in most enterprise scenarios.",
+        "D": "Skip insurance entirely; the cost of premiums exceeds the value of payouts statistically, and BCP capability is more effective than financial recovery from insurance."
+      },
+      "correct": "B",
+      "key_concept": "BCP insurance = business interruption + cyber liability + property + key-person + D&O + extra-expense, with periodic gap analysis aligned to BIA-quantified risks. General-policy-assumed has gaps; insurance-alone substitutes financial for operational; skip-insurance accepts uninsurable exposure.",
+      "pre_read": "For BCP-insurance questions, anchor on \"multi-policy combination + gap analysis + BIA-alignment.\" Single-policy or no-insurance approaches each fail.",
+      "correct_explanation": "ISACA Insurance Considerations guidance, NAIC Cybersecurity Insurance Guidance, and ISO 22301 (Business Continuity Management) establish multi-policy insurance integration with BCP: (1) BUSINESS INTERRUPTION INSURANCE — covers lost revenue and continuing expenses during a covered disruption; (2) CYBER LIABILITY — covers data breach, ransomware, regulatory penalties, customer notification; (3) PROPERTY INSURANCE — physical damage to facilities and equipment; (4) KEY-PERSON INSURANCE — financial exposure if critical leaders become unavailable; (5) D&O (DIRECTORS AND OFFICERS) — protects leadership from personal liability for decisions during disruption; (6) EXTRA-EXPENSE COVERAGE — pays for emergency operations costs (alternative sites, expedited hardware, contractor labor); (7) PERIODIC GAP ANALYSIS aligned to BIA-quantified risks (what risks the BCP identifies but insurance doesn't cover). Option A general-policy-assumed has significant gaps (cyber, key-person, extra-expense). Option C insurance-alone substitutes financial recovery for operational. Option D skip-insurance accepts uninsurable exposure.",
+      "wrong_explanations": {
+        "A": "General business insurance often excludes cyber, extra-expense (emergency operating costs above normal), and key-person coverage. BCP-specific insurance integration requires explicit gap analysis against BIA risks.",
+        "C": "Insurance recovers FINANCIAL loss; BCP restores OPERATIONS. During a 3-day outage, insurance proceeds arrive weeks later — too late to serve customers. Both are needed.",
+        "D": "Skip-insurance accepts unbounded financial exposure. Some risks (cyber breach with regulatory penalties; key-person death; lawsuit from disrupted customers) are large enough to threaten firm viability. Insurance shifts financial risk to the carrier."
+      },
+      "tips": [
+        "Trap is C — \"maximize insurance and skip BCP\" substitutes financial recovery for operational continuity; insurance proceeds arrive after the operational damage is already done.",
+        "BCP insurance = BUSINESS INTERRUPTION + CYBER + PROPERTY + KEY-PERSON + D&O + EXTRA-EXPENSE + GAP ANALYSIS. Multi-policy + alignment with BIA.",
+        "Exam-day shortcut: any BCP-insurance question is answered by the option naming MULTI-POLICY combination with BIA alignment; single-policy and skip-insurance answers each fail."
+      ],
+      "framework_ref": "ISACA Insurance Considerations guidance; NAIC Cybersecurity Insurance Guidance; ISO 22301 (Business Continuity Management)",
+      "related_concepts": [
+        "Business continuity insurance",
+        "Cyber liability",
+        "Key-person insurance"
+      ],
+      "_provenance": "Authored from concept: 'BCP insurance integration per NAIC Cybersecurity Insurance Guidance and ISO 22301'. Public sources: NAIC, ISO."
+    },
+    {
+      "id": "d4_094",
+      "domain": 4,
+      "subtopic": "BCP/DRP Plan Maintenance — Lifecycle",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST maintains the BCP/DRP over time?",
+      "options": {
+        "A": "Scheduled annual review + post-test updates + post-incident lessons learned + change-triggered review (org change, new systems, regulatory updates).",
+        "B": "Review the plan only when an external auditor requires it; routine maintenance produces minimal value because plans rarely change between activations.",
+        "C": "Maintain the plan exactly as originally written; any changes introduce drift from the tested baseline and weaken the recovery capability documented.",
+        "D": "Replace the plan completely every 5 years and ignore minor updates in between; periodic full rewrites are more effective than incremental maintenance."
+      },
+      "correct": "A",
+      "key_concept": "BCP/DRP maintenance = scheduled annual review + post-test updates + post-incident lessons learned + change-triggered review. Auditor-only review is reactive; never-update produces drift from current operations; full-rewrite-only loses continuity.",
+      "pre_read": "For plan maintenance questions, anchor on \"scheduled + post-test + post-incident + change-triggered.\" Auditor-only, never-update, and full-rewrite answers each fail.",
+      "correct_explanation": "ISACA Plan Maintenance Lifecycle guidance, ISO 22301 (Business Continuity Management), and DRII Professional Practices establish four-trigger maintenance: (1) SCHEDULED ANNUAL REVIEW (minimum cadence to verify plan currency); (2) POST-TEST UPDATES (after each DR test, integrate findings — procedures that didn't work, gaps discovered, role assignments that need adjustment); (3) POST-INCIDENT LESSONS LEARNED (after actual disruptions, integrate lessons regardless of whether the plan activated); (4) CHANGE-TRIGGERED REVIEW (organizational changes, new systems, new regulations, new dependencies trigger ad-hoc review). The plan stays current as the firm changes. Option B auditor-only review is reactive and infrequent. Option C never-update produces drift from current operations (systems change, people change, vendors change). Option D full-rewrite-every-5-years loses continuity and may introduce errors at rewrite time.",
+      "wrong_explanations": {
+        "B": "Auditor-only review is reactive and infrequent. Between audits, the plan drifts from current operations (systems retired, new ones added, people change roles); the plan becomes inaccurate when needed.",
+        "C": "Never-update preserves the tested baseline but loses currency. The firm's operations change continuously; a plan that doesn't change becomes increasingly disconnected from reality.",
+        "D": "Full-rewrite every 5 years loses continuity (institutional knowledge encoded in the plan) and may introduce errors at rewrite time. Incremental maintenance preserves continuity while integrating changes."
+      },
+      "tips": [
+        "Trap is C — \"maintain the plan exactly as originally written\" sounds like preserving a tested baseline but it produces drift from current operations; the firm changes, the plan must change with it.",
+        "Plan maintenance = SCHEDULED ANNUAL + POST-TEST + POST-INCIDENT + CHANGE-TRIGGERED. Four triggers; continuous maintenance.",
+        "Exam-day shortcut: any plan-maintenance question is answered by the option naming MULTIPLE TRIGGERS; auditor-only, never-update, and full-rewrite answers each fail."
+      ],
+      "framework_ref": "ISACA Plan Maintenance Lifecycle guidance; ISO 22301 (Business Continuity Management); DRII Professional Practices",
+      "related_concepts": [
+        "Plan maintenance",
+        "Post-test updates",
+        "Change-triggered review"
+      ],
+      "_provenance": "Authored from concept: 'BCP/DRP plan maintenance per ISO 22301 and DRII'. Public sources: ISO, DRII."
+    },
+    {
+      "id": "d4_095",
+      "domain": 4,
+      "subtopic": "DR Test Mid-Failure — Response Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the test-management decision the firm faces?",
+      "scenario_context": "A federally chartered bank is conducting its annual full-interruption DR test. At test hour 7 (of planned 24-hour test), three critical issues have emerged: (a) the recovery site's database failed to start due to a configuration drift not caught in the last simulation test 6 months ago; (b) the team has identified a workaround that will take ~4 hours to apply; (c) the regulator's annual operational-resilience examination begins next week and the test results will be reviewed. The CIO is concerned about test failure being recorded; the test director recommends invoking the workaround and continuing; the audit team raises the question of test integrity. The IS auditor was asked to advise on governance.",
+      "options": {
+        "A": "Halt the test immediately, document the failure, and reschedule next quarter; partial tests with workarounds produce unreliable evidence for regulator review.",
+        "B": "Conceal the configuration drift discovery and continue the test as if it didn't happen; the audit team's concerns are about process, not outcomes that matter to regulators.",
+        "C": "Apply the workaround, complete the test, document BOTH the original failure AND the workaround in the test report + remediation plan for the configuration drift.",
+        "D": "Defer to the CIO's preference; CIO authority over IT operations includes determining how to characterize test results in regulator-facing documentation."
+      },
+      "correct": "C",
+      "key_concept": "DR test mid-failure response = apply workaround + complete test + document BOTH original failure AND workaround + remediation plan. Halt-and-reschedule wastes work and informaton; conceal is ethically and legally wrong; CIO-deference compromises audit independence.",
+      "pre_read": "For DR-test-mid-failure questions, anchor on \"document the truth: failure + workaround + remediation plan.\" Halt, conceal, and defer-to-CIO each fail.",
+      "correct_explanation": "ISACA DR Test Failure Response guidance and FFIEC Business Continuity Management Booklet establish four-element response when a DR test surfaces an unplanned failure: (1) APPLY WORKAROUND if available (the configuration drift fix is exactly the kind of finding tests are designed to surface); (2) COMPLETE THE TEST (continued test validates other recovery aspects; aborting wastes work and information); (3) DOCUMENT THE FAILURE AND THE WORKAROUND in the test report (transparency is essential for regulator review and continuous improvement); (4) ESTABLISH REMEDIATION PLAN for the underlying issue (configuration drift detection, more frequent simulation tests). Regulators expect tests to find failures; what matters is the firm's response (transparency, remediation, learning). Option A halt-and-reschedule wastes the test work and produces less information than completing. Option B conceal is fraud; regulators investigate test methodology and discover concealment. Option D defer-to-CIO compromises audit independence.",
+      "wrong_explanations": {
+        "A": "Halting wastes the test work and produces less information than completing. The failure is valuable evidence of a control gap; the workaround validates the team can adapt. Both belong in the test report.",
+        "B": "Concealment is fraud. Regulators conducting operational-resilience examinations expect tests to find failures; what matters is transparency about findings and remediation. Concealment compounds the underlying issue with a more serious one.",
+        "D": "Defer-to-CIO compromises audit independence at exactly the moment when independent perspective matters. CIO has legitimate authority over IT operations but not over how the audit team characterizes findings."
+      },
+      "tips": [
+        "Trap is A — \"halt and reschedule\" sounds like a clean response but it wastes the test work and produces less information than completing with documented workaround; transparency about failures is valued by regulators.",
+        "DR test mid-failure = APPLY WORKAROUND + COMPLETE TEST + DOCUMENT BOTH + REMEDIATION PLAN. Four elements; transparency over concealment.",
+        "Exam-day shortcut: any DR-test-failure question is answered by the option naming TRANSPARENT DOCUMENTATION with remediation; halt, conceal, and defer answers each fail differently."
+      ],
+      "framework_ref": "ISACA DR Test Failure Response guidance; FFIEC Business Continuity Management Booklet; ISACA DRP Audit Program",
+      "related_concepts": [
+        "DR test failure",
+        "Test transparency",
+        "Configuration drift"
+      ],
+      "_provenance": "Authored from concept: 'DR test mid-failure response per ISACA DR Test Failure Response guidance and FFIEC BCM Booklet'. Public sources: ISACA, FFIEC. Scenario specifics (federally chartered bank, annual 24-hour full-interruption test, hour 7 DB failure from drift, 6-month-old last simulation, 4-hour workaround, regulator exam next week, CIO/test director/audit positions) invented for this question."
+    },
+    {
+      "id": "d4_096",
+      "domain": 4,
+      "subtopic": "DR Plan Invocation — Decision Under Executive Absence",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which decision MOST appropriately reflects sound DR-invocation governance under the conditions described?",
+      "scenario_context": "A regional retail bank's primary data center experiences a major power failure at 14:18 on a Tuesday. UPS lasts 30 minutes; generator failed to start (cause unknown). Estimated power restoration: 4-8 hours per utility. RTO for core banking is 2 hours. The bank's DR plan documents activation criteria: power loss exceeding RTO triggers DR invocation with the named on-call director's authority. At 14:32 the on-call director (Director of Operations) confirms power-restoration estimate exceeds RTO. The CIO is on a flight (unreachable for 4 hours); the COO is in a board offsite (reachable but in the middle of a session). The on-call director invokes the DR per plan at 14:40. The IS auditor was asked to assess the governance decision.",
+      "options": {
+        "A": "Criticize the on-call director's decision; major DR invocation should require CIO or COO authorization regardless of pre-delegated authority in the plan.",
+        "B": "Recommend re-invoking the DR with COO approval; the on-call director's initial invocation should be re-authorized at executive level to be legitimate.",
+        "C": "Recommend canceling the DR invocation and waiting for utility restoration; 4-8 hour power restoration may resolve before DR completes activation.",
+        "D": "Affirm the on-call director's decision; activation criteria were met, pre-delegated authority is documented, and acting per the plan is the governance discipline."
+      },
+      "correct": "D",
+      "key_concept": "DR invocation under documented pre-delegated authority = act per the plan when criteria are met. Pre-delegated authority exists for exactly this scenario; criticize-decision defeats the plan; re-authorize is redundant theater; cancel-and-wait accepts continued exposure.",
+      "pre_read": "For DR-invocation-decision questions, anchor on \"activation criteria + pre-delegated authority = act per plan.\" Criticize, re-authorize, and cancel-and-wait answers each fail to respect the plan structure.",
+      "correct_explanation": "ISACA DR Invocation Decision guidance, FFIEC Business Continuity Management Booklet, and DRII Professional Practices establish that pre-delegated activation authority exists for exactly this scenario: when (a) activation criteria are clearly met (power loss exceeding RTO is the documented criterion), (b) the named authority is available (on-call director on duty), and (c) executive escalation channels are slow or absent (CIO unreachable, COO in offsite), the documented authority acts per the plan. This is governance discipline, not authority circumvention. Option A criticize-the-decision defeats the plan structure — the plan documented pre-delegated authority precisely so events of this kind can be handled without executive bottleneck. Option B re-authorize-with-COO is redundant theater that delays response. Option C cancel-and-wait accepts continued exposure when the RTO clock is already running.",
+      "wrong_explanations": {
+        "A": "Criticizing the decision defeats the entire purpose of pre-delegated authority. The plan authors documented the on-call director's authority precisely so that events like this — happening when executives are unreachable — don't bottleneck on executive availability.",
+        "B": "Re-authorize-with-COO is redundant theater. The on-call director acted within documented authority and met activation criteria; layering executive approval on after doesn't add legitimacy, only delay.",
+        "C": "Cancel-and-wait accepts continued exposure during a power outage exceeding RTO. The bank's customer-facing services and regulatory commitments depend on meeting RTO; waiting compounds the issue."
+      },
+      "tips": [
+        "Trap is A — \"major DR invocation should require executive authorization\" matches a conservative-governance instinct but defeats pre-delegated authority; the plan documents the on-call director's authority precisely so this scenario doesn't bottleneck.",
+        "DR invocation = ACTIVATION CRITERIA MET + PRE-DELEGATED AUTHORITY AVAILABLE = ACT PER PLAN. Three properties; respect the plan structure.",
+        "Exam-day shortcut: any DR-invocation question is answered by the option AFFIRMING the documented authority's action; criticize and re-authorize answers defeat the plan structure."
+      ],
+      "framework_ref": "ISACA DR Invocation Decision guidance; FFIEC Business Continuity Management Booklet; DRII Professional Practices",
+      "related_concepts": [
+        "DR invocation",
+        "Pre-delegated authority",
+        "Activation criteria"
+      ],
+      "_provenance": "Authored from concept: 'DR invocation under pre-delegated authority per FFIEC BCM Booklet and DRII'. Public sources: FFIEC, DRII, ISACA. Scenario specifics (regional retail bank, Tuesday 14:18 power failure, 30-min UPS, generator failure, 4-8h restoration, 2h RTO, on-call director invocation at 14:40, CIO on flight, COO in offsite) invented for this question."
+    },
+    {
+      "id": "d4_097",
+      "domain": 4,
+      "subtopic": "BCP Audit Findings During Regulator Examination",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST guides the firm through the regulator-examination BCP findings the engagement faces?",
+      "scenario_context": "A community bank (~$2.8B assets, 38 branches) is mid-way through a federal operational-resilience examination. Regulators have identified three BCP findings: (a) the bank's last full-interruption test was 19 months ago (regulator expectation: ≤12 months); (b) the alternative processing contract with the recovery vendor was last reviewed 4 years ago and the named contacts have changed; (c) the BIA has not been updated since the bank acquired a smaller competitor 14 months ago, so newly-acquired operations aren't tier-classified. The CIO believes findings will result in formal MRA (Matters Requiring Attention). The CRO wants a defensive response; the CEO wants to engage transparently. The IS auditor was asked to advise on response governance.",
+      "options": {
+        "A": "Defend each finding as immaterial; the bank's overall BCP capability is sound and individual cadence/documentation gaps don't constitute material weaknesses.",
+        "B": "Accept the findings transparently + commit to remediation timeline + provide remediation evidence as completed + integrate into ongoing BCP maintenance cycle.",
+        "C": "Dispute the regulator's authority to set 12-month test cadence expectations; published rules don't mandate annual testing for community banks of this size.",
+        "D": "Wait for the formal MRA before responding; informal mid-examination commitments may compromise the bank's legal position during the formal MRA response phase."
+      },
+      "correct": "B",
+      "key_concept": "BCP audit findings during regulator exam = accept transparently + commit remediation timeline + provide evidence as completed + integrate into BCP maintenance. Defend-as-immaterial antagonizes; dispute-authority is futile; wait-for-MRA delays.",
+      "pre_read": "For regulator-finding response questions, anchor on \"transparent acceptance + remediation commitment + evidence + integration.\" Defend, dispute, and delay-until-formal approaches each compound the underlying issue.",
+      "correct_explanation": "ISACA BCP Audit Findings guidance, FFIEC Business Continuity Management Booklet, and OCC examination guidance establish four-element response to regulator findings: (1) ACCEPT FINDINGS TRANSPARENTLY (acknowledging facts builds credibility; disputing facts costs credibility); (2) COMMIT REMEDIATION TIMELINE (specific dates for each finding's resolution); (3) PROVIDE EVIDENCE AS REMEDIATION COMPLETES (don't wait for next exam; show progress); (4) INTEGRATE INTO BCP MAINTENANCE CYCLE (the findings reveal maintenance gaps; integrate the lessons into the lifecycle so they don't recur). Option A defend-as-immaterial antagonizes regulators and signals the bank doesn't take findings seriously. Option C dispute-authority on 12-month test cadence is futile — regulators may not mandate by rule but expect by examination practice. Option D wait-for-formal-MRA delays remediation and produces worse outcomes than proactive response.",
+      "wrong_explanations": {
+        "A": "Defend-as-immaterial antagonizes regulators and signals the bank doesn't take findings seriously. 19-month test gap and 4-year contract review gap are documentation-rigor gaps that regulators properly flag.",
+        "C": "Disputing the regulator's authority on examination practice expectations is futile. Even where specific cadences aren't mandated by rule, examination practice expectations are enforceable. Cooperation outperforms confrontation.",
+        "D": "Wait-for-formal-MRA delays remediation. The bank can begin remediation NOW; demonstrating proactive response to identified findings often reduces the severity of formal documentation in the final MRA."
+      },
+      "tips": [
+        "Trap is A — \"defend each finding as immaterial\" matches a defensive instinct but antagonizes regulators and signals the bank doesn't take findings seriously; transparency and remediation outperform defense.",
+        "Regulator finding response = ACCEPT + REMEDIATION TIMELINE + EVIDENCE + INTEGRATION. Four elements; transparency over defense.",
+        "Exam-day shortcut: any regulator-finding question is answered by the option naming TRANSPARENT ACCEPTANCE with remediation commitment; defend, dispute, and delay answers all worsen outcomes."
+      ],
+      "framework_ref": "ISACA BCP Audit Findings guidance; FFIEC Business Continuity Management Booklet; ISACA Regulator Audit Response guidance",
+      "related_concepts": [
+        "BCP audit findings",
+        "Regulator examination",
+        "MRA response"
+      ],
+      "_provenance": "Authored from concept: 'BCP regulator examination response per FFIEC BCM Booklet and OCC examination guidance'. Public sources: FFIEC, OCC, ISACA. Scenario specifics (community bank, $2.8B assets, 38 branches, 3 findings — 19-month test gap, 4-year contract review, 14-month BIA gap post-acquisition, CIO/CRO/CEO positions) invented for this question."
+    },
+    {
+      "id": "d4_098",
+      "domain": 4,
+      "subtopic": "Insurance Coverage Gap Discovered During BCP Review",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the insurance coverage gap the BCP review surfaced?",
+      "scenario_context": "A specialty manufacturer (1,900 employees, $720M revenue) completed its annual BCP review. The review revealed: (a) the existing cyber liability policy excludes ransomware-related extortion payments above a $5M sublimit; (b) the firm's recent ransomware risk assessment estimates potential extortion demands at $15-40M based on industry peer incidents; (c) the policy renewal is in 60 days; (d) increasing the sublimit to $25M would add ~$1.2M annually to premiums. The CFO objects to the increased premium; the CISO advocates for the higher sublimit; the General Counsel notes that paying extortion may have legal implications regardless of insurance coverage. The IS auditor was asked to advise on the governance of the coverage gap.",
+      "options": {
+        "A": "Apply structured analysis: ransomware risk quantification + sublimit adequacy + alternative risk-transfer options + legal implications of payment + scenario testing + board-level documented risk acceptance.",
+        "B": "Endorse the CFO's objection; $1.2M annual premium increase is disproportionate to the residual risk and the firm's ransomware controls likely prevent the maximum-extortion scenario.",
+        "C": "Endorse the CISO's higher-sublimit recommendation; cyber risk is escalating across the industry and insurance coverage gaps materially threaten firm viability under attack.",
+        "D": "Defer the coverage decision until after the next ransomware industry-impact study is published; current data is insufficient to justify the premium increase decision properly."
+      },
+      "correct": "A",
+      "key_concept": "Insurance coverage gap = structured analysis: risk quantification + sublimit adequacy + alternative risk-transfer + legal implications + scenario testing + board-level risk acceptance. Endorse-CFO/CISO are opposing single-stakeholder biases; defer-until-study wastes the 60-day renewal window.",
+      "pre_read": "For insurance-coverage-gap questions, anchor on \"structured analysis with board-level risk acceptance.\" Single-stakeholder endorsements reflect bias.",
+      "correct_explanation": "ISACA Insurance Gap Analysis guidance, NAIC Cybersecurity Insurance Guidance, and ISACA Insurance Considerations guidance establish six-element structured analysis for material insurance coverage gaps: (1) RANSOMWARE RISK QUANTIFICATION (peer incidents, threat-actor demand trends, firm-specific exposure factors); (2) SUBLIMIT ADEQUACY (does $5M, $25M, or different level match the risk profile); (3) ALTERNATIVE RISK-TRANSFER OPTIONS (captive insurance, parametric coverage, larger policy from different carrier); (4) LEGAL IMPLICATIONS OF PAYMENT (OFAC sanctions exposure, regulatory reporting, fiduciary considerations); (5) SCENARIO TESTING (run business-impact scenarios with current vs proposed coverage); (6) BOARD-LEVEL DOCUMENTED RISK ACCEPTANCE (the residual exposure after coverage decision is explicitly accepted by the appropriate authority). Option B endorses CFO without quantification. Option C endorses CISO without cost-benefit. Option D defer wastes the 60-day renewal window.",
+      "wrong_explanations": {
+        "B": "Endorsing the CFO's objection without quantifying the risk-vs-premium trade-off is biased toward cost. The $1.2M premium vs $15-40M potential demand requires structured analysis, not single-stakeholder cost-aversion.",
+        "C": "Endorsing the CISO's recommendation without cost-benefit analysis is biased toward coverage. The risk may be real but other risk-transfer options (captive, parametric, different carrier) may be more cost-effective.",
+        "D": "Defer-until-next-study wastes the 60-day renewal window. The decision must be made before renewal; deferral results in the existing inadequate coverage remaining in force."
+      },
+      "tips": [
+        "Trap is B or C — opposing single-stakeholder endorsements (CFO cost-aversion vs CISO coverage-maximization). Structured analysis with documented board acceptance sits between.",
+        "Insurance gap = RISK QUANTIFICATION + SUBLIMIT ADEQUACY + ALTERNATIVES + LEGAL + SCENARIOS + BOARD ACCEPTANCE. Six elements.",
+        "Exam-day shortcut: any insurance-gap question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS with board acceptance; single-stakeholder and defer answers each fail."
+      ],
+      "framework_ref": "ISACA Insurance Gap Analysis guidance; NAIC Cybersecurity Insurance Guidance; ISACA Insurance Considerations guidance",
+      "related_concepts": [
+        "Insurance coverage gap",
+        "Cyber liability sublimit",
+        "Risk transfer alternatives"
+      ],
+      "_provenance": "Authored from concept: 'Insurance coverage gap structured analysis per NAIC Cybersecurity Insurance Guidance'. Public sources: NAIC, ISACA. Scenario specifics (specialty manufacturer, 1.9K employees, $720M revenue, $5M sublimit vs $15-40M estimated demand, 60-day renewal, $1.2M premium increase, CFO/CISO/GC positions) invented for this question."
+    },
+    {
+      "id": "d4_099",
+      "domain": 4,
+      "subtopic": "Alternative Processing Contract — Concentration Risk Review",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the alternative processing contract concentration discovered?",
+      "scenario_context": "A multi-state insurance firm (~$3.4B revenue, 23 state licenses) is reviewing its DR vendor portfolio. Current state: a single recovery-services vendor provides hot-site capacity for ALL of the firm's critical systems (claims, policy administration, agent portal). Investigation reveals the vendor serves 47 other customers from the same facility, contractually committing 'best-effort' capacity but no formal queueing rights during widespread events. Regulatory examination guidance flags concentration risk. The CISO proposes diversifying to two vendors; the CFO objects to the additional $4.1M annual cost; the chief insurance regulator-relations officer cites peer firms' multi-vendor approaches. The IS auditor was asked to advise on the governance.",
+      "options": {
+        "A": "Endorse the CFO's position; the existing single-vendor arrangement has worked historically and concentration risk is theoretical for a firm of this size.",
+        "B": "Endorse the CISO's diversification proposal immediately; concentration risk is unacceptable for a regulated insurance firm regardless of cost.",
+        "C": "Apply structured analysis: concentration-risk quantification + multi-vendor cost-benefit + peer benchmarking + regulator-acceptability analysis + phased implementation with milestones.",
+        "D": "Defer the decision to the next strategic-planning cycle; recovery-vendor changes are major architectural decisions requiring multi-year planning lead time anyway."
+      },
+      "correct": "C",
+      "key_concept": "Alternative processing contract concentration = structured analysis: concentration-risk quantification + multi-vendor cost-benefit + peer benchmarking + regulator-acceptability + phased implementation. Endorse-CFO/CISO opposing biases; defer-to-strategy wastes the analysis window.",
+      "pre_read": "For recovery-vendor concentration questions, anchor on \"structured analysis with phased implementation.\" Single-stakeholder endorsements reflect bias.",
+      "correct_explanation": "ISACA Alternative Processing Contract guidance, OCC Bulletin 2013-29 (Third-Party Relationships), and ISACA Vendor Management guidance establish five-element structured analysis for recovery-vendor concentration: (1) CONCENTRATION-RISK QUANTIFICATION (probability of simultaneous activation with 47 other customers; queueing exposure; vendor-failure exposure); (2) MULTI-VENDOR COST-BENEFIT ($4.1M annual vs reduced concentration risk and improved negotiating leverage); (3) PEER BENCHMARKING (what do similar-size insurance firms do; what does the regulator-relations officer's input suggest); (4) REGULATOR-ACCEPTABILITY ANALYSIS (will the existing single-vendor arrangement attract regulatory criticism; what would satisfy regulators); (5) PHASED IMPLEMENTATION with milestones (diversification doesn't have to be all-at-once; start with one or two critical systems). Option A endorses CFO without addressing concentration-risk quantification. Option B endorses CISO without cost-benefit. Option D defer wastes the analysis opportunity.",
+      "wrong_explanations": {
+        "A": "Endorsing the CFO's cost objection without quantifying concentration risk is cost-biased. The single-vendor 'best-effort' arrangement during widespread events (regional disasters, multi-customer cyber events) is a material exposure that hasn't been quantified.",
+        "B": "Endorsing immediate diversification without cost-benefit and phased implementation may overinvest. Diversification has real benefits but the $4.1M increment should be analyzed for proportionality.",
+        "D": "Defer-to-strategy-cycle wastes the current analysis window. Regulatory examination has flagged the concentration; deferral signals to the regulator that the firm isn't responsive."
+      },
+      "tips": [
+        "Trap is A or B — opposing single-stakeholder endorsements (CFO cost-aversion vs CISO diversification-maximization). Structured analysis with phased implementation determines.",
+        "Vendor concentration = CONCENTRATION QUANTIFICATION + COST-BENEFIT + PEER BENCHMARKING + REGULATOR ACCEPTABILITY + PHASED IMPLEMENTATION. Five elements.",
+        "Exam-day shortcut: any recovery-vendor concentration question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS; single-stakeholder and defer answers each fail."
+      ],
+      "framework_ref": "ISACA Alternative Processing Contract guidance; OCC Bulletin 2013-29 (Third-Party Relationships); ISACA Vendor Management guidance",
+      "related_concepts": [
+        "Recovery vendor concentration",
+        "Multi-vendor strategy",
+        "Best-effort capacity"
+      ],
+      "_provenance": "Authored from concept: 'Alternative processing concentration risk per OCC Bulletin 2013-29 and ISACA Vendor Management guidance'. Public sources: OCC, ISACA. Scenario specifics (multi-state insurance, $3.4B revenue, 23 state licenses, single recovery vendor serving 47 other customers, $4.1M diversification cost, CISO/CFO/regulator-relations positions) invented for this question."
+    },
+    {
+      "id": "d4_100",
+      "domain": 4,
+      "subtopic": "Key Personnel Succession Crisis for BCP Capability",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the BCP succession crisis the firm faces?",
+      "scenario_context": "A mid-sized healthcare provider (5,800 employees, 4 hospitals) discovers that within 6 months: (a) the long-serving BCP director (18 years in role) is retiring; (b) the IT director (15-year tenure) is leaving for a competitor; (c) the deputy CIO (named alternate for BCP activation authority) is on indefinite medical leave; (d) two of the four named hospital BCP coordinators have been promoted to other roles. The CEO requests an assessment. The CIO is recruiting replacements but admits the institutional knowledge cannot be fully transferred in available time. The compliance officer cites regulator expectations for BCP capability continuity. The IS auditor was asked to recommend governance for the succession crisis.",
+      "options": {
+        "A": "Recommend hiring back the departing employees as consultants; the institutional knowledge cannot be replaced and consulting arrangements bridge the gap during recruitment.",
+        "B": "Recommend deferring all BCP testing and updates until new staff are hired and trained; testing without experienced staff produces unreliable results regardless of effort.",
+        "C": "Recommend reducing BCP scope to only the most critical functions; partial-scope BCP capability during the succession period is more realistic than maintaining full scope.",
+        "D": "Apply multi-track response: knowledge capture from departing staff + accelerated hiring + interim consulting bridge + paired-training with successors + post-transition validation testing."
+      },
+      "correct": "D",
+      "key_concept": "BCP succession crisis = multi-track: knowledge capture from departing + accelerated hiring + interim consulting bridge + paired-training with successors + post-transition validation testing. Hire-back-only is partial; defer-everything is irresponsible; reduce-scope sacrifices capability.",
+      "pre_read": "For BCP-succession-crisis questions, anchor on \"multi-track: knowledge capture + accelerated hiring + interim consulting + paired training + validation testing.\" Single-track responses fail.",
+      "correct_explanation": "ISACA Key Personnel Succession guidance, ISO 22301 (Business Continuity Management), and ISACA Knowledge-Transfer guidance establish five-element multi-track response to BCP succession crisis: (1) KNOWLEDGE CAPTURE FROM DEPARTING STAFF (recorded walkthroughs, runbook authoring, decision logs — capture before departure); (2) ACCELERATED HIRING (compress recruitment timeline, expand candidate pool, internal promotion paths); (3) INTERIM CONSULTING BRIDGE (departing staff or external BCP specialists provide gap-bridging support); (4) PAIRED-TRAINING with successors (when new staff arrive, they work alongside departing staff or consultants for overlap); (5) POST-TRANSITION VALIDATION TESTING (after new staff are in place, run BCP tests to validate capability continuity). Option A hire-back-only is partial — doesn't address paired training or accelerated hiring. Option B defer-everything is irresponsible for healthcare (operational resilience can't pause). Option C reduce-scope sacrifices capability rather than maintaining it through the transition.",
+      "wrong_explanations": {
+        "A": "Hire-back-as-consultants addresses gap-bridging but doesn't address accelerated hiring, paired training, or post-transition validation. Multi-track response addresses all dimensions of the transition.",
+        "B": "Defer all BCP work is irresponsible for a healthcare provider where operational resilience can't pause. Hospitals need continuous BCP capability; pause produces regulatory and patient-safety exposure.",
+        "C": "Reduce-scope sacrifices BCP capability during precisely the period when leadership transition increases risk. The right response maintains scope while bridging the capability gap."
+      },
+      "tips": [
+        "Trap is C — \"reduce BCP scope during transition\" sounds pragmatic but sacrifices capability when leadership transition increases risk; maintain scope while bridging the gap.",
+        "BCP succession crisis = KNOWLEDGE CAPTURE + ACCELERATED HIRING + INTERIM CONSULTING + PAIRED TRAINING + POST-TRANSITION VALIDATION. Five tracks; multi-element response.",
+        "Exam-day shortcut: any key-personnel-succession question is answered by the option naming MULTI-TRACK response; single-track or sacrifice-capability answers each fail."
+      ],
+      "framework_ref": "ISACA Key Personnel Succession guidance; ISO 22301 (Business Continuity Management); ISACA Knowledge-Transfer guidance",
+      "related_concepts": [
+        "BCP succession",
+        "Knowledge capture",
+        "Paired training",
+        "Interim consulting"
+      ],
+      "_provenance": "Authored from concept: 'BCP key personnel succession multi-track response per ISO 22301 and ISACA Knowledge-Transfer guidance'. Public sources: ISO, ISACA. Scenario specifics (mid-sized healthcare, 5.8K employees, 4 hospitals, 4 simultaneous BCP-relevant departures within 6 months, CIO/compliance positions) invented for this question."
     }
   ]
 }

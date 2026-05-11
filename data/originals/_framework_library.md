@@ -824,6 +824,28 @@ sub-references like "(Managed Risk) and APO12.03").
 - DRII Professional Practices
 - US-CERT recovery guidance
 - CISA #StopRansomware guidance
+
+## D4 batch 5 additions
+- ISACA DRP Audit Program
+- ISACA DR Test Types guidance
+- ISACA Alternative Site Types guidance
+- ISACA DRP Contents guidance
+- ISACA DR Scenarios guidance
+- ISACA Recovery Procedures guidance
+- ISACA DR Responsibilities guidance
+- ISACA BCP Development guidance
+- ISACA BCP Components guidance
+- ISACA Backup Supplies Resilience guidance
+- ISACA Insurance Considerations guidance
+- ISACA Plan Maintenance Lifecycle guidance
+- ISACA DR Test Failure Response guidance
+- ISACA DR Invocation Decision guidance
+- ISACA BCP Audit Findings guidance
+- ISACA Insurance Gap Analysis guidance
+- ISACA Alternative Processing Contract guidance
+- ISACA Key Personnel Succession guidance
+- FFIEC Business Continuity Management Booklet
+- NAIC Cybersecurity Insurance Guidance
 - BCI Good Practice Guidelines
 - ISO 27031 (ICT Readiness for Business Continuity)
 - ISACA Backup and Recovery Audit Program
