@@ -601,4 +601,34 @@ sub-references like "(Managed Risk) and APO12.03").
 - COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)
 - COBIT 2019 BAI08 (Managed Knowledge)
 - COBIT 2019 BAI09 (Managed Assets)
+
+## D3 batch 2 additions
+- NTIA SBOM Minimum Elements
+- CycloneDX SBOM Specification
+- SPDX License List
+- Linux Foundation OpenChain (ISO/IEC 5230)
+- Microsoft Threat Modeling (STRIDE)
+- OWASP Threat Modeling Cheat Sheet
+- ISO/IEC 14143 (Functional Size Measurement)
+- IFPUG Function Point Counting Practices Manual
+- Kanban Method (David Anderson)
+- OWASP DevSecOps Maturity Model (DSOMM)
+- IEEE 829 (Standard for Software Test Documentation)
+- ISTQB Advanced Level Test Analyst Syllabus
+- Trunk-Based Development (Paul Hammant)
+- Git Flow (Vincent Driessen)
+- Sigstore / Cosign
+- Notary v2 / OCI Image Signing
+- HashiCorp Terraform Cloud Drift Detection
+- Open Policy Agent (OPA)
+- Google SRE Book (Site Reliability Engineering)
+- Google SRE Workbook (Service Level Objectives)
+- PMI Practice Standard for Earned Value Management
+- ISO/IEC 42001 (AI Management System)
+- COBIT 2019 BAI03 (Managed Solutions Identification and Build) — Source Control
+- ISACA DevSecOps Audit guidance
+- ISACA Container Security guidance
+- ISACA Open Source Software Governance guidance
+- OWASP Testing Guide
+- OWASP Application Security Verification Standard (ASVS)
 - SLSA (Supply-chain Levels for Software Artifacts) framework

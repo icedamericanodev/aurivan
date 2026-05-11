@@ -746,6 +746,744 @@
         "Change enablement"
       ],
       "_provenance": "Authored from concept: 'Scope decomposition under regulatory deadline pressure per ISACA Project Audit guidance and COBIT 2019 BAI06/BAI07'. Public sources: ISACA guidance, COBIT 2019, ITIL 4. Scenario specifics (federally chartered insurer, 5,000 employees, 5-week deadline, 2 of 9 blocked scenarios, scenario 4 premium roll-up, scenario 7 reinsurance offset) invented for this question."
+    },
+    {
+      "id": "d3_021",
+      "domain": 3,
+      "subtopic": "Project Management Structures — Projectized vs Functional vs Matrix",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST describes the PRIMARY characteristic of a 'projectized' organizational structure?",
+      "options": {
+        "A": "Project staff report functionally to their department managers, with the project manager coordinating across silos as needed.",
+        "B": "Project staff report directly to the project manager for the duration of the project; the PM has full authority over resources.",
+        "C": "Project decisions are split between the functional manager and the project manager under a balanced matrix arrangement of authority.",
+        "D": "Project work is contracted entirely to outside vendors, with internal staff retaining only oversight responsibilities for outcomes."
+      },
+      "correct": "B",
+      "key_concept": "Projectized = staff report to PM; PM has full authority. Functional = staff report to department managers. Matrix = split authority. Outsourced = vendor-delivered. Each structure trades off authority, resource flexibility, and accountability.",
+      "pre_read": "For PM-structure questions, anchor on \"who has authority over project staff and resources.\" Projectized = PM; functional = functional manager; matrix = shared.",
+      "correct_explanation": "PMBOK Guide 7th Edition and PRINCE2 both define a projectized organizational structure as one where staff report directly to the project manager for the project's duration, with the PM exercising full authority over project resources, decisions, and team members. Functional structures (option A) keep staff reporting to department managers with the PM acting as coordinator. Matrix structures (option C) split authority between functional and project managers — balanced, weak, or strong matrix variants exist. Option D describes outsourcing, which is a sourcing decision, not a project organizational structure.",
+      "wrong_explanations": {
+        "A": "This describes a functional structure, not projectized. Functional structures are common in stable operations but create coordination overhead for projects because the PM has no direct authority.",
+        "C": "This describes a matrix structure (specifically the balanced matrix variant). Matrix structures are common for projects in functionally-organized firms but create dual-reporting tensions.",
+        "D": "Outsourcing is a sourcing strategy, not an organizational structure. The firm's internal organization is independent of whether the work is performed in-house or by vendors."
+      },
+      "tips": [
+        "Trap is A — \"functional reporting with PM coordinating\" is the most common organizational pattern, so candidates default to recognizing it as \"projectized.\" Anchor instead on WHO HAS AUTHORITY.",
+        "Projectized = PM has full authority. Functional = functional manager. Matrix = shared. Outsourced = vendor.",
+        "Exam-day shortcut: any PM-structure question is answered by mapping \"who controls staff and resources\" to the named structure."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; PRINCE2 (Projects in Controlled Environments); ISACA Project Management guidance",
+      "related_concepts": [
+        "Projectized organization",
+        "Functional structure",
+        "Matrix structure",
+        "Project authority"
+      ],
+      "_provenance": "Authored from concept: 'PM organizational structures per PMBOK 7E and PRINCE2'. Public sources: PMBOK 7E, PRINCE2."
+    },
+    {
+      "id": "d3_022",
+      "domain": 3,
+      "subtopic": "Application Control Categories — Input Controls",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of input controls in an application?",
+      "options": {
+        "A": "Validate that data entering the system is complete, accurate, valid, authorized, and properly formatted before processing.",
+        "B": "Verify that the system's transformation logic produces correct results across all permissible input ranges and combinations.",
+        "C": "Confirm that report distribution to authorized recipients occurs within the agreed service-level timeframes consistently.",
+        "D": "Authenticate users at sign-on and authorize their permissions to perform application functions during the session."
+      },
+      "correct": "A",
+      "key_concept": "Input controls validate data entering the system (CAVAA: complete, accurate, valid, authorized, appropriate format). Processing controls verify transformation. Output controls confirm distribution. Access controls authenticate users. Each category has a distinct PRIMARY purpose.",
+      "pre_read": "For application-control-category questions, anchor on the three core categories (input, processing, output) plus access. Input = data entering; processing = transformation; output = distribution.",
+      "correct_explanation": "ISACA Application Controls guidance and COBIT 2019 BAI03 (Managed Solutions Identification and Build) define input controls as the controls that validate data entering the application — checking for completeness, accuracy, validity, proper authorization, and correct format BEFORE the data is processed. Option B describes processing controls (transformation logic verification). Option C describes output controls (distribution accuracy). Option D describes access/authentication controls, which are a separate category from application input/processing/output controls. A useful memory anchor is to check that input is complete, accurate, valid, authorized, and in appropriate format.",
+      "wrong_explanations": {
+        "B": "This describes processing controls, which verify the system's transformation logic (calculations, business rules, data conversions) produces correct results. Processing happens AFTER input.",
+        "C": "This describes output controls, which confirm correct distribution of system results (reports, data feeds, screens) to authorized recipients. Output happens AFTER processing.",
+        "D": "Authentication and authorization are access controls, a separate category. Input/processing/output controls operate on the data; access controls operate on the user."
+      },
+      "tips": [
+        "Trap is D or B — D confuses authentication (access control) with input controls because users \"input\" themselves at sign-on; B confuses processing (transformation logic) with input validation. Both substitute related-but-distinct categories.",
+        "Input controls = data entering (complete + accurate + valid + authorized + appropriate format). Processing = transformation. Output = distribution. Access = users.",
+        "Exam-day shortcut: input/processing/output controls describe what happens to DATA. Access controls describe what happens to USERS. Don't conflate the categories."
+      ],
+      "framework_ref": "ISACA Application Controls guidance; COBIT 2019 BAI03 (Managed Solutions Identification and Build); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Application controls",
+        "Input controls",
+        "Processing controls",
+        "Output controls"
+      ],
+      "_provenance": "Authored from concept: 'Application input controls per ISACA Application Controls guidance and COBIT 2019 BAI03'. Public sources: ISACA guidance, COBIT 2019."
+    },
+    {
+      "id": "d3_023",
+      "domain": 3,
+      "subtopic": "Software Bill of Materials (SBOM) — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines a software bill of materials (SBOM)?",
+      "options": {
+        "A": "A signed agreement between vendor and customer specifying which software components the vendor will support and patch.",
+        "B": "A pricing schedule that lists each license fee and maintenance charge for components included in the deployed product.",
+        "C": "A formal record listing all open-source and third-party components, versions, and dependencies included in a software product.",
+        "D": "An inventory of physical hardware assets, including servers, network devices, and endpoints, used in production environments."
+      },
+      "correct": "C",
+      "key_concept": "SBOM = formal record of software components (open-source + third-party + dependencies + versions). It enables vulnerability management, license compliance, and supply-chain risk visibility. Service contracts, pricing schedules, and hardware inventories are different artifacts.",
+      "pre_read": "For SBOM questions, anchor on \"formal record of software components and versions.\" The purpose is supply-chain transparency for vulnerability management and license compliance.",
+      "correct_explanation": "NTIA SBOM Minimum Elements and CycloneDX SBOM Specification both define a software bill of materials as a formal, machine-readable record listing all components (open-source libraries, third-party modules, dependencies, internal modules) included in a software product, along with their versions and supplier information. SBOMs enable downstream vulnerability management (which deployed systems contain a vulnerable component?), license compliance (what licenses must the firm comply with?), and supply-chain risk visibility. Option A describes a vendor support agreement. Option B describes a pricing/license schedule. Option D describes a hardware asset inventory (sometimes called an HBOM but distinct from SBOM).",
+      "wrong_explanations": {
+        "A": "Vendor support agreements are contractual documents about who supports which components; they don't enumerate components themselves at the version-and-dependency level.",
+        "B": "License pricing schedules list financial obligations, not components and dependencies. SBOMs may inform license-compliance reviews but are not pricing documents.",
+        "D": "Hardware inventories track physical assets (servers, network gear, endpoints). SBOMs track software components inside applications. The two artifacts serve different control objectives."
+      },
+      "tips": [
+        "Trap is D — \"inventory of assets\" sounds bill-of-materials-like but it's a HARDWARE inventory; SBOM is specifically SOFTWARE components and versions.",
+        "SBOM = software components + versions + dependencies. Purpose: vulnerability management + license compliance + supply-chain transparency.",
+        "Exam-day shortcut: any SBOM question is answered by the option naming software components and versions; hardware/contract/pricing answers are wrong."
+      ],
+      "framework_ref": "NTIA SBOM Minimum Elements; CycloneDX SBOM Specification; CISA Software Bill of Materials guidance; NIST SP 800-218 (SSDF v1.1)",
+      "related_concepts": [
+        "SBOM",
+        "Supply chain",
+        "Open source",
+        "Vulnerability management",
+        "Software composition"
+      ],
+      "_provenance": "Authored from concept: 'SBOM definition per NTIA Minimum Elements and CycloneDX'. Public sources: NTIA, CycloneDX, CISA SBOM guidance."
+    },
+    {
+      "id": "d3_024",
+      "domain": 3,
+      "subtopic": "Threat Modeling — STRIDE",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST describes what each letter in the STRIDE threat-modeling framework represents?",
+      "options": {
+        "A": "Spoofing, Tampering, Resilience, Identity, Disclosure, Exfiltration — six threat dimensions across the application.",
+        "B": "Security, Trust, Reliability, Identity, Discretion, Encryption — six trust attributes evaluated across the application.",
+        "C": "Standards, Threats, Risks, Issues, Defects, Exceptions — six categories of audit findings to track during development.",
+        "D": "Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege — six threat categories."
+      },
+      "correct": "D",
+      "key_concept": "STRIDE = Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege. Each letter names a threat category that the design review should address. Memorize the six in order; distractors substitute similar-sounding but incorrect terms.",
+      "pre_read": "For STRIDE questions, memorize the six categories in order: S-T-R-I-D-E. Distractors typically swap one or two letters for similar-sounding but wrong terms (e.g., Resilience for Repudiation, Disclosure for Information disclosure with a twist).",
+      "correct_explanation": "Microsoft Threat Modeling and the OWASP Threat Modeling Cheat Sheet both define STRIDE as Spoofing (impersonation), Tampering (unauthorized modification), Repudiation (denial of having performed an action), Information disclosure (unauthorized access to information), Denial of service (preventing legitimate use), and Elevation of privilege (gaining unauthorized higher access). Option A swaps Repudiation for 'Resilience', Information disclosure for 'Identity' and 'Disclosure', and Elevation of privilege for 'Exfiltration' — same first letters but wrong meanings. Option B is a fabricated trust framework with overlapping initials. Option C is a fabricated audit-finding list with overlapping initials.",
+      "wrong_explanations": {
+        "A": "Resilience, Identity, Disclosure, and Exfiltration are not the canonical STRIDE letters. The acronym is constructed to be memorable; substituting similar-sounding words breaks the mapping.",
+        "B": "This is a fabricated trust framework. STRIDE is specifically a threat-modeling framework with six threat categories, not a list of trust attributes.",
+        "C": "This is a fabricated audit-finding list. STRIDE is not used for audit findings; it's a design-time threat-modeling framework."
+      },
+      "tips": [
+        "Trap is A — same first letters as the correct STRIDE but with wrong category names. The substitutions (Resilience for Repudiation, Exfiltration for Elevation) sound plausible but are wrong.",
+        "STRIDE = Spoofing, Tampering, Repudiation, Information disclosure, DoS, Elevation of privilege. Memorize the six in order.",
+        "Exam-day shortcut: STRIDE's distinguishing letter is R (Repudiation) — distractors swap it out because non-auditor STRIDE summaries often drop or substitute it. When an acronym option has lookalike letters, audit each letter, don't pattern-match the initials."
+      ],
+      "framework_ref": "Microsoft Threat Modeling (STRIDE); OWASP Threat Modeling Cheat Sheet; ISACA Application Controls guidance",
+      "related_concepts": [
+        "STRIDE",
+        "Threat modeling",
+        "Repudiation",
+        "Microsoft Threat Modeling"
+      ],
+      "_provenance": "Authored from concept: 'STRIDE threat-modeling categories per Microsoft Threat Modeling and OWASP'. Public sources: Microsoft, OWASP."
+    },
+    {
+      "id": "d3_025",
+      "domain": 3,
+      "subtopic": "Feasibility Study — Multi-Dimensional Coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination of feasibility studies BEST supports a comprehensive go/no-go decision for a major IT investment?",
+      "options": {
+        "A": "Technical and economic feasibility only — operational, legal, and schedule dimensions are addressed during execution after approval.",
+        "B": "Technical, economic, operational, legal/regulatory, and schedule feasibility — all five viewed as complementary go/no-go inputs.",
+        "C": "Economic feasibility alone, since financial viability subsumes the technical, operational, and legal dimensions of any project.",
+        "D": "Operational feasibility alone, since user-acceptance is the only dimension that ultimately matters for project success."
+      },
+      "correct": "B",
+      "key_concept": "Comprehensive feasibility = TELOS: Technical, Economic, Legal, Operational, Schedule. Each dimension can independently kill a project; addressing only some leaves blind spots. Mature governance considers all five before authorization.",
+      "pre_read": "For feasibility-study questions, anchor on \"all five dimensions before authorization\" (TELOS). Distractors typically narrow the scope to one or two dimensions, which leaves blind spots that surface later as project failure modes.",
+      "correct_explanation": "PMBOK Guide 7th Edition and ISACA Project Management guidance establish that comprehensive feasibility analysis covers Technical (can it be built?), Economic (does the value exceed cost?), Operational (can the organization absorb and run it?), Legal/regulatory (does it comply with applicable law?), and Schedule (can it be delivered in time to capture value?) dimensions — summarized as TELOS. Each dimension can independently kill a project. Option A defers operational, legal, and schedule analysis to execution, which is too late — projects that prove operationally infeasible after build face costly retrofits or abandonment. Option C and D each isolate one dimension, ignoring the multi-dimensional reality.",
+      "wrong_explanations": {
+        "A": "Deferring operational, legal, and schedule feasibility to execution misses the point of feasibility analysis: identifying killers BEFORE commitment. Build-then-discover-incompatibility is exactly what feasibility studies prevent.",
+        "C": "Economic feasibility alone is incomplete. A project may have strong financials but be technically infeasible (cannot be built), operationally unworkable (org cannot absorb), or legally prohibited.",
+        "D": "Operational feasibility alone is also incomplete. A user-loved system that cannot be built, costs too much, or violates regulations still fails despite operational acceptance."
+      },
+      "tips": [
+        "Trap is A — \"technical and economic only\" is the most common authoring shortcut and so feels familiar, but mature governance covers all five (TELOS) before authorization.",
+        "Feasibility = TELOS: Technical + Economic + Legal + Operational + Schedule. Each can independently kill a project.",
+        "Exam-day shortcut: feasibility-study questions are answered by the option naming the broadest set of dimensions; narrow-scope answers are usually wrong."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; ISACA Project Management guidance; ISACA Software Audit guidance",
+      "related_concepts": [
+        "Feasibility study",
+        "TELOS",
+        "Technical feasibility",
+        "Economic feasibility",
+        "Operational feasibility"
+      ],
+      "_provenance": "Authored from concept: 'Multi-dimensional feasibility (TELOS) per PMBOK 7E and ISACA Project Management guidance'. Public sources: PMBOK 7E, ISACA guidance."
+    },
+    {
+      "id": "d3_026",
+      "domain": 3,
+      "subtopic": "Function Point Analysis — vs Lines-of-Code",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies using function point analysis (FPA) over lines-of-code (LOC) for software sizing?",
+      "options": {
+        "A": "Sizing must be language-independent and reflect functional value delivered, allowing comparison across heterogeneous technology platforms.",
+        "B": "The team needs the simplest possible metric for tracking productivity within a single homogeneous codebase over time.",
+        "C": "The codebase is large and stable, so LOC growth provides a reliable monthly trend without additional analysis effort.",
+        "D": "Estimation accuracy at requirements time is unimportant; rough order-of-magnitude figures from LOC are sufficient for budgeting."
+      },
+      "correct": "A",
+      "key_concept": "FPA is preferred when sizing must be language-independent and tied to functional value (allowing cross-platform comparison and pre-code estimation). LOC is preferred for trend tracking within a single language/codebase. They answer different questions; pick FPA for value-based, cross-platform sizing.",
+      "pre_read": "For FPA-vs-LOC questions, anchor on \"language-independent + functional value + cross-platform\" for FPA; \"single-language + trend-tracking + simple\" for LOC.",
+      "correct_explanation": "ISO/IEC 14143 (Functional Size Measurement) and the IFPUG Function Point Counting Practices Manual both establish FPA as the technique appropriate when sizing must be (a) language-independent (a Java implementation and a COBOL implementation of the same requirements yield the same function-point count), (b) tied to functional value delivered to users (inputs, outputs, inquiries, internal logical files, external interface files), and (c) usable BEFORE code exists (estimation at requirements time). Option B describes the case where LOC is appropriate (single-language, trend tracking). Option C also favors LOC (stable codebase, growth trend). Option D dismisses estimation accuracy entirely, which doesn't justify either technique.",
+      "wrong_explanations": {
+        "B": "Single-codebase trend tracking is exactly the case where LOC is appropriate — simple, language-consistent. FPA's overhead is unjustified for this use case.",
+        "C": "Stable codebase + LOC trend is again LOC's strength. FPA's value emerges with multiple codebases, multiple languages, or pre-code estimation.",
+        "D": "Dismissing estimation accuracy doesn't justify either FPA or LOC. The choice between them depends on use case (cross-platform vs single-codebase), not on whether estimation matters."
+      },
+      "tips": [
+        "Trap is B — \"simplest possible metric\" sounds like FPA's appeal but it's actually LOC's. FPA is more complex; its value is language-independence and pre-code estimation.",
+        "FPA = language-independent + functional value + pre-code. LOC = single-language + trend-tracking + post-code.",
+        "Exam-day shortcut: FPA wins when comparing across languages/platforms or estimating before code exists; LOC wins for single-codebase trend tracking."
+      ],
+      "framework_ref": "ISO/IEC 14143 (Functional Size Measurement); IFPUG Function Point Counting Practices Manual; ISACA Software Audit guidance",
+      "related_concepts": [
+        "Function Point Analysis",
+        "FPA",
+        "LOC",
+        "ISO/IEC 14143",
+        "IFPUG"
+      ],
+      "_provenance": "Authored from concept: 'FPA vs LOC selection per ISO/IEC 14143 and IFPUG'. Public sources: ISO/IEC 14143, IFPUG."
+    },
+    {
+      "id": "d3_027",
+      "domain": 3,
+      "subtopic": "Scrum vs Kanban — Method Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which engagement type BEST justifies preferring Kanban over Scrum as the team's PRIMARY delivery method?",
+      "options": {
+        "A": "A new product build with high uncertainty on requirements but stable team composition over a 12-month delivery horizon.",
+        "B": "A two-year regulated platform replacement requiring stage-gated baselines and signed traceability artifacts at each gate.",
+        "C": "An ongoing operations team handling a continuous flow of varying-priority work without natural sprint boundaries.",
+        "D": "A six-month fixed-scope project with a hard go-live date and a stable, fully-defined product backlog throughout delivery."
+      },
+      "correct": "C",
+      "key_concept": "Kanban suits continuous-flow work (operations, support, varying priorities). Scrum suits time-boxed iterative product development. Stage-gated regulated builds need hybrid models. Fixed-scope/fixed-date suits a different (more waterfall-leaning) approach. Method must match work pattern.",
+      "pre_read": "For Kanban-vs-Scrum questions, anchor on \"work pattern.\" Continuous flow = Kanban. Time-boxed iterative product = Scrum. Each method optimizes for a different rhythm.",
+      "correct_explanation": "Scrum Guide 2020 and the Kanban Method (David Anderson) describe the two methods as optimized for different work patterns. Scrum is time-boxed and iteration-based — appropriate when the work has discrete cycles, planned commitment per cycle, and a need for predictable cadence. Kanban is flow-based — appropriate when work arrives continuously, priorities shift dynamically, and there's no natural sprint boundary. Option C describes a classic Kanban use case (operations team, continuous flow, varying priorities). Option A is Scrum's classic use case (new product, high uncertainty, iteration value). Option B requires stage-gated hybrid agile (covered in d3_017). Option D is fixed-scope/fixed-date, which fits a more waterfall-leaning method or constrained Scrum.",
+      "wrong_explanations": {
+        "A": "New-product builds with requirements uncertainty are Scrum's strength: time-boxed iterations let the team learn and adjust. Kanban can work but adds less value here than Scrum's iteration cadence.",
+        "B": "Regulated stage-gated builds require traceability artifacts and signed baselines that neither pure Scrum nor pure Kanban produce. The right answer is a hybrid (covered in d3_017).",
+        "D": "Fixed-scope, fixed-date with a stable backlog is closer to a constrained-Scrum or waterfall pattern; Kanban's strength (flow under varying priorities) is wasted on stable scope."
+      },
+      "tips": [
+        "Trap is A — \"high requirements uncertainty\" sounds like agile-in-general but it's specifically Scrum's strength (iterate to learn), not Kanban's (continuous flow).",
+        "Scrum = time-boxed + iteration + commitment. Kanban = flow + WIP limits + continuous priority. Match method to work pattern.",
+        "Exam-day shortcut: any Scrum-vs-Kanban question is answered by reading the work pattern: discrete cycles → Scrum; continuous flow → Kanban."
+      ],
+      "framework_ref": "Scrum Guide 2020; Kanban Method (David Anderson); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Scrum",
+        "Kanban",
+        "Continuous flow",
+        "Iteration",
+        "Agile method selection"
+      ],
+      "_provenance": "Authored from concept: 'Scrum vs Kanban method selection per Scrum Guide 2020 and Kanban Method (Anderson)'. Public sources: Scrum Guide, Anderson Kanban."
+    },
+    {
+      "id": "d3_028",
+      "domain": 3,
+      "subtopic": "DevSecOps Integration",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice BEST embodies DevSecOps integration in a CI/CD pipeline?",
+      "options": {
+        "A": "Run a single annual penetration test on the production environment and remediate findings during normal work cycles.",
+        "B": "Have the security team approve each deployment manually before the change-management ticket is closed by operations.",
+        "C": "Deploy security tools to the production environment after the application is live to monitor for runtime threats only.",
+        "D": "Embed automated security scans (SAST, SCA, secrets, IaC) at every pipeline stage with build-failing thresholds for high severity."
+      },
+      "correct": "D",
+      "key_concept": "DevSecOps = security automated at every pipeline stage with enforced gates. Annual pen-tests, manual security approvals, and post-deployment monitoring are pre-DevSecOps patterns; they're security activities but not DevSecOps integration.",
+      "pre_read": "For DevSecOps questions, anchor on \"automated + every stage + build-failing.\" Manual approvals, late-stage tests, and post-deployment-only monitoring are pre-DevSecOps patterns.",
+      "correct_explanation": "OWASP DevSecOps Maturity Model (DSOMM) and NIST SP 800-218 (SSDF v1.1) both establish that DevSecOps integration means embedding automated security checks at every pipeline stage — SAST (source-code scanning), SCA (software composition analysis for dependency vulnerabilities), secrets scanning (credentials, keys), IaC scanning (infrastructure misconfigurations) — with build-failing thresholds for high-severity findings. Option A's annual pen-test is a security activity but operates after the fact, not at pipeline speed. Option B's manual security approval creates a queue and removes developer ownership of security. Option C's post-deployment monitoring is RASP/runtime protection, valuable but not DevSecOps integration on its own.",
+      "wrong_explanations": {
+        "A": "Annual pen-tests run far too slowly for CI/CD pipelines that may deploy daily. DevSecOps means continuous, integrated security, not periodic external assessment.",
+        "B": "Manual security approvals create bottlenecks and remove developer ownership. DevSecOps means automation in the pipeline, with human review reserved for exceptions.",
+        "C": "Post-deployment runtime monitoring (RASP) is one DevSecOps element but not the integration practice. DevSecOps is shift-LEFT (in the pipeline) plus runtime, not runtime alone."
+      },
+      "tips": [
+        "Trap is B or A — B (\"security team approves each deployment\") feels process-rigorous; A (\"annual penetration test\") feels security-rigorous. Both are real security activities but neither is pipeline-integrated automation.",
+        "DevSecOps = automated SAST + SCA + secrets + IaC at every pipeline stage with build-failing high-severity gates. Shift-left, automate, gate.",
+        "Exam-day shortcut: any DevSecOps question is answered by the option naming AUTOMATED checks at MULTIPLE pipeline stages with ENFORCED gates."
+      ],
+      "framework_ref": "OWASP DevSecOps Maturity Model (DSOMM); NIST SP 800-218 (SSDF v1.1); ISACA DevSecOps Audit guidance",
+      "related_concepts": [
+        "DevSecOps",
+        "CI/CD security",
+        "SAST",
+        "SCA",
+        "Shift-left"
+      ],
+      "_provenance": "Authored from concept: 'DevSecOps integration per OWASP DSOMM and NIST SSDF'. Public sources: OWASP DSOMM, NIST SP 800-218."
+    },
+    {
+      "id": "d3_029",
+      "domain": 3,
+      "subtopic": "UAT Acceptance Criteria — Quality",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic MOST distinguishes well-formed UAT acceptance criteria from weak ones?",
+      "options": {
+        "A": "They are written by the development team based on the technical implementation choices made during the build phase.",
+        "B": "They are objectively testable, agreed by the business owner, and tied to specific requirements before the cycle starts.",
+        "C": "They are kept confidential between the test manager and the steering committee until UAT execution begins formally.",
+        "D": "They include detailed code-coverage thresholds and unit-test pass rates as the PRIMARY go/no-go indicators for UAT."
+      },
+      "correct": "B",
+      "key_concept": "Well-formed UAT criteria = objectively testable + business-owner-agreed + tied to requirements + set BEFORE the cycle. Dev-team authored, secret, or code-coverage-only criteria all break independence, transparency, or business-relevance.",
+      "pre_read": "For UAT-criteria questions, anchor on three properties: objectively testable, business-owner-agreed, set BEFORE the cycle. Distractors typically violate one or more.",
+      "correct_explanation": "IEEE 829 (Standard for Software Test Documentation), ISTQB Foundation Level Syllabus, and ISACA UAT Audit guidance all establish that well-formed UAT acceptance criteria must be (1) objectively testable (pass/fail can be determined without subjective judgment), (2) agreed by the business owner (the party accepting the system), (3) tied to specific documented requirements (traceable via the RTM), and (4) set BEFORE the UAT cycle starts (not retrofitted to match results). Option A violates independence — the dev team accepting their own work defeats UAT's purpose. Option C violates transparency — UAT criteria must be visible to all stakeholders. Option D conflates UAT (business acceptance) with unit testing (technical correctness); code-coverage is not a UAT measure.",
+      "wrong_explanations": {
+        "A": "Dev-team-authored criteria defeats UAT's independence: the team that built the system cannot be the team that accepts it on the business's behalf. UAT criteria come from business requirements.",
+        "C": "Confidential UAT criteria break the transparency essential to UAT. The business owner must see, agree to, and own the criteria before the cycle starts.",
+        "D": "Code-coverage and unit-test pass rates are UNIT-test measures, not UAT measures. UAT measures business acceptance against requirements, not code quality metrics."
+      },
+      "tips": [
+        "Trap is A — \"dev team writes criteria based on implementation\" sounds collaborative but it's exactly the independence violation auditors call out.",
+        "UAT criteria = testable + business-agreed + requirements-traceable + pre-set. All four properties or it's weak.",
+        "Exam-day shortcut: UAT criteria authored by anyone other than the business owner are flawed; UAT criteria using code-coverage are confused with unit-test criteria."
+      ],
+      "framework_ref": "IEEE 829 (Standard for Software Test Documentation); ISTQB Foundation Level Syllabus; ISACA UAT Audit guidance",
+      "related_concepts": [
+        "UAT acceptance criteria",
+        "Business acceptance",
+        "Test documentation",
+        "Requirements traceability"
+      ],
+      "_provenance": "Authored from concept: 'UAT acceptance criteria per IEEE 829 and ISTQB'. Public sources: IEEE 829, ISTQB, ISACA guidance."
+    },
+    {
+      "id": "d3_030",
+      "domain": 3,
+      "subtopic": "Mutation Testing — Test-Suite Effectiveness",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies introducing mutation testing into a project's test strategy?",
+      "options": {
+        "A": "The team needs to assess the effectiveness of its existing test suite at detecting subtle defects, not just code coverage.",
+        "B": "The codebase is small and stable, and adding any additional test technique would slow iteration unnecessarily here.",
+        "C": "The team wants to replace unit testing entirely because mutation testing automatically generates the missing tests.",
+        "D": "The build pipeline needs faster feedback on every commit, and mutation testing is the fastest available technique."
+      },
+      "correct": "A",
+      "key_concept": "Mutation testing = measure how well your tests detect injected defects. It complements (not replaces) unit testing and adds slow but valuable confidence in test-suite quality. Coverage tells you what's run; mutation tells you what's verified.",
+      "pre_read": "For mutation-testing questions, anchor on \"measures test-suite effectiveness, not code coverage.\" The technique injects defects (mutations) and checks if tests catch them; surviving mutants reveal weak tests.",
+      "correct_explanation": "ISO/IEC 29119 (Software Testing) and ISTQB Advanced Level Test Analyst Syllabus describe mutation testing as a technique that injects small artificial defects (mutations) into the code and verifies whether the existing test suite detects them. Surviving mutants reveal areas where tests pass even though defects exist — a stronger signal of test-suite quality than line coverage alone (which only measures whether code was executed, not whether it was verified). Option A correctly identifies the use case. Option B dismisses the technique without engaging its value. Option C incorrectly states mutation testing replaces unit tests (it complements them; you need unit tests to mutate). Option D has the cost direction wrong — mutation testing is SLOWER than other techniques because it runs the test suite many times.",
+      "wrong_explanations": {
+        "B": "Mutation testing is valuable EVEN for small codebases when test-suite quality matters, because surviving mutants identify weak tests regardless of codebase size.",
+        "C": "Mutation testing operates on existing tests; it doesn't generate them. You need unit tests first; mutation testing then evaluates how well those tests detect defects.",
+        "D": "Mutation testing is among the SLOWEST testing techniques because it runs the test suite for each mutation. It's a periodic-investment, not a per-commit gate."
+      },
+      "tips": [
+        "Trap is D — \"fastest feedback\" is exactly what mutation testing is NOT; it's slow precisely because it runs the test suite many times.",
+        "Mutation testing = injects defects, measures test detection. Coverage = code run. Mutation = code verified.",
+        "Exam-day shortcut: mutation-testing questions are answered by the option naming test-suite EFFECTIVENESS or quality; speed-flavored options are wrong."
+      ],
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Advanced Level Test Analyst Syllabus; ISACA Software Audit guidance",
+      "related_concepts": [
+        "Mutation testing",
+        "Test effectiveness",
+        "Test suite quality",
+        "Code coverage"
+      ],
+      "_provenance": "Authored from concept: 'Mutation testing measures test-suite effectiveness per ISO/IEC 29119 and ISTQB Advanced'. Public sources: ISO/IEC 29119, ISTQB Advanced."
+    },
+    {
+      "id": "d3_031",
+      "domain": 3,
+      "subtopic": "DAST vs IAST vs RASP — Differentiation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST distinguishes the PRIMARY purpose of DAST, IAST, and RASP?",
+      "options": {
+        "A": "DAST scans source code; IAST tests runtime behavior; RASP runs in a sandboxed pre-production environment for review.",
+        "B": "DAST runs in production with attack blocking; IAST scans static binaries; RASP analyzes test-environment runtime behaviors.",
+        "C": "DAST tests running applications externally; IAST instruments runtime to find vulnerabilities; RASP protects production at runtime.",
+        "D": "DAST and RASP are synonymous for runtime protection; IAST is a code-quality static-analysis variant of SAST."
+      },
+      "correct": "C",
+      "key_concept": "DAST = dynamic external testing of running app. IAST = runtime instrumentation in test/QA. RASP = runtime protection in production. Each operates on a different point in the lifecycle and serves a different control objective.",
+      "pre_read": "For DAST/IAST/RASP questions, anchor on lifecycle position: DAST = external test; IAST = instrumented test; RASP = production protection.",
+      "correct_explanation": "OWASP testing guides and NIST SP 800-218 (SSDF v1.1) define these three runtime application security techniques as serving distinct purposes. DAST (Dynamic Application Security Testing) tests a running application from the outside (HTTP/API requests) to find vulnerabilities exposed via the attack surface. IAST (Interactive Application Security Testing) instruments the runtime (agents inside the app) to detect vulnerabilities during functional testing. RASP (Runtime Application Self-Protection) operates in production, monitoring application behavior and blocking malicious actions in real time. Option A misdescribes DAST as static (it's dynamic) and RASP as sandboxed (it's production). Option B inverts DAST and RASP. Option D conflates DAST with RASP and miscategorizes IAST as static analysis.",
+      "wrong_explanations": {
+        "A": "DAST is dynamic (tests running apps), not static (source code). RASP is production runtime protection, not sandboxed pre-production. The descriptions are inverted.",
+        "B": "DAST does NOT run in production with attack blocking — that's RASP. IAST does NOT scan static binaries — that's SAST. The descriptions are confused.",
+        "D": "DAST and RASP are NOT synonyms. DAST tests externally; RASP protects internally. IAST is dynamic-runtime instrumentation, not a SAST variant."
+      },
+      "tips": [
+        "Trap is A — candidates confuse DAST (Dynamic) with SAST (Static) because the acronyms look alike, then assume DAST scans source code. DAST is DYNAMIC — it tests RUNNING applications.",
+        "DAST = dynamic external test. IAST = instrumented runtime test. RASP = runtime production protection. Three distinct purposes.",
+        "Exam-day shortcut: any DAST/IAST/RASP question is answered by mapping each to its lifecycle position (test outside / test instrumented / production protect)."
+      ],
+      "framework_ref": "OWASP Testing Guide; NIST SP 800-218 (SSDF v1.1); OWASP Application Security Verification Standard (ASVS)",
+      "related_concepts": [
+        "DAST",
+        "IAST",
+        "RASP",
+        "Runtime security",
+        "OWASP"
+      ],
+      "_provenance": "Authored from concept: 'DAST/IAST/RASP differentiation per OWASP testing guidance and NIST SSDF'. Public sources: OWASP, NIST SP 800-218."
+    },
+    {
+      "id": "d3_032",
+      "domain": 3,
+      "subtopic": "Source Control — Branching Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which branching strategy BEST supports continuous integration with frequent production deployments?",
+      "options": {
+        "A": "Long-lived feature branches that merge to main only at the end of each quarterly release cycle for stability.",
+        "B": "A single shared branch where every developer commits directly to main without isolation, review, or pre-merge checks.",
+        "C": "Per-developer permanent branches that never merge but are deployed individually as feature flags in production environments.",
+        "D": "Short-lived feature branches merged to a trunk daily through pull requests with automated checks before merge."
+      },
+      "correct": "D",
+      "key_concept": "Continuous integration suits short-lived feature branches merged to trunk daily with PR + automated checks (Trunk-Based Development). Long-lived branches accumulate merge debt; commit-direct-to-main skips review; per-developer permanent branches defeat integration.",
+      "pre_read": "For branching-strategy questions, anchor on \"short-lived + frequent merge to trunk + automated checks.\" That's the modern CI pattern; long-lived or no-isolation patterns are weak.",
+      "correct_explanation": "Trunk-Based Development (Paul Hammant) and DORA / Accelerate research both establish short-lived feature branches with daily merge to trunk through pull requests as the branching pattern that best supports continuous integration with frequent deployments. The pull request provides peer review and triggers automated checks (build, tests, SAST, SCA) before merge. Option A's long-lived feature branches accumulate merge debt and divergence, making integration painful and increasing conflict risk. Option B's commit-directly-to-main skips review and CI checks, exposing main to untested code. Option C's permanent per-developer branches defeat the entire purpose of integration — there is no shared codebase to integrate to.",
+      "wrong_explanations": {
+        "A": "Long-lived branches are exactly what trunk-based development was designed to replace. Quarterly merge cycles produce massive integration pain and slow time-to-market.",
+        "B": "Direct-to-main commits without review or checks expose main to untested code. CI requires both isolation (branches/PRs) AND fast merge cadence.",
+        "C": "Permanent per-developer branches eliminate integration. Feature flags are valid (they enable trunk-based development with safe rollout) but per-developer branches are not the integration mechanism."
+      },
+      "tips": [
+        "Trap is A — \"long-lived feature branches\" is the historical pattern many candidates remember, but it's the OPPOSITE of CI-friendly branching.",
+        "CI branching = short-lived + daily-to-trunk + PR-with-automated-checks. That's trunk-based development; everything else is degraded.",
+        "Exam-day shortcut: any branching question is answered by the option naming SHORT-LIVED + FREQUENT MERGE; long-lived or no-merge options are wrong."
+      ],
+      "framework_ref": "Trunk-Based Development (Paul Hammant); DORA / Accelerate (DevOps Research and Assessment); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Trunk-based development",
+        "Branching strategy",
+        "Continuous integration",
+        "Pull request",
+        "Git Flow"
+      ],
+      "_provenance": "Authored from concept: 'Trunk-based development branching per Hammant TBD and DORA research'. Public sources: TBD, DORA / Accelerate."
+    },
+    {
+      "id": "d3_033",
+      "domain": 3,
+      "subtopic": "Container Image Signing & Provenance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST verifies the integrity and provenance of container images deployed to production?",
+      "options": {
+        "A": "Schedule weekly antivirus scans of all container images running in production environments to detect malicious content.",
+        "B": "Cryptographically sign images at build time and verify signatures at runtime before scheduling on production clusters.",
+        "C": "Restrict container deployment to a single trusted registry with no further verification at runtime by the orchestrator.",
+        "D": "Encrypt the container registry's network connection and rely on TLS to ensure image trustworthiness end-to-end across stages."
+      },
+      "correct": "B",
+      "key_concept": "Image signing at build + signature verification at runtime is the canonical integrity-and-provenance control. AV scans miss build-time tampering; trusted-registry-only doesn't verify content; TLS protects transit but not the artifact.",
+      "pre_read": "For container-image questions, anchor on \"sign at build + verify at runtime.\" That binds the artifact to its origin and detects any post-build tampering.",
+      "correct_explanation": "Sigstore / Cosign and Notary v2 / OCI Image Signing both establish cryptographic image signing as the canonical control: a build pipeline signs the image with a private key (or via a transparency log like Sigstore), and the runtime (Kubernetes admission controller, Docker policy engine) verifies the signature against the trusted public key before scheduling the container on production hosts. SLSA (Supply-chain Levels for Software Artifacts) anchors this in a maturity model. Option A's antivirus scans miss build-time tampering and don't address provenance. Option C's trusted-registry restriction prevents image source diversity but doesn't verify the content of any specific image. Option D's TLS protects the transport but not the artifact itself; an image can be tampered after it leaves the registry.",
+      "wrong_explanations": {
+        "A": "AV scans operate on file content but miss the broader provenance question (who built this image? from what source?). Signing answers provenance; AV addresses only known-malicious content.",
+        "C": "Trusted-registry restriction is one element but doesn't verify that the image WITHIN the registry hasn't been tampered or substituted. Signing-and-verify provides per-image cryptographic proof.",
+        "D": "TLS protects transit only. An attacker who compromises the build pipeline can inject a tampered image; TLS would still deliver it cleanly. Signing detects tampering regardless of transport."
+      },
+      "tips": [
+        "Trap is C — \"trusted registry\" sounds sufficient but it doesn't verify any specific image; signing-and-verify provides per-artifact cryptographic proof.",
+        "Container integrity = sign at build + verify at runtime. AV, registry restrictions, and TLS each address narrower threats.",
+        "Exam-day shortcut: any container-integrity question is answered by the option naming SIGNING and VERIFICATION; transport-only or perimeter-only answers are weak."
+      ],
+      "framework_ref": "Sigstore / Cosign; Notary v2 / OCI Image Signing; SLSA (Supply-chain Levels for Software Artifacts) framework; ISACA Container Security guidance",
+      "related_concepts": [
+        "Container signing",
+        "SLSA",
+        "Sigstore",
+        "Cosign",
+        "Image provenance"
+      ],
+      "_provenance": "Authored from concept: 'Container image signing per Sigstore/Cosign and Notary v2 / SLSA'. Public sources: Sigstore, Notary v2, SLSA."
+    },
+    {
+      "id": "d3_034",
+      "domain": 3,
+      "subtopic": "Infrastructure-as-Code (IaC) Drift Detection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST detects unauthorized configuration changes to cloud infrastructure managed via Infrastructure-as-Code?",
+      "options": {
+        "A": "Continuous comparison between the IaC-declared state and live cloud state, with alerts on any unexpected divergence detected.",
+        "B": "An annual cloud-architecture review that examines security-group changes against approved configuration baselines for compliance.",
+        "C": "Monthly export of the cloud configuration for offsite backup, providing rollback capability after any incident or compromise.",
+        "D": "Quarterly user-access reviews of cloud admin accounts to detect inappropriate privilege grants and removals over time."
+      },
+      "correct": "A",
+      "key_concept": "IaC drift detection = continuous reconciliation between declared (IaC) and actual (cloud) state, with alerts on divergence. Annual reviews are too slow; backup is recovery, not detection; access reviews check permissions, not configuration.",
+      "pre_read": "For IaC drift-detection questions, anchor on \"continuous + IaC-declared vs live + alert on divergence.\" Periodic reviews and access checks address different controls.",
+      "correct_explanation": "HashiCorp Terraform Cloud Drift Detection and Open Policy Agent (OPA) policies, along with similar tooling (AWS Config, Azure Policy, GCP Asset Inventory), establish drift detection as a continuous comparison: the IaC-declared state (what should exist) is reconciled against the live cloud state (what does exist), with any unexpected divergence alerted to the appropriate team. This catches manual console changes, automation bugs, and unauthorized modifications quickly. Option B's annual review is far too slow — drift can persist for many months. Option C's monthly backup provides rollback but doesn't DETECT changes (the export captures whatever is there, drift included). Option D's access review addresses permission changes, not configuration changes.",
+      "wrong_explanations": {
+        "B": "Annual cadence is far too slow for cloud drift, where changes can occur in seconds and persist undetected for months. Drift detection must be continuous to be effective.",
+        "C": "Configuration backup provides rollback capability but doesn't DETECT changes. The export captures the current state including any drift, so the backup itself doesn't surface unauthorized changes.",
+        "D": "User-access reviews track WHO has permissions, not WHAT was changed. A user with appropriate permissions can still make unauthorized changes; drift detection catches the change, not the access path."
+      },
+      "tips": [
+        "Trap is C — \"backup for rollback\" sounds related to drift but backup CAPTURES the state including drift; it doesn't DETECT changes.",
+        "IaC drift = continuous IaC-declared vs live-actual reconciliation with alerts on divergence. Periodic reviews and backup are different controls.",
+        "Exam-day shortcut: any IaC-drift question is answered by the option naming continuous reconciliation; periodic-review or backup-only answers miss the mark."
+      ],
+      "framework_ref": "HashiCorp Terraform Cloud Drift Detection; Open Policy Agent (OPA); CSA Cloud Controls Matrix; ISACA Cloud Governance guidance",
+      "related_concepts": [
+        "IaC drift detection",
+        "Terraform",
+        "OPA",
+        "Cloud configuration management"
+      ],
+      "_provenance": "Authored from concept: 'IaC drift detection per Terraform Cloud and OPA'. Public sources: HashiCorp, OPA."
+    },
+    {
+      "id": "d3_035",
+      "domain": 3,
+      "subtopic": "SRE Error Budgets",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which decision MOST appropriately follows from an SRE error budget being fully consumed mid-quarter?",
+      "options": {
+        "A": "Continue normal feature deployment because operational improvements are more important than reliability metrics overall.",
+        "B": "Replace the existing SLO with a less stringent target until the next quarter to restore the available error budget here.",
+        "C": "Halt non-essential feature releases and prioritize reliability work until the budget recovers in the next measurement window.",
+        "D": "Eliminate the SRE function because tracking error budgets has clearly hindered the team's delivery throughput visibly."
+      },
+      "correct": "C",
+      "key_concept": "Error-budget exhaustion = halt non-essential feature releases, prioritize reliability work until budget recovers. Continuing-as-normal defeats the budget. Loosening the SLO eliminates accountability. Eliminating SRE removes the discipline that protects users.",
+      "pre_read": "For error-budget questions, anchor on \"budget exhausted = pivot to reliability.\" The budget exists to force the trade-off; ignoring it or relaxing the SLO defeats the mechanism.",
+      "correct_explanation": "Google SRE Book and Google SRE Workbook (Service Level Objectives) establish that an error budget — calculated as 1 minus the SLO target (e.g., 99.9% SLO = 0.1% error budget = ~43 minutes/month at 100% load) — is a deliberate negotiation between feature velocity and reliability. When the budget is fully consumed, the team SHOULD pivot to reliability work (incident postmortems, chronic-issue remediation, infrastructure improvements) and halt non-essential feature releases. This re-establishes margin and prevents user-affecting unreliability. Option A's continue-as-normal defeats the budget mechanism. Option B's SLO relaxation is the textbook bad pattern (move the goalposts to make the score acceptable). Option D's eliminate-the-function abandons the discipline entirely.",
+      "wrong_explanations": {
+        "A": "Ignoring exhausted error budget defeats the budget's purpose. The budget exists precisely to force the trade-off between velocity and reliability when reliability is suffering.",
+        "B": "Loosening the SLO when the budget is exhausted is the textbook control-failure pattern (move the standard to match the result). It eliminates the accountability the SLO was designed to create.",
+        "D": "Eliminating SRE because the budget is constraining is removing the discipline that protects users. The constraint is the FEATURE, not the bug."
+      },
+      "tips": [
+        "Trap is B — \"loosen the SLO\" sounds pragmatic but it's exactly the move-the-goalposts pattern auditors call out as a defective control.",
+        "Error budget exhausted = halt features + prioritize reliability + recover. Don't loosen, don't ignore, don't eliminate.",
+        "Exam-day shortcut: any error-budget question is answered by the option that PIVOTS to reliability when the budget is gone; relax-the-SLO answers are wrong."
+      ],
+      "framework_ref": "Google SRE Book (Site Reliability Engineering); Google SRE Workbook (Service Level Objectives); ISACA Software Audit guidance",
+      "related_concepts": [
+        "SRE",
+        "Error budget",
+        "SLO",
+        "SLI",
+        "Site reliability"
+      ],
+      "_provenance": "Authored from concept: 'SRE error-budget response per Google SRE Book and Workbook'. Public sources: Google SRE Book, SRE Workbook."
+    },
+    {
+      "id": "d3_036",
+      "domain": 3,
+      "subtopic": "Cutover Strategy — Phased vs Big-Bang",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies a phased cutover over a big-bang cutover for a system replacement?",
+      "options": {
+        "A": "A small system with low business risk where downtime can be tolerated for a single off-hours weekend window without disruption.",
+        "B": "A regulator-mandated single-date conversion where parallel operation is explicitly prohibited by the supervising agency for the firm.",
+        "C": "A green-field deployment with no legacy system to operate alongside, eliminating any need for a staged rollout strategy.",
+        "D": "A complex multi-business-unit replacement where staged rollout reduces blast radius and allows mid-course correction."
+      },
+      "correct": "D",
+      "key_concept": "Phased cutover suits complex, high-risk, multi-business-unit replacements where blast-radius reduction and mid-course correction matter. Big-bang suits low-risk single-window cuts; regulator-mandated single-date precludes phased; green-field has no legacy to migrate from.",
+      "pre_read": "For cutover-strategy questions, anchor on \"complexity + business-unit count + risk tolerance.\" Phased reduces blast radius; big-bang minimizes parallel-running cost. Match strategy to risk profile.",
+      "correct_explanation": "ISACA Data Migration guidance and COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning) describe phased cutover as appropriate when the replacement is complex (multi-module, multi-integration), spans multiple business units, and benefits from blast-radius reduction (a problem in phase 1 doesn't break phase 2-N) and mid-course correction (lessons from early phases improve later phases). Option A is big-bang's strength (low-risk, single window, simple). Option B explicitly prohibits parallel operation, which a phased approach typically requires. Option C is a green-field deployment — there's no legacy system to migrate from, so 'cutover strategy' doesn't apply in the same sense.",
+      "wrong_explanations": {
+        "A": "Small low-risk systems with off-hours windows are big-bang's strength: phasing adds overhead without proportional risk reduction. Phased is for HIGH-risk, multi-unit replacements.",
+        "B": "Regulator-mandated single-date with parallel-operation prohibited rules out phased entirely. Phased typically requires running old and new in parallel during transition.",
+        "C": "Green-field deployments have no legacy system to migrate from. 'Cutover strategy' presumes a replacement; green-field is a deployment, not a cutover."
+      },
+      "tips": [
+        "Trap is A — candidates default to \"phased is safer, so always phased\" but for low-risk single-window cuts, big-bang minimizes complexity and parallel-running cost.",
+        "Phased = complex + multi-unit + blast-radius reduction + mid-course correction. Big-bang = simple + low-risk + single window. Match strategy to profile.",
+        "Exam-day shortcut: any cutover-strategy question is answered by reading the complexity and risk profile; default-to-phased without reading is the trap."
+      ],
+      "framework_ref": "ISACA Data Migration guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); ISACA Project Management guidance",
+      "related_concepts": [
+        "Cutover strategy",
+        "Phased cutover",
+        "Big-bang cutover",
+        "Migration",
+        "Blast radius"
+      ],
+      "_provenance": "Authored from concept: 'Phased vs big-bang cutover selection per ISACA Data Migration guidance and COBIT 2019 BAI07'. Public sources: ISACA, COBIT 2019."
+    },
+    {
+      "id": "d3_037",
+      "domain": 3,
+      "subtopic": "Earned Value Management — Variance Interpretation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which interpretation MOST appropriately reflects the cumulative EVM signal at month 8?",
+      "scenario_context": "A 14-month $42M ERP rollout at a global manufacturer is in month 8. The PMO reports cumulative cost performance index (CPI) of 0.78 and schedule performance index (SPI) of 0.85. Earned value (EV) is $18M against a planned value (PV) of $21M and actual cost (AC) of $23M. The CFO is concerned by the burn rate and has asked the steering committee to consider scope reduction or program halt. The project team argues that recent re-baselining work in months 6-7 will improve performance from this point onward. The IS auditor was asked for a position on the variance interpretation before the next steering committee meeting.",
+      "options": {
+        "A": "The project is on track because re-baselining work justifies the variances, and the schedule will recover in months 9-10 organically.",
+        "B": "Both cost and schedule are materially behind; CPI 0.78 implies a ~$5M cost variance to date and recovery is unlikely without scope or method change.",
+        "C": "The schedule index of 0.85 is acceptable for a complex ERP, and the cost variance reflects normal start-up overhead in early phases.",
+        "D": "The CFO's concerns are premature; EVM at month 8 is not yet predictive of final outcomes for projects of this duration or complexity."
+      },
+      "correct": "B",
+      "key_concept": "CPI 0.78 + SPI 0.85 cumulative at month 8 signal material cost and schedule variance unlikely to self-correct. CPI < 0.9 sustained typically requires intervention (scope reduction, methodology change, replan). Re-baselining-will-fix-it is a common excuse, not a control.",
+      "pre_read": "For EVM-interpretation questions, anchor on cumulative CPI + SPI and what they imply for completion. CPI < 0.9 sustained is a control trigger. Recovery without intervention is rare; planned recovery requires explicit method or scope change.",
+      "correct_explanation": "PMBOK Guide 7th Edition and PMI Practice Standard for Earned Value Management establish that cumulative CPI < 0.9 and SPI < 0.9 once a project is past the early-execution phase (typically 15-20% complete onward, when CPI is empirically observed to stabilize) are strong predictors of final-outcome variance without intervention. At month 8 with EV $18M against BAC $42M, the project is ~43% complete — well past the stability threshold. CPI 0.78 means the project is earning $0.78 of value for every $1.00 spent; on a $42M baseline that implies projected cost at completion (EAC) of ~$54M absent intervention. SPI 0.85 indicates schedule slip at the same magnitude. Re-baselining work alone doesn't change the underlying delivery rate — it changes the comparison point. Option A's 'will recover organically' is a hope, not a plan. Option C's 'acceptable for complex ERP' lacks evidence. Option D's 'too early to tell' contradicts EVM's empirical predictive validity at this point in the project.",
+      "wrong_explanations": {
+        "A": "Re-baselining changes the comparison point but doesn't change underlying delivery efficiency. Recovery requires explicit scope, method, or resource change — not a baseline adjustment.",
+        "C": "Calling 0.85 SPI 'acceptable' lacks evidence. ISACA and PMI guidance treat SPI < 0.9 as a trigger for management attention, not normal operation.",
+        "D": "EVM past the 15-20% completion mark is highly predictive of final outcomes; this project is at ~43%. Dismissing the signal as 'premature' ignores the empirical stability of cumulative CPI/SPI as forecasting tools beyond early execution."
+      },
+      "tips": [
+        "Trap is A or D — A (\"re-baselining will fix it\") rationalizes the variance away; D (\"too early to tell\") dismisses the cumulative signal. Both let the team avoid root-cause intervention.",
+        "EVM cumulative signal: CPI/SPI < 0.9 past ~15-20% completion = trigger for explicit intervention. Recovery requires scope, method, or resource change.",
+        "Exam-day shortcut: any EVM-variance question with \"will recover organically\" or \"too early to tell\" as answers is naming traps; the right answer reads the cumulative signal."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; PMI Practice Standard for Earned Value Management; ISACA Project Audit guidance",
+      "related_concepts": [
+        "EVM",
+        "Earned value management",
+        "CPI",
+        "SPI",
+        "Variance analysis"
+      ],
+      "_provenance": "Authored from concept: 'EVM cumulative variance interpretation per PMBOK 7E and PMI EVM Standard'. Public sources: PMBOK 7E, PMI EVM Standard. Scenario specifics (ERP, $42M, 14-month, month 8, CPI 0.78, SPI 0.85, EV/PV/AC) invented for this question."
+    },
+    {
+      "id": "d3_038",
+      "domain": 3,
+      "subtopic": "MLOps Governance — Production Model Degradation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the production-model degradation and governance gaps identified?",
+      "scenario_context": "A regional health-insurance carrier (4 million members, 5 US states) deployed an ML-based fraud-detection model to production 8 months ago. The model uses claims patterns, provider networks, and member demographics to flag suspect transactions. Recent audit testing identified that (a) the model's false-positive rate has risen from 4% at deployment to 11%, (b) the model has not been re-trained since deployment, (c) demographic feature distributions in production traffic have drifted from training data, and (d) no formal model lifecycle governance exists. The audit committee asked the IS auditor to assess MLOps governance maturity and recommend next steps.",
+      "options": {
+        "A": "Establish formal MLOps governance: scheduled re-training cadence, drift monitoring with thresholds, performance-degradation gates, and an accountable model-owner role.",
+        "B": "Decommission the model immediately because false-positive rate doubling indicates the training approach was fundamentally flawed at the outset.",
+        "C": "Continue current operations because false-positive rates above 10% remain industry-standard for early-deployment fraud-detection systems generally.",
+        "D": "Outsource the model entirely to a vendor because in-house ML expertise is insufficient to operate predictive models reliably over time."
+      },
+      "correct": "A",
+      "key_concept": "MLOps governance = scheduled re-training + drift monitoring + performance gates + accountable model owner. Production ML degrades without active management; one-time deployment is the failure mode. Decommission, accept-as-industry-standard, and outsource each fail to address the governance gap.",
+      "pre_read": "For MLOps-governance questions, anchor on \"production ML requires lifecycle management.\" Models drift; monitoring + re-training + accountability prevent degradation. One-time deployment is the failure pattern.",
+      "correct_explanation": "NIST AI Risk Management Framework (AI RMF 1.0), ISO/IEC 42001 (AI Management System), and ISACA AI Audit guidance all establish that production ML models require formal lifecycle governance: (1) scheduled re-training based on performance and drift signals; (2) monitoring of input distribution, output distribution, and performance metrics with thresholds that trigger review; (3) performance-degradation gates that halt or route to human review when metrics breach thresholds; (4) an accountable model owner responsible for the model's behavior. Option B's immediate decommission overreacts — performance can be recovered through re-training. Option C's 'industry standard' framing lacks evidence and ignores the trend (4% → 11% is a doubling, not stable performance). Option D's outsource transfers the activity but not the firm's accountability for the model's behavior.",
+      "wrong_explanations": {
+        "B": "Doubled false-positive rate signals drift, not necessarily flawed training. Re-training with current data and feature distributions typically recovers performance without decommission.",
+        "C": "Industry-standard claims need evidence. The relevant signal is the trend (4% → 11%) and the absence of governance, not whether 11% is acceptable in some unspecified comparison.",
+        "D": "Outsourcing transfers the operational activity but the firm retains accountability for the model's behavior, regulatory compliance (HIPAA, state insurance), and member impact. Vendor-managed isn't governance-resolved."
+      },
+      "tips": [
+        "Trap is C — \"industry standard\" framing sounds calibrated but it's an evidence-free claim that lets the firm avoid addressing the governance gap.",
+        "MLOps governance = re-training cadence + drift monitoring + performance gates + accountable owner. Four elements; missing any creates failure.",
+        "Exam-day shortcut: any production-ML question is answered by the option naming LIFECYCLE GOVERNANCE; one-time deployment, accept-as-is, and outsource answers are wrong."
+      ],
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001 (AI Management System); ISACA AI Audit guidance",
+      "related_concepts": [
+        "MLOps",
+        "Model drift",
+        "AI governance",
+        "NIST AI RMF",
+        "Production ML lifecycle"
+      ],
+      "_provenance": "Authored from concept: 'MLOps governance for production ML per NIST AI RMF 1.0 and ISO/IEC 42001'. Public sources: NIST AI RMF, ISO/IEC 42001. Scenario specifics (health-insurance, 4M members, 5 states, fraud-detection model, 4%→11% FPR, 8 months in production, no re-training) invented for this question."
+    },
+    {
+      "id": "d3_039",
+      "domain": 3,
+      "subtopic": "Open-Source License Risk — Strong Copyleft (GPL) in SaaS",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation MOST appropriately addresses the open-source license risk and governance gap?",
+      "scenario_context": "A SaaS startup (~120 employees, B2B platform serving enterprise customers) is preparing for a Series B due-diligence audit. The platform's codebase relies on ~340 open-source dependencies. Investor counsel has flagged that several core modules import a library released under GPL v3 (strong copyleft) without isolating its use behind a service boundary. The CTO believes the GPL obligations don't apply because their product is delivered as SaaS, not distributed binaries. Legal counsel disagrees, citing AGPL-style network-distribution arguments and acquirer-side risk. The IS auditor is asked to assess governance and recommend next steps before due-diligence concludes.",
+      "options": {
+        "A": "Endorse the CTO's position because GPL v3 obligations apply only to distributed software, not SaaS-delivered products generally as a class.",
+        "B": "Halt all open-source use immediately and rewrite affected modules using only permissive-licensed components or proprietary code from scratch.",
+        "C": "Establish a formal OSS governance program: SBOM, license tracking, isolation of strong-copyleft dependencies, and pre-commit license scanning.",
+        "D": "Continue current development; due-diligence outcomes are determined by the acquirer's risk appetite, not the startup's controls and governance."
+      },
+      "correct": "C",
+      "key_concept": "OSS license risk = formal governance: SBOM + license tracking + strong-copyleft isolation + pre-commit license scanning. SaaS-loophole arguments are legally contested; halting OSS is impractical; relying on acquirer appetite abdicates the firm's responsibility.",
+      "pre_read": "For OSS-license-risk questions, anchor on \"formal governance program.\" SBOM + license tracking + isolation of strong copyleft + automated scanning. Single-position arguments (SaaS-only, halt-all-OSS, acquirer-decides) all fail to address the governance gap.",
+      "correct_explanation": "SPDX License List, Linux Foundation OpenChain (ISO/IEC 5230), and ISACA Open Source Software Governance guidance all establish formal OSS governance as the appropriate response: maintain an SBOM (per d3_023), track licenses and obligations per component, isolate strong-copyleft dependencies (GPL v3, AGPL) behind service boundaries to prevent license contamination of proprietary code, and run pre-commit license scanning to catch violations early. Option A endorses the CTO's contested SaaS-loophole position — courts and licensing experts disagree on whether GPL v3 obligations apply to SaaS delivery, and AGPL-style arguments and acquirer due-diligence concerns are real. Option B's halt-all-OSS is impractical (340 dependencies). Option D abdicates the firm's responsibility for its own controls.",
+      "wrong_explanations": {
+        "A": "The SaaS-loophole argument for GPL v3 is legally contested. AGPL-style network-copyleft arguments, acquirer due-diligence, and the absence of authoritative court rulings make this a substantive risk, not a settled question.",
+        "B": "Halting all OSS for a 340-dependency codebase is operationally impractical and ignores the value of permissive-licensed OSS. The right control is governance, not abandonment.",
+        "D": "Relying on the acquirer's risk appetite abdicates the firm's responsibility for its own controls. Strong governance reduces both due-diligence friction AND legal risk; passive deference does neither."
+      },
+      "tips": [
+        "Trap is A — \"GPL doesn't apply to SaaS\" is widespread but legally contested; AGPL exists precisely to close that interpretation, and acquirer due-diligence treats the question as substantive risk.",
+        "OSS license governance = SBOM + license tracking + strong-copyleft isolation + pre-commit scanning. Four elements; missing any leaves the gap.",
+        "Exam-day shortcut: any OSS-license question is answered by the option naming GOVERNANCE PROGRAM; single-position legal arguments and stop-the-world responses are wrong."
+      ],
+      "framework_ref": "SPDX License List; Linux Foundation OpenChain (ISO/IEC 5230); ISACA Open Source Software Governance guidance; CycloneDX SBOM Specification",
+      "related_concepts": [
+        "OSS governance",
+        "GPL",
+        "Strong copyleft",
+        "License compliance",
+        "OpenChain"
+      ],
+      "_provenance": "Authored from concept: 'OSS license risk governance per SPDX, OpenChain, and ISACA OSS Governance guidance'. Public sources: SPDX, OpenChain, ISACA. Scenario specifics (SaaS startup, 120 employees, Series B, 340 OSS deps, GPL v3 contamination dispute) invented for this question."
+    },
+    {
+      "id": "d3_040",
+      "domain": 3,
+      "subtopic": "Cutover Rehearsal Scope and Cadence",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which rehearsal-scope recommendation BEST balances cutover-risk reduction against time and cost constraints?",
+      "scenario_context": "A national payments processor (250M transactions/day, 30K merchants) is 12 weeks from a core-platform cutover. The cutover playbook is in draft. The CIO has proposed a single mock-conversion exercise three weeks before the live cutover, focused on technical procedures only (data conversion, system verification, switchover steps). The COO disagrees, arguing that business-process rehearsal (operations, customer-service, fraud-monitoring teams' procedures during cutover) is equally important and that one rehearsal three weeks out is too late to adjust if issues arise. The cutover risk committee asks the IS auditor for a recommendation on rehearsal scope and cadence.",
+      "options": {
+        "A": "Single technical-only mock conversion three weeks pre-cutover, since business rehearsal can be conducted post-cutover during the stabilization period.",
+        "B": "No rehearsal needed because the cutover playbook documents all procedures and rehearsal duplicates work the team already understands fully today.",
+        "C": "One comprehensive end-to-end rehearsal one week before live cutover to maximize realism and minimize disruption to business teams further.",
+        "D": "Multi-cycle rehearsals (technical at 8 weeks, end-to-end including business processes at 4 weeks, dry-run at 1 week) with after-action gates."
+      },
+      "correct": "D",
+      "key_concept": "High-stakes cutover = multi-cycle rehearsals (technical → end-to-end including business processes → dry-run) with after-action gates. Single-rehearsal or technical-only options leave business-process risk unaddressed and provide no time to fix issues found.",
+      "pre_read": "For cutover-rehearsal questions, anchor on \"multi-cycle + business-process inclusion + after-action gates + time-to-fix.\" Single rehearsals and technical-only scopes are typical pressure-driven shortcuts.",
+      "correct_explanation": "ISACA Data Migration guidance, COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning), and NIST SP 800-34 (Contingency Planning Guide) establish that high-stakes cutovers (high transaction volume, regulated context, customer-facing impact) benefit from multi-cycle rehearsals with progressively broader scope: a technical rehearsal early enough to identify infrastructure issues (8 weeks), an end-to-end rehearsal that includes business-process teams (operations, customer service, fraud monitoring) far enough out to act on findings (4 weeks), and a final dry-run close to cutover (1 week) to verify remediations and team readiness — each followed by an after-action review that gates progression. Option A's technical-only at 3 weeks misses business-process risk and leaves no time for major remediation. Option B's no-rehearsal contradicts every cutover-governance standard. Option C's single one-week-out rehearsal leaves no remediation time.",
+      "wrong_explanations": {
+        "A": "Technical-only rehearsal at 3 weeks ignores that operations, customer service, and fraud-monitoring teams must perform under cutover conditions; their procedures need rehearsal as much as the technical procedures do. Three weeks also leaves limited remediation time if issues surface.",
+        "B": "No-rehearsal contradicts every cutover-governance standard. Documents capture intent; rehearsal verifies that the documented procedures actually work under realistic conditions and that the team can execute them.",
+        "C": "Single rehearsal at one week pre-cutover leaves no time to remediate any significant findings. Rehearsal value comes from finding-and-fixing-and-re-rehearsing; one-shot rehearsal close to cutover provides theater, not assurance."
+      },
+      "tips": [
+        "Trap is A — \"technical-only mock conversion\" matches the CIO's preference and feels efficient, but cutover risk is as much business-process as technical; the COO's disagreement is well-founded.",
+        "Cutover rehearsal = multi-cycle (technical + end-to-end + dry-run) + business-process inclusion + after-action gates + time to remediate. All four matter.",
+        "Exam-day shortcut: any cutover-rehearsal question is answered by the option naming MULTIPLE rehearsals across the lead time; single-cycle answers are usually wrong for high-stakes cutovers."
+      ],
+      "framework_ref": "ISACA Data Migration guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); NIST SP 800-34 (Contingency Planning Guide)",
+      "related_concepts": [
+        "Cutover rehearsal",
+        "Mock conversion",
+        "Dry-run",
+        "After-action review",
+        "Cutover governance"
+      ],
+      "_provenance": "Authored from concept: 'Multi-cycle cutover rehearsals per ISACA Data Migration guidance and COBIT 2019 BAI07'. Public sources: ISACA, COBIT 2019, NIST SP 800-34. Scenario specifics (payments processor, 250M tx/day, 30K merchants, 12-week lead time, CIO/COO disagreement on scope) invented for this question."
     }
   ]
 }
