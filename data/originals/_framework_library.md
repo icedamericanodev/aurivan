@@ -908,6 +908,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISO/IEC 27001 Annex A.13 (Communications Security)
 - ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)
 - ISO/IEC 27040 (Information Technology — Security Techniques — Storage Security)
+- ISO/IEC 27040 (Storage Security)
 - ISO/IEC 9075 (SQL Standard)
 - MITRE ATT&CK Detection Engineering
 - MITRE D3FEND
@@ -934,3 +935,239 @@ sub-references like "(Managed Risk) and APO12.03").
 - SEC Rule 17a-4
 - SEC Seaboard Report (2001) Voluntary Disclosure Framework
 - SOX Sections 302, 404, 906
+
+## D4 batch 7 additions
+- BCI Good Practice Guidelines PP1 (Policy and Programme Management)
+- BCI Good Practice Guidelines PP2 (Embedding)
+- BCI Good Practice Guidelines PP3 (Analysis)
+- BCI Good Practice Guidelines PP4 (Design)
+- BCI Good Practice Guidelines PP5 (Implementation)
+- BCI Horizon Scanning Report
+- BCI Programme Governance Reference
+- FDA Drug and Medical Device Shortage Guidance
+- FTC Antitrust Safety Zones for Healthcare Crisis Coordination
+- HIPAA Business Associate Agreement 45 CFR §164.504(e)
+- ISACA Business Continuity Audit/Assurance Program
+- ISACA Cloud Computing Management Audit/Assurance Program
+- ISACA M&A IT Audit/Assurance Program
+- ISO 22301
+- ISO 22301 Clause 10.2 (Continual Improvement)
+- ISO 22301 Clause 7.3 (Awareness)
+- ISO 22301 Clause 8.2 (BIA and Risk Assessment)
+- ISO 22301 Clause 8.3 (Business Continuity Strategies and Solutions)
+- ISO 22301 Clause 8.3.6 (Communications)
+- ISO 22301 Clause 9.2 (Internal Audit)
+- ISO 22301 Clauses 5 and 7 (Leadership, Support)
+- ISO 22301 Clauses 6.2, 8.3
+- ISO 22301 Clauses 8 and 9 (Operation, Performance Evaluation)
+- ISO 22361 (Crisis Management — Guidelines)
+- ISO 22398 (Guidelines for Exercises)
+- ISO 28000 (Supply Chain Security Management)
+- LTO Consortium technical specifications
+- NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management)
+- PCI DSS v4.0 Requirement 12.8 (Service Provider Management)
+- SEC Regulation FD (Fair Disclosure)
+- State breach-notification laws (e.g., NY SHIELD Act, CA SB-1386)
+- BCI Good Practice Guidelines PP2 (Embedding) and PP4 (Design)
+- BCI Good Practice Guidelines PP3 (Analysis) and PP4 (Design)
+- ISO 22301 Clause 8.3
+
+## D4 batch 8 additions
+- Basel Committee BCBS 239 (Risk Data Aggregation)
+- Basel Committee Principles for Effective Risk Data Aggregation (BCBS 239)
+- CIS Controls v8 Safeguard 12 (Network Infrastructure Management)
+- CIS Controls v8 Safeguard 4 (Secure Configuration of Enterprise Assets)
+- CIS Controls v8 Safeguard 6 (Access Control Management)
+- COBIT 2019 BAI06 (Managed Changes)
+- COBIT 2019 DSS01 (Managed Operations)
+- COBIT 2019 DSS01 (Managed Operations), BAI06 (Managed Changes)
+- COBIT 2019 EDM02 (Ensured Benefits Delivery), APO12 (Managed Risk), BAI09 (Managed Assets)
+- FFIEC Call Report Instructions
+- Federal Reserve SR 11-7 (Model Risk Management)
+- IEEE 802.1Q (VLAN Switching)
+- ISACA EUC Audit/Assurance Program
+- ISACA IT Asset Management Audit/Assurance Program
+- ISACA IT Change Management Audit/Assurance Program
+- ISACA IT Operations Audit/Assurance Program
+- ISACA Network Perimeter Security Audit/Assurance Program
+- ISACA Privileged Access Management Audit/Assurance Program
+- ISACA Software Asset Management Audit/Assurance Program
+- ISACA Source Code Management Audit/Assurance Program
+- ISO 55001 (Asset Management — Management Systems)
+- ISO/IEC 19770-1 (Software Asset Management)
+- ITIL 4 Change Enablement
+- ITIL 4 Service Continuity Management
+- ITIL 4 Service Operation
+- ITIL 4 Service Operations Management
+- ITU-T Y.1541 (Network Performance Objectives for IP-Based Services)
+- NIST SP 800-128 (Security-Focused Configuration Management)
+- NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Cloud-Native Applications)
+- NIST SP 800-37 Rev 2 (Risk Management Framework)
+- NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy)
+- NIST SP 800-53 CM-3 (Configuration Change Control)
+- NIST SP 800-53 SA-22 (Unsupported System Components)
+- NIST SP 800-53 SA-5 (Information System Documentation)
+- NIST SP 800-63B (Authentication and Lifecycle Management)
+- OWASP DevSecOps Maturity Model (DSOMM)
+- Open Source Initiative (OSI) License Categories
+- PCI DSS v4.0 Requirement 12.10 (Incident Response)
+- SLSA (Supply-chain Levels for Software Artifacts)
+- COBIT 2019 BAI10 (Managed Configuration)
+- COBIT 2019 DSS06 (Managed Business Process Controls)
+- COBIT 2019 BAI04 (Managed Availability and Capacity)
+- ITIL 4 Capacity and Performance Management
+- RFC 1918 (Private Address Allocation)
+- RFC 7142 (IPv6 Addressing)
+- OWASP DSOMM
+- RFC 4291 (IP Version 6 Addressing Architecture)
+- NIST SP 800-53 Rev 5 AC-2 (Account Management)
+- NIST SP 800-53 Rev 5 AC-5 (Separation of Duties)
+- NIST SP 800-53 Rev 5 AC-6 (Least Privilege)
+- NIST SP 800-53 Rev 5 AC-17 (Remote Access)
+- NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)
+- NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration)
+
+## D4 batch 9 additions
+- BCI Good Practice Guidelines PP1 (Policy and Programme Management) and PP3 (Analysis)
+- CIS Controls v8 Safeguard 2 (Inventory and Control of Software Assets)
+- COBIT 2019 APO09 (Managed Service Agreements), APO10 (Managed Vendors)
+- COBIT 2019 DSS02 (Managed Service Requests and Incidents)
+- COBIT 2019 DSS03 (Managed Problems)
+- FBI Ransomware Guidance (Internet Crime Complaint Center IC3)
+- FDIC Cybersecurity Examination Procedures
+- FEMA Incident Command System (ICS)
+- FFIEC Cybersecurity Assessment Tool
+- FFIEC Vendor Management Guidance
+- HHS HIPAA Security Rule (45 CFR §164.308)
+- HIPAA HHS Breach Notification Rule (45 CFR §§ 164.400-414)
+- ISACA Enterprise Architecture Audit/Assurance Program
+- ISACA IT Vendor Management Audit/Assurance Program
+- ISACA Incident Management and Response Audit/Assurance Program
+- ISO/IEC 20000-1 (Information Technology — Service Management)
+- ITIL 4 Continual Improvement Management
+- ITIL 4 Problem Management
+- ITIL 4 Service Desk Practice
+- ITIL 4 Service Level Management
+- Joint Commission Sentinel Event Policy
+- NIST SP 800-53 Rev 5 CM-7 (Least Functionality)
+- OCC SR 11-14 (Supplemental Outsourcing Guidance)
+- OFAC Sanctions Compliance Advisory (Ransomware)
+- SEC Cybersecurity Disclosure Rules
+- SNIA Data Protection Best Practices
+- TOGAF Standard
+- FRB SR 11-14 (FFIEC Outsourcing Technology Services)
+- Joint Commission Sentinel Event Policy (principles)
+
+## D4 batch 10 additions
+- AICPA SOC Reporting Framework
+- AWS S3 Object Lock Documentation
+- AWS Shared Responsibility Model
+- AWS Well-Architected Framework (Cost Optimization and Performance Efficiency Pillars)
+- AWS Well-Architected Framework (Reliability Pillar)
+- Azure Shared Responsibility Documentation
+- CIS Controls v8 Safeguard 7 (Continuous Vulnerability Management)
+- CISA #StopRansomware Guide
+- CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities)
+- CISA Cross-Sector Cybersecurity Performance Goals
+- CISA Phishing Guidance
+- CMMC Certification Requirements
+- DRII Professional Practice 7
+- EPA Risk Management Plan (40 CFR §68)
+- FBI Ransomware Guidance (IC3)
+- FDA Current Good Manufacturing Practice (cGMP)
+- FinOps Foundation Best Practices
+- IEC 62443 (Industrial Cybersecurity)
+- ISO 22301 Clause 8.4.2 (Activation)
+- ISO/IEC 27017 (Cloud Security)
+- Microsoft Azure Architecture Center
+- NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)
+- NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control)
+- NIST SP 800-82 Rev 3 (Guide to Operational Technology Security)
+- Principles of Chaos Engineering (principlesofchaos.org)
+- OSHA Process Safety Management 29 CFR §1910.119
+- OWASP Application Security Verification Standard
+- Project Management Institute (PMI) Critical Path Method
+- State breach-notification laws (NY SHIELD Act, CA Civ Code §1798.82)
+
+## D4 batch 11 additions
+- AWS Cost Management documentation
+- AWS Well-Architected Framework (Operational Excellence Pillar)
+- AWS/Azure/GCP commercial relationship management practices
+- Azure Cloud Adoption Framework
+- CIS Benchmarks (AWS/Azure/GCP Foundations)
+- COBIT 2019 APO04 (Managed Innovation), BAI04 (Managed Availability and Capacity)
+- COBIT 2019 EDM03 (Ensured Risk Optimization), MEA02 (Managed Internal Control)
+- Carnegie Mellon CERT Insider Threat Center
+- Cloud Security Alliance (CSA) Cloud Controls Matrix
+- FEMA Crisis Communication best practices
+- FINRA Rule 4570 (Custodian of Books and Records)
+- HHS HIPAA Business Associate Agreement 45 CFR §164.504(e)
+- ISACA IT Audit Standards on Reporting
+- ISACA Identity and Access Management Audit/Assurance Program
+- ISACA SOX Audit/Assurance Program
+- ISO 19011 (Guidelines for Auditing Management Systems)
+- Kaplan & Norton Balanced Scorecard framework
+- NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program)
+- SEC Regulation S-K Item 308
+- SEC Rule 15c3-3 (Customer Protection)
+- SaaS Industry Tiered Pricing Practices
+- SEC Rule 15c6-1 (T+1 Settlement Cycle)
+
+## D4 batch 12 additions
+- ABA Litigation Hold Best Practices
+- AICPA AU-C Section 240 (Consideration of Fraud in a Financial Statement Audit)
+- AICPA Cybersecurity Risk Management Reporting Framework
+- AICPA SOC for Cybersecurity Reporting Framework
+- CFPB Disparate Impact Rule (12 CFR §1002)
+- CFPB Fair Lending Examination Procedures
+- CIS Kubernetes Benchmark
+- CISA Industrial Control Systems Cybersecurity Guidance
+- CISA Joint Cybersecurity Advisories
+- CISA Joint Cybersecurity Advisories (AD-related)
+- CISA Software Bill of Materials Guidance
+- CJEU Schrems II Ruling (Case C-311/18)
+- China Data Security Law (DSL)
+- China Personal Information Protection Law (PIPL)
+- Cloud-native architecture (cell-based architecture pattern)
+- EDPB Recommendations 01/2020 on Supplementary Measures
+- EU AI Act (Regulation 2024/1689)
+- EU GDPR Articles 48-49 (Transfers Subject to Appropriate Safeguards / Derogations)
+- EU GDPR Articles 5, 30, 31, 35 (Principles, Records of Processing, Cooperation, DPIA)
+- Equal Credit Opportunity Act 15 USC §1691
+- FFIEC Retail Payment Systems IT Examination Handbook
+- Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI)
+- GDPR Article 5(1)(d) (Accuracy Principle)
+- IRS / State Tax Authority Audit Procedures
+- ISACA Audit Committee / Board Cyber Engagement Guidance
+- ISACA Auditing Artificial Intelligence (IT Audit and Assurance Program)
+- ISACA IT Audit Standards on Communication of Results
+- ISACA Information Security Management Audit/Assurance Program
+- ISACA Privacy Audit/Assurance Program
+- ISACA Project Management Audit/Assurance Program
+- ISACA e-Discovery Audit guidance
+- Interagency Guidance on Third-Party Relationships (2023, OCC/FRB/FDIC)
+- MITRE ATT&CK (Container Matrix)
+- MITRE ATT&CK T1558.001 (Golden Ticket)
+- McKinsey M&A Integration Methodology
+- Microsoft Securing Privileged Access (Tier Model)
+- NACD Cyber-Risk Oversight Handbook
+- NIST AI Risk Management Framework 1.0
+- NIST SP 800-190 (Application Container Security Guide)
+- NIST SP 800-204D (Strategies for Secure Software Supply Chain)
+- NIST SP 800-213 (IoT Device Cybersecurity Capability Core Baseline)
+- NIST SP 800-53 Rev 5 IA-5 (Authenticator Management)
+- NIST SP 800-61 (Incident Handling)
+- NSA/CISA Kubernetes Hardening Guide
+- Open Policy Agent (OPA) Gatekeeper Best Practices
+- PCAOB AS 2110 (Identifying and Assessing Risks of Material Misstatement)
+- PCI DSS v4.0 Requirement 12 (Incident Response)
+- Restatement (Third) of Foreign Relations Law §442
+- SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023)
+- SEC Regulation S-K Item 106
+- State Insurance Regulators Model Holding Company System Regulatory Act (vendor management)
+- State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82)
+- State insurance department complaint procedures
+- The Sedona Conference Working Group on Electronic Document Retention
+- US Federal Rules of Civil Procedure on Subpoenas
+- Uniform Commercial Code (Material Breach Doctrine)
+- VISA / Mastercard / AmEx Incident Response Procedures

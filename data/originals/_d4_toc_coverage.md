@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d4.json`.
 
-**Last updated:** after D4 batch 6 (d4_101..d4_120) — 120 of 260 questions authored (46%).
+**Last updated:** after D4 batch 12 (d4_221..d4_240) — 240 of 260 questions authored (92%). **Foundational CLOSED at 26/26; Application CLOSED at 130/130.**
 
 ## Part A — Information Systems Operations
 
@@ -210,12 +210,12 @@
 
 | Tier | Authored | Target |
 |---|---|---|
-| Foundational | 20 | 26 |
-| Application | 72 | 130 |
-| Analysis | 28 | 104 |
-| **Total** | **120** | **260** |
+| Foundational | 26 | 26 | **CLOSED** |
+| Application | 130 | 130 | **CLOSED** |
+| Analysis | 84 | 104 |
+| **Total** | **240** | **260** |
 
-**D4 status:** in_progress; batches 1-6 (d4_001..d4_120) authored. 140/260 questions remaining across 7 batches.
+**D4 status:** in_progress; batches 1-12 (d4_001..d4_240) authored. **Foundational + Application closed.** 20/260 questions remaining (all Analysis) in 1 batch (D4-13 FINAL).
 
 ## D4 batch plan (cadence)
 

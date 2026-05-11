@@ -690,11 +690,11 @@ domain_4:
     analysis:     104
 
   status: in_progress
-  authored_total: 120
+  authored_total: 240
   authored_mix:
-    foundational: 20
-    application:  72
-    analysis:     28
+    foundational: 26
+    application:  130
+    analysis:     84
 
   covered:
     # Batch 1 (d4_001..d4_020) — 4F + 12A + 4An; broad TOC launch
@@ -828,6 +828,138 @@ domain_4:
     - { id: d4_118, subtopic: "Log Retention Gap During SEC Exam (Analysis)",        toc_ref: "4.9.2" }
     - { id: d4_119, subtopic: "Interface Cascade During Month-End Close (Analysis)", toc_ref: "4.4.2" }
     - { id: d4_120, subtopic: "DR Test Forensic Artifacts Post-Failover (Analysis)", toc_ref: "4.16.5" }
+
+    # Batch 7 (d4_121..d4_140) — 4F + 12A + 4An; backup media, BCP audit techniques, BCI GPG PP1-PP5, brand crisis, supply chain
+    - { id: d4_121, subtopic: "Backup Media Types and Sanitization",                toc_ref: "4.14.2" }
+    - { id: d4_122, subtopic: "Image/Reputation Damage in BCP",                     toc_ref: "4.15.2" }
+    - { id: d4_123, subtopic: "Offsite Backup Record-Keeping",                      toc_ref: "4.14.3" }
+    - { id: d4_124, subtopic: "IT-Business Continuity Coordination",                toc_ref: "4.15.1" }
+    - { id: d4_125, subtopic: "Backup Media Governance — Sanitization Selection",   toc_ref: "4.14.2" }
+    - { id: d4_126, subtopic: "Offsite Backup Periodic Procedures",                 toc_ref: "4.14.2" }
+    - { id: d4_127, subtopic: "Auditing Offsite Storage Facility",                  toc_ref: "4.15.11" }
+    - { id: d4_128, subtopic: "Interviewing Key BCP Personnel",                     toc_ref: "4.15.11" }
+    - { id: d4_129, subtopic: "Image/Reputation Damage Planning — Crisis Comms",    toc_ref: "4.15.2" }
+    - { id: d4_130, subtopic: "Unanticipated/Unforeseeable Disasters — Resilience", toc_ref: "4.15.2" }
+    - { id: d4_131, subtopic: "BCI GPG PP1 — Policy and Programme Management",      toc_ref: "4.15.10" }
+    - { id: d4_132, subtopic: "BCI GPG PP2 — Embedding BCM in Culture",             toc_ref: "4.15.10" }
+    - { id: d4_133, subtopic: "BCI GPG PP3 — Analysis (BIA + Risk)",                toc_ref: "4.15.10" }
+    - { id: d4_134, subtopic: "BCI GPG PP4 — Design (BC Strategies)",               toc_ref: "4.15.10" }
+    - { id: d4_135, subtopic: "BCI GPG PP5 — Implementation",                       toc_ref: "4.15.10" }
+    - { id: d4_136, subtopic: "Plan Development — Other Issues (Dependencies + Supply Chain)", toc_ref: "4.15.7" }
+    - { id: d4_137, subtopic: "Post-Acquisition BCP Obsolescence (Analysis)",       toc_ref: "4.15.7" }
+    - { id: d4_138, subtopic: "Brand Crisis During Ransomware Recovery (Analysis)", toc_ref: "4.15.2" }
+    - { id: d4_139, subtopic: "Pandemic + Supply Chain Compounding (Analysis)",     toc_ref: "4.15.2" }
+    - { id: d4_140, subtopic: "Offsite Vendor Relocation Without Notice (Analysis)", toc_ref: "4.15.11" }
+
+    # Batch 8 (d4_141..d4_160) — 2F + 14A + 4An; F CLOSES at 26/26. Network devices, software licensing, EUC depth, SCM, segmentation, DBA SoD
+    - { id: d4_141, subtopic: "Common Enterprise Network Devices",                  toc_ref: "4.1.3" }
+    - { id: d4_142, subtopic: "Software Licensing Categories",                      toc_ref: "4.6.6" }
+    - { id: d4_143, subtopic: "Converged Protocol Audit",                           toc_ref: "4.1.1" }
+    - { id: d4_144, subtopic: "IP Networking Audit",                                toc_ref: "4.1.1" }
+    - { id: d4_145, subtopic: "Hardware Refresh Cycle Governance",                  toc_ref: "4.1.6" }
+    - { id: d4_146, subtopic: "Hardware Capacity Planning + Warranty",              toc_ref: "4.1.6" }
+    - { id: d4_147, subtopic: "Job Scheduling Reviews — Dependency Mapping",        toc_ref: "4.3.2" }
+    - { id: d4_148, subtopic: "Scheduling — Change Control for Modifications",     toc_ref: "4.3.2" }
+    - { id: d4_149, subtopic: "EUC Governance — Spreadsheet Model Risk",            toc_ref: "4.5.1" }
+    - { id: d4_150, subtopic: "EUC Governance — End-User-Developed Tool Change Control", toc_ref: "4.5.1" }
+    - { id: d4_151, subtopic: "Network Administration — Privileged Access",         toc_ref: "4.1.1" }
+    - { id: d4_152, subtopic: "Network Segmentation and Microsegmentation",         toc_ref: "4.1.1" }
+    - { id: d4_153, subtopic: "Source Code Management Audit Scope",                 toc_ref: "4.6.7" }
+    - { id: d4_154, subtopic: "Hardware Maintenance — Preventive vs Reactive",      toc_ref: "4.1.6" }
+    - { id: d4_155, subtopic: "Network Device Configuration Management",            toc_ref: "4.1.3" }
+    - { id: d4_156, subtopic: "Database Administration — Separation of Duties",     toc_ref: "4.11.3" }
+    - { id: d4_157, subtopic: "EUC Spreadsheet Failure During Regulatory Reporting (Analysis)", toc_ref: "4.5.1" }
+    - { id: d4_158, subtopic: "Scheduling Overrun Causing Customer Impact (Analysis)", toc_ref: "4.3.2" }
+    - { id: d4_159, subtopic: "Hardware Refresh Budget Cut (Analysis)",             toc_ref: "4.1.6" }
+    - { id: d4_160, subtopic: "Network Segmentation Breach via Admin VLAN (Analysis)", toc_ref: "4.1.1" }
+
+    # Batch 9 (d4_161..d4_180) — 0F + 14A + 6An; backup media, network mgmt tools, problem mgmt RCA, SLA monitoring, BCP audit depth, 6 analysis
+    - { id: d4_161, subtopic: "Backup Media — Documentation and Cataloging",        toc_ref: "4.14.2" }
+    - { id: d4_162, subtopic: "Backup Devices and Media Types — Selection",         toc_ref: "4.14.2" }
+    - { id: d4_163, subtopic: "Network Management Tools — Audit Scope",             toc_ref: "4.7.5" }
+    - { id: d4_164, subtopic: "Problem Management — RCA Methodology",               toc_ref: "4.7.1" }
+    - { id: d4_165, subtopic: "ITSM SLA Monitoring — Metrics Design",                toc_ref: "4.10.2" }
+    - { id: d4_166, subtopic: "Help Desk Audit Depth — Multi-Dimension",             toc_ref: "4.7.4" }
+    - { id: d4_167, subtopic: "Network Administration — Control Framework",          toc_ref: "4.1.1" }
+    - { id: d4_168, subtopic: "Utility Programs — Governance",                       toc_ref: "4.6.5" }
+    - { id: d4_169, subtopic: "Problem Management Reporting — Cadence",              toc_ref: "4.7.6" }
+    - { id: d4_170, subtopic: "DDCRR — Detection through Reporting Audit",           toc_ref: "4.7.3" }
+    - { id: d4_171, subtopic: "SLA Monitoring Tools — Audit Scope",                  toc_ref: "4.10.2" }
+    - { id: d4_172, subtopic: "Service-Levels and Enterprise Architecture Alignment", toc_ref: "4.10.3" }
+    - { id: d4_173, subtopic: "BCP Audit — Offsite Recovery Validation",             toc_ref: "4.15.11" }
+    - { id: d4_174, subtopic: "Reviewing BCP — Completeness Assessment",             toc_ref: "4.15.11" }
+    - { id: d4_175, subtopic: "Major Incident Multi-Stakeholder Coordination (Analysis)", toc_ref: "4.7.2" }
+    - { id: d4_176, subtopic: "SLA Breach Multi-Vendor Finger-Pointing (Analysis)",  toc_ref: "4.10.2" }
+    - { id: d4_177, subtopic: "Network Outage Cascading to Critical Application (Analysis)", toc_ref: "4.7.2" }
+    - { id: d4_178, subtopic: "BCP Audit Reveals Plan-Operations Mismatch (Analysis)", toc_ref: "4.15.11" }
+    - { id: d4_179, subtopic: "Vendor MSP Compromised During Ransomware (Analysis)", toc_ref: "4.13.1" }
+    - { id: d4_180, subtopic: "Critical SLA Dispute Multi-Stakeholder (Analysis)",   toc_ref: "4.10.2" }
+
+    # Batch 10 (d4_181..d4_200) — 0F + 14A + 6An; cloud backup + DB perf + resiliency patterns + emergency change + patch + OT + 6 analysis
+    - { id: d4_181, subtopic: "Cloud Backup — Shared Responsibility Model",          toc_ref: "4.14.2" }
+    - { id: d4_182, subtopic: "Database Performance Tuning — Audit Visibility",      toc_ref: "4.11.3" }
+    - { id: d4_183, subtopic: "Application Resiliency Patterns",                     toc_ref: "4.13.1" }
+    - { id: d4_184, subtopic: "Network Resiliency Design — Geographic Redundancy",   toc_ref: "4.13.2" }
+    - { id: d4_185, subtopic: "Emergency Change Management — Risk-Based Governance", toc_ref: "4.8.1" }
+    - { id: d4_186, subtopic: "Patch Management — Risk-Based Prioritization",        toc_ref: "4.8.1" }
+    - { id: d4_187, subtopic: "Data Communications Software Audit",                  toc_ref: "4.6.4" }
+    - { id: d4_188, subtopic: "DR Plan Invocation Criteria",                         toc_ref: "4.16.6" }
+    - { id: d4_189, subtopic: "Recovery Time Arithmetic — Parallel vs Serial",       toc_ref: "4.16.1" }
+    - { id: d4_190, subtopic: "BCM Exercise Types and Progression",                  toc_ref: "4.15.9" }
+    - { id: d4_191, subtopic: "Vendor SOC Report Types and Audit Reliance",          toc_ref: "4.15.11" }
+    - { id: d4_192, subtopic: "Operational Technology (OT) Systems in BCP",          toc_ref: "4.13.1" }
+    - { id: d4_193, subtopic: "Help Desk Privileged-Change Attack Governance",       toc_ref: "4.7.4" }
+    - { id: d4_194, subtopic: "Capacity Planning for Cloud-Native Workloads",        toc_ref: "4.6.8" }
+    - { id: d4_195, subtopic: "Cloud Backup Ransomware — Object-Lock Bypass (Analysis)", toc_ref: "4.14.2" }
+    - { id: d4_196, subtopic: "Cross-Region Failover During Regional Outage (Analysis)", toc_ref: "4.13.2" }
+    - { id: d4_197, subtopic: "Emergency Change Introduced Security Issue (Analysis)", toc_ref: "4.8.1" }
+    - { id: d4_198, subtopic: "Patch Deferral vs Regulatory Deadline (Analysis)",    toc_ref: "4.8.1" }
+    - { id: d4_199, subtopic: "OT System Outage at Manufacturer (Analysis)",         toc_ref: "4.13.1" }
+    - { id: d4_200, subtopic: "DR Test Reveals Ambiguous Invocation Criteria (Analysis)", toc_ref: "4.16.6" }
+
+    # Batch 11 (d4_201..d4_220) — 4A + 16An; APPLICATION CLOSES at 130/130
+    - { id: d4_201, subtopic: "CMDB Governance",                                      toc_ref: "4.8" }
+    - { id: d4_202, subtopic: "Cloud Asset Inventory Governance",                     toc_ref: "4.2" }
+    - { id: d4_203, subtopic: "Workforce Resiliency Planning",                        toc_ref: "4.15.8" }
+    - { id: d4_204, subtopic: "BCM Metrics Dashboard Design",                         toc_ref: "4.15.10" }
+    - { id: d4_205, subtopic: "Multi-Cloud Cascade Outage (Analysis)",                toc_ref: "4.13.2" }
+    - { id: d4_206, subtopic: "Capacity Exhaustion During Peak Event (Analysis)",     toc_ref: "4.6.8" }
+    - { id: d4_207, subtopic: "Cloud Cost Runaway During Incident (Analysis)",        toc_ref: "4.2" }
+    - { id: d4_208, subtopic: "Vendor Contract Dispute Mid-Renewal (Analysis)",       toc_ref: "4.10.1" }
+    - { id: d4_209, subtopic: "IAM Compromise via Stolen API Tokens (Analysis)",      toc_ref: "4.6.3" }
+    - { id: d4_210, subtopic: "Stakeholder Pressure to Skip BCP Exercise (Analysis)", toc_ref: "4.15.9" }
+    - { id: d4_211, subtopic: "Insider Threat Detected During DR Exercise (Analysis)", toc_ref: "4.7.2" }
+    - { id: d4_212, subtopic: "Post-Acquisition IT Integration Failure (Analysis)",   toc_ref: "4.8.2" }
+    - { id: d4_213, subtopic: "SOX Attestation Material Weakness (Analysis)",         toc_ref: "4.6.3" }
+    - { id: d4_214, subtopic: "DR Test Cascade Failure (Analysis)",                   toc_ref: "4.15.9" }
+    - { id: d4_215, subtopic: "Data Corruption vs Settlement Deadline (Analysis)",    toc_ref: "4.11.3" }
+    - { id: d4_216, subtopic: "Help Desk Overwhelmed During Major Event (Analysis)",  toc_ref: "4.7.4" }
+    - { id: d4_217, subtopic: "Capacity for Unexpected Acquisition Spike (Analysis)", toc_ref: "4.6.8" }
+    - { id: d4_218, subtopic: "Sustained Cloud Vendor Service Degradation (Analysis)", toc_ref: "4.10.2" }
+    - { id: d4_219, subtopic: "Critical Staff Sudden Unavailability Mid-Incident (Analysis)", toc_ref: "4.15.8" }
+    - { id: d4_220, subtopic: "Audit Finding Requiring Board Attention (Analysis)",   toc_ref: "4.15.11" }
+
+    # Batch 12 (d4_221..d4_240) — 0A + 20An; all analysis synthesis
+    - { id: d4_221, subtopic: "Departing Employee Privileged Access Abuse (Analysis)", toc_ref: "4.6.3" }
+    - { id: d4_222, subtopic: "AD Compromise Golden Ticket (Analysis)",                toc_ref: "4.6.3" }
+    - { id: d4_223, subtopic: "Third-Party Library Zero-Day Supply-Chain (Analysis)",  toc_ref: "4.8.1" }
+    - { id: d4_224, subtopic: "Multi-Tenant Noisy-Neighbor SLA Breach (Analysis)",     toc_ref: "4.10.2" }
+    - { id: d4_225, subtopic: "Cyber Insurance Claim Dispute (Analysis)",              toc_ref: "4.15.8" }
+    - { id: d4_226, subtopic: "Litigation Hold During Active BCP Exercise (Analysis)", toc_ref: "4.15.9" }
+    - { id: d4_227, subtopic: "Acquisition Integration Extending Beyond Window (Analysis)", toc_ref: "4.8.2" }
+    - { id: d4_228, subtopic: "Multi-Jurisdiction Data Sovereignty Conflict (Analysis)", toc_ref: "4.11.3" }
+    - { id: d4_229, subtopic: "IoT Device Fleet Compromised (Analysis)",               toc_ref: "4.1.4" }
+    - { id: d4_230, subtopic: "Workforce Reduction IT Continuity (Analysis)",          toc_ref: "4.15.8" }
+    - { id: d4_231, subtopic: "AI/ML Model Bias in Production (Analysis)",             toc_ref: "4.11.3" }
+    - { id: d4_232, subtopic: "Tax Authority IT Audit During Planned Outage (Analysis)", toc_ref: "4.8.1" }
+    - { id: d4_233, subtopic: "Silent Data Corruption Over 90 Days (Analysis)",        toc_ref: "4.11.3" }
+    - { id: d4_234, subtopic: "Privacy Regulator Inquiry Response GDPR Art. 31 (Analysis)", toc_ref: "4.11.3" }
+    - { id: d4_235, subtopic: "SOC for Cybersecurity Report Reliance (Analysis)",      toc_ref: "4.15.11" }
+    - { id: d4_236, subtopic: "Kubernetes Admission Controller Misconfiguration (Analysis)", toc_ref: "4.6.2" }
+    - { id: d4_237, subtopic: "Vendor Termination Mid-Contract (Analysis)",            toc_ref: "4.10.1" }
+    - { id: d4_238, subtopic: "Active Malware in BCP Test Environment (Analysis)",     toc_ref: "4.15.9" }
+    - { id: d4_239, subtopic: "Payment Processor Downstream Impact (Analysis)",        toc_ref: "4.13.1" }
+    - { id: d4_240, subtopic: "Board Cyber-Literacy Gap During Incident (Analysis)",   toc_ref: "4.15.11" }
 
   queued_next: []
 
