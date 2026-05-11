@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d3.json`.
 
-**Last updated:** after D3 batch 5 (d3_081..d3_100) — 100 of 120 questions authored (83%). **Foundational tier CLOSED at 12/12. Application tier CLOSED at 60/60.** Analysis tier at 28/48 (58%).
+**Last updated:** after D3 batch 6 (d3_101..d3_120) — **DOMAIN 3 COMPLETE at 120/120** (12F + 60A + 48An). All three tiers closed at target.
 
 ## Part A — Project Governance and Management
 
@@ -124,10 +124,34 @@
 |---|---|---|
 | Foundational | **12** | **12** ✓ CLOSED |
 | Application | **60** | **60** ✓ CLOSED |
-| Analysis | 28 | 48 |
-| **Total** | **100** | **120** |
+| Analysis | **48** | **48** ✓ CLOSED |
+| **Total** | **120** | **120** ✓ |
 
-**D3 status:** in_progress; batches 1-5 (d3_001..d3_100) authored. **Foundational AND Application tiers closed.** 20/120 questions remaining — D3-6 closing batch is 0F + 0A + 20An (all analysis) to land exactly at 120/120.
+**D3 status: COMPLETE.** All 6 batches (d3_001..d3_120) authored; all three tiers closed at target.
+
+## Batch 6 closing additions (d3_101..d3_120) — capstone analysis scenarios
+
+D3-6 covers strategic, operational, and technical analysis-tier capstones:
+- 3.1.10 Failing program recovery (d3_105)
+- 3.2.7 IT portfolio rebalancing (d3_102)
+- 3.2.8 Insourcing decision (d3_103)
+- 3.2.9 Strategic-vendor renegotiation (d3_104)
+- 3.3.15 Distributed agile across time zones (d3_106)
+- 3.3.16 Microservices-to-monolith reversal (d3_109)
+- 3.4.24 Database tech selection (d3_110)
+- 3.4.25 Zero-trust migration (d3_112)
+- 3.4.26 Supply-chain attestation maturity (d3_115)
+- 3.4.27 Privacy regulator audit response (d3_116)
+- 3.4.28 Sole-vendor SaaS outage (d3_117)
+- 3.4.29 Cross-system referential integrity (d3_120)
+- 3.6.20 Multi-team release coordination (d3_107)
+- 3.6.21 Release scope creep (d3_108)
+- 3.6.22 Zero-day during release window (d3_113)
+- 3.6.23 Capacity shortfall during launch (d3_119)
+- 3.7.8 Mid-integration M&A recovery (d3_101)
+- 3.7.9 Cloud-native vs lift-and-shift (d3_111)
+- 3.7.10 Data sovereignty in M&A (d3_114)
+- 3.7.11 DWH migration vs quarter close (d3_118)
 
 ## Batch 4 additions (d3_061..d3_080) — TOC entries beyond the original outline
 

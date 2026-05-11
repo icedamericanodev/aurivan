@@ -3665,6 +3665,746 @@
         "Forward economics"
       ],
       "_provenance": "Authored from concept: 'Continue-vs-scrap product decision per ISACA Product Launch Decision guidance and ISACA IT Investment guidance'. Public sources: ISACA. Scenario specifics (SaaS startup, 1.8K employees, $14M sunk, 23 vs 150 adoption gap, 43 P1/P2 bugs, $8M + 8 months to fix, 2 acquirer interest, 3 alternative products, CEO/CFO positions) invented for this question."
+    },
+    {
+      "id": "d3_101",
+      "domain": 3,
+      "subtopic": "M&A IT Integration — Mid-Integration Recovery",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the mid-integration failure trajectory described?",
+      "scenario_context": "A global retailer's acquisition (announced 14 months ago, target $1.8B revenue) is in month 11 of a 24-month integration. The integration office has burned 70% of its $48M budget but completed 32% of planned milestones. Key issues: (a) the acquirer's ERP migration is 6 months behind; (b) acquired-firm staff attrition is 38% above baseline; (c) two critical integrations have failed twice and been deferred; (d) the audit committee has expressed loss of confidence in current leadership. The CIO is requesting another $20M and 12 more months. The board has asked the IS auditor to assess recovery options before deciding on funding.",
+      "options": {
+        "A": "Endorse the CIO's request for $20M and 12 additional months; M&A integrations regularly require multiple budget supplements to complete successfully.",
+        "B": "Recommend a structured recovery program: independent review, scope rebaselining, leadership assessment, milestone re-sequencing by risk and value, with funded go/no-go gates.",
+        "C": "Cancel the integration entirely and operate the two firms separately; mid-integration recovery rarely succeeds and consumes scarce capital with low return on investment.",
+        "D": "Defer all decisions until the next quarterly board meeting to allow more data to accumulate on the integration's actual recovery trajectory naturally."
+      },
+      "correct": "B",
+      "key_concept": "Mid-integration recovery = structured program: independent review + scope rebaseline + leadership assessment + risk-value re-sequencing + funded go/no-go gates. Endorse-and-fund continues a failing trajectory; cancel-entirely abandons sunk value without analysis; defer wastes lead time during decline.",
+      "pre_read": "For mid-integration recovery questions, anchor on \"structured recovery with go/no-go gates.\" Continue-and-fund, cancel-entirely, and defer each fail to address the multi-dimensional failure mode.",
+      "correct_explanation": "ISACA M&A Integration Recovery guidance, ISACA M&A IT Integration guidance, and COBIT 2019 BAI11 (Managed Projects) establish that mid-integration failure requires structured recovery rather than blind continuation or cancellation: (1) independent review by parties not invested in the current plan; (2) scope rebaselining (some commitments will be deferred or cut); (3) leadership assessment (the current CIO may not be the right recovery leader); (4) milestone re-sequencing prioritizing risk and value rather than original plan order; (5) funded go/no-go gates so the board can stop the program at defined checkpoints. Option A endorses the trajectory that produced the failure. Option C abandons sunk value (operational improvements and partial integrations) without analysis. Option D's defer-to-next-quarter wastes the most valuable resource (time) during ongoing decline.",
+      "wrong_explanations": {
+        "A": "Endorsing $20M and 12 more months continues a failing trajectory without addressing root cause (6-month ERP lag, 38% attrition spike, two failed integrations). Throwing more money at the same plan is the textbook bad pattern.",
+        "C": "Cancel-entirely abandons partial integration value and may incur additional costs (separation, re-divestiture, regulatory). Recovery analysis is needed BEFORE deciding to abandon.",
+        "D": "Defer-to-next-quarter wastes 90 days of integration decline. Mid-integration failures require ACTIVE governance intervention, not passive observation."
+      },
+      "tips": [
+        "Trap is A or C — opposing extremes. A (endorse-and-fund) doubles down on a failing plan; C (cancel-entirely) abandons sunk value without analysis. Recovery analysis sits between.",
+        "Mid-integration recovery = INDEPENDENT REVIEW + SCOPE REBASELINE + LEADERSHIP ASSESSMENT + RISK-VALUE RE-SEQUENCING + GO/NO-GO GATES. Five elements; all needed.",
+        "Exam-day shortcut: any mid-program recovery question is answered by the option naming STRUCTURED RECOVERY with GATES; endorse-and-fund and cancel-entirely answers are extremes."
+      ],
+      "framework_ref": "ISACA M&A Integration Recovery guidance; ISACA M&A IT Integration guidance; COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "M&A integration recovery",
+        "Mid-program recovery",
+        "Go/no-go gates"
+      ],
+      "_provenance": "Authored from concept: 'M&A IT integration mid-failure recovery per ISACA M&A Integration Recovery guidance and COBIT 2019 BAI11'. Public sources: ISACA, COBIT 2019. Scenario specifics ($1.8B target, 24-month integration, month 11, 70%/$48M budget burn, 32% milestone completion, 6-month ERP lag, 38% attrition spike, $20M/12-month request) invented for this question."
+    },
+    {
+      "id": "d3_102",
+      "domain": 3,
+      "subtopic": "IT Portfolio Rebalancing — Budget Cut",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides IT portfolio rebalancing under the imposed budget cut?",
+      "scenario_context": "A diversified industrial firm (~22,000 employees, $4.8B revenue, three business segments) faces a 22% IT budget cut effective next fiscal year ($46M reduction from $208M). The portfolio includes: (a) 8 strategic transformation initiatives ($112M), (b) 14 application modernization projects ($54M), (c) operational run-the-bank ($42M). The CIO must rebalance. Three approaches are debated: pro-rata cut across all categories; protect strategic transformation; protect operations. The CFO favors pro-rata cuts for transparency. The IS auditor was asked to assess governance principles for the rebalancing decision before the board meets.",
+      "options": {
+        "A": "Apply value-based rebalancing: forward NPV per portfolio item, strategic-alignment scoring, risk-weighted termination of low-value items, and explicit reinvestment of freed capacity.",
+        "B": "Endorse pro-rata cuts across all three categories; uniform reduction is the most transparent approach and avoids charges of favoritism between business segments.",
+        "C": "Protect strategic transformation entirely and absorb the full cut from operations and modernization; transformation funding produces the firm's future competitive position.",
+        "D": "Protect operations entirely and absorb the full cut from strategic transformation and modernization; operations stability is non-negotiable for current revenue."
+      },
+      "correct": "A",
+      "key_concept": "Portfolio rebalancing under budget cut = value-based: forward NPV per item + strategic alignment + risk-weighted termination + explicit reinvestment. Pro-rata is uniform but value-blind; protect-strategic and protect-operations are biased extremes that ignore item-level value differences.",
+      "pre_read": "For portfolio rebalancing questions, anchor on \"value-based per-item analysis, not category-level rules.\" Pro-rata and category-protection both ignore the item-level value differences that should drive cuts.",
+      "correct_explanation": "ISACA Val IT Framework, ISACA Portfolio Rebalancing guidance, and COBIT 2019 EDM02 (Ensured Benefits Delivery) establish that portfolio rebalancing under budget constraint should follow value-based analysis at the item level: (1) forward NPV per portfolio item (sunk costs excluded, future value only); (2) strategic-alignment scoring (how well does each item support enterprise strategy); (3) risk-weighted termination of low-value items (the lowest-value items in any category are cut first); (4) explicit reinvestment of freed capacity (terminated-item resources go to highest-value items, not lost entirely). Option B's pro-rata is uniform but value-blind — it cuts proportionally from high-value AND low-value items. Option C and D each protect a category whole, ignoring that some items WITHIN each category are higher and lower value.",
+      "wrong_explanations": {
+        "B": "Pro-rata is transparent but value-blind. Each category contains items of varying value; uniform cuts preserve low-value items while reducing high-value items proportionally, destroying value.",
+        "C": "Protect-strategic ignores that some strategic transformations are higher-value than some modernization or operations items. Category-level protection misses item-level value differences.",
+        "D": "Protect-operations is the same bias in the opposite direction. Some operations items may be lower-value than some modernization or transformation items; category-level protection misses this."
+      },
+      "tips": [
+        "Trap is B — \"pro-rata across categories\" feels fair and transparent but it's value-blind; the actual highest-value items in each category should be protected, the lowest cut.",
+        "Portfolio rebalancing = VALUE-BASED per item: NPV + alignment + risk-weighted termination + explicit reinvestment. Item-level, not category-level analysis.",
+        "Exam-day shortcut: any portfolio-cut question is answered by the option naming VALUE-BASED per-item analysis; pro-rata, category-protection answers all ignore item-level value differences."
+      ],
+      "framework_ref": "ISACA Val IT Framework; ISACA Portfolio Rebalancing guidance; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
+      "related_concepts": [
+        "Portfolio rebalancing",
+        "Val IT",
+        "Budget cut",
+        "Value-based analysis"
+      ],
+      "_provenance": "Authored from concept: 'Portfolio rebalancing under budget cut per ISACA Val IT and COBIT 2019 EDM02'. Public sources: ISACA Val IT, COBIT 2019. Scenario specifics (industrial firm, 22K employees, $4.8B revenue, 22% IT cut, $46M reduction from $208M, 8/14/run-the-bank portfolio split) invented for this question."
+    },
+    {
+      "id": "d3_103",
+      "domain": 3,
+      "subtopic": "Insourcing Previously Outsourced Function",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the insourcing decision for the previously-outsourced function?",
+      "scenario_context": "A financial services firm (~9,500 employees) outsourced its application development to a managed-services partner 8 years ago. The contract is up for renewal. Current state: vendor delivers ~85% of applications; ~$28M annual spend. Recent issues: (a) vendor staff turnover producing knowledge gaps; (b) regulator concerns about third-party concentration risk; (c) two material project delays attributed to vendor staffing; (d) vendor's price proposal includes a 28% increase. The CIO proposes insourcing 60% of development over 24 months. The CFO is concerned about the in-house build-up cost. The IS auditor is asked to assess the insourcing decision framework before the board votes.",
+      "options": {
+        "A": "Endorse the CIO's 60% insourcing plan; vendor performance issues and concentration risk justify the transition regardless of build-up cost trajectory.",
+        "B": "Decline insourcing entirely; the vendor's expertise cannot be reconstituted in-house within 24 months and the 28% price increase is the cost of capability.",
+        "C": "Apply a structured framework: TCO over 5-year horizon, capability gaps, ramp-up risk, concentration risk reduction, exit complexity, and milestone gates with contingency.",
+        "D": "Negotiate with the vendor only and decline to consider insourcing; renegotiation will resolve cost concerns without the risk and complexity of in-house buildup."
+      },
+      "correct": "C",
+      "key_concept": "Insourcing decision = structured framework: 5-year TCO + capability gaps + ramp-up risk + concentration reduction + exit complexity + milestone gates with contingency. Endorse-CIO, decline-insourcing, and negotiate-only-with-vendor are single-position answers that fail the multi-factor reality.",
+      "pre_read": "For insourcing decisions, anchor on \"multi-factor framework with milestone gates.\" The decision spans cost, capability, risk, and execution complexity; single-position answers reflect bias.",
+      "correct_explanation": "ISACA Insourcing Decision guidance, ISACA Vendor Management guidance, and OCC Bulletin 2013-29 (Third-Party Relationships) establish that insourcing-versus-outsourcing renewal decisions require structured multi-factor analysis: (1) TCO over a meaningful horizon (5 years, sunk costs excluded) comparing the two paths; (2) capability gaps (what does in-house need to develop, what's the timeline); (3) ramp-up risk (during transition, both paths must operate); (4) concentration-risk reduction (the regulator's actual concern); (5) exit complexity (what does termination of either path look like); (6) milestone gates with contingency (the decision is not all-or-nothing; partial insourcing with measured progression is often optimal). Option A endorses CIO bias without structured analysis. Option B is the opposite bias (vendor-loyalty). Option D ignores insourcing as an option entirely.",
+      "wrong_explanations": {
+        "A": "Endorsing the 60% plan without structured TCO and capability-gap analysis assumes the in-house ramp-up is feasible. Insourcing 60% in 24 months requires significant hiring, training, and tooling investment that may exceed savings.",
+        "B": "Decline-insourcing-entirely is the opposite bias and accepts vendor concentration risk + the 28% price increase. The regulator's concerns are real; declining insourcing as an option doesn't address them.",
+        "D": "Negotiate-only-with-vendor declines to evaluate insourcing as an option. This may produce a cheaper contract but doesn't address concentration risk or capability rebuilding."
+      },
+      "tips": [
+        "Trap is A or B — opposing biases (insource-everything vs vendor-loyalty). The right answer applies structured analysis, often producing a partial-insourcing answer with milestone gates rather than either extreme.",
+        "Insourcing = 5-YEAR TCO + CAPABILITY GAPS + RAMP-UP RISK + CONCENTRATION REDUCTION + EXIT COMPLEXITY + GATES. Six factors; single-position answers reflect bias.",
+        "Exam-day shortcut: any insourcing/outsourcing decision question is answered by the option naming MULTI-FACTOR FRAMEWORK with GATES; single-position endorsements are usually wrong."
+      ],
+      "framework_ref": "ISACA Insourcing Decision guidance; ISACA Vendor Management guidance; OCC Bulletin 2013-29 (Third-Party Relationships); COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Insourcing",
+        "Outsourcing",
+        "Vendor concentration",
+        "TCO"
+      ],
+      "_provenance": "Authored from concept: 'Insourcing decision framework per ISACA Insourcing Decision guidance and OCC Bulletin 2013-29'. Public sources: ISACA, OCC. Scenario specifics (financial services, 9.5K employees, 8-year vendor relationship, 85% of apps outsourced, $28M annual spend, 28% price increase, 60% insourcing proposal, 24-month timeline) invented for this question."
+    },
+    {
+      "id": "d3_104",
+      "domain": 3,
+      "subtopic": "Strategic-Vendor Lock-In — Mid-Contract Renegotiation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the strategic-vendor lock-in renegotiation pressure described?",
+      "scenario_context": "A national healthcare provider has used a strategic cloud vendor (Tier-1) for 5 years, with 70% of production workloads. The vendor has announced 18% price increases across services effective in 6 months, citing margin pressure. Switching cost analysis: 18-month migration to alternate vendor (alt cost: $34M); some workloads (12%) cannot easily migrate due to proprietary services. Recent regulatory guidance increases concentration-risk scrutiny. The CIO is concerned about both the price increase and the lock-in. The vendor has refused to negotiate the headline price. The IS auditor was asked to assess the firm's options before the next strategic-IT committee meeting.",
+      "options": {
+        "A": "Accept the 18% price increase; switching is too expensive and the proprietary services would require costly workarounds for any partial migration.",
+        "B": "Migrate everything to an alternate vendor immediately; the 18% increase plus concentration risk justifies the $34M switching cost.",
+        "C": "Threaten public regulator complaint about vendor pricing to force a negotiation; antagonistic pressure produces the most favorable outcomes in lock-in scenarios.",
+        "D": "Apply a multi-track strategy: credible exit-readiness investment, partial migration of portable workloads, contractual concessions on price+lock-in, regulator-aligned concentration reduction."
+      },
+      "correct": "D",
+      "key_concept": "Strategic-vendor lock-in renegotiation = multi-track: credible exit-readiness + partial migration of portable workloads + contractual concessions + regulator-aligned concentration reduction. Accept-the-increase yields leverage; full migration overspends; regulator-threat antagonizes counterproductively.",
+      "pre_read": "For strategic-vendor lock-in questions, anchor on \"credible exit-readiness + partial migration + concessions.\" The vendor's leverage is the lock-in; credible exit-readiness reduces it.",
+      "correct_explanation": "ISACA Vendor Renegotiation guidance, OCC Bulletin 2013-29 (Third-Party Relationships), and ISACA Vendor Management guidance establish that strategic-vendor lock-in renegotiation works through multiple tracks: (1) credible exit-readiness investment (migration tooling, alternate-vendor PoCs, skills development) signals to the vendor that lock-in is bounded; (2) partial migration of portable workloads (the 88% that CAN migrate easily, leaving the 12% proprietary services as a remaining lock-in but reducing total dependency); (3) contractual concessions (price ceilings, exit rights, data-portability commitments); (4) regulator-aligned concentration reduction (independently aligning with regulator concerns while not weaponizing them). Option A accepts the increase and the lock-in. Option B full migration is the opposite overcorrection. Option C antagonizes the vendor while making the firm look unprofessional to the regulator.",
+      "wrong_explanations": {
+        "A": "Accepting the 18% increase yields all leverage and continues 70% concentration. The vendor will repeat the pattern at the next renewal; the firm's strategic position weakens over time.",
+        "B": "Full migration to alternate vendor over $34M may exceed the concentration-risk reduction value AND introduces switching execution risk. Partial migration is usually more proportional.",
+        "C": "Threatening public regulator complaint as a negotiation tactic damages firm credibility with both the vendor (antagonistic relationship continuing post-negotiation) and the regulator (looks like weaponization of regulatory concern)."
+      },
+      "tips": [
+        "Trap is A or B — opposite extremes. A (accept the increase) yields all leverage; B (migrate everything) overspends on switching. The right answer is multi-track with credible exit-readiness as leverage.",
+        "Vendor renegotiation = CREDIBLE EXIT-READINESS + PARTIAL MIGRATION + CONCESSIONS + CONCENTRATION REDUCTION. Four tracks; missing any reduces leverage.",
+        "Exam-day shortcut: any vendor lock-in renegotiation question is answered by the option naming MULTI-TRACK with EXIT-READINESS as leverage; accept-the-increase and migrate-everything answers are extremes."
+      ],
+      "framework_ref": "ISACA Vendor Renegotiation guidance; ISACA Vendor Management guidance; OCC Bulletin 2013-29 (Third-Party Relationships); COBIT 2019 APO10 (Managed Vendors)",
+      "related_concepts": [
+        "Vendor lock-in",
+        "Renegotiation",
+        "Concentration risk",
+        "Exit-readiness"
+      ],
+      "_provenance": "Authored from concept: 'Strategic-vendor renegotiation per ISACA Vendor Renegotiation guidance and OCC Bulletin 2013-29'. Public sources: ISACA, OCC. Scenario specifics (national healthcare, 70% workload on Tier-1 vendor, 18% price increase, $34M migration cost, 12% proprietary workloads, regulator concentration scrutiny) invented for this question."
+    },
+    {
+      "id": "d3_105",
+      "domain": 3,
+      "subtopic": "Failing Program — Recovery vs Cancellation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which framework BEST guides the recovery-vs-cancellation decision for the failing program?",
+      "scenario_context": "A pharmaceuticals firm has a 30-month clinical-trial-management platform program. At month 19, the program is $22M over the $48M budget (sunk $70M total), 14 months behind schedule, and only 40% of features delivered. The vendor partner is requesting another $18M to complete. Customer commitments (3 internal business units) are being missed. A new CIO 4 months into the role has paused the program for assessment. Two CDOs have proposed: (a) cancel and start fresh with different vendor; (b) push through to completion. The IS auditor was asked to provide an analytical framework for the decision.",
+      "options": {
+        "A": "Push through to completion: $70M is sunk and the additional $18M ratio is small relative to total investment; canceling now wastes the prior commitment.",
+        "B": "Apply structured analysis: forward TCO (excluding sunk), opportunity cost of alternatives, business-unit dependency criticality, leadership change implications, exit complexity.",
+        "C": "Cancel immediately and start fresh; the failure mode (vendor underperformance + scope creep + leadership change) cannot be recovered with the same vendor at any cost.",
+        "D": "Defer the decision until the new CIO has completed a full year in role; structural decisions of this magnitude require leadership stability before resolution properly."
+      },
+      "correct": "B",
+      "key_concept": "Failing program recovery-vs-cancellation = structured analysis: forward TCO (sunk-cost-excluded) + opportunity cost + business-unit dependency + leadership implications + exit complexity. Push-through commits sunk-cost fallacy; cancel-immediately may abandon partial value; defer wastes time during decline.",
+      "pre_read": "For failing-program decisions, anchor on \"forward analysis excluding sunk costs.\" The $70M is gone regardless; only the next $18M matters in the forward decision.",
+      "correct_explanation": "ISACA Failing Program Recovery guidance, ISACA Val IT Framework, and PMBOK Guide 7th Edition establish structured analysis for failing-program decisions: (1) forward TCO (excluding sunk costs — the $70M is gone regardless); (2) opportunity cost (what would $18M produce on alternatives, including the 40% already-delivered scope captured); (3) business-unit dependency criticality (the 3 BUs have made commitments; their needs are real); (4) leadership-change implications (new CIO may shift program approach but doesn't reset trajectory); (5) exit complexity (cancel costs include vendor termination, business-unit re-planning, asset recovery). Option A commits the textbook sunk-cost fallacy. Option C abandons the 40% delivered scope and business-unit commitments without forward analysis. Option D's defer wastes a year during decline.",
+      "wrong_explanations": {
+        "A": "Push-through-because-$70M-sunk is the textbook sunk-cost fallacy. The forward question is whether the next $18M (and follow-on costs) produces more value than alternatives; sunk dollars are irrelevant to that question.",
+        "C": "Cancel-immediately abandons the 40% already-delivered scope value, 3 business-unit commitments, and assumes the same failure pattern recurs with the next vendor. Forward analysis may show recovery is the higher-value path.",
+        "D": "Defer-for-a-year wastes the most valuable resource during ongoing program decline. The 3 business units cannot wait 12 months for the decision; analysis can be done in weeks."
+      },
+      "tips": [
+        "Trap is A or C — opposing biases. A commits sunk-cost fallacy ($70M justifies more); C commits reverse sunk-cost fallacy ($70M wasted, so cancel). Both let prior spending drive the forward decision.",
+        "Failing program = FORWARD TCO + OPPORTUNITY COST + DEPENDENCY + LEADERSHIP + EXIT COMPLEXITY, all sunk-cost-excluded. Forward analysis only.",
+        "Exam-day shortcut: any failing-program question is answered by the option naming FORWARD ANALYSIS with SUNK-COST EXCLUSION; push-through and cancel-immediately answers commit opposite forms of sunk-cost fallacy."
+      ],
+      "framework_ref": "ISACA Failing Program Recovery guidance; ISACA Val IT Framework; PMBOK Guide 7th Edition; COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "Failing program",
+        "Sunk cost",
+        "Opportunity cost",
+        "Program recovery"
+      ],
+      "_provenance": "Authored from concept: 'Failing program recovery-vs-cancellation per ISACA Failing Program Recovery and Val IT'. Public sources: ISACA, PMBOK. Scenario specifics (pharma, 30-month clinical-trial platform, $22M over $48M budget, $70M total sunk, 14 months behind, 40% feature delivery, new CIO 4-month tenure) invented for this question."
+    },
+    {
+      "id": "d3_106",
+      "domain": 3,
+      "subtopic": "Distributed Agile Teams Across Time Zones",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which governance pattern BEST supports distributed agile teams operating across the time-zone profile described?",
+      "scenario_context": "A SaaS firm has 280 engineers across 6 sites: US-East (90), US-West (60), UK (40), India (60), Australia (20), Brazil (10). Recent retrospectives surface: (a) sync ceremonies (standups, planning) over Zoom are exclusionary depending on which sites get convenient hours; (b) decisions made in US-only hours feel locked when other sites see them in the morning; (c) Indian site reports lower retention attributed to off-hours work demands; (d) cross-team code review delays average 18 hours due to time-zone hand-offs. The VP Engineering and Chief of Staff are exploring governance changes. The IS auditor was asked for principles.",
+      "options": {
+        "A": "Adopt async-first practices: structured written decisions, follow-the-sun reviews, rotating sync hours, documented escalation paths, and explicit time-zone equity in scheduling.",
+        "B": "Consolidate engineering to US-East only; geographic distribution creates coordination cost that exceeds the talent-pool benefits in a SaaS engineering organization.",
+        "C": "Continue current state; engineering organizations naturally accept some time-zone friction and changes risk disrupting working patterns that are functioning adequately.",
+        "D": "Mandate that all engineers work US-East hours regardless of location; one-time-zone synchronicity simplifies coordination and eliminates the equity concerns observed."
+      },
+      "correct": "A",
+      "key_concept": "Distributed agile across time zones = async-first: structured written decisions + follow-the-sun reviews + rotating sync hours + escalation paths + scheduling equity. Consolidate-to-US destroys distributed talent value; continue-current ignores documented equity issues; mandate-US-hours violates labor norms and creates attrition.",
+      "pre_read": "For distributed agile questions, anchor on \"async-first with equity.\" Single-time-zone consolidation, status-quo, and mandate-conformance answers each fail on different dimensions.",
+      "correct_explanation": "ISACA Distributed Agile Teams guidance, Scrum Guide 2020, and SAFe (Scaled Agile Framework) establish async-first practices as the appropriate governance pattern for distributed agile teams across multiple time zones: (1) structured written decisions (decisions don't depend on real-time presence); (2) follow-the-sun reviews (code review hand-offs leverage time-zone diversity rather than fight it); (3) rotating sync hours (no one site bears the inconvenience burden continuously); (4) documented escalation paths (urgency doesn't require everyone awake); (5) scheduling equity (no site is permanently disadvantaged). Option B consolidates to US-East, losing distributed-talent value. Option C ignores the documented equity issues (Indian-site attrition). Option D's mandate-US-hours forces off-hours work on 5 of 6 sites, violates labor norms in multiple jurisdictions, and produces predictable attrition.",
+      "wrong_explanations": {
+        "B": "Consolidating to US-East abandons the distributed-talent strategy and ignores the operational reality: 5 of 6 sites would need to be closed or relocated. Adoption cost vastly exceeds friction-reduction value.",
+        "C": "Continue-current ignores documented equity issues and the Indian-site attrition signal. Engineering retention requires active governance; passive observation of friction produces attrition.",
+        "D": "Mandate-US-hours violates labor norms (overnight work standards in multiple jurisdictions), produces predictable attrition at non-US sites, and discriminates by geography rather than role."
+      },
+      "tips": [
+        "Trap is B or D — opposite extremes that both abandon distributed strategy. B consolidates geographically; D forces time-zone conformance. The right answer is async-first with equity.",
+        "Distributed agile = ASYNC-FIRST + WRITTEN DECISIONS + FOLLOW-THE-SUN + ROTATING SYNC + ESCALATION + EQUITY. Six elements; missing any creates friction.",
+        "Exam-day shortcut: any distributed-agile question is answered by the option naming ASYNC-FIRST with EQUITY; consolidation, mandate-hours, and status-quo answers all fail."
+      ],
+      "framework_ref": "ISACA Distributed Agile Teams guidance; Scrum Guide 2020; SAFe (Scaled Agile Framework)",
+      "related_concepts": [
+        "Distributed agile",
+        "Async-first",
+        "Follow-the-sun",
+        "Time-zone equity"
+      ],
+      "_provenance": "Authored from concept: 'Distributed agile across time zones per ISACA Distributed Agile Teams guidance and SAFe'. Public sources: ISACA, Scrum Guide, SAFe. Scenario specifics (SaaS, 280 engineers, 6 sites with specified counts and time-zone friction patterns) invented for this question."
+    },
+    {
+      "id": "d3_107",
+      "domain": 3,
+      "subtopic": "Concurrent Multi-Team Release Coordination",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which governance recommendation BEST addresses the concurrent multi-team release coordination challenge?",
+      "scenario_context": "A B2B SaaS platform has 8 product teams releasing independently to the same production environment. Recent quarter: 142 production releases (~17/team), 6 production incidents from cross-team interactions (one team's change broke another's feature), 2 incidents lasted >4 hours. Teams resist coordination because it slows individual velocity. The CTO is concerned about the rising cross-team incident rate. Three options are debated: weekly release-coordination meetings; release windows by team; full coordination requirements for any change. The IS auditor was asked to recommend governance principles for cross-team release coordination.",
+      "options": {
+        "A": "Mandate full coordination for every release across all 8 teams; cross-team incidents indicate insufficient coordination and complete review eliminates surprises.",
+        "B": "Reduce release frequency to weekly across all teams; less frequent releases produce fewer interaction surfaces and fewer cross-team incidents to manage.",
+        "C": "Implement contracts + observability + release coordination by risk tier: high-risk changes coordinate; low-risk changes proceed; cross-team-affecting changes use feature flags.",
+        "D": "Restrict each team to its own production environment; eliminate the shared-environment cross-team interaction entirely by isolating service responsibilities."
+      },
+      "correct": "C",
+      "key_concept": "Multi-team release coordination = contracts + observability + risk-tiered coordination + cross-team-affecting changes use feature flags. Full-coordinate-everything destroys velocity; reduce-frequency destroys DORA-aligned velocity; isolate-each-team destroys shared-platform value.",
+      "pre_read": "For multi-team release coordination questions, anchor on \"risk-tiered: high-risk coordinates, low-risk proceeds, cross-team-affecting uses flags.\" Full-coordinate and isolate-everyone extremes destroy value.",
+      "correct_explanation": "ISACA Release Train Coordination guidance, DORA / Accelerate research, and SAFe (Scaled Agile Framework) establish that multi-team release coordination should be risk-tiered: (1) SERVICE CONTRACTS (covered in d3_055) define what each team's API/behavior guarantees, so consuming teams can rely on documented behavior; (2) OBSERVABILITY (covered in d3_089) detects cross-team interaction issues early; (3) RISK-TIERED COORDINATION (high-risk changes — schema, contract, shared-service modifications — coordinate; low-risk changes proceed independently); (4) FEATURE FLAGS (covered in d3_086) gate cross-team-affecting changes for controlled rollout. Option A mandates full coordination, which destroys team velocity for low-risk changes. Option B reduces frequency, which DORA research correlates with HIGHER change failure rates. Option D isolates each team's environment, which loses shared-platform efficiency and economic benefits.",
+      "wrong_explanations": {
+        "A": "Mandate-full-coordination destroys per-team velocity and creates the kind of coordination bottleneck the team structure was designed to avoid. Risk-tiered coordination focuses overhead where it produces value.",
+        "B": "Reducing release frequency correlates with HIGHER change failure rates per DORA research (less practice + bigger releases + harder rollback). Frequency reduction is the wrong direction.",
+        "D": "Isolating each team's environment loses shared-platform efficiency and economic benefits. The point of a shared platform is shared infrastructure; teams should coordinate, not isolate."
+      },
+      "tips": [
+        "Trap is A or B — opposite-direction overcorrections that both destroy velocity. A coordinates everything (kills speed); B reduces frequency (DORA-anti-pattern). The right answer is risk-tiered.",
+        "Multi-team release coordination = CONTRACTS + OBSERVABILITY + RISK-TIERED + FEATURE FLAGS. Four elements; the system selects WHICH changes need coordination based on risk.",
+        "Exam-day shortcut: any multi-team-coordination question is answered by the option naming RISK-TIERED coordination with feature flags; mandate-everything and reduce-frequency answers are anti-patterns."
+      ],
+      "framework_ref": "ISACA Release Train Coordination guidance; DORA / Accelerate (DevOps Research and Assessment); SAFe (Scaled Agile Framework)",
+      "related_concepts": [
+        "Release coordination",
+        "Multi-team",
+        "Risk tiering",
+        "Feature flags"
+      ],
+      "_provenance": "Authored from concept: 'Multi-team release coordination per ISACA Release Train Coordination guidance and DORA research'. Public sources: ISACA, DORA, SAFe. Scenario specifics (B2B SaaS, 8 teams, 142 releases/quarter, 6 cross-team incidents, 2 lasting >4 hours, three coordination options debated) invented for this question."
+    },
+    {
+      "id": "d3_108",
+      "domain": 3,
+      "subtopic": "Major Release Scope Creep",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the mid-release scope creep described?",
+      "scenario_context": "A retail-tech firm is in week 14 of a 20-week major-release cycle. Original scope: 22 features; current scope: 38 features. Six unplanned features were added in weeks 4-10 (executive requests); four more proposed in weeks 11-13. Engineering velocity has slowed 28% versus baseline. Code review queues are 3x longer. Two original-scope features have been deferred to absorb the added work. QA reports the test plan covers original scope only. The CTO is concerned about release quality. The COO wants the additional features. The IS auditor was asked to advise on scope governance before the next release-coordination meeting.",
+      "options": {
+        "A": "Endorse the COO's continued scope additions; business agility requires adapting to executive priorities throughout the release cycle as they emerge.",
+        "B": "Cancel the entire release and start fresh with a stricter scope-control regime; the current scope is contaminated beyond recovery.",
+        "C": "Defer all additional features to the next release cycle without negotiation; established scope must be protected absolutely once the cycle begins.",
+        "D": "Apply scope re-baselining: trace the cost of each addition to date, evaluate forward additions via formal change control, defer or extend release with explicit owner accountability."
+      },
+      "correct": "D",
+      "key_concept": "Scope creep mid-release = scope re-baselining: trace cost of additions + formal change control on forward additions + defer or extend with explicit owner accountability. Endorse-continued-additions destroys quality; cancel-fresh-start wastes 14 weeks; rigid-no-additions ignores legitimate business changes.",
+      "pre_read": "For scope-creep questions, anchor on \"scope re-baselining with formal change control.\" Endorse-everything, cancel-fresh, and rigid-no answers are all extremes.",
+      "correct_explanation": "ISACA Scope Creep guidance, PMBOK Guide 7th Edition, and COBIT 2019 BAI11 (Managed Projects) establish structured response to mid-release scope creep: (1) TRACE COST of each prior addition to date (velocity impact, QA gap, deferred-feature opportunity cost); (2) EVALUATE FORWARD ADDITIONS via formal change control (every new request goes through scope-impact analysis, not direct executive injection); (3) DEFER OR EXTEND the release with explicit owner accountability (either the new scope deferred to next cycle, or the release date extended with explicit ownership of the trade-off). Option A endorses the pattern that produced the problem. Option B's cancel-fresh wastes 14 weeks of work. Option C's rigid-no ignores legitimate business changes that may genuinely warrant scope adjustment.",
+      "wrong_explanations": {
+        "A": "Endorsing continued scope additions doubles down on the pattern that produced the 28% velocity drop, code-review queue triple, and QA-coverage gap. Without change control, the release will miss quality.",
+        "B": "Cancel-fresh-start wastes 14 weeks of work. The release is contaminated by scope creep, not destroyed; re-baselining preserves the work that was done well.",
+        "C": "Rigid-no-additions is the opposite extreme. Some business changes (regulatory deadlines, competitive responses) genuinely warrant mid-cycle scope adjustment with proper change control; absolute scope-lock destroys agility."
+      },
+      "tips": [
+        "Trap is A or C — opposite extremes. A endorses uncontrolled additions; C rejects all changes. The right answer is formal change control: additions are evaluated, not assumed approved or rejected.",
+        "Scope creep response = TRACE COST + FORMAL CHANGE CONTROL + DEFER OR EXTEND with OWNER ACCOUNTABILITY. Four elements; the system makes the trade-off explicit.",
+        "Exam-day shortcut: any scope-creep question is answered by the option naming CHANGE CONTROL with EXPLICIT TRADE-OFF; endorse-everything and reject-all-additions answers are extremes."
+      ],
+      "framework_ref": "ISACA Scope Creep guidance; PMBOK Guide 7th Edition; COBIT 2019 BAI11 (Managed Projects)",
+      "related_concepts": [
+        "Scope creep",
+        "Change control",
+        "Re-baselining",
+        "Release governance"
+      ],
+      "_provenance": "Authored from concept: 'Scope creep mid-release governance per ISACA Scope Creep guidance and PMBOK 7E'. Public sources: ISACA, PMBOK. Scenario specifics (retail-tech, week 14 of 20-week release, 22→38 feature scope, 28% velocity drop, 3x code-review queue, 2 deferred original-scope features, QA gap) invented for this question."
+    },
+    {
+      "id": "d3_109",
+      "domain": 3,
+      "subtopic": "Microservices to Monolith Reversal Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the architecture-reversal decision the firm faces?",
+      "scenario_context": "A 4-year-old SaaS firm (~$80M ARR) migrated from monolith to microservices 28 months ago. Current state: 47 microservices, 18 of which are owned by 1-2 engineers each. Operations cost has tripled vs the monolith era (~$8M/year additional cloud + tooling spend). Engineering velocity has dropped 35% vs the monolith era (cross-service coordination overhead). Reliability has IMPROVED 25%. The new CTO has proposed re-consolidating back to ~10 services. The original architect (still on staff) argues this would lose the operational separation gains. The IS auditor was asked to assess the decision framework.",
+      "options": {
+        "A": "Endorse the CTO's consolidation to ~10 services; tripled operational cost and 35% velocity drop are clear signals that the microservices proliferation has gone too far.",
+        "B": "Apply structured analysis: per-service value, coupling reality, operational cost per service, velocity attribution, team-ownership patterns, and reversal cost vs ongoing cost.",
+        "C": "Endorse the architect's continue-microservices position; reliability has improved 25% and the operational and velocity costs are normal for the architecture pattern.",
+        "D": "Defer the architecture decision indefinitely; both positions have merit and the firm should let market and team feedback determine direction over the next several years."
+      },
+      "correct": "B",
+      "key_concept": "Architecture reversal decision = structured analysis per service: value + coupling + operational cost + velocity attribution + ownership patterns + reversal cost vs ongoing cost. Endorse-CTO and endorse-architect are opposing biases; defer wastes time on a measurable decision.",
+      "pre_read": "For architecture-reversal questions, anchor on \"per-service structured analysis.\" Aggregate metrics (tripled cost, 35% velocity drop) hide per-service variation. Some services may warrant consolidation; others may not.",
+      "correct_explanation": "ISACA Architecture Reversal Decision guidance and ISACA Microservices Audit guidance establish that architecture-reversal decisions (microservices → monolith or vice versa) require per-service structured analysis: (1) PER-SERVICE VALUE (what does this service contribute that justifies its independence); (2) COUPLING REALITY (services that change together should likely BE together); (3) OPERATIONAL COST PER SERVICE (the 18 services owned by 1-2 engineers may carry disproportionate cost); (4) VELOCITY ATTRIBUTION (35% drop may not be uniform — some services drive it more); (5) TEAM-OWNERSHIP PATTERNS (1-2 engineers per service is unstable); (6) REVERSAL COST vs ONGOING COST (consolidation has migration cost; both sides need quantification). Option A endorses CTO bias from aggregate metrics. Option C endorses original-architect bias. Option D's defer wastes a decision opportunity.",
+      "wrong_explanations": {
+        "A": "Endorsing consolidation from aggregate metrics (tripled cost, 35% velocity) ignores per-service variation. Some services genuinely benefit from independence; consolidating all of them throws out the operational separation gains.",
+        "C": "Endorsing the architect's continue-microservices position from reliability gains ignores the cost and velocity reality. The 18 services owned by 1-2 engineers each represent organizational fragility, not operational maturity.",
+        "D": "Deferring the decision wastes time on something that's measurable now. Per-service analysis can be completed in weeks; waiting 'several years' continues the cost and velocity burden."
+      },
+      "tips": [
+        "Trap is A or C — opposing biases (CTO consolidation vs original architect's defense). The right answer applies per-service analysis to find which services warrant consolidation and which justify their independence.",
+        "Architecture reversal = PER-SERVICE: VALUE + COUPLING + COST + VELOCITY + OWNERSHIP + REVERSAL-COST. Six factors per service; aggregate metrics mislead.",
+        "Exam-day shortcut: any architecture-reversal question is answered by the option naming PER-SERVICE STRUCTURED ANALYSIS; endorse-one-position answers reflect bias."
+      ],
+      "framework_ref": "ISACA Architecture Reversal Decision guidance; ISACA Microservices Audit guidance; Twelve-Factor App methodology",
+      "related_concepts": [
+        "Microservices",
+        "Monolith",
+        "Architecture reversal",
+        "Per-service analysis"
+      ],
+      "_provenance": "Authored from concept: 'Microservices-to-monolith reversal per ISACA Architecture Reversal Decision guidance'. Public sources: ISACA. Scenario specifics (4-year SaaS, $80M ARR, 47 microservices with 18 owned by 1-2 engineers, tripled ops cost, 35% velocity drop, 25% reliability improvement) invented for this question."
+    },
+    {
+      "id": "d3_110",
+      "domain": 3,
+      "subtopic": "Database Technology Selection — SQL vs NoSQL Trade-off",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which approach BEST guides the database technology selection for the new application?",
+      "scenario_context": "A logistics-tech firm is launching a new fleet-tracking application. Expected workload: 8M vehicles emitting telemetry every 5 seconds (~1.6M writes/sec at peak); read patterns include real-time dashboards (low-latency point reads) and analytics (large aggregations). Data model has well-defined entities (vehicle, route, driver, event) with some relationship constraints. The engineering team is split: half advocate PostgreSQL for ACID and SQL familiarity; half advocate a time-series database (e.g., InfluxDB, TimescaleDB) for ingest performance. The architect has proposed a polyglot persistence design. The IS auditor was asked to assess the database-technology-selection decision framework.",
+      "options": {
+        "A": "Apply structured selection: workload analysis (read/write patterns, consistency needs, data model), TCO over 5 years, ops complexity, schema-evolution trade-offs, polyglot complexity.",
+        "B": "Use PostgreSQL exclusively; ACID guarantees and SQL familiarity always outweigh specialized-database advantages for any modest-scale application implementation.",
+        "C": "Use a time-series database exclusively; the 1.6M writes/sec workload is the dominant signal and SQL databases cannot match the ingest performance of purpose-built time-series engines.",
+        "D": "Choose the technology the senior database engineer prefers; database expertise inside the firm matters more than nominal technology fit for any specific workload's properties."
+      },
+      "correct": "A",
+      "key_concept": "Database technology selection = structured: workload analysis + 5-year TCO + ops complexity + schema-evolution + polyglot complexity. PostgreSQL-only and time-series-only are opposing biases; defer-to-engineer-preference abandons the analysis.",
+      "pre_read": "For database-selection questions, anchor on \"structured workload-driven analysis with multi-year TCO.\" Single-technology endorsements reflect familiarity bias, not workload fit.",
+      "correct_explanation": "ISACA Database Technology Selection guidance and DAMA-DMBOK 2nd Edition establish structured analysis for database-technology selection: (1) WORKLOAD ANALYSIS — read/write patterns (1.6M writes/sec is significant), consistency needs (does the application need ACID, or is eventual consistency acceptable), query patterns (point reads vs aggregations); (2) TCO OVER 5 YEARS — license, ops, scaling cost over the planning horizon; (3) OPS COMPLEXITY — what does the team operate well, what's the learning curve; (4) SCHEMA-EVOLUTION TRADE-OFFS — how does the data model change over time, what migration paths exist; (5) POLYGLOT COMPLEXITY — using multiple databases adds coordination cost. The architect's polyglot proposal may be optimal but requires the same structured analysis as single-technology selection. Option B is PostgreSQL-familiarity bias. Option C is time-series-performance bias. Option D defers to individual preference.",
+      "wrong_explanations": {
+        "B": "PostgreSQL-only ignores the 1.6M writes/sec workload reality. PostgreSQL can scale but requires significant tuning, partitioning, and infrastructure investment; the structured analysis may reveal a different technology is better fit.",
+        "C": "Time-series-only ignores the relational data (vehicle, route, driver, event with relationships) and the analytics workload. Time-series databases optimize for ingest but may not serve all query patterns equally.",
+        "D": "Defer-to-engineer-preference abandons structured analysis for individual bias. While team expertise matters (factor 3 above), it's one input, not the decision."
+      },
+      "tips": [
+        "Trap is B or C — opposing single-technology biases. B is SQL-familiarity; C is time-series-performance. The right answer is structured workload-driven analysis that may produce either or a polyglot answer.",
+        "Database selection = WORKLOAD + 5-YEAR TCO + OPS COMPLEXITY + SCHEMA EVOLUTION + POLYGLOT COMPLEXITY. Five factors; single-technology endorsements reflect bias.",
+        "Exam-day shortcut: any database-selection question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS; single-technology and engineer-preference answers are biases."
+      ],
+      "framework_ref": "ISACA Database Technology Selection guidance; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Database Audit guidance",
+      "related_concepts": [
+        "Database selection",
+        "SQL",
+        "NoSQL",
+        "Time series",
+        "Polyglot persistence"
+      ],
+      "_provenance": "Authored from concept: 'Database technology selection per ISACA Database Technology Selection guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (logistics-tech fleet tracking, 8M vehicles, 5-second telemetry, 1.6M writes/sec peak, real-time + analytics workloads, PostgreSQL vs time-series debate) invented for this question."
+    },
+    {
+      "id": "d3_111",
+      "domain": 3,
+      "subtopic": "Cloud-Native Rewrite vs Lift-and-Shift",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which migration approach BEST suits the application portfolio described?",
+      "scenario_context": "A financial services firm with ~9,000 employees is migrating its on-prem application portfolio to cloud over a 24-month program. Portfolio: 84 applications categorized as: 22 strategic (high business value, evolving rapidly), 31 utility (medium value, stable feature set), 24 commodity (low value, infrequent change), 7 legacy-deprecated (planned retirement within 12 months). The CIO favors cloud-native rewrite across all 84 for consistency and 'cloud-native maturity' as the strategic target. The infrastructure architect favors lift-and-shift across all 84 for migration speed and predictability. The audit committee asked the IS auditor for a recommendation on migration approach given the portfolio's heterogeneity before the steering committee meets.",
+      "options": {
+        "A": "Lift-and-shift all 84 applications uniformly; consistency of migration approach is essential and rewrite-during-migration introduces unmanageable complexity.",
+        "B": "Cloud-native rewrite all 84 applications uniformly; cloud-native architecture is the strategic target and partial-migration creates two architectures the firm must operate.",
+        "C": "Apply portfolio-segmented strategy (Gartner 7 Rs / AWS 6 Rs): rewrite strategic apps, replatform utility apps, lift-and-shift commodity, retire deprecated.",
+        "D": "Defer the migration entirely; on-prem operation can continue indefinitely and forced cloud migration produces complexity without proportional business value at this firm scale."
+      },
+      "correct": "C",
+      "key_concept": "Cloud migration approach = portfolio-segmented (7 Rs / 6 Rs): rewrite strategic + replatform utility + lift-and-shift commodity + retire deprecated. Uniform-everything (rewrite OR lift-and-shift) misallocates effort; defer abandons the migration entirely.",
+      "pre_read": "For cloud migration questions, anchor on \"portfolio-segmented approach using 7 Rs / 6 Rs framework.\" Uniform-approach answers misallocate effort across a heterogeneous portfolio.",
+      "correct_explanation": "AWS/Azure 6 Rs Migration Playbooks, ISACA Cloud Migration Strategy guidance, and Gartner Cloud Migration Framework establish portfolio-segmented cloud migration strategies (7 Rs: Refactor, Replatform, Repurchase, Rehost, Retire, Retain, Relocate; the 6 Rs are a subset). Application portfolios are heterogeneous: high-value strategic apps benefit from cloud-native rewrite (refactor) to leverage cloud-native primitives; medium-value utility apps benefit from replatform (managed services swap-in); low-value commodity apps suit lift-and-shift (rehost) for speed; deprecated apps should be retired pre-migration. Option A's uniform lift-and-shift misses the cloud-native value for strategic apps. Option B's uniform rewrite overspends on commodity apps that will be retired or replaced. Option D defers indefinitely, accumulating on-prem operational debt.",
+      "wrong_explanations": {
+        "A": "Uniform lift-and-shift misses the cloud-native value for the 22 strategic apps. Migrating high-value evolving apps without refactoring produces 'cloud-tax' (you pay for cloud but don't benefit from cloud-native capabilities).",
+        "B": "Uniform rewrite overspends on 24 commodity apps that don't need cloud-native architecture and 7 deprecated apps that should be retired pre-migration. Effort allocation is the central question; uniform-everything ignores it.",
+        "D": "Defer-indefinitely accumulates on-prem operational debt and may be commercially unviable (data-center contracts, hardware refresh, talent retention all worsen over time). Migration is strategically required; segmentation is the question."
+      },
+      "tips": [
+        "Trap is A or B — opposing uniform-everything approaches that both misallocate effort across a heterogeneous portfolio. The right answer segments the portfolio by value and change frequency.",
+        "Cloud migration = PORTFOLIO-SEGMENTED via 7 Rs / 6 Rs framework. Rewrite strategic; replatform utility; lift-and-shift commodity; retire deprecated.",
+        "Exam-day shortcut: any cloud-migration-approach question is answered by the option naming PORTFOLIO-SEGMENTED with 7 Rs / 6 Rs; uniform-everything and defer-indefinitely answers fail differently."
+      ],
+      "framework_ref": "AWS/Azure 6 Rs Migration Playbooks; ISACA Cloud Migration Strategy guidance; Gartner Cloud Migration Framework",
+      "related_concepts": [
+        "Cloud migration",
+        "7 Rs framework",
+        "Lift-and-shift",
+        "Cloud-native"
+      ],
+      "_provenance": "Authored from concept: 'Cloud migration portfolio-segmented strategy per 6 Rs / 7 Rs frameworks and ISACA Cloud Migration Strategy guidance'. Public sources: AWS, Gartner, ISACA. Scenario specifics (financial services, 84 apps with 22/31/24/7 segment split, CIO vs architect debate) invented for this question."
+    },
+    {
+      "id": "d3_112",
+      "domain": 3,
+      "subtopic": "Zero-Trust Architecture Migration",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the firm's zero-trust architecture migration?",
+      "scenario_context": "A healthcare-services firm (~6,800 employees, HIPAA-regulated) is planning zero-trust migration from a traditional perimeter-based network. Current state: VPN for remote access, flat internal network, role-based access at application layer only. Drivers include: regulator emphasis on zero-trust; recent ransomware attack on a peer firm; remote-workforce expansion (60% of staff now remote). Three approaches debated: (a) deploy a ZTNA vendor across all access; (b) build native zero-trust over 36 months; (c) phased zero-trust with prioritization. The CISO leans toward approach (a) for speed. The IS auditor was asked to assess governance principles for the zero-trust migration.",
+      "options": {
+        "A": "Endorse approach (a) vendor ZTNA deployment for speed; quickly deploying a vendor solution avoids the complexity of building zero-trust capabilities in-house.",
+        "B": "Endorse approach (b) native zero-trust build over 36 months; in-house capability ensures the firm controls its security architecture independent of vendor lock-in.",
+        "C": "Defer all zero-trust work; the architecture is unproven in healthcare settings and the firm should observe peer adoption before committing investment.",
+        "D": "Apply NIST SP 800-207 phased approach: identity-first, asset inventory, micro-segmentation, continuous verification, monitor-and-iterate, with HIPAA-aligned controls in each phase."
+      },
+      "correct": "D",
+      "key_concept": "Zero-trust migration = NIST SP 800-207 phased: identity-first + asset inventory + micro-segmentation + continuous verification + monitor-and-iterate, HIPAA-aligned per phase. Vendor-ZTNA-fast is speed without architecture; build-native-36-months is excessively long; defer abandons the work.",
+      "pre_read": "For zero-trust migration questions, anchor on \"NIST SP 800-207 phased approach with regulator-aligned controls.\" Vendor-only-fast and build-native-slow are extremes; defer ignores the regulatory direction.",
+      "correct_explanation": "NIST Zero Trust Architecture (NIST SP 800-207) establishes a phased migration approach: (1) IDENTITY-FIRST — modernize authentication (covered in d3_056); (2) ASSET INVENTORY — know what's connected, where, and what data it accesses; (3) MICRO-SEGMENTATION — replace flat-network trust with per-flow authorization; (4) CONTINUOUS VERIFICATION — replace authenticate-once-trust-forever with ongoing verification; (5) MONITOR-AND-ITERATE. HIPAA alignment requires controls at each phase (covered access, audit logs, encryption). Option A vendor-ZTNA-only deploys a product without the architectural depth (asset inventory, micro-segmentation, continuous verification cannot be vendor-purchased as a single solution). Option B's 36-month native build is unnecessarily long; phased vendor + native is typically optimal. Option C defers a regulator-emphasized direction, accepting peer-firm-ransomware risk.",
+      "wrong_explanations": {
+        "A": "Vendor-ZTNA fast deployment substitutes a product purchase for architectural depth. ZTNA solutions provide access control but don't replace the broader architecture (identity hygiene, asset inventory, micro-segmentation) that zero-trust requires.",
+        "B": "Building native zero-trust over 36 months is unnecessarily long. The firm can leverage vendor capabilities for some phases while building native for others; full in-house buildout is rarely the most efficient path.",
+        "C": "Defer-zero-trust accepts peer-firm ransomware risk and ignores regulator direction. The architecture is well-established (NIST SP 800-207 published 2020); 'unproven' framing is no longer accurate."
+      },
+      "tips": [
+        "Trap is A or B — opposing speed-vs-control biases. A buys speed without architecture; B builds independence at excessive cost. The right answer is NIST SP 800-207 phased with vendor + native mix.",
+        "Zero-trust migration = NIST SP 800-207 PHASED: identity + inventory + micro-segmentation + continuous verification + monitor. Five phases; regulator-aligned per phase.",
+        "Exam-day shortcut: any zero-trust migration question is answered by the option naming NIST SP 800-207 PHASED approach; vendor-only-fast, native-only-slow, and defer answers each fail differently."
+      ],
+      "framework_ref": "NIST Zero Trust Architecture (NIST SP 800-207); CSA Zero Trust Framework; ISACA Zero-Trust Migration guidance",
+      "related_concepts": [
+        "Zero trust",
+        "NIST SP 800-207",
+        "Micro-segmentation",
+        "Continuous verification"
+      ],
+      "_provenance": "Authored from concept: 'Zero-trust migration per NIST SP 800-207 and CSA Zero Trust Framework'. Public sources: NIST, CSA. Scenario specifics (healthcare services, 6.8K employees, HIPAA, 60% remote, peer ransomware, VPN + flat internal + RBAC current state, three migration options debated) invented for this question."
+    },
+    {
+      "id": "d3_113",
+      "domain": 3,
+      "subtopic": "Application Zero-Day During Major Release Window",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST addresses the zero-day disclosure during the release window?",
+      "scenario_context": "A B2B SaaS firm is in the final 48 hours of a 4-month major release rollout to 1,800 enterprise customers. The new release passed all pre-deployment gates. Six hours ago a public CVE was disclosed in a foundational library used by both the new release AND the current production version. Exploit code is publicly available; no in-the-wild exploitation observed yet. The CISO, CTO, and release manager are in disagreement: (a) proceed with rollout, patch later; (b) halt rollout, patch first; (c) patch current production and proceed with rollout. The IS auditor was paged for an analytical perspective before the 06:00 final-cutover decision.",
+      "options": {
+        "A": "Endorse approach (a) proceed-then-patch; halting at 48 hours after 4 months of work creates schedule and customer-trust damage outweighing the residual zero-day risk during a short patch window.",
+        "B": "Apply structured response: scope the vulnerability across both versions, deploy emergency patch to BOTH current production AND release artifact, monitor for exploitation, then proceed with patched rollout.",
+        "C": "Endorse approach (b) halt-and-patch-first; any zero-day in a foundational library is a critical risk and the firm should never deploy known-vulnerable code at any rollout stage.",
+        "D": "Defer the rollout indefinitely until the vulnerability has been fully analyzed by external security researchers across the broader ecosystem for several weeks."
+      },
+      "correct": "B",
+      "key_concept": "Zero-day during release window = scope + emergency patch BOTH versions + monitor + proceed with patched rollout. Proceed-then-patch leaves exposure; halt-and-patch-first ignores patched-rollout option; defer-indefinitely is excessive.",
+      "pre_read": "For zero-day-during-release questions, anchor on \"scope + patch both versions + monitor + proceed patched.\" The release artifact can be patched without abandoning the rollout.",
+      "correct_explanation": "ISACA Zero-Day Response guidance, NIST SP 800-61 (Computer Security Incident Handling Guide), and SLSA framework establish that zero-day disclosure during a release window requires structured response: (1) SCOPE the vulnerability across both versions (current production AND release artifact use the library); (2) EMERGENCY PATCH BOTH — fix current production immediately (customers already exposed) AND rebuild the release artifact with the patch; (3) MONITOR for exploitation indicators in production telemetry; (4) PROCEED with PATCHED rollout (don't abandon 4 months of work for a fix-and-redeploy cycle). Option A proceed-then-patch leaves the release artifact vulnerable to a publicly-known exploit. Option C halt-and-patch-first treats the rollout as binary (halt OR proceed) when patched-rollout is a third option. Option D defer-indefinitely accepts ongoing exposure of current production.",
+      "wrong_explanations": {
+        "A": "Proceed-then-patch deploys known-vulnerable code with publicly-available exploit code to 1,800 enterprise customers. The 'short patch window' framing minimizes the exposure; even hours of exposure is material when exploit code is public.",
+        "C": "Halt-and-patch-first treats the rollout as binary. The right answer recognizes that the release artifact CAN be rebuilt with the patch within hours; abandoning 4 months of rollout work isn't necessary.",
+        "D": "Defer-indefinitely accepts ongoing exposure of CURRENT PRODUCTION (which also uses the library and is also vulnerable). Waiting weeks while production exposure continues is the wrong response to active risk."
+      },
+      "tips": [
+        "Trap is A or C — opposing extremes. A proceeds with known-vulnerable code; C halts the entire rollout. The right answer patches BOTH versions and proceeds with the patched rollout.",
+        "Zero-day during release = SCOPE + PATCH BOTH + MONITOR + PROCEED PATCHED. Four steps; the release artifact can be rebuilt without abandoning rollout.",
+        "Exam-day shortcut: any zero-day-during-release question is answered by the option naming PATCH BOTH VERSIONS and PROCEED PATCHED; proceed-then-patch and halt-entirely answers commit different errors."
+      ],
+      "framework_ref": "ISACA Zero-Day Response guidance; NIST SP 800-61 (Computer Security Incident Handling Guide); SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "related_concepts": [
+        "Zero-day response",
+        "Release window",
+        "Incident response",
+        "Public CVE"
+      ],
+      "_provenance": "Authored from concept: 'Zero-day during release window per ISACA Zero-Day Response guidance and NIST SP 800-61'. Public sources: ISACA, NIST. Scenario specifics (B2B SaaS, 4-month rollout to 1.8K enterprise customers, 48-hour final cutover, foundational library CVE with public exploit, three positions debated) invented for this question."
+    },
+    {
+      "id": "d3_114",
+      "domain": 3,
+      "subtopic": "Acquired-Firm Data Sovereignty Mismatch",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the data-sovereignty mismatch the acquisition has surfaced?",
+      "scenario_context": "A US-headquartered SaaS firm acquired a German competitor (€280M revenue, 1.4M EU subjects). Post-deal due-diligence revealed: (a) acquired firm's customer data is stored only in EU data centers per its prior contractual commitments; (b) acquirer's standard architecture stores all customer data in US data centers; (c) integrating the acquired firm's product into the acquirer's platform would require data migration to US storage; (d) acquired firm's EU customers have prior contractual data-localization commitments. The CTO proposes US-platform integration on the standard schedule. The CISO and legal counsel raise data-sovereignty concerns. The IS auditor was asked to assess the integration governance.",
+      "options": {
+        "A": "Maintain EU data sovereignty: integrate functionality without migrating data location; deploy EU-region infrastructure for the acquired product; honor prior commitments and GDPR transfer rules.",
+        "B": "Endorse the CTO's US-platform integration plan; the firm's standard architecture takes precedence over acquired-firm contractual commitments which can be addressed through customer notification.",
+        "C": "Cancel the acquisition entirely; data-sovereignty mismatches between US and EU firms create unmanageable regulatory and contractual risk for any cross-border integration.",
+        "D": "Migrate all acquired-firm data to US infrastructure immediately and refund any customers who object; speed of integration outweighs the contractual and regulatory complexity."
+      },
+      "correct": "A",
+      "key_concept": "Data sovereignty mismatch in acquisition = maintain EU sovereignty: integrate functionality without migrating data location + EU-region infrastructure + honor prior commitments + GDPR transfer rules. US-platform-integration breaches contracts and GDPR; cancel-acquisition overreacts; migrate-and-refund violates contracts.",
+      "pre_read": "For data-sovereignty mismatch questions, anchor on \"integrate functionality without migrating data location.\" Architecture standardization should not override contractual and regulatory commitments.",
+      "correct_explanation": "GDPR Articles 44-50 (International Transfers), ISACA Data Sovereignty guidance, and ISACA M&A IT Integration guidance establish that data-sovereignty commitments must be honored across an acquisition. The acquired firm's customers contracted for EU data storage; the acquirer inherits those commitments. GDPR Chapter V (Articles 44-50) restricts transfers to third countries (including the US under current adequacy decision uncertainty post-Schrems II). Correct response: deploy EU-region infrastructure for the acquired product; integrate functionality at the application layer without forcing data migration; respect prior contractual commitments. Option B violates contracts and GDPR. Option C cancel overreacts (the mismatch is manageable with proper architecture). Option D migrate-and-refund violates contracts (refund offers don't substitute for contract compliance) and breaches GDPR transfer rules.",
+      "wrong_explanations": {
+        "B": "US-platform integration breaches the acquired firm's contractual data-localization commitments AND GDPR Chapter V transfer rules. Customer notification is not a remedy for contract breach.",
+        "C": "Cancel-acquisition overreacts to a manageable architectural integration challenge. The data-sovereignty constraint is honored by maintaining EU infrastructure for EU data; functional integration happens at the application layer.",
+        "D": "Migrate-and-refund violates contracts. Customers contracted for EU data storage; refunds offered to those who object don't substitute for honoring the contract. It also breaches GDPR Chapter V transfer rules."
+      },
+      "tips": [
+        "Trap is B or D — both override sovereignty commitments. B does it via architecture standardization; D does it via refund-as-remedy. Both violate contracts and GDPR transfer rules.",
+        "Data sovereignty in M&A = INTEGRATE FUNCTIONALITY without MIGRATING DATA LOCATION + EU INFRASTRUCTURE + HONOR COMMITMENTS + GDPR transfer rules. Four elements; architecture standardization is not a sovereignty override.",
+        "Exam-day shortcut: any data-sovereignty M&A question is answered by the option naming MAINTAIN SOVEREIGNTY with FUNCTIONAL INTEGRATION; standardize-everything and migrate-and-refund answers violate constraints."
+      ],
+      "framework_ref": "GDPR Articles 44-50 (Transfers); ISACA Data Sovereignty guidance; ISACA M&A IT Integration guidance",
+      "related_concepts": [
+        "Data sovereignty",
+        "GDPR Chapter V",
+        "M&A integration",
+        "EU data localization"
+      ],
+      "_provenance": "Authored from concept: 'Data sovereignty in M&A per GDPR Articles 44-50 and ISACA Data Sovereignty guidance'. Public sources: GDPR, ISACA. Scenario specifics (US SaaS acquiring German competitor, €280M revenue, 1.4M EU subjects, EU data-localization contractual commitments) invented for this question."
+    },
+    {
+      "id": "d3_115",
+      "domain": 3,
+      "subtopic": "Supply-Chain Attestation Maturity Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the firm's supply-chain attestation maturity target?",
+      "scenario_context": "A government-services contractor (~3,200 employees, federal contracts > $400M annually) is responding to new federal cybersecurity requirements (EO 14028 derivatives) requiring supply-chain attestation. Options under consideration: (a) SLSA Level 1 (basic source/build attestation); (b) SLSA Level 2 (signed provenance + hosted build); (c) SLSA Level 3 (hardened build platform); (d) SLSA Level 4 (two-party review + reproducible). The CISO proposes SLSA Level 4 for thoroughness. The CTO is concerned about implementation cost (~$8M to reach Level 4 over 18 months). The IS auditor was asked to assess the maturity target before the program-funding decision.",
+      "options": {
+        "A": "Target SLSA Level 1 only; federal requirements are evolving and the firm should commit minimal resources until the regulatory direction stabilizes for the broader industry.",
+        "B": "Target SLSA Level 4 (CISO position); thoroughness across all four properties (source, build, dependencies, provenance) provides the strongest defensible position against evolving requirements.",
+        "C": "Apply structured maturity analysis: regulatory floor + risk-based target + cost-per-level + time-to-achieve + competitive positioning, with phased achievement and explicit reassessment gates.",
+        "D": "Defer all SLSA work pending further federal guidance; the regulations may shift and current investment may not satisfy future requirements with any certainty whatsoever."
+      },
+      "correct": "C",
+      "key_concept": "Supply-chain attestation maturity = structured analysis: regulatory floor + risk-based target + cost-per-level + time-to-achieve + competitive positioning + phased achievement + reassessment gates. Level-1-minimum is regulatory floor only; Level-4-thoroughness may overshoot; defer accepts contract risk.",
+      "pre_read": "For supply-chain attestation maturity questions, anchor on \"structured analysis with phased achievement.\" Single-level endorsements (minimum or maximum) reflect bias; defer abandons the regulatory direction.",
+      "correct_explanation": "SLSA (Supply-chain Levels for Software Artifacts) framework, ISACA Supply-Chain Attestation guidance, and NIST SP 800-218 (SSDF v1.1) establish that SLSA maturity should be chosen via structured analysis: (1) REGULATORY FLOOR — what does the federal requirement demand minimally; (2) RISK-BASED TARGET — what level matches the firm's actual supply-chain threat model and contract value at risk ($400M annually); (3) COST PER LEVEL — Level 4 is significantly more expensive than Level 2; (4) TIME-TO-ACHIEVE — 18 months to Level 4 is fast; phased achievement (Level 1 → 2 → 3 → 4) is typically the practical path; (5) COMPETITIVE POSITIONING — what are peer contractors achieving; (6) PHASED achievement with REASSESSMENT GATES. Option A Level-1-minimum is regulatory floor only and may not satisfy contract-specific terms. Option B Level-4-everywhere may overshoot for some artifacts. Option D defer-indefinitely accepts contract risk at $400M annually.",
+      "wrong_explanations": {
+        "A": "Targeting Level 1 only is the regulatory floor and may not satisfy contract-specific terms. Government-services contractors often face contract clauses exceeding the baseline federal requirement; risk-based targeting beyond Level 1 is typically warranted.",
+        "B": "Targeting Level 4 for all artifacts may overshoot. Some artifacts (utility libraries, internal tooling) may warrant Level 2 while critical production artifacts target Level 4. Uniform-everywhere ignores artifact-level risk variation.",
+        "D": "Defer accepts $400M annual contract risk and ignores the explicit regulatory direction. SLSA framework is stable enough to begin work; further federal guidance is more likely to extend than to invalidate current SLSA investments."
+      },
+      "tips": [
+        "Trap is A or B — opposing biases (minimum-compliance vs maximum-thoroughness). The right answer applies structured analysis to find the level that matches risk and cost, often differentiated by artifact criticality.",
+        "Supply-chain attestation = REGULATORY FLOOR + RISK-BASED TARGET + COST/LEVEL + TIME + COMPETITIVE + PHASED + GATES. Multi-factor maturity decision.",
+        "Exam-day shortcut: any maturity-target question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS with PHASED ACHIEVEMENT; uniform-everywhere and defer answers reflect bias."
+      ],
+      "framework_ref": "SLSA (Supply-chain Levels for Software Artifacts) framework; ISACA Supply-Chain Attestation guidance; NIST SP 800-218 (SSDF v1.1)",
+      "related_concepts": [
+        "SLSA",
+        "Supply-chain attestation",
+        "EO 14028",
+        "Maturity model"
+      ],
+      "_provenance": "Authored from concept: 'Supply-chain attestation maturity per SLSA framework and ISACA Supply-Chain Attestation guidance'. Public sources: SLSA, ISACA, NIST. Scenario specifics (government-services contractor, 3.2K employees, $400M annual federal contracts, four SLSA levels under consideration, $8M/18-month estimate for Level 4) invented for this question."
+    },
+    {
+      "id": "d3_116",
+      "domain": 3,
+      "subtopic": "Privacy Regulator Audit Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST guides the firm through the privacy regulator audit described?",
+      "scenario_context": "A digital-services firm (~5,000 employees, 18M global users) is undergoing a planned audit by an EU supervisory authority following a prior breach incident. The regulator's information request covers: (a) data-flow documentation; (b) consent-management records; (c) DPIA records for new processing activities; (d) breach-response logs; (e) sub-processor agreements. Internal review reveals: ~60% of requested artifacts are current; ~30% need updating or compilation; ~10% don't exist in compliant form. The DPO proposes full transparency in responses. The CMO wants to minimize disclosure. The general counsel is divided. The IS auditor was asked to advise on response governance.",
+      "options": {
+        "A": "Withhold information that doesn't exist in compliant form; the firm cannot produce documents that weren't created and disclosing absence creates evidence against the firm.",
+        "B": "Provide everything requested without prioritization; transparency is the only viable strategy and selective response signals defensiveness to the regulator without strategic benefit.",
+        "C": "Defer the entire response while internal counsel prepares a comprehensive defensive strategy; the firm should not respond piecemeal under audit pressure without prepared positions.",
+        "D": "Apply structured response: provide existing compliant artifacts, complete in-progress artifacts within window, disclose gaps transparently with remediation plans, with legal-counsel coordination throughout."
+      },
+      "correct": "D",
+      "key_concept": "Privacy regulator audit response = structured: existing artifacts + complete in-progress + disclose gaps with remediation plans + legal-counsel coordination. Withhold-absent-records misrepresents and accumulates; provide-everything-immediate lacks prioritization; defer-indefinitely fails the audit window.",
+      "pre_read": "For privacy regulator audit questions, anchor on \"transparent structured response with remediation plans for gaps.\" Withholding absent records, provide-everything-without-strategy, and defer all fail.",
+      "correct_explanation": "GDPR Articles 31 (Cooperation with Supervisory Authority) and 83 (Administrative Fines), ISACA Regulator Audit Response guidance, and EDPB Guidelines 06/2022 establish that audit response must combine transparency with structure: (1) PROVIDE EXISTING COMPLIANT ARTIFACTS immediately to demonstrate good faith; (2) COMPLETE IN-PROGRESS ARTIFACTS within the audit window where possible; (3) DISCLOSE GAPS TRANSPARENTLY with documented remediation plans (regulators reward proactive remediation; they punish concealment that is later discovered); (4) LEGAL-COUNSEL COORDINATION throughout (responses are positions; counsel structures them). Option A's withhold-absent-records is misrepresentation by omission; regulators discover gaps through other means and impose larger sanctions for concealment than for honest gaps with remediation plans. Option B's provide-everything-immediate lacks structure and may inadvertently surface unrelated issues. Option C's defer fails the audit cooperation requirement under Article 31.",
+      "wrong_explanations": {
+        "A": "Withholding absent records is misrepresentation by omission. GDPR Article 83 explicitly considers controller cooperation as a fine-amount factor; concealment increases penalties when discovered (which regulators do, through cross-referencing data subject inquiries, breach notifications, and other artifacts).",
+        "B": "Provide-everything-immediate lacks structure and may surface unrelated issues. Structured response prioritizes artifacts most directly responsive to the regulator's request and demonstrates organized compliance posture.",
+        "C": "Defer the response fails GDPR Article 31's cooperation requirement and signals defensiveness to the regulator. Legal-counsel coordination should happen IN PARALLEL with response, not as a precondition for any response."
+      },
+      "tips": [
+        "Trap is A or B — opposite extremes. A withholds and creates evidence of bad faith; B provides everything without structure and may surface unrelated issues. The right answer is structured transparency with remediation plans for gaps.",
+        "Regulator audit response = EXISTING + IN-PROGRESS + DISCLOSE GAPS WITH REMEDIATION + LEGAL COORDINATION. Four elements; transparent structure beats minimum or maximum extremes.",
+        "Exam-day shortcut: any regulator audit response question is answered by the option naming STRUCTURED TRANSPARENCY with REMEDIATION; withhold and defer answers signal bad faith."
+      ],
+      "framework_ref": "GDPR Article 31 (Cooperation with the Supervisory Authority); GDPR Article 83 (General Conditions for Imposing Administrative Fines); ISACA Regulator Audit Response guidance",
+      "related_concepts": [
+        "Regulator audit response",
+        "GDPR Article 31",
+        "Cooperation",
+        "Remediation plans"
+      ],
+      "_provenance": "Authored from concept: 'Privacy regulator audit response per GDPR Articles 31 and 83'. Public sources: GDPR, ISACA, EDPB. Scenario specifics (digital-services firm, 5K employees, 18M users, planned audit after prior breach, five document categories with 60/30/10 completeness split, DPO/CMO/counsel positions) invented for this question."
+    },
+    {
+      "id": "d3_117",
+      "domain": 3,
+      "subtopic": "Sole-Vendor SaaS Outage During Peak",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which immediate response BEST reflects sound governance during the sole-vendor SaaS outage?",
+      "scenario_context": "A retail firm depends on a single SaaS payment-processor for all online transactions ($14M/day, peak season). At 11:00 the vendor's API begins returning errors; by 11:45 customer orders fail at 100%. The vendor's status page reports a regional outage with no ETA. The firm has no alternate processor active. The CIO is exploring options: (a) wait for the vendor's restoration; (b) emergency activation of a backup processor; (c) suspend online sales until restoration. The CFO and head of e-commerce are in disagreement. The IS auditor was paged for governance perspective at 12:15.",
+      "options": {
+        "A": "Endorse waiting for vendor restoration; the operational complexity of emergency-activating an alternate processor in mid-outage exceeds the revenue cost of even a multi-hour outage.",
+        "B": "Activate the documented backup processor (if exists) and tested fallback; simultaneously communicate transparently with customers and capture the incident as a critical post-incident review input.",
+        "C": "Suspend online sales until vendor restoration; partial-operation during processor failure creates customer-experience problems worse than a clean operational pause clearly.",
+        "D": "Switch all transactions to a new processor never previously integrated; the urgency justifies any operational risk to restore revenue immediately during this peak season window."
+      },
+      "correct": "B",
+      "key_concept": "Sole-vendor SaaS outage response = activate documented + tested backup processor + transparent customer communication + post-incident review as input. Wait-passively yields $14M/day; suspend-sales-entirely abandons revenue when fallback exists; activate-untested-vendor introduces untested integration risk.",
+      "pre_read": "For sole-vendor outage questions, anchor on \"activate DOCUMENTED and TESTED fallback if it exists.\" Untested fallback or no-fallback are governance failures to be addressed in post-incident review.",
+      "correct_explanation": "ISACA Sole-Vendor Outage guidance, NIST SP 800-34 (Contingency Planning Guide), and OCC Bulletin 2013-29 (Third-Party Relationships) establish appropriate response to sole-vendor outage: (1) ACTIVATE DOCUMENTED AND TESTED BACKUP (if the firm has a tested alternate processor, this is the moment to use it); (2) TRANSPARENT CUSTOMER COMMUNICATION (acknowledge the issue, set expectations); (3) CAPTURE THE INCIDENT for post-incident review (sole-vendor concentration is itself the governance issue to address afterward). Option A wait-passively accepts $14M/day exposure without action when alternatives may exist. Option C suspend-sales abandons revenue entirely when fallback could continue some operations. Option D switch-to-untested-vendor introduces untested-integration risk (payment processing has many edge cases; untested integration produces its own failure modes). The scenario implies no tested backup exists, which IS the governance issue — but in the moment, an untested switch is worse than a transparent service pause if there's no tested fallback.",
+      "wrong_explanations": {
+        "A": "Wait-passively accepts $14M/day revenue loss without exploring alternatives. Even if a documented backup doesn't exist (which is the governance issue), customer-communication-and-partial-fallback options should be explored, not pure waiting.",
+        "C": "Suspend-sales-entirely is more drastic than necessary if any partial fallback exists. If a tested backup processor exists, activate it; suspension is a last resort, not the default.",
+        "D": "Activate-untested-processor introduces untested-integration risk at the worst moment. Payment processing has many edge cases (chargebacks, partial settlements, dispute flows); untested integration is likely to produce additional incidents."
+      },
+      "tips": [
+        "Trap is A or C — opposing extremes. A waits passively (loses $14M/day); C suspends entirely (loses all revenue). The right answer activates documented backup if it exists, with transparent communication.",
+        "Sole-vendor outage = ACTIVATE DOCUMENTED + TESTED BACKUP + TRANSPARENT COMMUNICATION + POST-INCIDENT REVIEW. Three elements during outage + governance follow-up.",
+        "Exam-day shortcut: any sole-vendor outage question is answered by the option naming DOCUMENTED TESTED FALLBACK + COMMUNICATION; wait-passively and untested-switch answers each fail differently."
+      ],
+      "framework_ref": "ISACA Sole-Vendor Outage guidance; NIST SP 800-34 (Contingency Planning Guide); OCC Bulletin 2013-29 (Third-Party Relationships)",
+      "related_concepts": [
+        "Sole-vendor outage",
+        "Backup processor",
+        "Vendor concentration",
+        "Incident response"
+      ],
+      "_provenance": "Authored from concept: 'Sole-vendor SaaS outage response per ISACA Sole-Vendor Outage guidance and NIST SP 800-34'. Public sources: ISACA, NIST, OCC. Scenario specifics (retail firm, single SaaS payment processor, $14M/day peak, 11:00 onset, 100% error rate by 11:45, no alternate active, three options debated) invented for this question."
+    },
+    {
+      "id": "d3_118",
+      "domain": 3,
+      "subtopic": "Data Warehouse Migration Mid-Quarter Close",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the timing conflict between the data warehouse migration and quarter close?",
+      "scenario_context": "A public company is in week 4 of a 10-week data warehouse migration. Quarter close begins in 2 weeks. The current data warehouse continues operating for finance reporting; the new platform is being populated in parallel. Finance has discovered that 3 critical reports for quarter close depend on month-end ETL jobs that have been re-architected on the new platform and not yet validated against the old. The CFO is asking whether quarter close should run on old or new. The CIO and migration program lead disagree. The IS auditor was asked to advise on cutover-vs-defer for quarter close.",
+      "options": {
+        "A": "Apply structured analysis: report-by-report validation status, parallel-run reconciliation in remaining 2 weeks, fallback plan to old warehouse, regulator/audit reporting timing, CFO sign-off requirements.",
+        "B": "Cutover all reports to the new platform immediately; the migration program should not be delayed by quarter-close timing once cutover is feasible at the technical level.",
+        "C": "Run quarter close on old platform regardless; migration cannot be allowed to introduce any risk to financial reporting integrity at quarter close for a public company at all.",
+        "D": "Defer the quarter close entirely until the migration is complete; financial-report integrity overrides the calendar deadline for filing requirements for the public company."
+      },
+      "correct": "A",
+      "key_concept": "DWH migration mid-quarter-close = structured analysis per report: validation status + parallel-run reconciliation + fallback to old + regulator timing + CFO sign-off. Cutover-everything is technical-not-governance; old-platform-blanket is overcautious; defer-quarter-close is impossible for public companies.",
+      "pre_read": "For DWH-migration-vs-quarter-close questions, anchor on \"per-report structured analysis with parallel-run.\" The decision is rarely all-or-nothing; some reports may safely run new, others should stay on old until validated.",
+      "correct_explanation": "ISACA Data Warehouse Migration guidance, ISACA Application Controls guidance, and SOX Section 302 (Quarterly Certification) establish that data-warehouse migration overlapping with financial-reporting close requires structured per-report analysis: (1) PER-REPORT VALIDATION STATUS (some reports may be fully validated, others not); (2) PARALLEL-RUN RECONCILIATION in remaining 2 weeks (run both, compare, document differences); (3) FALLBACK PLAN to the old warehouse if new-platform reports don't reconcile within tolerance; (4) REGULATOR/AUDIT REPORTING TIMING (SEC filing deadlines, external audit timing); (5) CFO SIGN-OFF REQUIREMENTS (SOX Section 302 quarterly certification requires CFO confidence in financial-reporting integrity). Option B cutover-everything ignores the validation gap. Option C run-on-old-blanket is the safer default but may waste migration progress. Option D defer-quarter-close is not viable for a public company under SEC filing requirements.",
+      "wrong_explanations": {
+        "B": "Cutover-everything ignores the documented validation gap (3 critical reports not yet validated). Public-company financial reporting requires demonstrable accuracy; unvalidated reports cannot be used for SOX-certified close.",
+        "C": "Run-everything-on-old may be the right answer for some reports but ignores that other reports may be safely cut over. Per-report analysis is more efficient than blanket old-platform usage.",
+        "D": "Defer the quarter close is not viable for a public company. SEC filing deadlines are fixed; failure to file produces material disclosure and potential delisting risk."
+      },
+      "tips": [
+        "Trap is B or C — opposite blanket-policies. B cuts over everything (ignores validation); C keeps everything on old (ignores migration progress). Per-report analysis is the structured path.",
+        "DWH migration during quarter close = PER-REPORT: VALIDATION + PARALLEL-RUN + FALLBACK + REGULATOR TIMING + CFO SIGN-OFF. Five factors per report; blanket policies miss per-report variation.",
+        "Exam-day shortcut: any migration-vs-reporting-close question is answered by the option naming PER-REPORT STRUCTURED ANALYSIS; cutover-everything and old-everything blanket answers each fail differently."
+      ],
+      "framework_ref": "ISACA Data Warehouse Migration guidance; ISACA Application Controls guidance; SOX Section 302 (Quarterly Certification)",
+      "related_concepts": [
+        "Data warehouse migration",
+        "Quarter close",
+        "SOX Section 302",
+        "Parallel run"
+      ],
+      "_provenance": "Authored from concept: 'DWH migration timing vs financial close per ISACA Data Warehouse Migration guidance and SOX Section 302'. Public sources: ISACA, SOX. Scenario specifics (public company, week 4 of 10-week DWH migration, quarter close in 2 weeks, 3 critical reports not validated, CFO/CIO/program-lead disagreement) invented for this question."
+    },
+    {
+      "id": "d3_119",
+      "domain": 3,
+      "subtopic": "Capacity Shortfall During Product Launch",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which immediate response BEST addresses the capacity shortfall the launch surfaced?",
+      "scenario_context": "A consumer-services firm launched a new product offering 3 hours ago. Traffic is 4.2x forecasted peak. Auto-scaling has saturated the cloud-account quota (capped at 200 instances; 200 active). Database connection pool is saturated. Error rate is 12% and rising. The product launch was preceded by extensive marketing investment (~$8M over 4 weeks) and the launch window is critical to a 6-week competitive timing. The CTO is exploring options: (a) emergency cloud-quota increase request; (b) implement traffic shaping (throttle) to keep error rate under control; (c) halt the launch and refund early customers. The IS auditor was paged for governance perspective.",
+      "options": {
+        "A": "Endorse approach (a) immediate quota increase only; capacity is the bottleneck and unblocking it restores normal operation without altering customer experience or launch dynamics.",
+        "B": "Endorse approach (c) halt the launch; 12%-and-rising error rate damages customer trust more than a clean pause and re-launch with proper capacity ever could possibly do.",
+        "C": "Apply parallel response: emergency quota increase + traffic shaping to protect database + transparent customer communication + post-incident capacity-planning review.",
+        "D": "Defer all decisions to the CTO during the active incident; the IS auditor's role is post-incident review, not real-time operational decision-making during the launch window."
+      },
+      "correct": "C",
+      "key_concept": "Capacity shortfall during launch = parallel response: emergency quota + traffic shaping + transparent communication + post-incident review. Single-action responses (quota-only or halt-only) miss the multi-dimensional pressure; defer-to-CTO abandons audit independence.",
+      "pre_read": "For capacity-shortfall-during-launch questions, anchor on \"parallel response: capacity + shaping + communication + review.\" Single-action responses each fail on a different dimension.",
+      "correct_explanation": "ISACA Launch Capacity Planning guidance, ISACA Performance Testing guidance, and ITIL 4 Incident Management establish that capacity-shortfall during launch requires parallel response: (1) EMERGENCY QUOTA INCREASE (cloud providers typically respond quickly to legitimate growth requests, but the request must be initiated immediately); (2) TRAFFIC SHAPING / THROTTLING to protect downstream constraints (database connection pool, downstream services) — better to serve 70% of traffic well than 100% poorly; (3) TRANSPARENT CUSTOMER COMMUNICATION (status page update, in-app messaging) to manage expectations; (4) POST-INCIDENT CAPACITY-PLANNING REVIEW (the 4.2x forecast miss is the governance issue to address — covered in d3_079 test-environment fidelity). Option A quota-only ignores the database bottleneck that quota increase won't fix. Option B halt-launch loses the competitive timing and $8M marketing investment when partial-service is recoverable. Option D defer-to-CTO abandons audit independence.",
+      "wrong_explanations": {
+        "A": "Quota increase only ignores the database connection pool saturation; more compute capacity won't fix a database constraint downstream. Parallel response addresses both.",
+        "B": "Halt-launch loses competitive timing and $8M marketing investment when partial-service is recoverable through traffic shaping and quota increase. Halt should be a last resort, not the default.",
+        "D": "Defer-to-CTO abandons audit independence at exactly the moment when independent voice matters most. The IS auditor's role includes real-time governance perspective during incidents, especially those with material business impact."
+      },
+      "tips": [
+        "Trap is A or B — opposite single-action responses. A addresses only one bottleneck (capacity); B abandons the launch entirely. The right answer is parallel multi-action response.",
+        "Capacity shortfall during launch = QUOTA INCREASE + TRAFFIC SHAPING + COMMUNICATION + POST-INCIDENT REVIEW. Four parallel actions; single-action approaches miss interacting constraints.",
+        "Exam-day shortcut: any launch-incident question is answered by the option naming PARALLEL RESPONSE with multiple actions; single-action and defer-to-business answers each fail differently."
+      ],
+      "framework_ref": "ISACA Launch Capacity Planning guidance; ISACA Performance Testing guidance; ITIL 4 Incident Management",
+      "related_concepts": [
+        "Capacity shortfall",
+        "Launch incident",
+        "Traffic shaping",
+        "Quota"
+      ],
+      "_provenance": "Authored from concept: 'Capacity shortfall during product launch per ISACA Launch Capacity Planning guidance'. Public sources: ISACA, ITIL 4. Scenario specifics (consumer services, 4.2x peak traffic, 200-instance quota cap, database pool saturation, 12% rising error rate, $8M marketing investment, 6-week competitive window) invented for this question."
+    },
+    {
+      "id": "d3_120",
+      "domain": 3,
+      "subtopic": "Cross-System Referential Integrity Loss",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST addresses the cross-system referential integrity loss the firm discovered?",
+      "scenario_context": "A B2B platform firm discovered that customer records exist in three integrated systems (CRM, billing, support) and recent integration changes have introduced inconsistencies: ~3% of customers (~720 records) show different data in different systems (name, email, billing address discrepancies). Root cause: a sync job authored 4 months ago has been silently failing for some record patterns. Downstream impacts: 4 billing disputes traced to wrong-address invoices; 2 customer-support escalations from miscommunication. The CIO, CFO, and head of customer success are exploring response options. The IS auditor was asked to advise on governance principles for the referential-integrity recovery.",
+      "options": {
+        "A": "Endorse a one-time data reconciliation only; once the 720 records are reconciled, the issue is resolved and ongoing governance changes are not required for this incident.",
+        "B": "Halt all customer-facing operations until full data reconciliation is complete across all three systems; integrity must be restored before any further customer interaction continues.",
+        "C": "Continue normal operations and address customer issues as they surface; 720 records out of the customer base is too small to justify special governance investment in remediation.",
+        "D": "Apply structured response: identify the 720 records and reconcile + fix the sync job + add reconciliation monitoring + root-cause review of why the silent failure went undetected for 4 months."
+      },
+      "correct": "D",
+      "key_concept": "Cross-system referential integrity loss = structured response: identify-and-reconcile 720 records + fix sync job + add reconciliation monitoring + root-cause review of detection failure. One-time-fix accepts recurrence; halt-everything overreacts; ignore accepts the data quality issue and the detection gap.",
+      "pre_read": "For referential-integrity loss questions, anchor on \"structured: reconcile + fix + monitor + root-cause review.\" One-time fixes ignore detection; halt-everything overreacts; ignore accepts the data quality issue.",
+      "correct_explanation": "ISACA Referential Integrity guidance, ISACA Data Integrity Controls guidance, DAMA-DMBOK 2nd Edition, and ISACA Data Migration guidance establish structured response for cross-system referential-integrity loss: (1) IDENTIFY AND RECONCILE the 720 records (which system has the authoritative value per field — covered by data stewardship in d3_073); (2) FIX THE SYNC JOB so new inconsistencies don't accumulate; (3) ADD RECONCILIATION MONITORING (continuous comparison between systems with alerts on discrepancies — covered in d3_034 IaC drift detection pattern); (4) ROOT-CAUSE REVIEW of why the silent failure went undetected for 4 months (the detection gap is the deeper governance issue — covered in d3_066 query performance monitoring). Option A one-time-fix doesn't prevent recurrence. Option B halt-everything overreacts to a 3% data-quality issue. Option C continue-and-handle-issues-as-they-surface accepts the data quality issue AND the detection gap.",
+      "wrong_explanations": {
+        "A": "One-time reconciliation fixes the symptom (720 inconsistent records) but doesn't address the cause (broken sync job) or the detection gap (silent failure for 4 months). Recurrence is likely without sync-job fix and ongoing monitoring.",
+        "B": "Halt-everything overreacts to a 3% data quality issue. The firm has ~720 affected records out of presumably tens of thousands; targeted reconciliation plus operations continuity is more proportional.",
+        "C": "Continue-and-handle-issues-as-they-surface accepts both the data quality issue (4 billing disputes already attributable, more likely) and the detection gap (the 4-month silent failure is the deeper governance problem the firm should address)."
+      },
+      "tips": [
+        "Trap is A or B — opposite extremes. A is one-time fix without ongoing controls; B is halt-everything without proportionality. The right answer is structured: reconcile + fix + monitor + root-cause review.",
+        "Referential integrity loss = IDENTIFY-AND-RECONCILE + FIX SYNC + ADD MONITORING + ROOT-CAUSE REVIEW. Four elements; missing any leaves a gap or accepts recurrence.",
+        "Exam-day shortcut: any data-integrity loss question is answered by the option naming RECONCILE + FIX SOURCE + MONITOR + ROOT-CAUSE; one-time-fix and ignore answers each fail differently."
+      ],
+      "framework_ref": "ISACA Referential Integrity guidance; ISACA Data Integrity Controls guidance; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality)",
+      "related_concepts": [
+        "Referential integrity",
+        "Cross-system sync",
+        "Data stewardship",
+        "Root-cause review"
+      ],
+      "_provenance": "Authored from concept: 'Cross-system referential integrity loss per ISACA Referential Integrity guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (B2B platform, 3 systems CRM/billing/support, 3% record inconsistency / 720 records, 4-month silent sync failure, 4 billing disputes + 2 support escalations traced) invented for this question. FINAL D3 QUESTION — D3 closes at 120/120."
     }
   ]
 }

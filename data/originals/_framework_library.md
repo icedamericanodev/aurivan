@@ -718,3 +718,34 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Knowledge-Transfer guidance
 - ISACA Mid-Cutover Conflict guidance
 - ISACA Product Launch Decision guidance
+
+## D3 batch 6 (closing) additions
+- ISACA M&A Integration Recovery guidance
+- ISACA Portfolio Rebalancing guidance
+- ISACA Insourcing Decision guidance
+- ISACA Vendor Renegotiation guidance
+- ISACA Failing Program Recovery guidance
+- ISACA Distributed Agile Teams guidance
+- ISACA Release Train Coordination guidance
+- ISACA Scope Creep guidance
+- ISACA Architecture Reversal Decision guidance
+- ISACA Database Technology Selection guidance
+- ISACA Cloud Migration Strategy guidance
+- ISACA Zero-Trust Migration guidance
+- ISACA Zero-Day Response guidance
+- ISACA Data Sovereignty guidance
+- ISACA Supply-Chain Attestation guidance
+- ISACA Regulator Audit Response guidance
+- ISACA Sole-Vendor Outage guidance
+- ISACA Data Warehouse Migration guidance
+- ISACA Launch Capacity Planning guidance
+- ISACA Referential Integrity guidance
+- NIST Zero Trust Architecture (NIST SP 800-207)
+- COBIT 2019 APO10 (Managed Vendors)
+- COBIT 2019 APO11 (Managed Quality)
+- COBIT 2019 APO12 (Managed Risk)
+- COBIT 2019 APO13 (Managed Security)
+- SAFe (Scaled Agile Framework)
+- LeSS (Large-Scale Scrum)
+- Scrum@Scale
+- SOX Section 302 (Quarterly Certification)
