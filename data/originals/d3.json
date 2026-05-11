@@ -1484,6 +1484,724 @@
         "Cutover governance"
       ],
       "_provenance": "Authored from concept: 'Multi-cycle cutover rehearsals per ISACA Data Migration guidance and COBIT 2019 BAI07'. Public sources: ISACA, COBIT 2019, NIST SP 800-34. Scenario specifics (payments processor, 250M tx/day, 30K merchants, 12-week lead time, CIO/COO disagreement on scope) invented for this question."
+    },
+    {
+      "id": "d3_041",
+      "domain": 3,
+      "subtopic": "Project Lifecycle Phases — PMBOK Process Groups",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which sequence BEST represents the standard project lifecycle phases under PMBOK guidance?",
+      "options": {
+        "A": "Planning, executing, monitoring, initiating, closing — initiation occurs near the end as final scope confirmation.",
+        "B": "Initiating, planning, executing, monitoring and controlling, closing — five process groups that span any project.",
+        "C": "Designing, building, testing, deploying, supporting — five technical phases that map directly to the SDLC.",
+        "D": "Charter, requirements, design, code, test, deploy — six artifacts produced sequentially through the project."
+      },
+      "correct": "B",
+      "key_concept": "PMBOK process groups: Initiating, Planning, Executing, Monitoring & Controlling, Closing. They are not phases of work (like SDLC) but groups of processes that recur across the project. Distractors substitute SDLC, artifacts, or scrambled orderings.",
+      "pre_read": "For project-lifecycle questions, anchor on the five PMBOK process groups in order: Initiating → Planning → Executing → Monitoring & Controlling → Closing. SDLC and artifact lists are different concepts.",
+      "correct_explanation": "PMBOK Guide 7th Edition defines the five process groups that organize project management activities across any project: Initiating (authorize the project), Planning (define scope, schedule, cost, quality, etc.), Executing (perform the work), Monitoring & Controlling (track progress and manage changes), and Closing (formally close the project). These are process groups, not chronological phases — Monitoring & Controlling runs continuously alongside Executing, for example. Option A scrambles the order. Option C lists SDLC phases (covered in d3_002), which are different from project process groups. Option D lists artifacts produced during a project, not lifecycle phases.",
+      "wrong_explanations": {
+        "A": "The order is scrambled. Initiating must come first (the project does not exist until it is initiated). Planning precedes Executing because you cannot execute without a plan.",
+        "C": "These are SDLC phases (covered in d3_002), which describe software development activities. Project process groups are management activities applicable to any project, not just software.",
+        "D": "These are project artifacts (charter, requirements doc, design doc, code, test results, deployment), not lifecycle phases. Phases are time periods of activity; artifacts are deliverables produced within them."
+      },
+      "tips": [
+        "Trap is C — \"design, build, test, deploy\" is the SDLC, which sounds like a project lifecycle but they are different concepts. Project lifecycle = MANAGEMENT activities; SDLC = SOFTWARE-BUILD activities.",
+        "PMBOK process groups: Initiating, Planning, Executing, Monitoring & Controlling, Closing. Five groups; not chronological phases.",
+        "Exam-day shortcut: when an option lists technical activities (design/build/test/deploy), it's the SDLC; when it lists management activities (initiate/plan/execute/control/close), it's the project lifecycle."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; PRINCE2 (Projects in Controlled Environments); ISACA Project Management guidance",
+      "related_concepts": [
+        "Project lifecycle",
+        "PMBOK process groups",
+        "Project management"
+      ],
+      "_provenance": "Authored from concept: 'PMBOK process groups vs SDLC distinction'. Public sources: PMBOK 7E, PRINCE2."
+    },
+    {
+      "id": "d3_042",
+      "domain": 3,
+      "subtopic": "Data Integrity Controls — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST describes the PRIMARY purpose of data integrity controls in an application?",
+      "options": {
+        "A": "Ensure data is complete, accurate, valid, and unaltered throughout entry, processing, storage, and output stages.",
+        "B": "Encrypt data at rest and in transit to prevent unauthorized parties from reading sensitive information assets.",
+        "C": "Authenticate users at sign-on and authorize their permissions to access specific application functions or modules.",
+        "D": "Log all data-access events to enable forensic investigation after a suspected breach or compromise occurs."
+      },
+      "correct": "A",
+      "key_concept": "Data integrity controls = ensure data remains complete, accurate, valid, and unaltered across its lifecycle. Encryption protects confidentiality. Authentication/authorization controls access. Logging supports detection and forensics. Each addresses a different security property.",
+      "pre_read": "For data-integrity questions, anchor on \"complete + accurate + valid + unaltered.\" Distractors substitute confidentiality (encryption), access (auth), or detection (logging) controls.",
+      "correct_explanation": "ISACA Data Integrity Controls guidance and ISACA Application Controls guidance define data integrity controls as the controls that ensure data remains complete (no missing values), accurate (correctly captured), valid (conforming to expected formats and values), and unaltered (protected against unauthorized modification) across its lifecycle — entry, processing, storage, and output. Option B describes confidentiality controls (encryption). Option C describes access controls (authentication/authorization). Option D describes detection controls (audit logging). The four security properties — confidentiality, integrity, availability, and accountability — each map to distinct control categories.",
+      "wrong_explanations": {
+        "B": "Encryption protects CONFIDENTIALITY (preventing unauthorized read), not INTEGRITY (preventing unauthorized modification). The two properties require different controls.",
+        "C": "Authentication and authorization are ACCESS controls, not data-integrity controls. They govern WHO can interact with data, not whether the data itself is complete and unaltered.",
+        "D": "Logging is a DETECTION control, supporting investigation after the fact. Integrity controls are PREVENTIVE, ensuring data is correct at the time of entry, processing, and storage."
+      },
+      "tips": [
+        "Trap is B — \"encrypt data\" sounds like protection but it protects CONFIDENTIALITY (read), not INTEGRITY (alteration). Different security properties; different controls.",
+        "Data integrity = complete + accurate + valid + unaltered across the data lifecycle. Encryption, auth, and logging address different properties.",
+        "Exam-day shortcut: when an option names encryption, auth, or logging, ask \"which CIA property does this address?\" If it's not integrity, the option is wrong for an integrity-controls question."
+      ],
+      "framework_ref": "ISACA Data Integrity Controls guidance; ISACA Application Controls guidance; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "Data integrity",
+        "CIA triad",
+        "Application controls"
+      ],
+      "_provenance": "Authored from concept: 'Data integrity controls per ISACA Data Integrity Controls guidance'. Public sources: ISACA guidance, COBIT 2019."
+    },
+    {
+      "id": "d3_043",
+      "domain": 3,
+      "subtopic": "Project Closure Activities",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which activity is MOST associated with formal project closure?",
+      "options": {
+        "A": "Conducting a second user-acceptance testing cycle to verify functional requirements before stakeholder approval.",
+        "B": "Producing the project charter that authorizes the project and grants the manager authority over resources.",
+        "C": "Releasing project resources, archiving documents, completing financial closeout, and capturing lessons learned.",
+        "D": "Re-baselining the schedule to align with the latest mid-project scope and resource changes for ongoing tracking."
+      },
+      "correct": "C",
+      "key_concept": "Project closure = release resources + archive documents + financial closeout + lessons learned (and obtain formal acceptance). UAT is an Executing-phase activity. Charter is Initiating. Re-baselining is Planning/Monitoring.",
+      "pre_read": "For project-closure questions, anchor on the closing-phase activities: release resources, archive documents, financial close, lessons learned, formal acceptance. Distractors propose activities from other process groups.",
+      "correct_explanation": "PMBOK Guide 7th Edition and ISACA Project Closure guidance establish formal project closure as the process of finalizing all activities: obtaining formal acceptance, releasing project resources back to the organization, archiving project documents for future reference, completing financial closeout (final invoices, vendor payments, asset transfers), and capturing lessons learned (covered in d3_044). Option A is an Executing-phase activity (UAT happens before deployment, not at closure). Option B is an Initiating-phase activity (the charter creates the project; closure ends it). Option D is a Planning or Monitoring & Controlling activity, not closure.",
+      "wrong_explanations": {
+        "A": "UAT is part of Executing. By the time the project closes, UAT has been completed and the system has been deployed. Closure addresses what happens AFTER deployment.",
+        "B": "The charter is produced during Initiating to authorize the project. Closure is the OPPOSITE end of the project lifecycle.",
+        "D": "Re-baselining is a Planning or Monitoring & Controlling activity that happens DURING the project, not at the end. Closure assumes the project is finishing, not adjusting."
+      },
+      "tips": [
+        "Trap is A — \"second UAT cycle\" sounds like a final-quality activity but UAT happens before deployment, not at closure. Closure addresses post-deployment wrap-up.",
+        "Closure = release resources + archive + financial close + lessons learned + formal acceptance. Five activities; all post-deployment.",
+        "Exam-day shortcut: project-closure questions are answered by the option naming WRAP-UP activities; planning, executing, or monitoring activities are wrong for a closure question."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; ISACA Project Closure guidance; ISACA Project Management guidance",
+      "related_concepts": [
+        "Project closure",
+        "Lessons learned",
+        "Project archive"
+      ],
+      "_provenance": "Authored from concept: 'Project closure activities per PMBOK 7E and ISACA Project Closure guidance'. Public sources: PMBOK 7E, ISACA guidance."
+    },
+    {
+      "id": "d3_044",
+      "domain": 3,
+      "subtopic": "Lessons Learned — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST defines the PRIMARY purpose of a lessons-learned process?",
+      "options": {
+        "A": "Identify which team members performed best on the project so they can be assigned to higher-profile future work.",
+        "B": "Document the formal project charter and supporting governance artifacts for inclusion in the project archive.",
+        "C": "Generate marketing case-study content describing project successes for use in future business-development efforts.",
+        "D": "Capture what worked, what didn't, and recommended improvements for future projects, accessible to the broader organization."
+      },
+      "correct": "D",
+      "key_concept": "Lessons learned = capture what worked + what didn't + recommendations + organizational accessibility. It's organizational learning, not individual evaluation, charter documentation, or marketing material. The accessibility property is critical — siloed lessons aren't lessons.",
+      "pre_read": "For lessons-learned questions, anchor on \"organizational learning across projects.\" Distractors propose individual performance review, charter documentation, or external marketing.",
+      "correct_explanation": "PMBOK Guide 7th Edition and ISACA Lessons Learned guidance establish lessons learned as the process of capturing knowledge gained during a project — what worked, what didn't, and what should change next time — and making that knowledge accessible to the broader organization (often via a lessons-learned repository, knowledge base, or community of practice). Option A confuses lessons learned with performance management (individual evaluation). Option B confuses it with archiving (storing artifacts). Option C confuses it with marketing (selecting successes for external messaging). The PRIMARY purpose is organizational learning, not any of those three adjacent activities.",
+      "wrong_explanations": {
+        "A": "Performance management is a separate HR process. Lessons learned addresses PROCESS improvement, not individual evaluation; the latter has different governance and confidentiality requirements.",
+        "B": "Archiving stores artifacts. Lessons learned synthesizes insight FROM activities; it's a value-added analysis, not a documentation copy.",
+        "C": "Marketing case studies select successes for external audiences. Lessons learned must include FAILURES to be useful for future projects; that's the opposite framing of marketing."
+      },
+      "tips": [
+        "Trap is A or C — A confuses lessons learned with PERFORMANCE management (people evaluation); C confuses it with MARKETING case studies (success-only narratives). Lessons learned addresses PROCESS, includes FAILURES, and serves FUTURE PROJECTS.",
+        "Lessons learned = what worked + what didn't + recommendations + accessible to org. All four properties; missing accessibility means no learning happens.",
+        "Exam-day shortcut: lessons-learned questions are answered by the option naming KNOWLEDGE TRANSFER for future projects; performance, archive, or marketing answers are wrong."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; ISACA Lessons Learned guidance; COBIT 2019 BAI08 (Managed Knowledge)",
+      "related_concepts": [
+        "Lessons learned",
+        "Organizational learning",
+        "Knowledge management"
+      ],
+      "_provenance": "Authored from concept: 'Lessons learned organizational learning per PMBOK 7E and COBIT 2019 BAI08'. Public sources: PMBOK 7E, ISACA guidance, COBIT 2019."
+    },
+    {
+      "id": "d3_045",
+      "domain": 3,
+      "subtopic": "Project Stakeholder Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST supports tailored project communication with diverse stakeholders?",
+      "options": {
+        "A": "Send identical detailed status reports to every stakeholder weekly to ensure complete transparency across all parties.",
+        "B": "Map stakeholders by power and interest, then tailor frequency, format, and content of communications to each group.",
+        "C": "Restrict communications to the steering committee and leave individual stakeholder engagement to functional managers.",
+        "D": "Publish all project artifacts on a public dashboard and let stakeholders self-serve the information they need."
+      },
+      "correct": "B",
+      "key_concept": "Stakeholder management = map by power and interest (the power-interest grid), then tailor communications. Uniform reports waste effort and miss differing needs. Steering-committee-only and self-serve approaches both fail because stakeholders need active, tailored engagement.",
+      "pre_read": "For stakeholder-management questions, anchor on \"map and tailor.\" The power-interest grid (or salience model) drives differential engagement. Uniform or one-channel approaches fail.",
+      "correct_explanation": "PMBOK Guide 7th Edition and ISACA Stakeholder Management guidance establish stakeholder mapping (power-interest grid, or Mendelow's matrix) followed by tailored communication as the canonical approach. Stakeholders with high power and high interest need active management with frequent detailed engagement; high power, low interest need to be kept satisfied with concise updates; low power, high interest kept informed; low power, low interest monitored. Option A's uniform reports waste effort on stakeholders who don't need detail and under-serve those who do. Option C's steering-only approach fails to engage critical stakeholders below executive level. Option D's self-serve approach assumes stakeholders will pull information; many will not, and critical issues won't surface.",
+      "wrong_explanations": {
+        "A": "Uniform reports treat all stakeholders identically, which is operationally wasteful and misses the point of stakeholder management — different stakeholders have different information needs and influence.",
+        "C": "Steering-committee-only engagement leaves operational stakeholders unattended; they may surface issues too late or feel disengaged from the project.",
+        "D": "Self-serve approaches assume stakeholders proactively pull information. In practice, busy stakeholders won't pull; critical issues remain invisible until they become crises."
+      },
+      "tips": [
+        "Trap is A — \"identical detailed reports for transparency\" feels democratic but it's actually a service failure: the over-detailed get ignored, the under-detailed get missed.",
+        "Stakeholder management = MAP (power-interest) then TAILOR (frequency + format + content). Uniform and self-serve approaches both fail.",
+        "Exam-day shortcut: any stakeholder-management question is answered by the option naming differential engagement based on stakeholder mapping; uniform-treatment answers are wrong."
+      ],
+      "framework_ref": "PMBOK Guide 7th Edition; ISACA Stakeholder Management guidance; ISACA Project Management guidance",
+      "related_concepts": [
+        "Stakeholder management",
+        "Power-interest grid",
+        "Mendelow's matrix"
+      ],
+      "_provenance": "Authored from concept: 'Stakeholder mapping and tailored engagement per PMBOK 7E and ISACA Stakeholder Management guidance'. Public sources: PMBOK 7E, ISACA guidance."
+    },
+    {
+      "id": "d3_046",
+      "domain": 3,
+      "subtopic": "IT Investment Portfolio — Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic BEST distinguishes IT investment portfolio governance from individual-project governance?",
+      "options": {
+        "A": "Portfolio governance prioritizes investments collectively against strategy and resource constraints, balancing risk and return.",
+        "B": "Portfolio governance focuses exclusively on financial reporting of project costs against approved budgets and schedules.",
+        "C": "Portfolio governance is the same as project governance, scaled up for organizations running many projects in parallel.",
+        "D": "Portfolio governance addresses only operational maintenance projects, not strategic transformation initiatives or programs."
+      },
+      "correct": "A",
+      "key_concept": "Portfolio governance = collective prioritization across investments using strategy fit, resource constraints, risk, and return. It is fundamentally different from project governance (which addresses one initiative). Same-scaled-up, financial-only, or operations-only framings all miss the strategic prioritization core.",
+      "pre_read": "For portfolio-governance questions, anchor on \"collective prioritization against strategy + resource constraints + risk-return balance.\" Project governance is a different concern.",
+      "correct_explanation": "ISACA Val IT Framework, ISACA IT Investment guidance, and COBIT 2019 EDM02 (Ensured Benefits Delivery) establish portfolio governance as the discipline of selecting, prioritizing, and rebalancing IT investments collectively — making strategic trade-offs that no single project can make alone. Portfolio governance evaluates each investment against enterprise strategy, available resources (people, money, capacity), risk-return profile, and interactions with other portfolio items. Option B narrows portfolio governance to financial reporting, which is one component but not the distinguishing characteristic. Option C conflates project and portfolio governance; they answer different questions (one project's success vs the right mix of projects). Option D arbitrarily limits portfolio governance to maintenance, which contradicts its strategic purpose.",
+      "wrong_explanations": {
+        "B": "Financial reporting is one input to portfolio governance, but the discipline is broader — strategy fit, capacity, risk, value, and dependencies all matter beyond finances.",
+        "C": "Project governance asks 'is this project succeeding?'. Portfolio governance asks 'are we doing the right projects, in the right order, with the right resources?'. Different questions; different answers.",
+        "D": "Portfolio governance applies to ALL IT investments — operational, strategic, transformation, run-the-bank, change-the-bank. Limiting it to one category contradicts its purpose."
+      },
+      "tips": [
+        "Trap is C — \"same as project governance, scaled up\" is the most common mental shortcut but it misses the strategic-trade-off core of portfolio governance.",
+        "Portfolio governance = COLLECTIVE prioritization against strategy + resources + risk + return. Project governance = INDIVIDUAL initiative success.",
+        "Exam-day shortcut: portfolio questions are answered by the option naming TRADE-OFFS across investments; single-project framings are project governance, not portfolio."
+      ],
+      "framework_ref": "ISACA Val IT Framework; ISACA IT Investment guidance; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
+      "related_concepts": [
+        "IT portfolio governance",
+        "Val IT",
+        "Investment prioritization"
+      ],
+      "_provenance": "Authored from concept: 'IT investment portfolio governance per ISACA Val IT and COBIT 2019 EDM02'. Public sources: ISACA Val IT, COBIT 2019."
+    },
+    {
+      "id": "d3_047",
+      "domain": 3,
+      "subtopic": "Low-Code/No-Code — Citizen Developer Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST appropriately addresses citizen-developer risk in a low-code/no-code platform?",
+      "options": {
+        "A": "Allow business users full freedom on the platform; IT involvement defeats the speed advantage of low-code tools.",
+        "B": "Require IT to author every low-code application; citizen developers may only file requests through the help desk.",
+        "C": "Establish a center-of-excellence with platform standards, environment tiers, security review gates, and citizen-developer training.",
+        "D": "Block all low-code platform usage organization-wide because the risks always outweigh the productivity benefits."
+      },
+      "correct": "C",
+      "key_concept": "Low-code/no-code governance = center-of-excellence model: platform standards + environment tiers (dev/test/prod) + security review gates + citizen-developer training. Full freedom and total ban are both extremes; IT-only authoring defeats the platform's value.",
+      "pre_read": "For low-code/no-code governance questions, anchor on the center-of-excellence model. Distractors propose extremes (free-for-all or total ban) or defeat the platform's value (IT-only authoring).",
+      "correct_explanation": "ISACA Low-Code/No-Code Governance guidance establishes a center-of-excellence (CoE) model as the appropriate governance pattern: define platform standards (allowed connectors, data sources, deployment patterns), environment tiers (citizen-developer sandbox, business-owned production, IT-managed shared apps), security review gates (PII handling, third-party integrations, scheduled jobs), and citizen-developer training (data hygiene, naming conventions, basic security). Option A's free-for-all creates shadow IT and security gaps. Option B's IT-only authoring eliminates the platform's productivity value (citizen developers exist precisely to build their own automations). Option D's total ban over-corrects and misses the productivity benefits the platform offers.",
+      "wrong_explanations": {
+        "A": "Full freedom creates shadow IT, data leakage, undocumented dependencies, and security gaps. The productivity gain is real but unmanaged risk eventually overwhelms it.",
+        "B": "IT-authored low-code defeats the platform's purpose. Citizen developers exist precisely to build their own automations; routing everything through IT recreates the bottleneck the platform was meant to relieve.",
+        "D": "Total ban over-corrects. Low-code/no-code platforms deliver real productivity for well-scoped use cases; the right answer is governance, not prohibition."
+      },
+      "tips": [
+        "Trap is A — \"full freedom for business users\" matches the marketing pitch of low-code platforms but creates shadow IT; governance is required even on platforms designed for non-developers.",
+        "Low-code/no-code governance = center-of-excellence + standards + environment tiers + security gates + training. Five elements; missing any creates risk.",
+        "Exam-day shortcut: any low-code/no-code question is answered by the option naming GOVERNANCE PROGRAM (CoE); free-for-all and total-ban answers are extremes that miss the middle path."
+      ],
+      "framework_ref": "ISACA Low-Code/No-Code Governance guidance; ISACA Software Audit guidance; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "related_concepts": [
+        "Low-code",
+        "No-code",
+        "Citizen developer",
+        "Center of excellence"
+      ],
+      "_provenance": "Authored from concept: 'Low-code/no-code governance per ISACA Low-Code/No-Code Governance guidance'. Public sources: ISACA guidance, COBIT 2019."
+    },
+    {
+      "id": "d3_048",
+      "domain": 3,
+      "subtopic": "API Versioning & Contract Testing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice BEST prevents breaking-change incidents between API providers and consumers?",
+      "options": {
+        "A": "Notify consumers via email one week before deploying any breaking change to a production API endpoint.",
+        "B": "Make breaking changes only at major release boundaries when consumers are expected to absorb migration work.",
+        "C": "Deploy breaking changes silently and monitor logs for consumer errors; remediate via patches as issues arise.",
+        "D": "Use semantic API versioning (vN), maintain old versions in parallel, and run consumer-driven contract tests pre-deployment."
+      },
+      "correct": "D",
+      "key_concept": "API breaking-change prevention = semantic versioning + parallel old/new versions + consumer-driven contract testing pre-deployment. Email notification, major-release-only, or silent deployment all leave consumers exposed to incidents.",
+      "pre_read": "For API-versioning questions, anchor on \"semantic versioning + parallel versions + contract testing.\" Notification-only and silent-deploy approaches both fail because consumers may not migrate or may not detect breakage.",
+      "correct_explanation": "OWASP API Security Top 10 (2023) and Pact (Consumer-Driven Contract Testing) establish three practices that together prevent breaking-change incidents: (1) semantic API versioning (e.g., /v1/, /v2/) so consumers can opt into new versions; (2) maintaining old versions in parallel during a deprecation window so consumers can migrate on their schedule; (3) consumer-driven contract testing — providers run the consumers' contracts as part of their CI to catch breaking changes BEFORE deployment. Option A relies on consumer action within a tight window. Option B doesn't prevent breakage, just batches it. Option C transfers risk entirely to consumers and treats production incidents as acceptable.",
+      "wrong_explanations": {
+        "A": "Email notification relies on consumer action within a window. Many consumers won't read or act in time, especially if the contact is stale or the change is missed.",
+        "B": "Major-release boundaries batch breaking changes but don't prevent them. Consumers still face migration work on the provider's schedule, and incidents still occur if testing is incomplete.",
+        "C": "Silent deployment treats production incidents as acceptable, which they aren't for consumer-facing APIs. Monitoring after the fact is detection, not prevention."
+      },
+      "tips": [
+        "Trap is A or B — A (\"email notification one week ahead\") relies on consumer action in a tight window; B (\"breaking changes at major release only\") batches breakage rather than preventing it. Both leave consumers exposed.",
+        "API breaking-change prevention = semantic versioning + parallel old/new + consumer-driven contract testing. Three practices; all three are needed.",
+        "Exam-day shortcut: API-versioning questions are answered by the option naming PARALLEL VERSIONS + CONTRACT TESTING; notification-only or silent-deploy answers are weak."
+      ],
+      "framework_ref": "OWASP API Security Top 10 (2023); Pact (Consumer-Driven Contract Testing); ISACA Software Audit guidance",
+      "related_concepts": [
+        "API versioning",
+        "Contract testing",
+        "Pact",
+        "Semantic versioning"
+      ],
+      "_provenance": "Authored from concept: 'API versioning and contract testing per OWASP API Top 10 and Pact'. Public sources: OWASP, Pact."
+    },
+    {
+      "id": "d3_049",
+      "domain": 3,
+      "subtopic": "Parallel Run Reconciliation Tolerance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which tolerance setting MOST appropriately governs parallel-run reconciliation between legacy and new systems?",
+      "options": {
+        "A": "Zero tolerance — any variance, however small, must be investigated and explained before cutover proceeds.",
+        "B": "A risk-based threshold per data category that reflects materiality and business impact, with documented investigation rules.",
+        "C": "A flat 5% tolerance applied uniformly across all data categories regardless of business sensitivity or volume.",
+        "D": "Whatever tolerance the project manager sets to keep the cutover on schedule given current variance levels observed."
+      },
+      "correct": "B",
+      "key_concept": "Parallel-run tolerance = risk-based per-category threshold with documented investigation rules. Zero tolerance is operationally infeasible (rounding, timing). Flat percentages ignore materiality. PM-set-by-schedule corrupts the control.",
+      "pre_read": "For parallel-run tolerance questions, anchor on \"risk-based + per category + documented investigation rules.\" Distractors propose extremes (zero, flat) or schedule-driven adjustment.",
+      "correct_explanation": "ISACA Data Migration guidance and ISACA Application Controls guidance establish risk-based, per-category tolerance thresholds as the appropriate parallel-run reconciliation control. Different data categories have different materiality and business impact (financial balances vs reference data, transaction counts vs descriptive fields), and tolerance should reflect those differences. Above the threshold triggers documented investigation; below the threshold is recorded but does not gate cutover. Option A's zero tolerance is operationally infeasible (timing differences, rounding, encoding variations all produce small variances). Option C's flat 5% is too loose for high-materiality data and unnecessarily strict for low-materiality data. Option D's PM-set-by-schedule corrupts the control by allowing pressure to drive the threshold.",
+      "wrong_explanations": {
+        "A": "Zero tolerance is operationally infeasible. Small variances from rounding, timing differences, and encoding variations always exist; demanding zero forces the team to either investigate trivia or false-flag the cutover.",
+        "C": "Flat 5% is arbitrarily applied. Financial balances may need 0.01% tolerance; descriptive fields may tolerate 1%. Uniform thresholds either over-investigate small data or under-investigate critical data.",
+        "D": "PM-set-by-schedule lets pressure drive the threshold, which is the textbook control failure pattern. The threshold must be set BEFORE the cutover and protected from schedule pressure."
+      },
+      "tips": [
+        "Trap is A — \"zero tolerance\" feels rigorous but it's operationally infeasible; the cutover never proceeds because trivial variances always exist.",
+        "Parallel-run tolerance = RISK-BASED + per CATEGORY + DOCUMENTED investigation rules. All three properties; missing any defeats the control.",
+        "Exam-day shortcut: any tolerance question is answered by the option naming RISK-BASED differential thresholds; zero or flat-uniform answers are extremes that fail."
+      ],
+      "framework_ref": "ISACA Data Migration guidance; ISACA Application Controls guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "Parallel run",
+        "Reconciliation tolerance",
+        "Materiality",
+        "Data conversion"
+      ],
+      "_provenance": "Authored from concept: 'Risk-based parallel-run tolerance per ISACA Data Migration guidance'. Public sources: ISACA guidance, COBIT 2019."
+    },
+    {
+      "id": "d3_050",
+      "domain": 3,
+      "subtopic": "Risk-Based Testing Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic MOST distinguishes a risk-based testing strategy from comprehensive testing?",
+      "options": {
+        "A": "Test effort is concentrated on the highest-risk areas (impact x likelihood) rather than spread evenly across the system.",
+        "B": "Every code path is tested with equal rigor to ensure no risk area is overlooked during the cycle or release.",
+        "C": "Testing is performed only after a risk event materializes in production rather than as a preventive activity.",
+        "D": "Risk-based testing replaces all other forms of testing because it focuses exclusively on production-relevant scenarios."
+      },
+      "correct": "A",
+      "key_concept": "Risk-based testing = concentrate effort on highest impact x likelihood areas. It is a strategy for prioritization, not a replacement for testing or a reactive activity. Comprehensive (uniform-rigor) testing is the opposite approach.",
+      "pre_read": "For risk-based testing questions, anchor on \"effort concentrated on highest impact x likelihood.\" It's a prioritization strategy, not reactive, not all-or-nothing.",
+      "correct_explanation": "ISO/IEC 29119 (Software Testing) and ISTQB Foundation Level Syllabus establish risk-based testing as a strategy that allocates testing effort proportional to risk — the product of impact (consequence if defective) and likelihood (probability of defect). Higher-risk areas get more thorough testing; lower-risk areas get lighter coverage. The strategy aligns testing investment with business value and accepts that perfect coverage is neither possible nor cost-justified. Option B describes comprehensive testing (uniform rigor), which is the OPPOSITE strategy. Option C describes reactive testing, not risk-based. Option D claims risk-based replaces all other testing, which misunderstands the strategy — risk-based is a prioritization framework that complements other techniques.",
+      "wrong_explanations": {
+        "B": "Uniform-rigor testing is the OPPOSITE of risk-based testing. Risk-based concentrates effort; uniform spreads effort. The two strategies answer different questions about how to allocate finite testing capacity.",
+        "C": "Reactive testing waits for incidents; risk-based testing PREDICTS where incidents are most likely and tests there. The two are different approaches.",
+        "D": "Risk-based is a prioritization framework, not a replacement. You still need unit tests, integration tests, UAT, etc. — risk-based decides WHICH ones get more depth."
+      },
+      "tips": [
+        "Trap is D — \"risk-based replaces all other testing\" sounds strategic but it misunderstands the framework; risk-based is prioritization, not substitution.",
+        "Risk-based testing = effort concentrated on impact x likelihood. Comprehensive = uniform rigor everywhere. Different strategies for different contexts.",
+        "Exam-day shortcut: risk-based-testing questions are answered by the option naming PRIORITIZATION by impact and likelihood; uniform or replace-everything answers are wrong."
+      ],
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Foundation Level Syllabus; ISACA Software Audit guidance",
+      "related_concepts": [
+        "Risk-based testing",
+        "Test prioritization",
+        "ISTQB"
+      ],
+      "_provenance": "Authored from concept: 'Risk-based testing strategy per ISO/IEC 29119 and ISTQB'. Public sources: ISO/IEC 29119, ISTQB."
+    },
+    {
+      "id": "d3_051",
+      "domain": 3,
+      "subtopic": "Performance Testing Types — Load vs Stress vs Soak",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option CORRECTLY pairs performance-testing types with their PRIMARY purpose?",
+      "options": {
+        "A": "Load tests push the system far beyond expected limits; stress tests simulate normal expected traffic; soak tests run a brief one-hour cycle.",
+        "B": "Load tests run for multi-day duration; stress tests measure expected throughput; soak tests find the breaking point under sudden spike loads.",
+        "C": "Load tests simulate expected traffic; stress tests push beyond limits to find breaking points; soak tests measure stability over extended duration.",
+        "D": "Load tests, stress tests, and soak tests are interchangeable terms for the same activity, distinguished only by the testing tool used."
+      },
+      "correct": "C",
+      "key_concept": "Load = simulate EXPECTED traffic. Stress = push BEYOND limits. Soak = measure stability over EXTENDED duration. Each tests a different performance dimension; together they characterize the system's performance envelope.",
+      "pre_read": "For performance-testing questions, anchor on the three primary types: load (expected), stress (beyond), soak (extended duration). Distractors typically swap the definitions across the three types — read each pairing carefully.",
+      "correct_explanation": "ISO/IEC 25010 (Software Product Quality Model), COBIT 2019 BAI04 (Managed Availability and Capacity), and ISACA Performance Testing guidance distinguish three primary performance-testing types: LOAD testing simulates the expected production traffic profile (concurrent users, transactions per second) to verify the system meets performance targets under normal load. STRESS testing pushes beyond expected limits to find the breaking point and observe degradation behavior (graceful vs catastrophic). SOAK (or endurance) testing runs sustained load over extended duration (hours to days) to detect memory leaks, resource exhaustion, and other long-running stability issues. Option A swaps load and stress definitions and shortens soak. Option B swaps load and soak (load is brief, not multi-day; soak is the long-duration test). Option D incorrectly conflates the three distinct techniques.",
+      "wrong_explanations": {
+        "A": "This swaps load and stress: load tests simulate EXPECTED traffic, not beyond-limits; stress tests push BEYOND limits, not expected traffic. A one-hour cycle is too short to be a true soak test.",
+        "B": "This swaps load and soak: load tests simulate normal traffic for a defined window (not multi-day); soak tests run for extended duration (hours to days) to detect leaks. Stress finds breaking points by pushing beyond limits.",
+        "D": "Load, stress, and soak are not interchangeable. Each tests a distinct performance dimension (expected behavior, beyond-limits behavior, long-duration stability) and answers a different question about the system."
+      },
+      "tips": [
+        "Trap is A or B — both swap two of the three definitions; A swaps load↔stress, B swaps load↔soak. The candidate who half-remembers the names will pick a swapped pairing without checking each.",
+        "Load = expected. Stress = beyond. Soak = extended duration. Three dimensions of performance testing; together they characterize the envelope.",
+        "Exam-day shortcut: when an option lists all three names, audit each definition in turn (don't pattern-match to the names); a swapped pairing fails on the second or third type."
+      ],
+      "framework_ref": "ISO/IEC 25010 (Software Product Quality Model); COBIT 2019 BAI04 (Managed Availability and Capacity) — Performance Testing; ISACA Performance Testing guidance",
+      "related_concepts": [
+        "Performance testing",
+        "Load testing",
+        "Stress testing",
+        "Soak testing"
+      ],
+      "_provenance": "Authored from concept: 'Performance-testing types per ISO/IEC 25010 and COBIT 2019 BAI04'. Public sources: ISO/IEC 25010, COBIT 2019."
+    },
+    {
+      "id": "d3_052",
+      "domain": 3,
+      "subtopic": "Software Composition Analysis (SCA)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control PRIMARILY addresses risk introduced by open-source dependencies in an application?",
+      "options": {
+        "A": "Schedule annual penetration tests of the production application to find any exploitable open-source vulnerabilities.",
+        "B": "Require developers to manually review every open-source dependency before adding it to the application codebase.",
+        "C": "Restrict the application to use only open-source components older than five years, considered field-tested by then.",
+        "D": "Run SCA tooling at every build to identify dependencies with known CVEs and trigger remediation workflows promptly."
+      },
+      "correct": "D",
+      "key_concept": "SCA tooling at build time = identify dependencies with known CVEs + trigger remediation. Annual pen-tests are too slow. Manual review doesn't scale. Old-only restriction is wrong (older components have MORE accumulated vulnerabilities, not fewer).",
+      "pre_read": "For SCA questions, anchor on \"automated at build + identify CVEs + trigger remediation.\" Distractors propose periodic, manual, or age-based controls that don't scale.",
+      "correct_explanation": "NIST SP 800-218 (SSDF v1.1) practice PW.4 (Reuse Existing, Well-Secured Software) and OWASP DSOMM both establish software composition analysis (SCA) tooling as the canonical control for open-source dependency risk: scan every build, cross-reference identified components against known-vulnerability databases (CVE/NVD, GitHub Advisory Database), report findings to developers, and trigger remediation workflows for high-severity matches. Option A's annual pen-tests are far too slow given the velocity of new CVE disclosures (often daily). Option B's manual review doesn't scale to hundreds of dependencies and their transitive dependencies. Option C's age-based restriction is backwards — older components have accumulated MORE known vulnerabilities, not fewer.",
+      "wrong_explanations": {
+        "A": "Annual pen-tests run far too slowly. New CVEs are disclosed daily; an annual cadence leaves up to 365 days of exposure before vulnerable components are identified.",
+        "B": "Manual review doesn't scale. A modest application may have hundreds of direct dependencies and thousands of transitive ones; manual is impractical and inconsistent.",
+        "C": "Age-based restriction is exactly backwards. Older components have ACCUMULATED known vulnerabilities; they're not safer for being older. Newer components may have fewer known issues."
+      },
+      "tips": [
+        "Trap is C — \"older components are field-tested\" sounds plausible but it's exactly inverted; older components have more accumulated CVEs, not fewer.",
+        "SCA = automated at build + CVE matching + remediation workflow. Annual scans, manual review, and age restrictions all fail.",
+        "Exam-day shortcut: any open-source-dependency question is answered by the option naming SCA TOOLING AT BUILD; periodic, manual, or age-based answers miss the velocity of vulnerability disclosure."
+      ],
+      "framework_ref": "NIST SP 800-218 (SSDF v1.1); OWASP DevSecOps Maturity Model (DSOMM); CycloneDX SBOM Specification",
+      "related_concepts": [
+        "SCA",
+        "Software composition analysis",
+        "CVE",
+        "Open-source dependencies"
+      ],
+      "_provenance": "Authored from concept: 'SCA tooling per NIST SSDF and OWASP DSOMM'. Public sources: NIST SP 800-218, OWASP DSOMM."
+    },
+    {
+      "id": "d3_053",
+      "domain": 3,
+      "subtopic": "Database Change Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST governs schema changes to a production database?",
+      "options": {
+        "A": "Allow database administrators direct production access for schema changes during normal business hours daily.",
+        "B": "Apply schema changes via versioned migration scripts reviewed, tested, and deployed through the change-management workflow.",
+        "C": "Skip schema changes entirely until the next major release window and require workarounds during the interim period.",
+        "D": "Allow developers to modify the production schema using the same mechanisms used for application code commits."
+      },
+      "correct": "B",
+      "key_concept": "Database schema changes = versioned migration scripts + reviewed + tested + deployed via change-management workflow. DBA-direct-access lacks audit trail. Skip-until-next-release creates workaround debt. Developer-direct-changes lacks separation of duties.",
+      "pre_read": "For database-change-management questions, anchor on \"versioned migration + reviewed + tested + workflow-deployed.\" Distractors propose direct-access, deferral, or unsegregated patterns.",
+      "correct_explanation": "ISACA Database Audit guidance and COBIT 2019 BAI06 (Managed IT Changes) establish versioned database migration scripts (e.g., Flyway, Liquibase, Alembic) as the appropriate control: each schema change is captured in a script, reviewed via pull request, tested in lower environments, and deployed through the same change-management workflow as application code. Option A's DBA-direct-access lacks audit trail and version control; changes are difficult to roll back, reproduce, or trace. Option C's skip-until-major-release creates accumulating workaround debt and operational risk. Option D's developer-direct-changes via app-code commit mechanism conflates two different change types and breaks separation of duties between application and database administration.",
+      "wrong_explanations": {
+        "A": "DBA-direct-access lacks audit trail, version control, and tested-rollback. Changes happen in production without the controls that protect application code from the same risks.",
+        "C": "Deferring schema changes to major releases creates workaround debt: applications work around the missing schema, those workarounds become permanent, and the eventual schema change must accommodate both old and new patterns.",
+        "D": "Developer-direct-schema-changes break separation of duties between application development and database administration. Schema and code have different change cadences and different review patterns."
+      },
+      "tips": [
+        "Trap is A — \"DBA direct access for schema changes\" is the historical pattern many organizations still use, but it lacks the audit trail and version control that protect application code.",
+        "Database change management = versioned migration scripts + review + test + workflow deployment. Same discipline as application code changes.",
+        "Exam-day shortcut: any database-change-management question is answered by the option naming VERSIONED MIGRATION through CHANGE-MANAGEMENT WORKFLOW; direct-access answers are weak."
+      ],
+      "framework_ref": "ISACA Database Audit guidance; COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 (Change Enablement)",
+      "related_concepts": [
+        "Database change management",
+        "Schema migration",
+        "Flyway",
+        "Liquibase"
+      ],
+      "_provenance": "Authored from concept: 'Database schema migration governance per ISACA Database Audit guidance and COBIT 2019 BAI06'. Public sources: ISACA, COBIT 2019."
+    },
+    {
+      "id": "d3_054",
+      "domain": 3,
+      "subtopic": "Application Rollback Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic BEST defines a robust application rollback strategy?",
+      "options": {
+        "A": "A tested, documented, time-bound procedure to revert to the prior version including data and configuration consistency.",
+        "B": "An informal commitment that the team will figure out how to restore service if the deployment fails badly in production.",
+        "C": "A backup of the previous deployment artifact stored in the repository for indefinite future reference if needed.",
+        "D": "A documented decision to never roll back; instead, fix forward by deploying a new release containing the fix promptly."
+      },
+      "correct": "A",
+      "key_concept": "Robust rollback = tested + documented + time-bound + includes data/config consistency. Informal commitments and artifact backups don't substitute for a tested procedure. Fix-forward-only is a real philosophy but not a rollback strategy and only works when forward fixes are reliably faster than rollback.",
+      "pre_read": "For rollback questions, anchor on \"tested + documented + time-bound + data/config consistent.\" Distractors propose informal, artifact-only, or fix-forward-only approaches that miss critical properties.",
+      "correct_explanation": "ITIL 4 Change Enablement and ISACA Software Audit guidance establish that a robust rollback strategy must be (1) tested — exercised periodically to confirm it works; (2) documented — clearly written so any qualified operator can execute under pressure; (3) time-bound — completable within a defined window so the team knows when to invoke; (4) data and configuration consistent — restoring not just the binary but any data schema or configuration changes the deployment introduced. Option B's informal commitment fails under pressure; teams can't 'figure out' rollback in the middle of an incident. Option C's artifact backup is necessary but not sufficient (you need the procedure too). Option D's fix-forward-only is a legitimate philosophy in some contexts but it's a deployment approach, not a rollback strategy; when forward fixes can't be deployed in time, you still need rollback.",
+      "wrong_explanations": {
+        "B": "Informal commitments fail under incident pressure. Teams need a tested, documented procedure they can execute calmly while the system is degraded.",
+        "C": "An artifact backup is the WHAT to roll back to, but it's not the procedure. You also need rollback steps for data, configuration, dependencies, and downstream systems.",
+        "D": "Fix-forward is a legitimate deployment philosophy when forward fixes are reliably faster than rollback. But it's not a rollback strategy; it's a decision to not have one. When forward fixes fail, the org has no fallback."
+      },
+      "tips": [
+        "Trap is D — \"never roll back, fix forward\" is a popular DevOps philosophy and may seem more advanced than rollback, but it's a different approach; without a rollback strategy, fix-forward failure leaves no fallback.",
+        "Rollback = tested + documented + time-bound + data/config consistent. Four properties; missing any reduces incident response under pressure.",
+        "Exam-day shortcut: any rollback-strategy question is answered by the option naming TESTED + DOCUMENTED procedure with DATA/CONFIG handling; informal or artifact-only answers are weak."
+      ],
+      "framework_ref": "ITIL 4 (Change Enablement); ISACA Software Audit guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "Rollback",
+        "Deployment strategy",
+        "Fix-forward",
+        "Change management"
+      ],
+      "_provenance": "Authored from concept: 'Rollback strategy properties per ITIL 4 and ISACA Software Audit guidance'. Public sources: ITIL 4, ISACA, COBIT 2019."
+    },
+    {
+      "id": "d3_055",
+      "domain": 3,
+      "subtopic": "Microservices Architecture — Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST distinguishes effective microservices governance from monolithic-application governance?",
+      "options": {
+        "A": "Microservices governance is identical to monolithic governance, scaled up for additional deployments and operations.",
+        "B": "Microservices governance ignores service boundaries because each service can independently make architectural decisions.",
+        "C": "Service contracts, API governance, observability, and coordinated change-management across distributed services that must work together.",
+        "D": "Microservices governance focuses solely on container orchestration; application-level controls are unnecessary in this model."
+      },
+      "correct": "C",
+      "key_concept": "Microservices governance = service contracts + API governance + observability + coordinated change-management across distributed services. The distributed nature requires controls that monolithic apps don't need; same-as-monolith, no-coordination, or container-only framings all fail.",
+      "pre_read": "For microservices-governance questions, anchor on \"distributed = needs explicit coordination.\" Service contracts (boundaries), API governance (interfaces), observability (correlated tracing), and coordinated change-management together address what monoliths get for free via shared codebase.",
+      "correct_explanation": "Twelve-Factor App methodology, Reactive Manifesto, and ISACA Microservices Audit guidance establish that microservices governance differs from monolithic governance because the distributed nature creates new control requirements. Service contracts (explicit interfaces between services) replace the implicit shared-code coupling of monoliths. API governance ensures services can evolve without breaking each other (covered in d3_048). Observability (distributed tracing, correlated logs, service-level objectives) replaces the single-process view of monoliths. Coordinated change management across services prevents one team's release from breaking another team's service. Option A misses the distributed nature entirely. Option B's no-coordination guarantees breakage. Option D narrows governance to container orchestration, ignoring application-level coordination.",
+      "wrong_explanations": {
+        "A": "Microservices are NOT just monoliths scaled up. The distributed nature creates new failure modes (network partitions, partial failures, version skew) that monoliths don't face; governance must address those.",
+        "B": "Independent decision-making per service is appropriate for INTERNAL implementation but breaks at SERVICE BOUNDARIES — contracts, APIs, and observability must be coordinated across services that interact.",
+        "D": "Container orchestration governs deployment but not architecture. Microservices need application-level governance (service contracts, API versioning, observability, coordinated change) on top of container infrastructure."
+      },
+      "tips": [
+        "Trap is A — \"same as monolith, scaled up\" is the most common mental shortcut and fundamentally misses the distributed nature of microservices.",
+        "Microservices governance = service contracts + API governance + observability + coordinated change. Four elements; distributed systems need all four.",
+        "Exam-day shortcut: any microservices-governance question is answered by the option naming COORDINATION across distributed services; same-as-monolith or no-coordination answers are wrong."
+      ],
+      "framework_ref": "ISACA Microservices Audit guidance; Twelve-Factor App methodology; Reactive Manifesto",
+      "related_concepts": [
+        "Microservices",
+        "Distributed systems",
+        "Service contracts",
+        "Observability"
+      ],
+      "_provenance": "Authored from concept: 'Microservices governance vs monolithic per Twelve-Factor and ISACA Microservices Audit guidance'. Public sources: 12-Factor, Reactive Manifesto, ISACA."
+    },
+    {
+      "id": "d3_056",
+      "domain": 3,
+      "subtopic": "Application Authentication — Beyond Username/Password",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which authentication control MOST strengthens an internet-facing application beyond username and password?",
+      "options": {
+        "A": "Require users to change passwords every 30 days regardless of password strength or known compromise indicators.",
+        "B": "Increase the minimum password length to 16 characters with mandatory mixed-case symbols and numerals throughout.",
+        "C": "Lock accounts after three failed password attempts and require manual help-desk intervention to unlock daily.",
+        "D": "Implement risk-based multi-factor authentication using a phishing-resistant second factor (FIDO2/WebAuthn or app-based)."
+      },
+      "correct": "D",
+      "key_concept": "Internet-facing app authentication strengthening = risk-based MFA with phishing-resistant second factor (FIDO2/WebAuthn). Forced rotations, longer passwords, and lockout policies are NIST-deprecated or low-leverage controls relative to MFA.",
+      "pre_read": "For authentication-strengthening questions, anchor on \"phishing-resistant MFA.\" NIST SP 800-63 explicitly deprecates forced password rotation and arbitrary complexity rules; MFA is the modern standard.",
+      "correct_explanation": "NIST SP 800-63 (Digital Identity Guidelines) and FIDO2/WebAuthn specifications establish risk-based multi-factor authentication with a phishing-resistant second factor (hardware security key, platform authenticator using WebAuthn, or app-based authenticator) as the most effective control for internet-facing application authentication. Option A's forced 30-day rotation is explicitly DEPRECATED by NIST SP 800-63 — it pushes users toward weaker passwords and reuse. Option B's longer/complex passwords help marginally but don't address phishing or credential theft. Option C's three-strikes lockout creates DoS risk (attacker can lock legitimate users) and doesn't address modern threats. Only MFA addresses the dominant threat (credential phishing/reuse).",
+      "wrong_explanations": {
+        "A": "NIST SP 800-63 explicitly deprecates forced password rotation. Mandatory rotation pushes users toward weaker, more predictable passwords (e.g., Spring2026!) and reuse across systems.",
+        "B": "Longer/complex passwords help against brute-force but don't address PHISHING or CREDENTIAL THEFT, which are the dominant attacker techniques for stealing valid credentials.",
+        "C": "Three-strikes lockout creates a DoS vector (attacker locks legitimate users by trying their accounts) and doesn't address phishing. NIST SP 800-63 recommends rate-limiting over hard lockout."
+      },
+      "tips": [
+        "Trap is B — \"longer, more complex passwords\" feels like the obvious upgrade but it doesn't address phishing, which is how most credential compromise actually happens; MFA is the modern standard.",
+        "Authentication strengthening = phishing-resistant MFA (FIDO2/WebAuthn). Password rotation, complexity rules, and lockout are NIST-deprecated or low-leverage.",
+        "Exam-day shortcut: any authentication-strengthening question is answered by the option naming PHISHING-RESISTANT MFA; password-policy answers are dated by NIST guidance."
+      ],
+      "framework_ref": "NIST SP 800-63 (Digital Identity Guidelines); FIDO2/WebAuthn specifications; OWASP Application Security Verification Standard (ASVS)",
+      "related_concepts": [
+        "Authentication",
+        "MFA",
+        "FIDO2",
+        "WebAuthn",
+        "NIST SP 800-63"
+      ],
+      "_provenance": "Authored from concept: 'Authentication strengthening with phishing-resistant MFA per NIST SP 800-63 and FIDO2/WebAuthn'. Public sources: NIST SP 800-63, FIDO Alliance."
+    },
+    {
+      "id": "d3_057",
+      "domain": 3,
+      "subtopic": "Build vs Buy vs SaaS — Multi-Factor Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which decision-framework recommendation BEST guides the build/buy/SaaS choice for the engagement?",
+      "scenario_context": "A regional retailer (~12,000 employees, $2.4B revenue) is replacing its 18-year-old custom-built warehouse management system. Three options are on the table: (a) build a new custom WMS internally; (b) buy a commercial WMS from a Tier-1 vendor with extensive customization; (c) adopt a SaaS WMS with minimal customization. The CIO has built a strawman favoring custom build, citing 'unique business processes that no commercial system can match.' The COO favors SaaS for speed-to-value. Procurement leadership cautions about vendor lock-in. The IS auditor is asked to review the build/buy/SaaS decision framework before steering committee.",
+      "options": {
+        "A": "Endorse the CIO's custom-build position because unique business processes always require custom-built systems to support them.",
+        "B": "Apply a multi-factor framework (TCO, time-to-value, fit-gap, lock-in, capability, risk) and challenge the 'unique-process' premise critically.",
+        "C": "Endorse the COO's SaaS position because speed-to-value always outweighs other build/buy considerations decisively.",
+        "D": "Defer the decision until external consultants deliver a written recommendation specific to this firm's situation and industry."
+      },
+      "correct": "B",
+      "key_concept": "Build vs buy vs SaaS = multi-factor framework: TCO + time-to-value + fit-gap + lock-in + capability + risk. The 'unique business processes' rationalization is widespread and almost always overstated; many 'unique' processes are actually configurable in commercial packages, and the few truly unique ones rarely justify full custom build.",
+      "pre_read": "For build/buy/SaaS questions, anchor on \"multi-factor framework + challenge the unique-process premise.\" Single-position answers (build-because-unique, SaaS-because-fast) typically reflect bias rather than analysis.",
+      "correct_explanation": "ISACA Build vs Buy Decision guidance, ISACA IT Investment guidance, and ISACA Val IT Framework establish a multi-factor decision framework: total cost of ownership (TCO including build/license/operate/exit), time-to-value (how soon does the business benefit), fit-gap analysis (what percentage of needs does each option meet out of the box), vendor lock-in (switching costs over the asset's life), capability fit (can the org actually build/operate this), and risk profile (build risk vs vendor risk vs SaaS risk). The CIO's 'unique business processes' claim must be tested empirically — many warehouse processes are well-supported by commercial WMS packages with configuration. Option A endorses bias. Option C endorses the opposite bias. Option D defers without engaging the framework.",
+      "wrong_explanations": {
+        "A": "The 'unique business processes' rationalization is widespread but often overstated. A fit-gap analysis typically reveals that 70-90% of warehouse processes are well-supported by commercial WMS; the remaining 10-30% are addressed via configuration, not custom build.",
+        "C": "SaaS speed-to-value is one factor in a multi-factor decision. Fit-gap, lock-in, capability, and risk also matter; endorsing one factor without analysis is the same bias the CIO exhibits, just in the opposite direction.",
+        "D": "Deferral to external consultants doesn't substitute for in-house analysis. The IS auditor's role is to ensure the decision framework is rigorous, not to outsource the decision."
+      },
+      "tips": [
+        "Trap is A — \"unique business processes require custom build\" is the most common rationalization in build-vs-buy discussions but it's almost always overstated; fit-gap analysis usually shows commercial fits.",
+        "Build/buy/SaaS = TCO + time-to-value + fit-gap + lock-in + capability + risk. Six factors; single-factor decisions reflect bias.",
+        "Exam-day shortcut: any build/buy decision question is answered by the option naming MULTI-FACTOR FRAMEWORK with EXPLICIT CHALLENGE of stakeholder rationalizations; single-position endorsements are wrong."
+      ],
+      "framework_ref": "ISACA Build vs Buy Decision guidance; ISACA IT Investment guidance; ISACA Val IT Framework",
+      "related_concepts": [
+        "Build vs buy",
+        "TCO",
+        "Vendor lock-in",
+        "Fit-gap analysis"
+      ],
+      "_provenance": "Authored from concept: 'Build/buy/SaaS multi-factor decision per ISACA Build vs Buy Decision guidance and Val IT'. Public sources: ISACA guidance, Val IT. Scenario specifics (regional retailer, 12K employees, $2.4B revenue, 18-year-old WMS, three options, CIO/COO/Procurement positions) invented for this question."
+    },
+    {
+      "id": "d3_058",
+      "domain": 3,
+      "subtopic": "SaaS Vendor SDLC Assurance — Limited Transparency",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which assurance approach BEST addresses the SDLC transparency gap with this SaaS vendor?",
+      "scenario_context": "A national insurance broker (1,800 employees, ~$340M revenue) has selected a SaaS policy-management platform from a mid-sized vendor. The vendor offers a SOC 2 Type II report covering security and availability but no SOC 1. The vendor declines to share its full SDLC documentation citing 'proprietary methodology.' The vendor will host customer data including policyholder PII subject to state insurance regulations and emerging privacy laws. The CISO and IS audit jointly need to recommend whether to proceed and what assurance gaps require remediation. The compliance officer is concerned about the lack of SDLC transparency for a system handling regulated data.",
+      "options": {
+        "A": "Require contractual SDLC controls (right to audit, breach notification, control attestation) plus SOC 2 Type II reliance and right to additional testing.",
+        "B": "Decline the contract entirely until the vendor agrees to share its full proprietary SDLC documentation directly with the firm in detail.",
+        "C": "Accept the vendor's SOC 2 Type II as sufficient assurance and waive any further SDLC review requirements completely from this point.",
+        "D": "Require the firm's internal IT to re-perform the vendor's SDLC controls in a parallel staging environment for verification."
+      },
+      "correct": "A",
+      "key_concept": "SaaS vendor SDLC assurance with limited transparency = contractual controls (audit rights, breach notification, control attestation) + SOC 2 Type II reliance + right to additional testing. Pure-decline overreaches; SOC 2-only acceptance under-provisions; re-performance is operationally infeasible.",
+      "pre_read": "For SaaS vendor SDLC assurance questions, anchor on \"contractual controls + SOC 2 reliance + audit rights.\" The vendor's proprietary stance is common; the firm's response is to bind the vendor contractually rather than try to inspect the SDLC directly.",
+      "correct_explanation": "AICPA SOC 2 Trust Services Criteria, ISACA SaaS Vendor Assurance guidance, and ISACA Vendor Management guidance establish that when a SaaS vendor declines to share its full SDLC, the firm should bind the vendor contractually: (1) right to audit (annually or on cause); (2) breach notification within defined timeframe; (3) control attestation (annual letter from vendor management); (4) reliance on SOC 2 Type II for security/availability; (5) right to additional testing (penetration tests, configuration reviews) at the firm's expense if needed. This combines vendor-attested controls with the firm's right to verify. Option B's pure-decline forgoes a viable vendor over a common (and often non-negotiable) position. Option C's SOC 2-only acceptance under-provisions for regulated PII contexts. Option D's re-performance in a parallel environment is operationally infeasible (the firm would essentially have to rebuild the platform).",
+      "wrong_explanations": {
+        "B": "Pure-decline overreaches. Most SaaS vendors will not share full SDLC documentation; declining all of them leaves the firm with no SaaS options. The right approach is contractual binding plus reliance on attestations.",
+        "C": "SOC 2 Type II covers security and availability but doesn't substitute for SDLC transparency. For regulated PII, additional contractual controls (audit rights, breach notification) and the right to additional testing are needed.",
+        "D": "Re-performing the vendor's SDLC in a parallel environment is operationally infeasible — the firm would essentially have to rebuild the platform, defeating the SaaS value proposition."
+      },
+      "tips": [
+        "Trap is B or C — B (\"decline entirely\") pattern-matches \"principled refusal\" for compliance-leaning candidates; C (\"accept SOC 2 as sufficient\") pattern-matches \"trust the report\" for risk-averse candidates. Both miss the contractual middle path.",
+        "SaaS vendor SDLC assurance = right-to-audit + breach notification + control attestation + SOC 2 reliance + right to additional testing. Five elements; vendor opacity is bound contractually, not waived.",
+        "Exam-day shortcut: any SaaS vendor assurance question is answered by the option naming CONTRACTUAL controls plus REPORT RELIANCE plus AUDIT RIGHTS; pure-decline and SOC-only-acceptance are extremes."
+      ],
+      "framework_ref": "AICPA SOC 2 Trust Services Criteria; ISACA SaaS Vendor Assurance guidance; ISACA Vendor Management guidance",
+      "related_concepts": [
+        "SaaS vendor assurance",
+        "SOC 2 Type II",
+        "Contractual controls",
+        "Right to audit"
+      ],
+      "_provenance": "Authored from concept: 'SaaS vendor SDLC assurance with limited transparency per AICPA SOC 2 and ISACA SaaS Vendor Assurance guidance'. Public sources: AICPA, ISACA guidance. Scenario specifics (insurance broker, 1.8K employees, $340M revenue, SOC 2 Type II, no SOC 1, proprietary SDLC, state insurance + privacy regs) invented for this question."
+    },
+    {
+      "id": "d3_059",
+      "domain": 3,
+      "subtopic": "Failed Deployment with Bad Rollback — Incident Governance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which position MOST appropriately reflects sound incident-response and rollback governance?",
+      "scenario_context": "A B2C e-commerce platform (3.2M monthly active users) deployed a major release at 02:00. By 03:30, error rates spike to 15% (vs baseline 0.4%) and order completion drops 78%. Investigation reveals the new release wrote data in a format the rollback script does not recognize — straight rollback would corrupt 4,200 orders placed in the 90-minute window. The CTO orders the team to 'roll back anyway and we'll fix the orders later.' The on-call SRE warns that customer-facing impact will compound. The IS auditor was paged for an opinion before the rollback executes at 04:00.",
+      "options": {
+        "A": "Execute the CTO's straight-rollback order immediately; corrupted-order remediation is a separate workstream from the outage response.",
+        "B": "Halt all action and convene a steering committee meeting to authorize the rollback decision before any operational changes occur.",
+        "C": "Pause the rollback, capture the 4,200 affected orders to a safe staging area, deploy a hotfix or roll forward, then reconcile orders.",
+        "D": "Continue accepting orders on the broken release while the team designs a permanent fix; revert only at the next maintenance window."
+      },
+      "correct": "C",
+      "key_concept": "Failed deployment + bad rollback path = pause + capture affected data safely + hotfix-or-roll-forward + reconcile. Straight rollback corrupts data; convening steering committee under incident pressure delays response; continuing-as-broken compounds customer impact.",
+      "pre_read": "For incident-response questions where rollback corrupts data, anchor on \"capture-then-act.\" The IS auditor's role is to insist on data preservation BEFORE executive direction is followed; the CTO's authority doesn't override fiduciary data-stewardship obligations.",
+      "correct_explanation": "NIST SP 800-61 (Computer Security Incident Handling Guide), ITIL 4 Incident Management, and ISACA Software Audit guidance all establish that when a documented rollback path will cause data loss or corruption, the appropriate response is to PAUSE the rollback long enough to preserve the at-risk data — copy the 4,200 affected orders to a safe staging area where they can be reconciled later — then choose between a hotfix (if available within minutes) or roll-forward (deploy a corrected release). Option A's straight rollback follows executive direction but causes data loss the firm has a fiduciary obligation to prevent. Option B's steering-committee escalation delays response by hours during a customer-facing incident. Option D's continuing-as-broken compounds customer impact and is not a real option (15% error rate is unacceptable).",
+      "wrong_explanations": {
+        "A": "The CTO's authority does not override the firm's fiduciary obligation to protect customer order data. Auditors should respectfully insist on data preservation; corrupted-order remediation 'later' may be impossible if the data is destroyed by rollback.",
+        "B": "Steering committee escalation under acute incident pressure delays response by hours. Pre-defined incident playbooks should authorize the on-call team to make data-preservation decisions in the moment; full governance review happens after.",
+        "D": "Continuing accepting orders on a release with 15% error rate compounds customer impact. The next maintenance window may be days away; that's not viable for a customer-facing failure."
+      },
+      "tips": [
+        "Trap is A — \"execute the CTO's order\" follows formal authority but it causes data loss; the auditor's role is to insist on data preservation, not to defer to authority that's making a poor decision under pressure.",
+        "Failed deployment + bad rollback = PAUSE + CAPTURE affected data + HOTFIX or ROLL FORWARD + RECONCILE. Four steps; data preservation comes first.",
+        "Exam-day shortcut: incident-response questions are answered by the option that PRESERVES DATA while restoring service; pure-execute-the-order or escalate-and-wait answers fail on either fiduciary or operational grounds."
+      ],
+      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); ITIL 4 Incident Management; ISACA Software Audit guidance",
+      "related_concepts": [
+        "Incident response",
+        "Rollback",
+        "Data preservation",
+        "Hotfix"
+      ],
+      "_provenance": "Authored from concept: 'Failed deployment with rollback complications per NIST SP 800-61 and ITIL 4 Incident Management'. Public sources: NIST SP 800-61, ITIL 4. Scenario specifics (B2C e-commerce, 3.2M MAU, 02:00 deploy, 15% error rate, 4,200 affected orders, 90-min window, CTO straight-rollback order) invented for this question."
+    },
+    {
+      "id": "d3_060",
+      "domain": 3,
+      "subtopic": "M&A IT Integration Governance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which integration-governance recommendation BEST addresses the multi-dimensional risks of this acquisition?",
+      "scenario_context": "A national bank just closed acquisition of a regional competitor (90 branches, 1.1M customers, ~$840M assets). Day-1 integration: customer access continues through both brands' channels. The 24-month integration plan calls for sunsetting the acquired firm's core banking platform and migrating customers to the acquirer's. The acquired firm's platform has 14 known third-party integrations, ~340 custom rule sets, and 18 in-flight projects. Some acquired-firm staff have indicated they may leave during integration. The audit committee asked the IS auditor to recommend integration governance principles before the integration office is stood up.",
+      "options": {
+        "A": "Freeze the acquired firm's IT change activity entirely for 24 months to prevent any divergence from the integration roadmap.",
+        "B": "Migrate customers immediately at Day-1 to the acquirer's platform to avoid running parallel systems for 24 months.",
+        "C": "Defer all governance decisions until the acquired firm's CIO has been replaced by an acquirer-appointed leader.",
+        "D": "Stand up an integration office, document discovered systems and dependencies, sequence migrations by risk and value, retain key staff with knowledge."
+      },
+      "correct": "D",
+      "key_concept": "M&A integration governance = integration office + system/dependency discovery + risk-and-value-sequenced migrations + key-staff retention. Freezing all change is operationally untenable; immediate migration is impossible at this scale; CIO-replacement deferral abandons governance during the highest-risk window.",
+      "pre_read": "For M&A integration questions, anchor on \"integration office + discovery + sequencing + retention.\" Single-position answers (freeze, immediate-migrate, defer) all fail to address the multi-dimensional governance need during the acquisition's most fragile period.",
+      "correct_explanation": "ISACA M&A IT Integration guidance, ISACA M&A IT Due Diligence guidance, and OCC Bulletin 2017-21 (Mergers and Acquisitions) establish four pillars of M&A integration governance: (1) integration office (clear authority, governance structure, escalation paths spanning both firms); (2) systems and dependency discovery (the acquired firm's actual environment, not the documented one — 14 known integrations is likely the surface, not the full set); (3) risk-and-value-sequenced migrations (high-risk/high-value items first, low-risk/low-value last, parallel run where appropriate); (4) key-staff retention with knowledge transfer (the acquired firm's domain knowledge often resides with people who may leave). Option A's freeze prevents necessary maintenance and patching, creating risk. Option B's immediate Day-1 migration is impossible for a 1.1M-customer/90-branch acquisition. Option C's CIO-replacement deferral leaves the highest-risk window without governance.",
+      "wrong_explanations": {
+        "A": "Freezing IT change for 24 months prevents necessary patches, regulatory updates, and incident response. Operational risk accumulates rapidly; a freeze is operationally untenable for any meaningful period.",
+        "B": "Immediate Day-1 migration of 1.1M customers across 90 branches is operationally impossible. Even well-planned core banking conversions take months; rushing creates the high-risk failure modes covered in d3_019 (cutover fallback).",
+        "C": "Deferring governance until the CIO is replaced abandons the acquired environment during its highest-risk period (uncertainty, staff attrition, integration pressure). Governance must be in place from Day-1, even if the CIO eventually changes."
+      },
+      "tips": [
+        "Trap is A — \"freeze all change for 24 months\" is intuitive risk-aversion but it accumulates operational risk faster than it reduces integration risk; freeze is rarely the answer for any meaningful period.",
+        "M&A integration governance = integration office + discovery + risk/value sequencing + key-staff retention. Four pillars; missing any creates failure during the most fragile period.",
+        "Exam-day shortcut: M&A integration questions are answered by the option naming MULTI-PILLAR GOVERNANCE; single-position answers (freeze, rush, defer) reflect bias rather than analysis."
+      ],
+      "framework_ref": "ISACA M&A IT Integration guidance; ISACA M&A IT Due Diligence guidance; OCC Bulletin 2017-21 (Mergers and Acquisitions)",
+      "related_concepts": [
+        "M&A integration",
+        "Integration office",
+        "Discovery",
+        "Key-staff retention"
+      ],
+      "_provenance": "Authored from concept: 'M&A IT integration governance per ISACA M&A IT Integration guidance and OCC Bulletin 2017-21'. Public sources: ISACA, OCC. Scenario specifics (national bank acquiring regional, 90 branches, 1.1M customers, $840M assets, 24-month integration, 14 integrations, 340 custom rules, 18 in-flight projects) invented for this question."
     }
   ]
 }

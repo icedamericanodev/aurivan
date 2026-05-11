@@ -632,3 +632,26 @@ sub-references like "(Managed Risk) and APO12.03").
 - OWASP Testing Guide
 - OWASP Application Security Verification Standard (ASVS)
 - SLSA (Supply-chain Levels for Software Artifacts) framework
+
+## D3 batch 3 additions
+- AICPA SOC 2 Trust Services Criteria
+- AICPA SOC 1 Type II Report
+- ISACA Stakeholder Management guidance
+- ISACA Project Closure guidance
+- ISACA Lessons Learned guidance
+- ISACA Data Integrity Controls guidance
+- ISACA Low-Code/No-Code Governance guidance
+- ISACA Database Audit guidance
+- ISACA Microservices Audit guidance
+- ISACA SaaS Vendor Assurance guidance
+- ISACA Build vs Buy Decision guidance
+- ISACA Performance Testing guidance
+- ISACA M&A IT Integration guidance
+- OWASP API Security Top 10 (2023)
+- Twelve-Factor App methodology
+- Reactive Manifesto
+- Pact (Consumer-Driven Contract Testing)
+- COBIT 2019 BAI01 (Managed Programs)
+- COBIT 2019 BAI04 (Managed Availability and Capacity) — Performance Testing
+- COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)
+- FIDO2/WebAuthn specifications
