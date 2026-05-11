@@ -2,27 +2,27 @@
 
 CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target).
 
-**Last updated:** D5-2 (d5_021..d5_040).
+**Last updated:** D5-3 (d5_041..d5_060).
 
 ## Tier targets
 
 | Tier          | Target | Authored | Remaining |
 |---------------|-------:|---------:|----------:|
-| Foundational  |     26 |        8 |        18 |
-| Application   |    130 |       24 |       106 |
-| Analysis      |    104 |        8 |        96 |
-| **Total**     |    260 |       40 |       220 |
+| Foundational  |     26 |       12 |        14 |
+| Application   |    130 |       36 |        94 |
+| Analysis      |    104 |       12 |        92 |
+| **Total**     |    260 |       60 |       200 |
 
-## TOC coverage (D5-1 + D5-2)
+## TOC coverage (D5-1 + D5-2 + D5-3)
 
 | TOC §  | Title                                                    | Authored |
 |--------|----------------------------------------------------------|---------:|
 | 5.1    | Information Asset Security Frameworks, Standards, Guidelines | 8    |
 | 5.2    | Privacy Principles                                       |        9 |
 | 5.3    | Physical Access and Environmental Controls               |       12 |
-| 5.4    | Identity and Access Management                           |       11 |
-| 5.5    | Network and End-Point Security                           |        0 |
-| 5.6    | Data Loss Prevention                                     |        0 |
+| 5.4    | Identity and Access Management                           |       13 |
+| 5.5    | Network and End-Point Security                           |       12 |
+| 5.6    | Data Loss Prevention                                     |        6 |
 | 5.7    | Data Encryption                                          |        0 |
 | 5.8    | Public Key Infrastructure (PKI)                          |        0 |
 | 5.9    | Web-Based Communication Techniques                       |        0 |
@@ -38,26 +38,19 @@ CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target
 ## Batch log
 
 ### D5-1 (d5_001..d5_020) — 4F + 12A + 4An
-- §5.1 Security Frameworks/Standards/Baselines (8): policy chars, ISO/IEC 27001
-  vs NIST CSF, lifecycle, standards selection, baselines, access principles
-- §5.3 Physical & Environmental Controls (12): env scope, access categories,
-  exposure, fire suppression, power, audit scope, visitor mgmt, anti-tailgating,
-  CCTV, data-center audit, sustained outage, breach via cleaning crew, HVAC
-  surgical shutdown, post-acquisition harmonization
+§5.1 Security Frameworks/Standards/Baselines (8) + §5.3 Physical & Environmental (12).
 
 ### D5-2 (d5_021..d5_040) — 4F + 12A + 4An
-- §5.2 Privacy Principles (9): GAPP/OECD/GDPR foundations, data subject rights
-  catalog, DPIA triggers, cross-border transfer mechanisms, privacy by design,
-  consent management lifecycle, data minimization, regulator investigation,
-  post-CJEU EU transfer remediation
-- §5.4 Identity and Access Management (11): IAM lifecycle, auth factor
-  categories, PAM controls, federated identity audit scope, JIT provisioning,
-  service-account mgmt, recertification cadence, NIST 800-63A IAL levels,
-  NIST 800-63B AAL levels, post-M&A IAM consolidation, leaked credential
-  containment
+§5.2 Privacy Principles (9) + §5.4 Identity and Access Management (11).
 
-**Position rotation D5-2:** 5A + 5B + 5C + 5D (perfect balance).
-**Plus-list pattern:** 2/4 analysis questions (down from 3/4 in D5-1);
-d5_037 (legal hold first) and d5_039 (rotate credential first) intentionally
-single-focus surgical-action correct answers.
-**Citation reuse:** 98% (1184 canonical citations in library).
+### D5-3 (d5_041..d5_060) — 4F + 12A + 4An
+§5.5 Network and Endpoint Security (12): zoning, endpoint taxonomy (AV/EPP/EDR/XDR),
+firewall types, microsegmentation, NAC, IDS/IPS, hardening, EDR audit, Zero Trust,
+endpoint encryption + §5.4 IAM closing (2): ABAC, IGA + §5.6 Data Loss Prevention
+(6): control types, policy framework, discovery/classification, egress channels,
+multi-jurisdiction design, active exfiltration.
+
+**Position rotation D5-3:** 5A + 5B + 5C + 5D (perfect after d5_056 swap).
+**Plus-list pattern:** 2/4 analysis questions (d5_057 ransomware isolation + d5_060
+insider access revocation intentionally single-focus surgical-action).
+**Citation reuse:** library at 1231 entries (+47 D5-3 citations covering NIST 800-94/111/162/207A, CIS Controls v8 Safeguards 4/10/13, ISACA Network/Endpoint/DLP/IGA/Insider Threat audit programs, MITRE ATT&CK, OASIS XACML, IEEE 802.1X, multi-jurisdiction privacy laws).

@@ -1020,11 +1020,11 @@ domain_5:
     analysis:     104
 
   status: in_progress
-  authored_total: 40
+  authored_total: 60
   authored_mix:
-    foundational: 8
-    application:  24
-    analysis:     8
+    foundational: 12
+    application:  36
+    analysis:     12
 
   covered:
     # Batch 1 (d5_001..d5_020) — 5.1 Info Security Frameworks + 5.3 Physical/Environmental
@@ -1070,3 +1070,25 @@ domain_5:
     - { id: d5_038, subtopic: "Post-M&A IAM Consolidation (Analysis)",                   toc_ref: "5.4" }
     - { id: d5_039, subtopic: "Privileged Credential Leak — Immediate Containment (Analysis, single-focus)", toc_ref: "5.4" }
     - { id: d5_040, subtopic: "Post-CJEU EU Transfer Cessation Response (Analysis)",     toc_ref: "5.2" }
+
+    # Batch 3 (d5_041..d5_060) — §5.4 IAM remainder + §5.5 Network/Endpoint + §5.6 DLP
+    - { id: d5_041, subtopic: "Network Security Zoning — Canonical Model",               toc_ref: "5.5" }
+    - { id: d5_042, subtopic: "Endpoint Protection — Canonical Taxonomy (AV/EPP/EDR/XDR)", toc_ref: "5.5" }
+    - { id: d5_043, subtopic: "DLP — Canonical Control Types",                            toc_ref: "5.6" }
+    - { id: d5_044, subtopic: "Firewall Types — Canonical Taxonomy",                      toc_ref: "5.5" }
+    - { id: d5_045, subtopic: "Microsegmentation Design",                                 toc_ref: "5.5" }
+    - { id: d5_046, subtopic: "Network Access Control (NAC)",                             toc_ref: "5.5" }
+    - { id: d5_047, subtopic: "IDS vs IPS — Selection and Tuning",                        toc_ref: "5.5" }
+    - { id: d5_048, subtopic: "Endpoint Hardening — CIS Benchmarks Application",          toc_ref: "5.5" }
+    - { id: d5_049, subtopic: "EDR/XDR Audit Scope",                                      toc_ref: "5.5" }
+    - { id: d5_050, subtopic: "Zero Trust Architecture — Implementation",                 toc_ref: "5.5" }
+    - { id: d5_051, subtopic: "DLP Policy Framework",                                     toc_ref: "5.6" }
+    - { id: d5_052, subtopic: "Data Discovery and Classification",                        toc_ref: "5.6" }
+    - { id: d5_053, subtopic: "DLP Egress Channels — Coverage",                           toc_ref: "5.6" }
+    - { id: d5_054, subtopic: "Attribute-Based Access Control (ABAC)",                    toc_ref: "5.4" }
+    - { id: d5_055, subtopic: "Identity Governance and Administration (IGA)",             toc_ref: "5.4" }
+    - { id: d5_056, subtopic: "Endpoint Encryption — Full-Disk and File-Level",           toc_ref: "5.5" }
+    - { id: d5_057, subtopic: "Ransomware Detection in EDR — Immediate Action (Analysis, single-focus)", toc_ref: "5.5" }
+    - { id: d5_058, subtopic: "Multi-Jurisdiction DLP Design (Analysis)",                 toc_ref: "5.6" }
+    - { id: d5_059, subtopic: "Post-Merger Network Segmentation (Analysis)",              toc_ref: "5.5" }
+    - { id: d5_060, subtopic: "Insider Threat Active Exfiltration — First Action (Analysis, single-focus)", toc_ref: "5.6" }

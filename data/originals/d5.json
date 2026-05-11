@@ -1464,6 +1464,730 @@
         "Sub-processor remediation"
       ],
       "_provenance": "Authored from concept: 'Post-CJEU EU transfer remediation with material revenue exposure'. Public sources: GDPR, CJEU, EDPB, European Commission. No legacy bank citation."
+    },
+    {
+      "id": "d5_041",
+      "domain": 5,
+      "subtopic": "Network Security Zoning — Canonical Model",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical network security zoning model used in defense-in-depth architectures?",
+      "options": {
+        "A": "Internet/untrusted + DMZ for public-facing services + internal trusted zone for business systems + restricted high-sensitivity zone for crown-jewel data, with controlled gateways between adjacent zones.",
+        "B": "A single flat network where all hosts can reach each other directly; segmentation is added only after a security incident demonstrates need.",
+        "C": "Two zones — internal and external — with all internal systems treated as equivalent trust level and a single perimeter firewall as the only boundary control.",
+        "D": "Distinct VLANs per business unit aligned to org-chart structure; firewalls between business units but flat internal connectivity within each business unit."
+      },
+      "correct": "A",
+      "key_concept": "Network zoning = untrusted (Internet) + DMZ (public services) + internal trusted (business) + restricted (crown-jewel). Multi-tier defense-in-depth with controlled gateways between adjacent zones.",
+      "pre_read": "For network zoning questions, anchor on multi-tier defense-in-depth with crown-jewel isolation. Flat-network, two-zone, and org-chart-VLAN framings each fail.",
+      "correct_explanation": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy), NIST SP 800-207 (Zero Trust Architecture), and ISO/IEC 27033-2 (Network security design) establish canonical network zoning: (1) UNTRUSTED ZONE — Internet, partner networks, BYOD; (2) DMZ — public-facing services (web servers, mail relays, reverse proxies); termination point for Internet traffic before internal access; (3) INTERNAL TRUSTED ZONE — business systems, productivity apps, internal services; (4) RESTRICTED/HIGH-SENSITIVITY ZONE — crown-jewel data (financial systems, customer PII databases, regulated workloads, OT/ICS); enhanced controls and monitoring. Gateways between adjacent zones enforce inspection (firewalls, WAFs, segmentation gateways); non-adjacent zones cannot communicate directly. Modern variants include MICROSEGMENTATION (per-workload zoning), ZERO TRUST (no implicit trust, every connection verified), and SECURE ACCESS SERVICE EDGE (SASE) (zone enforcement at edge). Org-chart-driven zoning misses the risk axis; flat networks fail defense-in-depth; two-zone castle-and-moat fails once perimeter is breached.",
+      "wrong_explanations": {
+        "B": "Flat networks violate defense-in-depth and let any compromised host reach any other. Adding segmentation only after incident is reactive operational malpractice; segmentation is a foundational design choice.",
+        "C": "Two-zone (internal/external) is the legacy castle-and-moat model that fails when adversaries breach the perimeter. Modern architectures require multiple internal zones with crown-jewel isolation.",
+        "D": "Org-chart-driven VLANs miss the SECURITY-RISK axis. Two business units with different risk profiles should NOT necessarily be at equal trust level; risk-based zoning beats org-chart-based zoning."
+      },
+      "tips": [
+        "Trap is D — 'VLANs per business unit by org chart' is candidate-seductive because it feels organized and consistent; but org-chart zoning misses the SECURITY-RISK axis. Two business units with different risk profiles should NOT be at equal trust level.",
+        "Network zoning = Internet + DMZ + internal trusted + restricted high-sensitivity. Multi-tier defense-in-depth with gateways between adjacent zones; non-adjacent zones don't communicate directly.",
+        "Exam-day shortcut: when stem asks about NETWORK ZONING, look for multi-tier defense-in-depth with crown-jewel isolation; flat-network, two-zone perimeter, and org-chart-VLAN framings each fail the risk-based-zoning test."
+      ],
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); NIST SP 800-207 (Zero Trust Architecture); ISO/IEC 27033-2 (Network security design); ISACA Network Security Audit/Assurance Program",
+      "related_concepts": [
+        "DMZ design",
+        "Defense-in-depth",
+        "Microsegmentation",
+        "Zero Trust Architecture"
+      ],
+      "_provenance": "Authored from concept: 'Canonical network security zoning per NIST 800-41 and ISO 27033'. Public sources: NIST, ISO, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_042",
+      "domain": 5,
+      "subtopic": "Endpoint Protection — Canonical Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical endpoint protection taxonomy (AV, EPP, EDR, XDR) as understood in current security architectures?",
+      "options": {
+        "A": "AV, EPP, EDR, and XDR are interchangeable terms referring to the same category of endpoint security tool; vendor marketing labels rather than functional distinctions.",
+        "B": "AV = signature-based malware detection + EPP = AV plus prevention controls (firewall, device control) + EDR = behavior-based detection with response capability + XDR = EDR extended across network/cloud/identity signals.",
+        "C": "AV is for laptops, EPP for desktops, EDR for servers, and XDR for cloud workloads; each tool operates on one specific endpoint type and they don't overlap.",
+        "D": "AV is reactive, EPP is preventive, EDR is detective, and XDR is administrative; each maps directly to one of the COSO control categories without overlap or evolution."
+      },
+      "correct": "B",
+      "key_concept": "Endpoint protection = AV (signature-based) → EPP (AV + prevention) → EDR (behavior + response) → XDR (EDR + cross-domain telemetry). Functional evolution, not vendor labels.",
+      "pre_read": "For endpoint protection taxonomy questions, anchor on the FUNCTIONAL evolution from signature → behavior → cross-domain. Marketing-equivalent, form-factor-mapped, and COSO-aligned framings each fail.",
+      "correct_explanation": "Endpoint protection taxonomy has evolved through four generations: (1) AV (ANTIVIRUS) — signature-based malware detection; effective against known threats; insufficient against novel/polymorphic malware; (2) EPP (ENDPOINT PROTECTION PLATFORM) — AV plus preventive controls: host firewall, device control (USB), application control, exploit prevention; suite-based prevention focus; (3) EDR (ENDPOINT DETECTION AND RESPONSE) — behavior-based detection (process trees, command-line analysis, registry changes, network connections); response capability (isolate, kill process, rollback); telemetry retention for investigation; (4) XDR (EXTENDED DETECTION AND RESPONSE) — EDR signals correlated with network telemetry, cloud workload telemetry, identity events (sign-ins, MFA failures), email security; cross-domain detection of multi-stage attacks. Modern enterprises typically deploy EPP+EDR (or unified vendor) on endpoints with XDR/SIEM correlation. CIS Controls v8 Safeguard 10 (Malware Defenses) and ISACA Endpoint Security Audit/Assurance Program treat these as functional layers, not interchangeable categories.",
+      "wrong_explanations": {
+        "A": "A treats AV/EPP/EDR/XDR as marketing equivalents, missing the genuine EVOLUTION from signature-based detection (AV) → suite of preventive controls (EPP) → behavior-based detection with response (EDR) → cross-domain telemetry correlation (XDR). The functional distinctions are real.",
+        "C": "C assigns each tool to a specific endpoint type (laptops/desktops/servers/cloud), which is incorrect. EDR and XDR run across endpoint types; the distinction is FUNCTIONAL (signature → behavior → cross-domain) not by endpoint form factor.",
+        "D": "D forces a one-to-one mapping to COSO categories that doesn't exist. AV has preventive (block) AND detective (alert) functions; EDR has detective AND corrective (response) functions; the COSO model isn't the right taxonomy for endpoint tools."
+      },
+      "tips": [
+        "Trap is A — 'AV/EPP/EDR/XDR are vendor marketing labels' is candidate-seductive because vendor naming IS often confusing; but the underlying FUNCTIONAL evolution (signature → behavior → cross-domain) is real and substantive, not marketing.",
+        "Endpoint protection evolution: signature-based (AV) → suite preventive (EPP) → behavior + response (EDR) → cross-domain telemetry (XDR). Each layer adds capability, doesn't replace prior.",
+        "Exam-day shortcut: when stem describes ENDPOINT PROTECTION TAXONOMY, look for FUNCTIONAL evolution (signature → behavior → cross-domain); marketing-equivalent, form-factor, and COSO framings each fail."
+      ],
+      "framework_ref": "CIS Controls v8 Safeguard 10 (Malware Defenses); NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling for Desktops and Laptops); ISACA Endpoint Security Audit/Assurance Program; MITRE ATT&CK Framework",
+      "related_concepts": [
+        "AV vs EDR",
+        "Behavior-based detection",
+        "XDR cross-domain telemetry",
+        "MITRE ATT&CK"
+      ],
+      "_provenance": "Authored from concept: 'Endpoint protection functional evolution AV/EPP/EDR/XDR'. Public sources: CIS, NIST, ISACA, MITRE. No legacy bank citation."
+    },
+    {
+      "id": "d5_043",
+      "domain": 5,
+      "subtopic": "DLP — Canonical Control Types",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical taxonomy of Data Loss Prevention (DLP) control types?",
+      "options": {
+        "A": "DLP refers exclusively to email-based data-loss controls; other channels (web, USB, cloud) are addressed by separate non-DLP tools and frameworks.",
+        "B": "DLP and data classification are synonymous; deploying a classification tool delivers DLP coverage automatically across all channels.",
+        "C": "Network DLP (gateway inspection of email/web/file-transfer egress) + endpoint DLP (host-based monitoring of USB/clipboard/printing/screenshots) + discovery DLP (scanning of data-at-rest in repositories for inventory and policy violations).",
+        "D": "DLP is a single product category combining all controls into one unified platform; no functional distinction between network/endpoint/discovery is necessary."
+      },
+      "correct": "C",
+      "key_concept": "DLP control types = network (gateway egress inspection) + endpoint (host monitoring) + discovery (data-at-rest scanning). Three functional categories per ISACA and Gartner taxonomy.",
+      "pre_read": "For DLP taxonomy questions, anchor on three functional control types (network + endpoint + discovery). Email-only, classification-conflation, and monolithic-product framings each fail.",
+      "correct_explanation": "ISACA Data Loss Prevention Audit/Assurance Program, Gartner DLP Magic Quadrant taxonomy, and Forrester DLP Wave categorize DLP into three functional control types: (1) NETWORK DLP — gateway inspection of data in motion (email/SMTP, web/HTTP-HTTPS upload, FTP/SFTP, instant messaging); inline inspection at egress points; (2) ENDPOINT DLP — host-based agent monitoring data in use on endpoints (USB removable media, clipboard copy-paste, printing, screen capture, cloud-sync clients, local file operations); (3) DISCOVERY DLP — scanning of data at rest in file shares, databases, document repositories, SharePoint/OneDrive, cloud storage; produces inventory of sensitive data and identifies policy violations (unencrypted PII on user drives, customer data in test environments). Modern unified DLP suites (Microsoft Purview, Forcepoint, Symantec, Digital Guardian) integrate all three into a single management plane. Classification (data-discovery + sensitivity labeling) is a PREREQUISITE for effective DLP policy but is not itself DLP. Email-only is one network-DLP component but not the full taxonomy.",
+      "wrong_explanations": {
+        "A": "A restricts DLP to email-only, missing endpoint (USB/clipboard/print), web (HTTPS upload), cloud (sanctioned and shadow IT), and discovery (data-at-rest) channels. Email-DLP is one component, not the whole.",
+        "B": "B conflates classification (what data exists, at what sensitivity) with DLP (enforcement at egress and rest). Classification FEEDS DLP policy (which data to protect, at what level) but doesn't perform the enforcement.",
+        "D": "D treats DLP as a monolithic product, missing the functional distinction between network/endpoint/discovery and the operational reality that mature programs deploy multiple tools or a unified suite with distinct control points."
+      },
+      "tips": [
+        "Trap is B — 'DLP and data classification are synonymous' is candidate-seductive because classification feels like DLP's main job; but classification IDENTIFIES what's sensitive (input to policy) while DLP ENFORCES (egress/endpoint/discovery actions). Classification feeds DLP, doesn't replace it.",
+        "DLP = three control types: network (egress) + endpoint (host) + discovery (data-at-rest). Classification is a prerequisite feeding DLP policy, not DLP itself.",
+        "Exam-day shortcut: when stem asks about DLP CONTROL TYPES, look for the three-type taxonomy (network/endpoint/discovery); email-only, classification-conflation, and monolithic-product framings each fail."
+      ],
+      "framework_ref": "ISACA Data Loss Prevention Audit/Assurance Program; Gartner DLP Magic Quadrant; NIST SP 800-122 (Guide to Protecting the Confidentiality of PII); ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention)",
+      "related_concepts": [
+        "Network DLP",
+        "Endpoint DLP",
+        "Discovery DLP",
+        "Data classification"
+      ],
+      "_provenance": "Authored from concept: 'DLP canonical control types taxonomy'. Public sources: ISACA, Gartner, NIST, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_044",
+      "domain": 5,
+      "subtopic": "Firewall Types — Canonical Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical taxonomy of firewall types used in modern network security architectures?",
+      "options": {
+        "A": "All firewalls perform the same packet-filter function; vendor branding (NGFW, WAF, etc.) is marketing differentiation without substantive functional difference.",
+        "B": "Modern firewalls are deprecated in favor of host-based controls only; perimeter firewalls add no value once endpoint protection is deployed.",
+        "C": "Firewalls are categorized by physical deployment (hardware, virtual, cloud) rather than by inspection capability; the inspection layer is irrelevant to taxonomy.",
+        "D": "Packet-filter (L3/L4 rules) + stateful inspection (connection-state tracking) + application-layer/NGFW (L7 inspection + identity + threat intel) + Web Application Firewall (HTTP/S-specific, OWASP-aligned)."
+      },
+      "correct": "D",
+      "key_concept": "Firewall types = packet-filter (L3/L4) + stateful (connection state) + NGFW (L7 + identity + threat intel) + WAF (HTTP/S application-specific). Four functional layers per NIST SP 800-41.",
+      "pre_read": "For firewall taxonomy questions, anchor on FUNCTIONAL evolution (packet-filter → stateful → NGFW → WAF). Marketing-equivalent, deprecated, and deployment-axis framings each fail.",
+      "correct_explanation": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy) and ISACA Network Security Audit/Assurance Program establish firewall functional taxonomy: (1) PACKET-FILTER FIREWALLS — Layer 3/4 rules on source/destination IP, port, protocol; stateless; fastest but blind to connection context; appropriate for simple gateway scenarios; (2) STATEFUL INSPECTION FIREWALLS — track connection state (TCP handshake, session establishment); allow return traffic for established connections; default for most enterprise firewalls; (3) APPLICATION-LAYER FIREWALLS / NGFW (NEXT-GEN FIREWALL) — Layer 7 inspection (application identification regardless of port), user-identity awareness (integration with IdP), threat-intelligence integration (block known-bad IPs/domains), TLS inspection, integrated IPS; representative vendors: Palo Alto, Fortinet, Check Point, Cisco; (4) WAF (WEB APPLICATION FIREWALL) — HTTP/S-specific inspection aligned to OWASP Top 10 (SQL injection, XSS, CSRF, file upload abuse); deployed in front of web applications; representative: AWS WAF, Cloudflare, F5 BIG-IP ASM, Imperva. Each layer adds capability without replacing prior layers; modern architectures use NGFW at perimeter, WAF in front of web apps, and microsegmentation gateways inside.",
+      "wrong_explanations": {
+        "A": "A treats firewall types as marketing differentiation, missing the genuine FUNCTIONAL evolution from packet-filter (L3/L4) → stateful (connection state) → application-aware (L7 + identity) → application-specific (WAF/HTTP). Each layer adds substantive capability.",
+        "B": "B claims firewalls are deprecated, which is incorrect. Firewalls remain foundational in Zero Trust architectures (just relocated to per-segment gateways rather than only perimeter). Defense-in-depth requires both network controls AND endpoint controls.",
+        "C": "C uses DEPLOYMENT taxonomy (hardware/virtual/cloud) which is orthogonal to FUNCTIONAL taxonomy (packet-filter/stateful/NGFW/WAF). A NGFW can be deployed as hardware, virtual, or cloud; the functional layer is the canonical taxonomy axis."
+      },
+      "tips": [
+        "Trap is C — 'firewalls categorized by deployment (hardware/virtual/cloud)' is candidate-seductive because deployment is a real operational concern; but deployment is ORTHOGONAL to function. A NGFW can be deployed as hardware, virtual, or cloud — function (inspection layer) is the canonical taxonomy axis.",
+        "Firewall taxonomy = packet-filter (L3/L4) + stateful (connection state) + NGFW (L7 + identity + threat intel) + WAF (HTTP/S OWASP-aligned). Four functional layers.",
+        "Exam-day shortcut: when stem asks about FIREWALL TYPES, look for the FUNCTIONAL evolution (L3/L4 → connection state → L7 → HTTP-specific); marketing-equivalent, deprecated, and deployment-axis framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); ISACA Network Security Audit/Assurance Program; OWASP Top 10 2021; PCI DSS v4.0 Requirement 1 (Install and Maintain Network Security Controls)",
+      "related_concepts": [
+        "NGFW",
+        "WAF OWASP-aligned",
+        "Stateful inspection",
+        "TLS inspection"
+      ],
+      "_provenance": "Authored from concept: 'Firewall canonical functional taxonomy'. Public sources: NIST, ISACA, OWASP, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_045",
+      "domain": 5,
+      "subtopic": "Microsegmentation Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a firm's microsegmentation initiative for an internal application portfolio (250 apps across 4,000 servers). Which option BEST captures the canonical MICROSEGMENTATION DESIGN framework?",
+      "options": {
+        "A": "Asset and traffic inventory + workload-level identity + policy by application archetype + east-west enforcement + drift monitoring + phased rollout + CI/CD policy-as-code integration.",
+        "B": "Single network-wide policy applied uniformly to all 4,000 servers from the perimeter firewall; internal traffic between servers is unrestricted to preserve application performance.",
+        "C": "VLAN per server cluster; firewall rules between VLANs to control east-west traffic; no application-identity awareness; configurations managed manually through ticket workflow.",
+        "D": "Deploy host-based firewalls on each server with default-deny inbound; rules managed by individual application owners with no central inventory or policy framework."
+      },
+      "correct": "A",
+      "key_concept": "Microsegmentation = inventory + workload identity + archetype policy + east-west enforcement + drift monitoring + phased rollout + CI/CD integration. Seven canonical elements.",
+      "pre_read": "For microsegmentation questions, anchor on workload-identity-based policy with central framework + delegated implementation. Single-perimeter, VLAN-legacy, and decentralized-ad-hoc framings each fail.",
+      "correct_explanation": "NIST SP 800-207 (Zero Trust Architecture), CIS Controls v8 Safeguard 12 (Network Infrastructure Management), and ISACA Network Security Audit/Assurance Program establish microsegmentation design framework: (1) ASSET AND TRAFFIC INVENTORY — full discovery of workloads, dependencies, observed flows; tools include VMware NSX, Illumio, Akamai Guardicore, AWS VPC Reachability Analyzer; (2) WORKLOAD-LEVEL IDENTITY — policy operates on workload identity (label, tag, certificate) not IP address; resilient to IP changes; (3) POLICY BY APPLICATION ARCHETYPE — group similar workloads (web-tier, app-tier, database-tier) under shared policy; reduces rule sprawl; (4) EAST-WEST ENFORCEMENT — block lateral movement between workloads that shouldn't communicate; per-port and per-protocol; (5) MONITORING WITH DRIFT ALERTING — observed-vs-policy delta surfaces misconfiguration and unauthorized changes; (6) PHASED ROLLOUT TO LIMIT BLAST RADIUS — observe → log-mode → enforce per app group; rollback path required; (7) INTEGRATION WITH CI/CD FOR POLICY-AS-CODE — policy lives in version control alongside infrastructure-as-code; reviewable; testable.",
+      "wrong_explanations": {
+        "B": "B is the INVERSE of microsegmentation — single perimeter policy treats all 4,000 servers as a flat zone, missing the entire point of per-workload segmentation. Unrestricted east-west traffic is the lateral-movement surface microsegmentation eliminates.",
+        "C": "C uses VLAN+firewall (legacy macrosegmentation), not microsegmentation. Microsegmentation operates at workload identity (not network address) and supports thousands of fine-grained policies without manual rule explosion. Manual ticket workflow doesn't scale to per-workload granularity.",
+        "D": "D distributes policy ownership to individual application teams without central framework, producing inconsistent policies, gaps, and unauditable state. Microsegmentation requires central inventory + framework with delegated implementation, not decentralized ad-hoc rules."
+      },
+      "tips": [
+        "Trap is C — 'VLAN per server cluster with firewall rules' is candidate-seductive because it's the legacy network-segmentation pattern most candidates have implemented; but legacy macrosegmentation uses IP/VLAN identity (which changes), doesn't scale to per-workload granularity, and requires manual rule maintenance. Microsegmentation uses WORKLOAD identity.",
+        "Microsegmentation = inventory + workload identity + archetype policy + east-west enforcement + drift monitoring + phased rollout + policy-as-code. Seven elements. NOT VLAN-based.",
+        "Exam-day shortcut: when stem asks about MICROSEGMENTATION, look for WORKLOAD-IDENTITY policy with central framework + delegated implementation; perimeter-only, VLAN-legacy, and decentralized framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); CIS Controls v8 Safeguard 12 (Network Infrastructure Management); ISACA Network Security Audit/Assurance Program; ISO/IEC 27033-2 (Network security design)",
+      "related_concepts": [
+        "Zero Trust",
+        "Workload identity",
+        "East-west enforcement",
+        "Policy-as-code"
+      ],
+      "_provenance": "Authored from concept: 'Microsegmentation design framework per NIST 800-207'. Public sources: NIST, CIS, ISACA, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_046",
+      "domain": 5,
+      "subtopic": "Network Access Control (NAC)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a Network Access Control (NAC) deployment at a firm with 8,000 endpoints, mixed corporate-owned and BYOD, across 12 sites. Which option BEST captures canonical NAC CONTROL CAPABILITIES?",
+      "options": {
+        "A": "Network Access Control is identical to firewall enforcement; deploying a perimeter firewall with strong egress rules provides NAC functionality without separate tooling.",
+        "B": "Device identification and profiling + posture assessment (OS/patches/AV/encryption) + policy-driven access (full/restricted/quarantine) + 802.1X for corporate + guest isolation + continuous monitoring.",
+        "C": "NAC applies only to wireless networks; wired ports are physically secured and don't require NAC enforcement at the network layer.",
+        "D": "NAC delivers value only for guest networks; corporate-owned devices are inherently trusted and don't require posture assessment or continuous monitoring."
+      },
+      "correct": "B",
+      "key_concept": "NAC = identification + profiling + posture (patch/AV/encryption) + policy-driven access (full/restricted/quarantine) + 802.1X for corporate + guest isolation + continuous monitoring with revocation. Seven capabilities.",
+      "pre_read": "For NAC questions, anchor on the seven canonical capabilities applied to both wired and wireless across corporate and BYOD. Firewall-equivalent, wireless-only, and guest-only framings each fail.",
+      "correct_explanation": "ISACA Network Access Control Audit/Assurance Program, NIST SP 800-46 Rev 2 (Guide to Enterprise Telework, Remote Access, and Bring Your Own Device Security), and Cisco / Aruba / Forescout NAC product documentation establish canonical NAC capabilities: (1) DEVICE IDENTIFICATION AND PROFILING — fingerprinting (MAC OUI, DHCP options, HTTP user-agent) categorizes devices (corporate laptop, BYOD phone, printer, IoT camera); (2) POSTURE ASSESSMENT — agent-based or agentless evaluation of OS patch level, AV running and updated, full-disk encryption enabled, host firewall enabled, last-scan recency; (3) POLICY-DRIVEN NETWORK ACCESS — full access for compliant corporate, restricted access for marginal compliance, quarantine for non-compliant (remediation network with patches/AV updates only), guest for BYOD; (4) 802.1X AUTHENTICATION FOR CORPORATE DEVICES — port-based authentication on wired and wireless using EAP-TLS (certificate-based, phishing-resistant); (5) GUEST NETWORK ISOLATION — captive portal, time-bounded access, segregated from corporate VLAN; (6) CONTINUOUS MONITORING WITH REVOCATION — re-assess posture periodically; revoke access if device drifts out of compliance; integration with EDR to revoke on threat indicator.",
+      "wrong_explanations": {
+        "A": "A conflates NAC (admission control at network access point) with firewall (traffic-filtering between segments). NAC operates BEFORE the device is on the network; firewall operates ON the traffic from devices already admitted. Different control points.",
+        "C": "C restricts NAC to wireless, missing wired-port NAC enforcement (802.1X port authentication, MAC authentication bypass for non-supplicant devices, dynamic VLAN assignment). Wired ports in conference rooms, lobbies, and shared office space are real attack vectors.",
+        "D": "D claims corporate devices are inherently trusted, which is the trust-by-default model that Zero Trust replaces. Corporate devices can be compromised, out-of-patch, missing AV; NAC posture assessment surfaces this regardless of ownership."
+      },
+      "tips": [
+        "Trap is D — 'NAC delivers value only for guest networks' is candidate-seductive because guest-network use cases are the most visible NAC feature; but corporate-device posture assessment is equally critical. Trust-by-ownership is the model Zero Trust replaces.",
+        "NAC = identification + profiling + posture + policy access (full/restricted/quarantine) + 802.1X corporate + guest isolation + continuous monitoring with revocation. Seven capabilities across wired/wireless and corporate/BYOD.",
+        "Exam-day shortcut: when stem says 'NAC' or 'NETWORK ACCESS CONTROL,' look for posture + policy + 802.1X + continuous monitoring; firewall-equivalent, wireless-only, and guest-only framings each fail."
+      ],
+      "framework_ref": "ISACA Network Access Control Audit/Assurance Program; NIST SP 800-46 Rev 2 (Guide to Enterprise Telework, Remote Access, and BYOD Security); IEEE 802.1X (Port-Based Network Access Control); NIST SP 800-207 (Zero Trust Architecture)",
+      "related_concepts": [
+        "802.1X authentication",
+        "Posture assessment",
+        "BYOD onboarding",
+        "Continuous compliance"
+      ],
+      "_provenance": "Authored from concept: 'NAC canonical control capabilities'. Public sources: ISACA, NIST, IEEE. No legacy bank citation."
+    },
+    {
+      "id": "d5_047",
+      "domain": 5,
+      "subtopic": "IDS vs IPS — Selection and Tuning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's intrusion detection/prevention (IDS/IPS) deployment. Which option BEST captures the CANONICAL distinction between IDS and IPS and their appropriate use?",
+      "options": {
+        "A": "IDS and IPS are interchangeable terms; the vendor's product naming determines which label applies regardless of deployment.",
+        "B": "IDS is for wired networks and IPS is for wireless networks; the two operate on different network technologies and don't overlap.",
+        "C": "IDS = detection-only (alerts on signatures/anomalies, no blocking) for monitoring + IPS = inline blocking on detection for enforcement; placement, tuning, and false-positive tolerance differ.",
+        "D": "IDS is signature-based and IPS is anomaly-based; the detection technique determines the label, not the action taken on a detection."
+      },
+      "correct": "C",
+      "key_concept": "IDS vs IPS = detect-only (IDS, alerts) vs detect-and-block (IPS, enforcement). Action on detection is the canonical distinction. Both use signature + anomaly detection.",
+      "pre_read": "For IDS/IPS questions, anchor on the action-on-detection distinction. Marketing-equivalent, network-medium-mapped, and detection-technique-mapped framings each fail.",
+      "correct_explanation": "NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems), ISACA Network Security Audit/Assurance Program, and CIS Controls v8 Safeguard 13 (Network Monitoring and Defense) distinguish IDS and IPS by ACTION ON DETECTION: (1) IDS (INTRUSION DETECTION SYSTEM) — observes traffic out-of-band (via span port, network tap, or host-based sensor); detects suspicious activity using signatures, anomaly detection, behavior analysis; ALERTS but does NOT block; appropriate when false-positive tolerance is low (blocking false-positives would disrupt business) or in monitoring-only environments; (2) IPS (INTRUSION PREVENTION SYSTEM) — observes traffic inline (in the enforcement path); detects same patterns as IDS; BLOCKS detected attacks (drops malicious packets, resets connections, dynamically updates firewall rules); appropriate where blocking is acceptable (known-bad signatures, high-confidence detections) and where the latency of inline inspection is tolerable. Modern NGFWs include IPS functionality. Placement: IDS at network egress points and within sensitive zones for monitoring; IPS at perimeter and at zone boundaries for enforcement. Both use signature AND anomaly detection; the IDS/IPS distinction is fundamentally about ACTION, not detection technique. Tuning: false-positive management is critical especially for IPS (false-block = business disruption); start in alert-only mode, then promote to block after confidence is established.",
+      "wrong_explanations": {
+        "A": "A treats IDS/IPS as marketing labels, missing the substantive distinction. IDS observes and alerts (out-of-band, no enforcement); IPS observes and BLOCKS (inline, enforcement). The action on detection is the canonical difference.",
+        "B": "B assigns IDS/IPS to network types (wired/wireless), which is incorrect. Both IDS and IPS operate on both wired and wireless; the distinction is the ACTION (detect-only vs detect-and-block), not the network medium.",
+        "D": "D maps IDS/IPS to detection technique (signature vs anomaly), which is incorrect. Both IDS and IPS use signature AND anomaly detection; the IDS/IPS distinction is about ACTION (alert vs block), not detection technique."
+      },
+      "tips": [
+        "Trap is D — 'IDS is signature-based and IPS is anomaly-based' is candidate-seductive because it sounds like a clean functional distinction; but it's WRONG. Both IDS and IPS use both signature AND anomaly detection; the difference is the ACTION on detection (alert vs block).",
+        "IDS = detect-only (alerts, out-of-band). IPS = detect-and-block (inline enforcement). Both use signature + anomaly detection. Placement and FP-tolerance differ.",
+        "Exam-day shortcut: when stem distinguishes IDS from IPS, look for ACTION-ON-DETECTION (alert vs block); marketing-equivalent, network-medium, and detection-technique-mapped framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems); ISACA Network Security Audit/Assurance Program; CIS Controls v8 Safeguard 13 (Network Monitoring and Defense); MITRE ATT&CK Framework",
+      "related_concepts": [
+        "Signature vs anomaly detection",
+        "Inline vs out-of-band",
+        "False-positive tuning",
+        "NGFW IPS integration"
+      ],
+      "_provenance": "Authored from concept: 'IDS vs IPS canonical distinction by action on detection'. Public sources: NIST, ISACA, CIS, MITRE. No legacy bank citation."
+    },
+    {
+      "id": "d5_048",
+      "domain": 5,
+      "subtopic": "Endpoint Hardening — CIS Benchmarks Application",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's endpoint hardening program covering 4,500 Windows workstations and 600 Linux servers. Which option BEST captures the canonical ENDPOINT HARDENING framework?",
+      "options": {
+        "A": "Apply CIS Benchmarks Level 2 (most aggressive) to all endpoints regardless of role or business need; exceptions are not permitted to preserve security posture uniformity.",
+        "B": "Allow each business unit to define its own hardening standard based on local risk assessment; central security does not impose baselines to preserve BU autonomy.",
+        "C": "Apply manufacturer-default configuration; the OS vendor's defaults are assumed secure for typical business use and require no further hardening.",
+        "D": "Tier-tailored baseline (CIS Benchmarks/DISA STIGs) + exception process for business deviations + automated scanning + remediation SLAs + drift alerting + asset-criticality tiering + change management."
+      },
+      "correct": "D",
+      "key_concept": "Endpoint hardening = tier-tailored baseline (CIS/STIGs) + exception process + automated scanning + remediation SLA + drift alerting + asset-criticality tiering + change management. Seven elements.",
+      "pre_read": "For endpoint hardening questions, anchor on tier-tailored baseline with exception process and automated enforcement. Uniform-aggressive, BU-defined, and manufacturer-default framings each fail.",
+      "correct_explanation": "ISACA Endpoint Security Audit/Assurance Program, CIS Controls v8 Safeguard 4 (Secure Configuration of Enterprise Assets and Software), and NIST SP 800-70 Rev 4 (National Checklist Program for IT Products) establish endpoint hardening framework: (1) ADOPT TIER-TAILORED BASELINE — CIS Benchmarks (Level 1 for most users, Level 2 for high-security roles); DISA STIGs for federal contractors; vendor security guides (Microsoft Security Compliance Toolkit, Apple Security Configuration Guide); tailor to environment, don't adopt unchanged; (2) EXCEPTION PROCESS — documented business justification, compensating control, expiry date, periodic review; auditable; (3) AUTOMATED SCANNING — BigFix, Tenable, Qualys, OpenSCAP; SCAP-based content (XCCDF, OVAL); scheduled with current baseline content; (4) REMEDIATION SLAs — critical findings (default-pass enabled, missing patches) closed within 7-14 days; high within 30; medium within 60; documented; (5) DRIFT ALERTING — change to baseline-relevant settings triggers alert; integration with SIEM; (6) ASSET-CRITICALITY-TIERED APPROACH — admin workstations to higher tier than knowledge-worker laptops; finance systems higher than productivity workstations; (7) CHANGE MANAGEMENT FOR BASELINE UPDATES — CIS Benchmark releases require evaluation, testing, exception review, and controlled rollout.",
+      "wrong_explanations": {
+        "A": "A applies the most aggressive baseline uniformly without tier-tailoring, breaking business applications and creating operational friction that triggers shadow-IT workarounds. No exception process means valid business needs become non-compliance findings rather than approved deviations.",
+        "B": "B fragments security posture by allowing BU-defined baselines; inconsistent configurations across BUs become attack-surface differentials, some BUs under-harden, and audit cannot define 'compliant' across the enterprise.",
+        "C": "C uses manufacturer defaults, which are optimized for compatibility and feature exposure, not for security. Default configurations include unnecessary services, weak protocol defaults, and unprivileged-user assumptions that exceed business need."
+      },
+      "tips": [
+        "Trap is A — the 'uniformity-equals-rigor fallacy.' Candidates pick A because uniform Level 2 feels like sound audit hygiene, but uniformity-without-exception-process breaks business applications and triggers shadow IT. Tier-tailored baseline plus exception process is the canonical pattern.",
+        "Endpoint hardening = tier-tailored baseline + exception process + automated scanning + remediation SLA + drift alerting + asset-criticality tiering + change management. Seven elements.",
+        "Exam-day shortcut: when stem asks about ENDPOINT HARDENING, look for tier-tailored baseline + exception process + automated enforcement; uniform-aggressive, BU-defined, and manufacturer-default framings each fail."
+      ],
+      "framework_ref": "ISACA Endpoint Security Audit/Assurance Program; CIS Controls v8 Safeguard 4 (Secure Configuration of Enterprise Assets and Software); NIST SP 800-70 Rev 4 (National Checklist Program for IT Products); DISA Security Technical Implementation Guides (STIGs)",
+      "related_concepts": [
+        "CIS Benchmarks Level 1/2",
+        "SCAP automation",
+        "Hardening exception process",
+        "Tier-tailored baseline"
+      ],
+      "_provenance": "Authored from concept: 'Endpoint hardening canonical framework with CIS Benchmarks'. Public sources: ISACA, CIS, NIST, DISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_049",
+      "domain": 5,
+      "subtopic": "EDR/XDR Audit Scope",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor scopes an EDR/XDR audit at a firm with 5,000 endpoints across Windows, macOS, and Linux. Which option BEST captures CANONICAL EDR/XDR AUDIT SCOPE?",
+      "options": {
+        "A": "Agent deployment coverage + telemetry retention/integrity + MITRE ATT&CK detection coverage + response capability (isolate/kill/rollback) + alert handling and tuning + SIEM/SOAR integration + privileged-action approval + tamper protection.",
+        "B": "Only the agent deployment percentage; if 95%+ of endpoints have the agent installed, the EDR deployment is considered sound and other dimensions are out of audit scope.",
+        "C": "Only the alert volume; if alert count is decreasing month-over-month, the EDR is considered effective without examining detection rule coverage or response capability.",
+        "D": "Only the vendor's SOC 2 report on the EDR platform; if the vendor passes SOC 2, the firm's EDR deployment is automatically considered well-governed."
+      },
+      "correct": "A",
+      "key_concept": "EDR/XDR audit scope = agent deployment + telemetry retention + detection rule coverage + response capability + alert handling + SIEM integration + privileged-action approval + tamper protection. Eight canonical dimensions.",
+      "pre_read": "For EDR/XDR audit questions, anchor on the eight-dimension scope spanning deployment, detection, response, and integration. Coverage-only, volume-only, and vendor-SOC-2-only framings each fail.",
+      "correct_explanation": "ISACA Endpoint Security Audit/Assurance Program, NIST SP 800-83 Rev 1, and MITRE ATT&CK Framework establish EDR/XDR audit scope: (1) AGENT DEPLOYMENT COVERAGE — % of endpoints with healthy agent; orphan detection (managed but no agent); exception inventory; (2) TELEMETRY RETENTION AND INTEGRITY — process events, command-line, network connections, file operations retained for incident investigation (90-365 days typical); chain-of-custody preserved; (3) DETECTION RULE COVERAGE MAPPED TO MITRE ATT&CK — which tactics, techniques, sub-techniques are covered; gap analysis; (4) RESPONSE CAPABILITY — isolate endpoint (network quarantine), kill process, rollback file changes, retrieve forensic artifacts; tested through tabletop or live exercise; (5) ALERT HANDLING AND TUNING — alert-to-incident conversion rate, false-positive rate, tuning cadence, dispositions tracked; (6) INTEGRATION WITH SIEM/SOAR — telemetry flow, alert enrichment, automated response playbooks; (7) PRIVILEGED-ACTION APPROVAL — isolating endpoints, killing processes, retrieving files require approval workflow (SOC, IR lead) and audit trail; (8) TAMPER PROTECTION OF AGENT — uninstall protection, configuration lock, kernel-level integrity; adversaries target EDR agents first.",
+      "wrong_explanations": {
+        "B": "B reduces audit scope to agent coverage only, missing seven other critical dimensions (telemetry retention, detection coverage, response, tuning, SIEM integration, privileged-action approval, tamper protection). 95% coverage with broken detection rules produces a false sense of security.",
+        "C": "C uses alert volume as a single metric, which is misleading. Decreasing alert volume could mean fewer threats, OR it could mean detection rules are mistuned, agents are crashing, or alerts are being silently suppressed. Volume alone is not a proxy for effectiveness.",
+        "D": "D confuses VENDOR governance (EDR platform SOC 2) with FIRM governance (firm's deployment and operation). Vendor passing SOC 2 says nothing about how the firm has deployed, tuned, monitored, or responded. Firm-side audit is separately required."
+      },
+      "tips": [
+        "Trap is D — 'vendor SOC 2 proves the firm's EDR is well-governed' is candidate-seductive because procurement-trained candidates equate vendor SOC 2 with firm-side governance; but vendor SOC 2 covers the EDR PLATFORM, not the firm's deployment, tuning, or response. Firm-side audit is separately required across all eight dimensions.",
+        "EDR/XDR audit = agent deployment + telemetry retention + detection coverage (MITRE ATT&CK) + response capability + alert handling + SIEM integration + privileged-action approval + tamper protection. Eight dimensions.",
+        "Exam-day shortcut: when stem asks about EDR/XDR AUDIT SCOPE, look for multi-dimension framework spanning deployment + detection + response + integration; coverage-only, volume-only, and vendor-SOC-2-only framings each fail."
+      ],
+      "framework_ref": "ISACA Endpoint Security Audit/Assurance Program; NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling); MITRE ATT&CK Framework; CIS Controls v8 Safeguard 13 (Network Monitoring and Defense)",
+      "related_concepts": [
+        "MITRE ATT&CK coverage",
+        "Telemetry retention",
+        "Tamper protection",
+        "SIEM/SOAR integration"
+      ],
+      "_provenance": "Authored from concept: 'EDR/XDR audit scope canonical framework'. Public sources: ISACA, NIST, MITRE, CIS. No legacy bank citation."
+    },
+    {
+      "id": "d5_050",
+      "domain": 5,
+      "subtopic": "Zero Trust Architecture — Implementation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a firm's Zero Trust Architecture (ZTA) implementation initiative. Which option BEST captures the canonical ZTA IMPLEMENTATION FRAMEWORK per NIST SP 800-207?",
+      "options": {
+        "A": "Replace the corporate firewall with cloud-based 'Zero Trust' product from a single vendor; product purchase delivers ZTA capability without architectural change.",
+        "B": "Never-trust-always-verify + every access authenticated/authorized + identity-centric + microsegmentation + continuous verification + separated PDP/PEP + telemetry-driven adaptive policy. NIST SP 800-207.",
+        "C": "Apply MFA at the perimeter and treat everything inside as trusted; ZTA is a marketing reframe of strong perimeter authentication.",
+        "D": "Eliminate VPNs entirely and require all access to come from corporate-owned devices on the corporate network; ZTA is a return to office-centric access only."
+      },
+      "correct": "B",
+      "key_concept": "ZTA = never-trust-always-verify + every access authenticated/authorized + identity-centric + microsegmentation + continuous verification + separated PDP/PEP + telemetry-driven adaptive policy. Seven canonical elements per NIST SP 800-207.",
+      "pre_read": "For ZTA implementation questions, anchor on the seven NIST SP 800-207 elements. Product-purchase, perimeter-MFA-only, and office-only framings each fail.",
+      "correct_explanation": "NIST SP 800-207 (Zero Trust Architecture, August 2020) establishes Zero Trust Architecture canonical elements: (1) NEVER TRUST ALWAYS VERIFY — no implicit trust based on network location, device ownership, or prior authentication state; (2) EVERY ACCESS REQUEST AUTHENTICATED AND AUTHORIZED — per-request not per-session; (3) IDENTITY-CENTRIC (NOT NETWORK-PERIMETER-CENTRIC) — primary control plane is identity (user + device); network becomes data plane; (4) MICROSEGMENTATION — per-workload policy enforcement; lateral-movement reduction; (5) CONTINUOUS VERIFICATION — not one-time at login; risk signals re-evaluated continuously (device posture changes, anomalous behavior, MFA challenge response); (6) POLICY DECISION POINT (PDP) AND POLICY ENFORCEMENT POINT (PEP) SEPARATED — PDP evaluates policy and risk; PEP enforces decisions at the resource; (7) TELEMETRY-DRIVEN ADAPTIVE POLICY — endpoint posture, identity behavior, threat intel, vulnerability state feed risk-adaptive decisions. NIST SP 800-207 deployment approaches: identity-governance-based, microsegmentation-based, software-defined perimeter (SDP). CISA Zero Trust Maturity Model adds pillars: Identity, Devices, Networks, Applications and Workloads, Data; with maturity levels Traditional → Initial → Advanced → Optimal.",
+      "wrong_explanations": {
+        "A": "A treats ZTA as a product purchase rather than an architectural pattern. ZTA is an APPROACH (per NIST SP 800-207) implemented through coordinated changes to identity, network, endpoint, and application architectures; no single product delivers it.",
+        "C": "C reduces ZTA to perimeter MFA + trust-inside, which is precisely what ZTA replaces. The core ZTA principle is NEVER TRUST internal traffic implicitly; perimeter MFA only protects the perimeter.",
+        "D": "D restricts ZTA to corporate-network access from corporate-owned devices, which contradicts the device-agnostic and location-agnostic principles. ZTA explicitly supports any-device any-location with policy-driven authorization."
+      },
+      "tips": [
+        "Trap is A — 'purchase a Zero Trust product' is candidate-seductive because vendor marketing dominates ZTA discussion; but ZTA is an ARCHITECTURE per NIST SP 800-207, not a product. Coordinated changes to identity, network, endpoint, and application architectures deliver ZTA.",
+        "ZTA = never-trust-always-verify + per-request authn/authz + identity-centric + microsegmentation + continuous verification + separated PDP/PEP + telemetry-driven adaptive policy. Seven elements per NIST SP 800-207.",
+        "Exam-day shortcut: when stem says 'ZERO TRUST,' look for the NIST SP 800-207 seven-element framework; product-purchase, perimeter-MFA-only, and office-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); CISA Zero Trust Maturity Model v2.0 (April 2023); NIST SP 800-207A (A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Cloud Environments); DoD Zero Trust Reference Architecture v2.0",
+      "related_concepts": [
+        "Policy Decision/Enforcement Points",
+        "Identity-centric architecture",
+        "CISA ZT Maturity Model",
+        "Continuous verification"
+      ],
+      "_provenance": "Authored from concept: 'Zero Trust Architecture implementation per NIST SP 800-207'. Public sources: NIST, CISA, DoD. No legacy bank citation."
+    },
+    {
+      "id": "d5_051",
+      "domain": 5,
+      "subtopic": "DLP Policy Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's Data Loss Prevention (DLP) policy implementation. Which option BEST captures the canonical DLP POLICY FRAMEWORK?",
+      "options": {
+        "A": "Block all outbound email containing any potentially sensitive keyword regardless of context; aggressive blocking is the safest default.",
+        "B": "Allow all outbound communication and rely on quarterly review of email and file-transfer logs to identify policy violations after the fact.",
+        "C": "Content-based detection (regex/keywords/EDM/fingerprinting) + context awareness (sender/recipient/channel) + identity awareness (role/clearance) + tiered response (block/quarantine/alert/encrypt) + exception workflow + tuning.",
+        "D": "Apply uniform DLP policy across all employees and channels; per-role or per-channel tailoring undermines policy uniformity and creates loopholes."
+      },
+      "correct": "C",
+      "key_concept": "DLP policy framework = content detection (regex/keywords/EDM/fingerprinting) + context awareness + identity awareness + tiered response (block/quarantine/alert/encrypt) + exception workflow + monitoring/tuning + audit trail. Seven elements.",
+      "pre_read": "For DLP policy questions, anchor on the seven-element framework with content + context + identity awareness. Aggressive-block-all, after-the-fact-review, and uniform-policy framings each fail.",
+      "correct_explanation": "ISACA Data Loss Prevention Audit/Assurance Program, Gartner DLP Magic Quadrant, and ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention) establish DLP policy framework: (1) CONTENT-BASED DETECTION — regex (SSN, credit card patterns), keywords (customer-data, trade-secret), exact-data-match (EDM) against database records, fingerprinting (document fingerprint, partial-match), machine-learning classifiers; (2) CONTEXT AWARENESS — sender, recipient (internal vs external), location (corporate network vs home WiFi), channel (corporate email vs Gmail), time-of-day, prior behavior; (3) IDENTITY AWARENESS — user role (finance can email finance data to authorized recipients), data-sensitivity clearance, department; (4) TIERED RESPONSE — BLOCK (most severe; sensitive content to external personal email), QUARANTINE (hold pending approval), ALERT (allow with notification to user/manager), ENCRYPT (allow with mandatory encryption); (5) EXCEPTION WORKFLOW — business-justified deviations with approval; expiry; audit; (6) MONITORING AND TUNING — false-positive rate tracked and reduced; new patterns added; user feedback channel; (7) AUDIT TRAIL — full record of detection, response, user action, approver. False-positive management is the operational make-or-break.",
+      "wrong_explanations": {
+        "A": "A uses pure content-based blocking without context or identity awareness; produces a flood of false positives that paralyze legitimate business communication. False-positive fatigue triggers users to find DLP workarounds, defeating the program.",
+        "B": "B is detective-only after-the-fact, with no preventive control. By the time quarterly log review identifies a violation, the data has already left the firm. DLP requires real-time or near-real-time prevention, not retrospective reporting.",
+        "D": "D applies uniform policy across all employees and channels, missing the legitimate need for tiered policy. A finance executive emailing budget data to the CFO via approved channel should be allowed; the same content to a personal Gmail should be blocked."
+      },
+      "tips": [
+        "Trap is A — 'block all outbound email with potentially sensitive keywords' is candidate-seductive because it sounds rigorous; but pure content-based blocking without context produces false-positive floods that paralyze business communication and trigger user workarounds. Context + identity awareness is essential.",
+        "DLP policy = content + context + identity awareness + tiered response (block/quarantine/alert/encrypt) + exception workflow + monitoring/tuning + audit trail. Seven elements. Content-only fails.",
+        "Exam-day shortcut: when stem asks about DLP POLICY, look for the seven-element framework with content + context + identity; aggressive-block, after-the-fact-review, and uniform-policy framings each fail."
+      ],
+      "framework_ref": "ISACA Data Loss Prevention Audit/Assurance Program; Gartner DLP Magic Quadrant; ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention); NIST SP 800-122 (Guide to Protecting the Confidentiality of PII)",
+      "related_concepts": [
+        "Exact-data-match (EDM)",
+        "Document fingerprinting",
+        "Tiered response",
+        "False-positive management"
+      ],
+      "_provenance": "Authored from concept: 'DLP canonical policy framework with content + context + identity'. Public sources: ISACA, Gartner, ISO, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_052",
+      "domain": 5,
+      "subtopic": "Data Discovery and Classification",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's data discovery and classification program prior to DLP enforcement rollout. Which option BEST captures the canonical DISCOVERY AND CLASSIFICATION framework?",
+      "options": {
+        "A": "Survey business units quarterly asking what data they hold; the survey responses become the data inventory without automated discovery or scanning.",
+        "B": "Assume all data is sensitive by default and apply uniform protection regardless of actual classification; eliminates the need for discovery.",
+        "C": "Rely on user-applied labels exclusively; users know their data best and automated discovery introduces false positives that overwhelm the program.",
+        "D": "Automated discovery (structured + unstructured) + sensitivity tiers (public/internal/confidential/restricted) + content-driven labels + user-confirmed for ambiguous + inheritance through downstream + remediation + periodic re-discovery."
+      },
+      "correct": "D",
+      "key_concept": "Discovery and classification = automated discovery + sensitivity tiers + content-driven labels + user-confirmed for ambiguous + inheritance + remediation of mis-located + periodic re-discovery. Seven elements.",
+      "pre_read": "For discovery/classification questions, anchor on automated discovery + tiered sensitivity + content-driven labels with user override. Survey-based, uniform-protection, and user-label-only framings each fail.",
+      "correct_explanation": "ISACA Data Classification Audit/Assurance Program, ISO/IEC 27001:2022 Annex A.5.12 (Classification of information), and Microsoft Purview / Varonis / BigID product documentation establish discovery and classification framework: (1) AUTOMATED DISCOVERY ACROSS STRUCTURED AND UNSTRUCTURED — databases, file shares, SharePoint/OneDrive, cloud storage (M365, Box, Google Drive), email archives, code repositories; tool-driven (BigID, Varonis, Microsoft Purview, IBM Guardium); (2) CLASSIFICATION BY SENSITIVITY — public / internal / confidential / restricted (four-tier typical; some firms use three or five); aligned to business risk and regulatory categories (PII, PHI, PCI, IP); (3) CONTENT-DRIVEN LABELS — regex (SSN, credit-card), keyword matching, exact-data-match (EDM), document fingerprinting, ML classifiers trained on known examples; (4) USER-CONFIRMED LABELS FOR AMBIGUOUS CONTENT — automated label proposed; user confirms or overrides; user labels override automatic; (5) INHERITANCE THROUGH DOWNSTREAM USES — when sensitive content is copied/embedded/derived, label propagates; (6) REMEDIATION OF MIS-LOCATED DATA — sensitive data in low-security locations identified and moved; user notification; (7) PERIODIC RE-DISCOVERY — quarterly typical; tracks data sprawl, identifies new repositories, validates labels. Classification is foundational for DLP, retention, encryption, and access-control policies.",
+      "wrong_explanations": {
+        "A": "A relies on self-reported surveys, which produces incomplete and inaccurate inventory. Business units don't know what's in shared drives, legacy databases, or shadow IT cloud storage; only automated discovery surfaces the actual state.",
+        "B": "B treats all data as sensitive uniformly, which over-protects low-sensitivity data (driving operational friction) and under-prioritizes truly-sensitive data (no differentiation by risk). Tiered classification enables proportionate protection.",
+        "C": "C relies on user labels exclusively, which has well-documented under-labeling bias (users don't label routine documents). User labels are valuable for ambiguous content but automated discovery is required to surface the unlabeled long tail."
+      },
+      "tips": [
+        "Trap is C — 'rely on user-applied labels exclusively' is candidate-seductive because users know their data best in principle; but in practice users have well-documented under-labeling bias (especially for routine documents and shared drives). Automated discovery surfaces the unlabeled long tail.",
+        "Discovery and classification = automated discovery + sensitivity tiers + content-driven labels + user-confirmed ambiguous + inheritance + remediation + periodic re-discovery. Seven elements.",
+        "Exam-day shortcut: when stem asks about DATA DISCOVERY and CLASSIFICATION, look for automated discovery + tiered sensitivity + content-driven labels; survey-based, uniform-protection, and user-label-only framings each fail."
+      ],
+      "framework_ref": "ISACA Data Classification Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.5.12 (Classification of information); NIST SP 800-60 (Guide for Mapping Types of Information and Information Systems to Security Categories); Microsoft Purview Information Protection",
+      "related_concepts": [
+        "Sensitivity labels",
+        "Content-driven classification",
+        "ML classifiers",
+        "Inheritance propagation"
+      ],
+      "_provenance": "Authored from concept: 'Discovery and classification framework as DLP prerequisite'. Public sources: ISACA, ISO, NIST, vendor documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_053",
+      "domain": 5,
+      "subtopic": "DLP Egress Channels — Coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the COMPLETENESS of the firm's DLP egress channel coverage. Which option BEST captures the canonical DLP EGRESS CHANNELS that require coverage?",
+      "options": {
+        "A": "Email (corporate + personal) + web (HTTPS upload, file sharing) + cloud (sanctioned + shadow IT) + USB/removable + printing + clipboard/screenshot + collaboration tools (Slack/Teams) + APIs/developer tooling.",
+        "B": "Email only; other channels (web, cloud, USB, print) are addressed by separate non-DLP controls and don't require integration with the DLP platform.",
+        "C": "Block all removable media and rely on that single control to prevent data exfiltration; eliminates the need for multi-channel DLP coverage.",
+        "D": "Network DLP at the perimeter is sufficient; endpoint and cloud-API channels are covered by network inspection at the corporate egress firewall."
+      },
+      "correct": "A",
+      "key_concept": "DLP egress channels = email + web + cloud + removable media + print + clipboard/screenshot + collaboration tools + APIs/developer tooling. Eight categories. Determined exfiltration uses path of least resistance.",
+      "pre_read": "For DLP egress coverage questions, anchor on multi-channel coverage with explicit gap analysis. Email-only, USB-block-only, and perimeter-network-only framings each fail.",
+      "correct_explanation": "ISACA Data Loss Prevention Audit/Assurance Program and Gartner DLP Market Guide establish DLP egress channel coverage requirements: (1) EMAIL — corporate Exchange/M365/Gmail outbound; personal webmail (Gmail, Yahoo, ProtonMail) blocked or DLP-inspected at network layer; (2) WEB — HTTPS upload to file-sharing sites (WeTransfer, Dropbox web, Google Drive web), social media, paste sites (pastebin); TLS-inspection required; (3) CLOUD STORAGE — sanctioned (corporate OneDrive/Box) DLP-integrated via API; shadow IT (personal Dropbox/iCloud) detected via CASB and blocked; (4) REMOVABLE MEDIA — USB, optical disk, eSATA; device control with whitelisting or block; (5) PRINTING — local printer, network printer, print-to-PDF; print-DLP inspects spool; (6) ENDPOINT CLIPBOARD AND SCREENSHOT — copy from sensitive app then paste elsewhere; screen capture by user or screen-sharing app; endpoint-DLP agents inspect; (7) COLLABORATION TOOLS — Slack, Teams, Zoom chat, Discord; DLP integration via app-specific API or DLP-aware connector; (8) APIs AND DEVELOPER TOOLING — git push to public repo, S3 bucket upload, container image push to public registry, secrets in CI/CD logs. Determined insiders use the path of least resistance; comprehensive coverage requires explicit gap analysis and per-channel control.",
+      "wrong_explanations": {
+        "B": "B restricts coverage to email-only, missing seven other channels (web, cloud, USB, print, clipboard, collaboration, APIs). Adversaries and insiders use the path of least resistance; an email-only DLP program is bypassed within minutes by anyone using personal cloud storage or USB.",
+        "C": "C uses USB-block-only, which addresses one channel and fails on the others. Determined insiders use cloud upload, personal email, screenshot+OCR, or printing-to-PDF if USB is blocked.",
+        "D": "D assumes perimeter network DLP covers everything, but TLS-encrypted traffic to cloud services bypasses gateway inspection without TLS decryption (which has privacy and operational implications), endpoint-local operations (USB, clipboard, print) never traverse the perimeter, and API/developer tooling often uses certificate-pinned connections that resist inspection."
+      },
+      "tips": [
+        "Trap is D — 'perimeter network DLP is sufficient' is candidate-seductive because perimeter inspection is operationally simpler than endpoint+cloud+API coverage; but TLS encryption, endpoint-local operations, and certificate-pinned API connections bypass perimeter network DLP. Multi-channel coverage is required.",
+        "DLP egress = email + web + cloud (sanctioned + shadow) + USB/print + clipboard/screenshot + collaboration + APIs. Eight channels. Path-of-least-resistance defeats partial coverage.",
+        "Exam-day shortcut: when stem asks about DLP EGRESS COVERAGE, look for multi-channel coverage with gap analysis; email-only, USB-block-only, and perimeter-network-only framings each fail."
+      ],
+      "framework_ref": "ISACA Data Loss Prevention Audit/Assurance Program; Gartner DLP Market Guide; ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention); Cloud Access Security Broker (CASB) market documentation",
+      "related_concepts": [
+        "CASB shadow-IT detection",
+        "TLS inspection",
+        "Endpoint DLP agent coverage",
+        "API egress"
+      ],
+      "_provenance": "Authored from concept: 'DLP egress channel canonical coverage'. Public sources: ISACA, Gartner, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_054",
+      "domain": 5,
+      "subtopic": "Attribute-Based Access Control (ABAC)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a firm's transition from role-based access control (RBAC) to attribute-based access control (ABAC) for a customer-data application. Which option BEST captures the canonical ABAC FRAMEWORK?",
+      "options": {
+        "A": "ABAC and RBAC are the same; ABAC is rebranded RBAC with vendor marketing differentiation rather than a substantive access-control model.",
+        "B": "Subject attributes (role/department/clearance) + resource attributes (sensitivity/owner) + environment attributes (time/location/device posture) + policy expressions + PDP + PEP + auditable decisions.",
+        "C": "ABAC eliminates the need for any access control framework; instead each application implements its own authorization logic without policy abstraction.",
+        "D": "ABAC requires all attributes to be defined at user-account creation time; runtime attribute evaluation is not part of the canonical ABAC pattern."
+      },
+      "correct": "B",
+      "key_concept": "ABAC = subject + resource + environment attributes + policy expressions + PDP + PEP + auditable decisions. NIST SP 800-162 framework. Supports policies RBAC cannot express.",
+      "pre_read": "For ABAC questions, anchor on subject + resource + environment attributes with runtime policy evaluation. RBAC-equivalent, app-specific, and account-creation-only framings each fail.",
+      "correct_explanation": "NIST SP 800-162 (Guide to Attribute-Based Access Control (ABAC) Definition and Considerations) and ISACA Identity and Access Management Audit/Assurance Program establish ABAC framework: (1) SUBJECT ATTRIBUTES — user identity, role, department, clearance level, employment status, training completion; (2) RESOURCE ATTRIBUTES — data sensitivity classification, owner, business context, regulatory category (PHI/PCI/PII), record type; (3) ENVIRONMENT ATTRIBUTES — time of access, source IP/location, device posture (managed/unmanaged, patch level, EDR status), MFA freshness, threat level; (4) POLICY EXPRESSIONS COMBINING THEM — 'IF subject.role = finance AND resource.classification = restricted AND environment.location IN approved-countries AND environment.device-managed = true THEN PERMIT'; XACML standard for policy expression; (5) POLICY DECISION POINT (PDP) — evaluates policy and returns permit/deny; (6) POLICY ENFORCEMENT POINT (PEP) — at the resource, enforces PDP decision; (7) AUDITABLE DECISIONS — full record of attributes considered, policy evaluated, decision returned. ABAC supports DYNAMIC AUTHORIZATION (re-evaluation at each access, not one-time at provisioning) and FINE-GRAINED POLICIES (combinations RBAC alone cannot express). Common implementations: Axiomatics, Microsoft Conditional Access (combines RBAC + ABAC-like policies), AWS IAM with attributes (tags + conditions). Migration from RBAC to ABAC typically retains roles as one attribute alongside environment and resource attributes.",
+      "wrong_explanations": {
+        "A": "A treats ABAC as rebranded RBAC, missing the substantive difference. RBAC grants access based on ROLE assignment alone; ABAC evaluates SUBJECT + RESOURCE + ENVIRONMENT attributes at access time. ABAC supports policies like 'finance role can read customer records ONLY during business hours from managed devices in country X' — RBAC alone can't express this.",
+        "C": "C eliminates the policy abstraction layer entirely, which is the inverse of ABAC. ABAC provides a CENTRAL policy decision point with attributes as inputs; per-application authorization fragments policy and creates inconsistency.",
+        "D": "D restricts attributes to account-creation time, missing the RUNTIME attribute evaluation that defines ABAC. Environment attributes (time, location, device posture, threat-level) are evaluated at access time, not at account provisioning."
+      },
+      "tips": [
+        "Trap is A — 'ABAC and RBAC are the same' is candidate-seductive because vendor marketing blurs the distinction; but ABAC evaluates SUBJECT + RESOURCE + ENVIRONMENT attributes at RUNTIME, supporting policies (time-bound, device-conditional, location-conditional) that RBAC alone cannot express.",
+        "ABAC = subject + resource + environment attributes + policy expressions + PDP + PEP + auditable decisions. NIST SP 800-162. Runtime evaluation. Supports conditional policies RBAC cannot.",
+        "Exam-day shortcut: when stem says 'ABAC' or 'ATTRIBUTE-BASED ACCESS CONTROL,' look for the seven-element NIST SP 800-162 framework with runtime evaluation; RBAC-equivalent, app-specific, and account-creation-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-162 (Guide to Attribute-Based Access Control Definition and Considerations); OASIS XACML 3.0 (eXtensible Access Control Markup Language); ISACA Identity and Access Management Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.5.15 (Access control)",
+      "related_concepts": [
+        "NIST SP 800-162",
+        "XACML policy expression",
+        "Dynamic authorization",
+        "Conditional Access"
+      ],
+      "_provenance": "Authored from concept: 'ABAC canonical framework per NIST SP 800-162'. Public sources: NIST, OASIS, ISACA, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_055",
+      "domain": 5,
+      "subtopic": "Identity Governance and Administration (IGA)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a firm's Identity Governance and Administration (IGA) program covering 4,000 employees and 350 applications. Which option BEST captures the canonical IGA FRAMEWORK?",
+      "options": {
+        "A": "IGA is identical to IAM; deploying any identity provider product delivers IGA capability without separate governance functions.",
+        "B": "IGA is a vendor product category; purchasing an IGA platform delivers governance capability without process or policy work.",
+        "C": "Identity lifecycle (JML) + access request/approval workflow + risk-tiered certification + role mining and engineering + SoD analytics + entitlement catalog + policy + audit reporting.",
+        "D": "IGA applies only to privileged accounts; standard user accounts are governed by routine HR processes and don't require IGA framework."
+      },
+      "correct": "C",
+      "key_concept": "IGA = identity lifecycle + access request/approval + certification + role mining/engineering + SoD analytics + entitlement catalog + policy + audit reporting. Eight canonical functions.",
+      "pre_read": "For IGA questions, anchor on the eight-function framework spanning operations + governance + analytics. IAM-equivalent, product-purchase, and privileged-only framings each fail.",
+      "correct_explanation": "ISACA Identity and Access Management Audit/Assurance Program, Gartner IGA Magic Quadrant, and Forrester IGA Wave establish IGA framework: (1) IDENTITY LIFECYCLE (JOINER/MOVER/LEAVER) — HR-driven provisioning at hire, modification on role change, termination at departure; coordinated across IdP, applications, directory services; (2) ACCESS REQUEST AND APPROVAL WORKFLOW — self-service catalog, approver chain by sensitivity, business justification capture, SLAs; (3) ACCESS CERTIFICATION — risk-tiered recertification cycles (privileged quarterly, business semi-annual, standard annual); independent reviewer (data owner/manager); remediation SLAs; (4) ROLE MINING AND ENGINEERING — discover roles from actual usage patterns, engineer them for least-privilege, govern role lifecycle; reduces entitlement sprawl; (5) SEGREGATION-OF-DUTIES (SoD) ANALYTICS — detect toxic combinations (requester + approver, posting + reviewing); preventive SoD checks at request time, detective analytics ongoing; (6) ENTITLEMENT CATALOG — central inventory of all available entitlements with descriptions, risk ratings, owners; (7) POLICY — what's required for which access (training, manager approval, business justification, SoD checks); (8) AUDIT REPORTING — completion rates, exception volume, SoD violations, risk metrics; quarterly to audit committee. Modern IGA platforms include SailPoint IdentityIQ/IdentityNow, Saviynt EIC, Microsoft Entra ID Governance, Omada Identity, Oracle IGA.",
+      "wrong_explanations": {
+        "A": "A conflates IAM (identity provisioning + authentication) with IGA (identity GOVERNANCE: who has access, why, with appropriate approval, certification, and analytics). IAM is the operational layer; IGA is the governance layer above it. IdP product alone doesn't deliver certification, role mining, or SoD analytics.",
+        "B": "B treats IGA as product purchase, missing the PROCESS and POLICY dimensions. IGA platforms (SailPoint, Saviynt, Microsoft Entra ID Governance, Omada) ENABLE governance but require process design, policy definition, and ongoing operation to deliver value.",
+        "D": "D restricts IGA to privileged accounts, missing the full scope. IGA covers ALL employee and contractor access — standard user access has SoD risks (e.g., requester also approving), recertification needs, and access-creep patterns that IGA framework addresses."
+      },
+      "tips": [
+        "Trap is A — candidates conflate IGA with IAM because both acronyms start with 'identity' and pattern-match; but IAM OPERATES accounts (provisioning, authentication) while IGA GOVERNS them (who has access, why, with certification, SoD, analytics). IdP product alone doesn't deliver governance.",
+        "IGA = identity lifecycle + access request/approval + certification + role mining/engineering + SoD analytics + entitlement catalog + policy + audit reporting. Eight canonical functions.",
+        "Exam-day shortcut: when stem says 'IGA' or 'IDENTITY GOVERNANCE,' look for the eight-function framework spanning operations + governance + analytics; IAM-equivalent, product-purchase, and privileged-only framings each fail."
+      ],
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; Gartner IGA Magic Quadrant; Forrester IGA Wave; ISO/IEC 27001:2022 Annex A.5.18 (Access rights)",
+      "related_concepts": [
+        "Role mining",
+        "SoD analytics",
+        "Access certification",
+        "Entitlement catalog"
+      ],
+      "_provenance": "Authored from concept: 'IGA canonical eight-function framework'. Public sources: ISACA, Gartner, Forrester, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_056",
+      "domain": 5,
+      "subtopic": "Endpoint Encryption — Full-Disk and File-Level",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's endpoint encryption program covering 5,000 laptops (Windows + macOS) and 3,000 mobile devices. Which option BEST captures the canonical ENDPOINT ENCRYPTION framework?",
+      "options": {
+        "A": "Endpoint encryption is mandatory only for executives and finance staff; routine knowledge-worker endpoints don't require encryption since they hold no sensitive data.",
+        "B": "Disk encryption is unnecessary on modern operating systems; OS-level access controls (login password + MFA) are sufficient protection for data at rest on endpoints.",
+        "C": "Encrypt only laptops; mobile devices are managed by MDM and don't require explicit encryption controls beyond default MDM configuration.",
+        "D": "FDE (BitLocker/FileVault) + file-level for sensitive content + removable-media encryption + mobile-device encryption (MDM-enforced) + corporate-managed key escrow + boot integrity (TPM/Secure Enclave) + compliance audit."
+      },
+      "correct": "D",
+      "key_concept": "Endpoint encryption = FDE (BitLocker/FileVault) + file-level for sensitive + removable-media + mobile-device + key escrow + boot integrity (TPM/Secure Enclave) + compliance audit. Seven elements.",
+      "pre_read": "For endpoint encryption questions, anchor on multi-layer encryption (disk + file + removable + mobile) with key escrow and boot integrity. OS-controls-only, laptop-only, and executive-only framings each fail.",
+      "correct_explanation": "NIST SP 800-111 (Guide to Storage Encryption Technologies for End User Devices), ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography), and CIS Controls v8 Safeguard 3.6 (Encrypt Data on End-User Devices) establish endpoint encryption framework: (1) FULL-DISK ENCRYPTION (FDE) — BitLocker (Windows), FileVault (macOS), LUKS (Linux); protects data at rest regardless of OS state; required for laptops; (2) FILE-LEVEL ENCRYPTION FOR SENSITIVE CONTENT — EFS, BitLocker To Go, Information Rights Management (IRM) for documents containing PII/PHI/IP; persists through copy/email/share; (3) REMOVABLE-MEDIA ENCRYPTION — BitLocker To Go, FileVault for external drives; mandatory or device-control blocks; (4) MOBILE-DEVICE ENCRYPTION — iOS Data Protection (default-on with passcode), Android File-Based Encryption; MDM-enforced and reported; (5) ESCROW OF RECOVERY KEYS — corporate-managed (Active Directory/MBAM/Intune for BitLocker, MDM for FileVault); user-only-managed keys lock the firm out of its own data on departure; (6) BOOT INTEGRITY — TPM (Windows), Secure Enclave (macOS), Hardware-Backed Key Store (Android, Samsung Knox); protects encryption keys; verifies boot chain; (7) AUDIT OF COMPLIANCE AND EXCEPTIONS — monthly/quarterly compliance reports, exception inventory (devices missing encryption with business justification), trend tracking. NIST FIPS 140-3 compliance for federal/regulated; AES-256 minimum modern standard.",
+      "wrong_explanations": {
+        "A": "A assumes routine endpoints hold no sensitive data, which is operationally false. Knowledge workers download spreadsheets, draft documents, save attachments, and use local caches that contain sensitive content. Role-based encryption tiering produces gaps; uniform encryption is the canonical pattern.",
+        "B": "B claims OS-level access controls (login + MFA) are sufficient, but these protect ONLY the live OS. When a laptop is stolen and the disk is removed or boot order is changed, the OS controls are bypassed. Disk-level encryption protects data at rest regardless of OS state.",
+        "C": "C restricts encryption to laptops, missing mobile devices. Mobile devices contain corporate email, documents, MFA tokens, and credentials; loss without encryption is a reportable breach in most jurisdictions. Mobile MDM SHOULD enforce encryption explicitly, not implicitly."
+      },
+      "tips": [
+        "Trap is B — 'OS access controls (login + MFA) are sufficient for data at rest' is candidate-seductive because these are universally deployed; but they protect ONLY the LIVE OS. Stolen laptop with disk removed or boot bypass defeats OS controls; only disk-level encryption protects at rest.",
+        "Endpoint encryption = FDE + file-level + removable-media + mobile + key escrow + boot integrity + compliance audit. Seven layers. OS controls alone leave at-rest gap.",
+        "Exam-day shortcut: when stem asks about ENDPOINT ENCRYPTION, look for multi-layer encryption with key escrow and boot integrity; OS-controls-only, laptop-only, and executive-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-111 (Guide to Storage Encryption Technologies for End User Devices); ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography); CIS Controls v8 Safeguard 3.6 (Encrypt Data on End-User Devices); NIST FIPS 140-3 (Security Requirements for Cryptographic Modules)",
+      "related_concepts": [
+        "BitLocker key escrow",
+        "TPM boot integrity",
+        "Mobile FDE",
+        "FIPS 140-3"
+      ],
+      "_provenance": "Authored from concept: 'Endpoint encryption canonical framework'. Public sources: NIST, ISO, CIS. No legacy bank citation."
+    },
+    {
+      "id": "d5_057",
+      "domain": 5,
+      "subtopic": "Ransomware Detection in EDR — Immediate Action",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A regional manufacturing firm's EDR platform alerts at 11:47 AM Wednesday: ransomware behavior detected on the Windows file-server hosting engineering drawings and customer-bid documents (12TB, used by 180 engineering staff across 4 sites). EDR shows: rapid file-extension changes (.crypted suffix appended), shadow-copy deletion attempted, suspicious cmd.exe with PowerShell encoded command. Alert severity CRITICAL. The SOC analyst confirms within 90 seconds: real ransomware encryption in progress, currently 8 minutes into the activity, approximately 7% of disk encrypted. The site IT manager (in another timezone) is reachable on call within 5 minutes. Backup runs nightly to immutable cloud storage. Engineering operations depend on this file server in real time.",
+      "options": {
+        "A": "ISOLATE the file server IMMEDIATELY through EDR network-quarantine (single click in EDR console) — every minute of additional encryption is irrecoverable data and additional cleanup scope; isolation completes in seconds and prevents lateral movement to other servers via SMB.",
+        "B": "Open an incident-response coordination call: SOC + site IT + engineering leadership + legal + executive comms; align on response framework before taking technical action on the file server.",
+        "C": "Begin restore from last night's backup immediately to the file server in parallel with ongoing encryption activity to minimize engineering downtime.",
+        "D": "Notify engineering staff at the four sites of the encryption-in-progress and request they close all open files; gather their feedback on which files are highest priority before isolating."
+      },
+      "correct": "A",
+      "key_concept": "Ransomware-in-progress FIRST action = isolate immediately via EDR network-quarantine. Coordination, restore, and notification all follow. Single surgical action because every minute extends encryption scope and lateral movement risk.",
+      "pre_read": "For time-critical ransomware questions, anchor on ISOLATE FIRST via EDR. The encryption-progress clock dominates other considerations.",
+      "correct_explanation": "When EDR confirms active ransomware encryption on a server, the FIRST action is IMMEDIATE NETWORK ISOLATION through EDR network-quarantine. Rationale: (1) EVERY MINUTE EXTENDS ENCRYPTION SCOPE — at typical ransomware encryption rates (10-50 MB/sec depending on variant and disk speed), every additional minute adds gigabytes of unrecoverable data; (2) LATERAL MOVEMENT RISK — modern ransomware enumerates SMB/RPC/RDP and propagates to adjacent servers, file shares, and backup systems; isolation contains the blast radius; (3) BACKUP TARGETS AT RISK — ransomware actively seeks and corrupts backup systems; immutable cloud backup is the firm's only guaranteed clean restore source; isolation prevents the attacker from pivoting to backup infrastructure; (4) FORENSIC PRESERVATION — isolated server retains pre-encryption state for IR investigation; physical disconnect risks losing volatile memory and active session state, but EDR network-quarantine preserves the running state while blocking outbound; (5) ISOLATION IS FAST — EDR console single-click; completes in seconds; faster than any coordination call. After isolation: (a) preserve forensic state for IR investigation, (b) confirm immutable backup integrity and isolation, (c) coordinate IR call with SOC + IT + legal + executive comms, (d) plan restore to clean target (NOT to compromised server), (e) hunt for additional infected hosts via EDR threat hunt, (f) prepare regulator notifications. ISACA Incident Management Audit/Assurance Program and NIST SP 800-61 Rev 2 both treat ISOLATION as the critical-path first action for active malware; coordination and communication are downstream of containment.",
+      "wrong_explanations": {
+        "B": "Multi-track coordination call is appropriate AFTER isolation. Every minute of coordination is a minute of additional encryption AND a minute of opportunity for lateral movement via SMB/RPC/RDP. Isolation is critical-path; coordination follows.",
+        "C": "Restoring INTO an actively-encrypting server overwrites pending data, mid-transaction state, and the restore itself may be corrupted if the server is compromised. Isolation must happen first; then restore from clean immutable backup to a clean target.",
+        "D": "Notifying 180 engineering staff while encryption is ongoing delays the only action that stops further data loss. Open files at the time of isolation will have a recoverability gap, but additional minutes of encryption are unrecoverable. Isolate first; then communicate."
+      },
+      "tips": [
+        "Trap is B — 'open incident-response coordination call' is candidate-seductive because broad coordination is appropriate for many incidents; but for ACTIVE ransomware encryption, every minute of coordination is more data encrypted and more lateral-movement risk. ISOLATE FIRST via EDR, coordinate second.",
+        "Active ransomware = isolate first via EDR network-quarantine. Coordination, restore, notification all follow. Containment dominates communication in time-critical malware scenarios.",
+        "Exam-day shortcut: when stem describes ACTIVE RANSOMWARE ENCRYPTION IN PROGRESS, look for IMMEDIATE ISOLATION via EDR; coordination-call, parallel-restore, and notify-first framings each fail the encryption-progress-clock test."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); MITRE ATT&CK Framework Impact tactic (T1486 Data Encrypted for Impact)",
+      "related_concepts": [
+        "EDR network-quarantine",
+        "Lateral movement containment",
+        "Immutable backup isolation",
+        "MITRE T1486"
+      ],
+      "_provenance": "Authored from concept: 'Ransomware-in-progress containment-first response'. Public sources: ISACA, NIST, CISA, MITRE. No legacy bank citation. Note: intentional single-focus surgical-action correct answer."
+    },
+    {
+      "id": "d5_058",
+      "domain": 5,
+      "subtopic": "Multi-Jurisdiction DLP Design",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the multi-jurisdiction DLP design?",
+      "scenario_context": "A multinational consumer-products firm (operating in 28 countries, 14,000 employees, headquartered in the US) is implementing enterprise DLP across all employee endpoints and corporate email. Regulatory landscape varies: EU GDPR (data minimization + cross-border restrictions on employee data + Article 88 employment monitoring constraints), China PIPL (data localization + government access requests), Russia 152-FZ (strict data localization), Brazil LGPD, India DPDP Act (2023), and state-level US (CCPA/CPRA, Virginia VCDPA, Colorado CDPA). Additionally: works councils in Germany, Italy, and France have negotiated specific employee-monitoring boundaries that limit DLP telemetry scope. The Chief Privacy Officer and CISO are presenting the design to the board in 6 weeks.",
+      "options": {
+        "A": "Apply uniform US-style DLP policy across all 28 countries to maintain consistency; jurisdictional variations can be addressed through individual exception requests as they arise.",
+        "B": "Global baseline + per-jurisdiction overlays + local DPO/legal review + central operational platform with jurisdiction tags + transparent per-jurisdiction employee notice + audit committee oversight + regulatory-change maintenance.",
+        "C": "Disable DLP entirely in EU, China, Russia, and other jurisdictions with regulatory or labor-relations complexity; deploy only in US and easy jurisdictions to avoid legal risk.",
+        "D": "Defer DLP rollout until a single global privacy/employment regulatory framework emerges; current jurisdictional fragmentation makes enterprise DLP infeasible."
+      },
+      "correct": "B",
+      "key_concept": "Multi-jurisdiction DLP = global baseline + per-jurisdiction overlays + per-jurisdiction DPO/legal review + central platform with jurisdiction tags + transparent employee notice + audit committee oversight. Seven tracks balancing consistency with local compliance.",
+      "pre_read": "For multi-jurisdiction DLP questions, anchor on global baseline + per-jurisdiction overlays. Uniform-US, selective-deployment, and deferral framings each fail.",
+      "correct_explanation": "ISACA Data Loss Prevention Audit/Assurance Program, GDPR Article 88 (Processing in the context of employment), and IAPP multi-jurisdiction guidance establish multi-jurisdiction DLP design: (1) GLOBAL BASELINE — data minimization, sensitive-data classification, exfiltration prevention; applies everywhere as floor; (2) PER-JURISDICTION OVERLAYS — additional controls (data localization in China/Russia/India), exclusions (works-council-protected employee communications in EU), notice requirements (transparent employee notification per Article 88 + national labor law); (3) PER-JURISDICTION DPO/LEGAL REVIEW — local DPO or in-region counsel signs off on policy scope, monitoring boundaries, employee notice; documented; (4) CENTRAL OPERATIONAL PLATFORM WITH JURISDICTION TAGS — single DLP platform (Microsoft Purview, Forcepoint, Symantec) with policy modules tagged by jurisdiction; reduces operational fragmentation; (5) TRANSPARENT EMPLOYEE NOTICE PER JURISDICTION — what's monitored, why, retention; transparent notice required; works-council consultation in DE/IT/FR; CCPA notice in CA; (6) AUDIT COMMITTEE OVERSIGHT — quarterly reporting on policy effectiveness, regulatory inquiries, exception volume; (7) MAINTENANCE FOR REGULATORY CHANGE — new laws (DPDP 2023 India, anticipated US federal privacy law) require policy refresh. Common failure modes: uniform US-style (regulatory exposure), selective deployment (gap on risky operations), deferral (no protection while waiting for clarity that won't come).",
+      "wrong_explanations": {
+        "A": "Failure mode = REGULATORY MISALIGNMENT BY UNIFORMITY. US-style DLP applied uniformly: violates GDPR proportionality (excessive monitoring), violates German/French/Italian works-council agreements, runs into China PIPL data-localization with cross-border DLP telemetry, exposes the firm to coordinated regulatory action.",
+        "C": "Failure mode = SELECTIVE DLP CREATES THE GAP THE PROGRAM ADDRESSES. EU/China/Russia operations handle exactly the data that needs protection (EU customer PII, China consumer data, IP). 'Disable in hard jurisdictions' means DLP doesn't cover the firm's actual risk surface.",
+        "D": "Failure mode = INDEFINITE DEFERRAL. A single global privacy framework will not emerge — jurisdictional fragmentation is the steady state. The board meeting in 6 weeks will expect a roadmap, not deferral. Deferring DLP leaves the firm undefended against insider threat and exfiltration."
+      },
+      "tips": [
+        "Trap is C — 'disable DLP in hard jurisdictions' is candidate-seductive because EU/China/Russia regulatory complexity is real; but selective deployment leaves the firm undefended exactly where the data-protection risk concentrates. Per-jurisdiction overlays on a global baseline is the canonical pattern.",
+        "Multi-jurisdiction DLP = global baseline + per-jurisdiction overlays + per-jurisdiction DPO/legal review + central platform with jurisdiction tags + transparent notice + audit oversight + regulatory-change maintenance. Seven tracks.",
+        "Exam-day shortcut: when stem describes MULTI-JURISDICTION DLP WITH REGULATORY DIVERSITY AND BOARD HORIZON, look for global-baseline-plus-overlays approach; uniform-US, selective-deployment, and deferral framings each fail."
+      ],
+      "framework_ref": "ISACA Data Loss Prevention Audit/Assurance Program; GDPR Article 88 (Processing in the context of employment); China PIPL (Personal Information Protection Law); Brazil LGPD (Lei Geral de Proteção de Dados); California Consumer Privacy Act (CCPA) / California Privacy Rights Act (CPRA); IAPP CIPM Body of Knowledge; India DPDP Act (2023)",
+      "related_concepts": [
+        "Works-council consultation",
+        "Data localization",
+        "Global baseline + overlays",
+        "Article 88 employee monitoring"
+      ],
+      "_provenance": "Authored from concept: 'Multi-jurisdiction DLP design balancing consistency with local compliance'. Public sources: ISACA, GDPR, IAPP, jurisdiction-specific laws. No legacy bank citation."
+    },
+    {
+      "id": "d5_059",
+      "domain": 5,
+      "subtopic": "Post-Merger Network Segmentation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the network segmentation harmonization?",
+      "scenario_context": "A regional retail chain (3,200 stores, US + Canada, 28,000 employees, $4.8B revenue) completes its acquisition of a competitor (1,400 stores, US only, 12,000 employees, $1.6B revenue). Network landscape: acquiring firm runs flat store-network with VPN aggregation to two data centers; acquired firm runs zone-segmented network with NGFW at each store and microsegmented data center. Combined entity has 4,600 stores. POS systems handle $20B+ annual payment-card transactions (PCI DSS scope). Combined Active Directory consolidation completes in 8 months. Board IT committee asks for the network harmonization plan in 4 weeks.",
+      "options": {
+        "A": "Immediately collapse all 4,600 stores to the acquiring firm's flat-network model to simplify operations and reduce cost; PCI DSS scope can be addressed in the second year of integration.",
+        "B": "Keep both networks separate indefinitely; the cost and operational complexity of harmonization exceeds the security benefit during the post-acquisition integration period.",
+        "C": "Inventory combined landscape + strategic pattern (zone-segmented + microsegmentation) + classify by complexity + PCI scope harmonization with QSA + AD-integrated identity overlay + phased migration + dual operation transition + audit committee.",
+        "D": "Defer network harmonization until the AD consolidation completes (8 months) and revenue synergies are confirmed; current dual operation is acceptable as steady-state until then."
+      },
+      "correct": "C",
+      "key_concept": "Post-merger network segmentation = inventory + strategic pattern (zone-segmented + microsegmentation) + classify by complexity + PCI scope harmonization with QSA + AD-integrated identity overlay + phased migration + dual operation during transition + audit committee. Eight tracks.",
+      "pre_read": "For post-merger network segmentation questions, anchor on the eight-track phased framework with PCI-aware sequencing. Flatten-to-weaker, indefinite-dual, and defer-to-business-milestones framings each fail.",
+      "correct_explanation": "ISACA M&A IT Audit/Assurance Program, NIST SP 800-207 (Zero Trust Architecture), and PCI DSS v4.0 (network segmentation guidance) establish post-merger network segmentation framework. Eight tracks: (1) INVENTORY COMBINED NETWORK LANDSCAPE — sites, segments, NGFW vendors, traffic flows, dependencies; (2) SELECT STRATEGIC PATTERN — typically the higher-baseline; zone-segmented + microsegmentation is target (regression to flat increases attack surface and PCI scope); (3) CLASSIFY BY INTEGRATION COMPLEXITY — new-build-easy sites first; legacy-network-complex sites later; high-volume PCI sites with QSA-coordinated cutover; (4) PCI DSS SCOPE HARMONIZATION WITH QSA — engage Qualified Security Assessor early; map current vs target segmentation; quarterly ASV scan continuity; (5) AD-INTEGRATED IDENTITY OVERLAY — network controls operate on workload identity (not just IP); IAM/AD consolidation feeds into segmentation policy; (6) PHASED MIGRATION ALIGNED TO RISK — high-value targets (data centers, payment processing) first; productivity stores last; rollback path required; (7) MAINTAIN DUAL OPERATION DURING TRANSITION — explicit dual-network operation for migration period (3-9 months typical); cutover criteria defined; (8) AUDIT COMMITTEE REPORTING — quarterly status, risk metrics, exception inventory. 4-week board prep means presenting the inventory, strategic pattern selection, and phase 1 plan — not the migration completed.",
+      "wrong_explanations": {
+        "A": "Failure mode = REGRESSION TO WEAKER POSTURE. Flat-network at 4,600 stores creates a massive lateral-movement surface for ransomware and threat actors; PCI DSS scope expands dramatically when segmentation is removed; second-year PCI remediation will be a major audit finding and may trigger QSA-mandated emergency segmentation.",
+        "B": "Failure mode = INDEFINITE DUAL-NETWORK. Sustains dual operational cost, fragments security posture (one half protected, one half flat), creates inconsistency in PCI DSS scope assessment, blocks integration synergies, and produces visible inconsistency in regulator examinations.",
+        "D": "Failure mode = DEFERRAL UNTIL UNRELATED MILESTONES. AD consolidation is downstream of network harmonization, not upstream — IAM overlays the network, not the reverse. Tying network plan to revenue synergies subordinates security to business timing. Board expects a plan in 4 weeks, not a deferral."
+      },
+      "tips": [
+        "Trap is A and D (dual). A (flatten to acquiring firm's model) is seductive because 'consolidate to reduce complexity' is a post-M&A reflex — but post-merger harmonization adopts the HIGHER baseline, not the lower; flattening regresses PCI scope and creates lateral-movement surface. D (defer until AD consolidation) is seductive because AD is a real IAM prerequisite — but AD OVERLAYS the network, not the reverse. Phased multi-track migration starting from the stronger baseline is the third way.",
+        "Post-merger network = inventory + strategic pattern + complexity classification + PCI/QSA harmonization + AD identity overlay + phased migration + dual operation + audit committee. Eight tracks. Don't regress to flat; don't defer indefinitely.",
+        "Exam-day shortcut: when stem describes POST-MERGER NETWORK with PCI scope and board horizon, look for phased multi-track plan starting with strategic pattern selection; flatten-to-weaker, indefinite-dual, and defer-to-AD-completion framings each fail."
+      ],
+      "framework_ref": "ISACA M&A IT Audit/Assurance Program; NIST SP 800-207 (Zero Trust Architecture); PCI DSS v4.0 (Network segmentation guidance); ISO/IEC 27033-2 (Network security design)",
+      "related_concepts": [
+        "PCI DSS scope reduction",
+        "QSA-coordinated cutover",
+        "Microsegmentation migration",
+        "Dual-network transition"
+      ],
+      "_provenance": "Authored from concept: 'Post-merger network segmentation harmonization with PCI scope'. Public sources: ISACA, NIST, PCI Council, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_060",
+      "domain": 5,
+      "subtopic": "Insider Threat Active Exfiltration — First Action",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A financial advisory firm (clients managing $14B in assets) receives an EDR + DLP alert at 3:38 PM Friday: senior portfolio manager (employed 11 years, resignation letter submitted Monday with 2-week notice, last day next Friday) has copied 4,200 client-portfolio files (~18GB) to a personal cloud storage account over the past 90 minutes; current rate of transfer is ~200MB/minute. The DLP alert correlates: client files contain non-public investment strategies, client contact lists, fee schedules. The portfolio manager is currently logged in at the office. The Chief Compliance Officer, CISO, and General Counsel are reachable on a conference bridge.",
+      "options": {
+        "A": "Open a multi-track coordination call: CCO + CISO + GC + HR + executive comms + IT to align on the response framework before taking technical action.",
+        "B": "Confront the portfolio manager directly in their office to ask about the file transfers and obtain their explanation before initiating any technical containment actions.",
+        "C": "Notify the affected clients of potential exposure of their portfolio data and engage external forensics before taking action on the portfolio manager's access.",
+        "D": "REVOKE access IMMEDIATELY through IdP (disable AD account + revoke OAuth tokens + force-disconnect cloud sessions) — every minute extends exfiltration and fiduciary exposure; revocation completes in 60 seconds."
+      },
+      "correct": "D",
+      "key_concept": "Insider exfiltration in progress FIRST action = revoke access immediately. Coordination, interview, notification all follow. Single surgical action because every minute extends exfiltration scope and fiduciary exposure.",
+      "pre_read": "For time-critical insider-exfiltration questions, anchor on REVOKE ACCESS FIRST. The exfiltration-rate clock dominates other considerations.",
+      "correct_explanation": "When EDR + DLP correlate to confirm active insider exfiltration with a known user identity and active session, the FIRST action is IMMEDIATE ACCESS REVOCATION. Rationale: (1) EVERY MINUTE EXTENDS EXFILTRATION SCOPE — at 200MB/minute, 10 minutes of coordination = 2GB additional client data exfiltrated; (2) DETECTION-TO-ACTION GAP IS WHERE ADVERSARIES OPERATE — the user is currently logged in and aware (or will become aware) that they have a narrow window; revocation closes the window; (3) REVOCATION IS FAST — IdP-managed AD disable + OAuth token revocation + force-disconnect of cloud sessions completes in 60 seconds; faster than any coordination call; (4) FIDUCIARY OBLIGATION — financial advisory firm has fiduciary duty to clients; allowing continued exfiltration while coordinating is a breach of that duty; (5) FORENSIC PRESERVATION — endpoint must be preserved for forensic imaging (NOT wiped), but ACCESS REVOCATION doesn't affect the endpoint; it prevents continued network exfiltration. After revocation: (a) preserve endpoint for forensic imaging (do not wipe; do not return to circulation); (b) IR call with CCO + CISO + GC + HR; (c) interview with legal counsel present (employment law + criminal referral considerations); (d) client notification per fiduciary duty and SEC/FINRA reporting obligations; (e) regulator notification (SEC Regulation S-P breach + state breach laws as applicable); (f) post-incident review of monitoring gaps that allowed 90 minutes of exfiltration before detection. The pattern is CONTAIN-FIRST: stop the bleeding, then diagnose, then communicate.",
+      "wrong_explanations": {
+        "A": "Multi-track coordination call is appropriate AFTER access revocation. The 200MB/minute transfer rate means every minute of coordination is ~200MB of additional exfiltrated client data. Revocation is critical-path; coordination follows.",
+        "B": "Direct confrontation before access revocation tips off the user that exfiltration is detected, potentially accelerating exfiltration (forced copy to USB before access is revoked), and gives the user opportunity to delete evidence on their endpoint. Revoke first; interview second.",
+        "C": "Client notification before access revocation continues to allow exfiltration during notification preparation. Notification is a downstream step after the exfiltration is stopped; engaging external forensics is appropriate but is also downstream of stopping the active exfiltration."
+      },
+      "tips": [
+        "Trap is A — for INSIDER THREAT specifically, 'multi-track coordination call' is uniquely seductive because the scenario invokes HR + legal + comms + IT as required pre-action stakeholders; but with a measurable 200MB/minute transfer rate, every coordination minute is more client data exfiltrated and a fiduciary-duty breach. REVOKE FIRST, coordinate second.",
+        "Active insider exfiltration = revoke access first (AD disable + OAuth revoke + session force-disconnect). Coordination, interview, notification all follow. Containment dominates communication in time-critical exfiltration scenarios.",
+        "Exam-day shortcut: when stem describes ACTIVE INSIDER EXFILTRATION WITH MEASURABLE RATE AND KNOWN IDENTITY, look for IMMEDIATE ACCESS REVOCATION; coordination-call, confront-user, and notify-clients-first framings each fail the exfiltration-rate-clock test."
+      ],
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SEC Regulation S-P (Privacy of Consumer Financial Information); FINRA Rule 4530 (Reporting Requirements); CERT Insider Threat Center research",
+      "related_concepts": [
+        "Active exfiltration containment",
+        "OAuth token revocation",
+        "Fiduciary duty",
+        "Forensic preservation"
+      ],
+      "_provenance": "Authored from concept: 'Insider threat active exfiltration immediate containment'. Public sources: ISACA, NIST, SEC, FINRA, CERT. No legacy bank citation. Note: intentional single-focus surgical-action correct answer."
     }
   ]
 }

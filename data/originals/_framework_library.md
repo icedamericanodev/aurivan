@@ -1331,3 +1331,50 @@ sub-references like "(Managed Risk) and APO12.03").
 - OECD Privacy Guidelines (2013)
 - Okta Migration Best Practices
 - ePrivacy Directive (2002/58/EC)
+- CERT Insider Threat Center research
+- CIS Controls v8 Safeguard 10 (Malware Defenses)
+- CIS Controls v8 Safeguard 13 (Network Monitoring and Defense)
+- CIS Controls v8 Safeguard 3.6 (Encrypt Data on End-User Devices)
+- CIS Controls v8 Safeguard 4 (Secure Configuration of Enterprise Assets and Software)
+- CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA)
+- CISA Zero Trust Maturity Model v2.0 (April 2023)
+- China PIPL (Personal Information Protection Law)
+- Cloud Access Security Broker (CASB) market documentation
+- DoD Zero Trust Reference Architecture v2.0
+- FINRA Rule 4530 (Reporting Requirements)
+- Forrester IGA Wave
+- GDPR Article 88 (Processing in the context of employment)
+- Gartner DLP Magic Quadrant
+- Gartner DLP Market Guide
+- Gartner IGA Magic Quadrant
+- IAPP CIPM Body of Knowledge
+- IEEE 802.1X (Port-Based Network Access Control)
+- ISACA Data Classification Audit/Assurance Program
+- ISACA Data Loss Prevention Audit/Assurance Program
+- ISACA Endpoint Security Audit/Assurance Program
+- ISACA Insider Threat Audit/Assurance Program
+- ISACA Network Access Control Audit/Assurance Program
+- ISACA Network Security Audit/Assurance Program
+- ISO/IEC 27001:2022 Annex A.5.12 (Classification of information)
+- ISO/IEC 27001:2022 Annex A.5.15 (Access control)
+- ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention)
+- ISO/IEC 27001:2022 Annex A.8.24 (Use of cryptography)
+- ISO/IEC 27033-2 (Network security design)
+- India DPDP Act (2023)
+- MITRE ATT&CK Framework
+- MITRE ATT&CK Framework Impact tactic (T1486 Data Encrypted for Impact)
+- Microsoft Purview Information Protection
+- NIST FIPS 140-3 (Security Requirements for Cryptographic Modules)
+- NIST SP 800-111 (Guide to Storage Encryption Technologies for End User Devices)
+- NIST SP 800-122 (Guide to Protecting the Confidentiality of PII)
+- NIST SP 800-162 (Guide to Attribute-Based Access Control Definition and Considerations)
+- NIST SP 800-207A (A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Cloud Environments)
+- NIST SP 800-46 Rev 2 (Guide to Enterprise Telework, Remote Access, and BYOD Security)
+- NIST SP 800-70 Rev 4 (National Checklist Program for IT Products)
+- NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling for Desktops and Laptops)
+- NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling)
+- NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems)
+- OASIS XACML 3.0 (eXtensible Access Control Markup Language)
+- OWASP Top 10 2021
+- PCI DSS v4.0 Requirement 1 (Install and Maintain Network Security Controls)
+- SEC Regulation S-P (Privacy of Consumer Financial Information)
