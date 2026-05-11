@@ -1458,6 +1458,733 @@
         "Dependency-mapped rollback"
       ],
       "_provenance": "Authored from concept: 'Heterogeneous release coordination per ITIL 4 Release Management and ISACA Heterogeneous Release Coordination guidance'. Public sources: ITIL 4, ISACA. Scenario specifics (B2B SaaS, 4 heterogeneous platforms — cloud microservices + mainframe + SaaS CRM + Oracle EBS, 8-week launch, CIO coordination concern) invented for this question."
+    },
+    {
+      "id": "d4_041",
+      "domain": 4,
+      "subtopic": "IS Architecture — Software Stack Layers",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which sequence BEST describes the software-stack layers of a typical enterprise application from lowest to highest?",
+      "options": {
+        "A": "Application code → operating system → middleware → hypervisor → hardware → network protocols at the top of the stack architecture.",
+        "B": "Hardware → hypervisor (if virtualized) → operating system → middleware (DB, app servers) → application code at the top of the stack.",
+        "C": "Network → application → database → operating system → hypervisor → hardware in descending order of business significance to users.",
+        "D": "Hardware and software are not layered; modern applications operate as a flat mesh of services with no hierarchical layering between them."
+      },
+      "correct": "B",
+      "key_concept": "Software-stack layers (bottom to top): Hardware → Hypervisor (if virtualized) → OS → Middleware (DB, app servers, message queues) → Application code. Each layer abstracts the one below and provides services to the one above. Other framings substitute different ordering or deny layering entirely.",
+      "pre_read": "For IS-architecture questions, anchor on the canonical bottom-to-top layering: Hardware → Hypervisor → OS → Middleware → App. Each layer provides services upward and abstracts hardware downward.",
+      "correct_explanation": "ISACA IS Architecture guidance and standard computer-systems references establish the canonical software-stack layering from bottom (closest to physical hardware) to top (closest to user/business): (1) HARDWARE — physical computing resources; (2) HYPERVISOR — when present, virtualizes hardware to support multiple OS instances; (3) OPERATING SYSTEM — manages hardware resources, provides system calls; (4) MIDDLEWARE — databases, application servers, message queues, runtime environments (JVM, .NET CLR); (5) APPLICATION CODE — business logic specific to the enterprise. Option A inverts the ordering. Option C orders by business significance, not by software-stack hierarchy. Option D denies layering entirely, which is wrong — even microservices and serverless functions execute on layered stacks.",
+      "wrong_explanations": {
+        "A": "The order is inverted. Hardware is at the bottom (most physical); application code is at the top (most abstract). Candidates often pick this because the user-facing layer (application code) feels intuitive to read first — top-down reading-order bias.",
+        "C": "Ordering by business significance produces a different framing for a different purpose (perhaps stakeholder communication). The software-stack layering is technical, not business-impact-based.",
+        "D": "Even modern flat-mesh architectures (microservices, serverless) execute on layered stacks underneath. The mesh is at the application-deployment level; the underlying execution is still layered."
+      },
+      "tips": [
+        "Trap is A — \"application code → OS → middleware\" reflects top-down reading-order bias (start with what the user sees) but inverts the actual stack; application code is at the TOP (most abstract), hardware at the BOTTOM (most physical).",
+        "IS architecture stack: HARDWARE → HYPERVISOR → OS → MIDDLEWARE → APP CODE. Bottom to top; each layer abstracts the one below.",
+        "Exam-day shortcut: any IS-architecture-stack question is answered by the option starting with HARDWARE at the bottom; starting with anything else is wrong."
+      ],
+      "framework_ref": "ISACA IS Architecture guidance; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "IS architecture",
+        "Software stack",
+        "Middleware",
+        "Hypervisor"
+      ],
+      "_provenance": "Authored from concept: 'Canonical software-stack layering per ISACA IS Architecture guidance'. Public sources: ISACA, standard systems references."
+    },
+    {
+      "id": "d4_042",
+      "domain": 4,
+      "subtopic": "Database Structures — Relational vs NoSQL Definitions",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY structural difference between a relational database (RDBMS) and a NoSQL database?",
+      "options": {
+        "A": "Relational databases enforce a fixed schema with tables, rows, columns, and relationships; NoSQL databases support flexible schemas (document, key-value, column-family, graph).",
+        "B": "Relational and NoSQL databases are functionally identical; the only difference is the vendor's branding for similar storage technologies.",
+        "C": "Relational databases store only numerical data; NoSQL databases handle text, images, and other unstructured content that relational databases cannot store.",
+        "D": "Relational databases are always faster than NoSQL databases at all query types; NoSQL trades performance for flexibility in non-critical use cases."
+      },
+      "correct": "A",
+      "key_concept": "Relational (RDBMS) = fixed schema + tables/rows/columns + relationships + ACID typically. NoSQL = flexible schema + multiple structural variants (document, key-value, column-family, graph) + often eventual consistency. They serve different use cases; neither is universally better.",
+      "pre_read": "For relational-vs-NoSQL questions, anchor on \"fixed-schema relational vs flexible-schema NoSQL with multiple variants.\" Distractors substitute identical-with-branding, data-type-only, or universal-performance claims.",
+      "correct_explanation": "ISACA Database Models guidance and DAMA-DMBOK 2nd Edition establish the canonical structural distinction: RELATIONAL databases (PostgreSQL, MySQL, Oracle, SQL Server) enforce a FIXED SCHEMA with tables, rows, columns, and explicit relationships (foreign keys); they typically provide ACID guarantees (atomicity, consistency, isolation, durability) for transactions. NOSQL databases (MongoDB document, Redis key-value, Cassandra column-family, Neo4j graph) support FLEXIBLE SCHEMAS — different documents in a collection can have different fields; column-family stores allow per-row schema variation; key-value stores impose minimal structure. NoSQL often relaxes consistency to scale horizontally (BASE: Basically Available, Soft state, Eventual consistency). Option B's interchangeable is wrong — they have fundamental structural differences. Option C's data-type-only is incorrect — relational databases handle text, BLOBs, JSON, XML. Option D's universal-performance is incorrect — NoSQL outperforms relational for some workloads (write-heavy, distributed, schema-flexible).",
+      "wrong_explanations": {
+        "B": "Relational and NoSQL are NOT functionally identical. The structural difference (fixed vs flexible schema), the consistency model (typically ACID vs typically BASE), and the scaling pattern (vertical vs horizontal) are fundamental, not branding.",
+        "C": "Relational databases handle many data types: text, BLOBs, JSON, XML, geospatial, full-text. The data-type framing is wrong; the structural framing (fixed vs flexible schema) is correct.",
+        "D": "NoSQL outperforms relational for some workloads: write-heavy ingestion (Cassandra), high-throughput key lookups (Redis), large flexible documents (MongoDB), graph traversals (Neo4j). \"Always faster\" is not true in either direction."
+      },
+      "tips": [
+        "Trap is C — \"NoSQL handles unstructured\" sounds plausible but conflates STRUCTURE (schema flexibility) with DATA TYPE (relational handles many types); the structural difference is schema flexibility.",
+        "Relational = FIXED SCHEMA + TABLES + ACID. NoSQL = FLEXIBLE SCHEMA + variants (doc/KV/column/graph) + often BASE. Different use cases.",
+        "Exam-day shortcut: any relational-vs-NoSQL question is answered by the option naming SCHEMA FLEXIBILITY as the key difference; data-type, branding, or universal-performance answers all miss the structural distinction."
+      ],
+      "framework_ref": "ISACA Database Models guidance; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Database Audit guidance",
+      "related_concepts": [
+        "Relational database",
+        "NoSQL",
+        "ACID",
+        "BASE",
+        "Schema flexibility"
+      ],
+      "_provenance": "Authored from concept: 'Relational vs NoSQL structural difference per ISACA Database Models guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA."
+    },
+    {
+      "id": "d4_043",
+      "domain": 4,
+      "subtopic": "Hardware Reviews — Audit Scope",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY scope of a hardware review by an IS auditor?",
+      "options": {
+        "A": "Verify each server's network cabling color matches the data center's color-coding standard for visual identification of cable function.",
+        "B": "Test the structural strength of server racks to determine whether they can support additional equipment in the next refresh cycle.",
+        "C": "Assess hardware inventory accuracy, lifecycle status, maintenance records, capacity utilization, and end-of-support exposures.",
+        "D": "Personally inspect every workstation, laptop, and mobile device in the organization for physical wear and cosmetic damage routinely."
+      },
+      "correct": "C",
+      "key_concept": "Hardware reviews = inventory accuracy + lifecycle status + maintenance records + capacity utilization + end-of-support exposures. Cable colors and rack strength are operations responsibilities; per-device cosmetic inspection is impractical and not the auditor's role.",
+      "pre_read": "For hardware-review scope questions, anchor on \"inventory + lifecycle + maintenance + capacity + EOS exposure.\" Distractors substitute operations details (cable colors, rack strength) or impractical activities (per-device cosmetic inspection).",
+      "correct_explanation": "ISACA Hardware Review guidance and ISACA Information Systems Audit and Assurance Standards establish five-element scope for hardware reviews: (1) INVENTORY ACCURACY (physical assets reconcile to the asset register); (2) LIFECYCLE STATUS (asset age, warranty status, scheduled replacement); (3) MAINTENANCE RECORDS (service history, vendor support coverage); (4) CAPACITY UTILIZATION (over-provisioned and under-provisioned hardware); (5) END-OF-SUPPORT EXPOSURES (hardware approaching vendor EOS without refresh plan). Option A's cable-color verification is operations work, not audit scope. Option B's rack-strength testing requires structural engineering, not IS audit. Option D's per-device cosmetic inspection is impractical and not auditor scope.",
+      "wrong_explanations": {
+        "A": "Cable color verification is data-center operations work (cable management standard compliance), not an IS audit objective. Auditors don't typically perform hands-on cable verification.",
+        "B": "Rack structural strength testing requires structural engineering or physical testing. IS auditors review documentation of rack capacity and load planning, not perform structural tests themselves.",
+        "D": "Per-device cosmetic inspection of every workstation is impractical for any meaningful organization (thousands of devices) and not aligned with audit risk-based scoping."
+      },
+      "tips": [
+        "Trap is D — \"inspect every workstation for wear and damage\" sounds thorough but it's impractical and outside the auditor's risk-based scope; hardware review is about INVENTORY + LIFECYCLE + MAINTENANCE.",
+        "Hardware review = INVENTORY + LIFECYCLE + MAINTENANCE + CAPACITY + EOS EXPOSURE. Five elements; auditor's risk-based perspective.",
+        "Exam-day shortcut: any hardware-review scope question is answered by the option naming AUDIT-RELEVANT dimensions; operations details and per-device inspection answers fall outside auditor scope."
+      ],
+      "framework_ref": "ISACA Hardware Review guidance; ISACA Hardware Lifecycle guidance; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "Hardware review",
+        "Hardware lifecycle",
+        "End of support",
+        "Capacity utilization"
+      ],
+      "_provenance": "Authored from concept: 'Hardware review audit scope per ISACA Hardware Review guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_044",
+      "domain": 4,
+      "subtopic": "Data Communications Software — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY function of data communications software in IT operations?",
+      "options": {
+        "A": "Encrypt all data stored on production databases to protect against unauthorized access by internal employees and external attackers.",
+        "B": "Manage the access control software that determines which users can authenticate to which application services on the network.",
+        "C": "Generate marketing communications and customer-facing newsletters describing new features and product capabilities to subscribers.",
+        "D": "Manage the protocols, sessions, and message routing that enable application processes on different systems to exchange data reliably."
+      },
+      "correct": "D",
+      "key_concept": "Data communications software = manages protocols, sessions, message routing for inter-system data exchange. Includes message brokers (Kafka, RabbitMQ), API gateways, ESBs, network protocol stacks. Encryption, access control, and marketing are different functions.",
+      "pre_read": "For data-communications-software questions, anchor on \"protocols + sessions + message routing for inter-system exchange.\" Distractors substitute encryption (security), access control (auth), or marketing (different domain).",
+      "correct_explanation": "ISACA Data Communications Software guidance and standard systems references define data communications software as the layer that manages protocols (TCP/IP stack, message protocols like AMQP/MQTT/HTTP), sessions (connection establishment, authentication, lifecycle), and message routing (delivery from source application to destination application) — enabling application processes on different systems to exchange data reliably. Examples: message brokers (Apache Kafka, RabbitMQ, ActiveMQ), enterprise service buses, API gateways, network protocol stacks built into operating systems. Option A is encryption (a security control, not communication management). Option B is access control software, which governs WHO can access systems rather than HOW data moves between them. Option C is marketing software, unrelated to IT operations.",
+      "wrong_explanations": {
+        "A": "Encryption protects data confidentiality. Data communications software manages how data MOVES between systems; encryption is one optional property of that movement, not the primary function.",
+        "B": "Access control software manages user-to-application authentication and authorization. Data communications software manages application-to-application message exchange — different layer, different concern.",
+        "C": "Marketing communications software is in a completely different domain (customer relationship management, content marketing). Data communications software is in IT operations / system architecture."
+      },
+      "tips": [
+        "Trap is A or B — opposing security-flavored decoys. A (encryption) sounds protection-related; B (access control software) sounds authorization-related. Both substitute a different security/governance concern for what data-communications software actually does — manage MESSAGE EXCHANGE between systems.",
+        "Data communications software = PROTOCOLS + SESSIONS + MESSAGE ROUTING. Inter-system data exchange. Different from encryption, auth, or marketing.",
+        "Exam-day shortcut: any data-communications question is answered by the option naming MESSAGE EXCHANGE between application processes; encryption, access control, and marketing answers describe different functions."
+      ],
+      "framework_ref": "ISACA Data Communications Software guidance; ISACA Network Management guidance; ISACA IS Architecture guidance",
+      "related_concepts": [
+        "Data communications software",
+        "Message broker",
+        "Protocol stack",
+        "ESB"
+      ],
+      "_provenance": "Authored from concept: 'Data communications software PRIMARY function per ISACA Data Communications Software guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_045",
+      "domain": 4,
+      "subtopic": "Operating System — Software Control Features",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST describes the software control features of a hardened operating system?",
+      "options": {
+        "A": "Disable all security features so that authorized users can perform any system operation without friction during normal business operations.",
+        "B": "Audit logging + access controls (RBAC/MAC) + integrity protection + privileged-action restrictions + tamper-evident configuration management.",
+        "C": "Apply only vendor default security settings; OS hardening introduces compatibility issues that exceed the security benefit for most environments.",
+        "D": "Rely entirely on perimeter network security; if attackers cannot reach the OS, the OS itself does not need additional control features applied."
+      },
+      "correct": "B",
+      "key_concept": "OS software control features = audit logging + access controls (RBAC/MAC) + integrity protection + privileged-action restrictions + tamper-evident configuration management. Disable-all is catastrophic; vendor-default-only is insufficient; perimeter-only assumes external-only threat.",
+      "pre_read": "For OS hardening questions, anchor on \"audit logs + access controls + integrity protection + privileged restrictions + tamper-evident config.\" Distractors propose disable-all, vendor-default-only, or perimeter-only.",
+      "correct_explanation": "NIST SP 800-123 (Guide to General Server Security), CIS Benchmarks for Operating Systems, and ISACA Operating System Hardening guidance establish five-element OS hardening: (1) AUDIT LOGGING for security-relevant events (authentication, privileged access, configuration changes); (2) ACCESS CONTROLS — RBAC (role-based, common) or MAC (mandatory, e.g., SELinux/AppArmor for high-security); (3) INTEGRITY PROTECTION (file integrity monitoring, kernel module signing, secure boot); (4) PRIVILEGED-ACTION RESTRICTIONS (sudo with just-in-time elevation, restricted shell for non-admins); (5) TAMPER-EVIDENT CONFIGURATION MANAGEMENT (config in version control, change tracked, drift detected). Option A's disable-all is catastrophic. Option C's vendor-default-only leaves significant exposure (vendor defaults prioritize compatibility, not security). Option D's perimeter-only ignores insider threats and lateral movement after perimeter compromise.",
+      "wrong_explanations": {
+        "A": "Disable-all eliminates the OS's protection against unauthorized actions, malicious software, and accidental damage. The OS exists in part to enforce these controls; disabling them defeats the OS's security role.",
+        "C": "Vendor default settings prioritize compatibility and ease of installation, not security. Hardening guides (CIS Benchmarks, NIST SP 800-123) explicitly recommend changes from defaults for production deployment.",
+        "D": "Perimeter-only assumes external-only threats. Insider threats, lateral movement after perimeter compromise, and direct attacks on the OS via vulnerabilities all bypass perimeter controls; defense in depth requires OS-layer controls."
+      },
+      "tips": [
+        "Trap is C — \"vendor default security settings are sufficient\" matches a common installation shortcut but vendor defaults prioritize compatibility, not security; CIS Benchmarks and NIST hardening guides explicitly recommend changes.",
+        "OS hardening = AUDIT LOGS + ACCESS CONTROLS + INTEGRITY PROTECTION + PRIVILEGED RESTRICTIONS + TAMPER-EVIDENT CONFIG. Five elements.",
+        "Exam-day shortcut: any OS-hardening question is answered by the option naming MULTI-ELEMENT CONTROLS; disable-all, vendor-default-only, and perimeter-only answers each fail differently."
+      ],
+      "framework_ref": "NIST SP 800-123 (Guide to General Server Security); CIS Benchmarks for Operating Systems; ISACA Operating System Hardening guidance",
+      "related_concepts": [
+        "OS hardening",
+        "RBAC",
+        "MAC",
+        "Integrity protection",
+        "CIS Benchmarks"
+      ],
+      "_provenance": "Authored from concept: 'OS software control features per NIST SP 800-123 and CIS Benchmarks'. Public sources: NIST, CIS."
+    },
+    {
+      "id": "d4_046",
+      "domain": 4,
+      "subtopic": "Operating System — Integrity Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST protects the integrity of an enterprise operating system against unauthorized modification?",
+      "options": {
+        "A": "Secure boot + signed kernel modules + file integrity monitoring (FIM) + immutable system directories + code signing for system binaries.",
+        "B": "Restart the operating system every weekend to clear any unauthorized modifications introduced during the week's normal operations and use.",
+        "C": "Run antivirus scans of the entire file system every hour to detect modifications; integrity controls beyond AV are unnecessary in modern systems.",
+        "D": "Allow developers root-level write access to all system directories; trust-the-developer is faster than implementing complex integrity controls."
+      },
+      "correct": "A",
+      "key_concept": "OS integrity controls = secure boot + signed kernel modules + FIM + immutable system directories + code signing. Restart-to-clear ignores persistent modifications; AV-only addresses malware not unauthorized changes; developer-root-access destroys integrity.",
+      "pre_read": "For OS integrity questions, anchor on \"secure boot + signed modules + FIM + immutable directories + code signing.\" Distractors propose restart-to-clear, AV-only, or developer-root-access.",
+      "correct_explanation": "NIST SP 800-123 (Guide to General Server Security), ISACA OS Integrity Controls guidance, and CIS Benchmarks establish multi-layer OS integrity protection: (1) SECURE BOOT verifies bootloader and kernel signatures at startup; (2) SIGNED KERNEL MODULES prevent unauthorized kernel-mode code; (3) FILE INTEGRITY MONITORING (FIM) — Tripwire, AIDE, or modern alternatives — detects unauthorized changes to system files; (4) IMMUTABLE SYSTEM DIRECTORIES (read-only mount of /usr, /bin, etc.) prevent runtime modification; (5) CODE SIGNING for system binaries (Authenticode on Windows, Apple notarization on macOS). Option B's restart-to-clear is naive — most unauthorized modifications persist across restart (rootkits, modified config files). Option C's AV-only addresses known-malicious files, not all unauthorized modifications. Option D's developer-root-access destroys integrity (developers can modify production system files at will).",
+      "wrong_explanations": {
+        "B": "Restart-to-clear assumes modifications are in volatile memory only. Most unauthorized modifications persist (modified config files, scheduled tasks, rootkits, planted binaries); restart doesn't clear them.",
+        "C": "AV scans detect KNOWN MALICIOUS files. They don't detect novel modifications to legitimate files (config tampering, modified binaries with no AV signature). Integrity controls need broader coverage than AV provides.",
+        "D": "Developer-root-access destroys OS integrity. Developers can modify any file, install any software, change any configuration without controls. Production OS integrity requires separation between development and production access."
+      },
+      "tips": [
+        "Trap is B — \"restart weekly to clear modifications\" is a common misconception; most unauthorized modifications persist across restart (config files, rootkits, planted binaries).",
+        "OS integrity = SECURE BOOT + SIGNED MODULES + FIM + IMMUTABLE DIRECTORIES + CODE SIGNING. Five layers.",
+        "Exam-day shortcut: any OS-integrity question is answered by the option naming MULTI-LAYER INTEGRITY CONTROLS; restart-to-clear, AV-only, and developer-root-access answers each fail."
+      ],
+      "framework_ref": "NIST SP 800-123 (Guide to General Server Security); ISACA OS Integrity Controls guidance; CIS Benchmarks for Operating Systems",
+      "related_concepts": [
+        "OS integrity",
+        "Secure boot",
+        "FIM",
+        "Code signing",
+        "Immutable directories"
+      ],
+      "_provenance": "Authored from concept: 'OS integrity controls per NIST SP 800-123 and ISACA OS Integrity Controls guidance'. Public sources: NIST, CIS, ISACA."
+    },
+    {
+      "id": "d4_047",
+      "domain": 4,
+      "subtopic": "Database Controls — Multi-Element Coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST describes the canonical control set for an enterprise production database?",
+      "options": {
+        "A": "Allow direct production database access to any developer or analyst on demand; centralized access controls slow business analysis unnecessarily.",
+        "B": "Rely on application-layer controls only; if the database is accessed only through the application, database-layer controls are redundant overhead.",
+        "C": "Access controls (least-privilege roles) + transaction integrity (ACID) + audit logging + encryption at rest + backup/restore + change management.",
+        "D": "Schedule full database export to flat files monthly for offline analysis; this eliminates need for in-database controls or query restrictions."
+      },
+      "correct": "C",
+      "key_concept": "Database controls = least-privilege access + ACID transaction integrity + audit logging + encryption at rest + backup/restore + change management. Free-developer-access destroys SoD; app-layer-only ignores direct-DB threats; flat-file-export defeats real-time data integrity.",
+      "pre_read": "For database-controls questions, anchor on \"access + integrity + audit + encryption + backup + change management.\" Distractors propose free-access, app-layer-only, or flat-file substitutes.",
+      "correct_explanation": "ISACA Database Audit guidance and NIST SP 800-53 establish six-element database controls: (1) ACCESS CONTROLS via least-privilege roles (read-only for analysts; write for application service accounts; admin for DBAs only); (2) TRANSACTION INTEGRITY via ACID guarantees (atomicity ensures partial transactions are rolled back); (3) AUDIT LOGGING of privileged actions, schema changes, and access to sensitive tables; (4) ENCRYPTION AT REST (Transparent Data Encryption or column-level encryption for PII); (5) BACKUP/RESTORE with tested recovery procedures; (6) CHANGE MANAGEMENT for schema changes and parameter modifications. Option A's free-developer-access destroys segregation of duties and audit traceability. Option B's app-layer-only ignores threats from direct DB access (DBAs, contractors, compromised credentials). Option D's flat-file-export defeats real-time data integrity and violates many regulatory requirements (PCI DSS, HIPAA, etc.).",
+      "wrong_explanations": {
+        "A": "Free-developer-access destroys segregation of duties (developers shouldn't have production data write access; analysts shouldn't have privileged read access without controls). It also undermines audit traceability and creates regulatory exposure.",
+        "B": "App-layer-only ignores threats from direct database access by DBAs, contractors, or compromised credentials. Defense in depth requires controls at multiple layers; database-layer controls protect against threats that bypass the application.",
+        "D": "Flat-file-monthly-export defeats real-time data integrity (analysis is on stale data), violates many regulatory requirements (PCI DSS requires real-time controls; HIPAA requires audit logging), and creates a new exposure (the flat files themselves need protection)."
+      },
+      "tips": [
+        "Trap is B — \"app-layer controls only\" matches a common assumption when applications are well-controlled but ignores direct-DB access by DBAs, contractors, or attackers with compromised credentials.",
+        "Database controls = ACCESS + INTEGRITY (ACID) + AUDIT + ENCRYPTION + BACKUP + CHANGE MANAGEMENT. Six elements; defense in depth at the data layer.",
+        "Exam-day shortcut: any database-controls question is answered by the option naming MULTI-LAYER controls including ACID + AUDIT + ENCRYPTION; single-layer or workaround answers fail."
+      ],
+      "framework_ref": "ISACA Database Audit guidance; NIST SP 800-53 (Information Security Controls); ISACA Application Controls guidance",
+      "related_concepts": [
+        "Database controls",
+        "ACID",
+        "Database access",
+        "TDE"
+      ],
+      "_provenance": "Authored from concept: 'Database controls per ISACA Database Audit guidance and NIST SP 800-53'. Public sources: ISACA, NIST."
+    },
+    {
+      "id": "d4_048",
+      "domain": 4,
+      "subtopic": "Database Reviews — Audit Scope",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST describes the canonical scope of a database audit review?",
+      "options": {
+        "A": "Review only the database backup logs; database backups are the only audit-relevant control because data loss is the primary risk.",
+        "B": "Inspect the physical hardware running the database to verify rack labeling and cable management standards are being followed routinely.",
+        "C": "Survey database users about their satisfaction with query performance; user satisfaction is the only meaningful database-control measure.",
+        "D": "Privileged access review + schema change history + audit log integrity + encryption verification + backup tests + segregation of duties analysis."
+      },
+      "correct": "D",
+      "key_concept": "Database reviews = privileged access review + schema change history + audit log integrity + encryption verification + backup tests + SoD analysis. Single-element reviews (backup-only, hardware-only, satisfaction-only) miss most of the audit-relevant control surface.",
+      "pre_read": "For database-review scope questions, anchor on \"privileged access + schema changes + audit logs + encryption + backups + SoD.\" Single-element answers miss the multi-control reality.",
+      "correct_explanation": "ISACA Database Audit guidance establishes six-element database review scope: (1) PRIVILEGED ACCESS REVIEW (DBAs, root accounts, service accounts; who has access, when last reviewed, justification); (2) SCHEMA CHANGE HISTORY (every DDL change traced to a change request and approved DBA); (3) AUDIT LOG INTEGRITY (logs are being generated, retained, and protected from tampering); (4) ENCRYPTION VERIFICATION (TDE enabled, key rotation working, encryption at rest confirmed for PII columns); (5) BACKUP TESTS (backups complete, restoration tested periodically, RPO/RTO met); (6) SEGREGATION OF DUTIES (DBA cannot also approve own changes; production DBA different from development DBA where material). Option A's backup-only misses access, schema, audit, encryption, and SoD. Option B's hardware-cable inspection is operations work, not database audit. Option C's satisfaction survey isn't a control review.",
+      "wrong_explanations": {
+        "A": "Backup-only review misses access controls, schema-change governance, audit logs, encryption, and segregation of duties. Backups are necessary but not sufficient; the audit must cover the full control set.",
+        "B": "Hardware cable management is data-center operations work. Candidates pick this when they conflate physical-infrastructure audit with logical-database audit; the two operate at different layers (hardware vs DBMS) and address different risks (physical vs logical access).",
+        "C": "User satisfaction surveys assess perceived performance, not control effectiveness. Audit reviews assess CONTROLS (whether they exist, are operating, and are effective), not user perception."
+      },
+      "tips": [
+        "Trap is A — \"backup logs are the only audit-relevant control\" matches a common misconception (backup is most visible) but it ignores access controls, schema changes, audit log integrity, and SoD.",
+        "Database review = PRIVILEGED ACCESS + SCHEMA CHANGES + AUDIT LOG INTEGRITY + ENCRYPTION + BACKUP TESTS + SoD. Six elements.",
+        "Exam-day shortcut: any database-review-scope question is answered by the option naming MULTI-ELEMENT CONTROL REVIEW; single-element or unrelated-activity answers each fail."
+      ],
+      "framework_ref": "ISACA Database Audit guidance; ISACA Information Systems Audit and Assurance Standards; NIST SP 800-53 (Information Security Controls)",
+      "related_concepts": [
+        "Database review",
+        "Privileged access",
+        "Schema change",
+        "DBA SoD"
+      ],
+      "_provenance": "Authored from concept: 'Database review scope per ISACA Database Audit guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_049",
+      "domain": 4,
+      "subtopic": "Common Enterprise Devices — Load Balancer Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST governs production load balancers in an enterprise environment?",
+      "options": {
+        "A": "Allow application teams to manage their own load balancers independently; centralized load-balancer management slows application deployment.",
+        "B": "Configuration management + change-managed deployment + health-check policies + TLS certificate lifecycle + privileged access + capacity reviews.",
+        "C": "Replace load balancers entirely with DNS round-robin; modern DNS is sufficient for distributing traffic across application instances.",
+        "D": "Disable load balancing during high-traffic periods to direct all users to a single server for consistent session handling continuously."
+      },
+      "correct": "B",
+      "key_concept": "Load balancer governance = configuration management + change-managed deployment + health-check policies + TLS certificate lifecycle + privileged access + capacity reviews. Per-team independent fragments environment; DNS-only lacks health checks; disable-during-traffic creates single-point-of-failure.",
+      "pre_read": "For load-balancer governance, anchor on \"config mgmt + change mgmt + health checks + TLS lifecycle + privileged access + capacity reviews.\" Distractors propose per-team chaos, DNS-only substitution, or disable-during-traffic.",
+      "correct_explanation": "ISACA Load Balancer Governance guidance and ITIL 4 Service Configuration Management establish six-element load-balancer governance: (1) CONFIGURATION MANAGEMENT (LB config in version control, peer reviewed); (2) CHANGE-MANAGED DEPLOYMENT (changes through CAB or automated change pipeline); (3) HEALTH-CHECK POLICIES (active probes, failure thresholds, automated removal of unhealthy backends); (4) TLS CERTIFICATE LIFECYCLE (renewal automation, expiration alerting, key rotation); (5) PRIVILEGED ACCESS (named admins, MFA, JIT elevation, audit logging); (6) CAPACITY REVIEWS (LB throughput vs traffic growth; refresh planning). Option A per-team-independent produces inconsistent configurations across environments. Option C DNS-round-robin doesn't perform health checks (sends traffic to dead servers) or session affinity. Option D disable-during-traffic creates a single-point-of-failure exactly when load is highest.",
+      "wrong_explanations": {
+        "A": "Per-team-independent load-balancer management produces inconsistent configurations, security gaps (some teams configure TLS poorly), and operational fragmentation. Centralized governance with team-friendly self-service is typical.",
+        "C": "DNS round-robin distributes traffic but doesn't health-check (sends traffic to dead servers because DNS doesn't know they're down), doesn't support session affinity, and doesn't terminate TLS. Load balancers do all three.",
+        "D": "Disable-during-traffic eliminates the load balancer's purpose at exactly the moment it's most needed. Single-server traffic handling fails immediately under high load; this answer inverts the design."
+      },
+      "tips": [
+        "Trap is C — \"DNS round-robin replaces load balancers\" is a common misconception; DNS doesn't health-check, doesn't support session affinity, and doesn't terminate TLS — all critical load-balancer functions.",
+        "Load balancer governance = CONFIG MGMT + CHANGE MGMT + HEALTH CHECKS + TLS LIFECYCLE + PRIVILEGED ACCESS + CAPACITY REVIEWS. Six elements.",
+        "Exam-day shortcut: any load-balancer question is answered by the option naming MULTI-ELEMENT GOVERNANCE; per-team, DNS-substitution, and disable-during-traffic answers each fail."
+      ],
+      "framework_ref": "ISACA Load Balancer Governance guidance; ITIL 4 Service Configuration Management; ISACA Network Management guidance",
+      "related_concepts": [
+        "Load balancer",
+        "Health checks",
+        "TLS lifecycle",
+        "ITIL 4"
+      ],
+      "_provenance": "Authored from concept: 'Load balancer governance per ISACA Load Balancer Governance guidance'. Public sources: ISACA, ITIL 4."
+    },
+    {
+      "id": "d4_050",
+      "domain": 4,
+      "subtopic": "Incident Response — Detection, Documentation, Control, Resolution, Reporting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which sequence BEST describes the standard activities for handling abnormal operational conditions?",
+      "options": {
+        "A": "Detection (monitoring/alerts) → Documentation (incident record) → Control (contain impact) → Resolution (restore service) → Reporting (stakeholder + post-incident).",
+        "B": "Reporting → Documentation → Detection → Control → Resolution; reporting first ensures stakeholders are aware before incident handling begins.",
+        "C": "Resolution → Detection → Control → Documentation → Reporting; resolve first to minimize user impact, document afterward when time permits.",
+        "D": "All five activities happen simultaneously by different teams independently with no required sequence between them at any point in the response."
+      },
+      "correct": "A",
+      "key_concept": "Abnormal-condition handling sequence: DETECTION → DOCUMENTATION → CONTROL → RESOLUTION → REPORTING. Each step builds on the previous; reporting-first defeats incident response; resolution-first lacks containment; simultaneous-all is uncoordinated.",
+      "pre_read": "For abnormal-condition handling questions, anchor on the canonical sequence: DETECT → DOCUMENT → CONTROL → RESOLVE → REPORT. Each step has a purpose and order; out-of-order or simultaneous approaches fail.",
+      "correct_explanation": "ISACA Incident Response Standards guidance, NIST SP 800-61 (Computer Security Incident Handling Guide), and ITIL 4 Incident Management practice establish the canonical sequence for handling abnormal operational conditions: (1) DETECTION via monitoring, alerts, or user reports; (2) DOCUMENTATION — create incident record with initial details (time, system, symptoms); (3) CONTROL — contain impact (isolate affected systems, prevent spread); (4) RESOLUTION — restore service (workaround or fix); (5) REPORTING — stakeholder communication during incident, post-incident review afterward. Option B reporting-first defeats the purpose (you can't report what hasn't been detected and characterized). Option C resolution-first lacks containment (the issue may spread during resolution). Option D simultaneous-all is uncoordinated and produces conflicting actions.",
+      "wrong_explanations": {
+        "B": "Reporting-first is impossible — you can't report an incident that hasn't been detected and characterized. Reporting comes after detection (initial alert) and continues throughout (status updates) and ends with post-incident review.",
+        "C": "Resolution-first skips containment, allowing the incident to spread while resolution is attempted. Containment (control) limits blast radius before broader resolution work.",
+        "D": "Simultaneous-all-no-sequence produces uncoordinated actions: containment may conflict with detection (taking systems offline before evidence is captured); reporting may be incorrect because resolution is incomplete."
+      },
+      "tips": [
+        "Trap is C — \"resolution-first to minimize user impact\" sounds user-centric but it skips CONTAINMENT, allowing the incident to spread. The right sequence is detect → document → CONTROL → resolve.",
+        "Abnormal-condition sequence = DETECT → DOCUMENT → CONTROL → RESOLVE → REPORT. Five steps; each builds on the previous.",
+        "Exam-day shortcut: any incident-response sequence question is answered by the option starting with DETECTION and ending with REPORTING; out-of-sequence answers fail."
+      ],
+      "framework_ref": "ISACA Incident Response Standards guidance; NIST SP 800-61 (Computer Security Incident Handling Guide); ITIL 4 Incident Management practice",
+      "related_concepts": [
+        "Incident response",
+        "Detection",
+        "Containment",
+        "Resolution"
+      ],
+      "_provenance": "Authored from concept: 'Abnormal-condition handling sequence per ISACA Incident Response Standards and NIST SP 800-61'. Public sources: ISACA, NIST."
+    },
+    {
+      "id": "d4_051",
+      "domain": 4,
+      "subtopic": "Problem Management Reporting — Review Cadence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST supports problem-management reporting and trend review?",
+      "options": {
+        "A": "Generate a quarterly executive summary listing the count of problems opened and closed; analytical depth is wasteful for executive consumption.",
+        "B": "Defer all problem-trend reporting until the end of the fiscal year; annual cadence aligns with audit committee review schedules typically.",
+        "C": "Monthly problem-management review: trend analysis + top recurring issues + root-cause patterns + remediation status + KPI/SLA correlation.",
+        "D": "Skip problem-management reporting; problem management is internal to operations and external reporting introduces unnecessary visibility risk."
+      },
+      "correct": "C",
+      "key_concept": "Problem-management reporting = monthly: trend analysis + top recurring issues + root-cause patterns + remediation status + KPI/SLA correlation. Quarterly-count-only lacks depth; annual is too slow; skip-reporting eliminates accountability.",
+      "pre_read": "For problem-reporting cadence questions, anchor on \"monthly multi-element review.\" Quarterly-count, annual-only, and skip-reporting answers each fail.",
+      "correct_explanation": "ITIL 4 Problem Management practice and ISACA Problem Reporting Cadence guidance establish monthly cadence with multi-element review: (1) TREND ANALYSIS (problem volume by category over time); (2) TOP RECURRING ISSUES (problems generating multiple incidents); (3) ROOT-CAUSE PATTERNS (similar root causes across different problems); (4) REMEDIATION STATUS (problems with known errors and proposed fixes); (5) KPI/SLA CORRELATION (which problems most affect availability, MTTR, customer satisfaction). Monthly cadence is responsive enough to catch escalating trends while not overwhelming reviewers. Option A quarterly-count-only lacks the analytical depth that drives action. Option B annual is too slow — trends accumulate for months before being noticed. Option D skip-reporting eliminates accountability and visibility.",
+      "wrong_explanations": {
+        "A": "Quarterly count summaries don't drive action. \"42 problems opened, 38 closed\" tells executives nothing about which problems matter, which are recurring, or what's being done. Multi-element analysis is needed.",
+        "B": "Annual reporting is too slow for problem management. Trends accumulate for months unnoticed; remediation work isn't prioritized; the firm absorbs avoidable incidents.",
+        "D": "Skip-reporting eliminates the visibility that drives prioritization. Problem management without reporting becomes a black hole — work happens but its value isn't visible to the rest of the organization."
+      },
+      "tips": [
+        "Trap is A or B — opposing inadequate cadences. A (\"quarterly executive summary\") matches what executives actually consume but lacks analytical depth; B (\"annual aligned with audit committee\") matches review schedules but is too slow for problem trends. Monthly multi-element review sits between.",
+        "Problem reporting = MONTHLY: TREND + TOP RECURRING + ROOT CAUSE + REMEDIATION + KPI/SLA CORRELATION. Five elements.",
+        "Exam-day shortcut: any problem-reporting question is answered by the option naming MONTHLY MULTI-ELEMENT review; quarterly-count-only and annual answers are too slow or shallow."
+      ],
+      "framework_ref": "ITIL 4 Problem Management practice; ISACA Problem Reporting Cadence guidance; ISACA Problem Management Audit guidance",
+      "related_concepts": [
+        "Problem reporting",
+        "Trend analysis",
+        "Recurring issues",
+        "ITIL 4"
+      ],
+      "_provenance": "Authored from concept: 'Problem management reporting cadence per ITIL 4 Problem Management practice and ISACA guidance'. Public sources: ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_052",
+      "domain": 4,
+      "subtopic": "IS Operations Reviews — Audit Scope",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST defines the scope of a periodic IS operations audit review?",
+      "options": {
+        "A": "Verify that the data center has decorative plants in the lobby and that the welcome desk is staffed during business hours daily.",
+        "B": "Survey IT staff about their job satisfaction; staff satisfaction is the most meaningful indicator of IS operations effectiveness.",
+        "C": "Inspect operations only when a serious incident has occurred; periodic review of healthy operations is wasteful audit overhead generally.",
+        "D": "Job scheduling reviews + change records + access reviews + log reviews + performance/capacity + incident/problem trends + DR test evidence."
+      },
+      "correct": "D",
+      "key_concept": "IS operations review scope = job scheduling + change records + access reviews + log reviews + performance/capacity + incident/problem trends + DR test evidence. Decorative-checks miss audit relevance; satisfaction-only isn't control review; reactive-only is too late.",
+      "pre_read": "For IS-operations-review scope, anchor on \"scheduling + changes + access + logs + performance + incidents + DR.\" Distractors substitute decorative checks, satisfaction surveys, or reactive-only patterns.",
+      "correct_explanation": "ISACA IS Operations Review guidance and ISACA Information Systems Audit and Assurance Standards establish multi-element IS operations review scope: (1) JOB SCHEDULING REVIEWS (orphan jobs, dependencies, execution trends); (2) CHANGE RECORDS (every production change traceable to approved change request); (3) ACCESS REVIEWS (privileged access to production reviewed and recertified); (4) LOG REVIEWS (logs being generated, retained, monitored); (5) PERFORMANCE AND CAPACITY (utilization vs commitments, growth trends); (6) INCIDENT AND PROBLEM TRENDS (recurring patterns, MTTR trends); (7) DR TEST EVIDENCE (BCP/DR exercises completed, results documented). Option A decorative checks aren't audit-relevant. Option B satisfaction surveys assess perception, not controls. Option C reactive-only-after-incidents misses the proactive audit role.",
+      "wrong_explanations": {
+        "A": "Decorative checks (plants, welcome desk) aren't audit-relevant for IS operations effectiveness. Audit reviews focus on CONTROLS that affect IT service delivery and risk.",
+        "B": "Staff satisfaction is one input but not the audit scope. IS operations effectiveness is measured by control operation, service delivery, and risk management — satisfaction may correlate but isn't the audit measure.",
+        "C": "Reactive-only-after-incidents is the opposite of audit's proactive role. Auditors review the controls that prevent and detect incidents; periodic review is essential whether or not incidents have occurred."
+      },
+      "tips": [
+        "Trap is C — \"inspect only after serious incidents\" matches a reactive-incident-management mindset but it inverts the audit's proactive role; audit reviews controls regardless of recent incidents.",
+        "IS operations review = SCHEDULING + CHANGES + ACCESS + LOGS + PERFORMANCE + INCIDENT/PROBLEM TRENDS + DR EVIDENCE. Seven elements.",
+        "Exam-day shortcut: any IS-operations-review question is answered by the option naming MULTI-ELEMENT control review; reactive-only and surface-only answers each fail."
+      ],
+      "framework_ref": "ISACA IS Operations Review guidance; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "IS operations review",
+        "Audit scope",
+        "Multi-element review"
+      ],
+      "_provenance": "Authored from concept: 'IS operations review scope per ISACA IS Operations Review guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_053",
+      "domain": 4,
+      "subtopic": "Service Levels and Enterprise Architecture Alignment",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST aligns service-level commitments with enterprise architecture decisions?",
+      "options": {
+        "A": "Treat service levels and enterprise architecture as separate concerns; SLM addresses customer commitments while EA addresses technical design only.",
+        "B": "Architect service tiers (gold/silver/bronze) with corresponding SLA targets, infrastructure investment, and operational practices reflected in the EA roadmap.",
+        "C": "Always commit to the highest possible SLA targets across all services; high availability is desirable for every system regardless of business need.",
+        "D": "Defer service level commitments until enterprise architecture is fully implemented; commitments cannot be made before the target architecture is complete."
+      },
+      "correct": "B",
+      "key_concept": "Service levels and EA alignment = architect service tiers (gold/silver/bronze) with SLA + infrastructure + operations + EA roadmap reflection. Separating SLM from EA produces drift; uniform-high-SLA wastes capital; defer-until-complete blocks operations.",
+      "pre_read": "For SLA-EA alignment questions, anchor on \"tiered services with SLA + infrastructure + operations + EA reflected in roadmap.\" Distractors propose separation, uniform-high, or defer-until-complete.",
+      "correct_explanation": "ITIL 4 Service Level Management practice and ISACA Service Level Architecture Alignment guidance establish that service-level commitments must be reflected in enterprise-architecture decisions: (1) ARCHITECT SERVICE TIERS (gold = high availability + multi-region active-active + 99.99% SLA; silver = active-passive + 99.9% SLA; bronze = single-region + best-effort) so customers can choose service level matching their business need; (2) CORRESPONDING INFRASTRUCTURE INVESTMENT (gold-tier systems get more compute, redundancy, monitoring); (3) OPERATIONAL PRACTICES (gold-tier systems get 24/7 on-call, faster incident response, more frequent DR tests); (4) EA ROADMAP REFLECTION (the firm's EA documents which systems are at which tier). Option A treats them as separate, producing drift between commitments and architecture. Option C uniform-high-SLA wastes capital on systems that don't need 99.99%. Option D defer blocks operations entirely.",
+      "wrong_explanations": {
+        "A": "Treating SLM and EA as separate produces drift: SLAs commit to availability that the architecture can't deliver, or the architecture invests in availability that no SLA reflects. Alignment requires explicit linkage in both directions.",
+        "C": "Uniform-high-SLA across all services wastes capital. Some systems (internal tools, batch reporting) genuinely don't need 99.99% availability; the firm pays the high-availability cost without benefit.",
+        "D": "Defer-until-EA-complete blocks operations. EA is never fully implemented — it's continuously evolving. Service levels must commit and operate continuously; EA accommodates and improves them over time."
+      },
+      "tips": [
+        "Trap is A — \"SLM and EA are separate concerns\" is a common organizational pattern but it produces drift between commitments and architecture; alignment requires explicit linkage.",
+        "SLA-EA alignment = TIERED SERVICES + SLA per tier + INFRASTRUCTURE per tier + OPERATIONS per tier + EA ROADMAP REFLECTION. Five-element alignment.",
+        "Exam-day shortcut: any SLA-EA-alignment question is answered by the option naming TIERED architecture with explicit linkage; separation, uniform-high-SLA, and defer answers each fail."
+      ],
+      "framework_ref": "ITIL 4 Service Level Management practice; ISACA Service Level Architecture Alignment guidance; ISACA Service Level Management guidance",
+      "related_concepts": [
+        "Service level management",
+        "Enterprise architecture",
+        "Service tiers",
+        "ITIL 4"
+      ],
+      "_provenance": "Authored from concept: 'Service level and enterprise architecture alignment per ITIL 4 SLM and ISACA Service Level Architecture Alignment guidance'. Public sources: ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_054",
+      "domain": 4,
+      "subtopic": "DBMS Architecture — Metadata and Data Dictionary",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST addresses risk associated with the database management system's metadata (data dictionary, system catalogs)?",
+      "options": {
+        "A": "Restrict metadata modification to DBAs with logged actions, version control of schema changes, and integrity verification of system catalogs.",
+        "B": "Allow any developer or analyst to modify metadata directly so they can adapt schema dynamically to changing business requirements freely.",
+        "C": "Disable metadata access entirely; modern applications don't need to query system catalogs and disabling reduces attack surface significantly.",
+        "D": "Treat metadata as application data; back it up nightly with the same procedures and retention as customer transaction records routinely."
+      },
+      "correct": "A",
+      "key_concept": "DBMS metadata controls = restrict modification to DBAs + log all actions + version control schema changes + integrity verification of system catalogs. Free modification destroys schema integrity; disabling defeats application requirements; treating-as-app-data ignores the special role of metadata.",
+      "pre_read": "For DBMS metadata questions, anchor on \"DBA-restricted modification + logged + version controlled + integrity verified.\" Free-modification, disable-entirely, and treat-as-app-data answers fail.",
+      "correct_explanation": "ISACA DBMS Architecture guidance and ISACA Database Audit guidance establish four-element DBMS metadata controls: (1) RESTRICT MODIFICATION to DBAs (the data dictionary defines the schema; uncontrolled modification breaks application contracts); (2) LOG ALL ACTIONS on metadata (audit trail of every schema change); (3) VERSION CONTROL schema changes (DDL in source control with peer review); (4) INTEGRITY VERIFICATION of system catalogs (catalogs match actual schema; anomalies trigger investigation). The metadata holds the canonical definition of the database structure; corruption or unauthorized modification breaks every application that depends on it. Option B free-modification destroys schema integrity. Option C disable-entirely is impossible (applications need to query system catalogs for things like column types). Option D treat-as-app-data misses the special role — metadata defines structure, not just records data.",
+      "wrong_explanations": {
+        "B": "Free metadata modification breaks application contracts. Applications query the data dictionary to know what columns exist, what types, what constraints. Unauthorized modification produces application failures across the organization.",
+        "C": "Disabling metadata access is impossible — applications NEED to query system catalogs (column types, table existence, indexes for query optimization). Removal would break applications.",
+        "D": "Metadata isn't application data — it DEFINES the application data structure. Backup procedures may be similar but metadata also requires version control of schema changes (which application data doesn't), and integrity verification of structure."
+      },
+      "tips": [
+        "Trap is B — \"allow developers to modify metadata for agility\" sounds modern but it breaks application contracts at scale; schema changes need governance regardless of methodology.",
+        "DBMS metadata controls = DBA-RESTRICTED + LOGGED + VERSION CONTROLLED + INTEGRITY VERIFIED. Four elements; metadata is structural, not just data.",
+        "Exam-day shortcut: any DBMS-metadata question is answered by the option naming DBA-RESTRICTED with version control and integrity verification; free-modify, disable, and treat-as-app-data answers each fail."
+      ],
+      "framework_ref": "ISACA DBMS Architecture guidance; ISACA Database Audit guidance; ISACA Database Models guidance",
+      "related_concepts": [
+        "DBMS metadata",
+        "Data dictionary",
+        "System catalogs",
+        "Schema control"
+      ],
+      "_provenance": "Authored from concept: 'DBMS metadata controls per ISACA DBMS Architecture guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_055",
+      "domain": 4,
+      "subtopic": "NoSQL Governance — When Appropriate and How",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scenario BEST justifies adopting a NoSQL database over a relational database for an enterprise application?",
+      "options": {
+        "A": "An application requiring strict ACID transactions across multiple related entities with complex joins and reporting requirements daily.",
+        "B": "A small departmental application with stable schema, low-volume queries, and existing investment in relational expertise within the team.",
+        "C": "A high-volume application with flexible/evolving schema, horizontal-scale requirements, or workload that fits a specific NoSQL model (document, key-value, graph).",
+        "D": "Any application built within the last 3 years; modern applications should always use NoSQL because relational databases are obsolete now."
+      },
+      "correct": "C",
+      "key_concept": "NoSQL appropriate when: high-volume + flexible/evolving schema + horizontal scale + workload fits a specific NoSQL model. Relational appropriate for ACID + complex joins + stable schema + small-scale. Each technology has its use cases; neither is universally better.",
+      "pre_read": "For NoSQL-vs-relational selection questions, anchor on \"workload fit not blanket preference.\" High-volume + flexible schema + horizontal-scale → NoSQL. ACID + joins + stable schema → relational.",
+      "correct_explanation": "ISACA NoSQL Governance guidance and DAMA-DMBOK 2nd Edition establish that NoSQL is appropriate when the workload matches a specific NoSQL model: (1) HIGH-VOLUME (e.g., write-heavy ingestion, web-scale read traffic); (2) FLEXIBLE/EVOLVING SCHEMA (e.g., per-customer custom fields, rapidly-changing data structure); (3) HORIZONTAL-SCALE REQUIREMENTS (NoSQL databases are typically designed to scale horizontally across many commodity servers; relational databases historically scale vertically); (4) WORKLOAD FITS A SPECIFIC MODEL (document for nested data and search, key-value for caching and session data, column-family for time-series and write-heavy, graph for relationship-heavy queries). Option A describes relational's strengths (ACID + joins). Option B describes another relational use case (small + stable). Option D is the universal-NoSQL bias — wrong; relational databases remain appropriate for many workloads.",
+      "wrong_explanations": {
+        "A": "ACID transactions, multiple related entities, complex joins, and reporting are RELATIONAL strengths. NoSQL databases relax some of these (document stores don't typically do joins, eventual consistency vs ACID).",
+        "B": "Small departmental + stable schema + low-volume + relational expertise — all favor relational. NoSQL adds operational complexity that isn't justified by these characteristics.",
+        "D": "Universal-NoSQL is bias, not analysis. Relational databases remain appropriate for transactional applications, financial systems, and any workload requiring strict ACID and complex relationships."
+      },
+      "tips": [
+        "Trap is D — \"modern applications should always use NoSQL\" matches a tech-trend bias but it's wrong; relational and NoSQL each have their use cases, and many modern applications appropriately use relational.",
+        "NoSQL appropriate when: HIGH VOLUME + FLEXIBLE SCHEMA + HORIZONTAL SCALE + WORKLOAD FITS MODEL (doc/KV/column/graph). Relational appropriate for ACID + JOINS + STABLE schema.",
+        "Exam-day shortcut: any NoSQL-vs-relational selection question is answered by the option matching workload to model; universal-NoSQL or universal-relational answers reflect bias."
+      ],
+      "framework_ref": "ISACA NoSQL Governance guidance; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Database Audit guidance",
+      "related_concepts": [
+        "NoSQL",
+        "Relational vs NoSQL",
+        "Workload fit",
+        "Document database"
+      ],
+      "_provenance": "Authored from concept: 'NoSQL governance per ISACA NoSQL Governance guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA."
+    },
+    {
+      "id": "d4_056",
+      "domain": 4,
+      "subtopic": "Legacy Database Models — Hierarchical / Network Audit Considerations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which audit consideration MOST applies to legacy hierarchical or network-model databases (e.g., IMS, IDMS) still in production use?",
+      "options": {
+        "A": "Treat them identically to relational databases for audit purposes; the underlying database model has no impact on audit considerations or controls.",
+        "B": "Decommission them immediately regardless of business value; legacy database models are inherently insecure and cannot be audited reliably.",
+        "C": "Skip audit entirely; legacy systems are typically too old to apply modern audit standards meaningfully and the cost outweighs the benefit at this stage.",
+        "D": "Vendor support status + skill availability + integration complexity + replacement timeline + compensating controls + data extraction for analytics."
+      },
+      "correct": "D",
+      "key_concept": "Legacy DB model audit considerations = vendor support status + skill availability + integration complexity + replacement timeline + compensating controls + data extraction for analytics. Treat-identically misses model-specific risks; decommission-immediately ignores business value; skip-audit is irresponsible.",
+      "pre_read": "For legacy database audit questions, anchor on \"vendor support + skill availability + integration + replacement timeline + compensating controls + data extraction.\" Generic-treatment, immediate-decommission, and skip-audit each fail.",
+      "correct_explanation": "ISACA Database Audit guidance and ISACA Legacy Modernization guidance establish six-element considerations for legacy database models still in production use: (1) VENDOR SUPPORT STATUS (is IBM still supporting IMS for the version in use; what's the EOL); (2) SKILL AVAILABILITY (the population of engineers who know hierarchical/network models is shrinking; replacement hiring is hard); (3) INTEGRATION COMPLEXITY (legacy databases often have proprietary access patterns; integrations are often custom code that's brittle); (4) REPLACEMENT TIMELINE (modernization is often planned but takes years); (5) COMPENSATING CONTROLS during the transition period (network isolation, enhanced monitoring); (6) DATA EXTRACTION FOR ANALYTICS (modern analytics tools work poorly with hierarchical/network models; ETL to relational/data lake may be needed). Option A treat-identically misses the model-specific risks. Option B decommission-immediately ignores business value (some legacy systems still run massive transaction volumes profitably). Option C skip-audit is irresponsible.",
+      "wrong_explanations": {
+        "A": "Hierarchical and network database models have different access patterns, security models, and operational characteristics than relational. Audit must address the model-specific risks (skill availability, vendor support trajectory).",
+        "B": "Decommissioning legacy databases without analyzing business value, modernization cost, and risk is overreaction. Many legacy systems run massive transaction volumes (banking, insurance) profitably; modernization is multi-year and risky.",
+        "C": "Skip-audit ignores the firm's actual risk exposure. Legacy systems running material business processes deserve as much (or more) audit attention than newer systems, given the skill-availability and vendor-support risks."
+      },
+      "tips": [
+        "Trap is A — \"treat identically to relational\" matches an audit shortcut but legacy models have unique risks (skill availability, vendor support, integration complexity) that require model-specific consideration.",
+        "Legacy DB audit = VENDOR SUPPORT + SKILL AVAILABILITY + INTEGRATION + REPLACEMENT TIMELINE + COMPENSATING CONTROLS + DATA EXTRACTION. Six considerations.",
+        "Exam-day shortcut: any legacy-database-audit question is answered by the option naming MODEL-SPECIFIC considerations; identical-treatment, immediate-decommission, and skip-audit answers each fail."
+      ],
+      "framework_ref": "ISACA Database Audit guidance; ISACA Database Models guidance; ISACA Legacy Modernization guidance",
+      "related_concepts": [
+        "Hierarchical database",
+        "Network database",
+        "Legacy database",
+        "IMS",
+        "IDMS"
+      ],
+      "_provenance": "Authored from concept: 'Legacy database model audit considerations per ISACA Database Audit guidance and ISACA Legacy Modernization guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_057",
+      "domain": 4,
+      "subtopic": "OS Hardening Conflict — Security vs Operations",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the OS hardening dispute the engagement faces?",
+      "scenario_context": "A 6,000-employee insurance firm is deploying CIS Benchmark Level 2 hardening to ~2,400 production servers. The security team has applied the full benchmark; operations reports 12 production incidents over the past month attributed to hardening (services unable to start, monitoring agents losing connectivity, scheduled jobs failing). The CISO insists Level 2 is non-negotiable. The CIO proposes downgrading to Level 1. The compliance officer cites regulator expectations for hardening evidence. The IS auditor was asked to recommend governance for the OS hardening dispute before the steering committee meets in 72 hours.",
+      "options": {
+        "A": "Endorse the CISO's full Level 2 hardening; security baselines should not be compromised regardless of operational impact in regulated environments.",
+        "B": "Apply structured hardening governance: per-server-class baseline analysis + exception process with compensating controls + risk acceptance documentation + monitoring + remediation plan.",
+        "C": "Endorse the CIO's downgrade to Level 1; operational stability is essential and the firm cannot tolerate continued production incidents from hardening overreach.",
+        "D": "Defer the decision indefinitely while operations and security teams negotiate independently; the steering committee should not adjudicate technical disagreements between executives."
+      },
+      "correct": "B",
+      "key_concept": "OS hardening conflict = structured governance: per-server-class baseline + exception process with compensating controls + risk acceptance + monitoring + remediation plan. Endorse-CISO ignores operational reality; endorse-CIO accepts security regression; defer abandons audit role.",
+      "pre_read": "For OS hardening dispute questions, anchor on \"per-server-class baseline + exception process with compensating controls + documented risk acceptance.\" Single-stakeholder endorsements reflect bias; defer abandons the decision.",
+      "correct_explanation": "CIS Benchmarks for Operating Systems, NIST SP 800-123 (Guide to General Server Security), and ISACA OS Hardening Conflict Resolution guidance establish structured hardening governance for production: (1) PER-SERVER-CLASS BASELINE ANALYSIS (web servers vs database servers vs application servers may need different baselines; not every Level 2 control applies equally); (2) EXCEPTION PROCESS WITH COMPENSATING CONTROLS (when a Level 2 control causes operational issues, document the exception and apply compensating controls — network isolation, enhanced monitoring, alternative protections); (3) DOCUMENTED RISK ACCEPTANCE by appropriate authority (CISO or CRO depending on residual risk severity); (4) MONITORING for issues introduced by hardening; (5) REMEDIATION PLAN to restore Level 2 compliance over time as application vendors and operational practices catch up. Option A endorses CISO's all-or-nothing position. Option C endorses CIO's regression. Option D abandons audit role.",
+      "wrong_explanations": {
+        "A": "Endorsing full Level 2 without exceptions accepts continued production incidents (12 in one month). Regulator expectations are met by documented hardening WITH risk-managed exceptions, not by absolute compliance with operational consequences.",
+        "C": "Downgrading to Level 1 entirely sacrifices security posture across all 2,400 servers because some specific controls cause issues on some specific servers. Per-server-class analysis and exception process are more proportional.",
+        "D": "Defer-while-negotiating abandons the steering committee's adjudication role and the audit function's input into governance. The 72-hour deadline is structural; deferral isn't viable."
+      },
+      "tips": [
+        "Trap is A or C — opposing single-stakeholder endorsements (CISO full-Level-2 vs CIO downgrade-to-Level-1). Structured governance with per-server-class baseline and documented exceptions sits between.",
+        "OS hardening conflict = PER-SERVER-CLASS BASELINE + EXCEPTION PROCESS + COMPENSATING CONTROLS + RISK ACCEPTANCE + MONITORING + REMEDIATION PLAN. Six elements.",
+        "Exam-day shortcut: any hardening-dispute question is answered by the option naming STRUCTURED GOVERNANCE with documented exceptions; single-stakeholder endorsements reflect bias."
+      ],
+      "framework_ref": "CIS Benchmarks for Operating Systems; NIST SP 800-123 (Guide to General Server Security); ISACA OS Hardening Conflict Resolution guidance",
+      "related_concepts": [
+        "OS hardening",
+        "CIS Benchmarks",
+        "Exception process",
+        "Compensating controls"
+      ],
+      "_provenance": "Authored from concept: 'OS hardening conflict structured resolution per CIS Benchmarks and NIST SP 800-123'. Public sources: CIS, NIST, ISACA. Scenario specifics (6K-employee insurer, 2,400 servers, CIS Level 2, 12 incidents in month, 72-hour deadline, CISO/CIO/compliance positions) invented for this question."
+    },
+    {
+      "id": "d4_058",
+      "domain": 4,
+      "subtopic": "Database Performance vs Availability Tradeoff",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the database performance-vs-availability tradeoff the engagement faces?",
+      "scenario_context": "A B2B SaaS firm operates a primary database supporting 1,400 enterprise customers. Read replicas serve 80% of query traffic; the primary handles writes plus the remaining 20% reads. Performance has degraded: query latency P99 has risen from 50ms to 320ms over 6 months. The infrastructure team proposes adding two more read replicas ($180K/yr operating cost) to absorb additional read load. The DBA team proposes reducing replication lag (currently 800ms) by switching to synchronous replication, which will reduce primary write throughput by ~40%. The CTO wants both. The CFO objects to the cost. The IS auditor was asked to advise on the decision framework.",
+      "options": {
+        "A": "Apply structured analysis: workload analysis + read/write distribution + replica lag impact + customer SLA implications + cost-per-option + phased implementation with monitoring.",
+        "B": "Endorse adding replicas only; replication lag is acceptable for read-heavy SaaS workloads and synchronous replication's 40% throughput penalty is unjustifiable for the use case.",
+        "C": "Endorse synchronous replication only; data freshness is non-negotiable for B2B enterprise customers and additional replicas don't address the underlying lag problem at all.",
+        "D": "Defer all changes until the next architecture review cycle; quarterly review provides the appropriate cadence for database infrastructure decisions in this firm's operating model."
+      },
+      "correct": "A",
+      "key_concept": "Database performance vs availability tradeoff = structured analysis: workload + read/write distribution + replica lag impact + SLA implications + cost-per-option + phased implementation with monitoring. Single-option endorsements reflect bias; defer accepts continued degradation.",
+      "pre_read": "For DB performance/availability tradeoff questions, anchor on \"structured analysis with phased implementation.\" Single-option endorsements reflect bias.",
+      "correct_explanation": "ISACA Database Performance vs Availability guidance, ISACA Database Audit guidance, and DAMA-DMBOK establish six-element structured analysis: (1) WORKLOAD ANALYSIS (what queries are slow, why, when; capacity vs query inefficiency); (2) READ/WRITE DISTRIBUTION (the 80/20 split — is it stable? are reads truly elastic with replicas?); (3) REPLICA LAG IMPACT (which queries are sensitive to staleness; which customers tolerate which lag); (4) CUSTOMER SLA IMPLICATIONS (do current SLAs commit to specific latency or freshness; do contemplated changes affect SLA compliance); (5) COST-PER-OPTION ($180K/yr replicas vs 40% write throughput reduction translated to capacity cost); (6) PHASED IMPLEMENTATION WITH MONITORING (start with replicas if cheapest; measure impact; consider sync replication after). Option B endorses infra-team without DBA-team analysis. Option C endorses DBA-team without infra-team analysis. Option D defers a decision that has 6 months of degradation already.",
+      "wrong_explanations": {
+        "B": "Endorsing replicas-only without analyzing replica lag impact and customer freshness expectations may not address the actual issue. Additional replicas reduce read latency under load but don't reduce the existing replication lag.",
+        "C": "Endorsing synchronous replication only addresses freshness but introduces a 40% write throughput penalty that may itself produce SLA breaches and customer impact. Trading one problem for another isn't structured analysis.",
+        "D": "Defer-to-quarterly-review-cycle accepts continued performance degradation. The trend (50ms → 320ms over 6 months) is already material; deferral compounds the issue."
+      },
+      "tips": [
+        "Trap is B or C — opposing infra-team and DBA-team endorsements. Both positions have merit but reflect bias; structured analysis weighs both.",
+        "DB performance/availability = WORKLOAD + READ/WRITE DISTRIBUTION + LAG IMPACT + SLA IMPLICATIONS + COST + PHASED IMPLEMENTATION. Six elements.",
+        "Exam-day shortcut: any DB performance/availability question is answered by the option naming STRUCTURED ANALYSIS with PHASED IMPLEMENTATION; single-option endorsements reflect bias."
+      ],
+      "framework_ref": "ISACA Database Performance vs Availability guidance; ISACA Database Audit guidance; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality)",
+      "related_concepts": [
+        "Database performance",
+        "Replica lag",
+        "Synchronous replication",
+        "Workload analysis"
+      ],
+      "_provenance": "Authored from concept: 'Database performance vs availability tradeoff per ISACA Database Performance vs Availability guidance'. Public sources: ISACA, DAMA. Scenario specifics (B2B SaaS, 1.4K customers, 80/20 read split, P99 50→320ms over 6 months, $180K replicas vs 40% throughput sync, CTO/CFO positions) invented for this question."
+    },
+    {
+      "id": "d4_059",
+      "domain": 4,
+      "subtopic": "Legacy SLA vs Enterprise Architecture Mismatch",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the legacy SLA / EA mismatch the engagement faces?",
+      "scenario_context": "A national insurance broker (~3,400 employees, $940M revenue) holds 28 SLAs with major customers signed 8-12 years ago committing to 99.99% availability for the policy-quoting platform. Current EA: monolithic on-premises platform on aged hardware approaching end-of-support; actual measured availability over past year is 99.62%; modernization to cloud-native architecture estimated $14M and 18 months. Customers haven't formally complained but recent renewals show competitive pressure. The CIO wants modernization; the CFO objects to cost; the chief revenue officer fears renewal losses if SLAs aren't met during transition. The IS auditor was asked to advise on governance for the legacy-SLA / EA-mismatch decision.",
+      "options": {
+        "A": "Endorse the CIO's modernization; the SLA/EA mismatch can only be resolved by replacing the legacy architecture with one capable of meeting commitments.",
+        "B": "Endorse the CFO's deferral; the actual availability gap (99.99% commit vs 99.62% actual) hasn't produced complaints and the $14M investment isn't business-justified currently.",
+        "C": "Apply structured analysis: SLA-vs-EA gap quantification + customer-renewal risk + modernization cost-benefit + transition-period SLA management + phased communication with customers.",
+        "D": "Defer the decision until customers formally complain about SLA breaches; absent customer complaint there is no business case for the modernization investment that justifies the cost."
+      },
+      "correct": "C",
+      "key_concept": "Legacy SLA / EA mismatch = structured analysis: gap quantification + customer-renewal risk + modernization cost-benefit + transition-period SLA management + phased customer communication. Single-stakeholder endorsements reflect bias; defer-until-complaint risks customer-renewal cliff.",
+      "pre_read": "For legacy-SLA / EA mismatch questions, anchor on \"structured: gap quantification + renewal risk + modernization cost-benefit + transition SLA management + customer communication.\" Single-stakeholder endorsements miss multi-factor reality.",
+      "correct_explanation": "ISACA Legacy SLA Mismatch guidance and ITIL 4 Service Level Management practice establish five-element structured analysis: (1) SLA-vs-EA GAP QUANTIFICATION (99.99% commitment vs 99.62% actual = 32 hours additional downtime per year vs commitment; what does that cost in service credits, customer impact, regulatory risk); (2) CUSTOMER-RENEWAL RISK (competitive pressure on renewals signals customer mobility; modernization may be required to retain customers regardless of formal complaint); (3) MODERNIZATION COST-BENEFIT ($14M investment vs renewal-loss exposure plus operational cost savings of new architecture); (4) TRANSITION-PERIOD SLA MANAGEMENT (during modernization, what's the SLA exposure; can interim measures bridge); (5) PHASED CUSTOMER COMMUNICATION (proactive engagement with customers about modernization roadmap, transparency about current state, commitment to future state). Option A endorses CIO without business-case analysis. Option B endorses CFO without renewal-risk analysis. Option D defer-until-complaint risks customer-renewal cliff.",
+      "wrong_explanations": {
+        "A": "Endorsing modernization without structured cost-benefit analysis assumes the $14M investment is justified. The analysis may support modernization but should be made on facts, not stakeholder preference.",
+        "B": "Endorsing deferral without renewal-risk analysis ignores the competitive pressure signal. By the time customers formally complain, renewals may already be lost; structured analysis includes leading indicators.",
+        "D": "Defer-until-complaint produces a renewal cliff. Customer departures often precede formal complaints; structured analysis includes leading indicators (renewal pressure, RFP activity, executive temperature) before formal complaints arrive."
+      },
+      "tips": [
+        "Trap is A or B — opposing single-stakeholder endorsements (CIO modernize vs CFO defer). Both positions reflect bias; structured analysis weighs both with leading indicators.",
+        "Legacy SLA / EA mismatch = GAP QUANTIFICATION + RENEWAL RISK + COST-BENEFIT + TRANSITION SLA MANAGEMENT + CUSTOMER COMMUNICATION. Five elements.",
+        "Exam-day shortcut: any SLA / EA mismatch question is answered by the option naming STRUCTURED ANALYSIS with renewal risk and customer communication; single-stakeholder endorsements miss multi-factor reality."
+      ],
+      "framework_ref": "ISACA Legacy SLA Mismatch guidance; ITIL 4 Service Level Management practice; ISACA Service Level Architecture Alignment guidance",
+      "related_concepts": [
+        "SLA mismatch",
+        "Legacy modernization",
+        "Customer renewal",
+        "EA roadmap"
+      ],
+      "_provenance": "Authored from concept: 'Legacy SLA / EA mismatch structured analysis per ISACA Legacy SLA Mismatch guidance'. Public sources: ISACA, ITIL 4. Scenario specifics (insurance broker, 3.4K employees, $940M revenue, 28 SLAs at 99.99% from 8-12 years ago, 99.62% actual, $14M/18-month modernization, CIO/CFO/CRO positions) invented for this question."
+    },
+    {
+      "id": "d4_060",
+      "domain": 4,
+      "subtopic": "Network Device End-of-Support Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the network device EOS decision the engagement faces?",
+      "scenario_context": "A regional bank operates 24 enterprise-grade load balancers and firewalls (mix of two vendors) approaching vendor end-of-support in 11 months. Three options: (a) refresh in place with same-vendor next-generation devices ($2.4M, like-for-like); (b) consolidate to single-vendor architecture across both functions ($1.8M but vendor-lock-in increases); (c) migrate to cloud-native equivalents in conjunction with planned cloud workload migration ($1.1M first year, but requires changing application architecture for some legacy services). The CISO has concerns about cloud-native equivalents during the transition. The CTO favors consolidation. The IS auditor was asked to advise on governance for the network device EOS decision.",
+      "options": {
+        "A": "Endorse the CTO's consolidation; single-vendor architecture simplifies operations and the cost savings justify the increased lock-in concern.",
+        "B": "Endorse the CISO's preference for in-place refresh; minimizing transition risk during EOS pressure is more important than achieving cost savings or modernization benefits.",
+        "C": "Defer the decision until the vendor end-of-support deadline passes; emergency procurement under deadline pressure produces better-aligned decisions than premature evaluation.",
+        "D": "Apply structured analysis: 5-year TCO per option + lock-in risk + transition complexity + capability fit + alignment with cloud strategy + phased implementation with milestones."
+      },
+      "correct": "D",
+      "key_concept": "Network device EOS decision = structured analysis: 5-year TCO + lock-in risk + transition complexity + capability fit + cloud strategy alignment + phased implementation with milestones. Single-stakeholder endorsements reflect bias; defer-until-deadline forces emergency procurement.",
+      "pre_read": "For network-device EOS questions, anchor on \"structured analysis with 5-year TCO and cloud strategy alignment.\" Single-stakeholder endorsements and defer-until-deadline answers each fail.",
+      "correct_explanation": "ISACA Network Device EOS Decision guidance and ISACA Hardware Refresh Decision guidance establish six-element structured analysis: (1) 5-YEAR TCO per option (capital + operating + transition cost over the planning horizon); (2) LOCK-IN RISK (consolidation reduces vendor count but increases per-vendor dependency); (3) TRANSITION COMPLEXITY (in-place refresh is lowest; consolidation moderate; cloud-native highest); (4) CAPABILITY FIT (does each option support current and planned use cases); (5) ALIGNMENT WITH CLOUD STRATEGY (if cloud migration is planned, cloud-native devices may align; if not, on-premises refresh is better); (6) PHASED IMPLEMENTATION WITH MILESTONES (24 devices can be refreshed/migrated in tranches with go/no-go gates). Option A endorses CTO consolidation. Option B endorses CISO in-place. Option D defer-until-deadline forces emergency procurement under pressure with worse outcomes.",
+      "wrong_explanations": {
+        "A": "Endorsing consolidation saves $600K (option B's $2.4M vs option B's $1.8M) but increases lock-in concentration across BOTH load-balancer and firewall functions. The lock-in risk for a regional bank — vendor failure, price escalation at next renewal, integration constraints — must be analyzed against the cost saving, not assumed away.",
+        "B": "Endorsing in-place refresh minimizes transition risk but locks in $1.3M of additional cost ($2.4M vs $1.1M cloud-native option B) and forgoes potential cloud-strategy alignment. The 11-month EOS window provides time for structured analysis; risk-minimization-only thinking ignores opportunity cost.",
+        "C": "Defer-until-deadline forces emergency procurement at the 11-month boundary. Vendors raise prices when customers have no alternative; the firm's negotiating position weakens as the deadline approaches. The firm has 11 months to do structured analysis NOW; deferral squanders that window."
+      },
+      "tips": [
+        "Trap is A or B — opposing CTO consolidation vs CISO in-place positions. Both reflect bias; structured analysis with 5-year TCO and strategy alignment determines.",
+        "Network device EOS = 5-YEAR TCO + LOCK-IN RISK + TRANSITION COMPLEXITY + CAPABILITY FIT + CLOUD STRATEGY ALIGNMENT + PHASED IMPLEMENTATION. Six elements.",
+        "Exam-day shortcut: any device EOS question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS with phased implementation; single-stakeholder and defer-until-deadline answers each fail."
+      ],
+      "framework_ref": "ISACA Network Device EOS Decision guidance; ISACA Hardware Refresh Decision guidance; ISACA Vendor Management guidance",
+      "related_concepts": [
+        "Network device EOS",
+        "Vendor lock-in",
+        "TCO analysis",
+        "Cloud strategy alignment"
+      ],
+      "_provenance": "Authored from concept: 'Network device EOS decision per ISACA Network Device EOS Decision guidance'. Public sources: ISACA. Scenario specifics (regional bank, 24 enterprise devices, 11-month EOS, three options, CISO/CTO positions) invented for this question."
     }
   ]
 }

@@ -794,6 +794,30 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-53 MP family (Media Protection controls)
 - NIST SP 800-53 AC family
 
+## D4 batch 3 additions
+- ISACA Database Audit guidance — already covered topically; expanded form
+- ISACA DBMS Architecture guidance
+- ISACA NoSQL Governance guidance
+- ISACA Database Models guidance
+- ISACA Operating System Hardening guidance
+- ISACA OS Integrity Controls guidance
+- ISACA Data Communications Software guidance
+- ISACA IS Architecture guidance
+- ISACA Hardware Review guidance
+- ISACA Load Balancer Governance guidance
+- ISACA Incident Response Standards guidance
+- ISACA Problem Reporting Cadence guidance
+- ISACA IS Operations Review guidance
+- ISACA Service Level Architecture Alignment guidance
+- ISACA OS Hardening Conflict Resolution guidance
+- ISACA Database Performance vs Availability guidance
+- ISACA Legacy SLA Mismatch guidance
+- ISACA Network Device EOS Decision guidance
+- NIST SP 800-123 (Guide to General Server Security)
+- NIST SP 800-179 (Guide to Securing Apple OS X 10.10 Systems for IT Professionals)
+- CIS Benchmarks for Operating Systems
+- NIST SP 800-44 (Guidelines on Securing Public Web Servers)
+
 ## D4 batch 2 additions
 - RFC 3022 (Network Address Translation)
 - ITIL 4 Change Enablement practice
