@@ -681,3 +681,40 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Production-Like Environment guidance
 - ISACA Vendor Abandonment guidance
 - FIPS 140-3 (Security Requirements for Cryptographic Modules)
+
+## D3 batch 5 additions
+- Behavior-Driven Development (Dan North)
+- Cucumber / Gherkin BDD framework
+- OpenLineage
+- Istio Service Mesh
+- Linkerd Service Mesh
+- CNCF Service Mesh Working Group
+- OpenFeature (CNCF)
+- LaunchDarkly Feature Management
+- Continuous Delivery (Humble & Farley)
+- Principles of Chaos Engineering
+- Netflix Chaos Monkey
+- OpenTelemetry (CNCF)
+- CNCF Observability TAG
+- PCI DSS v4.0 (Tokenization Guidance)
+- NIST SP 800-188 (De-Identification of Personal Information)
+- xz-utils CVE-2024-3094 (Supply-Chain Backdoor)
+- AWS Multi-Tenant SaaS Lens
+- ISACA Multi-Tenant SaaS Audit guidance
+- GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority)
+- CCPA Breach Notification Requirements
+- ISACA Code Coverage guidance
+- ISACA Boundary-Value Testing guidance
+- ISACA Feature Flag Governance guidance
+- ISACA Canary Deployment guidance
+- ISACA Chaos Engineering guidance
+- ISACA Observability Audit guidance
+- ISACA Tokenization guidance
+- ISACA Service Catalog Governance guidance
+- ISACA Supply-Chain Compromise Response guidance
+- ISACA Multi-Tenant Segregation guidance
+- ISACA Privacy Notification guidance
+- ISACA Cross-Functional Dependency guidance
+- ISACA Knowledge-Transfer guidance
+- ISACA Mid-Cutover Conflict guidance
+- ISACA Product Launch Decision guidance

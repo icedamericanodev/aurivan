@@ -2934,6 +2934,737 @@
         "Audit automation"
       ],
       "_provenance": "Authored from concept: 'Continuous compliance evidence in high-deploy regulated DevOps per ISACA Continuous Compliance guidance and SLSA framework'. Public sources: ISACA, SLSA. Scenario specifics (federally chartered bank, 30+ deploys/day, 14 service teams, SOC 1 audit, manual evidence flagged as not-scaling, audit firm's hypothetical acceptance of automation) invented for this question."
+    },
+    {
+      "id": "d3_081",
+      "domain": 3,
+      "subtopic": "Code Coverage — Meaningful Thresholds",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST uses code-coverage metrics to drive software quality?",
+      "options": {
+        "A": "Require 100% line coverage on every project; any uncovered line is treated as a quality defect to be remediated.",
+        "B": "Set risk-based coverage targets per module, monitor trends, and treat uncovered critical paths as the actual quality signal.",
+        "C": "Ignore code coverage entirely because it is gameable and provides no useful signal about test quality or effectiveness.",
+        "D": "Track only branch coverage and accept any value above 50% as adequate for production deployment readiness."
+      },
+      "correct": "B",
+      "key_concept": "Code coverage = risk-based per-module targets + trend monitoring + critical-path focus. 100% line coverage targets are gameable; ignore-entirely loses signal; branch-only with 50% threshold is arbitrary. Coverage is necessary but not sufficient for quality.",
+      "pre_read": "For code-coverage questions, anchor on \"risk-based targets + critical paths + trends.\" Distractors propose 100%-everywhere, ignore-entirely, or arbitrary thresholds.",
+      "correct_explanation": "ISACA Code Coverage guidance, ISO/IEC 25010 (Software Product Quality Model), and ISTQB Foundation Level Syllabus establish that code coverage is a necessary-but-not-sufficient signal. Mature use: (1) risk-based per-module targets (critical-path modules require higher coverage; lower-risk utility code can tolerate lower); (2) trend monitoring (coverage regression on a critical module is a stronger signal than an absolute number); (3) critical-path focus (an uncovered authentication or financial-calculation path matters more than 100 uncovered logging lines). Option A's 100%-everywhere creates incentive to write trivial tests that pad coverage without verifying behavior. Option C abandons the signal entirely. Option D's branch-only at 50% is arbitrary and ignores critical-path weighting.",
+      "wrong_explanations": {
+        "A": "100% line coverage creates the gameable-metric problem: developers write trivial tests that exercise lines without verifying behavior. The result is high coverage with low actual test quality.",
+        "C": "Ignoring coverage loses a useful (if imperfect) signal. The right answer is to USE coverage properly (risk-based, trend-focused), not to abandon it.",
+        "D": "Branch-only with a flat 50% threshold misses critical-path weighting. A 90%-covered utility module and a 30%-covered authentication module average to 60%, but the quality signal is very different."
+      },
+      "tips": [
+        "Trap is A — \"100% line coverage everywhere\" sounds rigorous but it's the gameable-metric anti-pattern; teams write trivial tests to pad coverage without testing behavior.",
+        "Code coverage = risk-based per-module + trend monitoring + critical-path focus. Coverage is a SIGNAL, not a quality guarantee.",
+        "Exam-day shortcut: any code-coverage question is answered by the option naming RISK-BASED + TREND; 100%-everywhere and ignore-entirely answers are both extremes."
+      ],
+      "framework_ref": "ISACA Code Coverage guidance; ISO/IEC 25010 (Software Product Quality Model); ISTQB Foundation Level Syllabus",
+      "related_concepts": [
+        "Code coverage",
+        "Line coverage",
+        "Branch coverage",
+        "Test quality"
+      ],
+      "_provenance": "Authored from concept: 'Risk-based code coverage per ISACA Code Coverage guidance and ISO/IEC 25010'. Public sources: ISACA, ISO/IEC 25010, ISTQB."
+    },
+    {
+      "id": "d3_082",
+      "domain": 3,
+      "subtopic": "Boundary-Value Analysis & Equivalence Partitioning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which test-design technique MOST efficiently catches off-by-one and edge-case defects?",
+      "options": {
+        "A": "Boundary-value analysis combined with equivalence partitioning, exercising values just inside and outside each partition.",
+        "B": "Random fuzzing of input values across the full possible range to maximize the chance of hitting defective behavior.",
+        "C": "Test only the median value of each parameter, since defects are equally likely anywhere in the input space.",
+        "D": "Test only the largest possible value of each parameter, since size-related defects dominate off-by-one failures."
+      },
+      "correct": "A",
+      "key_concept": "Boundary-value analysis (BVA) + equivalence partitioning = test just inside and outside each partition boundary. Most defects cluster at boundaries (off-by-one, fence-post errors); BVA catches them with minimal test count. Random fuzzing, median-only, or max-only are inefficient or incomplete.",
+      "pre_read": "For test-design questions about off-by-one and edge cases, anchor on \"boundary-value analysis + equivalence partitioning.\" The two techniques together minimize test count while maximizing edge-case coverage.",
+      "correct_explanation": "ISTQB Foundation Level Syllabus, ISACA Boundary-Value Testing guidance, and ISO/IEC 29119 establish boundary-value analysis combined with equivalence partitioning as the canonical efficient technique for edge-case defect detection. The method: (1) partition the input space into equivalence classes (values expected to behave the same way); (2) test ONE representative value from each partition (equivalence) AND values at the boundaries plus immediately inside and outside each boundary (BVA). Most defects cluster at boundaries (off-by-one, fence-post errors, comparison-operator mistakes). Option B's random fuzzing has lower defect-per-test efficiency. Option C's median-only misses boundary defects entirely. Option D's max-only misses the more common low-end boundaries.",
+      "wrong_explanations": {
+        "B": "Random fuzzing has its place (e.g., security/robustness testing) but it's lower-efficiency for finding edge-case defects than BVA + equivalence; the same number of tests catches fewer defects.",
+        "C": "Median-only ignores that defects DON'T cluster at the median — they cluster at boundaries. Testing the median is the least-informative single value.",
+        "D": "Max-only misses the more common low-end boundaries (off-by-one near zero, empty-input handling). Symmetric boundary testing catches both ends."
+      },
+      "tips": [
+        "Trap is B — \"random fuzzing across the full range\" sounds thorough but it has lower defect-per-test efficiency than targeted BVA + equivalence; fuzzing has security/robustness uses but isn't the right primary technique for edge cases.",
+        "Edge-case testing = BVA (just inside / just outside boundaries) + equivalence partitioning (one representative per class). Minimum tests, maximum boundary coverage.",
+        "Exam-day shortcut: any edge-case test-design question is answered by BVA + equivalence; random, median-only, and max-only answers all have efficiency or completeness gaps."
+      ],
+      "framework_ref": "ISTQB Foundation Level Syllabus; ISACA Boundary-Value Testing guidance; ISO/IEC 29119 (Software Testing)",
+      "related_concepts": [
+        "Boundary-value analysis",
+        "BVA",
+        "Equivalence partitioning",
+        "ISTQB"
+      ],
+      "_provenance": "Authored from concept: 'BVA + equivalence partitioning per ISTQB and ISO/IEC 29119'. Public sources: ISTQB, ISO/IEC 29119, ISACA."
+    },
+    {
+      "id": "d3_083",
+      "domain": 3,
+      "subtopic": "Behavior-Driven Development (BDD)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice MOST distinguishes behavior-driven development (BDD) from traditional test-first development?",
+      "options": {
+        "A": "BDD requires the development team to write all tests after the code is complete to focus testing on actual behavior.",
+        "B": "BDD eliminates unit testing entirely and relies exclusively on full end-to-end scenarios for verification of behavior.",
+        "C": "BDD uses business-readable scenarios (Given-When-Then) jointly authored by product, dev, and QA to align behavior expectations.",
+        "D": "BDD restricts test authoring to product managers; engineers may only review and execute, not author tests directly themselves."
+      },
+      "correct": "C",
+      "key_concept": "BDD = business-readable scenarios (Given-When-Then) + jointly authored by product/dev/QA + alignment artifact. It augments (not replaces) unit testing, is authored BEFORE code, and requires collaboration not role-restriction.",
+      "pre_read": "For BDD questions, anchor on \"business-readable + joint authoring + Given-When-Then.\" Distractors propose test-after, no-unit-tests, or product-manager-only authoring.",
+      "correct_explanation": "Behavior-Driven Development (Dan North) and Cucumber / Gherkin BDD framework establish BDD as a collaboration practice using business-readable scenarios in Given-When-Then format, jointly authored by product, development, and QA roles BEFORE code is written. The scenarios serve as living documentation and executable acceptance tests, aligning the three roles on what 'done' means for each user behavior. Option A's test-after inverts BDD (which is test-first / specification-first). Option B's no-unit-tests misreads BDD; unit tests remain valuable, and BDD scenarios operate at higher abstraction. Option D's product-manager-only restriction defeats the joint-authoring core of BDD.",
+      "wrong_explanations": {
+        "A": "Test-after development is the OPPOSITE of BDD. BDD writes scenarios FIRST (specification-first), then code follows; the scenarios serve as living acceptance criteria.",
+        "B": "BDD does NOT eliminate unit testing. BDD scenarios are higher-abstraction acceptance tests; unit tests remain valuable for the implementation details. The two are complementary.",
+        "D": "BDD requires JOINT authoring across product, development, and QA. Restricting to one role defeats the collaboration that gives BDD its alignment value."
+      },
+      "tips": [
+        "Trap is A or B — A (\"write tests after code\") inverts BDD's specification-first core; B (\"BDD eliminates unit testing\") misreads BDD as a replacement rather than a complement. Both reflect common misconceptions on different axes.",
+        "BDD = business-readable scenarios (Given-When-Then) + joint authoring + specification-first. Three properties; missing any breaks the model.",
+        "Exam-day shortcut: any BDD question is answered by the option naming GIVEN-WHEN-THEN with JOINT AUTHORING; test-after, no-unit-tests, or role-restricted answers misread BDD."
+      ],
+      "framework_ref": "Behavior-Driven Development (Dan North); Cucumber / Gherkin BDD framework; ISTQB Foundation Level Syllabus",
+      "related_concepts": [
+        "BDD",
+        "Given-When-Then",
+        "Cucumber",
+        "Specification by example"
+      ],
+      "_provenance": "Authored from concept: 'BDD practice per Dan North and Cucumber/Gherkin framework'. Public sources: BDD literature, Cucumber documentation."
+    },
+    {
+      "id": "d3_084",
+      "domain": 3,
+      "subtopic": "Application Data Lineage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST supports data-lineage tracking across an application's pipeline from source to consumption?",
+      "options": {
+        "A": "Manually maintain a wiki page describing how each data field flows through the application's processing stages over time.",
+        "B": "Run a quarterly survey across developers to ask each team where data flows in their systems and consolidate the responses.",
+        "C": "Restrict each developer's access to only their own service so lineage need not be tracked centrally across services for audit.",
+        "D": "Instrument applications to emit lineage metadata (source, transformations, destination) into a centralized lineage repository."
+      },
+      "correct": "D",
+      "key_concept": "Application data lineage = instrumented emission of source + transformations + destination into centralized lineage repository. Wiki pages, quarterly surveys, and access-restriction-instead-of-lineage are all manual or substitute approaches that fail at scale.",
+      "pre_read": "For data-lineage questions, anchor on \"instrumented + centralized repository + automated.\" Wiki and survey approaches don't scale and become stale quickly.",
+      "correct_explanation": "DAMA-DMBOK 2nd Edition, OpenLineage (CNCF), and ISACA Data Integrity Controls guidance establish that application data-lineage tracking is most effective when applications emit lineage metadata at runtime — source dataset/table/field, transformations applied, destination — into a centralized lineage repository (e.g., OpenLineage, Marquez, DataHub, Apache Atlas). This produces automatic, current lineage rather than manual maintenance. Option A's wiki goes stale within weeks of any system change. Option B's quarterly survey is even staler and incomplete. Option C confuses access restriction (a different control) with lineage; lineage matters even when access is restricted because data composition and quality issues cross service boundaries.",
+      "wrong_explanations": {
+        "A": "Manually-maintained wiki pages go stale within weeks of any system change. Lineage is a high-cardinality, high-velocity concern that demands automated tracking.",
+        "B": "Quarterly surveys produce stale, incomplete results. Developers may not remember every flow; consolidation across teams is error-prone; the artifact is outdated by the time it's compiled.",
+        "C": "Access restriction is a DIFFERENT control. Data flows across services regardless of who can read them; lineage tracks the composition and transformation path, which matters even under tight access controls."
+      },
+      "tips": [
+        "Trap is A — \"wiki page describing data flows\" matches early-org reality but it goes stale immediately; modern data-lineage requires instrumented automation.",
+        "Application data lineage = INSTRUMENTED emission + CENTRALIZED repository + AUTOMATED. Manual approaches don't scale.",
+        "Exam-day shortcut: any data-lineage question is answered by the option naming INSTRUMENTATION + CENTRAL repository; manual maintenance, surveys, and access-substitution answers all fail."
+      ],
+      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); OpenLineage; ISACA Data Integrity Controls guidance",
+      "related_concepts": [
+        "Data lineage",
+        "OpenLineage",
+        "Data governance",
+        "DAMA"
+      ],
+      "_provenance": "Authored from concept: 'Application data lineage per DAMA-DMBOK and OpenLineage'. Public sources: DAMA, OpenLineage, ISACA."
+    },
+    {
+      "id": "d3_085",
+      "domain": 3,
+      "subtopic": "Service Mesh — mTLS, Observability, Traffic Policy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which capability BEST distinguishes a service mesh from traditional service-to-service communication?",
+      "options": {
+        "A": "Service meshes eliminate the need for API gateways by replacing all north-south traffic management with east-west traffic policy.",
+        "B": "Service meshes provide mTLS, observability, and traffic policy out-of-band via sidecar proxies without modifying application code.",
+        "C": "Service meshes are a deployment pattern where all microservices live in a single binary connected by in-process function calls.",
+        "D": "Service meshes are a database technology that synchronizes data across services using event sourcing rather than direct calls."
+      },
+      "correct": "B",
+      "key_concept": "Service mesh = mTLS + observability + traffic policy delivered via sidecar proxies, transparent to application code. Eliminating API gateways, monolithic deployment, or database synchronization all misread service mesh entirely.",
+      "pre_read": "For service-mesh questions, anchor on \"sidecar proxies + mTLS + observability + traffic policy + transparent to app code.\" The architecture is OUT-OF-BAND from application logic.",
+      "correct_explanation": "Istio Service Mesh, Linkerd Service Mesh, and CNCF Service Mesh Working Group all define a service mesh as an infrastructure layer that handles service-to-service communication through sidecar proxies (one per pod), providing three core capabilities: (1) mTLS (mutual TLS for service-to-service authentication and encryption); (2) observability (distributed tracing, metrics, access logs at the network level); (3) traffic policy (routing, retries, circuit breakers, canary splits) — all without modifying application code. Option A misreads the architecture; service meshes handle east-west (service-to-service) traffic but do not replace API gateways for north-south (external-to-system) traffic. Option C describes a monolith. Option D is a fabricated definition.",
+      "wrong_explanations": {
+        "A": "Service meshes do NOT replace API gateways. They handle east-west (internal service-to-service) traffic; API gateways handle north-south (external-to-system) traffic. The two coexist with different scopes.",
+        "C": "A single binary with in-process calls is a MONOLITH, not a service mesh. Service meshes specifically address distributed services that communicate over the network.",
+        "D": "Service meshes are NOT a database technology. They operate at the network layer (TCP/HTTP), not the data-storage layer."
+      },
+      "tips": [
+        "Trap is A — \"service mesh eliminates API gateways\" sounds plausible because both handle traffic, but they operate on different traffic axes (east-west vs north-south) and coexist.",
+        "Service mesh = SIDECAR PROXIES + mTLS + OBSERVABILITY + TRAFFIC POLICY, transparent to app code. Out-of-band infrastructure.",
+        "Exam-day shortcut: any service-mesh question is answered by the option naming SIDECAR PROXIES with mTLS + observability + traffic policy; gateway-replacement, monolith, and database answers all misread."
+      ],
+      "framework_ref": "Istio Service Mesh; Linkerd Service Mesh; CNCF Service Mesh Working Group; ISACA Microservices Audit guidance",
+      "related_concepts": [
+        "Service mesh",
+        "Istio",
+        "Linkerd",
+        "Sidecar proxy",
+        "mTLS"
+      ],
+      "_provenance": "Authored from concept: 'Service mesh capabilities per Istio, Linkerd, and CNCF Service Mesh WG'. Public sources: Istio, Linkerd, CNCF."
+    },
+    {
+      "id": "d3_086",
+      "domain": 3,
+      "subtopic": "Feature Flag Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST governs production feature flags over their lifecycle?",
+      "options": {
+        "A": "Treat flags as code: versioned definitions, named owners, retirement dates, and audit logging of changes to flag state.",
+        "B": "Allow any developer to toggle production flags freely from their workstation to maximize delivery speed and autonomy.",
+        "C": "Never use feature flags; they introduce branching complexity that always exceeds the value of progressive delivery they enable.",
+        "D": "Keep all flags forever once created; removing flags risks regressions and the operational complexity of cleanup outweighs benefits."
+      },
+      "correct": "A",
+      "key_concept": "Feature flag management = versioned definitions + named owners + retirement dates + audit logging. Free-toggle by any developer breaks change control; never-use loses progressive delivery; keep-forever creates flag debt that destroys application maintainability.",
+      "pre_read": "For feature-flag questions, anchor on \"flags as code: versioned + owned + retired + audited.\" Free-toggle, never-use, and keep-forever each fail on a different dimension.",
+      "correct_explanation": "OpenFeature (CNCF), LaunchDarkly Feature Management, and ISACA Feature Flag Governance guidance all establish that production feature flags are powerful but require lifecycle governance: (1) versioned definitions (flag config in source control); (2) named owners (someone responsible for each flag); (3) retirement dates (flags are not permanent — once a feature is fully rolled out, the flag is removed); (4) audit logging (every flag state change is logged with actor, time, and reason). Option B's free-toggle breaks change control and creates production incidents from accidental toggles. Option C's never-use forgoes a valuable progressive-delivery and incident-response tool. Option D's keep-forever produces 'flag debt' — accumulating dead flags that complicate testing and create surprise interactions.",
+      "wrong_explanations": {
+        "B": "Free-toggle by any developer breaks change control. Production flag toggles affect users immediately; they require the same governance as other production changes (review, audit log, named accountability).",
+        "C": "Never-using flags forgoes a valuable tool. Feature flags enable progressive rollout, A/B testing, kill switches for incident response, and gradual migration; the cost is governance, not avoidance.",
+        "D": "Keeping flags forever produces 'flag debt': dead flags accumulate, complicate testing matrices, and create surprise interactions. Lifecycle includes retirement."
+      },
+      "tips": [
+        "Trap is B or D — opposite-direction failures of the same lifecycle principle. B (\"free-toggle by any developer\") breaks change control; D (\"keep flags forever\") creates flag debt. Both ignore that flags need governance throughout lifecycle.",
+        "Feature flag management = flags AS CODE: versioned + owned + retired + audited. Four properties; missing any creates risk or debt.",
+        "Exam-day shortcut: any feature-flag question is answered by the option naming FULL LIFECYCLE GOVERNANCE; free-toggle, never-use, and keep-forever answers are extremes."
+      ],
+      "framework_ref": "OpenFeature (CNCF); LaunchDarkly Feature Management; ISACA Feature Flag Governance guidance",
+      "related_concepts": [
+        "Feature flags",
+        "OpenFeature",
+        "Progressive delivery",
+        "Flag debt"
+      ],
+      "_provenance": "Authored from concept: 'Feature flag lifecycle management per OpenFeature and LaunchDarkly'. Public sources: CNCF OpenFeature, LaunchDarkly documentation."
+    },
+    {
+      "id": "d3_087",
+      "domain": 3,
+      "subtopic": "Canary Deployment Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic BEST defines a canary deployment strategy?",
+      "options": {
+        "A": "Deploy the new release to 100% of production traffic at once and roll back immediately if any error rate is observed.",
+        "B": "Deploy the new release to a copy of production in a parallel cloud region for one week of observation before live cutover.",
+        "C": "Route a small percentage of production traffic to the new release, monitor key metrics, then progressively shift if signals are healthy.",
+        "D": "Deploy the new release only to internal employees for a one-month staff-only acceptance window before any external rollout."
+      },
+      "correct": "C",
+      "key_concept": "Canary deployment = small traffic percentage → monitor → progressive shift if healthy. It limits blast radius and allows real-traffic validation. Big-bang, parallel-region-shadow, and employee-only are different strategies (or wrong descriptions).",
+      "pre_read": "For canary-deployment questions, anchor on \"small percentage + monitor + progressive shift.\" The strategy reduces blast radius by exposing only a fraction to new code initially.",
+      "correct_explanation": "Continuous Delivery (Humble & Farley), DORA / Accelerate (DevOps Research and Assessment), and ISACA Canary Deployment guidance define canary deployment as routing a small initial percentage (e.g., 1-5%) of production traffic to the new release, monitoring key metrics (error rate, latency, business KPIs), and progressively shifting traffic (5% → 25% → 50% → 100%) only if signals remain healthy. Origin: 'canary in the coal mine' — a small group detects problems before they affect everyone. Option A is big-bang (the opposite of canary). Option B describes a shadow / parallel-region pattern, not canary. Option D describes a staff-only / dogfood release, which is internal acceptance testing rather than canary.",
+      "wrong_explanations": {
+        "A": "Deploying to 100% at once is BIG-BANG deployment, the opposite of canary. Canary deliberately limits exposure to detect problems before they affect everyone.",
+        "B": "Shadow deployment (deploy to parallel region without live traffic) is a different strategy. Canary uses LIVE production traffic to validate; shadow uses copied or replayed traffic.",
+        "D": "Staff-only release is internal acceptance testing (dogfooding). Canary uses real production traffic from real users, not employees."
+      },
+      "tips": [
+        "Trap is B — \"deploy to parallel region for observation\" sounds canary-like because it's pre-cutover but it's SHADOW deployment; canary specifically uses LIVE production traffic at small percentages.",
+        "Canary = SMALL PERCENTAGE of live traffic → MONITOR → PROGRESSIVE SHIFT. Three properties; defines the strategy.",
+        "Exam-day shortcut: any canary question is answered by the option naming GRADUAL TRAFFIC SHIFT with HEALTH MONITORING; big-bang, shadow, and staff-only answers describe other strategies."
+      ],
+      "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); ISACA Canary Deployment guidance",
+      "related_concepts": [
+        "Canary deployment",
+        "Progressive delivery",
+        "Blast radius",
+        "DORA"
+      ],
+      "_provenance": "Authored from concept: 'Canary deployment strategy per Continuous Delivery and DORA research'. Public sources: Humble & Farley, DORA."
+    },
+    {
+      "id": "d3_088",
+      "domain": 3,
+      "subtopic": "Chaos Engineering Practice",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice BEST defines chaos engineering as an audit-relevant discipline?",
+      "options": {
+        "A": "Allow random production failures without warning to test team responsiveness and personal accountability under real pressure.",
+        "B": "Avoid all deliberate failure injection because production reliability requires zero unplanned disruption at all times.",
+        "C": "Restrict chaos experiments to non-production environments only, since production exposure is never acceptable.",
+        "D": "Run controlled experiments injecting failures with hypothesis + blast-radius limits + automatic rollback + learning capture."
+      },
+      "correct": "D",
+      "key_concept": "Chaos engineering = controlled experiments: hypothesis + blast-radius limits + automatic rollback + learning capture. Random-failures-no-warning is not engineering; avoid-all-injection forgoes resilience discovery; non-prod-only loses the very value chaos provides.",
+      "pre_read": "For chaos-engineering questions, anchor on \"controlled experiments with hypothesis + blast-radius + rollback + learning.\" Distractors propose unscoped chaos, avoidance, or non-prod-only restriction.",
+      "correct_explanation": "Principles of Chaos Engineering, Netflix Chaos Monkey (origin), and ISACA Chaos Engineering guidance establish chaos engineering as a disciplined practice: (1) form a HYPOTHESIS about steady-state behavior; (2) inject failure (instance termination, latency, dependency degradation) with EXPLICIT BLAST-RADIUS LIMITS so the experiment doesn't escalate; (3) AUTOMATIC ROLLBACK if metrics breach thresholds; (4) LEARNING CAPTURE — what surprised the team, what gaps were exposed. Done in production specifically because non-prod environments don't reveal production-only failure modes (covered in d3_079). Option A is unscoped chaos, not chaos engineering. Option B forgoes resilience discovery. Option C restricts to non-prod, losing most of the value.",
+      "wrong_explanations": {
+        "A": "Random failures without warning is unscoped chaos, not chaos engineering. The discipline requires hypothesis, blast-radius limits, rollback, and learning capture; without these it's just sabotage.",
+        "B": "Avoiding all deliberate failure injection forgoes resilience discovery. Production failure modes are best learned through controlled experiments before they happen unplanned.",
+        "C": "Non-production environments don't reveal production-only failure modes (network conditions, scale interactions, real traffic patterns). Restricting chaos to non-prod loses most of the value."
+      },
+      "tips": [
+        "Trap is C — \"restrict chaos to non-prod only\" feels safer but it loses the value because non-prod can't replicate production-only failure modes; controlled production chaos is the discipline.",
+        "Chaos engineering = HYPOTHESIS + BLAST-RADIUS LIMITS + AUTOMATIC ROLLBACK + LEARNING CAPTURE. Four properties; missing any is sabotage, not engineering.",
+        "Exam-day shortcut: any chaos-engineering question is answered by the option naming CONTROLLED experiments with explicit safeguards; random or non-prod-only answers misread."
+      ],
+      "framework_ref": "Principles of Chaos Engineering; Netflix Chaos Monkey; ISACA Chaos Engineering guidance",
+      "related_concepts": [
+        "Chaos engineering",
+        "Chaos Monkey",
+        "Resilience",
+        "Failure injection"
+      ],
+      "_provenance": "Authored from concept: 'Chaos engineering as disciplined practice per Principles of Chaos Engineering and Netflix Chaos Monkey'. Public sources: PoCE, Netflix."
+    },
+    {
+      "id": "d3_089",
+      "domain": 3,
+      "subtopic": "Observability Triad — Logs, Metrics, Traces",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST defines the observability triad for modern distributed systems?",
+      "options": {
+        "A": "Source code, executable binaries, and runtime configuration files for the production environment under audit.",
+        "B": "Logs (event records), metrics (aggregated measurements), and traces (request paths across services) with correlated context.",
+        "C": "Backups, disaster-recovery plans, and incident postmortems documented in the central knowledge management system.",
+        "D": "Test results, code coverage reports, and static-analysis findings produced during the most recent build cycle."
+      },
+      "correct": "B",
+      "key_concept": "Observability triad = LOGS (event records) + METRICS (aggregated measurements) + TRACES (request paths across services). The three pillars together enable diagnosis of distributed system behavior; correlated context across all three is the modern standard.",
+      "pre_read": "For observability questions, anchor on the triad: logs + metrics + traces. Each pillar answers different questions. Distractors substitute artifacts (code, backups, test results) for the runtime signals.",
+      "correct_explanation": "OpenTelemetry (CNCF), Google SRE Workbook (Service Level Objectives), CNCF Observability TAG, and ISACA Observability Audit guidance establish three complementary observability pillars: LOGS (discrete event records, high-cardinality, useful for forensics and specific event analysis); METRICS (aggregated measurements over time, low-cardinality, useful for dashboards and alerts); TRACES (request paths across services, useful for distributed-system diagnosis). The three are complementary, not interchangeable, and modern practice emphasizes CORRELATED CONTEXT (trace IDs in logs, exemplars in metrics) so engineers can pivot from one to another during diagnosis. Option A describes static artifacts. Option C describes BCP/DR / KM artifacts. Option D describes build-cycle outputs.",
+      "wrong_explanations": {
+        "A": "Source code, binaries, and config are STATIC artifacts. Observability is about RUNTIME signals from running systems; the artifacts don't directly answer questions about live behavior.",
+        "C": "Backups, DR plans, and postmortems are BCP/DR / KM artifacts. Useful but not the observability triad; observability is about understanding live system behavior, not preserving or post-analyzing it.",
+        "D": "Test results, coverage, and SAST are BUILD-CYCLE outputs. They inform pre-deployment confidence but don't observe runtime behavior in production."
+      },
+      "tips": [
+        "Trap is D — \"test results + coverage + static analysis\" sounds quality-related and may pattern-match in candidates who haven't worked with production observability; observability is RUNTIME, not build-time.",
+        "Observability triad = LOGS + METRICS + TRACES with CORRELATED CONTEXT. Three pillars; each answers a different question about runtime behavior.",
+        "Exam-day shortcut: any observability question is answered by the option naming LOGS + METRICS + TRACES; static, build-time, or BCP-related answers describe different concerns."
+      ],
+      "framework_ref": "OpenTelemetry (CNCF); Google SRE Workbook (Service Level Objectives); CNCF Observability TAG; ISACA Observability Audit guidance",
+      "related_concepts": [
+        "Observability triad",
+        "Logs",
+        "Metrics",
+        "Traces",
+        "OpenTelemetry"
+      ],
+      "_provenance": "Authored from concept: 'Observability triad per OpenTelemetry, Google SRE Workbook, CNCF Observability TAG'. Public sources: CNCF, Google SRE."
+    },
+    {
+      "id": "d3_090",
+      "domain": 3,
+      "subtopic": "Application Secrets Rotation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST manages rotation of application secrets (API keys, database credentials) over time?",
+      "options": {
+        "A": "Automate rotation via vault-issued short-lived credentials so applications fetch fresh secrets on schedule without manual intervention.",
+        "B": "Rotate secrets manually every two years and only when staff turnover requires immediate revocation of any specific named credential.",
+        "C": "Never rotate secrets because rotation introduces deployment risk and outage potential outweighing the marginal security gain.",
+        "D": "Rotate secrets only after a confirmed breach incident; preemptive rotation creates unnecessary operational overhead each time."
+      },
+      "correct": "A",
+      "key_concept": "Secrets rotation = automated + short-lived credentials issued by vault. Manual every-two-years is too slow; never-rotate accumulates exposure; rotate-only-after-breach is reactive (the breach already happened). Automation makes rotation cheap.",
+      "pre_read": "For secrets-rotation questions, anchor on \"automated + short-lived + vault-issued.\" Manual, never, and reactive approaches each fail on different dimensions.",
+      "correct_explanation": "HashiCorp Vault, NIST SP 800-57 (Recommendation for Key Management), and ISACA Secrets Management guidance establish automated short-lived-credential rotation as the appropriate control: the vault issues credentials with TTLs measured in minutes to hours; applications fetch fresh credentials on schedule; old credentials expire automatically. This makes rotation continuous and cheap. Option B's manual every-two-years is far too slow given typical compromise windows. Option C's never-rotate accumulates exposure; compromised credentials remain valid indefinitely. Option D's rotate-only-after-breach is reactive — the breach has already happened, so rotation at that point limits damage but doesn't prevent it.",
+      "wrong_explanations": {
+        "B": "Manual every-two-years is far too slow. Credential compromise windows are typically much shorter (days to months), and manual rotation has high friction that discourages frequency.",
+        "C": "Never-rotate accumulates exposure indefinitely. Any compromised credential remains valid; the supposed deployment risk of rotation is solved by automation (option A).",
+        "D": "Rotate-only-after-breach is reactive. The breach already happened; rotation at that point limits damage but doesn't prevent it. Proactive rotation is the discipline."
+      },
+      "tips": [
+        "Trap is C — \"never rotate, deployment risk outweighs security gain\" matches an older operational view but it's solved by AUTOMATION; the right answer makes rotation cheap, not avoided.",
+        "Secrets rotation = AUTOMATED + SHORT-LIVED + VAULT-ISSUED. Three properties; automation makes rotation continuous and low-risk.",
+        "Exam-day shortcut: any secrets-rotation question is answered by the option naming AUTOMATION with SHORT-LIVED credentials; manual, never, and reactive answers all fail."
+      ],
+      "framework_ref": "HashiCorp Vault; NIST SP 800-57 (Recommendation for Key Management); ISACA Secrets Management guidance",
+      "related_concepts": [
+        "Secrets rotation",
+        "Short-lived credentials",
+        "Vault",
+        "TTL"
+      ],
+      "_provenance": "Authored from concept: 'Application secrets rotation per HashiCorp Vault and NIST SP 800-57'. Public sources: HashiCorp, NIST."
+    },
+    {
+      "id": "d3_091",
+      "domain": 3,
+      "subtopic": "Tokenization vs Masking vs Encryption",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST distinguishes tokenization, masking, and encryption for application data protection?",
+      "options": {
+        "A": "Tokenization is one-way irreversible; encryption is one-way irreversible; masking is reversible with a key on demand.",
+        "B": "Tokenization, masking, and encryption are interchangeable terms differing only in which vendor implements the control technique.",
+        "C": "Tokenization substitutes a non-sensitive surrogate (reversible via vault); masking obscures for display (often irreversible); encryption is reversible with a key.",
+        "D": "Tokenization is the strongest because it requires more keys; encryption is the weakest because keys can be stolen."
+      },
+      "correct": "C",
+      "key_concept": "Tokenization = surrogate value, reversible via vault (preserves format). Masking = obscured for display, often irreversible (XXX-XX-1234). Encryption = ciphertext, reversible with key. Three distinct techniques with different use cases (PCI tokenization, display obscuring, at-rest/in-transit confidentiality).",
+      "pre_read": "For tokenization-vs-masking-vs-encryption questions, anchor on the canonical distinctions. Each protects differently and serves different use cases; conflating them produces compliance and design errors.",
+      "correct_explanation": "PCI DSS v4.0 (Tokenization Guidance), NIST SP 800-188 (De-Identification of Personal Information), ISACA Tokenization guidance, and ISACA Encryption Key Management guidance distinguish three distinct techniques: TOKENIZATION substitutes a non-sensitive surrogate token for the sensitive value; the original is stored in a vault and reversible only via the vault (commonly used in PCI to reduce scope, often preserves format). MASKING obscures the sensitive value for display (XXX-XX-1234) and is OFTEN irreversible (one-way transformation for non-production data, screen display). ENCRYPTION transforms plaintext to ciphertext using a key; reversible with the key. Option A wrongly classifies tokenization and encryption as irreversible. Option B treats them as interchangeable. Option D ranks them as 'stronger' / 'weaker' which misreads the techniques.",
+      "wrong_explanations": {
+        "A": "Tokenization IS reversible (via the vault). Encryption IS reversible (with the key). The two techniques differ in how they reverse (vault lookup vs cryptographic operation), not in whether they reverse.",
+        "B": "The three techniques are NOT interchangeable. They protect differently and serve different use cases. Treating them as the same produces compliance failures (e.g., PCI tokenization scope claims that don't hold).",
+        "D": "The techniques don't rank as stronger/weaker. They have different use cases: tokenization for PCI-scope reduction; masking for display/test; encryption for at-rest/in-transit confidentiality. The 'best' technique depends on the use case."
+      },
+      "tips": [
+        "Trap is A or D — A swaps the reversibility classifications (tokenization and encryption ARE both reversible, not one-way); D ranks the techniques as stronger/weaker when they actually serve different use cases. Both reflect half-remembered technical detail.",
+        "Tokenization = surrogate via vault. Masking = display obscuring, often one-way. Encryption = ciphertext with key. Three distinct techniques, three distinct use cases.",
+        "Exam-day shortcut: any tokenization-vs-X question is answered by the option that correctly distinguishes the three; interchangeable, irreversible, or ranked-by-strength answers all misread."
+      ],
+      "framework_ref": "PCI DSS v4.0 (Tokenization Guidance); NIST SP 800-188 (De-Identification of Personal Information); ISACA Tokenization guidance; ISACA Encryption Key Management guidance",
+      "related_concepts": [
+        "Tokenization",
+        "Masking",
+        "Encryption",
+        "PCI DSS",
+        "De-identification"
+      ],
+      "_provenance": "Authored from concept: 'Tokenization vs masking vs encryption per PCI DSS v4.0 and NIST SP 800-188'. Public sources: PCI Council, NIST."
+    },
+    {
+      "id": "d3_092",
+      "domain": 3,
+      "subtopic": "Service Catalog Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST defines effective service catalog governance for application/service offerings?",
+      "options": {
+        "A": "Allow each team to publish services into the catalog at will without review; team-level ownership ensures accuracy of entries.",
+        "B": "Restrict the catalog to executive-approved offerings only, requiring a quarterly board review for each new entry submitted.",
+        "C": "Eliminate the service catalog because modern self-service portals make centralized catalogs operationally obsolete and redundant.",
+        "D": "Define service standards (description, owner, SLA, deprecation policy) and review entries on creation and at lifecycle milestones."
+      },
+      "correct": "D",
+      "key_concept": "Service catalog governance = standards (description + owner + SLA + deprecation policy) + lifecycle review (on creation + at milestones). Free-publish loses standardization; executive-only-quarterly is too slow; eliminate-catalog loses discoverability.",
+      "pre_read": "For service-catalog governance questions, anchor on \"standards + lifecycle review.\" Distractors propose extremes (free-publish, board-only) or denial of the catalog's value.",
+      "correct_explanation": "ITIL 4 Service Catalog Management, ISACA IT Service Management guidance, and ISACA Service Catalog Governance guidance establish two foundational elements: (1) SERVICE STANDARDS — every entry has a description, named owner, SLA/SLO commitments, and deprecation policy; (2) LIFECYCLE REVIEW — entries reviewed at creation and at milestones (annual, on ownership change, on usage drop). Option A's free-publish produces a catalog that's incomplete and unstandardized; users can't compare offerings. Option B's executive-only-quarterly creates a bottleneck that pushes teams to bypass the catalog entirely. Option C's eliminate-catalog forgoes discoverability and inventory; self-service portals USE catalogs, not replace them.",
+      "wrong_explanations": {
+        "A": "Free-publish without review produces an unstandardized catalog. Users can't compare offerings; stale entries accumulate; the catalog loses trustworthiness.",
+        "B": "Executive-only-quarterly review creates a bottleneck. Teams will bypass the catalog and publish services in shadow ways; the bureaucracy defeats the discoverability purpose.",
+        "C": "Self-service portals USE catalogs to surface offerings; they don't replace them. Eliminating the catalog removes the underlying inventory of what's available."
+      },
+      "tips": [
+        "Trap is A — \"team-level ownership ensures accuracy\" matches engineering autonomy culture but it produces inconsistent, unstandardized entries; the catalog needs governance to remain useful.",
+        "Service catalog = STANDARDS (description + owner + SLA + deprecation) + LIFECYCLE REVIEW. Two foundational elements; missing either degrades the catalog.",
+        "Exam-day shortcut: any service-catalog question is answered by the option naming STANDARDS + LIFECYCLE REVIEW; free-publish, executive-only, and eliminate answers all fail."
+      ],
+      "framework_ref": "ITIL 4 (Change Enablement); ISACA Service Catalog Governance guidance; ISACA IT Service Management guidance",
+      "related_concepts": [
+        "Service catalog",
+        "ITIL 4",
+        "Service standards",
+        "Lifecycle review"
+      ],
+      "_provenance": "Authored from concept: 'Service catalog governance per ITIL 4 and ISACA Service Catalog Governance guidance'. Public sources: ITIL 4, ISACA."
+    },
+    {
+      "id": "d3_093",
+      "domain": 3,
+      "subtopic": "Failed POC-to-Production Translation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the POC-to-production translation gap identified in the engagement?",
+      "scenario_context": "A 4,000-employee logistics firm ran a six-week machine-learning POC to optimize delivery routing. The POC achieved 18% delivery-time reduction in a controlled test using six months of historical data. The CIO has authorized direct promotion of the POC code to production targeting Q4. Engineering raised concerns: (a) the POC has no error handling for live-streaming data; (b) the POC uses a single in-memory dataset (real production has 47 dispatch centers feeding 220K daily routes); (c) no monitoring or rollback exists; (d) the POC's data scientist is the sole maintainer. The audit committee asked the IS auditor to assess production readiness before authorization.",
+      "options": {
+        "A": "Authorize the promotion immediately to capture the 18% improvement; production hardening can be retrofitted after deployment.",
+        "B": "Run a structured productionization program: error handling, scaling, monitoring, rollback, team ownership, and staged rollout BEFORE production release.",
+        "C": "Cancel the project entirely; POCs that lack production-ready scaffolding indicate poor engineering culture and cannot be salvaged.",
+        "D": "Outsource the entire productionization effort to a third-party AI consulting firm because the in-house team lacks the relevant expertise."
+      },
+      "correct": "B",
+      "key_concept": "POC-to-production translation gap = structured productionization: error handling + scaling + monitoring + rollback + team ownership + staged rollout BEFORE release. POC code is not production code; promoting directly skips the engineering. Cancel and outsource both overreact.",
+      "pre_read": "For POC-to-production questions, anchor on \"POC code is not production code — production requires structured productionization.\" Single-position answers (promote-immediately, cancel-entirely, outsource-everything) all fail.",
+      "correct_explanation": "ISACA Software Audit guidance, NIST AI Risk Management Framework (AI RMF 1.0), and ISACA Project Audit guidance establish that POC code typically lacks the properties required for production operation: error handling (POCs handle the happy path; production sees edge cases continuously); scaling (POCs use small in-memory datasets; production handles much larger volumes); monitoring (POCs are often unmonitored); rollback (POCs have no rollback path); team ownership (POCs are often single-person artifacts). Structured productionization addresses each gap before deployment. Option A authorizes promotion of unready code, deferring engineering to 'later' which often becomes 'never.' Option C overreacts; the 18% improvement is real value worth preserving. Option D outsources the work without addressing the underlying ownership question.",
+      "wrong_explanations": {
+        "A": "Authorizing immediate promotion to capture the 18% improvement assumes the POC code will deliver the same improvement in production. Without error handling, scaling, monitoring, and rollback, the production deployment is likely to fail in ways the POC didn't.",
+        "C": "Cancel-entirely overreacts to a real but addressable productionization gap. The 18% improvement is meaningful value; the right answer is to productionize properly, not abandon the work.",
+        "D": "Outsourcing productionization transfers the work but doesn't address ownership. The model still needs in-house team responsibility for ongoing operation, drift monitoring (covered in d3_038), and value capture."
+      },
+      "tips": [
+        "Trap is A — \"capture the 18% improvement immediately\" matches the CIO's preference and pattern-matches \"don't let perfect be the enemy of good\" but POC code is structurally not production code; deferred productionization typically becomes never-productionized.",
+        "POC-to-production = STRUCTURED PRODUCTIONIZATION: error handling + scaling + monitoring + rollback + team ownership + staged rollout. Six elements; ALL needed before deployment.",
+        "Exam-day shortcut: any POC-to-production question is answered by the option naming STRUCTURED PRODUCTIONIZATION; promote-immediately and cancel-entirely answers are extremes."
+      ],
+      "framework_ref": "ISACA Software Audit guidance; NIST AI Risk Management Framework (AI RMF 1.0); ISACA Project Audit guidance",
+      "related_concepts": [
+        "POC",
+        "Productionization",
+        "MLOps",
+        "Production readiness"
+      ],
+      "_provenance": "Authored from concept: 'POC-to-production translation gap per ISACA Software Audit guidance and NIST AI RMF'. Public sources: ISACA, NIST AI RMF. Scenario specifics (logistics firm, 4K employees, 6-week POC, 18% improvement, 47 dispatch centers, 220K daily routes, sole-maintainer, no production-readiness) invented for this question."
+    },
+    {
+      "id": "d3_094",
+      "domain": 3,
+      "subtopic": "Open-Source Maintainer Compromise — Supply-Chain Backdoor",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST addresses the disclosed open-source supply-chain compromise affecting the firm?",
+      "scenario_context": "A 2,300-engineer enterprise SaaS firm uses an open-source library (call it 'libcore') in 14 of its production services. Public CVE was disclosed: a malicious commit by a co-maintainer over the past 9 months introduced a backdoor that activates under specific conditions. The CVE was disclosed yesterday; the malicious co-maintainer's commits are now identified. The library has been removed from public package repositories. The firm's CISO has called an emergency security incident; the IS auditor has been pulled in for governance perspective. Affected services include billing, authentication, and a customer-data export path. The maintainer compromise is unprecedented for the firm.",
+      "options": {
+        "A": "Activate incident-response: scope affected services, deploy emergency patches/removals, hunt for backdoor activation indicators, restore code integrity, post-incident review.",
+        "B": "Wait for the broader open-source community to develop a patch before taking any action; coordinated response is more effective than isolated firm response.",
+        "C": "Re-evaluate ALL open-source dependencies and replace every external library with internally-built code to eliminate future supply-chain risk entirely.",
+        "D": "Continue normal operations while monitoring CVE feeds; the backdoor's activation conditions may not affect the firm's specific use cases of the library."
+      },
+      "correct": "A",
+      "key_concept": "OSS maintainer compromise response = activate incident response: scope + emergency patch/removal + hunt for activation indicators + integrity restoration + post-incident review. Wait-for-community is passive; replace-all-OSS overreacts massively; continue-and-monitor accepts active backdoor risk.",
+      "pre_read": "For OSS supply-chain compromise questions, anchor on \"incident response: scope + remediate + hunt + restore + review.\" Wait-and-replace-all are extremes; continue-and-monitor accepts known active risk.",
+      "correct_explanation": "NIST SP 800-61 (Computer Security Incident Handling Guide), ISACA Supply-Chain Compromise Response guidance, xz-utils CVE-2024-3094 (Supply-Chain Backdoor) precedent, and SLSA framework establish a structured incident response for OSS supply-chain compromise: (1) SCOPE — which services use the library, in what versions, with what configurations; (2) EMERGENCY PATCH or REMOVAL — apply available patches or remove the dependency; (3) HUNT for indicators of backdoor activation in production telemetry; (4) RESTORE code integrity (verify the firm's binaries don't carry the backdoor); (5) POST-INCIDENT REVIEW. Option B's wait-for-community accepts active backdoor risk in production. Option C's replace-all-OSS is massive overreaction; not all OSS is compromised. Option D's continue-and-monitor accepts that a known backdoor may be in production unattended.",
+      "wrong_explanations": {
+        "B": "Wait-for-community accepts known active backdoor risk in production. The firm has its own exposure to address; community patches are valuable but the firm cannot defer its incident response to external timing.",
+        "C": "Replace-all-OSS is a massive overreaction. The firm has thousands of OSS dependencies; replacing all with internal code is operationally impossible and abandons OSS's value. The right answer is governance (covered in d3_039, d3_070) and incident response, not avoidance.",
+        "D": "Continue-and-monitor accepts that a known active backdoor may be in production unaddressed. 'May not affect the firm's specific use cases' is speculation; incident response demands verification, not hope."
+      },
+      "tips": [
+        "Trap is B or D — both are forms of \"wait.\" B (\"wait for coordinated community patch\") accepts active backdoor risk pending external timing; D (\"continue and monitor on speculation\") accepts active risk on hope. Incident response demands verification and action, not waiting.",
+        "OSS supply-chain compromise response = SCOPE + EMERGENCY PATCH/REMOVAL + HUNT + RESTORE + REVIEW. Five-step incident response; all five matter.",
+        "Exam-day shortcut: any OSS supply-chain compromise question is answered by the option naming STRUCTURED INCIDENT RESPONSE; wait-for-community, replace-all, and continue-and-monitor answers each fail differently."
+      ],
+      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Supply-Chain Compromise Response guidance; xz-utils CVE-2024-3094 (Supply-Chain Backdoor); SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "related_concepts": [
+        "Supply-chain compromise",
+        "OSS maintainer",
+        "xz-utils",
+        "Incident response"
+      ],
+      "_provenance": "Authored from concept: 'OSS maintainer compromise response per NIST SP 800-61, ISACA Supply-Chain Compromise Response, xz-utils precedent'. Public sources: NIST, ISACA, xz CVE. Scenario specifics (SaaS firm, 2.3K engineers, 14 services using libcore, 9-month malicious commit history, billing/auth/customer-data exposure) invented for this question."
+    },
+    {
+      "id": "d3_095",
+      "domain": 3,
+      "subtopic": "Multi-Tenant Data Segregation Incident",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response BEST addresses the multi-tenant data segregation failure described?",
+      "scenario_context": "A B2B SaaS provider (1,400 enterprise customers, 23M end users across tenants) discovered that a recent code change exposed customer A's data to customer B for a 7-hour window in an analytics dashboard. Customer A's record count: 380K rows. The exposure was customer B's analytics-team users seeing customer A's aggregated metrics (not raw PII). The bug was rolled back at hour 7. Investigation is ongoing. The CISO, CPO, and legal counsel are convening. The audit committee asked the IS auditor to advise on governance principles for the response. Affected jurisdictions span US, EU (GDPR), and APAC. Tenant agreements include indemnification clauses.",
+      "options": {
+        "A": "Restore to the pre-bug state, conclude the bug was isolated to dashboard rendering, and continue normal operations without further customer or regulator action.",
+        "B": "Treat the entire customer base as compromised, immediately suspend all customer access to the analytics module for an indeterminate window, and rebuild from scratch.",
+        "C": "Activate breach response: scope analysis, regulator notification analysis (GDPR Article 33 / 72-hour clock), customer notification, root-cause, and remediation including tenant-isolation hardening.",
+        "D": "Delegate the entire response to the legal team; technical governance is not relevant once a multi-tenant exposure has occurred and counsel takes over."
+      },
+      "correct": "C",
+      "key_concept": "Multi-tenant segregation incident response = breach response: scope + regulator notification (GDPR 72-hour clock) + customer notification + root-cause + remediation (tenant-isolation hardening). Conclude-and-continue ignores notification obligations; suspend-everything overreacts; delegate-to-legal abandons technical governance.",
+      "pre_read": "For multi-tenant segregation incident questions, anchor on \"breach response: scope + notification (regulator + customer) + root-cause + remediation.\" The GDPR 72-hour clock and tenant-contract obligations require structured response.",
+      "correct_explanation": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority — 72-hour clock), ISACA Multi-Tenant Segregation guidance, ISACA Privacy Notification guidance, and CCPA Breach Notification Requirements establish that multi-tenant data exposure between customers requires structured breach response: (1) SCOPE — what data, which customers, what duration; (2) REGULATOR NOTIFICATION analysis (GDPR 72-hour clock starts from awareness; even aggregated metrics may trigger depending on PII content); (3) CUSTOMER NOTIFICATION per tenant agreements and applicable laws; (4) ROOT-CAUSE — how did the change defeat tenant isolation; (5) REMEDIATION including tenant-isolation hardening (architectural controls, not just bug fix). Option A's conclude-and-continue ignores notification obligations and substantive regulator exposure. Option B's suspend-everything overreacts and breaches SLA commitments to unaffected tenants. Option D's delegate-to-legal abandons the technical-governance dimension.",
+      "wrong_explanations": {
+        "A": "Conclude-and-continue ignores GDPR Article 33's 72-hour notification clock and tenant-contract notification obligations. Even aggregated metrics may carry regulator notification triggers depending on PII content.",
+        "B": "Suspend-everything overreacts and creates customer-experience failures for the 1,399 unaffected customers. Targeted remediation (root-cause + tenant-isolation hardening) is more proportional.",
+        "D": "Delegate-to-legal abandons technical governance. Legal handles notification and counsel, but technical remediation (root-cause + isolation hardening) is IS audit and engineering scope; the two function in parallel, not legal-only."
+      },
+      "tips": [
+        "Trap is A — \"bug was isolated, conclude and continue\" matches the engineering instinct to fix-and-move-on but it ignores regulatory and contractual notification obligations; the breach occurred regardless of bug-isolation.",
+        "Multi-tenant incident = STRUCTURED BREACH RESPONSE: scope + regulator notification (72-hour clock) + customer notification + root-cause + remediation. Five-step response; all five matter.",
+        "Exam-day shortcut: any multi-tenant exposure question is answered by the option naming STRUCTURED BREACH RESPONSE with REGULATOR + CUSTOMER notification; conclude-and-continue and delegate answers each fail differently."
+      ],
+      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); ISACA Multi-Tenant Segregation guidance; ISACA Privacy Notification guidance; CCPA Breach Notification Requirements",
+      "related_concepts": [
+        "Multi-tenant segregation",
+        "Data breach",
+        "GDPR Article 33",
+        "Customer notification"
+      ],
+      "_provenance": "Authored from concept: 'Multi-tenant data segregation incident response per GDPR Article 33 and ISACA Multi-Tenant Segregation guidance'. Public sources: GDPR, ISACA, CCPA. Scenario specifics (B2B SaaS, 1.4K customers, 23M end users, 7-hour exposure window, 380K rows exposed, US/EU/APAC jurisdictions) invented for this question."
+    },
+    {
+      "id": "d3_096",
+      "domain": 3,
+      "subtopic": "Privacy Regulator Notification Timing",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the notification-timing decision the firm faces?",
+      "scenario_context": "A multinational consumer-services firm (EU + US + UK operations, 18M EU subjects, 12M US subjects) discovered at 14:00 Tuesday that an internal audit script accidentally exfiltrated customer PII to an internal staging environment for analysis. The data was promptly contained at 14:45. Initial investigation suggests no external exposure occurred. Awareness of the incident is documented at 14:00. GDPR Article 33's 72-hour notification clock to EU supervisory authority would expire Friday at 14:00. The CPO suggests waiting until investigation completes (estimated 1-2 weeks) before notifying; the DPO argues the clock has already started; legal counsel is divided. The IS auditor was asked to advise on notification timing.",
+      "options": {
+        "A": "Delay notification until investigation is complete (1-2 weeks); regulators prefer accurate complete information over rushed notifications.",
+        "B": "Skip notification entirely; the data was contained within the firm's environment and no external exposure occurred, so notification is unnecessary.",
+        "C": "Notify only US state attorneys general; GDPR Article 33 does not apply to internal exfiltration where no external party received the data.",
+        "D": "Notify the EU supervisory authority within 72 hours of awareness (by Friday 14:00) with available facts; supplement as investigation develops."
+      },
+      "correct": "D",
+      "key_concept": "GDPR Article 33 notification = 72 hours from AWARENESS, with available facts at the time. Article 33(4) explicitly allows supplemental notification as facts emerge. Delaying for complete investigation MISSES the clock; skipping notification ignores the article's scope (internal exposure can still be a breach); US-only-notification ignores EU jurisdiction.",
+      "pre_read": "For GDPR Article 33 notification-timing questions, anchor on \"72 hours from AWARENESS, with available facts.\" Article 33(4) explicitly allows supplemental information; the clock doesn't wait for complete investigation.",
+      "correct_explanation": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority) establishes that controllers must notify the supervisory authority of a personal data breach 'without undue delay and, where feasible, not later than 72 hours after having become aware of it.' Article 33(4) explicitly permits supplementing the initial notification as more information becomes available: 'Where, and in so far as, it is not possible to provide the information at the same time, the information may be provided in phases without undue further delay.' ISACA Privacy Notification guidance and EDPB Guidelines 06/2022 reinforce this. The 72-hour clock started at 14:00 Tuesday (awareness); it expires 14:00 Friday. The CPO's delay-until-investigation-complete approach would miss the deadline. Note that Article 33(1) does provide a risk-based exemption ('unless the personal data breach is unlikely to result in a risk to the rights and freedoms of natural persons') — but invoking that exemption requires a documented risk assessment, not a default skip. Option B's skip-entirely misreads Article 33's scope (a breach can occur with internal-only exposure; the proper path is a documented risk assessment, not deferral). Option C ignores EU jurisdiction for 18M EU subjects.",
+      "wrong_explanations": {
+        "A": "Delaying until investigation completes (1-2 weeks) misses the 72-hour clock. Article 33(4) explicitly anticipates incomplete information and allows supplemental notification; the clock doesn't wait for complete facts.",
+        "B": "Skip-notification as a default misreads Article 33's scope. Personal data breach under GDPR includes accidental disclosure, alteration, or loss — internal-only exposure may qualify if the internal access broadens data accessibility beyond authorized purposes. The proper path is a documented Article 33(1) risk-based assessment, not deferral; if that assessment concludes risk is present, notify within 72 hours.",
+        "C": "US-only-notification ignores EU jurisdiction. With 18M EU subjects affected, the firm has GDPR notification obligations to the relevant supervisory authority/authorities regardless of any US notification."
+      },
+      "tips": [
+        "Trap is A — \"delay until investigation complete for accurate notification\" sounds responsible but it misses the 72-hour clock; Article 33(4) explicitly anticipates incomplete information and allows supplementing.",
+        "GDPR Article 33 = 72 hours from AWARENESS, with available facts, supplemented as investigation develops. Memorize: awareness starts the clock, not investigation completion.",
+        "Exam-day shortcut: any GDPR notification-timing question is answered by the option naming 72-hour from AWARENESS with SUPPLEMENTAL FOLLOW-UP; delay-until-complete and skip-notification answers misread the article."
+      ],
+      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); ISACA Privacy Notification guidance; EDPB Guidelines 06/2022; CCPA Breach Notification Requirements",
+      "related_concepts": [
+        "GDPR Article 33",
+        "72-hour notification",
+        "Data breach",
+        "EDPB Guidelines"
+      ],
+      "_provenance": "Authored from concept: 'GDPR Article 33 72-hour notification with supplemental follow-up per Article 33(4) and EDPB Guidelines'. Public sources: GDPR, EDPB. Scenario specifics (multinational consumer-services, 18M EU + 12M US subjects, internal audit script exfiltration, 14:00 Tuesday awareness, Friday 14:00 deadline) invented for this question."
+    },
+    {
+      "id": "d3_097",
+      "domain": 3,
+      "subtopic": "Cross-Functional Shared Service Contention",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which governance recommendation BEST addresses the cross-functional contention for the shared platform?",
+      "scenario_context": "A 14,000-employee financial services firm has a shared internal authentication platform used by 31 product teams. Six month review shows the platform team has 3 engineers and a backlog of 240 feature requests from product teams. Three product teams (each ~$50M annual line of business) report that the authentication backlog is blocking their roadmaps. Two have proposed building their own authentication systems to bypass the bottleneck. The CISO is concerned about fragmentation. The platform-team manager has requested staffing increase. The CFO has not approved. The IS auditor was asked to recommend governance principles for the shared-platform dispute.",
+      "options": {
+        "A": "Allow each product team to build its own authentication; team autonomy and unblocking roadmaps outweighs the cost of fragmentation across the firm.",
+        "B": "Establish shared-platform governance: capacity-aligned funding, prioritization across teams, SLA commitments, and architectural standards preventing fragmentation.",
+        "C": "Disband the platform team entirely; embed authentication engineers into each product team to eliminate cross-team queueing and dependencies for delivery.",
+        "D": "Continue current state; the CFO's funding decisions are out of audit scope and the platform team's backlog reflects appropriate prioritization implicitly."
+      },
+      "correct": "B",
+      "key_concept": "Shared-platform contention governance = capacity-aligned funding + cross-team prioritization + SLA commitments + architectural standards. Allow-fragmentation accepts technical debt and security risk; disband-platform-team scales staff but loses platform-team specialization; defer-to-CFO abandons governance.",
+      "pre_read": "For shared-platform contention questions, anchor on \"governance: funding + prioritization + SLA + architectural standards.\" Single-position answers (fragment, disband, defer) all fail.",
+      "correct_explanation": "ISACA Cross-Functional Dependency guidance, COBIT 2019 APO08 (Managed Relationships), and COBIT 2019 APO09 (Managed Service Agreements) establish four elements for shared-platform governance: (1) CAPACITY-ALIGNED FUNDING — platform team staffing reflects demand from consumer teams (CFO needs visibility into the link); (2) CROSS-TEAM PRIORITIZATION — a governance body decides priorities across product teams' competing requests; (3) SLA COMMITMENTS — the platform commits to delivery timelines that consumer teams can plan around; (4) ARCHITECTURAL STANDARDS — preventing the fragmentation pattern (each team building its own authentication) which destroys cross-firm consistency and security. Option A accepts fragmentation, which is exactly what shared platforms exist to prevent. Option C disbands the specialization while distributing staff. Option D abandons the governance question that's been escalated to audit.",
+      "wrong_explanations": {
+        "A": "Allowing fragmentation produces 31 different authentication systems — security inconsistency, identity sprawl, and operational complexity at 31x. The cost of fragmentation typically dwarfs the cost of better platform governance.",
+        "C": "Disbanding the platform team and embedding authentication engineers in each product team loses the specialization advantage and scales staff inefficiently. Shared platforms exist because consolidated expertise serves the firm better than 31 copies of similar work.",
+        "D": "Defer-to-CFO abandons governance. The audit committee has explicitly asked for a recommendation; the CFO's funding role is one input but the broader question (how should this be governed) is what's been asked."
+      },
+      "tips": [
+        "Trap is A — \"let each team build its own authentication to unblock roadmaps\" matches the autonomy bias and short-term unblocking instinct but it produces 31 different authentication systems, which is far more costly than better platform governance.",
+        "Shared-platform contention = CAPACITY-ALIGNED FUNDING + CROSS-TEAM PRIORITIZATION + SLA + ARCHITECTURAL STANDARDS. Four elements; fragmentation answers are very expensive long-term.",
+        "Exam-day shortcut: when the stem describes contention for a shared internal service, the right answer names FUNDING + PRIORITIZATION + SLA together; pure team-autonomy answers ignore funding, pure executive-prioritization answers ignore SLA. Look for the option that resolves the bottleneck without breaking the platform model."
+      ],
+      "framework_ref": "ISACA Cross-Functional Dependency guidance; COBIT 2019 APO08 (Managed Relationships); COBIT 2019 APO09 (Managed Service Agreements)",
+      "related_concepts": [
+        "Shared platform",
+        "Cross-functional dependency",
+        "Platform team",
+        "SLA"
+      ],
+      "_provenance": "Authored from concept: 'Shared-platform contention governance per ISACA Cross-Functional Dependency guidance and COBIT 2019 APO08/APO09'. Public sources: ISACA, COBIT 2019. Scenario specifics (financial services, 14K employees, 31 product teams, 3-engineer platform team, 240-request backlog, 3 blocked teams threatening fragmentation, $50M LOBs) invented for this question."
+    },
+    {
+      "id": "d3_098",
+      "domain": 3,
+      "subtopic": "Critical Internal Team Departure — Knowledge Transfer",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the knowledge-loss risk from the team's departure?",
+      "scenario_context": "An 8,400-employee biotech firm has a 4-person team that built and maintains a custom laboratory information management system (LIMS) over 11 years. The system processes 220,000 samples per month across 28 facilities and is integrated with 17 downstream systems. All 4 team members announced departures effective in 9 weeks (going to a competitor). The interim CIO has proposed: (a) hire replacement engineers immediately; (b) attempt counter-offers to retain at least one; (c) document everything via knowledge-transfer sessions. The audit committee asked the IS auditor to assess the knowledge-loss risk and recommend additional governance. Replacement engineers will take 6+ months to onboard.",
+      "options": {
+        "A": "Multi-track response: paid knowledge-transfer sessions, video-recorded walkthroughs, runbook authoring, paired hires, vendor-supported parallel platform, and decision logs of recent changes.",
+        "B": "Accept the departure with no special action; documentation already exists from prior years and replacement engineers will absorb the system organically over 6+ months.",
+        "C": "Threaten the departing team with breach-of-contract litigation to compel continued knowledge transfer; loyalty to the firm should override their resignation.",
+        "D": "Decommission the LIMS entirely in 9 weeks before the team departs; the firm should not operate a system whose maintainers are leaving for a competitor."
+      },
+      "correct": "A",
+      "key_concept": "Critical-team departure knowledge transfer = multi-track: paid sessions + recorded walkthroughs + runbook authoring + paired hires + vendor-supported parallel + decision logs. Accept-no-action ignores the timing risk; litigation overreach destroys cooperation; decommission overreacts.",
+      "pre_read": "For critical-team-departure questions, anchor on \"multi-track knowledge transfer: paid + recorded + paired + runbook + vendor-supported + decisions.\" Single-position answers (accept, litigate, decommission) all fail.",
+      "correct_explanation": "ISACA Knowledge-Transfer guidance, COBIT 2019 BAI08 (Managed Knowledge), and ISACA Legacy Modernization guidance establish multi-track knowledge transfer for critical-team departures: (1) PAID KNOWLEDGE-TRANSFER SESSIONS — contractually structured sessions during notice period; (2) VIDEO-RECORDED WALKTHROUGHS — capture context-sensitive knowledge that's hard to document; (3) RUNBOOK AUTHORING — operational procedures for the next team; (4) PAIRED HIRES (if possible) — overlap windows where departing and incoming engineers work together; (5) VENDOR-SUPPORTED PARALLEL — engage a vendor or consultancy to provide gap-filling support; (6) DECISION LOGS — capture WHY recent changes were made (the hardest knowledge to transfer). Option B's accept-no-action assumes existing documentation is sufficient (it usually isn't for an 11-year custom system). Option C's litigation is operationally destructive and likely unenforceable. Option D's decommission overreacts to a manageable knowledge-transfer problem.",
+      "wrong_explanations": {
+        "B": "Accept-no-action assumes existing documentation captures the 11 years of context. In practice, 'tribal knowledge' — the reasoning behind specific design choices, the workarounds for edge cases, the integration quirks — is the most valuable and least documented.",
+        "C": "Litigation threats to compel knowledge transfer destroy cooperation and likely fail on enforceability grounds. The departing team can deliver minimum-compliant knowledge transfer under duress; the firm needs substantive cooperation.",
+        "D": "Decommissioning a LIMS that processes 220K samples/month across 28 facilities in 9 weeks is operationally impossible. The knowledge transfer is the manageable problem; decommissioning is the unmanageable one."
+      },
+      "tips": [
+        "Trap is B — \"existing documentation will suffice\" matches optimistic-status-quo bias but 11-year custom systems carry massive tribal knowledge; documentation rarely captures it.",
+        "Critical-team departure = MULTI-TRACK KT: paid sessions + recorded walkthroughs + runbooks + paired hires + vendor support + decision logs. Six tracks; missing any creates risk.",
+        "Exam-day shortcut: any critical-team-departure question is answered by the option naming MULTI-TRACK knowledge transfer; accept, litigate, and decommission answers are all weak."
+      ],
+      "framework_ref": "ISACA Knowledge-Transfer guidance; COBIT 2019 BAI08 (Managed Knowledge); ISACA Legacy Modernization guidance",
+      "related_concepts": [
+        "Knowledge transfer",
+        "Tribal knowledge",
+        "Critical-team departure",
+        "Runbook"
+      ],
+      "_provenance": "Authored from concept: 'Critical-team departure knowledge transfer per ISACA Knowledge-Transfer guidance and COBIT 2019 BAI08'. Public sources: ISACA, COBIT 2019. Scenario specifics (biotech, 8.4K employees, 4-person LIMS team, 11-year custom system, 220K samples/month, 28 facilities, 17 integrations, 9-week notice, 6+ month replacement onboarding) invented for this question."
+    },
+    {
+      "id": "d3_099",
+      "domain": 3,
+      "subtopic": "Mid-Cutover Data Migration Conflict",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which position MOST appropriately reflects sound governance for the mid-cutover discovery?",
+      "scenario_context": "A multinational manufacturer is at hour 28 of a 48-hour ERP cutover. Migrating production data has revealed a previously-undetected data-quality issue: ~12,000 supplier records (out of 86,000) have inconsistent country codes (mix of ISO 2-character and free-text). The cutover playbook does not address this scenario. Two engineering positions: (a) pause cutover at hour 28 to clean up the supplier data; (b) proceed and clean up post-cutover. The CTO is unreachable; the SVP of supply chain wants supplier flows working Monday. The IS auditor was paged for a position before hour 32 (the playbook's last decision gate before final cutover at hour 48).",
+      "options": {
+        "A": "Proceed without pausing; supplier-data cleanup is a Monday-morning operational issue that should not block a 48-hour cutover that's nearly complete.",
+        "B": "Halt the cutover entirely and roll back to legacy system; any undetected data-quality issue at hour 28 indicates the cutover plan was inadequate fundamentally.",
+        "C": "Pause cutover at hour 28; assess scope and remediation cost; if remediation can complete within the cutover window, proceed; if not, invoke fallback per playbook.",
+        "D": "Defer the decision to the SVP of supply chain; the IS auditor's role does not extend to mid-cutover operational decisions in real time during emergency situations."
+      },
+      "correct": "C",
+      "key_concept": "Mid-cutover unknown-condition response = pause + assess scope + remediation cost analysis + proceed-if-within-window OR invoke-fallback. Proceed-without-pause accepts unknown blast radius; halt-entirely overreacts; defer-to-business abandons audit independence.",
+      "pre_read": "For mid-cutover unknown-condition questions, anchor on \"pause + assess + decide proceed-or-fallback based on scope and remediation cost.\" The decision rule depends on whether remediation fits the window.",
+      "correct_explanation": "ISACA Mid-Cutover Conflict guidance, ISACA Data Migration guidance, and COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning) establish a structured response for mid-cutover discovery of unknown conditions: (1) PAUSE cutover at the next decision gate; (2) ASSESS SCOPE — how many records, what fields, what downstream impact; (3) REMEDIATION COST ANALYSIS — how long to fix, what risk if proceeding without fix, what risk if pausing; (4) DECISION RULE: if remediation fits within the cutover window with acceptable risk, proceed with remediation; if not, invoke fallback per playbook (covered in d3_019). Option A accepts unknown blast radius (supplier flows may break or produce subtle errors). Option B overreacts; the issue may be remediable within the window. Option D abandons audit independence and the IS auditor's specific governance role at exactly the moment when an independent voice is most valuable.",
+      "wrong_explanations": {
+        "A": "Proceed-without-pause accepts unknown blast radius. 12,000 supplier records with inconsistent country codes may produce subtle billing errors, shipment-routing failures, or regulatory-reporting issues that surface days or weeks later. The cost of a brief pause is much lower than the cost of downstream incidents.",
+        "B": "Halt-entirely and roll-back overreacts to a manageable data-quality issue. The question is whether remediation fits the cutover window; fallback should be the choice IF remediation doesn't fit, not the default.",
+        "D": "Defer-to-SVP abandons audit independence. The audit role is precisely to ensure the cutover-governance process holds under pressure; deferring to the business side dispenses with that role at exactly the wrong moment."
+      },
+      "tips": [
+        "Trap is A — \"proceed, Monday-morning issue\" pattern-matches schedule preservation but accepts unknown blast radius; supplier data inconsistencies can produce subtle errors that surface much later as larger issues.",
+        "Mid-cutover unknown condition = PAUSE + ASSESS SCOPE + REMEDIATION COST + DECISION (proceed-with-fix or invoke-fallback). The decision rule depends on whether remediation fits the window.",
+        "Exam-day shortcut: any mid-cutover discovery question is answered by the option naming STRUCTURED PAUSE + DECISION RULE; proceed-anyway and halt-entirely answers are extremes."
+      ],
+      "framework_ref": "ISACA Mid-Cutover Conflict guidance; ISACA Data Migration guidance; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "related_concepts": [
+        "Mid-cutover",
+        "Data quality",
+        "Cutover decision gate",
+        "Fallback"
+      ],
+      "_provenance": "Authored from concept: 'Mid-cutover data quality discovery per ISACA Mid-Cutover Conflict guidance and ISACA Data Migration guidance'. Public sources: ISACA, COBIT 2019. Scenario specifics (multinational manufacturer, 48-hour ERP cutover, hour 28 discovery, 12K of 86K supplier records inconsistent country codes, CTO unreachable, SVP/audit positions) invented for this question."
+    },
+    {
+      "id": "d3_100",
+      "domain": 3,
+      "subtopic": "Product Launch Continue-vs-Scrap Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the continue-vs-scrap decision for the product launch?",
+      "scenario_context": "A 1,800-employee SaaS startup launched a major new product (CRM module) 4 months ago. Investment to date: $14M. Customer adoption: 23 paying customers (target was 150 by month 4). Technical issues persist (43 unresolved P1/P2 bugs). Engineering team estimates $8M and 8 months to address. Two acquirers have shown interest in the underlying technology. Three product alternatives are also competing for engineering capacity. The CEO is reluctant to admit failure publicly; the CFO wants the spend to stop. The board has asked the IS auditor to assess governance for the continue-vs-scrap decision before the next board meeting.",
+      "options": {
+        "A": "Endorse the CEO's continue position; admitting public failure damages the firm's reputation and undermines the team morale, outweighing financial considerations.",
+        "B": "Endorse the CFO's scrap position immediately; the customer-adoption gap (23 vs 150 target) and sunk-cost are clear signals that the product cannot succeed at any reasonable additional investment.",
+        "C": "Defer the decision until customer adoption reaches 50% of target; product traction is the only meaningful signal for any continue-vs-scrap product decision in SaaS.",
+        "D": "Apply a structured decision framework: forward-looking unit economics, opportunity cost of alternatives, acquirer interest valuation, sunk-cost exclusion, and bias surfacing."
+      },
+      "correct": "D",
+      "key_concept": "Continue-vs-scrap decision = forward-looking unit economics + opportunity cost of alternatives + acquirer interest valuation + sunk-cost exclusion + bias surfacing. CEO-continue and CFO-scrap are opposing biases; defer-to-traction is single-signal thinking. Multi-factor analysis with explicit bias awareness wins.",
+      "pre_read": "For continue-vs-scrap questions, anchor on \"forward-looking analysis excluding sunk costs, with explicit bias surfacing.\" CEO's reputation concerns and CFO's loss-aversion are real biases the framework must address.",
+      "correct_explanation": "ISACA Product Launch Decision guidance and ISACA IT Investment guidance establish a structured framework for product continue-vs-scrap decisions: (1) FORWARD-LOOKING UNIT ECONOMICS — what does the next dollar produce (acquisition cost, churn, LTV), excluding the $14M sunk; (2) OPPORTUNITY COST — what would the next $8M produce on the three alternative products; (3) ACQUIRER INTEREST VALUATION — what is the underlying tech worth to acquirers vs continued internal development; (4) SUNK-COST EXCLUSION — the $14M is gone regardless; only the forward $8M matters; (5) BIAS SURFACING — name the CEO's reputation bias and the CFO's loss aversion explicitly so the board decides on facts, not emotion. Option A endorses CEO bias. Option B endorses CFO bias. Option C is single-signal (adoption) when multiple signals matter.",
+      "wrong_explanations": {
+        "A": "Endorsing the CEO's continue position based on reputation concerns is endorsing a bias. Reputation is a real factor but should be evaluated against opportunity cost and forward economics, not given primacy.",
+        "B": "Endorsing CFO scrap based on customer-adoption gap and sunk-cost is partially right but commits the sunk-cost fallacy in reverse. The right answer excludes sunk costs and looks forward.",
+        "C": "Adoption is ONE signal, not the only signal. Forward unit economics, opportunity cost, acquirer interest, and team capability all matter. Single-signal decisions miss the multi-factor reality."
+      },
+      "tips": [
+        "Trap is A or B — opposing biases that both feel decisive but each commits a single-factor decision; the right answer applies a multi-factor framework with explicit bias surfacing.",
+        "Continue-vs-scrap = FORWARD UNIT ECONOMICS + OPPORTUNITY COST + ACQUIRER VALUE + SUNK-COST EXCLUSION + BIAS SURFACING. Five elements; missing any leaves the decision biased.",
+        "Exam-day shortcut: any continue-vs-scrap product question is answered by the option naming MULTI-FACTOR FORWARD-LOOKING framework; single-position endorsements (continue, scrap, single-signal) are all biases."
+      ],
+      "framework_ref": "ISACA Product Launch Decision guidance; ISACA IT Investment guidance; ISACA Val IT Framework",
+      "related_concepts": [
+        "Product decision",
+        "Sunk cost",
+        "Opportunity cost",
+        "Forward economics"
+      ],
+      "_provenance": "Authored from concept: 'Continue-vs-scrap product decision per ISACA Product Launch Decision guidance and ISACA IT Investment guidance'. Public sources: ISACA. Scenario specifics (SaaS startup, 1.8K employees, $14M sunk, 23 vs 150 adoption gap, 43 P1/P2 bugs, $8M + 8 months to fix, 2 acquirer interest, 3 alternative products, CEO/CFO positions) invented for this question."
     }
   ]
 }

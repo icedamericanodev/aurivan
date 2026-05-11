@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d3.json`.
 
-**Last updated:** after D3 batch 4 (d3_061..d3_080) — 80 of 120 questions authored (67%). Foundational tier CLOSED at 12/12; Application tier at 48/60 (80%); Analysis tier at 20/48 (42%).
+**Last updated:** after D3 batch 5 (d3_081..d3_100) — 100 of 120 questions authored (83%). **Foundational tier CLOSED at 12/12. Application tier CLOSED at 60/60.** Analysis tier at 28/48 (58%).
 
 ## Part A — Project Governance and Management
 
@@ -123,11 +123,11 @@
 | Tier | Authored | Target |
 |---|---|---|
 | Foundational | **12** | **12** ✓ CLOSED |
-| Application | 48 | 60 |
-| Analysis | 20 | 48 |
-| **Total** | **80** | **120** |
+| Application | **60** | **60** ✓ CLOSED |
+| Analysis | 28 | 48 |
+| **Total** | **100** | **120** |
 
-**D3 status:** in_progress; batches 1-4 (d3_001..d3_080) authored. **Foundational tier closed.** 40/120 questions remaining across 2 batches (D3-5 mix 0F+12A+8An; D3-6 closing batch 0F+6A+14An).
+**D3 status:** in_progress; batches 1-5 (d3_001..d3_100) authored. **Foundational AND Application tiers closed.** 20/120 questions remaining — D3-6 closing batch is 0F + 0A + 20An (all analysis) to land exactly at 120/120.
 
 ## Batch 4 additions (d3_061..d3_080) — TOC entries beyond the original outline
 
