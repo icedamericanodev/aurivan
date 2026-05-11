@@ -690,11 +690,11 @@ domain_4:
     analysis:     104
 
   status: in_progress
-  authored_total: 60
+  authored_total: 80
   authored_mix:
-    foundational: 12
-    application:  36
-    analysis:     12
+    foundational: 14
+    application:  48
+    analysis:     18
 
   covered:
     # Batch 1 (d4_001..d4_020) — 4F + 12A + 4An; broad TOC launch
@@ -762,6 +762,28 @@ domain_4:
     - { id: d4_058, subtopic: "Database Performance vs Availability Tradeoff",       toc_ref: "4.11.3" }
     - { id: d4_059, subtopic: "Legacy SLA vs Enterprise Architecture Mismatch",      toc_ref: "4.10.3" }
     - { id: d4_060, subtopic: "Network Device End-of-Support Decision",              toc_ref: "4.1.3" }
+
+    # Batch 4 (d4_061..d4_080) — 2F + 12A + 6An (Part B Business Resilience)
+    - { id: d4_061, subtopic: "Backup Schemes — Full/Incremental/Differential",      toc_ref: "4.14.3" }
+    - { id: d4_062, subtopic: "RTO/RPO/MTTR Definitions",                            toc_ref: "4.16.1" }
+    - { id: d4_063, subtopic: "3-2-1 Backup Strategy",                               toc_ref: "4.14.3" }
+    - { id: d4_064, subtopic: "Backup Rotation — GFS",                               toc_ref: "4.14.3" }
+    - { id: d4_065, subtopic: "Offsite Backup Library Controls",                     toc_ref: "4.14.2" }
+    - { id: d4_066, subtopic: "Cloud Backup Governance",                             toc_ref: "4.14.2" }
+    - { id: d4_067, subtopic: "Application Resiliency Design",                       toc_ref: "4.13.1" }
+    - { id: d4_068, subtopic: "Network Resiliency Design",                           toc_ref: "4.13.2" }
+    - { id: d4_069, subtopic: "Data Storage Resiliency",                             toc_ref: "4.14.1" }
+    - { id: d4_070, subtopic: "BIA Criticality Classification",                      toc_ref: "4.12.1" }
+    - { id: d4_071, subtopic: "BCP Process — Lifecycle",                             toc_ref: "4.15.3" }
+    - { id: d4_072, subtopic: "BCP Policy — Required Components",                    toc_ref: "4.15.4" }
+    - { id: d4_073, subtopic: "BCP Incident Management — Activation",                toc_ref: "4.15.5" }
+    - { id: d4_074, subtopic: "Recovery Strategies — Hot/Warm/Cold Sites",           toc_ref: "4.16.2" }
+    - { id: d4_075, subtopic: "Backup Test Integrity Failure (Analysis)",            toc_ref: "4.14.2" }
+    - { id: d4_076, subtopic: "Cloud vs On-Prem Backup Decision (Analysis)",         toc_ref: "4.14.2" }
+    - { id: d4_077, subtopic: "Cross-Region Failover Decision (Analysis)",           toc_ref: "4.13.2" }
+    - { id: d4_078, subtopic: "BIA 3-Stakeholder Conflict (Analysis)",               toc_ref: "4.12.1" }
+    - { id: d4_079, subtopic: "Pandemic Continuity Governance (Analysis)",           toc_ref: "4.15.2" }
+    - { id: d4_080, subtopic: "DDoS Active Response (Analysis)",                     toc_ref: "4.13.1" }
 
   queued_next: []
 

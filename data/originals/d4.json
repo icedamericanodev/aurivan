@@ -2185,6 +2185,731 @@
         "Cloud strategy alignment"
       ],
       "_provenance": "Authored from concept: 'Network device EOS decision per ISACA Network Device EOS Decision guidance'. Public sources: ISACA. Scenario specifics (regional bank, 24 enterprise devices, 11-month EOS, three options, CISO/CTO positions) invented for this question."
+    },
+    {
+      "id": "d4_061",
+      "domain": 4,
+      "subtopic": "Backup Schemes — Full, Incremental, Differential",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST distinguishes full, incremental, and differential backup types?",
+      "options": {
+        "A": "Full backs up all selected data; incremental backs up changes since the last incremental; differential backs up changes since the last differential.",
+        "B": "Full backs up all selected data; incremental backs up changes since the last backup of any type; differential backs up changes since the last full backup.",
+        "C": "Full and differential are synonyms for complete data copies; incremental refers only to log files that record changes between full backups.",
+        "D": "Full, incremental, and differential are vendor-specific terms with no consistent definitions; each backup product uses them differently in practice."
+      },
+      "correct": "B",
+      "key_concept": "Full = all selected data. Incremental = changes since LAST BACKUP (any type). Differential = changes since LAST FULL. Restoration cost: differential needs only last full + last differential; incremental needs last full + every incremental since.",
+      "pre_read": "For backup-type definition questions, anchor on the reference point: incremental = since LAST BACKUP; differential = since LAST FULL. Restoration cost differs accordingly.",
+      "correct_explanation": "ISACA Backup and Recovery Audit Program and standard backup theory establish that FULL backs up all selected data each time it runs; INCREMENTAL backs up changes since the LAST BACKUP (whether that was a full or another incremental), so restoration requires the last full plus every incremental since; DIFFERENTIAL backs up changes since the LAST FULL backup, so restoration requires only the last full plus the most recent differential. Option A inverts the reference points (says incremental is since last incremental, differential is since last differential — wrong). Option C confuses full/differential and misdefines incremental as log-only. Option D claims the definitions are vendor-specific, which is incorrect — they are standardized across the industry even if some products extend them.",
+      "wrong_explanations": {
+        "A": "The reference points are reversed. Incremental is since the LAST BACKUP (of any type); differential is since the LAST FULL. This option swaps the two.",
+        "C": "Full and differential are NOT synonyms — full backs up all selected data while differential backs up changes since last full. Incremental is not log-only; it backs up all changed files (binary data, not just logs).",
+        "D": "The definitions are industry-standard. Vendor products may add features (synthetic full, forever-incremental) but the base definitions of full / incremental / differential are consistent."
+      },
+      "tips": [
+        "Trap is A — \"incremental since last incremental\" is the most common confusion; remember incremental = LAST BACKUP (any type), differential = LAST FULL.",
+        "Full = all data. Incremental = since LAST BACKUP. Differential = since LAST FULL. Restoration: differential is faster (full + 1); incremental is slower (full + N).",
+        "Exam-day shortcut: any backup-type question is answered by the option naming the correct REFERENCE POINTS (incremental → last backup; differential → last full)."
+      ],
+      "framework_ref": "ISACA Backup and Recovery Audit Program; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "Full backup",
+        "Incremental backup",
+        "Differential backup",
+        "Backup chain"
+      ],
+      "_provenance": "Authored from concept: 'Backup type definitions per industry-standard backup theory and ISACA Backup and Recovery Audit Program'. Public sources: ISACA, industry standards."
+    },
+    {
+      "id": "d4_062",
+      "domain": 4,
+      "subtopic": "RTO / RPO / MTTR — Definitions",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option CORRECTLY defines Recovery Time Objective (RTO), Recovery Point Objective (RPO), and Mean Time to Repair (MTTR)?",
+      "options": {
+        "A": "RTO = max tolerable downtime; RPO = max tolerable data loss; MTTR = average time to repair the failure that caused the outage.",
+        "B": "RTO = max tolerable data loss; RPO = max tolerable downtime; MTTR = average uptime between failures across the production environment.",
+        "C": "RTO, RPO, and MTTR are interchangeable terms for the same concept; the choice between them depends on the audience and the regulatory framework.",
+        "D": "RTO = average time between failures; RPO = the number of recovery sites the firm operates; MTTR = the cost in dollars to recover from any outage event."
+      },
+      "correct": "A",
+      "key_concept": "RTO = max tolerable DOWNTIME (how long can the service be unavailable). RPO = max tolerable DATA LOSS (how recent must the data restore-point be). MTTR = MEAN TIME TO REPAIR the failure. Three distinct properties; all three matter for resilience planning.",
+      "pre_read": "For RTO/RPO/MTTR questions, anchor on three distinct meanings: RTO = downtime tolerance; RPO = data-loss tolerance; MTTR = repair time. Memorize each and don't conflate.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management) and NIST SP 800-34 (Contingency Planning Guide) define three distinct metrics: RECOVERY TIME OBJECTIVE (RTO) — the maximum tolerable duration of service unavailability from incident start to restored service (downtime tolerance); RECOVERY POINT OBJECTIVE (RPO) — the maximum tolerable data loss measured as time between the last consistent backup and the failure point (data-loss tolerance); MEAN TIME TO REPAIR (MTTR) — the average time required to repair a failure once detected, measured across many incidents. RTO and RPO are PLANNING TARGETS set during the BIA process; MTTR is an OPERATIONAL MEASURE of actual repair performance. Option B swaps RTO and RPO. Option C calls them interchangeable, which is fundamentally wrong. Option D fabricates definitions.",
+      "wrong_explanations": {
+        "B": "RTO and RPO are reversed. RTO is about DOWNTIME (time-to-restore); RPO is about DATA LOSS (recovery-point in the past).",
+        "C": "RTO, RPO, and MTTR measure three different things (downtime, data loss, repair time). Conflating them defeats resilience planning — each drives different investment decisions.",
+        "D": "Average time between failures is MTBF (Mean Time Between Failures), not RTO. The number of recovery sites is an architecture choice, not RPO. Recovery cost is a metric but not MTTR."
+      },
+      "tips": [
+        "Trap is B — RTO/RPO swap is the most common confusion; RTO = TIME (downtime), RPO = POINT (data loss recovery point in time).",
+        "RTO = downtime tolerance. RPO = data-loss tolerance. MTTR = mean time to repair. Three distinct metrics; planning targets vs operational measure.",
+        "Exam-day shortcut: any RTO/RPO/MTTR question is answered by the option that correctly distinguishes downtime / data loss / repair time."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA BIA guidance",
+      "related_concepts": [
+        "RTO",
+        "RPO",
+        "MTTR",
+        "MTBF",
+        "BCM metrics"
+      ],
+      "_provenance": "Authored from concept: 'RTO/RPO/MTTR definitions per ISO 22301 and NIST SP 800-34'. Public sources: ISO, NIST."
+    },
+    {
+      "id": "d4_063",
+      "domain": 4,
+      "subtopic": "3-2-1 Backup Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which statement BEST describes the 3-2-1 backup strategy?",
+      "options": {
+        "A": "Maintain 3 production servers, 2 hot-standby servers, and 1 cold-standby server across geographically distributed data centers globally.",
+        "B": "Keep 3 separate access-control systems, 2 review cycles annually, and 1 quarterly tabletop test of incident response procedures regularly.",
+        "C": "Keep 3 copies of data, on 2 different media types, with 1 copy stored offsite (often extended as 3-2-1-1-0 adding offline + zero errors).",
+        "D": "Run 3 simultaneous backups, retain them for 2 weeks, and review the restore test results once per quarter as part of audit cycle."
+      },
+      "correct": "C",
+      "key_concept": "3-2-1 strategy = 3 copies of data + 2 different media types + 1 offsite. Modern extension 3-2-1-1-0 adds 1 offline (immutable/air-gapped) + 0 errors after verification. Distractors substitute server topology, control system count, or retention scheme for the actual data-copy strategy.",
+      "pre_read": "For 3-2-1 strategy questions, anchor on the data-copy meaning: 3 COPIES + 2 MEDIA TYPES + 1 OFFSITE. Modern extension adds OFFLINE/IMMUTABLE for ransomware resilience.",
+      "correct_explanation": "ISACA Backup and Recovery Audit Program and US-CERT recovery guidance establish 3-2-1 as the foundational backup-copy strategy: (3) keep at least 3 copies of data including the production original; (2) store backups on at least 2 different media types (e.g., disk + tape, or disk + cloud) to mitigate media-specific failure modes; (1) keep at least 1 copy offsite (separate from the production location to survive local disasters). The modern extension 3-2-1-1-0 adds (1 offline) — an immutable or air-gapped copy resistant to ransomware that encrypts online backups — and (0 errors) — verified restorability with no integrity errors. Option A describes server topology (compute redundancy), not data-copy strategy. Option B describes control framework cadence. Option D describes a retention and review pattern, not the 3-2-1 copy structure.",
+      "wrong_explanations": {
+        "A": "Server topology (3 production + 2 hot + 1 cold) addresses compute redundancy, not data-copy strategy. The 3-2-1 numbers refer to DATA COPIES, not server instances.",
+        "B": "Access control systems, review cycles, and incident tabletops are governance practices but not the 3-2-1 backup strategy. The 3-2-1 numbers refer specifically to BACKUP COPIES, MEDIA TYPES, and OFFSITE STORAGE.",
+        "D": "Simultaneous backups, retention duration, and review frequency are operational parameters of a backup program but not the 3-2-1 strategy itself."
+      },
+      "tips": [
+        "Trap is A — \"3 servers + 2 hot-standby + 1 cold-standby\" sounds like a resilience pattern but it's compute redundancy, not backup; the 3-2-1 numbers refer to DATA COPIES.",
+        "3-2-1 = 3 COPIES + 2 MEDIA TYPES + 1 OFFSITE. Modern 3-2-1-1-0 extension adds offline + zero errors.",
+        "Exam-day shortcut: any 3-2-1 question is answered by the option naming COPIES + MEDIA TYPES + OFFSITE; server-topology, access-control, or retention answers each describe different concepts."
+      ],
+      "framework_ref": "ISACA Backup and Recovery Audit Program; US-CERT recovery guidance; NIST SP 800-34 (Contingency Planning Guide)",
+      "related_concepts": [
+        "3-2-1 backup",
+        "3-2-1-1-0",
+        "Offline backup",
+        "Immutable backup"
+      ],
+      "_provenance": "Authored from concept: 'The 3-2-1 backup strategy and its 3-2-1-1-0 extension per ISACA Backup and Recovery Audit Program and US-CERT guidance'. Public sources: ISACA, US-CERT."
+    },
+    {
+      "id": "d4_064",
+      "domain": 4,
+      "subtopic": "Backup Rotation Methods — GFS and Alternatives",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which backup rotation method BEST balances long-term retention with media-set economy?",
+      "options": {
+        "A": "Single tape per week reused indefinitely; same physical media used for every backup to minimize tape purchase costs entirely.",
+        "B": "Round-robin daily rotation across 7 tapes (one per day of week) with no monthly or yearly retention beyond the 7-day cycle limit.",
+        "C": "Random rotation across available media with no scheduled pattern; whatever media is available at backup time gets used without policy guidance.",
+        "D": "Grandfather-Father-Son (GFS) — daily/weekly/monthly tiers with separate media sets each rotated on its own schedule for layered retention."
+      },
+      "correct": "D",
+      "key_concept": "GFS rotation = Grandfather (monthly) + Father (weekly) + Son (daily) tiers with separate media sets. Provides daily granularity, weekly mid-term recovery, monthly long-term retention. Single-tape, 7-tape-only, and random-rotation each fail on retention or recoverability.",
+      "pre_read": "For backup rotation questions, anchor on \"tiered retention with separate media sets per tier.\" GFS is the canonical pattern; alternatives include Tower of Hanoi and FIFO.",
+      "correct_explanation": "ISACA Backup and Recovery Audit Program establishes Grandfather-Father-Son (GFS) as the canonical rotation method for balancing retention with media economy: (1) SON tier — daily backups, typically rotated across 7 tapes (one per weekday or one per day-of-week); (2) FATHER tier — end-of-week backups retained for ~4 weeks (typically 4 tapes); (3) GRANDFATHER tier — end-of-month backups retained for the policy retention period (typically 12 monthly + 7 yearly tapes for 7-year retention). Total media count is modest (~30 tapes for full 7-year retention) compared to the alternative of separate media per backup. Option A's single-tape-reused has zero historical retention. Option B's 7-tape-only has 7-day retention maximum. Option C's random-rotation produces inconsistent recovery points.",
+      "wrong_explanations": {
+        "A": "Single tape reused indefinitely retains only the most recent backup; recovery to any earlier point is impossible. This violates the principle that backup retention should match data-recovery requirements.",
+        "B": "Round-robin across 7 daily tapes limits retention to 7 days. Many regulatory and business requirements require longer retention (monthly statements, yearly tax records, multi-year compliance evidence).",
+        "C": "Random rotation produces unpredictable recovery points. If the team needs to recover to last Tuesday's state, the system can't guarantee that media exists. Predictable, tiered rotation is essential."
+      },
+      "tips": [
+        "Trap is B — \"7 tapes daily\" sounds disciplined and is better than single-tape but limits retention to 7 days; layered retention via GFS is the canonical answer.",
+        "GFS rotation = Grandfather (monthly) + Father (weekly) + Son (daily). Three tiers + separate media sets + policy-driven retention.",
+        "Exam-day shortcut: any backup-rotation question is answered by the option naming TIERED RETENTION with separate media per tier; single-tape, single-cycle, and random answers each fail on retention or predictability."
+      ],
+      "framework_ref": "ISACA Backup and Recovery Audit Program; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "GFS backup rotation",
+        "Grandfather-Father-Son",
+        "Tower of Hanoi",
+        "Backup retention"
+      ],
+      "_provenance": "Authored from concept: 'Backup rotation methods per ISACA Backup and Recovery Audit Program'. Public sources: ISACA, industry standards."
+    },
+    {
+      "id": "d4_065",
+      "domain": 4,
+      "subtopic": "Offsite Backup Library — Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST governs an offsite backup library or vault?",
+      "options": {
+        "A": "Store backups in any nearby commercial storage facility; specialized data-protection facilities are unnecessary overhead for backup tapes.",
+        "B": "Inventory tracking + secure transport + access controls + environmental controls (climate, fire) + periodic media-rotation verification.",
+        "C": "Send tapes to the employee homes of senior IT staff; distributed storage protects against single-point failures at any one corporate facility.",
+        "D": "Keep one offsite copy at a contracted facility and never verify its existence; the contract itself provides sufficient assurance of backup readiness."
+      },
+      "correct": "B",
+      "key_concept": "Offsite library controls = inventory tracking + secure transport + access controls + environmental controls (climate, fire) + periodic media-rotation verification. Nearby-storage and employee-homes are unsuitable; contract-only assurance lacks verification.",
+      "pre_read": "For offsite-library questions, anchor on \"inventory + secure transport + access + environmental controls + verification.\" Distractors substitute inappropriate locations or contract-only patterns.",
+      "correct_explanation": "ISACA Backup and Recovery Audit Program establishes five-element offsite-library governance: (1) INVENTORY TRACKING (every tape's location and rotation status tracked at the media level); (2) SECURE TRANSPORT (chain of custody from production site to offsite vault; tamper-evident containers); (3) ACCESS CONTROLS (only authorized personnel access the offsite vault; access logged); (4) ENVIRONMENTAL CONTROLS (climate-controlled storage prevents tape degradation; fire suppression appropriate to media); (5) PERIODIC MEDIA-ROTATION VERIFICATION (auditor or BCP team verifies media is actually at the offsite location and matches inventory records). Option A's nearby commercial storage may lack environmental controls and is too close (regional disasters affect both production and storage). Option C's employee homes lack access controls, environmental protection, and chain-of-custody. Option D's contract-only assurance fails when actually needed (no verification = trust without evidence).",
+      "wrong_explanations": {
+        "A": "Nearby commercial storage may be too close (regional disasters affect both primary and storage), may lack environmental controls (temperature/humidity affect tape life), and lacks specialized backup-vault security.",
+        "C": "Employee-home storage fails on access controls (no badge logs, no audit trail), environmental protection (residential climate isn't tape-safe long-term), and chain-of-custody (no documented handoff). It also creates insider-risk and employee-departure-risk.",
+        "D": "Contract-only assurance with no verification means the firm trusts but doesn't verify. Periodic checks (annual at minimum) confirm media is actually present and condition is acceptable."
+      },
+      "tips": [
+        "Trap is A — \"nearby commercial storage\" sounds practical but it's typically too close (regional disaster affects both sites) and lacks specialized environmental controls.",
+        "Offsite library = INVENTORY + SECURE TRANSPORT + ACCESS CONTROLS + ENVIRONMENTAL CONTROLS + PERIODIC VERIFICATION. Five elements; contract-only fails on verification.",
+        "Exam-day shortcut: any offsite-library question is answered by the option naming MULTI-ELEMENT controls with periodic verification; nearby-storage, employee-homes, and contract-only answers each fail."
+      ],
+      "framework_ref": "ISACA Backup and Recovery Audit Program; NIST SP 800-34 (Contingency Planning Guide); NIST SP 800-209 (Security Guidelines for Storage Infrastructure)",
+      "related_concepts": [
+        "Offsite library",
+        "Backup vault",
+        "Chain of custody",
+        "Media rotation"
+      ],
+      "_provenance": "Authored from concept: 'Offsite library controls per ISACA Backup and Recovery Audit Program and NIST SP 800-34'. Public sources: ISACA, NIST."
+    },
+    {
+      "id": "d4_066",
+      "domain": 4,
+      "subtopic": "Cloud Backup Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control combination BEST governs use of cloud backup services for enterprise data?",
+      "options": {
+        "A": "Encryption (in transit + at rest with customer-managed keys) + access controls + retention policy + integrity verification + tested restoration + provider SLA review.",
+        "B": "Trust the cloud provider's default security; encrypted-by-default cloud storage means the customer doesn't need to apply additional controls.",
+        "C": "Avoid cloud backup entirely; on-premises tape libraries are inherently more secure than any cloud-based storage service for enterprise data.",
+        "D": "Use only the cloud provider's free-tier backup with no formal contract; cost minimization is the primary cloud-backup objective for most organizations."
+      },
+      "correct": "A",
+      "key_concept": "Cloud backup governance = encryption (transit + rest with CMK) + access controls + retention policy + integrity verification + tested restoration + provider SLA review. Trust-defaults loses customer control; avoid-entirely abandons cost-efficient option; free-tier-only lacks SLA.",
+      "pre_read": "For cloud-backup questions, anchor on \"encryption (CMK) + access + retention + integrity + tested restore + SLA review.\" Trust-defaults and avoid-entirely answers each fail.",
+      "correct_explanation": "ISACA Cloud Backup Governance guidance, NIST SP 800-209 (Security Guidelines for Storage Infrastructure), and CSA Cloud Controls Matrix establish six-element cloud-backup governance: (1) ENCRYPTION in transit (TLS) AND at rest with CUSTOMER-MANAGED KEYS (so the cloud provider cannot read backup contents); (2) ACCESS CONTROLS (IAM policies limiting who can read/write backups); (3) RETENTION POLICY (compliance with regulatory and business retention requirements); (4) INTEGRITY VERIFICATION (checksums on backup writes; periodic verification reads); (5) TESTED RESTORATION (periodic restore tests, not just backup creation); (6) PROVIDER SLA REVIEW (availability commitments, data durability, regional residency). Option B trust-defaults gives up customer-managed encryption keys. Option C avoid-entirely forgoes valid cost and resilience benefits. Option D free-tier-only typically lacks SLA, support, and capacity for enterprise scale.",
+      "wrong_explanations": {
+        "B": "Provider-default encryption uses provider-managed keys; the provider can read the data. Customer-managed keys (CMK) keep encryption keys outside the provider's reach, materially improving confidentiality.",
+        "C": "On-premises tape isn't inherently more secure than cloud — both have failure modes. Cloud backup offers significant advantages (geographic distribution, durability guarantees, scalability) when properly governed.",
+        "D": "Free-tier cloud backup typically lacks SLA commitments, capacity for enterprise data volumes, and support response times. Enterprise backup requires contracted service with appropriate guarantees."
+      },
+      "tips": [
+        "Trap is B — \"trust cloud provider defaults\" matches the cloud-marketing narrative but uses provider-managed keys; customer-managed keys are essential for material data confidentiality.",
+        "Cloud backup = ENCRYPTION (CMK) + ACCESS + RETENTION + INTEGRITY + TESTED RESTORE + SLA REVIEW. Six elements.",
+        "Exam-day shortcut: any cloud-backup question is answered by the option naming CUSTOMER-MANAGED KEYS with multiple other controls; trust-defaults, avoid-entirely, free-tier-only answers each fail differently."
+      ],
+      "framework_ref": "ISACA Cloud Backup Governance guidance; NIST SP 800-209 (Security Guidelines for Storage Infrastructure); CSA Cloud Controls Matrix",
+      "related_concepts": [
+        "Cloud backup",
+        "Customer-managed keys",
+        "Backup SLA",
+        "Tested restoration"
+      ],
+      "_provenance": "Authored from concept: 'Cloud backup governance per NIST SP 800-209 and CSA CCM'. Public sources: NIST, CSA, ISACA."
+    },
+    {
+      "id": "d4_067",
+      "domain": 4,
+      "subtopic": "Application Resiliency — Design Patterns",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST describes resilience design patterns for a critical enterprise application?",
+      "options": {
+        "A": "Single highly-tuned production server with maintenance windows for any updates; complexity of resilience patterns exceeds the operational benefit.",
+        "B": "Active-passive deployment only; one active server with one cold-standby that takes over only when the active server fails completely.",
+        "C": "Redundancy (multi-instance) + automated failover + circuit breakers + retry logic + bulkheads + graceful degradation under partial failure.",
+        "D": "Multiple identical servers without health checks; if any one server fails, traffic naturally routes to the others through load-balancer round-robin."
+      },
+      "correct": "C",
+      "key_concept": "Application resilience = redundancy + automated failover + circuit breakers + retry logic + bulkheads + graceful degradation. Single-server, active-passive-only, and round-robin-no-health-checks each fail on different resilience dimensions.",
+      "pre_read": "For application-resiliency questions, anchor on multi-pattern combination: redundancy + failover + circuit breakers + retry + bulkheads + graceful degradation. Single patterns are insufficient.",
+      "correct_explanation": "ISACA Application Resiliency guidance and ISO 27031 (ICT Readiness for Business Continuity) establish multi-pattern resilience design: (1) REDUNDANCY — multiple application instances across availability zones or regions; (2) AUTOMATED FAILOVER — when instance health degrades, traffic routes away automatically (load balancer + health checks); (3) CIRCUIT BREAKERS — when a downstream dependency fails, calls fail fast rather than blocking; (4) RETRY LOGIC — transient failures retry with exponential backoff; (5) BULKHEADS — isolate resources so one failing component doesn't exhaust shared resources (thread pools, connection pools); (6) GRACEFUL DEGRADATION — under partial failure, the application serves reduced functionality rather than failing entirely. Option A single-server fails on every dimension. Option B active-passive lacks the graceful-degradation and circuit-breaker patterns. Option D round-robin-no-health-checks sends traffic to failed servers.",
+      "wrong_explanations": {
+        "A": "Single-server tuning addresses performance but not resilience. Failures (hardware, OS, application) cause complete outage with no recovery option.",
+        "B": "Active-passive provides basic failover but lacks circuit breakers, retry logic, bulkheads, and graceful degradation. The active-passive transition itself causes downtime.",
+        "D": "Round-robin without health checks sends traffic to failed instances. Users hit the failed instance and experience errors until the load balancer is manually updated."
+      },
+      "tips": [
+        "Trap is B — \"active-passive deployment\" is a legitimate pattern but it's just one element of resilience; modern resilience requires the full pattern set (failover + circuit breakers + retry + bulkheads + graceful degradation).",
+        "Application resilience = REDUNDANCY + FAILOVER + CIRCUIT BREAKERS + RETRY + BULKHEADS + GRACEFUL DEGRADATION. Six patterns; multi-element design.",
+        "Exam-day shortcut: any application-resilience question is answered by the option naming MULTIPLE patterns; single-pattern answers are insufficient."
+      ],
+      "framework_ref": "ISACA Application Resiliency guidance; ISO 27031 (ICT Readiness for Business Continuity); ISACA Cyber Resilience guidance",
+      "related_concepts": [
+        "Application resilience",
+        "Circuit breaker",
+        "Bulkhead",
+        "Graceful degradation"
+      ],
+      "_provenance": "Authored from concept: 'Application resilience design patterns per ISACA Application Resiliency guidance and ISO 27031'. Public sources: ISACA, ISO."
+    },
+    {
+      "id": "d4_068",
+      "domain": 4,
+      "subtopic": "Network Resiliency — Design Patterns",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which design BEST supports network resiliency for an enterprise critical to business operations?",
+      "options": {
+        "A": "Single high-bandwidth internet connection from a single ISP; bandwidth is the primary determinant of network resilience for enterprise use.",
+        "B": "Two connections from the SAME ISP but using different physical cables; same-provider redundancy is sufficient for most enterprise needs.",
+        "C": "All network equipment in a single rack within the primary data center; consolidation reduces operational complexity and points of failure.",
+        "D": "Diverse-path WAN with multiple ISPs + redundant routers/switches + BGP for dynamic routing + monitoring with automated failover."
+      },
+      "correct": "D",
+      "key_concept": "Network resiliency = diverse-path WAN with multiple ISPs + redundant network equipment + BGP for dynamic routing + monitoring with automated failover. Single-ISP, same-ISP-different-cables, and single-rack consolidation each fail on a different failure mode.",
+      "pre_read": "For network-resiliency questions, anchor on \"diverse ISPs + redundant equipment + dynamic routing + monitoring + failover.\" Single-ISP and consolidation answers fail.",
+      "correct_explanation": "ISACA Network Resiliency guidance and ISO 27031 (ICT Readiness for Business Continuity) establish multi-element network resilience: (1) DIVERSE-PATH WAN with MULTIPLE ISPs (so an ISP outage doesn't isolate the enterprise); (2) REDUNDANT ROUTERS AND SWITCHES (hardware failure in one device doesn't disconnect the network); (3) BGP for DYNAMIC ROUTING (traffic automatically routes around failed paths); (4) MONITORING with AUTOMATED FAILOVER (network health continuously assessed; transitions happen without manual intervention). Option A single-ISP creates ISP-level single point of failure. Option B same-ISP-different-cables fails when the ISP itself has an outage (which happens). Option C single-rack consolidation creates a single point of failure for the entire network (the rack itself, the room power, the data-center facility).",
+      "wrong_explanations": {
+        "A": "Single-ISP is single point of failure at the ISP layer. ISP outages happen (routing issues, fiber cuts, peering disputes); diverse ISPs survive these.",
+        "B": "Same ISP with different cables protects against single-cable failures but not against ISP-level outages. The ISP's own infrastructure (routers, routing policies, peering) can fail or be misconfigured.",
+        "C": "Single-rack consolidation may reduce operational complexity but creates physical and electrical single points of failure. Resilience requires geographic and electrical diversity."
+      },
+      "tips": [
+        "Trap is B — \"two connections from same ISP\" feels redundant but doesn't protect against ISP-level outages; diversity must extend to multiple providers.",
+        "Network resilience = MULTIPLE ISPs + REDUNDANT EQUIPMENT + DYNAMIC ROUTING (BGP) + MONITORING + AUTOMATED FAILOVER. Five elements.",
+        "Exam-day shortcut: any network-resilience question is answered by the option naming MULTIPLE ISPs with diverse paths; single-ISP and consolidation answers fail."
+      ],
+      "framework_ref": "ISACA Network Resiliency guidance; ISO 27031 (ICT Readiness for Business Continuity); NIST SP 800-34 (Contingency Planning Guide)",
+      "related_concepts": [
+        "Network resilience",
+        "Diverse-path WAN",
+        "BGP",
+        "ISP redundancy"
+      ],
+      "_provenance": "Authored from concept: 'Network resilience design per ISACA Network Resiliency guidance and ISO 27031'. Public sources: ISACA, ISO, NIST."
+    },
+    {
+      "id": "d4_069",
+      "domain": 4,
+      "subtopic": "Data Storage Resiliency — Multi-Layer Protection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST protects against data loss for storage of critical business data?",
+      "options": {
+        "A": "Single high-quality SSD with manufacturer warranty; modern enterprise SSDs are sufficiently reliable that additional protection is unnecessary overhead.",
+        "B": "RAID (e.g., RAID 6 or 10) + storage replication (synchronous or asynchronous) + regular backups + snapshot capability + integrity checks.",
+        "C": "Daily backup to tape with weekly verification; backup alone provides sufficient data protection without requiring redundancy at the storage layer.",
+        "D": "Encrypt all storage to prevent unauthorized access; once encrypted, data is protected from loss because attackers cannot read or destroy it."
+      },
+      "correct": "B",
+      "key_concept": "Data storage resilience = RAID (multi-disk redundancy) + replication (multi-site copy) + backups (point-in-time recovery) + snapshots (rapid rollback) + integrity checks (silent corruption detection). Multi-layer; single controls each have failure modes.",
+      "pre_read": "For storage-resilience questions, anchor on multi-layer protection: RAID + replication + backups + snapshots + integrity checks. Single-control answers each have known failure modes.",
+      "correct_explanation": "ISACA Storage Resiliency guidance and NIST SP 800-209 (Security Guidelines for Storage Infrastructure) establish multi-layer storage protection: (1) RAID (e.g., RAID 6 tolerates 2 disk failures; RAID 10 mirrors and stripes) for disk-failure resilience; (2) STORAGE REPLICATION (synchronous for zero-data-loss DR; asynchronous for distance/cost balance) for site-level resilience; (3) BACKUPS for point-in-time recovery (logical-corruption recovery — RAID and replication can't recover deleted data because deletion propagates); (4) SNAPSHOTS for rapid rollback (faster than restore-from-backup); (5) INTEGRITY CHECKS (data-scrubbing, checksum verification) to detect silent corruption. Option A single-SSD has no protection against hardware failure. Option C backup-only lacks high-availability (recovery time too long for critical data). Option D encryption protects confidentiality but doesn't protect against loss (encrypted data can still be deleted, corrupted, or destroyed).",
+      "wrong_explanations": {
+        "A": "Enterprise SSDs do fail; manufacturer warranty replaces hardware but doesn't recover the data. Single-disk storage has no protection against the failure that statistics guarantee will eventually happen.",
+        "C": "Backup-only provides point-in-time recovery but the time-to-restore can be hours to days. For high-availability critical data, RAID and replication provide near-instant recovery from hardware failures.",
+        "D": "Encryption protects against unauthorized read but not against deletion, corruption, or destruction. An attacker (or accidental admin) can delete encrypted data as easily as plaintext data."
+      },
+      "tips": [
+        "Trap is C — \"daily tape backup is sufficient\" matches historical thinking but modern critical-data resilience requires multi-layer protection; backup is necessary but not sufficient.",
+        "Storage resilience = RAID + REPLICATION + BACKUPS + SNAPSHOTS + INTEGRITY CHECKS. Five layers; each addresses a different failure mode.",
+        "Exam-day shortcut: any storage-resilience question is answered by the option naming MULTI-LAYER protection; single-control answers each have known gaps."
+      ],
+      "framework_ref": "ISACA Storage Resiliency guidance; NIST SP 800-209 (Security Guidelines for Storage Infrastructure); ISACA Backup and Recovery Audit Program",
+      "related_concepts": [
+        "Storage resilience",
+        "RAID",
+        "Storage replication",
+        "Snapshots"
+      ],
+      "_provenance": "Authored from concept: 'Multi-layer data storage resilience per NIST SP 800-209 and ISACA Storage Resiliency guidance'. Public sources: NIST, ISACA."
+    },
+    {
+      "id": "d4_070",
+      "domain": 4,
+      "subtopic": "BIA — Criticality Classification of Operations",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST classifies business operations for BIA criticality tiering?",
+      "options": {
+        "A": "Tier by impact-over-time (financial, regulatory, customer, reputational) using documented BIA methodology with business owner attestation per tier.",
+        "B": "Treat all business operations as equally critical; tiering introduces subjective judgments that produce inconsistent recovery investment decisions.",
+        "C": "Classify based on IT system complexity; more complex systems get higher tiers because they take longer to recover after a disruption event.",
+        "D": "Let the CIO assign tier ratings to each operation based on intuition and IT investment history; centralizing the decision ensures consistency."
+      },
+      "correct": "A",
+      "key_concept": "BIA criticality classification = impact-over-time analysis (financial + regulatory + customer + reputational dimensions) + documented methodology + business owner attestation per tier. Equal-criticality wastes investment; IT-complexity-based misses business impact; CIO-intuition lacks rigor.",
+      "pre_read": "For BIA criticality questions, anchor on \"impact-over-time across multiple dimensions + business owner attestation.\" Distractors propose equal-treatment, IT-complexity proxies, or single-decider intuition.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management), NIST SP 800-34 (Contingency Planning Guide), and ISACA BIA guidance establish that BIA criticality classification follows the IMPACT, not the IT cost or complexity: (1) IMPACT-OVER-TIME ANALYSIS (what does 1 hour of disruption cost; what does 24 hours cost; what does 1 week cost — typically the impact accelerates as disruption duration grows); (2) MULTIPLE IMPACT DIMENSIONS (financial — revenue, cost; regulatory — penalties, license risk; customer — attrition, satisfaction; reputational — brand damage); (3) DOCUMENTED METHODOLOGY (consistent measurement across operations); (4) BUSINESS OWNER ATTESTATION per tier (the people who own the business outcomes attest to the criticality, not IT). Option B equal-treatment wastes investment on low-criticality operations. Option C IT-complexity-based is backwards (complex systems may not be business-critical; simple systems may be). Option D CIO-intuition lacks rigor and business ownership.",
+      "wrong_explanations": {
+        "B": "Equal criticality across all operations wastes investment by treating low-impact operations (employee directory, internal wiki) the same as high-impact operations (payments, customer-facing services). Tiering directs investment proportionally.",
+        "C": "IT complexity is a poor proxy for business criticality. Some complex systems support low-criticality functions; some simple systems are mission-critical. Criticality follows BUSINESS impact, not technical complexity.",
+        "D": "CIO intuition lacks the rigor and business-ownership that BIA requires. Business owners attest to criticality of their operations; the CIO facilitates the methodology and consolidation, not the individual ratings."
+      },
+      "tips": [
+        "Trap is B — \"treat all operations equally critical\" sounds fair but it wastes investment; tiering proportions resilience spend to business impact.",
+        "BIA criticality = IMPACT-OVER-TIME across (FINANCIAL + REGULATORY + CUSTOMER + REPUTATIONAL) + DOCUMENTED METHODOLOGY + BUSINESS-OWNER ATTESTATION. Multi-dimensional analysis.",
+        "Exam-day shortcut: any BIA criticality question is answered by the option naming MULTI-DIMENSIONAL IMPACT with business-owner ownership; equal-treatment, IT-proxy, and CIO-intuition answers each fail."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA BIA guidance",
+      "related_concepts": [
+        "BIA criticality",
+        "Impact-over-time",
+        "Business-owner attestation",
+        "BCP tiering"
+      ],
+      "_provenance": "Authored from concept: 'BIA criticality classification per ISO 22301 and NIST SP 800-34'. Public sources: ISO, NIST, ISACA."
+    },
+    {
+      "id": "d4_071",
+      "domain": 4,
+      "subtopic": "Business Continuity Planning Process — Standard Steps",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which sequence BEST represents the standard business continuity planning (BCP) process?",
+      "options": {
+        "A": "Develop plan → conduct BIA → identify risks → test plan → revise plan; planning first ensures clarity before analysis activities begin.",
+        "B": "Test continually without a written plan; modern BCP relies on rehearsal rather than documentation for organizational continuity readiness.",
+        "C": "Initiate (scope, policy) → BIA + risk assessment → develop strategies → write the plan → train + test → maintain (review, update).",
+        "D": "Skip BIA entirely; modern resilience focuses on continuous testing of recovery procedures and BIA is administrative overhead with no operational benefit."
+      },
+      "correct": "C",
+      "key_concept": "BCP process = INITIATE (scope, policy) → BIA + RISK ASSESSMENT → DEVELOP STRATEGIES → WRITE PLAN → TRAIN + TEST → MAINTAIN. Six-step lifecycle. Develop-first inverts dependencies; test-without-plan lacks structure; skip-BIA loses prioritization.",
+      "pre_read": "For BCP process questions, anchor on the canonical six-step lifecycle: initiate → BIA + risk → strategies → plan → train/test → maintain.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management), NIST SP 800-34 (Contingency Planning Guide), and DRII Professional Practices establish the canonical BCP process: (1) INITIATE — define scope, sponsorship, policy, governance; (2) BIA + RISK ASSESSMENT — determine criticality (per d4_070) and threat landscape; (3) DEVELOP STRATEGIES — select recovery strategies matching criticality tiers (per d4_074); (4) WRITE THE PLAN — document procedures, roles, communications; (5) TRAIN + TEST — staff awareness, tabletop exercises, full failover tests; (6) MAINTAIN — periodic review, post-incident updates, after-action revisions. Option A develop-plan-before-BIA inverts dependencies (you can't write a plan without knowing what's critical). Option B test-without-plan lacks structure. Option D skip-BIA loses the prioritization that drives investment decisions.",
+      "wrong_explanations": {
+        "A": "Writing the plan before BIA produces a plan that doesn't reflect actual business priorities. BIA determines WHAT to plan for; without BIA, the plan addresses arbitrary scope.",
+        "B": "Testing without a documented plan produces inconsistent rehearsals (each test exercises whatever the participants happen to remember). The plan provides repeatable structure across tests.",
+        "D": "Skipping BIA produces resilience investment that doesn't match business criticality. The firm may over-invest in low-criticality systems and under-invest in critical ones."
+      },
+      "tips": [
+        "Trap is A — \"develop plan first then conduct BIA\" inverts the dependency; BIA tells you WHAT to plan for and at what tier.",
+        "BCP lifecycle = INITIATE + BIA/RISK + STRATEGIES + PLAN + TRAIN/TEST + MAINTAIN. Six steps; sequential dependencies.",
+        "Exam-day shortcut: any BCP-process question is answered by the option starting with INITIATE and including BIA BEFORE planning; out-of-order sequences fail."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "related_concepts": [
+        "BCP process",
+        "BCP lifecycle",
+        "ISO 22301",
+        "DRII"
+      ],
+      "_provenance": "Authored from concept: 'BCP process lifecycle per ISO 22301, NIST SP 800-34, and DRII Professional Practices'. Public sources: ISO, NIST, DRII."
+    },
+    {
+      "id": "d4_072",
+      "domain": 4,
+      "subtopic": "BCP Policy — Required Components",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST describes the required components of an enterprise business continuity policy?",
+      "options": {
+        "A": "A list of specific recovery procedures for every critical business process across the enterprise organized by business unit and IT system.",
+        "B": "Technical specifications for the disaster recovery infrastructure (servers, storage, network) that supports the continuity capability the firm maintains.",
+        "C": "The annual cost of the BCP program documented in detail for finance and the audit committee to support budgeting decisions in the next year.",
+        "D": "Executive sponsorship + scope + objectives + roles/responsibilities + escalation/activation criteria + testing/maintenance cadence + governance structure."
+      },
+      "correct": "D",
+      "key_concept": "BCP policy = executive sponsorship + scope + objectives + roles/responsibilities + escalation/activation criteria + testing/maintenance cadence + governance structure. Recovery procedures are in the plan; technical specs are in the infrastructure design; annual cost is in the budget.",
+      "pre_read": "For BCP-policy questions, anchor on \"governance-level components: sponsorship + scope + objectives + roles + escalation + cadence + structure.\" Distractors substitute lower-level artifacts (procedures, specs, costs).",
+      "correct_explanation": "ISO 22301 (Business Continuity Management), DRII Professional Practices, and BCI Good Practice Guidelines establish that the BCP POLICY operates at the governance level: (1) EXECUTIVE SPONSORSHIP (board or CEO endorses the policy); (2) SCOPE (which business operations, geographies, regulatory environments are covered); (3) OBJECTIVES (what the BCP program aims to achieve in terms of resilience posture); (4) ROLES AND RESPONSIBILITIES (BCM officer, business-unit BCP coordinators, response team leads); (5) ESCALATION AND ACTIVATION CRITERIA (what triggers BCP plan activation); (6) TESTING AND MAINTENANCE CADENCE (how often tests, how often plan reviews); (7) GOVERNANCE STRUCTURE (oversight committee, reporting lines). The PLAN (a separate document) contains recovery procedures; the INFRASTRUCTURE DESIGN contains technical specs; the BUDGET contains costs. Option A confuses policy with recovery procedures. Option B confuses policy with technical infrastructure design. Option C confuses policy with budget documentation.",
+      "wrong_explanations": {
+        "A": "Recovery procedures are in the PLAN, not the policy. The policy is the governance-level document; the plan is the operational document containing procedures.",
+        "B": "Technical specifications are in the infrastructure design or runbooks, not the policy. The policy describes governance; the infrastructure documentation describes implementation.",
+        "C": "Annual cost is in the BUDGET, not the policy. The policy may reference funding commitments but doesn't itself document costs in detail."
+      },
+      "tips": [
+        "Trap is A — \"list of recovery procedures\" matches what the BCP PLAN contains, not the POLICY; policy is governance-level, plan is operational.",
+        "BCP policy = SPONSORSHIP + SCOPE + OBJECTIVES + ROLES + ESCALATION + CADENCE + GOVERNANCE. Seven elements at the governance level.",
+        "Exam-day shortcut: any BCP-policy question is answered by the option naming GOVERNANCE-LEVEL components; procedures, specs, and costs belong in different documents."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); DRII Professional Practices; BCI Good Practice Guidelines",
+      "related_concepts": [
+        "BCP policy",
+        "Governance structure",
+        "DRII",
+        "BCI"
+      ],
+      "_provenance": "Authored from concept: 'BCP policy components per ISO 22301, DRII, and BCI Good Practice Guidelines'. Public sources: ISO, DRII, BCI."
+    },
+    {
+      "id": "d4_073",
+      "domain": 4,
+      "subtopic": "BCP Incident Management — Activation and Response",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST governs BCP plan activation during a disruptive event?",
+      "options": {
+        "A": "Activate the BCP for every operational incident regardless of severity; consistent activation builds team readiness for major events when they occur.",
+        "B": "Defined activation criteria + authorized activator + incident command structure + communication plan + escalation criteria + scope-limited deactivation.",
+        "C": "Wait for executive direction before activating the BCP for any event; BCP activation is too consequential to be triggered by operational staff.",
+        "D": "Activate only after a regulator has been formally notified; until regulatory notification is complete, the BCP should remain on standby."
+      },
+      "correct": "B",
+      "key_concept": "BCP activation = defined criteria + authorized activator + incident command + communication plan + escalation criteria + scope-limited deactivation. Activate-for-every-incident creates fatigue; wait-for-executive delays response; wait-for-regulator inverts urgency.",
+      "pre_read": "For BCP-activation questions, anchor on \"defined criteria + authorized activator + incident command + communications + escalation + deactivation.\" Distractors propose over-activation, wait-for-executive, or wait-for-regulator.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management) and BCI Good Practice Guidelines establish six-element BCP activation: (1) DEFINED ACTIVATION CRITERIA (specific thresholds — duration, scope, impact — pre-agreed so activation isn't ad-hoc); (2) AUTHORIZED ACTIVATOR (named role with pre-delegated authority to activate without further approval); (3) INCIDENT COMMAND STRUCTURE (clear command, with workstreams under unified leadership); (4) COMMUNICATION PLAN (internal team, customers, regulators, partners — with templates pre-prepared); (5) ESCALATION CRITERIA (when does the incident escalate from team response to executive engagement to board notification); (6) SCOPE-LIMITED DEACTIVATION (return to normal operations is also defined, not just activation). Option A activate-for-every-incident creates activation fatigue. Option C wait-for-executive delays response during the critical first minutes/hours. Option D wait-for-regulator inverts urgency.",
+      "wrong_explanations": {
+        "A": "Activating for every operational incident creates activation fatigue. Teams stop taking activations seriously when most are minor. Defined criteria prevent over-activation.",
+        "C": "Waiting for executive direction delays response during the critical first minutes/hours of a disruption. Pre-delegated authority to defined activators enables fast response within the authority's scope.",
+        "D": "Wait-for-regulator inverts urgency. Regulator notification may come hours or days after the incident is contained; activation must happen at incident detection, not at regulator notification."
+      },
+      "tips": [
+        "Trap is C — \"wait for executive direction\" matches a conservative-governance instinct but delays response during critical minutes; pre-delegated authority to defined activators is the right pattern.",
+        "BCP activation = CRITERIA + AUTHORIZED ACTIVATOR + INCIDENT COMMAND + COMMUNICATIONS + ESCALATION + DEACTIVATION. Six elements.",
+        "Exam-day shortcut: any BCP-activation question is answered by the option naming PRE-DEFINED CRITERIA and AUTHORIZED ACTIVATOR; over-activation, wait-for-executive, and wait-for-regulator answers each fail."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); BCI Good Practice Guidelines; ISACA BCP Audit Program",
+      "related_concepts": [
+        "BCP activation",
+        "Incident command",
+        "Activation criteria"
+      ],
+      "_provenance": "Authored from concept: 'BCP activation governance per ISO 22301 and BCI Good Practice Guidelines'. Public sources: ISO, BCI."
+    },
+    {
+      "id": "d4_074",
+      "domain": 4,
+      "subtopic": "Recovery Strategies — Hot / Warm / Cold Sites",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST describes the trade-offs among hot site, warm site, and cold site recovery strategies?",
+      "options": {
+        "A": "Hot = highest cost + lowest RTO; warm = middle cost/RTO; cold = lowest cost + highest RTO. Choose tier to match criticality and budget per service.",
+        "B": "Hot, warm, and cold sites are interchangeable terms; the differences are vendor branding rather than substantive recovery-capability differences.",
+        "C": "Cold sites always provide better RTO than hot sites because they avoid the complexity of continuous synchronization with production systems.",
+        "D": "Only hot sites provide acceptable recovery for any enterprise; warm and cold tiers are obsolete patterns from the pre-virtualization era."
+      },
+      "correct": "A",
+      "key_concept": "Recovery strategies trade off COST vs RTO. Hot = highest cost (continuous sync) + lowest RTO (minutes-hours). Warm = middle (regular sync, less hardware) + middle RTO (hours-day). Cold = lowest cost (empty space) + highest RTO (days-weeks). Match tier to criticality.",
+      "pre_read": "For recovery-strategy questions, anchor on cost-vs-RTO trade-off across three tiers: hot (high cost, low RTO), warm (middle), cold (low cost, high RTO).",
+      "correct_explanation": "ISACA Recovery Strategy guidance, NIST SP 800-34 (Contingency Planning Guide), and DRII Professional Practices establish the canonical recovery-site spectrum: HOT SITE — fully provisioned with hardware, software, and current data via continuous synchronization; highest cost but lowest RTO (minutes to hours). WARM SITE — hardware and software in place but data not continuously synchronized; data must be restored from backup at activation; middle cost and middle RTO (hours to a day). COLD SITE — physical space with power, cooling, and network connectivity only; hardware must be procured and installed at activation; lowest cost but highest RTO (days to weeks). Match the tier to the criticality per BIA (per d4_070). Option B interchangeable is wrong (substantively different capabilities). Option C inverts the relationship (cold sites have HIGHER RTO, not lower). Option D dismisses warm and cold tiers, but they remain valid for lower-criticality systems.",
+      "wrong_explanations": {
+        "B": "Hot, warm, and cold sites have substantively different capabilities (data freshness, hardware readiness, RTO). Calling them branding-only conflates different recovery models.",
+        "C": "The relationship is inverted. Hot sites have LOWER RTO because they're continuously ready; cold sites have HIGHER RTO because they require hardware procurement and data restoration at activation.",
+        "D": "Warm and cold sites remain valid for lower-criticality systems where longer RTO is acceptable in exchange for cost savings. Hot-only is over-provisioning for many use cases."
+      },
+      "tips": [
+        "Trap is C — \"cold sites better RTO than hot\" inverts the relationship; cold has HIGHEST RTO (longest recovery time) because hardware must be procured at activation.",
+        "Recovery strategy trade-off = COST vs RTO. Hot (high cost, low RTO) → Warm (middle) → Cold (low cost, high RTO). Match tier to BIA criticality.",
+        "Exam-day shortcut: any recovery-strategy question is answered by the option correctly mapping cost and RTO across the three tiers."
+      ],
+      "framework_ref": "ISACA Recovery Strategy guidance; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "related_concepts": [
+        "Hot site",
+        "Warm site",
+        "Cold site",
+        "Recovery strategies"
+      ],
+      "_provenance": "Authored from concept: 'Recovery strategy spectrum (hot/warm/cold) per NIST SP 800-34 and DRII'. Public sources: NIST, DRII, ISACA."
+    },
+    {
+      "id": "d4_075",
+      "domain": 4,
+      "subtopic": "Backup Test Failure — Integrity Issue Mid-Recovery",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the backup test failure the firm has discovered?",
+      "scenario_context": "A regional credit union conducted a scheduled quarterly DR test of its core deposit system. Test results: (a) Day-1 restoration completed successfully (RTO met); (b) Day-2 reconciliation revealed 0.3% of accounts had integrity errors in the restored data — affecting ~9,400 customers of 3.1M; (c) Investigation traced the cause to a corrupted incremental backup from 47 days ago that propagated forward through subsequent incrementals; (d) The corruption is undetectable until restoration is attempted because backups verified successfully on creation. Production data is uncorrupted. The IS auditor was asked to recommend governance for both this finding and forward-looking remediation before the audit committee meets in 2 weeks.",
+      "options": {
+        "A": "Treat this as a one-time anomaly; the test discovered the issue and now backup integrity can be assumed for future tests without further changes.",
+        "B": "Mandate weekly full backups instead of incrementals; eliminating the incremental chain prevents propagation of corruption between backups.",
+        "C": "Apply structured remediation: deeper backup verification (restoration testing, not just creation) + checksumming per backup + retention of multiple recovery points + investigation of root cause.",
+        "D": "Suspend all backup operations and rebuild the entire backup infrastructure from scratch; the 47-day-old corruption indicates systemic backup-quality failure."
+      },
+      "correct": "C",
+      "key_concept": "Backup integrity failure = structured remediation: deeper verification (restoration testing not creation only) + per-backup checksumming + multiple recovery points + root-cause investigation. Treat-as-anomaly accepts recurrence; weekly-full sacrifices RPO; rebuild-everything overreacts.",
+      "pre_read": "For backup integrity failure questions, anchor on \"deeper verification + checksumming + multiple recovery points + root-cause.\" Treat-as-one-time accepts recurrence; over-corrections sacrifice operational properties.",
+      "correct_explanation": "ISACA Backup Testing guidance, NIST SP 800-34 (Contingency Planning Guide), and ISACA Backup and Recovery Audit Program establish four-element remediation when backup integrity fails: (1) DEEPER BACKUP VERIFICATION — periodic restoration testing (not just creation verification) detects the type of corruption discovered here; creation verification only confirms the backup-creation succeeded, not that the data is restorable; (2) PER-BACKUP CHECKSUMMING — content checksums (e.g., SHA-256 of each backed-up file) detect corruption regardless of source; (3) RETENTION OF MULTIPLE RECOVERY POINTS — keep at least N parallel backup chains so a single corrupted chain doesn't compromise all recovery options; (4) ROOT-CAUSE INVESTIGATION of how the corruption occurred (storage media, network, software bug, etc.) to prevent recurrence. Option A treat-as-anomaly accepts the systemic issue. Option B weekly-full eliminates incremental chains but produces RPO of up to 7 days. Option D rebuild-everything overreacts and ignores forward-looking governance.",
+      "wrong_explanations": {
+        "A": "Treating the 47-day-old corruption as a one-time anomaly accepts that the same class of corruption will recur. Without deeper verification, the firm has no way to detect future corruptions before restoration is attempted.",
+        "B": "Weekly full backups eliminate the incremental-chain corruption-propagation risk but sacrifice RPO. Current daily-incremental gives ~24-hour RPO; weekly-full gives ~7-day RPO. For deposit systems this RPO degradation is material.",
+        "D": "Rebuild-everything overreacts and ignores the forward-looking governance question. Better verification, checksumming, and multiple recovery points address the root cause without abandoning the existing backup infrastructure."
+      },
+      "tips": [
+        "Trap is B — \"weekly full backups to eliminate incremental corruption\" addresses the chain issue but sacrifices RPO from 24 hours to 7 days; better verification keeps both properties.",
+        "Backup integrity remediation = DEEPER VERIFICATION (restoration) + CHECKSUMMING + MULTIPLE RECOVERY POINTS + ROOT-CAUSE. Four elements; preserves operational properties.",
+        "Exam-day shortcut: any backup integrity failure question is answered by the option naming MULTI-ELEMENT REMEDIATION that preserves operational properties; one-time-fix, RPO-sacrificing, and rebuild-everything answers each fail differently."
+      ],
+      "framework_ref": "ISACA Backup Testing guidance; NIST SP 800-34 (Contingency Planning Guide); ISACA Backup and Recovery Audit Program",
+      "related_concepts": [
+        "Backup integrity",
+        "Restoration testing",
+        "Backup checksum",
+        "Recovery point preservation"
+      ],
+      "_provenance": "Authored from concept: 'Backup integrity failure remediation per ISACA Backup Testing guidance and NIST SP 800-34'. Public sources: NIST, ISACA. Scenario specifics (regional credit union, quarterly DR test, 0.3% accounts corrupted / 9,400 of 3.1M, 47-day-old corruption, undetectable until restore) invented for this question."
+    },
+    {
+      "id": "d4_076",
+      "domain": 4,
+      "subtopic": "Cloud vs On-Premises Backup — Decision Framework",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the cloud-vs-on-premises backup decision the engagement faces?",
+      "scenario_context": "A multinational pharmaceutical firm (operations in 9 countries, ~14,000 employees) is reviewing its enterprise backup architecture. Current state: on-premises tape library at each of 3 regional data centers, $4.2M annual operating cost, 18-hour RTO across regions, 24-hour RPO. Proposal: migrate to a hyperscale cloud backup service (deduplication, immutable storage, geo-replication), estimated $2.8M annual cost, 4-hour RTO, 1-hour RPO. Concerns raised: (a) data residency for EU and APAC operations; (b) regulatory expectations for clinical-trial data; (c) cloud vendor lock-in over 5+ years; (d) team skills transition. The CTO favors cloud migration; the CISO has data-sovereignty concerns; the CFO objects to transition cost. The IS auditor was asked to advise on the decision framework.",
+      "options": {
+        "A": "Endorse the CTO's cloud migration; cloud backup is universally superior to on-premises and the cost/RTO/RPO improvements justify any concerns raised.",
+        "B": "Endorse the CISO's on-premises preference; data sovereignty for pharmaceutical clinical-trial data overrides any cost or RTO/RPO improvement available.",
+        "C": "Defer the decision until the next 5-year IT strategy cycle; major backup architecture changes shouldn't be made on shorter timelines than strategic plans.",
+        "D": "Apply structured analysis: 5-year TCO + data-sovereignty constraints per region + regulatory acceptability + vendor lock-in mitigation + skills transition plan + phased implementation with milestones."
+      },
+      "correct": "D",
+      "key_concept": "Cloud vs on-prem backup decision = structured analysis: 5-year TCO + sovereignty + regulatory + lock-in mitigation + skills + phased implementation. Endorse-CTO/CISO single-stakeholder; defer-to-strategy-cycle wastes the analysis window.",
+      "pre_read": "For cloud-vs-on-prem backup questions, anchor on \"structured 6-element analysis with phased implementation.\" Single-stakeholder endorsements reflect bias.",
+      "correct_explanation": "ISACA Cloud Backup Governance guidance, NIST SP 800-209 (Security Guidelines for Storage Infrastructure), and CSA Cloud Controls Matrix establish six-element structured analysis: (1) 5-YEAR TCO (capital + operating + transition cost — option B's $2.8M annual is $14M over 5 years vs current $21M; saves $7M but transition costs must be netted); (2) DATA-SOVEREIGNTY CONSTRAINTS per region (EU GDPR, APAC country-specific data residency, US — may require regional cloud regions or hybrid); (3) REGULATORY ACCEPTABILITY (clinical-trial data is subject to FDA 21 CFR Part 11, EMA, and country-specific regulations that may have specific requirements for backup storage); (4) VENDOR LOCK-IN MITIGATION (escape clauses, data-export rights, multi-cloud strategy); (5) SKILLS TRANSITION PLAN (current tape-library team to cloud-backup-admin retraining); (6) PHASED IMPLEMENTATION with milestones (start with one region, expand based on outcomes). Option A endorses CTO without addressing sovereignty/regulatory. Option B endorses CISO without quantifying cost/RTO benefit. Option C defer wastes analysis time.",
+      "wrong_explanations": {
+        "A": "Endorsing cloud migration without addressing data sovereignty (EU GDPR, APAC residency) and regulatory acceptability (FDA 21 CFR Part 11 for clinical-trial data) ignores material risks specific to multi-national pharma.",
+        "B": "Endorsing on-premises without quantifying the cost ($7M over 5 years) and RTO/RPO improvement abandons material business value. Sovereignty is one factor in a multi-factor decision.",
+        "C": "Defer-to-5-year-cycle wastes a meaningful analysis window. Major architecture decisions don't have to wait for strategy cycles; they should integrate WITH strategy."
+      },
+      "tips": [
+        "Trap is A or B — opposing single-stakeholder endorsements (CTO cloud vs CISO on-prem). Both positions have merit; structured analysis weighs all factors.",
+        "Cloud vs on-prem backup = 5-YEAR TCO + DATA SOVEREIGNTY + REGULATORY + LOCK-IN MITIGATION + SKILLS + PHASED IMPLEMENTATION. Six elements.",
+        "Exam-day shortcut: any cloud-vs-on-prem backup question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS; single-stakeholder endorsements and defer answers reflect bias."
+      ],
+      "framework_ref": "ISACA Cloud Backup Governance guidance; NIST SP 800-209 (Security Guidelines for Storage Infrastructure); CSA Cloud Controls Matrix",
+      "related_concepts": [
+        "Cloud vs on-prem backup",
+        "Data sovereignty",
+        "Vendor lock-in",
+        "5-year TCO"
+      ],
+      "_provenance": "Authored from concept: 'Cloud-vs-on-prem backup decision per ISACA Cloud Backup Governance guidance'. Public sources: ISACA, NIST, CSA. Scenario specifics (multinational pharma, 9 countries, 14K employees, 3 DCs at $4.2M/year tape, $2.8M cloud, 18→4h RTO, 24→1h RPO, FDA/EMA clinical-trial regs) invented for this question."
+    },
+    {
+      "id": "d4_077",
+      "domain": 4,
+      "subtopic": "Cross-Region Failover — Active Decision Under Outage",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which decision MOST appropriately reflects sound cross-region failover governance under the observed conditions?",
+      "scenario_context": "A B2B platform (2.1M end users, 6,800 enterprise customers) operates from two cloud regions: primary (US-East, active) and secondary (US-West, warm-standby with 30-minute RPO). At 14:22 UTC, US-East begins reporting elevated error rates (8% climbing). The cloud provider's status page shows 'investigating elevated errors' with no ETA. By 14:45, error rate is 22% and customer support is receiving complaints. Failover to US-West will take ~45 minutes and incur up to 30 minutes of data loss for customer transactions in flight. The CIO is in a board meeting and unreachable. The on-call SRE has authority to invoke failover per documented playbook. The IS auditor was paged for governance perspective before 15:00.",
+      "options": {
+        "A": "Wait for the CIO to become available; cross-region failover is consequential enough that executive authorization should precede invocation regardless of operational impact.",
+        "B": "Invoke documented failover per playbook now; the documented authority exists for exactly this scenario, and continued degradation outweighs the 30-min RPO data loss.",
+        "C": "Wait for the cloud provider's status page to declare a definitive incident; failing over during 'investigating' status risks failing-over to recover from a transient issue that will resolve.",
+        "D": "Continue accepting traffic on US-East while manually routing affected customers to US-West; partial failover minimizes data loss while restoring service for affected users."
+      },
+      "correct": "B",
+      "key_concept": "Cross-region failover under documented playbook = invoke per playbook when conditions are met. SRE has documented authority; continued degradation outweighs RPO loss. Wait-for-CIO defeats the pre-delegated authority; wait-for-provider-confirmation delays unnecessarily; partial-failover is operationally complex and rarely viable.",
+      "pre_read": "For cross-region failover questions, anchor on \"documented playbook + pre-delegated authority + invoke when conditions met.\" Wait-for-executive and wait-for-vendor answers defeat the purpose of pre-delegated authority.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management) and ISACA BCP Audit Program establish that pre-delegated activation authority exists precisely for scenarios like this one: (1) DOCUMENTED PLAYBOOK with PRE-AGREED activation criteria (error rate thresholds, customer impact thresholds, vendor status — the on-call SRE's documented authority matches this scenario); (2) AUTHORIZED ACTIVATOR (the on-call SRE has the role); (3) CURRENT CONDITIONS MEET CRITERIA (22% error rate climbing, customer complaints, no ETA — clearly within scope); (4) TRADE-OFF ANALYSIS (30-min RPO data loss vs continued degradation — at current rate, continued degradation will exceed 30 minutes of impact within minutes). The auditor's role is to confirm the playbook governs this scenario and the authorized activator's decision is appropriate. Option A wait-for-CIO defeats pre-delegated authority. Option C wait-for-provider-confirmation delays when conditions already meet criteria. Option D partial-failover is operationally complex and rarely viable in cloud-region failover.",
+      "wrong_explanations": {
+        "A": "Wait-for-CIO defeats the entire purpose of pre-delegated activation authority. The CIO authorized the playbook precisely so that on-call SREs can invoke it without further escalation during disruptive events.",
+        "C": "Wait-for-provider-confirmation delays response when conditions already meet activation criteria. Cloud-provider 'investigating' status often persists for hours; the firm's customers experience degradation throughout.",
+        "D": "Partial failover (some traffic to each region) is operationally complex in cloud regions — DNS, routing, data synchronization, and customer-stickiness all complicate the model. Most cloud failovers are all-or-nothing for a given service."
+      },
+      "tips": [
+        "Trap is A — \"wait for CIO authorization\" matches a conservative-governance instinct but defeats pre-delegated authority; the playbook exists so this exact scenario can be handled by the on-call.",
+        "Cross-region failover = DOCUMENTED PLAYBOOK + PRE-DELEGATED AUTHORITY + INVOKE WHEN CRITERIA MET. Three elements; wait-for-executive defeats the purpose.",
+        "Exam-day shortcut: any failover-during-outage question is answered by the option respecting PRE-DELEGATED AUTHORITY; wait-for-executive and wait-for-vendor answers each fail."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); ISACA BCP Audit Program; ISACA Cross-Region Resiliency guidance",
+      "related_concepts": [
+        "Cross-region failover",
+        "Pre-delegated authority",
+        "Playbook activation",
+        "RPO trade-off"
+      ],
+      "_provenance": "Authored from concept: 'Cross-region failover under pre-delegated authority per ISO 22301 and ISACA BCP Audit Program'. Public sources: ISO, ISACA. Scenario specifics (B2B platform, 2.1M users, 6.8K enterprise, US-East primary / US-West warm, 14:22 UTC error rates 8→22%, 45-min failover, 30-min RPO, CIO unreachable, SRE on-call) invented for this question."
+    },
+    {
+      "id": "d4_078",
+      "domain": 4,
+      "subtopic": "BIA Conflict — Three-Stakeholder Tier Disagreement",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the three-stakeholder BIA disagreement the engagement faces?",
+      "scenario_context": "A regional bank's annual BIA review surfaces a three-way disagreement over the criticality tiering of its mobile banking app: (a) Retail Banking SVP claims Tier 1 (4-hour RTO) because customer experience and competitive position depend on availability; (b) CFO claims Tier 3 (24-hour RTO) because branch and call-center channels can serve customer needs during outages, citing 2024 outage data showing only 4% revenue impact during 8-hour mobile outage; (c) Chief Risk Officer claims Tier 2 (8-hour RTO) citing operational-resilience regulator expectations for digital channels at large banks. Each tier carries different infrastructure investment ($14M / $8M / $4M annualized). The IS auditor was asked to recommend governance for resolving the three-stakeholder disagreement.",
+      "options": {
+        "A": "Apply structured BIA reconciliation: gather quantitative evidence (revenue impact, customer attrition data, regulatory expectations) + facilitate stakeholder convergence + escalate to executive committee with documented rationale + revisit annually.",
+        "B": "Endorse the Retail Banking SVP's Tier 1 claim; customer experience is the dominant criterion for digital channels at any bank in a competitive market environment.",
+        "C": "Endorse the CFO's Tier 3 claim; the 2024 outage data showing only 4% revenue impact is the strongest empirical evidence available and should override perception-based claims.",
+        "D": "Endorse the CRO's Tier 2 claim; regulator expectations are non-negotiable and override both customer-experience and revenue-impact perspectives without further analysis."
+      },
+      "correct": "A",
+      "key_concept": "Three-stakeholder BIA disagreement = structured reconciliation: quantitative evidence + facilitate convergence + escalate to executive committee with documented rationale + revisit annually. Single-stakeholder endorsements reflect single-perspective bias even when each has merit.",
+      "pre_read": "For multi-stakeholder BIA conflict, anchor on \"reconcile with evidence + facilitate convergence + escalate with rationale.\" Single-stakeholder endorsements miss multi-perspective reality.",
+      "correct_explanation": "ISO 22301 (Business Continuity Management) and ISACA BIA Conflict Resolution guidance establish four-element structured reconciliation for multi-stakeholder BIA disputes: (1) GATHER QUANTITATIVE EVIDENCE — revenue impact data (the CFO's 4% figure is one data point; broader outage history, customer-attrition modeling, competitive-context analysis); regulatory expectations (the CRO's claim); customer-experience data (NPS during outages, complaint volume); (2) FACILITATE STAKEHOLDER CONVERGENCE — structured discussion that surfaces each stakeholder's underlying concern (the SVP's competitive concern, the CFO's investment concern, the CRO's regulatory concern); (3) ESCALATE TO EXECUTIVE COMMITTEE WITH DOCUMENTED RATIONALE — when stakeholders genuinely disagree, the executive committee resolves with documented reasoning; (4) REVISIT ANNUALLY — BIA tier ratings should be reviewed as conditions change. Each single-stakeholder endorsement (B, C, D) reflects valid considerations but misses the multi-perspective synthesis.",
+      "wrong_explanations": {
+        "B": "Endorsing Retail Banking SVP's Tier 1 reflects customer-experience priority but ignores the CFO's empirical evidence (4% revenue impact) and may over-invest beyond what the data supports.",
+        "C": "Endorsing CFO's Tier 3 reflects narrow revenue-impact framing but ignores the CRO's regulator expectations (operational resilience for large banks specifically targets digital-channel availability) and the SVP's competitive concerns.",
+        "D": "Endorsing CRO's Tier 2 reflects regulatory priority but doesn't engage the underlying revenue/customer evidence. Regulator expectations are inputs to BIA tiering, not the sole determinant."
+      },
+      "tips": [
+        "Trap is B, C, OR D — each single-stakeholder endorsement reflects valid concerns but misses the multi-perspective reality; structured reconciliation with evidence is the governance answer.",
+        "Multi-stakeholder BIA = QUANTITATIVE EVIDENCE + STRUCTURED CONVERGENCE + EXECUTIVE-COMMITTEE ESCALATION + ANNUAL REVISIT. Four elements; single-stakeholder endorsements bias the analysis.",
+        "Exam-day shortcut: any three-stakeholder BIA conflict question is answered by the option naming STRUCTURED RECONCILIATION; endorsing any single stakeholder reflects single-perspective bias."
+      ],
+      "framework_ref": "ISO 22301 (Business Continuity Management); ISACA BIA Conflict Resolution guidance; ISACA BIA guidance",
+      "related_concepts": [
+        "BIA criticality dispute",
+        "Three-stakeholder conflict",
+        "BIA reconciliation"
+      ],
+      "_provenance": "Authored from concept: 'Three-stakeholder BIA disagreement structured reconciliation per ISO 22301 and ISACA BIA Conflict Resolution guidance'. Public sources: ISO, ISACA. Scenario specifics (regional bank, mobile-banking BIA, Retail SVP/CFO/CRO disagreement, Tier 1/2/3 with $14M/$8M/$4M, 2024 outage 4% revenue impact, operational-resilience regulator) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback by using 3 stakeholders rather than 2."
+    },
+    {
+      "id": "d4_079",
+      "domain": 4,
+      "subtopic": "Pandemic Continuity — Workforce + IT Enablement",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses pandemic-continuity governance for the firm described?",
+      "scenario_context": "A medium-sized hospital group (4,200 employees across 8 facilities) is updating its pandemic continuity plan following recent influenza-season spikes that caused 18% absenteeism for two weeks and stressed care delivery. The plan must address: (a) clinical operations continuity (patient care can't pause); (b) IT-enabled remote work for administrative staff; (c) supply-chain resilience for medical supplies; (d) workforce communication and family-protection guidance. The CIO has been focused on (b) remote-work IT enablement. The COO is focused on (a) and (c). HR is focused on (d). The board has asked the IS auditor to recommend governance for integrating the four streams into a unified pandemic continuity capability.",
+      "options": {
+        "A": "Endorse the CIO's focus on remote-work IT enablement; modern pandemic continuity is fundamentally a technology-enablement problem for the workforce.",
+        "B": "Defer the pandemic-continuity plan until a true pandemic occurs; hypothetical planning produces less effective response than learning during actual events.",
+        "C": "Establish integrated pandemic-continuity governance: cross-functional steering committee + clinical/IT/supply/workforce workstreams + scenario-tested playbooks + WHO/CDC integration + post-event after-action.",
+        "D": "Outsource pandemic continuity to a specialized BCP consulting firm; in-house capability cannot match dedicated pandemic-planning expertise for a healthcare provider."
+      },
+      "correct": "C",
+      "key_concept": "Pandemic continuity = integrated governance: cross-functional steering committee + four workstreams (clinical + IT + supply + workforce) + scenario-tested playbooks + WHO/CDC integration + post-event after-action. Single-stream focus misses interdependencies; defer-until-pandemic is irresponsible; full outsource doesn't substitute for in-house ownership.",
+      "pre_read": "For pandemic-continuity questions, anchor on \"integrated cross-functional governance with multiple workstreams.\" Single-stream focus, defer-to-event, and full-outsource each fail.",
+      "correct_explanation": "ISACA Pandemic Continuity guidance, ISO 22301 (Business Continuity Management), and BCI Good Practice Guidelines establish five-element pandemic-continuity governance: (1) CROSS-FUNCTIONAL STEERING COMMITTEE (CIO, COO, CMO, HR, supply chain, communications — leadership across all relevant functions); (2) FOUR WORKSTREAMS INTEGRATED (clinical operations, IT enablement, supply-chain resilience, workforce/family — each with its own lead but coordinated); (3) SCENARIO-TESTED PLAYBOOKS (mild influenza spike, severe respiratory pandemic, regional outbreak — tested via tabletop exercises); (4) WHO/CDC INTEGRATION (subscribe to alerts, align with public-health guidance); (5) POST-EVENT AFTER-ACTION (lessons from each event integrated into the plan). Option A endorses CIO single-stream focus. Option B defer-until-pandemic is irresponsible for a healthcare provider. Option D full outsource doesn't substitute for in-house ownership of clinical operations and workforce.",
+      "wrong_explanations": {
+        "A": "CIO's IT-enablement focus is one of four workstreams. Pandemic continuity for a healthcare provider is dominantly about CLINICAL OPERATIONS continuity (patient care can't pause); IT is essential but not the dominant scope.",
+        "B": "Defer-until-pandemic is irresponsible for a healthcare provider. Pandemics produce immediate, sustained operational impact; the firm needs the plan BEFORE the event, not during.",
+        "D": "Full outsource transfers planning activity but not in-house ownership of clinical operations, workforce, and supply-chain decisions. Consultants can support, but the firm must own."
+      },
+      "tips": [
+        "Trap is A — CIO's IT-enablement focus is necessary but not sufficient for a healthcare provider; clinical operations continuity, workforce, and supply chain all need integrated attention.",
+        "Pandemic continuity = STEERING COMMITTEE + FOUR WORKSTREAMS (clinical + IT + supply + workforce) + PLAYBOOKS + WHO/CDC + AFTER-ACTION. Five elements.",
+        "Exam-day shortcut: any pandemic continuity question is answered by the option naming INTEGRATED CROSS-FUNCTIONAL governance; single-stream and defer answers fail."
+      ],
+      "framework_ref": "ISACA Pandemic Continuity guidance; ISO 22301 (Business Continuity Management); BCI Good Practice Guidelines",
+      "related_concepts": [
+        "Pandemic continuity",
+        "Cross-functional governance",
+        "Workforce protection",
+        "WHO/CDC alignment"
+      ],
+      "_provenance": "Authored from concept: 'Pandemic continuity governance per ISACA Pandemic Continuity guidance and ISO 22301'. Public sources: ISACA, ISO, BCI. Scenario specifics (medium hospital group, 4.2K employees, 8 facilities, 18% absenteeism flu, CIO/COO/HR positions) invented for this question."
+    },
+    {
+      "id": "d4_080",
+      "domain": 4,
+      "subtopic": "Application Resilience Under Active DDoS Attack",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which response MOST appropriately reflects sound application-resilience governance during the active DDoS attack?",
+      "scenario_context": "An e-commerce platform (8.4M registered customers, peak season) is under active DDoS attack at 21:30 local time. Attack profile: ~340 Gbps inbound, multi-vector (UDP flood + HTTP slow-loris + DNS amplification). Customer-facing front-end is degraded; backend services unaffected. Current DDoS protections include: (a) on-premises rate limiting (saturated); (b) ISP-level scrubbing (engaged, partially effective); (c) CDN absorbing some traffic; (d) cloud-based DDoS mitigation service available on contract but not yet activated. The CISO is leading incident response; the CIO is on the call. Activation of cloud DDoS service requires DNS redirection and ~25 minutes to fully propagate. The IS auditor was paged for governance perspective.",
+      "options": {
+        "A": "Recommend waiting for the attack to subside on its own; most DDoS attacks last under 30 minutes and aggressive mitigation may interfere with legitimate user traffic.",
+        "B": "Recommend disconnecting from the internet entirely until the attack ends; the firm cannot risk customer-data exposure during an active attack of this magnitude.",
+        "C": "Recommend the CISO take the firm offline and notify regulators; DDoS attacks of this scale (340 Gbps) constitute reportable incidents under most operational resilience guidance.",
+        "D": "Activate cloud DDoS mitigation per documented playbook + maintain operational status with CISO incident command + customer communication via status page + post-incident review."
+      },
+      "correct": "D",
+      "key_concept": "DDoS active response = activate documented mitigation per playbook + maintain operational status + customer communication + post-incident review. Wait-for-attack-to-subside accepts continued degradation; disconnect-entirely overreacts; offline-and-notify-regulator inverts urgency.",
+      "pre_read": "For DDoS active response questions, anchor on \"activate documented mitigation + maintain operations + communicate + post-incident review.\" Wait, disconnect, and over-escalate answers each fail.",
+      "correct_explanation": "ISACA DDoS Response guidance, NIST SP 800-184 (Guide for Cybersecurity Event Recovery), and ISACA Cyber Resilience guidance establish four-element active DDoS response: (1) ACTIVATE DOCUMENTED MITIGATION per playbook (cloud DDoS service exists on contract precisely for this scenario; 25-min propagation is acceptable given continued degradation); (2) MAINTAIN OPERATIONAL STATUS with CISO incident command (don't take the firm offline; the goal is to keep serving traffic while mitigation engages); (3) CUSTOMER COMMUNICATION via status page (manage expectations, acknowledge the attack at appropriate level of detail); (4) POST-INCIDENT REVIEW after the attack subsides (what worked, what didn't, mitigation upgrades). Option A wait-for-attack-to-subside accepts continued customer-facing degradation. Option B disconnect-from-internet overreacts and creates worse customer impact than continued degradation. Option C offline-and-notify-regulator inverts urgency (regulators expect notification but not at the cost of operational response).",
+      "wrong_explanations": {
+        "A": "Wait-for-attack-to-subside accepts continued customer-facing degradation during peak season. The firm has cloud DDoS service contracted precisely for this scenario; activating it is the right operational response.",
+        "B": "Disconnect-from-internet overreacts to a DDoS that's affecting front-end only. The backend is unaffected; cutting internet access takes the entire firm offline including legitimate customer traffic.",
+        "C": "Taking the firm offline and notifying regulators inverts the priority. Regulators may expect notification of significant attacks, but the operational response (activate mitigation) comes first; regulator notification follows established timing requirements."
+      },
+      "tips": [
+        "Trap is C — \"take firm offline and notify regulators\" matches a compliance-first instinct but it inverts urgency; operational response (activate mitigation) comes first, regulator notification follows per established timing.",
+        "DDoS active response = ACTIVATE MITIGATION (per playbook) + MAINTAIN OPERATIONS + CUSTOMER COMMUNICATION + POST-INCIDENT REVIEW. Four elements.",
+        "Exam-day shortcut: any DDoS active response question is answered by the option naming DOCUMENTED MITIGATION ACTIVATION with operational continuity; wait, disconnect, and compliance-first answers each fail."
+      ],
+      "framework_ref": "ISACA DDoS Response guidance; NIST SP 800-184 (Guide for Cybersecurity Event Recovery); ISACA Cyber Resilience guidance",
+      "related_concepts": [
+        "DDoS mitigation",
+        "Active incident response",
+        "CISO incident command",
+        "Cyber resilience"
+      ],
+      "_provenance": "Authored from concept: 'DDoS active response per ISACA DDoS Response guidance and NIST SP 800-184'. Public sources: ISACA, NIST. Scenario specifics (e-commerce, 8.4M customers, 21:30 attack, 340 Gbps multi-vector, four existing protections, 25-min cloud DDoS propagation, CISO/CIO on call) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback — incident response scenario rather than stakeholder conflict."
     }
   ]
 }

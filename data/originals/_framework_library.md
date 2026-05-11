@@ -818,6 +818,28 @@ sub-references like "(Managed Risk) and APO12.03").
 - CIS Benchmarks for Operating Systems
 - NIST SP 800-44 (Guidelines on Securing Public Web Servers)
 
+## D4 batch 4 additions
+- NIST SP 800-209 (Security Guidelines for Storage Infrastructure)
+- NIST SP 800-184 (Guide for Cybersecurity Event Recovery)
+- DRII Professional Practices
+- US-CERT recovery guidance
+- BCI Good Practice Guidelines
+- ISO 27031 (ICT Readiness for Business Continuity)
+- ISACA Backup and Recovery Audit Program
+- ISACA BCP Audit Program
+- ISACA DRP Audit Program
+- ISACA Application Resiliency guidance
+- ISACA Network Resiliency guidance
+- ISACA Storage Resiliency guidance
+- ISACA Cloud Backup Governance guidance
+- ISACA BCP Process guidance
+- ISACA Recovery Strategy guidance
+- ISACA Pandemic Continuity guidance
+- ISACA DDoS Response guidance
+- ISACA Backup Testing guidance
+- ISACA Cross-Region Resiliency guidance
+- ISACA Contingency Planning Conflict guidance
+
 ## D4 batch 2 additions
 - RFC 3022 (Network Address Translation)
 - ITIL 4 Change Enablement practice
