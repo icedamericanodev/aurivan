@@ -6,7 +6,7 @@
 
 **Maintenance rule:** update this doc in the same PR that lands a new authoring batch. Counts at the bottom must match `data/originals/_concept_queue.yaml` and `data/originals/d3.json`.
 
-**Last updated:** after D3 batch 3 (d3_041..d3_060) — 60 of 120 questions authored. **Foundational tier CLOSED at 12/12.**
+**Last updated:** after D3 batch 4 (d3_061..d3_080) — 80 of 120 questions authored (67%). Foundational tier CLOSED at 12/12; Application tier at 48/60 (80%); Analysis tier at 20/48 (42%).
 
 ## Part A — Project Governance and Management
 
@@ -123,8 +123,32 @@
 | Tier | Authored | Target |
 |---|---|---|
 | Foundational | **12** | **12** ✓ CLOSED |
-| Application | 36 | 60 |
-| Analysis | 12 | 48 |
-| **Total** | **60** | **120** |
+| Application | 48 | 60 |
+| Analysis | 20 | 48 |
+| **Total** | **80** | **120** |
 
-**D3 status:** in_progress; batches 1-3 (d3_001..d3_060) authored — halfway. **Foundational tier closed.** 60/120 questions remaining across ~3 batches (all A+An tier).
+**D3 status:** in_progress; batches 1-4 (d3_001..d3_080) authored. **Foundational tier closed.** 40/120 questions remaining across 2 batches (D3-5 mix 0F+12A+8An; D3-6 closing batch 0F+6A+14An).
+
+## Batch 4 additions (d3_061..d3_080) — TOC entries beyond the original outline
+
+D3 batch 4 covered depth topics that map to new TOC subdivisions (numbered 3.x.10+):
+- 3.3.10 GitOps deployment model (d3_063)
+- 3.3.11 AI-Augmented code generation (d3_074, analysis)
+- 3.3.12 Privacy-by-design in agile (d3_078, analysis)
+- 3.4.13 Encryption key management — app data (d3_067)
+- 3.4.14 Application logging — security & audit (d3_068)
+- 3.4.15 Data classification — non-prod envs (d3_069)
+- 3.4.16 Third-party component vulnerability mgmt (d3_070)
+- 3.4.17 SaaS-to-SaaS integration governance (d3_073, analysis)
+- 3.4.18 Vendor abandonment (d3_077, analysis)
+- 3.5.10 Code review effectiveness (d3_064)
+- 3.5.11 Test pyramid (d3_065)
+- 3.5.12 Database query performance audit (d3_066)
+- 3.5.13 Production-like test environment fidelity (d3_079, analysis)
+- 3.6.4 Container Runtime — Admission controllers (d3_062, complements d3_033 image signing)
+- 3.6.11 CI/CD secret management (d3_061)
+- 3.6.12 Privileged access — SDLC tools (d3_071)
+- 3.6.13 Multi-region deployment failure (d3_075, analysis)
+- 3.2.6 Legacy mainframe modernization (d3_076, analysis)
+- 3.8.3 DORA Four Key Metrics (d3_072)
+- 3.8.4 Continuous compliance evidence — high-deploy DevOps (d3_080, analysis)

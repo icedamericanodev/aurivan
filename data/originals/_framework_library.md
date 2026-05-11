@@ -655,3 +655,29 @@ sub-references like "(Managed Risk) and APO12.03").
 - COBIT 2019 BAI04 (Managed Availability and Capacity) — Performance Testing
 - COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)
 - FIDO2/WebAuthn specifications
+
+## D3 batch 4 additions
+- HashiCorp Vault
+- CyberArk Conjur
+- ISACA Secrets Management guidance
+- GitOps Working Group (CNCF)
+- Argo CD
+- Flux CD
+- Kubernetes Admission Controllers
+- OPA Gatekeeper
+- Falco (CNCF runtime security)
+- DORA Four Key Metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, MTTR)
+- ISACA AI-Augmented Development guidance
+- GitHub Copilot Trust Center documentation
+- ISACA GitOps Audit guidance
+- ISACA Code Review Effectiveness guidance
+- ISACA Test Pyramid guidance
+- ISACA Database Performance Audit guidance
+- NIST SP 800-57 (Recommendation for Key Management)
+- ISACA Encryption Key Management guidance
+- NIST SP 800-92 (Guide to Computer Security Log Management)
+- ISACA Continuous Compliance guidance
+- ISACA Legacy Modernization guidance
+- ISACA Production-Like Environment guidance
+- ISACA Vendor Abandonment guidance
+- FIPS 140-3 (Security Requirements for Cryptographic Modules)

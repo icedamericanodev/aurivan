@@ -2202,6 +2202,738 @@
         "Key-staff retention"
       ],
       "_provenance": "Authored from concept: 'M&A IT integration governance per ISACA M&A IT Integration guidance and OCC Bulletin 2017-21'. Public sources: ISACA, OCC. Scenario specifics (national bank acquiring regional, 90 branches, 1.1M customers, $840M assets, 24-month integration, 14 integrations, 340 custom rules, 18 in-flight projects) invented for this question."
+    },
+    {
+      "id": "d3_061",
+      "domain": 3,
+      "subtopic": "CI/CD Secret Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST manages secrets (API keys, credentials, tokens) used by CI/CD pipelines?",
+      "options": {
+        "A": "Store secrets as plaintext environment variables in the repository to ensure they are available across all jobs.",
+        "B": "Centralize secrets in a vault with short-lived dynamic credentials and audited access from pipeline workloads.",
+        "C": "Email secrets to developers who manually paste them into pipeline configuration files when needed each release.",
+        "D": "Restrict secrets to a single named administrator who personally runs all production deployments from a private machine."
+      },
+      "correct": "B",
+      "key_concept": "CI/CD secret management = centralized vault + short-lived dynamic credentials + audited access. Plaintext-in-repo, email distribution, and single-admin bottlenecks each fail on a different control dimension (confidentiality, traceability, or availability).",
+      "pre_read": "For CI/CD secret-management questions, anchor on \"vault + short-lived + audited.\" Distractors propose plaintext, email, or bottleneck patterns that fail confidentiality, traceability, or availability.",
+      "correct_explanation": "HashiCorp Vault, CyberArk Conjur, and NIST SP 800-218 (SSDF v1.1) all establish centralized secret management with short-lived dynamic credentials and audited access as the canonical control for CI/CD secrets. The pipeline workload authenticates to the vault, receives a short-lived credential, uses it for the deploy, and the credential expires within minutes. Option A's plaintext-in-repo is a recurring security incident vector (search engines and bots scan public repositories for committed secrets). Option C's email distribution lacks audit trail and exposes secrets to email retention and unauthorized forwarding. Option D's single-admin bottleneck creates an availability and key-person risk that breaks under absences and audit-trail expectations.",
+      "wrong_explanations": {
+        "A": "Plaintext secrets in a repository are a recurring security incident vector. Repositories may go public, be cloned, or have their history examined; once committed, secrets are effectively compromised.",
+        "C": "Email distribution lacks audit trail, has retention/forwarding risk, and creates manual error opportunities. Vault automation eliminates all three weaknesses.",
+        "D": "Single-admin bottlenecks fail on availability (one person's absence halts deployments) and audit traceability (the firm cannot demonstrate independent authorization for each deploy)."
+      },
+      "tips": [
+        "Trap is A — \"plaintext environment variables\" is alarmingly common in early-stage projects but it's exactly the pattern that produces repository-leak incidents.",
+        "CI/CD secrets = VAULT + SHORT-LIVED + AUDITED. Three properties; missing any creates a different failure mode.",
+        "Exam-day shortcut: any CI/CD secret question is answered by the option naming CENTRALIZED VAULT with DYNAMIC CREDENTIALS; plaintext, email, and personal-admin answers are all weak."
+      ],
+      "framework_ref": "HashiCorp Vault; CyberArk Conjur; ISACA Secrets Management guidance; NIST SP 800-218 (SSDF v1.1)",
+      "related_concepts": [
+        "CI/CD secrets",
+        "Vault",
+        "Dynamic credentials",
+        "Secret management"
+      ],
+      "_provenance": "Authored from concept: 'CI/CD secret management per HashiCorp Vault, CyberArk Conjur, NIST SSDF'. Public sources: HashiCorp, CyberArk, NIST SP 800-218."
+    },
+    {
+      "id": "d3_062",
+      "domain": 3,
+      "subtopic": "Container Runtime — Admission Controllers",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST prevents non-compliant container images from running in a Kubernetes production cluster?",
+      "options": {
+        "A": "Admission controllers (e.g., OPA Gatekeeper) enforce image-signing, registry, and policy constraints before pods are scheduled.",
+        "B": "A daily cron job scans running pods and emails violations to the platform team for manual review during business hours.",
+        "C": "A weekly external scan of cluster images checks against policy and reports findings to the security team only.",
+        "D": "Developers self-attest in the deployment manifest that the image meets all platform policies before submitting it."
+      },
+      "correct": "A",
+      "key_concept": "Kubernetes admission controllers (OPA Gatekeeper, Kyverno) enforce policy BEFORE pods are scheduled — prevention, not detection. Cron-job scanning, weekly scans, and self-attestation are detection or trust-based controls that miss real-time non-compliance.",
+      "pre_read": "For Kubernetes admission-control questions, anchor on \"enforce at admission, before scheduling.\" Periodic scans and self-attestation are detection or trust patterns; admission controllers are prevention.",
+      "correct_explanation": "Kubernetes Admission Controllers (built-in plus extensions like OPA Gatekeeper, Kyverno) intercept API server requests after authentication/authorization but before persistence — enforcing policy constraints like required image signatures (covered in d3_033), approved registries, resource limits, and security contexts BEFORE pods are scheduled. Option B's cron scan is detection (after the fact); a non-compliant pod has already run. Option C's weekly external scan has even worse latency. Option D's self-attestation is a trust control with no enforcement; developers can simply lie or be mistaken about compliance.",
+      "wrong_explanations": {
+        "B": "Cron scanning detects non-compliance AFTER pods are running. A vulnerable or unsigned image can serve traffic for hours before the next cron run identifies it.",
+        "C": "Weekly cadence is far too slow for production Kubernetes clusters where pods are created continuously. Non-compliant pods run unobstructed between scan cycles.",
+        "D": "Self-attestation is a trust control with no enforcement. Developers can claim compliance without verification; the cluster has no way to confirm or block non-compliant images."
+      },
+      "tips": [
+        "Trap is D — \"developer self-attestation\" sounds collaborative and matches early-DevOps culture, but it provides no enforcement; admission controllers block at the point of scheduling.",
+        "Admission controllers = enforce policy BEFORE scheduling. Prevention, not detection.",
+        "Exam-day shortcut: any Kubernetes-runtime question about preventing bad images in production is answered by the option naming ADMISSION CONTROLLERS or policy-engine ENFORCEMENT; periodic scans and trust answers are weaker."
+      ],
+      "framework_ref": "Kubernetes Admission Controllers; OPA Gatekeeper; Sigstore / Cosign; ISACA Container Security guidance",
+      "related_concepts": [
+        "Admission controllers",
+        "OPA Gatekeeper",
+        "Kubernetes",
+        "Policy as code"
+      ],
+      "_provenance": "Authored from concept: 'Kubernetes admission controllers for image policy enforcement'. Public sources: Kubernetes docs, OPA Gatekeeper, Sigstore."
+    },
+    {
+      "id": "d3_063",
+      "domain": 3,
+      "subtopic": "GitOps Deployment Model",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic MOST distinguishes a GitOps deployment model from a traditional CI/CD pipeline?",
+      "options": {
+        "A": "GitOps replaces all build automation, eliminating the need for CI tests, code review, or pre-deployment quality checks.",
+        "B": "GitOps uses manual operator commands during deployment to give the team direct visibility into each cluster change as it happens.",
+        "C": "Git is the single source of truth; an operator continuously reconciles actual cluster state to the declared Git state automatically.",
+        "D": "GitOps requires that production credentials be committed to the Git repository so operators can deploy directly to clusters without secrets."
+      },
+      "correct": "C",
+      "key_concept": "GitOps = Git as single source of truth + operator continuously reconciles actual state to declared state. CI/CD is push-based (pipeline pushes to cluster); GitOps is pull-based (operator pulls from Git). Credentials-in-Git is the textbook anti-pattern; manual-operator-commands and no-CI both misread GitOps.",
+      "pre_read": "For GitOps questions, anchor on \"Git as truth + operator reconciles + pull-based.\" Distractors propose no-CI, manual-deploy, or credentials-in-Git that all violate the model.",
+      "correct_explanation": "GitOps Working Group (CNCF), Argo CD, and Flux CD all establish GitOps as a model where Git is the single source of truth for declared infrastructure and application state, and an in-cluster operator continuously reconciles the actual cluster state to match. This is pull-based (operator polls Git) rather than push-based (CI/CD pipeline pushes to cluster), giving advantages in security (cluster credentials never leave the cluster), auditability (every change is a Git commit with author and review), and rollback (revert the commit). Option A misreads GitOps; CI/CD activities (test, review, build) still happen, just the deployment mechanism changes. Option B contradicts the model (continuous automated reconciliation, not manual commands). Option D is the textbook anti-pattern (credentials are NEVER committed to Git).",
+      "wrong_explanations": {
+        "A": "GitOps changes the deployment mechanism (from push to pull) but doesn't eliminate CI activities. Tests, code review, and build still happen; only the path from Git to cluster differs.",
+        "B": "Manual operator commands contradict GitOps. The operator runs continuously and reconciles state without human intervention; manual commands are bypasses, not the model.",
+        "D": "Committing production credentials to Git is a textbook anti-pattern (covered in d3_061). GitOps actually IMPROVES credential hygiene because credentials remain in the cluster; only the declared state lives in Git."
+      },
+      "tips": [
+        "Trap is D — \"credentials in Git\" is a real anti-pattern, and a candidate who doesn't know GitOps may assume it's how GitOps works; in fact GitOps moves credentials OUT of the pipeline, not into Git.",
+        "GitOps = Git as truth + operator reconciles + pull-based. Three properties define the model; CI activities continue alongside.",
+        "Exam-day shortcut: any GitOps question is answered by the option naming GIT AS TRUTH + CONTINUOUS RECONCILIATION; manual-deploy and credentials-in-Git answers misread the model."
+      ],
+      "framework_ref": "GitOps Working Group (CNCF); Argo CD; Flux CD; ISACA GitOps Audit guidance",
+      "related_concepts": [
+        "GitOps",
+        "Argo CD",
+        "Flux CD",
+        "Continuous reconciliation"
+      ],
+      "_provenance": "Authored from concept: 'GitOps deployment model per CNCF GitOps Working Group, Argo CD, Flux CD'. Public sources: CNCF, Argo, Flux."
+    },
+    {
+      "id": "d3_064",
+      "domain": 3,
+      "subtopic": "Code Review Effectiveness — Pull Request Patterns",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which practice MOST increases pull-request code-review effectiveness?",
+      "options": {
+        "A": "Have one designated reviewer approve all PRs from each author to maintain code-style consistency across the author's contributions.",
+        "B": "Require unanimous approval from every team member before merging any pull request to the trunk branch in any repository.",
+        "C": "Approve PRs based solely on whether the CI build passes; manual review of code changes is unnecessary overhead in a CI-rich workflow.",
+        "D": "Keep PRs small and focused, with at least one independent reviewer engaged before automated checks run for code feedback."
+      },
+      "correct": "D",
+      "key_concept": "Effective code review = small focused PRs + independent reviewer + early engagement. Single-reviewer-per-author breaks independence; unanimous approval creates bottleneck and reviewer fatigue; CI-only-approval skips human judgment on design and security.",
+      "pre_read": "For code-review questions, anchor on \"small + focused + independent reviewer.\" DORA research shows small PRs review faster, find more defects, and produce better feedback quality.",
+      "correct_explanation": "DORA / Accelerate research and ISACA Code Review Effectiveness guidance establish that small, focused pull requests (typically under 400 lines changed) reviewed by at least one independent reviewer produce the highest defect-detection rates and the best feedback quality. Reviewer engagement should happen early — before extensive automated checks — so feedback can shape direction rather than just confirm completion. Option A creates a reviewer monoculture (one person reviews each author) that loses the benefits of diverse perspectives and may amplify a single reviewer's blind spots. Option B's unanimous approval creates reviewer fatigue and bottleneck; team-size scales poorly. Option C's CI-only-approval skips human judgment on design quality, security implications, and contextual concerns that automated checks miss.",
+      "wrong_explanations": {
+        "A": "One-designated-reviewer-per-author breaks independence and diversity of perspective. Defects the designated reviewer misses become systematic blind spots.",
+        "B": "Unanimous approval creates reviewer fatigue (everyone must review every PR) and bottlenecks (any single absence halts merges). Scales poorly past small teams.",
+        "C": "CI catches mechanical issues (syntax, tests, style) but misses design quality, security context, and architectural concerns. Human review complements CI; it doesn't substitute for it."
+      },
+      "tips": [
+        "Trap is A or B — A (\"one designated reviewer per author for consistency\") breaks reviewer independence; B (\"unanimous approval\") breaks scale via fatigue and bottleneck. Both fail effective review, on different dimensions.",
+        "Code review = small + focused + independent + early. Four properties; DORA data shows each contributes to effectiveness.",
+        "Exam-day shortcut: any code-review question is answered by the option naming SMALL PRs and INDEPENDENT REVIEWER; single-reviewer-per-author and unanimous-approval answers fail on independence or scale."
+      ],
+      "framework_ref": "DORA / Accelerate (DevOps Research and Assessment); ISACA Code Review Effectiveness guidance; OWASP SAMM (Software Assurance Maturity Model)",
+      "related_concepts": [
+        "Code review",
+        "Pull request",
+        "DORA",
+        "Reviewer independence"
+      ],
+      "_provenance": "Authored from concept: 'Code review effectiveness per DORA research and OWASP SAMM'. Public sources: DORA, OWASP SAMM, ISACA guidance."
+    },
+    {
+      "id": "d3_065",
+      "domain": 3,
+      "subtopic": "Test Pyramid — Suite Composition",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which test-suite composition BEST reflects the test pyramid for cost-effective coverage?",
+      "options": {
+        "A": "Roughly equal counts of unit, integration, and end-to-end tests so that all levels are equally exercised in every build cycle.",
+        "B": "Many fast unit tests at the base, fewer integration tests in the middle, fewest end-to-end tests at the top of the pyramid.",
+        "C": "Skip unit tests because they verify obvious behavior; concentrate on end-to-end tests that mirror real user journeys through the system.",
+        "D": "Use only end-to-end tests; unit and integration tests are redundant if end-to-end tests pass without errors during a build cycle."
+      },
+      "correct": "B",
+      "key_concept": "Test pyramid = many fast unit tests + fewer integration tests + fewest E2E tests. Unit tests are fast and pinpoint defects; E2E tests are slow and find integration issues but make root-cause hard. Equal-count, skip-unit, or only-E2E all invert the pyramid and waste cycle time.",
+      "pre_read": "For test-pyramid questions, anchor on \"shape: wide base, narrow top.\" Many cheap unit tests; few expensive E2E tests. Inverted pyramids (only-E2E) and equal-cost layers both inflate test cycle time without proportional coverage gain.",
+      "correct_explanation": "ISO/IEC 29119 (Software Testing), ISTQB Foundation Level Syllabus, and ISACA Test Pyramid guidance all establish the test pyramid: many fast unit tests at the base (cheap to write, fast to run, pinpoint defects), fewer integration tests in the middle (verify components work together), and fewest end-to-end tests at the top (verify whole-system behavior but slow and brittle). Option A's equal-count inflates cycle time because E2E tests are typically 100-1000x slower than unit tests. Option C's skip-unit forgoes the fast feedback loop that catches most defects cheaply. Option D's only-E2E (inverted pyramid or ice cream cone) is the textbook anti-pattern producing slow brittle suites that fail to pinpoint root causes.",
+      "wrong_explanations": {
+        "A": "Equal-count inflates cycle time. E2E tests are typically 100-1000x slower than unit tests; running them in equal volume to unit tests makes test cycles unmanageably long.",
+        "C": "Skipping unit tests removes the fast feedback loop. E2E tests verify integrated behavior but are slow and don't pinpoint root cause; unit tests catch most defects cheaply.",
+        "D": "Only-E2E is the inverted pyramid anti-pattern — slow, brittle, and unable to pinpoint defects. Most test failures are 'something deep in the system' with no clear diagnostic."
+      },
+      "tips": [
+        "Trap is D — \"only end-to-end tests\" sounds comprehensive (\"we test the real user journey!\") but it's the textbook inverted-pyramid anti-pattern that produces slow, brittle suites.",
+        "Test pyramid = wide base (unit) + narrow top (E2E). Many fast pinpoint tests; few slow whole-system tests.",
+        "Exam-day shortcut: any test-pyramid question is answered by the option naming MORE unit + FEWER integration + FEWEST E2E; equal-count or only-E2E answers are anti-patterns."
+      ],
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Foundation Level Syllabus; ISACA Test Pyramid guidance",
+      "related_concepts": [
+        "Test pyramid",
+        "Unit tests",
+        "Integration tests",
+        "E2E tests"
+      ],
+      "_provenance": "Authored from concept: 'Test pyramid suite composition per ISO/IEC 29119 and ISTQB'. Public sources: ISO/IEC 29119, ISTQB, ISACA guidance."
+    },
+    {
+      "id": "d3_066",
+      "domain": 3,
+      "subtopic": "Database Query Performance — Ongoing Auditing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST supports ongoing audit of database query performance and slow-query trends?",
+      "options": {
+        "A": "Capture query execution metrics into a monitored time-series with alerts on slow-query trend regressions over time.",
+        "B": "Run a manual EXPLAIN PLAN on each query in production whenever performance complaints arise from end users or operators.",
+        "C": "Disable query logging in production to maximize throughput; investigate performance only after major customer-facing incidents occur.",
+        "D": "Restart the database every weekend to clear any accumulated query plan cache and prevent gradual performance drift entirely."
+      },
+      "correct": "A",
+      "key_concept": "Query performance auditing = continuous metric capture + time-series storage + trend alerts. Reactive EXPLAIN, disabled logging, and superstitious restarts all fail to detect regressions before they affect users.",
+      "pre_read": "For query-performance audit questions, anchor on \"continuous capture + trend monitoring + alerts.\" Reactive, disabled-logging, and restart approaches each fail in distinct ways.",
+      "correct_explanation": "ISACA Database Performance Audit guidance and COBIT 2019 BAI04 (Managed Availability and Capacity) establish continuous query performance monitoring as the appropriate audit control: capture per-query execution metrics (rows scanned, time spent, plan stability) into a time-series store, alert on regressions (a query that ran in 50ms last week now runs in 5s), and trend slow-query distributions over time to detect creeping degradation. Option B's manual EXPLAIN is reactive — by the time users complain, the issue is already affecting them. Option C's disabled logging deliberately removes the data needed to investigate, gambling on no incidents. Option D's weekly restart is superstition (clears plan cache but doesn't address actual query inefficiency) and introduces availability risk.",
+      "wrong_explanations": {
+        "B": "Manual EXPLAIN is reactive. By the time users complain, performance has already affected them; effective auditing detects regressions before users notice.",
+        "C": "Disabled query logging deliberately removes the data needed to investigate. The throughput gain is marginal; the investigative cost is high when incidents occur.",
+        "D": "Weekly restart is superstition. It clears plan cache but doesn't address query inefficiency, table-statistics staleness, or schema-design issues; it introduces availability risk without solving the underlying problem."
+      },
+      "tips": [
+        "Trap is B — \"manual EXPLAIN PLAN when complaints arise\" feels like classic DBA work but it's reactive; modern observability captures metrics continuously so regressions are caught before users see them.",
+        "Query performance audit = CONTINUOUS METRICS + TIME-SERIES + ALERTS. Three elements; missing any makes auditing reactive.",
+        "Exam-day shortcut: any database-performance audit question is answered by the option naming CONTINUOUS METRIC CAPTURE with TREND ALERTS; reactive manual approaches are weak."
+      ],
+      "framework_ref": "ISACA Database Performance Audit guidance; COBIT 2019 BAI04 (Managed Availability and Capacity); ISACA Database Audit guidance",
+      "related_concepts": [
+        "Query performance",
+        "Database observability",
+        "Slow-query log",
+        "Performance regression"
+      ],
+      "_provenance": "Authored from concept: 'Database query performance audit per ISACA Database Performance Audit guidance and COBIT 2019 BAI04'. Public sources: ISACA, COBIT 2019."
+    },
+    {
+      "id": "d3_067",
+      "domain": 3,
+      "subtopic": "Encryption Key Management — Application Data",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST appropriately governs encryption keys protecting application data at rest?",
+      "options": {
+        "A": "Store keys in the same database tables as the encrypted data so they are co-located for fast lookups by the application.",
+        "B": "Hardcode the encryption keys in the application source code so all developers have access without lookup overhead at runtime.",
+        "C": "Use a key management service (KMS or HSM) with documented key rotation, separation of duties, and audit logging.",
+        "D": "Distribute keys to all developers' personal devices so each engineer can decrypt production data when troubleshooting incidents."
+      },
+      "correct": "C",
+      "key_concept": "Encryption key management for application data = dedicated KMS or HSM + key rotation + separation of duties + audit logging. Keys with data, hardcoded keys, and developer-distributed keys each violate fundamental cryptographic principles.",
+      "pre_read": "For key-management questions, anchor on \"KMS/HSM + rotation + separation of duties + audit.\" Keys must be protected by controls independent of the data they protect.",
+      "correct_explanation": "NIST SP 800-57 (Recommendation for Key Management), ISACA Encryption Key Management guidance, and FIPS 140-3 (for HSMs) all establish that encryption keys must be managed in a system independent of the encrypted data, with documented key rotation policies, separation of duties between data administrators and key administrators, and audit logging of every key-management operation. Option A's keys-in-database co-locates keys with data, defeating encryption entirely (anyone who reads the database reads both keys and ciphertext). Option B's hardcoded keys exposes them to every developer with source-code access and to anyone who decompiles the binary. Option D's distributed-to-developers expands the attack surface dramatically and lacks audit trail.",
+      "wrong_explanations": {
+        "A": "Keys co-located with encrypted data defeat encryption. Anyone who reads the database reads both the keys and the ciphertext, effectively eliminating the protection.",
+        "B": "Hardcoded keys are exposed to every developer with source-code access and to anyone who decompiles the binary. Rotation is impractical because every rotation requires a code release.",
+        "D": "Distributed-to-developers expands the attack surface. Each developer's device becomes a target; key rotation is impractical at scale; audit trail is fragmented across devices."
+      },
+      "tips": [
+        "Trap is A — \"keys co-located with data for fast lookup\" sounds efficient but it's the textbook violation that defeats encryption entirely; keys must be PROTECTED INDEPENDENTLY.",
+        "Key management = dedicated KMS/HSM + rotation + separation of duties + audit. Four properties; missing any breaks the cryptographic model.",
+        "Exam-day shortcut: any key-management question is answered by the option naming KMS/HSM with rotation and separation of duties; co-location, hardcoding, or distribution answers all fail."
+      ],
+      "framework_ref": "NIST SP 800-57 (Recommendation for Key Management); ISACA Encryption Key Management guidance; FIPS 140-3 (Security Requirements for Cryptographic Modules)",
+      "related_concepts": [
+        "Key management",
+        "KMS",
+        "HSM",
+        "NIST SP 800-57",
+        "Key rotation"
+      ],
+      "_provenance": "Authored from concept: 'Application data encryption key management per NIST SP 800-57'. Public sources: NIST SP 800-57, ISACA guidance."
+    },
+    {
+      "id": "d3_068",
+      "domain": 3,
+      "subtopic": "Application Logging — Security Monitoring & Audit Traceability",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which logging practice BEST supports both security monitoring and audit traceability?",
+      "options": {
+        "A": "Log every user action including raw password attempts to a flat file for full session reconstruction in case of dispute.",
+        "B": "Skip application logging entirely because the infrastructure logs at the load balancer already capture every transaction.",
+        "C": "Sample 1% of application events to control storage costs and let real-time monitoring detect material issues elsewhere.",
+        "D": "Log security-relevant events with structured format, integrity protection, time synchronization, and centralized retention."
+      },
+      "correct": "D",
+      "key_concept": "Effective logging = security-relevant events + structured format + integrity protection + time sync + centralized retention. Logging passwords creates new compromise vectors; logging-skipping forgoes audit evidence; aggressive sampling misses anomalies.",
+      "pre_read": "For application-logging questions, anchor on \"security-relevant + structured + integrity-protected + time-synced + centralized.\" Distractors propose log-everything-including-secrets, log-nothing, or undersample patterns.",
+      "correct_explanation": "NIST SP 800-92 (Guide to Computer Security Log Management), OWASP Application Security Verification Standard (ASVS), and ISACA Application Controls guidance establish five properties of effective application logging: (1) capture security-relevant events (authentication outcomes, authorization decisions, data access, configuration changes) — not every keystroke; (2) structured format (JSON, key-value) for parseability; (3) integrity protection (append-only or signed) so logs cannot be tampered post-incident; (4) time synchronization (NTP) so cross-system correlation works; (5) centralized retention (SIEM or log aggregator) with defined retention policy. Option A's log-passwords is catastrophic — passwords are credentials, not events. Option B's skip-app-logging forgoes the application-level context infrastructure logs cannot provide. Option C's 1% sampling misses anomalies (the rare malicious request is likely sampled out).",
+      "wrong_explanations": {
+        "A": "Logging raw password attempts creates a new credential-store the firm must protect with the same rigor as the credential store itself. Most logging-best-practice guidance explicitly excludes credentials.",
+        "B": "Infrastructure logs (load balancer, network) capture transport-layer data but miss application-layer context: who authenticated, what action was attempted, whether authorization succeeded.",
+        "C": "1% sampling misses anomalies. Security events are by nature rare; sampling at 1% means most security events are silently dropped, defeating the monitoring purpose."
+      },
+      "tips": [
+        "Trap is A — \"log every action including passwords\" sounds thorough but logging credentials creates a SECOND credential store the firm must protect; standard guidance explicitly excludes credentials.",
+        "Logging = security-relevant + structured + integrity-protected + time-synced + centralized. Five properties; missing any reduces value or creates risk.",
+        "Exam-day shortcut: any application-logging question is answered by the option naming STRUCTURED + INTEGRITY-PROTECTED + CENTRALIZED; log-everything or skip-app-logging answers fail on different axes."
+      ],
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); OWASP Application Security Verification Standard (ASVS); ISACA Application Controls guidance",
+      "related_concepts": [
+        "Application logging",
+        "Security monitoring",
+        "Audit traceability",
+        "SIEM"
+      ],
+      "_provenance": "Authored from concept: 'Application logging for security and audit per NIST SP 800-92 and OWASP ASVS'. Public sources: NIST SP 800-92, OWASP ASVS."
+    },
+    {
+      "id": "d3_069",
+      "domain": 3,
+      "subtopic": "Data Classification — Development and Test Environments",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST applies the firm's data classification policy to development and test environments?",
+      "options": {
+        "A": "Treat development and test environments as unclassified, since they don't directly serve production customer transactions.",
+        "B": "Inherit the source data's classification into development and test environments and apply controls proportional to sensitivity.",
+        "C": "Apply only the most restrictive classification to all data in non-production, regardless of the actual source classification.",
+        "D": "Allow developers to set classification per project at their discretion, balancing convenience against perceived risk in each case."
+      },
+      "correct": "B",
+      "key_concept": "Non-production data inherits source classification. Controls are then applied proportional to sensitivity (masking, access restrictions, encryption). Treating non-prod as unclassified ignores the underlying data's nature; uniform-strict over-controls; developer-discretion lacks accountability.",
+      "pre_read": "For data-classification-in-non-prod questions, anchor on \"inherit + proportional controls.\" Production data does not lose its sensitivity by being copied; classification follows the data.",
+      "correct_explanation": "ISACA Application Controls guidance and ISO/IEC 27001 Annex A all establish that data classification follows the data, not the environment. Production PII copied to a test environment remains PII; production financial data copied to development remains regulated. The appropriate control is to inherit the source classification and apply controls proportional to sensitivity — masking/pseudonymization (covered in d3_010), access restrictions, encryption, retention limits. Option A's treat-as-unclassified is exactly the policy gap that produces test-environment breaches. Option C's uniform-most-restrictive over-controls low-sensitivity data, creating friction. Option D's developer-discretion lacks accountability; classification decisions should be policy-driven, not per-engineer.",
+      "wrong_explanations": {
+        "A": "Treating non-prod as unclassified ignores that the underlying data may be highly sensitive. A test database loaded from production retains all the sensitivity of production; classification follows the data.",
+        "C": "Applying only the most restrictive classification over-controls low-sensitivity data, creating friction without proportional benefit. Controls should match sensitivity, not be uniformly maximal.",
+        "D": "Developer-discretion classification lacks accountability and produces inconsistency. The same dataset may be classified differently across projects; firm-wide policy should drive classification."
+      },
+      "tips": [
+        "Trap is A — \"non-prod is unclassified\" matches the common-but-wrong intuition that test environments don't matter; in fact production data copied to test retains all its sensitivity.",
+        "Non-prod classification = INHERIT from source + PROPORTIONAL controls. Treat-as-unclassified, uniform-maximum, and developer-discretion all fail.",
+        "Exam-day shortcut: any data-classification-environment question is answered by the option naming CLASSIFICATION FOLLOWS DATA; environment-based exemptions are wrong."
+      ],
+      "framework_ref": "ISACA Application Controls guidance; ISO/IEC 27001:2022 (Information Security Management Systems); ISACA Data Integrity Controls guidance",
+      "related_concepts": [
+        "Data classification",
+        "Non-production environments",
+        "Data masking",
+        "Sensitivity"
+      ],
+      "_provenance": "Authored from concept: 'Data classification inheritance in non-production environments per ISACA Application Controls guidance and ISO/IEC 27001'. Public sources: ISACA, ISO/IEC 27001."
+    },
+    {
+      "id": "d3_070",
+      "domain": 3,
+      "subtopic": "Third-Party Component Vulnerability Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST effectively manages vulnerabilities in third-party application components over time?",
+      "options": {
+        "A": "Maintain an SBOM, subscribe to vulnerability feeds, and run automated remediation workflows on each disclosed CVE.",
+        "B": "Wait for the vendor to push security patches and accept the timing imposed by the vendor's release cadence regardless.",
+        "C": "Replace third-party components with custom-built equivalents to eliminate dependency on external maintainers and patch cycles.",
+        "D": "Conduct annual vulnerability assessments of the third-party stack to identify any accumulated security findings against the firm."
+      },
+      "correct": "A",
+      "key_concept": "Third-party vulnerability management = SBOM + vulnerability feeds + automated remediation workflows. Wait-for-vendor is passive; replace-with-custom misallocates engineering effort; annual assessment is too slow given CVE velocity.",
+      "pre_read": "For third-party vulnerability questions, anchor on \"SBOM + feeds + automated remediation.\" Periodic and passive approaches don't keep pace with CVE disclosure velocity.",
+      "correct_explanation": "NIST SP 800-218 (SSDF v1.1), CISA Software Bill of Materials guidance, and OWASP DevSecOps Maturity Model (DSOMM) all establish that effective third-party vulnerability management combines (1) maintained SBOM (covered in d3_023) so the firm knows what it has, (2) subscription to vulnerability feeds (NVD/CVE, GitHub Advisory, vendor advisories, OSV) so it knows about disclosures quickly, and (3) automated remediation workflows (PR creation, prioritization, deployment) so action follows knowledge. Option B's wait-for-vendor is passive and accepts the vendor's risk tolerance over the firm's. Option C's replace-with-custom moves dependency from external to internal but introduces large engineering burden and doesn't eliminate vulnerability (in-house code has its own CVEs). Option D's annual assessment is far too slow given hundreds of daily CVE disclosures.",
+      "wrong_explanations": {
+        "B": "Wait-for-vendor accepts the vendor's patching cadence over the firm's risk profile. For critical CVEs, the firm may need to act before the vendor (workaround, isolation) rather than wait.",
+        "C": "Replacing third-party components with custom-built versions misallocates engineering effort. Custom code introduces its own CVEs; the work is high-cost without proportional risk reduction.",
+        "D": "Annual assessment is far too slow given CVE disclosure velocity. By the time the annual review surfaces issues, vulnerable components have been in production for up to 365 days."
+      },
+      "tips": [
+        "Trap is B — \"wait for the vendor to push patches\" feels appropriately deferential but it accepts the vendor's risk tolerance; the firm's risk profile may demand earlier action (workaround, isolation).",
+        "Third-party vulnerability management = SBOM + feeds + automated remediation. Three elements; passive or periodic approaches fail.",
+        "Exam-day shortcut: any third-party vulnerability question is answered by the option naming SBOM-driven AUTOMATED remediation; wait-for-vendor and annual-assessment answers don't keep pace."
+      ],
+      "framework_ref": "NIST SP 800-218 (SSDF v1.1); CISA Software Bill of Materials guidance; OWASP DevSecOps Maturity Model (DSOMM); CycloneDX SBOM Specification",
+      "related_concepts": [
+        "Third-party vulnerability management",
+        "SBOM",
+        "CVE",
+        "Automated remediation"
+      ],
+      "_provenance": "Authored from concept: 'Third-party vulnerability management per NIST SSDF and CISA SBOM guidance'. Public sources: NIST SP 800-218, CISA, OWASP DSOMM."
+    },
+    {
+      "id": "d3_071",
+      "domain": 3,
+      "subtopic": "Privileged Access — SDLC Tools (CI/CD, Source Control, Registry)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST appropriately governs administrator access to CI/CD, source control, and container registry systems?",
+      "options": {
+        "A": "Grant developers permanent administrator access to all SDLC tools so they can self-serve without bottlenecks during work.",
+        "B": "Use shared service accounts with static passwords stored in a wiki page accessible to all engineering team members.",
+        "C": "Apply least privilege with just-in-time elevation, MFA, individual accountability, and audit logging across all SDLC tools.",
+        "D": "Disable all administrator access in CI/CD and source control; engineers operate only through the user-level web interface."
+      },
+      "correct": "C",
+      "key_concept": "SDLC admin access = least privilege + JIT elevation + MFA + individual accountability + audit logging. Permanent admin, shared accounts, and full-disable each fail on a different control dimension (least privilege, accountability, or availability).",
+      "pre_read": "For SDLC privileged-access questions, anchor on \"least privilege + JIT + MFA + individual + audit.\" The five-element pattern applies to ALL privileged-access controls; SDLC tools are not exempt.",
+      "correct_explanation": "NIST SP 800-53 AC-6 (Least Privilege), ISACA Secrets Management guidance, and ISACA DevSecOps Audit guidance all establish standard privileged-access controls for SDLC tools: least privilege (admin only when needed, scoped to specific operations), just-in-time elevation (request, approve, time-limited grant), MFA, individual accountability (named users, no shared accounts), and full audit logging. SDLC tools have the same threat profile as production infrastructure — admin access to CI/CD effectively grants production deploy authority. Option A's permanent admin removes least-privilege protection. Option B's shared accounts destroy individual accountability. Option D's full disable destroys availability; engineers cannot operate the tools.",
+      "wrong_explanations": {
+        "A": "Permanent admin removes least-privilege protection. SDLC tools are the deploy path to production; admin access here is equivalent to production admin and should be treated as such.",
+        "B": "Shared service accounts with wiki-stored passwords destroy individual accountability, expose credentials broadly, and lack rotation. This is the textbook bad pattern at every level (credential hygiene, accountability, audit).",
+        "D": "Full disable destroys availability. Engineers need to operate the tools; the answer is privileged-access governance, not access elimination."
+      },
+      "tips": [
+        "Trap is A — \"developers as permanent admins for speed\" matches early-startup culture but it equates to permanent production-deploy authority; SDLC tools deserve the same privileged-access discipline as production.",
+        "SDLC admin = least privilege + JIT + MFA + individual + audit. Five-element pattern; SDLC tools are not exempt from production-grade privileged-access controls.",
+        "Exam-day shortcut: any privileged-access question (production or SDLC) is answered by the option naming LEAST PRIVILEGE + JIT + MFA + AUDIT; permanent-admin, shared-account, and full-disable answers each fail on a different dimension."
+      ],
+      "framework_ref": "NIST SP 800-53 AC-6 (Least Privilege); ISACA Secrets Management guidance; ISACA DevSecOps Audit guidance",
+      "related_concepts": [
+        "Privileged access",
+        "Least privilege",
+        "Just-in-time",
+        "SDLC security"
+      ],
+      "_provenance": "Authored from concept: 'Privileged access for SDLC tools per NIST SP 800-53 AC-6 and ISACA DevSecOps Audit guidance'. Public sources: NIST SP 800-53, ISACA."
+    },
+    {
+      "id": "d3_072",
+      "domain": 3,
+      "subtopic": "DORA Four Key Metrics — Software Delivery Performance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which set of metrics BEST measures software delivery performance per the DORA / Accelerate research?",
+      "options": {
+        "A": "Lines of code per week, defect count, story points completed, and code-review approval rate per developer over time.",
+        "B": "Number of meetings, team-member tenure, individual commit count, and developer satisfaction survey score quarterly.",
+        "C": "Production incidents per year, mean salary per engineer, security findings closed, and tool license utilization rates.",
+        "D": "Deployment frequency, lead time for changes, change failure rate, and mean time to restore service after incidents."
+      },
+      "correct": "D",
+      "key_concept": "DORA Four Key Metrics = Deployment Frequency + Lead Time for Changes + Change Failure Rate + Mean Time to Restore. Two throughput (frequency, lead time), two stability (failure rate, MTTR). LOC, defect count, meetings, and incidents-per-year are common-but-bad alternatives.",
+      "pre_read": "For DORA metric questions, anchor on the four canonical metrics: Deployment Frequency, Lead Time for Changes, Change Failure Rate, MTTR. Two throughput, two stability. Bad-metric alternatives proliferate.",
+      "correct_explanation": "DORA / Accelerate (DevOps Research and Assessment) and the DORA Four Key Metrics establish four metrics that together measure software delivery performance: (1) Deployment Frequency (how often the team deploys to production); (2) Lead Time for Changes (commit to production duration); (3) Change Failure Rate (percentage of changes causing failures); (4) Mean Time to Restore service (MTTR). The first two measure throughput (how fast); the last two measure stability (how reliable). High performers excel on all four. Option A's LOC + defect count + story points + approval rate are all easily-gameable activity metrics, not outcome metrics. Option B's meetings + tenure + commit count + satisfaction are individual or process metrics, not delivery performance. Option C mixes outcomes (incidents) with costs (salary, license) and finding closure (security), failing as a coherent set.",
+      "wrong_explanations": {
+        "A": "LOC, defect count, story points, and approval rate are activity metrics that are easily gamed and don't measure delivery outcomes. DORA's contribution is specifically to identify the four metrics that DO measure outcomes.",
+        "B": "Meetings, tenure, commit count, and satisfaction are individual or process metrics. They have value but don't measure software delivery performance.",
+        "C": "Incidents/year + salary + security findings + license utilization mixes outcome and cost dimensions; the set lacks coherence and doesn't isolate delivery performance."
+      },
+      "tips": [
+        "Trap is A — \"lines of code + defect count + story points\" matches metrics many candidates have seen in their orgs, but DORA explicitly identified them as poor proxies for actual delivery performance.",
+        "DORA Four Key Metrics = Deployment Frequency + Lead Time + Change Failure Rate + MTTR. Two throughput + two stability. Memorize the four.",
+        "Exam-day shortcut: any DORA-metric question is answered by the option naming all four canonical metrics; LOC, story points, and activity-count answers are common bad-metric distractors."
+      ],
+      "framework_ref": "DORA Four Key Metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, MTTR); DORA / Accelerate (DevOps Research and Assessment)",
+      "related_concepts": [
+        "DORA",
+        "Four Key Metrics",
+        "Software delivery performance",
+        "Accelerate"
+      ],
+      "_provenance": "Authored from concept: 'DORA Four Key Metrics per DORA / Accelerate research'. Public sources: DORA, Accelerate book."
+    },
+    {
+      "id": "d3_073",
+      "domain": 3,
+      "subtopic": "SaaS-to-SaaS Integration Governance — Sprawl",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which governance recommendation BEST addresses the SaaS-to-SaaS integration sprawl?",
+      "scenario_context": "A 6,000-employee professional services firm has deployed 47 SaaS applications across functions (HR, finance, project management, CRM, marketing automation, support). Many integrate directly: HR pushes employee changes to ERP; CRM pulls product data from PIM; marketing automation syncs with CRM and email platform. The IT team has discovered ~120 active point-to-point integrations, ~30 of which were set up by business teams without IT review. Data quality issues are surfacing, including an incident where a stale customer status field caused a billing error. The audit committee asked the IS auditor for governance recommendations.",
+      "options": {
+        "A": "Decommission all 47 SaaS applications and consolidate to a single ERP suite to eliminate inter-system data flows entirely.",
+        "B": "Establish integration governance: inventory all flows, data stewardship for shared entities, hub-and-spoke architecture, and review gates for new integrations.",
+        "C": "Allow each business team to continue managing its own integrations directly; IT review introduces unnecessary friction across functions.",
+        "D": "Move all integrations to a single chat-based notification model where users manually reconcile any data discrepancies as observed."
+      },
+      "correct": "B",
+      "key_concept": "SaaS integration sprawl governance = inventory + data stewardship + hub-and-spoke architecture + review gates. Decommission-and-consolidate is unrealistic; business-team self-management produced the sprawl; manual reconciliation doesn't scale.",
+      "pre_read": "For SaaS integration sprawl questions, anchor on \"inventory + stewardship + hub-and-spoke + review gates.\" Single-position answers (consolidate-everything, accept-the-sprawl, manualize-reconciliation) all fail.",
+      "correct_explanation": "DAMA-DMBOK 2nd Edition, ISACA Cloud Governance guidance, and COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance) establish four-element SaaS integration governance for sprawl: (1) inventory all flows (who sends what to whom, with what cadence and transformation); (2) data stewardship for shared entities (customer, employee, product — one steward per entity, governing its definition across systems); (3) hub-and-spoke architecture (integration platform or iPaaS) replacing point-to-point with controlled flows; (4) review gates for new integrations (any new flow goes through architecture and security review). Option A's decommission-and-consolidate is unrealistic — 47 best-of-breed SaaS apps cannot be replaced by one ERP without major capability loss. Option C accepts the very pattern that produced the sprawl. Option D abandons automated integration entirely.",
+      "wrong_explanations": {
+        "A": "Decommissioning 47 SaaS apps to consolidate to one ERP suite is operationally and economically unrealistic for a 6,000-employee firm. Best-of-breed SaaS provides capabilities a single ERP cannot match; the right answer is governance, not consolidation.",
+        "C": "Business-team self-management is exactly the pattern that produced the sprawl (30 of 120 integrations set up without IT review). Continuing it perpetuates the problem.",
+        "D": "Manual reconciliation through chat doesn't scale to 120 integrations across 6,000 employees. The firm needs automated, governed integration, not manual data triage."
+      },
+      "tips": [
+        "Trap is A — \"decommission and consolidate to one ERP\" pattern-matches \"simplify the architecture\" but it's unrealistic; the right answer is governance for diverse SaaS, not consolidation.",
+        "SaaS integration governance = INVENTORY + STEWARDSHIP + HUB-AND-SPOKE + REVIEW GATES. Four elements; missing any leaves a gap.",
+        "Exam-day shortcut: any SaaS sprawl question is answered by the option naming MULTI-ELEMENT GOVERNANCE; consolidate-everything, accept-sprawl, and manual-reconcile answers are all extremes."
+      ],
+      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Cloud Governance guidance; COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "related_concepts": [
+        "SaaS sprawl",
+        "Integration governance",
+        "Data stewardship",
+        "Hub and spoke",
+        "iPaaS"
+      ],
+      "_provenance": "Authored from concept: 'SaaS-to-SaaS integration governance per DAMA-DMBOK and ISACA Cloud Governance'. Public sources: DAMA, ISACA, COBIT 2019. Scenario specifics (6K employees, 47 SaaS apps, 120 integrations, 30 unreviewed, billing-error incident) invented for this question."
+    },
+    {
+      "id": "d3_074",
+      "domain": 3,
+      "subtopic": "AI-Augmented Code Generation — Governance",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST balances productivity gains against AI-augmented coding risks?",
+      "scenario_context": "A 2,200-engineer SaaS company adopted GitHub Copilot enterprise-wide six months ago. Engineering productivity improved 22% on commit-volume metrics. However, recent audits have surfaced: (a) ~3% of generated code includes uncited open-source patterns whose licenses haven't been verified; (b) some generated suggestions reference deprecated APIs producing latent runtime errors; (c) some engineers paste sensitive code (PII, secrets) into Copilot context window without firm-policy awareness. The CTO is satisfied with productivity gains; the CISO and legal counsel want guardrails. The IS auditor was asked to assess AI-augmented coding governance and recommend next steps.",
+      "options": {
+        "A": "Establish governance: license-scanning of generated code, context-window data-handling training, attribution/disclosure policy, and ongoing CVE/quality monitoring of suggestions.",
+        "B": "Disable Copilot enterprise-wide; AI-generated code introduces unmanageable risks that outweigh productivity gains for regulated firms across the board.",
+        "C": "Continue current state because the CTO's productivity metric (22% commit-volume gain) justifies the residual licensing and data-handling risks observed.",
+        "D": "Allow each team to set its own Copilot policy at its discretion based on the team's local risk appetite and project context."
+      },
+      "correct": "A",
+      "key_concept": "AI-augmented coding governance = license-scanning + context-window training + attribution/disclosure policy + ongoing CVE/quality monitoring. Disable-entirely overreaches; continue-with-CTO-metric ignores audit findings; team-discretion lacks consistency.",
+      "pre_read": "For AI-augmented coding questions, anchor on \"governance program over license, data-handling, attribution, and quality.\" Single-position responses (disable, continue, decentralize) all fail to address the four distinct risk vectors.",
+      "correct_explanation": "ISACA AI-Augmented Development guidance, NIST AI Risk Management Framework (AI RMF 1.0), and GitHub Copilot Trust Center documentation establish four-element governance for AI-augmented coding: (1) license-scanning of generated code (SCA tooling extended to AI-generated patterns) to catch license-contamination — d3_039 scope; (2) context-window data-handling training (engineers should know what NOT to paste into AI prompts: secrets, PII, regulated data); (3) attribution/disclosure policy (whether/how AI-generated portions are marked); (4) ongoing CVE/quality monitoring of generated code patterns. Option B's disable-entirely is over-correction that abandons productivity. Option C's CTO-position endorsement ignores the audit findings (licensing, deprecated APIs, sensitive data). Option D's team-discretion produces inconsistency and gaps; some teams will adopt strong controls, others will not.",
+      "wrong_explanations": {
+        "B": "Disable-entirely abandons productivity gains across the entire engineering organization. The audit findings are real but addressable through governance, not blanket prohibition.",
+        "C": "Endorsing the CTO's productivity metric while ignoring three documented audit findings (license risk, deprecated APIs, sensitive-data leakage) accepts substantive residual risk on the basis of one favorable indicator.",
+        "D": "Team-discretion produces inconsistency. Some teams will adopt strong governance; others will not. Cross-team incidents (license, data leakage) cannot be contained by per-team policies."
+      },
+      "tips": [
+        "Trap is C or B — opposing extremes. C (\"continue because productivity metric justifies\") accepts documented audit findings on the basis of a favorable indicator; B (\"disable entirely\") abandons productivity on the basis of audit findings. Governance integrates productivity AND risk, not optimizing one over the other.",
+        "AI-augmented coding governance = LICENSE-SCANNING + DATA-HANDLING TRAINING + ATTRIBUTION POLICY + ONGOING MONITORING. Four elements; each addresses a distinct risk vector.",
+        "Exam-day shortcut: any AI/Copilot-coding question is answered by the option naming GOVERNANCE PROGRAM with multiple controls; productivity-metric-only or disable-entirely answers are extremes."
+      ],
+      "framework_ref": "ISACA AI-Augmented Development guidance; NIST AI Risk Management Framework (AI RMF 1.0); GitHub Copilot Trust Center documentation; ISO/IEC 42001 (AI Management System)",
+      "related_concepts": [
+        "AI coding",
+        "Copilot",
+        "License contamination",
+        "Context window",
+        "AI governance"
+      ],
+      "_provenance": "Authored from concept: 'AI-augmented coding governance per ISACA AI-Augmented Development guidance, NIST AI RMF, GitHub Copilot documentation'. Public sources: ISACA, NIST, GitHub. Scenario specifics (2.2K engineers, 22% productivity, 3% license-uncited, deprecated-API suggestions, context-window data-paste incidents) invented for this question."
+    },
+    {
+      "id": "d3_075",
+      "domain": 3,
+      "subtopic": "Multi-Region Deployment Failure — Mid-Rollout Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which position MOST appropriately reflects sound multi-region rollout governance under the observed conditions?",
+      "scenario_context": "A B2B SaaS provider (5M end-user seats across 30K enterprise customers) deployed a major release globally at 03:00 UTC, sequenced across four regions (US-East 03:00, EU 04:00, APAC 05:00, US-West 06:00). At 05:30, US-East shows 22% error rates and EU shows 8%; APAC just received the release and is fine; US-West has not yet deployed. The release manager wants to proceed with US-West to maintain schedule; the on-call SRE wants to halt and roll back US-East and EU; the CIO is unreachable. The IS auditor was paged for an opinion before 06:00 cutover.",
+      "options": {
+        "A": "Proceed with US-West deployment to maintain schedule; investigate US-East and EU issues after the global rollout completes.",
+        "B": "Continue the rollout schedule but skip US-West entirely and re-deploy it next week after issues in other regions stabilize naturally.",
+        "C": "Halt US-West deployment, roll back US-East and EU per documented playbook, and convene the incident bridge for root-cause analysis.",
+        "D": "Authorize the release manager to make the decision based on operational considerations; the IS auditor should not influence go/no-go in real time."
+      },
+      "correct": "C",
+      "key_concept": "Multi-region failure mid-rollout = halt forward propagation + roll back affected regions + convene incident response. Continuing-the-schedule under known failure compounds blast radius; skip-but-continue still propagates instability; defer-to-release-manager abandons auditor independence.",
+      "pre_read": "For multi-region rollout failure questions, anchor on \"halt forward propagation + roll back + investigate.\" Schedule pressure should NEVER drive continued deployment when failure signals are clear.",
+      "correct_explanation": "ITIL 4 Incident Management, NIST SP 800-61 (Computer Security Incident Handling Guide), and ISACA Software Audit guidance all establish that multi-region rollouts have an explicit blast-radius reduction purpose: the staged sequence allows the team to detect issues in earlier regions and prevent propagation to later ones. With US-East at 22% error rate (vs typical <1% baseline) and EU at 8%, the failure signal is unambiguous. The appropriate response is: (1) halt US-West to prevent propagation; (2) roll back US-East and EU per the documented playbook (covered in d3_054); (3) convene the incident bridge for root cause. Option A treats schedule as more important than known customer-facing failures. Option B's skip-but-continue still leaves US-East and EU broken. Option D abandons auditor independence; this is exactly the moment when independent voice matters.",
+      "wrong_explanations": {
+        "A": "Proceeding with US-West under known regional failures contradicts the entire purpose of staged multi-region rollouts (blast-radius reduction). Schedule is not a customer-facing failure justification.",
+        "B": "Skipping US-West but not rolling back US-East and EU leaves customers in those regions broken. The right action is to address the failure, not just stop propagating it.",
+        "D": "Defer-to-release-manager abandons audit independence at exactly the moment when independent voice matters most. The release manager is under schedule pressure; the auditor's role is to ensure governance discipline holds."
+      },
+      "tips": [
+        "Trap is A — \"proceed to maintain schedule\" is the exact pressure-response anti-pattern that staged rollouts exist to prevent; schedule should NEVER drive continued deployment over known failures.",
+        "Multi-region failure response = HALT forward + ROLL BACK affected + INVESTIGATE. Three actions; schedule-driven proceed answers are wrong.",
+        "Exam-day shortcut: any multi-region rollout-failure question is answered by the option naming HALT + ROLL BACK; proceed-anyway, skip-but-continue, and defer-to-release-manager answers all fail."
+      ],
+      "framework_ref": "ITIL 4 Incident Management; NIST SP 800-61 (Computer Security Incident Handling Guide); ISACA Software Audit guidance",
+      "related_concepts": [
+        "Multi-region deployment",
+        "Blast radius",
+        "Rollback",
+        "Incident response"
+      ],
+      "_provenance": "Authored from concept: 'Multi-region rollout failure governance per ITIL 4 Incident Management and NIST SP 800-61'. Public sources: ITIL 4, NIST. Scenario specifics (B2B SaaS, 5M seats, 30K customers, 4-region sequence, US-East 22% errors, EU 8%, 03:00-06:00 UTC) invented for this question."
+    },
+    {
+      "id": "d3_076",
+      "domain": 3,
+      "subtopic": "Legacy Mainframe Modernization — Decision Framework",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST balances modernization risk against knowledge-loss and execution complexity?",
+      "scenario_context": "A national insurance carrier has a 35-year-old mainframe-hosted policy administration system processing $4.2B in annual premium. The platform runs on COBOL with ~14M lines of code, supports 700+ business rules, and is maintained by a 22-person team where the median tenure is 28 years and three engineers plan to retire within 18 months. Replacement options include: (a) lift-and-shift to cloud (re-host); (b) re-engineer to Java microservices; (c) replatform to a vendor insurance suite; (d) maintain status quo while documenting knowledge. The CTO favors microservices replatform. The IS auditor is asked to assess the options.",
+      "options": {
+        "A": "Endorse the CTO's microservices replatform — modern architecture always wins over legacy regardless of complexity or execution risk.",
+        "B": "Maintain status quo with documentation only; modernization always fails for mainframe systems and the risk isn't worth pursuing.",
+        "C": "Outsource the legacy system to a managed-services provider entirely; the firm should not operate mainframe technology any longer.",
+        "D": "Multi-track approach: knowledge capture from retiring staff, fit-gap analysis across all four options, phased modernization tied to risk and value."
+      },
+      "correct": "D",
+      "key_concept": "Legacy modernization = multi-track: knowledge capture + fit-gap across options + phased modernization by risk/value. Single-position answers (CTO-endorse, status-quo, outsource) all fail because legacy modernization is multi-dimensional (technical, organizational, knowledge, time, value).",
+      "pre_read": "For legacy modernization questions, anchor on \"multi-track + knowledge + fit-gap + phased.\" Single-option answers reflect bias (modernize-everything or never-modernize). The right answer addresses all four dimensions.",
+      "correct_explanation": "ISACA Legacy Modernization guidance and ISACA M&A IT Integration guidance establish that complex legacy modernization (especially mainframe with deep business-logic embedding and aging knowledge holders) requires a multi-track approach: (1) knowledge capture from retiring staff (recordings, paired knowledge sessions, decision logs) BEFORE they leave; (2) fit-gap analysis across all reasonable options (re-host, re-platform, re-engineer, retain) per the AWS 6 Rs / Gartner 7 Rs migration frameworks; (3) phased modernization sequenced by risk and value (high-risk-high-value first); (4) ongoing governance bridging legacy and modern (covered in d3_060 M&A integration). Option A endorses CTO bias without analysis. Option B is the opposite bias (modernization always fails) and abandons retiring knowledge. Option C outsourcing transfers operational activity but the firm retains business-logic accountability for $4.2B in premium.",
+      "wrong_explanations": {
+        "A": "Endorsing the CTO's microservices replatform without analyzing the other options reflects bias rather than judgment. Microservices replatform on 14M lines of COBOL with embedded business rules is among the highest-risk options; it may or may not be right.",
+        "B": "Status-quo-with-documentation abandons the modernization analysis entirely. With 3 of 22 engineers retiring in 18 months and a 28-year median tenure, the knowledge-loss timeline forces action.",
+        "C": "Outsourcing to managed services transfers operational responsibility but not business-logic accountability. The firm still owns the $4.2B in premium and the regulatory compliance; vendor-managed legacy is still the firm's legacy."
+      },
+      "tips": [
+        "Trap is A or B — opposing biases. A (\"endorse CTO microservices replatform\") is the modernization-fetish bias; B (\"maintain status quo with documentation only\") is the modernization-always-fails bias. The right approach analyzes ALL options against the firm's actual constraints.",
+        "Legacy modernization = KNOWLEDGE CAPTURE + FIT-GAP across options + PHASED by risk/value + ONGOING GOVERNANCE. Four elements; single-position answers reflect bias.",
+        "Exam-day shortcut: any legacy modernization question is answered by the option naming MULTI-TRACK with KNOWLEDGE CAPTURE; modernize-everything and never-modernize answers are both biases."
+      ],
+      "framework_ref": "ISACA Legacy Modernization guidance; ISACA M&A IT Integration guidance; AWS/Azure 6 Rs Migration Playbooks",
+      "related_concepts": [
+        "Legacy modernization",
+        "Mainframe",
+        "Knowledge capture",
+        "7 Rs framework"
+      ],
+      "_provenance": "Authored from concept: 'Legacy mainframe modernization per ISACA Legacy Modernization guidance and Gartner 7Rs framework'. Public sources: ISACA, Gartner 7Rs. Scenario specifics (national insurance, 35-yr mainframe, $4.2B premium, 14M LOC COBOL, 700+ business rules, 22-person team, median 28-yr tenure, 3 retirements in 18 months) invented for this question."
+    },
+    {
+      "id": "d3_077",
+      "domain": 3,
+      "subtopic": "Vendor Abandonment — Active Dependency",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the multi-dimensional risk created by vendor abandonment?",
+      "scenario_context": "A regional credit union (310 branches, 2.8M members) uses a third-party check-image-processing component from a small vendor. The vendor announced (a) ceasing all new feature development, (b) supporting existing customers only through end-of-year, (c) no security patches after 90 days, (d) no replacement or migration path. The component is integrated into 18 downstream processes and ~$2.1B in monthly transaction volume passes through it. Two replacement vendors exist but each requires 12-18 months for integration. The CIO has called an emergency meeting; the IS auditor was asked for a governance position before the meeting.",
+      "options": {
+        "A": "Continue using the abandoned component indefinitely; switching costs are too high and security patches can be backfilled by internal teams.",
+        "B": "Stand up a transition program: immediate security risk mitigation, escrow/code-access, parallel vendor evaluation, and 12-18 month migration timeline with milestones.",
+        "C": "Decline both replacement vendors and build the component internally; in-house ownership eliminates future abandonment risk entirely from this point.",
+        "D": "Continue current operations and re-evaluate replacement options 9 months from now once vendor support has fully expired and the team has more clarity."
+      },
+      "correct": "B",
+      "key_concept": "Vendor abandonment = transition program: immediate security mitigation + escrow/code-access + parallel vendor evaluation + structured migration timeline. Continue-indefinitely accumulates security risk; build-in-house adds engineering burden without proportional value; defer-the-decision wastes the lead time.",
+      "pre_read": "For vendor abandonment questions, anchor on \"transition program with parallel tracks.\" Single-position answers (continue indefinitely, build in-house, defer) all fail to address the multi-dimensional risk.",
+      "correct_explanation": "ISACA Vendor Abandonment guidance, ISACA Vendor Management guidance, and OCC Bulletin 2013-29 (Third-Party Relationships) establish that vendor abandonment of an active critical dependency requires a multi-track transition program: (1) immediate security risk mitigation (compensating controls during the 90-day patch grace period and beyond — network isolation, enhanced monitoring, alternative-path planning); (2) escrow or source-code access (negotiated as part of original vendor agreement or sought now during the wind-down period); (3) parallel vendor evaluation (both replacement options assessed in parallel rather than sequentially); (4) structured migration timeline with milestones (12-18 months with checkpoints, decision gates, parallel-run planning). Option A's continue-indefinitely accumulates security risk after 90 days. Option C's build-in-house adds engineering burden and risk without comparable maturity. Option D's defer-9-months wastes the lead time the firm has now.",
+      "wrong_explanations": {
+        "A": "Continuing with an abandoned component accumulates security risk after the 90-day patch grace period ends. Internal patch backfill is rarely viable for a check-image-processing component subject to evolving fraud and image-quality threats.",
+        "C": "Building the component in-house adds engineering burden without comparable maturity. A check-image-processing component embeds significant fraud-detection and image-processing logic; in-house build is high-cost and slow.",
+        "D": "Defer-9-months wastes the lead time. The firm should start the transition NOW with the 12-18 month timeline; waiting 9 months collapses the available timeline to 3-9 months for the actual migration work."
+      },
+      "tips": [
+        "Trap is A — \"continue indefinitely, backfill patches internally\" is the default high-switching-cost response but it accumulates risk after the patch grace period ends; the firm cannot indefinitely substitute for vendor security work.",
+        "Vendor abandonment = TRANSITION PROGRAM: immediate security mitigation + escrow + parallel evaluation + structured timeline. Four parallel tracks; missing any creates gap.",
+        "Exam-day shortcut: any vendor-abandonment question is answered by the option naming MULTI-TRACK TRANSITION; continue-indefinitely, build-in-house, and defer answers each fail differently."
+      ],
+      "framework_ref": "ISACA Vendor Abandonment guidance; ISACA Vendor Management guidance; OCC Bulletin 2013-29 (Third-Party Relationships)",
+      "related_concepts": [
+        "Vendor abandonment",
+        "Third-party risk",
+        "Code escrow",
+        "Transition program"
+      ],
+      "_provenance": "Authored from concept: 'Vendor abandonment of active dependency per ISACA Vendor Abandonment guidance and OCC Bulletin 2013-29'. Public sources: ISACA, OCC. Scenario specifics (regional credit union, 310 branches, 2.8M members, check-image vendor abandonment, $2.1B/mo volume, 18 downstream processes, 90-day patch grace, 12-18 month migration) invented for this question."
+    },
+    {
+      "id": "d3_078",
+      "domain": 3,
+      "subtopic": "Privacy-by-Design in Agile Development",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST embeds privacy-by-design into the firm's agile development cadence?",
+      "scenario_context": "A health-tech startup (~85 employees, FDA-cleared digital therapeutic for diabetes management) ships sprints every two weeks. Recent audits identified privacy gaps: (a) PII data flows from a new feature were not documented before deployment; (b) data minimization wasn't considered during feature design; (c) consent flows for new data uses weren't analyzed before release; (d) the privacy team is consulted only after features are built. Regulatory exposure includes HIPAA (BAA partner relationships), state consumer health privacy laws, and FDA cybersecurity guidance. The CPO and head of engineering are exploring governance integration. The IS auditor was asked to recommend integration patterns.",
+      "options": {
+        "A": "Integrate privacy review into sprint planning: data-flow analysis, minimization checks, and consent design gates BEFORE story commitment for each sprint.",
+        "B": "Continue current state because regulators have not yet enforced privacy-by-design requirements against startups at this scale aggressively.",
+        "C": "Move all privacy review to the end of each sprint just before release to minimize disruption to the development team's flow.",
+        "D": "Centralize all privacy decisions in a quarterly compliance review; sprint-level integration creates excessive overhead for fast-moving teams."
+      },
+      "correct": "A",
+      "key_concept": "Privacy-by-design in agile = integrate at sprint planning (data-flow + minimization + consent gates) BEFORE story commitment. End-of-sprint review or quarterly batches are too late to change design; continue-current-state ignores audit findings.",
+      "pre_read": "For privacy-by-design-in-agile questions, anchor on \"shift left: privacy at sprint planning, BEFORE story commitment.\" End-of-sprint, quarterly, or do-nothing approaches all miss the design window.",
+      "correct_explanation": "GDPR Article 25 (Data Protection by Design and by Default), ISO/IEC 29100 (Privacy Framework), and ISACA Application Controls guidance establish privacy-by-design as a design-time discipline that must be integrated BEFORE stories are committed to a sprint — at sprint planning. Privacy review at this point includes (1) data-flow analysis (what new flows does this story create, where does data come from and go), (2) minimization checks (do we need every field; can we use derived/aggregated forms), (3) consent design gates (does the use case fall under existing consent or require new consent flows). Option B ignores documented audit findings and bets on continued regulatory leniency. Option C's end-of-sprint review is too late to change design without rework. Option D's quarterly batch loses the sprint-cadence advantage and lets non-compliant features ship between reviews.",
+      "wrong_explanations": {
+        "B": "Continuing current state ignores documented audit findings (undocumented PII flows, no minimization, no consent analysis). Regulators have explicitly increased enforcement against health-tech startups; deferring is high risk.",
+        "C": "End-of-sprint review is too late to change design without rework. The privacy team finds gaps at a point where remediation costs are high; the right answer is to shift privacy earlier in the cycle.",
+        "D": "Quarterly batches let non-compliant features ship between reviews. Two-week sprints mean ~6 sprints between quarterly checkpoints; an issue introduced in sprint 1 lives in production for 11 weeks before review."
+      },
+      "tips": [
+        "Trap is D — \"quarterly centralized review\" matches traditional compliance cadence and feels efficient, but it loses the sprint cadence's advantage and lets features ship between reviews.",
+        "Privacy-by-design in agile = SHIFT LEFT to sprint planning. Data-flow + minimization + consent gates BEFORE story commitment.",
+        "Exam-day shortcut: any privacy-by-design question is answered by the option naming INTEGRATION at the DESIGN POINT; end-of-cycle and batch-review answers come too late."
+      ],
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 29100 (Privacy Framework); ISACA Application Controls guidance",
+      "related_concepts": [
+        "Privacy by design",
+        "GDPR Article 25",
+        "Agile",
+        "HIPAA",
+        "Data minimization"
+      ],
+      "_provenance": "Authored from concept: 'Privacy-by-design integration in agile per GDPR Article 25 and ISO/IEC 29100'. Public sources: GDPR, ISO/IEC 29100, ISACA. Scenario specifics (health-tech startup, 85 employees, FDA-cleared diabetes therapeutic, 2-week sprints, 4 documented privacy gaps, HIPAA/state/FDA exposure) invented for this question."
+    },
+    {
+      "id": "d3_079",
+      "domain": 3,
+      "subtopic": "Production-Like Test Environment Fidelity",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the test-environment fidelity gap that produced the outage?",
+      "scenario_context": "A retail e-commerce platform (15M registered users, $2.8B annual GMV) just experienced a major outage. Root cause: a SQL query optimized for the test environment (12K row table) ran 18,000x slower in production (180M row table) and overloaded the database during a flash sale. Investigation revealed: (a) test environment had 0.007% of production data volume; (b) test environment used a smaller database tier than production; (c) load tests against the test environment had passed. The post-incident review surfaces fundamental questions about test-environment fidelity. The IS auditor is asked for recommendations on production-like environment governance.",
+      "options": {
+        "A": "Continue current state; deeper test environments are operationally infeasible and the firm should rely on production monitoring after deployment.",
+        "B": "Test all changes directly in production behind feature flags; lower environments add cost without proportional confidence in modern systems.",
+        "C": "Stand up production-fidelity staging: realistic data volumes, matching infrastructure tier, and representative load patterns for pre-release testing.",
+        "D": "Skip load testing entirely; the test environment cannot represent production load accurately, so the activity wastes effort without value."
+      },
+      "correct": "C",
+      "key_concept": "Test-environment fidelity gap = production-fidelity staging: realistic data volumes + matching infrastructure tier + representative load patterns. Continue-current produces repeat incidents; test-in-prod-with-flags is real but not a substitute; skip-load-testing throws away the value.",
+      "pre_read": "For test-environment fidelity questions, anchor on \"data volume + infrastructure tier + load patterns must match production for load tests to be predictive.\" Single-factor matches (e.g., same code) are insufficient.",
+      "correct_explanation": "ISACA Production-Like Environment guidance and DORA / Accelerate research establish that load tests against environments with materially different data volumes, infrastructure tier, or load patterns produce false confidence. The outage's three documented gaps (0.007% data volume, smaller DB tier, no representative load patterns) explain why the load test passed and production failed. Production-fidelity staging means matching the dimensions that affect performance: data volume (so query plans behave realistically), infrastructure tier (so resource ceilings match), and load patterns (so concurrency and contention behave realistically). Option A's continue-current accepts repeat incidents. Option B's test-in-prod-with-flags is a real pattern but it doesn't substitute for pre-release validation; flags can fail or be misconfigured. Option D's skip-load-testing throws away the entire activity.",
+      "wrong_explanations": {
+        "A": "Continuing current state accepts repeat outages of the same character. The next SQL-query regression will hit production for the same reason: test environment can't reveal production behavior.",
+        "B": "Test-in-prod-with-feature-flags is a real progressive-delivery pattern but it doesn't substitute for pre-release validation. Flags can fail, misconfigure, or hide latent issues; production-fidelity staging catches issues BEFORE production exposure.",
+        "D": "Skip-load-testing throws away the value. The right answer is to make load testing MEANINGFUL (production-fidelity), not to abandon it."
+      },
+      "tips": [
+        "Trap is B — \"test in production behind feature flags\" matches modern progressive-delivery thinking and is genuinely valuable, but it doesn't substitute for pre-release validation; flags can fail and hide issues.",
+        "Production-fidelity staging = REALISTIC DATA VOLUME + MATCHING INFRASTRUCTURE TIER + REPRESENTATIVE LOAD PATTERNS. All three; single-factor matches produce false confidence.",
+        "Exam-day shortcut: any test-fidelity question is answered by the option naming PRODUCTION-FIDELITY across multiple dimensions; test-in-prod-only and skip-the-activity answers are wrong."
+      ],
+      "framework_ref": "ISACA Production-Like Environment guidance; DORA / Accelerate (DevOps Research and Assessment); ISACA Performance Testing guidance",
+      "related_concepts": [
+        "Test environment fidelity",
+        "Staging",
+        "Load testing",
+        "Feature flags"
+      ],
+      "_provenance": "Authored from concept: 'Production-fidelity staging per ISACA Production-Like Environment guidance and DORA research'. Public sources: ISACA, DORA. Scenario specifics (e-commerce, 15M users, $2.8B GMV, 18,000x slow query, 0.007% data volume, smaller DB tier, flash-sale outage) invented for this question."
+    },
+    {
+      "id": "d3_080",
+      "domain": 3,
+      "subtopic": "Continuous Compliance Evidence — Regulated High-Deploy DevOps",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST supports auditable continuous compliance in a high-deploy-frequency environment?",
+      "scenario_context": "A federally chartered bank's payments engineering organization deploys to production 30+ times per day across 14 service teams. Annual SOC 1 audit requires evidence of change-management controls for every production change. The audit firm has flagged that manual evidence collection (screenshots, ticket exports, approval emails) does not scale and may miss changes. The CISO and audit director are exploring continuous-compliance approaches. The audit firm has tentatively indicated they would accept automated evidence pipelines if traceability and integrity are demonstrable. The IS auditor was asked to recommend a continuous-compliance evidence model.",
+      "options": {
+        "A": "Reduce deployment frequency to weekly so that manual evidence collection can keep pace with the auditor's expectations for change management.",
+        "B": "Continue manual evidence collection and accept the audit risk; automation introduces too many unknowns for a regulated environment at scale.",
+        "C": "Exempt this organization from change-management controls because high deployment frequency makes traditional controls infeasible to apply consistently.",
+        "D": "Automate compliance evidence collection: immutable change records, signed approvals, deployment provenance, and continuous monitoring with auditor access."
+      },
+      "correct": "D",
+      "key_concept": "Continuous compliance evidence = automated collection: immutable change records + signed approvals + deployment provenance + continuous monitoring + auditor access. Slow-deploys-to-fit-manual inverts modern governance; continue-manual scales poorly; exempt-from-controls abandons compliance.",
+      "pre_read": "For continuous compliance questions, anchor on \"automated evidence pipeline with immutable records, signed approvals, provenance, monitoring, and auditor access.\" The audit firm's hypothetical acceptance is the green light to engineer the pipeline; the IS auditor's role is to validate the design.",
+      "correct_explanation": "ISACA Continuous Compliance guidance, COBIT 2019 BAI06 (Managed IT Changes), and SLSA (Supply-chain Levels for Software Artifacts) all establish that high-frequency deployment environments can satisfy audit-evidence requirements through automated continuous-compliance pipelines: (1) immutable change records (signed, append-only) for every deploy; (2) signed approvals captured at the workflow level (not as manual artifacts); (3) deployment provenance (build inputs, artifact hashes, approver identity, deploy time); (4) continuous monitoring of change-management control effectiveness; (5) auditor access (read-only role giving auditors the same view the firm has). Option A's reduce-deployment-frequency inverts modern DevOps governance — slow deploys are a problem, not a solution. Option B's continue-manual accepts auditor-flagged scale failures. Option C's exempt-from-controls abandons compliance entirely.",
+      "wrong_explanations": {
+        "A": "Reducing deployment frequency to fit manual evidence inverts modern governance. Slow deploys correlate with HIGHER change failure rates per DORA research; the right answer is to automate evidence collection, not throttle deployment.",
+        "B": "Continuing manual evidence accepts the auditor's flagged scale failures. The audit firm has explicitly indicated they would accept automated pipelines; declining that option leaves the firm exposed.",
+        "C": "Exempt-from-controls abandons compliance. Federal-charter status and SOC 1 requirements make this option non-viable; the firm must demonstrate effective controls, not seek exemptions."
+      },
+      "tips": [
+        "Trap is A — \"reduce deployment frequency so manual evidence keeps pace\" matches an instinct toward control-driven slowdown but it inverts modern DevOps governance; deploy frequency and change failure rate are inversely correlated per DORA.",
+        "Continuous compliance = automated evidence: IMMUTABLE RECORDS + SIGNED APPROVALS + PROVENANCE + MONITORING + AUDITOR ACCESS. Five elements; missing any reduces auditability.",
+        "Exam-day shortcut: any high-deploy-frequency compliance question is answered by the option naming AUTOMATED EVIDENCE pipeline; slow-down-deploys and exempt-from-controls answers contradict modern DevOps and regulatory expectations."
+      ],
+      "framework_ref": "ISACA Continuous Compliance guidance; COBIT 2019 BAI06 (Managed IT Changes); SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "related_concepts": [
+        "Continuous compliance",
+        "Change management evidence",
+        "SOC 1",
+        "Audit automation"
+      ],
+      "_provenance": "Authored from concept: 'Continuous compliance evidence in high-deploy regulated DevOps per ISACA Continuous Compliance guidance and SLSA framework'. Public sources: ISACA, SLSA. Scenario specifics (federally chartered bank, 30+ deploys/day, 14 service teams, SOC 1 audit, manual evidence flagged as not-scaling, audit firm's hypothetical acceptance of automation) invented for this question."
     }
   ]
 }
