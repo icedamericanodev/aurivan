@@ -823,6 +823,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-184 (Guide for Cybersecurity Event Recovery)
 - DRII Professional Practices
 - US-CERT recovery guidance
+- CISA #StopRansomware guidance
 - BCI Good Practice Guidelines
 - ISO 27031 (ICT Readiness for Business Continuity)
 - ISACA Backup and Recovery Audit Program

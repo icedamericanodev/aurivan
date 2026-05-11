@@ -2275,7 +2275,7 @@
       "correct": "C",
       "key_concept": "3-2-1 strategy = 3 copies of data + 2 different media types + 1 offsite. Modern extension 3-2-1-1-0 adds 1 offline (immutable/air-gapped) + 0 errors after verification. Distractors substitute server topology, control system count, or retention scheme for the actual data-copy strategy.",
       "pre_read": "For 3-2-1 strategy questions, anchor on the data-copy meaning: 3 COPIES + 2 MEDIA TYPES + 1 OFFSITE. Modern extension adds OFFLINE/IMMUTABLE for ransomware resilience.",
-      "correct_explanation": "ISACA Backup and Recovery Audit Program and US-CERT recovery guidance establish 3-2-1 as the foundational backup-copy strategy: (3) keep at least 3 copies of data including the production original; (2) store backups on at least 2 different media types (e.g., disk + tape, or disk + cloud) to mitigate media-specific failure modes; (1) keep at least 1 copy offsite (separate from the production location to survive local disasters). The modern extension 3-2-1-1-0 adds (1 offline) — an immutable or air-gapped copy resistant to ransomware that encrypts online backups — and (0 errors) — verified restorability with no integrity errors. Option A describes server topology (compute redundancy), not data-copy strategy. Option B describes control framework cadence. Option D describes a retention and review pattern, not the 3-2-1 copy structure.",
+      "correct_explanation": "ISACA Backup and Recovery Audit Program and CISA #StopRansomware guidance establish 3-2-1 as the foundational backup-copy strategy: (3) keep at least 3 copies of data including the production original; (2) store backups on at least 2 different media types (e.g., disk + tape, or disk + cloud) to mitigate media-specific failure modes; (1) keep at least 1 copy offsite (separate from the production location to survive local disasters). The modern extension 3-2-1-1-0 adds (1 offline) — an immutable or air-gapped copy resistant to ransomware that encrypts online backups — and (0 errors) — verified restorability with no integrity errors. Option A describes server topology (compute redundancy), not data-copy strategy. Option B describes control framework cadence. Option D describes a retention and review pattern, not the 3-2-1 copy structure.",
       "wrong_explanations": {
         "A": "Server topology (3 production + 2 hot + 1 cold) addresses compute redundancy, not data-copy strategy. The 3-2-1 numbers refer to DATA COPIES, not server instances.",
         "B": "Access control systems, review cycles, and incident tabletops are governance practices but not the 3-2-1 backup strategy. The 3-2-1 numbers refer specifically to BACKUP COPIES, MEDIA TYPES, and OFFSITE STORAGE.",
@@ -2286,7 +2286,7 @@
         "3-2-1 = 3 COPIES + 2 MEDIA TYPES + 1 OFFSITE. Modern 3-2-1-1-0 extension adds offline + zero errors.",
         "Exam-day shortcut: any 3-2-1 question is answered by the option naming COPIES + MEDIA TYPES + OFFSITE; server-topology, access-control, or retention answers each describe different concepts."
       ],
-      "framework_ref": "ISACA Backup and Recovery Audit Program; US-CERT recovery guidance; NIST SP 800-34 (Contingency Planning Guide)",
+      "framework_ref": "ISACA Backup and Recovery Audit Program; CISA #StopRansomware guidance; NIST SP 800-34 (Contingency Planning Guide)",
       "related_concepts": [
         "3-2-1 backup",
         "3-2-1-1-0",
@@ -2354,7 +2354,7 @@
         "D": "Contract-only assurance with no verification means the firm trusts but doesn't verify. Periodic checks (annual at minimum) confirm media is actually present and condition is acceptable."
       },
       "tips": [
-        "Trap is A — \"nearby commercial storage\" sounds practical but it's typically too close (regional disaster affects both sites) and lacks specialized environmental controls.",
+        "Trap is A or C — A (\"nearby commercial storage\") feels practical but is typically too close for regional-disaster resilience; C (\"employee homes\") feels like distributed redundancy but lacks institutional access controls, environmental protection, and chain of custody. Both substitute convenience or distance for a properly governed offsite vault.",
         "Offsite library = INVENTORY + SECURE TRANSPORT + ACCESS CONTROLS + ENVIRONMENTAL CONTROLS + PERIODIC VERIFICATION. Five elements; contract-only fails on verification.",
         "Exam-day shortcut: any offsite-library question is answered by the option naming MULTI-ELEMENT controls with periodic verification; nearby-storage, employee-homes, and contract-only answers each fail."
       ],
@@ -2426,7 +2426,7 @@
         "D": "Round-robin without health checks sends traffic to failed instances. Users hit the failed instance and experience errors until the load balancer is manually updated."
       },
       "tips": [
-        "Trap is B — \"active-passive deployment\" is a legitimate pattern but it's just one element of resilience; modern resilience requires the full pattern set (failover + circuit breakers + retry + bulkheads + graceful degradation).",
+        "Trap is B or D — both are PARTIAL patterns. B (\"active-passive deployment only\") has failover but lacks circuit breakers, retry, bulkheads, and graceful degradation. D (\"round-robin without health checks\") has redundancy but lacks failover that respects health. Modern resilience requires the full pattern set, not any single element.",
         "Application resilience = REDUNDANCY + FAILOVER + CIRCUIT BREAKERS + RETRY + BULKHEADS + GRACEFUL DEGRADATION. Six patterns; multi-element design.",
         "Exam-day shortcut: any application-resilience question is answered by the option naming MULTIPLE patterns; single-pattern answers are insufficient."
       ],
@@ -2744,7 +2744,7 @@
       "correct": "D",
       "key_concept": "Cloud vs on-prem backup decision = structured analysis: 5-year TCO + sovereignty + regulatory + lock-in mitigation + skills + phased implementation. Endorse-CTO/CISO single-stakeholder; defer-to-strategy-cycle wastes the analysis window.",
       "pre_read": "For cloud-vs-on-prem backup questions, anchor on \"structured 6-element analysis with phased implementation.\" Single-stakeholder endorsements reflect bias.",
-      "correct_explanation": "ISACA Cloud Backup Governance guidance, NIST SP 800-209 (Security Guidelines for Storage Infrastructure), and CSA Cloud Controls Matrix establish six-element structured analysis: (1) 5-YEAR TCO (capital + operating + transition cost — option B's $2.8M annual is $14M over 5 years vs current $21M; saves $7M but transition costs must be netted); (2) DATA-SOVEREIGNTY CONSTRAINTS per region (EU GDPR, APAC country-specific data residency, US — may require regional cloud regions or hybrid); (3) REGULATORY ACCEPTABILITY (clinical-trial data is subject to FDA 21 CFR Part 11, EMA, and country-specific regulations that may have specific requirements for backup storage); (4) VENDOR LOCK-IN MITIGATION (escape clauses, data-export rights, multi-cloud strategy); (5) SKILLS TRANSITION PLAN (current tape-library team to cloud-backup-admin retraining); (6) PHASED IMPLEMENTATION with milestones (start with one region, expand based on outcomes). Option A endorses CTO without addressing sovereignty/regulatory. Option B endorses CISO without quantifying cost/RTO benefit. Option C defer wastes analysis time.",
+      "correct_explanation": "ISACA Cloud Backup Governance guidance, NIST SP 800-209 (Security Guidelines for Storage Infrastructure), and CSA Cloud Controls Matrix establish six-element structured analysis: (1) 5-YEAR TCO (capital + operating + transition cost — the proposed cloud option at $2.8M annual is $14M over 5 years vs current $21M; saves $7M but transition costs must be netted); (2) DATA-SOVEREIGNTY CONSTRAINTS per region (EU GDPR, APAC country-specific data residency, US — may require regional cloud regions or hybrid); (3) REGULATORY ACCEPTABILITY (clinical-trial data is subject to FDA 21 CFR Part 11, EMA, and country-specific regulations that may have specific requirements for backup storage); (4) VENDOR LOCK-IN MITIGATION (escape clauses, data-export rights, multi-cloud strategy); (5) SKILLS TRANSITION PLAN (current tape-library team to cloud-backup-admin retraining); (6) PHASED IMPLEMENTATION with milestones (start with one region, expand based on outcomes). Option A endorses CTO without addressing sovereignty/regulatory. Option B endorses CISO without quantifying cost/RTO benefit. Option C defer wastes analysis time.",
       "wrong_explanations": {
         "A": "Endorsing cloud migration without addressing data sovereignty (EU GDPR, APAC residency) and regulatory acceptability (FDA 21 CFR Part 11 for clinical-trial data) ignores material risks specific to multi-national pharma.",
         "B": "Endorsing on-premises without quantifying the cost ($7M over 5 years) and RTO/RPO improvement abandons material business value. Sovereignty is one factor in a multi-factor decision.",
@@ -2785,10 +2785,10 @@
       "wrong_explanations": {
         "A": "Wait-for-CIO defeats the entire purpose of pre-delegated activation authority. The CIO authorized the playbook precisely so that on-call SREs can invoke it without further escalation during disruptive events.",
         "C": "Wait-for-provider-confirmation delays response when conditions already meet activation criteria. Cloud-provider 'investigating' status often persists for hours; the firm's customers experience degradation throughout.",
-        "D": "Partial failover (some traffic to each region) is operationally complex in cloud regions — DNS, routing, data synchronization, and customer-stickiness all complicate the model. Most cloud failovers are all-or-nothing for a given service."
+        "D": "Partial failover patterns (gradual traffic shifting via load-balancer or CDN, canary failover) exist and are powerful, but they require pre-built traffic-shifting infrastructure that this scenario doesn't describe. With only documented full-failover capability available, attempting ad-hoc partial routing under outage pressure introduces more risk than executing the playbook."
       },
       "tips": [
-        "Trap is A — \"wait for CIO authorization\" matches a conservative-governance instinct but defeats pre-delegated authority; the playbook exists so this exact scenario can be handled by the on-call.",
+        "Trap is A or C — both are \"wait\" responses that delay action. A (\"wait for CIO\") defeats pre-delegated authority; C (\"wait for provider confirmation\") defeats pre-agreed activation criteria. The playbook governs both: when criteria are met and the authorized activator is available, action proceeds.",
         "Cross-region failover = DOCUMENTED PLAYBOOK + PRE-DELEGATED AUTHORITY + INVOKE WHEN CRITERIA MET. Three elements; wait-for-executive defeats the purpose.",
         "Exam-day shortcut: any failover-during-outage question is answered by the option respecting PRE-DELEGATED AUTHORITY; wait-for-executive and wait-for-vendor answers each fail."
       ],
@@ -2861,7 +2861,7 @@
         "D": "Full outsource transfers planning activity but not in-house ownership of clinical operations, workforce, and supply-chain decisions. Consultants can support, but the firm must own."
       },
       "tips": [
-        "Trap is A — CIO's IT-enablement focus is necessary but not sufficient for a healthcare provider; clinical operations continuity, workforce, and supply chain all need integrated attention.",
+        "Trap is A or B — opposite mistakes. A (CIO IT-enablement focus) is necessary but not sufficient for a healthcare provider; B (\"defer until pandemic occurs\") rationalizes inaction as agility but is irresponsible for clinical operations that can't pause. Integrated cross-functional governance addresses both.",
         "Pandemic continuity = STEERING COMMITTEE + FOUR WORKSTREAMS (clinical + IT + supply + workforce) + PLAYBOOKS + WHO/CDC + AFTER-ACTION. Five elements.",
         "Exam-day shortcut: any pandemic continuity question is answered by the option naming INTEGRATED CROSS-FUNCTIONAL governance; single-stream and defer answers fail."
       ],
@@ -2891,7 +2891,7 @@
       "correct": "D",
       "key_concept": "DDoS active response = activate documented mitigation per playbook + maintain operational status + customer communication + post-incident review. Wait-for-attack-to-subside accepts continued degradation; disconnect-entirely overreacts; offline-and-notify-regulator inverts urgency.",
       "pre_read": "For DDoS active response questions, anchor on \"activate documented mitigation + maintain operations + communicate + post-incident review.\" Wait, disconnect, and over-escalate answers each fail.",
-      "correct_explanation": "ISACA DDoS Response guidance, NIST SP 800-184 (Guide for Cybersecurity Event Recovery), and ISACA Cyber Resilience guidance establish four-element active DDoS response: (1) ACTIVATE DOCUMENTED MITIGATION per playbook (cloud DDoS service exists on contract precisely for this scenario; 25-min propagation is acceptable given continued degradation); (2) MAINTAIN OPERATIONAL STATUS with CISO incident command (don't take the firm offline; the goal is to keep serving traffic while mitigation engages); (3) CUSTOMER COMMUNICATION via status page (manage expectations, acknowledge the attack at appropriate level of detail); (4) POST-INCIDENT REVIEW after the attack subsides (what worked, what didn't, mitigation upgrades). Option A wait-for-attack-to-subside accepts continued customer-facing degradation. Option B disconnect-from-internet overreacts and creates worse customer impact than continued degradation. Option C offline-and-notify-regulator inverts urgency (regulators expect notification but not at the cost of operational response).",
+      "correct_explanation": "NIST SP 800-61 (Computer Security Incident Handling Guide), NIST SP 800-184 (Guide for Cybersecurity Event Recovery), and ISACA Cyber Resilience guidance establish four-element active DDoS response: (1) ACTIVATE DOCUMENTED MITIGATION per playbook (cloud DDoS service exists on contract precisely for this scenario; 25-min propagation is acceptable given continued degradation); (2) MAINTAIN OPERATIONAL STATUS with CISO incident command (don't take the firm offline; the goal is to keep serving traffic while mitigation engages); (3) CUSTOMER COMMUNICATION via status page (manage expectations, acknowledge the attack at appropriate level of detail); (4) POST-INCIDENT REVIEW after the attack subsides (what worked, what didn't, mitigation upgrades). Option A wait-for-attack-to-subside accepts continued customer-facing degradation. Option B disconnect-from-internet overreacts and creates worse customer impact than continued degradation. Option C offline-and-notify-regulator inverts urgency (regulators expect notification but not at the cost of operational response).",
       "wrong_explanations": {
         "A": "Wait-for-attack-to-subside accepts continued customer-facing degradation during peak season. The firm has cloud DDoS service contracted precisely for this scenario; activating it is the right operational response.",
         "B": "Disconnect-from-internet overreacts to a DDoS that's affecting front-end only. The backend is unaffected; cutting internet access takes the entire firm offline including legitimate customer traffic.",
@@ -2902,7 +2902,7 @@
         "DDoS active response = ACTIVATE MITIGATION (per playbook) + MAINTAIN OPERATIONS + CUSTOMER COMMUNICATION + POST-INCIDENT REVIEW. Four elements.",
         "Exam-day shortcut: any DDoS active response question is answered by the option naming DOCUMENTED MITIGATION ACTIVATION with operational continuity; wait, disconnect, and compliance-first answers each fail."
       ],
-      "framework_ref": "ISACA DDoS Response guidance; NIST SP 800-184 (Guide for Cybersecurity Event Recovery); ISACA Cyber Resilience guidance",
+      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); NIST SP 800-184 (Guide for Cybersecurity Event Recovery); ISACA Cyber Resilience guidance",
       "related_concepts": [
         "DDoS mitigation",
         "Active incident response",
