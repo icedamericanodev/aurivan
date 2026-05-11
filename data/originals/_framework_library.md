@@ -792,3 +792,25 @@ sub-references like "(Managed Risk) and APO12.03").
 - CSA Cloud Security Alliance Cloud Controls Matrix (CCM)
 - ISACA Information Systems Audit and Assurance Standards
 - NIST SP 800-53 MP family (Media Protection controls)
+- NIST SP 800-53 AC family
+
+## D4 batch 2 additions
+- RFC 3022 (Network Address Translation)
+- ITIL 4 Change Enablement practice
+- ITIL 4 Release Management practice
+- ITIL 4 Deployment Management practice
+- NIST SP 800-40 (Guide to Enterprise Patch Management Planning)
+- NIST SP 800-92 (Guide to Computer Security Log Management) — already partial; full form
+- ISACA Patch Management Audit guidance
+- ISACA Release Management Audit guidance
+- ISACA Access Control Software guidance
+- ISACA Source Code Management guidance
+- ISACA Software License Compliance guidance
+- ISACA Utility Programs guidance
+- ISACA Problem Management Audit guidance
+- ISACA Network Management Tools guidance
+- ISACA Log Management Audit guidance
+- ISACA Patch Deferral guidance
+- ISACA Hardware Refresh Decision guidance
+- ISACA Recurring Problem Trend guidance
+- ISACA Heterogeneous Release Coordination guidance

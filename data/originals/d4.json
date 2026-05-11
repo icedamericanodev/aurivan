@@ -733,6 +733,731 @@
         "Residual risk acceptance"
       ],
       "_provenance": "Authored from concept: 'BIA RTO/RPO conflict structured validation per ISO 22301, NIST SP 800-34, and ISACA BIA guidance'. Public sources: ISO 22301, NIST, ISACA. Scenario specifics (regional bank, retail-banking 1-hour/5-minute target, current 4-hour/30-minute, $14M increment, CFO/CRO positions) invented for this question."
+    },
+    {
+      "id": "d4_021",
+      "domain": 4,
+      "subtopic": "Network Address Translation (NAT) — Definition",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY function of Network Address Translation (NAT)?",
+      "options": {
+        "A": "Encrypt outbound network traffic so that intermediate routers cannot inspect packet contents during transit across the public internet.",
+        "B": "Translate IP addresses between two address spaces (typically private internal and public external) by rewriting packet headers as traffic crosses the boundary.",
+        "C": "Compress network packets to reduce bandwidth utilization on outbound links while maintaining application-layer transparency for all users.",
+        "D": "Authenticate users at the network layer before allowing any IP traffic to traverse the boundary between internal and external networks."
+      },
+      "correct": "B",
+      "key_concept": "NAT = translate IP addresses between two address spaces (typically private/public) by rewriting packet headers. Encryption, compression, and authentication are different functions performed by different network elements.",
+      "pre_read": "For NAT definition questions, anchor on \"translate addresses by rewriting headers at the boundary.\" Distractors substitute encryption (VPN), compression (WAN optimizer), or authentication (firewall/802.1X).",
+      "correct_explanation": "RFC 3022 (Network Address Translation) defines NAT as the function of translating IP addresses between two address spaces by rewriting packet headers as traffic crosses a boundary. The most common deployment is Network Address Port Translation (NAPT, also called PAT) which translates many private internal addresses to one or few public external addresses by multiplexing on TCP/UDP port numbers. NAT enables IPv4 address conservation, hides internal topology from external observers, and supports overlapping address spaces. Option A describes encryption (VPN, IPsec, TLS). Option C describes compression (WAN optimization, deduplication). Option D describes network access control (802.1X, firewall authentication).",
+      "wrong_explanations": {
+        "A": "Encryption protects content during transit. NAT translates ADDRESSES, not content. The two functions are typically performed by different network elements (VPN gateway for encryption, NAT router for translation).",
+        "C": "Compression reduces bandwidth by encoding packet contents more efficiently. NAT doesn't change packet contents; it only rewrites address fields in headers.",
+        "D": "Network access control authenticates devices/users before granting network access (the 802.1X port-based NAC pattern). NAT operates AFTER access is granted, translating addresses on traffic that's already been permitted."
+      },
+      "tips": [
+        "Trap is D — \"authenticate at network layer\" sounds boundary-related but it's 802.1X NAC, not NAT; NAT translates ADDRESSES, doesn't authenticate USERS.",
+        "NAT = translate addresses by rewriting headers at the boundary. Encryption protects content; compression reduces size; authentication grants access. Different elements, different functions.",
+        "Exam-day shortcut: any NAT question is answered by the option naming ADDRESS TRANSLATION via HEADER REWRITING; encryption/compression/authentication answers describe different functions."
+      ],
+      "framework_ref": "RFC 3022 (Network Address Translation); ISACA Network Management guidance; ISACA Network Governance guidance",
+      "related_concepts": [
+        "NAT",
+        "NAPT",
+        "Network address translation",
+        "RFC 3022"
+      ],
+      "_provenance": "Authored from concept: 'NAT PRIMARY function per RFC 3022'. Public sources: IETF RFC 3022, ISACA guidance."
+    },
+    {
+      "id": "d4_022",
+      "domain": 4,
+      "subtopic": "Computer Hardware Components — Categorization",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST categorizes the core hardware components of a general-purpose computing system?",
+      "options": {
+        "A": "Processing components (CPU, memory), input/output components (storage, network, peripherals), and supporting infrastructure (power, cooling).",
+        "B": "Network components (routers, switches), security components (firewalls, IDS), and management components (consoles, terminals).",
+        "C": "Front-end components (web servers, load balancers), middle-tier (application servers), and back-end (database servers, storage).",
+        "D": "Software components (operating system, applications), hardware components (servers, workstations), and human components (users, administrators)."
+      },
+      "correct": "A",
+      "key_concept": "Computer hardware categorization = processing (CPU + memory) + input/output (storage, network, peripherals) + supporting infrastructure (power, cooling). This is the canonical hardware-architecture framing. Distractors substitute network topology, application tiers, or socio-technical system layers.",
+      "pre_read": "For hardware-component categorization questions, anchor on the canonical hardware-architecture framing: PROCESSING + I/O + INFRASTRUCTURE. Distractors substitute different (also valid) categorization schemes for different purposes.",
+      "correct_explanation": "Standard computer-architecture references and the CISA Review Manual Domain 4 chapter on IT components categorize general-purpose computing hardware into three groups: PROCESSING components (CPU and memory subsystems — what executes computation); INPUT/OUTPUT components (storage, network interfaces, peripherals — how data moves in and out); and SUPPORTING INFRASTRUCTURE (power, cooling, racks, cabling — what keeps the system operational). Option B is a network topology categorization (different scope). Option C is an application-tier categorization (n-tier architecture, different scope). Option D is a socio-technical system categorization (people, process, technology, different scope). All three are valid for their respective purposes but don't describe the HARDWARE components specifically.",
+      "wrong_explanations": {
+        "B": "Network topology categorization (routers, switches, firewalls) is a different framing. Hardware components within a single computer don't include routers and switches; those are infrastructure between computers.",
+        "C": "Application-tier categorization (front-end, middle, back-end) describes SOFTWARE deployment patterns, not hardware components. The same physical server may run multiple tiers.",
+        "D": "Software + hardware + human is a socio-technical categorization. Within HARDWARE specifically, the categorization is processing + I/O + infrastructure."
+      },
+      "tips": [
+        "Trap is C — \"front-end, middle-tier, back-end\" is a valid categorization but for APPLICATION TIERS, not hardware components; hardware is processing + I/O + infrastructure.",
+        "Hardware components = PROCESSING (CPU+memory) + I/O (storage, network, peripherals) + INFRASTRUCTURE (power, cooling). Three categories at the hardware-architecture level.",
+        "Exam-day shortcut: any hardware-categorization question is answered by the option naming the HARDWARE level (processing + I/O + infrastructure); network, application-tier, and socio-technical answers describe different framings."
+      ],
+      "framework_ref": "ISACA Network Management guidance",
+      "related_concepts": [
+        "Hardware components",
+        "Processing",
+        "I/O",
+        "Computer architecture"
+      ],
+      "_provenance": "Authored from concept: 'Hardware component categorization per ISACA Information Systems Audit and Assurance Standards'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_023",
+      "domain": 4,
+      "subtopic": "Patch Management — PRIMARY Purpose",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of patch management?",
+      "options": {
+        "A": "Replace all production servers annually with new hardware to ensure they remain under the original equipment manufacturer warranty.",
+        "B": "Migrate to new operating system major versions whenever they become available to take advantage of new features and architectures.",
+        "C": "Apply vendor-supplied software updates (security fixes, bug fixes, functional updates) to systems on a managed schedule with testing and rollback.",
+        "D": "Document the configuration of every production system at deployment so that the documented state can be restored after future incidents."
+      },
+      "correct": "C",
+      "key_concept": "Patch management = apply vendor updates (security + bug + functional) + managed schedule + testing + rollback. Hardware replacement, version migration, and configuration documentation are different processes.",
+      "pre_read": "For patch-management definition questions, anchor on \"vendor updates + managed schedule + testing + rollback.\" Distractors substitute hardware refresh, major version migration, or config documentation.",
+      "correct_explanation": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning), ITIL 4 Service Configuration Management, and ISACA Patch Management Audit guidance define patch management as the process of applying vendor-supplied software updates — including security patches (CVE remediation), bug fixes (functional defect correction), and functional updates (minor feature additions) — to systems on a MANAGED SCHEDULE that includes pre-deployment testing (to catch regressions) and rollback procedures (when a patch causes incidents). Option A is hardware refresh (a different lifecycle activity). Option B is major-version upgrade (different scope — usually called upgrade management, with much larger testing and migration). Option D is configuration management (different activity — documenting state, not updating it).",
+      "wrong_explanations": {
+        "A": "Hardware replacement is a separate lifecycle activity. Annual replacement is rarely cost-justified (hardware lasts 3-5+ years typically); warranty extension is one consideration but not the primary purpose of patch management.",
+        "B": "Major OS version migration is upgrade management, a different process with larger scope (full application compatibility testing, often migration of users, data, integrations). Patching applies minor updates within a version.",
+        "D": "Configuration documentation captures STATE. Patching CHANGES state by applying updates. Two related but distinct processes."
+      },
+      "tips": [
+        "Trap is B — \"migrate to new OS major versions\" sounds like keeping systems current but it's upgrade management, much larger in scope; patch management is incremental updates within a version.",
+        "Patch management = VENDOR UPDATES + MANAGED SCHEDULE + TESTING + ROLLBACK. Four properties; missing any creates a different process.",
+        "Exam-day shortcut: any patch-management question is answered by the option naming VENDOR UPDATES with TESTING and ROLLBACK; hardware refresh, version migration, and config docs are different."
+      ],
+      "framework_ref": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning); ITIL 4 Service Configuration Management; ISACA Patch Management Audit guidance",
+      "related_concepts": [
+        "Patch management",
+        "Vendor updates",
+        "NIST SP 800-40",
+        "ITIL 4"
+      ],
+      "_provenance": "Authored from concept: 'Patch management PRIMARY purpose per NIST SP 800-40 and ITIL 4'. Public sources: NIST, ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_024",
+      "domain": 4,
+      "subtopic": "Release Management — PRIMARY Purpose",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which statement BEST describes the PRIMARY purpose of release management in IT service operations?",
+      "options": {
+        "A": "Reject all changes to production systems unless they have been requested by the original system architect who designed the system.",
+        "B": "Generate marketing material announcing new features to customers and stakeholders ahead of each major release cycle externally.",
+        "C": "Document each developer's individual contributions to a release for performance management and compensation purposes annually.",
+        "D": "Plan, build, test, and deploy a coordinated package of changes to production with a defined scope, schedule, and acceptance criteria."
+      },
+      "correct": "D",
+      "key_concept": "Release management = plan + build + test + deploy a coordinated package of changes + defined scope + schedule + acceptance criteria. It's the coordinating discipline around changes; distractors substitute gatekeeping, marketing, or HR functions.",
+      "pre_read": "For release-management questions, anchor on \"coordinated package of changes + plan/build/test/deploy + defined scope/schedule/acceptance.\" Distractors substitute gatekeeping, marketing, or HR.",
+      "correct_explanation": "ITIL 4 Release Management practice and ISACA Release Management Audit guidance define release management as the process of planning, building, testing, and deploying a COORDINATED PACKAGE of changes to production with a defined scope, schedule, and acceptance criteria. It coordinates the changes (often many small change requests grouped into a release), manages the deployment pipeline, and ensures the production environment receives the package as intended. Option A is gatekeeping (and incorrect gatekeeping — original architect approval isn't release management's structure). Option B describes external marketing. Option C describes HR / performance management. The release-management discipline is about COORDINATION of changes into deployable units, not any of those adjacent functions.",
+      "wrong_explanations": {
+        "A": "Original-architect approval is not a release-management requirement and ignores the fact that systems evolve beyond their original architects. Release management coordinates changes; it doesn't centralize gatekeeping with one named person.",
+        "B": "External marketing announces releases to customers but is a different function (product marketing). Release management's audience is internal: development, operations, change-management, and stakeholders.",
+        "C": "Individual contribution tracking is HR / performance management. Release management coordinates the technical work; it doesn't track who did what for compensation purposes."
+      },
+      "tips": [
+        "Trap is A — \"original architect approval\" sounds like a quality control but it's gatekeeping with the wrong owner; release management coordinates changes, doesn't centralize approval with one person.",
+        "Release management = PLAN + BUILD + TEST + DEPLOY + COORDINATED PACKAGE + DEFINED SCOPE/SCHEDULE/ACCEPTANCE. Six properties; coordinating function.",
+        "Exam-day shortcut: any release-management question is answered by the option naming COORDINATED PACKAGE of changes through plan-build-test-deploy; gatekeeping, marketing, and HR answers describe different functions."
+      ],
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; ISACA Release Management Audit guidance",
+      "related_concepts": [
+        "Release management",
+        "ITIL 4",
+        "Coordinated changes",
+        "Deployment"
+      ],
+      "_provenance": "Authored from concept: 'Release management PRIMARY purpose per ITIL 4 Release Management practice'. Public sources: ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_025",
+      "domain": 4,
+      "subtopic": "Hardware Maintenance — Monitoring and Reviews",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST supports proactive hardware maintenance in a data center environment?",
+      "options": {
+        "A": "Replace hardware only after failures occur; predictive maintenance introduces unnecessary cost without proportional benefit for most systems.",
+        "B": "Hardware monitoring (telemetry, SMART, environmental sensors) + scheduled maintenance + periodic reviews + failure trend analysis + planned refresh.",
+        "C": "Schedule full data-center shutdowns every quarter for comprehensive hardware inspection regardless of any operational impact concerns.",
+        "D": "Maintain a hot-spare for every production server; failures are handled instantly by failover with no need for proactive monitoring or maintenance."
+      },
+      "correct": "B",
+      "key_concept": "Proactive hardware maintenance = telemetry monitoring + scheduled maintenance + periodic reviews + failure trend analysis + planned refresh. Reactive-only accepts unplanned failures; quarterly-shutdown is operationally untenable; hot-spare-everything is wasteful and doesn't prevent failures.",
+      "pre_read": "For hardware-maintenance questions, anchor on \"telemetry + scheduled maintenance + reviews + trend analysis + planned refresh.\" Distractors propose pure-reactive, full-shutdown, or hot-spare-only.",
+      "correct_explanation": "ISACA Hardware Lifecycle guidance, ITIL 4 Service Configuration Management, and standard data-center operations practice establish five-element proactive hardware maintenance: (1) MONITORING via vendor telemetry (CPU/memory health, SMART for storage, environmental sensors for power and cooling); (2) SCHEDULED MAINTENANCE (firmware updates, component replacement at MTBF expectations); (3) PERIODIC REVIEWS (physical inspection, capacity vs demand); (4) FAILURE TREND ANALYSIS (identifying patterns before catastrophic failure); (5) PLANNED REFRESH (replacement before end-of-life). Option A's reactive-only accepts unplanned outages and unpredictable repair costs. Option C's quarterly full shutdown is operationally untenable for most production environments. Option D's hot-spare-everything is wasteful (2x capital) and doesn't prevent failures, only mitigates their impact.",
+      "wrong_explanations": {
+        "A": "Reactive-only accepts unplanned failures and the associated outage costs (lost transactions, customer impact, emergency repair pricing). Predictive maintenance typically pays for itself by reducing unplanned outage cost.",
+        "C": "Quarterly full data-center shutdowns are operationally untenable for production environments (most services cannot sustain hours of downtime quarterly). Maintenance happens during defined windows on individual systems, not full-DC shutdowns.",
+        "D": "Hot-spare-everything is 2x capital cost and still requires monitoring/maintenance (the spare also fails). Hot-spares mitigate impact but don't prevent failure; proactive monitoring is needed regardless."
+      },
+      "tips": [
+        "Trap is D — \"hot-spare for every server\" sounds rigorous but it's 2x capital and still requires monitoring; proactive maintenance reduces failure rate, not just impact.",
+        "Hardware maintenance = TELEMETRY + SCHEDULED MAINTENANCE + REVIEWS + TREND ANALYSIS + PLANNED REFRESH. Five elements; pure-reactive and quarterly-full-shutdown are extremes.",
+        "Exam-day shortcut: any hardware-maintenance question is answered by the option naming MULTI-ELEMENT PROACTIVE program; reactive-only and hot-spare-only answers each fail."
+      ],
+      "framework_ref": "ISACA Hardware Lifecycle guidance; ITIL 4 Service Configuration Management; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "Hardware maintenance",
+        "Predictive maintenance",
+        "Hardware lifecycle",
+        "MTBF"
+      ],
+      "_provenance": "Authored from concept: 'Proactive hardware maintenance per ISACA Hardware Lifecycle guidance and ITIL 4'. Public sources: ISACA, ITIL 4."
+    },
+    {
+      "id": "d4_026",
+      "domain": 4,
+      "subtopic": "Job Scheduling Reviews",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which scheduling-review activity MOST appropriately supports ongoing audit of job scheduler effectiveness?",
+      "options": {
+        "A": "Review scheduled jobs against business requirements + dependency correctness + execution-time trends + failure patterns + privileged access to scheduler.",
+        "B": "Allow the scheduler-administrator to self-review the configuration annually with no independent audit oversight at any frequency.",
+        "C": "Audit only when job failures cause customer-visible incidents; preventive review of healthy job streams is unnecessary overhead in modern operations.",
+        "D": "Generate a monthly report listing every job that ran during the period for the audit committee without further analysis or assessment activity."
+      },
+      "correct": "A",
+      "key_concept": "Scheduling reviews = jobs vs business requirements + dependency correctness + execution-time trends + failure patterns + privileged scheduler access. Self-review breaks independence; failure-only reviews are reactive; list-without-analysis isn't a review.",
+      "pre_read": "For scheduling-review questions, anchor on \"jobs vs business needs + dependencies + execution trends + failures + access.\" Distractors propose self-review, reactive-only, or report-without-analysis.",
+      "correct_explanation": "ISACA Job Scheduling Audit guidance establishes multi-dimensional scheduling reviews: (1) JOBS vs BUSINESS REQUIREMENTS (each scheduled job traces to a business need; orphan jobs running for unknown reasons are investigated and retired); (2) DEPENDENCY CORRECTNESS (jobs that depend on upstream completion correctly fail/skip when upstream fails); (3) EXECUTION-TIME TRENDS (jobs that take progressively longer indicate capacity issues, data growth, or coding problems); (4) FAILURE PATTERNS (which jobs fail, why, and how often — driving root-cause investigation); (5) PRIVILEGED ACCESS TO SCHEDULER (who can create/modify/delete jobs, with appropriate separation from job-owner roles). Option B breaks independence. Option C is reactive only. Option D produces a report without performing review.",
+      "wrong_explanations": {
+        "B": "Self-review breaks the independence essential to audit. The scheduler administrator should not audit their own work; reviewer must be a different party.",
+        "C": "Audit-only-after-failures is reactive. Many scheduler issues (orphan jobs running for unknown reasons, escalating execution times, unauthorized changes) don't manifest as customer-visible failures but still represent risk.",
+        "D": "Generating a list-of-jobs report is documentation, not review. Review requires analysis against criteria (business need, correctness, trends, failures, access)."
+      },
+      "tips": [
+        "Trap is C — \"audit only after failures\" sounds efficient but it's reactive; many scheduler risks (orphan jobs, escalating times, unauthorized changes) don't surface as customer-visible failures.",
+        "Scheduling review = BUSINESS-REQUIREMENT TRACE + DEPENDENCIES + EXECUTION TRENDS + FAILURE PATTERNS + PRIVILEGED ACCESS. Five dimensions; periodic and independent.",
+        "Exam-day shortcut: any scheduling-review question is answered by the option naming MULTI-DIMENSIONAL ANALYSIS with INDEPENDENT REVIEWER; self-review, reactive-only, and report-without-analysis answers each fail."
+      ],
+      "framework_ref": "ISACA Job Scheduling Audit guidance; ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "Scheduling review",
+        "Job orphan",
+        "Dependency",
+        "Scheduler access"
+      ],
+      "_provenance": "Authored from concept: 'Job scheduling reviews per ISACA Job Scheduling Audit guidance'. Public sources: ISACA."
+    },
+    {
+      "id": "d4_027",
+      "domain": 4,
+      "subtopic": "Access Control Software — Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST governs access control software (RBAC/ABAC system) for enterprise applications?",
+      "options": {
+        "A": "Allow each application's administrators to manage access independently; centralization slows business and reduces application-team autonomy unnecessarily.",
+        "B": "Require all access decisions to be reviewed by the CISO personally before any user is granted access to any application in the firm.",
+        "C": "Centralized access control software + role-based policies + periodic access reviews + segregation of duties + privileged-access escalation logging.",
+        "D": "Manage access via spreadsheet listing each user's access per application, updated annually during audit preparation and otherwise static."
+      },
+      "correct": "C",
+      "key_concept": "Access control software = centralized + RBAC policies + periodic access reviews + SoD enforcement + privileged-access logging. Per-app independence produces inconsistency; CISO-personal-review creates bottleneck; spreadsheet is stale.",
+      "pre_read": "For access-control-software questions, anchor on \"centralized + RBAC + periodic reviews + SoD + privileged logging.\" Per-app, CISO-bottleneck, and spreadsheet approaches each fail.",
+      "correct_explanation": "ISACA Access Control Software guidance, COBIT 2019 DSS05 (Managed Security Services), and NIST SP 800-53 AC family (Access Control) establish five-element governance: (1) CENTRALIZED ACCESS CONTROL SOFTWARE (single source of truth for user provisioning, RBAC roles, ABAC policies); (2) ROLE-BASED policies (users assigned to roles, roles assigned to permissions; reduces per-user permission management); (3) PERIODIC ACCESS REVIEWS (typically quarterly for production, annually for non-production; reviewers verify access still appropriate); (4) SEGREGATION OF DUTIES enforcement (toxic combinations blocked at provisioning); (5) PRIVILEGED ACCESS escalation logging (admin actions logged with named user, time, system, action). Option A's per-app independence produces inconsistency (same user, different access patterns across apps), gaps (offboarded users retain access in some apps), and audit challenges. Option B's CISO personal review is an impossible bottleneck for any enterprise. Option D's spreadsheet is stale and lacks SoD enforcement.",
+      "wrong_explanations": {
+        "A": "Per-application independent access management produces inconsistency (same user provisioned differently in different apps), gaps (offboarded user remains active in some apps), and audit blind spots. Centralization is essential.",
+        "B": "CISO personal review of every access decision is an impossible bottleneck. Even small firms have thousands of access decisions per quarter; CISO review is reserved for exceptional cases (privileged escalations, sensitive systems).",
+        "D": "Spreadsheet-based access management lacks enforcement (no automated SoD blocking), goes stale between updates, and provides no audit trail of changes. Modern access control requires software, not spreadsheets."
+      },
+      "tips": [
+        "Trap is A — \"per-app independent access\" matches team-autonomy culture but it produces inconsistency, offboarding gaps, and audit blind spots; centralization is essential.",
+        "Access control software = CENTRALIZED + RBAC + PERIODIC REVIEWS + SoD + PRIVILEGED LOGGING. Five elements; per-app, bottleneck, and spreadsheet approaches fail differently.",
+        "Exam-day shortcut: any access-control governance question is answered by the option naming CENTRALIZED with RBAC + REVIEWS + SoD; per-app and spreadsheet answers reflect outdated patterns."
+      ],
+      "framework_ref": "ISACA Access Control Software guidance; COBIT 2019 DSS05 (Managed Security Services); NIST SP 800-53 AC family",
+      "related_concepts": [
+        "Access control software",
+        "RBAC",
+        "Periodic access review",
+        "SoD"
+      ],
+      "_provenance": "Authored from concept: 'Access control software governance per ISACA Access Control Software guidance and COBIT 2019 DSS05'. Public sources: ISACA, COBIT 2019, NIST SP 800-53."
+    },
+    {
+      "id": "d4_028",
+      "domain": 4,
+      "subtopic": "Source Code Management — Production Code Custody",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST protects the integrity and availability of production source code?",
+      "options": {
+        "A": "Store source code only on the developer's workstation; cloud or shared storage introduces unnecessary attack surface for code exfiltration.",
+        "B": "Email production source code to all developers periodically so that any team member can rebuild the system if needed during an emergency.",
+        "C": "Run a build-server scan of production binaries to extract the source code via reverse engineering whenever a code copy is needed.",
+        "D": "Version-controlled repository with signed commits + branch protection + access controls + replicated backups + integrity verification."
+      },
+      "correct": "D",
+      "key_concept": "Production source code custody = version-controlled repository + signed commits + branch protection + access controls + replicated backups + integrity verification. Workstation-only, email-distribution, and reverse-engineering each fail catastrophically.",
+      "pre_read": "For source-code-management questions, anchor on \"version control + signed commits + branch protection + access + backups + integrity verification.\" Distractors propose workstation-only, email, or reverse-engineering — all severely deficient.",
+      "correct_explanation": "ISACA Source Code Management guidance, SLSA (Supply-chain Levels for Software Artifacts) framework, and OWASP SAMM establish six-element source-code custody: (1) VERSION-CONTROLLED REPOSITORY (Git, with hosting on a managed service like GitHub Enterprise, GitLab, or Bitbucket); (2) SIGNED COMMITS (cryptographic provenance of who authored each change); (3) BRANCH PROTECTION (cannot push directly to main without review; main branch is immutable except via merge); (4) ACCESS CONTROLS (read/write per repository, with privileged access escalation logged); (5) REPLICATED BACKUPS (geographically distributed); (6) INTEGRITY VERIFICATION (regular checksum verification, repository scans for tampering). Option A's workstation-only loses code when the workstation fails. Option B's email distribution lacks version control, integrity verification, and access control. Option C's reverse-engineering-from-binaries is absurd — binaries don't contain the original source (only compiled artifacts).",
+      "wrong_explanations": {
+        "A": "Workstation-only is single-point-of-failure. When the workstation fails or is lost, the firm loses the source code entirely. Modern source control requires centralized hosting with backup.",
+        "B": "Email distribution lacks version control (no history of changes), integrity verification (email recipients may modify), and access control (any email recipient has the code). It also creates leak risk via forwarding.",
+        "C": "Reverse-engineering from binaries doesn't recover original source code; it produces decompiled code that lacks comments, variable names, and the original structure. It's not a legitimate code custody strategy."
+      },
+      "tips": [
+        "Trap is A — \"workstation-only to reduce attack surface\" inverts the actual risk; workstation-only is HIGHER risk (single point of failure) than centralized version control with proper access controls.",
+        "Source code custody = VERSION CONTROL + SIGNED COMMITS + BRANCH PROTECTION + ACCESS + BACKUPS + INTEGRITY VERIFICATION. Six elements.",
+        "Exam-day shortcut: any source-code-custody question is answered by the option naming VERSION-CONTROLLED REPOSITORY with multiple controls; workstation-only, email, and reverse-engineering answers fail catastrophically."
+      ],
+      "framework_ref": "ISACA Source Code Management guidance; SLSA (Supply-chain Levels for Software Artifacts) framework; OWASP SAMM (Software Assurance Maturity Model)",
+      "related_concepts": [
+        "Source code management",
+        "Version control",
+        "SLSA",
+        "Branch protection"
+      ],
+      "_provenance": "Authored from concept: 'Source code custody per ISACA Source Code Management guidance and SLSA framework'. Public sources: ISACA, SLSA, OWASP SAMM."
+    },
+    {
+      "id": "d4_029",
+      "domain": 4,
+      "subtopic": "Software License Compliance — Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST manages software license compliance risk in an enterprise environment?",
+      "options": {
+        "A": "Trust the procurement team's license records as the single source of truth; technical verification of actual installed software is unnecessary overhead.",
+        "B": "Automated software-discovery + license-entitlement reconciliation + harvesting unused licenses + compliance reporting + vendor-audit preparation.",
+        "C": "Audit license compliance only after receiving an audit notification from a software vendor; proactive compliance is wasteful when no audit is imminent.",
+        "D": "Purchase enterprise licenses for all software regardless of actual usage; over-provisioning eliminates compliance risk and simplifies the licensing model."
+      },
+      "correct": "B",
+      "key_concept": "Software license compliance = automated discovery + entitlement reconciliation + license harvesting + compliance reporting + vendor-audit preparation. Trust-procurement loses ground truth; react-only-to-audits accepts exposure; over-provision wastes capital.",
+      "pre_read": "For software-licensing questions, anchor on \"automated discovery + reconciliation + harvesting + reporting + audit prep.\" Trust, reactive-only, and over-provision answers each fail.",
+      "correct_explanation": "ISACA Software License Compliance guidance and ITIL 4 Service Configuration Management establish five-element license compliance: (1) AUTOMATED DISCOVERY of installed software (agent-based tools — ServiceNow Software Asset Management, Snow, Flexera — scan endpoints and servers); (2) LICENSE-ENTITLEMENT RECONCILIATION (compare discovered installs against purchased entitlements per product, accounting for downgrade rights, multi-use rights, virtualization terms); (3) HARVESTING UNUSED LICENSES (reclaim from departed users or unused systems before purchasing additional); (4) COMPLIANCE REPORTING (current position by product, with alerts on over-licensed or under-licensed conditions); (5) VENDOR-AUDIT PREPARATION (records and reconciliation evidence ready when a vendor requests audit). Option A trusts procurement records that drift from reality. Option C accepts indefinite over-deployment until a vendor audit forces reconciliation (with retroactive penalties). Option D over-provisions to eliminate one risk but wastes significant capital.",
+      "wrong_explanations": {
+        "A": "Procurement records show what was PURCHASED; technical discovery shows what's INSTALLED. The two drift over time (test installs, BYOD, contractors' devices). Trusting procurement-only produces blind spots.",
+        "C": "Reactive-only-to-audits accepts indefinite over-deployment risk. Vendor audits assess current state and impose retroactive penalties for unlicensed installs found. Proactive compliance prevents the exposure.",
+        "D": "Over-provisioning enterprise licenses for all software wastes significant capital. Most firms can save 20-40% via reconciliation + harvesting; uniform enterprise licensing doesn't optimize cost."
+      },
+      "tips": [
+        "Trap is A — \"trust procurement records\" sounds efficient but procurement shows PURCHASED, technical discovery shows INSTALLED; the two drift and only technical discovery shows ground truth.",
+        "License compliance = DISCOVERY + RECONCILIATION + HARVESTING + REPORTING + AUDIT PREP. Five elements.",
+        "Exam-day shortcut: any license-compliance question is answered by the option naming AUTOMATED DISCOVERY with RECONCILIATION; trust, reactive-only, and over-provision answers each fail differently."
+      ],
+      "framework_ref": "ISACA Software License Compliance guidance; ITIL 4 Service Configuration Management; ISACA IT Asset Management guidance",
+      "related_concepts": [
+        "Software license compliance",
+        "License entitlement",
+        "License harvesting",
+        "Vendor audit"
+      ],
+      "_provenance": "Authored from concept: 'Software license compliance per ISACA Software License Compliance guidance and ITIL 4'. Public sources: ISACA, ITIL 4."
+    },
+    {
+      "id": "d4_030",
+      "domain": 4,
+      "subtopic": "Utility Programs — Governance",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control MOST appropriately governs powerful system utility programs (e.g., database query tools, file editors with raw-disk access)?",
+      "options": {
+        "A": "Restrict access to named individuals with privileged-access workflow approval + session logging + activity review + separation from production developer roles.",
+        "B": "Allow any developer to use any system utility on any system; utility access is necessary for productive operations work in modern environments.",
+        "C": "Disable all system utility programs in production environments; legitimate operations work should be performed through application interfaces only.",
+        "D": "Distribute utility passwords via the wiki page accessible to all engineering staff so that any team member can perform emergency operations."
+      },
+      "correct": "A",
+      "key_concept": "Utility program governance = named-individual access + privileged-access approval workflow + session logging + activity review + separation from developer roles. Free-allow accepts unauthorized risk; disable-all defeats legitimate operations; wiki-passwords destroys accountability.",
+      "pre_read": "For utility-program governance, anchor on \"named individuals + approval workflow + session logging + activity review + role separation.\" Distractors propose extremes or break accountability.",
+      "correct_explanation": "ISACA Utility Programs guidance and NIST SP 800-53 AC-6 (Least Privilege) establish five-element governance for powerful utility programs: (1) RESTRICTED ACCESS to named individuals (not roles, not shared accounts); (2) PRIVILEGED-ACCESS APPROVAL WORKFLOW (just-in-time access for specific time-bounded purposes); (3) SESSION LOGGING (every utility invocation logged with user, time, system, commands); (4) ACTIVITY REVIEW (periodic review of utility-program usage for appropriateness); (5) SEPARATION FROM PRODUCTION DEVELOPER ROLES (developers shouldn't have utility access to production they develop for, to enforce SoD). Option B free-allow accepts unauthorized data modification, deletion, or exfiltration risk. Option C disable-all defeats legitimate operations work (DBAs need query tools; storage admins need file editors). Option D wiki-passwords destroys accountability (logs show 'admin user' but not who actually performed the action).",
+      "wrong_explanations": {
+        "B": "Free utility access accepts unauthorized data modification, deletion, or exfiltration. Utility programs (raw database query, raw file editing) bypass application-layer controls; unrestricted access creates significant unaudited capability.",
+        "C": "Disabling all utilities defeats legitimate operations work. DBAs need direct query tools for diagnostics; storage admins need raw editing for recovery. The right control is governance, not disabling.",
+        "D": "Wiki-distributed passwords destroy accountability. Logs show the shared utility account, but not which specific person performed actions; investigations cannot identify the actor. Also exposes credentials to all wiki readers."
+      },
+      "tips": [
+        "Trap is C or D — opposing failure modes. C (\"disable all utilities\") is the over-restrictive trap that defeats legitimate operations; D (\"wiki-distributed passwords\") is the convenience trap that destroys accountability. Both fail on different axes of accountability and operational viability.",
+        "Utility programs = NAMED INDIVIDUALS + APPROVAL WORKFLOW + SESSION LOGGING + ACTIVITY REVIEW + SoD. Five elements.",
+        "Exam-day shortcut: any utility-program question is answered by the option naming GRANULAR ACCESS WITH LOGGING AND REVIEW; free-allow, disable-all, and shared-credential answers each fail differently."
+      ],
+      "framework_ref": "ISACA Utility Programs guidance; NIST SP 800-53 AC-6 (Least Privilege); ISACA Information Systems Audit and Assurance Standards",
+      "related_concepts": [
+        "Utility programs",
+        "Privileged access",
+        "Session logging",
+        "Least privilege"
+      ],
+      "_provenance": "Authored from concept: 'Utility program governance per ISACA Utility Programs guidance and NIST SP 800-53 AC-6'. Public sources: ISACA, NIST."
+    },
+    {
+      "id": "d4_031",
+      "domain": 4,
+      "subtopic": "Problem Management vs Incident Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic MOST distinguishes problem management from incident management under ITIL 4?",
+      "options": {
+        "A": "Problem and incident management are interchangeable terms; the same team handles both with the same process and tools across organizations.",
+        "B": "Problem management is just a more thorough form of incident management used when an incident lasts longer than a specified threshold of time.",
+        "C": "Problem management investigates root causes to prevent future incidents; incident management restores service from current outages as quickly as possible.",
+        "D": "Problem management addresses application bugs only; incident management handles infrastructure outages such as server, network, or storage failures."
+      },
+      "correct": "C",
+      "key_concept": "Problem management = ROOT CAUSE investigation for PREVENTION. Incident management = SERVICE RESTORATION for current outage. The two are complementary but distinct: incident-first for restoration; problem in parallel/after for prevention.",
+      "pre_read": "For problem-vs-incident questions, anchor on \"problem = root cause for prevention; incident = restoration of current outage.\" Distractors conflate the two or define them on a different axis (time threshold, technical category).",
+      "correct_explanation": "ITIL 4 Problem Management practice and ITIL 4 Incident Management practice (also referenced in d4_015) establish two complementary but distinct disciplines: INCIDENT MANAGEMENT restores service as quickly as possible from a current outage or impairment (detect, categorize, diagnose, resolve via workaround or fix, close). PROBLEM MANAGEMENT investigates root causes — typically of recurring incidents or major single events — to prevent future incidents (often by changing infrastructure, code, or process). Incident is reactive and time-pressured; problem is analytical and longer-running. Option A's interchangeable is fundamentally wrong. Option B's time-threshold-distinction is incorrect (both can take varying times). Option D's technical-category-distinction (application vs infrastructure) is also incorrect — both processes handle both types.",
+      "wrong_explanations": {
+        "A": "Incident and problem management are NOT interchangeable. They serve different purposes (restoration vs prevention), use different processes (rapid response vs analytical investigation), and may involve different people.",
+        "B": "Time threshold doesn't distinguish them. A 5-minute incident and a 5-day incident are both incident management. The trigger for problem management is recurrence or major impact, not duration.",
+        "D": "Both problem and incident management handle both application and infrastructure issues. The category distinction is wrong; the purpose distinction (restoration vs prevention) is correct."
+      },
+      "tips": [
+        "Trap is A — \"interchangeable terms\" is a common misconception in less-mature organizations; ITIL 4 explicitly separates the two practices because they serve different purposes.",
+        "Problem management = ROOT CAUSE for PREVENTION. Incident management = RESTORATION of CURRENT outage. Different purposes; both needed.",
+        "Exam-day shortcut: any problem-vs-incident question is answered by the option naming PREVENTION vs RESTORATION; interchangeable, time-threshold, or category-distinction answers all miss the purpose axis."
+      ],
+      "framework_ref": "ITIL 4 Problem Management practice; ITIL 4 Incident Management practice; ISACA Problem Management Audit guidance",
+      "related_concepts": [
+        "Problem management",
+        "Incident management",
+        "ITIL 4",
+        "Root cause"
+      ],
+      "_provenance": "Authored from concept: 'Problem vs incident management distinction per ITIL 4'. Public sources: ITIL 4."
+    },
+    {
+      "id": "d4_032",
+      "domain": 4,
+      "subtopic": "Network Management Tools — Combined Coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST supports comprehensive network management in an enterprise environment?",
+      "options": {
+        "A": "Manual ping tests run by operators every hour to verify each critical network link is up and responsive before any incident occurs.",
+        "B": "Trust vendor cloud-monitoring dashboards for all internet-facing services; internal network telemetry is unnecessary if external monitoring is in place.",
+        "C": "Reactive log review after customer complaints; proactive network monitoring is unnecessary overhead for stable production environments.",
+        "D": "Network management combining configuration management (NCM) + performance monitoring (NPM) + flow analysis (NetFlow/IPFIX) + alerting + SIEM integration."
+      },
+      "correct": "D",
+      "key_concept": "Network management = NCM (configuration) + NPM (performance) + flow analysis (NetFlow/IPFIX) + alerting + SIEM integration. Manual-ping is operationally untenable; vendor-cloud-only ignores internal; reactive-only-to-complaints is too slow.",
+      "pre_read": "For network-management questions, anchor on the multi-tool combination: configuration + performance + flow + alerting + SIEM. Single-tool or reactive approaches each fail.",
+      "correct_explanation": "ISACA Network Management Tools guidance and ITIL 4 Service Configuration Management establish multi-tool network management: (1) NETWORK CONFIGURATION MANAGEMENT (NCM) — tracks router/switch configurations, alerts on drift, enables rollback; (2) NETWORK PERFORMANCE MONITORING (NPM) — bandwidth utilization, latency, packet loss, jitter; (3) FLOW ANALYSIS via NetFlow/IPFIX/sFlow — visibility into who is talking to whom and at what volume; (4) ALERTING on thresholds and anomalies; (5) SIEM INTEGRATION — security analytics correlates network events with logs from other systems. Option A's manual ping is operationally untenable for any meaningful network (hundreds of links, continuous monitoring needed). Option B's vendor-cloud-only ignores internal east-west traffic and infrastructure monitoring. Option C's reactive-only-to-complaints is too slow — network issues compound rapidly.",
+      "wrong_explanations": {
+        "A": "Manual hourly ping tests are operationally untenable for any meaningful network. Modern networks have hundreds to thousands of links requiring continuous, automated monitoring.",
+        "B": "Vendor cloud-monitoring dashboards observe external-facing endpoints. Internal east-west traffic (between application tiers, microservices, databases) is invisible to external monitoring; both axes need coverage.",
+        "C": "Reactive-only-to-complaints accepts customer-facing impact before action. Network issues compound rapidly; proactive monitoring prevents many issues from reaching users."
+      },
+      "tips": [
+        "Trap is B — \"vendor cloud monitoring is sufficient\" matches modern cloud-first thinking but ignores internal east-west traffic; both external and internal monitoring are needed.",
+        "Network management = NCM + NPM + FLOW ANALYSIS + ALERTING + SIEM. Five tools/practices.",
+        "Exam-day shortcut: any network-management-tools question is answered by the option naming MULTI-TOOL COMBINATION; manual, single-tool, and reactive answers each fail."
+      ],
+      "framework_ref": "ISACA Network Management Tools guidance; ISACA Network Management guidance; ITIL 4 Service Configuration Management",
+      "related_concepts": [
+        "Network management",
+        "NCM",
+        "NPM",
+        "NetFlow",
+        "SIEM"
+      ],
+      "_provenance": "Authored from concept: 'Network management multi-tool combination per ISACA Network Management Tools guidance'. Public sources: ISACA, ITIL 4."
+    },
+    {
+      "id": "d4_033",
+      "domain": 4,
+      "subtopic": "Patch Management Process — Formal Steps",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which formal patch-management process BEST balances security urgency against operational stability?",
+      "options": {
+        "A": "Apply all vendor-released patches to all production systems within 24 hours regardless of severity, business impact, or testing status.",
+        "B": "Risk-tier patches: emergency security patches expedited; routine patches through standard test-stage-deploy cycle; defer with documented compensating controls.",
+        "C": "Defer all patches until annual maintenance window; aggressive patching introduces too much production change for the operational stability the firm requires.",
+        "D": "Apply patches selectively based on whichever administrator is on duty that week; consistency across administrators is unnecessary overhead for the team's productivity."
+      },
+      "correct": "B",
+      "key_concept": "Patch management process = RISK-TIERED: emergency security expedited; routine patches via test-stage-deploy; deferred patches require documented compensating controls. Apply-all-24h is operationally untenable; defer-to-annual accepts massive exposure; administrator-discretion lacks consistency.",
+      "pre_read": "For patch-management process questions, anchor on \"risk-tiered: emergency vs routine vs deferred with compensating controls.\" Apply-all-fast and defer-annually are extremes.",
+      "correct_explanation": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning), ISACA Patch Management Audit guidance, and ITIL 4 Change Enablement establish risk-tiered patch management: (1) EMERGENCY SECURITY PATCHES (critical CVEs with public exploits, regulator notifications) — expedited path with abbreviated testing and out-of-cycle deployment; (2) ROUTINE PATCHES (standard security and bug fixes) — through standard test-stage-deploy cycle (development → test → staging → production over days/weeks); (3) DEFERRED PATCHES (patches that conflict with critical business processes or have compatibility issues) — defer with documented COMPENSATING CONTROLS (network isolation, increased monitoring, alternative protections) and explicit risk acceptance. Option A apply-all-24h ignores testing, causes regressions, and is operationally untenable. Option C defer-to-annual accepts massive exposure (CVE disclosure to exploitation is often days, not months). Option D administrator-discretion produces inconsistent patching, leaving some systems exposed indefinitely.",
+      "wrong_explanations": {
+        "A": "Apply-all-within-24h skips testing and causes regressions (patches break working systems). Operations cannot absorb continuous untested changes; security improvement is offset by stability degradation.",
+        "C": "Defer-to-annual-window accepts 11 months of exposure to known vulnerabilities. CVE disclosure to exploitation is increasingly fast (often days); annual deferral is no longer viable for security.",
+        "D": "Administrator-discretion produces inconsistent patching. Some systems get patched promptly; others fall years behind. The firm's overall exposure becomes determined by the weakest-patched system."
+      },
+      "tips": [
+        "Trap is C — \"defer to annual window for stability\" matches risk-averse operations culture but it accepts massive security exposure; modern patching is risk-tiered with emergency-fast and routine-managed lanes.",
+        "Patch process = RISK-TIERED: EMERGENCY expedited + ROUTINE test-stage-deploy + DEFERRED with COMPENSATING CONTROLS. Three lanes.",
+        "Exam-day shortcut: any patch-process question is answered by the option naming RISK-TIERED with multiple lanes; apply-all-fast and defer-all-annually answers are extremes."
+      ],
+      "framework_ref": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning); ISACA Patch Management Audit guidance; ITIL 4 Change Enablement practice",
+      "related_concepts": [
+        "Patch management process",
+        "Risk-tiered patching",
+        "Compensating controls",
+        "NIST SP 800-40"
+      ],
+      "_provenance": "Authored from concept: 'Risk-tiered patch management per NIST SP 800-40 and ITIL 4'. Public sources: NIST, ITIL 4, ISACA."
+    },
+    {
+      "id": "d4_034",
+      "domain": 4,
+      "subtopic": "Release Management vs Change Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which characteristic MOST distinguishes release management from change management under ITIL 4?",
+      "options": {
+        "A": "Release management coordinates the package + deployment of multiple changes; change management governs the approval + risk assessment of individual changes.",
+        "B": "Release management and change management are interchangeable terms; the same team and process handle both with the same documentation and approvals.",
+        "C": "Release management handles only major version upgrades; change management handles only minor patches and configuration adjustments.",
+        "D": "Release management is responsible for marketing announcements of new features; change management is responsible for technical implementation of those features."
+      },
+      "correct": "A",
+      "key_concept": "Release management = COORDINATES PACKAGE + DEPLOYMENT of multiple changes. Change management = GOVERNS APPROVAL + RISK ASSESSMENT of individual changes. Complementary practices: change approves individual changes; release packages and deploys.",
+      "pre_read": "For release-vs-change questions, anchor on \"release packages and deploys; change approves and risk-assesses.\" Distractors conflate the two or define them on a different axis.",
+      "correct_explanation": "ITIL 4 Release Management practice and ITIL 4 Change Enablement practice are complementary but distinct: CHANGE MANAGEMENT governs the approval and risk assessment of individual changes (e.g., a CAB reviews a database schema change for risk before authorizing it). RELEASE MANAGEMENT coordinates the packaging and deployment of multiple approved changes into a coherent release that's planned, built, tested, and deployed together. A single release typically contains multiple approved changes; each change went through change-management approval, then release management coordinates their bundled deployment. Option B's interchangeable is wrong (different purposes). Option C's major-vs-minor distinction is also wrong (both processes handle both scales). Option D's marketing-vs-implementation is fabricated.",
+      "wrong_explanations": {
+        "B": "Release and change management are NOT interchangeable. They serve complementary purposes: change governs individual change approval; release coordinates packaged deployment. ITIL 4 explicitly separates the two practices.",
+        "C": "Major-vs-minor distinction is incorrect. Both processes handle both scales: a major release contains many changes, each approved by change management. A minor patch is still a change that goes through change management.",
+        "D": "Marketing announcements aren't part of either practice. Release management's audience is internal (development, operations, change management); marketing is a different organizational function."
+      },
+      "tips": [
+        "Trap is B — \"interchangeable terms\" is a common misconception in organizations without mature ITIL implementation; the two practices serve complementary but distinct purposes.",
+        "Release management = COORDINATES PACKAGE + DEPLOYMENT of multiple changes. Change management = APPROVES individual changes (CAB). Complementary, not interchangeable.",
+        "Exam-day shortcut: any release-vs-change question is answered by the option naming PACKAGE/DEPLOY (release) vs APPROVE/ASSESS (change); interchangeable, scale-based, or marketing-based answers each miss the purpose axis."
+      ],
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Change Enablement practice; ITIL 4 Deployment Management practice",
+      "related_concepts": [
+        "Release management",
+        "Change management",
+        "ITIL 4",
+        "CAB"
+      ],
+      "_provenance": "Authored from concept: 'Release vs change management distinction per ITIL 4'. Public sources: ITIL 4."
+    },
+    {
+      "id": "d4_035",
+      "domain": 4,
+      "subtopic": "Operational Log Management — Types and Coverage",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which combination BEST defines operational log management coverage for enterprise systems?",
+      "options": {
+        "A": "Application logs only; infrastructure and operating system logs add noise without proportional value for incident investigation or audit.",
+        "B": "All logs from every system regardless of value, retained indefinitely, with no sampling or filtering at any level for any reason.",
+        "C": "Security + application + system/OS + network + database + transaction logs, collected with integrity protection, retention per policy, indexed for search.",
+        "D": "Only logs that have been requested by an investigation during the last 12 months; older logs serve no operational or audit purpose."
+      },
+      "correct": "C",
+      "key_concept": "Operational log management = security + application + system/OS + network + database + transaction logs + integrity protection + policy-based retention + indexed search. Single-type, all-everything, and investigation-only approaches each fail.",
+      "pre_read": "For log-management questions, anchor on \"multi-type coverage + integrity protection + policy retention + indexed search.\" Single-type, all-with-no-filtering, and investigation-only answers all fail.",
+      "correct_explanation": "NIST SP 800-92 (Guide to Computer Security Log Management), ISACA Log Management Audit guidance, and ITIL 4 Service Configuration Management establish multi-source log coverage: SECURITY logs (authentication, authorization, access changes), APPLICATION logs (business events, errors), SYSTEM/OS logs (kernel, services, scheduled tasks), NETWORK logs (firewall, IDS, flow), DATABASE logs (transactions, schema changes, privileged access), TRANSACTION logs (business-process events for audit), with INTEGRITY PROTECTION (append-only, signed, replicated), RETENTION PER POLICY (regulatory requirements drive minimum retention, e.g., 7 years for financial records), and INDEXED SEARCH (SIEM or log-management platform enables investigation). Option A's application-only misses critical security and system events. Option B's all-with-no-filtering produces overwhelming volume, storage cost, and noise. Option D's investigation-only-retention violates regulatory retention requirements and forgoes detection capabilities.",
+      "wrong_explanations": {
+        "A": "Application-only logs miss critical security events (authentication, authorization), system events (kernel, OS), and network events (firewall, traffic). Comprehensive log management requires multi-source coverage.",
+        "B": "All-logs-no-filtering produces overwhelming storage costs, retrieval slowdowns, and noise that obscures real signals. Effective logging balances coverage with selectivity (verbose for security events; sampled for high-volume transactions).",
+        "D": "Investigation-only retention violates regulatory requirements (SOX 7 years, GDPR specific retention, HIPAA 6 years) and forgoes detection capabilities (you can only investigate what you've retained)."
+      },
+      "tips": [
+        "Trap is A or B — opposing coverage extremes. A (\"application logs only\") under-covers and misses security/OS/network signals; B (\"all logs from every system\") over-collects and obscures real signals. Both fail by missing the selective multi-source principle.",
+        "Log management = SECURITY + APPLICATION + OS + NETWORK + DATABASE + TRANSACTION logs + INTEGRITY + RETENTION + INDEXED SEARCH. Multi-source + multi-property.",
+        "Exam-day shortcut: any log-management question is answered by the option naming MULTI-SOURCE coverage with INTEGRITY + RETENTION; single-source, all-with-no-filtering, and investigation-only answers fail."
+      ],
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); ISACA Log Management Audit guidance; ITIL 4 Service Configuration Management",
+      "related_concepts": [
+        "Operational log management",
+        "Log types",
+        "Log retention",
+        "SIEM"
+      ],
+      "_provenance": "Authored from concept: 'Operational log management coverage per NIST SP 800-92 and ISACA Log Management Audit guidance'. Public sources: NIST, ISACA, ITIL 4."
+    },
+    {
+      "id": "d4_036",
+      "domain": 4,
+      "subtopic": "SIEM Integration with Log Management",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST integrates log management with security information and event management (SIEM)?",
+      "options": {
+        "A": "Send all production logs directly to the SIEM via single-vendor proprietary protocol with no normalization, parsing, or correlation at any stage.",
+        "B": "Disable log collection for non-security events to reduce SIEM volume and licensing cost; security logs alone provide sufficient situational awareness.",
+        "C": "Collect logs locally and review them quarterly; SIEM real-time integration is unnecessary overhead for organizations without dedicated security operations centers.",
+        "D": "Forward logs to SIEM with normalization to common schema + correlation rules + alerting + threat-intelligence integration + retention per policy."
+      },
+      "correct": "D",
+      "key_concept": "SIEM integration = forward logs + normalize to common schema + correlation rules + alerting + threat-intelligence integration + retention per policy. Raw-no-normalization, security-only, and quarterly-local-only approaches each fail.",
+      "pre_read": "For SIEM integration questions, anchor on \"normalize + correlate + alert + threat-intel + retain.\" Raw, security-only, and offline approaches each miss the value SIEM delivers.",
+      "correct_explanation": "NIST SP 800-92 (Guide to Computer Security Log Management), ISACA Log Management Audit guidance, and CSA Cloud Controls Matrix establish SIEM integration as: (1) FORWARD LOGS from sources (network, security, application, database, OS) to the SIEM; (2) NORMALIZE to a common schema (Common Event Format, ECS, vendor-specific) so events from heterogeneous sources can be queried uniformly; (3) CORRELATION RULES across event streams (e.g., login from new geo + privilege escalation within minutes); (4) ALERTING based on correlation rules with severity-based escalation; (5) THREAT-INTELLIGENCE INTEGRATION (known-bad IPs, IOC feeds, MITRE ATT&CK mappings); (6) RETENTION per policy. Option A's raw-no-normalization defeats correlation. Option B's security-only-logs misses context from application and infrastructure events that often signal security relevance. Option C's quarterly-local-only defeats real-time detection and response.",
+      "wrong_explanations": {
+        "A": "Sending raw logs without normalization defeats correlation across heterogeneous sources. The SIEM cannot correlate Windows auth events with firewall blocks without a common schema for both.",
+        "B": "Security-only logs miss context. Many security-relevant events appear first in application or infrastructure logs (unusual API calls, unexpected configuration changes). SIEM value comes from correlation across log sources.",
+        "C": "Quarterly local review defeats SIEM's real-time detection and response capability. Modern threats require detection in minutes-to-hours; quarterly review identifies issues months after exposure."
+      },
+      "tips": [
+        "Trap is B — \"security-only logs to reduce volume\" matches budget-conscious thinking but it misses cross-source correlation; many security signals first appear in application or infrastructure logs.",
+        "SIEM integration = FORWARD + NORMALIZE + CORRELATE + ALERT + THREAT-INTEL + RETENTION. Six elements; raw or single-source approaches lose the value.",
+        "Exam-day shortcut: any SIEM-integration question is answered by the option naming NORMALIZATION + CORRELATION + ALERTING; raw, security-only, and offline-only answers each fail differently."
+      ],
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); ISACA Log Management Audit guidance; CSA Cloud Controls Matrix",
+      "related_concepts": [
+        "SIEM",
+        "Log management",
+        "Correlation rules",
+        "Threat intelligence"
+      ],
+      "_provenance": "Authored from concept: 'SIEM integration with log management per NIST SP 800-92 and ISACA Log Management Audit guidance'. Public sources: NIST, ISACA, CSA."
+    },
+    {
+      "id": "d4_037",
+      "domain": 4,
+      "subtopic": "Patch Deferral Decision in Regulated Context",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the patch-deferral request the engagement faces?",
+      "scenario_context": "A federally chartered insurer operates a 24-year-old claims-processing system on Java 7 (end-of-life since 2022). A critical CVE (CVSS 9.8) was disclosed yesterday affecting the Java runtime. Patching to Java 8 (latest version with vendor compatibility certification for the claims application) is available but vendor reports 'unknown impact' on the claims-processing application's behavior given the system's age and customizations. Full migration to a modern Java version would require ~$3.2M and 14 months. The CIO proposes deferring the patch indefinitely; the CISO insists immediate patch. The compliance officer cites FFIEC examination expectations. The IS auditor was asked to recommend governance for the deferral request before the steering committee meets in 48 hours.",
+      "options": {
+        "A": "Endorse the CIO's indefinite deferral; the operational risk of breaking the 24-year-old claims system outweighs the security risk of an unpatched CVE in regulated infrastructure.",
+        "B": "Apply structured deferral analysis: exploit-availability + business-impact + compensating-controls + accelerated-modernization plan + documented risk acceptance by appropriate authority.",
+        "C": "Endorse the CISO's immediate patch position; security CVE 9.8 always outweighs operational stability concerns regardless of any system-specific impact considerations involved.",
+        "D": "Defer the decision until both CIO and CISO can agree on a unified position; the steering committee should not adjudicate technical disagreements between executives in a regulated context."
+      },
+      "correct": "B",
+      "key_concept": "Patch deferral in regulated context = structured analysis: exploit availability + business impact + compensating controls + accelerated modernization + documented risk acceptance by appropriate authority. Endorse-CIO ignores exploitable risk; endorse-CISO ignores operational reality; defer-to-CIO-CISO-agreement abandons audit role.",
+      "pre_read": "For patch-deferral analysis questions, anchor on \"structured deferral: exploit + business impact + compensating controls + modernization plan + risk acceptance.\" Single-stakeholder endorsements reflect bias.",
+      "correct_explanation": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning), FFIEC IT Examination Handbook, and ISACA Patch Deferral guidance establish structured deferral analysis for high-risk patches in regulated contexts: (1) EXPLOIT AVAILABILITY (is exploit code public? in-the-wild exploitation observed?); (2) BUSINESS IMPACT analysis (what's the actual operational consequence of patch failure vs unpatched exploitation); (3) COMPENSATING CONTROLS during deferral (network segmentation, increased monitoring, WAF rules, application-level mitigations) sufficient to substantially reduce exploitation risk; (4) ACCELERATED MODERNIZATION plan (the 14-month $3.2M plan needs visible commitment, not indefinite deferral); (5) DOCUMENTED RISK ACCEPTANCE by appropriate authority (CRO or board level given FFIEC examination expectations). Option A endorses indefinite deferral without compensating controls or modernization commitment. Option C endorses immediate patch without addressing operational uncertainty. Option D defers to CIO-CISO agreement abandoning audit role.",
+      "wrong_explanations": {
+        "A": "Indefinite deferral without compensating controls accepts indefinite exploitation risk on regulated infrastructure. FFIEC examiners would flag indefinite deferral as inadequate risk management.",
+        "C": "Immediate patch on a 24-year-old custom system with 'unknown impact' may cause production failure. Security urgency must engage with operational reality; structured analysis weighs both.",
+        "D": "Defer-to-CIO-CISO-agreement abandons the audit role and the steering committee's adjudication function. Steering committees exist precisely to resolve such conflicts based on analyst input."
+      },
+      "tips": [
+        "Trap is A or C — opposing single-stakeholder endorsements. A endorses indefinite deferral (CIO bias); C endorses immediate patch (CISO bias). Structured analysis with compensating controls and accelerated modernization sits between.",
+        "Patch deferral analysis = EXPLOIT AVAILABILITY + BUSINESS IMPACT + COMPENSATING CONTROLS + ACCELERATED MODERNIZATION + DOCUMENTED RISK ACCEPTANCE. Five elements.",
+        "Exam-day shortcut: any patch-deferral question is answered by the option naming STRUCTURED ANALYSIS WITH COMPENSATING CONTROLS; endorse-either-extreme answers reflect bias."
+      ],
+      "framework_ref": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning); FFIEC IT Examination Handbook; ISACA Patch Deferral guidance",
+      "related_concepts": [
+        "Patch deferral",
+        "Compensating controls",
+        "Risk acceptance",
+        "Regulated patching"
+      ],
+      "_provenance": "Authored from concept: 'Patch deferral structured analysis per NIST SP 800-40 and FFIEC examination expectations'. Public sources: NIST, FFIEC, ISACA. Scenario specifics (federally chartered insurer, 24-year-old claims system on Java 7, CVE 9.8 yesterday, $3.2M/14-month modernization, CIO/CISO/compliance positions) invented for this question."
+    },
+    {
+      "id": "d4_038",
+      "domain": 4,
+      "subtopic": "Hardware Refresh Decision — Legacy vs Modern",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST guides the hardware refresh decision the engagement faces?",
+      "scenario_context": "A 7,000-employee insurance firm runs its policy-administration platform on 8-year-old proprietary blade servers (vendor end-of-support in 9 months, no extension available). Three options: (a) refresh to identical-vendor next-generation blades ($4.2M, like-for-like architecture); (b) refresh to commodity x86 servers in same data center ($2.8M, requires application validation); (c) migrate to cloud (estimated $1.4M first year operating cost, $6.5M over 5 years, requires significant re-architecture). The CIO favors option (c) cloud; the CTO favors option (a) like-for-like; CFO is focused on 5-year TCO. Compliance team raises data residency concerns for some workloads. The IS auditor was asked to advise on decision framework.",
+      "options": {
+        "A": "Apply structured analysis: 5-year TCO per option + risk per option + data residency constraints + capability fit + transition complexity + alignment with broader strategy.",
+        "B": "Endorse the CIO's cloud migration; modern cloud architecture always wins over legacy refresh regardless of cost, complexity, or data residency constraints involved.",
+        "C": "Endorse the CTO's like-for-like refresh; familiar architecture minimizes operational risk and the firm should not undertake re-architecture at the same time as hardware refresh.",
+        "D": "Defer the decision until the vendor end-of-support deadline forces action; premature decisions are likely to be revised once urgency clarifies the actual constraints."
+      },
+      "correct": "A",
+      "key_concept": "Hardware refresh decision = structured analysis: 5-year TCO + risk + data residency + capability fit + transition complexity + strategy alignment. CIO and CTO endorsements reflect opposing biases; defer-until-deadline wastes the 9-month planning window.",
+      "pre_read": "For hardware-refresh-decision questions, anchor on \"structured multi-factor analysis with explicit constraint surfacing.\" Single-stakeholder endorsements reflect bias; defer-until-urgent loses planning time.",
+      "correct_explanation": "ISACA Hardware Refresh Decision guidance and ISACA Val IT Framework establish six-element structured analysis: (1) 5-YEAR TCO per option (capital, operating, transition cost — option C cloud appears cheaper year-1 but $6.5M over 5 years is higher than option B); (2) RISK per option (option A vendor lock-in; option B application-validation risk; option C re-architecture risk); (3) DATA RESIDENCY constraints (compliance team's concern may rule out some cloud regions or require specific configurations); (4) CAPABILITY FIT (does the firm have cloud-operating skills, x86 server skills, blade skills); (5) TRANSITION COMPLEXITY (data migration, application validation, training, dual-running periods); (6) ALIGNMENT WITH BROADER STRATEGY (is the firm cloud-first or hybrid; what's the next platform decision after this one). Option B endorses CIO bias without structured analysis. Option C endorses CTO bias the same way. Option D defer-until-deadline wastes the 9-month planning window and forces decisions under pressure.",
+      "wrong_explanations": {
+        "B": "Endorsing cloud migration without structured analysis ignores data residency, capability fit, transition complexity, and the 5-year TCO comparison. Cloud may or may not win; analysis determines.",
+        "C": "Endorsing like-for-like refresh assumes the existing architecture is the right target without comparison. Vendor lock-in and forgone modernization opportunity should be analyzed, not assumed away.",
+        "D": "Defer-until-deadline wastes the 9-month planning window. The decision should be made with months of analysis and execution time, not in the final weeks before end-of-support."
+      },
+      "tips": [
+        "Trap is B or C — opposing single-stakeholder endorsements (cloud-first vs like-for-like). Both reflect bias; structured analysis determines the right answer for the firm's specific profile.",
+        "Hardware refresh = 5-YEAR TCO + RISK + DATA RESIDENCY + CAPABILITY FIT + TRANSITION COMPLEXITY + STRATEGY ALIGNMENT. Six factors.",
+        "Exam-day shortcut: any hardware-refresh-decision question is answered by the option naming STRUCTURED MULTI-FACTOR ANALYSIS; single-stakeholder endorsements and defer-until-urgent answers each fail."
+      ],
+      "framework_ref": "ISACA Hardware Refresh Decision guidance; ISACA Val IT Framework; ISACA Hardware Lifecycle guidance",
+      "related_concepts": [
+        "Hardware refresh",
+        "TCO analysis",
+        "Cloud migration",
+        "Vendor end-of-support"
+      ],
+      "_provenance": "Authored from concept: 'Hardware refresh decision per ISACA Hardware Refresh Decision guidance and Val IT'. Public sources: ISACA. Scenario specifics (7K-employee insurer, 8-year-old blade servers, 9-month EOS, $4.2M/2.8M/1.4M-6.5M options, CIO/CTO/CFO/compliance positions) invented for this question."
+    },
+    {
+      "id": "d4_039",
+      "domain": 4,
+      "subtopic": "Recurring Problem Trend — Systemic Investigation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which recommendation BEST addresses the recurring problem trend the engagement has surfaced?",
+      "scenario_context": "A retail-tech firm has logged 47 production incidents over the past 6 months attributed to 'database performance' — all closed individually with point fixes (queries optimized, indexes added, connection pools tuned). Customer-facing impact totaled 38 hours of degraded service. Problem management has not been invoked because each incident was individually resolved. The new VP of operations notices the pattern and asks the IS auditor to advise on whether the firm has a problem-management gap. The CTO believes operational excellence is shown by quick incident resolution and disputes the need for additional investigation. The audit committee asked for a recommendation.",
+      "options": {
+        "A": "Endorse the CTO's position; 47 individually-resolved incidents demonstrate strong incident-management capability and don't necessarily indicate a systemic problem requiring further investigation.",
+        "B": "Recommend immediate platform migration to a new database technology; 47 recurring incidents indicate the underlying database choice is fundamentally inadequate for the workload.",
+        "C": "Recommend invoking problem management: aggregate trend analysis + common root cause investigation + systemic remediation plan + KEDB documentation + prevention measures with monitoring.",
+        "D": "Defer any analysis until incidents exceed 100; the current 47 is below typical thresholds that would warrant problem-management engagement for any organization at this scale."
+      },
+      "correct": "C",
+      "key_concept": "Recurring problem trend = invoke problem management: aggregate trend analysis + common root cause + systemic remediation + KEDB (Known Error Database) documentation + prevention with monitoring. Endorse-CTO accepts the pattern; migrate-immediately overreacts; defer-until-100 ignores the trend.",
+      "pre_read": "For recurring-problem questions, anchor on \"problem management for trend: aggregate + root cause + systemic remediation + KEDB + prevention.\" Endorse-quick-fix culture accepts the pattern; defer-by-threshold loses time.",
+      "correct_explanation": "ITIL 4 Problem Management practice, ISACA Recurring Problem Trend guidance, and ISACA Problem Management Audit guidance establish that incident recurrence is the trigger for problem management: (1) AGGREGATE TREND ANALYSIS (47 database-performance incidents in 6 months — what's the pattern by time, system, query type, customer segment); (2) COMMON ROOT CAUSE investigation (is it data volume growth, query patterns, connection pool sizing, schema design, infrastructure capacity); (3) SYSTEMIC REMEDIATION PLAN (architectural changes that prevent recurrence, not just individual fixes); (4) KEDB (KNOWN ERROR DATABASE) documentation (capture the underlying problem and known workarounds); (5) PREVENTION MEASURES WITH MONITORING (proactive detection of conditions that lead to incidents). Option A endorses incident-only thinking that misses the systemic issue. Option B's migrate-immediately overreacts (different database may not solve underlying patterns). Option D's defer-to-100-threshold accepts continued customer-facing impact (38 hours degraded already).",
+      "wrong_explanations": {
+        "A": "Endorsing the CTO's incident-only thinking accepts the pattern that produced 38 hours of customer-facing degraded service. Quick incident resolution is necessary but not sufficient; recurring incidents require problem management.",
+        "B": "Immediate platform migration overreacts. The underlying database choice may or may not be the issue; structured root-cause investigation determines the appropriate remediation (which may be migration, may be different).",
+        "D": "Defer-until-100-incidents is an arbitrary threshold that accepts continued impact. 47 incidents in 6 months is already a clear trend; problem management should be invoked now."
+      },
+      "tips": [
+        "Trap is A or B — opposing reactions to the recurring trend. A (CTO's \"individually-resolved demonstrates capability\") under-reacts and accepts the pattern; B (\"immediate platform migration\") over-reacts and assumes the database choice is the issue. Structured problem management sits between, identifying root cause before remediating.",
+        "Recurring problem = INVOKE PROBLEM MANAGEMENT: aggregate trend + root cause + systemic remediation + KEDB + prevention. Five elements; incident-only thinking misses the pattern.",
+        "Exam-day shortcut: any recurring-incident question is answered by the option naming PROBLEM MANAGEMENT for SYSTEMIC INVESTIGATION; endorse-quick-fix and arbitrary-threshold answers each fail."
+      ],
+      "framework_ref": "ITIL 4 Problem Management practice; ISACA Recurring Problem Trend guidance; ISACA Problem Management Audit guidance",
+      "related_concepts": [
+        "Problem management",
+        "Recurring incidents",
+        "KEDB",
+        "Systemic remediation"
+      ],
+      "_provenance": "Authored from concept: 'Recurring problem trend invokes problem management per ITIL 4 Problem Management and ISACA Recurring Problem Trend guidance'. Public sources: ITIL 4, ISACA. Scenario specifics (retail-tech, 47 incidents in 6 months, 38 hours degraded, CTO incident-only position, VP-ops noticing the pattern) invented for this question."
+    },
+    {
+      "id": "d4_040",
+      "domain": 4,
+      "subtopic": "Heterogeneous Release Coordination — Multi-Platform Deployment",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "Which approach BEST coordinates a heterogeneous release across the platforms described?",
+      "scenario_context": "A B2B SaaS firm needs to deploy a major release that touches: (a) a cloud-native microservices platform (3 teams; CI/CD with feature flags); (b) a mainframe-hosted billing system (1 team; quarterly release cycle); (c) a vendor-supplied CRM SaaS (vendor manages deployment; firm provides change requests); (d) on-premises Oracle E-Business Suite (1 team; biannual major release windows). All four must update together to support new product capability launching in 8 weeks. Each platform has its own change-management practices, testing cycle, and rollback options. The CIO is concerned about coordination. The IS auditor was asked to advise on release governance for the multi-platform launch.",
+      "options": {
+        "A": "Force all four platforms to adopt the cloud-native team's CI/CD cadence; this is the only way to coordinate heterogeneous platforms reliably under time pressure.",
+        "B": "Cancel the multi-platform release and split the new product capability into smaller launches that can be supported by each platform independently within its native cadence.",
+        "C": "Defer the launch by 6 months to allow the mainframe and Oracle EBS teams more time; coordination of heterogeneous platforms cannot be achieved on an 8-week timeline.",
+        "D": "Establish unified release-coordination plan: single launch date, platform-native cadence respected, integration testing, dependency-mapped rollback, joint command structure for go/no-go."
+      },
+      "correct": "D",
+      "key_concept": "Heterogeneous release coordination = unified plan + single launch date + native cadence per platform + integration testing + dependency-mapped rollback + joint command for go/no-go. Force-CI/CD-everywhere is unrealistic; cancel sacrifices business value; defer-6-months is excessive.",
+      "pre_read": "For heterogeneous release questions, anchor on \"unified plan respecting native cadence + integration testing + joint command.\" Force-one-cadence and defer-extensively are extremes.",
+      "correct_explanation": "ITIL 4 Release Management practice and ISACA Heterogeneous Release Coordination guidance establish six-element coordination for multi-platform releases: (1) UNIFIED RELEASE-COORDINATION PLAN (single document, all platforms, joint timeline); (2) SINGLE LAUNCH DATE for customer-visible capability (the 8-week target); (3) PLATFORM-NATIVE CADENCE RESPECTED (mainframe quarterly, Oracle biannual, cloud weekly — each platform builds within its cadence but converges at the launch); (4) INTEGRATION TESTING across platforms (end-to-end testing in pre-launch environments); (5) DEPENDENCY-MAPPED ROLLBACK (if one platform fails, which others must roll back, in what sequence); (6) JOINT COMMAND STRUCTURE for go/no-go (single decision authority across the four platform teams). Option A force-CI/CD-everywhere is unrealistic for mainframe and Oracle EBS (they have valid reasons for slower cycles). Option B cancel sacrifices customer-facing product value. Option C defer-6-months is excessive when 8-week coordinated launch is achievable with proper structure.",
+      "wrong_explanations": {
+        "A": "Force-all-platforms-to-CI/CD-cadence ignores valid reasons for slower cycles (mainframe regression testing, Oracle EBS dependency on annual support windows). Coordination doesn't require uniformity; it requires synchronization.",
+        "B": "Cancel-the-release sacrifices the new product capability without analysis of whether coordinated launch is feasible. Capability split may be appropriate sometimes; here, the requirement is multi-platform coordination, not capability reduction.",
+        "C": "Defer-6-months is excessive when proper structure (unified plan, native cadence, integration testing, joint command) can support an 8-week coordinated launch. Excessive deferral wastes business value."
+      },
+      "tips": [
+        "Trap is A — \"force CI/CD cadence on all platforms\" reflects cloud-native bias and ignores valid reasons for slower cycles in mainframe and Oracle EBS; coordination needs synchronization, not uniformity.",
+        "Heterogeneous release = UNIFIED PLAN + SINGLE DATE + NATIVE CADENCE + INTEGRATION TESTING + DEPENDENCY-MAPPED ROLLBACK + JOINT COMMAND. Six elements.",
+        "Exam-day shortcut: any multi-platform release question is answered by the option naming COORDINATION (not uniformity) with JOINT COMMAND; force-uniformity, cancel, and defer-extensively answers each fail."
+      ],
+      "framework_ref": "ITIL 4 Release Management practice; ISACA Heterogeneous Release Coordination guidance; ISACA Release Management Audit guidance",
+      "related_concepts": [
+        "Heterogeneous release",
+        "Multi-platform coordination",
+        "Joint command",
+        "Dependency-mapped rollback"
+      ],
+      "_provenance": "Authored from concept: 'Heterogeneous release coordination per ITIL 4 Release Management and ISACA Heterogeneous Release Coordination guidance'. Public sources: ITIL 4, ISACA. Scenario specifics (B2B SaaS, 4 heterogeneous platforms — cloud microservices + mainframe + SaaS CRM + Oracle EBS, 8-week launch, CIO coordination concern) invented for this question."
     }
   ]
 }
