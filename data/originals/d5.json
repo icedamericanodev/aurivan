@@ -5366,7 +5366,7 @@
         "C": "Failure mode = TLS-MAKES-NDR-USELESS. Modern NDR uses METADATA-BASED analysis (flow patterns, packet sizes, timing, JA3 fingerprints) that works on encrypted traffic. Plus selective TLS inspection at strategic points. NDR remains valuable despite encryption."
       },
       "tips": [
-        "Trap is A — 'only north-south matters' is candidate-seductive because perimeter is the most-discussed network boundary; but east-west is where LATERAL MOVEMENT happens (APT, ransomware, insider exfil). NDR's distinctive value is east-west visibility beyond what perimeter firewalls provide.",
+        "Trap is C and A (dual). C ('TLS makes NDR useless') is the strongest contemporary trap because TLS IS widely deployed; but modern NDR uses METADATA-BASED analysis (JA3/JA3S fingerprints, flow patterns, timing) that works on encrypted traffic. A ('north-south only matters') is the secondary trap; misses east-west lateral movement (APT, ransomware, insider exfil) which is NDR's distinctive value.",
         "NDR = east-west + north-south visibility + flow analysis + DPI + ML anomaly + IOC matching + integrations + encrypted-traffic metadata + retention + ATT&CK mapping. Ten elements.",
         "Exam-day shortcut: when stem asks about NDR/NTA, look for east-west + encrypted-traffic-aware framework; north-south-only, EDR-replaces, and TLS-makes-useless framings each fail."
       ],
@@ -5479,7 +5479,7 @@
         "Pentest scope dispute = accept + assign IR treatment + remediate + investigate scope-pivot + retest + post-incident review + contractual clarification. Seven tracks. Responsible-disclosure obligation supersedes contract scope.",
         "Exam-day shortcut: when stem describes PENTEST OUT-OF-SCOPE FINDING WITH MATERIAL VULN, look for accept-and-remediate-with-investigation framework; reject-valid-finding, threaten-vendor, and pay-to-include framings each fail."
       ],
-      "framework_ref": "ISO/IEC 29147 (Vulnerability Disclosure); CISA Coordinated Vulnerability Disclosure (CVD); PTES (Penetration Testing Execution Standard); PCI DSS v4.0 Requirement 11.4; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "framework_ref": "PTES (Penetration Testing Execution Standard); CISA Coordinated Vulnerability Disclosure (CVD); ISO/IEC 29147 (Vulnerability Disclosure — informed-by for ethics); PCI DSS v4.0 Requirement 11.4; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
       "related_concepts": [
         "Responsible disclosure obligation",
         "Scope-pivot investigation",
@@ -5549,7 +5549,7 @@
         "D": "Failure mode = MGMT-PLANE-ONLY. Data-plane access logs (S3 GetObject, KMS Decrypt) are CRITICAL for: exfiltration detection, sensitive-data access audit, compliance (PCI/HIPAA/SOX). Excluding them is short-sighted cost-optimization."
       },
       "tips": [
-        "Trap is D — 'management-plane only logging' is candidate-seductive because data-plane volume is much larger; but data-plane access logs are CRITICAL for exfiltration detection, sensitive-data access audit, and compliance (PCI/HIPAA/SOX). Excluding them is short-sighted cost-optimization.",
+        "Trap is D — 'management-plane logging only' is candidate-seductive because data-plane volume is much larger and cost-reduction is attractive; but the transferable principle is: DATA-PLANE ACCESS LOGS ARE NON-NEGOTIABLE for exfiltration detection + compliance evidence (PCI/HIPAA/SOX). Cost is the wrong axis for the cut — apply tiered storage instead (S3 Glacier for cold tier preserves logs at low cost).",
         "Cloud audit logging = all-clouds + management/data-plane + immutable storage + centralized aggregation + retention by source + SIEM integration + cold tier + cross-cloud query + tamper-evidence. Eleven elements.",
         "Exam-day shortcut: when stem asks about MULTI-CLOUD AUDIT LOGGING STRATEGY, look for all-clouds + management/data-plane + centralized + immutable framework; single-cloud, decentralized, and management-plane-only framings each fail."
       ],
@@ -5572,7 +5572,7 @@
       "scenario_context": "A SaaS firm's CSPM alerts at 9:42 PM Saturday: a production WAF security group rule changed 12 minutes ago — the rule that blocks SSH (port 22) from the public Internet to admin servers was removed. The change was made via direct console action, not through the IaC pipeline; no associated change ticket. Last-known-good IaC state has the rule. EDR shows 3 SSH connection attempts to admin servers from external IPs since the rule removal (no successful authentication yet — MFA + bastion is enforced). CISO + CISO-on-call + IR-lead + cloud architect on bridge call within 8 minutes.",
       "options": {
         "A": "Open a multi-track coordination call: CISO + CTO + GC + Cloud Architect + IR team + change-control to align on the response framework before taking technical action.",
-        "B": "ROLL BACK the security group rule IMMEDIATELY via IaC pipeline (re-apply last-known-good Terraform/CloudFormation state) — restoration completes in <60 seconds and closes SSH exposure window before adversary succeeds.",
+        "B": "ROLL BACK the security group rule IMMEDIATELY via IaC pipeline (re-apply last-known-good Terraform/CloudFormation state) — restoration completes in single-digit minutes and closes SSH exposure window before adversary succeeds.",
         "C": "Contact the person who likely made the change (cloud architect on duty) to ask about the modification before reverting; confirm legitimate business need first.",
         "D": "Block external IPs attempting SSH at the perimeter firewall while preserving the changed security group state for forensic analysis; reverting destroys evidence."
       },
@@ -5664,7 +5664,7 @@
         "Insider-threat program = UEBA + DLP + access analytics + manager training + employee reporting + privacy-aware monitoring + tiered investigation + executive sponsorship + cross-functional governance + periodic review. Ten tracks.",
         "Exam-day shortcut: when stem describes INSIDER-THREAT PROGRAM DESIGN in MULTI-JURISDICTIONAL CONTEXT, look for multi-layered framework with jurisdiction-aware boundaries; maximum-surveillance, privileged-only, and outsource framings each fail."
       ],
-      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center Research; NIST SP 800-53 Rev 5 PM-12; Executive Order 13587 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment)",
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center Research; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment); Executive Order 13587 (federal insider-threat program — informed-by model for private sector)",
       "related_concepts": [
         "UEBA baseline detection",
         "Works council co-determination",
@@ -5697,7 +5697,7 @@
         "D": "Failure mode = MSSP-FOR-COST-WITHOUT-OPERATIONAL-CHANGE. MSSP transition reduces some costs but transfers others (vendor lock-in, less business context, potential SLA breaches). MSSP decision is separate from cost optimization; should be made on its own merits, not as cost-reduction shortcut."
       },
       "tips": [
-        "Trap is C — 'reduce detection rule count by 30%' is candidate-seductive because fewer rules feels like a direct cost reduction; but blanket 30% cut creates detection GAPS (real detections in the eliminated rules). Targeted retirement of low-TP rules with ATT&CK coverage gap analysis is the canonical pattern.",
+        "Trap is C and B (dual). C ('reduce detection rule count by 30%') is candidate-seductive because fewer rules feels like direct cost reduction; but blanket cut creates detection GAPS. B ('reduce retention from 1y to 90d') is the more exam-grade trap — VIOLATES regulatory retention requirements (HIPAA 6y, SOX 7y, PCI 1y); tiered storage preserves retention without high-tier cost. Both fail; targeted retirement + tiered storage is canonical.",
         "SIEM cost optimization = log source review + tiered storage + data lake offload + use-case retirement + ingestion filtering + license negotiation + open-schema migration + post-optimization validation. Eight tracks preserving detection.",
         "Exam-day shortcut: when stem describes SIEM COST REDUCTION with DETECTION PRESERVATION, look for multi-layered framework with ATT&CK coverage validation; retention-shortening, blanket-rule-cut, and MSSP-shortcut framings each fail."
       ],
@@ -5775,7 +5775,7 @@
         "Cloud workload exploitation = isolate + threat hunt + audit IMDSv1 usage + force IMDSv2 + revoke credentials + forensic preservation + customer impact + regulator notification + post-incident IMDSv2 migration. Nine tracks.",
         "Exam-day shortcut: when stem describes CONFIRMED CLOUD WORKLOAD EXPLOITATION WITH LATERAL MOVEMENT, look for isolate + threat-hunt + selective framework; total-rebuild, allow-for-intel, and broad-disable framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Incident Handling); CISA Kubernetes Hardening Guidance (joint with NSA); AWS IMDSv2 Documentation; GDPR Article 33 (Notification of a personal data breach); MITRE ATT&CK T1611 (Escape to Host)",
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Incident Handling); CISA Kubernetes Hardening Guidance (joint with NSA); AWS IMDSv2 Documentation; GDPR Article 33 (Notification of a personal data breach); MITRE ATT&CK T1552.005 (Unsecured Credentials: Cloud Instance Metadata API); MITRE ATT&CK T1610 (Deploy Container); MITRE ATT&CK T1611 (Escape to Host)",
       "related_concepts": [
         "IMDSv1 → IMDSv2 migration",
         "kubectl cordon + NetworkPolicy",

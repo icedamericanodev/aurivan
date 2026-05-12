@@ -1626,3 +1626,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Sigma (Generic Signature Format for SIEM Systems)
 - Sigma (Generic Signature Format)
 - Snowflake / Databricks / Google Chronicle Documentation
+- MITRE ATT&CK T1552.005 (Unsecured Credentials: Cloud Instance Metadata API)
+- MITRE ATT&CK T1610 (Deploy Container)
+- MITRE ATT&CK T1611 (Escape to Host)
