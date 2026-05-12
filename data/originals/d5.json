@@ -8010,6 +8010,756 @@
         "External retainer for surge"
       ],
       "_provenance": "Authored from concept: 'Post-incident forensic capability building'. Public sources: ISACA, ISO, ASCLD, NIST, GIAC. No legacy bank citation."
+    },
+    {
+      "id": "d5_221",
+      "domain": 5,
+      "subtopic": "Certificate Revocation under CA Compromise (Application, §5.8)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST addresses certificate revocation when subordinate CA key compromise is suspected?",
+      "options": {
+        "A": "Issue new certificates immediately to all affected services; new certificate issuance supersedes the compromised chain without requiring formal revocation actions.",
+        "B": "Revoke compromised CA + downstream certificates via CRL + OCSP-stapled responses; force responders to reject the compromised chain at validation time.",
+        "C": "Wait for certificate expiry to remove the compromised chain; natural expiration avoids revocation-list bloat and operational complexity for relying parties.",
+        "D": "Notify relying parties to manually distrust the compromised CA; manual trust-store updates are more reliable than revocation infrastructure under compromise."
+      },
+      "correct": "B",
+      "key_concept": "Subordinate CA compromise = revoke compromised CA + downstream certs via CRL + OCSP-stapled responses (forces validation-time rejection by relying parties).",
+      "pre_read": "When CA-key compromise is suspected, revocation infrastructure (CRL + OCSP) is the canonical mechanism — new-cert issuance and expiry-wait fail the immediate trust-rejection requirement.",
+      "correct_explanation": "NIST SP 800-57 Part 1 Rev 5, RFC 6960 (OCSP), CA/Browser Forum Baseline Requirements §4.9, and RFC 5280 §5 establish certificate revocation framework. (1) REVOCATION VIA CRL — Certificate Revocation List published by issuing CA contains serial numbers of revoked certificates with reasonCode (keyCompromise). (2) OCSP STATUS CHECK — Online Certificate Status Protocol provides real-time revocation status; OCSP stapling embeds the responder's signed assertion in the TLS handshake. (3) REVOCATION SCOPE — when subordinate CA private key is compromised, the compromised CA itself plus all certificates it has issued must be revoked. (4) NEW CERT ISSUANCE alone fails: relying parties continue trusting the compromised chain until revocation is published. (5) EXPIRY-WAIT fails: compromise duration (potentially months/years) exposes relying parties throughout the certificate lifetime. (6) MANUAL TRUST-STORE UPDATES fail at scale: relying party trust-store management is heterogeneous and unreliable; revocation infrastructure is the canonical mechanism for forcing rejection.",
+      "wrong_explanations": {
+        "A": "TRAP — issue-new-only is seductive (looks decisive) but fails the relying-party trust dimension: until revocation is published, the compromised chain remains trusted at validation time by every relying party that has not yet rotated.",
+        "C": "Expiry-wait fails because compromise duration may exceed certificate validity (multi-year certs) and relying parties remain exposed throughout. CRL/OCSP revocation is non-negotiable for compromise scenarios.",
+        "D": "Manual trust-store distrust fails at scale: relying parties run heterogeneous trust stores (browsers, OSes, custom apps) and manual update coordination is unreliable. The PKI revocation infrastructure exists specifically to solve this problem."
+      },
+      "tips": [
+        "Trap is A — 'issue new certs immediately' feels decisive but skips the revocation step that actually forces relying-party rejection at validation time. Until revocation is published, the compromised chain remains trusted.",
+        "Mindset: PKI compromise response = REVOKE the compromised chain BEFORE rotating to new certs. New issuance without revocation leaves the compromise valid at validation time.",
+        "Exam-day shortcut: when stem says CA COMPROMISE or KEY COMPROMISE, look for CRL + OCSP-stapled revocation — issue-new-only, expiry-wait, and manual-distrust framings each fail the relying-party-validation test."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); RFC 6960 (Online Certificate Status Protocol — OCSP); CA/Browser Forum Baseline Requirements; RFC 5280 (X.509 Public-Key Infrastructure)",
+      "related_concepts": [
+        "PKI",
+        "revocation",
+        "OCSP",
+        "CRL",
+        "key compromise"
+      ],
+      "_provenance": "Authored from concept: 'Certificate Revocation under CA Compromise'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_222",
+      "domain": 5,
+      "subtopic": "PKI Hierarchy and Root CA Offline Boundary (Application, §5.8)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control BEST protects the root CA in a multi-tier PKI hierarchy for a government contractor?",
+      "options": {
+        "A": "Root CA kept offline in a HSM with ceremony-based access; subordinate (intermediate) CA online for routine issuance under separation-of-duties controls.",
+        "B": "Single online CA for both root and issuing functions; consolidation reduces operational complexity and accelerates certificate issuance for engineering teams.",
+        "C": "Root CA online with continuous monitoring; agility for emergency cert issuance outweighs the historical offline-root convention for modern PKI operations.",
+        "D": "Multiple online root CAs in active-active configuration; redundancy ensures availability for routine and emergency issuance across data centers."
+      },
+      "correct": "A",
+      "key_concept": "Multi-tier PKI = root CA offline in HSM + ceremony-based access + subordinate (intermediate) CA online for issuance + separation-of-duties controls.",
+      "pre_read": "Root CA must be offline; the trust anchor's compromise invalidates the entire hierarchy. Online-root, online-multi-root, and consolidated framings each fail the trust-anchor isolation principle.",
+      "correct_explanation": "NIST SP 800-57 Part 2 Rev 1, RFC 5280 §6, and ISACA Cryptographic Controls Audit/Assurance Program establish PKI hierarchy. (1) OFFLINE ROOT CA — root certificate authority is the trust anchor; compromise invalidates the entire downstream certificate hierarchy and requires re-bootstrapping all relying parties. (2) HSM-PROTECTED PRIVATE KEY — root signing key never leaves FIPS 140-3 validated hardware security module. (3) CEREMONY-BASED ACCESS — root operations (subordinate CA signing, CRL signing) require multi-person ceremony with documented procedures, video recording, and witness signatures. (4) ONLINE SUBORDINATE CA — intermediate CA is online for routine certificate issuance, operating under separation-of-duties (separate request submission + approval + issuance roles). (5) ONLINE-ROOT framings fail because the trust anchor must not be exposed to network compromise vectors; offline operation is non-negotiable for high-assurance PKI.",
+      "wrong_explanations": {
+        "B": "Single-online-CA fails the trust-anchor isolation principle: root key exposure to network compromise invalidates the entire hierarchy. The offline-root + online-subordinate split is the canonical PKI design pattern.",
+        "C": "Online-root fails for the same reason as B; modern PKI does NOT depart from the offline-root convention. The convention exists precisely because of nation-state compromise risk to online CAs.",
+        "D": "Multiple-online-roots multiplies the compromise risk rather than mitigating it; root-CA availability is solved via subordinate-CA redundancy, not via online-root multiplication."
+      },
+      "tips": [
+        "Trap is C — 'modernization' framing argues online-root is acceptable, but it isn't. The offline-root convention is foundational PKI design, not legacy nostalgia.",
+        "Mindset: trust-anchor isolation is the defining principle of multi-tier PKI. Anything that exposes the root to network compromise invalidates the entire hierarchy.",
+        "Exam-day shortcut: when stem says PKI HIERARCHY or ROOT CA, look for offline + HSM + ceremony + online-subordinate — online-root, online-multi-root, and consolidated framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 2 Rev 1; RFC 5280 (X.509 Public-Key Infrastructure); ISACA Cryptography Audit/Assurance Program; FIPS 140-3 (Security Requirements for Cryptographic Modules)",
+      "related_concepts": [
+        "PKI",
+        "hierarchy",
+        "root CA",
+        "HSM",
+        "trust anchor"
+      ],
+      "_provenance": "Authored from concept: 'PKI Hierarchy and Root CA Offline Boundary'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_223",
+      "domain": 5,
+      "subtopic": "TLS 1.0/1.1 Deprecation and Migration (Application, §5.9)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which sequencing BEST manages TLS 1.0/1.1 deprecation across customer-facing payment systems?",
+      "options": {
+        "A": "Disable TLS 1.0/1.1 immediately across all systems; abrupt cutover demonstrates security posture and forces customer migration without prolonged exposure window.",
+        "B": "Maintain TLS 1.0/1.1 indefinitely for legacy customer compatibility; commercial impact of customer cutover exceeds the residual risk from deprecated protocols.",
+        "C": "Inventory + enable TLS 1.3 + telemetry-based client-version baseline + staged cutover with customer notification + rollback path + PCI DSS attestation.",
+        "D": "Test TLS 1.3 in production after deprecating older versions; production validation is more authoritative than staging-environment cutover testing for payment systems."
+      },
+      "correct": "C",
+      "key_concept": "TLS deprecation = inventory + enable TLS 1.3 + client-version telemetry baseline + staged cutover with customer notification + rollback path + PCI DSS attestation.",
+      "pre_read": "TLS deprecation is a staged-migration discipline requiring telemetry-based baseline before cutover. Abrupt cutover, indefinite delay, and production-only-test framings each fail.",
+      "correct_explanation": "RFC 8446 (TLS 1.3), RFC 8996 (Deprecating TLS 1.0/1.1), PCI DSS v4.0.1 Requirement 4.2.1, and OWASP ASVS v4.0.3 §9 establish TLS migration framework. (1) INVENTORY — enumerate all client endpoints + server endpoints + library versions + cipher-suite configurations. (2) ENABLE TLS 1.3 — modern protocol with mandatory forward secrecy and reduced handshake complexity (1-RTT). (3) CLIENT-VERSION TELEMETRY — measure actual TLS-version distribution across customer base before cutover to size the impact window. (4) STAGED CUTOVER — disable TLS 1.0/1.1 in non-prod first, then customer-facing prod with documented customer notification (typically 90+ days). (5) ROLLBACK PATH — pre-approved configuration change procedure to re-enable older protocols if customer-impact exceeds tolerance. (6) PCI DSS ATTESTATION — payment systems require formal attestation post-cutover. ABRUPT-CUTOVER fails because legitimate-customer breakage creates fraud-detection blind-spots during the impact window. INDEFINITE-DELAY fails PCI DSS Requirement 4.2.1.",
+      "wrong_explanations": {
+        "A": "Abrupt-cutover fails commercial-operations test: legitimate customers using older browsers/POS terminals will fail transactions, creating fraud-detection blind-spots and customer-impact escalations during the unprotected window.",
+        "B": "Indefinite-delay fails the PCI DSS Requirement 4.2.1 control objective. Deprecated TLS versions have known cryptographic weaknesses (BEAST, POODLE) that are not theoretical.",
+        "D": "Production-only test fails the cutover-rollback discipline. Without staging validation, the rollback decision lacks pre-validated comparison baseline and is reactive rather than planned."
+      },
+      "tips": [
+        "Trap is A — 'abrupt cutover demonstrates security' fails because legitimate-customer breakage during the impact window creates fraud-detection blind-spots and customer-impact escalations.",
+        "Mindset: TLS deprecation is a STAGED MIGRATION discipline (telemetry + staged + rollback), not a one-shot cutover. The control objective is risk reduction, not security theater.",
+        "Exam-day shortcut: when the stem says TLS DEPRECATION, the right answer turns on STAGED MIGRATION discipline (with rollback path), NOT abrupt cutover. Abrupt-cutover is the trap because legitimate-customer breakage creates fraud blind-spots."
+      ],
+      "framework_ref": "IETF RFC 8446 (TLS 1.3); RFC 8996 (Deprecating TLS 1.0/1.1); PCI DSS v4.0.1 Requirement 4.2.1 (TLS Deprecation); OWASP ASVS",
+      "related_concepts": [
+        "TLS",
+        "deprecation",
+        "migration",
+        "PCI DSS",
+        "cryptography"
+      ],
+      "_provenance": "Authored from concept: 'TLS 1.0/1.1 Deprecation and Migration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_224",
+      "domain": 5,
+      "subtopic": "Secure API Gateway Controls (Application, §5.9)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which control set BEST secures an open-banking API gateway exposing customer financial data?",
+      "options": {
+        "A": "Perimeter WAF is sufficient for API protection; modern WAF rules cover the OWASP API Top 10 categories without dedicated API-gateway controls.",
+        "B": "API key authentication for all consumers; long-lived API keys provide simpler operational management than token-based authentication for B2B integrations.",
+        "C": "IP allowlist for consuming applications; network-perimeter trust is more reliable than application-layer authentication for closed banking partner ecosystems.",
+        "D": "OAuth 2.0 + mutual TLS + scope-based authorization + rate-limiting + schema validation + audit logging + token rotation under FAPI 2.0 profile baseline."
+      },
+      "correct": "D",
+      "key_concept": "Open-banking API gateway = OAuth 2.0 + mutual TLS + scope-based authz + rate-limiting + schema validation + audit logging + token rotation (FAPI 2.0 baseline).",
+      "pre_read": "API gateway controls span auth + authz + transport + rate-limit + schema + audit. WAF-only, long-lived-API-key, and IP-allowlist framings each fail multiple control dimensions.",
+      "correct_explanation": "OWASP API Security Top 10 (2023), FAPI 2.0 Security Profile (OpenID Foundation), NIST SP 800-204 §5, and ISO/IEC 27033-6 establish API gateway control framework. (1) OAUTH 2.0 + MUTUAL TLS — token-based authentication with proof-of-possession via client certificate. (2) SCOPE-BASED AUTHORIZATION — least-privilege at the data-element level (read-account-balance vs initiate-payment scopes). (3) RATE-LIMITING — per-client + per-endpoint quotas to prevent credential-stuffing and enumeration. (4) SCHEMA VALIDATION — strict request/response schema enforcement at the gateway to block malformed and injection-style inputs. (5) AUDIT LOGGING — full request/response logging with PII redaction for forensic and compliance use. (6) TOKEN ROTATION — short-lived access tokens (minutes) + refresh-token rotation with binding. (7) FAPI 2.0 baseline addresses the specific high-assurance requirements of financial-grade API exposure. WAF-ONLY fails because WAF operates at network/perimeter and cannot enforce business-logic authorization at the API-call level.",
+      "wrong_explanations": {
+        "A": "WAF-only fails the OWASP API Top 10 #2 (Broken Authentication) and #5 (Broken Function Level Authorization) — WAF operates at network/perimeter and cannot enforce business-logic authorization.",
+        "B": "Long-lived API keys fail the credential-rotation and compromise-blast-radius dimensions. Token-based authentication with short-lived access tokens is the canonical financial-grade API control.",
+        "C": "IP allowlist fails the application-layer authentication dimension and creates brittle operational coupling between IP/network changes and authentication. FAPI 2.0 explicitly requires application-layer mutual authentication."
+      },
+      "tips": [
+        "Trap is A — 'WAF is sufficient' is the common authoring mistake. WAF operates at network/perimeter and cannot enforce business-logic authorization at the API-call level.",
+        "Mindset: API security operates at multiple layers (transport + auth + authz + rate + schema + audit). Single-control framings always fail.",
+        "Exam-day shortcut: when the stem says FINANCIAL-GRADE API, the right answer requires LAYERED controls at the API gateway, not a single-control framing. WAF-only is the trap because WAF cannot enforce business-logic authorization."
+      ],
+      "framework_ref": "OWASP API Security Top 10 (2023); FAPI 2.0 Security Profile (OpenID Foundation); NIST SP 800-204 (Security Strategies for Microservices); ISO/IEC 27033-6 (Network Security: Securing IP Network Access)",
+      "related_concepts": [
+        "API security",
+        "OAuth",
+        "mutual TLS",
+        "open banking",
+        "FAPI"
+      ],
+      "_provenance": "Authored from concept: 'Secure API Gateway Controls'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_225",
+      "domain": 5,
+      "subtopic": "Hypervisor Escape Risk and VM Isolation (Application, §5.10)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which architecture BEST mitigates hypervisor-escape risk in a multi-tenant cloud SaaS environment?",
+      "options": {
+        "A": "Type 2 hypervisor on commodity OS; standard enterprise OS hardening covers the hypervisor attack surface for multi-tenant workloads at scale.",
+        "B": "Type 1 bare-metal hypervisor + dedicated hardware per high-sensitivity tenant + minimized hypervisor attack surface + timely CVE patching + escape-detection telemetry.",
+        "C": "Co-tenant VMs share trust boundary once the hypervisor is patched; CVE-level patching is sufficient to eliminate cross-tenant escape risk in shared environments.",
+        "D": "Nested virtualization for tenant isolation; nested layers provide defense-in-depth against escape vectors without requiring dedicated hardware per tenant."
+      },
+      "correct": "B",
+      "key_concept": "Hypervisor escape mitigation = Type 1 bare-metal + dedicated hardware for high-sensitivity tenants + minimized attack surface + CVE patching + escape-detection telemetry.",
+      "pre_read": "Hypervisor escape risk is residual; Type 1 + dedicated hardware + minimized surface + patching + detection are required layers. Type 2, co-tenant trust, and nested-virt-as-isolation framings each fail.",
+      "correct_explanation": "NIST SP 800-125, NIST SP 800-125A Rev 1, CIS VMware ESXi Benchmark, and CIS Microsoft Hyper-V Benchmark establish hypervisor security framework. (1) TYPE 1 BARE-METAL — hypervisor runs directly on hardware without a general-purpose OS underneath, reducing attack surface. (2) DEDICATED HARDWARE for high-sensitivity tenants — eliminates cross-tenant escape vector entirely for the highest-risk workloads. (3) MINIMIZED ATTACK SURFACE — disable unused devices, paravirtualization features, and management interfaces. (4) TIMELY CVE PATCHING — hypervisor-escape CVEs (VENOM, Cloudburst, L1TF, retbleed, etc.) require expedited patch cycles. (5) ESCAPE-DETECTION TELEMETRY — hypervisor-level integrity checks and tenant-isolation telemetry. (6) TYPE 2 + commodity OS underneath fails because the underlying OS attack surface compounds hypervisor risk. (7) CO-TENANT-TRUST-POST-PATCH fails because zero-day escape vectors persist between disclosure and patch; patching is necessary but not sufficient.",
+      "wrong_explanations": {
+        "A": "Type 2 hypervisor on commodity OS fails the multi-tenant attack-surface dimension — VMware Workstation / VirtualBox-class products are NOT used for multi-tenant cloud SaaS specifically because the underlying OS attack surface compounds hypervisor risk. Type 1 bare-metal is canonical for high-assurance multi-tenant.",
+        "C": "Co-tenant trust post-patch fails because zero-day escape vectors persist between disclosure and patch. Patching is necessary but not sufficient — dedicated hardware for high-sensitivity workloads remains the control.",
+        "D": "Nested virtualization adds complexity and attack surface, not defense-in-depth against escape. Nested hypervisors share the same escape vectors as the outer hypervisor."
+      },
+      "tips": [
+        "Trap is C — 'patch eliminates risk' fails because zero-days persist between disclosure and patch; dedicated hardware for high-sensitivity tenants is the residual control, not patching alone.",
+        "Mindset: hypervisor escape is a RESIDUAL risk that requires defense-in-depth (Type 1 + dedicated HW + minimized surface + patch + detect). Single-control framings always fail.",
+        "Exam-day shortcut: when the stem says MULTI-TENANT HYPERVISOR or ESCAPE risk, the right answer requires DEFENSE-IN-DEPTH including dedicated hardware for high-sensitivity workloads. Patch-eliminates-risk is the trap (zero-days persist)."
+      ],
+      "framework_ref": "NIST SP 800-125 (Guide to Security for Full Virtualization Technologies); NIST SP 800-125A Rev 1 (Hypervisor Platform Security Recommendations); CIS VMware ESXi Benchmark; ISO/IEC 27017 (Cloud Security)",
+      "related_concepts": [
+        "virtualization",
+        "hypervisor",
+        "escape",
+        "multi-tenant",
+        "isolation"
+      ],
+      "_provenance": "Authored from concept: 'Hypervisor Escape Risk and VM Isolation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_226",
+      "domain": 5,
+      "subtopic": "Phishing Simulation Program Metrics (Application, §5.12)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which metric BEST signals phishing-simulation program maturity at a hospital network?",
+      "options": {
+        "A": "Report rate (% of users who reported the simulation) trended quarterly against industry benchmarks; report-rate growth is the leading indicator of program maturity.",
+        "B": "Click rate (% of users who clicked the simulated link) as the sole metric; click-rate reduction is the canonical phishing-program success measure across industries.",
+        "C": "Training completion rate; 100% completion across the workforce demonstrates program success and satisfies the audit-evidence requirement for awareness controls.",
+        "D": "Number of simulations sent per quarter; simulation volume drives behavior change and is the canonical program-maturity indicator across mature security programs."
+      },
+      "correct": "A",
+      "key_concept": "Phishing simulation maturity = REPORT RATE (% reporting the simulation), trended quarterly against benchmarks; report-rate growth signals behavioral maturity beyond click-rate reduction.",
+      "pre_read": "Click-rate alone misses the active-defense dimension that report-rate captures. Click-rate-only, completion-rate, and volume framings each fail the maturity-measurement principle.",
+      "correct_explanation": "NIST SP 800-50 Rev 1, SANS Security Awareness Maturity Model, ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program, and Kirkpatrick Four-Level Evaluation Model establish phishing-program measurement framework. (1) REPORT RATE — percentage of users who reported the simulation via the phishing-reporting button or process; this is a LEADING indicator of behavioral maturity (active defense behavior). (2) CLICK RATE alone is a LAGGING indicator and misses the active-defense dimension; mature programs show declining click rate AND rising report rate. (3) COMPLETION RATE is Kirkpatrick L1 (reaction) only; it measures exposure to training, not behavior change. (4) SIMULATION VOLUME is an operational input metric, not an outcome metric; volume without measurement is activity, not effectiveness. (5) MATURE PROGRAMS measure report rate + click rate + repeat-clicker rate + time-to-report + reporting-quality.",
+      "wrong_explanations": {
+        "B": "Click-rate-only fails the active-defense dimension. Mature programs measure BOTH declining click rate AND rising report rate — the latter signals behavior change beyond avoidance.",
+        "C": "Training completion is a participation/exposure metric, not any Kirkpatrick level — it measures attendance, not reaction (L1) or learning (L2) or behavior (L3) or results (L4). Concrete-looking audit evidence that is disconnected from effectiveness.",
+        "D": "Simulation volume is an operational input metric, not an outcome metric. Volume without measurement is activity, not effectiveness — common authoring mistake."
+      },
+      "tips": [
+        "Trap is B — 'click rate alone' is the industry-common framing. Mature programs measure BOTH declining click rate AND rising report rate; click-rate-only misses the active-defense dimension.",
+        "Mindset: phishing-program maturity = REPORT-RATE GROWTH alongside click-rate reduction. Active defense behavior is the leading indicator; avoidance alone is lagging.",
+        "Exam-day shortcut: when stem says PHISHING SIMULATION METRICS, look for report-rate-trend + benchmark — click-rate-only, completion-rate, and volume framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-50 (Building an Information Technology Security Awareness Program); SANS Security Awareness Maturity Model; ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program; Kirkpatrick Four-Level Training Evaluation Model",
+      "related_concepts": [
+        "phishing",
+        "simulation",
+        "awareness",
+        "metrics",
+        "maturity"
+      ],
+      "_provenance": "Authored from concept: 'Phishing Simulation Program Metrics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_227",
+      "domain": 5,
+      "subtopic": "Security Training Effectiveness Measurement (Application, §5.12)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which measurement framework BEST evaluates security training effectiveness at a manufacturer?",
+      "options": {
+        "A": "Post-training quiz pass rate alone; knowledge-check scores demonstrate retention and are the canonical effectiveness measure for compliance-driven training programs.",
+        "B": "User satisfaction ratings via post-training survey; engagement scores predict behavior change and are the most-validated effectiveness indicator across industries.",
+        "C": "Kirkpatrick L1 reaction + L2 learning + L3 behavior change (observed post-training) + L4 results (incident-rate trend); multi-level measurement is required for effectiveness.",
+        "D": "Completion rate across the workforce; 100% completion demonstrates program reach and satisfies audit-evidence requirements for security training controls."
+      },
+      "correct": "C",
+      "key_concept": "Training effectiveness = Kirkpatrick L1 reaction + L2 learning + L3 behavior change + L4 results; multi-level measurement (especially L3 + L4) is required to demonstrate effectiveness beyond exposure.",
+      "pre_read": "Training effectiveness requires MULTI-LEVEL measurement. Quiz-only, satisfaction-only, and completion-only framings each fail the behavior-change dimension.",
+      "correct_explanation": "NIST SP 800-50 Rev 1, ISO/IEC 27001:2022 A.6.3, and Kirkpatrick Four-Level Training Evaluation Model establish training effectiveness measurement framework. (1) L1 REACTION — participant satisfaction (post-training survey). (2) L2 LEARNING — knowledge retention (post-training quiz; pre/post comparison). (3) L3 BEHAVIOR CHANGE — observed behavior in the workplace post-training (phishing-report rate increase; secure-coding-pattern adoption; least-privilege-request pattern). (4) L4 RESULTS — security outcomes (incident-rate trend; mean-time-to-report trend; near-miss-reporting rate). Mature programs measure L3 + L4, not just L1 + L2. (5) QUIZ-ONLY fails because L2 measures knowledge, not behavior; users can pass a quiz and not change behavior. (6) SATISFACTION-ONLY fails because L1 measures engagement, not learning or behavior. (7) COMPLETION-ONLY measures exposure, not any Kirkpatrick level.",
+      "wrong_explanations": {
+        "A": "Post-training quiz is Kirkpatrick L2 (learning) — it measures knowledge retention, not behavior change in the workplace. L3 + L4 are the canonical effectiveness levels.",
+        "B": "Satisfaction is Kirkpatrick L1 (reaction) — least-validated as an effectiveness indicator. Users can rate training highly and exhibit no behavior change.",
+        "D": "Completion rate measures exposure, not any Kirkpatrick level. Common audit-evidence trap because the artifact is concrete (100% complete) but disconnected from effectiveness."
+      },
+      "tips": [
+        "Trap is D — 'completion rate = effectiveness' is the audit-evidence trap. Completion measures exposure, not behavior change; Kirkpatrick L3 + L4 are the maturity levels.",
+        "Mindset: training effectiveness requires L3 + L4 (behavior + results), not just L1 + L2 (reaction + learning). Audit evidence focused on completion or quiz alone is insufficient.",
+        "Exam-day shortcut: when stem says TRAINING EFFECTIVENESS, look for Kirkpatrick L1 + L2 + L3 + L4 framework — quiz-only, satisfaction-only, and completion-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-50 (Building an Information Technology Security Awareness Program); ISO/IEC 27001:2022; Kirkpatrick Four-Level Training Evaluation Model; ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program",
+      "related_concepts": [
+        "training",
+        "effectiveness",
+        "Kirkpatrick",
+        "measurement",
+        "awareness"
+      ],
+      "_provenance": "Authored from concept: 'Security Training Effectiveness Measurement'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_228",
+      "domain": 5,
+      "subtopic": "DLP False-Positive Tuning (Application, §5.6)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST tunes a DLP program experiencing 80% false-positive rate at a law firm?",
+      "options": {
+        "A": "Tighten all rules to zero false positives by raising thresholds; the auditor's standard is no false positives, and tighter rules reduce alert-fatigue across the SOC.",
+        "B": "Disable the noisiest rules entirely; rules with high false-positive rates are net-negative and removing them improves analyst-productivity metrics measurably.",
+        "C": "Switch to a different DLP vendor; the false-positive rate indicates fundamental product mismatch, and rebaselining with a new vendor is more efficient than tuning.",
+        "D": "Baseline rule-by-rule precision + recall + tune via classifier refinement + exception lists + business-process integration + retraining + measured-precision target."
+      },
+      "correct": "D",
+      "key_concept": "DLP tuning = baseline rule-by-rule precision + recall + classifier refinement + exception lists + business-process integration + retraining + measured precision target.",
+      "pre_read": "DLP tuning is a precision/recall balancing discipline. Tighten-all, disable-noisy, and switch-vendor framings each fail the measurement-driven improvement principle.",
+      "correct_explanation": "NIST SP 800-122, ISO/IEC 27001:2022 A.8.12, and Gartner DLP Magic Quadrant evaluation criteria establish DLP tuning framework. (1) BASELINE PRECISION + RECALL per rule — precision = true positives / (TP + false positives); recall = TP / (TP + false negatives). (2) CLASSIFIER REFINEMENT — adjust regex patterns + ML model thresholds + content-type matching to improve precision without sacrificing recall below tolerance. (3) EXCEPTION LISTS — known-good source/destination pairs (legitimate business workflows) excluded from match. (4) BUSINESS-PROCESS INTEGRATION — understand legitimate data flows and exclude them from rule scope. (5) RETRAINING — feedback loop where analyst dispositions retrain the classifier. (6) MEASURED-PRECISION TARGET — typically 70-85% precision at acceptable recall; zero false positives means recall has collapsed and the rule has stopped detecting. TIGHTEN-ALL fails because zero FP requires zero recall; you'd stop detecting real exfiltration. DISABLE-NOISY fails because the high-FP rule may also be the high-recall rule for sensitive data; you'd lose detection.",
+      "wrong_explanations": {
+        "A": "Tighten-all-to-zero-FP fails the recall dimension: zero false positives requires zero recall, meaning the rule has stopped detecting actual exfiltration. The principle is precision + recall balance, not precision alone.",
+        "B": "Disable-noisy fails when the high-FP rule is also the high-recall rule for sensitive data classes. Without measurement-driven analysis, disabling rules creates detection blind-spots.",
+        "C": "Switch-vendor fails because the false-positive issue is most often a tuning issue, not a product issue. Vendor switches reset the tuning baseline and introduce new false-positive patterns."
+      },
+      "tips": [
+        "Trap is A — 'zero false positives = success' fails because zero FP requires zero recall (the rule has stopped detecting). Precision + recall balance is the principle, not precision alone.",
+        "Mindset: DLP tuning is a MEASUREMENT-DRIVEN balancing discipline. Tighten-all, disable-noisy, and switch-vendor framings each fail the precision-recall principle.",
+        "Exam-day shortcut: when the stem says DLP FALSE POSITIVES, the right answer is PRECISION + RECALL BALANCE via measurement-driven tuning. Tighten-all-to-zero-FP is the trap because zero FP requires zero recall — the rule stops detecting."
+      ],
+      "framework_ref": "NIST SP 800-122 (Guide to Protecting the Confidentiality of PII); ISO/IEC 27001:2022; ISACA Privacy Audit/Assurance Program; Gartner DLP Magic Quadrant",
+      "related_concepts": [
+        "DLP",
+        "false positive",
+        "tuning",
+        "precision",
+        "recall"
+      ],
+      "_provenance": "Authored from concept: 'DLP False-Positive Tuning'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_229",
+      "domain": 5,
+      "subtopic": "Consent Management Lifecycle (Application, §5.2)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which consent-management approach BEST satisfies GDPR Article 7 for a consumer mobile app?",
+      "options": {
+        "A": "Single bundled consent at sign-up covering all data uses; bundled consent simplifies user experience and is the industry-common consent management pattern.",
+        "B": "Granular purpose-specific consent + clear opt-in + withdrawal mechanism + consent evidence retention + re-consent cadence on material processing changes.",
+        "C": "Implied consent through continued app use; users who continue using the app after the privacy notice are demonstrating consent through behavior reliably.",
+        "D": "Pre-ticked boxes at sign-up; pre-ticked consent for marketing + analytics + third-party sharing is acceptable when balanced against legitimate-business-interest."
+      },
+      "correct": "B",
+      "key_concept": "GDPR-valid consent = granular purpose-specific + clear opt-in + withdrawal mechanism + consent evidence retention + re-consent cadence on material processing changes.",
+      "pre_read": "GDPR Article 7 requires SPECIFIC consent. Bundled, implied, and pre-ticked framings each fail the specificity + freely-given + unambiguous requirements.",
+      "correct_explanation": "GDPR Articles 4(11) (consent definition) and 7 (conditions for consent), Article 17 (right to erasure), GAPP Principle 3 (Choice & Consent), and ISO/IEC 29184 (Online Privacy Notices) establish consent-management framework. (1) GRANULAR PURPOSE-SPECIFIC — separate consent for each distinct processing purpose (analytics vs marketing vs third-party sharing). (2) CLEAR OPT-IN — unambiguous affirmative action (NOT pre-ticked, NOT bundled). (3) WITHDRAWAL MECHANISM — as easy to withdraw as to give (Article 7(3)). (4) CONSENT EVIDENCE RETENTION — log who consented to what processing at what time with what version of notice. (5) RE-CONSENT CADENCE — re-prompt when processing purposes materially change. (6) BUNDLED CONSENT fails Article 7(2) (bundled consent is invalid). (7) IMPLIED CONSENT fails Article 4(11) (consent must be unambiguous affirmative action). (8) PRE-TICKED BOXES fail under Planet49 (CJEU 2019).",
+      "wrong_explanations": {
+        "A": "Bundled consent fails GDPR Article 7(2) — consent must be separate from other contract terms and freely given for each distinct purpose. Industry-common does not equal GDPR-compliant.",
+        "C": "Implied consent through continued use fails Article 4(11) — consent must be UNAMBIGUOUS and AFFIRMATIVE action. Continued use is not affirmative consent.",
+        "D": "Pre-ticked boxes fail under Planet49 v. Bundesverband CJEU ruling (October 2019). Pre-ticked is explicitly invalid; affirmative action is required."
+      },
+      "tips": [
+        "Trap is A — bundled consent fails GDPR Article 7(2) (consent must be freely given for each distinct purpose). Pre-ticked boxes fail under Planet49 v. Bundesverband CJEU 2019; implied consent fails Article 4(11). Each wrong distractor maps to a different failed GDPR specificity test.",
+        "Mindset: GDPR consent requires GRANULAR + AFFIRMATIVE + WITHDRAWABLE + EVIDENCED. Bundled, implied, and pre-ticked framings each fail specific articles.",
+        "Exam-day shortcut: when the stem says GDPR CONSENT, the right answer turns on GRANULAR + AFFIRMATIVE + WITHDRAWABLE consent. Bundled consent is the trap (Planet49 CJEU 2019 explicitly struck this down)."
+      ],
+      "framework_ref": "GDPR Article 7 (Conditions for Consent); GDPR Article 17 (Right to Erasure); GAPP Principle 3 (Choice & Consent); ISO/IEC 29184 (Online Privacy Notices and Consent); Planet49 v. Bundesverband CJEU (2019) — Pre-Ticked Boxes Invalid",
+      "related_concepts": [
+        "consent",
+        "GDPR",
+        "privacy",
+        "Planet49",
+        "opt-in"
+      ],
+      "_provenance": "Authored from concept: 'Consent Management Lifecycle'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_230",
+      "domain": 5,
+      "subtopic": "Cryptographic Key Rotation Governance (Application, §5.7)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which approach BEST governs cryptographic key rotation across an energy utility's PCI environment?",
+      "options": {
+        "A": "Defined cryptoperiods per key type + scheduled rotation + dual control during rotation + tamper-evident audit trail + emergency rotation procedure for suspected compromise.",
+        "B": "Rotate keys only on suspected compromise; scheduled rotation creates unnecessary operational risk and rotation events are themselves vulnerability windows for the firm.",
+        "C": "Annual rotation across all key types regardless of usage; uniform rotation simplifies governance and demonstrates control consistency for audit-evidence purposes.",
+        "D": "Key rotation as a one-time exercise during initial deployment; well-protected keys (HSM-backed) do not require ongoing rotation as a control practice."
+      },
+      "correct": "A",
+      "key_concept": "Key rotation governance = defined cryptoperiods per key type + scheduled rotation + dual control + tamper-evident audit trail + emergency-rotation procedure for compromise.",
+      "pre_read": "Key rotation is cryptoperiod-driven discipline. Compromise-only, uniform-annual, and one-time framings each fail the cryptoperiod + dual-control principle.",
+      "correct_explanation": "NIST SP 800-57 Part 1 Rev 5 §5.3 (Cryptoperiods), FIPS 140-3, PCI DSS v4.0.1 Requirement 3.7, and ISACA Cryptographic Controls Audit/Assurance Program establish key rotation framework. (1) DEFINED CRYPTOPERIODS PER KEY TYPE — different key types have different cryptoperiods (e.g., symmetric data-encryption: ≤2 years; key-wrapping: ≤2 years; signature-generation: 1-3 years; key-transport private: 1-2 years; root CA: 10-20 years). (2) SCHEDULED ROTATION — rotation is calendar-driven AND event-driven (compromise OR cryptoperiod expiry). (3) DUAL CONTROL — multi-person ceremony for key generation and rotation. (4) TAMPER-EVIDENT AUDIT TRAIL — full logging of rotation events with who/when/what. (5) EMERGENCY ROTATION PROCEDURE — pre-defined accelerated rotation for suspected compromise. (6) COMPROMISE-ONLY framings fail because cryptoperiod expiry (statistical risk of cryptanalytic breakthroughs over time) is a separate rotation driver. (7) UNIFORM ANNUAL fails because cryptoperiods are key-type specific. (8) ONE-TIME framings fail PCI DSS Requirement 3.7.",
+      "wrong_explanations": {
+        "B": "Compromise-only rotation fails the cryptoperiod-expiry dimension. Cryptoperiods exist because cryptanalytic breakthroughs accumulate over time, increasing the statistical risk of key compromise even without observed compromise.",
+        "C": "Uniform annual rotation across all key types fails because cryptoperiods are key-type specific. Over-rotating short-lived keys is operationally costly; under-rotating long-lived keys (e.g., root CA) is appropriate.",
+        "D": "One-time rotation fails PCI DSS Requirement 3.7 which mandates documented key-management procedures including rotation. HSM-backed keys still require rotation for cryptoperiod-expiry reasons."
+      },
+      "tips": [
+        "Trap is B — 'compromise-only rotation' fails because cryptoperiods expire even without observed compromise; cryptanalytic risk accumulates over time.",
+        "Mindset: key rotation has TWO drivers (cryptoperiod-expiry + compromise). Either alone fails the canonical key-management framework.",
+        "Exam-day shortcut: when the stem says KEY ROTATION, the right answer recognizes TWO drivers: cryptoperiod-expiry AND compromise. Compromise-only is the trap because cryptanalytic risk accumulates even without observed compromise."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); FIPS 140-3 (Security Requirements for Cryptographic Modules); PCI DSS v4.0.1 Requirement 3.7 (Key Management Documentation); ISACA Cryptography Audit/Assurance Program",
+      "related_concepts": [
+        "key rotation",
+        "cryptoperiod",
+        "PCI DSS",
+        "FIPS 140-3",
+        "key management"
+      ],
+      "_provenance": "Authored from concept: 'Cryptographic Key Rotation Governance'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_231",
+      "domain": 5,
+      "subtopic": "Managed File Transfer SQLi Mass-Exfil Forensic Investigation (Analysis, MOVEit 2023 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic and audit response?",
+      "scenario_context": "An auto and home insurance carrier discovers at 6:42 AM Friday: its managed-file-transfer vendor (used to exchange ~1.2M policyholder claims documents with reinsurance partners) has notified customers of a zero-day SQL-injection vulnerability actively exploited by a financially-motivated ransomware group claiming data exfiltration from ~60 victim organizations. The carrier's audit team is reviewing the vendor's IR engagement: vendor patched the vulnerability 36 hours after disclosure; offered customer assistance line; no individual notification yet on whether carrier data was specifically exfiltrated. CISO + General Counsel + Privacy Officer + CFO + Vendor-Risk-Management lead coordinating response. State regulators expect notification under 50-state breach laws.",
+      "options": {
+        "A": "Demand the vendor patch and resume normal operations; the vendor's 36-hour patch demonstrates adequate response, and the carrier's role is to verify patch deployment, not run independent forensics.",
+        "B": "Wait for the vendor to confirm whether carrier data was specifically exfiltrated before any notification; speculative notification without confirmation creates customer confusion and regulatory complications.",
+        "C": "Contain MFT instance + preserve forensic image + independent log analysis (file-transfer audit + access logs) + assess scope of potentially exfiltrated PII + multi-state breach notification + vendor-risk reassessment.",
+        "D": "Switch to an alternative MFT vendor immediately as remediation; the carrier's reputational risk requires demonstrating vendor change rather than continuing with the affected vendor's patched product."
+      },
+      "correct": "C",
+      "key_concept": "Mass-exfil-via-vendor response = contain instance + independent forensic image + access-log analysis + scope assessment + multi-state notification + vendor-risk reassessment (parallel tracks, vendor-only confirmation is not sufficient).",
+      "pre_read": "When a vendor mass-exfil incident potentially affects your data, INDEPENDENT FORENSIC ANALYSIS + notification readiness are required — vendor confirmation alone is not sufficient and notification clocks have started.",
+      "correct_explanation": "ISACA Vendor Risk Management Audit/Assurance Program, lessons from the 2023 mass-exploitation incidents affecting managed-file-transfer products (CVE-2023-34362 echo: thousands of affected organizations including financial-services + healthcare + government), NIST SP 800-61 Rev 2 §3.3 (Containment, Eradication, Recovery), SEC Form 8-K Item 1.05 (material cybersecurity incidents), and state breach-notification laws establish vendor-mass-exfil response framework. (1) CONTAIN MFT INSTANCE — disable or segment the affected instance pending verification of patch effectiveness and forensic image. (2) PRESERVE FORENSIC IMAGE — independent forensic preservation of the carrier's MFT instance (web logs, application logs, database transaction logs, file-transfer audit) before any patching or remediation that could destroy evidence. (3) INDEPENDENT LOG ANALYSIS — the carrier must not rely solely on vendor attestation; carrier-side logs are independent evidence. (4) SCOPE ASSESSMENT — identify what PII was in transit + at rest in the MFT system. (5) MULTI-STATE NOTIFICATION — 50-state breach laws have varied triggers and timelines (most 30-60 days from determination of compromise). (6) VENDOR-RISK REASSESSMENT — re-baseline vendor risk rating; verify SOC 2 + secure-development + vulnerability-management evidence. (7) VENDOR-ONLY-CONFIRMATION fails because the carrier has independent disclosure obligations.",
+      "wrong_explanations": {
+        "A": "Demand-patch-and-resume fails the independent-forensic-analysis dimension. The carrier has independent breach-notification obligations and cannot rely solely on vendor attestation about whether carrier data was exfiltrated.",
+        "B": "Wait-for-vendor-confirmation fails the notify-first-for-customer-protection principle and state-breach-notification clocks (most 30-60 days from determination). Speculative notification is appropriate when scope is uncertain; silence is not.",
+        "D": "Switch-vendor-immediately is a remediation step but is not the FIRST or BEST action. Containment + forensic preservation + scope + notification precede vendor switching; switching during active investigation destroys evidence access."
+      },
+      "tips": [
+        "Trap is A — 'rely on vendor attestation' fails because the carrier has INDEPENDENT breach-notification obligations to policyholders and regulators; vendor-only confirmation is not sufficient.",
+        "Mindset: vendor-mass-exfil incidents trigger INDEPENDENT forensic + notification obligations on the affected customer — vendor attestation is not sufficient evidence for regulator filings.",
+        "Exam-day shortcut: when the stem says VENDOR INCIDENT with your data potentially affected, the right answer requires INDEPENDENT forensic + notification action. Rely-on-vendor-attestation is the trap because the customer has independent obligations."
+      ],
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Vendor Risk Management Audit/Assurance Program; SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); State Breach Notification Laws (50 states)",
+      "related_concepts": [
+        "vendor risk",
+        "mass exfiltration",
+        "MOVEit",
+        "breach notification",
+        "SEC 8-K"
+      ],
+      "_provenance": "Authored from concept: 'Managed File Transfer SQLi Mass-Exfil Forensic Investigation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: MOVEit/Cl0p 2023 tonal echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_232",
+      "domain": 5,
+      "subtopic": "Cryptographic Signing-Key Compromise (Analysis, single-focus REVOCATION-FIRST, Storm-0558 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A federal civilian executive-branch agency's CISO confirms at 4:18 AM Tuesday: a sophisticated threat actor (assessed as nation-state) has accessed a cloud email signing key and forged authentication tokens to access email mailboxes across the agency for an estimated 4-6 weeks. The cloud-platform vendor confirms the signing key was acquired through a chain-of-failures including an earlier crash-dump exposure. Agency CISO + CIO + Inspector General + Outside Counsel + CISA + FBI coordinating response. The compromised signing key remains technically valid; the forged tokens cannot be distinguished from legitimate tokens without revocation.",
+      "options": {
+        "A": "Rotate all agency user credentials immediately to limit lateral movement; user credential rotation is the canonical first action for account compromise scenarios across enterprise IR playbooks.",
+        "B": "Image the cloud environment for forensic analysis before any remediation; evidence preservation must precede remediation actions to satisfy chain-of-custody and Inspector-General review requirements.",
+        "C": "Notify Congressional oversight and CISA before any technical action; transparency obligations to oversight bodies precede technical remediation in federal agency incident response governance.",
+        "D": "REVOKE the compromised signing key FIRST via the vendor's key-revocation mechanism — forged tokens remain valid until revocation; user-credential rotation, forensic imaging, and notification cannot stop the active forgery vector."
+      },
+      "correct": "D",
+      "key_concept": "Cryptographic signing-key compromise = REVOKE the compromised key FIRST. Forged tokens remain valid until revocation; user credentials, forensic imaging, and notification cannot stop the active forgery vector.",
+      "pre_read": "Single-focus principle: REVOCATION-FIRST. When a cryptographic signing key is compromised, REVOCATION precedes credential rotation, forensic imaging, and notification — only revocation invalidates already-forged tokens.",
+      "correct_explanation": "When a cryptographic signing key is confirmed compromised, the FIRST action is REVOCATION of the compromised key via the vendor's key-revocation mechanism — this is the REVOCATION-FIRST principle, distinct from exposure-window-close (which governs urgency) and contain-first (which addresses network-level containment). Rationale: (1) FORGED TOKENS REMAIN VALID UNTIL REVOCATION — the threat actor can continue using forged tokens issued before revocation indefinitely; user-credential rotation does not invalidate tokens signed by the compromised key. (2) USER-CREDENTIAL ROTATION (Option A) fails because the compromise vector is NOT user credentials — it is the signing key. Rotating user credentials does not invalidate tokens signed by the compromised key. (3) FORENSIC IMAGING (Option B) fails the active-compromise dimension — preserving evidence while the forgery vector remains active extends the exposure window unnecessarily; imaging is concurrent or subsequent to revocation, not precedent. (4) NOTIFICATION-FIRST (Option C) fails because oversight bodies expect FIRST that you take technical action to STOP the active compromise; notification follows containment. NIST SP 800-57 Part 1 Rev 5 §8.3.5 (Compromise of Key Material), CISA AA23-193A-style federal advisories on token-forgery, and FedRAMP IR-4 establish the REVOCATION-FIRST sequencing for signing-key compromise. Distinct from CHAIN-OF-CUSTODY-FIRST (evidence integrity) and FORENSIC-IMAGING-BEFORE-WIPE (mobile-state-actor evidence preservation): REVOCATION-FIRST governs when revocation must precede forensic preservation in active-forgery scenarios.",
+      "wrong_explanations": {
+        "A": "User-credential rotation fails because the compromise vector is the SIGNING KEY, not user credentials. Tokens forged using the compromised key are signed and validated independently of user credentials; rotating user creds does not invalidate forged tokens.",
+        "B": "Forensic imaging before revocation extends the active-forgery window — every additional minute of validity for the compromised signing key produces more potentially-forged tokens. Imaging is concurrent or subsequent to revocation, never precedent.",
+        "C": "Notification-first fails because oversight bodies expect technical action to STOP the active compromise as the priority; notification follows containment of the active vector. CISA + FBI coordination is concurrent with revocation, not precedent."
+      },
+      "tips": [
+        "Trap is B — 'forensic imaging first' fails because preserving evidence while the forgery vector remains active extends exposure. Distinct from CHAIN-OF-CUSTODY-FIRST (litigation evidence-integrity disputes, not active forgery).",
+        "Mindset: REVOCATION-FIRST is the 14th D5 single-focus principle — when a cryptographic signing key is compromised, REVOKE BEFORE forensic preservation. The active forgery vector continues until revocation.",
+        "Exam-day shortcut: REVOCATION-FIRST attacks the active forgery vector itself, not user credentials (which the attacker doesn't need), not evidence preservation (which can happen post-revocation), not oversight notification (which follows containment)."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); CISA Joint Cybersecurity Advisories on Cloud Identity Compromise; FedRAMP IR-4 (Incident Handling); ISACA Cryptography Audit/Assurance Program",
+      "related_concepts": [
+        "signing key compromise",
+        "REVOCATION-FIRST",
+        "token forgery",
+        "Storm-0558",
+        "PKI"
+      ],
+      "_provenance": "Authored from concept: 'Cryptographic Signing-Key Compromise'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Microsoft Storm-0558 2023 tonal echo; introduces REVOCATION-FIRST principle. No legacy bank citation."
+    },
+    {
+      "id": "d5_233",
+      "domain": 5,
+      "subtopic": "Support-System Session-Cookie Theft Forensic Investigation (Analysis, Okta Oct 2023 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic response?",
+      "scenario_context": "A B2B SaaS customer (a regional payment processor) confirms at 10:42 PM Wednesday: its identity-provider vendor has disclosed a breach of its customer-support portal in which a threat actor accessed HAR-file uploads containing active session cookies. The vendor confirms the processor's tenant was among those affected; multiple customer accounts' active session cookies were exposed. CISO + General Counsel + Privacy Officer + downstream-customer-relations lead coordinating response. The session-cookie exposure permits authenticated access bypassing MFA + password until the sessions are explicitly revoked.",
+      "options": {
+        "A": "Force password reset for all end-users immediately; password reset is the canonical credential-compromise response and invalidates the threat actor's authenticated access reliably.",
+        "B": "Revoke all active sessions + force re-authentication + reset support-portal tokens + audit downstream tenant access + customer notification + vendor coordination + post-incident IdP-vendor reassessment.",
+        "C": "Reset all end-user passwords first; cookie-based access is short-lived and password reset is sufficient to remediate session-cookie compromise scenarios for B2B customers.",
+        "D": "Notify customers and wait for the IdP vendor to publish formal IoCs before technical action; vendor-supplied IoCs are required for accurate detection and remediation scope."
+      },
+      "correct": "B",
+      "key_concept": "Session-cookie compromise = REVOKE ACTIVE SESSIONS first + force re-auth + reset support tokens + audit downstream access + customer notify + vendor coordination + IdP reassessment. Passwords reset does NOT invalidate active sessions.",
+      "pre_read": "Session cookies authenticate independently of passwords. Session revocation (not password reset) is the canonical remediation for cookie-theft scenarios; passwords-only and wait-for-IoC framings each fail.",
+      "correct_explanation": "NIST SP 800-63B §7 (Session Management), OWASP ASVS v4.0.3 §3 (Session Management Verification Requirements), lessons from the October 2023 IdP-vendor support-system breach affecting B2B customers, and ISACA Identity and Access Management Audit/Assurance Program establish session-cookie-compromise response framework. (1) REVOKE ALL ACTIVE SESSIONS — session-cookie compromise authenticates the threat actor independently of passwords or MFA. Revocation (via session-management API or admin console) is the only mechanism to invalidate active sessions. (2) FORCE RE-AUTHENTICATION — after revocation, users must re-authenticate to establish new sessions. (3) RESET SUPPORT-PORTAL TOKENS — separate concern from session cookies; reset to prevent persistence via support-channel credentials. (4) AUDIT DOWNSTREAM TENANT ACCESS — what did the threat actor do with the active sessions before revocation? (5) CUSTOMER NOTIFICATION — downstream customer relations require disclosure. (6) VENDOR COORDINATION — joint forensic + scope analysis with the IdP vendor. (7) IDP REASSESSMENT — re-baseline vendor risk rating; verify HAR-file-handling and support-portal controls. (8) PASSWORD RESET ALONE fails because active session cookies authenticate independently of passwords.",
+      "wrong_explanations": {
+        "A": "Password reset fails because session cookies authenticate INDEPENDENTLY of passwords. Active sessions persist after password reset; the threat actor continues accessing accounts via stolen cookies until sessions are explicitly revoked.",
+        "C": "The 'cookies are short-lived' assertion is factually wrong: session cookies commonly persist hours to weeks (often the entire session lifetime, which spans multiple workdays). Revocation — not password reset — is the only mechanism that invalidates active sessions.",
+        "D": "Wait-for-vendor-IoC fails the active-compromise dimension. The processor has independent obligations to revoke sessions and protect downstream customer accounts; vendor IoC publication can take weeks."
+      },
+      "tips": [
+        "Trap is A — 'password reset for all' reflexes credential-compromise = password-reset, but session cookies authenticate INDEPENDENTLY of passwords. Sessions persist after password reset until explicit revocation.",
+        "Mindset: session-cookie compromise = SESSION REVOCATION (not password reset). Cookies and passwords are separate authentication primitives; revoking one does not invalidate the other.",
+        "Exam-day shortcut: when the stem says SESSION COOKIE THEFT, the right answer is SESSION REVOCATION, not password reset. Password-reset is the trap because cookies authenticate independently of passwords."
+      ],
+      "framework_ref": "NIST SP 800-63B (Digital Identity Guidelines: Authentication and Lifecycle Management); OWASP ASVS; ISACA Identity and Access Management Audit/Assurance Program",
+      "related_concepts": [
+        "session cookie",
+        "Okta",
+        "IdP",
+        "HAR file",
+        "session management"
+      ],
+      "_provenance": "Authored from concept: 'Support-System Session-Cookie Theft Forensic Investigation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Okta support-system breach Oct 2023 tonal echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_234",
+      "domain": 5,
+      "subtopic": "Service-Desk Vishing → MFA Bypass Ransomware (Analysis, MGM/Scattered Spider 2023 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A major US hospitality and gaming firm confirms at 8:14 AM Sunday: a sophisticated social-engineering attack on its IT service desk has resulted in MFA-bypass via attacker impersonation of a senior executive (vishing call to service desk). The threat actor obtained MFA-token reset + initial-access credentials, then deployed ransomware across guest-facing reservation + slot-floor + room-key systems. ~$100M+ business impact estimate. CISO + COO + CFO + General Counsel + IT-Service-Desk lead coordinating response. SEC + Nevada Gaming Control Board + state regulators expect formal notification. Service-desk training has been identified as the root-cause vector.",
+      "options": {
+        "A": "Contain lateral movement FIRST — segment compromised network zones + revoke compromised credentials + disable affected service accounts + isolate ransomware-affected systems — BEFORE investigating service-desk training failure.",
+        "B": "Retrain the IT service desk on vishing recognition immediately; root-cause-driven remediation prevents recurrence and is the canonical first action for social-engineering incidents.",
+        "C": "Pay the ransomware demand to restore guest-facing operations rapidly; the $100M+ business-impact magnitude justifies the ransom payment for fastest operational restoration.",
+        "D": "Notify SEC and Nevada Gaming Control Board before technical containment; regulatory transparency obligations precede operational containment in highly-regulated industries."
+      },
+      "correct": "A",
+      "key_concept": "Active ransomware with confirmed lateral movement = CONTAIN-FIRST (lateral-movement-contain principle). Service-desk retraining + ransom decision + regulator notification cannot precede stopping the active ransomware spread.",
+      "pre_read": "Single-focus principle: lateral-movement-contain. Retraining, ransom, and notification each fail because they do not address the ACTIVE LATERAL MOVEMENT in real-time.",
+      "correct_explanation": "When ransomware with active lateral movement is in progress, the FIRST action is CONTAIN — segment compromised network zones, revoke compromised credentials, disable affected service accounts, isolate ransomware-affected systems — applying the lateral-movement-contain principle (canonical D5 principle). Rationale: (1) ACTIVE LATERAL MOVEMENT CONTINUES until containment — every additional minute extends blast radius. (2) SERVICE-DESK RETRAINING (Option B) addresses the INITIAL-ACCESS vector but does not stop active ransomware that has already lateral-moved. Retraining is a post-incident remediation, not an active-incident response. (3) RANSOM PAYMENT (Option C) fails OFAC sanctions review obligations and does not stop active lateral movement — the threat actor may continue encryption activity during ransom negotiation. (4) REGULATOR NOTIFICATION (Option D) is required but is CONCURRENT with technical containment, not PRECEDENT — regulators expect technical action to STOP the active incident. NIST SP 800-61 Rev 2 §3.3.2 (Containment Strategy Selection), NIST SP 800-63B §5.1.3 (MFA Verifier Impersonation), lessons from the 2023 hospitality-sector ransomware incidents involving service-desk vishing as initial vector, OFAC Advisory on Ransomware Payments, SEC Form 8-K Item 1.05, and ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program establish active-ransomware response framework.",
+      "wrong_explanations": {
+        "B": "Service-desk retraining fails the active-incident response timeline. Retraining is a post-incident remediation (addresses recurrence). During active ransomware spread, containment-first is the only path that limits blast radius.",
+        "C": "Ransom payment fails OFAC sanctions review obligations (threat actor may be sanctioned) and does NOT stop active lateral movement — the threat actor may continue encrypting systems during ransom negotiation. Containment is independent of ransom decision.",
+        "D": "Regulator notification is concurrent with technical containment, not precedent. SEC + Gaming Control Board + state regulators expect technical action to STOP the active incident as the priority; notification follows."
+      },
+      "tips": [
+        "Trap is B — 'retrain service desk first' addresses recurrence but NOT the active spread of ransomware. Retraining cannot un-encrypt systems already encrypting; lateral-movement-contain trumps retraining.",
+        "Mindset: active ransomware with confirmed lateral movement = lateral-movement-contain principle (canonical D5). Retraining, ransom, and notification are concurrent or subsequent — never precedent.",
+        "Exam-day shortcut: when stem describes ACTIVE RANSOMWARE WITH SOCIAL-ENGINEERING INITIAL VECTOR, lateral-movement-contain trumps retraining (recurrence), ransom (OFAC + non-stopping), and notification (concurrent)."
+      ],
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); NIST SP 800-63B (Digital Identity Guidelines: Authentication and Lifecycle Management); OFAC Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments; SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program",
+      "related_concepts": [
+        "ransomware",
+        "social engineering",
+        "MGM",
+        "lateral-movement-contain",
+        "MFA bypass"
+      ],
+      "_provenance": "Authored from concept: 'Service-Desk Vishing → MFA Bypass Ransomware'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: MGM hospitality ransomware 2023 tonal echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_235",
+      "domain": 5,
+      "subtopic": "Encrypted-Vault Breach with Plaintext-Metadata Exposure (Analysis, LastPass 2022 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST customer-notification approach?",
+      "scenario_context": "A consumer security-software firm (password manager + identity-protection product, ~30M consumer + ~150K SMB customers) confirms at 11:42 PM Sunday: a multi-stage breach has resulted in exfiltration of customer encrypted vault backups + plaintext metadata (URLs visited, customer email, billing addresses, IP addresses) from cloud-storage backups. Encrypted vaults require customer master-password brute-forcing to decrypt; plaintext metadata is immediately usable. CISO + General Counsel + Privacy Officer + CEO + Outside Counsel + Communications coordinating customer-notification response. EU + US + Australian + Brazilian privacy regulators expect notification under GDPR Art. 33 + state breach laws + LGPD. Full forensic scope still under investigation.",
+      "options": {
+        "A": "Notify customers only of the encrypted-vault exposure; the master-password derivation makes vault decryption computationally infeasible and plaintext metadata exposure is incidental for notification purposes.",
+        "B": "Wait until forensic investigation completes (~6-8 weeks) before customer notification; partial-information notification creates customer confusion and regulatory complications around incomplete scope disclosure.",
+        "C": "Notify customers of metadata exposure + force master-password rotation guidance + publish IoCs + provide bcrypt-iteration upgrade + offer identity-protection for affected customers + multi-regulator filing + post-incident vault-architecture review.",
+        "D": "Notify only EU + US customers under GDPR + state breach laws; LGPD and Australian notification regimes are immature and notification under those jurisdictions creates excess regulatory exposure."
+      },
+      "correct": "C",
+      "key_concept": "Encrypted-vault breach with plaintext metadata = notify customers of metadata exposure + master-password rotation guidance + IoCs + iteration upgrade + identity-protection + multi-regulator filing + architecture review (notify-first-for-customer-protection canonical principle).",
+      "pre_read": "Encrypted-vault breaches notify on METADATA exposure (immediately usable) AND vault exposure (decryption risk over time). Encrypted-only, wait-for-complete-forensic, and selective-jurisdiction framings each fail.",
+      "correct_explanation": "GDPR Article 33 (72-hour notification), GDPR Article 34 (data subject notification), Brazil LGPD Article 48 (breach notification), Australia Notifiable Data Breaches Scheme, NIST SP 800-61 Rev 2 §3.2.7 (Notification), lessons from the 2022 password-manager breach involving encrypted vault + plaintext metadata exposure, and ISACA Information Privacy Audit/Assurance Program establish customer-notification framework for encrypted-vault breaches. (1) NOTIFY METADATA EXPOSURE — URLs visited, email, billing, IP are immediately usable for targeted phishing + credential stuffing. (2) MASTER-PASSWORD ROTATION GUIDANCE — even with encrypted vaults, weak master passwords are brute-forcible over time; rotation reduces decryption window. (3) PUBLISH IOCS — customer-side detection guidance. (4) BCRYPT-ITERATION UPGRADE — increase computational cost of brute-force decryption for vault backups. (5) IDENTITY-PROTECTION offering — fraud-prevention service for affected customers. (6) MULTI-REGULATOR FILING — GDPR + state breach laws + LGPD + Australia + Canada + others. (7) POST-INCIDENT VAULT-ARCHITECTURE REVIEW — re-evaluate encryption-key-on-server vs zero-knowledge architecture. (8) ENCRYPTED-ONLY-NOTIFY (Option A) fails because metadata is immediately usable for targeted attacks regardless of vault decryption status. (9) WAIT-FOR-COMPLETE-FORENSIC (Option B) fails GDPR Article 33 72-hour deadline + the notify-first-for-customer-protection canonical D5 principle. (10) SELECTIVE-JURISDICTION (Option D) fails because each regulator has independent obligations and notification is not optional.",
+      "wrong_explanations": {
+        "A": "Encrypted-only-notify fails because plaintext metadata (URLs, email, billing, IP) is IMMEDIATELY USABLE for targeted phishing + credential stuffing — independent of vault decryption status. Customers need this for active defense.",
+        "B": "Wait-for-complete-forensic fails GDPR Article 33 72-hour notification deadline AND the notify-first-for-customer-protection canonical D5 principle. Partial information is better than silence; customers can protect themselves.",
+        "D": "Selective-jurisdiction notification fails because LGPD + Australia NDB + state breach laws each have independent legal obligations. Failure-to-notify creates regulator-stacked penalty risk significantly exceeding any 'excess regulatory exposure' from compliant notification."
+      },
+      "tips": [
+        "Trap is B — 'wait for complete forensic' fails GDPR 72-hour deadline AND notify-first-for-customer-protection. Customers need active-defense info, not perfect information.",
+        "Mindset: encrypted-vault breach with plaintext metadata = notify on METADATA exposure (immediately usable for phishing/credential stuffing) AND vault exposure (brute-force decryption over time). Both notification triggers fire simultaneously.",
+        "Exam-day shortcut: when the stem describes ENCRYPTED VAULT + PLAINTEXT METADATA, the right answer notifies on BOTH (metadata immediately usable; vault decryption over time). Wait-for-complete-forensic is the trap (GDPR 72-hour deadline)."
+      ],
+      "framework_ref": "GDPR Articles 33-34 (Breach Notification); GDPR Article 33 (72-hour Supervisory Notification); GDPR Article 34 (Data Subject Notification); Brazil LGPD Article 48 (Communication of Security Incidents); Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023)",
+      "related_concepts": [
+        "password manager",
+        "vault breach",
+        "LastPass",
+        "GDPR",
+        "metadata exposure"
+      ],
+      "_provenance": "Authored from concept: 'Encrypted-Vault Breach with Plaintext-Metadata Exposure'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: LastPass 2022 vault-breach tonal echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_236",
+      "domain": 5,
+      "subtopic": "Internal CA Key Discovered on Stolen Laptop Forensic Sequencing (Analysis, multi-section synthesis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST sequencing decision?",
+      "scenario_context": "A pharmaceutical R&D firm confirms at 3:42 PM Tuesday: a developer's laptop was stolen during business travel 6 days ago; subsequent investigation found that the laptop contained an exported copy of the internal CA private key used to sign certificates for the firm's clinical-trial research portal and lab-equipment IoT mesh. CISO + General Counsel + Privacy Officer + IT Security + Forensics-Engagement-Lead coordinating response. The internal CA chain authenticates ~2,400 systems including FDA-regulated electronic-records (21 CFR Part 11) systems. Decision required on sequencing: revoke CA chain first vs forensic-image laptop first (if recovered) vs notify regulators first.",
+      "options": {
+        "A": "Image the recovered laptop forensically FIRST to preserve chain-of-custody evidence; revocation can follow once evidence is preserved per chain-of-custody-first principle.",
+        "B": "Notify FDA + EMA + Privacy Officer FIRST before technical action; regulated-industry oversight obligations precede technical remediation in life-sciences governance.",
+        "C": "Continue investigation to confirm whether the CA private key file was actually accessed by an unauthorized party before any technical action; speculative revocation creates unnecessary operational disruption.",
+        "D": "Revoke compromised CA chain FIRST + rotate dependent service certs + then image laptop for forensics + then notify FDA + EMA + post-incident architecture review (REVOCATION-FIRST principle)."
+      },
+      "correct": "D",
+      "key_concept": "Internal CA private-key exposure = REVOCATION-FIRST (revoke compromised chain + rotate dependent certs) precedes forensic imaging and regulator notification. Forgery vector continues until revocation.",
+      "pre_read": "Single-focus principle: REVOCATION-FIRST (reinforces d5_232). When a CA private key is compromised, revocation precedes forensic imaging and notification — the forgery vector continues until revocation.",
+      "correct_explanation": "When an internal CA private key is confirmed exposed (laptop theft confirmed; private-key file on laptop confirmed), the FIRST action is REVOCATION of the compromised CA chain — REVOCATION-FIRST principle. Rationale: (1) FORGERY VECTOR REMAINS ACTIVE UNTIL REVOCATION — anyone with access to the CA private key can forge certificates that authenticate to the firm's clinical-trial portal + lab IoT mesh. Forensic imaging (Option A) extends the active forgery window. (2) CHAIN-OF-CUSTODY-FIRST (Option A) is the WRONG single-focus principle for this scenario — chain-of-custody-first applies when evidence integrity is CONTESTED in litigation, not when active forgery is in progress. (3) FDA + EMA NOTIFICATION (Option B) is required but follows technical containment — regulators expect technical action to STOP active forgery as the priority; notification follows revocation. (4) CONFIRMATION-FIRST (Option C) fails because the assumption-of-compromise principle applies: once the private-key file is confirmed on the stolen laptop, treat as compromised — actual access by an unauthorized party cannot be definitively ruled out within an acceptable timeline. (5) FULL SEQUENCE — REVOKE compromised CA + ROTATE dependent service certificates (~2,400 systems) + IMAGE laptop if recovered + NOTIFY FDA + EMA + Privacy Officer + POST-INCIDENT architecture review (root vs subordinate split; HSM-protection; offline-root governance). NIST SP 800-57 Part 1 Rev 5 §8.3.5 (Compromise of Key Material), NIST SP 800-86 (Forensic Integration), ISACA Cryptographic Controls Audit/Assurance Program, and 21 CFR Part 11 (Electronic Records and Signatures) establish the sequencing framework.",
+      "wrong_explanations": {
+        "A": "Chain-of-custody-first is the WRONG principle for this scenario — it applies when evidence integrity is contested in litigation, not when active forgery is in progress. Forensic imaging extends the active forgery window. Imaging happens AFTER revocation.",
+        "B": "FDA + EMA notification is required but follows technical containment. Regulators (FDA + EMA) expect technical action to STOP active forgery as the priority; notification is concurrent or subsequent to revocation.",
+        "C": "Confirmation-first fails because once the private-key file is confirmed exposed, the assumption-of-compromise principle requires treating the chain as compromised. Definitive confirmation of unauthorized access takes too long; revocation cannot wait."
+      },
+      "tips": [
+        "Trap is A — chain-of-custody-first is the WRONG single-focus principle here; it applies to evidence-integrity DISPUTES in litigation, NOT active-forgery scenarios. Forensic imaging extends the active forgery window.",
+        "Mindset: REVOCATION-FIRST (introduced at d5_232) trumps chain-of-custody-first when active forgery is in progress. The forgery vector remains active until revocation; evidence preservation can happen after.",
+        "Exam-day shortcut: when stem describes CA PRIVATE KEY EXPOSURE, REVOCATION-FIRST attacks the active forgery vector. Imaging (chain-of-custody-first), notification (regulator-first), and confirmation (wait-and-see) each fail."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NIST SP 800-86 (Integrating Forensic Techniques into Incident Response); ISACA Cryptography Audit/Assurance Program; 21 CFR Part 11 (Electronic Records and Electronic Signatures)",
+      "related_concepts": [
+        "CA compromise",
+        "REVOCATION-FIRST",
+        "chain-of-custody-first",
+        "21 CFR Part 11",
+        "key exposure"
+      ],
+      "_provenance": "Authored from concept: 'Internal CA Key Discovered on Stolen Laptop Forensic Sequencing'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: reinforces REVOCATION-FIRST principle introduced in d5_232. No legacy bank citation."
+    },
+    {
+      "id": "d5_237",
+      "domain": 5,
+      "subtopic": "DLP-Detected Executive M&A Draft Quarantine Dispute (Analysis, governance synthesis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST governance response?",
+      "scenario_context": "An investment-banking firm's DLP system flags at 9:14 AM Monday: a senior partner has emailed a draft M&A pitch deck (containing material non-public client information) from his work email to his personal Gmail account. DLP automatically quarantined the email. The senior partner immediately escalates to General Counsel demanding release, arguing the pitch deck is for a 6 AM Wednesday board-presentation rehearsal at his home office (no time to use sanctioned WFH controls). CISO + General Counsel + Compliance Officer + Senior-Partner + Audit Committee Chair coordinating response. Firm policy requires sanctioned-MDM-laptop or sanctioned-VDI for material-non-public information (MNPI) work outside the office; both options were available to the senior partner.",
+      "options": {
+        "A": "Release the quarantined email to support the senior partner's board-presentation deadline; commercial-priority outweighs the DLP policy violation given the immediate business need and senior-partner status.",
+        "B": "Hold the quarantine + invoke firm pre-approved DLP-disposition policy (sanctioned-channel only; no exception for personal email regardless of role) + document the violation + Compliance and HR review + post-incident sanctioned-channel reinforcement training.",
+        "C": "Defer the disposition decision entirely to General Counsel's discretion; the senior partner's seniority and General Counsel's authority warrant case-by-case override of the firm DLP policy in this instance.",
+        "D": "Allow a one-time exception with documented executive override; documented exceptions preserve commercial flexibility while maintaining policy formal compliance for audit-evidence purposes."
+      },
+      "correct": "B",
+      "key_concept": "DLP governance dispute = HOLD the quarantine + invoke pre-approved policy + document violation + Compliance + HR review + reinforce sanctioned-channel training. Policy-driven action, not case-by-case override.",
+      "pre_read": "Single-focus principle: governance-by-pre-approved-policy. Senior-partner status, General-Counsel-discretion, and one-time-exception framings each fail the consistent-policy-application principle.",
+      "correct_explanation": "ISO/IEC 27001:2022 A.5.1 (Policies for Information Security), COBIT 2019 APO01 (Managed I&T Management Framework), ISACA IT Audit Standard 1202 (Risk Assessment in Planning), and SEC + FINRA rules on MNPI handling establish DLP governance framework. (1) PRE-APPROVED POLICY DISPOSITION — DLP quarantine dispositions must follow pre-approved policy paths, not case-by-case ad-hoc decisions. Firm policy requires sanctioned channels for MNPI work outside the office. (2) NO ROLE-BASED EXCEPTION — senior-partner status does NOT exempt from MNPI controls; in fact, senior staff have HIGHER information-handling obligations. (3) SANCTIONED CHANNELS WERE AVAILABLE — the senior partner had access to sanctioned-MDM-laptop AND sanctioned-VDI; he chose personal email for convenience. (4) DOCUMENT THE VIOLATION — DLP event + dispositioning + Compliance review create the audit trail. (5) COMPLIANCE AND HR REVIEW — repeat violations + regulatory implications + employment-discipline considerations. (6) POST-INCIDENT TRAINING — reinforce sanctioned-channel usage. (7) RELEASE (Option A) sets the precedent that commercial-priority overrides DLP policy — destroys the program. (8) GENERAL-COUNSEL-DISCRETION (Option C) fails because General Counsel is not the policy approver for DLP dispositions; CISO + Compliance own the disposition framework. (9) ONE-TIME-EXCEPTION (Option D) fails because exceptions become precedents and erode policy uniformity over time.",
+      "wrong_explanations": {
+        "A": "Release-for-commercial-priority destroys the DLP program — sets precedent that senior-partner deadlines override MNPI controls. Senior staff have HIGHER information-handling obligations, not lower; commercial-priority does not exempt.",
+        "C": "General Counsel's discretion is not the right governance path — General Counsel reviews legal aspects of DLP dispositions, but the disposition framework is owned by CISO + Compliance. Case-by-case override creates regulatory risk and audit findings.",
+        "D": "One-time-exception fails because exceptions become precedents over time. Once one senior staff member has been granted exception, others will request the same, eroding the policy. Pre-approved sanctioned-channel paths exist precisely to avoid this dynamic."
+      },
+      "tips": [
+        "Trap is D — 'one-time exception' fails because exceptions become precedents over time. Once one senior staff member is granted exception, others request the same, eroding uniform policy application.",
+        "Mindset: DLP governance = pre-approved policy paths, never case-by-case override. Sanctioned channels exist to avoid the exception-precedent dynamic; if exceptions are needed, the sanctioned channel framework is the answer.",
+        "Exam-day shortcut: when the stem describes a DLP DISPUTE with senior-staff override request, the right answer is PRE-APPROVED POLICY PATH, not case-by-case override. One-time-exception is the trap because exceptions become precedents."
+      ],
+      "framework_ref": "ISO/IEC 27001:2022; COBIT 2019 APO01 (Managed I&T Management Framework); ISACA IT Audit Standard 1202 (Risk Assessment in Planning); SEC + FINRA Rules on Material Non-Public Information (MNPI)",
+      "related_concepts": [
+        "DLP governance",
+        "MNPI",
+        "policy exception",
+        "investment banking",
+        "sanctioned channels"
+      ],
+      "_provenance": "Authored from concept: 'DLP-Detected Executive M&A Draft Quarantine Dispute'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_238",
+      "domain": 5,
+      "subtopic": "Cloud KMS Misconfiguration Cross-OU Blast Radius (Analysis, multi-section synthesis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic and remediation response?",
+      "scenario_context": "A cloud-native SaaS firm's audit team discovers at 1:14 PM Friday: the cloud KMS (key management service) key-policy for the production-customer-data encryption keys grants 'kms:Decrypt' permission to a wildcard role used across the development OU (~140 developers). The misconfiguration has existed for ~14 months. CISO + Security Engineering + Site Reliability + General Counsel + Privacy Officer coordinating response. Customer data includes PII for ~8M consumer end-users + HIPAA-PHI for healthcare-vertical customers. No evidence of actual unauthorized decryption found in initial review; activity logs retained for 12 months only.",
+      "options": {
+        "A": "Revoke the wildcard dev-OU access policy + rotate KMS keys + image dev-OU activity logs (full 12 months) for forensic analysis + scope-assessment of decrypted-data exposure + customer notification readiness + post-incident KMS-policy governance review.",
+        "B": "Rotate KMS keys; key rotation invalidates any potentially-cached plaintext and is sufficient remediation for KMS misconfiguration scenarios without observed unauthorized decryption.",
+        "C": "Disable the dev OU temporarily during investigation; full OU lockdown demonstrates the seriousness of the misconfiguration and prevents any further unauthorized decryption during forensic analysis.",
+        "D": "No notification required since activity logs show no unauthorized decryption; without evidence of actual data exposure, customer notification creates unnecessary regulatory exposure and customer concern."
+      },
+      "correct": "A",
+      "key_concept": "KMS misconfiguration cross-OU = revoke policy + rotate keys + image full retention-period activity logs + scope-assess decrypted-data exposure + customer-notification readiness + post-incident policy governance review.",
+      "pre_read": "KMS misconfiguration requires REVOKE POLICY (not just rotate keys) + forensic preservation of full retention period + scope-assessment for notification trigger. Rotate-only, disable-OU, and no-notification framings each fail.",
+      "correct_explanation": "NIST SP 800-145 (Cloud Computing Definition), NIST SP 800-57 Part 1 Rev 5 (Key Management), CSA Cloud Controls Matrix v4 (CEK-03 Cryptographic Key Management), ISO/IEC 27017 (Cloud Service Security), GDPR Article 33 + 34 (Breach Notification), HIPAA Breach Notification Rule, and ISACA Cloud Computing Audit/Assurance Program establish KMS misconfiguration response framework. (1) REVOKE WILDCARD ACCESS POLICY — fix the root-cause misconfiguration; key rotation alone leaves the policy in place and the keys would re-leak. (2) ROTATE KMS KEYS — invalidate any potentially-cached plaintext derived from the compromised keys. (3) IMAGE FULL RETENTION-PERIOD ACTIVITY LOGS — 12 months is the entire forensic window available; preserve before logs roll off. (4) SCOPE-ASSESSMENT — what data was decrypted by which dev-OU principals across the 14-month window? (5) CUSTOMER-NOTIFICATION READINESS — even without confirmed unauthorized decryption, GDPR + HIPAA may require notification based on RISK assessment (not certainty of exposure). (6) POST-INCIDENT POLICY GOVERNANCE — review all KMS key policies + IAM-policy-validation tooling + least-privilege automation. (7) ROTATE-ONLY (Option B) fails because the wildcard policy remains in place; keys would re-leak. (8) DISABLE-OU (Option C) is operationally disruptive and unnecessary — targeted policy revocation suffices. (9) NO-NOTIFICATION (Option D) fails because GDPR + HIPAA require risk-based notification, not certainty-of-exposure notification.",
+      "wrong_explanations": {
+        "B": "Rotate-keys-only fails because the wildcard access policy REMAINS IN PLACE — once new keys are issued under the same policy, dev-OU principals have the same decrypt access and the keys re-leak immediately. Policy revocation is the root-cause fix.",
+        "C": "Disable-OU is operationally disruptive (140 developers blocked) and unnecessary — targeted policy revocation accomplishes the same security objective without the operational impact. Disable-OU is overreach.",
+        "D": "No-notification fails GDPR Article 33 + 34 (risk-based assessment, not certainty-of-exposure) and HIPAA Breach Notification Rule (compromise of unsecured PHI requires notification with risk-of-harm assessment). Absence of observed unauthorized decryption is NOT proof of no exposure."
+      },
+      "tips": [
+        "Trap is B — 'rotate keys only' fails because the WILDCARD POLICY remains in place; new keys re-leak under the same policy. Policy revocation is the root-cause fix.",
+        "Mindset: KMS misconfiguration requires POLICY REVOCATION (root cause) + key rotation (cached-plaintext invalidation) + forensic preservation of full retention window. Rotate-only addresses symptom, not cause.",
+        "Exam-day shortcut: when the stem describes CLOUD KMS MISCONFIGURATION, the right answer is POLICY REVOCATION (root cause) plus key rotation. Rotate-keys-only is the trap because the wildcard policy remains in place."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); CSA Cloud Controls Matrix; ISO/IEC 27017 (Cloud Security); GDPR Articles 33-34 (Breach Notification); GDPR Article 33 (72-hour Supervisory Notification); HHS OCR HIPAA Breach Notification Rule; NIST SP 800-145 (NIST Definition of Cloud Computing)",
+      "related_concepts": [
+        "KMS",
+        "cloud security",
+        "misconfiguration",
+        "shared responsibility",
+        "blast radius"
+      ],
+      "_provenance": "Authored from concept: 'Cloud KMS Misconfiguration Cross-OU Blast Radius'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_239",
+      "domain": 5,
+      "subtopic": "Stagnant Phishing-Click Rate Board Inquiry (Analysis, single-focus methodology-rigor-first)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A large research university's CISO faces audit-committee inquiry at 11:42 AM Thursday: phishing-simulation click-rate trends across the past 5 years show flat ~22-24% click-rate despite $1.2M cumulative awareness-program investment. Audit Committee Chair wants root-cause analysis at the December meeting (8 weeks away). CISO + CIO + Chief Risk Officer + HR-Talent-Development lead + Awareness-Program-Vendor coordinating response. Current vendor contract renewal is also up in 8 weeks. Internal hypothesis ranges from population-effect (rotating undergraduate student population) to vendor-effectiveness gap to program-design failure across the 32,000-person faculty + staff + student population, with no segmentation analysis yet performed.",
+      "options": {
+        "A": "Replace the awareness-program vendor and re-baseline; 5 years of flat metrics demonstrates vendor failure and a vendor change resets the program-design questions definitively.",
+        "B": "Increase phishing-simulation frequency and difficulty; more-frequent + harder simulations drive behavior change and should reduce click rate measurably within 18 months.",
+        "C": "Investigate program DESIGN rigorously FIRST: Kirkpatrick L1-L4 measurement + population-segment analysis (faculty/staff/students separately) + report-rate trend + repeat-clicker analysis + control-group comparison + program-design audit BEFORE drawing conclusions about vendor or program failure.",
+        "D": "Accept the flat click-rate as the steady-state outcome for the university population; rotating student populations and academic-freedom culture may produce a structural ~22% click rate floor that is not addressable."
+      },
+      "correct": "C",
+      "key_concept": "Stagnant awareness-program metrics = investigate program DESIGN rigorously FIRST (Kirkpatrick L1-L4 + segmentation + report-rate + repeat-clicker + control group + design audit) BEFORE vendor change or program changes (METHODOLOGY-RIGOR-FIRST applied to awareness program audit).",
+      "pre_read": "Single-focus principle: methodology-rigor-first (applied to awareness program audit). Vendor change, frequency increase, and acceptance-as-floor framings each fail the diagnose-before-prescribe principle.",
+      "correct_explanation": "When awareness-program metrics are stagnant, the FIRST action is RIGOROUS METHODOLOGY INVESTIGATION — diagnose the program before prescribing the cure — applying the METHODOLOGY-RIGOR-FIRST principle (introduced at d5_217). Rationale: (1) PROGRAM-DESIGN AUDIT — is the simulation content appropriate to the population? Are difficulty calibration + scenario realism + content rotation in place? (2) KIRKPATRICK L1-L4 measurement — measuring only click rate (L3 partial) misses L1 (reaction), L2 (learning), L4 (results). Different levels point to different root causes. (3) POPULATION-SEGMENT ANALYSIS — faculty vs staff vs students may have very different click-rate profiles; aggregate flat metric may mask divergent trends. (4) REPORT-RATE TREND — is report rate rising even if click rate is flat? Active defense behavior change is the leading indicator (per d5_226). (5) REPEAT-CLICKER ANALYSIS — small population of repeat clickers may dominate the aggregate. Targeted intervention may dramatically improve metrics. (6) CONTROL-GROUP COMPARISON — peer-university benchmarks for awareness-program effectiveness. (7) DESIGN AUDIT — is content rotating? Are scenarios realistic? Is reporting visible? (8) VENDOR-CHANGE (Option A) without root-cause is spend-without-diagnosis; new vendor reset doesn't address program-design or population issues. (9) FREQUENCY-INCREASE (Option B) is premature without diagnosis — more-of-the-same may fail for the same reason. (10) ACCEPT-AS-FLOOR (Option D) is premature surrender without diagnosis. NIST SP 800-50 Rev 1, SANS Security Awareness Maturity Model, COBIT 2019 APO07 (Managed Human Resources), and ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program establish the methodology-rigor-first sequencing.",
+      "wrong_explanations": {
+        "A": "Replace-vendor fails because the diagnosis is incomplete — vendor change is appropriate IF the diagnosis points to vendor failure, not as a substitute for diagnosis. New-vendor reset doesn't fix program-design or population-segment issues.",
+        "B": "Frequency-increase fails because more-of-the-same may fail for the same underlying reason. If content + design + targeting are wrong, more simulations don't solve it — diagnosis comes before prescription.",
+        "D": "Accept-as-floor is premature surrender without diagnosis. Rotating-student-population is a plausible factor but not a verified root cause; control-group + peer benchmarks may reveal achievable improvement."
+      },
+      "tips": [
+        "Trap is A — 'replace vendor' fails because spend-without-diagnosis doesn't address program-design or population-segment root causes. New-vendor reset is appropriate IF diagnosis points there.",
+        "Mindset: METHODOLOGY-RIGOR-FIRST applies to AUDIT QUESTIONS, not just Daubert challenges (d5_217). Stagnant metrics require diagnosis before prescription — vendor change, frequency change, and acceptance all fail the diagnose-before-prescribe principle.",
+        "Exam-day shortcut: when the stem describes STAGNANT METRICS or BOARD INQUIRY, the right answer is DIAGNOSE BEFORE PRESCRIBE (methodology-rigor-first applied to audit). Replace-vendor is the trap because it spends without diagnosis."
+      ],
+      "framework_ref": "NIST SP 800-50 (Building an Information Technology Security Awareness Program); SANS Security Awareness Maturity Model; COBIT 2019 APO07 (Managed Human Resources); ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program",
+      "related_concepts": [
+        "awareness program",
+        "methodology-rigor-first",
+        "Kirkpatrick",
+        "vendor change",
+        "diagnosis"
+      ],
+      "_provenance": "Authored from concept: 'Stagnant Phishing-Click Rate Board Inquiry'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
+    },
+    {
+      "id": "d5_240",
+      "domain": 5,
+      "subtopic": "Customer PII in Dev Test Store DLP Gap (Analysis, GDPR breach-trigger synthesis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST audit and notification response?",
+      "scenario_context": "A European telecommunications operator's audit team discovers at 2:18 PM Wednesday during routine cloud-data-classification audit: ~2.4M customer records (names + phone numbers + billing addresses + ~180K national-identification numbers) reside in a development environment's test-data store, accessible to all ~80 developers, retained for 22 months. DLP rules never alerted because the dev environment was excluded from DLP scope ('dev-only' assumption). CISO + DPO + General Counsel + Privacy Officer + Engineering-VP + Engineering-Director-Dev-Platforms coordinating response. National data-protection authority (DPA) supervises under GDPR. No external exfiltration evidence found in initial activity-log review.",
+      "options": {
+        "A": "No notification required since no external exfiltration evidence and the data remained within firm-internal systems; GDPR notification triggers external unauthorized access, which is not present.",
+        "B": "Delete the test-data store immediately and document the deletion as remediation; deletion eliminates the exposure and prevents any further unauthorized access without further notification.",
+        "C": "Continue investigation for 90 days before notification to confirm full forensic scope and 22-month historical access analysis; partial information notifications create regulator complications.",
+        "D": "Contain dev-store access + assess Art. 4(12) breach trigger + DPO + Art. 33 72-hour assessment + DLP scope fix + classification review + delete after preservation."
+      },
+      "correct": "D",
+      "key_concept": "GDPR breach = unauthorized internal access (Art. 4(12)) + Art. 33 72-hour clock from awareness; contain + DPO assessment + notification readiness + DLP gap remediation + post-incident classification review (NOT delete-and-move-on).",
+      "pre_read": "GDPR breach trigger INCLUDES unauthorized internal access. No-external-exfil-no-breach, delete-and-move-on, and wait-90-days framings each fail Art. 4(12) + Art. 33.",
+      "correct_explanation": "GDPR Article 4(12) (definition of personal data breach), Article 33 (notification to supervisory authority within 72 hours of awareness), Article 34 (notification to data subjects), NIST SP 800-122, ENISA Personal Data Breach Notification Guidelines, and ISACA Information Privacy Audit/Assurance Program establish the GDPR breach-trigger framework. (1) GDPR ART. 4(12) DEFINITION: 'a breach of security leading to the accidental or unlawful destruction, loss, alteration, UNAUTHORISED DISCLOSURE OF, OR ACCESS TO, personal data transmitted, stored or otherwise processed.' Unauthorized INTERNAL access (80 developers without business need for production PII) qualifies. (2) ART. 33 72-HOUR CLOCK starts at AWARENESS — the audit discovery is the awareness event. (3) DPO ASSESSMENT — is this notification-triggering under the risk-of-harm test? (4) CONTAIN DEV-STORE ACCESS — revoke broad developer access; tighten to least-privilege. (5) DLP SCOPE GAP — dev-environment exclusion is a control failure; DLP should classify data regardless of environment. (6) POST-INCIDENT DATA-CLASSIFICATION REVIEW — how did production PII reach dev test-data in the first place? (7) DELETE AFTER PRESERVATION — destruction without preservation destroys the audit-evidence record. (8) NO-NOTIFICATION (Option A) misreads Art. 4(12) — unauthorized INTERNAL access is in scope; the breach trigger does not require external exfiltration. (9) DELETE-AND-MOVE-ON (Option B) destroys audit evidence + fails Art. 33 notification + leaves DLP gap unfixed. (10) WAIT-90-DAYS (Option C) fails Art. 33 72-hour clock + the notify-first-for-customer-protection principle.",
+      "wrong_explanations": {
+        "A": "No-notification fails GDPR Art. 4(12) — the breach definition INCLUDES unauthorized internal access, not just external exfiltration. 80 developers without business need for production PII constitutes unauthorized access regardless of whether external exfiltration is observed.",
+        "B": "Delete-and-document-as-remediation fails on three dimensions: (1) destroys audit evidence needed for Art. 33 notification scope, (2) does not address the underlying DLP scope gap, (3) does not satisfy the Art. 33 72-hour clock that already started at audit discovery.",
+        "C": "Wait-90-days fails Art. 33 72-hour notification clock + the notify-first-for-customer-protection canonical principle. The 72-hour clock starts at AWARENESS, not at full-forensic-scope-completion."
+      },
+      "tips": [
+        "Trap is A — 'no external exfil = no breach' fails GDPR Art. 4(12) which INCLUDES unauthorized internal access. 80 developers without business need for production PII constitutes unauthorized access.",
+        "Mindset: GDPR breach trigger = unauthorized ACCESS OR disclosure, not just exfiltration. The 72-hour clock starts at AWARENESS, not at full-forensic-scope-completion.",
+        "Exam-day shortcut: when the stem says PII FOUND IN DEV STORE, the right answer turns on GDPR Art. 4(12) (unauthorized internal access IS the breach trigger). No-external-exfil-no-breach is the trap because Art. 4(12) includes unauthorized access without exfiltration."
+      ],
+      "framework_ref": "GDPR Article 4(12) (Personal Data Breach Definition); GDPR Articles 33-34 (Breach Notification) (Notification); NIST SP 800-122 (Guide to Protecting the Confidentiality of PII); ENISA Personal Data Breach Notification Guidelines",
+      "related_concepts": [
+        "GDPR breach",
+        "unauthorized internal access",
+        "Art. 4(12)",
+        "DLP gap",
+        "dev environment"
+      ],
+      "_provenance": "Authored from concept: 'Customer PII in Dev Test Store DLP Gap'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation."
     }
   ]
 }

@@ -1760,3 +1760,31 @@ sub-references like "(Managed Risk) and APO12.03").
 - ANAB ISO/IEC 17025 Forensic Testing Accreditation
 - OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023)
 - OCC Bulletin 2013-29 (Third-Party Relationships, superseded June 2023)
+- Brazil LGPD Article 48 (Communication of Security Incidents)
+- Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC)
+- 21 CFR Part 11 (Electronic Records and Electronic Signatures)
+- SEC + FINRA Rules on Material Non-Public Information (MNPI)
+- ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program
+- GDPR Article 4(12) (Personal Data Breach Definition)
+- ENISA Personal Data Breach Notification Guidelines
+- RFC 8996 (Deprecating TLS 1.0/1.1)
+- FAPI 2.0 Security Profile (OpenID Foundation)
+- Planet49 v. Bundesverband CJEU (2019) — Pre-Ticked Boxes Invalid
+- ISO/IEC 29184 (Online Privacy Notices and Consent)
+- GAPP Principle 3 (Choice & Consent)
+- Kirkpatrick Four-Level Training Evaluation Model
+- PCI DSS v4.0.1 Requirement 3.7 (Key Management Documentation)
+- ISACA Vendor Risk Management Audit/Assurance Program
+- FedRAMP IR-4 (Incident Handling)
+- OWASP ASVS
+- GDPR Article 7 (Conditions for Consent)
+- CISA Joint Cybersecurity Advisories on Cloud Identity Compromise
+- NIST SP 800-57 Part 2 Rev 1
+- NIST SP 800-125A Rev 1 (Hypervisor Platform Security Recommendations)
+- RFC 5280 (X.509 Public-Key Infrastructure)
+- PCI DSS v4.0.1 Requirement 4.2.1 (TLS Deprecation)
+- ISO/IEC 27033-6 (Network Security: Securing IP Network Access)
+- RFC 6960 (Online Certificate Status Protocol — OCSP)
+- GDPR Article 33 (72-hour Supervisory Notification)
+- GDPR Article 34 (Data Subject Notification)
+- REVOCATION-FIRST principle (cryptographic signing-key / CA-key compromise: revoke FIRST via vendor revocation mechanism BEFORE forensic imaging, credential rotation, or notification — forged tokens/certificates remain valid until revocation)

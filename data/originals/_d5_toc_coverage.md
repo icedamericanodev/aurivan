@@ -2,49 +2,75 @@
 
 CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target).
 
-**Last updated:** D5-11 (d5_201..d5_220). All 17 D5 TOC sections covered; §5.17 Forensics deepest.
+**Last updated:** D5-12 (d5_221..d5_240). A TIER CLOSED at 130. All 17 D5 TOC sections covered.
 
 ## Tier targets
 
 | Tier          | Target | Authored | Remaining |
 |---------------|-------:|---------:|----------:|
 | Foundational  |     26 |       26 |         0 ✓ CLOSED |
-| Application   |    130 |      120 |        10 |
-| Analysis      |    104 |       74 |        30 |
-| **Total**     |    260 |      220 |        40 |
+| Application   |    130 |      130 |         0 ✓ CLOSED |
+| Analysis      |    104 |       84 |        20 |
+| **Total**     |    260 |      240 |        20 |
 
 ## TOC coverage (D5-1 through D5-10)
 
 | TOC §  | Title                                                    | Authored | Status |
 |--------|----------------------------------------------------------|---------:|:-------|
 | 5.1    | Information Asset Security Frameworks, Standards, Guidelines | 8    | ✓ opened |
-| 5.2    | Privacy Principles                                       |        9 | ✓ opened |
+| 5.2    | Privacy Principles                                       |       10 | ✓ extended (D5-12) |
 | 5.3    | Physical Access and Environmental Controls               |       12 | ✓ opened |
-| 5.4    | Identity and Access Management                           |       13 | ✓ opened |
+| 5.4    | Identity and Access Management                           |       14 | ✓ extended (D5-12) |
 | 5.5    | Network and End-Point Security                           |       12 | ✓ opened |
-| 5.6    | Data Loss Prevention                                     |        6 | ✓ opened |
-| 5.7    | Data Encryption                                          |       15 | ✓ opened |
-| 5.8    | Public Key Infrastructure (PKI)                          |        5 | ✓ opened |
-| 5.9    | Web-Based Communication Techniques                       |        5 | ✓ opened |
-| 5.10   | Virtualized Environments                                 |        6 | ✓ opened |
+| 5.6    | Data Loss Prevention                                     |        9 | ✓ extended (D5-12) |
+| 5.7    | Data Encryption                                          |       18 | ✓ extended (D5-12) |
+| 5.8    | Public Key Infrastructure (PKI)                          |        9 | ✓ extended (D5-12) |
+| 5.9    | Web-Based Communication Techniques                       |        7 | ✓ extended (D5-12) |
+| 5.10   | Virtualized Environments                                 |        7 | ✓ extended (D5-12) |
 | 5.11   | Mobile, Wireless, IoT Devices                            |        9 | ✓ opened |
-| 5.12   | Security Awareness Training and Programs                 |        6 | ✓ opened |
-| 5.13   | Information System Attack Methods and Techniques         |       14 | ✓ opened |
+| 5.12   | Security Awareness Training and Programs                 |        9 | ✓ extended (D5-12) |
+| 5.13   | Information System Attack Methods and Techniques         |       15 | ✓ extended (D5-12) |
 | 5.14   | Security Testing Tools and Techniques                    |       17 | ✓ opened |
 | 5.15   | Security Monitoring Tools and Techniques                 |       23 | ✓ opened |
 | 5.16   | Incident Response Management                             |       25 | ✓ opened |
-| 5.17   | Evidence Collection and Forensics                        |       35 | ✓ extended (D5-11) |
+| 5.17   | Evidence Collection and Forensics                        |       36 | ✓ extended (D5-12) |
 
 **All 17 TOC sections covered.** Remaining batches extend §5.16, §5.17 and synthesize.
 
-## Remaining coverage plan (D5-12 through D5-13)
+## Remaining coverage plan (D5-13 FINAL)
 
-40 questions across 2 batches. Mix targets: 0F + 10A + 30An remaining.
+20 questions in 1 batch. Mix targets: 0F + 0A + 20An remaining.
 
 | Batch | Mix | Focus |
 |---|---|---|
-| **D5-12** | 0F+10A+10An | §5.17 Forensics close + cross-cutting application — **A TIER CLOSES at 130** |
 | **D5-13 FINAL** | 0F+0A+20An | Capstone analysis spanning all D5 — **An TIER CLOSES at 104** |
+
+## Batch log — D5-12 (d5_221..d5_240) — A TIER CLOSED
+
+**Application (10) — thin-section fortification:**
+- §5.8 PKI (2): Certificate revocation under CA compromise + PKI hierarchy with offline root
+- §5.9 Web Comm (2): TLS 1.0/1.1 deprecation + Secure API gateway (FAPI 2.0)
+- §5.10 Virtualization (1): Hypervisor escape and VM isolation
+- §5.12 Awareness (2): Phishing simulation metrics + Training effectiveness (Kirkpatrick)
+- §5.6 DLP (1): DLP false-positive tuning
+- §5.2 Privacy (1): Consent management lifecycle (GDPR Article 7)
+- §5.7 Encryption (1): Cryptographic key rotation governance
+
+**Analysis (10) — 5 real-world tonal echoes + 1 NEW principle + 4 synthesis:**
+- d5_231 MOVEit/Cl0p 2023 echo (managed-file-transfer SQLi)
+- d5_232 Microsoft Storm-0558 2023 echo (signing-key compromise) — **NEW REVOCATION-FIRST PRINCIPLE**
+- d5_233 Okta Oct 2023 echo (HAR-file session cookie theft)
+- d5_234 MGM/Scattered Spider 2023 echo (service-desk vishing → MFA bypass)
+- d5_235 LastPass 2022 echo (encrypted vault + plaintext metadata)
+- d5_236 Internal CA key on stolen laptop (reinforces REVOCATION-FIRST)
+- d5_237 DLP-detected executive M&A draft dispute (governance synthesis)
+- d5_238 Cloud KMS misconfiguration cross-OU (synthesis)
+- d5_239 Stagnant phishing-click rate (methodology-rigor-first applied to audit)
+- d5_240 PII in dev test store (GDPR Art. 4(12) breach synthesis)
+
+**14 single-focus principles now in D5:** contain-first, restore-first, lateral-movement-contain, irreversible-loss-clock, financial-loss-clock, credential-validity-clock, exposure-window-close, trusted-baseline-restore, notify-first-for-customer-protection, defer-major-decisions-during-crisis, chain-of-custody-first, forensic-imaging-before-wipe, methodology-rigor-first, **revocation-first**.
+
+**REVOCATION-FIRST principle (d5_232, d5_236):** When a cryptographic signing key or CA private key is confirmed compromised, REVOKE the compromised key FIRST via vendor's revocation mechanism — forged tokens / forged certificates remain valid until revocation. Distinct from CHAIN-OF-CUSTODY-FIRST (evidence-integrity disputes in litigation) and FORENSIC-IMAGING-BEFORE-WIPE (mobile state-actor evidence preservation): REVOCATION-FIRST addresses active-forgery scenarios where the forgery vector continues until revocation.
 
 ## Batch log — D5-11 (d5_201..d5_220)
 

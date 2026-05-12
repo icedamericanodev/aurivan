@@ -1020,11 +1020,11 @@ domain_5:
     analysis:     104
 
   status: in_progress
-  authored_total: 220
+  authored_total: 240
   authored_mix:
     foundational: 26
-    application:  120
-    analysis:     74
+    application:  130
+    analysis:     84
 
   covered:
     # Batch 1 (d5_001..d5_020) — 5.1 Info Security Frameworks + 5.3 Physical/Environmental
@@ -1268,3 +1268,25 @@ domain_5:
     - { id: d5_218, subtopic: "Forensic Budget Defense at Board (Analysis)",                  toc_ref: "5.17" }
     - { id: d5_219, subtopic: "Legal Hold Scope Dispute Resolution (Analysis)",               toc_ref: "5.17" }
     - { id: d5_220, subtopic: "Forensic Team Capability Building Post-Major-Incident (Analysis)", toc_ref: "5.17" }
+
+    # Batch 12 (d5_221..d5_240) — Application thin-section fortification + Analysis with 5 real-world echoes + REVOCATION-FIRST new principle. A TIER CLOSES at 130.
+    - { id: d5_221, subtopic: "Certificate Revocation under CA Compromise",                       toc_ref: "5.8"  }
+    - { id: d5_222, subtopic: "PKI Hierarchy and Root CA Offline Boundary",                       toc_ref: "5.8"  }
+    - { id: d5_223, subtopic: "TLS 1.0/1.1 Deprecation and Migration",                            toc_ref: "5.9"  }
+    - { id: d5_224, subtopic: "Secure API Gateway Controls (FAPI 2.0)",                           toc_ref: "5.9"  }
+    - { id: d5_225, subtopic: "Hypervisor Escape Risk and VM Isolation",                          toc_ref: "5.10" }
+    - { id: d5_226, subtopic: "Phishing Simulation Program Metrics",                              toc_ref: "5.12" }
+    - { id: d5_227, subtopic: "Security Training Effectiveness Measurement (Kirkpatrick)",        toc_ref: "5.12" }
+    - { id: d5_228, subtopic: "DLP False-Positive Tuning (Precision-Recall Balance)",             toc_ref: "5.6"  }
+    - { id: d5_229, subtopic: "Consent Management Lifecycle (GDPR Article 7)",                    toc_ref: "5.2"  }
+    - { id: d5_230, subtopic: "Cryptographic Key Rotation Governance",                            toc_ref: "5.7"  }
+    - { id: d5_231, subtopic: "Managed File Transfer SQLi Mass-Exfil (Analysis, MOVEit 2023 echo)", toc_ref: "5.17" }
+    - { id: d5_232, subtopic: "Cryptographic Signing-Key Compromise (Analysis, single-focus REVOCATION-FIRST, Storm-0558 echo)", toc_ref: "5.8" }
+    - { id: d5_233, subtopic: "Support-System Session-Cookie Theft (Analysis, Okta Oct 2023 echo)", toc_ref: "5.4"  }
+    - { id: d5_234, subtopic: "Service-Desk Vishing MFA Bypass Ransomware (Analysis, MGM 2023 echo)", toc_ref: "5.13" }
+    - { id: d5_235, subtopic: "Encrypted Vault + Plaintext Metadata Breach (Analysis, LastPass 2022 echo)", toc_ref: "5.7"  }
+    - { id: d5_236, subtopic: "Internal CA Key on Stolen Laptop (Analysis, reinforces REVOCATION-FIRST)", toc_ref: "5.8"  }
+    - { id: d5_237, subtopic: "DLP-Detected Executive M&A Draft Quarantine Dispute (Analysis)",   toc_ref: "5.6"  }
+    - { id: d5_238, subtopic: "Cloud KMS Misconfiguration Cross-OU Blast Radius (Analysis)",      toc_ref: "5.7"  }
+    - { id: d5_239, subtopic: "Stagnant Phishing-Click Rate Board Inquiry (Analysis, methodology-rigor-first)", toc_ref: "5.12" }
+    - { id: d5_240, subtopic: "Customer PII in Dev Test Store DLP Gap (Analysis, GDPR Art. 4(12) breach)", toc_ref: "5.6"  }
