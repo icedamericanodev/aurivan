@@ -1677,3 +1677,55 @@ sub-references like "(Managed Risk) and APO12.03").
 - Weber Shandwick Crisis Management
 - state breach laws
 - Daniel Kahneman 'Thinking, Fast and Slow' (cognitive biases in crisis decision-making)
+- CHAIN-OF-CUSTODY-FIRST principle (forensic evidence integrity: independent hash verification before technical analysis or legal dispute)
+- FORENSIC-IMAGING-BEFORE-WIPE principle (mobile device evidence preservation: image before wipe even under state-actor exposure pressure)
+- ABA Model Rules of Professional Conduct (attorney-client privilege)
+- AWS Cloud Security IR Playbook
+- AWS Forensics Guidance
+- Amnesty Tech Pegasus Forensic Methodology
+- Azure Forensics Documentation
+- Azure Sentinel IR Documentation
+- Boyd
+- CERT Insider Threat Center
+- CFPB Consumer Financial Protection Bureau Guidance
+- CISA Known Exploited Vulnerabilities Catalog
+- CISA Software Supply Chain Security Guide
+- CISA Vulnerability Disclosure Guidance
+- CSA Cloud Forensics Working Group
+- CSA Cloud Incident Response Working Group
+- CSA Cross-Border Cloud Forensics Guidance
+- Cellebrite + GrayKey + Magnet AXIOM Mobile Documentation
+- Corelight / Suricata / Zeek Documentation
+- EnCase Certified Examiner (EnCE)
+- Executive Order 14028
+- FBI + CISA Joint Cybersecurity Advisories
+- FEMA HSEEP
+- FTC Safeguards Rule
+- FTK Imager / EnCase Documentation
+- Federal Rules of Evidence Rule 901 (Authentication)
+- GDPR Articles 28 + 33 + Chapter V
+- GIAC GCFE / GCFA / GREM Certifications
+- Google SRE Blameless Postmortems Methodology
+- ICS-CERT Incident Handling Guidance
+- IEC 62443 (Industrial Communication Networks Security)
+- ISACA Cloud Forensics Audit/Assurance Program
+- ISACA Forensics Audit/Assurance Program
+- ISACA International Forensics Audit/Assurance Program
+- ISACA Network Forensics Audit/Assurance Program
+- ISACA OT Security Audit/Assurance Program
+- ISACA Workforce Development Guidance
+- ISO/IEC 27037 (Digital Evidence Handling)
+- Mutual Legal Assistance Treaties
+- NIST SP 800-101 (Mobile Forensics)
+- NIST SP 800-218 (SSDF)
+- NIST SP 800-84 (Test, Training, Exercise Programs)
+- NIST SP 800-86
+- NSA + CISA SBOM Guidance
+- Rekall Framework
+- SANS DFIR Curriculum
+- SANS FOR500 (Digital Forensics and IR)
+- SANS FOR508 (Advanced Incident Response, Threat Hunting, and Digital Forensics)
+- SANS FOR572 (Advanced Network Forensics)
+- State Breach Notification Laws (50 states)
+- Volatility Foundation Documentation
+- Boyd's OODA Loop (Observe-Orient-Decide-Act)
