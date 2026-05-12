@@ -2,7 +2,7 @@
 
 CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target).
 
-**Last updated:** D5-12 (d5_221..d5_240). A TIER CLOSED at 130. All 17 D5 TOC sections covered.
+**Last updated:** D5-13 FINAL (d5_241..d5_260). **D5 COMPLETE 260/260. BANK COMPLETE 1004/1004.**
 
 ## Tier targets
 
@@ -10,8 +10,8 @@ CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target
 |---------------|-------:|---------:|----------:|
 | Foundational  |     26 |       26 |         0 ✓ CLOSED |
 | Application   |    130 |      130 |         0 ✓ CLOSED |
-| Analysis      |    104 |       84 |        20 |
-| **Total**     |    260 |      240 |        20 |
+| Analysis      |    104 |      104 |         0 ✓ CLOSED |
+| **Total**     |    260 |      260 |         0 ✓ **COMPLETE** |
 
 ## TOC coverage (D5-1 through D5-10)
 
@@ -37,13 +37,45 @@ CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target
 
 **All 17 TOC sections covered.** Remaining batches extend §5.16, §5.17 and synthesize.
 
-## Remaining coverage plan (D5-13 FINAL)
+## D5 COMPLETION — BANK COMPLETE AT 1004
 
-20 questions in 1 batch. Mix targets: 0F + 0A + 20An remaining.
+D5 = 260/260. Bank = 1004/1004 across 5 domains (D1: 180 + D2: 180 + D3: 124 + D4: 260 + D5: 260).
 
-| Batch | Mix | Focus |
-|---|---|---|
-| **D5-13 FINAL** | 0F+0A+20An | Capstone analysis spanning all D5 — **An TIER CLOSES at 104** |
+## Batch log — D5-13 FINAL (d5_241..d5_260) — BANK CAPSTONE
+
+**All 20 capstone analysis questions** spanning the four cluster types:
+
+**Real-world tonal echoes (5):**
+- d5_241 Marriott/Starwood 2018-2020 (long-dwell APT post-M&A)
+- d5_242 Snowflake 2024 (customer-credential mass-tenant exfil)
+- d5_243 Microsoft Midnight Blizzard 2024 (OAuth token-abuse executive email APT)
+- d5_244 SolarWinds-tonal SaaS supply-chain (malicious-update cascade)
+- d5_245 AT&T 2024 (third-party SaaS exposing carrier CDR)
+
+**Multi-section synthesis (5):**
+- d5_246 Cross-border forensic discovery + GDPR Art. 49 + MLAT
+- d5_247 Zero-trust failure via service-mesh implicit trust
+- d5_248 AI/ML model exfiltration + training-data leakage (NEW vector)
+- d5_249 Quantum-resistant cryptography migration governance
+- d5_250 SOC analyst burnout + alert fatigue capability rebuild
+
+**Single-focus principle reinforcement + 1 NEW principle (5):**
+- d5_251 REVOCATION-FIRST extension to code-signing certificates
+- d5_252 CONTAIN-FIRST extension to OT/ICS safety-critical
+- d5_253 **NEW BACKUP-IMMUTABILITY-FIRST principle (15th D5 principle)**
+- d5_254 CONTAIN-FIRST vs FORENSIC-IMAGING-BEFORE-WIPE (cross-principle)
+- d5_255 IRREVERSIBLE-LOSS-CLOCK vs NOTIFY-FIRST (cross-principle)
+
+**Bank-capstone governance synthesis (5):**
+- d5_256 Board-tier escalation criteria (SEC + Caremark)
+- d5_257 Cyber-insurance war-exclusion claim defense
+- d5_258 Nation-state attribution bounds (auditor vs IC)
+- d5_259 Privacy-by-design retrofit failure multi-jurisdiction
+- d5_260 **BANK FINAL** — 5-year technology-bet retrospective
+
+**15 single-focus principles now canonical in D5:** contain-first, restore-first, lateral-movement-contain, irreversible-loss-clock, financial-loss-clock, credential-validity-clock, exposure-window-close, trusted-baseline-restore, notify-first-for-customer-protection, defer-major-decisions-during-crisis, chain-of-custody-first, forensic-imaging-before-wipe, methodology-rigor-first, revocation-first, **backup-immutability-first**.
+
+**BACKUP-IMMUTABILITY-FIRST (d5_253):** when ransomware encryption is confirmed, VERIFY immutable + recent + complete + offline-isolated backups BEFORE any ransom decision, restoration attempt, or insurance engagement. Distinct from RESTORE-FIRST (which assumes verified backups exist) and TRUSTED-BASELINE-RESTORE (which applies to supply-chain compromise contexts). Specifically addresses ransomware-specific recovery where network-attached backups may also be compromised.
 
 ## Batch log — D5-12 (d5_221..d5_240) — A TIER CLOSED
 

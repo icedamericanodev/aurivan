@@ -1019,12 +1019,12 @@ domain_5:
     application:  130
     analysis:     104
 
-  status: in_progress
-  authored_total: 240
+  status: complete
+  authored_total: 260
   authored_mix:
     foundational: 26
     application:  130
-    analysis:     84
+    analysis:     104
 
   covered:
     # Batch 1 (d5_001..d5_020) — 5.1 Info Security Frameworks + 5.3 Physical/Environmental
@@ -1290,3 +1290,25 @@ domain_5:
     - { id: d5_238, subtopic: "Cloud KMS Misconfiguration Cross-OU Blast Radius (Analysis)",      toc_ref: "5.7"  }
     - { id: d5_239, subtopic: "Stagnant Phishing-Click Rate Board Inquiry (Analysis, methodology-rigor-first)", toc_ref: "5.12" }
     - { id: d5_240, subtopic: "Customer PII in Dev Test Store DLP Gap (Analysis, GDPR Art. 4(12) breach)", toc_ref: "5.6"  }
+
+    # Batch 13 FINAL (d5_241..d5_260) — All 20 CAPSTONE ANALYSIS. AN TIER CLOSES at 104. BANK CLOSES at 1004.
+    - { id: d5_241, subtopic: "Long-Dwell APT Discovered Post-M&A (Analysis, Capstone RW, Marriott/Starwood echo)", toc_ref: "5.4" }
+    - { id: d5_242, subtopic: "Reused-Credential Mass Tenant Exfil (Analysis, Capstone RW, Snowflake 2024 echo)", toc_ref: "5.4" }
+    - { id: d5_243, subtopic: "Executive-Tier Email APT via OAuth Token Abuse (Analysis, Capstone RW, Midnight Blizzard 2024 echo)", toc_ref: "5.4" }
+    - { id: d5_244, subtopic: "SaaS Provider Compromise Malicious-Update Cascade (Analysis, Capstone RW, supply-chain echo)", toc_ref: "5.13" }
+    - { id: d5_245, subtopic: "Third-Party SaaS Exposing Customer Call Records (Analysis, Capstone RW, AT&T 2024 echo)", toc_ref: "5.13" }
+    - { id: d5_246, subtopic: "Cross-Border Forensic Discovery + GDPR Art. 49 vs MLAT (Analysis, Capstone MS synthesis)", toc_ref: "5.17" }
+    - { id: d5_247, subtopic: "Zero-Trust Failure via Service-Mesh Implicit Trust (Analysis, Capstone MS synthesis)", toc_ref: "5.4" }
+    - { id: d5_248, subtopic: "AI/ML Model Exfil + Training-Data Leakage (Analysis, Capstone MS synthesis, NEW vector)", toc_ref: "5.13" }
+    - { id: d5_249, subtopic: "Quantum-Resistant Cryptography Migration Governance (Analysis, Capstone MS synthesis)", toc_ref: "5.7" }
+    - { id: d5_250, subtopic: "SOC Analyst Burnout and Alert Fatigue Capability Rebuild (Analysis, Capstone MS synthesis)", toc_ref: "5.15" }
+    - { id: d5_251, subtopic: "Code-Signing Certificate Compromise (Analysis, Capstone SP, REVOCATION-FIRST extension)", toc_ref: "5.8" }
+    - { id: d5_252, subtopic: "OT/ICS Safety-Critical Containment (Analysis, Capstone SP, CONTAIN-FIRST extension)", toc_ref: "5.5" }
+    - { id: d5_253, subtopic: "Ransomware Recovery via Verified Immutable Backups (Analysis, Capstone SP, NEW BACKUP-IMMUTABILITY-FIRST principle)", toc_ref: "5.16" }
+    - { id: d5_254, subtopic: "Active Exfil Endpoint CONTAIN vs FORENSIC-IMAGING (Analysis, Capstone SP cross-principle)", toc_ref: "5.4" }
+    - { id: d5_255, subtopic: "BEC Wire Fraud IRREVERSIBLE-LOSS-CLOCK vs NOTIFY-FIRST (Analysis, Capstone SP cross-principle)", toc_ref: "5.13" }
+    - { id: d5_256, subtopic: "Board-Tier Cybersecurity Incident Escalation Criteria (Analysis, Capstone BC governance)", toc_ref: "5.1" }
+    - { id: d5_257, subtopic: "Cyber-Insurance Ransomware Coverage Claim Defense (Analysis, Capstone BC governance)", toc_ref: "5.1" }
+    - { id: d5_258, subtopic: "Nation-State Attribution Bounds Auditor vs LE/IC (Analysis, Capstone BC governance)", toc_ref: "5.17" }
+    - { id: d5_259, subtopic: "Privacy-by-Design Retrofit Failure Multi-Jurisdiction (Analysis, Capstone BC governance)", toc_ref: "5.2" }
+    - { id: d5_260, subtopic: "Post-Incident 5-Year Technology-Bet Retrospective (Analysis, Capstone BC FINAL — closes bank at 1004)", toc_ref: "5.1" }

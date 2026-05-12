@@ -1788,3 +1788,39 @@ sub-references like "(Managed Risk) and APO12.03").
 - GDPR Article 33 (72-hour Supervisory Notification)
 - GDPR Article 34 (Data Subject Notification)
 - REVOCATION-FIRST principle (cryptographic signing-key / CA-key compromise: revoke FIRST via vendor revocation mechanism BEFORE forensic imaging, credential rotation, or notification — forged tokens/certificates remain valid until revocation)
+- NSM-10 (Quantum-Resistant Cryptography Migration, May 2022)
+- ISO/IEC 38500 (Corporate Governance of Information Technology)
+- NIST SP 800-39 (Managing Information Security Risk)
+- ENISA PQC Mitigation Guide
+- MITRE ATLAS Framework
+- Lloyd's Market Bulletin Y5381 (War Exclusion)
+- FBI Cyber Incident Reporting Guidance
+- CIRCIA 2022 (Cyber Incident Reporting for Critical Infrastructure Act)
+- ODNI Intelligence Community Directive 203 (Analytic Standards)
+- NACD Director's Handbook on Cyber-Risk Oversight (2023)
+- COSO ERM Framework 2017
+- UCC §4A-204 (Wire Transfer Refund and Customer Duty)
+- FFIEC IT Examination Handbook — Wholesale Payment Systems
+- FinCEN Advisory FIN-2016-A003 (Business Email Compromise)
+- ISACA Financial Services Audit/Assurance Program
+- ISACA Ransomware Audit Program
+- NIST SP 800-209 (Storage Infrastructure Security)
+- Caremark / Marchand Fiduciary Duty Doctrine
+- Merck v. ACE American Insurance (NJ Superior Court 2021; War Exclusion Litigation)
+- ISACA M&A Audit/Assurance Program
+- BACKUP-IMMUTABILITY-FIRST principle (ransomware recovery: verify immutable + recent + complete + offline-isolated backups BEFORE ransom decision, restoration attempt, or insurance engagement; distinct from RESTORE-FIRST and TRUSTED-BASELINE-RESTORE)
+- NIST FIPS 203/204/205 (Post-Quantum Cryptography Standards)
+- IEC 62443-3-3 (Industrial Communication Networks Security)
+- CISA ICS Recommended Practice — Defense in Depth
+- NERC CIP-008-6 (Cyber Security Incident Reporting)
+- ISACA Board Briefing on IT Governance
+- NAIC Insurance Data Security Model Law
+- ISO/IEC 42001:2023 (Artificial Intelligence Management System)
+- GDPR Article 48 (Transfers Not Authorised by Union Law)
+- Hague Convention on Taking of Evidence Abroad in Civil or Commercial Matters
+- NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems)
+- ISACA IT Audit Standard 1207 (Irregularity and Illegal Acts)
+- ISO/IEC 27036-2 (Information Security for Supplier Relationships)
+- FCC Customer Proprietary Network Information (CPNI) Rules 47 CFR §64.2011
+- ISACA Cyber Insurance Audit Program
+- ISO/IEC 27040:2024 (Storage Security)
