@@ -1583,3 +1583,46 @@ sub-references like "(Managed Risk) and APO12.03").
 - SANS Threat Hunting Methodology
 - Sqrrl Threat Hunting Reference Model
 - OWASP SAMM
+- AWS CloudTrail Documentation
+- AWS Config Documentation
+- AWS IMDSv2 Documentation
+- Azure Activity Log Documentation
+- Azure Policy Documentation
+- CERT Insider Threat Center Research
+- CIS AWS/Azure/GCP Foundations Benchmarks
+- CIS Controls v8 Safeguard 8.5
+- CISA + NSA Kubernetes Hardening Guidance
+- CISA Kubernetes Hardening Guidance (joint with NSA)
+- CISA SBOM at a Glance
+- CTID Adversary Emulation Library
+- Drata / Vanta / Secureframe Vendor Documentation
+- Elastic Common Schema (ECS)
+- Falco / Sysdig Secure Vendor Documentation
+- Florian Roth Sigma Project
+- GCP Cloud Audit Logs Documentation
+- Gartner CSPM Market Guide
+- Gartner NDR Market Guide
+- HashiCorp Terraform Documentation
+- ISACA Cloud Security Audit/Assurance Program
+- ISACA Compliance Audit/Assurance Program
+- ISO/IEC 27001:2022 Annex A
+- MITRE ATT&CK T1611 (Escape to Host)
+- MITRE CTID Adversary Emulation Library
+- MaGMA Use Case Framework
+- NIST SP 800-128 (Guide for Security-Focused Configuration Management)
+- NIST SP 800-204 (Security Strategies for Microservices)
+- NIST SP 800-218 (Secure Software Development Framework, SSDF)
+- NIST SP 800-53 Rev 5 (Cloud Overlay)
+- NIST SP 800-53 Rev 5 PM-12
+- NIST SP 800-61 Rev 2 (Incident Handling)
+- OCSF (Open Cybersecurity Schema Framework)
+- OWASP API Security Testing Guide
+- Open Cybersecurity Schema Framework (OCSF)
+- PCI DSS v4.0 Requirement 11.4.5 (Red Team Testing for Service Providers)
+- PCI DSS v4.0 Requirements 11 and 12.10
+- SANS Red Team / Blue Team / Purple Team Curriculum
+- SANS Red Team Curriculum
+- Salt Security / Noname / Traceable / Akto API Security Vendor Documentation
+- Sigma (Generic Signature Format for SIEM Systems)
+- Sigma (Generic Signature Format)
+- Snowflake / Databricks / Google Chronicle Documentation

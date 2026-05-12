@@ -5090,6 +5090,736 @@
         "Retained roles"
       ],
       "_provenance": "Authored from concept: 'MSSP transition from in-house SOC framework'. Public sources: ISACA, NIST, Gartner. No legacy bank citation."
+    },
+    {
+      "id": "d5_141",
+      "domain": 5,
+      "subtopic": "Red Team / Blue Team / Purple Team",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical distinction between red team, blue team, and purple team exercises?",
+      "options": {
+        "A": "Red team = adversarial emulation testing defenses; blue team = defenders detecting/responding; purple team = collaborative red+blue working together to improve detections through known-attack-with-known-detection iteration.",
+        "B": "Red, blue, and purple teams are equivalent organizational labels for the same security testing function; no functional distinction exists in practice.",
+        "C": "Red team handles network testing, blue team handles application testing, purple team handles cloud testing — each is scoped to one technology domain only.",
+        "D": "Only red team exercises matter; blue and purple teams are theoretical constructs without operational deployment in modern security programs."
+      },
+      "correct": "A",
+      "key_concept": "Red team (adversarial emulation) + blue team (defenders) + purple team (collaborative red+blue for detection improvement). Three distinct functions; purple bridges the gap between periodic red engagements and continuous blue operations.",
+      "pre_read": "For red/blue/purple team questions, anchor on functional distinction (offense/defense/collaboration). Equivalent-labels, technology-scoped, and red-only framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework, SANS Red Team / Blue Team / Purple Team curriculum, and ISACA Penetration Testing Audit/Assurance Program establish team taxonomy: RED TEAM — adversarial emulation simulating real attacker TTPs; goes beyond pentest by emphasizing full-kill-chain operations + stealth + persistence; uses ATT&CK techniques; provides realistic defender practice. BLUE TEAM — defenders: SOC analysts, IR responders, detection engineers, threat hunters; CONTINUOUSLY OPERATING (red is periodic). PURPLE TEAM — collaborative exercise: red performs known attack (specific ATT&CK technique) while blue attempts detection; if blue misses, gap is fixed (rule tuned, runbook updated); explicit goal is detection improvement, not blue-evaluation. Purple bridges the gap between periodic red engagements and continuous blue operations. ENGAGEMENT TYPES: full red team (multi-week, broad scope, adversary simulation); assumed-breach red team (start as if perimeter breached); purple team workshop (single-day, specific technique focus); tabletop (no actual attack — verbal walkthrough). Modern variant: ATT&CK-based emulation plans (CTID Adversary Emulation Library).",
+      "wrong_explanations": {
+        "B": "B treats teams as equivalent labels, missing functional distinction. Red is OFFENSE (adversarial emulation); blue is DEFENSE (detection + response); purple is COLLABORATIVE (test detections with known attacks). Different roles, different value.",
+        "C": "C scopes teams by technology, but red/blue/purple is functional (offense/defense/collaboration), not technology-bounded. All three teams operate across all technology layers.",
+        "D": "D dismisses blue and purple, but blue is the FOUNDATIONAL operational team (SOC analysts, IR responders); red is periodic-engagement. Without blue team continuously operating, red team value is wasted (no one to detect or learn from red findings)."
+      },
+      "tips": [
+        "Trap is B — 'red, blue, and purple are equivalent labels' is candidate-seductive because they all involve security exercises; but they have DISTINCT functions: red OFFENSE, blue DEFENSE, purple COLLABORATIVE for detection improvement. Different roles, different value.",
+        "Red team = adversarial emulation. Blue team = continuous defenders. Purple team = collaborative red+blue for detection improvement. Bridges periodic red engagements with continuous blue operations.",
+        "Exam-day shortcut: when stem distinguishes RED/BLUE/PURPLE TEAM ROLES, look for functional taxonomy (offense/defense/collaboration); equivalent-labels, technology-scoped, and red-only framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework; SANS Red Team / Blue Team / Purple Team Curriculum; ISACA Penetration Testing Audit/Assurance Program; CTID Adversary Emulation Library; MITRE D3FEND",
+      "related_concepts": [
+        "Adversary emulation plans",
+        "Purple team workshop",
+        "ATT&CK-based detection",
+        "Blue team continuous operations"
+      ],
+      "_provenance": "Authored from concept: 'Red team / blue team / purple team canonical functional distinction'. Public sources: MITRE, SANS, ISACA, CTID. No legacy bank citation."
+    },
+    {
+      "id": "d5_142",
+      "domain": 5,
+      "subtopic": "Software Composition Analysis (SCA)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's Software Composition Analysis (SCA) deployment across 320+ applications using third-party dependencies. Which option BEST captures SCA AUDIT SCOPE?",
+      "options": {
+        "A": "Only direct dependencies need scanning; transitive dependencies are vendor responsibility and out of firm-side audit scope or control.",
+        "B": "Dependency inventory (SBOM) + CVE vulnerability scanning + license compliance + transitive dependency depth + auto-remediation + CI/CD integration + signed-package verification.",
+        "C": "SCA is replaced entirely by SAST; static code analysis catches vulnerable patterns including third-party library use without separate tooling.",
+        "D": "SCA only addresses license compliance; vulnerability scanning of dependencies is handled by vulnerability scanners and is duplicate."
+      },
+      "correct": "B",
+      "key_concept": "SCA audit scope = dependency inventory (SBOM) + CVE vulnerability scanning + license compliance + transitive dependency depth + auto-remediation policies + CI/CD integration + signed-package verification + zero-day alerting. Eight dimensions.",
+      "pre_read": "For SCA audit questions, anchor on eight-dimension scope across security + license + supply-chain. Direct-only, SAST-replaces, and license-only framings each fail.",
+      "correct_explanation": "NIST SP 800-218 (Secure Software Development Framework, SSDF), CISA SBOM at a Glance, ISACA Software Supply Chain Audit/Assurance Program, and OWASP Dependency-Check + Snyk + GitHub Dependabot documentation establish SCA audit scope. (1) DEPENDENCY INVENTORY (SBOM) — Software Bill of Materials per Executive Order 14028 + CISA guidance; CycloneDX or SPDX format; (2) CVE VULNERABILITY SCANNING — by dependency version; CVSS scoring; KEV prioritization; (3) LICENSE COMPLIANCE — GPL/MIT/Apache attribution; incompatible-license detection; (4) TRANSITIVE DEPENDENCY DEPTH — full dependency tree, not just direct; 100x more transitive than direct typical; (5) AUTO-REMEDIATION POLICIES — Dependabot PRs, Snyk automatic upgrades for patch-version safe updates; manual review for major versions; (6) CI/CD INTEGRATION — fail builds on Critical/High vulnerable dependencies; (7) SIGNED-PACKAGE VERIFICATION — Sigstore cosign verification; SLSA provenance for build attestation; (8) ZERO-DAY ALERTING — when newly-published CVE matches deployed dependency version; integration with threat intel.",
+      "wrong_explanations": {
+        "A": "Failure mode = DIRECT-DEPENDENCY-ONLY scoping. Modern applications have 100x more TRANSITIVE dependencies than direct (one direct dependency pulls in 50+ transitive); the 2021 Log4Shell vulnerability spread because firms tracked only direct, not transitive. Full depth scanning required.",
+        "C": "Failure mode = SAST-REPLACES-SCA. SAST catches code-pattern flaws but doesn't know what library versions are installed. SCA looks at the dependency manifest (package.json, requirements.txt, pom.xml) to identify vulnerable VERSIONS — distinct value from SAST.",
+        "D": "Failure mode = LICENSE-ONLY scoping. SCA covers BOTH license compliance AND vulnerability scanning (CVE-to-version matching). Tools like Snyk, GitHub Dependabot, OWASP Dependency-Check do both. Restricting to license loses the security value."
+      },
+      "tips": [
+        "Trap is C — 'SAST replaces SCA' is candidate-seductive because both are application-security testing; but SAST catches CODE PATTERNS (SQL injection patterns), SCA catches VULNERABLE VERSIONS (Log4j 2.14.x). SAST doesn't know which library versions are installed; SCA tells you. Complementary scopes.",
+        "SCA audit = SBOM + CVE scanning + license compliance + transitive depth + auto-remediation + CI/CD integration + signed packages + zero-day alerting. Eight dimensions across security + supply-chain.",
+        "Exam-day shortcut: when stem asks about SCA AUDIT SCOPE, look for eight-dimension SBOM-grounded framework; direct-only, SAST-replaces, and license-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-218 (Secure Software Development Framework, SSDF); CISA SBOM at a Glance; Executive Order 14028 (Improving the Nation's Cybersecurity); ISACA Software Supply Chain Audit/Assurance Program; SLSA Supply-chain Levels for Software Artifacts",
+      "related_concepts": [
+        "SBOM CycloneDX/SPDX",
+        "Log4Shell transitive dependency",
+        "Sigstore cosign verification",
+        "Executive Order 14028"
+      ],
+      "_provenance": "Authored from concept: 'SCA audit canonical scope per NIST SSDF + CISA SBOM guidance'. Public sources: NIST, CISA, ISACA, OWASP. No legacy bank citation."
+    },
+    {
+      "id": "d5_143",
+      "domain": 5,
+      "subtopic": "Cloud Security Posture Management (CSPM)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor scopes a CSPM audit covering AWS, Azure, and GCP. Which option BEST captures the canonical CSPM AUDIT SCOPE?",
+      "options": {
+        "A": "Only AWS Config rules are needed; firms with multi-cloud must implement equivalent native tools per cloud without unified visibility or cross-cloud correlation.",
+        "B": "CSPM is replaced by individual cloud provider's own posture tools; third-party CSPM products add no value over native cloud services for posture management.",
+        "C": "Cloud account coverage + benchmark mapping (CIS/NIST/PCI) + drift detection from baseline + IAM/network/exposure detection + remediation workflow + SIEM integration + multi-cloud dashboard.",
+        "D": "CSPM addresses only IAM misconfigurations; network exposure detection and compliance benchmarking are separate audit scopes from cloud security posture management."
+      },
+      "correct": "C",
+      "key_concept": "CSPM audit = all accounts/subscriptions coverage + benchmark mapping + drift detection + IAM/network/exposure detection + remediation workflow + SIEM integration + multi-cloud dashboard. Eight elements.",
+      "pre_read": "For CSPM audit questions, anchor on eight-element multi-cloud unified framework. Single-cloud-native, native-replaces, and IAM-only framings each fail.",
+      "correct_explanation": "Gartner CSPM Market Guide, ISACA Cloud Security Audit/Assurance Program, CIS AWS/Azure/GCP Benchmarks, and CSPM vendor (Wiz, Prisma Cloud, Lacework, Microsoft Defender for Cloud, Orca) documentation establish CSPM audit scope. (1) COVERAGE OF ALL CLOUD ACCOUNTS — AWS organizations, Azure tenants, GCP organizations; nothing un-monitored; (2) BENCHMARK MAPPING — CIS AWS Foundations Benchmark, CIS Azure Foundations Benchmark, CIS GCP Benchmark; NIST 800-53, PCI DSS, HIPAA; compliance mapping; (3) DRIFT DETECTION — declared baseline vs actual state; alerting on deviations; (4) IAM MISCONFIGURATION DETECTION — over-permissioned roles, public access to sensitive resources, unrotated keys, root-account-with-MFA-off; (5) NETWORK EXPOSURE DETECTION — public-facing storage buckets, open ports, missing WAF on customer-facing apps; (6) REMEDIATION WORKFLOW — auto-fix where safe, ticketing for manual review otherwise; rollback capability; (7) INTEGRATION WITH SIEM — CSPM alerts to SIEM for correlation; bidirectional; (8) MULTI-CLOUD UNIFIED DASHBOARD — single pane for all clouds; comparable risk metrics across clouds.",
+      "wrong_explanations": {
+        "A": "Failure mode = SINGLE-CLOUD-NATIVE-ONLY. Most firms have multi-cloud; equivalent-per-cloud native tools fragment the posture view. CSPM products (Wiz, Prisma Cloud, Lacework, Microsoft Defender for Cloud) unify across clouds.",
+        "B": "Failure mode = NATIVE-TOOLS-REPLACE-CSPM. Native tools (AWS Security Hub, Azure Defender, GCP Security Command Center) catch their own cloud; multi-cloud unified posture, framework mapping, and prioritization come from CSPM. Both layers needed.",
+        "D": "Failure mode = SCOPE-RESTRICTION-TO-IAM-ONLY. CSPM covers IAM + network + storage + compute + workload + container + serverless misconfigurations. Restricting to IAM misses 60-80% of CSPM value."
+      },
+      "tips": [
+        "Trap is B — 'native cloud tools replace third-party CSPM' is candidate-seductive because native tools are vendor-supported and integrated; but native tools cover ONLY their cloud, missing multi-cloud unified posture and framework mapping. Both layers needed.",
+        "CSPM audit = all-accounts coverage + benchmark mapping + drift detection + IAM/network/exposure + remediation + SIEM integration + multi-cloud dashboard. Eight elements.",
+        "Exam-day shortcut: when stem asks about CSPM AUDIT SCOPE for multi-cloud firm, look for unified-multi-cloud framework; single-cloud-native, native-replaces, and IAM-only framings each fail."
+      ],
+      "framework_ref": "Gartner CSPM Market Guide; ISACA Cloud Security Audit/Assurance Program; CIS AWS/Azure/GCP Foundations Benchmarks; NIST SP 800-53 Rev 5 (Cloud Overlay)",
+      "related_concepts": [
+        "CIS Benchmarks",
+        "Multi-cloud unified dashboard",
+        "Drift detection",
+        "Wiz/Prisma Cloud/Lacework"
+      ],
+      "_provenance": "Authored from concept: 'CSPM audit scope for multi-cloud environments'. Public sources: Gartner, ISACA, CIS, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_144",
+      "domain": 5,
+      "subtopic": "API Security Testing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's API security testing covering 280+ REST/GraphQL endpoints. Which option BEST captures API SECURITY TESTING canonical approach?",
+      "options": {
+        "A": "Only DAST is needed for API testing; standard DAST tools cover all API security concerns without specialty tooling or API-specific approach methodology.",
+        "B": "API security testing is identical to web application testing; the same OWASP Top 10 testing tools apply without API-specific testing approach or framework.",
+        "C": "Only static analysis of API code is needed; runtime API testing adds no incremental value if SAST is comprehensive and well-tuned across the codebase.",
+        "D": "API-specific dynamic testing (OWASP API Top 10) + authn/unauthn paths + business-logic abuse + rate-limiting + BOLA/BFLA coverage + GraphQL tests + API discovery + CI/CD integration."
+      },
+      "correct": "D",
+      "key_concept": "API security testing = API-specific dynamic testing + authn/unauthn paths + business-logic abuse + rate-limiting verification + BOLA/BFLA coverage + GraphQL-specific tests + API discovery + CI/CD integration. Eight elements.",
+      "pre_read": "For API security testing questions, anchor on eight-element API-specific framework. Standard-DAST, web-equivalent, and SAST-only framings each fail.",
+      "correct_explanation": "OWASP API Security Top 10 (2023), OWASP API Security Testing Guide, NIST SP 800-204 (Security Strategies for Microservices-based Application Systems), and API-specific testing tool documentation (Burp API, Postman Security, StackHawk, Akto, Salt Security) establish API security testing framework. (1) API-SPECIFIC DYNAMIC TESTING — OWASP API Top 10 coverage; tools that understand OpenAPI/Swagger specs; (2) AUTHENTICATED AND UNAUTHENTICATED TEST PATHS — different scopes per access level; (3) BUSINESS-LOGIC ABUSE SCENARIOS — workflow manipulation, price tampering, refund-flow abuse; (4) RATE-LIMITING VERIFICATION — confirm rate-limits enforce; brute-force resistance; (5) BOLA/BFLA EXHAUSTIVE COVERAGE — object-level authorization (BOLA #1), function-level authorization (BFLA #5) tested across all endpoints; (6) GRAPHQL-SPECIFIC TESTS — query depth, introspection abuse, batch query DoS; (7) API DISCOVERY (SHADOW APIS) — find APIs not in the official inventory; deprecated/forgotten endpoints; (8) CI/CD INTEGRATION — fail builds on Critical/High findings.",
+      "wrong_explanations": {
+        "A": "Failure mode = STANDARD-DAST-INSUFFICIENT. Standard DAST tools assume HTML-rendering web apps; APIs return JSON/XML responses that don't trigger standard DAST navigation/crawling. API-specific DAST (Burp API, Postman Security, StackHawk, Akto) understand API contracts (OpenAPI/Swagger) and exercise endpoints properly.",
+        "B": "Failure mode = WEB-EQUIVALENT-API. OWASP separated API Top 10 (2023) because APIs have distinct attack surface: BOLA #1 is API-specific (object-ID manipulation), BFLA #5 is API-specific (function-level authz). Web app rubrics miss these.",
+        "C": "Failure mode = STATIC-ONLY. SAST sees code patterns but cannot test runtime authorization, business-logic flows, and chained-request abuse — all critical API attack vectors. Runtime testing is essential."
+      },
+      "tips": [
+        "Trap is B — 'API security testing = web application testing' is candidate-seductive because both are application-layer; but APIs have DISTINCT attack surface (BOLA, BFLA, business-logic-via-API, GraphQL-specific). OWASP API Top 10 separates from Web Top 10 for this reason.",
+        "API security testing = API-specific dynamic + authn/unauthn paths + business-logic abuse + rate-limiting + BOLA/BFLA + GraphQL tests + API discovery + CI/CD. Eight elements.",
+        "Exam-day shortcut: when stem asks about API SECURITY TESTING at scale, look for eight-element API-specific framework with BOLA + business-logic + discovery; standard-DAST, web-equivalent, and SAST-only framings each fail."
+      ],
+      "framework_ref": "OWASP API Security Top 10 (2023); OWASP API Security Testing Guide; NIST SP 800-204 (Security Strategies for Microservices); Salt Security / Noname / Traceable / Akto API Security Vendor Documentation",
+      "related_concepts": [
+        "BOLA + BFLA testing",
+        "API discovery (shadow APIs)",
+        "GraphQL-specific testing",
+        "OpenAPI/Swagger contract-based"
+      ],
+      "_provenance": "Authored from concept: 'API security testing canonical approach per OWASP API Top 10 (2023)'. Public sources: OWASP, NIST, API security vendors. No legacy bank citation."
+    },
+    {
+      "id": "d5_145",
+      "domain": 5,
+      "subtopic": "Red Team Engagement Coordination",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's red team engagement coordination process. Which option BEST captures the canonical RED TEAM ENGAGEMENT framework?",
+      "options": {
+        "A": "Pre-engagement scope + ROE + safe-deconfliction protocol + limited leadership awareness + selective IR notification + objective definition + reporting + debrief + remediation tracking.",
+        "B": "Red team operates without any prior firm awareness to maintain realism; surprise attack tests defenses fully.",
+        "C": "Red team coordinates only with IT leadership; IR team should be unaware to test detection capability under realistic conditions.",
+        "D": "Red team engagement is functionally identical to standard penetration testing; no specialty coordination framework or distinct engagement methodology is needed."
+      },
+      "correct": "A",
+      "key_concept": "Red team engagement = pre-engagement scope + rules of engagement + safe-deconfliction protocol + limited leadership awareness + selective IR notification + objective definition + reporting + post-engagement debrief + remediation tracking. Nine elements.",
+      "pre_read": "For red team coordination questions, anchor on nine-element framework with safe-deconfliction protocol. Zero-awareness, IR-unaware, and pentest-equivalent framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework, MITRE CTID Adversary Emulation Library, SANS Red Team Curriculum, and PCI DSS v4.0 Requirement 11.4.5 (red team testing for service providers) establish red team engagement framework. Nine elements: (1) PRE-ENGAGEMENT SCOPE — what's in/out, business systems, customer data, employee social engineering; (2) RULES OF ENGAGEMENT — time windows, no-touch systems, escalation criteria; (3) SAFE-DECONFLICTION PROTOCOL — specific IR contact who knows red is active; verifies red activity vs real adversary; quick path to halt red if real-incident interferes; (4) LIMITED LEADERSHIP AWARENESS — CISO + CIO + Chief Security Officer typically; not broader to preserve realism; (5) SELECTIVE IR NOTIFICATION — usually IR LEAD knows but not broader IR team (preserves test); deconfliction contact bridges this; (6) OBJECTIVE DEFINITION — assumed-breach (starts inside) vs full-engagement (gain initial access externally); ATT&CK-technique focus; (7) REPORTING FRAMEWORK — executive summary + technical detail + kill-chain narrative + detection-gap analysis; (8) POST-ENGAGEMENT DEBRIEF — purple-team-style walkthrough; what red did + what blue saw + what blue missed; (9) REMEDIATION TRACKING — detection-gap closure; rule tuning; runbook updates.",
+      "wrong_explanations": {
+        "B": "Failure mode = ZERO-AWARENESS-RED-TEAM. Unannounced red team risks: legitimate adversary activity confused with red team (or vice versa), operational disruption from misidentified red activity, legal exposure if red activity is reported externally. Some leadership awareness (limited circle) is required.",
+        "C": "Failure mode = IR-UNAWARE-RISKY. While IR team detection capability IS the test goal, completely uninformed IR creates risk: real-incident escalations during red engagement may be deprioritized as 'probably red team' (or vice versa). Safe-deconfliction protocol (specific IR contact who knows + can verify) preserves test integrity AND safety.",
+        "D": "Failure mode = PENTEST-EQUIVALENT-FRAMING. Red team is BROADER than pentest: longer engagement (weeks-to-months), full kill chain, stealth + persistence emphasis, ATT&CK-based emulation plans. Pentest is bounded vulnerability validation; red team is adversary simulation. Different coordination needs."
+      },
+      "tips": [
+        "Trap is B — 'zero-awareness red team for maximum realism' is candidate-seductive because surprise tests are more authentic; but zero awareness creates LEGAL + SAFETY risks (red activity vs real adversary confusion, operational disruption, external-reporting confusion). Some leadership awareness is required.",
+        "Red team engagement = pre-engagement scope + ROE + safe-deconfliction + limited leadership awareness + selective IR notification + objective definition + reporting + debrief + remediation tracking. Nine elements.",
+        "Exam-day shortcut: when stem asks about RED TEAM COORDINATION, look for nine-element framework with safe-deconfliction; zero-awareness, IR-unaware, and pentest-equivalent framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework; MITRE CTID Adversary Emulation Library; SANS Red Team Curriculum; PCI DSS v4.0 Requirement 11.4.5 (Red Team Testing for Service Providers)",
+      "related_concepts": [
+        "Safe-deconfliction protocol",
+        "Assumed-breach engagement",
+        "Purple-team debrief",
+        "ATT&CK emulation plans"
+      ],
+      "_provenance": "Authored from concept: 'Red team engagement coordination framework'. Public sources: MITRE, SANS, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_146",
+      "domain": 5,
+      "subtopic": "Cloud Configuration Drift Detection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's cloud configuration drift detection program across 12 AWS accounts + 4 Azure subscriptions. Which option BEST captures CLOUD CONFIG DRIFT detection?",
+      "options": {
+        "A": "Annual configuration audit is sufficient for cloud governance; continuous drift detection adds operational overhead without proportional security benefit at typical firm size.",
+        "B": "IaC-declared baseline + continuous drift scanning + drift alerting + auto-remediation low-risk + manual review high-risk + change-management correlation + RCA + drift-trend metrics.",
+        "C": "Cloud-provider native config tools (AWS Config, Azure Resource Graph) are sufficient without dedicated drift-detection framework or third-party CSPM platform.",
+        "D": "Configuration drift is a developer responsibility within their cloud accounts; security team has no role in monitoring or remediating drift across the environment."
+      },
+      "correct": "B",
+      "key_concept": "Cloud config drift detection = IaC baseline + continuous drift scanning + drift alerting + auto-remediation low-risk + manual review high-risk + change-management correlation + RCA + drift-trend metrics. Eight elements.",
+      "pre_read": "For cloud config drift questions, anchor on eight-element continuous-detection framework. Annual-audit-only, native-only, and developer-owned-without-security framings each fail.",
+      "correct_explanation": "NIST SP 800-128 (Guide for Security-Focused Configuration Management), CSA Cloud Controls Matrix, ISACA Cloud Security Audit/Assurance Program, and AWS Config + Azure Policy + GCP Security Command Center documentation establish drift detection framework. Eight elements: (1) IAC-DECLARED BASELINE — Terraform / CloudFormation / Pulumi / Bicep manifests are the authoritative declared state; (2) CONTINUOUS DRIFT SCANNING — CSPM (Wiz, Prisma Cloud) + cloud-provider native (AWS Config, Azure Policy); scan frequency hourly-to-real-time; (3) DRIFT ALERTING WITH SEVERITY — security-impacting drift Critical (public-S3-bucket, IAM-admin-added, encryption-off); operational drift Low (tag-change, name-change); (4) AUTO-REMEDIATION FOR LOW-RISK — declarative IaC pipeline re-applies baseline; pre-approved actions; (5) MANUAL REVIEW FOR HIGH-RISK — change may be legitimate (emergency response); reviewed before remediation; (6) CHANGE-MANAGEMENT CORRELATION — drift correlated with change tickets; legitimate-deployed changes confirmed; unauthorized changes investigated; (7) ROOT-CAUSE ANALYSIS — why did drift occur? broken IaC pipeline? manual override? account-compromise? (8) DRIFT-TREND METRICS — drift volume, time-to-detect, time-to-remediate; trending down indicates program maturity.",
+      "wrong_explanations": {
+        "A": "Failure mode = ANNUAL-AUDIT-ONLY. Cloud configuration changes hourly; annual audit catches drift at year-end only. Real-time/near-real-time detection is required to catch security-impacting drift (public-S3-bucket, open security group, removed encryption) before exploitation.",
+        "C": "Failure mode = NATIVE-ONLY-SUFFICIENT. AWS Config tracks state but doesn't compare to declared baseline (IaC); doesn't aggregate across accounts; doesn't prioritize by security impact. CSPM layer adds these. Both needed.",
+        "D": "Failure mode = DEVELOPER-OWNED-WITHOUT-SECURITY. Drift in security controls (encryption-off, public-access, IAM-broad) is SECURITY-relevant regardless of who deployed; shared responsibility between security + dev required."
+      },
+      "tips": [
+        "Trap is C — 'cloud-provider native config tools are sufficient' is candidate-seductive because native tools are vendor-supported; but native tools track STATE without comparing to declared BASELINE (IaC); CSPM adds baseline-comparison + cross-account aggregation + security prioritization. Both layers needed.",
+        "Drift detection = IaC baseline + continuous scanning + drift alerting + auto-remediation low-risk + manual review high-risk + change-mgmt correlation + RCA + trend metrics. Eight elements.",
+        "Exam-day shortcut: when stem asks about CLOUD CONFIG DRIFT DETECTION, look for IaC-baseline-grounded continuous framework; annual-audit, native-only, and developer-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-128 (Guide for Security-Focused Configuration Management); CSA Cloud Controls Matrix; ISACA Cloud Security Audit/Assurance Program; AWS Config Documentation; Azure Policy Documentation",
+      "related_concepts": [
+        "IaC declared baseline",
+        "Drift alerting severity",
+        "Change-management correlation",
+        "Wiz / Prisma Cloud"
+      ],
+      "_provenance": "Authored from concept: 'Cloud configuration drift detection canonical framework'. Public sources: NIST, CSA, ISACA, cloud provider documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_147",
+      "domain": 5,
+      "subtopic": "SIEM Tuning at Scale",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's SIEM tuning program covering 320+ active detection rules and ~8,000 daily alerts. Which option BEST captures SIEM TUNING program?",
+      "options": {
+        "A": "Annual single rule review is sufficient cadence; tuning more frequently than annually produces churn without measurable improvement in detection quality or operations.",
+        "B": "Disable noisiest rules entirely to reduce alert volume; if a rule produces high FP, eliminate it from production rather than investing in tuning effort.",
+        "C": "Quarterly rule review + FP-rate threshold per rule + analyst-feedback-driven tuning + use-case retirement + ATT&CK coverage maintenance + tuning sandbox + production gates + metrics.",
+        "D": "Outsource SIEM tuning to MSSP entirely; MSSPs have better tooling and accumulated expertise for tuning detection rules at scale across many client environments."
+      },
+      "correct": "C",
+      "key_concept": "SIEM tuning = quarterly review + FP-rate threshold + analyst-feedback-driven + use-case retirement + ATT&CK coverage maintenance + tuning sandbox + production gates + tuning metrics. Eight elements.",
+      "pre_read": "For SIEM tuning questions, anchor on continuous-quarterly-cadence with sandbox + production gates. Annual-only, disable-vs-tune, and outsource-without-context framings each fail.",
+      "correct_explanation": "MaGMA Use Case Framework, SANS Detection Engineering, ISACA SOC Audit/Assurance Program, and MITRE ATT&CK detection-engineering practices establish SIEM tuning framework. (1) QUARTERLY RULE REVIEW CADENCE — minimum; event-driven (new threat, new application) more frequent; (2) FP-RATE THRESHOLD PER RULE — typically <10% FP for production rules; rules above threshold flagged for tuning; (3) ANALYST-FEEDBACK-DRIVEN — analyst dispositions on alerts feed back to tuning queue; closes the loop; (4) USE-CASE RETIREMENT CRITERIA — rules not firing in 12 months OR <5% TP retired; (5) ATT&CK COVERAGE MAINTENANCE — retirement creates gaps; verify gap closure or replacement before retirement; (6) TUNING SANDBOX ENVIRONMENT — test tuning changes in dev/staging before production; replay historical events; (7) PRODUCTION-DEPLOYMENT GATES — change-management approval; rollback path; alert volume forecast; (8) TUNING METRICS DASHBOARD — FP rate trend per rule, TP rate, time-to-disposition, analyst hours saved.",
+      "wrong_explanations": {
+        "A": "Failure mode = ANNUAL-ONLY-TUNING. SIEM landscape changes constantly (new applications, threat landscape shifts, false-positive patterns emerge from environment changes); annual tuning is too infrequent to catch drift. Quarterly minimum + event-driven tuning is canonical.",
+        "B": "Failure mode = DISABLE-VS-TUNE. Disabling noisy rules eliminates noise AND eliminates the detections within that noise. Tuning preserves detection while reducing FP. Disabling is last resort, not first response.",
+        "D": "Failure mode = OUTSOURCE-WITHOUT-CONTEXT. MSSPs apply generic tuning; firm-specific tuning requires firm-context (legitimate-business-flows, peculiar deployment patterns, firm-specific threat model). Outsourcing without firm-context input fails."
+      },
+      "tips": [
+        "Trap is B — 'disable noisiest rules' is candidate-seductive because it immediately reduces alert volume; but disabling eliminates BOTH the noise AND the real detections within that noise. Tuning preserves detection; disabling is last resort.",
+        "SIEM tuning = quarterly review + FP-rate threshold + analyst-feedback + use-case retirement + ATT&CK coverage + tuning sandbox + production gates + metrics. Eight elements.",
+        "Exam-day shortcut: when stem asks about SIEM TUNING at scale, look for continuous-quarterly framework with sandbox + production gates; annual-only, disable-vs-tune, and outsource-without-context framings each fail."
+      ],
+      "framework_ref": "MaGMA Use Case Framework; SANS Detection Engineering Curriculum; ISACA SOC Audit/Assurance Program; MITRE ATT&CK Framework",
+      "related_concepts": [
+        "Quarterly rule review",
+        "Use-case retirement criteria",
+        "Tuning sandbox",
+        "ATT&CK coverage maintenance"
+      ],
+      "_provenance": "Authored from concept: 'SIEM tuning at scale canonical framework'. Public sources: MaGMA, SANS, ISACA, MITRE. No legacy bank citation."
+    },
+    {
+      "id": "d5_148",
+      "domain": 5,
+      "subtopic": "Network Traffic Analysis (NTA/NDR)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's Network Detection and Response (NDR) deployment. Which option BEST captures the canonical NDR FRAMEWORK?",
+      "options": {
+        "A": "Only north-south (perimeter) traffic matters for NDR; east-west internal traffic is fundamentally internal and out of NDR scope or analytical concern.",
+        "B": "NDR is replaced entirely by EDR; endpoint monitoring covers all network-relevant activity including lateral movement and C2 communication patterns.",
+        "C": "NDR can only inspect unencrypted traffic; widespread TLS deployment makes NDR ineffective in modern environments where most communication is encrypted.",
+        "D": "East-west + north-south visibility + flow analysis + DPI/protocol decoding + ML anomaly detection + IOC matching + EDR/SIEM/SOAR integration + encrypted-traffic metadata + retention + ATT&CK mapping."
+      },
+      "correct": "D",
+      "key_concept": "NDR framework = east-west + north-south visibility + flow analysis + DPI/protocol decoding + ML anomaly detection + IOC matching + EDR/SIEM/SOAR integration + encrypted-traffic metadata analysis + retention + ATT&CK mapping. Ten elements.",
+      "pre_read": "For NDR questions, anchor on ten-element framework spanning east-west + encrypted-traffic-aware. North-south-only, EDR-replaces, and TLS-makes-useless framings each fail.",
+      "correct_explanation": "Gartner NDR Market Guide, MITRE ATT&CK Framework, and NDR vendor (Darktrace, Vectra, ExtraHop, Corelight, Awake) documentation establish NDR framework. (1) EAST-WEST + NORTH-SOUTH TRAFFIC VISIBILITY — internal segments to external + internal-to-internal; sensors at strategic network points; (2) FLOW ANALYSIS — NetFlow / IPFIX / sFlow; volume + direction + protocol patterns; (3) DPI / PROTOCOL DECODING — DNS, HTTP, SMB, RDP, Kerberos protocol-level visibility; suspicious-pattern detection; (4) ML-BASED ANOMALY DETECTION — baseline normal traffic, detect deviations (unusual destinations, volume spikes, off-hours activity); (5) IOC MATCHING — known-bad IPs, domains, hashes via threat intel feeds; (6) INTEGRATION WITH EDR/SIEM/SOAR — bidirectional alerts and enrichment; (7) ENCRYPTED-TRAFFIC ANALYSIS — JA3/JA3S fingerprints, certificate analysis, traffic-pattern fingerprinting; works on encrypted; (8) SELECTIVE TLS DECRYPTION — at strategic points (egress, sensitive internal segments) with privacy controls; (9) RETENTION FOR INVESTIGATION — full PCAP at strategic points, metadata at scale; investigation timeline reconstruction; (10) ATT&CK TECHNIQUE MAPPING — detections aligned to TA0008 (Lateral Movement), TA0011 (C2), TA0010 (Exfiltration).",
+      "wrong_explanations": {
+        "A": "Failure mode = NORTH-SOUTH-ONLY. East-west (internal) traffic is where LATERAL MOVEMENT happens; APT activity, ransomware spread, insider exfiltration all occur east-west. NDR's value is east-west visibility that perimeter firewalls cannot provide.",
+        "B": "Failure mode = EDR-REPLACES-NDR. EDR sees endpoints but not endpoint-to-endpoint traffic at the network layer (modern EDR catches network connections but at the host); NDR sees the full traffic flow including non-EDR-instrumented systems (IoT, legacy, third-party). Complementary.",
+        "C": "Failure mode = TLS-MAKES-NDR-USELESS. Modern NDR uses METADATA-BASED analysis (flow patterns, packet sizes, timing, JA3 fingerprints) that works on encrypted traffic. Plus selective TLS inspection at strategic points. NDR remains valuable despite encryption."
+      },
+      "tips": [
+        "Trap is A — 'only north-south matters' is candidate-seductive because perimeter is the most-discussed network boundary; but east-west is where LATERAL MOVEMENT happens (APT, ransomware, insider exfil). NDR's distinctive value is east-west visibility beyond what perimeter firewalls provide.",
+        "NDR = east-west + north-south visibility + flow analysis + DPI + ML anomaly + IOC matching + integrations + encrypted-traffic metadata + retention + ATT&CK mapping. Ten elements.",
+        "Exam-day shortcut: when stem asks about NDR/NTA, look for east-west + encrypted-traffic-aware framework; north-south-only, EDR-replaces, and TLS-makes-useless framings each fail."
+      ],
+      "framework_ref": "Gartner NDR Market Guide; MITRE ATT&CK Framework (TA0008 Lateral Movement, TA0011 C2, TA0010 Exfiltration); ISACA SOC Audit/Assurance Program; CIS Controls v8 Safeguard 13 (Network Monitoring and Defense)",
+      "related_concepts": [
+        "East-west visibility",
+        "JA3/JA3S fingerprinting",
+        "Encrypted-traffic metadata analysis",
+        "NDR + EDR + SIEM correlation"
+      ],
+      "_provenance": "Authored from concept: 'NDR canonical framework per Gartner Market Guide + MITRE ATT&CK'. Public sources: Gartner, MITRE, ISACA, CIS, vendor documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_149",
+      "domain": 5,
+      "subtopic": "Detection Engineering Practice",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's detection engineering practice. Which option BEST captures the canonical DETECTION ENGINEERING framework?",
+      "options": {
+        "A": "Detection-as-code + version control + TDD (unit + integration tests) + lifecycle + ATT&CK coverage map + analyst feedback + production deployment gates + documentation + metrics framework.",
+        "B": "Detection rules are vendor-provided as baseline; no firm-side detection engineering practice or custom rule development is needed beyond the default rule set.",
+        "C": "Only signature-based detection should be engineered systematically; behavioral and analytics-based detection adds complexity without measurable security value.",
+        "D": "Detection engineering is identical to routine SIEM administration; no separate engineering practice or specialized skills are required beyond platform management."
+      },
+      "correct": "A",
+      "key_concept": "Detection engineering = detection-as-code + version control + TDD (unit + integration tests) + lifecycle + ATT&CK coverage map + analyst feedback + production gates + documentation + metrics. Nine elements.",
+      "pre_read": "For detection engineering questions, anchor on nine-element framework as a software-engineering-style discipline. Vendor-rules-sufficient, signature-only, and SIEM-admin-equivalent framings each fail.",
+      "correct_explanation": "SANS Detection Engineering Curriculum, MITRE ATT&CK Framework, Sigma (Generic Signature Format for SIEM Systems), and Florian Roth's Sigma + Detection Engineering practice establish detection engineering framework. Nine elements: (1) DETECTION-AS-CODE WITH VERSION CONTROL — rules in Git (Sigma, YARA, KQL, SPL); reviewable; testable; (2) TEST-DRIVEN DEVELOPMENT — unit tests (rule matches known-good and known-bad inputs); integration tests (full pipeline with telemetry replay); (3) LIFECYCLE — design (threat model) → test (sandbox) → deploy (monitor-mode) → tune (FP/FN reduction) → retire (when superseded); (4) ATT&CK-ALIGNED COVERAGE MAP — every detection maps to one or more ATT&CK techniques; coverage matrix tracked; (5) ANALYST FEEDBACK INTEGRATION — SOC analyst dispositions feed back to detection engineering; closes loop; (6) PRODUCTION DEPLOYMENT GATES — change-management approval; rollback path; alert volume forecast; (7) DOCUMENTATION STANDARDS — what threat it detects, why, expected FP rate, response runbook, retire criteria; (8) METRICS FRAMEWORK — TP rate, FP rate, time-to-disposition per rule; trending; (9) ATTACK PATH COVERAGE — beyond technique coverage to chain-level (Initial Access → Privilege Escalation → Lateral → Exfiltration paths).",
+      "wrong_explanations": {
+        "B": "Failure mode = VENDOR-RULES-SUFFICIENT. Vendor rules cover generic threats; firm-specific threats (firm's industry, technology stack, threat model) require custom detections. Detection engineering as a discipline is the practice of building these.",
+        "C": "Failure mode = SIGNATURE-ONLY-ENGINEERING. Signature-based detection catches known threats; UEBA / behavioral / ML detection catches novel threats. Both deserve engineering discipline; restricting to signature-only loses unknown-threat detection capability.",
+        "D": "Failure mode = SIEM-ADMIN-EQUIVALENT. SIEM admin manages the platform (deployment, performance, integration); detection engineering builds the DETECTIONS (use-case design, rule logic, testing). Different disciplines; both needed."
+      },
+      "tips": [
+        "Trap is B — 'vendor-provided rules are sufficient' is candidate-seductive because vendor rules are baseline-respected; but firm-specific threats (industry, tech stack, threat model) require custom detection. Vendor rules are the floor; firm-side detection engineering adds the ceiling.",
+        "Detection engineering = detection-as-code + version control + TDD + lifecycle + ATT&CK coverage + analyst feedback + production gates + documentation + metrics. Nine elements. Software-engineering-style discipline.",
+        "Exam-day shortcut: when stem asks about DETECTION ENGINEERING, look for nine-element framework as software-engineering-style discipline; vendor-rules-sufficient, signature-only, and SIEM-admin-equivalent framings each fail."
+      ],
+      "framework_ref": "SANS Detection Engineering Curriculum; MITRE ATT&CK Framework; Sigma (Generic Signature Format for SIEM Systems); Florian Roth Sigma Project",
+      "related_concepts": [
+        "Detection-as-code",
+        "Sigma rule format",
+        "TDD for detections",
+        "ATT&CK coverage matrix"
+      ],
+      "_provenance": "Authored from concept: 'Detection engineering canonical framework'. Public sources: SANS, MITRE, Sigma project. No legacy bank citation."
+    },
+    {
+      "id": "d5_150",
+      "domain": 5,
+      "subtopic": "Security Data Lake Architecture",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's security data lake architecture covering 8TB/day ingestion across cloud, on-premise, and endpoint sources. Which option BEST captures SECURITY DATA LAKE framework?",
+      "options": {
+        "A": "Send all logs to SIEM only without data lake architecture; data lakes add storage cost without value beyond what SIEM-native retention provides.",
+        "B": "Hot tier (SIEM 30-90d) + warm tier (90-365d) + cold tier (1-7y compliance) + open schema (OCSF/ECS) + cost-optimized storage + retention by source + analyst query + retention compliance + SIEM integration.",
+        "C": "Cold-tier storage on the cheapest cloud storage tier (S3 Glacier Deep Archive) is sufficient; analyst access time is irrelevant for cold-tier compliance logs.",
+        "D": "Replace SIEM entirely with a data lake architecture; SIEM is deprecated by cheap cloud storage at scale and provides no incremental value over query-on-demand."
+      },
+      "correct": "B",
+      "key_concept": "Security data lake = hot tier (SIEM 30-90d) + warm tier (90-365d) + cold tier (1-7y compliance + IR) + open schema (OCSF/ECS) + cost-optimized storage + retention by source + analyst query + retention compliance + SIEM integration. Nine elements.",
+      "pre_read": "For security data lake questions, anchor on nine-element tiered framework. SIEM-only, coldest-cheapest, and lake-replaces-SIEM framings each fail.",
+      "correct_explanation": "Open Cybersecurity Schema Framework (OCSF), Elastic Common Schema (ECS), CIS Controls v8 Safeguard 8 (Audit Log Management), and Snowflake / Databricks / Splunk Data Lake / Google Chronicle documentation establish security data lake framework. Nine elements: (1) HOT TIER (SIEM, 30-90 DAYS) — real-time correlation + analyst-active investigation; (2) WARM TIER (90-365 DAYS) — frequent investigation queries; sub-minute retrieval; (3) COLD TIER (1-7 YEARS) — compliance retention; IR + audit + regulator inquiry; hours-to-day retrieval acceptable; (4) OPEN SCHEMA — OCSF (industry-wide) or ECS (Elastic-native); normalized format across sources; (5) COST-OPTIMIZED STORAGE — S3 Standard → S3 Standard-IA → S3 Glacier → S3 Glacier Deep Archive lifecycle policies; OR Snowflake / Databricks for query-optimized cold tier; (6) RETENTION POLICY BY SOURCE — HIPAA 6 years, SOX 7 years, PCI 1 year, GDPR varies; (7) ANALYST QUERY TOOLING — SQL (Snowflake / Athena) or KQL (Sentinel) or SPL (Splunk Cold Storage); skill alignment with analysts; (8) RETENTION COMPLIANCE — auditable; tamper-evident; chain-of-custody for IR + legal; (9) INTEGRATION WITH SIEM — hot tier feeds SIEM; SIEM enriches and forwards to warm/cold via tier policy.",
+      "wrong_explanations": {
+        "A": "Failure mode = SIEM-ONLY-AT-SCALE. SIEM licensing typically $/GB; 8TB/day = $$$/year for SIEM alone; cold-tier compliance retention (7 years per SOX) blows budget. Data lake offloads cold tier to cheap storage while preserving SIEM analysis tier.",
+        "C": "Failure mode = COLDEST-CHEAPEST-WITHOUT-ACCESS. Glacier Deep Archive retrieval is hours-to-days; during incident investigation, hours of waiting for archive retrieval extends investigation timeline materially. Warm tier (S3 Standard-IA or similar) for 90-365 days enables faster query; Glacier acceptable for 1-7 year compliance archive.",
+        "D": "Failure mode = SIEM-DEPRECATED-BY-LAKE. Data lake is excellent for STORAGE + QUERY at scale; SIEM is optimized for REAL-TIME correlation + alerting. Real-time security operations need SIEM. Data lake complements; doesn't replace."
+      },
+      "tips": [
+        "Trap is D — 'data lake replaces SIEM entirely' is candidate-seductive because data lakes scale cheaper; but data lake is STORAGE + QUERY-OPTIMIZED; SIEM is REAL-TIME-CORRELATION-OPTIMIZED. Real-time security operations need SIEM. Data lake COMPLEMENTS SIEM (cold tier offload); doesn't replace.",
+        "Security data lake = hot tier (SIEM 30-90d) + warm (90-365d) + cold (1-7y) + open schema + cost-optimized storage + retention by source + analyst query + retention compliance + SIEM integration. Nine elements.",
+        "Exam-day shortcut: when stem asks about SECURITY DATA LAKE at scale, look for tiered framework with SIEM integration; SIEM-only, coldest-cheapest, and lake-replaces-SIEM framings each fail."
+      ],
+      "framework_ref": "Open Cybersecurity Schema Framework (OCSF); Elastic Common Schema (ECS); CIS Controls v8 Safeguard 8 (Audit Log Management); Snowflake / Databricks / Google Chronicle Documentation",
+      "related_concepts": [
+        "OCSF / ECS open schemas",
+        "Hot/warm/cold tier",
+        "S3 lifecycle policies",
+        "Data lake + SIEM complementarity"
+      ],
+      "_provenance": "Authored from concept: 'Security data lake canonical framework for at-scale ingestion'. Public sources: OCSF, ECS, CIS, vendor documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_151",
+      "domain": 5,
+      "subtopic": "Pentest Scope Dispute Resolution",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response?",
+      "scenario_context": "A SaaS firm's annual pentest is mid-engagement when at 11:14 AM Tuesday the pentest vendor (Mandiant-owned engagement) reports a Critical RCE vulnerability that's OUT OF DECLARED SCOPE — they discovered it while pivoting from in-scope systems. The CISO + General Counsel + CTO + pentest vendor lead are on bridge call within 14 minutes. The pentest contract scope explicitly excluded the affected system (customer billing platform) due to PCI sensitivity. Vendor argues the finding is material; CISO must decide treatment.",
+      "options": {
+        "A": "Reject the finding as out-of-scope and instruct the vendor to discard their notes on it; the finding is contractually invalid given explicit scope exclusion.",
+        "B": "Threaten the vendor with breach-of-contract if they disclose the finding; the scope violation completely undermines their report's validity and external standing.",
+        "C": "Accept the finding + assign treatment to firm IR + remediate the vulnerability + investigate scope-pivot + retest with scope addition + post-incident review + vendor contract clarification.",
+        "D": "Pay the vendor extra fees to formally include the out-of-scope finding in the pentest report; convert it to in-scope retroactively via contract amendment."
+      },
+      "correct": "C",
+      "key_concept": "Pentest scope dispute = accept finding + assign treatment to firm IR + remediate + investigate scope-pivot + retest + post-incident review + contractual clarification. Seven tracks balancing responsible-disclosure obligation + remediation + relationship management.",
+      "pre_read": "For pentest scope dispute questions, anchor on responsible-disclosure-first + remediation + root-cause investigation. Reject-valid-finding, threaten-vendor, and pay-to-include framings each fail.",
+      "correct_explanation": "ISO/IEC 29147 (Vulnerability Disclosure), OWASP Bug Bounty Program Best Practices, CISA Coordinated Vulnerability Disclosure (CVD), PTES (Penetration Testing Execution Standard), and PCI DSS v4.0 Requirement 11.4 establish pentest scope dispute resolution. Seven tracks: (1) ACCEPT THE FINDING AS DISCLOSED — vendor responsible-disclosure obligation supersedes contractual scope; firm benefits from the discovery; (2) ASSIGN TREATMENT TO FIRM IR — separate from the contracted pentest (which has scope); IR team owns remediation; (3) REMEDIATE THE UNDERLYING VULNERABILITY — Critical RCE on billing platform with PCI scope is high-priority; compensating control + patch path; (4) INVESTIGATE SCOPE-PIVOT — why did pentest reach out-of-scope system? legitimate discovery vs reckless pivot? Document for vendor contract review; (5) RETEST WITH EXPLICIT SCOPE ADDITION — once fixed, retest under proper scope to verify; (6) POST-INCIDENT PENTEST SCOPE REVIEW — was original scope too narrow? Should billing platform be in-scope going forward? PCI sensitivity is real but pentest exclusion may be over-cautious; (7) CONTRACTUAL CLARIFICATION WITH VENDOR — future engagements clarify responsible-disclosure obligation for incidental findings + scope-pivot governance.",
+      "wrong_explanations": {
+        "A": "Failure mode = REJECT-VALID-FINDING. Vendor has RESPONSIBLE DISCLOSURE obligation per OWASP, ISO/IEC 29147, and most pentest engagement contracts; firm cannot suppress a valid Critical vulnerability finding by scope assertion. Also: the vulnerability EXISTS regardless of whether the firm acknowledges it; not acting leaves customer exposure.",
+        "B": "Failure mode = THREATEN-VENDOR-DISCLOSURE. Threatening responsible-disclosure violates: SEC Reg S-K Item 1.05 (material cyber incident disclosure), state breach laws, and contracts. Vendor disclosure pressure typically backfires — public disclosure of the firm's attempt to suppress is reputationally worse than the vulnerability.",
+        "D": "Failure mode = PAY-TO-INCLUDE. Converting out-of-scope to in-scope retroactively is contract irregularity; auditor visibility into the cost change raises governance concerns; also doesn't address the root issue (why did vendor pivot out of scope, was that legitimate)."
+      },
+      "tips": [
+        "Trap is A — 'reject the finding as out-of-scope' is candidate-seductive because scope is contractually defined; but vendor has RESPONSIBLE-DISCLOSURE obligation that supersedes scope assertion. The vulnerability exists regardless of acknowledgment; remediation is required.",
+        "Pentest scope dispute = accept + assign IR treatment + remediate + investigate scope-pivot + retest + post-incident review + contractual clarification. Seven tracks. Responsible-disclosure obligation supersedes contract scope.",
+        "Exam-day shortcut: when stem describes PENTEST OUT-OF-SCOPE FINDING WITH MATERIAL VULN, look for accept-and-remediate-with-investigation framework; reject-valid-finding, threaten-vendor, and pay-to-include framings each fail."
+      ],
+      "framework_ref": "ISO/IEC 29147 (Vulnerability Disclosure); CISA Coordinated Vulnerability Disclosure (CVD); PTES (Penetration Testing Execution Standard); PCI DSS v4.0 Requirement 11.4; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "related_concepts": [
+        "Responsible disclosure obligation",
+        "Scope-pivot investigation",
+        "PCI DSS pentest scope",
+        "Post-engagement contract review"
+      ],
+      "_provenance": "Authored from concept: 'Pentest scope dispute resolution with responsible-disclosure obligation'. Public sources: ISO, CISA, PTES, PCI Council, SEC. No legacy bank citation."
+    },
+    {
+      "id": "d5_152",
+      "domain": 5,
+      "subtopic": "Compliance Scanning (SOC 2, ISO 27001)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the compliance scanning program?",
+      "scenario_context": "A SaaS firm pursuing SOC 2 Type II audit and ISO 27001 certification has 8 weeks to demonstrate consistent control operation across cloud infrastructure (AWS + Azure), application code, and operational processes. Auditor will sample evidence across the 12-month measurement period. The CISO + CTO + Compliance Officer + external auditor representative are coordinating the readiness. Current state: ad-hoc evidence collection, no continuous compliance scanning, manual screenshots and policy documents.",
+      "options": {
+        "A": "Continue ad-hoc manual evidence collection across the audit period; auditors typically accept manual processes for first-time SOC 2 and ISO 27001 certifications.",
+        "B": "Engage compliance consulting firm to assemble the evidence package retrospectively over the next 8 weeks; consultants handle the entire readiness preparation.",
+        "C": "Defer SOC 2 and ISO 27001 by 6 months to build a proper compliance program; the 8-week readiness timeline is unrealistic for first-time multi-framework audit.",
+        "D": "Continuous compliance scanning + control-evidence mapping + automated collection + verification cadence + exception workflow + auditor dashboard + framework cross-mapping + post-audit monitoring."
+      },
+      "correct": "D",
+      "key_concept": "Compliance scanning = continuous compliance tooling + control-evidence mapping + automated collection + verification cadence + exception workflow + auditor dashboard + framework cross-mapping + post-audit continuous monitoring. Eight tracks.",
+      "pre_read": "For compliance scanning questions, anchor on continuous-tools + control-mapping + evidence automation framework. Manual-at-scale, consultant-retrospective, and defer-without-need framings each fail.",
+      "correct_explanation": "AICPA SOC 2 Trust Services Criteria (Security/Availability/Processing Integrity/Confidentiality/Privacy), ISO/IEC 27001:2022 Annex A (93 controls in 4 themes), Drata / Vanta / Secureframe / Tugboat Logic vendor methodologies, and ISACA Compliance Audit/Assurance Program establish compliance scanning framework. Eight tracks: (1) CONTINUOUS COMPLIANCE SCANNING — Drata, Vanta, Secureframe, Tugboat Logic; integration with AWS/Azure + GitHub + IdP + endpoint tools; (2) CONTROL-TO-EVIDENCE MAPPING — SOC 2 TSC + ISO/IEC 27001 Annex A controls mapped to evidence artifacts; cross-walk with HIPAA/GDPR/PCI where applicable; (3) AUTOMATED EVIDENCE COLLECTION — daily snapshots, control-state extractions, configuration dumps; auditor-format ready; (4) CONTROL-OPERATION VERIFICATION CADENCE — daily/weekly per control criticality; not annual snapshot; (5) EXCEPTION MANAGEMENT WORKFLOW — when control deviates, documented exception + remediation + retention; auditor-visible; (6) AUDITOR-READINESS DASHBOARD — control coverage, evidence completeness, exceptions, remediation status; live state; (7) FRAMEWORK CROSS-MAPPING — one evidence artifact covers multiple frameworks (SOC 2 + ISO + HIPAA + GDPR); reduces redundancy; (8) POST-AUDIT CONTINUOUS MONITORING — compliance is not point-in-time; tooling continues post-audit for Type II ongoing operation requirement.",
+      "wrong_explanations": {
+        "A": "Failure mode = MANUAL-AT-SCALE. Manual evidence collection scales poorly: hundreds of controls × monthly verification × 12 months = thousands of screenshots/documents; auditor sample-testing finds gaps inevitably. Continuous compliance tools automate evidence collection and produce auditor-ready packages.",
+        "B": "Failure mode = CONSULTANT-RETROSPECTIVE-EVIDENCE. Retrospectively assembling 12 months of evidence is operationally difficult (was the control operating correctly throughout? evidence has to be contemporaneous). Auditors flag retrospectively-assembled evidence as a control-operation concern. Continuous tools collect evidence prospectively.",
+        "C": "Failure mode = DEFER-WITHOUT-NEED. 8-week readiness with continuous compliance tools is operationally feasible; deferring 6 months has business cost (customer requests SOC 2 for sales; lost revenue during deferral). Tools accelerate readiness; deferral is the lazy answer."
+      },
+      "tips": [
+        "Trap is C — 'defer SOC 2 + ISO 27001 by 6 months' is candidate-seductive because 8-week readiness sounds tight; but continuous compliance tools (Drata/Vanta/Secureframe) make 8 weeks operationally feasible. Deferring has business cost (lost customer revenue, competitive disadvantage); tools accelerate readiness.",
+        "Compliance scanning = continuous compliance tool + control mapping + automated evidence + verification cadence + exception workflow + auditor dashboard + framework cross-mapping + post-audit monitoring. Eight tracks.",
+        "Exam-day shortcut: when stem describes MULTI-FRAMEWORK COMPLIANCE READINESS with TIGHT TIMELINE, look for continuous-tools-driven framework; manual-at-scale, consultant-retrospective, and defer-without-need framings each fail."
+      ],
+      "framework_ref": "AICPA SOC 2 Trust Services Criteria; ISO/IEC 27001:2022 (Information Security Management Systems); ISO/IEC 27001:2022 Annex A; ISACA Compliance Audit/Assurance Program; Drata / Vanta / Secureframe Vendor Documentation",
+      "related_concepts": [
+        "Continuous compliance tooling",
+        "Trust Services Criteria",
+        "Cross-framework evidence mapping",
+        "Auditor readiness dashboard"
+      ],
+      "_provenance": "Authored from concept: 'Compliance scanning for SOC 2 + ISO 27001 multi-framework readiness'. Public sources: AICPA, ISO, ISACA, vendor methodologies. No legacy bank citation."
+    },
+    {
+      "id": "d5_153",
+      "domain": 5,
+      "subtopic": "Cloud Audit Logging Strategy",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST cloud audit logging strategy?",
+      "scenario_context": "A multi-cloud SaaS firm (3,400 employees, AWS + Azure + GCP, mixed workloads handling payment processing + customer PII + healthcare integrations) is implementing comprehensive cloud audit logging for security operations + compliance (PCI DSS + HIPAA + SOC 2) + investigation. Volume estimate: ~3TB/day across all clouds. Multiple regulatory regimes apply: HIPAA Security Rule §164.312(b) for audit logs of PHI access, PCI DSS 10 for payment-data audit trails, SOC 2 Common Criteria CC7.2 for monitoring. CISO + CTO + Chief Compliance Officer + Cloud Architecture team are coordinating the strategy ahead of board approval for FY26 budget allocation including a proposed centralized SIEM platform decision.",
+      "options": {
+        "A": "Enable CloudTrail + Azure Activity + GCP Audit Logs across accounts + management/data-plane separation + immutable storage + centralized aggregation + retention by source + SIEM integration + cross-cloud query + tamper-evidence.",
+        "B": "Enable only AWS CloudTrail audit logging; Azure and GCP are smaller usage in this environment and don't require comparable audit-log coverage or retention.",
+        "C": "Use only cloud-provider native logging without centralized aggregation or cross-cloud correlation; multi-cloud aggregation adds operational complexity and cost overhead at scale.",
+        "D": "Enable management-plane logging only across all clouds; data-plane access logs (S3, KMS, database queries) add storage cost without proportional security value."
+      },
+      "correct": "A",
+      "key_concept": "Cloud audit logging = CloudTrail + Azure Activity + GCP Audit Logs all clouds + management/data-plane separation + immutable storage + centralized aggregation + retention by source + SIEM integration + cold tier + cross-cloud query + tamper-evidence. Eleven elements.",
+      "pre_read": "For cloud audit logging questions, anchor on multi-cloud + management/data-plane + centralized aggregation. Single-cloud-only, decentralized, and management-plane-only framings each fail.",
+      "correct_explanation": "AWS CloudTrail Documentation, Azure Activity Log Documentation, GCP Cloud Audit Logs Documentation, NIST SP 800-92 (Log Management), CIS Controls v8 Safeguard 8.5 (Collect Detailed Audit Logs), and ISACA Cloud Security Audit/Assurance Program establish cloud audit logging strategy. (1) CLOUDTRAIL ACROSS ALL AWS ACCOUNTS — organization trail; all regions; log-file integrity validation; (2) AZURE ACTIVITY LOG + DIAGNOSTIC SETTINGS — all subscriptions; resource-level diagnostic logs; (3) GCP CLOUD AUDIT LOGS — admin activity (always-on) + data access (opt-in) + system event + policy denied across all projects; (4) MANAGEMENT/DATA-PLANE SEPARATION — management plane (account-level operations) AND data plane (S3 GetObject, KMS Decrypt, database queries); both required; (5) IMMUTABLE STORAGE — S3 Object Lock + write-once-read-many; tamper-evidence; (6) CENTRALIZED AGGREGATION — single SIEM or data lake; cross-cloud correlation; (7) RETENTION BY SOURCE/REGULATION — HIPAA 6y, SOX 7y, PCI 1y; tiered storage; (8) SIEM INTEGRATION — real-time correlation + alerting; (9) COST-OPTIMIZED COLD TIER — S3 Glacier for compliance retention; (10) CROSS-CLOUD QUERY CAPABILITY — multi-cloud incident investigation; OCSF or ECS open schema; (11) AUDIT-TRAIL TAMPER-EVIDENCE — log-file integrity validation (CloudTrail), Azure diagnostic settings to immutable storage, GCP Audit Logs immutability.",
+      "wrong_explanations": {
+        "B": "Failure mode = SINGLE-CLOUD-ONLY. Multi-cloud security operations require audit logging across ALL clouds; Azure and GCP misconfigurations + adversary activity must be visible. Volume-based exclusion creates blind spots.",
+        "C": "Failure mode = DECENTRALIZED-MULTI-CLOUD. Native logging per cloud is necessary but insufficient for multi-cloud correlation. Adversaries operating across clouds (lateral movement via federated identity) are invisible without centralized aggregation.",
+        "D": "Failure mode = MGMT-PLANE-ONLY. Data-plane access logs (S3 GetObject, KMS Decrypt) are CRITICAL for: exfiltration detection, sensitive-data access audit, compliance (PCI/HIPAA/SOX). Excluding them is short-sighted cost-optimization."
+      },
+      "tips": [
+        "Trap is D — 'management-plane only logging' is candidate-seductive because data-plane volume is much larger; but data-plane access logs are CRITICAL for exfiltration detection, sensitive-data access audit, and compliance (PCI/HIPAA/SOX). Excluding them is short-sighted cost-optimization.",
+        "Cloud audit logging = all-clouds + management/data-plane + immutable storage + centralized aggregation + retention by source + SIEM integration + cold tier + cross-cloud query + tamper-evidence. Eleven elements.",
+        "Exam-day shortcut: when stem asks about MULTI-CLOUD AUDIT LOGGING STRATEGY, look for all-clouds + management/data-plane + centralized + immutable framework; single-cloud, decentralized, and management-plane-only framings each fail."
+      ],
+      "framework_ref": "AWS CloudTrail Documentation; Azure Activity Log Documentation; GCP Cloud Audit Logs Documentation; NIST SP 800-92 (Log Management); CIS Controls v8 Safeguard 8.5",
+      "related_concepts": [
+        "Management vs data plane logging",
+        "CloudTrail organization trail",
+        "Cross-cloud OCSF/ECS aggregation",
+        "Immutable audit storage"
+      ],
+      "_provenance": "Authored from concept: 'Multi-cloud audit logging strategy'. Public sources: AWS / Azure / GCP, NIST, CIS, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_154",
+      "domain": 5,
+      "subtopic": "Cloud Configuration Drift on Production Security Control",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A SaaS firm's CSPM alerts at 9:42 PM Saturday: a production WAF security group rule changed 12 minutes ago — the rule that blocks SSH (port 22) from the public Internet to admin servers was removed. The change was made via direct console action, not through the IaC pipeline; no associated change ticket. Last-known-good IaC state has the rule. EDR shows 3 SSH connection attempts to admin servers from external IPs since the rule removal (no successful authentication yet — MFA + bastion is enforced). CISO + CISO-on-call + IR-lead + cloud architect on bridge call within 8 minutes.",
+      "options": {
+        "A": "Open a multi-track coordination call: CISO + CTO + GC + Cloud Architect + IR team + change-control to align on the response framework before taking technical action.",
+        "B": "ROLL BACK the security group rule IMMEDIATELY via IaC pipeline (re-apply last-known-good Terraform/CloudFormation state) — restoration completes in <60 seconds and closes SSH exposure window before adversary succeeds.",
+        "C": "Contact the person who likely made the change (cloud architect on duty) to ask about the modification before reverting; confirm legitimate business need first.",
+        "D": "Block external IPs attempting SSH at the perimeter firewall while preserving the changed security group state for forensic analysis; reverting destroys evidence."
+      },
+      "correct": "B",
+      "key_concept": "Config drift on production security control = ROLL BACK via IaC pipeline immediately. Investigation, perimeter mitigation, and user-confirmation all follow. Single critical-path action: TRUSTED-BASELINE-RESTORE principle.",
+      "pre_read": "For config drift on production security control questions, anchor on IMMEDIATE IAC ROLLBACK. The exposure clock with active attempts dominates other considerations.",
+      "correct_explanation": "When cloud configuration drift removes a production security control with active exploitation attempts visible, the FIRST action is IMMEDIATE IAC-PIPELINE ROLLBACK. Rationale: (1) EXPOSURE-CLOCK ACTIVE — SSH-removed rule + 3 connection attempts in 12 minutes = adversary scanning the exposed surface; every minute extends opportunity; (2) IAC ROLLBACK IS FAST — Terraform / CloudFormation re-apply restores the security group rule in <60 seconds; faster than coordination or perimeter alternative; (3) IAC ROLLBACK PRESERVES EVIDENCE — CloudTrail records both the original removal and the rollback; Config provides state-history snapshot; rollback doesn't destroy forensic evidence (it's auto-captured by cloud-provider audit logging); (4) ALTERNATIVES FAIL — coordination delays close of exposure; user-confirmation delays restoration; perimeter-firewall is partial mitigation that doesn't address security group baseline. After rollback: (a) IR call with CISO + IR + Cloud Architect for parallel investigation; (b) audit log review (CloudTrail + Config) for who made the change, when, from where; (c) MFA verification for the user; (d) account-compromise assessment if unauthorized; (e) if legitimate-but-out-of-process, re-apply change through IaC pipeline with proper approval. **NEW principle: TRUSTED-BASELINE-RESTORE** — applies when configuration has drifted from secure baseline IN PRODUCTION with measurable exposure. Distinct from prior principles: contain-first (adversary confirmed present), restore-first (control misbehaving), exposure-window-close (vulnerability pre-exploitation no patch). TRUSTED-BASELINE-RESTORE applies when SECURE BASELINE EXISTS (in IaC) and CURRENT STATE has drifted to less-secure; restore brings system back to known-good.",
+      "wrong_explanations": {
+        "A": "Failure mode = COORDINATION-DURING-EXPOSURE. Multi-track call wastes minutes while admin servers remain SSH-exposed and 3 connection attempts have already occurred. Roll back first (closes exposure); coordinate second.",
+        "C": "Failure mode = USER-CONFIRMATION-BEFORE-CLOSE. Contacting the suspected user delays rollback while exposure continues. If user confirms legitimate need, security group can be re-modified through proper IaC pipeline AFTER initial rollback. Close exposure first; investigate path second.",
+        "D": "Failure mode = PERIMETER-FIREWALL-BUT-PRESERVE-STATE. Blocking IPs at perimeter is partial mitigation but doesn't restore security group baseline; new IPs the adversary uses will reach the exposed servers. Forensic preservation is achievable via CloudTrail/Config snapshots BEFORE rollback (auto-captured); rollback doesn't destroy evidence."
+      },
+      "tips": [
+        "Trap is D — 'block external IPs at perimeter firewall and preserve security group state for forensics' is candidate-seductive because forensics preservation feels important; but rollback DOES NOT destroy evidence (CloudTrail + Config auto-capture both removal and rollback). Perimeter block is partial; new IPs reach the exposed servers. IaC rollback closes the exposure cleanly while preserving evidence.",
+        "NEW principle: TRUSTED-BASELINE-RESTORE — when production security control has drifted from declared IaC baseline WITH MEASURABLE EXPOSURE, FIRST action is IaC-pipeline rollback to last-known-good. Distinct from contain-first / restore-first / exposure-window-close.",
+        "Exam-day shortcut: when stem describes PRODUCTION SECURITY CONTROL DRIFT WITH ACTIVE EXPOSURE EVIDENCE, look for IMMEDIATE IAC ROLLBACK; coordination, user-confirmation, and perimeter-with-preservation framings each fail."
+      ],
+      "framework_ref": "ISACA Cloud Security Audit/Assurance Program; NIST SP 800-128 (Guide for Security-Focused Configuration Management); AWS Config Documentation; HashiCorp Terraform Documentation; CSA Cloud Controls Matrix",
+      "related_concepts": [
+        "IaC-pipeline rollback",
+        "TRUSTED-BASELINE-RESTORE principle",
+        "CloudTrail evidence preservation",
+        "Config drift severity"
+      ],
+      "_provenance": "Authored from concept: 'Config drift on production security control immediate rollback'. Public sources: ISACA, NIST, AWS, HashiCorp, CSA. No legacy bank citation. NEW single-focus principle: TRUSTED-BASELINE-RESTORE."
+    },
+    {
+      "id": "d5_155",
+      "domain": 5,
+      "subtopic": "Multi-Cloud SOC Consolidation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to multi-cloud SOC consolidation?",
+      "scenario_context": "A mid-market firm (1,400 employees, financial-services-adjacent) operates separate SOCs for AWS environments (3 production accounts) and Azure environments (2 subscriptions, post-acquisition); each SOC uses different SIEM (Splunk for AWS, Sentinel for Azure), different runbooks, different staffing. CISO is presenting consolidation strategy to board IT committee in 5 weeks with $4M+ FY26 budget allocation pending. Current cost to maintain two SOCs: $6.2M/year.",
+      "options": {
+        "A": "Maintain the separate SOCs indefinitely as is; consolidation introduces integration risk that outweighs cost savings for typical mid-market firm size.",
+        "B": "Immediately consolidate to AWS-side SOC (Splunk) and decommission the Azure-side entirely; AWS is the larger environment so its tooling wins by default.",
+        "C": "Inventory both SOC operations + strategic SIEM selection + rule-portfolio migration audit + multi-cloud skills training + phased migration with parallel run + knowledge preservation + unified runbooks + audit oversight.",
+        "D": "Outsource the entire multi-cloud SOC to an MSSP at full scope; eliminates the internal consolidation work and transfers operational burden to specialist vendor."
+      },
+      "correct": "C",
+      "key_concept": "Multi-cloud SOC consolidation = inventory both operations + strategic SIEM selection + rule-portfolio migration with mapping + multi-cloud skills training + phased migration with parallel run + knowledge preservation + unified runbooks + audit committee oversight + cost tracking. Nine tracks.",
+      "pre_read": "For multi-cloud SOC consolidation questions, anchor on phased + strategic-SIEM + parallel-run framework. Indefinite-fragmentation, winner-take-all, and outsource-as-shortcut framings each fail.",
+      "correct_explanation": "ISACA SOC Audit/Assurance Program, Gartner SIEM Magic Quadrant, OCSF (Open Cybersecurity Schema Framework), and ISACA M&A IT Audit/Assurance Program establish multi-cloud SOC consolidation framework. Nine tracks: (1) INVENTORY BOTH SOC OPERATIONS — full picture of Splunk/Sentinel rules, runbooks, integrations, staffing; (2) SELECT STRATEGIC SIEM — typically one with broader multi-cloud + open-schema support; Sentinel + Defender XDR for Azure-heavy + multi-cloud; Splunk for established multi-cloud or hybrid; modern entrants (Chronicle, Devo, Securonix); decision-criteria-documented; (3) RULE-PORTFOLIO MIGRATION WITH MAPPING AUDIT — Splunk-rule to Sentinel-rule mapping; gap analysis; OCSF schema normalization; (4) MULTI-CLOUD-NATIVE SKILLS TRAINING — analyst training on the strategic SIEM + cross-cloud expertise; (5) PHASED MIGRATION WITH PARALLEL RUN — 3-6 month phased; AWS-side migration to Sentinel runs parallel with Azure for 30-60 days; cutover criteria; (6) RETAINED-KNOWLEDGE PRESERVATION — institutional knowledge from both SOCs; rule rationale + runbook history; (7) UNIFIED RUNBOOKS — consistent IR procedures regardless of cloud source; (8) AUDIT COMMITTEE OVERSIGHT — quarterly status, SLA metrics, cost reduction tracking, risk events; (9) COST REDUCTION TRACKING — $6.2M baseline → target post-consolidation (typically 30-50% reduction with consolidation + some MSSP augmentation). 5-week board prep = present strategy + phase 1 plan + projected cost reduction.",
+      "wrong_explanations": {
+        "A": "Failure mode = INDEFINITE-FRAGMENTATION. $6.2M/year for fragmented SOCs is duplicative; cross-cloud incident response coordination is fractured; consolidation is the canonical pattern. Maintaining separation indefinitely sustains cost without benefit.",
+        "B": "Failure mode = WINNER-TAKE-ALL-WITHOUT-MIGRATION-PLAN. Immediate Azure-side decommission loses 4 years of Azure-side rule tuning + runbook context + analyst knowledge. Phased migration with parallel run is canonical; instant-decommission is reckless.",
+        "D": "Failure mode = OUTSOURCE-AS-CONSOLIDATION-SHORTCUT. MSSP transition (see d5_140) is a separate decision from SIEM consolidation; bundling both adds complexity and risk. Address consolidation first; MSSP decision later."
+      },
+      "tips": [
+        "Trap is B — 'immediately consolidate to AWS-side Splunk and decommission Azure-side' is candidate-seductive because AWS is the larger environment; but immediate-decommission loses 4 years of Azure-side rule tuning + runbook context. Phased migration with parallel run preserves knowledge.",
+        "Multi-cloud SOC consolidation = inventory + strategic SIEM + rule migration + multi-cloud skills + phased migration + parallel run + knowledge preservation + unified runbooks + audit oversight + cost tracking. Nine tracks.",
+        "Exam-day shortcut: when stem describes MULTI-SIEM CONSOLIDATION POST-ACQUISITION, look for phased + strategic-SIEM + parallel-run framework; indefinite-fragmentation, winner-take-all, and outsource-as-shortcut framings each fail."
+      ],
+      "framework_ref": "ISACA SOC Audit/Assurance Program; Gartner SIEM Magic Quadrant; OCSF (Open Cybersecurity Schema Framework); ISACA M&A IT Audit/Assurance Program",
+      "related_concepts": [
+        "Strategic SIEM selection",
+        "Rule-portfolio migration mapping",
+        "Parallel run cutover",
+        "OCSF schema normalization"
+      ],
+      "_provenance": "Authored from concept: 'Multi-cloud SOC consolidation framework'. Public sources: ISACA, Gartner, OCSF. No legacy bank citation."
+    },
+    {
+      "id": "d5_156",
+      "domain": 5,
+      "subtopic": "Insider Threat Detection Program Design",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the insider threat detection program design?",
+      "scenario_context": "A research-intensive biotech firm (3,200 employees) is designing an insider threat detection program post-acquisition. Acquired firm has a confirmed history of IP theft (2 incidents in prior 5 years; one resulted in $40M+ damages). The Chief Security Officer + CHRO + General Counsel + Compliance + employee representative (works council equivalent) are coordinating the design ahead of board approval. 14 jurisdictions globally; EU operations include Germany (works council protections).",
+      "options": {
+        "A": "Deploy maximum surveillance across all employees (email, browsing, file access, screen recording) without prior notice; comprehensive visibility is the safest defense available.",
+        "B": "Limit insider-threat detection to PRIVILEGED USERS only (executives, research scientists); rank-and-file employees pose minimal IP-theft risk based on historical incidents.",
+        "C": "Outsource insider-threat monitoring entirely to external service provider; firms cannot effectively self-monitor employees and external monitoring removes the conflict.",
+        "D": "UEBA + DLP + access analytics + manager training + employee reporting + privacy-aware monitoring (GDPR Article 88) + tiered investigation + executive sponsorship + cross-functional governance + periodic review."
+      },
+      "correct": "D",
+      "key_concept": "Insider-threat program = UEBA + DLP + access analytics + manager training + employee reporting + privacy-aware monitoring + tiered investigation + executive sponsorship + cross-functional governance + periodic review. Ten tracks balancing detection + privacy + jurisdiction.",
+      "pre_read": "For insider-threat program design questions, anchor on multi-layered framework with jurisdiction-aware privacy boundaries. Maximum-surveillance, privileged-only, and outsource framings each fail.",
+      "correct_explanation": "ISACA Insider Threat Audit/Assurance Program, CERT Insider Threat Center research, NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program), Executive Order 13587, GDPR Article 88 (Processing in the context of employment), and German Works Council Constitution Act establish insider-threat program framework. Ten tracks: (1) UEBA — User/Entity Behavior Analytics; baseline + deviation detection; (2) DLP — content-context-identity-aware data movement controls; egress monitoring; (3) ACCESS ANALYTICS — over-permission detection, dormant accounts, unusual access patterns; (4) MANAGER TRAINING ON BEHAVIORAL INDICATORS — financial stress, ideological grievance, life events; CERT indicator catalog; (5) EMPLOYEE REPORTING CHANNELS — anonymous, no-retaliation protected, multi-path; (6) PRIVACY-AWARE MONITORING BOUNDARIES — what's monitored (corporate-system activity), what isn't (personal communication when scope-limited), notice requirements; GDPR Art 88 + jurisdictional co-determination (German works council, French works council, Italian comitato aziendale); (7) TIERED INVESTIGATION WORKFLOW — UEBA risk score triggers review; investigation gated by legal/HR/security cross-functional approval; (8) EXECUTIVE SPONSORSHIP — CISO or Chief Security Officer with CEO support; (9) CROSS-FUNCTIONAL GOVERNANCE — security + HR + legal + compliance steering committee; consent for monitoring + investigation decisions; (10) PERIODIC POST-INCIDENT REVIEW — lessons learned + program refinement.",
+      "wrong_explanations": {
+        "A": "Failure mode = MAXIMUM-SURVEILLANCE-WITHOUT-NOTICE. Violates GDPR Article 88 (employment context), German works council co-determination rights, jurisdictional employee-monitoring constraints. Produces high alert volume that overwhelms analysis. Triggers employee trust collapse + union/legal action.",
+        "B": "Failure mode = PRIVILEGED-ONLY-SCOPING. Insider IP theft is not limited to executives; research scientists, lab technicians, and even contractors have access to sensitive IP. CERT Insider Threat Center research shows rank-and-file insider threat at multiple firms. Scope must cover all access-to-sensitive-data roles, not by hierarchy.",
+        "C": "Failure mode = OUTSOURCE-INSIDER-MONITORING. Third-party access to firm's most-sensitive monitoring data + employee data is high-risk (data residency, privacy, GDPR Article 28 processor obligations). Outsourcing also loses firm-specific context (research priorities, peer relationships, business-flow legitimacy). In-house with security + HR + legal coordination is canonical."
+      },
+      "tips": [
+        "Trap is A — 'maximum surveillance without notice' is candidate-seductive because more-monitoring feels safer; but violates GDPR Article 88, German works council rights, and jurisdictional employee-monitoring laws. Privacy-aware boundaries are required for legal AND operational reasons (alert fatigue, employee trust).",
+        "Insider-threat program = UEBA + DLP + access analytics + manager training + employee reporting + privacy-aware monitoring + tiered investigation + executive sponsorship + cross-functional governance + periodic review. Ten tracks.",
+        "Exam-day shortcut: when stem describes INSIDER-THREAT PROGRAM DESIGN in MULTI-JURISDICTIONAL CONTEXT, look for multi-layered framework with jurisdiction-aware boundaries; maximum-surveillance, privileged-only, and outsource framings each fail."
+      ],
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center Research; NIST SP 800-53 Rev 5 PM-12; Executive Order 13587 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment)",
+      "related_concepts": [
+        "UEBA baseline detection",
+        "Works council co-determination",
+        "Tiered investigation workflow",
+        "Cross-functional governance"
+      ],
+      "_provenance": "Authored from concept: 'Insider threat detection program multi-jurisdictional design'. Public sources: ISACA, CERT, NIST, EO 13587, GDPR. No legacy bank citation."
+    },
+    {
+      "id": "d5_157",
+      "domain": 5,
+      "subtopic": "SIEM Cost Optimization",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the SIEM cost reduction?",
+      "scenario_context": "A growth-stage SaaS firm (2,800 employees, customer base 4.2M end-users) is wrestling with SIEM cost escalation. The SIEM (Splunk Enterprise, deployed 4 years ago) is consuming $4.8M/year for 12TB/day log ingestion across cloud + endpoint + network sources. CFO has tasked CISO with 30% cost reduction in 6 months WITHOUT reducing detection capability or compliance posture. Detection coverage: 280 active rules mapped to MITRE ATT&CK; SOC handling 3,400 alerts/day with 60% false-positive rate; 1-year retention required for SOX (firm IPO'd 18 months ago). CISO + CTO + Detection Engineering Lead + procurement + Splunk account team are coordinating the optimization strategy.",
+      "options": {
+        "A": "Log source review + tiered storage + data lake offload + use-case retirement + ingestion-time filtering + license-model negotiation + open-schema migration + post-optimization detection coverage validation.",
+        "B": "Reduce log retention from 1 year to 90 days; the simpler retention reduction immediately reduces storage costs across the SIEM platform at significant scale.",
+        "C": "Reduce detection rule count by 30 percent across the board; fewer rules means fewer alerts means lower analyst operational cost and lower platform load.",
+        "D": "Switch to MSSP-managed SIEM entirely; MSSPs have better pricing leverage with Splunk and other vendors and absorb the cost-management complexity entirely."
+      },
+      "correct": "A",
+      "key_concept": "SIEM cost optimization = log source review + tiered storage + data lake offload + use-case retirement + ingestion-time filtering + license-model negotiation + open-schema migration + post-optimization validation. Eight tracks preserving detection capability.",
+      "pre_read": "For SIEM cost optimization questions, anchor on multi-layered cost reduction with detection preservation. Retention-shortening-compliance-risk, rule-cut-blanket, and MSSP-shortcut framings each fail.",
+      "correct_explanation": "Gartner SIEM Magic Quadrant, MaGMA Use Case Framework, ISACA SOC Audit/Assurance Program, and Splunk + Sentinel + Chronicle vendor cost-optimization documentation establish SIEM cost optimization framework. Eight tracks: (1) LOG SOURCE REVIEW — drop verbose / low-value sources (DEBUG-level application logs, redundant network logs); 20-40% volume reduction typical; (2) TIERED STORAGE — hot tier (SIEM analysis) 30 days, warm tier (warm search index) 60-90 days, cold tier (S3 Glacier / Snowflake) 1-7 years; cost difference 10-100x; (3) DATA LAKE OFFLOAD FOR COLD TIER — Snowflake / Databricks / Splunk SmartStore + S3; query-on-demand for IR + compliance; (4) USE-CASE RETIREMENT — rules with <5% true positive in 12 months retired (with ATT&CK coverage gap analysis to ensure replacement); (5) INGESTION-TIME FILTERING — drop noisy events before indexing (verbose HTTP 200 from health checks); 10-30% volume reduction; (6) LICENSE-MODEL NEGOTIATION — multi-year commit pricing, BYOL licensing, observability pricing models; (7) OPEN-SCHEMA MIGRATION (OCSF) — reduces vendor lock-in; enables price-comparison across vendors; (8) POST-OPTIMIZATION DETECTION COVERAGE VALIDATION — confirm ATT&CK coverage map unchanged post-optimization; re-test detection efficacy. 30% reduction is achievable with these tracks; aggressive cost-cutting without detection-preservation framework risks coverage gaps.",
+      "wrong_explanations": {
+        "B": "Failure mode = RETENTION-SHORTENING-COMPLIANCE-RISK. Retention requirements: HIPAA 6y, SOX 7y, PCI 1y. Reducing to 90 days creates compliance violations + loses incident-investigation capability (most APTs detected after 6+ months). Tiered storage (move logs to cheaper cold tier) preserves retention without high-tier cost.",
+        "C": "Failure mode = DETECTION-RULE-CUT-WITHOUT-ANALYSIS. Cutting 30% of rules indiscriminately eliminates real detections. Targeted retirement of low-TP-rate rules is appropriate; blanket 30% cut without ATT&CK coverage analysis creates detection gaps.",
+        "D": "Failure mode = MSSP-FOR-COST-WITHOUT-OPERATIONAL-CHANGE. MSSP transition reduces some costs but transfers others (vendor lock-in, less business context, potential SLA breaches). MSSP decision is separate from cost optimization; should be made on its own merits, not as cost-reduction shortcut."
+      },
+      "tips": [
+        "Trap is C — 'reduce detection rule count by 30%' is candidate-seductive because fewer rules feels like a direct cost reduction; but blanket 30% cut creates detection GAPS (real detections in the eliminated rules). Targeted retirement of low-TP rules with ATT&CK coverage gap analysis is the canonical pattern.",
+        "SIEM cost optimization = log source review + tiered storage + data lake offload + use-case retirement + ingestion filtering + license negotiation + open-schema migration + post-optimization validation. Eight tracks preserving detection.",
+        "Exam-day shortcut: when stem describes SIEM COST REDUCTION with DETECTION PRESERVATION, look for multi-layered framework with ATT&CK coverage validation; retention-shortening, blanket-rule-cut, and MSSP-shortcut framings each fail."
+      ],
+      "framework_ref": "Gartner SIEM Magic Quadrant; MaGMA Use Case Framework; ISACA SOC Audit/Assurance Program; OCSF (Open Cybersecurity Schema Framework)",
+      "related_concepts": [
+        "Tiered storage strategy",
+        "Data lake cold tier offload",
+        "Use-case retirement criteria",
+        "License-model negotiation"
+      ],
+      "_provenance": "Authored from concept: 'SIEM cost optimization with detection preservation'. Public sources: Gartner, MaGMA, ISACA, OCSF. No legacy bank citation."
+    },
+    {
+      "id": "d5_158",
+      "domain": 5,
+      "subtopic": "Detection Engineering Technical Debt",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the detection engineering technical debt?",
+      "scenario_context": "A SaaS firm's detection engineering team faces technical debt: 320+ active rules with no version control + minimal documentation + 8 different detection languages (Splunk SPL + Sigma + KQL + custom regex + etc.) + 12 different test patterns + many rules added by long-departed engineers. New rules take 3-4 weeks to deploy due to manual testing + manual deployment. CISO + Detection Engineering Lead + CTO + Cloud Architecture team coordinating on prioritization.",
+      "options": {
+        "A": "Retire all undocumented rules immediately to reduce technical debt; modern detection engineering should rebuild detection coverage from scratch with documentation.",
+        "B": "Detection-as-code migration + automated testing framework + production deployment automation + documentation backfill + selective use-case retirement + ATT&CK coverage maintenance + team skill investment + post-migration metrics.",
+        "C": "Hire 5 more detection engineers to absorb the technical debt; the underlying problem is staffing-driven and adding analyst capacity solves it at typical firm scale.",
+        "D": "Outsource the entire detection engineering function to MSSP; the accumulated technical debt becomes the MSSP's problem to manage going forward at scale."
+      },
+      "correct": "B",
+      "key_concept": "Detection engineering technical debt = detection-as-code migration + automated testing framework + production deployment automation + documentation backfill + selective use-case retirement + ATT&CK coverage maintenance + team skill investment + post-migration metrics. Eight tracks.",
+      "pre_read": "For detection engineering debt questions, anchor on multi-phase remediation with detection-preservation. Retire-all-undocumented, staff-scale, and outsource-debt-transfer framings each fail.",
+      "correct_explanation": "SANS Detection Engineering Curriculum, MITRE ATT&CK Framework, Sigma (Generic Signature Format), Florian Roth's Sigma Project, and detection engineering practice (Florian Roth, Anton Chuvakin, John Lambert) establish detection engineering debt remediation framework. Eight tracks: (1) DETECTION-AS-CODE MIGRATION — rules in Git (Sigma format for portability); each rule in its own file; pull-request review process; (2) AUTOMATED TESTING FRAMEWORK — unit tests (rule matches known-good and known-bad inputs); integration tests (full pipeline replay); CI/CD integration; (3) PRODUCTION DEPLOYMENT AUTOMATION — Git-pushed rules auto-deployed to SIEM/EDR; rollback path; alert-volume forecast; (4) DOCUMENTATION BACKFILL — what the rule detects, why, expected FP rate, response runbook; backfill prioritized by rule criticality + analyst frequency-of-use; (5) SELECTIVE USE-CASE RETIREMENT DURING MIGRATION — rules not firing in 12 months OR <5% TP retired (with ATT&CK coverage gap analysis); migration is the opportunity for cleanup; (6) ATT&CK COVERAGE MAP MAINTENANCE — track coverage during migration; ensure no gaps emerge; (7) TEAM SKILL INVESTMENT — Sigma + detection-as-code training; analyst capacity for review + tuning; (8) POST-MIGRATION METRICS — deployment velocity (3-4 weeks → 1-3 days), test coverage %, documentation completeness %, FP rate trend. 6-12 month migration timeline typical.",
+      "wrong_explanations": {
+        "A": "Failure mode = RETIRE-ALL-UNDOCUMENTED. Undocumented doesn't mean low-value; many critical detections may be undocumented but high-TP. Blanket retirement creates massive detection gaps (e.g., retiring an undocumented Mimikatz detection rule). Selective retirement after analysis is the canonical pattern.",
+        "C": "Failure mode = STAFF-SCALE-WITHOUT-FIX. Adding 5 engineers without fixing the underlying mess (no version control, manual testing, manual deploy) means they face same 3-4 week deployment cycle. Capacity scales but velocity doesn't; debt grows. Process improvement is the multiplier.",
+        "D": "Failure mode = OUTSOURCE-DEBT-TRANSFER. MSSP inherits the technical debt + adds vendor-lock-in + loses firm-specific context. Doesn't solve the underlying problem; transfers it externally with new problems."
+      },
+      "tips": [
+        "Trap is A — 'retire all undocumented rules immediately' is candidate-seductive because aggressive cleanup feels like rapid progress; but undocumented doesn't mean low-value. Critical undocumented detections (e.g., Mimikatz detection) deserve documentation backfill, not retirement. Selective retirement after analysis is canonical.",
+        "Detection engineering debt = detection-as-code + automated testing + production deployment + documentation backfill + selective retirement + ATT&CK coverage + skill investment + post-migration metrics. Eight tracks.",
+        "Exam-day shortcut: when stem describes DETECTION ENGINEERING TECHNICAL DEBT, look for multi-phase remediation with detection-preservation; retire-all-undocumented, staff-scale, and outsource-debt-transfer framings each fail."
+      ],
+      "framework_ref": "SANS Detection Engineering Curriculum; MITRE ATT&CK Framework; Sigma (Generic Signature Format); Florian Roth Sigma Project; ISACA SOC Audit/Assurance Program",
+      "related_concepts": [
+        "Detection-as-code migration",
+        "Sigma rule normalization",
+        "Automated testing framework",
+        "Selective use-case retirement"
+      ],
+      "_provenance": "Authored from concept: 'Detection engineering technical debt remediation'. Public sources: SANS, MITRE, Sigma, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_159",
+      "domain": 5,
+      "subtopic": "Cloud Workload Active Exploitation Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response approach?",
+      "scenario_context": "A SaaS firm's cloud workload protection (CWPP) platform alerts at 2:18 AM Friday: confirmed RCE exploitation on a customer-facing Kubernetes pod in the production cluster. Falco + EDR correlate: attacker has executed reconnaissance commands + attempted lateral movement to other pods + attempted access to instance metadata for cloud credentials. The compromised pod is part of a 47-pod deployment serving 1.8M end-users. AWS-side audit logs show metadata-service-v1 access attempts (IMDSv1 was deprecated 6 months ago but a few legacy pods still use it). The CTO + CISO + AppSec lead + SRE + General Counsel on bridge call within 18 minutes.",
+      "options": {
+        "A": "Wipe and rebuild the 47-pod deployment from clean container images; the entire deployment is potentially compromised so total rebuild is the safest path.",
+        "B": "Allow the exploitation activity to continue uninterrupted while gathering intelligence on attacker TTPs and lateral-movement patterns; the threat-intelligence value gathered justifies continued observation during active exposure.",
+        "C": "Isolate the compromised pod + threat-hunt across the deployment + audit IMDSv1 usage + force IMDSv2 + revoke leaked cloud credentials + forensic preservation + customer impact + regulator notification + post-incident IMDSv2 policy.",
+        "D": "Disable IMDSv1 immediately across all AWS accounts in the production environment; if the exploitation depends on IMDSv1, eliminating it stops the attack outright."
+      },
+      "correct": "C",
+      "key_concept": "Cloud workload active exploitation = isolate compromised pod + threat hunt across deployment + audit IMDSv1 usage + force IMDSv2 + revoke credentials + forensic preservation + customer impact assessment + regulator notification + post-incident IMDSv2 migration policy. Nine tracks.",
+      "pre_read": "For cloud workload exploitation questions, anchor on isolate + threat-hunt + selective remediation framework. Total-rebuild, allow-for-intel, and broad-disable framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide), CISA Kubernetes Hardening Guidance, AWS IMDSv2 Documentation, and MITRE ATT&CK T1611 (Escape to Host) establish cloud workload exploitation response. Nine tracks: (1) ISOLATE COMPROMISED POD — kubectl cordon + NetworkPolicy deny-all + preserve pod for forensics; (2) THREAT-HUNT ACROSS THE 47-POD DEPLOYMENT — same indicators (file hashes, registry artifacts, network patterns) across all pods; identify all compromised; (3) AUDIT IMDSv1 USAGE — IMDSv1 vulnerable to SSRF; inventory of pods still using IMDSv1 (cloud-provider audit logs); (4) FORCE IMDSv2 ACROSS ALL PODS — phased rollout for legacy pods; pre-tested compatibility; (5) REVOKE POTENTIALLY-LEAKED CREDENTIALS — rotate any cloud credentials that may have been accessed; AWS IAM access keys, IRSA service accounts, EKS pod identity tokens; (6) FORENSIC PRESERVATION — pod state, EDR telemetry, CloudTrail data-plane logs; chain-of-custody-grade; (7) CUSTOMER IMPACT ASSESSMENT — 1.8M end-users; data exposure analysis; SLA implications; (8) REGULATOR NOTIFICATION — per impact (GDPR Article 33 if EU customer data exposed; SEC Reg S-K Item 1.05 if material; state breach laws); (9) POST-INCIDENT IMDSv2 MIGRATION POLICY — legacy pods using IMDSv1 should not exist; policy enforcement going forward.",
+      "wrong_explanations": {
+        "A": "Failure mode = TOTAL-DEPLOYMENT-REBUILD. Wiping 47 pods destroys forensic evidence (memory state, lateral-movement indicators, attribution data); also causes service disruption to 1.8M end-users when isolation of compromised pod + threat hunt + selective rebuild can be more surgical.",
+        "B": "Failure mode = ALLOW-EXPLOITATION-FOR-INTEL. Active exploitation with reconnaissance + lateral movement attempts + metadata access = adversary moving toward credential theft + further pivot. Threat-intel gathering during active exposure is operationally and ethically wrong; isolate first, gather forensic intel post-isolation.",
+        "D": "Failure mode = IMDSv1-DISABLE-WITHOUT-MIGRATION. Disabling IMDSv1 immediately breaks the legacy pods that still depend on it (some pods will fail). Migration to IMDSv2 with rollout coordination is appropriate; not flip-switch during active incident. Isolation + selective remediation > broad disable."
+      },
+      "tips": [
+        "Trap is A — 'wipe and rebuild the entire 47-pod deployment' is candidate-seductive because total cleanup feels decisive; but wiping destroys forensic evidence + causes service disruption to 1.8M end-users. Isolate compromised pod + threat-hunt + selective rebuild is more surgical and preserves evidence.",
+        "Cloud workload exploitation = isolate + threat hunt + audit IMDSv1 usage + force IMDSv2 + revoke credentials + forensic preservation + customer impact + regulator notification + post-incident IMDSv2 migration. Nine tracks.",
+        "Exam-day shortcut: when stem describes CONFIRMED CLOUD WORKLOAD EXPLOITATION WITH LATERAL MOVEMENT, look for isolate + threat-hunt + selective framework; total-rebuild, allow-for-intel, and broad-disable framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Incident Handling); CISA Kubernetes Hardening Guidance (joint with NSA); AWS IMDSv2 Documentation; GDPR Article 33 (Notification of a personal data breach); MITRE ATT&CK T1611 (Escape to Host)",
+      "related_concepts": [
+        "IMDSv1 → IMDSv2 migration",
+        "kubectl cordon + NetworkPolicy",
+        "Cross-pod threat hunt",
+        "AWS IRSA credential revocation"
+      ],
+      "_provenance": "Authored from concept: 'Cloud workload active exploitation response in Kubernetes context'. Public sources: ISACA, NIST, CISA/NSA, AWS, MITRE. No legacy bank citation."
+    },
+    {
+      "id": "d5_160",
+      "domain": 5,
+      "subtopic": "Cloud Workload Runtime Detection Gap",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to remediating the cloud workload runtime detection gap?",
+      "scenario_context": "A SaaS firm's IR-driven security review reveals: 23 of 47 microservices in the production Kubernetes cluster have no runtime detection (Falco) deployed. A recent breach (now contained) exploited one of these unprotected services — undetected for 6 days before customer reports surfaced. The CISO + CTO + AppSec + SRE + Platform Engineering coordinating remediation strategy. Cluster supports 2.4M end-users + handles payment processing (PCI scope).",
+      "options": {
+        "A": "Issue a formal PCI DSS exception for the 23 services without runtime detection; document the gap in the firm's exception registry for the next external audit.",
+        "B": "Deploy Falco runtime detection only on the 23 services that are currently missing it; the existing 24 are already covered with the current Falco DaemonSet deployment.",
+        "C": "Migrate the entire Kubernetes cluster to a managed service such as EKS-Anywhere or GKE Autopilot; these managed services include runtime detection capability by default at the platform layer.",
+        "D": "Enable Falco across all 47 microservices + verify ATT&CK coverage + alert routing to SIEM + AppSec-SRE shared responsibility + detection-as-code Falco rules + post-incident review + customer impact + regulator notification + post-incident coverage policy."
+      },
+      "correct": "D",
+      "key_concept": "Cloud workload runtime detection gap = enable Falco across all + verify ATT&CK coverage + alert routing to SIEM + AppSec-SRE shared responsibility + detection-as-code Falco rules + post-incident review + customer impact + regulator notification + post-incident coverage gap policy. Nine tracks.",
+      "pre_read": "For runtime detection gap questions, anchor on coverage-completion + verification + governance framework. Exception-for-gap, deploy-only-gap-without-verification, and migration-as-shortcut framings each fail.",
+      "correct_explanation": "NIST SP 800-190 (Application Container Security Guide), CIS Kubernetes Benchmark, CISA Kubernetes Hardening Guidance, Falco / Sysdig Secure / Aqua Cloud Workload Protection documentation, and PCI DSS v4.0 Requirement 11 + 12.10 establish runtime detection gap remediation. Nine tracks: (1) ENABLE FALCO ACROSS ALL 47 MICROSERVICES — DaemonSet pattern; covers all nodes + their pods; (2) VERIFY RUNTIME DETECTION COVERAGE MAPS TO MITRE ATT&CK — gap analysis; especially T1611 (Escape to Host), T1486 (Data Encrypted for Impact), T1078 (Valid Accounts); (3) ALERT ROUTING TO SIEM — Falco alerts integrated with SIEM for correlation + analyst triage; (4) APPSEC-SRE SHARED RESPONSIBILITY MODEL — Falco is a workload-runtime control owned by AppSec + operated by SRE; cross-team responsibility; (5) DETECTION-AS-CODE FOR FALCO RULES — rules in Git; PR review; testing; (6) POST-INCIDENT REVIEW — why were 23 services missing Falco? deployment-process gap? team-ownership gap? policy enforcement gap?; (7) CUSTOMER IMPACT — 6-day detection delay; data exposure analysis; (8) REGULATOR NOTIFICATION — PCI DSS 12.10 incident reporting; state breach laws; SEC Reg S-K Item 1.05 if material; (9) POST-INCIDENT DETECTION-COVERAGE GAP POLICY — runtime detection mandatory for all production services; admission controller enforces; gap = block deployment.",
+      "wrong_explanations": {
+        "A": "Failure mode = EXCEPTION-FOR-PCI-GAP. PCI DSS 12.10 requires incident response capability including detection; an exception that documents 'we don't detect runtime threats on 23 services' fails 11.3 vulnerability management and 12.10. QSA will flag this as material finding; remediation, not exception, is required.",
+        "B": "Failure mode = DEPLOY-ONLY-23-WITHOUT-VERIFICATION. The 24 already-covered services may have Falco rules outdated, not aligned to current ATT&CK techniques, or with deployment gaps. Re-verify coverage across ALL 47 + remediate gaps; not just close the obvious gap.",
+        "C": "Failure mode = MIGRATION-AS-REMEDIATION-SHORTCUT. Migrating to managed Kubernetes is a multi-quarter project; doesn't address the immediate gap (23 unprotected services NOW). Migration may be appropriate long-term, but remediation comes first."
+      },
+      "tips": [
+        "Trap is A — 'issue formal PCI DSS exception' is candidate-seductive because exceptions are a real PCI DSS mechanism; but PCI DSS 11 + 12.10 require incident response capability including detection. Exception that documents 'we don't detect runtime threats' fails the requirement; QSA will flag as material finding. Remediation, not exception.",
+        "Cloud workload runtime detection gap = enable Falco all services + verify ATT&CK coverage + alert routing + AppSec-SRE shared model + detection-as-code + post-incident review + customer impact + regulator notification + post-incident coverage policy. Nine tracks.",
+        "Exam-day shortcut: when stem describes CLOUD WORKLOAD RUNTIME DETECTION GAP IN PCI SCOPE, look for coverage-completion + governance framework; exception-for-gap, deploy-only-gap, and migration-as-shortcut framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-190 (Application Container Security Guide); CIS Kubernetes Benchmark; CISA + NSA Kubernetes Hardening Guidance; PCI DSS v4.0 Requirements 11 and 12.10; Falco / Sysdig Secure Vendor Documentation",
+      "related_concepts": [
+        "Falco DaemonSet coverage",
+        "ATT&CK technique mapping",
+        "AppSec-SRE shared responsibility",
+        "Admission controller enforcement"
+      ],
+      "_provenance": "Authored from concept: 'Cloud workload runtime detection gap remediation in PCI scope'. Public sources: NIST, CIS, CISA/NSA, Falco, PCI Council. No legacy bank citation."
     }
   ]
 }
