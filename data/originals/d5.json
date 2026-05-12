@@ -5820,6 +5820,736 @@
         "Admission controller enforcement"
       ],
       "_provenance": "Authored from concept: 'Cloud workload runtime detection gap remediation in PCI scope'. Public sources: NIST, CIS, CISA/NSA, Falco, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_161",
+      "domain": 5,
+      "subtopic": "Incident Response Lifecycle (NIST SP 800-61 Rev 2)",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical incident response lifecycle per NIST SP 800-61 Rev 2?",
+      "options": {
+        "A": "Preparation + Detection and Analysis + Containment, Eradication, and Recovery + Post-Incident Activity. Four canonical phases with iteration between detection and containment.",
+        "B": "Investigation only; detect the incident, determine root cause, and document findings without separate containment or recovery phases.",
+        "C": "Single linear sequence: prevention, detection, response, with no preparation or post-incident phases as distinct elements.",
+        "D": "Incident reporting only to executives and regulators; technical response is downstream and not part of the IR lifecycle framework."
+      },
+      "correct": "A",
+      "key_concept": "IR lifecycle (NIST SP 800-61 Rev 2) = Preparation + Detection and Analysis + Containment/Eradication/Recovery + Post-Incident Activity. Four phases with iteration between phases 2-3.",
+      "pre_read": "For IR lifecycle questions, anchor on NIST SP 800-61 Rev 2 four-phase framework. Investigation-only, generic-linear, and reporting-only framings each fail.",
+      "correct_explanation": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide) is the canonical IR lifecycle framework, mapped to four phases. (1) PREPARATION — IR plan, team training, tooling, communication channels, retainer engagements, baseline establishment; the largest investment phase; readiness BEFORE incidents; (2) DETECTION AND ANALYSIS — alert triage, scope determination, severity classification, initial containment decisions; (3) CONTAINMENT, ERADICATION, AND RECOVERY — short-term containment, evidence preservation, root-cause identification, eradication, system restoration, monitoring; iterates with detection-analysis as more evidence surfaces; (4) POST-INCIDENT ACTIVITY — lessons learned, IR plan updates, control improvements, training updates, evidence retention for legal/compliance. ISO/IEC 27035 (Information security incident management) uses similar five-phase model: plan + detect + assess + respond + lessons. SANS PICERL (Preparation/Identification/Containment/Eradication/Recovery/Lessons) is a popular alternative naming; same conceptual phases. PCI DSS Requirement 12.10 (Incident Response Plan) requires IR plan + annual testing + documented evidence of operation. HIPAA Security Rule §164.308(a)(6) requires security incident procedures.",
+      "wrong_explanations": {
+        "B": "B reduces IR to investigation-only, missing PREPARATION (the largest investment), CONTAINMENT (limiting damage), and POST-INCIDENT (lessons learned that improve future response). Investigation is one of four phases.",
+        "C": "C uses a generic linear sequence missing PREPARATION (most-important phase — readiness investments before incidents) and POST-INCIDENT ACTIVITY (lessons learned). NIST framework explicitly includes both bookend phases.",
+        "D": "D restricts to reporting, missing all technical response phases. Reporting is one ELEMENT within the broader IR lifecycle; not the whole."
+      },
+      "tips": [
+        "Trap is B — 'investigation only' is candidate-seductive because investigation IS visible work during an incident; but it omits the critical PREPARATION phase (where most IR value comes from) + POST-INCIDENT (where improvement happens). Investigation alone is reactive without learning.",
+        "IR lifecycle = Preparation + Detection/Analysis + Containment/Eradication/Recovery + Post-Incident Activity. Four phases per NIST SP 800-61 Rev 2. Iteration between detection-analysis and containment.",
+        "Exam-day shortcut: when stem asks about IR LIFECYCLE / NIST SP 800-61, look for the four-phase framework with iteration between phases 2-3; investigation-only, generic-linear, and reporting-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27035 (Information Security Incident Management); SANS PICERL (Preparation/Identification/Containment/Eradication/Recovery/Lessons); PCI DSS v4.0 Requirement 12.10 (Incident Response Plan); HIPAA Security Rule §164.308(a)(6)",
+      "related_concepts": [
+        "NIST SP 800-61 four phases",
+        "SANS PICERL",
+        "Iteration between detection and containment",
+        "Post-incident lessons learned"
+      ],
+      "_provenance": "Authored from concept: 'IR lifecycle canonical framework per NIST SP 800-61 Rev 2'. Public sources: NIST, ISO, SANS, PCI Council, HIPAA. No legacy bank citation."
+    },
+    {
+      "id": "d5_162",
+      "domain": 5,
+      "subtopic": "IR Plan Canonical Elements",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's IR plan. Which option BEST captures the canonical IR PLAN elements?",
+      "options": {
+        "A": "A single document describing 'who to call' for IT outages; technical procedures live separately in operations runbooks across teams.",
+        "B": "Roles + severity classification matrix + escalation criteria + communication framework + technical playbooks + external coordination + evidence preservation + testing schedule + post-incident review template.",
+        "C": "Vendor's default IR plan template uploaded to the firm's policy library; customization unnecessary as templates cover common scenarios at most firms.",
+        "D": "Detailed step-by-step procedures for every conceivable incident type and variant; comprehensive coverage requires hundreds of pages of documentation."
+      },
+      "correct": "B",
+      "key_concept": "IR plan = roles + severity matrix + escalation criteria + communication framework + technical playbooks + external coordination + evidence preservation + testing schedule + post-incident review template. Nine elements.",
+      "pre_read": "For IR plan questions, anchor on nine-element framework. Contact-list-only, vendor-template-uncustomized, and exhaustive-procedures framings each fail.",
+      "correct_explanation": "NIST SP 800-61 Rev 2, ISACA Incident Management Audit/Assurance Program, PCI DSS v4.0 Requirement 12.10, and ISO/IEC 27035 establish IR plan canonical elements: (1) ROLES AND RESPONSIBILITIES — IR commander, technical lead, communications lead, legal liaison, executive sponsor, customer-success liaison; named individuals + backup; (2) SEVERITY CLASSIFICATION MATRIX — severity levels (S1 Critical / S2 High / S3 Medium / S4 Low) defined by business impact + data sensitivity + scope; not just technical severity; (3) ESCALATION CRITERIA — when to escalate by severity level (executive notification thresholds, regulator notification triggers); (4) COMMUNICATION FRAMEWORK — internal (cross-team), executive (board), external (customers, regulators, law enforcement); pre-approved templates per audience; (5) TECHNICAL PLAYBOOKS — common incident types (ransomware, credential compromise, DDoS, insider threat, supply-chain) with high-level response sequences; (6) EXTERNAL COORDINATION — IR retainer firms (Mandiant, CrowdStrike, Kroll), law enforcement (FBI IC3, CISA), regulators (HIPAA OCR, SEC), insurance broker; (7) EVIDENCE PRESERVATION PROCEDURES — chain-of-custody, memory imaging, log retention, witness statements; (8) TESTING SCHEDULE — annual tabletop minimum (PCI DSS), quarterly for high-risk; documented; (9) POST-INCIDENT REVIEW TEMPLATE — structured lessons-learned, root cause, control improvements.",
+      "wrong_explanations": {
+        "A": "A reduces IR plan to contact list, missing severity classification, escalation criteria, technical playbooks, evidence procedures. Contact list is one element; IR plan covers all dimensions.",
+        "C": "C uses vendor template without firm customization, missing firm-specific severity definitions, firm-specific roles, firm-specific systems, firm-specific regulatory obligations. Template is starting point; customization is essential.",
+        "D": "D over-specifies; comprehensive incident-by-incident procedures are unmaintainable at hundreds of pages. IR plan provides framework + playbooks for common types; novel incidents handled via framework."
+      },
+      "tips": [
+        "Trap is C — 'vendor's default IR plan template uploaded' is candidate-seductive because it satisfies a checkbox quickly; but unfirmcustomized template lacks firm-specific severity definitions, roles, regulatory obligations, and systems context. Customization is essential.",
+        "IR plan = roles + severity matrix + escalation criteria + communication framework + technical playbooks + external coordination + evidence preservation + testing schedule + post-incident review template. Nine elements.",
+        "Exam-day shortcut: when stem asks about IR PLAN ELEMENTS, look for the nine-element framework with FIRM customization; contact-list, vendor-template, and exhaustive-procedures framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-61 Rev 2; ISACA Incident Management Audit/Assurance Program; PCI DSS v4.0 Requirement 12.10; ISO/IEC 27035 (Information Security Incident Management)",
+      "related_concepts": [
+        "Severity classification matrix",
+        "IR commander role",
+        "Pre-approved communication templates",
+        "Annual tabletop testing"
+      ],
+      "_provenance": "Authored from concept: 'IR plan canonical elements per NIST SP 800-61'. Public sources: NIST, ISACA, PCI Council, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_163",
+      "domain": 5,
+      "subtopic": "Computer Security Incident Response Team (CSIRT) Structure",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's CSIRT (Computer Security Incident Response Team) structure. Which option BEST captures CSIRT canonical roles?",
+      "options": {
+        "A": "A single SOC analyst handles all incidents end-to-end including coordination; cross-functional team adds overhead without delivering operational value.",
+        "B": "Executive committee handles all incidents at the leadership level exclusively; technical staff execute the actions but don't participate in coordination decisions.",
+        "C": "Incident Commander + technical lead + comms lead + legal liaison + HR liaison + executive sponsor + customer-success liaison + IR retainer contact + clear escalation chains.",
+        "D": "External MSSP handles entire IR cycle from detection to recovery; firm staff have no CSIRT role beyond receiving escalation notifications."
+      },
+      "correct": "C",
+      "key_concept": "CSIRT = Incident Commander + technical lead + comms lead + legal liaison + HR liaison + executive sponsor + customer-success liaison + IR retainer + escalation chains. Nine roles balancing technical + business + legal + customer + executive.",
+      "pre_read": "For CSIRT structure questions, anchor on cross-functional team with named roles. Single-analyst, executive-only, and MSSP-replaces-CSIRT framings each fail.",
+      "correct_explanation": "CERT/CC CSIRT Handbook, ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, and SANS Incident Handler's Handbook establish CSIRT canonical structure: (1) INCIDENT COMMANDER — coordinates response, makes priority calls, single point of authority during incident; not necessarily the senior-most person, but the trained IR-commander; (2) TECHNICAL LEAD — drives investigation + containment + eradication; (3) COMMUNICATIONS LEAD — internal updates, executive briefings, external statements; coordinates with PR/marketing; (4) LEGAL LIAISON — privilege, regulatory obligations, litigation hold, law enforcement engagement; outside counsel coordination; (5) HR LIAISON — insider scenarios, employee impact, termination coordination; (6) EXECUTIVE SPONSOR — CISO or CIO; business decisions requiring executive authority; resource allocation; (7) CUSTOMER-SUCCESS LIAISON — customer-facing communications, account-manager coordination, SLA-impact assessment; (8) IR RETAINER CONTACT — external IR vendor (Mandiant, CrowdStrike, Kroll, etc.) point of engagement; pre-negotiated retainer; (9) ESCALATION CHAINS — clear paths to higher authority for resource decisions, regulator notification, public disclosure.",
+      "wrong_explanations": {
+        "A": "Failure mode = SINGLE-ANALYST. Modern incidents cross legal (regulator/lawsuit), HR (insider, employee impact), comms (customer/public), and executive (business decisions) functions. Single analyst cannot cover all; cross-functional team is essential.",
+        "B": "Failure mode = EXECUTIVE-ONLY-COORDINATION. Executives lack technical context to drive technical response; technical staff need authority to act. Distributed responsibility with executive sponsorship is canonical, not executive-driven.",
+        "D": "Failure mode = MSSP-AS-CSIRT-REPLACEMENT. MSSP provides 24x7 monitoring + initial response; firm-side CSIRT provides business context, customer comms, regulatory coordination, executive decisions. Both layers needed."
+      },
+      "tips": [
+        "Trap is A — 'single SOC analyst handles all incidents' is candidate-seductive because it sounds operationally lean; but modern incidents cross legal + HR + comms + executive functions. Single analyst cannot cover all dimensions.",
+        "CSIRT = Incident Commander + technical lead + comms lead + legal + HR + exec sponsor + customer-success + IR retainer + escalation chains. Nine roles. Cross-functional + named.",
+        "Exam-day shortcut: when stem asks about CSIRT STRUCTURE, look for cross-functional named-role team; single-analyst, executive-only, and MSSP-replaces framings each fail."
+      ],
+      "framework_ref": "CERT/CC CSIRT Handbook; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; SANS Incident Handler's Handbook; FIRST.org (Forum of Incident Response and Security Teams)",
+      "related_concepts": [
+        "Incident Commander role",
+        "Legal liaison + privilege",
+        "FIRST.org standards",
+        "CSIRT services framework"
+      ],
+      "_provenance": "Authored from concept: 'CSIRT canonical structure per CERT/CC + NIST'. Public sources: CERT, ISACA, NIST, SANS, FIRST. No legacy bank citation."
+    },
+    {
+      "id": "d5_164",
+      "domain": 5,
+      "subtopic": "Incident Classification — Severity Matrix",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's incident classification framework. Which option BEST captures the canonical SEVERITY MATRIX framework?",
+      "options": {
+        "A": "Single dimension based on technical severity only using CVSS-style Critical/High/Medium/Low; business impact assessment happens during response, not during classification.",
+        "B": "Continuous severity score from 0-100 with no defined level thresholds; analysts assign numerical values based on their personal judgment of each event.",
+        "C": "Severity assigned post-incident in the lessons-learned phase; initial response treats all incidents equivalently to avoid premature classification bias.",
+        "D": "Multi-dimensional severity = business impact + data sensitivity + scope + regulatory exposure + customer impact; four levels (S1-S4) with explicit thresholds and required response times."
+      },
+      "correct": "D",
+      "key_concept": "Incident classification = multi-dimensional severity (business impact + data sensitivity + scope + regulatory exposure + customer impact) + four levels (S1-S4) with explicit thresholds + required response times per level.",
+      "pre_read": "For incident classification questions, anchor on multi-dimensional matrix with explicit levels. Technical-only, continuous-without-levels, and post-incident framings each fail.",
+      "correct_explanation": "NIST SP 800-61 Rev 2, ISACA Incident Management Audit/Assurance Program, ENISA Reference Incident Classification Taxonomy, and FIRST CSIRT Services Framework establish severity matrix framework. (1) MULTI-DIMENSIONAL SEVERITY DIMENSIONS — Business Impact (revenue, operations, reputation); Data Sensitivity (PII/PHI/PCI/trade secret/intellectual property scope); Scope (single user vs systemwide); Regulatory Exposure (HIPAA breach notification, GDPR Article 33, SEC Reg S-K); Customer Impact (number affected, SLA implications); (2) FOUR-LEVEL FRAMEWORK — S1 Critical (immediate executive engagement; <1 hour response; major data exposure or business disruption); S2 High (senior engagement; <4 hour response; significant); S3 Medium (standard IR; <24 hour response); S4 Low (routine handling; <72 hour response); (3) EXPLICIT THRESHOLDS — written criteria per level (e.g., 'S1 if PII of 10,000+ users affected'); reduces classification subjectivity; (4) REQUIRED RESPONSE TIMES — engagement clocks per level; tracked against SLA; (5) ESCALATION CRITERIA — events that auto-escalate severity (e.g., 'media coverage' or 'regulator inquiry' auto-escalates to S1).",
+      "wrong_explanations": {
+        "A": "Failure mode = TECHNICAL-SEVERITY-ONLY. Two incidents with same CVSS may have very different business impact: a Critical RCE on a sandbox dev environment is lower urgency than a Medium misconfiguration on the production customer-data API. Multi-dimensional classification required.",
+        "B": "Failure mode = CONTINUOUS-SCORE-WITHOUT-LEVELS. Numerical scores without defined level thresholds produce inconsistent application (one analyst's '75' = another's '60'). Defined S1-S4 levels with explicit thresholds enable consistent response.",
+        "C": "Failure mode = SEVERITY-POST-INCIDENT. Without initial severity classification, all incidents trigger same response intensity — overruns analyst capacity for major incidents while over-investing in minor ones. Initial classification is critical-path."
+      },
+      "tips": [
+        "Trap is A — 'technical severity only (CVSS-style)' is candidate-seductive because CVSS is the most-familiar severity rubric; but CVSS measures technical severity; business impact + data sensitivity + scope require additional dimensions. Multi-dimensional matrix is canonical.",
+        "Incident classification = multi-dimensional (business impact + data sensitivity + scope + regulatory + customer) + four levels (S1-S4) + explicit thresholds + required response times.",
+        "Exam-day shortcut: when stem asks about INCIDENT SEVERITY MATRIX, look for multi-dimensional with explicit S1-S4 levels; technical-only, continuous, and post-incident framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-61 Rev 2; ISACA Incident Management Audit/Assurance Program; ENISA Reference Incident Classification Taxonomy; FIRST CSIRT Services Framework; GDPR Article 33 (Notification of a personal data breach)",
+      "related_concepts": [
+        "Multi-dimensional severity",
+        "S1-S4 level thresholds",
+        "Auto-escalation criteria",
+        "Business-impact dimension"
+      ],
+      "_provenance": "Authored from concept: 'Incident severity matrix canonical framework'. Public sources: NIST, ISACA, ENISA, FIRST. No legacy bank citation."
+    },
+    {
+      "id": "d5_165",
+      "domain": 5,
+      "subtopic": "Incident Escalation Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's incident escalation framework. Which option BEST captures CANONICAL ESCALATION criteria?",
+      "options": {
+        "A": "Severity-based auto-escalation + time-based + impact-based + executive-decision triggers + media-coverage trigger + explicit handoff requirements. Six canonical triggers.",
+        "B": "Single escalation pathway: SOC analyst escalates to SOC manager who escalates to CISO; same chain applies for all incident types regardless of context.",
+        "C": "No formal escalation framework; the incident commander uses personal judgment to escalate when appropriate based on incident dynamics at the time.",
+        "D": "Auto-escalation to CEO for all incidents regardless of severity; full executive visibility eliminates escalation decision complexity at typical firm scale."
+      },
+      "correct": "A",
+      "key_concept": "Escalation framework = severity-based + time-based + impact-based + executive-decision-triggers + media-coverage-trigger + explicit handoff requirements. Six canonical triggers.",
+      "pre_read": "For escalation framework questions, anchor on multi-trigger framework with explicit criteria. Single-chain, judgment-only, and auto-CEO-for-all framings each fail.",
+      "correct_explanation": "NIST SP 800-61 Rev 2, ISACA Incident Management Audit/Assurance Program, and PCI DSS v4.0 Requirement 12.10 establish escalation framework: (1) SEVERITY-BASED — S1 auto-escalates to CISO + executive sponsor + legal within 15 minutes; S2 within 1 hour; explicit times; (2) TIME-BASED — no progress on containment in N hours auto-escalates (S1 = 2h, S2 = 8h); prevents incidents from languishing; (3) IMPACT-BASED — regulator notification threshold (HIPAA OCR 60-day clock starts, SEC 4-day clock starts) triggers escalation; customer-impact threshold (>1000 affected, >$X revenue impact); (4) EXECUTIVE-DECISION TRIGGERS — events requiring executive decision (ransom payment consideration, public disclosure timing, customer-notification scope) escalate to CISO + CFO + GC + CEO; (5) MEDIA-COVERAGE TRIGGER — incident becoming public auto-escalates to S1 + executive + comms regardless of underlying technical severity; (6) EXPLICIT HANDOFF REQUIREMENTS — escalation handoff includes context, current status, decisions pending, timeline; not just 'here's an incident'. Documented criteria reduce escalation variance and ensure timely engagement.",
+      "wrong_explanations": {
+        "B": "Failure mode = SINGLE-CHAIN. Different incidents need different escalation paths: insider threat to HR + legal; customer-data breach to comms + legal + customer success; regulator inquiry to legal + executive directly. Single-chain misses these.",
+        "C": "Failure mode = JUDGMENT-ONLY. Escalation decisions vary by individual; without explicit criteria, similar incidents receive different treatment. Defined criteria reduce variance and ensure consistent timely escalation.",
+        "D": "Failure mode = AUTO-CEO-FOR-EVERYTHING. CEO inundated with minor incidents loses ability to focus on truly critical ones. Auto-CEO triggers only for material incidents (S1, regulator-relevant, media-relevant) preserve attention."
+      },
+      "tips": [
+        "Trap is C — 'no formal escalation; commander uses judgment' is candidate-seductive because trust-in-judgment respects practitioner autonomy; but judgment-only produces inconsistent application across analysts and over time. Defined criteria + commander judgment for edge cases is canonical.",
+        "Escalation = severity-based + time-based + impact-based + exec-decision triggers + media-coverage trigger + explicit handoff. Six triggers.",
+        "Exam-day shortcut: when stem asks about INCIDENT ESCALATION, look for multi-trigger framework; single-chain, judgment-only, and auto-CEO framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-61 Rev 2; ISACA Incident Management Audit/Assurance Program; PCI DSS v4.0 Requirement 12.10; FIRST CSIRT Services Framework",
+      "related_concepts": [
+        "Time-based escalation",
+        "Media-coverage trigger",
+        "Regulatory clock triggers",
+        "Executive-decision triggers"
+      ],
+      "_provenance": "Authored from concept: 'Incident escalation framework canonical structure'. Public sources: NIST, ISACA, PCI Council, FIRST. No legacy bank citation."
+    },
+    {
+      "id": "d5_166",
+      "domain": 5,
+      "subtopic": "Tabletop Exercise Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's IR tabletop exercise program. Which option BEST captures CANONICAL TABLETOP design?",
+      "options": {
+        "A": "Annual single tabletop with generic ransomware scenario for all years; same scenario each year enables clear progress comparison across time periods.",
+        "B": "Realistic firm-specific scenarios + scenario evolution injects + cross-functional participation + facilitator-driven + post-exercise improvements + annual minimum cadence + after-action documentation.",
+        "C": "External vendor designs and runs all scenarios entirely; firm participants execute responses without designing or facilitating any exercise components.",
+        "D": "Full-scale live exercise instead of tabletop format; only live attack simulation produces realistic results that meaningfully test incident response capability."
+      },
+      "correct": "B",
+      "key_concept": "Tabletop exercise = realistic firm-specific scenarios + scenario evolution (injects) + cross-functional participation + facilitator-driven discussion + post-exercise improvements + annual minimum + after-action documentation. Seven elements.",
+      "pre_read": "For tabletop exercise questions, anchor on seven-element framework. Same-scenario-each-year, external-only-design, and live-instead-of-tabletop framings each fail.",
+      "correct_explanation": "NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities), ISACA Incident Management Audit/Assurance Program, FEMA Homeland Security Exercise and Evaluation Program (HSEEP), and PCI DSS v4.0 Requirement 12.10.4 establish tabletop exercise framework: (1) REALISTIC SCENARIOS reflecting firm's threat model — industry-specific (healthcare ransomware, financial-services BEC, SaaS supply-chain compromise); not generic; (2) SCENARIO EVOLUTION (INJECTS) — facilitator adds new information mid-exercise (regulator inquiry, media coverage, executive escalation, customer demand); tests decision-making under evolving conditions; (3) CROSS-FUNCTIONAL PARTICIPATION — tech + legal + comms + executive + HR + customer-success; whoever would participate in real incident; (4) FACILITATOR-DRIVEN DISCUSSION — facilitator guides scenario; pauses for decision points; surfaces gaps; (5) POST-EXERCISE IMPROVEMENT ACTIONS — gaps identified become IR plan updates, control improvements, training; tracked to completion; (6) ANNUAL MINIMUM CADENCE — PCI DSS Requirement 12.10.4; quarterly for high-risk industries (financial services, healthcare critical operations); (7) AFTER-ACTION DOCUMENTATION — what was tested, who participated, gaps identified, actions assigned; auditable.",
+      "wrong_explanations": {
+        "A": "Failure mode = SAME-SCENARIO-EACH-YEAR. Repetition produces participants who memorize correct answers; loses the test value. Variety of scenarios reflecting firm's evolving threat model is canonical.",
+        "C": "Failure mode = EXTERNAL-VENDOR-WITHOUT-FIRM-DESIGN. External vendor designs based on generic context; misses firm-specific systems, regulatory obligations, customer profiles. Hybrid (external facilitator + firm scenario design) is canonical; pure-external lacks firm-specific value.",
+        "D": "Failure mode = LIVE-EXERCISE-INSTEAD-OF-TABLETOP. Live exercises (red team, breach simulation) and tabletops serve DIFFERENT purposes: live tests technical detection + response; tabletop tests decision-making, communication, coordination. Both required."
+      },
+      "tips": [
+        "Trap is A — 'same scenario each year for progress comparison' is candidate-seductive because consistency feels like measurement; but repetition produces memorized responses, not tested judgment. Variety of scenarios with evolving injects is canonical.",
+        "Tabletop exercise = realistic firm-specific scenarios + scenario evolution (injects) + cross-functional participation + facilitator-driven + post-exercise improvements + annual minimum + documentation. Seven elements.",
+        "Exam-day shortcut: when stem asks about TABLETOP EXERCISE DESIGN, look for seven-element framework with scenario variety; same-scenario, external-only, and live-instead-of-tabletop framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities); ISACA Incident Management Audit/Assurance Program; FEMA Homeland Security Exercise and Evaluation Program (HSEEP); PCI DSS v4.0 Requirement 12.10.4",
+      "related_concepts": [
+        "Scenario evolution injects",
+        "Cross-functional participation",
+        "After-action documentation",
+        "PCI DSS 12.10.4 cadence"
+      ],
+      "_provenance": "Authored from concept: 'Tabletop exercise canonical design per NIST SP 800-84 + HSEEP'. Public sources: NIST, ISACA, FEMA, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_167",
+      "domain": 5,
+      "subtopic": "External IR Retainer Engagement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's external IR retainer engagement framework. Which option BEST captures CANONICAL IR RETAINER program?",
+      "options": {
+        "A": "No retainer in place; engage IR vendor at time of incident on emergency procurement basis through normal contract channels for cost-efficiency.",
+        "B": "Single full-time-equivalent vendor contract instead of retainer; FTE pricing dominates retainer pricing for any meaningful IR engagement at scale.",
+        "C": "Pre-negotiated retainer with cleared vendor + SLA for engagement + on-site capability + scope definition + privilege framework + cyber insurance alignment + annual review + backup retainer.",
+        "D": "Insurance broker handles IR vendor selection entirely at time of incident; firm's role is claim filing only without pre-existing retainer relationship."
+      },
+      "correct": "C",
+      "key_concept": "IR retainer = pre-negotiated vendor + SLA for engagement + on-site capability + scope definition + privilege framework + cyber insurance alignment + annual review + hours tracking + backup retainer.",
+      "pre_read": "For IR retainer questions, anchor on pre-negotiated capacity with SLA + privilege framework. No-retainer, FTE-vs-retainer, and insurance-selects framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, and IR vendor (Mandiant, CrowdStrike, Kroll, Stroz Friedberg, IBM X-Force, PwC Cybersecurity) retainer documentation establish IR retainer framework: (1) PRE-NEGOTIATED RETAINER WITH CLEARED IR VENDOR — vendor pre-vetted (cleared for classified or sensitive engagements as needed); retainer contract pre-signed; ready-to-engage; (2) SLA FOR ENGAGEMENT INITIATION — typical 2-hour to engage; written SLA; (3) ON-SITE CAPABILITY — vendor can deploy on-site within 24-72 hours; remote-only is insufficient for major incidents; (4) SCOPE DEFINITION — what retainer covers (investigation, IR support, ransom negotiation, forensics, recovery support); what's out of scope; (5) PRIVILEGE FRAMEWORK — engagement under outside counsel direction; work product privileged for litigation; (6) CYBER INSURANCE VENDOR ALIGNMENT — retainer vendor pre-approved by insurance carrier; insurance may have preferred-vendor list; alignment prevents reimbursement issues; (7) ANNUAL RELATIONSHIP REVIEW — retainer hours used, response quality, contract terms refresh; (8) RETAINER HOURS TRACKING — hours used vs allocated; understand usage; (9) BACKUP RETAINER — secondary vendor available if primary unavailable (vendor incident response themselves, conflict of interest).",
+      "wrong_explanations": {
+        "A": "Failure mode = NO-RETAINER. Emergency procurement of IR vendor takes hours-to-days for contract + scope + privilege agreements during which the incident worsens. Pre-negotiated retainer enables engagement within 1-2 hours.",
+        "B": "Failure mode = FTE-VS-RETAINER. Full-time-equivalent contract over-pays for capability when not in incident; retainer pricing pays for availability + on-demand engagement. Retainer is cost-efficient for typical firm.",
+        "D": "Failure mode = INSURANCE-SELECTS-VENDOR. Insurance broker may have preferred vendors but firm should pre-select to ensure cleared, business-context-aware vendor available immediately; insurance can validate post-engagement."
+      },
+      "tips": [
+        "Trap is A — 'no retainer; engage IR vendor at time of incident' is candidate-seductive because retainer costs are visible while emergency-procurement cost is hidden; but emergency procurement consumes hours during which the incident worsens. Pre-negotiated retainer is operational standard for firms with material cybersecurity exposure.",
+        "IR retainer = pre-negotiated vendor + SLA + on-site capability + scope + privilege framework + insurance alignment + annual review + hours tracking + backup retainer. Nine elements.",
+        "Exam-day shortcut: when stem asks about IR RETAINER FRAMEWORK, look for pre-negotiated capacity with SLA + privilege + insurance alignment; no-retainer, FTE-vs-retainer, and insurance-selects framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; Mandiant / CrowdStrike / Kroll / Stroz Friedberg Retainer Methodologies",
+      "related_concepts": [
+        "Pre-negotiated retainer",
+        "Privilege framework",
+        "Cyber insurance alignment",
+        "Backup retainer"
+      ],
+      "_provenance": "Authored from concept: 'External IR retainer canonical framework'. Public sources: ISACA, NIST, IR vendor documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_168",
+      "domain": 5,
+      "subtopic": "IR Communication Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's IR communication framework. Which option BEST captures CANONICAL IR COMMUNICATION structure?",
+      "options": {
+        "A": "Single press release issued only at incident conclusion; internal communication uses email distribution lists throughout the active incident timeline.",
+        "B": "No formal communication framework needed; comms is ad-hoc during incidents and handled by whichever executive happens to be available at the time.",
+        "C": "Detailed technical communication to all stakeholder audiences at full depth; transparency at maximum technical depth is the safest posture for legal protection.",
+        "D": "Audience-specific templates + pre-approved language + cadence per severity + spokesperson designation + legal review gates + regulatory-clock-aligned notification + media coordination + post-incident audit."
+      },
+      "correct": "D",
+      "key_concept": "IR comms framework = audience-specific templates + pre-approved language + cadence per severity + spokesperson designation + legal review gates + customer notification aligned to regulatory clocks + media-statement coordination + post-incident audit. Eight elements.",
+      "pre_read": "For IR communication questions, anchor on multi-audience framework with templates + legal review. Single-press-release, ad-hoc, and maximum-technical framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, GDPR Articles 33-34 (Breach Notification), SEC Reg S-K Item 1.05, HIPAA Breach Notification Rule, and IR crisis communications guidance (Edelman, Weber Shandwick) establish IR communication framework: (1) AUDIENCE-SPECIFIC TEMPLATES — internal (cross-team status), executive (CISO/CIO/CFO/CEO/GC), customer (account-managers + direct customer comms), regulator (filings per applicable rule), media (statements + Q&A); (2) PRE-APPROVED LANGUAGE — legal-reviewed; key terms standardized (avoiding accidental admissions); (3) CADENCE PER SEVERITY — S1 hourly internal updates, daily executive; S2-S4 less frequent; documented; (4) SPOKESPERSON DESIGNATION — single voice externally (CISO + CEO depending on severity); reduces conflicting messages; (5) LEGAL REVIEW GATES — outbound external communications reviewed by counsel; privilege preserved; (6) CUSTOMER-NOTIFICATION TIMING ALIGNED TO REGULATORY CLOCKS — GDPR Article 33 72-hour clock to regulator, Article 34 to data subjects; HIPAA OCR 60-day clock; SEC Reg S-K Item 1.05 4-day clock; state breach laws (varies); customer notification timing aligned; (7) MEDIA-STATEMENT COORDINATION — proactive statement when material; reactive Q&A for media inquiry; pre-cleared spokesperson; (8) POST-INCIDENT COMMUNICATION AUDIT — what was communicated to whom and when; documented for regulator + auditor inquiry.",
+      "wrong_explanations": {
+        "A": "Failure mode = SINGLE-PRESS-RELEASE. Communication during incident is continuous: internal status updates, executive briefings, customer notifications, regulator filings, media inquiries. Multiple audiences with different needs require differentiated framework.",
+        "B": "Failure mode = AD-HOC-COMMS. Without pre-approved templates and spokesperson designation, every incident becomes a comms scramble; inconsistent messaging produces confusion; potential regulatory or legal liability from off-message statements.",
+        "C": "Failure mode = MAXIMUM-TECHNICAL-DETAIL. Customers don't need network-diagram detail; regulators need specific facts; media needs higher-level. Audience-appropriate depth is canonical, not maximum-technical-everywhere."
+      },
+      "tips": [
+        "Trap is C — 'detailed technical communication to all stakeholders for transparency' is candidate-seductive because transparency feels safer; but customers don't need network-diagram detail (loses message clarity), regulators have specific format requirements, and over-detail can create legal liability. Audience-appropriate depth is canonical.",
+        "IR comms = audience-specific templates + pre-approved language + cadence per severity + spokesperson + legal review gates + regulatory clock-aligned customer notification + media coordination + post-incident audit. Eight elements.",
+        "Exam-day shortcut: when stem asks about IR COMMUNICATION FRAMEWORK, look for multi-audience framework with templates + legal review; single-press-release, ad-hoc, and maximum-technical framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; GDPR Article 33 (Notification of a personal data breach); GDPR Articles 33-34 (Breach Notification); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure); HIPAA Breach Notification Rule 45 CFR §164.400-414",
+      "related_concepts": [
+        "Audience-specific templates",
+        "Regulatory clock alignment",
+        "Spokesperson designation",
+        "Privilege preservation"
+      ],
+      "_provenance": "Authored from concept: 'IR communication canonical framework with multi-audience + regulatory alignment'. Public sources: ISACA, NIST, GDPR, SEC, HIPAA. No legacy bank citation."
+    },
+    {
+      "id": "d5_169",
+      "domain": 5,
+      "subtopic": "Threat Intelligence Sharing During IR",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's threat intelligence sharing practice during incident response. Which option BEST captures CANONICAL THREAT INTEL SHARING approach?",
+      "options": {
+        "A": "ISAC participation + CISA voluntary sharing + bilateral peer sharing + IOC-first then case-detail phased + TLP marking + attribution caveats + post-incident publication + legal review.",
+        "B": "No threat intel sharing externally; firm-specific threat intel represents competitive advantage and should remain proprietary to preserve firm market position.",
+        "C": "Maximum sharing of all incident details with public security community immediately; transparency at full detail benefits the entire security ecosystem.",
+        "D": "Sharing only with law enforcement agencies; private security community sharing creates legal risk and potential exposure for the firm and counsel."
+      },
+      "correct": "A",
+      "key_concept": "Threat intel sharing = ISAC participation + CISA voluntary sharing + bilateral peer sharing + IOC-first then case-detail phased + TLP marking + attribution caveats + post-incident publication + legal review. Eight elements.",
+      "pre_read": "For threat intel sharing questions, anchor on multi-channel sharing with phased disclosure + TLP. No-sharing, maximum-immediate, and law-enforcement-only framings each fail.",
+      "correct_explanation": "ISACA Information Sharing Audit/Assurance Program, FIRST.org (Forum of Incident Response and Security Teams), CISA Information Sharing Programs (AIS Automated Indicator Sharing), and TLP (Traffic Light Protocol) v2.0 establish threat intel sharing framework: (1) ISAC PARTICIPATION — industry-specific information-sharing organizations: FS-ISAC (financial services), H-ISAC (healthcare), IT-ISAC (technology), Auto-ISAC (automotive), E-ISAC (electricity); membership-based, trust-framework sharing; (2) CISA VOLUNTARY SHARING — AIS (Automated Indicator Sharing) for IOCs; CISA Cyber Incident Reporting for Critical Infrastructure Act (CIRCIA) reporting; (3) BILATERAL PEER SHARING — direct sharing with trusted peers (often through CISO networks, regional security groups); (4) IOC-FIRST THEN CASE-DETAIL PHASED — share indicators of compromise (hashes, IPs, domains) immediately for defender benefit; share case details (TTPs, attack narrative) after incident is contained; (5) TLP MARKING — TLP:RED (recipient only), TLP:AMBER (limited disclosure), TLP:GREEN (community), TLP:CLEAR (formerly TLP:WHITE; public); marks indicate sharing boundaries; (6) THREAT-ACTOR ATTRIBUTION CAVEATS — attribution is hard; share TTPs (consistent with X actor) without certainty claims; reduces misattribution liability; (7) POST-INCIDENT ATTACK-PATTERN PUBLICATION — security blog or conference talk after victim consent; benefits broader community; (8) SHARING GATED BY LEGAL REVIEW — counsel reviews sensitive shares; privilege preserved; jurisdictional considerations.",
+      "wrong_explanations": {
+        "B": "Failure mode = NO-SHARING-COMPETITIVE-EDGE. Threat intel sharing is RECIPROCAL; firms that share receive higher-quality intel from peers. The competitive concern misunderstands the value of network effects in threat intel; sharing within trust frameworks (ISACs, CISA) is canonical practice.",
+        "C": "Failure mode = MAXIMUM-SHARING-IMMEDIATELY. Sharing case details before incident is contained alerts the threat actor; sharing with full attribution before investigation complete creates legal liability for misattribution. Phased sharing (IOCs first, case details later) with legal review is canonical.",
+        "D": "Failure mode = LAW-ENFORCEMENT-ONLY. FBI/CISA sharing is one channel; ISACs (FS-ISAC for financial services, H-ISAC for healthcare, IT-ISAC for technology) provide industry-specific peer sharing that complements government channels. Both have value."
+      },
+      "tips": [
+        "Trap is B — 'no sharing; firm-specific threat intel is competitive advantage' is candidate-seductive because secrecy feels safer; but threat intel sharing is RECIPROCAL — firms that share receive higher-quality intel from peers. ISACs and CISA voluntary sharing are canonical practice.",
+        "Threat intel sharing = ISAC + CISA + bilateral peer + IOC-first phased + TLP marking + attribution caveats + post-incident publication + legal review. Eight elements.",
+        "Exam-day shortcut: when stem asks about THREAT INTEL SHARING DURING IR, look for multi-channel framework with phased disclosure + TLP; no-sharing, maximum-immediate, and law-enforcement-only framings each fail."
+      ],
+      "framework_ref": "ISACA Information Sharing Audit/Assurance Program; FIRST.org Threat Intel Sharing; CISA Automated Indicator Sharing (AIS); CIRCIA (Cyber Incident Reporting for Critical Infrastructure Act); Traffic Light Protocol (TLP) v2.0",
+      "related_concepts": [
+        "FS-ISAC / H-ISAC / IT-ISAC",
+        "Traffic Light Protocol v2.0",
+        "CISA AIS",
+        "CIRCIA reporting"
+      ],
+      "_provenance": "Authored from concept: 'Threat intel sharing canonical framework during incident response'. Public sources: ISACA, FIRST, CISA, TLP standard. No legacy bank citation."
+    },
+    {
+      "id": "d5_170",
+      "domain": 5,
+      "subtopic": "Post-Incident Review Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's post-incident review (PIR) framework. Which option BEST captures CANONICAL PIR structure?",
+      "options": {
+        "A": "Identify the individual responsible for the incident; performance-improvement action focuses specifically on that named individual going forward.",
+        "B": "Blameless post-mortem culture + structured timeline reconstruction + root-cause analysis + contributing-factor analysis + action-item tracking + executive sponsorship + lessons into IR plan + cross-incident pattern analysis.",
+        "C": "PIR is optional unless regulator or insurance carrier specifically requires it; routine post-incident review adds overhead without proportional learning value.",
+        "D": "Document the incident in a closed-case report only; no further analysis or structured review is needed once immediate response activity concludes."
+      },
+      "correct": "B",
+      "key_concept": "Post-incident review = blameless culture + structured timeline reconstruction + root-cause analysis + contributing-factor analysis + action-item tracking + executive sponsorship + lessons fed into IR plan + cross-incident pattern analysis. Eight elements.",
+      "pre_read": "For PIR questions, anchor on eight-element framework with blameless culture. Blame-individual, optional-PIR, and closed-case-report-only framings each fail.",
+      "correct_explanation": "Google SRE Blameless Postmortems methodology, ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2 (Post-Incident Activity phase), and ITIL 4 Problem Management establish PIR framework. (1) BLAMELESS POST-MORTEM CULTURE — focus on systems + processes that enabled the incident, not individual blame; psychological safety enables full disclosure; Google SRE pioneered formal blameless culture in tech; (2) STRUCTURED TIMELINE RECONSTRUCTION — minute-by-minute timeline of events + decisions + actions; based on logs + interviews + documentation; (3) ROOT-CAUSE ANALYSIS — Five Whys, Ishikawa fishbone, or fault-tree analysis; arrives at TRUE root cause not symptom; (4) CONTRIBUTING-FACTOR ANALYSIS — factors that didn't directly cause but enabled or worsened (incomplete monitoring, missing alert, training gap); (5) ACTION-ITEM TRACKING — specific improvements assigned to owners with deadlines; tracked to completion; not promises; (6) EXECUTIVE SPONSORSHIP — CISO or CIO sponsors; resources for improvements committed; (7) LESSONS FED INTO IR PLAN — IR plan updated based on lessons; new playbooks added; severity classification refined; (8) CROSS-INCIDENT PATTERN ANALYSIS — quarterly review of recent incidents identifies recurring patterns (e.g., 'we keep missing initial-access alerts'); pattern-level fixes vs incident-by-incident.",
+      "wrong_explanations": {
+        "A": "Failure mode = BLAME-INDIVIDUAL. Blame culture suppresses information surfacing (individuals don't disclose contributing factors for fear of repercussion); without blameless culture, incidents are repeated. Blameless culture surfaces full picture.",
+        "C": "Failure mode = OPTIONAL-PIR. PIR is the LEARNING moment from an incident; treating it as optional means lessons are not captured + IR plan doesn't improve + same patterns recur. Annual minimum (and per-major-incident) is canonical.",
+        "D": "Failure mode = CLOSED-CASE-REPORT-ONLY. Documentation captures WHAT happened; PIR captures WHY + HOW TO PREVENT + WHAT TO IMPROVE. Documentation is one element of broader PIR framework."
+      },
+      "tips": [
+        "Trap is A — 'identify individual responsible' is candidate-seductive because accountability feels rigorous; but blame culture suppresses information surfacing (people don't disclose contributing factors). Blameless culture surfaces full picture. Google SRE pioneered formal blameless postmortems for this reason.",
+        "PIR = blameless culture + timeline reconstruction + RCA + contributing-factor analysis + action-item tracking + exec sponsorship + lessons-to-IR-plan + cross-incident pattern analysis. Eight elements.",
+        "Exam-day shortcut: when stem asks about POST-INCIDENT REVIEW, look for blameless culture + eight-element framework; blame-individual, optional-PIR, and closed-case-report-only framings each fail."
+      ],
+      "framework_ref": "Google SRE Blameless Postmortems methodology; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Post-Incident Activity); ITIL 4 Problem Management",
+      "related_concepts": [
+        "Blameless post-mortem culture",
+        "Five Whys / fishbone RCA",
+        "Contributing-factor analysis",
+        "Cross-incident pattern review"
+      ],
+      "_provenance": "Authored from concept: 'Post-incident review canonical framework per Google SRE + NIST'. Public sources: Google SRE, ISACA, NIST, ITIL. No legacy bank citation."
+    },
+    {
+      "id": "d5_171",
+      "domain": 5,
+      "subtopic": "Multi-Region Incident Coordination",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to multi-region incident coordination?",
+      "scenario_context": "A global SaaS firm's IR team is responding at 2:47 AM Sunday: confirmed ransomware activity in TWO regions simultaneously — US-East-1 (AWS) + EU-West-1 (AWS). Affected systems include customer-data platforms in both regions (3.8M US customers + 2.1M EU customers). Time zones span UTC-8 (US west coast leadership) to UTC+2 (EU operations). The firm has separate IR retainers per region (one for US, one for EU due to GDPR data-handling). CISO + CTO + Chief Customer Officer + GC + US-IR-retainer + EU-IR-retainer on bridge call within 30 minutes.",
+      "options": {
+        "A": "Run two completely independent IR responses (US team handles US incident, EU team handles EU incident); regional autonomy is more operationally efficient than coordinated response.",
+        "B": "Single US-led response with the EU IR retainer in support role only; centralizing decision authority simplifies cross-region coordination but reduces EU operational agility.",
+        "C": "Unified Incident Commander + regional IR retainer + parallel containment with synchronized comms + jurisdiction-appropriate regulator notification + cross-region forensic correlation + cyber insurance + aligned customer comms + post-incident refresh.",
+        "D": "Single EU-led response since GDPR is the stricter regulatory regime; EU regulatory complexity dominates the decision framework for multi-region incidents."
+      },
+      "correct": "C",
+      "key_concept": "Multi-region incident = unified Incident Commander + regional IR retainer engagement + parallel containment with synchronized comms + jurisdiction-appropriate regulator notification + cross-region forensic correlation + cyber insurance + customer comms aligned + post-incident plan refresh. Eight tracks.",
+      "pre_read": "For multi-region incident questions, anchor on unified commander + regional execution + synchronized comms framework. Independent-regional, US-led-with-EU-support, and EU-led-for-stricter framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2 (multi-jurisdictional considerations), GDPR Article 33 (72-hour notification to lead supervisory authority), HIPAA OCR Breach Notification Rule, FBI Internet Crime Complaint Center coordination, and ENISA Multi-Jurisdiction Incident Response Guidance establish multi-region IR framework. (1) UNIFIED INCIDENT COMMANDER — single decision authority across regions; not US-led or EU-led; cross-region command; typical = CISO; (2) REGIONAL IR-RETAINER ENGAGEMENT — both retainers engaged; regional retainers execute regional response under Commander direction; (3) PARALLEL CONTAINMENT WITH SYNCHRONIZED COMMUNICATION — both regions contain simultaneously; communication coordinated to avoid asymmetric messaging; (4) JURISDICTION-APPROPRIATE REGULATOR NOTIFICATION — US (HHS OCR for HIPAA, SEC, state AGs), EU (member state DPAs per GDPR Article 33; lead supervisory authority for cross-border); each region's regulators per their rules; (5) CROSS-REGION FORENSIC CORRELATION — same threat actor likely; TTPs correlated; attribution evidence shared between regional retainers; (6) CYBER INSURANCE NOTIFICATION — single notification with multi-region scope; policies often have regional coverage exclusions; (7) CUSTOMER COMMS ALIGNED ACROSS REGIONS — US customers and EU customers receive same factual content, language adapted to local regulations + culture; (8) POST-INCIDENT MULTI-REGION IR PLAN REFRESH — lessons captured for next multi-region scenario; cross-region coordination procedures refined.",
+      "wrong_explanations": {
+        "A": "Failure mode = INDEPENDENT-REGIONAL-RESPONSES. Two independent responses risk inconsistent customer messaging (US customers told one thing, EU customers told another), inconsistent forensic conclusions (one team finds artifacts the other misses), and missed cross-region correlation (same threat actor, same TTPs). Unified Incident Commander with regional execution is canonical.",
+        "B": "Failure mode = US-LED-WITH-EU-SUPPORT. Asymmetric response framing creates EU-side disempowerment; GDPR-specific actions (Article 33 notification within 72h) require EU-side authority. Unified Commander with regional EXECUTION authority is canonical.",
+        "D": "Failure mode = EU-LED-FOR-GDPR-STRICTER. Stricter regulation doesn't automatically grant decision authority; this asymmetry frames US side as junior, which is operationally awkward. Unified Commander with jurisdictional respect is canonical."
+      },
+      "tips": [
+        "Trap is A — 'independent regional responses' is candidate-seductive because regional autonomy feels operationally efficient; but independent responses risk inconsistent customer messaging, inconsistent forensic conclusions, and missed cross-region correlation. Unified Commander with regional execution is canonical.",
+        "Multi-region incident = unified Incident Commander + regional IR engagement + parallel containment + synchronized comms + jurisdiction-appropriate regulator notification + cross-region forensic correlation + cyber insurance + customer comms + post-incident refresh. Eight tracks.",
+        "Exam-day shortcut: when stem describes MULTI-REGION INCIDENT WITH JURISDICTIONAL COMPLEXITY, look for unified Commander + regional execution framework; independent, US-led, and EU-led framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; GDPR Article 33 (Notification of a personal data breach); HIPAA Breach Notification Rule; ENISA Multi-Jurisdiction Incident Response Guidance",
+      "related_concepts": [
+        "Unified Incident Commander",
+        "Cross-region forensic correlation",
+        "GDPR lead supervisory authority",
+        "Multi-jurisdiction customer comms"
+      ],
+      "_provenance": "Authored from concept: 'Multi-region incident coordination framework for global SaaS'. Public sources: ISACA, NIST, GDPR, HIPAA, ENISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_172",
+      "domain": 5,
+      "subtopic": "Cyber Insurance + IR Coordination",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the cyber insurance + IR coordination?",
+      "scenario_context": "A mid-market firm's IR team is responding at 9:18 AM Monday to a confirmed ransomware incident affecting customer payment processing (24% revenue impact). Estimated incident costs: $2.4M (IR vendor + recovery + business interruption + legal + regulator notification + customer comms). Firm holds $10M cyber insurance policy. Insurance broker calls within 18 minutes asking about claim filing + vendor pre-approval + ransom-payment policy stance. CISO + CTO + Chief Financial Officer + Chief Risk Officer + General Counsel + insurance broker + outside cybersecurity counsel on bridge call.",
+      "options": {
+        "A": "Pay the ransomware demand to minimize total cost; insurance reimburses; speed of resolution dominates other cost optimization considerations during the incident.",
+        "B": "Delay insurance notification until incident scope is fully understood; premature notification creates premium increase risk without certainty of claim filing.",
+        "C": "File claim immediately for full $10M policy limit regardless of estimated actual costs; secure maximum recovery from the carrier before scope is finalized.",
+        "D": "Notify insurer immediately + carrier-approved IR vendor + privilege via counsel + contemporaneous expense documentation + carrier compliance for ransom + claim filing + policy renewal review."
+      },
+      "correct": "D",
+      "key_concept": "Cyber insurance + IR = notify insurer immediately + carrier-pre-approved vendor + privilege through outside counsel + document carrier-relevant expenses + carrier compliance for ransom-payment decision + claim filing within deadline + post-incident debrief + policy renewal review. Eight tracks.",
+      "pre_read": "For cyber insurance coordination questions, anchor on immediate notification + carrier coordination + privilege framework. Pay-default, delay-notification, and full-limit-immediately framings each fail.",
+      "correct_explanation": "ISACA Cyber Insurance Audit/Assurance Program, OFAC Sanctions Compliance Guidance, CISA + FBI Joint Ransomware Advisory (no-pay guidance), Marsh Cyber Risk Surveys, and AIG / Chubb / Beazley cyber policy documentation establish insurance + IR coordination framework. (1) NOTIFY INSURER IMMEDIATELY — most policies require <24-72h notice; written notification with key facts; failure may void coverage; (2) ENGAGE CARRIER-PRE-APPROVED IR VENDOR — carriers maintain preferred-vendor lists for IR + forensics + counsel; pre-approved vendor maximizes reimbursement; non-approved may not be covered; (3) MAINTAIN PRIVILEGE THROUGH OUTSIDE COUNSEL DIRECTION — IR engagement runs under outside counsel (firm general counsel + cyber-specialist external counsel); attorney-client privilege protects work product; carrier's claims process respects privilege; (4) DOCUMENT CARRIER-RELEVANT EXPENSES CONTEMPORANEOUSLY — IR vendor invoices, legal fees, comms costs, regulator filings, customer notifications, business-interruption documentation; (5) CARRIER-POLICY COMPLIANCE FOR RANSOM-PAYMENT — policies often require carrier approval; OFAC sanctions screening; CISA discouragement; PAY-DECISION IS EXCEPTIONAL not default; (6) CLAIM FILING WITHIN POLICY DEADLINE — typically 30-60 days post-incident; documented submission; (7) POST-INCIDENT INSURANCE DEBRIEF — what was covered vs not, gaps for next policy renewal; (8) POLICY RENEWAL REVIEW — incidents inform next policy terms (coverage, exclusions, retention).",
+      "wrong_explanations": {
+        "A": "Failure mode = RANSOM-PAYMENT-AS-DEFAULT. Ransom payment violates OFAC sanctions if attacker group is sanctioned (Conti, REvil, Maze were sanctioned); pay-decision requires carrier consultation (many policies don't cover payment to sanctioned groups); pay-decision is exceptional, not default. CISA + FBI strongly discourage payment.",
+        "B": "Failure mode = DELAY-NOTIFICATION. Most cyber insurance policies REQUIRE notification within 24-72 hours of incident; delayed notification can void coverage entirely. Notify first; scope details follow.",
+        "C": "Failure mode = FULL-LIMIT-CLAIM-IMMEDIATELY. Filing a claim is appropriate; filing for full limit without supporting documentation is operationally wrong (carriers require contemporaneous expense documentation). File for actual incurred + reasonable projected costs; ongoing documentation supports claim progression."
+      },
+      "tips": [
+        "Trap is A — 'pay the ransomware demand to minimize total cost' is candidate-seductive because rapid resolution feels cost-optimal; but ransom payment to sanctioned groups violates OFAC, may not be covered by insurance, doesn't guarantee key delivery, and CISA + FBI strongly discourage. Pay-decision is exceptional, not default.",
+        "Cyber insurance + IR = immediate notification + carrier-pre-approved vendor + privilege via counsel + contemporaneous documentation + carrier compliance for ransom + claim filing + post-incident debrief + renewal review. Eight tracks.",
+        "Exam-day shortcut: when stem describes CYBER INSURANCE + IR COORDINATION, look for immediate notification + carrier coordination + privilege framework; pay-default, delay-notification, and full-limit framings each fail."
+      ],
+      "framework_ref": "ISACA Cyber Insurance Audit/Assurance Program; OFAC Sanctions Compliance Guidance; CISA + FBI Joint Ransomware Advisory; Marsh Cyber Risk Surveys; AIG / Chubb / Beazley Cyber Policy Documentation",
+      "related_concepts": [
+        "Carrier pre-approved vendor list",
+        "OFAC sanctions ransom risk",
+        "Outside counsel privilege",
+        "Contemporaneous expense documentation"
+      ],
+      "_provenance": "Authored from concept: 'Cyber insurance + IR coordination during ransomware incident'. Public sources: ISACA, OFAC, CISA, Marsh, carrier documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_173",
+      "domain": 5,
+      "subtopic": "SaaS Customer Material Data Breach — Notification First",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A B2B SaaS firm's IR team confirms at 1:14 PM Tuesday: customer data breach affecting 47 of the firm's 240 enterprise customers (PII + financial records exposed; customer-side regulatory and contractual notification obligations triggered). Incident contained; root cause identified (unpatched API vulnerability); forensic investigation 80% complete. The 47 affected customers include 8 publicly-traded firms with SEC Reg S-K Item 1.05 4-day clock obligations, 12 healthcare clients with HHS OCR HIPAA Breach Notification obligations, and 14 EU-data-processing clients with GDPR Article 33-34 obligations. CCO + CTO + Chief Customer Officer + General Counsel + Outside Counsel on bridge call within 14 minutes.",
+      "options": {
+        "A": "NOTIFY the 47 affected enterprise customers IMMEDIATELY (within hours) with confirmed breach details + remediation status + their downstream obligations — customer regulatory clocks (SEC/HIPAA/GDPR) depend on this notification.",
+        "B": "Open a multi-track coordination call: CCO + CTO + CCO + GC + outside counsel + cyber insurance + PR firm to align on customer-notification strategy before any customer outreach.",
+        "C": "Complete the forensic investigation fully (remaining 20%) before notifying customers; partial information notifications create legal exposure for the firm.",
+        "D": "Notify regulators (SEC, HHS OCR, EU member-state DPAs) first; regulator notification is the legal priority over customer notification."
+      },
+      "correct": "A",
+      "key_concept": "SaaS customer material breach FIRST action = NOTIFY affected enterprise customers immediately. Other coordination, forensic completion, and regulator notification all follow. Single critical-path action: NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION principle.",
+      "pre_read": "For B2B SaaS material customer breach questions, anchor on CUSTOMER NOTIFICATION FIRST. Customer regulatory clocks dominate other considerations.",
+      "correct_explanation": "When a B2B SaaS firm confirms a material customer data breach with downstream regulatory clocks at customer firms, the FIRST action is IMMEDIATE CUSTOMER NOTIFICATION. Rationale: (1) CUSTOMER REGULATORY CLOCKS START ON NOTIFICATION — SEC Reg S-K Item 1.05 (4-day clock for material cyber incidents) starts when the affected firm becomes aware; HHS OCR HIPAA Breach Notification (60-day clock to affected individuals + OCR) starts on discovery; GDPR Article 33 (72-hour clock to lead supervisory authority) starts on awareness. Customers cannot start their clocks until they know; SaaS firm notification gives them awareness; (2) CUSTOMER-CONTRACT OBLIGATIONS — most B2B SaaS contracts have data-incident notification clauses requiring SaaS firm notification within hours of confirmation; delay is breach of contract; (3) FIDUCIARY DUTY TO AFFECTED PARTIES — customers are the harmed parties; they need to take their own protective actions (notify their customers, file with regulators, engage their own IR resources); SaaS firm's delay extends their exposure window; (4) CURRENT FACTS + 'INVESTIGATION CONTINUING' IS CANONICAL — notification doesn't require 100% forensic completion; share what's confirmed now + commit to updates; supplementary notifications are standard; (5) NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION PRINCIPLE — distinct from prior surgical-action principles: contain-first applies when adversary active; restore-first applies when control misbehaving; this applies when CONFIRMED MATERIAL CUSTOMER IMPACT exists and customer regulatory/contractual clocks depend on SaaS firm notification. After notification: (a) IR call with CCO + CTO + CCO + GC for parallel coordination; (b) SaaS firm regulator notification (SEC + state breach laws + GDPR if EU data); (c) cyber insurance notification; (d) PR/comms coordination; (e) continued forensic investigation; (f) supplementary customer updates as investigation progresses; (g) remediation deployment; (h) post-incident customer-relationship management.",
+      "wrong_explanations": {
+        "B": "Failure mode = MULTI-TRACK-DELAY. Coordination call wastes hours during which customer regulatory clocks are running. The 47 customers have downstream obligations triggered by knowledge of breach; firm notification GIVES THEM the knowledge that starts their clocks. Delay is fiduciary breach against the customers.",
+        "C": "Failure mode = WAIT-FOR-100-PERCENT-FORENSICS. Customer notification with current confirmed facts + 'investigation continuing' is the canonical pattern; waiting for 100% forensic completion delays customer ability to meet their own regulator clocks. Initial notification + supplementary updates is standard.",
+        "D": "Failure mode = REGULATORS-FIRST-CUSTOMERS-AFTER. Regulator notification is for firm's own obligations (SaaS firm-specific). Customer notification is for the affected parties; their own regulator obligations require them knowing first. Customer-first is canonical for B2B SaaS material breaches."
+      },
+      "tips": [
+        "Trap is C — 'wait for 100% forensic completion before customer notification' is candidate-seductive because complete information feels safer; but 100% completion delays customer ability to meet their own regulator clocks (SEC 4-day, HIPAA 60-day, GDPR 72-hour). Notification with current confirmed facts + 'investigation continuing' is canonical.",
+        "NEW principle: NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION — when B2B SaaS confirms material customer-data breach with customer regulatory clocks at stake, customer notification is the FIRST action. Customer-clock obligations supersede SaaS-firm coordination convenience. Distinct from contain-first / restore-first / financial-loss-clock principles.",
+        "Exam-day shortcut: when stem describes B2B SAAS BREACH WITH MATERIAL CUSTOMER IMPACT + CUSTOMER REGULATORY CLOCKS, look for CUSTOMER-NOTIFICATION-FIRST; coordination-call, wait-for-100%, and regulators-first framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure, 4-day clock); HIPAA Breach Notification Rule 45 CFR §164.400-414 (60-day clock); GDPR Article 33 (72-hour clock); ABA Model Rule 1.4 (Communication with clients)",
+      "related_concepts": [
+        "B2B SaaS material breach",
+        "Customer downstream regulatory clocks",
+        "Initial notification + supplementary updates",
+        "NOTIFY-FIRST principle"
+      ],
+      "_provenance": "Authored from concept: 'B2B SaaS material customer data breach — customer notification first action'. Public sources: ISACA, SEC, HIPAA, GDPR, ABA. No legacy bank citation. NEW single-focus principle: NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION."
+    },
+    {
+      "id": "d5_174",
+      "domain": 5,
+      "subtopic": "Cross-Cloud Incident with Multiple Regulators",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the cross-cloud + multi-regulator incident coordination?",
+      "scenario_context": "A healthcare technology firm's IR team confirms at 8:14 PM Thursday: incident spanning AWS (customer-data) + Azure (clinical trial data) + on-premise (legacy clinical system). Regulatory implications: HIPAA (PHI exposure for 240K patient records) + FDA (clinical trial data integrity for 14 ongoing trials) + SEC (firm is publicly-traded) + EU GDPR (8% of trial patients are EU residents) + state breach laws (5 US states). Total: 9 distinct regulators. CISO + CTO + Chief Medical Officer + General Counsel + outside counsel + IR retainer on call.",
+      "options": {
+        "A": "Engage only the strictest regulator since GDPR has the 72-hour clock; satisfying the strictest regulator covers the others by inheritance and reduces work.",
+        "B": "Unified Incident Commander + cross-cloud forensic + jurisdiction-mapping + parallel regulator engagement + counsel-coordinated notifications + clinical-trial integrity assessment + patient/investigator/customer comms + insurance + post-incident refresh.",
+        "C": "Sequence regulator engagements (handle HHS OCR first, then SEC, then EU DPAs) to manage organizational cognitive load and ensure quality of each filing.",
+        "D": "Defer all regulator notification until full scope is determined; partial notifications create legal exposure and may compromise privileged investigation work."
+      },
+      "correct": "B",
+      "key_concept": "Multi-regulator incident = unified Incident Commander + cross-cloud forensic coordination + jurisdiction-mapping + parallel regulator engagement + counsel-coordinated notifications + clinical-trial integrity assessment + patient/investigator/customer comms + insurance + post-incident multi-regulatory plan refresh. Nine tracks.",
+      "pre_read": "For multi-regulator incident questions, anchor on parallel + counsel-coordinated engagement framework. Strictest-covers-all, sequential, and defer-for-full-scope framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, HIPAA Breach Notification Rule 45 CFR §164.400-414, FDA 21 CFR Part 11 (Electronic Records for clinical trials), SEC Reg S-K Item 1.05, GDPR Article 33, and state breach laws establish multi-regulator IR framework. Nine tracks: (1) UNIFIED INCIDENT COMMANDER — single decision authority across regulatory tracks; (2) CROSS-CLOUD FORENSIC COORDINATION — AWS + Azure + on-premise forensic correlation; same threat actor likely; unified evidence chain; (3) JURISDICTION-MAPPING — PHI → HHS OCR + state AGs + affected individuals; clinical trial data → FDA per 21 CFR Part 11 + sponsor obligations; firm-as-public-company → SEC 4-day clock; EU patients → GDPR Article 33 lead supervisory authority; (4) PARALLEL-TRACK REGULATOR ENGAGEMENT — all relevant regulators notified in parallel within their respective clocks; (5) COUNSEL-COORDINATED NOTIFICATIONS — outside counsel reviews all regulatory submissions; privilege preserved; consistent factual basis across submissions; (6) CLINICAL-TRIAL INTEGRITY ASSESSMENT — FDA implications: were trial outcomes compromised? Did data integrity break? Trial sponsor notification + FDA notification per 21 CFR; (7) PATIENT + INVESTIGATOR + CUSTOMER COMMS — patients (HIPAA-required), trial investigators (per protocol + GCP), customers (B2B SaaS impact); (8) INSURANCE — cyber + clinical-trial-data-specific coverage; (9) POST-INCIDENT MULTI-REGULATORY IR PLAN REFRESH — jurisdictional matrix updated; regulatory contact roster refreshed; future cross-cloud + multi-data-type incidents informed.",
+      "wrong_explanations": {
+        "A": "Failure mode = STRICTEST-COVERS-ALL. Different regulators have different REQUIREMENTS (not just timelines): HHS OCR requires notice to OCR + affected individuals + media if >500; SEC requires 8-K filing; FDA requires trial-integrity assessment; GDPR requires notice to lead supervisory authority. Each has distinct requirements; satisfying one doesn't satisfy others.",
+        "C": "Failure mode = SEQUENTIAL-REGULATOR-ENGAGEMENT. Regulators run their own clocks independently; sequential engagement means later regulators get late notifications. Parallel engagement with all relevant regulators is canonical.",
+        "D": "Failure mode = DEFER-NOTIFICATION-FOR-FULL-SCOPE. Regulatory clocks (GDPR 72h, SEC 4-day, HHS OCR 60-day) start on discovery/awareness, not on full scope. Notification with current facts + commitment to update is canonical."
+      },
+      "tips": [
+        "Trap is A — 'satisfy strictest regulator covers others' is candidate-seductive because timelines feel like the dimension that matters; but different regulators have different REQUIREMENTS (not just timelines). HHS OCR requires notice + media for >500 affected; SEC requires 8-K filing; FDA requires trial-integrity assessment. Each is distinct.",
+        "Multi-regulator incident = unified Commander + cross-cloud forensic + jurisdiction-mapping + parallel regulator engagement + counsel-coordinated + clinical-trial integrity + patient/investigator/customer comms + insurance + post-incident plan refresh. Nine tracks.",
+        "Exam-day shortcut: when stem describes CROSS-CLOUD INCIDENT WITH MULTIPLE REGULATORS, look for parallel + counsel-coordinated framework; strictest-covers-all, sequential, and defer-for-full-scope framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; HIPAA Breach Notification Rule 45 CFR §164.400-414; FDA 21 CFR Part 11 (Electronic Records); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure); GDPR Article 33",
+      "related_concepts": [
+        "Multi-regulator parallel engagement",
+        "Clinical-trial integrity assessment",
+        "Cross-cloud forensic correlation",
+        "Jurisdiction-mapping"
+      ],
+      "_provenance": "Authored from concept: 'Cross-cloud + multi-regulator incident coordination in healthcare technology context'. Public sources: ISACA, HIPAA, FDA, SEC, GDPR. No legacy bank citation."
+    },
+    {
+      "id": "d5_175",
+      "domain": 5,
+      "subtopic": "Crisis Communication During Major Incident",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to crisis communication during the unfolding major incident?",
+      "scenario_context": "A financial-services firm's CISO faces escalation at 10:42 AM Thursday: ransomware incident in customer-account systems is now 6 hours old + still unfolding. Affected: 2.4M customer accounts; service degradation visible to customers. Customer support inundated (140 calls/minute vs normal 6); social media mentions trending; one tech reporter has reached out for comment; SEC 8-K filing decision pending (firm is publicly-traded). CEO + CISO + CFO + Chief Customer Officer + General Counsel + PR firm + investor relations on bridge call within 22 minutes.",
+      "options": {
+        "A": "Stay silent publicly until the incident is fully resolved and contained; uncertain information creates more risk than complete silence with no statements.",
+        "B": "Issue single comprehensive statement immediately with full technical detail; transparency at maximum depth defuses speculation and adversarial framing of the incident.",
+        "C": "Customer status page + employee comms + investor relations holding statement + proactive media statement + customer support talking points + regulator notification prep + executive spokesperson + post-incident comms audit.",
+        "D": "Limit communications to legal-required regulator filings only; voluntary customer or media communication creates liability without proportional benefit during incident."
+      },
+      "correct": "C",
+      "key_concept": "Crisis communication = multi-audience framework (customer/employee/investor/media/regulator) + status page + holding statements + proactive media statement + customer support talking points + regulator preparation + spokesperson designation + post-incident comms audit. Eight elements.",
+      "pre_read": "For crisis communication questions, anchor on multi-audience framework. Stay-silent, maximum-technical-detail, and legal-minimum-only framings each fail.",
+      "correct_explanation": "Edelman Trust Barometer + Crisis Communications Best Practices, ISACA Crisis Communications guidance, NIST SP 800-61 Rev 2, SEC Reg S-K Item 1.05, and Weber Shandwick Crisis Management methodologies establish crisis communication framework during incidents. Eight elements: (1) CUSTOMER STATUS PAGE WITH REGULAR UPDATES — status.firm.com style + email subscribed lists; updates every 1-2 hours; what's known + what's being done; (2) EMPLOYEE INTERNAL COMMUNICATIONS — keep employees informed; reduce internal speculation; provide consistent customer-support talking points; (3) INVESTOR RELATIONS HOLDING STATEMENT — SEC Reg S-K Item 1.05 4-day filing clock; investor relations prepares 8-K filing; analyst inquiries handled; (4) PROACTIVE MEDIA STATEMENT — firm initiates media engagement when incident is publicly visible; pre-emptive statement establishes facts and tone; reactive Q&A for inquiries; (5) CUSTOMER SUPPORT PRE-APPROVED TALKING POINTS — customer support reps have consistent script; reduces inconsistent messaging; reduces escalation rate; (6) REGULATOR NOTIFICATION PREPARATION — facts gathered for upcoming regulator filings; counsel reviews; (7) EXECUTIVE SPOKESPERSON DESIGNATION — single external voice (CISO for technical, CEO for material); reduces conflicting messages; pre-prepared message guides; (8) POST-INCIDENT COMMUNICATIONS AUDIT — what was communicated to whom and when; effectiveness measurement; lessons for next crisis.",
+      "wrong_explanations": {
+        "A": "Failure mode = STAY-SILENT. Silence during a known incident with customer-visible impact + social media trending + reporter outreach creates information vacuum filled by speculation, rumor, and adversary-controlled narrative. Proactive controlled communication is canonical.",
+        "B": "Failure mode = MAXIMUM-TECHNICAL-DETAIL. Customers don't need network-diagram-level detail; regulators need specific format; media needs higher-level summary; investors need impact assessment. Audience-appropriate depth is canonical, not maximum-everywhere.",
+        "D": "Failure mode = LEGAL-MINIMUM-ONLY. Voluntary customer + media communication is operationally essential (customer support overwhelmed without talking points; media will report regardless, with or without firm input). Legal-minimum-only sacrifices business continuity for theoretical liability avoidance."
+      },
+      "tips": [
+        "Trap is A — 'stay silent until fully resolved' is candidate-seductive because uncertain communication creates risk; but silence during known incident with customer-visible impact + social media trending creates INFORMATION VACUUM filled by speculation + adversary-controlled narrative. Proactive controlled communication is canonical.",
+        "Crisis comms = customer status page + employee comms + investor relations holding statement + proactive media + customer support talking points + regulator prep + spokesperson + post-incident audit. Eight elements.",
+        "Exam-day shortcut: when stem describes CRISIS COMMUNICATIONS DURING UNFOLDING INCIDENT, look for multi-audience framework with proactive controlled communication; stay-silent, max-detail, and legal-minimum framings each fail."
+      ],
+      "framework_ref": "Edelman Trust Barometer Crisis Communications Best Practices; ISACA Crisis Communications Guidance; NIST SP 800-61 Rev 2; SEC Reg S-K Item 1.05; Weber Shandwick Crisis Management",
+      "related_concepts": [
+        "Status page updates",
+        "Customer support talking points",
+        "SEC 8-K material incident disclosure",
+        "Executive spokesperson designation"
+      ],
+      "_provenance": "Authored from concept: 'Crisis communication during major incident canonical framework'. Public sources: Edelman, ISACA, NIST, SEC, Weber Shandwick. No legacy bank citation."
+    },
+    {
+      "id": "d5_176",
+      "domain": 5,
+      "subtopic": "IR Plan Failure Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to remediating the IR plan failures?",
+      "scenario_context": "A retail firm's annual IR tabletop exercise (3 weeks ago) revealed major IR plan failures: communication breakdowns across regions, missing playbooks for critical scenarios, escalation paths unclear, regulator notification process undocumented, no defined relationship with cyber insurance broker, untested executive decision-making for ransom-payment scenario. The CISO + CIO + GC + Chief Risk Officer + cyber insurance broker + executive sponsor coordinating remediation ahead of board IT committee review in 5 weeks.",
+      "options": {
+        "A": "Patch only the specific identified gaps in the existing IR plan; comprehensive rewrite introduces too much change and disrupts operational continuity at scale.",
+        "B": "Outsource IR plan development entirely to external consultant; consultant brings broader expertise than internal team and produces higher-quality plans efficiently.",
+        "C": "Adopt a vendor's industry-standard IR plan template wholesale; replacing the existing plan with battle-tested template is efficient and proven across industry.",
+        "D": "Comprehensive rewrite + role definition + scenario-specific playbooks + escalation framework + regulator-notification procedures + cyber insurance broker engagement + quarterly tabletop + post-rewrite tabletop validation."
+      },
+      "correct": "D",
+      "key_concept": "IR plan failure remediation = comprehensive rewrite + role definition + scenario-specific playbooks + escalation framework + regulator-notification procedures + cyber insurance broker pre-engagement + quarterly tabletop cadence + executive decision-making framework + cross-team training + audit committee oversight + post-rewrite tabletop validation. Eleven tracks.",
+      "pre_read": "For IR plan failure remediation questions, anchor on comprehensive rewrite with firm customization + tabletop validation. Patch-only, outsource, and wholesale-template framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, ISO/IEC 27035, and ISACA Audit Recommendation Framework establish IR plan failure remediation. Eleven tracks: (1) COMPREHENSIVE IR PLAN REWRITE — when multiple major gaps surface, structural rewrite vs piecemeal patches; (2) ROLE DEFINITION — IR Commander, technical leads, communications leads, legal liaison, HR liaison, executive sponsor; named with backups; (3) SCENARIO-SPECIFIC PLAYBOOKS — ransomware, BEC, insider threat, supply-chain compromise, third-party breach, regulator inquiry; (4) ESCALATION FRAMEWORK — severity-based, time-based, impact-based, executive-decision-triggers, media-coverage-trigger; (5) REGULATOR-NOTIFICATION PROCEDURES — HHS OCR, SEC, GDPR, state AGs, FBI/CISA; contact roster + filing requirements + counsel review process; (6) CYBER INSURANCE BROKER PRE-ENGAGEMENT — broker is partner; pre-discussed notification process, claim filing, vendor pre-approval; (7) QUARTERLY TABLETOP CADENCE — vs annual; high-risk scenarios tested rotation; (8) EXECUTIVE DECISION-MAKING FRAMEWORK — ransom-payment decision criteria, public-disclosure timing, customer-notification scope; pre-prepared decision aids; (9) CROSS-TEAM TRAINING — IR plan known by all relevant personnel; training records; (10) AUDIT COMMITTEE OVERSIGHT — quarterly IR plan status, tabletop outcomes, lessons captured; (11) POST-REWRITE TABLETOP VALIDATION — new plan tested with tabletop within 30 days of completion; cycle.",
+      "wrong_explanations": {
+        "A": "Failure mode = PATCH-SPECIFIC-GAPS-ONLY. Multiple major gaps suggest structural issues with the IR plan, not isolated defects. Patching produces a still-incoherent plan; comprehensive rewrite is the canonical response to multi-gap finding.",
+        "B": "Failure mode = OUTSOURCE-IR-PLAN-DEVELOPMENT. External consultants provide expertise but lack firm-specific context (systems, customer base, regulatory exposure, business operations). Hybrid (consultant + firm SMEs) is canonical; pure outsource produces generic plan.",
+        "C": "Failure mode = WHOLESALE-VENDOR-TEMPLATE. Vendor templates are starting points; without firm customization, they miss firm-specific severity definitions, roles, regulatory obligations, systems context. Template is foundation; customization is essential."
+      },
+      "tips": [
+        "Trap is C — 'adopt vendor industry-standard IR plan template wholesale' is candidate-seductive because vendor templates are battle-tested and efficient to adopt; but vendor templates require firm-customization (severity definitions, roles, regulatory obligations, systems context). Template is foundation; customization is essential.",
+        "IR plan failure remediation = comprehensive rewrite + role definition + scenario-specific playbooks + escalation framework + regulator-notification procedures + cyber insurance broker + quarterly tabletop cadence + executive decision-making + training + audit oversight + post-rewrite tabletop. Eleven tracks.",
+        "Exam-day shortcut: when stem describes MULTIPLE MAJOR IR PLAN GAPS, look for comprehensive rewrite with firm customization; patch-only, outsource, and wholesale-template framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27035 (Information Security Incident Management); SANS PICERL Framework",
+      "related_concepts": [
+        "IR plan structural rewrite",
+        "Scenario-specific playbooks",
+        "Cyber insurance broker pre-engagement",
+        "Post-rewrite tabletop validation"
+      ],
+      "_provenance": "Authored from concept: 'IR plan failure analysis and comprehensive remediation'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation."
+    },
+    {
+      "id": "d5_177",
+      "domain": 5,
+      "subtopic": "Threat Actor Attribution Disclosure Decision",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the threat actor attribution disclosure decision?",
+      "scenario_context": "A defense contractor's IR investigation has concluded at 5:18 PM Friday: the attack was likely conducted by a specific nation-state-aligned threat actor group (forensic evidence + threat intel correlation + TTPs match). The firm's CEO + CISO + GC + Outside Counsel + cyber insurance + FBI cyber squad lead + Defense Counterintelligence Security Agency (DCSA) facility security officer are deciding whether to publicly attribute the attack to the named threat actor in upcoming SEC 8-K filing and press communications.",
+      "options": {
+        "A": "Discuss with FBI/DCSA + counsel + insurance + PR; assess attribution confidence; weigh transparency vs adversary intel + reputation; coordinate timing; align with probabilistic-language norms.",
+        "B": "Publicly attribute the attack to the named threat actor in the SEC 8-K filing and press communications immediately; transparency benefits broader security community.",
+        "C": "Never publicly attribute attacks to specific threat actors under any circumstances; attribution claims create legal liability if wrong and may reveal sensitive investigation methodology.",
+        "D": "Let FBI and DCSA decide all attribution disclosure questions; firm has no role in public attribution decisions or disclosure timing or messaging."
+      },
+      "correct": "A",
+      "key_concept": "Attribution disclosure decision = discuss with FBI/DCSA + counsel + insurance + PR + assess attribution confidence + geopolitical implications + legal liability if wrong + transparency value vs adversary intel + reputation + timing coordination + decision rationale + probabilistic-language attribution. Nine considerations.",
+      "pre_read": "For attribution disclosure questions, anchor on confidence-and-context framework with government coordination + probabilistic language. Immediate-public, never-public, and FBI-only-decides framings each fail.",
+      "correct_explanation": "ISACA Threat Intelligence Audit/Assurance Program, FBI + CISA Joint Cybersecurity Advisories (attribution norms), Mandiant + CrowdStrike Threat Intel Reports (attribution methodology), SEC Reg S-K Item 1.05 (cybersecurity disclosure), and DCSA Contractor Reporting Requirements establish attribution disclosure decision framework. (1) DISCUSS WITH FBI/DCSA — government may have its own attribution decision (sometimes public, sometimes withheld for ongoing operations); firm coordinates timing; (2) OUTSIDE COUNSEL — legal liability if attribution proves wrong; libel/defamation risk; coordinated language; (3) INSURANCE — attribution may affect coverage (state-actor exclusion clauses in some policies); cyber insurance broker consultation; (4) PR — public attribution invites media + industry response; reputational implications; (5) ATTRIBUTION CONFIDENCE LEVEL — Mandiant/CrowdStrike use probabilistic frameworks (HIGH/MODERATE/LOW confidence); public attribution requires very high confidence; (6) GEOPOLITICAL IMPLICATIONS — attribution to nation-state has diplomatic implications; sometimes worth coordinating with State Department; (7) LEGAL LIABILITY IF WRONG — defamation + civil liability for incorrect public attribution; probabilistic language reduces liability; (8) TIMING COORDINATION — with government partners, industry partners; (9) PROBABILISTIC LANGUAGE — 'consistent with' + 'attributed by [source] to' + 'most likely' vs definitive 'is' — reduces liability + matches industry norms.",
+      "wrong_explanations": {
+        "B": "Failure mode = IMMEDIATE-PUBLIC-ATTRIBUTION. Attribution is hard; confidence assessment matters. Public attribution with high confidence followed by later disconfirmation creates legal liability + reputational damage. 'Likely attribution' without 'definitive' qualifier is canonical; full public attribution requires very high confidence.",
+        "C": "Failure mode = NEVER-PUBLIC-ATTRIBUTE. Attribution has VALUE: industry threat intel sharing benefits, attribution norms (probabilistic language) reduce legal liability, transparency for shareholders/customers/community. Never-attribute is overly conservative; coordinated transparent attribution is industry pattern.",
+        "D": "Failure mode = FBI/DCSA-ONLY-DECIDE. FBI/DCSA may have their own attribution decision (sometimes public, sometimes not for ongoing intelligence operations); firm has its own disclosure obligations (SEC, customer, shareholder). Firm-side decision required in coordination with government, not deferred entirely."
+      },
+      "tips": [
+        "Trap is B — 'publicly attribute immediately in SEC 8-K and press' is candidate-seductive because transparency feels right; but attribution is hard and public claims followed by disconfirmation create legal + reputational damage. Confidence-and-context framework with probabilistic language is canonical.",
+        "Attribution disclosure = government discussion + counsel + insurance + PR + confidence level + geopolitical implications + legal liability + transparency value + timing + decision rationale + probabilistic language. Nine considerations.",
+        "Exam-day shortcut: when stem describes NATION-STATE ATTRIBUTION DECISION FOR PUBLIC DISCLOSURE, look for confidence-and-context framework with government coordination; immediate-public, never-public, and FBI-only-decides framings each fail."
+      ],
+      "framework_ref": "ISACA Threat Intelligence Audit/Assurance Program; FBI + CISA Joint Cybersecurity Advisories on attribution; Mandiant Threat Intelligence Methodology; CrowdStrike Attribution Methodology; SEC Reg S-K Item 1.05",
+      "related_concepts": [
+        "Probabilistic attribution language",
+        "Government coordination",
+        "Confidence level assessment",
+        "Defense contractor disclosure"
+      ],
+      "_provenance": "Authored from concept: 'Threat actor attribution disclosure decision framework'. Public sources: ISACA, FBI, CISA, threat intel vendors, SEC. No legacy bank citation."
+    },
+    {
+      "id": "d5_178",
+      "domain": 5,
+      "subtopic": "Major Architecture Decision During Active Incident",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A SaaS firm is at hour 18 of major ransomware incident response. The CEO + CTO + CISO are convened at 11:42 PM Sunday by the Chief Product Officer who proposes a major architectural decision: 'Given this incident exposed our monolithic database as a single point of failure, let's authorize the multi-quarter $14M database-sharding initiative now while everyone is focused.' The proposal has been on roadmap deferred for 8 months. Incident still ongoing — containment in progress, customer comms continuing, regulators notified, restoration timeline 48-72 hours.",
+      "options": {
+        "A": "Approve the database-sharding initiative immediately during the incident; the incident exposed the architectural vulnerability so decision criteria are unambiguous and resources aligned.",
+        "B": "DEFER the database-sharding decision until incident closes — crisis-context decisions have degraded quality (incomplete information, sleep-deprived participants, urgency bias, sunk-cost reasoning); preserve cognitive capacity for active incident.",
+        "C": "Open coordination call with CFO and Board immediately to make the $14M architectural decision during active incident; speed-of-decision matters when everyone is focused.",
+        "D": "Reject the architectural change proposal entirely; if the change had been genuinely important pre-incident, it would have already been approved through normal governance."
+      },
+      "correct": "B",
+      "key_concept": "Architectural decision during incident FIRST action = DEFER the decision until incident closes. Other options (approve, coordinate-decision, reject-entirely) all fail crisis-context-decision-quality test. Single critical-path action: DEFER-MAJOR-DECISIONS-DURING-CRISIS principle.",
+      "pre_read": "For major-decision-during-crisis questions, anchor on DEFER for post-incident decision. The crisis-context decision-quality concern dominates other considerations.",
+      "correct_explanation": "When a major architectural / strategic decision is proposed during an active incident, the FIRST action is IMMEDIATE DEFERRAL until incident closes. Rationale: (1) CRISIS-CONTEXT DECISION QUALITY IS DEGRADED — incomplete information about full incident scope (forensics not complete); sleep-deprived participants (hour 18 of response); urgency bias (incident creates artificial sense of urgency for unrelated decisions); sunk-cost reasoning (the incident already happened — does it actually argue for THIS decision?); confirmation bias (incident creates motivated reasoning); (2) COGNITIVE-LOAD CONCERN — incident response demands full attention; non-incident-critical decisions during incident fragment cognitive resources; (3) POST-INCIDENT DEBRIEF REVEALS FULL CONTEXT — root cause analysis, contributing factors, control improvements; architectural implications can be assessed with full picture; (4) STRATEGIC TIMING SHOULD NOT BE DRIVEN BY CRISIS — $14M, multi-quarter initiative deserves strategic deliberation, not crisis-emotion approval; (5) NEW principle: DEFER-MAJOR-DECISIONS-DURING-CRISIS. Distinct from prior surgical-action principles: contain-first applies when adversary active; restore-first applies when control misbehaving; financial-loss-clock applies when irreversible loss imminent; credential-validity-clock applies when adversary has session; exposure-window-close applies when vulnerability disclosed; trusted-baseline-restore applies when config drift; notify-first-for-customer-protection applies when customer regulatory clock running. DEFER-MAJOR-DECISIONS-DURING-CRISIS applies when major STRATEGIC decision is proposed during ongoing incident — defer until post-incident clarity is available. After deferral: (a) document the proposal + reasoning; (b) commit to revisit post-incident-closure (within 30 days); (c) continue incident response with undivided attention; (d) post-incident debrief includes architectural implications assessment; (e) strategic decision revisited with full context.",
+      "wrong_explanations": {
+        "A": "Failure mode = APPROVE-MAJOR-DECISION-DURING-CRISIS. Crisis-context decisions have DEGRADED QUALITY: incomplete information about full incident scope, sleep-deprived participants (it's hour 18), urgency bias inflating sense of need, sunk-cost reasoning (the incident already happened). Architectural decisions of $14M and multi-quarter scope deserve full-context deliberation.",
+        "C": "Failure mode = OPEN-COORDINATION-CALL-FOR-DECISION-DURING-INCIDENT. CFO + Board engagement during active incident is operationally appropriate FOR INCIDENT MATTERS (resource authorization, public disclosure decisions, ransom-payment decisions). Architectural roadmap decision is NOT incident-critical; calling Board for non-incident matter during crisis fragments attention.",
+        "D": "Failure mode = REJECT-ENTIRELY-AS-OVERREACTION. Incident may genuinely have revealed valid architectural concern; rejecting entirely loses the signal. DEFER + revisit post-incident is canonical; reject conflates timing with merit."
+      },
+      "tips": [
+        "Trap is A — 'approve the database-sharding initiative immediately' is candidate-seductive because incident-exposed-vulnerability + everyone-focused feels like timing-aligned decisive action; but crisis-context decisions have degraded quality (incomplete info, sleep-deprivation, urgency bias, sunk-cost reasoning). Architectural decisions deserve full-context deliberation.",
+        "NEW principle: DEFER-MAJOR-DECISIONS-DURING-CRISIS — when major architectural/strategic decision is proposed during active incident, FIRST action is deferral until incident closes. Crisis-context decision quality is degraded; post-incident clarity required.",
+        "Exam-day shortcut: when stem describes MAJOR DECISION PROPOSED DURING ACTIVE INCIDENT, look for DEFER-UNTIL-AFTER-INCIDENT; approve-now, coordinate-decision-during, and reject-entirely framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; Daniel Kahneman 'Thinking, Fast and Slow' (cognitive biases in crisis decision-making); ITIL 4 Major Incident Management; Google SRE Crisis Management Practices",
+      "related_concepts": [
+        "Crisis-context decision quality",
+        "Sunk-cost reasoning",
+        "Cognitive load during incidents",
+        "DEFER-MAJOR-DECISIONS principle"
+      ],
+      "_provenance": "Authored from concept: 'Major architectural decision during active incident — defer-first principle'. Public sources: ISACA, behavioral economics, ITIL, Google SRE. No legacy bank citation. NEW single-focus principle: DEFER-MAJOR-DECISIONS-DURING-CRISIS."
+    },
+    {
+      "id": "d5_179",
+      "domain": 5,
+      "subtopic": "Third-Party Breach Affecting Firm",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response approach?",
+      "scenario_context": "A SaaS firm's third-party HR vendor (handling employee benefits + payroll for 4,200 employees) confirms at 8:14 PM Wednesday: their systems have been breached; the firm's HR records (SSNs + bank accounts + employee dependent info + 1099 contractor records) may be compromised. Vendor's IR investigation is ongoing; vendor will issue formal notification within 72 hours per their contract. Firm's CHRO + CFO + CISO + GC + outside counsel + cyber insurance broker on call within 35 minutes.",
+      "options": {
+        "A": "Wait for vendor's 72-hour formal notification before any firm-side action is taken; the vendor is responsible for the breach so the firm's role is minimal.",
+        "B": "Sever the vendor relationship immediately and switch to alternative HR vendor for continuity; relationship termination is the appropriate response to vendor breach.",
+        "C": "Vendor engagement + firm's parallel investigation + regulatory obligation assessment + employee comms + cyber insurance + vendor contract review + employee credit monitoring + vendor relationship decision.",
+        "D": "Notify all employees immediately with full breach details before vendor's investigation completes; transparency overrides investigation continuity considerations during this incident."
+      },
+      "correct": "C",
+      "key_concept": "Third-party breach affecting firm = vendor engagement + firm's parallel investigation + regulatory obligation assessment + employee comms preparation + cyber insurance notification + vendor contract review + credit monitoring engagement + third-party-management policy review + vendor relationship decision. Nine tracks.",
+      "pre_read": "For third-party breach questions, anchor on parallel firm-side response + vendor coordination. Wait-for-vendor, sever-immediately, and notify-employees-with-full-details framings each fail.",
+      "correct_explanation": "ISACA Third-Party Risk Audit/Assurance Program, NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management), GDPR Article 28 (Processor obligations), state breach laws, and ISACA Vendor Management Audit/Assurance Program establish third-party breach response framework. Nine tracks: (1) ENGAGE WITH VENDOR — investigation scope, timeline, scope of firm's affected data, root cause; in writing; (2) RETAIN FIRM'S OWN OUTSIDE COUNSEL FOR PARALLEL INVESTIGATION — privilege preserved, attribution validated, vendor's findings independently assessed; (3) REGULATORY OBLIGATION ASSESSMENT — state breach laws (often shorter than vendor's 72-hour clock), GDPR Article 33 for EU employees, HIPAA if PHI involved; firm's clocks separate from vendor's; (4) EMPLOYEE COMMUNICATIONS PREPARATION — HR-coordinated, factual, supportive; pre-approved language; cadence of updates; (5) CYBER INSURANCE NOTIFICATION — third-party-incident coverage clauses vary; broker engaged; (6) VENDOR CONTRACT REVIEW — breach notification clauses (was vendor compliant), indemnification (firm's recovery), audit rights (firm can inspect remediation), data-handling provisions; (7) EMPLOYEE CREDIT MONITORING ENGAGEMENT — typical industry-standard offering (Equifax/Experian/TransUnion 12-24 months); (8) POST-INCIDENT THIRD-PARTY-MANAGEMENT POLICY REVIEW — were due diligence procedures adequate? do other vendors have similar exposure?; (9) VENDOR RELATIONSHIP DECISION — post-incident strategic: continue, replace, or audit; not during ongoing investigation.",
+      "wrong_explanations": {
+        "A": "Failure mode = WAIT-FOR-VENDOR-NOTIFICATION. The firm has its own regulatory obligations triggered by knowledge of breach (state breach laws often have shorter clocks than vendor's contractual 72-hour); employee communications must be coordinated; cyber insurance notification has its own timeline. Parallel firm-side action runs alongside vendor's investigation.",
+        "B": "Failure mode = SEVER-VENDOR-RELATIONSHIP-IMMEDIATELY. Operational continuity matters: HR + payroll continuity for 4,200 employees cannot break overnight. Vendor-relationship-decision is strategic, post-incident; immediate severance during ongoing investigation is over-reaction.",
+        "D": "Failure mode = NOTIFY-EMPLOYEES-WITH-FULL-DETAILS-BEFORE-INVESTIGATION-COMPLETES. Premature notification with incomplete information creates uncertainty (employees act without complete picture), may compromise ongoing investigation, may not align with regulatory requirements. Coordinated notification with current confirmed facts + commitment to updates is canonical."
+      },
+      "tips": [
+        "Trap is A — 'wait for vendor's 72-hour notification' is candidate-seductive because vendor owns the investigation; but the firm has ITS OWN regulatory obligations (state breach laws often shorter than 72h, GDPR 72h to lead supervisory authority, employee notification obligations). Parallel firm-side response runs alongside vendor's investigation.",
+        "Third-party breach affecting firm = vendor engagement + firm's parallel investigation + regulatory assessment + employee comms + cyber insurance + vendor contract review + credit monitoring + third-party-management policy review + vendor relationship decision. Nine tracks.",
+        "Exam-day shortcut: when stem describes THIRD-PARTY BREACH AFFECTING FIRM, look for parallel firm-side response framework; wait-for-vendor, sever-immediately, and notify-employees-full-details framings each fail."
+      ],
+      "framework_ref": "ISACA Third-Party Risk Audit/Assurance Program; NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); GDPR Article 28 (Processor obligations); GDPR Article 33 (Notification of a personal data breach); state breach laws; ISACA Vendor Management Audit/Assurance Program",
+      "related_concepts": [
+        "Vendor processor obligations",
+        "State breach law variation",
+        "Parallel firm-side investigation",
+        "Credit monitoring engagement"
+      ],
+      "_provenance": "Authored from concept: 'Third-party breach affecting firm response framework'. Public sources: ISACA, NIST, GDPR, state breach laws. No legacy bank citation."
+    },
+    {
+      "id": "d5_180",
+      "domain": 5,
+      "subtopic": "IR Readiness Assessment Findings Remediation",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to remediating the IR readiness assessment findings?",
+      "scenario_context": "A growth-stage tech firm's IR readiness assessment (annual) by external assessor reveals at 4:14 PM Monday: 18 findings total — 3 Critical (no IR plan tested annually, no cyber insurance broker engaged for IR coordination, no executive decision-making framework for ransom-payment scenario) + 7 High + 8 Medium. The firm has 1,400 employees + customer-data-handling SaaS business. CISO + CTO + CFO + CIO + outside counsel + external assessor on bridge call within 22 minutes. Firm has $80M annual revenue + cyber insurance pending broker engagement.",
+      "options": {
+        "A": "Patch only the 3 Critical findings within 90 days as priority focus; defer all High and Medium findings until next year's assessment cycle for budget alignment.",
+        "B": "Outsource entire IR program development to external IR vendor as turn-key service; transfers responsibility to vendor expertise and reduces firm-side workload.",
+        "C": "Adopt vendor industry-standard IR program template wholesale across the firm; replacing the gap-ridden current state with battle-tested template is efficient and proven.",
+        "D": "Critical/High/Medium SLA framework + cross-finding analysis + dedicated IR program manager + quarterly audit committee reporting + post-remediation IR readiness reassessment + insurance broker engagement for ongoing partnership."
+      },
+      "correct": "D",
+      "key_concept": "IR readiness remediation = Critical/High/Medium SLA framework + cross-finding analysis + dedicated IR program manager + quarterly audit committee reporting + post-remediation reassessment + insurance broker engagement. Six tracks.",
+      "pre_read": "For IR readiness remediation questions, anchor on multi-tier SLA framework with firm customization. Critical-only, outsource-turnkey, and wholesale-template framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, and ISACA Audit Recommendation Framework establish IR readiness remediation. Six tracks: (1) PRIORITIZE CRITICAL FINDINGS WITH SLA — annual tabletop testing (PCI DSS 12.10.4 if applicable), cyber insurance broker engagement (typical for material customer-data businesses), executive decision-making framework (ransom-payment criteria, public-disclosure timing, customer-notification scope); 30-60 day SLA; (2) HIGH FINDINGS WITH SLA — 90-180 days; (3) MEDIUM FINDINGS WITH SLA — 180-365 days; tracked; (4) CROSS-FINDING ANALYSIS — chained findings (Critical + High combining); holistic remediation; (5) DEDICATED IR PROGRAM MANAGER — IR readiness is ongoing operational responsibility; full-time or significant fractional FTE; not a side-of-desk task; (6) QUARTERLY AUDIT COMMITTEE REPORTING — progress on findings, SLA adherence, new findings; transparency; (7) POST-REMEDIATION IR READINESS REASSESSMENT — confirm gap closure; documented; (8) INSURANCE BROKER ENGAGEMENT — for ongoing partnership; cyber-policy review; pre-incident relationship for crisis response.",
+      "wrong_explanations": {
+        "A": "Failure mode = CRITICAL-ONLY-REMEDIATION. High and Medium findings often CHAIN with Critical to enable real risk; ignoring them extends exposure. Each severity has its own SLA; tracked-completion model is canonical.",
+        "B": "Failure mode = OUTSOURCE-IR-PROGRAM-AS-TURNKEY. External vendor provides expertise but firm's IR program must integrate with firm's systems, customers, regulators, business operations. Hybrid (vendor support + firm SMEs) is canonical; pure-turnkey produces generic program.",
+        "C": "Failure mode = WHOLESALE-VENDOR-TEMPLATE. Vendor templates are starting points; firm customization is essential for severity definitions, roles, regulatory obligations, systems context. Template is foundation; firm-adaptation is required."
+      },
+      "tips": [
+        "Trap is C — 'wholesale vendor template' is candidate-seductive because vendor templates are battle-tested and efficient; but firm-side customization (severity definitions, roles, regulatory obligations, systems context, customer profile) is essential. Template is foundation; firm-adaptation required.",
+        "IR readiness remediation = Critical/High/Medium SLA framework + cross-finding analysis + dedicated IR program manager + quarterly audit committee reporting + post-remediation reassessment + insurance broker engagement. Six tracks.",
+        "Exam-day shortcut: when stem describes IR READINESS ASSESSMENT WITH MULTI-SEVERITY FINDINGS, look for multi-tier SLA framework with firm customization; Critical-only, outsource-turnkey, and wholesale-template framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; ISACA Audit Recommendation Framework; PCI DSS v4.0 Requirement 12.10",
+      "related_concepts": [
+        "Severity-tiered SLA framework",
+        "Cross-finding chained analysis",
+        "Dedicated IR program manager",
+        "Quarterly audit committee oversight"
+      ],
+      "_provenance": "Authored from concept: 'IR readiness assessment findings remediation framework'. Public sources: ISACA, NIST, PCI Council. No legacy bank citation."
     }
   ]
 }

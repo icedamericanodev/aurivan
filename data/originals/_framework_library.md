@@ -1629,3 +1629,51 @@ sub-references like "(Managed Risk) and APO12.03").
 - MITRE ATT&CK T1552.005 (Unsecured Credentials: Cloud Instance Metadata API)
 - MITRE ATT&CK T1610 (Deploy Container)
 - MITRE ATT&CK T1611 (Escape to Host)
+- ABA Model Rule 1.4 (Communication with clients)
+- AIG / Chubb / Beazley Cyber Policy Documentation
+- CERT/CC CSIRT Handbook
+- CIRCIA (Cyber Incident Reporting for Critical Infrastructure Act)
+- CISA + FBI Joint Ransomware Advisory
+- CISA Automated Indicator Sharing (AIS)
+- CrowdStrike Attribution Methodology
+- Daniel Kahneman 
+- ENISA Multi-Jurisdiction Incident Response Guidance
+- ENISA Reference Incident Classification Taxonomy
+- Edelman Trust Barometer Crisis Communications Best Practices
+- FBI + CISA Joint Cybersecurity Advisories on attribution
+- FEMA Homeland Security Exercise and Evaluation Program (HSEEP)
+- FIRST CSIRT Services Framework
+- FIRST.org (Forum of Incident Response and Security Teams)
+- FIRST.org Threat Intel Sharing
+- GDPR Article 28 (Processor obligations)
+- GDPR Article 33
+- GDPR Article 33 (72-hour clock)
+- Google SRE Blameless Postmortems methodology
+- Google SRE Crisis Management Practices
+- HIPAA Security Rule §164.308(a)(6)
+- ISACA Audit Recommendation Framework
+- ISACA Crisis Communications Guidance
+- ISACA Cyber Insurance Audit/Assurance Program
+- ISACA Information Sharing Audit/Assurance Program
+- ISACA Third-Party Risk Audit/Assurance Program
+- ISACA Threat Intelligence Audit/Assurance Program
+- ISACA Vendor Management Audit/Assurance Program
+- ISO/IEC 27035 (Information Security Incident Management)
+- ITIL 4 Major Incident Management
+- Mandiant / CrowdStrike / Kroll / Stroz Friedberg Retainer Methodologies
+- Mandiant Threat Intelligence Methodology
+- Marsh Cyber Risk Surveys
+- NIST SP 800-61 Rev 2
+- NIST SP 800-61 Rev 2 (Post-Incident Activity)
+- NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities)
+- PCI DSS v4.0 Requirement 12.10
+- PCI DSS v4.0 Requirement 12.10.4
+- SANS Incident Handler
+- SANS PICERL (Preparation/Identification/Containment/Eradication/Recovery/Lessons)
+- SANS PICERL Framework
+- SEC Reg S-K Item 1.05
+- SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure, 4-day clock)
+- Traffic Light Protocol (TLP) v2.0
+- Weber Shandwick Crisis Management
+- state breach laws
+- Daniel Kahneman 'Thinking, Fast and Slow' (cognitive biases in crisis decision-making)
