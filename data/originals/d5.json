@@ -4364,6 +4364,732 @@
         "Remote Browser Isolation"
       ],
       "_provenance": "Authored from concept: 'Watering-hole attack response in government-services consulting context'. Public sources: ISACA, MITRE, NIST, CISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_121",
+      "domain": 5,
+      "subtopic": "Security Testing — Canonical Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical taxonomy of security testing techniques?",
+      "options": {
+        "A": "SAST + DAST + IAST + SCA + penetration testing + red team + vulnerability scanning + threat modeling + bug bounty. Nine canonical testing techniques.",
+        "B": "Penetration testing alone is sufficient; other techniques (SAST, DAST, code review) are redundant if pentest is performed.",
+        "C": "Only commercial vulnerability scanners matter for security testing; other testing techniques add cost overhead without delivering measurable additional security benefit.",
+        "D": "Security testing is identical to functional QA testing; no separate framework or specialty expertise is required to perform security validation of applications."
+      },
+      "correct": "A",
+      "key_concept": "Security testing = SAST + DAST + IAST + SCA + penetration testing + red team + vulnerability scanning + threat modeling + bug bounty. Nine techniques across SDLC + runtime + adversary-simulation dimensions.",
+      "pre_read": "For security testing taxonomy questions, anchor on nine-technique catalog spanning SDLC + runtime + adversary simulation. Pentest-only, scanner-only, and functional-QA-equivalent framings each fail.",
+      "correct_explanation": "OWASP Testing Guide, ISACA Application Security Audit/Assurance Program, NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment), and Microsoft Security Development Lifecycle (SDL) establish security testing canonical taxonomy: (1) SAST (STATIC APPLICATION SECURITY TESTING) — source-code analysis for known vulnerability patterns (SQL injection, XSS); tools: SonarQube, Checkmarx, Fortify, Semgrep, GitHub CodeQL; SDLC-stage: code commit / pre-merge; (2) DAST (DYNAMIC APPLICATION SECURITY TESTING) — running-application testing; tools: OWASP ZAP, Burp Suite, Acunetix; SDLC-stage: pre-production / production; (3) IAST (INTERACTIVE APPLICATION SECURITY TESTING) — instrumented application with runtime analysis; combines SAST + DAST visibility; tools: Contrast Security, Veracode IAST; (4) SCA (SOFTWARE COMPOSITION ANALYSIS) — third-party dependency vulnerability scanning; tools: Snyk, GitHub Dependabot, OWASP Dependency-Check, Sonatype; supply-chain risk; (5) PENETRATION TESTING — authorized adversarial testing; OWASP WSTG methodology; PTES standard; PCI DSS Requirement 11.4; (6) RED TEAM — adversarial-emulation longer than pentest; full kill-chain test; (7) VULNERABILITY SCANNING — network + host scanning; Tenable / Qualys / Rapid7; (8) THREAT MODELING — STRIDE, attack trees, PASTA; design-stage; SDLC-shift-left; (9) BUG BOUNTY — crowdsourced security testing; HackerOne / Bugcrowd; coordinated disclosure.",
+      "wrong_explanations": {
+        "B": "B reduces to pentest only, missing SAST (catches code-level flaws BEFORE deployment), DAST (catches runtime configuration issues), SCA (catches vulnerable dependencies — supply chain), and threat modeling (designs out flaws). Pentest is one technique at one stage.",
+        "C": "C restricts to vulnerability scanners (network-layer signature matching), missing application-layer testing (SAST/DAST), threat modeling (design-stage), and pentest (validated exploitation). Different techniques catch different categories.",
+        "D": "D equates security testing to functional QA, missing security-specific techniques (threat modeling for design flaws, SAST for code-flaw patterns, pentest for chained-attack validation). Security testing requires specialty distinct from functional QA."
+      },
+      "tips": [
+        "Trap is B — 'penetration testing alone is sufficient' is candidate-seductive because pentest is the most-visible testing technique; but pentest is one technique at one stage (pre-production typically); SAST + DAST + SCA + threat modeling are required at OTHER stages. Defense-in-depth across SDLC.",
+        "Security testing = SAST + DAST + IAST + SCA + pentest + red team + vuln scanning + threat modeling + bug bounty. Nine techniques across SDLC + runtime + adversary simulation.",
+        "Exam-day shortcut: when stem asks about SECURITY TESTING TAXONOMY, look for nine-technique catalog with SDLC-stage differentiation; pentest-only, scanner-only, and functional-QA-equivalent framings each fail."
+      ],
+      "framework_ref": "OWASP Testing Guide (WSTG); ISACA Application Security Audit/Assurance Program; NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); Microsoft Security Development Lifecycle (SDL); PCI DSS v4.0 Requirement 11.4 (Penetration Testing)",
+      "related_concepts": [
+        "SAST vs DAST vs IAST",
+        "SCA supply-chain risk",
+        "STRIDE threat modeling",
+        "PTES standard"
+      ],
+      "_provenance": "Authored from concept: 'Security testing canonical taxonomy per OWASP + NIST SP 800-115'. Public sources: OWASP, ISACA, NIST, Microsoft, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_122",
+      "domain": 5,
+      "subtopic": "SIEM / SOC — Canonical Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical taxonomy of security monitoring (SIEM + SOC) capabilities?",
+      "options": {
+        "A": "Log collection only; correlation, analytics, and response are vendor-product features that aren't required for SIEM/SOC capability.",
+        "B": "Log aggregation + parsing/normalization + correlation rules + threat intel + UEBA + alert triage + investigation workflows + SOAR response + reporting/dashboards.",
+        "C": "Modern SOC capability is replaced entirely by EDR; perimeter SIEM and log aggregation are deprecated approaches in cloud-first architectures.",
+        "D": "Only outsourced MSSP can deliver SIEM/SOC; in-house operation isn't operationally viable for any firm size."
+      },
+      "correct": "B",
+      "key_concept": "SIEM/SOC = log aggregation + parsing/normalization + correlation rules + threat intel + UEBA + alert triage + investigation workflows + SOAR response + reporting. Nine canonical capabilities.",
+      "pre_read": "For SIEM/SOC taxonomy questions, anchor on nine-capability framework spanning collection + analysis + response. Log-only, EDR-replaces-SIEM, and MSSP-only framings each fail.",
+      "correct_explanation": "NIST SP 800-92 (Guide to Computer Security Log Management), NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems), Gartner SIEM Magic Quadrant, and ISACA SOC Audit/Assurance Program establish SIEM/SOC capability taxonomy: (1) LOG AGGREGATION — collect logs from endpoints (EDR), network (firewalls, IDS/IPS, NetFlow), identity (IdP, AD), cloud (CloudTrail, Azure Activity, GCP Audit), applications (custom logs); (2) PARSING/NORMALIZATION — convert disparate log formats to common schema (CEF, LEEF, Elastic Common Schema, OpenSearch); enables cross-source correlation; (3) CORRELATION RULES — multi-event detection (failed-login + lateral-movement + data-egress = compromise pattern); MITRE ATT&CK technique-based; (4) THREAT INTELLIGENCE INTEGRATION — IOC feeds (known-bad IPs, domains, hashes); enrichment of alerts; (5) BEHAVIORAL ANALYTICS (UEBA) — user/entity baseline + deviation detection; supplements signature-based correlation; (6) ALERT TRIAGE — analyst workflow; severity ranking; false-positive disposition; SLAs by severity; (7) INVESTIGATION WORKFLOWS — case management, evidence collection, timeline reconstruction; (8) SOAR (SECURITY ORCHESTRATION AUTOMATION AND RESPONSE) — playbook automation (e.g., automated isolation of EDR-flagged host); (9) REPORTING/DASHBOARDS — operational metrics, executive reporting. Modern variants: SIEM-as-a-Service (cloud-native), XDR-replaces-SIEM models. Common SIEMs: Splunk, Microsoft Sentinel, Google Chronicle, IBM QRadar, Elastic Security, Devo, Exabeam.",
+      "wrong_explanations": {
+        "A": "A reduces to log collection only, missing the analytical layer (correlation, UEBA), the response layer (SOAR), and the workflow layer (alert triage, investigation). Log collection without analysis is data lake; SIEM is collection + analysis + response.",
+        "C": "C claims EDR replaces SIEM, but EDR is ENDPOINT-focused; SIEM correlates across endpoint + network + identity + cloud + application. EDR feeds SIEM; doesn't replace it. Cloud-first architectures still need cross-source correlation.",
+        "D": "D restricts to MSSP, but in-house SOC is operationally viable at most firm sizes with appropriate tooling. Hybrid (in-house + MSSP) is the canonical pattern; pure MSSP is one of three operating models."
+      },
+      "tips": [
+        "Trap is C — 'EDR replaces SIEM' is candidate-seductive because EDR is more recently-deployed than SIEM at many firms; but EDR is ENDPOINT-focused; SIEM correlates across all sources (endpoint + network + identity + cloud + application). EDR FEEDS SIEM; doesn't replace.",
+        "SIEM/SOC = log aggregation + parsing/normalization + correlation rules + threat intel + UEBA + alert triage + investigation + SOAR + reporting. Nine capabilities across collection + analysis + response.",
+        "Exam-day shortcut: when stem asks about SIEM/SOC CAPABILITIES, look for nine-capability framework; log-only, EDR-replaces, and MSSP-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems); Gartner SIEM Magic Quadrant; ISACA SOC Audit/Assurance Program",
+      "related_concepts": [
+        "SIEM correlation rules",
+        "UEBA",
+        "SOAR automation",
+        "MITRE ATT&CK-aligned detection"
+      ],
+      "_provenance": "Authored from concept: 'SIEM/SOC canonical capability taxonomy'. Public sources: NIST, Gartner, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_123",
+      "domain": 5,
+      "subtopic": "SAST — Audit Scope",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor scopes a Static Application Security Testing (SAST) audit covering the firm's 280+ in-house applications across Java, Python, JavaScript, and Go. Which option BEST captures SAST AUDIT SCOPE?",
+      "options": {
+        "A": "Only deployment percentage; if SAST runs on 90%+ of repositories, the program is considered sound.",
+        "B": "Only the SAST vendor's SOC 2; vendor SOC 2 attestation is sufficient evidence for SAST program effectiveness.",
+        "C": "Repo coverage + CI/CD integration + rule-set tuning + finding triage + remediation SLA + FP management + CVE mapping + auditor sample testing.",
+        "D": "SAST requires no audit because the tool runs automatically; if no critical findings are reported, the program is by definition effective."
+      },
+      "correct": "C",
+      "key_concept": "SAST audit scope = repo coverage + CI/CD integration + rule-set tuning + finding triage + remediation SLA + FP management + CVE mapping + auditor sample testing. Eight dimensions.",
+      "pre_read": "For SAST audit questions, anchor on eight-dimension scope covering configuration + operation + outcomes. Coverage-only, vendor-SOC-2-only, and no-findings-effective framings each fail.",
+      "correct_explanation": "OWASP SAMM (Software Assurance Maturity Model), ISACA Application Security Audit/Assurance Program, NIST SP 800-53 Rev 5 SA-11 (Developer Security and Privacy Testing), and Gartner Application Security Testing Magic Quadrant establish SAST audit scope: (1) COVERAGE OF REPOSITORIES — inventory of all repos; SAST configured on each; orphan-repo detection; (2) CI/CD INTEGRATION — SAST runs on commit/merge; results block merge or alert; not just scheduled scans; (3) RULE-SET TUNING TO LANGUAGE/FRAMEWORK — Java rules for Spring, Python for Django/FastAPI, JavaScript for React, Go for stdlib; framework-specific patterns; (4) FINDING TRIAGE — analyst workflow; severity confirmation; suppression governance; (5) REMEDIATION SLA — Critical 7 days, High 30 days, Medium 90 days typical; tracked; (6) FALSE-POSITIVE MANAGEMENT — FP rate tracked and tuned; high FP rate produces alert fatigue; (7) VULNERABILITY-TO-CVE MAPPING — for vulnerable-dependency findings (SCA-adjacent); CVSS scoring; (8) AUDITOR SAMPLE TESTING — auditor independently runs SAST on sample repos; compares to firm's reported state. Common SAST tools: SonarQube, Checkmarx, Fortify, Semgrep, GitHub Advanced Security CodeQL, Veracode.",
+      "wrong_explanations": {
+        "A": "A reduces audit to coverage percentage, missing seven other dimensions. 95% repo coverage with default rules + no triage produces high false-positive flood and missed real vulnerabilities. Quality of operation matters more than coverage alone.",
+        "B": "B confuses vendor SOC 2 (covers product) with firm-side configuration/operation (rule tuning, triage, remediation, false-positive management). Both required.",
+        "D": "D assumes 'no critical findings = effective', but absent findings can mean: rules mistuned, finding-suppression abuse, scans not running, or genuinely clean code. Audit must verify which case applies."
+      },
+      "tips": [
+        "Trap is A — '90% repo coverage is sufficient' is candidate-seductive because coverage is the most-visible metric; but 95% coverage with default rules + no triage produces false-positive flood and missed real vulnerabilities. Eight-dimension scope required.",
+        "SAST audit scope = repo coverage + CI/CD integration + rule-set tuning + finding triage + remediation SLA + FP management + CVE mapping + auditor sampling. Eight dimensions.",
+        "Exam-day shortcut: when stem asks about SAST AUDIT SCOPE, look for eight-dimension framework; coverage-only, vendor-SOC-2-only, and no-findings-effective framings each fail."
+      ],
+      "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 SA-11 (Developer Security and Privacy Testing); Gartner Application Security Testing Magic Quadrant",
+      "related_concepts": [
+        "SonarQube / Checkmarx / CodeQL",
+        "False-positive management",
+        "CI/CD merge gates",
+        "Suppression governance"
+      ],
+      "_provenance": "Authored from concept: 'SAST audit canonical scope'. Public sources: OWASP, ISACA, NIST, Gartner. No legacy bank citation."
+    },
+    {
+      "id": "d5_124",
+      "domain": 5,
+      "subtopic": "SIEM Use-Case Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's SIEM use-case framework covering 240+ active detection rules. Which option BEST captures the canonical SIEM USE-CASE framework?",
+      "options": {
+        "A": "Default vendor rules only; vendor rules cover all threats and no firm-side use-case development is required.",
+        "B": "Maximum number of detection rules is the canonical strategy; more rules equals better detection regardless of false-positive rate or analyst capacity.",
+        "C": "Only signature-based rules should be deployed; behavioral and analytics-based rules add operational complexity without delivering measurable security value.",
+        "D": "MITRE ATT&CK-aligned + threat-informed prioritization + use-case lifecycle + multi-source correlation + FP tuning + business-context enrichment + analyst feedback + coverage gap analysis."
+      },
+      "correct": "D",
+      "key_concept": "SIEM use-case framework = MITRE ATT&CK-aligned + threat-informed prioritization + use-case lifecycle (design/test/deploy/tune/retire) + multi-source correlation + FP tuning + business-context enrichment + analyst feedback + coverage gap analysis.",
+      "pre_read": "For SIEM use-case questions, anchor on eight-element framework with lifecycle management. Vendor-defaults, max-rules, and signature-only framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework, MaGMA Use Case Framework (SIEM Use Case Maturity), and SANS Detection Engineering establish SIEM use-case framework: (1) MITRE ATT&CK-ALIGNED USE-CASES — each rule maps to one or more ATT&CK techniques; coverage matrix; (2) THREAT-INFORMED PRIORITIZATION — based on threat landscape relevant to firm's industry + technology stack; not generic checklist; (3) USE-CASE-DEVELOPMENT LIFECYCLE — design (data sources, detection logic) → test (in dev environment) → deploy (in monitor mode initially) → tune (FP/FN management) → retire (when superseded); (4) MULTI-SOURCE CORRELATION — combine signals from EDR, IdP, network, cloud; reduce single-source FP; (5) FALSE-POSITIVE TUNING — FP rate tracked per rule; tuning cadence; suppression for benign-but-noisy patterns; (6) BUSINESS-CONTEXT ENRICHMENT — asset criticality, user-role, time-of-day context augments alerts; (7) ANALYST FEEDBACK LOOP — SOC analyst dispositions feed back to rule tuning; closes the loop; (8) COVERAGE GAP ANALYSIS — periodic review of ATT&CK matrix coverage; identify undetected tactics/techniques.",
+      "wrong_explanations": {
+        "A": "A relies on vendor defaults, missing firm-specific threats, threat-informed prioritization, and firm-context enrichment. Default rules are baseline; firm-specific use-cases require custom development.",
+        "B": "B maximizes rule count, missing alert fatigue impact. 240 rules with 30% false-positive rate produces analyst burnout; 80 well-tuned rules with 5% FP rate produces better outcomes. Quality > quantity.",
+        "C": "C restricts to signature-based, missing UEBA (behavioral anomalies), threat-intel-driven (IOC matching), and machine-learning detection (clustering anomalies). Signature-based catches known threats; behavioral catches novel."
+      },
+      "tips": [
+        "Trap is B — 'maximum number of rules = better detection' is candidate-seductive because more-coverage feels safer; but rules without tuning produce FP flood that causes analyst burnout (real-alert-missed-in-noise). 80 well-tuned rules beat 240 noisy ones.",
+        "SIEM use-cases = MITRE ATT&CK-aligned + threat-informed prioritization + use-case lifecycle + multi-source correlation + FP tuning + business-context enrichment + analyst feedback + coverage gap analysis. Eight elements.",
+        "Exam-day shortcut: when stem asks about SIEM USE-CASE FRAMEWORK, look for eight-element lifecycle-managed framework; vendor-defaults, max-rules, and signature-only framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework; MaGMA Use Case Framework (SIEM Use Case Maturity); SANS Detection Engineering Curriculum; ISACA SOC Audit/Assurance Program",
+      "related_concepts": [
+        "ATT&CK coverage matrix",
+        "Use-case lifecycle",
+        "Detection engineering",
+        "Alert fatigue"
+      ],
+      "_provenance": "Authored from concept: 'SIEM use-case framework canonical structure'. Public sources: MITRE, MaGMA, SANS, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_125",
+      "domain": 5,
+      "subtopic": "DAST — Audit Scope",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor scopes a Dynamic Application Security Testing (DAST) audit covering the firm's 80 production web applications. Which option BEST captures DAST AUDIT SCOPE?",
+      "options": {
+        "A": "Public + authenticated endpoints + scan frequency + crawl completeness + injection/XSS/SSRF rule coverage + business-logic abuse + remediation SLA + CI/CD integration + auditor validation.",
+        "B": "Only the DAST vendor's coverage of OWASP Top 10; if Top 10 is covered, no other dimensions are required.",
+        "C": "DAST is redundant with SAST; if SAST is deployed across the application portfolio then DAST adds no incremental value or coverage.",
+        "D": "DAST is fully automated and requires no audit because the tool reports any issues directly to development teams."
+      },
+      "correct": "A",
+      "key_concept": "DAST audit scope = coverage of public + authenticated endpoints + scan frequency + crawl completeness + rule coverage (injection/XSS/SSRF) + business-logic abuse scenarios + remediation SLA + CI/CD integration + auditor validation.",
+      "pre_read": "For DAST audit questions, anchor on nine-dimension scope including authenticated scanning + business-logic abuse. OWASP-Top-10-only, SAST-redundant, and fully-automated framings each fail.",
+      "correct_explanation": "OWASP Web Security Testing Guide (WSTG), ISACA Application Security Audit/Assurance Program, NIST SP 800-115, and OWASP ZAP / Burp Suite / Acunetix documentation establish DAST audit scope: (1) COVERAGE OF PUBLIC ENDPOINTS — unauthenticated scanning of customer-facing URLs; baseline; (2) COVERAGE OF AUTHENTICATED ENDPOINTS — DAST configured with test credentials; scans behind-login functionality; most-sensitive endpoints; (3) SCAN FREQUENCY — weekly/monthly + on-change + pre-production cutover; not annual; (4) CRAWL COMPLETENESS — verify scanner discovers all URLs (SPA single-page-app navigation, hidden endpoints, parameterized routes); not 'tool says 100%' but verified; (5) RULE COVERAGE — injection (SQL/NoSQL/cmd), XSS (reflected/stored/DOM), SSRF, broken authn, business-logic abuse; OWASP Top 10 mapped; (6) BUSINESS-LOGIC ABUSE SCENARIOS — beyond default tool rules; custom scripts for firm-specific workflows (price manipulation, refund flow); (7) REMEDIATION SLA — Critical 7 days, High 30 days, Medium 90 days; tracked; (8) INTEGRATION WITH CI/CD PRE-PRODUCTION — DAST runs in staging before production deploy; blocks Critical findings; (9) AUDITOR VALIDATION — auditor runs independent DAST on sample apps; compares to firm's reported state.",
+      "wrong_explanations": {
+        "B": "B reduces to OWASP Top 10 coverage, missing authenticated-endpoint scanning (most-sensitive endpoints), business-logic abuse (legitimate-looking malicious requests), and integration with CI/CD. Top 10 is one dimension among many.",
+        "C": "C claims DAST redundancy with SAST. They're COMPLEMENTARY: SAST catches code-level patterns at commit time; DAST catches runtime configuration issues (TLS misconfiguration, server-headers, authentication-flow bypass) that SAST cannot see. Both required.",
+        "D": "D treats DAST as fully automated, missing firm-side audit dimensions (rule selection, authenticated-scan configuration, business-logic-abuse scripts, remediation tracking). Tool runs; firm decides scope, frequency, and triage."
+      },
+      "tips": [
+        "Trap is C — 'DAST is redundant with SAST' is candidate-seductive because both are application-security testing; but SAST catches CODE-LEVEL patterns at commit; DAST catches RUNTIME issues (TLS misconfiguration, server-headers, authentication-flow bypass) that SAST cannot see. Both required.",
+        "DAST audit = public + authenticated endpoints + scan frequency + crawl completeness + rule coverage + business-logic abuse + remediation SLA + CI/CD integration + auditor validation. Nine dimensions.",
+        "Exam-day shortcut: when stem asks about DAST AUDIT SCOPE, look for nine-dimension framework with authenticated-scan + business-logic abuse + CI/CD; OWASP-only, SAST-redundant, and fully-automated framings each fail."
+      ],
+      "framework_ref": "OWASP Web Security Testing Guide (WSTG); OWASP Top 10 (2021); ISACA Application Security Audit/Assurance Program; NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment); OWASP ZAP Documentation",
+      "related_concepts": [
+        "Authenticated DAST scanning",
+        "Business-logic abuse scripts",
+        "CI/CD DAST gates",
+        "SAST + DAST complementarity"
+      ],
+      "_provenance": "Authored from concept: 'DAST audit canonical scope'. Public sources: OWASP, ISACA, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_126",
+      "domain": 5,
+      "subtopic": "SOC Operating Model — In-House vs MSSP vs Hybrid",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's SOC operating model decision. Which option BEST captures the canonical SOC OPERATING MODEL framework?",
+      "options": {
+        "A": "In-house (deep context, higher cost) + MSSP outsourced (24x7 coverage at lower cost, less context) + hybrid (in-house tier-1 + MSSP tier-2/3, canonical for mid-market).",
+        "B": "Only in-house SOC is acceptable; outsourcing any SOC operations to an MSSP creates unacceptable security risk regardless of firm size or capability.",
+        "C": "Only an MSSP-managed SOC is operationally viable; in-house SOC operations cannot scale or operate effectively for firms of any size.",
+        "D": "SOC operating model choice doesn't matter; in-house, MSSP, and hybrid approaches deliver equivalent security outcomes across all firm contexts."
+      },
+      "correct": "A",
+      "key_concept": "SOC operating model = in-house (deeper context, higher cost) + MSSP (24x7 coverage, lower cost, less context) + hybrid (in-house tier-1 + MSSP tier-2/3, canonical for mid-market). Selection driven by scale + cost + risk + compliance.",
+      "pre_read": "For SOC operating model questions, anchor on three-model framework (in-house/MSSP/hybrid) with selection criteria. In-house-only, MSSP-only, and equivalent framings each fail.",
+      "correct_explanation": "ISACA SOC Audit/Assurance Program, Gartner MSSP Magic Quadrant, and IDC Worldwide MSSP Survey establish SOC operating model framework: IN-HOUSE SOC — firm operates 24x7 SOC with own analysts + tools; pros: full control, deeper business context, alignment with firm culture; cons: higher cost ($1.5M-$5M+ annually for small SOC), staffing challenges (security-analyst burnout, retention difficulty), 24x7 coverage requires 4-6 analysts minimum; appropriate for: large firms (5,000+ employees), high-regulation industries, classified environments. MSSP (MANAGED SECURITY SERVICE PROVIDER) — outsourced SOC; pros: 24x7 coverage from day one, lower cost (often $200K-$1M annually depending on log volume), specialized expertise; cons: less business context, response coordination latency, vendor-lock-in risk; appropriate for: small-to-mid-market, firms that lack security-staffing capability, complement to small in-house team. HYBRID — in-house tier-1 (initial triage, business-context-aware) + MSSP tier-2/3 (deep investigation, 24x7 coverage); CANONICAL pattern for mid-market and large firms; balances cost + control + coverage. SELECTION CRITERIA: firm size, regulatory environment (some regulators expect in-house presence), industry threat profile, existing security maturity, geographic distribution.",
+      "wrong_explanations": {
+        "B": "B rules out MSSP, missing the canonical hybrid pattern (in-house tier-1 + MSSP for 24x7 coverage and overflow). Many mid-market firms cannot afford in-house 24x7 SOC; MSSP provides cost-effective augmentation.",
+        "C": "C rules out in-house, missing scenarios where in-house is appropriate (firms with very specialized industry context, government with classified data, financial institutions with regulator requirements). One-size-fits-all wrong.",
+        "D": "D claims equivalence, missing real differences in: cost (MSSP usually lower for 24x7 baseline), context (in-house deeper business knowledge), control (in-house more control over response decisions), and compliance (some regulations have in-house preferences)."
+      },
+      "tips": [
+        "Trap is C — 'only MSSP is viable' is candidate-seductive because outsourced 24x7 SOC is cost-effective for many firms; but in-house has legitimate use cases (specialized industry context, classified environments, regulator preferences). Hybrid combines both; pure MSSP is one of three models.",
+        "SOC models = in-house + MSSP + hybrid. Hybrid is canonical for mid-market (in-house tier-1 + MSSP tier-2/3). Selection driven by scale + cost + risk + compliance.",
+        "Exam-day shortcut: when stem asks about SOC OPERATING MODEL, look for three-model framework with selection criteria; in-house-only, MSSP-only, and equivalent framings each fail."
+      ],
+      "framework_ref": "ISACA SOC Audit/Assurance Program; Gartner MSSP Magic Quadrant; IDC Worldwide MSSP Survey; NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response)",
+      "related_concepts": [
+        "Hybrid SOC pattern",
+        "Tier-1/2/3 escalation",
+        "24x7 coverage cost",
+        "MSSP vendor management"
+      ],
+      "_provenance": "Authored from concept: 'SOC operating model selection framework'. Public sources: ISACA, Gartner, IDC, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_127",
+      "domain": 5,
+      "subtopic": "Penetration Testing Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's penetration testing program design. Which option BEST captures the canonical PENETRATION TESTING PROGRAM framework?",
+      "options": {
+        "A": "Annual single one-week pentest with no remediation follow-up or retest; the check-the-box compliance pattern for satisfying regulatory pentest requirements.",
+        "B": "Continuous internal pentest by in-house developers as part of their normal duties; embedded testing eliminates need for separate engagement.",
+        "C": "Scope + rules of engagement + tester qualification (OSCP/GPEN/CREST) + methodology (PTES/WSTG) + reporting + remediation SLA + retest verification + cadence + segregation from operations.",
+        "D": "Pentest is unnecessary if SAST + DAST + vulnerability scanning are deployed; redundant testing wastes budget."
+      },
+      "correct": "C",
+      "key_concept": "Pentest program = scope + rules of engagement + tester qualification (OSCP/GPEN/CREST) + methodology (PTES/WSTG) + reporting + remediation SLA + retest verification + cadence + segregation from ops. Nine elements.",
+      "pre_read": "For pentest program questions, anchor on nine-element framework with independence + remediation + retest. Annual-no-followup, in-house-developer, and SAST-makes-redundant framings each fail.",
+      "correct_explanation": "PTES (Penetration Testing Execution Standard), OWASP Web Security Testing Guide (WSTG), NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment), PCI DSS v4.0 Requirement 11.4, and ISACA Penetration Testing Audit/Assurance Program establish pentest program framework: (1) SCOPE DEFINITION — what's in scope (applications, networks, social engineering), what's out, accounts to use; (2) RULES OF ENGAGEMENT — time windows, no-touch systems, communications during test, escalation criteria; (3) TESTER QUALIFICATION — OSCP (Offensive Security Certified Professional), GPEN (GIAC Penetration Tester), CREST registered, PCI ASV for compliance scans; INDEPENDENT from operations; (4) METHODOLOGY — PTES seven phases (pre-engagement → intelligence gathering → threat modeling → vulnerability analysis → exploitation → post-exploitation → reporting); OWASP WSTG for web apps; (5) REPORTING — executive summary + technical detail + risk-ranked findings + remediation recommendations; (6) FINDING REMEDIATION SLA — Critical 7-30 days, High 30-90 days, Medium 90-180 days; tracked; (7) RETEST VERIFICATION — confirm fixes; documented; (8) CADENCE — annual minimum; PCI DSS Requirement 11.4 requires after significant change + annual; high-risk industries more frequent; (9) SEGREGATION FROM OPERATIONS — testers cannot be people who maintain the systems they test; independence requirement.",
+      "wrong_explanations": {
+        "A": "A is the check-the-box pattern, missing follow-up remediation, retest verification, and cadence appropriate to risk. Annual-only with no remediation is compliance theater, not security validation.",
+        "B": "B uses developers as pentesters, which fails OBJECTIVITY (developers test their own code, blind to their patterns). Pentest requires INDEPENDENT testers; PCI DSS, FFIEC, ISACA all require independence.",
+        "D": "D rules out pentest as redundant, missing the validated-exploitation dimension. SAST + DAST + scanning find FINDINGS; pentest validates that findings are EXPLOITABLE and chains multiple findings into realistic attack paths. Different value."
+      },
+      "tips": [
+        "Trap is B — 'continuous internal pentest by in-house developers' is candidate-seductive because embedded testing sounds efficient; but developers fail OBJECTIVITY (test their own code with same blind spots that produced the vulnerabilities). INDEPENDENT testers required per PCI DSS, FFIEC, ISACA.",
+        "Pentest program = scope + ROE + tester qualification (OSCP/GPEN/CREST) + methodology (PTES/WSTG) + reporting + remediation SLA + retest + cadence + independence. Nine elements.",
+        "Exam-day shortcut: when stem asks about PENTEST PROGRAM, look for nine-element framework with INDEPENDENCE + REMEDIATION + RETEST; annual-no-followup, in-house-dev, and SAST-makes-redundant framings each fail."
+      ],
+      "framework_ref": "PTES (Penetration Testing Execution Standard); OWASP Web Security Testing Guide (WSTG); NIST SP 800-115; PCI DSS v4.0 Requirement 11.4; ISACA Penetration Testing Audit/Assurance Program",
+      "related_concepts": [
+        "OSCP/GPEN/CREST certifications",
+        "PTES seven phases",
+        "Independence requirement",
+        "PCI DSS 11.4 cadence"
+      ],
+      "_provenance": "Authored from concept: 'Penetration testing program canonical framework'. Public sources: PTES, OWASP, NIST, PCI Council, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_128",
+      "domain": 5,
+      "subtopic": "Log Management Strategy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's enterprise log management strategy. Which option BEST captures the canonical LOG MANAGEMENT framework?",
+      "options": {
+        "A": "Collect all logs from all sources indefinitely; storage is cheap and retention concerns are operational not strategic.",
+        "B": "Collect only firewall logs as the source of security visibility; other log sources add volume without proportional security or audit value.",
+        "C": "Source inventory + generation requirements + collection architecture + retention by source + integrity protection + access controls + SIEM/lake feed + audit-trail compliance + scalability.",
+        "D": "Use only cloud-provider native logging services; cloud platforms handle retention, integrity protection, and compliance automatically without firm-side oversight."
+      },
+      "correct": "C",
+      "key_concept": "Log management = source inventory + generation requirements + collection architecture + retention by source + integrity protection + access controls + SIEM/lake feed + audit-trail compliance + scalability/cost. Nine elements.",
+      "pre_read": "For log management questions, anchor on nine-element strategic framework. Collect-everything, firewall-only, and cloud-native-only framings each fail.",
+      "correct_explanation": "NIST SP 800-92 (Guide to Computer Security Log Management), CIS Controls v8 Safeguard 8 (Audit Log Management), and ISO/IEC 27001:2022 Annex A.8.15 (Logging) establish log management framework: (1) SOURCE INVENTORY — endpoints (EDR + Windows Event Log + Linux syslog), network (firewalls, IDS/IPS, NetFlow, DNS), identity (IdP, AD, MFA logs), cloud (CloudTrail, Azure Activity, GCP Audit Logs), application (API logs, app server, DB logs), security tools (DLP, EDR, SIEM internal); (2) LOG GENERATION REQUIREMENTS — what events to log per source (failed authentications, privilege changes, data access for sensitive systems, admin actions); CIS Safeguard 8.5 list; (3) COLLECTION ARCHITECTURE — agent-based (Beats, Fluentd, Splunk Universal Forwarder), API-based (cloud), syslog forwarding; resilient (queueing for outages); (4) RETENTION POLICY BY SOURCE — hot tier 30-90 days for SIEM analysis; cold tier 1-7 years for compliance + incident-investigation; varies by regulation (HIPAA 6 years, SOX 7 years, PCI 1 year); (5) INTEGRITY PROTECTION — immutable storage (object-lock, append-only); cryptographic chains; tamper-evident; (6) ACCESS CONTROLS — RBAC for log access; least-privilege; audit-of-the-audit-log; (7) SIEM/LAKE FEED — operational SIEM + cold-tier data lake (Splunk indexers + AWS S3 + Snowflake); analyst access; (8) AUDIT-TRAIL COMPLIANCE — regulatory log requirements (PCI 10.7 retention, SOX-relevant logs, HIPAA audit logs §164.312(b)); (9) SCALABILITY/COST — log volume drives SIEM licensing (often $/GB); aggressive collection without value drives cost without benefit.",
+      "wrong_explanations": {
+        "A": "A collects everything indefinitely, missing retention POLICY by source (different sources have different retention requirements), cost management (log volume drives SIEM cost), and audit-relevance (not all sources are equally valuable). Strategy required.",
+        "B": "B restricts to firewall, missing the MOST-VALUABLE sources (EDR, IdP, application logs). Firewall logs are network-layer; modern attacks span endpoint + identity + application — multi-source correlation requires multi-source collection.",
+        "D": "D uses cloud-native only, missing INTEGRATION (cloud logs need to flow to SIEM), CROSS-CLOUD correlation (multi-cloud requires consolidation), and ON-PREMISE (most firms have hybrid). Cloud-native is one source layer."
+      },
+      "tips": [
+        "Trap is A — 'collect all logs indefinitely' is candidate-seductive because more-data feels safer; but storage cost (SIEM licensing often $/GB) and retention-policy compliance (some data shouldn't be retained past policy) make strategy essential. Generation + retention POLICY required.",
+        "Log management = source inventory + generation requirements + collection architecture + retention by source + integrity protection + access controls + SIEM/lake feed + audit-trail compliance + scalability/cost. Nine elements.",
+        "Exam-day shortcut: when stem asks about LOG MANAGEMENT STRATEGY, look for nine-element framework with source-specific retention + integrity; collect-everything, firewall-only, and cloud-native-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); CIS Controls v8 Safeguard 8 (Audit Log Management); ISO/IEC 27001:2022 Annex A.8.15 (Logging); PCI DSS v4.0 Requirement 10 (Track and Monitor)",
+      "related_concepts": [
+        "Hot/cold tier retention",
+        "Immutable log storage",
+        "CIS Safeguard 8.5 event list",
+        "Multi-source correlation"
+      ],
+      "_provenance": "Authored from concept: 'Log management strategic framework'. Public sources: NIST, CIS, ISO, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_129",
+      "domain": 5,
+      "subtopic": "Vulnerability Scanning Program",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's vulnerability scanning program covering network + endpoints + cloud + web apps. Which option BEST captures the canonical VULNERABILITY SCANNING program?",
+      "options": {
+        "A": "Only network-perimeter vulnerability scanning matters for security; internal scans are unnecessary overhead given trusted-internal-network architectural assumptions still in use.",
+        "B": "Only the vulnerability scanner's automatic findings need attention; no firm-side prioritization, business-context overlay, or remediation tracking is required for the program.",
+        "C": "Vulnerability scanning is fully deprecated in modern security architectures; runtime EDR detection eliminates the need for proactive vulnerability assessment of any kind.",
+        "D": "Asset inventory + authenticated + unauthenticated scans + cadence by criticality + CVE/CVSS scoring + remediation SLA by severity + exception process + trend tracking + PCI ASV scans."
+      },
+      "correct": "D",
+      "key_concept": "Vulnerability scanning = asset inventory + authenticated + unauthenticated scans + cadence by criticality + CVE-to-CVSS scoring + remediation SLA + exception process + trend tracking + ASV scans for PCI. Nine elements.",
+      "pre_read": "For vulnerability scanning questions, anchor on nine-element program with internal + external + business-context prioritization. Perimeter-only, scanner-output-only, and EDR-replaces framings each fail.",
+      "correct_explanation": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning), CIS Controls v8 Safeguard 7 (Continuous Vulnerability Management), PCI DSS v4.0 Requirement 11.3 (Vulnerability Scanning), and ISACA Vulnerability Management Audit/Assurance Program establish vulnerability scanning framework: (1) ASSET INVENTORY — CIS Safeguard 1; cannot scan what you don't know about; cloud assets via cloud-provider API discovery; (2) AUTHENTICATED SCANS — credentials provided to scanner for deeper visibility (installed packages, registry state, configuration); higher accuracy than unauthenticated; (3) UNAUTHENTICATED SCANS — adversarial perspective; what an external attacker sees; complements authenticated; (4) CADENCE BY ASSET CRITICALITY — Critical assets weekly, High monthly, Medium quarterly; PCI 11.3.1 requires quarterly + after change; (5) CVE-TO-CVSS SCORING — CVSS base score + environmental score (firm-specific context); KEV (Known Exploited Vulnerabilities Catalog from CISA) prioritization; (6) REMEDIATION SLA BY SEVERITY — Critical 7-15 days, High 30-60 days, Medium 90-180 days; tracked; (7) EXCEPTION PROCESS — documented business justification + compensating control + expiry date; auditable; (8) SCAN-RESULT TREND TRACKING — month-over-month finding count; remediation velocity; backlog management; (9) ASV (APPROVED SCANNING VENDOR) SCANS FOR PCI SCOPE — quarterly external ASV scans required by PCI DSS Requirement 11.3.2.",
+      "wrong_explanations": {
+        "A": "A restricts to perimeter, missing INTERNAL scanning (lateral-movement vulnerabilities, internal-facing apps). Zero Trust principles reject trusted-internal-network assumption; internal scanning is foundational.",
+        "B": "B uses scanner output without firm-side prioritization, missing the BUSINESS CONTEXT (asset criticality, exploit availability, public-facing exposure). A High CVSS on an isolated dev system is lower priority than Medium CVSS on a public-facing app.",
+        "C": "C claims EDR replaces vuln scanning, but they have DIFFERENT scope. EDR detects what's HAPPENING (active threats); vuln scanning detects what COULD HAPPEN (exploitable weaknesses). Complementary, not substitutable."
+      },
+      "tips": [
+        "Trap is C — 'EDR replaces vulnerability scanning' is candidate-seductive because EDR is more recent and active-detection-focused; but EDR detects what's HAPPENING (active threats), vuln scanning detects what COULD HAPPEN (exploitable weaknesses). Complementary scopes, not substitutable.",
+        "Vulnerability scanning = asset inventory + authenticated + unauthenticated + cadence + CVE/CVSS scoring + remediation SLA + exception process + trend tracking + ASV scans (PCI). Nine elements.",
+        "Exam-day shortcut: when stem asks about VULNERABILITY SCANNING PROGRAM, look for nine-element framework spanning internal + external + business-context + PCI ASV; perimeter-only, scanner-output-only, and EDR-replaces framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CIS Controls v8 Safeguard 7 (Continuous Vulnerability Management); PCI DSS v4.0 Requirement 11.3 (Vulnerability Scanning); ISACA Vulnerability Management Audit/Assurance Program; CISA Known Exploited Vulnerabilities (KEV) Catalog",
+      "related_concepts": [
+        "CVSS environmental score",
+        "CISA KEV Catalog",
+        "Authenticated vs unauthenticated scans",
+        "PCI ASV quarterly scans"
+      ],
+      "_provenance": "Authored from concept: 'Vulnerability scanning program canonical framework'. Public sources: NIST, CIS, PCI Council, ISACA, CISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_130",
+      "domain": 5,
+      "subtopic": "Threat Hunting Program",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's threat hunting program. Which option BEST captures the canonical THREAT HUNTING program?",
+      "options": {
+        "A": "Wait for SIEM alerts; threat hunting is identical to alert triage and adds no value beyond reactive operations.",
+        "B": "Hypothesis-driven hunts + ATT&CK technique-focused exploration + UEBA anomaly investigation + IOC pivoting + structured methodology + hunt reporting + SIEM/SOC alerting integration.",
+        "C": "Hunt only when threat-intel reports name the firm specifically; otherwise no proactive hunting is needed.",
+        "D": "Threat hunting is replaced by automated SOAR playbooks; human-driven hunting is obsolete in modern SOCs."
+      },
+      "correct": "B",
+      "key_concept": "Threat hunting = hypothesis-driven hunts + ATT&CK-focused exploration + UEBA-anomaly investigation + IOC pivoting + structured methodology + hunt reporting + SIEM/SOC integration. Seven canonical elements.",
+      "pre_read": "For threat hunting questions, anchor on hypothesis-driven proactive exploration distinct from reactive alert triage. Alert-triage-equivalent, named-firm-only, and SOAR-replaces framings each fail.",
+      "correct_explanation": "SANS Threat Hunting Methodology, MITRE ATT&CK Framework, Sqrrl Threat Hunting Reference Model, and ISACA SOC Audit/Assurance Program establish threat hunting framework: (1) HYPOTHESIS-DRIVEN HUNTS — start with hypothesis ('if APT-X is active in our environment, we'd see Y'); structured exploration; (2) ATT&CK TECHNIQUE-FOCUSED EXPLORATION — hunt for specific techniques (T1078 Valid Accounts, T1486 Data Encrypted, T1003 Credential Dumping); coverage matrix against ATT&CK; (3) UEBA-ANOMALY INVESTIGATION — behavioral deviations as hunt starting points (user accessing systems they normally don't); (4) IOC PIVOTING — known-bad indicator as pivot point; find all places it appears; expand from there; (5) STRUCTURED ANALYTICAL METHODOLOGY — Diamond Model, Kill Chain, ATT&CK; documented analytical process; (6) HUNT REPORTING AND METRICS — hunts conducted, findings, time-to-discovery; coverage metrics; (7) INTEGRATION WITH SIEM/SOC ALERTING — successful hunts become new detection rules; closes the proactive-to-reactive loop. Hunting is PROACTIVE complement to reactive alert triage; modern SOCs allocate 10-30% of analyst capacity to hunting.",
+      "wrong_explanations": {
+        "A": "A confuses alert triage (REACTIVE — responding to detection signals) with threat hunting (PROACTIVE — searching for adversary presence absent specific alerts). Hunting finds threats that alerts missed; complementary not redundant.",
+        "C": "C waits for named-firm threat intel, missing the hypothesis-driven hunting that doesn't require firm-specific naming. Industry threat intel + ATT&CK technique-focused hunts + UEBA anomalies all drive proactive hunts.",
+        "D": "D claims SOAR replaces hunting, but SOAR automates known response patterns; hunting EXPLORES UNKNOWN patterns. SOAR handles 'we know about this — automate the response'; hunting asks 'is there something we don't know about?'"
+      },
+      "tips": [
+        "Trap is A — 'threat hunting is alert triage' is candidate-seductive because both involve SOC analyst work; but alert triage is REACTIVE (respond to detection signals), hunting is PROACTIVE (search for adversary presence absent specific alerts). Complementary; hunting finds what alerts miss.",
+        "Threat hunting = hypothesis-driven + ATT&CK-focused + UEBA anomalies + IOC pivoting + structured methodology + reporting + SIEM integration. Seven elements. Proactive complement to reactive alerting.",
+        "Exam-day shortcut: when stem asks about THREAT HUNTING, look for hypothesis-driven PROACTIVE exploration; alert-triage-equivalent, named-firm-only, and SOAR-replaces framings each fail."
+      ],
+      "framework_ref": "SANS Threat Hunting Methodology; MITRE ATT&CK Framework; Sqrrl Threat Hunting Reference Model; ISACA SOC Audit/Assurance Program; David Bianco Pyramid of Pain",
+      "related_concepts": [
+        "Hypothesis-driven hunting",
+        "ATT&CK coverage matrix",
+        "Pyramid of Pain",
+        "Hunting-to-detection feedback loop"
+      ],
+      "_provenance": "Authored from concept: 'Threat hunting canonical framework'. Public sources: SANS, MITRE, Sqrrl, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_131",
+      "domain": 5,
+      "subtopic": "Threat Modeling — STRIDE",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's threat modeling practice. Which option BEST captures the canonical THREAT MODELING framework?",
+      "options": {
+        "A": "Threat modeling is purely theoretical and adds overhead without value; pen-testing alone catches threats post-implementation without requiring upfront modeling effort.",
+        "B": "STRIDE methodology (Spoofing/Tampering/Repudiation/Disclosure/DoS/Elevation) + design-stage application + data flow diagrams + threat catalog + mitigation linking + iteration on changes.",
+        "C": "Only attack trees are needed for threat modeling; STRIDE methodology adds unnecessary structure and overhead for typical software development teams to apply.",
+        "D": "Threat modeling is replaced entirely by SAST tooling deployment; static code analysis catches all design-level security issues automatically without modeling work."
+      },
+      "correct": "B",
+      "key_concept": "Threat modeling = STRIDE methodology + design-stage application + data flow diagrams + threat catalog + mitigation linking + iteration on changes. Six canonical elements.",
+      "pre_read": "For threat modeling questions, anchor on STRIDE at design stage with iteration. Pentest-replaces, attack-trees-only, and SAST-replaces framings each fail.",
+      "correct_explanation": "Microsoft Threat Modeling Methodology (STRIDE), OWASP Application Threat Modeling, NIST SP 800-154 (Guide to Data-Centric System Threat Modeling), and ISACA Application Security Audit/Assurance Program establish threat modeling framework: (1) STRIDE METHODOLOGY — six threat categories: SPOOFING (impersonating identity), TAMPERING (modifying data), REPUDIATION (denying actions), INFORMATION DISCLOSURE (data leakage), DENIAL OF SERVICE (availability impact), ELEVATION OF PRIVILEGE (gaining unauthorized access); each STRIDE category maps to specific mitigation classes; (2) DESIGN-STAGE APPLICATION — performed during architecture/design phase BEFORE code; shift-left principle; cheapest fix point; (3) DATA FLOW DIAGRAMS (DFD) — visual representation of system components, data flows, trust boundaries; threats analyzed at each boundary; (4) THREAT CATALOG — documented threats per component/flow; STRIDE-categorized; (5) MITIGATION LINKING — each threat linked to mitigation (technical control, process control, design change); (6) ITERATION ON CHANGES — re-modeled when architecture changes; not one-time-at-design. Alternative methodologies: PASTA (Process for Attack Simulation and Threat Analysis), Attack Trees, OCTAVE, LINDDUN (privacy threat modeling). Microsoft Threat Modeling Tool, OWASP Threat Dragon, IriusRisk are common tooling.",
+      "wrong_explanations": {
+        "A": "A defers to pentest-only, missing the SHIFT-LEFT value of threat modeling. Modeling at DESIGN stage catches issues BEFORE code is written — much cheaper than fixing post-deployment. Pentest catches what made it through; modeling prevents it from entering.",
+        "C": "C uses attack trees only, missing STRIDE's structured taxonomy that catches systematic categories. Attack trees model SPECIFIC scenarios; STRIDE catches all six categories systematically. Both have value; STRIDE provides broader coverage.",
+        "D": "D claims SAST replaces threat modeling, but SAST catches CODE-LEVEL patterns; threat modeling catches DESIGN-LEVEL flaws (missing trust boundaries, insecure data flows, wrong-component-responsible-for-validation). SAST cannot see design intent."
+      },
+      "tips": [
+        "Trap is A — 'pen-testing alone catches threats' is candidate-seductive because pentest is the most-visible testing technique; but threat modeling at DESIGN STAGE catches issues BEFORE code (shift-left, much cheaper). Pentest catches what made it through; modeling prevents entry. Both have value at different stages.",
+        "Threat modeling = STRIDE methodology + design-stage application + data flow diagrams + threat catalog + mitigation linking + iteration on changes. Six elements. SHIFT-LEFT principle.",
+        "Exam-day shortcut: when stem asks about THREAT MODELING, look for STRIDE-at-design with DFDs + iteration; pentest-replaces, attack-trees-only, and SAST-replaces framings each fail."
+      ],
+      "framework_ref": "Microsoft Threat Modeling Methodology (STRIDE); OWASP Application Threat Modeling; NIST SP 800-154 (Guide to Data-Centric System Threat Modeling); ISACA Application Security Audit/Assurance Program; OWASP Threat Dragon",
+      "related_concepts": [
+        "STRIDE six categories",
+        "Shift-left design-stage",
+        "Data flow diagrams (DFD)",
+        "PASTA / LINDDUN alternatives"
+      ],
+      "_provenance": "Authored from concept: 'Threat modeling canonical framework per STRIDE'. Public sources: Microsoft, OWASP, NIST, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_132",
+      "domain": 5,
+      "subtopic": "User and Entity Behavior Analytics (UEBA)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's User and Entity Behavior Analytics (UEBA) deployment. Which option BEST captures the canonical UEBA framework?",
+      "options": {
+        "A": "Replace the SIEM entirely with UEBA; UEBA's behavioral detection is universally more accurate than signature-based correlation across all security monitoring scenarios.",
+        "B": "Surveillance of all user activity at all times without prior notice; total visibility eliminates insider threat.",
+        "C": "Only signature-based detection should be used in modern SOC operations; behavioral analytics is theoretical and adds false-positive risk without delivering security value.",
+        "D": "Baseline behavior + ML anomaly detection + risk scoring + alert prioritization + SIEM integration + privacy notice (GDPR Article 88, works councils) + investigation workflows + model tuning."
+      },
+      "correct": "D",
+      "key_concept": "UEBA = baseline behavior + ML anomaly detection + risk scoring + alert prioritization + SIEM integration + privacy notice + investigation workflows + feedback for tuning. Eight canonical elements.",
+      "pre_read": "For UEBA questions, anchor on eight-element framework with privacy notice. SIEM-replaced, total-surveillance, and signature-only framings each fail.",
+      "correct_explanation": "Gartner UEBA Market Guide, NIST SP 800-53 Rev 5 SI-4 (System Monitoring), and ISACA SOC Audit/Assurance Program establish UEBA framework: (1) BASELINE BEHAVIOR MODELING — per-user and per-entity (service account, host, application) baseline of normal behavior; learning period typical 30-90 days; (2) MACHINE-LEARNING ANOMALY DETECTION — supervised + unsupervised + clustering models; detection of statistically significant deviations from baseline; (3) RISK SCORING — anomalies aggregated into risk score per entity; higher score = more deviation across multiple dimensions; (4) ALERT PRIORITIZATION — high-risk entities prioritized for analyst attention; reduces alert volume vs raw event stream; (5) INTEGRATION WITH SIEM — UEBA feeds SIEM with risk scores + anomalies; complements signature-based detection; (6) PRIVACY NOTICE — what's monitored (system access, data movement, login patterns), what isn't (personal communications when scope-limited), threshold for investigation; GDPR Article 88 + EU works councils require transparency; (7) INVESTIGATION WORKFLOWS — analyst review of high-risk entities; case management; (8) FEEDBACK FOR MODEL TUNING — analyst dispositions feed back to UEBA model; reduces false positives over time. Common UEBA: Splunk UBA, Microsoft Sentinel, Securonix, Exabeam, Gurucul.",
+      "wrong_explanations": {
+        "A": "A replaces SIEM with UEBA, but they're COMPLEMENTARY: SIEM catches known patterns via correlation; UEBA catches NOVEL patterns via baseline deviation. Modern SIEM platforms integrate UEBA as a module, not replacement.",
+        "B": "B uses total surveillance without privacy notice, violating GDPR Article 88, EU works council agreements, and trust. UEBA REQUIRES privacy framework: transparent notice of what's monitored, what isn't, what triggers investigation.",
+        "C": "C dismisses behavioral analytics, missing the value: signature-based catches KNOWN attacks; UEBA catches UNKNOWN (novel insider, compromised account behaving subtly differently, lateral movement patterns). Both required."
+      },
+      "tips": [
+        "Trap is B — 'surveillance of all user activity at all times' is candidate-seductive because more-monitoring feels safer; but total surveillance violates GDPR Article 88, EU works council agreements, and trust. UEBA REQUIRES transparent privacy notice + jurisdictional-aware scoping.",
+        "UEBA = baseline behavior + ML anomaly detection + risk scoring + alert prioritization + SIEM integration + privacy notice + investigation workflows + model tuning. Eight elements. Complement to signature-based detection.",
+        "Exam-day shortcut: when stem asks about UEBA, look for eight-element framework with privacy notice + SIEM integration; SIEM-replaced, total-surveillance, and signature-only framings each fail."
+      ],
+      "framework_ref": "Gartner UEBA Market Guide; NIST SP 800-53 Rev 5 SI-4 (System Monitoring); ISACA SOC Audit/Assurance Program; GDPR Article 88 (Processing in the context of employment); ISO/IEC 27001:2022 Annex A.5.34 (Privacy and protection of PII)",
+      "related_concepts": [
+        "Baseline behavior modeling",
+        "Risk scoring aggregation",
+        "UEBA + SIEM integration",
+        "GDPR Article 88 employee monitoring"
+      ],
+      "_provenance": "Authored from concept: 'UEBA canonical framework'. Public sources: Gartner, NIST, ISACA, GDPR, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_133",
+      "domain": 5,
+      "subtopic": "Bug Bounty Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's bug bounty program design. Which option BEST captures the canonical BUG BOUNTY PROGRAM framework?",
+      "options": {
+        "A": "Open-scope unlimited bounty without rules; let researchers find whatever they can with no scope, no targeting rules, and no coordinated disclosure requirements.",
+        "B": "Private invitation-only with strict NDA from researchers; only pre-vetted testers permitted, no public disclosure ever, and indefinite secrecy on all findings.",
+        "C": "Bug bounty is replaced entirely by automated SAST/DAST tooling; human-driven security testing adds no value beyond what automated commercial tools provide.",
+        "D": "Scope + reward tiers (CVSS-based) + coordinated disclosure policy + triage SLA + safe harbor + duplicate handling + tester verification + retest verification + payout + program metrics."
+      },
+      "correct": "D",
+      "key_concept": "Bug bounty program = scope + reward tiers + coordinated disclosure policy + triage SLA + safe harbor + duplicate handling + tester verification + retest verification + payout management + program metrics. Ten elements.",
+      "pre_read": "For bug bounty program questions, anchor on ten-element framework with scope + coordinated disclosure + safe harbor. Unscoped, strict-NDA, and SAST-replaces framings each fail.",
+      "correct_explanation": "OWASP Bug Bounty Program Best Practices, HackerOne / Bugcrowd vendor methodologies, ISACA Application Security Audit/Assurance Program, and CISA Coordinated Vulnerability Disclosure (CVD) guidance establish bug bounty framework: (1) SCOPE DEFINITION — in-scope targets, out-of-scope, attack-types-permitted (no DoS typically), test-account-provided; (2) REWARD TIERS — CVSS-based or impact-based; typical: Critical $5K-$50K, High $1K-$10K, Medium $250-$1K; (3) COORDINATED DISCLOSURE POLICY — researchers commit to private disclosure; firm commits to fix timeline + public disclosure post-fix; CVE assignment; (4) TRIAGE SLA — initial response within 24-72h; duplicate determination; validation; (5) SAFE HARBOR — legal protection for researchers acting in good faith within scope; protects from DMCA/CFAA exposure; CISA model language; (6) DUPLICATE HANDLING — first valid report receives bounty; transparent duplicate detection; (7) TESTER VERIFICATION — identity verification for paying bounties (1099 tax forms, OFAC sanctions screening); (8) RETEST VERIFICATION — after fix, researcher retests; confirms resolution; (9) PAYOUT MANAGEMENT — payment within defined timeline; tax reporting; (10) PROGRAM METRICS — submission volume, validation rate, time-to-fix, bounty-per-finding trends.",
+      "wrong_explanations": {
+        "A": "A uses unscoped bounty, missing scope DEFINITION (what targets are in/out — researchers test out-of-scope = uncoordinated exposure of sensitive systems), reward tiers (set expectations), and coordinated disclosure (prevent public disclosure before fix). Unscoped is chaos.",
+        "B": "B uses strict NDA + no public disclosure, missing the coordinated-disclosure principle. CVE assignment, attribution, and security-community trust require some level of public disclosure post-remediation. Indefinite secrecy is reputational risk.",
+        "C": "C dismisses human testing, missing what automated tools cannot find: business-logic flaws, chained-attack paths, novel exploitation techniques, social-engineering-paired attacks. Bug bounty complements SAST/DAST; doesn't replace."
+      },
+      "tips": [
+        "Trap is B — 'strict NDA with no public disclosure' is candidate-seductive because secrecy feels safer; but it violates COORDINATED DISCLOSURE principle (CVE assignment, attribution, community trust require some public disclosure post-remediation). Indefinite secrecy is reputational risk.",
+        "Bug bounty = scope + reward tiers + coordinated disclosure + triage SLA + safe harbor + duplicate handling + tester verification + retest + payout + metrics. Ten elements.",
+        "Exam-day shortcut: when stem asks about BUG BOUNTY PROGRAM, look for ten-element framework with scope + coordinated disclosure + safe harbor; unscoped, strict-NDA, and SAST-replaces framings each fail."
+      ],
+      "framework_ref": "OWASP Bug Bounty Program Best Practices; CISA Coordinated Vulnerability Disclosure (CVD); ISACA Application Security Audit/Assurance Program; HackerOne / Bugcrowd Vendor Methodologies; ISO/IEC 29147 (Vulnerability Disclosure)",
+      "related_concepts": [
+        "Safe harbor",
+        "Coordinated Vulnerability Disclosure",
+        "CVSS reward tiers",
+        "HackerOne / Bugcrowd platforms"
+      ],
+      "_provenance": "Authored from concept: 'Bug bounty program canonical framework'. Public sources: OWASP, CISA, ISACA, ISO, vendor methodologies. No legacy bank citation."
+    },
+    {
+      "id": "d5_134",
+      "domain": 5,
+      "subtopic": "SOAR Automation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's Security Orchestration Automation and Response (SOAR) deployment. Which option BEST captures the canonical SOAR framework?",
+      "options": {
+        "A": "Full automation of all response actions without human review; speed of response trumps oversight.",
+        "B": "Only manual incident-response playbooks should be used; SOAR automation introduces unacceptable risk and removes essential human judgment from response decisions.",
+        "C": "Playbook library + tested automation + human-in-loop gates for high-impact + EDR/IdP/SIEM/ticketing integration + metrics + governance + rollback procedures + audit trail.",
+        "D": "SOAR is identical to SIEM functionality; deploying a SIEM platform covers SOAR capability requirements without need for separate SOAR tooling."
+      },
+      "correct": "C",
+      "key_concept": "SOAR = playbook library + tested automation steps + human-in-loop gates for high-impact + EDR/IdP/SIEM/ticketing integration + metrics + governance + rollback + audit trail. Eight canonical elements.",
+      "pre_read": "For SOAR questions, anchor on eight-element framework with human-in-loop gates. Full-automation, manual-only, and SIEM-equivalent framings each fail.",
+      "correct_explanation": "Gartner SOAR Market Guide, ISACA SOC Audit/Assurance Program, MITRE D3FEND, and SOAR vendor (Palo Alto Cortex XSOAR, Splunk SOAR, IBM QRadar SOAR, Microsoft Sentinel automation) documentation establish SOAR framework: (1) PLAYBOOK LIBRARY — codified response patterns; common playbooks: phishing investigation, brute-force lockout, malware containment, credential-leak rotation; (2) TESTED AUTOMATION STEPS — each step tested in non-production; rollback validated; (3) HUMAN-IN-LOOP GATES FOR HIGH-IMPACT — production host isolation, user account disable, firewall rule changes require analyst approval; auto-execute only well-defined low-risk actions; (4) INTEGRATION WITH EDR/IDP/SIEM/TICKETING — bidirectional API integration; orchestrates actions across security stack; (5) METRICS — automation success rate, time-saved per playbook, escalation rate to human; (6) GOVERNANCE FOR NEW PLAYBOOKS — security architecture review + testing + production sign-off; not ad-hoc; (7) ROLLBACK PROCEDURES — every automated action has rollback path; pre-defined; (8) AUDIT TRAIL — every automated action logged with full context (who triggered, what action, what affected, when, why); SOX-relevant for financial systems.",
+      "wrong_explanations": {
+        "A": "A removes human-in-loop, but high-impact actions (isolating production hosts, disabling user accounts, blocking firewall rules) require human review for legitimate-business-impact assessment. Full automation produces operational disruption when false-positives occur. Tiered automation with human gates is canonical.",
+        "B": "B avoids automation entirely, missing SOAR's value: automated triage of high-volume routine alerts, automated enrichment (IOC lookup, asset context, user context), automated containment of well-defined threats. Manual-only doesn't scale to modern alert volumes.",
+        "D": "D equates SOAR to SIEM, but they're DISTINCT: SIEM is DETECTION (correlation, alerting); SOAR is RESPONSE (orchestration, automation). Modern platforms often bundle both but they're functionally distinct."
+      },
+      "tips": [
+        "Trap is A — 'full automation without human review' is candidate-seductive because speed-of-response is real value; but high-impact actions (isolating production hosts, disabling accounts, firewall blocks) require human review for legitimate-business-impact assessment. Tiered automation with human gates for high-impact is canonical.",
+        "SOAR = playbook library + tested automation + human-in-loop gates + multi-tool integration + metrics + governance + rollback + audit trail. Eight elements. Tiered automation; not full-auto.",
+        "Exam-day shortcut: when stem asks about SOAR FRAMEWORK, look for eight-element framework with human-in-loop gates for high-impact; full-auto, manual-only, and SIEM-equivalent framings each fail."
+      ],
+      "framework_ref": "Gartner SOAR Market Guide; ISACA SOC Audit/Assurance Program; MITRE D3FEND Framework; NIST SP 800-61 Rev 2 (Incident Handling Guide)",
+      "related_concepts": [
+        "Human-in-loop gates",
+        "Playbook governance",
+        "Rollback procedures",
+        "SOAR vs SIEM distinction"
+      ],
+      "_provenance": "Authored from concept: 'SOAR canonical framework'. Public sources: Gartner, ISACA, MITRE, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_135",
+      "domain": 5,
+      "subtopic": "Pentest Finding Remediation Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST remediation approach?",
+      "scenario_context": "An IT auditor's annual pentest delivers report at 4:38 PM Thursday: 22 findings total — 3 Critical (RCE in customer-facing API, hardcoded credential in container image, broken authentication on admin endpoint), 7 High, 8 Medium, 4 Low. Pentest vendor found Critical RCE via chained-attack-path that crosses 3 systems; firm's last pentest 11 months ago surfaced none of these. Customer base 2.4M users; affected systems include customer-data API + admin console + production CI/CD. The CISO + CTO + Engineering VP + General Counsel + insurance broker on call within 20 minutes.",
+      "options": {
+        "A": "Patch the 3 Critical pentest findings within 24 hours and ignore the High, Medium, and Low findings until next year's annual pentest cycle.",
+        "B": "Triage by criticality + immediate compensating controls + remediation by SLA + cross-finding pattern analysis + retest + RCA for prior-pentest miss + insurance notification.",
+        "C": "Engage the pentest vendor for continuous testing instead of the current annual cadence; the 11-month gap between tests is the root issue here.",
+        "D": "Issue a public-facing transparency report immediately disclosing all 22 findings to customers and regulators before remediation begins."
+      },
+      "correct": "B",
+      "key_concept": "Pentest remediation = triage by criticality + immediate compensating controls + remediation prioritization (Critical 7-15d, High 30d, Medium 90d, Low 180d) + cross-finding pattern analysis + retest + RCA for prior-pentest miss + insurance notification. Seven tracks.",
+      "pre_read": "For pentest remediation questions, anchor on triage-and-prioritized-remediation with compensating controls + cross-finding analysis. Critical-only, continuous-testing-pivot, and premature-disclosure framings each fail.",
+      "correct_explanation": "PTES (Penetration Testing Execution Standard), ISACA Penetration Testing Audit/Assurance Program, PCI DSS v4.0 Requirement 11.4 (Penetration Testing), and ISO/IEC 29147 (Coordinated Vulnerability Disclosure) establish pentest remediation framework. Seven tracks: (1) TRIAGE BY CRITICALITY — Critical/High/Medium/Low ranking; CVSS scoring; business-context overlay (customer-facing = higher priority); (2) IMMEDIATE COMPENSATING CONTROLS FOR CRITICAL — buy time for proper fix: WAF rule blocking the exploit path, network ACL isolating the vulnerable service, admin endpoint disabled; (3) REMEDIATION PRIORITIZATION BY SLA — Critical 7-15 days, High 30 days, Medium 90 days, Low 180 days; tracked; (4) CROSS-FINDING PATTERN ANALYSIS — chained-attack-paths (low + medium + high combining to enable critical) require holistic remediation; (5) RETEST WITH PENTEST VENDOR — confirm fix; documented; (6) ROOT-CAUSE ANALYSIS FOR PRIOR-PENTEST MISS — why didn't last year's pentest find these? scope gap? methodology gap? environment change? pentest vendor change? (7) INSURANCE NOTIFICATION — many cyber insurance policies require notification of material findings within timeline.",
+      "wrong_explanations": {
+        "A": "Failure mode = CRITICAL-ONLY REMEDIATION. High and Medium findings often chain together (low + medium can enable critical exploit path). Ignoring them maintains risk; the 7 High + 8 Medium findings need remediation within their SLAs, not deferral.",
+        "C": "Failure mode = OVER-CORRECTION-TO-CONTINUOUS-TESTING. Annual pentest with quarterly scans is appropriate cadence for most firms (PCI requires after change + annual minimum). Continuous testing has value but is not the response to a specific 22-finding report; remediation is.",
+        "D": "Failure mode = PREMATURE-PUBLIC-DISCLOSURE. Publishing 22 findings BEFORE remediation gives adversaries an attack roadmap. Coordinated disclosure is after remediation. Regulator notification (per state breach laws, SEC Reg S-K) is appropriate for material findings but on remediation timeline, not pre-fix."
+      },
+      "tips": [
+        "Trap is A — 'patch Critical findings and ignore High/Medium/Low until next year' is candidate-seductive because Critical prioritization sounds right; but High + Medium often CHAIN to create Critical exploit paths. Each severity tier has SLA; deferral maintains risk.",
+        "Pentest remediation = triage by criticality + immediate compensating controls + remediation by SLA + cross-finding pattern analysis + retest + RCA for prior-pentest miss + insurance notification. Seven tracks.",
+        "Exam-day shortcut: when stem describes PENTEST REPORT WITH MIXED-SEVERITY FINDINGS, look for triage + compensating controls + prioritized remediation; Critical-only, pivot-to-continuous, and premature-disclosure framings each fail."
+      ],
+      "framework_ref": "PTES (Penetration Testing Execution Standard); ISACA Penetration Testing Audit/Assurance Program; PCI DSS v4.0 Requirement 11.4 (Penetration Testing); ISO/IEC 29147 (Coordinated Vulnerability Disclosure); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "related_concepts": [
+        "Compensating controls",
+        "Chained-attack-path analysis",
+        "Pentest retest",
+        "Prior-pentest miss RCA"
+      ],
+      "_provenance": "Authored from concept: 'Penetration testing finding remediation framework'. Public sources: PTES, ISACA, PCI Council, ISO, SEC. No legacy bank citation."
+    },
+    {
+      "id": "d5_136",
+      "domain": 5,
+      "subtopic": "SOC Alert Fatigue Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST remediation approach?",
+      "scenario_context": "A regional financial-services firm's SOC manager presents at 11:30 AM Friday: alert fatigue crisis. Tier-1 analysts are handling 480 alerts/day per analyst (industry benchmark 75-100); 65% false-positive rate; 22 minutes average to alert disposition; analyst burnout escalating. Three real-incident misses in the last 90 days — including one initial-access alert dismissed as FP that was later found to be real APT activity which ran for 14 days before detection. SOC team turnover has doubled YoY. The CISO is presenting to the audit committee in 6 weeks with FY26 budget allocation pending.",
+      "options": {
+        "A": "Detection rule audit + FP tuning + SOAR automated triage + UEBA risk scoring + tiered analyst workflow + use-case retirement + analyst wellness + audit committee reporting + benchmarks + budget reallocation.",
+        "B": "Hire more tier-1 SOC analysts to absorb the alert volume; doubling SOC headcount fully eliminates the alert-fatigue problem at any firm.",
+        "C": "Disable the noisiest detection rules entirely to reduce alert volume; if 65% of alerts are false-positives, simply eliminating those rules solves the alert-fatigue problem.",
+        "D": "Outsource the SOC entirely to an MSSP; MSSPs have better tooling and processes for alert management and will solve the fatigue issue without firm-side work."
+      },
+      "correct": "A",
+      "key_concept": "Alert fatigue remediation = detection rule audit + FP tuning + automated triage (SOAR) + UEBA risk scoring + tiered workflow + use-case retirement + analyst wellness + audit committee reporting + benchmark comparison + budget reallocation. Ten tracks.",
+      "pre_read": "For SOC alert fatigue questions, anchor on multi-track remediation. Scale-headcount, disable-rules, and outsource framings each fail.",
+      "correct_explanation": "ISACA SOC Audit/Assurance Program, SANS SOC Survey, Gartner SOC Maturity Model, and MITRE D3FEND Framework establish alert fatigue remediation. Ten tracks: (1) DETECTION RULE AUDIT — review every active rule; ATT&CK coverage map; rules not firing or firing-too-noisily flagged; (2) FALSE-POSITIVE TUNING — tune top-10 noisiest rules first; success threshold: <10% FP rate per rule; (3) AUTOMATED TRIAGE VIA SOAR — automated enrichment (asset context, user context, threat intel lookup) reduces analyst effort per alert; (4) UEBA RISK SCORING — alerts prioritized by entity risk score; high-risk entities first; (5) TIERED ANALYST WORKFLOW — tier-1 routine triage, tier-2 investigation, tier-3 hunting + IR; clearer escalation; (6) USE-CASE RETIREMENT — rules that haven't fired in 12 months OR have <10% true-positive retired; (7) ANALYST WELLNESS PROGRAM — rotation, training, mental-health support; high-stress role; (8) AUDIT COMMITTEE REPORTING — metrics on alert volume, FP rate, time-to-disposition, real-incident catches; trend reporting; (9) BENCHMARK COMPARISON — peer comparison (industry analyst:alert ratios); justifies investment; (10) BUDGET REALLOCATION — investment in automation + UEBA + analyst capacity. ATT&CK coverage matrix shows whether retirement creates gaps.",
+      "wrong_explanations": {
+        "B": "Failure mode = SCALE-WITHOUT-FIX. Doubling headcount doesn't address the underlying problem (poor detection rules, high FP rate, missing automation). New analysts face same fatigue; doubles cost without solving root cause.",
+        "C": "Failure mode = DETECTION-GAP-CREATION. Disabling noisy rules eliminates noise but may eliminate REAL detections within that noise (the APT activity ran for 14 days before detection — likely because alerts were dismissed as FP). Tuning beats disabling.",
+        "D": "Failure mode = OUTSOURCING-DOESN'T-FIX-ROOT-CAUSE. MSSP may operate the same detection rules with same FP rate; the rule quality and use-case design issues remain. Hybrid (in-house tier-1 + MSSP overflow) is a model; pure outsourcing doesn't fix the rules."
+      },
+      "tips": [
+        "Trap is B — 'hire more tier-1 analysts' is candidate-seductive because doubling headcount feels like the direct solution; but it doesn't fix detection rule quality, FP rate, or automation. New analysts face same fatigue; cost doubles without root-cause resolution.",
+        "Alert fatigue = detection rule audit + FP tuning + SOAR automation + UEBA risk scoring + tiered workflow + use-case retirement + analyst wellness + reporting + benchmarks + budget reallocation. Ten tracks.",
+        "Exam-day shortcut: when stem describes ALERT-FATIGUE CRISIS WITH MISSED INCIDENTS, look for multi-track remediation; hire-more, disable-rules, and outsource framings each fail."
+      ],
+      "framework_ref": "ISACA SOC Audit/Assurance Program; SANS SOC Survey; Gartner SOC Maturity Model; MITRE D3FEND Framework; NIST SP 800-94 (Guide to IDS/IPS)",
+      "related_concepts": [
+        "SOC Maturity Model",
+        "FP tuning cadence",
+        "ATT&CK coverage matrix",
+        "Analyst burnout"
+      ],
+      "_provenance": "Authored from concept: 'SOC alert fatigue multi-track remediation'. Public sources: ISACA, SANS, Gartner, MITRE, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_137",
+      "domain": 5,
+      "subtopic": "Zero-Day Vulnerability Mitigation — Immediate Action",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A SaaS firm's threat-intel feed alerts at 6:48 AM Wednesday: zero-day vulnerability publicly disclosed in a JavaScript framework used in 23 of 47 firm applications. CVE published 8 minutes ago; CVSS 9.8 (RCE, unauthenticated); proof-of-concept exploit code circulating on Twitter; no vendor patch available (estimated 24-48 hours). Affected applications include customer authentication API + payment processing + admin console. Firm has 2.8M end-users. WAF (Cloudflare) and network ACLs (AWS) can deploy mitigations in minutes. The CTO + CISO + Chief Customer Officer + General Counsel + AWS TAM on bridge call within 14 minutes.",
+      "options": {
+        "A": "Wait for the vendor patch (24-48 hours) before taking any defensive action; the vendor knows their product best and the patch is the canonical fix.",
+        "B": "Open a multi-track coordination call: CTO + CISO + CCO + GC + AWS TAM + customer communication team before taking any technical action.",
+        "C": "Shut down all 23 affected applications until the vendor patch is available; full service unavailability is acceptable given the Critical CVSS score.",
+        "D": "DEPLOY compensating controls IMMEDIATELY (WAF rule blocking exploit pattern + network ACL + segment isolation for admin console) — minutes to deploy vs 24-48h patch wait, closes the exposure window."
+      },
+      "correct": "D",
+      "key_concept": "Zero-day mitigation FIRST action = deploy compensating controls (WAF + ACL + segmentation) immediately. Single critical-path action because public PoC + no patch + CVSS 9.8 means active exploitation is imminent.",
+      "pre_read": "For zero-day mitigation questions, anchor on COMPENSATING CONTROLS DEPLOY FAST. The exposure-window-with-public-PoC clock dominates other considerations.",
+      "correct_explanation": "When zero-day vulnerability is publicly disclosed with PoC + no vendor patch available, the FIRST action is IMMEDIATE COMPENSATING CONTROL DEPLOYMENT. Rationale: (1) EXPOSURE-WINDOW-CLOSE PRINCIPLE — public PoC + CVSS 9.8 + no patch = active scanning and exploitation begins within hours; every minute of exposure is opportunity; (2) COMPENSATING CONTROLS DEPLOY IN MINUTES — WAF rule (block exploit pattern), network ACL (restrict traffic), segment isolation; reversible after patch; preserves availability; (3) PATCH WAIT IS DOWNSTREAM — 24-48h wait is unavoidable but DURING that wait, compensating controls reduce exposure. Not-patching-yet ≠ not-acting; (4) DISTINCT FROM PRIOR SINGLE-FOCUS PRINCIPLES — distinct from contain-first (d5_077 CA, d5_098 container — adversary present); distinct from restore-first (d5_097 WAF FP — control misbehaving); distinct from financial-loss-clock (d5_112 BEC — irreversible wire); distinct from credential-validity-clock (d5_119 — adversary has active session); distinct from irreversible-loss-clock (d5_080 — destruction in progress). EXPOSURE-WINDOW-CLOSE applies when ADVERSARY-POTENTIAL is imminent (public PoC) but NOT YET CONFIRMED ACTIVE. After compensating controls: (a) IR call with CTO + CISO + GC + customer-comms for multi-track response; (b) monitor for exploitation attempts via SIEM/WAF logs; (c) vendor engagement on patch timeline; (d) patch deployment when available; (e) compensating controls retirement after patch validation; (f) post-incident SBOM dependency-vulnerability monitoring policy review.",
+      "wrong_explanations": {
+        "A": "Failure mode = WAIT-FOR-PATCH. 24-48 hour exposure with public PoC + CVSS 9.8 = adversaries actively exploiting; passive waiting accepts that exposure. Compensating controls (WAF/ACL/segmentation) deploy in minutes and reduce attack surface during patch wait.",
+        "B": "Multi-track coordination wastes minutes during which adversaries scan + exploit. WAF + ACL changes execute in minutes; coordination call is appropriate AFTER initial mitigation deployed. Containment-first principle applies.",
+        "C": "Shut-down-all-23 is operational over-reaction. Compensating controls (WAF rules blocking exploit pattern) preserve service availability for unaffected legitimate traffic while blocking adversary exploitation. Surgical mitigation beats blunt shutdown."
+      },
+      "tips": [
+        "Trap is A — 'wait for vendor patch' is candidate-seductive because vendor knows their product best; but 24-48h exposure with public PoC + CVSS 9.8 = adversaries already scanning. Compensating controls deploy in minutes; they don't fix the vuln but reduce attack surface during patch wait. NOT-PATCHING ≠ NOT-ACTING.",
+        "EXPOSURE-WINDOW-CLOSE principle: when vulnerability is publicly disclosed with PoC + no patch available, FIRST action is COMPENSATING CONTROL deployment (WAF/ACL/segmentation) — minutes vs hours-or-days patch wait. Distinct from contain-first (adversary present): this applies BEFORE adversary confirmed.",
+        "Exam-day shortcut: when stem describes ZERO-DAY WITH PUBLIC POC + NO PATCH + EXPOSED PRODUCTION SYSTEMS, look for IMMEDIATE COMPENSATING CONTROLS; wait-for-patch, coordination-call, and shut-down-all framings each fail the exposure-window-clock test."
+      ],
+      "framework_ref": "ISACA Vulnerability Management Audit/Assurance Program; NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CISA Known Exploited Vulnerabilities (KEV) Catalog; CISA Binding Operational Directive 22-01 (Reducing Significant Risk of Known Exploited Vulnerabilities); ISO/IEC 30111 (Vulnerability Handling Processes)",
+      "related_concepts": [
+        "Compensating controls",
+        "Public PoC exposure",
+        "CISA KEV",
+        "Virtual patching via WAF"
+      ],
+      "_provenance": "Authored from concept: 'Zero-day vulnerability immediate compensating control deployment'. Public sources: ISACA, NIST, CISA, ISO. No legacy bank citation. Note: NEW single-focus principle EXPOSURE-WINDOW-CLOSE — distinct from prior six principles."
+    },
+    {
+      "id": "d5_138",
+      "domain": 5,
+      "subtopic": "SIEM Log Gap Discovery",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST remediation approach?",
+      "scenario_context": "A regional healthcare network's IT auditor discovers at 2:14 PM Wednesday: SIEM has critical log gaps. EHR application logs (covering 14 hospital sites) have stopped flowing to SIEM since 8 weeks ago; no alerts triggered because absence-of-logs isn't itself a SIEM rule. The ~340K EHR-access events per day during this gap haven't been correlated for anomalous access patterns (HIPAA Security Rule §164.312(b) audit-log access). The CIO + CISO + CMO + Compliance + General Counsel + EHR vendor on bridge call within 20 minutes.",
+      "options": {
+        "A": "Discard the 8-week gap as operationally unrecoverable and focus solely on going-forward logging restoration; retroactive review of 19M EHR events is infeasible.",
+        "B": "Notify HIPAA OCR immediately of the 8-week audit-log gap without retroactive analysis or breach determination; transparency is the safest legal posture available.",
+        "C": "Restore log flow + retroactive log review for 8-week gap + HIPAA OCR notification prep + absence-of-logs alerting + log-flow heartbeat monitoring + EHR vendor coordination + compliance assessment + post-incident policy.",
+        "D": "Replace the entire SIEM platform with new tooling; if the current platform allowed undetected log-flow stoppage, it is fundamentally not fit for compliance purpose."
+      },
+      "correct": "C",
+      "key_concept": "SIEM log gap remediation = restore flow + retroactive log review + HIPAA OCR notification prep + absence-of-logs alerting + log-flow heartbeat monitoring + EHR vendor coordination + compliance assessment + post-incident log-pipeline policy. Eight tracks.",
+      "pre_read": "For SIEM log gap questions, anchor on multi-track remediation with retroactive review + heartbeat monitoring. Abandon-gap, premature-notification, and replace-platform framings each fail.",
+      "correct_explanation": "ISACA SOC Audit/Assurance Program, HIPAA Security Rule §164.312(b) (Audit Controls), NIST SP 800-92 (Log Management), and OCR HIPAA Audit Protocol establish SIEM log gap remediation. Eight tracks: (1) RESTORE LOG FLOW FROM EHR TO SIEM — diagnose root cause of stop; collector misconfiguration, network issue, log-format change; restore + confirm flow; (2) RETROACTIVE LOG REVIEW FOR 8-WEEK GAP — EHR source logs typically retained at the source; pull and replay through SIEM correlation rules; identify anomalous access patterns; flag for investigation; (3) HIPAA OCR NOTIFICATION PREPARATION — IF breach found in retroactive analysis: HIPAA Breach Notification Rule 60-day clock; OCR notification, individuals affected, media if >500; IF no breach: document the log-gap and remediation for next OCR audit; (4) ADD ABSENCE-OF-LOGS ALERTING — SIEM rule for 'log volume from source X dropped >X% vs baseline'; prevents recurrence; (5) LOG-FLOW HEARTBEAT MONITORING — periodic synthetic test events at the source; if not seen in SIEM, alert; defense-in-depth for log pipeline; (6) EHR VENDOR COORDINATION — work with EHR vendor on log-format stability, version updates, and pipeline issues; (7) COMPLIANCE ASSESSMENT — HIPAA + state law audit-log requirements; document gap + remediation; (8) POST-INCIDENT LOG-PIPELINE AUDIT POLICY — comprehensive log-pipeline audit; not just SIEM but all source-to-SIEM paths.",
+      "wrong_explanations": {
+        "A": "Failure mode = ABANDON-FORENSIC-RECONSTRUCTION. 19M events sounds operationally infeasible but log-storage typically retains EHR logs at the source (EHR system + DB) even when SIEM correlation didn't run. Retroactive correlation IS feasible; finding anomalies in 8 weeks of EHR access is critical for both HIPAA compliance and any breach impact assessment.",
+        "B": "Failure mode = PREMATURE-NOTIFICATION-WITHOUT-ANALYSIS. Notifying HIPAA OCR of a log gap BEFORE retroactive analysis prejudices the regulator's view (assumes worst case); proper sequence: retroactive analysis → determine if breach occurred → notify if breach found within HIPAA timeline. Premature notification without analysis is procedurally wrong.",
+        "D": "Failure mode = OVER-CORRECTION-TO-REPLACE-PLATFORM. The platform issue is real but replacement is a multi-quarter project; addressing the immediate compliance + audit issues comes first. Platform decision can follow."
+      },
+      "tips": [
+        "Trap is B — 'notify HIPAA OCR immediately' is candidate-seductive because transparency feels like the safest legal posture; but premature notification BEFORE retroactive analysis assumes worst case and prejudices the regulator's view. Proper sequence: retroactive analysis → determine breach → notify if found within HIPAA timeline.",
+        "SIEM log gap = restore flow + retroactive review + HIPAA notification prep + absence-of-logs alerting + heartbeat monitoring + vendor coordination + compliance assessment + post-incident policy. Eight tracks.",
+        "Exam-day shortcut: when stem describes SIEM LOG GAP WITH COMPLIANCE IMPACT, look for retroactive-review + heartbeat-monitoring + analysis-before-notification framework; abandon-gap, premature-notification, and replace-platform framings each fail."
+      ],
+      "framework_ref": "ISACA SOC Audit/Assurance Program; HIPAA Security Rule §164.312(b) (Audit Controls); NIST SP 800-92 (Log Management); HHS OCR HIPAA Audit Protocol; HIPAA Breach Notification Rule 45 CFR §164.400-414",
+      "related_concepts": [
+        "Absence-of-logs alerting",
+        "Log-flow heartbeat",
+        "Retroactive correlation",
+        "HIPAA audit log §164.312(b)"
+      ],
+      "_provenance": "Authored from concept: 'SIEM log gap discovery and remediation in healthcare context'. Public sources: ISACA, HIPAA, NIST, HHS OCR. No legacy bank citation."
+    },
+    {
+      "id": "d5_139",
+      "domain": 5,
+      "subtopic": "SAST False-Positive Flood Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST remediation approach?",
+      "scenario_context": "A SaaS firm's CISO faces escalation at 9:42 AM Tuesday: SAST scanning is blocking 80+ developer merge requests/day due to false positives on a new SAST rule deployed 5 days ago. The rule (intended to catch unsafe deserialization) fires on legitimate Spring Framework patterns. Sprint deadline tomorrow; engineering VP is escalating to executive leadership. The SAST team can disable the rule in monitor-mode in 30 seconds, modify the rule to whitelist Spring patterns within 4 hours, or revert the rule entirely.",
+      "options": {
+        "A": "Wait until the sprint ends in 24 hours; the 80+ blocked merges can clear naturally once developers update their code to comply with the new SAST rule.",
+        "B": "Flip rule to monitor-mode (30 seconds) + tune rule with Spring whitelist within 4 hours + audit committee notification + post-incident SAST deployment policy + bypass-governance retrospective.",
+        "C": "Allow developers to bypass the SAST gate manually using an override mechanism; sprint must complete on schedule regardless of security gate.",
+        "D": "Revert the new SAST rule entirely from production; if the rule produces false positives then it is fundamentally not fit for purpose at any tuning."
+      },
+      "correct": "B",
+      "key_concept": "SAST FP flood remediation = monitor-mode flip + rule tuning + audit committee notification + post-incident deployment policy (staged rollout, monitor-mode-first) + bypass-governance retrospective. Five tracks.",
+      "pre_read": "For SAST FP flood questions, anchor on monitor-mode flip + tuning + post-incident policy. Wait, manual-bypass, and revert-entirely framings each fail.",
+      "correct_explanation": "OWASP SAMM, ISACA Application Security Audit/Assurance Program, and SAST vendor (SonarQube, Checkmarx, Semgrep, CodeQL) tuning documentation establish SAST FP flood remediation. Five tracks: (1) MONITOR-MODE FLIP — rule continues running and reporting findings but doesn't block merges; 30-second config change; restores flow; full audit trail of findings preserved; (2) RULE TUNING WITHIN 4 HOURS — whitelist Spring Framework patterns that are safe (annotation-based deserialization with explicit type constraints); preserve detection for truly unsafe deserialization; (3) AUDIT COMMITTEE NOTIFICATION — material disruption to sprint commitments may need governance reporting; (4) POST-INCIDENT SAST RULE DEPLOYMENT POLICY — staged rollout (10% repos → 50% → 100%); monitor-mode for first week; FP-rate threshold before enforcement; (5) RETROSPECTIVE ON BYPASS GOVERNANCE FOR SPRINT EMERGENCIES — formal process for when monitor-mode flip is appropriate vs not; CISO approval threshold; documented; auditable.",
+      "wrong_explanations": {
+        "A": "Failure mode = WAIT-WITH-FROZEN-PIPELINE. 80+ blocked merges/day × 24 hours = ~80 developer-days of work blocked. Sprint deadline likely missed; engineering VP escalation valid. Wait-for-fix without restoring flow is operational malpractice.",
+        "C": "Failure mode = UNAUTHORIZED-BYPASS. Manual override mechanism bypasses the SAST gate but creates audit gap (which merges bypassed? who approved? what was missed?). Monitor-mode is the canonical pattern: rule still runs but doesn't block; full audit trail; tunable later.",
+        "D": "Failure mode = OVER-REVERT-WITHOUT-TUNING. Reverting entirely loses the rule's intended protection (unsafe deserialization detection). Monitor-mode preserves the rule + audit trail while restoring flow; tuning fixes the FP without losing the rule."
+      },
+      "tips": [
+        "Trap is C — 'allow developers manual override' is candidate-seductive because it lets the sprint proceed; but manual override bypasses the SAST gate without audit trail (which merges bypassed? what was missed?). Monitor-mode is canonical: rule still runs but doesn't block; full visibility preserved.",
+        "SAST FP flood = monitor-mode flip (30s restore) + rule tuning + audit committee notification + post-incident deployment policy + bypass-governance retrospective. Five tracks. Monitor-mode beats override or revert.",
+        "Exam-day shortcut: when stem describes SAST/DAST FALSE-POSITIVE FLOOD BLOCKING PIPELINE, look for monitor-mode flip + tuning; wait-with-frozen-pipeline, manual-bypass, and revert-entirely framings each fail."
+      ],
+      "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 SA-11 (Developer Security Testing); Gartner Application Security Testing Magic Quadrant",
+      "related_concepts": [
+        "SAST rule monitor-mode",
+        "Staged rollout policy",
+        "FP whitelist patterns",
+        "Override governance"
+      ],
+      "_provenance": "Authored from concept: 'SAST false-positive flood remediation balancing developer productivity + security'. Public sources: OWASP, ISACA, NIST, Gartner. No legacy bank citation."
+    },
+    {
+      "id": "d5_140",
+      "domain": 5,
+      "subtopic": "MSSP Transition Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the MSSP transition?",
+      "scenario_context": "A mid-market firm (1,800 employees, financial-services adjacent) is transitioning from in-house SOC to MSSP-managed model. Current state: 6-person in-house SOC team; planned MSSP transition begins next month; CFO has approved 25% cost reduction. The firm's SOC manages: SIEM (Splunk Enterprise), EDR (CrowdStrike), 320+ detection rules tuned over 4 years, threat intel feeds, IR runbooks. MSSP vendor proposes: their SIEM + standard MITRE ATT&CK ruleset. The CIO + CISO + Chief Risk Officer + GC on bridge call within 24 minutes for transition risk review.",
+      "options": {
+        "A": "Phased transition + rule-portfolio migration audit + IR runbook handoff with retention + SLA negotiation + retained in-house roles + data residency controls + parallel run + audit committee oversight.",
+        "B": "Cancel the planned MSSP transition entirely; the 25% cost reduction CFO target isn't worth the security risk of outsourcing SOC operations to any vendor.",
+        "C": "Accelerate the MSSP transition to next week to capture cost savings sooner; transition planning time adds no value.",
+        "D": "Lay off the in-house SOC team immediately when the MSSP transition begins; retaining redundant staff during transition wastes payroll budget unnecessarily."
+      },
+      "correct": "A",
+      "key_concept": "MSSP transition = phased transition + rule-portfolio migration with mapping audit + IR runbook handoff with retention + SLA negotiation + retained in-house roles + data residency + parallel run + audit committee oversight. Eight tracks.",
+      "pre_read": "For MSSP transition questions, anchor on phased + knowledge-preservation + parallel-run framework. Cancel, accelerate, and immediate-layoff framings each fail.",
+      "correct_explanation": "ISACA SOC Audit/Assurance Program, NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response), Gartner MSSP Magic Quadrant, and ISACA Outsourcing IT Audit/Assurance Program establish MSSP transition framework. Eight tracks: (1) PHASED TRANSITION WITH KNOWLEDGE-PRESERVATION — 3-6 month phased; week-by-week transition plan; documented knowledge transfer; (2) RULE-PORTFOLIO MIGRATION WITH MAPPING AUDIT — 320 firm-specific rules → MSSP's MITRE ATT&CK ruleset; gap analysis; firm-specific rules retained where MSSP standard doesn't cover; (3) IR RUNBOOK HANDOFF WITH RETENTION PERIOD — documented runbooks + escalation contacts + business context; retention by both parties for 12 months; (4) SLA NEGOTIATION — Mean Time To Detect (MTTD), Mean Time To Respond (MTTR), escalation criteria, communication protocols; financial penalties for SLA breach; (5) RETAINED IN-HOUSE ROLES — oversight (CISO-direct), incident command, business context provider, MSSP-vendor manager; minimum 2-3 retained roles typical; (6) CUSTOMER-DATA RESIDENCY AND ACCESS CONTROLS — log data sent to MSSP; data residency requirements (financial-services-adjacent suggests jurisdictional concerns); MSSP access to firm systems controlled; (7) PARALLEL RUN BEFORE FULL CUTOVER — both in-house + MSSP operate concurrently for 30-60 days; comparison testing; cutover criteria; (8) ONGOING AUDIT COMMITTEE OVERSIGHT — MSSP performance reporting, SLA metrics, incident handling, customer-data protection.",
+      "wrong_explanations": {
+        "B": "Failure mode = AVOID-TRANSITION-ENTIRELY. CFO-approved 25% cost reduction reflects valid business decision; hybrid + MSSP models work for many firms. Outright cancellation may not be the right outcome; properly-planned transition with risk-mitigation is.",
+        "C": "Failure mode = ACCELERATE-WITHOUT-PLANNING. 320+ tuned detection rules + 4 years of context + IR runbooks cannot transfer in a week. Acceleration causes detection gaps during the transition (adversary opportunity); planning time is essential.",
+        "D": "Failure mode = IMMEDIATE-LAYOFF. Loses the institutional knowledge (rule tuning rationale, business context, runbook history) needed for successful MSSP transition. Retain key personnel for transition period (3-6 months typical) with documented knowledge transfer."
+      },
+      "tips": [
+        "Trap is D — 'immediate layoff when MSSP transition starts' is candidate-seductive because retaining in-house team during transition feels like double-cost; but losing institutional knowledge (rule tuning rationale, business context, runbook history) jeopardizes the transition. Retain key personnel 3-6 months for knowledge transfer.",
+        "MSSP transition = phased + rule-portfolio migration + IR runbook handoff + SLA negotiation + retained in-house roles + data residency + parallel run + audit committee oversight. Eight tracks. Knowledge preservation is critical.",
+        "Exam-day shortcut: when stem describes MSSP TRANSITION FROM IN-HOUSE SOC, look for phased + knowledge-preservation + parallel-run; cancel, accelerate, and immediate-layoff framings each fail."
+      ],
+      "framework_ref": "ISACA SOC Audit/Assurance Program; NIST SP 800-86 (Forensic Techniques in Incident Response); Gartner MSSP Magic Quadrant; ISACA Outsourcing IT Audit/Assurance Program",
+      "related_concepts": [
+        "Knowledge transfer planning",
+        "SLA negotiation (MTTD/MTTR)",
+        "Parallel run cutover",
+        "Retained roles"
+      ],
+      "_provenance": "Authored from concept: 'MSSP transition from in-house SOC framework'. Public sources: ISACA, NIST, Gartner. No legacy bank citation."
     }
   ]
 }

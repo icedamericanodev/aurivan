@@ -1531,3 +1531,55 @@ sub-references like "(Managed Risk) and APO12.03").
 - SWIFT Customer Security Programme (CSP)
 - Social-Engineer Framework (Hadnagy)
 - Verizon Data Breach Investigations Report (DBIR)
+- CIS Controls v8 Safeguard 8 (Audit Log Management)
+- CISA Binding Operational Directive 22-01 (Reducing Significant Risk of Known Exploited Vulnerabilities)
+- CISA Coordinated Vulnerability Disclosure (CVD)
+- CISA Known Exploited Vulnerabilities (KEV) Catalog
+- David Bianco Pyramid of Pain
+- Gartner Application Security Testing Magic Quadrant
+- Gartner MSSP Magic Quadrant
+- Gartner SIEM Magic Quadrant
+- Gartner SOAR Market Guide
+- Gartner SOC Maturity Model
+- HHS OCR HIPAA Audit Protocol
+- HIPAA Breach Notification Rule 45 CFR §164.400-414
+- HIPAA Security Rule §164.312(b) (Audit Controls)
+- HackerOne / Bugcrowd Vendor Methodologies
+- IDC Worldwide MSSP Survey
+- ISACA Application Security Audit/Assurance Program
+- ISACA Outsourcing IT Audit/Assurance Program
+- ISACA Penetration Testing Audit/Assurance Program
+- ISACA SOC Audit/Assurance Program
+- ISACA Vulnerability Management Audit/Assurance Program
+- ISO/IEC 27001:2022 Annex A.5.34 (Privacy and protection of PII)
+- ISO/IEC 27001:2022 Annex A.8.15 (Logging)
+- ISO/IEC 29147 (Coordinated Vulnerability Disclosure)
+- ISO/IEC 30111 (Vulnerability Handling Processes)
+- MITRE D3FEND Framework
+- MaGMA Use Case Framework (SIEM Use Case Maturity)
+- Microsoft Security Development Lifecycle (SDL)
+- Microsoft Threat Modeling Methodology (STRIDE)
+- NIST SP 800-115
+- NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment)
+- NIST SP 800-154 (Guide to Data-Centric System Threat Modeling)
+- NIST SP 800-53 Rev 5 SA-11 (Developer Security Testing)
+- NIST SP 800-53 Rev 5 SA-11 (Developer Security and Privacy Testing)
+- NIST SP 800-53 Rev 5 SI-4 (System Monitoring)
+- NIST SP 800-61 Rev 2 (Incident Handling Guide)
+- NIST SP 800-86 (Forensic Techniques in Incident Response)
+- NIST SP 800-92 (Log Management)
+- NIST SP 800-94 (Guide to IDS/IPS)
+- OWASP Application Threat Modeling
+- OWASP Bug Bounty Program Best Practices
+- OWASP Software Assurance Maturity Model (SAMM)
+- OWASP Threat Dragon
+- OWASP ZAP Documentation
+- PCI DSS v4.0 Requirement 11.3 (Vulnerability Scanning)
+- PCI DSS v4.0 Requirement 11.4
+- PCI DSS v4.0 Requirement 11.4 (Penetration Testing)
+- PTES (Penetration Testing Execution Standard)
+- SANS Detection Engineering Curriculum
+- SANS SOC Survey
+- SANS Threat Hunting Methodology
+- Sqrrl Threat Hunting Reference Model
+- OWASP SAMM
