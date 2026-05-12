@@ -4532,7 +4532,7 @@
         "D": "D treats DAST as fully automated, missing firm-side audit dimensions (rule selection, authenticated-scan configuration, business-logic-abuse scripts, remediation tracking). Tool runs; firm decides scope, frequency, and triage."
       },
       "tips": [
-        "Trap is C — 'DAST is redundant with SAST' is candidate-seductive because both are application-security testing; but SAST catches CODE-LEVEL patterns at commit; DAST catches RUNTIME issues (TLS misconfiguration, server-headers, authentication-flow bypass) that SAST cannot see. Both required.",
+        "Trap is C and B (dual). C ('DAST redundant with SAST') is the strongest candidate-seductive trap because both feel like application-security; but SAST catches CODE-LEVEL patterns, DAST catches RUNTIME issues (TLS misconfig, server-headers, authn-flow bypass) — different scopes. B (OWASP Top 10 = sufficient) is the secondary trap for candidates anchored on Top 10 as the only rubric; misses authenticated-scan + business-logic abuse + CI/CD integration.",
         "DAST audit = public + authenticated endpoints + scan frequency + crawl completeness + rule coverage + business-logic abuse + remediation SLA + CI/CD integration + auditor validation. Nine dimensions.",
         "Exam-day shortcut: when stem asks about DAST AUDIT SCOPE, look for nine-dimension framework with authenticated-scan + business-logic abuse + CI/CD; OWASP-only, SAST-redundant, and fully-automated framings each fail."
       ],
@@ -4628,7 +4628,7 @@
         "A": "Collect all logs from all sources indefinitely; storage is cheap and retention concerns are operational not strategic.",
         "B": "Collect only firewall logs as the source of security visibility; other log sources add volume without proportional security or audit value.",
         "C": "Source inventory + generation requirements + collection architecture + retention by source + integrity protection + access controls + SIEM/lake feed + audit-trail compliance + scalability.",
-        "D": "Use only cloud-provider native logging services; cloud platforms handle retention, integrity protection, and compliance automatically without firm-side oversight."
+        "D": "Failure mode = CROSS-CLOUD-CORRELATION-GAP. Cloud-native logging only misses integration (cloud logs need to flow to SIEM), cross-cloud correlation (multi-cloud requires consolidation), and on-premise (most firms have hybrid). Cloud-native is one source layer, not the whole strategy."
       },
       "correct": "C",
       "key_concept": "Log management = source inventory + generation requirements + collection architecture + retention by source + integrity protection + access controls + SIEM/lake feed + audit-trail compliance + scalability/cost. Nine elements.",
@@ -4786,7 +4786,7 @@
       "tips": [
         "Trap is B — 'surveillance of all user activity at all times' is candidate-seductive because more-monitoring feels safer; but total surveillance violates GDPR Article 88, EU works council agreements, and trust. UEBA REQUIRES transparent privacy notice + jurisdictional-aware scoping.",
         "UEBA = baseline behavior + ML anomaly detection + risk scoring + alert prioritization + SIEM integration + privacy notice + investigation workflows + model tuning. Eight elements. Complement to signature-based detection.",
-        "Exam-day shortcut: when stem asks about UEBA, look for eight-element framework with privacy notice + SIEM integration; SIEM-replaced, total-surveillance, and signature-only framings each fail."
+        "Exam-day shortcut: when stem mentions BEHAVIORAL ANALYTICS combined with EU operations / works councils / multi-jurisdictional employees, watch for privacy-notice requirement (GDPR Article 88 jurisdictional constraint); when stem talks about UEBA REPLACING SIEM, expect EDR-vs-SIEM-style scope confusion."
       ],
       "framework_ref": "Gartner UEBA Market Guide; NIST SP 800-53 Rev 5 SI-4 (System Monitoring); ISACA SOC Audit/Assurance Program; GDPR Article 88 (Processing in the context of employment); ISO/IEC 27001:2022 Annex A.5.34 (Privacy and protection of PII)",
       "related_concepts": [
@@ -4820,7 +4820,7 @@
         "C": "C dismisses human testing, missing what automated tools cannot find: business-logic flaws, chained-attack paths, novel exploitation techniques, social-engineering-paired attacks. Bug bounty complements SAST/DAST; doesn't replace."
       },
       "tips": [
-        "Trap is B — 'strict NDA with no public disclosure' is candidate-seductive because secrecy feels safer; but it violates COORDINATED DISCLOSURE principle (CVE assignment, attribution, community trust require some public disclosure post-remediation). Indefinite secrecy is reputational risk.",
+        "Trap is B and A (dual). B ('strict NDA + no public disclosure') is the primary seductive trap because secrecy feels safer; but violates COORDINATED DISCLOSURE principle (CVE assignment + community trust require some public disclosure post-fix). A ('open scope, unlimited bounty') is the secondary trap for 'more crowdsourcing = more findings' thinking; but unscoped testing puts sensitive systems at risk + has no coordinated disclosure to prevent premature public knowledge.",
         "Bug bounty = scope + reward tiers + coordinated disclosure + triage SLA + safe harbor + duplicate handling + tester verification + retest + payout + metrics. Ten elements.",
         "Exam-day shortcut: when stem asks about BUG BOUNTY PROGRAM, look for ten-element framework with scope + coordinated disclosure + safe harbor; unscoped, strict-NDA, and SAST-replaces framings each fail."
       ],
@@ -5043,7 +5043,7 @@
       "tips": [
         "Trap is C — 'allow developers manual override' is candidate-seductive because it lets the sprint proceed; but manual override bypasses the SAST gate without audit trail (which merges bypassed? what was missed?). Monitor-mode is canonical: rule still runs but doesn't block; full visibility preserved.",
         "SAST FP flood = monitor-mode flip (30s restore) + rule tuning + audit committee notification + post-incident deployment policy + bypass-governance retrospective. Five tracks. Monitor-mode beats override or revert.",
-        "Exam-day shortcut: when stem describes SAST/DAST FALSE-POSITIVE FLOOD BLOCKING PIPELINE, look for monitor-mode flip + tuning; wait-with-frozen-pipeline, manual-bypass, and revert-entirely framings each fail."
+        "Exam-day shortcut: when stem shows SECURITY-CONTROL CAUSING PIPELINE BLOCKAGE, look for MONITOR-MODE-FLIP (preserves audit trail + restores flow) — unifying principle vs disable/revert/bypass alternatives. Transferable to WAF FP flood (d5_097), IDS rule misconfig, etc."
       ],
       "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 SA-11 (Developer Security Testing); Gartner Application Security Testing Magic Quadrant",
       "related_concepts": [
