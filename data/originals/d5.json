@@ -7280,6 +7280,736 @@
         "Action-item tracking"
       ],
       "_provenance": "Authored from concept: 'Post-incident forensic lessons learned framework'. Public sources: Google SRE, ISACA, NIST, ITIL. No legacy bank citation."
+    },
+    {
+      "id": "d5_201",
+      "domain": 5,
+      "subtopic": "Forensic Timeline Reconstruction",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures the canonical forensic timeline reconstruction framework?",
+      "options": {
+        "A": "Multi-source correlation (file system + registry + network + memory + application logs) + super-timeline (Plaso/log2timeline) + timezone normalization + suspect-vs-baseline comparison.",
+        "B": "Single-source review of file-system MAC timestamps only; bundling other sources adds noise and slows the investigation pace significantly.",
+        "C": "Manual reconstruction from interview accounts and documentation; technical-log correlation adds overhead without measurable value.",
+        "D": "Investigator's narrative summary written from memory; structured timelines are theoretical artifacts without operational benefit during real investigation."
+      },
+      "correct": "A",
+      "key_concept": "Timeline reconstruction = multi-source correlation + Plaso/log2timeline super-timeline + timezone normalization + suspect-vs-baseline comparison.",
+      "pre_read": "For timeline reconstruction questions, anchor on multi-source super-timeline + timezone normalization. Single-source MAC-times, interview-only, and informal-narrative framings each fail.",
+      "correct_explanation": "Plaso (log2timeline) project documentation, ISACA Forensics Audit/Assurance Program, NIST SP 800-86, and SANS FOR508 establish timeline reconstruction framework. (1) MULTI-SOURCE CORRELATION — file system (NTFS MFT, $LogFile, USN journal), registry (NTUSER.DAT, SYSTEM, SECURITY hives), network logs, memory artifacts (Volatility output), application logs (browser history, email metadata, EDR telemetry); (2) SUPER-TIMELINE — Plaso log2timeline parses 200+ artifact types into single normalized timeline; psort filtering; (3) TIMEZONE NORMALIZATION — all events to UTC; reconciles cross-system timezone drift; (4) SUSPECT-VS-BASELINE COMPARISON — anomaly identification via behavioral baseline.",
+      "wrong_explanations": {
+        "B": "B uses single-source only, missing CORROBORATION across sources. File-system MAC times can be MANIPULATED (timestomp); registry + network + memory + application logs provide independent corroboration.",
+        "C": "C uses interview accounts only, missing OBJECTIVE technical evidence. Interview accounts are subject to memory + bias; timeline reconstruction grounds investigation in artifacts.",
+        "D": "D uses informal narrative, missing the EVIDENTIARY rigor required for legal admissibility. Super-timeline output is reproducible + admissible."
+      },
+      "tips": [
+        "Trap is B — 'single-source file-system MAC timestamps' is candidate-seductive because MAC times are easy to query; but MAC times can be MANIPULATED (timestomp attacks; ANTI-FORENSICS countermeasure). Multi-source corroboration is canonical.",
+        "Timeline-reconstruction principle: MULTI-SOURCE CORROBORATION + super-timeline + UTC normalization + baseline comparison. File-system + registry + network + memory + application = independent corroboration.",
+        "Exam-day shortcut: when stem says 'TIMELINE RECONSTRUCTION' or 'TEMPORAL FORENSIC ANALYSIS,' look for super-timeline multi-source approach; single-source, interview-only, and informal-narrative framings each fail."
+      ],
+      "framework_ref": "Plaso (log2timeline) Forensic Super-Timeline Framework; ISACA Forensics Audit/Assurance Program; NIST SP 800-86; SANS FOR508 (Advanced Incident Response, Threat Hunting, and Digital Forensics)",
+      "related_concepts": [
+        "Super-timeline (Plaso/log2timeline)",
+        "Timestomp anti-forensics",
+        "Timezone normalization (UTC)",
+        "Multi-source corroboration"
+      ],
+      "_provenance": "Authored from concept: 'Forensic timeline reconstruction canonical framework'. Public sources: Plaso, ISACA, NIST, SANS. No legacy bank citation."
+    },
+    {
+      "id": "d5_202",
+      "domain": 5,
+      "subtopic": "Malware Analysis Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures the canonical malware analysis framework?",
+      "options": {
+        "A": "Antivirus signature scanning alone; modern AV detection covers all malware analysis needs for typical incident investigations across endpoints.",
+        "B": "Static analysis (binary + strings + signatures) + dynamic sandbox detonation (behavioral capture) + reverse engineering (Ghidra) + threat-intel correlation.",
+        "C": "Submit to public sandbox (VirusTotal) only; rely on community indicators rather than building internal analysis capabilities for the firm.",
+        "D": "Delete the suspected malware immediately upon detection; analysis adds risk and delay without measurable defensive benefit to operations."
+      },
+      "correct": "B",
+      "key_concept": "Malware analysis = static (binary + strings + imports + signatures) + dynamic (sandbox detonation + behavioral capture) + reverse engineering (IDA/Ghidra) + threat-intel correlation.",
+      "pre_read": "For malware analysis questions, anchor on multi-layer static + dynamic + reverse-engineering framework. AV-only, public-sandbox, and delete-immediately framings each fail.",
+      "correct_explanation": "ISACA Malware Analysis Audit/Assurance Program, NIST SP 800-83 Rev 1, SANS FOR610 (Reverse-Engineering Malware), and Cuckoo Sandbox + Hybrid Analysis + Joe Sandbox + ANY.RUN tooling establish malware analysis framework. (1) STATIC ANALYSIS — binary header (PE/ELF/Mach-O), strings extraction, import table analysis, signature scanning (YARA), unpacking; (2) DYNAMIC ANALYSIS — sandbox detonation (Cuckoo, Joe Sandbox, ANY.RUN); behavioral capture (file operations, registry changes, network connections, process creation); (3) REVERSE ENGINEERING — IDA Pro, Ghidra (NSA-released), Binary Ninja; disassembly + decompilation; advanced for novel-malware analysis; (4) THREAT-INTEL CORRELATION — IOCs against known-actor TTPs; MITRE ATT&CK technique mapping; attribution evidence.",
+      "wrong_explanations": {
+        "A": "A uses AV signatures only, missing UNKNOWN malware (novel variants, packed binaries, AV-evasion). Multi-layer analysis (static + dynamic + reverse-engineering) catches what signatures miss.",
+        "C": "C submits to PUBLIC sandbox (VirusTotal), which: (a) ALERTS THREAT ACTOR who is monitoring VT for their malware uploads, (b) exposes sensitive malware (targeting your firm) to broader attacker community. Internal sandbox is canonical for sensitive analysis.",
+        "D": "D deletes immediately, destroying EVIDENCE (analysis informs containment + remediation + attribution + future defense). Image-then-analyze is canonical."
+      },
+      "tips": [
+        "Trap is C — 'submit to public sandbox (VirusTotal)' is candidate-seductive because VT is widely-used; but PUBLIC sandbox ALERTS THREAT ACTOR (sophisticated actors monitor VT for their malware), exposes sensitive targeting to attacker community. Internal sandbox is canonical for sensitive analysis.",
+        "Malware analysis principle: MULTI-LAYER (static + dynamic + reverse engineering) with INTERNAL sandbox for sensitive analysis. AV-only, public-sandbox, and delete-immediately framings each fail.",
+        "Exam-day shortcut: when the stem requires MALWARE ANALYSIS for incident response, the right framework is multi-layer (static + dynamic + reverse engineering). AV-only and public-sandbox-only are evidentiary shortcuts that fail in court."
+      ],
+      "framework_ref": "ISACA Malware Analysis Audit/Assurance Program; NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling); SANS FOR610 (Reverse-Engineering Malware Curriculum); MITRE ATT&CK Framework; ITAF Performance Standards on Evidence",
+      "related_concepts": [
+        "Static + dynamic + reverse engineering",
+        "Internal vs public sandbox",
+        "Ghidra / IDA Pro",
+        "YARA signatures"
+      ],
+      "_provenance": "Authored from concept: 'Malware analysis canonical multi-layer framework'. Public sources: ISACA, NIST, SANS, sandbox tooling. No legacy bank citation."
+    },
+    {
+      "id": "d5_203",
+      "domain": 5,
+      "subtopic": "Anti-Forensics Countermeasures",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical anti-forensics countermeasure recognition?",
+      "options": {
+        "A": "Standard forensic procedures suffice; anti-forensics techniques remain theoretical without practical investigation impact in commercial cases.",
+        "B": "Skip systems showing anti-forensics evidence; investigation effort is better spent on cleaner targets where evidence remains intact.",
+        "C": "Timestomp detection + secure-deletion artifacts + encrypted-volume identification + rootkit indicators + log tampering + memory-only execution patterns.",
+        "D": "Anti-forensics only matters in nation-state cases; commercial forensic investigation never encounters meaningful evidence-destruction techniques in practice."
+      },
+      "correct": "C",
+      "key_concept": "Anti-forensics countermeasures = timestomp detection + secure deletion artifacts + encrypted volume identification + rootkit indicators + log tampering signatures + steganography awareness + memory-only execution patterns.",
+      "pre_read": "For anti-forensics questions, anchor on seven-element recognition framework. Theoretical-only, skip-system, and nation-state-only framings each fail.",
+      "correct_explanation": "ISACA Forensics Audit/Assurance Program, SANS FOR508, and anti-forensics research (Garfinkel et al., Harris et al.) establish anti-forensics countermeasure recognition: TIMESTOMP DETECTION (MAC time anomalies, $MFT entry analysis); SECURE DELETION ARTIFACTS (carving for residual artifacts, file-system journal); ENCRYPTED VOLUME IDENTIFICATION (entropy analysis, container headers); ROOTKIT INDICATORS (kernel module list anomalies, process anomalies vs Volatility); LOG TAMPERING SIGNATURES (gap detection, hash chain verification); STEGANOGRAPHY AWARENESS (image-file size anomalies, statistical tests); MEMORY-ONLY EXECUTION PATTERNS (fileless malware, PowerShell-only, WMI subscriptions).",
+      "wrong_explanations": {
+        "A": "A dismisses anti-forensics as theoretical, but it's INCREASINGLY COMMON. Timestomp tools (timestomp.exe, $MFT manipulation), secure deletion (DBAN, sdelete, BleachBit), encrypted volumes (VeraCrypt), rootkits (kernel-level evasion), log tampering, and memory-only execution all occur in commercial investigations.",
+        "B": "B skips anti-forensics systems, but the PRESENCE of anti-forensics is itself ATTRIBUTION EVIDENCE (sophistication, intent, possibly insider). Investigation MUST proceed; just with adjusted technique.",
+        "D": "D restricts to nation-state, missing the spread of anti-forensics tools to broader threat actors (ransomware groups, insider threats, organized crime). Anti-forensics is mainstream."
+      },
+      "tips": [
+        "Trap is A — 'standard forensic procedures sufficient' is candidate-seductive because mainstream forensic tooling exists; but anti-forensics is INCREASINGLY COMMON in commercial investigations (not just nation-state). Investigator awareness + countermeasure-specific techniques are essential.",
+        "Anti-forensics principle: PRESENCE OF ANTI-FORENSICS IS ITSELF EVIDENCE of sophistication and intent. Seven-element recognition framework. Investigation MUST proceed; just with adjusted technique.",
+        "Exam-day shortcut: when stem describes ANTI-FORENSICS COUNTERMEASURES or EVIDENCE TAMPERING SIGNATURES, look for seven-element recognition framework; theoretical-only, skip-system, and nation-state-only framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-86 (Integrating Forensic Techniques into Incident Response); SANS FOR508 (Advanced Incident Response, Threat Hunting, and Digital Forensics); ISO/IEC 27037 (Digital Evidence Handling); ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "Timestomp detection",
+        "Fileless / memory-only execution",
+        "Steganography awareness",
+        "Rootkit indicators"
+      ],
+      "_provenance": "Authored from concept: 'Anti-forensics countermeasures canonical recognition framework'. Public sources: ISACA, SANS, academic research, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_204",
+      "domain": 5,
+      "subtopic": "E-Discovery Integration with Forensics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical e-discovery integration with forensic investigation?",
+      "options": {
+        "A": "Forensics is technical-only; e-discovery is a separate legal-process domain without integration concerns or workflow overlap.",
+        "B": "E-discovery tooling replaces forensics; document review covers all technical investigation needs without separate forensic capability investment.",
+        "C": "Run e-discovery and forensics independently; coordination adds overhead without measurable benefit to either workflow or outcome.",
+        "D": "Legal hold + ESI custodian inventory + chain of custody + privilege review + EDRM-aligned workflow + producible-format preservation."
+      },
+      "correct": "D",
+      "key_concept": "E-discovery + forensics integration = legal hold coordination + ESI custodian inventory + chain of custody alignment + privilege review + EDRM workflow + producible-format preservation + FRCP compliance.",
+      "pre_read": "For e-discovery + forensics questions, anchor on integration framework. Separate-domains, e-discovery-replaces-forensics, and run-independently framings each fail.",
+      "correct_explanation": "EDRM (Electronic Discovery Reference Model), ISACA Forensics Audit/Assurance Program, Federal Rules of Civil Procedure (FRCP) Rule 26 + 34 + 37, and Sedona Conference principles establish e-discovery + forensics integration. (1) LEGAL HOLD COORDINATION — when litigation reasonably anticipated, legal hold suspends routine deletion; forensics imaging supports litigation hold; (2) ESI CUSTODIAN INVENTORY — who has what relevant ESI; mapped before collection; (3) CHAIN OF CUSTODY ALIGNMENT — same procedures for both forensic-evidence + e-discovery production; (4) PRIVILEGE REVIEW — outside counsel screens collection for attorney-client privilege before production; (5) EDRM-ALIGNED WORKFLOW — Identification → Preservation → Collection → Processing → Review → Analysis → Production → Presentation; (6) PRODUCIBLE-FORMAT PRESERVATION — TIFF/PDF + metadata for production; native format alternative; (7) FRCP COMPLIANCE — Rule 26(f) meet-and-confer, Rule 34 production scope, Rule 37 sanctions for spoliation.",
+      "wrong_explanations": {
+        "A": "A separates forensics from e-discovery, missing the OVERLAP: both work with chain of custody, both handle ESI, both feed legal proceedings. Integration produces better outcomes for both.",
+        "B": "B replaces forensics with e-discovery, missing FORENSIC-SPECIFIC capabilities (deleted-file recovery, memory analysis, malware analysis). E-discovery is document-review-centric; forensics is technical-investigation-centric.",
+        "C": "C runs independently, missing efficiency. Same custodian inventory; same chain of custody; same legal-defensibility requirements. Integrated workflow reduces duplication + improves consistency."
+      },
+      "tips": [
+        "Trap is C — 'run e-discovery and forensics independently' is candidate-seductive because they DO have distinct skill sets; but they share custodian inventory + chain of custody + legal-defensibility requirements. Integrated workflow reduces duplication + improves consistency.",
+        "E-discovery + forensics integration principle: SAME CUSTODIANS, SAME CHAIN OF CUSTODY, SAME LEGAL-DEFENSIBILITY REQUIREMENTS — integrate workflow rather than run-parallel. Seven elements; EDRM-aligned.",
+        "Exam-day shortcut: when stem describes E-DISCOVERY + FORENSIC INVESTIGATION OVERLAP, look for INTEGRATED EDRM workflow; separate-domains, e-discovery-replaces-forensics, and run-independently framings each fail."
+      ],
+      "framework_ref": "EDRM (Electronic Discovery Reference Model); Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI); The Sedona Conference Working Group on Electronic Document Retention; ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "EDRM workflow stages",
+        "FRCP Rule 26(f) meet-and-confer",
+        "Privilege review",
+        "Legal hold notification"
+      ],
+      "_provenance": "Authored from concept: 'E-discovery integration with forensic investigation'. Public sources: EDRM, ISACA, FRCP, Sedona. No legacy bank citation."
+    },
+    {
+      "id": "d5_205",
+      "domain": 5,
+      "subtopic": "Expert Witness Preparation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical expert witness preparation for forensic testimony?",
+      "options": {
+        "A": "Methodology documentation + Daubert standard compliance + CV qualification + report writing + deposition preparation + cross-examination simulation + ethical-conflict screening.",
+        "B": "Forensic analyst testifies based on accumulated experience; formal preparation adds overhead without proportional courtroom value.",
+        "C": "External expert witness fully replaces internal analyst testimony; outsourcing testimony eliminates internal preparation requirements.",
+        "D": "Skip expert witness; technical evidence speaks for itself in legal proceedings without testimony interpretation."
+      },
+      "correct": "A",
+      "key_concept": "Expert witness preparation = methodology documentation + Daubert standard compliance + CV qualification + report writing + deposition preparation + cross-examination simulation + ethical-conflict screening.",
+      "pre_read": "For expert witness questions, anchor on Daubert-compliant methodology + structured preparation. Experience-only, full-outsource, and skip-testimony framings each fail.",
+      "correct_explanation": "Federal Rules of Evidence Rule 702 (Testimony by Expert Witnesses), Daubert v. Merrell Dow (1993), ISACA Forensics Audit/Assurance Program, and ACFE Fraud Examiners Manual establish expert witness preparation framework. (1) METHODOLOGY DOCUMENTATION — peer-reviewed methods, error rates, general acceptance in scientific community; (2) DAUBERT STANDARD COMPLIANCE — four-factor admissibility test (testable, peer-reviewed, known error rate, general acceptance); (3) CV QUALIFICATION — education, certifications (GCFE/GCFA/EnCE), prior testimony history, publications; (4) REPORT WRITING — fact + opinion + methodology + limitations; Rule 26(a)(2)(B) expert disclosure; (5) DEPOSITION PREPARATION — anticipate opposing-counsel questions, attorney-witness prep sessions; (6) CROSS-EXAMINATION SIMULATION — mock cross with internal counsel; weak-point identification; (7) ETHICAL-CONFLICT SCREENING — prior engagements, current relationships, opinion-preformation review.",
+      "wrong_explanations": {
+        "B": "B relies on experience-only, missing Daubert factors (peer-reviewed methodology, known error rates, general acceptance, scientific testability). Daubert challenges WILL exclude testimony lacking documentation.",
+        "C": "C fully outsources, missing internal-analyst KNOWLEDGE (firm-specific context, custom analytical processes, original investigation). Hybrid (internal analyst + external expert if needed) is canonical.",
+        "D": "D skips expert witness, but TECHNICAL EVIDENCE REQUIRES INTERPRETATION for jury. Self-explanatory evidence is rare; expert testimony bridges technical-legal gap."
+      },
+      "tips": [
+        "Trap is B — 'experience-only' is candidate-seductive because senior forensic analysts DO have deep experience; but Daubert challenges WILL exclude testimony lacking peer-reviewed methodology + known error rates + general acceptance documentation. Preparation is essential.",
+        "Expert-witness principle: METHODOLOGY RIGOR (Daubert-compliant) + STRUCTURED PREPARATION (deposition + cross-examination simulation) + DOCUMENTED CREDENTIALS. Experience alone is insufficient.",
+        "Exam-day shortcut: when stem describes EXPERT WITNESS PREPARATION or DAUBERT CHALLENGE PREP, look for methodology documentation + structured preparation framework; experience-only, full-outsource, and skip-testimony framings each fail."
+      ],
+      "framework_ref": "Federal Rules of Evidence Rule 702 (Testimony by Expert Witnesses); Daubert v. Merrell Dow Pharmaceuticals, Inc., 509 U.S. 579 (1993); Federal Rules of Civil Procedure (FRCP) Rule 26 (Disclosure of Expert Testimony); ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "Daubert four-factor test",
+        "FRE Rule 702",
+        "Deposition preparation",
+        "FRCP 26(a)(2)(B) expert disclosure"
+      ],
+      "_provenance": "Authored from concept: 'Expert witness preparation canonical framework'. Public sources: FRE, Daubert, ISACA, ACFE. No legacy bank citation."
+    },
+    {
+      "id": "d5_206",
+      "domain": 5,
+      "subtopic": "Forensic Readiness Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures the canonical forensic readiness program design?",
+      "options": {
+        "A": "Forensic capability built only after first major incident; pre-incident investment is wasteful for firms without active threats today.",
+        "B": "Pre-incident log retention + chain-of-custody collection + tested IR-forensics integration + retainer + tabletop validation framework.",
+        "C": "Forensic capability outsourced entirely on retainer; pre-incident internal investment adds cost without proportional defensive benefit to operations.",
+        "D": "Forensic readiness equals having forensic tools available; people and process aspects are downstream operational concerns to address later."
+      },
+      "correct": "B",
+      "key_concept": "Forensic readiness = pre-incident log retention + chain-of-custody-ready collection + tested IR-forensics integration + trained team + external retainer + legal/regulatory framework + tabletop validation.",
+      "pre_read": "For forensic readiness questions, anchor on seven-element pre-incident framework. Wait-for-first-incident, full-outsource, and tools-only framings each fail.",
+      "correct_explanation": "ISACA Forensics Audit/Assurance Program, NIST SP 800-86, ISO/IEC 27043 (Incident Investigation Principles and Processes), and SANS FOR500 establish forensic readiness program framework. (1) PRE-INCIDENT LOG RETENTION — hot/warm/cold tier; retention by source per regulation; auditable; (2) CHAIN-OF-CUSTODY-READY COLLECTION CAPABILITY — write-blockers, imaging tools, hash verification, dual-witness procedures; pre-positioned; (3) TESTED IR-FORENSICS INTEGRATION — forensics is one phase of broader IR; coordination tested via tabletop; (4) TRAINED INTERNAL TEAM — GCFE/GCFA/EnCE certified; capability proven via exercises; (5) EXTERNAL RETAINER — surge capacity; specialized expertise (mobile forensics, malware reverse engineering); (6) LEGAL/REGULATORY FRAMEWORK — pre-engagement with outside counsel; privilege procedures; regulator coordination paths; (7) TABLETOP VALIDATION — annual minimum; tests readiness against realistic scenarios.",
+      "wrong_explanations": {
+        "A": "A waits for first incident, but BY THEN IT'S TOO LATE — log retention should have been preserving evidence; chain-of-custody procedures should have been ready; team should have been trained. Reactive readiness fails the time-pressure test.",
+        "C": "C fully outsources, missing pre-incident triage capability. Hybrid (internal initial triage + external retainer for deeper investigation) is canonical. Pure-outsource means slower initial response.",
+        "D": "D reduces readiness to TOOLS only, missing PEOPLE + PROCESS + LEGAL framework. Tools without trained analysts don't produce forensic outcomes."
+      },
+      "tips": [
+        "Trap is A — 'forensic capability built after first major incident' is candidate-seductive because investment-without-evidence-of-need feels wasteful; but BY THEN IT'S TOO LATE: log retention should have been preserving evidence; chain-of-custody should have been ready. Reactive readiness fails the time-pressure test.",
+        "Forensic readiness principle: PRE-INCIDENT INVESTMENT IS ESSENTIAL — by the time an incident occurs, evidence may already be gone. Seven elements; people + process + tools + legal.",
+        "Exam-day shortcut: when stem describes FORENSIC READINESS PROGRAM DESIGN, look for pre-incident seven-element framework; wait-for-incident, full-outsource, and tools-only framings each fail."
+      ],
+      "framework_ref": "ISO/IEC 27043 (Information Technology — Incident Investigation Principles and Processes); NIST SP 800-86 (Integrating Forensic Techniques into Incident Response); ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "Pre-incident log retention",
+        "Chain-of-custody-ready capability",
+        "ISO/IEC 27043",
+        "Tabletop validation"
+      ],
+      "_provenance": "Authored from concept: 'Forensic readiness program canonical design'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation."
+    },
+    {
+      "id": "d5_207",
+      "domain": 5,
+      "subtopic": "Legal Hold and Litigation Preservation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical legal hold and litigation preservation framework?",
+      "options": {
+        "A": "Issue legal hold only after lawsuit is formally filed; pre-filing holds create unnecessary operational burden across firm-wide operations.",
+        "B": "Legal hold is general counsel responsibility entirely; technical teams have no operational role in preservation execution or scope.",
+        "C": "Trigger hold + custodian notification + ESI preservation scope + auto-deletion suspension + acknowledgment + refresh + auditable workflow.",
+        "D": "Single hold for all litigation matters; per-matter hold management adds overhead without proportional defensibility benefit to outcomes."
+      },
+      "correct": "C",
+      "key_concept": "Legal hold = trigger-based issuance + custodian notification + ESI preservation scope + auto-deletion suspension + acknowledgment tracking + periodic refresh + release procedures + auditable workflow.",
+      "pre_read": "For legal hold questions, anchor on eight-element framework with trigger-based issuance. Wait-for-filing, legal-only, and single-global-hold framings each fail.",
+      "correct_explanation": "Federal Rules of Civil Procedure Rule 37(e) (Failure to Preserve ESI), Zubulake v. UBS Warburg (2003 spoliation case), Sedona Conference Principles, ISACA Forensics Audit/Assurance Program, and EDRM Legal Hold standards establish legal hold framework. (1) TRIGGER-BASED ISSUANCE — duty arises when litigation reasonably anticipated; not waiting for formal filing; (2) CUSTODIAN NOTIFICATION — written notice with scope and obligations; (3) ESI PRESERVATION SCOPE — what data types, date ranges, sources; per-matter specific; (4) AUTO-DELETION SUSPENSION — IT operations suspends routine deletion for matter-specific data; (5) ACKNOWLEDGMENT TRACKING — custodians acknowledge receipt; audit trail; (6) PERIODIC REFRESH — quarterly reminders to custodians; (7) RELEASE PROCEDURES — when matter closes, formal release; resume routine deletion; (8) AUDITABLE WORKFLOW — every step documented for defensibility.",
+      "wrong_explanations": {
+        "A": "A waits for formal filing, but legal hold duty triggers when litigation is REASONABLY ANTICIPATED — earlier than formal filing. Failure to hold from anticipation creates SPOLIATION CLAIMS (Zubulake v. UBS Warburg).",
+        "B": "B treats hold as legal-only, but PRESERVATION IS TECHNICAL — IT operations must suspend auto-deletion, snapshot mailboxes, preserve cloud-storage retention. Coordination is required.",
+        "D": "D uses single global hold, but per-matter scope matters — different matters have different custodians + ESI types. Single hold over-preserves (operational burden) + under-preserves (missed specific scopes)."
+      },
+      "tips": [
+        "Trap is A — 'wait for formal lawsuit filing' is candidate-seductive because pre-filing seems premature; but legal hold duty triggers when litigation is REASONABLY ANTICIPATED (Zubulake standard). Failure to hold from anticipation creates spoliation claims + FRCP 37(e) sanctions.",
+        "Legal hold principle: TRIGGER BY REASONABLE ANTICIPATION (Zubulake), not by formal filing. Eight-element framework with legal + technical + custodian coordination.",
+        "Exam-day shortcut: when the stem says LEGAL HOLD or LITIGATION PRESERVATION, the right answer turns on the duty trigger and auditable defensibility, NOT on lawsuit filing. Wait-for-filing is the trap because the duty arises on reasonable anticipation."
+      ],
+      "framework_ref": "Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI); The Sedona Conference Working Group on Electronic Document Retention; EDRM Legal Hold Standards; ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "Trigger-based hold issuance",
+        "FRCP 37(e) sanctions",
+        "Custodian acknowledgment",
+        "Per-matter scope"
+      ],
+      "_provenance": "Authored from concept: 'Legal hold and litigation preservation framework'. Public sources: FRCP, Zubulake, Sedona, ISACA, EDRM. No legacy bank citation."
+    },
+    {
+      "id": "d5_208",
+      "domain": 5,
+      "subtopic": "Mobile Forensics — Cross-Jurisdiction + Cloud-Sync",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical mobile forensics for cloud-sync + cross-jurisdiction scenarios?",
+      "options": {
+        "A": "Mobile device extraction only; cloud-stored data is the cloud provider's responsibility and remains outside forensic preservation scope.",
+        "B": "Cloud-sync preserves everything mobile-side; device extraction is redundant once cloud data is preserved via provider legal request.",
+        "C": "Standard mobile forensic procedures unchanged; cloud-sync adds no new forensic considerations beyond device-side analysis or jurisdiction.",
+        "D": "Mobile extraction (Cellebrite/GrayKey/Magnet) + cloud-sync provider preservation (Apple/Google legal) + jurisdictional analysis + disambiguation."
+      },
+      "correct": "D",
+      "key_concept": "Mobile cloud-sync forensics = device extraction + cloud-sync provider preservation + jurisdictional analysis + chain of custody + cloud-stored vs device-stored disambiguation.",
+      "pre_read": "For mobile cloud-sync forensics questions, anchor on hybrid device + cloud extraction + jurisdictional framework. Device-only, cloud-replaces-device, and standard-unchanged framings each fail.",
+      "correct_explanation": "ISACA Mobile Forensics Audit/Assurance Program, NIST SP 800-101 Rev 1, Cellebrite + GrayKey + Magnet AXIOM Mobile vendor documentation, and Apple/Google legal-request portals establish mobile cloud-sync forensics framework. (1) MOBILE DEVICE EXTRACTION — physical extraction (Cellebrite Premium, GrayKey), logical extraction; (2) CLOUD-SYNC PROVIDER PRESERVATION — Apple Law Enforcement Online (LEO) portal, Google Legal Investigations Support, Microsoft Online Services for Law Enforcement; preservation letter then production via subpoena/warrant; (3) JURISDICTIONAL ANALYSIS — which country's law enforcement process applies; cross-border data-transfer mechanisms; (4) CHAIN OF CUSTODY — for both device + cloud-extracted data; integrated; (5) CLOUD-STORED VS DEVICE-STORED DISAMBIGUATION — what's only on device, what's only in cloud, what's in both; informs extraction priority.",
+      "wrong_explanations": {
+        "A": "A skips cloud-sync data, missing MAJOR portion of mobile evidence. iCloud/Google Drive/OneDrive sync most user data; device-only extraction misses what's only in the cloud (older photos, messages, documents).",
+        "B": "B replaces device with cloud, missing what's DEVICE-ONLY (active session state, app-specific local data, deleted-but-not-yet-synced artifacts). Hybrid extraction is canonical.",
+        "C": "C ignores cloud-sync considerations, missing jurisdictional issues (Apple in US, Google in US, but data subject in EU per GDPR; provider legal-request process), authentication (device passcode vs cloud account credentials), and timing (real-time-sync may delete evidence post-acquisition)."
+      },
+      "tips": [
+        "Trap is C — 'standard mobile forensic procedures unchanged' is candidate-seductive because mobile-forensics tooling overlaps; but cloud-sync introduces JURISDICTIONAL considerations (Apple in US vs subject in EU per GDPR), authentication paths (device passcode vs cloud account), and timing (real-time sync may delete evidence post-acquisition).",
+        "Mobile cloud-sync principle: HYBRID DEVICE + CLOUD EXTRACTION with JURISDICTIONAL coordination. Five elements; cloud-stored vs device-stored disambiguation is the unique addition vs traditional mobile forensics.",
+        "Exam-day shortcut: when stem describes MOBILE FORENSICS WITH CLOUD-SYNC or CROSS-JURISDICTION, look for hybrid device + cloud + jurisdictional framework; device-only, cloud-replaces, and standard-unchanged framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-101 Rev 1 (Guidelines on Mobile Device Forensics); Cellebrite + GrayKey + Magnet AXIOM Mobile Documentation; ISO/IEC 27037 (Digital Evidence Handling); ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "Cloud-sync provider preservation",
+        "Apple LEO portal",
+        "Cellebrite Premium",
+        "Cross-border data-transfer mechanisms"
+      ],
+      "_provenance": "Authored from concept: 'Mobile forensics for cloud-sync + cross-jurisdiction scenarios'. Public sources: ISACA, NIST, mobile-forensic vendors, provider legal portals. No legacy bank citation."
+    },
+    {
+      "id": "d5_209",
+      "domain": 5,
+      "subtopic": "IoT and Embedded Device Forensics",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical IoT and embedded device forensics framework?",
+      "options": {
+        "A": "Manufacturer cooperation + firmware extraction + JTAG/UART debug interfaces + chip-off forensics + cloud-backend evidence + protocol analysis (MQTT/CoAP/proprietary) + vendor-specific tooling.",
+        "B": "Standard disk forensics tools apply unchanged; IoT devices use the same forensic procedures as desktops and servers.",
+        "C": "IoT forensics is impossible; embedded devices lack standard storage and can't be forensically investigated reliably.",
+        "D": "Cloud backend forensics only; the device itself is not a meaningful forensic target for IoT investigations."
+      },
+      "correct": "A",
+      "key_concept": "IoT forensics = manufacturer cooperation + firmware extraction + JTAG/UART debug interfaces + chip-off forensics + cloud-backend evidence + protocol analysis + vendor-specific tooling.",
+      "pre_read": "For IoT forensics questions, anchor on seven-element hybrid device + cloud framework. Standard-disk, impossible, and cloud-only framings each fail.",
+      "correct_explanation": "ISACA IoT Forensics Audit/Assurance Program, NIST IR 8259A, SANS FOR518 (Mac and iOS Forensic Analysis includes embedded), and IoT-specific tools (Tigard, Bus Pirate, JTAGulator, NAND-readers) establish IoT forensics framework. (1) MANUFACTURER COOPERATION — vendor support critical (firmware decryption keys, debug protocols); (2) FIRMWARE EXTRACTION — via JTAG or UART pins; often encrypted requires manufacturer assistance; (3) JTAG/UART DEBUG INTERFACES — Tigard, Bus Pirate, JTAGulator for boundary scan; (4) CHIP-OFF FORENSICS — desolder eMMC/NAND/SPI flash chip + read with NAND-reader; destructive technique; (5) CLOUD-BACKEND EVIDENCE — IoT devices often communicate with vendor cloud; backend logs preserve evidence; (6) PROTOCOL ANALYSIS — MQTT, CoAP, proprietary protocols (vendor-specific); (7) VENDOR-SPECIFIC TOOLING — many IoT forensic tasks require vendor-provided tools (e.g., Tesla, Nest, Ring).",
+      "wrong_explanations": {
+        "B": "B uses standard disk forensics, missing IoT-SPECIFIC considerations: chip-off forensics (eMMC/NAND), JTAG/UART debug interfaces (vendor-locked), proprietary protocols (MQTT/CoAP), firmware extraction (often encrypted), no traditional file system. Standard tools don't work.",
+        "C": "C dismisses IoT forensics as impossible, but established techniques exist: chip-off (desolder + read), JTAG via Tigard/Bus Pirate, firmware extraction (often via JTAG debug pins). Specialized but feasible.",
+        "D": "D restricts to cloud backend, missing DEVICE-LEVEL evidence (firmware modification, persistent malware, debug interfaces). Hybrid (device + cloud) is canonical."
+      },
+      "tips": [
+        "Trap is B — 'standard disk forensics tools apply unchanged' is candidate-seductive because forensic principles overlap; but IoT devices use eMMC/NAND/SPI flash instead of disks, lack standard file systems, use proprietary protocols. Standard tools don't work; specialized techniques (chip-off, JTAG) required.",
+        "IoT forensics principle: HYBRID DEVICE + CLOUD with SPECIALIZED TECHNIQUES (chip-off, JTAG, UART). Standard disk forensics doesn't transfer; vendor cooperation often essential.",
+        "Exam-day shortcut: when stem describes IoT/EMBEDDED DEVICE FORENSICS, look for hybrid device + cloud-backend + specialized techniques (chip-off/JTAG); standard-disk, impossible, and cloud-only framings each fail."
+      ],
+      "framework_ref": "NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline); ENISA Good Practices for Internet of Things and Smart Infrastructures Security; ISO/IEC 27037 (Digital Evidence Handling); ISACA Internet of Things (IoT) Audit/Assurance Program",
+      "related_concepts": [
+        "Chip-off forensics",
+        "JTAG / UART debug",
+        "Cloud-backend evidence",
+        "Vendor-specific tooling"
+      ],
+      "_provenance": "Authored from concept: 'IoT and embedded device forensics canonical framework'. Public sources: ISACA, NIST, SANS, IoT-forensic tooling. No legacy bank citation."
+    },
+    {
+      "id": "d5_210",
+      "domain": 5,
+      "subtopic": "Forensic Lab Accreditation (ISO 17025, ASCLD)",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "Which option BEST captures canonical forensic lab accreditation framework?",
+      "options": {
+        "A": "Vendor tool certifications alone (EnCE, ACE) suffice; lab-level accreditation adds overhead without proportional courtroom defensibility benefit.",
+        "B": "ISO/IEC 17025 testing/calibration + ASCLD/LAB digital-forensics + proficiency testing + documented procedures + tool validation.",
+        "C": "ISO 9001 quality certification suffices; specific forensic-lab accreditation is unnecessary overhead for typical forensic work performed.",
+        "D": "Accreditation is optional; uncredentialed forensic labs produce equivalent evidentiary results for typical commercial investigation case types."
+      },
+      "correct": "B",
+      "key_concept": "Forensic lab accreditation = ISO/IEC 17025 + ASCLD/LAB digital forensics + proficiency testing + documented procedures + management review + corrective action + accredited tool validation.",
+      "pre_read": "For forensic lab accreditation questions, anchor on ISO/IEC 17025 + ASCLD/LAB framework. Vendor-certs-only, ISO-9001-suffices, and optional framings each fail.",
+      "correct_explanation": "ISO/IEC 17025:2017 (General Requirements for the Competence of Testing and Calibration Laboratories), ASCLD/LAB (American Society of Crime Laboratory Directors / Laboratory Accreditation Board) Digital Forensics Module, ANAB (ANSI National Accreditation Board), and ISACA Forensics Audit/Assurance Program establish forensic lab accreditation framework. (1) ISO/IEC 17025 — international standard for testing/calibration lab competence; methodology, traceability, equipment calibration; (2) ASCLD/LAB DIGITAL FORENSICS MODULE — domain-specific accreditation for digital forensics labs; (3) PROFICIENCY TESTING — periodic blind tests of examiners; benchmark against peer labs; (4) DOCUMENTED PROCEDURES — every analytical method documented; version-controlled; (5) MANAGEMENT REVIEW — quarterly/annual review of lab operations, findings, customer feedback; (6) CORRECTIVE ACTION — when proficiency-test failures or methodology errors found, structured response; (7) ACCREDITED TOOL VALIDATION — forensic tools (FTK, EnCase, Cellebrite) validated for accreditation scope.",
+      "wrong_explanations": {
+        "A": "A uses vendor certifications only, missing LAB-LEVEL accreditation. Individual examiner certifications (EnCE, GCFE) demonstrate examiner skill; ISO/IEC 17025 + ASCLD/LAB demonstrate LAB QUALITY MANAGEMENT (proficiency testing, calibration, management review).",
+        "C": "C uses ISO 9001, but ISO 9001 is GENERIC quality management; ISO/IEC 17025 is SPECIFIC to testing/calibration labs (more rigorous, technically detailed). Forensic-lab accreditation requires 17025.",
+        "D": "D dismisses accreditation as optional, but accredited labs have STRONGER COURTROOM CREDIBILITY (Daubert challenges harder to mount), better insurance terms, better customer trust."
+      },
+      "tips": [
+        "Trap is A — 'vendor tool certifications alone (EnCE, AccessData ACE) sufficient' is candidate-seductive because individual certs are universally-recognized; but LAB-LEVEL accreditation (ISO/IEC 17025 + ASCLD/LAB) demonstrates QUALITY MANAGEMENT SYSTEMS (proficiency testing, calibration, management review). Both needed.",
+        "Forensic lab accreditation principle: LAB-LEVEL ACCREDITATION (ISO/IEC 17025 + ASCLD/LAB) is distinct from individual-examiner certification. Both required for full courtroom credibility.",
+        "Exam-day shortcut: when stem describes FORENSIC LAB ACCREDITATION, look for ISO/IEC 17025 + ASCLD/LAB framework; vendor-certs-only, ISO-9001-suffices, and optional framings each fail."
+      ],
+      "framework_ref": "ISO/IEC 17025:2017 (General Requirements for Testing and Calibration Laboratories); ANAB ISO/IEC 17025 Forensic Testing Accreditation; ANAB (ANSI National Accreditation Board); ISACA Forensics Audit/Assurance Program",
+      "related_concepts": [
+        "ISO/IEC 17025",
+        "ASCLD/LAB accreditation",
+        "Proficiency testing",
+        "Tool validation"
+      ],
+      "_provenance": "Authored from concept: 'Forensic lab accreditation canonical framework per ISO/IEC 17025 + ASCLD'. Public sources: ISO, ASCLD, ANAB, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_211",
+      "domain": 5,
+      "subtopic": "Destructive-Malware Forensic Investigation (Analysis, NotPetya echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic investigation approach?",
+      "scenario_context": "A multinational shipping firm's IR team confirms at 4:18 AM Tuesday: destructive-malware attack (encryption-impersonation; actual destruction not recovery) affecting 49,000+ Windows endpoints across all sites globally. Initial vector: software update from a compromised Ukrainian accounting-software vendor's update server. The malware spreads laterally via EternalBlue + Mimikatz; encrypts disks without recoverable keys; total business impact ~$300M+. CISO + CTO + CFO + CEO + General Counsel + Outside Counsel + IR retainer + FBI + Treasury + cyber insurance broker on bridge call within 90 minutes. Press has already published preliminary stories.",
+      "options": {
+        "A": "Pay any ransom demand to attempt key recovery; the magnitude of business impact justifies extraordinary recovery investment without forensic analysis.",
+        "B": "Focus solely on rapid recovery; forensic investigation can wait until business operations are restored to normal operating levels firmwide.",
+        "C": "Forensic preservation + supply-chain vector analysis + lateral-movement forensics + attribution + cyber insurance + post-incident vendor-risk review.",
+        "D": "Suppress forensic findings to preserve firm reputation; public disclosure of vector and impact creates avoidable reputational damage at scale."
+      },
+      "correct": "C",
+      "key_concept": "Destructive-malware investigation = forensic preservation + supply-chain vector analysis + lateral-movement analysis + nation-state attribution + cyber insurance documentation + post-incident immutable-backup + supply-chain-vendor-risk review.",
+      "pre_read": "For destructive-malware forensic questions, anchor on parallel forensics + recovery framework. Pay-ransom, defer-forensics, and suppress-findings framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, lessons from the 2017 NotPetya incident (attributed to GRU Sandworm; ~$10B+ global damages), CISA + FBI Joint Cybersecurity Advisories on destructive malware, NIST SP 800-83 Rev 1, and OFAC Sanctions Compliance Guidance (sanctions against Sandworm operators) establish destructive-malware forensic framework. (1) FORENSIC PRESERVATION across affected hosts — memory + disk imaging where feasible; restoration timeline must accommodate forensic preservation; (2) SUPPLY-CHAIN VECTOR FORENSIC ANALYSIS — vendor logs (within preservation window), update-mechanism analysis, vendor IR cooperation; (3) LATERAL-MOVEMENT FORENSIC ANALYSIS — EternalBlue + Mimikatz patterns; credential-theft timeline; (4) NATION-STATE ATTRIBUTION ANALYSIS — TTPs vs known actor profiles; probabilistic-language attribution; (5) CYBER INSURANCE DOCUMENTATION — destructive-malware coverage is policy-specific (war-exclusion clauses often invoked; Merck v. Ace litigation); (6) POST-INCIDENT IMMUTABLE-BACKUP — air-gapped, write-once architecture; (7) SUPPLY-CHAIN-VENDOR-RISK POLICY REVIEW — third-party software update integrity, code-signing, SBOM.",
+      "wrong_explanations": {
+        "A": "A pays ransom, but DESTRUCTIVE malware doesn't recover with keys — keys don't exist (encryption-impersonation pattern). Payment funds attackers without recovery. Plus: OFAC sanctions implications if attacker group is sanctioned (NotPetya attributed to Russian state actor; sanctions applied).",
+        "B": "B defers forensics, but forensic preservation has TIME-LIMITED WINDOW. Affected hosts may be re-imaged for restoration before forensic preservation; supply-chain vector forensic analysis is time-critical (vendor logs may roll over). Forensics + recovery RUN IN PARALLEL.",
+        "D": "D suppresses findings, missing customer + investor + regulator + cyber insurance obligations. Suppression-attempt usually fails (researchers publish independently) + amplifies reputational damage. Coordinated disclosure with counsel is canonical."
+      },
+      "tips": [
+        "Trap is A — 'pay ransom to attempt key recovery' is candidate-seductive because magnitude of impact feels overwhelming; but DESTRUCTIVE malware doesn't recover with keys (encryption-impersonation; keys don't exist). Payment funds attackers + OFAC sanctions implications if attacker group is sanctioned.",
+        "Destructive-malware principle: ENCRYPTION-IMPERSONATION DESTROYS evidence + data; recovery is FROM-BACKUP not from-keys. Forensics + recovery RUN IN PARALLEL; war-exclusion clause is policy-specific risk.",
+        "Exam-day shortcut: when stem describes DESTRUCTIVE MALWARE WITH SUPPLY-CHAIN VECTOR + NATION-STATE ATTRIBUTION, prioritize parallel forensics + recovery framework; pay-ransom, defer-forensics, and suppress-findings framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling); CISA + FBI Joint Ransomware Advisory; ISACA Software Supply Chain Audit/Assurance Program; OFAC Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments",
+      "related_concepts": [
+        "Destructive vs ransomware-encryption",
+        "Supply-chain vector forensics",
+        "EternalBlue + Mimikatz lateral movement",
+        "Cyber insurance war-exclusion"
+      ],
+      "_provenance": "Authored from concept: 'Destructive-malware forensic investigation, tonal NotPetya 2017 echo'. Public sources: ISACA, CISA, FBI, NIST, OFAC, public incident lessons + litigation. No legacy bank citation."
+    },
+    {
+      "id": "d5_212",
+      "domain": 5,
+      "subtopic": "Internal-Tools Breach Forensic Investigation (Analysis, Twitter 2020 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic investigation approach?",
+      "scenario_context": "A major social-media platform confirms at 8:14 PM Wednesday: a coordinated social-engineering attack on internal employees compromised credentials for internal administrative tools. Attackers used the tools to access 130+ high-profile accounts (politicians, celebrities, business leaders) and posted cryptocurrency scam messages; ~$120K stolen via cryptocurrency transfers. The CEO + CISO + CTO + General Counsel + Outside Counsel + IR retainer + FBI + Treasury (cryptocurrency tracing) + SEC (potentially material) + state AGs on bridge call. The incident is publicly visible; media coverage is intense.",
+      "options": {
+        "A": "Limit forensic disclosure to internal stakeholders only; external disclosure creates additional reputational damage during ongoing investigation and recovery.",
+        "B": "Focus on perpetrator identification first; technical forensics is secondary to law-enforcement coordination on attribution and prosecution timeline.",
+        "C": "Suspend the affected employees immediately; rapid termination demonstrates accountability and limits liability exposure to the firm at large.",
+        "D": "Social-engineering vector + privileged-access audit + tools access-log preservation + cryptocurrency tracing + transparent disclosure + insider-risk review."
+      },
+      "correct": "D",
+      "key_concept": "Internal-tools breach forensics = social-engineering vector analysis + privileged-access audit + tools access-log forensic preservation + cryptocurrency forensic tracing + cross-functional containment + transparent disclosure + post-incident insider-risk policy review.",
+      "pre_read": "For internal-tools breach questions, anchor on social-engineering vector + privileged-access + cryptocurrency tracing + transparent disclosure framework. Limit-disclosure, perpetrator-first, and immediate-suspension framings each fail.",
+      "correct_explanation": "ISACA Insider Threat Audit/Assurance Program, lessons from the 2020 Twitter internal-tools breach (~130 accounts, $120K cryptocurrency), CISA Social Engineering Guidance, FBI Cryptocurrency Investigation Guidance, and SEC Form 8-K Item 1.05 establish internal-tools breach forensic framework. (1) SOCIAL-ENGINEERING VECTOR ANALYSIS — phishing vs vishing vs in-person; victim-employee interviews; attacker-script analysis; (2) PRIVILEGED-ACCESS AUDIT — what tools were affected, what scope each tool allowed (account-takeover capability); IAM review; (3) TOOLS ACCESS-LOG FORENSIC PRESERVATION — admin-action logs; chain-of-custody-grade; (4) CRYPTOCURRENCY FORENSIC TRACING — Chainalysis, TRM Labs, blockchain analysis for fund tracing; cooperation with cryptocurrency exchanges; (5) CROSS-FUNCTIONAL CONTAINMENT — privileged access revocation, customer-account remediation, public statement coordination; (6) TRANSPARENT DISCLOSURE — public-facing platform; customer-trust dimension; coordinated with counsel; (7) POST-INCIDENT INSIDER-RISK MANAGEMENT — enhanced employee verification, additional approval gates for high-impact admin actions, social-engineering awareness training.",
+      "wrong_explanations": {
+        "A": "A limits disclosure, missing SEC + state AG + customer notification obligations (potentially material incident affecting public-facing platform). Suppression-attempt usually fails (incident is publicly visible). Transparent disclosure with counsel is canonical.",
+        "B": "B prioritizes perpetrator identification, but TECHNICAL FORENSICS (how attackers got in, what they accessed, scope) must precede attribution. Attribution depends on technical evidence; not reversed.",
+        "C": "C suspends employees immediately, but: (a) suspension may be premature without forensic confirmation of intent vs unwitting victim, (b) destroys access to interview / cooperation, (c) creates wrongful-termination exposure if forensics later exonerates. Suspension follows forensic confirmation, not precedes it."
+      },
+      "tips": [
+        "Trap is C — 'suspend affected employees immediately' is candidate-seductive because rapid action feels accountable; but suspension may be PREMATURE without forensic confirmation of intent vs unwitting victim. Suspension destroys cooperation access; creates wrongful-termination exposure if forensics exonerates. Suspension follows forensic confirmation, not precedes it.",
+        "Internal-tools breach principle: SOCIAL-ENGINEERING VECTOR + PRIVILEGED-ACCESS AUDIT + TRANSPARENT DISCLOSURE — employees may be unwitting victims; forensic confirmation precedes personnel action.",
+        "Exam-day shortcut: when stem describes INTERNAL-TOOLS BREACH WITH PUBLIC-FACING IMPACT, look for social-engineering + privileged-access + cryptocurrency tracing framework; limit-disclosure, perpetrator-first, and immediate-suspension framings each fail."
+      ],
+      "framework_ref": "ISACA Privileged Access Management Audit/Assurance Program; FBI Cryptocurrency Investigation Guidance; SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); NIST SP 800-86 (Integrating Forensic Techniques into Incident Response)",
+      "related_concepts": [
+        "Social-engineering vector",
+        "Privileged-access audit",
+        "Cryptocurrency forensic tracing",
+        "Customer-trust dimension"
+      ],
+      "_provenance": "Authored from concept: 'Internal-tools breach forensic investigation, tonal Twitter 2020 echo'. Public sources: ISACA, CISA, FBI, SEC, Chainalysis, public incident lessons. No legacy bank citation."
+    },
+    {
+      "id": "d5_213",
+      "domain": 5,
+      "subtopic": "Cloud Misconfiguration Breach Forensic Investigation (Analysis, Capital One 2019 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic investigation approach?",
+      "scenario_context": "A major US financial-services firm confirms at 11:14 AM Friday: customer data breach affecting ~100M+ records (names, addresses, SSNs, dates of birth, ~140K SSN data, ~80K bank account numbers). Initial vector: a former cloud-provider employee exploited a misconfigured AWS WAF rule to perform SSRF (Server-Side Request Forgery) attack against AWS instance metadata service (IMDSv1), retrieved IAM credentials, then accessed S3 buckets. Adversary had access for ~4 months before detection by external researcher. CEO + CISO + CTO + General Counsel + AWS Security + IR retainer + FBI + OCC + state AGs + ~50-state regulator notification preparation on bridge call.",
+      "options": {
+        "A": "WAF rule + SSRF vector + IMDSv1 → IMDSv2 migration + S3 access-log forensics + cloud-provider cooperation + customer notification + post-incident cloud-misconfiguration policy.",
+        "B": "Blame cloud provider entirely; misconfiguration is the provider's responsibility under shared-responsibility model and firm has minimal accountability for outcomes.",
+        "C": "Delay customer notification until full record-scope is confirmed; partial information notifications create unmanageable consumer confusion and additional reputational damage.",
+        "D": "Settle quickly with all 50 state AGs to limit legal exposure; admission of misconfiguration is unavoidable given documented facts and forensic findings."
+      },
+      "correct": "A",
+      "key_concept": "Cloud misconfiguration forensics = WAF rule + SSRF vector analysis + IMDSv1→IMDSv2 migration + S3 access-log analysis + cloud-provider cooperation + multi-regulator customer notification + post-incident cloud-misconfiguration prevention.",
+      "pre_read": "For cloud misconfiguration questions, anchor on shared-responsibility forensics + multi-regulator notification framework. Blame-provider, delay-notification, and settle-quickly framings each fail.",
+      "correct_explanation": "ISACA Cloud Security Audit/Assurance Program, lessons from the 2019 Capital One breach (~100M records via AWS WAF misconfiguration + SSRF), AWS Shared Responsibility Model documentation, OCC Bulletin 2013-29 (now superseded by the June 2023 Interagency Guidance on Third-Party Relationships) + similar, FTC Safeguards Rule, and state breach notification laws establish cloud misconfiguration forensic framework. (1) AWS WAF RULE + SSRF VECTOR ANALYSIS — how was the WAF misconfigured; SSRF mechanics; IMDSv1 vulnerability; (2) IMDSv1 → IMDSv2 MIGRATION — IMDSv1 vulnerable to SSRF; IMDSv2 (released 2019) requires session tokens; remediation; (3) S3 ACCESS-LOG FORENSIC ANALYSIS — what S3 buckets accessed, when, by what credentials; AWS CloudTrail + S3 server access logs; (4) CLOUD-PROVIDER COOPERATION — AWS legal/security teams; data-request process; (5) CUSTOMER NOTIFICATION — ~50 state breach laws (varying timelines) + FTC + OCC + state AGs; coordinated cross-state notification; (6) POST-INCIDENT CLOUD-MISCONFIGURATION PREVENTION — CSPM (Cloud Security Posture Management) tools, infrastructure-as-code review, IAM least-privilege enforcement.",
+      "wrong_explanations": {
+        "B": "B blames provider entirely, missing SHARED-RESPONSIBILITY MODEL: AWS is responsible for cloud INFRASTRUCTURE security; FIRM is responsible for cloud CONFIGURATION + IAM + WAF rules. The misconfiguration was FIRM-SIDE. Blame-shifting fails regulator scrutiny.",
+        "C": "C delays customer notification, missing state breach law clocks (most states require notification within 30-90 days of discovery; some require expedited notification for SSN exposure). Initial notification with confirmed scope + supplementary updates is canonical.",
+        "D": "D settles quickly, missing comprehensive remediation framework. Settlement is appropriate after FORENSIC + REMEDIATION steps establish accountability + corrective actions; not as substitute for investigation."
+      },
+      "tips": [
+        "Trap is B — 'blame cloud provider entirely' is candidate-seductive because provider IS responsible for some security dimensions; but SHARED-RESPONSIBILITY MODEL puts cloud CONFIGURATION + IAM + WAF rules on the firm. Misconfiguration was firm-side. Blame-shifting fails regulator scrutiny + customer expectations.",
+        "Cloud misconfiguration principle: SHARED-RESPONSIBILITY MODEL — provider owns infrastructure, firm owns configuration. Misconfigurations are firm-side; multi-regulator notification + CSPM remediation are canonical.",
+        "Exam-day shortcut: when stem describes CLOUD MISCONFIGURATION BREACH WITH MASS CUSTOMER IMPACT, look for shared-responsibility + SSRF/IMDS analysis + multi-regulator framework; blame-provider, delay-notification, and settle-quickly framings each fail."
+      ],
+      "framework_ref": "CSA Cloud Forensics Working Group; AWS Shared Responsibility Model; State Breach Notification Laws (50 states); OCC Cybersecurity Examination Handbook; OCC Bulletin 2013-29 (Third-Party Relationships, superseded June 2023); Interagency Guidance on Third-Party Relationships (2023, OCC/FRB/FDIC)",
+      "related_concepts": [
+        "Shared responsibility model",
+        "IMDSv1 vs IMDSv2",
+        "SSRF + WAF misconfiguration",
+        "Multi-state breach notification"
+      ],
+      "_provenance": "Authored from concept: 'Cloud misconfiguration breach forensic investigation, tonal Capital One 2019 echo'. Public sources: ISACA, AWS, FTC, OCC, state laws, public incident lessons. No legacy bank citation."
+    },
+    {
+      "id": "d5_214",
+      "domain": 5,
+      "subtopic": "Critical-Infrastructure Ransomware Forensic Investigation (Analysis, Colonial Pipeline echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic investigation approach?",
+      "scenario_context": "A US Gulf-Coast petroleum-pipeline operator confirms at 4:47 AM Friday: ransomware attack on IT/billing systems forcing pipeline shutdown affecting ~45% of US East Coast fuel supply. Initial vector: VPN credential compromise (single-factor authentication; password obtained from dark web breach dump). Attackers exfiltrated ~100GB customer/business data before encryption. Operator paid ~$4.4M ransom (decryption key worked but slowly; ultimately restored from backup). FBI later recovered ~$2.3M of ransom. CISO + CEO + DHS/TSA + FBI + DOE + CISA + Outside Counsel + IR retainer + Treasury (OFAC) on bridge call. National emergency declared.",
+      "options": {
+        "A": "Pay ransom immediately to restore pipeline operations; national fuel-supply impact justifies extraordinary recovery investment without negotiation or forensic delay.",
+        "B": "IT/OT segmentation + VPN credential vector + MFA gap audit + exfiltration forensics + federal coordination + OFAC review + OT-cybersecurity policy.",
+        "C": "Restrict investigation to IT systems only; OT/pipeline systems are operationally separate and not in forensic scope under the firm's existing IR policy.",
+        "D": "Refuse all federal coordination; firm has commercial obligations independent of federal critical-infrastructure designation and supporting agency reporting frameworks."
+      },
+      "correct": "B",
+      "key_concept": "Critical-infrastructure ransomware forensics = IT/OT segmentation analysis + VPN credential breach + MFA gap audit + data exfiltration analysis + federal coordination + cyber insurance + OFAC review + post-incident OT-cybersecurity policy.",
+      "pre_read": "For critical-infrastructure ransomware questions, anchor on IT/OT + federal coordination + OFAC framework. Pay-without-negotiation, IT-only, and refuse-federal framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, lessons from the 2021 Colonial Pipeline incident (DarkSide ransomware; ~$4.4M ransom paid; FBI recovered ~$2.3M), TSA Pipeline Security Directives (post-Colonial), CISA + FBI Joint Cybersecurity Advisories on ransomware, OFAC Sanctions Compliance Guidance, and DOE Energy Sector Cybersecurity guidance establish critical-infrastructure ransomware framework. (1) IT/OT SEGMENTATION ANALYSIS — IT-billing-systems vs OT-pipeline-control-systems; segmentation effectiveness; future-prevention design; (2) VPN CREDENTIAL BREACH VECTOR — dark-web credential dump source; (3) MFA GAP AUDIT — VPN MFA enforcement; single-factor authentication was the vector; (4) DATA EXFILTRATION FORENSIC ANALYSIS — ~100GB scope; what was exfiltrated; customer/business data classification; (5) FEDERAL COORDINATION — DHS, TSA (pipeline regulator), FBI (ransom-recovery capability), DOE, CISA; (6) CYBER INSURANCE — policy review for ransomware coverage + business interruption; (7) RANSOM-PAYMENT OFAC REVIEW — sanctions screening before payment; Treasury + OFAC pre-clearance; (8) POST-INCIDENT OT-CYBERSECURITY POLICY — IT/OT segmentation hardening, OT-specific monitoring (Dragos, Claroty, Nozomi), incident-response playbooks.",
+      "wrong_explanations": {
+        "A": "A pays ransom without negotiation, missing OFAC sanctions screening (some ransomware groups sanctioned; payment to sanctioned groups violates OFAC). FBI + Treasury engagement before payment is canonical for critical-infrastructure ransomware. CISA + FBI strongly discourage payment.",
+        "C": "C restricts to IT, missing IT/OT INTERCONNECTION analysis. Pipeline shutdown was due to IT/OT-billing-dependency (operator shut OT because IT-billing couldn't run); future-prevention requires understanding IT/OT segmentation.",
+        "D": "D refuses federal coordination, but critical-infrastructure firms have DESIGNATION-SPECIFIC obligations (TSA Pipeline Security Directive 2021, CISA reporting); federal coordination is required + provides resources (FBI ransom-recovery, CISA threat-intel)."
+      },
+      "tips": [
+        "Trap is A — 'pay ransom immediately for national fuel supply' is candidate-seductive because magnitude of impact feels overwhelming; but OFAC sanctions screening + FBI + Treasury engagement BEFORE payment are required. Sanctions-violation risk is material; FBI may have ransom-recovery capability (recovered ~$2.3M of $4.4M in Colonial case).",
+        "Critical-infrastructure ransomware principle: IT/OT INTERCONNECTION + FEDERAL COORDINATION + OFAC SANCTIONS SCREENING. Pipeline shutdown was IT-driven; OT-segmentation hardening is future-prevention.",
+        "Exam-day shortcut: when stem describes CRITICAL-INFRASTRUCTURE RANSOMWARE WITH NATIONAL IMPACT, look for IT/OT + federal coordination + OFAC framework; pay-without-negotiation, IT-only, and refuse-federal framings each fail."
+      ],
+      "framework_ref": "TSA Pipeline Security Directive SD02 / SD-02C; CISA + FBI Joint Ransomware Advisory; NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); OFAC Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments",
+      "related_concepts": [
+        "IT/OT segmentation",
+        "VPN MFA gap",
+        "OFAC ransom screening",
+        "TSA Pipeline Security Directives"
+      ],
+      "_provenance": "Authored from concept: 'Critical-infrastructure ransomware forensic investigation, tonal Colonial Pipeline 2021 echo'. Public sources: ISACA, TSA, CISA, FBI, OFAC, DOE, public incident lessons. No legacy bank citation."
+    },
+    {
+      "id": "d5_215",
+      "domain": 5,
+      "subtopic": "Healthcare-Sector Ransomware Mass-Impact Forensic Investigation (Analysis, Change Healthcare 2024 echo)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST forensic investigation approach?",
+      "scenario_context": "A major US healthcare-payment-processing intermediary confirms at 2:14 AM Monday: ransomware attack on core systems forcing shutdown of payment processing affecting ~120,000+ pharmacies + 70,000+ provider organizations across the US. Initial vector: stolen credentials (no MFA on Citrix portal); attackers had access for ~9 days before detection. Patient data (potentially affecting ~100M+ Americans' health information) exfiltrated. Ransom paid (~$22M) but data later released anyway after secondary extortion. CISO + CEO + parent-firm executives + HHS OCR + FTC + state AGs + Outside Counsel + IR retainer + Congressional oversight + FBI on bridge call within 4 hours.",
+      "options": {
+        "A": "Focus exclusively on operational restoration; forensic investigation can wait until pharmacy and provider operations are restored to normal across the network.",
+        "B": "Delay HHS OCR notification until full population scope is determined; partial-information notification creates regulatory complications and significant reputational damage exposure.",
+        "C": "Credential vector + MFA gap + Citrix RDP forensics + patient-data exfiltration + HHS OCR HIPAA Breach Notification + vendor-concentration policy review.",
+        "D": "Pay the secondary extortion demand to suppress data release; reputational and class-action liability significantly exceeds the secondary ransom payment amount."
+      },
+      "correct": "C",
+      "key_concept": "Healthcare-sector ransomware forensics = credential breach + MFA gap audit + Citrix RDP analysis + patient-data exfiltration scope + HHS OCR HIPAA Breach Notification + multi-stakeholder + double-extortion analysis + post-incident vendor-concentration risk policy.",
+      "pre_read": "For healthcare ransomware mass-impact questions, anchor on parallel forensics + restoration + HIPAA + multi-stakeholder framework. Operational-only, delay-OCR, and pay-secondary-extortion framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, lessons from the 2024 Change Healthcare incident (Optum/UnitedHealth subsidiary; BlackCat/ALPHV ransomware; ~$22M ransom paid; ~$1.6B+ business impact; ~100M+ patient records affected), HIPAA Breach Notification Rule, HHS OCR guidance, and CISA Healthcare Sector Cybersecurity Coordinating Council establish healthcare ransomware framework. (1) CREDENTIAL BREACH VECTOR — Citrix portal stolen credentials; MFA gap was the failure; (2) MFA GAP AUDIT — why was MFA not enforced on Citrix; remediation timeline; (3) CITRIX RDP FORENSIC ANALYSIS — what attackers accessed, when, what they did; chain-of-custody-grade; (4) PATIENT-DATA EXFILTRATION SCOPE — ~100M+ records implications; (5) HHS OCR HIPAA BREACH NOTIFICATION — 60-day clock to OCR + affected individuals + media for >500 affected; (6) MULTI-STAKEHOLDER COORDINATION — pharmacies (120K+) + providers (70K+) + parent company + Congressional oversight; (7) DOUBLE-EXTORTION ANALYSIS — primary encryption + secondary data-release threat; pattern of secondary release even after payment; (8) POST-INCIDENT HEALTHCARE-VENDOR CONCENTRATION RISK POLICY — Change Healthcare processed ~50% of US healthcare claims; concentration risk policy for vendor diversification.",
+      "wrong_explanations": {
+        "A": "A defers forensics for restoration, missing time-critical forensic preservation. Forensics + restoration RUN IN PARALLEL — different teams, different objectives. Operational restoration alone doesn't fulfill regulatory obligations (HIPAA Breach Notification + HHS OCR).",
+        "B": "B delays HHS OCR notification, missing HIPAA Breach Notification Rule clocks (60-day clock to affected individuals + HHS OCR; media notification if >500 affected — at ~100M, this is mandatory immediate media). Initial notification + supplementary updates is canonical.",
+        "D": "D pays secondary extortion, but: (a) historical pattern shows secondary payments often don't prevent release (attackers may release anyway, sell to others, or come back for tertiary demand), (b) OFAC sanctions risk, (c) sets precedent for future attacks. CISA + FBI strongly discourage."
+      },
+      "tips": [
+        "Trap is D — 'pay secondary extortion to suppress data release' is candidate-seductive because reputation + class-action exposure feels overwhelming; but: secondary payments often don't prevent release (historical pattern; attackers may release anyway, sell to others, demand more), OFAC sanctions risk, sets precedent. CISA + FBI strongly discourage.",
+        "Healthcare ransomware principle: MFA GAP is recurring failure vector + DOUBLE-EXTORTION is now standard pattern. Vendor-concentration risk (Change Healthcare processed ~50% of US healthcare claims) is post-incident policy lesson.",
+        "Exam-day shortcut: when the stem describes HEALTHCARE-SECTOR RANSOMWARE with mass patient impact, restoration alone fails HIPAA — the right answer pairs forensic preservation with breach-notification readiness. Delay-OCR is the trap because the 60-day clock has already started."
+      ],
+      "framework_ref": "HHS OCR HIPAA Breach Notification Rule; CISA + FBI Joint Ransomware Advisory; HHS 405(d) Health Industry Cybersecurity Practices (HICP); NIST SP 800-86 (Integrating Forensic Techniques into Incident Response)",
+      "related_concepts": [
+        "MFA gap on Citrix",
+        "Double-extortion pattern",
+        "Healthcare-vendor concentration risk",
+        "BlackCat/ALPHV ransomware"
+      ],
+      "_provenance": "Authored from concept: 'Healthcare-sector ransomware mass-impact forensic investigation, tonal Change Healthcare 2024 echo'. Public sources: ISACA, HIPAA, HHS OCR, CISA, OFAC, public incident lessons. No legacy bank citation."
+    },
+    {
+      "id": "d5_216",
+      "domain": 5,
+      "subtopic": "Anti-Forensics Countermeasures Encountered (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach?",
+      "scenario_context": "Mid-cap technology firm investigating suspected intellectual-property exfiltration by a former senior engineer. Two weeks into the forensic engagement, the team finds clear anti-forensics evidence on the suspect's company-issued laptop: timestomping across source-code directories, secure-deletion artifacts indicating sdelete usage, an encrypted VeraCrypt container of unknown contents, and SIEM log gaps coinciding with the suspect's final weeks before resignation. Litigation counsel is preparing the trade-secret complaint. The forensic team must decide whether traditional forensic analysis remains viable or requires methodological adjustment given the documented evidence-destruction countermeasures.",
+      "options": {
+        "A": "Abandon the investigation entirely; anti-forensics evidence destruction means traditional analysis will not recover sufficient material for litigation success.",
+        "B": "Confront the suspect with the anti-forensics evidence; admission may produce confessional evidence that pure technical analysis cannot reliably recover.",
+        "C": "Pivot to network-only forensic analysis; if device evidence is compromised, focus exclusively on network-side evidence sources for the investigation.",
+        "D": "Enhanced preservation + memory + log corroboration + countermeasure deployment + chain-of-custody verification + countermeasures-as-attribution documentation."
+      },
+      "correct": "D",
+      "key_concept": "Anti-forensics encountered = enhanced forensic preservation + multi-source corroboration + countermeasure-specific techniques + documentation of attempts as attribution + chain-of-custody verification + expert witness prep + post-incident detection capability investment.",
+      "pre_read": "For anti-forensics encountered questions, anchor on multi-source corroboration + attribution-evidence framework. Abandon-investigation, confront-suspect, and network-only-pivot framings each fail.",
+      "correct_explanation": "ISACA Forensics Audit/Assurance Program, SANS FOR508 (Advanced Incident Response, Threat Hunting, and Digital Forensics), and anti-forensics research literature establish anti-forensics-encountered response framework. PRESENCE OF ANTI-FORENSICS is ITSELF ATTRIBUTION EVIDENCE (consciousness of guilt, sophistication, intent — courts treat anti-forensics attempts as evidence of awareness of wrongdoing). MULTI-SOURCE CORROBORATION recovers evidence even with device-side destruction: memory forensics (Volatility captures in-memory artifacts not destroyed by secure-deletion), registry artifacts ($MFT residual entries, USN journal, $LogFile), unallocated space (anti-forensics rarely covers thoroughly), network logs (independent of device), cloud-sync data (often retained server-side after local destruction). ANTI-FORENSICS-SPECIFIC TECHNIQUES: timestomp detection (MAC time anomalies), encrypted-volume identification (entropy analysis), log-tampering detection (gap analysis, hash chain verification). CHAIN-OF-CUSTODY INTEGRITY VERIFICATION is critical (opposing counsel will challenge); INDEPENDENT EXPERT WITNESS preparation; POST-INCIDENT DETECTION CAPABILITY (UEBA, anti-forensics-aware EDR rules) to surface anti-forensics earlier in future investigations.",
+      "wrong_explanations": {
+        "A": "A abandons investigation, missing the value of anti-forensics evidence: PRESENCE OF ANTI-FORENSICS IS ATTRIBUTION EVIDENCE (consciousness of guilt, sophistication, intent). Multi-source corroboration recovers significant evidence even with device-side destruction.",
+        "B": "B confronts suspect, which: (a) destroys legal posture (suspect lawyers up, refuses cooperation), (b) doesn't recover destroyed evidence anyway, (c) blow cover for any ongoing surveillance. Forensic analysis precedes confrontation.",
+        "C": "C pivots to network-only, missing DEVICE-SIDE corroboration via memory forensics, registry artifacts (less commonly destroyed), unallocated space (anti-forensics tools rarely cover thoroughly). Multi-source forensics is canonical."
+      },
+      "tips": [
+        "Trap is C — 'pivot to network-only analysis' is candidate-seductive because device evidence appears compromised; but DEVICE-SIDE multi-source corroboration (memory, registry, unallocated space, cloud-sync) recovers significant evidence. Network-only misses device-side corroboration; multi-source is canonical.",
+        "Anti-forensics principle: PRESENCE OF ANTI-FORENSICS IS ATTRIBUTION EVIDENCE — courts treat anti-forensics attempts as consciousness-of-guilt. Multi-source corroboration recovers evidence; abandon-investigation fails.",
+        "Exam-day shortcut: when stem describes ANTI-FORENSICS COUNTERMEASURES ENCOUNTERED during forensic investigation, look for multi-source corroboration + attribution-evidence framework; abandon, confront-suspect, and network-only framings each fail."
+      ],
+      "framework_ref": "SANS FOR508 (Advanced Incident Response, Threat Hunting, and Digital Forensics); NIST SP 800-86 (Integrating Forensic Techniques into Incident Response); ISO/IEC 27037 (Digital Evidence Handling); Federal Rules of Evidence Rule 901 (Authentication)",
+      "related_concepts": [
+        "Anti-forensics as attribution evidence",
+        "Multi-source corroboration",
+        "Memory forensics resilience",
+        "Consciousness-of-guilt doctrine"
+      ],
+      "_provenance": "Authored from concept: 'Anti-forensics countermeasures encountered in investigation'. Public sources: ISACA, SANS, academic research, FRE. No legacy bank citation."
+    },
+    {
+      "id": "d5_217",
+      "domain": 5,
+      "subtopic": "Daubert Challenge to Expert Forensic Testimony (Analysis, single-focus)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A multinational firm's outside counsel reports at 9:18 AM Tuesday: in pending civil trade-secret litigation, opposing counsel has filed a Daubert motion challenging the admissibility of the firm's forensic expert testimony. Opposing counsel asserts: methodology lacks peer review, error rates undocumented, general acceptance unproven, scientific testability unestablished — the four Daubert factors. The firm's $12M trade-secret damages claim depends substantially on the expert's testimony about data exfiltration evidence. CISO + Outside Counsel + Forensic Expert + General Counsel + retained external forensic firm + opposing counsel + judge's clerk awaiting response within 30 days.",
+      "options": {
+        "A": "Document methodology rigor FIRST against the four Daubert factors (peer-reviewed publication, known error rate, general acceptance, scientific testability) before any legal response strategy.",
+        "B": "Argue the Daubert challenge as a delay tactic; opposing counsel's motion is a procedural distraction from the substantive trade-secret case at hand.",
+        "C": "Settle the case quickly to avoid the Daubert hearing; admissibility risk outweighs the trade-secret damages currently at stake in the litigation.",
+        "D": "Replace the forensic expert with a more credentialed alternative; substitution avoids the Daubert challenge entirely and resets the admissibility timeline."
+      },
+      "correct": "A",
+      "key_concept": "Daubert challenge to forensic testimony FIRST action = ESTABLISH METHODOLOGY RIGOR. Document peer-reviewed methodology + error rates + general acceptance + scientific testability BEFORE legal response strategy. Single critical-path action: METHODOLOGY-RIGOR-FIRST.",
+      "pre_read": "For Daubert challenge to forensic expert testimony, anchor on METHODOLOGY-RIGOR-FIRST. The four Daubert factors dominate other considerations.",
+      "correct_explanation": "When forensic expert testimony admissibility is challenged via Daubert motion, the FIRST action is ESTABLISH METHODOLOGY RIGOR — direct response to the four Daubert factors. Rationale: (1) DAUBERT v. MERRELL DOW (1993) ESTABLISHED FOUR-FACTOR TEST — peer-reviewed (published methodology), known error rates (proficiency testing data), general acceptance (SANS/ASCLD-recognized tools/procedures), scientific testability (reproducibility); (2) METHODOLOGY RIGOR IS THE SUBSTANTIVE RESPONSE — not procedural argument, settlement, or expert replacement; (3) DOCUMENTATION CAN OFTEN BE ASSEMBLED POST-HOC if methodology was sound — published forensic standards (ISO/IEC 27037, NIST SP 800-86, SANS curriculum), tool documentation (FTK, EnCase, Cellebrite validation), proficiency-test records, peer review evidence; (4) NEW principle: METHODOLOGY-RIGOR-FIRST. Distinct from prior single-focus principles (e.g., CHAIN-OF-CUSTODY-FIRST is EVIDENCE INTEGRITY; this is METHODOLOGY RIGOR — what the analyst did and how, not whether the evidence was unchanged). After establishing rigor: (a) Daubert hearing brief with methodology documentation; (b) expert testifies to qualifications + methodology + reproducibility; (c) opposing counsel cross-examination; (d) judge rules on admissibility; (e) if admitted, case proceeds; if excluded, alternative analysis or settlement reconsideration. Federal Rules of Evidence Rule 702 + Rule 703 govern expert testimony.",
+      "wrong_explanations": {
+        "B": "B treats Daubert as procedural distraction, missing the FOUNDATIONAL evidentiary requirement. If expert testimony is excluded, the $12M damages claim loses its evidentiary foundation. Daubert response must be substantive, not dismissive.",
+        "C": "C settles to avoid hearing, but: (a) settlement value depends on case strength; if expert testimony is admissible, case is stronger, (b) Daubert response is feasible with proper methodology documentation, (c) settling without addressing methodology gaps surrenders to the challenge prematurely. Methodology rigor first.",
+        "D": "D replaces expert, missing the issue: the methodology challenge applies to the ANALYSIS PERFORMED, not the expert's credentials. New expert would need to repeat the same analysis with same methodology; same Daubert issues recur. Methodology-first addresses root, not symptom."
+      },
+      "tips": [
+        "Trap is D — 'replace the forensic expert with more credentialed alternative' is candidate-seductive because new expert seems like a fresh start; but methodology challenge applies to the ANALYSIS PERFORMED, not the expert's credentials. New expert would need to repeat analysis with same methodology — same Daubert issues recur.",
+        "NEW principle: METHODOLOGY-RIGOR-FIRST — when forensic expert testimony admissibility is challenged via Daubert, FIRST action is establishing methodology rigor (peer-reviewed methods + error rates + general acceptance + scientific testability per Daubert four factors) BEFORE legal response strategy. Distinct from CHAIN-OF-CUSTODY-FIRST (evidence integrity) — this is METHODOLOGY rigor.",
+        "Exam-day shortcut: methodology-rigor-first attacks the analysis itself, not the expert (replace-expert), the lawyer (settle-to-avoid), or the timeline (delay-tactic). Each of those framings dodges the substantive Daubert response."
+      ],
+      "framework_ref": "Federal Rules of Evidence Rule 702 (Testimony by Expert Witnesses); Daubert v. Merrell Dow Pharmaceuticals, Inc., 509 U.S. 579 (1993); Kumho Tire Co. v. Carmichael, 526 U.S. 137 (1999); ISO/IEC 17025:2017 (General Requirements for Testing and Calibration Laboratories); NIST SP 800-86 (Integrating Forensic Techniques into Incident Response); ISO/IEC 27037 (Digital Evidence Handling)",
+      "related_concepts": [
+        "Daubert four factors",
+        "FRE Rule 702",
+        "Methodology rigor documentation",
+        "METHODOLOGY-RIGOR-FIRST principle"
+      ],
+      "_provenance": "Authored from concept: 'Daubert challenge to forensic expert testimony — methodology-rigor-first principle'. Public sources: FRE, Daubert, Kumho Tire, ISACA, ISO. No legacy bank citation. NEW single-focus principle: METHODOLOGY-RIGOR-FIRST."
+    },
+    {
+      "id": "d5_218",
+      "domain": 5,
+      "subtopic": "Forensic Budget Defense at Board (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to forensic budget defense?",
+      "scenario_context": "A growth-stage technology firm's CISO faces board challenge at 3:42 PM Thursday: the board IT committee's FY26 budget review questions the $3.2M forensic capability investment (~12% of cyber budget). Board members challenge: 'We haven't had a major incident requiring forensics; why this level of investment?' The CISO is preparing the budget defense. Current forensic team: 4 trained examiners, ISO/IEC 17025 accreditation in progress, two retained external firms, capability gap analysis identifying mobile + cloud forensics as 2025 priorities. Outside Counsel + CFO + Risk Officer + Audit Committee Chair + board IT Committee members attending.",
+      "options": {
+        "A": "Reduce the forensic budget by 30% to align with board concerns about cost; reduction demonstrates fiscal responsibility and aligns with no-recent-major-incident pattern observed firmwide.",
+        "B": "Incident-loss-prevented analysis + peer benchmarking + capability-gap-cost + regulatory readiness + insurance-premium reduction + BCP dependency + board IT Committee briefing.",
+        "C": "Defer the budget decision to the board; CISO authority over forensic capability is operational, not strategic, so board approval is the appropriate decision path for this matter.",
+        "D": "Maintain budget at the current level without documented defense; forensic capability is foundational to the firm and shouldn't require detailed board-level justification annually."
+      },
+      "correct": "B",
+      "key_concept": "Forensic budget defense = incident-loss-prevented analysis + peer benchmarking + capability-gap-cost analysis + regulatory readiness + insurance premium reduction + business-continuity dependency + board educational briefing.",
+      "pre_read": "For forensic budget defense questions, anchor on risk-based + evidence-based defense framework. Reduce-reactively, defer-to-board, and maintain-without-justification framings each fail.",
+      "correct_explanation": "ISACA Cybersecurity Audit/Assurance Program, Gartner Cybersecurity Budget Benchmarking, and ISACA Risk IT Framework establish forensic budget defense framework. (1) INCIDENT-LOSS-PREVENTED ANALYSIS — quantify estimated incidents prevented + scope contained by forensic capability; cite industry benchmarks (e.g., IBM Cost of a Data Breach Report); (2) PEER BENCHMARKING — peer-firm forensic investment as % of cyber budget; growth-stage technology firms typically 8-15% of cyber on forensics + IR; (3) CAPABILITY-GAP-COST ANALYSIS — gap in current capability + cost of closing (vs cost of major incident without capability); (4) REGULATORY READINESS — HIPAA Breach Notification, SEC Reg S-K Item 106, FTC Safeguards Rule, state breach laws — all require forensic capability; investment is COMPLIANCE-DRIVEN; (5) INSURANCE PREMIUM REDUCTION QUANTIFICATION — cyber insurance pricing reflects forensic readiness; documented capability reduces premiums; (6) BUSINESS-CONTINUITY DEPENDENCY — forensic capability enables rapid scope determination → faster restoration; (7) BOARD IT COMMITTEE EDUCATIONAL BRIEFING — board may lack technical context for forensic capability value; structured education is part of CISO's board engagement.",
+      "wrong_explanations": {
+        "A": "A reduces budget reactively, but no-recent-major-incident is NOT EVIDENCE of low forensic need — it's evidence of either luck or unmaterialized risk. Budget reduction increases risk exposure; risk-based justification is canonical.",
+        "C": "C defers entirely to board, but CISO has ACCOUNTABILITY for security risk + EXPERTISE on forensic capability requirements. Strategic board input is appropriate but CISO should bring evidence-based recommendation, not abdicate decision.",
+        "D": "D maintains without justification, but EVIDENCE-BASED budget defense is canonical board practice. Foundational doesn't mean unjustifiable; CISO must demonstrate value vs alternative investments."
+      },
+      "tips": [
+        "Trap is A — 'reduce budget by 30% to align with board concerns' is candidate-seductive because budget reduction feels fiscally responsible; but no-recent-major-incident is NOT EVIDENCE of low forensic need — it's evidence of either luck or unmaterialized risk. Risk-based defense beats reactive reduction.",
+        "Forensic budget defense principle: NO-RECENT-INCIDENT ≠ LOW NEED. Risk-based + evidence-based budget defense uses incident-loss-prevented + peer benchmarking + regulatory readiness + insurance + business-continuity dependency.",
+        "Exam-day shortcut: when stem describes BOARD CHALLENGE TO FORENSIC BUDGET, look for risk-based + evidence-based defense framework; reduce-reactively, defer-to-board, and maintain-without-justification framings each fail."
+      ],
+      "framework_ref": "ISACA Risk IT Framework; ISACA Cybersecurity Audit/Assurance Program; NIST SP 800-86 (Integrating Forensic Techniques into Incident Response); ISACA Forensics Audit/Assurance Program; Gartner Cybersecurity Budget Benchmarking Research",
+      "related_concepts": [
+        "Incident-loss-prevented quantification",
+        "Peer benchmarking",
+        "Insurance premium reduction",
+        "Board educational briefing"
+      ],
+      "_provenance": "Authored from concept: 'Forensic budget defense at board IT committee'. Public sources: ISACA, Gartner, IBM, board governance practice. No legacy bank citation."
+    },
+    {
+      "id": "d5_219",
+      "domain": 5,
+      "subtopic": "Legal Hold Scope Dispute Resolution (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach?",
+      "scenario_context": "A multinational firm's General Counsel reports at 11:42 AM Wednesday: pending class-action lawsuit (~$200M+ in alleged damages) has triggered legal hold dispute. Plaintiffs assert that the firm's preservation scope is inadequate — they demand: (a) extension to all employee personal communications and messaging platforms (Slack, Teams, WhatsApp), (b) preservation of all cloud-stored data across 14 regional offices, (c) acceleration of preservation to 30 days vs current 90. The firm's outside counsel asserts the current scope is reasonable and proportional. The judge has ordered a meet-and-confer within 14 days. CISO + General Counsel + Outside Counsel + IT operations + Records Management + Privacy Officer on bridge call.",
+      "options": {
+        "A": "Refuse all plaintiff scope expansion demands outright; aggressive defense protects firm interests at lower cost than expanded preservation across data systems.",
+        "B": "Accept all plaintiff scope demands to avoid dispute escalation; cooperation reduces litigation friction and demonstrates good-faith conduct under FRCP Rule 26 standards.",
+        "C": "Sedona Conference meet-and-confer + scope-proportionality + cost-shifting + cross-border residency + privacy + privilege framework + auditable preservation.",
+        "D": "Defer scope determination to the judge without prior negotiation; judicial ruling provides finality without firm-side legal cost during the discovery dispute."
+      },
+      "correct": "C",
+      "key_concept": "Legal hold scope dispute resolution = Sedona Conference Cooperation Proclamation + meet-and-confer in good faith + scope-proportionality analysis + technological feasibility + cost-shifting + cross-border data-residency + privacy + privilege review.",
+      "pre_read": "For legal hold scope dispute questions, anchor on Sedona + FRCP Rule 26(b)(1) proportionality framework. Refuse-all, accept-all, and defer-to-judge framings each fail.",
+      "correct_explanation": "Federal Rules of Civil Procedure Rule 26(b)(1) (Proportionality), Rule 26(c) (Cost-shifting), Rule 26(f) (Meet-and-confer), Rule 37(e) (Failure to preserve sanctions), Sedona Conference Cooperation Proclamation (2008), and ISACA Forensics Audit/Assurance Program establish legal hold scope dispute resolution framework. (1) MEET-AND-CONFER IN GOOD FAITH — Sedona Cooperation Proclamation + FRCP Rule 26(f); engage opposing counsel substantively on scope; (2) SCOPE-PROPORTIONALITY ANALYSIS — FRCP Rule 26(b)(1) factors (relevance, scope, importance of issues, parties' resources, amount in controversy, importance of discovery); (3) TECHNOLOGICAL FEASIBILITY ASSESSMENT — what's technically possible vs operationally feasible; (4) COST-SHIFTING — FRCP Rule 26(c) allows party seeking expanded discovery to bear costs; (5) CROSS-BORDER DATA-RESIDENCY ANALYSIS — 14 regional offices may invoke GDPR, China PIPL, other jurisdictional constraints; (6) PRIVACY CONSIDERATIONS — personal employee data has privacy protection (GDPR Article 88, US state laws); (7) PRIVILEGE REVIEW FRAMEWORK — attorney-client privilege screening before production; (8) AUDITABLE PRESERVATION EVIDENCE — documented preservation actions defend against spoliation claims.",
+      "wrong_explanations": {
+        "A": "A refuses all demands, but FRCP Rule 37(e) imposes sanctions for inadequate preservation; refusal-without-negotiation may trigger sanctions if some plaintiff demands are proportional. Sedona Conference Cooperation Proclamation favors good-faith negotiation.",
+        "B": "B accepts all demands, but over-preservation is OPERATIONALLY BURDENSOME (cost, IT operations impact, privacy concerns) + FRCP Rule 26(b)(1) explicitly grants proportionality protection. Selective acceptance based on proportionality is canonical.",
+        "D": "D defers to judge without negotiation, missing the meet-and-confer requirement (FRCP Rule 26(f)). Judge expects parties to negotiate scope in good faith first; unilateral deferral to judge may lead to less-favorable ruling."
+      },
+      "tips": [
+        "Trap is B — 'accept all plaintiff demands' is candidate-seductive because cooperation reduces litigation friction; but over-preservation is operationally burdensome + FRCP Rule 26(b)(1) explicitly grants proportionality protection. Selective acceptance based on proportionality is canonical.",
+        "Legal-hold-scope-dispute principle: SEDONA COOPERATION + FRCP RULE 26(b)(1) PROPORTIONALITY. Good-faith negotiation + selective acceptance based on proportionality + technological feasibility.",
+        "Exam-day shortcut: when stem describes LEGAL HOLD SCOPE DISPUTE WITH MEET-AND-CONFER ORDER, look for Sedona + proportionality + meet-and-confer framework; refuse-all, accept-all, and defer-to-judge framings each fail."
+      ],
+      "framework_ref": "Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI); The Sedona Conference Working Group on Electronic Document Retention; EDRM (Electronic Discovery Reference Model); ISACA Forensics Audit/Assurance Program; GDPR Article 88 (Processing in the context of employment)",
+      "related_concepts": [
+        "FRCP Rule 26(b)(1) proportionality",
+        "Sedona Cooperation Proclamation",
+        "Meet-and-confer",
+        "Cost-shifting"
+      ],
+      "_provenance": "Authored from concept: 'Legal hold scope dispute resolution in class-action context'. Public sources: FRCP, Sedona, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_220",
+      "domain": 5,
+      "subtopic": "Forensic Team Capability Building Post-Major-Incident (Analysis)",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach?",
+      "scenario_context": "A regional financial-services firm's CISO faces post-major-incident capability decisions at 2:18 PM Friday: the firm has just closed a 6-week investigation into a major customer-data breach that required substantial external forensic firm engagement ($1.8M cost) due to internal capability gaps. CISO + CFO + CRO + Audit Committee Chair + Board IT Committee + Outside Counsel coordinating capability-building strategy for FY26. The CFO has approved $2.5M for forensic capability investment over 18 months. Internal team: 2 examiners; gap analysis identified mobile + cloud forensics + malware reverse-engineering as priorities.",
+      "options": {
+        "A": "Continue full external dependence on retainer; outsource forensic capability completely as more economical than internal capability building for the firm.",
+        "B": "Hire five forensic engineers immediately to close gaps; mass-hire is the fastest path to closing internal capability deficiencies identified post-incident.",
+        "C": "Defer all capability investment until next budget cycle; recent incident exposed gaps but adequate time exists to plan thoroughly without urgency.",
+        "D": "Targeted specialist hires + ISO 17025/ASCLD pathway + tabletop cadence + tooling balance + retainer + cross-team training + reassessment."
+      },
+      "correct": "D",
+      "key_concept": "Post-incident forensic capability building = hire targeted specialists + accreditation pathway + tabletop validation + balanced tooling + external retainer for surge + cross-team training + post-FY26 reassessment.",
+      "pre_read": "For post-incident capability building questions, anchor on targeted-hiring + accreditation + tabletop framework. Full-outsource, mass-hire, and defer-to-next-cycle framings each fail.",
+      "correct_explanation": "ISACA Forensics Audit/Assurance Program, ISO/IEC 17025, ASCLD/LAB Digital Forensics Module, NIST SP 800-86, and ISACA Workforce Development guidance establish post-incident capability building framework. (1) HIRE TARGETED SPECIALISTS — gap-analysis-driven (mobile + cloud + reverse-engineering identified as priorities); not blanket hiring; (2) ACCREDITATION PATHWAY (ISO/IEC 17025 + ASCLD) — formal accreditation enhances courtroom credibility + insurance terms + customer trust; 12-24 month process; (3) TABLETOP VALIDATION CADENCE — quarterly tabletops test new capability against realistic scenarios; (4) TOOLING INVESTMENT — balanced commercial (FTK, EnCase, Cellebrite, Magnet AXIOM) + open-source (Volatility, Autopsy, Plaso); (5) EXTERNAL RETAINER FOR SURGE — even with strong internal capability, surge capacity matters; pre-negotiated retainer; (6) CROSS-TEAM TRAINING — GCFE/GCFA/EnCE for examiners; cross-functional awareness for SOC, IR, legal; (7) POST-FY26 CAPABILITY REASSESSMENT — measure outcomes, identify next-phase gaps; iterate.",
+      "wrong_explanations": {
+        "A": "A maintains full external dependence, missing in-house knowledge accumulation. External engagement costs ($1.8M for one incident) are unpredictable; in-house capability provides ongoing readiness + faster initial response. Hybrid (in-house initial + external surge) is canonical.",
+        "B": "B mass-hires immediately without gap-analysis-driven targeting. Five engineers without targeted specialization produces over-staffed in some areas + still-gapped in others. Targeted hiring based on gap analysis (mobile + cloud + reverse-engineering) is canonical.",
+        "C": "C defers entirely, missing time-pressure context: a major incident JUST CLOSED; capability gaps were EXPOSED; CFO has ALREADY APPROVED budget; deferring loses momentum + leaves firm exposed to same gaps for another budget cycle."
+      },
+      "tips": [
+        "Trap is B — 'hire 5 forensic engineers immediately' is candidate-seductive because mass-hire feels like fast gap-closure; but blanket hiring without gap-analysis-driven targeting produces over-staffed in some areas + still-gapped in others. Targeted hiring based on identified gaps (mobile + cloud + reverse-engineering) is canonical.",
+        "Post-incident-capability principle: GAP-ANALYSIS-DRIVEN TARGETED HIRING + accreditation + tabletop + balanced tooling + retainer + training. Time-pressure context (incident just closed, budget approved) favors action, not deferral.",
+        "Exam-day shortcut: when stem describes POST-INCIDENT FORENSIC CAPABILITY BUILDING with APPROVED BUDGET, look for targeted-specialists + accreditation + balanced framework; full-outsource, mass-hire, and defer-to-next-cycle framings each fail."
+      ],
+      "framework_ref": "ISO/IEC 17025:2017 (General Requirements for Testing and Calibration Laboratories); ASCLD/LAB Digital Forensics Module; GIAC GCFE / GCFA / GREM Certifications; ISACA Workforce Development Guidance; NIST SP 800-86 (Integrating Forensic Techniques into Incident Response)",
+      "related_concepts": [
+        "Targeted gap-analysis hiring",
+        "ISO 17025 + ASCLD accreditation pathway",
+        "Tabletop validation cadence",
+        "External retainer for surge"
+      ],
+      "_provenance": "Authored from concept: 'Post-incident forensic capability building'. Public sources: ISACA, ISO, ASCLD, NIST, GIAC. No legacy bank citation."
     }
   ]
 }

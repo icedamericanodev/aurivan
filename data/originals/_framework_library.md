@@ -1731,3 +1731,32 @@ sub-references like "(Managed Risk) and APO12.03").
 - Boyd's OODA Loop (Observe-Orient-Decide-Act)
 - GDPR Article 49 (Derogations for specific situations, including legal claims)
 - NIST SP 800-101 Rev 1 (Guidelines on Mobile Device Forensics)
+- METHODOLOGY-RIGOR-FIRST principle (Daubert challenge to expert testimony: establish methodology rigor per Daubert v. Merrell Dow factors before legal response strategy)
+- Plaso (log2timeline) Forensic Super-Timeline Framework
+- SANS FOR610 (Reverse-Engineering Malware Curriculum)
+- EDRM (Electronic Discovery Reference Model)
+- EDRM Legal Hold Standards
+- Federal Rules of Evidence Rule 702 (Testimony by Expert Witnesses)
+- Daubert v. Merrell Dow Pharmaceuticals, Inc., 509 U.S. 579 (1993)
+- Kumho Tire Co. v. Carmichael, 526 U.S. 137 (1999)
+- Federal Rules of Civil Procedure (FRCP) Rule 26 (Disclosure of Expert Testimony)
+- ISO/IEC 27043 (Information Technology — Incident Investigation Principles and Processes)
+- SANS FOR518 (Mac and iOS Forensic Analysis and Incident Response)
+- ISACA Internet of Things (IoT) Audit/Assurance Program
+- ISO/IEC 17025:2017 (General Requirements for Testing and Calibration Laboratories)
+- ASCLD/LAB Digital Forensics Module
+- ANAB (ANSI National Accreditation Board)
+- FBI Cryptocurrency Investigation Guidance
+- OCC Cybersecurity Examination Handbook
+- TSA Pipeline Security Directive SD02 / SD-02C
+- OFAC Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments
+- HHS 405(d) Health Industry Cybersecurity Practices (HICP)
+- Gartner Cybersecurity Budget Benchmarking Research
+- OCC Bulletin 2019-29 (Third-Party Relationships: Risk Management Guidance)
+- ISACA Malware Analysis Audit/Assurance Program
+- ISACA Cybersecurity Audit/Assurance Program
+- Interagency Guidance on Third-Party Relationships: Risk Management (June 2023; FRB, FDIC, OCC)
+- ENISA Good Practices for Internet of Things and Smart Infrastructures Security
+- ANAB ISO/IEC 17025 Forensic Testing Accreditation
+- OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023)
+- OCC Bulletin 2013-29 (Third-Party Relationships, superseded June 2023)

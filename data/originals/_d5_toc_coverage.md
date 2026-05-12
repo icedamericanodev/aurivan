@@ -2,16 +2,16 @@
 
 CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target).
 
-**Last updated:** D5-10 (d5_181..d5_200). **ALL 17 D5 TOC sections now opened.**
+**Last updated:** D5-11 (d5_201..d5_220). All 17 D5 TOC sections covered; §5.17 Forensics deepest.
 
 ## Tier targets
 
 | Tier          | Target | Authored | Remaining |
 |---------------|-------:|---------:|----------:|
 | Foundational  |     26 |       26 |         0 ✓ CLOSED |
-| Application   |    130 |      110 |        20 |
-| Analysis      |    104 |       64 |        40 |
-| **Total**     |    260 |      200 |        60 |
+| Application   |    130 |      120 |        10 |
+| Analysis      |    104 |       74 |        30 |
+| **Total**     |    260 |      220 |        40 |
 
 ## TOC coverage (D5-1 through D5-10)
 
@@ -33,19 +33,42 @@ CISA Review Manual 28th Edition, Domain 5 (26% exam weight, 260 questions target
 | 5.14   | Security Testing Tools and Techniques                    |       17 | ✓ opened |
 | 5.15   | Security Monitoring Tools and Techniques                 |       23 | ✓ opened |
 | 5.16   | Incident Response Management                             |       25 | ✓ opened |
-| 5.17   | Evidence Collection and Forensics                        |       15 | ✓ opened (D5-10) |
+| 5.17   | Evidence Collection and Forensics                        |       35 | ✓ extended (D5-11) |
 
 **All 17 TOC sections covered.** Remaining batches extend §5.16, §5.17 and synthesize.
 
-## Remaining coverage plan (D5-11 through D5-13)
+## Remaining coverage plan (D5-12 through D5-13)
 
-60 questions across 3 batches. Mix targets: 0F + 20A + 40An remaining.
+40 questions across 2 batches. Mix targets: 0F + 10A + 30An remaining.
 
 | Batch | Mix | Focus |
 |---|---|---|
-| **D5-11** | 0F+10A+10An | §5.17 Forensics (extend) + cross-cutting application |
-| **D5-12** | 0F+10A+10An | §5.17 Forensics (close) — **A TIER CLOSES at 130** |
+| **D5-12** | 0F+10A+10An | §5.17 Forensics close + cross-cutting application — **A TIER CLOSES at 130** |
 | **D5-13 FINAL** | 0F+0A+20An | Capstone analysis spanning all D5 — **An TIER CLOSES at 104** |
+
+## Batch log — D5-11 (d5_201..d5_220)
+
+**§5.17 Forensics extend (10 application):** Timeline reconstruction, malware analysis methodology, anti-forensics awareness, forensics + e-discovery integration, expert witness preparation, forensic readiness program, legal hold + litigation preservation, mobile cloud-sync forensics, IoT/embedded forensics, lab accreditation (ISO 17025 + ASCLD).
+
+**Analysis (10) — 5 real-world tonal echoes + 1 new single-focus principle:**
+- NotPetya 2017 echo (destructive malware, supply-chain vector, attribution)
+- Twitter 2020 echo (internal-tools breach, social engineering, cryptocurrency tracing)
+- Capital One 2019 echo (cloud misconfiguration, SSRF, IMDSv1→v2, multi-regulator notification)
+- Colonial Pipeline 2021 echo (critical-infrastructure ransomware, IT/OT, OFAC review)
+- Change Healthcare 2024 echo (healthcare sector mass-impact ransomware, HIPAA, double-extortion)
+- **Daubert Challenge (METHODOLOGY-RIGOR-FIRST — NEW)** — single-focus principle (d5_217): when expert forensic testimony is challenged via Daubert motion, FIRST action is documenting methodology rigor against the four Daubert factors (peer-review, error rate, general acceptance, scientific testability) BEFORE legal response strategy.
+- Anti-forensics encountered (enhanced preservation + countermeasures-as-attribution)
+- Forensic budget defense at board (risk-based framework)
+- Legal hold scope dispute (Sedona Cooperation + meet-and-confer + proportionality)
+- Forensic capability building post-major-incident (targeted hire + accreditation + tabletop cadence)
+
+**13 single-focus principles now in D5:** contain-first, restore-first, lateral-movement-contain, irreversible-loss-clock, financial-loss-clock, credential-validity-clock, exposure-window-close, trusted-baseline-restore, notify-first-for-customer-protection, defer-major-decisions-during-crisis, chain-of-custody-first, forensic-imaging-before-wipe, **methodology-rigor-first**.
+
+## Process improvements applied this batch
+
+1. **cisa-author-scaffolder pre-flight** continued (per D5-10).
+2. **Real-world incident grounding** continued — 5/10 analysis questions used tonal echoes (no CVE numbers, no company names in stems).
+3. **tip[2] stem-cued pre-check** — caught 3 cases (d5_202/207/215) at Stage-2.5 reviewer-pre-check, rewritten inline to single-stem-cue principle form (no batch-summary residual).
 
 ## Batch log — D5-10 (d5_181..d5_200)
 
