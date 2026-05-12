@@ -1020,11 +1020,11 @@ domain_5:
     analysis:     104
 
   status: in_progress
-  authored_total: 60
+  authored_total: 80
   authored_mix:
-    foundational: 12
-    application:  36
-    analysis:     12
+    foundational: 16
+    application:  48
+    analysis:     16
 
   covered:
     # Batch 1 (d5_001..d5_020) — 5.1 Info Security Frameworks + 5.3 Physical/Environmental
@@ -1092,3 +1092,25 @@ domain_5:
     - { id: d5_058, subtopic: "Multi-Jurisdiction DLP Design (Analysis)",                 toc_ref: "5.6" }
     - { id: d5_059, subtopic: "Post-Merger Network Segmentation (Analysis)",              toc_ref: "5.5" }
     - { id: d5_060, subtopic: "Insider Threat Active Exfiltration — First Action (Analysis, single-focus)", toc_ref: "5.6" }
+
+    # Batch 4 (d5_061..d5_080) — §5.7 Data Encryption + §5.8 Public Key Infrastructure (PKI)
+    - { id: d5_061, subtopic: "Cryptographic Primitives — Canonical Taxonomy",               toc_ref: "5.7" }
+    - { id: d5_062, subtopic: "Symmetric vs Asymmetric Encryption — Selection",              toc_ref: "5.7" }
+    - { id: d5_063, subtopic: "Cryptographic Hash Function — Properties",                    toc_ref: "5.7" }
+    - { id: d5_064, subtopic: "PKI Components — Canonical Taxonomy",                         toc_ref: "5.8" }
+    - { id: d5_065, subtopic: "AES Modes of Operation — Selection",                          toc_ref: "5.7" }
+    - { id: d5_066, subtopic: "TLS 1.2 vs TLS 1.3 — Differences",                            toc_ref: "5.7" }
+    - { id: d5_067, subtopic: "Certificate Lifecycle — Issuance to Revocation",              toc_ref: "5.8" }
+    - { id: d5_068, subtopic: "HSM vs Software Keystore — Selection",                        toc_ref: "5.7" }
+    - { id: d5_069, subtopic: "Key Management Lifecycle",                                    toc_ref: "5.7" }
+    - { id: d5_070, subtopic: "Digital Signature Audit",                                     toc_ref: "5.8" }
+    - { id: d5_071, subtopic: "Certificate Transparency and Pinning",                        toc_ref: "5.8" }
+    - { id: d5_072, subtopic: "Database Encryption — Selection (TDE vs column vs app-level)", toc_ref: "5.7" }
+    - { id: d5_073, subtopic: "Cloud KMS Audit",                                             toc_ref: "5.7" }
+    - { id: d5_074, subtopic: "Post-Quantum Cryptography Readiness",                         toc_ref: "5.7" }
+    - { id: d5_075, subtopic: "Tokenization vs Encryption vs Hashing — PCI Context",         toc_ref: "5.7" }
+    - { id: d5_076, subtopic: "Key Escrow and Recovery",                                     toc_ref: "5.7" }
+    - { id: d5_077, subtopic: "CA Compromise — Immediate Response (Analysis, single-focus)", toc_ref: "5.8" }
+    - { id: d5_078, subtopic: "HSM Partition Failure — Mid-Transaction (Analysis)",          toc_ref: "5.7" }
+    - { id: d5_079, subtopic: "PQC Migration Roadmap (Analysis)",                            toc_ref: "5.7" }
+    - { id: d5_080, subtopic: "Backup Encryption Key Destruction (Analysis, single-focus)",  toc_ref: "5.7" }

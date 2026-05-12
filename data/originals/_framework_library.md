@@ -1378,3 +1378,56 @@ sub-references like "(Managed Risk) and APO12.03").
 - OWASP Top 10 2021
 - PCI DSS v4.0 Requirement 1 (Install and Maintain Network Security Controls)
 - SEC Regulation S-P (Privacy of Consumer Financial Information)
+- AWS KMS Documentation (Key Management Service)
+- Adobe Approved Trust List
+- Apple FileVault Personal Recovery Key Documentation
+- Azure Key Vault Documentation
+- CA/Browser Forum Baseline Requirements
+- CISA-NIST-NSA Quantum-Readiness Guidance (April 2023)
+- Chrome CT Policy
+- DoD Cybersecurity Maturity Model Certification (CMMC) 2.0
+- GCP Cloud KMS Documentation
+- HHS OCR Breach Notification Rule
+- HIPAA Security Rule §164.308 (Administrative Safeguards)
+- IETF RFC 3161 (Time-Stamp Protocol)
+- IETF RFC 5246 (TLS 1.2)
+- IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile)
+- IETF RFC 5280 (X.509 Certificate and CRL Profile)
+- IETF RFC 6844 (DNS Certification Authority Authorization Resource Record)
+- IETF RFC 8446 (TLS 1.3)
+- IETF RFC 8555 (ACME Protocol)
+- IETF RFC 8996 (Deprecating TLS 1.0 and 1.1)
+- IETF RFC 9162 (Certificate Transparency Version 2.0)
+- ISACA Cloud Cryptography Audit/Assurance Program
+- ISACA Cryptography Audit/Assurance Program
+- ISACA Database Security Audit/Assurance Program
+- ISACA Digital Signature Audit/Assurance Program
+- ISACA PKI Audit/Assurance Program
+- ISO/IEC 18033 (Encryption algorithms)
+- Microsoft BitLocker Recovery Key Documentation
+- Microsoft Trusted Root Program
+- NIST FIPS 180-4 (Secure Hash Standard)
+- NIST FIPS 202 (SHA-3 Standard)
+- NIST SP 800-107 Rev 1 (Recommendation for Applications Using Approved Hash Algorithms)
+- NIST SP 800-122 (Guide to Protecting Confidentiality of PII)
+- NIST SP 800-152 (Profile for U.S. Federal Cryptographic Key Management Systems)
+- NIST SP 800-175B Rev 1 (Cryptographic Mechanisms)
+- NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms)
+- NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure)
+- NIST SP 800-38A (CBC, ECB, CTR Modes)
+- NIST SP 800-38C (CCM Mode)
+- NIST SP 800-38D (Galois/Counter Mode)
+- NIST SP 800-52 Rev 2 (TLS Implementation Guidelines)
+- NIST SP 800-57 Part 1 Rev 5 (Key Management Lifecycle)
+- NIST SP 800-57 Part 1 Rev 5 (Key Management)
+- NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)
+- NIST SP 800-89 (Recommendation for Obtaining Assurances for Digital Signature Applications)
+- NIST SP 800-90A Rev 1 (Random Number Generation)
+- NSA Commercial National Security Algorithm Suite (CNSA) 2.0
+- OCC Bulletin 2008-13 (IT Incidents)
+- Oracle TDE Documentation
+- PCI DSS v4.0 Requirement 12.10 (Incident Response Plan)
+- PCI DSS v4.0 Requirement 3.6 (Key Management)
+- PCI DSS v4.0 Requirement 3.7 (Key Management Procedures)
+- PCI Tokenization Product Security Guidelines
+- SQL Server Always Encrypted Documentation

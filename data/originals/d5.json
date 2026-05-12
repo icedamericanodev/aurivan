@@ -2188,6 +2188,730 @@
         "Forensic preservation"
       ],
       "_provenance": "Authored from concept: 'Insider threat active exfiltration immediate containment'. Public sources: ISACA, NIST, SEC, FINRA, CERT. No legacy bank citation. Note: intentional single-focus surgical-action correct answer."
+    },
+    {
+      "id": "d5_061",
+      "domain": 5,
+      "subtopic": "Cryptographic Primitives — Canonical Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical taxonomy of cryptographic primitives used in modern security architectures?",
+      "options": {
+        "A": "Symmetric encryption (AES) + asymmetric encryption (RSA/ECC) + hash functions (SHA-2/SHA-3) + message authentication codes (HMAC) + key-derivation functions (PBKDF2/Argon2) + signature schemes (RSA-PSS/ECDSA/EdDSA).",
+        "B": "Cryptography is a single technique; the algorithm name (AES, RSA, SHA) is marketing differentiation but they perform substantially equivalent functions for practical purposes.",
+        "C": "Only symmetric encryption matters operationally; asymmetric and hash functions are theoretical concerns without practical security architecture relevance.",
+        "D": "Cryptographic primitives are obsolete; modern security relies on access controls and network segmentation, replacing the need for encryption in current architectures."
+      },
+      "correct": "A",
+      "key_concept": "Crypto primitives = symmetric + asymmetric + hash + MAC + KDF + signatures. Six functional families per NIST SP 800-175B. Each serves distinct purpose; not interchangeable.",
+      "pre_read": "For cryptographic primitive questions, anchor on six functional families with distinct purposes. Marketing-equivalent, symmetric-only, and obsolete framings each fail.",
+      "correct_explanation": "NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms) and ISACA Cryptography Audit/Assurance Program establish six cryptographic primitive families: (1) SYMMETRIC ENCRYPTION — shared secret key; AES-128/192/256; fast, suitable for bulk data; (2) ASYMMETRIC ENCRYPTION — public/private key pair; RSA-2048/3072/4096, ECC P-256/P-384; suitable for key exchange and small-payload encryption; (3) HASH FUNCTIONS — one-way; SHA-256/SHA-384/SHA-512 (SHA-2 family), SHA-3; integrity verification, password storage (with salt + KDF); (4) MESSAGE AUTHENTICATION CODES (MAC) — authenticate message origin + integrity with shared key; HMAC-SHA256 most common; (5) KEY-DERIVATION FUNCTIONS (KDF) — derive crypto keys from passwords or keying material; PBKDF2, Argon2, scrypt, bcrypt; intentionally slow to resist brute-force; (6) DIGITAL SIGNATURES — non-repudiable authenticity; RSA-PSS, ECDSA, EdDSA. NIST FIPS 140-3 governs cryptographic module security. Each family serves a distinct security goal; substituting one for another (e.g., 'AES for integrity') is a category error.",
+      "wrong_explanations": {
+        "B": "B treats algorithms as marketing labels, missing fundamental functional differences. AES (symmetric, confidentiality) and RSA (asymmetric, key exchange + signatures) and SHA (one-way hash, integrity) perform different operations and are not substitutes.",
+        "C": "C restricts to symmetric, missing asymmetric (essential for key exchange + signatures) and hash (essential for integrity + password storage). Modern architectures require all three primitive families.",
+        "D": "D claims cryptography is obsolete, which is inverted. Access controls and segmentation are COMPLEMENTS to encryption, not replacements. TLS, signed updates, password hashing, JWT, blockchain all require cryptographic primitives."
+      },
+      "tips": [
+        "Trap is C — 'only symmetric matters operationally' is candidate-seductive because AES is the most-deployed primitive; but asymmetric is required for key exchange (TLS handshake) + signatures (code signing), and hash is required for integrity + passwords. All three families are operationally essential.",
+        "Crypto primitives = symmetric + asymmetric + hash + MAC + KDF + signatures. Six functional families serving distinct purposes. Not interchangeable.",
+        "Exam-day shortcut: when stem asks about CRYPTOGRAPHIC PRIMITIVES, look for the six-family taxonomy; marketing-equivalent, symmetric-only, and obsolete framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-175B Rev 1 (Guideline for Using Cryptographic Standards: Cryptographic Mechanisms); ISACA Cryptography Audit/Assurance Program; NIST FIPS 140-3 (Security Requirements for Cryptographic Modules); ISO/IEC 18033 (Encryption algorithms)",
+      "related_concepts": [
+        "Symmetric vs asymmetric",
+        "Hash properties",
+        "HMAC integrity",
+        "Digital signature schemes"
+      ],
+      "_provenance": "Authored from concept: 'Cryptographic primitives canonical taxonomy per NIST SP 800-175B'. Public sources: NIST, ISACA, ISO. No legacy bank citation."
+    },
+    {
+      "id": "d5_062",
+      "domain": 5,
+      "subtopic": "Symmetric vs Asymmetric Encryption — Selection",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures when to use symmetric vs asymmetric encryption in modern architectures?",
+      "options": {
+        "A": "Asymmetric for all encryption because it's stronger; symmetric is legacy and should be deprecated in favor of RSA-4096 for bulk data encryption.",
+        "B": "Symmetric for bulk data encryption (fast, low overhead); asymmetric for key exchange + digital signatures + identity verification (slower, but solves shared-secret distribution problem).",
+        "C": "Symmetric and asymmetric are equivalent for all purposes; the choice is based purely on vendor product availability and licensing cost considerations.",
+        "D": "Only symmetric should be used because asymmetric algorithms are vulnerable to quantum attacks; modern architectures eliminate asymmetric cryptography entirely."
+      },
+      "correct": "B",
+      "key_concept": "Symmetric = bulk data encryption (AES, fast). Asymmetric = key exchange + signatures + identity (RSA/ECC, slower). Hybrid pattern: asymmetric to establish key, symmetric for channel.",
+      "pre_read": "For symmetric vs asymmetric selection, anchor on bulk-data vs key-exchange/signatures roles. All-asymmetric, equivalent-choice, and asymmetric-eliminated framings each fail.",
+      "correct_explanation": "NIST SP 800-175B and NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management) establish symmetric vs asymmetric selection: SYMMETRIC ENCRYPTION (AES-128/192/256) — same key for encryption and decryption; FAST (gigabits-per-second on modern CPUs with AES-NI); LOW OVERHEAD; appropriate for: bulk data encryption (TLS data phase, full-disk encryption, database encryption, file encryption); DISTRIBUTION PROBLEM — both parties must share the same secret key without compromise. ASYMMETRIC ENCRYPTION (RSA-2048/3072/4096, ECC P-256/P-384) — public key for encryption, private key for decryption (and inverse for signatures); SLOWER (100-1000x slower than symmetric per byte); HIGHER COMPUTATIONAL COST; appropriate for: key exchange (TLS handshake establishes symmetric session key via asymmetric), digital signatures (code signing, document signing, certificate signing), identity verification (certificate-based authentication). HYBRID PATTERN: real-world systems combine both — TLS uses asymmetric for handshake/key-exchange then switches to symmetric AES-GCM for the data phase; encrypted email (S/MIME, PGP) wraps a symmetric data key with the recipient's asymmetric public key. QUANTUM CONSIDERATIONS: classical asymmetric (RSA, ECC) is quantum-vulnerable; NIST PQC standards (FIPS 203/204/205) provide quantum-resistant alternatives. Symmetric AES-256 considered quantum-resistant with sufficient key length.",
+      "wrong_explanations": {
+        "A": "A inverts the selection. Asymmetric is 100-1000x slower than symmetric and not suitable for bulk data. The pattern is HYBRID: asymmetric for key exchange, then symmetric for the actual encrypted channel (TLS works this way).",
+        "C": "C claims equivalence, missing the fundamental difference: symmetric requires shared secret distribution (problem at scale), asymmetric solves distribution via public/private key pairs. They have distinct roles.",
+        "D": "D claims asymmetric should be eliminated for quantum reasons, but elimination is premature. NIST FIPS 203/204/205 (PQC standards) provide quantum-resistant asymmetric algorithms; the transition is ongoing, not 'eliminate entirely.'"
+      },
+      "tips": [
+        "Trap is A — 'asymmetric is stronger so use it everywhere' is candidate-seductive because asymmetric keys are larger and feel more secure; but asymmetric is 100-1000x slower per byte. Using RSA for bulk data is operationally infeasible; hybrid pattern is canonical.",
+        "Symmetric (AES) = bulk data, fast. Asymmetric (RSA/ECC) = key exchange + signatures, slower. Hybrid: asymmetric establishes key, symmetric encrypts channel.",
+        "Exam-day shortcut: when stem asks SYMMETRIC vs ASYMMETRIC, look for bulk-data vs key-exchange/signatures roles; all-asymmetric, equivalent, and asymmetric-eliminated framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-175B Rev 1 (Cryptographic Mechanisms); NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); ISACA Cryptography Audit/Assurance Program; IETF RFC 8446 (TLS 1.3)",
+      "related_concepts": [
+        "Hybrid encryption",
+        "TLS handshake",
+        "Key distribution problem",
+        "PQC selection"
+      ],
+      "_provenance": "Authored from concept: 'Symmetric vs asymmetric encryption selection rationale'. Public sources: NIST, ISACA, IETF. No legacy bank citation."
+    },
+    {
+      "id": "d5_063",
+      "domain": 5,
+      "subtopic": "Cryptographic Hash Function — Properties",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical properties required of a cryptographic hash function?",
+      "options": {
+        "A": "Reversibility so the original input can be recovered from the hash when needed; this enables decryption of hashed passwords during recovery operations.",
+        "B": "Variable output size that matches the input length so the hash carries proportional information for the data being protected.",
+        "C": "Pre-image resistance (cannot recover input from output) + second-preimage resistance + collision resistance + deterministic + fixed output size.",
+        "D": "Speed optimization above all else; faster hash functions are more secure because they enable more frequent re-hashing of stored data."
+      },
+      "correct": "C",
+      "key_concept": "Hash properties = pre-image + second-preimage + collision resistance + deterministic + fixed output size. Five properties; one-way (NOT reversible).",
+      "pre_read": "For hash function properties, anchor on three resistance properties + deterministic + fixed size. Reversibility, variable-output, and speed-optimized framings each fail.",
+      "correct_explanation": "NIST FIPS 180-4 (Secure Hash Standard) and NIST FIPS 202 (SHA-3 Standard) establish cryptographic hash function properties: (1) PRE-IMAGE RESISTANCE — given hash h, computationally infeasible to find input m such that hash(m) = h; one-way function; (2) SECOND-PREIMAGE RESISTANCE — given input m1, computationally infeasible to find different m2 such that hash(m1) = hash(m2); (3) COLLISION RESISTANCE — computationally infeasible to find any pair (m1, m2) such that hash(m1) = hash(m2); birthday-bound attack space; (4) DETERMINISTIC — same input always produces same output; (5) FIXED OUTPUT SIZE — output bit length is constant regardless of input length (SHA-256 produces 256 bits, SHA-512 produces 512 bits). Approved algorithms: SHA-256, SHA-384, SHA-512 (SHA-2 family); SHA-3 (Keccak-based). DEPRECATED: SHA-1 (collision attacks demonstrated, used only for non-security purposes); MD5 (broken, never use for security). PASSWORD HASHING REQUIRES MORE THAN A HASH: a fast hash (SHA-256 alone) is inappropriate for passwords. Use a KEY-DERIVATION FUNCTION (PBKDF2, Argon2, scrypt, bcrypt) that is intentionally slow and includes a per-user salt. Hash + salt + iteration count + memory-hard properties resist brute force.",
+      "wrong_explanations": {
+        "A": "A claims reversibility, which is the INVERSE of what cryptographic hash functions provide. Hash functions are designed to be ONE-WAY; you cannot recover input from output. Password storage uses hashing PRECISELY because reversibility is impossible.",
+        "B": "B claims variable output, but cryptographic hashes have FIXED output sizes (SHA-256 always produces 256 bits regardless of input length). Fixed output is a defining property, not a limitation.",
+        "D": "D claims speed is most important, but for PASSWORD HASHING the OPPOSITE is true: KDFs (PBKDF2, Argon2, bcrypt) are intentionally slow to resist brute-force attacks. Fast hashes (SHA-256 alone) are inappropriate for password storage."
+      },
+      "tips": [
+        "Trap is A — 'hash should be reversible to recover passwords' is candidate-seductive because end users expect 'forgot password' to mean recover-password; but cryptographic hashes are ONE-WAY by design. Forgot-password works by RESET (issue new password), not recovery (decrypt hash).",
+        "Hash properties = pre-image + second-preimage + collision resistance + deterministic + fixed output size. One-way. Passwords need KDF with salt + iterations, not plain hash.",
+        "Exam-day shortcut: when stem asks about HASH FUNCTION PROPERTIES, look for three resistance properties + one-way + fixed size; reversibility, variable-output, and speed-optimized framings each fail."
+      ],
+      "framework_ref": "NIST FIPS 180-4 (Secure Hash Standard); NIST FIPS 202 (SHA-3 Standard); NIST SP 800-107 Rev 1 (Recommendation for Applications Using Approved Hash Algorithms); ISACA Cryptography Audit/Assurance Program",
+      "related_concepts": [
+        "Pre-image resistance",
+        "Collision resistance",
+        "SHA-2 vs SHA-3",
+        "Password hashing vs KDF"
+      ],
+      "_provenance": "Authored from concept: 'Cryptographic hash function canonical properties per NIST FIPS 180-4'. Public sources: NIST, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_064",
+      "domain": 5,
+      "subtopic": "PKI Components — Canonical Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical components of a Public Key Infrastructure (PKI)?",
+      "options": {
+        "A": "PKI is a single product; deploying any commercial CA product delivers complete PKI capability without additional infrastructure or policy.",
+        "B": "PKI is identical to digital certificates; issuing certificates IS PKI without separate authority, revocation, or policy framework components.",
+        "C": "PKI is only required for external customer-facing scenarios; internal infrastructure (servers, devices, employees) uses simpler authentication without PKI.",
+        "D": "Certificate Authority (CA) + Registration Authority (RA) + repository + Certificate Revocation List/OCSP + end-entity certificates + Certificate Policy + Certificate Practice Statement."
+      },
+      "correct": "D",
+      "key_concept": "PKI components = CA + RA + repository + CRL/OCSP + end-entity certs + certificate policy (CP) + certificate practice statement (CPS). Seven canonical components.",
+      "pre_read": "For PKI component questions, anchor on the seven-component infrastructure with governance documents. Single-product, certificates-only, and external-only framings each fail.",
+      "correct_explanation": "ISACA PKI Audit/Assurance Program, RFC 5280 (Internet X.509 PKI Certificate and CRL Profile), and CA/Browser Forum Baseline Requirements establish PKI components: (1) CERTIFICATE AUTHORITY (CA) — issues certificates; root CA and intermediate CA hierarchy; root key isolation in HSM; (2) REGISTRATION AUTHORITY (RA) — validates certificate-request applicants; collects identity proof; binds applicant to certificate request; can be merged with CA in smaller deployments; (3) CERTIFICATE REPOSITORY — published store of issued certificates; LDAP directory or web endpoint; (4) CERTIFICATE REVOCATION LIST (CRL) OR OCSP — revocation status; CRL = published list with serial numbers of revoked certificates (updated periodically); OCSP = Online Certificate Status Protocol with real-time per-cert lookup; (5) END-ENTITY CERTIFICATES — issued to users, servers, devices, code-signing identities; (6) CERTIFICATE POLICY (CP) — high-level governance: what types of certificates, for what purposes, with what assurance level; (7) CERTIFICATE PRACTICE STATEMENT (CPS) — operational practices: how CA actually operates (validation procedures, key ceremonies, audit cadence). Common implementations: Microsoft AD CS, EJBCA, AWS Certificate Manager Private CA, HashiCorp Vault PKI, commercial CAs (DigiCert, GlobalSign, Sectigo).",
+      "wrong_explanations": {
+        "A": "A treats PKI as a single product, missing the multi-component infrastructure. CA, RA, repository, revocation mechanism, and governance documents (CP/CPS) are distinct components that collectively make PKI work.",
+        "B": "B reduces PKI to 'certificates,' missing the AUTHORITY that issues them, the REVOCATION mechanism that limits their validity, and the POLICY framework that defines their use.",
+        "C": "C restricts PKI to external use, but internal PKI (mTLS for service-to-service, device certificates for endpoints, code signing for software supply chain) is foundational. Internal PKI is often more demanding than external."
+      },
+      "tips": [
+        "Trap is C — 'PKI only for external scenarios' is candidate-seductive because external HTTPS is the most-visible PKI use; but internal PKI (mTLS for service-to-service, device certificates for endpoints, code signing) is foundational to modern Zero Trust and DevSecOps architectures.",
+        "PKI components = CA + RA + repository + CRL/OCSP + end-entity certs + Certificate Policy (CP) + Certificate Practice Statement (CPS). Seven canonical components.",
+        "Exam-day shortcut: when stem asks about PKI COMPONENTS, look for the seven-component infrastructure with governance docs (CP + CPS); single-product, certificates-only, and external-only framings each fail."
+      ],
+      "framework_ref": "ISACA PKI Audit/Assurance Program; IETF RFC 5280 (Internet X.509 PKI Certificate and CRL Profile); CA/Browser Forum Baseline Requirements; NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure)",
+      "related_concepts": [
+        "Certificate hierarchy",
+        "OCSP vs CRL",
+        "Certificate Practice Statement",
+        "Internal PKI"
+      ],
+      "_provenance": "Authored from concept: 'PKI canonical components per RFC 5280 and CA/Browser Forum'. Public sources: ISACA, IETF, CA/B Forum, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_065",
+      "domain": 5,
+      "subtopic": "AES Modes of Operation — Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates an application's AES encryption implementation. Which option BEST captures the canonical AES MODES OF OPERATION and their appropriate selection?",
+      "options": {
+        "A": "GCM (authenticated encryption, modern default) + CCM (authenticated, IoT/constrained) + CBC (legacy, requires separate MAC for integrity) + ECB (deprecated, never use for confidentiality due to pattern leakage).",
+        "B": "All AES modes are equivalent; the mode name is implementation detail and ECB is acceptable for all use cases including bulk data encryption.",
+        "C": "AES is the mode; AES-128, AES-192, and AES-256 are the only choices and no mode-of-operation selection is required beyond key size.",
+        "D": "Only ECB should be used because it's the simplest mode; CBC, GCM, and CCM add complexity without security benefit and should be avoided."
+      },
+      "correct": "A",
+      "key_concept": "AES modes = GCM (authenticated, modern default) + CCM (authenticated, IoT) + CBC (legacy, needs MAC) + ECB (never use). Mode + key size are independent security choices.",
+      "pre_read": "For AES mode questions, anchor on authenticated encryption (GCM/CCM) as modern default. All-modes-equivalent, mode-irrelevant, and ECB-only framings each fail.",
+      "correct_explanation": "NIST SP 800-38 series (Recommendation for Block Cipher Modes of Operation) and NIST SP 800-175B establish AES mode of operation selection: (1) GCM (GALOIS/COUNTER MODE) — AUTHENTICATED ENCRYPTION with associated data (AEAD); single-pass; encryption + authentication in one operation; default for modern TLS 1.2/1.3, IPsec; performance: parallel-izable, hardware-accelerated; NIST SP 800-38D; REQUIRES unique nonce per (key, message); nonce reuse is catastrophic; (2) CCM (COUNTER WITH CBC-MAC) — authenticated encryption; two-pass; appropriate for constrained environments (IoT, Bluetooth, IEEE 802.11); NIST SP 800-38C; (3) CBC (CIPHER BLOCK CHAINING) — legacy confidentiality only; REQUIRES separate MAC (HMAC) for integrity (Encrypt-then-MAC pattern); vulnerable to padding oracle attacks if MAC absent; widely deployed but increasingly replaced by GCM; (4) ECB (ELECTRONIC CODEBOOK) — DEPRECATED for confidentiality; encrypts each block independently with same key, leaking patterns; never use for structured data; only acceptable for one-block encryption of random data; (5) CTR (COUNTER MODE) — stream cipher mode; CONFIDENTIALITY ONLY (needs separate MAC); foundation of GCM; parallel-izable.",
+      "wrong_explanations": {
+        "B": "B treats modes as implementation detail, missing the fundamental security distinction. ECB is INSECURE for confidentiality (leaks patterns); CBC requires separate MAC for integrity; GCM provides authenticated encryption. Mode choice is a security decision.",
+        "C": "C confuses KEY SIZE (128/192/256) with MODE OF OPERATION (ECB/CBC/CTR/GCM/CCM). Both matter: key size sets brute-force resistance; mode sets confidentiality + integrity properties.",
+        "D": "D recommends ECB, which is precisely WRONG. ECB encrypts each block independently, leaking patterns in structured data (the famous 'ECB penguin' example). Modern systems use GCM or CCM for authenticated encryption."
+      },
+      "tips": [
+        "Trap is D — 'ECB should be used because it's simplest' is candidate-seductive because simplicity is often a virtue; but ECB leaks PATTERNS in structured data (the famous ECB penguin example). Modern systems use GCM for authenticated encryption.",
+        "AES modes: GCM (modern default, authenticated) + CCM (IoT, authenticated) + CBC (legacy, needs MAC) + ECB (never). Key size + mode are independent.",
+        "Exam-day shortcut: when stem asks about AES MODES, look for authenticated encryption (GCM/CCM) as modern default; equivalent-modes, mode-irrelevant, and ECB-acceptable framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-38D (Galois/Counter Mode); NIST SP 800-38C (CCM Mode); NIST SP 800-38A (CBC, ECB, CTR Modes); NIST SP 800-175B Rev 1 (Cryptographic Mechanisms); IETF RFC 8446 (TLS 1.3); ISACA Cryptography Audit/Assurance Program",
+      "related_concepts": [
+        "AES-GCM AEAD",
+        "Padding oracle attacks",
+        "ECB pattern leakage",
+        "Nonce reuse vulnerability"
+      ],
+      "_provenance": "Authored from concept: 'AES mode of operation selection per NIST SP 800-38 series'. Public sources: NIST, IETF, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_066",
+      "domain": 5,
+      "subtopic": "TLS 1.2 vs TLS 1.3 — Differences",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's TLS deployment. Which option BEST captures the canonical DIFFERENCES between TLS 1.2 and TLS 1.3?",
+      "options": {
+        "A": "TLS 1.2 and TLS 1.3 are identical in security guarantees; the version number is marketing differentiation without substantive cryptographic improvement.",
+        "B": "TLS 1.3 removes legacy weak cipher suites + uses only AEAD ciphers + faster handshake (1-RTT, 0-RTT resumption) + forward secrecy mandatory + cleaner protocol surface area; TLS 1.2 retains for compatibility.",
+        "C": "TLS 1.3 is weaker than TLS 1.2 because it has fewer cipher options; firms should remain on TLS 1.2 to maintain cryptographic flexibility.",
+        "D": "TLS 1.3 is deprecated and TLS 1.2 is the current standard; firms should migrate away from TLS 1.3 to TLS 1.2 for current best practice."
+      },
+      "correct": "B",
+      "key_concept": "TLS 1.3 vs 1.2: 1.3 removes weak ciphers + uses only AEAD + 1-RTT handshake (0-RTT resume) + mandatory forward secrecy + cleaner surface. 1.3 is current standard.",
+      "pre_read": "For TLS version questions, anchor on TLS 1.3 improvements over 1.2 (cipher cleanup + handshake speed + forward secrecy). Equivalent-versions, fewer-equals-weaker, and 1.2-current framings each fail.",
+      "correct_explanation": "IETF RFC 8446 (TLS 1.3, August 2018) and RFC 5246 (TLS 1.2, August 2008) define the protocol versions. Substantive TLS 1.3 improvements over 1.2: (1) REMOVED WEAK CIPHERS — RC4, 3DES, MD5, SHA-1, EXPORT ciphers, CBC modes (without integrity), static RSA key exchange (no forward secrecy); (2) AEAD-ONLY — only authenticated encryption (AES-GCM, ChaCha20-Poly1305); no separate MAC; (3) FASTER HANDSHAKE — 1 round-trip (1-RTT) for new connections vs 2-RTT in TLS 1.2; 0-RTT resumption available (with care, since 0-RTT is replayable); (4) MANDATORY FORWARD SECRECY — all key exchanges are (EC)DHE-based; compromise of server key does not compromise past sessions; (5) ENCRYPTED HANDSHAKE — handshake messages encrypted after ServerHello (Certificate, CertificateVerify, Finished); reduces metadata leakage; (6) CLEANER PROTOCOL SURFACE — removed compression (CRIME attack), removed renegotiation (DROWN), removed downgrade attacks (TLS_FALLBACK_SCSV no longer needed). TLS 1.0 and 1.1 deprecated by RFC 8996 (March 2021). Most browsers, servers, and modern frameworks support TLS 1.3 as default; TLS 1.2 retained for legacy interoperability. Migration audit checks: server-side TLS 1.3 enabled, weak cipher suites disabled, certificate transparency monitoring.",
+      "wrong_explanations": {
+        "A": "A treats versions as marketing, missing substantive improvements: TLS 1.3 removed RSA key exchange (no forward secrecy), removed MD5/SHA-1, removed CBC modes, removed compression (CRIME), removed renegotiation (DROWN); these are real cryptographic improvements.",
+        "C": "C inverts the security relationship. Fewer cipher options in TLS 1.3 is a FEATURE — the removed ciphers were weak (RC4, 3DES, CBC without integrity, MD5-based MACs). Less attack surface; stronger remaining options.",
+        "D": "D inverts the version order. TLS 1.3 is the CURRENT standard (RFC 8446, August 2018), TLS 1.2 is the prior version. Firms should migrate TO 1.3, not away from it. TLS 1.2 deprecation timeline is being established."
+      },
+      "tips": [
+        "Trap is C — 'TLS 1.3 is weaker because fewer cipher options' is candidate-seductive because optionality feels like flexibility; but the REMOVED ciphers were the WEAK ones (RC4, 3DES, CBC-without-integrity, MD5). Less attack surface, stronger remaining choices.",
+        "TLS 1.3 = removed weak ciphers + AEAD-only + 1-RTT handshake + mandatory forward secrecy + encrypted handshake. RFC 8446 since 2018. Migration target.",
+        "Exam-day shortcut: when stem compares TLS 1.2 vs 1.3, look for 1.3's cipher-cleanup + handshake-speed + forward-secrecy improvements; equivalent, fewer-weaker, and 1.2-current framings each fail."
+      ],
+      "framework_ref": "IETF RFC 8446 (TLS 1.3); IETF RFC 5246 (TLS 1.2); IETF RFC 8996 (Deprecating TLS 1.0 and 1.1); NIST SP 800-52 Rev 2 (TLS Implementation Guidelines)",
+      "related_concepts": [
+        "Forward secrecy",
+        "AEAD-only cipher suites",
+        "0-RTT resumption",
+        "Encrypted handshake"
+      ],
+      "_provenance": "Authored from concept: 'TLS 1.2 vs TLS 1.3 substantive differences'. Public sources: IETF, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_067",
+      "domain": 5,
+      "subtopic": "Certificate Lifecycle — Issuance to Revocation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's certificate lifecycle management. Which option BEST captures the canonical CERTIFICATE LIFECYCLE?",
+      "options": {
+        "A": "Certificates are issued once at deployment and used indefinitely; renewal and revocation are exception cases handled ad hoc when problems arise.",
+        "B": "Certificate lifecycle is fully automated by the CA product; no firm-side process design or governance is required beyond purchasing the product.",
+        "C": "Key generation + CSR submission with validation + CA issuance + deployment + monitoring with expiry alerting + renewal before expiry + revocation when compromised + CRL/OCSP publication.",
+        "D": "Certificates issued by public CAs require no firm-side lifecycle management; the CA handles everything including monitoring deployed certificates."
+      },
+      "correct": "C",
+      "key_concept": "Certificate lifecycle = key gen + CSR with validation + CA issuance + deployment + monitoring with expiry alerts + renewal + revocation + CRL/OCSP. Eight stages with firm-side governance.",
+      "pre_read": "For certificate lifecycle questions, anchor on the eight-stage firm-side process with monitoring + renewal + revocation. Indefinite-use, fully-automated, and CA-handles-everything framings each fail.",
+      "correct_explanation": "ISACA PKI Audit/Assurance Program and CA/Browser Forum Baseline Requirements establish certificate lifecycle: (1) KEY GENERATION — generate cryptographically strong key pair (RSA-2048+, ECC P-256+); on HSM for high-assurance; (2) CSR SUBMISSION WITH APPLICANT VALIDATION — Certificate Signing Request submitted to RA/CA; identity validated per policy (Domain Validation, Organization Validation, Extended Validation for public certs; firm-internal validation for internal certs); (3) CA ISSUANCE WITH POLICY COMPLIANCE — CA validates CSR against Certificate Policy, issues signed certificate with appropriate validity, key usage, extended key usage, subject alternative names; (4) DEPLOYMENT TO END-ENTITY — certificate installed on server, device, or user identity store; private key protected; (5) MONITORING WITH EXPIRY ALERTING — central inventory, automated monitoring (Venafi, AppViewX, Keyfactor), alerts 30/60/90 days before expiry; (6) RENEWAL BEFORE EXPIRY — new CSR or automated renewal (ACME protocol for Let's Encrypt); cutover without outage; (7) REVOCATION WHEN COMPROMISED — submit revocation request; CA publishes to CRL + OCSP; (8) CRL/OCSP PUBLICATION — revocation status available to relying parties; OCSP responders for real-time status. Common failure mode: 'set-and-forget' produces expiry outages (Equifax 2017 — expired cert allowed undetected breach). Cert lifecycle is a continuous operational process, not a one-time deployment.",
+      "wrong_explanations": {
+        "A": "A treats certificates as permanent, missing the lifecycle. Certificates have validity periods (typically 1-2 years for public certs, varies for internal); expiry without renewal causes outage; compromise requires revocation. Ad-hoc handling produces outages and exposure.",
+        "B": "B claims CA automates everything, missing the firm-side governance and operational dimensions. CA automation handles ISSUANCE; the firm must handle inventory, monitoring, deployment, renewal triggering, and revocation initiation.",
+        "D": "D claims public CA handles lifecycle, but the public CA only ISSUES and provides revocation INFRASTRUCTURE; they don't know which certificates the firm has deployed where. Firm-side inventory + monitoring is required for public CA-issued certs."
+      },
+      "tips": [
+        "Trap is A — 'issue once and use indefinitely' is candidate-seductive because manual renewal feels inefficient; but certificates have validity periods (1-2 years public, varies internal); expiry without renewal causes outage; compromise requires revocation. Lifecycle is mandatory.",
+        "Certificate lifecycle = key gen + CSR/validation + issuance + deployment + monitoring + renewal + revocation + CRL/OCSP. Eight stages. Firm-side governance required.",
+        "Exam-day shortcut: when stem says CERTIFICATE LIFECYCLE, look for the eight-stage firm-side process including monitoring + renewal + revocation; indefinite-use, fully-automated, and CA-handles-everything framings each fail."
+      ],
+      "framework_ref": "ISACA PKI Audit/Assurance Program; IETF RFC 5280 (X.509 Certificate and CRL Profile); CA/Browser Forum Baseline Requirements; IETF RFC 8555 (ACME Protocol)",
+      "related_concepts": [
+        "ACME automated issuance",
+        "Certificate expiry monitoring",
+        "OCSP stapling",
+        "Key ceremony"
+      ],
+      "_provenance": "Authored from concept: 'Certificate lifecycle canonical framework'. Public sources: ISACA, IETF, CA/B Forum. No legacy bank citation."
+    },
+    {
+      "id": "d5_068",
+      "domain": 5,
+      "subtopic": "HSM vs Software Keystore — Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's key-storage architecture for production keys handling $400M annual payment volume. Which option BEST captures HSM vs SOFTWARE KEYSTORE selection?",
+      "options": {
+        "A": "Software keystores are always sufficient; HSMs are over-engineered marketing products without genuine security advantage for any production workload.",
+        "B": "HSM is mandatory for ALL keys regardless of value or use case; software keystores should be deprecated entirely from modern architectures.",
+        "C": "Cloud KMS replaces both HSM and software keystores; cloud providers handle all key storage and firms need no on-premise key infrastructure.",
+        "D": "HSM (FIPS 140-3 Level 3+, tamper-resistant hardware) for high-value/regulated keys; software keystore (file-based, hardware-backed when available) for low/medium-value keys; selection driven by key value + regulatory + threat model."
+      },
+      "correct": "D",
+      "key_concept": "Key storage = HSM (FIPS 140-3 L3+) for high-value/regulated + software keystore (hardware-backed) for low/medium-value. Selection driven by value + regulatory + threat model.",
+      "pre_read": "For key storage questions, anchor on risk-tiered selection (HSM for high-value/regulated, software for low/medium). All-software, all-HSM, and cloud-KMS-replaces-all framings each fail.",
+      "correct_explanation": "NIST FIPS 140-3 (Security Requirements for Cryptographic Modules), PCI DSS v4.0 Requirement 3.6 (Key Management), and ISACA Cryptography Audit/Assurance Program establish HSM vs software keystore selection framework: HSMs — dedicated tamper-resistant hardware (Thales Luna, Entrust nShield, Utimaco, Marvell LiquidSecurity); keys NEVER leave the HSM in plaintext; operations performed inside the HSM boundary; FIPS 140-3 LEVEL 3 typical for payments (tamper-evident + identity-based authentication + tamper-active response); Level 4 (envelope) for highest-assurance; appropriate for: payment processing (PCI DSS Requirement 3.6.6 explicitly requires HSM-managed keys for cryptographic key custody), digital certificate authorities (root CA private keys), code signing certificates (root of trust for software supply chain), regulated industries with key custody requirements. SOFTWARE KEYSTORES — file-based key storage (Java KeyStore, Windows DPAPI, macOS Keychain, HashiCorp Vault) with encryption-at-rest; appropriate for: low/medium-value workloads, development environments, internal-only APIs; hardware-backed variants (TPM-protected, Secure Enclave) bridge the gap. CLOUD KMS (AWS KMS, Azure Key Vault, GCP Cloud KMS) — service offering with HSM-backed key custody; FIPS 140-3 validated underlying HSMs; CloudHSM/Dedicated HSM/Cloud HSM variants for single-tenant control. Selection driven by: KEY VALUE (financial exposure if compromised), REGULATORY (PCI DSS, FFIEC, FedRAMP requirements), THREAT MODEL (insider, nation-state, opportunistic), OPERATIONAL (latency, throughput).",
+      "wrong_explanations": {
+        "A": "A dismisses HSM, missing the substantive security advantage: HSMs provide tamper-resistant hardware boundary where keys NEVER leave in plaintext; software keystores have keys in process memory accessible to compromise. For $400M payment volume + PCI DSS, HSM is required.",
+        "B": "B mandates HSM for ALL keys, which is operationally infeasible and economically unreasonable. Low-value keys (development environments, internal APIs) don't justify HSM cost. Risk-based selection beats uniform mandate.",
+        "C": "C claims cloud KMS replaces everything, but cloud KMS USES HSMs under the hood (AWS CloudHSM, Azure Dedicated HSM, GCP Cloud HSM). Cloud KMS is a deployment model, not a replacement for the HSM/software-keystore selection question."
+      },
+      "tips": [
+        "Trap is C — 'cloud KMS replaces both HSM and software keystores' is candidate-seductive because cloud KMS abstracts the underlying hardware; but cloud KMS USES HSMs under the hood (AWS CloudHSM, Azure Dedicated HSM, GCP Cloud HSM). It's a deployment model, not a replacement.",
+        "Key storage = HSM (FIPS 140-3 L3+) for high-value/regulated + software keystore for low/medium-value. Cloud KMS uses HSMs under the hood. Risk-tiered selection.",
+        "Exam-day shortcut: when stem asks about KEY STORAGE for HIGH-VALUE/REGULATED workloads (payments, certs, signing), look for HSM (FIPS 140-3 L3+); software-sufficient, all-HSM, and cloud-replaces-all framings each fail."
+      ],
+      "framework_ref": "NIST FIPS 140-3 (Security Requirements for Cryptographic Modules); PCI DSS v4.0 Requirement 3.6 (Key Management); ISACA Cryptography Audit/Assurance Program; NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)",
+      "related_concepts": [
+        "FIPS 140-3 Level 3",
+        "PCI DSS key custody",
+        "Cloud KMS / HSM",
+        "TPM-backed software keystore"
+      ],
+      "_provenance": "Authored from concept: 'HSM vs software keystore risk-tiered selection'. Public sources: NIST, PCI Council, ISACA, vendor documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_069",
+      "domain": 5,
+      "subtopic": "Key Management Lifecycle",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's cryptographic key management program. Which option BEST captures the canonical KEY MANAGEMENT LIFECYCLE?",
+      "options": {
+        "A": "Generation + distribution + storage + use + rotation + archival + destruction. Eight stages per NIST SP 800-57; policy-driven with role separation and audit trail.",
+        "B": "Generate keys once at deployment and never rotate; rotation introduces operational risk and modern crypto algorithms don't require periodic rotation.",
+        "C": "Key management is a vendor product feature; deploying any KMS or HSM product delivers complete lifecycle management without policy design.",
+        "D": "Keys are owned by individual application teams who decide rotation independently; central key management adds unnecessary process overhead."
+      },
+      "correct": "A",
+      "key_concept": "Key lifecycle = generation + distribution + storage + use + rotation + archival + destruction. Eight stages per NIST SP 800-57. Policy-driven with role separation + audit trail.",
+      "pre_read": "For key management questions, anchor on the eight-stage NIST SP 800-57 lifecycle. Never-rotate, vendor-product-only, and decentralized-team framings each fail.",
+      "correct_explanation": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management), NIST SP 800-152 (Profile for U.S. Federal Cryptographic Key Management Systems), and ISACA Cryptography Audit/Assurance Program establish key management lifecycle: (1) GENERATION — random number generator (NIST SP 800-90A DRBG) inside HSM or hardware RNG; key strength matched to use (AES-256 for high-value); (2) DISTRIBUTION — secure channels (key wrap with KEK, in-person ceremony, secure courier for cold-keys); (3) STORAGE — HSM for high-value, software keystore for low-value; encryption-at-rest of key material; access controls; (4) USE — authorized operations only (encrypt/decrypt/sign/verify); rate-limiting; audit logging; (5) ROTATION — cadence by sensitivity (PCI DSS Requirement 3.7 requires annual minimum; high-value more frequent; rotation on personnel changes, on compromise); (6) ARCHIVAL — historical keys retained for decryption of archived ciphertext; secure long-term storage; (7) DESTRUCTION — when no longer needed for archival; cryptographic erasure (overwrite key material) or physical destruction of HSM (cold-key root keys); auditable; (8) (CROSS-CUTTING) ROLE SEPARATION + AUDIT — split-knowledge / dual-control for high-value ceremonies (root key generation, HSM initialization); full audit trail. NIST SP 800-152 governs federal cryptographic key management systems (CKMS).",
+      "wrong_explanations": {
+        "B": "B advocates against rotation, but rotation is fundamental to cryptographic hygiene: limits exposure window of compromised keys, addresses departing privileged users, aligns with compliance requirements (PCI DSS, FFIEC), enables algorithm upgrades. Never-rotate is operational malpractice.",
+        "C": "C treats KMS as turn-key, missing the POLICY dimension. KMS products provide MECHANISMS; lifecycle policies (rotation cadence by sensitivity, separation of duties for ceremonies, archival of historical keys) require firm-side design.",
+        "D": "D decentralizes key management, producing inconsistent policies across teams, gaps in rotation cadence, and unauditable state. Central key management with delegated implementation is the canonical pattern."
+      },
+      "tips": [
+        "Trap is B — 'never rotate keys' is candidate-seductive because rotation introduces operational risk; but never-rotate is operational malpractice. PCI DSS Requirement 3.7 requires annual minimum rotation; FFIEC and ISACA expect rotation on personnel changes and on compromise.",
+        "Key lifecycle = generation + distribution + storage + use + rotation + archival + destruction. Eight stages per NIST SP 800-57. Cross-cutting: role separation + audit trail.",
+        "Exam-day shortcut: when stem asks about KEY MANAGEMENT LIFECYCLE, look for the eight-stage NIST SP 800-57 framework; never-rotate, product-only, and decentralized framings each fail."
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NIST SP 800-152 (Profile for U.S. Federal Cryptographic Key Management Systems); NIST SP 800-90A Rev 1 (Random Number Generation); ISACA Cryptography Audit/Assurance Program; PCI DSS v4.0 Requirement 3.7 (Key Management Procedures)",
+      "related_concepts": [
+        "Key rotation cadence",
+        "Split-knowledge ceremonies",
+        "Cryptographic erasure",
+        "Dual-control"
+      ],
+      "_provenance": "Authored from concept: 'Key management lifecycle per NIST SP 800-57'. Public sources: NIST, ISACA, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_070",
+      "domain": 5,
+      "subtopic": "Digital Signature Audit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor scopes a digital-signature audit covering the firm's code-signing certificates, document-signing, and email S/MIME deployments. Which option BEST captures DIGITAL SIGNATURE AUDIT SCOPE?",
+      "options": {
+        "A": "Only the certificate validity period; if signing certificates are within their validity window, the digital-signature program is considered sound.",
+        "B": "Signing key custody (HSM, split-knowledge) + signer identity verification + signing operation logging + timestamp authority + revocation checking + verification at relying party + trust chain integrity.",
+        "C": "Only the signing software vendor; if the signing tool vendor passes their SOC 2, no firm-side audit of signing operations is required.",
+        "D": "Digital signatures don't require audit because the cryptography is mathematically sound; audit focus should be on access controls only."
+      },
+      "correct": "B",
+      "key_concept": "Digital signature audit = signing key custody (HSM/split-knowledge) + signer identity verification + signing operation logging + timestamp authority + revocation checking + verification at relying party + trust chain integrity. Seven dimensions.",
+      "pre_read": "For digital signature audit questions, anchor on the seven operational dimensions beyond certificate validity. Validity-only, vendor-SOC-2-only, and crypto-sound-no-audit framings each fail.",
+      "correct_explanation": "ISACA Digital Signature Audit/Assurance Program, NIST SP 800-89 (Recommendation for Obtaining Assurances for Digital Signature Applications), and Adobe Approved Trust List + Microsoft Trusted Root Program criteria establish digital signature audit scope: (1) SIGNING KEY CUSTODY — code-signing keys in HSM (FIPS 140-3 L3+); split-knowledge ceremonies for root-signing keys; access controls + dual approval; (2) SIGNER IDENTITY VERIFICATION — who is authorized to sign what; documented approval matrix; integration with IAM; (3) SIGNING OPERATION LOGGING — what was signed (artifact + hash), when, by whom, with what approval; tamper-resistant log; (4) TIMESTAMP AUTHORITY INTEGRATION — RFC 3161 timestamping with trusted TSA; provides proof of when signature was created; allows verification after signing certificate expires; (5) REVOCATION STATUS CHECKING — both at signing time (signer's certificate not revoked) and verification time; OCSP/CRL integration; (6) SIGNATURE VERIFICATION AT RELYING PARTY — code execution environments verify signatures before execution; document viewers (Adobe, Microsoft) check signatures; firm-issued software has its certificates in trust stores; (7) CERTIFICATE TRUST CHAIN INTEGRITY — root CA → intermediate → end-entity chain; intermediate certificates available; trust anchor maintained. Common failure modes: code-signing key theft (NotPetya 2017 — stolen key signed malicious update), missing timestamp (signature appears invalid after certificate expires), missing revocation check (signed by revoked certificate accepted as valid).",
+      "wrong_explanations": {
+        "A": "A reduces audit to certificate validity, missing six other dimensions (key custody, signer identity, operation logging, timestamp, revocation checking, verification, trust chain). Valid certificate with compromised signing key produces fraudulent signatures.",
+        "C": "C relies on vendor SOC 2, but vendor SOC 2 covers the vendor's product; the firm's USE of the product (who can sign what, with what approval, with what audit trail) requires separate firm-side audit.",
+        "D": "D claims cryptography is sound so no audit needed, missing the operational dimensions. Mathematics is sound; OPERATIONS (key custody, signer identity, revocation handling) are where digital-signature programs fail."
+      },
+      "tips": [
+        "Trap is C — 'vendor SOC 2 covers digital signature program' is candidate-seductive because procurement-trained candidates equate vendor SOC 2 with firm-side governance; but vendor SOC 2 covers the PRODUCT; the firm's USE of it (key custody, signer identity, operations) requires separate audit.",
+        "Digital signature audit = key custody + signer identity + operation logging + timestamp + revocation checking + verification + trust chain. Seven operational dimensions.",
+        "Exam-day shortcut: when stem says DIGITAL SIGNATURE AUDIT, look for the seven operational dimensions beyond certificate validity; validity-only, vendor-SOC-2-only, and crypto-sound-no-audit framings each fail."
+      ],
+      "framework_ref": "ISACA Digital Signature Audit/Assurance Program; NIST SP 800-89 (Recommendation for Obtaining Assurances for Digital Signature Applications); NIST FIPS 140-3 (Security Requirements for Cryptographic Modules); IETF RFC 3161 (Time-Stamp Protocol); Adobe Approved Trust List; Microsoft Trusted Root Program",
+      "related_concepts": [
+        "Code-signing key custody",
+        "Timestamp authority",
+        "Trust chain verification",
+        "Split-knowledge ceremony"
+      ],
+      "_provenance": "Authored from concept: 'Digital signature audit scope canonical framework'. Public sources: ISACA, NIST, IETF, vendor trust programs. No legacy bank citation."
+    },
+    {
+      "id": "d5_071",
+      "domain": 5,
+      "subtopic": "Certificate Transparency and Pinning",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's defenses against certificate-based attacks (mis-issued certificates, rogue CAs). Which option BEST captures CERTIFICATE TRANSPARENCY and CERTIFICATE PINNING canonical roles?",
+      "options": {
+        "A": "Certificate Transparency and pinning are identical features; deploying one delivers the benefits of the other automatically without separate configuration.",
+        "B": "Certificate Transparency is a CA-side concern; relying parties (browsers, applications) have no role and the firm cannot influence detection.",
+        "C": "Certificate Transparency = public append-only logs for retrospective detection of mis-issuance; Certificate Pinning = relying-party policy specifying expected CA to reject unexpected issuance.",
+        "D": "Certificate pinning is deprecated and should not be deployed; static pins create operational fragility and lock-in to specific CAs."
+      },
+      "correct": "C",
+      "key_concept": "Certificate Transparency = public append-only logs (retrospective detection); Certificate Pinning = relying-party policy (proactive enforcement). Complementary defenses against mis-issuance and rogue CAs.",
+      "pre_read": "For certificate-attack defense questions, anchor on CT + pinning complementary roles. Equivalent-features, CA-only-concern, and pinning-deprecated framings each fail.",
+      "correct_explanation": "RFC 9162 (Certificate Transparency Version 2.0), Chrome/Apple/Firefox CT enforcement policies, and IETF mobile-app pinning best practices establish Certificate Transparency + Certificate Pinning roles: CERTIFICATE TRANSPARENCY (CT) — append-only PUBLIC logs of every issued certificate; operated by multiple log operators (Google, Cloudflare, DigiCert, Sectigo, Let's Encrypt); CAs are REQUIRED by major browsers to log issued certificates; relying parties verify Signed Certificate Timestamps (SCT) showing the certificate was logged; firms MONITOR CT LOGS (Censys, crt.sh, Facebook CT) for unexpected certificates issued for their domains (indicates mis-issuance or unauthorized issuance); RETROSPECTIVE DETECTION across the whole CA ecosystem. CERTIFICATE PINNING — relying party (browser, mobile app, server) policy specifying expected CA or specific certificate; reject connections where the actual certificate doesn't match the pin even if signed by a 'trusted' CA; PROACTIVE ENFORCEMENT at the specific relying party. EVOLUTION: original HTTP Public Key Pinning (HPKP) deprecated due to operational fragility (locked-out scenarios); MODERN ALTERNATIVES: (1) CAA records (DNS-level policy specifying which CAs may issue for a domain), (2) Expect-CT header (require CT compliance, report violations), (3) mobile app pinning via OS API (iOS App Transport Security, Android Network Security Configuration). Together: CT provides ecosystem-wide visibility and retrospective detection; pinning provides specific-relying-party proactive enforcement.",
+      "wrong_explanations": {
+        "A": "A treats CT and pinning as equivalent, but they're complementary with different mechanisms: CT provides RETROSPECTIVE detection across the whole ecosystem; pinning provides PROACTIVE enforcement at a specific relying party. Defense-in-depth uses both.",
+        "B": "B claims CT is CA-only, missing that relying parties (browsers especially) ENFORCE CT compliance by rejecting certificates that aren't logged; firms can monitor CT logs (Censys, crt.sh) for mis-issued certificates targeting their domains.",
+        "D": "D claims pinning is deprecated, but the original HTTP Public Key Pinning (HPKP) was deprecated due to operational fragility; modern alternatives (CAA records, Expect-CT, mobile-app pinning via OS API) provide pinning benefits with safer deployment."
+      },
+      "tips": [
+        "Trap is A — 'CT and pinning are identical features' is candidate-seductive because both relate to certificate trust; but they have DIFFERENT mechanisms (CT retrospective public logs, pinning proactive specific-party policy). Defense-in-depth uses both.",
+        "CT = public append-only logs (retrospective detection across ecosystem). Pinning = relying-party policy (proactive enforcement at specific party). Complementary, not equivalent.",
+        "Exam-day shortcut: when stem asks about CERTIFICATE TRANSPARENCY or PINNING defenses, look for complementary CT (retrospective) + pinning (proactive) roles; equivalent, CA-only, and deprecated framings each fail."
+      ],
+      "framework_ref": "IETF RFC 9162 (Certificate Transparency Version 2.0); IETF RFC 6844 (DNS Certification Authority Authorization Resource Record); Chrome CT Policy; CA/Browser Forum Baseline Requirements; ISACA PKI Audit/Assurance Program",
+      "related_concepts": [
+        "CT log monitoring",
+        "CAA DNS records",
+        "Mobile pinning via OS API",
+        "HPKP deprecation"
+      ],
+      "_provenance": "Authored from concept: 'Certificate Transparency and Pinning complementary roles'. Public sources: IETF, browser CT policies, CA/B Forum. No legacy bank citation."
+    },
+    {
+      "id": "d5_072",
+      "domain": 5,
+      "subtopic": "Database Encryption — Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a firm's database encryption for a 12TB customer database holding PII, payment tokens, and order history. Which option BEST captures DATABASE ENCRYPTION SELECTION (TDE vs column-level vs application-level)?",
+      "options": {
+        "A": "Transparent Data Encryption (TDE) alone is sufficient for all data; column-level and application-level encryption add complexity without security benefit.",
+        "B": "Application-level encryption only; TDE and column-level encryption are deprecated in favor of application-side cryptography that bypasses the database entirely.",
+        "C": "Only the most sensitive fields require encryption; other PII (name, address, phone) doesn't require encryption since it's not financial or health data.",
+        "D": "Transparent Data Encryption (broad at-rest coverage) + column-level encryption (granular sensitive columns) + application-level encryption (highest sensitivity, key separation from DBA) — layered by sensitivity."
+      },
+      "correct": "D",
+      "key_concept": "Database encryption = TDE (at-rest broad coverage) + column-level (granular sensitive columns) + application-level (highest sensitivity with key separation from DBA). Layered by sensitivity.",
+      "pre_read": "For database encryption questions, anchor on layered approach (TDE + column + application). TDE-only, application-only, and most-sensitive-only framings each fail.",
+      "correct_explanation": "ISACA Database Security Audit/Assurance Program, NIST SP 800-122 (Guide to Protecting Confidentiality of PII), and database vendor cryptography documentation (Oracle TDE, SQL Server Always Encrypted, PostgreSQL pgcrypto) establish database encryption layered architecture: (1) TRANSPARENT DATA ENCRYPTION (TDE) — data file and log file encryption at rest; symmetric key managed by database; transparent to application; protects against: stolen backup files, stolen disks, point-in-time recovery snapshots; LIMITATION: plaintext in memory and accessible to DBAs with database read access; (2) COLUMN-LEVEL ENCRYPTION — encrypt specific sensitive columns (SSN, credit card, account number); granular access control; protects against: DBAs without specific column access, query result caching of plaintext; (3) APPLICATION-LEVEL ENCRYPTION — encryption performed in the application BEFORE data hits the database; encryption keys managed outside the database (KMS/HSM); DBAs CANNOT decrypt; SQL Server Always Encrypted, Oracle Application Express, custom implementations; protects against: DBA insider threat, database backup theft, query inspection. SELECTION FRAMEWORK by sensitivity: ALL DATA → TDE (baseline); PII + regulated data → column-level on sensitive columns + TDE elsewhere; CROWN-JEWEL (full credit card numbers, SSN, medical records) → application-level + column-level + TDE (layered). Modern alternative: TOKENIZATION (replace sensitive data with token; original stored in vault; data-in-place protection without key management challenges).",
+      "wrong_explanations": {
+        "A": "A relies on TDE alone, missing the LIMITATION: TDE encrypts at rest but data is plaintext in memory and to anyone with database read access (including DBAs, compromised applications, backup files via point-in-time recovery). High-sensitivity data needs column-level or application-level for separation from DBA access.",
+        "B": "B uses application-level only, missing TDE's broad at-rest coverage. Application-level handles the most-sensitive fields well but doesn't protect against backup theft, log files, query result caches, and other database-internal data. Layered approach is canonical.",
+        "C": "C restricts encryption to financial/health data, missing the regulatory and breach-notification scope. State breach laws cover name + contact info combined; GDPR/CCPA cover all PII. 'Only the most sensitive' is an outdated narrow scope."
+      },
+      "tips": [
+        "Trap is A — 'TDE alone is sufficient' is candidate-seductive because TDE is transparent and operationally simple; but TDE has a critical LIMITATION: data is plaintext to anyone with database read access including DBAs. High-sensitivity data needs column-level or application-level for DBA separation.",
+        "Database encryption = TDE (at-rest broad) + column-level (granular sensitive) + application-level (highest sensitivity, key separation from DBA). Layered by sensitivity. Tokenization for crown-jewel.",
+        "Exam-day shortcut: when stem asks about DATABASE ENCRYPTION, look for layered TDE + column + application approach; TDE-only, application-only, and most-sensitive-only framings each fail."
+      ],
+      "framework_ref": "ISACA Database Security Audit/Assurance Program; NIST SP 800-122 (Guide to Protecting Confidentiality of PII); Oracle TDE Documentation; SQL Server Always Encrypted Documentation; PCI DSS v4.0 Requirement 3 (Protect Stored Account Data)",
+      "related_concepts": [
+        "Transparent Data Encryption",
+        "Application-level encryption",
+        "Always Encrypted",
+        "Tokenization"
+      ],
+      "_provenance": "Authored from concept: 'Database encryption layered approach by sensitivity'. Public sources: ISACA, NIST, vendor documentation, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_073",
+      "domain": 5,
+      "subtopic": "Cloud KMS Audit",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor scopes a cloud Key Management Service (KMS) audit covering AWS KMS, Azure Key Vault, and GCP KMS keys for the firm's multi-cloud workloads. Which option BEST captures CLOUD KMS AUDIT SCOPE?",
+      "options": {
+        "A": "Key inventory + IAM policy review + key rotation enforcement + access audit logs + envelope encryption pattern + key-policy SoD + customer-managed vs service-managed + cross-region replication.",
+        "B": "Only the cloud provider's SOC 2; if AWS/Azure/GCP pass their SOC 2 reports, the firm's KMS deployment is automatically considered well-governed.",
+        "C": "Only the number of keys provisioned; if key count matches workload expectations, KMS configuration is considered sound.",
+        "D": "Cloud KMS doesn't require firm-side audit because cloud providers handle all aspects of key management on customer's behalf."
+      },
+      "correct": "A",
+      "key_concept": "Cloud KMS audit = key inventory + IAM policy review + rotation enforcement + access audit logs + envelope encryption pattern + key-policy SoD + customer-managed vs service-managed + cross-region replication. Eight dimensions.",
+      "pre_read": "For cloud KMS audit questions, anchor on the eight-dimension scope under shared responsibility. Provider-SOC-2-only, key-count-only, and provider-handles-everything framings each fail.",
+      "correct_explanation": "ISACA Cloud Cryptography Audit/Assurance Program and AWS/Azure/GCP key-management documentation establish cloud KMS audit scope: (1) KEY INVENTORY — central inventory of customer-managed keys (CMKs) across accounts/subscriptions/projects; orphan detection (keys without active use); naming convention compliance; (2) IAM POLICY REVIEW — who can use, manage, or administer each key; least-privilege scope; service-role permissions; cross-account access; (3) KEY ROTATION ENFORCEMENT — automatic rotation enabled where supported; cadence appropriate to sensitivity (AWS KMS auto-rotation = 365 days for symmetric CMKs; manual rotation for asymmetric); (4) ACCESS AUDIT LOGS — CloudTrail (AWS), Azure Activity Log, GCP Cloud Audit Logs capture every key use; alerting on anomalous patterns; (5) ENVELOPE ENCRYPTION PATTERN REVIEW — data encrypted with data key, data key encrypted with master key (KMS-stored); reduces master-key calls and exposure; pattern verified in application architecture; (6) KEY-POLICY SEPARATION OF DUTIES — key administrators (create/delete keys) separated from key users (encrypt/decrypt); review approver separate from administrator; (7) CUSTOMER-MANAGED vs SERVICE-MANAGED KEY DECISIONS — service-managed keys (AWS-managed, default) acceptable for most workloads; customer-managed keys (CMK) required for cryptographic policy control, audit visibility, regulatory requirements; (8) CROSS-REGION REPLICATION FOR KEYS — multi-region keys for DR; reciprocal trust boundaries documented. Common failure mode: 'cloud provider handles it' — shared responsibility model means provider operates HSM infrastructure; firm operates key policies, IAM, rotation, encryption patterns.",
+      "wrong_explanations": {
+        "B": "B confuses cloud provider SOC 2 with firm-side configuration. Provider SOC 2 says the underlying HSM is FIPS validated and operations are sound; FIRM SIDE configuration (key policies, IAM permissions, rotation cadence, encryption-at-rest patterns) is the firm's responsibility under shared-responsibility model.",
+        "C": "C uses key count as the metric, but key count says nothing about policy quality. 500 keys with overly-broad IAM permissions are worse than 50 keys with proper policies. Quality of configuration matters more than quantity.",
+        "D": "D claims firm has no audit role, contradicting the SHARED RESPONSIBILITY model. Cloud provider operates the HSM infrastructure; firm operates key policies, IAM permissions, rotation, encryption patterns. Both sides have audit-relevant responsibilities."
+      },
+      "tips": [
+        "Trap is B — 'cloud provider SOC 2 is sufficient' is candidate-seductive because cloud SOC 2 reports are comprehensive; but provider SOC 2 covers the UNDERLYING HSM infrastructure. SHARED RESPONSIBILITY model means firm-side configuration (key policies, IAM, rotation) requires separate audit.",
+        "Cloud KMS audit = key inventory + IAM policies + rotation + access audit logs + envelope encryption + key-policy SoD + customer-vs-service-managed + cross-region replication. Eight dimensions under shared responsibility.",
+        "Exam-day shortcut: when stem names MULTIPLE CLOUD PROVIDERS or 'KMS AUDIT,' the answer involves shared-responsibility scope (firm-side key policies + IAM + rotation), not vendor SOC 2; provider-SOC-2-only, key-count-only, and provider-handles-everything framings each fail."
+      ],
+      "framework_ref": "ISACA Cloud Cryptography Audit/Assurance Program; AWS KMS Documentation (Key Management Service); Azure Key Vault Documentation; GCP Cloud KMS Documentation; NIST SP 800-57 Part 1 Rev 5 (Key Management)",
+      "related_concepts": [
+        "Customer-managed keys",
+        "Envelope encryption",
+        "Key policy SoD",
+        "Cross-region replication"
+      ],
+      "_provenance": "Authored from concept: 'Cloud KMS audit scope under shared responsibility'. Public sources: ISACA, cloud-provider documentation, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_074",
+      "domain": 5,
+      "subtopic": "Post-Quantum Cryptography Readiness",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's Post-Quantum Cryptography (PQC) readiness program. Which option BEST captures the canonical PQC READINESS framework?",
+      "options": {
+        "A": "PQC is theoretical and doesn't require any current action; firms should wait until quantum computers are operational before evaluating PQC algorithms.",
+        "B": "Cryptographic inventory + algorithm-agility architecture + NIST PQC standards adoption (FIPS 203/204/205) + hybrid classical+PQC deployment + harvest-now-decrypt-later mitigation + roadmap by data sensitivity.",
+        "C": "Replace all classical cryptography with quantum-key-distribution (QKD); QKD eliminates the need for software-based PQC algorithm migration.",
+        "D": "PQC affects only government and defense contractors; commercial firms can defer indefinitely without operational or regulatory consequence."
+      },
+      "correct": "B",
+      "key_concept": "PQC readiness = crypto inventory + algorithm agility + NIST PQC adoption (FIPS 203/204/205) + hybrid deployment + HNDL mitigation + roadmap by data sensitivity and lifetime. Six elements.",
+      "pre_read": "For PQC readiness questions, anchor on inventory + agility + NIST adoption + hybrid + HNDL + roadmap. Wait-until-operational, QKD-replaces, and government-only framings each fail.",
+      "correct_explanation": "NIST FIPS 203 (ML-KEM, August 2024), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA), CISA-NIST-NSA Quantum-Readiness Guidance (April 2023), and NSA Commercial National Security Algorithm Suite (CNSA) 2.0 establish post-quantum cryptography readiness framework: (1) CRYPTOGRAPHIC INVENTORY — full inventory of where cryptography is used (TLS, VPN, code signing, document signing, S/MIME, file encryption, database encryption); algorithm types (RSA, ECDH, ECDSA classical; AES symmetric); priorities by quantum-vulnerability and data sensitivity; (2) ALGORITHM-AGILITY ARCHITECTURE — design systems for algorithm flexibility (configurable cipher suites, certificate hierarchies that can be re-signed); pre-positioning for PQC migration; (3) NIST PQC STANDARDS ADOPTION — FIPS 203 ML-KEM (key encapsulation, replaces RSA/ECDH key exchange); FIPS 204 ML-DSA (digital signatures, replaces RSA/ECDSA); FIPS 205 SLH-DSA (stateless hash-based signatures, alternative for high-assurance signature schemes); (4) HYBRID CLASSICAL+PQC DEPLOYMENT — run classical and PQC algorithms in parallel during transition (TLS hybrid key exchange); fallback to classical if PQC implementation issues; (5) HARVEST-NOW-DECRYPT-LATER (HNDL) MITIGATION — long-lifetime data (10+ years) protected first; intellectual property, customer financial records, regulatory archives; (6) ROADMAP BY DATA SENSITIVITY AND LIFETIME — migration sequenced by HNDL exposure; NSA CNSA 2.0 mandates PQC for federal national security systems by 2030-2035. Symmetric AES-256 considered quantum-resistant; SHA-256/384/512 require double-length output to maintain security.",
+      "wrong_explanations": {
+        "A": "A defers PQC indefinitely, missing the HARVEST-NOW-DECRYPT-LATER threat: adversaries are collecting today's encrypted traffic to decrypt with future quantum computers; data with long secrecy requirements (10+ years) is at risk now even if quantum doesn't arrive for 10-15 years.",
+        "C": "C proposes QKD as alternative, but QKD requires specialized fiber/satellite infrastructure (not Internet-deployable), addresses only key exchange (not signatures), and has its own implementation vulnerabilities. NIST PQC software algorithms (FIPS 203/204/205) are the practical mainstream path.",
+        "D": "D restricts PQC to government, but commercial firms have long-lifetime data too (intellectual property, customer records, financial archives). Long-lifetime data is HNDL-vulnerable; regulatory bodies (CISA, NSA) are pushing commercial adoption."
+      },
+      "tips": [
+        "Trap is A — 'PQC is theoretical and defer until quantum operational' is candidate-seductive because quantum computers aren't yet cryptographically relevant; but HARVEST-NOW-DECRYPT-LATER means adversaries collect today's traffic for future quantum decryption. Long-lifetime data is at risk now.",
+        "PQC readiness = crypto inventory + algorithm agility + NIST FIPS 203/204/205 adoption + hybrid deployment + HNDL mitigation + roadmap by sensitivity/lifetime. Six elements.",
+        "Exam-day shortcut: when stem says POST-QUANTUM CRYPTOGRAPHY or PQC READINESS, look for inventory + agility + NIST PQC + hybrid + HNDL + roadmap; defer-until-quantum, QKD-replaces, and government-only framings each fail."
+      ],
+      "framework_ref": "NIST FIPS 203 (ML-KEM); NIST FIPS 204 (ML-DSA); NIST FIPS 205 (SLH-DSA); CISA-NIST-NSA Quantum-Readiness Guidance (April 2023); NSA Commercial National Security Algorithm Suite (CNSA) 2.0",
+      "related_concepts": [
+        "ML-KEM key encapsulation",
+        "Hybrid classical+PQC",
+        "Harvest-now-decrypt-later",
+        "Algorithm agility"
+      ],
+      "_provenance": "Authored from concept: 'Post-Quantum Cryptography readiness framework'. Public sources: NIST FIPS 203/204/205, CISA, NSA. No legacy bank citation."
+    },
+    {
+      "id": "d5_075",
+      "domain": 5,
+      "subtopic": "Tokenization vs Encryption vs Hashing — PCI Context",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates a payment-card processor's data-protection architecture under PCI DSS. Which option BEST captures TOKENIZATION vs ENCRYPTION vs HASHING selection for PAN data?",
+      "options": {
+        "A": "Hashing alone is sufficient for PAN protection because hashes are one-way; hashed PAN can substitute for stored PAN without other controls.",
+        "B": "Encryption is the only acceptable approach for PAN under PCI DSS; tokenization is not permitted and hashing is irrelevant to PAN protection.",
+        "C": "Tokenization (replace PAN with token; scope-reducing) + encryption (PAN encrypted with managed keys; scope retained) + hashing (one-way, searchable indices only, never as PAN-storage substitute due to limited entropy).",
+        "D": "All three (tokenization, encryption, hashing) are interchangeable; PCI DSS treats them as equivalent control options without distinction."
+      },
+      "correct": "C",
+      "key_concept": "PCI PAN protection = tokenization (replace PAN, scope-reducing) + encryption (PAN encrypted, scope retained) + hashing (one-way, for searchable indices only, NOT storage substitute). Three distinct security properties.",
+      "pre_read": "For PCI tokenization vs encryption vs hashing questions, anchor on three distinct security properties with scope implications. Hash-only, encryption-only, and equivalent-options framings each fail.",
+      "correct_explanation": "PCI DSS v4.0 Requirement 3 (Protect Stored Account Data), PCI Tokenization Guidelines, and PCI SSC PIN Security Standard establish three data-protection approaches with distinct security properties and PCI scope implications: (1) TOKENIZATION — original PAN replaced with non-sensitive TOKEN (random or format-preserving); PAN stored in dedicated TOKENIZATION VAULT (highly-restricted CDE); applications/databases hold only tokens; SCOPE REDUCTION because tokens are not cardholder data (PCI scope concentrated in tokenization vault, not throughout the firm); approved tokenization solutions: TrustCommerce, Square, vendor-managed (Stripe, Adyen) or in-house; (2) ENCRYPTION — PAN encrypted with managed keys; encrypted PAN remains cardholder data under PCI; SCOPE RETAINED (all systems handling encrypted PAN are in CDE); strong key management (HSM-backed, NIST FIPS 140-3 L3+) per PCI Requirement 3.6/3.7; (3) HASHING — one-way mathematical transformation; suitable for: searchable indices (hash PAN to enable lookup without storing plaintext), data-integrity verification; UNSUITABLE for PAN storage substitute because PAN entropy is limited (16 digits, first 6 = BIN, last 4 often visible, leaves ~6 unknown digits = 10^6 brute-force trivial); PCI explicitly requires that hashed PAN not be used as substitute for stored PAN. SCOPE-REDUCTION priority: tokenization > encryption > hash-for-search; selection driven by required functionality (search/match needed → tokenization or hash-for-search; protect stored PAN → tokenization or encryption).",
+      "wrong_explanations": {
+        "A": "A misuses hashing for PAN storage. PAN has limited entropy (16 digits; first 6 = BIN identifier, last 4 often visible, leaves only 6 unknown digits = 10^6 = 1M possible values); rainbow table attack on hashed PAN is trivial. PCI DSS prohibits hash-only PAN storage.",
+        "B": "B rules out tokenization, but PCI DSS explicitly RECOGNIZES tokenization (PCI Tokenization Guidelines) as a method to reduce PCI scope. Tokenization is a valid alternative to encryption with scope-reduction benefit.",
+        "D": "D treats all three as equivalent, missing the substantive differences: tokenization REPLACES PAN with non-sensitive token (PAN outside cardholder-data environment); encryption preserves PAN in encrypted form (PCI scope retained); hashing is one-way (different security property)."
+      },
+      "tips": [
+        "Trap is A — 'hashing alone is sufficient for PAN' is candidate-seductive because hashes are one-way; but PAN has LIMITED ENTROPY (~6 unknown digits = 10^6 possible values, trivially brute-forced). PCI DSS prohibits hash-only PAN storage.",
+        "PCI PAN protection = tokenization (replace, scope-reducing) + encryption (in-place, scope-retained) + hashing (one-way, searchable indices only). Three distinct security properties.",
+        "Exam-day shortcut: when stem asks about PCI PAN PROTECTION OPTIONS, look for tokenization-vs-encryption-vs-hashing distinction with scope implications; hash-only, encryption-only, and equivalent framings each fail."
+      ],
+      "framework_ref": "PCI DSS v4.0 Requirement 3 (Protect Stored Account Data); PCI Tokenization Product Security Guidelines; PCI DSS v4.0 Requirement 3.6 (Key Management); NIST FIPS 140-3 (Security Requirements for Cryptographic Modules); ISACA Cryptography Audit/Assurance Program",
+      "related_concepts": [
+        "Tokenization vault",
+        "PAN entropy",
+        "Scope reduction",
+        "Format-preserving encryption"
+      ],
+      "_provenance": "Authored from concept: 'Tokenization vs encryption vs hashing for PCI PAN protection'. Public sources: PCI Council, ISACA. No legacy bank citation."
+    },
+    {
+      "id": "d5_076",
+      "domain": 5,
+      "subtopic": "Key Escrow and Recovery",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's key-escrow and recovery program for full-disk-encryption keys, BitLocker recovery keys, and CA root keys. Which option BEST captures KEY ESCROW AND RECOVERY framework?",
+      "options": {
+        "A": "Allow users to manage their own keys without escrow; this maximizes privacy and avoids the security risk of central key storage.",
+        "B": "Escrow all keys in a single shared vault with broad IT administrator access; broad access enables fast recovery when needed.",
+        "C": "Skip escrow for FDE and BitLocker keys; trust users to remember recovery keys or reinstall the operating system if the key is lost.",
+        "D": "Corporate-managed escrow (AD/MBAM/Intune/MDM) + identity-verified recovery workflow + split-knowledge for high-value (CA roots: M-of-N) + audit trail + tested procedures + retention aligned to data."
+      },
+      "correct": "D",
+      "key_concept": "Key escrow and recovery = corporate-managed escrow (AD/MBAM/Intune/MDM) + identity-verified recovery workflow + split-knowledge for high-value (CA roots: M-of-N officers) + audit trail + tested procedures + retention aligned to data retention.",
+      "pre_read": "For key escrow questions, anchor on corporate-managed with identity-verified recovery + split-knowledge for high-value keys + audit trail. User-managed-no-escrow, broad-shared-vault, and skip-escrow framings each fail.",
+      "correct_explanation": "ISACA Cryptography Audit/Assurance Program and NIST SP 800-57 Part 1 Rev 5 (Key Management Lifecycle) establish key escrow and recovery framework: (1) CORPORATE-MANAGED ESCROW — BitLocker recovery keys in Active Directory or Microsoft BitLocker Administration and Monitoring (MBAM) or Microsoft Intune; FileVault recovery keys in MDM; corporate KMS for application keys; (2) SECURE RECOVERY WORKFLOW WITH IDENTITY VERIFICATION — user identity verified before key disclosure (multi-factor, manager approval for sensitive systems); break-glass procedures documented; (3) SPLIT-KNOWLEDGE FOR HIGH-VALUE KEYS — CA root keys protected by M-of-N officer keys (Shamir's secret sharing or HSM quorum); no single officer can recover root key; ceremony procedures documented and audited; (4) AUDIT TRAIL OF ESCROW + RECOVERY — what was escrowed, when, by whom; what was recovered, when, by whom, with what justification; tamper-resistant log; (5) TESTED RECOVERY PROCEDURES — periodic drills (quarterly typical) confirm escrowed keys can be successfully retrieved and used; broken escrow discovered before crisis; (6) RETENTION ALIGNED TO DATA RETENTION — escrowed keys retained as long as data they decrypt is retained; cryptographic erasure (delete key) is one method to retire data. PRIVACY CONSIDERATIONS: user devices may have personal data; escrow scope and access controls must be transparent (employee notice); legal counsel reviews for jurisdictions with employee-monitoring constraints.",
+      "wrong_explanations": {
+        "A": "A allows user-managed keys without escrow, which produces business risk: departing employees lock the firm out of corporate data, key loss requires full reinstall, recovery is impossible. Privacy and recoverability can both be served via corporate escrow with audited access.",
+        "B": "B uses broad-access shared vault, missing SEPARATION OF DUTIES and AUDIT. Broad administrator access defeats the purpose of escrow (insider exposure of escrowed keys); recovery should require identity verification + approval + audit logging.",
+        "C": "C skips escrow entirely, leaving FDE/BitLocker key loss to user memory or reinstall. Reinstall destroys data; corporate data shouldn't be at user-memory risk. Escrow is mandatory for corporate-managed encryption."
+      },
+      "tips": [
+        "Trap is A and B (dual). A ('user-managed for privacy') is seductive because privacy is a real value — but user-managed without escrow creates business risk (departing employees, key loss, irrecoverable corporate data). B ('broad-access shared vault') is the operationally common misconfiguration — looks like 'escrow done' but defeats separation-of-duties; recovery should require identity-verified workflow + approval + audit.",
+        "Key escrow = corporate-managed + identity-verified recovery + split-knowledge for high-value + audit trail + tested procedures + retention aligned to data. Privacy via audited access, not no-escrow.",
+        "Exam-day shortcut: when stem asks about KEY ESCROW AND RECOVERY, look for corporate-managed + identity-verified + split-knowledge high-value + audit + tested; user-managed-no-escrow, broad-shared-vault, and skip-escrow framings each fail."
+      ],
+      "framework_ref": "ISACA Cryptography Audit/Assurance Program; NIST SP 800-57 Part 1 Rev 5 (Key Management Lifecycle); Microsoft BitLocker Recovery Key Documentation; Apple FileVault Personal Recovery Key Documentation",
+      "related_concepts": [
+        "BitLocker AD escrow",
+        "Shamir's secret sharing",
+        "Split-knowledge ceremony",
+        "M-of-N officer keys"
+      ],
+      "_provenance": "Authored from concept: 'Key escrow and recovery framework'. Public sources: ISACA, NIST, Microsoft, Apple. No legacy bank citation."
+    },
+    {
+      "id": "d5_077",
+      "domain": 5,
+      "subtopic": "CA Compromise — Immediate Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A regional bank's PKI team confirms at 4:22 PM Tuesday: the firm's INTERNAL ROOT CA private key (stored on HSM Cluster-1) was accessed via a previously-undisclosed HSM admin credential leak. Forensic review shows the credential was active for 47 hours before discovery. The root CA signs 8,400 internal certificates (mTLS for 350 microservices, code-signing for ATM software, employee VPN, IoT device identities for branch systems). Replacing the root CA requires re-issuing all 8,400 certificates and a coordinated PKI rebuild. The CISO, CIO, Chief Risk Officer, and General Counsel are on the line within 15 minutes. Bank operations continue normally; no evidence of certificate misuse yet.",
+      "options": {
+        "A": "REVOKE the compromised root CA certificate IMMEDIATELY (publish CRL + push OCSP responder update) — every hour the compromised CA remains trusted is opportunity for fraudulent certificate issuance.",
+        "B": "Open a multi-track coordination call with CISO + CIO + CRO + GC + PKI team + business leadership to align on the response framework and customer-communication strategy before any technical action.",
+        "C": "Begin generating a new root CA private key on a clean HSM and prepare the 8,400 replacement certificates in parallel before revoking the compromised CA to minimize disruption.",
+        "D": "Notify all 8,400 relying-party services that they should temporarily disable certificate validation until the new PKI is operational, allowing operations to continue without trust verification."
+      },
+      "correct": "A",
+      "key_concept": "Compromised root CA FIRST action = revoke immediately + push CRL/OCSP. Multi-track response follows AFTER revocation. Single surgical action because every hour the compromised CA remains trusted extends adversary opportunity.",
+      "pre_read": "For time-critical CA-compromise questions, anchor on REVOKE FIRST. The trust-extension clock dominates other considerations.",
+      "correct_explanation": "When an internal root CA private key is compromised, the FIRST action is IMMEDIATE REVOCATION. Rationale: (1) EVERY HOUR EXTENDS ADVERSARY OPPORTUNITY — with the compromised root key, adversaries can issue fraudulent certificates that all relying parties will trust; mTLS handshakes, code signatures, and identity verifications will accept adversary-signed credentials; (2) 47 HOURS OF UNDETECTED ACCESS MEANS FRAUDULENT CERTIFICATES MAY EXIST — even if no misuse detected yet, the firm cannot rule out pre-positioned adversary certificates; (3) REVOCATION IS FAST AND DECISIVE — publish CRL with root CA serial number, push OCSP responder update; relying parties stop trusting; (4) NEW CA ROLLOUT IS DOWNSTREAM — generating new root CA, re-issuing 8,400 certificates is a 2-4 week effort; cannot wait for new CA to revoke compromised one; (5) BUSINESS CONTINUITY DURING REVOCATION — services will fail until new certificates deployed; this is the cost of the compromise, not a reason to delay revocation. After revocation: (a) issue emergency communication to all 8,400 relying-party teams with rollback procedure and migration plan; (b) generate new root CA on clean HSM with split-knowledge ceremony; (c) re-issue replacement certificates prioritized by business criticality; (d) forensic investigation of HSM admin credential leak; (e) regulator notification per banking IT incident requirements (FFIEC IT Examination Handbook, OCC Bulletin 2008-13 IT Incidents). PCI DSS, FFIEC, and ISACA PKI Audit/Assurance Program all treat ROOT CA COMPROMISE as the highest-severity PKI event requiring immediate revocation regardless of operational disruption.",
+      "wrong_explanations": {
+        "B": "Multi-track coordination call is appropriate AFTER revocation. The 47-hour adversary window means fraudulent certificates may already be issued or being prepared; every additional hour extends adversary opportunity. Revocation is critical-path; coordination follows.",
+        "C": "Generating new root CA before revoking the compromised one leaves the compromised CA TRUSTED in the interim. Adversaries with the compromised root key can issue fraudulent certificates that all 8,400 relying parties will trust. Revoke first; new CA second.",
+        "D": "Disabling certificate validation across 8,400 services is operational malpractice: removes the ENTIRE TRUST FABRIC for the period it's disabled, allowing any TLS certificate to be accepted. This is worse than the compromised CA. Revoke + emergency rebuild is the right pattern."
+      },
+      "tips": [
+        "Trap is C — 'generate new root CA in parallel before revoking' is candidate-seductive because it appears to minimize disruption; but generating new CA before revoking leaves the compromised CA TRUSTED in the interim, during which adversaries with the root key can continue issuing fraudulent certificates. Revoke first; new CA second.",
+        "Compromised CA = revoke immediately (CRL + OCSP). Multi-track response, new CA generation, and re-issuance all follow. Single surgical action; trust-extension clock dominates.",
+        "Exam-day shortcut: when stem describes COMPROMISED CA WITH UNDETECTED ACCESS WINDOW, look for IMMEDIATE REVOCATION; coordination-call, parallel-new-CA, and disable-validation framings each fail the trust-extension-clock test."
+      ],
+      "framework_ref": "ISACA PKI Audit/Assurance Program; NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure); FFIEC IT Examination Handbook (Information Security Booklet); OCC Bulletin 2008-13 (IT Incidents); CA/Browser Forum Baseline Requirements; ISACA Incident Management Audit/Assurance Program",
+      "related_concepts": [
+        "Root CA revocation",
+        "Emergency CA rebuild",
+        "Trust fabric collapse",
+        "FFIEC IT incident"
+      ],
+      "_provenance": "Authored from concept: 'Compromised CA immediate revocation response'. Public sources: ISACA, NIST, FFIEC, CA/B Forum. No legacy bank citation. Note: intentional single-focus surgical-action correct answer."
+    },
+    {
+      "id": "d5_078",
+      "domain": 5,
+      "subtopic": "HSM Partition Failure — Mid-Transaction",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response?",
+      "scenario_context": "A financial services firm's primary payment-processing HSM partition shows a critical fault alarm at 11:47 AM Tuesday: the HSM cluster's primary partition has detected a hardware integrity violation and locked itself; the secondary partition (different physical HSM, same logical cluster) is healthy. The firm processes $42M of payment transactions per hour during business hours and ~3.8M transactions per day. The cluster is configured for active-passive failover (manual failover, ~5-minute switchover). Transaction queue is currently growing at 6,000 tx/minute; cannot encrypt new payment instructions without an HSM. The CRO, CISO, Chief Payments Officer, and General Counsel join an emergency call within 10 minutes.",
+      "options": {
+        "A": "Immediately power-cycle the primary HSM partition to attempt automatic recovery; if recovery succeeds, no failover is required and operations resume on the primary partition.",
+        "B": "Failover to secondary HSM partition + transaction queue drain + customer/merchant communication + reconciliation prep + forensic preservation of primary + regulator notification + tested failback + cause analysis.",
+        "C": "Wait for vendor diagnostic before any failover; vendor support engagement is the safest path even though it takes 4-6 hours during which transactions queue.",
+        "D": "Disable HSM-based transaction encryption temporarily and process transactions without encryption while the HSM is offline; PCI DSS exception will be approved retroactively given the business criticality."
+      },
+      "correct": "B",
+      "key_concept": "HSM partition failure = failover to secondary + queue drain + customer/merchant comms + reconciliation prep + forensic preservation of primary + regulator notification + tested failback + cause analysis. Eight-track response.",
+      "pre_read": "For HSM partition failure questions, anchor on the eight-track failover + comms + forensic + regulator framework. Power-cycle, wait-for-vendor, and operate-without-encryption framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, PCI DSS v4.0 Requirement 3.6 (Key Management), and HSM vendor (Thales/Entrust/Utimaco) operational documentation establish HSM partition failure response. Eight tracks: (1) FAILOVER TO SECONDARY HSM PARTITION — pre-configured active-passive cluster designed for this scenario; manual or automated failover; ~5-minute switchover in this scenario; (2) ACTIVATE TRANSACTION QUEUE DRAIN — queued transactions processed in order once secondary is active; rate-limited to avoid secondary overload; SLA recovery; (3) CUSTOMER/MERCHANT COMMUNICATION — proactive notification of brief outage and recovery; transaction settlement timing communicated; (4) RECONCILIATION PREP — settlement reconciliation post-recovery may identify duplicate or missed transactions; pre-prepare reconciliation procedure; (5) FORENSIC PRESERVATION OF PRIMARY PARTITION — hardware integrity violation is investigation-worthy (potential physical tampering, supply-chain attack, firmware corruption); preserve state for forensic investigation; vendor and forensic engagement; (6) REGULATOR NOTIFICATION — banking IT incident notification per FFIEC IT Examination Handbook; potential SEC 8-K material event for public company depending on impact; (7) TESTED FAILBACK PLAN — once primary is repaired and integrity verified, controlled failback; not immediate; (8) CAUSE ANALYSIS POST-RECOVERY — root cause of integrity violation; supply-chain review; vendor lessons-learned. PCI DSS Requirement 3.6.6 + Requirement 12.10 (Incident Response): both apply.",
+      "wrong_explanations": {
+        "A": "Failure mode = POWER-CYCLE WITHOUT FORENSICS. Power-cycling the primary partition destroys volatile state needed for forensic investigation of the integrity violation; potentially triggers tamper-active response (key destruction) that prevents recovery. Failover preserves primary state for investigation while restoring service.",
+        "C": "Failure mode = WAIT-FOR-VENDOR. 4-6 hours of queue growth = $168M-$252M of queued transactions; merchant SLAs and customer trust damage; regulator concern. Failover is designed for exactly this scenario; use it then engage vendor on the failed partition.",
+        "D": "Failure mode = OPERATE WITHOUT ENCRYPTION. PCI DSS Requirement 3.6 explicitly requires HSM-managed keys for payment crypto; operating without encryption violates PCI compliance immediately and creates regulator-level findings. Retroactive exception is not a real concept; PCI compliance is continuous."
+      },
+      "tips": [
+        "Trap is D — 'operate without encryption temporarily with retroactive PCI exception' is candidate-seductive because business continuity pressure is real; but operating without encryption violates PCI DSS Requirement 3.6 immediately and creates regulator-level findings. There's no retroactive PCI exception. HSM failover is the canonical pattern for exactly this scenario.",
+        "HSM partition failure = failover + queue drain + comms + reconciliation + forensic + regulator notification + tested failback + cause analysis. Eight tracks balancing recovery + investigation + compliance.",
+        "Exam-day shortcut: when stem describes ACTIVE TRANSACTION VOLUME + PARTITION FAILURE (or any HSM cluster with healthy secondary), the answer is FAILOVER not power-cycle; preserves primary partition for forensics while restoring service. Power-cycle destroys volatile state; wait-for-vendor wastes the failover capability the cluster was designed for."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; PCI DSS v4.0 Requirement 3.6 (Key Management); PCI DSS v4.0 Requirement 12.10 (Incident Response Plan); FFIEC IT Examination Handbook (Information Security Booklet)",
+      "related_concepts": [
+        "HSM failover",
+        "Tamper-active response",
+        "Transaction queue drain",
+        "PCI continuous compliance"
+      ],
+      "_provenance": "Authored from concept: 'HSM partition failure during transaction processing'. Public sources: ISACA, PCI Council, FFIEC, vendor documentation. No legacy bank citation."
+    },
+    {
+      "id": "d5_079",
+      "domain": 5,
+      "subtopic": "PQC Migration Roadmap",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST approach to the PQC migration roadmap?",
+      "scenario_context": "A defense contractor (4,200 employees, prime contracts with DoD totaling $1.8B/year) is required by recently-finalized DoD guidance to begin PQC migration. Current state: ~340 systems using classical RSA/ECDH/ECDSA across TLS endpoints, document signing, code signing, and stored encrypted archives (some with 25-year retention). Vendor support varies: cloud providers offering hybrid PQC in TLS, but on-premise systems and legacy applications lag. The CISO is presenting the migration roadmap to the CEO and CFO in 8 weeks ahead of board review and ahead of the next DoD quarterly compliance review.",
+      "options": {
+        "A": "Replace all classical cryptography (RSA, ECDH, ECDSA) with NIST PQC algorithms within 6 months to meet DoD guidance immediately; accept operational disruption as compliance cost.",
+        "B": "Wait for cryptographic-relevant quantum computers to become operational (estimated 10-15 years) before initiating PQC migration; current PQC is premature for production deployment.",
+        "C": "Cryptographic inventory + algorithm agility + HNDL data prioritization + hybrid classical+PQC deployment + NIST FIPS 203/204/205 adoption + vendor coordination + CMMC/CNSA 2.0 alignment + multi-year phased roadmap.",
+        "D": "Migrate only TLS endpoints to PQC; document signing, code signing, and stored encrypted archives don't require PQC migration since they're not transmitted over the wire."
+      },
+      "correct": "C",
+      "key_concept": "PQC migration roadmap = cryptographic inventory + algorithm agility + HNDL prioritization + hybrid deployment + NIST FIPS 203/204/205 adoption + vendor coordination + CMMC/CNSA 2.0 alignment + multi-year phased roadmap. Eight tracks.",
+      "pre_read": "For PQC migration roadmap questions, anchor on multi-year phased framework with HNDL prioritization. Forced-6-month, wait-for-quantum, and TLS-only framings each fail.",
+      "correct_explanation": "NIST FIPS 203 (ML-KEM, August 2024), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA), CISA-NIST-NSA Quantum-Readiness Guidance, NSA Commercial National Security Algorithm Suite (CNSA) 2.0, and DoD Cybersecurity Maturity Model Certification (CMMC) 2.0 establish PQC migration roadmap framework. Eight tracks: (1) CRYPTOGRAPHIC INVENTORY — full inventory across TLS, code signing, document signing, S/MIME, encrypted archives, IoT identities; quantum-vulnerability assessment per system; (2) ALGORITHM-AGILITY ARCHITECTURE — design systems for cipher-suite flexibility; certificate hierarchies with re-sign capability; pre-positioning for PQC; (3) HARVEST-NOW-DECRYPT-LATER DATA PRIORITIZATION — long-lifetime data first (25-year archives = highest priority); intellectual property + contractual obligations; (4) HYBRID CLASSICAL+PQC DEPLOYMENT FOR NEW TLS — parallel classical and PQC in TLS handshake; fallback to classical on PQC issues; allows incremental rollout without breaking interoperability; (5) NIST FIPS 203/204/205 ADOPTION — ML-KEM for key encapsulation, ML-DSA for digital signatures, SLH-DSA for high-assurance signatures; vendor implementations as they become available; (6) VENDOR COORDINATION — cloud providers (AWS/Azure/GCP) ahead; on-premise vendors lagging; coordinate roadmaps and procurement pressure; (7) CMMC AND CNSA 2.0 ALIGNMENT — DoD CMMC 2.0 will incorporate PQC requirements; NSA CNSA 2.0 mandates PQC for national security systems by 2030-2035; align roadmap to defense-contractor obligations; (8) MULTI-YEAR PHASED ROADMAP — typical 3-7 year migration; quarterly milestones; board reporting; budget allocation; staffing for PQC expertise. The 8-week presentation horizon means presenting the inventory, prioritization, and phase 1 plan — not the migration completed.",
+      "wrong_explanations": {
+        "A": "Failure mode = FORCED 6-MONTH CUTOVER. 340 systems with diverse PQC support (cloud ahead, legacy lagging) cannot migrate in 6 months without breaking interoperability. Phased multi-year roadmap with hybrid deployment is the canonical pattern; DoD guidance recognizes this.",
+        "B": "Failure mode = HNDL DENIAL. Adversaries are HARVESTING NOW for future decryption; 25-year retention archives with classical encryption are at risk now. Defense contractor data is high-value HNDL target. Migration begins now even though quantum is years away.",
+        "D": "Failure mode = INCOMPLETE SCOPE. Document signing certificates and code signing certificates use the same classical algorithms vulnerable to quantum forgery; stored encrypted archives with 25-year retention are HNDL-vulnerable. PQC scope is broader than TLS endpoints."
+      },
+      "tips": [
+        "Trap is A — 'replace all classical cryptography within 6 months' is candidate-seductive because urgency feels appropriate for defense compliance; but 340 systems with diverse PQC support cannot migrate in 6 months without breaking interoperability. DoD guidance recognizes multi-year phased approach.",
+        "PQC migration = crypto inventory + algorithm agility + HNDL prioritization + hybrid deployment + NIST FIPS 203/204/205 + vendor coordination + CMMC/CNSA 2.0 alignment + multi-year phased roadmap. Eight tracks.",
+        "Exam-day shortcut: when stem names a CRYPTOGRAPHIC INVENTORY SIZE (e.g., 340 systems) + DIVERSE READINESS + a regulatory DEADLINE, the answer is phased multi-year with HNDL prioritization; forced-6-month cutover, wait-for-quantum, and TLS-only framings each fail."
+      ],
+      "framework_ref": "NIST FIPS 203 (ML-KEM); NIST FIPS 204 (ML-DSA); NIST FIPS 205 (SLH-DSA); CISA-NIST-NSA Quantum-Readiness Guidance (April 2023); NSA Commercial National Security Algorithm Suite (CNSA) 2.0; DoD Cybersecurity Maturity Model Certification (CMMC) 2.0",
+      "related_concepts": [
+        "FIPS 203 ML-KEM",
+        "Hybrid TLS deployment",
+        "HNDL data prioritization",
+        "CNSA 2.0 mandate"
+      ],
+      "_provenance": "Authored from concept: 'PQC migration roadmap for defense contractor under DoD guidance'. Public sources: NIST, CISA, NSA, DoD. No legacy bank citation."
+    },
+    {
+      "id": "d5_080",
+      "domain": 5,
+      "subtopic": "Backup Encryption Key Destruction Attack",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A regional hospital network's monitoring detects at 8:47 PM Sunday: ransomware variant active on production storage with cryptographic-erasure behavior — encryption keys for the firm's encrypted backup volumes are being systematically destroyed in the backup vault (preventing future decryption even if backups are recovered). EDR confirms 18% of backup-key shards already destroyed; rate is ~2% per minute. The IR team has 4 minutes before 50% of keys are destroyed (recovery-window threshold). Hospital operations: 4 hospitals, 1,200 active patient records in EHR, 24/7 clinical workflows. Air-gapped offline backup of last week is available but represents 7 days of patient-record loss if used.",
+      "options": {
+        "A": "Open a multi-track coordination call with CIO + CISO + CMO + GC + clinical leadership + IT operations + executive comms to align on the response framework before any technical action.",
+        "B": "Attempt to halt the cryptographic-erasure process by isolating the backup-vault infrastructure from the network, hoping to preserve some keys before the 4-minute threshold.",
+        "C": "Negotiate with the ransomware actor for key restoration; offer payment in exchange for keys to avoid the 7-day data loss from air-gapped backup restore.",
+        "D": "INITIATE air-gapped offline backup restore IMMEDIATELY — the 4-minute window before 50% key destruction makes online-backup recovery unviable; air-gapped backup with separate key material is the surgical recovery action."
+      },
+      "correct": "D",
+      "key_concept": "Backup-key destruction attack FIRST action = initiate air-gapped offline backup restore immediately. Coordination, isolation, negotiation all fail the time-pressure test. Single surgical action because online-backup recovery is being actively destroyed.",
+      "pre_read": "For time-critical backup-key destruction questions, anchor on AIR-GAPPED OFFLINE RESTORE FIRST. The recovery-window clock dominates other considerations.",
+      "correct_explanation": "When ransomware is performing cryptographic erasure on backup encryption keys (destroying keys to prevent future decryption of backups), the FIRST action is IMMEDIATE AIR-GAPPED OFFLINE BACKUP RESTORE. Rationale: (1) RECOVERY WINDOW IS CLOSING FAST — at 2% per minute key destruction, the system has 4 minutes before 50% threshold; below 50% threshold, online-backup recovery is impossible (no keys to decrypt with); (2) AIR-GAPPED OFFLINE BACKUP HAS SEPARATE KEY MATERIAL — by design, air-gapped backup uses keys not stored online; ransomware cannot reach them; this is the only viable recovery path; (3) 7-DAY DATA LOSS IS PAINFUL BUT RECOVERABLE — patient records lost can be reconstructed from chart paper, alternative systems, manual entry; permanent loss of all backups due to key destruction is unrecoverable; (4) COORDINATION/ISOLATION/NEGOTIATION ALL FAIL TIME-PRESSURE TEST — multi-track call wastes minutes; isolation may slow but not stop on-vault process; ransom negotiation doesn't beat 4-minute clock; (5) RESTORE INITIATION IS FAST — air-gapped backup restore initiates in seconds; bulk transfer can take hours but the decision to initiate is fast. After initiation: (a) IR call with CIO + CISO + CMO + GC for parallel operational management; (b) clinical-system fallback procedures (paper charts for 7-day data gap); (c) FBI/CISA notification (HIPAA Security Rule incident; HHS OCR 60-day notification clock starts); (d) forensic preservation of compromised systems; (e) post-incident immutable-backup architecture review. ISACA Incident Management Audit/Assurance Program and NIST SP 800-61 Rev 2 both treat CRITICAL-WINDOW RECOVERY DECISIONS as needing immediate action; coordination follows.",
+      "wrong_explanations": {
+        "A": "Multi-track coordination call is appropriate AFTER air-gapped restore is initiated. The 4-minute window means coordination during continued key destruction is wasted minutes. Initiate restore first; coordinate second.",
+        "B": "Isolation may slow but won't stop key destruction (process is on-vault, not network-dependent); the 2%-per-minute rate means even 1 additional minute = 2% more keys destroyed; below 50% threshold ALL recovery via online backup is broken. Air-gapped restore is the only recovery path.",
+        "C": "Ransom payment is operationally problematic: payment doesn't guarantee key recovery, may violate OFAC sanctions (some ransomware groups are sanctioned), creates incentive for further attacks, and the time-pressure 4-minute window makes negotiation impossible. Air-gapped offline backup with separate key material is the recovery path."
+      },
+      "tips": [
+        "Trap is C — 'negotiate with ransomware actor' is candidate-seductive because clinical-operations pressure feels intolerable; but payment doesn't guarantee key recovery, may violate OFAC sanctions, and the 4-minute window makes negotiation impossible. Air-gapped offline backup is the recovery path.",
+        "IRREVERSIBLE-LOSS-CLOCK principle: when an attack is actively destroying recovery state (cryptographic erasure of backup keys, evidence wiping, log tampering), the FIRST action is the one that preserves the LAST remaining recovery path. Transferable to any active-destruction scenario where waiting forecloses options.",
+        "Exam-day shortcut: when stem describes ACTIVE DESTRUCTION OF RECOVERY STATE (key shards being destroyed, evidence being wiped) with a MEASURABLE THRESHOLD (50% in 4 minutes), look for the action that preserves the LAST viable recovery path — typically air-gapped/offline because online state is being actively corrupted."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); HIPAA Security Rule §164.308 (Administrative Safeguards); HHS OCR Breach Notification Rule",
+      "related_concepts": [
+        "Air-gapped offline backup",
+        "Cryptographic erasure attack",
+        "Immutable backup",
+        "OFAC ransomware sanctions"
+      ],
+      "_provenance": "Authored from concept: 'Cryptographic-erasure attack on backup keys with time-critical recovery window'. Public sources: ISACA, NIST, CISA, HIPAA, HHS OCR. No legacy bank citation. Note: intentional single-focus surgical-action correct answer."
     }
   ]
 }
