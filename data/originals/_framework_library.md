@@ -1729,3 +1729,5 @@ sub-references like "(Managed Risk) and APO12.03").
 - State Breach Notification Laws (50 states)
 - Volatility Foundation Documentation
 - Boyd's OODA Loop (Observe-Orient-Decide-Act)
+- GDPR Article 49 (Derogations for specific situations, including legal claims)
+- NIST SP 800-101 Rev 1 (Guidelines on Mobile Device Forensics)

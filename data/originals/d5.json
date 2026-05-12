@@ -6648,7 +6648,7 @@
       "tips": [
         "Trap is B — 'consensus from full response team' is candidate-seductive because broad input feels safer; but consensus delays time-critical decisions. Designated-decider (with consultation when appropriate) + OODA loop is canonical.",
         "Crisis decisions = OODA + pre-delegated authority + decision logs + briefing cadence + post-incident review. Five elements. Decider, not consensus.",
-        "Exam-day shortcut: when stem describes 'CRISIS DECISION' or 'TIME-PRESSURED CHOICE,' look for OODA + pre-delegated authority; all-to-CEO, consensus-required, and defer-all framings each fail."
+        "Exam-day shortcut: when stem mentions CONSENSUS-REQUIRED, ALL-TO-CEO, or DEFER-ALL-DECISIONS framings in a time-pressured incident, those are the traps — broad-input-feels-safer but delays time-critical decisions; canonical answer is pre-delegated authority with OODA."
       ],
       "framework_ref": "Boyd's OODA Loop (Observe-Orient-Decide-Act); ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; ITIL 4 Major Incident Management",
       "related_concepts": [
@@ -6863,7 +6863,7 @@
       },
       "tips": [
         "Trap is C — 'immediately impose acquirer IR plan on acquired entity' is candidate-seductive because rapid integration feels efficient; but loses acquired-entity context (customer base, regulatory exposure, retainer relationships). Phased migration with knowledge preservation is canonical.",
-        "M&A IR = playbook merge + severity-matrix harmonization + retainer reconciliation + jurisdictional-overlap audit + cross-firm CSIRT integration + phased migration + post-merger tabletop. Seven tracks.",
+        "M&A IR principle: PHASED MIGRATION WITH CONTEXT PRESERVATION beats immediate-impose or indefinite-separate. Acquired-entity context (customers, regulators, retainers) is the value preserved; harmonization comes through controlled phasing, not flip-day cutover.",
         "Exam-day shortcut: when stem describes M&A IR CONSOLIDATION, look for playbook-merge + jurisdictional-overlap audit framework; indefinite-separate, immediate-impose, and MSSP-outsource framings each fail."
       ],
       "framework_ref": "ISACA M&A IT Audit/Assurance Program; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2",
@@ -6939,7 +6939,7 @@
         "Credit-bureau-scale breach = scope-first investigation + parallel containment + IR retainer + forensic preservation + multi-regulator notification + customer notification + credit monitoring + post-incident review. Eight tracks.",
         "Exam-day shortcut: when stem describes MASSIVE CONSUMER-DATA BREACH with regulatory exposure, prioritize SCOPE-FIRST INVESTIGATION before public-disclosure detail; premature-disclosure, defer-entirely, and pay-ransom framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; FTC Safeguards Rule; CFPB Consumer Financial Protection Bureau Guidance; State Breach Notification Laws (50 states); SEC Reg S-K Item 1.05",
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; FTC Safeguards Rule; CFPB Consumer Financial Protection Bureau Guidance; State Breach Notification Laws (50 states); SEC Form 8-K Item 1.05 (Material Cybersecurity Incidents); SEC Reg S-K Item 106 (Cybersecurity Disclosure in Periodic Reports)",
       "related_concepts": [
         "State breach law coordination",
         "CFPB consumer notification",
@@ -7043,14 +7043,14 @@
       "wrong_explanations": {
         "A": "A extracts immediately, ignoring GDPR + jurisdictional restrictions; risks regulatory enforcement (German DPAs, French CNIL) + evidence inadmissibility in EU jurisdictions if challenged. MLAT coordination + adequacy decisions are canonical.",
         "C": "C defers entirely, missing operational urgency. Most cross-border forensic-evidence transfers are feasible via: (a) GDPR Article 28 processor obligations, (b) Standard Contractual Clauses (SCCs), (c) EU-US DPF adequacy decision. Operational analysis can proceed during legal coordination.",
-        "D": "D restricts to EU-region analysis only, missing the firm's centralized analysis capability + cross-region threat correlation. In-region analysis + jurisdictionally-compliant evidence sharing is canonical, not pure regionalization."
+        "D": "Failure mode = OVER-CONSTRAINS-TO-PURE-REGIONALIZATION. EU-only analysis forgoes cross-region threat correlation (same threat actor likely operating across regions) and centralized analytical capability. In-region analysis + jurisdictionally-compliant evidence sharing reconciles data residency WITH cross-region correlation; pure regionalization over-corrects in one direction."
       },
       "tips": [
         "Trap is A — 'extract EU forensic evidence to US headquarters immediately' is candidate-seductive because investigation timeline pressure feels overriding; but cross-border evidence movement without GDPR + jurisdictional compliance risks regulatory enforcement + evidence inadmissibility. Canonical pattern uses MLAT + adequacy mechanisms.",
         "Cross-jurisdiction forensics = MLAT coordination + EU regional in-region analysis + GDPR Article 28 + EU-US DPF adequacy + jurisdictional analysis + data-residency-compliant evidence handling. Six tracks.",
-        "Exam-day shortcut: when stem describes CROSS-BORDER FORENSIC EVIDENCE MOVEMENT with GDPR/data-residency constraints, anchor on MLAT + adequacy + in-region analysis; extract-immediately, defer-entirely, and EU-only framings each fail."
+        "Exam-day shortcut: when stem mentions JURISDICTIONAL RESTRICTIONS on forensic evidence movement, the answer must reconcile investigation continuity WITH data-residency law — not override either; extract-immediately, defer-for-certainty, and pure-regionalization framings each fail this reconciliation test."
       ],
-      "framework_ref": "ISACA International Forensics Audit/Assurance Program; GDPR Article 28 (Processor obligations); GDPR Articles 28 + 33 + Chapter V; EU-US Data Privacy Framework (July 2023); Mutual Legal Assistance Treaties; CSA Cross-Border Cloud Forensics Guidance",
+      "framework_ref": "ISACA International Forensics Audit/Assurance Program; GDPR Chapter V Articles 44-50 (Transfers); GDPR Article 28 (Processor obligations); GDPR Article 49 (Derogations for specific situations, including legal claims); GDPR Article 33 (Notification); EU-US Data Privacy Framework (July 2023); Mutual Legal Assistance Treaties; CSA Cross-Border Cloud Forensics Guidance",
       "related_concepts": [
         "MLAT coordination",
         "In-region analysis",
@@ -7161,7 +7161,7 @@
         "NEW principle: FORENSIC-IMAGING-BEFORE-WIPE — when mobile device has state-actor surveillance indicators, IMAGING is FIRST action even under remediation pressure. Evidence preservation is irreversible-loss-risk if wipe happens first. Distinct from prior surgical-action principles.",
         "Exam-day shortcut: when stem describes STATE-ACTOR MOBILE COMPROMISE with remediation pressure, FIRST action is FORENSIC IMAGING (then wipe); wipe-immediately, continue-using, and discard-device framings each fail the evidence-preservation test."
       ],
-      "framework_ref": "ISACA Forensics Audit/Assurance Program; Citizen Lab Pegasus Research; Amnesty Tech Pegasus Forensic Methodology; Cellebrite + GrayKey + Magnet AXIOM Mobile Documentation; NIST SP 800-101 (Mobile Forensics)",
+      "framework_ref": "ISACA Forensics Audit/Assurance Program; Citizen Lab Pegasus Research; Amnesty Tech Pegasus Forensic Methodology; Cellebrite + GrayKey + Magnet AXIOM Mobile Documentation; NIST SP 800-101 Rev 1 (Guidelines on Mobile Device Forensics)",
       "related_concepts": [
         "Mobile forensic imaging",
         "Pegasus-class indicators",
@@ -7232,7 +7232,7 @@
       },
       "tips": [
         "Trap is A — 'hire 5 forensic engineers immediately' is candidate-seductive because staffing scales capacity; but blanket hiring without gap analysis produces over-staffed in some areas + still-gapped in others. Gap analysis first, then targeted hiring is canonical.",
-        "Forensic capability building = gap analysis + targeted hiring + certification training + tooling investment + external retainer for surge + tabletop validation. Six elements.",
+        "Capability-building principle: GAP-ANALYSIS-FIRST METHODOLOGY before resource investment (hiring or tooling). Mass hiring without gap analysis over-staffs some areas while leaving others gapped; tooling without analysts is dead-letter. Analysis precedes investment.",
         "Exam-day shortcut: when stem describes 'FORENSIC CAPABILITY GAP' or 'IR READINESS GAP REMEDIATION,' anchor on GAP-ANALYSIS-FIRST methodology where capability assessment precedes hiring or tooling decisions; mass-hire, tools-first, and permanent-outsource framings each fail."
       ],
       "framework_ref": "ISACA Forensics Audit/Assurance Program; GIAC GCFE / GCFA / GREM Certifications; SANS DFIR Curriculum; EnCase Certified Examiner (EnCE); ISACA Workforce Development Guidance",
