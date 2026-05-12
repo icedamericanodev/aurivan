@@ -1431,3 +1431,55 @@ sub-references like "(Managed Risk) and APO12.03").
 - PCI DSS v4.0 Requirement 3.7 (Key Management Procedures)
 - PCI Tokenization Product Security Guidelines
 - SQL Server Always Encrypted Documentation
+- AWS IAM Roles for Service Accounts (IRSA) Documentation
+- Amnesty Tech Mobile Forensics Methodology
+- Apple Device Enrollment Program (DEP) Documentation
+- Aruba RFProtect Documentation
+- Azure Managed Identity Documentation
+- CIS Controls v8 Control 1 (Inventory and Control of Enterprise Assets)
+- CIS Docker Benchmark
+- CIS Microsoft Windows Server Benchmark (Hyper-V)
+- CIS VMware ESXi Benchmark
+- CISA Joint Cybersecurity Advisory on IoT Botnets
+- Cisco AirMagnet Documentation
+- Citizen Lab Pegasus Research
+- EU Cyber Resilience Act (CRA)
+- FCC US Cyber Trust Mark Program
+- FDA 21 CFR Part 11 (Electronic Records)
+- GCP Workload Identity Federation Documentation
+- GDPR Articles 33-34 (Breach Notification)
+- IEEE 802.11i (WPA2)
+- IEEE 802.11w (Protected Management Frames)
+- ISACA Mobile Device Security Audit/Assurance Program
+- ISACA Virtualization Audit/Assurance Program
+- ISACA Web Application Security Audit/Assurance Program
+- Intel Side Channel Vulnerabilities Documentation
+- MDN Web Docs HTTP Headers
+- MITRE ATT&CK Framework T1611 (Escape to Host)
+- Microsoft Intune Documentation
+- Mirai Botnet Research
+- NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline)
+- NIST SP 800-124 Rev 2 (Guidelines for Managing the Security of Mobile Devices in the Enterprise)
+- NIST SP 800-124 Rev 2 (Managing Mobile Devices)
+- NIST SP 800-125 (Guide to Security for Full Virtualization Technologies)
+- NIST SP 800-153 (Guidelines for Securing WLANs)
+- NIST SP 800-163 Rev 1 (Vetting the Security of Mobile Applications)
+- NIST SP 800-204 (Security Strategies for Microservices-based Application Systems)
+- NIST SP 800-213 (IoT Device Cybersecurity Guidance for the Federal Government)
+- NIST SP 800-97 (Establishing Wireless Robust Security Networks: A Guide to IEEE 802.11i)
+- OWASP API Security Project
+- OWASP Application Security Verification Standard (ASVS) v4.0
+- OWASP Kubernetes Top 10
+- OWASP Mobile Application Security Testing Guide (MASTG)
+- OWASP Mobile Application Security Verification Standard (MASVS)
+- OWASP Mobile Application Security Verification Standard (MASVS) v2.0
+- OWASP Mobile Top 10
+- OWASP ModSecurity Core Rule Set (CRS)
+- OWASP Secure Headers Project
+- OWASP Top 10 (2021)
+- OWASP Top 10 (2021) A05 Security Misconfiguration
+- PCI DSS v4.0 Requirement 6.2.2 (Web Application Security)
+- PCI DSS v4.0 Requirement 6.4 (Public-Facing Web Applications)
+- SLSA Supply-chain Levels for Software Artifacts
+- Spectre/Meltdown Vulnerability Patches
+- Wi-Fi Alliance WPA3 Specification
