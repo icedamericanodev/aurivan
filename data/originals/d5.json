@@ -3636,6 +3636,734 @@
         "Manual fallback procedures"
       ],
       "_provenance": "Authored from concept: 'IoT botnet activity in branch network response'. Public sources: ISACA, NIST, CISA, Mirai research. No legacy bank citation."
+    },
+    {
+      "id": "d5_101",
+      "domain": 5,
+      "subtopic": "Security Awareness Program — Canonical Framework",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical framework for an information security awareness and training program?",
+      "options": {
+        "A": "Role-tailored curriculum + new-hire training + annual refresh + phishing simulation + role-specific modules + metrics + executive sponsorship + HR integration.",
+        "B": "Annual one-hour generic compliance video for all employees with no role differentiation, simulation, or measurement of behavioral outcome.",
+        "C": "Posters in office hallways and occasional all-hands reminders; formal training program adds overhead without measurable security benefit.",
+        "D": "Optional self-service training accessed by employees only when motivated by personal interest; participation is voluntary without tracking."
+      },
+      "correct": "A",
+      "key_concept": "Awareness program = role-tailored curriculum + new-hire training + annual refresh + phishing simulation + role-specific modules + metrics + executive sponsorship + HR lifecycle integration. Eight canonical elements.",
+      "pre_read": "For security awareness questions, anchor on the eight-element framework. Generic-annual-video, posters-only, and voluntary-self-service framings each fail.",
+      "correct_explanation": "ISACA Security Awareness Audit/Assurance Program, NIST SP 800-50 (Building an Information Technology Security Awareness and Training Program, currently under revision as Rev 1), NIST SP 800-181 Rev 1 (NICE Workforce Framework), and SANS Security Awareness Maturity Model establish canonical awareness program framework: (1) ROLE-TAILORED CURRICULUM — different content for general staff, IT/admin, developers, finance, HR, executives, board; (2) NEW-HIRE TRAINING — within first 30 days; covers acceptable use, basic threats, incident reporting; (3) ANNUAL REFRESH — mandatory recertification; updated content reflecting current threats; (4) PHISHING SIMULATION — quarterly campaigns; click + report metrics; targeted re-training for repeat clickers; (5) ROLE-SPECIFIC MODULES FOR ELEVATED-RISK ROLES — secure coding for developers, fraud-recognition for finance, secure-data-handling for HR, board-level cyber-risk briefings; (6) METRICS — completion rates, simulation click rates, time-to-report, reduction in repeat clickers; trends; (7) EXECUTIVE SPONSORSHIP — CISO or CSO sponsors program; CEO/board visibility for high-stakes communications; (8) HR LIFECYCLE INTEGRATION — onboarding, role-change, offboarding tied to training records; HRIS integration. Maturity model progression: Level 1 (compliance-driven) → Level 2 (skill-based) → Level 3 (behavior-changing) → Level 4 (culture-embedded). PCI DSS Requirement 12.6 mandates security awareness; HIPAA Security Rule §164.308(a)(5) requires.",
+      "wrong_explanations": {
+        "B": "B reduces awareness to a generic annual video, missing role-tailoring (admins, developers, finance, executives need different content), phishing simulation (behavioral practice), metrics (effectiveness), and HR-lifecycle integration. Compliance check without behavior change.",
+        "C": "C uses posters and reminders only, missing structured curriculum, simulation, and measurement. Posters increase visibility but don't change behavior at scale; formal program is the foundation of measurable security culture.",
+        "D": "D makes training voluntary, which produces participation among those who least need it (motivated security-curious employees) and skips those at greatest risk (busy executives, transaction-processing staff). Mandatory tracked completion is standard."
+      },
+      "tips": [
+        "Trap is B — 'annual one-hour generic compliance video' is candidate-seductive because it's the most-deployed awareness 'program' across firms; but generic-annual misses role-tailoring, behavioral simulation, and metrics. Compliance check without behavior change is the failure mode the eight-element framework addresses.",
+        "Awareness program = role-tailored curriculum + new-hire + annual refresh + phishing simulation + role-specific modules + metrics + executive sponsorship + HR lifecycle integration. Eight elements. Maturity Level 1 (compliance) → Level 4 (culture).",
+        "Exam-day shortcut: when stem asks about SECURITY AWARENESS PROGRAM, look for the eight-element framework with phishing simulation + metrics + role-tailoring; generic-annual, posters-only, and voluntary framings each fail."
+      ],
+      "framework_ref": "ISACA Security Awareness Audit/Assurance Program; NIST SP 800-50 (Building an Information Technology Security Awareness and Training Program); NIST SP 800-181 Rev 1 (NICE Workforce Framework); SANS Security Awareness Maturity Model; PCI DSS v4.0 Requirement 12.6",
+      "related_concepts": [
+        "Phishing simulation cadence",
+        "Role-tailored curriculum",
+        "Behavior-change metrics",
+        "SANS Maturity Model"
+      ],
+      "_provenance": "Authored from concept: 'Security awareness program canonical framework per NIST SP 800-50 + SANS Maturity Model'. Public sources: ISACA, NIST, SANS, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_102",
+      "domain": 5,
+      "subtopic": "Attack Methods — MITRE ATT&CK Taxonomy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "question": "Which option BEST captures the canonical taxonomy for information-system attack methods?",
+      "options": {
+        "A": "Attacks are categorized exclusively by attacker motivation (financial, espionage, hacktivism); the underlying techniques don't require their own taxonomy framework.",
+        "B": "MITRE ATT&CK 14 tactics across the full kill chain (initial access → execution → persistence → escalation → lateral movement → exfiltration → impact).",
+        "C": "Attack categorization is vendor-specific and varies dramatically across security products; no industry-standard taxonomy actually exists in practice.",
+        "D": "Only OWASP Top 10 is needed; web-application attacks are the only category requiring framework treatment in modern security architectures."
+      },
+      "correct": "B",
+      "key_concept": "Attack taxonomy = MITRE ATT&CK 14 tactics across the full kill chain. Industry standard adopted by EDR + SOC + threat intel + frameworks. Hundreds of mapped techniques per tactic.",
+      "pre_read": "For attack taxonomy questions, anchor on MITRE ATT&CK 14 tactics. Motivation-only, vendor-specific, and OWASP-only framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework (Adversarial Tactics, Techniques, and Common Knowledge, refined since 2013) is the industry-standard attack taxonomy used by EDR/XDR vendors, SOC operations, threat intelligence, and frameworks (NIST SP 800-53, ISO/IEC 27001:2022). Fourteen TACTICS (the adversary's objective at each stage): (TA0043) RECONNAISSANCE — gather information about target; (TA0042) RESOURCE DEVELOPMENT — establish infrastructure (acquire domains, develop capabilities); (TA0001) INITIAL ACCESS — entry vector (phishing, exploit public-facing app, supply chain compromise); (TA0002) EXECUTION — run malicious code on target; (TA0003) PERSISTENCE — maintain foothold across restarts; (TA0004) PRIVILEGE ESCALATION — gain higher-privilege access; (TA0005) DEFENSE EVASION — avoid detection; (TA0006) CREDENTIAL ACCESS — steal credentials; (TA0007) DISCOVERY — understand the environment; (TA0008) LATERAL MOVEMENT — move through environment; (TA0009) COLLECTION — gather data of interest; (TA0011) COMMAND AND CONTROL — communicate with controlled systems; (TA0010) EXFILTRATION — steal data; (TA0040) IMPACT — destroy/disrupt (ransomware encryption, defacement, denial). Each tactic has multiple TECHNIQUES with sub-techniques; e.g., Initial Access → T1566 Phishing → T1566.001 Spearphishing Attachment. ATT&CK also includes specialized matrices: Enterprise (Windows/macOS/Linux), Mobile, ICS, Cloud. SOC + EDR + threat intel tooling all map detections to ATT&CK techniques for shared vocabulary.",
+      "wrong_explanations": {
+        "A": "A categorizes by motivation only, missing TECHNIQUES which is what defenders detect and respond to. Motivation matters for attribution; techniques matter for defense. ATT&CK's value is exactly the techniques layer.",
+        "C": "C claims no standard taxonomy, but MITRE ATT&CK (since 2013, refined continuously) is the industry-standard taxonomy adopted by EDR vendors, SOC tooling, threat intelligence reports, and security frameworks. Vendor product taxonomies map TO ATT&CK.",
+        "D": "D restricts to OWASP Top 10, but OWASP covers web-application attacks specifically (one layer); ATT&CK covers the full kill chain across initial access, execution, persistence, lateral movement, exfiltration. Both frameworks are needed for distinct purposes."
+      },
+      "tips": [
+        "Trap is C — 'no standard taxonomy exists' is candidate-seductive because security vendor product taxonomies do vary; but MITRE ATT&CK has been the industry-standard adopted by EDR vendors, SOC tooling, and frameworks since ~2018. Vendor product taxonomies MAP TO ATT&CK, not replace it.",
+        "Attack taxonomy = MITRE ATT&CK 14 tactics covering full kill chain. Industry standard. Each tactic has multiple techniques + sub-techniques. Matrices: Enterprise / Mobile / ICS / Cloud.",
+        "Exam-day shortcut: when stem asks about ATTACK METHODS or ATTACK CATEGORIZATION, look for MITRE ATT&CK 14 tactics; motivation-only, vendor-specific, and OWASP-only framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework (Enterprise/Mobile/ICS/Cloud matrices); NIST SP 800-53 Rev 5 (referencing ATT&CK for threat models); ISACA Information Systems Audit/Assurance Standards; ISO/IEC 27001:2022 (Information Security Management Systems); CISA Top Attack Techniques Advisory",
+      "related_concepts": [
+        "ATT&CK Enterprise matrix",
+        "Tactics vs techniques vs sub-techniques",
+        "Kill chain stages",
+        "Threat-intel-to-ATT&CK mapping"
+      ],
+      "_provenance": "Authored from concept: 'MITRE ATT&CK 14 tactics as canonical attack taxonomy'. Public sources: MITRE, NIST, ISACA, CISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_103",
+      "domain": 5,
+      "subtopic": "Phishing and Spear-Phishing — Attack Patterns",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's defenses against phishing and spear-phishing attacks. Which option BEST captures the canonical PHISHING ATTACK PATTERNS that the awareness program should address?",
+      "options": {
+        "A": "Phishing is exclusively email-based attacks; SMS, voice, and other channels are separate threats with separate awareness coverage.",
+        "B": "All phishing is the same generic email-based credential harvesting; targeted variants are theoretically interesting but operationally identical.",
+        "C": "Bulk phishing + spear-phishing + whaling + Business Email Compromise (BEC) + smishing (SMS) + vishing (voice/AI-generated audio) — six canonical patterns.",
+        "D": "Phishing is only a consumer threat; corporate users with email security gateways are not exposed to phishing regardless of awareness program."
+      },
+      "correct": "C",
+      "key_concept": "Phishing patterns = bulk + spear-phishing + whaling + BEC + smishing + vishing. Six canonical patterns across volume/targeting/channel dimensions.",
+      "pre_read": "For phishing pattern questions, anchor on six-pattern taxonomy. Email-only, all-same, and consumer-only framings each fail.",
+      "correct_explanation": "ISACA Information Security Audit/Assurance Program, FBI Internet Crime Complaint Center (IC3) Annual Reports, and CISA Phishing Guidance establish phishing attack pattern taxonomy: (1) BULK PHISHING — volume-based campaigns sending millions of emails; low-effort; broad credential harvesting; often spoofed major brands (Microsoft, Google, banks); (2) SPEAR-PHISHING — TARGETED attacks against specific individuals; attacker researches target (LinkedIn, social media, public records); plausible pretext; higher success rate; (3) WHALING — spear-phishing targeting EXECUTIVES (CEO, CFO, board members); high-value targets; often financial fraud or strategic intelligence; (4) BUSINESS EMAIL COMPROMISE (BEC) — executive-impersonation attacks targeting finance team for wire-transfer fraud; FBI IC3 reports BEC at $2.9B+ annual losses; multiple sub-patterns (CEO fraud, vendor invoice fraud, payroll diversion, attorney impersonation); (5) SMISHING — SMS phishing; increasingly used for MFA bypass (smishing for SMS OTP, MFA-fatigue prompts); (6) VISHING — voice phishing; INCREASINGLY AI-GENERATED audio (deepfake voice clones of executives requesting wire transfers); challenges traditional 'verify by calling back' defense since attacker may control or spoof the callback number. Modern variant: MULTI-CHANNEL CAMPAIGNS combining phishing + smishing + vishing in coordinated sequence to defeat single-channel defenses.",
+      "wrong_explanations": {
+        "A": "A restricts phishing to email, missing smishing (SMS phishing — common in MFA-bypass attacks), vishing (voice phishing — increasingly AI-generated audio impersonating executives), and channel-specific patterns. Modern phishing is multi-channel; awareness program must cover all.",
+        "B": "B treats all phishing as identical, missing the spectrum from bulk (volume, low-effort, broad target) to BEC (high-effort, executive-impersonation, finance-team-targeted, wire-transfer-focused). Defenses and user training differ across the spectrum.",
+        "D": "D claims gateway defenses make awareness unnecessary, missing that email gateways have known bypass rates (often 5-15% for sophisticated attacks). Awareness is the second layer after gateway; one layer alone is insufficient."
+      },
+      "tips": [
+        "Trap is D — 'corporate email gateways eliminate phishing exposure' is candidate-seductive because gateway products are sophisticated; but gateways have known bypass rates (5-15% for sophisticated attacks). Awareness is the second layer; gateway alone is insufficient.",
+        "Phishing patterns = bulk + spear + whaling + BEC + smishing + vishing. Six patterns across volume/targeting/channel. BEC alone is $2.9B+ annual FBI IC3 losses.",
+        "Exam-day shortcut: when stem asks about PHISHING PATTERNS, look for six-pattern taxonomy across channels and targeting; email-only, all-same, and gateway-sufficient framings each fail."
+      ],
+      "framework_ref": "ISACA Information Security Audit/Assurance Program; FBI Internet Crime Complaint Center (IC3) Annual Report; CISA Phishing Guidance; NIST SP 800-83 Rev 1 (Malware Incident Handling)",
+      "related_concepts": [
+        "Business Email Compromise (BEC)",
+        "Smishing/Vishing",
+        "AI-generated voice phishing",
+        "Multi-channel phishing campaigns"
+      ],
+      "_provenance": "Authored from concept: 'Phishing attack pattern taxonomy across channels and targeting'. Public sources: ISACA, FBI IC3, CISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_104",
+      "domain": 5,
+      "subtopic": "Phishing Simulation Program Design",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's phishing simulation program covering 8,400 employees. Which option BEST captures the canonical PHISHING SIMULATION program design?",
+      "options": {
+        "A": "Annual single-campaign with widely-publicized identical phishing message; consistent measurement enables year-over-year comparison.",
+        "B": "Punitive enforcement for any employee who clicks; one-strike performance impact incentivizes attention to all suspicious emails.",
+        "C": "External vendor runs the program with no firm-side curation; vendor's default templates and cadence are used unchanged.",
+        "D": "Quarterly campaigns + progressive difficulty + reporter-friendly culture (no click-punishment) + repeat-clicker training + click+report metrics + scenario variety + transparent post-campaign."
+      },
+      "correct": "D",
+      "key_concept": "Phishing simulation = quarterly + progressive difficulty + reporter-friendly (reward reporting, no click-punishment) + repeat-clicker re-training + click AND report metrics + scenario variety + transparent post-campaign disclosure.",
+      "pre_read": "For phishing simulation questions, anchor on reporter-friendly culture + progressive difficulty + click-and-report metrics. Annual-identical, punitive, and vendor-default framings each fail.",
+      "correct_explanation": "ISACA Security Awareness Audit/Assurance Program, KnowBe4 / Proofpoint Security Awareness / Cofense PhishMe vendor methodologies, and SANS Security Awareness Maturity Model establish phishing simulation canonical design: (1) QUARTERLY CAMPAIGNS — frequent enough to build habit; not so frequent that employees develop simulation-fatigue; (2) PROGRESSIVE DIFFICULTY — start with obvious phishing (basic IOCs visible); progress to sophisticated (BEC pretext, spoofed-domain look-alikes, attachment-based); skill builds; (3) REPORTER-FRIENDLY CULTURE — explicit no-punishment for clicks; REWARD reporting (positive feedback when employee reports suspicious email); the goal is to maximize REPORT RATE; (4) TARGETED RE-TRAINING FOR REPEAT CLICKERS — repeat-click pattern (3+ clicks in 12 months) triggers role-specific re-training; manager involvement for persistent patterns; (5) CLICK-RATE AND REPORT-RATE METRICS — click rate decreasing over time + report rate increasing = healthy program; click alone misses behavior change; (6) SCENARIO VARIETY — finance-pretext, IT-pretext, HR-pretext, vendor-pretext; firm-specific contexts (recent vendor relationships, ongoing projects, real executive names); (7) TRANSPARENT POST-CAMPAIGN DISCLOSURE — after campaign, communicate that simulation occurred + what to look for; teaches without humiliating individuals. Punitive culture is the most-common failure mode; produces high-click-low-report state.",
+      "wrong_explanations": {
+        "A": "A uses annual + identical message, missing: progressive difficulty (skill builds over time), variety (real attackers don't reuse), and behavioral practice (one event/year doesn't build habit). Annual-identical produces high false-confidence metrics.",
+        "B": "B uses punitive enforcement, which is COUNTERPRODUCTIVE: employees stop reporting suspicious emails for fear of consequences (anything they report might be marked as 'I clicked something'). The most-important metric (REPORT RATE) drops; firms lose visibility into real attacks.",
+        "C": "C delegates to vendor without firm-side curation, missing firm-specific context (firm's vendor names, executive names, common business processes). Vendor default templates produce predictable patterns; firm-specific scenarios are more realistic."
+      },
+      "tips": [
+        "Trap is B — 'punitive enforcement for clicks' is candidate-seductive because punishment feels like accountability; but punitive culture is operationally counterproductive: employees stop reporting suspicious emails (anything reported might be 'I clicked something'). REPORT RATE drops; visibility into real attacks drops. Reporter-friendly culture is canonical.",
+        "Phishing simulation = quarterly + progressive difficulty + reporter-friendly + repeat-clicker training + click+report metrics + scenario variety + transparent post-campaign. Click rate ↓ AND report rate ↑ = healthy.",
+        "Exam-day shortcut: when stem describes a SIMULATION PROGRAM with CLICK-RATE as the only reported metric, suspect missing-REPORT-RATE failure; when stem describes PUNITIVE consequence for clicks, expect REPORT RATE has dropped; reporter-friendly culture is what makes click-rate decline durable."
+      ],
+      "framework_ref": "ISACA Security Awareness Audit/Assurance Program; KnowBe4 Security Awareness Methodology; Cofense PhishMe Behavioral Conditioning; SANS Security Awareness Maturity Model",
+      "related_concepts": [
+        "Click rate vs report rate",
+        "Reporter-friendly culture",
+        "Progressive difficulty",
+        "Repeat-clicker re-training"
+      ],
+      "_provenance": "Authored from concept: 'Phishing simulation program canonical design'. Public sources: ISACA, vendor methodologies, SANS. No legacy bank citation."
+    },
+    {
+      "id": "d5_105",
+      "domain": 5,
+      "subtopic": "Social Engineering Taxonomy",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's social engineering defenses. Which option BEST captures the canonical SOCIAL ENGINEERING taxonomy?",
+      "options": {
+        "A": "Pretexting + baiting + tailgating + quid pro quo + phishing/spear-phishing + impersonation. Six canonical techniques across non-technical attack space.",
+        "B": "Social engineering is identical to phishing; the two terms are synonymous and no broader taxonomy is required.",
+        "C": "Only technical attacks (malware, exploits) matter; social engineering is non-technical and outside information security scope.",
+        "D": "Social engineering only affects consumer users; corporate employees with awareness training are immune to social engineering tactics."
+      },
+      "correct": "A",
+      "key_concept": "Social engineering = pretexting + baiting + tailgating + quid pro quo + phishing + impersonation. Six canonical techniques across non-technical attack space. Responsible for ~80%+ of breach initial access (Verizon DBIR).",
+      "pre_read": "For social engineering questions, anchor on six-technique taxonomy. Phishing-synonym, non-technical-dismissal, and immune-with-training framings each fail.",
+      "correct_explanation": "ISACA Information Security Audit/Assurance Program, Verizon Data Breach Investigations Report (DBIR, annual), and Christopher Hadnagy's Social-Engineer Framework establish social engineering taxonomy: (1) PRETEXTING — fabricated scenario to elicit information or action ('I'm from IT, your account is locked, I need your password to unlock'); typically verbal/phone or written, not email; (2) BAITING — lure target with attractive media (USB drops in parking lots, fake game cheats, free download); curiosity-driven malware execution; (3) TAILGATING — PHYSICAL access exploitation; following authorized person through access-controlled door; combined with social pretext ('forgot my badge'); (4) QUID PRO QUO — offer service or favor in exchange for credentials/access; ('I'll help you with your laptop issue if you log in here'); often used in IT-support impersonation; (5) PHISHING/SPEAR-PHISHING — email-based; included as social engineering subset; (6) IMPERSONATION — executive (CEO fraud, whaling), IT support, vendor, government inspector; pretext often paired with urgency to bypass verification. Per Verizon DBIR, social engineering is the most-common initial-access vector (sustained ~70-85% of breaches over recent years).",
+      "wrong_explanations": {
+        "B": "B reduces social engineering to phishing, missing pretexting (verbal/written scenario, non-email), baiting (physical media drops, USB drops), tailgating (PHYSICAL access exploitation), quid pro quo, and impersonation. Phishing is one technique within the broader category.",
+        "C": "C dismisses social engineering as non-technical, but social engineering is responsible for ~80%+ of breaches per Verizon DBIR (initial-access vector). Most-effective initial-access technique; clearly within information security scope.",
+        "D": "D claims awareness immunizes employees, but well-trained employees still fall to sophisticated social engineering (AI voice clones, spear-phishing with insider knowledge, multi-channel campaigns). Awareness REDUCES susceptibility, doesn't eliminate."
+      },
+      "tips": [
+        "Trap is D — 'awareness training immunizes employees' is candidate-seductive because awareness IS effective; but well-trained employees still fall to sophisticated social engineering (AI voice clones, multi-channel campaigns, spear-phishing with insider knowledge from public sources). Awareness REDUCES susceptibility, doesn't eliminate.",
+        "Social engineering = pretexting + baiting + tailgating + quid pro quo + phishing + impersonation. Six canonical techniques. ~80%+ of breach initial access per Verizon DBIR. Awareness REDUCES susceptibility but doesn't eliminate.",
+        "Exam-day shortcut: when stem asks about SOCIAL ENGINEERING, look for six-technique taxonomy; phishing-synonym, non-technical-dismissal, and immune-with-training framings each fail."
+      ],
+      "framework_ref": "ISACA Information Security Audit/Assurance Program; Verizon Data Breach Investigations Report (DBIR); Social-Engineer Framework (Hadnagy); NIST SP 800-50 (Building Security Awareness Program)",
+      "related_concepts": [
+        "Verizon DBIR initial-access",
+        "Pretexting",
+        "Tailgating + piggybacking",
+        "AI voice clone impersonation"
+      ],
+      "_provenance": "Authored from concept: 'Social engineering canonical taxonomy'. Public sources: ISACA, Verizon DBIR, NIST, social-engineering research. No legacy bank citation."
+    },
+    {
+      "id": "d5_106",
+      "domain": 5,
+      "subtopic": "Role-Based Security Training",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's role-based security training. Which option BEST captures the canonical ROLE-BASED TRAINING content tailoring?",
+      "options": {
+        "A": "All employees receive identical training content for fairness and consistency; role differentiation undermines training equity across the workforce.",
+        "B": "Developers (secure coding) + admins (PAM/audit) + finance (BEC/wire verification) + HR (PII/insider) + executives (cyber-risk/crisis) + general staff (basic threats/reporting).",
+        "C": "Only executives need security training; their decisions affect the firm; rank-and-file staff have no security responsibilities.",
+        "D": "Role-based training is automated by HR-LMS systems with no curriculum design required; default vendor content covers all roles equivalently."
+      },
+      "correct": "B",
+      "key_concept": "Role-based training = developers (secure coding/OWASP) + admins (privilege/audit) + finance (BEC/wire verification) + HR (PII/insider threat) + executives (cyber-risk/crisis) + general staff (basic threats/reporting). Six canonical role buckets.",
+      "pre_read": "For role-based training questions, anchor on six-role-bucket taxonomy. Identical-content, executives-only, and vendor-default framings each fail.",
+      "correct_explanation": "ISACA Security Awareness Audit/Assurance Program, NIST SP 800-181 Rev 1 (NICE Cybersecurity Workforce Framework), and SANS Security Awareness Maturity Model establish role-based training content tailoring framework: (1) DEVELOPERS — secure coding (OWASP Top 10, SAST/DAST tools, secure SDLC), threat modeling, code review for security, secret management; (2) ADMINS (IT, SysAdmin, Network) — privileged access management (PAM, JIT), audit logging, change management, secure-configuration standards (CIS Benchmarks), incident response handling; (3) FINANCE — Business Email Compromise (BEC) recognition, wire-transfer out-of-band verification, vendor invoice fraud patterns, payroll diversion red flags; (4) HR — PII handling, employee privacy, insider-threat indicators, secure offboarding, employment-law awareness for monitoring; (5) EXECUTIVES — cyber-risk in business decisions, crisis communication, regulatory implications, board reporting; (6) GENERAL STAFF — phishing recognition, password hygiene, suspicious-email reporting, mobile device security, acceptable use. Maps to NIST NICE Framework specialty areas. Content needs FIRM-SPECIFIC CONTEXT (firm's vendor names, secure-coding standards, wire-transfer SOP, common business processes).",
+      "wrong_explanations": {
+        "A": "A uses identical content, missing the substantive role differences. Developers need secure-coding (OWASP) which is irrelevant to HR; HR needs PII-handling and insider-threat which is irrelevant to developers. Identical content over-covers some, under-covers others, and engages no one fully.",
+        "C": "C restricts to executives, missing the operational majority of breach vectors. Developers introduce vulnerabilities (Equifax 2017 = unpatched Struts via developer awareness gap); finance is BEC target ($2.9B+ annually); rank-and-file are phishing-clicked targets.",
+        "D": "D claims vendor content covers all roles, but vendor default content is generic. Role-specific content needs firm context (firm's secure-coding standards, firm's wire-transfer procedure, firm's vendor relationships). Curriculum design is required."
+      },
+      "tips": [
+        "Trap is C — 'only executives need security training' is candidate-seductive because executives ARE high-value targets; but operational majority of breach vectors are at OTHER roles: developers (vulnerabilities), finance (BEC), rank-and-file (phishing). Restricting training to executives leaves the broader attack surface uncovered.",
+        "Role-based training = developers + admins + finance + HR + executives + general staff. Six canonical role buckets with role-specific content + firm-specific context.",
+        "Exam-day shortcut: when stem asks about ROLE-BASED TRAINING, look for the six-role-bucket taxonomy with role-specific + firm-specific content; identical-content, executives-only, and vendor-default framings each fail."
+      ],
+      "framework_ref": "ISACA Security Awareness Audit/Assurance Program; NIST SP 800-181 Rev 1 (NICE Cybersecurity Workforce Framework); SANS Security Awareness Maturity Model; OWASP Top 10 (2021)",
+      "related_concepts": [
+        "NIST NICE Framework",
+        "Developer secure coding",
+        "Finance BEC training",
+        "Executive cyber-risk briefing"
+      ],
+      "_provenance": "Authored from concept: 'Role-based security training content tailoring'. Public sources: ISACA, NIST, SANS, OWASP. No legacy bank citation."
+    },
+    {
+      "id": "d5_107",
+      "domain": 5,
+      "subtopic": "Web Attack Methods Catalog",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's defenses against web application attacks. Which option BEST captures the canonical WEB ATTACK METHODS catalog?",
+      "options": {
+        "A": "Only SQL injection matters; other web attack methods are theoretical and don't occur in modern web applications with parameterized queries.",
+        "B": "Web attacks are addressed by WAF deployment without need for application-side awareness or development practices.",
+        "C": "Injection (SQL/NoSQL/cmd/LDAP) + XSS + CSRF + SSRF + XXE + insecure deserialization + path traversal + open redirect + broken authn/session + business-logic abuse.",
+        "D": "Web application attacks are deprecated since the rise of mobile apps; modern firms don't have web applications requiring attack-method coverage."
+      },
+      "correct": "C",
+      "key_concept": "Web attacks = injection + XSS + CSRF + SSRF + XXE + insecure deserialization + path traversal + open redirect + broken authn/session + business-logic abuse. Ten canonical attack categories.",
+      "pre_read": "For web attack questions, anchor on ten-category taxonomy with both WAF and application-side defenses. SQL-only, WAF-only, and web-deprecated framings each fail.",
+      "correct_explanation": "OWASP Top 10 (2021), OWASP Web Security Testing Guide (WSTG), and ISACA Web Application Security Audit/Assurance Program establish web attack methods: (1) INJECTION — SQL/NoSQL (database query manipulation), Command (OS command execution), LDAP (directory query manipulation), Template injection; defense: parameterized queries, input validation, ORM; (2) CROSS-SITE SCRIPTING (XSS) — reflected (in URL), stored (in database, served to other users), DOM-based (client-side JavaScript); defense: output encoding, CSP; (3) CSRF (CROSS-SITE REQUEST FORGERY) — force authenticated user to perform unwanted action; defense: anti-CSRF tokens, SameSite cookies; (4) SSRF (SERVER-SIDE REQUEST FORGERY) — server fetches attacker-controlled URL; cloud-metadata-endpoint abuse common (AWS IMDSv1 vulnerable); defense: URL allowlist, IMDSv2; (5) XXE (XML EXTERNAL ENTITY) — XML parser fetches external resources; defense: disable external entities; (6) INSECURE DESERIALIZATION — untrusted data deserialized leading to RCE; (7) PATH TRAVERSAL — '../' in URL accessing unauthorized files; (8) OPEN REDIRECT — uncontrolled redirect to attacker URL; phishing abuse; (9) BROKEN AUTHENTICATION/SESSION — weak session management, session fixation, token leakage; (10) BUSINESS-LOGIC ABUSE — legitimate-looking requests exploiting business logic (price manipulation, quantity manipulation, workflow bypass).",
+      "wrong_explanations": {
+        "A": "A restricts to SQL injection, missing nine other attack categories. XSS (stored variant powers credential theft + account takeover), CSRF (forces authenticated users to perform unwanted actions), SSRF (cloud-metadata-endpoint abuse), business-logic abuse all require distinct defenses.",
+        "B": "B relies on WAF only, missing application-side defenses. WAF catches generic patterns but misses business-logic attacks (legitimate-looking requests with malicious intent), authenticated-session attacks (already past WAF), and zero-day vulnerabilities. Application-side defenses (parameterized queries, output encoding, CSRF tokens, anti-CSRF) are required.",
+        "D": "D claims web apps are deprecated, but web applications remain the dominant interface for SaaS, customer portals, internal applications, partner portals, admin consoles. Mobile apps typically call API endpoints which are web-application-equivalent attack surface."
+      },
+      "tips": [
+        "Trap is A — 'only SQL injection matters' is candidate-seductive because SQL injection is the most-discussed web attack; but XSS, CSRF, SSRF, business-logic abuse, and others occur frequently and require distinct defenses. SQL injection is one of ten categories.",
+        "Web attacks = injection + XSS + CSRF + SSRF + XXE + insecure deserialization + path traversal + open redirect + broken authn + business-logic abuse. Ten categories; WAF + application-side defenses both needed.",
+        "Exam-day shortcut: when stem asks about WEB ATTACK METHODS, look for the ten-category taxonomy; SQL-only, WAF-only, and web-deprecated framings each fail."
+      ],
+      "framework_ref": "OWASP Top 10 (2021); OWASP Web Security Testing Guide (WSTG); ISACA Web Application Security Audit/Assurance Program; PCI DSS v4.0 Requirement 6 (Develop and Maintain Secure Systems)",
+      "related_concepts": [
+        "Stored XSS",
+        "SSRF cloud-metadata abuse",
+        "Business-logic abuse",
+        "Anti-CSRF tokens + SameSite cookies"
+      ],
+      "_provenance": "Authored from concept: 'Web attack methods canonical catalog per OWASP Top 10 + WSTG'. Public sources: OWASP, ISACA, PCI Council. No legacy bank citation."
+    },
+    {
+      "id": "d5_108",
+      "domain": 5,
+      "subtopic": "Network Attack Methods Catalog",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's network attack defenses. Which option BEST captures the canonical NETWORK ATTACK METHODS catalog?",
+      "options": {
+        "A": "Network attacks are deprecated since most communication now uses TLS; widespread encryption eliminates network-layer attack categories entirely.",
+        "B": "Only DDoS matters in network attack scope; the other network attack methods are theoretical and lack practical defensive relevance.",
+        "C": "Network attacks are external-perimeter only; the internal corporate network is inherently trusted and requires no network-attack defenses.",
+        "D": "MITM + DNS poisoning + DDoS + lateral movement (SMB/RPC/RDP) + sniffing + protocol downgrade + BGP routing attacks + DHCP starvation."
+      },
+      "correct": "D",
+      "key_concept": "Network attacks = MITM + DNS poisoning + DDoS + lateral movement (SMB/RPC/RDP) + sniffing + protocol downgrade + routing attacks (BGP hijack) + DHCP starvation. Eight canonical categories.",
+      "pre_read": "For network attack questions, anchor on eight-category taxonomy across transport + routing + lateral movement. TLS-eliminates, DDoS-only, and external-only framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework (Network Tactics), NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment), and CISA Network Security Guidance establish network attack methods: (1) MAN-IN-THE-MIDDLE — TLS-strip (downgrade HTTPS to HTTP), ARP spoofing (redirect Layer 2), session hijacking; defense: HSTS, certificate pinning, dynamic ARP inspection; (2) DNS POISONING — cache poisoning, DNS hijack, malicious DNS server; defense: DNSSEC validation, encrypted DNS (DoT/DoH); (3) DDoS — volumetric (NTP/DNS amplification), protocol (SYN flood), application (HTTP flood); defense: scrubbing service (CDN, Cloudflare, AWS Shield, Akamai), rate limiting; (4) LATERAL MOVEMENT — SMB exploitation (EternalBlue), RPC, RDP brute-force, credential reuse, Pass-the-Hash, Pass-the-Ticket; defense: microsegmentation, EDR, privileged access management; (5) SNIFFING ON SHARED MEDIA — packet capture on WiFi, hub/switch port mirroring; defense: switched networks, encryption; (6) PROTOCOL DOWNGRADE — TLS version downgrade, cipher suite downgrade; defense: minimum-version enforcement, modern cipher requirements; (7) ROUTING ATTACKS — BGP hijack (recent incidents: 2022 Twitter route leak, 2023 KLAYswap), Route Origin Authorization (RPKI) defense; (8) DHCP STARVATION — exhaust DHCP pool with spoofed requests then provide rogue DHCP service; defense: DHCP snooping.",
+      "wrong_explanations": {
+        "A": "A claims TLS eliminates network attacks, but: TLS-strip downgrades to plaintext; ARP spoofing redirects traffic; DNS poisoning subverts name resolution (TLS validates the cert but DNS poisoning sends you to attacker's domain with attacker's cert); BGP hijack reroutes whole traffic flows. TLS solves transport confidentiality but not routing/resolution attacks.",
+        "B": "B restricts to DDoS, missing MITM (credential capture), DNS poisoning (phishing facilitation), lateral movement (post-breach propagation), and routing attacks. Each category requires distinct defense.",
+        "C": "C restricts to external, but most lateral-movement attacks are INTERNAL (SMB, RPC, RDP exploitation, credential harvesting). Zero Trust principles explicitly reject trusted-internal-network assumption."
+      },
+      "tips": [
+        "Trap is A — 'TLS eliminates network attacks' is candidate-seductive because TLS IS widely deployed; but TLS solves transport CONFIDENTIALITY, not routing (BGP hijack) or resolution (DNS poisoning). TLS-strip downgrades HTTPS to HTTP; ARP spoofing redirects traffic. Network attacks remain.",
+        "Network attacks = MITM + DNS poisoning + DDoS + lateral movement + sniffing + downgrade + routing (BGP hijack) + DHCP starvation. Eight categories across transport + routing + lateral movement.",
+        "Exam-day shortcut: when stem asks about NETWORK ATTACK METHODS, look for the eight-category taxonomy; TLS-eliminates, DDoS-only, and external-only framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework; NIST SP 800-115 (Technical Guide to Information Security Testing); CISA Network Security Guidance; NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy)",
+      "related_concepts": [
+        "BGP hijack",
+        "DNS poisoning",
+        "TLS-strip attack",
+        "Pass-the-Hash"
+      ],
+      "_provenance": "Authored from concept: 'Network attack methods canonical catalog'. Public sources: MITRE, NIST, CISA. No legacy bank citation."
+    },
+    {
+      "id": "d5_109",
+      "domain": 5,
+      "subtopic": "Endpoint Attack Methods Catalog",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's endpoint attack defenses. Which option BEST captures the canonical ENDPOINT ATTACK METHODS catalog?",
+      "options": {
+        "A": "Traditional malware + fileless + LOLBins + macro malware + ransomware + crypto miners + info-stealers + RATs + supply-chain malware.",
+        "B": "Only signature-based malware exists; modern endpoints with AV are fully protected against all endpoint attack methods.",
+        "C": "Endpoint attacks are addressed by EDR alone; awareness program coverage of endpoint attacks adds no value.",
+        "D": "Endpoint attacks affect only physical desktops; modern cloud-first architectures eliminate the endpoint as a relevant attack surface entirely."
+      },
+      "correct": "A",
+      "key_concept": "Endpoint attacks = traditional malware + fileless + LOLBins + macro malware + ransomware + crypto miners + info-stealers + RATs + supply-chain malware. Nine canonical categories.",
+      "pre_read": "For endpoint attack questions, anchor on nine-category taxonomy including fileless and LOLBin variants. Signature-only, EDR-only-without-awareness, and cloud-eliminates framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework, NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling), and Living Off The Land Binaries and Scripts (LOLBAS) project establish endpoint attack method taxonomy: (1) TRADITIONAL MALWARE — signature-detectable; Win32 PE files, ELF, Mach-O; AV-detectable but increasingly bypassed; (2) FILELESS ATTACKS — no file on disk; PowerShell scripts in memory, WMI subscriptions, registry-only payloads, ProcessHollowing; EDR-required to detect; (3) LIVING-OFF-THE-LAND BINARIES (LOLBINS) — legitimate Windows/Linux binaries used maliciously (PowerShell, certutil.exe, WMI, mshta, regsvr32, bitsadmin); AV can't flag (binaries are signed Microsoft); behavioral detection required; (4) MACRO MALWARE — Office document macros; VBA, XLM (Excel 4.0 macros, recently abused); (5) RANSOMWARE — file encryption + extortion; modern variants include data exfiltration (double-extortion); (6) CRYPTO MINERS — unauthorized cryptocurrency mining using victim CPU/GPU; subtle resource consumption; (7) INFO-STEALERS — credential theft, browser-stored password extraction, session cookie theft (RedLine, Vidar, Raccoon); (8) RATs (REMOTE ACCESS TROJANS) — persistent backdoor with command-and-control; (9) SUPPLY-CHAIN MALWARE — pre-installed in legitimate software (SolarWinds 2020, XZ-utils 2024).",
+      "wrong_explanations": {
+        "B": "B restricts to signature-detectable malware, missing fileless attacks (no file on disk, AV blind), LOLBins (legitimate binaries used maliciously, AV can't flag), and modern variants. Signature-based AV misses 50%+ of modern attacks per industry research.",
+        "C": "C claims EDR-only is sufficient, missing the user-behavior dimension. EDR detects technical indicators; awareness teaches users to RECOGNIZE the social-engineering precursor (phishing → malicious download → endpoint malware). Defense in depth requires both.",
+        "D": "D claims endpoints are eliminated by cloud, but cloud workloads run on endpoints (developer workstations to develop, SaaS clients on endpoints to access). Endpoint attack surface persists in cloud-first architectures."
+      },
+      "tips": [
+        "Trap is B — 'signature-based AV is fully protective' is candidate-seductive because traditional AV is universally deployed; but signature-based AV misses 50%+ of modern attacks (fileless, LOLBins, novel variants). EDR + behavioral detection required.",
+        "Endpoint attacks = traditional malware + fileless + LOLBins + macro malware + ransomware + crypto miners + info-stealers + RATs + supply-chain malware. Nine categories. Signature-only insufficient.",
+        "Exam-day shortcut: when stem asks about ENDPOINT ATTACK METHODS, look for the nine-category taxonomy including fileless + LOLBins; signature-only, EDR-only-without-awareness, and cloud-eliminates framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework; NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling); LOLBAS Project (Living Off The Land Binaries and Scripts); CIS Controls v8 Safeguard 10 (Malware Defenses)",
+      "related_concepts": [
+        "Fileless attacks",
+        "LOLBins (PowerShell, certutil)",
+        "Double-extortion ransomware",
+        "Supply-chain malware (SolarWinds)"
+      ],
+      "_provenance": "Authored from concept: 'Endpoint attack methods canonical catalog'. Public sources: MITRE, NIST, LOLBAS, CIS. No legacy bank citation."
+    },
+    {
+      "id": "d5_110",
+      "domain": 5,
+      "subtopic": "Privilege Escalation and Lateral Movement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's defenses against privilege escalation and lateral movement after initial compromise. Which option BEST captures the canonical PRIVILEGE ESCALATION AND LATERAL MOVEMENT taxonomy?",
+      "options": {
+        "A": "Initial compromise is the only stage that matters; post-compromise activity is theoretical without practical defensive value.",
+        "B": "Token manipulation + kernel exploits + Kerberos attacks (Golden/Silver/Pass-the-Ticket) + Pass-the-Hash + admin-share abuse + RDP brute-force + LSASS dumping.",
+        "C": "Lateral movement is prevented by network segmentation alone; no other defenses are required after segmentation.",
+        "D": "Privilege escalation and lateral movement are identical concepts; one framework covers both without distinction."
+      },
+      "correct": "B",
+      "key_concept": "Privilege escalation + lateral movement = token manipulation + kernel exploits + service-account abuse + Kerberos attacks (Golden/Silver/Pass-the-Ticket) + Pass-the-Hash + admin-share abuse + RDP brute-force + LSASS dumping. Eight techniques.",
+      "pre_read": "For escalation + lateral movement questions, anchor on eight-technique catalog with distinct escalation (upward) vs lateral (horizontal) directions. Post-compromise-irrelevant, segmentation-only, and escalation=lateral framings each fail.",
+      "correct_explanation": "MITRE ATT&CK Framework tactics TA0004 (Privilege Escalation) and TA0008 (Lateral Movement) establish post-compromise technique catalog: PRIVILEGE ESCALATION (upward — same host): (1) TOKEN MANIPULATION (T1134) — stealing or impersonating access tokens; (2) KERNEL EXPLOITS — exploiting unpatched kernel CVEs; (3) SERVICE-ACCOUNT ABUSE — exploiting over-permissioned service accounts; (4) UAC BYPASS — bypassing Windows User Account Control; LATERAL MOVEMENT (horizontal — other hosts): (5) KERBEROS ATTACKS — Golden Ticket (forged TGT), Silver Ticket (forged TGS), Pass-the-Ticket (T1550.003), Kerberoasting (extract service-account password hashes); (6) PASS-THE-HASH (T1550.002) — authenticate with NTLM hash without knowing password; (7) ADMIN-SHARE ABUSE — SMB/RPC (T1021.002) admin shares used for lateral execution (PsExec, WMI); (8) RDP BRUTE-FORCE OR HIJACK (T1021.001) — exposed RDP, credential reuse; CROSS-CUTTING: LSASS CREDENTIAL DUMPING (T1003.001) — extract cleartext or hashes from LSASS process memory (Mimikatz). Defenses: PAM with JIT, credential isolation (Credential Guard), tiered admin model, microsegmentation, EDR detection of credential-dumping behavior.",
+      "wrong_explanations": {
+        "A": "A dismisses post-compromise stages, but POST-COMPROMISE is where the impact occurs. Initial compromise gives the adversary one foothold; privilege escalation + lateral movement transforms a single foothold into enterprise compromise. Defense at these stages is critical.",
+        "C": "C relies on segmentation alone, missing privilege escalation techniques (token manipulation, kernel exploits) and credential-based lateral movement (Pass-the-Hash works across segments if credentials are reused). PAM + credential hygiene + segmentation + EDR all needed.",
+        "D": "D conflates escalation and lateral movement, but they're DISTINCT: escalation is UPWARD (gaining higher privilege on the same host); lateral movement is HORIZONTAL (moving to other hosts). Different techniques and defenses; ATT&CK has separate tactic categories (TA0004, TA0008)."
+      },
+      "tips": [
+        "Trap is C — 'network segmentation alone prevents lateral movement' is candidate-seductive because segmentation IS effective; but credential-based lateral movement (Pass-the-Hash) works across segments if credentials are reused. Segmentation + credential hygiene + PAM + EDR all needed.",
+        "Privilege escalation + lateral movement = 8 techniques. ESCALATION (upward, same host): token manipulation + kernel exploits + service-account abuse + UAC bypass. LATERAL (horizontal): Kerberos attacks + Pass-the-Hash + admin-share + RDP. Cross-cutting: LSASS dumping.",
+        "Exam-day shortcut: when stem describes POST-COMPROMISE PROPAGATION, look for the eight-technique taxonomy distinguishing escalation (upward) vs lateral (horizontal); post-compromise-irrelevant, segmentation-only, and escalation=lateral framings each fail."
+      ],
+      "framework_ref": "MITRE ATT&CK Framework TA0004 (Privilege Escalation) and TA0008 (Lateral Movement); Microsoft Tiered Administrative Model; Microsoft Credential Guard Documentation; NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
+      "related_concepts": [
+        "Pass-the-Hash",
+        "Golden Ticket attack",
+        "LSASS dumping",
+        "Microsoft Credential Guard"
+      ],
+      "_provenance": "Authored from concept: 'Privilege escalation and lateral movement canonical techniques'. Public sources: MITRE, Microsoft, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_111",
+      "domain": 5,
+      "subtopic": "Insider-Threat Awareness Program",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's insider-threat awareness program. Which option BEST captures the canonical INSIDER-THREAT AWARENESS program?",
+      "options": {
+        "A": "Insider threat is a personnel matter handled by HR alone; no IT or security program involvement is required.",
+        "B": "Surveillance of all employees with monitoring of email, browsing, and file access at all times; total visibility eliminates insider threat.",
+        "C": "Manager training on behavioral indicators + employee reporting + HR-IT integration + DLP + UEBA + ethics training + privacy notice + clear reporting channels.",
+        "D": "Insider threat is rare; awareness program coverage of insider scenarios is unnecessary and may damage employee morale."
+      },
+      "correct": "C",
+      "key_concept": "Insider-threat program = manager training + employee reporting + HR-IT integration + DLP + UEBA analytics + ethics training + privacy notice + reporting channels. Eight elements balancing detection + culture + privacy.",
+      "pre_read": "For insider-threat questions, anchor on eight-element framework. HR-only, total-surveillance, and rare-no-program framings each fail.",
+      "correct_explanation": "ISACA Insider Threat Audit/Assurance Program, CERT Insider Threat Center research, NIST SP 800-53 Rev 5 (PM-12 Insider Threat Program), and Executive Order 13587 (Insider Threat Program for federal agencies) establish insider-threat program framework: (1) MANAGER TRAINING ON BEHAVIORAL INDICATORS — financial stress, ideological grievance, life events, withdrawal from team; CERT Insider Threat Center has indicator catalogs; (2) EMPLOYEE REPORTING CULTURE — anonymous reporting channels, no-retaliation policy, see-something-say-something; (3) HR-IT INTEGRATION FOR OFFBOARDING — coordinated termination workflow; immediate access revocation; equipment recovery; data sanitization; (4) DLP INTEGRATION — content + context + identity-aware detection of anomalous data movement; (5) UEBA-DRIVEN ANALYTICS — User and Entity Behavior Analytics; baseline behavior + deviation detection; anomalous access patterns, after-hours activity, mass file access; (6) ETHICS AND INTEGRITY TRAINING — culture of integrity; whistleblower protection; reduce ideological-grievance vector; (7) PRIVACY NOTICE ON MONITORING — transparent disclosure of what's monitored; jurisdictional employee-monitoring constraints (GDPR Article 88, works councils, state laws); (8) CLEAR REPORTING CHANNELS — to HR + ethics + security; multiple paths to accommodate different concerns. Insider-threat program is HIGHLY-SENSITIVE due to privacy implications; legal review required.",
+      "wrong_explanations": {
+        "A": "A treats insider threat as HR-only, missing the IT/security dimension. Insider threat requires HR (personnel indicators, offboarding workflow), IT (system monitoring, access controls), and security (DLP, UEBA analytics). Single-function ownership fails.",
+        "B": "B relies on total surveillance, which: (a) violates privacy in many jurisdictions (GDPR Article 88, works councils), (b) produces alert fatigue that misses real insider activity, (c) damages employee trust irreparably. Targeted, transparent monitoring with strong privacy framework is the canonical pattern.",
+        "D": "D claims insider threat is rare, but CERT Insider Threat Center research and breach reports indicate insiders account for 20-30% of breaches. Major incidents (Booz Allen-Snowden 2013, NSA-Reality Winner 2017, Tesla 2023) demonstrate ongoing risk; awareness program coverage is essential."
+      },
+      "tips": [
+        "Trap is B — 'total surveillance eliminates insider threat' is candidate-seductive because more monitoring feels like more protection; but total surveillance: (a) violates privacy in many jurisdictions, (b) produces alert fatigue that misses real activity, (c) damages employee trust. Targeted + transparent monitoring with strong privacy framework is canonical.",
+        "Insider-threat program = manager training + employee reporting + HR-IT integration + DLP + UEBA analytics + ethics training + privacy notice + reporting channels. Eight elements balancing detection + culture + privacy.",
+        "Exam-day shortcut: when stem asks about INSIDER-THREAT PROGRAM, look for eight-element framework balancing detection + culture + privacy; HR-only, total-surveillance, and rare-no-program framings each fail."
+      ],
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center research; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); Executive Order 13587; GDPR Article 88 (Processing in the context of employment)",
+      "related_concepts": [
+        "UEBA",
+        "Behavioral indicators",
+        "Whistleblower protection",
+        "Privacy notice for monitoring"
+      ],
+      "_provenance": "Authored from concept: 'Insider-threat awareness program balancing detection + culture + privacy'. Public sources: ISACA, CERT, NIST, EO 13587, GDPR. No legacy bank citation."
+    },
+    {
+      "id": "d5_114",
+      "domain": 5,
+      "subtopic": "Security Awareness Metrics Framework",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "An IT auditor evaluates the firm's security awareness program metrics. Which option BEST captures the canonical AWARENESS METRICS framework?",
+      "options": {
+        "A": "Only completion rate matters; if 95%+ of employees complete annual training, the program is considered effective.",
+        "B": "No metrics are needed because awareness program effectiveness cannot be measured; intangible cultural benefit justifies the program regardless.",
+        "C": "Phishing click rate alone is sufficient; if click rate is below 5%, the program is considered effective.",
+        "D": "Phishing click + report rates + completion by role + time-to-report + repeat-clicker patterns + behavior surveys + incident correlation + maturity assessment."
+      },
+      "correct": "D",
+      "key_concept": "Awareness metrics = phishing click + report rates + completion by role + time-to-report + repeat-clicker patterns + behavior surveys + incident-correlation + maturity assessment. Eight elements; click+report rates are the canonical pair.",
+      "pre_read": "For awareness metrics questions, anchor on eight-element framework with click AND report rates together. Completion-only, can't-measure, and click-only framings each fail.",
+      "correct_explanation": "ISACA Security Awareness Audit/Assurance Program and SANS Security Awareness Maturity Model establish awareness metrics framework: (1) PHISHING CLICK RATE — % of simulated phishing recipients who click; trending down over time = improving; benchmark ~10-20% for untrained programs, <5% for mature; (2) PHISHING REPORT RATE — % of recipients who REPORT suspicious email; trending UP = improving; the canonical companion to click rate; (3) COMPLETION RATES BY ROLE — completion of role-specific training; trending toward 100% by role; (4) TIME-TO-REPORT SUSPICIOUS EMAILS — minutes from receipt to report; decreasing = faster threat response; (5) REPEAT-CLICKER PATTERNS — employees who click multiple simulations; targeted re-training; trend down over time; (6) SECURE-BEHAVIOR SURVEYS — annual employee surveys on security knowledge + attitude; cultural progression; (7) INCIDENT CORRELATION — did awareness training prevent or surface an actual incident (employee reported real phishing, employee avoided a known bad click); qualitative + quantitative; (8) PROGRAM MATURITY ASSESSMENT — SANS Maturity Model Level 1 (compliance) → Level 2 (skill) → Level 3 (behavior) → Level 4 (culture). KEY PAIR: click rate AND report rate together; click alone misses fear-of-reporting culture (low click + low report = bad).",
+      "wrong_explanations": {
+        "A": "A reduces metrics to completion rate, which measures ATTENDANCE not LEARNING or BEHAVIOR CHANGE. 95% completion of a generic video produces 95% completion metric with zero behavior change. Completion is necessary but insufficient.",
+        "B": "B claims awareness can't be measured, but well-established metrics (click rates, report rates, time-to-report, incident correlation) demonstrate program effectiveness. 'Can't measure' justifies low-quality programs; canonical metrics exist.",
+        "C": "C uses click rate alone, missing REPORT RATE (most-important counterpart — low click + high report = healthy; low click + low report could mean fearful employees). Click rate AND report rate together are the meaningful pair."
+      },
+      "tips": [
+        "Trap is C — 'phishing click rate alone is sufficient' is candidate-seductive because click rate IS the most-watched metric; but click rate ALONE misses report rate; low click + low report could mean fearful employees (afraid to report after clicking elsewhere). Click rate AND report rate together are the canonical pair.",
+        "Awareness metrics = phishing click + report rates + completion by role + time-to-report + repeat-clicker patterns + behavior surveys + incident correlation + maturity assessment. Eight elements; click+report rates are the key pair.",
+        "Exam-day shortcut: when stem reports CLICK RATE LOOKS GOOD or COMPLETION RATE 95%+, ask 'what about REPORT RATE? what about TIME-TO-REPORT?' Single-metric framings expose the dimensions a candidate is expected to surface."
+      ],
+      "framework_ref": "ISACA Security Awareness Audit/Assurance Program; SANS Security Awareness Maturity Model; KnowBe4 PhishER + Cofense PhishMe Behavioral Metrics; NIST SP 800-50 (Building Security Awareness Program)",
+      "related_concepts": [
+        "Click rate + report rate pair",
+        "SANS Maturity Model levels",
+        "Time-to-report",
+        "Incident correlation"
+      ],
+      "_provenance": "Authored from concept: 'Security awareness metrics canonical framework'. Public sources: ISACA, SANS, vendor methodologies, NIST. No legacy bank citation."
+    },
+    {
+      "id": "d5_112",
+      "domain": 5,
+      "subtopic": "BEC Wire-Transfer Fraud — Immediate Action",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "A mid-market manufacturing firm's finance manager submits a $2.4M wire-transfer instruction at 2:47 PM Tuesday for an emergency vendor payment based on an urgent email from the CEO (currently traveling overseas; reachable on cell). The wire-transfer SOP requires email confirmation only. The treasury analyst's monitoring alert flags the destination bank account: previously unknown beneficiary, located in a high-risk jurisdiction, account opened 14 days ago. Wire is queued for transmission to settlement bank in 45 minutes (cutoff 3:32 PM). The CFO is in meetings; the CEO is reachable on cell phone. Annual revenue $180M; this would be the largest single wire in the firm's history.",
+      "options": {
+        "A": "HALT the wire transfer IMMEDIATELY (recall from settlement queue) + verify CEO's instruction via out-of-band channel (cell phone to KNOWN number) BEFORE any further action.",
+        "B": "Send the wire as instructed; if it's fraudulent, the firm can request bank recall after the fact through SWIFT message exchange.",
+        "C": "Escalate to the CFO + CISO + General Counsel for a coordination call before taking any action on the wire transfer instruction.",
+        "D": "Reply to the CEO's email asking for confirmation; await response before processing or halting the wire transfer."
+      },
+      "correct": "A",
+      "key_concept": "BEC wire-fraud FIRST action = HALT the wire (recall from settlement queue) + verify via out-of-band channel. Single critical-path action because settlement cutoff makes verification time-bounded.",
+      "pre_read": "For BEC wire-fraud questions, anchor on HALT-AND-VERIFY-OUT-OF-BAND. The settlement-cutoff clock dominates other considerations.",
+      "correct_explanation": "When wire-transfer instructions show BEC red flags (urgency, new beneficiary, unusual jurisdiction, high amount, executive-impersonation pattern), the FIRST action is IMMEDIATE WIRE HALT + OUT-OF-BAND VERIFICATION. Rationale: (1) SETTLEMENT CUTOFF CLOCK — 45-minute window; once wire settles, recall success rate plunges (< 50% within 24h, near-zero after 72h); halt is the time-critical action; (2) OUT-OF-BAND BREAKS ATTACKER CHANNEL — email reply confirms with whoever controls the email account (possibly attacker); cell phone to KNOWN number (not number in the suspicious email) confirms with the real CEO; (3) BEC RED FLAGS ARE PATTERN — FBI IC3 reports $2.9B+ annual BEC losses; the exact pattern in this scenario (urgent + new beneficiary + high jurisdiction + record amount) is textbook; not paranoia; (4) HALT IS REVERSIBLE — if CEO confirms genuine instruction, wire resends within hours; if not, fraud prevented; asymmetric cost favors halt-and-verify; (5) FINANCIAL-LOSS CLOCK — distinct from prior single-focus principles (contain-first for adversary present, restore-first for FP flooding, lateral-movement-contain for breach propagation). After verification: (a) if fraud confirmed: incident response, FBI IC3 report, bank fraud-investigation engagement, internal post-incident; (b) if genuine: wire resends with documented out-of-band verification audit record; (c) update SOP: REQUIRE out-of-band verification for wires above threshold + any single red flag.",
+      "wrong_explanations": {
+        "B": "Failure mode = SEND-AND-RECALL. International wire recall success rate is < 50% within 24 hours, near-zero after 72 hours. New-account beneficiary in high-risk jurisdiction = beneficiary likely planned exit strategy. Send-and-recall is the failure mode BEC depends on.",
+        "C": "Multi-track coordination call wastes minutes. 45-minute settlement cutoff means coordination during the window may complete after settlement. CFO + CISO involvement is appropriate AFTER halt; halt first.",
+        "D": "Replying to email is the FAILURE PATTERN BEC exploits — the email account may be compromised or spoofed; the attacker controls the reply path. Out-of-band verification (cell phone to known number) breaks the attacker's communication channel."
+      },
+      "tips": [
+        "Trap is D — 'reply to the CEO's email asking for confirmation' is candidate-seductive because email-replying feels like 'checking with the CEO'; but BEC EXPLOITS this exact pattern. The attacker controls the email account (or spoofs it); they control the reply path. Out-of-band verification (cell phone to KNOWN number) breaks attacker channel.",
+        "FINANCIAL-LOSS CLOCK principle: when monetary loss is irreversible after a short window (wire-transfer settlement, cryptocurrency transactions), HALT-AND-VERIFY-OUT-OF-BAND is the canonical first action; distinct from contain-first / restore-first / lateral-movement-contain.",
+        "Exam-day shortcut: when stem describes WIRE-TRANSFER + BEC RED FLAGS + SETTLEMENT CUTOFF, look for HALT-AND-VERIFY-OUT-OF-BAND; send-and-recall, coordination-call, and email-reply-verify framings each fail the settlement-clock test."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; FBI Internet Crime Complaint Center (IC3) BEC Annual Report; SWIFT Customer Security Programme (CSP); OFAC Sanctions Compliance Guidance; PCAOB AS 2401 (Consideration of Fraud)",
+      "related_concepts": [
+        "Out-of-band verification",
+        "Settlement cutoff clock",
+        "BEC red flags",
+        "Wire recall low success"
+      ],
+      "_provenance": "Authored from concept: 'BEC wire-fraud immediate response'. Public sources: ISACA, FBI IC3, SWIFT, OFAC, PCAOB. No legacy bank citation. Note: intentional single-focus surgical action; FINANCIAL-LOSS-CLOCK principle distinct from contain-first / restore-first / lateral-movement-contain."
+    },
+    {
+      "id": "d5_113",
+      "domain": 5,
+      "subtopic": "Data Exfiltration in Progress — Multi-Track Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response?",
+      "scenario_context": "A pharmaceutical research firm's DLP + UEBA correlate at 1:14 AM Wednesday: confirmed data exfiltration in progress. A SENIOR RESEARCHER (employed 9 years, working on novel-compound trials, recent performance review issues, has accepted a competitor's offer per HR) has been transferring research-IP files (proprietary compounds, trial data, partnership terms) to an external cloud-storage account for the past 3 hours; ~120GB transferred so far at ~40MB/min; total at-risk IP estimated $80M valuation. The researcher's access was scheduled to be revoked Friday (their last day). HR + CISO + General Counsel + CFO + Chief Research Officer + external IP counsel are on bridge call within 12 minutes.",
+      "options": {
+        "A": "Confront the researcher directly to demand explanation; if they admit fault, agree to a settlement and complete employment without further action.",
+        "B": "Revoke all access + preserve evidence + engage external IP counsel + cloud takedown + R&D notification + regulator notification + HR restructuring + post-incident policy.",
+        "C": "Allow exfiltration to continue (~40MB/min) until business hours so the response can be coordinated with full leadership team during normal working hours.",
+        "D": "Power down the researcher's workstation immediately and delete all cloud-storage transfer records to make the exfiltration impossible to detect by external counsel during litigation."
+      },
+      "correct": "B",
+      "key_concept": "Insider IP exfiltration = revoke access + preserve evidence + engage IP counsel + cloud takedown + R&D notification + regulator notification (FDA) + HR restructuring + post-incident policy. Eight tracks balancing speed + forensics + legal + regulatory.",
+      "pre_read": "For insider IP-exfiltration questions, anchor on revoke + preserve + counsel + takedown + regulator framework. Confront-first, allow-continue, and destroy-records framings each fail.",
+      "correct_explanation": "ISACA Insider Threat Audit/Assurance Program, NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide), FDA 21 CFR Part 11 (Electronic Records for clinical-trial data), and Defend Trade Secrets Act 2016 (federal civil cause of action for trade-secret theft) establish multi-track insider IP-exfiltration response. Eight tracks: (1) REVOKE ALL CORPORATE ACCESS — SSO + VPN + cloud tokens + physical badge; immediate per-system revocation via IdP + cloud-management API; (2) PRESERVE EVIDENCE — DO NOT delete suspicious files; chain-of-custody-grade imaging of workstation; cloud-provider preserved log requests (DMCA-style legal hold); (3) ENGAGE EXTERNAL IP COUNSEL — Defend Trade Secrets Act civil action preparation; injunction request; (4) SECURE CLOUD-PROVIDER TAKEDOWN — DMCA + trade-secret-violation takedown to exfil destination; preserve evidence before takedown; (5) NOTIFY R&D PORTFOLIO TEAM — which projects affected; compound IP at risk; defensive patent filing acceleration; (6) REGULATOR NOTIFICATION — FDA implications for trial data integrity; 21 CFR Part 11 audit-trail implications; (7) HR EXIT-INTERVIEW RESTRUCTURING — accelerate exit; pre-prepare confidentiality reminders; post-employment trade-secret enforcement; (8) POST-INCIDENT IP-HANDLING POLICY REVIEW — what gates failed (UEBA detected too late, access-revocation lagged termination notice). Common failure modes: confront-first (destroys evidence); allow-continue (extends exposure); destroy-records (obstruction).",
+      "wrong_explanations": {
+        "A": "Failure mode = CONFRONT-WITHOUT-EVIDENCE-PRESERVATION. Direct confrontation gives the researcher opportunity to delete evidence on their workstation (browser history, file copies, transfer logs) and on personal device. Confrontation is appropriate AFTER evidence preservation; not before.",
+        "C": "Failure mode = ALLOW-CONTINUED-EXFILTRATION. ~40MB/min × 6 hours to business hours = 14GB additional IP exfiltrated. The $80M at-risk valuation grows with every passing minute. Multi-track response runs in PARALLEL with immediate access revocation; coordination doesn't wait.",
+        "D": "Failure mode = EVIDENCE DESTRUCTION. Deleting cloud-storage transfer records is OBSTRUCTION OF JUSTICE; it destroys evidence that external IP counsel needs for litigation, creates legal liability for the firm, and likely doesn't even prevent detection (cloud provider retains logs)."
+      },
+      "tips": [
+        "Trap is C — 'allow exfiltration to continue until business hours for coordinated response' is candidate-seductive because broad coordination is appropriate for many incidents; but with measurable 40MB/min exfiltration rate, 6 hours = 14GB additional IP. Multi-track response runs in PARALLEL with immediate access revocation.",
+        "Insider IP exfiltration = revoke + preserve + IP counsel + cloud takedown + R&D notification + regulator notification + HR restructuring + post-incident policy. Eight tracks. Access revocation is concurrent first action, multi-track follows immediately.",
+        "Exam-day shortcut: when stem describes INSIDER IP EXFILTRATION + IP-VALUE-AT-RISK + DEPARTING-EMPLOYEE patterns, look for revoke-and-preserve-and-multi-track; confront-first, allow-continue, and destroy-records framings each fail."
+      ],
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); FDA 21 CFR Part 11 (Electronic Records); Defend Trade Secrets Act of 2016; CERT Insider Threat Center research",
+      "related_concepts": [
+        "Defend Trade Secrets Act",
+        "DMCA-style takedown",
+        "Evidence preservation",
+        "Insider exfiltration"
+      ],
+      "_provenance": "Authored from concept: 'Insider IP exfiltration in pharmaceutical research'. Public sources: ISACA, NIST, FDA, DTSA, CERT. No legacy bank citation."
+    },
+    {
+      "id": "d5_115",
+      "domain": 5,
+      "subtopic": "Supply Chain Compromise Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response?",
+      "scenario_context": "A SaaS firm's SOC team confirms at 11:42 PM Thursday: software supply-chain compromise. A third-party npm package (downloaded 84,000 weekly across the firm's 38 customer-facing applications) has been compromised — the latest version (v4.3.2, released 4 hours ago) contains a backdoor that exfiltrates environment variables and customer-data tokens. The firm's CI/CD pulled v4.3.2 in the last 2 hours; the package is in 7 production applications serving 2.1M end-users. Customer data tokens for ~340K users may have been exposed. The CTO + CISO + Chief Customer Officer + General Counsel + external forensics + cyber insurance broker are on bridge call within 18 minutes.",
+      "options": {
+        "A": "Update to the latest npm package version (v4.3.3) immediately; the package maintainer likely pushed a fix for the compromise.",
+        "B": "Wait for the npm package maintainer to publish official guidance before taking action; they have visibility into the compromise scope that the firm lacks.",
+        "C": "Pin to known-good version + rollback production deployments + invalidate customer tokens + rotate firm secrets + customer notification + registry takedown + cyber insurance + post-incident SBOM policy.",
+        "D": "Replace the npm package entirely with an alternative library; this avoids future supply-chain risk from the compromised maintainer."
+      },
+      "correct": "C",
+      "key_concept": "Supply-chain compromise response = pin to known-good + rollback production + invalidate tokens + rotate secrets + customer notification + registry takedown + cyber insurance notification + post-incident SBOM/dependency policy. Eight tracks.",
+      "pre_read": "For supply-chain compromise questions, anchor on pin-known-good + rollback + invalidate + rotate + notify framework. Update-latest, wait-for-maintainer, and replace-entirely framings each fail.",
+      "correct_explanation": "ISACA Software Supply Chain Audit/Assurance Program, NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management), CISA Defending Against Software Supply Chain Attacks (April 2021), and SLSA (Supply-chain Levels for Software Artifacts) framework establish supply-chain compromise response. Eight tracks: (1) PIN TO KNOWN-GOOD PACKAGE VERSION — v4.3.1 (last version before compromise); update CI/CD lockfiles (package-lock.json, yarn.lock); deploy across all affected pipelines; (2) ROLL BACK AFFECTED PRODUCTION DEPLOYMENTS — redeploy v4.3.1 to the 7 production applications; (3) INVALIDATE CUSTOMER-DATA TOKENS — force token rotation for ~340K affected users; users re-authenticate; (4) FORCE-ROTATE FIRM SECRETS — env variables exposed via backdoor must be assumed compromised; API keys, database passwords, OAuth client secrets all rotated; (5) CUSTOMER NOTIFICATION — proactive communication to 340K affected users; transparent about exposure scope; per GDPR Articles 33-34 (72-hour clock), state breach laws, SEC Reg S-K Item 1.05 (4-day clock for material cyber incidents); (6) NPM/REGISTRY TAKEDOWN REQUEST — formal request to npm Security team to remove v4.3.2 from registry; vendor coordination; (7) CYBER INSURANCE NOTIFICATION — many policies require notification within 24-72h of incident discovery; (8) POST-INCIDENT SBOM AND DEPENDENCY-MANAGEMENT POLICY REVIEW — SBOM generation (CycloneDX/SPDX); dependency scanning (Snyk, GitHub Dependabot, Sonatype); package-source allowlist; signed packages preference; SLSA Level 3+ for critical dependencies.",
+      "wrong_explanations": {
+        "A": "Failure mode = TRUST-COMPROMISED-MAINTAINER. v4.3.3 from the same compromised maintainer or registry account may contain the SAME backdoor or worse. Until the compromise scope and attribution are confirmed, ANY new version from that source is suspect. Pin to known-good v4.3.1 is the safe move.",
+        "B": "Failure mode = WAIT-FOR-MAINTAINER. The firm has 2 hours of production exposure with potential customer-data-token theft already; waiting for upstream guidance extends exposure while customers are affected. Firm-side action is critical-path.",
+        "D": "Failure mode = OVERREACT-DURING-INCIDENT. Replacing the package entirely during the incident introduces new bugs (different library API, different behavior) and delays customer notification. Stabilize first (pin to known-good), then make strategic decisions about future dependencies."
+      },
+      "tips": [
+        "Trap is A — 'update to latest npm package version (v4.3.3)' is candidate-seductive because new versions usually fix issues; but v4.3.3 from the same compromised maintainer/registry account may contain the SAME backdoor or worse. Pin to known-good v4.3.1 until compromise scope and attribution confirmed.",
+        "Supply-chain compromise = pin known-good + rollback production + invalidate tokens + rotate secrets + customer notification + registry takedown + cyber insurance + post-incident SBOM/dependency policy. Eight tracks.",
+        "Exam-day shortcut: when stem describes SUPPLY-CHAIN COMPROMISE (npm/PyPI/GitHub action/container image), look for pin-known-good + rollback + invalidate + rotate framework; update-latest, wait-for-maintainer, and replace-entirely framings each fail."
+      ],
+      "framework_ref": "ISACA Software Supply Chain Audit/Assurance Program; NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); CISA Defending Against Software Supply Chain Attacks (April 2021); SLSA Supply-chain Levels for Software Artifacts; GDPR Articles 33-34 (Breach Notification); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "related_concepts": [
+        "npm supply-chain compromise",
+        "Pin to known-good",
+        "SBOM generation",
+        "SLSA framework"
+      ],
+      "_provenance": "Authored from concept: 'Software supply-chain compromise response'. Public sources: ISACA, NIST, CISA, SLSA, SEC. No legacy bank citation."
+    },
+    {
+      "id": "d5_116",
+      "domain": 5,
+      "subtopic": "Ransomware Detection — Multi-Site Spread",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response?",
+      "scenario_context": "A regional healthcare network's EDR alerts at 3:14 AM Saturday: ransomware variant active across multiple sites. Behavior: file-encryption + lateral-movement via SMB exploitation + attempting to disable backup volumes. Spread observed across 14 servers in 3 of 6 hospital sites within 22 minutes. EHR servers, imaging-system servers, lab-system servers all affected. Patient operations: emergency rooms operational at all 6 sites; 18 active surgeries in progress; ~600 inpatients across the network. Backup architecture: nightly to immutable cloud + replica to off-site DR site. CISO + CMO + CIO + General Counsel + Crisis Management Team + external IR vendor on bridge within 25 minutes.",
+      "options": {
+        "A": "Pay the ransom immediately to restore operations and minimize patient-care disruption; the financial cost is acceptable given the clinical-operations criticality.",
+        "B": "Power down all affected systems immediately to stop encryption; bring sites back online one at a time during business hours over the following week.",
+        "C": "Allow encryption to complete on affected systems while focusing leadership attention on patient-care continuity; technical response can wait for business hours.",
+        "D": "Network-isolate affected sites + clinical downtime procedures + forensic preservation + external IR vendor + patient comms + regulator notification (HHS OCR + FBI/CISA) + cyber insurance + restore from immutable backup."
+      },
+      "correct": "D",
+      "key_concept": "Multi-site ransomware = network-isolate affected sites + clinical downtime procedures + forensic preservation + external IR vendor + patient/customer comms + regulator notification (HHS OCR + FBI/CISA) + cyber insurance + restore from immutable backup. Eight tracks.",
+      "pre_read": "For multi-site healthcare ransomware questions, anchor on isolate-with-downtime-procedures + multi-track response. Pay-ransom, total-powerdown, and allow-encryption framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, HIPAA Security Rule §164.308 + §164.402 (breach notification), CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA), and HHS OCR HIPAA Breach Notification establish multi-site healthcare ransomware response. Eight tracks: (1) NETWORK-ISOLATE AFFECTED SITES — segment off from corporate WAN; stops lateral movement to remaining 3 sites; preserves forensic state on affected hosts; (2) ACTIVATE DOWNTIME PROCEDURES — paper charts for active surgeries, manual orders for medications, backup imaging (CT/MRI via alternate workflow), alternate lab workflows; pre-existing downtime SOP; (3) PRESERVE FORENSIC STATE — memory imaging, network traffic captures, EDR telemetry retained; for IR investigation + insurance + regulator + law enforcement; (4) ENGAGE EXTERNAL IR VENDOR — Mandiant, CrowdStrike, Kroll, or insurer-preferred; clean-room investigation; (5) PATIENT/CUSTOMER COMMS — proactive patient notification per HIPAA Breach Notification Rule (HHS OCR ≤60 days; immediate if high-risk; media notification for >500 affected); (6) REGULATOR NOTIFICATION — HHS OCR (HIPAA), FBI IC3 + CISA (cybersecurity incident), state breach laws; SEC if public-company (Item 1.05 4-day clock); (7) CYBER INSURANCE ENGAGEMENT — many policies require notification within 24-72h; coverage typically requires non-payment of ransom; (8) RESTORE FROM CLEAN IMMUTABLE BACKUP TO CLEAN INFRASTRUCTURE — never restore to compromised hosts; rebuild infrastructure first; restore data; staged validation before re-introduction to network. CISA + FBI joint advisory STRONGLY DISCOURAGES ransom payment.",
+      "wrong_explanations": {
+        "A": "Failure mode = RANSOM PAYMENT. Payment doesn't guarantee key delivery; payment to sanctioned ransomware groups violates OFAC; the firm becomes a known-payer (incentivizes future attacks); CISA/FBI guidance strongly discourages payment. Restoration from clean immutable backup is the canonical recovery path.",
+        "B": "Failure mode = TOTAL-SITE-POWERDOWN. Powering down all 14 affected servers stops encryption but also destroys volatile state (memory forensics) and disrupts patient care (EHR access, imaging system access, lab system access during surgeries). Network isolation preserves forensic state while stopping lateral movement.",
+        "C": "Failure mode = ALLOW-CONTINUED-ENCRYPTION. Allowing encryption to complete is operationally and ethically wrong: patient care depends on EHR/imaging/lab systems; encryption-completion destroys patient data without recovery path; the 'wait for business hours' principle fails when there are active surgeries and 600 inpatients."
+      },
+      "tips": [
+        "Trap is A — 'pay the ransom immediately' is candidate-seductive because clinical-operations criticality is real; but payment doesn't guarantee key delivery, may violate OFAC sanctions, creates known-payer status, and CISA/FBI strongly discourage. Restoration from clean immutable backup is the canonical recovery path.",
+        "Multi-site healthcare ransomware = network-isolate + clinical downtime + forensic preserve + external IR vendor + patient comms + regulator notification + cyber insurance + restore from immutable backup. Eight tracks.",
+        "Exam-day shortcut: when stem describes MULTI-SITE RANSOMWARE WITH ACTIVE CLINICAL OPERATIONS, look for isolate-with-downtime-procedures + multi-track; pay-ransom, total-powerdown, and allow-encryption framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; HIPAA Security Rule §164.308 and §164.402; CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); HHS OCR HIPAA Breach Notification Rule; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "related_concepts": [
+        "Healthcare downtime procedures",
+        "Immutable backup restoration",
+        "OFAC ransom-payment risk",
+        "HHS OCR notification"
+      ],
+      "_provenance": "Authored from concept: 'Multi-site healthcare ransomware response'. Public sources: ISACA, HIPAA, CISA, HHS OCR, SEC. No legacy bank citation."
+    },
+    {
+      "id": "d5_117",
+      "domain": 5,
+      "subtopic": "Security Awareness Program Effectiveness Analysis",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST analysis approach?",
+      "scenario_context": "A regional bank (3,400 employees, 64 branches, $14B in assets, FFIEC-supervised) has been running its security awareness program for 4 years with internal + external vendor partnership. Year-over-year metrics: phishing click rate declined 18% → 11% → 6% → 4%; report rate increased 12% → 28% → 51% → 68%; year-1 had 14 employee-caused incidents (one BEC near-miss at $1.2M), year-4 had 3 minor incidents. CISO is preparing the annual program effectiveness review for the audit committee in 3 weeks. CFO has questioned whether the $1.8M annual program cost is justified given the trajectory — wants supporting analysis for the FY26 budget decision.",
+      "options": {
+        "A": "YoY metric trends + incident reduction correlation + peer benchmarks + cost-per-prevented-incident + SANS Maturity assessment + role-cohort analysis + leading indicators + qualitative culture.",
+        "B": "Discontinue the program; click rate of 4% indicates the workforce is sufficiently trained and continued investment is no longer cost-justified.",
+        "C": "Increase the budget by 50% to accelerate the trajectory; if 4% click rate is good, lower is better and investment scales linearly.",
+        "D": "Replace the program with an external vendor's turnkey awareness offering; vendor benchmarks are sufficient evidence of effectiveness without firm-specific analysis."
+      },
+      "correct": "A",
+      "key_concept": "Awareness program effectiveness analysis = YoY trends + incident correlation + peer benchmarks + cost-per-prevented-incident + SANS Maturity assessment + role-cohort analysis + leading indicators + qualitative culture. Eight-element analysis.",
+      "pre_read": "For awareness program effectiveness questions, anchor on eight-element analysis framework. Discontinue, linear-scale, and outsource-context framings each fail.",
+      "correct_explanation": "ISACA Security Awareness Audit/Assurance Program, SANS Security Awareness Maturity Model, and Aberdeen Group / Gartner awareness program ROI research establish effectiveness analysis framework. Eight elements: (1) YEAR-OVER-YEAR METRIC TRENDS — click rate declining + report rate increasing = healthy trajectory; firm at YoY 18→4 click and 12→68 report demonstrates strong progress; (2) INCIDENT REDUCTION CORRELATION — employee-caused incidents 14→3 over 4 years; aligned with metric trajectory suggests causal effect not coincidence; (3) BENCHMARK VS INDUSTRY PEERS — firm at 4% click vs industry ~10-15% for mature programs; significantly above peer median; (4) COST-PER-PREVENTED-INCIDENT ESTIMATE — $1.8M annual / (estimated 8 prevented incidents per year × average incident cost $850K) = positive ROI; (5) SANS MATURITY MODEL ASSESSMENT — Level 1 (compliance) → 2 (skill) → 3 (behavior-changing) → 4 (culture-embedded); firm at Level 3 trending to Level 4; (6) ROLE-COHORT ANALYSIS — does every role bucket show progress, or are some lagging (finance for BEC, developers for secure coding); targeted intervention; (7) LEADING INDICATORS — time-to-report (decreasing = faster threat response), repeat-clicker reduction; (8) QUALITATIVE CULTURE INDICATORS — employee survey sentiment, voluntary reporting of suspicious behavior, security-team approachability. Discontinuation produces regression; investment in MAINTENANCE + INNOVATION (AI phishing simulation, deepfake-audio training) is the canonical pattern at this maturity level.",
+      "wrong_explanations": {
+        "B": "Failure mode = STOP-AT-PEAK. Discontinuing the program would cause regression: awareness atrophies without reinforcement (employees forget, new hires lack training, threat landscape evolves). 4% click rate reflects the PROGRAM, not the workforce; remove the program and click rate climbs back to industry baseline ~20-30%.",
+        "C": "Failure mode = LINEAR-INVESTMENT-ASSUMPTION. Investment doesn't scale linearly: at low click rates, marginal returns diminish; the next 1% reduction is harder than the prior 1%. Targeted investment in remaining-clickers or new techniques (AI phishing) beats blanket 50% increase.",
+        "D": "Failure mode = OUTSOURCE-FIRM-CONTEXT. External vendor benchmarks lack firm-specific metric continuity (different methodology), firm-specific roles, and firm-specific threat scenarios. The firm's 4-year metric continuity has VALUE that turnkey replacement loses."
+      },
+      "tips": [
+        "Trap is B — 'discontinue the program because 4% click rate is good enough' is candidate-seductive because cost-cutting in mature programs feels justified; but discontinuation produces REGRESSION (awareness atrophies, click rate climbs back to ~20-30% baseline). 4% reflects the PROGRAM, not a permanent workforce property.",
+        "Program effectiveness = YoY trends + incident correlation + peer benchmarks + cost-per-prevented-incident + SANS Maturity + role cohorts + leading indicators + qualitative culture. Eight-element analysis. Maturity Level 3 → 4 with maintenance + innovation, not discontinuation.",
+        "Exam-day shortcut: when stem describes AWARENESS PROGRAM EFFECTIVENESS REVIEW WITH MATURE METRICS, look for eight-element analysis with maintenance recommendation; discontinue, linear-scale, and outsource framings each fail."
+      ],
+      "framework_ref": "ISACA Security Awareness Audit/Assurance Program; SANS Security Awareness Maturity Model; Aberdeen Group Awareness ROI Research; Gartner Magic Quadrant for Security Awareness Computer-Based Training",
+      "related_concepts": [
+        "SANS Maturity Model levels",
+        "Cost-per-prevented-incident",
+        "Role-cohort analysis",
+        "Regression risk"
+      ],
+      "_provenance": "Authored from concept: 'Security awareness program effectiveness analysis'. Public sources: ISACA, SANS, Aberdeen, Gartner. No legacy bank citation."
+    },
+    {
+      "id": "d5_118",
+      "domain": 5,
+      "subtopic": "APT Investigation Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST investigation approach?",
+      "scenario_context": "A defense contractor's SOC detects at 9:18 PM Friday: indicators consistent with Advanced Persistent Threat (APT) activity. Multiple sources: EDR detected anomalous PowerShell activity on a finance workstation 3 weeks ago (dismissed as benign at the time); SIEM correlation flags outbound C2-pattern traffic to a previously-unflagged domain over the past 14 days; threat-intel feed identifies the domain as associated with a known nation-state actor (no public attribution disclosed). Affected: 14 servers + 47 workstations + potentially the firm's CAD design network for classified contracts. CISO + CIO + Chief Security Officer + Defense Counterintelligence Security Agency (DCSA) facility security officer + external IR vendor (NSP-DC certified) + FBI cyber squad lead on bridge within 35 minutes.",
+      "options": {
+        "A": "Immediately block the C2 domain at the perimeter firewall and roll out EDR detection rules across all endpoints to disrupt the APT operations.",
+        "B": "Engage cleared IR vendor + passive containment (don't alert adversary) + forensic preservation + DCSA notification (NISPOM) + FBI coordination + threat intel collection + classified-systems audit + government reporting.",
+        "C": "Power down all 14 servers and 47 workstations immediately to stop APT activity; rebuild from gold images over the weekend.",
+        "D": "Wait for the FBI cyber squad and DCSA to take full control of the investigation; firm-side action during nation-state APT incidents may compromise federal response."
+      },
+      "correct": "B",
+      "key_concept": "APT investigation = engaged cleared IR vendor + passive containment + forensic preservation + DCSA notification (NISPOM) + FBI coordination + threat intel collection (don't alert) + classified-systems audit + post-incident government reporting. Eight tracks.",
+      "pre_read": "For nation-state APT questions in defense-contractor context, anchor on passive-containment + cleared-IR-vendor + DCSA-coordination framework. Block-C2-immediately, total-powerdown, and complete-deferral framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NISPOM (National Industrial Security Program Operating Manual, 32 CFR Part 117), CISA + NSA Joint Cybersecurity Advisories on nation-state actors, FBI Insider Threat Program, and DCSA contractor reporting requirements establish APT investigation response for defense contractors. Eight tracks: (1) CLEARED EXTERNAL IR VENDOR — NSA-certified or DoD-approved (NSP-DC, Cyber Incident Reporting for Critical Infrastructure Act CIRCIA-aware); investigates classified-adjacent environment; (2) PASSIVE CONTAINMENT — isolate affected segments WITHOUT alerting adversary; pre-deployed network controls; do not modify endpoint config; preserve adversary's operational signatures; (3) FORENSIC PRESERVATION — memory dumps, network captures, EDR telemetry; chain-of-custody-grade; (4) DCSA NOTIFICATION — NISPOM 32 CFR §117.8 requires defense-contractor reporting; facility security officer engagement; (5) FBI COORDINATION — FBI Insider Threat Program + nation-state desk; FBI may run parallel intelligence operation; (6) THREAT INTEL COLLECTION — observe the APT's tactics, techniques, procedures (TTPs); attribution evidence; pivoting to other compromised entities for joint defense; do not immediately block C2; gather intelligence first; (7) CLASSIFIED-SYSTEMS AUDIT — confirm classified systems integrity; classified-data audit; defensive briefing to cleared personnel; (8) POST-INCIDENT GOVERNMENT REPORTING — DCSA + DoD + relevant agency; lessons learned; threat intel sharing through ISACs and government channels.",
+      "wrong_explanations": {
+        "A": "Failure mode = ALERT-THE-ADVERSARY. Immediately blocking C2 alerts the APT that they're detected; they accelerate the operation (data exfiltration, evidence destruction, pivot to backup access methods). For APT investigation, PASSIVE CONTAINMENT (isolation without alerting) preserves intelligence-gathering capability.",
+        "C": "Failure mode = TOTAL-POWERDOWN-WITHOUT-FORENSICS. Powering down 14 servers + 47 workstations: destroys volatile state (memory forensics, network connection state) needed for APT investigation; alerts the adversary that they're detected; rebuilds may bring back the APT's persistence mechanisms.",
+        "D": "Failure mode = COMPLETE-FEDERAL-DEFERRAL. While FBI + DCSA coordination is REQUIRED for defense-contractor APT incidents, firm-side action runs in PARALLEL (passive containment, forensic preservation, evidence collection). Complete deferral leaves the firm undefended during the federal-response window."
+      },
+      "tips": [
+        "Trap is A — 'immediately block the C2 domain' is candidate-seductive because blocking-bad-domains is the standard SOC playbook; but for APT investigation, immediate blocking ALERTS the adversary, accelerating exfiltration or evidence destruction. PASSIVE CONTAINMENT preserves intelligence-gathering capability while limiting impact.",
+        "APT investigation = cleared IR vendor + passive containment + forensic preservation + DCSA notification + FBI coordination + threat intel collection (don't alert) + classified-systems audit + post-incident government reporting. Eight tracks for defense contractor.",
+        "Exam-day shortcut: when stem describes NATION-STATE APT in DEFENSE-CONTRACTOR context, look for passive-containment + cleared-IR-vendor + DCSA-coordination + threat-intel-first; block-C2-immediately, total-powerdown, and complete-deferral framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NISPOM (National Industrial Security Program Operating Manual, 32 CFR Part 117); CISA + NSA Joint Cybersecurity Advisories on nation-state actors; FBI Insider Threat Program; DCSA Contractor Reporting Requirements",
+      "related_concepts": [
+        "Passive containment",
+        "Cleared IR vendor",
+        "NISPOM 32 CFR §117.8",
+        "Threat intel before C2 block"
+      ],
+      "_provenance": "Authored from concept: 'Nation-state APT investigation in defense-contractor context'. Public sources: ISACA, NISPOM, CISA/NSA advisories, FBI, DCSA. No legacy bank citation."
+    },
+    {
+      "id": "d5_119",
+      "domain": 5,
+      "subtopic": "Phishing Initial Access — Credential Compromise",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the FIRST action?",
+      "scenario_context": "An e-commerce firm's SIEM correlates at 7:14 AM Monday: a customer-service agent (employed 6 months, manages customer refund processing for ~120 customer support tickets/day) clicked a phishing email at 7:02 AM and entered their corporate credentials into the spoofed Microsoft 365 page. Their credentials are now confirmed valid against the firm's IdP (Azure AD); MFA was prompted at 7:11 AM and approved (push-fatigue). The agent has access to the customer database with PII for 4.7M customers + refund-processing system. The agent's manager is reachable on chat; SOC + CISO + Chief Customer Officer + General Counsel + HR are on bridge call within 12 minutes.",
+      "options": {
+        "A": "Open a multi-track coordination call: SOC + CISO + Chief Customer Officer + General Counsel + HR + Customer Support Leadership before taking any technical action on the agent's account.",
+        "B": "Contact the agent directly to confirm whether they noticed anything suspicious and to gather details about the phishing email before initiating any access revocation.",
+        "C": "REVOKE the agent's all corporate access IMMEDIATELY through IdP (Azure AD disable + OAuth token revocation + force-disconnect active sessions) — every minute extends adversary opportunity.",
+        "D": "Reset the agent's password but allow continued access; the credential compromise can be contained by simply forcing a password change while preserving operational continuity."
+      },
+      "correct": "C",
+      "key_concept": "Phishing credential compromise FIRST action = revoke all access immediately (account disable + OAuth token revocation + force-disconnect sessions). Coordination, user confirmation, password-only-reset all fail the credential-validity-clock test.",
+      "pre_read": "For phishing-initial-access credential-compromise questions, anchor on FULL ACCESS REVOCATION FIRST (not just password reset). The credential-validity clock dominates other considerations.",
+      "correct_explanation": "When phishing-initial-access has resulted in confirmed credential compromise + valid MFA session + adversary-active-session, the FIRST action is IMMEDIATE FULL ACCESS REVOCATION. Rationale: (1) CREDENTIAL-VALIDITY CLOCK — adversary has valid creds + approved MFA; every minute is potential customer-PII exfiltration or fraudulent-refund processing; revocation closes the window; (2) PASSWORD-RESET ALONE IS INSUFFICIENT — adversary's ACTIVE SESSIONS (OAuth tokens, browser sessions, app sessions) remain valid after password change until session expiry; must force-disconnect; (3) MFA PUSH-FATIGUE PATTERN — adversary's success indicates the agent approved the MFA push; MFA-bypass via push-fatigue is a known attack pattern; account disable + push notification removal needed; (4) FULL REVOCATION IS FAST — Azure AD account disable + Revoke-MgUserSignInSession (or equivalent) + OAuth token revocation; completes in <60 seconds; faster than coordination call; (5) DISTINCT FROM PRIOR SINGLE-FOCUS PRINCIPLES — distinct from d5_039 (developer credential leak in code repo, immediate rotation), d5_060 (insider exfiltration with measurable rate, revoke + preserve evidence), d5_112 (BEC wire-transfer financial-loss clock), d5_077 (CA compromise, revoke certificate), d5_080 (ransomware backup-key destruction, air-gapped restore). Each has distinct surgical-action principle: this is CREDENTIAL-VALIDITY-CLOCK (adversary has working credentials, every minute is exfiltration opportunity). After revocation: (a) IR call with SOC + CISO + CCO + GC + HR for multi-track response; (b) audit log review for what adversary accessed during 12-minute window (PII queries, refund processing actions, lateral-movement attempts); (c) customer notification per impact assessment (state breach laws, GDPR Article 33 if EU customers); (d) credential reset for the agent + push-fatigue retraining; (e) MFA upgrade to phishing-resistant (FIDO2) for high-risk roles; (f) post-incident phishing-simulation focused on MFA-fatigue.",
+      "wrong_explanations": {
+        "A": "Multi-track coordination wastes minutes during which the adversary has valid credentials + approved MFA session. Coordination is appropriate AFTER access revocation; not before. Time-pressure scenario.",
+        "B": "Contacting the agent first wastes minutes and provides nothing the SIEM correlation hasn't already established (credentials clicked, MFA push-fatigue approved, session active). User confirmation of phishing doesn't change the revocation decision; technical action proceeds.",
+        "D": "Password reset without session revocation leaves the adversary's ACTIVE SESSIONS valid (they don't reauthenticate until session expiry); the adversary continues to exfiltrate PII or process refunds. Full access revocation (account disable + token revocation + force-disconnect sessions) is required."
+      },
+      "tips": [
+        "Trap is D — 'just reset the password while preserving continued access' is candidate-seductive because operational continuity matters; but password reset alone leaves ADVERSARY'S ACTIVE SESSIONS valid (they don't reauthenticate until session expiry). Full revocation (account disable + token revocation + session force-disconnect) is required.",
+        "CREDENTIAL-VALIDITY-CLOCK principle: adversary has VALID CREDENTIALS + APPROVED MFA + ACTIVE SESSION; FIRST action is FULL ACCESS REVOCATION (account disable + token revocation + session force-disconnect) — NOT just password reset (sessions stay valid until force-disconnected). Differentiator: this is an ACTIVE-SESSION scenario where password change alone doesn't revoke existing sessions; the adversary continues operating until sessions are explicitly killed.",
+        "Exam-day shortcut: when stem describes PHISHING-INITIAL-ACCESS + CONFIRMED CREDENTIAL COMPROMISE + ACTIVE SESSION, look for FULL ACCESS REVOCATION FIRST; coordination, user-confirm, and password-only-reset framings each fail the credential-validity-clock test."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); MITRE ATT&CK T1078 (Valid Accounts); Microsoft Entra ID Revoke-MgUserSignInSession Documentation; GDPR Article 33 (Notification of a personal data breach); CISA Phishing Guidance",
+      "related_concepts": [
+        "MFA push-fatigue",
+        "Session force-disconnect",
+        "OAuth token revocation",
+        "Active-session containment"
+      ],
+      "_provenance": "Authored from concept: 'Phishing-initial-access credential-compromise immediate response'. Public sources: ISACA, NIST, MITRE, Microsoft, CISA. No legacy bank citation. Note: intentional single-focus surgical action; CREDENTIAL-VALIDITY-CLOCK principle distinct from prior surgical-action principles."
+    },
+    {
+      "id": "d5_120",
+      "domain": 5,
+      "subtopic": "Watering-Hole Attack Response",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "What is the BEST response?",
+      "scenario_context": "A government-services consulting firm's threat-intel feed alerts at 4:18 AM Tuesday: a known nation-state-aligned actor has compromised the WEB INFRASTRUCTURE of a government-services trade association website that the firm's employees visit regularly (~38 employees access daily for industry-news). The compromise serves drive-by-download malware targeting Windows endpoints with admin privileges; firm endpoints visited the site over the past 11 days. EDR has identified 12 firm endpoints with suspicious indicators consistent with the watering-hole malware. The CISO + CIO + Federal Account Director + General Counsel + external IR vendor (FedRAMP-cleared) + FBI cyber squad on bridge within 30 minutes.",
+      "options": {
+        "A": "Wipe and rebuild the 12 affected endpoints immediately to eliminate the watering-hole malware without further investigation.",
+        "B": "Block the trade association website at the firewall but leave the 12 affected endpoints in place; the watering-hole malware will fail to communicate with C2 once the website is blocked.",
+        "C": "Issue an enterprise-wide notification to all 38 employees who visit the trade association website to manually check their endpoints for suspicious activity.",
+        "D": "DNS block of compromised site + isolate suspected endpoints + threat hunt + forensic preservation + responsible disclosure + FBI coordination + customer impact + post-incident policy."
+      },
+      "correct": "D",
+      "key_concept": "Watering-hole attack = DNS block of compromised site + isolate suspected endpoints + threat hunt across all endpoints + forensic preservation + responsible disclosure to compromised site owner + FBI coordination + customer impact assessment + post-incident policy review. Eight tracks.",
+      "pre_read": "For watering-hole-attack questions, anchor on DNS-block + endpoint-isolation + threat-hunt + responsible-disclosure framework. Wipe-without-forensics, trust-no-C2, and manual-user-inspection framings each fail.",
+      "correct_explanation": "ISACA Incident Management Audit/Assurance Program, MITRE ATT&CK T1189 (Drive-by Compromise), NIST SP 800-61 Rev 2, and CISA + NSA Joint Cybersecurity Advisories on watering-hole attacks establish multi-track response. Eight tracks: (1) BLOCK COMPROMISED SITE AT CORPORATE DNS — stops new endpoint exposure; complements firewall block; DNS-level block applies to remote workers via corporate-DNS-via-VPN; (2) ISOLATE SUSPECTED-COMPROMISED ENDPOINTS — 12 endpoints with watering-hole indicators; network isolation via EDR (NetworkPolicy or quarantine); preserves forensic state; (3) THREAT-HUNT ACROSS ALL ENDPOINTS — same indicators (file hashes, registry artifacts, network patterns) hunted across all endpoints, not just the 12 already flagged; (4) PRESERVE FORENSIC STATE — memory dumps, EDR telemetry, network captures from suspected-compromised endpoints; for IR + attribution + federal coordination; (5) NOTIFY THE TRADE ASSOCIATION — responsible-disclosure of their website compromise; the trade association has a duty to its other members (firm is one of many visiting); coordinated with FBI on timing if active investigation; (6) FBI COORDINATION — nation-state attribution requires FBI Cyber Division engagement; firm is a victim AND an attribution data point; threat-intel sharing; (7) FEDERAL-CUSTOMER IMPACT ASSESSMENT — government-services consulting firm has federal-customer notification obligations; FedRAMP-cleared status may impact customer reporting; (8) POST-INCIDENT THREAT-INTEL-DRIVEN POLICY REVIEW — does the firm have third-party-website-visit risk policy? defensive controls (browser isolation, RBI) for high-risk-website categories?",
+      "wrong_explanations": {
+        "A": "Failure mode = WIPE-WITHOUT-FORENSICS. Wiping the 12 endpoints destroys forensic evidence of the watering-hole malware's TTPs, persistence mechanisms, and lateral-movement attempts. Preserved forensic state is critical for: threat-intel collection (TTPs to share with federal customer + FBI), attribution evidence, scope determination (other endpoints affected), and post-incident remediation.",
+        "B": "Failure mode = TRUST-MALWARE-WILL-FAIL-WITHOUT-C2. The watering-hole malware may have already established secondary C2 channels, may have backdoors that activate on schedule (not on-demand C2), or may have already moved laterally to other endpoints. Endpoint isolation + threat hunt is needed; site blocking alone is insufficient.",
+        "C": "Failure mode = MANUAL-USER-INSPECTION. Asking 38 employees to manually check their endpoints produces uneven results (some won't check, some will check incorrectly, some will alert the adversary by their checking behavior). EDR-driven threat hunt is the canonical detection approach."
+      },
+      "tips": [
+        "Trap is A — 'wipe and rebuild the 12 affected endpoints immediately' is candidate-seductive because total-cleanup-as-resolution feels decisive and complete; but wipe-without-forensics destroys evidence of TTPs, persistence mechanisms, and attribution data — for nation-state APT scenarios this is high-value intelligence loss. Isolate-and-preserve-then-rebuild is canonical. Transferable: 'destroying-evidence-feels-like-resolution' recurs across IR scenarios.",
+        "Watering-hole attack = DNS block + endpoint isolation + threat hunt + forensic preservation + responsible disclosure to site owner + FBI coordination + customer impact assessment + post-incident policy review. Eight tracks.",
+        "Exam-day shortcut: when stem describes WATERING-HOLE ATTACK targeting industry-website with known nation-state attribution, look for DNS-block + endpoint-isolation + threat-hunt + responsible-disclosure framework; wipe-without-forensics, trust-no-C2, and manual-user-inspection framings each fail."
+      ],
+      "framework_ref": "ISACA Incident Management Audit/Assurance Program; MITRE ATT&CK T1189 (Drive-by Compromise); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA + NSA Joint Cybersecurity Advisories on nation-state actors; Browser Isolation / Remote Browser Isolation (RBI) Vendor Documentation",
+      "related_concepts": [
+        "Watering-hole attack pattern",
+        "Threat hunt with IOCs",
+        "Responsible disclosure",
+        "Remote Browser Isolation"
+      ],
+      "_provenance": "Authored from concept: 'Watering-hole attack response in government-services consulting context'. Public sources: ISACA, MITRE, NIST, CISA. No legacy bank citation."
     }
   ]
 }

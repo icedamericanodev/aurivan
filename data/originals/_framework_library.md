@@ -1483,3 +1483,51 @@ sub-references like "(Managed Risk) and APO12.03").
 - SLSA Supply-chain Levels for Software Artifacts
 - Spectre/Meltdown Vulnerability Patches
 - Wi-Fi Alliance WPA3 Specification
+- Aberdeen Group Awareness ROI Research
+- Browser Isolation / Remote Browser Isolation (RBI) Vendor Documentation
+- CISA + NSA Joint Cybersecurity Advisories on nation-state actors
+- CISA Defending Against Software Supply Chain Attacks (April 2021)
+- CISA Network Security Guidance
+- CISA Top Attack Techniques Advisory
+- Cofense PhishMe Behavioral Conditioning
+- DCSA Contractor Reporting Requirements
+- Defend Trade Secrets Act of 2016
+- Executive Order 13587
+- FBI Insider Threat Program
+- FBI Internet Crime Complaint Center (IC3) Annual Report
+- FBI Internet Crime Complaint Center (IC3) BEC Annual Report
+- Gartner Magic Quadrant for Security Awareness Computer-Based Training
+- HHS OCR HIPAA Breach Notification Rule
+- HIPAA Security Rule §164.308 and §164.402
+- ISACA Information Security Audit/Assurance Program
+- ISACA Information Systems Audit/Assurance Standards
+- ISACA Security Awareness Audit/Assurance Program
+- ISACA Software Supply Chain Audit/Assurance Program
+- KnowBe4 PhishER + Cofense PhishMe Behavioral Metrics
+- KnowBe4 Security Awareness Methodology
+- LOLBAS Project (Living Off The Land Binaries and Scripts)
+- MITRE ATT&CK Framework TA0004 (Privilege Escalation) and TA0008 (Lateral Movement)
+- MITRE ATT&CK T1078 (Valid Accounts)
+- MITRE ATT&CK T1189 (Drive-by Compromise)
+- Microsoft Credential Guard Documentation
+- Microsoft Entra ID Revoke-MgUserSignInSession Documentation
+- Microsoft Tiered Administrative Model
+- NISPOM (National Industrial Security Program Operating Manual, 32 CFR Part 117)
+- NIST SP 800-115 (Technical Guide to Information Security Testing)
+- NIST SP 800-181 Rev 1 (NICE Cybersecurity Workforce Framework)
+- NIST SP 800-181 Rev 1 (NICE Workforce Framework)
+- NIST SP 800-50 (Building Security Awareness Program)
+- NIST SP 800-50 (Building an Information Technology Security Awareness and Training Program)
+- NIST SP 800-53 Rev 5 (referencing ATT&CK for threat models)
+- NIST SP 800-83 Rev 1 (Malware Incident Handling)
+- NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling)
+- OFAC Sanctions Compliance Guidance
+- OWASP Web Security Testing Guide (WSTG)
+- PCAOB AS 2401 (Consideration of Fraud)
+- PCI DSS v4.0 Requirement 12.6
+- PCI DSS v4.0 Requirement 6 (Develop and Maintain Secure Systems)
+- SANS Security Awareness Maturity Model
+- SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)
+- SWIFT Customer Security Programme (CSP)
+- Social-Engineer Framework (Hadnagy)
+- Verizon Data Breach Investigations Report (DBIR)
