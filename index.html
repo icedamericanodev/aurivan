@@ -50,7 +50,11 @@
 .ep-set:focus-visible,
 .ep-skip:focus-visible,
 .ec-edit:focus-visible,
-.wb-close:focus-visible {
+.wb-close:focus-visible,
+.sidebar-link:focus-visible,
+.sidebar-profile:focus-visible,
+.dash-action:focus-visible,
+.name-prompt-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: var(--r-sm, 6px);
@@ -74,6 +78,9 @@
      active chips). Use --accent for outlines, borders, links, hover indicators. */
   --accent-fill: #1D4ED8;
   --accent2: #14B8A6;
+  /* --accent2-fill: darker teal for teal text on light backgrounds.
+     #14B8A6 on white = 2.99:1 (fails AA); #0F766E = 5.4:1 (passes AA). */
+  --accent2-fill: #0F766E;
   --accent3: #00d4aa;
 
   /* Brand-nav palette derived from Aurivan logo (compass-A mark) */
@@ -124,6 +131,7 @@
   --accent: #3B82F6;
   --accent-fill: #1D4ED8; /* WCAG AA: 7.7:1 white-on-brand-blue (vs 3.68:1 on --accent) */
   --accent2: #14B8A6;
+  --accent2-fill: #2DD4BF; /* dark-mode teal text: 7.8:1 on --surface, vs 4.4:1 for --accent2 */
   --accent3: #00e6bb;
 
   /* Brand-nav palette (same in dark mode) */
@@ -4148,6 +4156,242 @@ header {
   .notify-form-row { flex-direction: column; }
   .notify-btn { width: 100%; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   v9.2 — BRAND HERO + TIP JAR (replaces "Train Like an ISACA Auditor")
+   Built around the 4 Aurivan pillars: Navigate / Master / Adapt / Lead.
+   ════════════════════════════════════════════════════════════ */
+.brand-card {
+  margin: 48px 0 18px;
+  padding: 34px 32px 32px;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.brand-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+.brand-card::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(20,184,166,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.brand-card > * { position: relative; z-index: 1; }
+.brand-card-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--accent-fill);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.brand-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+.brand-card-title .brand-card-accent {
+  background: linear-gradient(135deg, var(--brand-blue), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.brand-card-desc {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin: 0 0 24px;
+  max-width: 620px;
+}
+.brand-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 26px;
+}
+.brand-pillar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.brand-pillar:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.brand-pillar-icon {
+  width: 36px; height: 36px;
+  margin: 0 auto 10px;
+  color: var(--accent-fill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand-pillar-icon svg { width: 100%; height: 100%; }
+.brand-pillar:nth-child(3) .brand-pillar-icon { color: var(--accent2-fill); }
+.brand-pillar:nth-child(4) .brand-pillar-icon { color: var(--accent2-fill); }
+.brand-pillar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.brand-pillar-sub {
+  font-size: 11.5px;
+  color: var(--text2);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.brand-coverage {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.brand-coverage-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.brand-coverage-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.brand-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.brand-chip.live {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: #fff;
+}
+.brand-chip.soon::after {
+  content: 'soon';
+  margin-left: 6px;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 100px;
+  background: rgba(20,184,166,0.12);
+  color: var(--accent2-fill);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .brand-card { padding: 24px 20px 22px; margin: 32px 0 14px; }
+  .brand-card-title { font-size: 26px; }
+  .brand-pillars { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+@media (max-width: 420px) {
+  .brand-pillars { grid-template-columns: 1fr 1fr; }
+  .brand-pillar { padding: 14px 10px; }
+}
+
+/* ── TIP JAR ── */
+.tipjar-card {
+  margin: 0 0 22px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, rgba(20,184,166,0.08), rgba(59,130,246,0.06));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+.tipjar-text { min-width: 0; }
+.tipjar-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent2-fill);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.tipjar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+.tipjar-desc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: 0;
+}
+.tipjar-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.tipjar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--accent-fill);
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  min-height: 44px;
+  white-space: nowrap;
+}
+.tipjar-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(29,78,216,0.30);
+}
+.tipjar-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  .tipjar-card { grid-template-columns: 1fr; }
+  .tipjar-actions { align-items: stretch; }
+  .tipjar-btn { justify-content: center; }
+}
 /* ── GLOBAL THEME TRANSITION ── */
 *, *::before, *::after {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
@@ -4204,15 +4448,548 @@ header::after {
 @keyframes correctPop { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
 .opt.correct { animation: correctPop 0.4s ease; }
 /* ── SCORE GLOW ── */
-.summary-big-score { 
+.summary-big-score {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
+/* ════════════════════════════════════════════════════════════
+   v9.2 — SIDEBAR LAYOUT + DASHBOARD
+   ════════════════════════════════════════════════════════════ */
+.app-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 0 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 50;
+}
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px 22px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.sidebar-brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-teal));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+}
+.sidebar-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.sidebar-section { display: flex; flex-direction: column; }
+.sidebar-section + .sidebar-section { margin-top: 14px; }
+.sidebar-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  padding: 0 18px 8px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  color: var(--text2);
+  font-weight: 500;
+  font-size: 13.5px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border: none;
+  background: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+  min-height: 36px;
+}
+.sidebar-link:hover { background: var(--surface2); color: var(--text); }
+.sidebar-link.active {
+  /* v9.2 a11y: use --accent-fill (#1D4ED8) instead of --accent (#3B82F6)
+     so text-on-surface meets WCAG AA 4.5:1 in both light and dark mode. */
+  background: rgba(59,130,246,0.10);
+  color: var(--accent-fill);
+  border-left-color: var(--accent-fill);
+}
+.sidebar-link-icon {
+  font-size: 14px;
+  width: 18px;
+  display: inline-flex;
+  justify-content: center;
+}
+.sidebar-link-badge {
+  margin-left: auto;
+  /* v9.2 a11y: --accent-fill ensures white-text-on-bg ≥ 7.7:1 contrast */
+  background: var(--accent-fill);
+  color: white;
+  font-size: 10px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  min-width: 22px;
+  text-align: center;
+}
+.sidebar-spacer { flex: 1; }
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  cursor: pointer;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+}
+.sidebar-profile:hover { background: var(--surface2); }
+.sidebar-profile-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+  /* v9.2 a11y: white initial on --accent-fill = 7.7:1, on --accent = 3.68:1 */
+  background: var(--accent-fill);
+  flex-shrink: 0;
+}
+.sidebar-profile-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.2;
+}
+.sidebar-profile-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.app-main-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 24px 80px;
+  box-sizing: border-box;
+}
+
+/* Mobile: collapse sidebar to top horizontal bar */
+@media (max-width: 760px) {
+  .app-shell { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: sticky;
+    top: 0;
+    flex-direction: column;
+    padding: 8px 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    align-items: stretch;
+    gap: 0;
+  }
+  .sidebar-brand {
+    padding: 4px 6px 8px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    justify-content: space-between;
+  }
+  .sidebar-brand::after {
+    content: '\2630';
+    font-size: 18px;
+    color: var(--text2);
+    cursor: pointer;
+  }
+  .sidebar-section-label { display: none; }
+  .sidebar-section {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 4px;
+    padding: 4px 0;
+  }
+  .sidebar-section + .sidebar-section { margin-top: 0; border-top: 1px solid var(--border); padding-top: 6px; }
+  .sidebar-link {
+    padding: 10px 12px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 8px;
+    flex-shrink: 0;
+    min-height: 44px;
+    font-size: 12.5px;
+  }
+  .sidebar-link.active {
+    background: rgba(59,130,246,0.10);
+    border-left-color: transparent;
+  }
+  .sidebar-spacer { display: none; }
+  .sidebar-profile { padding: 8px 6px 4px; border-top: 1px solid var(--border); margin-top: 6px; }
+  .app-main-inner { padding: 0 16px 80px; }
+}
+
+/* ── DASHBOARD SCREEN ── */
+.dash-greeting {
+  margin: 24px 0 22px;
+}
+.dash-greeting h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.dash-greeting p {
+  font-size: 14px;
+  color: var(--text2);
+  margin: 0;
+  line-height: 1.55;
+}
+.dash-greeting .dash-streak-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(20,184,166,0.10);
+  border: 1px solid rgba(20,184,166,0.30);
+  /* v9.2 a11y: --accent2-fill is 5.4:1 light / 7.8:1 dark, vs --accent2's 2.99:1 light failure */
+  color: var(--accent2-fill);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.dash-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  transition: border-color 0.15s;
+}
+.kpi-card:hover { border-color: var(--border2); }
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+.kpi-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.kpi-value.muted { color: var(--text2); }
+.kpi-delta {
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 500;
+}
+.kpi-delta.up { color: var(--correct); }
+.kpi-delta.down { color: var(--wrong); }
+.kpi-delta-arrow { display: inline-block; margin-right: 2px; }
+
+@media (max-width: 760px) {
+  .dash-kpis { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .kpi-card { padding: 12px 14px; border-radius: 12px; }
+  .kpi-value { font-size: 22px; }
+}
+
+.dash-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+@media (max-width: 920px) { .dash-row { grid-template-columns: 1fr; } }
+
+.dash-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+.dash-panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  color: var(--text);
+}
+.dash-domain-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 44px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.dash-domain-row:last-child { margin-bottom: 0; }
+.dash-domain-name {
+  font-size: 12.5px;
+  color: var(--text2);
+  font-weight: 500;
+  /* v9.2 P8: truncate gracefully if a domain name grows past 130px column */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dash-domain-bar {
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dash-domain-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+.dash-domain-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+  color: var(--text2);
+}
+
+.dash-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.dash-action {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: inherit;
+  color: var(--text);
+  min-height: 88px;
+}
+.dash-action:hover {
+  border-color: var(--accent);
+  background: var(--surface2);
+  transform: translateY(-1px);
+}
+.dash-action-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(59,130,246,0.12);
+  color: var(--accent);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.dash-action-title {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text);
+}
+.dash-action-sub {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .dash-actions { grid-template-columns: 1fr; }
+  .dash-greeting h1 { font-size: 24px; }
+}
+
+/* Name prompt modal */
+.name-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  padding: 16px;
+}
+.name-prompt-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+}
+.name-prompt-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.name-prompt-sub {
+  font-size: 13px;
+  color: var(--text2);
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+.name-prompt-input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  margin-bottom: 14px;
+  box-sizing: border-box;
+}
+.name-prompt-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+}
+.name-prompt-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.name-prompt-btn {
+  padding: 11px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+  min-height: 44px; /* v9.2 a11y: WCAG 2.5.5 tap target */
+}
+.name-prompt-btn.primary {
+  background: var(--accent-fill, var(--accent));
+  color: white;
+  border-color: transparent;
+  font-weight: 600;
+}
+.name-prompt-btn:hover { filter: brightness(1.08); }
+
+/* Hide the legacy top nav-tabs row when sidebar is shown */
+.app-shell .nav-tabs-wrap { display: none; }
+
+/* Compact top header inside .app-main (just the right-side controls remain) */
+.app-shell header {
+  padding: 14px 0 6px;
+}
+
+/* On the Dashboard, hide the duplicate mindset strip / stats row / readiness
+   card / study-rec card — the Dashboard already presents those metrics. */
+body.on-dashboard .mindset-strip,
+body.on-dashboard .stats-row,
+body.on-dashboard #readinessCard,
+body.on-dashboard #studyRecCard {
+  display: none !important;
+}
+
 </style>
 </head>
-<body>
-<div class="app">
+<body class="on-dashboard">
+<div class="app app-shell">
+
+<!-- SIDEBAR (v9.2) — primary nav, semantic <nav> per WCAG -->
+<nav class="sidebar" id="appSidebar" aria-label="Primary">
+  <div class="sidebar-brand">
+    <span class="sidebar-brand-mark" aria-hidden="true">A</span>
+    <span class="sidebar-brand-name">aurivan</span>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Study</div>
+    <button class="sidebar-link active" id="side-dashboard" onclick="switchTab('dashboard')"><span class="sidebar-link-icon">&#127968;</span>Dashboard</button>
+    <button class="sidebar-link" id="side-practice" onclick="switchTab('practice')"><span class="sidebar-link-icon">&#9997;</span>Practice<span class="sidebar-link-badge" id="sideBadgePractice" style="display:none">0</span></button>
+    <button class="sidebar-link" id="side-bookmarks" onclick="switchTab('bookmarks')"><span class="sidebar-link-icon">&#128278;</span>Saved<span class="sidebar-link-badge" id="sideBadgeSaved" style="display:none">0</span></button>
+    <button class="sidebar-link" id="side-weakspots" onclick="switchTab('weakspots')"><span class="sidebar-link-icon">&#128202;</span>Weak Spots</button>
+    <button class="sidebar-link" id="side-mock" onclick="switchTab('mock')"><span class="sidebar-link-icon">&#127941;</span>Mock Exam</button>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Learn</div>
+    <button class="sidebar-link" id="side-topics" onclick="switchTab('topics')"><span class="sidebar-link-icon">&#128196;</span>Topics</button>
+    <button class="sidebar-link" id="side-principles" onclick="switchTab('principles')"><span class="sidebar-link-icon">&#9881;&#65039;</span>Principles</button>
+    <button class="sidebar-link" id="side-glossary" onclick="switchTab('glossary')"><span class="sidebar-link-icon">&#128218;</span>Glossary</button>
+  </div>
+  <div class="sidebar-spacer"></div>
+  <button class="sidebar-profile" onclick="showProfilePanel()" aria-label="Profile and settings">
+    <span class="sidebar-profile-avatar" id="sideProfileAvatar">A</span>
+    <div>
+      <div class="sidebar-profile-name" id="sideProfileName">Friend</div>
+      <div class="sidebar-profile-sub">Guest</div>
+    </div>
+  </button>
+</nav>
+
+<div class="app-main">
+<div class="app-main-inner">
 
 <!-- WELCOME BANNER (Decision 4) — first-time users only -->
 <div id="welcome-banner" class="welcome-banner" hidden>
@@ -4223,7 +5000,7 @@ header::after {
 
 <!-- HEADER -->
 <header>
-  <div class="logo">
+  <div class="logo" style="display:none" aria-hidden="true">
     <span class="logo-eyebrow">Master Modern Risk</span>
     <span class="logo-name">
       <svg class="brand-mark" viewBox="0 0 60 72" fill="none" aria-hidden="true" style="height:34px;width:auto;vertical-align:-8px;margin-right:4px">
@@ -4298,8 +5075,27 @@ header::after {
   <button class="nav-tab" onclick="switchTab('mock')" id="tab-mock">&#127941; Mock Exam</button>
 </div></div><!-- /nav-tabs-wrap -->
 
+<!-- DASHBOARD (v9.2) -->
+<div id="screen-dashboard" class="screen active">
+  <div class="dash-greeting">
+    <h1>Good <span id="dashTimeOfDay">morning</span>, <span id="dashGreetName">friend</span>.<span class="dash-streak-pill" id="dashStreakPill" style="display:none">&#128293; <span id="dashStreakNum">0</span>-day streak</span></h1>
+    <p id="dashSubGreeting">Welcome back to Aurivan.</p>
+  </div>
+  <div class="dash-kpis" id="dashKpis"></div>
+  <div class="dash-row">
+    <div class="dash-panel">
+      <h2 class="dash-panel-title">Domain progress</h2>
+      <div id="dashDomainProgress"></div>
+    </div>
+    <div class="dash-panel">
+      <h2 class="dash-panel-title">Quick actions</h2>
+      <div class="dash-actions" id="dashQuickActions"></div>
+    </div>
+  </div>
+</div>
+
 <!-- PRACTICE -->
-<div id="screen-practice" class="screen active">
+<div id="screen-practice" class="screen">
   <!-- Decision 8 — Exam-date countdown / set-date prompt -->
   <div id="examCountdownArea"></div>
   <!-- Decision 9 — Session start / debrief inline card -->
@@ -4386,25 +5182,70 @@ header::after {
   <div id="glossaryArea"></div>
 </div>
 
-  <!-- ── TRAIN LIKE AN ISACA AUDITOR — engagement section (HTML-only, no backend) ── -->
-  <section class="notify-card" data-testid="notify-section">
-    <div class="notify-eyebrow">Stay In The Loop</div>
-    <h2 class="notify-title">&#128640; Train Like an <em>ISACA Auditor</em></h2>
-    <p class="notify-desc">I&#39;m continuously improving this CISA prep tool with new scenario-based questions, harder ISACA-style simulations, and weak-area tracking features.</p>
-    <ul class="notify-features">
-      <li>New scenario-based questions</li>
-      <li>Harder ISACA-style simulations</li>
-      <li>Weak-area tracking features</li>
-    </ul>
-    <div class="notify-interests-label">Coverage</div>
-    <div class="notify-chips" data-testid="notify-chips">
-      <span class="notify-chip active" data-testid="notify-chip-cisa">CISA</span>
-      <span class="notify-chip" data-testid="notify-chip-crisc">CRISC</span>
-      <span class="notify-chip" data-testid="notify-chip-cism">CISM</span>
-      <span class="notify-chip" data-testid="notify-chip-cloud">Cloud Audit</span>
-      <span class="notify-chip" data-testid="notify-chip-ai">AI Governance</span>
+  <!-- ── BRAND HERO — Aurivan slogan + 4 pillars (v9.2) ── -->
+  <section class="brand-card" data-testid="brand-hero">
+    <div class="brand-card-eyebrow">The Aurivan Way</div>
+    <h2 class="brand-card-title">Master <span class="brand-card-accent">Modern Risk.</span></h2>
+    <p class="brand-card-desc">A continuous learning platform for IT Audit, Cyber Risk, and AI Governance professionals — authored from primary sources, free, and growing every week.</p>
+
+    <div class="brand-pillars">
+      <div class="brand-pillar">
+        <div class="brand-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/><path d="M8.5 8.5L14 10l-2 4-3.5-1.5z" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div class="brand-pillar-title">Navigate</div>
+        <div class="brand-pillar-sub">with clarity</div>
+      </div>
+      <div class="brand-pillar">
+        <div class="brand-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-4 9-8 9s-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="brand-pillar-title">Master</div>
+        <div class="brand-pillar-sub">with confidence</div>
+      </div>
+      <div class="brand-pillar">
+        <div class="brand-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>
+        </div>
+        <div class="brand-pillar-title">Adapt</div>
+        <div class="brand-pillar-sub">to change</div>
+      </div>
+      <div class="brand-pillar">
+        <div class="brand-pillar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/><path d="M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/></svg>
+        </div>
+        <div class="brand-pillar-title">Lead</div>
+        <div class="brand-pillar-sub">the future</div>
+      </div>
     </div>
-    <div class="notify-trust">Updates land directly inside the app &mdash; just reopen this page anytime.</div>
+
+    <div class="brand-coverage">
+      <div class="brand-coverage-label">Coverage roadmap</div>
+      <div class="brand-coverage-chips">
+        <span class="brand-chip live">CISA</span>
+        <span class="brand-chip soon">CRISC</span>
+        <span class="brand-chip soon">CISM</span>
+        <span class="brand-chip soon">Cloud Audit</span>
+        <span class="brand-chip soon">AI Governance</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TIP JAR — optional support for the project (v9.2) ──
+       Replace TIPJAR_URL after creating a Buy Me a Coffee / Ko-fi account.
+       Hide the section by adding hidden attribute or display:none if not desired. -->
+  <section class="tipjar-card" data-testid="tipjar">
+    <div class="tipjar-text">
+      <div class="tipjar-eyebrow">Support the mission</div>
+      <h3 class="tipjar-title">Aurivan stays free — forever.</h3>
+      <p class="tipjar-desc">No paywall, no account, no ads. If the app has helped you prep, a small tip keeps the lights on and funds new questions, new domains, and new features.</p>
+    </div>
+    <div class="tipjar-actions">
+      <a class="tipjar-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" aria-label="Support Aurivan with a tip on Buy Me a Coffee">
+        <span aria-hidden="true">&#9749;</span> Buy me a coffee
+      </a>
+      <p class="tipjar-meta">Powered by Buy Me a Coffee &middot; we never see your card.</p>
+    </div>
   </section>
 
   <!-- ── LEGAL DISCLAIMER ── -->
@@ -4415,7 +5256,9 @@ header::after {
     <p><strong>CISA&reg; is a registered trademark of ISACA.</strong> All references are used for educational and identification purposes only.</p>
     <p>This tool is intended as a supplementary study resource and should not be considered a replacement for official ISACA materials.</p>
   </section>
-</div>
+</div><!-- /.app-main-inner -->
+</div><!-- /.app-main -->
+</div><!-- /.app.app-shell -->
 
 <div id="flagModal"></div>
 <div id="changelogModal"></div>
@@ -4890,7 +5733,7 @@ var S_DEFAULTS = {
   lastOpenedSubtopic: {},
   confidenceLog: [],
   sessionHistory: [],
-  activeTab: "practice",
+  activeTab: "dashboard",
 };
 
 var S = JSON.parse(JSON.stringify(S_DEFAULTS));
@@ -6512,12 +7355,22 @@ function switchTab(t) {
   clearAllTimers(); // always clear timers when switching tabs
   S.activeTab = t;
   saveState();
+  // v9.2: toggle body class so dashboard hides redundant top chrome
+  document.body.classList.toggle('on-dashboard', t === 'dashboard');
   document.querySelectorAll('.nav-tab').forEach(function(x){
     x.classList.toggle('active', x.id === 'tab-' + t);
+  });
+  document.querySelectorAll('.sidebar-link').forEach(function(x){
+    var isActive = x.id === 'side-' + t;
+    x.classList.toggle('active', isActive);
+    // v9.2 a11y P6: aria-current announces "current page" to screen readers
+    if (isActive) x.setAttribute('aria-current', 'page');
+    else x.removeAttribute('aria-current');
   });
   document.querySelectorAll('.screen').forEach(function(x){
     x.classList.toggle('active', x.id === 'screen-' + t);
   });
+  if (t === 'dashboard') renderDashboard();
   if (t === 'bookmarks') renderBookmarks();
   if (t === 'weakspots') renderWeakSpots();
   if (t === 'mock') renderMockSetup();
@@ -6726,6 +7579,8 @@ function updateStats() {
   bd.textContent = n;
   bd.style.display = n > 0 ? 'inline' : 'none';
   updateMissedBtn();
+  // v9.2: keep sidebar Saved badge in sync
+  try { updateSidebarBadges(); } catch(e) {}
 }
 
 // â”€â”€ MINDSET ROTATION â”€â”€
@@ -9247,6 +10102,256 @@ function calcReadinessScore() {
   return Math.round((weightedScore / totalWeight) * 100);
 }
 
+// ── DASHBOARD (v9.2) ──
+var DASH_NAME_KEY = 'aurivan_user_name_v1';
+
+function getUserName() {
+  try {
+    // 1) Prefer the simple dashboard-name key (set by our prompt)
+    var n = (localStorage.getItem(DASH_NAME_KEY) || '').trim();
+    if (n) return n.replace(/<[^>]*>/g, '').substring(0, 24);
+    // 2) Fall back to the active profile name if it isn't the default
+    try {
+      var actId = localStorage.getItem(ACTIVE_KEY);
+      var profs = JSON.parse(localStorage.getItem(PROFILES_KEY) || '{}');
+      if (actId && profs[actId] && profs[actId].name && profs[actId].name !== 'My Progress') {
+        return String(profs[actId].name).replace(/<[^>]*>/g, '').substring(0, 24);
+      }
+    } catch(e) {}
+    return '';
+  } catch(e) { return ''; }
+}
+
+function saveUserName(n) {
+  try {
+    var clean = (n || '').replace(/<[^>]*>/g, '').trim().substring(0, 24);
+    if (clean) {
+      localStorage.setItem(DASH_NAME_KEY, clean);
+    } else {
+      localStorage.removeItem(DASH_NAME_KEY);
+    }
+  } catch(e) {}
+}
+
+function timeOfDayGreeting() {
+  var h = new Date().getHours();
+  if (h < 12) return 'morning';
+  if (h < 18) return 'afternoon';
+  return 'evening';
+}
+
+function maybeShowNamePrompt() {
+  if (getUserName()) return; // name already set
+  if (localStorage.getItem('aurivan_name_prompt_dismissed_v1') === '1') return;
+  showNamePrompt(false);
+}
+
+function showNamePrompt(canSkip) {
+  if (document.getElementById('namePromptOverlay')) return;
+  var skipBtn = (canSkip !== false)
+    ? '<button class="name-prompt-btn" onclick="dismissNamePrompt(false)">Skip</button>'
+    : '<button class="name-prompt-btn" onclick="dismissNamePrompt(false)">Not now</button>';
+  var overlay = document.createElement('div');
+  overlay.id = 'namePromptOverlay';
+  overlay.className = 'name-prompt-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'namePromptTitle');
+  overlay.innerHTML = ''
+    + '<div class="name-prompt-card">'
+    +   '<h2 class="name-prompt-title" id="namePromptTitle">Welcome to Aurivan</h2>'
+    +   '<p class="name-prompt-sub">What should we call you? This stays in your browser only — no account needed.</p>'
+    +   '<input type="text" class="name-prompt-input" id="namePromptInput" placeholder="Your first name" maxlength="24" autocomplete="given-name" />'
+    +   '<div class="name-prompt-actions">'
+    +     skipBtn
+    +     '<button class="name-prompt-btn primary" onclick="submitNamePrompt()">Save name</button>'
+    +   '</div>'
+    + '</div>';
+  // v9.2 a11y P5: ESC key and click-outside dismiss
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) dismissNamePrompt(false);
+  });
+  document.body.appendChild(overlay);
+  // ESC key handler — bound at document level, removed on dismiss
+  window._namePromptEscHandler = function(e) {
+    if (e.key === 'Escape') dismissNamePrompt(false);
+  };
+  document.addEventListener('keydown', window._namePromptEscHandler);
+  setTimeout(function(){
+    var inp = document.getElementById('namePromptInput');
+    if (inp) {
+      inp.value = getUserName() || '';
+      inp.focus();
+      inp.addEventListener('keydown', function(e){
+        if (e.key === 'Enter') submitNamePrompt();
+      });
+    }
+  }, 30);
+}
+
+function submitNamePrompt() {
+  var inp = document.getElementById('namePromptInput');
+  if (!inp) return;
+  saveUserName(inp.value);
+  dismissNamePrompt(true);
+  updateDashboardGreeting();
+  updateSidebarProfile();
+}
+
+function dismissNamePrompt(saved) {
+  var ov = document.getElementById('namePromptOverlay');
+  if (ov) ov.remove();
+  // v9.2 a11y P5: clean up ESC listener
+  if (window._namePromptEscHandler) {
+    document.removeEventListener('keydown', window._namePromptEscHandler);
+    window._namePromptEscHandler = null;
+  }
+  if (!saved) {
+    try { localStorage.setItem('aurivan_name_prompt_dismissed_v1', '1'); } catch(e) {}
+  }
+}
+
+function updateSidebarProfile() {
+  var name = getUserName() || 'Friend';
+  var nameEl = document.getElementById('sideProfileName');
+  var avEl = document.getElementById('sideProfileAvatar');
+  if (nameEl) nameEl.textContent = name;
+  if (avEl) avEl.textContent = (name.charAt(0) || 'A').toUpperCase();
+}
+
+function updateDashboardGreeting() {
+  var nameEl = document.getElementById('dashGreetName');
+  var todEl = document.getElementById('dashTimeOfDay');
+  if (nameEl) nameEl.textContent = getUserName() || 'friend';
+  if (todEl) todEl.textContent = timeOfDayGreeting();
+}
+
+function updateSidebarBadges() {
+  // Practice badge = number of flagged/saved questions to review
+  var savedCount = (S.bookmarks && S.bookmarks.length) || 0;
+  var sb = document.getElementById('sideBadgeSaved');
+  if (sb) {
+    if (savedCount > 0) { sb.textContent = savedCount; sb.style.display = ''; }
+    else { sb.style.display = 'none'; }
+  }
+  // Hide practice badge by default (we only badge Saved for clarity)
+  var pb = document.getElementById('sideBadgePractice');
+  if (pb) pb.style.display = 'none';
+}
+
+function renderDashboard() {
+  updateDashboardGreeting();
+  updateSidebarProfile();
+  updateSidebarBadges();
+
+  // Subtext: flagged + exam countdown
+  var sub = '';
+  var examDate = getExamDate();
+  var flagged = (S.bookmarks && S.bookmarks.length) || 0;
+  if (flagged > 0) {
+    sub += 'You have <strong>' + flagged + '</strong> flagged question' + (flagged===1?'':'s') + ' to review.';
+  } else {
+    sub += 'No flagged questions yet — bookmark trickier ones during practice.';
+  }
+  if (examDate) {
+    var diff = Math.ceil((new Date(examDate + 'T00:00:00').getTime() - Date.now()) / 86400000);
+    if (diff > 0) sub += ' Your exam is in <strong>' + diff + ' day' + (diff===1?'':'s') + '</strong>.';
+    else if (diff === 0) sub += ' <strong>Your exam is today — good luck!</strong>';
+    else sub += ' Exam date has passed.';
+  } else {
+    sub += ' <a href="#" onclick="event.preventDefault();switchTab(\'practice\');setTimeout(scrollToExamCountdown,200)" style="color:var(--accent-fill);text-decoration:underline">Set your exam date</a>';
+  }
+  var subEl = document.getElementById('dashSubGreeting');
+  if (subEl) subEl.innerHTML = sub;
+
+  // Streak pill
+  var streakPill = document.getElementById('dashStreakPill');
+  var streakNum = document.getElementById('dashStreakNum');
+  if (streakPill && streakNum) {
+    if (S.streak > 0) {
+      streakNum.textContent = S.streak;
+      streakPill.style.display = '';
+    } else {
+      streakPill.style.display = 'none';
+    }
+  }
+
+  // KPIs
+  var readiness = calcReadinessScore();
+  var totalAns = (S.score && S.score.t) || 0;
+  var totalCor = (S.score && S.score.c) || 0;
+  var correctRate = totalAns > 0 ? Math.round((totalCor/totalAns)*100) : null;
+  var streak = S.streak || 0;
+
+  var kpiHtml = ''
+    + kpiCardHtml('Readiness', readiness !== null ? readiness + '%' : '—', readiness===null?'Answer questions to score':'Weighted by exam blueprint', readiness)
+    + kpiCardHtml('Questions', totalAns.toLocaleString(), totalAns ? 'answered' : 'start any time', null)
+    + kpiCardHtml('Correct rate', correctRate !== null ? correctRate + '%' : '—', correctRate===null?'—':totalCor + ' of ' + totalAns + ' correct', null)
+    + kpiCardHtml('Streak', streak, streak ? (streak===1?'day':'days') + ' in a row' : 'Answer a question to start', null);
+
+  var kpisEl = document.getElementById('dashKpis');
+  if (kpisEl) kpisEl.innerHTML = kpiHtml;
+
+  // Domain progress
+  var domainNames = {1:'IS Audit Process',2:'IT Governance',3:'IS Acquisition',4:'IS Operations',5:'Info Protection'};
+  var domainHtml = '';
+  [1,2,3,4,5].forEach(function(d) {
+    var st = S.ds[d] || {t:0,c:0};
+    var pct = st.t > 0 ? Math.round((st.c/st.t)*100) : 0;
+    // v9.2 a11y: 3:1 non-text contrast on light-mode --surface2 (#e8eeff) requires
+    // darker fills. --warning (#fbbf24) fails at 1.6:1; #b45309 hits 4.5:1.
+    // --accent (#3B82F6) is 3.0:1 borderline; --accent-fill (#1D4ED8) is 5.8:1.
+    var color = pct >= 75 ? 'var(--correct)' : pct >= 50 ? '#b45309' : pct > 0 ? 'var(--accent-fill)' : 'var(--border2)';
+    domainHtml += '<div class="dash-domain-row">'
+      + '<div class="dash-domain-name">' + domainNames[d] + '</div>'
+      + '<div class="dash-domain-bar"><div class="dash-domain-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>'
+      + '<div class="dash-domain-pct" style="color:' + (pct>0?color:'var(--muted)') + '">' + (st.t>0 ? pct + '%' : '—') + '</div>'
+      + '</div>';
+  });
+  var dpEl = document.getElementById('dashDomainProgress');
+  if (dpEl) dpEl.innerHTML = domainHtml;
+
+  // Quick actions
+  var qaHtml = ''
+    + '<button class="dash-action" onclick="switchTab(\'practice\')">'
+    +   '<span class="dash-action-icon">&#9997;</span>'
+    +   '<span class="dash-action-title">Continue practice</span>'
+    +   '<span class="dash-action-sub">' + (totalAns > 0 ? 'Resume where you left off' : 'Start your first session') + '</span>'
+    + '</button>'
+    + '<button class="dash-action" onclick="switchTab(\'bookmarks\')">'
+    +   '<span class="dash-action-icon">&#128278;</span>'
+    +   '<span class="dash-action-title">Review flagged</span>'
+    +   '<span class="dash-action-sub">' + (flagged > 0 ? flagged + ' saved question' + (flagged===1?'':'s') : 'Nothing saved yet') + '</span>'
+    + '</button>'
+    + '<button class="dash-action" onclick="switchTab(\'weakspots\')">'
+    +   '<span class="dash-action-icon">&#128202;</span>'
+    +   '<span class="dash-action-title">Weak spots</span>'
+    +   '<span class="dash-action-sub">Train your weakest domains</span>'
+    + '</button>'
+    + '<button class="dash-action" onclick="switchTab(\'mock\')">'
+    +   '<span class="dash-action-icon">&#127941;</span>'
+    +   '<span class="dash-action-title">Mock exam</span>'
+    +   '<span class="dash-action-sub">150 questions, exam-style</span>'
+    + '</button>';
+  var qaEl = document.getElementById('dashQuickActions');
+  if (qaEl) qaEl.innerHTML = qaHtml;
+}
+
+function kpiCardHtml(label, value, sub, valueForDelta) {
+  var muted = (value === '—');
+  return '<div class="kpi-card">'
+    + '<div class="kpi-label">' + label + '</div>'
+    + '<div class="kpi-value' + (muted?' muted':'') + '">' + value + '</div>'
+    + '<div class="kpi-delta">' + sub + '</div>'
+    + '</div>';
+}
+
+function scrollToExamCountdown() {
+  var el = document.getElementById('examCountdownArea');
+  if (el) el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+
 function renderReadinessCard() {
   var card = document.getElementById('readinessCard');
   if (!card) return;
@@ -9892,31 +10997,30 @@ document.querySelectorAll('[data-diff]').forEach(function(b){
 });
 setInterval(rotateMindset, 7500);
 
-if (S.activeTab && S.activeTab !== 'practice') {
-  switchTab(S.activeTab);
-} else if (shouldResumeCurrent()) {
+// v9.2: always invoke switchTab so the correct screen is activated
+// (the old conditional skipped switchTab when activeTab was 'practice',
+// which left the new Dashboard's `.screen.active` class on the wrong panel
+// for returning users whose saved tab was 'practice').
+switchTab(S.activeTab || 'dashboard');
+
+if (shouldResumeCurrent() && S.activeTab === 'practice') {
   renderResumePrompt();
 }
 
-if (shouldResumeCurrent() && (!S.activeTab || S.activeTab === 'practice')) {
-  renderResumePrompt();
-}
-
-// First visit: show profile creation if no profiles exist
+// First visit: ask for a first name (guest-only, stored locally)
 (function() {
   try {
-    var profiles = getProfiles();
-    if (Object.keys(profiles).length === 0) {
-      // Show profile creation prompt after short delay
-      setTimeout(function() { showProfilePanel(); }, 700);
-    } else {
-      // Has profiles â€” check onboarding
-      checkOnboarding();
-    }
-  } catch(e) {
     checkOnboarding();
-  }
+  } catch(e) {}
+  // Show simple name prompt if no name yet (replaces heavier profile panel
+  // as the first-touch UX; users can still open the full profile panel later)
+  setTimeout(function() {
+    try { maybeShowNamePrompt(); } catch(e) {}
+  }, 600);
 })();
+
+// Initial sidebar profile/badge sync (runs after S is loaded)
+try { updateSidebarProfile(); updateSidebarBadges(); } catch(e) {}
 
 
 
