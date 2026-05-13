@@ -544,6 +544,28 @@ header {
   color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden;
   text-overflow: ellipsis; transition: opacity 0.4s;
 }
+/* Mobile: let the mindset sentence wrap to multiple lines so users read the full text.
+   On narrow viewports the horizontal divider becomes a thin underline beneath the label. */
+@media (max-width: 600px) {
+  .mindset-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 16px;
+  }
+  .ms-divider { display: none; }
+  .ms-label {
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+    align-self: stretch;
+  }
+  .ms-text {
+    white-space: normal;
+    text-overflow: clip;
+    line-height: 1.55;
+    font-size: 13.5px;
+  }
+}
 
 /* â”€â”€ STATS â”€â”€ */
 .stats-row {
