@@ -50,11 +50,7 @@
 .ep-set:focus-visible,
 .ep-skip:focus-visible,
 .ec-edit:focus-visible,
-.wb-close:focus-visible,
-.sidebar-link:focus-visible,
-.sidebar-profile:focus-visible,
-.dash-action:focus-visible,
-.name-prompt-btn:focus-visible {
+.wb-close:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: var(--r-sm, 6px);
@@ -3693,6 +3689,41 @@ header {
 }
 .whats-new-btn:hover {border-color:var(--accent);color:var(--accent);}
 
+/* ── HEADER TIP BUTTON (v9.2) ──
+   Brand-accent CTA next to the Feedback button. Smaller and lighter than
+   the bottom tipjar-card; opens Buy Me a Coffee in a new tab. */
+.tip-header-btn {
+  font-family:"JetBrains Mono",monospace;
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:6px 14px;
+  border-radius:100px;
+  border:2px solid transparent;
+  background:var(--accent-fill);
+  color:#fff;
+  cursor:pointer;
+  transition:var(--tr);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.tip-header-btn:hover {
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(29,78,216,0.30);
+}
+.tip-header-btn:focus-visible {
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+@media (max-width: 600px) {
+  .tip-header-btn { padding:5px 11px; font-size:10px; min-height:32px; }
+}
+
 /* ── FEEDBACK MODAL ── */
 .fb-row { margin-bottom:16px; }
 .fb-label {
@@ -4448,605 +4479,15 @@ header::after {
 @keyframes correctPop { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
 .opt.correct { animation: correctPop 0.4s ease; }
 /* ── SCORE GLOW ── */
-.summary-big-score {
+.summary-big-score { 
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
-/* ════════════════════════════════════════════════════════════
-   v9.2 — SIDEBAR LAYOUT + DASHBOARD
-   ════════════════════════════════════════════════════════════ */
-.app-shell {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  min-height: 100vh;
-}
-.sidebar {
-  width: 240px;
-  flex-shrink: 0;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 18px 0 16px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  z-index: 50;
-}
-.sidebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 18px 22px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 14px;
-}
-.sidebar-brand-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--brand-blue), var(--brand-teal));
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-}
-.sidebar-brand-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-.sidebar-section { display: flex; flex-direction: column; }
-.sidebar-section + .sidebar-section { margin-top: 14px; }
-.sidebar-section-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  padding: 0 18px 8px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 18px;
-  color: var(--text2);
-  font-weight: 500;
-  font-size: 13.5px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  border: none;
-  background: none;
-  border-left: 3px solid transparent;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  transition: background 0.15s, color 0.15s;
-  min-height: 36px;
-}
-.sidebar-link:hover { background: var(--surface2); color: var(--text); }
-.sidebar-link.active {
-  /* v9.2 a11y: use --accent-fill (#1D4ED8) instead of --accent (#3B82F6)
-     so text-on-surface meets WCAG AA 4.5:1 in both light and dark mode. */
-  background: rgba(59,130,246,0.10);
-  color: var(--accent-fill);
-  border-left-color: var(--accent-fill);
-}
-.sidebar-link-icon {
-  font-size: 14px;
-  width: 18px;
-  display: inline-flex;
-  justify-content: center;
-}
-.sidebar-link-badge {
-  margin-left: auto;
-  /* v9.2 a11y: --accent-fill ensures white-text-on-bg ≥ 7.7:1 contrast */
-  background: var(--accent-fill);
-  color: white;
-  font-size: 10px;
-  padding: 1px 8px;
-  border-radius: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  min-width: 22px;
-  text-align: center;
-}
-.sidebar-spacer { flex: 1; }
-.sidebar-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 18px 4px;
-  border-top: 1px solid var(--border);
-  margin-top: 14px;
-  cursor: pointer;
-  background: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: none;
-  width: 100%;
-  text-align: left;
-  font-family: inherit;
-  color: inherit;
-}
-.sidebar-profile:hover { background: var(--surface2); }
-.sidebar-profile-avatar {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 12px;
-  /* v9.2 a11y: white initial on --accent-fill = 7.7:1, on --accent = 3.68:1 */
-  background: var(--accent-fill);
-  flex-shrink: 0;
-}
-.sidebar-profile-name {
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.2;
-}
-.sidebar-profile-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-.app-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.app-main-inner {
-  max-width: 1040px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 24px 80px;
-  box-sizing: border-box;
-}
-
-/* Mobile: collapse sidebar to a SINGLE horizontal row at top.
-   v9.2 fix: previously the sidebar reflowed to a column with 3+ stacked rows
-   (brand / Study scroller / Learn scroller / profile) which ate ~200px of
-   vertical space. Now it's one ~56px-tall row with brand · all nav links
-   (horizontally scrollable) · profile, separated by vertical dividers. */
-@media (max-width: 760px) {
-  .app-shell { flex-direction: column; }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: sticky;
-    top: 0;
-    flex-direction: row;
-    align-items: center;
-    padding: 0;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    gap: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  .sidebar-brand {
-    flex-shrink: 0;
-    border-bottom: none;
-    border-right: 1px solid var(--border);
-    margin: 0;
-    padding: 6px 12px 6px 10px;
-  }
-  .sidebar-brand::after { display: none; } /* drop the dead hamburger glyph */
-  .sidebar-section-label { display: none; }
-  .sidebar-section {
-    flex-direction: row;
-    padding: 0;
-    gap: 2px;
-    flex-shrink: 0;
-  }
-  .sidebar-section + .sidebar-section {
-    margin-top: 0;
-    border-top: none;
-    padding-top: 0;
-    border-left: 1px solid var(--border);
-    padding-left: 4px;
-    margin-left: 2px;
-  }
-  .sidebar-link {
-    padding: 8px 12px;
-    border-left: none;
-    border-bottom: none;
-    border-radius: 8px;
-    flex-shrink: 0;
-    min-height: 44px;
-    font-size: 12.5px;
-  }
-  .sidebar-link.active {
-    background: rgba(59,130,246,0.10);
-    border-left-color: transparent;
-  }
-  .sidebar-spacer { display: none; }
-  .sidebar-profile {
-    flex-shrink: 0;
-    border-top: none;
-    border-left: 1px solid var(--border);
-    margin: 0 0 0 auto;
-    padding: 6px 10px;
-    width: auto;
-  }
-  /* Hide the name+sub text in the profile button on mobile to save space —
-     the avatar circle stays as the tap target into the profile panel. */
-  .sidebar-profile > div { display: none; }
-  .app-main-inner { padding: 0 16px 80px; }
-}
-
-/* ── DASHBOARD SCREEN ── */
-.dash-greeting {
-  margin: 24px 0 22px;
-}
-.dash-greeting h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 30px;
-  font-weight: 700;
-  margin: 0 0 6px;
-  color: var(--text);
-  letter-spacing: -0.01em;
-}
-.dash-greeting p {
-  font-size: 14px;
-  color: var(--text2);
-  margin: 0;
-  line-height: 1.55;
-}
-.dash-greeting .dash-streak-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 100px;
-  background: rgba(20,184,166,0.10);
-  border: 1px solid rgba(20,184,166,0.30);
-  /* v9.2 a11y: --accent2-fill is 5.4:1 light / 7.8:1 dark, vs --accent2's 2.99:1 light failure */
-  color: var(--accent2-fill);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  /* v9.2 mobile fix: own its row on mobile (was inline inside <h1> and wrapped
-     onto the second line baseline awkwardly with the period). Desktop pulls
-     it back inline next to the greeting. */
-  margin: 8px 0 0;
-  vertical-align: baseline;
-}
-@media (min-width: 761px) {
-  .dash-greeting .dash-streak-pill {
-    margin: -4px 0 0 12px;
-  }
-}
-
-.dash-kpis {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 22px;
-}
-.kpi-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px 18px;
-  transition: border-color 0.15s;
-}
-.kpi-card:hover { border-color: var(--border2); }
-.kpi-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin: 0 0 8px;
-  font-weight: 600;
-}
-.kpi-value {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.1;
-  margin-bottom: 6px;
-}
-.kpi-value.muted { color: var(--text2); }
-.kpi-delta {
-  font-size: 11px;
-  color: var(--text2);
-  font-weight: 500;
-}
-.kpi-delta.up { color: var(--correct); }
-.kpi-delta.down { color: var(--wrong); }
-.kpi-delta-arrow { display: inline-block; margin-right: 2px; }
-
-@media (max-width: 760px) {
-  .dash-kpis { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .kpi-card { padding: 12px 14px; border-radius: 12px; }
-  .kpi-value { font-size: 22px; }
-}
-
-.dash-row {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 16px;
-  margin-bottom: 22px;
-}
-@media (max-width: 920px) { .dash-row { grid-template-columns: 1fr; } }
-
-.dash-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-}
-.dash-panel-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 17px;
-  font-weight: 600;
-  margin: 0 0 14px;
-  color: var(--text);
-}
-.dash-domain-row {
-  display: grid;
-  grid-template-columns: 130px 1fr 44px;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.dash-domain-row:last-child { margin-bottom: 0; }
-.dash-domain-name {
-  font-size: 12.5px;
-  color: var(--text2);
-  font-weight: 500;
-  /* v9.2 P8: truncate gracefully if a domain name grows past 130px column */
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.dash-domain-bar {
-  height: 6px;
-  background: var(--surface2);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.dash-domain-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-.dash-domain-pct {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  text-align: right;
-  color: var(--text2);
-}
-
-.dash-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.dash-action {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-family: inherit;
-  color: var(--text);
-  min-height: 88px;
-}
-.dash-action:hover {
-  border-color: var(--accent);
-  background: var(--surface2);
-  transform: translateY(-1px);
-}
-.dash-action-icon {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: rgba(59,130,246,0.12);
-  color: var(--accent);
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-.dash-action-title {
-  font-weight: 600;
-  font-size: 13.5px;
-  color: var(--text);
-}
-.dash-action-sub {
-  font-size: 11px;
-  color: var(--text2);
-  margin-top: 2px;
-}
-
-@media (max-width: 480px) {
-  .dash-actions { grid-template-columns: 1fr; }
-  .dash-greeting h1 { font-size: 24px; }
-}
-
-/* v9.2 mobile fix: dash-panel padding + domain-row label column were too
-   wide on narrow phones. Math (was): 375 − 32 body − 40 panel − 20 grid =
-   283 inner; minus 130 label minus 44 pct = 109px bar (felt cramped).
-   After: 92px label + 36px pct in a tighter panel = ~155px bar (+42%). */
-@media (max-width: 760px) {
-  .dash-panel { padding: 16px 14px; border-radius: 12px; }
-  .dash-row { gap: 12px; margin-bottom: 16px; }
-  .dash-greeting { margin: 16px 0; }
-}
-@media (max-width: 600px) {
-  .dash-domain-row { grid-template-columns: 92px 1fr 36px; gap: 8px; }
-  .dash-domain-name { font-size: 12px; }
-  .dash-domain-pct { font-size: 10.5px; }
-}
-
-/* Name prompt modal */
-.name-prompt-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9000;
-  padding: 16px;
-}
-.name-prompt-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px 24px;
-  max-width: 380px;
-  width: 100%;
-  text-align: center;
-}
-.name-prompt-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0 0 6px;
-  color: var(--text);
-}
-.name-prompt-sub {
-  font-size: 13px;
-  color: var(--text2);
-  margin: 0 0 18px;
-  line-height: 1.5;
-}
-.name-prompt-input {
-  width: 100%;
-  padding: 12px 14px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 14px;
-  margin-bottom: 14px;
-  box-sizing: border-box;
-}
-.name-prompt-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-}
-.name-prompt-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-.name-prompt-btn {
-  padding: 11px 18px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
-  color: var(--text);
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
-  font-weight: 500;
-  min-height: 44px; /* v9.2 a11y: WCAG 2.5.5 tap target */
-}
-.name-prompt-btn.primary {
-  background: var(--accent-fill, var(--accent));
-  color: white;
-  border-color: transparent;
-  font-weight: 600;
-}
-.name-prompt-btn:hover { filter: brightness(1.08); }
-
-/* Hide the legacy top nav-tabs row when sidebar is shown */
-.app-shell .nav-tabs-wrap { display: none; }
-
-/* Compact top header inside .app-main (just the right-side controls remain) */
-.app-shell header {
-  padding: 14px 0 6px;
-}
-
-/* On the Dashboard, hide the duplicate mindset strip / stats row / readiness
-   card / study-rec card — the Dashboard already presents those metrics. */
-body.on-dashboard .mindset-strip,
-body.on-dashboard .stats-row,
-body.on-dashboard #readinessCard,
-body.on-dashboard #studyRecCard {
-  display: none !important;
-}
-
-/* v9.2 mobile: legacy header (version pill + 5 chrome buttons + dark toggle)
-   wraps into 2-3 rows at 375px width, pushing the dashboard greeting below
-   the fold. Hide the duplicate Profile + the secondary buttons on mobile —
-   they're reachable from the sidebar profile button / profile panel. Keep
-   the dark-mode toggle (sole essential header-level control). */
-@media (max-width: 760px) {
-  .app-shell header { padding: 6px 0 2px; }
-  .app-shell header .header-right { gap: 6px; }
-  .app-shell header .header-right .bank-pill,
-  .app-shell header .header-right .profile-btn,
-  .app-shell header .header-right .whats-new-btn {
-    display: none;
-  }
-}
-
 </style>
 </head>
-<body class="on-dashboard">
-<div class="app app-shell">
-
-<!-- SIDEBAR (v9.2) — primary nav, semantic <nav> per WCAG -->
-<nav class="sidebar" id="appSidebar" aria-label="Primary">
-  <div class="sidebar-brand">
-    <span class="sidebar-brand-mark" aria-hidden="true">A</span>
-    <span class="sidebar-brand-name">aurivan</span>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Study</div>
-    <button class="sidebar-link active" id="side-dashboard" onclick="switchTab('dashboard')"><span class="sidebar-link-icon">&#127968;</span>Dashboard</button>
-    <button class="sidebar-link" id="side-practice" onclick="switchTab('practice')"><span class="sidebar-link-icon">&#9997;</span>Practice<span class="sidebar-link-badge" id="sideBadgePractice" style="display:none">0</span></button>
-    <button class="sidebar-link" id="side-bookmarks" onclick="switchTab('bookmarks')"><span class="sidebar-link-icon">&#128278;</span>Saved<span class="sidebar-link-badge" id="sideBadgeSaved" style="display:none">0</span></button>
-    <button class="sidebar-link" id="side-weakspots" onclick="switchTab('weakspots')"><span class="sidebar-link-icon">&#128202;</span>Weak Spots</button>
-    <button class="sidebar-link" id="side-mock" onclick="switchTab('mock')"><span class="sidebar-link-icon">&#127941;</span>Mock Exam</button>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Learn</div>
-    <button class="sidebar-link" id="side-topics" onclick="switchTab('topics')"><span class="sidebar-link-icon">&#128196;</span>Topics</button>
-    <button class="sidebar-link" id="side-principles" onclick="switchTab('principles')"><span class="sidebar-link-icon">&#9881;&#65039;</span>Principles</button>
-    <button class="sidebar-link" id="side-glossary" onclick="switchTab('glossary')"><span class="sidebar-link-icon">&#128218;</span>Glossary</button>
-  </div>
-  <div class="sidebar-spacer"></div>
-  <button class="sidebar-profile" onclick="showProfilePanel()" aria-label="Profile and settings">
-    <span class="sidebar-profile-avatar" id="sideProfileAvatar">A</span>
-    <div>
-      <div class="sidebar-profile-name" id="sideProfileName">Friend</div>
-      <div class="sidebar-profile-sub">Guest</div>
-    </div>
-  </button>
-</nav>
-
-<div class="app-main">
-<div class="app-main-inner">
+<body>
+<div class="app">
 
 <!-- WELCOME BANNER (Decision 4) — first-time users only -->
 <div id="welcome-banner" class="welcome-banner" hidden>
@@ -5057,7 +4498,7 @@ body.on-dashboard #studyRecCard {
 
 <!-- HEADER -->
 <header>
-  <div class="logo" style="display:none" aria-hidden="true">
+  <div class="logo">
     <span class="logo-eyebrow">Master Modern Risk</span>
     <span class="logo-name">
       <svg class="brand-mark" viewBox="0 0 60 72" fill="none" aria-hidden="true" style="height:34px;width:auto;vertical-align:-8px;margin-right:4px">
@@ -5088,6 +4529,7 @@ body.on-dashboard #studyRecCard {
     <button class="whats-new-btn" onclick="showChangelog()">What&#39;s New</button>
     <button class="whats-new-btn" onclick="showSessionSummary()" style="font-size:10px;letter-spacing:0.1em">&#128202; Summary</button>
     <button class="whats-new-btn" onclick="showFeedback()" style="font-size:10px;letter-spacing:0.1em" title="Send feedback, request a feature, or report a bug">&#128172; Feedback</button>
+    <a class="tip-header-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" title="Support Aurivan with a tip on Buy Me a Coffee" aria-label="Support Aurivan with a tip on Buy Me a Coffee"><span aria-hidden="true">&#9749;</span> Tip</a>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
     <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
   </div>
@@ -5132,28 +4574,8 @@ body.on-dashboard #studyRecCard {
   <button class="nav-tab" onclick="switchTab('mock')" id="tab-mock">&#127941; Mock Exam</button>
 </div></div><!-- /nav-tabs-wrap -->
 
-<!-- DASHBOARD (v9.2) -->
-<div id="screen-dashboard" class="screen active">
-  <div class="dash-greeting">
-    <h1>Good <span id="dashTimeOfDay">morning</span>, <span id="dashGreetName">friend</span>.</h1>
-    <span class="dash-streak-pill" id="dashStreakPill" style="display:none">&#128293; <span id="dashStreakNum">0</span>-day streak</span>
-    <p id="dashSubGreeting">Welcome back to Aurivan.</p>
-  </div>
-  <div class="dash-kpis" id="dashKpis"></div>
-  <div class="dash-row">
-    <div class="dash-panel">
-      <h2 class="dash-panel-title">Domain progress</h2>
-      <div id="dashDomainProgress"></div>
-    </div>
-    <div class="dash-panel">
-      <h2 class="dash-panel-title">Quick actions</h2>
-      <div class="dash-actions" id="dashQuickActions"></div>
-    </div>
-  </div>
-</div>
-
 <!-- PRACTICE -->
-<div id="screen-practice" class="screen">
+<div id="screen-practice" class="screen active">
   <!-- Decision 8 — Exam-date countdown / set-date prompt -->
   <div id="examCountdownArea"></div>
   <!-- Decision 9 — Session start / debrief inline card -->
@@ -5290,8 +4712,8 @@ body.on-dashboard #studyRecCard {
   </section>
 
   <!-- ── TIP JAR — optional support for the project (v9.2) ──
-       Replace TIPJAR_URL after creating a Buy Me a Coffee / Ko-fi account.
-       Hide the section by adding hidden attribute or display:none if not desired. -->
+       Replace the BMC URL after creating a Buy Me a Coffee / Ko-fi account.
+       Hide the section by adding the `hidden` attribute if not desired. -->
   <section class="tipjar-card" data-testid="tipjar">
     <div class="tipjar-text">
       <div class="tipjar-eyebrow">Support the mission</div>
@@ -5314,9 +4736,7 @@ body.on-dashboard #studyRecCard {
     <p><strong>CISA&reg; is a registered trademark of ISACA.</strong> All references are used for educational and identification purposes only.</p>
     <p>This tool is intended as a supplementary study resource and should not be considered a replacement for official ISACA materials.</p>
   </section>
-</div><!-- /.app-main-inner -->
-</div><!-- /.app-main -->
-</div><!-- /.app.app-shell -->
+</div>
 
 <div id="flagModal"></div>
 <div id="changelogModal"></div>
@@ -5791,7 +5211,7 @@ var S_DEFAULTS = {
   lastOpenedSubtopic: {},
   confidenceLog: [],
   sessionHistory: [],
-  activeTab: "dashboard",
+  activeTab: "practice",
 };
 
 var S = JSON.parse(JSON.stringify(S_DEFAULTS));
@@ -7413,22 +6833,12 @@ function switchTab(t) {
   clearAllTimers(); // always clear timers when switching tabs
   S.activeTab = t;
   saveState();
-  // v9.2: toggle body class so dashboard hides redundant top chrome
-  document.body.classList.toggle('on-dashboard', t === 'dashboard');
   document.querySelectorAll('.nav-tab').forEach(function(x){
     x.classList.toggle('active', x.id === 'tab-' + t);
-  });
-  document.querySelectorAll('.sidebar-link').forEach(function(x){
-    var isActive = x.id === 'side-' + t;
-    x.classList.toggle('active', isActive);
-    // v9.2 a11y P6: aria-current announces "current page" to screen readers
-    if (isActive) x.setAttribute('aria-current', 'page');
-    else x.removeAttribute('aria-current');
   });
   document.querySelectorAll('.screen').forEach(function(x){
     x.classList.toggle('active', x.id === 'screen-' + t);
   });
-  if (t === 'dashboard') renderDashboard();
   if (t === 'bookmarks') renderBookmarks();
   if (t === 'weakspots') renderWeakSpots();
   if (t === 'mock') renderMockSetup();
@@ -7637,8 +7047,6 @@ function updateStats() {
   bd.textContent = n;
   bd.style.display = n > 0 ? 'inline' : 'none';
   updateMissedBtn();
-  // v9.2: keep sidebar Saved badge in sync
-  try { updateSidebarBadges(); } catch(e) {}
 }
 
 // â”€â”€ MINDSET ROTATION â”€â”€
@@ -10160,256 +9568,6 @@ function calcReadinessScore() {
   return Math.round((weightedScore / totalWeight) * 100);
 }
 
-// ── DASHBOARD (v9.2) ──
-var DASH_NAME_KEY = 'aurivan_user_name_v1';
-
-function getUserName() {
-  try {
-    // 1) Prefer the simple dashboard-name key (set by our prompt)
-    var n = (localStorage.getItem(DASH_NAME_KEY) || '').trim();
-    if (n) return n.replace(/<[^>]*>/g, '').substring(0, 24);
-    // 2) Fall back to the active profile name if it isn't the default
-    try {
-      var actId = localStorage.getItem(ACTIVE_KEY);
-      var profs = JSON.parse(localStorage.getItem(PROFILES_KEY) || '{}');
-      if (actId && profs[actId] && profs[actId].name && profs[actId].name !== 'My Progress') {
-        return String(profs[actId].name).replace(/<[^>]*>/g, '').substring(0, 24);
-      }
-    } catch(e) {}
-    return '';
-  } catch(e) { return ''; }
-}
-
-function saveUserName(n) {
-  try {
-    var clean = (n || '').replace(/<[^>]*>/g, '').trim().substring(0, 24);
-    if (clean) {
-      localStorage.setItem(DASH_NAME_KEY, clean);
-    } else {
-      localStorage.removeItem(DASH_NAME_KEY);
-    }
-  } catch(e) {}
-}
-
-function timeOfDayGreeting() {
-  var h = new Date().getHours();
-  if (h < 12) return 'morning';
-  if (h < 18) return 'afternoon';
-  return 'evening';
-}
-
-function maybeShowNamePrompt() {
-  if (getUserName()) return; // name already set
-  if (localStorage.getItem('aurivan_name_prompt_dismissed_v1') === '1') return;
-  showNamePrompt(false);
-}
-
-function showNamePrompt(canSkip) {
-  if (document.getElementById('namePromptOverlay')) return;
-  var skipBtn = (canSkip !== false)
-    ? '<button class="name-prompt-btn" onclick="dismissNamePrompt(false)">Skip</button>'
-    : '<button class="name-prompt-btn" onclick="dismissNamePrompt(false)">Not now</button>';
-  var overlay = document.createElement('div');
-  overlay.id = 'namePromptOverlay';
-  overlay.className = 'name-prompt-overlay';
-  overlay.setAttribute('role', 'dialog');
-  overlay.setAttribute('aria-modal', 'true');
-  overlay.setAttribute('aria-labelledby', 'namePromptTitle');
-  overlay.innerHTML = ''
-    + '<div class="name-prompt-card">'
-    +   '<h2 class="name-prompt-title" id="namePromptTitle">Welcome to Aurivan</h2>'
-    +   '<p class="name-prompt-sub">What should we call you? This stays in your browser only — no account needed.</p>'
-    +   '<input type="text" class="name-prompt-input" id="namePromptInput" placeholder="Your first name" maxlength="24" autocomplete="given-name" />'
-    +   '<div class="name-prompt-actions">'
-    +     skipBtn
-    +     '<button class="name-prompt-btn primary" onclick="submitNamePrompt()">Save name</button>'
-    +   '</div>'
-    + '</div>';
-  // v9.2 a11y P5: ESC key and click-outside dismiss
-  overlay.addEventListener('click', function(e){
-    if (e.target === overlay) dismissNamePrompt(false);
-  });
-  document.body.appendChild(overlay);
-  // ESC key handler — bound at document level, removed on dismiss
-  window._namePromptEscHandler = function(e) {
-    if (e.key === 'Escape') dismissNamePrompt(false);
-  };
-  document.addEventListener('keydown', window._namePromptEscHandler);
-  setTimeout(function(){
-    var inp = document.getElementById('namePromptInput');
-    if (inp) {
-      inp.value = getUserName() || '';
-      inp.focus();
-      inp.addEventListener('keydown', function(e){
-        if (e.key === 'Enter') submitNamePrompt();
-      });
-    }
-  }, 30);
-}
-
-function submitNamePrompt() {
-  var inp = document.getElementById('namePromptInput');
-  if (!inp) return;
-  saveUserName(inp.value);
-  dismissNamePrompt(true);
-  updateDashboardGreeting();
-  updateSidebarProfile();
-}
-
-function dismissNamePrompt(saved) {
-  var ov = document.getElementById('namePromptOverlay');
-  if (ov) ov.remove();
-  // v9.2 a11y P5: clean up ESC listener
-  if (window._namePromptEscHandler) {
-    document.removeEventListener('keydown', window._namePromptEscHandler);
-    window._namePromptEscHandler = null;
-  }
-  if (!saved) {
-    try { localStorage.setItem('aurivan_name_prompt_dismissed_v1', '1'); } catch(e) {}
-  }
-}
-
-function updateSidebarProfile() {
-  var name = getUserName() || 'Friend';
-  var nameEl = document.getElementById('sideProfileName');
-  var avEl = document.getElementById('sideProfileAvatar');
-  if (nameEl) nameEl.textContent = name;
-  if (avEl) avEl.textContent = (name.charAt(0) || 'A').toUpperCase();
-}
-
-function updateDashboardGreeting() {
-  var nameEl = document.getElementById('dashGreetName');
-  var todEl = document.getElementById('dashTimeOfDay');
-  if (nameEl) nameEl.textContent = getUserName() || 'friend';
-  if (todEl) todEl.textContent = timeOfDayGreeting();
-}
-
-function updateSidebarBadges() {
-  // Practice badge = number of flagged/saved questions to review
-  var savedCount = (S.bookmarks && S.bookmarks.length) || 0;
-  var sb = document.getElementById('sideBadgeSaved');
-  if (sb) {
-    if (savedCount > 0) { sb.textContent = savedCount; sb.style.display = ''; }
-    else { sb.style.display = 'none'; }
-  }
-  // Hide practice badge by default (we only badge Saved for clarity)
-  var pb = document.getElementById('sideBadgePractice');
-  if (pb) pb.style.display = 'none';
-}
-
-function renderDashboard() {
-  updateDashboardGreeting();
-  updateSidebarProfile();
-  updateSidebarBadges();
-
-  // Subtext: flagged + exam countdown
-  var sub = '';
-  var examDate = getExamDate();
-  var flagged = (S.bookmarks && S.bookmarks.length) || 0;
-  if (flagged > 0) {
-    sub += 'You have <strong>' + flagged + '</strong> flagged question' + (flagged===1?'':'s') + ' to review.';
-  } else {
-    sub += 'No flagged questions yet — bookmark trickier ones during practice.';
-  }
-  if (examDate) {
-    var diff = Math.ceil((new Date(examDate + 'T00:00:00').getTime() - Date.now()) / 86400000);
-    if (diff > 0) sub += ' Your exam is in <strong>' + diff + ' day' + (diff===1?'':'s') + '</strong>.';
-    else if (diff === 0) sub += ' <strong>Your exam is today — good luck!</strong>';
-    else sub += ' Exam date has passed.';
-  } else {
-    sub += ' <a href="#" onclick="event.preventDefault();switchTab(\'practice\');setTimeout(scrollToExamCountdown,200)" style="color:var(--accent-fill);text-decoration:underline">Set your exam date</a>';
-  }
-  var subEl = document.getElementById('dashSubGreeting');
-  if (subEl) subEl.innerHTML = sub;
-
-  // Streak pill
-  var streakPill = document.getElementById('dashStreakPill');
-  var streakNum = document.getElementById('dashStreakNum');
-  if (streakPill && streakNum) {
-    if (S.streak > 0) {
-      streakNum.textContent = S.streak;
-      streakPill.style.display = '';
-    } else {
-      streakPill.style.display = 'none';
-    }
-  }
-
-  // KPIs
-  var readiness = calcReadinessScore();
-  var totalAns = (S.score && S.score.t) || 0;
-  var totalCor = (S.score && S.score.c) || 0;
-  var correctRate = totalAns > 0 ? Math.round((totalCor/totalAns)*100) : null;
-  var streak = S.streak || 0;
-
-  var kpiHtml = ''
-    + kpiCardHtml('Readiness', readiness !== null ? readiness + '%' : '—', readiness===null?'Answer questions to score':'Weighted by exam blueprint', readiness)
-    + kpiCardHtml('Questions', totalAns.toLocaleString(), totalAns ? 'answered' : 'start any time', null)
-    + kpiCardHtml('Correct rate', correctRate !== null ? correctRate + '%' : '—', correctRate===null?'—':totalCor + ' of ' + totalAns + ' correct', null)
-    + kpiCardHtml('Streak', streak, streak ? (streak===1?'day':'days') + ' in a row' : 'Answer a question to start', null);
-
-  var kpisEl = document.getElementById('dashKpis');
-  if (kpisEl) kpisEl.innerHTML = kpiHtml;
-
-  // Domain progress
-  var domainNames = {1:'IS Audit Process',2:'IT Governance',3:'IS Acquisition',4:'IS Operations',5:'Info Protection'};
-  var domainHtml = '';
-  [1,2,3,4,5].forEach(function(d) {
-    var st = S.ds[d] || {t:0,c:0};
-    var pct = st.t > 0 ? Math.round((st.c/st.t)*100) : 0;
-    // v9.2 a11y: 3:1 non-text contrast on light-mode --surface2 (#e8eeff) requires
-    // darker fills. --warning (#fbbf24) fails at 1.6:1; #b45309 hits 4.5:1.
-    // --accent (#3B82F6) is 3.0:1 borderline; --accent-fill (#1D4ED8) is 5.8:1.
-    var color = pct >= 75 ? 'var(--correct)' : pct >= 50 ? '#b45309' : pct > 0 ? 'var(--accent-fill)' : 'var(--border2)';
-    domainHtml += '<div class="dash-domain-row">'
-      + '<div class="dash-domain-name">' + domainNames[d] + '</div>'
-      + '<div class="dash-domain-bar"><div class="dash-domain-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>'
-      + '<div class="dash-domain-pct" style="color:' + (pct>0?color:'var(--muted)') + '">' + (st.t>0 ? pct + '%' : '—') + '</div>'
-      + '</div>';
-  });
-  var dpEl = document.getElementById('dashDomainProgress');
-  if (dpEl) dpEl.innerHTML = domainHtml;
-
-  // Quick actions
-  var qaHtml = ''
-    + '<button class="dash-action" onclick="switchTab(\'practice\')">'
-    +   '<span class="dash-action-icon">&#9997;</span>'
-    +   '<span class="dash-action-title">Continue practice</span>'
-    +   '<span class="dash-action-sub">' + (totalAns > 0 ? 'Resume where you left off' : 'Start your first session') + '</span>'
-    + '</button>'
-    + '<button class="dash-action" onclick="switchTab(\'bookmarks\')">'
-    +   '<span class="dash-action-icon">&#128278;</span>'
-    +   '<span class="dash-action-title">Review flagged</span>'
-    +   '<span class="dash-action-sub">' + (flagged > 0 ? flagged + ' saved question' + (flagged===1?'':'s') : 'Nothing saved yet') + '</span>'
-    + '</button>'
-    + '<button class="dash-action" onclick="switchTab(\'weakspots\')">'
-    +   '<span class="dash-action-icon">&#128202;</span>'
-    +   '<span class="dash-action-title">Weak spots</span>'
-    +   '<span class="dash-action-sub">Train your weakest domains</span>'
-    + '</button>'
-    + '<button class="dash-action" onclick="switchTab(\'mock\')">'
-    +   '<span class="dash-action-icon">&#127941;</span>'
-    +   '<span class="dash-action-title">Mock exam</span>'
-    +   '<span class="dash-action-sub">150 questions, exam-style</span>'
-    + '</button>';
-  var qaEl = document.getElementById('dashQuickActions');
-  if (qaEl) qaEl.innerHTML = qaHtml;
-}
-
-function kpiCardHtml(label, value, sub, valueForDelta) {
-  var muted = (value === '—');
-  return '<div class="kpi-card">'
-    + '<div class="kpi-label">' + label + '</div>'
-    + '<div class="kpi-value' + (muted?' muted':'') + '">' + value + '</div>'
-    + '<div class="kpi-delta">' + sub + '</div>'
-    + '</div>';
-}
-
-function scrollToExamCountdown() {
-  var el = document.getElementById('examCountdownArea');
-  if (el) el.scrollIntoView({behavior:'smooth',block:'center'});
-}
-
-
 function renderReadinessCard() {
   var card = document.getElementById('readinessCard');
   if (!card) return;
@@ -11055,30 +10213,31 @@ document.querySelectorAll('[data-diff]').forEach(function(b){
 });
 setInterval(rotateMindset, 7500);
 
-// v9.2: always invoke switchTab so the correct screen is activated
-// (the old conditional skipped switchTab when activeTab was 'practice',
-// which left the new Dashboard's `.screen.active` class on the wrong panel
-// for returning users whose saved tab was 'practice').
-switchTab(S.activeTab || 'dashboard');
-
-if (shouldResumeCurrent() && S.activeTab === 'practice') {
+if (S.activeTab && S.activeTab !== 'practice') {
+  switchTab(S.activeTab);
+} else if (shouldResumeCurrent()) {
   renderResumePrompt();
 }
 
-// First visit: ask for a first name (guest-only, stored locally)
+if (shouldResumeCurrent() && (!S.activeTab || S.activeTab === 'practice')) {
+  renderResumePrompt();
+}
+
+// First visit: show profile creation if no profiles exist
 (function() {
   try {
+    var profiles = getProfiles();
+    if (Object.keys(profiles).length === 0) {
+      // Show profile creation prompt after short delay
+      setTimeout(function() { showProfilePanel(); }, 700);
+    } else {
+      // Has profiles â€” check onboarding
+      checkOnboarding();
+    }
+  } catch(e) {
     checkOnboarding();
-  } catch(e) {}
-  // Show simple name prompt if no name yet (replaces heavier profile panel
-  // as the first-touch UX; users can still open the full profile panel later)
-  setTimeout(function() {
-    try { maybeShowNamePrompt(); } catch(e) {}
-  }, 600);
+  }
 })();
-
-// Initial sidebar profile/badge sync (runs after S is loaded)
-try { updateSidebarProfile(); updateSidebarBadges(); } catch(e) {}
 
 
 
