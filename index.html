@@ -4618,7 +4618,11 @@ header::after {
   box-sizing: border-box;
 }
 
-/* Mobile: collapse sidebar to top horizontal bar */
+/* Mobile: collapse sidebar to a SINGLE horizontal row at top.
+   v9.2 fix: previously the sidebar reflowed to a column with 3+ stacked rows
+   (brand / Study scroller / Learn scroller / profile) which ate ~200px of
+   vertical space. Now it's one ~56px-tall row with brand · all nav links
+   (horizontally scrollable) · profile, separated by vertical dividers. */
 @media (max-width: 760px) {
   .app-shell { flex-direction: column; }
   .sidebar {
@@ -4626,37 +4630,42 @@ header::after {
     height: auto;
     position: sticky;
     top: 0;
-    flex-direction: column;
-    padding: 8px 12px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    align-items: stretch;
     gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
   .sidebar-brand {
-    padding: 4px 6px 8px;
-    margin-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-    justify-content: space-between;
+    flex-shrink: 0;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+    margin: 0;
+    padding: 6px 12px 6px 10px;
   }
-  .sidebar-brand::after {
-    content: '\2630';
-    font-size: 18px;
-    color: var(--text2);
-    cursor: pointer;
-  }
+  .sidebar-brand::after { display: none; } /* drop the dead hamburger glyph */
   .sidebar-section-label { display: none; }
   .sidebar-section {
     flex-direction: row;
-    overflow-x: auto;
-    gap: 4px;
-    padding: 4px 0;
+    padding: 0;
+    gap: 2px;
+    flex-shrink: 0;
   }
-  .sidebar-section + .sidebar-section { margin-top: 0; border-top: 1px solid var(--border); padding-top: 6px; }
+  .sidebar-section + .sidebar-section {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 4px;
+    margin-left: 2px;
+  }
   .sidebar-link {
-    padding: 10px 12px;
+    padding: 8px 12px;
     border-left: none;
-    border-bottom: 2px solid transparent;
+    border-bottom: none;
     border-radius: 8px;
     flex-shrink: 0;
     min-height: 44px;
@@ -4667,7 +4676,17 @@ header::after {
     border-left-color: transparent;
   }
   .sidebar-spacer { display: none; }
-  .sidebar-profile { padding: 8px 6px 4px; border-top: 1px solid var(--border); margin-top: 6px; }
+  .sidebar-profile {
+    flex-shrink: 0;
+    border-top: none;
+    border-left: 1px solid var(--border);
+    margin: 0 0 0 auto;
+    padding: 6px 10px;
+    width: auto;
+  }
+  /* Hide the name+sub text in the profile button on mobile to save space —
+     the avatar circle stays as the tap target into the profile panel. */
+  .sidebar-profile > div { display: none; }
   .app-main-inner { padding: 0 16px 80px; }
 }
 
@@ -4703,8 +4722,16 @@ header::after {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  margin-left: 10px;
-  vertical-align: middle;
+  /* v9.2 mobile fix: own its row on mobile (was inline inside <h1> and wrapped
+     onto the second line baseline awkwardly with the period). Desktop pulls
+     it back inline next to the greeting. */
+  margin: 8px 0 0;
+  vertical-align: baseline;
+}
+@media (min-width: 761px) {
+  .dash-greeting .dash-streak-pill {
+    margin: -4px 0 0 12px;
+  }
 }
 
 .dash-kpis {
@@ -4861,6 +4888,21 @@ header::after {
   .dash-greeting h1 { font-size: 24px; }
 }
 
+/* v9.2 mobile fix: dash-panel padding + domain-row label column were too
+   wide on narrow phones. Math (was): 375 − 32 body − 40 panel − 20 grid =
+   283 inner; minus 130 label minus 44 pct = 109px bar (felt cramped).
+   After: 92px label + 36px pct in a tighter panel = ~155px bar (+42%). */
+@media (max-width: 760px) {
+  .dash-panel { padding: 16px 14px; border-radius: 12px; }
+  .dash-row { gap: 12px; margin-bottom: 16px; }
+  .dash-greeting { margin: 16px 0; }
+}
+@media (max-width: 600px) {
+  .dash-domain-row { grid-template-columns: 92px 1fr 36px; gap: 8px; }
+  .dash-domain-name { font-size: 12px; }
+  .dash-domain-pct { font-size: 10.5px; }
+}
+
 /* Name prompt modal */
 .name-prompt-overlay {
   position: fixed;
@@ -4951,6 +4993,21 @@ body.on-dashboard .stats-row,
 body.on-dashboard #readinessCard,
 body.on-dashboard #studyRecCard {
   display: none !important;
+}
+
+/* v9.2 mobile: legacy header (version pill + 5 chrome buttons + dark toggle)
+   wraps into 2-3 rows at 375px width, pushing the dashboard greeting below
+   the fold. Hide the duplicate Profile + the secondary buttons on mobile —
+   they're reachable from the sidebar profile button / profile panel. Keep
+   the dark-mode toggle (sole essential header-level control). */
+@media (max-width: 760px) {
+  .app-shell header { padding: 6px 0 2px; }
+  .app-shell header .header-right { gap: 6px; }
+  .app-shell header .header-right .bank-pill,
+  .app-shell header .header-right .profile-btn,
+  .app-shell header .header-right .whats-new-btn {
+    display: none;
+  }
 }
 
 </style>
@@ -5078,7 +5135,8 @@ body.on-dashboard #studyRecCard {
 <!-- DASHBOARD (v9.2) -->
 <div id="screen-dashboard" class="screen active">
   <div class="dash-greeting">
-    <h1>Good <span id="dashTimeOfDay">morning</span>, <span id="dashGreetName">friend</span>.<span class="dash-streak-pill" id="dashStreakPill" style="display:none">&#128293; <span id="dashStreakNum">0</span>-day streak</span></h1>
+    <h1>Good <span id="dashTimeOfDay">morning</span>, <span id="dashGreetName">friend</span>.</h1>
+    <span class="dash-streak-pill" id="dashStreakPill" style="display:none">&#128293; <span id="dashStreakNum">0</span>-day streak</span>
     <p id="dashSubGreeting">Welcome back to Aurivan.</p>
   </div>
   <div class="dash-kpis" id="dashKpis"></div>
