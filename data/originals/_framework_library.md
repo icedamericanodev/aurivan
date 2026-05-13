@@ -7,9 +7,7 @@ bank (D1: 180, D2: 70).
 **How it's used:**
 - `scripts/lint_originals.py` parses bullet entries in this file as canonical
   citation strings.
-- New citations introduced in a batch must either match a canonical entry here
   (exactly) or be added to this file in the same PR.
-- This prevents the recurring drift pattern (e.g., "ISO/IEC 31000:2018 Risk
   Management" vs "ISO 31000:2018 (Risk Management)" — three variants of the
   same standard appeared in the bank before this library was created).
 
@@ -154,57 +152,8 @@ acceptable when the reference is to the broader topical body of guidance.
 - ISACA Risk IT Framework
 - ISACA EGIT Framework
 - ISACA "Auditing Artificial Intelligence" (IT Audit and Assurance Program)
-- ISACA QAIP guidance
 - ISACA QAIP guidance on External Assessments
 - ISACA QAIP guidance on Internal Assessments
-- ISACA Data Governance guidance
-- ISACA Information Security Governance guidance
-- ISACA Information Security Policy guidance
-- ISACA Information Security Management guidance
-- ISACA IT Performance Monitoring guidance
-- ISACA IT Workforce Management guidance
-- ISACA IT Vendor Management guidance
-- ISACA IT Sourcing guidance
-- ISACA IT Outsourcing Strategy guidance
-- ISACA Outsourcing Governance guidance
-- ISACA IT Financial Management guidance
-- ISACA IT Portfolio Management guidance
-- ISACA IT Management Practices guidance
-- ISACA IT Organization guidance
-- ISACA Network Management guidance
-- ISACA Capacity Management guidance
-- ISACA Cloud Risk Management guidance
-- ISACA Cloud Computing guidance
-- ISACA Risk Analysis guidance
-- ISACA Privacy Program guidance
-- ISACA Quality Management guidance
-- ISACA Operational Excellence guidance
-- ISACA Audit Universe guidance
-- ISACA Audit Team Training guidance
-- ISACA SoD guidance
-- ISACA Outsourcing Risk Assessment guidance
-- ISACA Outsourcing Practices guidance
-- ISACA Privacy guidance
-- ISACA Cloud guidance
-- ISACA Portfolio Management guidance
-- ISACA Vendor Management guidance
-- ISACA Fraud Risk Management guidance
-- ISACA Enterprise Change Management guidance
-- ISACA Fraud Investigation guidance
-- ISACA HR Controls guidance
-- ISACA AI Audit guidance
-- ISACA Change Management guidance
-- ISACA Performance Management guidance
-- ISACA Sourcing Strategy guidance
-- ISACA Project Management guidance
-- ISACA IT Strategy guidance
-- ISACA IT Strategic Planning guidance
-- ISACA Strategic Planning guidance
-- ISACA Business Intelligence guidance
-- ISACA IT Investment guidance
-- ISACA Network Governance guidance
-- ISACA Compensating Controls guidance
-- ISACA Cloud Audit guidance
 - ISACA EGIT (Strategic Alignment)
 - ISACA EGIT Definition
 
@@ -258,18 +207,12 @@ acceptable when the reference is to the broader topical body of guidance.
 
 ## ISO / IEC
 
-- ISO/IEC 27001
-- ISO/IEC 27001:2022
 - ISO/IEC 27001:2022 (Information Security Management Systems)
 - ISO/IEC 27001:2022 Control A.5.1 (Policies for Information Security)
-- ISO/IEC 27002
 - ISO/IEC 27002:2022
 - ISO/IEC 27014 (Governance of Information Security)
 - ISO/IEC 31000:2018 (Risk Management)
-- ISO/IEC 31000:2018 Risk Management
 - ISO 31000:2018 (Risk Management)
-- ISO 31000:2018 Risk Management
-- ISO/IEC 31000 Risk Management
 - ISO 31010:2019 (Risk Assessment Techniques)
 - ISO 9001:2015
 - ISO/IEC 90003:2018 (Software engineering — Guidelines for the application of ISO 9001:2015 to computer software)
@@ -277,10 +220,7 @@ acceptable when the reference is to the broader topical body of guidance.
 
 ## NIST
 
-- NIST Cybersecurity Framework
-- NIST Cybersecurity Framework v2.0 (2024)
 - NIST AI Risk Management Framework (AI RMF 1.0)
-- NIST SP 800-53 (Security and Privacy Controls)
 - NIST SP 800-145 (The NIST Definition of Cloud Computing)
 - NIST SP 800-171 (Protecting Controlled Unclassified Information)
 - NIST SP 800-12 (Introduction to Information Security)
@@ -291,9 +231,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - NIST SP 800-60 (Data Categorization)
 - NIST SP 800-171
 - NIST SP 800-53
-- NIST Cybersecurity Framework v2.0
-- NIST Cybersecurity Framework (Protect/Detect/Respond functions)
-- NIST Cybersecurity Framework v2.0 (Govern Function)
 
 ## AICPA / AT-C / SSAE
 
@@ -329,7 +266,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - IIA Practice Guide on Internal Audit's Role in Major Decisions
 - IIA Practice Guide on Risk Management
 - IIA Risk Management Standards
-- IIA International Standard 1130 (Impairment to Independence)
 - IIA International Standards 1311 (Internal Assessments)
 - IIA International Standards 1312 (External Assessments)
 - IIA International Standards 2010 (Planning)
@@ -365,9 +301,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - AICPA SSAE 18 AT-C 105 (Concepts Common to All Attestation Engagements)
 - AICPA SSAE 18 AT-C 205 (Examination Engagements)
 - AICPA Trust Services Criteria
-- ISACA Cyber Insurance guidance
-- ISACA Audit Committee guidance
-- ISACA IT Outsourcing guidance
 - ISO 9004
 - Crosby Quality is Free
 - Juran Quality Handbook
@@ -376,24 +309,12 @@ acceptable when the reference is to the broader topical body of guidance.
 - ISO 22301 (Business Continuity Management)
 - NIST SP 800-34 (Contingency Planning Guide)
 - NIST SP 800-50 (Building an Information Technology Security Awareness Program)
-- NIST SP 800-61 (Computer Security Incident Handling Guide)
-- ISACA Business Continuity guidance
-- ISACA Incident Response guidance
-- ISACA Information Security Awareness guidance
-- ISACA IT Service Management guidance
-- ISACA Cloud Cost Governance guidance
-- ISACA Cloud Governance guidance
-- ISACA Cloud Architecture guidance
-- ISACA Compliance Management guidance
-- ISACA M&A IT Due Diligence guidance
 - ITIL 4 Incident Management
 - OCC Bulletin 2017-21 (Mergers and Acquisitions)
 - OCC Comptroller's Licensing Manual — Business Combinations
 - GDPR Article 3 (Territorial Scope)
 - GDPR Article 12 (Information and Modalities for Exercise of Rights)
 - GDPR Article 15 (Right of Access)
-- GDPR Article 5 (Principles)
-- ISACA Outsourcing Risk Assessment guidance
 - FinOps Foundation Framework
 - PMI Standard for Program Management
 - EFQM Model (2020)
@@ -405,7 +326,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - OWASP LLM Top 10 (LLM01: Prompt Injection)
 - DAMA-DMBOK 2nd Edition (Data Governance + Data Quality)
 - IAPP CIPP/CIPM bodies of knowledge
-- ISACA IT Balanced Scorecard guidance
 - DAMA-DMBOK 2nd Edition
 - IIA Practice Guide on Multi-Jurisdictional Audits
 - Gartner Cloud Migration Framework
@@ -421,8 +341,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - Sarbanes-Oxley Act Section 301 (Audit Committee Requirements)
 - Sarbanes-Oxley Act Section 404 (Management Assessment of Internal Controls)
 - Sarbanes-Oxley Act Section 407 (Financial Expert Disclosure)
-- Sarbanes-Oxley Act Section 802 (Records Retention)
-- Sarbanes-Oxley Act Section 802 (Criminal Penalties for Altering Documents)
 - 17 CFR 210.2-06 (Retention of Audit and Review Records)
 - SEC Rule 17 CFR 210.2-06
 - HIPAA
@@ -432,7 +350,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - HIPAA 45 CFR § 164.530
 - FFIEC Outsourcing Technology Services booklet
 - FFIEC Incident Response examination procedures
-- OCC Bulletin 2013-29 (Third-Party Relationships)
 - NYSE Listed Company Manual Section 303A.07
 - SEC Item 407(d)(5)
 - EDPB Guidelines on Article 6
@@ -463,9 +380,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - GDPR (EU 2016/679)
 - GDPR Article 6 (Lawfulness of Processing)
 - GDPR Article 24 (Controller Responsibility)
-- GDPR Article 24 (controller responsibility)
 - GDPR Articles 5 and 24 (EU Regulation 2016/679)
-- GDPR Article 7 (Consent)
 - GDPR Article 13 (Information to be provided)
 - GDPR Article 25 (Data Protection by Design and by Default)
 - GDPR Article 25 (Privacy by Design and Default)
@@ -493,10 +408,6 @@ acceptable when the reference is to the broader topical body of guidance.
 - APPI (Japan)
 - PIPA (South Korea)
 - POPIA (South Africa)
-- Schrems II
-- Schrems II ruling (CJEU 2020)
-- EU-US Data Privacy Framework (2023, contested)
-- EU-US Data Privacy Framework
 - EDPB Guidelines 8/2020
 - Standard Contractual Clauses (SCCs)
 - Transfer Impact Assessments (TIAs)
@@ -516,34 +427,24 @@ top-level objective code, and accepts trailing detail (e.g., COBIT 2019 APO12
 sub-references like "(Managed Risk) and APO12.03").
 
 ## Batch 10 additions
-- ISACA Security Operations guidance
 - NITTF Insider Threat Program guidance
 - NIST SP 800-150 (Guide to Cyber Threat Information Sharing)
 - NIST SP 800-218 (Secure Software Development Framework)
 - Executive Order 14028 (Improving the Nation's Cybersecurity)
-- ISACA Open Source Software guidance
 - IEC 62443 (Industrial Automation and Control Systems Security)
 - NIST SP 800-82 (Guide to OT Security)
-- ISACA Industrial Cybersecurity guidance
 - NIST SP 800-207 (Zero Trust Architecture)
 - CISA Zero Trust Maturity Model
-- ISACA Threat Intelligence guidance
 - ISO/IEC 27035 (Information security incident management)
 - OWASP API Security Top 10
 - CSA API Security Guidelines
-- ISACA API Governance guidance
 - NIST SP 800-63 (Digital Identity Guidelines)
-- ISACA Identity and Access Management guidance
-- ISACA Privileged Access guidance
 - CIS Critical Security Controls
-- ISACA Insider Threat guidance
 - NIST SP 800-53 AT-2(2)
 - NIST SP 800-53 AC-6 (Least Privilege)
-- ISACA Crisis Communication guidance
 - CISA Ransomware Guidance
 - FBI Ransomware Advisories
 - ISO/IEC 30300 (Records Management)
-- ISACA Information Governance guidance
 - ARMA Generally Accepted Recordkeeping Principles (GARP)
 - CSA Zero Trust Framework
 
@@ -552,12 +453,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISSB IFRS S2 (Climate-related Disclosures)
 - CSRD (Corporate Sustainability Reporting Directive)
 - SEC Climate Disclosure Rules
-- ISACA ESG Governance guidance
 - Federal Reserve SR 20-15 (Operational Resilience)
-- ISACA Cyber Resilience guidance
-- ISACA Privacy Investigation guidance
-- ISACA Customer Trust Recovery guidance
-- ISACA Audit Function Management guidance
 - IIA International Standards 1300-1330 (Quality Assurance and Improvement Program)
 - GDPR Article 31 (Cooperation with the Supervisory Authority)
 - GDPR Article 83 (General Conditions for Imposing Administrative Fines)
@@ -586,14 +482,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - DORA / Accelerate (DevOps Research and Assessment)
 - ITIL 4 Service Configuration Management
 - ISACA Val IT Framework
-- ISACA IT Investment guidance
-- ISACA Software Audit guidance
-- ISACA Application Controls guidance
-- ISACA Data Migration guidance
-- ISACA Project Audit guidance
-- ISACA Configuration Management guidance
-- ISACA UAT Audit guidance
-- ISACA Code Escrow guidance
 - OWASP SAMM (Software Assurance Maturity Model)
 - BSIMM (Building Security In Maturity Model)
 - NIST SP 800-218 (SSDF v1.1)
@@ -626,9 +514,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - PMI Practice Standard for Earned Value Management
 - ISO/IEC 42001 (AI Management System)
 - COBIT 2019 BAI03 (Managed Solutions Identification and Build) — Source Control
-- ISACA DevSecOps Audit guidance
-- ISACA Container Security guidance
-- ISACA Open Source Software Governance guidance
 - OWASP Testing Guide
 - OWASP Application Security Verification Standard (ASVS)
 - SLSA (Supply-chain Levels for Software Artifacts) framework
@@ -636,17 +521,6 @@ sub-references like "(Managed Risk) and APO12.03").
 ## D3 batch 3 additions
 - AICPA SOC 2 Trust Services Criteria
 - AICPA SOC 1 Type II Report
-- ISACA Stakeholder Management guidance
-- ISACA Project Closure guidance
-- ISACA Lessons Learned guidance
-- ISACA Data Integrity Controls guidance
-- ISACA Low-Code/No-Code Governance guidance
-- ISACA Database Audit guidance
-- ISACA Microservices Audit guidance
-- ISACA SaaS Vendor Assurance guidance
-- ISACA Build vs Buy Decision guidance
-- ISACA Performance Testing guidance
-- ISACA M&A IT Integration guidance
 - OWASP API Security Top 10 (2023)
 - Twelve-Factor App methodology
 - Reactive Manifesto
@@ -659,7 +533,6 @@ sub-references like "(Managed Risk) and APO12.03").
 ## D3 batch 4 additions
 - HashiCorp Vault
 - CyberArk Conjur
-- ISACA Secrets Management guidance
 - GitOps Working Group (CNCF)
 - Argo CD
 - Flux CD
@@ -667,19 +540,8 @@ sub-references like "(Managed Risk) and APO12.03").
 - OPA Gatekeeper
 - Falco (CNCF runtime security)
 - DORA Four Key Metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, MTTR)
-- ISACA AI-Augmented Development guidance
 - GitHub Copilot Trust Center documentation
-- ISACA GitOps Audit guidance
-- ISACA Code Review Effectiveness guidance
-- ISACA Test Pyramid guidance
-- ISACA Database Performance Audit guidance
-- NIST SP 800-57 (Recommendation for Key Management)
-- ISACA Encryption Key Management guidance
 - NIST SP 800-92 (Guide to Computer Security Log Management)
-- ISACA Continuous Compliance guidance
-- ISACA Legacy Modernization guidance
-- ISACA Production-Like Environment guidance
-- ISACA Vendor Abandonment guidance
 - FIPS 140-3 (Security Requirements for Cryptographic Modules)
 
 ## D3 batch 5 additions
@@ -700,46 +562,10 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-188 (De-Identification of Personal Information)
 - xz-utils CVE-2024-3094 (Supply-Chain Backdoor)
 - AWS Multi-Tenant SaaS Lens
-- ISACA Multi-Tenant SaaS Audit guidance
 - GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority)
 - CCPA Breach Notification Requirements
-- ISACA Code Coverage guidance
-- ISACA Boundary-Value Testing guidance
-- ISACA Feature Flag Governance guidance
-- ISACA Canary Deployment guidance
-- ISACA Chaos Engineering guidance
-- ISACA Observability Audit guidance
-- ISACA Tokenization guidance
-- ISACA Service Catalog Governance guidance
-- ISACA Supply-Chain Compromise Response guidance
-- ISACA Multi-Tenant Segregation guidance
-- ISACA Privacy Notification guidance
-- ISACA Cross-Functional Dependency guidance
-- ISACA Knowledge-Transfer guidance
-- ISACA Mid-Cutover Conflict guidance
-- ISACA Product Launch Decision guidance
 
 ## D3 batch 6 (closing) additions
-- ISACA M&A Integration Recovery guidance
-- ISACA Portfolio Rebalancing guidance
-- ISACA Insourcing Decision guidance
-- ISACA Vendor Renegotiation guidance
-- ISACA Failing Program Recovery guidance
-- ISACA Distributed Agile Teams guidance
-- ISACA Release Train Coordination guidance
-- ISACA Scope Creep guidance
-- ISACA Architecture Reversal Decision guidance
-- ISACA Database Technology Selection guidance
-- ISACA Cloud Migration Strategy guidance
-- ISACA Zero-Trust Migration guidance
-- ISACA Zero-Day Response guidance
-- ISACA Data Sovereignty guidance
-- ISACA Supply-Chain Attestation guidance
-- ISACA Regulator Audit Response guidance
-- ISACA Sole-Vendor Outage guidance
-- ISACA Data Warehouse Migration guidance
-- ISACA Launch Capacity Planning guidance
-- ISACA Referential Integrity guidance
 - NIST Zero Trust Architecture (NIST SP 800-207)
 - COBIT 2019 APO10 (Managed Vendors)
 - COBIT 2019 APO11 (Managed Quality)
@@ -749,7 +575,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - LeSS (Large-Scale Scrum)
 - Scrum@Scale
 - SOX Section 302 (Quarterly Certification)
-- NIST SP 800-37 (Risk Management Framework)
 
 ## D4 batch 1 additions
 - OSI Reference Model (ISO/IEC 7498-1)
@@ -763,24 +588,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ITIL 4 Service Desk practice
 - ITIL 4 Service Configuration Management practice
 - ISO/IEC 20000-1:2018 (Service Management System)
-- ISACA Service Level Management guidance
-- ISACA Job Scheduling Audit guidance
-- ISACA IT Asset Management guidance
-- ISACA Hardware Lifecycle guidance
-- ISACA Wireless Security guidance
-- ISACA Removable Media guidance
-- ISACA Shadow IT Governance guidance
-- ISACA End-User Computing guidance
-- ISACA Help Desk Audit guidance
-- ISACA Capacity Management guidance
-- ISACA OS Audit guidance
-- ISACA System Interfaces guidance
-- ISACA Incident Management guidance
-- ISACA BIA guidance
-- ISACA Proxy Server guidance
-- ISACA Outage Response guidance
-- ISACA SLA Breach Analysis guidance
-- ISACA BIA Conflict Resolution guidance
 - NIST SP 800-46 (Telework / Remote Access)
 - NIST SP 800-97 (Wireless Network Security)
 - NIST SP 800-114 (Mobile Devices and Removable Media)
@@ -796,23 +603,6 @@ sub-references like "(Managed Risk) and APO12.03").
 
 ## D4 batch 3 additions
 - ISACA Database Audit guidance — already covered topically; expanded form
-- ISACA DBMS Architecture guidance
-- ISACA NoSQL Governance guidance
-- ISACA Database Models guidance
-- ISACA Operating System Hardening guidance
-- ISACA OS Integrity Controls guidance
-- ISACA Data Communications Software guidance
-- ISACA IS Architecture guidance
-- ISACA Hardware Review guidance
-- ISACA Load Balancer Governance guidance
-- ISACA Incident Response Standards guidance
-- ISACA Problem Reporting Cadence guidance
-- ISACA IS Operations Review guidance
-- ISACA Service Level Architecture Alignment guidance
-- ISACA OS Hardening Conflict Resolution guidance
-- ISACA Database Performance vs Availability guidance
-- ISACA Legacy SLA Mismatch guidance
-- ISACA Network Device EOS Decision guidance
 - NIST SP 800-123 (Guide to General Server Security)
 - NIST SP 800-179 (Guide to Securing Apple OS X 10.10 Systems for IT Professionals)
 - CIS Benchmarks for Operating Systems
@@ -827,23 +617,6 @@ sub-references like "(Managed Risk) and APO12.03").
 
 ## D4 batch 5 additions
 - ISACA DRP Audit Program
-- ISACA DR Test Types guidance
-- ISACA Alternative Site Types guidance
-- ISACA DRP Contents guidance
-- ISACA DR Scenarios guidance
-- ISACA Recovery Procedures guidance
-- ISACA DR Responsibilities guidance
-- ISACA BCP Development guidance
-- ISACA BCP Components guidance
-- ISACA Backup Supplies Resilience guidance
-- ISACA Insurance Considerations guidance
-- ISACA Plan Maintenance Lifecycle guidance
-- ISACA DR Test Failure Response guidance
-- ISACA DR Invocation Decision guidance
-- ISACA BCP Audit Findings guidance
-- ISACA Insurance Gap Analysis guidance
-- ISACA Alternative Processing Contract guidance
-- ISACA Key Personnel Succession guidance
 - Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)
 - FFIEC Business Continuity Management Booklet
 - NAIC Cybersecurity Insurance Guidance
@@ -852,17 +625,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Backup and Recovery Audit Program
 - ISACA BCP Audit Program
 - ISACA DRP Audit Program
-- ISACA Application Resiliency guidance
-- ISACA Network Resiliency guidance
-- ISACA Storage Resiliency guidance
-- ISACA Cloud Backup Governance guidance
-- ISACA BCP Process guidance
-- ISACA Recovery Strategy guidance
-- ISACA Pandemic Continuity guidance
-- ISACA DDoS Response guidance
-- ISACA Backup Testing guidance
-- ISACA Cross-Region Resiliency guidance
-- ISACA Contingency Planning Conflict guidance
 
 ## D4 batch 2 additions
 - RFC 3022 (Network Address Translation)
@@ -871,19 +633,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ITIL 4 Deployment Management practice
 - NIST SP 800-40 (Guide to Enterprise Patch Management Planning)
 - NIST SP 800-92 (Guide to Computer Security Log Management) — already partial; full form
-- ISACA Patch Management Audit guidance
-- ISACA Release Management Audit guidance
-- ISACA Access Control Software guidance
-- ISACA Source Code Management guidance
-- ISACA Software License Compliance guidance
-- ISACA Utility Programs guidance
-- ISACA Problem Management Audit guidance
-- ISACA Network Management Tools guidance
-- ISACA Log Management Audit guidance
-- ISACA Patch Deferral guidance
-- ISACA Hardware Refresh Decision guidance
-- ISACA Recurring Problem Trend guidance
-- ISACA Heterogeneous Release Coordination guidance
 
 ## D4 batch 6 additions
 - 45 CFR §164.316 (HIPAA Security Rule)
@@ -917,7 +666,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6)
 - NIST SP 800-189 (Resilient Interdomain Traffic Exchange)
 - NIST SP 800-53 Rev 5 SI-7 (Software, Firmware, and Information Integrity)
-- NIST SP 800-57 Part 1 (Recommendation for Key Management)
 - NIST SP 800-84 (Guide to Test, Training, and Exercise Programs)
 - NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response)
 - NIST SP 800-95 (Guide to Secure Web Services)
@@ -950,7 +698,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Business Continuity Audit/Assurance Program
 - ISACA Cloud Computing Management Audit/Assurance Program
 - ISACA M&A IT Audit/Assurance Program
-- ISO 22301
 - ISO 22301 Clause 10.2 (Continual Improvement)
 - ISO 22301 Clause 7.3 (Awareness)
 - ISO 22301 Clause 8.2 (BIA and Risk Assessment)
@@ -1002,7 +749,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ITU-T Y.1541 (Network Performance Objectives for IP-Based Services)
 - NIST SP 800-128 (Security-Focused Configuration Management)
 - NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Cloud-Native Applications)
-- NIST SP 800-37 Rev 2 (Risk Management Framework)
 - NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy)
 - NIST SP 800-53 CM-3 (Configuration Change Control)
 - NIST SP 800-53 SA-22 (Unsupported System Components)
@@ -1050,7 +796,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - ITIL 4 Service Level Management
 - Joint Commission Sentinel Event Policy
 - NIST SP 800-53 Rev 5 CM-7 (Least Functionality)
-- OCC SR 11-14 (Supplemental Outsourcing Guidance)
+- Federal Reserve SR 11-14 (Supplemental Outsourcing Guidance)
 - OFAC Sanctions Compliance Advisory (Ransomware)
 - SEC Cybersecurity Disclosure Rules
 - SNIA Data Protection Best Practices
@@ -1125,7 +871,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - CISA Joint Cybersecurity Advisories
 - CISA Joint Cybersecurity Advisories (AD-related)
 - CISA Software Bill of Materials Guidance
-- CJEU Schrems II Ruling (Case C-311/18)
 - China Data Security Law (DSL)
 - China Personal Information Protection Law (PIPL)
 - Cloud-native architecture (cell-based architecture pattern)
@@ -1145,7 +890,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Privacy Audit/Assurance Program
 - ISACA Project Management Audit/Assurance Program
 - ISACA e-Discovery Audit guidance
-- Interagency Guidance on Third-Party Relationships (2023, OCC/FRB/FDIC)
 - MITRE ATT&CK (Container Matrix)
 - MITRE ATT&CK T1558.001 (Golden Ticket)
 - McKinsey M&A Integration Methodology
@@ -1156,7 +900,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-204D (Strategies for Secure Software Supply Chain)
 - NIST SP 800-213 (IoT Device Cybersecurity Capability Core Baseline)
 - NIST SP 800-53 Rev 5 IA-5 (Authenticator Management)
-- NIST SP 800-61 (Incident Handling)
 - NSA/CISA Kubernetes Hardening Guide
 - Open Policy Agent (OPA) Gatekeeper Best Practices
 - PCAOB AS 2110 (Identifying and Assessing Risks of Material Misstatement)
@@ -1204,14 +947,11 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Internal Audit Code of Ethics
 - ISACA Risk Management Audit/Assurance Program
 - ISO 22320 (Emergency Management)
-- ISO 31000 (Risk Management)
 - ISO/IEC 11770-2 (Key Management)
 - ISO/IEC 27001 Annex A.11 (Physical and Environmental Security)
-- ISO/IEC 27001 Annex A.9 (Access Control)
 - ISO/IEC 27037 (Digital Evidence)
 - ISO/IEC 29147 (Vulnerability Disclosure)
 - ISO/IEC 42001 (AI Management Systems)
-- Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023)
 - Mastercard Site Data Protection (SDP) Program
 - NIST FIPS 203 (ML-KEM)
 - NIST FIPS 204 (ML-DSA)
@@ -1260,7 +1000,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NFPA 12 (Standard on Carbon Dioxide Extinguishing Systems)
 - NFPA 2001 (Standard on Clean Agent Fire Extinguishing Systems)
 - NFPA 75 (Standard for the Fire Protection of Information Technology Equipment)
-- NIST Cybersecurity Framework (CSF) v2.0 (NIST CSF v2.0)
 - NIST Cybersecurity Framework (NIST CSF) v2.0 (February 2024)
 - NIST SP 800-100 (Information Security Handbook)
 - NIST SP 800-12 Rev 1 (An Introduction to Information Security)
@@ -1294,12 +1033,9 @@ sub-references like "(Managed Risk) and APO12.03").
 - FIDO Alliance FIDO2/WebAuthn Specifications
 - FIDO Alliance Specifications (FIDO2/WebAuthn)
 - GAPP (Generally Accepted Privacy Principles)
-- GDPR Article 30 (Records of processing activities)
-- GDPR Article 33 (Notification of a personal data breach)
 - GDPR Article 5 (Principles relating to processing of personal data)
 - GDPR Article 5(1)(c) (Data minimisation)
 - GDPR Article 58 (Powers of supervisory authorities)
-- GDPR Article 7 (Conditions for consent)
 - GDPR Articles 15-22 (Data Subject Rights)
 - GDPR Chapter V Articles 44-50
 - GDPR Chapter V Articles 44-50 (Transfers of personal data to third countries)
@@ -1308,7 +1044,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - IAB Transparency and Consent Framework v2.2
 - IETF RFC 6749 (OAuth 2.0)
 - OpenID Connect Core 1.0 (OpenID Foundation specification)
-- ISACA Incident Management Audit/Assurance Program
 - ISO/IEC 27001:2022 Annex A.5.16 (Identity management)
 - ISO/IEC 27001:2022 Annex A.5.18 (Access rights)
 - ISO/IEC 27001:2022 Annex A.8.2 (Privileged access rights)
@@ -1371,8 +1106,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-207A (A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Cloud Environments)
 - NIST SP 800-46 Rev 2 (Guide to Enterprise Telework, Remote Access, and BYOD Security)
 - NIST SP 800-70 Rev 4 (National Checklist Program for IT Products)
-- NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling for Desktops and Laptops)
-- NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling)
 - NIST SP 800-94 (Guide to Intrusion Detection and Prevention Systems)
 - OASIS XACML 3.0 (eXtensible Access Control Markup Language)
 - OWASP Top 10 2021
@@ -1418,8 +1151,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-38C (CCM Mode)
 - NIST SP 800-38D (Galois/Counter Mode)
 - NIST SP 800-52 Rev 2 (TLS Implementation Guidelines)
-- NIST SP 800-57 Part 1 Rev 5 (Key Management Lifecycle)
-- NIST SP 800-57 Part 1 Rev 5 (Key Management)
 - NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)
 - NIST SP 800-89 (Recommendation for Obtaining Assurances for Digital Signature Applications)
 - NIST SP 800-90A Rev 1 (Random Number Generation)
@@ -1519,7 +1250,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-50 (Building Security Awareness Program)
 - NIST SP 800-50 (Building an Information Technology Security Awareness and Training Program)
 - NIST SP 800-53 Rev 5 (referencing ATT&CK for threat models)
-- NIST SP 800-83 Rev 1 (Malware Incident Handling)
 - NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling)
 - OFAC Sanctions Compliance Guidance
 - OWASP Web Security Testing Guide (WSTG)
@@ -1565,7 +1295,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-53 Rev 5 SA-11 (Developer Security Testing)
 - NIST SP 800-53 Rev 5 SA-11 (Developer Security and Privacy Testing)
 - NIST SP 800-53 Rev 5 SI-4 (System Monitoring)
-- NIST SP 800-61 Rev 2 (Incident Handling Guide)
 - NIST SP 800-86 (Forensic Techniques in Incident Response)
 - NIST SP 800-92 (Log Management)
 - NIST SP 800-94 (Guide to IDS/IPS)
@@ -1614,7 +1343,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - NIST SP 800-218 (Secure Software Development Framework, SSDF)
 - NIST SP 800-53 Rev 5 (Cloud Overlay)
 - NIST SP 800-53 Rev 5 PM-12
-- NIST SP 800-61 Rev 2 (Incident Handling)
 - OCSF (Open Cybersecurity Schema Framework)
 - OWASP API Security Testing Guide
 - Open Cybersecurity Schema Framework (OCSF)
@@ -1646,8 +1374,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - FIRST.org (Forum of Incident Response and Security Teams)
 - FIRST.org Threat Intel Sharing
 - GDPR Article 28 (Processor obligations)
-- GDPR Article 33
-- GDPR Article 33 (72-hour clock)
 - Google SRE Blameless Postmortems methodology
 - Google SRE Crisis Management Practices
 - HIPAA Security Rule §164.308(a)(6)
@@ -1663,8 +1389,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Mandiant / CrowdStrike / Kroll / Stroz Friedberg Retainer Methodologies
 - Mandiant Threat Intelligence Methodology
 - Marsh Cyber Risk Surveys
-- NIST SP 800-61 Rev 2
-- NIST SP 800-61 Rev 2 (Post-Incident Activity)
 - NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities)
 - PCI DSS v4.0 Requirement 12.10
 - PCI DSS v4.0 Requirement 12.10.4
@@ -1716,7 +1440,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - ISACA Workforce Development Guidance
 - ISO/IEC 27037 (Digital Evidence Handling)
 - Mutual Legal Assistance Treaties
-- NIST SP 800-101 (Mobile Forensics)
 - NIST SP 800-218 (SSDF)
 - NIST SP 800-84 (Test, Training, Exercise Programs)
 - NIST SP 800-86
@@ -1752,14 +1475,11 @@ sub-references like "(Managed Risk) and APO12.03").
 - OFAC Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments
 - HHS 405(d) Health Industry Cybersecurity Practices (HICP)
 - Gartner Cybersecurity Budget Benchmarking Research
-- OCC Bulletin 2019-29 (Third-Party Relationships: Risk Management Guidance)
 - ISACA Malware Analysis Audit/Assurance Program
 - ISACA Cybersecurity Audit/Assurance Program
-- Interagency Guidance on Third-Party Relationships: Risk Management (June 2023; FRB, FDIC, OCC)
 - ENISA Good Practices for Internet of Things and Smart Infrastructures Security
 - ANAB ISO/IEC 17025 Forensic Testing Accreditation
 - OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023)
-- OCC Bulletin 2013-29 (Third-Party Relationships, superseded June 2023)
 - Brazil LGPD Article 48 (Communication of Security Incidents)
 - Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC)
 - 21 CFR Part 11 (Electronic Records and Electronic Signatures)
@@ -1785,7 +1505,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - PCI DSS v4.0.1 Requirement 4.2.1 (TLS Deprecation)
 - ISO/IEC 27033-6 (Network Security: Securing IP Network Access)
 - RFC 6960 (Online Certificate Status Protocol — OCSP)
-- GDPR Article 33 (72-hour Supervisory Notification)
 - GDPR Article 34 (Data Subject Notification)
 - REVOCATION-FIRST principle (cryptographic signing-key / CA-key compromise: revoke FIRST via vendor revocation mechanism BEFORE forensic imaging, credential rotation, or notification — forged tokens/certificates remain valid until revocation)
 - NSM-10 (Quantum-Resistant Cryptography Migration, May 2022)
@@ -1824,3 +1543,15 @@ sub-references like "(Managed Risk) and APO12.03").
 - FCC Customer Proprietary Network Information (CPNI) Rules 47 CFR §64.2011
 - ISACA Cyber Insurance Audit Program
 - ISO/IEC 27040:2024 (Storage Security)
+
+## Canonical citations added during pre-launch cleanup
+- COSO Internal Control - Integrated Framework (2013)
+- EU-US Data Privacy Framework (2023)
+- IIA Quality Assessment and Improvement Program (QAIP)
+- ISACA Business Continuity Management Audit/Assurance Program
+- ISACA Outsourced IT Environments Audit/Assurance Program
+- ISACA Software Development Life Cycle Audit/Assurance Program
+- Sarbanes-Oxley Act Section 802 (Records Retention / Criminal Penalties for Altering Documents)
+- GDPR Article 56 (One-Stop-Shop / Lead Supervisory Authority)
+- SEC Reg S-K Item 106 (Cybersecurity Risk Management, Strategy, Governance, and Incident Disclosure)
+- SEC Regulation S-K Item 407(d)(5)

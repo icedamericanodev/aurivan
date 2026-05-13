@@ -215,7 +215,7 @@
         "Standards selection = regulatory + sector + certification value + control coverage + total cost + multi-framework alignment. Six elements.",
         "Exam-day shortcut: when stem asks how to SELECT a standards framework, answer involves SYSTEMATIC FIT ANALYSIS, not default-to-popular or all-frameworks."
       ],
-      "framework_ref": "ISACA Information Security Management Audit/Assurance Program; ISO/IEC 27001:2022 (Information Security Management Systems); NIST Cybersecurity Framework (CSF) v2.0 (NIST CSF v2.0); COBIT 2019 Framework: Introduction and Methodology; NIST SP 800-53; CIS Controls v8",
+      "framework_ref": "ISACA Information Security Management Audit/Assurance Program; ISO/IEC 27001:2022 (Information Security Management Systems); NIST Cybersecurity Framework (NIST CSF) v2.0 (February 2024); COBIT 2019 Framework: Introduction and Methodology; NIST SP 800-53; CIS Controls v8",
       "related_concepts": [
         "Framework selection",
         "ISO 27001 certification",
@@ -238,7 +238,7 @@
         "D": "Set baselines at maximum-hardening levels uniformly across all assets; the strongest configuration provides the strongest security posture."
       },
       "correct": "C",
-      "key_concept": "Baselines = tier by criticality + minimum configs per tier + exception process with risk acceptance + automated scanning + currency tied to threat landscape. Five elements.",
+      "key_concept": "Security baselines are RISK-TIERED, not one-size-fits-all. Higher-criticality systems get tighter baselines; lower-criticality systems get controlled exceptions through a documented process.",
       "pre_read": "For baseline establishment questions, anchor on 'tier by criticality + tier-specific configs + exception process + automated scanning + currency.' Vendor-default, BU-defined, maximum-everything framings each fail.",
       "correct_explanation": "ISACA Information Security Management Audit/Assurance Program, CIS Controls v8 Implementation Group framework, NIST SP 800-53B, and COBIT 2019 BAI10 establish five-element baseline framework: (1) TIER BY ASSET CRITICALITY — mission/business/standard/low; (2) MINIMUM CONFIGS PER TIER — CIS Benchmarks, DISA STIGs as inputs; tier-tailoring essential; (3) EXCEPTION PROCESS — documented exceptions, compensating controls, periodic review; audit committee approves above threshold; (4) AUTOMATED SCANNING — continuous compliance (CIS-CAT, Tenable, Defender for Cloud); (5) CURRENCY TIED TO THREAT LANDSCAPE — updated when new threats/vulnerabilities emerge; ties to CISA KEV awareness.",
       "wrong_explanations": {
@@ -288,7 +288,7 @@
         "Access principles = least privilege + need-to-know + SoD + default-deny + recertification. Five principles. RBAC/MFA/PAM are downstream mechanisms.",
         "Exam-day shortcut: when stem asks about access PRINCIPLES, answer involves the five principles (not authentication mechanisms or RBAC); when stem asks about IMPLEMENTATION, look for the mechanism."
       ],
-      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-6 (Least Privilege); ISO/IEC 27001:2022 Annex A.5.15–A.5.18 (Access control, identity management, authentication, access rights) and A.8.2–A.8.5 (Technical access controls); ISACA Privileged Access Management Audit/Assurance Program",
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISO/IEC 27001:2022 Annex A.5.15–A.5.18 (Access control, identity management, authentication, access rights) and A.8.2–A.8.5 (Technical access controls); ISACA Privileged Access Management Audit/Assurance Program",
       "related_concepts": [
         "Least privilege",
         "Need-to-know",
@@ -472,7 +472,7 @@
         "Visitor management = pre-arrangement + ID verification + zone-restricted badge + escort + sign-in/sign-out log + equipment restrictions + post-visit review. Seven elements.",
         "Exam-day shortcut: when stem asks about VISITOR MANAGEMENT answer involves MULTI-ELEMENT process with PRE-ARRANGEMENT, ID verification, badge, escort, log, equipment restrictions, and post-visit review."
       ],
-      "framework_ref": "ASIS International Physical Security Standards; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) PE-2 (Physical Access Authorizations), PE-3 (Physical Access Control), PE-6 (Monitoring Physical Access); ISACA Data Center Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.7 (Physical Controls)",
+      "framework_ref": "ASIS International Physical Security Standards; NIST SP 800-53 Rev 5 PE-2 (Physical Access Authorizations), PE-3 (Physical Access Control), PE-6 (Monitoring Physical Access); ISACA Data Center Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.7 (Physical Controls)",
       "related_concepts": [
         "Visitor pre-authorization",
         "ID verification",
@@ -509,7 +509,7 @@
         "Anti-tailgating = mantrap + detection sensors + CCTV + alarms + guards + signage + training. Seven elements.",
         "Exam-day shortcut: when stem mentions TAILGATING answer involves MULTI-ELEMENT mechanism + detection + behavioral training; not mechanical-alone or visual-deterrence-alone."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) PE-3 (Physical Access Control); ASIS International Physical Security Standards; ISACA Data Center Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.7 (Physical Controls)",
+      "framework_ref": "NIST SP 800-53 Rev 5 PE-3 (Physical Access Control); ASIS International Physical Security Standards; ISACA Data Center Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.7 (Physical Controls)",
       "related_concepts": [
         "Mantrap two-door interlock",
         "Tailgate-detection sensors",
@@ -545,7 +545,7 @@
         "CCTV program = camera placement (access + zones) + retention + live monitoring (selective) + access controls + extension during incidents + tamper-detection + IR integration. Seven elements.",
         "Exam-day shortcut: when stem says CCTV PROGRAM answer involves MULTI-ELEMENT scope including PLACEMENT in sensitive zones and SELECTIVE live monitoring; not doors-only or all-cameras-live."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) PE-6 (Monitoring Physical Access); ASIS International Physical Security Standards; ISACA Data Center Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.7 (Physical Controls)",
+      "framework_ref": "NIST SP 800-53 Rev 5 PE-6 (Monitoring Physical Access); ASIS International Physical Security Standards; ISACA Data Center Audit/Assurance Program; ISO/IEC 27001:2022 Annex A.7 (Physical Controls)",
       "related_concepts": [
         "Camera placement strategy",
         "CCTV retention",
@@ -594,7 +594,7 @@
     {
       "id": "d5_017",
       "domain": 5,
-      "subtopic": "Sustained Power Outage (Analysis)",
+      "subtopic": "Sustained Power Outage",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST recommendation the IS auditor should give the chief operations officer?",
@@ -632,7 +632,7 @@
     {
       "id": "d5_018",
       "domain": 5,
-      "subtopic": "Physical Breach via Cleaning Crew (Analysis)",
+      "subtopic": "Physical Breach via Cleaning Crew",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST recommendation the IS auditor should give the chief security officer?",
@@ -657,7 +657,7 @@
         "Physical breach by cleaning crew = forensic preservation + independent inspection + vendor coordination + law enforcement + customer notification + vendor review + badge governance + post-incident enhancement. Eight tracks.",
         "Exam-day shortcut: when stem reports physical breach by third-party with potential malicious intent, answer involves FORENSIC PRESERVATION + LAW ENFORCEMENT + INDEPENDENT INSPECTION in parallel; not vendor-management-only response."
       ],
-      "framework_ref": "NIST SP 800-61 (Computer Security Incident Handling Guide); NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response); ISACA Data Center Audit/Assurance Program; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); FBI Internet Crime Complaint Center",
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response); ISACA Data Center Audit/Assurance Program; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); FBI Internet Crime Complaint Center",
       "related_concepts": [
         "Hardware implants in physical breach",
         "Industrial espionage investigation",
@@ -669,7 +669,7 @@
     {
       "id": "d5_019",
       "domain": 5,
-      "subtopic": "HVAC Failure with 10-Min Hardware-Damage Trajectory (Analysis)",
+      "subtopic": "HVAC Failure with 10-Min Hardware-Damage Trajectory",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST recommendation the IS auditor should give the data center operations manager?",
@@ -694,7 +694,7 @@
         "Time-critical scenarios with minute-scale consequence thresholds require SURGICAL ACTION addressing the trajectory; comprehensive coordination follows AFTER stabilization.",
         "Exam-day shortcut: when stem reports a consequence-trajectory measured in minutes (not hours), answer involves SINGLE-FOCUS SURGICAL ACTION addressing the trajectory; multi-track coordinated response is for SUSTAINED scenarios."
       ],
-      "framework_ref": "ASHRAE TC 9.9 (Mission Critical Facilities); TIA-942 (Telecommunications Infrastructure Standard for Data Centers); NIST SP 800-61 (Computer Security Incident Handling Guide); Uptime Institute Operational Sustainability Standards",
+      "framework_ref": "ASHRAE TC 9.9 (Mission Critical Facilities); TIA-942 (Telecommunications Infrastructure Standard for Data Centers); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); Uptime Institute Operational Sustainability Standards",
       "related_concepts": [
         "Thermal trajectory management",
         "Hardware-damage thresholds",
@@ -706,7 +706,7 @@
     {
       "id": "d5_020",
       "domain": 5,
-      "subtopic": "Post-Acquisition Physical Security Harmonization (Analysis)",
+      "subtopic": "Post-Acquisition Physical Security Harmonization",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST recommendation the IS auditor should give the chief operating officer?",
@@ -840,7 +840,7 @@
         "IAM lifecycle = joiner + mover + leaver + recertification. Coordinated across HR + IdP + apps + directory. Mover step is where privilege creep starts.",
         "Exam-day shortcut: when stem asks about IAM LIFECYCLE, look for the four-stage coordinated process; joiner-only, persistence-by-default, and manager-only framings each miss the mover and recertification steps."
       ],
-      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-2 (Account Management); ISO/IEC 27001:2022 Annex A.5.16 (Identity management); COBIT 2019 DSS05 (Managed Security Services)",
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 AC-2 (Account Management); ISO/IEC 27001:2022 Annex A.5.16 (Identity management); COBIT 2019 DSS05 (Managed Security Services)",
       "related_concepts": [
         "Joiner-mover-leaver",
         "Privilege creep",
@@ -948,7 +948,7 @@
         "Transfer mechanisms = adequacy (EU-US DPF since July 2023) + SCCs with TIA + BCRs (intra-group) + Article 49 derogations (limited). Encryption is supplementary.",
         "Exam-day shortcut: when stem asks about CROSS-BORDER TRANSFER MECHANISMS, look for the four legal bases; encryption-only, blanket-prohibited, and forced-localization framings each fail."
       ],
-      "framework_ref": "GDPR Chapter V Articles 44-50 (Transfers of personal data to third countries); EU-US Data Privacy Framework (July 2023); EDPB Recommendations 01/2020 on Supplementary Measures; CJEU Schrems II Judgment (C-311/18)",
+      "framework_ref": "GDPR Chapter V Articles 44-50 (Transfers of personal data to third countries); EU-US Data Privacy Framework (2023); EDPB Recommendations 01/2020 on Supplementary Measures; CJEU Schrems II Judgment (C-311/18)",
       "related_concepts": [
         "Transfer impact assessment",
         "Adequacy decisions",
@@ -1020,7 +1020,7 @@
         "Consent = freely given + specific + informed + unambiguous + opt-in + granular + withdrawable + documented + auditable. Lifecycle: collect → store → apply → refresh → withdraw.",
         "Exam-day shortcut: when stem says 'CONSENT,' look for the nine Article 7 elements; implied-consent, bundled-consent, and one-time-flag framings each fail GDPR's affirmative-act requirement."
       ],
-      "framework_ref": "GDPR Article 7 (Conditions for consent); GDPR Recital 32; EDPB Guidelines 05/2020 on consent; ePrivacy Directive (2002/58/EC); IAB Transparency and Consent Framework v2.2",
+      "framework_ref": "GDPR Article 7 (Conditions for Consent); GDPR Recital 32; EDPB Guidelines 05/2020 on consent; ePrivacy Directive (2002/58/EC); IAB Transparency and Consent Framework v2.2",
       "related_concepts": [
         "Affirmative consent",
         "Consent withdrawal",
@@ -1092,7 +1092,7 @@
         "PAM = vault + session recording + JIT elevation + MFA + monitoring + certification + break-glass. Seven controls. Permanent admin, shared credentials, and unmanaged local-admin each fail.",
         "Exam-day shortcut: when stem describes PRIVILEGED accounts (domain admin, root, service accounts), look for the seven-control PAM framework; permanent, shared, and unmanaged-local-admin framings each fail."
       ],
-      "framework_ref": "ISACA Privileged Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-6 (Least Privilege); CIS Controls v8 Control 6 (Access Control Management); NIST SP 800-63B (Phishing-resistant MFA); ISO/IEC 27001:2022 Annex A.8.2 (Privileged access rights)",
+      "framework_ref": "ISACA Privileged Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 AC-6 (Least Privilege); CIS Controls v8 Control 6 (Access Control Management); NIST SP 800-63B (Phishing-resistant MFA); ISO/IEC 27001:2022 Annex A.8.2 (Privileged access rights)",
       "related_concepts": [
         "JIT elevation",
         "Vault-managed credentials",
@@ -1164,7 +1164,7 @@
         "JIT = request + approval + time-bounded + scope-bounded + automation + audit log. Six elements. Complement to RBAC for elevated/sensitive permissions.",
         "Exam-day shortcut: when stem says 'JUST-IN-TIME ACCESS,' look for the six-element workflow; permanent-RBAC, auto-approved, and manual-email framings each miss the time-bounded and audit elements."
       ],
-      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-2 (Account Management); CIS Controls v8 Control 6 (Access Control Management); ISO/IEC 27001:2022 Annex A.5.18 (Access rights)",
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 AC-2 (Account Management); CIS Controls v8 Control 6 (Access Control Management); ISO/IEC 27001:2022 Annex A.5.18 (Access rights)",
       "related_concepts": [
         "Privileged Identity Management (PIM)",
         "Time-bounded access",
@@ -1200,7 +1200,7 @@
         "Service-account control = inventory + owner + scope + rotation + vault + monitoring + recertification + decommissioning. Eight elements. Managed identities are the modern alternative.",
         "Exam-day shortcut: when stem says 'SERVICE-ACCOUNT MANAGEMENT,' look for the eight-element framework; shared-password, human-pattern-applied-to-service, and no-inventory framings each fail."
       ],
-      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) IA-2 (Identification and Authentication); NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Applications); CIS Controls v8 Control 5 (Account Management)",
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 IA-2 (Identification and Authentication); NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Applications); CIS Controls v8 Control 5 (Account Management)",
       "related_concepts": [
         "Managed identities",
         "Secret rotation",
@@ -1236,7 +1236,7 @@
         "Recertification = risk-tiered cadence + data-owner/manager reviewer + role+entitlement+exception scope + completion required + remediation SLA + audit committee reporting.",
         "Exam-day shortcut: when stem says 'ACCESS RECERTIFICATION,' look for risk-tiered cadence + independent reviewer; uniform-annual, finding-driven, and self-certification framings each fail."
       ],
-      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-2(7) (Privileged User Accounts); ISO/IEC 27001:2022 Annex A.5.18 (Access rights); COBIT 2019 DSS05 (Managed Security Services)",
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 AC-2(7) (Privileged User Accounts); ISO/IEC 27001:2022 Annex A.5.18 (Access rights); COBIT 2019 DSS05 (Managed Security Services)",
       "related_concepts": [
         "Risk-tiered cadence",
         "Self-certification bias",
@@ -1345,7 +1345,7 @@
         "Time-critical regulator investigations: PRESERVE FIRST, then respond. Spoliation risk dominates broad coordination. Legal hold + external privacy counsel under privilege are the surgical first action.",
         "Exam-day shortcut: when stem describes FORMAL REGULATOR INVESTIGATION NOTICE WITH DEADLINE, look for LEGAL HOLD as first action; premature-compliance, redesign-first, and broad-coordination framings each fail the spoliation-risk test."
       ],
-      "framework_ref": "GDPR Article 58 (Powers of supervisory authorities); GDPR Article 30 (Records of processing activities); ISACA Privacy Audit/Assurance Program; ACC Sample Litigation Hold Policy; ABA Model Rule 3.4 (Fairness to Opposing Party and Counsel)",
+      "framework_ref": "GDPR Article 58 (Powers of supervisory authorities); GDPR Article 30 (Records of Processing Activities); ISACA Privacy Audit/Assurance Program; ACC Sample Litigation Hold Policy; ABA Model Rule 3.4 (Fairness to Opposing Party and Counsel)",
       "related_concepts": [
         "Legal hold",
         "Spoliation risk",
@@ -1419,7 +1419,7 @@
         "Leaked credential = rotate first. Force-push doesn't invalidate. Customer notification before rotation tells adversary credential is being burned. Containment dominates communication.",
         "Exam-day shortcut: when stem describes EXPOSED PRIVILEGED CREDENTIAL WITH PUBLIC VISIBILITY, look for IMMEDIATE ROTATION; coordination-call, force-push, and notify-first framings each fail the credential-validity-clock test."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CIS Controls v8 Control 5 (Account Management); GDPR Article 33 (Notification of a personal data breach); NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) IR-4 (Incident Handling)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CIS Controls v8 Control 5 (Account Management); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
       "related_concepts": [
         "Secret rotation",
         "Credential exposure",
@@ -1456,7 +1456,7 @@
         "Post-CJEU EU transfer remediation = map + assess + identify supplementary measures + updated SCCs with TIA + EU-data-only architecture + BCR + customer-DPO + board. Eight tracks. DPF resolves some flows, not sub-processor exposures.",
         "Exam-day shortcut: when stem describes EU CUSTOMER TRANSFER-MECHANISM CHALLENGE WITH MATERIAL REVENUE EXPOSURE, look for multi-track remediation; forced-migration, DPF-misrepresentation, and controller-reframing framings each fail."
       ],
-      "framework_ref": "GDPR Chapter V Articles 44-50; CJEU Schrems II Judgment (C-311/18); EU-US Data Privacy Framework (July 2023); EDPB Recommendations 01/2020 on Supplementary Measures; 2021 Standard Contractual Clauses Commission Decision",
+      "framework_ref": "GDPR Chapter V Articles 44-50; CJEU Schrems II Judgment (C-311/18); EU-US Data Privacy Framework (2023); EDPB Recommendations 01/2020 on Supplementary Measures; 2021 Standard Contractual Clauses Commission Decision",
       "related_concepts": [
         "Transfer impact assessment",
         "Supplementary measures",
@@ -1528,7 +1528,7 @@
         "Endpoint protection evolution: signature-based (AV) → suite preventive (EPP) → behavior + response (EDR) → cross-domain telemetry (XDR). Each layer adds capability, doesn't replace prior.",
         "Exam-day shortcut: when stem describes ENDPOINT PROTECTION TAXONOMY, look for FUNCTIONAL evolution (signature → behavior → cross-domain); marketing-equivalent, form-factor, and COSO framings each fail."
       ],
-      "framework_ref": "CIS Controls v8 Safeguard 10 (Malware Defenses); NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling for Desktops and Laptops); ISACA Endpoint Security Audit/Assurance Program; MITRE ATT&CK Framework",
+      "framework_ref": "CIS Controls v8 Safeguard 10 (Malware Defenses); NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling); ISACA Endpoint Security Audit/Assurance Program; MITRE ATT&CK Framework",
       "related_concepts": [
         "AV vs EDR",
         "Behavior-based detection",
@@ -1780,7 +1780,7 @@
         "EDR/XDR audit = agent deployment + telemetry retention + detection coverage (MITRE ATT&CK) + response capability + alert handling + SIEM integration + privileged-action approval + tamper protection. Eight dimensions.",
         "Exam-day shortcut: when stem asks about EDR/XDR AUDIT SCOPE, look for multi-dimension framework spanning deployment + detection + response + integration; coverage-only, volume-only, and vendor-SOC-2-only framings each fail."
       ],
-      "framework_ref": "ISACA Endpoint Security Audit/Assurance Program; NIST SP 800-83 Rev 1 (Guide to Malware Incident Prevention and Handling); MITRE ATT&CK Framework; CIS Controls v8 Safeguard 13 (Network Monitoring and Defense)",
+      "framework_ref": "ISACA Endpoint Security Audit/Assurance Program; NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling); MITRE ATT&CK Framework; CIS Controls v8 Safeguard 13 (Network Monitoring and Defense)",
       "related_concepts": [
         "MITRE ATT&CK coverage",
         "Telemetry retention",
@@ -1816,7 +1816,7 @@
         "ZTA = never-trust-always-verify + per-request authn/authz + identity-centric + microsegmentation + continuous verification + separated PDP/PEP + telemetry-driven adaptive policy. Seven elements per NIST SP 800-207.",
         "Exam-day shortcut: when stem says 'ZERO TRUST,' look for the NIST SP 800-207 seven-element framework; product-purchase, perimeter-MFA-only, and office-only framings each fail."
       ],
-      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); CISA Zero Trust Maturity Model v2.0 (April 2023).0 (April 2023); NIST SP 800-207A (A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Cloud Environments); DoD Zero Trust Reference Architecture v2.0",
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); CISA Zero Trust Maturity Model v2.0 (April 2023); NIST SP 800-207A (A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Cloud Environments); DoD Zero Trust Reference Architecture v2.0",
       "related_concepts": [
         "Policy Decision/Enforcement Points",
         "Identity-centric architecture",
@@ -2069,7 +2069,7 @@
         "Active ransomware = isolate first via EDR network-quarantine. Coordination, restore, notification all follow. Containment dominates communication in time-critical malware scenarios.",
         "Exam-day shortcut: when stem describes ACTIVE RANSOMWARE ENCRYPTION IN PROGRESS, look for IMMEDIATE ISOLATION via EDR; coordination-call, parallel-restore, and notify-first framings each fail the encryption-progress-clock test."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); MITRE ATT&CK Framework Impact tactic (T1486 Data Encrypted for Impact)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); MITRE ATT&CK Framework Impact tactic (T1486 Data Encrypted for Impact)",
       "related_concepts": [
         "EDR network-quarantine",
         "Lateral movement containment",
@@ -2635,7 +2635,7 @@
         "D": "Cloud KMS doesn't require firm-side audit because cloud providers handle all aspects of key management on customer's behalf."
       },
       "correct": "A",
-      "key_concept": "Cloud KMS audit = key inventory + IAM policy review + rotation enforcement + access audit logs + envelope encryption pattern + key-policy SoD + customer-managed vs service-managed + cross-region replication. Eight dimensions.",
+      "key_concept": "Cloud KMS audit examines BOTH policy (IAM) AND operation (rotation, access logs, separation-of-duties) — not key inventory alone. Misconfigured policy is the most common KMS finding.",
       "pre_read": "For cloud KMS audit questions, anchor on the eight-dimension scope under shared responsibility. Provider-SOC-2-only, key-count-only, and provider-handles-everything framings each fail.",
       "correct_explanation": "ISACA Cloud Cryptography Audit/Assurance Program and AWS/Azure/GCP key-management documentation establish cloud KMS audit scope: (1) KEY INVENTORY — central inventory of customer-managed keys (CMKs) across accounts/subscriptions/projects; orphan detection (keys without active use); naming convention compliance; (2) IAM POLICY REVIEW — who can use, manage, or administer each key; least-privilege scope; service-role permissions; cross-account access; (3) KEY ROTATION ENFORCEMENT — automatic rotation enabled where supported; cadence appropriate to sensitivity (AWS KMS auto-rotation = 365 days for symmetric CMKs; manual rotation for asymmetric); (4) ACCESS AUDIT LOGS — CloudTrail (AWS), Azure Activity Log, GCP Cloud Audit Logs capture every key use; alerting on anomalous patterns; (5) ENVELOPE ENCRYPTION PATTERN REVIEW — data encrypted with data key, data key encrypted with master key (KMS-stored); reduces master-key calls and exposure; pattern verified in application architecture; (6) KEY-POLICY SEPARATION OF DUTIES — key administrators (create/delete keys) separated from key users (encrypt/decrypt); review approver separate from administrator; (7) CUSTOMER-MANAGED vs SERVICE-MANAGED KEY DECISIONS — service-managed keys (AWS-managed, default) acceptable for most workloads; customer-managed keys (CMK) required for cryptographic policy control, audit visibility, regulatory requirements; (8) CROSS-REGION REPLICATION FOR KEYS — multi-region keys for DR; reciprocal trust boundaries documented. Common failure mode: 'cloud provider handles it' — shared responsibility model means provider operates HSM infrastructure; firm operates key policies, IAM, rotation, encryption patterns.",
       "wrong_explanations": {
@@ -2648,7 +2648,7 @@
         "Cloud KMS audit = key inventory + IAM policies + rotation + access audit logs + envelope encryption + key-policy SoD + customer-vs-service-managed + cross-region replication. Eight dimensions under shared responsibility.",
         "Exam-day shortcut: when stem names MULTIPLE CLOUD PROVIDERS or 'KMS AUDIT,' the answer involves shared-responsibility scope (firm-side key policies + IAM + rotation), not vendor SOC 2; provider-SOC-2-only, key-count-only, and provider-handles-everything framings each fail."
       ],
-      "framework_ref": "ISACA Cloud Cryptography Audit/Assurance Program; AWS KMS Documentation (Key Management Service); Azure Key Vault Documentation; GCP Cloud KMS Documentation; NIST SP 800-57 Part 1 Rev 5 (Key Management)",
+      "framework_ref": "ISACA Cloud Cryptography Audit/Assurance Program; AWS KMS Documentation (Key Management Service); Azure Key Vault Documentation; GCP Cloud KMS Documentation; NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)",
       "related_concepts": [
         "Customer-managed keys",
         "Envelope encryption",
@@ -2756,7 +2756,7 @@
         "Key escrow = corporate-managed + identity-verified recovery + split-knowledge for high-value + audit trail + tested procedures + retention aligned to data. Privacy via audited access, not no-escrow.",
         "Exam-day shortcut: when stem asks about KEY ESCROW AND RECOVERY, look for corporate-managed + identity-verified + split-knowledge high-value + audit + tested; user-managed-no-escrow, broad-shared-vault, and skip-escrow framings each fail."
       ],
-      "framework_ref": "ISACA Cryptography Audit/Assurance Program; NIST SP 800-57 Part 1 Rev 5 (Key Management Lifecycle); Microsoft BitLocker Recovery Key Documentation; Apple FileVault Personal Recovery Key Documentation",
+      "framework_ref": "ISACA Cryptography Audit/Assurance Program; NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); Microsoft BitLocker Recovery Key Documentation; Apple FileVault Personal Recovery Key Documentation",
       "related_concepts": [
         "BitLocker AD escrow",
         "Shamir's secret sharing",
@@ -2793,7 +2793,7 @@
         "Compromised CA = revoke immediately (CRL + OCSP). Multi-track response, new CA generation, and re-issuance all follow. Single surgical action; trust-extension clock dominates.",
         "Exam-day shortcut: when stem describes COMPROMISED CA WITH UNDETECTED ACCESS WINDOW, look for IMMEDIATE REVOCATION; coordination-call, parallel-new-CA, and disable-validation framings each fail the trust-extension-clock test."
       ],
-      "framework_ref": "ISACA PKI Audit/Assurance Program; NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure); FFIEC IT Examination Handbook (Information Security Booklet); OCC Bulletin 2008-13 (IT Incidents); CA/Browser Forum Baseline Requirements; ISACA Incident Management Audit/Assurance Program",
+      "framework_ref": "ISACA PKI Audit/Assurance Program; NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure); FFIEC IT Examination Handbook (Information Security Booklet); OCC Bulletin 2008-13 (IT Incidents); CA/Browser Forum Baseline Requirements; ISACA Incident Management and Response Audit/Assurance Program",
       "related_concepts": [
         "Root CA revocation",
         "Emergency CA rebuild",
@@ -2830,7 +2830,7 @@
         "HSM partition failure = failover + queue drain + comms + reconciliation + forensic + regulator notification + tested failback + cause analysis. Eight tracks balancing recovery + investigation + compliance.",
         "Exam-day shortcut: when stem describes ACTIVE TRANSACTION VOLUME + PARTITION FAILURE (or any HSM cluster with healthy secondary), the answer is FAILOVER not power-cycle; preserves primary partition for forensics while restoring service. Power-cycle destroys volatile state; wait-for-vendor wastes the failover capability the cluster was designed for."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; PCI DSS v4.0 Requirement 3.6 (Key Management); PCI DSS v4.0 Requirement 12.10 (Incident Response Plan); FFIEC IT Examination Handbook (Information Security Booklet)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; PCI DSS v4.0 Requirement 3.6 (Key Management); PCI DSS v4.0 Requirement 12.10 (Incident Response Plan); FFIEC IT Examination Handbook (Information Security Booklet)",
       "related_concepts": [
         "HSM failover",
         "Tamper-active response",
@@ -2904,7 +2904,7 @@
         "IRREVERSIBLE-LOSS-CLOCK principle: when an attack is actively destroying recovery state (cryptographic erasure of backup keys, evidence wiping, log tampering), the FIRST action is the one that preserves the LAST remaining recovery path. Transferable to any active-destruction scenario where waiting forecloses options.",
         "Exam-day shortcut: when stem describes ACTIVE DESTRUCTION OF RECOVERY STATE (key shards being destroyed, evidence being wiped) with a MEASURABLE THRESHOLD (50% in 4 minutes), look for the action that preserves the LAST viable recovery path — typically air-gapped/offline because online state is being actively corrupted."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); HIPAA Security Rule §164.308 (Administrative Safeguards); HHS OCR Breach Notification Rule",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); HIPAA Security Rule §164.308 (Administrative Safeguards); HHS OCR Breach Notification Rule",
       "related_concepts": [
         "Air-gapped offline backup",
         "Cryptographic erasure attack",
@@ -3287,7 +3287,7 @@
         "D": "Authenticate every workload through OAuth client credentials with stored client secrets; OAuth is the universal standard regardless of context."
       },
       "correct": "C",
-      "key_concept": "Cloud workload identity = cloud-native mechanism (AWS IRSA, Azure Managed Identity, GCP Workload Identity) + short-lived tokens via instance metadata + scope-limited IAM + audit logging + transparent rotation. Eliminates static credentials.",
+      "key_concept": "Cloud-native workload identity replaces long-lived static credentials with ephemeral, scope-bound, audit-rich tokens — eliminating the rotation+revocation+storage burden that bedevils static credentials.",
       "pre_read": "For cloud workload identity questions, anchor on cloud-native short-lived-token mechanisms. Long-lived-keys, shared-accounts, and OAuth-client-credentials framings each fail.",
       "correct_explanation": "NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Applications), AWS IAM Roles for Service Accounts (IRSA), Azure Managed Identity, and GCP Workload Identity Federation establish cloud workload identity canonical pattern: (1) WORKLOAD IDENTITY VIA CLOUD-PROVIDER MECHANISM — AWS: IAM Roles for EC2 (instance profiles) and IAM Roles for Service Accounts (IRSA for EKS pods); Azure: Managed Identity (system-assigned or user-assigned); GCP: Workload Identity (binds K8s SA to GCP SA); (2) SHORT-LIVED TOKENS VIA INSTANCE METADATA — Instance Metadata Service (IMDSv2 for AWS requires session token; v1 vulnerable to SSRF), Azure IMDS, GCP metadata server; tokens valid 1 hour typical; auto-refreshed; (3) SCOPE-LIMITED IAM POLICIES — workload role has only the permissions its job requires; not broad admin; (4) AUDIT LOGGING — CloudTrail, Azure Activity Log, GCP Cloud Audit Logs capture every AssumeRole, every token issuance; (5) ROTATION TRANSPARENT TO WORKLOAD — SDK auto-refreshes credentials; application code uses default credential chain; never touches keys directly. Common failure: 'embedded API keys in environment variables' — workload identity eliminates this entire class of secret-sprawl.",
       "wrong_explanations": {
@@ -3517,7 +3517,7 @@
         "Diagnostic question for time-critical scenarios: 'is the harm coming from inside the control or from outside it?' RESTORE-FIRST applies when NO ADVERSARY IS PRESENT (control misbehaving on legitimate traffic — d5_097); CONTAIN-FIRST applies when ADVERSARY IS ACTIVE (CA compromise d5_077, container escape d5_098, ransomware-key destruction d5_080). Same time-pressure pattern, opposite direction of action.",
         "Exam-day shortcut: when stem describes DEFENSIVE-CONTROL FALSE POSITIVES BLOCKING LEGITIMATE TRAFFIC during peak business, look for MONITOR-MODE FLIP or CONTROL-DISABLE first; coordination-call, wait-for-vendor, and full-rollback framings each fail the revenue-loss-clock test."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; ISACA Web Application Security Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Incident Management",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; ISACA Web Application Security Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Incident Management",
       "related_concepts": [
         "WAF monitor mode",
         "Vendor-pushed ruleset risk",
@@ -3554,7 +3554,7 @@
         "Lateral-movement containment principle: container escape gives adversary access to the NODE; 47 co-located pods at risk including admin tooling; isolation of POD + NODE preserves forensic state while stopping lateral movement.",
         "Exam-day shortcut: when stem describes CONFIRMED CONTAINER ESCAPE WITH CO-LOCATED PODS, look for ISOLATE POD + NODE first (NetworkPolicy + cordon-drain); coordination-call, pod-deletion, and customer-notify-first framings each fail the lateral-movement-clock test."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-190 (Application Container Security Guide); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); MITRE ATT&CK Framework T1611 (Escape to Host)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-190 (Application Container Security Guide); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); MITRE ATT&CK Framework T1611 (Escape to Host)",
       "related_concepts": [
         "Falco runtime detection",
         "Container escape CVE-2022-0185",
@@ -3591,7 +3591,7 @@
         "BYOD compromise + spillover = selective wipe of managed apps + revoke corporate access + forensic preservation + clinical-trial exposure assessment + regulator notification + HR engagement + intelligence-sharing. Seven tracks balancing speed + forensics + privacy + compliance.",
         "Exam-day shortcut: when stem describes BYOD COMPROMISE with CORPORATE-DATA SPILLOVER under privacy constraints, look for selective-wipe + access-revoke + forensic-preservation; over-wipe, wait-for-return, and defer-to-FBI framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; GDPR Article 33 (Notification of a personal data breach); GDPR Articles 33-34 (Breach Notification); FDA 21 CFR Part 11 (Electronic Records); NIST SP 800-46 Rev 2 (Guide to Enterprise Telework, Remote Access, and BYOD Security); Citizen Lab Pegasus Research; Amnesty Tech Mobile Forensics Methodology",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); GDPR Articles 33-34 (Breach Notification); FDA 21 CFR Part 11 (Electronic Records); NIST SP 800-46 Rev 2 (Guide to Enterprise Telework, Remote Access, and BYOD Security); Citizen Lab Pegasus Research; Amnesty Tech Mobile Forensics Methodology",
       "related_concepts": [
         "Pegasus spyware",
         "Selective wipe",
@@ -3628,7 +3628,7 @@
         "IoT botnet response = ISP coordination + segmentation + manual fallback + accelerated procurement + vendor coordination + post-incident IoT lifecycle policy + regulator notification. Seven tracks balancing containment + operations + procurement + lifecycle.",
         "Exam-day shortcut: when stem describes COMPROMISED DEVICES ACROSS MULTIPLE BRANCH ISPS or DDoS-against-external-target, single-firm-firewall is structurally inadequate (must coordinate N branches while attack continues); ISP-level RTBH null-route scales from one action. Transferable to cloud-region compromise + any-geographically-distributed-egress scenarios."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Joint Cybersecurity Advisory on IoT Botnets; NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline); Mirai Botnet Research",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Joint Cybersecurity Advisory on IoT Botnets; NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline); Mirai Botnet Research",
       "related_concepts": [
         "ISP null-routing",
         "IoT lifecycle policy",
@@ -3736,7 +3736,7 @@
         "Phishing patterns = bulk + spear + whaling + BEC + smishing + vishing. Six patterns across volume/targeting/channel. BEC alone is $2.9B+ annual FBI IC3 losses.",
         "Exam-day shortcut: when stem asks about PHISHING PATTERNS, look for six-pattern taxonomy across channels and targeting; email-only, all-same, and gateway-sufficient framings each fail."
       ],
-      "framework_ref": "ISACA Information Security Audit/Assurance Program; FBI Internet Crime Complaint Center (IC3) Annual Report; CISA Phishing Guidance; NIST SP 800-83 Rev 1 (Malware Incident Handling)",
+      "framework_ref": "ISACA Information Security Audit/Assurance Program; FBI Internet Crime Complaint Center (IC3) Annual Report; CISA Phishing Guidance; NIST SP 800-83 Rev 1 (Malware Incident Prevention and Handling)",
       "related_concepts": [
         "Business Email Compromise (BEC)",
         "Smishing/Vishing",
@@ -3988,7 +3988,7 @@
         "Privilege escalation + lateral movement = 8 techniques. ESCALATION (upward, same host): token manipulation + kernel exploits + service-account abuse + UAC bypass. LATERAL (horizontal): Kerberos attacks + Pass-the-Hash + admin-share + RDP. Cross-cutting: LSASS dumping.",
         "Exam-day shortcut: when stem describes POST-COMPROMISE PROPAGATION, look for the eight-technique taxonomy distinguishing escalation (upward) vs lateral (horizontal); post-compromise-irrelevant, segmentation-only, and escalation=lateral framings each fail."
       ],
-      "framework_ref": "MITRE ATT&CK Framework TA0004 (Privilege Escalation) and TA0008 (Lateral Movement); Microsoft Tiered Administrative Model; Microsoft Credential Guard Documentation; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) AC-6 (Least Privilege)",
+      "framework_ref": "MITRE ATT&CK Framework TA0004 (Privilege Escalation) and TA0008 (Lateral Movement); Microsoft Tiered Administrative Model; Microsoft Credential Guard Documentation; NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
       "related_concepts": [
         "Pass-the-Hash",
         "Golden Ticket attack",
@@ -4024,7 +4024,7 @@
         "Insider-threat program = manager training + employee reporting + HR-IT integration + DLP + UEBA analytics + ethics training + privacy notice + reporting channels. Eight elements balancing detection + culture + privacy.",
         "Exam-day shortcut: when stem asks about INSIDER-THREAT PROGRAM, look for eight-element framework balancing detection + culture + privacy; HR-only, total-surveillance, and rare-no-program framings each fail."
       ],
-      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center research; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) PM-12 (Insider Threat Program); Executive Order 13587; GDPR Article 88 (Processing in the context of employment)",
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center research; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); Executive Order 13587; GDPR Article 88 (Processing in the context of employment)",
       "related_concepts": [
         "UEBA",
         "Behavioral indicators",
@@ -4097,7 +4097,7 @@
         "FINANCIAL-LOSS CLOCK principle: when monetary loss is irreversible after a short window (wire-transfer settlement, cryptocurrency transactions), HALT-AND-VERIFY-OUT-OF-BAND is the canonical first action; distinct from contain-first / restore-first / lateral-movement-contain.",
         "Exam-day shortcut: when stem describes WIRE-TRANSFER + BEC RED FLAGS + SETTLEMENT CUTOFF, look for HALT-AND-VERIFY-OUT-OF-BAND; send-and-recall, coordination-call, and email-reply-verify framings each fail the settlement-clock test."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; FBI Internet Crime Complaint Center (IC3) BEC Annual Report; SWIFT Customer Security Programme (CSP); OFAC Sanctions Compliance Guidance; PCAOB AS 2401 (Consideration of Fraud)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; FBI Internet Crime Complaint Center (IC3) BEC Annual Report; SWIFT Customer Security Programme (CSP); OFAC Sanctions Compliance Guidance; PCAOB AS 2401 (Consideration of Fraud)",
       "related_concepts": [
         "Out-of-band verification",
         "Settlement cutoff clock",
@@ -4208,7 +4208,7 @@
         "Multi-site healthcare ransomware = network-isolate + clinical downtime + forensic preserve + external IR vendor + patient comms + regulator notification + cyber insurance + restore from immutable backup. Eight tracks.",
         "Exam-day shortcut: when stem describes MULTI-SITE RANSOMWARE WITH ACTIVE CLINICAL OPERATIONS, look for isolate-with-downtime-procedures + multi-track; pay-ransom, total-powerdown, and allow-encryption framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; HIPAA Security Rule §164.308 and §164.402; CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); HHS OCR HIPAA Breach Notification Rule; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; HIPAA Security Rule §164.308 and §164.402; CISA Stop Ransomware Guide (joint with FBI/MS-ISAC/NSA); HHS OCR HIPAA Breach Notification Rule; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
       "related_concepts": [
         "Healthcare downtime procedures",
         "Immutable backup restoration",
@@ -4282,7 +4282,7 @@
         "APT investigation = cleared IR vendor + passive containment + forensic preservation + DCSA notification + FBI coordination + threat intel collection (don't alert) + classified-systems audit + post-incident government reporting. Eight tracks for defense contractor.",
         "Exam-day shortcut: when stem describes NATION-STATE APT in DEFENSE-CONTRACTOR context, look for passive-containment + cleared-IR-vendor + DCSA-coordination + threat-intel-first; block-C2-immediately, total-powerdown, and complete-deferral framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NISPOM (National Industrial Security Program Operating Manual, 32 CFR Part 117); CISA + NSA Joint Cybersecurity Advisories on nation-state actors; FBI Insider Threat Program; DCSA Contractor Reporting Requirements",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NISPOM (National Industrial Security Program Operating Manual, 32 CFR Part 117); CISA + NSA Joint Cybersecurity Advisories on nation-state actors; FBI Insider Threat Program; DCSA Contractor Reporting Requirements",
       "related_concepts": [
         "Passive containment",
         "Cleared IR vendor",
@@ -4319,7 +4319,7 @@
         "CREDENTIAL-VALIDITY-CLOCK principle: adversary has VALID CREDENTIALS + APPROVED MFA + ACTIVE SESSION; FIRST action is FULL ACCESS REVOCATION (account disable + token revocation + session force-disconnect) — NOT just password reset (sessions stay valid until force-disconnected). Differentiator: this is an ACTIVE-SESSION scenario where password change alone doesn't revoke existing sessions; the adversary continues operating until sessions are explicitly killed.",
         "Exam-day shortcut: when stem describes PHISHING-INITIAL-ACCESS + CONFIRMED CREDENTIAL COMPROMISE + ACTIVE SESSION, look for FULL ACCESS REVOCATION FIRST; coordination, user-confirm, and password-only-reset framings each fail the credential-validity-clock test."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); MITRE ATT&CK T1078 (Valid Accounts); Microsoft Entra ID Revoke-MgUserSignInSession Documentation; GDPR Article 33 (Notification of a personal data breach); CISA Phishing Guidance",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); MITRE ATT&CK T1078 (Valid Accounts); Microsoft Entra ID Revoke-MgUserSignInSession Documentation; GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); CISA Phishing Guidance",
       "related_concepts": [
         "MFA push-fatigue",
         "Session force-disconnect",
@@ -4356,7 +4356,7 @@
         "Watering-hole attack = DNS block + endpoint isolation + threat hunt + forensic preservation + responsible disclosure to site owner + FBI coordination + customer impact assessment + post-incident policy review. Eight tracks.",
         "Exam-day shortcut: when stem describes WATERING-HOLE ATTACK targeting industry-website with known nation-state attribution, look for DNS-block + endpoint-isolation + threat-hunt + responsible-disclosure framework; wipe-without-forensics, trust-no-C2, and manual-user-inspection framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; MITRE ATT&CK T1189 (Drive-by Compromise); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA + NSA Joint Cybersecurity Advisories on nation-state actors; Browser Isolation / Remote Browser Isolation (RBI) Vendor Documentation",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; MITRE ATT&CK T1189 (Drive-by Compromise); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA + NSA Joint Cybersecurity Advisories on nation-state actors; Browser Isolation / Remote Browser Isolation (RBI) Vendor Documentation",
       "related_concepts": [
         "Watering-hole attack pattern",
         "Threat hunt with IOCs",
@@ -4464,7 +4464,7 @@
         "SAST audit scope = repo coverage + CI/CD integration + rule-set tuning + finding triage + remediation SLA + FP management + CVE mapping + auditor sampling. Eight dimensions.",
         "Exam-day shortcut: when stem asks about SAST AUDIT SCOPE, look for eight-dimension framework; coverage-only, vendor-SOC-2-only, and no-findings-effective framings each fail."
       ],
-      "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) SA-11 (Developer Security and Privacy Testing); Gartner Application Security Testing Magic Quadrant",
+      "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 SA-11 (Developer Security and Privacy Testing); Gartner Application Security Testing Magic Quadrant",
       "related_concepts": [
         "SonarQube / Checkmarx / CodeQL",
         "False-positive management",
@@ -4487,7 +4487,7 @@
         "D": "MITRE ATT&CK-aligned + threat-informed prioritization + use-case lifecycle + multi-source correlation + FP tuning + business-context enrichment + analyst feedback + coverage gap analysis."
       },
       "correct": "D",
-      "key_concept": "SIEM use-case framework = MITRE ATT&CK-aligned + threat-informed prioritization + use-case lifecycle (design/test/deploy/tune/retire) + multi-source correlation + FP tuning + business-context enrichment + analyst feedback + coverage gap analysis.",
+      "key_concept": "SIEM use-case design must be THREAT-INFORMED (MITRE ATT&CK) and LIFECYCLE-MANAGED, not technology-driven. Use-cases are products with owners, metrics, and retirement criteria.",
       "pre_read": "For SIEM use-case questions, anchor on eight-element framework with lifecycle management. Vendor-defaults, max-rules, and signature-only framings each fail.",
       "correct_explanation": "MITRE ATT&CK Framework, MaGMA Use Case Framework (SIEM Use Case Maturity), and SANS Detection Engineering establish SIEM use-case framework: (1) MITRE ATT&CK-ALIGNED USE-CASES — each rule maps to one or more ATT&CK techniques; coverage matrix; (2) THREAT-INFORMED PRIORITIZATION — based on threat landscape relevant to firm's industry + technology stack; not generic checklist; (3) USE-CASE-DEVELOPMENT LIFECYCLE — design (data sources, detection logic) → test (in dev environment) → deploy (in monitor mode initially) → tune (FP/FN management) → retire (when superseded); (4) MULTI-SOURCE CORRELATION — combine signals from EDR, IdP, network, cloud; reduce single-source FP; (5) FALSE-POSITIVE TUNING — FP rate tracked per rule; tuning cadence; suppression for benign-but-noisy patterns; (6) BUSINESS-CONTEXT ENRICHMENT — asset criticality, user-role, time-of-day context augments alerts; (7) ANALYST FEEDBACK LOOP — SOC analyst dispositions feed back to rule tuning; closes the loop; (8) COVERAGE GAP ANALYSIS — periodic review of ATT&CK matrix coverage; identify undetected tactics/techniques.",
       "wrong_explanations": {
@@ -4788,7 +4788,7 @@
         "UEBA = baseline behavior + ML anomaly detection + risk scoring + alert prioritization + SIEM integration + privacy notice + investigation workflows + model tuning. Eight elements. Complement to signature-based detection.",
         "Exam-day shortcut: when stem mentions BEHAVIORAL ANALYTICS combined with EU operations / works councils / multi-jurisdictional employees, watch for privacy-notice requirement (GDPR Article 88 jurisdictional constraint); when stem talks about UEBA REPLACING SIEM, expect EDR-vs-SIEM-style scope confusion."
       ],
-      "framework_ref": "Gartner UEBA Market Guide; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) SI-4 (System Monitoring); ISACA SOC Audit/Assurance Program; GDPR Article 88 (Processing in the context of employment); ISO/IEC 27001:2022 Annex A.5.34 (Privacy and protection of PII)",
+      "framework_ref": "Gartner UEBA Market Guide; NIST SP 800-53 Rev 5 SI-4 (System Monitoring); ISACA SOC Audit/Assurance Program; GDPR Article 88 (Processing in the context of employment); ISO/IEC 27001:2022 Annex A.5.34 (Privacy and protection of PII)",
       "related_concepts": [
         "Baseline behavior modeling",
         "Risk scoring aggregation",
@@ -4860,7 +4860,7 @@
         "SOAR = playbook library + tested automation + human-in-loop gates + multi-tool integration + metrics + governance + rollback + audit trail. Eight elements. Tiered automation; not full-auto.",
         "Exam-day shortcut: when stem asks about SOAR FRAMEWORK, look for eight-element framework with human-in-loop gates for high-impact; full-auto, manual-only, and SIEM-equivalent framings each fail."
       ],
-      "framework_ref": "Gartner SOAR Market Guide; ISACA SOC Audit/Assurance Program; MITRE D3FEND Framework; NIST SP 800-61 Rev 2 (Incident Handling Guide)",
+      "framework_ref": "Gartner SOAR Market Guide; ISACA SOC Audit/Assurance Program; MITRE D3FEND Framework; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)",
       "related_concepts": [
         "Human-in-loop gates",
         "Playbook governance",
@@ -5045,7 +5045,7 @@
         "SAST FP flood = monitor-mode flip (30s restore) + rule tuning + audit committee notification + post-incident deployment policy + bypass-governance retrospective. Five tracks. Monitor-mode beats override or revert.",
         "Exam-day shortcut: when stem shows SECURITY-CONTROL CAUSING PIPELINE BLOCKAGE, look for MONITOR-MODE-FLIP (preserves audit trail + restores flow) — unifying principle vs disable/revert/bypass alternatives. Transferable to WAF FP flood (d5_097), IDS rule misconfig, etc."
       ],
-      "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) SA-11 (Developer Security Testing); Gartner Application Security Testing Magic Quadrant",
+      "framework_ref": "OWASP Software Assurance Maturity Model (SAMM); OWASP SAMM; ISACA Application Security Audit/Assurance Program; NIST SP 800-53 Rev 5 SA-11 (Developer Security Testing); Gartner Application Security Testing Magic Quadrant",
       "related_concepts": [
         "SAST rule monitor-mode",
         "Staged rollout policy",
@@ -5069,7 +5069,7 @@
         "D": "Lay off the in-house SOC team immediately when the MSSP transition begins; retaining redundant staff during transition wastes payroll budget unnecessarily."
       },
       "correct": "A",
-      "key_concept": "MSSP transition = phased transition + rule-portfolio migration with mapping audit + IR runbook handoff with retention + SLA negotiation + retained in-house roles + data residency + parallel run + audit committee oversight. Eight tracks.",
+      "key_concept": "MSSP transitions are STAGED, not big-bang: rule-portfolio migration with audit + IR runbook handoff + parallel-operation overlap to validate before cutover.",
       "pre_read": "For MSSP transition questions, anchor on phased + knowledge-preservation + parallel-run framework. Cancel, accelerate, and immediate-layoff framings each fail.",
       "correct_explanation": "ISACA SOC Audit/Assurance Program, NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response), Gartner MSSP Magic Quadrant, and ISACA Outsourcing IT Audit/Assurance Program establish MSSP transition framework. Eight tracks: (1) PHASED TRANSITION WITH KNOWLEDGE-PRESERVATION — 3-6 month phased; week-by-week transition plan; documented knowledge transfer; (2) RULE-PORTFOLIO MIGRATION WITH MAPPING AUDIT — 320 firm-specific rules → MSSP's MITRE ATT&CK ruleset; gap analysis; firm-specific rules retained where MSSP standard doesn't cover; (3) IR RUNBOOK HANDOFF WITH RETENTION PERIOD — documented runbooks + escalation contacts + business context; retention by both parties for 12 months; (4) SLA NEGOTIATION — Mean Time To Detect (MTTD), Mean Time To Respond (MTTR), escalation criteria, communication protocols; financial penalties for SLA breach; (5) RETAINED IN-HOUSE ROLES — oversight (CISO-direct), incident command, business context provider, MSSP-vendor manager; minimum 2-3 retained roles typical; (6) CUSTOMER-DATA RESIDENCY AND ACCESS CONTROLS — log data sent to MSSP; data residency requirements (financial-services-adjacent suggests jurisdictional concerns); MSSP access to firm systems controlled; (7) PARALLEL RUN BEFORE FULL CUTOVER — both in-house + MSSP operate concurrently for 30-60 days; comparison testing; cutover criteria; (8) ONGOING AUDIT COMMITTEE OVERSIGHT — MSSP performance reporting, SLA metrics, incident handling, customer-data protection.",
       "wrong_explanations": {
@@ -5357,7 +5357,7 @@
         "D": "East-west + north-south visibility + flow analysis + DPI/protocol decoding + ML anomaly detection + IOC matching + EDR/SIEM/SOAR integration + encrypted-traffic metadata + retention + ATT&CK mapping."
       },
       "correct": "D",
-      "key_concept": "NDR framework = east-west + north-south visibility + flow analysis + DPI/protocol decoding + ML anomaly detection + IOC matching + EDR/SIEM/SOAR integration + encrypted-traffic metadata analysis + retention + ATT&CK mapping. Ten elements.",
+      "key_concept": "NDR (network detection and response) requires VISIBILITY across both east-west and north-south traffic — perimeter-only monitoring misses lateral movement.",
       "pre_read": "For NDR questions, anchor on ten-element framework spanning east-west + encrypted-traffic-aware. North-south-only, EDR-replaces, and TLS-makes-useless framings each fail.",
       "correct_explanation": "Gartner NDR Market Guide, MITRE ATT&CK Framework, and NDR vendor (Darktrace, Vectra, ExtraHop, Corelight, Awake) documentation establish NDR framework. (1) EAST-WEST + NORTH-SOUTH TRAFFIC VISIBILITY — internal segments to external + internal-to-internal; sensors at strategic network points; (2) FLOW ANALYSIS — NetFlow / IPFIX / sFlow; volume + direction + protocol patterns; (3) DPI / PROTOCOL DECODING — DNS, HTTP, SMB, RDP, Kerberos protocol-level visibility; suspicious-pattern detection; (4) ML-BASED ANOMALY DETECTION — baseline normal traffic, detect deviations (unusual destinations, volume spikes, off-hours activity); (5) IOC MATCHING — known-bad IPs, domains, hashes via threat intel feeds; (6) INTEGRATION WITH EDR/SIEM/SOAR — bidirectional alerts and enrichment; (7) ENCRYPTED-TRAFFIC ANALYSIS — JA3/JA3S fingerprints, certificate analysis, traffic-pattern fingerprinting; works on encrypted; (8) SELECTIVE TLS DECRYPTION — at strategic points (egress, sensitive internal segments) with privacy controls; (9) RETENTION FOR INVESTIGATION — full PCAP at strategic points, metadata at scale; investigation timeline reconstruction; (10) ATT&CK TECHNIQUE MAPPING — detections aligned to TA0008 (Lateral Movement), TA0011 (C2), TA0010 (Exfiltration).",
       "wrong_explanations": {
@@ -5479,7 +5479,7 @@
         "Pentest scope dispute = accept + assign IR treatment + remediate + investigate scope-pivot + retest + post-incident review + contractual clarification. Seven tracks. Responsible-disclosure obligation supersedes contract scope.",
         "Exam-day shortcut: when stem describes PENTEST OUT-OF-SCOPE FINDING WITH MATERIAL VULN, look for accept-and-remediate-with-investigation framework; reject-valid-finding, threaten-vendor, and pay-to-include framings each fail."
       ],
-      "framework_ref": "PTES (Penetration Testing Execution Standard); CISA Coordinated Vulnerability Disclosure (CVD); ISO/IEC 29147 (Vulnerability Disclosure — informed-by for ethics); PCI DSS v4.0 Requirement 11.4; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
+      "framework_ref": "PTES (Penetration Testing Execution Standard); CISA Coordinated Vulnerability Disclosure (CVD); ISO/IEC 29147 (Vulnerability Disclosure); PCI DSS v4.0 Requirement 11.4; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure)",
       "related_concepts": [
         "Responsible disclosure obligation",
         "Scope-pivot investigation",
@@ -5503,7 +5503,7 @@
         "D": "Continuous compliance scanning + control-evidence mapping + automated collection + verification cadence + exception workflow + auditor dashboard + framework cross-mapping + post-audit monitoring."
       },
       "correct": "D",
-      "key_concept": "Compliance scanning = continuous compliance tooling + control-evidence mapping + automated collection + verification cadence + exception workflow + auditor dashboard + framework cross-mapping + post-audit continuous monitoring. Eight tracks.",
+      "key_concept": "Compliance scanning is CONTINUOUS evidence collection — control-evidence mapping + automated artifact collection — replacing manual point-in-time audits with always-current attestation.",
       "pre_read": "For compliance scanning questions, anchor on continuous-tools + control-mapping + evidence automation framework. Manual-at-scale, consultant-retrospective, and defer-without-need framings each fail.",
       "correct_explanation": "AICPA SOC 2 Trust Services Criteria (Security/Availability/Processing Integrity/Confidentiality/Privacy), ISO/IEC 27001:2022 Annex A (93 controls in 4 themes), Drata / Vanta / Secureframe / Tugboat Logic vendor methodologies, and ISACA Compliance Audit/Assurance Program establish compliance scanning framework. Eight tracks: (1) CONTINUOUS COMPLIANCE SCANNING — Drata, Vanta, Secureframe, Tugboat Logic; integration with AWS/Azure + GitHub + IdP + endpoint tools; (2) CONTROL-TO-EVIDENCE MAPPING — SOC 2 TSC + ISO/IEC 27001 Annex A controls mapped to evidence artifacts; cross-walk with HIPAA/GDPR/PCI where applicable; (3) AUTOMATED EVIDENCE COLLECTION — daily snapshots, control-state extractions, configuration dumps; auditor-format ready; (4) CONTROL-OPERATION VERIFICATION CADENCE — daily/weekly per control criticality; not annual snapshot; (5) EXCEPTION MANAGEMENT WORKFLOW — when control deviates, documented exception + remediation + retention; auditor-visible; (6) AUDITOR-READINESS DASHBOARD — control coverage, evidence completeness, exceptions, remediation status; live state; (7) FRAMEWORK CROSS-MAPPING — one evidence artifact covers multiple frameworks (SOC 2 + ISO + HIPAA + GDPR); reduces redundancy; (8) POST-AUDIT CONTINUOUS MONITORING — compliance is not point-in-time; tooling continues post-audit for Type II ongoing operation requirement.",
       "wrong_explanations": {
@@ -5664,7 +5664,7 @@
         "Insider-threat program = UEBA + DLP + access analytics + manager training + employee reporting + privacy-aware monitoring + tiered investigation + executive sponsorship + cross-functional governance + periodic review. Ten tracks.",
         "Exam-day shortcut: when stem describes INSIDER-THREAT PROGRAM DESIGN in MULTI-JURISDICTIONAL CONTEXT, look for multi-layered framework with jurisdiction-aware boundaries; maximum-surveillance, privileged-only, and outsource framings each fail."
       ],
-      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center Research; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) PM-12 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment); Executive Order 13587 (federal insider-threat program — informed-by model for private sector)",
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center Research; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment); Executive Order 13587 (federal insider-threat program — informed-by model for private sector)",
       "related_concepts": [
         "UEBA baseline detection",
         "Works council co-determination",
@@ -5775,7 +5775,7 @@
         "Cloud workload exploitation = isolate + threat hunt + audit IMDSv1 usage + force IMDSv2 + revoke credentials + forensic preservation + customer impact + regulator notification + post-incident IMDSv2 migration. Nine tracks.",
         "Exam-day shortcut: when stem describes CONFIRMED CLOUD WORKLOAD EXPLOITATION WITH LATERAL MOVEMENT, look for isolate + threat-hunt + selective framework; total-rebuild, allow-for-intel, and broad-disable framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Incident Handling); CISA Kubernetes Hardening Guidance (joint with NSA); AWS IMDSv2 Documentation; GDPR Article 33 (Notification of a personal data breach); MITRE ATT&CK T1552.005 (Unsecured Credentials: Cloud Instance Metadata API); MITRE ATT&CK T1610 (Deploy Container); MITRE ATT&CK T1611 (Escape to Host)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Kubernetes Hardening Guidance (joint with NSA); AWS IMDSv2 Documentation; GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); MITRE ATT&CK T1552.005 (Unsecured Credentials: Cloud Instance Metadata API); MITRE ATT&CK T1610 (Deploy Container); MITRE ATT&CK T1611 (Escape to Host)",
       "related_concepts": [
         "IMDSv1 → IMDSv2 migration",
         "kubectl cordon + NetworkPolicy",
@@ -5884,7 +5884,7 @@
         "IR plan = roles + severity matrix + escalation criteria + communication framework + technical playbooks + external coordination + evidence preservation + testing schedule + post-incident review template. Nine elements.",
         "Exam-day shortcut: when stem asks about IR PLAN ELEMENTS, look for the nine-element framework with FIRM customization; contact-list, vendor-template, and exhaustive-procedures framings each fail."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2; ISACA Incident Management Audit/Assurance Program; PCI DSS v4.0 Requirement 12.10; ISO/IEC 27035 (Information Security Incident Management)",
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Incident Management and Response Audit/Assurance Program; PCI DSS v4.0 Requirement 12.10; ISO/IEC 27035 (Information Security Incident Management)",
       "related_concepts": [
         "Severity classification matrix",
         "IR commander role",
@@ -5920,7 +5920,7 @@
         "CSIRT = Incident Commander + technical lead + comms lead + legal + HR + exec sponsor + customer-success + IR retainer + escalation chains. Nine roles. Cross-functional + named.",
         "Exam-day shortcut: when stem asks about CSIRT STRUCTURE, look for cross-functional named-role team; single-analyst, executive-only, and MSSP-replaces framings each fail."
       ],
-      "framework_ref": "CERT/CC CSIRT Handbook; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; SANS Incident Handler's Handbook; FIRST.org (Forum of Incident Response and Security Teams)",
+      "framework_ref": "CERT/CC CSIRT Handbook; ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SANS Incident Handler; FIRST.org (Forum of Incident Response and Security Teams)",
       "related_concepts": [
         "Incident Commander role",
         "Legal liaison + privilege",
@@ -5956,7 +5956,7 @@
         "Incident classification = multi-dimensional (business impact + data sensitivity + scope + regulatory + customer) + four levels (S1-S4) + explicit thresholds + required response times.",
         "Exam-day shortcut: when stem asks about INCIDENT SEVERITY MATRIX, look for multi-dimensional with explicit S1-S4 levels; technical-only, continuous, and post-incident framings each fail."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2; ISACA Incident Management Audit/Assurance Program; ENISA Reference Incident Classification Taxonomy; FIRST CSIRT Services Framework; GDPR Article 33 (Notification of a personal data breach)",
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Incident Management and Response Audit/Assurance Program; ENISA Reference Incident Classification Taxonomy; FIRST CSIRT Services Framework; GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority)",
       "related_concepts": [
         "Multi-dimensional severity",
         "S1-S4 level thresholds",
@@ -5992,7 +5992,7 @@
         "Escalation = severity-based + time-based + impact-based + exec-decision triggers + media-coverage trigger + explicit handoff. Six triggers.",
         "Exam-day shortcut: when stem asks about INCIDENT ESCALATION, look for multi-trigger framework; single-chain, judgment-only, and auto-CEO framings each fail."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2; ISACA Incident Management Audit/Assurance Program; PCI DSS v4.0 Requirement 12.10; FIRST CSIRT Services Framework",
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Incident Management and Response Audit/Assurance Program; PCI DSS v4.0 Requirement 12.10; FIRST CSIRT Services Framework",
       "related_concepts": [
         "Time-based escalation",
         "Media-coverage trigger",
@@ -6028,7 +6028,7 @@
         "Tabletop exercise = realistic firm-specific scenarios + scenario evolution (injects) + cross-functional participation + facilitator-driven + post-exercise improvements + annual minimum + documentation. Seven elements.",
         "Exam-day shortcut: when stem asks about TABLETOP EXERCISE DESIGN, look for seven-element framework with scenario variety; same-scenario, external-only, and live-instead-of-tabletop framings each fail."
       ],
-      "framework_ref": "NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities); ISACA Incident Management Audit/Assurance Program; FEMA Homeland Security Exercise and Evaluation Program (HSEEP); PCI DSS v4.0 Requirement 12.10.4",
+      "framework_ref": "NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities); ISACA Incident Management and Response Audit/Assurance Program; FEMA Homeland Security Exercise and Evaluation Program (HSEEP); PCI DSS v4.0 Requirement 12.10.4",
       "related_concepts": [
         "Scenario evolution injects",
         "Cross-functional participation",
@@ -6064,7 +6064,7 @@
         "IR retainer = pre-negotiated vendor + SLA + on-site capability + scope + privilege framework + insurance alignment + annual review + hours tracking + backup retainer. Nine elements.",
         "Exam-day shortcut: when stem asks about IR RETAINER FRAMEWORK, look for pre-negotiated capacity with SLA + privilege + insurance alignment; no-retainer, FTE-vs-retainer, and insurance-selects framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; Mandiant / CrowdStrike / Kroll / Stroz Friedberg Retainer Methodologies",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); Mandiant / CrowdStrike / Kroll / Stroz Friedberg Retainer Methodologies",
       "related_concepts": [
         "Pre-negotiated retainer",
         "Privilege framework",
@@ -6100,7 +6100,7 @@
         "IR comms = audience-specific templates + pre-approved language + cadence per severity + spokesperson + legal review gates + regulatory clock-aligned customer notification + media coordination + post-incident audit. Eight elements.",
         "Exam-day shortcut: when stem asks about IR COMMUNICATION FRAMEWORK, look for multi-audience framework with templates + legal review; single-press-release, ad-hoc, and maximum-technical framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; GDPR Article 33 (Notification of a personal data breach); GDPR Articles 33-34 (Breach Notification); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure); HIPAA Breach Notification Rule 45 CFR §164.400-414",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); GDPR Articles 33-34 (Breach Notification); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure); HIPAA Breach Notification Rule 45 CFR §164.400-414",
       "related_concepts": [
         "Audience-specific templates",
         "Regulatory clock alignment",
@@ -6123,7 +6123,7 @@
         "D": "Sharing only with law enforcement agencies; private security community sharing creates legal risk and potential exposure for the firm and counsel."
       },
       "correct": "A",
-      "key_concept": "Threat intel sharing = ISAC participation + CISA voluntary sharing + bilateral peer sharing + IOC-first then case-detail phased + TLP marking + attribution caveats + post-incident publication + legal review. Eight elements.",
+      "key_concept": "Threat intelligence sharing flows multiple directions: ISAC participation + government voluntary + bilateral peer + open-source. No single source covers all relevant indicators.",
       "pre_read": "For threat intel sharing questions, anchor on multi-channel sharing with phased disclosure + TLP. No-sharing, maximum-immediate, and law-enforcement-only framings each fail.",
       "correct_explanation": "ISACA Information Sharing Audit/Assurance Program, FIRST.org (Forum of Incident Response and Security Teams), CISA Information Sharing Programs (AIS Automated Indicator Sharing), and TLP (Traffic Light Protocol) v2.0 establish threat intel sharing framework: (1) ISAC PARTICIPATION — industry-specific information-sharing organizations: FS-ISAC (financial services), H-ISAC (healthcare), IT-ISAC (technology), Auto-ISAC (automotive), E-ISAC (electricity); membership-based, trust-framework sharing; (2) CISA VOLUNTARY SHARING — AIS (Automated Indicator Sharing) for IOCs; CISA Cyber Incident Reporting for Critical Infrastructure Act (CIRCIA) reporting; (3) BILATERAL PEER SHARING — direct sharing with trusted peers (often through CISO networks, regional security groups); (4) IOC-FIRST THEN CASE-DETAIL PHASED — share indicators of compromise (hashes, IPs, domains) immediately for defender benefit; share case details (TTPs, attack narrative) after incident is contained; (5) TLP MARKING — TLP:RED (recipient only), TLP:AMBER (limited disclosure), TLP:GREEN (community), TLP:CLEAR (formerly TLP:WHITE; public); marks indicate sharing boundaries; (6) THREAT-ACTOR ATTRIBUTION CAVEATS — attribution is hard; share TTPs (consistent with X actor) without certainty claims; reduces misattribution liability; (7) POST-INCIDENT ATTACK-PATTERN PUBLICATION — security blog or conference talk after victim consent; benefits broader community; (8) SHARING GATED BY LEGAL REVIEW — counsel reviews sensitive shares; privilege preserved; jurisdictional considerations.",
       "wrong_explanations": {
@@ -6172,7 +6172,7 @@
         "PIR = blameless culture + timeline reconstruction + RCA + contributing-factor analysis + action-item tracking + exec sponsorship + lessons-to-IR-plan + cross-incident pattern analysis. Eight elements.",
         "Exam-day shortcut: when stem asks about POST-INCIDENT REVIEW, look for blameless culture + eight-element framework; blame-individual, optional-PIR, and closed-case-report-only framings each fail."
       ],
-      "framework_ref": "Google SRE Blameless Postmortems methodology; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Post-Incident Activity); ITIL 4 Problem Management",
+      "framework_ref": "Google SRE Blameless Postmortems methodology; ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Problem Management",
       "related_concepts": [
         "Blameless post-mortem culture",
         "Five Whys / fishbone RCA",
@@ -6196,7 +6196,7 @@
         "D": "Single EU-led response since GDPR is the stricter regulatory regime; EU regulatory complexity dominates the decision framework for multi-region incidents."
       },
       "correct": "C",
-      "key_concept": "Multi-region incident = unified Incident Commander + regional IR retainer engagement + parallel containment with synchronized comms + jurisdiction-appropriate regulator notification + cross-region forensic correlation + cyber insurance + customer comms aligned + post-incident plan refresh. Eight tracks.",
+      "key_concept": "Multi-region incidents require UNIFIED COMMAND with regional execution — single Incident Commander coordinating parallel containment + jurisdiction-aware coordination.",
       "pre_read": "For multi-region incident questions, anchor on unified commander + regional execution + synchronized comms framework. Independent-regional, US-led-with-EU-support, and EU-led-for-stricter framings each fail.",
       "correct_explanation": "ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2 (multi-jurisdictional considerations), GDPR Article 33 (72-hour notification) routed to the lead supervisory authority per Article 56 one-stop-shop, HIPAA OCR Breach Notification Rule, FBI Internet Crime Complaint Center coordination, and ENISA Multi-Jurisdiction Incident Response Guidance establish multi-region IR framework. (1) UNIFIED INCIDENT COMMANDER — single decision authority across regions; not US-led or EU-led; cross-region command; typical = CISO; (2) REGIONAL IR-RETAINER ENGAGEMENT — both retainers engaged; regional retainers execute regional response under Commander direction; (3) PARALLEL CONTAINMENT WITH SYNCHRONIZED COMMUNICATION — both regions contain simultaneously; communication coordinated to avoid asymmetric messaging; (4) JURISDICTION-APPROPRIATE REGULATOR NOTIFICATION — US (HHS OCR for HIPAA, SEC, state AGs), EU (member state DPAs per GDPR Article 33; lead supervisory authority for cross-border); each region's regulators per their rules; (5) CROSS-REGION FORENSIC CORRELATION — same threat actor likely; TTPs correlated; attribution evidence shared between regional retainers; (6) CYBER INSURANCE NOTIFICATION — single notification with multi-region scope; policies often have regional coverage exclusions; (7) CUSTOMER COMMS ALIGNED ACROSS REGIONS — US customers and EU customers receive same factual content, language adapted to local regulations + culture; (8) POST-INCIDENT MULTI-REGION IR PLAN REFRESH — lessons captured for next multi-region scenario; cross-region coordination procedures refined.",
       "wrong_explanations": {
@@ -6209,7 +6209,7 @@
         "Multi-region incident = unified Incident Commander + regional IR engagement + parallel containment + synchronized comms + jurisdiction-appropriate regulator notification + cross-region forensic correlation + cyber insurance + customer comms + post-incident refresh. Eight tracks.",
         "Exam-day shortcut: when stem describes MULTI-REGION INCIDENT WITH JURISDICTIONAL COMPLEXITY, look for unified Commander + regional execution framework; independent, US-led, and EU-led framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; GDPR Article 33 (Notification of a personal data breach); GDPR Article 56 (One-Stop-Shop / Lead Supervisory Authority for cross-border processing); HIPAA Breach Notification Rule; ENISA Multi-Jurisdiction Incident Response Guidance",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); GDPR Article 56 (One-Stop-Shop / Lead Supervisory Authority); HIPAA Breach Notification Rule; ENISA Multi-Jurisdiction Incident Response Guidance",
       "related_concepts": [
         "Unified Incident Commander",
         "Cross-region forensic correlation",
@@ -6283,7 +6283,7 @@
         "NEW principle: NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION — when B2B SaaS confirms material customer-data breach with customer regulatory clocks at stake, customer notification is the FIRST action. Customer-clock obligations supersede SaaS-firm coordination convenience. Distinct from contain-first / restore-first / financial-loss-clock principles.",
         "Exam-day shortcut: when stem describes B2B SAAS BREACH WITH MATERIAL CUSTOMER IMPACT + CUSTOMER REGULATORY CLOCKS, look for CUSTOMER-NOTIFICATION-FIRST; coordination-call, wait-for-100%, and regulators-first framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure, 4-day clock); HIPAA Breach Notification Rule 45 CFR §164.400-414 (60-day clock); GDPR Article 33 (72-hour clock); ABA Model Rule 1.4 (Communication with clients)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure, 4-day clock); HIPAA Breach Notification Rule 45 CFR §164.400-414 (60-day clock); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); ABA Model Rule 1.4 (Communication with clients)",
       "related_concepts": [
         "B2B SaaS material breach",
         "Customer downstream regulatory clocks",
@@ -6320,7 +6320,7 @@
         "Multi-regulator incident = unified Commander + cross-cloud forensic + jurisdiction-mapping + parallel regulator engagement + counsel-coordinated + clinical-trial integrity + patient/investigator/customer comms + insurance + post-incident plan refresh. Nine tracks.",
         "Exam-day shortcut: when stem describes CROSS-CLOUD INCIDENT WITH MULTIPLE REGULATORS, look for parallel + counsel-coordinated framework; strictest-covers-all, sequential, and defer-for-full-scope framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; HIPAA Breach Notification Rule 45 CFR §164.400-414; FDA 21 CFR Part 11 (Electronic Records); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure); GDPR Article 33",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; HIPAA Breach Notification Rule 45 CFR §164.400-414; FDA 21 CFR Part 11 (Electronic Records); SEC Reg S-K Item 1.05 (Cybersecurity Incident Disclosure); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority)",
       "related_concepts": [
         "Multi-regulator parallel engagement",
         "Clinical-trial integrity assessment",
@@ -6357,7 +6357,7 @@
         "Crisis comms = customer status page + employee comms + investor relations holding statement + proactive media + customer support talking points + regulator prep + spokesperson + post-incident audit. Eight elements.",
         "Exam-day shortcut: when stem describes CRISIS COMMUNICATIONS DURING UNFOLDING INCIDENT, look for multi-audience framework with proactive controlled communication; stay-silent, max-detail, and legal-minimum framings each fail."
       ],
-      "framework_ref": "Edelman Trust Barometer Crisis Communications Best Practices; ISACA Crisis Communications Guidance; NIST SP 800-61 Rev 2; SEC Reg S-K Item 1.05; Weber Shandwick Crisis Management",
+      "framework_ref": "Edelman Trust Barometer Crisis Communications Best Practices; ISACA Crisis Communications Guidance; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SEC Reg S-K Item 1.05; Weber Shandwick Crisis Management",
       "related_concepts": [
         "Status page updates",
         "Customer support talking points",
@@ -6394,7 +6394,7 @@
         "IR plan failure remediation = comprehensive rewrite + role definition + scenario-specific playbooks + escalation framework + regulator-notification procedures + cyber insurance broker + quarterly tabletop cadence + executive decision-making + training + audit oversight + post-rewrite tabletop. Eleven tracks.",
         "Exam-day shortcut: when stem describes MULTIPLE MAJOR IR PLAN GAPS, look for comprehensive rewrite with firm customization; patch-only, outsource, and wholesale-template framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27035 (Information Security Incident Management); SANS PICERL Framework",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27035 (Information Security Incident Management); SANS PICERL Framework",
       "related_concepts": [
         "IR plan structural rewrite",
         "Scenario-specific playbooks",
@@ -6468,7 +6468,7 @@
         "NEW principle: DEFER-MAJOR-DECISIONS-DURING-CRISIS — when major architectural/strategic decision is proposed during active incident, FIRST action is deferral until incident closes. Crisis-context decision quality is degraded; post-incident clarity required.",
         "Exam-day shortcut: when stem describes MAJOR DECISION PROPOSED DURING ACTIVE INCIDENT, look for DEFER-UNTIL-AFTER-INCIDENT; approve-now, coordinate-decision-during, and reject-entirely framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; Daniel Kahneman 'Thinking, Fast and Slow' (cognitive biases in crisis decision-making); ITIL 4 Major Incident Management; Google SRE Crisis Management Practices",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; Daniel Kahneman 'Thinking, Fast and Slow' (cognitive biases in crisis decision-making); ITIL 4 Major Incident Management; Google SRE Crisis Management Practices",
       "related_concepts": [
         "Crisis-context decision quality",
         "Sunk-cost reasoning",
@@ -6505,7 +6505,7 @@
         "Third-party breach affecting firm = vendor engagement + firm's parallel investigation + regulatory assessment + employee comms + cyber insurance + vendor contract review + credit monitoring + third-party-management policy review + vendor relationship decision. Nine tracks.",
         "Exam-day shortcut: when stem describes THIRD-PARTY BREACH AFFECTING FIRM, look for parallel firm-side response framework; wait-for-vendor, sever-immediately, and notify-employees-full-details framings each fail."
       ],
-      "framework_ref": "ISACA Third-Party Risk Audit/Assurance Program; NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); GDPR Article 28 (Processor obligations); GDPR Article 33 (Notification of a personal data breach); state breach laws; ISACA Vendor Management Audit/Assurance Program",
+      "framework_ref": "ISACA Third-Party Risk Audit/Assurance Program; NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); GDPR Article 28 (Processor obligations); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); state breach laws; ISACA Vendor Management Audit/Assurance Program",
       "related_concepts": [
         "Vendor processor obligations",
         "State breach law variation",
@@ -6542,7 +6542,7 @@
         "IR readiness remediation = Critical/High/Medium SLA framework + cross-finding analysis + dedicated IR program manager + quarterly audit committee reporting + post-remediation reassessment + insurance broker engagement. Six tracks.",
         "Exam-day shortcut: when stem describes IR READINESS ASSESSMENT WITH MULTI-SEVERITY FINDINGS, look for multi-tier SLA framework with firm customization; Critical-only, outsource-turnkey, and wholesale-template framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; ISACA Audit Recommendation Framework; PCI DSS v4.0 Requirement 12.10",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Audit Recommendation Framework; PCI DSS v4.0 Requirement 12.10",
       "related_concepts": [
         "Severity-tiered SLA framework",
         "Cross-finding chained analysis",
@@ -6578,7 +6578,7 @@
         "Testing ladder = tabletop (discussion) + functional drill (execution) + full-scale (coordination). Each tests different layer; cadence by risk tier.",
         "Exam-day shortcut: when stem says 'MAJOR INCIDENT TESTING,' look for the tabletop-functional-fullscale ladder; tabletop-only, surprise-injection, and external-only framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; NIST SP 800-84 (Test, Training, Exercise Programs); FEMA HSEEP; PCI DSS v4.0 Requirement 12.10.4",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-84 (Test, Training, Exercise Programs); FEMA HSEEP; PCI DSS v4.0 Requirement 12.10.4",
       "related_concepts": [
         "Functional drill",
         "Full-scale exercise",
@@ -6650,7 +6650,7 @@
         "Crisis decisions = OODA + pre-delegated authority + decision logs + briefing cadence + post-incident review. Five elements. Decider, not consensus.",
         "Exam-day shortcut: when stem mentions CONSENSUS-REQUIRED, ALL-TO-CEO, or DEFER-ALL-DECISIONS framings in a time-pressured incident, those are the traps — broad-input-feels-safer but delays time-critical decisions; canonical answer is pre-delegated authority with OODA."
       ],
-      "framework_ref": "Boyd's OODA Loop (Observe-Orient-Decide-Act); ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2; ITIL 4 Major Incident Management",
+      "framework_ref": "Boyd's OODA Loop (Observe-Orient-Decide-Act); ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Major Incident Management",
       "related_concepts": [
         "Pre-delegated authority",
         "OODA loop",
@@ -6794,7 +6794,7 @@
         "Cloud IR = shared responsibility + CSP cooperation + API-evidence + ephemeral preservation + multi-tenant constraints + region-aware coordination + tested cloud-specific playbooks. Seven elements.",
         "Exam-day shortcut: when stem describes CLOUD IR, look for shared-responsibility + cloud-specific tools framework; on-premise-unchanged, CSP-handles-all, and standard-imaging framings each fail."
       ],
-      "framework_ref": "ISACA Cloud Security Audit/Assurance Program; NIST SP 800-61 Rev 2; CSA Cloud Incident Response Working Group; AWS Cloud Security IR Playbook; Azure Sentinel IR Documentation",
+      "framework_ref": "ISACA Cloud Security Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CSA Cloud Incident Response Working Group; AWS Cloud Security IR Playbook; Azure Sentinel IR Documentation",
       "related_concepts": [
         "Shared responsibility model",
         "Ephemeral resource preservation",
@@ -6853,7 +6853,7 @@
         "D": "Outsource entire IR program to MSSP post-acquisition; eliminates the integration work and bridges any process gaps."
       },
       "correct": "A",
-      "key_concept": "M&A IR consolidation = IR playbook merge + severity-matrix harmonization + retainer reconciliation + jurisdictional-overlap audit + cross-firm CSIRT integration + phased migration + post-merger tabletop validation.",
+      "key_concept": "M&A IR consolidation requires harmonizing both organizations' playbooks, not running parallel processes. Synthesis happens at the policy + tooling + retainer + jurisdiction layers.",
       "pre_read": "For M&A IR questions, anchor on phased + harmonization framework. Indefinite-separate, immediate-impose-acquirer, and MSSP-outsource framings each fail.",
       "correct_explanation": "ISACA M&A IT Audit/Assurance Program, ISACA Incident Management Audit/Assurance Program, and NIST SP 800-61 Rev 2 establish M&A IR consolidation: IR PLAYBOOK MERGE (best-of-both with documented decisions); SEVERITY-MATRIX HARMONIZATION (S1-S4 thresholds unified); RETAINER RECONCILIATION (consolidate IR retainers; preserve regional retainer where geographic-specific); JURISDICTIONAL-OVERLAP AUDIT (combined regulator landscape — sometimes acquired entity has additional regulators); CROSS-FIRM CSIRT INTEGRATION (named roles, escalation chains, communication channels); PHASED MIGRATION (3-6 month integration timeline); POST-MERGER TABLETOP VALIDATION (test consolidated plan within 30 days of migration).",
       "wrong_explanations": {
@@ -6866,7 +6866,7 @@
         "M&A IR principle: PHASED MIGRATION WITH CONTEXT PRESERVATION beats immediate-impose or indefinite-separate. Acquired-entity context (customers, regulators, retainers) is the value preserved; harmonization comes through controlled phasing, not flip-day cutover.",
         "Exam-day shortcut: when stem describes M&A IR CONSOLIDATION, look for playbook-merge + jurisdictional-overlap audit framework; indefinite-separate, immediate-impose, and MSSP-outsource framings each fail."
       ],
-      "framework_ref": "ISACA M&A IT Audit/Assurance Program; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2",
+      "framework_ref": "ISACA M&A IT Audit/Assurance Program; ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)",
       "related_concepts": [
         "Severity-matrix harmonization",
         "Jurisdictional-overlap audit",
@@ -6914,7 +6914,7 @@
     {
       "id": "d5_191",
       "domain": 5,
-      "subtopic": "Credit-Bureau-Scale Breach Forensic Investigation (Analysis)",
+      "subtopic": "Credit-Bureau-Scale Breach Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -6939,7 +6939,7 @@
         "Credit-bureau-scale breach = scope-first investigation + parallel containment + IR retainer + forensic preservation + multi-regulator notification + customer notification + credit monitoring + post-incident review. Eight tracks.",
         "Exam-day shortcut: when stem describes MASSIVE CONSUMER-DATA BREACH with regulatory exposure, prioritize SCOPE-FIRST INVESTIGATION before public-disclosure detail; premature-disclosure, defer-entirely, and pay-ransom framings each fail."
       ],
-      "framework_ref": "ISACA Incident Management Audit/Assurance Program; FTC Safeguards Rule; CFPB Consumer Financial Protection Bureau Guidance; State Breach Notification Laws (50 states); SEC Form 8-K Item 1.05 (Material Cybersecurity Incidents); SEC Reg S-K Item 106 (Cybersecurity Disclosure in Periodic Reports)",
+      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; FTC Safeguards Rule; CFPB Consumer Financial Protection Bureau Guidance; State Breach Notification Laws (50 states); SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); SEC Reg S-K Item 106 (Cybersecurity Risk Management, Strategy, Governance, and Incident Disclosure)",
       "related_concepts": [
         "State breach law coordination",
         "CFPB consumer notification",
@@ -6951,7 +6951,7 @@
     {
       "id": "d5_192",
       "domain": 5,
-      "subtopic": "Software-Supply-Chain Compromise Forensic Investigation (Analysis)",
+      "subtopic": "Software-Supply-Chain Compromise Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -6988,7 +6988,7 @@
     {
       "id": "d5_193",
       "domain": 5,
-      "subtopic": "Forensic Evidence Integrity Dispute (Analysis, single-focus)",
+      "subtopic": "Forensic Evidence Integrity Dispute",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -7025,7 +7025,7 @@
     {
       "id": "d5_194",
       "domain": 5,
-      "subtopic": "Cross-Jurisdiction Forensics with Data Residency Constraints (Analysis)",
+      "subtopic": "Cross-Jurisdiction Forensics with Data Residency Constraints",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7050,7 +7050,7 @@
         "Cross-jurisdiction forensics = MLAT coordination + EU regional in-region analysis + GDPR Article 28 + EU-US DPF adequacy + jurisdictional analysis + data-residency-compliant evidence handling. Six tracks.",
         "Exam-day shortcut: when stem mentions JURISDICTIONAL RESTRICTIONS on forensic evidence movement, the answer must reconcile investigation continuity WITH data-residency law — not override either; extract-immediately, defer-for-certainty, and pure-regionalization framings each fail this reconciliation test."
       ],
-      "framework_ref": "ISACA International Forensics Audit/Assurance Program; GDPR Chapter V Articles 44-50 (Transfers); GDPR Article 28 (Processor obligations); GDPR Article 49 (Derogations for specific situations, including legal claims); GDPR Article 33 (Notification); EU-US Data Privacy Framework (July 2023); Mutual Legal Assistance Treaties; CSA Cross-Border Cloud Forensics Guidance",
+      "framework_ref": "ISACA International Forensics Audit/Assurance Program; GDPR Chapter V Articles 44-50 (Transfers); GDPR Article 28 (Processor obligations); GDPR Article 49 (Derogations for specific situations, including legal claims); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); EU-US Data Privacy Framework (2023); Mutual Legal Assistance Treaties; CSA Cross-Border Cloud Forensics Guidance",
       "related_concepts": [
         "MLAT coordination",
         "In-region analysis",
@@ -7062,7 +7062,7 @@
     {
       "id": "d5_195",
       "domain": 5,
-      "subtopic": "Mass-Exploitation Vulnerability Forensic Investigation (Analysis)",
+      "subtopic": "Mass-Exploitation Vulnerability Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7099,7 +7099,7 @@
     {
       "id": "d5_196",
       "domain": 5,
-      "subtopic": "Covert Insider Threat Forensic Investigation (Analysis)",
+      "subtopic": "Covert Insider Threat Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7124,7 +7124,7 @@
         "Covert insider investigation = HR/legal-led + non-disruptive collection + monitoring without behavioral change + executive sponsorship. Four elements; OVERT IR playbook is wrong tool.",
         "Exam-day shortcut: when stem describes COVERT INSIDER INVESTIGATION (no tipping off), anchor on HR/LEGAL-LED + non-disruptive collection; immediate-suspension, standard-playbook, and direct-interview framings each fail the cover-preservation test."
       ],
-      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center; NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems) PM-12 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment); ABA Model Rules of Professional Conduct (attorney-client privilege)",
+      "framework_ref": "ISACA Insider Threat Audit/Assurance Program; CERT Insider Threat Center; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); GDPR Article 88 (Processing in the context of employment); ABA Model Rules of Professional Conduct (attorney-client privilege)",
       "related_concepts": [
         "Covert preservation",
         "HR/legal-led investigation",
@@ -7136,7 +7136,7 @@
     {
       "id": "d5_197",
       "domain": 5,
-      "subtopic": "Mobile Device State-Actor Forensics (Analysis, single-focus)",
+      "subtopic": "Mobile Device State-Actor Forensics",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -7173,7 +7173,7 @@
     {
       "id": "d5_198",
       "domain": 5,
-      "subtopic": "Vendor-Incident Forensic Tool Dispute (Analysis)",
+      "subtopic": "Vendor-Incident Forensic Tool Dispute",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7210,7 +7210,7 @@
     {
       "id": "d5_199",
       "domain": 5,
-      "subtopic": "Forensic Team Capability Building (Analysis)",
+      "subtopic": "Forensic Team Capability Building",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7222,7 +7222,7 @@
         "D": "Outsource all forensic capability to external retainer permanently; external expertise exceeds what an in-house team can deliver economically."
       },
       "correct": "C",
-      "key_concept": "Forensic capability building = gap analysis FIRST + targeted hiring + certification training + tooling investment + external retainer for surge + tabletop validation.",
+      "key_concept": "Forensic capability building is GAP-ANALYSIS-DRIVEN: identify which capabilities are needed, then hire/train/certify toward the gap. Generic capability investment misses the most-needed skills.",
       "pre_read": "For forensic capability questions, anchor on gap-analysis-first + balanced people + tools + process framework. Mass-hire, tools-first, and permanent-outsource framings each fail.",
       "correct_explanation": "ISACA Forensics Audit/Assurance Program, GIAC certifications (GCFE Certified Forensic Examiner, GCFA Certified Forensic Analyst, GREM Reverse-Engineering Malware), SANS DFIR curriculum, EnCase Certified Examiner (EnCE), and ISACA Workforce Development guidance establish forensic capability framework: CAPABILITY GAP ANALYSIS FIRST (current state, target state, prioritized gaps); TARGETED HIRING (specialized roles based on gap analysis); CERTIFICATION TRAINING (GIAC GCFE/GCFA, EnCE, SANS courses); TOOLING INVESTMENT (open-source: Volatility, Autopsy, Plaso; commercial: FTK, EnCase, Cellebrite, Magnet AXIOM); EXTERNAL RETAINER for surge capacity (Mandiant, Stroz Friedberg, Kroll); TABLETOP VALIDATION (verify capability against realistic scenarios); ongoing professional development.",
       "wrong_explanations": {
@@ -7247,7 +7247,7 @@
     {
       "id": "d5_200",
       "domain": 5,
-      "subtopic": "Post-Incident Forensic Lessons Learned (Analysis)",
+      "subtopic": "Post-Incident Forensic Lessons Learned",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7272,7 +7272,7 @@
         "Post-incident lessons-learned = blameless culture + multi-source timeline + root-cause analysis + cross-finding pattern analysis + action-item tracking + executive review + regulatory cooperation. Seven elements.",
         "Exam-day shortcut: when stem describes POST-INCIDENT REVIEW after major incident, anchor on BLAMELESS + STRUCTURED framework; individual-blame, brief-summary, and quick-close-out framings each fail."
       ],
-      "framework_ref": "Google SRE Blameless Postmortems Methodology; ISACA Incident Management Audit/Assurance Program; NIST SP 800-61 Rev 2 (Post-Incident Activity); ITIL 4 Problem Management",
+      "framework_ref": "Google SRE Blameless Postmortems Methodology; ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Problem Management",
       "related_concepts": [
         "Blameless culture",
         "Multi-source timeline reconstruction",
@@ -7439,7 +7439,7 @@
         "D": "Skip expert witness; technical evidence speaks for itself in legal proceedings without testimony interpretation."
       },
       "correct": "A",
-      "key_concept": "Expert witness preparation = methodology documentation + Daubert standard compliance + CV qualification + report writing + deposition preparation + cross-examination simulation + ethical-conflict screening.",
+      "key_concept": "Expert witness preparation is methodology-first under Daubert standards: the analyst's process, qualifications, and testimony quality determine admissibility, not the conclusions alone.",
       "pre_read": "For expert witness questions, anchor on Daubert-compliant methodology + structured preparation. Experience-only, full-outsource, and skip-testimony framings each fail.",
       "correct_explanation": "Federal Rules of Evidence Rule 702 (Testimony by Expert Witnesses), Daubert v. Merrell Dow (1993), ISACA Forensics Audit/Assurance Program, and ACFE Fraud Examiners Manual establish expert witness preparation framework. (1) METHODOLOGY DOCUMENTATION — peer-reviewed methods, error rates, general acceptance in scientific community; (2) DAUBERT STANDARD COMPLIANCE — four-factor admissibility test (testable, peer-reviewed, known error rate, general acceptance); (3) CV QUALIFICATION — education, certifications (GCFE/GCFA/EnCE), prior testimony history, publications; (4) REPORT WRITING — fact + opinion + methodology + limitations; Rule 26(a)(2)(B) expert disclosure; (5) DEPOSITION PREPARATION — anticipate opposing-counsel questions, attorney-witness prep sessions; (6) CROSS-EXAMINATION SIMULATION — mock cross with internal counsel; weak-point identification; (7) ETHICAL-CONFLICT SCREENING — prior engagements, current relationships, opinion-preformation review.",
       "wrong_explanations": {
@@ -7583,7 +7583,7 @@
         "D": "Cloud backend forensics only; the device itself is not a meaningful forensic target for IoT investigations."
       },
       "correct": "A",
-      "key_concept": "IoT forensics = manufacturer cooperation + firmware extraction + JTAG/UART debug interfaces + chip-off forensics + cloud-backend evidence + protocol analysis + vendor-specific tooling.",
+      "key_concept": "IoT forensics is fundamentally non-PC: extraction routes are firmware-level (JTAG/UART/eMMC), not file-system-level. Manufacturer cooperation often necessary for sealed devices.",
       "pre_read": "For IoT forensics questions, anchor on seven-element hybrid device + cloud framework. Standard-disk, impossible, and cloud-only framings each fail.",
       "correct_explanation": "ISACA IoT Forensics Audit/Assurance Program, NIST IR 8259A, SANS FOR518 (Mac and iOS Forensic Analysis includes embedded), and IoT-specific tools (Tigard, Bus Pirate, JTAGulator, NAND-readers) establish IoT forensics framework. (1) MANUFACTURER COOPERATION — vendor support critical (firmware decryption keys, debug protocols); (2) FIRMWARE EXTRACTION — via JTAG or UART pins; often encrypted requires manufacturer assistance; (3) JTAG/UART DEBUG INTERFACES — Tigard, Bus Pirate, JTAGulator for boundary scan; (4) CHIP-OFF FORENSICS — desolder eMMC/NAND/SPI flash chip + read with NAND-reader; destructive technique; (5) CLOUD-BACKEND EVIDENCE — IoT devices often communicate with vendor cloud; backend logs preserve evidence; (6) PROTOCOL ANALYSIS — MQTT, CoAP, proprietary protocols (vendor-specific); (7) VENDOR-SPECIFIC TOOLING — many IoT forensic tasks require vendor-provided tools (e.g., Tesla, Nest, Ring).",
       "wrong_explanations": {
@@ -7644,7 +7644,7 @@
     {
       "id": "d5_211",
       "domain": 5,
-      "subtopic": "Destructive-Malware Forensic Investigation (Analysis, NotPetya echo)",
+      "subtopic": "Destructive-Malware Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -7681,7 +7681,7 @@
     {
       "id": "d5_212",
       "domain": 5,
-      "subtopic": "Internal-Tools Breach Forensic Investigation (Analysis, Twitter 2020 echo)",
+      "subtopic": "Internal-Tools Breach Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -7718,7 +7718,7 @@
     {
       "id": "d5_213",
       "domain": 5,
-      "subtopic": "Cloud Misconfiguration Breach Forensic Investigation (Analysis, Capital One 2019 echo)",
+      "subtopic": "Cloud Misconfiguration Breach Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -7743,7 +7743,7 @@
         "Cloud misconfiguration principle: SHARED-RESPONSIBILITY MODEL — provider owns infrastructure, firm owns configuration. Misconfigurations are firm-side; multi-regulator notification + CSPM remediation are canonical.",
         "Exam-day shortcut: when stem describes CLOUD MISCONFIGURATION BREACH WITH MASS CUSTOMER IMPACT, look for shared-responsibility + SSRF/IMDS analysis + multi-regulator framework; blame-provider, delay-notification, and settle-quickly framings each fail."
       ],
-      "framework_ref": "CSA Cloud Forensics Working Group; AWS Shared Responsibility Model; State Breach Notification Laws (50 states); OCC Cybersecurity Examination Handbook; OCC Bulletin 2013-29 (Third-Party Relationships, superseded June 2023); Interagency Guidance on Third-Party Relationships (2023, OCC/FRB/FDIC)",
+      "framework_ref": "CSA Cloud Forensics Working Group; AWS Shared Responsibility Model; State Breach Notification Laws (50 states); OCC Cybersecurity Examination Handbook; OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
       "related_concepts": [
         "Shared responsibility model",
         "IMDSv1 vs IMDSv2",
@@ -7755,7 +7755,7 @@
     {
       "id": "d5_214",
       "domain": 5,
-      "subtopic": "Critical-Infrastructure Ransomware Forensic Investigation (Analysis, Colonial Pipeline echo)",
+      "subtopic": "Critical-Infrastructure Ransomware Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -7792,7 +7792,7 @@
     {
       "id": "d5_215",
       "domain": 5,
-      "subtopic": "Healthcare-Sector Ransomware Mass-Impact Forensic Investigation (Analysis, Change Healthcare 2024 echo)",
+      "subtopic": "Healthcare-Sector Ransomware Mass-Impact Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic investigation approach?",
@@ -7829,7 +7829,7 @@
     {
       "id": "d5_216",
       "domain": 5,
-      "subtopic": "Anti-Forensics Countermeasures Encountered (Analysis)",
+      "subtopic": "Anti-Forensics Countermeasures Encountered",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7866,7 +7866,7 @@
     {
       "id": "d5_217",
       "domain": 5,
-      "subtopic": "Daubert Challenge to Expert Forensic Testimony (Analysis, single-focus)",
+      "subtopic": "Daubert Challenge to Expert Forensic Testimony",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -7903,7 +7903,7 @@
     {
       "id": "d5_218",
       "domain": 5,
-      "subtopic": "Forensic Budget Defense at Board (Analysis)",
+      "subtopic": "Forensic Budget Defense at Board",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach to forensic budget defense?",
@@ -7940,7 +7940,7 @@
     {
       "id": "d5_219",
       "domain": 5,
-      "subtopic": "Legal Hold Scope Dispute Resolution (Analysis)",
+      "subtopic": "Legal Hold Scope Dispute Resolution",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -7977,7 +7977,7 @@
     {
       "id": "d5_220",
       "domain": 5,
-      "subtopic": "Forensic Team Capability Building Post-Major-Incident (Analysis)",
+      "subtopic": "Forensic Team Capability Building Post-Major-Incident",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST approach?",
@@ -8014,7 +8014,7 @@
     {
       "id": "d5_221",
       "domain": 5,
-      "subtopic": "Certificate Revocation under CA Compromise (Application, §5.8)",
+      "subtopic": "Certificate Revocation under CA Compromise",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which approach BEST addresses certificate revocation when subordinate CA key compromise is suspected?",
@@ -8051,7 +8051,7 @@
     {
       "id": "d5_222",
       "domain": 5,
-      "subtopic": "PKI Hierarchy and Root CA Offline Boundary (Application, §5.8)",
+      "subtopic": "PKI Hierarchy and Root CA Offline Boundary",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which control BEST protects the root CA in a multi-tier PKI hierarchy for a government contractor?",
@@ -8088,7 +8088,7 @@
     {
       "id": "d5_223",
       "domain": 5,
-      "subtopic": "TLS 1.0/1.1 Deprecation and Migration (Application, §5.9)",
+      "subtopic": "TLS 1.0/1.1 Deprecation and Migration",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which sequencing BEST manages TLS 1.0/1.1 deprecation across customer-facing payment systems?",
@@ -8099,7 +8099,7 @@
         "D": "Test TLS 1.3 in production after deprecating older versions; production validation is more authoritative than staging-environment cutover testing for payment systems."
       },
       "correct": "C",
-      "key_concept": "TLS deprecation = inventory + enable TLS 1.3 + client-version telemetry baseline + staged cutover with customer notification + rollback path + PCI DSS attestation.",
+      "key_concept": "TLS deprecation is a STAGED MIGRATION discipline, not a one-shot cutover. Telemetry-baseline first, then staged rollout with documented rollback path.",
       "pre_read": "TLS deprecation is a staged-migration discipline requiring telemetry-based baseline before cutover. Abrupt cutover, indefinite delay, and production-only-test framings each fail.",
       "correct_explanation": "RFC 8446 (TLS 1.3), RFC 8996 (Deprecating TLS 1.0/1.1), PCI DSS v4.0.1 Requirement 4.2.1, and OWASP ASVS v4.0.3 §9 establish TLS migration framework. (1) INVENTORY — enumerate all client endpoints + server endpoints + library versions + cipher-suite configurations. (2) ENABLE TLS 1.3 — modern protocol with mandatory forward secrecy and reduced handshake complexity (1-RTT). (3) CLIENT-VERSION TELEMETRY — measure actual TLS-version distribution across customer base before cutover to size the impact window. (4) STAGED CUTOVER — disable TLS 1.0/1.1 in non-prod first, then customer-facing prod with documented customer notification (typically 90+ days). (5) ROLLBACK PATH — pre-approved configuration change procedure to re-enable older protocols if customer-impact exceeds tolerance. (6) PCI DSS ATTESTATION — payment systems require formal attestation post-cutover. ABRUPT-CUTOVER fails because legitimate-customer breakage creates fraud-detection blind-spots during the impact window. INDEFINITE-DELAY fails PCI DSS Requirement 4.2.1.",
       "wrong_explanations": {
@@ -8125,7 +8125,7 @@
     {
       "id": "d5_224",
       "domain": 5,
-      "subtopic": "Secure API Gateway Controls (Application, §5.9)",
+      "subtopic": "Secure API Gateway Controls",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which control set BEST secures an open-banking API gateway exposing customer financial data?",
@@ -8162,7 +8162,7 @@
     {
       "id": "d5_225",
       "domain": 5,
-      "subtopic": "Hypervisor Escape Risk and VM Isolation (Application, §5.10)",
+      "subtopic": "Hypervisor Escape Risk and VM Isolation",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which architecture BEST mitigates hypervisor-escape risk in a multi-tenant cloud SaaS environment?",
@@ -8199,7 +8199,7 @@
     {
       "id": "d5_226",
       "domain": 5,
-      "subtopic": "Phishing Simulation Program Metrics (Application, §5.12)",
+      "subtopic": "Phishing Simulation Program Metrics",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which metric BEST signals phishing-simulation program maturity at a hospital network?",
@@ -8236,7 +8236,7 @@
     {
       "id": "d5_227",
       "domain": 5,
-      "subtopic": "Security Training Effectiveness Measurement (Application, §5.12)",
+      "subtopic": "Security Training Effectiveness Measurement",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which measurement framework BEST evaluates security training effectiveness at a manufacturer?",
@@ -8260,7 +8260,7 @@
         "Mindset: training effectiveness requires L3 + L4 (behavior + results), not just L1 + L2 (reaction + learning). Audit evidence focused on completion or quiz alone is insufficient.",
         "Exam-day shortcut: when stem says TRAINING EFFECTIVENESS, look for Kirkpatrick L1 + L2 + L3 + L4 framework — quiz-only, satisfaction-only, and completion-only framings each fail."
       ],
-      "framework_ref": "NIST SP 800-50 (Building an Information Technology Security Awareness Program); ISO/IEC 27001:2022; Kirkpatrick Four-Level Training Evaluation Model; ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-50 (Building an Information Technology Security Awareness Program); ISO/IEC 27001:2022 (Information Security Management Systems); Kirkpatrick Four-Level Training Evaluation Model; ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program",
       "related_concepts": [
         "training",
         "effectiveness",
@@ -8273,7 +8273,7 @@
     {
       "id": "d5_228",
       "domain": 5,
-      "subtopic": "DLP False-Positive Tuning (Application, §5.6)",
+      "subtopic": "DLP False-Positive Tuning",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which approach BEST tunes a DLP program experiencing 80% false-positive rate at a law firm?",
@@ -8297,7 +8297,7 @@
         "Mindset: DLP tuning is a MEASUREMENT-DRIVEN balancing discipline. Tighten-all, disable-noisy, and switch-vendor framings each fail the precision-recall principle.",
         "Exam-day shortcut: when the stem says DLP FALSE POSITIVES, the right answer is PRECISION + RECALL BALANCE via measurement-driven tuning. Tighten-all-to-zero-FP is the trap because zero FP requires zero recall — the rule stops detecting."
       ],
-      "framework_ref": "NIST SP 800-122 (Guide to Protecting the Confidentiality of PII); ISO/IEC 27001:2022; ISACA Privacy Audit/Assurance Program; Gartner DLP Magic Quadrant",
+      "framework_ref": "NIST SP 800-122 (Guide to Protecting the Confidentiality of PII); ISO/IEC 27001:2022 (Information Security Management Systems); ISACA Privacy Audit/Assurance Program; Gartner DLP Magic Quadrant",
       "related_concepts": [
         "DLP",
         "false positive",
@@ -8310,7 +8310,7 @@
     {
       "id": "d5_229",
       "domain": 5,
-      "subtopic": "Consent Management Lifecycle (Application, §5.2)",
+      "subtopic": "Consent Management Lifecycle",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which consent-management approach BEST satisfies GDPR Article 7 for a consumer mobile app?",
@@ -8321,7 +8321,7 @@
         "D": "Pre-ticked boxes at sign-up; pre-ticked consent for marketing + analytics + third-party sharing is acceptable when balanced against legitimate-business-interest."
       },
       "correct": "B",
-      "key_concept": "GDPR-valid consent = granular purpose-specific + clear opt-in + withdrawal mechanism + consent evidence retention + re-consent cadence on material processing changes.",
+      "key_concept": "GDPR-valid consent requires SPECIFIC, UNAMBIGUOUS, AFFIRMATIVE consent for each distinct processing purpose with documented withdrawability. Bundled, implied, and pre-ticked consent each fail Article 7.",
       "pre_read": "GDPR Article 7 requires SPECIFIC consent. Bundled, implied, and pre-ticked framings each fail the specificity + freely-given + unambiguous requirements.",
       "correct_explanation": "GDPR Articles 4(11) (consent definition) and 7 (conditions for consent), Article 17 (right to erasure), GAPP Principle 3 (Choice & Consent), and ISO/IEC 29184 (Online Privacy Notices) establish consent-management framework. (1) GRANULAR PURPOSE-SPECIFIC — separate consent for each distinct processing purpose (analytics vs marketing vs third-party sharing). (2) CLEAR OPT-IN — unambiguous affirmative action (NOT pre-ticked, NOT bundled). (3) WITHDRAWAL MECHANISM — as easy to withdraw as to give (Article 7(3)). (4) CONSENT EVIDENCE RETENTION — log who consented to what processing at what time with what version of notice. (5) RE-CONSENT CADENCE — re-prompt when processing purposes materially change. (6) BUNDLED CONSENT fails Article 7(2) (bundled consent is invalid). (7) IMPLIED CONSENT fails Article 4(11) (consent must be unambiguous affirmative action). (8) PRE-TICKED BOXES fail under Planet49 (CJEU 2019).",
       "wrong_explanations": {
@@ -8347,7 +8347,7 @@
     {
       "id": "d5_230",
       "domain": 5,
-      "subtopic": "Cryptographic Key Rotation Governance (Application, §5.7)",
+      "subtopic": "Cryptographic Key Rotation Governance",
       "difficulty": "application",
       "bloom_level": "Application",
       "question": "Which approach BEST governs cryptographic key rotation across an energy utility's PCI environment?",
@@ -8384,7 +8384,7 @@
     {
       "id": "d5_231",
       "domain": 5,
-      "subtopic": "Managed File Transfer SQLi Mass-Exfil Forensic Investigation (Analysis, MOVEit 2023 echo)",
+      "subtopic": "Managed File Transfer SQLi Mass-Exfil Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and audit response?",
@@ -8422,7 +8422,7 @@
     {
       "id": "d5_232",
       "domain": 5,
-      "subtopic": "Cryptographic Signing-Key Compromise (Analysis, single-focus REVOCATION-FIRST, Storm-0558 echo)",
+      "subtopic": "Cryptographic Signing-Key Compromise",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -8460,7 +8460,7 @@
     {
       "id": "d5_233",
       "domain": 5,
-      "subtopic": "Support-System Session-Cookie Theft Forensic Investigation (Analysis, Okta Oct 2023 echo)",
+      "subtopic": "Support-System Session-Cookie Theft Forensic Investigation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic response?",
@@ -8498,7 +8498,7 @@
     {
       "id": "d5_234",
       "domain": 5,
-      "subtopic": "Service-Desk Vishing → MFA Bypass Ransomware (Analysis, MGM/Scattered Spider 2023 echo)",
+      "subtopic": "Service-Desk Vishing → MFA Bypass Ransomware",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -8536,7 +8536,7 @@
     {
       "id": "d5_235",
       "domain": 5,
-      "subtopic": "Encrypted-Vault Breach with Plaintext-Metadata Exposure (Analysis, LastPass 2022 echo)",
+      "subtopic": "Encrypted-Vault Breach with Plaintext-Metadata Exposure",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST customer-notification approach?",
@@ -8561,7 +8561,7 @@
         "Mindset: encrypted-vault breach with plaintext metadata = notify on METADATA exposure (immediately usable for phishing/credential stuffing) AND vault exposure (brute-force decryption over time). Both notification triggers fire simultaneously.",
         "Exam-day shortcut: when the stem describes ENCRYPTED VAULT + PLAINTEXT METADATA, the right answer notifies on BOTH (metadata immediately usable; vault decryption over time). Wait-for-complete-forensic is the trap (GDPR 72-hour deadline)."
       ],
-      "framework_ref": "GDPR Articles 33-34 (Breach Notification); GDPR Article 33 (72-hour Supervisory Notification); GDPR Article 34 (Data Subject Notification); Brazil LGPD Article 48 (Communication of Security Incidents); Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023)",
+      "framework_ref": "GDPR Articles 33-34 (Breach Notification); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); GDPR Article 34 (Data Subject Notification); Brazil LGPD Article 48 (Communication of Security Incidents); Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023)",
       "related_concepts": [
         "password manager",
         "vault breach",
@@ -8574,7 +8574,7 @@
     {
       "id": "d5_236",
       "domain": 5,
-      "subtopic": "Internal CA Key Discovered on Stolen Laptop Forensic Sequencing (Analysis, multi-section synthesis)",
+      "subtopic": "Internal CA Key Discovered on Stolen Laptop Forensic Sequencing",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST sequencing decision?",
@@ -8612,7 +8612,7 @@
     {
       "id": "d5_237",
       "domain": 5,
-      "subtopic": "DLP-Detected Executive M&A Draft Quarantine Dispute (Analysis, governance synthesis)",
+      "subtopic": "DLP-Detected Executive M&A Draft Quarantine Dispute",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST governance response?",
@@ -8637,7 +8637,7 @@
         "Mindset: DLP governance = pre-approved policy paths, never case-by-case override. Sanctioned channels exist to avoid the exception-precedent dynamic; if exceptions are needed, the sanctioned channel framework is the answer.",
         "Exam-day shortcut: when the stem describes a DLP DISPUTE with senior-staff override request, the right answer is PRE-APPROVED POLICY PATH, not case-by-case override. One-time-exception is the trap because exceptions become precedents."
       ],
-      "framework_ref": "ISO/IEC 27001:2022; COBIT 2019 APO01 (Managed I&T Management Framework); ISACA IT Audit Standard 1202 (Risk Assessment in Planning); SEC + FINRA Rules on Material Non-Public Information (MNPI)",
+      "framework_ref": "ISO/IEC 27001:2022 (Information Security Management Systems); COBIT 2019 APO01 (Managed I&T Management Framework); ISACA IT Audit Standard 1202 (Risk Assessment in Planning); SEC + FINRA Rules on Material Non-Public Information (MNPI)",
       "related_concepts": [
         "DLP governance",
         "MNPI",
@@ -8650,7 +8650,7 @@
     {
       "id": "d5_238",
       "domain": 5,
-      "subtopic": "Cloud KMS Misconfiguration Cross-OU Blast Radius (Analysis, multi-section synthesis)",
+      "subtopic": "Cloud KMS Misconfiguration Cross-OU Blast Radius",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and remediation response?",
@@ -8675,7 +8675,7 @@
         "Mindset: KMS misconfiguration requires POLICY REVOCATION (root cause) + key rotation (cached-plaintext invalidation) + forensic preservation of full retention window. Rotate-only addresses symptom, not cause.",
         "Exam-day shortcut: when the stem describes CLOUD KMS MISCONFIGURATION, the right answer is POLICY REVOCATION (root cause) plus key rotation. Rotate-keys-only is the trap because the wildcard policy remains in place."
       ],
-      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); CSA Cloud Controls Matrix; ISO/IEC 27017 (Cloud Security); GDPR Articles 33-34 (Breach Notification); GDPR Article 33 (72-hour Supervisory Notification); HHS OCR HIPAA Breach Notification Rule; NIST SP 800-145 (NIST Definition of Cloud Computing)",
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); CSA Cloud Controls Matrix; ISO/IEC 27017 (Cloud Security); GDPR Articles 33-34 (Breach Notification); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); HHS OCR HIPAA Breach Notification Rule; NIST SP 800-145 (NIST Definition of Cloud Computing)",
       "related_concepts": [
         "KMS",
         "cloud security",
@@ -8688,7 +8688,7 @@
     {
       "id": "d5_239",
       "domain": 5,
-      "subtopic": "Stagnant Phishing-Click Rate Board Inquiry (Analysis, single-focus methodology-rigor-first)",
+      "subtopic": "Stagnant Phishing-Click Rate Board Inquiry",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -8726,7 +8726,7 @@
     {
       "id": "d5_240",
       "domain": 5,
-      "subtopic": "Customer PII in Dev Test Store DLP Gap (Analysis, GDPR breach-trigger synthesis)",
+      "subtopic": "Customer PII in Dev Test Store DLP Gap",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST audit and notification response?",
@@ -8764,7 +8764,7 @@
     {
       "id": "d5_241",
       "domain": 5,
-      "subtopic": "Long-Dwell APT Discovered Post-M&A (Analysis, Capstone RW, Marriott/Starwood 2018 echo)",
+      "subtopic": "Long-Dwell APT Discovered Post-M&A",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and audit response?",
@@ -8789,7 +8789,7 @@
         "Mindset: M&A inherited compromise fires TWO canonical principles simultaneously — contain-first (active vector) + exposure-window-close (4-year dwell). Both run concurrently with regulator coordination.",
         "Exam-day shortcut: when the stem says INHERITED COMPROMISE from M&A or LONG-DWELL APT, the right answer fires TWO principles concurrently — contain-first (active vector) AND exposure-window-close (multi-year dwell). Rescission is the overreach trap; it extinguishes legal recovery alongside the transaction."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27001:2022; OCC Comptroller's Licensing Manual — Business Combinations; GDPR Articles 33-34 (Breach Notification); ISACA M&A Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27001:2022 (Information Security Management Systems); OCC Comptroller's Licensing Manual — Business Combinations; GDPR Articles 33-34 (Breach Notification); ISACA M&A Audit/Assurance Program",
       "related_concepts": [
         "M&A due diligence",
         "long-dwell APT",
@@ -8802,7 +8802,7 @@
     {
       "id": "d5_242",
       "domain": 5,
-      "subtopic": "Reused-Credential Mass Tenant Exfil via Cloud Data Warehouse (Analysis, Capstone RW, Snowflake 2024 echo)",
+      "subtopic": "Reused-Credential Mass Tenant Exfil via Cloud Data Warehouse",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and audit response?",
@@ -8840,7 +8840,7 @@
     {
       "id": "d5_243",
       "domain": 5,
-      "subtopic": "Executive-Tier Corporate Email APT via OAuth Token Abuse (Analysis, Capstone RW, Midnight Blizzard 2024 echo)",
+      "subtopic": "Executive-Tier Corporate Email APT via OAuth Token Abuse",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and audit response?",
@@ -8878,7 +8878,7 @@
     {
       "id": "d5_244",
       "domain": 5,
-      "subtopic": "Third-Party SaaS Provider Compromise — Malicious Updates Cascade (Analysis, Capstone RW, supply-chain echo)",
+      "subtopic": "Third-Party SaaS Provider Compromise — Malicious Updates Cascade",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and audit response?",
@@ -8916,7 +8916,7 @@
     {
       "id": "d5_245",
       "domain": 5,
-      "subtopic": "Third-Party SaaS Unauthorized Access Exposing Customer Call Records (Analysis, Capstone RW, AT&T 2024 echo)",
+      "subtopic": "Third-Party SaaS Unauthorized Access Exposing Customer Call Records",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and audit response?",
@@ -8930,7 +8930,7 @@
       "correct": "B",
       "key_concept": "Third-party SaaS exposing customer CDR = revoke vendor access + dual-side forensic preservation + scope + CPNI notification under 47 CFR §64.2011 + state AGs + vendor-risk re-baseline + carrier-side oversight overhaul + transparent disclosure.",
       "pre_read": "Telecom-sector breaches trigger CPNI-specific notification (47 CFR §64.2011) PARALLEL to state laws. Wait-for-FCC, notify-before-scope, and vendor-lead-investigation framings each fail.",
-      "correct_explanation": "FCC Customer Proprietary Network Information (CPNI) Rules 47 CFR §64.2011, NIST SP 800-53 Rev 5 (Supply Chain Controls — SR-3), State Breach Notification Laws (50 states), ISACA Risk IT Framework, and ISACA Vendor Risk Management Audit/Assurance Program establish telecom-sector vendor-breach response. (1) REVOKE VENDOR ACCESS — contain the active vector. (2) DUAL-SIDE FORENSIC PRESERVATION — vendor-side AND carrier-side logs both required; carrier-side cannot rely solely on vendor attestation (independent obligations). (3) SCOPE-ASSESS SUBSCRIBER SET — which ~109M subscribers are affected? (4) CPNI NOTIFICATION — 47 CFR §64.2011(b)(2) requires notification within 7 business days to law enforcement (USSS + FBI); customer notification follows after 7-business-day LE consultation window. (5) STATE AGs — concurrent state-law notification. (6) VENDOR-RISK RE-BASELINE — re-evaluate vendor SOC 2 + access controls + data-residency. (7) CARRIER-SIDE OVERSIGHT OVERHAUL — what carrier-side controls (vendor access auditing, data-minimization, retention limits) failed? (8) TRANSPARENT DISCLOSURE — beyond regulatory minimum, telecom-sector customer trust requires substantive disclosure. (9) WAIT-FOR-FCC (Option A) fails the 7-business-day CPNI clock that has already started. (10) NOTIFY-BEFORE-SCOPE (Option C) fails because regulators expect substantive scope assessment with notification, not pre-scope notification. (11) VENDOR-LEAD-INVESTIGATION (Option D) fails the carrier's independent-control-attestation obligations.",
+      "correct_explanation": "FCC Customer Proprietary Network Information (CPNI) Rules 47 CFR §64.2011, NIST SP 800-53 Rev 5 (Supply Chain Controls — SR-3), State Breach Notification Laws (50 states), ISACA Risk IT Framework, and ISACA Vendor Risk Management Audit/Assurance Program establish telecom-sector vendor-breach response. (1) REVOKE VENDOR ACCESS — contain the active vector. (2) DUAL-SIDE FORENSIC PRESERVATION — vendor-side AND carrier-side logs both required; carrier-side cannot rely solely on vendor attestation (independent obligations). (3) SCOPE-ASSESS SUBSCRIBER SET — which ~109M subscribers are affected? (4) CPNI NOTIFICATION — 47 CFR §64.2011(b)(2) requires notification within 7 business days from breach determination to USSS + FBI; customer notification then permitted only after a subsequent 7-business-day LE-consultation hold under §64.2011(b)(3) unless directed otherwise. (5) STATE AGs — concurrent state-law notification. (6) VENDOR-RISK RE-BASELINE — re-evaluate vendor SOC 2 + access controls + data-residency. (7) CARRIER-SIDE OVERSIGHT OVERHAUL — what carrier-side controls (vendor access auditing, data-minimization, retention limits) failed? (8) TRANSPARENT DISCLOSURE — beyond regulatory minimum, telecom-sector customer trust requires substantive disclosure. (9) WAIT-FOR-FCC (Option A) fails the 7-business-day CPNI clock that has already started. (10) NOTIFY-BEFORE-SCOPE (Option C) fails because regulators expect substantive scope assessment with notification, not pre-scope notification. (11) VENDOR-LEAD-INVESTIGATION (Option D) fails the carrier's independent-control-attestation obligations.",
       "wrong_explanations": {
         "A": "Wait-for-FCC fails the 7-business-day CPNI notification clock under 47 CFR §64.2011(b)(2), which has already started at carrier discovery. State breach laws have parallel + independent timelines. Sector-regulator deference doesn't extend the clock.",
         "C": "Notify-before-scope fails because regulators expect SUBSTANTIVE scope assessment WITH notification, not pre-scope notification. Notifying the FCC without knowing affected-subscriber count creates remediation gaps the regulator will flag as control failure.",
@@ -8954,7 +8954,7 @@
     {
       "id": "d5_246",
       "domain": 5,
-      "subtopic": "Cross-Border Forensic Discovery + GDPR Art. 49 vs MLAT (Analysis, Capstone Multi-Section synthesis)",
+      "subtopic": "Cross-Border Forensic Discovery + GDPR Art. 49 vs MLAT",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST cross-border forensic approach?",
@@ -8992,7 +8992,7 @@
     {
       "id": "d5_247",
       "domain": 5,
-      "subtopic": "Zero-Trust Architecture Failure via Service-Mesh Implicit Trust (Analysis, Capstone Multi-Section synthesis)",
+      "subtopic": "Zero-Trust Architecture Failure via Service-Mesh Implicit Trust",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic and remediation response?",
@@ -9030,7 +9030,7 @@
     {
       "id": "d5_248",
       "domain": 5,
-      "subtopic": "AI/ML Model Exfiltration + Training-Data Leakage via Prompt Injection (Analysis, Capstone Multi-Section synthesis, NEW vector)",
+      "subtopic": "AI/ML Model Exfiltration + Training-Data Leakage via Prompt Injection",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST forensic response?",
@@ -9068,7 +9068,7 @@
     {
       "id": "d5_249",
       "domain": 5,
-      "subtopic": "Quantum-Resistant Cryptography Migration Governance (Analysis, Capstone Multi-Section synthesis)",
+      "subtopic": "Quantum-Resistant Cryptography Migration Governance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST PQC migration governance approach?",
@@ -9106,7 +9106,7 @@
     {
       "id": "d5_250",
       "domain": 5,
-      "subtopic": "SOC Analyst Burnout and Alert Fatigue Capability Rebuild (Analysis, Capstone Multi-Section synthesis)",
+      "subtopic": "SOC Analyst Burnout and Alert Fatigue Capability Rebuild",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST capability-rebuild response?",
@@ -9144,7 +9144,7 @@
     {
       "id": "d5_251",
       "domain": 5,
-      "subtopic": "Code-Signing Certificate Compromise Recovery (Analysis, Capstone SP, REVOCATION-FIRST extension to code-signing)",
+      "subtopic": "Code-Signing Certificate Compromise Recovery",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -9182,7 +9182,7 @@
     {
       "id": "d5_252",
       "domain": 5,
-      "subtopic": "OT/ICS Network Compromise — Safety-Critical Containment (Analysis, Capstone SP, CONTAIN-FIRST extension to OT/ICS)",
+      "subtopic": "OT/ICS Network Compromise — Safety-Critical Containment",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -9220,7 +9220,7 @@
     {
       "id": "d5_253",
       "domain": 5,
-      "subtopic": "Ransomware Recovery via Verified Immutable Backups (Analysis, Capstone SP, NEW BACKUP-IMMUTABILITY-FIRST principle — 15th D5 principle)",
+      "subtopic": "Ransomware Recovery via Verified Immutable Backups",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST action?",
@@ -9258,7 +9258,7 @@
     {
       "id": "d5_254",
       "domain": 5,
-      "subtopic": "Active Exfil Endpoint — CONTAIN vs FORENSIC-IMAGING Principle Selection (Analysis, Capstone SP cross-principle)",
+      "subtopic": "Active Exfil Endpoint — CONTAIN vs FORENSIC-IMAGING Principle Selection",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST sequencing decision?",
@@ -9296,7 +9296,7 @@
     {
       "id": "d5_255",
       "domain": 5,
-      "subtopic": "BEC Wire Fraud Window — IRREVERSIBLE-LOSS-CLOCK vs NOTIFY-FIRST Principle Selection (Analysis, Capstone SP cross-principle)",
+      "subtopic": "BEC Wire Fraud Window — IRREVERSIBLE-LOSS-CLOCK vs NOTIFY-FIRST Principle Selection",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST sequencing decision?",
@@ -9310,7 +9310,7 @@
       "correct": "C",
       "key_concept": "BEC wire fraud = IRREVERSIBLE-LOSS-CLOCK fires faster than NOTIFY-FIRST. Initiate wire-reversal under UCC §4A-204 + SWIFT GPI stop + FinCEN SAR + FBI IC3 CONCURRENT; customer notification AFTER reversal initiated (still within customer-notification reasonable-time window).",
       "pre_read": "Cross-principle decision: IRREVERSIBLE-LOSS-CLOCK trumps NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION when reversal window is shorter than notification window. Notify-before-reverse, wait-for-LE, and absorb-loss framings each fail.",
-      "correct_explanation": "When IRREVERSIBLE-LOSS-CLOCK and NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION appear to conflict, the canonical resolution depends on RELATIVE CLOCK SPEED — the faster clock takes priority. UCC §4A-204 (Refund of payment and duty of customer to report regarding unauthorized payment order), FFIEC IT Examination Handbook (Wholesale Payment Systems), FinCEN Advisory FIN-2016-A003 (Business Email Compromise), and ISACA Financial Services Audit/Assurance Program establish the BEC wire-fraud framework. (1) UCC §4A-204 WIRE-REVERSAL — bank initiates recall request to correspondent bank within ~24-hour window; recovery probability drops sharply after 24 hours. (2) PARALLEL SWIFT GPI STOP-PAYMENT — international wire stop-payment via SWIFT Global Payments Innovation. (3) PARALLEL FINCEN SAR — 30 days from determination of suspicious activity; can run concurrent with reversal attempt. (4) CONCURRENT FBI IC3 — fraud reporting; LE coordination is concurrent, not precedent. (5) CUSTOMER NOTIFICATION AFTER REVERSAL INITIATED — customer notification is reasonable-time (no specific clock under GLBA for wire fraud); reversal-attempt does not delay notification beyond the same business day, but notification does not BLOCK reversal attempt. (6) NOTIFY-BEFORE-REVERSE (Option A) inverts the clock priority — notification doesn't run faster than reversal, but reversal runs SLOWER if notification disrupts attention or sequencing. (7) WAIT-FOR-LE-CLEARANCE (Option B) fails because FBI IC3 reporting is concurrent with reversal, not precedent; LE does not block UCC §4A-204 mechanism. (8) ABSORB-LOSS (Option D) is securities-fraud-territory if the loss is material AND undisclosed; ~10% recovery is still recovery worth attempting.",
+      "correct_explanation": "When IRREVERSIBLE-LOSS-CLOCK and NOTIFY-FIRST-FOR-CUSTOMER-PROTECTION appear to conflict, the canonical resolution depends on RELATIVE CLOCK SPEED — the faster clock takes priority. UCC §4A-204 (Refund of payment and duty of customer to report regarding unauthorized payment order), FFIEC IT Examination Handbook (Wholesale Payment Systems), FinCEN Advisory FIN-2016-A003 (Business Email Compromise), and ISACA Financial Services Audit/Assurance Program establish the BEC wire-fraud framework. (1) UCC §4A-204 WIRE-REVERSAL — bank initiates recall request to correspondent bank within ~24-hour window; recovery probability drops sharply after 24 hours. (2) PARALLEL SWIFT GPI STOP-PAYMENT — international wire stop-payment via SWIFT Global Payments Innovation. (3) PARALLEL FINCEN SAR — within 30 calendar days of initial detection per 31 CFR §1020.320(b)(3); can run concurrent with reversal attempt. (4) CONCURRENT FBI IC3 — fraud reporting; LE coordination is concurrent, not precedent. (5) CUSTOMER NOTIFICATION AFTER REVERSAL INITIATED — customer notification is reasonable-time (no specific clock under GLBA for wire fraud); reversal-attempt does not delay notification beyond the same business day, but notification does not BLOCK reversal attempt. (6) NOTIFY-BEFORE-REVERSE (Option A) inverts the clock priority — notification doesn't run faster than reversal, but reversal runs SLOWER if notification disrupts attention or sequencing. (7) WAIT-FOR-LE-CLEARANCE (Option B) fails because FBI IC3 reporting is concurrent with reversal, not precedent; LE does not block UCC §4A-204 mechanism. (8) ABSORB-LOSS (Option D) is securities-fraud-territory if the loss is material AND undisclosed; ~10% recovery is still recovery worth attempting.",
       "wrong_explanations": {
         "A": "Notify-before-reverse inverts the clock priority. The wire-reversal clock (~24 hours; ~10% recovery after) shrinks faster than the customer-notification clock (reasonable-time; same-business-day). Reversing FIRST then notifying preserves both customer interest AND recovery probability. Notification doesn't BLOCK reversal but doesn't ACCELERATE it either; reversal needs to start now.",
         "B": "Wait-for-LE-clearance fails because FBI IC3 reporting is CONCURRENT with reversal, not precedent. LE does not block UCC §4A-204 wire-reversal mechanism; the bank acts in its own commercial interest + customer-protection capacity. Deferring reversal to LE-clearance is misunderstanding of LE coordination model.",
@@ -9334,7 +9334,7 @@
     {
       "id": "d5_256",
       "domain": 5,
-      "subtopic": "Board-Tier Cybersecurity Incident Escalation Criteria (Analysis, Capstone Bank-Capstone governance synthesis)",
+      "subtopic": "Board-Tier Cybersecurity Incident Escalation Criteria",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST escalation framework?",
@@ -9372,7 +9372,7 @@
     {
       "id": "d5_257",
       "domain": 5,
-      "subtopic": "Cyber-Insurance Ransomware-Coverage Claim Defense (Analysis, Capstone Bank-Capstone governance synthesis)",
+      "subtopic": "Cyber-Insurance Ransomware-Coverage Claim Defense",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST claim-defense approach?",
@@ -9410,7 +9410,7 @@
     {
       "id": "d5_258",
       "domain": 5,
-      "subtopic": "Nation-State Attribution Bounds — Auditor vs LE/IC (Analysis, Capstone Bank-Capstone governance synthesis)",
+      "subtopic": "Nation-State Attribution Bounds — Auditor vs LE/IC",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST attribution-statement approach?",
@@ -9424,7 +9424,7 @@
       "correct": "A",
       "key_concept": "Nation-state attribution = methodology-rigor-first applied to attribution BOUNDS. Auditor reports technical indicators + TTPs + overlaps WITHOUT public nation-state attribution; IC attribution is classified-channel separate. Clear distinction between auditor-attestable facts and IC-attributable inference.",
       "pre_read": "Nation-state attribution has BOUNDS — auditors report technical facts; nation-state attribution is IC/LE inference under classified-channel + ICD 203 analytic standards. Public attribution, classified-access demands, and refuse-LE framings each fail.",
-      "correct_explanation": "Nation-state attribution applies METHODOLOGY-RIGOR-FIRST to ATTRIBUTION BOUNDS — the auditor reports what is technically defensible; the nation-state inference is an Intelligence Community function under classified-channel coordination. FBI Cyber Incident Reporting Guidance, CIRCIA 2022 (Cyber Incident Reporting for Critical Infrastructure Act), ODNI Intelligence Community Directive 203 (Analytic Standards), CISA Cybersecurity Advisories framework, and ISACA IT Audit Standard 1204 (Materiality and Pervasiveness) establish attribution-bounds framework. (1) AUDITOR-ATTESTABLE TECHNICAL FACTS — TTPs (MITRE ATT&CK technique IDs), infrastructure overlaps (C2 IP/domain reuse), malware-family identification, all technically-defensible. (2) NO PUBLIC NATION-STATE ATTRIBUTION — auditor reports do NOT publicly attribute to nation-states; this is IC/LE attribution function. (3) CLASSIFIED-CHANNEL LE/IC COORDINATION — FBI + CISA classified channels; the firm provides technical indicators to LE/IC, which performs nation-state attribution under ICD 203 analytic standards (estimative language, source diversity, confidence levels). (4) ICD 203 ALIGNMENT — analytic standards include CONFIDENCE LEVELS (high/moderate/low) + estimative language (likely / possibly / unlikely). (5) POST-INCIDENT ATTRIBUTION-POLICY GOVERNANCE — when does firm comment publicly, when does firm defer to LE/IC. (6) DISTINCTION BETWEEN AUDITOR-ATTESTABLE FACTS AND IC-ATTRIBUTABLE INFERENCE — auditor: 'these TTPs are consistent with previously-attributed activity'; LE/IC: 'this is [nation-state] activity.' (7) PUBLIC-ATTRIBUTION (Option B) is overreach beyond auditor competence and creates litigation + diplomatic exposure. (8) DEMAND-CLASSIFIED (Option C) is boundary violation — classified information is access-controlled by clearance, not by critical-infrastructure designation. (9) REFUSE-LE (Option D) is under-reach — critical-infrastructure operators have CIRCIA 72-hour CISA reporting obligations.",
+      "correct_explanation": "Nation-state attribution applies METHODOLOGY-RIGOR-FIRST to ATTRIBUTION BOUNDS — the auditor reports what is technically defensible; the nation-state inference is an Intelligence Community function under classified-channel coordination. FBI Cyber Incident Reporting Guidance, CIRCIA 2022 (Cyber Incident Reporting for Critical Infrastructure Act), ODNI Intelligence Community Directive 203 (Analytic Standards), CISA Cybersecurity Advisories framework, and ISACA IT Audit Standard 1206 (Using the Work of Other Experts) establish attribution-bounds framework. (1) AUDITOR-ATTESTABLE TECHNICAL FACTS — TTPs (MITRE ATT&CK technique IDs), infrastructure overlaps (C2 IP/domain reuse), malware-family identification, all technically-defensible. (2) NO PUBLIC NATION-STATE ATTRIBUTION — auditor reports do NOT publicly attribute to nation-states; this is IC/LE attribution function. (3) CLASSIFIED-CHANNEL LE/IC COORDINATION — FBI + CISA classified channels; the firm provides technical indicators to LE/IC, which performs nation-state attribution under ICD 203 analytic standards (estimative language, source diversity, confidence levels). (4) ICD 203 ALIGNMENT — analytic standards include CONFIDENCE LEVELS (high/moderate/low) + estimative language (likely / possibly / unlikely). (5) POST-INCIDENT ATTRIBUTION-POLICY GOVERNANCE — when does firm comment publicly, when does firm defer to LE/IC. (6) DISTINCTION BETWEEN AUDITOR-ATTESTABLE FACTS AND IC-ATTRIBUTABLE INFERENCE — auditor: 'these TTPs are consistent with previously-attributed activity'; LE/IC: 'this is [nation-state] activity.' (7) PUBLIC-ATTRIBUTION (Option B) is overreach beyond auditor competence and creates litigation + diplomatic exposure. (8) DEMAND-CLASSIFIED (Option C) is boundary violation — classified information is access-controlled by clearance, not by critical-infrastructure designation. (9) REFUSE-LE (Option D) is under-reach — critical-infrastructure operators have CIRCIA 72-hour CISA reporting obligations.",
       "wrong_explanations": {
         "B": "Public nation-state attribution is OVERREACH beyond auditor competence. Attribution is an IC/LE function with classified-channel coordination + ICD 203 analytic standards. Public attribution by auditor creates litigation exposure (defamation if wrong) + diplomatic exposure (nation-state response to public accusation).",
         "C": "Demand-classified-indicators is BOUNDARY VIOLATION. Classified information is access-controlled by SECURITY CLEARANCE, not by critical-infrastructure designation. The firm provides indicators TO IC/LE; IC/LE shares only what is shareable at the firm's clearance level. Demanding classified access is misunderstanding of the IC model.",
@@ -9448,7 +9448,7 @@
     {
       "id": "d5_259",
       "domain": 5,
-      "subtopic": "Privacy-by-Design Retrofit Failure on Legacy CRM (Analysis, Capstone Bank-Capstone governance synthesis)",
+      "subtopic": "Privacy-by-Design Retrofit Failure on Legacy CRM",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the BEST regulatory + audit response?",
@@ -9486,7 +9486,7 @@
     {
       "id": "d5_260",
       "domain": 5,
-      "subtopic": "Post-Incident 5-Year Technology-Bet Retrospective (Analysis, Capstone Bank-Capstone FINAL — closes An tier at 104 + bank at 1004)",
+      "subtopic": "Post-Incident 5-Year Technology-Bet Retrospective",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "question": "What is the FIRST decision the audit committee should re-examine?",
@@ -9511,7 +9511,7 @@
         "Mindset: bank-capstone FINAL principle — strategic retrospective applies methodology-rigor-first (diagnose before prescribe; examine each decision against its OWN original criteria, not hindsight) + defer-major-decisions-during-crisis (don't lock in new strategic bets during retrospective). Both canonical D5 principles fire concurrently.",
         "Exam-day shortcut: when the stem says STRATEGIC TECHNOLOGY-BET RETROSPECTIVE, the right answer applies METHODOLOGY-RIGOR-FIRST (diagnose before prescribe; examine each decision against its OWN original criteria, not hindsight). Personalize-and-blame is the trap because it closes the retrospective without extracting organizational learning."
       ],
-      "framework_ref": "COBIT 2019 (EDM02 Ensured Benefits Delivery); ISACA Risk IT Framework; ISO/IEC 38500 (Corporate Governance of Information Technology); NIST SP 800-39 (Managing Information Security Risk); ISO/IEC 27001:2022; NIST Cybersecurity Framework (NIST CSF) v2.0 (February 2024)",
+      "framework_ref": "COBIT 2019 (EDM02 Ensured Benefits Delivery); ISACA Risk IT Framework; ISO/IEC 38500 (Corporate Governance of Information Technology); NIST SP 800-39 (Managing Information Security Risk); ISO/IEC 27001:2022 (Information Security Management Systems); NIST Cybersecurity Framework (NIST CSF) v2.0 (February 2024)",
       "related_concepts": [
         "strategic retrospective",
         "methodology-rigor-first",

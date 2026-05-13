@@ -571,6 +571,27 @@ header {
 .bk-btn.saved { border-color: var(--warning); background: var(--warning-light); }
 
 .q-body { padding: 28px 24px 24px; }
+.q-scenario {
+  background: rgba(139,109,255,0.06);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.q-scenario-label {
+  display: block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
 .q-text {
   font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
   line-height: 1.7; color: var(--text); margin-bottom: 24px;
@@ -3205,7 +3226,7 @@ header::after {
     <span class="logo-name">CISA <em>Mindset</em></span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v8.8</span>
+    <span class="bank-pill" id="versionPill">v9.0</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -3397,7 +3418,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v8.8';
+const APP_VERSION = 'v9.0';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -5943,6 +5964,7 @@ function renderQuestion(q) {
     + '<button class="fl-btn" onclick="showFlagModal()" title="Flag this question">&#9873;</button>'
     + '</div></div>'
     + '<div class="q-body">'
+    + (q.scenario_context ? '<div class="q-scenario"><span class="q-scenario-label">Scenario</span>' + escapeHtml(q.scenario_context) + '</div>' : '')
     + '<p class="q-text">' + escapeHtml(q.question) + '</p>'
     + '<div class="conf-step-label step1"><span class="conf-step-num">1</span> Rate your confidence first</div>'
     + '<div class="conf-row">'
@@ -6558,6 +6580,7 @@ function showMockQuestion() {
     + '<div class="q-meta"><span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;color:var(--muted)">No explanations in mock mode</span></div>'
     + '</div>'
     + '<div class="q-body">'
+    + (q.scenario_context ? '<div class="q-scenario"><span class="q-scenario-label">Scenario</span>' + escapeHtml(q.scenario_context) + '</div>' : '')
     + '<p class="q-text">' + escapeHtml(q.question) + '</p>'
     + '<div class="opts" id="mOpts">' + optsHtml + '</div>'
     + '<div id="mFeedback"></div>'
@@ -8677,6 +8700,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Fully rebuilt question bank',
+    items: [
+      { cat: 'new', text: 'Every question is now original — rewritten from public ISACA, NIST, and ISO sources. No derivative content.' },
+      { cat: 'new', text: 'Analysis-tier questions now include rich scenario context — realistic situations with stakeholders, time pressure, and trade-offs.' },
+      { cat: 'new', text: 'Auditor-mindset principles surface throughout — pattern-recognition shortcuts that transfer across questions.' },
+      { cat: 'improved', text: 'Three tips per question that consistently teach the trap, the principle, and the exam-day shortcut.' },
+      { cat: 'improved', text: 'Framework citations cleaned and consolidated — every reference traceable to a real published standard.' }
+    ]
+  },
+  {
+    version: 'v8.8',
     title: 'Quieter onboarding and bank-complete copy',
     items: [
       { cat: 'improved', text: 'Onboarding and bank-complete screens now read more naturally without unnecessary numerical noise.' }

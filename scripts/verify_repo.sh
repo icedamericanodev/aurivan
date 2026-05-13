@@ -9,16 +9,17 @@ OK="✓"
 FAIL="✗"
 status=0
 
-# 1. JSON validity + override coverage --------------------------------------
+# 1. JSON validity + tip coverage --------------------------------------------
+# v9.0+: tips live inline in data/originals/d{N}.json (single source of truth).
+# `scripts/originals_to_domain.py` regenerates data/domain{N}.json from originals.
+# tips_overrides/ is legacy and no longer the authoring layer.
 python3 - <<'PY' || status=1
 import json, sys
-counts = {1: 164, 2: 164, 3: 120, 4: 263, 5: 284}
+counts = {1: 180, 2: 180, 3: 124, 4: 260, 5: 260}
 all_ok = True
 print("Tip + question coverage:")
 for d, expected in counts.items():
     try:
-        ov = json.load(open(f'data/tips_overrides/d{d}.json'))
-        ov_count = sum(1 for k in ov if not k.startswith('_'))
         dom = json.load(open(f'data/domain{d}.json'))
         q_count = len(dom['questions'])
         with_tips = sum(1 for q in dom['questions'] if q.get('tips') and len(q['tips']) >= 3)
@@ -26,9 +27,9 @@ for d, expected in counts.items():
         print(f"  D{d}: ERROR {e}")
         all_ok = False
         continue
-    ok = ov_count == expected and q_count == expected and with_tips == expected
+    ok = q_count == expected and with_tips == expected
     mark = "✓" if ok else "✗"
-    print(f"  {mark} D{d}: overrides={ov_count} questions={q_count} with_tips={with_tips} (expected {expected})")
+    print(f"  {mark} D{d}: questions={q_count} with_tips={with_tips} (expected {expected})")
     if not ok: all_ok = False
 sys.exit(0 if all_ok else 1)
 PY
