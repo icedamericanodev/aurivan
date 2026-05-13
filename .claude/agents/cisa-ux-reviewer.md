@@ -58,10 +58,17 @@ Walk these in order. For each, output findings tiered as HARD ERROR / PRECISION 
 - Flag font-family declarations that don't use the three approved fonts
 - Common false positive to AVOID: hex literals inside `<svg>` definitions for the logo/icons are acceptable; only flag text/background/border colors
 
-### 2. Brand identity (Aurivan navy/blue)
+### 2. Brand identity (Aurivan navy/blue) — RGBA spellings count
 - Verify `--accent` is `#3B82F6` (blue) NOT `#8b6dff` (purple) in both LIGHT and DARK mode `:root`
 - Verify `--accent2` is `#14B8A6` (teal) NOT `#ff7eb3` (pink)
 - Search for usages of `#8b6dff`, `#ff7eb3`, `#6c47ff`, `#ff6b9d` and verify they're inside reserved-role contexts (`--purple` / `--pink` token definitions OR Mindset-tip / streak-celebration use cases only). Flag any other use.
+- **ALSO grep the equivalent RGBA spellings** — these are the same reserved colors and equally count:
+  - `rgba(108,71,255,` (light-mode purple #6c47ff)
+  - `rgba(139,109,255,` (dark-mode purple #8b6dff)
+  - `rgba(255,107,157,` (light-mode pink #ff6b9d)
+  - `rgba(255,126,179,` (dark-mode pink #ff7eb3)
+  - Verify each occurrence is in a reserved-role context (Mindset tip / streak / celebration). Flag any decorative chrome leak (body glow, loading pill, changelog tag, hover halo, etc.).
+- Search for legacy orange `rgba(232,82,26,` — this was the pre-v8 brand and is always a leak.
 - Confirm `<title>` reads "Aurivan — Master Modern Risk"
 - Confirm `APP_VERSION` matches the version pill text
 - Confirm logo SVG renders with the compass-A mark + "aurivan" wordmark
@@ -73,18 +80,44 @@ Walk these in order. For each, output findings tiered as HARD ERROR / PRECISION 
 - Flag mismatches
 
 ### 4. Accessibility (WCAG AA)
-- Run contrast spot-checks on key text-bg pairs and document calculations:
-  - `--text` (#f0f2ff dark / #0d0f1a light) on `--bg`
-  - `--text2` on `--surface`
-  - `--muted` on `--surface` (this is the riskiest pair — check carefully)
-  - Tip colors on their tinted backgrounds: amber on `rgba(251,191,36,.07)`, purple on `rgba(139,109,255,.08)`, green on `rgba(74,222,128,.07)`
-  - White text on `--accent`, `--accent2`, `--wrong`, `--warning`
-- Find tap targets < 44×44px on mobile (`@media (max-width: 600px)` should have min-width/min-height ≥ 44px on every interactive element)
-- Verify semantic HTML: `<button>` for actions (NOT `<div onclick>`); proper heading hierarchy; `<main>` / `<section>` / `<article>` / `<aside>` / `<header>` / `<footer>` used appropriately
+
+**Quantitative contrast pass (HARD ERROR if any pair fails on readable text):**
+- Run all foreground × background pairs touched by the change through a contrast calculator
+- Calculate ratios for these CANONICAL pairs and document numbers in the review:
+  - `--text` on `--bg` (both modes)
+  - `--text2` on `--surface` (both modes)
+  - `--muted` on `--surface` — riskiest, often fails
+  - White (#fff) on `--accent`, `--accent-fill`, `--accent2`, `--wrong`, `--warning` (button fills)
+  - Tip body text on tinted backgrounds: amber on `rgba(251,191,36,.07)`, purple on `rgba(139,109,255,.08)`, green on `rgba(74,222,128,.07)`
+  - `--accent` text on `--bg` (links / nav-tab active state)
+- AA floor: 4.5:1 for body text, 3:1 for large (18pt+ or 14pt bold) or non-text UI
+- If a token swap happened (e.g. accent purple → blue), the previous contrast assumption is invalid — recompute every pair
+- Recommend a `scripts/check_contrast.py` helper reading the `:root` token blocks and emitting a CSV of every pair × ratio for diff against prior runs
+
+**Reduced motion (promoted to HARD ERROR per WCAG 2.3.3 + vestibular safety):**
+- Verify a top-level `@media (prefers-reduced-motion: reduce)` rule exists that disables animation + transition + scroll-behavior
+- Missing reduced-motion guard with 10+ animations on the page = HARD ERROR, not soft
+
+**Tap targets (≥44×44px on <600px):**
+- The `@media (max-width: 600px)` block MUST cover every interactive element that's < 44px in default style
+- Known-suspect list (seed your audit against these — flag any NOT included in the mobile-tap-target media query):
+  - `.bk-btn`, `.fl-btn` (bookmark + flag)
+  - `.dark-toggle-btn`, `.whats-new-btn` (header chrome)
+  - `.nav-tab` (tab bar)
+  - `.conf-btn` (confidence chips — typically 36px default)
+  - `.profile-btn` (header profile)
+  - `.pwa-dismiss-btn` (PWA install banner — typically 21px, worst offender)
+  - `.welcome-banner .wb-close` (welcome dismiss)
+  - `.exam-countdown .ec-edit`, `.exam-prompt .ep-skip` (Decision 8 controls)
+  - `.seq-tips-skip` (Skip tips link)
+  - `.notes-item-toggle` (Topics tab toggles)
+- Find any NEW interactive class added by the change being reviewed and audit its mobile size
+
+**Semantic HTML + ARIA:**
+- `<button>` for actions (NOT `<div onclick>`); proper heading hierarchy; `<main>` / `<section>` / `<article>` / `<aside>` / `<header>` / `<footer>` used appropriately
 - Verify ARIA labels on icon-only buttons (close X, bookmark, flag, dark-toggle, etc.)
-- Verify keyboard navigation: every interactive element reachable via Tab; visible focus states
+- Verify keyboard navigation: every interactive element reachable via Tab; visible focus-visible ring on EVERY primary interactive surface (`.nav-tab`, `.opt`, `.conf-btn`, `.gen-btn`, `.act-btn`, `.es-btn`, `.ss-chip`, `.principle-link`, `.submit-btn`, etc.)
 - Verify `<meta name="viewport">` doesn't have `user-scalable=no` or `maximum-scale=1`
-- Check `prefers-reduced-motion` is honored (animations should respect)
 - Check `prefers-color-scheme` works (dark-mode default + light-mode fallback)
 
 ### 5. Mobile reflow (375px viewport)
@@ -110,7 +143,8 @@ Walk these in order. For each, output findings tiered as HARD ERROR / PRECISION 
 - Every async action shows loading state (spinner, disabled state with label change)
 - Hover states should not move layout (transform/box-shadow only, not margin/padding)
 - Form inputs have focus rings that meet 3:1 contrast against background
-- Click-feedback animations respect `prefers-reduced-motion`
+- Click-feedback animations respect `prefers-reduced-motion` (covered as HARD ERROR in dimension 4)
+- **Principle-link / regex highlight test plan:** if the change adds a regex-based link or highlight (like the Mindset-tip principle ID linkifier `/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g`), generate a match set against the actual text corpus (tips, explanations, etc.) and verify ZERO unintended matches. Common false-positives to test for: `NIST-CSF`, `MFA-OTP`, `CIA-TRIAD`, `PKI-CA`, `IAM-USER`, `MITRE-ATTACK`. Recommend allowlist-based matching (`PRINCIPLE_IDS.has(pid) ? <link> : pid`) over pattern-based whenever a known finite set exists.
 
 ### 8. Information architecture
 - Tab count balance: currently 7 tabs (Topics, Principles, Glossary, Practice, Saved, Weak Spots, Mock Exam). Flag if this exceeds 8 — cognitive load threshold.
