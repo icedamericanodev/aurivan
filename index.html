@@ -509,6 +509,7 @@ header {
   padding: 32px 0 28px; border-bottom: 2px solid var(--border2);
   margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
   animation: slideDown 0.6s ease both;
+  position: relative; z-index: 10;
 }
 
 .logo { display: flex; flex-direction: column; }
@@ -536,8 +537,56 @@ header {
   color: transparent;
 }
 .brand-mark { color: var(--text); flex-shrink: 0; }
+.logo-tagline {
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--accent2); letter-spacing: 0.06em; margin-top: 4px;
+  text-transform: uppercase;
+}
 
-.header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; position: relative; }
+/* ── MOBILE HEADER HAMBURGER ── */
+#hdrMenuBtn {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--surface2); border: 2px solid var(--border2);
+  cursor: pointer; font-size: 18px; color: var(--text);
+  transition: var(--tr); flex-shrink: 0;
+}
+#hdrMenuBtn:hover, #hdrMenuBtn:focus-visible { border-color: var(--accent); outline: none; }
+#hdrMenu {
+  display: none; flex-direction: column; gap: 2px;
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 6px;
+  min-width: 190px; z-index: 200;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+}
+#hdrMenu.open { display: flex; }
+.hdr-menu-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; border-radius: 10px;
+  background: none; border: none; width: 100%; text-align: left;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 600; color: var(--text2); transition: var(--tr);
+}
+.hdr-menu-item:hover, .hdr-menu-item:focus-visible { background: var(--ink); color: var(--accent); outline: none; }
+.hdr-menu-divider { height: 1px; background: var(--border2); margin: 4px 0; }
+.hdr-menu-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+  background: var(--ink); color: var(--ink-fg);
+  display: inline-block; align-self: flex-start; margin: 2px 4px 4px;
+}
+@media (max-width: 600px) {
+  .header-right { flex-wrap: nowrap; gap: 6px; }
+  .header-right > .bank-pill { display: none !important; }
+  .header-right > .whats-new-btn { display: none !important; }
+  #profileBtnLabel { display: none; }
+  .profile-btn { padding: 5px 6px; }
+  #hdrMenuBtn { display: flex; }
+}
 .bank-pill {
   font-family: 'JetBrains Mono', monospace; font-size: 10px;
   letter-spacing: 0.1em; text-transform: uppercase;
@@ -4535,9 +4584,10 @@ header::after {
         <path d="M16,63 C20,57 24,57 28,63 C32,69 36,69 40,63 C44,57 48,57 52,63" stroke="url(#brand-wave)" stroke-width="2.4" stroke-linecap="round"/>
       </svg><span class="brand-word">aurivan</span>
     </span>
+    <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v9.1</span>
+    <span class="bank-pill" id="versionPill">v9.2</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4548,6 +4598,15 @@ header::after {
     <a class="tip-header-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" title="Support Aurivan with a tip on Buy Me a Coffee" aria-label="Support Aurivan with a tip on Buy Me a Coffee"><span aria-hidden="true">&#9749;</span> Tip</a>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
     <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
+    <button id="hdrMenuBtn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false">&#8801;</button>
+    <div id="hdrMenu" role="menu">
+      <button class="hdr-menu-item" onclick="showChangelog();closeHdrMenu()" role="menuitem">&#127381; What&#39;s New</button>
+      <button class="hdr-menu-item" onclick="showSessionSummary();closeHdrMenu()" role="menuitem">&#128202; Summary</button>
+      <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
+      <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
+      <div class="hdr-menu-divider"></div>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v9.2</span>
+    </div>
   </div>
 </header>
 
@@ -4785,7 +4844,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v9.1';
+const APP_VERSION = 'v9.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10214,6 +10273,8 @@ try {
 (function syncHeaderVersion(){
   var pill = document.getElementById('versionPill');
   if (pill) pill.textContent = APP_VERSION;
+  var menuPill = document.getElementById('hdrMenuPill');
+  if (menuPill) menuPill.textContent = APP_VERSION;
 })();
 renderDomainGrid();
 renderSubtopicFilter();
@@ -10828,6 +10889,14 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Mobile-friendly header and app identity',
+    items: [
+      { cat: 'new', text: 'The logo now shows "Free CISA Exam Prep" so first-time visitors immediately know what Aurivan is.' },
+      { cat: 'improved', text: 'On phones the header now fits in a single row. Secondary options (What\'s New, Summary, Feedback, Help) move into a hamburger menu so the dashboard content starts immediately below the logo.' }
+    ]
+  },
+  {
+    version: 'v9.1',
     title: 'Brand refresh and a wider canvas',
     items: [
       { cat: 'new', text: 'A new brand-aligned hero section anchors the app around the Aurivan slogan — Master Modern Risk — with the four guiding pillars: Navigate, Master, Adapt, Lead.' },
@@ -11143,6 +11212,25 @@ function toggleDarkMode() {
   document.getElementById('darkToggleBtn').textContent = isDark ? '🌙' : '☀️';
   try { localStorage.setItem('cisa_theme', newTheme); } catch(e){}
 }
+function toggleHdrMenu() {
+  var menu = document.getElementById('hdrMenu');
+  var btn = document.getElementById('hdrMenuBtn');
+  var open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', String(open));
+}
+function closeHdrMenu() {
+  var menu = document.getElementById('hdrMenu');
+  var btn = document.getElementById('hdrMenuBtn');
+  if (menu) menu.classList.remove('open');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('hdrMenu');
+  var btn = document.getElementById('hdrMenuBtn');
+  if (menu && menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) {
+    closeHdrMenu();
+  }
+});
 // Eagerly preload notes data on app start so the readiness card,
 // study recommendation, and other consumers have data ready when needed.
 // (Topics tab will use the cached result once available.)
