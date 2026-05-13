@@ -194,7 +194,23 @@ body::before {
     radial-gradient(ellipse at 50% 50%, rgba(0,230,187,0.06) 0%, transparent 60%);
 }
 
-.app { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 20px 80px; }
+/* v9.1: widened from 860px to 1200px (Bootstrap container-xl) so the app
+   uses more screen on big monitors. Question stems, options, and
+   explanations are readability-sensitive — they're constrained back to
+   ~820px via the #qArea max-width below. UX agent recommendation. */
+.app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* Reading-width cap for question content: 17px Playfair Display becomes
+   uncomfortable to scan past ~80-90 chars/line. Keep the actual question
+   display (qArea + timerArea) at ~820px max even though their parent
+   .app is now 1200px. Chrome elements (stats row, study-rec card,
+   readiness card, nav-tabs, domain grid, controls row) still use the
+   full 1200px for breathing room. */
+#qArea, #timerArea {
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 
 /* ── DOMAIN WEIGHT BADGE ── */
@@ -4521,7 +4537,7 @@ header::after {
     </span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v9.0</span>
+    <span class="bank-pill" id="versionPill">v9.1</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4769,7 +4785,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v9.0';
+const APP_VERSION = 'v9.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10812,6 +10828,19 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Brand refresh and a wider canvas',
+    items: [
+      { cat: 'new', text: 'A new brand-aligned hero section anchors the app around the Aurivan slogan — Master Modern Risk — with the four guiding pillars: Navigate, Master, Adapt, Lead.' },
+      { cat: 'new', text: 'Coverage roadmap chips show what is live (CISA) and what is on the way (CRISC, CISM, Cloud Audit, AI Governance).' },
+      { cat: 'new', text: 'A tip jar option lets supporters chip in to keep the app free and growing. Optional, no account, never shown as a paywall.' },
+      { cat: 'new', text: 'A new Tip button in the header makes supporting the project a one-click action.' },
+      { cat: 'improved', text: 'The app now uses more of your screen on larger displays so dashboards, stats, and panels breathe — while question text stays in a comfortable reading width.' },
+      { cat: 'improved', text: 'Grammar pass across all five domains: cleaner sentences, corrected article and verb errors, and clearer wording in scenarios and explanations.' },
+      { cat: 'fixed', text: 'Seven question explanations across Domain 1 and Domain 4 mistakenly listed the correct letter inside the wrong-answer group. They now list the right distractors.' }
+    ]
+  },
+  {
+    version: 'v9.0',
     title: 'Rebuilt from source',
     items: [
       { cat: 'new', text: '1,004 original questions, authored directly from ISACA, NIST, and ISO standards. No exam-bank citations in the chain. Every question traces to a primary source document.' },
