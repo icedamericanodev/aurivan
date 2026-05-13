@@ -107,6 +107,71 @@ else
   printf "  ${OK} reported (errors=%s warnings=%s; new batches should use --batch --strict)\n" "$errors_count" "$warnings_count"
 fi
 
+# 7. Accessibility (pa11y, WCAG AA) -----------------------------------------
+# pa11y runs WCAG AA against a served URL. We skip silently if node/npx is
+# absent or no local server is running on port 8000 — the maintainer can run
+# it on demand: `python3 -m http.server 8000 &` then re-run verify_repo.sh.
+# Strict (fail) mode triggers only if explicitly enabled via $STRICT_A11Y.
+printf "\nAccessibility (pa11y WCAG AA):\n"
+if command -v node >/dev/null 2>&1 && command -v npx >/dev/null 2>&1; then
+  if curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/ 2>/dev/null | grep -q "200"; then
+    # Capture output, count failures by severity
+    if pa11y_out=$(npx --yes pa11y@8 --reporter csv --standard WCAG2AA http://localhost:8000/ 2>&1); then
+      a11y_errors=$(echo "$pa11y_out" | grep -c '^"error"' || true)
+      a11y_warnings=$(echo "$pa11y_out" | grep -c '^"warning"' || true)
+      if [ "$a11y_errors" -eq 0 ]; then
+        printf "  ${OK} 0 errors / %s warnings (WCAG 2.1 AA)\n" "$a11y_warnings"
+      else
+        printf "  ${FAIL} %s errors / %s warnings — run pa11y locally for details\n" "$a11y_errors" "$a11y_warnings"
+        if [ -n "${STRICT_A11Y:-}" ]; then status=1; fi
+      fi
+    else
+      printf "  pa11y failed to run (network? install issue?) — skipped\n"
+    fi
+  else
+    printf "  skipped (no local server on :8000 — start with: python3 -m http.server 8000 &)\n"
+  fi
+else
+  printf "  skipped (node/npx not available)\n"
+fi
+
+# 8. Lighthouse (performance + a11y + best-practices + SEO) -----------------
+# Lighthouse CI runs a headless Chrome audit. Same skip rules as pa11y.
+# Outputs a one-line score summary; the JSON/HTML reports stay in /tmp.
+# Disabled by default (slow ~30s) — enable with $RUN_LIGHTHOUSE=1.
+if [ -n "${RUN_LIGHTHOUSE:-}" ]; then
+  printf "\nLighthouse (perf + a11y + best-practices + SEO):\n"
+  if command -v node >/dev/null 2>&1 && command -v npx >/dev/null 2>&1; then
+    if curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/ 2>/dev/null | grep -q "200"; then
+      lh_out=$(npx --yes lighthouse@12 http://localhost:8000/ \
+        --quiet --chrome-flags="--headless --no-sandbox" \
+        --output=json --output-path=/tmp/_lighthouse.json 2>&1 || true)
+      if [ -f /tmp/_lighthouse.json ]; then
+        # Extract category scores via python (avoid jq dependency)
+        python3 - <<'PY'
+import json, sys
+try:
+    data = json.load(open('/tmp/_lighthouse.json'))
+    cats = data.get('categories', {})
+    for k in ('performance','accessibility','best-practices','seo'):
+        c = cats.get(k, {})
+        score = int((c.get('score') or 0) * 100)
+        mark = "✓" if score >= 90 else "○"
+        print(f"  {mark} {k:18s} {score:>3d}/100")
+except Exception as e:
+    print(f"  Lighthouse output parse failed: {e}")
+PY
+      else
+        printf "  Lighthouse failed to produce JSON — check logs\n"
+      fi
+    else
+      printf "  skipped (no local server on :8000)\n"
+    fi
+  else
+    printf "  skipped (node/npx not available)\n"
+  fi
+fi
+
 # Summary --------------------------------------------------------------------
 echo
 if [ $status -eq 0 ]; then

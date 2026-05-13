@@ -85,6 +85,44 @@ for d,e in counts.items():
 # See scripts/lint_inline_js.sh — invoked automatically by the SessionStart hook.
 ```
 
+## UI/UX review workflow (added v9.0)
+
+After any commit that touches `index.html` (styles, components, copy), invoke
+`cisa-ux-reviewer` BEFORE merging. It complements the content reviewers:
+
+| Agent | Scope | When to invoke |
+|---|---|---|
+| `cisa-exam-reviewer` | Question content, distractors, citations, scenario realism | After authoring a batch of questions |
+| `cisa-pedagogy-checker` | Wrong-answer explanations + tips teach the principle | After authoring a batch of questions |
+| `cisa-ux-reviewer` | Design tokens, brand consistency, WCAG AA, mobile reflow, IA | After UI-touching commits |
+| `cisa-citation-*` | Fabricated / mis-attributed framework_ref | At Stage 2.5 of authoring |
+
+The UX reviewer reads `design-notes/MASTER_HANDOFF.md` as locked source of
+truth and flags deviations from the variant selections table. Findings are
+tiered HARD ERROR / PRECISION / OBSERVATION — apply HARD ERRORS inline
+before merge.
+
+## Local quality gates beyond schema/lint
+
+`scripts/verify_repo.sh` (SessionStart hook) runs these in addition to the
+schema/lint checks:
+
+- **JS no-undef lint** — always on (skipped if node/npx missing)
+- **Accessibility (pa11y, WCAG AA)** — runs only if a local server is on
+  http://localhost:8000. To exercise it, run `python3 -m http.server 8000 &`
+  before the hook. Default is non-blocking; set `STRICT_A11Y=1` to fail
+  on a11y errors.
+- **Lighthouse (perf + a11y + best-practices + SEO)** — opt-in (slow ~30s).
+  Run with `RUN_LIGHTHOUSE=1 bash scripts/verify_repo.sh`. Same local-server
+  requirement as pa11y.
+
+The maintainer pattern for a full pre-merge check:
+```bash
+python3 -m http.server 8000 &
+RUN_LIGHTHOUSE=1 STRICT_A11Y=1 bash scripts/verify_repo.sh
+kill %1
+```
+
 ## Conventions
 
 - **Tip authoring voice.** 3–4 short tips per question:
