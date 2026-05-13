@@ -40,6 +40,23 @@ work without rediscovering the layout.
    `originalToDisplay` / `displayToOriginal` to translate display letters
    ↔ original letters. Touching this breaks both grading and the
    post-exam review.
+5. **Every PR that ships a user-visible change MUST bump `APP_VERSION` AND
+   add a What's New entry in the same commit.** No exceptions.
+   - "User-visible" = anything a learner could notice: new feature, UI
+     change, copy edit, bug fix, content change, performance boost,
+     a11y improvement.
+   - Internal-only changes (scripts, agents, CI, docs, dev tooling,
+     refactors with no behavior change) do NOT require a bump.
+   - Versioning: `vMAJOR.MINOR` semver-ish.
+     - MAJOR bump = breaking redesign or full bank rebuild (rare).
+     - MINOR bump = new feature, UI uplift, content release, or a cluster
+       of fixes. Increment by 0.1 (v9.0 → v9.1 → v9.2).
+     - For tiny single-fix PRs, still bump the MINOR — we don't use patch
+       versions. The bank gets enough activity that semver patches add
+       noise without value.
+   - The bump-checklist (see "Bump version" workflow below) MUST be
+     completed before opening the PR. Reviewers will reject PRs that
+     ship behavior but leave `APP_VERSION` stale.
 
 ## Common workflows
 
