@@ -219,20 +219,156 @@ body::before {
 .domain-card:hover .dc-loading { background: rgba(255,255,255,0.22); color: #fff; }
 @keyframes dcLoadingPulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
 
-/* ── SUBTOPIC FILTER ── */
+/* ── SUBTOPIC FILTER (v9.1: collapsed accordion + categorized expanded drawer) ── */
 .subtopic-filter-row {
-  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  margin-bottom: 12px;
   padding: 10px 14px; background: var(--surface); border: 2px solid var(--border);
   border-radius: 12px; animation: slideUp 0.3s ease both;
 }
+.subtopic-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.subtopic-pick-divider {
+  position: relative;
+  display: inline-flex; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+  padding-left: 12px;
+  margin-left: 4px;
+  border-left: 1px solid var(--border2);
+  white-space: nowrap;
+}
+.subtopic-pick-label {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 700;
+  cursor: help;
+}
 .subtopic-chip {
   font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  padding: 4px 10px; border-radius: 100px; border: 1.5px solid var(--border2);
+  padding: 5px 11px; border-radius: 100px; border: 1.5px solid var(--border2);
   background: var(--surface2); color: var(--text2); cursor: pointer;
   transition: var(--tr); font-weight: 700; letter-spacing: 0.04em; text-transform: capitalize;
+  white-space: nowrap; max-width: 100%;
 }
 .subtopic-chip:hover { border-color: var(--accent); color: var(--accent); }
 .subtopic-chip.active { background: var(--accent-fill); border-color: var(--accent-fill); color: #fff; }
+/* Accuracy-tinted left dot on top-pick chips (when user has practice history) */
+.subtopic-chip.weak       { box-shadow: inset 4px 0 0 var(--wrong); padding-left: 14px; }
+.subtopic-chip.borderline { box-shadow: inset 4px 0 0 var(--warning); padding-left: 14px; }
+.subtopic-chip.strong     { box-shadow: inset 4px 0 0 var(--correct); padding-left: 14px; }
+.subtopic-chip.active.weak,
+.subtopic-chip.active.borderline,
+.subtopic-chip.active.strong { box-shadow: none; padding-left: 11px; }
+
+/* Active-when-not-in-topPicks: highlighted with × to clear */
+.subtopic-chip.active.selected-elsewhere {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: #fff;
+}
+
+/* Browse-all expander */
+.subtopic-expand-btn {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.08em;
+  padding: 5px 12px; border-radius: 100px;
+  background: transparent; border: 1.5px dashed var(--border2);
+  color: var(--text2); cursor: pointer;
+  transition: var(--tr); font-weight: 700;
+  white-space: nowrap;
+}
+.subtopic-expand-btn:hover {
+  border-color: var(--accent); color: var(--accent);
+  border-style: solid;
+}
+
+/* Expanded drawer with categorized chips */
+.subtopic-drawer {
+  margin-top: -4px;
+  margin-bottom: 16px;
+  padding: 14px 16px 16px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-top: 1px dashed var(--border2);
+  border-radius: 0 0 12px 12px;
+  max-height: 420px;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease both;
+}
+.subtopic-search-row {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface);
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.subtopic-search {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--tr);
+}
+.subtopic-search:focus { border-color: var(--accent); }
+.subtopic-search::placeholder { color: var(--muted); }
+.subtopic-search-clear {
+  background: var(--surface2); border: 1.5px solid var(--border);
+  color: var(--muted); width: 36px; height: 36px;
+  border-radius: 10px; font-size: 18px; cursor: pointer;
+  transition: var(--tr); padding: 0;
+}
+.subtopic-search-clear:hover { color: var(--text); border-color: var(--accent); }
+.subtopic-cat {
+  margin-top: 14px;
+}
+.subtopic-cat-header {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.subtopic-cat-name { flex: 1; }
+.subtopic-cat-count {
+  font-size: 9px; letter-spacing: 0.1em;
+  color: var(--muted);
+  background: var(--surface2);
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+.subtopic-cat-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.subtopic-no-match {
+  padding: 24px 8px;
+  text-align: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+@media (max-width: 600px) {
+  .subtopic-expand-btn { margin-left: 0; min-height: 36px; }
+  .subtopic-pick-divider { width: 100%; border-left: none; padding-left: 0; margin-left: 0; }
+  .subtopic-drawer { max-height: 360px; padding: 12px 10px; }
+}
 
 /* ── TOAST NOTIFICATION ── */
 .toast {
@@ -8813,6 +8949,8 @@ function showToast(msg, type, dur) {
 
 // ── SUBTOPIC FILTER ──
 var activeSubtopic = null;
+var subtopicFilterExpanded = false; // v9.1: collapsed-by-default accordion
+var subtopicFilterSearch = '';      // v9.1: search query inside expanded view
 
 function getSubtopicsForDomain(domain) {
   var qs = domain === 'all'
@@ -8823,24 +8961,228 @@ function getSubtopicsForDomain(domain) {
   return Object.keys(seen).sort();
 }
 
+// v9.1: count questions per subtopic in the selected domain (drives category counts)
+function getSubtopicQuestionCounts(domain) {
+  var qs = domain === 'all'
+    ? Object.keys(QB).reduce(function(a, d){ return a.concat(QB[d]||[]); }, [])
+    : (QB[String(domain)] || []);
+  var counts = {};
+  qs.forEach(function(q){ if (q.subtopic) counts[q.subtopic] = (counts[q.subtopic]||0) + 1; });
+  return counts;
+}
+
+// v9.1: keyword-driven categorization. Order matters: more-specific categories first
+// so "Cloud KMS Audit" lands in Cloud Security (not Governance via "audit" later).
+var SUBTOPIC_CATEGORIES = [
+  ['Cloud Security',                ['cloud', 'csp ', 'csa ', 'aws ', 'azure', 'gcp ', 'serverless', 'kubernetes', 'kms']],
+  ['PKI & Cryptography',            ['certificate', ' ca ', 'pki', 'crypt', 'aes', 'rsa', 'hash', 'signature', 'key rotation', 'key lifecycle', 'key management', 'tls', 'ssl', 'pqc', 'quantum']],
+  ['Identity & Access',             ['access ', 'authentication', 'authoriz', 'iam ', 'mfa ', 'privileged', 'rbac', 'abac', 'pam ', 'identity', 'session', 'oauth', 'sso', 'least privilege', 'segregation', 'recertification']],
+  ['App & Dev Security',            ['api ', 'application', 'bug bounty', 'devsecops', 'web app', 'sast', 'dast', 'sca ', 'iast', 'code signing', 'code review', 'sdlc', 'agile', 'devops', 'ci/cd', 'container', 'microservices', 'pipeline', 'open source', 'oss', 'dependency', 'supply']],
+  ['Data Protection & Privacy',     ['data classification', 'data loss', 'dlp', 'encryption', 'pii', 'phi', 'consent', 'privacy', 'anonymiz', 'pseudonymiz', 'minimization', 'retention', 'data integrity', 'data migration', 'data governance']],
+  ['Threat & Vulnerability',        ['vulnerability', 'threat', 'patch', 'cve', 'attack method', 'malware', 'ransomware', 'ddos', 'zero day', 'zero-day', 'pentest', 'red team', 'mitre att', 'edr ', 'siem', 'soar', 'ioc', 'apt', 'social engineering']],
+  ['Incident Response & Forensics', ['forensic', 'incident', 'crisis', 'investigation', 'breach', 'bec ', 'wire fraud', 'response', 'containment', 'eradicat', 'recovery', 'backup', 'restore', 'chain of custody', 'evidence', 'log analysis', 'destructive', 'covert insider']],
+  ['Network Security',              ['network', 'firewall', 'waf', 'ndr', 'ids', 'ips', 'segmentation', 'vpn', 'dns', 'east-west', 'micro-segmentation', 'zero trust', 'zta', 'service mesh', 'east west', 'perimeter']],
+  ['Mobile & Wireless',             ['wireless', 'wi-fi', 'wifi', 'mobile', 'byod', 'iot', 'bluetooth', 'smartphone', 'tablet', 'mdm', 'mam']],
+  ['Physical & Environmental',      ['physical', 'cctv', 'tailgat', 'environmental', 'facility', 'badge', 'visitor', 'data center', 'fire suppression', 'hvac', 'power', 'mantrap']],
+  ['BCP & DR',                      ['bcp', 'drp', 'business continuity', 'disaster', 'rto', 'rpo', 'bia', 'failover', 'resilience', 'redundan', 'high availability', 'ha ', 'restore']],
+  ['Training & Awareness',          ['awareness', 'training', 'phishing', 'simulation', 'culture', 'workforce', 'people']],
+  ['Vendor & Third-Party',          ['vendor', 'third-party', 'third party', 'msp ', 'mssp', 'outsourc', 'soc 2', 'soc2', 'sla ', 'supplier', 'tpr']],
+  ['M&A & Strategy',                ['m&a', 'merger', 'acquisition', 'divestiture', 'esg', 'transformation', 'capstone', 'strategy', 'roadmap']],
+  ['Governance & Compliance',       ['audit', 'standards', 'governance', 'risk', 'compliance', 'gdpr', 'sox', 'pci dss', 'pci ', 'hipaa', 'glba', 'ccpa', 'pipa', 'lgpd', 'sec ', 'finra', 'regulatory', 'board', 'committee', 'policy', 'framework', 'methodology']],
+];
+function categorizeSubtopic(subtopic) {
+  var s = ' ' + subtopic.toLowerCase() + ' ';
+  for (var i = 0; i < SUBTOPIC_CATEGORIES.length; i++) {
+    var keywords = SUBTOPIC_CATEGORIES[i][1];
+    for (var j = 0; j < keywords.length; j++) {
+      if (s.indexOf(keywords[j]) !== -1) return SUBTOPIC_CATEGORIES[i][0];
+    }
+  }
+  return 'Other';
+}
+
+// v9.1: compute per-subtopic accuracy from session history. Returns { subtopic: pct (0..100) | null }
+function getSubtopicAccuracy(domain) {
+  var hist = (S.sessionHistory || []).filter(function(h){
+    return domain === 'all' || String(h.domain) === String(domain);
+  });
+  // For each subtopic we have, count answered + correct from history that mentions it.
+  // sessionHistory truncates to first 80 chars of question stem (not subtopic), so we
+  // proxy via questionStem→subtopic lookup using the bank. Approximate but useful.
+  var qToST = {};
+  var qs = domain === 'all'
+    ? Object.keys(QB).reduce(function(a, d){ return a.concat(QB[d]||[]); }, [])
+    : (QB[String(domain)] || []);
+  qs.forEach(function(q){ if (q.question && q.subtopic) qToST[q.question.substring(0,80)] = q.subtopic; });
+  var stats = {};
+  hist.forEach(function(h){
+    var st = qToST[h.question];
+    if (!st) return;
+    if (!stats[st]) stats[st] = { answered: 0, correct: 0 };
+    stats[st].answered++;
+    if (h.correct) stats[st].correct++;
+  });
+  // Return { st: pct } only for subtopics with ≥3 answered
+  var out = {};
+  Object.keys(stats).forEach(function(st){
+    if (stats[st].answered >= 3) {
+      out[st] = Math.round((stats[st].correct / stats[st].answered) * 100);
+    }
+  });
+  return out;
+}
+
+// v9.1: pick 5 subtopics to surface as quick-picks in the collapsed filter.
+// Strategy: lowest-accuracy subtopics first (with ≥3 history); fallback to
+// most-frequent subtopics by question count.
+function pickTopSubtopics(domain, allSubtopics, count) {
+  count = count || 5;
+  var accuracy = getSubtopicAccuracy(domain);
+  var weakest = Object.keys(accuracy).sort(function(a, b){ return accuracy[a] - accuracy[b]; });
+  if (weakest.length >= 3) {
+    // Trust the weakest signal — pad with random others if fewer than count
+    if (weakest.length >= count) return weakest.slice(0, count);
+    var rest = allSubtopics.filter(function(st){ return weakest.indexOf(st) === -1; });
+    return weakest.concat(rest.slice(0, count - weakest.length));
+  }
+  // Fallback: most-frequent subtopics (most questions in the bank)
+  var counts = getSubtopicQuestionCounts(domain);
+  return allSubtopics.slice().sort(function(a, b){
+    return (counts[b] || 0) - (counts[a] || 0);
+  }).slice(0, count);
+}
+
 function renderSubtopicFilter() {
   var area = document.getElementById('subtopicFilterArea');
   if (!area) return;
   var d = S.selectedDomain;
   var subtopics = getSubtopicsForDomain(d);
   if (!subtopics.length || d === 'all') { area.innerHTML = ''; return; }
-  var chips = subtopics.map(function(st){
+  var counts = getSubtopicQuestionCounts(d);
+  var accuracy = getSubtopicAccuracy(d);
+  var hasHistory = Object.keys(accuracy).length >= 3;
+  var topPicks = pickTopSubtopics(d, subtopics, 5);
+  var search = subtopicFilterSearch.toLowerCase();
+
+  // Filter chip helper — returns the HTML for one chip
+  function chipHtml(st, opts){
+    opts = opts || {};
+    var label = st.replace(/-/g, ' ');
     var active = activeSubtopic === st ? ' active' : '';
-    return '<button class="subtopic-chip' + active + '" onclick="setSubtopicFilter(\'' + st + '\')">' + escapeHtml(st.replace(/-/g,' ')) + '</button>';
-  }).join('');
+    var accClass = '';
+    if (opts.showAccuracy && accuracy[st] !== undefined) {
+      accClass = accuracy[st] < 50 ? ' weak'
+               : accuracy[st] < 75 ? ' borderline' : ' strong';
+    }
+    return '<button class="subtopic-chip' + active + accClass + '"'
+      + ' onclick="setSubtopicFilter(\'' + st.replace(/'/g, "\\'") + '\')"'
+      + ' title="' + (counts[st] || 0) + ' question' + ((counts[st]||0) === 1 ? '' : 's')
+      + (accuracy[st] !== undefined ? ' · ' + accuracy[st] + '% accuracy' : '')
+      + '">' + escapeHtml(label) + '</button>';
+  }
+
+  // Top picks (collapsed view): All + 5 quick picks + expand
+  var allChip = '<button class="subtopic-chip' + (!activeSubtopic ? ' active' : '') + '"'
+    + ' onclick="setSubtopicFilter(null)">All</button>';
+  var topPickChips = topPicks.map(function(st){ return chipHtml(st, { showAccuracy: hasHistory }); }).join('');
+  var pickLabel = hasHistory
+    ? '<span class="subtopic-pick-label" title="Your 5 weakest subtopics based on practice history">Weak spots</span>'
+    : '<span class="subtopic-pick-label">Quick pick</span>';
+  var expandBtn = '<button class="subtopic-expand-btn" onclick="toggleSubtopicExpand()">'
+    + (subtopicFilterExpanded ? 'Hide all &#9650;' : 'Browse all (' + subtopics.length + ') &#9660;')
+    + '</button>';
+
+  // Active filter chip (highlighted, removable) — shown when filter NOT in topPicks
+  var activeChip = '';
+  if (activeSubtopic && topPicks.indexOf(activeSubtopic) === -1) {
+    activeChip = '<button class="subtopic-chip active selected-elsewhere"'
+      + ' onclick="setSubtopicFilter(null)"'
+      + ' title="Click to clear">'
+      + escapeHtml(activeSubtopic.replace(/-/g, ' ')) + ' &times;</button>';
+  }
+
+  // Expanded view: search + categorized chip groups
+  var expandedHtml = '';
+  if (subtopicFilterExpanded) {
+    // Group subtopics by category, then alphabetical within. Apply search filter.
+    var grouped = {};
+    subtopics.forEach(function(st){
+      if (search && st.toLowerCase().indexOf(search) === -1
+                 && categorizeSubtopic(st).toLowerCase().indexOf(search) === -1) return;
+      var cat = categorizeSubtopic(st);
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(st);
+    });
+    // Preserve the order of SUBTOPIC_CATEGORIES + 'Other' last
+    var categoryOrder = SUBTOPIC_CATEGORIES.map(function(c){ return c[0]; }).concat(['Other']);
+    var groupsHtml = categoryOrder
+      .filter(function(cat){ return grouped[cat] && grouped[cat].length; })
+      .map(function(cat){
+        var items = grouped[cat].sort();
+        var itemsHtml = items.map(function(st){ return chipHtml(st, { showAccuracy: hasHistory }); }).join('');
+        return '<div class="subtopic-cat">'
+          + '<div class="subtopic-cat-header">'
+            + '<span class="subtopic-cat-name">' + escapeHtml(cat) + '</span>'
+            + '<span class="subtopic-cat-count">' + items.length + '</span>'
+          + '</div>'
+          + '<div class="subtopic-cat-chips">' + itemsHtml + '</div>'
+        + '</div>';
+      }).join('');
+    var noMatch = !groupsHtml
+      ? '<div class="subtopic-no-match">No subtopics match &ldquo;' + escapeHtml(subtopicFilterSearch) + '&rdquo;.</div>'
+      : '';
+    expandedHtml = '<div class="subtopic-drawer">'
+      + '<div class="subtopic-search-row">'
+        + '<input type="text" class="subtopic-search" id="subtopicSearchInput" placeholder="Search subtopics&hellip;"'
+        + ' value="' + escapeHtml(subtopicFilterSearch) + '"'
+        + ' oninput="filterSubtopicSearch(this.value)">'
+        + (search ? '<button class="subtopic-search-clear" onclick="filterSubtopicSearch(\'\')" title="Clear search">&times;</button>' : '')
+      + '</div>'
+      + groupsHtml
+      + noMatch
+    + '</div>';
+  }
+
   area.innerHTML = '<div class="subtopic-filter-row">'
-    + '<span class="subtopic-label" style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">Sub-topic</span>'
-    + '<button class="subtopic-chip' + (!activeSubtopic ? ' active' : '') + '" onclick="setSubtopicFilter(null)">All</button>'
-    + chips + '</div>';
+    + '<span class="subtopic-label">Sub-topic</span>'
+    + allChip
+    + (topPickChips ? '<span class="subtopic-pick-divider">' + pickLabel + '</span>' + topPickChips : '')
+    + activeChip
+    + expandBtn
+    + '</div>' + expandedHtml;
+
+  // Restore focus on search input after re-render
+  if (subtopicFilterExpanded && search) {
+    setTimeout(function(){
+      var inp = document.getElementById('subtopicSearchInput');
+      if (inp) {
+        inp.focus();
+        // Place cursor at end
+        var len = inp.value.length;
+        try { inp.setSelectionRange(len, len); } catch(e){}
+      }
+    }, 0);
+  }
+}
+
+function toggleSubtopicExpand() {
+  subtopicFilterExpanded = !subtopicFilterExpanded;
+  if (!subtopicFilterExpanded) subtopicFilterSearch = '';
+  renderSubtopicFilter();
+}
+
+function filterSubtopicSearch(q) {
+  subtopicFilterSearch = q || '';
+  renderSubtopicFilter();
 }
 
 function setSubtopicFilter(st) {
   activeSubtopic = st;
+  // Picking a filter collapses the drawer (the chosen filter is visible inline now)
+  if (st) {
+    subtopicFilterExpanded = false;
+    subtopicFilterSearch = '';
+  }
   renderSubtopicFilter();
 }
 // ── PHASE 2: EXAM DATE + READINESS SCORE ──
