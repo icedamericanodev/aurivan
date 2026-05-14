@@ -9645,7 +9645,7 @@
         "D": "This describes Maximum Tolerable Downtime (MTD) — the outer ceiling beyond which the business itself is jeopardized. RTO must always be less than or equal to MTD."
       },
       "tips": [
-        "RTO = Recovery TIME Objective. The 'T' = Time the system is DOWN. Measures the outage duration target.",
+        "Mnemonic: RTO measures elapsed time the service is down — the T stands for Time-to-restore. Counted forward from outage start.",
         "Disambiguation: RTO answers 'how fast back online?' RPO answers 'how much data can we lose?' MTD is the outer survival limit. WRT is the post-restore catch-up.",
         "Exam shortcut: any answer about elapsed time to restore service = RTO. Any answer about data loss measured in time = RPO."
       ],
@@ -9666,14 +9666,14 @@
         "A": "The maximum elapsed time within which a service must be restored after disruption to avoid unacceptable consequences.",
         "B": "The maximum acceptable amount of data loss measured in time prior to a disruption.",
         "C": "The mean elapsed time between successive failures of a repairable system component.",
-        "D": "The total cost incurred per hour of unplanned downtime for a critical business process."
+        "D": "The maximum total outage duration the business can survive before viability is threatened."
       },
       "correct": "B",
       "correct_explanation": "RPO is the target maximum age of files or data that must be recovered from backup storage for normal operations to resume. It is expressed in time (e.g., 15 minutes, 4 hours, 24 hours) measured backward from the moment of disruption. ISO 22301:2019 and NIST SP 800-34 Rev 1 both define RPO as a data-loss tolerance objective that drives backup frequency, replication latency, and journaling strategy. An RPO of one hour requires backups or replication at least hourly. Option A describes RTO. Option C describes MTBF. Option D describes downtime cost, not RPO.",
       "wrong_explanations": {
         "A": "This describes the Recovery Time Objective (RTO), which measures elapsed time to restore service, not acceptable data loss.",
         "C": "This describes Mean Time Between Failures (MTBF), a reliability metric for repairable components, unrelated to backup recovery objectives.",
-        "D": "Downtime cost is an economic impact metric used during the BIA to justify investment in recovery. It is not a recovery objective and is not measured in time."
+        "D": "This describes Maximum Tolerable Downtime (MTD), not RPO. MTD answers 'how long can we be down before the business fails?' — a downtime-tolerance metric. RPO answers 'how much data loss can we tolerate?' — a data-recency metric. Candidates conflate the two because both anchor BCP planning; MTD bounds RTO, while RPO bounds backup frequency."
       },
       "tips": [
         "RPO = Recovery POINT Objective. The 'P' = Point in time to which data must be recovered. Measures acceptable data loss.",
@@ -9769,7 +9769,7 @@
         "D": "Setting and reporting on service targets is Service Level Management. It interacts with Incident Management (incidents may breach SLAs) but is a separate practice with a different goal."
       },
       "tips": [
-        "Conceptual split: Incident Management brings service BACK (accepts a workaround if it restores service). Problem Management finds out WHY (unsatisfied until root cause is fixed). Different practices, different time horizons.",
+        "Incident Management's job is speed of restoration: get the service back fast, even with a workaround. Root-cause work waits for Problem Management.",
         "Disambiguation: Incident Management restores service. Problem Management finds and fixes root cause. They are deliberately separate.",
         "Exam shortcut: 'restore service as quickly as possible' = Incident Management. 'eliminate root cause' = Problem Management."
       ],

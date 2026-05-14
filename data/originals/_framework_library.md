@@ -1557,3 +1557,176 @@ sub-references like "(Managed Risk) and APO12.03").
 - GDPR Article 56 (One-Stop-Shop / Lead Supervisory Authority)
 - SEC Reg S-K Item 106 (Cybersecurity Risk Management, Strategy, Governance, and Incident Disclosure)
 - SEC Regulation S-K Item 407(d)(5)
+
+---
+
+## v10.5 Additions — recall-tier expansion and new content
+
+Citations added 2026-05-14 to cover the v10.0-v10.4 content additions:
+30 foundational recall questions (v10.4), 24 precision-word companion
+questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
+
+### ISACA
+- ISACA "Audit Data Analytics" guidance
+- ISACA "Auditing Cryptocurrency Operations" guidance
+- ISACA CISA Review Manual Domain 4
+- ISACA CISA Review Manual on General vs Application Controls
+- ISACA CISA Review Manual, Domain 1 — Use of CAATs
+- ISACA CISA Review Manual, Domain 2
+- ISACA CISA Review Manual, Domain 3 SDLC guidance
+- ISACA CISA Review Manual, Domain 3 testing levels
+- ISACA CISA Review Manual, Domain 3 third-party software acquisition guidance
+- ISACA DevOps audit and assurance guidance
+- ISACA IS Audit and Assurance Standards
+- ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Continuous Auditing
+- ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling
+- ISACA IT Audit Standards on Audit Function Management
+- ISACA IT Audit Standards on CSA
+- ISACA IT Audit Standards on Control Classifications
+- ISACA IT Audit and Assurance Standards / ITAF
+- ISACA ITAF 4th Edition Tools and Techniques (Audit Sampling)
+- ISACA ITAF 4th Edition Tools and Techniques (Use of CAATs)
+- ISACA ITAF 4th Edition, General Standard 1005 (Due Professional Care)
+- ISACA ITAF Performance Standard 1205 (Evidence)
+- ISACA Information Security Policy guidance (parallel for security culture)
+- ISACA Risk IT Framework, 2nd Edition
+- ISACA governance guidance on the audit committee
+
+### ITAF
+- ITAF (Information Technology Assurance Framework) — Standards and Guidelines layering
+- ITAF (Information Technology Assurance Framework) — Standards layer authority
+- ITAF General ISACA IT Audit Standard 1006 (Proficiency)
+- ITAF General Standards
+- ITAF General Standards layer
+- ITAF General Standards on Audit Charter and Reporting Line
+- ITAF General Standards on Audit Methodology
+- ITAF General Standards on Audit Quality Assurance
+- ITAF General Standards on Compliance with Multiple Frameworks
+- ITAF General Standards on Control Self-Assessment
+- ITAF General Standards on Proficiency, Due Care, and Documentation
+- ITAF General Standards on the IS Audit Function
+- ITAF Performance Standards on Agile Auditing
+- ITAF Performance Standards on Audit Documentation
+- ITAF Performance Standards on Audit Evidence
+- ITAF Performance Standards on Audit Objectives
+- ITAF Performance Standards on Audit Programs
+- ITAF Performance Standards on Audit Reporting
+- ITAF Performance Standards on Audit Reports
+- ITAF Performance Standards on CAATs and Data Analytics
+- ITAF Performance Standards on Engagement Resource Management
+- ITAF Performance Standards on Engagement Scope
+- ITAF Performance Standards on External Experts
+- ITAF Performance Standards on Follow-up
+- ITAF Performance Standards on Framework Selection
+- ITAF Performance Standards on IT General Controls
+- ITAF Performance Standards on Integrated Audits
+- ITAF Performance Standards on Logical Access
+- ITAF Performance Standards on Materiality and Risk
+- ITAF Performance Standards on Regulatory Compliance
+- ITAF Performance Standards on Resource Management
+- ITAF Performance Standards on Risk Treatment
+- ITAF Performance Standards on Special-Purpose Reports
+- ITAF Performance Standards on Testing
+- ITAF Performance Standards on Third-Party Audit Reports (SOC 2)
+- ITAF Tools and Techniques (Information Technology Assurance Framework)
+- ITAF Tools and Techniques on CAATs and Continuous Auditing
+- ITAF Tools and Techniques on Risk Assessment Techniques
+- ITAF section 1001
+- ITAF — IT Audit Framework (ISACA)
+
+### IIA
+- IIA 1300-series QAIP guidance
+- IIA International Professional Practices Framework (IPPF)
+- IIA International Standards 1110 (Organizational Independence)
+- IIA International Standards 1210 (Proficiency)
+- IIA International Standards 1210.A2 (Fraud Knowledge)
+- IIA International Standards 1300 (Quality Assurance and Improvement Program)
+- IIA International Standards 1300 series (Quality Assurance and Improvement Program)
+- IIA International Standards 1311 (Internal) and 1312 (External Assessments)
+- IIA International Standards 2060 (Reporting to Senior Management and the Board)
+- IIA International Standards 2200 (Engagement Planning)
+- IIA International Standards for the Professional Practice of Internal Auditing, Standard 1100 (Independence and Objectivity)
+- IIA Position Paper on Continuous Auditing
+- IIA Practice Guide on CSA
+- IIA Standard 1000 (Purpose, Authority, and Responsibility)
+- IIA Standard 1130 (Impairments to Independence or Objectivity)
+- IIA Three Lines Model (2020 update of the Three Lines of Defense Model)
+
+### AICPA
+- AICPA AU-C 500 (Audit Evidence)
+- AICPA AU-C 520 (Analytical Procedures, analogous)
+- AICPA SOC for Service Organizations framework
+- AICPA SSAE 18
+- AICPA SSAE 18 / AT-C Section 205 (Examination Engagements) and the foundational AT-C Section 105
+
+### ISO
+- ISO 22301 (Business Continuity Management Systems)
+- ISO 22301:2019 Security and resilience — Business continuity management systems
+- ISO 22301:2019 clause 8.2.2
+- ISO/IEC 27001:2022
+- ISO/IEC 27001:2022 Information Security Management Systems
+- ISO/IEC 38500:2015 Information technology - Governance of IT for the organization
+
+### NIST
+- NIST AI Risk Management Framework (AI RMF 1.0) — adversarial robustness guidance
+- NIST SP 800-160 Systems Security Engineering
+- NIST SP 800-161r1 Supply Chain Risk Management
+- NIST SP 800-162 (ABAC)
+- NIST SP 800-175B Rev 1
+- NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems
+- NIST SP 800-34 Rev 1 Section 3.2
+- NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites
+- NIST SP 800-53 AC-6 (Least Privilege) + AU-6 (Audit Review)
+- NIST SP 800-53 Rev 5
+- NIST SP 800-53 Rev 5 (AC family)
+- NIST SP 800-53 Rev 5 (AC family, AU family, IA family)
+- NIST SP 800-57 Part 1 Rev 5
+- NIST SP 800-63B (Digital Identity Guidelines)
+
+### COBIT
+- COBIT 2019 Framework: Introduction and Methodology (EDM01-EDM05
+- COBIT 2019 control-risk mapping
+- COBIT MEA02
+
+### ITIL
+- ITIL 4 Change Enablement practice guide
+- ITIL 4 Foundation
+- ITIL 4 Foundation, Incident Management practice
+- ITIL 4 Foundation: ITIL 4 Edition (AXELOS / PeopleCert), Four Dimensions of Service Management
+
+### Sarbanes
+- Sarbanes-Oxley Act Section 301
+- Sarbanes-Oxley Act Section 407
+
+### GDPR
+- GDPR Article 49 (Derogations for Specific Situations)
+- GDPR Article 88 (Processing in the Context of Employment)
+- GDPR Articles 33 (Breach Notification to Supervisory Authority), 34 (Breach Notification to Data Subjects)
+- GDPR Articles 48-49 (Transfers Subject to Appropriate Safeguards / Derogations)
+- GDPR Articles 5, 13, 14, 35 (Principles, Information, DPIA)
+- GDPR Articles 5, 30, 31, 35 (Principles, Records of Processing, Cooperation, DPIA)
+
+### EU
+- EU NIS2 Directive
+
+### COSO
+- COSO Internal Control - Integrated Framework (2013) Component 5
+
+### Other
+- APO, BAI, DSS, MEA domains)
+- DFARS 252.204-7012
+- DoD CMMC (Cybersecurity Maturity Model Certification) Program
+- FAA / EASA records-retention rules (analogous regulator context for MRO)
+- FAIR (Factor Analysis of Information Risk) Institute
+- Federal Rules of Civil Procedure Rule 37 (Failure to Make Disclosures or to Cooperate in Discovery — Sanctions, including spoliation)
+- FinCEN regulations 31 CFR 1010.320 (Suspicious Activity Report)
+- FinCEN regulations 31 CFR Part 1020 (KYC/CIP for financial institutions)
+- Humble and Farley, Continuous Delivery (Addison-Wesley)
+- ISA 705 (Modifications to the Opinion)
+- ISTQB Foundation Level syllabus
+- Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification
+- superseded by IIA Global Internal Audit Standards Domain II Standard 2.1 (Independence) effective January 9, 2025
+
+### Other Auditing Standards
+- ISA 240 (The Auditor's Responsibilities Relating to Fraud)
+- Cressey's Fraud Triangle (foundational forensic-audit literature)

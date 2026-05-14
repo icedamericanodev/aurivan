@@ -916,6 +916,11 @@ header {
   color: var(--text2);
 }
 .sc-expand-btn { display: none; }
+/* Mobile: tighten q-body/q-header to recover ~24px fold-line for long compound options */
+@media (max-width: 600px) {
+  .q-header { padding: 14px 16px; }
+  .q-body { padding: 20px 16px 18px; }
+}
 /* Mobile: collapsible scenario (Decision 10) */
 @media (max-width: 600px) {
   .sc-text {
@@ -1456,7 +1461,8 @@ header {
 }
 .exam-prompt .ep-input {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+  /* 16px prevents iOS Mobile Safari auto-zoom-on-focus (threshold <16px triggers zoom) */
+  font-size: 16px;
   padding: 8px 10px;
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -3026,7 +3032,8 @@ header {
   border-radius: 12px;
   background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2389613f' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 14px center;
   color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px; font-weight: 600; outline: none; transition: var(--tr);
+  /* 16px prevents iOS Mobile Safari auto-zoom-on-focus (threshold <16px triggers zoom) */
+  font-size: 16px; font-weight: 600; outline: none; transition: var(--tr);
 }
 .gloss-search:focus { border-color: var(--accent); background-color: var(--surface); }
 .gloss-search::placeholder { color: var(--muted); font-weight: 400; }
@@ -3061,7 +3068,7 @@ header {
 }
 .gloss-chip.d1.active { background: #2563eb; border-color: #2563eb; }
 .gloss-chip.d2.active { background: #7c3aed; border-color: #7c3aed; }
-.gloss-chip.d3.active { background: #e8521a; border-color: #e8521a; }
+.gloss-chip.d3.active { background: var(--d3); border-color: var(--d3); }
 .gloss-chip.d4.active { background: #059669; border-color: #059669; }
 .gloss-chip.d5.active { background: #db2777; border-color: #db2777; }
 
@@ -3709,6 +3716,59 @@ header {
   .study-rec-dismiss { min-width: 44px; min-height: 44px; padding: 10px; }
 }
 
+/* TRIPLET COMPANIONS — surfaced below tips on the explanation panel.
+   Teal left-border (--accent2) intentionally distinct from the navy
+   (--accent) scenario block at top of card. */
+.triplet-companions {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-top: 16px;
+}
+.tc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.tc-scenario {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+.tc-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text2);
+}
+.tc-chip-role {
+  color: var(--accent2);
+  letter-spacing: 0.08em;
+}
+.tc-chip-qid {
+  color: var(--muted);
+}
+
 /* CHANGELOG */
 .changelog-overlay {
   position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;
@@ -3756,6 +3816,43 @@ header {
 [data-theme="dark"] .cl-cat.new      {background:rgba(59,130,246,0.22);color:#93c5fd;}
 [data-theme="dark"] .cl-cat.improved {background:rgba(52,211,153,0.18);color:#6ee7b7;}
 [data-theme="dark"] .cl-cat.fixed    {background:rgba(220,38,38,0.22);color:#fca5a5;}
+.cl-older {
+  margin: 8px 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface2);
+  overflow: hidden;
+}
+.cl-older > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: var(--tr);
+}
+.cl-older > summary::-webkit-details-marker { display: none; }
+.cl-older > summary::after {
+  content: "\25BE";
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+.cl-older[open] > summary::after { transform: rotate(180deg); }
+.cl-older > summary:hover { color: var(--accent); background: var(--surface); }
+.cl-older-body {
+  padding: 4px 16px 12px;
+  border-top: 1px solid var(--border);
+}
+.cl-older-body .cl-version:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
 .cl-close {
   margin-top:20px;width:100%;padding:12px;border-radius:10px;
   background:var(--ink);color:var(--ink-fg);border:none;
@@ -4506,8 +4603,11 @@ header {
   .tipjar-btn { justify-content: center; }
 }
 /* ── GLOBAL THEME TRANSITION ── */
-*, *::before, *::after {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+/* Scoped to body only: component-level --tr handles fine-grained transitions.
+   The universal *, *::before, *::after rule was forcing compositor work on every
+   element for every property change — costly and unnecessary. */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 /* ── DARK MODE: override hardcoded non-variable colors ── */
 [data-theme="dark"] .tips-card {
@@ -4604,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.4</span>
+    <span class="bank-pill" id="versionPill">v10.5</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4614,7 +4714,7 @@ header::after {
     <button class="whats-new-btn" onclick="showFeedback()" style="font-size:10px;letter-spacing:0.1em" title="Send feedback, request a feature, or report a bug">&#128172; Feedback</button>
     <a class="tip-header-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" title="Support Aurivan with a tip on Buy Me a Coffee" aria-label="Support Aurivan with a tip on Buy Me a Coffee"><span aria-hidden="true">&#9749;</span> Tip</a>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
-    <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
+    <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
     <button id="hdrMenuBtn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false">&#8801;</button>
     <div id="hdrMenu" role="menu">
       <button class="hdr-menu-item" onclick="showChangelog();closeHdrMenu()" role="menuitem">&#127381; What&#39;s New</button>
@@ -4677,7 +4777,7 @@ header::after {
 
   <div class="controls-row">
     <div class="ctrl-group">
-      <span class="ctrl-label" title="Foundational=Recall, Application=Scenario, Analysis=Best Judgment (CISA is mostly Application + Analysis)">Difficulty <span style="border-bottom:1px dashed var(--border2);cursor:help;font-size:9px">?</span></span>
+      <span class="ctrl-label" title="Foundational=Recall, Application=Scenario, Analysis=Best Judgment (CISA is mostly Application + Analysis)">Difficulty <span style="border-bottom:1px dashed var(--border2);cursor:help;font-size:9px" role="img" aria-label="Show help" tabindex="0">?</span></span>
       <button class="ctrl-btn active" data-diff="any" onclick="setDiff(this,'any')">Any</button>
       <button class="ctrl-btn" data-diff="foundational" onclick="setDiff(this,'foundational')" title="Foundational: Knowledge recall">Foundational</button>
       <button class="ctrl-btn" data-diff="application" onclick="setDiff(this,'application')" title="Application: Scenario-based judgment">Application</button>
@@ -4840,7 +4940,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.4';
+const APP_VERSION = 'v10.5';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7706,8 +7806,8 @@ function renderQuestion(q) {
     + subtopicHtml
     + '<div class="q-meta">'
     + '<span class="q-num">#' + getQuestionNumber(q) + '</span>'
-    + '<button class="bk-btn' + (isBk?' saved':'') + '" id="bkBtn" onclick="toggleBookmark()">&#128278;</button>'
-    + '<button class="fl-btn" onclick="showFlagModal()" title="Flag this question">&#9873;</button>'
+    + '<button class="bk-btn' + (isBk?' saved':'') + '" id="bkBtn" aria-label="Toggle bookmark" onclick="toggleBookmark()">&#128278;</button>'
+    + '<button class="fl-btn" onclick="showFlagModal()" aria-label="Flag for review" title="Flag this question">&#9873;</button>'
     + '</div></div>'
     + '<div class="q-body">'
     + (q.scenario_context ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
@@ -7948,6 +8048,7 @@ function showResult(chosen, correct, timeout) {
     + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(q.correct_explanation) + '</p></div>'
     + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'
     + tipsBlock
+    + buildTripletCompanionsHtml(q)
     + '<div class="result-actions">'
     + '<button class="act-btn secondary" onclick="toggleBookmark()">&#128278; Save</button>'
     + '<button class="act-btn secondary" onclick="showFlagModal()" style="border-color:var(--wrong);color:var(--wrong)">&#9873; Flag</button>'
@@ -10893,6 +10994,33 @@ function toggleMockDetail(i) {
   }
 }
 
+// ── TRIPLET COMPANIONS DATA ──
+// Maps a question ID to its sibling questions in a triplet/pair scenario.
+// Embedded inline (source: data/triplet_manifest.json) so the static app
+// can render cross-links without an extra fetch. Update by regenerating
+// from the manifest if the triplet roster changes.
+const TRIPLET_COMPANIONS = {"d2_181":{"scenario_key":"Capacity and Growth Planning","role":"BEST","companions":[{"qid":"d2_183","role":"PRIMARY"},{"qid":"d2_045","role":"FIRST"}]},"d2_183":{"scenario_key":"Capacity and Growth Planning","role":"PRIMARY","companions":[{"qid":"d2_181","role":"BEST"},{"qid":"d2_045","role":"FIRST"}]},"d2_045":{"scenario_key":"Capacity and Growth Planning","role":"FIRST","companions":[{"qid":"d2_181","role":"BEST"},{"qid":"d2_183","role":"PRIMARY"}]},"d2_182":{"scenario_key":"Multi-Jurisdiction Privacy Program Scaling","role":"BEST","companions":[{"qid":"d2_184","role":"MOST_IMPORTANT"},{"qid":"d2_066","role":"FIRST"}]},"d2_184":{"scenario_key":"Multi-Jurisdiction Privacy Program Scaling","role":"MOST_IMPORTANT","companions":[{"qid":"d2_182","role":"BEST"},{"qid":"d2_066","role":"FIRST"}]},"d2_066":{"scenario_key":"Multi-Jurisdiction Privacy Program Scaling","role":"FIRST","companions":[{"qid":"d2_182","role":"BEST"},{"qid":"d2_184","role":"MOST_IMPORTANT"}]},"d5_261":{"scenario_key":"Ransomware Detection in EDR","role":"BEST","companions":[{"qid":"d5_271","role":"PRIMARY"},{"qid":"d5_057","role":"FIRST"}]},"d5_271":{"scenario_key":"Ransomware Detection in EDR","role":"PRIMARY","companions":[{"qid":"d5_261","role":"BEST"},{"qid":"d5_057","role":"FIRST"}]},"d5_057":{"scenario_key":"Ransomware Detection in EDR","role":"FIRST","companions":[{"qid":"d5_261","role":"BEST"},{"qid":"d5_271","role":"PRIMARY"}]},"d5_262":{"scenario_key":"Privileged Credential Leak","role":"BEST","companions":[{"qid":"d5_272","role":"PRIMARY"},{"qid":"d5_039","role":"FIRST"}]},"d5_272":{"scenario_key":"Privileged Credential Leak","role":"PRIMARY","companions":[{"qid":"d5_262","role":"BEST"},{"qid":"d5_039","role":"FIRST"}]},"d5_039":{"scenario_key":"Privileged Credential Leak","role":"FIRST","companions":[{"qid":"d5_262","role":"BEST"},{"qid":"d5_272","role":"PRIMARY"}]},"d5_263":{"scenario_key":"Insider Threat Active Exfiltration","role":"BEST","companions":[{"qid":"d5_273","role":"PRIMARY"},{"qid":"d5_060","role":"FIRST"}]},"d5_273":{"scenario_key":"Insider Threat Active Exfiltration","role":"PRIMARY","companions":[{"qid":"d5_263","role":"BEST"},{"qid":"d5_060","role":"FIRST"}]},"d5_060":{"scenario_key":"Insider Threat Active Exfiltration","role":"FIRST","companions":[{"qid":"d5_263","role":"BEST"},{"qid":"d5_273","role":"PRIMARY"}]},"d5_264":{"scenario_key":"BEC Wire-Transfer Fraud","role":"BEST","companions":[{"qid":"d5_274","role":"PRIMARY"},{"qid":"d5_112","role":"FIRST"}]},"d5_274":{"scenario_key":"BEC Wire-Transfer Fraud","role":"PRIMARY","companions":[{"qid":"d5_264","role":"BEST"},{"qid":"d5_112","role":"FIRST"}]},"d5_112":{"scenario_key":"BEC Wire-Transfer Fraud","role":"FIRST","companions":[{"qid":"d5_264","role":"BEST"},{"qid":"d5_274","role":"PRIMARY"}]},"d5_265":{"scenario_key":"CA Compromise","role":"BEST","companions":[{"qid":"d5_275","role":"PRIMARY"},{"qid":"d5_077","role":"FIRST"}]},"d5_275":{"scenario_key":"CA Compromise","role":"PRIMARY","companions":[{"qid":"d5_265","role":"BEST"},{"qid":"d5_077","role":"FIRST"}]},"d5_077":{"scenario_key":"CA Compromise","role":"FIRST","companions":[{"qid":"d5_265","role":"BEST"},{"qid":"d5_275","role":"PRIMARY"}]},"d5_276":{"scenario_key":"Container Escape Detection","role":"PRIMARY","companions":[{"qid":"d5_098","role":"FIRST"}]},"d5_098":{"scenario_key":"Container Escape Detection","role":"FIRST","companions":[{"qid":"d5_276","role":"PRIMARY"}]},"d5_277":{"scenario_key":"Zero-Day Vulnerability Mitigation","role":"PRIMARY","companions":[{"qid":"d5_137","role":"FIRST"}]},"d5_137":{"scenario_key":"Zero-Day Vulnerability Mitigation","role":"FIRST","companions":[{"qid":"d5_277","role":"PRIMARY"}]},"d5_278":{"scenario_key":"Phishing Initial Access","role":"MOST_IMPORTANT","companions":[{"qid":"d5_119","role":"FIRST"}]},"d5_119":{"scenario_key":"Phishing Initial Access","role":"FIRST","companions":[{"qid":"d5_278","role":"MOST_IMPORTANT"}]},"d5_279":{"scenario_key":"Cloud Configuration Drift on Production Security Control","role":"MOST_IMPORTANT","companions":[{"qid":"d5_154","role":"FIRST"}]},"d5_154":{"scenario_key":"Cloud Configuration Drift on Production Security Control","role":"FIRST","companions":[{"qid":"d5_279","role":"MOST_IMPORTANT"}]},"d5_280":{"scenario_key":"SaaS Customer Material Data Breach","role":"MOST_IMPORTANT","companions":[{"qid":"d5_173","role":"FIRST"}]},"d5_173":{"scenario_key":"SaaS Customer Material Data Breach","role":"FIRST","companions":[{"qid":"d5_280","role":"MOST_IMPORTANT"}]}};
+
+// Build the "companion questions" strip injected below the tips block on the
+// explanation panel. Uses --accent2 (teal) to distinguish it from the navy
+// scenario block at the top of the question card.
+function buildTripletCompanionsHtml(q) {
+  if (!q || !q.id) return '';
+  var meta = TRIPLET_COMPANIONS[q.id];
+  if (!meta || !meta.companions || !meta.companions.length) return '';
+  var roleLabels = { 'BEST': 'BEST', 'PRIMARY': 'PRIMARY', 'MOST_IMPORTANT': 'MOST IMPORTANT', 'FIRST': 'FIRST' };
+  var chips = meta.companions.map(function(c) {
+    var r = roleLabels[c.role] || c.role;
+    return '<span class="tc-chip"><span class="tc-chip-role">' + escapeHtml(r) + '</span><span class="tc-chip-qid">' + escapeHtml(c.qid) + '</span></span>';
+  }).join('');
+  var myRole = roleLabels[meta.role] || meta.role;
+  return '<div class="triplet-companions">'
+    + '<div class="tc-label">Companion questions</div>'
+    + '<div class="tc-scenario">' + escapeHtml(meta.scenario_key) + ' &middot; you answered the <strong>' + escapeHtml(myRole) + '</strong> framing</div>'
+    + '<div class="tc-chips">' + chips + '</div>'
+    + '</div>';
+}
+
 // â”€â”€ CHANGELOG â”€â”€
 // ── WHAT'S NEW DATA ──
 // User-facing changelog. Entries are grouped by category (new / improved /
@@ -10902,6 +11030,19 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Polish release: cleaner citations, smaller What\'s New, sharper recall tips',
+    items: [
+      { cat: 'new', text: 'When you answer a question that appears in a precision-word triplet (FIRST → BEST → PRIMARY/MOST IMPORTANT), the explanation now shows the companion question IDs so you can compare how the precision word changed the correct answer on the same scenario. 31 triplet scenarios are surfaced this way.' },
+      { cat: 'improved', text: 'The What\'s New modal now keeps the latest three releases expanded and collapses older versions into an "Older versions" expandable section — easier to scan recent changes without scrolling through a year of history.' },
+      { cat: 'improved', text: '12 recall-question tips and four distractor options sharpened. Tips are tighter (no more forced backronyms or capitalized stage directions), and a few definitional questions had their always-fake distractors replaced with realistic candidate confusions — same correct answer, harder fakes.' },
+      { cat: 'improved', text: 'Search boxes (glossary, exam date prompt) bumped to 16px font-size so iOS Safari no longer zooms in when you tap them.' },
+      { cat: 'improved', text: 'Bookmark, flag, and dark-mode buttons now carry screen-reader labels; the difficulty help icon is keyboard-accessible.' },
+      { cat: 'fixed', text: 'Domain 3 chip color now matches the canonical D3 amber token instead of an older orange. Theme transitions limited to surface colors to remove a redundant universal-selector rule.' },
+      { cat: 'fixed', text: 'Question card on mobile (375px) padding tightened so the submit button stays above the fold on questions with the longest compound options.' }
+    ]
+  },
+  {
+    version: 'v10.4',
     title: 'Pre-launch polish: 30 new recall questions + accessibility fixes',
     items: [
       { cat: 'new', text: '30 new foundational recall questions added across all 5 domains (6 per domain). The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.' },
@@ -11168,7 +11309,7 @@ const CHANGELOG = [
 function showChangelog() {
   var modal = document.getElementById("changelogModal");
   var catLabels = { 'new': 'New', 'improved': 'Improved', 'fixed': 'Fixed' };
-  var versionsHtml = CHANGELOG.map(function(entry, idx) {
+  var renderEntry = function(entry, idx) {
     var label = idx === 0
       ? '<span class="cl-latest">LATEST</span> ' + escapeHtml(entry.version)
       : escapeHtml(entry.version);
@@ -11181,11 +11322,24 @@ function showChangelog() {
       + '<div class="cl-ver-label">' + label + '</div>'
       + '<ul class="cl-items">' + itemsHtml + '</ul>'
       + '</div>';
-  }).join('');
+  };
+  // Keep the latest 3 versions expanded; collapse the rest inside a <details>.
+  var KEEP_EXPANDED = 3;
+  var expanded = CHANGELOG.slice(0, KEEP_EXPANDED).map(renderEntry).join('');
+  var older = CHANGELOG.slice(KEEP_EXPANDED);
+  var olderHtml = '';
+  if (older.length) {
+    var olderInner = older.map(function(entry, i) { return renderEntry(entry, i + KEEP_EXPANDED); }).join('');
+    olderHtml = '<details class="cl-older">'
+      + '<summary>Show older versions (' + older.length + ')</summary>'
+      + '<div class="cl-older-body">' + olderInner + '</div>'
+      + '</details>';
+  }
   modal.innerHTML = '<div class="changelog-overlay" onclick="closeChangelog(event)">'
     + '<div class="changelog-modal" onclick="event.stopPropagation()">'
     + '<div class="cl-title">What\'s New</div>'
-    + versionsHtml
+    + expanded
+    + olderHtml
     + '<button class="cl-close" onclick="closeChangelog()">Got it!</button>'
     + '</div></div>';
 }

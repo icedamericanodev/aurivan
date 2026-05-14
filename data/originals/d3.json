@@ -4576,7 +4576,7 @@
         "D": "Testing cannot precede build because there is no built artifact to test. Maintenance also cannot precede deployment, since maintenance applies to a deployed system."
       },
       "tips": [
-        "Mnemonic: R-D-B-T-D-M = Requirements, Design, Build, Test, Deploy, Maintain — six waterfall phases in strict order, each gated by sign-off before the next begins.",
+        "Six waterfall phases in strict order: Requirements, Design, Build, Test, Deploy, Maintain. Anchor rule: design always follows requirements, never the reverse — each phase is gated by sign-off.",
         "Disambiguation: design always follows requirements (you cannot design what is undefined), and test always follows build (you cannot test what does not exist).",
         "Exam shortcut: if an option places test before build, design before requirements, or maintenance before deploy, eliminate it immediately."
       ],
@@ -4596,14 +4596,14 @@
       "options": {
         "A": "Backlog Refinement, Daily Scrum, Sprint Review, Release Planning",
         "B": "Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective",
-        "C": "Sprint Planning, Daily Scrum, Demo Day, Lessons Learned Meeting",
+        "C": "Sprint Planning, Backlog Refinement, Sprint Review, Sprint Retrospective — four events bracketing every Scrum sprint.",
         "D": "Sprint Kickoff, Stakeholder Sync, Sprint Review, Sprint Retrospective"
       },
       "correct": "B",
       "correct_explanation": "The 2020 Scrum Guide names four events inside the sprint container: Sprint Planning opens the sprint by defining the sprint goal and selected backlog items; the Daily Scrum is a fifteen-minute team event to inspect progress toward the sprint goal; the Sprint Review at the end inspects the increment with stakeholders; and the Sprint Retrospective closes the sprint by inspecting the team's process. Backlog refinement is an ongoing activity, not a prescribed event. Release planning was removed from official Scrum long ago and is not part of the framework. These four are the only formal events Scrum defines.",
       "wrong_explanations": {
         "A": "Backlog refinement is an ongoing activity, not a prescribed Scrum event, and release planning is not part of the 2020 Scrum Guide at all.",
-        "C": "'Demo Day' and 'Lessons Learned Meeting' are informal names; the Scrum Guide uses the precise terms Sprint Review and Sprint Retrospective, and exam recall items expect the formal names.",
+        "C": "Backlog Refinement is an ACTIVITY in Scrum (an ongoing practice of clarifying upcoming work), not a prescribed event. The 2020 Scrum Guide lists exactly four events inside the sprint: Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective. Including Backlog Refinement as an event is the most realistic candidate confusion because the activity has structure and cadence — but it doesn't qualify as an event.",
         "D": "'Sprint Kickoff' and 'Stakeholder Sync' are not Scrum terms. The opening event is Sprint Planning, and stakeholder engagement happens at the Sprint Review."
       },
       "tips": [
@@ -4638,7 +4638,7 @@
         "C": "Test scope is a pipeline design choice, not the defining difference. Mature pipelines under either model run unit, integration, and other test stages."
       },
       "tips": [
-        "Mnemonic: deliveRy = Review (a human reviews and approves); deploymenT = auTo (no human gate).",
+        "CD-Delivery keeps every build deployable but a HUMAN approves the release; CD-Deployment removes the human gate and releases automatically. The 'D' tells you whether a human stands in the way.",
         "Disambiguation: Continuous Integration is about merging and building frequently; delivery and deployment are about how releases reach production.",
         "Exam shortcut: if an option talks about test types or cadence as the distinction, it is wrong. The defining difference is the manual approval gate."
       ],

@@ -10149,7 +10149,7 @@
       "scenario_context": "",
       "question": "Which option BEST defines the three pillars of the CIA triad in information security?",
       "options": {
-        "A": "Control, Identification, and Assurance — the three core functions of a security operations program.",
+        "A": "Confidentiality, Integrity, and Authentication — preventing disclosure, tampering, and identity spoofing across the asset lifecycle.",
         "B": "Confidentiality, Integrity, and Availability — preventing unauthorized disclosure, modification, and denial of access.",
         "C": "Compliance, Investigation, and Authorization — the three regulatory pillars of information governance.",
         "D": "Cryptography, Identity, and Auditing — the three technical domains protecting information assets."
@@ -10157,7 +10157,7 @@
       "correct": "B",
       "correct_explanation": "The CIA triad is the foundational model for information security objectives codified in NIST SP 800-53 Rev 5 and ISO/IEC 27001:2022. CONFIDENTIALITY prevents unauthorized disclosure of information (controls: encryption, access control, classification). INTEGRITY prevents unauthorized or undetected modification of data (controls: hashing, digital signatures, change control). AVAILABILITY ensures information and systems are accessible to authorized users when required (controls: redundancy, backups, DDoS protection). All three must be balanced; over-investing in one (e.g., confidentiality via excessive access restriction) can degrade another (availability). The CIA triad is the basis for FIPS 199 impact-level categorization.",
       "wrong_explanations": {
-        "A": "Control, Identification, and Assurance is a fabricated expansion. The CIA acronym in security exclusively refers to Confidentiality, Integrity, Availability — not to operational program functions.",
+        "A": "Authentication is a security mechanism, but the canonical CIA triad pairs Confidentiality with Integrity and AVAILABILITY (not Authentication). Authentication is part of the AAA model (Authentication, Authorization, Accounting), which is a related but distinct framework. ISACA distinguishes CIA (information-asset properties) from AAA (access-control activities).",
         "C": "Compliance, Investigation, and Authorization is not the CIA triad. While these are real activities in a security program, they are not the foundational three objectives that the CIA acronym represents.",
         "D": "Cryptography, Identity, and Auditing are security control families or capabilities, not the CIA triad's objectives. The triad describes WHAT must be protected (the goals), not the technical means used to achieve protection."
       },
@@ -10226,7 +10226,7 @@
       "tips": [
         "Mnemonic: Know / Have / Are — the three classic authentication-factor categories.",
         "Disambiguation: Two passwords = NOT MFA (both are knowledge). Password + SMS code = MFA (knowledge + possession).",
-        "Exam shortcut: If a stem asks about authentication FACTOR categories, the answer pairs 'know / have / are' (sometimes extended with 'do' and 'where you are')."
+        "If a stem asks about authentication factor CATEGORIES, the answer is some pairing of know/have/are. Location and behavior are sometimes added but aren't part of the core taxonomy."
       ],
       "pre_read": "For authentication factor questions, anchor on 'know / have / are.' Cryptographic-operation, data-handling, and SoD substitutions each fail.",
       "_provenance": "Authored from concept: 'Authentication factors taxonomy'. Foundational recall tier. Public sources: NIST SP 800-63B."
@@ -10275,14 +10275,14 @@
       "options": {
         "A": "DAC = owner discretion; MAC = mandatory labels; RBAC = role assignments; ABAC = attribute-based policy evaluation.",
         "B": "DAC = digital authentication code; MAC = message authentication code; RBAC = role-based audit control; ABAC = audit-based access control.",
-        "C": "DAC = data access classification; MAC = managed access control; RBAC = recovery-based access control; ABAC = access-based assurance control.",
+        "C": "DAC = data access classification by sensitivity; MAC = manual access certification by managers quarterly; RBAC = role-based annual reviews; ABAC = attribute-based audit attestation.",
         "D": "DAC = directory access control; MAC = manual access certification; RBAC = remote-based access control; ABAC = anonymous-based access control."
       },
       "correct": "A",
       "correct_explanation": "Four canonical access-control models recognized by NIST SP 800-53 Rev 5 and NIST SP 800-162. DISCRETIONARY ACCESS CONTROL (DAC): the data OWNER decides who gets access; file-system permissions (chmod, NTFS ACLs) are classic DAC. Flexible but inconsistent. MANDATORY ACCESS CONTROL (MAC): the SYSTEM enforces access decisions based on classification labels (Top Secret, Secret, Confidential) and clearance; users cannot override. Used in military and high-assurance systems (SELinux). ROLE-BASED ACCESS CONTROL (RBAC): permissions assigned to ROLES (e.g., 'AP Clerk'), and users are assigned roles; simplifies administration at enterprise scale. Defined in NIST RBAC standard. ATTRIBUTE-BASED ACCESS CONTROL (ABAC): policies evaluate ATTRIBUTES (user attributes, resource attributes, environmental attributes like time/location) at access-decision time; most flexible and policy-rich. Defined in NIST SP 800-162. Modern Zero Trust architectures typically use ABAC or RBAC+ABAC hybrids.",
       "wrong_explanations": {
         "B": "These are fabricated expansions. MAC in cryptography can mean 'Message Authentication Code' but in access control it means Mandatory Access Control. The other three expansions in this option do not exist.",
-        "C": "These expansions are fabricated and not used in any standard. The real four models map to discretionary, mandatory, role-based, and attribute-based.",
+        "C": "These pseudo-definitions sound official but invert the models: DAC is owner-driven discretion (not classification-based), MAC enforces mandatory labels in policy (not manual manager certification), RBAC is role assignment (not annual review), and ABAC is attribute-evaluation (not audit attestation). The trap is plausible-sounding terminology that swaps the model's actual control mechanism.",
         "D": "These expansions are fabricated. DAC is discretionary, not directory-based. RBAC is role-based, not remote-based."
       },
       "tips": [
@@ -10310,7 +10310,7 @@
         "D": "Grant administrators unrestricted privileged access while restricting only general users; trust scales with seniority and role tenure."
       },
       "correct": "C",
-      "correct_explanation": "NIST SP 800-207 defines Zero Trust Architecture (ZTA) as a security model that ELIMINATES implicit trust based on network location. The core tenet is 'never trust, always verify': every access request must be authenticated, authorized, and continuously validated using multiple signals including user identity, device health/posture, resource sensitivity, behavioral analytics, and environmental context (time, location, risk score). Key principles per NIST SP 800-207: (1) all data sources and computing services are resources; (2) all communication is secured regardless of network location; (3) access is granted per-session; (4) access is determined by dynamic policy including observable state; (5) the enterprise monitors and measures integrity and security posture of all owned and associated assets; (6) all resource authentication and authorization is dynamic and strictly enforced before access; (7) the enterprise collects information about asset state and uses it to improve security posture. ZTA assumes breach and minimizes blast radius.",
+      "correct_explanation": "NIST SP 800-207 defines Zero Trust Architecture (ZTA) as a security model that ELIMINATES implicit trust based on network location. The three load-bearing principles are: (1) per-request verification — every access request is authenticated and authorized, not pre-validated by network position; (2) no implicit network-location trust — corporate network membership does not grant access; (3) continuous validation — sessions are continuously evaluated against identity, device posture, and behavior. The full seven-tenet framework (including resource-level access, dynamic policy, asset inventory, comprehensive monitoring, and continuous improvement) expands on these three but the principles above carry the architecture. Option A (perimeter trust) is the traditional defense-in-depth model Zero Trust replaces. Option B (encryption alone) confuses confidentiality with access control. Option D (privileged admin exemption) violates the no-implicit-trust principle that defines Zero Trust.",
       "wrong_explanations": {
         "A": "Perimeter trust is the OPPOSITE of Zero Trust. The traditional 'castle and moat' model assumed internal traffic was safe; Zero Trust explicitly rejects this assumption because attackers, malicious insiders, and lateral movement defeat perimeter-only controls.",
         "B": "Zero Trust REQUIRES strong authentication on every request, not its elimination. Encryption alone protects data in transit but does not verify the identity or authorization of the requesting subject — which is the core Zero Trust requirement.",

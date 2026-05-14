@@ -4,6 +4,21 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.5] — Polish release: cleaner citations, smaller What's New, sharper recall tips
+
+### New
+- When you answer a question that appears in a precision-word triplet (FIRST → BEST → PRIMARY/MOST IMPORTANT), the explanation now shows the companion question IDs so you can compare how the precision word changed the correct answer on the same scenario. 31 triplet scenarios are surfaced this way.
+
+### Improved
+- The What's New modal now keeps the latest three releases expanded and collapses older versions into an "Older versions" expandable section — easier to scan recent changes without scrolling through a year of history.
+- 12 recall-question tips and four distractor options sharpened. Tips are tighter (no more forced backronyms or capitalized stage directions), and a few definitional questions had their always-fake distractors replaced with realistic candidate confusions — same correct answer, harder fakes.
+- Search boxes (glossary, exam date prompt) bumped to 16px font-size so iOS Safari no longer zooms in when you tap them.
+- Bookmark, flag, and dark-mode buttons now carry screen-reader labels; the difficulty help icon is keyboard-accessible.
+
+### Fixed
+- Domain 3 chip color now matches the canonical D3 amber token instead of an older orange. Theme transitions limited to surface colors to remove a redundant universal-selector rule.
+- Question card on mobile (375px) padding tightened so the submit button stays above the fold on questions with the longest compound options.
+
 ## [v10.4] — Pre-launch polish: 30 new recall questions + accessibility fixes
 
 ### New

@@ -142,9 +142,10 @@ def lint_question(q: dict, library: set[str]) -> tuple[list[str], list[str]]:
                 f"{qid}: scenario_context long ({wc}w; analysis tier target 80–160)"
             )
 
-    # Check 4: tip-1 trap-anchor
+    # Check 4: tip-1 trap-anchor (skip for foundational tier — recall questions use mnemonic tips, not trap-naming)
     tips = q.get("tips", [])
-    if tips:
+    is_foundational = q.get("difficulty") == "foundational" or q.get("bloom_level") == "Foundational"
+    if tips and not is_foundational:
         tip1 = tips[0]
         # heuristic: tip 1 should cite a wrong-answer letter (A/B/C/D) that is NOT the correct one
         # Pattern: "Trap is X" or "Trap is X or Y"
