@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v9.4] — Domain 1 audit pass: explanation accuracy and cleaner citations
+
+### Fixed
+- Fixed 12 Domain 1 explanations where the parenthetical letter pointed to the wrong option (for example, the explanation said "(C)" but described option B). Each finding now references the option it actually describes.
+- Cleaned up 33 Domain 1 citations that read "ISACA IT Audit ISACA IT Audit Standard..." — the duplicated phrase has been removed.
+- Removed a doubled "(Audit Sampling)" parenthetical from 10 Domain 1 citations of AICPA AU-C 530, and normalized "1207 (Irregularity..." to "1207 (Irregularities and Illegal Acts)" so the same standard is named consistently across the bank.
+
+### Improved
+- Added closing audit-mindset sentences to 16 Domain 1 definitional explanations so the principle each concept enforces (independence, evidence sufficiency, business-risk prioritization) is named, not just inferred.
+- Tightened two Domain 1 stems that lacked an exam-style precision word, and trimmed four correct-answer options that were noticeably longer than their distractors.
+
 ## [v9.3] — Domain 3 audit pass: clearer questions, sharper teaching
 
 ### Improved

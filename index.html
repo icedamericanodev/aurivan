@@ -4587,7 +4587,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v9.3</span>
+    <span class="bank-pill" id="versionPill">v9.4</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4844,7 +4844,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v9.3';
+const APP_VERSION = 'v9.4';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10889,6 +10889,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Domain 1 audit pass — explanation accuracy and cleaner citations',
+    items: [
+      { cat: 'fixed', text: 'Fixed 12 Domain 1 explanations where the parenthetical letter pointed to the wrong option (for example, the explanation said "(C)" but described option B). Each finding now references the option it actually describes.' },
+      { cat: 'fixed', text: 'Cleaned up 33 Domain 1 citations that read "ISACA IT Audit ISACA IT Audit Standard..." — the duplicated phrase has been removed.' },
+      { cat: 'fixed', text: 'Removed a doubled "(Audit Sampling)" parenthetical from 10 Domain 1 citations of AICPA AU-C 530, and normalized "1207 (Irregularity..." to "1207 (Irregularities and Illegal Acts)" so the same standard is named consistently across the bank.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to 16 Domain 1 definitional explanations so the principle each concept enforces (independence, evidence sufficiency, business-risk prioritization) is named, not just inferred.' },
+      { cat: 'improved', text: 'Tightened two Domain 1 stems that lacked an exam-style precision word, and trimmed four correct-answer options that were noticeably longer than their distractors.' }
+    ]
+  },
+  {
+    version: 'v9.3',
     title: 'Domain 3 audit pass — clearer questions, sharper teaching',
     items: [
       { cat: 'improved', text: 'Tightened question stems across Domain 3 to remove redundant qualifier words, so the exam-style precision word does the work it is supposed to do.' },
