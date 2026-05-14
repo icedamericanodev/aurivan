@@ -2701,10 +2701,10 @@
       "bloom_level": "Application",
       "question": "An IT auditor evaluates a payment-card processor's data-protection architecture under PCI DSS. Which option BEST captures TOKENIZATION vs ENCRYPTION vs HASHING selection for PAN data?",
       "options": {
-        "A": "Hashing alone + scope-reduction claim + searchable index reuse + no encryption layer; sufficient for PAN.",
-        "B": "Encryption with managed keys + PCI scope retained + tokenization prohibited + hashing irrelevant; encryption-only is canonical.",
+        "A": "Hashing alone + scope-reduction claim + searchable index reuse + no encryption layer; treats the one-way property as sufficient PAN-storage substitute despite limited entropy and lack of confidentiality.",
+        "B": "Encryption with managed keys + PCI scope retained + tokenization prohibited + hashing dismissed as irrelevant; treats encryption as the canonical and sufficient control without recognizing tokenization's scope-reducing role.",
         "C": "Tokenization (replace PAN with token; scope-reducing) + encryption (PAN encrypted with managed keys; scope retained) + hashing (one-way, searchable indices only, never as PAN-storage substitute due to limited entropy).",
-        "D": "Tokenization + encryption + hashing as interchangeable + cost-driven selection + no scope-reduction distinction; auditor accepts any."
+        "D": "Tokenization + encryption + hashing as interchangeable + cost-driven selection + no scope-reduction distinction; treats the three controls as substitutable rather than complementary across the PAN-protection lifecycle."
       },
       "correct": "C",
       "key_concept": "PCI PAN protection = tokenization (replace PAN, scope-reducing) + encryption (PAN encrypted, scope retained) + hashing (one-way, for searchable indices only, NOT storage substitute). Three distinct security properties.",
@@ -8618,10 +8618,10 @@
       "question": "What is the BEST governance response?",
       "scenario_context": "An investment-banking firm's DLP system flags at 9:14 AM Monday: a senior partner has emailed a draft M&A pitch deck (containing material non-public client information) from his work email to his personal Gmail account. DLP automatically quarantined the email. The senior partner immediately escalates to General Counsel demanding release, arguing the pitch deck is for a 6 AM Wednesday board-presentation rehearsal at his home office (no time to use sanctioned WFH controls). CISO + General Counsel + Compliance Officer + Senior-Partner + Audit Committee Chair coordinating response. Firm policy requires sanctioned-MDM-laptop or sanctioned-VDI for material-non-public information (MNPI) work outside the office; both options were available to the senior partner.",
       "options": {
-        "A": "Release the quarantined email + log the disposition + add post-hoc compliance note; documented exception preserves both board-rehearsal need and audit trail.",
+        "A": "Release the quarantined email despite policy violation + log the disposition + add post-hoc compliance note; documented exception preserves both board-rehearsal need and creates audit trail.",
         "B": "Hold the quarantine + invoke firm pre-approved DLP-disposition policy (sanctioned-channel only; no exception for personal email regardless of role) + document the violation + Compliance and HR review + post-incident sanctioned-channel reinforcement training.",
-        "C": "Defer disposition to General Counsel discretion + accept case-by-case override + close compliance review on GC sign-off; GC authority warrants this override.",
-        "D": "Allow one-time exception + capture executive override + require deletion attestation; documented exceptions preserve commercial flexibility while maintaining formal policy compliance."
+        "C": "Defer disposition entirely to General Counsel discretion + accept case-by-case override + close compliance review on GC sign-off; GC commercial authority warrants this disposition-policy override.",
+        "D": "Allow one-time exception under executive sponsor + capture written override + require post-send deletion attestation; documented exceptions preserve commercial flexibility while maintaining formal policy compliance."
       },
       "correct": "B",
       "key_concept": "DLP governance dispute = HOLD the quarantine + invoke pre-approved policy + document violation + Compliance + HR review + reinforce sanctioned-channel training. Policy-driven action, not case-by-case override.",
@@ -8657,9 +8657,9 @@
       "scenario_context": "A cloud-native SaaS firm's audit team discovers at 1:14 PM Friday: the cloud KMS (key management service) key-policy for the production-customer-data encryption keys grants 'kms:Decrypt' permission to a wildcard role used across the development OU (~140 developers). The misconfiguration has existed for ~14 months. CISO + Security Engineering + Site Reliability + General Counsel + Privacy Officer coordinating response. Customer data includes PII for ~8M consumer end-users + HIPAA-PHI for healthcare-vertical customers. No evidence of actual unauthorized decryption found in initial review; activity logs retained for 12 months only.",
       "options": {
         "A": "Revoke the wildcard dev-OU access policy + rotate KMS keys + image dev-OU activity logs (full 12 months) for forensic analysis + scope-assessment of decrypted-data exposure + customer notification readiness + post-incident KMS-policy governance review.",
-        "B": "Rotate KMS keys + invalidate cached plaintext + monitor for anomalous decrypts; key rotation is sufficient remediation without observed unauthorized decryption.",
-        "C": "Disable dev OU temporarily + halt developer pipelines + lift after forensic clearance; full OU lockdown demonstrates seriousness and prevents further decryption.",
-        "D": "No customer notification + close finding internally + document absence-of-evidence; without evidence of actual exposure, notification creates unnecessary regulatory exposure."
+        "B": "Rotate KMS keys + invalidate cached plaintext + monitor for anomalous decrypts going forward; key rotation alone is sufficient remediation without observed unauthorized decryption events to investigate.",
+        "C": "Disable the dev OU temporarily + halt developer pipelines + lift restrictions after forensic clearance review; full OU lockdown demonstrates seriousness and prevents any further decryption activity.",
+        "D": "Issue no customer notification + close finding internally as undetermined + document absence-of-evidence per policy; without confirmed evidence of actual data exposure, notification creates unnecessary regulatory exposure."
       },
       "correct": "A",
       "key_concept": "KMS misconfiguration cross-OU = revoke policy + rotate keys + image full retention-period activity logs + scope-assess decrypted-data exposure + customer-notification readiness + post-incident policy governance review.",

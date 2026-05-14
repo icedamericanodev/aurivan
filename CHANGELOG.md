@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.9] — Parity hotfix: three Domain 5 wrong-answer options trimmed too short
+
+### Fixed
+- In the v10.7 Domain 5 wrong-answer rewrites, three questions (d5_075 on PCI DSS data protection, d5_237 on DLP quarantine governance, d5_238 on KMS key-policy compromise) ended up with wrong answers noticeably shorter than the correct answer — which lets candidates eliminate the long option without reasoning. Extended each wrong answer with the audit rationale that justifies the (incorrect) approach, so all four options now sit at similar lengths and have to be evaluated on their merits.
+
 ## [v10.8] — Final authenticity sweep: D2 wrong-answer parity + long-scenario trims
 
 ### Improved

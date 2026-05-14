@@ -4704,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.8</span>
+    <span class="bank-pill" id="versionPill">v10.9</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4940,7 +4940,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.8';
+const APP_VERSION = 'v10.9';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11030,6 +11030,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Parity hotfix: three Domain 5 wrong-answer options trimmed too short',
+    items: [
+      { cat: 'fixed', text: 'In the v10.7 Domain 5 wrong-answer rewrites, three questions (d5_075 on PCI DSS data protection, d5_237 on DLP quarantine governance, d5_238 on KMS key-policy compromise) ended up with wrong answers noticeably shorter than the correct answer — which lets candidates eliminate the long option without reasoning. Extended each wrong answer with the audit rationale that justifies the (incorrect) approach, so all four options now sit at similar lengths and have to be evaluated on their merits.' }
+    ]
+  },
+  {
+    version: 'v10.8',
     title: 'Final authenticity sweep: D2 wrong-answer parity + long-scenario trims',
     items: [
       { cat: 'improved', text: 'Rewrote wrong-answer options on 22 Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.' },
