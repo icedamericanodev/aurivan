@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v9.7] — Domain 5 audit pass: clearer security checklists and stronger principle teaching
+
+### Fixed
+- Repaired 49 mis-grouped parentheses across 36 Domain 5 security explanations. Numbered checklists (incident response, IAM lifecycle, forensic procedure) now read cleanly instead of running adjacent items together.
+
+### Improved
+- Removed bank-internal vocabulary from five Domain 5 explanations (phrases like "introduced in D5-12" or "15th D5 single-focus principle"). Each question now reads as a standalone item.
+- Added closing audit-mindset sentences to 15 Domain 5 security scenarios so the principle being tested (independence in disclosure decisions, prevention over correction in threat modeling, root cause in access recertification) is named, not just demonstrated.
+- Trimmed a stray meta-callout from one foundational question that exposed the answer's structure.
+
 ## [v9.6] — Domain 4 audit pass: accuracy fixes and clearer explanation lists
 
 ### Fixed
