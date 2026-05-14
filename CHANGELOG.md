@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.10] — Exam mode: practice questions exactly as the real ISACA exam presents them
+
+### New
+- Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface matches the real ISACA exam — just the question, four options, and a clean explanation after answering.
+- Your preference persists across sessions. Toggle mid-question and the current question re-renders in the new mode immediately.
+
+### Fixed
+- A Domain 1 chest X-ray AI-drift question (d1_108) had a scenario over the 150-word ceiling. Trimmed to 74 words combined while preserving every fact relevant to the audit decision.
+
 ## [v10.9] — Parity hotfix: three Domain 5 wrong-answer options trimmed too short
 
 ### Fixed

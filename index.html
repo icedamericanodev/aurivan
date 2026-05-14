@@ -3696,7 +3696,7 @@ header {
     min-width: 44px; min-height: 44px;
     padding: 6px;
   }
-  .dark-toggle-btn, .whats-new-btn {
+  .dark-toggle-btn, .whats-new-btn, .exam-mode-btn {
     min-width: 44px; min-height: 44px;
   }
   .nav-tab { min-height: 44px; }
@@ -4704,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.9</span>
+    <span class="bank-pill" id="versionPill">v10.10</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4714,6 +4714,7 @@ header::after {
     <button class="whats-new-btn" onclick="showFeedback()" style="font-size:10px;letter-spacing:0.1em" title="Send feedback, request a feature, or report a bug">&#128172; Feedback</button>
     <a class="tip-header-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" title="Support Aurivan with a tip on Buy Me a Coffee" aria-label="Support Aurivan with a tip on Buy Me a Coffee"><span aria-hidden="true">&#9749;</span> Tip</a>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
+    <button class="exam-mode-btn" id="examModeBtn" onclick="toggleExamMode()" aria-label="Toggle exam-realistic mode" title="Study mode (current): dense scenario blocks, tips revealed after answering. Exam mode: compact stems and minimal post-answer feedback — closer to the real ISACA exam." style="border-radius:18px;height:34px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;font-weight:600;background:var(--surface2);border:2px solid var(--border2);color:var(--text2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor=window.S&&window.S.examMode?'var(--accent)':'var(--border2)'"><span id="examModeIcon" aria-hidden="true">📚</span><span id="examModeLabel">STUDY</span></button>
     <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
     <button id="hdrMenuBtn" onclick="toggleHdrMenu()" aria-label="More options" aria-expanded="false">&#8801;</button>
     <div id="hdrMenu" role="menu">
@@ -4940,7 +4941,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.9';
+const APP_VERSION = 'v10.10';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7810,8 +7811,8 @@ function renderQuestion(q) {
     + '<button class="fl-btn" onclick="showFlagModal()" aria-label="Flag for review" title="Flag this question">&#9873;</button>'
     + '</div></div>'
     + '<div class="q-body">'
-    + (q.scenario_context ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
-    + '<p class="q-text">' + escapeHtml(q.question) + '</p>'
+    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
+    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
     + '<div class="opts">' + optsHtml + '</div>'
     + '<div class="conf-stage" id="confStage" hidden>'
       + confTipHtml
@@ -8040,15 +8041,19 @@ function showResult(chosen, correct, timeout) {
 
   // detectMindsetIssue expects the ORIGINAL letter the user picked, not the display letter.
   var chosenOrig = chosen ? displayToOriginal(chosen, shuffle) : null;
-  var mindsetAlertHtml = !ok && !timeout ? buildMindsetAlertHtml(q, chosenOrig) : '';
+  // v10.10 exam mode: hide pedagogical add-ons (mindset alert, tips, triplet companions)
+  // to match the surface of the real ISACA exam, where only explanation + per-option
+  // breakdown are presented.
+  var inExamMode = !!(window.S && S.examMode);
+  var mindsetAlertHtml = (!ok && !timeout && !inExamMode) ? buildMindsetAlertHtml(q, chosenOrig) : '';
   p.innerHTML =
     mindsetAlertHtml
     + '<div class="verdict ' + vc + '"><span class="verdict-icon">' + vi + '</span>' + vt + '</div>'
     + metaRow
     + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(q.correct_explanation) + '</p></div>'
     + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'
-    + tipsBlock
-    + buildTripletCompanionsHtml(q)
+    + (inExamMode ? '' : tipsBlock)
+    + (inExamMode ? '' : buildTripletCompanionsHtml(q))
     + '<div class="result-actions">'
     + '<button class="act-btn secondary" onclick="toggleBookmark()">&#128278; Save</button>'
     + '<button class="act-btn secondary" onclick="showFlagModal()" style="border-color:var(--wrong);color:var(--wrong)">&#9873; Flag</button>'
@@ -8486,8 +8491,8 @@ function showMockQuestion() {
     + '<div class="q-meta"><span style="font-family:\x27JetBrains Mono\x27,monospace;font-size:9px;color:var(--muted)">No explanations in mock mode</span></div>'
     + '</div>'
     + '<div class="q-body">'
-    + (q.scenario_context ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
-    + '<p class="q-text">' + escapeHtml(q.question) + '</p>'
+    + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
+    + '<p class="q-text">' + (q.scenario_context && window.S && S.examMode ? escapeHtml(q.scenario_context) + ' ' : '') + escapeHtml(q.question) + '</p>'
     + '<div class="opts" id="mOpts">' + optsHtml + '</div>'
     + '<div id="mFeedback"></div>'
     + '</div></div>';
@@ -10373,6 +10378,7 @@ try {
   var menuPill = document.getElementById('hdrMenuPill');
   if (menuPill) menuPill.textContent = APP_VERSION;
 })();
+loadExamMode();  // v10.10 — restore exam-mode preference
 renderDomainGrid();
 renderSubtopicFilter();
 updateStats();
@@ -11030,6 +11036,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Exam mode: practice questions exactly as the real ISACA exam presents them',
+    items: [
+      { cat: 'new', text: 'Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface matches the real ISACA exam — just the question, four options, and a clean explanation after answering.' },
+      { cat: 'new', text: 'Your preference persists across sessions. Toggle mid-question and the current question re-renders in the new mode immediately.' },
+      { cat: 'fixed', text: 'A Domain 1 chest X-ray AI-drift question (d1_108) had a scenario over the 150-word ceiling. Trimmed to 74 words combined while preserving every fact relevant to the audit decision.' }
+    ]
+  },
+  {
+    version: 'v10.9',
     title: 'Parity hotfix: three Domain 5 wrong-answer options trimmed too short',
     items: [
       { cat: 'fixed', text: 'In the v10.7 Domain 5 wrong-answer rewrites, three questions (d5_075 on PCI DSS data protection, d5_237 on DLP quarantine governance, d5_238 on KMS key-policy compromise) ended up with wrong answers noticeably shorter than the correct answer — which lets candidates eliminate the long option without reasoning. Extended each wrong answer with the audit rationale that justifies the (incorrect) approach, so all four options now sit at similar lengths and have to be evaluated on their merits.' }
@@ -11533,6 +11548,52 @@ function toggleDarkMode() {
   document.documentElement.setAttribute('data-theme', newTheme);
   document.getElementById('darkToggleBtn').textContent = isDark ? '🌙' : '☀️';
   try { localStorage.setItem('cisa_theme', newTheme); } catch(e){}
+}
+
+// ── EXAM-REALISTIC MODE TOGGLE (v10.10) ──
+// Two ways to practice: STUDY mode (default) shows dense scenario blocks plus
+// post-answer tips, mindset coaching, and triplet-companion chips so the learner
+// internalizes audit reasoning. EXAM mode merges scenario into the stem as a
+// single paragraph and hides all pedagogical add-ons so the surface looks like
+// the real ISACA exam — no tips, no companion chips, no mindset alerts.
+function toggleExamMode() {
+  if (!window.S) window.S = {};
+  S.examMode = !S.examMode;
+  try { localStorage.setItem('cisa_exam_mode', S.examMode ? '1' : '0'); } catch(e){}
+  syncExamModeBtn();
+  // Re-render the current question if one is showing so the user sees the
+  // mode change immediately without having to advance.
+  try {
+    if (S.current && typeof renderQuestion === 'function' && S.activeTab !== 'mock') {
+      renderQuestion(S.current);
+    } else if (S.activeTab === 'mock' && typeof showMockQuestion === 'function') {
+      showMockQuestion();
+    }
+  } catch(e) {}
+}
+function syncExamModeBtn() {
+  var btn = document.getElementById('examModeBtn');
+  var icon = document.getElementById('examModeIcon');
+  var label = document.getElementById('examModeLabel');
+  if (!btn) return;
+  if (S.examMode) {
+    if (icon) icon.textContent = '📝';
+    if (label) label.textContent = 'EXAM';
+    btn.style.borderColor = 'var(--accent)';
+    btn.style.color = 'var(--accent)';
+  } else {
+    if (icon) icon.textContent = '📚';
+    if (label) label.textContent = 'STUDY';
+    btn.style.borderColor = 'var(--border2)';
+    btn.style.color = 'var(--text2)';
+  }
+}
+function loadExamMode() {
+  if (!window.S) window.S = {};
+  try {
+    S.examMode = localStorage.getItem('cisa_exam_mode') === '1';
+  } catch(e) { S.examMode = false; }
+  syncExamModeBtn();
 }
 function toggleHdrMenu() {
   var menu = document.getElementById('hdrMenu');
