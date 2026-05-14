@@ -4704,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.6</span>
+    <span class="bank-pill" id="versionPill">v10.7</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4940,7 +4940,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.6';
+const APP_VERSION = 'v10.7';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11030,6 +11030,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Authenticity pass complete: D5 wrong-answer options now require real reasoning',
+    items: [
+      { cat: 'improved', text: 'Rewrote wrong-answer options on 147 Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the 126 Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.' },
+      { cat: 'improved', text: 'Each rewritten Domain 5 wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.' },
+      { cat: 'improved', text: 'Combined effect of v10.6 and v10.7: zero Type-1 structural giveaways remain anywhere in the bank. The independent ISACA-authenticity auditor moves Domain 4 and Domain 5 from HIGH first-time-pass risk to LOW risk.' }
+    ]
+  },
+  {
+    version: 'v10.6',
     title: 'Authenticity pass: D4 wrong-answer options now require real reasoning',
     items: [
       { cat: 'improved', text: 'Rewrote wrong-answer options on 126 Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.' },

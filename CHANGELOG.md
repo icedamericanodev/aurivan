@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.7] — Authenticity pass complete: D5 wrong-answer options now require real reasoning
+
+### Improved
+- Rewrote wrong-answer options on 147 Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the 126 Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.
+- Each rewritten Domain 5 wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.
+- Combined effect of v10.6 and v10.7: zero Type-1 structural giveaways remain anywhere in the bank. The independent ISACA-authenticity auditor moves Domain 4 and Domain 5 from HIGH first-time-pass risk to LOW risk.
+
 ## [v10.6] — Authenticity pass: D4 wrong-answer options now require real reasoning
 
 ### Improved
