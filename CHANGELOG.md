@@ -4,6 +4,37 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.2] — Caricature distractors retired across 36 questions
+
+### Improved
+- Removed recycled "Endorse the [executive]" / "Defer to management" / "Trust the vendor" caricature wording from 50 distractor options across 36 questions in D1, D2, D3, and D4. Candidates can no longer eliminate options by spotting the forbidden word — each option now describes a plausible-looking audit position with compensating elements (documented review, legal sign-off, SOC reliance), and the candidate has to reason about why the position still fails the ISACA test.
+- Wrong-answer explanations for these 50 options were rewritten to name the new failure mode and the underlying audit principle (independence, evidence sufficiency, root-cause priority, business-risk anchoring, structured-evaluation requirement) instead of just pointing at the caricature.
+
+## [v10.1] — Precision-word triplets: same scenario, three different correct answers
+
+### New
+- 12 new questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word — PRIMARY or MOST IMPORTANT — produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.
+- PRIMARY questions ask the dominant audit consideration or lens (e.g., ransomware PRIMARY = encryption-progress clock; insider exfiltration PRIMARY = fiduciary duty to clients). MOST IMPORTANT questions ask the non-negotiable factor — the one element that, if absent, makes the entire response moot (e.g., phishing-credential MOST IMPORTANT = verified revocation completeness; SaaS B2B breach MOST IMPORTANT = own-regulator clock satisfied).
+
+### Improved
+- Every triplet member explicitly names its two companions in the explanation, so a candidate who saw the same scenario three times across the bank can compare exactly how the precision word changed the correct answer each time.
+
+## [v10.0] — Paired precision-word questions: FIRST vs BEST as judgment, not memorization
+
+### New
+- 12 new companion questions added across Domains 2 and 5. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design — FIRST is a single containment action, BEST is the full well-sequenced response — so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.
+- Pair examples: ransomware detection (FIRST = isolate via EDR; BEST = isolate + forensic + threat-hunt + notify + restore + harden), insider exfiltration (FIRST = revoke access; BEST = revoke + forensic + legal hold + investigate + client notify), and multi-jurisdiction privacy governance (FIRST = baseline; BEST = baseline + Privacy Governance Council + board KPIs + regulatory-triggered review).
+
+### Improved
+- Each BEST companion explicitly names its FIRST counterpart in the explanation, so a candidate who answered the FIRST version one way and the BEST version differently can see exactly what the precision word changed.
+
+## [v9.9] — Harder distractors, round 2: another 80 structural giveaways eliminated
+
+### Improved
+- Rewrote distractors for 80 more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Cumulatively, 160 questions across the two passes now have genuinely challenging wrong options.
+- Each rewritten distractor matches the correct option's compound format and fails for a specific teachable reason — wrong priority order, missing critical element, wrong scope, wrong framing, or including a harmful element — so candidates must reason about content rather than pattern-match on format.
+- Wrong-answer explanations for these 240 new options name the failure mode and tie it back to ISACA principles (independence, evidence over assumption, prevention over correction, root cause over symptoms, business risk over compliance).
+
 ## [v9.8] — Harder distractors: 80 structural giveaways eliminated across D2, D4, D5
 
 ### Improved
