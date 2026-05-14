@@ -4704,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.7</span>
+    <span class="bank-pill" id="versionPill">v10.8</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4940,7 +4940,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.7';
+const APP_VERSION = 'v10.8';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11030,6 +11030,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Final authenticity sweep: D2 wrong-answer parity + long-scenario trims',
+    items: [
+      { cat: 'improved', text: 'Rewrote wrong-answer options on 22 Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.' },
+      { cat: 'improved', text: 'Trimmed 25 question scenarios (3 Domain 2, 22 Domain 4) that ran over 150 words. ISACA\'s typical exam stem is 20-50 words with an 80-word ceiling; trimming these to ≤100 words while preserving every fact the correct answer depends on brings the bank closer to the compact stem style candidates will face on the real exam.' },
+      { cat: 'fixed', text: 'A Domain 2 cloud-shared-responsibility question (d2_014) used the absolute word "always" in its correct option. Even when factually accurate, ISACA prohibits absolute words because they let candidates eliminate by spotting absolutes. Reworded with the graded language ISACA actually uses.' }
+    ]
+  },
+  {
+    version: 'v10.7',
     title: 'Authenticity pass complete: D5 wrong-answer options now require real reasoning',
     items: [
       { cat: 'improved', text: 'Rewrote wrong-answer options on 147 Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the 126 Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.' },

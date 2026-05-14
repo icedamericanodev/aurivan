@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.8] — Final authenticity sweep: D2 wrong-answer parity + long-scenario trims
+
+### Improved
+- Rewrote wrong-answer options on 22 Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.
+- Trimmed 25 question scenarios (3 Domain 2, 22 Domain 4) that ran over 150 words. ISACA's typical exam stem is 20-50 words with an 80-word ceiling; trimming these to ≤100 words while preserving every fact the correct answer depends on brings the bank closer to the compact stem style candidates will face on the real exam.
+
+### Fixed
+- A Domain 2 cloud-shared-responsibility question (d2_014) used the absolute word "always" in its correct option. Even when factually accurate, ISACA prohibits absolute words because they let candidates eliminate by spotting absolutes. Reworded with the graded language ISACA actually uses.
+
 ## [v10.7] — Authenticity pass complete: D5 wrong-answer options now require real reasoning
 
 ### Improved
