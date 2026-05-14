@@ -4587,7 +4587,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v9.4</span>
+    <span class="bank-pill" id="versionPill">v9.5</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4844,7 +4844,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v9.4';
+const APP_VERSION = 'v9.5';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10889,6 +10889,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Domain 2 audit pass — distinct answer options and sharper governance teaching',
+    items: [
+      { cat: 'fixed', text: 'Two Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.' },
+      { cat: 'fixed', text: 'Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one Domain 2 stem.' },
+      { cat: 'fixed', text: 'Cleaned up a doubled phrase in a Domain 2 citation ("ISACA IT Audit ISACA IT Audit Standard 1207") and a doubled "Article 25" parenthetical in an EDPB citation.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to 15 Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.' },
+      { cat: 'improved', text: 'Trimmed three Domain 2 correct-answer options that were noticeably longer than their distractors so the right answer is no longer detectable by length alone.' }
+    ]
+  },
+  {
+    version: 'v9.4',
     title: 'Domain 1 audit pass — explanation accuracy and cleaner citations',
     items: [
       { cat: 'fixed', text: 'Fixed 12 Domain 1 explanations where the parenthetical letter pointed to the wrong option (for example, the explanation said "(C)" but described option B). Each finding now references the option it actually describes.' },

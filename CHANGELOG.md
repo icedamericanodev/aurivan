@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v9.5] — Domain 2 audit pass: distinct answer options and sharper governance teaching
+
+### Fixed
+- Two Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.
+- Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one Domain 2 stem.
+- Cleaned up a doubled phrase in a Domain 2 citation ("ISACA IT Audit ISACA IT Audit Standard 1207") and a doubled "Article 25" parenthetical in an EDPB citation.
+
+### Improved
+- Added closing audit-mindset sentences to 15 Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.
+- Trimmed three Domain 2 correct-answer options that were noticeably longer than their distractors so the right answer is no longer detectable by length alone.
+
 ## [v9.4] — Domain 1 audit pass: explanation accuracy and cleaner citations
 
 ### Fixed

@@ -385,6 +385,7 @@ acceptable when the reference is to the broader topical body of guidance.
 - GDPR Article 25 (Data Protection by Design and by Default)
 - GDPR Article 25 (Privacy by Design and Default)
 - EDPB Guidelines 4/2019 (Article 25 Data Protection by Design and by Default)
+- EDPB Guidelines 4/2019 (Art. 25)
 - EDPB Guidelines 248/2017 (DPIA)
 - GDPR Article 5(1)(e) (Storage Limitation)
 - GDPR Article 17 (Right to Erasure)
