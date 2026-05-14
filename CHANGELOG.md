@@ -4,6 +4,16 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.6] — Authenticity pass: D4 wrong-answer options now require real reasoning
+
+### Improved
+- Rewrote wrong-answer options on 126 Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.
+
+### Fixed
+- Twenty-seven wrong-answer options across Domain 1, Domain 2, and Domain 3 used absolute words ("always", "never", "common", "rarely") that real ISACA exam options avoid. Each is now phrased with the graded language ISACA actually uses ("typically", "generally", "in most cases", "standard"), so candidates can't eliminate by spotting absolutes — they have to evaluate the audit reasoning.
+- Three Domain 3 explanations had drifted into first-person voice ("we", "our"). Reframed to the third-person voice ISACA uses ("the organization", "the IS auditor", "management").
+- Three Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.
+
 ## [v10.5] — Polish release: cleaner citations, smaller What's New, sharper recall tips
 
 ### New

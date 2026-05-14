@@ -835,7 +835,7 @@
       "correct": "C",
       "key_concept": "SBOM = formal record of software components (open-source + third-party + dependencies + versions). It enables vulnerability management, license compliance, and supply-chain risk visibility. Service contracts, pricing schedules, and hardware inventories are different artifacts.",
       "pre_read": "For SBOM questions, anchor on \"formal record of software components and versions.\" The purpose is supply-chain transparency for vulnerability management and license compliance.",
-      "correct_explanation": "NTIA SBOM Minimum Elements and CycloneDX SBOM Specification both define a software bill of materials as a formal, machine-readable record listing all components (open-source libraries, third-party modules, dependencies, internal modules) included in a software product, along with their versions and supplier information. SBOMs enable downstream vulnerability management (which deployed systems contain a vulnerable component?), license compliance (what licenses must the firm comply with?), and supply-chain risk visibility. Option A describes a vendor support agreement. Option B describes a pricing/license schedule. Option D describes a hardware asset inventory (sometimes called an HBOM but distinct from SBOM). From the audit angle, an SBOM answers the question 'when a critical CVE drops at 2 a.m., do we know within minutes whether we are exposed?' Firms without one answer that question in days or weeks.",
+      "correct_explanation": "NTIA SBOM Minimum Elements and CycloneDX SBOM Specification both define a software bill of materials as a formal, machine-readable record listing all components (open-source libraries, third-party modules, dependencies, internal modules) included in a software product, along with their versions and supplier information. SBOMs enable downstream vulnerability management (which deployed systems contain a vulnerable component?), license compliance (what licenses must the organization comply with?), and supply-chain risk visibility. Option A describes a vendor support agreement. Option B describes a pricing/license schedule. Option D describes a hardware asset inventory (sometimes called an HBOM but distinct from SBOM). From the audit angle, an SBOM answers the question of whether, when a critical CVE drops at 2 a.m., the organization can determine within minutes whether it is exposed. Firms without one answer that question in days or weeks.",
       "wrong_explanations": {
         "A": "Vendor support agreements are contractual documents about who supports which components; they do not enumerate components themselves at the version-and-dependency level.",
         "B": "License pricing schedules list financial obligations, not components and dependencies. SBOMs may inform license-compliance reviews but are not pricing documents.",
@@ -1159,7 +1159,7 @@
       "options": {
         "A": "Long-lived feature branches that merge to main only at the end of each quarterly release cycle for stability.",
         "B": "A single shared branch where every developer commits directly to main without isolation, review, or pre-merge checks.",
-        "C": "Per-developer permanent branches that never merge but are deployed individually as feature flags in production environments.",
+        "C": "Per-developer permanent branches that do not merge but are deployed individually as feature flags in production environments.",
         "D": "Short-lived feature branches merged to a trunk daily through pull requests with automated checks before merge."
       },
       "correct": "D",
@@ -1706,7 +1706,7 @@
         "A": "Allow business users full freedom on the platform; IT involvement defeats the speed advantage of low-code tools.",
         "B": "Require IT to author every low-code application; citizen developers may only file requests through the help desk.",
         "C": "Establish a center-of-excellence with platform standards, environment tiers, security review gates, and citizen-developer training.",
-        "D": "Block all low-code platform usage organization-wide because the risks always outweigh the productivity benefits."
+        "D": "Block all low-code platform usage organization-wide because the risks invariably outweigh the productivity benefits."
       },
       "correct": "C",
       "key_concept": "Low-code/no-code governance = center-of-excellence model: platform standards + environment tiers (dev/test/prod) + security review gates + citizen-developer training. Full freedom and total ban are both extremes; IT-only authoring defeats the platform's value.",
@@ -1957,7 +1957,7 @@
         "A": "A tested, documented, time-bound procedure to revert to the prior version including data and configuration consistency.",
         "B": "An informal commitment that the team will figure out how to restore service if the deployment fails badly in production.",
         "C": "A backup of the previous deployment artifact stored in the repository for indefinite future reference if needed.",
-        "D": "A documented decision to never roll back; instead, fix forward by deploying a new release containing the fix promptly."
+        "D": "A documented decision to forgo rollback in all cases; instead, fix forward by deploying a new release containing the fix promptly."
       },
       "correct": "A",
       "key_concept": "Robust rollback = tested + documented + time-bound + includes data/config consistency. Informal commitments and artifact backups do not substitute for a tested procedure. Fix-forward-only is a real philosophy but not a rollback strategy and only works when forward fixes are reliably faster than rollback.",
@@ -2135,7 +2135,7 @@
       "subtopic": "Failed Deployment with Bad Rollback. Incident Governance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Which position MOST appropriately reflects sound incident-response and rollback governance?",
+      "question": "A B2C e-commerce platform (3.2M monthly active users) deployed a major release at 02:00. By 03:30, error rates spike to 15% (vs baseline 0.4%) and order completion drops 78%. Investigation reveals the new release wrote data in a format the rollback script does not recognize; straight rollback would corrupt 4,200 orders placed in the 90-minute window. The CTO has directed the team to roll back regardless and reconcile the affected orders afterward. The on-call SRE has warned that customer-facing impact will compound. The IS auditor was paged for an opinion before the rollback executes at 04:00. Which position MOST appropriately reflects sound incident-response and rollback governance?",
       "scenario_context": "A B2C e-commerce platform (3.2M monthly active users) deployed a major release at 02:00. By 03:30, error rates spike to 15% (vs baseline 0.4%) and order completion drops 78%. Investigation reveals the new release wrote data in a format the rollback script does not recognize; straight rollback would corrupt 4,200 orders placed in the 90-minute window. The CTO orders the team to 'roll back anyway and we'll fix the orders later.' The on-call SRE warns that customer-facing impact will compound. The IS auditor was paged for an opinion before the rollback executes at 04:00.",
       "options": {
         "A": "Execute the CTO's straight-rollback order immediately; corrupted-order remediation is a separate workstream from the outage response.",
@@ -2759,7 +2759,7 @@
       "scenario_context": "A national insurance carrier has a 35-year-old mainframe-hosted policy administration system processing $4.2B in annual premium. The platform runs on COBOL with ~14M lines of code, supports 700+ business rules, and is maintained by a 22-person team where the median tenure is 28 years and three engineers plan to retire within 18 months. Replacement options include: (a) lift-and-shift to cloud (re-host); (b) re-engineer to Java microservices; (c) replatform to a vendor insurance suite; (d) maintain status quo while documenting knowledge. The CTO favors microservices replatform. The IS auditor is asked to assess the options.",
       "options": {
         "A": "Adopt microservices replatform as the target architecture, since that is the standard direction for legacy mainframe modernization at scale",
-        "B": "Maintain status quo with documentation only; modernization always fails for mainframe systems and the risk is not worth pursuing.",
+        "B": "Maintain status quo with documentation only; modernization typically fails for mainframe systems and the risk is not worth pursuing.",
         "C": "Outsource the legacy system to a managed-services provider entirely; the firm should not operate mainframe technology any longer.",
         "D": "Multi-track approach: knowledge capture from retiring staff, fit-gap analysis across all four options, phased modernization tied to risk and value."
       },
@@ -2840,7 +2840,7 @@
       "correct": "A",
       "key_concept": "Privacy-by-design in agile = integrate at sprint planning (data-flow + minimization + consent gates) BEFORE story commitment. End-of-sprint review or quarterly batches are too late to change design; continue-current-state ignores audit findings.",
       "pre_read": "For privacy-by-design-in-agile questions, anchor on \"shift left: privacy at sprint planning, BEFORE story commitment.\" End-of-sprint, quarterly, or do-nothing approaches all miss the design window.",
-      "correct_explanation": "GDPR Article 25 (Data Protection by Design and by Default), ISO/IEC 29100 (Privacy Framework), and ISACA Application Controls guidance establish privacy-by-design as a design-time discipline that must be integrated BEFORE stories are committed to a sprint; at sprint planning. Privacy review at this point includes (1) data-flow analysis (what new flows does this story create, where does data come from and go), (2) minimization checks (do we need every field; can we use derived/aggregated forms), (3) consent design gates (does the use case fall under existing consent or require new consent flows). Option B ignores documented audit findings and bets on continued regulatory leniency. Option C's end-of-sprint review is too late to change design without rework. Option D's quarterly batch loses the sprint-cadence advantage and lets non-compliant features ship between reviews.",
+      "correct_explanation": "GDPR Article 25 (Data Protection by Design and by Default), ISO/IEC 29100 (Privacy Framework), and ISACA Application Controls guidance establish privacy-by-design as a design-time discipline that must be integrated BEFORE stories are committed to a sprint; at sprint planning. Privacy review at this point includes (1) data-flow analysis (what new flows the story creates, where data comes from and goes), (2) minimization checks (whether every field is needed; whether derived/aggregated forms can be used), (3) consent design gates (whether the use case falls under existing consent or requires new consent flows). Option B ignores documented audit findings and bets on continued regulatory leniency. Option C's end-of-sprint review is too late to change design without rework. Option D's quarterly batch loses the sprint-cadence advantage and lets non-compliant features ship between reviews.",
       "wrong_explanations": {
         "B": "Continuing current state ignores documented audit findings (undocumented PII flows, no minimization, no consent analysis). Regulators have explicitly increased enforcement against health-tech startups; deferring is high risk.",
         "C": "End-of-sprint review is too late to change design without rework. The privacy team finds gaps at a point where remediation costs are high; the right answer is to shift privacy earlier in the cycle.",
@@ -3126,7 +3126,7 @@
       "options": {
         "A": "Treat flags as code: versioned definitions, named owners, retirement dates, and audit logging of changes to flag state.",
         "B": "Allow any developer to toggle production flags freely from their workstation to maximize delivery speed and autonomy.",
-        "C": "Never use feature flags; they introduce branching complexity that always exceeds the value of progressive delivery they enable.",
+        "C": "Avoid feature flags entirely; they introduce branching complexity that consistently exceeds the value of progressive delivery they enable.",
         "D": "Keep all flags forever once created; removing flags risks regressions and the operational complexity of cleanup outweighs benefits."
       },
       "correct": "A",
@@ -3135,7 +3135,7 @@
       "correct_explanation": "OpenFeature (CNCF), LaunchDarkly Feature Management, and ISACA Feature Flag Governance guidance all establish that production feature flags are powerful but require lifecycle governance: (1) versioned definitions (flag config in source control); (2) named owners (someone responsible for each flag); (3) retirement dates (flags are not permanent; once a feature is fully rolled out, the flag is removed); (4) audit logging (every flag state change is logged with actor, time, and reason). Option B's free-toggle breaks change control and creates production incidents from accidental toggles. Option C's never-use forgoes a valuable progressive-delivery and incident-response tool. Option D's keep-forever produces 'flag debt': accumulating dead flags that complicate testing and create surprise interactions.",
       "wrong_explanations": {
         "B": "Free-toggle by any developer breaks change control. Production flag toggles affect users immediately; they require the same governance as other production changes (review, audit log, named accountability).",
-        "C": "Never-using flags forgoes a valuable tool. Feature flags enable progressive rollout, A/B testing, kill switches for incident response, and gradual migration; the cost is governance, not avoidance.",
+        "C": "Avoiding flags entirely forgoes a valuable tool. Feature flags enable progressive rollout, A/B testing, kill switches for incident response, and gradual migration; the cost is governance, not avoidance.",
         "D": "Keeping flags forever produces 'flag debt': dead flags accumulate, complicate testing matrices, and create surprise interactions. Lifecycle includes retirement."
       },
       "tips": [
@@ -3198,7 +3198,7 @@
       "options": {
         "A": "Allow random production failures without warning to test team responsiveness and personal accountability under real pressure.",
         "B": "Avoid all deliberate failure injection because production reliability requires zero unplanned disruption at all times.",
-        "C": "Restrict chaos experiments to non-production environments only, since production exposure is never acceptable.",
+        "C": "Restrict chaos experiments to non-production environments only, since production exposure is not acceptable.",
         "D": "Run controlled experiments injecting failures with hypothesis + blast-radius limits + automatic rollback + learning capture."
       },
       "correct": "D",
@@ -3271,7 +3271,7 @@
       "options": {
         "A": "Automate rotation via vault-issued short-lived credentials so applications fetch fresh secrets on schedule without manual intervention.",
         "B": "Rotate secrets manually every two years and only when staff turnover requires immediate revocation of any specific named credential.",
-        "C": "Never rotate secrets because rotation introduces deployment risk and outage potential outweighing the marginal security gain.",
+        "C": "Do not rotate secrets because rotation introduces deployment risk and outage potential outweighing the marginal security gain.",
         "D": "Rotate secrets only after a confirmed breach incident; preemptive rotation creates unnecessary operational overhead each time."
       },
       "correct": "A",
@@ -3280,7 +3280,7 @@
       "correct_explanation": "HashiCorp Vault, NIST SP 800-57 (Recommendation for Key Management), and ISACA Secrets Management guidance establish automated short-lived-credential rotation as the appropriate control: the vault issues credentials with TTLs measured in minutes to hours; applications fetch fresh credentials on schedule; old credentials expire automatically. This makes rotation continuous and cheap. Option B's manual every-two-years is far too slow given typical compromise windows. Option C's never-rotate accumulates exposure; compromised credentials remain valid indefinitely. Option D's rotate-only-after-breach is reactive: the breach has already happened, so rotation at that point limits damage but does not prevent it.",
       "wrong_explanations": {
         "B": "Manual every-two-years is far too slow. Credential compromise windows are typically much shorter (days to months), and manual rotation has high friction that discourages frequency.",
-        "C": "Never-rotate accumulates exposure indefinitely. Any compromised credential remains valid; the supposed deployment risk of rotation is solved by automation (option A).",
+        "C": "Skipping rotation accumulates exposure indefinitely. Any compromised credential remains valid; the supposed deployment risk of rotation is solved by automation (option A).",
         "D": "Rotate-only-after-breach is reactive. The breach already happened; rotation at that point limits damage but does not prevent it. Proactive rotation is the discipline."
       },
       "tips": [
@@ -3677,7 +3677,7 @@
       "options": {
         "A": "Approve the CIO's request for $20M and 12 additional months on the standard assumption that M&A integrations routinely need budget supplements past the original plan",
         "B": "Recommend a structured recovery program: independent review, scope rebaselining, leadership assessment, milestone re-sequencing by risk and value, with funded go/no-go gates.",
-        "C": "Cancel the integration entirely and operate the two firms separately; mid-integration recovery rarely succeeds and consumes scarce capital with low return on investment.",
+        "C": "Cancel the integration entirely and operate the two firms separately; mid-integration recovery seldom succeeds and consumes scarce capital with low return on investment.",
         "D": "Defer all decisions until the next quarterly board meeting to allow more data to accumulate on the integration's actual recovery trajectory naturally."
       },
       "correct": "B",
@@ -4008,7 +4008,7 @@
       "scenario_context": "A logistics-tech firm is launching a new fleet-tracking application. Expected workload: 8M vehicles emitting telemetry every 5 seconds (~1.6M writes/sec at peak); read patterns include real-time dashboards (low-latency point reads) and analytics (large aggregations). Data model has well-defined entities (vehicle, route, driver, event) with some relationship constraints. The engineering team is split: half advocate PostgreSQL for ACID and SQL familiarity; half advocate a time-series database (e.g., InfluxDB, TimescaleDB) for ingest performance. The architect has proposed a polyglot persistence design. The IS auditor was asked to assess the database-technology-selection decision framework.",
       "options": {
         "A": "Apply structured selection: workload analysis (read/write patterns, consistency needs, data model), TCO over 5 years, ops complexity, schema-evolution trade-offs, polyglot complexity.",
-        "B": "Use PostgreSQL exclusively; ACID guarantees and SQL familiarity always outweigh specialized-database advantages for any modest-scale application implementation.",
+        "B": "Use PostgreSQL exclusively; ACID guarantees and SQL familiarity reliably outweigh specialized-database advantages for any modest-scale application implementation.",
         "C": "Use a time-series database exclusively; the 1.6M writes/sec workload is the dominant signal and SQL databases cannot match the ingest performance of purpose-built time-series engines.",
         "D": "Choose the technology the senior database engineer prefers; database expertise inside the firm matters more than nominal technology fit for any specific workload's properties."
       },
@@ -4121,7 +4121,7 @@
       "options": {
         "A": "Endorse approach (a) proceed-then-patch; halting at 48 hours after 4 months of work creates schedule and customer-trust damage outweighing the residual zero-day risk during a short patch window.",
         "B": "Apply structured response: scope the vulnerability across both versions, deploy emergency patch to BOTH current production AND release artifact, monitor for exploitation, then proceed with patched rollout.",
-        "C": "Endorse approach (b) halt-and-patch-first; any zero-day in a foundational library is a critical risk and the firm should never deploy known-vulnerable code at any rollout stage.",
+        "C": "Endorse approach (b) halt-and-patch-first; any zero-day in a foundational library is a critical risk and the firm should not deploy known-vulnerable code at any rollout stage.",
         "D": "Defer the rollout indefinitely until the vulnerability has been fully analyzed by external security researchers across the broader ecosystem for several weeks."
       },
       "correct": "B",
@@ -4270,7 +4270,7 @@
         "A": "Endorse waiting for primary restoration; the operational complexity of activating the backup processor in mid-outage exceeds the revenue cost of even a multi-hour outage.",
         "B": "Activate the documented and quarterly-tested backup processor per the documented playbook; communicate transparently with customers and capture the incident as a post-incident review input.",
         "C": "Suspend online sales until primary restoration; partial-operation through the backup creates customer-experience problems worse than a clean operational pause regardless.",
-        "D": "Switch all transactions to a new processor never previously integrated; the urgency justifies any operational risk to restore revenue immediately during this peak season window."
+        "D": "Switch all transactions to a new processor not previously integrated; the urgency justifies any operational risk to restore revenue immediately during this peak season window."
       },
       "correct": "B",
       "key_concept": "Sole-vendor SaaS outage response = activate documented + tested backup processor + transparent customer communication + post-incident review as input. Wait-passively yields $14M/day; suspend-sales abandons revenue when tested fallback exists; activate-untested-vendor introduces untested integration risk.",

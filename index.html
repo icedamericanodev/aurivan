@@ -4704,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.5</span>
+    <span class="bank-pill" id="versionPill">v10.6</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4940,7 +4940,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.5';
+const APP_VERSION = 'v10.6';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11030,6 +11030,16 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Authenticity pass: D4 wrong-answer options now require real reasoning',
+    items: [
+      { cat: 'improved', text: 'Rewrote wrong-answer options on 126 Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.' },
+      { cat: 'fixed', text: 'Twenty-seven wrong-answer options across Domain 1, Domain 2, and Domain 3 used absolute words ("always", "never", "common", "rarely") that real ISACA exam options avoid. Each is now phrased with the graded language ISACA actually uses ("typically", "generally", "in most cases", "standard"), so candidates can\'t eliminate by spotting absolutes — they have to evaluate the audit reasoning.' },
+      { cat: 'fixed', text: 'Three Domain 3 explanations had drifted into first-person voice ("we", "our"). Reframed to the third-person voice ISACA uses ("the organization", "the IS auditor", "management").' },
+      { cat: 'fixed', text: 'Three Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.' }
+    ]
+  },
+  {
+    version: 'v10.5',
     title: 'Polish release: cleaner citations, smaller What\'s New, sharper recall tips',
     items: [
       { cat: 'new', text: 'When you answer a question that appears in a precision-word triplet (FIRST → BEST → PRIMARY/MOST IMPORTANT), the explanation now shows the companion question IDs so you can compare how the precision word changed the correct answer on the same scenario. 31 triplet scenarios are surfaced this way.' },

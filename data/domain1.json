@@ -1828,7 +1828,7 @@
         "A": "Practical procedures, templates, and example workflows that audit teams may adapt to specific engagements",
         "B": "Advisory commentary on how to apply professional judgment in specific audit scenarios, recommended but not required",
         "C": "Mandatory minimum requirements that establish what an IS audit engagement must include and how it must be conducted",
-        "D": "Reference summaries of common audit findings published annually by ISACA's research division"
+        "D": "Reference summaries of recurring audit findings published annually by ISACA's research division"
       },
       "correct": "C",
       "key_concept": "ISACA IS Audit and Assurance Standards are the mandatory authority layer of ITAF. They establish minimum requirements for IS audits and must be followed; Guidelines explain how to apply them; Tools and Techniques provide adaptable practical aids.",
@@ -2478,8 +2478,8 @@
       "subtopic": "Fraud Triangle. Indicator Identification",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS auditor at a regional grocery retail chain is evaluating findings from an audit of the head-office finance team. During fieldwork, the auditor documents four observations: (1) the accounts-payable clerk has been with the company for 19 years and has become the only staff member who knows the supplier-master-setup process; the clerk has declined to take vacation for four consecutive years and resists cross-training requests; (2) the same clerk recently complained openly to colleagues about being passed over for promotion three times in five years and feeling underpaid for the workload; (3) the company's whistleblower hotline is operated by an external vendor, but the audit committee has not received or reviewed any reports from it for 18 months; (4) AP override-approval thresholds were last recalibrated seven years ago, despite significant inflation in supplier-invoice amounts since then.",
-      "question": "Applying the fraud-triangle model (pressure, opportunity, rationalization), which observation provides the STRONGEST single fraud-triangle indicator that warrants the auditor's expanded inquiry?",
+      "scenario_context": "An IS auditor at a regional grocery chain documents four head-office finance findings: (1) the AP clerk, 19 years' tenure, is sole holder of the supplier-master-setup process, has declined vacation four years running, and resists cross-training; (2) the same clerk has openly complained about being passed over for promotion and feeling underpaid; (3) the whistleblower hotline has produced no reports to the audit committee for 18 months; (4) AP override-approval thresholds were last recalibrated seven years ago despite material invoice inflation.",
+      "question": "Applying the fraud-triangle model (pressure, opportunity, rationalization), which observation provides the STRONGEST single indicator warranting expanded inquiry?",
       "options": {
         "A": "Observation 1; long tenure, sole knowledge of supplier-master setup, no vacation in four years, resistance to cross-training (opportunity indicator)",
         "B": "Observation 2; openly expressed dissatisfaction about pay and promotions over the past five years (pressure indicator)",
@@ -3177,7 +3177,7 @@
       "scenario_context": "An IS audit director at a semiconductor manufacturer is deciding the scope of an integrated audit of the wafer-fabrication production-control system. The system includes IT components (the production-control application, integration to ERP, sensor-data feeds from manufacturing equipment), operational components (production scheduling, in-process quality control, yield optimization), and financial-reporting components (work-in-process inventory valuation, scrap accounting). Three options are on the table: (1) IS-audit-only scope covering IT components; (2) operational-audit-only scope covering production scheduling and quality; (3) integrated scope covering IT + operational + financial-reporting components in a single coordinated engagement.",
       "question": "Which scope decision is MOST appropriate, and what is the key risk of choosing a narrower scope?",
       "options": {
-        "A": "Option 1 (IS-audit-only). IS audits should always remain narrowly scoped to IT components to maintain technical depth, and other audit types should be performed separately as their own engagements",
+        "A": "Option 1 (IS-audit-only). IS audits should typically remain narrowly scoped to IT components to maintain technical depth, and other audit types should be performed separately as their own engagements",
         "B": "Option 2 (operational-audit-only); operational concerns dominate semiconductor production, so an operational-audit-only scope is sufficient and IT and financial-reporting components can be handled by ad-hoc procedures",
         "C": "Option 3 (integrated scope). IT, operational, and financial-reporting components are interdependent, so an integrated audit recognizes cross-domain risk; narrower scope misses risks at the seams",
         "D": "All three should be performed sequentially in three separate engagements, even if it means duplicating fieldwork at each component boundary, so each audit type retains its specialist focus"
@@ -3248,7 +3248,7 @@
       "subtopic": "External Expert. Inadequate Work Scenario",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS auditor at an agricultural-technology company engaged a specialist data-engineering firm to evaluate the integrity of the company's satellite-imagery-derived crop-yield prediction model; work that exceeded the audit team's own technical depth. The auditor evaluated the firm's competence, objectivity, and the relevance of their work before engagement (per Standard 1206) and accepted them. After receiving the firm's report, the auditor identifies four problems: (1) the firm's report does not document its methodology in sufficient detail for the auditor to evaluate the work's quality; (2) two of the firm's stated conclusions appear to contradict each other on the question of model drift; (3) the firm performed no review of the training-data lineage despite the auditor's engagement letter explicitly requesting it; (4) the firm has now invoiced for the engagement and pressed for sign-off so they can issue the invoice formally. The auditor must decide how to handle this.",
+      "scenario_context": "An IS auditor engaged a specialist data-engineering firm (evaluated and accepted under Standard 1206) to assess a satellite-imagery-derived crop-yield model. On receiving the firm's report, the auditor identifies four problems: (1) methodology is not documented in sufficient detail for the auditor to evaluate quality; (2) two stated conclusions on model drift contradict each other; (3) the firm performed no review of training-data lineage despite the engagement letter requesting it; (4) the firm has invoiced and is pressing for sign-off.",
       "question": "Which response is MOST appropriate, and what is the key reasoning under ISACA Standard 1206?",
       "options": {
         "A": "Accept the firm's report as delivered, since the auditor evaluated competence and objectivity before engagement and the firm is now established; relying on the firm now is consistent with the original decision",
@@ -3290,7 +3290,7 @@
         "A": "The mandatory minimum requirements that establish what every IS audit engagement must include",
         "B": "Practical procedures, audit programs, templates, and example workflows that audit teams may adapt to specific engagements",
         "C": "Advisory commentary on how to apply the Standards in specific contexts, recommended but not required",
-        "D": "Reference summaries of common audit findings published annually by ISACA's research division"
+        "D": "Reference summaries of recurring audit findings published annually by ISACA's research division"
       },
       "correct": "B",
       "key_concept": "Tools and Techniques is the practical layer of ITAF; adaptable procedures, audit programs, templates, and example workflows. It supports execution where Standards establish requirements and Guidelines recommend application.",
@@ -3987,7 +3987,7 @@
       "subtopic": "Continuous Auditing. Architecture Trade-offs",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS audit director at a container-shipping line is designing a continuous-auditing architecture for the bills-of-lading system, which processes ~280,000 bills per day across 47 ports and is mission-critical to operations. Five design factors are in tension: (1) detection latency; the audit team wants anomalies surfaced within minutes; (2) production-system impact; operations cannot tolerate any meaningful latency or failure on the bills-of-lading system; (3) coverage breadth; the audit team wants every transaction evaluated, not a sample; (4) auditor-staffing; the audit function is small and cannot triage hundreds of false positives per hour; (5) data-protection regulations require that audit access not extend to certain customer-PII fields. The director is choosing among three architectures: A) embedded audit modules inline in production processing; B) a near-real-time read-only replica of production with audit rules running against the replica; C) a periodic CAATs batch on hourly extracts.",
+      "scenario_context": "An IS audit director at a container-shipping line is designing a continuous-auditing architecture for the bills-of-lading system (~280,000 bills/day, 47 ports, mission-critical). Five factors are in tension: (1) detection latency within minutes; (2) zero production impact; (3) every-transaction coverage, no sampling; (4) a small audit team that cannot triage hundreds of false positives per hour; (5) data-protection rules excluding certain customer-PII fields. Three architectures: A) embedded audit modules inline in production; B) a near-real-time read-only replica with audit rules; C) periodic CAATs batch on hourly extracts.",
       "question": "Which architecture is MOST appropriate, and how does it balance the five design factors?",
       "options": {
         "A": "Architecture A (embedded audit modules inline); best latency and best coverage; manage production-impact concerns by careful instrumentation and the auditor-staffing concern through tuning of alert thresholds",
@@ -5291,7 +5291,7 @@
       "scenario_context": "An IS audit director at a regional electric utility is leading the function's migration from a periodic-audit model (one engagement per major area per year) to a hybrid continuous-auditing-plus-periodic model. The function has 8 staff, ~20 high-priority systems, and limited automation. The director is designing a 24-month implementation roadmap. Four candidate sequencing approaches are on the table: (A) start with the highest-risk system and build out, (B) start with the most-instrumented system to maximize early wins, (C) attempt full continuous auditing across all 20 systems simultaneously, (D) defer continuous auditing entirely until automation tooling is in place.",
       "question": "Which sequencing approach is MOST appropriate, and what staging principle guides the decision?",
       "options": {
-        "A": "Approach A (highest-risk first); risk-based prioritization always wins and the function should start where audit value is highest",
+        "A": "Approach A (highest-risk first); risk-based prioritization is the dominant criterion and the function should start where audit value is highest",
         "B": "Approach D (defer until automation is in place); eliminates implementation risk by waiting",
         "C": "Approach C (full simultaneous deployment across all 20 systems); covers everything at once and avoids staged-rollout risk",
         "D": "Approach B (most-instrumented-first with risk-based expansion); staged implementation builds team capability and demonstrates value, then expands by combining risk priority with instrumentation readiness"
@@ -5369,7 +5369,7 @@
       "options": {
         "A": "Heat Map only; simplest to communicate and the audit committee will understand it best",
         "B": "Pick whichever method is fastest to implement regardless of stakeholder needs, regulatory defensibility, or quantitative-modeling fit for the highest-priority risks",
-        "C": "FAIR only; quantitative methods are always more rigorous and dominate qualitative methods regardless of executive-communication needs",
+        "C": "FAIR only; quantitative methods are inherently more rigorous and dominate qualitative methods regardless of executive-communication needs",
         "D": "Layer methods by use case: ISO 31000 as defensibility framework, FAIR for quantitative loss modeling, heat-map for executive communication"
       },
       "correct": "D",
@@ -5522,7 +5522,7 @@
         "A": "Ongoing evaluations are operationally embedded in regular activities (supervisor exception review, automated alerts, KPI dashboards), while separate evaluations are periodic standalone reviews",
         "B": "Ongoing evaluations are performed by the audit function only, while separate evaluations are performed by management only",
         "C": "Ongoing evaluations cover only IT controls, while separate evaluations cover only business-process controls",
-        "D": "Ongoing evaluations are required by COSO, while separate evaluations are optional and rarely used in practice"
+        "D": "Ongoing evaluations are required by COSO, while separate evaluations are optional and infrequently used in practice"
       },
       "correct": "A",
       "key_concept": "COSO Component 5 distinguishes ongoing evaluations (operationally embedded, continuous) from separate evaluations (periodic, standalone, stepping back to examine controls). Both are management activities; both are required for a complete monitoring environment.",
@@ -6776,7 +6776,7 @@
         "A": "SOC 1 addresses controls over financial reporting; SOC 2 addresses Trust Services Criteria such as security and availability",
         "B": "SOC 1 is for general public distribution; SOC 2 is restricted to the service organization's management",
         "C": "SOC 1 covers cloud providers exclusively; SOC 2 covers traditional outsourced data center providers",
-        "D": "SOC 1 is a point-in-time report (Type I only); SOC 2 is always a period-of-time report (Type II only)"
+        "D": "SOC 1 is a point-in-time report (Type I only); SOC 2 is exclusively a period-of-time report (Type II only)"
       },
       "correct": "A",
       "correct_explanation": "Under the AICPA SOC for Service Organizations framework, SOC 1 reports examine a service organization's controls that are relevant to a user entity's internal control over financial reporting — they exist to support the user's financial-statement audit. SOC 2 reports examine controls against the Trust Services Criteria: security (the common criteria), and optionally availability, processing integrity, confidentiality, and privacy. The two reports answer fundamentally different questions and are not interchangeable; choosing the wrong one is a common procurement and audit-coordination error.",

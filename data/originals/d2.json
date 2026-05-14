@@ -350,7 +350,7 @@
       "options": {
         "A": "The IT Governance Charter is well-designed; the four implementation gaps are operational issues that do not reflect on the charter itself, since the charter's design has not changed",
         "B": "Documented governance and operational practice have diverged across all four observations; the gap is itself a finding (governance on paper but not in practice), and the unmet charter-update cycle means the system has no self-correction mechanism",
-        "C": "The four observations are independent operational issues that should be reported separately to the relevant area owners, since they affect different aspects of IT governance and do not share a common cause",
+        "C": "The four observations are independent operational issues that should be reported separately to the relevant area owners, since they affect different aspects of IT governance and do not share a single root cause",
         "D": "The IT Governance Charter should be discarded entirely and replaced with a new framework, since the documented governance has clearly failed to take hold in operational practice"
       },
       "correct": "B",
@@ -423,7 +423,7 @@
       "question": "An IS auditor at a regional REIT is evaluating which risk-analysis method to apply to IT risks. The CIO wants to use only quantitative methods (FAIR-style dollar-loss modeling) for all IT risks because \"numbers are more rigorous than ratings.\" The auditor must respond. What is the MOST important consideration when selecting between qualitative, semi-quantitative, and quantitative methods?",
       "options": {
         "A": "Method choice follows from available data and analytical objective: quantitative needs sufficient data to support credible probability estimates; qualitative leverages judgment when data is sparse; semi-quantitative combines them based on which risks have data and which do not",
-        "B": "Quantitative methods are always more rigorous than qualitative methods and should be applied universally to all IT risks regardless of data availability, since dollar values are inherently more objective than ratings and the precision of quantitative output is what stakeholders need",
+        "B": "Quantitative methods are inherently more rigorous than qualitative methods and should be applied universally to all IT risks regardless of data availability, since dollar values are inherently more objective than ratings and the precision of quantitative output is what stakeholders need",
         "C": "Qualitative methods should be applied universally to all IT risks since they are simpler and faster to execute, regardless of whether quantitative data could support more precise estimates; the simplicity of qualitative output is more important than precision",
         "D": "The method choice does not materially affect the audit conclusion as long as the chosen methodology is consistently applied across all risks; consistency in method outweighs fit-for-purpose, and the analytical objective is secondary to consistency"
       },
@@ -571,7 +571,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor at a national bank is evaluating the data-classification program. The bank has data spanning customer financial records (regulated under GLBA), employee PII (regulated under various state laws), public marketing material, and internal operational data. What is the MOST important characteristic of an effective data-classification approach?",
       "options": {
-        "A": "Classify all data at the highest sensitivity level (e.g., 'Restricted') to ensure maximum protection across the entire data estate, since over-protection is always safer than under-protection and avoids classification errors",
+        "A": "Classify all data at the highest sensitivity level (e.g., 'Restricted') to ensure maximum protection across the entire data estate, since over-protection is presumed safer than under-protection and avoids classification errors",
         "B": "A small number of classification levels (e.g., Public / Internal / Confidential / Restricted) tied to specific handling requirements (storage, access, transmission, retention); each data type classified once at the right level; automated tooling enforces handling controls",
         "C": "Classify each data record individually with custom protection rules tailored to the specific use case, business context, and regulatory requirements applicable to that exact record at that exact time",
         "D": "Avoid formal classification entirely and rely on individual employee judgment to handle data appropriately based on the context of each interaction with each data element"
@@ -2010,7 +2010,7 @@
         "A": "Annual one-day mandatory training delivered in a single all-hands format, identical content for every IT role and skill level",
         "B": "Role-based competency framework with individual skill-gap assessments, training plans tied to gaps, and periodic re-assessment of competence",
         "C": "Training delivered only when an incident reveals a knowledge gap, so training time tracks observed operational issues rather than forecasts",
-        "D": "Vendor-led product certifications counted as the entirety of the training program, since vendor materials are always current and authoritative"
+        "D": "Vendor-led product certifications counted as the entirety of the training program, since vendor materials are presumed current and authoritative"
       },
       "correct": "B",
       "key_concept": "Effective IT training programs combine role-based competency frameworks, individual gap assessments, gap-targeted training plans, and re-assessment cadence. One-size-fits-all, incident-only, and vendor-only models all leave material competency gaps.",
@@ -2334,7 +2334,7 @@
         "A": "An annual ISMS internal audit conducted in isolation from the day-to-day risk register, incident log, and KCI dashboard maintained by the security team",
         "B": "Quarterly external penetration tests conducted in isolation, with findings filed for compliance evidence but not tied back to the program's risk treatment plan",
         "C": "An integrated operating cadence: risk register reviewed monthly, KCIs reported with KRIs to leadership, incidents feeding the risk register, and ISMS audits informed by all three",
-        "D": "Reactive operations only; work the security backlog when an incident reveals a gap, since proactive investment in routine operations rarely pays off measurably in budget cycles"
+        "D": "Reactive operations only; work the security backlog when an incident reveals a gap, since proactive investment in routine operations seldom pays off measurably in budget cycles"
       },
       "correct": "C",
       "key_concept": "InfoSec program operations require an INTEGRATED cadence: risk register review, KCI/KRI reporting to leadership, incidents feeding the register, and ISMS audits informed by all three. Isolated annual audits, isolated pen tests, and reactive-only models leave material gaps.",
@@ -2555,7 +2555,7 @@
       "scenario_context": "A regional bank's risk register shows three IT risks the board is treating this quarter. Risk 1: an unsupported version of a core banking middleware product; impact = high; likelihood = high; the vendor has confirmed there will be no further patches. Risk 2: a low-likelihood/low-impact risk that the bank's website might be DDoS'd by a small protest group on a single day; cost-to-mitigate exceeds expected loss by ~10x. Risk 3: a high-impact risk of cyber-incident loss exceeding the firm's loss-absorbing capacity, which would trigger regulatory action. The CRO asks an IS auditor for a treatment recommendation tied to each specific risk.",
       "options": {
         "A": "Treat all three risks identically by accepting them all, since formal acceptance with documentation is sufficient for risks that the board has reviewed and signed off on",
-        "B": "Treat all three risks identically by mitigating them all, since mitigation is the most rigorous treatment and rigor is always the right answer in financial-services regulated contexts",
+        "B": "Treat all three risks identically by mitigating them all, since mitigation is the most rigorous treatment and rigor is the default right answer in financial-services regulated contexts",
         "C": "Risk 1 → REDUCE/AVOID (cannot accept high/high unpatched); Risk 2 → ACCEPT (reduction cost exceeds expected loss); Risk 3 → TRANSFER (cyber insurance) plus REDUCE for the regulatory dimension",
         "D": "Transfer all three risks to insurers, since insurance coverage is the most efficient form of risk treatment and removes the bank's exposure entirely regardless of risk type or magnitude"
       },
@@ -2565,7 +2565,7 @@
       "correct_explanation": "ISACA Risk IT Framework, COSO ERM (2017), and ISO 31000:2018 establish that risk treatment must be matched to each risk's profile; not applied uniformly. Risk 1 (high impact, high likelihood, unpatched) cannot be accepted (the magnitude is too large) and cannot be transferred alone (insurance does not cover the operational reality of running unpatched core software). It must be mitigated (upgrade or replace the middleware) or avoided (decommission and replace with a supported product). Risk 2 (low/low, mitigation cost ~10x expected loss) is the textbook ACCEPT case; formal acceptance with documentation; mitigating wastes resources. Risk 3 (loss could exceed capacity, regulatory consequence) requires TRANSFER (cyber insurance covers loss) plus mitigation (insurance does not cover the regulatory action; only loss reimbursement). Each risk gets the treatment that fits its profile. Option A's uniform accept is wrong on Risks 1 and 3 (high impact). Option B's uniform mitigate wastes resources on Risk 2. Option D's uniform transfer fails because insurance does not cover all forms of consequence (operational, regulatory).",
       "wrong_explanations": {
         "A": "Accepting all three is wrong on Risks 1 (high-impact unpatched core banking) and 3 (loss exceeding capacity + regulatory action). Acceptance is appropriate only when expected loss is within tolerance and mitigation cost exceeds expected loss; true for Risk 2, false for the others.",
-        "B": "Mitigating all three wastes resources on Risk 2 (mitigation cost is ~10x expected loss). Mitigation is rigorous but not always cost-effective; ISACA's risk treatment framework explicitly includes Accept as a valid treatment when mitigation is uneconomic.",
+        "B": "Mitigating all three wastes resources on Risk 2 (mitigation cost is ~10x expected loss). Mitigation is rigorous but not invariably cost-effective; ISACA's risk treatment framework explicitly includes Accept as a valid treatment when mitigation is uneconomic.",
         "D": "Transferring all three to insurers is wrong on Risks 1 (insurance does not cover operational reality of running unpatched core software) and on Risk 3's regulatory dimension (insurance covers loss reimbursement, not regulatory consequences). Transfer is one tool, not a universal answer."
       },
       "tips": [
@@ -3172,7 +3172,7 @@
       "options": {
         "A": "Consolidate all workloads onto AWS over the next 18 months by migrating Azure and GCP workloads, regardless of vendor lock-in implications or workload-specific cloud advantages",
         "B": "Build a multi-cloud governance layer: federated identity across all three clouds, normalized monitoring into a single SIEM, consistent tagging/FinOps, and policy-as-code for each cloud control plane",
-        "C": "Accept the inconsistency as inherent and focus on each cloud independently, since trying to unify governance across three different control planes inevitably produces lowest-common-denominator security postures",
+        "C": "Accept the inconsistency as inherent and focus on each cloud independently, since trying to unify governance across three different control planes tends to produce a weakest-link security posture",
         "D": "Outsource cloud governance to a managed service provider that specializes in multi-cloud, transferring full control and accountability for the cloud security and compliance posture to the MSP under one contract"
       },
       "correct": "B",
@@ -3209,7 +3209,7 @@
       "options": {
         "A": "Use multi-scenario ROI analysis (stable, federal-rule-only, state-law-only, both materialize) with adjusted cost-benefit per scenario plus explicit valuation of optionality from modular architecture",
         "B": "Reject the investment entirely until regulatory uncertainty resolves, since investing in any AI-powered credit decisioning platform under unfinalized regulation is irresponsible regardless of ROI projections claimed",
-        "C": "Approve the investment based on the stable-regulation 25% IRR, since regulators rarely finalize proposed rules on their original timeline and waiting for certainty would forfeit competitive advantage of moving first",
+        "C": "Approve the investment based on the stable-regulation 25% IRR, since regulators seldom finalize proposed rules on their original timeline and waiting for certainty would forfeit competitive advantage of moving first",
         "D": "Outsource the regulatory uncertainty to the platform vendor by contractually requiring the vendor to absorb all future compliance costs, transferring the regulatory risk entirely to the vendor through indemnification clauses"
       },
       "correct": "A",
@@ -6637,7 +6637,7 @@
       "question": "Which recommendation is BEST?",
       "options": {
         "A": "Build a global baseline meeting strictest-common privacy requirements plus a jurisdiction-specific exception layer mapped through a control library + align privacy, legal, and business owners through a Privacy Governance Council with each jurisdiction's DPO as a voting member + report DSAR SLA, breach-notification timeliness, and control-library coverage to the CPO and board risk committee quarterly + schedule annual control-library reviews triggered by regulatory change",
-        "B": "Build a global baseline meeting strictest-common requirements plus a jurisdiction-specific exception layer mapped through a control library + assign operational ownership of jurisdiction-specific exception handling to the in-house privacy team + report DSAR SLA and breach-notification metrics to the CPO on a monthly basis with no board-level reporting cadence",
+        "B": "Build a global baseline meeting the strictest applicable requirements plus a jurisdiction-specific exception layer mapped through a control library + assign operational ownership of jurisdiction-specific exception handling to the in-house privacy team + report DSAR SLA and breach-notification metrics to the CPO on a monthly basis without a board-level reporting cadence",
         "C": "Establish a board-level privacy risk committee with authority to approve cross-border data transfer decisions + define privacy KPIs reported to the board quarterly + commission an annual privacy audit against each of the 14 jurisdictions before any underlying baseline or control library is built",
         "D": "Identify the jurisdiction with the most demanding regulatory requirements + achieve full compliance with that single regime + report compliance status to the board on an annual basis + update the program reactively whenever regulators in any of the 14 jurisdictions issue new guidance or enforcement actions"
       },
