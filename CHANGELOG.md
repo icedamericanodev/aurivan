@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v9.3] — Domain 3 audit pass: clearer questions, sharper teaching
+
+### Improved
+- Tightened question stems across Domain 3 to remove redundant qualifier words, so the exam-style precision word does the work it is supposed to do.
+- Added closing audit-mindset sentences to several Domain 3 explanations so the principle being tested is named, not just inferred.
+- Strengthened wrong-answer explanations on Domain 3 questions where the trap was being dismissed instead of taught.
+
+### Fixed
+- Domain 3 D3-124 explanation no longer cites OCC mergers-and-acquisitions guidance for a certification-and-accreditation question.
+- Updated Domain 3 third-party-risk citations to reflect that OCC Bulletin 2013-29 was superseded in June 2023 by the Interagency Guidance on Third-Party Relationships.
+
 ## [v8.7] — Cleaner What's New
 
 ### Improved

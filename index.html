@@ -4587,7 +4587,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v9.2</span>
+    <span class="bank-pill" id="versionPill">v9.3</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4844,7 +4844,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v9.2';
+const APP_VERSION = 'v9.3';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10889,6 +10889,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Domain 3 audit pass — clearer questions, sharper teaching',
+    items: [
+      { cat: 'improved', text: 'Tightened question stems across Domain 3 to remove redundant qualifier words, so the exam-style precision word does the work it is supposed to do.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to several Domain 3 explanations so the principle being tested is named, not just inferred.' },
+      { cat: 'improved', text: 'Strengthened wrong-answer explanations on Domain 3 questions where the trap was being dismissed instead of taught.' },
+      { cat: 'fixed', text: 'Domain 3 D3-124 explanation no longer cites OCC mergers-and-acquisitions guidance for a certification-and-accreditation question.' },
+      { cat: 'fixed', text: 'Updated Domain 3 third-party-risk citations to reflect that OCC Bulletin 2013-29 was superseded in June 2023 by the Interagency Guidance on Third-Party Relationships.' }
+    ]
+  },
+  {
+    version: 'v9.2',
     title: 'Mobile-friendly header and app identity',
     items: [
       { cat: 'new', text: 'The logo now shows "Free CISA Exam Prep" so first-time visitors immediately know what Aurivan is.' },

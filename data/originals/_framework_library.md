@@ -1480,6 +1480,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - ENISA Good Practices for Internet of Things and Smart Infrastructures Security
 - ANAB ISO/IEC 17025 Forensic Testing Accreditation
 - OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023)
+- OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023 by Interagency Guidance on Third-Party Relationships)
 - Brazil LGPD Article 48 (Communication of Security Incidents)
 - Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC)
 - 21 CFR Part 11 (Electronic Records and Electronic Signatures)
