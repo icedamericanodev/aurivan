@@ -3870,7 +3870,7 @@ header {
 
 /* ── HEADER TIP BUTTON (v9.2) ──
    Brand-accent CTA next to the Feedback button. Smaller and lighter than
-   the bottom tipjar-card; opens Buy Me a Coffee in a new tab. */
+   the bottom tipjar-card; opens Ko-fi in a new tab. */
 .tip-header-btn {
   font-family:"JetBrains Mono",monospace;
   font-size:10px;
@@ -4704,7 +4704,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.10</span>
+    <span class="bank-pill" id="versionPill">v10.11</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4712,7 +4712,7 @@ header::after {
     <button class="whats-new-btn" onclick="showChangelog()">What&#39;s New</button>
     <button class="whats-new-btn" onclick="showSessionSummary()" style="font-size:10px;letter-spacing:0.1em">&#128202; Summary</button>
     <button class="whats-new-btn" onclick="showFeedback()" style="font-size:10px;letter-spacing:0.1em" title="Send feedback, request a feature, or report a bug">&#128172; Feedback</button>
-    <a class="tip-header-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" title="Support Aurivan with a tip on Buy Me a Coffee" aria-label="Support Aurivan with a tip on Buy Me a Coffee"><span aria-hidden="true">&#9749;</span> Tip</a>
+    <a class="tip-header-btn" href="https://ko-fi.com/aurivan" target="_blank" rel="noopener noreferrer" title="Support Aurivan with a tip on Ko-fi" aria-label="Support Aurivan with a tip on Ko-fi"><span aria-hidden="true">&#9749;</span> Tip</a>
     <button class="whats-new-btn" onclick="showOnboarding()" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">?</button>
     <button class="exam-mode-btn" id="examModeBtn" onclick="toggleExamMode()" aria-label="Toggle exam-realistic mode" title="Study mode (current): dense scenario blocks, tips revealed after answering. Exam mode: compact stems and minimal post-answer feedback — closer to the real ISACA exam." style="border-radius:18px;height:34px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;font-weight:600;background:var(--surface2);border:2px solid var(--border2);color:var(--text2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor=window.S&&window.S.examMode?'var(--accent)':'var(--border2)'"><span id="examModeIcon" aria-hidden="true">📚</span><span id="examModeLabel">STUDY</span></button>
     <button class="dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode" style="border-radius:50%;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface2);border:2px solid var(--border2);cursor:pointer;transition:var(--tr);flex-shrink:0;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">🌙</button>
@@ -4884,7 +4884,7 @@ header::after {
   </section>
 
   <!-- ── TIP JAR — optional support for the project (v9.2) ──
-       Replace the BMC URL after creating a Buy Me a Coffee / Ko-fi account.
+       Switched from Buy Me a Coffee to Ko-fi in v10.11 (BMC has limited support in some regions including PH).
        Hide the section by adding the `hidden` attribute if not desired. -->
   <section class="tipjar-card" data-testid="tipjar">
     <div class="tipjar-text">
@@ -4893,10 +4893,10 @@ header::after {
       <p class="tipjar-desc">No paywall, no account, no ads. If the app has helped you prep, a small tip keeps the lights on and funds new questions, new domains, and new features.</p>
     </div>
     <div class="tipjar-actions">
-      <a class="tipjar-btn" href="https://buymeacoffee.com/aurivan" target="_blank" rel="noopener noreferrer" aria-label="Support Aurivan with a tip on Buy Me a Coffee">
-        <span aria-hidden="true">&#9749;</span> Buy me a coffee
+      <a class="tipjar-btn" href="https://ko-fi.com/aurivan" target="_blank" rel="noopener noreferrer" aria-label="Support Aurivan with a tip on Ko-fi">
+        <span aria-hidden="true">&#9749;</span> Support on Ko-fi
       </a>
-      <p class="tipjar-meta">Powered by Buy Me a Coffee &middot; we never see your card.</p>
+      <p class="tipjar-meta">Powered by Ko-fi &middot; we never see your card.</p>
     </div>
   </section>
 
@@ -4941,7 +4941,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.10';
+const APP_VERSION = 'v10.11';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11036,6 +11036,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Ko-fi replaces Buy Me a Coffee for tip support',
+    items: [
+      { cat: 'fixed', text: 'The Tip button in the header and the "Support the mission" card on the practice screen now link to Ko-fi instead of Buy Me a Coffee. Buy Me a Coffee has limited payment support in some regions (including the Philippines); Ko-fi accepts contributions globally. Same Aurivan styling, just a different processor.' }
+    ]
+  },
+  {
+    version: 'v10.10',
     title: 'Exam mode: practice questions exactly as the real ISACA exam presents them',
     items: [
       { cat: 'new', text: 'Added an Exam / Study toggle in the header. STUDY mode (default) shows dense scenario blocks plus post-answer tips, mindset coaching, and triplet-companion chips so you internalize audit reasoning. EXAM mode merges the scenario into the question stem as one paragraph and hides every pedagogical add-on so the surface matches the real ISACA exam — just the question, four options, and a clean explanation after answering.' },

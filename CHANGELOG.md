@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.11] — Ko-fi replaces Buy Me a Coffee for tip support
+
+### Fixed
+- The Tip button in the header and the "Support the mission" card on the practice screen now link to Ko-fi instead of Buy Me a Coffee. Buy Me a Coffee has limited payment support in some regions (including the Philippines); Ko-fi accepts contributions globally. Same Aurivan styling, just a different processor.
+
 ## [v10.10] — Exam mode: practice questions exactly as the real ISACA exam presents them
 
 ### New
