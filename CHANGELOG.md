@@ -4,6 +4,19 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.4] — Pre-launch polish: 30 new recall questions + accessibility fixes
+
+### New
+- 30 new foundational recall questions added across all 5 domains (6 per domain). The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.
+
+### Fixed
+- Accessibility fixes for color contrast in light mode. The confidence-rating buttons after answering (Sure / Educated / Guessing), the wrong-answer tip-type labels (TRAP / MINDSET / EXAM-DAY), and the mock-exam-in-progress warning banner now meet WCAG AA (4.5:1) instead of the previous 1.93–3.34:1.
+- Mobile tap targets on the header hamburger menu, session-start chips, control buttons, and study-recommendation dismiss are now at least 44×44 pixels at 375px width, matching the 44px target for one-handed use.
+- Changelog category chip colors no longer leak reserved tones (pink for Fixed, purple for New in dark mode). Fixed is now red; New in dark mode is now light blue.
+
+### Improved
+- First-time users on the Practice tab now land directly on Q1 instead of an explainer card. The locked design decision was always "instant question" — this restores it. Keyboard shortcuts and the start button remain available for users who prefer them.
+
 ## [v10.3] — Quality pass: 28 question touch-ups from specialist review
 
 ### Fixed

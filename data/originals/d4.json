@@ -9623,6 +9623,192 @@
         "Strategic-level governance recommendations"
       ],
       "_provenance": "Authored from concept: 'D4 capstone — year-long Operations & Resilience audit conclusion'. Public sources: ISACA, IIA, COBIT, ISO. Scenario specifics (financial services $3.2B, year-long Operations & Resilience audit, multi-domain findings, 6-month examination horizon) invented."
+    },
+    {
+      "id": "d4_261",
+      "domain": 4,
+      "subtopic": "RTO vs RPO. Recovery Objectives",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "Recovery Time Objective (RTO) is the maximum acceptable elapsed time between a disruption and the restoration of a business process or IT service. RTO is measured in time and answers \"how quickly must we be back online?\"",
+      "framework_ref": "ISO 22301:2019 Security and resilience — Business continuity management systems; NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
+      "scenario_context": "",
+      "question": "Which statement BEST describes the Recovery Time Objective (RTO)?",
+      "options": {
+        "A": "The maximum acceptable elapsed time between a disruption and restoration of a business process or service.",
+        "B": "The maximum acceptable amount of data loss measured in time prior to the disruption.",
+        "C": "The total elapsed time required to return staff to full productivity after systems are restored.",
+        "D": "The longest period an organization can survive without its critical systems before viability is threatened."
+      },
+      "correct": "A",
+      "correct_explanation": "RTO is the target time within which a business process or IT service must be restored after a disruption to avoid unacceptable consequences. It is measured in elapsed time (minutes, hours, days) from the moment of disruption. ISO 22301:2019 and NIST SP 800-34 Rev 1 both define RTO as a recovery objective focused on the duration of outage, not on data loss or downstream productivity. RTO drives the selection of recovery strategies such as hot/warm/cold site, replication, and standby capacity. Option B describes RPO. Option C describes WRT. Option D describes MTD.",
+      "wrong_explanations": {
+        "B": "This describes the Recovery Point Objective (RPO), which measures acceptable data loss in time (e.g., the last backup point), not the time required to restore service.",
+        "C": "This describes Work Recovery Time (WRT) — the time after systems are restored that staff need to reconcile data, complete batch work, and return to full productivity.",
+        "D": "This describes Maximum Tolerable Downtime (MTD) — the outer ceiling beyond which the business itself is jeopardized. RTO must always be less than or equal to MTD."
+      },
+      "tips": [
+        "RTO = Recovery TIME Objective. The 'T' = Time the system is DOWN. Measures the outage duration target.",
+        "Disambiguation: RTO answers 'how fast back online?' RPO answers 'how much data can we lose?' MTD is the outer survival limit. WRT is the post-restore catch-up.",
+        "Exam shortcut: any answer about elapsed time to restore service = RTO. Any answer about data loss measured in time = RPO."
+      ],
+      "pre_read": "RTO = time to restore service after a disruption. Distinguish from RPO (data loss tolerance), WRT (post-restore catch-up), and MTD (outer survival limit).",
+      "_provenance": "Authored from concept: 'RTO definition per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019, NIST SP 800-34 Rev 1."
+    },
+    {
+      "id": "d4_262",
+      "domain": 4,
+      "subtopic": "RTO vs RPO. Recovery Objectives",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "Recovery Point Objective (RPO) is the maximum acceptable amount of data loss, measured in time prior to a disruption. RPO answers \"how much data can we afford to lose?\" and drives backup frequency and replication strategy.",
+      "framework_ref": "ISO 22301:2019 Security and resilience — Business continuity management systems; NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
+      "scenario_context": "",
+      "question": "Which statement BEST describes the Recovery Point Objective (RPO)?",
+      "options": {
+        "A": "The maximum elapsed time within which a service must be restored after disruption to avoid unacceptable consequences.",
+        "B": "The maximum acceptable amount of data loss measured in time prior to a disruption.",
+        "C": "The mean elapsed time between successive failures of a repairable system component.",
+        "D": "The total cost incurred per hour of unplanned downtime for a critical business process."
+      },
+      "correct": "B",
+      "correct_explanation": "RPO is the target maximum age of files or data that must be recovered from backup storage for normal operations to resume. It is expressed in time (e.g., 15 minutes, 4 hours, 24 hours) measured backward from the moment of disruption. ISO 22301:2019 and NIST SP 800-34 Rev 1 both define RPO as a data-loss tolerance objective that drives backup frequency, replication latency, and journaling strategy. An RPO of one hour requires backups or replication at least hourly. Option A describes RTO. Option C describes MTBF. Option D describes downtime cost, not RPO.",
+      "wrong_explanations": {
+        "A": "This describes the Recovery Time Objective (RTO), which measures elapsed time to restore service, not acceptable data loss.",
+        "C": "This describes Mean Time Between Failures (MTBF), a reliability metric for repairable components, unrelated to backup recovery objectives.",
+        "D": "Downtime cost is an economic impact metric used during the BIA to justify investment in recovery. It is not a recovery objective and is not measured in time."
+      },
+      "tips": [
+        "RPO = Recovery POINT Objective. The 'P' = Point in time to which data must be recovered. Measures acceptable data loss.",
+        "Disambiguation: RPO is BACKWARD in time (last good backup). RTO is FORWARD in time (how long until restored).",
+        "Exam shortcut: backup frequency drives RPO; recovery strategy drives RTO. Any question about acceptable data loss = RPO."
+      ],
+      "pre_read": "RPO = acceptable data loss measured in time. Drives backup and replication frequency. Distinguish from RTO (restoration time).",
+      "_provenance": "Authored from concept: 'RPO definition per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019, NIST SP 800-34 Rev 1."
+    },
+    {
+      "id": "d4_263",
+      "domain": 4,
+      "subtopic": "BIA. Business Impact Analysis",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "A Business Impact Analysis (BIA) identifies critical business processes, quantifies the operational and financial impact of disruption over time, and establishes recovery objectives (RTO, RPO, MTD). The BIA is the foundational input to business continuity strategy.",
+      "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2; ISACA CISA Review Manual Domain 4",
+      "scenario_context": "",
+      "question": "What is the PRIMARY purpose of a Business Impact Analysis (BIA)?",
+      "options": {
+        "A": "To define the technical configuration of the recovery site and replication infrastructure.",
+        "B": "To document the step-by-step procedures staff must follow when executing the disaster recovery plan.",
+        "C": "To identify critical business processes and determine the impact of disruption over time.",
+        "D": "To negotiate service level commitments with cloud and managed service providers."
+      },
+      "correct": "C",
+      "correct_explanation": "The BIA is the analytical foundation of business continuity. Its primary purpose is to identify the organization's critical processes, quantify the operational, financial, regulatory, and reputational impact of their disruption over time, and use that analysis to establish recovery objectives (RTO, RPO, MTD) and process prioritization. ISO 22301:2019 clause 8.2.2 and NIST SP 800-34 Rev 1 Section 3.2 both place the BIA before strategy selection. The BIA's outputs feed the BCP/DRP, not the other way around. Option A is a strategy/design activity that follows BIA. Option B describes DRP procedures. Option D describes SLA negotiation.",
+      "wrong_explanations": {
+        "A": "Designing the recovery site is part of the recovery strategy phase, which uses BIA outputs (RTO/RPO) as inputs. It is a downstream activity, not the purpose of the BIA.",
+        "B": "Step-by-step recovery procedures are documented in the Disaster Recovery Plan (DRP), produced after the BIA has set objectives and after strategies have been selected.",
+        "D": "Negotiating SLAs is a sourcing and contractual activity. While BIA outputs may inform SLA targets, SLA negotiation itself is not the purpose of the BIA."
+      },
+      "tips": [
+        "BIA = Business IMPACT Analysis. The whole point is to quantify IMPACT of disruption over time.",
+        "Disambiguation: BIA identifies WHAT is critical and HOW MUCH disruption costs. The BCP/DRP then describes WHAT TO DO about it.",
+        "Exam shortcut: BIA always precedes strategy selection. RTO/RPO/MTD are OUTPUTS of the BIA, not inputs."
+      ],
+      "pre_read": "BIA identifies critical processes, quantifies impact over time, and sets RTO/RPO/MTD. It precedes BCP/DRP strategy selection.",
+      "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2."
+    },
+    {
+      "id": "d4_264",
+      "domain": 4,
+      "subtopic": "Alternate Site. Hot/Warm/Cold",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "A hot site is a fully equipped alternate facility with hardware, software, network, and current data replication that can take over operations within hours. A warm site has hardware and infrastructure but requires data restoration. A cold site provides space and utilities only.",
+      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; ISACA CISA Review Manual Domain 4",
+      "scenario_context": "",
+      "question": "Which statement BEST describes a hot site?",
+      "options": {
+        "A": "A facility with hardware and network infrastructure but no current data, requiring restoration from backups.",
+        "B": "A facility providing physical space, power, and environmental controls but no installed IT equipment.",
+        "C": "A reciprocal arrangement with another organization to share computing facilities during a disruption.",
+        "D": "A fully equipped facility with hardware, software, and current data ready for rapid cutover within hours."
+      },
+      "correct": "D",
+      "correct_explanation": "A hot site is the most expensive and fastest-to-activate alternate site option. Per NIST SP 800-34 Rev 1 Section 3.4.2, it is a fully operational facility with hardware, system software, applications, network connectivity, and current or near-current data (via replication or frequent restoration). Recovery times are typically measured in hours, supporting low-RTO requirements. Option A describes a warm site. Option B describes a cold site. Option C describes a reciprocal agreement, which is a separate alternate-site option.",
+      "wrong_explanations": {
+        "A": "This describes a warm site — hardware and infrastructure are in place but data is not current, so recovery requires loading recent backups before cutover. Recovery is faster than a cold site but slower than a hot site.",
+        "B": "This describes a cold site — space, power, and HVAC only. Hardware must be procured or moved in and software installed before recovery can begin, taking days to weeks.",
+        "C": "This describes a reciprocal (mutual aid) agreement, a separate alternate-site arrangement. While useful, it is not the definition of a hot site."
+      },
+      "tips": [
+        "Hot = HOT and ready (data current, fastest, most expensive). Warm = warming up (hardware ready, data must load). Cold = empty room (space only, slowest, cheapest).",
+        "Disambiguation: the temperature maps to readiness. Hotter = closer to running. Colder = more work needed before recovery.",
+        "Exam shortcut: any answer mentioning current data and rapid cutover = hot site. Empty space with utilities = cold site."
+      ],
+      "pre_read": "Hot site = fully equipped, data current, hours to recover. Warm = hardware only. Cold = space and utilities only.",
+      "_provenance": "Authored from concept: 'Hot/warm/cold site definitions per NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: NIST SP 800-34 Rev 1 Section 3.4.2, ISACA CISA Review Manual."
+    },
+    {
+      "id": "d4_265",
+      "domain": 4,
+      "subtopic": "ITIL Incident Management. Service Restoration",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "ITIL 4 defines Incident Management as the practice of minimizing the negative impact of incidents by restoring normal service operation as quickly as possible. The goal is restoration of service, not root-cause determination, which belongs to Problem Management.",
+      "framework_ref": "ITIL 4 Foundation, Incident Management practice",
+      "scenario_context": "",
+      "question": "What is the PRIMARY goal of the ITIL 4 Incident Management practice?",
+      "options": {
+        "A": "To restore normal service operation as quickly as possible and minimize business impact.",
+        "B": "To identify the underlying root cause of recurring failures and eliminate it permanently.",
+        "C": "To assess, authorize, and schedule changes to IT services with minimal disruption.",
+        "D": "To define service level targets and report on achieved performance to customers."
+      },
+      "correct": "A",
+      "correct_explanation": "Per ITIL 4, Incident Management is the practice of minimizing the negative impact of incidents by restoring normal service operation as quickly as possible. The emphasis is on speed of restoration — a workaround that brings the service back is acceptable even if the underlying cause is not yet known. Root-cause analysis is explicitly the responsibility of Problem Management, which operates on a longer time horizon. Option A captures the speed-of-restoration goal. Option B describes Problem Management. Option C describes Change Enablement (Change Management). Option D describes Service Level Management.",
+      "wrong_explanations": {
+        "B": "Root-cause elimination is the goal of Problem Management, not Incident Management. The two practices are deliberately separated so service restoration is not delayed by root-cause investigation.",
+        "C": "Assessing and scheduling changes is the goal of Change Enablement (called Change Management in earlier ITIL versions), a distinct practice from Incident Management.",
+        "D": "Setting and reporting on service targets is Service Level Management. It interacts with Incident Management (incidents may breach SLAs) but is a separate practice with a different goal."
+      },
+      "tips": [
+        "Conceptual split: Incident Management brings service BACK (accepts a workaround if it restores service). Problem Management finds out WHY (unsatisfied until root cause is fixed). Different practices, different time horizons.",
+        "Disambiguation: Incident Management restores service. Problem Management finds and fixes root cause. They are deliberately separate.",
+        "Exam shortcut: 'restore service as quickly as possible' = Incident Management. 'eliminate root cause' = Problem Management."
+      ],
+      "pre_read": "ITIL 4 Incident Management = restore normal service as quickly as possible. Root cause is Problem Management's job.",
+      "_provenance": "Authored from concept: 'ITIL 4 Incident Management goal and definition'. Foundational recall tier. Public sources: ITIL 4 Foundation publication."
+    },
+    {
+      "id": "d4_266",
+      "domain": 4,
+      "subtopic": "RAID Levels. Storage Redundancy",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "RAID 1 (mirroring) writes identical data to two or more disks, providing full redundancy and fast read performance at the cost of 50 percent usable capacity. It tolerates the loss of any one disk in a mirrored pair without data loss.",
+      "framework_ref": "Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification; ISACA CISA Review Manual Domain 4",
+      "scenario_context": "",
+      "question": "An IS auditor reviewing storage controls confirms a database server uses RAID 1. Which BEST describes the protection RAID 1 provides?",
+      "options": {
+        "A": "Data is striped across multiple disks with no redundancy, providing performance but no fault tolerance.",
+        "B": "Data is striped across disks with distributed parity, tolerating a single disk failure across the set.",
+        "C": "Identical data is written to two or more disks, providing mirroring and tolerance of a single disk failure.",
+        "D": "Data is striped across disks with double distributed parity, tolerating two simultaneous disk failures."
+      },
+      "correct": "C",
+      "correct_explanation": "RAID 1 is the mirroring configuration: every block written to one disk is written identically to one or more mirror disks. It provides full redundancy — the loss of any one disk in a mirrored pair causes no data loss because an identical copy remains. Usable capacity is half (or less) of raw capacity. Read performance benefits because reads can be served by either disk. Option C is the correct mirroring definition. Option A describes RAID 0 (striping, no redundancy). Option B describes RAID 5 (striping with single parity). Option D describes RAID 6 (striping with double parity).",
+      "wrong_explanations": {
+        "A": "This describes RAID 0, which stripes data for performance but provides no redundancy. Loss of any disk in a RAID 0 set destroys the entire array's data.",
+        "B": "This describes RAID 5, which stripes data with a single parity block distributed across all disks. It tolerates one disk failure but is not mirroring.",
+        "D": "This describes RAID 6, which uses two independent parity calculations distributed across disks. It tolerates two simultaneous disk failures but is not mirroring."
+      },
+      "tips": [
+        "RAID 1 = mirror = 1 copy on each disk. Half the capacity, full redundancy, simplest fault tolerance.",
+        "Disambiguation: RAID 0 = stripe only (no protection). RAID 1 = mirror. RAID 5 = stripe + 1 parity. RAID 6 = stripe + 2 parity. RAID 10 = mirror + stripe.",
+        "Exam shortcut: any answer mentioning 'identical copies' or 'mirroring' = RAID 1. Parity-based answers = RAID 5 or 6."
+      ],
+      "pre_read": "RAID 1 = mirroring. RAID 0 = striping only. RAID 5 = striping with one parity. RAID 6 = striping with two parities. RAID 10 = mirror + stripe.",
+      "_provenance": "Authored from concept: 'RAID 1 mirroring definition'. Foundational recall tier. Public sources: SNIA Common RAID DDF, ISACA CISA Review Manual."
     }
   ]
 }

@@ -2,7 +2,7 @@
   "domain": 5,
   "title": "Protection of Information Assets",
   "weight": "26%",
-  "count": 280,
+  "count": 286,
   "questions": [
     {
       "id": "d5_001",
@@ -10137,6 +10137,192 @@
       ],
       "pre_read": "For B2B SaaS material-breach MOST IMPORTANT questions, the non-negotiable closure factor is satisfaction of the SaaS firm's OWN regulator-notification clocks (GDPR Article 33, SEC Item 1.05 where applicable). Customer notification, forensic documentation, and board reporting are valid but replaceable factors.",
       "_provenance": "Authored from concept: 'Precision-word MOST IMPORTANT in B2B SaaS breach notification — the non-negotiable factor that, if absent, makes the entire response moot'. Paired companion to d5_173 and d5_269. Public sources: GDPR Article 33 and Article 83, SEC Reg S-K Item 1.05 final rule, HIPAA Breach Notification Rule, ISACA Incident Management Audit/Assurance Program. No legacy bank citation."
+    },
+    {
+      "id": "d5_281",
+      "domain": 5,
+      "subtopic": "CIA Triad. Confidentiality Integrity Availability",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "CIA triad = Confidentiality (prevent unauthorized disclosure), Integrity (prevent unauthorized modification), Availability (ensure authorized access when needed). Three foundational security objectives.",
+      "framework_ref": "NIST SP 800-53 Rev 5; ISO/IEC 27001:2022",
+      "scenario_context": "",
+      "question": "Which option BEST defines the three pillars of the CIA triad in information security?",
+      "options": {
+        "A": "Control, Identification, and Assurance — the three core functions of a security operations program.",
+        "B": "Confidentiality, Integrity, and Availability — preventing unauthorized disclosure, modification, and denial of access.",
+        "C": "Compliance, Investigation, and Authorization — the three regulatory pillars of information governance.",
+        "D": "Cryptography, Identity, and Auditing — the three technical domains protecting information assets."
+      },
+      "correct": "B",
+      "correct_explanation": "The CIA triad is the foundational model for information security objectives codified in NIST SP 800-53 Rev 5 and ISO/IEC 27001:2022. CONFIDENTIALITY prevents unauthorized disclosure of information (controls: encryption, access control, classification). INTEGRITY prevents unauthorized or undetected modification of data (controls: hashing, digital signatures, change control). AVAILABILITY ensures information and systems are accessible to authorized users when required (controls: redundancy, backups, DDoS protection). All three must be balanced; over-investing in one (e.g., confidentiality via excessive access restriction) can degrade another (availability). The CIA triad is the basis for FIPS 199 impact-level categorization.",
+      "wrong_explanations": {
+        "A": "Control, Identification, and Assurance is a fabricated expansion. The CIA acronym in security exclusively refers to Confidentiality, Integrity, Availability — not to operational program functions.",
+        "C": "Compliance, Investigation, and Authorization is not the CIA triad. While these are real activities in a security program, they are not the foundational three objectives that the CIA acronym represents.",
+        "D": "Cryptography, Identity, and Auditing are security control families or capabilities, not the CIA triad's objectives. The triad describes WHAT must be protected (the goals), not the technical means used to achieve protection."
+      },
+      "tips": [
+        "Mnemonic: CIA = three letters, three goals — Confidentiality (secrecy), Integrity (accuracy), Availability (uptime).",
+        "Disambiguation: CIA triad is OBJECTIVES (what we protect). AAA is the ACCESS-CONTROL triad (Authentication, Authorization, Accounting). Do not conflate.",
+        "Exam shortcut: If a stem asks about three security GOALS or PILLARS, the answer is almost always Confidentiality, Integrity, Availability."
+      ],
+      "pre_read": "For CIA triad definition questions, anchor on 'confidentiality prevents disclosure, integrity prevents tampering, availability prevents denial.' Fabricated CIA expansions and substitutions of AAA terms each fail.",
+      "_provenance": "Authored from concept: 'CIA triad definition'. Foundational recall tier. Public sources: NIST SP 800-53 Rev 5, ISO/IEC 27001:2022, FIPS 199."
+    },
+    {
+      "id": "d5_282",
+      "domain": 5,
+      "subtopic": "Access Control. AAA Authentication Authorization Accounting",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "AAA = Authentication (prove identity), Authorization (grant permissions), Accounting (log activity). Three distinct access-control phases.",
+      "framework_ref": "NIST SP 800-53 Rev 5 (AC family, AU family, IA family)",
+      "scenario_context": "",
+      "question": "Which option BEST describes the three phases of the AAA access-control model?",
+      "options": {
+        "A": "Authentication proves identity; Authorization grants permitted actions; Accounting records what was done.",
+        "B": "Authentication encrypts data; Authorization signs transactions; Accounting balances entitlements across users.",
+        "C": "Authentication classifies data; Authorization assigns risk ratings; Accounting reconciles financial transactions.",
+        "D": "Authentication issues certificates; Authorization revokes credentials; Accounting destroys expired keys."
+      },
+      "correct": "A",
+      "correct_explanation": "AAA is the canonical access-control framework codified in NIST SP 800-53 Rev 5 across the IA (Identification and Authentication), AC (Access Control), and AU (Audit and Accountability) control families. AUTHENTICATION verifies the claimed identity of a subject (something you know/have/are/do/are-located). AUTHORIZATION determines what the authenticated subject is permitted to do (read, write, execute against which objects). ACCOUNTING (sometimes called Auditing) records subject actions in immutable logs supporting non-repudiation, forensics, and detective controls. The three phases are sequential and distinct — a system can authenticate without authorizing (anonymous read), but cannot authorize without first authenticating, and accounting depends on identifying the authenticated subject in logs.",
+      "wrong_explanations": {
+        "B": "Encryption, signing, and entitlement-balancing are cryptographic and entitlement-management activities, not the AAA phases. AAA describes the access-decision lifecycle, not cryptographic operations.",
+        "C": "Data classification, risk rating, and financial reconciliation are governance and financial activities. None of them describes the AAA model's three phases.",
+        "D": "Certificate issuance, credential revocation, and key destruction are PKI lifecycle activities, not AAA phases. Confusing PKI operations with AAA is a common trap."
+      },
+      "tips": [
+        "Mnemonic: AAA = 'Who are you? (Authentication) → What can you do? (Authorization) → What did you do? (Accounting).'",
+        "Disambiguation: AAA is the ACCESS-CONTROL triad. CIA is the SECURITY-OBJECTIVES triad. They are different acronyms with different domains.",
+        "Exam shortcut: If a stem mentions THREE PHASES of access control or identity management, the canonical answer is Authentication, Authorization, Accounting."
+      ],
+      "pre_read": "For AAA definition questions, anchor on 'prove you are, grant what you can, record what you did.' Cryptographic, governance, and PKI substitutions each fail.",
+      "_provenance": "Authored from concept: 'AAA model definition'. Foundational recall tier. Public sources: NIST SP 800-53 Rev 5 (AC, AU, IA families)."
+    },
+    {
+      "id": "d5_283",
+      "domain": 5,
+      "subtopic": "Authentication Factors. Knowledge Possession Inherence",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "Authentication factors: something you KNOW (password), something you HAVE (token), something you ARE (biometric). MFA requires two or more DIFFERENT factor categories.",
+      "framework_ref": "NIST SP 800-63B (Digital Identity Guidelines)",
+      "scenario_context": "",
+      "question": "Which option BEST defines the three primary categories of authentication factors?",
+      "options": {
+        "A": "Something you encrypt, something you decrypt, and something you hash — cryptographic operations protecting the credential.",
+        "B": "Something you know (password or PIN), something you have (token or smartcard), and something you are (biometric).",
+        "C": "Something you classify, something you label, and something you tag — data-handling attributes attached to credentials.",
+        "D": "Something you create, something you approve, and something you reconcile — the segregation steps for credential issuance."
+      },
+      "correct": "B",
+      "correct_explanation": "NIST SP 800-63B Digital Identity Guidelines defines three primary authentication-factor categories. KNOWLEDGE FACTORS (something you know): passwords, PINs, security questions — weakest because they can be guessed, phished, or shared. POSSESSION FACTORS (something you have): hardware tokens, smart cards, mobile authenticator apps, FIDO2 keys — require physical theft or cloning to defeat. INHERENCE FACTORS (something you are): biometrics such as fingerprint, face, or iris — hard to share but raise privacy concerns. Multi-factor authentication (MFA) requires combining factors from two or more DIFFERENT categories; two passwords are not MFA. NIST 800-63B also recognizes location and behavior as supplementary factors but the three primary categories remain knowledge, possession, inherence.",
+      "wrong_explanations": {
+        "A": "Encryption, decryption, and hashing are cryptographic operations, not authentication-factor categories. They protect credentials in transit and at rest but are not 'factors' a user presents to authenticate.",
+        "C": "Classification, labeling, and tagging are data-handling activities applied to information assets, not authentication-factor categories. The question asks about factors the user presents, not metadata on the credential.",
+        "D": "Create, approve, and reconcile is a segregation-of-duties pattern for transaction processing, not an authentication-factor taxonomy."
+      },
+      "tips": [
+        "Mnemonic: Know / Have / Are — the three classic authentication-factor categories.",
+        "Disambiguation: Two passwords = NOT MFA (both are knowledge). Password + SMS code = MFA (knowledge + possession).",
+        "Exam shortcut: If a stem asks about authentication FACTOR categories, the answer pairs 'know / have / are' (sometimes extended with 'do' and 'where you are')."
+      ],
+      "pre_read": "For authentication factor questions, anchor on 'know / have / are.' Cryptographic-operation, data-handling, and SoD substitutions each fail.",
+      "_provenance": "Authored from concept: 'Authentication factors taxonomy'. Foundational recall tier. Public sources: NIST SP 800-63B."
+    },
+    {
+      "id": "d5_284",
+      "domain": 5,
+      "subtopic": "Cryptography. Symmetric vs Asymmetric",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "Symmetric crypto uses one shared key, is fast, used for bulk data encryption (AES). Asymmetric crypto uses a key pair (public/private), is slow, used for key exchange and digital signatures (RSA, ECC).",
+      "framework_ref": "NIST SP 800-175B Rev 1; NIST SP 800-57 Part 1 Rev 5",
+      "scenario_context": "",
+      "question": "Which option BEST distinguishes symmetric from asymmetric cryptography?",
+      "options": {
+        "A": "Symmetric uses a key pair for signatures; asymmetric uses one shared key — the terms describe identical operations.",
+        "B": "Symmetric uses one shared key, fast for bulk data; asymmetric uses a public/private pair for key exchange and signatures.",
+        "C": "Symmetric is used only for hashing and integrity; asymmetric is used only for password storage and user authentication.",
+        "D": "Symmetric works only over trusted networks; asymmetric works only over untrusted networks — the distinction is about transport."
+      },
+      "correct": "B",
+      "correct_explanation": "NIST SP 800-175B Rev 1 distinguishes the two cryptographic families. SYMMETRIC cryptography uses a SINGLE shared secret key for both encryption and decryption; algorithms such as AES (NIST FIPS 197) are computationally fast and suited for BULK data encryption (disk, database, network traffic). The challenge is secure key distribution. ASYMMETRIC cryptography uses a mathematically related KEY PAIR (public + private); the public key encrypts (or verifies signatures) and the private key decrypts (or creates signatures). Algorithms include RSA, ECC, and Diffie-Hellman. Asymmetric is computationally expensive and not used for bulk data; instead it solves key exchange (negotiate a symmetric session key) and digital signatures (non-repudiation). Real-world protocols like TLS use asymmetric to establish a session, then switch to symmetric AES for the actual data — best of both worlds.",
+      "wrong_explanations": {
+        "A": "This option inverts the definitions. Symmetric uses ONE shared key; asymmetric uses a key PAIR. The two terms describe fundamentally different mathematical constructions, not the same operation.",
+        "C": "Hashing is a separate primitive distinct from both symmetric and asymmetric encryption (hashes are one-way, not reversible). Neither family is restricted to hashing or to password storage — both are general-purpose encryption families.",
+        "D": "Network trust level does not determine which cryptographic family applies. Symmetric and asymmetric are distinguished by key structure (one shared vs paired), not by the network environment."
+      },
+      "tips": [
+        "Mnemonic: Symmetric = Same key (one); Asymmetric = Apart keys (pair, public + private).",
+        "Disambiguation: Symmetric is FAST and used for BULK data. Asymmetric is SLOW and used for KEY EXCHANGE and SIGNATURES.",
+        "Exam shortcut: TLS uses both — asymmetric to negotiate a session key, symmetric (AES) to encrypt the traffic."
+      ],
+      "pre_read": "For symmetric vs asymmetric questions, anchor on 'one shared key vs key pair; fast bulk vs slow exchange/signature.' Inverted, hashing-conflation, and transport-only substitutions each fail.",
+      "_provenance": "Authored from concept: 'Symmetric vs asymmetric cryptography'. Foundational recall tier. Public sources: NIST SP 800-175B Rev 1, NIST SP 800-57 Part 1 Rev 5, FIPS 197."
+    },
+    {
+      "id": "d5_285",
+      "domain": 5,
+      "subtopic": "Access Control Models. RBAC ABAC DAC MAC",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "DAC = owner grants access. MAC = system enforces labels (military). RBAC = roles map to permissions. ABAC = attributes evaluated by policy. Four canonical access-control models.",
+      "framework_ref": "NIST SP 800-162 (ABAC); NIST SP 800-53 Rev 5 (AC family)",
+      "scenario_context": "",
+      "question": "Which option BEST defines the four canonical access-control models DAC, MAC, RBAC, and ABAC?",
+      "options": {
+        "A": "DAC = owner discretion; MAC = mandatory labels; RBAC = role assignments; ABAC = attribute-based policy evaluation.",
+        "B": "DAC = digital authentication code; MAC = message authentication code; RBAC = role-based audit control; ABAC = audit-based access control.",
+        "C": "DAC = data access classification; MAC = managed access control; RBAC = recovery-based access control; ABAC = access-based assurance control.",
+        "D": "DAC = directory access control; MAC = manual access certification; RBAC = remote-based access control; ABAC = anonymous-based access control."
+      },
+      "correct": "A",
+      "correct_explanation": "Four canonical access-control models recognized by NIST SP 800-53 Rev 5 and NIST SP 800-162. DISCRETIONARY ACCESS CONTROL (DAC): the data OWNER decides who gets access; file-system permissions (chmod, NTFS ACLs) are classic DAC. Flexible but inconsistent. MANDATORY ACCESS CONTROL (MAC): the SYSTEM enforces access decisions based on classification labels (Top Secret, Secret, Confidential) and clearance; users cannot override. Used in military and high-assurance systems (SELinux). ROLE-BASED ACCESS CONTROL (RBAC): permissions assigned to ROLES (e.g., 'AP Clerk'), and users are assigned roles; simplifies administration at enterprise scale. Defined in NIST RBAC standard. ATTRIBUTE-BASED ACCESS CONTROL (ABAC): policies evaluate ATTRIBUTES (user attributes, resource attributes, environmental attributes like time/location) at access-decision time; most flexible and policy-rich. Defined in NIST SP 800-162. Modern Zero Trust architectures typically use ABAC or RBAC+ABAC hybrids.",
+      "wrong_explanations": {
+        "B": "These are fabricated expansions. MAC in cryptography can mean 'Message Authentication Code' but in access control it means Mandatory Access Control. The other three expansions in this option do not exist.",
+        "C": "These expansions are fabricated and not used in any standard. The real four models map to discretionary, mandatory, role-based, and attribute-based.",
+        "D": "These expansions are fabricated. DAC is discretionary, not directory-based. RBAC is role-based, not remote-based."
+      },
+      "tips": [
+        "Mnemonic: DAC = Discretionary (owner). MAC = Mandatory (labels). RBAC = Roles. ABAC = Attributes.",
+        "Disambiguation: RBAC scales by role assignment; ABAC scales by policy expression. Modern Zero Trust leans on ABAC for context-aware decisions.",
+        "Exam shortcut: Military or classified data = MAC. Enterprise with job functions = RBAC. Context-aware (time/location/risk) = ABAC. File-share permissions = DAC."
+      ],
+      "pre_read": "For access-control model questions, anchor on 'owner / labels / roles / attributes.' Fabricated acronym expansions each fail.",
+      "_provenance": "Authored from concept: 'Access control models DAC/MAC/RBAC/ABAC'. Foundational recall tier. Public sources: NIST SP 800-53 Rev 5, NIST SP 800-162, NIST RBAC standard."
+    },
+    {
+      "id": "d5_286",
+      "domain": 5,
+      "subtopic": "Zero Trust Architecture. NIST SP 800-207 Principles",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "Zero Trust = never trust, always verify. Per-request authentication and authorization, no implicit network-location trust, continuous verification, least privilege. NIST SP 800-207.",
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture)",
+      "scenario_context": "",
+      "question": "Which option BEST describes the core principle of a Zero Trust architecture as defined in NIST SP 800-207?",
+      "options": {
+        "A": "Trust the corporate network perimeter and treat all internal traffic as authenticated by default once the firewall is crossed.",
+        "B": "Eliminate authentication entirely and rely on encryption alone to protect data in transit between trusted enclaves.",
+        "C": "Never trust by default; verify every access request explicitly using identity, device posture, and context regardless of network location.",
+        "D": "Grant administrators unrestricted privileged access while restricting only general users; trust scales with seniority and role tenure."
+      },
+      "correct": "C",
+      "correct_explanation": "NIST SP 800-207 defines Zero Trust Architecture (ZTA) as a security model that ELIMINATES implicit trust based on network location. The core tenet is 'never trust, always verify': every access request must be authenticated, authorized, and continuously validated using multiple signals including user identity, device health/posture, resource sensitivity, behavioral analytics, and environmental context (time, location, risk score). Key principles per NIST SP 800-207: (1) all data sources and computing services are resources; (2) all communication is secured regardless of network location; (3) access is granted per-session; (4) access is determined by dynamic policy including observable state; (5) the enterprise monitors and measures integrity and security posture of all owned and associated assets; (6) all resource authentication and authorization is dynamic and strictly enforced before access; (7) the enterprise collects information about asset state and uses it to improve security posture. ZTA assumes breach and minimizes blast radius.",
+      "wrong_explanations": {
+        "A": "Perimeter trust is the OPPOSITE of Zero Trust. The traditional 'castle and moat' model assumed internal traffic was safe; Zero Trust explicitly rejects this assumption because attackers, malicious insiders, and lateral movement defeat perimeter-only controls.",
+        "B": "Zero Trust REQUIRES strong authentication on every request, not its elimination. Encryption alone protects data in transit but does not verify the identity or authorization of the requesting subject — which is the core Zero Trust requirement.",
+        "D": "Zero Trust applies LEAST PRIVILEGE to all subjects including administrators (often more strictly because of higher impact). Trust does not scale with seniority; it is earned per-request via verification, not granted by job title."
+      },
+      "tips": [
+        "Mnemonic: Zero Trust = 'never trust, always verify' — per-request, identity-centric, network-location-agnostic.",
+        "Disambiguation: Zero Trust does NOT mean 'no authentication'; it means NO IMPLICIT trust. Every request is explicitly verified using multiple signals.",
+        "Exam shortcut: If a stem rewards perimeter trust, internal-network trust, or seniority-based trust, it is the WRONG answer for a Zero Trust question."
+      ],
+      "pre_read": "For Zero Trust questions, anchor on 'never trust, always verify; per-request authentication and authorization regardless of network location.' Perimeter-trust, no-auth, and seniority-based-trust framings each fail.",
+      "_provenance": "Authored from concept: 'Zero Trust core principles NIST 800-207'. Foundational recall tier. Public sources: NIST SP 800-207."
     }
   ]
 }

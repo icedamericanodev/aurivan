@@ -103,9 +103,10 @@
   --d4: #6644e0; --d4-light: #ede8ff; --d4-border: #c4b5fd;
   --d5: #60A5FA; --d5-light: #dbeafe; --d5-border: #93c5fd;
 
-  --correct: #00c48c; --correct-light: #d0fdf4;
-  --wrong: #ff4d6d; --wrong-light: #ffe0e6;
-  --warning: #f59e0b; --warning-light: #fef3c7;
+  --correct: #00c48c; --correct-light: #d0fdf4; --correct-strong: #057350;
+  --wrong: #ff4d6d; --wrong-light: #ffe0e6; --wrong-strong: #a51e3e;
+  --warning: #f59e0b; --warning-light: #fef3c7; --warning-strong: #9a5800;
+  --purple: #8b6dff; --purple-strong: #6d28d9;
 
   --radius: 16px; --tr: 0.2s ease;
   --shadow: 0 2px 16px rgba(59,130,246,0.10);
@@ -152,9 +153,10 @@
   --d4: #a78bfa; --d4-light: #1e1a3a; --d4-border: #4a3d8a;
   --d5: #38bdf8; --d5-light: #082f49; --d5-border: #075985;
 
-  --correct: #00e6aa; --correct-light: #002e20;
-  --wrong: #ff6080; --wrong-light: #300018;
-  --warning: #fbbf24; --warning-light: #2a1a00;
+  --correct: #00e6aa; --correct-light: #002e20; --correct-strong: #6ee7b7;
+  --wrong: #ff6080; --wrong-light: #300018; --wrong-strong: #fda4af;
+  --warning: #fbbf24; --warning-light: #2a1a00; --warning-strong: #fcd34d;
+  --purple-strong: #c4b5fd;
 
   --shadow: 0 2px 20px rgba(0,0,0,0.5);
   --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
@@ -445,7 +447,7 @@ body::before {
 .mock-confirm-row strong { color:var(--text);font-weight:700; }
 .mock-confirm-warn {
   background:var(--warning-light);border:2px solid #fcd34d;border-radius:10px;
-  padding:10px 14px;font-size:12px;color:var(--warning);font-weight:600;margin:14px 0;
+  padding:10px 14px;font-size:12px;color:var(--warning-strong);font-weight:600;margin:14px 0;
 }
 .mock-confirm-btns { display:flex;gap:10px;margin-top:4px; }
 .mock-confirm-btn {
@@ -1134,9 +1136,9 @@ header {
   font-size: 11px; color: var(--muted); font-style: italic;
 }
 /* Tip-type colors (drives currentColor for dot, label, principle link) */
-.seq-tip.seq-trap.unlocked    { color: var(--warning); background: rgba(251,191,36,.07); border-color: rgba(251,191,36,.30); }
-.seq-tip.seq-mind.unlocked    { color: var(--purple);  background: rgba(139,109,255,.08); border-color: rgba(139,109,255,.30); }
-.seq-tip.seq-exam.unlocked    { color: var(--correct); background: rgba(74,222,128,.07); border-color: rgba(74,222,128,.30); }
+.seq-tip.seq-trap.unlocked    { color: var(--warning-strong); background: rgba(251,191,36,.07); border-color: rgba(251,191,36,.30); }
+.seq-tip.seq-mind.unlocked    { color: var(--purple-strong);  background: rgba(139,109,255,.08); border-color: rgba(139,109,255,.30); }
+.seq-tip.seq-exam.unlocked    { color: var(--correct-strong); background: rgba(74,222,128,.07); border-color: rgba(74,222,128,.30); }
 .seq-tips-skip {
   display: inline-block;
   margin-top: 4px;
@@ -3416,14 +3418,23 @@ header {
   display:flex;align-items:center;gap:6px;color:var(--text2);
 }
 .conf-btn:hover {transform:translateY(-2px);box-shadow:var(--shadow);}
-.conf-btn[data-conf="sure"]:hover,.conf-btn[data-conf="sure"].picked {
+.conf-btn[data-conf="sure"]:hover {
   border-color:var(--correct);background:var(--correct-light);color:var(--correct);
 }
-.conf-btn[data-conf="educated"]:hover,.conf-btn[data-conf="educated"].picked {
+.conf-btn[data-conf="sure"].picked {
+  border-color:var(--correct);background:var(--correct-light);color:var(--correct-strong);
+}
+.conf-btn[data-conf="educated"]:hover {
   border-color:var(--warning);background:var(--warning-light);color:var(--warning);
 }
-.conf-btn[data-conf="guessing"]:hover,.conf-btn[data-conf="guessing"].picked {
+.conf-btn[data-conf="educated"].picked {
+  border-color:var(--warning);background:var(--warning-light);color:var(--warning-strong);
+}
+.conf-btn[data-conf="guessing"]:hover {
   border-color:var(--wrong);background:var(--wrong-light);color:var(--wrong);
+}
+.conf-btn[data-conf="guessing"].picked {
+  border-color:var(--wrong);background:var(--wrong-light);color:var(--wrong-strong);
 }
 .conf-label {
   font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.15em;
@@ -3690,6 +3701,12 @@ header {
   .exam-countdown .ec-edit { min-height: 44px; padding: 12px 14px; }
   .exam-prompt .ep-skip { min-width: 44px; min-height: 44px; padding: 10px 14px; }
   .seq-tips-skip { min-height: 44px; padding: 12px 4px; }
+  /* UX-review v10.4: hamburger menu, session-start chips, control buttons */
+  #hdrMenuBtn { min-width: 44px; min-height: 44px; padding: 10px; }
+  .ss-chip { min-width: 44px; min-height: 44px; padding: 10px 14px; }
+  .ss-select { min-height: 44px; padding: 10px 14px; }
+  .ctrl-btn { min-height: 44px; padding: 10px 14px; }
+  .study-rec-dismiss { min-width: 44px; min-height: 44px; padding: 10px; }
 }
 
 /* CHANGELOG */
@@ -3735,10 +3752,10 @@ header {
 }
 .cl-cat.new      {background:rgba(59,130,246,0.13);color:var(--accent);}
 .cl-cat.improved {background:rgba(0,168,134,0.14);color:#047857;}
-.cl-cat.fixed    {background:rgba(220,38,38,0.10);color:#be185d;}
-[data-theme="dark"] .cl-cat.new      {background:rgba(59,130,246,0.22);color:#c4b5fd;}
+.cl-cat.fixed    {background:rgba(220,38,38,0.10);color:#b91c1c;}
+[data-theme="dark"] .cl-cat.new      {background:rgba(59,130,246,0.22);color:#93c5fd;}
 [data-theme="dark"] .cl-cat.improved {background:rgba(52,211,153,0.18);color:#6ee7b7;}
-[data-theme="dark"] .cl-cat.fixed    {background:rgba(244,114,182,0.18);color:#f9a8d4;}
+[data-theme="dark"] .cl-cat.fixed    {background:rgba(220,38,38,0.22);color:#fca5a5;}
 .cl-close {
   margin-top:20px;width:100%;padding:12px;border-radius:10px;
   background:var(--ink);color:var(--ink-fg);border:none;
@@ -4587,7 +4604,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.3</span>
+    <span class="bank-pill" id="versionPill">v10.4</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4680,28 +4697,7 @@ header::after {
   </button>
 
   <div id="timerArea" style="display:none"></div>
-  <div id="qArea">
-    <div class="empty-first">
-      <div class="empty-first-icon">&#127941;</div>
-      <div class="empty-first-title">Ready to train your auditor mindset?</div>
-      <div class="empty-first-sub">Every question tests ISACA-style judgment, not memorization.<br>The auditor assesses, recommends, and reports &#8212; never fixes.</div>
-      <div class="empty-first-steps">
-        <div class="empty-first-step">
-          <div class="empty-first-step-num">&#8594; Step 1</div>
-          <div class="empty-first-step-text">Pick a domain or go All Domains</div>
-        </div>
-        <div class="empty-first-step">
-          <div class="empty-first-step-num">&#8594; Step 2</div>
-          <div class="empty-first-step-text">Rate confidence, then select your answer</div>
-        </div>
-        <div class="empty-first-step">
-          <div class="empty-first-step-num">&#8594; Step 3</div>
-          <div class="empty-first-step-text">Review the explanation &#8212; understand the why</div>
-        </div>
-      </div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.1em">Keyboard: <strong>1/2/3</strong> confidence &middot; <strong>A&#8211;D</strong> answer &middot; <strong>Enter</strong> next</div>
-    </div>
-  </div>
+  <div id="qArea"></div>
 </div>
 
 <!-- MOCK -->
@@ -4844,7 +4840,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.3';
+const APP_VERSION = 'v10.4';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10316,6 +10312,23 @@ if (shouldResumeCurrent() && (!S.activeTab || S.activeTab === 'practice')) {
   }
 })();
 
+// FTUE Decision 4 (Approach A — Instant question): if practice tab is the
+// active screen, no exam is in progress, no resume is pending, and the user
+// has not yet answered a question, fire Q1 immediately so the landing surface
+// is a real CISA question, not an explainer card.
+(function ftueInstantQuestion() {
+  try {
+    var onPractice = !S.activeTab || S.activeTab === 'practice';
+    var notResuming = !shouldResumeCurrent();
+    var freshUser = !S.qn || S.qn === 0;
+    var qArea = document.getElementById('qArea');
+    var qAreaEmpty = qArea && !qArea.innerHTML.trim();
+    if (onPractice && notResuming && freshUser && qAreaEmpty) {
+      setTimeout(function() { try { nextQ(); } catch (e) { console.error('FTUE auto-fire failed:', e); } }, 200);
+    }
+  } catch (e) {}
+})();
+
 
 
 
@@ -10889,6 +10902,17 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Pre-launch polish: 30 new recall questions + accessibility fixes',
+    items: [
+      { cat: 'new', text: '30 new foundational recall questions added across all 5 domains (6 per domain). The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.' },
+      { cat: 'fixed', text: 'Accessibility fixes for color contrast in light mode. The confidence-rating buttons after answering (Sure / Educated / Guessing), the wrong-answer tip-type labels (TRAP / MINDSET / EXAM-DAY), and the mock-exam-in-progress warning banner now meet WCAG AA (4.5:1) instead of the previous 1.93–3.34:1.' },
+      { cat: 'fixed', text: 'Mobile tap targets on the header hamburger menu, session-start chips, control buttons, and study-recommendation dismiss are now at least 44×44 pixels at 375px width, matching the 44px target for one-handed use.' },
+      { cat: 'fixed', text: 'Changelog category chip colors no longer leak reserved tones (pink for Fixed, purple for New in dark mode). Fixed is now red; New in dark mode is now light blue.' },
+      { cat: 'improved', text: 'First-time users on the Practice tab now land directly on Q1 instead of an explainer card. The locked design decision was always "instant question" — this restores it. Keyboard shortcuts and the start button remain available for users who prefer them.' }
+    ]
+  },
+  {
+    version: 'v10.3',
     title: 'Quality pass: 28 question touch-ups from specialist review',
     items: [
       { cat: 'fixed', text: 'A Domain 2 supply-chain incident question (d2_172) had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says — that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.' },

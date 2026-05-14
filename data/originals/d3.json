@@ -4551,6 +4551,192 @@
         "FFIEC"
       ],
       "_provenance": "Authored from concept: 'Regulated certification/accreditation per FFIEC IT Examination Handbook and NIST SP 800-37'. Public sources: FFIEC, NIST SP 800-37, ISACA. Gap-closing question for D3 TOC section 3.7.5 (Certification/Accreditation). Scenario specifics (federally chartered bank, FFIEC + OCC + GLBA + SOC 1 regulatory context, three positions debated, CIO timeline concern) invented for this question."
+    },
+    {
+      "id": "d3_125",
+      "domain": 3,
+      "subtopic": "SDLC Phases. Waterfall Sequence",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "The waterfall SDLC proceeds in a strict sequence: requirements, design, build (construction), test, deploy (implementation), and maintain. Each phase produces signed-off deliverables that feed the next.",
+      "framework_ref": "ISACA CISA Review Manual, Domain 3 SDLC guidance; NIST SP 800-160 Systems Security Engineering",
+      "scenario_context": "",
+      "question": "In a traditional waterfall SDLC, which sequence of phases is correct?",
+      "options": {
+        "A": "Design, requirements, build, deploy, test, maintain",
+        "B": "Requirements, build, design, test, maintain, deploy",
+        "C": "Requirements, design, build, test, deploy, maintain",
+        "D": "Requirements, design, test, build, maintain, deploy"
+      },
+      "correct": "C",
+      "correct_explanation": "Waterfall is a linear, phase-gated lifecycle. Requirements are elicited and baselined first, then translated into a design specification. Construction (build) implements the design, after which testing verifies the built system against requirements. Deployment moves the system into production, and maintenance sustains it through its operational life. ISACA's CISA review material and NIST SP 800-160 both present this canonical sequence. Auditors look for evidence that each phase was signed off before the next began; out-of-order execution defeats the control purpose of the gated model.",
+      "wrong_explanations": {
+        "A": "Design cannot precede requirements because design solves a problem that requirements must first define. Testing also cannot occur after deployment in the gated waterfall flow; pre-deployment verification is the correct order.",
+        "B": "Build cannot precede design in waterfall; without a design specification there is nothing to construct against. This option also places maintenance before deployment, which is impossible.",
+        "D": "Testing cannot precede build because there is no built artifact to test. Maintenance also cannot precede deployment, since maintenance applies to a deployed system."
+      },
+      "tips": [
+        "Mnemonic: R-D-B-T-D-M = Requirements, Design, Build, Test, Deploy, Maintain — six waterfall phases in strict order, each gated by sign-off before the next begins.",
+        "Disambiguation: design always follows requirements (you cannot design what is undefined), and test always follows build (you cannot test what does not exist).",
+        "Exam shortcut: if an option places test before build, design before requirements, or maintenance before deploy, eliminate it immediately."
+      ],
+      "pre_read": "Waterfall phase-order questions are pure recall. Anchor on two rules: requirements come before design, and build comes before test. Apply those two rules and the answer falls out.",
+      "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-160."
+    },
+    {
+      "id": "d3_126",
+      "domain": 3,
+      "subtopic": "Scrum Events. 2020 Scrum Guide",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "The 2020 Scrum Guide defines exactly four prescribed events within the sprint: Sprint Planning, Daily Scrum (standup), Sprint Review, and Sprint Retrospective. The sprint itself is the container event.",
+      "framework_ref": "Scrum Guide 2020 (Schwaber and Sutherland)",
+      "scenario_context": "",
+      "question": "According to the 2020 Scrum Guide, which set lists ALL the prescribed events that occur within a sprint?",
+      "options": {
+        "A": "Backlog Refinement, Daily Scrum, Sprint Review, Release Planning",
+        "B": "Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective",
+        "C": "Sprint Planning, Daily Scrum, Demo Day, Lessons Learned Meeting",
+        "D": "Sprint Kickoff, Stakeholder Sync, Sprint Review, Sprint Retrospective"
+      },
+      "correct": "B",
+      "correct_explanation": "The 2020 Scrum Guide names four events inside the sprint container: Sprint Planning opens the sprint by defining the sprint goal and selected backlog items; the Daily Scrum is a fifteen-minute team event to inspect progress toward the sprint goal; the Sprint Review at the end inspects the increment with stakeholders; and the Sprint Retrospective closes the sprint by inspecting the team's process. Backlog refinement is an ongoing activity, not a prescribed event. Release planning was removed from official Scrum long ago and is not part of the framework. These four are the only formal events Scrum defines.",
+      "wrong_explanations": {
+        "A": "Backlog refinement is an ongoing activity, not a prescribed Scrum event, and release planning is not part of the 2020 Scrum Guide at all.",
+        "C": "'Demo Day' and 'Lessons Learned Meeting' are informal names; the Scrum Guide uses the precise terms Sprint Review and Sprint Retrospective, and exam recall items expect the formal names.",
+        "D": "'Sprint Kickoff' and 'Stakeholder Sync' are not Scrum terms. The opening event is Sprint Planning, and stakeholder engagement happens at the Sprint Review."
+      },
+      "tips": [
+        "Structural mnemonic: Sprint is the container event; inside it sit four prescribed events — Planning (open the sprint), Daily Scrum (inspect daily), Review (inspect the product), Retrospective (inspect the process). No other events are part of Scrum.",
+        "Disambiguation: backlog refinement is an activity, not an event; release planning is not in Scrum at all. Only events named in the Scrum Guide count.",
+        "Exam shortcut: if an option uses informal labels like 'demo' or 'kickoff' instead of the Guide's exact terms, it is wrong on a recall item."
+      ],
+      "pre_read": "Scrum-event recall questions test exact terminology from the 2020 Scrum Guide. Answers that paraphrase or substitute industry slang for the formal event names are wrong.",
+      "_provenance": "Authored from concept: 'Scrum events (sprint planning, daily standup, sprint review, retrospective)'. Foundational recall tier. Public sources: Scrum Guide 2020."
+    },
+    {
+      "id": "d3_127",
+      "domain": 3,
+      "subtopic": "CI/CD. Continuous Delivery vs Continuous Deployment",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "Continuous Delivery keeps every build deployable but requires a manual approval to release to production. Continuous Deployment removes that manual gate and automatically pushes every passing build to production.",
+      "framework_ref": "ISACA DevOps audit and assurance guidance; Humble and Farley, Continuous Delivery (Addison-Wesley)",
+      "scenario_context": "",
+      "question": "What is the PRIMARY distinction between Continuous Delivery and Continuous Deployment?",
+      "options": {
+        "A": "Continuous Delivery integrates code daily; Continuous Deployment integrates code weekly with batched releases.",
+        "B": "Continuous Delivery applies only to web applications; Continuous Deployment applies only to mobile and embedded systems.",
+        "C": "Continuous Delivery runs unit tests only; Continuous Deployment runs unit and integration tests before release.",
+        "D": "Continuous Delivery requires manual approval to release to production; Continuous Deployment releases automatically with no manual gate."
+      },
+      "correct": "D",
+      "correct_explanation": "In Continuous Delivery every change that passes the automated pipeline is proven deployable to production, but an explicit human approval gates the actual release. Continuous Deployment removes that gate: every change that passes the pipeline is released to production automatically. The distinction matters to auditors because the presence or absence of a human approval changes the control model. Continuous Integration, by contrast, refers to the upstream practice of merging and building changes frequently. The three terms form a maturity progression: integration, then delivery, then deployment.",
+      "wrong_explanations": {
+        "A": "Integration cadence is the Continuous Integration concept, not the delivery-versus-deployment distinction. Both Continuous Delivery and Continuous Deployment rely on frequent integration.",
+        "B": "Neither term is scoped to a platform. Both practices apply across web, mobile, embedded, and back-end systems wherever automated pipelines are feasible.",
+        "C": "Test scope is a pipeline design choice, not the defining difference. Mature pipelines under either model run unit, integration, and other test stages."
+      },
+      "tips": [
+        "Mnemonic: deliveRy = Review (a human reviews and approves); deploymenT = auTo (no human gate).",
+        "Disambiguation: Continuous Integration is about merging and building frequently; delivery and deployment are about how releases reach production.",
+        "Exam shortcut: if an option talks about test types or cadence as the distinction, it is wrong. The defining difference is the manual approval gate."
+      ],
+      "pre_read": "CI/CD recall questions hinge on a single fact: Continuous Delivery has a human approval before production; Continuous Deployment does not. Everything else is distractor noise.",
+      "_provenance": "Authored from concept: 'CI/CD distinctions (continuous integration / delivery / deployment)'. Foundational recall tier. Public sources: ISACA DevOps audit guidance; Humble and Farley, Continuous Delivery."
+    },
+    {
+      "id": "d3_128",
+      "domain": 3,
+      "subtopic": "User Acceptance Testing. Purpose and Timing",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "User Acceptance Testing is the final test stage in which the business confirms the system meets documented requirements and is fit for purpose. UAT occurs after system testing and before production cutover.",
+      "framework_ref": "ISACA CISA Review Manual, Domain 3 testing levels; ISTQB Foundation Level syllabus",
+      "scenario_context": "",
+      "question": "What is the PRIMARY purpose of User Acceptance Testing (UAT)?",
+      "options": {
+        "A": "To allow developers to verify that individual code modules function as designed in isolation",
+        "B": "To allow business users to confirm the system meets agreed requirements and is fit for production use",
+        "C": "To allow security testers to identify exploitable vulnerabilities in the running application",
+        "D": "To allow infrastructure engineers to confirm the production environment can sustain peak load"
+      },
+      "correct": "B",
+      "correct_explanation": "User Acceptance Testing is performed by the business owners or their delegates against documented acceptance criteria derived from the requirements baseline. Its purpose is to provide independent business confirmation that the system does what was specified and is fit for production use. UAT is the last test stage before production cutover and the formal sign-off gates the go-live decision. Unit testing addresses isolated modules and is owned by developers. Security testing addresses vulnerabilities. Performance and capacity testing address load sustainability. Each of those is a separate test level with different owners, timing, and objectives.",
+      "wrong_explanations": {
+        "A": "That describes unit testing, which developers perform on individual modules early in construction. UAT is a business-owned validation activity, not a developer activity.",
+        "C": "That describes security testing such as penetration testing or DAST. UAT is functional and business-acceptance focused, not adversarial.",
+        "D": "That describes performance, load, or capacity testing. UAT validates functional fitness for purpose, not infrastructure capacity."
+      },
+      "tips": [
+        "Mnemonic: UAT = Users Accept and Take. Business users accept the system and take ownership of the go-live decision.",
+        "Disambiguation: developers do unit testing, QA does system testing, security does pen testing, and users do UAT. Owner identifies the test level.",
+        "Exam shortcut: any option that names a non-business actor as the UAT performer (developer, security tester, sysadmin) is wrong."
+      ],
+      "pre_read": "UAT questions resolve on two anchors: who performs it (business users, not IT) and when (after system testing, before production cutover). Hold those two facts and recall items become mechanical.",
+      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; ISTQB Foundation Level syllabus."
+    },
+    {
+      "id": "d3_129",
+      "domain": 3,
+      "subtopic": "ITIL 4 Change Management. Change Types",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "ITIL 4 defines three change types: standard (pre-authorized, low-risk, repeatable), normal (assessed and authorized through the change process, typically by a CAB), and emergency (expedited authorization for urgent fixes outside the normal cadence).",
+      "framework_ref": "ITIL 4 Foundation; ITIL 4 Change Enablement practice guide",
+      "scenario_context": "",
+      "question": "ITIL 4 Change Enablement categorizes changes into which three types?",
+      "options": {
+        "A": "Standard, normal, and emergency",
+        "B": "Routine, planned, and unplanned",
+        "C": "Major, minor, and patch",
+        "D": "Approved, pending, and rejected"
+      },
+      "correct": "A",
+      "correct_explanation": "ITIL 4 Change Enablement names exactly three change types. Standard changes are pre-authorized, low-risk, and repeatable; they follow a documented procedure and do not require per-instance CAB review. Normal changes go through the full assessment and authorization workflow, typically reviewed by a change authority such as a Change Advisory Board. Emergency changes are urgent fixes (often incident-driven) that follow an expedited authorization path with reduced lead time, while still being recorded and reviewed. This three-way taxonomy is core ITIL recall and is consistently tested.",
+      "wrong_explanations": {
+        "B": "'Routine, planned, and unplanned' is informal language and is not the ITIL 4 taxonomy. ITIL uses the specific terms standard, normal, and emergency.",
+        "C": "'Major, minor, and patch' is a release-sizing or versioning concept, not the ITIL change-type taxonomy. Change type concerns authorization path, not release magnitude.",
+        "D": "'Approved, pending, and rejected' are change-record statuses or workflow states, not change types. A change of any type can be in any of those statuses at a point in time."
+      },
+      "tips": [
+        "Mnemonic: SNE — Standard, Normal, Emergency. Three letters, three change types.",
+        "Disambiguation: change TYPE is authorization path (standard, normal, emergency); change STATUS is workflow state (approved, pending, rejected). The exam distinguishes them.",
+        "Exam shortcut: if an option uses sizing words (major, minor, patch) or workflow states (approved, pending), it is not the change-type taxonomy."
+      ],
+      "pre_read": "ITIL change-type recall questions test exactly three labels: standard, normal, emergency. Any option that swaps in sizing or status terms is wrong.",
+      "_provenance": "Authored from concept: 'ITIL 4 Change Management — standard/normal/emergency change types'. Foundational recall tier. Public sources: ITIL 4 Foundation; ITIL 4 Change Enablement practice guide."
+    },
+    {
+      "id": "d3_130",
+      "domain": 3,
+      "subtopic": "Source Code Escrow. Purpose",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "A source code escrow agreement deposits a vendor's source code (and build instructions) with an independent third party. The code is released to the licensee only if defined trigger events occur, such as vendor bankruptcy or sustained failure to support the product.",
+      "framework_ref": "ISACA CISA Review Manual, Domain 3 third-party software acquisition guidance; NIST SP 800-161r1 Supply Chain Risk Management",
+      "scenario_context": "",
+      "question": "What is the PRIMARY purpose of a source code escrow arrangement when licensing software from a vendor?",
+      "options": {
+        "A": "To grant the licensee perpetual ownership of the source code immediately upon contract signing",
+        "B": "To allow the vendor to back up the source code at an offsite location for disaster recovery purposes",
+        "C": "To make the source code available to the licensee under defined trigger conditions such as vendor bankruptcy or abandonment",
+        "D": "To provide an independent quality review of the source code before each release to production"
+      },
+      "correct": "C",
+      "correct_explanation": "Source code escrow is a risk-treatment control for the scenario in which a licensee depends on vendor-supplied software but does not own the source. The vendor deposits source code and build materials with an independent escrow agent. The licensee gains rights to obtain the deposited materials only when a contractually defined trigger occurs, most commonly vendor bankruptcy, acquisition with product discontinuation, or sustained failure to meet support obligations. Until a trigger fires, the licensee has no access. The arrangement protects business continuity without transferring ownership during normal operations.",
+      "wrong_explanations": {
+        "A": "Escrow does not grant ownership at signing; it grants a contingent right to access the deposited code if trigger conditions occur. Ownership and IP remain with the vendor.",
+        "B": "Escrow is not a vendor backup mechanism. The vendor maintains its own backups separately; escrow exists to protect the licensee against vendor failure, not the vendor against data loss.",
+        "D": "Code review for quality is a separate assurance activity. Escrow agents hold and release materials; they do not perform quality review of the deposited source."
+      },
+      "tips": [
+        "Structural model: Escrow = third-party safe deposit with three parties. Vendor deposits the source code, escrow agent holds it, licensee receives it only on a trigger event (vendor bankruptcy, end-of-support, sale).",
+        "Disambiguation: escrow is a continuity control for the LICENSEE, not a backup for the vendor and not an ownership transfer.",
+        "Exam shortcut: any option implying immediate access, ownership transfer, or vendor benefit is wrong. Escrow protects the buyer against vendor failure, conditionally."
+      ],
+      "pre_read": "Source code escrow questions resolve on two facts: the licensee gets contingent access (not ownership), and the contingency is vendor failure (not the vendor's own DR needs).",
+      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management."
     }
   ]
 }

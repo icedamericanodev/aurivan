@@ -2,7 +2,7 @@
   "domain": 2,
   "title": "Governance and Management of IT",
   "weight": "18%",
-  "count": 184,
+  "count": 190,
   "questions": [
     {
       "id": "d2_001",
@@ -6715,6 +6715,192 @@
       ],
       "pre_read": "Precision-word MOST IMPORTANT questions in multi-jurisdiction privacy governance test whether you can distinguish the foundational legal prerequisite (lawful basis) from operationally important downstream controls (DSAR SLAs, transfer mechanisms, translated notices). FIRST asks what foundational step to take; BEST asks for the full governance package; MOST IMPORTANT asks which factor cannot be omitted. Lawful basis is the only factor whose absence makes the underlying processing itself unlawful—every other listed factor governs how lawful processing is operated.",
       "_provenance": "Authored from concept: 'Precision-word MOST IMPORTANT in multi-jurisdiction privacy governance — lawful-basis identification (GDPR Article 6 and equivalents) is the non-negotiable factor; DSAR SLAs, transfer mechanisms, and translated notices are downstream of it'. Paired companion to d2_066 (FIRST) and d2_182 (BEST). Public sources: GDPR Article 6, EDPB Guidelines 5/2020 on consent and lawful basis, ISO/IEC 27701, ISACA Privacy A/A Program, IAPP CIPP body of knowledge. No legacy bank citation."
+    },
+    {
+      "id": "d2_185",
+      "domain": 2,
+      "subtopic": "COBIT 2019. Governance vs Management Objectives",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "COBIT 2019 splits 40 objectives into 5 governance objectives in the Evaluate, Direct, and Monitor (EDM) domain and 35 management objectives across APO, BAI, DSS, and MEA.",
+      "framework_ref": "COBIT 2019 Framework: Introduction and Methodology (EDM01-EDM05; APO, BAI, DSS, MEA domains)",
+      "scenario_context": "",
+      "question": "In COBIT 2019, which domain contains the governance objectives that the governing body is responsible for?",
+      "options": {
+        "A": "Align, Plan and Organize (APO), covering strategy and architecture management activities",
+        "B": "Build, Acquire and Implement (BAI), covering solution development and change enablement",
+        "C": "Evaluate, Direct and Monitor (EDM), covering stakeholder value and resource oversight",
+        "D": "Monitor, Evaluate and Assess (MEA), covering performance monitoring and compliance"
+      },
+      "correct": "C",
+      "correct_explanation": "COBIT 2019 separates governance from management. The Evaluate, Direct, and Monitor (EDM) domain holds the five governance objectives (EDM01 through EDM05) that the governing body owns: framework setting, benefits delivery, risk optimization, resource optimization, and stakeholder engagement. The other three domains (APO, BAI, DSS) plus MEA together contain the 35 management objectives owned by executive management. APO covers planning, BAI covers building, DSS covers running, and MEA covers monitoring activities carried out by management, not governance.",
+      "wrong_explanations": {
+        "A": "Align, Plan and Organize (APO) is a management domain owned by executive management, focused on strategy, enterprise architecture, and portfolio management, not governance.",
+        "B": "Build, Acquire and Implement (BAI) is a management domain covering solution development, change enablement, and project execution; it does not contain governance objectives.",
+        "D": "Monitor, Evaluate and Assess (MEA) is a management domain for monitoring performance, compliance, and internal control; the similar-sounding name Evaluate, Direct and Monitor (EDM) is the governance domain."
+      },
+      "tips": [
+        "Mnemonic: EDM = Evaluate, Direct, Monitor = the only governance domain in COBIT 2019.",
+        "Disambiguation: MEA sounds similar but is a management domain (monitoring controls); EDM is the board-level governance domain.",
+        "Exam shortcut: 5 governance objectives (EDM01-05) plus 35 management objectives equals 40 total COBIT 2019 objectives."
+      ],
+      "pre_read": "COBIT 2019 organizes 40 objectives into one governance domain (EDM) owned by the governing body and four management domains (APO, BAI, DSS, MEA) owned by executive management.",
+      "_provenance": "Authored from concept: 'COBIT 2019 governance vs management objectives — EDM is the governance domain'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA COBIT 2019 Framework: Introduction and Methodology."
+    },
+    {
+      "id": "d2_186",
+      "domain": 2,
+      "subtopic": "ISO/IEC 38500. IT Governance Principles",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "ISO/IEC 38500 defines six principles for the governance of IT: Responsibility, Strategy, Acquisition, Performance, Conformance, and Human Behavior.",
+      "framework_ref": "ISO/IEC 38500:2015 Information technology - Governance of IT for the organization",
+      "scenario_context": "",
+      "question": "Which of the following is one of the six principles of IT governance defined in ISO/IEC 38500?",
+      "options": {
+        "A": "Confidentiality, ensuring that information is accessible only to authorized parties",
+        "B": "Conformance, ensuring that IT use complies with applicable legislation and policies",
+        "C": "Continuity, ensuring that IT services recover within agreed recovery time objectives",
+        "D": "Capacity, ensuring that IT resources scale to meet projected business demand"
+      },
+      "correct": "B",
+      "correct_explanation": "ISO/IEC 38500 establishes six principles for the governance of IT: Responsibility, Strategy, Acquisition, Performance, Conformance, and Human Behavior. Conformance addresses the governing body's duty to ensure that IT use complies with all mandatory legislation, regulations, and internal policies. The other options describe valid IT concerns but are not ISO/IEC 38500 governance principles: confidentiality is an information-security property (ISO 27001/CIA triad), continuity is a business-continuity concept, and capacity is an operational management concern.",
+      "wrong_explanations": {
+        "A": "Confidentiality is one element of the CIA triad in information security (ISO 27001), not a governance principle under ISO/IEC 38500.",
+        "C": "Continuity is a business-continuity management concept addressed in ISO 22301; it is not one of the six ISO/IEC 38500 governance principles.",
+        "D": "Capacity management is an operational IT service-management practice in ITIL 4, not an ISO/IEC 38500 governance principle."
+      },
+      "tips": [
+        "Group the 6 ISO/IEC 38500 principles by purpose: Responsibility, Strategy, Human Behavior are people-facing; Acquisition, Performance, Conformance are activity-facing. Three pairs, six principles total.",
+        "Disambiguation: Conformance (38500) means legal and policy compliance at governance level; Compliance testing is the audit activity that verifies it.",
+        "Exam shortcut: any 38500 question is answered by spotting one of the six R-S-A-P-C-H principles."
+      ],
+      "pre_read": "ISO/IEC 38500 is the international standard for the governance of IT; it provides six principles that guide the governing body in directing and overseeing IT use.",
+      "_provenance": "Authored from concept: 'ISO/IEC 38500 six IT governance principles'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISO/IEC 38500:2015 standard."
+    },
+    {
+      "id": "d2_187",
+      "domain": 2,
+      "subtopic": "IT Strategy Committee vs IT Steering Committee",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "The IT strategy committee advises the board on long-term IT direction, while the IT steering committee operates at executive level to oversee day-to-day IT execution, prioritization, and resource allocation.",
+      "framework_ref": "ISACA CISA Review Manual, Domain 2; COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "scenario_context": "",
+      "question": "What is the PRIMARY role of an IT steering committee?",
+      "options": {
+        "A": "Advising the board on emerging technology trends and long-term IT strategic direction",
+        "B": "Overseeing daily IT operations and approving routine technology change requests",
+        "C": "Prioritizing IT projects, allocating resources, and monitoring delivery against business objectives",
+        "D": "Performing independent assurance over IT controls on behalf of the audit committee"
+      },
+      "correct": "C",
+      "correct_explanation": "The IT steering committee operates at the executive-management level. Its primary role is to align IT investments with business objectives by prioritizing IT projects in the portfolio, allocating resources across them, and monitoring delivery against approved business cases. It is distinct from the IT strategy committee, which is a board-level advisory body focused on long-term IT direction. The steering committee does not perform daily operational decision-making (that belongs to IT management) and it does not provide independent assurance (that is the internal audit function).",
+      "wrong_explanations": {
+        "A": "Advising the board on long-term IT strategic direction is the role of the IT strategy committee, which sits at the board level, not the IT steering committee.",
+        "B": "Overseeing daily IT operations and routine change approvals is the role of IT line management and the change advisory board, not the IT steering committee.",
+        "D": "Independent assurance over IT controls is performed by internal audit reporting to the audit committee; the IT steering committee is a management body, not an assurance function."
+      },
+      "tips": [
+        "Mnemonic: Strategy = board advisory (long-term, what direction); Steering = executive (which projects, how much funding).",
+        "Disambiguation: strategy committee answers WHERE IT should go; steering committee answers WHICH initiatives to fund and run.",
+        "Exam shortcut: if the question mentions project prioritization or resource allocation, the answer is steering committee."
+      ],
+      "pre_read": "Two distinct IT governance committees exist: the IT strategy committee advises the board on long-term direction, while the IT steering committee operates at executive level to direct IT investment and execution.",
+      "_provenance": "Authored from concept: 'IT strategy committee vs IT steering committee role distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA CISA Review Manual Domain 2; COBIT 2019 EDM01."
+    },
+    {
+      "id": "d2_188",
+      "domain": 2,
+      "subtopic": "ITIL 4. Four Dimensions of Service Management",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "ITIL 4 defines four dimensions of service management: Organizations and People, Information and Technology, Partners and Suppliers, and Value Streams and Processes.",
+      "framework_ref": "ITIL 4 Foundation: ITIL 4 Edition (AXELOS / PeopleCert), Four Dimensions of Service Management",
+      "scenario_context": "",
+      "question": "Which of the following is one of the four dimensions of service management in ITIL 4?",
+      "options": {
+        "A": "Organizations and People, addressing organizational structures, culture, roles, and staff competencies",
+        "B": "Plan, Build, Run, addressing the three lifecycle phases of an IT service offering",
+        "C": "Strategy, Design, Transition, addressing the lifecycle stage gates of v3 service management",
+        "D": "People, Process, Technology, addressing the classical three-legged enterprise operating model"
+      },
+      "correct": "A",
+      "correct_explanation": "ITIL 4 replaces the older lifecycle-stage model with four dimensions that must each be considered for any product or service: Organizations and People; Information and Technology; Partners and Suppliers; and Value Streams and Processes. Organizations and People covers structures, culture, roles, and skills. The lifecycle stages named in the other options belong to ITIL v3 (Strategy, Design, Transition, Operation, Continual Improvement), not ITIL 4. The Plan, Build, Run model and the People, Process, Technology triad are generic IT operating-model concepts, not ITIL 4 dimensions.",
+      "wrong_explanations": {
+        "B": "Plan, Build, Run is a generic IT operating-model phrasing, not an ITIL 4 dimension; ITIL 4 uses the service value chain rather than build/run phases.",
+        "C": "Strategy, Design, and Transition are lifecycle stages from ITIL v3; ITIL 4 retired the lifecycle model in favor of four dimensions and the service value chain.",
+        "D": "People, Process, Technology is a long-standing generic operating-model triad that predates ITIL 4 and is not its formal four-dimensions model."
+      },
+      "tips": [
+        "Mnemonic preserving the pairings: Org+People, Info+Tech, Partners+Suppliers, Value Streams+Processes. Every ITIL 4 dimension is a pair of two paired concepts — no single-word dimensions.",
+        "Disambiguation: ITIL v3 had five lifecycle stages; ITIL 4 has four dimensions plus a service value chain.",
+        "Exam shortcut: any ITIL 4 dimension answer pairs two related concepts (Organizations AND People, Information AND Technology)."
+      ],
+      "pre_read": "ITIL 4 organizes service management around four dimensions that must be balanced holistically: Organizations and People, Information and Technology, Partners and Suppliers, and Value Streams and Processes.",
+      "_provenance": "Authored from concept: 'ITIL 4 four dimensions of service management'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ITIL 4 Foundation publication (AXELOS / PeopleCert)."
+    },
+    {
+      "id": "d2_189",
+      "domain": 2,
+      "subtopic": "Three Lines Model. Roles and Responsibilities",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "The IIA Three Lines Model assigns operational ownership of risk and control to the first line, oversight and compliance functions to the second line, and independent assurance to the third line (internal audit).",
+      "framework_ref": "IIA Three Lines Model (2020 update of the Three Lines of Defense Model)",
+      "scenario_context": "",
+      "question": "Under the IIA Three Lines Model, which function provides independent assurance over governance, risk management, and internal control?",
+      "options": {
+        "A": "First line, comprising operational management that owns and manages risks day to day",
+        "B": "Second line, comprising risk management and compliance functions that oversee the first line",
+        "C": "Third line, comprising internal audit, reporting functionally to the audit committee",
+        "D": "External auditors engaged by the audit committee to opine on the financial statements"
+      },
+      "correct": "C",
+      "correct_explanation": "The Three Lines Model places independent and objective assurance over governance, risk management, and internal control in the third line, which is internal audit. To preserve independence, internal audit reports functionally to the board's audit committee and administratively to senior management. The first line (operational management) owns and manages risks directly. The second line (risk, compliance, and similar oversight functions) provides expertise and challenges the first line but is not independent of management. External auditors are outside the Three Lines Model; they provide assurance over financial statements to external stakeholders, not internal assurance over the full control environment.",
+      "wrong_explanations": {
+        "A": "Operational management is the first line; it owns and manages risks directly and is not independent, so it cannot provide assurance to the governing body over its own activities.",
+        "B": "Risk management and compliance functions are the second line; they oversee and support the first line but report into management and therefore are not independent assurance providers.",
+        "D": "External auditors sit outside the Three Lines Model. The question asks which line provides assurance; the model itself reserves that role for internal audit as the third line."
+      },
+      "tips": [
+        "Mnemonic: 1st = Own it, 2nd = Oversee it, 3rd = Audit it.",
+        "Disambiguation: the 2020 IIA update renamed it the Three Lines Model (from Three Lines of Defense) and emphasized collaboration over pure defense.",
+        "Exam shortcut: the word independent in a Three Lines question almost always points to internal audit (third line)."
+      ],
+      "pre_read": "The IIA Three Lines Model clarifies roles for managing and assuring risk: operational management (first), risk and compliance oversight (second), and independent internal audit (third).",
+      "_provenance": "Authored from concept: 'Three Lines Model roles - operational, risk and compliance, internal audit'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: IIA Three Lines Model 2020 position paper."
+    },
+    {
+      "id": "d2_190",
+      "domain": 2,
+      "subtopic": "KPI vs KRI. Performance and Risk Indicators",
+      "difficulty": "foundational",
+      "bloom_level": "Foundational",
+      "key_concept": "A KPI measures progress toward achieving an objective; a KRI provides an early-warning signal that risk exposure is approaching or exceeding an acceptable level.",
+      "framework_ref": "ISACA Risk IT Framework, 2nd Edition; COBIT 2019 Performance Management (CMMI-based capability and process performance)",
+      "scenario_context": "",
+      "question": "What is the PRIMARY purpose of a key risk indicator (KRI)?",
+      "options": {
+        "A": "To measure how efficiently a business process consumes resources during normal operating conditions",
+        "B": "To provide an early-warning signal that risk exposure is approaching or beyond appetite",
+        "C": "To quantify the financial impact of a risk event after the event has already occurred",
+        "D": "To report progress against strategic objectives displayed on a balanced-scorecard management dashboard"
+      },
+      "correct": "B",
+      "correct_explanation": "A key risk indicator (KRI) is a forward-looking metric used to signal that risk exposure is increasing toward or past an acceptable threshold, giving management time to act before the risk materializes. This contrasts with a key performance indicator (KPI), which measures progress toward an objective and is typically backward-looking or current-state. KRIs are not designed to measure operational efficiency, quantify loss after the fact, or report strategic-objective progress; those are roles for efficiency metrics, loss data, and KPIs on a balanced scorecard, respectively.",
+      "wrong_explanations": {
+        "A": "Efficiency metrics measure resource consumption versus output; these are typically KPIs, not KRIs, and they describe current performance rather than warning of future risk.",
+        "C": "Quantifying impact after a risk event is loss-data analysis, not a KRI; KRIs are early-warning indicators that operate before the event, not afterward.",
+        "D": "Reporting progress against strategic objectives is the role of KPIs on a balanced scorecard; KRIs report risk exposure trends, not objective achievement."
+      },
+      "tips": [
+        "Mnemonic: KPI tracks performance (objective progress); KRI tracks risk (exposure trend).",
+        "Disambiguation: KRIs are leading indicators (warn before); KPIs are typically lagging or current (measure during or after).",
+        "Exam shortcut: the words early warning or threshold approaching in a stem almost always point to KRI."
+      ],
+      "pre_read": "Performance and risk indicators serve complementary purposes: KPIs measure objective achievement, while KRIs provide leading signals that risk exposure is changing.",
+      "_provenance": "Authored from concept: 'KPI vs KRI definitions and distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA Risk IT Framework 2nd Edition; COBIT 2019 Performance Management."
     }
   ]
 }
