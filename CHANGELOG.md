@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v9.8] — Harder distractors: 80 structural giveaways eliminated across D2, D4, D5
+
+### Improved
+- Rewrote all three distractors for 80 Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.
+- Three Domain 2 governance-scenario distractors received the same treatment. Each wrong option now describes a coherent but flawed multi-element approach rather than a single-dimension oversimplification.
+- Wrong-answer explanations for all 240 rewritten options now explain the specific failure mode — why the compound-looking distractor is still wrong — rather than just dismissing a simplistic option.
+
 ## [v9.7] — Domain 5 audit pass: clearer security checklists and stronger principle teaching
 
 ### Fixed

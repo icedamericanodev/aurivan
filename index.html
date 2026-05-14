@@ -4587,7 +4587,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v9.7</span>
+    <span class="bank-pill" id="versionPill">v9.8</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4844,7 +4844,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v9.7';
+const APP_VERSION = 'v9.8';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -10889,6 +10889,15 @@ function toggleMockDetail(i) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Harder distractors — 80 structural giveaways eliminated across D2, D4, D5',
+    items: [
+      { cat: 'improved', text: 'Rewrote all three distractors for 80 Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.' },
+      { cat: 'improved', text: 'Three Domain 2 governance-scenario distractors received the same treatment. Each wrong option now describes a coherent but flawed multi-element approach rather than a single-dimension oversimplification.' },
+      { cat: 'improved', text: 'Wrong-answer explanations for all 240 rewritten options now explain the specific failure mode — why the compound-looking distractor is still wrong — rather than just dismissing a simplistic option.' }
+    ]
+  },
+  {
+    version: 'v9.7',
     title: 'Domain 5 audit pass — clearer security checklists and stronger principle teaching',
     items: [
       { cat: 'fixed', text: 'Repaired 49 mis-grouped parentheses across 36 Domain 5 security explanations. Numbered checklists (incident response, IAM lifecycle, forensic procedure) now read cleanly instead of running adjacent items together.' },
