@@ -4,6 +4,17 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v9.6] — Domain 4 audit pass: accuracy fixes and clearer explanation lists
+
+### Fixed
+- One Domain 4 question on offsite-recovery validation had its keyed answer pointed at the wrong option after a prior shuffle. The keyed answer, the wrong-answer explanations, and the trap-naming tip now all point at the right option.
+- Six Domain 4 explanations referenced the wrong option letter when describing the trap (for example, the explanation said "Option A (refuse)" when the "refuse" option was actually C). All six now name the option they describe.
+- Three Domain 4 questions had garbled wording where "IT's" or "it's been" was rendered as "It is" by an earlier prose pass. The original meaning has been restored.
+- Repaired 41 mis-grouped parentheses across 29 Domain 4 explanation lists. Numbered governance and recovery checklists now read cleanly instead of running adjacent items together.
+
+### Improved
+- Added closing audit-mindset sentences to six Domain 4 incident-and-resilience scenarios so the principle being tested (compensating controls, business alignment, evidence over assumptions) is named, not just demonstrated.
+
 ## [v9.5] — Domain 2 audit pass: distinct answer options and sharper governance teaching
 
 ### Fixed
