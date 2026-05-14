@@ -4,11 +4,22 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## [v10.2] — Caricature distractors retired across 36 questions
+## [v10.3] — Quality pass: 28 question touch-ups from specialist review
+
+### Fixed
+- A Domain 2 supply-chain incident question (d2_172) had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says — that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.
+- A GDPR breach-notification question (d3_096) had the correct option presume Article 33(1) notification was required without acknowledging the risk-based exemption gate. The option now explicitly conducts the risk assessment first and notifies only if the breach is likely to risk data subjects.
 
 ### Improved
-- Removed recycled "Endorse the [executive]" / "Defer to management" / "Trust the vendor" caricature wording from 50 distractor options across 36 questions in D1, D2, D3, and D4. Candidates can no longer eliminate options by spotting the forbidden word — each option now describes a plausible-looking audit position with compensating elements (documented review, legal sign-off, SOC reliance), and the candidate has to reason about why the position still fails the ISACA test.
-- Wrong-answer explanations for these 50 options were rewritten to name the new failure mode and the underlying audit principle (independence, evidence sufficiency, root-cause priority, business-risk anchoring, structured-evaluation requirement) instead of just pointing at the caricature.
+- Four wait-passive wrong-answer options across D1 and D2 (audit-committee escalation, trading-floor surveillance, privacy operationalization, mid-cycle risk treatment) no longer use the over-recycled "Wait for the next meeting" framing — they now describe a plausible deferral with stated justification, which still fails the urgency principle but no longer telegraphs the trap with a single word.
+- Ten Domain 4 questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero — a counting tell introduced by the previous polish pass. The 30 affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.
+- Twelve Domain 5 BEST/PRIMARY companions (d5_261-270, d5_275, d5_276) had a generic tip-2 phrase repeated across the set. Each tip-2 now anchors to the scenario-specific dominant clock or principle (encryption clock for ransomware, irreversible-loss clock for BEC, parallel-track notification clocks for SaaS B2B, build-time-vs-runtime confusion for container escape) so candidates learn what makes THIS scenario distinctive, not a phrase to memorize.
+
+## [v10.2] — Sharper wrong-answer options across 36 questions
+
+### Improved
+- Replaced over-recycled wrong-answer phrasing on 50 options across 36 questions in D1, D2, D3, and D4. Wrong options that used to read like "Endorse the CIO's position" or "Trust the vendor's report" — phrasings learners eventually spot on sight — now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.
+- Wrong-answer explanations for these 50 options were rewritten to name the actual failure mode (audit independence, evidence sufficiency, root-cause priority, business-risk anchoring, structured evaluation) so you learn the principle being tested rather than the cue word that gives the trap away.
 
 ## [v10.1] — Precision-word triplets: same scenario, three different correct answers
 
