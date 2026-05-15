@@ -4754,7 +4754,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.19</span>
+    <span class="bank-pill" id="versionPill">v10.21</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4773,7 +4773,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.19</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.21</span>
     </div>
   </div>
 </header>
@@ -4991,7 +4991,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.19';
+const APP_VERSION = 'v10.21';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11138,6 +11138,22 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Audit Testing & Sampling topic rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The Audit Testing and Sampling Methodology topic (Domain 1) is now a full study resource. The compliance-vs-substantive testing and sampling subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: a side-by-side of what compliance testing and substantive testing each check, and a comparison of statistical sampling (projectable to the population) against judgmental sampling (not projectable).' }
+    ]
+  },
+  {
+    version: 'v10.20',
+    title: 'Types of Controls topic rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The Types of Controls and Considerations topic (Domain 1) is now a full study resource. The control classifications and control-to-risk subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: a timeline showing how preventive, detective, and corrective controls act before, during, and after an incident, and a diagram of how controls reduce inherent risk down to the residual risk that remains.' }
+    ]
+  },
+  {
+    version: 'v10.19',
     title: 'Incident & Change Management topics rebuilt with diagrams',
     items: [
       { cat: 'new', text: 'The Problem and Incident Management and IT Change, Configuration and Patch Management topics (Domain 4) are now full study resources. Incident handling, patch management, release management, and IS operations each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },

@@ -4,6 +4,18 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.21] — Audit Testing & Sampling topic rebuilt with diagrams
+
+### New
+- The Audit Testing and Sampling Methodology topic (Domain 1) is now a full study resource. The compliance-vs-substantive testing and sampling subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: a side-by-side of what compliance testing and substantive testing each check, and a comparison of statistical sampling (projectable to the population) against judgmental sampling (not projectable).
+
+## [v10.20] — Types of Controls topic rebuilt with diagrams
+
+### New
+- The Types of Controls and Considerations topic (Domain 1) is now a full study resource. The control classifications and control-to-risk subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: a timeline showing how preventive, detective, and corrective controls act before, during, and after an incident, and a diagram of how controls reduce inherent risk down to the residual risk that remains.
+
 ## [v10.19] — Incident & Change Management topics rebuilt with diagrams
 
 ### New
