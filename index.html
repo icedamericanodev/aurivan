@@ -4754,7 +4754,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.14</span>
+    <span class="bank-pill" id="versionPill">v10.15</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4773,7 +4773,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.14</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.15</span>
     </div>
   </div>
 </header>
@@ -4991,7 +4991,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.14';
+const APP_VERSION = 'v10.15';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11138,6 +11138,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Identity & Access Management topic rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The Identity and Access Management topic (Domain 5) is now a full study resource. Its four subtopics — the three A\'s (authentication, authorization, accountability), Zero Trust, Privileged Access Management, and the access-control models — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: a Zero Trust vs perimeter-model comparison, a just-in-time privileged-access lifecycle, and a who-decides-access breakdown of the DAC, MAC, RBAC and ABAC models.' }
+    ]
+  },
+  {
+    version: 'v10.14',
     title: 'New study topic: Public Key Infrastructure (PKI)',
     items: [
       { cat: 'new', text: 'Public Key Infrastructure is now a full study topic (Domain 5). It explains how digital certificates make public keys trustworthy — the certificate authority, registration authority, and the chain of trust from an offline root CA down to everyday certificates, shown as a diagram.' },

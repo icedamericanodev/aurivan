@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.15] — Identity & Access Management topic rebuilt with diagrams
+
+### New
+- The Identity and Access Management topic (Domain 5) is now a full study resource. Its four subtopics — the three A's (authentication, authorization, accountability), Zero Trust, Privileged Access Management, and the access-control models — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: a Zero Trust vs perimeter-model comparison, a just-in-time privileged-access lifecycle, and a who-decides-access breakdown of the DAC, MAC, RBAC and ABAC models.
+
 ## [v10.14] — New study topic: Public Key Infrastructure (PKI)
 
 ### New
