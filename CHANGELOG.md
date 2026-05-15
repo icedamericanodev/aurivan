@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.14] — New study topic: Public Key Infrastructure (PKI)
+
+### New
+- Public Key Infrastructure is now a full study topic (Domain 5). It explains how digital certificates make public keys trustworthy — the certificate authority, registration authority, and the chain of trust from an offline root CA down to everyday certificates, shown as a diagram.
+- A second subtopic covers the certificate lifecycle — request, validation, issuance, use, renewal, and revocation — with a lifecycle diagram and a side-by-side comparison of the two revocation-checking methods, CRL and OCSP.
+
 ## [v10.13] — Data Encryption topic rebuilt with diagrams
 
 ### New

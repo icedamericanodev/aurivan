@@ -1392,7 +1392,95 @@
             "Certificate Revocation List (CRL)": "List of certificates that have been revoked before expiration."
           },
           "real_life_scenario": "When you visit a banking website and see the padlock icon (HTTPS), the browser has verified the bank's digital certificate was issued by a trusted CA — proving you are connected to the real bank, not an imposter.",
-          "exam_tip": "PKI = the trust framework for digital certificates. CA is the trusted third party."
+          "exam_tip": "PKI = the trust framework for digital certificates. CA is the trusted third party.",
+          "subtopics": [
+            {
+              "id": "5.7.1",
+              "name": "PKI Components and the Chain of Trust",
+              "summary": "Public Key Infrastructure (PKI) is the framework of roles, policies, and technology that makes public-key cryptography trustworthy at scale. It answers one question: when you receive a public key, how do you know it genuinely belongs to who it claims?",
+              "illustration": {
+                "svg": "<svg viewBox='0 0 470 250' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='PKI chain of trust: a root CA signs intermediate CAs, which sign end-entity certificates'><text x='235' y='12' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Self-signed root — the trust anchor, kept offline</text><rect x='180' y='18' width='110' height='40' rx='4' fill='var(--accent-fill)'/><text x='235' y='42' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Root CA</text><rect x='56' y='110' width='132' height='40' rx='4' fill='var(--accent-fill)'/><text x='122' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Intermediate CA</text><rect x='282' y='110' width='132' height='40' rx='4' fill='var(--accent-fill)'/><text x='348' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Intermediate CA</text><rect x='74' y='202' width='96' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='122' y='225' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Server cert</text><rect x='300' y='202' width='96' height='38' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='348' y='225' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Email cert</text><line x1='235' y1='58' x2='122' y2='110' stroke='var(--text2)' stroke-width='1.5'/><line x1='235' y1='58' x2='348' y2='110' stroke='var(--text2)' stroke-width='1.5'/><line x1='122' y1='150' x2='122' y2='202' stroke='var(--text2)' stroke-width='1.5'/><line x1='348' y1='150' x2='348' y2='202' stroke='var(--text2)' stroke-width='1.5'/><text x='235' y='180' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>End-entity certificates — used by sites, people, devices</text></svg>",
+                "caption": "The PKI chain of trust. A self-signed root CA (kept offline) signs intermediate CAs, which sign the everyday end-entity certificates. Trust delegates downward; a verifier checks a certificate by chaining upward until it reaches a root it already trusts."
+              },
+              "discussion": "Asymmetric cryptography only works if you can trust that a public key really belongs to the party you think it does. On its own, a public key is just a number — an attacker could hand you their key while claiming to be your bank. PKI solves this with a trusted third party.\nA Certificate Authority (CA) is an organisation everyone agrees to trust. It verifies an identity and then issues a digital certificate — a document that binds a public key to that identity and is signed by the CA's own private key. Because your software already trusts the CA, and the CA vouches for the certificate, you can now trust the public key inside it.\nCAs are arranged in a hierarchy called the chain of trust. At the top sits the root CA — self-signed, and so important it is usually kept physically offline. The root signs intermediate CAs, which in turn sign the everyday end-entity certificates used by websites, people, and devices. Trust delegates downward; a verifier checks a certificate by chaining upward, link by link, until it reaches a root it already trusts.\nFor an auditor: protecting the root CA's private key is the single most important control in the whole system — if it is compromised, every certificate beneath it is worthless. Auditors check that the root is kept offline, that issuance follows the documented Certificate Policy, and that the Registration Authority properly verifies identity before any certificate is issued.",
+              "components": [
+                {
+                  "component": "Certificate Authority (CA)",
+                  "role": "Issues and digitally signs certificates. The trusted party that everyone relies on.",
+                  "analogy": "A passport office — a trusted authority whose stamp others accept."
+                },
+                {
+                  "component": "Registration Authority (RA)",
+                  "role": "Verifies the identity of a requester before the CA will issue a certificate.",
+                  "analogy": "The clerk who checks your documents before the passport is printed."
+                },
+                {
+                  "component": "Digital Certificate (X.509)",
+                  "role": "Binds a public key to an identity and is signed by the CA. Holds the subject, public key, validity dates, and serial number.",
+                  "analogy": "The passport itself — an identity document anyone can verify."
+                },
+                {
+                  "component": "Chain of Trust",
+                  "role": "Root CA signs intermediate CAs, which sign end-entity certificates. A verifier chains upward to a trusted root.",
+                  "analogy": "A reference vouched for by someone who is in turn vouched for by someone you already trust."
+                }
+              ],
+              "real_life_scenario": "An IS auditor reviews a company's internal PKI and finds the root CA's private key stored on an always-online, internet-connected server 'for convenience'. This is a critical finding: a single compromise of that key would let an attacker forge a trusted certificate for any system in the company. The recommendation — move the root CA offline (air-gapped and powered down) and issue day-to-day certificates only from intermediate CAs.",
+              "common_mistakes": [
+                "Thinking the CA stores or sees private keys. The subject generates its own key pair and keeps the private key; the CA only signs the public key.",
+                "Believing a certificate proves the holder is trustworthy. It only proves the public key belongs to the named identity — the CA vouches for identity, not for honesty.",
+                "Treating the root and intermediate CAs as interchangeable. The root is the trust anchor and is kept offline; intermediates do the day-to-day issuing so the root is rarely exposed."
+              ],
+              "exam_tip": "PKI binds a public key to a verified identity. CA issues and signs; RA verifies identity first; the certificate is the signed binding. Protecting the offline root CA's private key is the most important control.",
+              "memory_aid": "RA checks, CA signs, the certificate binds. Trust flows down from the root; verification chains up to it."
+            },
+            {
+              "id": "5.7.2",
+              "name": "Certificate Lifecycle and Revocation",
+              "summary": "A digital certificate is not permanent. It moves through a lifecycle — request, validation, issuance, active use, and finally renewal or revocation — and verifiers must be able to check, at any moment, whether it is still valid.",
+              "illustration": [
+                {
+                  "svg": "<svg viewBox='0 0 500 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Certificate lifecycle: request, validate, issue, active use, then renewal or expiry'><rect x='8' y='14' width='84' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='50' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Request</text><rect x='110' y='14' width='92' height='42' rx='4' fill='var(--accent-fill)'/><text x='156' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Validate</text><rect x='220' y='14' width='80' height='42' rx='4' fill='var(--accent-fill)'/><text x='260' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Issue</text><rect x='318' y='14' width='86' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='361' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Active use</text><rect x='422' y='14' width='70' height='42' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='457' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Expire</text><line x1='94' y1='35' x2='101' y2='35' stroke='var(--text2)' stroke-width='1.5'/><path d='M101,31 L108,35 L101,39 Z' fill='var(--text2)'/><line x1='204' y1='35' x2='211' y2='35' stroke='var(--text2)' stroke-width='1.5'/><path d='M211,31 L218,35 L211,39 Z' fill='var(--text2)'/><line x1='302' y1='35' x2='309' y2='35' stroke='var(--text2)' stroke-width='1.5'/><path d='M309,31 L316,35 L309,39 Z' fill='var(--text2)'/><line x1='406' y1='35' x2='413' y2='35' stroke='var(--text2)' stroke-width='1.5'/><path d='M413,31 L420,35 L413,39 Z' fill='var(--text2)'/><text x='250' y='86' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Renewal — a fresh certificate is issued before the old one expires</text><text x='250' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Revocation — trust is cancelled early if the private key is compromised</text></svg>",
+                  "caption": "The certificate lifecycle. A certificate is requested, the identity is validated, the CA issues it, and it is used until it expires — unless it is revoked early because the private key was compromised."
+                },
+                {
+                  "svg": "<svg viewBox='0 0 450 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Comparison of CRL and OCSP certificate revocation checking'><rect x='10' y='8' width='209' height='152' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><rect x='10' y='8' width='209' height='26' rx='6' fill='var(--accent-fill)'/><rect x='10' y='20' width='209' height='14' fill='var(--accent-fill)'/><text x='114' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>CRL</text><text x='24' y='58' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CHECK</text><text x='24' y='72' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' fill='var(--text2)'>Downloaded list of revoked IDs</text><text x='24' y='92' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FRESHNESS</text><text x='24' y='106' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' fill='var(--text2)'>Periodic — may be stale</text><text x='24' y='126' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>NETWORK</text><text x='24' y='140' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' fill='var(--text2)'>One large file to fetch</text><rect x='231' y='8' width='209' height='152' rx='6' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><rect x='231' y='8' width='209' height='26' rx='6' fill='var(--accent-fill)'/><rect x='231' y='20' width='209' height='14' fill='var(--accent-fill)'/><text x='335' y='25' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>OCSP</text><text x='245' y='58' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>CHECK</text><text x='245' y='72' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' fill='var(--text2)'>Real-time status query</text><text x='245' y='92' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>FRESHNESS</text><text x='245' y='106' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' fill='var(--text2)'>Live — always current</text><text x='245' y='126' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>NETWORK</text><text x='245' y='140' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' fill='var(--text2)'>Small query each time</text></svg>",
+                  "caption": "Two ways to check revocation. A CRL is a periodically-downloaded list of revoked certificates; OCSP is a real-time query for one specific certificate. OCSP gives a fresher answer."
+                }
+              ],
+              "discussion": "Every certificate has a fixed validity period, and trust in it has to be managed from the day it is requested to the day it expires.\nThe lifecycle begins when the subject generates a key pair and sends a Certificate Signing Request (CSR) — containing its public key — to the CA. The Registration Authority validates the requester's identity. Once satisfied, the CA issues the certificate by signing it. The certificate is then in active use, for example securing a website over TLS.\nTwo things can end that use. Renewal is the planned path: before the certificate expires, a fresh one is issued so service continues uninterrupted. Revocation is the unplanned path: if the private key is compromised, or the certificate was mis-issued, the CA cancels it early — before its expiry date.\nRevocation only protects anyone if verifiers can find out about it. Two mechanisms publish revocation status. A Certificate Revocation List (CRL) is a signed list of revoked certificate serial numbers that the CA publishes periodically; clients download it and check against it. Its weakness is freshness — between publications the list can be stale. The Online Certificate Status Protocol (OCSP) addresses this: instead of downloading a whole list, the client sends a real-time query for one specific certificate and receives a live answer.\nFor an auditor: expired certificates cause real outages, so certificate-expiry monitoring is a genuine operational control to test. And a revocation mechanism that clients never actually consult provides no protection at all.",
+              "steps": [
+                {
+                  "step": "1 · Request",
+                  "detail": "The subject generates a key pair and sends a Certificate Signing Request (CSR), containing its public key, to the CA."
+                },
+                {
+                  "step": "2 · Validation",
+                  "detail": "The Registration Authority verifies the requester's identity against the documented Certificate Policy."
+                },
+                {
+                  "step": "3 · Issuance",
+                  "detail": "The CA signs the certificate, binding the public key to the verified identity."
+                },
+                {
+                  "step": "4 · Active use",
+                  "detail": "The certificate secures real traffic — such as a TLS website — until its validity period ends."
+                },
+                {
+                  "step": "5 · Renewal or revocation",
+                  "detail": "Renewal: a fresh certificate is issued before expiry. Revocation: trust is cancelled early if the private key is compromised."
+                }
+              ],
+              "common_mistakes": [
+                "Confusing renewal with revocation. Renewal is the planned replacement of a certificate before it expires; revocation is the early, unplanned cancellation of one that can no longer be trusted.",
+                "Assuming an expired certificate and a revoked certificate are the same. Expiry is the normal end of life; revocation is an early termination because something went wrong — usually a compromised private key.",
+                "Thinking CRL and OCSP do different jobs. They answer the same question — is this certificate still valid — but CRL uses a periodically-downloaded list while OCSP makes a real-time query. OCSP is fresher.",
+                "Believing that issuing a CRL protects anyone by itself. Revocation only protects a verifier that actually checks it; a client that never consults the CRL or OCSP will still trust a revoked certificate."
+              ],
+              "exam_tip": "Renewal = planned, before expiry. Revocation = early, because of compromise. CRL = a periodically-published list (can be stale); OCSP = a real-time, per-certificate query (fresher).",
+              "memory_aid": "Renewal is planned; revocation is the alarm. CRL is a list you download; OCSP is a question you ask."
+            }
+          ]
         },
         {
           "topic_id": "5.8",
