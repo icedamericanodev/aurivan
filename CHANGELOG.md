@@ -4,65 +4,66 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
-## [v10.21] — Audit Testing & Sampling topic rebuilt with diagrams
+## [v10.23] — Clearer What's New notes
+
+### Improved
+- The What's New notes are now written in plain language and focus on what each update means for you as a learner, rather than the behind-the-scenes detail.
+
+## [v10.22] — Risk-Based Audit Planning is now a full study page
 
 ### New
-- The Audit Testing and Sampling Methodology topic (Domain 1) is now a full study resource. The compliance-vs-substantive testing and sampling subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: a side-by-side of what compliance testing and substantive testing each check, and a comparison of statistical sampling (projectable to the population) against judgmental sampling (not projectable).
+- The Risk-Based Audit Planning topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
 
-## [v10.20] — Types of Controls topic rebuilt with diagrams
-
-### New
-- The Types of Controls and Considerations topic (Domain 1) is now a full study resource. The control classifications and control-to-risk subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: a timeline showing how preventive, detective, and corrective controls act before, during, and after an incident, and a diagram of how controls reduce inherent risk down to the residual risk that remains.
-
-## [v10.19] — Incident & Change Management topics rebuilt with diagrams
+## [v10.21] — Audit Testing & Sampling is now a full study page
 
 ### New
-- The Problem and Incident Management and IT Change, Configuration and Patch Management topics (Domain 4) are now full study resources. Incident handling, patch management, release management, and IS operations each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: a five-phase incident-handling flow, a patch-management lifecycle, a release pipeline, and a segregation-of-duties gate showing why the person who builds a change should not be the one who approves it into production.
+- The Audit Testing and Sampling topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
 
-## [v10.18] — System Development (SDLC) topic rebuilt with diagrams
-
-### New
-- The System Development Methodologies topic (Domain 3) is now a full study resource. The SDLC models and SDLC phases subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: a Waterfall-vs-Agile diagram contrasting the strict phase cascade with short repeating sprints, and a seven-phase SDLC flow showing where the IS auditor has a focus at every stage.
-
-## [v10.17] — Cloud & Virtualization topic rebuilt with diagrams
+## [v10.20] — Types of Controls is now a full study page
 
 ### New
-- The Cloud and Virtualized Environments topic (Domain 5) is now a full study resource. Its three subtopics — virtualization, software-defined networking, and containerization — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: the virtualization stack from hardware up through the hypervisor to the VMs, the control-plane / data-plane split of SDN, and a side-by-side comparison showing why a container (sharing one host OS kernel) is lighter than a VM (carrying a full guest OS).
+- The Types of Controls topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
 
-## [v10.16] — Network & Endpoint Security topic rebuilt with diagrams
-
-### New
-- The Network and Endpoint Security topic (Domain 5) is now a full study resource. Its four subtopics — firewalls, Unified Threat Management, network segmentation, and endpoint security — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: firewall types ordered by inspection depth, a three-zone segmentation diagram showing the DMZ buffer between the internet and the trusted network, and the layered controls that protect every endpoint device.
-
-## [v10.15] — Identity & Access Management topic rebuilt with diagrams
+## [v10.19] — Incident & Change Management are now full study pages
 
 ### New
-- The Identity and Access Management topic (Domain 5) is now a full study resource. Its four subtopics — the three A's (authentication, authorization, accountability), Zero Trust, Privileged Access Management, and the access-control models — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
-- Highlights: a Zero Trust vs perimeter-model comparison, a just-in-time privileged-access lifecycle, and a who-decides-access breakdown of the DAC, MAC, RBAC and ABAC models.
+- The Incident Management and Change & Patch Management topics now read as full study pages — clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.
+
+## [v10.18] — System Development (SDLC) is now a full study page
+
+### New
+- The System Development (SDLC) topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
+
+## [v10.17] — Cloud & Virtualization is now a full study page
+
+### New
+- The Cloud and Virtualization topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
+
+## [v10.16] — Network & Endpoint Security is now a full study page
+
+### New
+- The Network and Endpoint Security topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
+
+## [v10.15] — Identity & Access Management is now a full study page
+
+### New
+- The Identity and Access Management topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
 
 ## [v10.14] — New study topic: Public Key Infrastructure (PKI)
 
 ### New
-- Public Key Infrastructure is now a full study topic (Domain 5). It explains how digital certificates make public keys trustworthy — the certificate authority, registration authority, and the chain of trust from an offline root CA down to everyday certificates, shown as a diagram.
-- A second subtopic covers the certificate lifecycle — request, validation, issuance, use, renewal, and revocation — with a lifecycle diagram and a side-by-side comparison of the two revocation-checking methods, CRL and OCSP.
+- Public Key Infrastructure (PKI) is now a full study page — clear diagrams of how digital certificates and the chain of trust work, an in-depth plain-language explanation, and the common mistakes to watch for.
 
-## [v10.13] — Data Encryption topic rebuilt with diagrams
-
-### New
-- The Data Encryption topic (Domain 5) is now a full study page. Symmetric, asymmetric, and digital-signature subtopics each carry a theme-aware diagram of how the keys flow, an extended plain-and-technical explanation, common mistakes, and worked examples.
-- The asymmetric subtopic adds a side-by-side symmetric-vs-asymmetric comparison so the most confused distinction on the exam is clear at a glance.
-
-## [v10.12] — Deeper topic pages, starting with the OSI model
+## [v10.13] — Data Encryption is now a full study page
 
 ### New
-- Topic pages can now carry much richer study material — an extended discussion in mixed plain and technical language, a worked case study, a "common mistakes" call-out, and theme-aware illustrations. The Topics tab is becoming a genuine study resource, not just short definitions.
-- The first fully built-out topic is the OSI model: a labelled 7-layer pyramid diagram, a layer-by-layer breakdown pairing the technical job of each layer with an everyday analogy, a real-world audit scenario, common mistakes, and a memory aid. Find it under Topics → Domain 4 → IT Infrastructure.
+- The Data Encryption topic now reads as a full study page — clear diagrams of how the keys flow, an in-depth plain-language explanation, worked examples, and the common mistakes to watch for.
+
+## [v10.12] — Topic pages are becoming full study resources
+
+### New
+- Topic pages are becoming full study resources — clear diagrams, in-depth explanations in plain language, worked examples, and common-mistakes call-outs, instead of short definitions.
+- The first one is the OSI model: a labelled 7-layer diagram with a plain-language walkthrough. Find it any time under the Topics tab.
 
 ## [v10.11] — Ko-fi replaces Buy Me a Coffee for tip support
 

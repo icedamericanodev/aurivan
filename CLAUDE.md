@@ -194,3 +194,18 @@ PR #79, and PR #80 will recur on every subsequent PR.
 User-facing, NOT developer-facing. Group by **New / Improved / Fixed**.
 One short sentence per item, no code symbols, no line numbers. The full
 technical history lives in git and the PR descriptions.
+
+**Keep entries general — describe the benefit, not the work.** A learner
+reading What's New wants to know what is better for them now, not how it
+was built. Write about the user-visible outcome and stop there.
+
+- DO say: "The Data Encryption topic is now a full study page — clear
+  diagrams, an in-depth plain-language explanation, and common mistakes
+  to watch for."
+- DON'T enumerate the internals: no "subtopics", no domain numbers, no
+  question IDs (`d5_075`), no internal labels ("Type-1 structural
+  giveaway", "PERIMETER-TRUST INVERSION"), no counts of items changed,
+  no "rebuilt / refactored", no per-diagram breakdowns.
+- One short, plain-language item per entry is usually enough. Topic
+  names are fine (learners navigate by them); the background mechanics
+  are not.
