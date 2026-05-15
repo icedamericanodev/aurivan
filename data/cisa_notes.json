@@ -808,6 +808,82 @@
                 "TCP/IP": "Core communication protocol of the internet.",
                 "DNS (Domain Name System)": "Translates domain names to IP addresses."
               }
+            },
+            {
+              "id": "4.1.2",
+              "name": "The OSI Model",
+              "summary": "The Open Systems Interconnection (OSI) model is a 7-layer framework that describes how data moves across a network — from the physical wires at the bottom to the application a person actually uses at the top. Each layer has one job and interacts only with the layers directly above and below it.",
+              "illustration": [
+                {
+                  "svg": "<svg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='OSI model seven-layer pyramid from Physical at the base to Application at the peak'><rect x='135' y='10' width='130' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>7 · Application</text><rect x='115' y='50' width='170' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='72' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>6 · Presentation</text><rect x='95' y='90' width='210' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='112' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>5 · Session</text><rect x='75' y='130' width='250' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>4 · Transport</text><rect x='55' y='170' width='290' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='192' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>3 · Network</text><rect x='35' y='210' width='330' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='232' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>2 · Data Link</text><rect x='15' y='250' width='370' height='34' rx='3' fill='var(--accent-fill)'/><text x='200' y='272' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='700' fill='#ffffff'>1 · Physical</text></svg>",
+                  "caption": "The OSI model's seven layers. The lower four are the media layers — they move data across the network; the upper three are the host layers — they prepare and deliver it to the application."
+                },
+                {
+                  "svg": "<svg viewBox='0 0 380 250' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Data encapsulation: each layer adds a header as data moves down the stack'><text x='190' y='15' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Application – user data</text><rect x='100' y='20' width='180' height='26' rx='2' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='190' y='36' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Data</text><text x='190' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Transport – Segment</text><rect x='78' y='70' width='44' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='100' y='86' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>TCP</text><rect x='122' y='70' width='180' height='26' rx='2' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='212' y='86' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Data</text><text x='190' y='115' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Network – Packet</text><rect x='56' y='120' width='44' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='78' y='136' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>IP</text><rect x='100' y='120' width='44' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='122' y='136' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>TCP</text><rect x='144' y='120' width='180' height='26' rx='2' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='234' y='136' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Data</text><text x='190' y='165' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Data Link – Frame</text><rect x='21' y='170' width='40' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='41' y='186' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>FH</text><rect x='61' y='170' width='44' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='83' y='186' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>IP</text><rect x='105' y='170' width='44' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='127' y='186' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>TCP</text><rect x='149' y='170' width='180' height='26' rx='2' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='239' y='186' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='var(--text)'>Data</text><rect x='329' y='170' width='30' height='26' rx='2' fill='var(--accent-fill)' stroke='var(--border2)' stroke-width='0.75'/><text x='344' y='186' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>FCS</text><text x='190' y='215' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='600' fill='var(--text2)'>Physical – Bits</text><text x='190' y='233' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='11' letter-spacing='1.5' fill='var(--accent-fill)'>0100 1000 0110 0101 0110 1100</text></svg>",
+                  "caption": "Data encapsulation: as data moves down the stack, each layer wraps it in its own header (and the Data Link layer adds a trailer). Transport calls it a Segment, Network a Packet, Data Link a Frame, and Physical transmits it as raw Bits."
+                }
+              ],
+              "discussion": "Think of sending a physical letter. You write the message (the application's job), put it in an envelope and seal it (formatting and encryption), the postal service picks the route between cities (addressing), decides registered mail or a postcard (reliable vs fast delivery), and finally roads and trucks physically move it (the wires). The OSI model splits network communication the same way — into seven stages, each responsible for one part of the journey, each able to do its job without knowing the details of the others.\nAs data travels down the stack on the sending device, every layer adds its own header — this is called encapsulation. The receiving device reverses it, stripping one header per layer on the way up. That is why the same data is called a Segment at Layer 4, a Packet at Layer 3, and a Frame at Layer 2.\nWhy auditors care: the model gives you a shared vocabulary for WHERE a control or a weakness lives. A firewall rule that blocks ports is a Layer 4 (Transport) control. An IPsec VPN that encrypts traffic is a Layer 3 control. Phishing that tricks a user is a Layer 7 (Application) problem — no network control below it will stop it. When you can name the layer, you can reason about whether a control is placed where the risk actually is.",
+              "layers": [
+                {
+                  "layer": "7 — Application",
+                  "technical": "Where network-aware programs operate and provide services to the user.",
+                  "analogy": "The message itself — what you actually wrote in the letter.",
+                  "protocols": "HTTP, HTTPS, FTP, SMTP, DNS, SNMP, SSH",
+                  "devices": "End-user applications — web browsers, email clients, API clients"
+                },
+                {
+                  "layer": "6 — Presentation",
+                  "technical": "Translates, encrypts, and compresses data so both ends interpret it the same way.",
+                  "analogy": "Translating the letter into a language the recipient reads, and sealing the envelope.",
+                  "protocols": "TLS/SSL, JPEG, ASCII, MPEG, GIF",
+                  "devices": "SSL/TLS offloaders, encryption gateways"
+                },
+                {
+                  "layer": "5 — Session",
+                  "technical": "Opens, manages, and terminates the ongoing conversation between two systems.",
+                  "analogy": "Agreeing to start talking, taking turns, and saying goodbye at the end.",
+                  "protocols": "NetBIOS, RPC, SIP, SQL, PPTP",
+                  "devices": "Session border controllers (SBC)"
+                },
+                {
+                  "layer": "4 — Transport",
+                  "technical": "Provides end-to-end delivery, reliability, flow control, and error recovery. Port numbers identify the service.",
+                  "analogy": "Choosing registered mail (TCP) versus a postcard (UDP), and numbering the pages.",
+                  "protocols": "TCP, UDP, SCTP",
+                  "devices": "Load balancers, Layer-4 firewalls"
+                },
+                {
+                  "layer": "3 — Network",
+                  "technical": "Handles logical addressing and routes packets across separate networks.",
+                  "analogy": "The postal service deciding which cities the letter passes through.",
+                  "protocols": "IP (IPv4/IPv6), ICMP, IPsec, IGMP, OSPF, BGP",
+                  "devices": "Routers, Layer-3 switches"
+                },
+                {
+                  "layer": "2 — Data Link",
+                  "technical": "Provides node-to-node delivery, framing, MAC addressing, and error detection.",
+                  "analogy": "The local delivery van carrying the letter from one depot to the next.",
+                  "protocols": "Ethernet (802.3), PPP, MAC, VLAN (802.1Q), STP (802.1D)",
+                  "devices": "Switches, bridges, wireless access points"
+                },
+                {
+                  "layer": "1 — Physical",
+                  "technical": "Transmits raw bits over the physical medium — electrical, optical, or radio.",
+                  "analogy": "The roads and the physical movement of the envelope itself.",
+                  "protocols": "Ethernet physical media, fiber, DSL, 802.11 radio (PHY)",
+                  "devices": "Hubs, repeaters, network cables, fiber"
+                }
+              ],
+              "real_life_scenario": "An IS auditor reviews a breach where attackers read login credentials off the corporate Wi-Fi. The network team insists the firewall (Layer 4) and router ACLs (Layer 3) were correctly configured — and they were. The real gap was at Layer 2: the wireless network used an outdated encryption standard, so traffic between laptops and the access point could be captured from the air. Naming the layer pinpointed the fix — upgrade the Layer 2 wireless encryption — instead of re-auditing controls that were never the problem.",
+              "common_mistakes": [
+                "Confusing Layer 2 (Data Link — MAC addresses, switches) with Layer 3 (Network — IP addresses, routers). This is a frequent exam trap.",
+                "Assuming a firewall protects every layer. A traditional port-based firewall works at Layer 4 and cannot stop a Layer 7 attack such as phishing or SQL injection.",
+                "Thinking encryption lives in only one layer. It can sit at Layer 6 (TLS), Layer 3 (IPsec VPN), or Layer 2 (Wi-Fi) — and the layer decides what the encryption actually protects.",
+                "Memorizing the layer names but not what each layer does. The exam tests whether you can place a control or a symptom at the right layer, not recall the list."
+              ],
+              "memory_aid": "Bottom-up (Layer 1→7): 'Please Do Not Throw Sausage Pizza Away' — Physical, Data Link, Network, Transport, Session, Presentation, Application. Top-down: 'All People Seem To Need Data Processing'.",
+              "exam_tip": "When a question describes a symptom, identify the layer first. 'Cannot reach any website, but the connection is up' points to Layer 7 (DNS). 'Intermittent drops on one desk' often points to Layer 1 (physical cabling). Naming the layer narrows the answer fast."
             }
           ]
         },

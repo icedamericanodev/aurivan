@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.12] — Deeper topic pages, starting with the OSI model
+
+### New
+- Topic pages can now carry much richer study material — an extended discussion in mixed plain and technical language, a worked case study, a "common mistakes" call-out, and theme-aware illustrations. The Topics tab is becoming a genuine study resource, not just short definitions.
+- The first fully built-out topic is the OSI model: a labelled 7-layer pyramid diagram, a layer-by-layer breakdown pairing the technical job of each layer with an everyday analogy, a real-world audit scenario, common mistakes, and a memory aid. Find it under Topics → Domain 4 → IT Infrastructure.
+
 ## [v10.11] — Ko-fi replaces Buy Me a Coffee for tip support
 
 ### Fixed

@@ -122,6 +122,32 @@ The pre-review agent catches the kinds of errors the maintainer was historically
 - **Comments explain WHY, not WHAT.** If a comment just restates the code, delete it.
 - **Keep the inline JS lint-clean** (`bash scripts/lint_inline_js.sh`). The only allowed `no-undef` global is the standard GA `dataLayer` stub.
 
+## Topic illustrations (v10.12+)
+
+Topic subtopics in `data/cisa_notes.json` may carry an `illustration` field —
+either a single object or an array of them. Two shapes are accepted:
+
+- **Inline SVG** (preferred): `{ "svg": "<svg viewBox='...'>...</svg>", "caption": "..." }`
+- **External image**: `{ "img": "assets/<file>", "alt": "...", "caption": "..." }`
+  — image files live in `/assets/`.
+
+**Inline SVG is strongly preferred** — it is theme-aware, crisp at any size,
+and searchable. External raster images are NOT theme-aware (a white-background
+PNG looks wrong in dark mode) and do not scale cleanly on phones.
+
+SVG authoring contract (the SVG is rendered raw — it is trusted maintainer
+content, not user input):
+
+- Use `viewBox` for sizing, never fixed pixel `width`/`height` — this is what
+  lets the diagram scale down to a 375px phone.
+- Use `currentColor`, `var(--accent)`, `var(--accent2)`, `var(--text)` etc. for
+  fills/strokes — never hardcode hex colors, or the diagram will not adapt to
+  dark mode. (Solid `#ffffff` text on a coloured `var(--accent)` block is fine —
+  it reads in both themes.)
+- No `<script>`, no inline event handlers (`onload=`, `onclick=`…), no
+  `javascript:` URLs, no `<foreignObject>`. `sanitizeIllustrationSvg()` strips
+  the whole illustration if it finds any of these.
+
 ## What's New (changelog) style
 
 User-facing — written for CISA candidates, not developers.

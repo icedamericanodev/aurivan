@@ -2423,6 +2423,56 @@ header {
   margin-bottom: 4px;
 }
 
+/* v10.12 — deeper topic content: discussion, illustration, case study, mistakes */
+.notes-discussion {
+  font-size: 12px; line-height: 1.7; color: var(--text2);
+  margin-bottom: 12px;
+}
+.notes-figure {
+  margin: 0 0 12px; padding: 14px; border-radius: 8px;
+  background: var(--surface2); border: 1.5px solid var(--border);
+  color: var(--text); text-align: center;
+}
+.notes-figure svg, .notes-figure img {
+  max-width: 100%; height: auto; display: block; margin: 0 auto;
+}
+.notes-figcaption {
+  font-size: 10px; color: var(--muted); margin-top: 8px;
+  font-style: italic; line-height: 1.5;
+}
+.notes-casestudy {
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--d2-light); border-left: 3px solid var(--d2);
+  font-size: 12px; line-height: 1.65; color: var(--text);
+  margin-bottom: 10px;
+}
+.notes-casestudy-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--d2); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.notes-mistakes {
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--wrong-light); border-left: 3px solid var(--wrong);
+  margin-bottom: 10px;
+}
+.notes-mistakes-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
+  color: var(--wrong-strong); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.notes-mistakes-list {
+  list-style: none; display: flex; flex-direction: column; gap: 4px;
+}
+.notes-mistakes-list li {
+  font-size: 12px; line-height: 1.6; color: var(--text2);
+  padding-left: 14px; position: relative;
+}
+.notes-mistakes-list li::before {
+  content: '\2717'; position: absolute; left: 0;
+  color: var(--wrong); font-size: 10px; top: 2px; font-weight: 700;
+}
+
 .notes-kv-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
   margin-bottom: 10px;
@@ -4704,7 +4754,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.11</span>
+    <span class="bank-pill" id="versionPill">v10.12</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4723,7 +4773,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v9.2</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.12</span>
     </div>
   </div>
 </header>
@@ -4941,7 +4991,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.11';
+const APP_VERSION = 'v10.12';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6095,7 +6145,7 @@ function renderGenericField(key, val, searchQ) {
     }
     html += '<div class="notes-kv-grid">';
     val.forEach(function(obj) {
-      var titleKey = ['type','name','phase','connection'].find(function(k){ return obj[k]; });
+      var titleKey = ['type','name','phase','connection','layer','step','component'].find(function(k){ return obj[k]; });
       var titleVal = titleKey ? obj[titleKey] : null;
       html += '<div class="notes-kv-card">';
       if (titleVal) {
@@ -6137,13 +6187,25 @@ function renderGenericField(key, val, searchQ) {
   return '';
 }
 
+// v10.12 — illustration SVG is hand-authored maintainer content (trusted, not
+// user input) and is rendered raw because escaping would show the source as
+// text. This helper is defense-in-depth against an accidental bad paste: it
+// rejects the string entirely if it contains scripts, inline event handlers,
+// javascript: URLs, or <foreignObject> (which can host scripts).
+function sanitizeIllustrationSvg(s) {
+  if (typeof s !== 'string') return '';
+  if (/<script|on\w+\s*=|javascript:|<foreignObject/i.test(s)) return '';
+  return s;
+}
+
 function renderItemBody(raw, domainId, searchQ) {
   if (!raw || typeof raw !== 'object') {
     return '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
   }
 
   // Tracker: mark fields as already rendered so generic pass skips them
-  var done = { id:1, name:1, topic_id:1, topic_name:1, subtopics:1 };
+  var done = { id:1, name:1, topic_id:1, topic_name:1, subtopics:1,
+               discussion:1, illustration:1, common_mistakes:1 };
   var html = '';
 
   // ── 1. Summary at top, no label (the headline of the subtopic) ──
@@ -6151,6 +6213,34 @@ function renderItemBody(raw, domainId, searchQ) {
     html += '<p class="notes-summary">' + renderText(raw.summary, searchQ) + '</p>';
   }
   done.summary = 1;
+
+  // ── 1b. Extended discussion (v10.12) — prose, mixed tech/plain language ──
+  if (typeof raw.discussion === 'string' && raw.discussion.trim()) {
+    html += '<div class="notes-discussion">' + renderText(raw.discussion, searchQ) + '</div>';
+  }
+
+  // ── 1c. Illustration (v10.12) — inline SVG (theme-aware) or external image.
+  //        Accepts a single illustration object OR an array of them. ──
+  if (raw.illustration) {
+    var ills = Array.isArray(raw.illustration) ? raw.illustration : [raw.illustration];
+    ills.forEach(function(ill) {
+      if (!ill || typeof ill !== 'object') return;
+      var figInner = '';
+      if (typeof ill.svg === 'string' && ill.svg.trim()) {
+        figInner = sanitizeIllustrationSvg(ill.svg);
+      } else if (typeof ill.img === 'string' && ill.img.trim()) {
+        figInner = '<img src="' + escapeHtml(ill.img) + '" loading="lazy" alt="'
+          + escapeHtml(ill.alt || ill.caption || '') + '">';
+      }
+      if (figInner) {
+        html += '<figure class="notes-figure">' + figInner
+          + (typeof ill.caption === 'string' && ill.caption.trim()
+              ? '<figcaption class="notes-figcaption">' + escapeHtml(ill.caption) + '</figcaption>'
+              : '')
+          + '</figure>';
+      }
+    });
+  }
 
   // ── 2. Highlight boxes (special semantic fields) ──
   // Format: [field_key, css_class, label_class, icon_html, label_text]
@@ -6191,7 +6281,8 @@ function renderItemBody(raw, domainId, searchQ) {
     ['real_life_scenario',  'notes-scenario', 'notes-scenario-label', '&#127970;', 'Real-Life Scenario'],
     ['exam_tip',            'notes-exam-tip', 'notes-exam-tip-label', '&#128221;', 'Exam Tip'],
     ['memory_aid',          'notes-memory',   'notes-memory-label',   '&#129504;', 'Memory Aid'],
-    ['hierarchy_memory_aid','notes-memory',   'notes-memory-label',   '&#129504;', 'Memory Aid']
+    ['hierarchy_memory_aid','notes-memory',   'notes-memory-label',   '&#129504;', 'Memory Aid'],
+    ['case_study',          'notes-casestudy','notes-casestudy-label','&#128218;', 'Case Study']
   ];
 
   // ── 4. Generic pass: render every remaining field by type ──
@@ -6214,6 +6305,17 @@ function renderItemBody(raw, domainId, searchQ) {
       done[k] = 1;
     }
   });
+
+  // ── 5b. Common mistakes (v10.12) — array of strings, warning-styled list ──
+  if (Array.isArray(raw.common_mistakes) && raw.common_mistakes.length) {
+    html += '<div class="notes-mistakes">'
+      + '<div class="notes-mistakes-label">&#9888; Common Mistakes</div>'
+      + '<ul class="notes-mistakes-list">'
+      + raw.common_mistakes.map(function(m) {
+          return '<li>' + renderText(String(m), searchQ) + '</li>';
+        }).join('')
+      + '</ul></div>';
+  }
 
   // Nova #3: "Practice this topic" CTA button at the end of every body
   if (domainId) {
@@ -11036,6 +11138,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Deeper topic pages, starting with the OSI model',
+    items: [
+      { cat: 'new', text: 'Topic pages can now carry much richer study material — an extended discussion in mixed plain and technical language, a worked case study, a "common mistakes" call-out, and theme-aware illustrations. The Topics tab is becoming a genuine study resource, not just short definitions.' },
+      { cat: 'new', text: 'The first fully built-out topic is the OSI model: a labelled 7-layer pyramid diagram, a layer-by-layer breakdown pairing the technical job of each layer with an everyday analogy, a real-world audit scenario, common mistakes, and a memory aid. Find it under Topics → Domain 4 → IT Infrastructure.' }
+    ]
+  },
+  {
+    version: 'v10.11',
     title: 'Ko-fi replaces Buy Me a Coffee for tip support',
     items: [
       { cat: 'fixed', text: 'The Tip button in the header and the "Support the mission" card on the practice screen now link to Ko-fi instead of Buy Me a Coffee. Buy Me a Coffee has limited payment support in some regions (including the Philippines); Ko-fi accepts contributions globally. Same Aurivan styling, just a different processor.' }
