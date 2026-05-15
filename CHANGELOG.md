@@ -4,6 +4,30 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.19] — Incident & Change Management topics rebuilt with diagrams
+
+### New
+- The Problem and Incident Management and IT Change, Configuration and Patch Management topics (Domain 4) are now full study resources. Incident handling, patch management, release management, and IS operations each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: a five-phase incident-handling flow, a patch-management lifecycle, a release pipeline, and a segregation-of-duties gate showing why the person who builds a change should not be the one who approves it into production.
+
+## [v10.18] — System Development (SDLC) topic rebuilt with diagrams
+
+### New
+- The System Development Methodologies topic (Domain 3) is now a full study resource. The SDLC models and SDLC phases subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: a Waterfall-vs-Agile diagram contrasting the strict phase cascade with short repeating sprints, and a seven-phase SDLC flow showing where the IS auditor has a focus at every stage.
+
+## [v10.17] — Cloud & Virtualization topic rebuilt with diagrams
+
+### New
+- The Cloud and Virtualized Environments topic (Domain 5) is now a full study resource. Its three subtopics — virtualization, software-defined networking, and containerization — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: the virtualization stack from hardware up through the hypervisor to the VMs, the control-plane / data-plane split of SDN, and a side-by-side comparison showing why a container (sharing one host OS kernel) is lighter than a VM (carrying a full guest OS).
+
+## [v10.16] — Network & Endpoint Security topic rebuilt with diagrams
+
+### New
+- The Network and Endpoint Security topic (Domain 5) is now a full study resource. Its four subtopics — firewalls, Unified Threat Management, network segmentation, and endpoint security — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.
+- Highlights: firewall types ordered by inspection depth, a three-zone segmentation diagram showing the DMZ buffer between the internet and the trusted network, and the layered controls that protect every endpoint device.
+
 ## [v10.15] — Identity & Access Management topic rebuilt with diagrams
 
 ### New

@@ -4754,7 +4754,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.15</span>
+    <span class="bank-pill" id="versionPill">v10.19</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4773,7 +4773,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.15</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.19</span>
     </div>
   </div>
 </header>
@@ -4991,7 +4991,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.15';
+const APP_VERSION = 'v10.19';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11138,6 +11138,38 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Incident & Change Management topics rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The Problem and Incident Management and IT Change, Configuration and Patch Management topics (Domain 4) are now full study resources. Incident handling, patch management, release management, and IS operations each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: a five-phase incident-handling flow, a patch-management lifecycle, a release pipeline, and a segregation-of-duties gate showing why the person who builds a change should not be the one who approves it into production.' }
+    ]
+  },
+  {
+    version: 'v10.18',
+    title: 'System Development (SDLC) topic rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The System Development Methodologies topic (Domain 3) is now a full study resource. The SDLC models and SDLC phases subtopics each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: a Waterfall-vs-Agile diagram contrasting the strict phase cascade with short repeating sprints, and a seven-phase SDLC flow showing where the IS auditor has a focus at every stage.' }
+    ]
+  },
+  {
+    version: 'v10.17',
+    title: 'Cloud & Virtualization topic rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The Cloud and Virtualized Environments topic (Domain 5) is now a full study resource. Its three subtopics — virtualization, software-defined networking, and containerization — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: the virtualization stack from hardware up through the hypervisor to the VMs, the control-plane / data-plane split of SDN, and a side-by-side comparison showing why a container (sharing one host OS kernel) is lighter than a VM (carrying a full guest OS).' }
+    ]
+  },
+  {
+    version: 'v10.16',
+    title: 'Network & Endpoint Security topic rebuilt with diagrams',
+    items: [
+      { cat: 'new', text: 'The Network and Endpoint Security topic (Domain 5) is now a full study resource. Its four subtopics — firewalls, Unified Threat Management, network segmentation, and endpoint security — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
+      { cat: 'new', text: 'Highlights: firewall types ordered by inspection depth, a three-zone segmentation diagram showing the DMZ buffer between the internet and the trusted network, and the layered controls that protect every endpoint device.' }
+    ]
+  },
+  {
+    version: 'v10.15',
     title: 'Identity & Access Management topic rebuilt with diagrams',
     items: [
       { cat: 'new', text: 'The Identity and Access Management topic (Domain 5) is now a full study resource. Its four subtopics — the three A\'s (authentication, authorization, accountability), Zero Trust, Privileged Access Management, and the access-control models — each gained a diagram, an extended plain-and-technical explanation, and a common-mistakes call-out.' },
