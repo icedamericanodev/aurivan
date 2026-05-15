@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.13] — Data Encryption topic rebuilt with diagrams
+
+### New
+- The Data Encryption topic (Domain 5) is now a full study page. Symmetric, asymmetric, and digital-signature subtopics each carry a theme-aware diagram of how the keys flow, an extended plain-and-technical explanation, common mistakes, and worked examples.
+- The asymmetric subtopic adds a side-by-side symmetric-vs-asymmetric comparison so the most confused distinction on the exam is clear at a glance.
+
 ## [v10.12] — Deeper topic pages, starting with the OSI model
 
 ### New
