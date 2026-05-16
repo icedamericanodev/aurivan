@@ -4873,7 +4873,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.38</span>
+    <span class="bank-pill" id="versionPill">v10.39</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4892,7 +4892,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.38</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.39</span>
     </div>
   </div>
 </header>
@@ -5176,7 +5176,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.38';
+const APP_VERSION = 'v10.39';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -5617,6 +5617,10 @@ var S_DEFAULTS = {
   lastOpenedSubtopic: {},
   confidenceLog: [],
   sessionHistory: [],
+  // Adaptive review queue (v10.39): qId -> { box, dueAt, lastSeen, reps }.
+  // A Leitner-style schedule — questions missed in practice resurface on a
+  // spreading interval until they graduate out of box 5.
+  review: {},
   activeTab: "home",
 };
 
@@ -5702,18 +5706,93 @@ function rehydrateSavedQuestions(list) {
   return out;
 }
 
+// ── ADAPTIVE REVIEW QUEUE (v10.39) ──
+// Leitner-style spaced repetition. Each missed question gets a review
+// entry { box, dueAt, lastSeen, reps }; the box advances on correct
+// answers and resets on wrong ones, spreading the interval until the
+// question graduates out of box 5.
+var REVIEW_INTERVAL_DAYS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
+var REVIEW_MAX_BOX = 5;
+var DAY_MS = 86400000;
+
+function sanitizeReviewMap(r) {
+  if (!r || typeof r !== 'object') return {};
+  var out = {};
+  Object.keys(r).forEach(function(id) {
+    var e = r[id];
+    if (!e || typeof e !== 'object') return;
+    var box = Math.round(Number(e.box) || 1);
+    if (box < 1) box = 1;
+    if (box > REVIEW_MAX_BOX) box = REVIEW_MAX_BOX;
+    out[id] = {
+      box: box,
+      dueAt: Number(e.dueAt) || 0,
+      lastSeen: Number(e.lastSeen) || 0,
+      reps: Math.max(0, Math.round(Number(e.reps) || 0))
+    };
+  });
+  return out;
+}
+
+// Update one question's review schedule after a practice answer.
+// Consumes the already-graded `ok` — never re-derives correctness.
+function updateReviewSchedule(qId, ok, confidence) {
+  if (!qId) return;
+  if (!S.review || typeof S.review !== 'object') S.review = {};
+  var now = Date.now();
+  var e = S.review[qId];
+  if (!ok) {
+    // Wrong — (re)enter the queue at box 1, due immediately.
+    S.review[qId] = {
+      box: 1, dueAt: now, lastSeen: now,
+      reps: ((e && e.reps) || 0) + 1
+    };
+    return;
+  }
+  // Correct but the question was never in the queue → nothing to schedule.
+  if (!e) return;
+  if (confidence === 'guessing') {
+    // A lucky guess does not advance the box — just re-space at the
+    // current box so it still comes back.
+    e.dueAt = now + REVIEW_INTERVAL_DAYS[e.box] * DAY_MS;
+    e.lastSeen = now; e.reps = (e.reps || 0) + 1;
+    return;
+  }
+  // Confident correct answer — promote a box.
+  if (e.box >= REVIEW_MAX_BOX) {
+    delete S.review[qId]; // graduated — leaves the queue for good
+    return;
+  }
+  e.box = e.box + 1;
+  e.dueAt = now + REVIEW_INTERVAL_DAYS[e.box] * DAY_MS;
+  e.lastSeen = now; e.reps = (e.reps || 0) + 1;
+}
+
+// Question ids that are due for review now, most-overdue / weakest first.
+function getDueReview() {
+  if (!S.review || typeof S.review !== 'object') return [];
+  var now = Date.now();
+  return Object.keys(S.review)
+    .filter(function(id){ return S.review[id] && S.review[id].dueAt <= now; })
+    .sort(function(a, b){
+      var ra = S.review[a], rb = S.review[b];
+      return (ra.dueAt - rb.dueAt) || (ra.box - rb.box);
+    });
+}
+
 function normalizeImportedState(state) {
   if (!state || typeof state !== 'object') return null;
   var clean = {};
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered",
-                "current","qn","activeTab"];
+                "current","qn","activeTab","review"];
   fields.forEach(function(k) {
     if (state[k] !== undefined) clean[k] = state[k];
   });
   clean.bookmarks = rehydrateSavedQuestions(clean.bookmarks);
   clean.missedQuestions = rehydrateSavedQuestions(clean.missedQuestions);
+  clean.review = sanitizeReviewMap(clean.review);
   clean.current = clean.current && clean.current.id ? findQuestionById(clean.current.id) : null;
   if (!clean.score || typeof clean.score !== 'object') clean.score = {t:0,c:0};
   if (!clean.ds || typeof clean.ds !== 'object') clean.ds = JSON.parse(JSON.stringify(S_DEFAULTS.ds));
@@ -5762,6 +5841,7 @@ function saveState() {
     score: S.score, ds: S.ds, streak: S.streak, bookmarks: S.bookmarks,
     answeredIds: S.answeredIds, missedQuestions: S.missedQuestions,
     confidenceLog: S.confidenceLog, sessionHistory: S.sessionHistory,
+    review: S.review,
     selectedDomain: S.selectedDomain, diff: S.diff,
     timerEnabled: S.timerEnabled, timerSeconds: S.timerSeconds,
     qIdx: S.qIdx, mindsetIdx: S.mindsetIdx,
@@ -5791,7 +5871,7 @@ function loadState() {
   if (!profiles[id] || !profiles[id].state) return;
   var saved = normalizeImportedState(profiles[id].state) || {};
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
-                "confidenceLog","sessionHistory","selectedDomain","diff",
+                "confidenceLog","sessionHistory","review","selectedDomain","diff",
                 "timerEnabled","timerSeconds","qIdx","mindsetIdx","glossMastered","topicReviewed",
                 "current","qn","activeTab","mockAnswers","mockCurrent","mockTotalSecondsLeft"];
   fields.forEach(function(k) {
@@ -5809,6 +5889,21 @@ function loadState() {
   if (!S.qIdx["all"]) S.qIdx["all"] = 0;
   if (!S.queues) S.queues = {};
   if (!S.queues["all"]) S.queues["all"] = [];
+  seedReviewFromMissed();
+}
+
+// One-time migration for users from before the adaptive review queue:
+// if no review schedule exists yet but there are missed questions, seed
+// each as due-now at box 1. Idempotent — only seeds when review is empty,
+// so graduated questions are never re-added on a later load.
+function seedReviewFromMissed() {
+  if (!S.review || typeof S.review !== 'object') S.review = {};
+  if (Object.keys(S.review).length > 0) return;
+  if (!Array.isArray(S.missedQuestions) || !S.missedQuestions.length) return;
+  var now = Date.now();
+  S.missedQuestions.forEach(function(q) {
+    if (q && q.id) S.review[q.id] = { box: 1, dueAt: now, lastSeen: 0, reps: 0 };
+  });
 }
 
 function createProfile(name) {
@@ -5846,6 +5941,7 @@ function switchProfile(id) {
   loadState();
   // Rebuild queues and re-render
   missedReviewMode = false;
+  reviewQueueMode = false;
   buildQueues();
   renderDomainGrid();
   updateStats();
@@ -7289,6 +7385,11 @@ function getNextQ(domainStr, diff) {
 // â”€â”€ TAB SWITCHING â”€â”€
 function switchTab(t) {
   clearAllTimers(); // always clear timers when switching tabs
+  // Leaving any review-replay session — clear the mode flags so the gen
+  // button and nextQ() return to normal practice behaviour. startReviewQueue
+  // re-sets reviewQueueMode AFTER its own switchTab('practice') call.
+  reviewQueueMode = false;
+  missedReviewMode = false;
   S.activeTab = t;
   saveState();
   document.querySelectorAll('.nav-tab').forEach(function(x){
@@ -7409,6 +7510,20 @@ function renderHome() {
         : diff + ' day' + (diff === 1 ? '' : 's') + ' until your exam';
       html += '<div class="home-domain-row"><span class="home-domain-name">&#128197; ' + when + '</span></div>';
     }
+  }
+
+  // Due for review — the adaptive review queue.
+  var dueCount = 0;
+  try { dueCount = getDueReview().length; } catch (e) {}
+  html += '<div class="home-section-label">Review queue</div>';
+  if (dueCount > 0) {
+    html += '<div class="home-domain-row">'
+      + '<span class="home-domain-name">&#128260; ' + dueCount + ' question' + (dueCount === 1 ? '' : 's') + ' due for review</span>'
+      + '<button class="home-cta" style="min-height:44px;padding:0 16px" onclick="startReviewQueue()">Review now</button>'
+      + '</div>';
+  } else {
+    html += '<div class="home-domain-row"><span class="home-domain-name" style="color:var(--muted);font-weight:600">'
+      + '&#10003; All caught up — nothing due for review.</span></div>';
   }
 
   html += '<div class="home-section-label">Domain progress</div>';
@@ -7757,6 +7872,11 @@ function discardResumeQuestion() {
 // â”€â”€ NEXT PRACTICE QUESTION â”€â”€
 function nextQ() {
   clearAllTimers();
+  if (reviewQueueMode) {
+    reviewQueueIndex++;
+    showNextReview();
+    return;
+  }
   if (missedReviewMode) {
     missedReviewIndex++;
     showNextMissed();
@@ -7815,6 +7935,8 @@ function onPracticeTimeout() {
       if (S.missedQuestions[m].id === S.current.id) { alreadyMissed = true; break; }
     }
     if (!alreadyMissed) S.missedQuestions.push(JSON.parse(JSON.stringify(S.current)));
+    // A timed-out question is a miss — schedule it for review too.
+    try { updateReviewSchedule(S.current.id, false, 'none'); } catch(e) {}
   }
   if (S.current.id && S.answeredIds && S.answeredIds[d]) {
     S.answeredIds[d][S.current.id] = true;
@@ -8319,6 +8441,12 @@ function selectAnswer(chosen, _ignoredCorrect) {
   // Remove from missed if answered correctly
   if (ok && S.current) {
     S.missedQuestions = S.missedQuestions.filter(function(q){ return q.id !== S.current.id; });
+  }
+
+  // Adaptive review queue — schedule (or graduate) this question based on
+  // the answer just graded. Practice path only; consumes the existing `ok`.
+  if (S.current) {
+    try { updateReviewSchedule(S.current.id, ok, currentConfidence); } catch(e) {}
   }
 
   // Log confidence
@@ -9204,11 +9332,13 @@ function doResetProgress() {
   S.missedQuestions = [];
   S.confidenceLog = [];
   S.sessionHistory = [];
+  S.review = {};
   S.answeredIds = {"1":{},"2":{},"3":{},"4":{},"5":{},"all":{}};
   S.qIdx = {"1":0,"2":0,"3":0,"4":0,"5":0,"all":0};
   S.selectedDomain = "1";
   S.diff = "any";
   missedReviewMode = false;
+  reviewQueueMode = false;
   buildQueues();
   renderDomainGrid();
   updateStats();
@@ -11120,8 +11250,70 @@ function showNextMissed() {
   }, 100);
 }
 
+// ── ADAPTIVE REVIEW QUEUE — SESSION (v10.39) ──
+var reviewQueueMode = false;
+var reviewQueueList = [];
+var reviewQueueIndex = 0;
+
+// Start a spaced-review session over every question currently due.
+function startReviewQueue() {
+  var dueIds = getDueReview();
+  // Resolve each due id to a question object — prefer the missed-questions
+  // store (full objects), fall back to the live bank, skip anything gone.
+  var byId = {};
+  (S.missedQuestions || []).forEach(function(q){ if (q && q.id) byId[q.id] = q; });
+  reviewQueueList = dueIds.map(function(id){
+    return byId[id] || (typeof findQuestionById === 'function' ? findQuestionById(id) : null);
+  }).filter(Boolean);
+  if (!reviewQueueList.length) {
+    if (typeof showToast === 'function') showToast('Nothing due for review right now', 'info', 2200);
+    return;
+  }
+  reviewQueueIndex = 0;
+  switchTab('practice');     // clears the review-mode flags…
+  reviewQueueMode = true;    // …so set ours after the tab switch
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  showNextReview();
+}
+
+function showNextReview() {
+  clearAllTimers();
+  if (reviewQueueIndex >= reviewQueueList.length) {
+    reviewQueueMode = false;
+    var stillDue = getDueReview().length;
+    document.getElementById('qArea').innerHTML = '<div class="empty" style="background:var(--correct-light);border:2px solid var(--correct);border-radius:var(--radius);padding:36px">'
+      + '<div class="empty-icon">🎉</div>'
+      + '<div class="empty-title" style="color:var(--correct)">Review session complete</div>'
+      + '<div class="empty-sub">' + (stillDue > 0
+          ? stillDue + ' question' + (stillDue === 1 ? '' : 's') + ' still due — missed answers come back sooner.'
+          : 'Nothing else is due right now. Great work!') + '</div>'
+      + '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
+      + (stillDue > 0 ? '<button class="act-btn primary" onclick="startReviewQueue()">🔄 Continue review (' + stillDue + ')</button>' : '')
+      + '<button class="act-btn secondary" onclick="backToPractice()">Back to Practice</button>'
+      + '</div></div>';
+    document.getElementById("genBtnText").textContent = "Start Practice";
+    return;
+  }
+  var q = reviewQueueList[reviewQueueIndex];
+  S.current = q;
+  S.qn++;
+  document.getElementById("genBtnText").textContent = "Next Review (" + (reviewQueueIndex + 1) + "/" + reviewQueueList.length + ")";
+  renderQuestion(q);
+  if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
+  setTimeout(function(){
+    var qArea = document.getElementById("qArea");
+    if (qArea) {
+      var rect = qArea.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo({top: scrollTop + rect.top - 20, behavior: 'smooth'});
+    }
+  }, 100);
+}
+
 function backToPractice() {
   missedReviewMode = false;
+  reviewQueueMode = false;
   document.getElementById("genBtnText").textContent = "Start Practice";
   var genBtn = document.querySelector('.gen-btn');
   if (genBtn) genBtn.style.display = 'flex';
@@ -11452,6 +11644,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Adaptive review queue',
+    items: [
+      { cat: 'new', text: 'Questions you answer incorrectly now come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they are retired. The Home screen shows how many are due and lets you start a focused review session in one tap.' }
+    ]
+  },
+  {
+    version: 'v10.38',
     title: 'Opening a section lands you on its content',
     items: [
       { cat: 'fixed', text: 'On phones, opening a section from the More menu now takes you straight to that section’s content, instead of the top of the page where you had to scroll down to find it.' }

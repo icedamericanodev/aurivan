@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.39] — Adaptive review queue
+
+### New
+- Questions you answer incorrectly now come back on a spaced schedule — soon at first, then at widening intervals as you get them right, until they are retired. The Home screen shows how many are due and lets you start a focused review session in one tap.
+
 ## [v10.38] — Opening a section lands you on its content
 
 ### Fixed
