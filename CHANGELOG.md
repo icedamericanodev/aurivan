@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.24] — Audit Data Analytics is now a full study page
+
+### New
+- The Audit Data Analytics topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
+
 ## [v10.23] — Clearer What's New notes
 
 ### Improved
