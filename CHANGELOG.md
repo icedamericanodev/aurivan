@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.41] — Refreshed section banners
+
+### Improved
+- The banners at the top of the Glossary and FAQ pages have been restyled to match the rest of the app — a clean, light Aurivan card instead of the old dark panel.
+
 ## [v10.40] — New FAQ & Help section
 
 ### New
