@@ -4754,7 +4754,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.28</span>
+    <span class="bank-pill" id="versionPill">v10.29</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4773,7 +4773,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.28</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.29</span>
     </div>
   </div>
 </header>
@@ -4991,7 +4991,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.28';
+const APP_VERSION = 'v10.29';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11138,6 +11138,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'IT Governance & Structure is now a full study page',
+    items: [
+      { cat: 'new', text: 'The Organizational Structure, IT Governance and IT Strategy topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.' }
+    ]
+  },
+  {
+    version: 'v10.28',
     title: 'Audit Project Management is now a full study page',
     items: [
       { cat: 'new', text: 'The Audit Project Management topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for. Domain 1 is now fully built out.' }
