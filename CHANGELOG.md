@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.30] — More Governance & Management of IT topics are now full study pages
+
+### New
+- Several more topics in Governance and Management of IT — IT policies and standards, enterprise risk management, data privacy, IT resource management, third-party and cloud governance, and performance monitoring — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.
+
 ## [v10.29] — IT Governance & Structure is now a full study page
 
 ### New
