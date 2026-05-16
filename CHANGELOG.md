@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.34] — Audit Evidence & Reporting are now full study pages
+
+### New
+- The Audit Evidence Collection and Reporting and Communication topics now read as full study pages — with this, every topic in the Auditing Process domain is a complete study resource.
+
 ## [v10.33] — Every Topics page is now a full study resource
 
 ### New
