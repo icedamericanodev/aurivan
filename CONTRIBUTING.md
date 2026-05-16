@@ -85,6 +85,15 @@ This file is read by humans for cross-session continuity and by future contribut
 
 ### Bump the version
 
+Versioning is `vMAJOR.MINOR.PATCH`, semver-ish:
+
+- **MAJOR** (`v10.x` → `v11`) — a significant / massive change: full redesign, full question-bank rebuild, a new certification track, or an architecture change. Rare; resets MINOR and PATCH to 0.
+- **MINOR** (`v11` → `v11.1`) — a new feature, UI uplift, content release, or a notable bug fix / cluster of fixes shipped together. The common bump; resets PATCH to 0.
+- **PATCH** (`v11.1` → `v11.1.1`) — a single small, isolated correction shipped on its own (one minor bug fix, a copy/typo fix, a small style or accessibility tweak) with no new feature or content.
+- Omit trailing `.0` (`v11`, `v11.1`); PATCH releases show all three (`v11.1.1`). Never skip a level.
+
+Then:
+
 1. Edit `const APP_VERSION` in `index.html` (one place).
 2. Edit the static `<span class="bank-pill" id="versionPill">` text in the header to match (the JS overrides this on load, but matching the static markup keeps view-source clean).
 3. Add a new entry at the top of the `CHANGELOG` array in `index.html` using the New / Improved / Fixed categories. The first entry automatically gets the `LATEST` badge.

@@ -47,13 +47,23 @@ work without rediscovering the layout.
      a11y improvement.
    - Internal-only changes (scripts, agents, CI, docs, dev tooling,
      refactors with no behavior change) do NOT require a bump.
-   - Versioning: `vMAJOR.MINOR` semver-ish.
-     - MAJOR bump = breaking redesign or full bank rebuild (rare).
-     - MINOR bump = new feature, UI uplift, content release, or a cluster
-       of fixes. Increment by 0.1 (v9.0 → v9.1 → v9.2).
-     - For tiny single-fix PRs, still bump the MINOR — we don't use patch
-       versions. The bank gets enough activity that semver patches add
-       noise without value.
+   - Versioning: `vMAJOR.MINOR.PATCH` semver-ish — three levels.
+     - **MAJOR** bump (e.g. `v10.x` → `v11`) = a significant / massive
+       change: a full redesign, a full question-bank rebuild, a new
+       certification track, or an architecture change. Rare. Resets MINOR
+       and PATCH to 0.
+     - **MINOR** bump (e.g. `v11` → `v11.1`) = a new feature, a UI uplift,
+       a content release, or a notable bug fix / cluster of fixes shipped
+       together. This is the common bump. Resets PATCH to 0.
+     - **PATCH** bump (e.g. `v11.1` → `v11.1.1`) = a single small, isolated
+       correction shipped on its own — one minor bug fix, a copy/typo fix,
+       or a small style / accessibility tweak — with no new feature and no
+       new content. (Standard semver: PATCH = backwards-compatible fixes.)
+       When unsure between MINOR and PATCH, ask: does this add or change a
+       capability a learner would call "new"? Yes → MINOR; no → PATCH.
+     - Omit trailing `.0`: write `v11` and `v11.1`, not `v11.0.0` /
+       `v11.1.0`; PATCH releases always show all three (`v11.1.1`). Never
+       skip a level.
    - The bump-checklist (see "Bump version" workflow below) MUST be
      completed before opening the PR. Reviewers will reject PRs that
      ship behavior but leave `APP_VERSION` stale.
