@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.44] — Easier to support Aurivan
+
+### New
+- Aurivan is free, with no ads or paywall. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.
+
 ## [v10.43] — A dedicated About page
 
 ### Improved
