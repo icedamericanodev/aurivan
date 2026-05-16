@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.42] — A sharper Aurivan brand
+
+### New
+- A new Vision & Mission card explains what Aurivan stands for — free, honest CISA preparation that teaches how ISACA thinks.
+
+### Improved
+- The header logo, name, and slogan have been refined into one clean, balanced lockup that reads as a finished brand.
+
 ## [v10.41] — Refreshed section banners
 
 ### Improved

@@ -514,34 +514,26 @@ header {
   position: relative; z-index: 10;
 }
 
-.logo { display: flex; flex-direction: column; }
+.logo { display: flex; flex-direction: row; align-items: center; gap: 13px; }
+.brand-mark { color: var(--text); flex-shrink: 0; height: 46px; width: auto; }
+.logo-text { display: flex; flex-direction: column; min-width: 0; }
 .logo-eyebrow {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent);
-  margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-fill);
+  font-weight: 600; margin-bottom: 3px;
 }
-.logo-eyebrow::before { content: ''; font-size: 7px; }
-.logo-name {
-  font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700;
-  color: var(--text); line-height: 1; letter-spacing: -1px;
-  display: flex; align-items: center; gap: 2px;
-}
-.logo-name em { color: var(--accent); font-style: italic; }
-.logo-name .brand-word {
+.brand-word {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 800;
-  font-size: 26px;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  background: linear-gradient(135deg, var(--brand-light), var(--brand-mid) 60%, var(--brand-teal));
+  font-weight: 800; font-size: 31px; line-height: 0.95;
+  letter-spacing: -0.005em; text-transform: lowercase;
+  background: linear-gradient(120deg, var(--brand-light) 0%, var(--brand-mid) 52%, var(--brand-teal) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.brand-mark { color: var(--text); flex-shrink: 0; }
 .logo-tagline {
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 600;
-  color: var(--accent2); letter-spacing: 0.06em; margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
+  color: var(--accent2-fill); letter-spacing: 0.13em; margin-top: 5px;
   text-transform: uppercase;
 }
 
@@ -588,6 +580,9 @@ header {
   #profileBtnLabel { display: none; }
   .profile-btn { padding: 5px 6px; }
   #hdrMenuBtn { display: flex; }
+  .logo { gap: 10px; }
+  .brand-mark { height: 38px; }
+  .brand-word { font-size: 25px; }
 }
 .bank-pill {
   font-family: 'JetBrains Mono', monospace; font-size: 10px;
@@ -4727,10 +4722,36 @@ header {
   font-weight: 600;
 }
 
+/* ── VISION & MISSION ── */
+.mission-card { margin: 18px 0; }
+.mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.mission-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 18px 20px;
+}
+.mission-item-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 8px;
+}
+.mission-item.vision .mission-item-label { color: var(--accent-fill); }
+.mission-item.mission .mission-item-label { color: var(--accent2-fill); }
+.mission-item-text {
+  font-size: 14px; color: var(--text2); line-height: 1.62; margin: 0;
+}
+.mission-item-text strong { color: var(--text); font-weight: 700; }
+
 @media (max-width: 760px) {
   .brand-card { padding: 24px 20px 22px; margin: 32px 0 14px; }
   .brand-card-title { font-size: 26px; }
   .brand-pillars { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .mission-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 420px) {
   .brand-pillars { grid-template-columns: 1fr 1fr; }
@@ -4895,9 +4916,7 @@ header::after {
 <!-- HEADER -->
 <header>
   <div class="logo">
-    <span class="logo-eyebrow">Master Modern Risk</span>
-    <span class="logo-name">
-      <svg class="brand-mark" viewBox="0 0 60 72" fill="none" aria-hidden="true" style="height:34px;width:auto;vertical-align:-8px;margin-right:4px">
+      <svg class="brand-mark" viewBox="0 0 60 72" fill="none" aria-hidden="true">
         <defs>
           <linearGradient id="brand-needle" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#38BDF8"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
           <linearGradient id="brand-circle" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#60A5FA"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -4913,12 +4932,15 @@ header::after {
         <rect x="26.5" y="35" width="17" height="5" fill="currentColor" opacity=".95"/>
         <polygon points="18,53 33,22 37.5,26.5 23,57" fill="url(#brand-needle)" opacity="0.9"/>
         <path d="M16,63 C20,57 24,57 28,63 C32,69 36,69 40,63 C44,57 48,57 52,63" stroke="url(#brand-wave)" stroke-width="2.4" stroke-linecap="round"/>
-      </svg><span class="brand-word">aurivan</span>
-    </span>
-    <span class="logo-tagline">Free CISA Exam Prep</span>
+      </svg>
+    <div class="logo-text">
+      <span class="logo-eyebrow">Master Modern Risk</span>
+      <span class="brand-word">aurivan</span>
+      <span class="logo-tagline">Free CISA&reg; Exam Prep</span>
+    </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.41</span>
+    <span class="bank-pill" id="versionPill">v10.42</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4937,7 +4959,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.41</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.42</span>
     </div>
   </div>
 </header>
@@ -5106,6 +5128,22 @@ header::after {
     </div>
   </section>
 
+  <!-- ── VISION & MISSION ── -->
+  <section class="brand-card mission-card" data-testid="vision-mission">
+    <div class="brand-card-eyebrow">Why Aurivan exists</div>
+    <h2 class="brand-card-title">Vision &amp; <span class="brand-card-accent">Mission.</span></h2>
+    <div class="mission-grid">
+      <div class="mission-item vision">
+        <div class="mission-item-label">Our Vision</div>
+        <p class="mission-item-text">A world where every IT&#8209;audit and risk professional can build genuine exam confidence &mdash; and a real auditor's judgment &mdash; <strong>regardless of budget, employer, or where they live.</strong></p>
+      </div>
+      <div class="mission-item mission">
+        <div class="mission-item-label">Our Mission</div>
+        <p class="mission-item-text">To make rigorous CISA preparation <strong>free and honest</strong> &mdash; practice and study material that teaches <strong>how ISACA actually thinks</strong>, so candidates reason like an auditor instead of memorizing facts. A serious supplement to your study, never a shortcut around it.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ── TIP JAR — optional support for the project (v9.2) ──
        Switched from Buy Me a Coffee to Ko-fi in v10.11 (BMC has limited support in some regions including PH).
        Hide the section by adding the `hidden` attribute if not desired. -->
@@ -5258,7 +5296,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.41';
+const APP_VERSION = 'v10.42';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11790,6 +11828,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'A sharper Aurivan brand',
+    items: [
+      { cat: 'improved', text: 'The header logo, name, and slogan have been refined into one clean, balanced lockup that reads as a finished brand.' },
+      { cat: 'new', text: 'A new Vision & Mission card explains what Aurivan stands for — free, honest CISA preparation that teaches how ISACA thinks.' }
+    ]
+  },
+  {
+    version: 'v10.41',
     title: 'Refreshed section banners',
     items: [
       { cat: 'improved', text: 'The banners at the top of the Glossary and FAQ pages have been restyled to match the rest of the app — a clean, light Aurivan card instead of the old dark panel.' }
