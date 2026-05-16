@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.38] — Opening a section lands you on its content
+
+### Fixed
+- On phones, opening a section from the More menu now takes you straight to that section's content, instead of the top of the page where you had to scroll down to find it.
+
 ## [v10.37] — Clearer answer explanations
 
 ### Improved

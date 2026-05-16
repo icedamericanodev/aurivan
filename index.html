@@ -4873,7 +4873,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.37</span>
+    <span class="bank-pill" id="versionPill">v10.38</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4892,7 +4892,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.37</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.38</span>
     </div>
   </div>
 </header>
@@ -5176,7 +5176,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.37';
+const APP_VERSION = 'v10.38';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7313,10 +7313,15 @@ function switchTab(t) {
     if (sessionGoal === null) showSessionStart(); // Decision 9 — offer session start when no active session
     if (shouldResumeCurrent()) renderResumePrompt();
   }
-  // Land at the top of the newly opened section — without this the
-  // viewport keeps its previous scroll position and the section's
-  // heading is off-screen. (Boot calls switchTab before paint; harmless.)
-  try { window.scrollTo(0, 0); } catch (e) {}
+  // Land on the newly opened section's own content — scroll the active
+  // screen element into view rather than the page origin, so the section
+  // heading sits at the top of the viewport instead of the page header.
+  // (Boot calls switchTab before paint; the try/catch keeps that harmless.)
+  try {
+    var sc = document.getElementById('screen-' + t);
+    if (sc && sc.scrollIntoView) sc.scrollIntoView({ block: 'start' });
+    else window.scrollTo(0, 0);
+  } catch (e) {}
 }
 
 // â”€â”€ MOBILE BOTTOM NAV (v10.35) â”€â”€
@@ -11447,6 +11452,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Opening a section lands you on its content',
+    items: [
+      { cat: 'fixed', text: 'On phones, opening a section from the More menu now takes you straight to that section’s content, instead of the top of the page where you had to scroll down to find it.' }
+    ]
+  },
+  {
+    version: 'v10.37',
     title: 'Clearer answer explanations',
     items: [
       { cat: 'improved', text: 'After you answer, the option-by-option breakdown now makes the correct answer stand out at a glance, and every explanation is set in slightly larger, easier-to-read text — so it is clearer why the right answer wins and why each other option falls short.' }
