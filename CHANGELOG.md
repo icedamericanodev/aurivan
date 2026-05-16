@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.27] — Audit Standards & Ethics is now a full study page
+
+### New
+- The IS Audit Standards, Guidelines, Functions and Codes of Ethics topic now reads as a full study page — clear diagrams, an in-depth explanation in plain language, and the common mistakes to watch for.
+
 ## [v10.26] — Types of Audits is now a full study page
 
 ### New
