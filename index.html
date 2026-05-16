@@ -4754,7 +4754,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.31</span>
+    <span class="bank-pill" id="versionPill">v10.32</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4773,7 +4773,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.31</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.32</span>
     </div>
   </div>
 </header>
@@ -4991,7 +4991,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.31';
+const APP_VERSION = 'v10.32';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -11138,6 +11138,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'The IT Operations & Resilience domain is now fully built out',
+    items: [
+      { cat: 'new', text: 'The remaining topics in Information Systems Operations and Business Resilience — networking, system availability and capacity, log management, database management, business impact analysis, data backup, and business continuity planning — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }
+    ]
+  },
+  {
+    version: 'v10.31',
     title: 'The Systems Development domain is now fully built out',
     items: [
       { cat: 'new', text: 'The remaining topics in Information Systems Acquisition, Development and Implementation — project governance, application controls, system testing and implementation, and the post-implementation review — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.' }

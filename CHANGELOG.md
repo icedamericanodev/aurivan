@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.32] — The IT Operations & Resilience domain is now fully built out
+
+### New
+- The remaining topics in Information Systems Operations and Business Resilience — networking, system availability and capacity, log management, database management, business impact analysis, data backup, and business continuity planning — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.
+
 ## [v10.31] — The Systems Development domain is now fully built out
 
 ### New
