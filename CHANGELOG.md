@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.31] — The Systems Development domain is now fully built out
+
+### New
+- The remaining topics in Information Systems Acquisition, Development and Implementation — project governance, application controls, system testing and implementation, and the post-implementation review — now read as full study pages with clear diagrams, in-depth explanations in plain language, and the common mistakes to watch for.
+
 ## [v10.30] — More Governance & Management of IT topics are now full study pages
 
 ### New
