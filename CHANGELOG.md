@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.35] — A new Home screen and easier navigation on phones
+
+### New
+- On a phone, the app now has a bottom navigation bar — Home, Practice, Mock, Topics, and More — always within thumb's reach, so every section is one tap away instead of hidden behind a side-scroll.
+- A new Home screen greets you with a quick way to resume studying, your exam-readiness score, a countdown to your exam date, and your progress in each of the five domains.
+
 ## [v10.34] — Audit Evidence & Reporting are now full study pages
 
 ### New
