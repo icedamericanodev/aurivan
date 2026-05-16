@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.40] — New FAQ & Help section
+
+### New
+- A searchable FAQ is now built in — open it from the More menu for clear answers on using the app, how the CISA exam is structured, and how to study effectively.
+
 ## [v10.39] — Adaptive review queue
 
 ### New
