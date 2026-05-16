@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.43] — A dedicated About page
+
+### Improved
+- Aurivan now has its own About page — open it from the More menu to read what Aurivan stands for, its vision and mission, and the wider roadmap, all in one place.
+
 ## [v10.42] — A sharper Aurivan brand
 
 ### New
