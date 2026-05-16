@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.45] — Your privacy, clearly explained
+
+### New
+- Aurivan now asks before using analytics — a clear cookie choice on your first visit. Decline and nothing is stored; accept and it stays anonymous. You can change your choice any time from the footer.
+- A full Privacy Policy and Terms of Use are now published and linked from the footer, so it is easy to see exactly how the app works and how your data is handled.
+
 ## [v10.44] — Easier to support Aurivan
 
 ### New

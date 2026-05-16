@@ -172,6 +172,9 @@ kill %1
 
 - Feature work happens on the session-designated `claude/add-cisa-questions-json-*` branch.
 - Open PR against `main` via the GitHub MCP, then merge once verified.
+- **Always subscribe to a PR's activity (`subscribe_pr_activity`) right after
+  creating it** — don't ask first. This keeps the session watching CI and
+  review comments so failures and feedback are picked up automatically.
 - Commit messages explain the WHY in the first line and any non-obvious
   reasoning in the body. Don't mention internal symbol names in user-
   facing changelog entries (those go to the git log instead).

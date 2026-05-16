@@ -8,12 +8,12 @@ CISA Mindset is a **fully client-side, single-file HTML application**. It has:
 - No database
 - No user accounts or authentication
 - No personally identifiable information collected or stored
-- No cookies (other than what your browser/CDN may set)
+- No cookies set by the app itself; a Google Analytics cookie is set **only if you accept** it on the in-app cookie banner
 
 All progress (scores, bookmarks, profiles) lives in your browser's `localStorage` and never leaves your device — except in two cases:
 
 1. **Feedback you choose to send** through the in-app Feedback button, which posts to a Google Form bound to `certprep.support@gmail.com`.
-2. **Anonymous Google Analytics page-view metrics** if your browser permits.
+2. **Anonymous Google Analytics page-view metrics**, but only if you accept analytics on the cookie consent banner. Until then, analytics storage is denied by default (Google Consent Mode) and no analytics cookie is set.
 
 ## Supported version
 
@@ -64,9 +64,11 @@ For non-security bugs and feature requests, the easiest path is:
 |---|---|---|
 | Progress, bookmarks, profiles | Your browser's localStorage | Always (never leaves device) |
 | Feedback messages | `certprep.support@gmail.com` (via Google Form) | Only when you click Send |
-| Anonymous page-view metrics | Google Analytics | If your browser permits |
+| Anonymous page-view metrics | Google Analytics | Only after you accept the cookie banner |
 | Question content | Loaded from the same origin as the page | On page load |
 
 No question response data, scores, or personally identifiable information is transmitted off-device.
+
+The full user-facing **[Privacy Policy](privacy.html)** and **[Terms of Use](terms.html)** are published alongside the app.
 
 Thank you for helping keep this tool safe for exam candidates.

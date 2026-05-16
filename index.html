@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KDECR41WQ9"></script>
+<!-- Google Analytics — Consent Mode v2.
+     Analytics storage is denied by default and is enabled only after the
+     visitor accepts on the cookie banner. A prior choice is restored here,
+     before GA initialises, so accepted visitors are measured from page one. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
+  gtag('consent', 'default', { 'analytics_storage': 'denied' });
+  try {
+    if (localStorage.getItem('aurivan_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KDECR41WQ9"></script>
+<script>
   gtag('config', 'G-KDECR41WQ9');
 </script>
 <meta charset="UTF-8">
@@ -1472,6 +1483,52 @@ header {
 .welcome-banner .wb-close:hover { color: var(--text); background: var(--surface2); }
 @media (max-width: 600px) {
   .welcome-banner { font-size: 12px; padding: 10px 12px; }
+}
+
+/* ── COOKIE CONSENT BANNER ── */
+.consent-banner {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 250;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; flex-wrap: wrap;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 2px solid var(--accent);
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.consent-banner[hidden] { display: none; }
+.consent-text {
+  margin: 0; flex: 1; min-width: 240px; max-width: 620px;
+  font-size: 13px; color: var(--text2); line-height: 1.5;
+}
+.consent-text strong { color: var(--text); }
+.consent-text a { color: var(--accent); font-weight: 700; }
+.consent-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.consent-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  padding: 10px 22px; border-radius: 100px; min-height: 44px;
+  transition: var(--tr);
+}
+.consent-btn.accept { background: var(--accent-fill); color: #fff; border: 2px solid var(--accent-fill); }
+.consent-btn.accept:hover { filter: brightness(1.08); }
+.consent-btn.decline { background: var(--surface); color: var(--text); border: 2px solid var(--accent); }
+.consent-btn.decline:hover { background: var(--surface2); }
+.consent-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.consent-close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: none; border: 2px solid var(--border2); border-radius: 50%;
+  color: var(--text2); font-size: 20px; line-height: 1; cursor: pointer;
+  transition: var(--tr);
+}
+.consent-close[hidden] { display: none; }
+.consent-close:hover { border-color: var(--accent); color: var(--text); }
+.consent-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .consent-banner { gap: 10px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); }
+  .consent-actions { width: 100%; }
+  .consent-btn { flex: 1; }
 }
 
 /* ── PHASE 3: UNIFIED EMPTY STATES (Decision 7) ── */
@@ -4531,6 +4588,21 @@ header {
   display: inline-block;
 }
 .legal-disclaimer strong { color: var(--text); }
+.legal-disclaimer .legal-links {
+  margin-top: 14px; display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 6px 18px;
+}
+.legal-disclaimer .legal-links a,
+.legal-disclaimer .legal-link-btn {
+  color: var(--accent); font-weight: 700; text-decoration: none;
+  font-size: inherit; font-family: inherit; letter-spacing: inherit;
+  background: none; border: none; padding: 0; cursor: pointer;
+}
+.legal-disclaimer .legal-links a:hover,
+.legal-disclaimer .legal-link-btn:hover { text-decoration: underline; }
+.legal-disclaimer .legal-link-btn:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+}
 
 @media (max-width: 600px) {
   .notify-card { padding: 24px 18px; }
@@ -4896,6 +4968,21 @@ header::after {
 </style>
 </head>
 <body>
+
+<!-- COOKIE CONSENT BANNER — analytics stays off until the visitor chooses -->
+<div id="consent-banner" class="consent-banner" role="region" aria-label="Cookie consent" tabindex="-1" hidden>
+  <p class="consent-text">
+    <span aria-hidden="true">&#127850;</span>
+    Aurivan uses one optional cookie for <strong>anonymous analytics</strong> — to see how the app is used and what to improve. Nothing else leaves your device.
+    <a href="privacy.html" target="_blank" rel="noopener noreferrer" aria-label="Privacy Policy (opens in a new tab)">Privacy&nbsp;Policy</a>
+  </p>
+  <div class="consent-actions">
+    <button type="button" class="consent-btn decline" onclick="setConsent(false)">Decline</button>
+    <button type="button" id="consent-accept" class="consent-btn accept" onclick="setConsent(true)">Accept</button>
+    <button type="button" id="consent-close" class="consent-close" onclick="dismissConsentBanner()" aria-label="Close without changing your choice" hidden>&times;</button>
+  </div>
+</div>
+
 <div class="app">
 
 <!-- WELCOME BANNER (Decision 4) — first-time users only -->
@@ -4932,7 +5019,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.44</span>
+    <span class="bank-pill" id="versionPill">v10.45</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4950,7 +5037,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.44</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.45</span>
     </div>
   </div>
 </header>
@@ -5161,6 +5248,11 @@ header::after {
     <p><span class="warn">&#9888; This app is NOT affiliated with, endorsed by, or sponsored by ISACA&reg;.</span></p>
     <p><strong>CISA&reg; is a registered trademark of ISACA.</strong> All references are used for educational and identification purposes only.</p>
     <p>This tool is intended as a supplementary study resource and should not be considered a replacement for official ISACA materials.</p>
+    <p class="legal-links">
+      <a href="privacy.html" target="_blank" rel="noopener noreferrer" aria-label="Privacy Policy (opens in a new tab)">Privacy Policy</a>
+      <a href="terms.html" target="_blank" rel="noopener noreferrer" aria-label="Terms of Use (opens in a new tab)">Terms of Use</a>
+      <button type="button" class="legal-link-btn" onclick="openConsentBanner()">Cookie preferences</button>
+    </p>
   </section>
 </div>
 
@@ -5291,7 +5383,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.44';
+const APP_VERSION = 'v10.45';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8196,6 +8288,62 @@ function dismissWelcomeBanner() {
   try { localStorage.setItem('aurivan_welcome_seen', '1'); } catch (e) {}
 }
 
+// ── COOKIE CONSENT BANNER ──
+// Shown until the visitor makes a choice. Analytics is denied by default
+// (set in the head); accepting flips Consent Mode to granted. The choice
+// is persisted so the banner does not reappear, and can be revisited via
+// the "Cookie preferences" link in the footer.
+var consentReturnFocus = null;
+function consentChoiceMade() {
+  try {
+    var c = localStorage.getItem('aurivan_consent');
+    return c === 'granted' || c === 'denied';
+  } catch (e) { return false; }
+}
+function showConsentBanner(reopened) {
+  var el = document.getElementById('consent-banner');
+  if (!el) return;
+  // The X (neutral close) is offered only when the banner is re-opened with
+  // a choice already on record — a first-time visitor must pick Accept/Decline.
+  var closeBtn = document.getElementById('consent-close');
+  if (closeBtn) closeBtn.hidden = !reopened;
+  el.hidden = false;
+  try { el.focus(); } catch (e) {}
+}
+function hideConsentBanner() {
+  var el = document.getElementById('consent-banner');
+  if (el) el.hidden = true;
+  if (consentReturnFocus && consentReturnFocus.focus) {
+    try { consentReturnFocus.focus(); } catch (e) {}
+  }
+  consentReturnFocus = null;
+}
+function initConsentBanner() {
+  // Escape closes the banner only once a choice already exists.
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var el = document.getElementById('consent-banner');
+    if (el && !el.hidden && consentChoiceMade()) hideConsentBanner();
+  });
+  if (!consentChoiceMade()) showConsentBanner(false);
+}
+function setConsent(granted) {
+  try { localStorage.setItem('aurivan_consent', granted ? 'granted' : 'denied'); } catch (e) {}
+  try {
+    if (window.gtag) {
+      window.gtag('consent', 'update', { 'analytics_storage': granted ? 'granted' : 'denied' });
+    }
+  } catch (e) {}
+  hideConsentBanner();
+}
+function openConsentBanner() {
+  consentReturnFocus = document.activeElement;
+  showConsentBanner(true);
+}
+function dismissConsentBanner() {
+  if (consentChoiceMade()) hideConsentBanner();
+}
+
 // ── EMPTY STATES (Decision 7) — Lucide-style inline SVG icons ──
 var ES_ICONS = {
   spinner: '<svg class="es-icon spin" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>',
@@ -11097,6 +11245,7 @@ ensureLocalProfile();
 loadState();
 buildQueues();
 initWelcomeBanner(); // Phase 3 — Decision 4
+initConsentBanner(); // cookie consent — gates Google Analytics
 // Decision 8 + 9: countdown + session-start render on practice screen (lazy
 // init — only if practice tab is the active screen on boot)
 try {
@@ -11842,6 +11991,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Your privacy, clearly explained',
+    items: [
+      { cat: 'new', text: 'Aurivan now asks before using analytics — a clear cookie choice on your first visit. Decline and nothing is stored; accept and it stays anonymous. You can change your choice any time from the footer.' },
+      { cat: 'new', text: 'A full Privacy Policy and Terms of Use are now published and linked from the footer, so it is easy to see exactly how the app works and how your data is handled.' }
+    ]
+  },
+  {
+    version: 'v10.44',
     title: 'Easier to support Aurivan',
     items: [
       { cat: 'new', text: 'Aurivan is free, with no ads or paywall. If it is helping your prep, you can now chip in more easily — there is a Support option in the More menu, a support card on the Home screen, and a gentle thank-you prompt after you finish a mock exam.' }
