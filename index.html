@@ -808,6 +808,9 @@ header {
 @media (max-width: 600px) {
   #bottomNav { display: flex; }
   #hdrMenuBtn { display: none; }
+  /* The bottom nav replaces the horizontally-scrolling top-tab strip on
+     phones — hide the strip so there is one navigation system, not two. */
+  .nav-tabs-wrap { display: none; }
   .app { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 }
 
@@ -4865,7 +4868,7 @@ header::after {
     <span class="logo-tagline">Free CISA Exam Prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.35</span>
+    <span class="bank-pill" id="versionPill">v10.36</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -4884,7 +4887,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.35</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.36</span>
     </div>
   </div>
 </header>
@@ -5142,7 +5145,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.35';
+const APP_VERSION = 'v10.36';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -7280,6 +7283,10 @@ function switchTab(t) {
     if (sessionGoal === null) showSessionStart(); // Decision 9 — offer session start when no active session
     if (shouldResumeCurrent()) renderResumePrompt();
   }
+  // Land at the top of the newly opened section — without this the
+  // viewport keeps its previous scroll position and the section's
+  // heading is off-screen. (Boot calls switchTab before paint; harmless.)
+  try { window.scrollTo(0, 0); } catch (e) {}
 }
 
 // â”€â”€ MOBILE BOTTOM NAV (v10.35) â”€â”€
@@ -11410,6 +11417,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Smoother section switching on phones',
+    items: [
+      { cat: 'fixed', text: 'On phones, the old row of tabs at the top is gone — the bottom navigation bar is now the single way to move around, so there is no more side-scrolling strip.' },
+      { cat: 'fixed', text: 'Opening a section now takes you straight to the top of it, instead of leaving you scrolled partway down the previous screen.' }
+    ]
+  },
+  {
+    version: 'v10.35',
     title: 'A new Home screen and easier navigation on phones',
     items: [
       { cat: 'new', text: 'On a phone, the app now has a bottom navigation bar — Home, Practice, Mock, Topics, and More — always within thumb’s reach, so every section is one tap away instead of hidden behind a side-scroll.' },

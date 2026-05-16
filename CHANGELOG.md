@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.36] — Smoother section switching on phones
+
+### Fixed
+- On phones, the old row of tabs at the top is gone — the bottom navigation bar is now the single way to move around, so there is no more side-scrolling strip.
+- Opening a section now takes you straight to the top of it, instead of leaving you scrolled partway down the previous screen.
+
 ## [v10.35] — A new Home screen and easier navigation on phones
 
 ### New
