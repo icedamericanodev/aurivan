@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.37] — Clearer answer explanations
+
+### Improved
+- After you answer, the option-by-option breakdown now makes the correct answer stand out at a glance, and every explanation is set in slightly larger, easier-to-read text — so it is clearer why the right answer wins and why each other option falls short.
+
 ## [v10.36] — Smoother section switching on phones
 
 ### Fixed
