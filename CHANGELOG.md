@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.33] — Every Topics page is now a full study resource
+
+### New
+- The last topics in Protection of Information Assets — security frameworks and baselines, physical and environmental controls, and data loss prevention — now read as full study pages. With this, every topic across all five domains has clear diagrams, an in-depth plain-language explanation, and the common mistakes to watch for.
+
 ## [v10.32] — The IT Operations & Resilience domain is now fully built out
 
 ### New
