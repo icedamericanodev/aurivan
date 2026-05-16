@@ -5131,20 +5131,46 @@ const QB = JSON.parse(document.getElementById('qbData').textContent);
 // All domain keys normalized: QB keys are strings "1"-"5", q.domain is int 1-5
 // We use STRING keys throughout for all lookups to be consistent
 
-const DI = {
-  "1":{name:'Information System Auditing Process',short:'IS Audit',color:'#2563eb',weight:18},
-  "2":{name:'Governance and Management of IT',short:'IT Governance',color:'#7c3aed',weight:18},
-  "3":{name:'IS Acquisition, Dev & Implementation',short:'IS Acquisition',color:'#e8521a',weight:12},
-  "4":{name:'IS Operations & Business Resilience',short:'IS Operations',color:'#059669',weight:26},
-  "5":{name:'Protection of Information Assets',short:'Info Protection',color:'#db2777',weight:26},
+// ── CERTIFICATION REGISTRY ──
+// The app is built so additional certifications (CRISC, CISM, ISO 27001…)
+// can later slot in by adding a descriptor entry plus their data files,
+// rather than editing scattered constants. For now CISA is the only
+// registered certification. Everything cert-specific below (DI, the mock
+// blueprint, the remote-domain paths) is DERIVED from the active descriptor,
+// so consumers keep reading the same identifiers and behaviour is unchanged.
+const CERTS = {
+  cisa: {
+    id: 'cisa',
+    name: 'CISA',
+    fullName: 'Certified Information Systems Auditor',
+    domains: {
+      "1":{name:'Information System Auditing Process',short:'IS Audit',color:'#2563eb',weight:18},
+      "2":{name:'Governance and Management of IT',short:'IT Governance',color:'#7c3aed',weight:18},
+      "3":{name:'IS Acquisition, Dev & Implementation',short:'IS Acquisition',color:'#e8521a',weight:12},
+      "4":{name:'IS Operations & Business Resilience',short:'IS Operations',color:'#059669',weight:26},
+      "5":{name:'Protection of Information Assets',short:'Info Protection',color:'#db2777',weight:26},
+    },
+    mockTotal: 150,
+    mockDifficultyMix: { analysis: 0.30, application: 0.55, foundational: 0.15 },
+    // Path-builder for a domain's question bank — a function so a future
+    // data/{certId}/ relocation is a one-line descriptor change.
+    dataPath: function(d){ return 'data/domain' + d + '.json'; }
+  }
 };
+const ACTIVE_CERT = 'cisa';
+const ACTIVE = CERTS[ACTIVE_CERT];
 
-// Mock-exam blueprint:
+// DI — canonical domain registry for the active certification. Derived from
+// the descriptor; identical in shape and value to the former CISA literal,
+// so every DI[...] read and Object.keys(DI) loop is unchanged.
+const DI = ACTIVE.domains;
+
+// Mock-exam blueprint — derived from the active certification descriptor.
 //   Domain mix follows DI.weight (official CISA: 18/18/12/26/26).
 //   Difficulty mix mirrors a typical CISA exam: ~30% Analysis,
-//   ~55% Application, ~15% Foundational. Tweak in one place.
-const MOCK_TOTAL = 150;
-const MOCK_DIFFICULTY_MIX = { analysis: 0.30, application: 0.55, foundational: 0.15 };
+//   ~55% Application, ~15% Foundational. Tweak in the descriptor above.
+const MOCK_TOTAL = ACTIVE.mockTotal;
+const MOCK_DIFFICULTY_MIX = ACTIVE.mockDifficultyMix;
 const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / Application', foundational: 'Easy / Foundational' };
 
 // Single source of truth for the app version. The header pill renders this
@@ -5162,15 +5188,14 @@ const FEEDBACK_FIELD_TYPE = 'entry.1841479494';
 const FEEDBACK_FIELD_MESSAGE = 'entry.5371025';
 const FEEDBACK_FIELD_DIAG = 'entry.346272382';
 
-// Domains loaded asynchronously from data/domain*.json (start with D1).
-// QB starts empty for these; UI re-renders once the bank arrives.
-const REMOTE_DOMAINS = {
-  "1": "data/domain1.json",
-  "2": "data/domain2.json",
-  "3": "data/domain3.json",
-  "4": "data/domain4.json",
-  "5": "data/domain5.json"
-};
+// Domains loaded asynchronously from the active certification's data files
+// (start with D1). QB starts empty for these; UI re-renders once the bank
+// arrives. Derived from the descriptor — Object.keys(DI) preserves the
+// "1".."5" insertion order, so this object is identical to the former literal.
+const REMOTE_DOMAINS = Object.keys(DI).reduce(function(m, d){
+  m[d] = ACTIVE.dataPath(d);
+  return m;
+}, {});
 window.QB_LOADING = Object.assign({}, REMOTE_DOMAINS); // tracks which domains are still loading
 window.QB_LOAD_ERROR = {}; // tracks fetch failures per domain
 
