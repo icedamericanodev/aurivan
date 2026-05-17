@@ -95,8 +95,8 @@ job during fieldwork. As evidence comes in, you judge whether the planned
 procedures still hold and adjust them. The trap is A: "stay on schedule"
 sounds responsible, but a fieldwork phase that finishes on time with
 unreliable evidence is worse than one that runs a few days long with strong
-evidence. Match each phase to its defining discipline: planning = scope and
-program, fieldwork = supervised execution, reporting = communication.
+evidence. Match each phase to its defining discipline: planning sets the scope and
+program, fieldwork is supervised execution, and reporting is communication.
 
 ---
 
@@ -120,7 +120,7 @@ healthcare entities
 D) A subset of the IT change-management process that controls how changes
 reach production
 
-Your pick + why?
+Your pick, and why?
 
 Reveal:
 Answer: B. Per COBIT 2019, EGIT is the system by which IT decisions are made
@@ -180,11 +180,12 @@ incident management restores service from current outages as fast as possible
 D) Problem management is for application bugs only; incident management is for
 infrastructure outages
 
-Answer + reasoning below.
+Answer and reasoning below.
 
 Reveal:
-Answer: C. Incident management = restoration of a current outage, fast and
-reactive. Problem management = root-cause investigation for prevention,
+Answer: C. Incident management restores service from a current outage,
+fast and reactive. Problem management investigates root causes to prevent
+future incidents,
 analytical and longer-running. The trap is A ("interchangeable"), a common
 misconception in less-mature shops. ITIL 4 deliberately separates them because
 they serve different purposes. Note B and D are also wrong: duration doesn't
@@ -196,29 +197,33 @@ the option naming prevention vs restoration.
 ## QOTD #5, Domain 5
 
 Title:
-[CISA QOTD] Reviewing access standards: which are the canonical access principles?
+[CISA QOTD] What should a firm's access-management standards actually be built on?
 
 Body:
-An auditor reviews access standards for a regulated firm. Which combination
-BEST captures the canonical access principles to validate?
+An IS auditor is reviewing the access-management standards of a regulated
+firm. Which of the following BEST represents the principles those standards
+should be built on?
 
-A) Strong passwords + MFA: authentication strength is the foundation of access
-standards
-B) Role-based access control (RBAC) implemented across all systems
-C) Privileged access management (PAM) tooling deployed for privileged users
-D) Least privilege + need-to-know + segregation of duties + default-deny +
-periodic recertification
+A) The standards should center on authentication strength, primarily strong
+passwords and multi-factor authentication.
+B) The standards should be defined by the access mechanism in use, such as
+role-based access control implemented across all systems.
+C) The standards should be embodied by the privileged access management
+tooling deployed for administrative accounts.
+D) The standards should enforce least privilege, need-to-know, segregation of
+duties, default-deny, and periodic recertification of access.
 
-Your call + why?
+Your answer, and why?
 
 Reveal:
-Answer: D. Least privilege, need-to-know, segregation of duties, default-deny,
-periodic recertification. The trap is B: RBAC is seductive because everyone
-uses it, but RBAC is the implementation, not the principle. An RBAC system
-with over-broad roles violates least privilege. A, B and C all confuse
-mechanisms (how) with principles (what access is granted). Shortcut: if the
-stem says "principles", answer the five principles; if it says
-"implementation", look for the mechanism.
+Answer: D. The canonical access principles are least privilege, need-to-know,
+segregation of duties, default-deny, and periodic recertification. The trap is
+B: role-based access control is seductive because almost everyone uses it, but
+RBAC is the implementation, not the principle. An RBAC system with over-broad
+roles still violates least privilege. Options A, B and C all confuse a
+mechanism (how access is enforced) with the principle (what access should be
+granted). Shortcut: when the stem asks about principles, name the principles;
+when it asks about implementation, name the mechanism.
 
 ---
 
@@ -238,7 +243,7 @@ B) Proceed with the audit but disclose the prior involvement in the audit report
 C) Limit the audit scope to areas the auditor was not directly involved in
 D) Have a peer auditor independently review all audit conclusions before issuance
 
-Answer + reasoning below.
+Answer and reasoning below.
 
 Reveal:
 Answer: A. Self-review is a textbook independence threat. You cannot objectively
@@ -260,17 +265,19 @@ An IS auditor at a health-insurance company is explaining the Three Lines Model
 to the audit committee. Which statement BEST describes the boundaries between
 the three lines?
 
-A) First line = operational management owning risks in their areas; second line
-= risk and compliance functions providing oversight (not independent); third
-line = internal audit providing independent assurance
-B) First line = internal audit performing operational testing; second line =
-compliance functions; third line = the board accepting all final risk decisions
-C) All three lines report to internal audit, which is the single point of
-accountability for the entire risk-management framework
+A) The first line is operational management, which owns and manages the risks
+in its own areas; the second line is the risk and compliance functions, which
+provide oversight but are not independent of management; and the third line is
+internal audit, which provides independent assurance.
+B) The first line is internal audit performing operational testing, the second
+line is the compliance functions, and the third line is the board accepting
+all final risk decisions.
+C) All three lines report to internal audit, which serves as the single point
+of accountability for the entire risk-management framework.
 D) The Three Lines Model is interchangeable with COSO's Internal Control
-Framework and the terms can be used synonymously
+Framework, and the terms can be used synonymously.
 
-Your pick + why?
+Your pick, and why?
 
 Reveal:
 Answer: A. The IIA's Three Lines Model: first line owns the risk (operational
@@ -300,7 +307,7 @@ rollback capability after an incident
 D) Quarterly user-access reviews of cloud admin accounts to detect
 inappropriate privilege grants
 
-Answer + reasoning below.
+Answer and reasoning below.
 
 Reveal:
 Answer: A. Drift detection is a continuous comparison: the IaC-declared state
@@ -330,7 +337,7 @@ system catalogs, and disabling reduces attack surface
 D) Treat metadata as application data and back it up nightly with the same
 procedures and retention as customer transaction records
 
-Your call + why?
+Your answer, and why?
 
 Reveal:
 Answer: A. Metadata holds the canonical definition of the database structure;
@@ -351,17 +358,17 @@ Body:
 An IS auditor is conducting a data center physical security audit. Which
 approach BEST addresses the relevant audit scope?
 
-A) Review CCTV coverage maps, recording retention, playback integrity, and
-monitoring staffing
-B) Inspect fire suppression, smoke detector placement, and fire marshal
-sign-off
-C) Sample 30 days of badge-access logs, provisioning and de-provisioning
-records, and terminated-employee access revocation
-D) A multi-element scope: perimeter, interior zones, access mechanisms, visitor
-management, monitoring, environmental controls, emergency procedures,
-post-incident review, vendor access, and audit-trail integrity
+A) The audit should concentrate on the surveillance environment, reviewing
+CCTV coverage, recording retention, playback integrity, and monitoring staffing.
+B) The audit should concentrate on fire safety, inspecting suppression systems,
+smoke detector placement, and the fire marshal sign-off.
+C) The audit should concentrate on access records, sampling badge-access logs
+and reviewing provisioning, de-provisioning, and terminated-employee revocation.
+D) The audit should cover the full physical environment, including the
+perimeter, interior zones, access mechanisms, visitor management, monitoring,
+environmental controls, emergency procedures, and the audit trail.
 
-Answer + reasoning below.
+Your answer, and why?
 
 Reveal:
 Answer: D. A data center physical security audit is multi-element by nature.

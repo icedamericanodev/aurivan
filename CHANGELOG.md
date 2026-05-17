@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.45.1] — Saved Questions display fix
+
+### Fixed
+- On phones, the Saved Questions list now lays out correctly. The question text is no longer squeezed into a narrow column by the tag selector beside it.
+
 ## [v10.45] — Your privacy, clearly explained
 
 ### New
