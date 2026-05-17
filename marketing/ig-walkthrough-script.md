@@ -66,3 +66,54 @@ Libre lahat to. Walang account, walang ads. Hindi to shortcut, pero sobrang laki
   and captions also reinforce the feature names.
 - Keep the ethics rule: Aurivan is a big help but not a shortcut, never a
   guaranteed pass. Do not add pass-guarantee claims.
+
+## English-only version (for international followers)
+
+Same 9 beats and navigation cues as above; only the voiceover changes.
+
+1. Hook. Open the app, Home screen showing.
+   "Taking the CISA exam? Don't spend thousands. This reviewer is completely free. Aurivan."
+
+2. Home tab. Slowly scroll the Home screen.
+   "The moment you open it, the Home screen shows what matters: your readiness score, a countdown to your exam date, and your progress in every domain."
+
+3. Tap Practice. Start a question, tap an option, tap a confidence button.
+   "Head to Practice. Real CISA-style questions. Answer one, then rate how confident you were: sure, educated guess, or guessing."
+
+4. Tap Submit. Scroll through the explanation.
+   "Here is my favorite part. It does not just tell you right or wrong. It explains why, option by option, and how ISACA actually thinks. Plus exam tips on every question."
+
+5. Tap Mock. Show the Mock Exam setup card.
+   "There is a full Mock Exam too. All 150 questions, a four-hour timer, exactly like the real thing."
+
+6. Tap Topics. Open a topic, scroll an illustrated study page.
+   "In Topics, you get a complete study guide. Clear diagrams, plain-language explanations, and the common mistakes to avoid."
+
+7. Tap More then Weak Spots, then point at the Review queue on Home.
+   "Not sure where you are weak? Weak Spots shows you. And the questions you miss come back so you review them again. Spaced repetition, built in."
+
+8. Quick flashes. Glossary, Principles, Saved, then the dark mode toggle.
+   "There is a glossary, a principles library, you can save the hard questions, and yes, there is dark mode."
+
+9. Close. Back on Home or the logo.
+   "All of it is free. No account, no ads. It is not a shortcut, but it is a huge help for your prep. Aurivan. Link in bio. Go try it."
+
+### Clean voiceover script, English (paste this into ElevenLabs)
+
+Taking the CISA exam? Don't spend thousands. This reviewer is completely free. Aurivan.
+
+The moment you open it, the Home screen shows what matters: your readiness score, a countdown to your exam date, and your progress in every domain.
+
+Head to Practice. Real CISA-style questions. Answer one, then rate how confident you were: sure, educated guess, or guessing.
+
+Here is my favorite part. It does not just tell you right or wrong. It explains why, option by option, and how ISACA actually thinks. Plus exam tips on every question.
+
+There is a full Mock Exam too. All 150 questions, a four-hour timer, exactly like the real thing.
+
+In Topics, you get a complete study guide. Clear diagrams, plain-language explanations, and the common mistakes to avoid.
+
+Not sure where you are weak? Weak Spots shows you. And the questions you miss come back so you review them again. Spaced repetition, built in.
+
+There is a glossary, a principles library, you can save the hard questions, and yes, there is dark mode.
+
+All of it is free. No account, no ads. It is not a shortcut, but it is a huge help for your prep. Aurivan. Link in bio. Go try it.
