@@ -13,7 +13,7 @@
 #   2. If there are any, pulls them and prints what changed.
 #   3. If the questions changed (../data/domain*.json), rebuilds the
 #      question pack. If libraries changed (package.json / lock file),
-#      runs npm install and REBUILDS the app (new libraries can include
+#      runs npm ci and REBUILDS the app (new libraries can include
 #      native Android code, which only a rebuild picks up).
 #
 # You do not need to press anything after that. Expo's dev server WATCHES the
@@ -85,6 +85,10 @@ while [ "$STOPPING" = "0" ]; do
   echo "New work on origin/$BRANCH:"
   git --no-pager log --oneline "HEAD..origin/$BRANCH" | sed 's/^/    /'
 
+  # package-lock.json is generated: if a local npm rewrote it, that change is
+  # noise, and leaving it would make git refuse every pull from here on.
+  git checkout --quiet -- package-lock.json 2>/dev/null
+
   if ! git pull --quiet --ff-only origin "$BRANCH"; then
     echo "  Could not fast-forward. You have local changes, or the branch was"
     echo "  rebuilt after a merge. Run 'git status' and sort it out by hand;"
@@ -96,9 +100,11 @@ while [ "$STOPPING" = "0" ]; do
 
   # New libraries need installing, and the dev server must restart to see them.
   if echo "$CHANGED" | grep -qE '^mobile/package(-lock)?\.json$'; then
-    echo "  Libraries changed: running npm install and rebuilding the app."
+    echo "  Libraries changed: running npm ci and rebuilding the app."
     stop_expo
-    npm install --silent   # also rebuilds the question pack (postinstall)
+    # npm ci installs exactly what the lock file lists and never rewrites it
+    # (npm install can, which then blocks the next git pull).
+    npm ci --silent   # also rebuilds the question pack (postinstall)
     start_expo
     continue
   fi

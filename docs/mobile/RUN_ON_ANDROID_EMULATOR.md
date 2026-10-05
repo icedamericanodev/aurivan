@@ -59,10 +59,16 @@ Already cloned? Just update instead: `cd ~/aurivan && git pull && cd mobile`.
 
 ## Step 2 — Install the app's libraries (once, and after library changes)
 
-    npm install
+    npm ci
 
 Downloads every library the app uses and builds the question pack. Look for
 `✓ content pack built: … questions`. Yellow `npm warn` lines are normal.
+
+> **Why `npm ci` and not `npm install`?** `npm ci` installs *exactly* what
+> the project's lock file lists and never changes that file. `npm install`
+> can quietly rewrite `package-lock.json`, and then `git pull` refuses with
+> *"Your local changes … would be overwritten"*. If that ever happens:
+> `git restore mobile/package-lock.json`, then pull again.
 
 ## Step 3 — Start the emulator
 
@@ -121,7 +127,7 @@ changed. Code changes appear on the emulator **within a second or two, by
 themselves** (Expo's "Fast Refresh"). It also:
 
 - rebuilds the question pack when questions change, and
-- runs `npm install` and **rebuilds the app** when libraries change (new
+- runs `npm ci` and **rebuilds the app** when libraries change (new
   libraries can contain native Android code, which only a rebuild picks up).
 
 You don't type anything after starting it. Stop it with **Ctrl-C**.
@@ -143,7 +149,7 @@ The app updates by itself. Two exceptions:
 | If the pull changed… | Do this |
 |---|---|
 | Questions (`data/domain*.json`) | `cd mobile && npm run content` |
-| Libraries (`mobile/package.json`) | Ctrl-C the dev server, `npm install`, then `npx expo run:android` again |
+| Libraries (`mobile/package.json`) | Ctrl-C the dev server, `npm ci`, then `npx expo run:android` again |
 
 I'll tell you when either happens. It's rare.
 
@@ -210,7 +216,8 @@ phone. Live updates work the same way.
 | `adb: command not found` | PATH line from Step 0 missing | Redo Step 0 |
 | Build fails with a long Gradle error | Usually a stale build | `cd ~/aurivan/mobile && rm -rf android && npx expo run:android` (regenerates it) |
 | App icon opens a "Development servers" screen | The dev server isn't running | Run `npx expo start` (or `bash scripts/dev-sync.sh`), then tap the server shown |
-| Red error screen about a missing module | Libraries changed since your last install | Ctrl-C → `npm install` → `npx expo run:android` |
+| Red error screen about a missing module | Libraries changed since your last install | Ctrl-C → `npm ci` → `npx expo run:android` |
+| `Your local changes to … package-lock.json would be overwritten` | An `npm install` rewrote the lock file | `git restore mobile/package-lock.json`, then pull again; use `npm ci` from now on |
 | `Could not fast-forward` from dev-sync | You edited files locally, or a branch was reset after a merge | `git status`; if you have no changes you need: `git fetch origin && git reset --hard origin/<branch>` |
 
 Send me a screenshot of any error you can't match here — the real cause is
