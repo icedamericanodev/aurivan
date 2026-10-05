@@ -1,0 +1,34 @@
+name: Mobile
+
+# Typecheck + unit tests for the Expo app. Also runs when question data
+# changes, because the content-pack integrity test reads data/domain*.json.
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml']
+  push:
+    branches: [main]
+    paths: ['mobile/**', 'data/domain*.json', '.github/workflows/mobile.yml']
+
+jobs:
+  check:
+    name: Typecheck + tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - name: Install (also builds the content pack)
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit + content tests
+        run: npm test -- --ci

@@ -1,0 +1,69 @@
+/**
+ * Root layout — runs once when the app opens.
+ * 1. Keeps the splash screen up while fonts and saved progress load.
+ * 2. Wraps every screen in a navigation "stack" (screens slide in/out).
+ */
+import { JetBrainsMono_500Medium } from '@expo-google-fonts/jetbrains-mono/500Medium';
+import { PlusJakartaSans_400Regular } from '@expo-google-fonts/plus-jakarta-sans/400Regular';
+import { PlusJakartaSans_500Medium } from '@expo-google-fonts/plus-jakarta-sans/500Medium';
+import { PlusJakartaSans_600SemiBold } from '@expo-google-fonts/plus-jakarta-sans/600SemiBold';
+import { PlusJakartaSans_700Bold } from '@expo-google-fonts/plus-jakarta-sans/700Bold';
+import { useFonts } from 'expo-font';
+import * as Notifications from 'expo-notifications';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useHydrated } from '../store/useHydrated';
+import { useTheme } from '../theme/useTheme';
+
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// Show study reminders even if the app is open.
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+export default function RootLayout() {
+  const [fontsLoaded, fontError] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
+    JetBrainsMono_500Medium,
+  });
+  const hydrated = useHydrated();
+  const { c, isDark } = useTheme();
+  // If a font fails to load we still start (system font fallback) rather than hang.
+  const ready = (fontsLoaded || Boolean(fontError)) && hydrated;
+
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync().catch(() => {});
+  }, [ready]);
+
+  if (!ready) return null;
+
+  return (
+    <SafeAreaProvider>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: c.bg },
+        }}
+      >
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
+        {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
+        <Stack.Screen name="session" options={{ gestureEnabled: false }} />
+        <Stack.Screen name="results" options={{ gestureEnabled: false }} />
+      </Stack>
+    </SafeAreaProvider>
+  );
+}
