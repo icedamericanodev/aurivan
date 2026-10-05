@@ -14,7 +14,7 @@ and use `bash scripts/dev-sync.sh`.
 3. In a terminal:
    ```bash
    cd mobile
-   npm install        # downloads libraries AND builds the question pack
+   npm ci             # downloads libraries AND builds the question pack
    npx expo start     # starts the dev server and shows a QR code
    ```
 4. Scan the QR code with your phone camera (iPhone) or with Expo Go (Android).
