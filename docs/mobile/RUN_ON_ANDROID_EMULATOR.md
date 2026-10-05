@@ -21,31 +21,37 @@ you can tap through a feature instead of looking at a screenshot of it.
 
 | Tool | Why | Status |
 |---|---|---|
-| **Android Studio** | The **emulator**, the Android SDK, and the Java it bundles | ✅ from Salapify |
+| **Android Studio** | The **emulator** and the Android SDK | ✅ from Salapify |
+| **Java 17** | React Native's Android build requires it (Android Studio's bundled Java is too new) | Step 0 |
 | **Node.js 20+** | Runs Expo's tools. `node --version` should print `v24.x` | ✅ installed |
 | **VS Code** | To open the project and use its Terminal | ✅ |
 | **Git** | To get the code | ✅ |
 
-## Step 0 — Tell the terminal where Android and Java live (once)
+## Step 0 — Install Java 17 and tell the terminal where things live (once)
 
-Flutter finds these on its own; Expo's Android build needs to be told. In the
-VS Code Terminal, paste these **four lines** one at a time, pressing Enter
-after each:
+React Native's Android build needs **Java 17**. Newer Android Studio versions
+bundle Java 21–25, which is too new: the build fails at a step named
+`configureCMakeDebug` with *"A restricted method in java.lang.System has been
+called"*. So install Java 17 separately:
 
-    echo 'export ANDROID_HOME="$HOME/Library/Android/sdk"' >> ~/.zshrc
-    echo 'export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"' >> ~/.zshrc
-    echo 'export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"' >> ~/.zshrc
-    source ~/.zshrc
+1. Download **Azul Zulu JDK 17** for **macOS, ARM 64-bit, .dmg** (free):
+   https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk
+   (Intel Mac? pick **x86 64-bit** instead.) Open it and run the installer.
+2. In the VS Code Terminal, paste these **four lines** one at a time:
+
+       echo 'export ANDROID_HOME="$HOME/Library/Android/sdk"' >> ~/.zshrc
+       echo 'export JAVA_HOME="$(/usr/libexec/java_home -v 17)"' >> ~/.zshrc
+       echo 'export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"' >> ~/.zshrc
+       source ~/.zshrc
 
 What this does: adds three settings to `~/.zshrc`, the file your terminal
-reads every time it opens, so you never have to type them again. `source`
-applies them to the current tab right away.
+reads every time it opens, so you never type them again. `source` applies
+them to the current tab now.
 
 Check it worked:
 
-    adb devices
-
-With the emulator running you should see something like `emulator-5554  device`.
+    java -version        # should say: openjdk version "17…"
+    adb devices          # with the emulator running: emulator-5554  device
 
 ---
 
@@ -211,10 +217,11 @@ phone. Live updates work the same way.
 | You see… | It means | Fix |
 |---|---|---|
 | `SDK location not found` / `ANDROID_HOME` | Step 0 wasn't applied in this tab | Run Step 0, or open a new Terminal tab |
-| `Unable to locate a Java Runtime` / `JAVA_HOME is set to an invalid directory` | Java path wrong | Check Android Studio is in **Applications**; redo Step 0 |
+| `Unable to locate a Java Runtime` / `JAVA_HOME is set to an invalid directory` | Java 17 missing or not selected | Install Java 17 and redo Step 0; `java -version` must say 17 |
+| `Execution failed for task …configureCMakeDebug` + `A restricted method in java.lang.System has been called` | Build is running on Java 24+ (too new) | Install Java 17 (Step 0), then `cd android && ./gradlew --stop && cd .. && rm -rf android/.cxx android/app/.cxx node_modules/react-native-worklets/android/.cxx` and build again |
 | `No Android connected device found` | Emulator isn't running | Start it (Step 3), then run the command again |
 | `adb: command not found` | PATH line from Step 0 missing | Redo Step 0 |
-| Build fails with a long Gradle error | Usually a stale build | `cd ~/aurivan/mobile && rm -rf android && npx expo run:android` (regenerates it) |
+| Build fails with a long Gradle error | Find the real cause: `cd android && ./gradlew app:assembleDebug 2>&1 \| tee ~/aurivan-build.log \| grep -A 12 "What went wrong"` — send that. Otherwise usually a stale build | `cd ~/aurivan/mobile && rm -rf android && npx expo run:android` (regenerates it) |
 | App icon opens a "Development servers" screen | The dev server isn't running | Run `npx expo start` (or `bash scripts/dev-sync.sh`), then tap the server shown |
 | Red error screen about a missing module | Libraries changed since your last install | Ctrl-C → `npm ci` → `npx expo run:android` |
 | `Your local changes to … package-lock.json would be overwritten` | An `npm install` rewrote the lock file | `git restore mobile/package-lock.json`, then pull again; use `npm ci` from now on |
