@@ -3,6 +3,10 @@
 The iOS + Android version of Aurivan, built with React Native + Expo.
 Architecture, roadmap and launch plan: [`docs/mobile/ARCHITECTURE.md`](../docs/mobile/ARCHITECTURE.md).
 
+**Testing on the Android emulator (with automatic updates from GitHub)?**
+Follow [`docs/mobile/RUN_ON_ANDROID_EMULATOR.md`](../docs/mobile/RUN_ON_ANDROID_EMULATOR.md)
+and use `bash scripts/dev-sync.sh`.
+
 ## Run it on your phone (5 minutes, no Mac needed)
 
 1. Install **Node.js 20+** on your computer (https://nodejs.org).
