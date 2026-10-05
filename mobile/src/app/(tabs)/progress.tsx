@@ -27,7 +27,7 @@ export default function Progress() {
       <Card>
         <Row>
           <Stat value={String(answered)} label="answered" />
-          <Stat value={answered ? `${Math.round((mastered / answered) * 100)}%` : '—'} label="accuracy" color={c.accent} />
+          <Stat value={answered ? `${Math.round((mastered / answered) * 100)}%` : '—'} label="accuracy" color={c.accentText} />
           <Stat value={String(streak)} label="day streak" color={c.tealText} />
         </Row>
       </Card>

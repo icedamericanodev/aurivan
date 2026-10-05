@@ -16,10 +16,19 @@ export function dayKey(ms: number): string {
   return `${d.getFullYear()}-${mm}-${dd}`;
 }
 
+/**
+ * The calendar day before `ms`. Uses date maths, not "minus 24 hours",
+ * because days are 23 or 25 hours long when clocks change (DST).
+ */
+export function yesterdayKey(ms: number): string {
+  const d = new Date(ms);
+  return dayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1, 12).getTime());
+}
+
 export function bumpStreak(s: Streak, now: number): Streak {
   const today = dayKey(now);
   if (s.lastDay === today) return s;
-  const yesterday = dayKey(now - 86_400_000);
+  const yesterday = yesterdayKey(now);
   const current = s.lastDay === yesterday ? s.current + 1 : 1;
   return { current, best: Math.max(s.best, current), lastDay: today };
 }
@@ -27,6 +36,6 @@ export function bumpStreak(s: Streak, now: number): Streak {
 /** Streak to SHOW: if you missed yesterday entirely, it is broken (0). */
 export function visibleStreak(s: Streak, now: number): number {
   if (!s.lastDay) return 0;
-  const ok = s.lastDay === dayKey(now) || s.lastDay === dayKey(now - 86_400_000);
+  const ok = s.lastDay === dayKey(now) || s.lastDay === yesterdayKey(now);
   return ok ? s.current : 0;
 }

@@ -4,10 +4,10 @@
  * and a one-tap "continue" that picks the most valuable domain.
  */
 import { router } from 'expo-router';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Card, Gap, Pill, ProgressBar, Row, Screen, Stat, T } from '../../components/ui';
 import { getDomain } from '../../content/certifications';
-import { startPractice, startReview } from '../../lib/sessions';
+import { guardedStart, startPractice, startReview } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useSession } from '../../store/session';
 import { useSettings } from '../../store/settings';
@@ -21,16 +21,13 @@ export default function Home() {
   const active = useSession((s) => s.active);
   const focus = readiness.focusDomainId ? getDomain(cert, readiness.focusDomainId) : undefined;
 
-  const go = (started: unknown) => {
-    if (started) router.push('/session');
-    else Alert.alert('Nothing to show yet', 'Answer a few practice questions first.');
-  };
+  const open = () => router.push('/session');
 
   return (
     <Screen>
       <Row style={{ justifyContent: 'space-between' }}>
-        <T v="mono" color={c.accent}>{cert.name} · {cert.issuer}</T>
-        {streak > 0 && <Pill label={`🔥 ${streak}-day streak`} color={c.tealText} />}
+        <T v="mono" color={c.accentText}>{cert.name} · {cert.issuer}</T>
+        {streak > 0 && <Pill label={`🔥 ${streak}-day streak`} color={c.tealText} accessibilityLabel={`${streak}-day streak`} />}
       </Row>
       <Gap h={space.sm} />
       <T v="title">Ready when you are.</T>
@@ -52,7 +49,7 @@ export default function Home() {
         <Row>
           <View style={{ flex: 1 }}>
             <T v="label" color={c.text2}>Exam readiness</T>
-            <T v="hero" color={c.accent}>{readiness.score}%</T>
+            <T v="hero" color={c.accentText}>{readiness.score}%</T>
             <T v="caption">
               {readiness.reliable ? 'Weighted by the official blueprint.' : 'Keep practising every domain to firm this up.'}
             </T>
@@ -87,7 +84,7 @@ export default function Home() {
         <Button
           label={focus ? `Practise ${focus.short} (10)` : 'Start practising'}
           accessibilityHint="Starts 10 questions in the domain with the most room to improve"
-          onPress={() => go(startPractice(cert.id, { count: 10, domainId: focus?.id, title: focus?.name }))}
+          onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus?.id, title: focus?.name }), open)}
         />
       </Card>
       <Gap />
@@ -100,7 +97,7 @@ export default function Home() {
         {dueCount > 0 && (
           <>
             <Gap h={space.md} />
-            <Button kind="secondary" label="Start review" onPress={() => go(startReview(cert.id))} />
+            <Button kind="secondary" label="Start review" onPress={() => guardedStart(() => startReview(cert.id), open)} />
           </>
         )}
       </Card>

@@ -12,7 +12,7 @@ import { useTheme } from '../../theme/useTheme';
 const icon = (glyph: string) =>
   function TabIcon({ color }: { color: ColorValue }) {
     return (
-      <Text style={{ color, fontSize: 20 }} accessibilityElementsHidden importantForAccessibility="no">
+      <Text style={{ color, fontSize: 20, lineHeight: 24 }} maxFontSizeMultiplier={1.3} accessibilityElementsHidden importantForAccessibility="no">
         {glyph}
       </Text>
     );
@@ -24,10 +24,11 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: c.accent,
+        tabBarActiveTintColor: c.accentText,
         tabBarInactiveTintColor: c.muted,
         tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border },
-        tabBarLabelStyle: { fontFamily: font.semibold, fontSize: 11 },
+        tabBarLabelStyle: { fontFamily: font.semibold, fontSize: 11, lineHeight: 14 },
+        tabBarAllowFontScaling: true,
       }}
     >
       <Tabs.Screen name="home" options={{ title: 'Home', tabBarIcon: icon('⌂') }} />

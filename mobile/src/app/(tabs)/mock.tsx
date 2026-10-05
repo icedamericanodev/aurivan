@@ -3,32 +3,20 @@
  * weights, same difficulty mix, no feedback until you submit.
  */
 import { router } from 'expo-router';
-import { Alert } from 'react-native';
 import { Button, Card, Gap, Pill, Row, Screen, T } from '../../components/ui';
-import { startMock } from '../../lib/sessions';
+import { guardedStart, startMock } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
-import { useSession } from '../../store/session';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 export default function Mock() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
-  const active = useSession((s) => s.active);
   const mini = Math.round(cert.exam.questions / 3);
   const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);
 
-  const begin = (questions?: number) => {
-    const launch = () => {
-      if (startMock(cert.id, questions)) router.push('/session');
-    };
-    if (active) {
-      Alert.alert('Replace current session?', `You have an unfinished "${active.title}". Starting a mock will discard it.`, [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Start mock', style: 'destructive', onPress: launch },
-      ]);
-    } else launch();
-  };
+  const begin = (questions?: number) =>
+    guardedStart(() => startMock(cert.id, questions), () => router.push('/session'));
 
   const last = progress.mocks[0];
 

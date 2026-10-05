@@ -77,3 +77,12 @@ describe('streak', () => {
     expect(visibleStreak(s, t0 + 7 * day)).toBe(0);
   });
 });
+
+describe('yesterdayKey (DST-safe)', () => {
+  it('steps back one calendar day across month and year boundaries', () => {
+    const { yesterdayKey } = require('../engine/streak');
+    expect(yesterdayKey(new Date(2026, 10, 1, 23, 30).getTime())).toBe('2026-10-31');
+    expect(yesterdayKey(new Date(2026, 2, 9, 0, 30).getTime())).toBe('2026-03-08');
+    expect(yesterdayKey(new Date(2027, 0, 1, 8).getTime())).toBe('2026-12-31');
+  });
+});

@@ -1,8 +1,10 @@
 /**
- * Aurivan design tokens for mobile — ported 1:1 from index.html's :root
- * and [data-theme="dark"] blocks (navy/blue identity, locked in
- * design-notes/MASTER_HANDOFF.md). Contrast notes are kept: use
- * `accentFill` (not `accent`) behind white text to pass WCAG AA.
+ * Aurivan design tokens for mobile — ported from index.html's :root and
+ * [data-theme="dark"] blocks (navy/blue identity, locked in
+ * design-notes/MASTER_HANDOFF.md). Dark-mode correct/wrong/warning values
+ * were adjusted for native surfaces; every text pair passes WCAG AA.
+ * Rules: `accentText` for blue text, `accentFill` behind white text,
+ * `accent` only for borders and bars.
  */
 export interface Palette {
   bg: string;
@@ -12,8 +14,9 @@ export interface Palette {
   text: string;
   text2: string;
   muted: string;
-  accent: string; // outlines, links, progress
-  accentFill: string; // filled buttons with white text (7.7:1)
+  accent: string; // borders, bars, focus rings — NOT small text (3.7:1 on white)
+  accentText: string; // brand-blue TEXT that passes WCAG AA (≥ 5.7:1)
+  accentFill: string; // filled buttons with white text (6.7:1)
   teal: string;
   tealText: string;
   onAccent: string;
@@ -35,6 +38,7 @@ export const light: Palette = {
   text2: '#2D3460',
   muted: '#5A6390',
   accent: '#3B82F6',
+  accentText: '#1D4ED8',
   accentFill: '#1D4ED8',
   teal: '#14B8A6',
   tealText: '#0F766E',
@@ -57,6 +61,7 @@ export const dark: Palette = {
   text2: '#A0A8D4',
   muted: '#8C93B8',
   accent: '#3B82F6',
+  accentText: '#60A5FA',
   accentFill: '#1D4ED8',
   teal: '#14B8A6',
   tealText: '#2DD4BF',

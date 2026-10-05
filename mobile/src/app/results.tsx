@@ -51,7 +51,7 @@ export default function Results() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <T v="mono" color={c.accent}>{active.title.toUpperCase()}</T>
+      <T v="mono" color={c.accentText}>{active.title.toUpperCase()}</T>
       <Gap h={space.sm} />
       <T v="title">{pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}</T>
       <Gap />

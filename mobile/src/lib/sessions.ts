@@ -2,6 +2,7 @@
  * Session factory — builds a ready-to-run quiz session for each mode.
  * Screens call these and then navigate to /session.
  */
+import { Alert } from 'react-native';
 import { getCertification } from '../content/certifications';
 import { findQuestion, getAllQuestions } from '../content/loader';
 import type { Difficulty } from '../content/types';
@@ -21,7 +22,6 @@ function newSession(
   ids: string[],
   extra: Partial<ActiveSession> = {},
 ): ActiveSession | null {
-  if (ids.length === 0) return null;
   const now = Date.now();
   const rng = createRng(now);
   const shuffle = useSettings.getState().shuffleOptions;
@@ -30,12 +30,15 @@ function newSession(
     const q = findQuestion(certId, id);
     if (q) perms[id] = shuffle ? makePermutation(q, rng) : identityPermutation(q);
   }
+  // Drop ids whose question no longer exists (e.g. removed in a content update).
+  const questionIds = ids.filter((id) => perms[id]);
+  if (questionIds.length === 0) return null;
   const session: ActiveSession = {
     id: `${mode}-${now}`,
     mode,
     certId,
     title,
-    questionIds: ids.filter((id) => perms[id]),
+    questionIds,
     perms,
     index: 0,
     responses: {},
@@ -83,4 +86,32 @@ export function startMock(certId: string, questions?: number) {
   return newSession('mock', certId, total === cert.exam.questions ? 'Full mock exam' : 'Mini mock', ids, {
     deadline: Date.now() + minutes * 60_000,
   });
+}
+
+/**
+ * Start a session safely. If an UNFINISHED session exists (e.g. a paused
+ * mock exam), ask before replacing it — losing 2 hours of exam work to a
+ * stray tap would be awful. `onStarted` runs once a session exists;
+ * `onEmpty` when there was nothing to practise.
+ */
+export function guardedStart(
+  start: () => ActiveSession | null,
+  onStarted: () => void,
+  onEmpty: () => void = () =>
+    Alert.alert('Nothing to practise yet', 'Try a different filter, or answer a few questions first.'),
+) {
+  const launch = () => (start() ? onStarted() : onEmpty());
+  const current = useSession.getState().active;
+  if (current && !current.finishedAt) {
+    Alert.alert(
+      'Replace your unfinished session?',
+      `You have an unfinished "${current.title}". Starting something new will discard it.`,
+      [
+        { text: 'Keep it', style: 'cancel' },
+        { text: 'Discard and start', style: 'destructive', onPress: launch },
+      ],
+    );
+  } else {
+    launch();
+  }
 }

@@ -8,9 +8,9 @@
  * No feedback until you submit the whole exam — just like the real thing.
  */
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, View } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AccessibilityInfo, Alert, BackHandler, Modal, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ConfidenceRow, OptionCard, ResultBanner, ScenarioBlock, TipsReveal, type OptionState } from '../components/quiz';
 import { Button, Card, Gap, Pill, Row, T } from '../components/ui';
@@ -74,12 +74,25 @@ export default function SessionScreen() {
   const remaining = active?.deadline ? active.deadline - now : 0;
   useEffect(() => {
     if (isMock && active?.deadline && !active.finishedAt && remaining <= 0) {
-      finishSession();
-      router.replace('/results');
+      finishSession(); // the finishedAt effect below navigates to /results
     }
   }, [isMock, remaining, active?.deadline, active?.finishedAt]);
 
-  // Finished sessions belong on the results screen.
+  // Android hardware back button runs the same "End/Pause?" confirmation
+  // as the on-screen button, instead of silently leaving the quiz.
+  const leaveRef = useRef<() => void>(() => router.replace('/home'));
+  useFocusEffect(
+    useCallback(() => {
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        leaveRef.current();
+        return true;
+      });
+      return () => sub.remove();
+    }, []),
+  );
+
+  // Finished sessions belong on the results screen (the ONLY place that
+  // navigates there, so it never happens twice).
   useEffect(() => {
     if (active?.finishedAt) router.replace('/results');
   }, [active?.finishedAt]);
@@ -87,9 +100,17 @@ export default function SessionScreen() {
   if (!active || !q || !perm || !qid) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.lg, justifyContent: 'center' }}>
-        <T v="heading" center>No session in progress.</T>
+        <T v="heading" center>
+          {active ? 'This session can’t continue — its questions were updated.' : 'No session in progress.'}
+        </T>
         <Gap />
-        <Button label="Back to Home" onPress={() => router.replace('/home')} />
+        <Button
+          label="Back to Home"
+          onPress={() => {
+            useSession.getState().clear();
+            router.replace('/home');
+          }}
+        />
       </SafeAreaView>
     );
   }
@@ -115,6 +136,7 @@ export default function SessionScreen() {
     if (!selected) return;
     const ok = isCorrect(q, selected, perm);
     Haptics.notificationAsync(ok ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error).catch(() => {});
+    AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
     answer(qid, { display: selected, correct: ok, confidence });
     recordAnswer(active.certId, qid, ok, confidence);
   };
@@ -122,10 +144,7 @@ export default function SessionScreen() {
   const next = () => {
     if (!isLast) goTo(active.index + 1);
     else if (isMock) confirmSubmitExam();
-    else {
-      finishSession();
-      router.replace('/results');
-    }
+    else finishSession(); // the finishedAt effect navigates to /results
   };
 
   const confirmSubmitExam = () => {
@@ -138,10 +157,7 @@ export default function SessionScreen() {
         {
           text: 'Submit',
           style: 'destructive',
-          onPress: () => {
-            finishSession();
-            router.replace('/results');
-          },
+          onPress: () => finishSession(),
         },
       ],
     );
@@ -162,7 +178,6 @@ export default function SessionScreen() {
           onPress: () => {
             if (answered) {
               finishSession();
-              router.replace('/results');
             } else {
               useSession.getState().clear();
               router.replace('/home');
@@ -172,6 +187,8 @@ export default function SessionScreen() {
       ]);
     }
   };
+
+  leaveRef.current = leave;
 
   const optionState = (display: Letter): OptionState => {
     if (!submitted) return selected === display ? 'selected' : 'idle';
@@ -194,7 +211,7 @@ export default function SessionScreen() {
       <View style={{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderBottomWidth: 1, borderBottomColor: c.border }}>
         <Row style={{ justifyContent: 'space-between' }}>
           <Pressable accessibilityRole="button" accessibilityLabel={isMock ? 'Pause exam' : 'End session'} onPress={leave} hitSlop={12}>
-            <T v="label" color={c.accent}>{isMock ? 'Pause' : 'End'}</T>
+            <T v="label" color={c.accentText}>{isMock ? 'Pause' : 'End'}</T>
           </Pressable>
           <T v="label">
             {active.index + 1} / {total}
@@ -205,7 +222,7 @@ export default function SessionScreen() {
             </T>
           ) : (
             <Pressable accessibilityRole="button" accessibilityLabel={saved ? 'Remove from saved' : 'Save question'} onPress={() => toggleBookmark(active.certId, qid)} hitSlop={12}>
-              <T v="label" color={c.accent}>{saved ? '★ Saved' : '☆ Save'}</T>
+              <T v="label" color={c.accentText}>{saved ? '★ Saved' : '☆ Save'}</T>
             </Pressable>
           )}
         </Row>
@@ -213,7 +230,7 @@ export default function SessionScreen() {
 
       <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl }}>
         <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-          {domain && <Pill label={domain.short} color={domain.color} />}
+          {domain && <Pill label={domain.short} dot={domain.color} />}
           <Pill label={q.difficulty} />
           {flagged && <Pill label="⚑ Flagged" color={c.warning} />}
         </Row>
@@ -282,9 +299,9 @@ export default function SessionScreen() {
       <View style={{ padding: space.lg, paddingBottom: space.md, borderTopWidth: 1, borderTopColor: c.border, backgroundColor: c.surface, gap: space.md }}>
         {isMock ? (
           <Row gap={space.sm}>
-            <Button kind="secondary" label="‹" accessibilityHint="Previous question" disabled={active.index === 0} onPress={() => goTo(active.index - 1)} style={{ paddingHorizontal: space.lg }} />
+            <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={() => goTo(active.index - 1)} style={{ paddingHorizontal: space.lg }} />
             <Button kind="secondary" label={flagged ? '⚑ Unflag' : '⚐ Flag'} onPress={() => toggleFlag(qid)} />
-            <Button kind="secondary" label="▦" accessibilityHint="Open question navigator" onPress={() => setNavOpen(true)} style={{ paddingHorizontal: space.lg }} />
+            <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={() => setNavOpen(true)} style={{ paddingHorizontal: space.lg }} />
             <Button label={isLast ? 'Finish' : 'Next ›'} onPress={next} style={{ flex: 1 }} />
           </Row>
         ) : submitted ? (
@@ -322,8 +339,9 @@ export default function SessionScreen() {
                       setNavOpen(false);
                     }}
                     style={{
-                      width: 52,
-                      height: 52,
+                      minWidth: 52,
+                      minHeight: 52,
+                      paddingHorizontal: space.xs,
                       borderRadius: radius.sm,
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -332,7 +350,7 @@ export default function SessionScreen() {
                       backgroundColor: done ? c.accentFill : c.surface,
                     }}
                   >
-                    <T v="label" color={done ? c.onAccent : c.text}>{flag ? `⚑${i + 1}` : `${done ? '●' : '○'}${i + 1}`}</T>
+                    <T v="label" color={done ? c.onAccent : c.text}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
                   </Pressable>
                 );
               })}

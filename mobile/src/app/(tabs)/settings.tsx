@@ -114,7 +114,7 @@ export default function Settings() {
             value={s.reminder.enabled}
             disabled={busy}
             onValueChange={toggleReminder}
-            trackColor={{ true: c.accentFill, false: c.border }}
+            trackColor={{ true: c.accentFill, false: c.muted }}
           />
         </Row>
         <Gap h={space.md} />
@@ -123,7 +123,7 @@ export default function Settings() {
             <T v="heading">Shuffle answer options</T>
             <T v="caption">Stops you memorising letters instead of reasoning.</T>
           </View>
-          <Switch accessibilityLabel="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} trackColor={{ true: c.accentFill, false: c.border }} />
+          <Switch accessibilityLabel="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} trackColor={{ true: c.accentFill, false: c.muted }} />
         </Row>
       </Card>
       <Gap />

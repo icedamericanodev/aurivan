@@ -85,6 +85,7 @@ export function Button({
   disabled,
   style,
   accessibilityHint,
+  accessibilityLabel,
 }: {
   label: string;
   onPress: () => void;
@@ -92,16 +93,19 @@ export function Button({
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   accessibilityHint?: string;
+  /** Spoken name when the visible label is a symbol (e.g. "‹"). */
+  accessibilityLabel?: string;
 }) {
   const { c } = useTheme();
   const bg =
     kind === 'primary' ? c.accentFill : kind === 'secondary' ? c.surface2 : kind === 'danger' ? c.wrongBg : 'transparent';
-  const fg = kind === 'primary' ? c.onAccent : kind === 'danger' ? c.wrong : c.accent;
+  const fg = kind === 'primary' ? c.onAccent : kind === 'danger' ? c.wrong : c.accentText;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}
       disabled={disabled}
       style={({ pressed }) => [
@@ -159,11 +163,28 @@ export function ProgressBar({ value, color, height = 8 }: { value: number; color
 }
 
 // ── Pill: small label chip ────────────────────────────────────────────
-export function Pill({ label, color, bg }: { label: string; color?: string; bg?: string }) {
+// `dot` shows a colour swatch (e.g. a domain colour) next to readable text,
+// because domain colours themselves are too light to be used AS text.
+export function Pill({
+  label,
+  color,
+  bg,
+  dot,
+  accessibilityLabel,
+}: {
+  label: string;
+  color?: string;
+  bg?: string;
+  dot?: string;
+  accessibilityLabel?: string;
+}) {
   const { c } = useTheme();
   return (
-    <View style={[styles.pill, { backgroundColor: bg ?? c.surface2 }]}>
-      <Text style={[variantStyle.mono, { color: color ?? c.text2 }]}>{label.toUpperCase()}</Text>
+    <View style={[styles.pill, { backgroundColor: bg ?? c.surface2, flexDirection: 'row', alignItems: 'center', gap: 6 }]}>
+      {dot && <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: dot }} />}
+      <Text accessibilityLabel={accessibilityLabel} style={[variantStyle.mono, { color: color ?? c.text2 }]}>
+        {label.toUpperCase()}
+      </Text>
     </View>
   );
 }
@@ -216,7 +237,7 @@ const styles = StyleSheet.create({
   card: { borderRadius: radius.lg, borderWidth: 1, padding: space.lg },
   pill: { alignSelf: 'flex-start', borderRadius: radius.pill, paddingHorizontal: space.sm, paddingVertical: 3 },
   chip: {
-    minHeight: 40,
+    minHeight: 48,
     borderRadius: radius.pill,
     borderWidth: 1,
     paddingHorizontal: space.lg,

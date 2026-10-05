@@ -17,12 +17,12 @@ export function ScenarioBlock({ text }: { text: string }) {
   const long = text.length > 220;
   return (
     <View style={{ borderLeftWidth: 3, borderLeftColor: c.accent, backgroundColor: c.surface2, padding: space.md, borderRadius: radius.sm }}>
-      <T v="mono" color={c.accent}>SCENARIO</T>
+      <T v="mono" color={c.accentText}>SCENARIO</T>
       <Gap h={space.xs} />
       <T v="body" color={c.text2}>{long && !open ? `${text.slice(0, 200).trimEnd()}…` : text}</T>
       {long && (
-        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} style={{ paddingVertical: space.sm }}>
-          <T v="label" color={c.accent}>{open ? 'Show less' : 'Read full scenario'}</T>
+        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
+          <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read full scenario'}</T>
         </Pressable>
       )}
     </View>
@@ -57,7 +57,7 @@ export function OptionCard({
   return (
     <Pressable
       accessibilityRole="radio"
-      accessibilityState={{ selected: state === 'selected', disabled }}
+      accessibilityState={{ checked: state === 'selected', disabled }}
       accessibilityLabel={`Option ${letter}: ${text}${suffix}`}
       onPress={onPress}
       disabled={disabled}
@@ -75,8 +75,11 @@ export function OptionCard({
         opacity: state === 'dimmed' ? 0.6 : pressed ? 0.85 : 1,
       })}
     >
-      <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: look.badge, alignItems: 'center', justifyContent: 'center' }}>
-        <T v="label" color={look.badgeText} style={{ fontFamily: font.bold }}>{letter}</T>
+      <View style={{ minWidth: 28, minHeight: 28, paddingHorizontal: 4, borderRadius: 14, backgroundColor: look.badge, alignItems: 'center', justifyContent: 'center' }}>
+        {/* ✓ / ✗ marks correct/wrong by shape, not colour alone. */}
+        <T v="label" color={look.badgeText} style={{ fontFamily: font.bold }}>
+          {state === 'correct' ? `${letter}✓` : state === 'wrong' ? `${letter}✗` : letter}
+        </T>
       </View>
       <T v="body" style={{ flex: 1 }}>{text}</T>
     </Pressable>
@@ -121,7 +124,7 @@ export function TipsReveal({ tips }: { tips: string[] }) {
     <Card style={{ backgroundColor: c.surface2 }}>
       {tips.slice(0, shown).map((tip, i) => (
         <View key={i} style={{ marginBottom: space.md }}>
-          <T v="mono" color={i === 0 ? c.warning : i === 1 ? c.accent : c.tealText}>
+          <T v="mono" color={i === 0 ? c.warning : i === 1 ? c.accentText : c.tealText}>
             {`${i + 1}. ${TIP_LABELS[i] ?? 'Tip'}`.toUpperCase()}
           </T>
           <Gap h={space.xs} />

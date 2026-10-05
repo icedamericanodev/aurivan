@@ -4,10 +4,10 @@
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Card, Chip, Gap, ProgressBar, Row, Screen, T } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
-import { startBookmarks, startPractice } from '../../lib/sessions';
+import { guardedStart, startBookmarks, startPractice } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -29,14 +29,16 @@ export default function Practice() {
 
   const start = () => {
     const domain = cert.domains.find((d) => d.id === domainId);
-    const s = startPractice(cert.id, {
-      count,
-      domainId,
-      difficulty: DIFFS[diff].value,
-      title: domain ? domain.name : 'Mixed practice',
-    });
-    if (s) router.push('/session');
-    else Alert.alert('No questions match', 'Try a different difficulty or domain.');
+    guardedStart(
+      () =>
+        startPractice(cert.id, {
+          count,
+          domainId,
+          difficulty: DIFFS[diff].value,
+          title: domain ? domain.name : 'Mixed practice',
+        }),
+      () => router.push('/session'),
+    );
   };
 
   return (
@@ -65,7 +67,10 @@ export default function Practice() {
             style={{ marginBottom: space.sm, borderColor: selected ? c.accent : c.border, borderWidth: selected ? 2 : 1 }}
           >
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="mono" color={d.color}>DOMAIN {d.id} · {d.weight}%</T>
+              <Row gap={6}>
+                <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: d.color }} />
+                <T v="mono" color={c.text2}>DOMAIN {d.id} · {d.weight}%</T>
+              </Row>
               <T v="caption">{dm?.answered ?? 0} answered</T>
             </Row>
             <T v="heading">{d.name}</T>
@@ -109,9 +114,7 @@ export default function Practice() {
             <Button
               kind="secondary"
               label="Practise saved questions"
-              onPress={() => {
-                if (startBookmarks(cert.id)) router.push('/session');
-              }}
+              onPress={() => guardedStart(() => startBookmarks(cert.id), () => router.push('/session'))}
             />
           </>
         )}

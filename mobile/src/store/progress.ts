@@ -42,6 +42,8 @@ interface ProgressState {
     confidence?: Confidence,
     opts?: { schedule?: boolean },
   ) => void;
+  /** Put questions into review (due now) WITHOUT counting them as answered. */
+  queueForReview: (certId: string, questionIds: string[]) => void;
   toggleBookmark: (certId: string, questionId: string) => void;
   recordMock: (certId: string, result: MockResult) => void;
   resetCert: (certId: string) => void;
@@ -82,6 +84,17 @@ export const useProgress = create<ProgressState>()(
             streak: bumpStreak(s.streak, now),
             today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
           };
+        }),
+
+      queueForReview: (certId, questionIds) =>
+        set((s) => {
+          const now = Date.now();
+          const cp = s.byCert[certId] ?? emptyCert();
+          const review = { ...cp.review };
+          for (const id of questionIds) {
+            review[id] = { box: 1, dueAt: now, lastSeen: now, reps: review[id]?.reps ?? 0 };
+          }
+          return { byCert: { ...s.byCert, [certId]: { ...cp, review } } };
         }),
 
       toggleBookmark: (certId, questionId) =>
