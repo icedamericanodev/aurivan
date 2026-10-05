@@ -4,12 +4,17 @@
 #
 #   bash scripts/dev-sync.sh          # from inside the mobile/ folder
 #
-# What it does, every 15 seconds:
+# Aurivan runs as its OWN app on the emulator (a "development build"), not
+# inside Expo Go. On start this builds and installs that app (first time
+# ~5-10 minutes, later runs under a minute), then serves your code to it.
+#
+# What it does next, every 15 seconds:
 #   1. Asks GitHub for new commits on your current branch (git fetch).
 #   2. If there are any, pulls them and prints what changed.
 #   3. If the questions changed (../data/domain*.json), rebuilds the
 #      question pack. If libraries changed (package.json / lock file),
-#      runs npm install and restarts the dev server.
+#      runs npm install and REBUILDS the app (new libraries can include
+#      native Android code, which only a rebuild picks up).
 #
 # You do not need to press anything after that. Expo's dev server WATCHES the
 # files: the moment a pull changes code, it pushes the change to the emulator
@@ -20,7 +25,7 @@
 #
 # Use this when Claude works in a CLOUD session and PUSHES commits. If Claude
 # Code runs on this Mac and edits files directly, you do not need this script
-# at all: plain `npx expo start --android` already reacts to every saved file.
+# at all: plain `npx expo run:android` already reacts to every saved file.
 
 set -u
 INTERVAL=15
@@ -40,9 +45,10 @@ STOPPING=0
 EXPO_PID=""
 
 start_expo() {
-  # --android opens the app on the running emulator (installing Expo Go on it
-  # the first time). Output goes straight to this window.
-  npx expo start --android &
+  # Builds (incrementally) and installs the Aurivan development build on the
+  # running emulator, then starts the dev server that streams code to it.
+  # Output goes straight to this window.
+  npx expo run:android &
   EXPO_PID=$!
 }
 
@@ -90,7 +96,7 @@ while [ "$STOPPING" = "0" ]; do
 
   # New libraries need installing, and the dev server must restart to see them.
   if echo "$CHANGED" | grep -qE '^mobile/package(-lock)?\.json$'; then
-    echo "  Libraries changed: running npm install and restarting the dev server."
+    echo "  Libraries changed: running npm install and rebuilding the app."
     stop_expo
     npm install --silent   # also rebuilds the question pack (postinstall)
     start_expo

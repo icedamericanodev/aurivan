@@ -4,156 +4,152 @@ Written for a beginner. Every step says what it does and why it matters.
 Same idea as Salapify's "run it yourself" guide, adapted for Aurivan, which
 is built with **Expo (React Native)** instead of Flutter.
 
-The goal: the Aurivan app running on an Android emulator on your MacBook,
-updating by itself whenever new code arrives, so you can tap through a
-feature instead of looking at a screenshot of it.
+The goal: Aurivan installed on your Android emulator **as its own app** (its
+own icon, like Salapify 3), updating by itself whenever new code arrives, so
+you can tap through a feature instead of looking at a screenshot of it.
+
+> **Expo vs Expo Go.** *Expo* is the toolkit Aurivan is built with — like
+> Flutter is for Salapify — and it stays. *Expo Go* is a separate helper app
+> that can run Expo projects without building them. We do **not** use Expo Go:
+> it cannot run every feature (daily reminders crash in it on Android).
+> Instead you build a **development build**: the real Aurivan app, wired to
+> receive live code updates.
 
 ---
 
 ## What you need
 
-| Tool | Why | You probably have it? |
+| Tool | Why | Status |
 |---|---|---|
-| **Android Studio** | Gives you the **emulator** (the simulated phone) and the Android SDK | Yes, from Salapify |
-| **Node.js 20 or newer** | Runs Expo's tools and installs Aurivan's libraries. Aurivan's equivalent of Flutter | Check below |
-| **VS Code** (Visual Studio Code) | To open the project and use its built-in Terminal | Yes |
-| **Git** | To get the code from GitHub | Yes |
+| **Android Studio** | The **emulator**, the Android SDK, and the Java it bundles | ✅ from Salapify |
+| **Node.js 20+** | Runs Expo's tools. `node --version` should print `v24.x` | ✅ installed |
+| **VS Code** | To open the project and use its Terminal | ✅ |
+| **Git** | To get the code | ✅ |
 
-Unlike Salapify, you do **not** need to install Flutter, Java or Xcode for this.
+## Step 0 — Tell the terminal where Android and Java live (once)
 
-### Check Node.js
+Flutter finds these on its own; Expo's Android build needs to be told. In the
+VS Code Terminal, paste these **four lines** one at a time, pressing Enter
+after each:
 
-Open VS Code → menu **Terminal → New Terminal**, and run:
+    echo 'export ANDROID_HOME="$HOME/Library/Android/sdk"' >> ~/.zshrc
+    echo 'export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"' >> ~/.zshrc
+    echo 'export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"' >> ~/.zshrc
+    source ~/.zshrc
 
-    node --version
+What this does: adds three settings to `~/.zshrc`, the file your terminal
+reads every time it opens, so you never have to type them again. `source`
+applies them to the current tab right away.
 
-- **A number like `v20.x` or `v22.x`** → good, skip ahead.
-- **"command not found"** or a number below 20 → install it:
+Check it worked:
 
-      brew install node
+    adb devices
 
-  (`brew` is Homebrew, the same tool you used for Flutter. If `brew` is
-  missing, install it from https://brew.sh first.)
+With the emulator running you should see something like `emulator-5554  device`.
 
 ---
 
 ## Step 1 — Get the Aurivan code (once)
 
-In the VS Code Terminal, go to where you keep projects and clone:
-
-    cd ~/Projects                      # or wherever you keep code
+    cd ~
     git clone https://github.com/icedamericanodev/aurivan.git
-    cd aurivan
+    cd aurivan/mobile
 
-Then open it in VS Code: **File → Open Folder… → aurivan**.
-
-If you already cloned Aurivan before, just update it instead:
-
-    cd ~/Projects/aurivan
-    git checkout main
-    git pull
+Already cloned? Just update instead: `cd ~/aurivan && git pull && cd mobile`.
 
 ## Step 2 — Install the app's libraries (once, and after library changes)
 
-    cd mobile
     npm install
 
-What this does: downloads every library the app uses into
-`mobile/node_modules/`, **and** automatically builds the question pack from
-`data/domain*.json`. You should see a line like:
+Downloads every library the app uses and builds the question pack. Look for
+`✓ content pack built: … questions`. Yellow `npm warn` lines are normal.
 
-    ✓ content pack built: … questions → src/content/generated/
+## Step 3 — Start the emulator
 
-**The first install takes a few minutes.** Later ones take seconds.
+Android Studio → **More Actions → Virtual Device Manager** (or **Tools →
+Device Manager**) → press **▶** next to your **Pixel 8**. Wait for the home
+screen. The same emulator can run Salapify and Aurivan side by side — they are
+separate apps.
 
-## Step 3 — Start the emulator (same as Salapify)
+## Step 4 — Build and run Aurivan (the first time)
 
-If you already made a Pixel emulator for Salapify, reuse it. Skip to 5.
+Inside `~/aurivan/mobile`:
 
-1. Open **Android Studio**.
-2. Welcome screen → **More Actions → Virtual Device Manager**
-   (if a project is open: **Tools → Device Manager**).
-3. **Create Device** → pick **Pixel 7** (or any recent Pixel).
-4. System image: **API 34 or newer**. Click **Download** if shown, wait.
-5. Press the **▶ play** arrow next to the device. A phone appears. Leave it
-   running.
+    npx expo run:android
 
-## Step 4 — Run Aurivan on the emulator
+What happens:
 
-In the VS Code Terminal, inside the `mobile` folder:
+1. Expo generates the Android project (a hidden `android/` folder — never
+   edit it, it is regenerated).
+2. Gradle (Android's build tool) compiles Aurivan. **The first build takes
+   5–10 minutes** — it is compiling everything from nothing. Later builds take
+   well under a minute. This is normal.
+3. It installs **Aurivan** on the emulator (you'll see the app icon), opens
+   it, and starts the **dev server** that streams your code into the app.
 
-    npx expo start --android
+You should see: *"Which exam are you preparing for?"*
 
-What happens, in order:
-
-1. Expo starts a **dev server** (it bundles the app's code and serves it).
-2. It finds your running emulator and installs **Expo Go** on it the first
-   time — a free app that runs Expo projects during development.
-3. Aurivan opens inside Expo Go on the emulator.
-
-**The first launch takes a minute or two** while the code is bundled. After
-that it is near-instant.
-
-You should see the onboarding screen: *"Which exam are you preparing for?"*
-
-### Keys you can press in that Terminal window
+Leave that Terminal running. Keys you can press in it:
 
 | Key | What it does |
 |---|---|
 | **r** | Reload the app (fresh start, keeps saved progress) |
-| **a** | Open the app on Android again (if you closed it) |
 | **j** | Open the debugger |
 | **m** | Toggle the in-app developer menu |
 | **Ctrl-C** | Stop the dev server |
 
+> **Next time,** if nothing native changed, you don't need to rebuild: open
+> the Aurivan icon on the emulator and run `npx expo start` — the app
+> connects to it. `npx expo run:android` also works every time; it just takes
+> a little longer because it checks the build.
+
 ---
 
-## Live updates — the part that saves you time
+## Live updates — the efficient loop
 
 ### Option A: let a script do it (recommended)
 
 When I (Claude) work in a cloud session and **push** commits, run this
 instead of Step 4, with the emulator already open:
 
-    cd mobile
+    cd ~/aurivan/mobile
     bash scripts/dev-sync.sh
 
-It starts the app **and** watches GitHub. Every 15 seconds it checks for new
-commits, pulls them, and prints what changed. It also:
+It builds/installs Aurivan, starts the dev server, **and** watches GitHub.
+Every 15 seconds it checks for new commits, pulls them, and prints what
+changed. Code changes appear on the emulator **within a second or two, by
+themselves** (Expo's "Fast Refresh"). It also:
 
-- rebuilds the question pack if questions changed, and
-- runs `npm install` and restarts the dev server if libraries changed.
+- rebuilds the question pack when questions change, and
+- runs `npm install` and **rebuilds the app** when libraries change (new
+  libraries can contain native Android code, which only a rebuild picks up).
 
-You do not type anything after that. Stop it with **Ctrl-C**.
+You don't type anything after starting it. Stop it with **Ctrl-C**.
 
-> **Which branch?** It watches the branch you are on. To test a pull request
-> before merging, switch to its branch first:
+> **Which branch?** It watches the branch you're on. To test a pull request
+> before merging, switch to its branch first, e.g.
 > `git fetch origin && git checkout claude/jolly-archimedes-p1sklr`
-> (the PR page shows the branch name). To test what is live, stay on `main`.
+> (the PR page shows the branch name). To test what's live, stay on `main`.
 
 ### Option B: by hand
 
-Leave `npx expo start --android` running. In a **second** Terminal tab
-(the **+** in VS Code's Terminal panel):
+Leave `npx expo run:android` running. In a **second** Terminal tab (the **+**
+in VS Code's Terminal panel):
 
-    git pull
+    cd ~/aurivan && git pull
 
-The app updates **by itself** within a second or two. Expo's dev server
-watches the files and pushes changes to the emulator ("Fast Refresh").
-
-Two exceptions:
+The app updates by itself. Two exceptions:
 
 | If the pull changed… | Do this |
 |---|---|
 | Questions (`data/domain*.json`) | `cd mobile && npm run content` |
-| Libraries (`mobile/package.json`) | Stop with Ctrl-C, run `npm install`, then `npx expo start --android` again |
+| Libraries (`mobile/package.json`) | Ctrl-C the dev server, `npm install`, then `npx expo run:android` again |
 
-I will tell you when either happens. It is rare.
+I'll tell you when either happens. It's rare.
 
-**If a screen still looks old:** press **r** in the dev server window
-(full reload). If *that* still shows old code, stop with Ctrl-C and run
-`npx expo start --android -c` (the `-c` clears Expo's cache), and check
-`git branch --show-current` to confirm you are on the branch you expect.
+**If a screen still looks old:** press **r**. If *that* still shows old
+code: Ctrl-C, run `npx expo start -c` (the `-c` clears the cache), and check
+`git branch --show-current` to confirm you're on the branch you expect.
 
 ---
 
@@ -162,18 +158,18 @@ I will tell you when either happens. It is rare.
 1. **Onboarding:** pick CISA (others show "Coming soon"), pick an exam date.
 2. **Home:** readiness 0%, domain bars, "Practise IS Audit (10)".
 3. **Practice a question:** tap an option → choose Sure/Unsure/Guessing →
-   **Submit answer**. Check:
-   - the green ✓ / red ✗ marks,
-   - "Why X is tempting but wrong" uses the **same letter you tapped**,
-   - tips reveal one at a time (Trap → Mindset → Exam-day).
+   **Submit answer**. Check the green ✓ / red ✗ marks, that "Why X is
+   tempting but wrong" uses the **same letter you tapped**, and that tips
+   reveal one at a time (Trap → Mindset → Exam-day).
 4. **Answer a few wrong on purpose**, end the session → Results → **Practise
    the ones I missed**.
 5. **Home → Spaced review** now shows questions due.
 6. **Mock tab → Mini mock:** answer a few, **flag** one (⚐), open the grid
-   (▦), then **Pause**. Swipe the app away completely, reopen it, and check
-   Home shows **Resume** with your answers still there.
-7. **Settings:** switch Dark/Light, toggle shuffle off and see options stay
-   in A–D order, try the daily reminder.
+   (▦), then **Pause**. Swipe the app away completely, reopen it from its
+   icon, and check Home shows **Resume** with your answers still there.
+7. **Settings:** Dark/Light, shuffle off (options stay in A–D order), and
+   the **daily reminder** — it works in this build. Set it, then check
+   Android's notification settings list Aurivan.
 8. **Android back button** inside a quiz should ask before leaving.
 
 Found something odd? Tell me the screen, what you tapped, and what you
@@ -181,40 +177,26 @@ expected. A screenshot (⌘-S in the emulator toolbar) helps a lot.
 
 ---
 
-## Things worth knowing before they confuse you
+## Things worth knowing
 
-**It starts completely empty.** No answers, 0% readiness, no streak. That is
-exactly what a brand-new learner sees, which makes it the most honest test.
+**It starts completely empty** — exactly what a brand-new learner sees.
 
-**To reset to a brand-new install:** long-press the Expo Go icon → **App
-info → Storage → Clear storage**, or in Aurivan: **Settings → Reset CISA
-progress**.
+**Reset to a brand-new install:** long-press the Aurivan icon → **App info →
+Storage → Clear storage**, or in the app: **Settings → Reset CISA progress**.
 
-**Daily reminders in Expo Go:** Expo Go has limited notification support, so
-the reminder toggle may show a warning or not fire. That is an Expo Go
-limitation, not an Aurivan bug. Reminders are fully testable in a
-"development build" (below).
+**Your progress lives on the emulator only.** Accounts and sync come later.
 
-**Your progress lives on the emulator only.** Accounts and sync come in a
-later phase.
+**The dev build is for testing, not the store.** The store version is built
+separately (EAS production build) and doesn't connect to a dev server.
 
 ---
 
-## Running on your real Android phone instead
+## Running on your real Android phone
 
-Better for judging how it feels in your hand.
-
-**Easiest (no cable):** install **Expo Go** from the Play Store on your phone.
-Make sure the phone and Mac are on the **same Wi-Fi**. Run `npx expo start`
-(without `--android`) and scan the QR code it prints using the Expo Go app.
-
-**With a USB cable:** turn on Developer options (Settings → About phone → tap
-**Build number** 7 times) → turn on **USB debugging** → plug in → trust the
-computer → `npx expo start --android`.
-
-If the QR code won't connect (office or hotel Wi-Fi often blocks it), use:
-
-    npx expo start --tunnel
+Developer options (Settings → About phone → tap **Build number** 7 times) →
+turn on **USB debugging** → plug into the Mac → trust the computer →
+`adb devices` should list it → `npx expo run:android --device` and pick your
+phone. Live updates work the same way.
 
 ---
 
@@ -222,20 +204,14 @@ If the QR code won't connect (office or hotel Wi-Fi often blocks it), use:
 
 | You see… | It means | Fix |
 |---|---|---|
-| `No Android connected device found` | The emulator isn't running yet | Start it in Android Studio (Step 3), then press **a** |
-| `command not found: npx` | Node.js isn't installed | `brew install node` |
-| `✗ missing source file … domain1.json` | You ran it outside the repo, or `data/` is missing | Run from `aurivan/mobile` in a full clone |
-| Red error screen about a missing module | Libraries changed since your last install | Ctrl-C → `npm install` → start again |
-| App is stuck on an old version | Cached bundle | Ctrl-C → `npx expo start --android -c` |
+| `SDK location not found` / `ANDROID_HOME` | Step 0 wasn't applied in this tab | Run Step 0, or open a new Terminal tab |
+| `Unable to locate a Java Runtime` / `JAVA_HOME is set to an invalid directory` | Java path wrong | Check Android Studio is in **Applications**; redo Step 0 |
+| `No Android connected device found` | Emulator isn't running | Start it (Step 3), then run the command again |
+| `adb: command not found` | PATH line from Step 0 missing | Redo Step 0 |
+| Build fails with a long Gradle error | Usually a stale build | `cd ~/aurivan/mobile && rm -rf android && npx expo run:android` (regenerates it) |
+| App icon opens a "Development servers" screen | The dev server isn't running | Run `npx expo start` (or `bash scripts/dev-sync.sh`), then tap the server shown |
+| Red error screen about a missing module | Libraries changed since your last install | Ctrl-C → `npm install` → `npx expo run:android` |
 | `Could not fast-forward` from dev-sync | You edited files locally, or a branch was reset after a merge | `git status`; if you have no changes you need: `git fetch origin && git reset --hard origin/<branch>` |
 
----
-
-## What is NOT set up yet, said plainly
-
-- There is no installable APK file yet. That needs an Expo account and an
-  **EAS build** (`npx eas-cli@latest build --profile preview --platform android`),
-  which produces a link you can open on any Android phone. It is the next
-  milestone on the roadmap (`docs/mobile/ARCHITECTURE.md`, Phase 1).
-- A **development build** (a custom version of Expo Go with Aurivan built in,
-  needed for full reminder testing) comes with that same step.
+Send me a screenshot of any error you can't match here — the real cause is
+usually a few lines above the last red line.
