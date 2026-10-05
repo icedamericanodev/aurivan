@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.45.1</span>
+    <span class="bank-pill" id="versionPill">v10.45.2</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5045,7 +5045,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.45.1</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.45.2</span>
     </div>
   </div>
 </header>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.45.1';
+const APP_VERSION = 'v10.45.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8271,10 +8271,76 @@ function displayToOriginal(displayLetter, shuffle) {
 // shuffled display equivalents. This lets hand-authored tips that say
 // "Trap is C 'IT knowledge'" continue to read correctly when C has
 // been shuffled to display position B.
+//
+// Only GENUINE option references are mapped. A standalone capital A-D can
+// also be the English article ("A sample of 25"), a label ("Annex A",
+// "Architecture B", "Class A/B/C") or part of an abbreviation ("C&A",
+// "D&O", "C-level", "A.8.12") — those must never change. Same rules as
+// mobile/scripts/build-content.mjs (tokenizeLetters); keep them in sync.
+var LETTER_LABEL_WORDS = {
+  annex:1, appendix:1, architecture:1, approach:1, state:1, 'class':1, series:1,
+  plan:1, type:1, tier:1, schedule:1, phase:1, exhibit:1, category:1, level:1,
+  part:1, section:1, grade:1, vitamin:1, site:1, building:1, zone:1, team:1,
+  version:1, model:1, form:1, regulated:1, privacy:1, scenario:1, vendor:1,
+  system:1, company:1, region:1, unit:1, group:1, division:1, step:1
+};
+// "A" followed by one of these is an option reference ("A is tempting"),
+// not the article ("A sample").
+var LETTER_VERBISH_AFTER_A = {
+  is:1, was:1, would:1, could:1, might:1, may:1, can:1, will:1, does:1, did:1,
+  only:1, also:1, still:1, correctly:1, incorrectly:1, sounds:1, looks:1,
+  seems:1, confuses:1, describes:1, reflects:1, relies:1, uses:1, treats:1,
+  applies:1, reduces:1, limits:1, endorses:1, waits:1, stacks:1, addresses:1,
+  assumes:1, fails:1, misses:1, jumps:1, focuses:1, skips:1, ignores:1,
+  conflates:1, mistakes:1, offers:1, proposes:1, suggests:1, tests:1,
+  answers:1, targets:1, substitutes:1, delegates:1, accepts:1, rejects:1,
+  recommends:1, requires:1, moves:1, puts:1, places:1, gives:1, takes:1,
+  makes:1, has:1, and:1, or:1, are:1, were:1, invites:1, tempts:1
+};
+
+// Words that, right before a letter, mean "an answer option".
+var LETTER_CHOICE_WORDS = {
+  to:1, pick:1, picks:1, picked:1, choose:1, chooses:1, chose:1, than:1,
+  over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1
+};
+
+function isOptionLetterRef(text, letter, offset) {
+  var before = text.slice(0, offset);
+  var after = text.slice(offset + 1);
+  // Second half of an abbreviation: "C&A", "M&A", "D&O".
+  if (/&$/.test(before)) return false;
+  // Lists like "Class A/B/C": follow the decision for the letter before the slash.
+  var slash = before.match(/\b([A-D])\/$/);
+  if (slash) return isOptionLetterRef(text, slash[1], offset - 2);
+  // Word directly before the letter, separated by whitespace only.
+  var pm = before.match(/([A-Za-z]+)\s+$/);
+  var prevWord = pm ? pm[1] : '';
+  // "pick A", "than A", "option A" → always an option reference.
+  if (prevWord && LETTER_CHOICE_WORDS[prevWord.toLowerCase()] === 1) return true;
+  if (prevWord && LETTER_LABEL_WORDS[prevWord.toLowerCase()] === 1) return false;
+  // ALL-CAPS emphasis ("IS A", "THAN A") is English; "B, C, OR D" is a list.
+  if (prevWord.length > 1 && prevWord === prevWord.toUpperCase() &&
+      prevWord !== 'OR' && prevWord !== 'AND') return false;
+  if (letter === 'A') {
+    var nm = after.match(/^\s+([A-Za-z]+)/);
+    var nextWord = nm ? nm[1] : '';
+    if (nextWord && /^[a-z]/.test(nextWord) && LETTER_VERBISH_AFTER_A[nextWord] !== 1) {
+      // "A buys speed; B builds..." — a third-person verb plus other
+      // option letters in the text marks a reference; otherwise an article.
+      var namesOthers = /\b[B-D]\b/.test(text);
+      var thirdPerson = /[^su]s$/.test(nextWord) && !/(ss|us|is|ics)$/.test(nextWord);
+      if (!(namesOthers && thirdPerson)) return false;
+    }
+    if (/^\s+\d/.test(after)) return false; // "A 15-minute RPO"
+  }
+  return true;
+}
+
 function mapLettersInText(text, shuffle) {
   if (!text || !shuffle) return text;
-  return text.replace(/\b([A-D])\b/g, function(_, ch) {
-    return originalToDisplay(ch, shuffle);
+  // Skips "C-level", "A.8.12", "C&A", quoted 'A'; allows possessive "B's".
+  return text.replace(/\b([A-D])\b(?![-&.]\w|['’](?!s\b))/g, function(match, ch, offset) {
+    return isOptionLetterRef(text, ch, offset) ? originalToDisplay(ch, shuffle) : match;
   });
 }
 
@@ -11999,6 +12065,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Clearer tips when answers are shuffled',
+    items: [
+      { cat: 'fixed', text: 'Tips now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.' }
+    ]
+  },
+  {
+    version: 'v10.45.1',
     title: 'Saved Questions display fix',
     items: [
       { cat: 'fixed', text: 'On phones, the Saved Questions list now lays out correctly. The question text is no longer squeezed into a narrow column by the tag selector beside it.' }
