@@ -22,6 +22,9 @@ work without rediscovering the layout.
 | `CONTRIBUTING.md` | Human-facing version of this file (workflows, code style, PR rules) |
 | `CHANGELOG.md` | Canonical user-facing release history (mirrors the in-app What's New) |
 | `SECURITY.md` | Disclosure policy + privacy summary |
+| `mobile/` | **Expo (React Native) iOS + Android app.** Own `package.json`, tests and `mobile/CLAUDE.md`. Reads questions from `data/domain*.json` via `mobile/scripts/build-content.mjs` |
+| `docs/mobile/ARCHITECTURE.md` | Mobile tech-stack decision, architecture, roadmap, store-launch plan |
+| `supabase/migrations/` | Phase 3 database schema (accounts + sync). Written, not yet applied |
 
 ## Hard rules
 
@@ -164,9 +167,25 @@ kill %1
   in tips.
 - **No new dependencies.** This app loads from `file://` and over plain
   HTTP; we keep it framework-free, no npm install, no bundler.
+  (This rule is for the **web app** only. `mobile/` is an npm project —
+  add packages there with `npx expo install` and justify each one.)
 - **Don't surface the total question count in user-facing copy.** The
   bank size is intentionally not advertised in the app; use generic
   phrasing ("practice questions across all 5 domains") instead.
+
+## Mobile app workflow (added with `mobile/`)
+
+- Run `npm run check` inside `mobile/` after touching `mobile/` or `data/domain*.json`
+  (CI runs the same in `.github/workflows/mobile.yml`). The content-pack
+  test fails if any question has a broken answer key.
+- Changing CISA domain weights in `DI` means changing
+  `mobile/src/content/certifications.ts` in the same commit.
+- Mobile releases bump `expo.version` in `mobile/app.json`; web-only rules
+  (`APP_VERSION`, What's New) do not apply to mobile-only changes.
+- Mobile agents: `mobile-app-engineer`, `mobile-qa-tester`, `mobile-ux-reviewer`,
+  `mobile-security-auditor`, `app-store-compliance-reviewer`. Multi-cert content
+  agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
+  `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`.
 
 ## Branching + GitHub
 

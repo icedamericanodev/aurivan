@@ -1,0 +1,62 @@
+/**
+ * Spaced repetition (Leitner boxes) — a direct port of the web app's
+ * review queue so learners get the same behaviour on mobile.
+ *
+ * Idea in plain English: every question you miss goes into Box 1 and is
+ * due again immediately. Each time you answer it correctly (and you were
+ * not just guessing), it moves up a box and comes back later:
+ *   Box 1 → now, Box 2 → 1 day, Box 3 → 3 days, Box 4 → 7 days, Box 5 → 16 days.
+ * Answer it correctly from Box 5 and it "graduates" out of the queue.
+ */
+export type Confidence = 'sure' | 'unsure' | 'guessing';
+
+export interface ReviewEntry {
+  box: number; // 1..MAX_BOX
+  dueAt: number; // epoch ms
+  lastSeen: number; // epoch ms
+  reps: number; // how many times it was reviewed
+}
+
+export const INTERVAL_DAYS: Record<number, number> = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
+export const MAX_BOX = 5;
+export const DAY_MS = 86_400_000;
+
+/**
+ * Work out the new review entry after an answer.
+ * Returns `null` when the question should NOT be in the queue
+ * (never missed, or just graduated).
+ */
+export function nextReview(
+  current: ReviewEntry | undefined,
+  correct: boolean,
+  confidence: Confidence | undefined,
+  now: number,
+): ReviewEntry | null {
+  if (!correct) {
+    // Wrong → back to Box 1, due right away.
+    return { box: 1, dueAt: now, lastSeen: now, reps: (current?.reps ?? 0) + 1 };
+  }
+  // Correct, but it was never in the queue → nothing to schedule.
+  if (!current) return null;
+
+  if (confidence === 'guessing') {
+    // A lucky guess does not earn a promotion — re-space at the same box.
+    return {
+      ...current,
+      dueAt: now + INTERVAL_DAYS[current.box] * DAY_MS,
+      lastSeen: now,
+      reps: current.reps + 1,
+    };
+  }
+  if (current.box >= MAX_BOX) return null; // graduated 🎓
+
+  const box = current.box + 1;
+  return { box, dueAt: now + INTERVAL_DAYS[box] * DAY_MS, lastSeen: now, reps: current.reps + 1 };
+}
+
+/** Question ids due now — most overdue first, then lowest box. */
+export function dueIds(review: Record<string, ReviewEntry>, now: number): string[] {
+  return Object.keys(review)
+    .filter((id) => review[id].dueAt <= now)
+    .sort((a, b) => review[a].dueAt - review[b].dueAt || review[a].box - review[b].box);
+}
