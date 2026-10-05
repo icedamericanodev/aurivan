@@ -23,6 +23,10 @@
 #
 # Stop with Ctrl-C.
 #
+# To see Claude's work AS IT IS PUSHED (before merging), run it on Claude's
+# working branch: git checkout claude/jolly-archimedes-p1sklr
+# To see only merged work, run it on main.
+#
 # Use this when Claude works in a CLOUD session and PUSHES commits. If Claude
 # Code runs on this Mac and edits files directly, you do not need this script
 # at all: plain `npx expo run:android` already reacts to every saved file.
@@ -90,10 +94,23 @@ while [ "$STOPPING" = "0" ]; do
   git checkout --quiet -- package-lock.json 2>/dev/null
 
   if ! git pull --quiet --ff-only origin "$BRANCH"; then
-    echo "  Could not fast-forward. You have local changes, or the branch was"
-    echo "  rebuilt after a merge. Run 'git status' and sort it out by hand;"
-    echo "  this script picks up again afterwards."
-    continue
+    # Claude's working branch is reset onto main after every merge (see
+    # CLAUDE.md "Post-merge branch hygiene"), so a plain pull can no longer
+    # fast-forward. If you have NO local edits there is nothing to lose:
+    # match GitHub's version exactly. With local edits, stop and let you
+    # decide, so nothing you wrote is ever thrown away.
+    if [ -z "$(git status --porcelain)" ]; then
+      echo "  The branch was rebuilt on GitHub (normal after a merge)."
+      echo "  You have no local edits, so syncing to GitHub's version."
+      git reset --quiet --hard "origin/$BRANCH"
+    else
+      echo "  Could not fast-forward and you have local edits:"
+      git status --short | sed 's/^/    /'
+      echo "  Keep them? Commit or stash them. Don't need them?"
+      echo "    git restore . && git clean -fd"
+      echo "  This script picks up again afterwards."
+      continue
+    fi
   fi
 
   CHANGED="$(git --no-pager diff --name-only "$LOCAL" HEAD)"

@@ -218,7 +218,7 @@ phone. Live updates work the same way.
 | App icon opens a "Development servers" screen | The dev server isn't running | Run `npx expo start` (or `bash scripts/dev-sync.sh`), then tap the server shown |
 | Red error screen about a missing module | Libraries changed since your last install | Ctrl-C → `npm ci` → `npx expo run:android` |
 | `Your local changes to … package-lock.json would be overwritten` | An `npm install` rewrote the lock file | `git restore mobile/package-lock.json`, then pull again; use `npm ci` from now on |
-| `Could not fast-forward` from dev-sync | You edited files locally, or a branch was reset after a merge | `git status`; if you have no changes you need: `git fetch origin && git reset --hard origin/<branch>` |
+| `Could not fast-forward and you have local edits` from dev-sync | You (or a tool) changed files in the project | It lists them. Don't need them? `git restore . && git clean -fd` — the script then carries on. (A branch rebuilt after a merge is handled automatically when you have no local edits.) |
 
 Send me a screenshot of any error you can't match here — the real cause is
 usually a few lines above the last red line.
