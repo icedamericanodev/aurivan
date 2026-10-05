@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.45.3] — Explanations match the shuffled answers
+
+### Fixed
+- Answer explanations now refer to the same letters you see on screen when options are shuffled, so "why this is right" and "why this is wrong" point at the choice you see.
+
 ## [v10.45.2] — Clearer tips when answers are shuffled
 
 ### Fixed

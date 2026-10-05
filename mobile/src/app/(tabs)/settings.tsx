@@ -8,7 +8,7 @@ import { Alert, Linking, Switch, View } from 'react-native';
 import { Button, Card, Chip, Gap, Row, Screen, T } from '../../components/ui';
 import { CERTIFICATIONS } from '../../content/certifications';
 import { config } from '../../lib/config';
-import { cancelReminders, ensurePermission, scheduleDailyReminder } from '../../lib/reminders';
+import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../../lib/reminders';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { useSession } from '../../store/session';
@@ -107,12 +107,16 @@ export default function Settings() {
         <Row style={{ justifyContent: 'space-between' }}>
           <View style={{ flex: 1 }}>
             <T v="heading">Daily reminder</T>
-            <T v="caption">Every day at {String(s.reminder.hour).padStart(2, '0')}:{String(s.reminder.minute).padStart(2, '0')}</T>
+            <T v="caption">
+              {remindersSupported
+                ? `Every day at ${String(s.reminder.hour).padStart(2, '0')}:${String(s.reminder.minute).padStart(2, '0')}`
+                : 'Available in the installed app (not in Expo Go on Android).'}
+            </T>
           </View>
           <Switch
             accessibilityLabel="Daily study reminder"
-            value={s.reminder.enabled}
-            disabled={busy}
+            value={remindersSupported && s.reminder.enabled}
+            disabled={busy || !remindersSupported}
             onValueChange={toggleReminder}
             trackColor={{ true: c.accentFill, false: c.muted }}
           />

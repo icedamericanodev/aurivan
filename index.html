@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.45.2</span>
+    <span class="bank-pill" id="versionPill">v10.45.3</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5045,7 +5045,7 @@ header::after {
       <button class="hdr-menu-item" onclick="showFeedback();closeHdrMenu()" role="menuitem">&#128172; Feedback</button>
       <button class="hdr-menu-item" onclick="showOnboarding();closeHdrMenu()" role="menuitem">&#10067; Help</button>
       <div class="hdr-menu-divider"></div>
-      <span class="hdr-menu-pill" id="hdrMenuPill">v10.45.2</span>
+      <span class="hdr-menu-pill" id="hdrMenuPill">v10.45.3</span>
     </div>
   </div>
 </header>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.45.2';
+const APP_VERSION = 'v10.45.3';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8304,14 +8304,14 @@ var LETTER_CHOICE_WORDS = {
   over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1
 };
 
-function isOptionLetterRef(text, letter, offset) {
+function isOptionLetterRef(text, letter, offset, selfLetter) {
   var before = text.slice(0, offset);
   var after = text.slice(offset + 1);
   // Second half of an abbreviation: "C&A", "M&A", "D&O".
   if (/&$/.test(before)) return false;
   // Lists like "Class A/B/C": follow the decision for the letter before the slash.
   var slash = before.match(/\b([A-D])\/$/);
-  if (slash) return isOptionLetterRef(text, slash[1], offset - 2);
+  if (slash) return isOptionLetterRef(text, slash[1], offset - 2, selfLetter);
   // Word directly before the letter, separated by whitespace only.
   var pm = before.match(/([A-Za-z]+)\s+$/);
   var prevWord = pm ? pm[1] : '';
@@ -8324,23 +8324,31 @@ function isOptionLetterRef(text, letter, offset) {
   if (letter === 'A') {
     var nm = after.match(/^\s+([A-Za-z]+)/);
     var nextWord = nm ? nm[1] : '';
+    // "A quietly suppresses..." in its own explanation: look past one -ly adverb.
+    if (offset === 0 && selfLetter === 'A' && /ly$/.test(nextWord)) {
+      var nm2 = after.match(/^\s+[A-Za-z]+\s+([A-Za-z]+)/);
+      if (nm2) nextWord = nm2[1];
+    }
     if (nextWord && /^[a-z]/.test(nextWord) && LETTER_VERBISH_AFTER_A[nextWord] !== 1) {
       // "A buys speed; B builds..." — a third-person verb plus other
       // option letters in the text marks a reference; otherwise an article.
       var namesOthers = /\b[B-D]\b/.test(text);
       var thirdPerson = /[^su]s$/.test(nextWord) && !/(ss|us|is|ics)$/.test(nextWord);
-      if (!(namesOthers && thirdPerson)) return false;
+      // An option's own explanation opening "A overstates..." names itself.
+      var opensOwnExplanation = offset === 0 && selfLetter === 'A';
+      if (!((namesOthers || opensOwnExplanation) && thirdPerson)) return false;
     }
     if (/^\s+\d/.test(after)) return false; // "A 15-minute RPO"
   }
   return true;
 }
 
-function mapLettersInText(text, shuffle) {
+// `selfLetter` (optional): the ORIGINAL option a wrong-answer explanation belongs to.
+function mapLettersInText(text, shuffle, selfLetter) {
   if (!text || !shuffle) return text;
   // Skips "C-level", "A.8.12", "C&A", quoted 'A'; allows possessive "B's".
   return text.replace(/\b([A-D])\b(?![-&.]\w|['’](?!s\b))/g, function(match, ch, offset) {
-    return isOptionLetterRef(text, ch, offset) ? originalToDisplay(ch, shuffle) : match;
+    return isOptionLetterRef(text, ch, offset, selfLetter) ? originalToDisplay(ch, shuffle) : match;
   });
 }
 
@@ -8913,9 +8921,9 @@ function showResult(chosen, correct, timeout) {
     var origL = shuffle[idx];
     var isRight = displayL === correct;
     var expText = isRight
-      ? '<strong>CORRECT.</strong> ' + escapeHtml(q.correct_explanation)
+      ? '<strong>CORRECT.</strong> ' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle))
       : (q.wrong_explanations && q.wrong_explanations[origL])
-        ? escapeHtml(q.wrong_explanations[origL])
+        ? escapeHtml(mapLettersInText(q.wrong_explanations[origL], shuffle, origL))
         : 'This option does not reflect the primary IS auditor priority in this scenario.';
     return '<div class="opt-exp ' + (isRight ? 'right' : 'wrong') + '">'
       + '<span class="opt-exp-letter ' + (isRight?'right':'wrong') + '">' + displayL + '</span>'
@@ -8996,7 +9004,7 @@ function showResult(chosen, correct, timeout) {
     mindsetAlertHtml
     + '<div class="verdict ' + vc + '"><span class="verdict-icon">' + vi + '</span>' + vt + '</div>'
     + metaRow
-    + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(q.correct_explanation) + '</p></div>'
+    + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p></div>'
     + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'
     + (inExamMode ? '' : tipsBlock)
     + (inExamMode ? '' : buildTripletCompanionsHtml(q))
@@ -12004,7 +12012,7 @@ function buildMockAnswerKey(answers) {
     // Explanation
     if (a.q.correct_explanation) {
       html += '<div style="font-size:12.5px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:10px;margin-top:8px">'
-        + '<strong style="color:var(--correct)">Why ' + escapeHtml(correctAns) + ' is correct:</strong> ' + escapeHtml(a.q.correct_explanation)
+        + '<strong style="color:var(--correct)">Why ' + escapeHtml(correctAns) + ' is correct:</strong> ' + escapeHtml(mapLettersInText(a.q.correct_explanation, shuffle))
         + '</div>';
     }
     if (a.q.framework_ref) {
@@ -12065,6 +12073,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Explanations match the shuffled answers',
+    items: [
+      { cat: 'fixed', text: 'Answer explanations now refer to the same letters you see on screen when options are shuffled, so "why this is right" and "why this is wrong" point at the choice you see.' }
+    ]
+  },
+  {
+    version: 'v10.45.2',
     title: 'Clearer tips when answers are shuffled',
     items: [
       { cat: 'fixed', text: 'Tips now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.' }
