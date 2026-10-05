@@ -7,7 +7,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.45.2] — Clearer tips when answers are shuffled
 
 ### Fixed
-- Tips and explanations now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.
+- Tips now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.
 
 ## [v10.45.1] — Saved Questions display fix
 

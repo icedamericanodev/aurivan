@@ -8298,6 +8298,12 @@ var LETTER_VERBISH_AFTER_A = {
   makes:1, has:1, and:1, or:1, are:1, were:1, invites:1, tempts:1
 };
 
+// Words that, right before a letter, mean "an answer option".
+var LETTER_CHOICE_WORDS = {
+  to:1, pick:1, picks:1, picked:1, choose:1, chooses:1, chose:1, than:1,
+  over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1
+};
+
 function isOptionLetterRef(text, letter, offset) {
   var before = text.slice(0, offset);
   var after = text.slice(offset + 1);
@@ -8309,6 +8315,8 @@ function isOptionLetterRef(text, letter, offset) {
   // Word directly before the letter, separated by whitespace only.
   var pm = before.match(/([A-Za-z]+)\s+$/);
   var prevWord = pm ? pm[1] : '';
+  // "pick A", "than A", "option A" → always an option reference.
+  if (prevWord && LETTER_CHOICE_WORDS[prevWord.toLowerCase()] === 1) return true;
   if (prevWord && LETTER_LABEL_WORDS[prevWord.toLowerCase()] === 1) return false;
   // ALL-CAPS emphasis ("IS A", "THAN A") is English; "B, C, OR D" is a list.
   if (prevWord.length > 1 && prevWord === prevWord.toUpperCase() &&
@@ -12059,7 +12067,7 @@ const CHANGELOG = [
     version: APP_VERSION,
     title: 'Clearer tips when answers are shuffled',
     items: [
-      { cat: 'fixed', text: 'Tips and explanations now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.' }
+      { cat: 'fixed', text: 'Tips now keep their wording intact when answer options are shuffled — only real references to an answer letter change, so sentences no longer read oddly.' }
     ]
   },
   {

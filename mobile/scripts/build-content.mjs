@@ -50,6 +50,12 @@ const LABEL_WORDS = new Set([
   'system', 'company', 'region', 'unit', 'group', 'division', 'step',
 ]);
 
+// Words that, right before a letter, mean "an answer option".
+const CHOICE_WORDS = new Set([
+  'to', 'pick', 'picks', 'picked', 'choose', 'chooses', 'chose', 'than',
+  'over', 'vs', 'versus', 'unlike', 'option', 'options', 'answer',
+]);
+
 // When "A" is followed by one of these words it is an option reference
 // ("A is tempting", "A confuses..."), not the English article ("A sample").
 const VERBISH_AFTER_A = new Set([
@@ -90,6 +96,8 @@ export function tokenizeLetters(text) {
     const prevWord = prevWordMatch ? prevWordMatch[1] : '';
     const spaced = prevWord !== '';
 
+    // "pick A", "than A", "option A" → always an option reference.
+    if (prevWord && CHOICE_WORDS.has(prevWord.toLowerCase())) return true;
     // "Annex A", "Architecture B" → a label, not an option.
     if (prevWord && spaced && LABEL_WORDS.has(prevWord.toLowerCase())) return false;
     // ALL-CAPS emphasis like "IS A", "THAN A" → English. ("B, C, OR D" is a list.)
