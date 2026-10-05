@@ -72,9 +72,10 @@ const VERBISH_AFTER_A = new Set([
 
 /**
  * Replace option-letter references (A–D) with {{X}} tokens.
+ * `selfLetter` (optional): the option a wrong-answer explanation belongs to.
  * Exported for tests (see src/__tests__/tokenize.test.ts).
  */
-export function tokenizeLetters(text) {
+export function tokenizeLetters(text, selfLetter) {
   if (!text) return text;
   // The regex skips "C-level", "A.8.12", "C&A", and quoted 'A' but allows "B's".
   const LETTER_RE = /\b([A-D])\b(?![-&.]\w|['’](?!s\b))/g;
@@ -106,14 +107,20 @@ export function tokenizeLetters(text) {
       return false;
     }
     if (letter === 'A') {
-      const nextWord = (after.match(/^\s+([A-Za-z]+)/) || [])[1];
+      let nextWord = (after.match(/^\s+([A-Za-z]+)/) || [])[1];
+      // "A quietly suppresses…" in its own explanation: look past one -ly adverb.
+      if (offset === 0 && selfLetter === 'A' && nextWord && /ly$/.test(nextWord)) {
+        nextWord = (after.match(/^\s+[A-Za-z]+\s+([A-Za-z]+)/) || [])[1] ?? nextWord;
+      }
       // "A" followed by a lowercase word: article unless that word is verb-ish.
       if (nextWord && /^[a-z]/.test(nextWord) && !VERBISH_AFTER_A.has(nextWord)) {
         // "A buys speed; B builds..." — when the text also names other
         // options, a third-person verb ("buys", not "process") marks a reference.
         const namesOtherOptions = /\b[B-D]\b/.test(text);
         const thirdPersonVerb = /[^su]s$/.test(nextWord) && !/(ss|us|is|ics)$/.test(nextWord);
-        if (!(namesOtherOptions && thirdPersonVerb)) return false;
+        // An option's own explanation opening "A overstates…" names itself.
+        const opensOwnExplanation = offset === 0 && selfLetter === 'A';
+        if (!((namesOtherOptions || opensOwnExplanation) && thirdPersonVerb)) return false;
       }
       // "A 15-minute RPO" → article.
       if (/^\s+\d/.test(after)) return false;
@@ -129,7 +136,7 @@ function toPackQuestion(q, certId) {
   const tok = tokenizeLetters;
   const wrong = {};
   for (const [letter, text] of Object.entries(q.wrong_explanations || {})) {
-    wrong[letter] = tok(text);
+    wrong[letter] = tok(text, letter); // `letter`: this explanation's own option
   }
   return {
     id: q.id,
