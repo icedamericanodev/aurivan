@@ -1650,7 +1650,7 @@
       "options": {
         "A": "Install endpoint antivirus on each production server",
         "B": "Rely on the perimeter firewall to block external attacks",
-        "C": "Disable operating system audit logging to free resources",
+        "C": "Patch each server to the latest vendor release",
         "D": "Apply a hardened baseline such as a CIS benchmark"
       },
       "correct": "D",
@@ -1660,10 +1660,10 @@
       "wrong_explanations": {
         "A": "Antivirus detects malware but leaves default accounts, services and weak settings in place.",
         "B": "A perimeter firewall does nothing about insiders or attackers already inside, and leaves weak host settings unchanged.",
-        "C": "Audit logging is a core control; disabling it removes evidence and detection."
+        "C": "Patching fixes known flaws but keeps the vendor-default services, accounts and settings that caused the finding."
       },
       "tips": [
-        "Eliminate: B trusts the perimeter alone, and C switches off a core control for performance.",
+        "Eliminate: B trusts the perimeter alone, and C patches code but leaves the default settings in place.",
         "Final two: D beats A because the finding is weak configuration; hardening fixes it, while antivirus addresses a different threat.",
         "Exam cue: misconfiguration calls for a hardened baseline, not an extra security tool layered on top."
       ],
@@ -1909,8 +1909,8 @@
       "bloom_level": "Application",
       "question": "An IS auditor is reviewing IT operations and wants evidence that production job scheduling is controlled. Which evidence is MOST relevant?",
       "options": {
-        "A": "Staff satisfaction survey results from the operations team",
-        "B": "Visitor sign-in logs from the data center lobby",
+        "A": "Administrator access lists for the job scheduling tool",
+        "B": "Operator shift handover notes for the overnight batch window",
         "C": "Job schedule changes matched to authorized change requests",
         "D": "Trend analysis of batch job completion rates on dashboards"
       },
@@ -1919,12 +1919,12 @@
       "pre_read": "The stem asks whether scheduling is controlled. Separate evidence of authorization from evidence of performance.",
       "correct_explanation": "A control over job scheduling means jobs and their parameters change only with approval. Tracing schedule changes back to approved change requests tests that control directly and would reveal unauthorized jobs. Completion dashboards are useful operational metrics, but they show that jobs ran, not that the jobs running were authorized, and they are management-prepared rather than auditor-tested.",
       "wrong_explanations": {
-        "A": "Morale surveys describe staff sentiment. They provide no evidence about whether production jobs are authorized.",
-        "B": "Lobby sign-in logs relate to physical visitor access, not to control over the production job schedule.",
+        "A": "Access lists show who could change the schedule, not whether the changes actually made were approved.",
+        "B": "Handover notes record operational events informally. They are not evidence that schedule changes were authorized.",
         "D": "Completion-rate trends show jobs ran on time. They cannot show whether the scheduled jobs were authorized."
       },
       "tips": [
-        "Eliminate: A measures morale, and B covers lobby visitor access; neither addresses job scheduling.",
+        "Eliminate: A shows who could change the schedule, not whether changes were approved, and B is informal shift notes.",
         "Final two: C beats D because matching changes to approvals tests the control, while completion trends only show results.",
         "Exam cue: to test whether something is controlled, prefer evidence of authorization over performance metrics."
       ],
@@ -4092,7 +4092,7 @@
         "A": "Concentrate testing on ERP input validation and error queues",
         "B": "Concentrate testing on TLS and firewall rules along the path",
         "C": "Rely on browser-side validation built into the web store",
-        "D": "Follow order data through each hop from source to ERP"
+        "D": "Trace sample orders through every hop, including transformation"
       },
       "correct": "D",
       "key_concept": "Interface risk sits at the sender, the transport, the middleware transformation and the receiver; scope must follow the data end to end.",
@@ -7321,7 +7321,7 @@
         "A": "Fail over workloads for the customers who are demanding it",
         "B": "Invoke failover now and brief the CIO once it completes",
         "C": "Escalate to the CIO now for an immediate failover decision",
-        "D": "Wait for an updated provider estimate at the four-hour mark"
+        "D": "Have the CIO wait for the provider's four-hour update"
       },
       "correct": "C",
       "key_concept": "When an outage will exceed the RTO, the invocation decision must be made quickly by the authority the plan names.",
@@ -7330,7 +7330,7 @@
       "wrong_explanations": {
         "A": "Choosing by which customers complain replaces the plan's business-impact priorities with pressure from the loudest voices.",
         "B": "The plan reserves invocation for the CIO. Acting first and briefing later bypasses that authority when escalation takes only minutes.",
-        "D": "By hour four the RTO has already passed, and the failover still takes time. The current estimate is enough to act on."
+        "D": "By hour four the RTO has already passed, and failover still takes time. The current estimate is enough for the CIO to decide now."
       },
       "tips": [
         "Eliminate: A lets customer pressure override the plan's priorities, and D waits until the RTO is already lost.",
@@ -7696,7 +7696,7 @@
       "subtopic": "Capacity Exhaustion During Peak Event",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An online retailer's autoscaling hits a soft cloud quota its provider raises within minutes, and 28% of requests time out; no queueing exists. What should the IS auditor recommend the operations head do FIRST?",
+      "question": "An online retailer's autoscaling hits a soft cloud quota its provider can raise on request, and 28% of requests time out; no queueing exists. What should the IS auditor recommend the operations head do FIRST?",
       "options": {
         "A": "Raise an urgent quota-increase request with the cloud provider",
         "B": "Deploy the full site to a secondary region immediately",
@@ -9024,8 +9024,8 @@
       "options": {
         "A": "Restore systems in the same order they failed",
         "B": "Restore the most-used systems first to cut help desk calls",
-        "C": "Restore payroll and contract billing first, then the remaining systems",
-        "D": "Follow BIA tiers, restoring directory and shared dependencies first"
+        "C": "Restore payroll and billing, then directory and shared services",
+        "D": "Restore directory and shared services, then payroll and billing"
       },
       "correct": "D",
       "key_concept": "Restoration follows BIA criticality adjusted for technical dependencies: shared infrastructure is recovered first so critical applications can run.",
@@ -9034,7 +9034,7 @@
       "wrong_explanations": {
         "A": "Failure order reflects how the attack spread, not business criticality, so critical services may wait behind minor ones.",
         "B": "Help desk volume is not a recovery criterion; the BIA ranks services by business impact and tolerable downtime.",
-        "C": "The priorities are right, but payroll and billing cannot start or authenticate until directory and database dependencies are back."
+        "C": "The BIA priority is right, but payroll and billing cannot start or authenticate until directory and shared services are back."
       },
       "tips": [
         "Eliminate: A follows the attack's path, and B ranks by help desk noise instead of business impact.",
@@ -9358,7 +9358,7 @@
       "subtopic": "Year-End Close. Job Scheduling Control Bypass",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor confirms a whistleblower's claim that, during year-end close, operators run ad hoc batch jobs posting journal entries outside the scheduler's approval workflow. What should the auditor recommend FIRST?",
+      "question": "An IS auditor confirms a whistleblower's claim that, during the ongoing year-end close, operators are running ad hoc batch jobs that post journal entries outside the scheduler's approval workflow. What should the auditor recommend FIRST?",
       "options": {
         "A": "Have operators document each ad hoc run and its purpose after close",
         "B": "Block job submission outside the scheduler's approved queue now",
