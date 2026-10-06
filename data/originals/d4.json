@@ -92,7 +92,7 @@
         "A": "An informal promise to resolve escalated issues quickly",
         "B": "Financial penalties payable to the customer for each missed target",
         "C": "Technical design documents for each service component",
-        "D": "Measurable service targets with agreed performance reporting"
+        "D": "Numeric service targets with agreed performance reporting"
       },
       "correct": "D",
       "key_concept": "An SLA documents agreed, measurable service targets and reporting; penalties and remedies only work once performance can be measured.",
@@ -462,8 +462,8 @@
       "question": "An IS auditor finds production servers were hardened at deployment but never reviewed since. Which periodic activity would BEST address this gap?",
       "options": {
         "A": "Confirming automatic security updates are enabled on every server",
-        "B": "Monitoring CPU and memory utilization trends over time",
-        "C": "Comparing current settings with the approved security baseline",
+        "B": "Measuring CPU and memory utilization trends over time",
+        "C": "Checking settings for drift from the secure configuration standard",
         "D": "Checking operating system license compliance each year"
       },
       "correct": "C",
@@ -472,11 +472,11 @@
       "correct_explanation": "Hardening decays: settings drift, accounts are added and services are switched on after deployment. Periodically comparing each server's current configuration with the approved baseline detects that drift, including privileged access and logging changes. Confirming automatic updates are on covers patching alone; a fully patched server can still carry weakened settings or excess administrator accounts.",
       "wrong_explanations": {
         "A": "Automatic updates address patch levels. They do not detect configuration drift, new privileged accounts or disabled logging.",
-        "B": "Utilization monitoring is a capacity measure. It says nothing about security settings or system integrity.",
+        "B": "Utilization measurement is a capacity activity. It says nothing about security settings or system integrity.",
         "D": "License compliance is a legal and cost concern. It does not test whether servers remain securely configured."
       },
       "tips": [
-        "Eliminate: B is capacity monitoring and D is license compliance; neither tests security.",
+        "Eliminate: B measures capacity and D checks license compliance; neither tests security.",
         "Final two: C beats A because baseline comparison detects drift; update settings cover patching alone.",
         "Exam cue: when hardening was set once and never checked, look for a periodic comparison against the approved baseline."
       ],
@@ -610,9 +610,9 @@
       "question": "During a major outage, three concurrent incidents, including suspected lateral movement, are handled by separate teams with no shared lead. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Let each team continue independently on its own incident",
-        "B": "Pause the response until any links are established",
+        "B": "Pause the response until links between incidents are analyzed",
         "C": "Appoint one incident commander over coordinated workstreams",
-        "D": "Concentrate on the database failure and defer the others"
+        "D": "Prioritize the database failure per the BIA and defer the others"
       },
       "correct": "C",
       "key_concept": "Concurrent, possibly linked incidents need a single incident commander coordinating separate workstreams, priorities and communications.",
@@ -620,11 +620,11 @@
       "correct_explanation": "Concurrent incidents that may be linked need one command structure: a single incident commander sets priorities, runs separate workstreams and coordinates communications and decisions. Focusing on the database failure reflects business impact, but deferring a suspected intrusion lets an attacker act unchecked and ignores the chance that the incidents share a cause. Coordination keeps every workstream moving.",
       "wrong_explanations": {
         "A": "Independent handling produces conflicting decisions and messages, and nobody sees links between incidents. This is the gap the auditor should close.",
-        "B": "Halting response during an outage extends impact. Links can be investigated in parallel within coordinated workstreams.",
+        "B": "Halting response to analyze links during an outage extends impact. Links can be investigated in parallel within coordinated workstreams.",
         "D": "Deferring a suspected intrusion risks data loss and spread, and ignores possible links to the outage. A commander can prioritize without stopping other workstreams."
       },
       "tips": [
-        "Eliminate: A keeps the uncoordinated status quo, and B halts response mid-outage.",
+        "Eliminate: A keeps the uncoordinated status quo, and B halts response mid-outage to analyze links.",
         "Final two: C beats D because a single commander prioritizes without abandoning the suspected intrusion.",
         "Exam cue: multiple concurrent incidents call for unified command, not choosing one and dropping the rest."
       ],
@@ -943,10 +943,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor is reviewing the production job scheduler. Which test provides the BEST evidence that scheduled jobs run as the business intends?",
       "options": {
-        "A": "Compare the job schedule to approved business requirements quarterly",
+        "A": "Check the schedule against agreed business requirements quarterly",
         "B": "Review the failed-job log for the past quarter's batch runs",
         "C": "Interview the scheduler administrator about job dependencies",
-        "D": "Count nightly jobs executed against available processing capacity"
+        "D": "Measure nightly jobs executed against the capacity plan"
       },
       "correct": "A",
       "key_concept": "Scheduler reviews compare jobs with approved business requirements, catching unauthorized or mis-sequenced jobs that never appear in failure logs.",
@@ -955,7 +955,7 @@
       "wrong_explanations": {
         "B": "Failure logs show jobs that broke, not whether successful jobs were authorized or correctly sequenced against business needs.",
         "C": "An interview is testimonial evidence from the person who runs the scheduler, so it is weaker than comparing records with requirements.",
-        "D": "Capacity counts address performance planning, not whether the jobs themselves are correct and authorized."
+        "D": "Measuring jobs against the capacity plan addresses performance planning, not whether the jobs themselves are correct and authorized."
       },
       "tips": [
         "Eliminate: C relies on testimony from the scheduler owner, and D measures capacity rather than job correctness.",
@@ -1390,7 +1390,7 @@
       "options": {
         "A": "Support cloud migration, since its first-year cost is lowest",
         "B": "Replace like-for-like, since it carries the least transition risk",
-        "C": "Commission an external benchmark before considering either option",
+        "C": "Commission an independent benchmark before considering either option",
         "D": "Have management compare each option's lifetime cost and risk"
       },
       "correct": "D",
@@ -1400,7 +1400,7 @@
       "wrong_explanations": {
         "A": "First-year cost ignores lifetime cost, migration risk and data residency limits, so it is not a sound basis.",
         "B": "Lower transition risk is one factor, but choosing before comparing lifetime costs and risks pre-empts management's evaluation.",
-        "C": "A benchmark delays the decision; management already has enough to compare lifetime cost and risk."
+        "C": "An independent benchmark delays the decision; management already has enough to compare lifetime cost and risk."
       },
       "tips": [
         "Eliminate: A judges on first-year cost alone, and C wastes the planning window before support ends.",
@@ -1911,8 +1911,8 @@
       "options": {
         "A": "Staff satisfaction survey results from the operations team",
         "B": "Visitor sign-in logs from the data center lobby",
-        "C": "Job schedule changes traced to approved change requests",
-        "D": "Batch job completion rates shown on monthly dashboards"
+        "C": "Job schedule changes matched to authorized change requests",
+        "D": "Trend analysis of batch job completion rates on dashboards"
       },
       "correct": "C",
       "key_concept": "Evidence that scheduled jobs change only through approved requests tests the control itself, not just its outcomes.",
@@ -1921,11 +1921,11 @@
       "wrong_explanations": {
         "A": "Morale surveys describe staff sentiment. They provide no evidence about whether production jobs are authorized.",
         "B": "Lobby sign-in logs relate to physical visitor access, not to control over the production job schedule.",
-        "D": "Completion rates show jobs ran on time. They cannot show whether the scheduled jobs were authorized."
+        "D": "Completion-rate trends show jobs ran on time. They cannot show whether the scheduled jobs were authorized."
       },
       "tips": [
         "Eliminate: A measures morale, and B covers lobby visitor access; neither addresses job scheduling.",
-        "Final two: C beats D because tracing changes to approvals tests the control, while completion rates only show results.",
+        "Final two: C beats D because matching changes to approvals tests the control, while completion trends only show results.",
         "Exam cue: to test whether something is controlled, prefer evidence of authorization over performance metrics."
       ],
       "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ISACA IT Audit Standard 1205 (Evidence)",
@@ -3861,10 +3861,10 @@
       "bloom_level": "Application",
       "question": "A four-analyst security operations team dismisses most of its 3,500 daily SIEM alerts as noise. Which action should the security operations manager take FIRST?",
       "options": {
-        "A": "Measure each rule's true-positive rate and tune weak rules",
-        "B": "Automate closure of routine alerts through a SOAR playbook",
+        "A": "Tune or retire rules with low true-positive rates",
+        "B": "Automate closure of routine alerts through a documented SOAR playbook",
         "C": "Hire enough analysts to review each alert generated daily",
-        "D": "Disable any rule that produces over 100 alerts daily"
+        "D": "Measure alert volumes and disable rules above 100 daily"
       },
       "correct": "A",
       "key_concept": "Alert fatigue is a detection-tuning problem: measure signal quality per rule, tune or retire weak rules, and keep the suppressed logs.",
@@ -3876,7 +3876,7 @@
         "D": "Alert volume alone does not show a rule is useless. A blanket volume cut-off may disable high-value detections."
       },
       "tips": [
-        "Eliminate: C staffs up to review noise, and D cuts rules by volume without knowing their value.",
+        "Eliminate: C staffs up to review noise, and D cuts rules by raw volume without knowing their value.",
         "Final two: A beats B because rule quality must be measured before alerts are auto-closed, or real detections get discarded.",
         "Exam cue: fix the source of the problem before automating around it."
       ],
@@ -4092,7 +4092,7 @@
         "A": "Concentrate testing on ERP input validation and error queues",
         "B": "Concentrate testing on TLS and firewall rules along the path",
         "C": "Rely on browser-side validation built into the web store",
-        "D": "Trace order data through each hop from source to ERP"
+        "D": "Follow order data through each hop from source to ERP"
       },
       "correct": "D",
       "key_concept": "Interface risk sits at the sender, the transport, the middleware transformation and the receiver; scope must follow the data end to end.",
@@ -4167,7 +4167,7 @@
       "options": {
         "A": "Lessons learned from the post-test debrief session",
         "B": "A detailed scenario narrative written for the participants",
-        "C": "Measurable success criteria for each test objective",
+        "C": "Specific pass/fail thresholds for each test objective",
         "D": "Corrective actions for gaps the test reveals"
       },
       "correct": "C",
@@ -4181,7 +4181,7 @@
       },
       "tips": [
         "Eliminate: A and D are post-test outputs, so they cannot be defined before execution.",
-        "Final two: C beats B because criteria make the result measurable, while a scenario only sets context.",
+        "Final two: C beats B because pass/fail thresholds make the result judgeable, while a scenario only sets context.",
         "Exam cue: a test without predefined success criteria cannot fail, so it cannot prove anything."
       ],
       "framework_ref": "ISO 22301:2019 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); DRII Professional Practice 8 (Business Continuity Plan Exercise, Assessment, and Maintenance); BCI Good Practice Guidelines 2023 PP6 (Validation)",
@@ -5153,7 +5153,7 @@
       "question": "During a pandemic, a medical device maker's sole-source chip supplier is at 40% capacity, with three weeks of stock left. What is the BEST recommendation by the IS auditor?",
       "options": {
         "A": "Consolidate remaining chip stock through urgent air freight",
-        "B": "Wait for the regional lockdown to ease before acting",
+        "B": "Analyze the supplier's recovery plan before seeking alternatives",
         "C": "Allocate the remaining units evenly across hospital customers",
         "D": "Begin qualifying an alternate chip source in parallel"
       },
@@ -5163,11 +5163,11 @@
       "correct_explanation": "The root exposure is a single supplier for a critical component, and qualifying an alternate source has the longest lead time, so it must start now alongside short-term measures. Air-freighting existing stock is a sensible tactical move, but it only buys a few weeks from the same constrained supplier and leaves the single point of failure in place when that stock runs out.",
       "wrong_explanations": {
         "A": "Air freight speeds delivery of a shrinking supply from the same source. It buys weeks but leaves the sole-source dependency unresolved.",
-        "B": "With three weeks of stock and an uncertain lockdown, waiting risks a complete production stop for critical-care devices.",
+        "B": "Analysis spends scarce weeks of stock. With a sole source and three weeks left, alternate qualification must start now regardless of the plan.",
         "C": "Equal allocation ignores clinical criticality. Scarce units should go first to the uses where shortage would harm patients most."
       },
       "tips": [
-        "Eliminate: B gambles on the lockdown ending in time, and C ignores clinical priority in allocating scarce units.",
+        "Eliminate: B spends scarce weeks analyzing before acting, and C ignores clinical priority in allocating scarce units.",
         "Final two: D beats A because an alternate source removes the single point of failure, while air freight only buys weeks.",
         "Exam cue: for a single point of failure, prefer the action that removes the dependency, started early because lead times are long."
       ],
@@ -5760,10 +5760,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor needs assurance that firewall and router configurations have not changed outside the change process. Which evidence is MOST reliable?",
       "options": {
-        "A": "Automated comparison of running configs with approved baselines",
+        "A": "Automated drift alerts on running versus authorized configurations",
         "B": "Approved change tickets for every change recorded in the log",
         "C": "Successful test restores of saved device configuration backups",
-        "D": "Device firmware versions matched to the vendor's latest release"
+        "D": "Device firmware versions compared with the vendor's latest release"
       },
       "correct": "A",
       "key_concept": "Unauthorized configuration change is detected by comparing actual running configurations to approved baselines; ticket reviews only cover changes someone recorded.",
@@ -5772,11 +5772,11 @@
       "wrong_explanations": {
         "B": "Tickets matched to logged changes cover only recorded changes; an unrecorded edit never enters the sample.",
         "C": "Restore tests show configurations are recoverable, not that the running configuration matches what was approved.",
-        "D": "Firmware currency addresses vulnerabilities, not whether configuration settings were changed without authorization."
+        "D": "Comparing firmware versions addresses patch currency, not whether configuration settings were changed without authorization."
       },
       "tips": [
         "Eliminate: C tests recoverability, and D tests patch currency, neither of which detects unauthorized changes.",
-        "Final two: A beats B because baseline comparison catches unlogged changes, while tickets cover only what was recorded.",
+        "Final two: A beats B because drift alerts on the running state catch unlogged changes, while tickets cover only what was recorded.",
         "Exam cue: to find changes made outside a process, test the actual state, not the process's own records."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI10 (Managed Configuration); NIST SP 800-128 (Security-Focused Configuration Management); CIS Controls v8 Control 4 (Secure Configuration of Enterprise Assets)",
@@ -6102,9 +6102,9 @@
       "bloom_level": "Application",
       "question": "A problem manager finds the same storage outage has recurred three times, and each incident was closed after a restart. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Open a problem record for structured root cause analysis",
+        "A": "Open a problem record to find the underlying cause",
         "B": "Automate the restart so service recovers faster next time",
-        "C": "Close the incidents and monitor for a fourth recurrence",
+        "C": "Close the incidents and measure recurrence risk over another quarter",
         "D": "Replace the storage array with a newer vendor model"
       },
       "correct": "A",
@@ -6113,11 +6113,11 @@
       "correct_explanation": "Three recurrences show the restart is a workaround, not a fix. Opening a problem record and applying a structured technique, such as 5-Whys or a fishbone analysis, identifies the underlying cause and drives a corrective action that prevents further outages. Automating the restart shortens each outage, which is helpful, but it institutionalizes the workaround and leaves the cause unknown and the outages continuing.",
       "wrong_explanations": {
         "B": "Faster recovery reduces impact, but the outage keeps happening because nobody has found out why.",
-        "C": "Waiting for another recurrence accepts further business impact when the pattern is already clear.",
+        "C": "Measuring recurrence for another quarter accepts further business impact when the pattern is already clear.",
         "D": "Replacing hardware before diagnosis may spend money without fixing a cause that lies elsewhere."
       },
       "tips": [
-        "Eliminate: C waits for more harm, and D buys a solution before the cause is known.",
+        "Eliminate: C waits a quarter for more harm, and D buys a solution before the cause is known.",
         "Final two: A beats B because finding the root cause stops recurrence, while automation only speeds the workaround.",
         "Exam cue: repeated incidents with the same symptom point to problem management and root cause analysis."
       ],
@@ -6483,7 +6483,7 @@
       "question": "An IS auditor is assessing whether a business continuity plan is complete. Which check is MOST important?",
       "options": {
         "A": "Compare the plan's table of contents with last year's version",
-        "B": "Trace each critical process from the BIA to a recovery procedure",
+        "B": "Check each critical BIA process has a recovery procedure",
         "C": "Confirm the plan was reviewed and approved within the last year",
         "D": "Rate the plan using the BCP coordinator's self-assessment"
       },
@@ -6498,7 +6498,7 @@
       },
       "tips": [
         "Eliminate: A only compares structure, and D relies on unverified self-assessment.",
-        "Final two: B beats C because tracing from the BIA proves coverage, while recent approval proves only currency.",
+        "Final two: B beats C because checking every BIA process for a procedure proves coverage, while recent approval proves only currency.",
         "Exam cue: BCP completeness starts from the BIA; check that every critical process traces to a recovery procedure."
       ],
       "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; ISO 22301:2019 Clause 9.2 (Internal Audit); FFIEC Business Continuity Management Booklet; BCI Good Practice Guidelines 2023 PP6 (Validation)",
@@ -6787,8 +6787,8 @@
       "question": "An IS auditor is assessing how a database team manages performance. Which evidence BEST shows that performance is managed proactively?",
       "options": {
         "A": "Monthly uptime percentages from the team's dashboard",
-        "B": "Slow-query logs reviewed in detail whenever users report delays",
-        "C": "Trended metrics compared with an agreed performance baseline",
+        "B": "Slow-query logs analyzed for root cause whenever users report delays",
+        "C": "Trended metrics checked against agreed performance thresholds",
         "D": "The vendor's tuning guide stored on the team intranet"
       },
       "correct": "C",
@@ -6797,12 +6797,12 @@
       "correct_explanation": "Proactive performance management needs a baseline of normal behaviour and trends compared against it, so degradation is spotted and capacity added before users notice. Slow-query review is useful tuning work, but triggered by user complaints it is reactive: it starts only after service has already suffered. Uptime and stored guidance say nothing about how performance is actually managed.",
       "wrong_explanations": {
         "A": "Uptime shows whether the database is available, not whether it performs well. A slow but running database still meets an uptime target.",
-        "B": "Reviewing slow queries is useful, but triggering it from user complaints makes it reactive. Problems are found only after service has degraded.",
+        "B": "Analyzing slow queries is useful, but triggering it from user complaints makes it reactive. Problems are found only after service has degraded.",
         "D": "A stored guide shows documentation exists, not that anyone follows it or measures the results."
       },
       "tips": [
         "Eliminate: A measures availability rather than performance, and D shows documentation rather than practice.",
-        "Final two: C beats B because a baseline with trends detects degradation before users do, while complaint-driven review reacts afterwards.",
+        "Final two: C beats B because trends against agreed thresholds detect degradation before users do, while complaint-driven analysis reacts afterwards.",
         "Exam cue: proactive management means a baseline plus trends; anything triggered by user complaints is reactive."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
@@ -7316,26 +7316,26 @@
       "subtopic": "Cross-Region Failover During Regional Outage",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A cloud region outage is two hours old, the provider estimates 6–12 hours to restore, and the BCP sets a four-hour RTO. What is the BEST recommendation from the IS auditor?",
+      "question": "A cloud region outage is two hours old with 6–12 hours to restore against a four-hour RTO, and the BCP names the CIO as invocation authority. What should the recovery manager do FIRST?",
       "options": {
         "A": "Fail over workloads for the customers who are demanding it",
-        "B": "Ask customers to approve the data-loss window first",
-        "C": "Invoke the planned failover to the secondary region now",
+        "B": "Invoke failover now and brief the CIO once it completes",
+        "C": "Escalate to the CIO now for an immediate failover decision",
         "D": "Wait for an updated provider estimate at the four-hour mark"
       },
       "correct": "C",
-      "key_concept": "When the expected outage exceeds the RTO, invoke the planned failover early enough for recovery to finish within the objective.",
-      "pre_read": "Compare the provider's estimate with the RTO. Then ask how much time the failover itself still needs.",
-      "correct_explanation": "The RTO comes from the business impact analysis and the provider's estimate already exceeds it. With two hours gone, the planned failover must start now to finish in time. Waiting for a better estimate feels prudent, but at hour four the objective is already missed and the failover itself still has to run.",
+      "key_concept": "When an outage will exceed the RTO, the invocation decision must be made quickly by the authority the plan names.",
+      "pre_read": "Compare the provider's estimate with the RTO. Then check who the plan says makes the invocation decision.",
+      "correct_explanation": "The provider's estimate already exceeds the four-hour RTO, so a failover decision is needed now, but the BCP gives that decision to the CIO. Escalating immediately gets an authorized invocation within minutes. Invoking without the CIO feels decisive, but it bypasses the plan's named authority, and failover commits cost and data-loss trade-offs that the plan reserves for that executive.",
       "wrong_explanations": {
         "A": "Choosing by which customers complain replaces the plan's business-impact priorities with pressure from the loudest voices.",
-        "B": "Customers do not own the firm's recovery decision. The data-loss tolerance was set in the plan's recovery point objective.",
+        "B": "The plan reserves invocation for the CIO. Acting first and briefing later bypasses that authority when escalation takes only minutes.",
         "D": "By hour four the RTO has already passed, and the failover still takes time. The current estimate is enough to act on."
       },
       "tips": [
-        "Eliminate: A lets pressure override the plan's priorities, and B hands management's decision to customers.",
-        "Final two: C beats D because the estimate already exceeds the RTO, and waiting until hour four guarantees missing it.",
-        "Exam cue: compare the expected outage with the RTO; if it will be exceeded, invoke the plan in time to meet it."
+        "Eliminate: A lets customer pressure override the plan's priorities, and D waits until the RTO is already lost.",
+        "Final two: C beats B because the plan names the CIO as invocation authority, and escalating now costs minutes, not the RTO.",
+        "Exam cue: once the trigger is met, get the decision fast from the authority the plan names; neither wait nor bypass it."
       ],
       "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); ISO 22301:2019 Clause 8.4 (Business Continuity Plans and Procedures); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
@@ -7624,8 +7624,8 @@
       "options": {
         "A": "Number of exercises completed against the annual test plan",
         "B": "Total program spend compared with the approved budget",
-        "C": "Recovery times achieved in exercises compared with RTOs",
-        "D": "Maturity score benchmarked against industry peer organizations"
+        "C": "Recovery times achieved in exercises against each RTO",
+        "D": "Maturity score compared with industry peer organizations"
       },
       "correct": "C",
       "key_concept": "Executives need outcome metrics: whether recovery capability meets business-set RTOs, not merely whether activities happened or money was spent.",
@@ -7696,26 +7696,26 @@
       "subtopic": "Capacity Exhaustion During Peak Event",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "During a viral demand spike, an online retailer's autoscaling hits its cloud service quota and 28% of requests time out. What should the IS auditor recommend the operations head do FIRST?",
+      "question": "An online retailer's autoscaling hits a soft cloud quota its provider raises within minutes, and 28% of requests time out; no queueing exists. What should the IS auditor recommend the operations head do FIRST?",
       "options": {
-        "A": "Queue excess requests so the site degrades gracefully",
+        "A": "Raise an urgent quota-increase request with the cloud provider",
         "B": "Deploy the full site to a secondary region immediately",
         "C": "Take the discounted product offline to cut demand",
-        "D": "Request a quota increase and wait for vendor approval"
+        "D": "Build request queueing so the site degrades gracefully"
       },
       "correct": "A",
-      "key_concept": "Graceful degradation such as request queueing stabilizes service within current capacity while longer-term capacity actions proceed.",
-      "pre_read": "Look at what the firm controls right now. Which option stops timeouts using capacity that already exists?",
-      "correct_explanation": "Queueing excess requests lets the site serve customers in order instead of timing them out, using capacity the firm already controls. It stabilizes service immediately while quota and region options are pursued. Deploying the whole site to a secondary region sounds decisive, but replicating inventory, pricing and routing under load is a large, risky change that will not help within the hour.",
+      "key_concept": "A soft cloud quota is an administrative limit; asking the provider to lift it is faster and safer than building new controls mid-incident.",
+      "pre_read": "Ask what kind of limit was hit and who can lift it fastest.",
+      "correct_explanation": "The binding constraint is a soft quota, an administrative limit the provider can lift quickly, so an urgent increase request is the fastest way to restore capacity. Building request queueing is sound resilience engineering, but with none in place, designing and deploying it during a live spike is a risky change that will not land sooner than the provider's response.",
       "wrong_explanations": {
         "B": "A full secondary-region deployment under load is a major, untested change. It takes hours and risks data inconsistency.",
         "C": "Pulling the promotion is a business decision that sacrifices revenue and reputation instead of managing the technical capacity problem.",
-        "D": "Quota requests can take hours. Waiting leaves timeouts unchecked when the firm can act within existing capacity."
+        "D": "Queueing helps future spikes, but building it mid-incident is an untested change that takes longer than lifting a soft quota."
       },
       "tips": [
-        "Eliminate: C sacrifices the business to fix a technical constraint, and D leaves customers timing out while a vendor responds.",
-        "Final two: A beats B because queueing stabilizes service now within current capacity, while a full regional deployment is slow and risky.",
-        "Exam cue: in capacity crises, first stabilize with what you control, then add capacity."
+        "Eliminate: B attempts a risky regional rebuild under load, and C sacrifices the business to fix a technical constraint.",
+        "Final two: A beats D because the provider can lift a soft quota quickly, while building queueing mid-incident is slow and risky.",
+        "Exam cue: when the limit is administrative, remove it at the source before engineering around it mid-incident."
       ],
       "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); Microsoft Azure Architecture Center; ITIL 4 Capacity and Performance Management; COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
@@ -8153,7 +8153,7 @@
       "bloom_level": "Analysis",
       "question": "A cloud vendor has missed its 99.95% SLA for 90 days despite an agreed remediation roadmap; credits cover about 8% of business impact. What is the IS auditor's BEST recommendation to the CTO?",
       "options": {
-        "A": "Accept the SLA credits as adequate compensation and continue",
+        "A": "Measure SLA performance against the remediation plan for another quarter",
         "B": "Migrate production to an alternative cloud vendor right away",
         "C": "Issue a formal cure notice demanding a remediation roadmap",
         "D": "Redesign critical services to tolerate the vendor's degradations"
@@ -8163,12 +8163,12 @@
       "pre_read": "Compare the credits with the business impact. Ask who really bears the cost when the vendor falls short.",
       "correct_explanation": "Credits cover a small fraction of the impact, which shows the firm, not the vendor, carries the risk. The firm remains accountable for its service, so the lasting fix is to design critical services to tolerate vendor degradation. A cure notice is a legitimate contractual step, but the vendor has already agreed a remediation roadmap and the pattern continues; more contract pressure changes little for customers.",
       "wrong_explanations": {
-        "A": "Credits cover about 8% of the impact, so accepting them leaves the business absorbing nearly all of the loss.",
+        "A": "The roadmap has already failed for 90 days. Another quarter of measurement leaves the business absorbing losses that credits barely cover.",
         "B": "An immediate migration is a large, risky change, and a new vendor can also degrade without resilient design.",
         "C": "A remediation roadmap is already agreed and still failing. A formal cure notice adds pressure but does not protect customers."
       },
       "tips": [
-        "Eliminate: A accepts compensation far below the impact, and B makes a rushed, risky move that does not remove vendor dependence.",
+        "Eliminate: A waits another quarter on a failing roadmap, and B makes a rushed, risky move that does not remove vendor dependence.",
         "Final two: D beats C because the firm stays accountable for resilience, and an agreed roadmap has not changed the pattern.",
         "Exam cue: SLA credits are not a risk response; when a vendor keeps failing, build resilience you control."
       ],
@@ -8383,7 +8383,7 @@
         "A": "Add shared capacity until the large tenant's load is absorbed",
         "B": "Enforce per-tenant resource quotas sized to each contract",
         "C": "Renegotiate the large tenant's contract to add volume pricing",
-        "D": "Issue SLA credits to the affected tenants and keep monitoring"
+        "D": "Measure each tenant's load for a month, then review quotas"
       },
       "correct": "B",
       "key_concept": "Multi-tenant service levels depend on isolation; per-tenant quotas stop one workload from consuming capacity contracted to others.",
@@ -8392,10 +8392,10 @@
       "wrong_explanations": {
         "A": "More shared capacity treats the symptom. Without isolation, the large tenant's growth consumes the headroom and breaches recur.",
         "C": "Pricing changes take time and do not stop the workload from degrading other tenants today.",
-        "D": "Credits compensate after the fact but leave the cause in place, so breaches continue each peak period."
+        "D": "The cause is already known. A month of measurement leaves eleven tenants in breach while isolation could be enforced now."
       },
       "tips": [
-        "Eliminate: C changes price without changing the load, and D pays for breaches without stopping them.",
+        "Eliminate: C changes price without changing the load, and D delays a month although the cause is already known.",
         "Final two: B beats A because isolation fixes the cause, while added shared capacity is absorbed by the same tenant.",
         "Exam cue: in shared environments, fix isolation before adding capacity."
       ],
@@ -8609,16 +8609,16 @@
       "options": {
         "A": "Carry out the cuts and raise concerns informally with the CFO",
         "B": "Quantify the continuity risks and propose mitigations to senior management",
-        "C": "Suspend the cuts until the audit committee approves a risk assessment",
+        "C": "Suspend the cuts until an independent risk analysis has been completed",
         "D": "Outsource IT operations to a managed provider to absorb the cuts"
       },
       "correct": "B",
       "key_concept": "Management owns the staffing decision; the auditor quantifies continuity risk and proposes mitigations so the risk is accepted knowingly.",
       "pre_read": "Notice who gave the order. Ask which option informs that decision without taking it away from management.",
-      "correct_explanation": "Staffing levels are management's decision, but leaders must decide with the continuity risk in view. Quantifying the single-person dependencies and proposing mitigations such as knowledge capture and cross-training gives senior management a documented basis for its choice. Suspending the cuts pending audit committee approval sounds prudent, but it takes a business decision away from management.",
+      "correct_explanation": "Staffing levels are management's decision, but leaders must decide with the continuity risk in view. Quantifying the single-person dependencies and proposing mitigations such as knowledge capture and cross-training gives senior management a documented basis for its choice. Suspending the cuts for an independent risk analysis sounds prudent, but it takes a business decision away from management.",
       "wrong_explanations": {
         "A": "Informal concerns leave no record and give decision-makers no quantified view of the risk they are accepting.",
-        "C": "The audit committee oversees but does not approve operational staffing. Halting management's decision oversteps the advisory role.",
+        "C": "Halting management's staffing decision for an outside analysis oversteps the advisory role; the risk can be quantified alongside the decision.",
         "D": "A rushed outsourcing deal is a major strategic change with its own transition risk, and it does not address the dependencies before the cuts."
       },
       "tips": [
@@ -8723,7 +8723,7 @@
         "A": "Notify every customer that past invoices may be inaccurate",
         "B": "Restore the latest backup and replay valid transactions",
         "C": "Fix the trigger and leave historical invoices as issued",
-        "D": "Analyze the invoice data to scope the affected records"
+        "D": "Query the invoice data to identify every affected record"
       },
       "correct": "D",
       "key_concept": "With no clean backup, analyze the data to identify and quantify the corruption before correcting records or notifying customers.",
@@ -8833,7 +8833,7 @@
       "bloom_level": "Analysis",
       "question": "An IS auditor finds a cluster's admission policies have run in audit-only mode for 11 months, and one violating pod is mining cryptocurrency. What should the CTO do FIRST?",
       "options": {
-        "A": "Keep the policies in audit mode while violations are tracked",
+        "A": "Keep audit mode and analyze violations against policy for a month",
         "B": "Remove the admission controller and rely on runtime security tools",
         "C": "Isolate the compromised workload and hunt for further intrusion",
         "D": "Switch every policy to enforce mode across the cluster immediately"
@@ -8843,12 +8843,12 @@
       "pre_read": "Notice that misuse is already happening. Separate actions that stop the attacker from those that prevent future deployments.",
       "correct_explanation": "An attacker is already inside, so containing the known compromise and hunting for further foothold comes first. Enforcing the policies is essential, but it only governs new deployments; it does not evict an intruder already running, and flipping all policies at once may break the many existing workloads that violate them.",
       "wrong_explanations": {
-        "A": "Tracking violations leaves the gap open and does nothing about the active intrusion already found in the cluster.",
+        "A": "Analyzing violations for another month leaves the gap open and does nothing about the active intrusion already found in the cluster.",
         "B": "Removing preventive controls because they were misconfigured weakens defence further; the fix is correct configuration, not removal.",
         "D": "Enforcement is needed but governs only new deployments, so the running intruder is untouched and blanket enforcement may disrupt production."
       },
       "tips": [
-        "Eliminate: A tolerates the open gap, and B removes a preventive control instead of fixing it.",
+        "Eliminate: A tolerates the open gap for another month, and B removes a preventive control instead of fixing it.",
         "Final two: C beats D because an active intrusion must be contained before hardening; enforcement does not evict a running attacker.",
         "Exam cue: when a control gap has already been exploited, contain the incident first, then close the gap in phases."
       ],
@@ -9211,21 +9211,21 @@
       "options": {
         "A": "Accept the remote diagnostics as evidence of no tampering",
         "B": "Arrange an independent on-site inspection of the firm's equipment",
-        "C": "Rely on the provider's own forensic findings once they are issued",
+        "C": "Await an independent analysis of the provider's access logs",
         "D": "Relocate the equipment to a new colocation provider immediately"
       },
       "correct": "B",
-      "key_concept": "Physical access breaches need independent physical inspection; remote diagnostics and the breached provider's own report are insufficient assurance.",
-      "pre_read": "Ask what remote diagnostics can and cannot see. Then ask who is independent of the control that failed.",
-      "correct_explanation": "Remote diagnostics cannot detect physical implants or added hardware, so only a hands-on inspection can confirm the equipment's integrity. Making it independent ensures the finding does not depend on the party whose controls failed. The provider's forensic report is useful input, but the provider has an interest in the outcome and focuses on its facility, not on the firm's hardware.",
+      "key_concept": "Physical access breaches need independent physical inspection; remote diagnostics and access logs cannot show whether hardware was altered.",
+      "pre_read": "Ask what remote diagnostics and access logs can and cannot see. Then ask who is independent of the control that failed.",
+      "correct_explanation": "Remote diagnostics cannot detect physical implants or added hardware, so only a hands-on inspection can confirm the equipment's integrity. Making it independent ensures the finding does not depend on the party whose controls failed. An independent review of the provider's access logs sounds rigorous, but logs show who entered and when, not whether anyone altered the firm's hardware.",
       "wrong_explanations": {
         "A": "Remote diagnostics cannot see hardware implants or physical changes, so they cannot prove the equipment is untouched.",
-        "C": "The provider's controls failed, so its own findings lack independence and may not cover the firm's specific equipment.",
+        "C": "Access logs show who entered, not whether hardware was altered, and waiting delays the hands-on check that can.",
         "D": "Moving equipment before inspection may destroy evidence and moves possibly tampered hardware into a new site."
       },
       "tips": [
         "Eliminate: A trusts tools that cannot see physical tampering, and D relocates hardware before checking it.",
-        "Final two: B beats C because the firm needs independent assurance; the provider is investigating its own control failure.",
+        "Final two: B beats C because only a physical inspection can reveal tampering; access logs show entry, not changes to hardware.",
         "Exam cue: after a physical breach, verify with independent physical evidence; remote checks and the breached party's word are not enough."
       ],
       "framework_ref": "ISO/IEC 27001:2022 Annex A.7 (Physical Controls); HHS HIPAA Security Rule 45 CFR §164.310 (Physical Safeguards); PCI DSS v4.0.1 Requirement 9 (Restrict Physical Access to Cardholder Data); ISO/IEC 27037 (Digital Evidence)",
@@ -9287,7 +9287,7 @@
       "options": {
         "A": "Block each attacking IP address at the web application firewall",
         "B": "Scale out the login tier to absorb the added traffic",
-        "C": "Wait for the attacker's credential list to be exhausted",
+        "C": "Analyze the attack traffic before changing login policy",
         "D": "Filter bot logins and step up MFA on risky attempts"
       },
       "correct": "D",
@@ -9297,10 +9297,10 @@
       "wrong_explanations": {
         "A": "Rotating residential proxies supply new addresses faster than they can be blocked, so the load and takeovers continue.",
         "B": "Extra capacity absorbs the load but lets the attacker test credentials faster, increasing takeovers and cost.",
-        "C": "Waiting lets takeovers and checkout slowdowns continue for as long as the list lasts, which may be days."
+        "C": "Analysis can run alongside containment. Delaying controls lets takeovers and checkout slowdowns continue in the meantime."
       },
       "tips": [
-        "Eliminate: A fails against rotating proxies, and C lets takeovers and slowdowns continue while doing nothing.",
+        "Eliminate: A fails against rotating proxies, and C delays containment for analysis while takeovers continue.",
         "Final two: D beats B because removing attack traffic fixes the cause; scaling out gives the attacker more capacity.",
         "Exam cue: when an attack drives a capacity problem, shed the hostile load before adding resources."
       ],
@@ -9433,26 +9433,26 @@
       "subtopic": "DR Site Located in Active-War-Zone Region",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank's DR site lies in a region now suffering attacks on power and telecoms, and switching providers takes six months. What should the IS auditor recommend FIRST to the chief operating officer?",
+      "question": "A bank's DR site lies in a region now suffering attacks on power and telecoms, and switching providers takes six months. What is the IS auditor's BEST recommendation to the chief operating officer?",
       "options": {
         "A": "Keep the current site until the contract renewal date",
-        "B": "Reassess the site's risk against the BIA recovery objectives",
+        "B": "Defer exit and add interim recovery capacity while migrating",
         "C": "Terminate the DR contract and begin migrating immediately",
         "D": "Rely on the vendor's assurance that operations continue"
       },
       "correct": "B",
-      "key_concept": "A changed threat to a recovery site calls for a fresh risk assessment against recovery objectives before choosing an exit path.",
-      "pre_read": "Notice the six-month switching time. Ask what decision must come before acting, and what happens to recovery capability meanwhile.",
-      "correct_explanation": "The threat environment has changed materially, so the first step is to reassess whether the site can still meet the RTO and RPO set by the BIA, and to size the gap. That assessment tells management whether to run a parallel site, accelerate a move or accept interim risk. Terminating immediately sounds decisive but leaves the bank with no DR capability for six months.",
+      "key_concept": "When a recovery site's risk rises but replacement takes months, a staged exit with interim safeguards keeps recovery capability in place.",
+      "pre_read": "Notice the six-month switching time. Ask what happens to recovery capability while the bank moves.",
+      "correct_explanation": "The current site is degraded but remains the bank's only recovery capability, and a replacement takes six months. Keeping it while adding interim recovery capacity elsewhere, then moving in stages, holds risk within the BIA objectives until the new site is proven. Terminating at once sounds decisive, but it leaves the bank with no DR capability for the whole six-month switch.",
       "wrong_explanations": {
-        "A": "Waiting for renewal ignores a material change in risk. Contract timing should not drive a resilience decision.",
+        "A": "Waiting for renewal adds no safeguards against a material change in risk. Contract timing should not drive a resilience decision.",
         "C": "Ending the contract before an alternate site is ready removes all recovery capability during the six-month switch.",
         "D": "The vendor's self-report is not independent evidence that the site can still meet the BIA recovery objectives."
       },
       "tips": [
         "Eliminate: A lets the contract date drive a resilience decision, and D accepts an interested party's word as evidence.",
-        "Final two: B beats C because terminating before assessing leaves no DR site for six months; assess first, then act.",
-        "Exam cue: when an option removes your only recovery capability, look for the step that assesses before cutting over."
+        "Final two: B beats C because a staged exit with interim capacity keeps recovery capability; terminating first leaves none for six months.",
+        "Exam cue: when the only recovery option is degraded, keep it under compensating safeguards until its replacement is proven."
       ],
       "framework_ref": "ISO 22301:2019 Clause 8.2.3 (Risk Assessment); NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; FFIEC Business Continuity Management Booklet; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
@@ -9475,21 +9475,21 @@
       "options": {
         "A": "Invoke the incident response plan with independent forensics",
         "B": "Rely on the MDR provider's own review of the missed alerts",
-        "C": "Review the MDR contract's detection obligations and remedies",
+        "C": "Commission an independent review of the MDR detection rules",
         "D": "Claim liquidated damages for the provider's detection failure"
       },
       "correct": "A",
       "key_concept": "A confirmed cardholder data breach triggers the incident response plan first; vendor accountability is addressed after containment and independent evidence.",
       "pre_read": "Notice the data is already exposed. Ask what protects customers and evidence now, before deciding what to do about the vendor.",
-      "correct_explanation": "Card data is already exposed, so the incident response plan required by PCI DSS must start now: contain, preserve evidence and engage independent forensics, which also supports brand and QSA notification. The MDR provider cannot investigate its own failure. Reviewing the contract is a sound step, but it addresses the vendor relationship, not the live breach, so it comes later.",
+      "correct_explanation": "Card data is already exposed, so the incident response plan required by PCI DSS must start now: contain, preserve evidence and engage independent forensics, which also supports brand and QSA notification. The MDR provider cannot investigate its own failure. Reviewing the detection rules is a sound step, but it explains why alerts were missed rather than containing the live breach, so it comes later.",
       "wrong_explanations": {
         "B": "The provider has a conflict of interest when reviewing its own missed alerts. The investigation needs independent forensics.",
-        "C": "Contract review matters for accountability, but it does nothing to contain an active breach or preserve evidence.",
+        "C": "Reviewing detection rules matters for accountability, but it does nothing to contain an active breach or preserve evidence.",
         "D": "Pursuing damages is a commercial remedy. It does not contain the breach and is premature before forensics establish the facts."
       },
       "tips": [
         "Eliminate: B lets the vendor investigate itself, and D jumps to a commercial claim before the facts are known.",
-        "Final two: A beats C because a live breach needs response and evidence first; the contract question waits.",
+        "Final two: A beats C because a live breach needs response and evidence first; the detection-rule review waits.",
         "Exam cue: in a breach involving a vendor, respond to the incident first and settle the vendor relationship later."
       ],
       "framework_ref": "PCI DSS v4.0.1 Requirement 12.10 (Incident Response); Visa Account Information Security (AIS) Program; Mastercard Site Data Protection (SDP) Program; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); ISACA Vendor Management Audit/Assurance Program",
