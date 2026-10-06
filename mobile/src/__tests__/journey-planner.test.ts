@@ -87,3 +87,12 @@ describe('streak with a weekly rest day', () => {
     expect(weekStrip(s, day(3))).toEqual([false, false, false, false, true, false, true]);
   });
 });
+
+describe('streak migration', () => {
+  it('keeps yesterday in the week strip for saves without recentDays', () => {
+    const day = (d: number) => new Date(2026, 0, d, 12).getTime();
+    const old = { current: 3, best: 3, lastDay: '2026-01-04' }; // pre-v1 save shape
+    const s = bumpStreak(old, day(5));
+    expect(weekStrip(s, day(5)).slice(-2)).toEqual([true, true]);
+  });
+});

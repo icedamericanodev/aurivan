@@ -53,7 +53,8 @@ export function bumpStreak(s: Streak, now: number): Streak {
   const today = dayKey(now);
   if (s.lastDay === today) return s;
 
-  const recentDays = [...(s.recentDays ?? []), today].slice(-14);
+  // Older saves have lastDay but no recentDays: carry lastDay over so the week strip keeps it.
+  const recentDays = [...(s.recentDays ?? (s.lastDay ? [s.lastDay] : [])), today].slice(-14);
   let current = 1;
   let restDay = s.restDay ?? null;
 

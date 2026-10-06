@@ -65,7 +65,12 @@ export default function Settings() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={() => router.back()} hitSlop={12}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Back"
+        onPress={() => router.back()}
+        style={{ minHeight: 48, minWidth: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
+      >
         <T v="label" color={c.accentText}>‹ Back</T>
       </Pressable>
       <Gap h={space.sm} />

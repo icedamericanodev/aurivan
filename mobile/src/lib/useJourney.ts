@@ -19,7 +19,7 @@ export function useJourney() {
   const dailyGoal = useSettings((s) => s.dailyGoal);
   const streakState = useProgress((s) => s.streak);
 
-  return useMemo(() => {
+  const derived = useMemo(() => {
     const lessons = lessonsFor(cert.id);
     const answeredTotal = readiness.domains.reduce((n, d) => n + d.answered, 0);
     const stage = journeyStage({
@@ -42,7 +42,6 @@ export function useJourney() {
       examQuestions: cert.exam.questions,
     });
     return {
-      ...active,
       stage,
       stageLabel: STAGE_LABEL[stage],
       stageProgress: stageProgress(stage),
@@ -52,5 +51,6 @@ export function useJourney() {
       answeredTotal,
       week: weekStrip(streakState, Date.now()),
     };
-  }, [active, cert, progress, readiness, dueCount, daysLeft, dailyGoal, streakState]);
+  }, [cert, progress, readiness, dueCount, daysLeft, dailyGoal, streakState]);
+  return { ...active, ...derived };
 }

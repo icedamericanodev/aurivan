@@ -3,8 +3,8 @@
  * end-of-round summary. Games stay full-screen and calm.
  */
 import { router } from 'expo-router';
-import { useMemo, useState, type ReactNode } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion, ZoomIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { findQuestion } from '../content/loader';
@@ -31,7 +31,7 @@ export function useRound(certId: string, build: (rngSeed: number) => string[]) {
     return items;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seed, certId]);
-  return { round, restart: () => setSeed(Date.now()) };
+  return { round, seed, restart: () => setSeed(Date.now()) };
 }
 
 export function GameFrame({
@@ -54,10 +54,17 @@ export function GameFrame({
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderBottomWidth: 1, borderBottomColor: c.border }}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <Pressable accessibilityRole="button" accessibilityLabel="Close game" onPress={() => router.back()} hitSlop={12}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Close game"
+            onPress={() => router.back()}
+            style={{ minHeight: 48, minWidth: 48, justifyContent: 'center' }}
+          >
             <T v="label" color={c.accentText}>Close</T>
           </Pressable>
-          <T v="label">{title}</T>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <T v="label" numberOfLines={1}>{title}</T>
+          </View>
           <T v="mono" color={c.text2} accessibilityLabel={`Round ${index + 1} of ${total}, score ${score}`}>
             {`${Math.min(index + 1, total)}/${total} · ${score}`}
           </T>
@@ -126,16 +133,36 @@ export function RoundEnd({
   );
 }
 
-/** Small reveal card used after each answer. */
+/**
+ * Reveal card after each answer. Long explanations are clamped to 5 lines
+ * with a 48px "Read full explanation" toggle, and the title is announced
+ * to screen readers.
+ */
 export function RevealCard({ tone, title, body }: { tone: 'good' | 'bad' | 'info'; title: string; body: string }) {
   const { c } = useTheme();
+  const [open, setOpen] = useState(false);
   const color = tone === 'good' ? c.correct : tone === 'bad' ? c.wrong : c.accentText;
+  const long = body.length > 280;
+  useEffect(() => {
+    AccessibilityInfo.announceForAccessibility(title);
+  }, [title]);
   return (
     <Animated.View entering={FadeIn.duration(240).reduceMotion(ReduceMotion.System)}>
       <Card style={{ borderColor: color }}>
-        <T v="label" color={color}>{title}</T>
+        <View accessibilityLiveRegion="polite">
+          <T v="label" color={color}>{title}</T>
+        </View>
         <Gap h={space.xs} />
-        <T style={{ lineHeight: 24 }}>{body}</T>
+        <T style={{ lineHeight: 24 }} numberOfLines={long && !open ? 5 : undefined}>{body}</T>
+        {long && (
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setOpen(!open)}
+            style={{ minHeight: 48, justifyContent: 'center' }}
+          >
+            <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read full explanation'}</T>
+          </Pressable>
+        )}
       </Card>
     </Animated.View>
   );

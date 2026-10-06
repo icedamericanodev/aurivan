@@ -162,7 +162,7 @@ export default function Journey() {
             <Card style={{ borderColor: c.teal }}>
               <Row gap={space.sm}>
                 <Sparkles size={20} color={c.tealText} strokeWidth={ICON_STROKE} />
-                <T v="heading" color={c.tealText}>Pass-ready</T>
+                <T v="heading" color={c.tealText}>Exam-ready</T>
               </Row>
               <T v="body">
                 Your readiness has held above the target across every domain. Keep it warm with short sessions until exam day.
@@ -192,10 +192,8 @@ export default function Journey() {
       {/* Week strip */}
       <Animated.View entering={enter(6)}>
         <Card>
-          <Row style={{ justifyContent: 'space-between' }}>
-            <T v="label" color={c.text2}>This week</T>
-            <T v="caption">One rest day a week keeps your streak.</T>
-          </Row>
+          <T v="label" color={c.text2}>This week</T>
+          <T v="caption">One rest day a week keeps your streak.</T>
           <Gap h={space.md} />
           <WeekStrip days={j.week} />
         </Card>

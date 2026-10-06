@@ -46,6 +46,7 @@ export function ReadinessRing({ score, size = 120, label = 'ready' }: { score: n
       accessible
       accessibilityRole="progressbar"
       accessibilityLabel={`Exam readiness ${score} percent`}
+      accessibilityValue={{ min: 0, max: 100, now: score }}
       style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
     >
       <Svg width={size} height={size} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
@@ -62,8 +63,10 @@ export function ReadinessRing({ score, size = 120, label = 'ready' }: { score: n
           animatedProps={animatedProps}
         />
       </Svg>
-      <T v="title" color={c.text} style={{ fontFamily: font.mono, fontSize: size / 4.2 }}>{`${score}%`}</T>
-      <T v="caption">{label}</T>
+      <T v="title" color={c.text} maxFontSizeMultiplier={1.3} style={{ fontFamily: font.mono, fontSize: size / 4.2 }}>
+        {`${score}%`}
+      </T>
+      <T v="caption" maxFontSizeMultiplier={1.3}>{label}</T>
     </View>
   );
 }
@@ -104,15 +107,15 @@ export function DomainRoute({
                   borderRadius: 18,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: done ? c.teal : current ? c.accentFill : c.surface,
+                  backgroundColor: done ? c.teal : current ? c.surface2 : c.surface,
                   borderWidth: current ? 3 : 1,
                   borderColor: done ? c.teal : current ? c.accent : c.border,
                 }}
               >
                 {done ? (
-                  <Check size={18} color={c.bg} strokeWidth={2.5} />
+                  <Check size={18} color={c.navy} strokeWidth={2.5} />
                 ) : (
-                  <T v="label" color={current ? c.onAccent : c.text2} style={{ fontFamily: font.mono }}>{d.id}</T>
+                  <T v="label" color={current ? c.accentText : c.text2} style={{ fontFamily: font.mono }}>{d.id}</T>
                 )}
               </View>
               {!last && <View style={{ width: 2, flex: 1, backgroundColor: done ? c.teal : c.border }} />}
@@ -134,7 +137,7 @@ export function DomainRoute({
 const DAY_LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export function WeekStrip({ days }: { days: boolean[] }) {
-  const { c } = useTheme();
+  const { c, isDark } = useTheme();
   const today = new Date().getDay();
   return (
     <View
@@ -151,11 +154,15 @@ export function WeekStrip({ days }: { days: boolean[] }) {
                 width: 28,
                 height: 28,
                 borderRadius: 14,
-                backgroundColor: studied ? c.teal : c.surface2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: studied ? (isDark ? c.teal : c.tealText) : c.surface2,
                 borderWidth: i === 6 ? 2 : 0,
                 borderColor: c.accent,
               }}
-            />
+            >
+              {studied && <Check size={14} color={isDark ? c.navy : c.onAccent} strokeWidth={2.5} />}
+            </View>
             <T v="caption">{DAY_LETTERS[dow]}</T>
           </View>
         );

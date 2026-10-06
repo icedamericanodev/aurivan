@@ -22,7 +22,7 @@ const GAMES: { id: GameId; name: string; hook: string; skill: string; Icon: type
   {
     id: 'sprint',
     name: 'Calibrated Sprint',
-    hook: 'Bet 1–3 chips on each answer. Confidence costs when it’s wrong.',
+    hook: 'Stake 1–3 points on each answer. Over-confidence costs when it’s wrong.',
     skill: 'Knowing what you know',
     Icon: Scale,
   },

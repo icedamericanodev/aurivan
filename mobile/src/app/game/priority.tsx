@@ -27,7 +27,7 @@ const SIZE = 5;
 export default function PriorityLens() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
-  const { round, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE));
+  const { round, seed, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE));
   const [i, setI] = useState(0);
   const [score, setScore] = useState(0);
   const [word, setWord] = useState<PriorityWord | null>(null);
@@ -36,7 +36,8 @@ export default function PriorityLens() {
 
   const item = round[i];
   const actual = item ? priorityWord(item.q.stem)! : null;
-  const choices = useMemo(() => (actual ? wordChoices(actual, createRng(i + round.length)) : []), [actual, i, round.length]);
+  // Seeded from this round's own seed, so the right word lands in a different chip each time.
+  const choices = useMemo(() => (actual ? wordChoices(actual, createRng(seed * 31 + i)) : []), [actual, i, seed]);
 
   if (!item || !actual) {
     return (

@@ -660,3 +660,24 @@ Everything is already designed and prototyped. Code's job is integration, not in
 - ✓ Empty state copy written above
 - ✓ Relaunch copy in `relaunch-copy-v9.md`
 - ✓ Mobile fixes scripted in `fix-mobile.js` and `audit-mobile.js`
+
+---
+
+## NATIVE MOBILE APP (`mobile/`) — LOCKED DECISIONS
+
+Added with Experience v1. The sections above describe the web app; these lock
+the native app's information architecture.
+
+| Decision | Selection |
+|---|---|
+| Tab bar (5 tabs, in order) | **Journey · Learn · Practice · Play · You** |
+| Mock exams | Live inside **Practice** (no separate tab) |
+| Settings | Pushed screen opened from **You** (not a tab) |
+| Accent rule | One accent-filled element per screen; everything else outlined |
+| Touch targets | 48×48 minimum |
+| Motion | 180–320ms ease-out, always honours Reduce Motion |
+
+**Documented exception — Calibrated Sprint.** The "answer first, then rate
+confidence" rule used in practice sessions is reversed in this one game: the
+learner stakes 1–3 points *before* answering. Committing the stake first is
+the whole point of the game (it measures calibration), so this is intentional.

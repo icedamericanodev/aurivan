@@ -4,7 +4,7 @@
  * marks the lesson done and feeds the journey.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SceneView } from '../../components/lesson';
@@ -21,6 +21,8 @@ export default function LessonPlayer() {
   const completeLesson = useProgress((s) => s.completeLesson);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState(false);
+  // Moving between scenes re-mounts the check unanswered, so reset the gate too.
+  useEffect(() => setChecked(false), [index]);
 
   if (!lesson) {
     return (
@@ -50,7 +52,12 @@ export default function LessonPlayer() {
       {/* Progress rail: one segment per scene */}
       <View style={{ paddingHorizontal: space.lg, paddingTop: space.sm }}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <Pressable accessibilityRole="button" accessibilityLabel="Close lesson" onPress={() => router.back()} hitSlop={12}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Close lesson"
+            onPress={() => router.back()}
+            style={{ minHeight: 48, minWidth: 48, justifyContent: 'center' }}
+          >
             <T v="label" color={c.accentText}>Close</T>
           </Pressable>
           <T v="mono">{`${lesson.minutes} MIN · ${index + 1}/${lesson.scenes.length}`}</T>
@@ -78,17 +85,17 @@ export default function LessonPlayer() {
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: space.xl }}>
         {/* key forces each scene to re-mount, replaying its entrance animation */}
         <SceneView key={index} scene={scene} onCheck={() => setChecked(true)} />
+        {isLast && (
+          <>
+            <Gap h={space.xl} />
+            <T v="caption">
+              {`${lesson.provenance} Last reviewed ${lesson.lastReviewed}. Sources: ${lesson.references.join('; ')}.`}
+            </T>
+          </>
+        )}
       </ScrollView>
 
       <View style={{ padding: space.lg, borderTopWidth: 1, borderTopColor: c.border, backgroundColor: c.surface }}>
-        {isLast && (
-          <>
-            <T v="caption" center>
-              {lesson.provenance} Last reviewed {lesson.lastReviewed}. Sources: {lesson.references.join('; ')}.
-            </T>
-            <Gap h={space.sm} />
-          </>
-        )}
         <Row gap={space.sm}>
           <Button
             kind="secondary"

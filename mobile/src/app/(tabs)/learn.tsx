@@ -2,7 +2,8 @@
  * Learn — domains and their motion lessons. Opening from the Journey route
  * (?domain=4) scrolls the learner straight to that domain.
  */
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback } from 'react';
 import { View } from 'react-native';
 import { Check, ICON_STROKE, Lock } from '../../components/icons';
 import { Card, Gap, Pill, ProgressBar, Row, Screen, T } from '../../components/ui';
@@ -15,7 +16,11 @@ export default function Learn() {
   const { c } = useTheme();
   const { cert, progress, readiness } = useActiveCert();
   const { domain } = useLocalSearchParams<{ domain?: string }>();
-  const domains = domain ? [...cert.domains].sort((a) => (a.id === domain ? -1 : 0)) : cert.domains;
+  // Put the requested domain first, keep the rest in blueprint order.
+  const match = cert.domains.find((d) => d.id === domain);
+  const domains = match ? [match, ...cert.domains.filter((d) => d !== match)] : cert.domains;
+  // Learn is a tab, so the param would stick; clear it when the learner leaves.
+  useFocusEffect(useCallback(() => () => router.setParams({ domain: undefined }), []));
 
   return (
     <Screen>
@@ -58,13 +63,15 @@ export default function Learn() {
                         borderRadius: radius.pill,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: isDone ? c.teal : c.accentFill,
+                        backgroundColor: isDone ? c.teal : c.surface,
+                        borderWidth: isDone ? 0 : 1,
+                        borderColor: c.accent,
                       }}
                     >
                       {isDone ? (
-                        <Check size={16} color={c.bg} strokeWidth={2.5} />
+                        <Check size={16} color={c.navy} strokeWidth={2.5} />
                       ) : (
-                        <T v="label" color={c.onAccent}>▶</T>
+                        <T v="label" color={c.accentText}>▶</T>
                       )}
                     </View>
                     <View style={{ flex: 1 }}>

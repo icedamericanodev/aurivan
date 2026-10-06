@@ -55,3 +55,11 @@ describe('Calibrated Sprint', () => {
     expect(calibrationVerdict([r(2, true)])).toBe('not-enough-data');
   });
 });
+
+describe('Priority Lens choice positions', () => {
+  it('the right word does not sit in a fixed chip across rounds', () => {
+    const positions = new Set<number>();
+    for (let seed = 1; seed <= 20; seed++) positions.add(wordChoices('FIRST', createRng(seed * 31)).indexOf('FIRST'));
+    expect(positions.size).toBeGreaterThan(1);
+  });
+});

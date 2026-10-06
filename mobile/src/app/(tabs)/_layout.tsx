@@ -24,7 +24,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: c.accentText,
         tabBarInactiveTintColor: c.muted,
         tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border },
-        tabBarLabelStyle: { fontFamily: font.semibold, fontSize: 11, lineHeight: 14 },
+        tabBarLabelStyle: { fontFamily: font.semibold, fontSize: 11 },
       }}
     >
       {/* route stays "home" so existing links keep working; the tab reads "Journey" */}

@@ -63,7 +63,7 @@ export default function CalibratedSprint() {
         {calibration(results).map((b) => (
           <View key={b.stake} style={{ marginBottom: space.md }}>
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="label">{`${b.stake} chip${b.stake > 1 ? 's' : ''} (${STAKE_CONFIDENCE[b.stake]})`}</T>
+              <T v="label">{`Stake ${b.stake} (${STAKE_CONFIDENCE[b.stake]})`}</T>
               <T v="mono">{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% of ${b.answered}`}</T>
             </Row>
             <Gap h={space.xs} />
@@ -121,7 +121,7 @@ export default function CalibratedSprint() {
             <Gap h={space.sm} />
             <Row gap={space.sm} style={{ justifyContent: 'center' }}>
               {([1, 2, 3] as Stake[]).map((s) => (
-                <Chip key={s} label={`${s} chip${s > 1 ? 's' : ''}`} selected={stake === s} onPress={() => setStake(s)} />
+                <Chip key={s} label={`Stake ${s}`} selected={stake === s} onPress={() => setStake(s)} />
               ))}
             </Row>
           </View>
@@ -144,7 +144,7 @@ export default function CalibratedSprint() {
           <Gap h={space.sm} />
           <RevealCard
             tone={ok ? 'good' : 'bad'}
-            title={ok ? `+${stake} chips` : `−${stake} chips · best answer ${originalToDisplay(q.correct, perm)}`}
+            title={ok ? `+${stake}` : `−${stake} · best answer ${originalToDisplay(q.correct, perm)}`}
             body={renderText(q.explanation, perm)}
           />
         </>

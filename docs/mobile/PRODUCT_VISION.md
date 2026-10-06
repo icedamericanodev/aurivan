@@ -34,7 +34,7 @@ Every screen knows where the learner is. Home always shows **one next best step*
 | **Learn** | Understand | Motion lessons per topic, each ending in a 3-question check | Weak domains covered |
 | **Practice** | Make it stick | Practice, spaced review, games, mistake journal | Each domain ≥ 70% |
 | **Mock** | Rehearse | Full timed mocks | All domains ≥ 65% + 2 mocks |
-| **Ready** | Honest go/no-go | Readiness range + remaining gaps | Readiness ≥ 80% for 7 days → **Pass-ready moment** |
+| **Ready** | Honest go/no-go | Readiness range + remaining gaps | Readiness ≥ 80% for 7 days → **Exam-ready moment** |
 | **Exam day** | Calm & prepared | T-7 checklist, light review, pacing coach | Exam date passes |
 | **Passed / Retry** | Close the loop | Celebration + share card, or a kind retry plan | Outcome reported |
 | **Recertify / Next** | Keep growing | CPE tracker, next certification on the same map | Next goal set |
@@ -86,6 +86,8 @@ Professional tone: no mascots, no confetti per answer.
 | Who Acts? — auditor, management or board | Role lens | Next |
 | Term Duel, Root-Cause Ladder, Pre-Read Scanner, Mixed Shift, Concept Chain | Retrieval, root cause, interleaving | Later |
 
+> Calibrated Sprint is the one place the learner rates confidence *before* answering (they stake 1–3 points first). That reversal is deliberate: it is what the game measures.
+
 ---
 
 ## 6. Tools
@@ -114,7 +116,7 @@ cards, Concept map, Exam-day pacing coach, Glossary with audio.
 
 **Signature moments:** the route map drawing itself after onboarding ·
 checkpoint clears tinting a domain teal · the Trap → Mindset → Exam-day
-reveal · the Pass-ready moment · results day.
+reveal · the Exam-ready moment · results day.
 
 **Never:** guilt notifications, hearts/lives, leaderboards by default,
 confetti per answer, paywall before the first question, autoplay video,

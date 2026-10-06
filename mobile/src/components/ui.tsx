@@ -57,6 +57,8 @@ export function T({
   style,
   center,
   accessibilityLabel,
+  maxFontSizeMultiplier,
+  numberOfLines,
 }: {
   children: ReactNode;
   v?: Variant;
@@ -64,12 +66,17 @@ export function T({
   style?: StyleProp<TextStyle>;
   center?: boolean;
   accessibilityLabel?: string;
+  /** Cap font scaling where a fixed shape must hold the text (e.g. the ring). */
+  maxFontSizeMultiplier?: number;
+  numberOfLines?: number;
 }) {
   const { c } = useTheme();
   const defaultColor = v === 'caption' || v === 'mono' ? c.muted : c.text;
   return (
     <Text
       accessibilityLabel={accessibilityLabel}
+      maxFontSizeMultiplier={maxFontSizeMultiplier}
+      numberOfLines={numberOfLines}
       style={[variantStyle[v], { color: color ?? defaultColor }, center && { textAlign: 'center' }, style]}
     >
       {children}

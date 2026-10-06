@@ -21,7 +21,7 @@ export function ScenarioBlock({ text }: { text: string }) {
       <Gap h={space.xs} />
       <T v="body" color={c.text2}>{long && !open ? `${text.slice(0, 200).trimEnd()}…` : text}</T>
       {long && (
-        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
+        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 48, justifyContent: 'center' }}>
           <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read full scenario'}</T>
         </Pressable>
       )}
@@ -177,7 +177,7 @@ export function TrustCard({
           accessibilityLabel={`Report an issue with question ${questionId}`}
           onPress={onReport}
           hitSlop={8}
-          style={{ minHeight: 44, justifyContent: 'center' }}
+          style={{ minHeight: 48, justifyContent: 'center' }}
         >
           <T v="label" color={c.accentText}>Report an issue</T>
         </Pressable>

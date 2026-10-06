@@ -84,14 +84,14 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
               <View
                 style={{
                   borderRadius: radius.md,
-                  borderWidth: 1,
                   borderColor: i === 0 ? c.accent : c.border,
-                  backgroundColor: i === 0 ? c.accentFill : c.surface,
+                  borderWidth: i === 0 ? 2 : 1,
+                  backgroundColor: i === 0 ? c.surface2 : c.surface,
                   padding: space.md,
                 }}
               >
-                <T v="label" color={i === 0 ? c.onAccent : c.text} style={{ fontSize: 16 }}>{layer.label}</T>
-                <T v="caption" color={i === 0 ? c.onAccent : c.text2} style={{ fontSize: 14, lineHeight: 20 }}>
+                <T v="label" color={i === 0 ? c.accentText : c.text} style={{ fontSize: 16 }}>{layer.label}</T>
+                <T v="caption" color={c.text2} style={{ fontSize: 14, lineHeight: 20 }}>
                   {layer.note}
                 </T>
               </View>
@@ -118,12 +118,14 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
                     width: 28,
                     height: 28,
                     borderRadius: 14,
-                    backgroundColor: c.accentFill,
+                    backgroundColor: c.surface2,
+                    borderWidth: 1,
+                    borderColor: c.accent,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <T v="label" color={c.onAccent} style={{ fontFamily: font.mono, fontSize: 13 }}>{String(i + 1)}</T>
+                  <T v="label" color={c.accentText} style={{ fontFamily: font.mono, fontSize: 13 }}>{String(i + 1)}</T>
                 </View>
                 {i < scene.steps.length - 1 && <View style={{ width: 2, flex: 1, minHeight: 18, backgroundColor: c.border }} />}
               </View>

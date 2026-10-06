@@ -46,7 +46,12 @@ export default function Mistakes() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={() => router.back()} hitSlop={12}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Back"
+        onPress={() => router.back()}
+        style={{ minHeight: 48, minWidth: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
+      >
         <T v="label" color={c.accentText}>‹ Back</T>
       </Pressable>
       <Gap h={space.sm} />
@@ -96,7 +101,7 @@ export default function Mistakes() {
           const q = findQuestion(cert.id, id);
           if (!q) return null;
           return (
-            <Card key={id} style={{ marginBottom: space.md, opacity: m.resolved ? 0.6 : 1 }}>
+            <Card key={id} style={{ marginBottom: space.md, borderColor: m.resolved ? c.teal : c.border }}>
               <T v="mono" color={m.resolved ? c.tealText : c.text2}>
                 {`${m.resolved ? 'FIXED · ' : ''}${new Date(m.at).toLocaleDateString()}`}
               </T>
