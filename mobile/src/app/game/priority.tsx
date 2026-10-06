@@ -101,7 +101,7 @@ export default function PriorityLens() {
           />
         ) : !word ? (
           <>
-            <T v="label" center color={c.text2}>Step 1 · Which word decides this question?</T>
+            <T v="label" center color={c.text2}>Step 1: which word decides this?</T>
             <Row gap={space.sm} style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               {choices.map((w) => (
                 <Chip key={w} label={w} selected={false} onPress={() => setWord(w)} />
@@ -109,7 +109,7 @@ export default function PriorityLens() {
             </Row>
           </>
         ) : (
-          <T v="label" center color={c.accentText}>Step 2 · Now answer with that lens</T>
+          <T v="label" center color={c.accentText}>Step 2: answer with that lens</T>
         )
       }
     >
@@ -118,7 +118,7 @@ export default function PriorityLens() {
         <>
           <RevealCard
             tone={wordRight ? 'good' : 'bad'}
-            title={wordRight ? `${actual} — that’s the lens` : `It’s ${actual}, not ${word}`}
+            title={wordRight ? `${actual}: that’s the lens` : `It’s ${actual}, not ${word}`}
             body={PRIORITY_MEANING[actual]}
           />
           <Gap h={space.md} />

@@ -7,7 +7,7 @@ import { AccessibilityInfo, Pressable, View } from 'react-native';
 import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
 import { tipParts } from '../engine/tips';
-import { font, radius, size, space } from '../theme/tokens';
+import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Button, Card, Chip, Gap, Row, T } from './ui';
 
@@ -18,7 +18,7 @@ export function ScenarioBlock({ text }: { text: string }) {
   const long = text.length > 220;
   return (
     <View style={{ borderLeftWidth: 3, borderLeftColor: c.accent, backgroundColor: c.surface2, padding: space.md, borderRadius: radius.sm }}>
-      <T v="mono" color={c.accentText}>SCENARIO</T>
+      <T v="eyebrow">Scenario</T>
       <Gap h={space.xs} />
       <T v="body" color={c.text2}>{long && !open ? `${text.slice(0, 200).trimEnd()}…` : text}</T>
       {long && (
@@ -47,12 +47,14 @@ export function OptionCard({
   disabled?: boolean;
 }) {
   const { c } = useTheme();
+  // Selected uses INK (the text colour), never green: green means "correct".
+  // Dimmed options use muted text instead of opacity, so they stay legible.
   const look = {
-    idle: { border: c.border, bg: c.surface, badge: c.surface2, badgeText: c.text2 },
-    selected: { border: c.accent, bg: c.surface, badge: c.accentFill, badgeText: c.onAccent },
-    correct: { border: c.correct, bg: c.correctBg, badge: c.correct, badgeText: c.bg },
-    wrong: { border: c.wrong, bg: c.wrongBg, badge: c.wrong, badgeText: c.bg },
-    dimmed: { border: c.border, bg: c.surface, badge: c.surface2, badgeText: c.muted },
+    idle: { border: c.border, bg: c.surface, badge: c.surface2, badgeText: c.text2, text: c.text },
+    selected: { border: c.text, bg: c.surface, badge: c.text, badgeText: c.surface, text: c.text },
+    correct: { border: c.correct, bg: c.correctBg, badge: c.correct, badgeText: c.bg, text: c.text },
+    wrong: { border: c.wrong, bg: c.wrongBg, badge: c.wrong, badgeText: c.bg, text: c.text },
+    dimmed: { border: c.border, bg: c.surface, badge: c.surface2, badgeText: c.muted, text: c.muted },
   }[state];
   const suffix = state === 'correct' ? ', correct answer' : state === 'wrong' ? ', your answer, incorrect' : state === 'selected' ? ', selected' : '';
   return (
@@ -73,16 +75,16 @@ export function OptionCard({
         borderWidth: state === 'idle' || state === 'dimmed' ? 1 : 2,
         borderColor: look.border,
         backgroundColor: look.bg,
-        opacity: state === 'dimmed' ? 0.6 : pressed ? 0.85 : 1,
+        opacity: pressed ? 0.85 : 1,
       })}
     >
-      <View style={{ minWidth: 28, minHeight: 28, paddingHorizontal: 4, borderRadius: 14, backgroundColor: look.badge, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ minWidth: 28, minHeight: 28, paddingHorizontal: space.xs, borderRadius: radius.pill, backgroundColor: look.badge, alignItems: 'center', justifyContent: 'center' }}>
         {/* ✓ / ✗ marks correct/wrong by shape, not colour alone. */}
-        <T v="label" color={look.badgeText} style={{ fontFamily: font.bold }}>
+        <T v="label" color={look.badgeText}>
           {state === 'correct' ? `${letter}✓` : state === 'wrong' ? `${letter}✗` : letter}
         </T>
       </View>
-      <T v="body" style={{ flex: 1 }}>{text}</T>
+      <T v="body" color={look.text} style={{ flex: 1 }}>{text}</T>
     </Pressable>
   );
 }
@@ -95,10 +97,9 @@ const CONF: { label: string; value: Confidence }[] = [
 ];
 
 export function ConfidenceRow({ value, onChange }: { value?: Confidence; onChange: (v: Confidence) => void }) {
-  const { c } = useTheme();
   return (
     <View>
-      <T v="caption" color={c.text2}>How confident are you?</T>
+      <T v="meta">How confident are you?</T>
       <Gap h={space.xs} />
       <Row gap={space.sm}>
         {CONF.map((x) => (
@@ -126,9 +127,8 @@ export function TipsReveal({ tips }: { tips: string[] }) {
         const { label, body } = tipParts(tip, i);
         return (
           <View key={i} style={{ marginBottom: space.md }}>
-            <T v="mono" color={i === 0 ? c.warning : i === 1 ? c.accentText : c.tealText}>
-              {`${i + 1}. ${label}`.toUpperCase()}
-            </T>
+            {/* Tip labels are eyebrows in warning colour (the one allowed exception). */}
+            <T v="eyebrow" color={c.warning}>{`${i + 1}. ${label}`}</T>
             <Gap h={space.xs} />
             <T v="body">{body}</T>
           </View>
@@ -149,7 +149,7 @@ export function ResultBanner({ correct }: { correct: boolean }) {
       accessibilityLiveRegion="polite"
       style={{ padding: space.md, borderRadius: radius.md, backgroundColor: correct ? c.correctBg : c.wrongBg }}
     >
-      <T v="heading" color={correct ? c.correct : c.wrong} style={{ fontSize: size.lg }}>
+      <T v="title" color={correct ? c.correct : c.wrong}>
         {correct ? '✓ Correct' : '✗ Not quite'}
       </T>
     </View>
@@ -171,10 +171,10 @@ export function TrustCard({
     <View
       style={{ borderTopWidth: 1, borderTopColor: c.border, paddingTop: space.md, marginTop: space.md, gap: space.xs }}
     >
-      <T v="mono" color={c.tealText}>ORIGINAL QUESTION</T>
-      {reference && <T v="caption">{`Grounded in: ${reference}`}</T>}
+      <T v="eyebrow">Original question</T>
+      {reference && <T v="meta">{`Grounded in: ${reference}`}</T>}
       <Row style={{ justifyContent: 'space-between' }}>
-        <T v="caption">{`Code ${questionId}`}</T>
+        <T v="meta">{`Code ${questionId}`}</T>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`Report an issue with question ${questionId}`}

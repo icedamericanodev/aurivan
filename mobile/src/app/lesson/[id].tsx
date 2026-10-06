@@ -27,7 +27,7 @@ export default function LessonPlayer() {
   if (!lesson) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.lg, justifyContent: 'center' }}>
-        <T v="heading" center>This lesson isn’t available.</T>
+        <T v="title" center>This lesson isn’t available.</T>
         <Gap />
         <Button label="Back" onPress={() => router.back()} />
       </SafeAreaView>
@@ -60,13 +60,13 @@ export default function LessonPlayer() {
           >
             <T v="label" color={c.accentText}>Close</T>
           </Pressable>
-          <T v="mono">{`${lesson.minutes} MIN · ${index + 1}/${lesson.scenes.length}`}</T>
+          <T v="meta" num>{`${lesson.minutes} min · ${index + 1}/${lesson.scenes.length}`}</T>
         </Row>
         <Gap h={space.sm} />
         <View
           accessibilityRole="progressbar"
           accessibilityValue={{ min: 1, max: lesson.scenes.length, now: index + 1 }}
-          style={{ flexDirection: 'row', gap: 4 }}
+          style={{ flexDirection: 'row', gap: space.xs }}
         >
           {lesson.scenes.map((_, i) => (
             <View
@@ -88,7 +88,7 @@ export default function LessonPlayer() {
         {isLast && (
           <>
             <Gap h={space.xl} />
-            <T v="caption">
+            <T v="meta">
               {`${lesson.provenance} Last reviewed ${lesson.lastReviewed}. Sources: ${lesson.references.join('; ')}.`}
             </T>
           </>

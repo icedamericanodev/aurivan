@@ -5,8 +5,8 @@
 import Constants from 'expo-constants';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { Alert, Linking, Pressable, Switch, View } from 'react-native';
-import { Button, Card, Chip, Gap, Row, Screen, T } from '../components/ui';
+import { Alert, Linking, Pressable, View } from 'react-native';
+import { Button, Card, Chip, Gap, Row, Screen, T, Toggle } from '../components/ui';
 import { CERTIFICATIONS } from '../content/certifications';
 import { config } from '../lib/config';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../lib/reminders';
@@ -74,10 +74,10 @@ export default function Settings() {
         <T v="label" color={c.accentText}>‹ Back</T>
       </Pressable>
       <Gap h={space.sm} />
-      <T v="title">Settings</T>
+      <T v="display">Settings</T>
       <Gap />
 
-      <T v="label" color={c.text2}>Certification</T>
+      <T v="title">Certification</T>
       <Gap h={space.sm} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         {CERTIFICATIONS.map((x) => (
@@ -95,7 +95,7 @@ export default function Settings() {
       </View>
       <Gap />
 
-      <T v="label" color={c.text2}>Appearance</T>
+      <T v="title">Appearance</T>
       <Gap h={space.sm} />
       <Row gap={space.sm}>
         {THEMES.map((t) => (
@@ -104,7 +104,7 @@ export default function Settings() {
       </Row>
       <Gap />
 
-      <T v="label" color={c.text2}>Daily goal</T>
+      <T v="title">Daily goal</T>
       <Gap h={space.sm} />
       <Row gap={space.sm}>
         {GOALS.map((g) => (
@@ -116,28 +116,27 @@ export default function Settings() {
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
           <View style={{ flex: 1 }}>
-            <T v="heading">Daily reminder</T>
-            <T v="caption">
+            <T v="title">Daily reminder</T>
+            <T v="meta">
               {remindersSupported
                 ? `Every day at ${String(s.reminder.hour).padStart(2, '0')}:${String(s.reminder.minute).padStart(2, '0')}`
-                : 'Available in the installed app (not in Expo Go on Android).'}
+                : 'Available in the installed app, not Expo Go on Android.'}
             </T>
           </View>
-          <Switch
+          <Toggle
             accessibilityLabel="Daily study reminder"
             value={remindersSupported && s.reminder.enabled}
             disabled={busy || !remindersSupported}
             onValueChange={toggleReminder}
-            trackColor={{ true: c.accentFill, false: c.muted }}
           />
         </Row>
         <Gap h={space.md} />
         <Row style={{ justifyContent: 'space-between' }}>
           <View style={{ flex: 1 }}>
-            <T v="heading">Shuffle answer options</T>
-            <T v="caption">Stops you memorising letters instead of reasoning.</T>
+            <T v="title">Shuffle answer options</T>
+            <T v="meta">Stops you memorising letters.</T>
           </View>
-          <Switch accessibilityLabel="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} trackColor={{ true: c.accentFill, false: c.muted }} />
+          <Toggle accessibilityLabel="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} />
         </Row>
       </Card>
       <Gap />
@@ -145,14 +144,14 @@ export default function Settings() {
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
       <Gap h={space.xl} />
 
-      <T v="label" color={c.text2}>About</T>
+      <T v="title">About</T>
       <Gap h={space.sm} />
-      <T v="caption">
+      <T v="meta">
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.
       </T>
       <Gap h={space.sm} />
       {CERTIFICATIONS.filter((x) => x.status === 'available').map((x) => (
-        <T key={x.id} v="caption">{x.trademarkNotice}</T>
+        <T key={x.id} v="meta">{x.trademarkNotice}</T>
       ))}
       <Gap h={space.sm} />
       {config.privacyUrl !== '' && (

@@ -14,10 +14,10 @@ import Animated, {
 import Svg, { Circle } from 'react-native-svg';
 import type { DomainInfo } from '../content/types';
 import type { DomainMastery } from '../engine/readiness';
-import { font, radius, space } from '../theme/tokens';
+import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check, ChevronRight, ICON_STROKE } from './icons';
-import { T } from './ui';
+import { ICON_SIZE, IconTile, T } from './ui';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -63,10 +63,10 @@ export function ReadinessRing({ score, size = 120, label = 'ready' }: { score: n
           animatedProps={animatedProps}
         />
       </Svg>
-      <T v="title" color={c.text} maxFontSizeMultiplier={1.3} style={{ fontFamily: font.mono, fontSize: size / 4.2 }}>
+      <T v="display" num maxFontSizeMultiplier={1.3}>
         {`${score}%`}
       </T>
-      <T v="caption" maxFontSizeMultiplier={1.3}>{label}</T>
+      <T v="meta" maxFontSizeMultiplier={1.3}>{label}</T>
     </View>
   );
 }
@@ -104,25 +104,25 @@ export function DomainRoute({
                 style={{
                   width: 36,
                   height: 36,
-                  borderRadius: 18,
+                  borderRadius: radius.pill,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: done ? c.teal : current ? c.surface2 : c.surface,
+                  backgroundColor: done ? c.accent : current ? c.surface2 : c.surface,
                   borderWidth: current ? 3 : 1,
-                  borderColor: done ? c.teal : current ? c.accent : c.border,
+                  borderColor: done ? c.accent : current ? c.accent : c.border,
                 }}
               >
                 {done ? (
-                  <Check size={18} color={c.navy} strokeWidth={2.5} />
+                  <Check size={ICON_SIZE.row} color={c.ink} strokeWidth={ICON_STROKE} />
                 ) : (
-                  <T v="label" color={current ? c.accentText : c.text2} style={{ fontFamily: font.mono }}>{d.id}</T>
+                  <T v="label" num color={current ? c.accentText : c.text2} maxFontSizeMultiplier={1.3}>{d.id}</T>
                 )}
               </View>
-              {!last && <View style={{ width: 2, flex: 1, backgroundColor: done ? c.teal : c.border }} />}
+              {!last && <View style={{ width: 2, flex: 1, backgroundColor: done ? c.accent : c.border }} />}
             </View>
             <View style={{ flex: 1, paddingBottom: space.md }}>
               <T v="label">{d.short}</T>
-              <T v="caption">
+              <T v="meta" num>
                 {`${Math.round(m * 100)}% · ${d.weight}% of exam${current ? ' · focus now' : ''}`}
               </T>
             </View>
@@ -137,7 +137,7 @@ export function DomainRoute({
 const DAY_LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export function WeekStrip({ days }: { days: boolean[] }) {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   const today = new Date().getDay();
   return (
     <View
@@ -148,22 +148,22 @@ export function WeekStrip({ days }: { days: boolean[] }) {
       {days.map((studied, i) => {
         const dow = (today - (6 - i) + 7) % 7;
         return (
-          <View key={i} style={{ alignItems: 'center', gap: 4 }}>
+          <View key={i} style={{ alignItems: 'center', gap: space.xs }}>
             <View
               style={{
                 width: 28,
                 height: 28,
-                borderRadius: 14,
+                borderRadius: radius.pill,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: studied ? (isDark ? c.teal : c.tealText) : c.surface2,
+                backgroundColor: studied ? c.clay : c.surface2,
                 borderWidth: i === 6 ? 2 : 0,
                 borderColor: c.accent,
               }}
             >
-              {studied && <Check size={14} color={isDark ? c.navy : c.onAccent} strokeWidth={2.5} />}
+              {studied && <Check size={ICON_SIZE.inline} color={c.ink} strokeWidth={ICON_STROKE} />}
             </View>
-            <T v="caption">{DAY_LETTERS[dow]}</T>
+            <T v="meta">{DAY_LETTERS[dow]}</T>
           </View>
         );
       })}
@@ -200,26 +200,13 @@ export function ActionRow({
         opacity: pressed ? 0.7 : 1,
       })}
     >
-      {icon && (
-        <View
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: radius.sm,
-            backgroundColor: c.surface2,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {icon}
-        </View>
-      )}
+      {icon && <IconTile>{icon}</IconTile>}
       <View style={{ flex: 1 }}>
-        <T v="label" style={{ fontSize: 15 }}>{title}</T>
-        {subtitle && <T v="caption">{subtitle}</T>}
+        <T v="label">{title}</T>
+        {subtitle && <T v="meta">{subtitle}</T>}
       </View>
-      {right && <T v="mono" color={c.text2}>{right}</T>}
-      <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+      {right && <T v="meta" num>{right}</T>}
+      <ChevronRight size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
     </Pressable>
   );
 }

@@ -104,7 +104,7 @@ export default function TrapSpotter() {
           />
         ) : (
           <T v="label" center color={phase === 'trap' ? c.warning : c.accentText}>
-            {phase === 'trap' ? 'Step 1 · Tap the TRAP — the most tempting wrong answer' : 'Step 2 · Now tap the BEST answer'}
+            {phase === 'trap' ? 'Step 1: tap the trap' : 'Step 2: tap the BEST answer'}
           </T>
         )
       }
@@ -135,7 +135,7 @@ export default function TrapSpotter() {
           <Gap h={space.sm} />
           <RevealCard
             tone={result.correct ? 'good' : 'bad'}
-            title={result.correct ? 'Best answer — correct' : `Best answer: ${originalToDisplay(q.correct, perm)}`}
+            title={result.correct ? 'Best answer: correct' : `Best answer: ${originalToDisplay(q.correct, perm)}`}
             body={renderText(q.explanation, perm)}
           />
         </>

@@ -5,39 +5,42 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 import { ActionRow } from '../../components/journey';
 import { Bookmark, Gauge, ICON_STROKE, NotebookPen, Settings } from '../../components/icons';
-import { Card, Gap, ProgressBar, Row, Screen, Stat, T } from '../../components/ui';
+import { Card, Gap, ICON_SIZE, ProgressBar, Row, Screen, Stat, T } from '../../components/ui';
+import { domainColor } from '../../content/certifications';
+import { shortDate } from '../../lib/format';
 import { guardedStart, startBookmarks } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 export default function You() {
-  const { c } = useTheme();
+  const { c, isDark } = useTheme();
   const { cert, readiness, progress, streak } = useActiveCert();
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
-  const icon = (G: typeof Gauge) => <G size={20} color={c.accentText} strokeWidth={ICON_STROKE} />;
+  const icon = (G: typeof Gauge) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
   return (
     <Screen>
-      <T v="title">You</T>
+      <T v="display">You</T>
       <Gap />
       <Card>
         <Row>
           <Stat value={String(answered)} label="answered" />
           <Stat value={answered ? `${Math.round((mastered / answered) * 100)}%` : '—'} label="accuracy" color={c.accentText} />
-          <Stat value={String(streak)} label="day streak" color={c.tealText} />
+          <Stat value={String(streak)} label="day streak" color={c.clayText} />
         </Row>
       </Card>
       <Gap />
 
-      <T v="label" color={c.text2}>Study tools</T>
+      <T v="title">Study tools</T>
+      <Gap h={space.sm} />
       <Card style={{ paddingVertical: space.xs }}>
         <ActionRow
           icon={icon(NotebookPen)}
           title="Mistake journal"
-          subtitle="Every miss, with why — tag the thinking slip"
+          subtitle="Every miss, tagged"
           right={openMistakes ? `${openMistakes} open` : undefined}
           onPress={() => router.push('/mistakes')}
         />
@@ -52,7 +55,7 @@ export default function You() {
       </Card>
       <Gap />
 
-      <T v="label" color={c.text2}>By domain</T>
+      <T v="title">By domain</T>
       <Gap h={space.sm} />
       {cert.domains.map((d) => {
         const dm = readiness.domains.find((x) => x.domainId === d.id)!;
@@ -60,36 +63,36 @@ export default function You() {
           <View key={d.id} style={{ marginBottom: space.md }}>
             <Row style={{ justifyContent: 'space-between' }}>
               <T v="label" style={{ flex: 1 }}>{d.short}</T>
-              <T v="caption">{dm.accuracy === null ? 'Not started' : `${Math.round(dm.accuracy * 100)}% · ${dm.answered} done`}</T>
+              <T v="meta" num>{dm.accuracy === null ? 'Not started' : `${Math.round(dm.accuracy * 100)}% · ${dm.answered} done`}</T>
             </Row>
             <Gap h={space.xs} />
-            <ProgressBar value={dm.accuracy ?? 0} color={d.color} height={6} />
+            <ProgressBar value={dm.accuracy ?? 0} color={domainColor(d.tone, isDark)} height={6} />
           </View>
         );
       })}
 
       <Gap h={space.sm} />
-      <T v="label" color={c.text2}>Mock exams</T>
+      <T v="title">Mock exams</T>
       <Gap h={space.sm} />
       {progress.mocks.length === 0 ? (
         <Card>
-          <T v="caption">No mocks yet. Your Journey will suggest one when every domain is warming up.</T>
+          <T v="meta">No mocks yet. Journey will suggest one.</T>
         </Card>
       ) : (
         progress.mocks.slice(0, 10).map((m) => (
           <Card key={m.id} style={{ marginBottom: space.sm }}>
             <Row style={{ justifyContent: 'space-between' }}>
               <View>
-                <T v="heading">{Math.round((m.correct / m.total) * 100)}%</T>
-                <T v="caption">{`${new Date(m.finishedAt).toLocaleDateString()} · ${m.total} questions`}</T>
+                <T v="title" num>{`${Math.round((m.correct / m.total) * 100)}%`}</T>
+                <T v="meta" num>{`${shortDate(m.finishedAt)} · ${m.total} questions`}</T>
               </View>
-              <T v="caption">{`${m.minutesUsed} min`}</T>
+              <T v="meta" num>{`${m.minutesUsed} min`}</T>
             </Row>
           </Card>
         ))
       )}
       <Gap />
-      <T v="caption" center>{cert.trademarkNotice}</T>
+      <T v="meta" center>{cert.trademarkNotice}</T>
     </Screen>
   );
 }

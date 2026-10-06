@@ -5,26 +5,28 @@
  */
 import { Tabs } from 'expo-router';
 import type { ColorValue } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BookOpen, Compass, Gamepad2, ICON_STROKE, Target, UserRound } from '../../components/icons';
-import { font } from '../../theme/tokens';
+import { ICON_SIZE, TAB_BAR_HEIGHT, tabLabelStyle } from '../../components/ui';
 import { useTheme } from '../../theme/useTheme';
 
 type IconProps = { color: ColorValue; size: number };
 const icon = (Glyph: typeof Compass) =>
   function TabIcon({ color }: IconProps) {
-    return <Glyph size={24} color={color as string} strokeWidth={ICON_STROKE} />;
+    return <Glyph size={ICON_SIZE.bar} color={color as string} strokeWidth={ICON_STROKE} />;
   };
 
 export default function TabsLayout() {
   const { c } = useTheme();
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: c.accentText,
         tabBarInactiveTintColor: c.muted,
-        tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border },
-        tabBarLabelStyle: { fontFamily: font.semibold, fontSize: 11 },
+        tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border, height: TAB_BAR_HEIGHT + insets.bottom },
+        tabBarLabelStyle: tabLabelStyle,
       }}
     >
       {/* route stays "home" so existing links keep working; the tab reads "Journey" */}

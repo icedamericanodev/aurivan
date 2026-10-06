@@ -58,19 +58,19 @@ export default function CalibratedSprint() {
           setResults([]);
         }}
       >
-        <T v="label" color={c.text2}>Your calibration</T>
+        <T v="title">Your calibration</T>
         <Gap h={space.sm} />
         {calibration(results).map((b) => (
           <View key={b.stake} style={{ marginBottom: space.md }}>
             <Row style={{ justifyContent: 'space-between' }}>
               <T v="label">{`Stake ${b.stake} (${STAKE_CONFIDENCE[b.stake]})`}</T>
-              <T v="mono">{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% of ${b.answered}`}</T>
+              <T v="meta" num>{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% of ${b.answered}`}</T>
             </Row>
             <Gap h={space.xs} />
-            <ProgressBar value={b.accuracy ?? 0} color={b.stake === 3 ? c.accent : c.teal} height={6} />
+            <ProgressBar value={b.accuracy ?? 0} color={b.stake === 3 ? c.accent : c.clay} height={6} />
           </View>
         ))}
-        <T color={c.text2} style={{ lineHeight: 24 }}>{VERDICT_COPY[verdict]}</T>
+        <T color={c.text2}>{VERDICT_COPY[verdict]}</T>
       </RoundEnd>
     );
   }

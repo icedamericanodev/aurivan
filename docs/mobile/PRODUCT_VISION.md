@@ -105,14 +105,15 @@ cards, Concept map, Exam-day pacing coach, Glossary with audio.
 3. **Calm pace, sharp thinking.** 4. **Reward understanding, never punish absence.**
 5. **Built for every certification.**
 
-- Navy/blue tokens (`mobile/src/theme/tokens.ts`), Plus Jakarta Sans,
-  numbers in JetBrains Mono, Lucide icons (stroke 1.75).
+- "Forest" design system (`docs/mobile/DESIGN_SYSTEM.md`, tokens in
+  `mobile/src/theme/tokens.ts`): Plus Jakarta Sans only, tabular figures for
+  numbers, Lucide icons (stroke 1.75).
 - Cards: 16px radius, 1px border, no shadows in dark mode; one accent-filled
   element per screen.
 - Motion: 180ms base / 320ms transitions, ease-out; springs only for
   celebrations; Reduce Motion respected.
 - Lesson art: flat geometric systems (doors, ledgers, pipelines, shields) in
-  navy/blue/teal — not cartoon people.
+  the Forest palette — not cartoon people.
 
 **Signature moments:** the route map drawing itself after onboarding ·
 checkpoint clears tinting a domain teal · the Trap → Mindset → Exam-day
