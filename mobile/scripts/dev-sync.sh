@@ -41,97 +41,111 @@ if [ ! -f package.json ] || [ ! -f app.json ]; then
 fi
 
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+RESTART_FLAG="$(mktemp -u /tmp/aurivan-restart.XXXXXX)"
 echo "Watching origin/$BRANCH on GitHub, checking every ${INTERVAL}s."
 echo "Press Ctrl-C to stop."
 echo
 
+# LAYOUT, AND WHY: the app's dev server runs in the FOREGROUND and the GitHub
+# watcher in the BACKGROUND. The first version did the opposite, and Expo then
+# printed "Using a non-interactive terminal, keyboard commands are disabled":
+# a background process cannot read your keyboard, so r (reload) did nothing.
+# Same lesson Salapify's script learned: keep the app in front.
+
 STOPPING=0
-EXPO_PID=""
-
-start_expo() {
-  # Builds (incrementally) and installs the Aurivan development build on the
-  # running emulator, then starts the dev server that streams code to it.
-  # Output goes straight to this window.
-  npx expo run:android &
-  EXPO_PID=$!
-}
-
-stop_expo() {
-  if [ -n "$EXPO_PID" ]; then
-    kill "$EXPO_PID" 2>/dev/null
-    wait "$EXPO_PID" 2>/dev/null
-    EXPO_PID=""
-  fi
-}
+WATCH_PID=""
 
 cleanup() {
   STOPPING=1
-  echo
-  echo "Stopping."
-  stop_expo
+  [ -n "$WATCH_PID" ] && kill "$WATCH_PID" 2>/dev/null
+  rm -f "$RESTART_FLAG"
 }
 trap cleanup EXIT
-trap 'cleanup; exit 0' INT TERM
+trap 'cleanup; echo; echo "Stopping."; exit 0' INT TERM
 
-start_expo
+# ── The watcher (background) ───────────────────────────────────────────
+watch_github() {
+  while true; do
+    sleep "$INTERVAL"
 
-while [ "$STOPPING" = "0" ]; do
-  sleep "$INTERVAL"
+    # Ask GitHub what it has. This does NOT change your files.
+    git fetch --quiet origin "$BRANCH" 2>/dev/null || continue
+    LOCAL="$(git rev-parse HEAD 2>/dev/null)"
+    REMOTE="$(git rev-parse "origin/$BRANCH" 2>/dev/null)"
+    [ -z "$REMOTE" ] && continue
+    [ "$LOCAL" = "$REMOTE" ] && continue
 
-  # Ask GitHub what it has. This does NOT change your files.
-  git fetch --quiet origin "$BRANCH" 2>/dev/null || continue
-  LOCAL="$(git rev-parse HEAD 2>/dev/null)"
-  REMOTE="$(git rev-parse "origin/$BRANCH" 2>/dev/null)"
-  [ -z "$REMOTE" ] && continue
-  [ "$LOCAL" = "$REMOTE" ] && continue
+    echo
+    echo "New work on origin/$BRANCH:"
+    git --no-pager log --oneline "HEAD..origin/$BRANCH" | sed 's/^/    /'
 
-  echo
-  echo "New work on origin/$BRANCH:"
-  git --no-pager log --oneline "HEAD..origin/$BRANCH" | sed 's/^/    /'
+    # package-lock.json is generated: if a local npm rewrote it, that change is
+    # noise, and leaving it would make git refuse every pull from here on.
+    git checkout --quiet -- package-lock.json 2>/dev/null
 
-  # package-lock.json is generated: if a local npm rewrote it, that change is
-  # noise, and leaving it would make git refuse every pull from here on.
-  git checkout --quiet -- package-lock.json 2>/dev/null
+    if ! git pull --quiet --ff-only origin "$BRANCH"; then
+      # Claude's working branch is reset onto main after every merge (see
+      # CLAUDE.md "Post-merge branch hygiene"), so a plain pull can no longer
+      # fast-forward. If you have NO local edits there is nothing to lose:
+      # match GitHub's version exactly. With local edits, stop and let you
+      # decide, so nothing you wrote is ever thrown away.
+      if [ -z "$(git status --porcelain)" ]; then
+        echo "  The branch was rebuilt on GitHub (normal after a merge)."
+        echo "  You have no local edits, so syncing to GitHub's version."
+        git reset --quiet --hard "origin/$BRANCH"
+      else
+        echo "  Could not fast-forward and you have local edits:"
+        git status --short | sed 's/^/    /'
+        echo "  Keep them? Commit or stash them. Don't need them?"
+        echo "    git restore . && git clean -fd"
+        echo "  This script picks up again afterwards."
+        continue
+      fi
+    fi
 
-  if ! git pull --quiet --ff-only origin "$BRANCH"; then
-    # Claude's working branch is reset onto main after every merge (see
-    # CLAUDE.md "Post-merge branch hygiene"), so a plain pull can no longer
-    # fast-forward. If you have NO local edits there is nothing to lose:
-    # match GitHub's version exactly. With local edits, stop and let you
-    # decide, so nothing you wrote is ever thrown away.
-    if [ -z "$(git status --porcelain)" ]; then
-      echo "  The branch was rebuilt on GitHub (normal after a merge)."
-      echo "  You have no local edits, so syncing to GitHub's version."
-      git reset --quiet --hard "origin/$BRANCH"
-    else
-      echo "  Could not fast-forward and you have local edits:"
-      git status --short | sed 's/^/    /'
-      echo "  Keep them? Commit or stash them. Don't need them?"
-      echo "    git restore . && git clean -fd"
-      echo "  This script picks up again afterwards."
+    CHANGED="$(git --no-pager diff --name-only "$LOCAL" HEAD)"
+
+    # New libraries: the app must be rebuilt. Ask the foreground loop to do it
+    # (flag file), then stop the running dev server so the loop takes over.
+    if echo "$CHANGED" | grep -qE '^mobile/package(-lock)?\.json$'; then
+      echo "  Libraries changed: reinstalling and rebuilding the app."
+      : >"$RESTART_FLAG"
+      pkill -INT -f "expo run:android" 2>/dev/null
       continue
     fi
-  fi
 
-  CHANGED="$(git --no-pager diff --name-only "$LOCAL" HEAD)"
+    # New or edited questions: rebuild the question pack. The dev server sees
+    # the regenerated files and refreshes the app on its own.
+    if echo "$CHANGED" | grep -qE '^data/domain[0-9]+\.json$|^mobile/scripts/build-content\.mjs$'; then
+      echo "  Questions changed: rebuilding the question pack."
+      npm run --silent content
+    fi
 
-  # New libraries need installing, and the dev server must restart to see them.
-  if echo "$CHANGED" | grep -qE '^mobile/package(-lock)?\.json$'; then
-    echo "  Libraries changed: running npm ci and rebuilding the app."
-    stop_expo
+    echo "  Done. The emulator refreshes by itself (press r here if it looks stale)."
+  done
+}
+
+watch_github &
+WATCH_PID=$!
+
+# ── The app (foreground, so r / j / m keys work) ───────────────────────
+while true; do
+  # Builds (incrementally), installs the Aurivan development build on the
+  # running emulator, and starts the dev server that streams code to it.
+  npx expo run:android
+  [ "$STOPPING" = "1" ] && break
+
+  if [ -f "$RESTART_FLAG" ]; then
+    rm -f "$RESTART_FLAG"
     # npm ci installs exactly what the lock file lists and never rewrites it
     # (npm install can, which then blocks the next git pull).
     npm ci --silent   # also rebuilds the question pack (postinstall)
-    start_expo
+    echo "Rebuilding Aurivan with the new libraries."
     continue
   fi
 
-  # New or edited questions: rebuild the question pack. The dev server sees
-  # the regenerated files and refreshes the app on its own.
-  if echo "$CHANGED" | grep -qE '^data/domain[0-9]+\.json$|^mobile/scripts/build-content\.mjs$'; then
-    echo "  Questions changed: rebuilding the question pack."
-    npm run --silent content
-  fi
-
-  echo "  Done. The emulator refreshes by itself (press r here if it looks stale)."
+  echo
+  echo "The dev server stopped. If that was not you pressing Ctrl-C, the"
+  echo "reason is in the output above. Run this script again to restart."
+  break
 done
