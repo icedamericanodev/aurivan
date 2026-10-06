@@ -1730,3 +1730,27 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ### Other Auditing Standards
 - ISA 240 (The Auditor's Responsibilities Relating to Fraud)
 - Cressey's Fraud Triangle (foundational forensic-audit literature)
+
+## Added with exam-style v2 (Domain 1 review, Oct 2026)
+
+- IIA Global Internal Audit Standards (2024), Standard 2.1 (Individual Objectivity)
+- IIA Global Internal Audit Standards (2024), Standard 2.2 (Safeguarding Objectivity)
+- IIA Global Internal Audit Standards (2024), Standard 6.2 (Internal Audit Charter)
+- IIA Global Internal Audit Standards (2024), Standard 7.1 (Organizational Independence)
+- IIA Global Internal Audit Standards (2024), Standard 12.1 (Internal Quality Assessment)
+- IIA Global Internal Audit Standards (2024), Standard 15.2 (Confirming the Implementation of Recommendations or Action Plans)
+- IIA Global Internal Audit Standards (2024), Standard 3.1 (Competency)
+- IIA Global Internal Audit Standards (2024), Standard 8.1 (Board Interaction)
+- IIA Global Internal Audit Standards (2024), Standard 8.3 (Quality)
+- IIA Global Internal Audit Standards (2024), Standard 8.4 (External Quality Assessment)
+- IIA Global Internal Audit Standards (2024), Standard 9.1 (Understanding Governance, Risk Management, and Control Processes)
+- IIA Global Internal Audit Standards (2024), Standard 9.4 (Internal Audit Plan)
+- IIA Global Internal Audit Standards (2024), Standard 9.5 (Coordination and Reliance)
+- IIA Global Internal Audit Standards (2024), Standard 13.2 (Engagement Risk Assessment)
+- IIA Global Internal Audit Standards (2024), Standard 13.3 (Engagement Objectives and Scope)
+- IIA Global Internal Audit Standards (2024), Standard 14.6 (Engagement Documentation)
+- IIA Global Internal Audit Standards (2024), Standard 15.1 (Final Engagement Communication)
+- ISACA Code of Professional Ethics (disclosure of significant facts; objectivity)
+- ITAF (IT Audit Framework), 4th ed. — Standards and Guidelines
+- ITAF (IT Audit Framework), 4th ed. — Tools and Techniques
+- ISACA Code of Professional Ethics (Objectivity)
