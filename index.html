@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.46</span>
+    <span class="bank-pill" id="versionPill">v10.47</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.46';
+const APP_VERSION = 'v10.47';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12086,6 +12086,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Governance questions, exam-style',
+    items: [
+      { cat: 'improved', text: 'Governance and Management of IT questions are now short and direct, like the real exam, with tips on ruling out two choices and picking between the final two.' }
+    ]
+  },
+  {
+    version: 'v10.46',
     title: 'Questions that read like the real exam',
     items: [
       { cat: 'improved', text: 'Information Systems Auditing Process questions are now short and direct, like the real exam: one or two sentences and four concise choices.' },

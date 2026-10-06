@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.47] — Governance questions, exam-style
+
+### Improved
+- Governance and Management of IT questions are now short and direct, like the real exam, with tips on ruling out two choices and picking between the final two.
+
 ## [v10.46] — Questions that read like the real exam
 
 ### Improved
