@@ -19,7 +19,7 @@ import {
   Target,
   Timer,
 } from '../../components/icons';
-import { Button, Card, Gap, Pill, ProgressBar, Row, Screen, T } from '../../components/ui';
+import { Button, Card, Gap, ICON_SIZE, Pill, ProgressBar, Row, Screen, T } from '../../components/ui';
 import type { PlanItem } from '../../engine/planner';
 import { runPlanItem } from '../../lib/actions';
 import { useJourney } from '../../lib/useJourney';
@@ -30,7 +30,7 @@ import { useTheme } from '../../theme/useTheme';
 const enter = (i: number) => FadeInDown.duration(320).delay(i * 80).reduceMotion(ReduceMotion.System);
 
 function planIcon(item: PlanItem, color: string) {
-  const p = { size: 20, color, strokeWidth: ICON_STROKE };
+  const p = { size: ICON_SIZE.row, color, strokeWidth: ICON_STROKE };
   switch (item.kind) {
     case 'review':
       return <RotateCcw {...p} />;
@@ -48,7 +48,7 @@ function planIcon(item: PlanItem, color: string) {
 function planTitle(item: PlanItem): { title: string; subtitle?: string } {
   switch (item.kind) {
     case 'review':
-      return { title: `Review ${item.count} due`, subtitle: 'Questions you missed, back at the right moment' };
+      return { title: `Review ${item.count} due`, subtitle: 'Due for review' };
     case 'lesson':
       return { title: item.title, subtitle: 'Lesson · about 3 minutes' };
     case 'practice':
@@ -65,30 +65,30 @@ export default function Journey() {
   const j = useJourney();
   const active = useSession((s) => s.active);
   const countdown =
-    j.daysLeft === null ? 'NO EXAM DATE' : j.daysLeft < 0 ? 'EXAM DONE' : `${j.daysLeft} DAY${j.daysLeft === 1 ? '' : 'S'}`;
+    j.daysLeft === null ? 'No exam date' : j.daysLeft < 0 ? 'Exam done' : `${j.daysLeft} day${j.daysLeft === 1 ? '' : 's'}`;
 
   return (
     <Screen>
       <Animated.View entering={enter(0)}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="mono" color={c.accentText}>{`${j.cert.name} · ${countdown}`}</T>
+          <T v="eyebrow" num>{`${j.cert.name} · ${countdown}`}</T>
           {j.streak > 0 && (
-            <Row gap={4} style={{ minHeight: 24 }}>
-              <Flame size={16} color={c.tealText} strokeWidth={ICON_STROKE} />
-              <T v="mono" color={c.tealText} accessibilityLabel={`${j.streak}-day streak`}>{String(j.streak)}</T>
+            <Row gap={space.xs} style={{ minHeight: 24 }}>
+              <Flame size={ICON_SIZE.inline} color={c.clayText} strokeWidth={ICON_STROKE} />
+              <T v="label" num color={c.clayText} accessibilityLabel={`${j.streak}-day streak`}>{String(j.streak)}</T>
             </Row>
           )}
         </Row>
         <Gap h={space.sm} />
-        <T v="title">{j.plan.length ? 'Today’s plan' : 'Well done.'}</T>
+        <T v="display">{j.plan.length ? 'Today’s plan' : 'Well done.'}</T>
       </Animated.View>
       <Gap />
 
       {active && !active.finishedAt && (
         <Animated.View entering={enter(1)}>
-          <Card onPress={() => router.push('/session')} accessibilityLabel="Resume your session" style={{ borderColor: c.accent }}>
-            <T v="heading">Resume: {active.title}</T>
-            <T v="caption">Question {active.index + 1} of {active.questionIds.length}</T>
+          <Card onPress={() => router.push('/session')} accessibilityLabel="Resume your session" emphasis>
+            <T v="title">Resume: {active.title}</T>
+            <T v="meta" num>Question {active.index + 1} of {active.questionIds.length}</T>
           </Card>
           <Gap />
         </Animated.View>
@@ -100,12 +100,12 @@ export default function Journey() {
           <Row gap={space.lg}>
             <ReadinessRing score={j.readiness.score} />
             <View style={{ flex: 1 }}>
-              <T v="mono" color={c.tealText}>STAGE</T>
-              <T v="heading">{j.stageLabel}</T>
+              <T v="eyebrow">Stage</T>
+              <T v="title">{j.stageLabel}</T>
               <Gap h={space.sm} />
-              <ProgressBar value={j.stageProgress} color={c.teal} height={6} />
+              <ProgressBar value={j.stageProgress} color={c.clay} height={6} />
               <Gap h={space.sm} />
-              <T v="caption">
+              <T v="meta">
                 {j.readiness.reliable
                   ? 'Weighted by the official exam blueprint.'
                   : 'Readiness firms up as you practise every domain.'}
@@ -120,8 +120,8 @@ export default function Journey() {
       <Animated.View entering={enter(3)}>
         {j.plan.length === 0 ? (
           <Card>
-            <T v="heading">Exam done — how did it go?</T>
-            <T v="caption">Update your exam date in Settings to plan a retake or your next certification.</T>
+            <T v="title">Exam done. How did it go?</T>
+            <T v="meta">Set a new date to plan what’s next.</T>
             <Gap h={space.md} />
             <Button kind="secondary" label="Open settings" onPress={() => router.push('/settings')} />
           </Card>
@@ -132,10 +132,10 @@ export default function Journey() {
               if (i === 0) {
                 return (
                   <View key={i} style={{ marginBottom: j.plan.length > 1 ? space.sm : 0 }}>
-                    <T v="mono" color={c.accentText}>START HERE</T>
+                    <T v="eyebrow">Start here</T>
                     <Gap h={space.xs} />
-                    <T v="heading">{title}</T>
-                    {subtitle && <T v="caption">{subtitle}</T>}
+                    <T v="title">{title}</T>
+                    {subtitle && <T v="meta">{subtitle}</T>}
                     <Gap h={space.md} />
                     <Button label="Start" onPress={() => runPlanItem(item, j.cert.id)} accessibilityHint={title} />
                   </View>
@@ -159,14 +159,12 @@ export default function Journey() {
       {j.stage === 'ready' && (
         <>
           <Animated.View entering={enter(4)}>
-            <Card style={{ borderColor: c.teal }}>
+            <Card style={{ borderColor: c.clay }}>
               <Row gap={space.sm}>
-                <Sparkles size={20} color={c.tealText} strokeWidth={ICON_STROKE} />
-                <T v="heading" color={c.tealText}>Exam-ready</T>
+                <Sparkles size={ICON_SIZE.row} color={c.clayText} strokeWidth={ICON_STROKE} />
+                <T v="title" color={c.clayText}>Exam-ready</T>
               </Row>
-              <T v="body">
-                Your readiness has held above the target across every domain. Keep it warm with short sessions until exam day.
-              </T>
+              <T v="body">Above target in every domain. Short sessions keep it warm until exam day.</T>
             </Card>
           </Animated.View>
           <Gap />
@@ -176,7 +174,7 @@ export default function Journey() {
       {/* Domain route */}
       <Animated.View entering={enter(5)}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="label" color={c.text2}>Your route</T>
+          <T v="title">Your route</T>
           <Pill label={`${j.cert.domains.length} domains`} />
         </Row>
         <Gap h={space.md} />
@@ -192,8 +190,8 @@ export default function Journey() {
       {/* Week strip */}
       <Animated.View entering={enter(6)}>
         <Card>
-          <T v="label" color={c.text2}>This week</T>
-          <T v="caption">One rest day a week keeps your streak.</T>
+          <T v="title">This week</T>
+          <T v="meta">One rest day a week keeps your streak.</T>
           <Gap h={space.md} />
           <WeekStrip days={j.week} />
         </Card>

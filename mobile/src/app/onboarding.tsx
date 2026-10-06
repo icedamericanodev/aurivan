@@ -37,11 +37,11 @@ export default function Onboarding() {
   if (step === 1) {
     return (
       <Screen>
-        <T v="mono" color={c.accentText}>AURIVAN · MASTER MODERN RISK</T>
+        <T v="eyebrow">Aurivan · Master modern risk</T>
         <Gap h={space.sm} />
-        <T v="title">Which exam are you preparing for?</T>
+        <T v="display">Which exam are you preparing for?</T>
         <Gap h={space.sm} />
-        <T color={c.text2}>You can switch any time in Settings.</T>
+        <T v="meta">You can switch any time in Settings.</T>
         <Gap />
         {CERTIFICATIONS.map((cert) => {
           const available = cert.status === 'available';
@@ -53,16 +53,16 @@ export default function Onboarding() {
               accessibilityLabel={`${cert.name}, ${cert.fullName}${available ? '' : ', coming soon'}`}
               style={{
                 marginBottom: space.md,
-                borderColor: selected ? c.accent : c.border,
+                // Selected = 2px ink border (green never means "selected").
+                borderColor: selected ? c.text : c.border,
                 borderWidth: selected ? 2 : 1,
-                opacity: available ? 1 : 0.6,
               }}
             >
               <Row style={{ justifyContent: 'space-between' }}>
-                <T v="heading">{cert.name}</T>
+                <T v="title" color={available ? c.text : c.muted}>{selected ? `✓ ${cert.name}` : cert.name}</T>
                 {!available && <Pill label="Coming soon" />}
               </Row>
-              <T v="caption">{cert.fullName}</T>
+              <T v="meta" color={available ? c.text2 : c.muted}>{cert.fullName}</T>
             </Card>
           );
         })}
@@ -74,9 +74,9 @@ export default function Onboarding() {
 
   return (
     <Screen>
-      <T v="title">When is your exam?</T>
+      <T v="display">When is your exam?</T>
       <Gap h={space.sm} />
-      <T color={c.text2}>We use this for your countdown and daily study target. Rough is fine.</T>
+      <T v="meta">For your countdown. A rough date is fine.</T>
       <Gap />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         {PRESETS.map((p, i) => (

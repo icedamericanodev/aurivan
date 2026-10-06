@@ -40,8 +40,12 @@ export interface DomainInfo {
   name: string;
   short: string;
   weight: number; // % of the real exam (all domains sum to 100)
-  color: string;
+  /** Colour tone 0–4 (see domainColor in certifications.ts). Never a hex value. */
+  tone: DomainTone;
 }
+
+/** Index into the 5 domain tones: Lake, Moss, Ochre, Heather, Slate. */
+export type DomainTone = 0 | 1 | 2 | 3 | 4;
 
 /** Facts about the real exam — used by mock exams and the readiness score. */
 export interface ExamFormat {

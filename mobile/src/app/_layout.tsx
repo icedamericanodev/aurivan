@@ -1,11 +1,10 @@
 /**
  * Root layout — runs once when the app opens.
  * 1. Keeps the splash screen up while fonts and saved progress load.
+ *    One family (Plus Jakarta Sans) in three weights: 400, 600, 700.
  * 2. Wraps every screen in a navigation "stack" (screens slide in/out).
  */
-import { JetBrainsMono_500Medium } from '@expo-google-fonts/jetbrains-mono/500Medium';
 import { PlusJakartaSans_400Regular } from '@expo-google-fonts/plus-jakarta-sans/400Regular';
-import { PlusJakartaSans_500Medium } from '@expo-google-fonts/plus-jakarta-sans/500Medium';
 import { PlusJakartaSans_600SemiBold } from '@expo-google-fonts/plus-jakarta-sans/600SemiBold';
 import { PlusJakartaSans_700Bold } from '@expo-google-fonts/plus-jakarta-sans/700Bold';
 import { useFonts } from 'expo-font';
@@ -26,10 +25,8 @@ initNotifications();
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     PlusJakartaSans_400Regular,
-    PlusJakartaSans_500Medium,
     PlusJakartaSans_600SemiBold,
     PlusJakartaSans_700Bold,
-    JetBrainsMono_500Medium,
   });
   const hydrated = useHydrated();
   const { c, isDark } = useTheme();

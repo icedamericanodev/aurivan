@@ -13,7 +13,8 @@
  * does this for you. CISA weights mirror the web app's DI registry, which
  * is the canonical source (see CLAUDE.md hard rule 2).
  */
-import type { Certification } from './types';
+import { domainPalette } from '../theme/tokens';
+import type { Certification, DomainTone } from './types';
 
 const ISACA_TM = (name: string) =>
   `Not affiliated with or endorsed by ISACA®. ${name}® is a registered trademark of ISACA.`;
@@ -41,11 +42,11 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', weight: 18, color: '#3B82F6' },
-      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', weight: 18, color: '#14B8A6' },
-      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', weight: 12, color: '#F59E0B' },
-      { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', weight: 26, color: '#8B6DFF' },
-      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', weight: 26, color: '#60A5FA' },
+      { id: '1', name: 'Information System Auditing Process', short: 'IS Audit', weight: 18, tone: 0 },
+      { id: '2', name: 'Governance and Management of IT', short: 'IT Governance', weight: 18, tone: 1 },
+      { id: '3', name: 'IS Acquisition, Development & Implementation', short: 'IS Acquisition', weight: 12, tone: 2 },
+      { id: '4', name: 'IS Operations & Business Resilience', short: 'IS Operations', weight: 26, tone: 3 },
+      { id: '5', name: 'Protection of Information Assets', short: 'Info Protection', weight: 26, tone: 4 },
     ],
   },
   {
@@ -65,10 +66,10 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Information Security Governance', short: 'Governance', weight: 17, color: '#3B82F6' },
-      { id: '2', name: 'Information Security Risk Management', short: 'Risk Mgmt', weight: 20, color: '#14B8A6' },
-      { id: '3', name: 'Information Security Program', short: 'Program', weight: 33, color: '#8B6DFF' },
-      { id: '4', name: 'Incident Management', short: 'Incidents', weight: 30, color: '#F59E0B' },
+      { id: '1', name: 'Information Security Governance', short: 'Governance', weight: 17, tone: 0 },
+      { id: '2', name: 'Information Security Risk Management', short: 'Risk Mgmt', weight: 20, tone: 1 },
+      { id: '3', name: 'Information Security Program', short: 'Program', weight: 33, tone: 2 },
+      { id: '4', name: 'Incident Management', short: 'Incidents', weight: 30, tone: 3 },
     ],
   },
   {
@@ -88,10 +89,10 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISACA reports scaled scores from 200–800; 450 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Governance', short: 'Governance', weight: 26, color: '#3B82F6' },
-      { id: '2', name: 'IT Risk Assessment', short: 'Assessment', weight: 20, color: '#14B8A6' },
-      { id: '3', name: 'Risk Response and Reporting', short: 'Response', weight: 32, color: '#8B6DFF' },
-      { id: '4', name: 'Information Technology and Security', short: 'IT & Security', weight: 22, color: '#F59E0B' },
+      { id: '1', name: 'Governance', short: 'Governance', weight: 26, tone: 0 },
+      { id: '2', name: 'IT Risk Assessment', short: 'Assessment', weight: 20, tone: 1 },
+      { id: '3', name: 'Risk Response and Reporting', short: 'Response', weight: 32, tone: 2 },
+      { id: '4', name: 'Information Technology and Security', short: 'IT & Security', weight: 22, tone: 3 },
     ],
   },
   {
@@ -111,9 +112,9 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'Check ISACA’s current candidate guide for scoring details.',
     },
     domains: [
-      { id: '1', name: 'AI Governance and Risk', short: 'Governance', weight: 33, color: '#3B82F6' },
-      { id: '2', name: 'AI Operations', short: 'Operations', weight: 46, color: '#14B8A6' },
-      { id: '3', name: 'AI Auditing Tools and Techniques', short: 'Tools', weight: 21, color: '#8B6DFF' },
+      { id: '1', name: 'AI Governance and Risk', short: 'Governance', weight: 33, tone: 0 },
+      { id: '2', name: 'AI Operations', short: 'Operations', weight: 46, tone: 1 },
+      { id: '3', name: 'AI Auditing Tools and Techniques', short: 'Tools', weight: 21, tone: 2 },
     ],
   },
   {
@@ -134,14 +135,14 @@ export const CERTIFICATIONS: Certification[] = [
       passingNote: 'ISC2 reports scaled scores out of 1000; 700 is the passing mark.',
     },
     domains: [
-      { id: '1', name: 'Security and Risk Management', short: 'Risk Mgmt', weight: 16, color: '#3B82F6' },
-      { id: '2', name: 'Asset Security', short: 'Assets', weight: 10, color: '#14B8A6' },
-      { id: '3', name: 'Security Architecture and Engineering', short: 'Architecture', weight: 13, color: '#8B6DFF' },
-      { id: '4', name: 'Communication and Network Security', short: 'Network', weight: 13, color: '#F59E0B' },
-      { id: '5', name: 'Identity and Access Management', short: 'IAM', weight: 13, color: '#60A5FA' },
-      { id: '6', name: 'Security Assessment and Testing', short: 'Testing', weight: 12, color: '#2DD4BF' },
-      { id: '7', name: 'Security Operations', short: 'Operations', weight: 13, color: '#A78BFA' },
-      { id: '8', name: 'Software Development Security', short: 'AppSec', weight: 10, color: '#FBBF24' },
+      { id: '1', name: 'Security and Risk Management', short: 'Risk Mgmt', weight: 16, tone: 0 },
+      { id: '2', name: 'Asset Security', short: 'Assets', weight: 10, tone: 1 },
+      { id: '3', name: 'Security Architecture and Engineering', short: 'Architecture', weight: 13, tone: 2 },
+      { id: '4', name: 'Communication and Network Security', short: 'Network', weight: 13, tone: 3 },
+      { id: '5', name: 'Identity and Access Management', short: 'IAM', weight: 13, tone: 4 },
+      { id: '6', name: 'Security Assessment and Testing', short: 'Testing', weight: 12, tone: 0 },
+      { id: '7', name: 'Security Operations', short: 'Operations', weight: 13, tone: 1 },
+      { id: '8', name: 'Software Development Security', short: 'AppSec', weight: 10, tone: 2 },
     ],
   },
 ];
@@ -155,3 +156,12 @@ export function getDomain(cert: Certification, domainId: string) {
 }
 
 export const DEFAULT_CERT_ID = 'cisa';
+
+/**
+ * The colour for a domain tone (0 Lake, 1 Moss, 2 Ochre, 3 Heather, 4 Slate)
+ * in light or dark mode. Use it for dots, bars and ring segments only,
+ * never for text (tones are not tuned for text contrast).
+ */
+export function domainColor(tone: DomainTone, isDark: boolean): string {
+  return (isDark ? domainPalette.dark : domainPalette.light)[tone];
+}

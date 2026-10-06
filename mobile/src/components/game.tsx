@@ -65,7 +65,7 @@ export function GameFrame({
           <View style={{ flex: 1, alignItems: 'center' }}>
             <T v="label" numberOfLines={1}>{title}</T>
           </View>
-          <T v="mono" color={c.text2} accessibilityLabel={`Round ${index + 1} of ${total}, score ${score}`}>
+          <T v="meta" num accessibilityLabel={`Round ${index + 1} of ${total}, score ${score}`}>
             {`${Math.min(index + 1, total)}/${total} · ${score}`}
           </T>
         </Row>
@@ -89,7 +89,7 @@ export function QuestionHead({ q }: { q: PackQuestion }) {
           <Gap h={space.md} />
         </>
       )}
-      <T v="heading" style={{ lineHeight: 26 }}>{q.stem}</T>
+      <T v="title">{q.stem}</T>
       <Gap />
     </Animated.View>
   );
@@ -117,10 +117,10 @@ export function RoundEnd({
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.xl, flexGrow: 1, justifyContent: 'center' }}>
         <Animated.View entering={ZoomIn.duration(320).reduceMotion(ReduceMotion.System)}>
-          <T v="mono" color={c.accentText} center>ROUND COMPLETE</T>
+          <T v="eyebrow" center>Round complete</T>
           <Gap h={space.sm} />
-          <T v="hero" center>{`${score}`}</T>
-          <T v="caption" center>{`out of ${max}${best !== undefined ? ` · best ${best}` : ''}`}</T>
+          <T v="display" num center>{`${score}`}</T>
+          <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${best}` : ''}`}</T>
         </Animated.View>
         <Gap h={space.xl} />
         {children}
@@ -153,7 +153,7 @@ export function RevealCard({ tone, title, body }: { tone: 'good' | 'bad' | 'info
           <T v="label" color={color}>{title}</T>
         </View>
         <Gap h={space.xs} />
-        <T style={{ lineHeight: 24 }} numberOfLines={long && !open ? 5 : undefined}>{body}</T>
+        <T numberOfLines={long && !open ? 5 : undefined}>{body}</T>
         {long && (
           <Pressable
             accessibilityRole="button"

@@ -12,6 +12,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Button, Card, Chip, Gap, Row, Screen, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
+import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useProgress, type ThinkingSlip } from '../store/progress';
@@ -24,7 +25,7 @@ const SLIPS: { id: ThinkingSlip; label: string; coach: string }[] = [
   { id: 'tech-first', label: 'Tech before governance', coach: 'Policy, ownership and approval usually come before tools.' },
   { id: 'symptom', label: 'Fixed the symptom', coach: 'Prefer the option that removes the root cause.' },
   { id: 'misread', label: 'Misread', coach: 'Slow down on the last line of the stem.' },
-  { id: 'knowledge', label: 'Didn’t know it', coach: 'A content gap — a lesson or review session will close it.' },
+  { id: 'knowledge', label: 'Didn’t know it', coach: 'A content gap. A lesson or review will close it.' },
 ];
 
 export default function Mistakes() {
@@ -55,16 +56,16 @@ export default function Mistakes() {
         <T v="label" color={c.accentText}>‹ Back</T>
       </Pressable>
       <Gap h={space.sm} />
-      <T v="title">Mistake journal</T>
-      <T color={c.text2}>Tag why you slipped. The pattern matters more than any single question.</T>
+      <T v="display">Mistake journal</T>
+      <T v="meta">Tag why you slipped. Find your pattern.</T>
       <Gap />
 
       {topSlip && (
         <>
-          <Card style={{ borderColor: c.accent }}>
-            <T v="mono" color={c.accentText}>YOUR PATTERN</T>
-            <T v="heading">{`${topSlip.label} · ${topSlip.n}`}</T>
-            <T color={c.text2}>{topSlip.coach}</T>
+          <Card emphasis>
+            <T v="eyebrow">Your pattern</T>
+            <T v="title" num>{`${topSlip.label} · ${topSlip.n}`}</T>
+            <T v="meta">{topSlip.coach}</T>
           </Card>
           <Gap />
         </>
@@ -86,34 +87,39 @@ export default function Mistakes() {
       )}
 
       <Row style={{ justifyContent: 'space-between' }}>
-        <T v="label" color={c.text2}>{showFixed ? 'All mistakes' : `${open.length} open`}</T>
+        <T v="title" num>{showFixed ? 'All mistakes' : `${open.length} open`}</T>
         <Chip label={showFixed ? 'Hide fixed' : 'Show fixed'} selected={showFixed} onPress={() => setShowFixed(!showFixed)} />
       </Row>
       <Gap h={space.sm} />
 
       {entries.length === 0 ? (
         <Card>
-          <T v="heading">Nothing here yet</T>
-          <T v="caption">Questions you miss in practice, mocks and games are filed here automatically.</T>
+          <T v="title">Nothing here yet</T>
+          <T v="meta">Missed questions land here.</T>
         </Card>
       ) : (
         entries.map(([id, m]) => {
           const q = findQuestion(cert.id, id);
           if (!q) return null;
           return (
-            <Card key={id} style={{ marginBottom: space.md, borderColor: m.resolved ? c.teal : c.border }}>
-              <T v="mono" color={m.resolved ? c.tealText : c.text2}>
-                {`${m.resolved ? 'FIXED · ' : ''}${new Date(m.at).toLocaleDateString()}`}
-              </T>
+            <Card key={id} style={{ marginBottom: space.md }}>
+              <T v="eyebrow" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
               <Gap h={space.xs} />
               <T v="body">{q.stem.length > 160 ? `${q.stem.slice(0, 160)}…` : q.stem}</T>
-              <Gap h={space.sm} />
-              {m.picked && <T color={c.wrong}>{`You chose: ${q.options[m.picked]}`}</T>}
-              <T color={c.correct}>{`Best answer: ${q.options[q.correct]}`}</T>
+              <Gap h={space.md} />
+              {m.picked && (
+                <>
+                  <T v="eyebrow" color={c.wrong}>✗ Your answer</T>
+                  <T v="meta" numberOfLines={2}>{q.options[m.picked]}</T>
+                  <Gap h={space.sm} />
+                </>
+              )}
+              <T v="eyebrow" color={c.correct}>✓ Best answer</T>
+              <T v="meta" numberOfLines={2}>{q.options[q.correct]}</T>
               {!m.resolved && (
                 <>
                   <Gap h={space.md} />
-                  <T v="caption">Why did you slip?</T>
+                  <T v="meta">Why did you slip?</T>
                   <Gap h={space.xs} />
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.xs }}>
                     {SLIPS.map((s) => (

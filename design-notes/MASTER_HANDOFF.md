@@ -676,6 +676,14 @@ the native app's information architecture.
 | Accent rule | One accent-filled element per screen; everything else outlined |
 | Touch targets | 48×48 minimum |
 | Motion | 180–320ms ease-out, always honours Reduce Motion |
+| Visual identity (mobile) | **Forest — see `docs/mobile/DESIGN_SYSTEM.md`.** Replaces the navy/blue identity for `mobile/` only; the web app keeps navy. One theme (light + dark), one font (Plus Jakarta Sans 400/600/700), six text styles |
+| Selected state | **Ink** (the text colour), never green. Green = primary buttons, bars, rings; ✓ on `correctBg` = correct answer |
+| Style guard | No `fontSize` / `lineHeight` / `fontFamily` / hex colours outside `components/ui.tsx` and `theme/`. ESLint enforces it in `npm run check` and CI |
+
+These earlier mobile rules still hold under Forest: tips are revealed one at a
+time, confidence is asked after selecting (before submitting), answer options
+are at least 56px tall, primary actions sit in the bottom thumb-zone bar, and
+correct/wrong are shown by shape (✓ / ✗) as well as colour.
 
 **Documented exception — Calibrated Sprint.** The "answer first, then rate
 confidence" rule used in practice sessions is reversed in this one game: the

@@ -4,10 +4,10 @@
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { ActionRow } from '../../components/journey';
 import { Crosshair, ICON_STROKE, RotateCcw, Target, Timer } from '../../components/icons';
-import { Button, Card, Chip, Gap, Pill, Row, Screen, T } from '../../components/ui';
+import { Button, Card, Chip, Gap, ICON_SIZE, Pill, Row, Screen, T } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { guardedStart, startMock, startPractice, startReview } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -15,6 +15,11 @@ import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 const SIZES = [10, 20, 50];
+// Chips sit in a single scrollable line that runs to the screen edges
+// (the negative margin cancels the page padding, so chips aren't cut off
+// mid-screen); the vertical padding keeps the 48px touch area unclipped.
+const facetScroll = { marginHorizontal: -space.lg } as const;
+const facetRow = { gap: space.sm, paddingVertical: 2, paddingHorizontal: space.lg } as const;
 const DIFFS: { label: string; value?: Difficulty }[] = [
   { label: 'Any' },
   { label: 'Foundational', value: 'foundational' },
@@ -32,12 +37,12 @@ export default function Practice() {
   const focus = cert.domains.find((d) => d.id === readiness.focusDomainId);
   const mini = Math.round(cert.exam.questions / 3);
   const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);
-  const icon = (G: typeof Target) => <G size={20} color={c.accentText} strokeWidth={ICON_STROKE} />;
+  const icon = (G: typeof Target) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
   return (
     <Screen>
-      <T v="title">Practice</T>
-      <T color={c.text2}>Every option explained, every trap named.</T>
+      <T v="display">Practice</T>
+      <T v="meta">Every option explained, every trap named.</T>
       <Gap />
 
       <Card style={{ paddingVertical: space.xs }}>
@@ -51,7 +56,7 @@ export default function Practice() {
           <ActionRow
             icon={icon(Crosshair)}
             title={`Weak area: ${focus.short}`}
-            subtitle="Where you have the most points to gain"
+            subtitle="Most points to gain"
             onPress={() =>
               guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.name }), open)
             }
@@ -67,26 +72,27 @@ export default function Practice() {
       </Card>
       <Gap />
 
-      <T v="label" color={c.text2}>Build a set</T>
+      <T v="title">Build a set</T>
       <Gap h={space.sm} />
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+      {/* One horizontal row per facet: domain, difficulty, size. */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={facetScroll} contentContainerStyle={facetRow}>
         <Chip label="All domains" selected={domainId === undefined} onPress={() => setDomainId(undefined)} />
         {cert.domains.map((d) => (
           <Chip key={d.id} label={d.short} selected={domainId === d.id} onPress={() => setDomainId(d.id)} />
         ))}
-      </View>
-      <Gap h={space.md} />
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+      </ScrollView>
+      <Gap h={space.sm} />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={facetScroll} contentContainerStyle={facetRow}>
         {DIFFS.map((d, i) => (
           <Chip key={d.label} label={d.label} selected={diff === i} onPress={() => setDiff(i)} />
         ))}
-      </View>
-      <Gap h={space.md} />
-      <Row gap={space.sm}>
+      </ScrollView>
+      <Gap h={space.sm} />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={facetScroll} contentContainerStyle={facetRow}>
         {SIZES.map((n) => (
           <Chip key={n} label={`${n} Qs`} selected={count === n} onPress={() => setCount(n)} />
         ))}
-      </Row>
+      </ScrollView>
       <Gap h={space.md} />
       <Button
         kind="secondary"
@@ -108,31 +114,31 @@ export default function Practice() {
       <Gap h={space.xl} />
 
       <Row style={{ justifyContent: 'space-between' }}>
-        <T v="label" color={c.text2}>Mock exams</T>
-        <Timer size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+        <T v="title">Mock exams</T>
+        <Timer size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
       </Row>
       <Gap h={space.sm} />
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="heading">Mini mock</T>
+          <T v="title">Mini mock</T>
           <Pill label={`${miniMinutes} min`} />
         </Row>
-        <T v="caption">{`${mini} questions at real exam pace. Feedback at the end.`}</T>
+        <T v="meta" num>{`${mini} questions at exam pace. Feedback at the end.`}</T>
         <Gap h={space.md} />
         <Button kind="secondary" label="Start mini mock" onPress={() => guardedStart(() => startMock(cert.id, mini), open)} />
       </Card>
       <Gap h={space.sm} />
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="heading">Full mock</T>
+          <T v="title">Full mock</T>
           <Pill label={`${cert.exam.minutes / 60} hrs`} />
         </Row>
-        <T v="caption">{`${cert.exam.questions} questions · ${cert.exam.minutes} minutes · weighted like the real ${cert.name}`}</T>
+        <T v="meta" num>{`${cert.exam.questions} questions, weighted like the real ${cert.name}.`}</T>
         <Gap h={space.md} />
         <Button kind="secondary" label="Start full mock" onPress={() => guardedStart(() => startMock(cert.id), open)} />
       </Card>
       <Gap h={space.sm} />
-      <T v="caption">{cert.exam.passingNote}</T>
+      <T v="meta">{cert.exam.passingNote}</T>
     </Screen>
   );
 }

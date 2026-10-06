@@ -1,6 +1,6 @@
 name: Mobile
 
-# Typecheck + unit tests for the Expo app. Also runs when question data
+# Typecheck + lint + unit tests for the Expo app. Also runs when question data
 # changes, because the content-pack integrity test reads data/domain*.json.
 
 on:
@@ -30,5 +30,7 @@ jobs:
         run: npm ci
       - name: Typecheck
         run: npm run typecheck
+      - name: Lint (includes the design-system guard)
+        run: npm run lint
       - name: Unit + content tests
         run: npm test -- --ci

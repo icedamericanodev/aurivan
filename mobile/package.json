@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
-    "@expo-google-fonts/jetbrains-mono": "^0.4.1",
     "@expo-google-fonts/plus-jakarta-sans": "^0.4.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~57.0.26",
@@ -31,6 +30,8 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/react": "~19.2.2",
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~57.0.2",
     "jest": "^30.5.2",
     "jest-expo": "~57.0.5",
     "react-test-renderer": "19.2.3",
@@ -45,8 +46,10 @@
     "content": "node scripts/build-content.mjs",
     "postinstall": "node scripts/build-content.mjs",
     "typecheck": "tsc --noEmit",
+    "lint": "expo lint",
     "test": "jest",
-    "check": "npm run typecheck && npm test"
+    "check": "npm run typecheck && npm run lint && npm test",
+    "lint": "expo lint"
   },
   "private": true,
   "jest": {

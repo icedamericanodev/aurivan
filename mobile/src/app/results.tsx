@@ -6,8 +6,8 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, Gap, ProgressBar, Row, Screen, Stat, T } from '../components/ui';
-import { getCertification } from '../content/certifications';
+import { Button, Card, DomainDot, Gap, ProgressBar, Row, Screen, Stat, T } from '../components/ui';
+import { domainColor, getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
 import { scoreSession } from '../lib/finishSession';
@@ -18,7 +18,7 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 export default function Results() {
-  const { c } = useTheme();
+  const { c, isDark } = useTheme();
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -27,7 +27,7 @@ export default function Results() {
   if (!active || !score) {
     return (
       <Screen>
-        <T v="heading">No results to show.</T>
+        <T v="title">No results to show.</T>
         <Gap />
         <Button label="Back to Home" onPress={() => router.replace('/home')} />
       </Screen>
@@ -52,9 +52,9 @@ export default function Results() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <T v="mono" color={c.accentText}>{active.title.toUpperCase()}</T>
+      <T v="eyebrow">{active.title}</T>
       <Gap h={space.sm} />
-      <T v="title">{pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}</T>
+      <T v="display">{pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}</T>
       <Gap />
       <Card>
         <Row>
@@ -65,7 +65,7 @@ export default function Results() {
         {active.mode === 'mock' && (
           <>
             <Gap h={space.md} />
-            <T v="caption" center>
+            <T v="meta" center>
               Practice scores are not scaled exam scores. {cert.exam.passingNote}
             </T>
           </>
@@ -73,7 +73,7 @@ export default function Results() {
       </Card>
       <Gap />
 
-      <T v="label" color={c.text2}>By domain</T>
+      <T v="title">By domain</T>
       <Gap h={space.sm} />
       {cert.domains
         .filter((d) => score.byDomain[d.id])
@@ -82,10 +82,14 @@ export default function Results() {
           return (
             <View key={d.id} style={{ marginBottom: space.md }}>
               <Row style={{ justifyContent: 'space-between' }}>
-                <T v="caption">{d.short}</T>
-                <T v="caption">{b.correct}/{b.total}</T>
+                <Row gap={space.sm}>
+                  <DomainDot domain={d} />
+                  <T v="meta">{d.short}</T>
+                </Row>
+                <T v="meta" num>{`${b.correct}/${b.total}`}</T>
               </Row>
-              <ProgressBar value={b.correct / b.total} color={d.color} height={6} />
+              <Gap h={space.xs} />
+              <ProgressBar value={b.correct / b.total} color={domainColor(d.tone, isDark)} height={6} />
             </View>
           );
         })}
@@ -100,7 +104,7 @@ export default function Results() {
       <Button kind="secondary" label="Done" onPress={done} />
       <Gap />
 
-      <T v="label" color={c.text2}>Review answers</T>
+      <T v="title">Review answers</T>
       <Gap h={space.sm} />
       {active.questionIds.map((id, i) => {
         const q = findQuestion(active.certId, id);
@@ -115,7 +119,7 @@ export default function Results() {
           <Pressable key={id} accessibilityRole="button" accessibilityLabel={`Question ${i + 1}, ${status}. Tap to ${open ? 'collapse' : 'expand'}`} onPress={() => setOpenId(open ? null : id)}>
             <Card style={{ marginBottom: space.sm }}>
               <Row style={{ justifyContent: 'space-between' }}>
-                <T v="label">Q{i + 1}</T>
+                <T v="label" num>{`Q${i + 1}`}</T>
                 <T v="label" color={color}>{status}</T>
               </Row>
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
@@ -131,7 +135,7 @@ export default function Results() {
                   {trapTip(q) !== '' && (
                     <>
                       <Gap h={space.sm} />
-                      <T v="caption">
+                      <T v="meta">
                         {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
                         {renderText(trapTip(q), perm)}
                       </T>

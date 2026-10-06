@@ -101,8 +101,8 @@ export default function SessionScreen() {
   if (!active || !q || !perm || !qid) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.lg, justifyContent: 'center' }}>
-        <T v="heading" center>
-          {active ? 'This session can’t continue — its questions were updated.' : 'No session in progress.'}
+        <T v="title" center>
+          {active ? 'This session can’t continue. Its questions were updated.' : 'No session in progress.'}
         </T>
         <Gap />
         <Button
@@ -216,11 +216,11 @@ export default function SessionScreen() {
           <Pressable accessibilityRole="button" accessibilityLabel={isMock ? 'Pause exam' : 'End session'} onPress={leave} hitSlop={12}>
             <T v="label" color={c.accentText}>{isMock ? 'Pause' : 'End'}</T>
           </Pressable>
-          <T v="label">
+          <T v="label" num>
             {active.index + 1} / {total}
           </T>
           {isMock ? (
-            <T v="label" color={lowTime ? c.wrong : c.text} accessibilityLabel={`Time remaining ${formatClock(remaining)}`}>
+            <T v="label" num color={lowTime ? c.wrong : c.text} accessibilityLabel={`Time remaining ${formatClock(remaining)}`}>
               ⏱ {formatClock(remaining)}
             </T>
           ) : (
@@ -233,8 +233,8 @@ export default function SessionScreen() {
 
       <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl }}>
         <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-          {domain && <Pill label={domain.short} dot={domain.color} />}
-          <Pill label={q.difficulty} />
+          {domain && <Pill label={domain.short} domain={domain} />}
+          <Pill label={q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)} />
           {flagged && <Pill label="⚑ Flagged" color={c.warning} />}
         </Row>
         <Gap h={space.md} />
@@ -244,7 +244,7 @@ export default function SessionScreen() {
             <Gap h={space.md} />
           </>
         )}
-        <T v="heading" style={{ lineHeight: 26 }}>{q.stem}</T>
+        <T v="title">{q.stem}</T>
         <Gap />
 
         {displayLetters.map((d) => (
@@ -281,7 +281,7 @@ export default function SessionScreen() {
               {q.keyConcept && (
                 <>
                   <Gap h={space.md} />
-                  <T v="label" color={c.text2}>Key concept</T>
+                  <T v="eyebrow">Key concept</T>
                   <T v="body" color={c.text2}>{q.keyConcept}</T>
                 </>
               )}
@@ -317,10 +317,10 @@ export default function SessionScreen() {
         <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
           <ScrollView contentContainerStyle={{ padding: space.lg }}>
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="title">Questions</T>
+              <T v="display">Questions</T>
               <Button kind="ghost" label="Close" onPress={() => setNavOpen(false)} />
             </Row>
-            <T v="caption">● answered · ○ not answered · ⚑ flagged</T>
+            <T v="meta">● answered · ○ not answered · ⚑ flagged</T>
             <Gap />
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
               {active.questionIds.map((id, i) => {
@@ -345,10 +345,11 @@ export default function SessionScreen() {
                       justifyContent: 'center',
                       borderWidth: current ? 2 : 1,
                       borderColor: current ? c.accent : flag ? c.warning : c.border,
-                      backgroundColor: done ? c.accentFill : c.surface,
+                      // Answered = ink fill (never green: green means "correct").
+                      backgroundColor: done ? c.text : c.surface,
                     }}
                   >
-                    <T v="label" color={done ? c.onAccent : c.text}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
+                    <T v="label" num color={done ? c.surface : c.text}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
                   </Pressable>
                 );
               })}
