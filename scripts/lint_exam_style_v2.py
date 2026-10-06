@@ -169,6 +169,10 @@ def main(args):
         longest = [q for q in v2 if q.get("options") and q.get("correct") in q["options"]
                    and len(q["options"][q["correct"]]) > max(len(v) for k, v in q["options"].items() if k != q["correct"])]
         share = len(longest) / len(v2)
+        if len(v2) >= 40 and share < 0.15:
+            print(f"ERROR key is the longest option (by characters) in only {share:.0%} of items (min 15%): "
+                  "'never pick the longest' would become a reverse tell; let some keys be naturally longest")
+            n_err += 1
         if len(v2) >= 12 and share > 0.30:
             print(f"ERROR key is the longest option (by characters) in {share:.0%} of items (max 30%): "
                   + ", ".join(q["id"] for q in longest[:12]) + ("…" if len(longest) > 12 else ""))
