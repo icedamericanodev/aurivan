@@ -12,7 +12,8 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Alert, BackHandler, Modal, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ConfidenceRow, OptionCard, ResultBanner, ScenarioBlock, TipsReveal, type OptionState } from '../components/quiz';
+import { ConfidenceRow, OptionCard, ResultBanner, ScenarioBlock, TipsReveal, TrustCard, type OptionState } from '../components/quiz';
+import { reportIssue } from '../lib/report';
 import { Button, Card, Gap, Pill, Row, T } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { findQuestion } from '../content/loader';
@@ -139,6 +140,8 @@ export default function SessionScreen() {
     AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
     answer(qid, { display: selected, correct: ok, confidence });
     recordAnswer(active.certId, qid, ok, confidence);
+    // File every miss in the Mistake Journal, with the ORIGINAL letter picked.
+    if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm));
   };
 
   const next = () => {
@@ -282,12 +285,7 @@ export default function SessionScreen() {
                   <T v="body" color={c.text2}>{q.keyConcept}</T>
                 </>
               )}
-              {q.reference && (
-                <>
-                  <Gap h={space.sm} />
-                  <T v="caption">Reference: {q.reference}</T>
-                </>
-              )}
+              <TrustCard questionId={q.id} reference={q.reference} onReport={() => reportIssue(q.id, cert.name)} />
             </Card>
             <Gap h={space.md} />
             <TipsReveal key={qid} tips={q.tips.map((t) => renderText(t, perm))} />

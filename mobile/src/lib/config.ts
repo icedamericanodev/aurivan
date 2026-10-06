@@ -8,6 +8,8 @@ export const config = {
   privacyUrl: process.env.EXPO_PUBLIC_PRIVACY_URL ?? '',
   /** Live URL of terms.html — required once subscriptions exist. */
   termsUrl: process.env.EXPO_PUBLIC_TERMS_URL ?? '',
+  /** Where "Report an issue" emails go. Without it, reports are acknowledged in-app only. */
+  feedbackEmail: process.env.EXPO_PUBLIC_FEEDBACK_EMAIL ?? '',
   /** Supabase (Phase 3: accounts + sync). Publishable values only. */
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '',

@@ -6,6 +6,7 @@
  *   fed into spaced review.
  */
 import { findQuestion } from '../content/loader';
+import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
 
@@ -46,7 +47,10 @@ export function finishSession() {
     const skipped: string[] = [];
     for (const id of s.questionIds) {
       const r = s.responses[id];
-      if (r) progress.recordAnswer(s.certId, id, r.correct, r.confidence);
+      if (r) {
+        progress.recordAnswer(s.certId, id, r.correct, r.confidence);
+        if (!r.correct) progress.recordMistake(s.certId, id, displayToOriginal(r.display, s.perms[id]));
+      }
       else skipped.push(id);
     }
     // Skipped questions come back for review, but don't count as studied

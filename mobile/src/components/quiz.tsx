@@ -21,7 +21,7 @@ export function ScenarioBlock({ text }: { text: string }) {
       <Gap h={space.xs} />
       <T v="body" color={c.text2}>{long && !open ? `${text.slice(0, 200).trimEnd()}…` : text}</T>
       {long && (
-        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
+        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 48, justifyContent: 'center' }}>
           <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read full scenario'}</T>
         </Pressable>
       )}
@@ -149,6 +149,39 @@ export function ResultBanner({ correct }: { correct: boolean }) {
       <T v="heading" color={correct ? c.correct : c.wrong} style={{ fontSize: size.lg }}>
         {correct ? '✓ Correct' : '✗ Not quite'}
       </T>
+    </View>
+  );
+}
+
+// ── Trust card: where this question comes from + report an issue ──────
+export function TrustCard({
+  questionId,
+  reference,
+  onReport,
+}: {
+  questionId: string;
+  reference?: string;
+  onReport: () => void;
+}) {
+  const { c } = useTheme();
+  return (
+    <View
+      style={{ borderTopWidth: 1, borderTopColor: c.border, paddingTop: space.md, marginTop: space.md, gap: space.xs }}
+    >
+      <T v="mono" color={c.tealText}>ORIGINAL QUESTION</T>
+      {reference && <T v="caption">{`Grounded in: ${reference}`}</T>}
+      <Row style={{ justifyContent: 'space-between' }}>
+        <T v="caption">{`Code ${questionId}`}</T>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Report an issue with question ${questionId}`}
+          onPress={onReport}
+          hitSlop={8}
+          style={{ minHeight: 48, justifyContent: 'center' }}
+        >
+          <T v="label" color={c.accentText}>Report an issue</T>
+        </Pressable>
+      </Row>
     </View>
   );
 }
