@@ -318,22 +318,22 @@
       "options": {
         "A": "Developer attestation that known defects have been resolved",
         "B": "Quarterly penetration testing of the current production release",
-        "C": "Weekly manager review of merged commits and their test logs",
+        "C": "Automated nightly regression test runs against the main code branch",
         "D": "Automated gates that block deployment on failed tests or scans"
       },
       "correct": "D",
       "key_concept": "In CI/CD, automated quality gates that block deployment on failed tests or scans give consistent preventive assurance for every build.",
       "pre_read": "Note the deployment frequency. Ask which control acts on every build before production rather than afterwards.",
-      "correct_explanation": "With several deployments a day, only an automated, enforced control in the pipeline can act on every build before it reaches production. Gates that fail the build on test or scan failures are preventive and consistent. A weekly manager review is the runner-up: it is independent, but it is detective and runs after many builds have already been deployed.",
+      "correct_explanation": "With several deployments a day, only an enforced control in the pipeline can act on every build before it reaches production. Gates that fail the build on test or scan failures are preventive and consistent. Nightly automated regression runs are the runner-up: they are consistent, but they are detective and run after many builds have already been deployed.",
       "wrong_explanations": {
         "A": "Self-attestation is unverified and not independent. It gives little assurance that defects were really fixed.",
         "B": "Quarterly testing examines a tiny fraction of releases. Hundreds of builds would reach production untested in between.",
-        "C": "A weekly review is detective and lags the deployment rate. Faulty builds could run in production for days first."
+        "C": "Nightly runs are automated but detective. They test code after it has already been deployed several times that day."
       },
       "tips": [
         "Eliminate: A relies on unverified self-attestation, and B tests far too rarely for daily deployments.",
-        "Final two: D beats C because an enforced preventive gate stops every bad build; a weekly review only finds problems after release.",
-        "Exam cue: in high-frequency pipelines, prefer automated preventive controls built into the flow over periodic human review."
+        "Final two: D beats C because an enforced gate stops every bad build before release; a nightly run only finds problems afterward.",
+        "Exam cue: in high-frequency pipelines, prefer preventive gates in the deployment flow over checks that run after release, automated or not."
       ],
       "framework_ref": "NIST SP 800-218 (SSDF v1.1); DORA / Accelerate (DevOps Research and Assessment); OWASP SAMM (Software Assurance Maturity Model)",
       "related_concepts": [
@@ -620,7 +620,7 @@
       "options": {
         "A": "Pure Scrum, using sprint reviews as the audit evidence",
         "B": "Waterfall, with signed phase deliverables as audit evidence",
-        "C": "Postpone the choice until legal counsel rules on agile",
+        "C": "Scrum, with a single compliance sign-off before final release",
         "D": "Hybrid agile with stage gates and signed traceability baselines"
       },
       "correct": "D",
@@ -630,10 +630,10 @@
       "wrong_explanations": {
         "A": "Sprint reviews show working increments but leave no signed baselines or traceability. Auditors would lack evidence over requirements and changes.",
         "B": "Waterfall yields strong evidence but gives up the delivery flexibility the CIO wants, when agile with gates and baselines can satisfy regulators too.",
-        "C": "Methodology fit is a control design question, not a legal ruling. Waiting only delays the project."
+        "C": "One sign-off at the end gives no stage gates or traceability during delivery, so gaps surface when they are costliest to fix."
       },
       "tips": [
-        "Eliminate: A drops the traceability that regulated audits need, and C delays a decision that needs no legal opinion.",
+        "Eliminate: A drops the traceability that regulated audits need, and C checks compliance once, at the end, when gaps are costliest to fix.",
         "Final two: D beats B because a controlled hybrid meets evidence needs and keeps agility; waterfall needlessly sacrifices delivery flexibility.",
         "Exam cue: in regulated agile projects, recommend adding gates and traceability to agile rather than abandoning agile."
       ],
@@ -773,7 +773,7 @@
       "options": {
         "A": "The developer's functional department manager",
         "B": "The vendor account manager under the outsourcing contract",
-        "C": "The project manager",
+        "C": "The project manager leading the project team",
         "D": "The project sponsor who signed the project charter"
       },
       "correct": "C",
@@ -797,7 +797,7 @@
         "Matrix structure",
         "Project authority"
       ],
-      "_provenance": "Authored from concept: 'PM organizational structures per PMBOK 7E and PRINCE2'. Public sources: PMBOK 7E, PRINCE2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'PM organizational structures per PMBOK 7E and PRINCE2'. Public sources: PMBOK 7E, PRINCE2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (key lengthened to match distractor length).",
       "style_version": 2
     },
     {
@@ -1261,22 +1261,22 @@
       "question": "Cloud infrastructure is managed through Infrastructure-as-Code, but engineers can still change settings in the console. Which control should the IS auditor consider MOST effective at detecting unauthorized changes?",
       "options": {
         "A": "Monthly configuration exports stored offsite for recovery",
-        "B": "Peer review of every change to the IaC templates",
+        "B": "Automated policy checks run on every IaC template change",
         "C": "Continuous comparison of live settings with the IaC definitions",
         "D": "Annual architecture review of settings against approved baselines"
       },
       "correct": "C",
       "key_concept": "IaC drift detection continuously reconciles live cloud state with declared code and alerts on divergence, catching out-of-band changes.",
       "pre_read": "Note the console path that bypasses code. Ask which control would still see a change made that way.",
-      "correct_explanation": "Drift detection continuously compares the live cloud state with the state declared in code and alerts on any difference, so a console change made outside the pipeline is caught quickly. Peer review of IaC templates is the runner-up: it is a strong preventive control, but console changes bypass the templates entirely, so the review never sees them.",
+      "correct_explanation": "Drift detection continuously compares the live cloud state with the state declared in code and alerts on any difference, so a console change made outside the pipeline is caught quickly. Automated policy checks on IaC templates are the runner-up: they are a strong preventive control, but console changes bypass the templates entirely, so the checks never see them.",
       "wrong_explanations": {
         "A": "Configuration exports support recovery after an incident. They do not compare states or alert anyone to an unauthorized change.",
-        "B": "Template review prevents bad code changes, but console changes never pass through the templates, so it cannot detect them.",
+        "B": "Policy checks prevent bad template changes, but console changes never pass through the templates, so the checks cannot detect them.",
         "D": "An annual review is far too infrequent. Unauthorized changes could persist for months before anyone notices."
       },
       "tips": [
         "Eliminate: A is a recovery measure, and D is too infrequent to detect changes in time.",
-        "Final two: C beats B because console changes bypass template review; only comparing live state with code reveals them.",
+        "Final two: C beats B because console changes bypass template checks; only comparing live state with code reveals them.",
         "Exam cue: when changes can bypass the pipeline, choose a detective control that reconciles actual state with the approved baseline."
       ],
       "framework_ref": "COBIT 2019 BAI10 (Managed Configuration); NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration); CSA Cloud Controls Matrix; ISACA Cloud Computing Management Audit/Assurance Program",
@@ -1779,7 +1779,7 @@
       "question": "A development manager learns that API releases repeatedly break partner integrations. Which practice would BEST prevent this?",
       "options": {
         "A": "Emailing partners a week before deploying any breaking change to production",
-        "B": "Versioned endpoints plus consumer contract tests run before each deployment",
+        "B": "Versioning endpoints and running consumer contract tests before each deployment",
         "C": "Deploying changes quietly and patching once partners report errors",
         "D": "Freezing the API interface so that it can no longer evolve"
       },
@@ -1804,7 +1804,7 @@
         "Pact",
         "Semantic versioning"
       ],
-      "_provenance": "Authored from concept: 'API versioning and contract testing per OWASP API Top 10 and Pact'. Public sources: OWASP, Pact. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'API versioning and contract testing per OWASP API Top 10 and Pact'. Public sources: OWASP, Pact. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel).",
       "style_version": 2
     },
     {
@@ -1964,8 +1964,8 @@
       "options": {
         "A": "Restricting direct schema changes to approved, scheduled maintenance windows",
         "B": "Letting developers alter the schema through their code commit rights",
-        "C": "Postponing every schema change until the next major release",
-        "D": "Versioned migration scripts, reviewed and tested, via change management"
+        "C": "Logging each schema change in a register after it is applied",
+        "D": "Deploying versioned migration scripts, reviewed and tested, via change management"
       },
       "correct": "D",
       "key_concept": "Database schema changes should flow through versioned, reviewed and tested migration scripts within the change-management process.",
@@ -1974,10 +1974,10 @@
       "wrong_explanations": {
         "A": "A maintenance window changes when the work happens, not how it is controlled. Direct, unreviewed changes remain.",
         "B": "Giving developers production schema access worsens segregation of duties and still bypasses review and testing.",
-        "C": "Indefinite postponement blocks needed changes and encourages risky workarounds or emergency bypasses."
+        "C": "An after-the-fact register records changes but does not review or test them before they reach production."
       },
       "tips": [
-        "Eliminate: B widens uncontrolled production access, and C blocks legitimate change.",
+        "Eliminate: B widens uncontrolled production access, and C records changes only after they reach production.",
         "Final two: D beats A because review, testing and traceability address the real risk, while a window only changes timing.",
         "Exam cue: when a finding is uncontrolled change, the BEST fix routes it through change management, not just a different time slot."
       ],
@@ -1988,7 +1988,7 @@
         "Flyway",
         "Liquibase"
       ],
-      "_provenance": "Authored from concept: 'Database schema migration governance per ISACA Database Audit guidance and COBIT 2019 BAI06'. Public sources: ISACA, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Database schema migration governance per ISACA Database Audit guidance and COBIT 2019 BAI06'. Public sources: ISACA, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel; postpone distractor C replaced).",
       "style_version": 2
     },
     {
@@ -2073,7 +2073,7 @@
       "bloom_level": "Application",
       "question": "An organization's internet-facing customer portal relies on usernames and passwords. Which control would MOST strengthen authentication?",
       "options": {
-        "A": "Risk-based MFA using a phishing-resistant factor such as FIDO2",
+        "A": "Enforcing risk-based MFA with a phishing-resistant factor such as FIDO2",
         "B": "Forcing password changes every 30 days for every user",
         "C": "Locking accounts after three failed attempts until help desk resets",
         "D": "Requiring 16-character passwords with mixed case and symbols"
@@ -2100,7 +2100,7 @@
         "WebAuthn",
         "NIST SP 800-63"
       ],
-      "_provenance": "Authored from concept: 'Authentication strengthening with phishing-resistant MFA per NIST SP 800-63 and FIDO2/WebAuthn'. Public sources: NIST SP 800-63, FIDO Alliance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Authentication strengthening with phishing-resistant MFA per NIST SP 800-63 and FIDO2/WebAuthn'. Public sources: NIST SP 800-63, FIDO Alliance. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel).",
       "style_version": 2
     },
     {
@@ -2262,7 +2262,7 @@
         "A": "Encrypting the configuration files and sharing the key with developers",
         "B": "Restricting deployments to one administrator's personal workstation",
         "C": "Emailing credentials to developers to paste in at release time",
-        "D": "A central vault issuing short-lived, audited credentials to pipelines"
+        "D": "Issuing short-lived, audited credentials to pipelines from a central vault"
       },
       "correct": "D",
       "key_concept": "CI/CD secrets belong in a central vault that issues short-lived credentials to pipelines and audits every access.",
@@ -2285,7 +2285,7 @@
         "Dynamic credentials",
         "Secret management"
       ],
-      "_provenance": "Authored from concept: 'CI/CD secret management per HashiCorp Vault, CyberArk Conjur, NIST SSDF'. Public sources: HashiCorp, CyberArk, NIST SP 800-218. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'CI/CD secret management per HashiCorp Vault, CyberArk Conjur, NIST SSDF'. Public sources: HashiCorp, CyberArk, NIST SP 800-218. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel).",
       "style_version": 2
     },
     {
@@ -2446,7 +2446,7 @@
       "options": {
         "A": "Running EXPLAIN plans whenever users complain about slowness",
         "B": "Disabling query logging to maximize production throughput",
-        "C": "Query metrics kept as time series, alerting on regressions",
+        "C": "Tracking query metrics over time and alerting on regressions",
         "D": "Restarting the database weekly to clear the plan cache"
       },
       "correct": "C",
@@ -2470,7 +2470,7 @@
         "Slow-query log",
         "Performance regression"
       ],
-      "_provenance": "Authored from concept: 'Database query performance audit per ISACA Database Performance Audit guidance and COBIT 2019 BAI04'. Public sources: ISACA, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Database query performance audit per ISACA Database Performance Audit guidance and COBIT 2019 BAI04'. Public sources: ISACA, COBIT 2019. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel).",
       "style_version": 2
     },
     {
@@ -2857,7 +2857,7 @@
         "A": "Keep the component and patch it internally when needed",
         "B": "Select the replacement vendor with the fastest integration time",
         "C": "Launch a transition program with interim compensating controls",
-        "D": "Revisit the options once vendor support has fully ended"
+        "D": "Begin a replacement RFP and formally accept the interim risk"
       },
       "correct": "C",
       "key_concept": "Vendor abandonment of a critical component needs a transition program: interim compensating controls, proper evaluation and a planned migration.",
@@ -2866,10 +2866,10 @@
       "wrong_explanations": {
         "A": "Without source code or vendor support, internal teams cannot reliably patch the component, so security risk grows after 90 days.",
         "B": "Speed is one criterion, not the selection basis; it skips due diligence and leaves the interim gap uncontrolled.",
-        "D": "Waiting wastes the lead time available now and guarantees a long period of unpatched exposure."
+        "D": "Starting procurement helps, but accepting a year or more of unpatched exposure on a critical component is not justified when compensating controls are available."
       },
       "tips": [
-        "Eliminate: A assumes patching ability the firm lacks, and D wastes the lead time.",
+        "Eliminate: A assumes patching ability the firm lacks, and D accepts a long unpatched gap instead of controlling it.",
         "Final two: C beats B because a risk-based transition covers the interim exposure and a proper evaluation, not just speed.",
         "Exam cue: when support ends before a replacement can land, look for interim compensating controls plus a planned transition."
       ],
@@ -2929,7 +2929,7 @@
       "bloom_level": "Analysis",
       "question": "A query passed load testing on a 12,000-row test table but overloaded production, which holds 180 million rows. Which recommendation should the IS auditor consider BEST?",
       "options": {
-        "A": "Query-performance code review by senior DBAs before each release",
+        "A": "Requiring senior DBA code review of query performance before each release",
         "B": "Staging with production-scale data volumes and matching database tiers",
         "C": "Dropping load tests, since test results cannot predict production",
         "D": "Relying on production monitoring to catch slowdowns after release"
@@ -2966,9 +2966,9 @@
       "bloom_level": "Analysis",
       "question": "A bank deploys to production over 30 times a day, and its external auditor says manual change evidence no longer scales. Which recommendation is BEST?",
       "options": {
-        "A": "Automated, tamper-evident records linking each deploy to its approval",
+        "A": "Generating automated, tamper-evident records linking each deploy to its approval",
         "B": "Limiting deployments to weekly so manual evidence collection can keep up",
-        "C": "A monthly change-board review of a sample of deployments",
+        "C": "Holding a monthly change-board review of a sample of deployments",
         "D": "Exempting high-frequency teams from change management controls"
       },
       "correct": "A",
@@ -2992,7 +2992,7 @@
         "SOC 1",
         "Audit automation"
       ],
-      "_provenance": "Authored from concept: 'Continuous compliance evidence in high-deploy regulated DevOps per ISACA Continuous Compliance guidance and SLSA framework'. Public sources: ISACA, SLSA. Scenario specifics (federally chartered bank, 30+ deploys/day, 14 service teams, SOC 1 audit, manual evidence flagged as not-scaling, audit firm's hypothetical acceptance of automation) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Continuous compliance evidence in high-deploy regulated DevOps per ISACA Continuous Compliance guidance and SLSA framework'. Public sources: ISACA, SLSA. Scenario specifics (federally chartered bank, 30+ deploys/day, 14 service teams, SOC 1 audit, manual evidence flagged as not-scaling, audit firm's hypothetical acceptance of automation) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel).",
       "style_version": 2
     },
     {
@@ -3153,8 +3153,8 @@
       "options": {
         "A": "Central gateway control of external client traffic into the system",
         "B": "Mutual TLS between services without changing application code",
-        "C": "Merging the services into one binary with in-process calls",
-        "D": "Syncing service data through an event-sourced shared database"
+        "C": "A single merged binary with in-process calls between services",
+        "D": "Service data synced through an event-sourced shared database"
       },
       "correct": "B",
       "key_concept": "A service mesh uses sidecar proxies to give internal service traffic mutual TLS, observability and policy without code changes.",
@@ -3190,9 +3190,9 @@
       "question": "An IS auditor finds hundreds of production feature flags with no named owners, some toggled directly by developers. Which control is MOST important?",
       "options": {
         "A": "Replacing feature flags with long-lived release branches in source control",
-        "B": "A yearly cleanup project to remove flags no longer in use",
+        "B": "Running a yearly cleanup project to remove flags no longer in use",
         "C": "Letting any developer toggle production flags to speed delivery",
-        "D": "Flags governed as code with owners, expiry and change logs"
+        "D": "Governing flags as code with owners, expiry and change logs"
       },
       "correct": "D",
       "key_concept": "Feature flags need lifecycle governance: versioned definitions, named owners, retirement dates and logged, authorized changes.",
@@ -3215,7 +3215,7 @@
         "Progressive delivery",
         "Flag debt"
       ],
-      "_provenance": "Authored from concept: 'Feature flag lifecycle management per OpenFeature and LaunchDarkly'. Public sources: CNCF OpenFeature, LaunchDarkly documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Feature flag lifecycle management per OpenFeature and LaunchDarkly'. Public sources: CNCF OpenFeature, LaunchDarkly documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (options made grammatically parallel).",
       "style_version": 2
     },
     {
@@ -3416,12 +3416,12 @@
         "A": "Allow each team to publish its catalog entries without any central review",
         "B": "Retire the catalog in favor of team-run self-service portals",
         "C": "Have the service desk purge stale entries in an annual clean-up",
-        "D": "Require a named owner and lifecycle reviews for each catalog entry"
+        "D": "Require a named owner and a yearly owner review of each entry"
       },
       "correct": "D",
-      "key_concept": "Service catalog governance needs accountable owners, defined service standards and reviews at each lifecycle milestone, not occasional clean-ups.",
+      "key_concept": "Service catalog governance needs an accountable owner for each entry who reviews it periodically; a purge by a non-owner leaves the cause.",
       "pre_read": "Notice the stem asks for the cause, not a quick fix. Separate options that prevent recurrence from those that clean up later.",
-      "correct_explanation": "The findings show entries without accountable owners and no review as services change. Requiring a named owner, service level and deprecation status for each entry, reviewed at creation and at lifecycle milestones, fixes the cause. An annual clean-up removes stale entries for a while, but the service desk does not own the services, and errors build up again between purges.",
+      "correct_explanation": "The findings show entries without accountable owners and no review as services change. Requiring a named owner for each entry, who confirms its status in a yearly review, fixes the cause; a catalog changes slowly, so an annual owner review is proportionate. An annual clean-up by the service desk removes stale entries, but the desk does not own the services, so errors return between purges.",
       "wrong_explanations": {
         "A": "Unreviewed publishing is what lets ownerless and retired entries accumulate; it removes the control rather than adding one.",
         "B": "Scattering services across team portals removes the single governed view that users and service management rely on.",
@@ -3429,8 +3429,8 @@
       },
       "tips": [
         "Eliminate: A removes review entirely, and B removes the catalog instead of governing it.",
-        "Final two: D beats C because ownership and milestone reviews prevent stale entries; a yearly purge by the service desk only cleans up afterward.",
-        "Exam cue: when a finding asks for the cause, choose accountable ownership built into the process over periodic clean-up."
+        "Final two: D beats C because the accountable owner reviews each entry; a service-desk purge cleans up without fixing ownership.",
+        "Exam cue: a periodic review is a sound control when the accountable owner performs it and the asset changes slowly."
       ],
       "framework_ref": "ITIL 4 Service Catalogue Management practice; COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
@@ -3439,7 +3439,7 @@
         "Service standards",
         "Lifecycle review"
       ],
-      "_provenance": "Authored from concept: 'Service catalog governance per ITIL 4 and ISACA Service Catalog Governance guidance'. Public sources: ITIL 4, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Service catalog governance per ITIL 4 and ISACA Service Catalog Governance guidance'. Public sources: ITIL 4, ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (key now a periodic owner review, so interval words also appear in keys).",
       "style_version": 2
     },
     {
@@ -3487,7 +3487,7 @@
       "bloom_level": "Analysis",
       "question": "A backdoor is disclosed in an open-source library used by the firm's billing and authentication services. Once the incident is declared, which action should the IS auditor expect FIRST?",
       "options": {
-        "A": "Wait for the open-source community to publish a fixed release",
+        "A": "Pin the current library version and freeze further dependency updates",
         "B": "Scope affected services and contain or remove the compromised library",
         "C": "Review dependency-selection policy and update the approved library list",
         "D": "Keep services running while monitoring vulnerability feeds for exploits"
@@ -3497,7 +3497,7 @@
       "pre_read": "Notice the word FIRST. Order the options by incident phase: analysis, containment, eradication, recovery, lessons learned.",
       "correct_explanation": "Incident handling starts with analysis and containment: identify which services use the library, then contain the exposure by removing or isolating the compromised version, while hunting for signs the backdoor was used. Reviewing the dependency-selection policy is valuable, but it belongs to post-incident lessons learned; doing it first leaves billing and authentication exposed while the policy is debated.",
       "wrong_explanations": {
-        "A": "Waiting for an external fix leaves a known backdoor active in critical services. The firm must contain its own exposure now.",
+        "A": "Pinning freezes the compromised version in place. It blocks new versions but leaves the backdoor running in critical services.",
         "C": "Policy review is a lessons-learned step after containment. Done first, it leaves the backdoor active in production.",
         "D": "Monitoring alone does nothing to stop a disclosed backdoor in authentication and billing paths. Containment cannot wait for exploitation."
       },
@@ -3561,7 +3561,7 @@
       "bloom_level": "Analysis",
       "question": "Aware since Tuesday 14:00 that EU customer data was exposed internally, the CPO wants to delay any GDPR notification decision until the investigation ends. What is the IS auditor's BEST advice?",
       "options": {
-        "A": "Wait until the investigation ends so the notice is complete",
+        "A": "Assess risk now; file one complete notice when facts are confirmed",
         "B": "Notify US state regulators, since GDPR excludes internal incidents",
         "C": "Assess the risk now; notify within 72 hours, supplementing later",
         "D": "Notify every affected data subject before any risk assessment"
@@ -3569,9 +3569,9 @@
       "correct": "C",
       "key_concept": "GDPR Article 33 requires risk assessment and authority notification within 72 hours of awareness, with details supplemented as they emerge.",
       "pre_read": "Notice when awareness began. Ask whether the legal deadline depends on the investigation finishing.",
-      "correct_explanation": "Under GDPR Article 33 the 72-hour clock starts at awareness, not at the end of the investigation. The controller should assess the risk to individuals now and, if notification is required, notify the supervisory authority within 72 hours, adding information in phases as Article 33(4) allows. Waiting for a complete picture sounds careful but misses the legal deadline.",
+      "correct_explanation": "Under GDPR Article 33 the 72-hour clock starts at awareness, not at the end of the investigation. The controller should assess the risk to individuals now and, if notification is required, notify the supervisory authority within 72 hours, adding information in phases as Article 33(4) allows. Holding a single complete notice until the facts are confirmed sounds careful but risks missing the legal deadline.",
       "wrong_explanations": {
-        "A": "The deadline runs from awareness. Article 33(4) allows phased information, so waiting for a complete report misses the 72-hour limit.",
+        "A": "The deadline runs from awareness. Article 33(4) allows phased information, so holding one notice for confirmed facts risks missing the 72-hour limit.",
         "B": "GDPR covers personal data breaches whether or not data leaves the organization. US regulators do not replace EU duties.",
         "D": "Notifying individuals depends on a high-risk finding. Skipping the risk assessment is not the required process and may cause needless alarm."
       },
@@ -3712,7 +3712,7 @@
         "A": "Stop the module, because the $14M already spent makes recovery uneconomic",
         "B": "Continue, since cancelling would harm reputation and team morale",
         "C": "Forward costs and benefits against alternatives, excluding sunk spend",
-        "D": "Wait until adoption reaches half the target before deciding"
+        "D": "Customer survey results on why adoption is low"
       },
       "correct": "C",
       "key_concept": "Investment continue-or-stop decisions compare forward costs and benefits against alternatives and exclude sunk cost.",
@@ -3721,10 +3721,10 @@
       "wrong_explanations": {
         "A": "The conclusion may be right, but the stated reason is sunk cost. Past spend is irrelevant to whether future spend is worthwhile.",
         "B": "Reputation and morale matter, but they are not a decision basis on their own and invite continuing a failing investment.",
-        "D": "Waiting for an arbitrary adoption level keeps spending without analysis and delays a decision the board needs now."
+        "D": "Customer feedback is a useful input, but it says nothing about remaining costs or alternatives, so it cannot be the decision basis."
       },
       "tips": [
-        "Eliminate: B rests on emotion, and D defers while costs keep growing.",
+        "Eliminate: B rests on emotion, and D treats one input, customer opinion, as the whole decision basis.",
         "Final two: C beats A because past spend is sunk; only forward costs, benefits and alternatives should decide.",
         "Exam cue: when a stem quotes money already spent, look for the option that explicitly excludes sunk cost."
       ],
@@ -3819,24 +3819,24 @@
       "bloom_level": "Analysis",
       "question": "Management proposes insourcing 60% of outsourced application development over 24 months after vendor delays and a 28% price rise. Which input is MOST important to the IS auditor's assessment of the decision?",
       "options": {
-        "A": "Lifecycle cost, capability gaps, transition risk and exit planning",
+        "A": "A multi-year business case comparing insourced and outsourced total cost",
         "B": "The regulator's stated concern about third-party concentration risk",
         "C": "Management's view that the vendor delays alone justify the change",
-        "D": "The vendor's written assurance that staff turnover will be resolved"
+        "D": "Exit terms agreed first, then cost, capability and transition review"
       },
       "correct": "A",
-      "key_concept": "Insourcing decisions need multi-year total cost of ownership, capability gaps, transition risk and exit planning, not a single driver.",
-      "pre_read": "Notice several drivers in the stem. Ask which option weighs them together, including the cost of changing.",
-      "correct_explanation": "A sourcing change is a major investment with execution risk. The assessment needs a multi-year total cost of ownership, the capability the firm must build, the risk of the transition itself and a clear exit plan from the vendor, with gates to stop if the build-up falters. Concentration risk is a real driver, but one driver cannot show whether insourcing is affordable or feasible.",
+      "key_concept": "Insourcing decisions rest on a multi-year business case comparing the total cost of each option, made before any exit commitment.",
+      "pre_read": "Notice several drivers in the stem. Ask which option compares the alternatives, and whether any commits before the analysis.",
+      "correct_explanation": "A sourcing change is a major investment with execution risk, so the decision must rest on a multi-year business case comparing the total cost of insourcing, including capability build-up and transition, with staying outsourced. Agreeing exit terms first looks thorough because it lists every factor, but it commits the firm to leaving before the analysis shows insourcing is affordable or feasible.",
       "wrong_explanations": {
         "B": "Concentration risk is one reason to act, but it does not show whether insourcing is affordable or achievable.",
         "C": "Delays are a symptom to weigh, not a full case; a decision of this size needs cost, capability and transition analysis.",
-        "D": "A vendor promise is not evidence of improvement and says nothing about the cost or feasibility of insourcing."
+        "D": "Every factor is listed, but exit terms come first, committing the firm to leave before analysis shows insourcing is viable."
       },
       "tips": [
-        "Eliminate: C relies on one symptom, and D accepts an unverified vendor promise.",
-        "Final two: A beats B because concentration risk is one driver, while the decision needs full cost and transition analysis.",
-        "Exam cue: for sourcing decisions, prefer total cost of ownership and transition risk over any single driver."
+        "Eliminate: B and C each rest on a single driver, a regulator concern or vendor delays, rather than analysis of the decision.",
+        "Final two: A beats D because the business case must come before any exit commitment; D covers every factor in the wrong order.",
+        "Exam cue: an option listing every factor is not automatically best; check its sequence and who owns it."
       ],
       "framework_ref": "ISACA Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
@@ -3845,7 +3845,7 @@
         "Vendor concentration",
         "TCO"
       ],
-      "_provenance": "Authored from concept: 'Insourcing decision framework per ISACA Insourcing Decision guidance and OCC Bulletin 2013-29'. Public sources: ISACA, OCC. Scenario specifics (financial services, 9.5K employees, 8-year vendor relationship, 85% of apps outsourced, $28M annual spend, 28% price increase, 60% insourcing proposal, 24-month timeline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Insourcing decision framework per ISACA Insourcing Decision guidance and OCC Bulletin 2013-29'. Public sources: ISACA, OCC. Scenario specifics (financial services, 9.5K employees, 8-year vendor relationship, 85% of apps outsourced, $28M annual spend, 28% price increase, 60% insourcing proposal, 24-month timeline) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (comprehensive list moved to distractor D in the wrong order; key sharpened to the business case).",
       "style_version": 2
     },
     {
@@ -4044,7 +4044,7 @@
         "A": "Aggregate operating cost and delivery speed trends since the migration",
         "B": "Service-by-service analysis of value, coupling, cost and ownership",
         "C": "The original architect's view that reliability gains justify the cost",
-        "D": "Leaving the decision until market feedback shows the direction"
+        "D": "Industry benchmarks of how many services similar firms run"
       },
       "correct": "B",
       "key_concept": "Architecture reversal decisions need per-service evidence on value, coupling, cost and ownership, not aggregate trends or advocacy.",
@@ -4053,10 +4053,10 @@
       "wrong_explanations": {
         "A": "Platform-wide trends show a problem exists but cannot identify which services to merge, risking the reliability gains.",
         "C": "One stakeholder's view based on one metric ignores the tripled cost and slower delivery the firm is facing.",
-        "D": "Delaying indefinitely lets the cost and delivery problems continue with no structured basis for any decision."
+        "D": "Benchmarks describe other firms' platforms, not which of these services earn their cost or carry the reliability gains."
       },
       "tips": [
-        "Eliminate: C rests on one person's view of one metric, and D avoids deciding.",
+        "Eliminate: C rests on one person's view of one metric, and D relies on other firms' figures rather than this platform's.",
         "Final two: B beats A because per-service analysis shows where to consolidate, while aggregate trends cannot.",
         "Exam cue: for architecture reversal decisions, prefer granular evidence over aggregate metrics or advocates' positions."
       ],
@@ -4079,23 +4079,23 @@
       "question": "A fleet-tracking application must ingest 1.6 million telemetry writes per second and also support relational queries. Which database selection approach should the IS auditor consider BEST?",
       "options": {
         "A": "Choose PostgreSQL alone for its ACID transactions and team familiarity",
-        "B": "Choose a time-series database because ingest volume dominates",
+        "B": "Choose an engine, then assess workload, consistency, cost and complexity",
         "C": "Adopt whichever product the senior database engineer prefers",
-        "D": "Select against workload, consistency, total cost and operating complexity"
+        "D": "Test candidate designs against both stated workloads before choosing"
       },
       "correct": "D",
-      "key_concept": "Technology selection should be driven by documented workload, consistency, cost and operability requirements, not a single metric.",
-      "pre_read": "Notice the stem lists two different workloads. Ask which option weighs both rather than one.",
-      "correct_explanation": "Database selection should follow documented requirements: the read and write patterns, consistency needs, data model, total cost and the operating effort of running one or several engines. That analysis may well favour a polyglot design. Choosing a time-series engine because of ingest volume sounds data-driven, but it optimises one requirement and ignores the relational queries and consistency needs.",
+      "key_concept": "Technology selection should be tested against every documented workload before a choice is made, not driven by one metric or preference.",
+      "pre_read": "Notice the stem lists two different workloads. Ask which option proves fit to both before committing.",
+      "correct_explanation": "Database selection should be proven against documented requirements before committing: testing candidate designs, possibly polyglot, against both the 1.6 million writes per second and the relational queries shows which one meets them at acceptable cost and complexity. Choosing an engine first and then assessing every factor looks comprehensive, but the analysis comes after the decision, so it can only justify the choice, not inform it.",
       "wrong_explanations": {
         "A": "Team familiarity does not make a single relational engine fit 1.6 million writes per second; the ingest workload is ignored.",
-        "B": "Ingest volume matters, but optimising for it alone ignores the relational queries and consistency needs also stated.",
+        "B": "It names every factor, but in the wrong order: assessing after choosing can only justify the engine, not select it.",
         "C": "Personal preference is not a selection criterion; it skips requirements analysis entirely and risks a poor workload fit."
       },
       "tips": [
         "Eliminate: A ignores the extreme write volume, and C replaces analysis with preference.",
-        "Final two: D beats B because selection must weigh every stated requirement, while B optimises for ingest alone.",
-        "Exam cue: for technology selection, prefer requirement-based evaluation over a single dominant metric or preference."
+        "Final two: D beats B because evidence must come before the choice; B lists every factor but assesses them after committing.",
+        "Exam cue: a checklist of every factor is not the answer if it comes in the wrong order; evaluate before you decide."
       ],
       "framework_ref": "COBIT 2019 APO14 (Managed Data); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
@@ -4105,7 +4105,7 @@
         "Time series",
         "Polyglot persistence"
       ],
-      "_provenance": "Authored from concept: 'Database technology selection per ISACA Database Technology Selection guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (logistics-tech fleet tracking, 8M vehicles, 5-second telemetry, 1.6M writes/sec peak, real-time + analytics workloads, PostgreSQL vs time-series debate) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Database technology selection per ISACA Database Technology Selection guidance and DAMA-DMBOK'. Public sources: ISACA, DAMA. Scenario specifics (logistics-tech fleet tracking, 8M vehicles, 5-second telemetry, 1.6M writes/sec peak, real-time + analytics workloads, PostgreSQL vs time-series debate) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (comprehensive list moved to distractor B in the wrong order; key sharpened to testing before choosing).",
       "style_version": 2
     },
     {
@@ -4117,21 +4117,21 @@
       "question": "An IS auditor reviews a cloud migration plan covering strategic, stable utility and soon-to-retire applications. Which migration approach is BEST?",
       "options": {
         "A": "Refactor every application as cloud-native for one consistent architecture",
-        "B": "Choose rehost, replatform, refactor or retire by each application's value",
-        "C": "Postpone migration until every application can move in a single wave",
+        "B": "Match each application's migration path to its business value",
+        "C": "Let each app team pick rehost, replatform, refactor or retire",
         "D": "Rehost every application first, then refactor strategic ones after cutover"
       },
       "correct": "B",
-      "key_concept": "Cloud migration paths are chosen per application by business value and expected change, not applied uniformly across a mixed portfolio.",
+      "key_concept": "Cloud migration paths are matched to each application's business value at portfolio level, not applied uniformly or left to team preference.",
       "pre_read": "Notice the portfolio mixes strategic, stable and retiring applications. Ask which approach respects those differences.",
       "correct_explanation": "A mixed portfolio needs a migration path matched to each application's business value and lifespan: refactor what is strategic, replatform what is stable, rehost commodity systems and retire what is ending. Rehosting everything first sounds pragmatic, but it spends effort moving applications due for retirement and moves strategic ones twice, so the investment is not aligned to value.",
       "wrong_explanations": {
         "A": "Refactoring everything spends the most expensive treatment on stable and retiring applications that return little value from it.",
-        "C": "A single-wave move concentrates risk and delays benefits; migration programs are sequenced in waves by priority.",
+        "C": "Listing every path does not make the choice value-based; team preference replaces a portfolio decision, so costly treatments may go where value is low.",
         "D": "Rehosting everything first moves soon-to-retire applications for no benefit and makes strategic ones migrate twice."
       },
       "tips": [
-        "Eliminate: A applies the costliest treatment uniformly, and C concentrates all risk in one late wave.",
+        "Eliminate: A applies the costliest treatment uniformly, and C leaves each path to team preference instead of business value.",
         "Final two: B beats D because each application's path should follow its business value, not a uniform first step.",
         "Exam cue: when a portfolio is mixed, prefer the option that differentiates by business value over any one-size-fits-all approach."
       ],
@@ -4142,7 +4142,7 @@
         "Lift-and-shift",
         "Cloud-native"
       ],
-      "_provenance": "Authored from concept: 'Cloud migration portfolio-segmented strategy per 6 Rs / 7 Rs frameworks and ISACA Cloud Migration Strategy guidance'. Public sources: AWS, Gartner, ISACA. Scenario specifics (financial services, 84 apps with 22/31/24/7 segment split, CIO vs architect debate) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud migration portfolio-segmented strategy per 6 Rs / 7 Rs frameworks and ISACA Cloud Migration Strategy guidance'. Public sources: AWS, Gartner, ISACA. Scenario specifics (financial services, 84 apps with 22/31/24/7 segment split, CIO vs architect debate) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (comprehensive list moved to distractor C with the wrong owner; postpone distractor removed; key sharpened).",
       "style_version": 2
     },
     {
@@ -4154,23 +4154,23 @@
       "question": "A HIPAA-regulated firm with a flat internal network plans a zero-trust migration; the CISO wants a vendor ZTNA tool deployed everywhere at once. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Deploy the vendor ZTNA tool across every access path immediately",
-        "B": "Micro-segment the network around the clinical systems right away",
-        "C": "Inventory identities, assets and data flows to define protect surfaces",
-        "D": "Wait until peer healthcare firms have proven zero-trust in practice"
+        "B": "Micro-segment the network around the clinical systems straight away",
+        "C": "Delay ZTNA rollout until identities, assets and flows are inventoried",
+        "D": "Enforce MFA on clinical systems while keeping the flat network"
       },
       "correct": "C",
       "key_concept": "Zero-trust starts by knowing the identities, assets and data flows to protect; enforcement tools and segmentation are designed from that baseline.",
       "pre_read": "Look for the word FIRST. Ask what must be known before any zero-trust control can be designed well.",
-      "correct_explanation": "Zero-trust policies decide access per identity, device and resource, so the firm must first know its users, assets and data flows. That inventory defines the protect surfaces that later segmentation and access tools enforce. Micro-segmenting clinical systems is a sound zero-trust step, but without the inventory the segments are drawn on guesswork and may break care workflows or miss sensitive data.",
+      "correct_explanation": "Zero-trust policies decide access per identity, device and resource, so the firm must know its users, assets and data flows before enforcing anything; the tool rollout should wait for that inventory, which defines the protect surfaces. Micro-segmenting clinical systems is a sound zero-trust step, but without the inventory the segments are drawn on guesswork and may break care workflows or miss sensitive data.",
       "wrong_explanations": {
         "A": "Deploying a tool everywhere before defining what to protect buys a product, not an architecture, and risks disrupting clinical access.",
         "B": "Segmentation is a valid control, but done before the inventory its boundaries rest on assumptions about assets and flows.",
-        "D": "Waiting for peers ignores the firm's own exposure on a flat network and delays risk reduction."
+        "D": "MFA strengthens logins, but on a flat network an authenticated user or compromised device can still reach everything."
       },
       "tips": [
-        "Eliminate: A deploys a product before any design, and D delays action on a known exposure.",
-        "Final two: C beats B because segment boundaries must be based on a known inventory of identities, assets and data flows.",
-        "Exam cue: for any architecture change, know what you are protecting before choosing how to enforce it."
+        "Eliminate: A deploys a product before any design, and D hardens logins while the flat network stays open.",
+        "Final two: C beats B because both the tool and the segments must rest on a known inventory of identities, assets and data flows.",
+        "Exam cue: when FIRST meets a big rollout, delaying enforcement until you know what you are protecting can be the right answer."
       ],
       "framework_ref": "NIST Zero Trust Architecture (NIST SP 800-207); CISA Zero Trust Maturity Model v2.0",
       "related_concepts": [
@@ -4179,7 +4179,7 @@
         "Micro-segmentation",
         "Continuous verification"
       ],
-      "_provenance": "Authored from concept: 'Zero-trust migration per NIST SP 800-207 and CSA Zero Trust Framework'. Public sources: NIST, CSA. Scenario specifics (healthcare services, 6.8K employees, HIPAA, 60% remote, peer ransomware, VPN + flat internal + RBAC current state, three migration options debated) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Zero-trust migration per NIST SP 800-207 and CSA Zero Trust Framework'. Public sources: NIST, CSA. Scenario specifics (healthcare services, 6.8K employees, HIPAA, 60% remote, peer ransomware, VPN + flat internal + RBAC current state, three migration options debated) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: de-cued (key reworded as a sequence-first deferral; wait distractor D replaced with a partial control).",
       "style_version": 2
     },
     {
@@ -4266,8 +4266,8 @@
       "options": {
         "A": "Commit to the top level now for the strongest, most defensible position",
         "B": "Meet the required floor first, then raise levels by risk and cost",
-        "C": "Adopt the lowest level until federal rules stop changing",
-        "D": "Defer attestation work until further federal guidance arrives"
+        "C": "Pick a mid level matching what peer contractors report",
+        "D": "Attest the flagship product and leave other software lines out"
       },
       "correct": "B",
       "key_concept": "Assurance targets are set by risk: meet mandatory requirements, then invest in higher maturity where risk reduction justifies the cost, with reassessment gates.",
@@ -4275,11 +4275,11 @@
       "correct_explanation": "A maturity target should meet the mandatory attestation floor, then rise in phases where the risk reduction justifies the cost, with gates to reassess as rules evolve. Committing to the top level appears thorough, but it fixes a large spend before the firm knows which risks justify it, and it may delay meeting the current requirement while the full program is built.",
       "wrong_explanations": {
         "A": "Maximum maturity is not automatically best; an $8M commitment without risk-based justification may overshoot and delay required compliance.",
-        "C": "Stopping at the lowest level ignores both current contract risk and the actual supply-chain threat to the firm.",
-        "D": "Deferring all work risks noncompliance with requirements that already apply to federal suppliers."
+        "C": "Copying peers ignores the firm's own required floor and risk profile, so the target is neither compliance-based nor risk-based.",
+        "D": "Partial scope leaves other software delivered to federal customers below the required floor and noncompliant."
       },
       "tips": [
-        "Eliminate: C settles for the minimum regardless of risk, and D ignores requirements already in force.",
+        "Eliminate: C copies peers instead of using the firm's own requirements and risk, and D leaves most software below the required floor.",
         "Final two: B beats A because investment should follow risk and required compliance, not maximum maturity for its own sake.",
         "Exam cue: when one option is the most thorough and another is risk-based and phased, ISACA favors risk-based."
       ],
@@ -4303,7 +4303,7 @@
       "options": {
         "A": "Submit existing records and disclose the gaps with remediation plans",
         "B": "Submit the compliant records and leave out the missing items",
-        "C": "Delay the whole response until counsel finishes a defense strategy",
+        "C": "Submit existing records and dispute that the rest are required",
         "D": "Finish every missing record before submitting any part of the response"
       },
       "correct": "A",
@@ -4312,11 +4312,11 @@
       "correct_explanation": "The firm owes the authority cooperation that is both timely and accurate. Submitting existing records, disclosing the gaps openly and attaching remediation plans meets the response window and shows accountability, which regulators weigh when setting penalties. Completing every missing record first looks thorough, but it misses the deadline and produces documents created after the fact that could mislead about past compliance.",
       "wrong_explanations": {
         "B": "Silently omitting requested items misrepresents the firm's position and damages trust once the gaps surface.",
-        "C": "Stalling the entire response breaches the duty to cooperate and is likely to worsen enforcement outcomes.",
+        "C": "Disputing the scope without basis undermines cooperation and does not change the fact that required records are missing.",
         "D": "Holding everything back misses the response window, and records written after the fact can misstate past compliance."
       },
       "tips": [
-        "Eliminate: B hides gaps from the regulator, and C stalls cooperation entirely.",
+        "Eliminate: B hides gaps from the regulator, and C disputes the request instead of cooperating.",
         "Final two: A beats D because timely, honest disclosure with a remediation plan outranks a late response that looks complete.",
         "Exam cue: with regulators, transparency plus a credible remediation plan beats delay or concealment."
       ],
@@ -4415,7 +4415,7 @@
         "A": "Request a quota increase so auto-scaling can absorb the demand",
         "B": "Throttle incoming traffic to protect the database while capacity grows",
         "C": "Halt the launch and refund every customer who has signed up",
-        "D": "Let the spike subside on its own before changing any capacity"
+        "D": "Restart the database to clear its saturated connection pool"
       },
       "correct": "B",
       "key_concept": "In a capacity incident, first stabilize the constrained component; adding capacity in one layer does not fix a bottleneck in another.",
@@ -4424,10 +4424,10 @@
       "wrong_explanations": {
         "A": "More instances add database connections, so raising the quota alone can worsen the saturated pool.",
         "C": "Halting and refunding abandons the launch when the service can be stabilized by controlling load.",
-        "D": "Waiting while errors rise lets the incident grow and risks a complete outage."
+        "D": "A restart drops in-flight transactions, and the pool refills at once because the incoming load is unchanged."
       },
       "tips": [
-        "Eliminate: C abandons a recoverable launch, and D waits while errors climb.",
+        "Eliminate: C abandons a recoverable launch, and D restarts the database without reducing the load that saturated it.",
         "Final two: B beats A because extra instances would push more load onto the already saturated database.",
         "Exam cue: when several layers are saturated, stabilize the shared constraint before adding capacity elsewhere."
       ],
@@ -4451,8 +4451,8 @@
       "options": {
         "A": "Fix the root cause, correct records, add reconciliation monitoring",
         "B": "Reconcile the 720 affected records in a one-time cleanup effort",
-        "C": "Halt customer-facing operations until every record is corrected",
-        "D": "Correct inconsistencies as customers raise complaints about them"
+        "C": "Halt customer-facing operations while the records are corrected",
+        "D": "Add a manual billing check for each new customer record"
       },
       "correct": "A",
       "key_concept": "Data-integrity failures need root-cause correction and detective monitoring; cleaning up affected records alone leaves the cause and the detection gap.",
@@ -4461,10 +4461,10 @@
       "wrong_explanations": {
         "B": "A cleanup corrects existing records, but the faulty job keeps creating new mismatches and nothing detects them.",
         "C": "Stopping operations for a few hundred records is disproportionate when targeted correction is possible.",
-        "D": "Waiting for complaints relies on customers as the detective control and lets billing errors continue."
+        "D": "Checking new records adds manual effort but leaves the 720 existing errors and the faulty job in place."
       },
       "tips": [
-        "Eliminate: C is a disproportionate shutdown, and D makes customers the detective control.",
+        "Eliminate: C is a disproportionate shutdown, and D adds manual checks on new records while the cause and old errors remain.",
         "Final two: A beats B because it repairs the records and also fixes the cause and adds monitoring, while cleanup only treats symptoms.",
         "Exam cue: when a failure went undetected, the best answer fixes the cause and adds a detective control."
       ],
@@ -4790,9 +4790,9 @@
       "bloom_level": "Foundational",
       "question": "A firm has a source code escrow agreement for critical software from a small vendor. Which control BEST assures the deposit would be usable if released?",
       "options": {
-        "A": "The vendor's annual written confirmation that deposits are current",
+        "A": "The vendor's own annual written confirmation that deposits are current",
         "B": "Contract terms defining release triggers such as vendor insolvency",
-        "C": "Agent verification that the deposit builds the live version",
+        "C": "Annual agent verification that the deposit builds the live version",
         "D": "Storing the deposit with the vendor's own legal counsel"
       },
       "correct": "C",
@@ -4807,10 +4807,10 @@
       "tips": [
         "Eliminate: A relies on vendor self-assertion, and D leaves the deposit with a party that is not independent.",
         "Final two: C beats B because triggers govern when code is released, while verification proves it will work.",
-        "Exam cue: for escrow assurance, look for independent verification that the deposit is complete and buildable."
+        "Exam cue: for escrow assurance, an independent periodic test build beats any vendor assertion, however often it is made."
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); COBIT 2019 APO10 (Managed Vendors)",
-      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015.",
+      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015. v2: de-cued (key states an annual agent verification, so interval words also appear in keys).",
       "style_version": 2
     }
   ]
