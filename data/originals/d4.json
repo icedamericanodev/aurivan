@@ -3594,37 +3594,38 @@
     {
       "id": "d4_098",
       "domain": 4,
-      "subtopic": "Insurance Coverage Gap Discovered During BCP Review",
+      "subtopic": "BCP Funding Gap. Risk Acceptance and Workarounds",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "With renewal 60 days away, a BCP review finds the cyber policy caps ransomware extortion at $5M against an estimated $15–40M exposure. What is the IS auditor's BEST recommendation?",
+      "question": "A BIA update rates six more systems at a 4-hour RTO, but DR capacity is funded only for the original 12 this year. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Keep the current sublimit because security controls are mature",
-        "B": "Present the quantified gap and options for the board to decide",
-        "C": "Wait for an industry study before revisiting the cover",
-        "D": "Raise the sublimit to $25M at renewal to close the gap"
+        "A": "Lengthen the six systems' RTOs to fit the funded capacity",
+        "B": "Have the risk owner formally accept the gap with manual workarounds",
+        "C": "Cut the DR testing budget to fund the six extra systems",
+        "D": "Rely on the DR provider's best-effort recovery terms for the six systems"
       },
       "correct": "B",
-      "key_concept": "Coverage gaps are risk decisions for the board: quantify the gap, set out treatment options and legal issues, then let management decide.",
-      "pre_read": "Notice the deadline and the size of the gap. Ask whose decision this is and what they need to make it.",
-      "correct_explanation": "The gap is large and the deadline near, so the board needs the quantified exposure and the treatment options, including higher limits, alternative risk transfer, stronger controls and the legal limits on paying extortion, to make a documented decision. Raising the sublimit straight to $25M is decisive, but it skips cost-benefit and legal analysis and still leaves part of the estimated exposure uncovered.",
+      "key_concept": "When a recovery gap cannot be funded, the risk owner formally accepts it, with interim workarounds and a funding plan.",
+      "pre_read": "Notice that no budget exists this year. Ask how an unfixable gap should be owned and contained meanwhile.",
+      "correct_explanation": "With no funding this year, the gap cannot be closed now, so it must be owned: the risk owner formally accepts it, interim manual workarounds limit the impact, and funding is requested for the next cycle. Best-effort recovery sounds pragmatic, but it carries no capacity commitment, so in a wide disruption the six systems may not recover while other clients compete.",
       "wrong_explanations": {
-        "A": "Control maturity reduces likelihood but does not close a $10–35M financial gap the review quantified.",
-        "C": "Waiting for a study misses the 60-day renewal window and leaves the gap open for another year.",
-        "D": "A direct increase skips cost-benefit and legal review, presumes the answer, and still leaves part of the exposure uncovered."
+        "A": "RTOs come from business impact, not available budget; stretching them hides an unaccepted continuity risk.",
+        "C": "Untested recovery is unreliable; cutting testing weakens assurance for all 18 systems to cover six.",
+        "D": "Best-effort terms carry no capacity commitment, so in a wide disruption the six systems may not recover in time."
       },
       "tips": [
-        "Eliminate: A ignores the quantified gap, and C misses the renewal window.",
-        "Final two: B beats D because the board decides risk treatment on full options; a direct increase presumes one answer.",
-        "Exam cue: for significant residual-risk gaps, the auditor informs and management or the board decides treatment."
+        "Eliminate: A bends business-driven RTOs to fit the budget, and C weakens testing for every system to fund six.",
+        "Final two: B beats D because an unfunded gap needs a documented owner and workarounds; best-effort recovery is an unrecorded hope.",
+        "Exam cue: when a continuity gap cannot be funded now, the risk owner formally accepts it with compensating measures."
       ],
-      "framework_ref": "COBIT 2019 APO12 (Managed Risk); ISO 31000:2018 (Risk Management); OFAC Updated Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments (September 2021)",
+      "framework_ref": "ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); COBIT 2019 DSS04 (Managed Continuity); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
-        "Insurance coverage gap",
-        "Cyber liability sublimit",
-        "Risk transfer alternatives"
+        "Unfunded DR gap",
+        "Formal risk acceptance",
+        "Manual workarounds",
+        "Risk owner"
       ],
-      "_provenance": "Authored from concept: 'Insurance coverage gap structured analysis per NAIC Cybersecurity Insurance Guidance'. Public sources: NAIC, ISACA. Scenario specifics (specialty manufacturer, 1.9K employees, $720M revenue, $5M sublimit vs $15-40M estimated demand, 60-day renewal, $1.2M premium increase, CFO/CISO/GC positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Insurance coverage gap structured analysis per NAIC Cybersecurity Insurance Guidance'. Public sources: NAIC, ISACA. Scenario specifics (specialty manufacturer, 1.9K employees, $720M revenue, $5M sublimit vs $15-40M estimated demand, 60-day renewal, $1.2M premium increase, CFO/CISO/GC positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -4387,39 +4388,38 @@
     {
       "id": "d4_119",
       "domain": 4,
-      "subtopic": "System Interface Cascade Failure. Month-End Close",
+      "subtopic": "System Interface. Silent Record Loss Detection",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Days before quarter close, an IS auditor finds an interface silently dropped $12.4 million of sales over 11 days. What should the auditor recommend FIRST?",
+      "question": "An IS auditor finds a sales interface dropped 4,800 orders over 11 days after a vendor patch, while the job reported success every run. Which control would have BEST detected the failure?",
       "options": {
-        "A": "Let the CFO judge materiality and file on schedule",
-        "B": "Manually key the missing orders into the ERP before close",
-        "C": "Disclose a material weakness publicly before any assessment",
-        "D": "Escalate to the audit committee and external auditors"
+        "A": "Have sales staff spot-check a weekly sample of orders",
+        "B": "Obtain the vendor's written warranty that future patches are defect-free",
+        "C": "Alert operations whenever the interface job ends with an error",
+        "D": "Balance record counts and control totals between sender and receiver"
       },
       "correct": "D",
-      "key_concept": "A control failure that may affect financial reporting must be escalated to those charged with governance; materiality is not one executive's call.",
-      "pre_read": "Ask whose decision materiality is for a public company. Then check which option fixes data but skips governance.",
-      "correct_explanation": "A multi-day interface failure affecting reported revenue may be a control deficiency over financial reporting. The audit committee and external auditors must be involved so materiality is assessed properly and disclosure decisions are made by the right people. Manually keying the missing orders restores the data quickly, but it bypasses interface controls, adds error risk and leaves the control failure unreported to governance.",
+      "key_concept": "Interface completeness controls balance record counts and control totals between sender and receiver each run, catching silent data loss.",
+      "pre_read": "Notice the job reported success while orders disappeared. Ask which control compares what was sent with what arrived.",
+      "correct_explanation": "The failure was silent: the job completed normally while records disappeared, so only a control comparing what was sent with what arrived would catch it. Record counts and control totals balanced every run detect dropped or altered records within one cycle. Alerting on job errors is useful, but this job never errored, so the alert would have stayed quiet for all 11 days.",
       "wrong_explanations": {
-        "A": "Materiality is not a unilateral CFO decision when reporting controls have failed. Governance and external auditors must be involved.",
-        "B": "Manual entry restores data but bypasses interface controls, risks keying errors and leaves the control failure unescalated.",
-        "C": "Disclosing before assessing materiality may misstate the issue. The assessment must come before any public disclosure."
+        "A": "Weekly sampling may miss a small drop rate entirely and finds losses days late, after orders have gone unfulfilled.",
+        "B": "A warranty shifts blame after a failure but does not detect dropped records; the organization still needs its own interface control.",
+        "C": "The job completed without errors while dropping records, so an error alert would not have fired during the 11 days."
       },
       "tips": [
-        "Eliminate: A leaves materiality to one executive, and C discloses before anyone has assessed materiality.",
-        "Final two: D beats B because a reporting-control failure needs governance escalation, while manual entry only patches the data.",
-        "Exam cue: when financial reporting is affected, escalate to those charged with governance before choosing a fix."
+        "Eliminate: A samples weekly and finds losses late, and B relies on a warranty instead of a control.",
+        "Final two: D beats C because the job reported success; only sender-receiver balancing reveals silently dropped records.",
+        "Exam cue: for interfaces, completeness is proven by matching counts and totals at both ends, not by job status."
       ],
-      "framework_ref": "SOX Sections 302, 404, 906; PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); COBIT 2019 EDM05 (Ensured Stakeholder Engagement); COBIT 2019 DSS06 (Managed Business Process Controls); SEC Form 8-K Item 4.02",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 DSS01 (Managed Operations); ITIL 4 Monitoring and Event Management practice",
       "related_concepts": [
-        "SOX 302/404",
-        "Material weakness",
-        "Significant deficiency",
-        "Audit committee charter",
-        "Form 8-K Item 4.02"
+        "Interface control totals",
+        "Record-count balancing",
+        "Silent data loss",
+        "Job monitoring"
       ],
-      "_provenance": "Authored from concept: 'Interface cascade into month-end close — SOX governance and materiality framework'. Public sources: SEC, PCAOB, COSO, ISACA. Scenario specifics (retail chain $1.8B, 2.3% drop rate, 4,800 orders, $12.4M, 11-day undetected, vendor patch encoding bug, 3 business days to close) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Interface cascade into month-end close — SOX governance and materiality framework'. Public sources: SEC, PCAOB, COSO, ISACA. Scenario specifics (retail chain $1.8B, 2.3% drop rate, 4,800 orders, $12.4M, 11-day undetected, vendor patch encoding bug, 3 business days to close) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -7959,39 +7959,38 @@
     {
       "id": "d4_213",
       "domain": 4,
-      "subtopic": "Compliance Attestation Finding Required Immediate Remediation",
+      "subtopic": "Leaver Deprovisioning. Orphaned Account Containment",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "One week before a 10-K filing, external auditors classify terminated users keeping access for 30+ days as a material weakness. What should the IS auditor recommend the compliance officer do FIRST?",
+      "question": "At a hospital, an IS auditor finds 47 terminated users still hold clinical system access because HR emails leaver lists to IT weekly. What should the auditor recommend FIRST?",
       "options": {
-        "A": "Brief the audit committee and agree the disclosure with counsel",
-        "B": "Remediate now and report controls effective from today",
-        "C": "Contest the classification as a significant deficiency instead",
-        "D": "Request a filing extension until the weakness is fully remediated"
+        "A": "Disable the 47 accounts and check them for post-termination logins",
+        "B": "Automate the leaver feed from the HR system into identity management",
+        "C": "Ask managers to recertify team access at next quarter's review",
+        "D": "Accept the risk since clinical areas also need badge entry"
       },
       "correct": "A",
-      "key_concept": "A material weakness near filing is a governance matter: the audit committee and counsel must oversee accurate disclosure, not reclassification or late fixes.",
-      "pre_read": "Note how close the filing is. Ask who must oversee an issue that affects what the company certifies publicly.",
-      "correct_explanation": "A material weakness affects management's certification, so the audit committee must oversee it and counsel must shape an accurate disclosure. That keeps governance informed and the filing truthful. Management may challenge a classification with evidence, but contesting it a week before filing, after external auditors have already evidenced the failure, looks like avoiding disclosure rather than fixing the control.",
+      "key_concept": "Deprovisioning must be timely; when orphaned accounts are found, disable them and check for misuse before re-engineering the leaver process.",
+      "pre_read": "Notice the accounts are still active today. Ask what removes the exposure fastest, then what prevents recurrence.",
+      "correct_explanation": "The 47 active accounts are a live exposure today, so the first step is to disable them and check whether any were used after termination, which may reveal an incident to handle. Automating the HR feed is the right root-cause fix and should follow, but building it takes weeks while the known orphaned accounts stay open to misuse.",
       "wrong_explanations": {
-        "B": "Year-end assessment covers the whole year. A last-week fix cannot make the control effective for the period already tested.",
-        "C": "Disputing classification without strong evidence delays disclosure and can appear to minimize a year-long control failure.",
-        "D": "Delaying the filing does not change the year's control failure, and remediation now cannot rewrite the assessment period."
+        "B": "Automation fixes future leavers but takes time to build, leaving the 47 known orphaned accounts usable in the meantime.",
+        "C": "Quarterly recertification is a slow detective control; it leaves known orphaned accounts open for months.",
+        "D": "Badge control does not stop remote or shared-workstation use of a valid account, so the logical exposure remains."
       },
       "tips": [
-        "Eliminate: B misstates the assessment period, and D delays filing without changing the year's control failure.",
-        "Final two: A beats C because governance oversight and accurate disclosure come before arguing the label.",
-        "Exam cue: when a serious finding meets a public deadline, involve the audit committee and disclose accurately."
+        "Eliminate: C leaves known orphaned accounts open until a quarterly review, and D relies on physical access to cover a logical gap.",
+        "Final two: A beats B because known live exposure is removed first; the automated feed fixes the process afterward.",
+        "Exam cue: when a review finds active exposure, contain the known cases first, then fix the process that created them."
       ],
-      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); SEC Regulation S-K Item 308; SOX Sections 302, 404, 906; COBIT 2019 EDM03 (Ensured Risk Optimization); COBIT 2019 MEA02 (Managed System of Internal Control)",
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); COBIT 2019 DSS06 (Managed Business Process Controls); NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 PS-4 (Personnel Termination)",
       "related_concepts": [
-        "Material weakness vs significant deficiency",
-        "SOX 404 audit-year scope",
-        "SOX 906 criminal certification",
-        "Audit committee coordination",
-        "10-K disclosure timeline"
+        "Deprovisioning",
+        "Orphaned accounts",
+        "HR-to-IAM feed",
+        "Leaver process"
       ],
-      "_provenance": "Authored from concept: 'SOX 404 material weakness finding pre-10-K filing'. Public sources: PCAOB, SEC, ISACA. Scenario specifics (publicly-traded healthcare $2.8B, 10-K filing one week, SOX 404 IT general controls, 47 access instances, terminated employees retained access 30+ days) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SOX 404 material weakness finding pre-10-K filing'. Public sources: PCAOB, SEC, ISACA. Scenario specifics (publicly-traded healthcare $2.8B, 10-K filing one week, SOX 404 IT general controls, 47 access instances, terminated employees retained access 30+ days) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -8225,39 +8224,38 @@
     {
       "id": "d4_220",
       "domain": 4,
-      "subtopic": "Audit Finding Requiring Board Attention",
+      "subtopic": "Remediation Tracking. Evidence-Based Closure",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor finds the incident response plan untested for 2.5 years, with committed remediation never done. How should the chief audit executive BEST present this to the audit committee?",
+      "question": "A remediation action to test the incident response plan, untested for 2.5 years, was closed after only a document revision. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Downgrade the rating to keep it within routine reporting",
-        "B": "Rate it on substance and obtain management's action plan beforehand",
-        "C": "Present it without a management response to protect independence",
-        "D": "Carry it into next year's cycle to avoid late-cycle disruption"
+        "A": "Accept the closure because the plan document was revised",
+        "B": "Reopen the action until a plan test evidences remediation",
+        "C": "Close the finding since no major incident occurred this year",
+        "D": "Obtain a signed attestation from the incident response lead"
       },
       "correct": "B",
-      "key_concept": "Findings are rated on their substance, and management's response and action plan are obtained before reporting; this does not compromise independence.",
-      "pre_read": "Ask what the audit committee needs to act: an accurate rating, and what management will do about it.",
-      "correct_explanation": "Audit standards expect findings to be rated on their real significance and reported with management's response and action plan. Obtaining that response before the meeting lets the committee see both the problem and the fix. Withholding management's view to protect independence misreads the rule: independence governs the auditor's judgement, not whether management may respond to a finding.",
+      "key_concept": "Remediation actions close only on evidence the control operates; for response plans, that evidence is a documented test.",
+      "pre_read": "Notice the item was closed without a test. Ask what proof would show a response plan actually works.",
+      "correct_explanation": "Remediation closes on evidence that the control now operates, and for a response plan that evidence is a test, such as a tabletop or simulation, with results and fixes recorded. Reopening the action keeps it tracked until that proof exists. A signed attestation looks formal, but it is the owner's own assertion, not evidence that the plan would work.",
       "wrong_explanations": {
-        "A": "Softening the rating to suit routine reporting misrepresents the risk and compromises the auditor's objectivity.",
-        "C": "Independence protects the auditor's judgement, not silence from management. Reports normally include management's response and plan.",
-        "D": "Delaying a significant finding leaves governance unaware of a known, unremediated risk for another year."
+        "A": "A revised document shows the plan was edited, not that it works; untested plans often fail on contacts, roles and tooling.",
+        "C": "A quiet year says nothing about readiness; the plan exists for the incident that has not happened yet.",
+        "D": "An attestation is the owner's own assertion; it does not show the plan would operate during a real incident."
       },
       "tips": [
-        "Eliminate: A softens the rating, and D hides a significant finding for another year.",
-        "Final two: B beats C because management's response belongs in the report, and including it does not impair independence.",
-        "Exam cue: report findings at their true severity, with management's agreed action plan attached."
+        "Eliminate: A treats an edited document as proof, and C treats a quiet year as evidence of readiness.",
+        "Final two: B beats D because closure needs test evidence that the plan works; an attestation is only the owner's assertion.",
+        "Exam cue: a remediation action closes on evidence the control operates, not on management's word."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); IIA Global Internal Audit Standards (2024), Standard 15.1 (Final Engagement Communication); ISACA Code of Professional Ethics",
+      "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs for IT Plans and Capabilities); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
-        "Material weakness classification",
-        "Pre-meeting coordination",
-        "Audit independence",
-        "SEC 8-K 1.05 four-day disclosure",
-        "Repeat finding governance failure"
+        "Remediation closure",
+        "Test evidence",
+        "Follow-up activities",
+        "Repeat findings"
       ],
-      "_provenance": "Authored from concept: 'IS audit material finding requiring board attention'. Public sources: PCAOB, ISACA, ISO, SEC. Scenario specifics (publicly-traded financial services $8.4B, cyber-incident response plan stale 2.5 years, plan-operations drift, SEC 8-K 1.05 alignment gap, 2 weeks to audit committee) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IS audit material finding requiring board attention'. Public sources: PCAOB, ISACA, ISO, SEC. Scenario specifics (publicly-traded financial services $8.4B, cyber-incident response plan stale 2.5 years, plan-operations drift, SEC 8-K 1.05 alignment gap, 2 weeks to audit committee) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -8529,39 +8527,38 @@
     {
       "id": "d4_228",
       "domain": 4,
-      "subtopic": "Multi-Jurisdiction Data Sovereignty Conflict",
+      "subtopic": "DR Replication. Data Residency Conflict",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A US subpoena demands customer data held in the EU and China, where local law restricts such transfers. What is the BEST recommendation from the IS auditor to the chief privacy officer?",
+      "question": "An IS auditor finds the DR design replicates EU customer data nightly to a US region where local transfer rules prohibit it. What is the BEST recommendation?",
       "options": {
-        "A": "Produce the data promptly to avoid US contempt sanctions",
-        "B": "Refuse the subpoena outright on GDPR and PIPL grounds",
-        "C": "Negotiate a narrower US production and then transfer the data",
-        "D": "Coordinate counsel in each jurisdiction to narrow or challenge it"
+        "A": "Suspend replication and accept the loss of DR coverage",
+        "B": "Rely on the provider's contract for transfer compliance",
+        "C": "Encrypt the replicated data in transit and at rest with customer-held keys",
+        "D": "Move DR to a compliant region that still meets RTO and RPO"
       },
       "correct": "D",
-      "key_concept": "Conflicting cross-border legal duties call for coordinated counsel in every jurisdiction before data is produced or refused.",
-      "pre_read": "Notice that two regimes pull in opposite directions. Look for the option that weighs both before any data moves.",
-      "correct_explanation": "The firm faces conflicting legal duties, so the response must weigh every jurisdiction before any data moves. Coordinated counsel can seek to narrow or challenge the request and consult EU and Chinese authorities on lawful transfer routes. Negotiating a narrower production helps, but transferring afterward still ignores the EU and Chinese restrictions that apply to whatever is sent.",
+      "key_concept": "DR site selection must satisfy data residency rules and recovery objectives together; encryption does not change where data resides.",
+      "pre_read": "Notice what is prohibited: the location, not the exposure. Ask which option fixes the location without losing recovery capability.",
+      "correct_explanation": "Relocating the DR target to a compliant region removes the prohibited transfer while keeping recovery capability, provided the new site is tested against the agreed RTO and RPO. Encryption with customer-held keys is a strong safeguard, but it does not change where the copies reside; a transfer that local rules prohibit stays prohibited however well the data is protected.",
       "wrong_explanations": {
-        "A": "Prompt production resolves the US risk by creating EU and Chinese violations, since neither regime permits transfer on a foreign order alone.",
-        "B": "Outright refusal swaps one legal exposure for another, inviting contempt sanctions without exploring lawful options to narrow or reconcile the demand.",
-        "C": "A narrower request reduces volume, yet transferring the data still breaches local transfer rules unless those regimes are addressed too."
+        "A": "Stopping replication ends the transfer but leaves critical systems with no recovery path, trading a compliance breach for an unacceptable continuity gap.",
+        "B": "A contract cannot make a prohibited transfer lawful, and the organization stays accountable for where its customer data is stored.",
+        "C": "Encryption protects confidentiality, but the replicated copies still sit in a region where local rules forbid the transfer."
       },
       "tips": [
-        "Eliminate: A and B each satisfy one jurisdiction by breaking the other, rather than reconciling the conflicting obligations.",
-        "Final two: D beats C because it addresses every jurisdiction before data moves, while C narrows scope but still transfers unlawfully.",
-        "Exam cue: when legal duties conflict across borders, choose the coordinated legal response over any one-sided action."
+        "Eliminate: A gives up DR coverage, and B leans on a contract that cannot make the transfer lawful.",
+        "Final two: D beats C because the location itself is prohibited; encryption protects the copies but they still reside there.",
+        "Exam cue: when a DR design breaks a constraint, redesign the site and re-prove RTO and RPO rather than dropping recovery."
       ],
-      "framework_ref": "GDPR Articles 48 (Transfers or Disclosures Not Authorised by Union Law), 49 (Derogations for Specific Situations); China Personal Information Protection Law (PIPL); China Data Security Law (DSL); Federal Rules of Civil Procedure (FRCP) Rule 45 (Subpoena); Restatement (Third) of Foreign Relations Law §442",
+      "framework_ref": "ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); GDPR Articles 44-50 (Transfers)",
       "related_concepts": [
-        "GDPR Article 48",
-        "China PIPL cross-border transfer",
-        "International comity",
-        "Motion to quash",
-        "Multi-jurisdiction conflict"
+        "DR site data residency",
+        "RTO/RPO revalidation",
+        "Cross-border replication",
+        "Recovery site selection"
       ],
-      "_provenance": "Authored from concept: 'Multi-jurisdiction data sovereignty conflict response'. Public sources: EU, China cyberspace administration, US courts, ISACA. Scenario specifics (multinational SaaS $890M ARR, US federal subpoena, EU + China customer data, GDPR Art 48 + PIPL conflict) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Multi-jurisdiction data sovereignty conflict response'. Public sources: EU, China cyberspace administration, US courts, ISACA. Scenario specifics (multinational SaaS $890M ARR, US federal subpoena, EU + China customer data, GDPR Art 48 + PIPL conflict) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -8643,39 +8640,38 @@
     {
       "id": "d4_231",
       "domain": 4,
-      "subtopic": "AI/ML Model Bias in Production",
+      "subtopic": "Model Release Regression. Rollback Decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor learns a production credit-scoring model approves applicants from certain neighborhoods at markedly lower rates through proxy features. What should management do FIRST?",
+      "question": "A newly released version of a production credit-scoring model approves applicants from certain neighborhoods at markedly lower rates than the prior version. What should management do FIRST?",
       "options": {
-        "A": "Route the model's decisions to human review while bias is investigated",
-        "B": "Keep the model live and add a fairness monitoring dashboard",
-        "C": "Drop the location field from the data and retrain the model",
-        "D": "Commission an external validation before changing how decisions are made"
+        "A": "Roll back to the prior validated version under emergency change",
+        "B": "Keep the new version live and add a fairness dashboard",
+        "C": "Drop the location field and push a hotfix release today",
+        "D": "Route decisions to human review while the release is investigated"
       },
       "correct": "A",
-      "key_concept": "When a production model causes ongoing harm, contain it first with human review, then investigate and remediate the bias.",
-      "pre_read": "Notice that the model is live and deciding today. Ask which option stops further harm soonest.",
-      "correct_explanation": "The model is producing potentially unlawful outcomes for real applicants every day, so the first priority is to stop further harm. Routing decisions to human review does that while the bias is investigated. External validation is a sound step, but waiting for it before changing anything lets discriminatory decisions keep accumulating.",
+      "key_concept": "When a release causes harm and a validated prior version exists, back out the release through emergency change before investigating root cause.",
+      "pre_read": "Notice the problem began with the new release. Ask whether a known-good state exists and how fast it can be restored.",
+      "correct_explanation": "The harmful behaviour arrived with the new release and a validated prior version exists, so restoring it through emergency change removes the cause quickly and keeps an approval record. Root cause can then be found offline. Human review also contains decisions, but it is a workaround: the faulty release stays live, and reviewers must spot a subtle pattern across high volumes.",
       "wrong_explanations": {
-        "B": "Monitoring measures the harm but lets the model keep making the same biased decisions for every new applicant.",
-        "C": "The bias works through correlated proxy features, so removing one field leaves the pattern intact, and retraining is not an immediate stop.",
-        "D": "Independent validation belongs in the response, but delaying all change until it finishes allows biased decisions to continue."
+        "B": "A dashboard measures the disparity but leaves the faulty release making the same skewed decisions for every new applicant.",
+        "C": "Proxy features can carry the pattern without the field, and a same-day hotfix adds a second unvalidated change to production.",
+        "D": "Manual review leaves the faulty release live and depends on reviewers catching a subtle pattern across high decision volumes."
       },
       "tips": [
-        "Eliminate: B keeps the biased model deciding, and C misses that proxy features carry the bias without the field.",
-        "Final two: A beats D because harm is ongoing; stop it now and validate in parallel rather than validating first.",
-        "Exam cue: when a live system is causing harm, contain the harm before studying it further."
+        "Eliminate: B leaves the faulty release deciding, and C pushes an untested hotfix that proxy features may defeat.",
+        "Final two: A beats D because restoring the known-good version removes the cause, while human review only works around it.",
+        "Exam cue: when a new release causes harm and a validated prior version exists, back it out first, then investigate."
       ],
-      "framework_ref": "Equal Credit Opportunity Act 15 USC §1691; CFPB Fair Lending Examination Procedures; Regulation B (Equal Credit Opportunity Act), 12 CFR Part 1002; NIST AI Risk Management Framework 1.0; ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); EU AI Act (Regulation 2024/1689)",
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Change Enablement practice; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); NIST AI Risk Management Framework 1.0",
       "related_concepts": [
-        "ECOA disparate impact",
-        "ML fair-lending testing",
-        "Proxy variables (ZIP code via correlation)",
-        "Model governance gap",
-        "Adverse-action remediation"
+        "Emergency change rollback",
+        "Release regression",
+        "Known-good version",
+        "Post-release monitoring"
       ],
-      "_provenance": "Authored from concept: 'ML credit-scoring model disparate impact'. Public sources: ECOA, CFPB, NIST, ISACA. Scenario specifics (consumer lending $2.3B, ML credit-scoring 8 months in production, 38K affected applicants, 23% disparity by ZIP code) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ML credit-scoring model disparate impact'. Public sources: ECOA, CFPB, NIST, ISACA. Scenario specifics (consumer lending $2.3B, ML credit-scoring 8 months in production, 38K affected applicants, 23% disparity by ZIP code) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -8757,39 +8753,38 @@
     {
       "id": "d4_234",
       "domain": 4,
-      "subtopic": "Privacy Regulator Inquiry Response GDPR Art. 31",
+      "subtopic": "Log Retention. Preservation for Regulator Request",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A lead data protection authority requests transfer records within 30 days, but the firm's transfer impact assessments are incomplete. What is the BEST recommendation from the IS auditor to the chief privacy officer?",
+      "question": "A data protection authority requests 18 months of transfer logs, but the log platform keeps 90 days online and overwrites older archives monthly. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Withhold the assessments until any formal enforcement begins",
-        "B": "Respond on time, disclosing the gaps with a remediation plan",
-        "C": "Request an extension and finish the assessments before you respond",
-        "D": "Submit the records and describe the assessments as complete"
+        "A": "Answer using the 90 days of logs currently held online",
+        "B": "Suspend archive rotation so requested logs are not overwritten",
+        "C": "Ask counsel to seek an extension while the logs are rebuilt",
+        "D": "Extend the log retention policy to 18 months for future requests"
       },
       "correct": "B",
-      "key_concept": "Regulator inquiries call for timely, honest cooperation: disclose known gaps with a dated remediation plan rather than delay or conceal.",
-      "pre_read": "Notice the 30-day deadline and the known gap. Ask which option keeps the firm both timely and truthful.",
-      "correct_explanation": "The firm has a duty to cooperate with its supervisory authority. Responding on time, openly acknowledging the incomplete assessments and committing to a dated remediation plan shows good faith and credibility. Seeking an extension to fix gaps first sounds diligent, but it delays cooperation and can look like concealment once the authority learns the gaps existed.",
+      "key_concept": "When logs are requested for an inquiry, preserve them by suspending scheduled deletion before retrieval or retention policy changes.",
+      "pre_read": "Notice the archives are overwritten monthly. Ask what will be lost if nothing changes today.",
+      "correct_explanation": "Monthly rotation is destroying records the authority has asked for, so preservation comes first; retrieval and review can follow once nothing more is lost. Extending retention to 18 months is a sound control fix, but it governs future logs only and does nothing to stop this month's rotation overwriting the archives already requested.",
       "wrong_explanations": {
-        "A": "Withholding requested documents breaches the duty to cooperate and invites escalation to formal enforcement.",
-        "C": "Delaying the response to repair gaps first prioritises appearance over cooperation, and the authority may view it as evasive.",
-        "D": "Describing incomplete work as complete misleads the regulator, turning a compliance gap into a far more serious integrity failure."
+        "A": "Ninety days covers a fraction of the requested period, and the older archives keep being overwritten while the reply is prepared.",
+        "C": "Overwritten logs cannot be rebuilt, and extra time does nothing to stop the rotation that is destroying the requested records.",
+        "D": "A longer policy fixes future retention but does not stop this month's rotation overwriting the logs already requested."
       },
       "tips": [
-        "Eliminate: A refuses cooperation, and D misrepresents the firm's position to the regulator.",
-        "Final two: B beats C because timely, honest disclosure with a plan builds credibility, while delay can look like concealment.",
-        "Exam cue: with a regulator, transparency about known gaps plus a remediation plan beats waiting until everything looks perfect."
+        "Eliminate: A answers with a fraction of the period, and C seeks time while rotation keeps destroying records.",
+        "Final two: B beats D because the requested logs must be preserved now; a new policy only protects future records.",
+        "Exam cue: when records are requested, stop scheduled deletion first, then fix the retention policy."
       ],
-      "framework_ref": "GDPR Articles 5, 30, 31, 35 (Principles, Records of Processing, Cooperation, DPIA); CJEU Schrems II Judgment (C-311/18); EDPB Recommendations 01/2020 on Supplementary Measures; EU-US Data Privacy Framework (2023)",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); COBIT 2019 DSS01 (Managed Operations); GDPR Article 31 (Cooperation with the Supervisory Authority)",
       "related_concepts": [
-        "GDPR Article 31 cooperation",
-        "Schrems II / EU-US DPF",
-        "Transfer Impact Assessment (TIA)",
-        "Standard Contractual Clauses (SCCs)",
-        "Irish DPC lead supervisory"
+        "Log retention",
+        "Archive rotation",
+        "Evidence preservation",
+        "Regulator inquiry support"
       ],
-      "_provenance": "Authored from concept: 'GDPR DPC inquiry response per Article 31 cooperation duty'. Public sources: EU GDPR, CJEU, EDPB, ISACA. Scenario specifics (multinational SaaS $560M ARR, Irish DPC lead, customer complaint trigger, 14 doc items, 30-day deadline, incomplete TIAs) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'GDPR DPC inquiry response per Article 31 cooperation duty'. Public sources: EU GDPR, CJEU, EDPB, ISACA. Scenario specifics (multinational SaaS $560M ARR, Irish DPC lead, customer complaint trigger, 14 doc items, 30-day deadline, incomplete TIAs) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -8985,77 +8980,75 @@
     {
       "id": "d4_240",
       "domain": 4,
-      "subtopic": "Board Cyber-Literacy Gap During Incident",
+      "subtopic": "Incident Classification. Severity Matrix Misfire",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Hours before a breach briefing, the CISO learns most of the board lacks cyber background yet must decide on disclosure materiality. What is the BEST approach for the briefing?",
+      "question": "Sixteen hours into a breach exposing 340,000 customer records, the incident is still ranked low priority because the severity matrix scores only affected staff users. What should the incident manager do FIRST?",
       "options": {
-        "A": "Walk directors through the attack chain and indicators of compromise",
-        "B": "Present management's recommended decisions for quick board approval",
-        "C": "Frame each required decision with a plain-language materiality framework",
-        "D": "Postpone the briefing until directors complete cyber awareness training"
+        "A": "Keep the current rating until more staff report problems",
+        "B": "Revise the severity matrix through change control this week",
+        "C": "Reclassify it as a major incident based on business impact",
+        "D": "Brief directors on the attack chain and indicators of compromise"
       },
       "correct": "C",
-      "key_concept": "Boards own key incident decisions; brief them in business terms with a clear framework so their judgment is informed.",
-      "pre_read": "Notice who must decide materiality. Ask which approach lets those people make the decision themselves.",
-      "correct_explanation": "The board must make informed judgments on materiality and disclosure within a tight regulatory window. Framing each decision with a plain-language materiality framework equips directors to decide themselves. Presenting management's recommendations for quick approval is efficient, but it reduces the board to a rubber stamp on decisions it is accountable for.",
+      "key_concept": "Incident priority reflects business impact and urgency; a misfiring severity rule is overridden for the live incident, then corrected.",
+      "pre_read": "Notice what the matrix measures and what was actually harmed. Ask what the live incident needs right now.",
+      "correct_explanation": "Priority should reflect business impact, and 340,000 exposed customer records is a major incident however few staff are affected. Reclassifying now triggers the major-incident process: dedicated coordination, escalation and notification clocks. Fixing the matrix through change control is the right follow-up, but doing it first leaves the live breach misranked and under-resourced while the change is approved.",
       "wrong_explanations": {
-        "A": "Technical detail overwhelms directors without background and does not help them make the business decisions in front of them.",
-        "B": "Recommendations help, but seeking quick approval undermines the board's oversight duty to understand and own the decision.",
-        "D": "Disclosure deadlines run regardless; training later is useful, but postponing now risks missing the regulatory window."
+        "A": "Staff reports are the wrong measure of impact; customer data exposure is the harm, and waiting leaves the breach under-resourced.",
+        "B": "The matrix needs fixing, but changing it first leaves the live breach misranked and under-resourced while the change is approved.",
+        "D": "Technical detail does not help directors, and briefing them before the incident is properly classified skips the escalation path."
       },
       "tips": [
-        "Eliminate: A buries business decisions in technical detail, and D lets the disclosure clock run out.",
-        "Final two: C beats B because the board owns materiality decisions and must understand them, not merely approve management's answer.",
-        "Exam cue: brief boards on the decisions they must make, in business terms, so they can exercise real oversight."
+        "Eliminate: A waits on the wrong measure of impact, and D briefs directors on technical detail before classification.",
+        "Final two: C beats B because the live incident needs correct handling now; the matrix fix follows through change control.",
+        "Exam cue: classify incidents by business impact; when a rule misfires, override it now and correct it afterward."
       ],
-      "framework_ref": "SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); NACD Cyber-Risk Oversight Handbook; SEC Regulation S-K Item 106",
+      "framework_ref": "ITIL 4 Incident Management practice; NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "related_concepts": [
-        "Form 8-K Item 1.05 4-business-day rule",
-        "Materiality determination framework",
-        "Board cyber-literacy",
-        "Cyber-incident director",
-        "Pre-incident drills"
+        "Incident classification",
+        "Severity matrix",
+        "Incident prioritization",
+        "Escalation criteria"
       ],
-      "_provenance": "Authored from concept: 'Board cyber-literacy gap during active breach'. Public sources: SEC, NACD, ISACA. Scenario specifics (publicly-traded retailer $3.8B, 340K customer records breached, hour 16, board-level briefing 4 hours, 1 of 9 directors with technical background) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Board cyber-literacy gap during active breach'. Public sources: SEC, NACD, ISACA. Scenario specifics (publicly-traded retailer $3.8B, 340K customer records breached, hour 16, board-level briefing 4 hours, 1 of 9 directors with technical background) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
       "id": "d4_241",
       "domain": 4,
-      "subtopic": "Quantum-Safe Cryptography Migration Mid-Ransomware",
+      "subtopic": "Ransomware Recovery. Restoration Sequencing",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After a ransomware attack, intelligence suggests the actor stores RSA-protected data to decrypt later with quantum computers. What is the BEST recommendation from the IS auditor on the 30-month post-quantum migration plan?",
+      "question": "During ransomware recovery at a federal contractor, IT plans to restore systems in the order they failed, while the BIA ranks payroll and contract billing highest. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Pause the migration until the ransomware response is fully closed",
-        "B": "Keep the 30-month schedule since quantum attacks remain theoretical",
-        "C": "Lengthen RSA keys to 4096 bits as the long-term fix",
-        "D": "Inventory cryptography and accelerate migration for long-lived data"
+        "A": "Restore systems in the same order they failed",
+        "B": "Restore the most-used systems first to cut help desk calls",
+        "C": "Restore payroll and contract billing first, then the remaining systems",
+        "D": "Follow BIA tiers, restoring directory and shared dependencies first"
       },
       "correct": "D",
-      "key_concept": "Under harvest-now, decrypt-later, prioritise post-quantum migration by data lifetime, starting with a cryptographic inventory.",
-      "pre_read": "Notice that the attacker keeps the data for later. Ask how long that data must remain confidential.",
-      "correct_explanation": "Data harvested today stays exposed as long as it remains sensitive, so the migration timeline must be judged against data lifetime, not against when quantum computers arrive. A cryptographic inventory shows where long-lived data is protected by vulnerable algorithms, letting the firm prioritise it. Keeping the schedule seems reasonable, but it ignores that an adversary is already collecting the data.",
+      "key_concept": "Restoration follows BIA criticality adjusted for technical dependencies: shared infrastructure is recovered first so critical applications can run.",
+      "pre_read": "Notice the BIA ranks payroll and billing highest. Ask what those applications need running before they can work.",
+      "correct_explanation": "Recovery order follows the BIA's criticality tiers, but critical applications cannot run until the shared services beneath them, such as directory, DNS and databases, are restored and verified clean. Following the tiers with dependencies first gets payroll and billing working soonest. Restoring payroll and billing first matches the BIA ranking, yet without their dependencies they will not start or authenticate.",
       "wrong_explanations": {
-        "A": "Pausing lets the exposure of harvested data grow; incident response and cryptographic planning can and should run in parallel.",
-        "B": "The threat is not theoretical for data being harvested now; anything sensitive for years is already exposed to future decryption.",
-        "C": "Longer RSA keys do not resist a capable quantum computer; only quantum-resistant algorithms address that threat."
+        "A": "Failure order reflects how the attack spread, not business criticality, so critical services may wait behind minor ones.",
+        "B": "Help desk volume is not a recovery criterion; the BIA ranks services by business impact and tolerable downtime.",
+        "C": "The priorities are right, but payroll and billing cannot start or authenticate until directory and database dependencies are back."
       },
       "tips": [
-        "Eliminate: A delays migration while exposure grows, and C misunderstands that quantum attacks break RSA regardless of key length.",
-        "Final two: D beats B because data harvested today stays sensitive for years, so migration must start before quantum capability arrives.",
-        "Exam cue: judge cryptographic risk by how long the data must stay secret, not by when the threat seems likely."
+        "Eliminate: A follows the attack's path, and B ranks by help desk noise instead of business impact.",
+        "Final two: D beats C because critical applications depend on shared services that must be restored first.",
+        "Exam cue: recovery order is BIA priority plus the dependency map; restore foundations before the applications on them."
       ],
-      "framework_ref": "NIST FIPS 203 (ML-KEM); NIST FIPS 204 (ML-DSA); NIST FIPS 205 (SLH-DSA); NIST SP 800-208 (Stateful Hash-Based Signature Schemes); Quantum-Readiness: Migration to Post-Quantum Cryptography (CISA, NSA, NIST, 2023); NSA Commercial National Security Algorithm Suite 2.0 (CNSA 2.0) Advisory (2022)",
+      "framework_ref": "NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems); NIST SP 800-184 (Guide for Cybersecurity Event Recovery); ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis)",
       "related_concepts": [
-        "Post-quantum cryptography",
-        "FIPS 203/204/205",
-        "Harvest-now-decrypt-later",
-        "Crypto-agility",
-        "Hybrid classical+PQC"
+        "Recovery order",
+        "BIA tiers",
+        "Dependency mapping",
+        "Directory services recovery"
       ],
-      "_provenance": "Authored from concept: 'Quantum harvest-now ransomware scenario'. Public sources: NIST, CISA, NSA. Scenario specifics (federal contractor $1.9B, hour 12 of ransomware, AES-256+RSA-2048, $14M ransom, 24-36 month planned PQC migration, intel on harvest pattern) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Quantum harvest-now ransomware scenario'. Public sources: NIST, CISA, NSA. Scenario specifics (federal contractor $1.9B, hour 12 of ransomware, AES-256+RSA-2048, $14M ransom, 24-36 month planned PQC migration, intel on harvest pattern) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -9137,77 +9130,75 @@
     {
       "id": "d4_244",
       "domain": 4,
-      "subtopic": "Insurance Fraud Detected During Incident Investigation",
+      "subtopic": "Incident Records. Evidence Integrity and Custody",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A cyber-insurance claim is found to be inflated, and the controller who prepared it has financial ties to the forensic vendor. What should the IS auditor recommend to the CFO FIRST?",
+      "question": "During ransomware recovery, an IS auditor finds the incident log supporting a cyber-insurance claim was edited by a controller with ties to the forensic vendor. What should the auditor recommend FIRST?",
       "options": {
-        "A": "Terminate the controller immediately for cause",
-        "B": "Let the controller correct the figures under CFO review",
-        "C": "Remove the controller from the claim and order an independent inquiry",
-        "D": "Revise the claim to lower figures and notify the carrier at once"
+        "A": "Let the controller annotate each edit with its justification",
+        "B": "Commission an independent claim review once recovery is complete",
+        "C": "Preserve original log copies and move custody to another owner",
+        "D": "Correct the claim figures and notify the insurer of the change"
       },
       "correct": "C",
-      "key_concept": "Suspected fraud with a conflict of interest calls for removing the conflicted person and an independent investigation before corrective disclosure.",
-      "pre_read": "Notice the controller's link to the vendor. Ask who can be trusted to establish the true figures.",
-      "correct_explanation": "Possible fraud and self-dealing require facts established independently before conclusions are drawn. Removing the conflicted controller protects the evidence and the claim, and an independent investigation determines the true scope. Revising the claim and notifying the carrier is the right destination, but doing it before the investigation risks an incomplete correction that must be revised again.",
+      "key_concept": "Incident documentation is evidence: preserve originals and keep chain of custody away from conflicted staff before relying on it.",
+      "pre_read": "Notice who edited the log and their link to the vendor. Ask what must be protected before anything is corrected.",
+      "correct_explanation": "The incident record is evidence for the claim, the recovery decisions and any later investigation, so its integrity comes first: preserve original copies from backups and system audit trails, and take custody away from the conflicted editor. Correcting the claim and notifying the insurer is the right destination, but figures drawn from an altered log may be wrong and need restating again.",
       "wrong_explanations": {
-        "A": "Termination before investigation prejudges the outcome, creates employment-law exposure and may lose a source of evidence.",
-        "B": "The controller is the conflicted party; letting them correct their own work undermines independence and the integrity of the claim.",
-        "D": "Correction and disclosure are needed, but without an investigation the revised figures and scope may still be wrong."
+        "A": "The controller is the conflicted party; explaining their own edits leaves custody of the evidence in the wrong hands.",
+        "B": "Waiting until recovery ends lets originals age out of backups and logs, and the conflicted controller keeps custody meanwhile.",
+        "D": "Figures rebuilt from an altered log may still be wrong; evidence integrity must be secured before the claim is restated."
       },
       "tips": [
-        "Eliminate: A punishes before facts are known, and B leaves the conflicted person in control.",
-        "Final two: C beats D because an independent investigation must establish scope before the claim is corrected and disclosed.",
-        "Exam cue: when fraud and a conflict of interest surface, separate the conflicted person and investigate independently before acting on conclusions."
+        "Eliminate: A leaves the conflicted editor in charge of the record, and B delays while original evidence can be lost.",
+        "Final two: C beats D because a claim can only be corrected reliably from records whose integrity is secured.",
+        "Exam cue: when incident records may be tampered with, preserve originals and fix chain of custody before acting on them."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); 18 USC §1341 (Mail Fraud); 18 USC §1343 (Wire Fraud); State Insurance Fraud Statutes; Federal Sentencing Guidelines (Organizational Sentencing); SOX Sections 302, 404, 906",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response)",
       "related_concepts": [
-        "Mail/wire fraud",
-        "Related-party self-dealing",
-        "Voluntary self-disclosure mitigation",
-        "Claim governance",
-        "Forensic vendor COI"
+        "Incident evidence integrity",
+        "Original log preservation",
+        "Chain of custody",
+        "Incident documentation"
       ],
-      "_provenance": "Authored from concept: 'Insurance claim fraud detected during incident response'. Public sources: ISACA, federal statutes. Scenario specifics (manufacturer $580M, $22M ransomware claim, ~30% inflation, controller self-dealing with forensic vendor) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Insurance claim fraud detected during incident response'. Public sources: ISACA, federal statutes. Scenario specifics (manufacturer $580M, $22M ransomware claim, ~30% inflation, controller self-dealing with forensic vendor) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
       "id": "d4_245",
       "domain": 4,
-      "subtopic": "Cross-Border Employee Monitoring & GDPR Article 88",
+      "subtopic": "Monitoring Agent Rollout. Release Readiness Gate",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A firm plans keystroke and screen monitoring for staff in the US, EU and India, and German works councils have objected. What should the IS auditor recommend to the chief privacy officer FIRST?",
+      "question": "Management plans to release a keystroke-monitoring agent to 2,400 laptops in the US, EU and India before its 50-laptop pilot finishes. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Pause the rollout until a DPIA and works-council consultation finish",
-        "B": "Launch in the US and India while the EU legal review continues",
-        "C": "Deploy everywhere with a consent opt-out for EU employees",
-        "D": "Deploy globally with jurisdiction-specific privacy notices"
+        "A": "Hold the release until pilot results and change approval are in",
+        "B": "Release to one region now and expand as issues are fixed",
+        "C": "Deploy everywhere and roll back any laptops that report problems",
+        "D": "Deploy globally once counsel approves jurisdiction-specific privacy notices"
       },
       "correct": "A",
-      "key_concept": "High-risk employee monitoring requires a DPIA and works-council consultation before deployment, not after a partial launch.",
-      "pre_read": "Notice the works councils' objection and how intrusive the tool is. Ask what must happen before any rollout.",
-      "correct_explanation": "Keystroke and screen monitoring is highly intrusive, so its necessity and proportionality must be assessed before deployment, and German law gives works councils co-determination rights. Pausing for the DPIA and consultation is the right sequence. Launching first in the US and India seems pragmatic, but it deploys an untested design whose proportionality may change after review.",
+      "key_concept": "A release reaches production only after pilot or test evidence is reviewed and change approval is granted, with a tested backout plan.",
+      "pre_read": "Notice the pilot has not finished. Ask what a pilot is for and what should gate the release.",
+      "correct_explanation": "An endpoint agent on every laptop is a high-impact change, so release management requires pilot evidence, formal change approval and a tested backout before deployment. Holding the release secures all three. A regional rollout sounds controlled, but it still pushes an unvalidated build to hundreds of users and makes production staff the test group the pilot was meant to replace.",
       "wrong_explanations": {
-        "B": "Staging by jurisdiction deploys monitoring before anyone has assessed whether its scope is necessary and proportionate.",
-        "C": "Employee consent is rarely freely given, and an opt-out does not satisfy works-council co-determination rights.",
-        "D": "Notices provide transparency but cannot replace a DPIA, a lawful basis or the works councils' consultation rights."
+        "B": "Phasing limits blast radius but still deploys a build whose pilot has not finished, so production users become the test group.",
+        "C": "Fleet-wide deployment with reactive rollback assumes a tested backout exists and accepts widespread disruption before problems are known.",
+        "D": "Privacy notices address transparency, not release readiness; the agent would still ship without pilot results or change approval."
       },
       "tips": [
-        "Eliminate: C relies on employee consent and an opt-out, and D treats notices as a substitute for assessment.",
-        "Final two: A beats B because intrusive monitoring must be assessed before any deployment, not after a partial launch.",
-        "Exam cue: for high-risk processing, assess and consult first; a sound pause beats a fast partial rollout."
+        "Eliminate: C deploys fleet-wide on untested rollback, and D treats privacy notices as release readiness.",
+        "Final two: A beats B because a regional rollout still releases an unvalidated build; pilot evidence and approval come first.",
+        "Exam cue: a pilot exists to gate the release, so do not release before its results are reviewed and approved."
       ],
-      "framework_ref": "GDPR Article 88 (Processing in the Context of Employment); German Works Council Constitution Act (Betriebsverfassungsgesetz, BetrVG §87); French CNIL Employee Monitoring Guidance; UK ICO Employment Practices and Data Protection: Monitoring Workers (2023); GDPR Articles 5, 13, 14, 35 (Principles, Information, DPIA)",
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); GDPR Article 88 (Processing in the Context of Employment)",
       "related_concepts": [
-        "GDPR Article 88",
-        "Works council co-determination (BetrVG)",
-        "CNIL Employee Monitoring Guidance",
-        "UK ICO Employee Monitoring Code",
-        "DPIA"
+        "Release readiness",
+        "Pilot results",
+        "Change approval",
+        "Deployment hold"
       ],
-      "_provenance": "Authored from concept: 'Cross-border employee monitoring multi-jurisdiction'. Public sources: EU GDPR, German labor law, French CNIL, UK ICO. Scenario specifics (multinational tech firm $820M ARR, ~2,460 employees across US/EU/UK/India, multi-modality monitoring, works council objections) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cross-border employee monitoring multi-jurisdiction'. Public sources: EU GDPR, German labor law, French CNIL, UK ICO. Scenario specifics (multinational tech firm $820M ARR, ~2,460 employees across US/EU/UK/India, multi-modality monitoring, works council objections) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -9289,39 +9280,38 @@
     {
       "id": "d4_248",
       "domain": 4,
-      "subtopic": "Mass Account Takeover via Credential Stuffing",
+      "subtopic": "Credential Stuffing. Capacity Under Attack",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An e-commerce site faces credential stuffing from thousands of rotating residential proxy IPs, and only 18% of customers use MFA. What should the chief security officer do FIRST?",
+      "question": "A credential-stuffing attack from rotating proxy IPs has pushed an e-commerce login service to 95% capacity, slowing checkout for real customers. What should operations management do FIRST?",
       "options": {
         "A": "Block each attacking IP address at the web application firewall",
-        "B": "Reset passwords for the accounts already confirmed as compromised",
-        "C": "Wait for the attacker's credential list to run out naturally",
-        "D": "Apply bot detection with step-up MFA on risky login attempts"
+        "B": "Scale out the login tier to absorb the added traffic",
+        "C": "Wait for the attacker's credential list to be exhausted",
+        "D": "Filter bot logins and step up MFA on risky attempts"
       },
       "correct": "D",
-      "key_concept": "Against credential stuffing from rotating IPs, use behavioural bot detection and step-up authentication rather than IP blocking.",
-      "pre_read": "Notice that the IPs keep rotating. Ask which control stops stolen passwords from working on accounts not yet compromised.",
-      "correct_explanation": "Attacks spread across rotating proxies defeat IP-based blocking, so defenders must judge each login by behaviour. Bot detection spots automated attempts, and step-up MFA stops stolen passwords from working on accounts not yet taken over. Resetting confirmed accounts is necessary, but it only protects victims already found while the attack keeps succeeding against new ones.",
+      "key_concept": "When hostile traffic consumes capacity, contain the attack traffic first; adding capacity treats the symptom and can amplify the attack.",
+      "pre_read": "Notice why capacity is near its limit. Ask whether more resources would help customers or the attacker.",
+      "correct_explanation": "The attack is both a security incident and a capacity drain, so the first step is to stop hostile attempts consuming the login tier: behavioural bot filtering sheds attack traffic, and step-up MFA blocks stolen passwords. Scaling out restores headroom, but it also lets the attacker try credentials faster, raising takeovers and cost without removing the cause of the load.",
       "wrong_explanations": {
-        "A": "Rotating residential proxies supply fresh addresses faster than they can be blocked, so IP blocking barely slows the attack.",
-        "B": "This helps known victims, but the attack keeps hitting other accounts whose reused passwords are on the attacker's list.",
-        "C": "Waiting lets takeovers and fraud continue for as long as the list lasts, which may be days."
+        "A": "Rotating residential proxies supply new addresses faster than they can be blocked, so the load and takeovers continue.",
+        "B": "Extra capacity absorbs the load but lets the attacker test credentials faster, increasing takeovers and cost.",
+        "C": "Waiting lets takeovers and checkout slowdowns continue for as long as the list lasts, which may be days."
       },
       "tips": [
-        "Eliminate: A fails against rotating proxies, and C lets fraud grow while doing nothing.",
-        "Final two: D beats B because it stops new takeovers across all accounts, while B only repairs damage already done.",
-        "Exam cue: during an ongoing attack, prefer the control that stops new harm over one that repairs past harm."
+        "Eliminate: A fails against rotating proxies, and C lets takeovers and slowdowns continue while doing nothing.",
+        "Final two: D beats B because removing attack traffic fixes the cause; scaling out gives the attacker more capacity.",
+        "Exam cue: when an attack drives a capacity problem, shed the hostile load before adding resources."
       ],
-      "framework_ref": "OWASP Top 10 2021 (A07 Identification and Authentication Failures); NIST SP 800-63B-4 (Digital Identity Guidelines: Authentication and Authenticator Management); OWASP Credential Stuffing Prevention Cheat Sheet; FIDO Alliance WebAuthn Specifications",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ITIL 4 Capacity and Performance Management; OWASP Automated Threats to Web Applications (OAT-008 Credential Stuffing)",
       "related_concepts": [
+        "Capacity under attack",
+        "Bot traffic filtering",
         "Credential stuffing",
-        "Behavioral bot detection",
-        "WebAuthn / Passkeys",
-        "Per-username rate-limiting",
-        "Transaction-MFA"
+        "Autoscaling cost"
       ],
-      "_provenance": "Authored from concept: 'Mass credential-stuffing attack response'. Public sources: OWASP, NIST, CISA, ISACA, FIDO. Scenario specifics (e-commerce $1.2B 8.4M users, hour 6, 14% success rate, 62K compromised accounts, $50K/hour growing fraud, 18% MFA opt-in) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Mass credential-stuffing attack response'. Public sources: OWASP, NIST, CISA, ISACA, FIDO. Scenario specifics (e-commerce $1.2B 8.4M users, hour 6, 14% success rate, 62K compromised accounts, $50K/hour growing fraud, 18% MFA opt-in) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -9365,39 +9355,38 @@
     {
       "id": "d4_250",
       "domain": 4,
-      "subtopic": "Whistleblower Report on Inadequate Controls",
+      "subtopic": "Year-End Close. Job Scheduling Control Bypass",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An anonymous whistleblower alleges the CFO directed staff to bypass journal-entry approvals during year-end close. What should the chief audit executive do FIRST?",
+      "question": "An IS auditor confirms a whistleblower's claim that, during year-end close, operators run ad hoc batch jobs posting journal entries outside the scheduler's approval workflow. What should the auditor recommend FIRST?",
       "options": {
-        "A": "Ask the CFO to explain the bypassed approvals",
-        "B": "Report the allegation directly to the audit committee chair",
-        "C": "Begin an internal audit of the year-end journal entry population",
-        "D": "Pause any action until the SEC provides guidance"
+        "A": "Have operators document each ad hoc run and its purpose after close",
+        "B": "Block job submission outside the scheduler's approved queue now",
+        "C": "Review the ad hoc runs for unauthorized entries before close",
+        "D": "Rely on the external auditors' year-end testing to cover it"
       },
       "correct": "B",
-      "key_concept": "Allegations against a senior executive go directly to the audit committee, which directs an independent investigation.",
-      "pre_read": "Notice who is accused. Ask which body is independent of that person and can direct the response.",
-      "correct_explanation": "The allegation concerns a senior executive, so independent oversight must be engaged before any investigative step. Reporting directly to the audit committee chair puts the matter with the body that oversees financial reporting and can direct an independent investigation. Starting an audit of journal entries is a natural instinct, but launching it without committee oversight risks tipping off the CFO and weakens independence.",
+      "key_concept": "Production jobs run only through the scheduler's approved path; when a bypass is active, close it before assessing its impact.",
+      "pre_read": "Notice the bypass is still happening during close. Ask which step stops the problem growing.",
+      "correct_explanation": "While the bypass stays open, every new ad hoc run adds unapproved entries to the close, so the first step is to force all job submissions through the scheduler's approval path. Any review then works on a fixed population. Reviewing runs before close is essential, but doing it while operators keep bypassing the workflow means new unapproved entries arrive faster than they are checked.",
       "wrong_explanations": {
-        "A": "Confronting the accused executive first risks evidence destruction and retaliation, and could expose the whistleblower.",
-        "C": "Testing entries will be needed, but beginning before the audit committee is engaged risks alerting the CFO and lacks independent direction.",
-        "D": "A parallel regulator report does not suspend the firm's own governance duties; waiting lets evidence and controls degrade."
+        "A": "After-the-fact notes do not stop the bypass, and operators documenting their own unapproved runs give weak evidence.",
+        "C": "Review is needed, but with the bypass still open, new unapproved runs keep adding entries faster than they can be checked.",
+        "D": "External testing is not the organization's control; relying on it lets unapproved postings continue through close and into the statements."
       },
       "tips": [
-        "Eliminate: A alerts the accused executive, and D abandons the firm's own governance duties.",
-        "Final two: B beats C because allegations against senior executives need independent oversight before investigation begins.",
-        "Exam cue: when allegations involve senior management, escalate to the audit committee before investigating."
+        "Eliminate: A documents the bypass without stopping it, and D hands the organization's control duty to external auditors.",
+        "Final two: B beats C because closing the bypass fixes the population; reviewing first lets new unapproved runs keep arriving.",
+        "Exam cue: when a control bypass is still happening, stop the bypass first, then assess what already got through."
       ],
-      "framework_ref": "SEC Whistleblower Program (Dodd-Frank Section 922, 17 CFR §240.21F); SOX Sections 301 (Audit Committee), 806 (Whistleblower Protection), 1107 (Retaliation); IIA Global Internal Audit Standards (2024), Standard 8.1 (Board Interaction); ISACA Code of Professional Ethics",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 Change Enablement practice; PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting)",
       "related_concepts": [
-        "Whistleblower anonymity preservation",
-        "SOX 301 audit committee direct-line",
-        "Independent investigation",
-        "Chain-of-custody at firm",
-        "Cooperative SEC engagement"
+        "Job-scheduling bypass",
+        "Year-end change control",
+        "Scheduler access",
+        "Run-history review"
       ],
-      "_provenance": "Authored from concept: 'Whistleblower allegation against CFO investigation'. Public sources: SEC, SOX, PCAOB, ISACA. Scenario specifics (publicly-traded $1.6B, CFO directed override $4.2M journal entries, anonymous whistleblower with email evidence, SEC parallel notification) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Whistleblower allegation against CFO investigation'. Public sources: SEC, SOX, PCAOB, ISACA. Scenario specifics (publicly-traded $1.6B, CFO directed override $4.2M journal entries, anonymous whistleblower with email evidence, SEC parallel notification) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -9517,39 +9506,38 @@
     {
       "id": "d4_254",
       "domain": 4,
-      "subtopic": "IT Acquisition Earnings-Affecting Milestone Failure",
+      "subtopic": "Post-Integration Review. Legacy System Decommissioning",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor learns that only $10M of a $42M IT integration synergy promised to investors will land this quarter, and part may never materialize. What should the auditor recommend as BEST to the CFO?",
+      "question": "A post-implementation review finds an acquired firm's legacy ERP still running 11 months after integration because three interfaces depend on it, delaying promised IT savings. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Reaffirm the full target with a narrative on integration progress",
-        "B": "Withdraw synergy guidance entirely without explaining the change",
-        "C": "Report the $10M now and recast $42M as a multi-year goal",
-        "D": "Revise guidance to the achievable synergies after counsel review"
+        "A": "Shut down the legacy ERP now to realize the savings",
+        "B": "Defer decommissioning until the next annual budget cycle is approved",
+        "C": "Retain the legacy ERP as a warm standby for the new platform",
+        "D": "Migrate the three interfaces, then retire it under change control"
       },
       "correct": "D",
-      "key_concept": "When IT integration benefits fall short, disclosed guidance must be revised to what is achievable; management owns the disclosure, the auditor advises.",
-      "pre_read": "Notice that part of the benefit may never arrive. Ask which option is still accurate once that fact is known.",
-      "correct_explanation": "Investors relied on the $42M figure, and part of it may never be realized, so guidance must be revised to what is achievable, reviewed by counsel and the external auditor before release. That keeps disclosures accurate and protects the audit committee. Recasting $42M as a multi-year goal looks transparent, but it still presents benefits management doubts will arrive.",
+      "key_concept": "After implementation, legacy systems are retired through change control once dependent interfaces are migrated; untested leftovers are not resilience.",
+      "pre_read": "Notice what keeps the legacy ERP alive. Ask which option removes that blocker safely.",
+      "correct_explanation": "The savings depend on retiring the legacy ERP, and the blocker is three live interfaces. Migrating them, then decommissioning through change control with data archived and access removed, delivers the benefit without breaking operations. Keeping the old ERP as a warm standby sounds prudent, but it was never designed or tested for recovery, so it adds cost and stale-data risk rather than real resilience.",
       "wrong_explanations": {
-        "A": "Reaffirming a target management knows is unachievable risks misleading investors and creates disclosure liability.",
-        "B": "Withdrawing guidance without explanation erodes trust and still leaves earlier statements uncorrected.",
-        "C": "A multi-year label keeps the full $42M in play even though part may never materialize, so the guidance stays misleading."
+        "A": "Shutting down now breaks the three interfaces that still depend on the legacy ERP, disrupting order processing to hit a savings date.",
+        "B": "Deferring without a migration plan leaves the dependencies in place, so parallel running and its costs simply continue.",
+        "C": "An untested parallel system is not a recovery capability; it keeps cost and duplicate-data risk without meeting any RTO."
       },
       "tips": [
-        "Eliminate: A repeats a figure known to be wrong, and B withdraws guidance without correcting the record.",
-        "Final two: D beats C because only revised, achievable figures are accurate; a longer timeline still promises doubtful benefits.",
-        "Exam cue: when benefits realization falls short, the best answer corrects the record rather than reframing it."
+        "Eliminate: A breaks live interfaces to hit a savings date, and B defers without removing the dependencies.",
+        "Final two: D beats C because a legacy system needs a planned exit, and an untested standby gives no real recovery capability.",
+        "Exam cue: retire legacy systems only after their dependencies are migrated, and do it through change control."
       ],
-      "framework_ref": "SEC Rule 10b-5 (Securities Fraud); SEC Regulation S-K Items 303 (MD&A), 105 (Risk Factors); SOX Sections 302, 404, 906",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 Change Enablement practice",
       "related_concepts": [
-        "Material misstatement by omission",
-        "SEC Rule 10b-5",
-        "Revised guidance disclosure",
-        "Audit committee approval of disclosure",
-        "SOX 906 certification"
+        "Post-implementation review",
+        "Interface migration",
+        "Legacy system retirement",
+        "Change control"
       ],
-      "_provenance": "Authored from concept: 'Earnings-affecting integration milestone miss'. Public sources: SEC, SOX, PCAOB. Scenario specifics (publicly-traded tech $1.2B, $42M synergy announced 11 months ago, $10M achievable, $18M at risk, Q4 earnings call pending) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Earnings-affecting integration milestone miss'. Public sources: SEC, SOX, PCAOB. Scenario specifics (publicly-traded tech $1.2B, $42M synergy announced 11 months ago, $10M achievable, $18M at risk, Q4 earnings call pending) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {
@@ -9745,39 +9733,38 @@
     {
       "id": "d4_260",
       "domain": 4,
-      "subtopic": "Operations Governance Maturity. D4 Capstone",
+      "subtopic": "Remediation Tracking. Consolidated Risk-Ranked Register",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After a year-long operations and resilience audit with findings across five areas, the CAE must brief the audit committee before regulatory examinations in six months. Which approach is BEST?",
+      "question": "After a year-long operations audit with 38 findings across five areas, each team tracks remediation in its own spreadsheet. With an examination due in six months, what is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Limit the briefing to findings within the examination scope",
-        "B": "List every finding with its rating and management response",
-        "C": "Defer the briefing until the regulatory examinations conclude",
-        "D": "Prioritize cross-domain themes by risk with a remediation roadmap"
+        "A": "Keep separate team trackers and consolidate them before the exam",
+        "B": "Close each item once its owner confirms the fix is done",
+        "C": "Remediate items in the examination's scope before the others",
+        "D": "Use one risk-ranked register with owners, dates and retesting"
       },
       "correct": "D",
-      "key_concept": "Audit committee reporting should synthesize findings into prioritized, risk-ranked themes with a remediation roadmap, not a flat list.",
-      "pre_read": "Notice the audience is the audit committee. Ask what helps it govern: every detail, or what matters most and what happens next?",
-      "correct_explanation": "The audit committee needs to know which risks matter most across the whole domain and how management will fix them, so prioritized themes with a remediation roadmap support oversight and examination readiness. Listing every finding with ratings and responses is complete and well documented, but it leaves the committee to do the prioritizing that the CAE is expected to provide.",
+      "key_concept": "Remediation is tracked in one risk-ranked register with owners, target dates and retesting before closure, not by examination scope.",
+      "pre_read": "Notice the trackers are scattered and an examination is coming. Ask what should set the order of the work.",
+      "correct_explanation": "Scattered trackers hide overdue and duplicated actions, so one register ranked by risk, with named owners, target dates and retesting before closure, lets management and audit see real progress across all five areas. Remediating examination-scope items first is tempting, but it lets the examiner's agenda override risk and leaves higher-risk issues outside that scope open.",
       "wrong_explanations": {
-        "A": "Letting the regulator's agenda set scope hides significant risks outside the examination and narrows the committee's view.",
-        "B": "A flat list is complete but unprioritized. The committee cannot easily see which risks drive the overall assessment.",
-        "C": "Waiting denies the committee time to oversee remediation before examiners arrive, which is when it is most needed."
+        "A": "Consolidating only before the exam keeps progress invisible for months, so slipped or duplicated actions surface too late to fix.",
+        "B": "Owner confirmation is an assertion, not evidence; items need retesting before closure or they may reopen at examination.",
+        "C": "Ordering work by the examiner's scope rather than by risk leaves higher-risk items outside that scope unremediated."
       },
       "tips": [
-        "Eliminate: A lets the regulator's agenda set audit scope, and C withholds results when the committee most needs them.",
-        "Final two: D beats B because the committee needs risk-ranked priorities and a path forward, not an unranked list.",
-        "Exam cue: for board or committee reporting, choose synthesis and prioritization over exhaustive detail."
+        "Eliminate: A hides progress until just before the exam, and B closes items on the owner's word without retesting.",
+        "Final two: D beats C because remediation is ordered by risk, not by what examiners plan to look at.",
+        "Exam cue: sound remediation tracking means one register, risk ranking, owners, due dates and retesting before closure."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); IIA Global Internal Audit Standards (2024), Standard 11.3 (Communicating Results); COBIT 2019 MEA02 (Managed System of Internal Control)",
+      "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); COBIT 2019 MEA02 (Managed System of Internal Control); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
-        "Cross-domain maturity assessment",
-        "Audit committee briefing structure",
-        "Regulatory examination alignment",
-        "Multi-year audit cycle",
-        "Strategic-level governance recommendations"
+        "Remediation register",
+        "Risk-ranked tracking",
+        "Follow-up activities",
+        "Findings prioritization"
       ],
-      "_provenance": "Authored from concept: 'D4 capstone — year-long Operations & Resilience audit conclusion'. Public sources: ISACA, IIA, COBIT, ISO. Scenario specifics (financial services $3.2B, year-long Operations & Resilience audit, multi-domain findings, 6-month examination horizon) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'D4 capstone — year-long Operations & Resilience audit conclusion'. Public sources: ISACA, IIA, COBIT, ISO. Scenario specifics (financial services $3.2B, year-long Operations & Resilience audit, multi-domain findings, 6-month examination horizon) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
       "style_version": 2
     },
     {

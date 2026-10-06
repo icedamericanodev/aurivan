@@ -1943,3 +1943,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - SEC Whistleblower Program (Dodd-Frank Section 922, 17 CFR §240.21F)
 - The Sedona Conference Commentary on Legal Holds, Second Edition: The Trigger & The Process (2019)
 - UK ICO Employment Practices and Data Protection: Monitoring Workers (2023)
+- NIST SP 800-53 Rev 5 PS-4 (Personnel Termination)
+- NIST SP 800-34 Rev 1 (Contingency Planning Guide for Federal Information Systems)
+- OWASP Automated Threats to Web Applications (OAT-008 Credential Stuffing)
