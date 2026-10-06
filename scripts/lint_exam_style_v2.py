@@ -87,6 +87,10 @@ def check(q):
     others = [v for k, v in ol.items() if k != c]
     if ol[c] > max(others):
         errs.append(f"key is the longest option {ol}")
+    chars = {k: len(v) for k, v in opts.items()}
+    longest_other = max(v for k, v in chars.items() if k != c)
+    if chars[c] > longest_other + 8:
+        errs.append(f"key is the longest option by {chars[c] - longest_other} characters (max 8): lengthen a distractor or trim the key")
     ratio = ol[c] / (sum(others) / 3)
     if not 0.67 <= ratio <= 1.5:
         errs.append(f"key/distractor length ratio {ratio:.2f} (want 0.67–1.50) {ol}")
@@ -161,6 +165,14 @@ def main(args):
         n_err += len(errs)
         n_warn += len(warns)
     if v2:
+        # Test-wise candidates pick the longest option; keep that tell near chance (25%).
+        longest = [q for q in v2 if q.get("options") and q.get("correct") in q["options"]
+                   and len(q["options"][q["correct"]]) > max(len(v) for k, v in q["options"].items() if k != q["correct"])]
+        share = len(longest) / len(v2)
+        if len(v2) >= 12 and share > 0.30:
+            print(f"ERROR key is the longest option (by characters) in {share:.0%} of items (max 30%): "
+                  + ", ".join(q["id"] for q in longest[:12]) + ("…" if len(longest) > 12 else ""))
+            n_err += 1
         spread = ", ".join(f"{k}{keys[k]}" for k in "ABCD")
         top = max(keys.values()) / len(v2)
         if len(v2) >= 12 and top > 0.35:
