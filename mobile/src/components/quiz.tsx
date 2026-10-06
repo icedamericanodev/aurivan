@@ -152,3 +152,36 @@ export function ResultBanner({ correct }: { correct: boolean }) {
     </View>
   );
 }
+
+// ── Trust card: where this question comes from + report an issue ──────
+export function TrustCard({
+  questionId,
+  reference,
+  onReport,
+}: {
+  questionId: string;
+  reference?: string;
+  onReport: () => void;
+}) {
+  const { c } = useTheme();
+  return (
+    <View
+      style={{ borderTopWidth: 1, borderTopColor: c.border, paddingTop: space.md, marginTop: space.md, gap: space.xs }}
+    >
+      <T v="mono" color={c.tealText}>ORIGINAL QUESTION</T>
+      {reference && <T v="caption">{`Grounded in: ${reference}`}</T>}
+      <Row style={{ justifyContent: 'space-between' }}>
+        <T v="caption">{`Code ${questionId}`}</T>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Report an issue with question ${questionId}`}
+          onPress={onReport}
+          hitSlop={8}
+          style={{ minHeight: 44, justifyContent: 'center' }}
+        >
+          <T v="label" color={c.accentText}>Report an issue</T>
+        </Pressable>
+      </Row>
+    </View>
+  );
+}

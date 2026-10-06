@@ -56,6 +56,12 @@ export default function RootLayout() {
         {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
         <Stack.Screen name="session" options={{ gestureEnabled: false }} />
         <Stack.Screen name="results" options={{ gestureEnabled: false }} />
+        <Stack.Screen name="lesson/[id]" options={{ animation: 'fade_from_bottom' }} />
+        <Stack.Screen name="game/trap" options={{ animation: 'fade_from_bottom' }} />
+        <Stack.Screen name="game/sprint" options={{ animation: 'fade_from_bottom' }} />
+        <Stack.Screen name="game/priority" options={{ animation: 'fade_from_bottom' }} />
+        <Stack.Screen name="mistakes" />
+        <Stack.Screen name="settings" />
       </Stack>
     </SafeAreaProvider>
   );

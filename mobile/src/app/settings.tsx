@@ -4,17 +4,18 @@
  */
 import Constants from 'expo-constants';
 import { useState } from 'react';
-import { Alert, Linking, Switch, View } from 'react-native';
-import { Button, Card, Chip, Gap, Row, Screen, T } from '../../components/ui';
-import { CERTIFICATIONS } from '../../content/certifications';
-import { config } from '../../lib/config';
-import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../../lib/reminders';
-import { useActiveCert } from '../../lib/useActiveCert';
-import { useProgress } from '../../store/progress';
-import { useSession } from '../../store/session';
-import { useSettings, type ThemePref } from '../../store/settings';
-import { space } from '../../theme/tokens';
-import { useTheme } from '../../theme/useTheme';
+import { router } from 'expo-router';
+import { Alert, Linking, Pressable, Switch, View } from 'react-native';
+import { Button, Card, Chip, Gap, Row, Screen, T } from '../components/ui';
+import { CERTIFICATIONS } from '../content/certifications';
+import { config } from '../lib/config';
+import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../lib/reminders';
+import { useActiveCert } from '../lib/useActiveCert';
+import { useProgress } from '../store/progress';
+import { useSession } from '../store/session';
+import { useSettings, type ThemePref } from '../store/settings';
+import { space } from '../theme/tokens';
+import { useTheme } from '../theme/useTheme';
 
 const THEMES: { label: string; value: ThemePref }[] = [
   { label: 'System', value: 'system' },
@@ -63,7 +64,11 @@ export default function Settings() {
     ]);
 
   return (
-    <Screen>
+    <Screen edges={['top', 'bottom']}>
+      <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={() => router.back()} hitSlop={12}>
+        <T v="label" color={c.accentText}>‹ Back</T>
+      </Pressable>
+      <Gap h={space.sm} />
       <T v="title">Settings</T>
       <Gap />
 

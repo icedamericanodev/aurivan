@@ -1,106 +1,205 @@
 /**
- * Home — "what should I do today?" at a glance.
- * Readiness on top (UX panel pattern #5), then today's goal, reviews due,
- * and a one-tap "continue" that picks the most valuable domain.
+ * Journey — "where am I, and what's my one next step?"
+ *
+ * Top to bottom: countdown + stage, readiness ring, today's plan (tap to
+ * start), the domain route, and a calm week strip. One accent-filled
+ * element per screen: the first plan item.
  */
 import { router } from 'expo-router';
 import { View } from 'react-native';
-import { Button, Card, Gap, Pill, ProgressBar, Row, Screen, Stat, T } from '../../components/ui';
-import { getDomain } from '../../content/certifications';
-import { guardedStart, startPractice, startReview } from '../../lib/sessions';
-import { useActiveCert } from '../../lib/useActiveCert';
+import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
+import { ActionRow, DomainRoute, ReadinessRing, WeekStrip } from '../../components/journey';
+import {
+  BookOpen,
+  Flame,
+  Gamepad2,
+  ICON_STROKE,
+  RotateCcw,
+  Sparkles,
+  Target,
+  Timer,
+} from '../../components/icons';
+import { Button, Card, Gap, Pill, ProgressBar, Row, Screen, T } from '../../components/ui';
+import type { PlanItem } from '../../engine/planner';
+import { runPlanItem } from '../../lib/actions';
+import { useJourney } from '../../lib/useJourney';
 import { useSession } from '../../store/session';
-import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-export default function Home() {
-  const { c } = useTheme();
-  const { cert, readiness, dueCount, daysLeft, streak, answeredToday } = useActiveCert();
-  const dailyGoal = useSettings((s) => s.dailyGoal);
-  const active = useSession((s) => s.active);
-  const focus = readiness.focusDomainId ? getDomain(cert, readiness.focusDomainId) : undefined;
+const enter = (i: number) => FadeInDown.duration(320).delay(i * 80).reduceMotion(ReduceMotion.System);
 
-  const open = () => router.push('/session');
+function planIcon(item: PlanItem, color: string) {
+  const p = { size: 20, color, strokeWidth: ICON_STROKE };
+  switch (item.kind) {
+    case 'review':
+      return <RotateCcw {...p} />;
+    case 'lesson':
+      return <BookOpen {...p} />;
+    case 'practice':
+      return <Target {...p} />;
+    case 'game':
+      return <Gamepad2 {...p} />;
+    case 'mock':
+      return <Timer {...p} />;
+  }
+}
+
+function planTitle(item: PlanItem): { title: string; subtitle?: string } {
+  switch (item.kind) {
+    case 'review':
+      return { title: `Review ${item.count} due`, subtitle: 'Questions you missed, back at the right moment' };
+    case 'lesson':
+      return { title: item.title, subtitle: 'Lesson · about 3 minutes' };
+    case 'practice':
+      return { title: item.label, subtitle: 'Practice' };
+    case 'game':
+      return { title: item.label, subtitle: 'Play' };
+    case 'mock':
+      return { title: item.label, subtitle: 'Timed, at real exam pace' };
+  }
+}
+
+export default function Journey() {
+  const { c } = useTheme();
+  const j = useJourney();
+  const active = useSession((s) => s.active);
+  const countdown =
+    j.daysLeft === null ? 'NO EXAM DATE' : j.daysLeft < 0 ? 'EXAM DONE' : `${j.daysLeft} DAY${j.daysLeft === 1 ? '' : 'S'}`;
 
   return (
     <Screen>
-      <Row style={{ justifyContent: 'space-between' }}>
-        <T v="mono" color={c.accentText}>{cert.name} · {cert.issuer}</T>
-        {streak > 0 && <Pill label={`🔥 ${streak}-day streak`} color={c.tealText} accessibilityLabel={`${streak}-day streak`} />}
-      </Row>
-      <Gap h={space.sm} />
-      <T v="title">Ready when you are.</T>
+      <Animated.View entering={enter(0)}>
+        <Row style={{ justifyContent: 'space-between' }}>
+          <T v="mono" color={c.accentText}>{`${j.cert.name} · ${countdown}`}</T>
+          {j.streak > 0 && (
+            <Row gap={4} style={{ minHeight: 24 }}>
+              <Flame size={16} color={c.tealText} strokeWidth={ICON_STROKE} />
+              <T v="mono" color={c.tealText} accessibilityLabel={`${j.streak}-day streak`}>{String(j.streak)}</T>
+            </Row>
+          )}
+        </Row>
+        <Gap h={space.sm} />
+        <T v="title">{j.plan.length ? 'Today’s plan' : 'Well done.'}</T>
+      </Animated.View>
       <Gap />
 
       {active && !active.finishedAt && (
-        <>
+        <Animated.View entering={enter(1)}>
           <Card onPress={() => router.push('/session')} accessibilityLabel="Resume your session" style={{ borderColor: c.accent }}>
             <T v="heading">Resume: {active.title}</T>
-            <T v="caption">
-              Question {active.index + 1} of {active.questionIds.length}
-            </T>
+            <T v="caption">Question {active.index + 1} of {active.questionIds.length}</T>
           </Card>
+          <Gap />
+        </Animated.View>
+      )}
+
+      {/* Hero: readiness + journey stage */}
+      <Animated.View entering={enter(2)}>
+        <Card>
+          <Row gap={space.lg}>
+            <ReadinessRing score={j.readiness.score} />
+            <View style={{ flex: 1 }}>
+              <T v="mono" color={c.tealText}>STAGE</T>
+              <T v="heading">{j.stageLabel}</T>
+              <Gap h={space.sm} />
+              <ProgressBar value={j.stageProgress} color={c.teal} height={6} />
+              <Gap h={space.sm} />
+              <T v="caption">
+                {j.readiness.reliable
+                  ? 'Weighted by the official exam blueprint.'
+                  : 'Readiness firms up as you practise every domain.'}
+              </T>
+            </View>
+          </Row>
+        </Card>
+      </Animated.View>
+      <Gap />
+
+      {/* Today's plan */}
+      <Animated.View entering={enter(3)}>
+        {j.plan.length === 0 ? (
+          <Card>
+            <T v="heading">Exam done — how did it go?</T>
+            <T v="caption">Update your exam date in Settings to plan a retake or your next certification.</T>
+            <Gap h={space.md} />
+            <Button kind="secondary" label="Open settings" onPress={() => router.push('/settings')} />
+          </Card>
+        ) : (
+          <Card>
+            {j.plan.map((item, i) => {
+              const { title, subtitle } = planTitle(item);
+              if (i === 0) {
+                return (
+                  <View key={i} style={{ marginBottom: j.plan.length > 1 ? space.sm : 0 }}>
+                    <T v="mono" color={c.accentText}>START HERE</T>
+                    <Gap h={space.xs} />
+                    <T v="heading">{title}</T>
+                    {subtitle && <T v="caption">{subtitle}</T>}
+                    <Gap h={space.md} />
+                    <Button label="Start" onPress={() => runPlanItem(item, j.cert.id)} accessibilityHint={title} />
+                  </View>
+                );
+              }
+              return (
+                <ActionRow
+                  key={i}
+                  icon={planIcon(item, c.accentText)}
+                  title={title}
+                  subtitle={subtitle}
+                  onPress={() => runPlanItem(item, j.cert.id)}
+                />
+              );
+            })}
+          </Card>
+        )}
+      </Animated.View>
+      <Gap />
+
+      {j.stage === 'ready' && (
+        <>
+          <Animated.View entering={enter(4)}>
+            <Card style={{ borderColor: c.teal }}>
+              <Row gap={space.sm}>
+                <Sparkles size={20} color={c.tealText} strokeWidth={ICON_STROKE} />
+                <T v="heading" color={c.tealText}>Pass-ready</T>
+              </Row>
+              <T v="body">
+                Your readiness has held above the target across every domain. Keep it warm with short sessions until exam day.
+              </T>
+            </Card>
+          </Animated.View>
           <Gap />
         </>
       )}
 
-      <Card>
-        <Row>
-          <View style={{ flex: 1 }}>
-            <T v="label" color={c.text2}>Exam readiness</T>
-            <T v="hero" color={c.accentText}>{readiness.score}%</T>
-            <T v="caption">
-              {readiness.reliable ? 'Weighted by the official blueprint.' : 'Keep practising every domain to firm this up.'}
-            </T>
-          </View>
-          {daysLeft !== null && daysLeft >= 0 && (
-            <Stat value={String(daysLeft)} label={daysLeft === 1 ? 'day to go' : 'days to go'} color={daysLeft <= 14 ? c.warning : c.text} />
-          )}
+      {/* Domain route */}
+      <Animated.View entering={enter(5)}>
+        <Row style={{ justifyContent: 'space-between' }}>
+          <T v="label" color={c.text2}>Your route</T>
+          <Pill label={`${j.cert.domains.length} domains`} />
         </Row>
         <Gap h={space.md} />
-        {cert.domains.map((d) => {
-          const dm = readiness.domains.find((x) => x.domainId === d.id);
-          return (
-            <View key={d.id} style={{ marginBottom: space.sm }}>
-              <Row style={{ justifyContent: 'space-between' }}>
-                <T v="caption">{d.short}</T>
-                <T v="caption">{Math.round((dm?.mastery ?? 0) * 100)}%</T>
-              </Row>
-              <ProgressBar value={dm?.mastery ?? 0} color={d.color} height={6} />
-            </View>
-          );
-        })}
-      </Card>
-      <Gap />
-
-      <Card>
-        <T v="label" color={c.text2}>Today</T>
-        <Gap h={space.sm} />
-        <T v="heading">{Math.min(answeredToday, dailyGoal)} / {dailyGoal} questions</T>
-        <Gap h={space.sm} />
-        <ProgressBar value={answeredToday / dailyGoal} color={c.teal} />
-        <Gap />
-        <Button
-          label={focus ? `Practise ${focus.short} (10)` : 'Start practising'}
-          accessibilityHint="Starts 10 questions in the domain with the most room to improve"
-          onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus?.id, title: focus?.name }), open)}
+        <DomainRoute
+          domains={j.cert.domains}
+          mastery={j.readiness.domains}
+          focusId={j.focus?.id}
+          onPress={(domainId) => router.push({ pathname: '/(tabs)/learn', params: { domain: domainId } })}
         />
-      </Card>
+      </Animated.View>
       <Gap />
 
-      <Card>
-        <T v="label" color={c.text2}>Spaced review</T>
-        <Gap h={space.sm} />
-        <T v="heading">{dueCount === 0 ? 'All caught up ✓' : `${dueCount} question${dueCount === 1 ? '' : 's'} due`}</T>
-        <T v="caption">Questions you missed come back at the right moment until they stick.</T>
-        {dueCount > 0 && (
-          <>
-            <Gap h={space.md} />
-            <Button kind="secondary" label="Start review" onPress={() => guardedStart(() => startReview(cert.id), open)} />
-          </>
-        )}
-      </Card>
+      {/* Week strip */}
+      <Animated.View entering={enter(6)}>
+        <Card>
+          <Row style={{ justifyContent: 'space-between' }}>
+            <T v="label" color={c.text2}>This week</T>
+            <T v="caption">One rest day a week keeps your streak.</T>
+          </Row>
+          <Gap h={space.md} />
+          <WeekStrip days={j.week} />
+        </Card>
+      </Animated.View>
     </Screen>
   );
 }

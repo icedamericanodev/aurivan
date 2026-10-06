@@ -1,13 +1,15 @@
 /**
- * Practice — choose a domain, difficulty and length, then go.
- * Also the home of Saved (bookmarked) questions.
+ * Practice — every way to answer questions, in one place:
+ * quick start, spaced review, a custom set, and timed mock exams.
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Button, Card, Chip, Gap, ProgressBar, Row, Screen, T } from '../../components/ui';
+import { ActionRow } from '../../components/journey';
+import { Crosshair, ICON_STROKE, RotateCcw, Target, Timer } from '../../components/icons';
+import { Button, Card, Chip, Gap, Pill, Row, Screen, T } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
-import { guardedStart, startBookmarks, startPractice } from '../../lib/sessions';
+import { guardedStart, startMock, startPractice, startReview } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -22,103 +24,115 @@ const DIFFS: { label: string; value?: Difficulty }[] = [
 
 export default function Practice() {
   const { c } = useTheme();
-  const { cert, readiness, progress } = useActiveCert();
+  const { cert, readiness, dueCount } = useActiveCert();
   const [domainId, setDomainId] = useState<string | undefined>(undefined);
   const [count, setCount] = useState(10);
   const [diff, setDiff] = useState(0);
-
-  const start = () => {
-    const domain = cert.domains.find((d) => d.id === domainId);
-    guardedStart(
-      () =>
-        startPractice(cert.id, {
-          count,
-          domainId,
-          difficulty: DIFFS[diff].value,
-          title: domain ? domain.name : 'Mixed practice',
-        }),
-      () => router.push('/session'),
-    );
-  };
+  const open = () => router.push('/session');
+  const focus = cert.domains.find((d) => d.id === readiness.focusDomainId);
+  const mini = Math.round(cert.exam.questions / 3);
+  const miniMinutes = Math.round((cert.exam.minutes / cert.exam.questions) * mini);
+  const icon = (G: typeof Target) => <G size={20} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
   return (
     <Screen>
       <T v="title">Practice</T>
-      <T color={c.text2}>Instant feedback, tips, and spaced review for anything you miss.</T>
+      <T color={c.text2}>Every option explained, every trap named.</T>
       <Gap />
 
-      <T v="label" color={c.text2}>Domain</T>
-      <Gap h={space.sm} />
-      <Card
-        onPress={() => setDomainId(undefined)}
-        accessibilityLabel="All domains, mixed"
-        style={{ marginBottom: space.sm, borderColor: domainId === undefined ? c.accent : c.border, borderWidth: domainId === undefined ? 2 : 1 }}
-      >
-        <T v="heading">All domains (mixed)</T>
+      <Card style={{ paddingVertical: space.xs }}>
+        <ActionRow
+          icon={icon(Target)}
+          title="Quick 10"
+          subtitle="Mixed questions, new material first"
+          onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), open)}
+        />
+        {focus && (
+          <ActionRow
+            icon={icon(Crosshair)}
+            title={`Weak area: ${focus.short}`}
+            subtitle="Where you have the most points to gain"
+            onPress={() =>
+              guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.name }), open)
+            }
+          />
+        )}
+        <ActionRow
+          icon={icon(RotateCcw)}
+          title="Spaced review"
+          subtitle={dueCount ? 'Missed questions, due now' : 'All caught up'}
+          right={dueCount ? String(dueCount) : undefined}
+          onPress={() => guardedStart(() => startReview(cert.id), open)}
+        />
       </Card>
-      {cert.domains.map((d) => {
-        const dm = readiness.domains.find((x) => x.domainId === d.id);
-        const selected = domainId === d.id;
-        return (
-          <Card
-            key={d.id}
-            onPress={() => setDomainId(d.id)}
-            accessibilityLabel={`Domain ${d.id}, ${d.name}, ${d.weight} percent of the exam`}
-            style={{ marginBottom: space.sm, borderColor: selected ? c.accent : c.border, borderWidth: selected ? 2 : 1 }}
-          >
-            <Row style={{ justifyContent: 'space-between' }}>
-              <Row gap={6}>
-                <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: d.color }} />
-                <T v="mono" color={c.text2}>DOMAIN {d.id} · {d.weight}%</T>
-              </Row>
-              <T v="caption">{dm?.answered ?? 0} answered</T>
-            </Row>
-            <T v="heading">{d.name}</T>
-            <Gap h={space.sm} />
-            <ProgressBar value={dm?.mastery ?? 0} color={d.color} height={6} />
-          </Card>
-        );
-      })}
-      <Gap h={space.sm} />
+      <Gap />
 
-      <T v="label" color={c.text2}>Difficulty</T>
+      <T v="label" color={c.text2}>Build a set</T>
       <Gap h={space.sm} />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        <Chip label="All domains" selected={domainId === undefined} onPress={() => setDomainId(undefined)} />
+        {cert.domains.map((d) => (
+          <Chip key={d.id} label={d.short} selected={domainId === d.id} onPress={() => setDomainId(d.id)} />
+        ))}
+      </View>
+      <Gap h={space.md} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         {DIFFS.map((d, i) => (
           <Chip key={d.label} label={d.label} selected={diff === i} onPress={() => setDiff(i)} />
         ))}
       </View>
-      <Gap />
-
-      <T v="label" color={c.text2}>Questions</T>
-      <Gap h={space.sm} />
+      <Gap h={space.md} />
       <Row gap={space.sm}>
         {SIZES.map((n) => (
-          <Chip key={n} label={String(n)} selected={count === n} onPress={() => setCount(n)} />
+          <Chip key={n} label={`${n} Qs`} selected={count === n} onPress={() => setCount(n)} />
         ))}
       </Row>
+      <Gap h={space.md} />
+      <Button
+        kind="secondary"
+        label={`Start ${count} questions`}
+        onPress={() => {
+          const domain = cert.domains.find((d) => d.id === domainId);
+          guardedStart(
+            () =>
+              startPractice(cert.id, {
+                count,
+                domainId,
+                difficulty: DIFFS[diff].value,
+                title: domain ? domain.name : 'Custom set',
+              }),
+            open,
+          );
+        }}
+      />
       <Gap h={space.xl} />
-      <Button label={`Start ${count} questions`} onPress={start} />
 
-      <Gap h={space.xl} />
+      <Row style={{ justifyContent: 'space-between' }}>
+        <T v="label" color={c.text2}>Mock exams</T>
+        <Timer size={18} color={c.muted} strokeWidth={ICON_STROKE} />
+      </Row>
+      <Gap h={space.sm} />
       <Card>
-        <T v="heading">Saved questions</T>
-        <T v="caption">
-          {progress.bookmarks.length === 0
-            ? 'Tap ☆ Save on any question to build your own revision set.'
-            : `${progress.bookmarks.length} saved`}
-        </T>
-        {progress.bookmarks.length > 0 && (
-          <>
-            <Gap h={space.md} />
-            <Button
-              kind="secondary"
-              label="Practise saved questions"
-              onPress={() => guardedStart(() => startBookmarks(cert.id), () => router.push('/session'))}
-            />
-          </>
-        )}
+        <Row style={{ justifyContent: 'space-between' }}>
+          <T v="heading">Mini mock</T>
+          <Pill label={`${miniMinutes} min`} />
+        </Row>
+        <T v="caption">{`${mini} questions at real exam pace. Feedback at the end.`}</T>
+        <Gap h={space.md} />
+        <Button kind="secondary" label="Start mini mock" onPress={() => guardedStart(() => startMock(cert.id, mini), open)} />
       </Card>
+      <Gap h={space.sm} />
+      <Card>
+        <Row style={{ justifyContent: 'space-between' }}>
+          <T v="heading">Full mock</T>
+          <Pill label={`${cert.exam.minutes / 60} hrs`} />
+        </Row>
+        <T v="caption">{`${cert.exam.questions} questions · ${cert.exam.minutes} minutes · weighted like the real ${cert.name}`}</T>
+        <Gap h={space.md} />
+        <Button kind="secondary" label="Start full mock" onPress={() => guardedStart(() => startMock(cert.id), open)} />
+      </Card>
+      <Gap h={space.sm} />
+      <T v="caption">{cert.exam.passingNote}</T>
     </Screen>
   );
 }
