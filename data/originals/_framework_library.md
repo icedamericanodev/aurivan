@@ -1754,3 +1754,36 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ITAF (IT Audit Framework), 4th ed. — Standards and Guidelines
 - ITAF (IT Audit Framework), 4th ed. — Tools and Techniques
 - ISACA Code of Professional Ethics (Objectivity)
+
+## Added with exam-style v2 (Domain 2 citation clean-up, Oct 2026)
+
+- #StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023)
+- AWS Prescriptive Guidance: Migration Strategies
+- Article 29 Working Party Guidelines on DPIA (WP248 rev.01, endorsed by the EDPB)
+- COBIT 2019 DSS04 (Managed Continuity)
+- Commission Implementing Decision (EU) 2021/914 (Standard Contractual Clauses)
+- EDPB Guidelines 04/2022 on the calculation of administrative fines under the GDPR
+- FFIEC Joint Statement on Security in a Cloud Computing Environment (2020)
+- GDPR Article 5(2) (Accountability)
+- GINA (Genetic Information Nondiscrimination Act)
+- HIPAA Breach Notification Rule (45 CFR §§ 164.400-414)
+- HIPAA Privacy Rule (45 CFR Part 164 Subpart E)
+- IEC 31010:2019 (Risk Assessment Techniques)
+- IIA Global Internal Audit Standards (2024), Standard 10.2 (Human Resources Management)
+- IIA Global Internal Audit Standards (2024), Standard 9.2 (Internal Audit Strategy)
+- ISACA CISA Review Manual, 28th Edition, Chapter 2 (Governance and Management of IT)
+- ISO 30300:2020 (Management Systems for Records)
+- ISO 37301:2021 (Compliance Management Systems)
+- ISO/IEC 27002:2022 Control 5.7 (Threat Intelligence)
+- ISO/IEC 27036-1:2021 (Cybersecurity — Supplier Relationships — Overview and Concepts)
+- Microsoft Cloud Adoption Framework for Azure
+- NERC CIP-003-9 (Cyber Security — Security Management Controls)
+- NIST SP 800-160 Vol 2 Rev 1 (Developing Cyber-Resilient Systems)
+- NIST SP 800-50 Rev 1 (Building a Cybersecurity and Privacy Learning Program)
+- NIST SP 800-53 Rev 5 AU-6 (Audit Record Review, Analysis, and Reporting)
+- NIST SP 800-53 Rev 5 AU-9 (Protection of Audit Information)
+- NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)
+- NITTF Insider Threat Program Maturity Framework (2018)
+- PCI DSS v4.0.1 Requirement 12.10 (Incident Response)
+- TOGAF Standard, 10th Edition
+- UK-GDPR (post-Brexit)
