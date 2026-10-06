@@ -108,8 +108,9 @@ def validate_question(q: dict, expected_domain: int, idx: int) -> list[str]:
 
     if "correct_explanation" in q:
         ce = q["correct_explanation"]
-        # Analysis-tier requires longer explanation (60+ words per the checklist quality bar)
-        if isinstance(ce, str) and q.get("difficulty") == "analysis":
+        # Analysis-tier requires longer explanation (60+ words per the checklist quality bar).
+        # Exam-style v2 items use a 40–75 word range, checked by lint_exam_style_v2.py.
+        if isinstance(ce, str) and q.get("difficulty") == "analysis" and q.get("style_version") != 2:
             words = len(ce.split())
             if words < 60:
                 errors.append(f"{qid}: analysis-tier correct_explanation has only {words} words (< 60 expected)")

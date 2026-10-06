@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.45.3</span>
+    <span class="bank-pill" id="versionPill">v10.46</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.45.3';
+const APP_VERSION = 'v10.46';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8295,13 +8295,13 @@ var LETTER_VERBISH_AFTER_A = {
   conflates:1, mistakes:1, offers:1, proposes:1, suggests:1, tests:1,
   answers:1, targets:1, substitutes:1, delegates:1, accepts:1, rejects:1,
   recommends:1, requires:1, moves:1, puts:1, places:1, gives:1, takes:1,
-  makes:1, has:1, and:1, or:1, are:1, were:1, invites:1, tempts:1
+  makes:1, has:1, and:1, or:1, are:1, were:1, invites:1, tempts:1, never:1
 };
 
 // Words that, right before a letter, mean "an answer option".
 var LETTER_CHOICE_WORDS = {
   to:1, pick:1, picks:1, picked:1, choose:1, chooses:1, chose:1, than:1,
-  over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1
+  over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1, beats:1, beat:1
 };
 
 function isOptionLetterRef(text, letter, offset, selfLetter) {
@@ -8643,6 +8643,19 @@ function endSession() {
 
 // ── SEQUENTIAL TIPS REVEAL — Decision 3 (Treatment C) ──
 // Strict order Trap → Mindset → Exam-day; user can only unlock the next tip.
+// Exam-style v2 tips carry their own label ("Eliminate: …", "Final two: …",
+// "Exam cue: …"); older tips are labelled by position (Trap → Mindset → Exam-day).
+var V2_TIP_LABELS = { 'Eliminate': 'Eliminate two', 'Final two': 'Final two', 'Exam cue': 'Exam cue' };
+function tipParts(text, idx) {
+  var m = /^(Eliminate|Final two|Exam cue):\s*/.exec(text);
+  if (m) {
+    var rest = text.slice(m[0].length);
+    return { label: V2_TIP_LABELS[m[1]], body: rest.charAt(0).toUpperCase() + rest.slice(1) };
+  }
+  var legacy = ['Trap', 'Mindset', 'Exam-day'];
+  return { label: legacy[idx] || 'Exam-day', body: text };
+}
+
 function unlockTip(qId, idx, total) {
   var container = document.getElementById('tips-seq-' + qId);
   if (!container) return;
@@ -8658,7 +8671,7 @@ function unlockTip(qId, idx, total) {
   var rawText = S.current.tips[idx];
   // Apply letter remapping for shuffled options
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
-  var text = mapLettersInText(rawText, shuffle);
+  var text = tipParts(mapLettersInText(rawText, shuffle), idx).body;
   var bodyText = escapeHtml(text);
   // Linkify principle IDs in Mindset tip
   var tipTypes = ['trap', 'mind', 'exam'];
@@ -8939,15 +8952,15 @@ function showResult(chosen, correct, timeout) {
     .filter(function(t){ return t && t.trim(); })
     .map(function(t){ return mapLettersInText(t, shuffle); });
   var tipTypes = ['trap', 'mind', 'exam']; // 1=Trap, 2=Mindset, 3=Exam-day
-  var tipLabels = { trap: 'Trap', mind: 'Mindset', exam: 'Exam-day' };
   var tipQid = q.id || 'q';
   // Auto-unlock count: 1 if wrong, 0 if correct (per Decision 3 state rules)
   var initialUnlocked = (!ok && !timeout) ? 1 : 0;
   var tipsHtml = tipsArr.map(function(t, i){
     var type = tipTypes[i] || 'exam';
     var isUnlocked = i < initialUnlocked;
+    var parts = tipParts(t, i);
     // Linkify principle IDs in Mindset (index 1) body. Pattern: ALL-CAPS-WITH-HYPHENS, 2+ segments.
-    var bodyText = escapeHtml(t);
+    var bodyText = escapeHtml(parts.body);
     if (type === 'mind') {
       bodyText = bodyText.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
         return '<a class="principle-link" href="#principles/' + pid + '" onclick="openPrinciple(\'' + pid + '\'); return false;">' + pid + '</a>';
@@ -8960,7 +8973,7 @@ function showResult(chosen, correct, timeout) {
       + '<div class="seq-tip-header">'
         + '<span class="seq-num">0' + (i + 1) + '</span>'
         + '<span class="seq-dot"></span>'
-        + '<span class="seq-label">' + tipLabels[type] + '</span>'
+        + '<span class="seq-label">' + escapeHtml(parts.label) + '</span>'
         + (!isUnlocked ? '<span class="seq-lock">Tap to reveal ›</span>' : '')
       + '</div>'
       + (isUnlocked
@@ -12073,6 +12086,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Questions that read like the real exam',
+    items: [
+      { cat: 'improved', text: 'Information Systems Auditing Process questions are now short and direct, like the real exam: one or two sentences and four concise choices.' },
+      { cat: 'new', text: 'Every question in that topic now comes with tips on how to rule out two choices and how to pick between the final two.' }
+    ]
+  },
+  {
+    version: 'v10.45.3',
     title: 'Explanations match the shuffled answers',
     items: [
       { cat: 'fixed', text: 'Answer explanations now refer to the same letters you see on screen when options are shuffled, so "why this is right" and "why this is wrong" point at the choice you see.' }

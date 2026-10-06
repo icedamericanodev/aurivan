@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
 import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
+import { tipParts } from '../engine/tips';
 import { font, radius, size, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Button, Card, Chip, Gap, Row, T } from './ui';
@@ -108,9 +109,7 @@ export function ConfidenceRow({ value, onChange }: { value?: Confidence; onChang
   );
 }
 
-// ── Tips: sequential reveal Trap → Mindset → Exam-day (→ bonus) ───────
-const TIP_LABELS = ['The trap', 'The mindset', 'Exam-day shortcut', 'One more thing'];
-
+// ── Tips: sequential reveal (v2: Eliminate → Final two → Exam cue) ─────
 export function TipsReveal({ tips }: { tips: string[] }) {
   const { c } = useTheme();
   const [shown, setShown] = useState(1);
@@ -118,21 +117,25 @@ export function TipsReveal({ tips }: { tips: string[] }) {
     const next = Math.min(shown + 1, tips.length);
     setShown(next);
     // Screen-reader users hear the newly revealed tip right away.
-    AccessibilityInfo.announceForAccessibility(`${TIP_LABELS[next - 1]}: ${tips[next - 1]}`);
+    const { label, body } = tipParts(tips[next - 1], next - 1);
+    AccessibilityInfo.announceForAccessibility(`${label}: ${body}`);
   };
   return (
     <Card style={{ backgroundColor: c.surface2 }}>
-      {tips.slice(0, shown).map((tip, i) => (
-        <View key={i} style={{ marginBottom: space.md }}>
-          <T v="mono" color={i === 0 ? c.warning : i === 1 ? c.accentText : c.tealText}>
-            {`${i + 1}. ${TIP_LABELS[i] ?? 'Tip'}`.toUpperCase()}
-          </T>
-          <Gap h={space.xs} />
-          <T v="body">{tip}</T>
-        </View>
-      ))}
+      {tips.slice(0, shown).map((tip, i) => {
+        const { label, body } = tipParts(tip, i);
+        return (
+          <View key={i} style={{ marginBottom: space.md }}>
+            <T v="mono" color={i === 0 ? c.warning : i === 1 ? c.accentText : c.tealText}>
+              {`${i + 1}. ${label}`.toUpperCase()}
+            </T>
+            <Gap h={space.xs} />
+            <T v="body">{body}</T>
+          </View>
+        );
+      })}
       {shown < tips.length && (
-        <Button kind="ghost" label={`Reveal ${TIP_LABELS[shown]?.toLowerCase() ?? 'next tip'} →`} onPress={reveal} />
+        <Button kind="ghost" label={`Reveal ${tipParts(tips[shown], shown).label.toLowerCase()} →`} onPress={reveal} />
       )}
     </Card>
   );

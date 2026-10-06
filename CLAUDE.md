@@ -17,6 +17,7 @@ work without rediscovering the layout.
 | `data/glossary.json` | Glossary tab data |
 | `scripts/convert_test_bank.py` | Idempotent converter: xlsm + tips overrides → `data/domain{N}.json` |
 | `scripts/verify_repo.sh` | Repo health check (run via the SessionStart hook) |
+| `scripts/lint_exam_style_v2.py` | Harness for exam-style v2 questions (short stems, Eliminate / Final two / Exam cue tips). Rules: `docs/content/EXAM_STYLE_V2.md` |
 | `scripts/lint_inline_js.sh` | Extracts inline `<script>` blocks from `index.html` and runs ESLint `no-undef` |
 | `.claude/settings.json` | Permission allowlist + SessionStart validation hook |
 | `CONTRIBUTING.md` | Human-facing version of this file (workflows, code style, PR rules) |
@@ -175,6 +176,7 @@ kill %1
 
 ## Mobile app workflow (added with `mobile/`)
 
+- `npm run shots` inside `mobile/` captures phone-size screenshots of the key screens with demo data (`mobile/scripts/screenshots/`). Send them to the maintainer after UI changes.
 - Run `npm run check` inside `mobile/` after touching `mobile/` or `data/domain*.json`
   (CI runs the same in `.github/workflows/mobile.yml`). The content-pack
   test fails if any question has a broken answer key.
