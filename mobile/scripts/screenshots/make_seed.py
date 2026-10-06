@@ -28,5 +28,11 @@ theme = sys.argv[2] if len(sys.argv) > 2 else "dark"
 settings = {"state": {"onboarded": True, "activeCertId": "cisa", "examDates": {"cisa": dk(now + 38 * day)},
             "theme": theme, "shuffleOptions": True, "dailyGoal": 20,
             "reminder": {"enabled": False, "hour": 19, "minute": 0}}, "version": 1}
+# An in-progress practice session on exam-style v2 questions (unshuffled for clarity).
+ids = ["d1_010", "d1_008", "d1_053"]
+session = {"state": {"active": {"id": "demo", "mode": "practice", "certId": "cisa", "title": "Practice · IS Audit",
+           "questionIds": ids, "perms": {i: ["A", "B", "C", "D"] for i in ids}, "index": 0, "responses": {},
+           "flagged": [], "startedAt": now}}, "version": 1}
 Path(sys.argv[1]).write_text(json.dumps({"aurivan.progress.v1": json.dumps(progress),
-                                         "aurivan.settings.v1": json.dumps(settings)}))
+                                         "aurivan.settings.v1": json.dumps(settings),
+                                         "aurivan.session.v1": json.dumps(session)}))
