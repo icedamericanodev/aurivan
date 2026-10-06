@@ -34,7 +34,7 @@
         "Final two: C beats A because transport stays a separate layer in both models; only the top three OSI layers merge.",
         "Exam cue: TCP/IP has four layers, and its application layer absorbs OSI layers 5 to 7, nothing below."
       ],
-      "framework_ref": "OSI Reference Model (ISO/IEC 7498-1); TCP/IP Reference Model; RFC 791 (Internet Protocol); RFC 793 (Transmission Control Protocol)",
+      "framework_ref": "OSI Reference Model (ISO/IEC 7498-1); RFC 1122 (Requirements for Internet Hosts — Communication Layers); RFC 791 (Internet Protocol); RFC 9293 (Transmission Control Protocol)",
       "related_concepts": [
         "OSI Reference Model",
         "TCP/IP",
@@ -71,7 +71,7 @@
         "Final two: A beats D because controlled, ordered execution is the purpose; unreviewed restarts weaken oversight of failures.",
         "Exam cue: automation adds value when exceptions still get human review; options that remove that review are rarely BEST."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ITIL 4 Service Configuration Management; ISO/IEC 20000-1:2018 (Service Management System)",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ISO/IEC 20000-1:2018 (Service Management System)",
       "related_concepts": [
         "Job scheduling",
         "Cron",
@@ -108,7 +108,7 @@
         "Final two: D beats B because a breach must be measurable before any penalty can apply.",
         "Exam cue: for agreements and contracts, measurable targets come first; remedies and penalties depend on them."
       ],
-      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 DSS01 (Managed Operations)",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 APO09 (Managed Service Agreements)",
       "related_concepts": [
         "SLA",
         "Service Level Management",
@@ -145,7 +145,7 @@
         "Final two: B beats A because the BIA measures impact over time; threat likelihood belongs to the risk assessment.",
         "Exam cue: the BIA answers what hurts most and how fast it must return, and it comes before any recovery strategy."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Management Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "BIA",
         "RTO",
@@ -183,7 +183,7 @@
         "Final two: C beats D because authentication proves identity, while a MAC address can be spoofed.",
         "Exam cue: prefer controls that authenticate before access over controls that trust identifiers an attacker can copy."
       ],
-      "framework_ref": "IEEE 802.1X (Network Access Control); ISACA Network Perimeter Security Audit/Assurance Program; NIST SP 800-53 (Information Security Controls)",
+      "framework_ref": "IEEE 802.1X (Network Access Control); NIST SP 800-53 Rev 5 IA-3 (Device Identification and Authentication); ISO/IEC 27002:2022 Control 8.20 (Networks Security)",
       "related_concepts": [
         "802.1X",
         "Network Access Control",
@@ -220,7 +220,7 @@
         "Final two: A beats C because the objective is evidence of who did what; filtering prevents but does not attribute.",
         "Exam cue: match the control to the objective; an investigation needs identity plus logs, not just prevention."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA Network Perimeter Security Audit/Assurance Program; NIST SP 800-53 (Information Security Controls)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-53 Rev 5 AU-3 (Content of Audit Records); ISO/IEC 27002:2022 Control 8.15 (Logging)",
       "related_concepts": [
         "Forward proxy",
         "URL filtering",
@@ -257,7 +257,7 @@
         "Final two: D beats A because a technical preventive control enforces the rule; a signed policy only asks for compliance.",
         "Exam cue: when a directive control has already failed, the BEST answer usually enforces the rule technically."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-53 MP family (Media Protection controls); NIST SP 800-53 (Information Security Controls)",
+      "framework_ref": "NIST SP 800-53 Rev 5 MP-7 (Media Use); ISO/IEC 27002:2022 Control 7.10 (Storage Media)",
       "related_concepts": [
         "USB device control",
         "Removable media",
@@ -332,7 +332,7 @@
         "Final two: C beats B because ongoing reconciliation covers the whole lifecycle; a yearly count is a stale snapshot.",
         "Exam cue: asset management runs from acquisition to secure disposal; prefer ongoing reconciliation over point-in-time counts."
       ],
-      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ITIL 4 Service Configuration Management; NIST SP 800-88 (Media Sanitization)",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ITIL 4 IT Asset Management practice; NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization)",
       "related_concepts": [
         "ITAM",
         "Asset lifecycle",
@@ -369,7 +369,7 @@
         "Final two: D beats A because only reconciliation on receipt detects loss or change after export.",
         "Exam cue: for interfaces, completeness and accuracy are proven by reconciling totals at the receiving end."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA IT Application Controls Audit/Assurance Program; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "System interfaces",
         "Reconciliation controls",
@@ -406,7 +406,7 @@
         "Final two: A beats D because change review stops formula errors at source; a total-level check misses plausible errors.",
         "Exam cue: for material end-user computing, look for change control on the logic, not just checks on the output."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 BAI03 (Managed Solutions Identification and Build); SOX Section 404 (Internal Controls over Financial Reporting)",
+      "framework_ref": "COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 DSS06 (Managed Business Process Controls); SOX Section 404 (Internal Controls over Financial Reporting)",
       "related_concepts": [
         "End-user computing",
         "EUC",
@@ -443,7 +443,7 @@
         "Final two: B beats C because observed traffic is independent evidence; self-reported surveys miss what teams forget or hide.",
         "Exam cue: for discovery, evidence from systems outranks evidence from the people being assessed."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); CSA Cloud Controls Matrix; ISACA Cloud Computing Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); CSA Cloud Controls Matrix; ISACA Cloud Computing Management Audit/Assurance Program",
       "related_concepts": [
         "Shadow IT",
         "CASB",
@@ -480,7 +480,7 @@
         "Final two: C beats A because baseline comparison detects drift; update settings cover patching alone.",
         "Exam cue: when hardening was set once and never checked, look for a periodic comparison against the approved baseline."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-53 (Information Security Controls); ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration); NIST SP 800-53 Rev 5 CM-6 (Configuration Settings); COBIT 2019 BAI10 (Managed Configuration)",
       "related_concepts": [
         "OS review",
         "Patch compliance",
@@ -517,7 +517,7 @@
         "Final two: D beats C because forecasting gives lead time; a 95 percent alert fires too late to plan.",
         "Exam cue: proactive means acting on forecasts before thresholds; alerts and complaints are reactive signals."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ITIL 4 Capacity and Performance Management; COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "framework_ref": "ITIL 4 Capacity and Performance Management; COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Capacity management",
         "Proactive monitoring",
@@ -554,7 +554,7 @@
         "Final two: A beats C because incident management restores service first; problem management then finds the cause.",
         "Exam cue: restore service first, but never skip root cause; look for the hand-off to problem management."
       ],
-      "framework_ref": "ITIL 4 Incident Management practice; ITIL 4 Problem Management practice; ISACA Incident Management and Response Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Incident Management practice; ITIL 4 Problem Management practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "related_concepts": [
         "Incident management",
         "Problem management",
@@ -591,7 +591,7 @@
         "Final two: B beats A because reopen rates measure failed fixes directly; surveys measure perception.",
         "Exam cue: when a metric may be gamed, look for an outcome measure that the gaming would expose."
       ],
-      "framework_ref": "ITIL 4 Service Desk practice; ITIL 4 Incident Management practice; ITAF Performance Standards on Evidence",
+      "framework_ref": "ITIL 4 Service Desk practice; ITIL 4 Incident Management practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "related_concepts": [
         "Help desk",
         "First-call resolution",
@@ -628,7 +628,7 @@
         "Final two: C beats D because a single commander prioritizes without abandoning the suspected intrusion.",
         "Exam cue: multiple concurrent incidents call for unified command, not choosing one and dropping the rest."
       ],
-      "framework_ref": "ITIL 4 Incident Management practice; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITAF Performance Standards on Evidence",
+      "framework_ref": "ITIL 4 Incident Management practice; NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
       "related_concepts": [
         "Multi-incident response",
         "Incident command",
@@ -665,7 +665,7 @@
         "Final two: A beats C because remediation should follow risk, not popularity or cost.",
         "Exam cue: when many issues surface at once, risk-rank FIRST; sanctioning, migrating or retiring follows from the ranking."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023); CSA Cloud Controls Matrix",
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); CSA Cloud Controls Matrix",
       "related_concepts": [
         "Shadow IT",
         "Tiered remediation",
@@ -702,7 +702,7 @@
         "Final two: D beats A because cause must rest on evidence; a workshop without data negotiates it.",
         "Exam cue: in blame disputes, the BEST first step establishes facts from independent evidence before anyone agrees a cause."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ITIL 4 Problem Management practice; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)",
+      "framework_ref": "ITIL 4 Problem Management practice; COBIT 2019 DSS03 (Managed Problems); ITIL 4 Service Level Management practice",
       "related_concepts": [
         "SLA breach",
         "Root cause analysis",
@@ -739,7 +739,7 @@
         "Final two: B beats D because impact must justify the target before money is committed.",
         "Exam cue: waiting is BEST when a key input is missing; here the impact-versus-cost analysis must precede approval."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Management Audit/Assurance Program; ITAF Performance Standards on Evidence",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "BIA",
         "RTO",
@@ -777,7 +777,7 @@
         "Final two: C beats B because private ranges are not routable on the internet and must be translated.",
         "Exam cue: private addresses reaching the internet point to translation at the boundary; NAT hides internal addressing but is not encryption."
       ],
-      "framework_ref": "RFC 3022 (Network Address Translation); ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "RFC 3022 (Network Address Translation); RFC 1918 (Private Address Allocation)",
       "related_concepts": [
         "NAT",
         "NAPT",
@@ -814,7 +814,7 @@
         "Final two: D beats A because power and cooling support every server; peripheral failures stay local.",
         "Exam cue: hardware scope covers processing, input/output and supporting infrastructure; power and cooling are easy to forget."
       ],
-      "framework_ref": "ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
       "related_concepts": [
         "Hardware components",
         "Processing",
@@ -851,7 +851,7 @@
         "Final two: A beats D because even critical patches need testing and rollback; urgency shortens the process but does not skip it.",
         "Exam cue: change control applies even in emergencies; prefer expedited testing over untested deployment."
       ],
-      "framework_ref": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning); ITIL 4 Service Configuration Management; ITAF Performance Standards on Evidence",
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); ITIL 4 Change Enablement practice; NIST SP 800-53 Rev 5 SI-2 (Flaw Remediation)",
       "related_concepts": [
         "Patch management",
         "Vendor updates",
@@ -888,7 +888,7 @@
         "Final two: B beats C because the changes are already approved; release management tests them together as one package.",
         "Exam cue: change management authorizes each change; release management plans, tests and deploys the bundle."
       ],
-      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; ITAF Performance Standards on Evidence",
+      "framework_ref": "ITIL 4 Release Management practice; ITIL 4 Deployment Management practice; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Release management",
         "ITIL 4",
@@ -925,7 +925,7 @@
         "Final two: C beats A because monitoring prevents failures; hot spares only soften their impact.",
         "Exam cue: match the objective; reducing failures needs predictive, preventive controls, while reducing impact needs redundancy."
       ],
-      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ITIL 4 Service Configuration Management; ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); NIST SP 800-53 Rev 5 MA-6 (Timely Maintenance); COBIT 2019 DSS01 (Managed Operations)",
       "related_concepts": [
         "Hardware maintenance",
         "Predictive maintenance",
@@ -962,7 +962,7 @@
         "Final two: A beats B because a baseline of approved requirements reveals unauthorized or mis-sequenced jobs that run without failing.",
         "Exam cue: the best evidence compares what happens with an approved baseline; exception logs show only what broke."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 DSS01 (Managed Operations)",
       "related_concepts": [
         "Scheduling review",
         "Job orphan",
@@ -999,7 +999,7 @@
         "Final two: C beats D because centrally enforced roles prevent the inconsistency, while self-recertification only detects it later.",
         "Exam cue: when the root issue is inconsistency across many systems, prefer a central preventive control over local detective reviews."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 DSS05 (Managed Security Services); NIST SP 800-53 AC family",
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); NIST SP 800-53 Rev 5 AC-2 (Account Management); ISO/IEC 27002:2022 Control 5.15 (Access Control)",
       "related_concepts": [
         "Access control software",
         "RBAC",
@@ -1036,7 +1036,7 @@
         "Final two: B beats A because a repository protects integrity and history, while backups only copy whatever each workstation holds.",
         "Exam cue: for source code, look for one authoritative, access-controlled version with history; copies alone protect availability, not integrity."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; SLSA (Supply-chain Levels for Software Artifacts) framework; OWASP SAMM (Software Assurance Maturity Model)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.4 (Access to Source Code); SLSA v1.0 (Supply-chain Levels for Software Artifacts); OWASP SAMM (Software Assurance Maturity Model)",
       "related_concepts": [
         "Source code management",
         "Version control",
@@ -1073,7 +1073,7 @@
         "Final two: D beats A because compliance compares deployed software with entitlements, and purchase records show only one side.",
         "Exam cue: license compliance reconciles two sides, what is installed and what is entitled; one side alone proves nothing."
       ],
-      "framework_ref": "ITAF Performance Standards on Reporting; ITIL 4 Service Configuration Management; COBIT 2019 BAI09 (Managed Assets)",
+      "framework_ref": "ITIL 4 IT Asset Management practice; COBIT 2019 BAI09 (Managed Assets); ISO/IEC 19770-1 (Software Asset Management)",
       "related_concepts": [
         "Software license compliance",
         "License entitlement",
@@ -1110,7 +1110,7 @@
         "Final two: C beats A because preventive restriction removes the developer access, while monthly log review only finds misuse afterwards.",
         "Exam cue: for tools that bypass application controls, prefer named, approved, least-privilege access over detective review alone."
       ],
-      "framework_ref": "COBIT 2019 BAI01 (Managed Programs); NIST SP 800-53 AC-6 (Least Privilege); ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.18 (Use of Privileged Utility Programs); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); COBIT 2019 DSS01 (Managed Operations)",
       "related_concepts": [
         "Utility programs",
         "Privileged access",
@@ -1184,7 +1184,7 @@
         "Final two: A beats B because monitoring with alerts detects live failures, while configuration management controls settings, not availability.",
         "Exam cue: match the tool to the gap; a detection gap needs continuous monitoring and alerting, not configuration control."
       ],
-      "framework_ref": "ISACA Network Perimeter Security Audit/Assurance Program; ITIL 4 Service Configuration Management",
+      "framework_ref": "ITIL 4 Monitoring and Event Management practice; COBIT 2019 DSS01 (Managed Operations); ISO/IEC 27002:2022 Control 8.16 (Monitoring Activities)",
       "related_concepts": [
         "Network management",
         "NCM",
@@ -1222,7 +1222,7 @@
         "Final two: C beats D because an actively exploited flaw needs the expedited path, while routine patches can follow normal testing.",
         "Exam cue: in patching, risk sets the speed; active exploitation moves a patch to the emergency path, still under change control."
       ],
-      "framework_ref": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning); ITAF Performance Standards on Evidence; ITIL 4 Change Enablement practice",
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); ITIL 4 Change Enablement practice; CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities)",
       "related_concepts": [
         "Patch management process",
         "Risk-tiered patching",
@@ -1296,7 +1296,7 @@
         "Final two: B beats A because the stated gap is missing log sources, and integrity protection for existing logs does not close it.",
         "Exam cue: coverage gaps need more log sources, not stronger protection of the sources already kept."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); ITAF Performance Standards on Evidence; ITIL 4 Service Configuration Management",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); ISO/IEC 27002:2022 Control 8.15 (Logging); NIST SP 800-53 Rev 5 AU-11 (Audit Record Retention)",
       "related_concepts": [
         "Operational log management",
         "Log types",
@@ -1333,7 +1333,7 @@
         "Final two: C beats D because cross-source rules need a common field format, while threat feeds only add external indicators.",
         "Exam cue: when correlation fails across sources, check normalization first; rules cannot match fields that are named differently."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); ITAF Performance Standards on Evidence; CSA Cloud Controls Matrix",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); NIST SP 800-53 Rev 5 AU-6 (Audit Record Review, Analysis, and Reporting); ISO/IEC 27002:2022 Control 8.15 (Logging)",
       "related_concepts": [
         "SIEM",
         "Log management",
@@ -1370,7 +1370,7 @@
         "Final two: A beats B because management accepts a bounded, compensated risk instead of an untested change on a critical system.",
         "Exam cue: when a fix cannot be applied safely, look for compensating controls plus documented acceptance by the risk owner."
       ],
-      "framework_ref": "NIST SP 800-40 (Guide to Enterprise Patch Management Planning); FFIEC IT Examination Handbook; ITAF Performance Standards on Evidence",
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); NIST SP 800-53 Rev 5 SI-2 (Flaw Remediation); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
         "Patch deferral",
         "Compensating controls",
@@ -1444,7 +1444,7 @@
         "Final two: B beats C because root cause analysis comes before an expensive fix; the fault may not lie in the platform.",
         "Exam cue: recurring incidents with one symptom call for problem management, not more point fixes or a premature replacement."
       ],
-      "framework_ref": "ITIL 4 Problem Management practice; ITAF Performance Standards on Evidence; COBIT 2019 DSS03 (Managed Problems)",
+      "framework_ref": "ITIL 4 Problem Management practice; COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
         "Problem management",
         "Recurring incidents",
@@ -1481,7 +1481,7 @@
         "Final two: A beats D because a joint plan with integration testing protects the end-to-end service, while separate deployments only respect cadence.",
         "Exam cue: release management coordinates many teams through one plan; it respects how each platform releases rather than forcing uniformity."
       ],
-      "framework_ref": "ITIL 4 Release Management practice; COBIT 2019 BAI06 (Managed IT Changes); ITAF Performance Standards on Evidence",
+      "framework_ref": "ITIL 4 Release Management practice; COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Heterogeneous release",
         "Multi-platform coordination",
@@ -1518,7 +1518,7 @@
         "Final two: D beats B because a type 1 hypervisor runs directly on hardware; an operating system beneath it means type 2.",
         "Exam cue: each layer uses services from the one below; check the stem for type 1 versus type 2 before ordering a stack."
       ],
-      "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "NIST SP 800-125 (Guide to Security for Full Virtualization Technologies); COBIT 2019 APO03 (Managed Enterprise Architecture)",
       "related_concepts": [
         "IS architecture",
         "Software stack",
@@ -1555,7 +1555,7 @@
         "Final two: C beats A because the stem asks about structure; a flexible schema shifts data validation away from the database.",
         "Exam cue: relational means a fixed schema enforced by the database; NoSQL flexibility moves integrity checks into the application."
       ],
-      "framework_ref": "ISACA Database Management Audit/Assurance Program; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality)",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality)",
       "related_concepts": [
         "Relational database",
         "NoSQL",
@@ -1593,7 +1593,7 @@
         "Final two: B beats A because unsupported hardware behind critical services cannot be fixed quickly, while capacity shortfalls build visibly over time.",
         "Exam cue: with limited time, aim audit effort at the highest-impact exposure, such as critical services on components that cannot be supported."
       ],
-      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISACA IT Audit Standard 1202 (Risk Assessment in Planning)",
       "related_concepts": [
         "Hardware review",
         "Hardware lifecycle",
@@ -1630,7 +1630,7 @@
         "Final two: D beats B because orders lost in transit never reach billing, so its logs cannot show them.",
         "Exam cue: match the control to where the failure occurs; delivery failures between systems point to the communications layer."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); ISACA Network Perimeter Security Audit/Assurance Program; COBIT 2019 APO03 (Managed Enterprise Architecture)",
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); COBIT 2019 DSS06 (Managed Business Process Controls)",
       "related_concepts": [
         "Data communications software",
         "Message broker",
@@ -1667,7 +1667,7 @@
         "Final two: D beats A because the finding is weak configuration; hardening fixes it, while antivirus addresses a different threat.",
         "Exam cue: misconfiguration calls for a hardened baseline, not an extra security tool layered on top."
       ],
-      "framework_ref": "NIST SP 800-123 (Guide to General Server Security); CIS Benchmarks for Operating Systems; ITAF Performance Standards on Evidence",
+      "framework_ref": "NIST SP 800-123 (Guide to General Server Security); CIS Benchmarks for Operating Systems; NIST SP 800-53 Rev 5 CM-6 (Configuration Settings)",
       "related_concepts": [
         "OS hardening",
         "RBAC",
@@ -1705,7 +1705,7 @@
         "Final two: A beats B because integrity monitoring detects any change against a baseline, while antivirus spots only known malicious code.",
         "Exam cue: to detect unauthorized change, compare against a trusted baseline; signature tools detect known threats, not change itself."
       ],
-      "framework_ref": "NIST SP 800-123 (Guide to General Server Security); ITAF Performance Standards on Evidence; CIS Benchmarks for Operating Systems",
+      "framework_ref": "NIST SP 800-123 (Guide to General Server Security); NIST SP 800-53 Rev 5 SI-7 (Software, Firmware, and Information Integrity); CIS Benchmarks for Operating Systems",
       "related_concepts": [
         "OS integrity",
         "Secure boot",
@@ -1743,7 +1743,7 @@
         "Final two: C beats D because individual accounts restore accountability, while rotating a shared password keeps every action anonymous.",
         "Exam cue: shared privileged accounts are an accountability problem; prefer individual, least-privilege access with logging over tightening the shared credential."
       ],
-      "framework_ref": "ISACA Database Management Audit/Assurance Program; NIST SP 800-53 (Information Security Controls); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); NIST SP 800-53 Rev 5 IA-2 (Identification and Authentication (Organizational Users)); NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
       "related_concepts": [
         "Database controls",
         "ACID",
@@ -1780,7 +1780,7 @@
         "Final two: A beats C because tamper-resistant logging detects misuse by the DBAs themselves, while password changes only counter stolen credentials.",
         "Exam cue: when excessive privilege is accepted, look for independent monitoring the privileged users cannot alter."
       ],
-      "framework_ref": "ISACA Database Management Audit/Assurance Program; ISACA Information Systems Audit and Assurance Standards; NIST SP 800-53 (Information Security Controls)",
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); NIST SP 800-53 Rev 5 AU-6 (Audit Record Review, Analysis, and Reporting); NIST SP 800-53 Rev 5 AU-9 (Protection of Audit Information)",
       "related_concepts": [
         "Database review",
         "Privileged access",
@@ -1817,7 +1817,7 @@
         "Final two: B beats D because the core finding is uncontrolled change, and expiry alerts fix only one certificate symptom.",
         "Exam cue: when teams change production directly, the answer is usually change control against a baseline, not a narrower technical fix."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); ITIL 4 Service Configuration Management; ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI10 (Managed Configuration); ITIL 4 Change Enablement practice",
       "related_concepts": [
         "Load balancer",
         "Health checks",
@@ -1854,7 +1854,7 @@
         "Final two: C beats A because containment comes before resolution; stopping the payment run limits harm while the fix is prepared.",
         "Exam cue: handling runs detect, document, control, resolve, report; pausing a process to contain harm is often the right next move."
       ],
-      "framework_ref": "ISACA Incident Management and Response Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Incident Management practice",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ITIL 4 Incident Management practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "related_concepts": [
         "Incident response",
         "Detection",
@@ -1891,7 +1891,7 @@
         "Final two: B beats D because trend and root-cause data show whether recurrence falls, while closure speed does not.",
         "Exam cue: when the goal is preventing repeats, pick the measure of recurrence over the measure of speed."
       ],
-      "framework_ref": "ITIL 4 Problem Management practice; ITAF Performance Standards on Evidence; COBIT 2019 DSS03 (Managed Problems)",
+      "framework_ref": "ITIL 4 Problem Management practice; COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
         "Problem reporting",
         "Trend analysis",
@@ -1928,7 +1928,7 @@
         "Final two: C beats D because tracing changes to approvals tests the control, while completion rates only show results.",
         "Exam cue: to test whether something is controlled, prefer evidence of authorization over performance metrics."
       ],
-      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "IS operations review",
         "Audit scope",
@@ -1964,7 +1964,7 @@
         "Final two: A beats D because targets must shape the design; setting them separately invites undeliverable promises.",
         "Exam cue: when service levels meet architecture, choose the option that links commitment, design and investment by business need."
       ],
-      "framework_ref": "ITIL 4 Service Level Management practice; COBIT 2019 DSS01 (Managed Operations)",
+      "framework_ref": "ITIL 4 Service Level Management practice; COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 APO03 (Managed Enterprise Architecture)",
       "related_concepts": [
         "Service level management",
         "Enterprise architecture",
@@ -2001,7 +2001,7 @@
         "Final two: D beats C because removing direct change rights prevents the problem, while monthly review only finds it later.",
         "Exam cue: when the finding is excessive rights, fix the rights first; reviews support but do not replace restriction."
       ],
-      "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); ISACA Database Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); COBIT 2019 BAI10 (Managed Configuration); COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
         "DBMS metadata",
         "Data dictionary",
@@ -2038,7 +2038,7 @@
         "Final two: B beats D because flexible schema at volume fits NoSQL, while strict consistency is what NoSQL often trades away.",
         "Exam cue: choose the technology that fits the workload; a fashionable option is right only when its strengths match the need."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Database Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI03 (Managed Solutions Identification and Build); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); COBIT 2019 APO14 (Managed Data)",
       "related_concepts": [
         "NoSQL",
         "Relational vs NoSQL",
@@ -2075,7 +2075,7 @@
         "Final two: A beats D because current support and skills drive today's risk, while a future timeline does not reduce it.",
         "Exam cue: for legacy platforms, focus on the risk of running them now, not on promises to replace them later."
       ],
-      "framework_ref": "ISACA Database Management Audit/Assurance Program; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); COBIT 2019 APO07 (Managed Human Resources)",
       "related_concepts": [
         "Hierarchical database",
         "Network database",
@@ -2113,7 +2113,7 @@
         "Final two: C beats B because formal exceptions with compensating controls keep risk accountable, while ad hoc downgrades hide it.",
         "Exam cue: when security and operations clash, prefer a governed exception process over a blanket or reactive change."
       ],
-      "framework_ref": "CIS Benchmarks for Operating Systems; NIST SP 800-123 (Guide to General Server Security); ITAF Performance Standards on Evidence",
+      "framework_ref": "CIS Benchmarks for Operating Systems; NIST SP 800-123 (Guide to General Server Security); NIST SP 800-53 Rev 5 CM-6 (Configuration Settings)",
       "related_concepts": [
         "OS hardening",
         "CIS Benchmarks",
@@ -2150,7 +2150,7 @@
         "Final two: D beats C because understanding the cause should precede spending, not follow it.",
         "Exam cue: when the cause of a problem is unknown, analysis comes FIRST; acting before diagnosis is the trap."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); ISACA Database Management Audit/Assurance Program; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality)",
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
       "related_concepts": [
         "Database performance",
         "Replica lag",
@@ -2187,7 +2187,7 @@
         "Final two: A beats B because the auditor informs management's decision; directing IT oversteps the auditor's role.",
         "Exam cue: the IS auditor recommends and reports; management decides and directs. Reject options where the auditor takes management's job."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ITIL 4 Service Level Management practice; COBIT 2019 DSS01 (Managed Operations)",
+      "framework_ref": "ITIL 4 Service Level Management practice; COBIT 2019 APO09 (Managed Service Agreements); ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "SLA mismatch",
         "Legacy modernization",
@@ -2224,7 +2224,7 @@
         "Final two: B beats C because it protects the gap without forcing a rushed migration of core network devices.",
         "Exam cue: when a deadline cannot be met, cover the interim risk with compensating controls rather than rushing the change."
       ],
-      "framework_ref": "ISACA Network Perimeter Security Audit/Assurance Program; COBIT 2019 BAI09 (Managed Assets); ISACA Vendor Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISACA Val IT Framework",
       "related_concepts": [
         "Network device EOS",
         "Vendor lock-in",
@@ -2261,7 +2261,7 @@
         "Final two: C beats A because differentials are cumulative since the last full, while incrementals require the whole chain.",
         "Exam cue: differential = since last full (faster restore); incremental = since last backup (faster backup, longer restore chain)."
       ],
-      "framework_ref": "ISACA Backup and Recovery Audit Program; ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
       "related_concepts": [
         "Full backup",
         "Incremental backup",
@@ -2298,7 +2298,7 @@
         "Final two: D beats A because the requirement limits lost data; RTO limits downtime.",
         "Exam cue: RPO looks back to the last good copy (data loss); RTO looks forward to restored service (downtime)."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Management Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "RTO",
         "RPO",
@@ -2336,7 +2336,7 @@
         "Final two: A beats C because the gap here is location; an immutable copy onsite still shares the site's fate.",
         "Exam cue: test the facts against each element of a named rule, and fix the element that is missing."
       ],
-      "framework_ref": "ISACA Backup and Recovery Audit Program; CISA #StopRansomware guidance; NIST SP 800-34 (Contingency Planning Guide)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.13 (Information Backup); #StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); NIST SP 800-53 Rev 5 CP-9 (System Backup)",
       "related_concepts": [
         "3-2-1 backup",
         "3-2-1-1-0",
@@ -2373,7 +2373,7 @@
         "Final two: B beats D because layered rotation meets retention cheaply, while keeping every tape ignores media economy.",
         "Exam cue: when a stem gives two requirements, the answer must satisfy both; meeting one at any cost is the trap."
       ],
-      "framework_ref": "ISACA Backup and Recovery Audit Program; ISACA Information Systems Audit and Assurance Standards",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
       "related_concepts": [
         "GFS backup rotation",
         "Grandfather-Father-Son",
@@ -2410,7 +2410,7 @@
         "Final two: C beats D because inventory reconciliation proves the media exist, while a contract only proves the service is paid for.",
         "Exam cue: prefer evidence that the protected asset is actually there over evidence that an agreement exists."
       ],
-      "framework_ref": "ISACA Backup and Recovery Audit Program; NIST SP 800-34 (Contingency Planning Guide); NIST SP 800-209 (Security Guidelines for Storage Infrastructure)",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-6 (Alternate Storage Site); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; NIST SP 800-209 (Security Guidelines for Storage Infrastructure)",
       "related_concepts": [
         "Offsite library",
         "Backup vault",
@@ -2484,7 +2484,7 @@
         "Final two: A beats B because isolating the failing dependency stops the cascade; more instances inherit it.",
         "Exam cue: match the resilience pattern to the failure mode; redundancy does not help when every copy shares the cause."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO 27031 (ICT Readiness for Business Continuity); ISACA Cybersecurity Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 27031 (ICT Readiness for Business Continuity); AWS Well-Architected Framework (Reliability Pillar); COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Application resilience",
         "Circuit breaker",
@@ -2521,7 +2521,7 @@
         "Final two: C beats B because provider and path diversity removes the shared dependency; more links from one ISP keep it.",
         "Exam cue: resilience means removing single points of failure; more of the same component rarely does that."
       ],
-      "framework_ref": "ISACA Network Perimeter Security Audit/Assurance Program; ISO 27031 (ICT Readiness for Business Continuity); NIST SP 800-34 (Contingency Planning Guide)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities); ISO/IEC 27031 (ICT Readiness for Business Continuity); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
         "Network resilience",
         "Diverse-path WAN",
@@ -2558,7 +2558,7 @@
         "Final two: D beats C because logical errors are common and RAID copies them; triple disk failure is rare.",
         "Exam cue: RAID is availability, not backup; only point-in-time copies recover from deletion or corruption."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-209 (Security Guidelines for Storage Infrastructure); ISACA Backup and Recovery Audit Program",
+      "framework_ref": "NIST SP 800-209 (Security Guidelines for Storage Infrastructure); NIST SP 800-53 Rev 5 CP-9 (System Backup); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
       "related_concepts": [
         "Storage resilience",
         "RAID",
@@ -2595,7 +2595,7 @@
         "Final two: B beats D because criticality comes from business impact; cost decides how to recover, after the BIA.",
         "Exam cue: business impact drives recovery priorities. BIA before strategy, and owners confirm the ratings."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Management Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "BIA criticality",
         "Impact-over-time",
@@ -2632,7 +2632,7 @@
         "Final two: A beats B because strategies depend on BIA results; choosing them first reverses the lifecycle.",
         "Exam cue: in continuity planning, the BIA comes before strategy, plans and tests."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "framework_ref": "ISO 22301:2019 Clause 8.2 (Business Impact Analysis and Risk Assessment); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; DRII Professional Practices",
       "related_concepts": [
         "BCP process",
         "BCP lifecycle",
@@ -2669,7 +2669,7 @@
         "Final two: D beats A because policy states mandate and accountability; procedures belong in the plans beneath it.",
         "Exam cue: policy = why, who and scope; plans and procedures = how. Match the content to the document level."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); DRII Professional Practices; BCI Good Practice Guidelines",
+      "framework_ref": "ISO 22301:2019 Clause 5.2 (Policy); DRII Professional Practice 1 (Program Initiation and Management); BCI Good Practice Guidelines 2023 PP1 (Policy and Programme Management)",
       "related_concepts": [
         "BCP policy",
         "Governance structure",
@@ -2706,7 +2706,7 @@
         "Final two: B beats D because delegated authority removes the bottleneck; a longer call tree only makes it easier to reach.",
         "Exam cue: when a single person blocks a response, look for pre-delegated authority with defined criteria."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); BCI Good Practice Guidelines; ISACA BCP Audit Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); COBIT 2019 DSS04 (Managed Continuity); DRII Professional Practice 5 (Incident Response)",
       "related_concepts": [
         "BCP activation",
         "Incident command",
@@ -2742,7 +2742,7 @@
         "Final two: C beats A because the warm site meets the RTO at lower cost; a hot site exceeds the need.",
         "Exam cue: pick the least costly recovery option that still meets the RTO; overspending on low-criticality systems is a trap."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "framework_ref": "ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; DRII Professional Practice 4 (Business Continuity Strategies)",
       "related_concepts": [
         "Hot site",
         "Warm site",
@@ -2779,7 +2779,7 @@
         "Final two: A beats B because only test restores detect corruption; a new backup cycle only limits its spread.",
         "Exam cue: a backup is proven only by restoring it; prefer controls that test recoverability over those that test creation."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); ISACA Backup and Recovery Audit Program",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
       "related_concepts": [
         "Backup integrity",
         "Restoration testing",
@@ -2853,7 +2853,7 @@
         "Final two: D beats B because the playbook's own criteria have triggered; external confirmation is not a precondition.",
         "Exam cue: when criteria are met and authority is delegated, the BEST answer is to act per the documented plan."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); ISACA BCP Audit Program; ITAF Performance Standards on Evidence",
+      "framework_ref": "ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); COBIT 2019 DSS04 (Managed Continuity); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
         "Cross-region failover",
         "Pre-delegated authority",
@@ -2890,7 +2890,7 @@
         "Final two: A beats D because management owns criticality decisions; the auditor advises and must stay independent.",
         "Exam cue: when an option has the auditor making a business decision, it is usually the runner-up, not the key."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management); ITAF Performance Standards on Evidence; ISACA Business Continuity Management Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "BIA criticality dispute",
         "Three-stakeholder conflict",
@@ -2926,7 +2926,7 @@
         "Final two: C beats A because integrated ownership protects patient care, while IT-led governance puts an enabler first.",
         "Exam cue: when a threat spans many functions, prefer cross-functional ownership over handing control to one department."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management); BCI Good Practice Guidelines",
+      "framework_ref": "ISO 22301:2019 Clause 5.3 (Roles, Responsibilities and Authorities); BCI Good Practice Guidelines 2023 PP1 (Policy and Programme Management)",
       "related_concepts": [
         "Pandemic continuity",
         "Cross-functional governance",
@@ -2963,7 +2963,7 @@
         "Final two: B beats D because containment and service restoration come before root-cause work, which follows later.",
         "Exam cue: during an active incident, contain and restore FIRST; investigate root cause afterwards, never skip it."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); NIST SP 800-184 (Guide for Cybersecurity Event Recovery); ISACA Cybersecurity Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-184 (Guide for Cybersecurity Event Recovery); NIST SP 800-53 Rev 5 SC-5 (Denial-of-Service Protection)",
       "related_concepts": [
         "DDoS mitigation",
         "Active incident response",
@@ -3000,7 +3000,7 @@
         "Final two: D beats C because a parallel test proves capability while production keeps running; full interruption disrupts it.",
         "Exam cue: real processing without production risk points to a parallel test; full interruption is for proven, mature plans."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); DRII Professional Practice 8 (Business Continuity Plan Exercise, Assessment, and Maintenance)",
       "related_concepts": [
         "DR testing",
         "Tabletop",
@@ -3038,7 +3038,7 @@
         "Final two: A beats C because continuous synchronization meets the RPO; nightly backups lose up to a day of data.",
         "Exam cue: near-zero RPO means continuous replication; a hot site answers RTO only when its data is current."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); DRII Professional Practice 4 (Business Continuity Strategies)",
       "related_concepts": [
         "Reciprocal agreement",
         "Mobile recovery site",
@@ -3075,7 +3075,7 @@
         "Final two: C beats B because business impact sets recovery targets; IT capability is then measured against them.",
         "Exam cue: BIA comes before strategy; any option setting RTO from technical capability reverses the order."
       ],
-      "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; NIST SP 800-34 (Contingency Planning Guide); ISO 22301 (Business Continuity Management)",
+      "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis)",
       "related_concepts": [
         "RTO/RPO alignment",
         "Criticality tiering",
@@ -3111,7 +3111,7 @@
         "Final two: B beats C because contention for shared capacity decides whether recovery happens at all.",
         "Exam cue: for shared or subscription recovery sites, look for capacity guarantees and priority during widespread events."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); FFIEC Business Continuity Management Booklet",
+      "framework_ref": "Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); FFIEC Business Continuity Management Booklet; NIST SP 800-53 Rev 5 CP-7 (Alternate Processing Site)",
       "related_concepts": [
         "Recovery vendor contract",
         "Multi-tenant fair use",
@@ -3148,7 +3148,7 @@
         "Final two: D beats C because the business owns the RTO; IT must meet it, not rewrite it.",
         "Exam cue: when capability misses a recovery target, fix the capability or escalate; never quietly change the target."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); COBIT 2019 BAI09 (Managed Assets); ISACA DRP Audit Program",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; COBIT 2019 BAI09 (Managed Assets); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
         "Alternative hardware",
         "Priority replacement",
@@ -3184,7 +3184,7 @@
         "Final two: C beats B because without a declaration nothing starts; communications support a recovery already under way.",
         "Exam cue: for plan-content questions, prefer the element that triggers or authorizes action over supporting sections."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ITAF Performance Standards on Evidence; ISACA DRP Audit Program",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
         "IT DRP",
         "DRP contents",
@@ -3221,7 +3221,7 @@
         "Final two: A beats C because likely events such as ransomware need recovery plans, not only catastrophes.",
         "Exam cue: DR scope is set by credible risk; prefer coverage of likely and severe events over one dramatic scenario."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management)",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.2.3 (Risk Assessment); NIST SP 800-184 (Guide for Cybersecurity Event Recovery)",
       "related_concepts": [
         "DRP scenarios",
         "Ransomware DR",
@@ -3257,7 +3257,7 @@
         "Final two: D beats B because recovery needs site-specific steps an alternate can follow; production runbooks assume normal conditions.",
         "Exam cue: judge recovery documentation by whether a qualified substitute could execute it, not by who wrote it."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.4.4 (Business Continuity Plans); DRII Professional Practice 6 (Plan Development and Implementation)",
       "related_concepts": [
         "Recovery procedures",
         "Step-by-step procedures",
@@ -3293,7 +3293,7 @@
         "Final two: B beats A because only separate leads let the parallel work the RTO requires actually happen.",
         "Exam cue: in DR team design, look for single-person bottlenecks; each critical concurrent task needs its own trained owner."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; NIST SP 800-53 Rev 5 CP-2 (Contingency Plan); DRII Professional Practice 6 (Plan Development and Implementation)",
       "related_concepts": [
         "DRP roles",
         "Incident commander",
@@ -3330,7 +3330,7 @@
         "Final two: C beats B because procedures describe how to execute a strategy, so the strategy must be chosen first.",
         "Exam cue: BIA, then strategy, then plans, then training and testing; do not write procedures for an unchosen strategy."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management); DRII Professional Practices; BCI Good Practice Guidelines",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); DRII Professional Practice 3 (Business Impact Analysis); BCI Good Practice Guidelines 2023 PP3 (Analysis)",
       "related_concepts": [
         "BCP development",
         "BCP lifecycle",
@@ -3366,7 +3366,7 @@
         "Final two: A beats C because defined decision areas remove ambiguity; more titles leave it in place.",
         "Exam cue: when a plan's weakness is ambiguity, choose the option that defines ownership, not the one that adds names."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management); DRII Professional Practices",
+      "framework_ref": "ISO 22301:2019 Clause 5.3 (Roles, Responsibilities and Authorities); ISO 22301:2019 Clause 8.4.2 (Incident Response Structure)",
       "related_concepts": [
         "BCP key personnel",
         "Decision authority",
@@ -3402,7 +3402,7 @@
         "Final two: D beats C because separating storage and suppliers removes the single points of failure; more stock in one place does not.",
         "Exam cue: for supplies and equipment, look for geographic separation and an alternate source."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management); BCI Good Practice Guidelines",
+      "framework_ref": "ISO 22301:2019 Clause 8.3.4 (Resource Requirements); BCI Good Practice Guidelines 2023 PP4 (Design)",
       "related_concepts": [
         "Supply backup",
         "Reorder thresholds",
@@ -3438,7 +3438,7 @@
         "Final two: B beats A because any insurance, including business interruption, pays money but cannot restore operations.",
         "Exam cue: insurance is a financial risk-transfer tool; it never substitutes for operational recovery capability."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NAIC Cybersecurity Insurance Guidance; ISO 22301 (Business Continuity Management)",
+      "framework_ref": "ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions); COBIT 2019 APO12 (Managed Risk); ISO 31000:2018 (Risk Management)",
       "related_concepts": [
         "Business continuity insurance",
         "Cyber liability",
@@ -3474,7 +3474,7 @@
         "Final two: C beats A because significant changes trigger maintenance now; the annual cycle is a minimum, not a gate.",
         "Exam cue: plan maintenance has two triggers, schedule AND change; a major change should not wait for the calendar."
       ],
-      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISO 22301 (Business Continuity Management); DRII Professional Practices",
+      "framework_ref": "COBIT 2019 DSS04 (Managed Continuity); ISO 22301:2019 Clause 8.6 (Evaluation of Business Continuity Documentation and Capabilities); DRII Professional Practice 8 (Business Continuity Plan Exercise, Assessment, and Maintenance)",
       "related_concepts": [
         "Plan maintenance",
         "Post-test updates",
@@ -3510,7 +3510,7 @@
         "Final two: A beats C because continuing yields more evidence while full reporting keeps the result honest.",
         "Exam cue: a test that finds a failure has done its job; report it fully and keep learning, never hide it."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; FFIEC Business Continuity Management Booklet; ISACA DRP Audit Program",
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); FFIEC Business Continuity Management Booklet; NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
         "DR test failure",
         "Test transparency",
@@ -3546,7 +3546,7 @@
         "Final two: D beats B because delegated authority, used within documented criteria, needs no later ratification.",
         "Exam cue: when an auditor assesses a decision, test it against the documented criteria and authority at that time."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; FFIEC Business Continuity Management Booklet; DRII Professional Practices",
+      "framework_ref": "ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); FFIEC Business Continuity Management Booklet; DRII Professional Practice 5 (Incident Response)",
       "related_concepts": [
         "DR invocation",
         "Pre-delegated authority",
@@ -3582,7 +3582,7 @@
         "Final two: C beats B because planned, owned remediation beats a risky test rushed for appearance.",
         "Exam cue: for valid findings, prefer transparent acceptance with a dated remediation plan over defence or hurried fixes."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; FFIEC Business Continuity Management Booklet",
+      "framework_ref": "FFIEC Business Continuity Management Booklet; ISO 22301:2019 Clause 10.1 (Nonconformity and Corrective Action)",
       "related_concepts": [
         "BCP audit findings",
         "Regulator examination",
@@ -3618,7 +3618,7 @@
         "Final two: B beats D because the board decides risk treatment on full options; a direct increase presumes one answer.",
         "Exam cue: for significant residual-risk gaps, the auditor informs and management or the board decides treatment."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NAIC Cybersecurity Insurance Guidance",
+      "framework_ref": "COBIT 2019 APO12 (Managed Risk); ISO 31000:2018 (Risk Management); OFAC Updated Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments (September 2021)",
       "related_concepts": [
         "Insurance coverage gap",
         "Cyber liability sublimit",
@@ -3654,7 +3654,7 @@
         "Final two: A beats B because contract terms cannot remove single-facility concentration; only diversification analysis addresses it.",
         "Exam cue: when one supplier or site holds all recovery capability, look past contract fixes to concentration risk."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); ISACA Vendor Management Audit/Assurance Program",
+      "framework_ref": "Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); ISACA Vendor Management Audit/Assurance Program; FFIEC Business Continuity Management Booklet",
       "related_concepts": [
         "Recovery vendor concentration",
         "Multi-vendor strategy",
@@ -3690,7 +3690,7 @@
         "Final two: C beats D because documented knowledge belongs to the organization; consultants keep it with individuals.",
         "Exam cue: for key-person risk, prefer institutionalizing knowledge in documentation over arrangements with specific people."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management)",
+      "framework_ref": "ISO 22301:2019 Clause 7.2 (Competence); ISO 22301:2019 Clause 7.5 (Documented Information)",
       "related_concepts": [
         "BCP succession",
         "Knowledge capture",
@@ -3727,7 +3727,7 @@
         "Final two: C beats B because QoS already protects voice quality, while a shared-core outage stops storage and voice together.",
         "Exam cue: when separate services share one transport, look first for the single point of failure."
       ],
-      "framework_ref": "RFC 3720 (iSCSI Protocol); INCITS T11 (FCoE specifications); RFC 3031 (MPLS Architecture); RFC 3261 (SIP for VoIP); NIST SP 800-58 (Security Considerations for Voice Over IP Systems)",
+      "framework_ref": "RFC 7143 (iSCSI Protocol, Consolidated); INCITS T11 (FCoE specifications); RFC 3031 (MPLS Architecture); RFC 3261 (SIP for VoIP); NIST SP 800-58 (Security Considerations for Voice Over IP Systems)",
       "related_concepts": [
         "iSCSI",
         "FCoE",
@@ -3765,7 +3765,7 @@
         "Final two: A beats B because an uninspected protocol bypasses the perimeter, while inventory drift is an administrative weakness.",
         "Exam cue: a control that silently misses part of the traffic is worse than one that is merely hard to manage."
       ],
-      "framework_ref": "RFC 791 (Internet Protocol); RFC 8200 (Internet Protocol Version 6 Specification); NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6); RFC 1519 (CIDR)",
+      "framework_ref": "RFC 791 (Internet Protocol); RFC 8200 (Internet Protocol Version 6 Specification); NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6); RFC 4632 (Classless Inter-domain Routing (CIDR))",
       "related_concepts": [
         "IPv4 exhaustion",
         "IPv6 SLAAC",
@@ -3841,7 +3841,7 @@
         "Final two: B beats C because validation feeding the next cycle shows the GPG lifecycle, while certification registers serve ISO 22301 audits.",
         "Exam cue: continuity programmes are cycles; look for the option where results loop back into planning."
       ],
-      "framework_ref": "BCI Good Practice Guidelines (Six Professional Practices); ISO 22301 (Security and Resilience — Business Continuity Management Systems); ISO 22313 (BCMS Guidance)",
+      "framework_ref": "BCI Good Practice Guidelines 2023 (Six Professional Practices); ISO 22301:2019 Security and resilience — Business continuity management systems; ISO 22313:2020 (Business Continuity Management Systems — Guidance on the Use of ISO 22301)",
       "related_concepts": [
         "Business Continuity Lifecycle",
         "BIA",
@@ -3917,7 +3917,7 @@
         "Final two: C beats B because requirement-based retention per log type complies without over-retaining, which breaches storage limitation.",
         "Exam cue: retention questions are answered by requirements first; uniform periods, short or long, are the trap."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); 45 CFR §164.316 (HIPAA Security Rule); SEC Rule 17a-4; PCI DSS v4.0 Requirement 10; GDPR Article 5(1)(e) (Storage Limitation); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); 45 CFR §164.316 (HIPAA Security Rule); SEC Rule 17a-4; PCI DSS v4.0.1 Requirement 10 (Log and Monitor All Access to System Components and Cardholder Data); GDPR Article 5(1)(e) (Storage Limitation)",
       "related_concepts": [
         "Defensible disposition",
         "Write-once media",
@@ -3955,7 +3955,7 @@
         "Final two: B beats C because valid-credential misuse rarely matches signatures, so behavioural baselining is needed alongside the rules.",
         "Exam cue: known bad suits rules; unknown or insider behaviour suits behaviour analytics. Mature programmes layer both."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); MITRE ATT&CK Detection Engineering; Gartner UEBA Market Guide; MITRE D3FEND",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); MITRE ATT&CK Detection Engineering; NIST SP 800-53 Rev 5 SI-4 (System Monitoring); MITRE D3FEND",
       "related_concepts": [
         "MITRE ATT&CK",
         "MITRE D3FEND",
@@ -3993,7 +3993,7 @@
         "Final two: D beats A because stewardship fixes conflicting meanings at the source, while prefixes only fix the names.",
         "Exam cue: data integrity problems with definitions call for ownership and governance, not cosmetic renaming."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); ISO/IEC 11179 (Metadata Registries); DAMA Data Management Body of Knowledge (DMBOK); ISACA Database Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); ISO/IEC 11179 (Metadata Registries); DAMA Data Management Body of Knowledge (DMBOK)",
       "related_concepts": [
         "Data steward",
         "Master data management",
@@ -4031,7 +4031,7 @@
         "Final two: C beats B because TDE decrypts for database sessions, so only application-level encryption hides PII from DBAs.",
         "Exam cue: match the encryption layer to the threat actor; ask whether that actor sees plaintext at that layer."
       ],
-      "framework_ref": "NIST SP 800-111 (Guide to Storage Encryption Technologies); FIPS 140-3 (Security Requirements for Cryptographic Modules); PCI DSS v4.0 Requirement 3 (Protect Stored Account Data); NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)",
+      "framework_ref": "NIST SP 800-111 (Guide to Storage Encryption Technologies); FIPS 140-3 (Security Requirements for Cryptographic Modules); PCI DSS v4.0.1 Requirement 3 (Protect Stored Account Data); NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management)",
       "related_concepts": [
         "TDE",
         "Homomorphic encryption",
@@ -4069,7 +4069,7 @@
         "Final two: B beats A because the RPO breach is certain from the schedule, while an RTO breach is only a possibility.",
         "Exam cue: compare backup frequency with the RPO and restore time with the RTO; never mix the two."
       ],
-      "framework_ref": "ISO/IEC 27040 (Information Technology — Security Techniques — Storage Security); NIST SP 800-34 (Contingency Planning Guide); ISACA Database Management Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27040 (Information Technology — Security Techniques — Storage Security)",
       "related_concepts": [
         "RPO",
         "RTO",
@@ -4107,7 +4107,7 @@
         "Final two: D beats A because errors introduced upstream never surface in receiver-side controls.",
         "Exam cue: for interfaces, scope follows the data from source to destination, including the transformation step."
       ],
-      "framework_ref": "COBIT 2019 BAI03 (Managed Solutions Identification and Build); NIST SP 800-95 (Guide to Secure Web Services); ISO/IEC 27001 Annex A.13 (Communications Security); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build); ISO/IEC 27002:2022 Control 5.14 (Information Transfer); NIST SP 800-95 (Guide to Secure Web Services)",
       "related_concepts": [
         "End-to-end reconciliation",
         "Idempotency",
@@ -4145,7 +4145,7 @@
         "Final two: A beats C because it prevents the duplicate from posting, while reconciliation finds it afterwards.",
         "Exam cue: retries without a unique-ID check create duplicates; prefer preventive interface controls over after-the-fact reconciliation."
       ],
-      "framework_ref": "COBIT 2019 BAI03 (Managed Solutions Identification and Build); NIST SP 800-53 Rev 5 SI-7 (Software, Firmware, and Information Integrity); ISACA IT Application Controls Audit/Assurance Program; ISO/IEC 27001 Annex A.13 (Communications Security)",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build); NIST SP 800-53 Rev 5 SI-7 (Software, Firmware, and Information Integrity)",
       "related_concepts": [
         "HMAC",
         "Idempotency",
@@ -4183,7 +4183,7 @@
         "Final two: C beats B because criteria make the result measurable, while a scenario only sets context.",
         "Exam cue: a test without predefined success criteria cannot fail, so it cannot prove anything."
       ],
-      "framework_ref": "ISO 22301 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); DRII Professional Practice 9; BCI Good Practice Guidelines PP6 (Validation)",
+      "framework_ref": "ISO 22301:2019 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); DRII Professional Practice 8 (Business Continuity Plan Exercise, Assessment, and Maintenance); BCI Good Practice Guidelines 2023 PP6 (Validation)",
       "related_concepts": [
         "Test scope creep",
         "Success criteria",
@@ -4221,7 +4221,7 @@
         "Final two: D beats B because recording deviations preserves the test's evidence, while mid-test rewrites distort timings.",
         "Exam cue: tests are meant to find gaps; capture them during the test and fix the plan afterwards."
       ],
-      "framework_ref": "NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); ISO 22301 Clause 8.5 (Exercise Programme); DRII Professional Practice 9; BCI Good Practice Guidelines PP6 (Validation)",
+      "framework_ref": "NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); ISO 22301:2019 Clause 8.5 (Exercise Programme); DRII Professional Practice 8 (Business Continuity Plan Exercise, Assessment, and Maintenance); BCI Good Practice Guidelines 2023 PP6 (Validation)",
       "related_concepts": [
         "Post-exercise review",
         "Gap analysis",
@@ -4259,7 +4259,7 @@
         "Final two: A beats B because ownership and dates make remediation trackable, while a verdict only reports the outcome.",
         "Exam cue: when the goal is fixing findings, pick the option that assigns accountability."
       ],
-      "framework_ref": "ISO 22301 Clause 9.1 (Performance Evaluation); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); DRII Professional Practice 9; BCI Good Practice Guidelines PP6 (Validation)",
+      "framework_ref": "ISO 22301:2019 Clause 8.5 (Exercise Programme); ISO 22301:2019 Clause 10.1 (Nonconformity and Corrective Action); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); BCI Good Practice Guidelines 2023 PP6 (Validation)",
       "related_concepts": [
         "Root cause analysis",
         "After-action review",
@@ -4297,7 +4297,7 @@
         "Final two: B beats C because system-generated records outrank a management assertion prepared after the event.",
         "Exam cue: for evidence reliability, prefer independent, system-generated and contemporaneous records over statements."
       ],
-      "framework_ref": "ISO 22301 Clause 9.1 (Performance Evaluation); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); ISACA DRP Audit Program; FFIEC Business Continuity Management Booklet",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISO 22301:2019 Clause 9.1 (Monitoring, Measurement, Analysis and Evaluation); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); FFIEC Business Continuity Management Booklet",
       "related_concepts": [
         "Test evidence",
         "Observer independence",
@@ -4335,7 +4335,7 @@
         "Final two: B beats C because the risk owner must choose between data loss and lateness, and restoring first is irreversible.",
         "Exam cue: when options trade one business harm for another, management decides on the auditor's analysis; the auditor does not pick."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISACA Database Management Audit/Assurance Program; NAIC Model Audit Rule (statutory financial reporting); ISO 22301 Clause 8.4 (Business Continuity Procedures)",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; COBIT 2019 DSS04 (Managed Continuity); ISO 22301:2019 Clause 8.4.5 (Recovery); NAIC Model Audit Rule (statutory financial reporting)",
       "related_concepts": [
         "IMS hierarchical database",
         "Transaction log replay",
@@ -4411,7 +4411,7 @@
         "Final two: D beats B because a reporting-control failure needs governance escalation, while manual entry only patches the data.",
         "Exam cue: when financial reporting is affected, escalate to those charged with governance before choosing a fix."
       ],
-      "framework_ref": "SOX Sections 302, 404, 906; PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); COBIT 2019 EDM05 (Ensured Stakeholder Engagement); ISACA IT Application Controls Audit/Assurance Program; SEC Form 8-K Item 4.02",
+      "framework_ref": "SOX Sections 302, 404, 906; PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); COBIT 2019 EDM05 (Ensured Stakeholder Engagement); COBIT 2019 DSS06 (Managed Business Process Controls); SEC Form 8-K Item 4.02",
       "related_concepts": [
         "SOX 302/404",
         "Material weakness",
@@ -4449,7 +4449,7 @@
         "Final two: A beats B because evidence lost to a rebuild cannot be recovered, while DR can be rebuilt in parallel.",
         "Exam cue: in incident response, preserve evidence before you change or rebuild the affected systems."
       ],
-      "framework_ref": "NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response); HHS HIPAA Breach Notification Rule (45 CFR §§ 164.400-414); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); HSCC Healthcare and Public Health Sector Coordinating Council guidance",
+      "framework_ref": "NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response); HHS HIPAA Breach Notification Rule (45 CFR §§ 164.400-414); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); HHS 405(d) Health Industry Cybersecurity Practices (HICP), 2023 Edition",
       "related_concepts": [
         "Chain of custody",
         "Attorney-client privilege in DFIR",
@@ -4487,7 +4487,7 @@
         "Final two: C beats B because a verified Purge protects data leaving your control without destroying leased assets.",
         "Exam cue: choose the sanitization method by sensitivity and destination, not automatically the most extreme one."
       ],
-      "framework_ref": "NIST SP 800-88 (Media Sanitization); ISO/IEC 27040 (Storage Security); LTO Consortium technical specifications",
+      "framework_ref": "NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization); ISO/IEC 27040 (Storage Security); LTO Consortium technical specifications",
       "related_concepts": [
         "NIST SP 800-88",
         "Cryptographic erase",
@@ -4525,7 +4525,7 @@
         "Final two: D beats C because impact must be assessed in the BIA, while communications are only the response.",
         "Exam cue: hard to measure does not mean out of scope; BIAs use proxies and qualitative scales."
       ],
-      "framework_ref": "ISO 22301 Clause 8.3.6 (Communications); BCI Good Practice Guidelines PP4 (Design); ISO 22361 (Crisis Management — Guidelines); ISO 22398 (Guidelines for Exercises)",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); BCI Good Practice Guidelines 2023 PP3 (Analysis)",
       "related_concepts": [
         "Crisis communications",
         "Trust recovery",
@@ -4563,7 +4563,7 @@
         "Final two: A beats B because custody needs an accountable record per transfer; a sealed case proves nothing about who held which tape.",
         "Exam cue: chain of custody means a documented, acknowledged record at every handover of evidence or media."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISO/IEC 27040 (Storage Security); ISACA Business Continuity Audit/Assurance Program; ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)",
+      "framework_ref": "NIST SP 800-53 Rev 5 MP-5 (Media Transport); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27040 (Storage Security)",
       "related_concepts": [
         "Chain of custody",
         "Inventory reconciliation",
@@ -4601,7 +4601,7 @@
         "Final two: B beats D because objectives must first match business needs; funding the wrong objectives still fails.",
         "Exam cue: business impact analysis comes before IT strategy; IT recovery objectives without business input are the red flag."
       ],
-      "framework_ref": "ISO 22301 Clause 8.4 (Business Continuity Procedures); NIST SP 800-34 (Contingency Planning Guide); BCI Good Practice Guidelines PP1 (Policy and Programme Management); ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); ISO/IEC 27031 (ICT Readiness for Business Continuity); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "BIA",
         "Joint governance",
@@ -4639,7 +4639,7 @@
         "Final two: D beats C because key destruction renders every copy unreadable, while console deletion is only logical.",
         "Exam cue: for cloud data you cannot physically reach, cryptographic erase through key destruction is the sanitization answer."
       ],
-      "framework_ref": "NIST SP 800-88 (Media Sanitization); ISO/IEC 27040 (Storage Security); ISACA Cloud Computing Management Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-88 Rev 2 (Guidelines for Media Sanitization); ISO/IEC 27040 (Storage Security); ISACA Cloud Computing Management Audit/Assurance Program",
       "related_concepts": [
         "Cryptographic erase",
         "Degaussing",
@@ -4677,7 +4677,7 @@
         "Final two: C beats A because a restore proves usability, while a completed job only proves the backup ran.",
         "Exam cue: when asked what proves a backup works, pick the restore test over logs, contracts or monitoring."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISO/IEC 27040 (Storage Security); ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-53 Rev 5 CP-9 (System Backup); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
       "related_concepts": [
         "Restoration testing",
         "Inventory reconciliation",
@@ -4715,7 +4715,7 @@
         "Final two: A beats B because relying on another assurer's work first requires confirming its scope fits your risks.",
         "Exam cue: when a SOC report is offered, the auditor's next step is to evaluate its scope and period, not accept it."
       ],
-      "framework_ref": "ISACA Business Continuity Audit/Assurance Program; ISO/IEC 27040 (Storage Security); ISO 22301 Clause 8.4 (Business Continuity Procedures); NIST SP 800-34 (Contingency Planning Guide)",
+      "framework_ref": "ISACA IT Audit Standard 1206 (Using the Work of Other Experts); ISACA IT Audit Standard 1205 (Evidence); ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "Vendor BCP",
         "Fire suppression in tape libraries",
@@ -4753,7 +4753,7 @@
         "Final two: D beats C because unaided recall tests readiness, while a guided walkthrough invites agreement with the text.",
         "Exam cue: interviews add value when they test what people can do in practice, not what the paper says."
       ],
-      "framework_ref": "ISACA Business Continuity Audit/Assurance Program; ISO 22301 Clause 9.2 (Internal Audit); ITAF Performance Standards on Evidence; ISACA IT Audit Standard 1205 (Evidence)",
+      "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; ISO 22301:2019 Clause 9.2 (Internal Audit); ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
         "Cross-interviewee comparison",
         "Plan-paper vs plan-practice",
@@ -4791,7 +4791,7 @@
         "Final two: B beats A because preparation before the event enables speed, while drafting after classification loses the first hours.",
         "Exam cue: for crisis communication, the best answer prepares people and messages before the event, then speaks early with one voice."
       ],
-      "framework_ref": "ISO 22361 (Crisis Management — Guidelines); ISO 22301 Clause 8.3.6 (Communications); BCI Good Practice Guidelines PP4 (Design); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)",
+      "framework_ref": "ISO 22361 (Crisis Management — Guidelines); ISO 22301:2019 Clause 8.4.3 (Warning and Communication); BCI Good Practice Guidelines 2023 PP4 (Design); DRII Professional Practice 9 (Crisis Communications)",
       "related_concepts": [
         "Crisis communications",
         "Spokesperson training",
@@ -4829,7 +4829,7 @@
         "Final two: A beats B because impact-based capability covers any cause, while per-scenario plans only cover predicted events.",
         "Exam cue: when the cause is unknown, choose the option that plans for the impact rather than the specific event."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP2 (Embedding) and PP4 (Design); ISO 22301 Clause 10.2 (Continual Improvement); BCI Horizon Scanning Report",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP4 (Design); ISO 22301:2019 Clause 8.3 (Business Continuity Strategies and Solutions)",
       "related_concepts": [
         "Black swans",
         "Redundancy",
@@ -4867,7 +4867,7 @@
         "Final two: D beats A because missing governance stops the whole programme, while a scope gap is one fixable flaw.",
         "Exam cue: a policy without owners, roles and review is intent only; missing governance outranks a flaw in the wording."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP1 (Policy and Programme Management); ISO 22301 Clauses 5 and 7 (Leadership, Support); BCI Programme Governance Reference",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP1 (Policy and Programme Management); ISO 22301:2019 Clause 5.3 (Roles, Responsibilities and Authorities); ISO 22301:2019 Clause 9.3 (Management Review)",
       "related_concepts": [
         "BCM steering committee",
         "BCM coordinator",
@@ -4905,7 +4905,7 @@
         "Final two: C beats D because a step inside approvals changes decisions, while a campaign only raises awareness.",
         "Exam cue: to embed a discipline in culture, prefer the option that builds it into normal business processes."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP2 (Embedding); ISO 22301 Clause 7.3 (Awareness); ISACA Information Security Policy guidance (parallel for security culture)",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP2 (Embedding); ISO 22301:2019 Clause 7.3 (Awareness); DRII Professional Practice 7 (Awareness and Training Programs)",
       "related_concepts": [
         "Organizational culture",
         "Tailored training",
@@ -4943,7 +4943,7 @@
         "Final two: B beats A because the BIA sets recovery time objectives, while a threat assessment estimates likelihood, not urgency.",
         "Exam cue: BIA comes before strategy. When a site or solution is chosen first, the BIA is the FIRST fix."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP3 (Analysis); ISO 22301 Clause 8.2 (BIA and Risk Assessment); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP3 (Analysis); ISO 22301:2019 Clause 8.2 (Business Impact Analysis and Risk Assessment); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "BIA",
         "MTPD",
@@ -4981,7 +4981,7 @@
         "Final two: A beats C because missing people and suppliers stop recovery working, while failback matters only after recovery succeeds.",
         "Exam cue: a strategy covering only IT is incomplete; look for the gap in people, premises or suppliers."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP4 (Design); ISO 22301 Clause 8.3 (Business Continuity Strategies and Solutions); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP4 (Design); ISO 22301:2019 Clause 8.3.4 (Resource Requirements); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "Resilience domains",
         "BIA-driven design",
@@ -5019,7 +5019,7 @@
         "Final two: D beats C because people must learn their roles before an exercise can test the plan.",
         "Exam cue: the order is approve, train, exercise, then test more aggressively; pick the earliest missing step."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP5 (Implementation); ISO 22301 Clauses 8 and 9 (Operation, Performance Evaluation); NIST SP 800-34 (Contingency Planning Guide)",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP5 (Implementation); ISO 22301:2019 Clause 7.2 (Competence); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
         "Plan deployment",
         "Role-specific training",
@@ -5057,7 +5057,7 @@
         "Final two: C beats A because assurance or an alternate keeps payments running, while credits only compensate after the outage.",
         "Exam cue: for a critical supplier, prefer evidence of tested continuity or an alternate source over contractual penalties."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP4 (Design); ISO 28000 (Supply Chain Security Management); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); ISO 22301 Clause 8.3",
+      "framework_ref": "BCI Good Practice Guidelines 2023 PP4 (Design); ISO 22301:2019 Clause 8.3.4 (Resource Requirements); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
         "Supply-chain BCM",
         "Multi-tier visibility",
@@ -5095,7 +5095,7 @@
         "Final two: B beats A because testing the gap now produces evidence, while postponing leaves months without any test.",
         "Exam cue: when a plan has a known gap, prefer an action that tests and documents it over waiting for perfection."
       ],
-      "framework_ref": "BCI Good Practice Guidelines PP3 (Analysis) and PP4 (Design); ISO 22301 Clauses 6.2, 8.3; ISACA M&A IT Audit/Assurance Program; ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.6 (Evaluation of Business Continuity Documentation and Capabilities); ISO 22301:2019 Clause 8.5 (Exercise Programme); BCI Good Practice Guidelines 2023 PP6 (Validation); ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "M&A continuity integration",
         "Combined BCP design",
@@ -5133,7 +5133,7 @@
         "Final two: A beats B because a factual statement counters rumour now, while silence until forensics lets the rumour win.",
         "Exam cue: in a crisis, communicate early with verified facts through one voice; do not wait for full certainty."
       ],
-      "framework_ref": "ISO 22361 (Crisis Management — Guidelines); ISO 22301 Clause 8.3.6 (Communications); BCI Good Practice Guidelines PP4 (Design); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SEC Regulation FD (Fair Disclosure)",
+      "framework_ref": "ISO 22361 (Crisis Management — Guidelines); ISO 22301:2019 Clause 8.4.3 (Warning and Communication); DRII Professional Practice 9 (Crisis Communications); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); SEC Regulation FD (Fair Disclosure)",
       "related_concepts": [
         "Crisis communications cadence",
         "Multi-audience alignment",
@@ -5171,7 +5171,7 @@
         "Final two: D beats A because an alternate source removes the single point of failure, while air freight only buys weeks.",
         "Exam cue: for a single point of failure, prefer the action that removes the dependency, started early because lead times are long."
       ],
-      "framework_ref": "ISO 28000 (Supply Chain Security Management); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); FDA Drug and Medical Device Shortage Guidance; FTC Antitrust Safety Zones for Healthcare Crisis Coordination; ISO 22301 (Business Continuity Management)",
+      "framework_ref": "ISO 22301:2019 Clause 8.3.4 (Resource Requirements); BCI Good Practice Guidelines 2023 PP4 (Design); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management)",
       "related_concepts": [
         "Compound crisis response",
         "Long-lead-time parallel tracks",
@@ -5209,7 +5209,7 @@
         "Final two: B beats A because the facts on custody drive every later decision, while termination answers none of them.",
         "Exam cue: when exposure is unknown, the FIRST step is to establish the facts before choosing a remedy."
       ],
-      "framework_ref": "ISO/IEC 27040 (Storage Security); HIPAA Business Associate Agreement 45 CFR §164.504(e); PCI DSS v4.0 Requirement 12.8 (Service Provider Management); ISACA Business Continuity Audit/Assurance Program; State breach-notification laws (e.g., NY SHIELD Act, CA SB-1386)",
+      "framework_ref": "ISO/IEC 27040 (Storage Security); HIPAA Business Associate Agreement 45 CFR §164.504(e); PCI DSS v4.0.1 Requirement 12.8 (Third-Party Service Provider Management); COBIT 2019 APO10 (Managed Vendors); State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82)",
       "related_concepts": [
         "BAA breach",
         "PCI service-provider obligations",
@@ -5247,7 +5247,7 @@
         "Final two: C beats D because a firewall enforces policy, while a router's core job is forwarding packets.",
         "Exam cue: forwarding devices move traffic; when the question asks to enforce policy between zones, choose the firewall."
       ],
-      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); IEEE 802.1Q (VLAN Switching); RFC 791 (Internet Protocol); NIST SP 800-189 (Resilient Interdomain Traffic Exchange)",
+      "framework_ref": "NIST SP 800-41 Rev 1 (Guidelines on Firewalls and Firewall Policy); IEEE 802.1Q (VLAN Switching); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks); PCI DSS v4.0.1 Requirement 1 (Install and Maintain Network Security Controls)",
       "related_concepts": [
         "OSI layers",
         "Stateful firewall",
@@ -5285,7 +5285,7 @@
         "Final two: A beats D because forced source disclosure threatens the product itself, while missing attribution is easily corrected.",
         "Exam cue: copyleft plus distribution means source-disclosure risk; that outranks notice and counting issues."
       ],
-      "framework_ref": "Open Source Initiative (OSI) License Categories; ISACA Software Asset Management Audit/Assurance Program; COBIT 2019 BAI09 (Managed Assets); ISO/IEC 19770-1 (Software Asset Management)",
+      "framework_ref": "Open Source Initiative (OSI) License Categories; Linux Foundation OpenChain (ISO/IEC 5230); COBIT 2019 BAI09 (Managed Assets); ISO/IEC 19770-1 (Software Asset Management)",
       "related_concepts": [
         "Copyleft",
         "GPL/AGPL/LGPL",
@@ -5323,7 +5323,7 @@
         "Final two: D beats C because QoS and separation handle bursts, while a monthly average hides them.",
         "Exam cue: when different traffic types share a link, look for prioritization and segmentation, not average utilization."
       ],
-      "framework_ref": "NIST SP 800-58 (Security Considerations for Voice Over IP Systems); RFC 3720 (iSCSI Protocol); ITU-T Y.1541 (Network Performance Objectives for IP-Based Services); RFC 3261 (SIP for VoIP)",
+      "framework_ref": "NIST SP 800-58 (Security Considerations for Voice Over IP Systems); RFC 7143 (iSCSI Protocol, Consolidated); ITU-T Y.1541 (Network Performance Objectives for IP-Based Services); RFC 3261 (SIP for VoIP)",
       "related_concepts": [
         "QoS DSCP markings",
         "VLAN segmentation",
@@ -5361,7 +5361,7 @@
         "Final two: B beats A because governance prevents the overlap at source, while NAT works around it and adds complexity.",
         "Exam cue: prefer the option that fixes the cause through governance over a technical workaround that masks it."
       ],
-      "framework_ref": "RFC 1918 (Private Address Allocation); RFC 4291 (IP Version 6 Addressing Architecture); NIST SP 800-119 (Guidelines for the Secure Deployment of IPv6); ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "RFC 1918 (Private Address Allocation); RFC 4291 (IP Version 6 Addressing Architecture); COBIT 2019 BAI10 (Managed Configuration)",
       "related_concepts": [
         "IPAM",
         "RFC 1918",
@@ -5399,7 +5399,7 @@
         "Final two: C beats B because an owner's approval is a governed decision, while a report only gives visibility.",
         "Exam cue: when a risk is knowingly kept, look for formal acceptance by the accountable owner, not just reporting."
       ],
-      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ITIL 4 Service Configuration Management; ISACA IT Asset Management Audit/Assurance Program; NIST SP 800-53 SA-5 (Information System Documentation)",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); NIST SP 800-53 Rev 5 SA-22 (Unsupported System Components); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
         "End-of-support",
         "TCO analysis",
@@ -5437,7 +5437,7 @@
         "Final two: A beats B because one cost view aligns both dates, while separate decisions may pay for unneeded cover.",
         "Exam cue: when two lifecycle dates affect the same asset, choose the option that decides them together on total cost."
       ],
-      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management; ISACA IT Asset Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management; COBIT 2019 BAI09 (Managed Assets)",
       "related_concepts": [
         "Capacity forecasting",
         "Warranty-refresh alignment",
@@ -5475,7 +5475,7 @@
         "Final two: D beats A because dependency mapping targets cascade risk, while a random sample treats every job as equal.",
         "Exam cue: when asked to focus on business impact, prefer risk-based targeting over random or volume-based measures."
       ],
-      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ITIL 4 Service Operations Management; ISACA IT Operations Audit/Assurance Program; NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration)",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ISACA IT Audit Standard 1202 (Risk Assessment in Planning)",
       "related_concepts": [
         "Critical path",
         "Dependency mapping",
@@ -5513,7 +5513,7 @@
         "Final two: B beats A because a governed fast route prevents bypass, while reconciliation only detects it weeks later.",
         "Exam cue: urgency never removes change control; look for an emergency path with authorization and later review."
       ],
-      "framework_ref": "ITIL 4 Change Enablement; COBIT 2019 BAI06 (Managed Changes); ISACA IT Change Management Audit/Assurance Program; NIST SP 800-53 CM-3 (Configuration Change Control)",
+      "framework_ref": "ITIL 4 Change Enablement practice; COBIT 2019 BAI06 (Managed IT Changes); NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control)",
       "related_concepts": [
         "Standard change template",
         "CAB",
@@ -5551,7 +5551,7 @@
         "Final two: C beats A because you must know what exists and how critical it is before deciding what to migrate.",
         "Exam cue: for end-user computing, the first control is an owned, risk-ranked inventory; everything else builds on it."
       ],
-      "framework_ref": "FFIEC IT Examination Handbook (End-User Computing); Basel Committee Principles for Effective Risk Data Aggregation (BCBS 239); COBIT 2019 BAI03 (Managed Solutions Identification and Build); ISACA EUC Audit/Assurance Program",
+      "framework_ref": "Basel Committee Principles for Effective Risk Data Aggregation (BCBS 239); Federal Reserve SR 11-7 (Model Risk Management); COBIT 2019 BAI09 (Managed Assets)",
       "related_concepts": [
         "Model risk",
         "BCBS 239",
@@ -5589,7 +5589,7 @@
         "Final two: A beats B because control proportional to risk is sustainable, while uniform heavy control invites bypass.",
         "Exam cue: when assets vary widely in risk, prefer controls scaled to risk over one uniform level."
       ],
-      "framework_ref": "FFIEC IT Examination Handbook (End-User Computing); COBIT 2019 BAI06 (Managed Changes); ISACA EUC Audit/Assurance Program; NIST SP 800-53 CM-3 (Configuration Change Control)",
+      "framework_ref": "COBIT 2019 BAI06 (Managed IT Changes); NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); Federal Reserve SR 11-7 (Model Risk Management)",
       "related_concepts": [
         "EUC tiering",
         "Promotion to managed application",
@@ -5627,7 +5627,7 @@
         "Final two: A beats B because named accounts make actions attributable, while rotation only protects the shared secret.",
         "Exam cue: when an account is shared, the fix is individual accountability, not a stronger shared password."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); NIST SP 800-53 Rev 5 AC-17 (Remote Access); ISACA Privileged Access Management Audit/Assurance Program; CIS Controls v8 Safeguard 6 (Access Control Management); NIST SP 800-63B (Authentication and Lifecycle Management)",
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISO/IEC 27002:2022 Control 8.2 (Privileged Access Rights); CIS Controls v8 Control 6 (Access Control Management)",
       "related_concepts": [
         "PAM",
         "JIT elevation",
@@ -5665,7 +5665,7 @@
         "Final two: C beats B because preventive segmentation stops lateral spread, while monitoring only reports it.",
         "Exam cue: for lateral movement inside a network, prefer enforced internal segmentation over perimeter or detective controls."
       ],
-      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); CIS Controls v8 Safeguard 12 (Network Infrastructure Management); ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-207 (Zero Trust Architecture); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks); CIS Controls v8 Control 12 (Network Infrastructure Management)",
       "related_concepts": [
         "Zero-trust",
         "Microsegmentation",
@@ -5703,7 +5703,7 @@
         "Final two: B beats A because review before merge stops unreviewed code, while access recertification only confirms who may merge.",
         "Exam cue: when one person can push changes to release alone, look for a preventive second-person control at that step."
       ],
-      "framework_ref": "NIST SP 800-204C (Implementation of DevSecOps for Microservices-based Cloud-Native Applications); OWASP DSOMM; ISACA Source Code Management Audit/Assurance Program; SLSA (Supply-chain Levels for Software Artifacts)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.4 (Access to Source Code); NIST SP 800-218 (SSDF v1.1); SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-204C (Implementation of DevSecOps for a Microservices-based Application with Service Mesh)",
       "related_concepts": [
         "Protected branches",
         "SCA scanning",
@@ -5741,7 +5741,7 @@
         "Final two: D beats C because maintenance effort should follow criticality and redundancy, not one uniform schedule.",
         "Exam cue: when assets differ in criticality, prefer the risk-based option over any one-size-fits-all policy."
       ],
-      "framework_ref": "ITIL 4 Service Continuity Management; ISO 55001 (Asset Management — Management Systems); COBIT 2019 BAI09 (Managed Assets); ISACA IT Asset Management Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 27002:2022 Control 7.13 (Equipment Maintenance); COBIT 2019 BAI09 (Managed Assets); ISO 55001 (Asset Management — Management Systems)",
       "related_concepts": [
         "Preventive maintenance",
         "Condition-based maintenance",
@@ -5779,7 +5779,7 @@
         "Final two: A beats B because baseline comparison catches unlogged changes, while tickets cover only what was recorded.",
         "Exam cue: to find changes made outside a process, test the actual state, not the process's own records."
       ],
-      "framework_ref": "CIS Controls v8 Safeguard 4 (Secure Configuration of Enterprise Assets); NIST SP 800-128 (Security-Focused Configuration Management); COBIT 2019 BAI10 (Managed Configuration); ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI10 (Managed Configuration); NIST SP 800-128 (Security-Focused Configuration Management); CIS Controls v8 Control 4 (Secure Configuration of Enterprise Assets)",
       "related_concepts": [
         "CIS Benchmarks",
         "Configuration drift",
@@ -5817,7 +5817,7 @@
         "Final two: C beats A because independent log control protects the trail, while a review trusts logs DBAs can purge.",
         "Exam cue: when people control the record of their own actions, separate the duty; a later review cannot fix it."
       ],
-      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); COBIT 2019 DSS06 (Managed Business Process Controls); NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); ISACA Database Management Audit/Assurance Program; SOX Sections 302, 404, 906",
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-5 (Separation of Duties); NIST SP 800-53 Rev 5 AU-9 (Protection of Audit Information); COBIT 2019 DSS06 (Managed Business Process Controls); PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); SOX Sections 302, 404, 906",
       "related_concepts": [
         "Function-based SoD",
         "Break-glass with PIR",
@@ -5855,7 +5855,7 @@
         "Final two: B beats C because a proven model under review is safer than an untested rebuild under time pressure.",
         "Exam cue: in a crisis, prefer the tested, reviewed path now and schedule the structural fix afterward."
       ],
-      "framework_ref": "FFIEC IT Examination Handbook (End-User Computing); Basel Committee BCBS 239 (Risk Data Aggregation); Federal Reserve SR 11-7 (Model Risk Management); FFIEC Call Report Instructions",
+      "framework_ref": "Basel Committee BCBS 239 (Risk Data Aggregation); Federal Reserve SR 11-7 (Model Risk Management); FFIEC Call Report Instructions",
       "related_concepts": [
         "Model risk",
         "EUC documentation gap",
@@ -5893,7 +5893,7 @@
         "Final two: D beats C because service is restored first, while the problem record still drives the root-cause fix.",
         "Exam cue: restore service before root cause, but look for the option that still commits to finding the root cause."
       ],
-      "framework_ref": "ITIL 4 Service Operation; COBIT 2019 DSS01 (Managed Operations), BAI06 (Managed Changes); ISACA IT Operations Audit/Assurance Program; Federal Reserve SR 11-7 (Model Risk Management)",
+      "framework_ref": "ITIL 4 Incident Management practice; ITIL 4 Problem Management practice; COBIT 2019 DSS01 (Managed Operations); COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
         "Batch window overrun",
         "Job parallelization",
@@ -5931,7 +5931,7 @@
         "Final two: C beats B because risk-based reallocation works within management's decision, while escalation tries to overturn it.",
         "Exam cue: when resources are cut, prioritize by risk and document what is deferred; deferring low-risk items can be right."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery), APO12 (Managed Risk), BAI09 (Managed Assets); ISACA IT Asset Management Audit/Assurance Program; NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations)",
+      "framework_ref": "COBIT 2019 BAI09 (Managed Assets); COBIT 2019 APO12 (Managed Risk); NIST SP 800-53 Rev 5 SA-22 (Unsupported System Components); NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations)",
       "related_concepts": [
         "EOS risk acceptance",
         "Refresh prioritization",
@@ -5969,7 +5969,7 @@
         "Final two: A beats B because, once contained, evidence must be preserved before systems are changed.",
         "Exam cue: after containment, preserve evidence first; eradication and rebuild come next."
       ],
-      "framework_ref": "PCI DSS v4.0 Requirement 12.10 (Incident Response); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); NIST SP 800-207 (Zero Trust Architecture); State breach-notification laws (e.g., NY SHIELD Act, CA SB-1386); HIPAA Breach Notification Rule (analogous)",
+      "framework_ref": "PCI DSS v4.0.1 Requirement 12.10 (Incident Response); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82)",
       "related_concepts": [
         "PCI DSS Req 12.10",
         "Lateral movement detection",
@@ -6007,7 +6007,7 @@
         "Final two: B beats C because frequent reconciliation across all sources finds missing media sooner than a yearly offsite count.",
         "Exam cue: when records sit in several places, look for regular reconciliation between them."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISO/IEC 27040 (Storage Security); ISACA Business Continuity Audit/Assurance Program; NIST SP 800-88 (Media Sanitization)",
+      "framework_ref": "NIST SP 800-53 Rev 5 MP-4 (Media Storage); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27040 (Storage Security)",
       "related_concepts": [
         "Media catalog",
         "Cross-source reconciliation",
@@ -6045,7 +6045,7 @@
         "Final two: D beats C because only an immutable or offline copy resists ransomware; replication can copy the damage.",
         "Exam cue: for ransomware resilience, look for immutability or an air gap, not just more copies."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISO/IEC 27040 (Storage Security); SNIA Data Protection Best Practices; CISA #StopRansomware guidance",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27040 (Storage Security); #StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); ISO/IEC 27002:2022 Control 8.13 (Information Backup)",
       "related_concepts": [
         "Air-gapped backup",
         "Immutable storage",
@@ -6083,7 +6083,7 @@
         "Final two: C beats B because a segment with no data is a total blind spot, while poor tuning still sees the traffic.",
         "Exam cue: in monitoring audits, a coverage gap outranks problems with how collected data is analyzed."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); COBIT 2019 DSS01 (Managed Operations); ISACA IT Operations Audit/Assurance Program; CIS Controls v8 Safeguard 12 (Network Infrastructure Management)",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ITIL 4 Monitoring and Event Management practice; CIS Controls v8 Control 13 (Network Monitoring and Defense)",
       "related_concepts": [
         "SNMP monitoring",
         "NetFlow",
@@ -6121,7 +6121,7 @@
         "Final two: A beats B because finding the root cause stops recurrence, while automation only speeds the workaround.",
         "Exam cue: repeated incidents with the same symptom point to problem management and root cause analysis."
       ],
-      "framework_ref": "ITIL 4 Problem Management; ISO/IEC 20000-1 (Information Technology — Service Management); COBIT 2019 DSS03 (Managed Problems); ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Problem Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
         "5-Whys",
         "Fishbone diagram",
@@ -6159,7 +6159,7 @@
         "Final two: D beats A because the gap is a missing outcome measure, not a speed target that is too loose.",
         "Exam cue: when green metrics clash with unhappy users, the metric set is measuring the wrong thing."
       ],
-      "framework_ref": "ITIL 4 Service Level Management; ISO/IEC 20000-1 (Information Technology — Service Management); COBIT 2019 APO09 (Managed Service Agreements); ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 APO09 (Managed Service Agreements)",
       "related_concepts": [
         "Leading vs lagging metrics",
         "First-call resolution",
@@ -6197,7 +6197,7 @@
         "Final two: B beats A because an unescalated security call can let an attack continue, while inaccurate figures only distort reporting.",
         "Exam cue: at the help desk, check that security events leave the service queue quickly; that outranks service metrics."
       ],
-      "framework_ref": "ITIL 4 Service Desk Practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents); ISACA IT Operations Audit/Assurance Program; NIST SP 800-63B (Authentication and Lifecycle Management)",
+      "framework_ref": "ITIL 4 Service Desk practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents); NIST SP 800-63B-4 (Digital Identity Guidelines: Authentication and Authenticator Management); ISO/IEC 27002:2022 Control 5.17 (Authentication Information)",
       "related_concepts": [
         "First-contact resolution",
         "Knowledge base",
@@ -6235,7 +6235,7 @@
         "Final two: C beats D because approval before change prevents harm, while a weekly review finds it after the fact.",
         "Exam cue: when changes are made first and recorded later, recommend the preventive approval step."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); CIS Controls v8 Safeguard 12 (Network Infrastructure Management); COBIT 2019 DSS05 (Managed Security Services); ISACA Network Perimeter Security Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); COBIT 2019 BAI06 (Managed IT Changes); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection); CIS Controls v8 Control 12 (Network Infrastructure Management)",
       "related_concepts": [
         "Configuration baseline",
         "Drift detection",
@@ -6273,7 +6273,7 @@
         "Final two: A beats B because restricting and logging use prevents and records misuse, while an annual review finds it late.",
         "Exam cue: for powerful tools, prefer restricted, logged access over both bans and after-the-fact reviews."
       ],
-      "framework_ref": "NIST SP 800-53 Rev 5 CM-7 (Least Functionality); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISACA IT Operations Audit/Assurance Program; CIS Controls v8 Safeguard 2 (Inventory and Control of Software Assets)",
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-7 (Least Functionality); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISO/IEC 27002:2022 Control 8.18 (Use of Privileged Utility Programs); CIS Controls v8 Control 2 (Inventory and Control of Software Assets)",
       "related_concepts": [
         "Least functionality",
         "Approved utility list",
@@ -6311,7 +6311,7 @@
         "Final two: D beats C because executives need impact-weighted trends, not ticket-level operational detail.",
         "Exam cue: match the report to its audience: governance bodies get periodic trends tied to business impact."
       ],
-      "framework_ref": "ITIL 4 Continual Improvement Management; ITIL 4 Problem Management; ISACA IT Operations Audit/Assurance Program; COBIT 2019 DSS03 (Managed Problems)",
+      "framework_ref": "ITIL 4 Measurement and Reporting practice; ITIL 4 Problem Management practice; COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
         "Weekly operational trend",
         "Monthly executive summary",
@@ -6349,7 +6349,7 @@
         "Final two: B beats C because records of real incidents prove operation, while a tabletop only simulates it.",
         "Exam cue: for operating effectiveness, evidence of real execution outranks design documents and simulations."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Incident Management and Response Audit/Assurance Program; SEC Cybersecurity Disclosure Rules; HIPAA HHS Breach Notification Rule (45 CFR §§ 164.400-414)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); COBIT 2019 DSS02 (Managed Service Requests and Incidents); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
       "related_concepts": [
         "MTTD",
         "Containment effectiveness",
@@ -6387,7 +6387,7 @@
         "Final two: C beats D because direct reconciliation tests the actual SLA figures, while a SOC 2 report covers general controls.",
         "Exam cue: when a party grades its own performance and money depends on it, look for independent verification."
       ],
-      "framework_ref": "ITIL 4 Service Level Management; ISO/IEC 20000-1 (Information Technology — Service Management); COBIT 2019 APO09 (Managed Service Agreements); ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 APO09 (Managed Service Agreements)",
       "related_concepts": [
         "Measurement methodology mismatch",
         "Vendor self-reporting conflict",
@@ -6425,7 +6425,7 @@
         "Final two: A beats B because service levels should shape the design before approval, not be rewritten to fit it afterward.",
         "Exam cue: for architecture changes, check service-level impact before approval, not after go-live."
       ],
-      "framework_ref": "COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 APO03 (Managed Enterprise Architecture); TOGAF Standard; ISACA Enterprise Architecture Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 APO03 (Managed Enterprise Architecture); TOGAF Standard, 10th Edition",
       "related_concepts": [
         "Bidirectional alignment",
         "Architecture review board",
@@ -6463,7 +6463,7 @@
         "Final two: D beats C because only a timed restore proves usability and speed, while reconciliation proves presence.",
         "Exam cue: when the objective is recovery time, the best evidence is a timed recovery test."
       ],
-      "framework_ref": "ISACA Business Continuity Audit/Assurance Program; NIST SP 800-34 (Contingency Planning Guide); ISO 22301 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs)",
+      "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.5 (Exercise Programme)",
       "related_concepts": [
         "Sample restore",
         "RTO validation",
@@ -6501,7 +6501,7 @@
         "Final two: B beats C because tracing from the BIA proves coverage, while recent approval proves only currency.",
         "Exam cue: BCP completeness starts from the BIA; check that every critical process traces to a recovery procedure."
       ],
-      "framework_ref": "ISACA Business Continuity Audit/Assurance Program; ISO 22301 Clause 9.2 (Internal Audit); FFIEC Business Continuity Management Booklet; BCI Good Practice Guidelines PP6 (Validation)",
+      "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; ISO 22301:2019 Clause 9.2 (Internal Audit); FFIEC Business Continuity Management Booklet; BCI Good Practice Guidelines 2023 PP6 (Validation)",
       "related_concepts": [
         "Content completeness",
         "BIA traceability",
@@ -6539,7 +6539,7 @@
         "Final two: C beats D because unified command must exist before communication and recovery can be coordinated.",
         "Exam cue: when stakeholders conflict in a crisis, set up command and decision rights before choosing actions."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Incident Management; FEMA Incident Command System (ICS); ISACA Incident Management and Response Audit/Assurance Program; HIPAA Privacy Rule",
+      "framework_ref": "ITIL 4 Incident Management practice; FEMA Incident Command System (ICS); ISO 22320:2018 (Emergency Management — Guidelines for Incident Management); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
         "Incident commander",
         "FEMA ICS",
@@ -6577,7 +6577,7 @@
         "Final two: B beats C because penalties need evidence of where availability is lost, and only end-to-end tracing provides it.",
         "Exam cue: when every party's own metric looks green but the service is red, measure end to end before assigning blame."
       ],
-      "framework_ref": "ITIL 4 Service Level Management; ISO/IEC 20000-1 (Information Technology — Service Management); COBIT 2019 APO09 (Managed Service Agreements), APO10 (Managed Vendors); ISACA IT Vendor Management Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 APO10 (Managed Vendors); ISACA Vendor Management Audit/Assurance Program",
       "related_concepts": [
         "End-to-end tracing",
         "Measurement methodology reconciliation",
@@ -6615,7 +6615,7 @@
         "Final two: D beats A because the cause must be established before choosing the fix; a lab freeze assumes the answer.",
         "Exam cue: after service is restored, find the root cause next; avoid answers that pick a remedy before the cause is known."
       ],
-      "framework_ref": "Joint Commission Sentinel Event Policy (principles); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); HHS HIPAA Security Rule (45 CFR §164.308); ITIL 4 Incident Management; ISACA Incident Management and Response Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Problem Management practice; COBIT 2019 DSS03 (Managed Problems); Joint Commission Sentinel Event Policy (principles)",
       "related_concepts": [
         "Blameless post-incident review",
         "Tiered change governance",
@@ -6653,7 +6653,7 @@
         "Final two: A beats B because recovery priorities come from the BIA; rewriting first would carry stale objectives into the new plan.",
         "Exam cue: BIA before strategy, and strategy before plan; when the analysis is stale, refresh it first."
       ],
-      "framework_ref": "ISACA Business Continuity Audit/Assurance Program; BCI Good Practice Guidelines PP1 (Policy and Programme Management) and PP3 (Analysis); ISO 22301 Clause 10.2 (Continual Improvement); FFIEC Business Continuity Management Booklet",
+      "framework_ref": "ISACA Business Continuity Management Audit/Assurance Program; BCI Good Practice Guidelines 2023 PP3 (Analysis); ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); ISO 22301:2019 Clause 8.6 (Evaluation of Business Continuity Documentation and Capabilities); FFIEC Business Continuity Management Booklet",
       "related_concepts": [
         "BCP staleness",
         "Substantive annual review",
@@ -6691,7 +6691,7 @@
         "Final two: C beats B because containment by an independent responder must precede restoration, or the attacker can reinfect restored systems.",
         "Exam cue: when the recovery partner is the attack path, bring in an independent responder before restoring anything."
       ],
-      "framework_ref": "CISA #StopRansomware guidance; FBI Ransomware Guidance (Internet Crime Complaint Center IC3); OFAC Sanctions Compliance Advisory (Ransomware); FDIC Cybersecurity Examination Procedures; FFIEC Cybersecurity Assessment Tool; FRB SR 11-14 (FFIEC Outsourcing Technology Services); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "framework_ref": "#StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); FBI Ransomware Guidance (Internet Crime Complaint Center IC3)",
       "related_concepts": [
         "MSP supply-chain attack",
         "FS-ISAC coordination",
@@ -6729,7 +6729,7 @@
         "Final two: D beats B because the contract's measurement definition must settle the facts before any concession is offered.",
         "Exam cue: when two parties' metrics disagree, go back to the agreed definition before taking a commercial position."
       ],
-      "framework_ref": "ITIL 4 Service Level Management; ISO/IEC 20000-1 (Information Technology — Service Management); COBIT 2019 APO09 (Managed Service Agreements), APO10 (Managed Vendors); ISACA IT Vendor Management Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Service Level Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 APO09 (Managed Service Agreements); ISACA Vendor Management Audit/Assurance Program",
       "related_concepts": [
         "Measurement methodology divergence",
         "Precedent management",
@@ -6805,7 +6805,7 @@
         "Final two: C beats B because a baseline with trends detects degradation before users do, while complaint-driven review reacts afterwards.",
         "Exam cue: proactive management means a baseline plus trends; anything triggered by user complaints is reactive."
       ],
-      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ISACA Database Management Audit/Assurance Program; ISO/IEC 20000-1 (Information Technology — Service Management); ITIL 4 Capacity and Performance Management",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
       "related_concepts": [
         "Slow-query log",
         "Index review",
@@ -6843,7 +6843,7 @@
         "Final two: A beats B because stopping calls to a failed dependency contains the cascade, while retries keep feeding it.",
         "Exam cue: when one failing component drags others down, prefer the control that isolates it over one that keeps retrying."
       ],
-      "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); Microsoft Azure Architecture Center; Principles of Chaos Engineering (principlesofchaos.org); OWASP Application Security Verification Standard",
+      "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); Microsoft Azure Architecture Center: Circuit Breaker Pattern; Principles of Chaos Engineering (principlesofchaos.org)",
       "related_concepts": [
         "Circuit breaker",
         "Hystrix / Resilience4j",
@@ -6881,7 +6881,7 @@
         "Final two: D beats B because a shared failure point can defeat both sites at once, while a long time-to-live only slows failover.",
         "Exam cue: redundancy is only as good as its independence; look for the dependency both copies share."
       ],
-      "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); NIST SP 800-34 (Contingency Planning Guide); ISACA Network Perimeter Security Audit/Assurance Program; ISO 22301 Clause 8.4 (Business Continuity Procedures)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.14 (Redundancy of Information Processing Facilities); NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; AWS Well-Architected Framework (Reliability Pillar)",
       "related_concepts": [
         "Multi-region active-active",
         "BGP multi-homing",
@@ -6919,7 +6919,7 @@
         "Final two: B beats A because an independent reviewer gives assurance that the implementer's own record cannot.",
         "Exam cue: emergency changes may skip prior approval but never skip control; look for independent review after the fact."
       ],
-      "framework_ref": "ITIL 4 Change Enablement; COBIT 2019 BAI06 (Managed Changes); ISACA IT Change Management Audit/Assurance Program; NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control)",
+      "framework_ref": "ITIL 4 Change Enablement practice; COBIT 2019 BAI06 (Managed IT Changes); NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control)",
       "related_concepts": [
         "eCAB",
         "Post-implementation review",
@@ -6957,7 +6957,7 @@
         "Final two: C beats A because active exploitation shows real, current threat, while a base score rates severity without that context.",
         "Exam cue: in patch priority, known exploitation on exposed assets outranks a high score on paper."
       ],
-      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); ISACA IT Operations Audit/Assurance Program; CIS Controls v8 Safeguard 7 (Continuous Vulnerability Management)",
+      "framework_ref": "NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); CIS Controls v8 Control 7 (Continuous Vulnerability Management); NIST SP 800-53 Rev 5 SI-2 (Flaw Remediation)",
       "related_concepts": [
         "CISA KEV catalog",
         "CVSS scoring",
@@ -6995,7 +6995,7 @@
         "Final two: D beats C because reconciliation proves each message arrived and was processed, while queue-depth alerts only show overall flow.",
         "Exam cue: for data moving between systems, completeness and integrity tests outrank health monitoring."
       ],
-      "framework_ref": "NIST SP 800-95 (Guide to Secure Web Services); ISO/IEC 27001 Annex A.13 (Communications Security); ISACA IT Application Controls Audit/Assurance Program; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "framework_ref": "NIST SP 800-95 (Guide to Secure Web Services); ISO/IEC 27002:2022 Control 5.14 (Information Transfer); COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Dead-letter queue",
         "Message integrity",
@@ -7033,7 +7033,7 @@
         "Final two: A beats B because the consensus rule itself can block a timely decision, while inconsistent ratings can be fixed with defined triggers.",
         "Exam cue: invocation needs a named decision-maker with a backup; any rule that needs everyone to agree risks missing the RTO."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISO 22301 Clause 8.4.2 (Activation); DRII Professional Practice 7; ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); DRII Professional Practice 5 (Incident Response); ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "Invocation trigger",
         "Decision authority",
@@ -7071,7 +7071,7 @@
         "Final two: C beats B because recovery runs in parallel where dependencies allow, so the dependency chain sets the total, not the sum.",
         "Exam cue: total recovery time follows the critical path through dependencies, limited by the staff available."
       ],
-      "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Audit/Assurance Program; ISO 22301 Clause 8.4 (Business Continuity Procedures); Project Management Institute (PMI) Critical Path Method",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.4 (Business Continuity Plans and Procedures); PMBOK Guide 6th Edition, Section 6.5 (Develop Schedule)",
       "related_concepts": [
         "Critical-path method",
         "Dependency graph",
@@ -7109,7 +7109,7 @@
         "Final two: B beats C because exercises progress from discussion to live systems; the team must know its roles first.",
         "Exam cue: build exercises step by step, tabletop before parallel and parallel before full interruption."
       ],
-      "framework_ref": "ISO 22301 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); BCI Good Practice Guidelines PP6 (Validation); DRII Professional Practice 9",
+      "framework_ref": "ISO 22301:2019 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); BCI Good Practice Guidelines 2023 PP6 (Validation); DRII Professional Practice 8 (Business Continuity Plan Exercise, Assessment, and Maintenance)",
       "related_concepts": [
         "Tabletop exercise",
         "Parallel test",
@@ -7147,7 +7147,7 @@
         "Final two: A beats B because an opinion only means something for the scope it covers; relevance must be confirmed first.",
         "Exam cue: before relying on another auditor's work, confirm it covers what you need, then judge its results."
       ],
-      "framework_ref": "AICPA SOC Reporting Framework; AICPA Trust Services Criteria; ISACA IT Vendor Management Audit/Assurance Program; ISACA IT Audit Standard 1206 (Using the Work of Other Experts)",
+      "framework_ref": "AICPA SOC Reporting Framework; AICPA Trust Services Criteria; ISACA Vendor Management Audit/Assurance Program; ISACA IT Audit Standard 1206 (Using the Work of Other Experts)",
       "related_concepts": [
         "SOC 1 vs SOC 2 vs SOC 3",
         "Type I vs Type II",
@@ -7223,7 +7223,7 @@
         "Final two: C beats A because a mandatory verification step works regardless of how convincing the caller is, while training relies on judgement.",
         "Exam cue: prefer a control built into the process over one that relies on people noticing an attack."
       ],
-      "framework_ref": "NIST SP 800-63B (Authentication and Lifecycle Management); CISA Phishing Guidance; ISACA IT Operations Audit/Assurance Program; CIS Controls v8 Safeguard 6 (Access Control Management)",
+      "framework_ref": "NIST SP 800-63B-4 (Digital Identity Guidelines: Authentication and Authenticator Management); CISA, NSA, FBI and MS-ISAC Phishing Guidance: Stopping the Attack Cycle at Phase One (2023); ITIL 4 Service Desk practice; CIS Controls v8 Control 6 (Access Control Management)",
       "related_concepts": [
         "Social engineering",
         "MGM Resorts 2023 incident",
@@ -7261,7 +7261,7 @@
         "Final two: B beats C because a quota limit causes an outage at peak demand, while cost overruns are a financial rather than capacity risk.",
         "Exam cue: elastic does not mean unlimited; cloud capacity planning includes tracking provider quotas."
       ],
-      "framework_ref": "AWS Well-Architected Framework (Cost Optimization and Performance Efficiency Pillars); Microsoft Azure Architecture Center; FinOps Foundation Best Practices; COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "framework_ref": "AWS Well-Architected Framework (Cost Optimization and Performance Efficiency Pillars); Microsoft Azure Architecture Center; FinOps Foundation Framework; COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Autoscaling rules",
         "Service quotas",
@@ -7299,7 +7299,7 @@
         "Final two: D beats B because containment comes before recovery; restoring while attackers have access risks losing the restore too.",
         "Exam cue: in an active attack, contain first, then restore; a restore into a live intrusion can be undone."
       ],
-      "framework_ref": "CISA #StopRansomware Guide; FBI Ransomware Guidance (IC3); OFAC Sanctions Compliance Advisory (Ransomware); AWS S3 Object Lock Documentation; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)",
+      "framework_ref": "#StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); FBI Ransomware Guidance (Internet Crime Complaint Center IC3); OFAC Updated Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments (September 2021); AWS S3 Object Lock Documentation; NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
         "S3 Object Lock",
         "OFAC SDN list",
@@ -7337,7 +7337,7 @@
         "Final two: C beats D because the estimate already exceeds the RTO, and waiting until hour four guarantees missing it.",
         "Exam cue: compare the expected outage with the RTO; if it will be exceeded, invoke the plan in time to meet it."
       ],
-      "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); ISO 22301 Clause 8.4 (Business Continuity Procedures); NIST SP 800-34 (Contingency Planning Guide); ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); ISO 22301:2019 Clause 8.4 (Business Continuity Plans and Procedures); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
         "Cross-region replication lag",
         "Failover confidence",
@@ -7375,7 +7375,7 @@
         "Final two: A beats B because containment stops further access; the investigation follows immediately but cannot come first.",
         "Exam cue: in an active exposure, close the gap first, preserve evidence while doing so, then investigate."
       ],
-      "framework_ref": "GLBA Safeguards Rule (16 CFR §314); State breach-notification laws (NY SHIELD Act, CA Civ Code §1798.82); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Incident Management and Response Audit/Assurance Program; SEC Cybersecurity Disclosure Rules",
+      "framework_ref": "GLBA Safeguards Rule (16 CFR §314); State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); SEC Cybersecurity Disclosure Rules",
       "related_concepts": [
         "GLBA Safeguards Rule",
         "Emergency change governance",
@@ -7413,7 +7413,7 @@
         "Final two: B beats A because management can accept its own risks but cannot waive an external mandate; the formal exception route can.",
         "Exam cue: when an external rule and a business need clash, use the rule's own exception process rather than internal sign-off."
       ],
-      "framework_ref": "CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); NIST SP 800-171 (Protecting CUI); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CMMC Certification Requirements; ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); NIST SP 800-171 Rev 3 (Protecting Controlled Unclassified Information in Nonfederal Systems and Organizations); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); CMMC Program Rule (32 CFR Part 170)",
       "related_concepts": [
         "BOD 22-01 exception request",
         "Compensating controls documentation",
@@ -7489,7 +7489,7 @@
         "Final two: D beats B because a targeted fix closes the known gap now, while a full rewrite leaves it open for months.",
         "Exam cue: when a test exposes one specific gap, fix that gap and re-test rather than starting a broad rewrite."
       ],
-      "framework_ref": "FDIC Cybersecurity Examination Procedures; NIST SP 800-34 (Contingency Planning Guide); ISO 22301 Clause 8.4.2 (Activation); ISACA Business Continuity Audit/Assurance Program; BCI Good Practice Guidelines PP6 (Validation)",
+      "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); ISACA Business Continuity Management Audit/Assurance Program; BCI Good Practice Guidelines 2023 PP6 (Validation); ISO 22301:2019 Clause 8.5 (Exercise Programme)",
       "related_concepts": [
         "Quantitative invocation thresholds",
         "Decision authority clarification",
@@ -7527,7 +7527,7 @@
         "Final two: B beats A because scope and ownership must exist before discovery, or the tool fills the CMDB with unowned noise.",
         "Exam cue: when setting up any repository FIRST, define scope and owners before automating collection."
       ],
-      "framework_ref": "ITIL 4 Service Configuration Management; COBIT 2019 BAI10 (Managed Configuration); NIST SP 800-128 (Security-Focused Configuration Management); ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Service Configuration Management practice; COBIT 2019 BAI10 (Managed Configuration); NIST SP 800-128 (Security-Focused Configuration Management)",
       "related_concepts": [
         "Configuration item",
         "Auto-discovery",
@@ -7565,7 +7565,7 @@
         "Final two: D beats B because continuous discovery with ownership tags is timely and accountable, while billing lags and cannot name owners.",
         "Exam cue: for fast-changing environments, prefer continuous automated sources over periodic or financial proxies."
       ],
-      "framework_ref": "Cloud Security Alliance (CSA) Cloud Controls Matrix; AWS Well-Architected Framework (Operational Excellence Pillar); Azure Cloud Adoption Framework; ISACA Cloud Computing Management Audit/Assurance Program; CIS Benchmarks (AWS/Azure/GCP Foundations)",
+      "framework_ref": "Cloud Security Alliance (CSA) Cloud Controls Matrix; AWS Well-Architected Framework (Operational Excellence Pillar); Microsoft Cloud Adoption Framework for Azure; ISACA Cloud Computing Management Audit/Assurance Program; CIS Controls v8 Control 1 (Inventory and Control of Enterprise Assets)",
       "related_concepts": [
         "Cloud-native APIs",
         "Cloud tagging policy",
@@ -7603,7 +7603,7 @@
         "Final two: A beats B because a rehearsed second person is tested capability, while a runbook alone is an untested plan.",
         "Exam cue: in continuity questions, tested capability beats untested documentation every time."
       ],
-      "framework_ref": "ISO 22301 Clause 8.4 (Business Continuity Procedures); BCI Good Practice Guidelines PP4 (Design); NIST SP 800-34 (Contingency Planning Guide); ISACA Business Continuity Audit/Assurance Program",
+      "framework_ref": "ISO 22301:2019 Clause 8.3.4 (Resource Requirements); BCI Good Practice Guidelines 2023 PP4 (Design); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; COBIT 2019 APO07 (Managed Human Resources)",
       "related_concepts": [
         "Cross-training matrix",
         "Succession planning",
@@ -7641,7 +7641,7 @@
         "Final two: C beats A because achieved recovery against RTOs measures outcomes, while exercise counts only measure activity.",
         "Exam cue: for oversight metrics, choose the outcome tied to business objectives over activity or cost counts."
       ],
-      "framework_ref": "ISO 22301 Clause 9.1 (Performance Evaluation); BCI Good Practice Guidelines PP6 (Validation); ISACA Business Continuity Audit/Assurance Program; Kaplan & Norton Balanced Scorecard framework",
+      "framework_ref": "ISO 22301:2019 Clause 9.1 (Monitoring, Measurement, Analysis and Evaluation); BCI Good Practice Guidelines 2023 PP6 (Validation); ISACA Business Continuity Management Audit/Assurance Program; Kaplan & Norton Balanced Scorecard framework",
       "related_concepts": [
         "Balanced scorecard",
         "RTO achievement",
@@ -7755,7 +7755,7 @@
         "Final two: C beats A because the alert fired but reached nobody, so delivery, not sensitivity, must be fixed.",
         "Exam cue: when a control fails, recommend the fix at the exact point it broke."
       ],
-      "framework_ref": "FinOps Foundation Best Practices; AWS Cost Management documentation; ISACA Cloud Computing Management Audit/Assurance Program; COBIT 2019 APO06 (Managed Budget and Costs)",
+      "framework_ref": "FinOps Foundation Framework; AWS Cost Management documentation; ISACA Cloud Computing Management Audit/Assurance Program; COBIT 2019 APO06 (Managed Budget and Costs)",
       "related_concepts": [
         "Cost anomaly detection",
         "AWS Budgets auto-action",
@@ -7793,7 +7793,7 @@
         "Final two: B beats D because the board needs cost and benchmark evidence before it can decide well.",
         "Exam cue: when FIRST is asked about a major decision, gather and analyze the facts before escalating."
       ],
-      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISACA IT Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); HHS HIPAA Business Associate Agreement 45 CFR §164.504(e)",
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISACA Vendor Management Audit/Assurance Program; ISO/IEC 27036-1:2021 (Cybersecurity — Supplier Relationships — Overview and Concepts); HHS HIPAA Business Associate Agreement 45 CFR §164.504(e)",
       "related_concepts": [
         "TCO analysis",
         "Vendor benchmarking",
@@ -7831,7 +7831,7 @@
         "Final two: A beats B because protecting customer data outranks gathering intelligence while exfiltration is active.",
         "Exam cue: when data is actively leaving, contain first and preserve evidence as you do it."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); NIST SP 800-63B (Authentication and Lifecycle Management); ISACA Privileged Access Management Audit/Assurance Program; OWASP API Security Top 10",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-63B-4 (Digital Identity Guidelines: Authentication and Authenticator Management); NIST SP 800-53 Rev 5 IR-4 (Incident Handling); OWASP API Security Top 10 (2023)",
       "related_concepts": [
         "API token revocation",
         "OAuth refresh tokens",
@@ -7869,7 +7869,7 @@
         "Final two: D beats A because right-sizing the scope keeps the regulatory commitment, while deferral breaks it.",
         "Exam cue: when a required test clashes with workload, reduce scope before you reduce frequency."
       ],
-      "framework_ref": "ISO 22301 Clause 8.5 (Exercise Programme); FFIEC Business Continuity Management Booklet; ISACA Business Continuity Audit/Assurance Program; BCI Good Practice Guidelines PP6 (Validation)",
+      "framework_ref": "ISO 22301:2019 Clause 8.5 (Exercise Programme); FFIEC Business Continuity Management Booklet; ISACA Business Continuity Management Audit/Assurance Program; BCI Good Practice Guidelines 2023 PP6 (Validation)",
       "related_concepts": [
         "Regulatory commitment continuity",
         "Targeted exercise scope",
@@ -7907,7 +7907,7 @@
         "Final two: C beats A because ambiguous, authorized access calls for securing evidence and coordination before visible action.",
         "Exam cue: in suspected insider cases without active data loss, preserve evidence and involve HR and legal before confronting."
       ],
-      "framework_ref": "Carnegie Mellon CERT Insider Threat Center; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Identity and Access Management Audit/Assurance Program",
+      "framework_ref": "CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022); NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
         "Insider threat investigation",
         "CERT Insider Threat Center",
@@ -7945,7 +7945,7 @@
         "Final two: B beats A because coordinated command and triage must come before repeating a recovery method that already failed.",
         "Exam cue: when several systems fail at once, establish command and priorities before choosing technical fixes."
       ],
-      "framework_ref": "ISACA M&A IT Audit/Assurance Program; FEMA Incident Command System (ICS); COBIT 2019 BAI06 (Managed Changes); ISACA IT Change Management Audit/Assurance Program; ISO 22301 (Business Continuity Management)",
+      "framework_ref": "FEMA Incident Command System (ICS); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
         "Big Bang cutover",
         "Rollback feasibility",
@@ -7983,7 +7983,7 @@
         "Final two: A beats C because governance oversight and accurate disclosure come before arguing the label.",
         "Exam cue: when a serious finding meets a public deadline, involve the audit committee and disclose accurately."
       ],
-      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); SEC Regulation S-K Item 308; SOX Sections 302, 404, 906; COBIT 2019 EDM03 (Ensured Risk Optimization), MEA02 (Managed Internal Control); ISACA SOX Audit/Assurance Program",
+      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); SEC Regulation S-K Item 308; SOX Sections 302, 404, 906; COBIT 2019 EDM03 (Ensured Risk Optimization); COBIT 2019 MEA02 (Managed System of Internal Control)",
       "related_concepts": [
         "Material weakness vs significant deficiency",
         "SOX 404 audit-year scope",
@@ -8021,7 +8021,7 @@
         "Final two: C beats D because analyzed failures and proactive regulator contact drive remediation, while a memo only records.",
         "Exam cue: a failed test is a finding to analyze and disclose, never a score to improve."
       ],
-      "framework_ref": "FFIEC Business Continuity Management Booklet; ISO 22301 Clause 9.1 (Performance Evaluation); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); ISACA Business Continuity Audit/Assurance Program; FDIC Cybersecurity Examination Procedures",
+      "framework_ref": "FFIEC Business Continuity Management Booklet; ISO 22301:2019 Clause 8.5 (Exercise Programme); NIST SP 800-84 (Guide to Test, Training, and Exercise Programs); ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "Structured exercise debrief",
         "Finding categorization",
@@ -8059,7 +8059,7 @@
         "Final two: D beats B because a backup replay yields verified data far faster and more reliably than manual rework.",
         "Exam cue: for corrupted data, choose the fastest verified recovery and engage regulators before deadlines, not after."
       ],
-      "framework_ref": "SEC Rule 15c6-1 (T+1 Settlement Cycle); SEC Rule 17a-4 (Books and Records Preservation); FINRA Rule 4511 (General Requirements); SEC Rule 15c3-3 (Customer Protection); ISACA Database Management Audit/Assurance Program; FFIEC IT Examination Handbook (Operations); ISO/IEC 27040 (Storage Security)",
+      "framework_ref": "SEC Rule 15c6-1 (T+1 Settlement Cycle); SEC Rule 17a-4 (Books and Records Preservation); FINRA Rule 4511 (General Requirements); SEC Rule 15c3-3 (Customer Protection); FFIEC Business Continuity Management Booklet; ISO/IEC 27040 (Storage Security)",
       "related_concepts": [
         "T+1 settlement",
         "Customer-protection rules",
@@ -8097,7 +8097,7 @@
         "Final two: B beats A because clear communication removes avoidable contacts, while extra staff only absorbs them.",
         "Exam cue: when volume comes from duplicate reports, reduce demand with communication before adding capacity."
       ],
-      "framework_ref": "ITIL 4 Service Desk Practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents); ISACA IT Operations Audit/Assurance Program; FEMA Crisis Communication best practices",
+      "framework_ref": "ITIL 4 Service Desk practice; ITIL 4 Incident Management practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "related_concepts": [
         "Mass communication to reduce duplicate tickets",
         "Surge capacity scripts",
@@ -8135,7 +8135,7 @@
         "Final two: A beats B because modelled, phased onboarding protects all tenants, while an untested scale-up risks everyone's service.",
         "Exam cue: in capacity questions, model the demand first, then commit to a plan you can prove."
       ],
-      "framework_ref": "ITIL 4 Capacity and Performance Management; COBIT 2019 APO04 (Managed Innovation), BAI04 (Managed Availability and Capacity); ISACA IT Operations Audit/Assurance Program; SaaS Industry Tiered Pricing Practices",
+      "framework_ref": "ITIL 4 Capacity and Performance Management; COBIT 2019 BAI04 (Managed Availability and Capacity); COBIT 2019 APO09 (Managed Service Agreements)",
       "related_concepts": [
         "Capacity engineering",
         "Tiered SaaS pricing",
@@ -8173,7 +8173,7 @@
         "Final two: D beats C because the firm stays accountable for resilience, and an agreed roadmap has not changed the pattern.",
         "Exam cue: SLA credits are not a risk response; when a vendor keeps failing, build resilience you control."
       ],
-      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISACA IT Vendor Management Audit/Assurance Program; AWS/Azure/GCP commercial relationship management practices; ITIL 4 Service Level Management",
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO09 (Managed Service Agreements); ITIL 4 Supplier Management practice; ISACA Vendor Management Audit/Assurance Program",
       "related_concepts": [
         "Vendor performance trending",
         "SLA credit gap",
@@ -8211,7 +8211,7 @@
         "Final two: C beats A because rebuilding leadership keeps recovery moving, while waiting prolongs the outage and the dependency.",
         "Exam cue: when a key person is lost, replace the capability rather than wait for the person."
       ],
-      "framework_ref": "ISACA Business Continuity Audit/Assurance Program; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); BCI Good Practice Guidelines PP4 (Design); FEMA Incident Command System (ICS)",
+      "framework_ref": "ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); BCI Good Practice Guidelines 2023 PP4 (Design); FEMA Incident Command System (ICS)",
       "related_concepts": [
         "Single-person dependency",
         "Alternative team assembly",
@@ -8249,7 +8249,7 @@
         "Final two: B beats C because management's response belongs in the report, and including it does not impair independence.",
         "Exam cue: report findings at their true severity, with management's agreed action plan attached."
       ],
-      "framework_ref": "PCAOB AS 2201 (Audit of Internal Control Over Financial Reporting); ISACA Code of Professional Ethics; ISACA IT Audit Standards on Reporting; ISO 19011 (Guidelines for Auditing Management Systems); SEC Cybersecurity Disclosure Rules (December 2023)",
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); IIA Global Internal Audit Standards (2024), Standard 15.1 (Final Engagement Communication); ISACA Code of Professional Ethics",
       "related_concepts": [
         "Material weakness classification",
         "Pre-meeting coordination",
@@ -8287,7 +8287,7 @@
         "Final two: D beats A because confirmed data theft overrides routine off-boarding timelines.",
         "Exam cue: when a leaver's data theft is confirmed, contain now; process timelines are for normal departures."
       ],
-      "framework_ref": "Carnegie Mellon CERT Insider Threat Center; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); GLBA Safeguards Rule (16 CFR §314); State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); ISACA Identity and Access Management Audit/Assurance Program",
+      "framework_ref": "CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022); NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); GLBA Safeguards Rule (16 CFR §314); State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82)",
       "related_concepts": [
         "Insider threat",
         "USB device exfiltration",
@@ -8325,7 +8325,7 @@
         "Final two: A beats B because domain controllers still honor the previous krbtgt key after a single reset.",
         "Exam cue: fix the root of trust an attacker forged before cleaning individual machines."
       ],
-      "framework_ref": "Microsoft Securing Privileged Access (Tier Model); MITRE ATT&CK T1558.001 (Golden Ticket); CISA Joint Cybersecurity Advisories (AD-related); NIST SP 800-53 Rev 5 IA-5 (Authenticator Management); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Identity and Access Management Audit/Assurance Program",
+      "framework_ref": "Microsoft Securing Privileged Access (Tier Model); MITRE ATT&CK T1558.001 (Golden Ticket); Detecting and Mitigating Active Directory Compromises (ASD, CISA, NSA et al., 2024); NIST SP 800-53 Rev 5 IA-5 (Authenticator Management); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
         "Kerberoasting",
         "Golden Ticket",
@@ -8363,7 +8363,7 @@
         "Final two: C beats A because an active exploit demands exposure-based emergency priorities, not the routine change order.",
         "Exam cue: when you cannot patch everything at once, patch by exposure and add a compensating control meanwhile."
       ],
-      "framework_ref": "NIST SP 800-204D (Strategies for Secure Software Supply Chain); CISA Software Bill of Materials Guidance; SLSA (Supply-chain Levels for Software Artifacts); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); MITRE ATT&CK Detection Engineering; ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines); CISA Software Bill of Materials Guidance; SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
       "related_concepts": [
         "SBOM",
         "Virtual patching",
@@ -8401,7 +8401,7 @@
         "Final two: B beats A because isolation fixes the cause, while added shared capacity is absorbed by the same tenant.",
         "Exam cue: in shared environments, fix isolation before adding capacity."
       ],
-      "framework_ref": "Cloud-native architecture (cell-based architecture pattern); COBIT 2019 APO09 (Managed Service Agreements); ISACA IT Vendor Management Audit/Assurance Program; AWS Well-Architected Framework (Reliability Pillar); SaaS Industry Tiered Pricing Practices",
+      "framework_ref": "AWS Well-Architected: Reducing the Scope of Impact with Cell-Based Architecture (2023); COBIT 2019 APO09 (Managed Service Agreements); AWS Well-Architected Framework (Reliability Pillar); COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Cell-based architecture",
         "Noisy-neighbor controls",
@@ -8439,7 +8439,7 @@
         "Final two: D beats C because the firm's documented evidence must come before any outside pressure on the carrier.",
         "Exam cue: in any dispute, establish your own evidence first; it decides which response is worth pursuing."
       ],
-      "framework_ref": "NAIC Cybersecurity Insurance Guidance; State insurance department complaint procedures; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); ISACA Business Continuity Audit/Assurance Program; HIPAA HHS Breach Notification Rule (45 CFR §§ 164.400-414)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 MEA02 (Managed System of Internal Control); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
         "Insurance coverage interpretation",
         "Contra proferentem rule",
@@ -8477,7 +8477,7 @@
         "Final two: C beats B because a targeted pause meets the legal duty without leaving the recovery plan untested for an open-ended period.",
         "Exam cue: when a legal preservation duty collides with an operation, stop only the conflicting steps and let counsel define scope."
       ],
-      "framework_ref": "Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI); ABA Litigation Hold Best Practices; ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); ISACA e-Discovery Audit guidance; The Sedona Conference Working Group on Electronic Document Retention",
+      "framework_ref": "Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI); The Sedona Conference Commentary on Legal Holds, Second Edition: The Trigger & The Process (2019); The Sedona Conference Working Group on Electronic Document Retention",
       "related_concepts": [
         "Litigation hold",
         "FRCP Rule 37(e) spoliation",
@@ -8515,7 +8515,7 @@
         "Final two: B beats C because management needs facts and options compared before committing another year of budget.",
         "Exam cue: when a project is off track, the auditor's first recommendation is an accurate status and options analysis, not a chosen fix."
       ],
-      "framework_ref": "ISACA M&A IT Audit/Assurance Program; COBIT 2019 EDM02 (Ensured Benefits Delivery); McKinsey M&A Integration Methodology; ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 BAI01 (Managed Programs); ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "M&A IT integration",
         "Hybrid steady-state",
@@ -8553,7 +8553,7 @@
         "Final two: D beats C because it addresses every jurisdiction before data moves, while C narrows scope but still transfers unlawfully.",
         "Exam cue: when legal duties conflict across borders, choose the coordinated legal response over any one-sided action."
       ],
-      "framework_ref": "GDPR Articles 48-49 (Transfers Subject to Appropriate Safeguards / Derogations); China Personal Information Protection Law (PIPL); China Data Security Law (DSL); US Federal Rules of Civil Procedure on Subpoenas; Restatement (Third) of Foreign Relations Law §442; ISACA Privacy Audit/Assurance Program",
+      "framework_ref": "GDPR Articles 48 (Transfers or Disclosures Not Authorised by Union Law), 49 (Derogations for Specific Situations); China Personal Information Protection Law (PIPL); China Data Security Law (DSL); Federal Rules of Civil Procedure (FRCP) Rule 45 (Subpoena); Restatement (Third) of Foreign Relations Law §442",
       "related_concepts": [
         "GDPR Article 48",
         "China PIPL cross-border transfer",
@@ -8591,7 +8591,7 @@
         "Final two: A beats B because the update channel itself is compromised; contain and revoke access before remediating through it.",
         "Exam cue: in an active compromise, cut attacker control and revoke stolen credentials before rolling out fixes."
       ],
-      "framework_ref": "NIST SP 800-213 (IoT Device Cybersecurity Guidance); NISTIR 8259A (IoT Device Cybersecurity Capability Core Baseline); CISA Industrial Control Systems Cybersecurity Guidance; NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); IEC 62443 (Industrial Cybersecurity); ISACA Cloud Computing Management Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-213 (IoT Device Cybersecurity Guidance); NISTIR 8259A (IoT Device Cybersecurity Capability Core Baseline); NIST SP 800-82 Rev 3 (Guide to Operational Technology Security); IEC 62443 (Industrial Cybersecurity); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
         "IoT fleet management",
         "C2 sinkhole",
@@ -8629,7 +8629,7 @@
         "Final two: B beats C because management owns staffing decisions; the auditor's role is to make the risk visible, not to block the cut.",
         "Exam cue: when management takes a risky decision, document and communicate the risk with options rather than halting the decision."
       ],
-      "framework_ref": "ISO 22301 Clause 8.4 (Business Continuity Procedures); ISACA Business Continuity Audit/Assurance Program; BCI Good Practice Guidelines PP4 (Design); COBIT 2019 APO07 (Managed Human Resources)",
+      "framework_ref": "ISO 22301:2019 Clause 8.3.4 (Resource Requirements); BCI Good Practice Guidelines 2023 PP4 (Design); COBIT 2019 APO07 (Managed Human Resources); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
         "Single-person dependency",
         "Knowledge capture",
@@ -8667,7 +8667,7 @@
         "Final two: A beats D because harm is ongoing; stop it now and validate in parallel rather than validating first.",
         "Exam cue: when a live system is causing harm, contain the harm before studying it further."
       ],
-      "framework_ref": "Equal Credit Opportunity Act 15 USC §1691; CFPB Fair Lending Examination Procedures; CFPB Disparate Impact Rule (12 CFR §1002); NIST AI Risk Management Framework 1.0; ISACA Auditing Artificial Intelligence (IT Audit and Assurance Program); EU AI Act (Regulation 2024/1689)",
+      "framework_ref": "Equal Credit Opportunity Act 15 USC §1691; CFPB Fair Lending Examination Procedures; Regulation B (Equal Credit Opportunity Act), 12 CFR Part 1002; NIST AI Risk Management Framework 1.0; ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); EU AI Act (Regulation 2024/1689)",
       "related_concepts": [
         "ECOA disparate impact",
         "ML fair-lending testing",
@@ -8705,7 +8705,7 @@
         "Final two: C beats B because agreeing on sequence protects both the patch and the audit, while deferral accepts exploit risk first.",
         "Exam cue: when two legitimate obligations clash on timing, try sequencing by agreement before sacrificing either one."
       ],
-      "framework_ref": "CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); IRS / State Tax Authority Audit Procedures; ISACA IT Audit Standards on Communication of Results; NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
+      "framework_ref": "CISA Binding Operational Directive 22-01 (Known Exploited Vulnerabilities); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); ITIL 4 Change Enablement practice",
       "related_concepts": [
         "Competing regulatory obligations",
         "BOD 22-01 deadline",
@@ -8743,7 +8743,7 @@
         "Final two: D beats A because you must know which records are wrong before telling customers anything useful.",
         "Exam cue: when data integrity fails and no clean copy exists, scope the damage before remediating or notifying."
       ],
-      "framework_ref": "AICPA AU-C Section 240 (Consideration of Fraud in a Financial Statement Audit); PCAOB AS 2110 (Identifying and Assessing Risks of Material Misstatement); GDPR Article 5(1)(d) (Accuracy Principle); ISACA Database Management Audit/Assurance Program; SOX Sections 302, 404, 906",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 APO14 (Managed Data); GDPR Article 5(1)(d) (Accuracy Principle); SOX Sections 302, 404, 906; PCAOB AS 2110 (Identifying and Assessing Risks of Material Misstatement)",
       "related_concepts": [
         "Silent data corruption",
         "Data reconciliation",
@@ -8781,7 +8781,7 @@
         "Final two: B beats C because timely, honest disclosure with a plan builds credibility, while delay can look like concealment.",
         "Exam cue: with a regulator, transparency about known gaps plus a remediation plan beats waiting until everything looks perfect."
       ],
-      "framework_ref": "GDPR Articles 5, 30, 31, 35 (Principles, Records of Processing, Cooperation, DPIA); CJEU Schrems II Judgment (C-311/18); EDPB Recommendations 01/2020 on Supplementary Measures; EU-US Data Privacy Framework (2023); ISACA Privacy Audit/Assurance Program",
+      "framework_ref": "GDPR Articles 5, 30, 31, 35 (Principles, Records of Processing, Cooperation, DPIA); CJEU Schrems II Judgment (C-311/18); EDPB Recommendations 01/2020 on Supplementary Measures; EU-US Data Privacy Framework (2023)",
       "related_concepts": [
         "GDPR Article 31 cooperation",
         "Schrems II / EU-US DPF",
@@ -8857,7 +8857,7 @@
         "Final two: C beats D because an active intrusion must be contained before hardening; enforcement does not evict a running attacker.",
         "Exam cue: when a control gap has already been exploited, contain the incident first, then close the gap in phases."
       ],
-      "framework_ref": "CIS Kubernetes Benchmark; NIST SP 800-190 (Application Container Security Guide); NSA/CISA Kubernetes Hardening Guide; Open Policy Agent (OPA) Gatekeeper Best Practices; MITRE ATT&CK (Container Matrix); ISACA Cloud Computing Management Audit/Assurance Program",
+      "framework_ref": "CIS Kubernetes Benchmark; NIST SP 800-190 (Application Container Security Guide); NSA/CISA Kubernetes Hardening Guide; MITRE ATT&CK (Container Matrix); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
         "OPA Gatekeeper",
         "Pod Security Standards",
@@ -8895,7 +8895,7 @@
         "Final two: A beats D because it protects continuity without conceding the firm's legal position against a failing vendor.",
         "Exam cue: in a vendor exit, secure continuity of the critical service first, then pursue the commercial dispute in parallel."
       ],
-      "framework_ref": "ISACA IT Vendor Management Audit/Assurance Program; COBIT 2019 APO10 (Managed Vendors); Uniform Commercial Code (Material Breach Doctrine); State Insurance Regulators Model Holding Company System Regulatory Act (vendor management); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); COBIT 2019 DSS04 (Managed Continuity); ISACA Vendor Management Audit/Assurance Program; Restatement (Second) of Contracts §241 (Material Breach)",
       "related_concepts": [
         "Material breach voiding penalty",
         "Transition Services Agreement (TSA)",
@@ -8933,7 +8933,7 @@
         "Final two: D beats C because evidence must be preserved before rebuilding, or the firm cannot tell whether production is affected.",
         "Exam cue: contain and preserve evidence before you eradicate; wiping first destroys the investigation."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); CISA Joint Cybersecurity Advisories; ISACA Incident Management and Response Audit/Assurance Program; FDIC Cybersecurity Examination Procedures; FFIEC Cybersecurity Assessment Tool",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
       "related_concepts": [
         "Malware in test environment",
         "Cross-contamination risk",
@@ -8971,7 +8971,7 @@
         "Final two: B beats C because the planned workaround covers the expected outage, while a weeks-long switch cannot arrive in time.",
         "Exam cue: compare the fix's lead time with the outage's expected duration before choosing a drastic recovery option."
       ],
-      "framework_ref": "PCI DSS v4.0 Requirement 12 (Incident Response); VISA / Mastercard / AmEx Incident Response Procedures; ISACA Information Security Management Audit/Assurance Program; FFIEC Retail Payment Systems IT Examination Handbook",
+      "framework_ref": "COBIT 2019 DSS04 (Managed Continuity); PCI DSS v4.0.1 Requirement 12.10 (Incident Response); FFIEC Retail Payment Systems IT Examination Handbook",
       "related_concepts": [
         "Payment processor outage",
         "Manual card workarounds with PCI controls",
@@ -9009,7 +9009,7 @@
         "Final two: C beats B because the board owns materiality decisions and must understand them, not merely approve management's answer.",
         "Exam cue: brief boards on the decisions they must make, in business terms, so they can exercise real oversight."
       ],
-      "framework_ref": "SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); NACD Cyber-Risk Oversight Handbook; ISACA Audit Committee / Board Cyber Engagement Guidance; SEC Cybersecurity Disclosure Rules; SEC Regulation S-K Item 106",
+      "framework_ref": "SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); NACD Cyber-Risk Oversight Handbook; SEC Regulation S-K Item 106",
       "related_concepts": [
         "Form 8-K Item 1.05 4-business-day rule",
         "Materiality determination framework",
@@ -9047,7 +9047,7 @@
         "Final two: D beats B because data harvested today stays sensitive for years, so migration must start before quantum capability arrives.",
         "Exam cue: judge cryptographic risk by how long the data must stay secret, not by when the threat seems likely."
       ],
-      "framework_ref": "NIST FIPS 203 (ML-KEM); NIST FIPS 204 (ML-DSA); NIST FIPS 205 (SLH-DSA); NIST SP 800-208 (Stateful Hash-Based Signature Schemes); CISA Quantum-Readiness Guide; NSA Cybersecurity Information Sheet (CSI) on Post-Quantum Cryptography",
+      "framework_ref": "NIST FIPS 203 (ML-KEM); NIST FIPS 204 (ML-DSA); NIST FIPS 205 (SLH-DSA); NIST SP 800-208 (Stateful Hash-Based Signature Schemes); Quantum-Readiness: Migration to Post-Quantum Cryptography (CISA, NSA, NIST, 2023); NSA Commercial National Security Algorithm Suite 2.0 (CNSA 2.0) Advisory (2022)",
       "related_concepts": [
         "Post-quantum cryptography",
         "FIPS 203/204/205",
@@ -9085,7 +9085,7 @@
         "Final two: A beats B because the first priority is to reduce exposure; notification follows once access is actually assessed.",
         "Exam cue: when a vulnerability becomes public, re-rate the risk and mitigate at once rather than holding to the old timeline."
       ],
-      "framework_ref": "ISACA Information Security Management Audit/Assurance Program; OWASP Bug Bounty Best Practices; Department of Justice Guidance on Good-Faith Security Research (May 2022); CFAA 18 USC §1030; ISO/IEC 29147 (Vulnerability Disclosure)",
+      "framework_ref": "ISO/IEC 29147 (Vulnerability Disclosure); ISO/IEC 30111 (Vulnerability Handling Processes); DOJ Policy for Charging Cases under the Computer Fraud and Abuse Act (May 2022); CFAA 18 USC §1030",
       "related_concepts": [
         "Coordinated vulnerability disclosure",
         "CFAA safe harbor",
@@ -9123,7 +9123,7 @@
         "Final two: B beats C because exceeding the RTO triggers the planned alternate processing, while manual work cannot scale.",
         "Exam cue: when an outage passes the BIA's recovery time objective, invoke the plan; do not keep waiting on vendor estimates."
       ],
-      "framework_ref": "FFIEC Business Continuity Management Booklet; FDIC Cybersecurity Examination Procedures; ISO 22301 Clause 8.4.2 (Activation); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "framework_ref": "FFIEC Business Continuity Management Booklet; ISO 22301:2019 Clause 8.4.2 (Incident Response Structure); COBIT 2019 DSS04 (Managed Continuity); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
       "related_concepts": [
         "BCP invocation thresholds",
         "Core-banking vendor concentration",
@@ -9161,7 +9161,7 @@
         "Final two: C beats D because an independent investigation must establish scope before the claim is corrected and disclosed.",
         "Exam cue: when fraud and a conflict of interest surface, separate the conflicted person and investigate independently before acting on conclusions."
       ],
-      "framework_ref": "ISACA Fraud Risk Management Audit/Assurance Program; 18 USC §1341 (Mail Fraud); 18 USC §1343 (Wire Fraud); State Insurance Fraud Statutes; Federal Sentencing Guidelines (Organizational Sentencing); SOX Sections 302, 404, 906",
+      "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); 18 USC §1341 (Mail Fraud); 18 USC §1343 (Wire Fraud); State Insurance Fraud Statutes; Federal Sentencing Guidelines (Organizational Sentencing); SOX Sections 302, 404, 906",
       "related_concepts": [
         "Mail/wire fraud",
         "Related-party self-dealing",
@@ -9199,7 +9199,7 @@
         "Final two: A beats B because intrusive monitoring must be assessed before any deployment, not after a partial launch.",
         "Exam cue: for high-risk processing, assess and consult first; a sound pause beats a fast partial rollout."
       ],
-      "framework_ref": "GDPR Article 88 (Processing in the Context of Employment); German Works Council Constitution Act (Betriebsverfassungsgesetz, BetrVG §87); French CNIL Employee Monitoring Guidance; UK ICO Employee Monitoring Code (2023); GDPR Articles 5, 13, 14, 35 (Principles, Information, DPIA)",
+      "framework_ref": "GDPR Article 88 (Processing in the Context of Employment); German Works Council Constitution Act (Betriebsverfassungsgesetz, BetrVG §87); French CNIL Employee Monitoring Guidance; UK ICO Employment Practices and Data Protection: Monitoring Workers (2023); GDPR Articles 5, 13, 14, 35 (Principles, Information, DPIA)",
       "related_concepts": [
         "GDPR Article 88",
         "Works council co-determination (BetrVG)",
@@ -9237,7 +9237,7 @@
         "Final two: B beats C because the firm needs independent assurance; the provider is investigating its own control failure.",
         "Exam cue: after a physical breach, verify with independent physical evidence; remote checks and the breached party's word are not enough."
       ],
-      "framework_ref": "ISO/IEC 27001 Annex A.11 (Physical and Environmental Security); HHS HIPAA Security Rule 45 CFR §164.310 (Physical Safeguards); PCI DSS v4.0 Requirement 9 (Restrict Physical Access to Cardholder Data); ISACA Data Center Audit/Assurance Program; ISO/IEC 27037 (Digital Evidence)",
+      "framework_ref": "ISO/IEC 27001:2022 Annex A.7 (Physical Controls); HHS HIPAA Security Rule 45 CFR §164.310 (Physical Safeguards); PCI DSS v4.0.1 Requirement 9 (Restrict Physical Access to Cardholder Data); ISO/IEC 27037 (Digital Evidence)",
       "related_concepts": [
         "Colocation tenant security",
         "Tailgating breach",
@@ -9275,7 +9275,7 @@
         "Final two: C beats B because the data sits inside the model; a bypassable filter is a half-measure while exposure continues.",
         "Exam cue: when personal data is exposed by design, stop the processing first, then assess, remediate and notify."
       ],
-      "framework_ref": "NIST AI Risk Management Framework 1.0; ISO/IEC 42001 (AI Management Systems); GDPR Articles 33 (Breach Notification to Supervisory Authority), 34 (Breach Notification to Data Subjects); ISACA Auditing Artificial Intelligence Audit Program; State breach-notification laws",
+      "framework_ref": "NIST AI Risk Management Framework 1.0; ISO/IEC 42001 (AI Management Systems); GDPR Articles 33 (Breach Notification to Supervisory Authority), 34 (Breach Notification to Data Subjects); ISACA \"Auditing Artificial Intelligence\" (IT Audit and Assurance Program); State breach-notification laws",
       "related_concepts": [
         "Gen-AI training data leakage",
         "Prompt injection / jailbreak",
@@ -9313,7 +9313,7 @@
         "Final two: D beats B because it stops new takeovers across all accounts, while B only repairs damage already done.",
         "Exam cue: during an ongoing attack, prefer the control that stops new harm over one that repairs past harm."
       ],
-      "framework_ref": "OWASP Top 10 2021 (A07 Identification and Authentication Failures); NIST SP 800-63B (Authentication and Lifecycle Management); CISA Joint Cybersecurity Advisories on Credential Stuffing; ISACA Identity and Access Management Audit/Assurance Program; FIDO Alliance WebAuthn Specifications",
+      "framework_ref": "OWASP Top 10 2021 (A07 Identification and Authentication Failures); NIST SP 800-63B-4 (Digital Identity Guidelines: Authentication and Authenticator Management); OWASP Credential Stuffing Prevention Cheat Sheet; FIDO Alliance WebAuthn Specifications",
       "related_concepts": [
         "Credential stuffing",
         "Behavioral bot detection",
@@ -9389,7 +9389,7 @@
         "Final two: B beats C because allegations against senior executives need independent oversight before investigation begins.",
         "Exam cue: when allegations involve senior management, escalate to the audit committee before investigating."
       ],
-      "framework_ref": "SEC Whistleblower Program (Dodd-Frank Section 922; 17 CFR §240.21F); SOX Sections 301 (Audit Committee), 806 (Whistleblower Protection), 1107 (Retaliation); PCAOB AS 2110 (Identifying and Assessing Risks); ISACA Internal Audit Code of Ethics; ISACA IT Audit Standards on Communication of Results",
+      "framework_ref": "SEC Whistleblower Program (Dodd-Frank Section 922, 17 CFR §240.21F); SOX Sections 301 (Audit Committee), 806 (Whistleblower Protection), 1107 (Retaliation); IIA Global Internal Audit Standards (2024), Standard 8.1 (Board Interaction); ISACA Code of Professional Ethics",
       "related_concepts": [
         "Whistleblower anonymity preservation",
         "SOX 301 audit committee direct-line",
@@ -9427,7 +9427,7 @@
         "Final two: C beats B because the obligations must be known before data moves; a transfer may itself breach export rules.",
         "Exam cue: when laws conflict, the FIRST step is to understand obligations, not to pick a physical action."
       ],
-      "framework_ref": "US OFAC Sanctions Regulations (31 CFR Chapter V); EU Sanctions Framework; Russian Federal Law on Personal Data (152-FZ, Data Localization); Roskomnadzor Cross-Border Transfer Rules; GDPR Article 49 (Derogations for Specific Situations); ISACA IT Vendor Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); US OFAC Sanctions Regulations (31 CFR Chapter V); Council Regulation (EU) No 833/2014 (Russia Sectoral Sanctions); Russian Federal Law on Personal Data (152-FZ, Data Localization); GDPR Article 49 (Derogations for Specific Situations)",
       "related_concepts": [
         "OFAC SDN list",
         "Russian Data Localization Law 152-FZ",
@@ -9465,7 +9465,7 @@
         "Final two: B beats C because terminating before assessing leaves no DR site for six months; assess first, then act.",
         "Exam cue: when an option removes your only recovery capability, look for the step that assesses before cutting over."
       ],
-      "framework_ref": "ISO 22301 (Business Continuity Management Systems); ISACA Business Continuity Audit/Assurance Program; FFIEC Business Continuity Management Booklet; US OFAC Sanctions Regulations (31 CFR Chapter V); ISO 22320 (Emergency Management)",
+      "framework_ref": "ISO 22301:2019 Clause 8.2.3 (Risk Assessment); NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; FFIEC Business Continuity Management Booklet; ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
         "Geopolitical risk in BCP site selection",
         "DR vendor war-zone operations",
@@ -9503,7 +9503,7 @@
         "Final two: A beats C because a live breach needs response and evidence first; the contract question waits.",
         "Exam cue: in a breach involving a vendor, respond to the incident first and settle the vendor relationship later."
       ],
-      "framework_ref": "PCI DSS v4.0 Requirement 12.10 (Incident Response); Visa Account Information Security (AIS) Program; Mastercard Site Data Protection (SDP) Program; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); ISACA IT Vendor Management Audit/Assurance Program",
+      "framework_ref": "PCI DSS v4.0.1 Requirement 12.10 (Incident Response); Visa Account Information Security (AIS) Program; Mastercard Site Data Protection (SDP) Program; State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82); ISACA Vendor Management Audit/Assurance Program",
       "related_concepts": [
         "Outsourced MDR governance",
         "Card-brand forensic procedures",
@@ -9541,7 +9541,7 @@
         "Final two: D beats C because only revised, achievable figures are accurate; a longer timeline still promises doubtful benefits.",
         "Exam cue: when benefits realization falls short, the best answer corrects the record rather than reframing it."
       ],
-      "framework_ref": "SEC Rule 10b-5 (Securities Fraud); SOX Sections 302, 404, 906; SEC Regulation S-K Items 303 (MD&A), 105 (Risk Factors); SEC Plain English Disclosure Guidance; PCAOB AS 2410 (Related Parties)",
+      "framework_ref": "SEC Rule 10b-5 (Securities Fraud); SEC Regulation S-K Items 303 (MD&A), 105 (Risk Factors); SOX Sections 302, 404, 906",
       "related_concepts": [
         "Material misstatement by omission",
         "SEC Rule 10b-5",
@@ -9579,7 +9579,7 @@
         "Final two: B beats C because compensating controls need an accountable owner and an end date, not just continuation.",
         "Exam cue: for unsupported systems, look for formal risk acceptance by management plus a replacement plan."
       ],
-      "framework_ref": "NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations); FDA Quality System Regulation (21 CFR Part 820); SOX Sections 302, 404; ISACA Risk Management Audit/Assurance Program; ISO/IEC 31000:2018 (Risk Management)",
+      "framework_ref": "NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations); NIST SP 800-53 Rev 5 SA-22 (Unsupported System Components); COBIT 2019 APO12 (Managed Risk); ISO 31000:2018 (Risk Management); FDA Quality Management System Regulation (QMSR), 21 CFR Part 820; SOX Sections 302, 404",
       "related_concepts": [
         "End-of-support (EOS) systems",
         "Compensating controls documentation",
@@ -9617,7 +9617,7 @@
         "Final two: A beats C because exposure is ongoing; contain first, then analyze using the logs you preserved.",
         "Exam cue: when data is still exposed, the FIRST step is containment that also preserves evidence."
       ],
-      "framework_ref": "AWS S3 Security Best Practices; Cloud Security Alliance (CSA) Cloud Controls Matrix; ISO/IEC 29147 (Vulnerability Disclosure); DOJ Good-Faith Security Research Policy (May 2022); ISACA Cloud Computing Management Audit/Assurance Program; State breach-notification laws",
+      "framework_ref": "AWS S3 Security Best Practices; Cloud Security Alliance (CSA) Cloud Controls Matrix; ISO/IEC 29147 (Vulnerability Disclosure); DOJ Policy for Charging Cases under the Computer Fraud and Abuse Act (May 2022); ISACA Cloud Computing Management Audit/Assurance Program; State breach-notification laws",
       "related_concepts": [
         "Public cloud misconfiguration",
         "Good-faith security research",
@@ -9655,7 +9655,7 @@
         "Final two: D beats C because pre-delegated authority keeps both speed and oversight; ad hoc autonomy loses oversight.",
         "Exam cue: in an incident, use the decision rights the plan already defines rather than inventing new ones."
       ],
-      "framework_ref": "FEMA Incident Command System (ICS); NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Incident Management; ISO 22301 (Business Continuity Management); ISACA IT Operations Audit/Assurance Program",
+      "framework_ref": "FEMA Incident Command System (ICS); ITIL 4 Incident Management; COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "related_concepts": [
         "Incident command authority",
         "Pre-established delegation",
@@ -9693,7 +9693,7 @@
         "Final two: C beats D because recovery is already under way; investigation runs in parallel, before evidence ages out.",
         "Exam cue: restore before root cause, but never at the cost of the evidence the root cause depends on."
       ],
-      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); Carnegie Mellon CERT Insider Threat Center; SOX Sections 302, 404; ISO/IEC 27001:2022 Annex A.9 (Access Control)",
+      "framework_ref": "ISACA Identity and Access Management Audit/Assurance Program; NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022); SOX Sections 302, 404; ISO/IEC 27002:2022 Control 8.2 (Privileged Access Rights)",
       "related_concepts": [
         "Insider threat investigation",
         "Dual-control for destructive operations",
@@ -9731,7 +9731,7 @@
         "Final two: A beats C because a parallel legal track protects the deadline without distracting recovery teams.",
         "Exam cue: when operational and legal pressures collide, separate the tracks rather than sacrificing either one."
       ],
-      "framework_ref": "Federal Arbitration Act 9 USC §1; AAA (American Arbitration Association) Commercial Arbitration Rules; FFIEC Business Continuity Management Booklet; ISACA IT Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
+      "framework_ref": "Federal Arbitration Act 9 USC §1; AAA (American Arbitration Association) Commercial Arbitration Rules; FFIEC Business Continuity Management Booklet; ISACA Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)",
       "related_concepts": [
         "Arbitration response timeline",
         "Default judgment risk",
@@ -9769,7 +9769,7 @@
         "Final two: D beats B because the committee needs risk-ranked priorities and a path forward, not an unranked list.",
         "Exam cue: for board or committee reporting, choose synthesis and prioritization over exhaustive detail."
       ],
-      "framework_ref": "ISACA Internal Audit Code of Ethics; IIA Global Internal Audit Standards (2024), Standard 15.1 (Final Engagement Communication); COBIT 2019 EDM02 (Ensured Benefits Delivery), MEA02 (Managed Internal Control); ISO 19011 (Guidelines for Auditing Management Systems); ISACA IT Audit Standards on Reporting",
+      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); IIA Global Internal Audit Standards (2024), Standard 11.3 (Communicating Results); COBIT 2019 MEA02 (Managed System of Internal Control)",
       "related_concepts": [
         "Cross-domain maturity assessment",
         "Audit committee briefing structure",
@@ -9869,7 +9869,7 @@
         "Final two: A beats C because recovery objectives come from the BIA; setting them with IT first skips business impact.",
         "Exam cue: in continuity planning, BIA before objectives, objectives before strategy, strategy before procedures."
       ],
-      "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2; ISACA CISA Review Manual Domain 4",
+      "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
       "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
@@ -9900,7 +9900,7 @@
         "Final two: D beats C because only current replicated data meets near-zero data loss; a warm site restores from backup.",
         "Exam cue: match site type to both objectives; short RTO plus tiny RPO means hot."
       ],
-      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; ISACA CISA Review Manual Domain 4",
+      "framework_ref": "NIST SP 800-34 Rev 1 Section 3.4.2 Alternate Sites; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
       "_provenance": "Authored from concept: 'Hot/warm/cold site definitions per NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: NIST SP 800-34 Rev 1 Section 3.4.2, ISACA CISA Review Manual. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
@@ -9962,7 +9962,7 @@
         "Final two: B beats C because mirroring copies corruption to both disks instantly; it protects only against hardware failure.",
         "Exam cue: RAID is availability, not backup; it protects against disk failure, never against bad data."
       ],
-      "framework_ref": "Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification; ISACA CISA Review Manual Domain 4",
+      "framework_ref": "Storage Networking Industry Association (SNIA) Common RAID Disk Data Format Specification; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
       "_provenance": "Authored from concept: 'RAID 1 mirroring definition'. Foundational recall tier. Public sources: SNIA Common RAID DDF, ISACA CISA Review Manual. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     }
