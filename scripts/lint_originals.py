@@ -126,7 +126,8 @@ def lint_question(q: dict, library: set[str]) -> tuple[list[str], list[str]]:
             )
 
     # Check 7: scenario_context word count for analysis tier
-    if diff == "analysis":
+    # Exam-style v2 items have no scenario (see scripts/lint_exam_style_v2.py).
+    if diff == "analysis" and q.get("style_version") != 2:
         sc = q.get("scenario_context", "")
         wc = len(sc.split())
         if wc < 60:

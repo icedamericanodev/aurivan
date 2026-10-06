@@ -118,26 +118,26 @@
       "subtopic": "Audit Evidence Reliability",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor at a hospital is testing whether the electronic health record (EHR) system enforces password complexity rules. Which of the following provides the MOST reliable evidence that the rule is operating as designed?",
+      "question": "An IS auditor is testing whether an application enforces password complexity rules. Which of the following provides the MOST reliable evidence that the control is operating effectively in production?",
       "options": {
-        "A": "The IT manager's signed attestation that the rule is configured correctly",
-        "B": "A screenshot of the system's password policy configuration page provided by IT",
-        "C": "The auditor's direct observation of attempting to set a non-compliant password and seeing it rejected",
-        "D": "A vendor-supplied compliance report confirming the rule is enabled in the product"
+        "A": "A signed statement from the IT manager confirming the setting",
+        "B": "Auditor inspection of the system's password parameter settings",
+        "C": "A vendor document stating the product supports complexity rules",
+        "D": "Auditor's own attempt to set a noncompliant password"
       },
-      "correct": "C",
-      "key_concept": "Direct observation by the auditor of a control operating produces the most reliable form of audit evidence; representations and documents are inherently weaker because they depend on someone else's claim.",
-      "pre_read": "Order the options by the auditor's direct involvement in producing the evidence: did the auditor observe it themselves, or did someone else hand them a representation? The most direct, auditor-produced evidence is almost always the answer.",
-      "correct_explanation": "ISACA's evidence-reliability hierarchy puts direct auditor observation at the top because it eliminates the risk that a third party (whether benign or malicious) is misrepresenting the system's behavior. A signed attestation depends on management's truthfulness; a screenshot depends on the IT team's accuracy in capturing the right view; a vendor report describes the vendor's claim about the product, not its operation in this specific configuration. Only when the auditor types a non-compliant password and watches the system reject it has the auditor observed the control operating in the moment.",
+      "correct": "D",
+      "key_concept": "Evidence the auditor obtains directly by observation or reperformance is more reliable than representations, documents or configuration inspection.",
+      "pre_read": "Notice the stem asks whether the control is operating, not merely configured. Rank options by who generated the evidence.",
+      "correct_explanation": "Evidence the auditor obtains directly by observing or reperforming a control is the most reliable, because it does not depend on anyone else's claim. Attempting a noncompliant password and watching the system reject it proves the rule operates in production now. Inspecting parameters is strong evidence of design, but settings can be overridden by exceptions or other policies.",
       "wrong_explanations": {
-        "A": "Management attestations are management representations; the weakest form of evidence. They are acceptable as starting points but not as primary evidence of control operation.",
-        "B": "Screenshots provided by IT are internal documents subject to selection bias (was this captured in a special test environment?) and tampering. Better than attestation, weaker than direct observation.",
-        "D": "Vendor reports are external but describe the vendor's claim about the product, not the operation in this specific environment. They miss configuration drift and customization."
+        "A": "A management representation is the weakest evidence type. It is a useful starting point, never proof that a control operates.",
+        "B": "Inspecting settings shows the control is configured, not that it works; exceptions or overrides could still let weak passwords through.",
+        "C": "A vendor document describes product capability in general, not how this installation is configured or whether the rule is enabled."
       },
       "tips": [
-        "Trap is A: signed attestations look formal and accountable but they are representations, not evidence of operation.",
-        "Audit evidence reliability descends from \"auditor observed it directly\" → \"external corroboration\" → \"internal documents\" → \"management says so.\"",
-        "Exam-day shortcut: when one option mentions the auditor doing something themselves, that option usually wins on reliability grounds."
+        "Eliminate: A is a management representation and C describes product capability, not this system's configuration.",
+        "Final two: D beats B because reperformance proves the control operates, while inspecting settings only proves it is configured.",
+        "Exam cue: for MOST reliable evidence, prefer what the auditor directly observes or reperforms over anything someone hands over."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Performance Standards on Evidence",
       "related_concepts": [
@@ -145,7 +145,8 @@
         "Direct observation",
         "Management representations"
       ],
-      "_provenance": "Authored from concept: 'evidence reliability — direct observation vs representation'. Public source: ISACA IT Audit Standard 1205. All scenario specifics (hospital, EHR, password complexity) invented for this question."
+      "_provenance": "Authored from concept: 'evidence reliability — direct observation vs representation'. Public source: ISACA IT Audit Standard 1205. All scenario specifics (hospital, EHR, password complexity) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_005",
@@ -261,27 +262,26 @@
       "subtopic": "Compensating Control with SoD Breakdown",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS auditor at an electric utility is reviewing privileged access controls for the SCADA system that manages grid operations. The control matrix specifies that all privileged sessions must be reviewed within 24 hours of session end, by a person other than the session holder. The utility has implemented this through a SOAR-based workflow: each session triggers a ticket assigned to a peer engineer, who must close the ticket with their review notes. The auditor's testing reveals: (1) 100% of sessions over the past three months have generated tickets, (2) 96% of tickets have been closed with review notes, (3) on inspection, 41% of the closed tickets contain only the boilerplate text \"Reviewed; no anomalies\" with no specific session details, (4) 12% of those generic-text tickets were closed by the same engineer who held the session. The CIO notes that the 96% close rate is \"well above our 90% target.\"",
-      "question": "Which finding should the auditor flag as the GREATEST risk?",
+      "question": "An IS auditor tests a compensating control requiring an independent peer review of every privileged session. Which finding represents the GREATEST risk?",
       "options": {
-        "A": "The 12% of generic-closed tickets where the reviewer was the session holder",
-        "B": "The 4% of tickets that remain unclosed",
-        "C": "The 41% of closed tickets containing only boilerplate review text",
-        "D": "The fact that the utility set its closure target at only 90% rather than 100%"
+        "A": "Some sessions were reviewed by the session holder",
+        "B": "Many reviews contain only generic, boilerplate approval text",
+        "C": "A small percentage of review tickets remain open",
+        "D": "The review closure target was set below 100 percent"
       },
       "correct": "A",
-      "key_concept": "When a compensating control's design includes a separation-of-duties element (review by another person), violations of that SoD element produce false assurance that is worse than the underlying risk being unmitigated.",
-      "pre_read": "For multi-finding scenarios, ask: which finding is the SYSTEMIC failure that makes other findings worse, vs. which are localized issues? The systemic finding is usually the answer. Look specifically for breakdowns in the design intent of the control, not just operational inefficiency.",
-      "correct_explanation": "All four findings are real, but they have different blast radii. The 4% unclosed tickets (B) and the 41% boilerplate reviews (C) are control-effectiveness issues; the control runs but its review quality is weak. The 90% target (D) is a design issue worth flagging but is policy-level. The 12% where the session holder reviewed their own session (A) is most severe because it eliminates the separation-of-duties element that makes the compensating control meaningful in the first place. Without SoD, the control is not a control. It is a self-attestation. The fact that those 12% are sitting inside the closed-and-reviewed bucket means the 96% closure rate provides false assurance: the CIO believes the control is working when in fact it has no SoD at all in those cases.",
+      "key_concept": "When a compensating control relies on independent review, a self-review breaks segregation of duties and creates false assurance.",
+      "pre_read": "Notice the word independent in the stem. Ask which finding removes the element that makes the control work at all.",
+      "correct_explanation": "The control's value depends on segregation of duties: someone other than the session holder reviews the activity. A self-review removes that element entirely, so the control provides no assurance while still appearing complete in metrics. Boilerplate notes weaken review quality, but an independent person still looked at the session.",
       "wrong_explanations": {
-        "C": "Boilerplate reviews are a quality-of-control issue and degrade the value of the review, but a peer engineer who actually looked and saw nothing has still preserved the SoD. The review was thin, not absent.",
-        "D": "Setting closure at 90% is a policy weakness but is open and observable to management. It is a design conversation, not a finding that creates false assurance about the SCADA system itself.",
-        "B": "Unclosed tickets are detectable and create their own follow-up signal. The risk is bounded by the 4% rate and is operationally remediable through follow-up."
+        "B": "Boilerplate notes degrade review quality and evidence, but an independent reviewer was still involved, so segregation of duties is preserved.",
+        "C": "Open tickets are visible exceptions that management can track and chase. The risk is small and already detectable.",
+        "D": "A target below 100 percent is a design choice open to management view. It does not create hidden false assurance."
       },
       "tips": [
-        "Trap is C: 41% boilerplate is the loudest individual finding but it does not break the control's design; the SoD-violation finding does.",
-        "A compensating control's review-by-another-person element is what makes it compensating. If that is violated, the whole compensating function collapses.",
-        "Exam-day shortcut: when one finding describes self-review or self-approval inside what is supposed to be a peer-review control, that is almost always the answer; even if other findings have higher percentages."
+        "Eliminate: C is a small, visible exception, and D is an openly known target-setting choice.",
+        "Final two: A beats B because self-review removes segregation of duties entirely, while boilerplate review is weak but still independent.",
+        "Exam cue: when a control relies on a second person, a breach of that independence outranks poor quality of the review."
       ],
       "framework_ref": "ISACA IT Audit Standard 1203 (Performance and Supervision); COBIT MEA02; NIST SP 800-53 AC-6 (Least Privilege) + AU-6 (Audit Review)",
       "related_concepts": [
@@ -290,7 +290,8 @@
         "False assurance",
         "Control effectiveness"
       ],
-      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question."
+      "_provenance": "Authored from concept: 'SoD violation inside a peer-review compensating control — false assurance'. Public source: ISACA IT Audit Standard 1203 + NIST SP 800-53. All scenario specifics (utility, SCADA, SOAR workflow, percentages) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_009",
@@ -335,27 +336,26 @@
       "subtopic": "Fraud Indicators. Auditor's First Action",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS auditor at an insurance company is conducting a routine review of claims-processing workflows. While testing a sample of claim adjustments, the auditor notices a pattern: 14 high-value claims (each over $200,000) were processed in the last 90 days using an emergency-override workflow that is intended for genuine claims-adjuster unavailability. All 14 were initiated by the same senior adjuster, all 14 were approved within 2 minutes by the same supervisor, and all 14 went to claimants whose names share unusual matching patterns (e.g., similar middle names, addresses in the same three ZIP codes). The auditor has not yet documented the finding or discussed it with anyone.",
-      "question": "What should the auditor do FIRST?",
+      "question": "During fieldwork, an IS auditor finds repeated high-value payments processed through an emergency override, all initiated and approved by the same two employees. What should the auditor do FIRST?",
       "options": {
-        "A": "Confront the senior adjuster and supervisor to gather their explanation before formalizing anything",
-        "B": "Expand the sample to all emergency-override claims in the last 12 months to gauge the full pattern",
-        "C": "Document the observations factually and escalate to the CAE / appropriate governance level per the audit function's fraud-response procedure",
-        "D": "Quietly continue the routine audit while collecting more evidence to avoid alerting the suspects"
+        "A": "Interview both employees to obtain their explanations",
+        "B": "Expand testing to all override transactions for the year",
+        "C": "Disable the emergency override until the matter is resolved",
+        "D": "Document the facts and escalate per fraud procedures"
       },
-      "correct": "C",
-      "key_concept": "When an IS auditor identifies indicators of potential fraud, the FIRST step is to document factually and escalate per the established fraud-response procedure; not to investigate independently or confront the suspects.",
-      "pre_read": "When the stem describes a pattern that strongly suggests fraud (collusion indicators, unusual approval timing, claimant relationship anomalies), shift the question from \"audit testing\" to \"fraud-response.\" The first action in fraud-response procedures is escalation, not investigation.",
-      "correct_explanation": "The pattern described; same adjuster initiating, same supervisor approving within 2 minutes, claimants with matching attributes; has the textbook signature of collusive fraud. The IS auditor's role is not to investigate fraud independently; that responsibility sits with the CAE, internal investigations team, legal, or external forensics depending on the organization. Documenting factually and escalating preserves evidence integrity, protects the auditor from being drawn into an investigation they are not equipped to run, and prevents the suspects from being tipped off. Expanding the sample (B) is reasonable later but not first; escalation comes before scope expansion to ensure proper authorization. The fraud-response procedure exists exactly to handle these cases.",
+      "correct": "D",
+      "key_concept": "On finding fraud indicators, the IS auditor first documents facts and escalates through the fraud-response procedure, not investigating alone.",
+      "pre_read": "Notice the red flags suggest collusion and the stem says FIRST. Ask who is authorized to investigate before more testing happens.",
+      "correct_explanation": "Indicators of possible fraud should be documented factually and escalated through the established fraud-response channel, typically the chief audit executive, so investigation is properly authorized and evidence is preserved. The IS auditor's role is to detect and report, not to investigate independently. Expanding the sample is a sound later step, but acting before escalation risks working without authority or alerting suspects.",
       "wrong_explanations": {
-        "A": "Confronting the suspects tips them off, gives them opportunity to destroy or alter records, and exposes the auditor to interference. Auditors do not run interrogations.",
-        "B": "Sample expansion is a sound investigative step but not the first step. Expansion before escalation can also alter the audit's posture without authorization, and it does not address the immediate need to engage the right investigatory resources.",
-        "D": "\"Quietly continue while collecting more evidence\" is the worst option: it both delays escalation (evidence may be destroyed) and risks the auditor losing their objectivity by becoming the de facto investigator without authority."
+        "A": "Approaching the suspects alerts them, risks evidence destruction and draws the auditor into an investigation they are not authorized to run.",
+        "B": "Expanding the sample may be appropriate, but only after escalation, so scope and investigative approach are properly authorized.",
+        "C": "Disabling a system function is a management decision. An auditor who changes operations loses independence."
       },
       "tips": [
-        "Trap is B: sample expansion sounds rigorous but it is a substantive step that comes after escalation, not before.",
-        "Auditors detect, document, and escalate fraud indicators. Investigation is someone else's job (forensics, legal, CAE).",
-        "Exam-day shortcut: any time the stem describes auditor-discovered fraud indicators and asks \"what FIRST,\" the answer is almost always document + escalate per the fraud-response procedure."
+        "Eliminate: A tips off the suspects, and C has the auditor changing operations, which is management's decision.",
+        "Final two: D beats B because escalation must come first; more testing is valid only once the right authority directs it.",
+        "Exam cue: suspected fraud plus FIRST almost always means document and escalate, never confront or investigate alone."
       ],
       "framework_ref": "ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts); IIA International Standards 1210.A2 (Fraud Knowledge); ISA 240 (The Auditor's Responsibilities Relating to Fraud)",
       "related_concepts": [
@@ -364,7 +364,8 @@
         "Evidence preservation",
         "Escalation chain"
       ],
-      "_provenance": "Authored from concept: 'auditor's first response to suspected fraud — document and escalate, not investigate'. Public source: ISACA IT Audit Standard 1207. All scenario specifics (insurance, claims-adjuster collusion pattern, $200K threshold, 14 claims) invented for this question."
+      "_provenance": "Authored from concept: 'auditor's first response to suspected fraud — document and escalate, not investigate'. Public source: ISACA IT Audit Standard 1207. All scenario specifics (insurance, claims-adjuster collusion pattern, $200K threshold, 14 claims) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_011",
@@ -514,26 +515,26 @@
       "subtopic": "Audit Follow-up Activities",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Six months after issuing an audit report on a hospital's vendor-access controls, an IS auditor is conducting follow-up. Management has reported that all 8 findings have been remediated. Which of the following is the PRIMARY purpose of the follow-up procedure?",
+      "question": "Management reports that all findings from a prior IS audit have been remediated. What is the PRIMARY purpose of the auditor's follow-up?",
       "options": {
-        "A": "Re-perform the original audit procedures to confirm the findings have not recurred",
-        "B": "Issue an updated audit opinion based on the current state of the controls",
-        "C": "Verify that management has actually implemented the agreed remediation, not just that they reported doing so",
-        "D": "Identify any new issues that may have emerged since the original audit"
+        "A": "Re-perform the original audit program in full",
+        "B": "Verify that agreed corrective actions were actually implemented",
+        "C": "Help management design any remaining corrective actions",
+        "D": "Issue a revised audit opinion on the audited area"
       },
-      "correct": "C",
-      "key_concept": "The purpose of audit follow-up is to verify that management has implemented agreed remediation; not to repeat the audit, not to issue a new opinion, not to discover new issues. It is a verification procedure, narrow in scope.",
-      "pre_read": "Identify the verb that defines follow-up: verify, confirm, validate. Re-performing the full audit (A) is broader than follow-up; issuing a new opinion (C) is a separate engagement; identifying new issues (D) is the next audit cycle, not follow-up.",
-      "correct_explanation": "Audit follow-up is a verification procedure: management has reported that remediation is in place, and the auditor independently confirms whether that is actually the case. The scope is bounded by the original findings; for each finding, the auditor verifies that the agreed remediation action has been implemented and is operating. The auditor relies on independent evidence, not management's self-report. This is narrower than re-auditing (A), more limited than issuing a new opinion (B), and distinct from finding new issues (D), which would be a separate engagement.",
+      "correct": "B",
+      "key_concept": "Audit follow-up independently verifies that agreed corrective actions were implemented; it is narrower than a new audit or opinion.",
+      "pre_read": "Notice that management has only reported remediation. Ask what the auditor must independently confirm, and how wide the scope should be.",
+      "correct_explanation": "Follow-up is a verification procedure bounded by the original findings. The auditor independently confirms that each agreed corrective action has actually been implemented, rather than relying on management's self-report. It is deliberately narrower than a new audit; repeating the full program or forming a fresh opinion belongs to a separate engagement planned through the risk-based audit plan.",
       "wrong_explanations": {
-        "A": "Re-performing the original audit procedures is broader than follow-up. Follow-up is bounded by the specific remediation actions agreed to in the original report; it does not repeat the entire audit.",
-        "D": "Identifying new issues is part of the next audit cycle, not part of follow-up. Mixing them dilutes the focus on whether remediation actually happened.",
-        "B": "Follow-up does not issue a new audit opinion; it produces a verification result on whether remediation occurred. A new opinion would require a fresh audit engagement."
+        "A": "Re-performing the whole program is a new audit. Follow-up targets only the agreed remediation for the reported findings.",
+        "C": "Designing corrective actions is management's responsibility. An auditor who designs fixes impairs objectivity when later assessing them.",
+        "D": "A revised opinion needs a full new engagement. Follow-up reports on remediation status, not a fresh opinion."
       },
       "tips": [
-        "Trap is A: re-performing the audit sounds rigorous but it is overscoped. Follow-up is narrowly scoped to verifying the remediation actually happened.",
-        "Follow-up = verification of management's remediation against the original findings. Not a new audit, not a new opinion.",
-        "Exam-day shortcut: when asked about follow-up purpose, the answer is almost always about verifying agreed remediation has been implemented."
+        "Eliminate: C has the auditor designing fixes, which is management's job, and D requires a full new engagement.",
+        "Final two: B beats A because follow-up is scoped to the agreed actions; re-running the whole program is a new audit, not follow-up.",
+        "Exam cue: when management says it is fixed, the auditor's job is to verify independently, not to trust or redo everything."
       ],
       "framework_ref": "ISACA IT Audit Standard 1402 (Follow-up Activities); IIA International Standards 2500 (Monitoring Progress)",
       "related_concepts": [
@@ -541,7 +542,8 @@
         "Remediation verification",
         "Audit cycle"
       ],
-      "_provenance": "Authored from concept: 'audit follow-up — verifying remediation, not re-auditing'. Public source: ISACA IT Audit Standard 1402 + IIA International Standards 2500. All scenario specifics (hospital, vendor-access, 6-month gap, 8 findings) invented for this question."
+      "_provenance": "Authored from concept: 'audit follow-up — verifying remediation, not re-auditing'. Public source: ISACA IT Audit Standard 1402 + IIA International Standards 2500. All scenario specifics (hospital, vendor-access, 6-month gap, 8 findings) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_016",
@@ -695,27 +697,26 @@
       "subtopic": "Control Self-Assessment Limitations",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "A large university has adopted control self-assessment (CSA): each department conducts a quarterly self-assessment of its IS-related controls (access management, data classification, change tracking) and submits a report to the IS audit team. The IS audit team has been operating CSA for 18 months. They have noticed: (1) 90% of departments report \"all controls operating effectively,\" (2) the same departments collectively had 12 confirmed access-control incidents this year requiring incident response, (3) most departments do not have IT specialists doing the assessment. It is typically done by department administrators, (4) the IS audit team has been treating CSA as covering most of their assurance needs, reducing their independent testing. The audit committee has asked the CAE to assess the CSA program.",
-      "question": "Which of the following is the IS auditor's GREATEST concern about the current CSA implementation?",
+      "question": "An IS auditor reduced independent testing because business-unit control self-assessments rate controls as effective, yet security incidents keep occurring. What is the GREATEST concern?",
       "options": {
-        "A": "The 12 access-control incidents indicate widespread fraud across the university",
-        "B": "The departments lack IT specialists, which means CSA results are unreliable and require external validation",
-        "C": "CSA is being used as a substitute for audit-led assurance, despite the gap between self-reported and actual control effectiveness",
-        "D": "The audit team should reduce or eliminate CSA in favor of traditional audit procedures"
+        "A": "CSA is replacing, not supplementing, audit testing",
+        "B": "Self-assessors lack sufficient technical expertise in IS controls",
+        "C": "The incidents indicate widespread fraud across the business units",
+        "D": "CSA programs are inherently unsuitable for assessing IS controls"
       },
-      "correct": "C",
-      "key_concept": "CSA is a complement to audit-led assurance, not a substitute. When the auditor reduces independent testing on the strength of self-reports, and self-reports diverge from actual control effectiveness, the assurance posture is fundamentally compromised; even if individual CSA findings are useful.",
-      "pre_read": "For CSA scenarios, look for evidence of (1) divergence between self-reported and actual control state, (2) reliance posture by the audit function, (3) lack of independent validation. The systemic risk is the audit function over-relying on self-reports, not the self-reports themselves being imperfect.",
-      "correct_explanation": "CSA is valuable as a tool for engaging business units in control thinking and surfacing concerns the audit team might not see. It is not a substitute for independent audit-led assurance. The scenario shows the classic CSA failure mode: self-reports say 90% \"all effective,\" reality says 12 confirmed incidents (so the self-reports are unreliable), and the audit function has reduced its independent testing on the strength of those reports. The result is that nobody is providing genuine assurance: the departments are not qualified to self-assess accurately, and the audit team has stepped back. This is the systemic failure. The lack of IT specialists (B) is a contributing cause; but C captures the broader risk. Eliminating CSA (D) overcorrects; CSA still has value as a complementary tool. The 12 incidents (A) are not necessarily fraud. They are the symptom that exposes the assurance gap.",
+      "correct": "A",
+      "key_concept": "Control self-assessment complements but never replaces independent audit assurance, especially when self-reports conflict with actual outcomes.",
+      "pre_read": "Notice two facts: the auditor reduced testing, and results contradict incidents. Look for the root cause, not a symptom.",
+      "correct_explanation": "Control self-assessment complements independent audit work; it cannot replace it. Here self-reported results contradict actual incidents, yet the audit function has stepped back, so no one is providing reliable assurance. That structural over-reliance is the root concern. Weak assessor expertise is a real contributing cause, but even expert self-assessors would not justify replacing independent testing.",
       "wrong_explanations": {
-        "A": "Twelve confirmed access-control incidents could be process failures, misconfiguration, or training gaps; not necessarily fraud. The relevance of the number is that it contradicts the self-reported \"effective\" claim, exposing the CSA assurance gap.",
-        "D": "Eliminating CSA throws out a useful tool. The right response is to restore audit-led independent testing alongside CSA, not to abandon CSA entirely.",
-        "B": "Lack of IT specialists is a real concern and a contributing cause; but it is narrower than B. Even with IT specialists, CSA would not be a substitute for independent audit testing; the structural issue is the over-reliance, of which expertise is one input."
+        "B": "Limited expertise contributes to unreliable results, but it is a cause, not the core problem of reduced independent assurance.",
+        "C": "Incidents may stem from errors, misconfiguration or training gaps. Nothing in the stem establishes fraud.",
+        "D": "CSA remains a useful complementary tool. Abandoning it overcorrects; the fix is restoring independent testing alongside it."
       },
       "tips": [
-        "Trap is B: \"departments lack IT specialists\" is the loud individual cause but it is a contributing factor, not the systemic risk.",
-        "CSA is a complement to audit, not a substitute. When the audit function reduces independent testing because of CSA, and CSA self-reports are unreliable, the assurance gap is the deepest concern.",
-        "Exam-day shortcut: when a CSA scenario describes the audit team \"relying on\" or \"treating CSA as covering\" their assurance needs, the answer is almost always about that over-reliance posture, not about the CSA mechanics themselves."
+        "Eliminate: C jumps to fraud without evidence, and D overcorrects by discarding a useful tool.",
+        "Final two: A beats B because over-reliance on self-assessment is the root cause; assessor skill is only one contributing factor.",
+        "Exam cue: CSA supplements independent assurance and never replaces it; look for the option naming that over-reliance."
       ],
       "framework_ref": "IIA International Standards 2050 (Coordination and Reliance); IIA Practice Guide on CSA; ITAF General Standards on Control Self-Assessment",
       "related_concepts": [
@@ -724,7 +725,8 @@
         "Three lines of defense",
         "Reliance and coordination"
       ],
-      "_provenance": "Authored from concept: 'CSA over-reliance — audit function substituting CSA for independent testing'. Public source: IIA International Standards 2050 + IIA CSA Practice Guide. All scenario specifics (university, quarterly cadence, 90%/12-incident divergence, department administrators, 18-month run) invented for this question."
+      "_provenance": "Authored from concept: 'CSA over-reliance — audit function substituting CSA for independent testing'. Public source: IIA International Standards 2050 + IIA CSA Practice Guide. All scenario specifics (university, quarterly cadence, 90%/12-incident divergence, department administrators, 18-month run) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_021",
@@ -1899,26 +1901,26 @@
       "subtopic": "Sampling Risk. Type I vs Type II",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor concludes from a sample that a control is operating effectively when, in fact, the control is NOT operating effectively across the population. Which type of sampling risk does this represent?",
+      "question": "An IS auditor concludes from a sample that a control is effective, but the control is actually failing across the population. Which risk does this BEST represent?",
       "options": {
-        "A": "The risk of incorrect rejection; concluding from the sample that the control is failing when it is actually operating",
-        "B": "Detection risk; the risk that the audit procedures fail to detect a misstatement that has occurred",
-        "C": "The risk of incorrect acceptance; concluding from the sample that the control is operating when it is actually failing",
-        "D": "Inherent risk; the risk that arises from the nature of the audited area before any controls are considered"
+        "A": "Inherent risk of the audited process",
+        "B": "Detection risk in the overall audit",
+        "C": "Risk of underreliance on the control",
+        "D": "Risk of overreliance on the control"
       },
-      "correct": "C",
-      "key_concept": "Sampling risk is the chance that the sample does not represent the population. It comes in two directions: incorrect rejection (the auditor wrongly concludes failure) and incorrect acceptance (the auditor wrongly concludes effectiveness). Incorrect acceptance is the more dangerous direction because the audit issues an unwarranted clean opinion.",
-      "pre_read": "For sampling-risk questions, identify the direction of error before mapping to the term. \"Concluded effective when actually failing\" = incorrect acceptance. \"Concluded failing when actually effective\" = incorrect rejection. Detection and inherent risks are different categories of audit risk, not sampling-specific.",
-      "correct_explanation": "The scenario describes a false-positive conclusion of effectiveness; the sample led the auditor to accept the control as operating when in fact it was not. This is the textbook definition of incorrect acceptance (sometimes called \"beta risk\" or \"Type II\" in statistical-sampling literature). Option A describes the inverse (incorrect rejection) which is also a sampling risk but the opposite direction. Options B and D are real components of audit risk in the broader audit-risk model (Inherent × Control × Detection ≈ Audit Risk) but are not specifically sampling risk. Distinguishing the two directions of sampling risk and separating sampling risk from the broader audit-risk model is foundational. Incorrect acceptance is the more dangerous direction: the auditor signs off and an actual control weakness escapes detection. Incorrect rejection costs audit hours; incorrect acceptance can cost the business.",
+      "correct": "D",
+      "key_concept": "In tests of controls, overreliance is concluding from a sample that a control works when it does not, giving unwarranted assurance.",
+      "pre_read": "Notice the direction of the error: the sample said effective, reality said failing. Then pick the most specific sampling term.",
+      "correct_explanation": "Sampling risk is the chance that a sample-based conclusion differs from what testing the whole population would show. In a test of controls, concluding a control is effective when it is not is the risk of overreliance, the more dangerous direction because it gives unwarranted assurance. Detection risk is a broader audit-risk component, so it is less precise.",
       "wrong_explanations": {
-        "A": "Describes the inverse direction. Incorrect rejection means concluding failure when the control is actually operating. That is the opposite of what the scenario describes.",
-        "D": "Inherent risk is the risk arising from the nature of the audited area before controls are considered. It is independent of sampling and is part of the audit-risk model, not sampling risk.",
-        "B": "Detection risk is part of the broader audit-risk model (the risk that audit procedures miss a misstatement) but it is not specifically sampling risk. A sample that is too small or non-representative is one cause of detection risk, but the term itself is broader."
+        "A": "Inherent risk exists before controls or audit procedures are considered. It has nothing to do with a sample-based conclusion.",
+        "B": "Detection risk is the broad audit-risk component. The question describes a specific sampling error, which has its own precise term.",
+        "C": "Underreliance is the opposite direction: concluding a control fails when it actually works, which only wastes audit effort."
       },
       "tips": [
-        "Trap is A: auditors easily flip the direction of incorrect acceptance vs incorrect rejection. Read \"actually failing\" carefully.",
-        "Two directions of sampling risk: incorrect acceptance (worse (issued a clean opinion) and incorrect rejection (better) wasted effort but no false assurance).",
-        "Exam-day shortcut: \"concluded operating when actually failing\" = incorrect acceptance. The dangerous direction."
+        "Eliminate: A arises before any testing occurs, and C is the opposite direction, wrongly concluding failure.",
+        "Final two: D beats B because the stem describes a sampling error in a control test; detection risk is the broader umbrella term.",
+        "Exam cue: trusting a failing control is overreliance, the dangerous error; distrusting a working control only costs extra testing."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ITAF Tools and Techniques on Sampling; AICPA AU-C 530 (Audit Sampling)",
       "related_concepts": [
@@ -1927,7 +1929,8 @@
         "Incorrect rejection",
         "Audit risk model"
       ],
-      "_provenance": "Authored from concept: 'sampling-risk definition — incorrect acceptance vs incorrect rejection vs broader audit-risk components'. Public source: ITAF Tools and Techniques on Sampling. No legacy bank consulted."
+      "_provenance": "Authored from concept: 'sampling-risk definition — incorrect acceptance vs incorrect rejection vs broader audit-risk components'. Public source: ITAF Tools and Techniques on Sampling. No legacy bank consulted. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_054",
@@ -4467,26 +4470,26 @@
       "subtopic": "IT General Controls. Logical Access (Provisioning, Review, Deprovisioning)",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor at an online travel-booking platform is testing the IT general controls over logical access for the booking-and-payments system. Which characteristic is MOST important in a well-designed logical-access control?",
+      "question": "An IS auditor is evaluating the design of logical access controls for a payments application. Which of the following is MOST important?",
       "options": {
-        "A": "Provisioning is automated based on the user's job title alone, with no manager approval, to minimize friction at hire",
-        "B": "Provisioning authorized on least privilege, periodic access review verifies continued business need, deprovisioning is timely on role change, and SoD checks prevent toxic combinations",
-        "C": "All employees receive identical baseline access regardless of role, so no employee feels under-privileged compared to peers",
-        "D": "Deprovisioning is performed annually as part of the year-end audit, since interim deprovisioning creates HR friction"
+        "A": "Owner-approved, least-privilege provisioning of every new access request",
+        "B": "Quarterly access reviews performed by the system owners",
+        "C": "Identical baseline access granted to all staff regardless of role",
+        "D": "Leavers removed during the annual access recertification cycle"
       },
-      "correct": "B",
-      "key_concept": "Logical-access controls require: least-privilege provisioning (with proper authorization), periodic access review (continued business need), timely deprovisioning (on role change or separation), and segregation-of-duties checks. Each step must be present.",
-      "pre_read": "For logical-access questions, four lifecycle stages: provisioning + review + deprovisioning + SoD. Distractors that drop any stage, automate without authorization, or set baseline-equal-for-all are wrong.",
-      "correct_explanation": "ISACA IT Audit Standards on IT General Controls and COBIT 2019 DSS05 (Managed Security Services) establish that logical-access controls cover the full lifecycle: (1) provisioning authorized based on least privilege (user gets the minimum access for their role, approved by appropriate authority), (2) periodic access review (typically quarterly or semi-annually) verifying continued business need, (3) timely deprovisioning on role change or separation (typically within 24 hours), (4) segregation-of-duties checks preventing toxic combinations of access. Option A automates provisioning by job title without authorization, removing the human approval step that catches edge cases. Option C gives identical baseline access regardless of role, violating least privilege. Option D defers deprovisioning to year-end, leaving access in place for departed or role-changed employees for up to a year.",
+      "correct": "A",
+      "key_concept": "Preventive access control at the point of grant, owner-approved and least-privilege, outranks detective reviews that find excess access later.",
+      "pre_read": "Notice the stem asks about design. Separate options that prevent excess access from those that only find it later.",
+      "correct_explanation": "Good access design prevents excess rights from being granted at all. Owner-approved, least-privilege provisioning is a preventive control: it stops the problem at the moment access is given. Periodic reviews are detective; they only find excess access after it exists and may already have been misused. When judging design, a preventive control at the source outranks a later check.",
       "wrong_explanations": {
-        "A": "Automated job-title provisioning without manager approval removes the human authorization step that catches edge cases (contractors, special-access roles, exceptions). Least privilege requires per-user judgment, not just job-title mapping.",
-        "C": "Identical baseline access violates least privilege fundamentally. A finance clerk does not need engineering-system access; an engineer does not need finance-system access. Role-based provisioning is the right design.",
-        "D": "Annual deprovisioning leaves access in place for departed or role-changed employees for up to a year, creating clear over-privilege risk. Timely deprovisioning (typically 24 hours) is the standard."
+        "B": "Periodic reviews are valuable but purely detective. Without authorized least-privilege provisioning, excess access exists until the next review.",
+        "C": "Uniform access ignores job need and directly violates least privilege, creating excessive access and segregation-of-duties conflicts.",
+        "D": "Removing leavers only annually leaves orphaned accounts active for months. Deprovisioning must be timely, triggered by the leaver event."
       },
       "tips": [
-        "Trap is D: \"defer deprovisioning to reduce HR friction\" sounds operationally sensible but creates a year-long over-privilege window.",
-        "Logical-access lifecycle: provisioning (least-privilege + authorized) + review (continued need) + deprovisioning (timely) + SoD checks. Four stages.",
-        "Exam-day shortcut: logical-access questions are answered by the option naming all four lifecycle stages with appropriate authorization at each step."
+        "Eliminate: C violates least privilege outright, and D leaves departed users' access active for up to a year.",
+        "Final two: A beats B because preventing excess access at the point of grant is stronger than detecting it later.",
+        "Exam cue: when a question asks about control design, prefer the preventive control at the source over a detective review."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 DSS05 (Managed Security Services); ITAF Performance Standards on Logical Access",
       "related_concepts": [
@@ -4496,7 +4499,8 @@
         "Deprovisioning",
         "Segregation of duties"
       ],
-      "_provenance": "Authored from concept: 'logical-access lifecycle - provisioning + review + deprovisioning + SoD, distinct from automated-without-authorization / equal-baseline / annual-deprovisioning approaches'. Public source: COBIT 2019 DSS05. All scenario specifics (online travel-booking platform, booking-and-payments system) invented for this question. Distinct from d1_104 (change management) and d1_067 (IS-specific controls scenario)."
+      "_provenance": "Authored from concept: 'logical-access lifecycle - provisioning + review + deprovisioning + SoD, distinct from automated-without-authorization / equal-baseline / annual-deprovisioning approaches'. Public source: COBIT 2019 DSS05. All scenario specifics (online travel-booking platform, booking-and-payments system) invented for this question. Distinct from d1_104 (change management) and d1_067 (IS-specific controls scenario). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_124",
@@ -4541,27 +4545,26 @@
       "subtopic": "Audit Independence. Long Tenure Threat",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS auditor has served on every annual audit of a family-office wealth-management firm's portfolio-management system for the past 11 consecutive years. The auditor's relationship with the family-office's CTO is friendly and well-established; the family-office trusts the auditor's judgment and has expressed dissatisfaction with prior firm-mandated rotations. The audit director is reviewing the engagement's independence posture. Three facts are relevant: (1) no specific incident or behavior has compromised the auditor's independence; (2) the auditor's professional firm has a tenure rotation policy of 7 years that has been informally waived for this engagement; (3) the family-office is a private entity not subject to mandatory auditor rotation under public-company rules.",
-      "question": "Which response BEST applies threat-and-safeguard analysis to the long-tenure threat?",
+      "question": "An IS auditor has led the same client's audit for eleven years, beyond the firm's rotation policy, with no independence issues observed. What is the audit firm's BEST response?",
       "options": {
-        "A": "No action needed; the family-office is private and not subject to mandatory rotation, the auditor has not committed any specific independence breach, and the trust the family-office has in the auditor is itself a positive characteristic",
-        "B": "Continue without action but document the 11-year tenure in the audit work papers as a disclosure",
-        "C": "Mandatory dismissal of the auditor for cause, since 11-year tenure on a single client constitutes per-se independence violation",
-        "D": "Long tenure is a familiarity threat regardless of mandatory rotation; the firm's 7-year policy has been ignored for 4 years; safeguards (rotation now or independent quality review) are required"
+        "A": "Take no action because no impairment has been identified",
+        "B": "Remove the auditor for a per se independence violation",
+        "C": "Rotate the engagement lead as firm policy requires",
+        "D": "Disclose the tenure to the audit committee and continue"
       },
-      "correct": "D",
-      "key_concept": "Long auditor tenure is a familiarity threat to independence; even without specific incidents and even when mandatory rotation does not apply. Firm tenure policies exist precisely because the threat exists; ignoring those policies for 4 years past their threshold is itself a quality-management failure that warrants safeguards now.",
-      "pre_read": "For long-tenure independence questions, three pieces matter: (1) familiarity threat exists regardless of incidents, (2) firm policies exist for a reason and waiving them creates governance gaps, (3) safeguards (rotation, independent review) are the response. Distractors that wait for a specific incident, treat firm policies as optional, or escalate to dismissal are wrong.",
-      "correct_explanation": "ISACA IT Audit Standard 1003 (Auditor's Professional Independence) and the ISACA Code of Professional Ethics use a threat-and-safeguard framework that recognizes familiarity threat; the risk that long association with the audited entity erodes the auditor's professional skepticism, even without any specific incident. The threat is real regardless of whether mandatory rotation applies; mandatory rotation rules exist precisely because regulators and standard-setters know the threat exists at scale. The firm's own 7-year tenure policy is a recognition of this threat at the firm level; waiving it informally for 4 years means the firm itself has not maintained its quality controls. Safeguards (rotation now, or independent engagement-quality review by an uninvolved senior plus rotation in 1-2 years) restore independence to acceptable levels. Option A treats absence-of-specific-incident as evidence-of-no-threat, missing how familiarity threat operates. Option C escalates to mandatory dismissal, which is over-corrective for a familiarity threat addressable by safeguards. Option B documents the threat without addressing it, which is independence theater.",
+      "correct": "C",
+      "key_concept": "Long tenure is a familiarity threat even without incidents; apply the safeguard the firm's policy requires, rotation, rather than mere disclosure.",
+      "pre_read": "Notice that no incident occurred but policy was exceeded. Ask whether the option reduces the threat or merely records it.",
+      "correct_explanation": "Long association creates a familiarity threat that erodes professional skepticism gradually, even without any visible incident. The firm's own rotation policy is the safeguard designed for this threat, and it has been exceeded, so rotating the engagement lead is the right response. An engagement quality review can add assurance during handover. Disclosure informs governance but leaves the threat unmitigated.",
       "wrong_explanations": {
-        "A": "Absence of specific incident does not establish absence of independence threat. Familiarity threats erode professional skepticism gradually; the lack of a recordable incident is not evidence the threat is absent. Trust by the audited entity is not a safeguard against familiarity threat. It is sometimes a symptom of it.",
-        "C": "Mandatory dismissal for cause is over-corrective for a familiarity threat. The threat is reduceable by safeguards (rotation, independent review). Dismissal is the response when threats cannot be reduced to acceptable level by safeguards.",
-        "B": "Documenting the tenure without applying safeguards is disclosure-without-mitigation. The threat exists and is reducible; mitigation is the response, not just disclosure."
+        "A": "Absence of an incident is not absence of threat. Familiarity erodes skepticism quietly, and the firm's own policy has been exceeded.",
+        "B": "Removal for cause overcorrects. A familiarity threat that safeguards can reduce does not amount to a per se violation.",
+        "D": "Disclosure is transparent but does not reduce the threat. Without a safeguard, the familiarity risk remains unaddressed."
       },
       "tips": [
-        "Trap is A: \"no specific incident\" feels like evidence of safety but familiarity threat operates without specific incidents.",
-        "Long tenure = familiarity threat. Threat exists regardless of mandatory-rotation rules. Firm tenure policies are a recognition of the threat, not optional.",
-        "Exam-day shortcut: long-tenure independence questions are answered by the option that names familiarity threat AND applies rotation or independent-review safeguards."
+        "Eliminate: A ignores a recognized threat, and B overcorrects when a safeguard can reduce the threat.",
+        "Final two: C beats D because a threat must be reduced by a safeguard; disclosure alone informs but does not mitigate.",
+        "Exam cue: for independence threats, choose the safeguard that reduces the threat, not mere disclosure or drastic removal."
       ],
       "framework_ref": "ISACA IT Audit Standard 1003 (Auditor's Professional Independence); ISACA Code of Professional Ethics (Independence); ITAF General Standards on Independence; IIA Standard 1130 (Impairments to Independence or Objectivity)",
       "related_concepts": [
@@ -4571,7 +4574,8 @@
         "Independent engagement-quality review",
         "Firm-level tenure policy"
       ],
-      "_provenance": "Authored from concept: 'long-tenure independence threat - familiarity threat addressable by rotation or independent-review safeguards, distinct from no-specific-incident-needed and from mandatory-dismissal'. Public source: ISACA Standard 1003 + Code of Professional Ethics + IIA 1130. All scenario specifics (family-office wealth-management, 11-year tenure, 7-year firm policy waived) invented for this question. Distinct from d1_002 self-review, d1_087 dual-low-threat, d1_105 self-interest severity."
+      "_provenance": "Authored from concept: 'long-tenure independence threat - familiarity threat addressable by rotation or independent-review safeguards, distinct from no-specific-incident-needed and from mandatory-dismissal'. Public source: ISACA Standard 1003 + Code of Professional Ethics + IIA 1130. All scenario specifics (family-office wealth-management, 11-year tenure, 7-year firm policy waived) invented for this question. Distinct from d1_002 self-review, d1_087 dual-low-threat, d1_105 self-interest severity. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_126",
@@ -6008,27 +6012,26 @@
       "subtopic": "Audit Documentation. Litigation-Hold Response",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "scenario_context": "An IS auditor at a food-and-beverage distributor receives notice from general counsel of a litigation hold: the company is being sued by a former customer over alleged contract-term violations, and all documents potentially related to the customer relationship (including any audit work papers) must be preserved. The audit director must respond. Three related facts: (1) the audit team has work papers from a 3-year-ago audit that referenced the customer relationship in a contract-monitoring procedure; (2) the audit-records retention schedule would normally call for those work papers to be destroyed in 6 months under the standard 5-year retention; (3) the audit team has its own ongoing audit that includes a different aspect of the same customer's account.",
-      "question": "Which response BEST addresses the litigation-hold under audit-documentation discipline?",
+      "question": "Legal counsel issues a litigation hold, and prior-year IS audit work papers related to the matter are due for routine destruction. What should the audit function do FIRST?",
       "options": {
-        "A": "Destroy the 3-year-old work papers per the standard retention schedule, since the litigation hold does not apply retroactively",
-        "B": "Suspend retention for any work papers potentially related to the customer relationship, coordinate with general counsel on hold scope, and preserve documents under access controls",
-        "C": "Refuse the litigation hold on the grounds that audit documentation is privileged and not subject to legal-hold requirements",
-        "D": "Transfer all potentially related documents to general counsel's office and disengage the audit function from the matter entirely"
+        "A": "Destroy them according to the approved retention schedule",
+        "B": "Suspend destruction and preserve them under access controls",
+        "C": "Transfer all related work papers to legal counsel's custody",
+        "D": "Decline the hold because audit work papers are privileged"
       },
       "correct": "B",
-      "key_concept": "Litigation holds suspend the standard retention schedule for documents potentially related to the litigation. The audit function preserves the documents under coordination with counsel, applies the hold to current as well as historical materials, and documents the hold's application. Standard retention, refusing the hold, and full transfer to counsel all violate the discipline.",
-      "pre_read": "For litigation-hold response questions, anchor on \"suspend retention + coordinate with counsel + apply to current and historical + document the hold\". Distractors that follow standard retention, refuse the hold, or fully delegate all break the discipline.",
-      "correct_explanation": "ISACA IT Audit Standard 1208 (Audit Documentation), ITAF Performance Standards on Documentation, and legal e-discovery requirements (Federal Rules of Civil Procedure Rule 37) establish that litigation holds override standard retention schedules. When notice of litigation hold is received, the audit function: (1) suspends the standard retention schedule for any audit documentation potentially related to the matter; (2) coordinates with general counsel on the precise scope of the hold (which engagements, which time periods, which document types); (3) preserves electronic and paper documents under access controls (preventing unauthorized modification or deletion); (4) applies the hold prospectively as well as retrospectively (current-engagement work papers also become subject to the hold once they reference the customer); (5) documents the hold's application explicitly. Option A follows the standard retention schedule, which would result in spoliation of evidence: a serious legal sanction risk. Option C refuses the hold based on a misunderstanding of audit-documentation status (audit documentation is generally NOT privileged absent specific attorney-work-product circumstances; even when privilege might apply, the privilege determination is made by counsel, not the audit director). Option D over-delegates by disengaging the audit function entirely; the audit director must continue managing audit operations while honoring the hold.",
+      "key_concept": "A litigation hold suspends routine retention; the audit function preserves relevant documentation under control and coordinates scope with counsel.",
+      "pre_read": "Notice the conflict between the hold and the retention schedule, and the word FIRST. Decide which obligation takes priority.",
+      "correct_explanation": "A litigation hold overrides the normal retention schedule. The audit function must immediately suspend destruction of potentially relevant documentation and preserve it under access controls, then coordinate with counsel on hold scope. Destroying covered records risks spoliation sanctions. Handing everything to counsel may seem compliant, but the audit function remains custodian of its records and must still manage them.",
       "wrong_explanations": {
-        "A": "Following the standard retention schedule when a litigation hold is in place creates a spoliation-of-evidence risk under FRCP Rule 37 and similar rules. The hold must override the retention schedule.",
-        "C": "Audit documentation is generally not privileged absent specific attorney-work-product circumstances. Refusing a litigation hold misunderstands both legal-hold obligations and the privilege framework. Privilege determinations are counsel's responsibility, not the audit director's.",
-        "D": "Transferring documents to general counsel and disengaging entirely abdicates the audit function's continuing responsibility. The audit director must continue managing audit operations while complying with the hold."
+        "A": "Following the schedule after a hold notice risks spoliation of evidence. The hold supersedes routine retention.",
+        "C": "Counsel directs the hold, but wholesale transfer is not required. The audit function stays responsible for preserving its records.",
+        "D": "Audit work papers are generally not privileged, and privilege calls belong to counsel, not the audit function."
       },
       "tips": [
-        "Trap is C: \"audit privilege\" misunderstands legal-hold obligations. Audit work is generally not privileged.",
-        "Litigation hold response: suspend retention + coordinate with counsel + apply prospectively and retrospectively + document the hold.",
-        "Exam-day shortcut: litigation-hold questions are answered by the option that suspends standard retention and coordinates with counsel."
+        "Eliminate: A risks spoliation of evidence, and D misreads privilege, which counsel, not audit, determines.",
+        "Final two: B beats C because preservation in place is the immediate duty; transferring custody is not required and abdicates responsibility.",
+        "Exam cue: a litigation hold always suspends routine destruction; preserve first, then coordinate the scope with counsel."
       ],
       "framework_ref": "ISACA IT Audit Standard 1208 (Audit Documentation); ITAF Performance Standards on Documentation; Federal Rules of Civil Procedure Rule 37 (Failure to Make Disclosures or to Cooperate in Discovery — Sanctions, including spoliation)",
       "related_concepts": [
@@ -6038,7 +6041,8 @@
         "Legal coordination",
         "Audit documentation under hold"
       ],
-      "_provenance": "Authored from concept: 'litigation hold response - suspend retention + coordinate with counsel + apply prospectively and retrospectively + document, distinct from standard retention / refuse / full delegation'. Public source: ISACA Standard 1208 + FRCP Rule 37. All scenario specifics (food-and-beverage distributor, former-customer litigation, 3-year-old work papers, ongoing audit) invented for this question. Distinct from d1_043/101/122 prior documentation questions."
+      "_provenance": "Authored from concept: 'litigation hold response - suspend retention + coordinate with counsel + apply prospectively and retrospectively + document, distinct from standard retention / refuse / full delegation'. Public source: ISACA Standard 1208 + FRCP Rule 37. All scenario specifics (food-and-beverage distributor, former-customer litigation, 3-year-old work papers, ongoing audit) invented for this question. Distinct from d1_043/101/122 prior documentation questions. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_165",
@@ -6771,30 +6775,30 @@
       "subtopic": "SOC Report Types. SOC 1 vs SOC 2 vs SOC 3",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "key_concept": "SOC 1 reports address controls relevant to a user entity's internal control over financial reporting (ICFR); SOC 2 reports address Trust Services Criteria (security, availability, processing integrity, confidentiality, privacy); SOC 3 is a general-use summary of a SOC 2.",
+      "key_concept": "SOC 1 covers controls relevant to user entities' financial reporting; SOC 2 covers Trust Services Criteria; SOC 3 summarizes SOC 2 publicly.",
       "framework_ref": "AICPA SSAE 18; AICPA Trust Services Criteria (TSC 2017, revised); AICPA SOC for Service Organizations framework",
-      "scenario_context": "",
-      "question": "Which BEST describes the distinction between AICPA SOC 1 and SOC 2 reports?",
+      "question": "An IS auditor is relying on an outsourced payroll processor whose output feeds the client's financial statements. Which service organization report is MOST appropriate?",
       "options": {
-        "A": "SOC 1 addresses controls over financial reporting; SOC 2 addresses Trust Services Criteria such as security and availability",
-        "B": "SOC 1 is for general public distribution; SOC 2 is restricted to the service organization's management",
-        "C": "SOC 1 covers cloud providers exclusively; SOC 2 covers traditional outsourced data center providers",
-        "D": "SOC 1 is a point-in-time report (Type I only); SOC 2 is exclusively a period-of-time report (Type II only)"
+        "A": "The provider's SOC 3 general-use seal report",
+        "B": "A SOC 2 report on the Trust Services Criteria",
+        "C": "A SOC 1 report from the service auditor",
+        "D": "The provider's internal audit report on IT controls"
       },
-      "correct": "A",
-      "correct_explanation": "Under the AICPA SOC for Service Organizations framework, SOC 1 reports examine a service organization's controls that are relevant to a user entity's internal control over financial reporting — they exist to support the user's financial-statement audit. SOC 2 reports examine controls against the Trust Services Criteria: security (the common criteria), and optionally availability, processing integrity, confidentiality, and privacy. The two reports answer fundamentally different questions and are not interchangeable; choosing the wrong one is a common procurement and audit-coordination error.",
+      "correct": "C",
+      "correct_explanation": "SOC 1 reports address a service organization's controls relevant to user entities' internal control over financial reporting, which is exactly the assurance requested. SOC 2 reports address the Trust Services Criteria such as security and availability; they cover IT controls but are not designed around financial reporting. Matching the report's subject matter to the audit objective is the deciding factor.",
       "wrong_explanations": {
-        "B": "Distribution differs the other way: SOC 1 and SOC 2 are both restricted-use reports; SOC 3 is the general-use variant of SOC 2. Candidates often invert this.",
-        "C": "Both SOC 1 and SOC 2 can apply to any kind of service organization, including cloud and traditional outsourcers. The distinction is the subject matter (financial vs trust criteria), not the technology stack.",
-        "D": "Both SOC 1 and SOC 2 come in Type I (design at a point in time) and Type II (design and operating effectiveness over a period). The Type I/II distinction is independent of the SOC 1/2 distinction."
+        "A": "SOC 3 is a brief general-use summary of SOC 2 work. It lacks control detail and does not target financial reporting.",
+        "B": "SOC 2 covers security and related criteria. It is relevant to IT risk but not designed for financial reporting reliance.",
+        "D": "Internal audit reports are not independent attestations prepared for user entities and may not be shareable or reliable for this purpose."
       },
       "tips": [
-        "Memory aid: SOC 1 = $ (financial reporting controls). SOC 2 = Trust (security, availability, processing integrity, confidentiality, privacy). SOC 3 = Public summary of SOC 2.",
-        "Disambiguate Type I vs Type II: Type I = design at a point in time (snapshot). Type II = design + operating effectiveness over a period (typically 6-12 months). Type II is the version that actually evidences operating controls.",
-        "Exam shortcut: if the stem mentions financial-statement audit or ICFR support, it's SOC 1. If it mentions security, availability, or any of the five Trust Services Criteria, it's SOC 2. If it's marketing-grade and publicly posted, it's SOC 3."
+        "Eliminate: A is only a high-level summary, and D lacks the independent attestation that user auditors rely on.",
+        "Final two: C beats B because the objective is financial reporting; SOC 2 addresses security-type criteria, not reporting controls.",
+        "Exam cue: financial statements point to SOC 1; security, availability or privacy point to SOC 2; a public summary is SOC 3."
       ],
-      "pre_read": "AICPA's SOC for Service Organizations framework provides three distinct report types for service providers. Knowing which report answers which question is foundational for vendor risk and third-party audit coordination.",
-      "_provenance": "Authored from concept: 'SOC 1 vs SOC 2 vs SOC 3 report types'. Foundational recall tier addressing the bank's recall-tier shortage (was 10%, target 20%). Public sources: AICPA SSAE 18 (Attestation Standards: Clarification and Recodification); AICPA Trust Services Criteria 2017 (revised); AICPA SOC for Service Organizations framework documentation."
+      "pre_read": "Notice the output feeds financial statements. Match the report's subject matter to that objective, not to IT security generally.",
+      "_provenance": "Authored from concept: 'SOC 1 vs SOC 2 vs SOC 3 report types'. Foundational recall tier addressing the bank's recall-tier shortage (was 10%, target 20%). Public sources: AICPA SSAE 18 (Attestation Standards: Clarification and Recodification); AICPA Trust Services Criteria 2017 (revised); AICPA SOC for Service Organizations framework documentation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "style_version": 2
     },
     {
       "id": "d1_186",
