@@ -200,6 +200,33 @@ kill %1
   reasoning in the body. Don't mention internal symbol names in user-
   facing changelog entries (those go to the git log instead).
 
+### PR self-review loop (maintainer rule, added 2026-10-06)
+
+Every PR gets reviewed and fixed **before** it is handed to the maintainer.
+Fix-and-push is automatic; only major issues are escalated.
+
+1. Open the PR and subscribe to it (as above).
+2. Review the diff with the reviewers that fit what changed:
+   - code → `/code-review` (correctness)
+   - mobile UI → `mobile-ux-reviewer`, plus `npm run shots` screenshots
+   - mobile behaviour → `mobile-qa-tester`
+   - question content → `qa-question-tester` (blind) and `cisa-d{N}-standards-auditor`
+   - web UI → `cisa-ux-reviewer`
+3. Fix every finding the reviewers mark blocking, plus plainly correct nits.
+   Re-run the local gates (`npm run check`, the linters, `scripts/verify_repo.sh`).
+   Push. Repeat until reviews and CI are clean.
+4. **Escalate to the maintainer only for major issues.** Report everything
+   else as done. Major means:
+   - a product, design or content-direction decision
+   - an answer key that two reviewers dispute, after one fix attempt
+   - a security or privacy risk, data loss, or a breaking change to saved learner progress
+   - app-store policy or legal/trademark risk
+   - new paid services, costs or accounts
+   - anything that cannot be fixed inside the PR's scope
+5. Tell the maintainer the PR is green and reviewed, in a short summary of
+   what was found and fixed. **Merging stays the maintainer's call**
+   ("merge PR N") unless they say otherwise.
+
 ### Post-merge branch hygiene (CRITICAL — avoids recurring squash-merge conflicts)
 
 PRs are merged via **squash-merge**, which collapses N feature-branch commits

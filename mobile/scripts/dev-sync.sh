@@ -79,9 +79,10 @@ watch_github() {
     echo "New work on origin/$BRANCH:"
     git --no-pager log --oneline "HEAD..origin/$BRANCH" | sed 's/^/    /'
 
-    # package-lock.json is generated: if a local npm rewrote it, that change is
-    # noise, and leaving it would make git refuse every pull from here on.
-    git checkout --quiet -- package-lock.json 2>/dev/null
+    # Files tools rewrite on their own: package-lock.json (npm) and
+    # tsconfig.json (Expo touches it when the dev server starts). Those edits
+    # are noise, and leaving them would make git refuse every pull from here on.
+    git checkout --quiet -- package-lock.json tsconfig.json 2>/dev/null
 
     if ! git pull --quiet --ff-only origin "$BRANCH"; then
       # Claude's working branch is reset onto main after every merge (see
