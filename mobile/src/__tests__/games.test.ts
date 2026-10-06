@@ -2,7 +2,7 @@ import { getAllQuestions } from '../content/loader';
 import type { PackQuestion } from '../content/types';
 import { calibration, calibrationVerdict, sprintScore } from '../engine/games/calibration';
 import { priorityPool, priorityWord, wordChoices } from '../engine/games/priorityLens';
-import { buildTrapRound, scoreTrapPick, trapLetter, trapPool } from '../engine/games/trapSpotter';
+import { buildTrapRound, scoreTrapPick, trapLetter, trapPool, trapTip } from '../engine/games/trapSpotter';
 import { createRng } from '../engine/random';
 
 const bank = getAllQuestions('cisa');
@@ -17,6 +17,19 @@ describe('Trap Spotter', () => {
     const q = { tips: ['Trap is {{B}}: tempting.'], correct: 'A', options: { A: 'a', B: 'b', C: 'c', D: 'd' } } as unknown as PackQuestion;
     expect(scoreTrapPick(q, 'B', 'A')).toEqual({ spotted: true, correct: true, points: 2 });
     expect(scoreTrapPick(q, 'C', 'B').points).toBe(0);
+  });
+  it('reads the runner-up from exam-style v2 "Final two" tips', () => {
+    const q = {
+      tips: ['Eliminate: {{A}} and {{C}} miss the point.', 'Final two: {{D}} beats {{B}} because …', 'Exam cue: …'],
+      correct: 'D',
+      options: { A: 'a', B: 'b', C: 'c', D: 'd' },
+    } as unknown as PackQuestion;
+    expect(trapLetter(q)).toBe('B');
+    expect(trapTip(q)).toMatch(/^Final two:/);
+    // Every rewritten Domain 1 question yields a trap for the game.
+    const v2 = bank.filter((x) => x.tips.some((t) => t.startsWith('Final two:')));
+    expect(v2.length).toBeGreaterThan(150);
+    for (const x of v2) expect(trapLetter(x)).not.toBeNull();
   });
   it('builds a round of unique questions', () => {
     const ids = buildTrapRound(bank, createRng(3), 5);

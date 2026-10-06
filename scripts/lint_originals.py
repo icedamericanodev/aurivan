@@ -146,7 +146,8 @@ def lint_question(q: dict, library: set[str]) -> tuple[list[str], list[str]]:
     # Check 4: tip-1 trap-anchor (skip for foundational tier — recall questions use mnemonic tips, not trap-naming)
     tips = q.get("tips", [])
     is_foundational = q.get("difficulty") == "foundational" or q.get("bloom_level") == "Foundational"
-    if tips and not is_foundational:
+    # v2 items name the trap in tip 2 ("Final two: K beats R"); lint_exam_style_v2.py checks it.
+    if tips and not is_foundational and q.get("style_version") != 2:
         tip1 = tips[0]
         # heuristic: tip 1 should cite a wrong-answer letter (A/B/C/D) that is NOT the correct one
         # Pattern: "Trap is X" or "Trap is X or Y"

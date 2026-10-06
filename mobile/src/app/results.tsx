@@ -11,6 +11,7 @@ import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
 import { scoreSession } from '../lib/finishSession';
+import { trapTip } from '../engine/games/trapSpotter';
 import { startFromIds } from '../lib/sessions';
 import { useSession } from '../store/session';
 import { space } from '../theme/tokens';
@@ -127,10 +128,13 @@ export default function Results() {
                   <T color={c.correct}>Best answer ({originalToDisplay(q.correct, perm)}): {q.options[q.correct]}</T>
                   <Gap h={space.sm} />
                   <T v="body" color={c.text2}>{renderText(q.explanation, perm)}</T>
-                  {q.tips[0] && (
+                  {trapTip(q) !== '' && (
                     <>
                       <Gap h={space.sm} />
-                      <T v="caption">Trap: {renderText(q.tips[0], perm)}</T>
+                      <T v="caption">
+                        {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
+                        {renderText(trapTip(q), perm)}
+                      </T>
                     </>
                   )}
                 </>

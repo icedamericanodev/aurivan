@@ -8,7 +8,7 @@ import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, T } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
-import { buildTrapRound, scoreTrapPick, trapLetter } from '../../engine/games/trapSpotter';
+import { buildTrapRound, scoreTrapPick, trapLetter, trapTip } from '../../engine/games/trapSpotter';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, originalToDisplay, renderText } from '../../engine/shuffle';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -130,7 +130,7 @@ export default function TrapSpotter() {
                 ? `Trap spotted: ${originalToDisplay(trapOriginal, perm)}`
                 : `The trap was ${originalToDisplay(trapOriginal, perm)}, not ${trapPick}`
             }
-            body={renderText(q.tips[0], perm)}
+            body={renderText(trapTip(q), perm)}
           />
           <Gap h={space.sm} />
           <RevealCard

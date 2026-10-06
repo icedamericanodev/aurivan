@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.46] — Questions that read like the real exam
+
+### Improved
+- Information Systems Auditing Process questions are now short and direct, like the real exam: one or two sentences and four concise choices.
+
+### New
+- Every question in that topic now comes with tips on how to rule out two choices and how to pick between the final two.
+
 ## [v10.45.3] — Explanations match the shuffled answers
 
 ### Fixed

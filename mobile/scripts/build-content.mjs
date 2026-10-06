@@ -53,7 +53,7 @@ const LABEL_WORDS = new Set([
 // Words that, right before a letter, mean "an answer option".
 const CHOICE_WORDS = new Set([
   'to', 'pick', 'picks', 'picked', 'choose', 'chooses', 'chose', 'than',
-  'over', 'vs', 'versus', 'unlike', 'option', 'options', 'answer',
+  'over', 'vs', 'versus', 'unlike', 'option', 'options', 'answer', 'beats', 'beat',
 ]);
 
 // When "A" is followed by one of these words it is an option reference
@@ -67,7 +67,7 @@ const VERBISH_AFTER_A = new Set([
   'conflates', 'mistakes', 'offers', 'proposes', 'suggests', 'tests',
   'answers', 'targets', 'substitutes', 'delegates', 'accepts', 'rejects',
   'recommends', 'requires', 'moves', 'puts', 'places', 'gives', 'takes',
-  'makes', 'has', 'and', 'or', 'are', 'were', 'invites', 'tempts',
+  'makes', 'has', 'and', 'or', 'are', 'were', 'invites', 'tempts', 'never',
 ]);
 
 /**

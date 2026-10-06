@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.45.3</span>
+    <span class="bank-pill" id="versionPill">v10.46</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.45.3';
+const APP_VERSION = 'v10.46';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -8295,13 +8295,13 @@ var LETTER_VERBISH_AFTER_A = {
   conflates:1, mistakes:1, offers:1, proposes:1, suggests:1, tests:1,
   answers:1, targets:1, substitutes:1, delegates:1, accepts:1, rejects:1,
   recommends:1, requires:1, moves:1, puts:1, places:1, gives:1, takes:1,
-  makes:1, has:1, and:1, or:1, are:1, were:1, invites:1, tempts:1
+  makes:1, has:1, and:1, or:1, are:1, were:1, invites:1, tempts:1, never:1
 };
 
 // Words that, right before a letter, mean "an answer option".
 var LETTER_CHOICE_WORDS = {
   to:1, pick:1, picks:1, picked:1, choose:1, chooses:1, chose:1, than:1,
-  over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1
+  over:1, vs:1, versus:1, unlike:1, option:1, options:1, answer:1, beats:1, beat:1
 };
 
 function isOptionLetterRef(text, letter, offset, selfLetter) {
@@ -12073,6 +12073,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Questions that read like the real exam',
+    items: [
+      { cat: 'improved', text: 'Information Systems Auditing Process questions are now short and direct, like the real exam: one or two sentences and four concise choices.' },
+      { cat: 'new', text: 'Every question in that topic now comes with tips on how to rule out two choices and how to pick between the final two.' }
+    ]
+  },
+  {
+    version: 'v10.45.3',
     title: 'Explanations match the shuffled answers',
     items: [
       { cat: 'fixed', text: 'Answer explanations now refer to the same letters you see on screen when options are shuffled, so "why this is right" and "why this is wrong" point at the choice you see.' }
