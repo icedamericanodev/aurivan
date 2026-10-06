@@ -53,6 +53,7 @@ author batch ──► harness ──► blind tester + domain auditor ──►
 1. **Author.** An agent rewrites a batch of about 25 questions into a scratch file.
 2. **Harness.** `python3 scripts/lint_exam_style_v2.py --file <batch>`. The author loops until it reports 0 errors, then reviews each warning by judgement.
 3. **Review.** `qa-question-tester` answers blind, and `cisa-d{N}-standards-auditor` checks keys, the final two and wording.
+   Also run an **alignment read**: print the batch with `python3 scripts/print_alignment.py --file <batch>` and have an agent confirm each "why-X-wrong" line and tip letter describes the option under that letter. Blind testers cannot see this error (only distractors move, so the key still reads right), and word-overlap lint cannot catch it reliably.
 4. **Fix.** Apply every FIX, then re-run the harness.
 5. **Merge** into `data/originals/d{N}.json`, then run all the gates:
    ```bash

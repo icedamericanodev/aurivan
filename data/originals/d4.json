@@ -793,7 +793,7 @@
       "subtopic": "Computer Hardware Components. Categorization",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor scoping a server hardware review has included processors, memory, storage and network interfaces. Which component group is MOST important to add?",
+      "question": "An IS auditor scoping a server hardware review has included processors, memory, storage and network interfaces. Which further hardware area is MOST important to add?",
       "options": {
         "A": "Attached peripherals such as printers and scanners",
         "B": "Operating system and application software",
@@ -1126,26 +1126,26 @@
       "subtopic": "Problem Management vs Incident Management",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "During a major outage, the incident manager wants to keep service down until the root cause is confirmed. What should the IS auditor advise as the BEST approach?",
+      "question": "Service desk agents keep rediscovering the same workaround for a recurring fault whose permanent fix is months away. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Close the incident once users stop reporting the outage",
-        "B": "Restore service now and raise a problem record for analysis",
-        "C": "Confirm the root cause first so the fix is permanent",
-        "D": "Route the outage through the change advisory board for approval"
+        "A": "Keep each related incident open until the permanent fix is deployed",
+        "B": "Record a known error with its workaround for the service desk",
+        "C": "Send every recurrence to the problem team for fresh analysis",
+        "D": "Apply the permanent fix in production without change approval"
       },
       "correct": "B",
-      "key_concept": "Incident management restores service quickly; problem management then investigates root cause so the fault does not recur.",
-      "pre_read": "Separate the two goals: restoring service now and preventing recurrence. Ask which option achieves both in the right order.",
-      "correct_explanation": "Incident management aims to restore normal service as quickly as possible, while problem management finds and removes underlying causes. Restoring service now and logging a problem record limits business impact and still ensures the root cause is investigated. Waiting for the root cause keeps the business down for an unknown period, putting a diagnostic goal ahead of service restoration.",
+      "key_concept": "When a root cause is known but unfixed, problem management records a known error and workaround so incidents are resolved quickly.",
+      "pre_read": "The cause is understood and a fix is planned. Ask what stops agents solving the same incident from scratch.",
+      "correct_explanation": "A recurring fault with a known workaround and a planned fix is a known error. Recording it with the workaround lets agents restore service quickly and consistently while problem management tracks the permanent fix. Sending each recurrence for fresh analysis sounds thorough, but the cause is already understood, so repeated investigation wastes effort and slows restoration.",
       "wrong_explanations": {
-        "A": "Closing on silence leaves no record for root cause work and may hide a recurring fault.",
-        "C": "Root cause matters, but holding service down to find it extends business impact; problem management can investigate after restoration.",
-        "D": "The change advisory board reviews planned changes. Restoring an outage follows the incident and emergency change paths, not routine board approval."
+        "A": "Holding incidents open until the fix lands leaves users without service for months, although a working workaround already exists.",
+        "C": "The root cause is already known; reanalysing each recurrence duplicates work and delays restoration without adding knowledge.",
+        "D": "Even urgent fixes go through change control, using the emergency route if needed; bypassing approval risks a production failure."
       },
       "tips": [
-        "Eliminate: A closes without any record, and D applies routine change approval to an outage.",
-        "Final two: B beats C because incident management restores service first, and a problem record ensures root cause is still pursued.",
-        "Exam cue: restore service first, but never skip root cause; look for the option that does both in that order."
+        "Eliminate: A leaves users down despite a workaround, and D bypasses change control.",
+        "Final two: B beats C because the cause is already known; a known error record reuses that knowledge instead of repeating analysis.",
+        "Exam cue: known cause plus workaround means a known error record; restore service first, fix permanently through change control."
       ],
       "framework_ref": "ITIL 4 Problem Management practice; ITIL 4 Incident Management practice; COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
@@ -1238,7 +1238,7 @@
       "subtopic": "Release Management vs Change Management",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds that twelve approved changes were deployed together over one weekend with no coordinated build, test or rollback plan. Which ITIL 4 practice is MOST clearly lacking?",
+      "question": "An IS auditor finds each approved component of a payroll upgrade went live separately over three weeks, with no combined build, test or rollback plan. Which ITIL 4 practice is MOST clearly lacking?",
       "options": {
         "A": "Change enablement",
         "B": "Service continuity management",
@@ -1390,7 +1390,7 @@
       "options": {
         "A": "Support cloud migration, since its first-year cost is lowest",
         "B": "Replace like-for-like, since it carries the least transition risk",
-        "C": "Wait until support ends so the deadline forces a decision",
+        "C": "Commission an external benchmark before considering either option",
         "D": "Have management compare each option's lifetime cost and risk"
       },
       "correct": "D",
@@ -1400,7 +1400,7 @@
       "wrong_explanations": {
         "A": "First-year cost ignores lifetime cost, migration risk and data residency limits, so it is not a sound basis.",
         "B": "Lower transition risk is one factor, but choosing before comparing lifetime costs and risks pre-empts management's evaluation.",
-        "C": "Waiting wastes the nine-month planning window and leaves no time for a careful transition."
+        "C": "A benchmark delays the decision; management already has enough to compare lifetime cost and risk."
       },
       "tips": [
         "Eliminate: A judges on first-year cost alone, and C wastes the planning window before support ends.",
@@ -1651,12 +1651,12 @@
         "A": "Install endpoint antivirus on each production server",
         "B": "Rely on the perimeter firewall to block external attacks",
         "C": "Disable operating system audit logging to free resources",
-        "D": "Apply a hardened configuration baseline and monitor for drift"
+        "D": "Apply a hardened baseline such as a CIS benchmark"
       },
       "correct": "D",
-      "key_concept": "Operating systems need a hardened configuration baseline covering access, logging and privileges, monitored for drift.",
+      "key_concept": "Vendor-default operating systems need a hardened configuration baseline covering services, access, logging and privileges.",
       "pre_read": "Name the finding first, then ask which option corrects it rather than adding a layer around it.",
-      "correct_explanation": "Vendor defaults often leave unneeded services, weak access settings and limited logging enabled. A hardened baseline, such as a CIS benchmark, sets access controls, logging and privilege restrictions, and drift monitoring keeps servers aligned with it. Antivirus adds protection against malware, but it does not change the weak settings themselves, so the misconfiguration exposure the auditor found remains.",
+      "correct_explanation": "Vendor defaults often leave unneeded services, weak access settings and limited logging enabled. A hardened baseline, such as a CIS benchmark, removes unneeded services and sets access controls, logging and privilege restrictions. Antivirus adds protection against malware, but it does not change the weak settings themselves, so the misconfiguration exposure the auditor found remains.",
       "wrong_explanations": {
         "A": "Antivirus detects malware but leaves default accounts, services and weak settings in place.",
         "B": "A perimeter firewall does nothing about insiders or attackers already inside, and leaves weak host settings unchanged.",
@@ -1665,7 +1665,7 @@
       "tips": [
         "Eliminate: B trusts the perimeter alone, and C switches off a core control for performance.",
         "Final two: D beats A because the finding is weak configuration; hardening fixes it, while antivirus addresses a different threat.",
-        "Exam cue: misconfiguration calls for a hardened baseline with drift monitoring, not an extra security tool layered on top."
+        "Exam cue: misconfiguration calls for a hardened baseline, not an extra security tool layered on top."
       ],
       "framework_ref": "NIST SP 800-123 (Guide to General Server Security); CIS Benchmarks for Operating Systems; ITAF Performance Standards on Evidence",
       "related_concepts": [
@@ -2203,26 +2203,26 @@
       "subtopic": "Network Device End-of-Support Decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Firewalls and load balancers reach vendor end-of-support in 11 months, and three replacement options are proposed. Which should the IS auditor recommend as the BEST basis for management's choice?",
+      "question": "Core firewalls reach vendor end-of-support in 11 months, but their replacement project cannot finish for 18 months. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "The lowest first-year purchase price among the options",
-        "B": "Five-year total cost of ownership adjusted for transition risk",
-        "C": "The CTO's preference for consolidating onto a single vendor",
-        "D": "Continued use past end-of-support until budget is available"
+        "A": "Run the firewalls unsupported until the replacement is complete",
+        "B": "Obtain extended vendor support and add compensating controls",
+        "C": "Compress the replacement project to finish before support ends",
+        "D": "Accept the gap since firewall rules rarely need vendor patches"
       },
       "correct": "B",
-      "key_concept": "Infrastructure replacement decisions compare lifecycle cost and risk across options, not the first-year price or one executive's preference.",
-      "pre_read": "Ask which basis captures the full cost and risk of each option over the life of the equipment.",
-      "correct_explanation": "Options with different lock-in, migration effort and operating costs can only be compared fairly over their life. A multi-year total cost of ownership that also weighs transition risk shows the true trade-off. The lowest first-year price looks prudent, but it ignores operating costs, vendor dependence and migration effort that can make the cheapest start the most expensive choice.",
+      "key_concept": "When replacement cannot beat end-of-support, cover the interim exposure with extended support or compensating controls, and have management own the residual risk.",
+      "pre_read": "Compare the two dates. Ask how the gap is protected rather than how to make it disappear.",
+      "correct_explanation": "For seven months the firewalls would run without security fixes, so the gap needs extended or third-party support plus compensating controls such as tighter monitoring, with management accepting what remains. Compressing the project sounds decisive, but rushing a core network migration raises the risk of outages and misconfigured rules, trading a known exposure for a new one.",
       "wrong_explanations": {
-        "A": "First-year price omits operating, support and transition costs that dominate a multi-year lifecycle.",
-        "C": "A single executive's preference is not an objective basis and ignores lock-in risk from consolidation.",
-        "D": "Running security devices past end-of-support leaves them without patches, exposing the network to unfixed flaws."
+        "A": "Unsupported firewalls receive no security fixes, so known perimeter vulnerabilities stay open for months with nothing to offset them.",
+        "C": "Forcing a complex network migration into a shorter timeline cuts testing and raises outage and misconfiguration risk.",
+        "D": "Firewall software and firmware do receive security fixes; assuming otherwise leaves exploitable perimeter flaws unpatched."
       },
       "tips": [
-        "Eliminate: C rests on one person's preference, and D runs security devices unsupported.",
-        "Final two: B beats A because lifecycle cost and transition risk reveal the true trade-off; first-year price hides most of it.",
-        "Exam cue: for technology investments, prefer total cost of ownership over purchase price."
+        "Eliminate: A runs unpatched perimeter devices, and D assumes firewalls need no vendor fixes.",
+        "Final two: B beats C because it protects the gap without forcing a rushed migration of core network devices.",
+        "Exam cue: when a deadline cannot be met, cover the interim risk with compensating controls rather than rushing the change."
       ],
       "framework_ref": "ISACA Network Perimeter Security Audit/Assurance Program; COBIT 2019 BAI09 (Managed Assets); ISACA Vendor Management Audit/Assurance Program",
       "related_concepts": [
@@ -3272,26 +3272,26 @@
       "subtopic": "DRP Organization and Responsibilities",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A disaster recovery plan names the infrastructure lead as the only person authorized to start database recovery. What is the IS auditor's BEST recommendation?",
+      "question": "A DR plan assigns one engineer to lead both network and database recovery, which must run in parallel to meet the RTO. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Route approval of every recovery step through the CIO",
-        "B": "Name a trained alternate with the same documented authority",
-        "C": "Let whoever is on shift take the role at activation",
-        "D": "Record additional home and mobile contact numbers for the lead"
+        "A": "Run the two recoveries in sequence under the one engineer",
+        "B": "Assign a separate trained lead to each recovery workstream",
+        "C": "Have the CIO personally direct each recovery workstream",
+        "D": "Engage a contractor once the disaster has been declared"
       },
       "correct": "B",
-      "key_concept": "Each critical recovery role needs a named, trained alternate with the same authority so one absence cannot stall recovery.",
-      "pre_read": "Spot the single point of failure in the stem. Ask which option removes it rather than reducing it.",
-      "correct_explanation": "Naming a single authorized person creates a single point of failure: if the lead is ill, travelling or affected by the disaster, recovery cannot start. A trained alternate with the same documented authority removes that dependency. Extra contact numbers make the lead easier to reach, but they do not help when the lead is unavailable or incapacitated.",
+      "key_concept": "DR team structure must give each concurrent workstream its own trained lead; an overloaded role becomes a bottleneck that breaks the RTO.",
+      "pre_read": "Two tasks must run at once. Ask whether one person can lead both without delaying recovery.",
+      "correct_explanation": "Parallel workstreams need parallel leadership. A separate trained lead for network and database recovery lets both proceed at once and removes a single-person bottleneck. Running them in sequence under one engineer keeps the plan simple, but parallel work is needed to meet the RTO, so sequencing builds a predictable delay into recovery.",
       "wrong_explanations": {
-        "A": "Routing every step through the CIO adds a new bottleneck and single point of failure.",
-        "C": "Improvised role assignment wastes time and may put untrained staff in charge of critical recovery.",
-        "D": "More numbers improve reachability but leave recovery dependent on one person who may be injured or unavailable."
+        "A": "Sequencing work that must run in parallel extends recovery beyond the RTO the business set.",
+        "C": "The CIO's role is coordination and decisions; directing technical workstreams overloads the crisis lead and lacks hands-on skill.",
+        "D": "A contractor arriving after declaration lacks system knowledge and adds onboarding delay when time matters most."
       },
       "tips": [
-        "Eliminate: A creates a new bottleneck, and C improvises a critical role at the worst moment.",
-        "Final two: B beats D because an alternate removes the single point of failure; better contact details only reduce it.",
-        "Exam cue: for any critical recovery role, look for a named primary AND a trained alternate."
+        "Eliminate: C overloads the CIO with technical work, and D relies on an outsider arriving late.",
+        "Final two: B beats A because only separate leads let the parallel work the RTO requires actually happen.",
+        "Exam cue: in DR team design, look for single-person bottlenecks; each critical concurrent task needs its own trained owner."
       ],
       "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-34 (Contingency Planning Guide); DRII Professional Practices",
       "related_concepts": [
@@ -3309,26 +3309,26 @@
       "subtopic": "BCP Development. Detailed Steps",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A business continuity manager has management sponsorship to build a BCP for a newly acquired division. What should be done FIRST?",
+      "question": "The BIA for a newly acquired division is complete, and its business continuity manager wants to start writing recovery plans. What should be done FIRST?",
       "options": {
         "A": "Run a full-interruption test of existing recovery arrangements",
-        "B": "Select recovery strategies for the division's key systems",
-        "C": "Perform a business impact analysis of the division's processes",
+        "B": "Write detailed recovery procedures for each critical process",
+        "C": "Select recovery strategies able to meet the agreed RTOs",
         "D": "Customize a commercial BCP template with the division's details"
       },
       "correct": "C",
-      "key_concept": "After sponsorship and scope, the BIA comes first: it sets criticality and recovery targets that drive strategy selection.",
-      "pre_read": "Order the BCP lifecycle steps. Ask which output every later step depends on.",
-      "correct_explanation": "Once sponsorship is in place, the BIA identifies the division's critical processes, the impact of disruption and the resulting recovery targets. Every later step depends on it. Selecting recovery strategies is the next step, and it sounds decisive, but choosing strategies before the BIA means guessing at criticality and recovery targets, risking overspending or underprotection.",
+      "key_concept": "After the BIA sets recovery objectives, recovery strategies are selected; detailed plans and procedures are then written to implement them.",
+      "pre_read": "The BIA is done. Ask what must be decided before anyone can write step-by-step procedures.",
+      "correct_explanation": "Recovery strategies, such as alternate sites, manual workarounds and supplier arrangements, must be chosen to meet the RTOs before plans describe how to use them. Writing detailed procedures first feels productive, but procedures written without an agreed strategy may describe resources the division will not have, and must be rewritten once the strategy is chosen.",
       "wrong_explanations": {
-        "A": "Testing comes after a plan exists; a full-interruption test now would test arrangements not designed for the division.",
-        "B": "Strategy selection follows the BIA. Without impact data and recovery targets, strategies cannot be justified or sized.",
-        "D": "A template supplies structure but none of the impact analysis or strategy the division actually needs."
+        "A": "A full-interruption test validates plans and strategies that do not yet exist, and risks disrupting a division still being integrated.",
+        "B": "Procedures implement a chosen strategy; writing them first risks documenting resources and sites that will not exist.",
+        "D": "A generic template ignores the division's BIA results and strategy, producing a plan that looks complete but fits nothing."
       },
       "tips": [
-        "Eliminate: A tests before any plan exists, and D copies a format without analysis.",
-        "Final two: C beats B because strategy must be sized to BIA results; the BIA comes first.",
-        "Exam cue: in continuity sequencing questions, BIA before strategy, strategy before plan, plan before test."
+        "Eliminate: A tests arrangements before plans exist, and D swaps the BIA results for a generic template.",
+        "Final two: C beats B because procedures describe how to execute a strategy, so the strategy must be chosen first.",
+        "Exam cue: BIA, then strategy, then plans, then training and testing; do not write procedures for an unchosen strategy."
       ],
       "framework_ref": "ITAF Performance Standards on Evidence; ISO 22301 (Business Continuity Management); DRII Professional Practices; BCI Good Practice Guidelines",
       "related_concepts": [
@@ -3706,7 +3706,7 @@
       "subtopic": "Converged Protocols. Definition",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor reviews a network whose Ethernet core carries both iSCSI storage and VoIP telephony traffic. Which risk is MOST important to evaluate?",
+      "question": "An IS auditor reviews an Ethernet core that carries both iSCSI storage and VoIP traffic, with QoS prioritising voice. Which risk is MOST important to evaluate?",
       "options": {
         "A": "Licensing costs rising from separate vendor management consoles",
         "B": "Voice call quality dropping during heavy storage transfers",
@@ -3724,7 +3724,7 @@
       },
       "tips": [
         "Eliminate: A confuses convergence with management consoles, and D misdescribes converged protocols as collapsing OSI layers.",
-        "Final two: C beats B because a shared-core outage stops storage and voice together, while contention only degrades call quality.",
+        "Final two: C beats B because QoS already protects voice quality, while a shared-core outage stops storage and voice together.",
         "Exam cue: when separate services share one transport, look first for the single point of failure."
       ],
       "framework_ref": "RFC 3720 (iSCSI Protocol); INCITS T11 (FCoE specifications); RFC 3031 (MPLS Architecture); RFC 3261 (SIP for VoIP); NIST SP 800-58 (Security Considerations for Voice Over IP Systems)",
@@ -4124,26 +4124,26 @@
       "subtopic": "System Interface Controls. Totals, Sequence, Integrity",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A web-store-to-ERP order interface is protected by TLS and per-sender API keys. Which additional control should the IS auditor consider MOST important?",
+      "question": "A web store sends each order to the ERP as an API message and resends it on timeout. Which control should the IS auditor consider MOST important to prevent duplicate orders?",
       "options": {
-        "A": "Count and value reconciliation between sender and receiver",
+        "A": "Unique identifiers checked by the receiver to reject repeats",
         "B": "Stronger TLS cipher suites with certificate pinning",
-        "C": "Field-level input validation of incoming orders within the ERP",
+        "C": "Daily count and value reconciliation between the two systems",
         "D": "More frequent rotation of the per-sender API keys"
       },
       "correct": "A",
-      "key_concept": "Transport security and authentication do not prove completeness. Record count and value reconciliation detects lost or duplicated interface data.",
-      "pre_read": "List what TLS and API keys already cover. Then ask which interface risk neither of them can detect.",
-      "correct_explanation": "TLS protects data in transit and API keys authenticate the sender, but neither tells anyone whether every order arrived once and only once. Count and value reconciliation between sender and receiver detects dropped, duplicated or altered batches. Field validation in the ERP improves the accuracy of each record that arrives, but it cannot see a record that never arrived at all.",
+      "key_concept": "Retrying interfaces need unique identifiers or sequence checks so the receiver rejects duplicates before posting; reconciliation only finds them afterwards.",
+      "pre_read": "Timeouts trigger resends. Ask which control stops a resent order posting twice, rather than finding it later.",
+      "correct_explanation": "When a sender retries after a timeout, the receiver may already hold the first copy. Checking a unique identifier or sequence number lets the receiver reject the repeat before it posts. Daily count and value reconciliation is a sound detective control, but it finds duplicates after they post, when goods may already have shipped or customers been billed twice.",
       "wrong_explanations": {
-        "B": "Stronger ciphers strengthen a control that already exists. They add nothing for completeness of the data flow.",
-        "C": "Input validation checks records that arrive. It cannot detect orders dropped before reaching the ERP.",
-        "D": "Faster key rotation hardens authentication, which is already in place. It does not show that all orders arrived."
+        "B": "Stronger TLS protects data in transit; a legitimately resent message is still delivered and posted twice.",
+        "C": "Reconciliation detects duplicates after posting, when customers may already have been charged; prevention at the receiver is stronger.",
+        "D": "Key rotation limits misuse of stolen credentials but does nothing about duplicate messages from the authorised sender."
       },
       "tips": [
-        "Eliminate: B and D only strengthen transport security and authentication, which the interface already has.",
-        "Final two: A beats C because validation checks records that arrive, while reconciliation detects records that never arrive.",
-        "Exam cue: when asked for the missing interface control, think completeness first: counts and totals."
+        "Eliminate: B and D strengthen transport security, which does not stop a valid sender's retries posting twice.",
+        "Final two: A beats C because it prevents the duplicate from posting, while reconciliation finds it afterwards.",
+        "Exam cue: retries without a unique-ID check create duplicates; prefer preventive interface controls over after-the-fact reconciliation."
       ],
       "framework_ref": "COBIT 2019 BAI03 (Managed Solutions Identification and Build); NIST SP 800-53 Rev 5 SI-7 (Software, Firmware, and Information Integrity); ISACA IT Application Controls Audit/Assurance Program; ISO/IEC 27001 Annex A.13 (Communications Security)",
       "related_concepts": [
@@ -4317,23 +4317,23 @@
       "question": "A corrupted policy ledger forces a choice between restoring a 36-hour-old backup and slower log replay before a statutory filing deadline. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Rebuild the corrupted indexes directly in production right away",
-        "B": "Establish the regulator's position before choosing a recovery path",
+        "B": "Have management weigh each path's data loss against the deadline",
         "C": "Restore the older backup now to protect the filing deadline",
         "D": "Have the CFO attest that restored backup data is complete"
       },
       "correct": "B",
-      "key_concept": "When recovery options trade data integrity against a deadline, establish which harm the stakeholder weighs more before committing to an irreversible path.",
-      "pre_read": "Both recovery paths cost something. Ask what fact decides which cost is worse, and whether it can be learned quickly.",
-      "correct_explanation": "Restoring the backup loses 36 hours of data; replaying logs risks a late filing. Which harm is worse depends on how the regulator treats a late filing versus an incomplete one, and that can be established in hours. Choosing first and asking later risks committing to the wrong, irreversible path. Restoring now protects the deadline, but it accepts known data loss in a statutory report without knowing whether that is acceptable.",
+      "key_concept": "When recovery paths trade data loss against a deadline, the auditor sets out the impacts and management, as risk owner, decides.",
+      "pre_read": "Both recovery paths cost something. Ask who owns the choice and what they need to make it.",
+      "correct_explanation": "Restoring the backup loses 36 hours of data; log replay risks a late filing. Which harm is worse is a business decision, so management should weigh both, consulting the regulator if needed, before committing. Restoring now protects the deadline, but it accepts known data loss in a statutory report without the accountable owner deciding that loss is acceptable.",
       "wrong_explanations": {
         "A": "Repairing a corrupted production database without a tested procedure or change control risks further damage and destroys evidence.",
-        "C": "This commits to 36 hours of data loss in a statutory filing before learning whether the regulator would accept a late, complete one.",
+        "C": "This commits to 36 hours of data loss in a statutory filing before the accountable owner has weighed it against a late, complete filing.",
         "D": "An attestation cannot make 36-hour-old data complete. Signing it would give the regulator false assurance."
       },
       "tips": [
         "Eliminate: A bypasses change control on a damaged system, and D asks for an attestation that cannot be true.",
-        "Final two: B beats C because the regulator's stance decides which loss is worse, and restoring first is irreversible.",
-        "Exam cue: when a fact that decides between options can be learned quickly, getting it first beats acting now."
+        "Final two: B beats C because the risk owner must choose between data loss and lateness, and restoring first is irreversible.",
+        "Exam cue: when options trade one business harm for another, management decides on the auditor's analysis; the auditor does not pick."
       ],
       "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISACA Database Management Audit/Assurance Program; NAIC Model Audit Rule (statutory financial reporting); ISO 22301 Clause 8.4 (Business Continuity Procedures)",
       "related_concepts": [
@@ -4355,23 +4355,23 @@
       "question": "During a regulatory examination, the CISO learns IT shortened log retention below the legally required period without consulting compliance. What should the IS auditor recommend as the BEST next step?",
       "options": {
         "A": "Wait until examiners raise retention before discussing the gap",
-        "B": "Restore required retention and recover old logs from backups",
-        "C": "Disclose the gap to the regulator through legal counsel",
+        "B": "Recover the purged logs from backups before anything else",
+        "C": "Restore required retention and report the gap to management",
         "D": "Amend the written policy to match the shortened retention"
       },
       "correct": "C",
-      "key_concept": "A compliance gap found during an examination should be disclosed proactively through counsel, alongside remediation; concealment is treated more seriously than the gap.",
-      "pre_read": "Note the timing: an examination is under way. Ask what the regulator would think on discovering a quiet fix.",
-      "correct_explanation": "During an active examination, voluntary disclosure through counsel lets the firm frame the gap, scope it correctly and earn cooperation credit, while remediation runs alongside. Quietly restoring retention and recovering logs is necessary work, but done without disclosure it looks like concealment once examiners find the change, and regulators typically treat concealment more seriously than the original gap.",
+      "key_concept": "Stop a compliance gap growing first, then escalate it so management and counsel decide any disclosure; the auditor does not make that call.",
+      "pre_read": "Each day under the short setting purges more logs. Ask what stops the loss and who decides disclosure.",
+      "correct_explanation": "Every day the shortened setting stays, more required logs are purged, so retention must be restored at once and the gap reported to management, who decide with counsel how to inform examiners. Recovering purged logs from backups matters, but doing it first lets the loss continue, and backups may not hold everything, so stopping further loss comes first.",
       "wrong_explanations": {
-        "A": "Waiting to be asked looks like concealment if examiners find the gap themselves, and forfeits any credit for cooperation.",
-        "B": "Remediation is needed, but doing it silently mid-examination appears to hide the gap and still leaves the missing period undisclosed.",
+        "A": "Waiting to be asked looks like concealment if examiners find the gap themselves, and lets required logs keep disappearing.",
+        "B": "Recovery is worthwhile, but while it runs the short setting keeps purging required logs; stop the loss before rebuilding history.",
         "D": "Rewriting policy to match a non-compliant practice does not change the legal requirement and compounds the breach."
       },
       "tips": [
         "Eliminate: A waits to be caught, and D rewrites the policy to legitimise a breach.",
-        "Final two: C beats B because remediation without disclosure during an examination looks like concealment.",
-        "Exam cue: when regulators are already looking, transparent disclosure through the proper channel beats a quiet fix."
+        "Final two: C beats B because stopping further loss comes before recovering past data, and management must know now.",
+        "Exam cue: contain first, then remediate; disclosure to regulators is management's decision, informed by the auditor."
       ],
       "framework_ref": "SEC Rule 17a-4; SEC Enforcement Manual; SEC Seaboard Report (2001) Voluntary Disclosure Framework; FINRA Rule 4511 (General Requirements); NIST SP 800-92 (Guide to Computer Security Log Management)",
       "related_concepts": [
@@ -4476,7 +4476,7 @@
       "correct": "C",
       "key_concept": "NIST SP 800-88 matches Clear, Purge or Destroy to data sensitivity and whether media leaves organizational control, then verifies the result.",
       "pre_read": "Note two facts: confidential data, and the disks leave your control. Ask which method fits both.",
-      "correct_explanation": "Media leaving organizational control after holding confidential data needs a Purge-level method suited to the medium, such as cryptographic erase or a verified overwrite, with the result verified and documented. Physical destruction is the strongest option and would protect the data, but it is more than the situation requires and breaches the lease, when a verified Purge already makes the data unrecoverable.",
+      "correct_explanation": "Media leaving organizational control after holding confidential data needs a Purge-level method suited to the medium, such as cryptographic erase or a firmware sanitize command, with the result verified and documented. Physical destruction is the strongest option and would protect the data, but it is more than the situation requires and breaches the lease, when a verified Purge already makes the data unrecoverable.",
       "wrong_explanations": {
         "A": "A quick format only rewrites file-system structures. The underlying data stays recoverable with common tools.",
         "B": "Destruction protects the data but exceeds what the case requires and breaks the lease, when a verified Purge suffices.",
@@ -4542,26 +4542,26 @@
       "subtopic": "Offsite Backup Record-Keeping",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor finds that backup tapes sent to an offsite vault are tracked only through the vendor's records. Which control is MOST important to add?",
+      "question": "An IS auditor finds backup tapes pass between operators, couriers and the offsite vault with no signed record at each handover. Which control is MOST important to add?",
       "options": {
-        "A": "An internal tape log reconciled monthly with vendor records",
-        "B": "Annual review of the vault vendor's SOC 2 report",
-        "C": "Longer retention periods for the tapes held at the offsite vault",
+        "A": "Itemized receipts acknowledged by both parties at transfer",
+        "B": "Locked, tamper-evident cases for each tape shipment",
+        "C": "Longer retention periods for tapes held at the vault",
         "D": "More frequent courier pickups from the data center"
       },
       "correct": "A",
-      "key_concept": "Offsite media needs the sender's own inventory and chain of custody, reconciled periodically with the vendor, so missing media is detected.",
-      "pre_read": "Ask how the firm would notice a missing tape today. Then pick the control that gives it its own view.",
-      "correct_explanation": "Relying only on the vendor's records means the firm cannot independently detect a lost or misplaced tape. Keeping its own inventory and reconciling it monthly with the vendor's records gives that independent check and supports chain of custody. Reviewing the vendor's SOC 2 report gives useful assurance over the vendor's general controls, but it does not confirm that the firm's specific tapes are all present.",
+      "key_concept": "Chain of custody for backup media needs an itemized, acknowledged record at each transfer, so a loss can be traced to a point and party.",
+      "pre_read": "Picture a tape going missing. Ask which control shows where, and with whom, it was last seen.",
+      "correct_explanation": "Without an acknowledged record at each transfer, a missing tape cannot be traced to the point or party where it went astray, and nobody is accountable. Itemized receipts close that chain of custody. Locked, tamper-evident cases protect tapes in transit, but they show only whether a case was opened, not which tapes it held or who had it.",
       "wrong_explanations": {
-        "B": "A SOC 2 report covers the vendor's control environment in general. It cannot confirm that specific tapes are accounted for.",
-        "C": "Retention length does not address tracking. Tapes could still go missing without anyone at the firm noticing.",
-        "D": "Pickup frequency affects how current offsite copies are, not whether the firm can account for tapes already sent."
+        "B": "Tamper-evident cases deter interference in transit but record neither the tapes inside nor who held them, so custody stays unproven.",
+        "C": "Retention length governs how long tapes are kept, not whether their movements are recorded.",
+        "D": "More pickups move tapes offsite sooner but multiply undocumented handovers, widening the custody gap."
       },
       "tips": [
-        "Eliminate: C changes retention, not tracking, and D changes pickup timing without improving accountability.",
-        "Final two: A beats B because reconciliation verifies the firm's own tapes, while a SOC 2 report gives only general assurance.",
-        "Exam cue: never rely solely on a third party's records; keep your own and reconcile them."
+        "Eliminate: C changes retention, and D adds more undocumented transfers.",
+        "Final two: A beats B because custody needs an accountable record per transfer; a sealed case proves nothing about who held which tape.",
+        "Exam cue: chain of custody means a documented, acknowledged record at every handover of evidence or media."
       ],
       "framework_ref": "NIST SP 800-34 (Contingency Planning Guide); ISO/IEC 27040 (Storage Security); ISACA Business Continuity Audit/Assurance Program; ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)",
       "related_concepts": [
@@ -5948,7 +5948,7 @@
       "subtopic": "Network Segmentation Breach via Admin VLAN",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An attacker used misconfigured ACLs to reach the cardholder data zone, and the path is now blocked at the firewall. Before the ACLs are rebuilt, what should the IS auditor recommend FIRST?",
+      "question": "An attacker used misconfigured ACLs to reach the cardholder data zone, and the path is now blocked at the firewall. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Capture forensic images and logs of the affected segments",
         "B": "Rebuild the ACLs at once through an emergency change",
@@ -6178,24 +6178,24 @@
       "bloom_level": "Application",
       "question": "An IS auditor reviewing a help desk with strong SLA results has time for one more area. Which area presents the GREATEST risk to examine?",
       "options": {
-        "A": "Accuracy of ticket categorization and escalation routing",
-        "B": "Caller identity verification before password resets",
+        "A": "Accuracy of first-contact resolution figures in monthly desk reports",
+        "B": "Escalation of security-related calls to the incident response team",
         "C": "Average handle time recorded for each desk agent",
         "D": "Formatting consistency of knowledge base articles"
       },
       "correct": "B",
-      "key_concept": "Help desk password resets are a social-engineering target; weak caller verification can hand an attacker valid credentials, which outranks service-quality issues.",
-      "pre_read": "Notice SLA results are already strong. Ask which area could let an outsider gain access.",
-      "correct_explanation": "A help desk that resets passwords without verifying the caller can hand an attacker a working account, which is a direct security exposure. That outranks service-quality issues already partly covered by the strong SLA results. Accurate categorization and escalation matter, because misrouted tickets delay fixes and can hide security incidents, but the impact is slower service rather than immediate unauthorized access.",
+      "key_concept": "The help desk often hears of security incidents first; failing to escalate those calls lets attacks continue unnoticed.",
+      "pre_read": "Notice SLA results are already strong. Ask which area could let an active attack go unnoticed.",
+      "correct_explanation": "Security-related calls, such as reported phishing or suspicious account activity, that are handled as routine tickets can let an active incident run unnoticed. That is a direct risk to the firm. Accurate resolution figures matter because management relies on them, but an error distorts service reporting rather than leaving an attack uncontained, and the strong SLA results already give some comfort on service quality.",
       "wrong_explanations": {
-        "A": "Misrouting delays resolution, but its impact is mainly on service quality rather than direct unauthorized access.",
+        "A": "Overstated resolution figures mislead management about service quality, but they do not leave an active security incident uncontained.",
         "C": "Handle time is an efficiency metric with little bearing on control risk.",
         "D": "Article formatting is a usability matter, not a control weakness with meaningful risk."
       },
       "tips": [
         "Eliminate: C is an efficiency metric, and D is a cosmetic usability issue.",
-        "Final two: B beats A because unverified resets can grant access to an attacker, while misrouting mainly slows service.",
-        "Exam cue: at the help desk, credential resets are the security-critical control; check verification before service metrics."
+        "Final two: B beats A because an unescalated security call can let an attack continue, while inaccurate figures only distort reporting.",
+        "Exam cue: at the help desk, check that security events leave the service queue quickly; that outranks service metrics."
       ],
       "framework_ref": "ITIL 4 Service Desk Practice; COBIT 2019 DSS02 (Managed Service Requests and Incidents); ISACA IT Operations Audit/Assurance Program; NIST SP 800-63B (Authentication and Lifecycle Management)",
       "related_concepts": [
@@ -6205,7 +6205,7 @@
         "Help desk social engineering",
         "Feedback to problem management"
       ],
-      "_provenance": "Authored from concept: 'Help desk audit multi-dimensional scope per ITIL 4 and COBIT DSS02'. Public sources: AXELOS, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Help desk audit multi-dimensional scope per ITIL 4 and COBIT DSS02'. Public sources: AXELOS, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Retargeted from caller verification to avoid duplicating d4_193.",
       "style_version": 2
     },
     {
@@ -6523,12 +6523,12 @@
         "A": "Start a forensic review before any further recovery decisions",
         "B": "Let each executive run their own workstream in parallel",
         "C": "Appoint one incident commander with defined decision rights",
-        "D": "Direct the CMO to brief members and regulators right away"
+        "D": "Direct the CMO to brief customers and regulators right away"
       },
       "correct": "C",
       "key_concept": "In a major incident with competing stakeholders, establish unified command and decision rights first; coordinated recovery and communication follow from it.",
       "pre_read": "Notice the problem is conflicting direction, not a missing action. Ask what must exist before the actions can be coordinated.",
-      "correct_explanation": "The outage is prolonged because executives are pulling in different directions. Appointing one incident commander with clear decision rights creates a single point of coordination, so recovery, clinical workarounds and communications are sequenced rather than contested. Briefing members and regulators is urgent and valuable, but launched before command is set, messages may contradict recovery decisions and need retracting later.",
+      "correct_explanation": "The outage is prolonged because executives are pulling in different directions. Appointing one incident commander with clear decision rights creates a single point of coordination, so recovery, workarounds and communications are sequenced rather than contested. Briefing members and regulators is urgent and valuable, but launched before command is set, messages may contradict recovery decisions and need retracting later.",
       "wrong_explanations": {
         "A": "Halting recovery for a forensic review prolongs the outage when nothing points to malicious activity.",
         "B": "Independent workstreams are exactly what is causing the conflict; they need one point of coordination.",
@@ -6748,10 +6748,10 @@
       "bloom_level": "Application",
       "question": "An IS auditor reviews a firm's use of a cloud backup service under the shared responsibility model. Which finding is the GREATEST concern?",
       "options": {
-        "A": "Backup encryption keys are held and managed by the firm itself",
+        "A": "Provider data-centre floor plans have not been shared with the firm",
         "B": "Restore testing is left to the provider's standard platform checks",
-        "C": "Retention periods follow the provider's default backup settings",
-        "D": "Provider data-centre floor plans have not been shared with the firm"
+        "C": "Backup encryption keys are held and managed by the firm itself",
+        "D": "Retention periods follow the provider's default backup settings"
       },
       "correct": "B",
       "key_concept": "In cloud backup, the provider owns infrastructure while the customer owns its data, retention, keys and proof of restore.",
@@ -7090,9 +7090,9 @@
       "bloom_level": "Application",
       "question": "A newly formed crisis management team has never exercised the organization's continuity plan. Which exercise should the business continuity manager schedule FIRST?",
       "options": {
-        "A": "A parallel test that runs systems at the recovery site",
+        "A": "A full-interruption test that shuts down production",
         "B": "A tabletop walkthrough of roles and key decisions",
-        "C": "A full-interruption test that shuts down production",
+        "C": "A parallel test that runs systems at the recovery site",
         "D": "A vendor-run drill that the crisis team watches as observers"
       },
       "correct": "B",
@@ -7242,9 +7242,9 @@
       "bloom_level": "Application",
       "question": "A firm relies on autoscaling for a cloud-native application but does not track the provider's service quotas. What is the GREATEST capacity risk for the IS auditor to report?",
       "options": {
-        "A": "Unchecked scaling may cause unplanned cloud cost overruns each month",
+        "A": "Developers may lose access to the provider's console",
         "B": "Autoscaling may stall at quota limits during peak demand",
-        "C": "Developers may lose access to the provider's console",
+        "C": "Unchecked scaling may cause unplanned cloud cost overruns each month",
         "D": "The provider may raise prices for reserved capacity"
       },
       "correct": "B",
@@ -7280,8 +7280,8 @@
       "bloom_level": "Analysis",
       "question": "During a ransomware attack, Object Lock protected recent cloud backups, but attackers are now deleting older unlocked backups. What should the IS auditor recommend the CISO do FIRST?",
       "options": {
-        "A": "Restore production immediately from the locked snapshots",
-        "B": "Pay the ransom because outage costs exceed the demand",
+        "A": "Pay the ransom because outage costs exceed the demand",
+        "B": "Restore production immediately from the locked snapshots",
         "C": "Extend retention on the snapshots already under Object Lock",
         "D": "Revoke the attackers' access to the cloud backup account"
       },
@@ -7318,10 +7318,10 @@
       "bloom_level": "Analysis",
       "question": "A cloud region outage is two hours old, the provider estimates 6–12 hours to restore, and the BCP sets a four-hour RTO. What is the BEST recommendation from the IS auditor?",
       "options": {
-        "A": "Ask customers to approve the data-loss window first",
-        "B": "Wait for an updated provider estimate at the four-hour mark",
+        "A": "Fail over workloads for the customers who are demanding it",
+        "B": "Ask customers to approve the data-loss window first",
         "C": "Invoke the planned failover to the secondary region now",
-        "D": "Fail over workloads for the customers who are demanding it"
+        "D": "Wait for an updated provider estimate at the four-hour mark"
       },
       "correct": "C",
       "key_concept": "When the expected outage exceeds the RTO, invoke the planned failover early enough for recovery to finish within the objective.",
@@ -7432,8 +7432,8 @@
       "bloom_level": "Analysis",
       "question": "During suspected ransomware on a chemical plant's SCADA system, operators run reactors manually and one reactor nears its cutoff temperature. What should the chief operating officer do FIRST?",
       "options": {
-        "A": "Isolate the SCADA network to preserve forensic evidence",
-        "B": "Continue manual production to meet customer commitments",
+        "A": "Continue manual production to meet customer commitments",
+        "B": "Isolate the SCADA network to preserve forensic evidence",
         "C": "Begin a controlled shutdown unless safety margins are assured",
         "D": "Wait for the cyber insurer's team to arrive before deciding"
       },
@@ -7470,8 +7470,8 @@
       "bloom_level": "Analysis",
       "question": "In a DR exercise, teams spent 47 minutes debating invocation because the plan's triggers said only “significant impact”. What is the BEST recommendation for the IS auditor to give the business continuity manager?",
       "options": {
-        "A": "Commission a full rewrite of the continuity plan",
-        "B": "Retrain participants on the existing invocation wording",
+        "A": "Retrain participants on the existing invocation wording",
+        "B": "Commission a full rewrite of the continuity plan",
         "C": "Accept the debate as normal judgement under pressure",
         "D": "Define measurable invocation thresholds and re-test them"
       },
@@ -7886,7 +7886,7 @@
       "subtopic": "Insider Threat Detected During DR Exercise",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Midway through a DR exercise, a trusted DBA with authorized read rights queries customer tables outside the exercise scope. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "Midway through a DR exercise, a DBA with authorized read rights queries customer tables outside the exercise scope, with no sign of data leaving. What should the IS auditor recommend the CISO do FIRST?",
       "options": {
         "A": "Suspend the DBA's access and remove them from the exercise",
         "B": "Ask the DBA's manager to question the DBA during the exercise",
@@ -7972,7 +7972,7 @@
       "correct": "A",
       "key_concept": "A material weakness near filing is a governance matter: the audit committee and counsel must oversee accurate disclosure, not reclassification or late fixes.",
       "pre_read": "Note how close the filing is. Ask who must oversee an issue that affects what the company certifies publicly.",
-      "correct_explanation": "A material weakness affects management's certification, so the audit committee must oversee it and counsel must shape an accurate disclosure. That keeps governance informed and the filing truthful. Management may challenge a classification with evidence, but contesting it a week before filing, with 47 instances across the year, looks like avoiding disclosure rather than fixing the control.",
+      "correct_explanation": "A material weakness affects management's certification, so the audit committee must oversee it and counsel must shape an accurate disclosure. That keeps governance informed and the filing truthful. Management may challenge a classification with evidence, but contesting it a week before filing, after external auditors have already evidenced the failure, looks like avoiding disclosure rather than fixing the control.",
       "wrong_explanations": {
         "B": "Year-end assessment covers the whole year. A last-week fix cannot make the control effective for the period already tested.",
         "C": "Disputing classification without strong evidence delays disclosure and can appear to minimize a year-long control failure.",
@@ -8152,7 +8152,7 @@
       "subtopic": "Sustained Cloud Vendor Service Degradation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A responsive cloud vendor has still missed its 99.95% SLA repeatedly for 90 days, and credits cover about 8% of business impact. What is the IS auditor's BEST recommendation to the CTO?",
+      "question": "A cloud vendor has missed its 99.95% SLA for 90 days despite an agreed remediation roadmap; credits cover about 8% of business impact. What is the IS auditor's BEST recommendation to the CTO?",
       "options": {
         "A": "Accept the SLA credits as adequate compensation and continue",
         "B": "Migrate production to an alternative cloud vendor right away",
@@ -8162,15 +8162,15 @@
       "correct": "D",
       "key_concept": "SLA credits do not transfer business impact; the organization stays accountable for resilience and must design critical services around vendor failures.",
       "pre_read": "Compare the credits with the business impact. Ask who really bears the cost when the vendor falls short.",
-      "correct_explanation": "Credits cover a small fraction of the impact, which shows the firm, not the vendor, carries the risk. The firm remains accountable for its service, so the lasting fix is to design critical services to tolerate vendor degradation. A cure notice is a legitimate contractual step, but the vendor is already responsive and the pattern continues; more pressure changes little for customers.",
+      "correct_explanation": "Credits cover a small fraction of the impact, which shows the firm, not the vendor, carries the risk. The firm remains accountable for its service, so the lasting fix is to design critical services to tolerate vendor degradation. A cure notice is a legitimate contractual step, but the vendor has already agreed a remediation roadmap and the pattern continues; more contract pressure changes little for customers.",
       "wrong_explanations": {
         "A": "Credits cover about 8% of the impact, so accepting them leaves the business absorbing nearly all of the loss.",
         "B": "An immediate migration is a large, risky change, and a new vendor can also degrade without resilient design.",
-        "C": "The vendor is already responsive yet failing. Contract pressure may help at the margin but does not protect customers."
+        "C": "A remediation roadmap is already agreed and still failing. A formal cure notice adds pressure but does not protect customers."
       },
       "tips": [
         "Eliminate: A accepts compensation far below the impact, and B makes a rushed, risky move that does not remove vendor dependence.",
-        "Final two: D beats C because accountability for service resilience stays with the firm, while contract pressure has not changed the pattern.",
+        "Final two: D beats C because the firm stays accountable for resilience, and an agreed roadmap has not changed the pattern.",
         "Exam cue: SLA credits are not a risk response; when a vendor keeps failing, build resilience you control."
       ],
       "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISACA IT Vendor Management Audit/Assurance Program; AWS/Azure/GCP commercial relationship management practices; ITIL 4 Service Level Management",
@@ -8269,7 +8269,7 @@
       "question": "A resigning DBA with four days left downloaded 240MB of customer loan data, including SSNs, to a USB drive at 02:30. What should the IS auditor recommend the CISO do FIRST?",
       "options": {
         "A": "Revoke the DBA's access at Friday's scheduled off-boarding",
-        "B": "Monitor the DBA covertly through Friday to gather evidence",
+        "B": "Ask the DBA to return the drive and sign a declaration",
         "C": "Have the manager question the DBA at Monday's check-in",
         "D": "Suspend access now and secure the USB as evidence"
       },
@@ -8279,11 +8279,11 @@
       "correct_explanation": "Sensitive customer data has already been copied by a departing privileged user, so containment cannot wait. Suspending access now and securing the drive under chain of custody stops further loss and keeps the evidence usable. Revoking at Friday's off-boarding follows normal process, but it leaves four more days of privileged access to data already being taken.",
       "wrong_explanations": {
         "A": "Routine off-boarding timing ignores confirmed exfiltration and leaves privileged access open for four more days.",
-        "B": "Covert monitoring lets a known exfiltration continue for days, exposing more customer data for little extra evidence.",
+        "B": "A request alerts the DBA without securing access or evidence, and a declaration cannot prove no copies exist.",
         "C": "Waiting for a check-in and confronting without securing the drive invites deletion of evidence and further loss."
       },
       "tips": [
-        "Eliminate: B lets confirmed exfiltration continue, and C confronts the DBA before evidence is secured.",
+        "Eliminate: B alerts the DBA without securing access or evidence, and C confronts the DBA before evidence is secured.",
         "Final two: D beats A because confirmed data theft overrides routine off-boarding timelines.",
         "Exam cue: when a leaver's data theft is confirmed, contain now; process timelines are for normal departures."
       ],
@@ -8428,7 +8428,7 @@
       "correct": "D",
       "key_concept": "Disputed claims turn on evidence: documented control status and an independent reading of the policy come before settling, suing or complaining.",
       "pre_read": "Look at the carrier's three reasons. Ask what the firm needs before it can judge whether any of them hold.",
-      "correct_explanation": "The denial rests on factual claims about MFA, testing and backups. Gathering contemporaneous control evidence and an independent coverage review shows whether the exclusions actually apply, and informs every later choice. A regulator complaint is a legitimate lever, but filed before the firm knows its own evidence, it relies on outside pressure instead of a documented position.",
+      "correct_explanation": "The denial rests on factual claims about MFA and penetration testing. Gathering contemporaneous control evidence and an independent coverage review shows whether the exclusions actually apply, and informs every later choice. A regulator complaint is a legitimate lever, but filed before the firm knows its own evidence, it relies on outside pressure instead of a documented position.",
       "wrong_explanations": {
         "A": "Accepting a tenth of the claim before testing the exclusions may forfeit a valid recovery permanently.",
         "B": "Litigation before assessing the evidence is costly and premature, and may fail if an exclusion genuinely applies.",
@@ -8884,7 +8884,7 @@
       "correct": "A",
       "key_concept": "In a contested vendor exit, protect continuity of the critical service while pursuing contractual remedies in parallel.",
       "pre_read": "Notice that claims processing cannot stop. Ask which option keeps service running without giving up the firm's rights.",
-      "correct_explanation": "Claims processing cannot stop, so continuity must be secured through a transition services arrangement while counsel tests whether repeated SLA failures and the security incident amount to material breach, which may void the penalty. Accepting the 18-month term keeps service running, but it waives the firm's strongest legal position and leaves it tied to a distressed, insecure vendor.",
+      "correct_explanation": "Claims processing cannot stop, so continuity must be secured through a transition services arrangement while counsel tests whether the repeated failures amount to material breach, which may void the penalty. Accepting the 18-month term keeps service running, but it waives the firm's strongest legal position and leaves it tied to a distressed, insecure vendor.",
       "wrong_explanations": {
         "B": "Paying immediately gives up the breach argument, and cutting over without migration and testing risks a gap in a critical service.",
         "C": "Withholding payment from the only processor of claims invites service suspension and puts continuity at risk during litigation.",
@@ -9458,7 +9458,7 @@
       "wrong_explanations": {
         "A": "Waiting for renewal ignores a material change in risk. Contract timing should not drive a resilience decision.",
         "C": "Ending the contract before an alternate site is ready removes all recovery capability during the six-month switch.",
-        "D": "The vendor's self-report is not independent evidence, and it already admits degraded bandwidth and regional risk."
+        "D": "The vendor's self-report is not independent evidence that the site can still meet the BIA recovery objectives."
       },
       "tips": [
         "Eliminate: A lets the contract date drive a resilience decision, and D accepts an interested party's word as evidence.",
@@ -9570,7 +9570,7 @@
       "pre_read": "Notice the controls already exist. Ask what is still missing: who owns the residual risk, and when does it end?",
       "correct_explanation": "Isolation and compensating controls reduce but do not remove the risk of an unpatchable OS. Management, as risk owner, should formally accept the residual risk and commit funding and dates to replace the system, which also gives regulators and the insurer an accurate position. Continuing under existing controls keeps the system safe today but leaves the risk unowned and with no end date.",
       "wrong_explanations": {
-        "A": "Compressing validation of a regulated manufacturing process risks product quality and compliance. Speed does not justify skipping validation.",
+        "A": "Compressing validation of the replacement risks errors and compliance failures in production. Speed does not justify skipping testing.",
         "C": "The controls help, but without formal acceptance and an exit plan the risk has no accountable owner and no end date.",
         "D": "Omitting a known risk from an insurance application is misrepresentation and could void cover when it is needed."
       },
@@ -9724,7 +9724,7 @@
       "wrong_explanations": {
         "B": "Settling on the vendor's terms under pressure concedes the dispute and does not guarantee faster recovery.",
         "C": "Recovery length is unknown, so postponing risks missing the 30-day deadline. Legal work does not need the operations team.",
-        "D": "Terminating mid-outage with a 6–9 month switch leaves the bank without a core-banking provider while still disputing."
+        "D": "Terminating mid-outage cuts off the only core-banking provider while recovery and the dispute are both unresolved."
       },
       "tips": [
         "Eliminate: B concedes under pressure without securing recovery, and D cuts off the only provider mid-outage.",
