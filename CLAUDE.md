@@ -223,7 +223,12 @@ Fix-and-push is automatic; only major issues are escalated.
    - app-store policy or legal/trademark risk
    - new paid services, costs or accounts
    - anything that cannot be fixed inside the PR's scope
-5. Tell the maintainer the PR is green and reviewed, in a short summary of
+5. **Always send screenshots at handoff** (maintainer rule): run
+   `npm run shots` in `mobile/` and send the relevant phone screenshots with
+   the summary. For UI changes, send the changed screens in light and dark.
+   For question changes, send sample questions from the changed domain with
+   `SHOT_QUESTIONS=d2_010,d2_045 npm run shots` (question, answer and tips).
+6. Tell the maintainer the PR is green and reviewed, in a short summary of
    what was found and fixed. **Merging stays the maintainer's call**
    ("merge PR N") unless they say otherwise.
 

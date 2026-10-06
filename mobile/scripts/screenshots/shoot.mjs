@@ -22,28 +22,33 @@ for (const [name, path] of routes) {
   await page.screenshot({ path: `${out}/${name}.png` });
   console.log('shot', name);
 }
-// A v2 question, then the answer reveal with explanation and the three tips.
+// Each sample question: the question, the answer reveal, and all three tips.
+const keys = (seed.__shotKeys || 'D').split(',');
 await page.goto('http://127.0.0.1:8093/session', { waitUntil: 'networkidle' });
 await page.waitForTimeout(1500);
-await page.screenshot({ path: `${out}/11-question.png` });
-await page.getByLabel(/^Option D:/).first().click();
-await page.getByText('Submit answer', { exact: true }).click();
-await page.waitForTimeout(1200);
-await page.screenshot({ path: `${out}/12-answer.png` });
-await page.mouse.move(196, 500);
-for (const [i, dy] of [[13, 700], [14, 1400]]) {
-  await page.mouse.wheel(0, dy);
+for (let q = 0; q < keys.length; q++) {
+  const n = q === 0 ? '' : `-q${q + 1}`;
+  await page.screenshot({ path: `${out}/11-question${n}.png` });
+  await page.getByLabel(new RegExp(`^Option ${keys[q]}:`)).first().click();
+  await page.getByText('Submit answer', { exact: true }).click();
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: `${out}/12-answer${n}.png` });
+  await page.mouse.move(196, 500);
+  for (const [i, dy] of [[13, 700], [14, 1400]]) {
+    await page.mouse.wheel(0, dy);
+    await page.waitForTimeout(800);
+    if (q === 0) await page.screenshot({ path: `${out}/${i}-explanation-tips.png` });
+  }
+  for (let k = 0; k < 2; k++) {
+    const btn = page.getByText(/^Reveal .* →$/).first();
+    if (await btn.count()) { await btn.click(); await page.waitForTimeout(500); }
+  }
+  await page.mouse.wheel(0, 1400);
   await page.waitForTimeout(800);
-  await page.screenshot({ path: `${out}/${i}-explanation-tips.png` });
+  await page.screenshot({ path: `${out}/15-all-tips${n}.png` });
+  const next = page.getByText('Next question', { exact: true });
+  if (q < keys.length - 1 && (await next.count())) { await next.click(); await page.waitForTimeout(1200); }
 }
-// Reveal all three tips.
-for (let k = 0; k < 2; k++) {
-  const btn = page.getByText(/^Reveal .* →$/).first();
-  if (await btn.count()) { await btn.click(); await page.waitForTimeout(500); }
-}
-await page.mouse.wheel(0, 1400);
-await page.waitForTimeout(800);
-await page.screenshot({ path: `${out}/15-all-tips.png` });
 console.log('shot session flow');
 console.log('errors:', errs.slice(0, 5));
 await browser.close();

@@ -29,10 +29,16 @@ settings = {"state": {"onboarded": True, "activeCertId": "cisa", "examDates": {"
             "theme": theme, "shuffleOptions": True, "dailyGoal": 20,
             "reminder": {"enabled": False, "hour": 19, "minute": 0}}, "version": 1}
 # An in-progress practice session on exam-style v2 questions (unshuffled for clarity).
-ids = ["d1_010", "d1_008", "d1_053"]
+# SHOT_QUESTIONS=d2_010,d2_045 picks the sample questions (default: Domain 1 samples).
+import os
+ids = [i for i in os.environ.get("SHOT_QUESTIONS", "d1_010,d1_008,d1_053").split(",") if i]
 session = {"state": {"active": {"id": "demo", "mode": "practice", "certId": "cisa", "title": "Practice · IS Audit",
            "questionIds": ids, "perms": {i: ["A", "B", "C", "D"] for i in ids}, "index": 0, "responses": {},
            "flagged": [], "startedAt": now}}, "version": 1}
-Path(sys.argv[1]).write_text(json.dumps({"aurivan.progress.v1": json.dumps(progress),
+# The shoot script answers each sample correctly, so it needs the keys.
+bank = {q["id"]: q for d in range(1, 6) for q in json.loads((GEN / f"d{d}.json").read_text())}
+shot_keys = ",".join(bank[i]["correct"] for i in ids)
+Path(sys.argv[1]).write_text(json.dumps({"__shotKeys": shot_keys,
+                                         "aurivan.progress.v1": json.dumps(progress),
                                          "aurivan.settings.v1": json.dumps(settings),
                                          "aurivan.session.v1": json.dumps(session)}))
