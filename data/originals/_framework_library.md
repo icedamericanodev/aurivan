@@ -1787,3 +1787,41 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - PCI DSS v4.0.1 Requirement 12.10 (Incident Response)
 - TOGAF Standard, 10th Edition
 - UK-GDPR (post-Brexit)
+
+## Added with exam-style v2 (Domain 3 citation clean-up, Oct 2026)
+
+- CISA Zero Trust Maturity Model v2.0
+- EDPB Guidelines 9/2022 on Personal Data Breach Notification under GDPR
+- ISO/IEC 20926:2009 (IFPUG Functional Size Measurement Method)
+- ISO/IEC 25023:2016 (Measurement of System and Software Product Quality)
+- ISO/IEC 27002:2022 Control 5.12 (Classification of Information)
+- ISO/IEC 27002:2022 Control 8.30 (Outsourced Development)
+- ISO/IEC 27002:2022 Control 8.33 (Test Information)
+- ISO/IEC 5338:2023 (AI System Life Cycle Processes)
+- ISO/IEC 5962:2021 (SPDX Specification V2.2.1)
+- ISO/IEC/IEEE 15939:2017 (Measurement Process)
+- ISO/IEC/IEEE 29119-2:2021 (Software Testing — Test Processes)
+- ISO/IEC/IEEE 29119-3:2021 (Software Testing — Test Documentation)
+- ISO/IEC/IEEE 29119-4:2021 (Software Testing — Test Techniques)
+- ISO/IEC/IEEE 29148:2018 (Requirements Engineering)
+- ISTQB Certified Tester Performance Testing (CT-PT) Syllabus
+- ITIL 4 Service Catalogue Management practice
+- NIST SP 800-188 (De-Identifying Government Datasets: Techniques and Governance)
+- NIST SP 800-204A (Building Secure Microservices-based Applications Using Service-Mesh Architecture)
+- NIST SP 800-204C (Implementation of DevSecOps for a Microservices-based Application with Service Mesh)
+- NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines)
+- NIST SP 800-218A (Secure Software Development Practices for Generative AI and Dual-Use Foundation Models)
+- NIST SP 800-53 Rev 5 CA-6 (Authorization)
+- NIST SP 800-53 Rev 5 CM-14 (Signed Components)
+- OWASP Secrets Management Cheat Sheet
+- OpenGitOps Principles v1.0.0 (CNCF GitOps Working Group)
+- PCI DSS v4.0.1 Requirement 3 (Protect Stored Account Data)
+- PMBOK Guide 6th Edition (Project Management Process Groups)
+- PMBOK Guide 6th Edition, Section 2.4.4 (Organizational Structure Types)
+- PMBOK Guide 6th Edition, Section 4.1 (Develop Project Charter)
+- PMBOK Guide 6th Edition, Section 4.4 (Manage Project Knowledge)
+- PMBOK Guide 6th Edition, Section 4.6 (Perform Integrated Change Control)
+- PMBOK Guide 6th Edition, Section 4.7 (Close Project or Phase)
+- PMI Agile Practice Guide (2017)
+- PMI Process Groups: A Practice Guide (2022)
+- SLSA v1.0 (Supply-chain Levels for Software Artifacts)

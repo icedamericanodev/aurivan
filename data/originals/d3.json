@@ -34,7 +34,7 @@
         "Final two: C beats D because the business case justifies funding, while the charter actually delegates authority to the project manager.",
         "Exam cue: when the stem asks who authorized a project or its manager, look for the sponsor-approved charter."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; PRINCE2 (Projects in Controlled Environments); ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "PMBOK Guide 6th Edition, Section 4.1 (Develop Project Charter); PRINCE2 (Projects in Controlled Environments); ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "Project charter",
         "Project sponsor",
@@ -72,7 +72,7 @@
         "Final two: D beats C because failing to meet business needs is the root risk; cost overrun is one consequence of it.",
         "Exam cue: when a phase is skipped, pick the option about the business outcome over its cost or schedule symptoms."
       ],
-      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); COBIT 2019 BAI02 (Managed Requirements Definition)",
       "related_concepts": [
         "SDLC",
         "Software life cycle",
@@ -88,28 +88,28 @@
       "subtopic": "Software Testing Levels. Definitions",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Before go-live, an IS auditor must confirm that a new payroll system satisfies its users' needs. Which testing evidence is MOST appropriate?",
+      "question": "Before go-live, an IS auditor must confirm that a new payroll system passes data correctly to the general ledger and bank interfaces. Which testing evidence is MOST appropriate?",
       "options": {
-        "A": "Acceptance test results signed off by the business owners",
-        "B": "System test results approved by the QA team lead",
+        "A": "Integration test results tracing records across each connection",
+        "B": "Acceptance test results signed off by the payroll business owners",
         "C": "Unit test results logged by the individual developers",
         "D": "Code coverage reports produced by the build pipeline"
       },
       "correct": "A",
-      "key_concept": "Each testing level has its own scope: unit for modules, integration for interfaces, system for the whole, and UAT for business acceptance.",
-      "pre_read": "Note the objective in the stem: user needs. Ask which test level, and whose sign-off, proves that objective.",
-      "correct_explanation": "User acceptance testing is the level designed to confirm that a system meets business needs, and sign-off by the business owners is the evidence of that acceptance. System testing is the runner-up: it checks the whole system against its specifications, but it is run and approved by IT or QA, so it does not show that users accept the result.",
+      "key_concept": "Each test level has its own scope: unit for modules, integration for interfaces between components, system for the whole, UAT for business acceptance.",
+      "pre_read": "Match the audit objective in the stem to the test level whose scope covers it.",
+      "correct_explanation": "Integration testing is the level designed to verify that data passes correctly between connected components and systems, so its results directly evidence the payroll-to-ledger and bank flows. Business acceptance sign-off is the runner-up: it shows users accept the workflows, but users judge business outcomes on selected scenarios and do not systematically verify every interface record.",
       "wrong_explanations": {
-        "B": "System testing verifies the integrated system against specifications. It is performed by QA, not the business, so it cannot evidence user acceptance.",
-        "C": "Unit tests verify single modules in isolation. They say nothing about whether business workflows meet user needs.",
-        "D": "Coverage reports measure how much code was exercised by tests. They are a quality metric, not acceptance evidence."
+        "B": "Acceptance confirms the system meets user needs. It is not designed to verify each interface's data transfer systematically.",
+        "C": "Unit tests verify single modules in isolation. They cannot show that data moves correctly between systems.",
+        "D": "Coverage reports measure how much code the tests exercised. They say nothing about interface data accuracy."
       },
       "tips": [
-        "Eliminate: C tests single modules only, and D is a code metric; neither shows business needs are met.",
-        "Final two: A beats B because only acceptance by business owners proves the system meets their needs; QA tests against specifications.",
-        "Exam cue: match the evidence to the objective: business fit needs user acceptance; technical correctness needs unit, integration or system tests."
+        "Eliminate: C tests modules in isolation and D measures code exercised; neither examines data passing between systems.",
+        "Final two: A beats B because integration testing is designed to verify interface data flows, while UAT confirms business acceptance.",
+        "Exam cue: match the objective to the test level: interfaces point to integration testing, business fit to UAT."
       ],
-      "framework_ref": "ISTQB Foundation Level Syllabus; ISO/IEC 29119 (Software Testing); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISTQB Foundation Level Syllabus; ISO/IEC 29119 (Software Testing); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Unit testing",
         "Integration testing",
@@ -117,7 +117,7 @@
         "User acceptance testing",
         "ISTQB"
       ],
-      "_provenance": "Authored from concept: 'Software testing levels and their scopes per ISTQB and ISO/IEC 29119'. Public sources: ISTQB Foundation Level Syllabus, ISO/IEC 29119. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Software testing levels and their scopes per ISTQB and ISO/IEC 29119'. Public sources: ISTQB Foundation Level Syllabus, ISO/IEC 29119. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to integration testing to avoid duplicating d3_128.",
       "style_version": 2
     },
     {
@@ -147,7 +147,7 @@
         "Final two: B beats D because formal change control over every baselined artifact prevents unauthorized edits; a later review only notices them.",
         "Exam cue: a configuration item is any controlled artifact in the baseline, not just code, and not just hardware."
       ],
-      "framework_ref": "IEEE 828 (Configuration Management in Systems and Software Engineering); ISO/IEC 12207 (Software Life Cycle Processes); ITIL 4 Service Configuration Management; ITAF Performance Standards on Evidence",
+      "framework_ref": "IEEE 828 (Configuration Management in Systems and Software Engineering); ISO/IEC 12207 (Software Life Cycle Processes); ITIL 4 Service Configuration Management; COBIT 2019 BAI10 (Managed Configuration)",
       "related_concepts": [
         "Configuration item",
         "Configuration management",
@@ -163,7 +163,7 @@
       "subtopic": "Project Risk Escalation Criteria",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews a program's risk register. Which condition BEST justifies the project manager escalating a risk to the sponsor?",
+      "question": "An IS auditor reviews a project's risk register. Which condition BEST justifies the project manager escalating a risk to the sponsor?",
       "options": {
         "A": "The risk was re-rated higher in the most recent risk assessment",
         "B": "The risk owner set a response date two periods out",
@@ -260,7 +260,7 @@
         "Final two: A beats B because completeness needs a requirement-by-requirement link; sign-off covers only what was actually tested.",
         "Exam cue: 'every requirement built and tested' is a completeness question; look for traceability, not approval."
       ],
-      "framework_ref": "IEEE 830 (Recommended Practice for Software Requirements Specifications); ISACA Software Development Life Cycle Audit/Assurance Program; ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "ISO/IEC/IEEE 29148:2018 (Requirements Engineering); COBIT 2019 BAI02 (Managed Requirements Definition)",
       "related_concepts": [
         "Requirements traceability matrix",
         "RTM",
@@ -297,7 +297,7 @@
         "Final two: B beats A because agile forecasting relies on stabilized empirical velocity; converting to hours adds false precision.",
         "Exam cue: in agile, reliability comes from team-owned estimates and observed history, not from fixed-hour commitments."
       ],
-      "framework_ref": "Scrum Guide 2020; DORA / Accelerate (DevOps Research and Assessment); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "Scrum Guide 2020; PMI Agile Practice Guide (2017)",
       "related_concepts": [
         "Story points",
         "Velocity",
@@ -373,7 +373,7 @@
         "Final two: C beats A because masking removes personal data from test entirely; encryption still exposes it to every test user.",
         "Exam cue: for test data, remove the sensitive content at the source rather than protecting it after it has been copied."
       ],
-      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 29100 (Privacy Framework); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 29100 (Privacy Framework); ISO/IEC 27002:2022 Control 8.33 (Test Information)",
       "related_concepts": [
         "Test data management",
         "Data masking",
@@ -449,7 +449,7 @@
         "Final two: B beats A because reconciliation proves every record and total transferred; acceptance testing only shows functions work.",
         "Exam cue: for data conversion, completeness and accuracy evidence means counts and control totals matched between source and target."
       ],
-      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); ISACA IT Application Controls Audit/Assurance Program; ISO/IEC 12207 (Software Life Cycle Processes)",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 DSS06 (Managed Business Process Controls); ISO/IEC 12207 (Software Life Cycle Processes)",
       "related_concepts": [
         "Data conversion",
         "Reconciliation",
@@ -466,7 +466,7 @@
       "subtopic": "Release Management. Change Advisory Board (CAB)",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Under ITIL 4 change enablement, what is the PRIMARY responsibility of a change advisory board?",
+      "question": "An IS auditor reviews the terms of reference for a change advisory board. Which responsibility should be the board's PRIMARY role?",
       "options": {
         "A": "Writing the technical implementation plan for each change",
         "B": "Running high-risk deployments in production personally",
@@ -525,12 +525,12 @@
         "Final two: D beats A because a change in detection could explain the rise; the auditor confirms the cause before concluding.",
         "Exam cue: when a metric moves after a change in how it is measured, investigate the cause before drawing conclusions."
       ],
-      "framework_ref": "ISO/IEC 25010 (Software Product Quality Model); IEEE 1061 (Software Quality Metrics Methodology); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 25010 (Software Product Quality Model); ISO/IEC 25023:2016 (Measurement of System and Software Product Quality); ISO/IEC/IEEE 15939:2017 (Measurement Process)",
       "related_concepts": [
         "Defect density",
         "Software quality metrics",
         "ISO/IEC 25010",
-        "IEEE 1061"
+        "ISO/IEC 25010 quality model"
       ],
       "_provenance": "Authored from concept: 'Defect density interpretation requires root-cause review per ISO/IEC 25010 and IEEE 1061'. Public sources: ISO/IEC 25010, IEEE 1061. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
@@ -562,7 +562,7 @@
         "Final two: A beats B because escrow secures source code if the vendor fails; audit rights only give visibility while it operates.",
         "Exam cue: critical custom software plus a fragile single vendor points to escrow with clear release triggers."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA Vendor Management Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); ISACA Vendor Management Audit/Assurance Program; COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
         "Source code escrow",
         "Vendor management",
@@ -619,9 +619,9 @@
       "question": "A health insurer's CIO wants Scrum-only delivery for a regulated claims platform that undergoes annual SOC 1 audits. Which approach should the IS auditor MOST recommend?",
       "options": {
         "A": "Pure Scrum, using sprint reviews as the audit evidence",
-        "B": "Strict waterfall, since agile cannot meet regulatory evidence needs",
+        "B": "Waterfall, with signed phase deliverables as audit evidence",
         "C": "Postpone the choice until legal counsel rules on agile",
-        "D": "Scaled agile with stage gates and signed traceability baselines"
+        "D": "Hybrid agile with stage gates and signed traceability baselines"
       },
       "correct": "D",
       "key_concept": "Regulated projects can use agile delivery when stage gates, signed baselines and traceability give auditors the evidence they need.",
@@ -629,7 +629,7 @@
       "correct_explanation": "A hybrid keeps agile delivery while adding the controls regulators and auditors rely on: stage gates, signed requirements baselines, traceability and controlled scope changes. Strict waterfall is the runner-up: it produces strong evidence, but it assumes agile cannot be controlled and gives up delivery flexibility the organization values, when a hybrid can satisfy both needs.",
       "wrong_explanations": {
         "A": "Sprint reviews show working increments but leave no signed baselines or traceability. Auditors would lack evidence over requirements and changes.",
-        "B": "Waterfall gives traceability but discards agility. Agile methods can meet evidence needs when gates and baselines are added.",
+        "B": "Waterfall yields strong evidence but gives up the delivery flexibility the CIO wants, when agile with gates and baselines can satisfy regulators too.",
         "C": "Methodology fit is a control design question, not a legal ruling. Waiting only delays the project."
       },
       "tips": [
@@ -637,7 +637,7 @@
         "Final two: D beats B because a controlled hybrid meets evidence needs and keeps agility; waterfall needlessly sacrifices delivery flexibility.",
         "Exam cue: in regulated agile projects, recommend adding gates and traceability to agile rather than abandoning agile."
       ],
-      "framework_ref": "ISACA Software Development Life Cycle Audit/Assurance Program; COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 BAI11 (Managed Projects)",
+      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); COBIT 2019 BAI02 (Managed Requirements Definition); COBIT 2019 BAI11 (Managed Projects)",
       "related_concepts": [
         "Hybrid agile",
         "Stage gates",
@@ -676,7 +676,7 @@
         "Final two: C beats D because agreed exit criteria should decide readiness; going live on schedule accepts major untested risk.",
         "Exam cue: when testing fails its exit criteria, the auditor recommends holding to the criteria and documenting any deviation."
       ],
-      "framework_ref": "ISACA Project Management Audit/Assurance Program; ITAF Performance Standards on Evidence; ISACA IT Audit Standard 1204 (Materiality); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "ISACA Project Management Audit/Assurance Program; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI11 (Managed Projects)",
       "related_concepts": [
         "UAT",
         "Exit criteria",
@@ -693,7 +693,7 @@
       "subtopic": "Data Conversion Fallback During Cutover",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Hours before branches open, a core-banking cutover shows an unexplained $4.7M deposit variance. A tested fallback plan exists. What is the IS auditor's BEST advice?",
+      "question": "Hours before branches open, a core-banking cutover shows an unexplained $4.7M deposit variance; a tested fallback plan exists. What is the IS auditor's BEST advice?",
       "options": {
         "A": "Invoke the fallback plan and revert to the legacy system",
         "B": "Lock the affected accounts and open on the new platform",
@@ -731,7 +731,7 @@
       "subtopic": "Major Release Governance Under Regulatory Deadline",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A release must meet a fixed regulatory deadline in five weeks, but two of nine new reports remain blocked in UAT. What should the IS auditor MOST appropriately recommend?",
+      "question": "A release must meet a fixed regulatory deadline in five weeks, but two of nine new reports, neither required by the regulation, remain blocked in UAT. What should the IS auditor MOST appropriately recommend?",
       "options": {
         "A": "Deploy everything, excluding the blocked reports from UAT scope",
         "B": "Ship a tested subset; defer blocked reports under risk acceptance",
@@ -741,7 +741,7 @@
       "correct": "B",
       "key_concept": "Under fixed deadlines, ship a fully tested scope subset and defer blocked items with documented risk acceptance; never skip testing silently.",
       "pre_read": "Notice the deadline is fixed and only part of the scope is blocked. Ask which option keeps testing intact and still meets the date.",
-      "correct_explanation": "Splitting scope lets the organization meet the regulatory deadline with a subset that has fully passed UAT, while the blocked reports follow in a later release under formally documented risk acceptance. Halting everything is the runner-up: it protects quality, but it guarantees a missed fixed deadline and penalties when a fully tested subset could ship safely.",
+      "correct_explanation": "Splitting scope lets the organization meet the regulatory deadline with a subset that has fully passed UAT, while the blocked reports follow in a later release under formally documented risk acceptance. Halting everything is the runner-up: it protects quality, but it guarantees a missed fixed deadline when a fully tested subset could ship safely.",
       "wrong_explanations": {
         "A": "Silently dropping blocked items from test scope ships untested code and hides the gap from decision-makers.",
         "C": "Workarounds can bridge a short gap, but making them permanent replaces a designed control with an informal one.",
@@ -769,11 +769,11 @@
       "subtopic": "Project Management Structures. Projectized vs Functional vs Matrix",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "In a projectized organization, a project manager wants to reassign a developer to a critical task. Who has the PRIMARY authority to approve this?",
+      "question": "In a projectized organization, a developer must be moved to a critical project task. Who has the PRIMARY authority to make this reassignment?",
       "options": {
         "A": "The developer's functional department manager",
         "B": "The vendor account manager under the outsourcing contract",
-        "C": "The project manager, who directs the project team",
+        "C": "The project manager",
         "D": "The project sponsor who signed the project charter"
       },
       "correct": "C",
@@ -790,7 +790,7 @@
         "Final two: C beats D because projectized structures give the project manager full resource authority; the sponsor handles escalations, not assignments.",
         "Exam cue: projectized means the project manager controls resources; functional means department managers do; matrix splits authority."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; PRINCE2 (Projects in Controlled Environments); ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "PMBOK Guide 6th Edition, Section 2.4.4 (Organizational Structure Types); PRINCE2 (Projects in Controlled Environments); ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "Projectized organization",
         "Functional structure",
@@ -827,7 +827,7 @@
         "Final two: D beats A because validity checks stop bad data at entry; run-to-run totals only confirm records moved intact.",
         "Exam cue: map the failure to the control category: bad data getting in points to input controls such as validity checks."
       ],
-      "framework_ref": "ISACA IT Application Controls Audit/Assurance Program; COBIT 2019 BAI03 (Managed Solutions Identification and Build); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Application controls",
         "Input controls",
@@ -864,7 +864,7 @@
         "Final two: B beats D because an SBOM maps components to products, while host scans only check the vendor's own servers.",
         "Exam cue: 'which products contain component X' is exactly the question an SBOM exists to answer."
       ],
-      "framework_ref": "NTIA SBOM Minimum Elements; CycloneDX SBOM Specification; CISA Software Bill of Materials guidance; NIST SP 800-218 (SSDF v1.1)",
+      "framework_ref": "NTIA SBOM Minimum Elements; CycloneDX SBOM Specification; ISO/IEC 5962:2021 (SPDX Specification V2.2.1); NIST SP 800-218 (SSDF v1.1)",
       "related_concepts": [
         "SBOM",
         "Supply chain",
@@ -902,7 +902,7 @@
         "Final two: C beats B because the gap is evidence of the action, which logging supplies; authentication alone proves only who signed in.",
         "Exam cue: 'the user denies doing it and nothing proves otherwise' maps to Repudiation; the fix is accountable, tamper-evident logging."
       ],
-      "framework_ref": "Microsoft Threat Modeling (STRIDE); OWASP Threat Modeling Cheat Sheet; ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "Microsoft Threat Modeling (STRIDE); OWASP Threat Modeling Cheat Sheet; OWASP SAMM (Software Assurance Maturity Model)",
       "related_concepts": [
         "STRIDE",
         "Threat modeling",
@@ -939,7 +939,7 @@
         "Final two: D beats B because the gap is missing dimensions; refining cost figures leaves operational, legal and schedule blind spots.",
         "Exam cue: close feasibility gaps before approval, and remember TELOS: technical, economic, legal, operational, schedule."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; ISACA Project Management Audit/Assurance Program; ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "PMBOK Guide 7th Edition; ISACA Project Management Audit/Assurance Program; COBIT 2019 BAI02 (Managed Requirements Definition)",
       "related_concepts": [
         "Feasibility study",
         "TELOS",
@@ -977,7 +977,7 @@
         "Final two: A beats B because function points follow a standard counting method, while story points are calibrated differently by each team.",
         "Exam cue: comparing across languages, or sizing before code exists, points to function point analysis."
       ],
-      "framework_ref": "ISO/IEC 14143 (Functional Size Measurement); IFPUG Function Point Counting Practices Manual; ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 14143 (Functional Size Measurement); ISO/IEC 20926:2009 (IFPUG Functional Size Measurement Method); IFPUG Function Point Counting Practices Manual",
       "related_concepts": [
         "Function Point Analysis",
         "FPA",
@@ -1015,7 +1015,7 @@
         "Final two: B beats C because pull-based flow absorbs daily priority shifts, while sprint commitments assume work can be planned in batches.",
         "Exam cue: continuous, interrupt-driven work points to Kanban; time-boxed product development points to Scrum."
       ],
-      "framework_ref": "Scrum Guide 2020; Kanban Method (David Anderson); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "Scrum Guide 2020; Kanban Method (David Anderson); PMI Agile Practice Guide (2017)",
       "related_concepts": [
         "Scrum",
         "Kanban",
@@ -1032,28 +1032,28 @@
       "subtopic": "DevSecOps Integration",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor is assessing whether a team's CI/CD pipeline reflects DevSecOps practice. Which observation provides the STRONGEST evidence?",
+      "question": "An IS auditor finds that pipeline scan findings sit unresolved for months because the security team logs them but developers never see them. Which change BEST reflects DevSecOps practice?",
       "options": {
-        "A": "An annual penetration test of the production environment",
-        "B": "Security team sign-off recorded on each release ticket",
-        "C": "Automated security scans that fail builds on high-severity findings",
-        "D": "Runtime threat monitoring added after the application goes live"
+        "A": "Have the security team fix findings in a central queue",
+        "B": "Turn off the scan rules that produce the most findings",
+        "C": "Feed findings into team backlogs with severity-based fix deadlines",
+        "D": "Commission an annual penetration test to confirm which findings matter"
       },
       "correct": "C",
-      "key_concept": "DevSecOps embeds automated security testing in every pipeline stage, with enforced thresholds that stop vulnerable builds.",
-      "pre_read": "Ask where the security activity happens: inside the pipeline on every change, or outside it before or after release.",
-      "correct_explanation": "DevSecOps builds security into the pipeline itself: automated code, dependency, secrets and infrastructure-as-code scans run on every change, and enforced thresholds stop vulnerable builds. Manual security sign-off on each release is a real control, but it sits outside the pipeline, slows frequent releases and depends on reviewers keeping pace rather than on consistent automation.",
+      "key_concept": "DevSecOps makes security a shared responsibility: scan findings go into delivery teams' backlogs with severity-based fix deadlines.",
+      "pre_read": "Ask who owns a security finding in DevSecOps, and how it reaches the people who can fix it.",
+      "correct_explanation": "DevSecOps makes security a shared responsibility: findings flow into the delivery team's own backlog, are prioritized like other work and must be fixed within severity-based deadlines, so the people who wrote the code fix it. Central fixing by the security team is the runner-up: it gets findings addressed, but it keeps security outside the team, creates a bottleneck and leaves developers repeating the same flaws.",
       "wrong_explanations": {
-        "A": "Annual testing finds issues long after code ships. It is periodic assurance, not security integrated into the pipeline.",
-        "B": "Manual sign-off is a gate outside the pipeline. It scales poorly with frequent releases and depends on reviewer capacity.",
-        "D": "Runtime monitoring detects attacks after release. It complements, but does not demonstrate, security built into development."
+        "A": "A central fixing team becomes a bottleneck and keeps developers unaware of their own flaws, so the same weaknesses keep recurring.",
+        "B": "Silencing noisy rules hides risk instead of treating it. Tuning false positives is valid, but disabling rules by volume is not.",
+        "D": "An annual test is periodic and late. It does not change who owns findings or how quickly they are fixed."
       },
       "tips": [
-        "Eliminate: A is periodic and D is post-release; both sit outside the build pipeline.",
-        "Final two: C beats B because automated, enforced gates run on every change, while manual sign-off is a separate step that does not scale.",
-        "Exam cue: DevSecOps evidence is automation plus enforcement inside the pipeline, not a security team approving at the end."
+        "Eliminate: B hides risk by silencing scan rules, and D adds a late, periodic test that does not change ownership.",
+        "Final two: C beats A because DevSecOps makes the delivery team own and fix its flaws, rather than routing them to a central bottleneck.",
+        "Exam cue: in DevSecOps questions, prefer the option that puts security work inside the team's normal workflow."
       ],
-      "framework_ref": "OWASP DevSecOps Maturity Model (DSOMM); NIST SP 800-218 (SSDF v1.1); ITAF Performance Standards on Evidence",
+      "framework_ref": "OWASP DevSecOps Maturity Model (DSOMM); NIST SP 800-218 (SSDF v1.1); OWASP SAMM (Software Assurance Maturity Model)",
       "related_concepts": [
         "DevSecOps",
         "CI/CD security",
@@ -1061,7 +1061,7 @@
         "SCA",
         "Shift-left"
       ],
-      "_provenance": "Authored from concept: 'DevSecOps integration per OWASP DSOMM and NIST SSDF'. Public sources: OWASP DSOMM, NIST SP 800-218. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DevSecOps integration per OWASP DSOMM and NIST SSDF'. Public sources: OWASP DSOMM, NIST SP 800-218. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to DevSecOps ownership of findings to avoid duplicating d3_009/d3_011.",
       "style_version": 2
     },
     {
@@ -1091,7 +1091,7 @@
         "Final two: A beats B because acceptance belongs to the business owner against requirements; QA tracing to design checks what was built.",
         "Exam cue: UAT criteria are business-owned, testable and set before execution; design- or code-based criteria are the wrong test level."
       ],
-      "framework_ref": "IEEE 829 (Standard for Software Test Documentation); ISTQB Foundation Level Syllabus; ITAF Performance Standards on Evidence",
+      "framework_ref": "ISO/IEC/IEEE 29119-3:2021 (Software Testing — Test Documentation); ISTQB Foundation Level Syllabus; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "UAT acceptance criteria",
         "Business acceptance",
@@ -1128,7 +1128,7 @@
         "Final two: D beats A because mutation scores show whether tests catch faults, while coverage only shows which lines ran.",
         "Exam cue: high coverage plus escaped defects signals weak assertions; mutation testing measures what the tests actually verify."
       ],
-      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Advanced Level Test Analyst Syllabus; ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Advanced Level Test Analyst Syllabus",
       "related_concepts": [
         "Mutation testing",
         "Test effectiveness",
@@ -1165,7 +1165,7 @@
         "Final two: B beats C because RASP protects live traffic in production, while IAST instruments the code only during testing.",
         "Exam cue: DAST tests from outside, IAST tests from inside, and RASP protects from inside in production."
       ],
-      "framework_ref": "OWASP Testing Guide; NIST SP 800-218 (SSDF v1.1); OWASP Application Security Verification Standard (ASVS)",
+      "framework_ref": "OWASP Web Security Testing Guide (WSTG); NIST SP 800-218 (SSDF v1.1); OWASP Application Security Verification Standard (ASVS)",
       "related_concepts": [
         "DAST",
         "IAST",
@@ -1203,7 +1203,7 @@
         "Final two: A beats B because trunk-based merges integrate daily with checks, while Git Flow's long-running branches delay integration.",
         "Exam cue: continuous integration plus frequent releases points to trunk-based development with gated pull requests."
       ],
-      "framework_ref": "Trunk-Based Development (Paul Hammant); DORA / Accelerate (DevOps Research and Assessment); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "Trunk-Based Development (Paul Hammant); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Trunk-based development",
         "Branching strategy",
@@ -1241,7 +1241,7 @@
         "Final two: D beats C because a verified signature proves origin and integrity, while a trusted registry only trusts a storage location.",
         "Exam cue: provenance questions want cryptographic signing at build plus verification at deployment."
       ],
-      "framework_ref": "Sigstore / Cosign; Notary v2 / OCI Image Signing; SLSA (Supply-chain Levels for Software Artifacts) framework; ISACA Information Security Management Audit/Assurance Program",
+      "framework_ref": "SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-53 Rev 5 CM-14 (Signed Components); NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines); NIST SP 800-190 (Application Container Security Guide)",
       "related_concepts": [
         "Container signing",
         "SLSA",
@@ -1279,7 +1279,7 @@
         "Final two: C beats B because console changes bypass template review; only comparing live state with code reveals them.",
         "Exam cue: when changes can bypass the pipeline, choose a detective control that reconciles actual state with the approved baseline."
       ],
-      "framework_ref": "HashiCorp Terraform Cloud Drift Detection; Open Policy Agent (OPA); CSA Cloud Controls Matrix; ISACA Cloud Computing Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI10 (Managed Configuration); NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration); CSA Cloud Controls Matrix; ISACA Cloud Computing Management Audit/Assurance Program",
       "related_concepts": [
         "IaC drift detection",
         "Terraform",
@@ -1316,7 +1316,7 @@
         "Final two: B beats C because the policy for an exhausted budget is to stop non-essential change, not to release more carefully.",
         "Exam cue: once the error budget is spent, feature releases pause and reliability work takes priority until it recovers."
       ],
-      "framework_ref": "Google SRE Book (Site Reliability Engineering); Google SRE Workbook (Service Level Objectives); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "Google SRE Book (Site Reliability Engineering); Google SRE Workbook (Service Level Objectives)",
       "related_concepts": [
         "SRE",
         "Error budget",
@@ -1338,7 +1338,7 @@
         "A": "Phased rollout by unit, limiting impact and allowing correction",
         "B": "Big-bang cutover over one weekend, avoiding temporary interfaces",
         "C": "Indefinite parallel running of both systems in every unit",
-        "D": "Big-bang cutover, because phasing is meant for green-field builds"
+        "D": "Big-bang cutover scheduled for the quarter-end closing weekend"
       },
       "correct": "A",
       "key_concept": "Phased cutover suits complex, multi-unit replacements because staged waves limit blast radius and allow mid-course correction.",
@@ -1347,10 +1347,10 @@
       "wrong_explanations": {
         "B": "Big-bang suits simpler, lower-risk replacements. Here a single failure would hit all six units at once with no chance to adjust.",
         "C": "Parallel running is a time-limited validation step. Running both systems indefinitely doubles effort and never completes the transition.",
-        "D": "Phasing suits replacements of existing systems; a green-field build is where there is nothing to phase from."
+        "D": "Quarter-end is a bank's busiest, highest-risk period. A full cutover then compounds migration risk with closing pressure."
       },
       "tips": [
-        "Eliminate: C never completes the transition, and D misstates when phasing applies.",
+        "Eliminate: C never completes the transition, and D stacks cutover on the riskiest weekend of the quarter.",
         "Final two: A beats B because staged waves contain failures and allow correction; big-bang is simpler but exposes every unit at once.",
         "Exam cue: complex, multi-unit, high-impact replacements point to phased cutover; small, low-risk systems suit big-bang."
       ],
@@ -1371,7 +1371,7 @@
       "subtopic": "Earned Value Management. Variance Interpretation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "At month 8 of a 14-month ERP project, the PMO reports a cumulative CPI of 0.78 and SPI of 0.85. The team says recent re-baselining will fix this. What should the IS auditor conclude FIRST?",
+      "question": "At month 8 of a 14-month ERP project, the PMO reports a cumulative CPI of 0.78 and SPI of 0.85; the team says recent re-baselining will fix this. What should the IS auditor conclude FIRST?",
       "options": {
         "A": "Performance is within tolerance for a complex ERP rollout",
         "B": "A conclusion should wait until re-baselined figures mature",
@@ -1388,7 +1388,7 @@
         "C": "By mid-project, cumulative EVM indices are reliable predictors; cumulative CPI tends to stabilize early."
       },
       "tips": [
-        "Eliminate: A treats a 22% cost overrun as normal, and C wrongly claims EVM has no predictive value at mid-project.",
+        "Eliminate: A treats earning only 78 cents of value per dollar spent as normal, and C wrongly claims EVM has no predictive value at mid-project.",
         "Final two: D beats B because re-baselining resets the yardstick but does not fix performance; waiting only delays corrective action.",
         "Exam cue: CPI or SPI well below 1.0 past the midpoint signals real variance; 'it will recover' is a claim, not evidence."
       ],
@@ -1412,25 +1412,25 @@
       "question": "A fraud-detection model's false-positive rate has risen from 4% to 11% in eight months, with no retraining or assigned model owner. What should the IS auditor recommend as the BEST response?",
       "options": {
         "A": "Decommission the model and return to fully manual claim reviews",
-        "B": "Retrain the model now using the latest production claims data",
-        "C": "Governance with an owner, drift alerts and retraining triggers",
+        "B": "Raise the alert threshold to cut false positives now",
+        "C": "Assign an owner and set drift alerts and retraining triggers",
         "D": "Accept the rate, as it is typical for fraud-detection models"
       },
       "correct": "C",
       "key_concept": "Production ML needs lifecycle governance: an accountable owner, drift monitoring, retraining triggers and performance gates.",
       "pre_read": "Separate the symptom (rising errors) from the cause (no monitoring or owner). Ask which option fixes the cause.",
-      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is the absence of lifecycle governance. An accountable owner, drift monitoring with thresholds, and defined retraining and performance gates keep the model reliable over time. Retraining now is the runner-up: it would lower today's error rate, but without monitoring and ownership the model would drift again unnoticed.",
+      "correct_explanation": "The rising false-positive rate is a symptom; the root cause is the absence of lifecycle governance. An accountable owner, drift monitoring with thresholds, and defined retraining and performance gates keep the model reliable over time. Raising the alert threshold is the runner-up: it cuts false positives quickly, but it trades them for missed fraud and leaves the unowned model drifting.",
       "wrong_explanations": {
         "A": "Decommissioning discards a fixable model and returns to costly manual review, without addressing why degradation went unnoticed.",
-        "B": "One-off retraining treats the symptom. With no monitoring or owner, the model would degrade again without anyone noticing.",
+        "B": "A higher threshold cuts false positives but lets more fraud through. With no owner or monitoring, the model keeps drifting unnoticed.",
         "D": "Accepting a near-tripling of false positives ignores the drift evidence and the missing governance behind it."
       },
       "tips": [
         "Eliminate: A abandons a fixable model, and D accepts degradation as normal.",
-        "Final two: C beats B because governance fixes the root cause, while one-off retraining fixes only today's symptom.",
+        "Final two: C beats B because governance fixes the root cause, while tuning the threshold only shifts today's symptom.",
         "Exam cue: when a symptom comes with a missing control framework, recommend the framework, not the one-time fix."
       ],
-      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001 (AI Management System); ITAF Performance Standards on Evidence",
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001 (AI Management System); ISO/IEC 5338:2023 (AI System Life Cycle Processes)",
       "related_concepts": [
         "MLOps",
         "Model drift",
@@ -1447,10 +1447,10 @@
       "subtopic": "Open-Source License Risk. Strong Copyleft (GPL) in SaaS",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Before investor due diligence, an IS auditor finds core SaaS modules import a strong-copyleft GPL library; the CTO and legal counsel disagree on its obligations. What should the auditor recommend as BEST?",
+      "question": "Before investor due diligence, an IS auditor finds core SaaS modules import an AGPL-licensed library; the CTO and legal counsel disagree on its obligations. What should the auditor recommend as BEST?",
       "options": {
         "A": "Isolate copyleft code and scan licenses before merging",
-        "B": "Obtain a documented legal opinion endorsing the CTO's view",
+        "B": "Obtain a documented legal opinion on the library's obligations",
         "C": "Rewrite every open-source module using proprietary code",
         "D": "Leave the decision to the investor's risk appetite"
       },
@@ -1459,7 +1459,7 @@
       "pre_read": "Notice the disagreement between experts. Ask which option stays safe whichever interpretation turns out to be right.",
       "correct_explanation": "When experts disagree on a license obligation, the sound response reduces exposure under either reading. Isolating the copyleft component behind a service boundary and scanning licenses before code is merged does that, and stops new issues entering. A documented legal opinion is the runner-up, but it bets the product on one contested interpretation and adds no ongoing control.",
       "wrong_explanations": {
-        "B": "A legal opinion records one contested view of one library. If that view fails, the exposure remains, and no ongoing control is added.",
+        "B": "A legal opinion records one contested view of one library. If that view is wrong, the exposure remains, and no ongoing control is added.",
         "C": "Rewriting all open-source code is costly and unnecessary; most permissive-licensed dependencies carry no comparable obligation.",
         "D": "License compliance is the organization's own responsibility. Deferring to an investor's appetite abdicates control of the risk."
       },
@@ -1468,7 +1468,7 @@
         "Final two: A beats B because isolation and scanning reduce exposure whichever legal view prevails; an opinion only bets on one view.",
         "Exam cue: when experts disagree on an obligation, prefer the control that reduces exposure under either interpretation."
       ],
-      "framework_ref": "SPDX License List; Linux Foundation OpenChain (ISO/IEC 5230); COBIT 2019 EDM02 (Ensured Benefits Delivery); CycloneDX SBOM Specification",
+      "framework_ref": "SPDX License List; Linux Foundation OpenChain (ISO/IEC 5230); COBIT 2019 MEA03 (Managed Compliance with External Requirements); CycloneDX SBOM Specification",
       "related_concepts": [
         "OSS governance",
         "GPL",
@@ -1523,34 +1523,34 @@
       "subtopic": "Project Lifecycle Phases. PMBOK Process Groups",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor finds that work on a project began before anyone formally authorized it or named a sponsor. Which project management process group was MOST clearly bypassed?",
+      "question": "A project plan maps the five PMI process groups one-to-one onto five sequential SDLC phases. What should the IS auditor identify as the MOST significant flaw?",
       "options": {
-        "A": "Planning, which defines scope, schedule and cost baselines",
-        "B": "Executing, which carries out the work to deliver outputs",
-        "C": "Closing, which obtains final acceptance and archives project records",
-        "D": "Initiating, which produces the charter and identifies stakeholders"
+        "A": "Monitoring and controlling would run once, not across every phase",
+        "B": "Planning would not be revisited as later phases add detail",
+        "C": "The plan should use PRINCE2 stages instead of process groups",
+        "D": "Closing would need to occur before user acceptance testing"
       },
-      "correct": "D",
-      "key_concept": "The five process groups are Initiating, Planning, Executing, Monitoring and Controlling, and Closing; Initiating authorizes the project via a charter.",
-      "pre_read": "Ask which process group grants authority to start. Planning and Executing both assume that step is done.",
-      "correct_explanation": "Initiating is the process group that formally authorizes a project through a charter, names the sponsor and grants the manager authority over resources. Planning is the runner-up because it also precedes the work, but planning builds baselines for a project that has already been authorized; it cannot supply the missing authorization.",
+      "correct": "A",
+      "key_concept": "PMI process groups are not SDLC phases; they repeat within each phase, and monitoring and controlling runs throughout the project.",
+      "pre_read": "Distinguish project management process groups from SDLC phases, and ask which group must operate continuously.",
+      "correct_explanation": "Process groups are not phases: they interact and repeat within every phase, and monitoring and controlling runs throughout to catch cost, schedule and scope variances. Confining it to one phase leaves the rest of the project without oversight. Revisiting planning is the runner-up: progressive elaboration matters, but missing oversight is the greater control gap because variances would go undetected.",
       "wrong_explanations": {
-        "A": "Planning sets baselines for an authorized project. Skipping it would be a separate gap; it does not grant authorization.",
-        "B": "Executing is where the work happened. The finding is that it started without the earlier authorization step.",
-        "C": "Closing comes at the end with final acceptance and archiving. It has no role in starting a project."
+        "B": "Planning does recur as detail emerges, but uncontrolled variance across most phases is the larger governance risk.",
+        "C": "PRINCE2 is an alternative method, not a correction. Swapping frameworks does not fix the misunderstanding of process groups.",
+        "D": "Closing follows final acceptance. Placing it before user acceptance testing would close the project before the business accepts it."
       },
       "tips": [
-        "Eliminate: B is where the work happened, and C occurs only at the end.",
-        "Final two: D beats A because authorization and the sponsor come from the charter in Initiating; Planning assumes that approval already exists.",
-        "Exam cue: no charter, no sponsor and no authority all point to Initiating, the first process group."
+        "Eliminate: C swaps frameworks without fixing the flaw, and D would close the project before the business accepts it.",
+        "Final two: A beats B because oversight that runs only once lets variances go undetected, a greater gap than a stale plan.",
+        "Exam cue: process groups overlap and repeat within phases; monitoring and controlling never stops until closure."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; PRINCE2 (Projects in Controlled Environments); ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "PMI Process Groups: A Practice Guide (2022); PMBOK Guide 6th Edition (Project Management Process Groups); ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "Project lifecycle",
         "PMBOK process groups",
         "Project management"
       ],
-      "_provenance": "Authored from concept: 'PMBOK process groups vs SDLC distinction'. Public sources: PMBOK 7E, PRINCE2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'PMBOK process groups vs SDLC distinction'. Public sources: PMBOK 7E, PRINCE2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to process groups vs SDLC phases (source concept) to avoid duplicating d3_001.",
       "style_version": 2
     },
     {
@@ -1580,7 +1580,7 @@
         "Final two: C beats B because mismatched totals prove the data itself is wrong; who changed it is a follow-up question.",
         "Exam cue: control totals, hash totals and record counts protect integrity: complete, accurate, valid data from input to output."
       ],
-      "framework_ref": "ISACA IT Application Controls Audit/Assurance Program; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Data integrity",
         "CIA triad",
@@ -1616,7 +1616,7 @@
         "Final two: B beats C because closure wraps up resources and records now; benefits are measured in a review months after closure.",
         "Exam cue: closure means release, close out, archive and learn; benefits realization is measured later, after operations stabilize."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; COBIT 2019 BAI01 (Managed Programs); ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "PMBOK Guide 6th Edition, Section 4.7 (Close Project or Phase); COBIT 2019 BAI11 (Managed Projects); ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "Project closure",
         "Lessons learned",
@@ -1631,7 +1631,7 @@
       "subtopic": "Lessons Learned. Definition",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "After closing three projects, a PMO notes that each repeated the same vendor-onboarding delays. Which lessons-learned practice should the IS auditor recommend as MOST effective?",
+      "question": "Three closed projects each held a lessons-learned workshop, yet all repeated the same vendor-onboarding delays. Which practice should the IS auditor recommend as MOST effective?",
       "options": {
         "A": "Keep a searchable lessons repository reviewed at project start",
         "B": "Hold a detailed lessons-learned workshop when each project ends",
@@ -1652,7 +1652,7 @@
         "Final two: A beats B because the repeated problem shows lessons are not reused; better capture alone changes nothing.",
         "Exam cue: lessons learned only count when future projects consult them; look for the option that feeds them forward."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; ITAF Performance Standards on Evidence; COBIT 2019 BAI08 (Managed Knowledge)",
+      "framework_ref": "PMBOK Guide 6th Edition, Section 4.4 (Manage Project Knowledge); COBIT 2019 BAI08 (Managed Knowledge)",
       "related_concepts": [
         "Lessons learned",
         "Organizational learning",
@@ -1688,7 +1688,7 @@
         "Final two: C beats D because planned, targeted communication confirms each group gets what it needs, while self-service leaves it to chance.",
         "Exam cue: with diverse stakeholders, analyze them first, then tailor. Uniform or passive communication is rarely BEST."
       ],
-      "framework_ref": "PMBOK Guide 7th Edition; ITAF Performance Standards on Evidence; ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "PMBOK Guide 7th Edition; ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "Stakeholder management",
         "Power-interest grid",
@@ -1760,7 +1760,7 @@
         "Final two: A beats D because controls built into the development path prevent problems, while an annual review only finds them later.",
         "Exam cue: when enabling new ways of building, prefer governance designed in early over after-the-fact inspection."
       ],
-      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); ISACA Software Development Life Cycle Audit/Assurance Program; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
+      "framework_ref": "COBIT 2019 APO01 (Managed I&T Management Framework); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Low-code",
         "No-code",
@@ -1797,7 +1797,7 @@
         "Final two: B beats A because testing contracts before release prevents the break, while notice only warns partners it is coming.",
         "Exam cue: to PREVENT a failure, prefer a control that tests before release over one that communicates or reacts."
       ],
-      "framework_ref": "OWASP API Security Top 10 (2023); Pact (Consumer-Driven Contract Testing); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "OWASP API Security Top 10 (2023); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "API versioning",
         "Contract testing",
@@ -1834,7 +1834,7 @@
         "Final two: D beats A because materiality-based thresholds focus scrutiny where errors matter, while zero tolerance spends it everywhere equally.",
         "Exam cue: when a threshold must be set, prefer risk-based and materiality-driven over uniform or absolute rules."
       ],
-      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 DSS06 (Managed Business Process Controls)",
       "related_concepts": [
         "Parallel run",
         "Reconciliation tolerance",
@@ -1871,7 +1871,7 @@
         "Final two: C beats A because risk-based allocation tests critical functions deeply, while even spreading dilutes effort across trivial areas.",
         "Exam cue: limited time or budget plus a choice of focus usually points to a risk-based answer."
       ],
-      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Foundation Level Syllabus; ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISO/IEC/IEEE 29119-2:2021 (Software Testing — Test Processes); ISTQB Foundation Level Syllabus",
       "related_concepts": [
         "Risk-based testing",
         "Test prioritization",
@@ -1907,7 +1907,7 @@
         "Final two: A beats C because only an extended run reveals slow leaks, while a one-hour load test ends before they surface.",
         "Exam cue: match the test to the objective. Duration points to soak, normal volume to load, beyond limits to stress."
       ],
-      "framework_ref": "ISO/IEC 25010 (Software Product Quality Model); COBIT 2019 BAI04 (Managed Availability and Capacity) — Performance Testing; ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISO/IEC 25010 (Software Product Quality Model); COBIT 2019 BAI04 (Managed Availability and Capacity); ISTQB Certified Tester Performance Testing (CT-PT) Syllabus",
       "related_concepts": [
         "Performance testing",
         "Load testing",
@@ -1981,7 +1981,7 @@
         "Final two: D beats A because review, testing and traceability address the real risk, while a window only changes timing.",
         "Exam cue: when a finding is uncontrolled change, the BEST fix routes it through change management, not just a different time slot."
       ],
-      "framework_ref": "ISACA Database Management Audit/Assurance Program; COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 (Change Enablement)",
+      "framework_ref": "NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 (Change Enablement)",
       "related_concepts": [
         "Database change management",
         "Schema migration",
@@ -2018,7 +2018,7 @@
         "Final two: C beats A because a tested, complete procedure gives assurance, while an untested artifact ignores data and configuration.",
         "Exam cue: for recovery plans, tested beats documented, and documented beats merely available."
       ],
-      "framework_ref": "ITIL 4 (Change Enablement); ISACA Software Development Life Cycle Audit/Assurance Program; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "ITIL 4 (Change Enablement); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Rollback",
         "Deployment strategy",
@@ -2055,7 +2055,7 @@
         "Final two: B beats D because the new risk lives between services, and unit tests only check each service in isolation.",
         "Exam cue: when architecture becomes distributed, look for controls over interfaces and end-to-end visibility."
       ],
-      "framework_ref": "ISACA IT Application Controls Audit/Assurance Program; Twelve-Factor App methodology; Reactive Manifesto",
+      "framework_ref": "NIST SP 800-204 (Security Strategies for Microservices-based Application Systems); Twelve-Factor App methodology; COBIT 2019 APO03 (Managed Enterprise Architecture)",
       "related_concepts": [
         "Microservices",
         "Distributed systems",
@@ -2130,7 +2130,7 @@
         "Final two: C beats D because the business case and requirements comparison comes before product evaluation, not after vendor demos.",
         "Exam cue: when executives argue for solutions, the auditor recommends a structured, requirements-based business case FIRST."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 APO05 (Managed Portfolio); ISACA Val IT Framework",
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA Val IT Framework; COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Build vs buy",
         "TCO",
@@ -2183,7 +2183,7 @@
       "subtopic": "Failed Deployment with Bad Rollback. Incident Governance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A failed release wrote orders in a format the rollback script cannot read. The CTO orders an immediate rollback anyway. What should the IS auditor advise FIRST?",
+      "question": "A failed release wrote orders in a format the rollback script cannot read; the CTO orders an immediate rollback anyway. What should the IS auditor advise FIRST?",
       "options": {
         "A": "Execute the rollback now and repair the affected orders afterward",
         "B": "Preserve the affected orders, then roll forward or apply a hotfix",
@@ -2204,7 +2204,7 @@
         "Final two: B beats A because protecting data integrity comes before restoring service by a path known to corrupt it.",
         "Exam cue: when recovery would destroy data, preserve the data first, then restore service by another route."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITIL 4 Incident Management; ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ITIL 4 Incident Management; COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
         "Incident response",
         "Rollback",
@@ -2241,7 +2241,7 @@
         "Final two: A beats D because sequencing must follow discovered dependencies and risk, not value alone.",
         "Exam cue: in M&A integration, discovery of the acquired environment comes before any migration sequencing."
       ],
-      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 EDM02 (Ensured Benefits Delivery); OCC Bulletin 2017-21 (Mergers and Acquisitions)",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI09 (Managed Assets); COBIT 2019 APO12 (Managed Risk)",
       "related_concepts": [
         "M&A integration",
         "Integration office",
@@ -2278,7 +2278,7 @@
         "Final two: D beats A because short-lived, audited credentials limit exposure, while a shared key keeps secrets static and unattributed.",
         "Exam cue: for machine secrets, centralized vaulting with short-lived credentials and audit logs beats any form of shared static secret."
       ],
-      "framework_ref": "HashiCorp Vault; CyberArk Conjur; ISACA Cryptography Audit/Assurance Program; NIST SP 800-218 (SSDF v1.1)",
+      "framework_ref": "NIST SP 800-218 (SSDF v1.1); NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines); OWASP Secrets Management Cheat Sheet",
       "related_concepts": [
         "CI/CD secrets",
         "Vault",
@@ -2294,35 +2294,35 @@
       "subtopic": "Container Runtime. Admission Controllers",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A platform owner must stop unsigned or unapproved container images from running in production Kubernetes clusters. Which control is MOST effective?",
+      "question": "A platform owner must stop pods that request privileged mode or run as root from starting in production Kubernetes clusters. Which control is MOST effective?",
       "options": {
         "A": "A daily scan of running pods that emails policy violations to engineers",
         "B": "Developer self-attestation in each deployment manifest",
-        "C": "Admission policies rejecting non-compliant images before scheduling",
-        "D": "Pulling the latest base image tag in every build"
+        "C": "Admission policies rejecting non-compliant pod specs before scheduling",
+        "D": "Network policies restricting traffic between cluster namespaces"
       },
       "correct": "C",
-      "key_concept": "Kubernetes admission controllers enforce image policy at deployment time, preventing non-compliant images from ever running.",
-      "pre_read": "Notice the stem says stop, not detect. Ask which option acts before the image runs.",
-      "correct_explanation": "Admission control evaluates each deployment request against policy, such as required signatures and approved registries, and rejects non-compliant images before any pod is scheduled. It is preventive and automatic. A daily scan of running pods is a useful detective layer, but by the time it reports, the non-compliant image has already been running in production for hours.",
+      "key_concept": "Kubernetes admission controllers enforce security policy at deployment, so privileged or non-compliant pods are rejected before they ever run.",
+      "pre_read": "Notice the stem says stop, not detect. Ask which option acts before the pod runs.",
+      "correct_explanation": "Admission control evaluates each pod request against policy, such as Pod Security Standards, and rejects privileged or root configurations before anything is scheduled. It is preventive and automatic. A daily scan of running pods is a useful detective layer, but by the time it reports, the privileged pod has already been running in production for hours.",
       "wrong_explanations": {
         "A": "Scanning running pods is detective. A non-compliant image runs in production until someone acts on the report.",
         "B": "Self-attestation is not verified. A mistaken or dishonest declaration lets a non-compliant image through.",
-        "D": "Floating latest tags make builds unpredictable and can pull unreviewed images, weakening control over what runs."
+        "D": "Network policies limit traffic between workloads. They do not stop a pod from starting with privileged or root settings."
       },
       "tips": [
-        "Eliminate: B relies on unverified self-declaration, and D makes image content less predictable, not more controlled.",
-        "Final two: C beats A because blocking at admission prevents the image from running, while a daily scan finds it afterward.",
+        "Eliminate: B relies on unverified self-declaration, and D controls network traffic, not how pods are configured.",
+        "Final two: C beats A because admission control prevents the privileged pod from starting, while a daily scan finds it afterward.",
         "Exam cue: when the stem says stop or prevent, choose the control that blocks at the gate over one that detects later."
       ],
-      "framework_ref": "Kubernetes Admission Controllers; OPA Gatekeeper; Sigstore / Cosign; ISACA Information Security Management Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-190 (Application Container Security Guide); CIS Kubernetes Benchmark; NSA/CISA Kubernetes Hardening Guide; NIST SP 800-53 Rev 5 CM-14 (Signed Components)",
       "related_concepts": [
         "Admission controllers",
         "OPA Gatekeeper",
         "Kubernetes",
         "Policy as code"
       ],
-      "_provenance": "Authored from concept: 'Kubernetes admission controllers for image policy enforcement'. Public sources: Kubernetes docs, OPA Gatekeeper, Sigstore. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Kubernetes admission controllers for image policy enforcement'. Public sources: Kubernetes docs, OPA Gatekeeper, Sigstore. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to pod-security admission to avoid duplicating d3_033.",
       "style_version": 2
     },
     {
@@ -2352,7 +2352,7 @@
         "Final two: B beats D because continuous reconciliation keeps production matching approval over time, while a push deploys once.",
         "Exam cue: assurance that state stays as approved needs continuous comparison, not just a controlled one-time deployment."
       ],
-      "framework_ref": "GitOps Working Group (CNCF); Argo CD; Flux CD; ITAF Performance Standards on Evidence",
+      "framework_ref": "OpenGitOps Principles v1.0.0 (CNCF GitOps Working Group); NIST SP 800-204C (Implementation of DevSecOps for a Microservices-based Application with Service Mesh); COBIT 2019 BAI10 (Managed Configuration)",
       "related_concepts": [
         "GitOps",
         "Argo CD",
@@ -2389,7 +2389,7 @@
         "Final two: A beats D because small changes with a fresh independent reviewer find more defects than a fixed, familiar pairing.",
         "Exam cue: review quality depends on manageable scope and real independence, not on more approvers or automation alone."
       ],
-      "framework_ref": "DORA / Accelerate (DevOps Research and Assessment); ITAF Performance Standards on Evidence; OWASP SAMM (Software Assurance Maturity Model)",
+      "framework_ref": "DORA / Accelerate (DevOps Research and Assessment); NIST SP 800-218 (SSDF v1.1); OWASP SAMM (Software Assurance Maturity Model)",
       "related_concepts": [
         "Code review",
         "Pull request",
@@ -2426,7 +2426,7 @@
         "Final two: D beats A because weighting toward fast unit tests cuts run time, while an equal mix keeps many slow tests.",
         "Exam cue: for regression suites, think pyramid: most tests fast and low-level, fewest slow and end-to-end."
       ],
-      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Foundation Level Syllabus; ITAF Performance Standards on Evidence",
+      "framework_ref": "ISO/IEC 29119 (Software Testing); ISTQB Foundation Level Syllabus",
       "related_concepts": [
         "Test pyramid",
         "Unit tests",
@@ -2463,7 +2463,7 @@
         "Final two: C beats A because continuous metrics with alerts detect trends early, while complaint-driven checks are reactive.",
         "Exam cue: ongoing oversight points to continuous, automated monitoring with thresholds, not ad hoc investigation."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 BAI04 (Managed Availability and Capacity); ISACA Database Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
       "related_concepts": [
         "Query performance",
         "Database observability",
@@ -2500,7 +2500,7 @@
         "Final two: C beats B because separating key custodians from data custodians matters more than rotation frequency.",
         "Exam cue: for encryption at rest, ask who can reach both the data and the key; the answer should be nobody."
       ],
-      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); ITAF Performance Standards on Evidence; FIPS 140-3 (Security Requirements for Cryptographic Modules)",
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); FIPS 140-3 (Security Requirements for Cryptographic Modules)",
       "related_concepts": [
         "Key management",
         "KMS",
@@ -2538,7 +2538,7 @@
         "Final two: A beats D because evidence must be trustworthy and correlatable, not just detailed.",
         "Exam cue: for audit logs, look for integrity, time synchronization and central retention before volume of detail."
       ],
-      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); OWASP Application Security Verification Standard (ASVS); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-92 (Guide to Computer Security Log Management); OWASP Application Security Verification Standard (ASVS); NIST SP 800-53 Rev 5 AU-9 (Protection of Audit Information)",
       "related_concepts": [
         "Application logging",
         "Security monitoring",
@@ -2575,7 +2575,7 @@
         "Final two: B beats C because controls should match the data's real sensitivity, not be maximal by default.",
         "Exam cue: when data moves between environments, its classification and owner travel with it."
       ],
-      "framework_ref": "ISACA IT Application Controls Audit/Assurance Program; ISO/IEC 27001:2022 (Information Security Management Systems)",
+      "framework_ref": "ISO/IEC 27001:2022 (Information Security Management Systems); ISO/IEC 27002:2022 Control 5.12 (Classification of Information); ISO/IEC 27002:2022 Control 8.33 (Test Information)",
       "related_concepts": [
         "Data classification",
         "Non-production environments",
@@ -2591,35 +2591,35 @@
       "subtopic": "Third-Party Component Vulnerability Management",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An application depends on hundreds of open-source libraries. Which control should the IS auditor expect as MOST effective for managing their vulnerabilities over time?",
+      "question": "An application's libraries are scanned at each build, but the application has not been rebuilt for eight months. Which control should the IS auditor expect as MOST effective for newly disclosed vulnerabilities?",
       "options": {
-        "A": "Security review of each library before it is first adopted",
+        "A": "Scheduled monthly rebuilds so build-time scans run again",
         "B": "Replacing open-source libraries with equivalent in-house components",
         "C": "An annual vulnerability assessment of the whole library stack",
-        "D": "A maintained SBOM continuously checked against vulnerability advisories"
+        "D": "Deployed-release SBOMs continuously matched against new advisories"
       },
       "correct": "D",
-      "key_concept": "Third-party component risk is managed continuously: know what you use (SBOM) and match it against new vulnerability disclosures.",
-      "pre_read": "Notice the words over time in the stem. Ask which control keeps working after adoption.",
-      "correct_explanation": "New vulnerabilities are disclosed in existing libraries every day, so the control must track what is in use and react to each disclosure. A maintained software bill of materials matched against advisory feeds does that continuously. Reviewing a library before adoption is a sound early control, but it is a point-in-time check and misses flaws found after the library is in use.",
+      "key_concept": "Flaws disclosed after release are caught by continuously matching deployed-software SBOMs against advisories, not by build-time scans alone.",
+      "pre_read": "Notice the scans run only at build time. Ask what catches a flaw disclosed while nothing is being rebuilt.",
+      "correct_explanation": "Build-time scanning only checks code when it is built, so a stable release can carry newly disclosed flaws for months. Keeping an SBOM for each deployed release and matching it continuously against advisory feeds flags exposure the day a disclosure appears. Monthly rebuilds would rerun the scans, but they leave up to a month of blind exposure and add release risk just to trigger a check.",
       "wrong_explanations": {
-        "A": "Intake review is valuable, but it only reflects vulnerabilities known on the day of adoption, not those disclosed later.",
+        "A": "Rebuilding to trigger scans leaves gaps of up to a month and adds deployment risk; detection should not depend on releases.",
         "B": "In-house code has its own vulnerabilities and maintenance burden; replacing libraries moves the risk rather than managing it.",
         "C": "An annual cycle leaves newly disclosed vulnerabilities unaddressed for months, far slower than disclosure and exploitation."
       },
       "tips": [
         "Eliminate: B shifts risk to unproven in-house code, and C reacts far too slowly to new disclosures.",
-        "Final two: D beats A because the stem says over time, and intake review is a one-off check.",
-        "Exam cue: when a stem stresses an ongoing risk, prefer the continuous control over a point-in-time one."
+        "Final two: D beats A because continuous matching of what is deployed detects new disclosures immediately, without waiting for a rebuild.",
+        "Exam cue: build-time scanning covers what is being built; monitoring deployed components covers what is already running."
       ],
-      "framework_ref": "NIST SP 800-218 (SSDF v1.1); CISA Software Bill of Materials guidance; OWASP DevSecOps Maturity Model (DSOMM); CycloneDX SBOM Specification",
+      "framework_ref": "NIST SP 800-218 (SSDF v1.1); NTIA SBOM Minimum Elements; OWASP DevSecOps Maturity Model (DSOMM); CycloneDX SBOM Specification",
       "related_concepts": [
         "Third-party vulnerability management",
         "SBOM",
         "CVE",
         "Automated remediation"
       ],
-      "_provenance": "Authored from concept: 'Third-party vulnerability management per NIST SSDF and CISA SBOM guidance'. Public sources: NIST SP 800-218, CISA, OWASP DSOMM. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Third-party vulnerability management per NIST SSDF and CISA SBOM guidance'. Public sources: NIST SP 800-218, CISA, OWASP DSOMM. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to deployed-release monitoring to avoid overlap with d3_052.",
       "style_version": 2
     },
     {
@@ -2649,7 +2649,7 @@
         "Final two: C beats D because preventing standing admin access is stronger than finding it at the next review.",
         "Exam cue: treat build and deployment tools like production; privileged access there needs the same controls."
       ],
-      "framework_ref": "NIST SP 800-53 AC-6 (Least Privilege); ISACA Cryptography Audit/Assurance Program; ITAF Performance Standards on Evidence",
+      "framework_ref": "NIST SP 800-53 Rev 5 AC-6 (Least Privilege); NIST SP 800-218 (SSDF v1.1); NIST SP 800-204D (Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines)",
       "related_concepts": [
         "Privileged access",
         "Least privilege",
@@ -2723,7 +2723,7 @@
         "Final two: D beats C because governance must precede technology; know and own the flows before re-architecting them.",
         "Exam cue: when a finding shows uncontrolled growth, recommend inventory, ownership and an approval gate before any tool."
       ],
-      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Cloud Computing Management Audit/Assurance Program; COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Cloud Computing Management Audit/Assurance Program; COBIT 2019 APO03 (Managed Enterprise Architecture)",
       "related_concepts": [
         "SaaS sprawl",
         "Integration governance",
@@ -2761,7 +2761,7 @@
         "Final two: A beats B because each control must address a named finding; peer review misses both licence origin and prompt leakage.",
         "Exam cue: match each recommendation to the risks named in the stem; a generic control that misses them is the runner-up."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST AI Risk Management Framework (AI RMF 1.0); GitHub Copilot Trust Center documentation; ISO/IEC 42001 (AI Management System)",
+      "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 42001 (AI Management System); NIST SP 800-218A (Secure Software Development Practices for Generative AI and Dual-Use Foundation Models); Linux Foundation OpenChain (ISO/IEC 5230)",
       "related_concepts": [
         "AI coding",
         "Copilot",
@@ -2799,7 +2799,7 @@
         "Final two: A beats C because containment and service restoration come before root-cause analysis.",
         "Exam cue: in a live failure, contain and restore first, then investigate; the auditor advises, management executes."
       ],
-      "framework_ref": "ITIL 4 Incident Management; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ITIL 4 Incident Management; ITIL 4 Deployment Management practice; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Multi-region deployment",
         "Blast radius",
@@ -2836,7 +2836,7 @@
         "Final two: B beats A because the business case and options analysis must come before committing to a build approach.",
         "Exam cue: when a stem names a preferred solution, look for the option that tests it against alternatives first."
       ],
-      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); AWS/Azure 6 Rs Migration Playbooks",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI08 (Managed Knowledge); COBIT 2019 APO05 (Managed Portfolio); AWS Prescriptive Guidance: Migration Strategies",
       "related_concepts": [
         "Legacy modernization",
         "Mainframe",
@@ -2873,7 +2873,7 @@
         "Final two: C beats B because a risk-based transition covers the interim exposure and a proper evaluation, not just speed.",
         "Exam cue: when support ends before a replacement can land, look for interim compensating controls plus a planned transition."
       ],
-      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023 by Interagency Guidance on Third-Party Relationships)",
+      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
         "Vendor abandonment",
         "Third-party risk",
@@ -2910,7 +2910,7 @@
         "Final two: D beats B because controls designed in at planning beat a gate applied after the design is fixed.",
         "Exam cue: for 'by design' requirements, choose the earliest point in the lifecycle where the design can still change."
       ],
-      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 29100 (Privacy Framework); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); ISO/IEC 29100 (Privacy Framework); EDPB Guidelines 4/2019 (Article 25 Data Protection by Design and by Default)",
       "related_concepts": [
         "Privacy by design",
         "GDPR Article 25",
@@ -2948,7 +2948,7 @@
         "Final two: B beats A because test evidence is valid only when conditions match production; review cannot reproduce scale.",
         "Exam cue: when a test passed but production failed, question how representative the test environment was."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; DORA / Accelerate (DevOps Research and Assessment); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI04 (Managed Availability and Capacity); ISTQB Certified Tester Performance Testing (CT-PT) Syllabus",
       "related_concepts": [
         "Test environment fidelity",
         "Staging",
@@ -2985,7 +2985,7 @@
         "Final two: A beats C because complete, automated evidence of every change outranks a delayed partial sample.",
         "Exam cue: when volume outgrows manual evidence, look for controls built into the pipeline, not slower delivery."
       ],
-      "framework_ref": "ITAF Performance Standards on Reporting; COBIT 2019 BAI06 (Managed IT Changes); SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 BAI06 (Managed IT Changes); SLSA v1.0 (Supply-chain Levels for Software Artifacts)",
       "related_concepts": [
         "Continuous compliance",
         "Change management evidence",
@@ -3022,7 +3022,7 @@
         "Final two: C beats A because effort should follow risk; a uniform threshold treats all code as equally important.",
         "Exam cue: when a metric drives behaviour, prefer the risk-based use over a single blanket target."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISO/IEC 25010 (Software Product Quality Model); ISTQB Foundation Level Syllabus",
+      "framework_ref": "ISO/IEC/IEEE 29119-4:2021 (Software Testing — Test Techniques); ISTQB Foundation Level Syllabus",
       "related_concepts": [
         "Code coverage",
         "Line coverage",
@@ -3059,7 +3059,7 @@
         "Final two: D beats B because off-by-one errors live at boundaries, which one representative value per partition misses.",
         "Exam cue: off-by-one or edge defects point to boundary-value analysis; partitioning alone sets the classes, not the edges."
       ],
-      "framework_ref": "ISTQB Foundation Level Syllabus; ITAF Performance Standards on Evidence; ISO/IEC 29119 (Software Testing)",
+      "framework_ref": "ISTQB Foundation Level Syllabus; ISO/IEC/IEEE 29119-4:2021 (Software Testing — Test Techniques)",
       "related_concepts": [
         "Boundary-value analysis",
         "BVA",
@@ -3096,7 +3096,7 @@
         "Final two: A beats C because BDD is defined by shared business-readable scenarios, not by test-first unit coding alone.",
         "Exam cue: BDD means three roles agreeing behaviour in plain language; TDD means developers writing unit tests first."
       ],
-      "framework_ref": "Behavior-Driven Development (Dan North); Cucumber / Gherkin BDD framework; ISTQB Foundation Level Syllabus",
+      "framework_ref": "Behavior-Driven Development (Dan North); ISTQB Foundation Level Syllabus",
       "related_concepts": [
         "BDD",
         "Given-When-Then",
@@ -3133,7 +3133,7 @@
         "Final two: C beats A because system-generated evidence is more reliable than manually maintained records.",
         "Exam cue: for evidence reliability, prefer system-generated, current records over manually maintained documentation."
       ],
-      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); OpenLineage; ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); OpenLineage; COBIT 2019 APO14 (Managed Data)",
       "related_concepts": [
         "Data lineage",
         "OpenLineage",
@@ -3170,7 +3170,7 @@
         "Final two: B beats A because a mesh secures internal service-to-service calls; the edge gateway governs external traffic.",
         "Exam cue: service mesh means sidecar proxies giving mTLS, observability and traffic policy for east-west traffic."
       ],
-      "framework_ref": "Istio Service Mesh; Linkerd Service Mesh; CNCF Service Mesh Working Group; ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-204A (Building Secure Microservices-based Applications Using Service-Mesh Architecture); NIST SP 800-204 (Security Strategies for Microservices-based Application Systems)",
       "related_concepts": [
         "Service mesh",
         "Istio",
@@ -3208,7 +3208,7 @@
         "Final two: D beats B because ongoing ownership and change control address both findings; a yearly cleanup addresses neither.",
         "Exam cue: a production toggle is a production change; expect ownership, authorization and an audit trail."
       ],
-      "framework_ref": "OpenFeature (CNCF); LaunchDarkly Feature Management; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
+      "framework_ref": "OpenFeature (CNCF); COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 BAI10 (Managed Configuration)",
       "related_concepts": [
         "Feature flags",
         "OpenFeature",
@@ -3245,7 +3245,7 @@
         "Final two: C beats A because exposing a small share first limits impact, while blue-green exposes everyone before switching back.",
         "Exam cue: limiting blast radius with real traffic points to canary; fast full switch-back points to blue-green."
       ],
-      "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); ITAF Performance Standards on Evidence",
+      "framework_ref": "Continuous Delivery (Humble & Farley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Canary deployment",
         "Progressive delivery",
@@ -3282,7 +3282,7 @@
         "Final two: A beats D because built-in impact limits and abort criteria contain harm; approval alone does not.",
         "Exam cue: for any planned production risk, look for a hypothesis, defined scope and stop criteria before sign-off."
       ],
-      "framework_ref": "Principles of Chaos Engineering; Netflix Chaos Monkey; ITAF Performance Standards on Evidence",
+      "framework_ref": "Principles of Chaos Engineering; COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Chaos engineering",
         "Chaos Monkey",
@@ -3319,7 +3319,7 @@
         "Final two: A beats B because only correlated traces, metrics and logs can follow one request across services; isolated logs cannot.",
         "Exam cue: for distributed systems, look for correlation across signals, not just more retention of a single signal."
       ],
-      "framework_ref": "OpenTelemetry (CNCF); Google SRE Workbook (Service Level Objectives); CNCF Observability TAG; ITAF Performance Standards on Evidence",
+      "framework_ref": "OpenTelemetry (CNCF); Google SRE Workbook (Service Level Objectives)",
       "related_concepts": [
         "Observability triad",
         "Logs",
@@ -3336,35 +3336,35 @@
       "subtopic": "Application Secrets Rotation",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds that application API keys and database credentials have not changed since go-live three years ago. Which recommendation is BEST?",
+      "question": "An IS auditor finds application API keys and database credentials unchanged for three years, and no record of which systems use each one. What should the auditor recommend FIRST?",
       "options": {
-        "A": "Rotate the credentials once a confirmed breach has occurred",
-        "B": "Have administrators rotate each credential manually once a year",
-        "C": "Issue short-lived, auto-rotated credentials from a secrets vault",
-        "D": "Keep the credentials unchanged to avoid deployment outages"
+        "A": "Rotate the credentials only after a confirmed breach occurs",
+        "B": "Rotate every credential at once in one change window",
+        "C": "Map each secret to its owner and consuming services",
+        "D": "Leave the credentials unchanged to avoid deployment outages"
       },
       "correct": "C",
-      "key_concept": "Application secrets should be short-lived and rotated automatically from a vault, limiting exposure if leaked and removing manual handling.",
-      "pre_read": "Notice the secrets have never changed. Ask which option limits how long any leaked secret stays useful.",
-      "correct_explanation": "Short-lived credentials issued and rotated automatically by a secrets vault shrink the window in which a leaked secret is useful and remove people from handling secrets. This matches NIST SP 800-57 guidance on limited cryptoperiods. Annual manual rotation is better than nothing, but secrets stay valid for a year and manual handling adds exposure and error.",
+      "key_concept": "Safe secrets remediation starts with an inventory of owners and consumers, enabling planned rotation and a move to short-lived vault credentials.",
+      "pre_read": "Notice nobody knows which systems use each secret. Ask what must be known before any rotation is safe.",
+      "correct_explanation": "Before secrets can be rotated safely or moved into a vault, the firm must know who owns each one and which services depend on it; otherwise rotation breaks unknown consumers and causes outages. Rotating everything at once tackles three years of exposure directly, but without that map it is likely to fail mid-change and push teams back to static secrets.",
       "wrong_explanations": {
         "A": "Waiting for a confirmed breach means a stolen secret stays usable until the damage is detected, which may be never.",
-        "B": "Manual yearly rotation leaves each secret valid for long periods and relies on administrators seeing and handling the secret values.",
+        "B": "Rotating blind breaks consumers nobody has identified, causing outages and pressure to roll back to the old secrets.",
         "D": "Unchanged credentials give any past leak permanent access. Rotation risk is managed through automation, not by avoiding rotation."
       },
       "tips": [
         "Eliminate: A rotates only after damage is known, and D never rotates, so a leaked secret works indefinitely.",
-        "Final two: C beats B because automated short-lived secrets cut exposure time and remove manual handling of the secret.",
-        "Exam cue: for secrets, prefer automated, short-lived, centrally managed credentials over manual or event-driven rotation."
+        "Final two: C beats B because rotation is safe only once owners and consumers are known; blind rotation causes outages.",
+        "Exam cue: for long-unmanaged assets, inventory and ownership come before remediation at scale."
       ],
-      "framework_ref": "HashiCorp Vault; NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); ISACA Cryptography Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NIST SP 800-53 Rev 5 IA-5 (Authenticator Management); OWASP Secrets Management Cheat Sheet",
       "related_concepts": [
         "Secrets rotation",
         "Short-lived credentials",
         "Vault",
         "TTL"
       ],
-      "_provenance": "Authored from concept: 'Application secrets rotation per HashiCorp Vault and NIST SP 800-57'. Public sources: HashiCorp, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Application secrets rotation per HashiCorp Vault and NIST SP 800-57'. Public sources: HashiCorp, NIST. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to secrets inventory to avoid overlap with d3_061.",
       "style_version": 2
     },
     {
@@ -3373,7 +3373,7 @@
       "subtopic": "Tokenization vs Masking vs Encryption",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor reviews protection for stored card numbers. The payment service must recover them, but values stolen from other systems should be useless. Which control is BEST?",
+      "question": "An IS auditor reviews stored card numbers that the payment service must recover, but copies stolen from other systems must be useless. Which control is BEST?",
       "options": {
         "A": "Display masking that reveals just the last four digits",
         "B": "Tokenization using surrogate values mapped in a secured vault",
@@ -3394,7 +3394,7 @@
         "Final two: B beats C because tokens carry no recoverable data outside the vault, while ciphertext is exposed by any stolen key.",
         "Exam cue: reversible plus useless-if-stolen points to tokenization; masking is for display, encryption keeps data in scope."
       ],
-      "framework_ref": "PCI DSS v4.0 (Tokenization Guidance); NIST SP 800-188 (De-Identification of Personal Information); ITAF Performance Standards on Evidence",
+      "framework_ref": "PCI DSS v4.0.1 Requirement 3 (Protect Stored Account Data); PCI Tokenization Product Security Guidelines; NIST SP 800-188 (De-Identifying Government Datasets: Techniques and Governance)",
       "related_concepts": [
         "Tokenization",
         "Masking",
@@ -3432,7 +3432,7 @@
         "Final two: D beats C because ownership and milestone reviews prevent stale entries; a yearly purge by the service desk only cleans up afterward.",
         "Exam cue: when a finding asks for the cause, choose accountable ownership built into the process over periodic clean-up."
       ],
-      "framework_ref": "ITIL 4 (Change Enablement); COBIT 2019 DSS01 (Managed Operations); COBIT 2019 BAI04 (Managed Availability and Capacity)",
+      "framework_ref": "ITIL 4 Service Catalogue Management practice; COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Service catalog",
         "ITIL 4",
@@ -3469,7 +3469,7 @@
         "Final two: D beats C because readiness criteria cover every gap and ownership, while one fix by one person leaves the rest open.",
         "Exam cue: a proof of concept is not production. Expect readiness gates and staged rollout before release."
       ],
-      "framework_ref": "ISACA Software Development Life Cycle Audit/Assurance Program; NIST AI Risk Management Framework (AI RMF 1.0); ISACA Project Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); NIST AI Risk Management Framework (AI RMF 1.0); ISO/IEC 5338:2023 (AI System Life Cycle Processes); ISACA Project Management Audit/Assurance Program",
       "related_concepts": [
         "POC",
         "Productionization",
@@ -3506,7 +3506,7 @@
         "Final two: B beats C because containment comes before lessons learned; policy review is right activity, wrong time.",
         "Exam cue: in incident questions asking FIRST, choose scoping and containment before root-cause or policy improvement."
       ],
-      "framework_ref": "NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); ITAF Performance Standards on Evidence; xz-utils CVE-2024-3094 (Supply-Chain Backdoor); SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); xz-utils CVE-2024-3094 (Supply-Chain Backdoor); SLSA v1.0 (Supply-chain Levels for Software Artifacts)",
       "related_concepts": [
         "Supply-chain compromise",
         "OSS maintainer",
@@ -3522,7 +3522,7 @@
       "subtopic": "Multi-Tenant Data Segregation Incident",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A code change let one SaaS customer see another tenant's aggregated metrics for seven hours before rollback. Which response should the IS auditor advise management is MOST appropriate?",
+      "question": "A code change let one SaaS customer see another tenant's aggregated metrics for seven hours before rollback. Which response is MOST appropriate for the IS auditor to advise management?",
       "options": {
         "A": "Invoke breach response, including notification assessment for affected tenants",
         "B": "Close the incident, since the rollback ended the exposure",
@@ -3543,7 +3543,7 @@
         "Final two: A beats C because a fix without notification assessment leaves legal and customer obligations unmet.",
         "Exam cue: when data crosses a boundary it should not, think breach response with notification analysis, not just a bug fix."
       ],
-      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); ITAF Performance Standards on Evidence; ISACA Privacy Audit/Assurance Program; CCPA Breach Notification Requirements",
+      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); GDPR Article 34 (Data Subject Notification); EDPB Guidelines 9/2022 on Personal Data Breach Notification under GDPR",
       "related_concepts": [
         "Multi-tenant segregation",
         "Data breach",
@@ -3559,7 +3559,7 @@
       "subtopic": "Privacy Regulator Notification Timing",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A firm became aware on Tuesday at 14:00 that EU customer data was exposed internally. The CPO wants to delay any GDPR notification decision until the investigation ends. What is the IS auditor's BEST advice?",
+      "question": "Aware since Tuesday 14:00 that EU customer data was exposed internally, the CPO wants to delay any GDPR notification decision until the investigation ends. What is the IS auditor's BEST advice?",
       "options": {
         "A": "Wait until the investigation ends so the notice is complete",
         "B": "Notify US state regulators, since GDPR excludes internal incidents",
@@ -3580,7 +3580,7 @@
         "Final two: C beats A because the 72-hour clock runs from awareness and phased notification is allowed.",
         "Exam cue: for GDPR timing, the clock starts at awareness; assess risk now and supplement details later."
       ],
-      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); ISACA Privacy Audit/Assurance Program; EDPB Guidelines 06/2022; CCPA Breach Notification Requirements",
+      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); EDPB Guidelines 9/2022 on Personal Data Breach Notification under GDPR",
       "related_concepts": [
         "GDPR Article 33",
         "72-hour notification",
@@ -3617,7 +3617,7 @@
         "Final two: D beats C because a mandate without funded capacity and prioritization keeps the bottleneck in place.",
         "Exam cue: for shared-service disputes, prefer governance that funds capacity and sets priorities over bans or free-for-alls."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 APO08 (Managed Relationships); COBIT 2019 APO09 (Managed Service Agreements)",
+      "framework_ref": "COBIT 2019 APO08 (Managed Relationships); COBIT 2019 APO09 (Managed Service Agreements); COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Shared platform",
         "Cross-functional dependency",
@@ -3654,7 +3654,7 @@
         "Final two: B beats A because captured knowledge outlasts any individual, while one retained engineer is still a single point of failure.",
         "Exam cue: for key-person risk, choose capturing knowledge in the organization over depending on retaining individuals."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 BAI08 (Managed Knowledge); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "COBIT 2019 BAI08 (Managed Knowledge); COBIT 2019 APO07 (Managed Human Resources); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
       "related_concepts": [
         "Knowledge transfer",
         "Tribal knowledge",
@@ -3675,11 +3675,11 @@
         "A": "Pause at the gate, size the fix, then proceed or revert",
         "B": "Proceed with the cutover and clean the supplier data after go-live",
         "C": "Roll back now, since the cutover plan is fundamentally flawed",
-        "D": "Make the go/no-go decision personally while the CTO is unreachable"
+        "D": "Take the go/no-go decision on management's behalf to save time"
       },
       "correct": "A",
       "key_concept": "Unexpected cutover issues should be assessed at a decision gate, then management proceeds or falls back based on evidence.",
-      "pre_read": "Notice the playbook has a gate before the final cutover. Ask which option uses it, and who decides.",
+      "pre_read": "Notice the issue is outside the playbook. Ask which option assesses impact before committing, and who decides.",
       "correct_explanation": "A sound cutover uses decision gates so that unexpected issues are assessed before commitment. Pausing to size the fix and judge whether it fits the window lets management proceed or invoke fallback on evidence. Proceeding and cleaning up later keeps the schedule, but it loads known-bad master data into production without assessing the effect on supplier transactions.",
       "wrong_explanations": {
         "B": "Proceeding loads known-bad master data into production without assessing its impact on supplier payments and orders.",
@@ -3691,7 +3691,7 @@
         "Final two: A beats B because a risk-based decision at the gate assesses impact before committing bad data to production.",
         "Exam cue: when a surprise arises mid-implementation, assess at the decision gate before choosing to proceed or fall back."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI06 (Managed IT Changes)",
       "related_concepts": [
         "Mid-cutover",
         "Data quality",
@@ -3707,7 +3707,7 @@
       "subtopic": "Product Launch Continue-vs-Scrap Decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After four months and $14M spent, a new CRM module has 23 of 150 targeted customers. The board asks the IS auditor what basis to use for the continue-or-stop decision. Which is MOST appropriate?",
+      "question": "After $14M and four months, a new CRM module has 23 of 150 targeted customers. What is the MOST appropriate basis the IS auditor should advise the board to use for its continue-or-stop decision?",
       "options": {
         "A": "Stop the module, because the $14M already spent makes recovery uneconomic",
         "B": "Continue, since cancelling would harm reputation and team morale",
@@ -3728,7 +3728,7 @@
         "Final two: C beats A because past spend is sunk; only forward costs, benefits and alternatives should decide.",
         "Exam cue: when a stem quotes money already spent, look for the option that explicitly excludes sunk cost."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 APO05 (Managed Portfolio); ISACA Val IT Framework",
+      "framework_ref": "COBIT 2019 APO05 (Managed Portfolio); ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
       "related_concepts": [
         "Product decision",
         "Sunk cost",
@@ -3744,7 +3744,7 @@
       "subtopic": "M&A IT Integration. Mid-Integration Recovery",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Eleven months into a 24-month integration, 70% of the budget is spent but 32% of milestones are done. The CIO requests $20M more. What should the IS auditor recommend to the board FIRST?",
+      "question": "Eleven months into a 24-month integration, 70% of the budget is spent but 32% of milestones are done, and the CIO requests $20M more. What should the IS auditor recommend to the board FIRST?",
       "options": {
         "A": "Approve the request, as integrations commonly need extra funding",
         "B": "Cancel the integration and run both firms separately",
@@ -3754,7 +3754,7 @@
       "correct": "D",
       "key_concept": "A troubled program needs an independent review and rebaselined plan before more funding is committed.",
       "pre_read": "Notice the gap between spend and progress. Ask which option tests the plan before money is released.",
-      "correct_explanation": "Spend running well ahead of delivery, plus the audit committee's loss of confidence, means the current plan cannot be trusted. An independent review that rebaselines scope, schedule and cost gives the board a reliable footing before more money is committed. Tranche funding is a good control, but tying it to milestones set by the same leadership builds gates on an unvalidated plan.",
+      "correct_explanation": "Spend running well ahead of delivery means the current plan cannot be trusted. An independent review that rebaselines scope, schedule and cost gives the board a reliable footing before more money is committed. Tranche funding is a good control, but tying it to milestones set by the same leadership builds gates on an unvalidated plan.",
       "wrong_explanations": {
         "A": "Approving more money on industry norms ignores the evidence that the current plan and leadership are failing.",
         "B": "Abandoning the integration discards the deal rationale and sunk progress without assessing whether recovery is feasible.",
@@ -3765,7 +3765,7 @@
         "Final two: D beats C because an independent rebaseline must come before gates; gates built on an unvalidated plan add little assurance.",
         "Exam cue: when a project is far off track and confidence is lost, independent review comes before new funding."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI11 (Managed Projects)",
+      "framework_ref": "COBIT 2019 BAI01 (Managed Programs); COBIT 2019 BAI11 (Managed Projects); PMI Standard for Program Management",
       "related_concepts": [
         "M&A integration recovery",
         "Mid-program recovery",
@@ -3780,26 +3780,26 @@
       "subtopic": "IT Portfolio Rebalancing. Budget Cut",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Facing a 22% IT budget cut, the CFO favors an equal percentage cut to every project for transparency. Which approach should the IS auditor recommend to the investment committee as BEST?",
+      "question": "Facing a 22% IT budget cut, an investment committee has ranked all projects by value. Before stopping the lowest-ranked ones, what should the IS auditor recommend it confirm FIRST?",
       "options": {
-        "A": "Cut every portfolio item by the same percentage for transparency",
-        "B": "Rank items by value, alignment and risk; stop the weakest",
-        "C": "Shield transformation programs and take the cut from operations",
-        "D": "Shield operations and take the whole cut from transformation"
+        "A": "Each business unit gives up an equal share of projects",
+        "B": "None is regulatory-mandated or a prerequisite for higher ones",
+        "C": "Exit costs for each project proposed for stopping are known",
+        "D": "Project managers agree with how their projects were ranked"
       },
       "correct": "B",
-      "key_concept": "Portfolio rebalancing ranks each investment by value, alignment and risk, rather than applying uniform or category-wide cuts.",
-      "pre_read": "Notice the CFO's reason is transparency. Ask whether transparency or value should drive which investments survive.",
-      "correct_explanation": "Val IT and COBIT EDM02 expect investments to be managed as a portfolio for value. Ranking each item by expected value, strategic alignment and risk, then stopping or shrinking the weakest, keeps the most valuable work whole. An equal cut is transparent, but it weakens every item, including critical ones, and may leave several programs underfunded to succeed.",
+      "key_concept": "Portfolio cuts rank investments by value and risk, then confirm no low-ranked item is mandatory or a prerequisite for higher-value work.",
+      "pre_read": "Notice the ranking is already done. Ask what a pure value ranking could miss before anything is stopped.",
+      "correct_explanation": "A value ranking can place an item low even though regulation requires it or higher-value projects depend on it. Stopping such an item would create a compliance breach or undermine the investments the cut is meant to protect, so mandates and dependencies must be confirmed first. Exit costs refine the savings estimate, but they do not show whether stopping is permissible.",
       "wrong_explanations": {
-        "A": "Equal cuts look fair but ignore value. Strong programs are weakened and weak ones survive, so the portfolio loses value.",
-        "C": "Protecting a whole category ignores item value and risks underfunding operations that keep current revenue running.",
-        "D": "Protecting a whole category ignores item value and abandons transformation that may carry the firm's highest returns."
+        "A": "Equal shares by unit reintroduce the uniform cut that value ranking replaced, protecting weak projects in some units.",
+        "C": "Exit costs adjust the savings, but they do not reveal a mandate or dependency that makes stopping unacceptable.",
+        "D": "Manager agreement is not a control; managers naturally defend their own projects regardless of value."
       },
       "tips": [
-        "Eliminate: C and D protect a category wholesale instead of judging each item on its value.",
-        "Final two: B beats A because value-based ranking protects the best investments, while equal cuts weaken everything alike.",
-        "Exam cue: under budget pressure, prefer portfolio decisions ranked by value and risk over uniform or category-wide cuts."
+        "Eliminate: A brings back a uniform cut, and D lets interested parties veto the ranking.",
+        "Final two: B beats C because a mandated or prerequisite project cannot be stopped whatever its exit cost.",
+        "Exam cue: before cutting by value, check for mandatory items and dependencies the ranking may miss."
       ],
       "framework_ref": "ISACA Val IT Framework; COBIT 2019 EDM02 (Ensured Benefits Delivery)",
       "related_concepts": [
@@ -3808,7 +3808,7 @@
         "Budget cut",
         "Value-based analysis"
       ],
-      "_provenance": "Authored from concept: 'Portfolio rebalancing under budget cut per ISACA Val IT and COBIT 2019 EDM02'. Public sources: ISACA Val IT, COBIT 2019. Scenario specifics (industrial firm, 22K employees, $4.8B revenue, 22% IT cut, $46M reduction from $208M, 8/14/run-the-bank portfolio split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Portfolio rebalancing under budget cut per ISACA Val IT and COBIT 2019 EDM02'. Public sources: ISACA Val IT, COBIT 2019. Scenario specifics (industrial firm, 22K employees, $4.8B revenue, 22% IT cut, $46M reduction from $208M, 8/14/run-the-bank portfolio split) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to mandates and dependencies to avoid overlap with d3_046.",
       "style_version": 2
     },
     {
@@ -3838,7 +3838,7 @@
         "Final two: A beats B because concentration risk is one driver, while the decision needs full cost and transition analysis.",
         "Exam cue: for sourcing decisions, prefer total cost of ownership and transition risk over any single driver."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA Vendor Management Audit/Assurance Program; OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023 by Interagency Guidance on Third-Party Relationships); COBIT 2019 APO10 (Managed Vendors)",
+      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
         "Insourcing",
         "Outsourcing",
@@ -3875,7 +3875,7 @@
         "Final two: C beats B because staged exit readiness cuts lock-in at managed risk; a sudden full move ignores cost and dependencies.",
         "Exam cue: for vendor lock-in, prefer credible, staged exit options over full acceptance or abrupt wholesale migration."
       ],
-      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023 by Interagency Guidance on Third-Party Relationships); COBIT 2019 APO10 (Managed Vendors)",
+      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); COBIT 2019 APO10 (Managed Vendors)",
       "related_concepts": [
         "Vendor lock-in",
         "Renegotiation",
@@ -3891,26 +3891,26 @@
       "subtopic": "Failing Program. Recovery vs Cancellation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A program is $22M over budget and 14 months late, and the vendor wants $18M more. The new CIO has paused it. What is the IS auditor's MOST appropriate contribution?",
+      "question": "Management leans toward cancelling a paused program that is $22M over budget, though three business units already use its delivered modules. Which risk should the IS auditor raise as MOST important?",
       "options": {
-        "A": "Recommend finishing the program to protect the $70M invested",
-        "B": "Validate the vendor's $18M cost-to-complete estimate",
-        "C": "Make the cancellation decision itself, since the auditor is independent",
-        "D": "Propose forward-looking criteria for management to compare all options"
+        "A": "Contract termination penalties payable to the vendor on exit",
+        "B": "Reputational harm from admitting publicly that the program failed",
+        "C": "Project team morale after the program is stopped",
+        "D": "Disruption to live processes relying on the partial system"
       },
       "correct": "D",
-      "key_concept": "In program recovery decisions, the auditor supplies objective forward-looking criteria, while management makes the decision.",
-      "pre_read": "Notice the question asks about the auditor's contribution. Separate advising from deciding and narrow evidence from a full comparison.",
-      "correct_explanation": "The auditor adds value by giving management an objective basis for its decision: criteria comparing forward cost, benefits, business dependency and exit complexity across finishing, restarting or cancelling, with money already spent excluded. Management decides. Checking the vendor's estimate is useful evidence, but it tests one option and cannot tell management whether completing is better than the alternatives.",
+      "key_concept": "Cancellation decisions must weigh exit complexity, especially disruption to processes already relying on delivered components, above bounded contractual costs.",
+      "pre_read": "Notice that business units already use parts of the program. Ask what stopping it would do to them.",
+      "correct_explanation": "Cancelling is a management decision, but it must account for exit complexity. Three business units already run live processes on the delivered modules, so stopping without a transition plan could halt operations, a larger and less reversible impact than any fee. Termination penalties are a real cost to weigh, but they are bounded, contractual and quantifiable, unlike disruption to the business.",
       "wrong_explanations": {
-        "A": "Protecting the amount already invested is the sunk-cost error; past spend should not drive further commitment.",
-        "B": "The estimate is one input for one option. It cannot show whether completing beats restarting or cancelling.",
-        "C": "Deciding to cancel is a management decision. An auditor who makes it loses the independence needed to assess it."
+        "A": "Penalties matter, but they are a bounded, quantifiable cost; operational disruption to dependent units carries greater and less reversible impact.",
+        "B": "Reputation is a soft factor and would not justify keeping a failing program; it is not the decisive exit risk.",
+        "C": "Morale affects the team, not the business processes that depend on the system, and does not change the cancellation risk."
       },
       "tips": [
-        "Eliminate: A reasons from sunk cost, and C has the auditor take management's decision.",
-        "Final two: D beats B because comparing all options on forward criteria serves the decision; one estimate tests only one option.",
-        "Exam cue: the auditor provides objective criteria and evidence; management owns the go, fix or stop decision."
+        "Eliminate: B weighs reputation, and C weighs team morale; neither measures business impact.",
+        "Final two: D beats A because disruption to live operations outweighs a bounded, contractual exit cost.",
+        "Exam cue: when stopping a system others rely on, weigh business continuity and exit complexity before cost."
       ],
       "framework_ref": "COBIT 2019 BAI01 (Managed Programs); ISACA Val IT Framework; PMBOK Guide 7th Edition; COBIT 2019 BAI11 (Managed Projects)",
       "related_concepts": [
@@ -3919,7 +3919,7 @@
         "Opportunity cost",
         "Program recovery"
       ],
-      "_provenance": "Authored from concept: 'Failing program recovery-vs-cancellation per ISACA Failing Program Recovery and Val IT'. Public sources: ISACA, PMBOK. Scenario specifics (pharma, 30-month clinical-trial platform, $22M over $48M budget, $70M total sunk, 14 months behind, 40% feature delivery, new CIO 4-month tenure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Failing program recovery-vs-cancellation per ISACA Failing Program Recovery and Val IT'. Public sources: ISACA, PMBOK. Scenario specifics (pharma, 30-month clinical-trial platform, $22M over $48M budget, $70M total sunk, 14 months behind, 40% feature delivery, new CIO 4-month tenure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to exit risk to avoid overlap with d3_100.",
       "style_version": 2
     },
     {
@@ -3949,7 +3949,7 @@
         "Final two: B beats D because written decisions and rotating hours include every site; a fixed time always excludes the same ones.",
         "Exam cue: for distributed agile teams, prefer asynchronous, documented practices and shared burden over one dominant time zone."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; Scrum Guide 2020; SAFe (Scaled Agile Framework)",
+      "framework_ref": "Scrum Guide 2020; SAFe (Scaled Agile Framework); PMI Agile Practice Guide (2017)",
       "related_concepts": [
         "Distributed agile",
         "Async-first",
@@ -4023,7 +4023,7 @@
         "Final two: C beats D because controlling scope comes first; extending tests accepts every addition without assessment.",
         "Exam cue: for scope creep, formal change control and rebaselining come before work that absorbs the extra scope."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; PMBOK Guide 7th Edition; COBIT 2019 BAI11 (Managed Projects)",
+      "framework_ref": "PMBOK Guide 6th Edition, Section 4.6 (Perform Integrated Change Control); COBIT 2019 BAI11 (Managed Projects)",
       "related_concepts": [
         "Scope creep",
         "Change control",
@@ -4060,7 +4060,7 @@
         "Final two: B beats A because per-service analysis shows where to consolidate, while aggregate trends cannot.",
         "Exam cue: for architecture reversal decisions, prefer granular evidence over aggregate metrics or advocates' positions."
       ],
-      "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); ISACA IT Application Controls Audit/Assurance Program; Twelve-Factor App methodology",
+      "framework_ref": "COBIT 2019 APO03 (Managed Enterprise Architecture); TOGAF Standard, 10th Edition; ISO/IEC/IEEE 42010 (Architecture Description)",
       "related_concepts": [
         "Microservices",
         "Monolith",
@@ -4097,7 +4097,7 @@
         "Final two: D beats B because selection must weigh every stated requirement, while B optimises for ingest alone.",
         "Exam cue: for technology selection, prefer requirement-based evaluation over a single dominant metric or preference."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); ISACA Database Management Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "related_concepts": [
         "Database selection",
         "SQL",
@@ -4135,7 +4135,7 @@
         "Final two: B beats D because each application's path should follow its business value, not a uniform first step.",
         "Exam cue: when a portfolio is mixed, prefer the option that differentiates by business value over any one-size-fits-all approach."
       ],
-      "framework_ref": "AWS/Azure 6 Rs Migration Playbooks; ISACA Cloud Computing Management Audit/Assurance Program; Gartner Cloud Migration Framework",
+      "framework_ref": "AWS Prescriptive Guidance: Migration Strategies; Microsoft Cloud Adoption Framework for Azure; ISACA Cloud Computing Management Audit/Assurance Program",
       "related_concepts": [
         "Cloud migration",
         "7 Rs framework",
@@ -4151,7 +4151,7 @@
       "subtopic": "Zero-Trust Architecture Migration",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A HIPAA-regulated firm with a flat internal network plans a zero-trust migration. The CISO wants a vendor ZTNA tool deployed everywhere at once. What should the IS auditor recommend FIRST?",
+      "question": "A HIPAA-regulated firm with a flat internal network plans a zero-trust migration; the CISO wants a vendor ZTNA tool deployed everywhere at once. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Deploy the vendor ZTNA tool across every access path immediately",
         "B": "Micro-segment the network around the clinical systems right away",
@@ -4172,7 +4172,7 @@
         "Final two: C beats B because segment boundaries must be based on a known inventory of identities, assets and data flows.",
         "Exam cue: for any architecture change, know what you are protecting before choosing how to enforce it."
       ],
-      "framework_ref": "NIST Zero Trust Architecture (NIST SP 800-207); CSA Zero Trust Framework; ITAF Performance Standards on Evidence",
+      "framework_ref": "NIST Zero Trust Architecture (NIST SP 800-207); CISA Zero Trust Maturity Model v2.0",
       "related_concepts": [
         "Zero trust",
         "NIST SP 800-207",
@@ -4209,7 +4209,7 @@
         "Final two: A beats C because the flaw also lives in production, so fixing only the release leaves live systems exposed.",
         "Exam cue: scope a vulnerability to every place it exists before deciding what to fix first."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide); SLSA (Supply-chain Levels for Software Artifacts) framework",
+      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning); SLSA v1.0 (Supply-chain Levels for Software Artifacts)",
       "related_concepts": [
         "Zero-day response",
         "Release window",
@@ -4262,7 +4262,7 @@
       "subtopic": "Supply-Chain Attestation Maturity Decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A federal contractor must set a software supply-chain (SLSA) maturity target. The CISO wants the top level, costing about $8M over 18 months. Which recommendation by the IS auditor is BEST?",
+      "question": "A federal contractor must set a software supply-chain (SLSA) maturity target; the CISO wants the top level, costing about $8M over 18 months. Which recommendation by the IS auditor is BEST?",
       "options": {
         "A": "Commit to the top level now for the strongest, most defensible position",
         "B": "Meet the required floor first, then raise levels by risk and cost",
@@ -4283,7 +4283,7 @@
         "Final two: B beats A because investment should follow risk and required compliance, not maximum maturity for its own sake.",
         "Exam cue: when one option is the most thorough and another is risk-based and phased, ISACA favors risk-based."
       ],
-      "framework_ref": "SLSA (Supply-chain Levels for Software Artifacts) framework; ITAF Performance Standards on Evidence; NIST SP 800-218 (SSDF v1.1)",
+      "framework_ref": "SLSA v1.0 (Supply-chain Levels for Software Artifacts); NIST SP 800-218 (SSDF v1.1); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management)",
       "related_concepts": [
         "SLSA",
         "Supply-chain attestation",
@@ -4320,7 +4320,7 @@
         "Final two: A beats D because timely, honest disclosure with a remediation plan outranks a late response that looks complete.",
         "Exam cue: with regulators, transparency plus a credible remediation plan beats delay or concealment."
       ],
-      "framework_ref": "GDPR Article 31 (Cooperation with the Supervisory Authority); GDPR Article 83 (General Conditions for Imposing Administrative Fines); ITAF Performance Standards on Evidence",
+      "framework_ref": "GDPR Article 31 (Cooperation with the Supervisory Authority); GDPR Article 83 (General Conditions for Imposing Administrative Fines)",
       "related_concepts": [
         "Regulator audit response",
         "GDPR Article 31",
@@ -4336,7 +4336,7 @@
       "subtopic": "Sole-Vendor SaaS Outage During Peak",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "During peak season, a retailer's sole payment processor suffers an outage with no recovery estimate. A quarterly-tested backup processor is on standby. What should management do FIRST?",
+      "question": "During peak season, a retailer's primary payment processor suffers an outage with no recovery estimate, and a quarterly-tested backup processor is on standby. What should management do FIRST?",
       "options": {
         "A": "Escalate the outage to the vendor under the contract's SLA terms",
         "B": "Integrate a new processor quickly to restore online sales today",
@@ -4357,7 +4357,7 @@
         "Final two: C beats A because invoking the tested plan restores operations, while an SLA claim only compensates.",
         "Exam cue: when a tested continuity option exists and recovery time is unknown, invoke the plan."
       ],
-      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; NIST SP 800-34 (Contingency Planning Guide); OCC Bulletin 2013-29 (Third-Party Relationships: Risk Management Guidance, superseded June 2023 by Interagency Guidance on Third-Party Relationships)",
+      "framework_ref": "ISACA Vendor Management Audit/Assurance Program; NIST SP 800-34 (Contingency Planning Guide); Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29); COBIT 2019 DSS04 (Managed Continuity)",
       "related_concepts": [
         "Sole-vendor outage",
         "Backup processor",
@@ -4394,7 +4394,7 @@
         "Final two: D beats C because reconciliation produces evidence for the decision, while halting stops the program without it.",
         "Exam cue: before cutover of financial data, look for parallel run and reconciliation as the deciding evidence."
       ],
-      "framework_ref": "COBIT 2019 APO14 (Managed Data); ISACA IT Application Controls Audit/Assurance Program; SOX Section 302 (Quarterly Certification)",
+      "framework_ref": "COBIT 2019 APO14 (Managed Data); COBIT 2019 DSS06 (Managed Business Process Controls); SOX Section 302 (Quarterly Certification)",
       "related_concepts": [
         "Data warehouse migration",
         "Quarter close",
@@ -4431,7 +4431,7 @@
         "Final two: B beats A because extra instances would push more load onto the already saturated database.",
         "Exam cue: when several layers are saturated, stabilize the shared constraint before adding capacity elsewhere."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA Software Development Life Cycle Audit/Assurance Program; ITIL 4 Incident Management",
+      "framework_ref": "ITIL 4 Incident Management; ITIL 4 Capacity and Performance Management; COBIT 2019 BAI04 (Managed Availability and Capacity)",
       "related_concepts": [
         "Capacity shortfall",
         "Launch incident",
@@ -4449,7 +4449,7 @@
       "bloom_level": "Analysis",
       "question": "An IS auditor finds a CRM-to-billing sync job has failed silently for four months, leaving 720 customer records inconsistent. Which recommendation is BEST?",
       "options": {
-        "A": "Fix the sync job's root cause and add reconciliation monitoring",
+        "A": "Fix the root cause, correct records, add reconciliation monitoring",
         "B": "Reconcile the 720 affected records in a one-time cleanup effort",
         "C": "Halt customer-facing operations until every record is corrected",
         "D": "Correct inconsistencies as customers raise complaints about them"
@@ -4457,7 +4457,7 @@
       "correct": "A",
       "key_concept": "Data-integrity failures need root-cause correction and detective monitoring; cleaning up affected records alone leaves the cause and the detection gap.",
       "pre_read": "Notice the failure was silent for four months. Ask which option stops it recurring and makes it visible next time.",
-      "correct_explanation": "The real weaknesses are a faulty interface and the absence of any control that would have detected it. Fixing the sync job's root cause and adding reconciliation monitoring stops new errors and surfaces any future failure quickly. A one-time cleanup corrects today's records, but the job keeps producing errors and nobody would notice them for months again.",
+      "correct_explanation": "The real weaknesses are a faulty interface and the absence of any control that would have detected it. Fixing the root cause, correcting the affected records and adding reconciliation monitoring stops new errors, repairs existing ones and surfaces any future failure quickly. A one-time cleanup corrects today's records, but the job keeps producing errors and nobody would notice them for months again.",
       "wrong_explanations": {
         "B": "A cleanup corrects existing records, but the faulty job keeps creating new mismatches and nothing detects them.",
         "C": "Stopping operations for a few hundred records is disproportionate when targeted correction is possible.",
@@ -4465,10 +4465,10 @@
       },
       "tips": [
         "Eliminate: C is a disproportionate shutdown, and D makes customers the detective control.",
-        "Final two: A beats B because fixing the cause and adding monitoring prevents recurrence, while cleanup only treats symptoms.",
+        "Final two: A beats B because it repairs the records and also fixes the cause and adds monitoring, while cleanup only treats symptoms.",
         "Exam cue: when a failure went undetected, the best answer fixes the cause and adds a detective control."
       ],
-      "framework_ref": "ITAF Performance Standards on Evidence; ISACA IT Application Controls Audit/Assurance Program; DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); DAMA-DMBOK 2nd Edition (Data Governance + Data Quality); COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
         "Referential integrity",
         "Cross-system sync",
@@ -4542,7 +4542,7 @@
         "Final two: D beats B because prototyping resolves requirements uncertainty, and B has none left to resolve.",
         "Exam cue: match the method to requirements certainty: uncertain favors prototyping or iteration, stable favors sequential."
       ],
-      "framework_ref": "ISACA Software Development Life Cycle Audit/Assurance Program; ISO/IEC 12207 (Software Life Cycle Processes); PMBOK Guide 7th Edition",
+      "framework_ref": "COBIT 2019 BAI02 (Managed Requirements Definition); ISO/IEC 12207 (Software Life Cycle Processes); PMBOK Guide 7th Edition",
       "related_concepts": [
         "Prototyping",
         "Waterfall",
@@ -4579,7 +4579,7 @@
         "Final two: A beats B because ongoing control of each output outranks a one-time approval of the tool.",
         "Exam cue: whatever produces code, the code itself must pass the same SDLC controls before production."
       ],
-      "framework_ref": "ISACA Software Development Life Cycle Audit/Assurance Program; ISO/IEC 12207 (Software Life Cycle Processes); ISACA IT Application Controls Audit/Assurance Program",
+      "framework_ref": "COBIT 2019 BAI03 (Managed Solutions Identification and Build); ISO/IEC 12207 (Software Life Cycle Processes); COBIT 2019 BAI10 (Managed Configuration)",
       "related_concepts": [
         "CASE tools",
         "Code generators",
@@ -4595,9 +4595,9 @@
       "subtopic": "Certification / Accreditation in Regulated Builds",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank's regulated payments platform has passed development testing. The CIO wants to skip formal accreditation to protect the timeline. Which recommendation by the IS auditor is BEST?",
+      "question": "A bank's regulated payments platform has passed development testing, and the CIO wants to skip formal accreditation to protect the timeline. Which recommendation by the IS auditor is BEST?",
       "options": {
-        "A": "Have the IS auditor sign off the release as independent certifier",
+        "A": "Complete an independent control certification, then release on its results",
         "B": "Have an authorized official accept residual risk before deployment",
         "C": "Treat passing development tests as sufficient evidence for release",
         "D": "Accredit the platform after go-live using production feedback"
@@ -4605,18 +4605,18 @@
       "correct": "B",
       "key_concept": "Accreditation is a management decision: an authorized official accepts residual risk on the basis of certification evidence before the system goes live.",
       "pre_read": "Ask who owns the decision to accept risk on a regulated system, and when it must happen.",
-      "correct_explanation": "Accreditation is a formal management decision in which an authorized official reviews certification evidence and accepts the residual risk before the system operates. That keeps accountability with management and gates deployment. Having the IS auditor sign off sounds independent, but it puts the auditor in the position of owning a management decision, which impairs the independence needed to audit the system later.",
+      "correct_explanation": "Accreditation is the formal management decision in which an authorized official reviews certification evidence and accepts the residual risk before the system operates, keeping accountability with management. Independent certification sounds rigorous, but it evaluates whether controls work; it is evidence for the decision, not the decision, so releasing on its results still skips the accountable risk acceptance.",
       "wrong_explanations": {
-        "A": "Accepting risk is a management responsibility; an auditor who signs off owns the decision and loses independence.",
+        "A": "Certification tests controls and informs the decision, but without an authorized official accepting residual risk, no one is accountable for releasing.",
         "C": "Development testing shows functions work but does not document control evidence or formal risk acceptance.",
         "D": "Accreditation is a pre-deployment gate; doing it after go-live leaves customers exposed to unaccepted risk."
       },
       "tips": [
         "Eliminate: C confuses testing with accreditation, and D moves the gate to after go-live.",
-        "Final two: B beats A because management accepts risk; the auditor advises but never owns the decision.",
-        "Exam cue: when an option makes the auditor approve or sign off, look for the one that keeps the decision with management."
+        "Final two: B beats A because certification supplies evidence, while accreditation is management's accountable acceptance of residual risk.",
+        "Exam cue: certification evaluates controls; accreditation is management formally accepting the remaining risk before go-live."
       ],
-      "framework_ref": "FFIEC IT Examination Handbook; NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations); ISACA Software Development Life Cycle Audit/Assurance Program",
+      "framework_ref": "NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems and Organizations); NIST SP 800-53 Rev 5 CA-6 (Authorization)",
       "related_concepts": [
         "Certification",
         "Accreditation",
@@ -4654,7 +4654,7 @@
         "Final two: D beats C because testing must gate deployment, not follow it.",
         "Exam cue: anchor on requirements before design and test before deploy; any option breaking either is wrong."
       ],
-      "framework_ref": "ISACA CISA Review Manual, Domain 3 SDLC guidance; NIST SP 800-160 Systems Security Engineering",
+      "framework_ref": "ISO/IEC 12207 (Software Life Cycle Processes); NIST SP 800-160 Vol 1 (Systems Security Engineering); COBIT 2019 BAI03 (Managed Solutions Identification and Build)",
       "_provenance": "Authored from concept: 'SDLC phases (waterfall: requirements -> design -> build -> test -> deploy -> maintain)'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-160. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
@@ -4716,7 +4716,7 @@
         "Final two: A beats B because frequent merging is shared continuous integration; only the release gate differs.",
         "Exam cue: delivery means a human approves the release; deployment means the pipeline releases automatically."
       ],
-      "framework_ref": "ISACA DevOps audit and assurance guidance; Humble and Farley, Continuous Delivery (Addison-Wesley)",
+      "framework_ref": "Humble and Farley, Continuous Delivery (Addison-Wesley); DORA / Accelerate (DevOps Research and Assessment); COBIT 2019 BAI06 (Managed IT Changes)",
       "_provenance": "Authored from concept: 'CI/CD distinctions (continuous integration / delivery / deployment)'. Foundational recall tier. Public sources: ISACA DevOps audit guidance; Humble and Farley, Continuous Delivery. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
@@ -4726,29 +4726,29 @@
       "subtopic": "User Acceptance Testing. Purpose and Timing",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A project manager is planning user acceptance testing (UAT) for a new system. What is its PRIMARY purpose?",
+      "question": "A project manager is scheduling user acceptance testing (UAT) for a new billing system. When is UAT MOST appropriately performed?",
       "options": {
-        "A": "Developers verify that each code module works correctly in isolation",
-        "B": "Testers confirm the integrated system meets its technical specifications",
-        "C": "Engineers confirm that the production environment can sustain peak load",
-        "D": "Business users confirm the system meets their agreed requirements"
+        "A": "During construction, as each module is completed",
+        "B": "In parallel with system testing to shorten the schedule",
+        "C": "After go-live, using live transactions in production",
+        "D": "After system testing passes, in a production-like environment"
       },
       "correct": "D",
-      "key_concept": "UAT is where business users confirm the system meets agreed requirements and is fit for use before production cutover.",
-      "pre_read": "Look at who performs each test. Ask which group must accept the system for business use.",
-      "correct_explanation": "UAT is the final test stage, where business users confirm that the system meets their agreed requirements and works for real business processes before cutover. Their sign-off is the acceptance decision. Checking the integrated system against technical specifications sounds similar, but that is system testing by the test team; a system can meet its specifications yet still fail business needs.",
+      "key_concept": "UAT follows successful system testing and precedes cutover, with business users testing in a production-like environment.",
+      "pre_read": "Place UAT in the test sequence. Ask what must be stable before business users can accept the system.",
+      "correct_explanation": "UAT is the final acceptance gate: business users confirm the system meets their requirements once system testing has removed technical defects, using a production-like environment and data so results reflect real use, and before cutover. Running UAT alongside system testing saves time, but users then test a moving build, find defects the test team should catch, and may accept a version that later changes.",
       "wrong_explanations": {
-        "A": "Testing modules in isolation is unit testing, performed by developers early in construction.",
-        "B": "Verifying the integrated system against specifications is system testing; it does not give business acceptance.",
-        "C": "Confirming peak-load capacity is performance or stress testing, not user acceptance."
+        "A": "Module-level checks during construction are unit testing by developers; business acceptance needs the integrated system.",
+        "B": "Overlapping with system testing means users accept an unstable build that may still change after their sign-off.",
+        "C": "Acceptance after go-live is too late; the business would be using a system it never accepted."
       },
       "tips": [
-        "Eliminate: A describes unit testing, and C describes performance testing.",
-        "Final two: D beats B because acceptance belongs to business users, while system testing checks technical specifications.",
-        "Exam cue: when the question says acceptance, look for business users confirming their own requirements."
+        "Eliminate: A is unit-level work during build, and C accepts the system only after it is live.",
+        "Final two: D beats B because acceptance should rest on a stable, system-tested build, not one still changing.",
+        "Exam cue: UAT sits after system testing and before cutover, in a production-like environment, run by business users."
       ],
-      "framework_ref": "ISACA CISA Review Manual, Domain 3 testing levels; ISTQB Foundation Level syllabus",
-      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; ISTQB Foundation Level syllabus. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "framework_ref": "ISTQB Foundation Level Syllabus; COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)",
+      "_provenance": "Authored from concept: 'UAT (User Acceptance Testing) purpose and timing'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; ISTQB Foundation Level syllabus. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to UAT timing to avoid overlap with d3_003/d3_029.",
       "style_version": 2
     },
     {
@@ -4788,29 +4788,29 @@
       "subtopic": "Source Code Escrow. Purpose",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A firm licensing critical software from a small vendor negotiates a source code escrow agreement. What is the agreement's PRIMARY purpose?",
+      "question": "A firm has a source code escrow agreement for critical software from a small vendor. Which control BEST assures the deposit would be usable if released?",
       "options": {
-        "A": "Transfer source code ownership to the licensee at contract signing",
-        "B": "Keep an offsite copy of the code for the vendor's disaster recovery",
-        "C": "Release code to the licensee if the vendor fails or abandons it",
-        "D": "Have an independent party review code quality before each release"
+        "A": "The vendor's annual written confirmation that deposits are current",
+        "B": "Contract terms defining release triggers such as vendor insolvency",
+        "C": "Agent verification that the deposit builds the live version",
+        "D": "Storing the deposit with the vendor's own legal counsel"
       },
       "correct": "C",
-      "key_concept": "Escrow protects the licensee's continuity: an independent agent holds the code and releases it only on defined triggers such as vendor failure.",
-      "pre_read": "Ask whose risk escrow protects: the vendor's or the licensee's.",
-      "correct_explanation": "Escrow protects the licensee against losing support for critical software. An independent agent holds the source code and build material and releases it to the licensee only on defined triggers such as vendor insolvency or abandonment. An offsite copy for disaster recovery also involves a third party holding code, but it serves the vendor's continuity and gives the licensee no right to the code.",
+      "key_concept": "Escrow assurance requires independent, periodic verification that the deposit is complete, current and builds the production version.",
+      "pre_read": "Ask what happens if the vendor fails tomorrow and the deposit is outdated.",
+      "correct_explanation": "Escrow only protects the licensee if the deposited material can actually rebuild the software in use. Periodic verification by the escrow agent, compiling the deposit and comparing it with the live version, provides that evidence. Clear release triggers are essential, but they only determine when the code is handed over, not whether what is handed over will work.",
       "wrong_explanations": {
-        "A": "Escrow does not transfer ownership; the vendor keeps its intellectual property unless a trigger event occurs.",
-        "B": "An offsite backup protects the vendor's own recovery and gives the licensee no access to the code.",
-        "D": "Escrow agents may verify deposits, but reviewing code quality before releases is not the purpose of escrow."
+        "A": "A vendor's own confirmation is self-assertion; it does not show the deposit is complete or will build.",
+        "B": "Triggers decide when code is released, but a stale or incomplete deposit is useless when it arrives.",
+        "D": "The vendor's counsel is not independent, so the licensee cannot rely on access when the vendor fails."
       },
       "tips": [
-        "Eliminate: A transfers ownership at signing, and D describes a quality review rather than escrow.",
-        "Final two: C beats B because escrow protects the licensee's continuity, while an offsite backup protects only the vendor.",
-        "Exam cue: escrow equals release to the licensee on trigger events such as bankruptcy or abandonment."
+        "Eliminate: A relies on vendor self-assertion, and D leaves the deposit with a party that is not independent.",
+        "Final two: C beats B because triggers govern when code is released, while verification proves it will work.",
+        "Exam cue: for escrow assurance, look for independent verification that the deposit is complete and buildable."
       ],
-      "framework_ref": "ISACA CISA Review Manual, Domain 3 third-party software acquisition guidance; NIST SP 800-161r1 Supply Chain Risk Management",
-      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.30 (Outsourced Development); NIST SP 800-161 Rev 1 (Cybersecurity Supply Chain Risk Management); COBIT 2019 APO10 (Managed Vendors)",
+      "_provenance": "Authored from concept: 'Source code escrow purpose'. Foundational recall tier. Public sources: ISACA CISA Review Manual Domain 3; NIST SP 800-161r1 Supply Chain Risk Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: retargeted to escrow verification to avoid overlap with d3_015.",
       "style_version": 2
     }
   ]

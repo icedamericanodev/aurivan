@@ -70,6 +70,10 @@ def check(q):
         errs.append("stem has no capitalised priority word (BEST/MOST/FIRST/…)")
     if not stem.rstrip().endswith("?"):
         errs.append("stem must end with '?'")
+    # Real items are one or two sentences. Ignore dots inside numbers and abbreviations.
+    sentences = re.findall(r"[^.?!]+(?:[.?!](?=\s|$))", re.sub(r"(\d)\.(\d)|\b(e\.g|i\.e|vs|Inc|U\.S)\.", r"\1\2", stem))
+    if len(sentences) > 2:
+        errs.append(f"stem has {len(sentences)} sentences (max 2)")
     # 2. Named actor (rule: the stem says who acts)
     if not any(a in stem.lower() for a in ACTOR_WORDS):
         warns.append("stem names no actor (IS auditor, audit firm, management…)")

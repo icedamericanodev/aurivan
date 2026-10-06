@@ -13,7 +13,7 @@ ISACA mindset picks one.
 
 | Field | Rule |
 |---|---|
-| `question` | ≤ 35 words, 1–2 sentences, ends with `?`, contains a CAPITALISED priority word. Names who acts (IS auditor, audit firm, management…). Keeps at least one concrete fact the candidate must weigh. |
+| `question` | ≤ 35 words, at most 2 sentences (harness-checked), ends with `?`, contains a CAPITALISED priority word. Names who acts (IS auditor, audit firm, management…). Keeps at least one concrete fact the candidate must weigh. |
 | `scenario_context` | **Removed.** Fold the one fact that matters into the stem. |
 | `options` A–D | ≤ 12 words each, grammatically parallel. By words, the key is never uniquely the longest, and its length is 0.67–1.5× the distractor average. By characters, the key is at most 8 longer than the longest distractor, and is the longest option in 15–30% of a domain (chance is 25%; too few is a reverse tell). Test-wise candidates pick the longest answer. |
 | `correct_explanation` | 40–75 words. Why the key wins, then why the runner-up loses. |
