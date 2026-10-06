@@ -8317,6 +8317,8 @@ function isOptionLetterRef(text, letter, offset, selfLetter) {
   var prevWord = pm ? pm[1] : '';
   // "pick A", "than A", "option A" → always an option reference.
   if (prevWord && LETTER_CHOICE_WORDS[prevWord.toLowerCase()] === 1) return true;
+  // Exam-style v2 tips open "Eliminate: A …": that A is always an option.
+  if (/^Eliminate:\s*$/.test(before)) return true;
   if (prevWord && LETTER_LABEL_WORDS[prevWord.toLowerCase()] === 1) return false;
   // ALL-CAPS emphasis ("IS A", "THAN A") is English; "B, C, OR D" is a list.
   if (prevWord.length > 1 && prevWord === prevWord.toUpperCase() &&

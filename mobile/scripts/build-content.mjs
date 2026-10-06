@@ -99,6 +99,8 @@ export function tokenizeLetters(text, selfLetter) {
 
     // "pick A", "than A", "option A" → always an option reference.
     if (prevWord && CHOICE_WORDS.has(prevWord.toLowerCase())) return true;
+    // Exam-style v2 tips open "Eliminate: A …" — that A is always an option.
+    if (/^Eliminate:\s*$/.test(before)) return true;
     // "Annex A", "Architecture B" → a label, not an option.
     if (prevWord && spaced && LABEL_WORDS.has(prevWord.toLowerCase())) return false;
     // ALL-CAPS emphasis like "IS A", "THAN A" → English. ("B, C, OR D" is a list.)
