@@ -8643,6 +8643,19 @@ function endSession() {
 
 // ── SEQUENTIAL TIPS REVEAL — Decision 3 (Treatment C) ──
 // Strict order Trap → Mindset → Exam-day; user can only unlock the next tip.
+// Exam-style v2 tips carry their own label ("Eliminate: …", "Final two: …",
+// "Exam cue: …"); older tips are labelled by position (Trap → Mindset → Exam-day).
+var V2_TIP_LABELS = { 'Eliminate': 'Eliminate two', 'Final two': 'Final two', 'Exam cue': 'Exam cue' };
+function tipParts(text, idx) {
+  var m = /^(Eliminate|Final two|Exam cue):\s*/.exec(text);
+  if (m) {
+    var rest = text.slice(m[0].length);
+    return { label: V2_TIP_LABELS[m[1]], body: rest.charAt(0).toUpperCase() + rest.slice(1) };
+  }
+  var legacy = ['Trap', 'Mindset', 'Exam-day'];
+  return { label: legacy[idx] || 'Exam-day', body: text };
+}
+
 function unlockTip(qId, idx, total) {
   var container = document.getElementById('tips-seq-' + qId);
   if (!container) return;
@@ -8658,7 +8671,7 @@ function unlockTip(qId, idx, total) {
   var rawText = S.current.tips[idx];
   // Apply letter remapping for shuffled options
   var shuffle = S.currentShuffle || DISPLAY_LETTERS;
-  var text = mapLettersInText(rawText, shuffle);
+  var text = tipParts(mapLettersInText(rawText, shuffle), idx).body;
   var bodyText = escapeHtml(text);
   // Linkify principle IDs in Mindset tip
   var tipTypes = ['trap', 'mind', 'exam'];
@@ -8939,15 +8952,15 @@ function showResult(chosen, correct, timeout) {
     .filter(function(t){ return t && t.trim(); })
     .map(function(t){ return mapLettersInText(t, shuffle); });
   var tipTypes = ['trap', 'mind', 'exam']; // 1=Trap, 2=Mindset, 3=Exam-day
-  var tipLabels = { trap: 'Trap', mind: 'Mindset', exam: 'Exam-day' };
   var tipQid = q.id || 'q';
   // Auto-unlock count: 1 if wrong, 0 if correct (per Decision 3 state rules)
   var initialUnlocked = (!ok && !timeout) ? 1 : 0;
   var tipsHtml = tipsArr.map(function(t, i){
     var type = tipTypes[i] || 'exam';
     var isUnlocked = i < initialUnlocked;
+    var parts = tipParts(t, i);
     // Linkify principle IDs in Mindset (index 1) body. Pattern: ALL-CAPS-WITH-HYPHENS, 2+ segments.
-    var bodyText = escapeHtml(t);
+    var bodyText = escapeHtml(parts.body);
     if (type === 'mind') {
       bodyText = bodyText.replace(/\b([A-Z]{3,}(?:-[A-Z]+){1,5})\b/g, function(_, pid){
         return '<a class="principle-link" href="#principles/' + pid + '" onclick="openPrinciple(\'' + pid + '\'); return false;">' + pid + '</a>';
@@ -8960,7 +8973,7 @@ function showResult(chosen, correct, timeout) {
       + '<div class="seq-tip-header">'
         + '<span class="seq-num">0' + (i + 1) + '</span>'
         + '<span class="seq-dot"></span>'
-        + '<span class="seq-label">' + tipLabels[type] + '</span>'
+        + '<span class="seq-label">' + escapeHtml(parts.label) + '</span>'
         + (!isUnlocked ? '<span class="seq-lock">Tap to reveal ›</span>' : '')
       + '</div>'
       + (isUnlocked
