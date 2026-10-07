@@ -1,5 +1,5 @@
 /**
- * Settings — certification, appearance, study goal, reminders, haptics,
+ * Settings — certification, exam date, appearance, study goal, reminders, haptics,
  * data, and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
@@ -10,6 +10,9 @@ import { Alert, Linking, View } from 'react-native';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, T, ToggleRow } from '../components/ui';
 import { CERTIFICATIONS } from '../content/certifications';
+import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
+import { dayKey } from '../engine/streak';
+import { changeExamDate } from '../lib/activity';
 import { config } from '../lib/config';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../lib/reminders';
 import { useActiveCert } from '../lib/useActiveCert';
@@ -19,6 +22,13 @@ import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
 
 const GOALS = [10, 20, 40];
+/** Fine-tune the exam date: [chip label, days to move]. */
+const DATE_STEPS: [string, number][] = [
+  ['1 week earlier', -7],
+  ['1 day earlier', -1],
+  ['1 day later', 1],
+  ['1 week later', 7],
+];
 
 export default function Settings() {
   const { cert } = useActiveCert();
@@ -26,6 +36,16 @@ export default function Settings() {
   const resetCert = useProgress((p) => p.resetCert);
   const clearSession = useSession((x) => x.clear);
   const [busy, setBusy] = useState(false);
+  // "Now" is read once per visit (render stays pure); presets move in months.
+  const [now] = useState(() => Date.now());
+  const examDate = s.examDates[cert.id];
+  const presetIdx = presetIndexFor(examDate, now);
+  // Step the date a day or a week at a time, never before today.
+  const step = (days: number) => {
+    if (!examDate) return;
+    const next = addDays(examDate, days);
+    changeExamDate(cert.id, next < dayKey(now) ? dayKey(now) : next);
+  };
 
   const toggleReminder = async (enabled: boolean) => {
     setBusy(true);
@@ -83,6 +103,32 @@ export default function Settings() {
           />
         ))}
       </View>
+
+      {/* Exam date: the same presets as onboarding, plus day/week steps for
+          the exact date (the exam-eve and exam-day plans depend on it).
+          Changing it rebuilds today's plan for this cert. */}
+      <Section title="Exam date" meta={examDate ? examDateLabel(examDate) : 'Not set'} />
+      <Gap h={space.sm} />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+        {EXAM_DATE_PRESETS.map((p, i) => (
+          <Chip
+            key={p.label}
+            label={p.label}
+            selected={presetIdx === i}
+            onPress={() => changeExamDate(cert.id, p.months ? dateInMonths(p.months, now) : undefined)}
+          />
+        ))}
+      </View>
+      {examDate && (
+        <>
+          <Gap h={space.sm} />
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+            {DATE_STEPS.map(([label, days]) => (
+              <Chip key={label} label={label} selected={false} onPress={() => step(days)} />
+            ))}
+          </View>
+        </>
+      )}
 
       {/* Same setting as the switch at the top of You: they always agree. */}
       <Section title="Appearance" />

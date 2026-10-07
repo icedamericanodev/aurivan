@@ -44,7 +44,7 @@ export function planText(item: PlanItem): { title: string; meta: string; short: 
   const mins = itemMinutes(item);
   switch (item.kind) {
     case 'review':
-      return { title: `Review ${item.count} due`, meta: `About ${mins} minutes · questions you missed`, short: 'Spaced review' };
+      return { title: item.label ?? `Review ${item.count} due`, meta: `About ${mins} minutes · questions you missed`, short: 'Spaced review' };
     case 'lesson':
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
     case 'practice':

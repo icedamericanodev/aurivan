@@ -49,7 +49,9 @@ export function finishSession() {
     for (const id of s.questionIds) {
       const r = s.responses[id];
       if (r) {
-        progress.recordAnswer(s.certId, id, r.correct, r.confidence);
+        // Readiness is logged ONCE after the batch (below), not after each of
+        // up to 150 answers: a low partway through must not reset the hold.
+        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false });
         if (!r.correct) progress.recordMistake(s.certId, id, displayToOriginal(r.display, s.perms[id]));
       }
       else skipped.push(id);
@@ -57,6 +59,7 @@ export function finishSession() {
     // Skipped questions come back for review, but don't count as studied
     // (no streak, daily-goal or readiness credit for answering nothing).
     if (skipped.length) progress.queueForReview(s.certId, skipped);
+    progress.logReadinessNow(s.certId);
     const score = scoreSession(s);
     // If the learner reopens the app after the deadline, the exam ended AT
     // the deadline — not now.

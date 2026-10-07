@@ -68,6 +68,18 @@ export function newDayPlan(day: string, certId: string, items: PlanItem[], readi
   };
 }
 
+/**
+ * Swap today's plan for a freshly built one (the exam date changed, so the
+ * day's advice changed). Today's numbers carry over: answers, minutes and the
+ * readiness the day started at. The items start fresh (a new plan can't
+ * inherit ticks from different items). A plan from another day or cert is
+ * simply replaced.
+ */
+export function replanDay(old: DayPlan | undefined, fresh: DayPlan): DayPlan {
+  if (!old || old.day !== fresh.day || old.certId !== fresh.certId) return fresh;
+  return { ...fresh, start: old.start, answered: old.answered, correct: old.correct, minutes: old.minutes };
+}
+
 /** Questions needed to finish a review/practice item: 80% of the PLANNED count (never the session size). */
 export function itemTarget(item: PlanItem): number {
   if (item.kind !== 'review' && item.kind !== 'practice') return 0;

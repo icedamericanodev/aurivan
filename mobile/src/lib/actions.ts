@@ -11,7 +11,8 @@ const openSession = () => router.push('/session');
 export function runPlanItem(item: PlanItem, certId: string) {
   switch (item.kind) {
     case 'review':
-      return guardedStart(() => startReview(certId), openSession);
+      // A labelled review is the exam eve's light review: stop at its count.
+      return guardedStart(() => startReview(certId, item.label ? item.count : undefined), openSession);
     case 'lesson':
       return router.push(`/lesson/${item.lessonId}`);
     case 'practice':
