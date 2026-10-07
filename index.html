@@ -6695,7 +6695,7 @@ function sanitizeIllustrationSvg(s) {
 
 function renderItemBody(raw, domainId, searchQ) {
   if (!raw || typeof raw !== 'object') {
-    return '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
+    return '<p class="notes-summary" style="color:var(--muted);font-style:italic">More on this topic is coming soon.</p>';
   }
 
   // Tracker: mark fields as already rendered so generic pass skips them
@@ -6817,7 +6817,7 @@ function renderItemBody(raw, domainId, searchQ) {
     html += '<button class="notes-practice-link" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">'
       + '&#9654; Practice questions for Domain ' + domainId + '</button>';
   }
-  return html || '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
+  return html || '<p class="notes-summary" style="color:var(--muted);font-style:italic">More on this topic is coming soon.</p>';
 }
 
 // ── MAIN RENDER ──
@@ -12090,7 +12090,8 @@ const CHANGELOG = [
     version: APP_VERSION,
     title: 'Current sources',
     items: [
-      { cat: 'fixed', text: 'A few payment-card and digital-identity questions now cite the current editions of those standards.' }
+      { cat: 'fixed', text: 'A few payment-card and digital-identity questions now cite the current editions of those standards.' },
+      { cat: 'improved', text: 'Topic notes no longer send you to an outside study guide for more detail.' }
     ]
   },
   {

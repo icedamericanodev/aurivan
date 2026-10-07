@@ -9,6 +9,9 @@ For internal/technical history, see git log and PR descriptions.
 ### Fixed
 - A few payment-card and digital-identity questions now cite the current editions of those standards.
 
+### Improved
+- Topic notes no longer send you to an outside study guide for more detail.
+
 ## [v10.53] — Every exam topic covered
 
 ### New
