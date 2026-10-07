@@ -130,7 +130,8 @@ export function T({
   num?: boolean;
   accessibilityLabel?: string;
   accessibilityRole?: 'header' | 'text';
-  /** Override the spec's per-variant cap (theme/tokens.ts `maxScale`). Never 1.0. */
+  /** Override the spec's per-variant cap (theme/tokens.ts `maxScale`). Never 1.0, except text inside a
+   *  fixed-size image (the share card), whose wrapper's accessibilityLabel speaks the full text. */
   maxFontSizeMultiplier?: number;
   numberOfLines?: number;
 }) {

@@ -27,6 +27,7 @@ export { default as Play } from 'lucide-react-native/icons/play';
 export { default as RotateCcw } from 'lucide-react-native/icons/rotate-ccw';
 export { default as Scale } from 'lucide-react-native/icons/scale';
 export { default as Settings } from 'lucide-react-native/icons/settings';
+export { default as Share2 } from 'lucide-react-native/icons/share-2';
 export { default as ShieldCheck } from 'lucide-react-native/icons/shield-check';
 export { default as SunMoon } from 'lucide-react-native/icons/sun-moon';
 export { default as Sun } from 'lucide-react-native/icons/sun';

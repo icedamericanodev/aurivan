@@ -165,6 +165,15 @@ await page.mouse.wheel(0, 260);
 await page.waitForTimeout(600);
 await page.screenshot({ path: `${out}/29b-mindset-growth-card.png` });
 console.log('shot signature moments');
+// Share card: the preview sheet from You (demo data has a readiness range).
+await shot('31-share-card', '/you');
+await page.getByRole('button', { name: 'Share progress', exact: true }).click();
+await page.waitForTimeout(1200);
+await page.screenshot({ path: `${out}/31-share-card.png` });
+await page.getByRole('button', { name: 'Streak', exact: true }).click().catch(() => {});
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/31b-share-card-streak.png` });
+console.log('shot share card');
 // Saved questions, with a few bookmarks (row opens the question; bookmark removes).
 await edit('aurivan.progress.v1', "v.state.byCert.cisa.bookmarks = ['d4_250', 'd4_190', 'd1_010'];");
 await shot('17b-saved', '/saved');
