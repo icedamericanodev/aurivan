@@ -154,6 +154,8 @@ acceptable when the reference is to the broader topical body of guidance.
 - AICPA reporting standards
 - SSAE 18 AT-C 105 (Concepts Common to All Attestation Engagements)
 - SSAE 18 AT-C 205 (Examination Engagements)
+- AICPA AT-C 215 (Agreed-Upon Procedures Engagements, as revised by SSAE 19)
+- IAASB ISRS 4400 (Revised)
 
 ## IIA
 
