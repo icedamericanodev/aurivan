@@ -7,8 +7,10 @@ import Constants from 'expo-constants';
 import { useState } from 'react';
 import { router } from 'expo-router';
 import { Alert, Linking, View } from 'react-native';
+import { BrandLockup, PillarList } from '../components/brand';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, T, ToggleRow } from '../components/ui';
+import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
@@ -20,6 +22,7 @@ import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
+import { useTheme } from '../theme/useTheme';
 
 const GOALS = [10, 20, 40];
 /** Fine-tune the exam date: [chip label, days to move]. */
@@ -32,6 +35,7 @@ const DATE_STEPS: [string, number][] = [
 
 export default function Settings() {
   const { cert } = useActiveCert();
+  const { c, isDark } = useTheme();
   const s = useSettings();
   const resetCert = useProgress((p) => p.resetCert);
   const clearSession = useSession((x) => x.clear);
@@ -159,7 +163,16 @@ export default function Settings() {
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
 
       <Section title="About" />
-      <Gap h={space.sm} />
+      <Gap h={space.md} />
+      {/* Our vision: the same promise as the welcome screen (content/brand.ts). */}
+      <BrandLockup tone={isDark ? 'dark' : 'light'} height={28} />
+      <Gap h={space.lg} />
+      <T v="caption" color={c.accentText}>Our vision</T>
+      <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{TAGLINE}</T>
+      <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{VISION_LINE}</T>
+      <Gap h={space.lg} />
+      <PillarList look="rows" />
+      <Gap h={space.xl} />
       <T v="meta">
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.
       </T>

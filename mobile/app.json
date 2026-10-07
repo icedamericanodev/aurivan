@@ -7,10 +7,15 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "backgroundColor": "#0E0F1A",
+    "backgroundColor": "#F3F1EA",
     "ios": {
       "bundleIdentifier": "com.aurivan.app",
       "supportsTablet": false,
+      "icon": {
+        "light": "./assets/icon.png",
+        "dark": "./assets/icon-dark.png",
+        "tinted": "./assets/icon-tinted.png"
+      },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -18,7 +23,7 @@
     "android": {
       "package": "com.aurivan.app",
       "adaptiveIcon": {
-        "backgroundColor": "#0B1E3D",
+        "backgroundColor": "#1E4A34",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -41,9 +46,13 @@
         "expo-splash-screen",
         {
           "image": "./assets/splash-icon.png",
-          "imageWidth": 160,
+          "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#0B1E3D"
+          "backgroundColor": "#F3F1EA",
+          "dark": {
+            "image": "./assets/splash-icon-dark.png",
+            "backgroundColor": "#1E4A34"
+          }
         }
       ],
       "expo-notifications"

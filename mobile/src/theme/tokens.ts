@@ -108,6 +108,31 @@ export const dark: Palette = {
 };
 
 /**
+ * Brand colours for the "True North" mark and lockup (DESIGN_SYSTEM.md, "Brand").
+ * The lockup has two fixed tones that do NOT follow the theme:
+ * - `light`: on paper (bg). Ring/book in accent, honey tip, forest needle half.
+ * - `dark`: on forest or the dark bg. Ring/book in sap, light honey, paper half.
+ * Honey appears once per mark, on the needle's north tip, and never carries meaning.
+ */
+export interface BrandTone {
+  ring: string; // the growth-ring arc and the open book
+  honey: string; // the needle's west (left) half: the north tip
+  needle: string; // the needle's east (right) half
+  word: string; // the "aurivan" wordmark
+  leaf: string; // the leaf over the i
+}
+export const brand: { light: BrandTone; dark: BrandTone } = {
+  light: { ring: '#2B6E4A', honey: '#7A5100', needle: '#1E4A34', word: '#17231B', leaf: '#2B6E4A' },
+  dark: { ring: '#A9D9BA', honey: '#E9C46A', needle: '#F3F1EA', word: '#F3F1EA', leaf: '#A9D9BA' },
+};
+
+/** Pillar glyphs (welcome + About): a line in accentText over a leaf fill. */
+export const pillarGlyph = {
+  light: { stroke: '#24603F', fill: '#A9D9BA' },
+  dark: { stroke: '#93CFAA', fill: '#2E5440' },
+} as const;
+
+/**
  * Paper grain overlay opacity (spec §10.5). Never higher: at 5% the weakest
  * text pair (muted on bg) still passes 4.7:1.
  */
