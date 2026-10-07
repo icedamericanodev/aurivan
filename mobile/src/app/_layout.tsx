@@ -77,6 +77,8 @@ export default function RootLayout() {
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />
         <Stack.Screen name="caught-up" />
+        <Stack.Screen name="bank/index" />
+        <Stack.Screen name="bank/[domain]" />
       </Stack>
       {/* Paper grain over every screen (touch-through, hidden from screen readers). */}
       <Grain />

@@ -7,7 +7,7 @@
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Crosshair, ICON_STROKE, Play, RotateCcw } from '../../components/icons';
+import { Crosshair, ICON_STROKE, Library, Play, RotateCcw } from '../../components/icons';
 import { Button, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../../engine/dayPlan';
@@ -66,7 +66,6 @@ export default function Practice() {
           trailing={dueCount ? <Trail value={String(dueCount)} unit="due" /> : undefined}
           accessibilityLabel={`Spaced review, ${dueCount ? `${dueCount} due` : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up'))}
-          last={!focus}
         />
         {focus && (
           <ListRow
@@ -74,9 +73,16 @@ export default function Practice() {
             title={`Weak area: ${focus.short}`}
             subtitle="Most points to gain"
             onPress={() => guardedStart(() => startPractice(cert.id, { count: 10, domainId: focus.id, title: focus.name }), open)}
-            last
           />
         )}
+        {/* Browse every question by domain and topic (app/bank). Never shows bank size. */}
+        <ListRow
+          icon={icon(Library)}
+          title="Question bank"
+          subtitle="Browse by domain and topic"
+          onPress={() => router.push('/bank')}
+          last
+        />
       </Enter>
 
       <Enter i={2}>
