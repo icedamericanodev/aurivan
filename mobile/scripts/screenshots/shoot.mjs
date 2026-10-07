@@ -117,6 +117,48 @@ await edit('aurivan.progress.v1', `
     done: [true, true, true], start: { score: 62, domains: { '1': .74, '2': .66, '3': .55, '4': .58, '5': .6 } },
     answered: 31, correct: 25, minutes: 24, celebrated: true };`);
 await shot('20-clearing', '/home');
+// ── Phase 5b signature moments ──────────────────────────────────────
+// A local "YYYY-MM-DD" n days from today, as source for edit().
+const keyIn = (n) => `(() => { const d = new Date(); d.setDate(d.getDate() + (${n}));
+  const p = (x) => String(x).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); })()`;
+// Slips for the eve card: tag a few mistakes (role ×3, priority ×2).
+await edit('aurivan.progress.v1', `
+  const m = v.state.byCert.cisa.mistakes;
+  Object.keys(m).forEach((id, i) => { if (i < 5) m[id].slip = i < 3 ? 'role' : 'priority'; });`);
+// Exam-ready: a strong learner (9 in 10 right, range ~86–94) whose lower
+// bound has been logged at 86 for the last 7 days. A fresh, unfinished plan.
+await edit('aurivan.progress.v1', `
+  const cp = v.state.byCert.cisa;
+  Object.keys(cp.answers).forEach((id, i) => { const ok = i % 10 !== 0; cp.answers[id] = { ...cp.answers[id], lastCorrect: ok, correctCount: ok ? 1 : 0 }; });
+  const log = []; for (let k = 6; k >= 0; k--) { const day = ${keyIn('-k')}; log.push({ day, min: 86, last: 86 }); }
+  cp.moments = { readiness: log };
+  if (v.state.days) delete v.state.days.cisa;`);
+await shot('26-exam-ready', '/home', 2400);
+// Dismissed from here on (it shows once per cert).
+await edit('aurivan.progress.v1', 'v.state.byCert.cisa.moments.readySeenAt = Date.now();');
+// Exam eve (exam tomorrow), then exam day.
+await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(1)};`);
+await shot('27-exam-eve', '/home');
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 500);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/27b-exam-eve-scrolled.png` });
+await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(0)};`);
+await shot('28-exam-day', '/home');
+await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(38)};`);
+// Mindset growth (You): first-try answers from make_seed.py (__growth); the
+// demo's other answers count as re-answered, so the windows are the seeded ones.
+await edit('aurivan.progress.v1', `
+  const g = ${seed.__growth}; const cp = v.state.byCert.cisa;
+  Object.keys(cp.answers).forEach((id) => { cp.answers[id].attempts = 2; });
+  Object.assign(cp.answers, g.answers); Object.assign(cp.mistakes, g.mistakes);`);
+await shot('29-mindset-growth', '/you');
+await page.getByText('Mindset growth', { exact: true }).scrollIntoViewIfNeeded();
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 260);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/29b-mindset-growth-card.png` });
+console.log('shot signature moments');
 // Saved questions, with a few bookmarks (row opens the question; bookmark removes).
 await edit('aurivan.progress.v1', "v.state.byCert.cisa.bookmarks = ['d4_250', 'd4_190', 'd1_010'];");
 await shot('17b-saved', '/saved');

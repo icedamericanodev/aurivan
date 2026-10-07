@@ -6,16 +6,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { getCertification, CERTIFICATIONS } from '../content/certifications';
+import { daysToExam } from '../engine/examDay';
 import { computeReadiness } from '../engine/readiness';
 import { dueIds } from '../engine/srs';
 import { dayKey, visibleStreak } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 
+/**
+ * Calendar days from today to the exam date (local days, DST-safe; the same
+ * maths as the exam-eve card in engine/examDay.ts). null = no date set.
+ */
 export function daysUntil(dateStr?: string): number | null {
-  if (!dateStr) return null;
-  const exam = new Date(`${dateStr}T00:00:00`).getTime();
-  return Math.ceil((exam - Date.now()) / 86_400_000);
+  return daysToExam(dateStr, dayKey(Date.now()));
 }
 
 export function useActiveCert() {

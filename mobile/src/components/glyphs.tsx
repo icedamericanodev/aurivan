@@ -296,6 +296,7 @@ export function GrowthRings({
   colors,
   track,
   accessibilityLabel,
+  replay = false,
 }: {
   preset: RingPreset;
   /** 0..1 per domain, blueprint order (inner → outer). */
@@ -305,6 +306,8 @@ export function GrowthRings({
   colors: string[] | string;
   track: string;
   accessibilityLabel?: string;
+  /** Grow the arcs on mount even if this preset already grew today (a signature moment). */
+  replay?: boolean;
 }) {
   const { k, r0, gap, pith } = RING_PRESETS[preset];
   // The box fits the outer ring plus its wobble (+4.2% at most), so nothing clips.
@@ -316,7 +319,9 @@ export function GrowthRings({
     () => rings.map((ring, i) => ringArc(c, ring.rm, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0.001, Math.min(1, mastery[i] ?? 0)))),
     [rings, mastery, c],
   );
-  const animate = grownOn[preset] !== todayKey();
+  // Grows once a day per preset, or every mount when `replay` asks for it.
+  // RingArc's timing honours Reduce Motion (static under it).
+  const animate = replay || grownOn[preset] !== todayKey();
   useEffect(() => {
     grownOn[preset] = todayKey();
   }, [preset]);

@@ -64,7 +64,7 @@ export const PATTERN_COPY: Record<SlipPattern, SlipCoachCopy> = {
 };
 
 /** Tie-break order: game-backed, derived patterns first. */
-const PATTERN_ORDER: SlipPattern[] = ['runner-up', 'priority', 'overconfident', 'role', 'tech-first', 'symptom', 'misread', 'knowledge'];
+export const PATTERN_ORDER: SlipPattern[] = ['runner-up', 'priority', 'overconfident', 'role', 'tech-first', 'symptom', 'misread', 'knowledge'];
 
 /** Every pattern one mistake shows (may be several, may be none). */
 export function patternsOf(m: SlipInput): SlipPattern[] {

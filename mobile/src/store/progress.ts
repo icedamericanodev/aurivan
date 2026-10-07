@@ -7,9 +7,12 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getCertification } from '../content/certifications';
 import type { Letter } from '../content/types';
+import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
-import type { AnswerRecord } from '../engine/readiness';
+import { computeReadiness, type AnswerRecord } from '../engine/readiness';
+import { readinessRange } from '../engine/readinessRange';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
@@ -38,6 +41,17 @@ export interface MistakeEntry {
 
 export type GameId = 'trap' | 'sprint' | 'priority';
 
+/**
+ * Signature moments (Phase 5b). OPTIONAL on purpose: saves from before 5b
+ * have no `moments` and load as "no history yet" (no migration needed).
+ */
+export interface CertMoments {
+  /** A small daily log of the readiness range's lower bound (engine/examReady.ts). */
+  readiness?: ReadinessDay[];
+  /** When the one-time "You're ready" panel was dismissed (once per cert). */
+  readySeenAt?: number;
+}
+
 export interface CertProgress {
   answers: Record<string, AnswerRecord>;
   review: Record<string, ReviewEntry>;
@@ -46,6 +60,8 @@ export interface CertProgress {
   lessonsDone: string[];
   mistakes: Record<string, MistakeEntry>;
   gameBest: Partial<Record<GameId, number>>;
+  /** Phase 5b: optional, see CertMoments. */
+  moments?: CertMoments;
 }
 
 const emptyCert = (): CertProgress => ({
@@ -107,6 +123,10 @@ interface ProgressState {
   completeLesson: (certId: string, lessonId: string) => void;
   recordGame: (certId: string, game: GameId, score: number) => void;
   recordMock: (certId: string, result: MockResult) => void;
+  /** Log today's readiness lower bound (null = not enough data) for the exam-ready hold. */
+  noteReadiness: (certId: string, day: string, low: number | null) => void;
+  /** The learner closed the "You're ready" panel; it never shows again for this cert. */
+  dismissReady: (certId: string) => void;
   resetCert: (certId: string) => void;
 }
 
@@ -168,8 +188,11 @@ export const useProgress = create<ProgressState>()(
           // Today's clearing card counts answers for this cert's plan, today only.
           const cur = s.days[certId];
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
+          // Exam-ready hold: log the new readiness lower bound for today, so a
+          // dip during the day resets the 7-day hold (engine/examReady.ts).
+          const moments = withReadiness(cp.moments, certId, answers, day);
           return {
-            byCert: { ...s.byCert, [certId]: { ...cp, answers, review, mistakes } },
+            byCert: { ...s.byCert, [certId]: { ...cp, answers, review, mistakes, ...(moments ? { moments } : {}) } },
             streak: bumpStreak(s.streak, now),
             today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
             days,
@@ -238,11 +261,30 @@ export const useProgress = create<ProgressState>()(
           };
         }),
 
+      noteReadiness: (certId, day, low) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const log = cp.moments?.readiness ?? [];
+          const next = logReadinessDay(log, day, low);
+          if (next === log) return s; // nothing changed: no save, no re-render
+          return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, readiness: next } } } };
+        }),
+
+      dismissReady: (certId) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          if (cp.moments?.readySeenAt) return s;
+          return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, readySeenAt: Date.now() } } } };
+        }),
+
       resetCert: (certId) =>
         set((s) => {
           const days = { ...s.days };
           delete days[certId];
-          return { byCert: { ...s.byCert, [certId]: emptyCert() }, days };
+          // "Shows once per certification": a reset keeps the dismissed flag.
+          const seen = s.byCert[certId]?.moments?.readySeenAt;
+          const fresh: CertProgress = seen ? { ...emptyCert(), moments: { readySeenAt: seen } } : emptyCert();
+          return { byCert: { ...s.byCert, [certId]: fresh }, days };
         }),
     }),
     {
@@ -251,6 +293,7 @@ export const useProgress = create<ProgressState>()(
       // v2: the single `day` plan became `days`, keyed by cert id.
       // Phase 5a added only OPTIONAL fields (AnswerRecord.lastAssisted,
       // MistakeEntry.confidence), so no version bump: old saves load as-is.
+      // Phase 5b added one more optional field (CertProgress.moments): same.
       version: 2,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },
@@ -267,6 +310,24 @@ export function migrateProgress(persisted: unknown): Record<string, unknown> {
   const days: Record<string, DayPlan> = { ...(old.days ?? {}) };
   if (day && typeof day === 'object' && day.certId && !days[day.certId]) days[day.certId] = day;
   return { ...rest, days };
+}
+
+/**
+ * The cert's moments with today's readiness lower bound logged. Returns
+ * undefined when the cert is unknown (no blueprint to weigh readiness).
+ */
+function withReadiness(
+  moments: CertMoments | undefined,
+  certId: string,
+  answers: Record<string, AnswerRecord>,
+  day: string,
+): CertMoments | undefined {
+  const cert = getCertification(certId);
+  if (!cert) return moments;
+  const range = readinessRange(cert, computeReadiness(cert, answers));
+  const log = moments?.readiness ?? [];
+  const next = logReadinessDay(log, day, range.enough ? range.low : null);
+  return next === log ? moments : { ...moments, readiness: next };
 }
 
 /** Read one certification's progress (never undefined). */

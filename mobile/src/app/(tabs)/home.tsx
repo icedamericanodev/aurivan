@@ -11,16 +11,23 @@
  *
  * When every plan item is done, the forest panel becomes the clearing card
  * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
+ *
+ * Signature moments (Phase 5b, components/moments.tsx):
+ *   - the day before the exam / exam day: a calm card above the panel;
+ *   - "You're ready" (readiness lower bound ≥ 80% for 7 days): the forest
+ *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
+import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
 import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T } from '../../components/ui';
 import { currentIndex, itemMinutes, planComplete } from '../../engine/dayPlan';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
+import { useTodayMoments } from '../../lib/moments';
 import { useJourney } from '../../lib/useJourney';
 import { useProgress } from '../../store/progress';
 import { useSession } from '../../store/session';
@@ -44,6 +51,9 @@ export default function Today() {
   const plan = j.dayPlan;
   const allDone = planComplete(plan);
   const cur = currentIndex(plan);
+  const moments = useTodayMoments({ cert: j.cert, progress: j.progress, range: j.range, examDate: j.examDate, today: plan.day });
+  // The one-time panel takes the forest slot while the plan is still open.
+  const showReady = moments.ready && plan.items.length > 0 && !allDone;
   const playIcon = (color: string) => <Play size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
 
   // The clearing's one success tap, once a day (respects the Haptics setting).
@@ -56,7 +66,8 @@ export default function Today() {
 
   // "Also today": an unfinished session first, then the plan items still to do.
   const resume = active && !active.finishedAt ? active : null;
-  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && i !== cur);
+  // While the ready panel shows, the current item is listed here too.
+  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && (showReady || i !== cur));
   const alsoCount = rest.length + (resume ? 1 : 0);
   // Tomorrow = a preview of the live plan (the next two items).
   const tomorrow = j.plan.slice(0, 2);
@@ -76,8 +87,16 @@ export default function Today() {
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Today</T>
       </Enter>
 
+      {moments.moment && (
+        <Enter i={1} style={{ marginTop: space.lg }}>
+          <ExamEveCard moment={moments.moment} reminders={moments.reminders} pace={moments.pace} />
+        </Enter>
+      )}
+
       <Enter i={1} style={{ marginTop: space.lg }}>
-        {plan.items.length === 0 ? (
+        {showReady ? (
+          <ExamReadyPanel cert={j.cert} readiness={j.readiness} onDismiss={moments.dismissReady} />
+        ) : plan.items.length === 0 ? (
           <HeroPanel
             caption={j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan'}
             title="How did it go?"

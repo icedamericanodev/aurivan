@@ -5,15 +5,19 @@
  * domains outside-in so it matches what you see.
  * The appearance switch sits at the top (owner request) and shares its
  * setting with Settings → Appearance.
+ * Mindset growth (Phase 5b): under the stats, only when the learner picks the
+ * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
  */
 import { router } from 'expo-router';
 import { View } from 'react-native';
 import { DomainRings, ringsSpoken } from '../../components/journey';
+import { MindsetGrowthCard } from '../../components/moments';
 import { Bookmark, ICON_STROKE, NotebookPen, Settings } from '../../components/icons';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
 import { shortDate } from '../../lib/format';
+import { useMindsetGrowth } from '../../lib/moments';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -26,6 +30,7 @@ export default function You() {
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
+  const growth = useMindsetGrowth(cert.id, progress);
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
   return (
@@ -64,6 +69,11 @@ export default function You() {
             <Stat key="c" value={String(streak)} label="day streak" color={c.clay} />,
           ]}
         </StatRow>
+        {growth.show && (
+          <View style={{ marginTop: space.xl }}>
+            <MindsetGrowthCard earlyIn10={growth.earlyIn10} lateIn10={growth.lateIn10} line={growth.line} spoken={growth.spoken} />
+          </View>
+        )}
       </Enter>
 
       <Enter i={3}>
