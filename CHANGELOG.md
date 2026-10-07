@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.52] — Sharper questions
+
+### Improved
+- A fresh round of expert review made a set of questions clearer, so each one has a single best answer and no wording gives it away.
+- Sources now point to the latest editions of the project management and IT governance standards.
+- Questions now use consistent American spelling, as on the real exam.
+
 ## [v10.51.2] — Privacy policy: share cards
 
 ### Improved

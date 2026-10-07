@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.51.2</span>
+    <span class="bank-pill" id="versionPill">v10.52</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.51.2';
+const APP_VERSION = 'v10.52';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12088,6 +12088,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Sharper questions',
+    items: [
+      { cat: 'improved', text: 'A fresh round of expert review made a set of questions clearer, so each one has a single best answer and no wording gives it away.' },
+      { cat: 'improved', text: 'Sources now point to the latest editions of the project management and IT governance standards.' },
+      { cat: 'improved', text: 'Questions now use consistent American spelling, as on the real exam.' }
+    ]
+  },
+  {
+    version: 'v10.51.2',
     title: 'Privacy policy: share cards',
     items: [
       { cat: 'improved', text: 'The privacy policy now explains how sharing your progress works in the mobile app.' }
