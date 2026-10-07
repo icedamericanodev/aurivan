@@ -4,10 +4,6 @@
  * recorded here as `it.failing` (planner on eve/exam day, mindset-growth
  * false positives) are fixed, so they are normal tests now.
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { daysToExam, examMoment } from '../engine/examDay';
 import { examReadyDue, logReadinessDay, readyHoldDays, shiftDay, type ReadinessDay } from '../engine/examReady';
@@ -18,6 +14,12 @@ import { createRng } from '../engine/random';
 import { daysUntil } from '../lib/useActiveCert';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress } from '../store/progress';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 const today = '2026-10-07';
 

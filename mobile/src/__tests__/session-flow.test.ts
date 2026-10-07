@@ -3,15 +3,17 @@
  * study credit for skipped questions, early-ended practice must score only
  * what was answered, and sessions must never start empty.
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import { getAllQuestions } from '../content/loader';
 import { finishSession, scoreSession } from '../lib/finishSession';
 import { startFromIds, startMock } from '../lib/sessions';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 beforeEach(() => {
   useProgress.getState().resetCert('cisa');

@@ -3,7 +3,7 @@ import type { PackQuestion } from '../content/types';
 import { allocate, buildMockExam } from '../engine/blueprint';
 import { createRng } from '../engine/random';
 import { computeReadiness, MIN_SAMPLE } from '../engine/readiness';
-import { bumpStreak, visibleStreak } from '../engine/streak';
+import { bumpStreak, visibleStreak, yesterdayKey } from '../engine/streak';
 
 const cisa = getCertification('cisa')!;
 
@@ -80,7 +80,6 @@ describe('streak', () => {
 
 describe('yesterdayKey (DST-safe)', () => {
   it('steps back one calendar day across month and year boundaries', () => {
-    const { yesterdayKey } = require('../engine/streak');
     expect(yesterdayKey(new Date(2026, 10, 1, 23, 30).getTime())).toBe('2026-10-31');
     expect(yesterdayKey(new Date(2026, 2, 9, 0, 30).getTime())).toBe('2026-03-08');
     expect(yesterdayKey(new Date(2027, 0, 1, 8).getTime())).toBe('2026-12-31');

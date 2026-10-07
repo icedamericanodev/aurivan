@@ -1,8 +1,8 @@
 // Phone-size (393x852 @2x) screenshots of key screens with demo data. See run.sh.
 import { createRequire } from 'module';
+import fs from 'fs';
 const require = createRequire(process.env.PLAYWRIGHT_REQUIRE_FROM || import.meta.url);
 const { chromium } = require('playwright');
-import fs from 'fs';
 const seed = JSON.parse(fs.readFileSync(process.argv[2]));
 const out = process.argv[3];
 const routes = [

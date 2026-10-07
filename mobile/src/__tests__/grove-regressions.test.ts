@@ -3,10 +3,6 @@
  * the new `day` / `haptics` keys, the frozen day plan across midnight,
  * readiness-range edge cases, and the "runner-up" line on the real bank.
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCertification } from '../content/certifications';
 import type { Letter } from '../content/types';
@@ -22,6 +18,12 @@ import { createRng } from '../engine/random';
 import { logActivity } from '../lib/activity';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 const cisa = getCertification('cisa')!;
 const empty = computeReadiness(cisa, {});

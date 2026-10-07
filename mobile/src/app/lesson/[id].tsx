@@ -4,7 +4,7 @@
  * marks the lesson done, ticks it off today's plan and feeds the journey.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { BotanyKind } from '../../components/glyphs';
@@ -24,8 +24,14 @@ export default function LessonPlayer() {
   const completeLesson = useProgress((s) => s.completeLesson);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState(false);
-  // Moving between scenes re-mounts the check unanswered, so reset the gate too.
-  useEffect(() => setChecked(false), [index]);
+  // Moving between scenes re-mounts the check unanswered, so reset the gate
+  // too. Done in the same event as the move (not in an effect) so there is
+  // no extra render with a stale gate.
+  const goTo = (to: number) => {
+    if (to === index) return;
+    setIndex(to);
+    setChecked(false);
+  };
 
   if (!lesson) {
     return (
@@ -44,7 +50,7 @@ export default function LessonPlayer() {
 
   const next = () => {
     if (!isLast) {
-      setIndex(index + 1);
+      goTo(index + 1);
       return;
     }
     completeLesson(lesson.certId, lesson.id);
@@ -78,7 +84,7 @@ export default function LessonPlayer() {
 
       <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
         <Row gap={space.sm}>
-          <Button kind="secondary" label="Back" disabled={index === 0} onPress={() => setIndex(Math.max(0, index - 1))} style={{ flex: 1 }} />
+          <Button kind="secondary" label="Back" disabled={index === 0} onPress={() => goTo(Math.max(0, index - 1))} style={{ flex: 1 }} />
           <Button label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
         </Row>
       </View>

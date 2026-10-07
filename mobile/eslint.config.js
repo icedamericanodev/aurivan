@@ -29,10 +29,9 @@ module.exports = defineConfig([
     ignores: ['dist/*', 'src/content/generated/*'],
   },
   {
-    // These React Compiler rules flag existing patterns (Date.now() in
-    // render, resetting state in an effect, a "latest callback" ref).
-    // They are advisory here; fixing them is a behaviour change, so they
-    // warn for now instead of blocking CI. TODO: address in a later pass.
+    // React Compiler rules. The existing hits were fixed or narrowly
+    // disabled with a reason; they stay at "warn" so a new hit is visible
+    // in `npm run lint` without blocking CI.
     rules: {
       'react-hooks/purity': 'warn',
       'react-hooks/set-state-in-effect': 'warn',

@@ -40,10 +40,17 @@ export function useActiveCert() {
   }, []);
 
   const readiness = useMemo(() => computeReadiness(cert, progress.answers), [cert, progress.answers]);
+  // Reading the clock here is deliberate: when the review queue changes (for
+  // example after answering), the recount includes reviews that fell due
+  // since the last foreground, without waiting for the next AppState change.
   const dueCount = useMemo(
+    // eslint-disable-next-line react-hooks/purity -- see the comment above
     () => dueIds(progress.review, Math.max(now, Date.now())).length,
     [progress.review, now],
   );
+  // Same reason: one clock read per render for the streak and today's count.
+  // eslint-disable-next-line react-hooks/purity -- see the comment above
+  const clock = Math.max(now, Date.now());
 
   return {
     cert,
@@ -52,8 +59,8 @@ export function useActiveCert() {
     dueCount,
     examDate,
     daysLeft: daysUntil(examDate),
-    streak: visibleStreak(streak, Math.max(now, Date.now())),
+    streak: visibleStreak(streak, clock),
     // Only count today's answers if the saved counter is from today (local time).
-    answeredToday: today.day === dayKey(Date.now()) ? today.answered : 0,
+    answeredToday: today.day === dayKey(clock) ? today.answered : 0,
   };
 }

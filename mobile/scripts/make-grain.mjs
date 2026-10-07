@@ -10,6 +10,7 @@
 // To keep each file small (< 30 KB) the image is a 2-bit palette PNG: four
 // shades of ONE colour that differ only in transparency. A fixed seed means
 // re-running the script produces byte-identical files.
+import { Buffer } from 'node:buffer';
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
