@@ -1145,7 +1145,7 @@
         "A": "The application's session lifetime and how it handles revoked users",
         "B": "The identity provider's password complexity and lockout settings",
         "C": "The expiry dates of signing certificates in the federation metadata",
-        "D": "The SaaS vendor's latest assurance report on data centre security"
+        "D": "The SaaS vendor's latest assurance report on data center security"
       },
       "correct": "A",
       "key_concept": "In federation, applications keep their own sessions; disabling a user at the identity provider does not end them unless revocation is handled.",
@@ -1154,7 +1154,7 @@
       "wrong_explanations": {
         "B": "Password settings govern new sign-ins at the identity provider. Disabled users are not signing in again; their old application session carries on.",
         "C": "Certificate expiry is a real federation risk, but it would break sign-ins rather than let disabled users keep working.",
-        "D": "A data centre assurance report covers the vendor's hosting controls. It does not explain sessions outliving a disabled account."
+        "D": "A data center assurance report covers the vendor's hosting controls. It does not explain sessions outliving a disabled account."
       },
       "tips": [
         "Eliminate: B concerns new logins at the identity provider, and D covers the vendor's hosting, not user sessions.",
@@ -1631,7 +1631,7 @@
       "correct": "C",
       "key_concept": "A web application firewall can virtually patch application-layer flaws such as SQL injection while the code fix is developed.",
       "pre_read": "Notice the flaw lives inside web requests and the fix is slow. Ask which control can block at that layer now.",
-      "correct_explanation": "The flaw sits in application requests, which arrive on the normal web port. A web application firewall inspects those HTTP requests and can block injection attempts before they reach the code, acting as a virtual patch until the fix ships. An intrusion detection sensor may recognise the same patterns, but it only raises alerts, so the injection would still reach the database.",
+      "correct_explanation": "The flaw sits in application requests, which arrive on the normal web port. A web application firewall inspects those HTTP requests and can block injection attempts before they reach the code, acting as a virtual patch until the fix ships. An intrusion detection sensor may recognize the same patterns, but it only raises alerts, so the injection would still reach the database.",
       "wrong_explanations": {
         "A": "Injection attacks arrive on the permitted web ports, so restricting traffic to those ports lets them straight through.",
         "B": "Attackers can use any source address, and an address block list cannot see what is inside the web request.",
@@ -1917,7 +1917,7 @@
         "Inheritance propagation"
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 5.12 (Classification of Information); ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); COBIT 2019 APO14 (Managed Data)",
-      "question": "Management wants data loss prevention blocking switched on next month, but the firm has never located or labelled its sensitive data. What should the CISO do FIRST?",
+      "question": "Management wants data loss prevention blocking switched on next month, but the firm has never located or labeled its sensitive data. What should the CISO do FIRST?",
       "options": {
         "A": "Enable blocking next month as planned and refine rules afterward",
         "B": "Have data owners classify sensitive data before blocking is enforced",
@@ -1927,7 +1927,7 @@
       "correct": "B",
       "key_concept": "Data discovery and owner-led classification are prerequisites for data loss prevention enforcement; rules cannot protect data nobody has identified.",
       "pre_read": "Notice what the firm has never done. Ask what blocking rules need before they can work.",
-      "correct_explanation": "Blocking rules can only protect data the firm can recognise. Without discovery and classification, rules either miss sensitive data or block normal work. Data owners, who understand the business value, should classify the data first so enforcement targets the right content. Going live as planned feels decisive, but enforcing blind rules invites disruption and hasty exceptions that hollow out the control.",
+      "correct_explanation": "Blocking rules can only protect data the firm can recognize. Without discovery and classification, rules either miss sensitive data or block normal work. Data owners, who understand the business value, should classify the data first so enforcement targets the right content. Going live as planned feels decisive, but enforcing blind rules invites disruption and hasty exceptions that hollow out the control.",
       "wrong_explanations": {
         "A": "Enforcing before the data is known produces missed leaks and false blocks, and the resulting exceptions weaken the control from the start.",
         "C": "A second tool faces the same problem: neither can protect data the firm has not located or classified.",
@@ -2031,7 +2031,7 @@
       "question": "An IS auditor reviews identity governance for 350 applications, where access is requested through an approval workflow and single sign-on with multi-factor authentication is fully deployed. Which gap should concern the auditor MOST?",
       "options": {
         "A": "New starters wait up to three days for their application accounts",
-        "B": "Role definitions were built without analysing existing entitlement data",
+        "B": "Role definitions were built without analyzing existing entitlement data",
         "C": "Accumulated application access is never recertified by business owners",
         "D": "Approvers cannot yet approve access requests from a mobile device"
       },
@@ -2040,12 +2040,12 @@
       "pre_read": "Notice what is already in place: approvals, single sign-on and strong authentication. Ask what would catch access that is no longer needed.",
       "correct_explanation": "Approval workflows control what is granted, but nothing here removes access that is no longer needed. Without periodic recertification by business owners, access piles up as staff move roles, breaking least privilege across 350 applications. Roles built without entitlement analysis are a design weakness, but they mainly affect efficiency and accuracy of new grants, and recertification would expose their errors.",
       "wrong_explanations": {
-        "A": "A three-day wait for accounts affects productivity, not protection. It does not create excess or unauthorised access.",
+        "A": "A three-day wait for accounts affects productivity, not protection. It does not create excess or unauthorized access.",
         "B": "Weak role engineering makes grants less precise, but recertification would expose those errors. Its absence leaves no safety net at all.",
         "D": "A missing mobile approval feature is a convenience gap. Approvals still happen through the existing workflow."
       },
       "tips": [
-        "Eliminate: A is a provisioning delay, and D is a convenience feature; neither creates unauthorised access.",
+        "Eliminate: A is a provisioning delay, and D is a convenience feature; neither creates unauthorized access.",
         "Final two: C beats B because nothing ever removes unneeded access, while weak role design is caught by recertification.",
         "Exam cue: strong login and approval controls do not remove old access; look for who periodically confirms access is still needed."
       ],
@@ -2480,7 +2480,7 @@
         "D": "Review the website outage logs after every unplanned outage"
       },
       "correct": "A",
-      "key_concept": "Certificate lifecycle management needs the organisation's own inventory, expiry monitoring and timely renewal, not reliance on outside reminders.",
+      "key_concept": "Certificate lifecycle management needs the organization's own inventory, expiry monitoring and timely renewal, not reliance on outside reminders.",
       "pre_read": "Notice the word preventive. Ask who should know every certificate the firm owns and when each expires.",
       "correct_explanation": "An expiry outage shows the firm does not track its own certificates. A complete inventory with automated expiry alerts, and renewal well before the deadline, prevents a repeat across every certificate. Certificate authority reminder emails help, but they cover only that authority's certificates and go to whoever originally ordered them, often a person who has since left.",
       "wrong_explanations": {
@@ -2491,7 +2491,7 @@
       "tips": [
         "Eliminate: B only postpones the next expiry, and D reacts after the outage instead of preventing it.",
         "Final two: A beats C because the firm must own its inventory and alerts; outside reminders miss certificates and contacts.",
-        "Exam cue: for certificate outages, look for inventory plus automated monitoring owned by the organisation."
+        "Exam cue: for certificate outages, look for inventory plus automated monitoring owned by the organization."
       ],
       "_provenance": "Authored from concept: 'Certificate lifecycle canonical framework'. Public sources: ISACA, IETF, CA/B Forum. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
@@ -2667,9 +2667,9 @@
       "correct": "D",
       "key_concept": "To protect data from privileged database administrators, encrypt sensitive fields with keys held outside the database team's control.",
       "pre_read": "Notice who can see the card numbers. Ask which control still works against a database superuser.",
-      "correct_explanation": "Transparent data encryption protects files on disk, not data returned to an authorised query, and administrators control the database itself. Encrypting card numbers in the application, with keys the administrators cannot reach, keeps them unreadable even to database superusers. Stricter table permissions sound targeted, but administrators can grant themselves access or bypass those permissions.",
+      "correct_explanation": "Transparent data encryption protects files on disk, not data returned to an authorized query, and administrators control the database itself. Encrypting card numbers in the application, with keys the administrators cannot reach, keeps them unreadable even to database superusers. Stricter table permissions sound targeted, but administrators can grant themselves access or bypass those permissions.",
       "wrong_explanations": {
-        "A": "A longer key changes nothing: transparent encryption decrypts data automatically for any authorised query, including administrators'.",
+        "A": "A longer key changes nothing: transparent encryption decrypts data automatically for any authorized query, including administrators'.",
         "B": "Backup encryption protects offsite copies, not the live database the administrators are querying.",
         "C": "Database administrators can change or bypass database permissions, so the card numbers stay readable to them."
       },
@@ -2696,7 +2696,7 @@
       "framework_ref": "ISO/IEC 27002:2022 Control 5.23 (Information Security for Use of Cloud Services); ISO/IEC 27017 (Cloud Security); CSA Cloud Controls Matrix",
       "question": "An IS auditor scoping a cloud key management service audit already has the provider's clean SOC 2 Type 2 report. Which area should the auditor's own testing focus on MOST?",
       "options": {
-        "A": "The provider's data centre physical security and guard staffing",
+        "A": "The provider's data center physical security and guard staffing",
         "B": "The number of keys the firm creates for each workload monthly",
         "C": "The firm's own permissions to use and administer each key",
         "D": "Whether provider staff can access the firm's key material"
@@ -2776,7 +2776,7 @@
         "D": "Encrypt card numbers in every system with centrally managed keys"
       },
       "correct": "A",
-      "key_concept": "Tokenization removes card numbers from most systems, shrinking PCI DSS scope, while the vault still allows authorised recovery.",
+      "key_concept": "Tokenization removes card numbers from most systems, shrinking PCI DSS scope, while the vault still allows authorized recovery.",
       "pre_read": "Notice two needs: fewer systems holding card numbers, and the ability to refund. Ask which method meets both.",
       "correct_explanation": "Tokenization replaces card numbers with tokens that are useless outside the vault, so systems holding only tokens can fall out of PCI DSS scope, while the vault returns the real number for refunds. Encryption with managed keys protects card numbers well, but every system holding encrypted card data and its key access generally stays in scope, so it misses the stated goal.",
       "wrong_explanations": {
@@ -3962,7 +3962,7 @@
       "correct": "B",
       "key_concept": "SQL injection is fixed at the source by parameterized queries; a web application firewall is a compensating layer, not the cure.",
       "pre_read": "Name the attack the stem describes. Then ask which option removes the flaw rather than filtering attempts to exploit it.",
-      "correct_explanation": "Joining user input into SQL text creates a SQL injection flaw. Parameterized statements keep data separate from the query, so the flaw is removed in the code itself. A web application firewall can block many known attack patterns and is good defence in depth, but it filters attempts rather than fixing the flaw, and attackers regularly find ways around its rules.",
+      "correct_explanation": "Joining user input into SQL text creates a SQL injection flaw. Parameterized statements keep data separate from the query, so the flaw is removed in the code itself. A web application firewall can block many known attack patterns and is good defense in depth, but it filters attempts rather than fixing the flaw, and attackers regularly find ways around its rules.",
       "wrong_explanations": {
         "A": "Encryption at rest protects stolen disks or files. Injected queries run through the application, which reads the data already decrypted.",
         "C": "A firewall filters known attack patterns and helps as an extra layer, but the vulnerable code remains and bypass techniques exist.",
@@ -4102,7 +4102,7 @@
       "framework_ref": "GDPR Article 88 (Processing in the context of employment); NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022)",
       "question": "A CISO plans to monitor employees' email and file activity to detect insider threats. What should the CISO do FIRST?",
       "options": {
-        "A": "Deploy behaviour analytics across every employee account",
+        "A": "Deploy behavior analytics across every employee account",
         "B": "Start monitoring quietly so that suspects are not alerted",
         "C": "Agree a lawful monitoring policy with legal and HR",
         "D": "Ask IT staff to choose which employees to watch closely"
@@ -4110,7 +4110,7 @@
       "correct": "C",
       "key_concept": "Employee monitoring needs a lawful, documented policy agreed with legal and HR before tools are deployed; policy comes before technology.",
       "pre_read": "Notice the word FIRST and that the monitoring covers employees' personal activity. Ask what must exist before any tool runs.",
-      "correct_explanation": "Monitoring employees' email and files touches privacy and employment law, so the CISO first needs a lawful policy agreed with legal and HR that sets scope, purpose and notice to staff. Behaviour analytics may be the right tool later, but deploying it before the policy exists risks unlawful monitoring and unusable evidence. Policy comes before technology.",
+      "correct_explanation": "Monitoring employees' email and files touches privacy and employment law, so the CISO first needs a lawful policy agreed with legal and HR that sets scope, purpose and notice to staff. Behavior analytics may be the right tool later, but deploying it before the policy exists risks unlawful monitoring and unusable evidence. Policy comes before technology.",
       "wrong_explanations": {
         "A": "Analytics may be the right tool, but deploying it before scope and legal basis are set risks unlawful monitoring and unusable evidence.",
         "B": "Covert monitoring without a policy or notice can breach privacy and employment law and taint any evidence collected.",
@@ -4174,7 +4174,7 @@
         "Wire recall low success"
       ],
       "framework_ref": "FinCEN Advisory FIN-2016-A003 (Business Email Compromise); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
-      "question": "A treasury analyst flags a $2.4M wire, emailed by the travelling CEO, to an overseas account opened 14 days ago. With settlement in 45 minutes, what should the treasury manager do FIRST?",
+      "question": "A treasury analyst flags a $2.4M wire, emailed by the traveling CEO, to an overseas account opened 14 days ago. With settlement in 45 minutes, what should the treasury manager do FIRST?",
       "options": {
         "A": "Hold the wire until the CEO confirms on a known phone number",
         "B": "Reply to the CEO's email and ask him to confirm the payment",
@@ -4548,17 +4548,17 @@
       "options": {
         "A": "Run the static analysis tool on every commit instead of nightly",
         "B": "Replace the static analysis tool with another vendor's product",
-        "C": "Train developers to recognise genuine false positives",
+        "C": "Train developers to recognize genuine false positives",
         "D": "Require security team approval for each suppressed finding"
       },
       "correct": "D",
       "key_concept": "Suppressing a security finding is an exception that needs independent approval; the person whose code is flagged should not close it alone.",
       "pre_read": "Notice who suppresses the findings and who checks them. Ask which control restores independence.",
-      "correct_explanation": "Developers dismissing findings in their own code with no review is a segregation of duties gap: real vulnerabilities can be suppressed unnoticed. Requiring security team approval for each suppression adds an independent check. Training improves judgement, but the same people would still decide alone on findings in their own code, so the independence gap remains.",
+      "correct_explanation": "Developers dismissing findings in their own code with no review is a segregation of duties gap: real vulnerabilities can be suppressed unnoticed. Requiring security team approval for each suppression adds an independent check. Training improves judgment, but the same people would still decide alone on findings in their own code, so the independence gap remains.",
       "wrong_explanations": {
         "A": "Scanning more often produces findings sooner, but developers could still dismiss them with no review.",
         "B": "Any tool produces findings that can be suppressed. Changing vendors leaves the unreviewed suppression process unchanged.",
-        "C": "Better judgement helps, but developers would still decide alone on their own code's findings, leaving the independence gap open."
+        "C": "Better judgment helps, but developers would still decide alone on their own code's findings, leaving the independence gap open."
       },
       "tips": [
         "Eliminate: A changes scan timing, and B changes the tool, while the unreviewed suppression stays.",
@@ -5923,7 +5923,7 @@
       "correct": "D",
       "key_concept": "Evidence of operating effectiveness, such as a test that triggers and handles an alert, outranks evidence that a tool is installed.",
       "pre_read": "Recall what failed: no one was alerted for six days. Ask which evidence proves that failure would not happen again.",
-      "correct_explanation": "The original failure was that an attack produced no alert anyone acted on. Only a test showing that attack behaviour triggers alerts which reach analysts and are handled proves the control operates end to end. Agent status reports show the tool is installed and running, but not that its detections fire or that alerts are routed and worked.",
+      "correct_explanation": "The original failure was that an attack produced no alert anyone acted on. Only a test showing that attack behavior triggers alerts which reach analysts and are handled proves the control operates end to end. Agent status reports show the tool is installed and running, but not that its detections fire or that alerts are routed and worked.",
       "wrong_explanations": {
         "A": "This shows installation and coverage, not that rules detect attacks or that alerts reach analysts. Running agents can still produce no actionable alert.",
         "B": "A vendor's general claim says nothing about this organization's configuration, rule set or alert routing.",
@@ -6108,7 +6108,7 @@
       "correct": "A",
       "key_concept": "Escalation needs several triggers, including time and impact, so incidents that worsen after triage still reach decision-makers.",
       "pre_read": "Notice that escalation happens only once, at triage. Ask what happens to an incident that gets worse afterwards.",
-      "correct_explanation": "The procedure's single trigger is a one-time judgement at triage, so an incident that worsens or drags on never reaches leadership. Adding time-based and impact-based triggers, such as missed containment targets, makes escalation follow how the incident develops. A second review improves the initial rating, but still relies on that one moment and misses later deterioration.",
+      "correct_explanation": "The procedure's single trigger is a one-time judgment at triage, so an incident that worsens or drags on never reaches leadership. Adding time-based and impact-based triggers, such as missed containment targets, makes escalation follow how the incident develops. A second review improves the initial rating, but still relies on that one moment and misses later deterioration.",
       "wrong_explanations": {
         "B": "Sending every incident to the chief executive overwhelms leadership and blurs priorities. Escalation should be selective and criteria-based.",
         "C": "Removing criteria makes escalation inconsistent and personal. Clear, defined triggers are the point of an escalation procedure.",
@@ -6117,7 +6117,7 @@
       "tips": [
         "Eliminate: B floods the chief executive with every incident, and C removes criteria and makes escalation inconsistent.",
         "Final two: A beats D because a better triage rating still misses incidents that worsen after triage; a time trigger catches them.",
-        "Exam cue: good escalation has several triggers, including time and impact, not one judgement made at the start."
+        "Exam cue: good escalation has several triggers, including time and impact, not one judgment made at the start."
       ],
       "_provenance": "Authored from concept: 'Incident escalation framework canonical structure'. Public sources: NIST, ISACA, PCI Council, FIRST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
@@ -6256,7 +6256,7 @@
       "correct": "A",
       "key_concept": "Share threat indicators early but safely: strip personal data and label each item with handling limits such as Traffic Light Protocol.",
       "pre_read": "Think about what the shared package itself contains. Ask which safeguard the CISO directly controls.",
-      "correct_explanation": "Sharing indicators helps peers defend themselves, but the shared data must not become a disclosure itself. Removing customer personal data and labelling indicators with sharing limits, such as Traffic Light Protocol markings, protects confidentiality and controls onward distribution. Member agreements add a contractual layer, but they do not keep personal data out of the package or set limits on each item shared.",
+      "correct_explanation": "Sharing indicators helps peers defend themselves, but the shared data must not become a disclosure itself. Removing customer personal data and labeling indicators with sharing limits, such as Traffic Light Protocol markings, protects confidentiality and controls onward distribution. Member agreements add a contractual layer, but they do not keep personal data out of the package or set limits on each item shared.",
       "wrong_explanations": {
         "B": "Agreements help, but they do not keep personal data out of what is shared or tell recipients how far each item may spread.",
         "C": "Indicators are useful without attribution. Waiting for it delays warnings that could protect other organizations now.",
@@ -6735,7 +6735,7 @@
         "D": "Delete the infected files to protect other users"
       },
       "correct": "B",
-      "key_concept": "Preserve before you analyse: take a hashed forensic image and keep chain of custody so evidence stays admissible.",
+      "key_concept": "Preserve before you analyze: take a hashed forensic image and keep chain of custody so evidence stays admissible.",
       "pre_read": "Notice the words legal action. Ask which option keeps the evidence provably unchanged.",
       "correct_explanation": "Evidence for legal action must be shown to be unaltered. Capturing a forensic image and recording its hash before analysis preserves the original state and lets later findings be verified against it. Scanning the live server seems a quick way to learn what happened, but it changes files and timestamps and may destroy the integrity that makes the evidence admissible.",
       "wrong_explanations": {
@@ -6746,7 +6746,7 @@
       "tips": [
         "Eliminate: D destroys the evidence, and A leaves gaps in custody that a court may reject.",
         "Final two: B beats C because preserving an unaltered, hashed copy must come before any analysis that could change the original.",
-        "Exam cue: when evidence may go to court, preserve first and analyse copies; never work on the original."
+        "Exam cue: when evidence may go to court, preserve first and analyze copies; never work on the original."
       ],
       "_provenance": "Authored from concept: 'Digital forensics canonical framework'. Public sources: ISACA, NIST, ISO, SANS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
@@ -10283,9 +10283,9 @@
       "correct": "C",
       "key_concept": "Telling clients does not discharge an organization's own legal duties as controller of the data it owns.",
       "pre_read": "Notice whose data the employee records are. Ask whose legal duty applies to them.",
-      "correct_explanation": "For the employee records, the firm itself is the data controller, so GDPR Article 33 requires it to notify its supervisory authority within 72 hours of becoming aware, unless the breach is unlikely to result in risk. Notifying clients covers their data, not the firm's own. Client acknowledgements are useful evidence that notices arrived, but they do not discharge the firm's separate legal duty for its employees' data.",
+      "correct_explanation": "For the employee records, the firm itself is the data controller, so GDPR Article 33 requires it to notify its supervisory authority within 72 hours of becoming aware, unless the breach is unlikely to result in risk. Notifying clients covers their data, not the firm's own. Client acknowledgments are useful evidence that notices arrived, but they do not discharge the firm's separate legal duty for its employees' data.",
       "wrong_explanations": {
-        "A": "Acknowledgements prove delivery of client notices but do nothing for the firm's own legal obligation for its employee data.",
+        "A": "Acknowledgments prove delivery of client notices but do nothing for the firm's own legal obligation for its employee data.",
         "B": "Formatting a report for the audit committee is governance housekeeping with no legal deadline attached.",
         "D": "Logging for a quarterly report is routine reporting. It does not meet any regulatory notification deadline."
       },

@@ -1901,3 +1901,7 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-177 Rev 1 (Trustworthy Email)
 - NIST SP 800-53 Rev 5 AU-5 (Response to Audit Logging Process Failures)
 - ISO/IEC 27002:2022 Control 8.32 (Change Management)
+
+## Round 2 citation update (Oct 2026)
+- PMBOK Guide 8th Edition (2025)
+- ISO/IEC 38500:2024 Information technology - Governance of IT for the organization

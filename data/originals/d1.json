@@ -59,10 +59,10 @@
       "correct": "C",
       "key_concept": "Auditing a system you designed or built is a self-review threat; removing the threat by reassignment beats mitigating it.",
       "pre_read": "Notice the auditor's former role on the same system. Decide whether the threat should be mitigated or removed.",
-      "correct_explanation": "Leading the build of the IAM system and then auditing it is a classic self-review threat: the auditor would be judging their own design decisions. Reassigning the engagement to someone with no involvement removes the threat entirely. A peer review of conclusions is a reasonable safeguard, but the fieldwork, sampling and judgements would still come from the conflicted auditor, so the threat remains.",
+      "correct_explanation": "Leading the build of the IAM system and then auditing it is a classic self-review threat: the auditor would be judging their own design decisions. Reassigning the engagement to someone with no involvement removes the threat entirely. A peer review of conclusions is a reasonable safeguard, but the fieldwork, sampling and judgments would still come from the conflicted auditor, so the threat remains.",
       "wrong_explanations": {
         "A": "Six months does not cure self-review. The auditor would still be assessing design decisions they made personally.",
-        "B": "Peer review mitigates the threat but leaves the conflicted auditor doing the fieldwork and judgements; removing the threat is stronger.",
+        "B": "Peer review mitigates the threat but leaves the conflicted auditor doing the fieldwork and judgments; removing the threat is stronger.",
         "D": "Letting the auditee validate findings adds a second independence problem rather than solving the first."
       },
       "tips": [
@@ -638,20 +638,20 @@
         "A": "Flagged events are a small share of total access events",
         "B": "Investigating false positives consumes audit staff time",
         "C": "Auditors cannot explain or defend conclusions drawn from it",
-        "D": "Auditors may defer to the tool over their own judgement"
+        "D": "Auditors may defer to the tool over their own judgment"
       },
       "correct": "C",
       "key_concept": "Evidence from an automated tool is only as reliable as the auditor's understanding of how it works; unexplainable output cannot support conclusions.",
       "pre_read": "Notice the vendor cannot explain the model. Ask what that does to the quality of evidence the auditor can rely on.",
-      "correct_explanation": "Audit evidence must be sufficient and reliable, and the auditor must be able to explain how each conclusion was reached. If the tool's logic cannot be explained, the auditor cannot assess its reliability or defend conclusions built on it. Over-reliance on the tool is a real behavioural risk, but it is a symptom; the core problem is that the evidence itself cannot be validated.",
+      "correct_explanation": "Audit evidence must be sufficient and reliable, and the auditor must be able to explain how each conclusion was reached. If the tool's logic cannot be explained, the auditor cannot assess its reliability or defend conclusions built on it. Over-reliance on the tool is a real behavioral risk, but it is a symptom; the core problem is that the evidence itself cannot be validated.",
       "wrong_explanations": {
         "A": "A small flagged share is expected of an anomaly tool and does not by itself indicate a problem.",
         "B": "Some false positives are normal. Wasted effort is an efficiency cost, not a threat to the validity of conclusions.",
         "D": "Over-reliance is a concern, but even careful auditors cannot validate evidence from a model whose logic is opaque."
       },
       "tips": [
-        "Eliminate: A describes normal anomaly-tool behaviour, and B is an efficiency cost rather than an evidence problem.",
-        "Final two: C beats D because opaque logic undermines the evidence itself; over-reliance is a behaviour that follows from it.",
+        "Eliminate: A describes normal anomaly-tool behavior, and B is an efficiency cost rather than an evidence problem.",
+        "Final two: C beats D because opaque logic undermines the evidence itself; over-reliance is a behavior that follows from it.",
         "Exam cue: with any audit tool, the auditor must understand and be able to defend how its output was produced."
       ],
       "framework_ref": "NIST AI Risk Management Framework (AI RMF 1.0); ISACA IT Audit Standard 1205 (Evidence); ISACA Auditing Artificial Intelligence (white paper, 2018)",
@@ -931,7 +931,7 @@
       "question": "An IS auditor is testing the integrity of a gaming platform that processes 3 million microtransactions daily. Which reason BEST justifies using CAATs for this engagement?",
       "options": {
         "A": "The volume makes manual testing of transactions impractical",
-        "B": "Tools can replace the auditor's professional judgement",
+        "B": "Tools can replace the auditor's professional judgment",
         "C": "Standards require CAATs on every engagement",
         "D": "Automated tools reduce the engagement's cost and hours"
       },
@@ -940,14 +940,14 @@
       "pre_read": "Notice the transaction volume. Ask what the audit objective requires that manual methods cannot deliver.",
       "correct_explanation": "CAATs are justified when the audit objective needs analysis that manual testing cannot achieve, such as full-population tests or pattern detection across very large volumes. Three million transactions a day is squarely that case. Lower cost and effort often follow, but efficiency is a by-product; the decision is driven by what the objective requires, and CAATs can sometimes cost more than manual sampling.",
       "wrong_explanations": {
-        "B": "CAATs support professional judgement; the auditor still designs the tests, interprets results and draws conclusions.",
+        "B": "CAATs support professional judgment; the auditor still designs the tests, interprets results and draws conclusions.",
         "C": "No standard mandates CAATs on every engagement. Their use depends on the objective and the data available.",
         "D": "Efficiency is a welcome side effect, but CAATs are chosen because the objective requires them, not to save money."
       },
       "tips": [
-        "Eliminate: B hands judgement to a tool, and C invents a universal requirement that standards do not impose.",
+        "Eliminate: B hands judgment to a tool, and C invents a universal requirement that standards do not impose.",
         "Final two: A beats D because the objective's need for volume analysis justifies CAATs; savings are a by-product.",
-        "Exam cue: high volumes or full-population and pattern testing point to CAATs; judgement always stays with the auditor."
+        "Exam cue: high volumes or full-population and pattern testing point to CAATs; judgment always stays with the auditor."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
@@ -1049,7 +1049,7 @@
       "correct": "C",
       "key_concept": "Agile auditing suits fast-changing subjects, agile organizations and stakeholders who want frequent, incremental assurance.",
       "pre_read": "Notice three facts: monthly change, weekly releases and a request for earlier assurance. Match the audit cadence to them.",
-      "correct_explanation": "All three facts favour agile auditing: the subject changes monthly, engineering works in short cycles, and the committee wants earlier assurance. Short sprints with incremental reporting keep conclusions current. A traditional cycle with an interim update offers some earlier visibility, but the main conclusions would still arrive months later, after several retrains, describing a model that no longer exists.",
+      "correct_explanation": "All three facts favor agile auditing: the subject changes monthly, engineering works in short cycles, and the committee wants earlier assurance. Short sprints with incremental reporting keep conclusions current. A traditional cycle with an interim update offers some earlier visibility, but the main conclusions would still arrive months later, after several retrains, describing a model that no longer exists.",
       "wrong_explanations": {
         "A": "A continuously retrained model may never stabilize, and deferring leaves the committee without the assurance it requested.",
         "B": "Outsourcing changes who audits, not the cadence; a traditional cycle run by any firm would still deliver stale conclusions.",
@@ -1113,7 +1113,7 @@
       "subtopic": "Code of Professional Ethics. Integrity",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A client's CFO offers an IS audit manager's firm a future advisory contract if a damaging finding is removed. If the manager removes it, which ISACA Code principle is MOST directly violated?",
+      "question": "After a client's CFO offers a future advisory contract, an IS audit manager omits a damaging finding from the issued report. Which ISACA Code principle does the report MOST directly breach?",
       "options": {
         "A": "Maintain competency and keep knowledge current in relevant fields",
         "B": "Support the professional education of stakeholders and the public",
@@ -1122,17 +1122,17 @@
       },
       "correct": "D",
       "key_concept": "Removing a finding for an inducement breaches the ISACA Code's duty to disclose all significant facts that would otherwise distort reported results.",
-      "pre_read": "Notice what the CFO wants removed. Ask which principle covers what must appear in reported results.",
-      "correct_explanation": "Removing a damaging finding to win future business withholds a significant fact. The Code's requirement to inform appropriate parties of all significant facts, so results are not distorted, addresses this directly. Objectivity is also compromised by the inducement, but that principle governs how work is performed; removing the finding specifically corrupts what is reported.",
+      "pre_read": "Notice the question asks about the issued report. Ask which principle covers what must appear in reported results.",
+      "correct_explanation": "Omitting a damaging finding withholds a significant fact from the report. The Code requires informing appropriate parties of all significant facts so reported results are not distorted, so the report itself breaches the disclosure principle. Accepting the inducement also impairs objectivity, and that breach is real, but the question asks what the issued report violates, and its content fails the disclosure duty.",
       "wrong_explanations": {
         "A": "Competency concerns skills and knowledge. Nothing suggests the manager lacks ability; the problem is misconduct.",
         "B": "Supporting stakeholder education is a separate obligation and has no bearing on an inducement to suppress a finding.",
-        "C": "Objectivity is impaired by the inducement, but the act requested, suppressing a finding, falls most directly under the duty to disclose significant facts."
+        "C": "Objectivity is impaired by the inducement, but the question asks about the issued report, and omitting a finding breaches the duty to disclose significant facts."
       },
       "tips": [
         "Eliminate: A is about skills, and B concerns stakeholder education; neither addresses an inducement.",
-        "Final two: D beats C because removing the finding hides a significant fact; objectivity covers bias in performing the work.",
-        "Exam cue: suppressing or distorting findings points to the duty to disclose significant facts; bias in fieldwork points to objectivity."
+        "Final two: D beats C because the report's content hides a significant fact; objectivity covers the bias behind it.",
+        "Exam cue: when a question asks what was reported, look to the disclosure duty; when it asks how the work was done, look to objectivity."
       ],
       "framework_ref": "ISACA Code of Professional Ethics (disclosure of significant facts and objectivity)",
       "related_concepts": [
@@ -1141,7 +1141,7 @@
         "Conflict of interest",
         "Acts discreditable to the profession"
       ],
-      "_provenance": "Authored from concept: 'integrity violation — removing audit findings for financial inducement'. Public source: ISACA Code of Professional Ethics. All scenario specifics (public accounting firm, CFO advisory-contract offer) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem says 'accepting this offer' to remove the ambiguous 'complying'. Blind re-check clarity fix (Oct 2026).",
+      "_provenance": "Authored from concept: 'integrity violation — removing audit findings for financial inducement'. Public source: ISACA Code of Professional Ethics. All scenario specifics (public accounting firm, CFO advisory-contract offer) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem says 'accepting this offer' to remove the ambiguous 'complying'. Blind re-check clarity fix (Oct 2026). Round 2 review (Oct 2026): stem now asks what the issued report breaches, so objectivity (C) is clearly second; explanation concedes the objectivity breach.",
       "style_version": 2
     },
     {
@@ -1784,8 +1784,8 @@
       "question": "An IS auditor must test whether a second-reviewer control operated and estimate the dollar value of mispriced rules. Which sampling approach BEST meets both objectives?",
       "options": {
         "A": "Attribute sampling for both objectives on one sample",
-        "B": "Stop-or-go sampling for both objectives",
-        "C": "Attribute for the control; variable for dollar value",
+        "B": "Variable sampling for the control and attribute sampling for dollar value",
+        "C": "Attribute sampling for the control and variable sampling for dollar value",
         "D": "Judgmental selection of the highest-value rules"
       },
       "correct": "C",
@@ -1794,11 +1794,11 @@
       "correct_explanation": "Each objective needs the method built for it. Whether a control operated is a yes-or-no attribute, so attribute sampling estimates the deviation rate. Estimating dollar error needs variable sampling, often monetary-unit sampling. A single attribute sample is efficient and handles the control test, but it yields an error rate, not a projected dollar amount.",
       "wrong_explanations": {
         "A": "Attribute sampling estimates how often errors occur, not their monetary size, so the dollar objective goes unmet.",
-        "B": "Stop-or-go sampling suits low-deviation control tests and cannot produce a dollar estimate.",
+        "B": "This reverses the methods: variable sampling estimates amounts, not whether a control operated, and attribute sampling yields rates, not dollar values.",
         "D": "Judgmental selection cannot be projected statistically to the population, so neither objective is supported."
       },
       "tips": [
-        "Eliminate: B is a control-testing shortcut with no dollar estimate, and D cannot be projected to the population.",
+        "Eliminate: B swaps the two methods, and D cannot be projected to the population.",
         "Final two: C beats A because attribute sampling yields error rates, while the second objective needs a dollar estimate.",
         "Exam cue: yes-or-no control questions take attribute sampling; how-much questions take variable sampling."
       ],
@@ -1809,7 +1809,7 @@
         "Monetary-unit sampling",
         "Compliance vs substantive testing"
       ],
-      "_provenance": "Authored from concept: 'sampling-technique selection — attribute for compliance, variable for substantive monetary estimation'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (SaaS retail marketplace, price-rules engine, second-reviewer control, dollar-estimation objective) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'sampling-technique selection — attribute for compliance, variable for substantive monetary estimation'. Public source: ITAF Tools and Techniques on Sampling. All scenario specifics (SaaS retail marketplace, price-rules engine, second-reviewer control, dollar-estimation objective) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): two-part key form de-cued; distractor B now has the same two-part form with the methods reversed.",
       "style_version": 2
     },
     {
@@ -1828,7 +1828,7 @@
       "correct": "D",
       "key_concept": "Finding severity rests on the auditor's judgment of facts; requests to soften ratings are declined unless new facts justify a change.",
       "pre_read": "Separate a request based on preference from one based on facts. Then ask whether escalation is needed yet.",
-      "correct_explanation": "Severity ratings reflect the auditor's professional judgment on the facts, not the auditee's preferences. Declining to change ratings on request, while inviting management to present facts that might change them, protects objectivity and keeps the relationship constructive. Escalating and cancelling the exit meeting is premature: one request is not proven interference, and the meeting exists to validate findings.",
+      "correct_explanation": "Severity ratings reflect the auditor's professional judgment on the facts, not the auditee's preferences. Declining to change ratings on request, while inviting management to present facts that might change them, protects objectivity and keeps the relationship constructive. Escalating and canceling the exit meeting is premature: one request is not proven interference, and the meeting exists to validate findings.",
       "wrong_explanations": {
         "A": "Changing ratings to manage the committee's reaction lets the auditee shape the conclusions and undermines objectivity.",
         "B": "Keeping critical findings from the committee hides information its oversight depends on and breaches reporting duties.",
@@ -3127,21 +3127,21 @@
       "options": {
         "A": "Accept the metrics because the model passed external validation",
         "B": "Compare model outputs with an independent challenger model's outputs",
-        "C": "Recalculate the weekly accuracy metrics from production logs",
+        "C": "Rerun the data scientists' own scripts to confirm the reported weekly metrics",
         "D": "Defer model testing until a failure occurs in production"
       },
       "correct": "B",
       "key_concept": "For high-stakes AI models, an independent challenger model exposes drift and systematic errors that self-reported metrics cannot reveal.",
       "pre_read": "Notice the evidence is self-reported. Ask which option gives the auditor an independent basis for comparison.",
-      "correct_explanation": "A challenger model built independently and run on the same inputs reveals systematic deviations, bias and drift that the production model cannot see in itself. Recalculating the weekly metrics confirms the arithmetic is right, but it still measures the model against its own yardstick, so correlated or systematic errors stay hidden.",
+      "correct_explanation": "A challenger model built independently and run on the same inputs reveals systematic deviations, bias and drift that the production model cannot see in itself. Rerunning the data scientists' own scripts confirms the reported arithmetic, but it still measures the model against its own yardstick, so correlated or systematic errors stay hidden.",
       "wrong_explanations": {
         "A": "Past validation does not prove current performance. Drift appears after deployment, so self-reported metrics need independent challenge.",
-        "C": "Recomputing the same metrics verifies their accuracy, not their adequacy. A model's own measures cannot reveal errors it is systematically blind to.",
+        "C": "Rerunning the team's own scripts confirms the arithmetic, not the adequacy of the measure; a model's own yardstick cannot reveal errors it is systematically blind to.",
         "D": "Waiting for a failure makes the audit reactive. For a high-stakes model, the goal is detecting drift before harm occurs."
       },
       "tips": [
         "Eliminate: A relies on old validation, and D waits for harm instead of detecting drift early.",
-        "Final two: B beats C because an independent reference exposes systematic errors; recalculating the model's own metrics only confirms the arithmetic.",
+        "Final two: B beats C because an independent reference exposes systematic errors; rerunning the team's own scripts only confirms the arithmetic.",
         "Exam cue: when evidence comes from the system being audited, look for the option that adds an independent point of comparison."
       ],
       "framework_ref": "ISACA Auditing Artificial Intelligence (white paper, 2018); NIST AI Risk Management Framework (AI RMF 1.0)",
@@ -3152,7 +3152,7 @@
         "Model drift",
         "Systematic bias detection"
       ],
-      "_provenance": "Authored from concept: 'AI/ML challenger-model testing - independent reference for high-stakes systems where self-reporting cannot detect systematic failures'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (autonomous-vehicle company, pedestrian/cyclist classification, data-science team proposal) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'AI/ML challenger-model testing - independent reference for high-stakes systems where self-reporting cannot detect systematic failures'. Public source: ISACA Auditing AI program + NIST AI RMF. All scenario specifics (autonomous-vehicle company, pedestrian/cyclist classification, data-science team proposal) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): option C reworded so it matches its explanation (rerunning the team's own scripts, not an independent recalculation).",
       "style_version": 2
     },
     {
@@ -3581,16 +3581,16 @@
         "D": "Switch to annualized loss figures despite the sparse data"
       },
       "correct": "B",
-      "key_concept": "Qualitative risk assessment needs defined rating criteria so different participants' judgements are consistent and comparable.",
+      "key_concept": "Qualitative risk assessment needs defined rating criteria so different participants' judgments are consistent and comparable.",
       "pre_read": "Notice the ratings vary widely between experts. Ask what makes qualitative scores comparable.",
-      "correct_explanation": "Wide disagreement usually means participants are using different scales, so the auditor first agrees defined criteria for likelihood and impact and has them score again. Averaging produces a single number, but it hides the disagreement and turns inconsistent judgements into false precision that the audit plan would then rely on.",
+      "correct_explanation": "Wide disagreement usually means participants are using different scales, so the auditor first agrees defined criteria for likelihood and impact and has them score again. Averaging produces a single number, but it hides the disagreement and turns inconsistent judgments into false precision that the audit plan would then rely on.",
       "wrong_explanations": {
         "A": "Averaging inconsistent scores hides why they differ and gives a misleading appearance of precision.",
-        "C": "Deferring to seniority replaces structured judgement with authority and loses the group's knowledge.",
+        "C": "Deferring to seniority replaces structured judgment with authority and loses the group's knowledge.",
         "D": "Annualized loss figures need reliable loss data, which this system does not have."
       },
       "tips": [
-        "Eliminate: C replaces judgement with rank, and D needs loss data that does not exist.",
+        "Eliminate: C replaces judgment with rank, and D needs loss data that does not exist.",
         "Final two: B beats A because shared criteria fix the cause of the spread; averaging only hides it.",
         "Exam cue: qualitative risk ratings are only as consistent as their defined scales; fix the scale before the score."
       ],
@@ -3613,9 +3613,9 @@
       "bloom_level": "Application",
       "question": "A CFO argues that management's monthly control-monitoring reviews make the IS audit function's independent evaluation duplicative. What is the auditor's BEST response?",
       "options": {
-        "A": "Explain both are complementary; audit adds objective assurance",
+        "A": "Explain that audit also tests whether the monitoring itself works",
         "B": "Reduce audit testing where monthly monitoring reports no issues",
-        "C": "Agree to stop independent evaluation of the monitored controls",
+        "C": "Agree to stop independent evaluation of the controls already monitored",
         "D": "Defer to the regulator's inspections as the independent review"
       },
       "correct": "A",
@@ -3640,7 +3640,7 @@
         "COSO components",
         "Auditor independence"
       ],
-      "_provenance": "Authored from concept: 'control-environment evaluation - management monitoring vs independent evaluation as complementary activities, not substitutes'. Public source: COSO 2013 + ISACA Standards. All scenario specifics (small-molecule biopharma R&D, GMP context, CFO duplication question) invented for this question. Distinct from d1_028 application angle. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'control-environment evaluation - management monitoring vs independent evaluation as complementary activities, not substitutes'. Public source: COSO 2013 + ISACA Standards. All scenario specifics (small-molecule biopharma R&D, GMP context, CFO duplication question) invented for this question. Distinct from d1_028 application angle. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Round 2 review (Oct 2026): key reworded as one clause to remove the two-part tell.",
       "style_version": 2
     },
     {
@@ -6313,7 +6313,7 @@
       "pre_read": "Notice the commitments were made and missed three times. Ask who can hold management accountable when its promises fail.",
       "correct_explanation": "A finding that recurs despite repeated commitments is itself a signal: remediation is failing, and the risk management is carrying may not be what the board intended. The director should identify the root cause and escalate the pattern to the audit committee, which holds management accountable. Reissuing with a firmer deadline repeats the approach that has already failed three times.",
       "wrong_explanations": {
-        "A": "Acknowledgement is not remediation. Silencing an unresolved finding hides a persistent weakness from governance.",
+        "A": "Acknowledgment is not remediation. Silencing an unresolved finding hides a persistent weakness from governance.",
         "C": "Absence of loss so far does not reduce the underlying risk; severity reflects exposure, not luck.",
         "D": "A firmer deadline repeats the cycle that has already failed and leaves governance unaware of the pattern."
       },
@@ -6536,7 +6536,7 @@
       },
       "correct": "C",
       "key_concept": "Audit program templates are adapted to engagement-specific risks and controls, keeping their structure and documenting each change.",
-      "pre_read": "Notice the template is generic and the workflow is specialised. Ask whether the program's procedures fit the actual controls.",
+      "pre_read": "Notice the template is generic and the workflow is specialized. Ask whether the program's procedures fit the actual controls.",
       "correct_explanation": "Templates provide structure, not a finished program. The manager should keep the template's objectives and evidence discipline but tailor each procedure to the workflow's actual risks and controls, such as partner-bank identity checks, and document why. Appending fintech steps looks efficient, but the original steps stay untailored, so some test controls that do not exist while real risks stay under-tested.",
       "wrong_explanations": {
         "A": "Templates are generic starting points; using one unchanged tests controls the engagement may lack and misses its specific risks.",
