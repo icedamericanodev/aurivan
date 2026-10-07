@@ -671,7 +671,7 @@ export const CISA_LESSONS: Lesson[] = [
       {
         type: 'idea',
         heading: 'The core idea',
-        body: 'Go-live is the day a new system starts running the real business. A post-implementation review, held months later, asks three things. Do the controls (the safeguards built into the system) work as designed? Did the promised benefits arrive? What lessons should future projects use?',
+        body: 'Go-live is the day a new system starts running the real business. A post-implementation review, usually held months later, asks three things. Do the controls (the safeguards built into the system) work as designed? Did the promised benefits arrive? What lessons should future projects use?',
       },
       {
         type: 'analogy',
