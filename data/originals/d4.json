@@ -315,7 +315,7 @@
       "options": {
         "A": "Depreciation tags applied to assets at purchase",
         "B": "An annual spreadsheet stock count performed by the finance team",
-        "C": "Ongoing discovery reconciled to the register through disposal",
+        "C": "Ongoing discovery reconciled to the register until secure disposal",
         "D": "Separate inventories kept by each business unit"
       },
       "correct": "C",
@@ -339,7 +339,7 @@
         "Asset disposal",
         "Secure data destruction"
       ],
-      "_provenance": "Authored from concept: 'ITAM full-lifecycle per ISACA IT Asset Management guidance and ITIL 4 Service Configuration Management'. Public sources: ISACA, ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ITAM full-lifecycle per ISACA IT Asset Management guidance and ITIL 4 Service Configuration Management'. Public sources: ISACA, ITIL 4. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key option reworded as a plain statement.",
       "style_version": 2
     },
     {
@@ -607,7 +607,7 @@
       "subtopic": "Major Outage with Multiple Incident Overlap",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "During a major outage, three concurrent incidents, including suspected lateral movement, are handled by separate teams with no shared lead. What should the IS auditor recommend FIRST?",
+      "question": "Three concurrent incidents (a major outage, a database failure and a suspected intrusion) are run by separate teams with no shared lead. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Let each team continue independently on its own incident",
         "B": "Pause the response until links between incidents are analyzed",
@@ -635,7 +635,7 @@
         "Outage coordination",
         "ITIL 4"
       ],
-      "_provenance": "Authored from concept: 'Multi-incident overlap response per ITIL 4 Incident Management and NIST SP 800-61'. Public sources: ITIL 4, NIST SP 800-61. Scenario specifics (B2B SaaS, 1.6M users, 90 minutes elapsed, 3 concurrent incidents — database + auth + lateral movement) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Multi-incident overlap response per ITIL 4 Incident Management and NIST SP 800-61'. Public sources: ITIL 4, NIST SP 800-61. Scenario specifics (B2B SaaS, 1.6M users, 90 minutes elapsed, 3 concurrent incidents — database + auth + lateral movement) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now names the database failure the options rely on. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -718,7 +718,7 @@
       "subtopic": "BIA-Driven RTO/RPO Decision Conflict",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A business line demands a 1-hour RTO costing $14 million more than current capability, and executives meet next week to approve targets. What is the IS auditor's BEST recommendation?",
+      "question": "A business line demands a 1-hour RTO, unsupported by any impact analysis, costing $14 million more than current capability; executives approve targets next week. What is the IS auditor's BEST recommendation?",
       "options": {
         "A": "Set the target to match current replication capability",
         "B": "Delay approval until impact and cost per option are compared",
@@ -728,7 +728,7 @@
       "correct": "B",
       "key_concept": "RTO and RPO targets follow quantified business impact weighed against cost; management then approves the target and accepts residual risk.",
       "pre_read": "Ask whether anyone has shown what an outage costs at each RTO. If not, what must happen before approval?",
-      "correct_explanation": "Recovery targets should come from quantified business impact weighed against cost, with management accepting the residual risk of the option chosen. Neither number has been tested yet, so the right move is to hold approval until each option's impact, regulatory exposure and cost are compared. Approving the 1-hour target and phasing spend sounds decisive, but it commits millions before showing the impact justifies it.",
+      "correct_explanation": "Recovery targets should come from quantified business impact weighed against cost, with management accepting the residual risk of the option chosen. No impact analysis supports the 1-hour demand yet, so the right move is to hold approval until each option's impact, regulatory exposure and cost are compared. Approving the 1-hour target and phasing spend sounds decisive, but it commits millions before showing the impact justifies it.",
       "wrong_explanations": {
         "A": "Matching current capability lets infrastructure set business targets, reversing the BIA logic in which business impact drives recovery objectives.",
         "C": "Budget alone ignores business impact and regulatory exposure. Target-setting needs impact and cost weighed together, not one executive's constraint.",
@@ -747,7 +747,7 @@
         "Cost-benefit analysis",
         "Residual risk acceptance"
       ],
-      "_provenance": "Authored from concept: 'BIA RTO/RPO conflict structured validation per ISO 22301, NIST SP 800-34, and ISACA BIA guidance'. Public sources: ISO 22301, NIST, ISACA. Scenario specifics (regional bank, retail-banking 1-hour/5-minute target, current 4-hour/30-minute, $14M increment, CFO/CRO positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'BIA RTO/RPO conflict structured validation per ISO 22301, NIST SP 800-34, and ISACA BIA guidance'. Public sources: ISO 22301, NIST, ISACA. Scenario specifics (regional bank, retail-banking 1-hour/5-minute target, current 4-hour/30-minute, $14M increment, CFO/CRO positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states no impact analysis supports the demand.",
       "style_version": 2
     },
     {
@@ -801,9 +801,9 @@
         "D": "Power supply and cooling infrastructure"
       },
       "correct": "D",
-      "key_concept": "Core hardware groups are processing (CPU, memory), input/output (storage, network, peripherals) and supporting infrastructure (power, cooling).",
-      "pre_read": "Map the included items to the three hardware groups. Ask which group is missing entirely.",
-      "correct_explanation": "Hardware is commonly grouped into processing, input/output and the supporting infrastructure that keeps it running. The scope already covers processing and the main input/output paths, but omits power and cooling, without which every server fails at once. Peripherals are input/output hardware too, but printers and scanners matter little to server availability compared with the infrastructure everything depends on.",
+      "key_concept": "A server hardware review spans processing (CPU, memory), input/output (storage, network) and the power and cooling every component depends on.",
+      "pre_read": "Sort the included items into processing and input/output. Then ask what every server also depends on.",
+      "correct_explanation": "A server hardware review should cover processing, input/output and the power and cooling that keep both running. The scope already covers processing and the main input/output paths, but omits power and cooling, without which every server fails at once. Peripherals are input/output hardware too, but printers and scanners matter little to server availability compared with the infrastructure everything depends on.",
       "wrong_explanations": {
         "A": "Peripherals are input/output hardware, but printers and scanners rarely affect server operation. Their failure is local, unlike a power or cooling failure.",
         "B": "Operating systems and applications are software. They belong to a different review, not a hardware component scope.",
@@ -812,7 +812,7 @@
       "tips": [
         "Eliminate: B is software and C concerns people and access, not hardware.",
         "Final two: D beats A because power and cooling support every server; peripheral failures stay local.",
-        "Exam cue: hardware scope covers processing, input/output and supporting infrastructure; power and cooling are easy to forget."
+        "Exam cue: a hardware scope covers processing, input/output and the power and cooling behind them; the last is easy to forget."
       ],
       "framework_ref": "COBIT 2019 BAI09 (Managed Assets); ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
       "related_concepts": [
@@ -821,7 +821,7 @@
         "I/O",
         "Computer architecture"
       ],
-      "_provenance": "Authored from concept: 'Hardware component categorization per ISACA Information Systems Audit and Assurance Standards'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Hardware component categorization per ISACA Information Systems Audit and Assurance Standards'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): hardware grouping aligned with the Review Manual (power and cooling as supporting environment).",
       "style_version": 2
     },
     {
@@ -943,7 +943,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor is reviewing the production job scheduler. Which test provides the BEST evidence that scheduled jobs run as the business intends?",
       "options": {
-        "A": "Check the schedule against agreed business requirements quarterly",
+        "A": "Compare the job schedule with approved business requirements",
         "B": "Review the failed-job log for the past quarter's batch runs",
         "C": "Interview the scheduler administrator about job dependencies",
         "D": "Measure nightly jobs executed against the capacity plan"
@@ -969,7 +969,7 @@
         "Dependency",
         "Scheduler access"
       ],
-      "_provenance": "Authored from concept: 'Job scheduling reviews per ISACA Job Scheduling Audit guidance'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Job scheduling reviews per ISACA Job Scheduling Audit guidance'. Public sources: ISACA. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key reworded as a one-off audit test, not a recurring control.",
       "style_version": 2
     },
     {
@@ -1400,7 +1400,7 @@
       "wrong_explanations": {
         "A": "First-year cost ignores lifetime cost, migration risk and data residency limits, so it is not a sound basis.",
         "B": "Lower transition risk is one factor, but choosing before comparing lifetime costs and risks pre-empts management's evaluation.",
-        "C": "An independent benchmark delays the decision; management already has enough to compare lifetime cost and risk."
+        "C": "An outside benchmark adds cost and delay, and management would still need to compare lifetime cost and risk itself."
       },
       "tips": [
         "Eliminate: A judges on first-year cost alone, and C wastes the planning window before support ends.",
@@ -1414,7 +1414,7 @@
         "Cloud migration",
         "Vendor end-of-support"
       ],
-      "_provenance": "Authored from concept: 'Hardware refresh decision per ISACA Hardware Refresh Decision guidance and Val IT'. Public sources: ISACA. Scenario specifics (7K-employee insurer, 8-year-old blade servers, 9-month EOS, $4.2M/2.8M/1.4M-6.5M options, CIO/CTO/CFO/compliance positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Hardware refresh decision per ISACA Hardware Refresh Decision guidance and Val IT'. Public sources: ISACA. Scenario specifics (7K-employee insurer, 8-year-old blade servers, 9-month EOS, $4.2M/2.8M/1.4M-6.5M options, CIO/CTO/CFO/compliance positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): distractor rebuttal no longer relies on a fact absent from the stem.",
       "style_version": 2
     },
     {
@@ -2888,7 +2888,7 @@
       "tips": [
         "Eliminate: B and C each adopt one stakeholder's view and discard the others' evidence.",
         "Final two: A beats D because management owns criticality decisions; the auditor advises and must stay independent.",
-        "Exam cue: when an option has the auditor making a business decision, it is usually the runner-up, not the key."
+        "Exam cue: when an option has the auditor make a business decision, reject it; the auditor advises, management decides."
       ],
       "framework_ref": "ISO 22301:2019 Clause 8.2.2 (Business Impact Analysis); ISACA Business Continuity Management Audit/Assurance Program",
       "related_concepts": [
@@ -2896,7 +2896,7 @@
         "Three-stakeholder conflict",
         "BIA reconciliation"
       ],
-      "_provenance": "Authored from concept: 'Three-stakeholder BIA disagreement structured reconciliation per ISO 22301 and ISACA BIA Conflict Resolution guidance'. Public sources: ISO, ISACA. Scenario specifics (regional bank, mobile-banking BIA, Retail SVP/CFO/CRO disagreement, Tier 1/2/3 with $14M/$8M/$4M, 2024 outage 4% revenue impact, operational-resilience regulator) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback by using 3 stakeholders rather than 2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Three-stakeholder BIA disagreement structured reconciliation per ISO 22301 and ISACA BIA Conflict Resolution guidance'. Public sources: ISO, ISACA. Scenario specifics (regional bank, mobile-banking BIA, Retail SVP/CFO/CRO disagreement, Tier 1/2/3 with $14M/$8M/$4M, 2024 outage 4% revenue impact, operational-resilience regulator) invented for this question. Varies analysis-tier template per D4-3 reviewer feedback by using 3 stakeholders rather than 2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): exam cue rewritten as a principle rather than an answer-pattern rule.",
       "style_version": 2
     },
     {
@@ -3204,21 +3204,21 @@
       "options": {
         "A": "Cover a range of events, from local failures to cyber attacks",
         "B": "Add further detail to the regional natural-disaster playbook",
-        "C": "Plan for catastrophic worst cases and leave minor outages to operations",
+        "C": "Plan for total site loss and leave other outages to operations",
         "D": "Replace it with one playbook for the single likeliest event"
       },
       "correct": "A",
       "key_concept": "A DR plan should address a range of credible disruptions, including local failures and cyber attacks, not one dramatic scenario.",
       "pre_read": "Ask which disruptions are most likely in practice and whether a single-scenario plan would handle them.",
-      "correct_explanation": "Most real outages are local hardware failures or cyber events such as ransomware, not regional disasters. A plan covering a credible range of scenarios lets the organization respond to what is likely as well as what is severe. Planning only for catastrophic worst cases sounds thorough, but it leaves frequent, damaging disruptions such as ransomware without a recovery playbook.",
+      "correct_explanation": "Most real outages are local hardware failures or cyber events such as ransomware, not regional disasters. A plan covering a credible range of scenarios lets the organization respond to what is likely as well as what is severe. Planning only for total site loss sounds thorough, but it leaves frequent, damaging disruptions such as ransomware without a recovery playbook.",
       "wrong_explanations": {
         "B": "More detail on the same scenario does not address cyber, hardware or supplier disruptions the plan ignores.",
-        "C": "Worst-case focus leaves common, damaging events such as ransomware unplanned; many of these exceed what routine operations can recover.",
+        "C": "Site-loss focus leaves common, damaging events such as ransomware unplanned; many of these exceed what routine operations can recover.",
         "D": "A single-scenario plan fails whenever a different event occurs, which is the usual case."
       },
       "tips": [
         "Eliminate: B deepens the same single scenario, and D narrows the plan further.",
-        "Final two: A beats C because likely events such as ransomware need recovery plans, not only catastrophes.",
+        "Final two: A beats C because likely events such as ransomware need recovery plans, not only total site loss.",
         "Exam cue: DR scope is set by credible risk; prefer coverage of likely and severe events over one dramatic scenario."
       ],
       "framework_ref": "NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO 22301:2019 Clause 8.2.3 (Risk Assessment); NIST SP 800-184 (Guide for Cybersecurity Event Recovery)",
@@ -3227,7 +3227,7 @@
         "Ransomware DR",
         "Pandemic continuity"
       ],
-      "_provenance": "Authored from concept: 'IT DRP scenario spectrum per NIST SP 800-34 and ISO 22301'. Public sources: NIST, ISO. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IT DRP scenario spectrum per NIST SP 800-34 and ISO 22301'. Public sources: NIST, ISO. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): runner-up narrowed to total site loss so it clearly excludes ransomware.",
       "style_version": 2
     },
     {
@@ -3821,7 +3821,7 @@
       "subtopic": "BCM Good Practices Structure",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor reviews a continuity programme that claims to follow the BCI Good Practice Guidelines. Which observation BEST shows the guidelines' lifecycle design in practice?",
+      "question": "An IS auditor reviews a business continuity programme. Which observation BEST shows that it operates as a continuous lifecycle?",
       "options": {
         "A": "Identical recovery site tiers mandated for every business unit",
         "B": "Validation results feeding back into the next planning cycle",
@@ -3829,17 +3829,17 @@
         "D": "A one-time project closed once the plans are signed"
       },
       "correct": "B",
-      "key_concept": "The BCI Good Practice Guidelines describe six Professional Practices that run as an iterative lifecycle, with validation feeding the next cycle.",
-      "pre_read": "Recall the six Professional Practices, from Policy and Programme Management to Validation. Ask whether they form a line or a loop.",
-      "correct_explanation": "The BCI Good Practice Guidelines organise continuity work into six Professional Practices that repeat as a lifecycle, ending in Validation, whose results drive the next round of analysis and design. Seeing validation outcomes feed planning shows that cycle working. Certification evidence registers relate to ISO 22301 conformity; the GPG is practitioner guidance aligned with that standard, not a certification checklist, so registers alone do not prove the lifecycle.",
+      "key_concept": "A continuity programme is an iterative lifecycle: validation results from exercises, reviews and audits feed the next cycle of analysis and design.",
+      "pre_read": "Ask whether a continuity programme should run as a line or a loop. Look for evidence that results return to planning.",
+      "correct_explanation": "A continuity programme works as a lifecycle when validation results from exercises, reviews and audits feed the next round of analysis and design; the BCI Good Practice Guidelines end their six Professional Practices with Validation for this reason. Certification evidence registers show readiness for an ISO 22301 audit, but they can exist without any results looping back into planning.",
       "wrong_explanations": {
-        "A": "The guidelines expect strategies sized to each unit's analysed needs. Mandating identical site tiers ignores the analysis practice entirely.",
-        "C": "Certification evidence relates to ISO 22301 audits. The GPG is practitioner guidance, so registers do not show its iterative lifecycle operating.",
+        "A": "A lifecycle sizes strategies to each unit's analysed needs. Mandating identical site tiers skips that analysis entirely.",
+        "C": "Certification registers prepare for ISO 22301 audits. They can exist without any validation results looping back into planning.",
         "D": "Closing the work as a one-off project is the opposite of a lifecycle. Plans would decay without embedding and validation."
       },
       "tips": [
         "Eliminate: A ignores unit-specific analysis, and D treats continuity as a one-off project rather than a lifecycle.",
-        "Final two: B beats C because validation feeding the next cycle shows the GPG lifecycle, while certification registers serve ISO 22301 audits.",
+        "Final two: B beats C because validation feeding the next cycle shows the lifecycle working; certification registers can exist without that loop.",
         "Exam cue: continuity programmes are cycles; look for the option where results loop back into planning."
       ],
       "framework_ref": "BCI Good Practice Guidelines 2023 (Six Professional Practices); ISO 22301:2019 Security and resilience — Business continuity management systems; ISO 22313:2020 (Business Continuity Management Systems — Guidance on the Use of ISO 22301)",
@@ -3850,7 +3850,7 @@
         "ISO 22301 alignment",
         "DRII Professional Practices"
       ],
-      "_provenance": "Authored from concept: 'BCI Good Practice Guidelines six Professional Practices'. Public sources: BCI, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'BCI Good Practice Guidelines six Professional Practices'. Public sources: BCI, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): tests the lifecycle principle instead of recall of a third-party guide.",
       "style_version": 2
     },
     {
@@ -3862,14 +3862,14 @@
       "question": "A four-analyst security operations team dismisses most of its 3,500 daily SIEM alerts as noise. Which action should the security operations manager take FIRST?",
       "options": {
         "A": "Tune or retire rules with low true-positive rates",
-        "B": "Automate closure of routine alerts through a documented SOAR playbook",
+        "B": "Auto-close routine alerts through a documented security orchestration playbook",
         "C": "Hire enough analysts to review each alert generated daily",
         "D": "Measure alert volumes and disable rules above 100 daily"
       },
       "correct": "A",
       "key_concept": "Alert fatigue is a detection-tuning problem: measure signal quality per rule, tune or retire weak rules, and keep the suppressed logs.",
       "pre_read": "Ask what dismissing most alerts tells you about the rules. Then decide what must be known before automating or staffing.",
-      "correct_explanation": "Dismissing most alerts shows the rules produce poor signal. Measuring each rule's true-positive rate tells the manager which rules to tune, re-prioritise or retire, and keeps evidence for those decisions. Automating closure through SOAR is useful later, but doing it first would auto-close alerts from rules nobody has validated, hiding real detections instead of fixing the noise at its source.",
+      "correct_explanation": "Dismissing most alerts shows the rules produce poor signal. Measuring each rule's true-positive rate tells the manager which rules to tune, re-prioritise or retire, and keeps evidence for those decisions. Automating closure through an orchestration playbook is useful later, but doing it first would auto-close alerts from rules nobody has validated, hiding real detections instead of fixing the noise at its source.",
       "wrong_explanations": {
         "B": "Automation is valuable once rules are tuned. Auto-closing alerts from unmeasured rules risks silently discarding true detections.",
         "C": "Adding staff to review noise treats the symptom. Most of the volume comes from weak rules, not from genuine threat activity.",
@@ -3888,7 +3888,7 @@
         "SOAR",
         "MITRE ATT&CK"
       ],
-      "_provenance": "Authored from concept: 'SIEM alert governance per NIST SP 800-92 and MITRE ATT&CK detection engineering'. Public sources: NIST, MITRE, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'SIEM alert governance per NIST SP 800-92 and MITRE ATT&CK detection engineering'. Public sources: NIST, MITRE, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): SOAR acronym replaced with plain wording.",
       "style_version": 2
     },
     {
@@ -3937,15 +3937,15 @@
       "bloom_level": "Application",
       "question": "A security team relying on SIEM correlation rules wants better detection of insider credential misuse. Which approach should the security manager consider BEST?",
       "options": {
-        "A": "Retire the correlation rules once the UEBA baselines are trained",
-        "B": "Add UEBA as a behavioural layer beside the existing rules",
+        "A": "Retire the correlation rules once behaviour analytics baselines are trained",
+        "B": "Add user behaviour analytics beside the existing correlation rules",
         "C": "Expand the rule library with more insider-threat signatures",
         "D": "Raise rule thresholds to reduce insider alert volume"
       },
       "correct": "B",
-      "key_concept": "Rules detect known bad patterns deterministically; UEBA detects unusual behaviour. Layered together, they cover insider misuse that signatures miss.",
+      "key_concept": "Rules detect known bad patterns deterministically; user behaviour analytics detect unusual activity. Layered together, they cover insider misuse that signatures miss.",
       "pre_read": "Ask what insider misuse with valid credentials looks like to a signature. Then decide which detection method spots unusual behaviour.",
-      "correct_explanation": "Insiders using valid credentials rarely match a known-bad signature, so behaviour analytics that baseline normal activity and score deviations are needed. Adding UEBA as a layer keeps the rules for known patterns and compliance reporting while covering the unknown. Writing more signatures sounds like a measured improvement, but signatures can only describe misuse that has already been anticipated.",
+      "correct_explanation": "Insiders using valid credentials rarely match a known-bad signature, so behaviour analytics that baseline normal activity and score deviations are needed. Adding user behaviour analytics as a layer keeps the rules for known patterns and compliance reporting while covering the unknown. Writing more signatures sounds like a measured improvement, but signatures can only describe misuse that has already been anticipated.",
       "wrong_explanations": {
         "A": "Rules still give deterministic detection of known attacks and compliance evidence. Retiring them trades one blind spot for another.",
         "C": "More signatures help with known patterns, but insider misuse of valid credentials often looks legitimate and matches no predefined rule.",
@@ -3964,7 +3964,7 @@
         "Insider threat detection",
         "Behavioral baselining"
       ],
-      "_provenance": "Authored from concept: 'UEBA vs rules-based detection complementary integration'. Public sources: NIST, MITRE, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'UEBA vs rules-based detection complementary integration'. Public sources: NIST, MITRE, Gartner. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): UEBA acronym replaced with plain wording.",
       "style_version": 2
     },
     {
@@ -4051,7 +4051,7 @@
       "bloom_level": "Application",
       "question": "A trade database has a 15-minute RPO and a four-hour RTO, but transaction logs are backed up only every four hours. What should the IS auditor report as the MOST significant gap?",
       "options": {
-        "A": "Nightly full backups may stretch restore time past the RTO",
+        "A": "Restoring the logs may take longer than the four-hour RTO",
         "B": "Up to four hours of committed trades could be lost",
         "C": "Log backups run more often than trading systems require",
         "D": "Four-hour log intervals meet common industry practice"
@@ -4078,7 +4078,7 @@
         "Synchronous replication",
         "Point-in-time recovery"
       ],
-      "_provenance": "Authored from concept: 'Database backup strategy alignment with RPO per ISO/IEC 27040 and NIST SP 800-34'. Public sources: ISO/IEC, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Database backup strategy alignment with RPO per ISO/IEC 27040 and NIST SP 800-34'. Public sources: ISO/IEC, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): distractor A no longer introduces backups absent from the stem.",
       "style_version": 2
     },
     {
@@ -4428,7 +4428,7 @@
       "subtopic": "DR Test Forensic Artifacts Post-Failover",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Two days after a hospital network's DR failover test, threat hunters find attacker activity in the DR environment. What should the IS auditor recommend FIRST?",
+      "question": "Two days after a hospital network's DR failover test, with production running normally, threat hunters find attacker activity in the DR environment. What should the IS auditor recommend FIRST?",
       "options": {
         "A": "Preserve the DR snapshots and logs as forensic evidence",
         "B": "Rebuild the DR environment to restore recovery capability",
@@ -4457,7 +4457,7 @@
         "Lateral movement detection",
         "Parallel reconstruction"
       ],
-      "_provenance": "Authored from concept: 'Post-failover forensic discovery — multi-track response with HIPAA and DFIR governance'. Public sources: NIST, HHS OCR, FBI Cyber. Scenario specifics (14-hospital regional healthcare network, 2.1M patient records, 36-hour DR failover March 15, beaconing to C2 domain, threat-hunting discovery March 17) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Post-failover forensic discovery — multi-track response with HIPAA and DFIR governance'. Public sources: NIST, HHS OCR, FBI Cyber. Scenario specifics (14-hospital regional healthcare network, 2.1M patient records, 36-hour DR failover March 15, beaconing to C2 domain, threat-hunting discovery March 17) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states production is running normally.",
       "style_version": 2
     },
     {
@@ -4696,7 +4696,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor is planning an audit of a third-party offsite media storage vendor that provides a current SOC 2 report. Which approach is MOST appropriate?",
       "options": {
-        "A": "Assess the report's scope against our risks and test gaps",
+        "A": "Evaluate the report's scope, then test any uncovered risks",
         "B": "Rely on the report's unqualified opinion without any further testing",
         "C": "Limit the work to contract terms and insurance certificates",
         "D": "Photograph the facility during an unannounced site visit"
@@ -4723,7 +4723,7 @@
         "Restoration testing",
         "Vendor due diligence"
       ],
-      "_provenance": "Authored from concept: 'Offsite storage facility audit eight-dimension scope per ISACA BC Audit Program'. Public sources: ISACA, ISO/IEC, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Offsite storage facility audit eight-dimension scope per ISACA BC Audit Program'. Public sources: ISACA, ISO/IEC, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key option made a plain, unambiguous statement.",
       "style_version": 2
     },
     {
@@ -5112,7 +5112,7 @@
       "subtopic": "Brand Crisis During Ransomware Recovery",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Eighteen hours into a ransomware outage, social media claims the firm is hiding a breach, while forensics is still incomplete. What should the IS auditor advise the CEO to do FIRST?",
+      "question": "Eighteen hours into a ransomware outage, social media claims the firm is hiding a breach, while forensics is still incomplete. What should the CEO do FIRST?",
       "options": {
         "A": "Issue a factual statement through the designated spokesperson",
         "B": "Withhold external comment until forensics confirms any exfiltration",
@@ -5141,7 +5141,7 @@
         "Spokesperson framework",
         "Regulation FD"
       ],
-      "_provenance": "Authored from concept: 'Brand crisis during ransomware recovery — coordinated comms timing'. Public sources: ISO, BCI, NIST, SEC. Scenario specifics (consumer fintech, 2.4M users, hour 18 of incident, viral hiding-a-breach thread, Reuters query, multi-stakeholder positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Brand crisis during ransomware recovery — coordinated comms timing'. Public sources: ISO, BCI, NIST, SEC. Scenario specifics (consumer fintech, 2.4M users, hour 18 of incident, viral hiding-a-breach thread, Reuters query, multi-stakeholder positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -6100,7 +6100,7 @@
       "subtopic": "Problem Management. Root Cause Analysis Methodology",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A problem manager finds the same storage outage has recurred three times, and each incident was closed after a restart. What should the IS auditor recommend as BEST?",
+      "question": "An IS auditor finds the same storage outage has recurred three times, and each incident was closed after a restart. What should the auditor recommend as BEST?",
       "options": {
         "A": "Open a problem record to find the underlying cause",
         "B": "Automate the restart so service recovers faster next time",
@@ -6129,7 +6129,7 @@
         "Corrective vs preventive actions",
         "Root cause vs symptom"
       ],
-      "_provenance": "Authored from concept: 'Problem management RCA per ITIL 4 and ISO/IEC 20000-1'. Public sources: AXELOS, ISO/IEC, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Problem management RCA per ITIL 4 and ISO/IEC 20000-1'. Public sources: AXELOS, ISO/IEC, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): actor clarified: the IS auditor finds the recurrence.",
       "style_version": 2
     },
     {
@@ -6518,7 +6518,7 @@
       "subtopic": "Major Incident Multi-Stakeholder Coordination",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "In hour 14 of a major outage, five executives are pushing conflicting recovery and communication actions. What should the IS auditor recommend the COO do FIRST?",
+      "question": "In hour 14 of a major outage, five executives are pushing conflicting recovery and communication actions. What should the COO do FIRST?",
       "options": {
         "A": "Start a forensic review before any further recovery decisions",
         "B": "Let each executive run their own workstream in parallel",
@@ -6528,9 +6528,9 @@
       "correct": "C",
       "key_concept": "In a major incident with competing stakeholders, establish unified command and decision rights first; coordinated recovery and communication follow from it.",
       "pre_read": "Notice the problem is conflicting direction, not a missing action. Ask what must exist before the actions can be coordinated.",
-      "correct_explanation": "The outage is prolonged because executives are pulling in different directions. Appointing one incident commander with clear decision rights creates a single point of coordination, so recovery, workarounds and communications are sequenced rather than contested. Briefing members and regulators is urgent and valuable, but launched before command is set, messages may contradict recovery decisions and need retracting later.",
+      "correct_explanation": "The outage is prolonged because executives are pulling in different directions. Appointing one incident commander with clear decision rights creates a single point of coordination, so recovery, workarounds and communications are sequenced rather than contested. Briefing customers and regulators is urgent and valuable, but if it starts before command is set, messages may contradict recovery decisions and need retracting later.",
       "wrong_explanations": {
-        "A": "Halting recovery for a forensic review prolongs the outage when nothing points to malicious activity.",
+        "A": "Halting recovery for a forensic review prolongs the outage when no one has reported signs of an attack.",
         "B": "Independent workstreams are exactly what is causing the conflict; they need one point of coordination.",
         "D": "Communication matters, but without unified command messages may conflict with recovery decisions and need correction."
       },
@@ -6547,7 +6547,7 @@
         "Parallel workstreams",
         "Pre-chartered post-incident review"
       ],
-      "_provenance": "Authored from concept: 'Major incident multi-stakeholder coordination per FEMA ICS adapted for IT'. Public sources: NIST, FEMA, AXELOS, ISACA. Scenario specifics (managed-care insurance $6.8B, 4.1M members, schema change corruption, hour 14, multi-stakeholder positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Major incident multi-stakeholder coordination per FEMA ICS adapted for IT'. Public sources: NIST, FEMA, AXELOS, ISACA. Scenario specifics (managed-care insurance $6.8B, 4.1M members, schema change corruption, hour 14, multi-stakeholder positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; explanation wording matches option D. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -6670,7 +6670,7 @@
       "subtopic": "Vendor Managed Service Unavailable During Ransomware",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Ransomware entered a bank through its managed service provider's remote tools, and the continuity plan names that provider as recovery lead. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "Ransomware entered a bank through its managed service provider's remote tools, and the continuity plan names that provider as recovery lead. What should the CISO do FIRST?",
       "options": {
         "A": "Let the provider lead recovery as the continuity plan specifies",
         "B": "Restore core systems from the bank's own offline backups",
@@ -6699,7 +6699,7 @@
         "OFAC sanctions on ransomware",
         "Vendor concentration"
       ],
-      "_provenance": "Authored from concept: 'MSP supply-chain ransomware multi-track response'. Public sources: CISA, FBI, OFAC, FDIC, FFIEC, OCC. Scenario specifics (community bank $2.1B, MSP serves 70+ banks, supply-chain attack via remote-management tool, 12 affected client banks, hour 8) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'MSP supply-chain ransomware multi-track response'. Public sources: CISA, FBI, OFAC, FDIC, FFIEC, OCC. Scenario specifics (community bank $2.1B, MSP serves 70+ banks, supply-chain attack via remote-management tool, 12 affected client banks, hour 8) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -7278,7 +7278,7 @@
       "subtopic": "Cloud Backup Ransomware. Object-Lock Bypass Attempt",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "During a ransomware attack, Object Lock protected recent cloud backups, but attackers are now deleting older unlocked backups. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "During a ransomware attack, Object Lock protected recent cloud backups, but attackers are now deleting older unlocked backups. What should the CISO do FIRST?",
       "options": {
         "A": "Pay the ransom because outage costs exceed the demand",
         "B": "Restore production immediately from the locked snapshots",
@@ -7307,7 +7307,7 @@
         "FBI IC3 reporting",
         "Ransomware insurance"
       ],
-      "_provenance": "Authored from concept: 'Cloud backup ransomware with Object Lock protection — DO NOT PAY rationale'. Public sources: CISA, FBI, OFAC, AWS. Scenario specifics (media streaming $2.7B, 14M subscribers, hour 6, $25M ransom, $90-140M outage estimate, partial Object Lock coverage 6 months) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Cloud backup ransomware with Object Lock protection — DO NOT PAY rationale'. Public sources: CISA, FBI, OFAC, AWS. Scenario specifics (media streaming $2.7B, 14M subscribers, hour 6, $25M ransom, $90-140M outage estimate, partial Object Lock coverage 6 months) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -7392,7 +7392,7 @@
       "subtopic": "Patch Deferral vs Regulatory Deadline",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A binding directive requires a known-exploited vulnerability be patched within three days, but patching needs an outage before a fixed contract deliverable. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "A binding directive with its own exception process requires a known-exploited flaw patched within three days, but patching needs an outage before a contract deadline. What should the IS auditor recommend the CISO do FIRST?",
       "options": {
         "A": "Defer the patch under a signed internal risk-acceptance memo",
         "B": "Seek a formal directive extension with compensating controls",
@@ -7421,7 +7421,7 @@
         "CMMC certification",
         "Patch-window scheduling conflicts"
       ],
-      "_provenance": "Authored from concept: 'Patch deferral with regulatory deadline conflict — formal extension request multi-track'. Public sources: CISA, NIST, DoD CMMC. Scenario specifics (federal contractor $760M, CUI processing, CMMC renewal 5 weeks, CISA KEV catalog 14-day rule, 11 days elapsed, DoD deliverable 8 days, 6-hour outage required) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Patch deferral with regulatory deadline conflict — formal extension request multi-track'. Public sources: CISA, NIST, DoD CMMC. Scenario specifics (federal contractor $760M, CUI processing, CMMC renewal 5 weeks, CISA KEV catalog 14-day rule, 11 days elapsed, DoD deliverable 8 days, 6-hour outage required) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the directive has its own exception process. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -7658,7 +7658,7 @@
       "subtopic": "Multi-Cloud Cascade Outage",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Both cloud providers in a firm's failover design are degraded at once, and a third provider holds no production deployment. What should the IS auditor recommend the CTO do FIRST?",
+      "question": "Both cloud providers in a firm's failover design are degraded at once, and a third provider holds no production deployment. What should the CTO do FIRST?",
       "options": {
         "A": "Fail over to the third provider using improvised runbooks",
         "B": "Post hourly status updates while monitoring provider dashboards",
@@ -7687,7 +7687,7 @@
         "BGP route diversity",
         "Architectural review"
       ],
-      "_provenance": "Authored from concept: 'Multi-cloud cascade outage assumption failure'. Public sources: AWS, Microsoft, CSA, ISACA. Scenario specifics (SaaS provider $560M ARR, AWS-primary + Azure-ML, both degraded simultaneously, GCP accounts no production, customer pressure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Multi-cloud cascade outage assumption failure'. Public sources: AWS, Microsoft, CSA, ISACA. Scenario specifics (SaaS provider $560M ARR, AWS-primary + Azure-ML, both degraded simultaneously, GCP accounts no production, customer pressure) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -7810,7 +7810,7 @@
       "subtopic": "IAM Compromise via Stolen API Tokens",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Threat hunters find phished customer API tokens with read-write access being used from anomalous locations, and some data has already left. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "Threat hunters find phished customer API tokens with read-write access being used from anomalous locations, and some data has already left. What should the CISO do FIRST?",
       "options": {
         "A": "Revoke the tokens and preserve evidence of their use",
         "B": "Keep the tokens live to gather more attacker intelligence",
@@ -7839,7 +7839,7 @@
         "Active vs passive containment",
         "Customer notification coordination"
       ],
-      "_provenance": "Authored from concept: 'IAM compromise via stolen API tokens — multi-track response'. Public sources: NIST, ISACA, OWASP. Scenario specifics (B2B SaaS $380M ARR, 7 customer integrations, anomalous geographic usage, ~4-11 day window, <5% data exfiltrated, UEBA detection) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IAM compromise via stolen API tokens — multi-track response'. Public sources: NIST, ISACA, OWASP. Scenario specifics (B2B SaaS $380M ARR, 7 customer integrations, anomalous geographic usage, ~4-11 day window, <5% data exfiltrated, UEBA detection) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -7848,12 +7848,12 @@
       "subtopic": "Stakeholder Pressure to Skip BCP Exercise",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A CFO asks to defer a bank's quarterly failover exercise, committed to examiners, by six months because of acquisition workload. What is the IS auditor's BEST recommendation to the COO?",
+      "question": "Citing acquisition workload, a CFO asks to defer by six months a quarterly failover exercise the bank committed to examiners to verify last quarter's fixes. What is the IS auditor's BEST recommendation to the COO?",
       "options": {
         "A": "Approve the deferral with a signed risk-acceptance memo",
         "B": "Replace the failover with a walkthrough run by finance staff",
         "C": "Cancel the exercise and rely on last quarter's results",
-        "D": "Run a scoped failover of remediated gaps on schedule"
+        "D": "Run a failover scoped to the remediated gaps on schedule"
       },
       "correct": "D",
       "key_concept": "A regulatory test commitment can be right-sized to resource limits, but it should still be met; scope flexes before the commitment does.",
@@ -7877,7 +7877,7 @@
         "Prior findings remediation",
         "Audit committee notification"
       ],
-      "_provenance": "Authored from concept: 'BCP exercise stakeholder pressure structured analysis'. Public sources: ISO, FFIEC, ISACA, BCI. Scenario specifics (retail bank $12B, full-scale failover planned, Q4 earnings + acquisition integration competing, $380K cost, prior findings partial remediation) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'BCP exercise stakeholder pressure structured analysis'. Public sources: ISO, FFIEC, ISACA, BCI. Scenario specifics (retail bank $12B, full-scale failover planned, Q4 earnings + acquisition integration competing, $380K cost, prior findings partial remediation) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states the exercise verifies last quarter fixes; key reworded.",
       "style_version": 2
     },
     {
@@ -7886,7 +7886,7 @@
       "subtopic": "Insider Threat Detected During DR Exercise",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Midway through a DR exercise, a DBA with authorized read rights queries customer tables outside the exercise scope, with no sign of data leaving. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "Midway through a DR exercise, a DBA with authorized read rights queries customer tables outside the exercise scope, with no sign of data leaving. What should the CISO do FIRST?",
       "options": {
         "A": "Suspend the DBA's access and remove them from the exercise",
         "B": "Ask the DBA's manager to question the DBA during the exercise",
@@ -7905,7 +7905,7 @@
       "tips": [
         "Eliminate: B tips off the DBA through an untrained interview, and D lets evidence age while activity continues unexamined.",
         "Final two: C beats A because ambiguous, authorized access calls for securing evidence and coordination before visible action.",
-        "Exam cue: in suspected insider cases without active data loss, preserve evidence and involve HR and legal before confronting."
+        "Exam cue: suspend access when data has left or harm is done; when access is authorized and nothing has left, preserve evidence and involve HR first."
       ],
       "framework_ref": "CERT Common Sense Guide to Mitigating Insider Threats, 7th Edition (CMU SEI, 2022); NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
@@ -7915,7 +7915,7 @@
         "Chain-of-custody preservation",
         "Cover-of-exercise tactic"
       ],
-      "_provenance": "Authored from concept: 'Insider threat detected during DR exercise'. Public sources: Carnegie Mellon CERT, NIST, ISACA. Scenario specifics (insurance company $3.8B, 15-year tenure DBA, top performer, customer-data access outside exercise scope, threat-intel match, financial stress signals) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Insider threat detected during DR exercise'. Public sources: Carnegie Mellon CERT, NIST, ISACA. Scenario specifics (insurance company $3.8B, 15-year tenure DBA, top performer, customer-data access outside exercise scope, threat-intel match, financial stress signals) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -7924,7 +7924,7 @@
       "subtopic": "Post-Acquisition IT Integration Failure",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After a failed Big Bang integration cutover, point-of-sale, inventory and payroll systems are broken, and the first rollback attempt failed. What should the IS auditor recommend the CEO do FIRST?",
+      "question": "After a failed all-at-once integration cutover, point-of-sale, inventory and payroll systems are broken, and the first rollback attempt failed. What should the CEO do FIRST?",
       "options": {
         "A": "Retry the rollback with a larger vendor team",
         "B": "Appoint one incident commander to triage and set priorities",
@@ -7953,7 +7953,7 @@
         "Payroll continuity workaround",
         "M&A IT integration risk"
       ],
-      "_provenance": "Authored from concept: 'Post-acquisition IT integration failure multi-track response'. Public sources: ISACA, FEMA, ISO. Scenario specifics ($5.2B + $1.8B retail acquisition, 14 months post-close, Big Bang cutover, POS/inventory/payroll/returns broken, rollback failed, $45M+ revenue at risk) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Post-acquisition IT integration failure multi-track response'. Public sources: ISACA, FEMA, ISO. Scenario specifics ($5.2B + $1.8B retail acquisition, 14 months post-close, Big Bang cutover, POS/inventory/payroll/returns broken, rollback failed, $45M+ revenue at risk) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -8003,13 +8003,13 @@
       "options": {
         "A": "Extend the window past 24 hours to raise the score",
         "B": "Restart from hour zero and report the rerun results instead",
-        "C": "Stop the test, rank failures and notify the examiner proactively",
+        "C": "Finish the test, rank failures and brief the examiner early",
         "D": "Close the exercise record with an internal lessons-learned memo"
       },
       "correct": "C",
-      "key_concept": "A failed exercise is valuable evidence: stop it, analyze the failures for remediation and be transparent with the regulator.",
+      "key_concept": "A failed exercise is valuable evidence: finish it as planned, analyze the failures for remediation and be transparent with the regulator.",
       "pre_read": "Ask what the exercise is for. Does a failure need hiding or improving, or does it need analyzing and reporting honestly?",
-      "correct_explanation": "An exercise exists to find weaknesses, and this one has found several. Stopping it, ranking the failures by cause for remediation and informing the examiner proactively turns the result into an improvement plan and preserves regulatory trust. An internal lessons-learned memo records the failures, but it neither drives prioritized remediation nor tells the regulator, who will read the report anyway.",
+      "correct_explanation": "An exercise exists to find weaknesses, and this one has found several. Finishing it within the planned window gathers evidence on the remaining steps, ranking failures by cause drives remediation, and briefing the examiner early preserves regulatory trust. An internal lessons-learned memo records the failures, but it neither drives prioritized remediation nor prepares the regulator, who will read the report anyway.",
       "wrong_explanations": {
         "A": "Stretching the window distorts the test conditions to improve the score, so the report no longer reflects real recovery capability.",
         "B": "Reporting a clean rerun instead of the actual result misleads the regulator and hides the failures the exercise exposed.",
@@ -8028,7 +8028,7 @@
         "Targeted re-exercise",
         "Exercise data quality vs completion"
       ],
-      "_provenance": "Authored from concept: 'DR test cascade failure structured response'. Public sources: FFIEC, ISO, NIST, ISACA. Scenario specifics (federally-chartered bank $23B, 24-hour DR exercise, multiple distinct failures, 30% objective achievement, FDIC examiner report) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DR test cascade failure structured response'. Public sources: FFIEC, ISO, NIST, ISACA. Scenario specifics (federally-chartered bank $23B, 24-hour DR exercise, multiple distinct failures, 30% objective achievement, FDIC examiner report) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key now finishes the exercise, consistent with d4_095.",
       "style_version": 2
     },
     {
@@ -8037,7 +8037,7 @@
       "subtopic": "Data Corruption Recovery vs Business Deadline",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Storage corruption has damaged 8% of yesterday's trade records on settlement day; restoring the clean backup and replaying logs takes 6–8 hours. What should the IS auditor recommend the CFO do FIRST?",
+      "question": "Storage corruption has damaged 8% of yesterday's trade records on settlement day; restoring the clean backup and replaying logs takes 6–8 hours. What should the CFO do FIRST?",
       "options": {
         "A": "Settle using best-available data and correct the records afterward",
         "B": "Reconcile each affected trade manually before settling",
@@ -8047,7 +8047,7 @@
       "correct": "D",
       "key_concept": "Integrity of settlement data comes first; the fastest verified recovery path plus early regulator contact beats settling on corrupt data.",
       "pre_read": "Compare the recovery options against the deadline. Which one produces verified data in time, and who should hear early?",
-      "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data within the deadline, and telling the regulator early protects the firm if timing slips. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay.",
+      "correct_explanation": "Settlement must rest on accurate records. Restoring the clean backup and replaying the transaction logs is the fastest route to verified data, and telling the regulator early protects the firm if timing slips. Manual reconciliation is accurate in principle, but reworking thousands of trades by hand is far slower and more error-prone than a replay.",
       "wrong_explanations": {
         "A": "Settling on known-corrupt data harms customers and breaches books-and-records duties. Later correction does not undo that.",
         "B": "Manually reconciling thousands of trades takes far longer than a replay and introduces human error under deadline pressure.",
@@ -8066,7 +8066,7 @@
         "Proactive regulator disclosure",
         "Verified data settlement"
       ],
-      "_provenance": "Authored from concept: 'Data corruption with settlement-deadline regulatory conflict'. Public sources: FINRA, SEC, ISACA, FFIEC, ISO. Scenario specifics (retail brokerage $840M, 8% trade record corruption, ~14K customers, T+1 settlement, 6-8 hour replay vs 14-18 hour manual) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Data corruption with settlement-deadline regulatory conflict'. Public sources: FINRA, SEC, ISACA, FFIEC, ISO. Scenario specifics (retail brokerage $840M, 8% trade record corruption, ~14K customers, T+1 settlement, 6-8 hour replay vs 14-18 hour manual) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -8075,7 +8075,7 @@
       "subtopic": "Help Desk Overwhelmed During Major Event",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "During a campus email outage, help-desk tickets jump fivefold, mostly duplicates from users unaware the outage is universal. What should the IS auditor recommend the CIO do FIRST?",
+      "question": "During a campus email outage, help-desk tickets jump fivefold, mostly duplicates from users unaware the outage is universal. What should the CIO do FIRST?",
       "options": {
         "A": "Reassign administrative staff to answer help-desk phone queues",
         "B": "Broadcast an outage notice with scheduled status updates",
@@ -8104,7 +8104,7 @@
         "Cadence updates",
         "Pre-positioned surge agreements"
       ],
-      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Help desk surge during major event'. Public sources: AXELOS, ISACA, FEMA. Scenario specifics (regional university 32K students 4.2K staff, email outage hour 4, 1,400+ tickets in 4 hours, 90+ minute waits) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -8189,11 +8189,11 @@
       "subtopic": "Critical Staff Sudden Unavailability Mid-Incident",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Six hours into a clinical-trial database recovery, the only architect who knows the system is hospitalized for at least 24 hours. What should the IS auditor recommend the COO do FIRST?",
+      "question": "Six hours into a clinical-trial database recovery, the only architect who knows the system is hospitalized for at least 24 hours. What should the COO do FIRST?",
       "options": {
         "A": "Freeze the database and pause recovery until the architect returns",
-        "B": "Let the two junior engineers continue without added oversight",
-        "C": "Form an interim team of external specialists under one lead",
+        "B": "Let the remaining engineers continue recovery without added oversight",
+        "C": "Form an interim team under one lead, adding external specialists",
         "D": "Escalate the recovery decision to the board for direction"
       },
       "correct": "C",
@@ -8202,7 +8202,7 @@
       "correct_explanation": "Recovery cannot depend on one unavailable person. An interim team under a named lead, strengthened by external specialists, restores leadership and expertise quickly while keeping decisions accountable. Freezing the database protects its current state, but pausing for at least a day prolongs the outage, threatens regulatory deadlines and only deepens the single-person dependency that caused the problem.",
       "wrong_explanations": {
         "A": "Freezing protects state but stalls recovery for a day or more and keeps the firm dependent on one person.",
-        "B": "Engineers who have never led a major recovery, without oversight, risk compounding the data-integrity problem.",
+        "B": "Remaining engineers working without senior oversight on a system none of them knows well risk compounding the data-integrity problem.",
         "D": "The board sets direction, not live recovery steps. Escalating the operational decision delays action and adds no expertise."
       },
       "tips": [
@@ -8218,7 +8218,7 @@
         "External specialist engagement",
         "BCM single-point-of-knowledge"
       ],
-      "_provenance": "Authored from concept: 'Critical staff sudden unavailability during major incident'. Public sources: ISACA, NIST, BCI, FEMA. Scenario specifics (pharmaceutical research $1.6B, 20-year DB architect Dr. K. medical emergency, 30 minutes ago, backup architect vacation, two junior engineers, FDA filing 3 weeks) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Critical staff sudden unavailability during major incident'. Public sources: ISACA, NIST, BCI, FEMA. Scenario specifics (pharmaceutical research $1.6B, 20-year DB architect Dr. K. medical emergency, 30 minutes ago, backup architect vacation, two junior engineers, FDA filing 3 weeks) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; options no longer refer to people absent from the stem.",
       "style_version": 2
     },
     {
@@ -8264,7 +8264,7 @@
       "subtopic": "Departing Employee Privileged Access Abuse",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A resigning DBA with four days left downloaded 240MB of customer loan data, including SSNs, to a USB drive at 02:30. What should the IS auditor recommend the CISO do FIRST?",
+      "question": "A resigning DBA with four days left downloaded 240MB of customer loan data, including SSNs, to a USB drive at 02:30. What should the CISO do FIRST?",
       "options": {
         "A": "Revoke the DBA's access at Friday's scheduled off-boarding",
         "B": "Ask the DBA to return the drive and sign a declaration",
@@ -8293,7 +8293,7 @@
         "Non-compete enforcement",
         "GLBA breach notification"
       ],
-      "_provenance": "Authored from concept: 'Departing employee privileged-access abuse — emergency containment'. Public sources: CERT, NIST, FTC. Scenario specifics (regional bank $4.2B, DBA 5 days post-resignation, 240MB USB exfiltration, 02:30 anomalous access, SSN queries) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Departing employee privileged-access abuse — emergency containment'. Public sources: CERT, NIST, FTC. Scenario specifics (regional bank $4.2B, DBA 5 days post-resignation, 240MB USB exfiltration, 02:30 anomalous access, SSN queries) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -8302,7 +8302,7 @@
       "subtopic": "Active Directory Compromise. Golden Ticket",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An attacker has forged Golden Tickets using a krbtgt account whose password has not changed in seven years. Which action should the IS auditor recommend the CISO prioritize FIRST?",
+      "question": "An attacker has forged Golden Tickets using a krbtgt account whose password has not changed in seven years. Which action should the CISO prioritize FIRST?",
       "options": {
         "A": "Rotate the krbtgt password twice, with replication in between",
         "B": "Reset the krbtgt password once and force user password changes",
@@ -8331,7 +8331,7 @@
         "Tier-zero hardening",
         "MITRE ATT&CK T1558"
       ],
-      "_provenance": "Authored from concept: 'AD Golden Ticket attack response per Microsoft + MITRE ATT&CK'. Public sources: Microsoft, MITRE, CISA, NIST. Scenario specifics (manufacturing $2.1B, krbtgt 7-year-old password, ~140 workstations compromised, 11-day attack chain) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'AD Golden Ticket attack response per Microsoft + MITRE ATT&CK'. Public sources: Microsoft, MITRE, CISA, NIST. Scenario specifics (manufacturing $2.1B, krbtgt 7-year-old password, ~140 workstations compromised, 11-day attack chain) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -8340,7 +8340,7 @@
       "subtopic": "Third-Party Library Zero-Day Supply-Chain",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An actively exploited flaw appears in an open-source library used by 340 services, and each safe rollout takes 4–6 hours. What should the IS auditor recommend the CTO do FIRST?",
+      "question": "An actively exploited flaw appears in an open-source library used by 340 services, and each safe rollout takes 4–6 hours. What should the CTO do FIRST?",
       "options": {
         "A": "Patch services in the standard change-board priority order",
         "B": "Patch internal microservices first, then customer-facing APIs",
@@ -8369,7 +8369,7 @@
         "Transitive dependency",
         "1-N day vs zero-day"
       ],
-      "_provenance": "Authored from concept: 'Third-party library zero-day supply-chain response'. Public sources: NIST, CISA, SLSA, ISACA. Scenario specifics (SaaS analytics $720M, 340 internal microservices + 9 customer APIs + CI/CD, CVSS 10 zero-day, 4-6 hour rollout per service) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Third-party library zero-day supply-chain response'. Public sources: NIST, CISA, SLSA, ISACA. Scenario specifics (SaaS analytics $720M, 340 internal microservices + 9 customer APIs + CI/CD, CVSS 10 zero-day, 4-6 hour rollout per service) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -8530,7 +8530,7 @@
       "subtopic": "DR Replication. Data Residency Conflict",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor finds the DR design replicates EU customer data nightly to a US region where local transfer rules prohibit it. What is the BEST recommendation?",
+      "question": "An IS auditor finds the DR design replicates customer data nightly to a region where a data-localization law forbids storing any copy. What is the BEST recommendation?",
       "options": {
         "A": "Suspend replication and accept the loss of DR coverage",
         "B": "Rely on the provider's contract for transfer compliance",
@@ -8540,14 +8540,14 @@
       "correct": "D",
       "key_concept": "DR site selection must satisfy data residency rules and recovery objectives together; encryption does not change where data resides.",
       "pre_read": "Notice what is prohibited: the location, not the exposure. Ask which option fixes the location without losing recovery capability.",
-      "correct_explanation": "Relocating the DR target to a compliant region removes the prohibited transfer while keeping recovery capability, provided the new site is tested against the agreed RTO and RPO. Encryption with customer-held keys is a strong safeguard, but it does not change where the copies reside; a transfer that local rules prohibit stays prohibited however well the data is protected.",
+      "correct_explanation": "Relocating the DR target to a compliant region removes the prohibited copies while keeping recovery capability, provided the new site is tested against the agreed RTO and RPO. Encryption with customer-held keys is a strong safeguard, but it does not change where the copies reside; a localization law that forbids storing data in a region applies however well the data is protected.",
       "wrong_explanations": {
         "A": "Stopping replication ends the transfer but leaves critical systems with no recovery path, trading a compliance breach for an unacceptable continuity gap.",
-        "B": "A contract cannot make a prohibited transfer lawful, and the organization stays accountable for where its customer data is stored.",
-        "C": "Encryption protects confidentiality, but the replicated copies still sit in a region where local rules forbid the transfer."
+        "B": "A contract cannot override a localization law, and the organization stays accountable for where its customer data is stored.",
+        "C": "Encryption protects confidentiality, but the replicated copies still sit in a region where the localization law forbids storing them."
       },
       "tips": [
-        "Eliminate: A gives up DR coverage, and B leans on a contract that cannot make the transfer lawful.",
+        "Eliminate: A gives up DR coverage, and B leans on a contract that cannot override the law.",
         "Final two: D beats C because the location itself is prohibited; encryption protects the copies but they still reside there.",
         "Exam cue: when a DR design breaks a constraint, redesign the site and re-prove RTO and RPO rather than dropping recovery."
       ],
@@ -8558,7 +8558,7 @@
         "Cross-border replication",
         "Recovery site selection"
       ],
-      "_provenance": "Authored from concept: 'Multi-jurisdiction data sovereignty conflict response'. Public sources: EU, China cyberspace administration, US courts, ISACA. Scenario specifics (multinational SaaS $890M ARR, US federal subpoena, EU + China customer data, GDPR Art 48 + PIPL conflict) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
+      "_provenance": "Authored from concept: 'Multi-jurisdiction data sovereignty conflict response'. Public sources: EU, China cyberspace administration, US courts, ISACA. Scenario specifics (multinational SaaS $890M ARR, US federal subpoena, EU + China customer data, GDPR Art 48 + PIPL conflict) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit. Learner-impact review (Oct 2026): recast as a data-localization ban so the encryption rebuttal is accurate.",
       "style_version": 2
     },
     {
@@ -8945,24 +8945,24 @@
       "subtopic": "Payment Processor Downstream Impact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A hotel chain's card processor has been down 12 hours with a 24-hour ETA; switching processors takes weeks. What is the BEST recommendation from the IS auditor to the CFO?",
+      "question": "A hotel chain's card processor is down with a 24-hour ETA, and staff process cards manually under the continuity plan; switching processors takes weeks. What is the IS auditor's BEST recommendation to the CFO?",
       "options": {
         "A": "Stop accepting cards and take cash payments until restoration",
-        "B": "Keep the BCP manual workaround with cardholder-data controls enforced",
+        "B": "Keep the manual card process with cardholder-data controls enforced",
         "C": "Switch to an alternate processor through emergency procurement",
         "D": "Let guests settle their bills once the processor is restored"
       },
       "correct": "B",
       "key_concept": "Use the tested continuity workaround while keeping its security controls intact; a recovery option slower than the outage adds no value.",
-      "pre_read": "Compare the 24-hour ETA with the weeks needed to switch. Then check what the BCP already provides.",
-      "correct_explanation": "The BCP already provides a manual workaround sized for an outage of this length, and it can continue as long as cardholder-data protections still apply to imprint slips and stored card details. An emergency switch sounds decisive, but it takes weeks, well beyond the stated ETA, and rushed integration adds new failure risk.",
+      "pre_read": "Compare the 24-hour ETA with the weeks needed to switch. Then check what the continuity plan already provides.",
+      "correct_explanation": "The continuity plan already provides the manual card process now in use, and it can continue as long as cardholder-data protections still apply to imprint slips and stored card details. An emergency switch sounds decisive, but it takes weeks, well beyond the stated ETA, and rushed integration adds new failure risk.",
       "wrong_explanations": {
         "A": "Refusing cards turns a manageable outage into lost revenue and guest harm when a planned workaround already exists.",
         "C": "A switch taking weeks cannot help an outage expected to end within a day, and rushed integration adds risk.",
         "D": "Deferring payment creates credit and collection risk and ignores the documented continuity procedure already in place."
       },
       "tips": [
-        "Eliminate: A abandons card revenue unnecessarily, and D creates credit risk while ignoring the BCP.",
+        "Eliminate: A abandons card revenue unnecessarily, and D creates credit risk while ignoring the continuity plan.",
         "Final two: B beats C because the planned workaround covers the expected outage, while a weeks-long switch cannot arrive in time.",
         "Exam cue: compare the fix's lead time with the outage's expected duration before choosing a drastic recovery option."
       ],
@@ -8974,7 +8974,7 @@
         "PCI DSS Requirement 12",
         "Hospitality downstream impact"
       ],
-      "_provenance": "Authored from concept: 'Payment processor outage downstream impact response'. Public sources: PCI SSC, VISA, ISACA, FFIEC. Scenario specifics (hotel chain $1.4B 280 properties, hour 12 of processor outage, ETA 'within 24h', $2.4M/day, BCP-documented manual workarounds) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Payment processor outage downstream impact response'. Public sources: PCI SSC, VISA, ISACA, FFIEC. Scenario specifics (hotel chain $1.4B 280 properties, hour 12 of processor outage, ETA 'within 24h', $2.4M/day, BCP-documented manual workarounds) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem now states staff are already using the manual card process; BCP acronym removed. Blind re-check clarity fix (Oct 2026).",
       "style_version": 2
     },
     {
@@ -8983,15 +8983,15 @@
       "subtopic": "Incident Classification. Severity Matrix Misfire",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Sixteen hours into a breach exposing 340,000 customer records, the incident is still ranked low priority because the severity matrix scores only affected staff users. What should the incident manager do FIRST?",
+      "question": "Sixteen hours into a breach exposing 340,000 customer records, the incident is still ranked low priority because the priority matrix scores only affected staff users. What should the incident manager do FIRST?",
       "options": {
         "A": "Keep the current rating until more staff report problems",
-        "B": "Revise the severity matrix through change control this week",
+        "B": "Revise the priority matrix through change control this week",
         "C": "Reclassify it as a major incident based on business impact",
         "D": "Brief directors on the attack chain and indicators of compromise"
       },
       "correct": "C",
-      "key_concept": "Incident priority reflects business impact and urgency; a misfiring severity rule is overridden for the live incident, then corrected.",
+      "key_concept": "Incident priority reflects business impact and urgency; a misfiring priority rule is overridden for the live incident, then corrected.",
       "pre_read": "Notice what the matrix measures and what was actually harmed. Ask what the live incident needs right now.",
       "correct_explanation": "Priority should reflect business impact, and 340,000 exposed customer records is a major incident however few staff are affected. Reclassifying now triggers the major-incident process: dedicated coordination, escalation and notification clocks. Fixing the matrix through change control is the right follow-up, but doing it first leaves the live breach misranked and under-resourced while the change is approved.",
       "wrong_explanations": {
@@ -9011,7 +9011,7 @@
         "Incident prioritization",
         "Escalation criteria"
       ],
-      "_provenance": "Authored from concept: 'Board cyber-literacy gap during active breach'. Public sources: SEC, NACD, ISACA. Scenario specifics (publicly-traded retailer $3.8B, 340K customer records breached, hour 16, board-level briefing 4 hours, 1 of 9 directors with technical background) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
+      "_provenance": "Authored from concept: 'Board cyber-literacy gap during active breach'. Public sources: SEC, NACD, ISACA. Scenario specifics (publicly-traded retailer $3.8B, 340K customer records breached, hour 16, board-level briefing 4 hours, 1 of 9 directors with technical background) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit. Learner-impact review (Oct 2026): priority matrix, not severity matrix, matching the key concept.",
       "style_version": 2
     },
     {
@@ -9436,7 +9436,7 @@
       "question": "A bank's DR site lies in a region now suffering attacks on power and telecoms, and switching providers takes six months. What is the IS auditor's BEST recommendation to the chief operating officer?",
       "options": {
         "A": "Keep the current site until the contract renewal date",
-        "B": "Defer exit and add interim recovery capacity while migrating",
+        "B": "Keep the site and add interim capacity while migrating",
         "C": "Terminate the DR contract and begin migrating immediately",
         "D": "Rely on the vendor's assurance that operations continue"
       },
@@ -9462,7 +9462,7 @@
         "Financial supervisor BCP notification",
         "Material BCP change"
       ],
-      "_provenance": "Authored from concept: 'DR site located in active war-zone region'. Public sources: ISO, ISACA, FFIEC, OFAC. Scenario specifics (financial services $2.4B, DR site Eastern Europe selected 8 years ago, recent military escalation, 3-year contract remaining, 4-6 month switching time) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DR site located in active war-zone region'. Public sources: ISO, ISACA, FFIEC, OFAC. Scenario specifics (financial services $2.4B, DR site Eastern Europe selected 8 years ago, recent military escalation, 3-year contract remaining, 4-6 month switching time) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): key no longer reads as self-contradictory.",
       "style_version": 2
     },
     {
@@ -9471,7 +9471,7 @@
       "subtopic": "Outsourced SOC Missed Incident",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Customer card data has appeared on the dark web, and the outsourced MDR provider's logs show events that should have raised alerts. What should the IS auditor recommend FIRST to the CISO?",
+      "question": "Customer card data has appeared on the dark web, and the outsourced MDR provider's logs show events that should have raised alerts. What should the CISO do FIRST?",
       "options": {
         "A": "Invoke the incident response plan with independent forensics",
         "B": "Rely on the MDR provider's own review of the missed alerts",
@@ -9481,7 +9481,7 @@
       "correct": "A",
       "key_concept": "A confirmed cardholder data breach triggers the incident response plan first; vendor accountability is addressed after containment and independent evidence.",
       "pre_read": "Notice the data is already exposed. Ask what protects customers and evidence now, before deciding what to do about the vendor.",
-      "correct_explanation": "Card data is already exposed, so the incident response plan required by PCI DSS must start now: contain, preserve evidence and engage independent forensics, which also supports brand and QSA notification. The MDR provider cannot investigate its own failure. Reviewing the detection rules is a sound step, but it explains why alerts were missed rather than containing the live breach, so it comes later.",
+      "correct_explanation": "Card data is already exposed, so the incident response plan required by PCI DSS must start now: contain, preserve evidence and engage independent forensics, which also supports required notice to card brands and assessors. The MDR provider cannot investigate its own failure. Reviewing the detection rules is a sound step, but it explains why alerts were missed rather than containing the live breach, so it comes later.",
       "wrong_explanations": {
         "B": "The provider has a conflict of interest when reviewing its own missed alerts. The investigation needs independent forensics.",
         "C": "Reviewing detection rules matters for accountability, but it does nothing to contain an active breach or preserve evidence.",
@@ -9500,7 +9500,7 @@
         "Independent forensics vs vendor self-review",
         "MDR contract breach"
       ],
-      "_provenance": "Authored from concept: 'Outsourced SOC missed incident'. Public sources: PCI SSC, Visa, Mastercard, ISACA. Scenario specifics (specialty retailer $720M, MDR provider 2 of 3 years $4.8M/year, ~62K card records leaked, PCI DSS QSA in 8 weeks) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Outsourced SOC missed incident'. Public sources: PCI SSC, Visa, Mastercard, ISACA. Scenario specifics (specialty retailer $720M, MDR provider 2 of 3 years $4.8M/year, ~62K card records leaked, PCI DSS QSA in 8 weeks) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; payment-industry jargon explained.",
       "style_version": 2
     },
     {
@@ -9584,7 +9584,7 @@
       "subtopic": "Public S3 Bucket Researcher Disclosure",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A researcher reports a publicly readable cloud bucket holding customer emails and source code, and asks for a bounty before deleting their copy. What should the IS auditor recommend FIRST to the CTO?",
+      "question": "A researcher reports a publicly readable cloud bucket holding customer emails and source code, and asks for a bounty before deleting their copy. What should the CTO do FIRST?",
       "options": {
         "A": "Block public bucket access and preserve its access logs",
         "B": "Pay the requested bounty in return for a deletion confirmation",
@@ -9613,7 +9613,7 @@
         "Bucket-level access control",
         "DOJ CFAA safe harbor"
       ],
-      "_provenance": "Authored from concept: 'Public S3 bucket researcher disclosure'. Public sources: AWS, CSA, ISO/IEC, DOJ, ISACA. Scenario specifics (SaaS $380M ARR, 14-month-old bucket, 28K customer emails + internal Slack + source code, researcher web-scan discovery) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Public S3 bucket researcher disclosure'. Public sources: AWS, CSA, ISO/IEC, DOJ, ISACA. Scenario specifics (SaaS $380M ARR, 14-month-old bucket, 28K customer emails + internal Slack + source code, researcher web-scan discovery) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {
@@ -9626,13 +9626,13 @@
       "options": {
         "A": "Keep routing each decision to executives by satellite call",
         "B": "Pause major recovery actions until executives can reconvene",
-        "C": "Let the VP decide alone and brief executives after closure",
+        "C": "Let a senior manager decide alone and brief executives after closure",
         "D": "Let the incident commander decide, with hourly executive updates"
       },
       "correct": "D",
       "key_concept": "Incident plans pre-delegate decision rights to an incident commander so response is fast, while regular updates keep executive oversight.",
       "pre_read": "Notice the plan already names someone. Ask how to restore speed without losing oversight of the decisions being made.",
-      "correct_explanation": "The plan already pre-delegates authority to an incident commander, so invoking it removes the 30-minute delay while hourly updates keep executives informed and able to intervene. That is how ITIL incident practice and incident command are meant to work. Letting the VP decide alone also restores speed, but it bypasses the defined role and leaves executives blind until the incident closes.",
+      "correct_explanation": "The plan already pre-delegates authority to an incident commander, so invoking it removes the 30-minute delay while hourly updates keep executives informed and able to intervene. That is how ITIL incident practice and incident command are meant to work. Letting a senior manager decide alone also restores speed, but it bypasses the defined role and leaves executives blind until the incident closes.",
       "wrong_explanations": {
         "A": "Per-decision approval by satellite is the cause of the delay. Continuing it extends the outage and the revenue loss.",
         "B": "Pausing recovery during a customer-facing outage maximizes business impact. Restoration should continue under delegated authority.",
@@ -9651,7 +9651,7 @@
         "Executive offsite continuity",
         "Post-incident delegation review"
       ],
-      "_provenance": "Authored from concept: 'Severity-1 incident during executive offsite'. Public sources: FEMA, NIST, AXELOS, ISO. Scenario specifics (SaaS $820M ARR, hour 3 of customer-facing API outage, 4,200 customers, $180K/hour loss, C-suite at remote offsite) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Severity-1 incident during executive offsite'. Public sources: FEMA, NIST, AXELOS, ISO. Scenario specifics (SaaS $820M ARR, hour 3 of customer-facing API outage, 4,200 customers, $180K/hour loss, C-suite at remote offsite) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): option C no longer names a person absent from the stem.",
       "style_version": 2
     },
     {
@@ -9660,7 +9660,7 @@
       "subtopic": "DBA Deleted Production Data. Mistake or Malice",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A DBA on call but not assigned any change deleted 2.4M production records at 03:00, claiming a typo, while restoration from backup proceeds. What should the IS auditor recommend FIRST to the CISO?",
+      "question": "A DBA on call but not assigned any change deleted 2.4M production records at 03:00, claiming a typo, while restoration from backup proceeds. What should the CISO do FIRST?",
       "options": {
         "A": "Accept the typo account and start an HR corrective process",
         "B": "Terminate the DBA for cause and revoke database access",
@@ -9689,7 +9689,7 @@
         "Mistake-vs-malice forensics",
         "Employee wellness in insider risk"
       ],
-      "_provenance": "Authored from concept: 'DBA deleted production data — accident or intentional'. Public sources: ISACA, NIST, CERT. Scenario specifics (B2B SaaS $420M ARR, 2.4M records deleted, 8-year tenure DBA, off-hours, personal financial stress) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DBA deleted production data — accident or intentional'. Public sources: ISACA, NIST, CERT. Scenario specifics (B2B SaaS $420M ARR, 2.4M records deleted, 8-year tenure DBA, off-hours, personal financial stress) invented. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly.",
       "style_version": 2
     },
     {

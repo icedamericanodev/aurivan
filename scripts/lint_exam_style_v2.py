@@ -24,7 +24,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 PRIORITY_WORDS = ["BEST", "FIRST", "MOST", "PRIMARY", "GREATEST", "LEAST", "MAIN", "STRONGEST"]
-ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "committee", "firm", "owner", "officer", "manager"]
+ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "committee", "firm", "owner", "officer", "manager",
+               "director", "ciso", "cio", "cto", "ceo", "cfo", "coo", "cae", "dpo", "team", "lead"]
 LONE_ABSOLUTES = ["always", "never", "all", "in full", "inherently", "per se", "only", "guarantees?"]
 STOP = set("the a an of to and or for in on by with is are be that this which what who its it as at from not".split())
 

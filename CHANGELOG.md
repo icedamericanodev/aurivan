@@ -9,6 +9,7 @@ For internal/technical history, see git log and PR descriptions.
 ### Improved
 - Information Systems Operations and Business Resilience questions are now short and direct, like the real exam, with tips on ruling out two choices and picking between the final two.
 - Each of those questions now points to the current edition of the framework or standard behind its answer.
+- Questions across the first four topics were reviewed by exam experts: clearer answer choices, every fact you need now in the question, and explanations that no longer contradict each other.
 
 ## [v10.48] — Systems development questions, exam-style
 
