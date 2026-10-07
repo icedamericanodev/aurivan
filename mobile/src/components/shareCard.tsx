@@ -28,6 +28,7 @@ import type { Readiness } from '../engine/readiness';
 import { notAffiliated, shareMessage, shareOptions, type ShareHeadline, type ShareInput, type ShareKind } from '../engine/shareCard';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
+import { BrandLockup } from './brand';
 import { GrowthRings } from './glyphs';
 import { ICON_STROKE, Share2 } from './icons';
 import { Button, Chip, ChipRow, ICON_SIZE, Row, T } from './ui';
@@ -67,9 +68,11 @@ function ShareCard({ cert, readiness, headline }: { cert: Certification; readine
         overflow: 'hidden',
       }}
     >
-      {/* Wordmark and cert name. */}
-      <Row style={{ justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <T v="hero" color={c.onForest} maxFontSizeMultiplier={FIXED}>Aurivan</T>
+      {/* Lockup (dark tone: it sits on forest) and cert name. The lockup is
+          a drawing, so it never scales with the font size either. Decorative:
+          the wrapper's accessibilityLabel already says "Aurivan". */}
+      <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <BrandLockup tone="dark" height={30} decorative />
         <T v="caption" color={c.sap} maxFontSizeMultiplier={FIXED}>{cert.name}</T>
       </Row>
 

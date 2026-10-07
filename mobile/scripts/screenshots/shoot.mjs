@@ -35,6 +35,14 @@ const shot0 = async (name, path) => {
   await page.screenshot({ path: `${out}/${name}.png` });
   console.log('shot', name);
 };
+// Settings → About: the brand vision (lockup, tagline, four pillars).
+await shot0('16b-settings-about', '/settings');
+await page.getByText('Our vision', { exact: true }).scrollIntoViewIfNeeded();
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 120);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/16b-settings-about.png` });
+console.log('shot settings about');
 // Question bank: the domain list, a domain (All), the Missed filter, and the
 // seedling empty state (Saved: the seed has no bookmarks yet at this point).
 await shot0('23-bank', '/bank');
@@ -192,9 +200,13 @@ await edit('aurivan.progress.v1', 'v.state.byCert.cisa.mistakes = {};');
 await shot('21-mistakes-empty', '/mistakes');
 // Onboarding (last: it marks the learner as new).
 await edit('aurivan.settings.v1', 'v.state.onboarded = false;');
+// 22: the welcome (lockup, tagline, pillars); 22b: the exam; 22c: the date.
 await shot('22-onboarding', '/onboarding');
+await page.getByText('Start my plan', { exact: true }).click();
+await page.waitForTimeout(900);
+await page.screenshot({ path: `${out}/22b-onboarding-exam.png` });
 await page.getByText('Continue', { exact: true }).click();
 await page.waitForTimeout(900);
-await page.screenshot({ path: `${out}/22b-onboarding-date.png` });
+await page.screenshot({ path: `${out}/22c-onboarding-date.png` });
 console.log('errors:', errs.slice(0, 5));
 await browser.close();

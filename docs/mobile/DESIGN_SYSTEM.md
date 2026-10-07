@@ -333,3 +333,46 @@ All behind `ReduceMotion.System`; haptics respect the Settings toggle.
 **You**: `display` → rings 172 + legend (outer → inner, matching the visual) → one `meta` line explaining the rings → stat row (3 columns, hairline top/bottom and between, `stat` 34; streak numeral in `clay`) → "Study tools" rows with serif trailing counts → By domain bars removed (the rings + legend replace them) → mocks list.
 
 **Empty state** (Mistake journal, Saved, Spaced review "all caught up", No mocks): pushed header → seedling art 170 in `accent`, 46 from header → `hero` centred one-line title ("Nothing open right now") → `body` `ink2` centred, ≤ 2 lines → optional teaching tags (non-interactive `soft` tags with a 6pt `clay` dot showing the trap types that will appear) → sticky primary action + ghost secondary. Copy is factual and forward-looking; no "Yay!".
+
+## 12. Brand: "True North" (mobile app, chosen 2026-10-07)
+
+**Mark.** A compass needle rising from an open book, under one growth-ring
+arc, with a honey north tip: your direction comes from the study. The gaps
+between needle, ring and book are real cut-outs (SVG masks), so the mark works
+on any background. Honey appears once per mark and never carries meaning.
+
+**Lockup.** Mark + "aurivan" in Fraunces 600 lowercase (outlined, with a leaf
+over the i). Two fixed tones that do not follow the theme: `light` on paper,
+`dark` on forest or the dark bg. Code: `components/brand.tsx`
+(`BrandMark`, `BrandLockup`, `PillarGlyph`, `PillarList`); colours:
+`brand` and `pillarGlyph` in `theme/tokens.ts`.
+
+**Vision (Set A "Rings").** Copy lives only in `content/brand.ts`.
+Tagline "Master Modern Risk." · line "Grow your judgement, one ring at a time."
+· pillars See the path / Grow deep roots / Grow with the seasons / Stand tall.
+Shown on the welcome screen (onboarding step 0, the screen's one forest panel)
+and in Settings → About ("Our vision"). The share card carries the dark lockup.
+
+**Store assets** (`mobile/assets`, rendered from the master SVGs):
+
+| File | Size | Notes |
+|---|---|---|
+| `icon.png` | 1024 | Forest icon. iOS `ios.icon.light` and the default icon |
+| `icon-dark.png` / `icon-tinted.png` | 1024 | iOS 18 dark and tinted (white mark on black) |
+| `android-icon-foreground.png` | 512 | Transparent, mark inside the 66% safe zone |
+| `android-icon-background.png` | 512 | Solid forest `#1E4A34` |
+| `android-icon-monochrome.png` | 432 | Android 13+ themed icon (alpha only) |
+| `splash-icon.png` / `splash-icon-dark.png` | 1024 | Transparent mark + wordmark; splash bg paper `#F3F1EA` / forest `#1E4A34`, `imageWidth` 200 |
+| `favicon.png` | 48 | Web |
+
+**Never alpha on iOS icons.** `icon.png`, `icon-dark.png` and `icon-tinted.png`
+must be opaque RGB (PNG colour type 2); App Store Connect rejects an icon with
+an alpha channel. `src/__tests__/brand.test.tsx` checks this.
+
+**Contrast (all pass).** Mark on forest: paper needle 7.16:1, sap 5.13:1,
+honey 4.84:1. Mark on paper: forest needle 8.91:1, ring 5.41:1, honey 6.18:1.
+Lockup wordmark: ink on paper 14.37:1, paper on forest 8.91:1. Pillar glyph
+stroke on its soft circle: 6.15:1 light, 8.29:1 dark (3:1 needed for graphics).
+
+**Old navy compass-A logo (`#0B1E3D`).** Web app only. It no longer appears
+anywhere in the mobile app or its store assets.
