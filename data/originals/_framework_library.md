@@ -1907,3 +1907,18 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ## Round 2 citation update (Oct 2026)
 - PMBOK Guide 8th Edition (2025)
 - ISO/IEC 38500:2024 Information technology - Governance of IT for the organization
+
+## Added in the 2026-10 topic rebalance
+
+- ISO/IEC 27001:2022 Clause 4.3 (Determining the Scope of the Information Security Management System)
+- ISO/IEC 27001:2022 Clause 6.1.3 (Information Security Risk Treatment)
+- ISO/IEC 27002:2022 Control 5.2 (Information Security Roles and Responsibilities)
+- ISO/IEC 27002:2022 Control 5.10 (Acceptable Use of Information and Other Associated Assets)
+- NIST SP 800-53 Rev 5 PL-4 (Rules of Behavior)
+- NIST SP 800-53 Rev 5 SA-4 (Acquisition Process)
+- NIST SP 800-53 Rev 5 SI-10 (Information Input Validation)
+- NIST SP 800-53 Rev 5 AU-10 (Non-repudiation)
+- MITRE ATT&CK T1110.003 (Brute Force: Password Spraying)
+- MITRE ATT&CK T1071.004 (Application Layer Protocol: DNS)
+- MITRE ATT&CK T1550.002 (Use Alternate Authentication Material: Pass the Hash)
+- IETF RFC 3647 (Internet X.509 Public Key Infrastructure Certificate Policy and Certification Practices Framework)

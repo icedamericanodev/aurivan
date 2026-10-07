@@ -2,7 +2,7 @@
   "domain": 5,
   "title": "Protection of Information Assets",
   "weight": "26%",
-  "count": 286,
+  "count": 293,
   "questions": [
     {
       "id": "d5_001",
@@ -905,38 +905,38 @@
     {
       "id": "d5_025",
       "domain": 5,
-      "subtopic": "Privacy Impact Assessment (DPIA) Triggers",
-      "difficulty": "application",
-      "bloom_level": "Application",
+      "subtopic": "ISMS Scope. Certification Coverage",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
       "related_concepts": [
-        "High-risk processing",
-        "Records of processing activities",
-        "Prior consultation Article 36",
-        "Vulnerable populations"
+        "ISMS scope",
+        "Certification coverage",
+        "Reliance on certificates",
+        "Card data handling"
       ],
-      "framework_ref": "GDPR Article 35 (Data Protection Impact Assessment); Article 29 Working Party Guidelines on DPIA (WP248 rev.01, endorsed by the EDPB)",
-      "question": "A data protection officer reviews four new projects. Which project MOST clearly requires a data protection impact assessment before processing begins?",
+      "framework_ref": "ISO/IEC 27001:2022 Clause 4.3 (Determining the Scope of the Information Security Management System); PCI DSS v4.0",
+      "question": "An IS auditor finds a company's ISO/IEC 27001 certificate scope excludes the call center, where staff take card payments by phone. Which concern is MOST significant?",
       "options": {
-        "A": "Large-scale analysis of patients' health records to profile risk",
-        "B": "Moving employee payroll records onto a new on-premises database server",
-        "C": "An internal wiki holding engineering drawings and documents",
-        "D": "A website redesign that collects no personal data from visitors"
+        "A": "The certificate gives no assurance over the call center's card handling",
+        "B": "The certification body should not have issued this certificate to the company",
+        "C": "Call center staff have not completed security awareness training",
+        "D": "Card payment rules no longer apply to the call center"
       },
       "correct": "A",
-      "key_concept": "A data protection impact assessment is required before processing likely to result in high risk, such as large-scale processing of health data.",
-      "pre_read": "Ask which project involves sensitive data, at scale, used in a new way that could affect people.",
-      "correct_explanation": "GDPR Article 35 requires a data protection impact assessment when processing is likely to result in high risk to people, and names large-scale processing of special categories such as health data as a trigger. Profiling patients adds to that risk. The payroll move involves personal data, but it is routine processing of the same records for the same purpose, not new high-risk processing.",
+      "key_concept": "A certificate covers only its defined scope; relying parties must check that high-risk areas are inside it.",
+      "pre_read": "Ask what a certificate does and does not tell people who rely on it.",
+      "correct_explanation": "An ISO/IEC 27001 certificate covers only the scope the organization defined, so it says nothing about how the call center protects card data. Customers, partners and management may rely on the certificate as if it covered that high-risk area. Challenging the certificate itself is the runner-up, but organizations may set their scope; the issue is the assurance gap and whether the exclusion is justified.",
       "wrong_explanations": {
-        "B": "Payroll data is personal, but moving it for the same purpose is routine processing and not likely to be high risk by itself.",
-        "C": "Engineering drawings and documents are not personal data about individuals, so the assessment duty does not arise.",
-        "D": "A redesign that collects no personal data involves no personal data processing, so no assessment is needed."
+        "B": "Organizations may define their own ISMS scope, and certification covers what was assessed. The exclusion creates an assurance gap, not an invalid certificate.",
+        "C": "Training is a separate control. Even fully trained staff would not bring the call center inside the certificate's scope, so the assurance gap would remain.",
+        "D": "Card payment obligations apply wherever card data is handled, whatever the ISMS scope says."
       },
       "tips": [
-        "Eliminate: C and D involve no meaningful personal data, so GDPR's assessment duty does not arise.",
-        "Final two: A beats B because large-scale health profiling is a named high-risk trigger, while a payroll move is routine processing.",
-        "Exam cue: look for high-risk markers such as special category data, large scale, profiling, monitoring or new technology."
+        "Eliminate: C swaps a scope question for a training question, and D wrongly assumes scope removes industry obligations.",
+        "Final two: A beats B because a narrow scope is allowed; the risk is that people rely on assurance it does not provide.",
+        "Exam cue: always check what a certificate or assurance report covers before relying on it."
       ],
-      "_provenance": "Authored from concept: 'DPIA mandatory triggers per GDPR Article 35'. Public sources: GDPR, EDPB, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DPIA mandatory triggers per GDPR Article 35'. Public sources: GDPR, EDPB, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A6 Privacy Program and Principles to 5A1. Rebalance review (Oct 2026): option C explanation now teaches why training does not close a scope gap.",
       "style_version": 2
     },
     {
@@ -979,38 +979,38 @@
     {
       "id": "d5_027",
       "domain": 5,
-      "subtopic": "Privacy by Design. Implementation",
-      "difficulty": "application",
-      "bloom_level": "Application",
+      "subtopic": "Lost Device Remote Wipe. Evidence of Execution",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
       "related_concepts": [
-        "Data Protection by Design and Default",
-        "Default privacy settings",
-        "Lifecycle integration",
-        "Positive-sum trade-off"
+        "Remote wipe",
+        "Lost devices",
+        "Control execution evidence",
+        "Mobile device management"
       ],
-      "framework_ref": "GDPR Article 25 (Data Protection by Design and by Default); EDPB Guidelines 4/2019 (Article 25 Data Protection by Design and by Default)",
-      "question": "An IS auditor reviews a new mobile app that shares users' location by default, with an opt-out in its settings. Which recommendation BEST reflects privacy by design?",
+      "framework_ref": "NIST SP 800-124 Rev 2 (Guidelines for Managing the Security of Mobile Devices in the Enterprise); NIST SP 800-53 Rev 5 AC-19 (Access Control for Mobile Devices)",
+      "question": "An IS auditor reviews 25 lost-phone cases where the device management console shows a remote wipe as sent. Which finding should concern the auditor MOST?",
       "options": {
-        "A": "Switch location sharing off by default until the user opts in",
-        "B": "Add a clear notice showing users how to switch sharing off",
-        "C": "Encrypt the stored location history using strong, managed keys",
-        "D": "Revisit the default setting after launch if customers complain"
+        "A": "Nine wipes were never confirmed as completed on the device",
+        "B": "Lost devices were reported up to four hours after loss",
+        "C": "Wipe commands were sent by the help desk, not security",
+        "D": "Users were not asked to sign a lost-device form"
       },
       "correct": "A",
-      "key_concept": "Privacy by default means the most protective setting applies automatically; users opt in to sharing rather than having to opt out.",
-      "pre_read": "Notice what happens to a user who never opens the settings. Ask which option protects that user.",
-      "correct_explanation": "GDPR Article 25 requires data protection by default: the most privacy-protective setting applies without any action by the user. Switching location sharing off until the user opts in fixes the design itself. A clearer opt-out notice improves transparency, another privacy-by-design principle, but users who never read it keep sharing their location.",
+      "key_concept": "A wipe command protects data only once the device carries it out; the auditor looks for evidence of completion.",
+      "pre_read": "Ask whether sending a command proves the data was removed.",
+      "correct_explanation": "A wipe command only protects data once the device receives and carries it out; a phone kept offline never does. Nine unconfirmed wipes mean there is no evidence the control worked, and nobody followed up on devices that may still hold company data. Reporting delays of a few hours are the runner-up: they widen the exposure window, but a wipe that never runs leaves the exposure open indefinitely.",
       "wrong_explanations": {
-        "B": "A clearer notice helps transparency, but the default still shares location for every user who takes no action, which Article 25 does not allow.",
-        "C": "Encryption protects stored data from outsiders. It does not limit the collection and sharing that the default setting causes.",
-        "D": "Waiting for complaints after launch is reactive. Privacy by design anticipates the problem and fixes it before release."
+        "B": "Delays widen the window before the wipe is sent, but a confirmed wipe still closes it; an unconfirmed one may never close it.",
+        "C": "Who sends the command matters less than whether it worked; help desk execution under a defined process is common and acceptable.",
+        "D": "A missing form is a paperwork gap and does nothing to show whether the data on the lost phone was removed."
       },
       "tips": [
-        "Eliminate: C protects data at rest but leaves the sharing untouched, and D waits for complaints instead of acting before launch.",
-        "Final two: A beats B because privacy by default needs no user action; a notice still leaves silent users sharing.",
-        "Exam cue: when a stem mentions a default setting, the privacy-by-design answer changes the default, not the explanation of it."
+        "Eliminate: C questions who sent the command rather than whether it worked, and D is a paperwork gap.",
+        "Final two: A beats B because a delay narrows protection, while an unconfirmed wipe may mean the data was never protected.",
+        "Exam cue: a control that was triggered is not a control that worked; look for evidence of completion."
       ],
-      "_provenance": "Authored from concept: 'Privacy by Design seven foundational principles operationalized in GDPR Article 25'. Public sources: GDPR, EDPB, Cavoukian, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Privacy by Design seven foundational principles operationalized in GDPR Article 25'. Public sources: GDPR, EDPB, Cavoukian, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A6 Privacy Program and Principles to 5A9.",
       "style_version": 2
     },
     {
@@ -1460,38 +1460,38 @@
     {
       "id": "d5_040",
       "domain": 5,
-      "subtopic": "Post-Schrems EU Data Transfer Cessation Response",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Information Classification Scheme. Consistency",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "Transfer impact assessment",
-        "Supplementary measures",
-        "Binding Corporate Rules",
-        "Sub-processor remediation"
+        "Classification scheme",
+        "Handling rules",
+        "Post-merger harmonization",
+        "Data owner role"
       ],
-      "framework_ref": "GDPR Articles 44-50 (Transfers); CJEU Schrems II Judgment (C-311/18); EDPB Recommendations 01/2020 on Supplementary Measures",
-      "question": "A court ruling invalidates the transfer mechanism a SaaS firm uses for one US sub-processor, and an EU customer demands remediation within 90 days. What should the data protection officer do FIRST?",
+      "framework_ref": "ISO/IEC 27001:2022 Annex A.5.12 (Classification of information); ISO/IEC 27002:2022 Control 5.12 (Classification of Information)",
+      "question": "After a merger, an IS auditor finds each business unit labels information with its own classification levels, so shared data gets inconsistent protection. Which recommendation is BEST?",
       "options": {
-        "A": "Migrate every EU customer to EU-hosted infrastructure within thirty days",
-        "B": "Tell the customer the ruling does not affect the firm's processing",
-        "C": "Map which personal data flows reach the affected sub-processor",
-        "D": "Sign new standard contractual clauses with that sub-processor"
+        "A": "Keep each unit's scheme and publish a mapping between them",
+        "B": "Apply the strictest unit's highest label to all shared data",
+        "C": "Adopt one company-wide classification scheme with handling rules",
+        "D": "Have IT decide protection levels for all shared data stores"
       },
       "correct": "C",
-      "key_concept": "When a transfer mechanism falls, first map the affected personal data flows; the remedy and its impact assessment depend on that scope.",
-      "pre_read": "Notice the ruling affects only one sub-processor. Ask what the firm must know before choosing any remedy.",
-      "correct_explanation": "The ruling affects one sub-processor, so the firm must first establish exactly which personal data, customers and processing reach it. That mapping shows the scope of the problem and which remedy fits: new clauses with supplementary measures, a different provider or relocation. New standard contractual clauses are a likely remedy, but since Schrems II they must rest on a transfer impact assessment built on that mapping.",
+      "key_concept": "One approved organization-wide classification scheme, with handling rules per level, gives every unit the same labels and protection.",
+      "pre_read": "Ask what makes a label mean the same thing in every part of the company.",
+      "correct_explanation": "A single organization-wide classification scheme, approved by management and paired with handling rules for each level, gives every unit the same meaning for each label and the same protection for shared data. Keeping separate schemes with a published mapping is the runner-up; it can help during transition, but people must translate labels at every handoff, and mismatched levels keep producing gaps.",
       "wrong_explanations": {
-        "A": "A wholesale migration in thirty days disrupts every customer to fix one sub-processor relationship, and is disproportionate before the affected flows are known.",
-        "B": "Dismissing the ruling ignores the gap it creates for this sub-processor and risks losing the customer.",
-        "D": "New clauses may become the fix, but they need a transfer impact assessment, which requires knowing which data flows are affected."
+        "A": "A mapping can help in transition, but people must translate labels at every handoff, and levels that do not match leave gaps.",
+        "B": "Labeling everything at the top level over-protects routine data, raises cost and teaches staff to ignore labels.",
+        "D": "IT can implement protection, but data owners decide sensitivity; a technical team choosing levels skips business ownership."
       },
       "tips": [
-        "Eliminate: A overreacts across every customer, and B ignores the ruling's effect on this sub-processor.",
-        "Final two: C beats D because you cannot choose or justify a transfer remedy until you know which data flows it must cover.",
-        "Exam cue: before picking a remedy for a data problem, establish which data is affected; scope comes before solution."
+        "Eliminate: B over-classifies everything, and D gives IT a decision that belongs to data owners.",
+        "Final two: C beats A because one scheme gives each label the same meaning everywhere, while a mapping keeps the translation gaps.",
+        "Exam cue: classification starts with one approved scheme and handling rules; owners then apply it to their data."
       ],
-      "_provenance": "Authored from concept: 'Post-CJEU EU transfer remediation with material revenue exposure'. Public sources: GDPR, CJEU, EDPB, European Commission. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): attributed the transfer impact assessment duty to Schrems II rather than the GDPR text.",
+      "_provenance": "Authored from concept: 'Post-CJEU EU transfer remediation with material revenue exposure'. Public sources: GDPR, CJEU, EDPB, European Commission. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): attributed the transfer impact assessment duty to Schrems II rather than the GDPR text. Rebalanced (Oct 2026): re-angled from 2A6 Privacy Program and Principles to 5A1.",
       "style_version": 2
     },
     {
@@ -4272,38 +4272,38 @@
     {
       "id": "d5_116",
       "domain": 5,
-      "subtopic": "Ransomware Detection. Multi-Site Spread",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Mobile App Vetting under MDM",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "Healthcare downtime procedures",
-        "Immutable backup restoration",
-        "OFAC ransom-payment risk",
-        "HHS OCR notification"
+        "Mobile app vetting",
+        "App permissions",
+        "Managed app catalog",
+        "Mobile device management"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); #StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); HHS 405(d) Health Industry Cybersecurity Practices (HICP), 2023 Edition",
-      "question": "Ransomware is spreading over the network to servers at three of six hospital sites while surgeries continue. What should the CISO do FIRST?",
+      "framework_ref": "NIST SP 800-163 Rev 1 (Vetting the Security of Mobile Applications); NIST SP 800-124 Rev 2 (Guidelines for Managing the Security of Mobile Devices in the Enterprise)",
+      "question": "Staff install a free scanning app on company-managed phones that requests access to contacts, location and microphone. Which control is BEST for the security manager to implement?",
       "options": {
-        "A": "Restore the encrypted servers from the immutable backups at once",
-        "B": "Power down every server and workstation at the six hospitals",
-        "C": "Open talks with the attackers to obtain a decryption key",
-        "D": "Isolate the affected sites while clinics use downtime procedures"
+        "A": "Warn staff about risky apps in the next awareness session",
+        "B": "Block every app not developed by the company itself",
+        "C": "Remove the scanning app from each phone by hand",
+        "D": "Allow only vetted apps through the device management catalog"
       },
       "correct": "D",
-      "key_concept": "Containment should be proportionate: isolate the affected network segments to stop spread while patient care continues under downtime procedures.",
-      "pre_read": "Notice two facts: the malware is spreading and surgeries are under way. Ask which action stops spread without endangering patients.",
-      "correct_explanation": "Containment comes first, and it should be proportionate. Isolating the affected sites' networks stops the ransomware spreading while clinicians switch to downtime procedures, so patient care continues. Powering down all six hospitals would also stop spread, but it shuts down unaffected sites and life-supporting systems during surgery, causing more harm than the threat requires.",
+      "key_concept": "On managed phones, vetting apps and distributing only approved ones enforces the rule instead of relying on user judgment.",
+      "pre_read": "Notice the app asks for far more than scanning needs. Ask which control stops the next such app too.",
+      "correct_explanation": "Apps that request far more permissions than their function needs can harvest data from managed phones. Vetting apps against security criteria and distributing only approved ones through the device management catalog stops risky apps before installation and covers every future app. Awareness training is the runner-up; it helps staff spot warning signs, but it relies on each person's judgment and enforces nothing.",
       "wrong_explanations": {
-        "A": "Restoring before containment lets the ransomware re-encrypt the restored servers. Recovery follows containment and eradication.",
-        "B": "A total shutdown halts spread but disrupts unaffected sites and systems supporting surgeries in progress, causing harm beyond what containment needs.",
-        "C": "Negotiating neither stops the spread nor guarantees a working key, and it can raise legal and sanctions issues."
+        "A": "Awareness helps, but it depends on every user judging permissions correctly, and nothing stops the next risky install.",
+        "B": "Banning all third-party apps blocks legitimate tools the business needs; vetting manages the risk without stopping useful work.",
+        "C": "Removing one app by hand fixes today's case only, and nothing prevents staff installing the next risky app."
       },
       "tips": [
-        "Eliminate: A recovers before containing, and C negotiates while the malware keeps spreading.",
-        "Final two: D beats B because isolating affected sites stops the spread without shutting down care at unaffected hospitals.",
-        "Exam cue: contain first, but in proportion; the BEST containment stops spread with the least harm to critical services."
+        "Eliminate: B blocks useful apps along with risky ones, and C cleans up one app without preventing the next.",
+        "Final two: D beats A because vetting enforces the rule on every device, while training relies on each user's judgment.",
+        "Exam cue: on managed mobile devices, prefer enforced controls such as vetted app catalogs over user judgment."
       ],
-      "_provenance": "Authored from concept: 'Multi-site healthcare ransomware response'. Public sources: ISACA, HIPAA, CISA, HHS OCR, SEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): lengthened distractors so the key is no longer clearly the longest.",
+      "_provenance": "Authored from concept: 'Multi-site healthcare ransomware response'. Public sources: ISACA, HIPAA, CISA, HHS OCR, SEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): lengthened distractors so the key is no longer clearly the longest. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): smoothed the stem wording.",
       "style_version": 2
     },
     {
@@ -4420,38 +4420,38 @@
     {
       "id": "d5_120",
       "domain": 5,
-      "subtopic": "Watering-Hole Attack Response",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Guest Wireless Segmentation",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "Watering-hole attack pattern",
-        "Threat hunt with IOCs",
-        "Responsible disclosure",
-        "Remote Browser Isolation"
+        "Guest Wi-Fi",
+        "Network segmentation",
+        "Internet-only access",
+        "Wireless security"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); MITRE ATT&CK T1189 (Drive-by Compromise); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
-      "question": "Endpoint monitoring flags twelve laptops with malware indicators after staff visited a compromised industry website. What should the security manager do FIRST?",
+      "framework_ref": "NIST SP 800-153 (Guidelines for Securing WLANs); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks)",
+      "question": "An IS auditor finds the guest wireless network at headquarters puts visitors on the same network segment as employee laptops and file servers. Which recommendation is BEST?",
       "options": {
-        "A": "Rebuild the twelve laptops from clean images today",
-        "B": "Isolate the laptops and hunt for other infected hosts",
-        "C": "Ask staff who visited the site to check their own laptops",
-        "D": "Report the compromise to the website owner and await a fix"
+        "A": "Require visitors to accept the acceptable use terms first",
+        "B": "Separate guest traffic so it reaches only the internet",
+        "C": "Change the guest wireless passphrase every week",
+        "D": "Hide the guest network name from public broadcast"
       },
       "correct": "B",
-      "key_concept": "Contain before eradicate: isolate known infected hosts and find the rest, keeping evidence, before rebuilding anything.",
-      "pre_read": "Notice the stem gives twelve known laptops, but other visitors may also be infected. Ask what rebuilding first would lose.",
-      "correct_explanation": "Isolating the twelve laptops contains them while keeping their evidence, and hunting with the same indicators finds other infected hosts that monitoring has not flagged. Rebuilding is the right eradication step later, but doing it first wipes the evidence that reveals how the malware works and which other hosts to look for.",
+      "key_concept": "Guest and other untrusted wireless users belong on a separate segment that can reach only the internet.",
+      "pre_read": "Ask what a visitor can reach once connected, not just who can connect.",
+      "correct_explanation": "The weakness is that anyone allowed on the guest network can reach employee devices and file servers. Separating guest traffic onto its own segment that can reach only the internet removes that path, whoever connects. Rotating the passphrase weekly is the runner-up; it narrows who can join, but every legitimate visitor, and anyone they share it with, still lands beside corporate assets.",
       "wrong_explanations": {
-        "A": "Rebuilding is eradication. Done first, it wipes the evidence needed to understand the malware and find other infected hosts.",
-        "C": "Users cannot reliably detect malware on their own machines, and self-checks leave infected laptops connected.",
-        "D": "Telling the site owner is good practice later, but waiting on them leaves infected laptops connected inside the network."
+        "A": "Acceptable use terms set expectations but do nothing technically to stop a visitor's device from reaching corporate systems.",
+        "C": "Frequent rotation limits who can join, but anyone who does join still shares a segment with employee laptops and servers.",
+        "D": "Hiding the network name is weak obscurity; the name is easily discovered, and joined users still reach corporate assets."
       },
       "tips": [
-        "Eliminate: C relies on users to find malware, and D waits on an outside party while infected laptops stay connected.",
-        "Final two: B beats A because containment and scoping come before eradication; rebuilding first destroys the evidence.",
-        "Exam cue: incidents run contain, eradicate, recover; an option that rebuilds before containing is out of order."
+        "Eliminate: A relies on an agreement rather than a technical barrier, and D hides a name that tools reveal in seconds.",
+        "Final two: B beats C because separation removes the path to corporate assets, while passphrase changes only limit who joins.",
+        "Exam cue: guest and untrusted wireless users belong on a separate segment with internet-only access."
       ],
-      "_provenance": "Authored from concept: 'Watering-hole attack response in government-services consulting context'. Public sources: ISACA, MITRE, NIST, CISA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Watering-hole attack response in government-services consulting context'. Public sources: ISACA, MITRE, NIST, CISA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9.",
       "style_version": 2
     },
     {
@@ -6307,38 +6307,38 @@
     {
       "id": "d5_171",
       "domain": 5,
-      "subtopic": "Multi-Region Incident Coordination",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Risk-Based Security Control Selection",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "Unified Incident Commander",
-        "Cross-region forensic correlation",
-        "GDPR lead supervisory authority",
-        "Multi-jurisdiction customer comms"
+        "Risk-based control selection",
+        "Control frameworks as reference",
+        "Risk assessment",
+        "Control gaps"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); GDPR Article 56 (One-Stop-Shop / Lead Supervisory Authority); GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority)",
-      "question": "Ransomware hits a firm's US and EU cloud regions at the same time, and each region has its own response retainer. What should the CISO do FIRST?",
+      "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 (Information Security Risk Treatment); ISO/IEC 27001:2022 Clause 8.2 (Information Security Risk Assessment); NIST SP 800-30 Rev 1 (Guide for Conducting Risk Assessments)",
+      "question": "A security manager selected controls for a new payments platform from a vendor's best-practice checklist, without a risk assessment. What should the IS auditor recommend FIRST?",
       "options": {
-        "A": "Let the US team decide and notify every regulator centrally",
-        "B": "Appoint one incident commander to coordinate both regional teams",
-        "C": "Delay containment until both retainers agree a joint plan",
-        "D": "Run separate regional responses, each led by its own local commander"
+        "A": "Replace the checklist with the full control set of a recognized framework",
+        "B": "Assess the platform's risks and map the selected controls to them",
+        "C": "Implement every checklist control before the platform goes live",
+        "D": "Test whether the checklist controls operate effectively"
       },
       "correct": "B",
-      "key_concept": "A single incident across several regions needs one incident commander, while regional teams handle local evidence and notification duties.",
-      "pre_read": "Ask whether this is one incident or two. Then ask who should decide for it.",
-      "correct_explanation": "One attack across two regions needs one decision-maker, so containment, evidence and messages stay consistent and findings move quickly between teams. A single incident commander can still use each region's retainer and meet each jurisdiction's notification rules. Separate regional responses respect local rules, but they risk conflicting actions and miss links between related attacks.",
+      "key_concept": "Controls are selected to treat assessed risks; frameworks and checklists are references, not a substitute for the risk assessment.",
+      "pre_read": "Ask what tells the organization which controls this platform actually needs.",
+      "correct_explanation": "Controls should answer the risks a system actually faces, so the first step is a risk assessment that shows which threats matter and whether the chosen controls address them, exposing gaps and unneeded controls. Swapping in a recognized framework's full control set is tempting, but it is still a generic list; without the risk assessment, the firm cannot tell which controls it needs or how strong they must be.",
       "wrong_explanations": {
-        "A": "One region cannot meet every jurisdiction's notification duties alone. EU notifications follow EU rules and timelines.",
-        "C": "Delaying containment for agreement lets the ransomware spread. Containment proceeds while the joint plan is formed.",
-        "D": "Regional autonomy respects local rules but risks conflicting containment, inconsistent messages and missed links between attacks that are likely related."
+        "A": "A recognized framework is a useful reference, but adopting its full set without assessing risk repeats the same mistake on a larger scale.",
+        "C": "Implementing everything wastes money on low risks and may still miss threats specific to this platform that no generic checklist covers.",
+        "D": "Testing comes later. Controls can work perfectly and still be the wrong controls if nobody checked them against the platform's risks."
       },
       "tips": [
-        "Eliminate: A ignores each jurisdiction's own notification rules, and C lets ransomware spread while teams negotiate.",
-        "Final two: B beats D because one attack needs one decision-maker, while regional teams still handle local evidence and notices.",
-        "Exam cue: one incident in many places needs one commander; local teams execute, but decisions are coordinated."
+        "Eliminate: C applies every control regardless of need, and D tests controls before anyone knows they are the right ones.",
+        "Final two: B beats A because a framework is still a generic list; only a risk assessment shows which controls this platform needs.",
+        "Exam cue: frameworks and checklists inform control selection, but the risk assessment drives it."
       ],
-      "_provenance": "Authored from concept: 'Multi-region incident coordination framework for global SaaS'. Public sources: ISACA, NIST, GDPR, HIPAA, ENISA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Multi-region incident coordination framework for global SaaS'. Public sources: ISACA, NIST, GDPR, HIPAA, ENISA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Rebalance review (Oct 2026): added the risk treatment clause to the citation.",
       "style_version": 2
     },
     {
@@ -6455,38 +6455,38 @@
     {
       "id": "d5_175",
       "domain": 5,
-      "subtopic": "Crisis Communication During Major Incident",
+      "subtopic": "NIST CSF Profiles. Gap Prioritization",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "Status page updates",
-        "Customer support talking points",
-        "SEC 8-K material incident disclosure",
-        "Executive spokesperson designation"
+        "NIST CSF current profile",
+        "NIST CSF target profile",
+        "Gap analysis",
+        "Security roadmap"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO 22361:2022 (Security and Resilience — Crisis Management — Guidelines); DRII Professional Practice 9 (Crisis Communications)",
-      "question": "Six hours into a ransomware outage, customers face visible service failures, call volumes have surged and a reporter has asked for comment. What should management do FIRST about communication?",
+      "framework_ref": "NIST Cybersecurity Framework (NIST CSF) v2.0 (February 2024); COBIT 2019 APO13 (Managed Security)",
+      "question": "A CISO has documented NIST Cybersecurity Framework current and target profiles, and the gap between them is large. Which approach to building the security roadmap is BEST?",
       "options": {
-        "A": "Issue a holding statement to investors before updating customers",
-        "B": "Update affected customers regularly on impact and next steps",
-        "C": "Stay silent publicly until every system is fully restored",
-        "D": "Publish full technical details of the attack to everyone"
+        "A": "Close the cheapest and fastest gaps first to show progress",
+        "B": "Prioritize gaps by business risk and agree the plan with management",
+        "C": "Reach Tier 4 (Adaptive) across the organization within a year",
+        "D": "Buy tools that cover the largest number of categories with gaps"
       },
       "correct": "B",
-      "key_concept": "During a visible incident, give affected customers timely, factual and regular updates; silence and over-disclosure both cause harm.",
-      "pre_read": "Ask who is affected right now and what they need to know.",
-      "correct_explanation": "Customers are already living with the outage, and silence fills with speculation and floods support lines. Regular, factual updates on what is affected and what is being done maintain trust without disclosing sensitive detail. Investor communication matters and may be required, but customers are the audience being harmed now, and briefing investors first while customers wait damages trust further.",
+      "key_concept": "The gap between current and target profiles feeds a roadmap ranked by business risk and approved by management.",
+      "pre_read": "Ask what should decide the order in which security gaps are closed.",
+      "correct_explanation": "The profile gap shows where the organization falls short of its target. The roadmap should rank those gaps by the risk they pose to business objectives, with management agreeing priorities and funding. Fixing the cheapest gaps first shows quick progress, but it can leave the highest-risk gaps open for months; cost and speed matter only after risk sets the order.",
       "wrong_explanations": {
-        "A": "Investor communication may be required, but customers are being harmed now. Leaving them uninformed while investors are briefed erodes trust.",
-        "C": "Silence during a visible outage fuels speculation and overwhelms support. Customers need timely, factual updates.",
-        "D": "Full technical detail can help attackers and confuse customers. Updates should be factual but appropriate to each audience."
+        "A": "Quick wins help momentum, but ordering work by ease rather than risk can leave the most dangerous gaps open longest.",
+        "C": "The target profile, not the top tier, sets the goal. Tiers describe how rigorous risk practices are, not a required maturity level; forcing Tier 4 ignores risk appetite.",
+        "D": "Tools bought to tick categories may miss the riskiest gaps; the framework describes outcomes, not a product shopping list."
       },
       "tips": [
-        "Eliminate: C leaves customers guessing during a visible outage, and D overshares detail that can help attackers.",
-        "Final two: B beats A because customers are the audience being harmed right now; investors matter but are not first.",
-        "Exam cue: in a visible incident, communicate first with those directly affected, factually and regularly."
+        "Eliminate: C ignores the target profile the organization chose, and D treats the framework as a shopping list for tools.",
+        "Final two: B beats A because gaps are ranked by business risk; ease of fixing matters only after risk sets the order.",
+        "Exam cue: a gap analysis feeds a risk-prioritized roadmap that management approves and funds."
       ],
-      "_provenance": "Authored from concept: 'Crisis communication during major incident canonical framework'. Public sources: Edelman, ISACA, NIST, SEC, Weber Shandwick. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Crisis communication during major incident canonical framework'. Public sources: Edelman, ISACA, NIST, SEC, Weber Shandwick. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Rebalance review (Oct 2026): corrected option C so Tiers are not presented as maturity levels.",
       "style_version": 2
     },
     {
@@ -6751,38 +6751,38 @@
     {
       "id": "d5_183",
       "domain": 5,
-      "subtopic": "Crisis Decision-Making Framework",
+      "subtopic": "Security Roles. Data Owner vs Custodian",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
-        "Pre-delegated authority",
-        "OODA loop",
-        "Decision logs",
-        "Designated decider"
+        "Data owner",
+        "Data custodian",
+        "Classification accountability",
+        "CISO advisory role"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27002:2022 Control 5.24 (Information Security Incident Management Planning and Preparation)",
-      "question": "An IS auditor finds that during a ransomware attack, isolating infected servers waited four hours for the CEO's approval. Which recommendation BEST addresses this delay?",
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.12 (Classification of Information); ISO/IEC 27002:2022 Control 5.2 (Information Security Roles and Responsibilities)",
+      "question": "An IS auditor finds database administrators decide the classification of customer data in the systems they manage. Which recommendation is BEST?",
       "options": {
-        "A": "Pre-delegate containment authority to the incident manager",
-        "B": "Require the whole response team to agree before isolating servers",
-        "C": "Record each incident decision and its approver in a decision log",
-        "D": "Route isolation decisions to the board risk committee instead"
+        "A": "Assign classification decisions to the business owners of the data",
+        "B": "Have the CISO approve each classification the administrators set",
+        "C": "Require administrators to apply the highest level to all data",
+        "D": "Record the administrators' current classification decisions in a register"
       },
       "correct": "A",
-      "key_concept": "Containment is fast when the incident plan pre-delegates authority to act, so the incident manager need not wait for executive approval.",
-      "pre_read": "Notice that the delay came from waiting for one approver. Ask which change removes the wait rather than recording it.",
-      "correct_explanation": "The four-hour delay came from needing the CEO's approval before acting. Pre-delegating containment authority to the incident manager, within limits management sets in the plan, lets isolation happen in minutes while executives are briefed. A decision log is good practice for accountability and later review, but it records the delay rather than preventing it.",
+      "key_concept": "Data owners classify data and approve access; custodians such as administrators implement the protection the owner specifies.",
+      "pre_read": "Separate who is accountable for the data from who looks after the systems that hold it.",
+      "correct_explanation": "Data owners are business managers accountable for an information asset, so they decide its classification and who may access it. Administrators are custodians: they implement the protection the owner sets. Having the CISO approve administrators' choices adds oversight but still leaves the decision with the wrong party; the CISO sets the scheme and advises, while the business owner understands the data's value and impact.",
       "wrong_explanations": {
-        "B": "Requiring the whole team to agree adds another approval step and slows containment further. It spreads responsibility instead of assigning it.",
-        "C": "A decision log supports accountability and post-incident review, but containment would still wait for the same executive approval.",
-        "D": "Moving the decision to a board committee adds a higher, slower approval layer during a live attack."
+        "B": "The CISO defines the classification scheme and advises, but is not accountable for each data set. The custodian still makes a decision that belongs to the owner.",
+        "C": "Blanket top-level classification wastes resources and makes labels meaningless. It also leaves the owner out of a decision that depends on business value.",
+        "D": "Recording the decisions makes them visible but keeps the custodian, not the owner, deciding how sensitive the data is."
       },
       "tips": [
-        "Eliminate: B adds a consensus step, and D moves the decision even higher; both slow containment further.",
-        "Final two: A beats C because pre-delegated authority removes the wait, while a decision log only records it.",
-        "Exam cue: when an incident stalls waiting for approval, look for authority delegated in advance through the plan."
+        "Eliminate: C over-protects everything regardless of value, and D records the current practice without correcting who decides.",
+        "Final two: A beats B because classification is an owner's accountability; CISO approval still leaves custodians making the call.",
+        "Exam cue: owners decide classification and access, custodians implement and protect, and users follow the rules."
       ],
-      "_provenance": "Authored from concept: 'Crisis decision-making framework per Boyd OODA + ITIL'. Public sources: military doctrine, ISACA, NIST, ITIL. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Crisis decision-making framework per Boyd OODA + ITIL'. Public sources: military doctrine, ISACA, NIST, ITIL. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1.",
       "style_version": 2
     },
     {
@@ -7343,75 +7343,75 @@
     {
       "id": "d5_199",
       "domain": 5,
-      "subtopic": "Forensic Team Capability Building",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Acceptable Use Policy. Scope and Acknowledgment",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "Capability gap analysis",
-        "GIAC GCFE/GCFA certifications",
-        "External retainer for surge",
-        "Balanced people + tools + process"
+        "Acceptable use policy",
+        "Policy scope",
+        "User acknowledgment",
+        "Contractor access"
       ],
-      "framework_ref": "NIST SP 800-181 Rev 1 (NICE Workforce Framework); COBIT 2019 APO07 (Managed Human Resources)",
-      "question": "A CISO has a $500,000 budget to build in-house forensic capability after two costly outsourced investigations. What should the CISO do FIRST?",
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.10 (Acceptable Use of Information and Other Associated Assets); NIST SP 800-53 Rev 5 PL-4 (Rules of Behavior)",
+      "question": "An IS auditor finds that 300 contractors with network access never acknowledged the acceptable use policy, because onboarding covers only employees. Which recommendation is BEST?",
       "options": {
-        "A": "Assess which forensic skills and tools are missing",
-        "B": "Hire five forensic analysts to expand the team quickly",
-        "C": "Buy an enterprise forensic platform to modernize tooling",
-        "D": "Sign a surge support retainer with an external forensic firm"
+        "A": "Require all users with access to acknowledge the policy",
+        "B": "Add a security-rules clause to each staffing agency contract",
+        "C": "Remove network access from all contractors until reviewed",
+        "D": "Publish the acceptable use policy on the company intranet"
       },
       "correct": "A",
-      "key_concept": "Capability investment starts with a gap analysis, so budget goes to the skills, tools and processes the organization actually lacks.",
-      "pre_read": "Notice the budget is fixed and the gaps are not yet known. Ask what must be known before spending any of it.",
-      "correct_explanation": "Before spending a fixed budget, the CISO needs to know which skills, tools and processes are missing compared with the incidents the firm actually faces. A gap analysis directs money to hiring, training or tooling in the right mix. A surge retainer is a sensible part of most programs, but signing it first commits budget before knowing what in-house capability is needed.",
+      "key_concept": "An acceptable use policy applies to everyone who uses the organization's systems, and each user should acknowledge it.",
+      "pre_read": "Ask whether the policy's reach should follow employment type or system access.",
+      "correct_explanation": "An acceptable use policy should bind everyone who uses the organization's systems, so acknowledgment belongs in the access process for all users, whatever their employment type. That makes each person accountable and gives evidence for discipline or contract action. A clause in the agency contract is the runner-up: it binds the agency, not the individual, and does not show each contractor read the rules.",
       "wrong_explanations": {
-        "B": "Hiring five analysts commits most of the budget to headcount before knowing which skills are needed.",
-        "C": "Buying a platform first addresses tooling, which may not be the gap. Tools without trained examiners add little.",
-        "D": "A retainer is a sensible later piece, but signing it first spends budget on outside help before the in-house gaps are known."
+        "B": "A contract clause binds the agency, not each person at the keyboard, and gives no evidence that individual contractors read or accepted the rules.",
+        "C": "Cutting all contractor access would disrupt the business over a documentation gap that can be fixed without stopping work.",
+        "D": "Publishing the policy makes it available, but it does not show that contractors read it or accept accountability for following it."
       },
       "tips": [
-        "Eliminate: B and C commit most of the budget to one remedy before the gaps are known.",
-        "Final two: A beats D because a retainer is useful, but only a gap analysis shows what to build in-house.",
-        "Exam cue: when asked what to do FIRST with a capability budget, assess the gap before buying people or tools."
+        "Eliminate: C overreacts to a fixable gap, and D makes the policy available without anyone accepting it.",
+        "Final two: A beats B because each user's acknowledgment creates personal accountability, which a clause in the agency's contract does not.",
+        "Exam cue: policy scope follows access, so anyone who uses the systems must be covered, whatever their employment type."
       ],
-      "_provenance": "Authored from concept: 'Forensic team capability building framework'. Public sources: ISACA, GIAC, SANS, EnCase. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Forensic team capability building framework'. Public sources: ISACA, GIAC, SANS, EnCase. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5A1.",
       "style_version": 2
     },
     {
       "id": "d5_200",
       "domain": 5,
-      "subtopic": "Post-Incident Forensic Lessons Learned",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Security Standards. Conformance Metrics",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "Blameless culture",
-        "Multi-source timeline reconstruction",
-        "Cross-finding pattern analysis",
-        "Action-item tracking"
+        "Hardening standards",
+        "Conformance measurement",
+        "Security metrics",
+        "Configuration drift"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27002:2022 Control 5.27 (Learning from Information Security Incidents); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
-      "question": "An IS auditor finds a patient-data breach repeated last year's incident because the agreed lessons-learned actions were never completed. What should the auditor recommend as BEST?",
+      "framework_ref": "ISO/IEC 27001:2022 Clause 9.1 (Monitoring, Measurement, Analysis and Evaluation); ISO/IEC 27002:2022 Control 5.36 (Compliance with Policies, Rules and Standards for Information Security)",
+      "question": "An IS auditor finds a hardening standard approved for all servers, but no one measures how many servers actually conform to it. Which recommendation is BEST?",
       "options": {
-        "A": "Hold a lessons-learned meeting within a week of every incident",
-        "B": "Write longer incident reports with fuller technical detail",
-        "C": "Rely on the incident tickets as the record of actions",
-        "D": "Give each action an owner and track it to closure"
+        "A": "Rewrite the standard so it covers fewer server settings",
+        "B": "Require each administrator to confirm conformance once a year",
+        "C": "Remind administrators of the standard in annual awareness training",
+        "D": "Scan servers regularly and report conformance rates to management"
       },
       "correct": "D",
-      "key_concept": "Lessons learned reduce risk only when each action has an owner, a due date and tracking until closure is verified.",
-      "pre_read": "Notice the review happened but its actions were never completed. Ask which option makes sure fixes actually get done.",
-      "correct_explanation": "The lessons were identified last year, but nothing made sure the fixes happened, so the same weakness let the breach recur. Giving each action an owner and a due date, and tracking it until closure is verified, turns findings into fixed controls. Holding reviews promptly after every incident sounds rigorous, but this firm already held one; the failure was in follow-through, not in the meeting.",
+      "key_concept": "A security standard needs objective, regular measurement of conformance, reported to management, to show it is followed.",
+      "pre_read": "Ask which option produces objective evidence that servers meet the standard.",
+      "correct_explanation": "A standard only reduces risk if systems follow it, and management can only know that through measurement. Regular automated scans give objective conformance rates, show drift over time and let management act on exceptions. Annual self-confirmation by administrators is the runner-up, but it relies on the people being measured, happens rarely and produces no independent evidence of the actual settings.",
       "wrong_explanations": {
-        "A": "The firm already reviewed the incident. Faster meetings produce more findings, but nothing ensures the agreed fixes are completed.",
-        "B": "More detail in reports does not make anyone deliver the fixes, so the weakness can recur.",
-        "C": "Tickets record what responders did during the incident; they do not assign or track the improvement actions afterward."
+        "A": "Narrowing the standard lowers the bar without telling anyone whether servers meet it. The missing element is measurement, not a shorter document.",
+        "B": "Self-attestation is weak evidence because administrators confirm their own work, and a yearly cycle misses drift in between.",
+        "C": "Training may improve knowledge of the standard, but it produces no evidence of whether servers actually conform."
       },
       "tips": [
-        "Eliminate: B adds detail without follow-through, and C relies on records of the response, not of the improvements.",
-        "Final two: D beats A because the failure was in completing actions, not in holding reviews; ownership and tracking fix that.",
-        "Exam cue: when the same finding repeats, look for ownership and tracking to closure, not more analysis."
+        "Eliminate: A weakens the standard instead of measuring it, and C raises awareness without producing any evidence.",
+        "Final two: D beats B because independent, regular measurement is stronger evidence than administrators confirming their own work.",
+        "Exam cue: a policy or standard without a metric is unverified; look for objective, repeatable measurement reported to management."
       ],
-      "_provenance": "Authored from concept: 'Post-incident forensic lessons learned framework'. Public sources: Google SRE, ISACA, NIST, ITIL. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_170 (blameless reviews): now lessons-learned actions tracked to closure.",
+      "_provenance": "Authored from concept: 'Post-incident forensic lessons learned framework'. Public sources: Google SRE, ISACA, NIST, ITIL. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_170 (blameless reviews): now lessons-learned actions tracked to closure. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1.",
       "style_version": 2
     },
     {
@@ -7528,75 +7528,75 @@
     {
       "id": "d5_204",
       "domain": 5,
-      "subtopic": "E-Discovery Integration with Forensics",
+      "subtopic": "Security Frameworks. Common Control Mapping",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
-        "EDRM workflow stages",
-        "FRCP Rule 26(f) meet-and-confer",
-        "Privilege review",
-        "Legal hold notification"
+        "Common control framework",
+        "Framework mapping",
+        "Compliance efficiency",
+        "Overlapping requirements"
       ],
-      "framework_ref": "EDRM (Electronic Discovery Reference Model); Federal Rules of Civil Procedure (FRCP) Rule 37(e) (Preservation of ESI); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence)",
-      "question": "Forensic images collected for a breach investigation will now also be evidence in a related lawsuit. What should the forensics lead and legal team do FIRST?",
+      "framework_ref": "COBIT 2019 APO13 (Managed Security); ISO/IEC 27001:2022; PCI DSS v4.0",
+      "question": "A security manager must show compliance with ISO/IEC 27001, PCI DSS and a regulator's rules, and each audit team tests overlapping controls separately. Which approach is BEST?",
       "options": {
-        "A": "Hand the complete images to opposing counsel without any review",
-        "B": "Reuse the original images under a single chain of custody",
-        "C": "Re-collect the devices separately using e-discovery software tools",
-        "D": "Delete the forensic images once the breach investigation ends"
+        "A": "Schedule all three audits in the same month to save effort",
+        "B": "Map one common control set to all three sets of requirements",
+        "C": "Drop the ISO/IEC 27001 certification to reduce the audit load",
+        "D": "Ask the regulator to accept the PCI DSS assessment instead"
       },
       "correct": "B",
-      "key_concept": "When forensic evidence also serves litigation, keep the original collection under one documented chain of custody rather than collecting again.",
-      "pre_read": "Notice the evidence already exists. Ask whether a second collection could still capture the same state as the first.",
-      "correct_explanation": "The original forensic images capture the devices' state at the time of the breach and already have a documented chain of custody. Using them for both purposes, with legal managing privilege review and production, keeps one defensible evidence trail. Re-collecting with e-discovery tools sounds tidy, but the devices have changed since, and two collections invite disputes over which version is authentic.",
+      "key_concept": "A common control set mapped to every applicable framework lets each control be designed, run and evidenced once.",
+      "pre_read": "Ask how to stop the same control being built and tested three times.",
+      "correct_explanation": "A common control framework maps each control once to every requirement it satisfies, so the firm designs, operates and evidences overlapping controls a single time and sees gaps against all three sources. Scheduling the audits together is the runner-up; it reduces disruption for a month but leaves three separate control sets and repeated testing of the same controls.",
       "wrong_explanations": {
-        "A": "Producing images without review can disclose privileged material and personal data unrelated to the lawsuit.",
-        "C": "The devices have changed since the breach, so a new collection cannot capture the original state and creates competing versions.",
-        "D": "Once litigation is anticipated, deleting relevant evidence is spoliation and can lead to court sanctions."
+        "A": "Running the audits together saves calendar time but not effort, because each team still tests its own version of the same controls.",
+        "C": "Dropping a certification removes assurance customers may rely on, and does not fix the duplicated control design.",
+        "D": "A regulator sets its own requirements; one assessment rarely covers another framework's scope, and the firm cannot redefine the rules."
       },
       "tips": [
-        "Eliminate: A skips privilege and privacy review, and D destroys evidence a court may require.",
-        "Final two: B beats C because the original images capture the breach-time state; a new collection cannot.",
-        "Exam cue: when evidence is reused for litigation, keep one original collection and one chain of custody."
+        "Eliminate: C gives up assurance to save effort, and D assumes one framework can stand in for a regulator's rules.",
+        "Final two: B beats A because mapping controls once removes duplicated work, while aligning dates only compresses it.",
+        "Exam cue: when several frameworks overlap, look for one common control set mapped to every requirement."
       ],
-      "_provenance": "Authored from concept: 'E-discovery integration with forensic investigation'. Public sources: EDRM, ISACA, FRCP, Sedona. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'E-discovery integration with forensic investigation'. Public sources: EDRM, ISACA, FRCP, Sedona. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5A1.",
       "style_version": 2
     },
     {
       "id": "d5_205",
       "domain": 5,
-      "subtopic": "Expert Witness Preparation",
+      "subtopic": "Policy Hierarchy. Standards vs Guidelines",
       "difficulty": "application",
       "bloom_level": "Application",
       "related_concepts": [
-        "Daubert four-factor test",
-        "FRE Rule 702",
-        "Deposition preparation",
-        "FRCP 26(a)(2)(B) expert disclosure"
+        "Policy hierarchy",
+        "Mandatory standards",
+        "Advisory guidelines",
+        "Enforceability"
       ],
-      "framework_ref": "Federal Rules of Evidence Rule 702 (Testimony by Expert Witnesses); Daubert v. Merrell Dow Pharmaceuticals, Inc., 509 U.S. 579 (1993); Federal Rules of Civil Procedure (FRCP) Rule 26 (Disclosure of Expert Testimony)",
-      "question": "A company's forensic analyst will testify about a breach, and opposing counsel plans to challenge how the analysis was done. What should the forensics manager ensure FIRST?",
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.1 (Policies for Information Security); NIST SP 800-12 Rev 1 (An Introduction to Information Security)",
+      "question": "An IS auditor finds password length and lockout requirements are written in a guideline, and several teams have chosen not to follow them. Which recommendation is BEST?",
       "options": {
-        "A": "The analyst rehearses a confident verbal account of the findings",
-        "B": "The analyst holds several recognized forensic certifications",
-        "C": "The analyst's conclusions match management's view of the case",
-        "D": "The analyst's methods are documented, tested and repeatable"
+        "A": "Add the password requirements to the annual awareness training program",
+        "B": "Discipline teams that do not follow the guideline",
+        "C": "Ask each team to document its own password rules",
+        "D": "Move the requirements into a mandatory standard under the policy"
       },
       "correct": "D",
-      "key_concept": "Expert evidence stands or falls on a documented, reliable method that another examiner could repeat, not on credentials or delivery.",
-      "pre_read": "Notice the challenge targets how the analysis was done. Ask which preparation answers that specific challenge.",
-      "correct_explanation": "Courts admit expert testimony when it rests on a reliable, documented method that another examiner could repeat; in US federal courts, Federal Rule of Evidence 702 sets this reliability test. Since opposing counsel will attack the method, documenting tested, repeatable steps is the first defense. Certifications support the analyst's qualifications, but a well-credentialed expert with an undocumented method can still have the testimony excluded.",
+      "key_concept": "Guidelines are advisory; requirements the organization treats as mandatory belong in standards that draw authority from policy.",
+      "pre_read": "Ask whether a team can be faulted for not following a document that only advises.",
+      "correct_explanation": "Guidelines are advisory by design, so teams may legitimately depart from them. Requirements the organization treats as mandatory, such as password length and lockout, belong in a standard that draws its authority from the policy and can be enforced and audited. Disciplining teams for ignoring a guideline is the runner-up, but it punishes people for using discretion the document itself gave them.",
       "wrong_explanations": {
-        "A": "Confident delivery helps in court but cannot defend a method that is undocumented or unreliable.",
-        "B": "Credentials help qualify the analyst, but they do not answer a challenge to the method actually used.",
-        "C": "Aligning conclusions with management destroys the analyst's independence and credibility as an expert."
+        "A": "Training raises awareness, but the requirements would still sit in an advisory document that teams are free not to follow.",
+        "B": "Guidelines are advisory, so punishing noncompliance is unfair and hard to defend. The requirement must first be made mandatory.",
+        "C": "Letting each team set its own rules creates inconsistent protection and moves further from a single enforceable requirement."
       },
       "tips": [
-        "Eliminate: A relies on delivery, and C compromises the analyst's independence.",
-        "Final two: D beats B because the challenge targets the method; credentials cannot rescue an undocumented process.",
-        "Exam cue: when forensic work faces legal challenge, a documented, repeatable method is the foundation."
+        "Eliminate: A adds training but leaves the rules optional, and C splits one requirement into many team versions.",
+        "Final two: D beats B because a guideline is advisory; make the rule mandatory before enforcing it.",
+        "Exam cue: policy sets intent, standards are mandatory, procedures give steps, and guidelines only advise."
       ],
-      "_provenance": "Authored from concept: 'Expert witness preparation canonical framework'. Public sources: FRE, Daubert, ISACA, ACFE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): explanation scopes Federal Rule of Evidence 702 to US federal courts.",
+      "_provenance": "Authored from concept: 'Expert witness preparation canonical framework'. Public sources: FRE, Daubert, ISACA, ACFE. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): explanation scopes Federal Rule of Evidence 702 to US federal courts. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5A1.",
       "style_version": 2
     },
     {
@@ -8083,38 +8083,38 @@
     {
       "id": "d5_219",
       "domain": 5,
-      "subtopic": "Legal Hold Scope Dispute Resolution",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "Security Policy Exceptions. Expiry and Review",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "FRCP Rule 26(b)(1) proportionality",
-        "Sedona Cooperation Proclamation",
-        "Meet-and-confer",
-        "Cost-shifting"
+        "Policy exceptions",
+        "Risk acceptance",
+        "Exception expiry",
+        "Periodic review"
       ],
-      "framework_ref": "The Sedona Conference Commentary on Legal Holds, Second Edition: The Trigger & The Process (2019); Federal Rules of Civil Procedure (FRCP) Rule 26(b)(1) (Scope of Discovery — Proportionality)",
-      "question": "Plaintiffs demand that a legal hold cover every employee's personal messaging apps, and the court has ordered the parties to confer. What should the CISO recommend FIRST?",
+      "framework_ref": "ISO/IEC 27002:2022 Control 5.36 (Compliance with Policies, Rules and Standards for Information Security); COBIT 2019 APO12 (Managed Risk)",
+      "question": "An IS auditor reviews the security exception register and finds 40 exceptions approved years ago with no expiry date or review. Which concern is MOST significant?",
       "options": {
-        "A": "Map where relevant data sits and propose a proportionate scope",
-        "B": "Accept every plaintiff demand to show good faith toward the court",
-        "C": "Refuse the demands outright and leave the scope to the judge",
-        "D": "Pause the existing hold until the scope is agreed"
+        "A": "Accepted risks may no longer match current threats or controls",
+        "B": "The register does not record who requested each exception",
+        "C": "Exceptions show the security policy is too strict to follow",
+        "D": "Approved exceptions should have been reported to external auditors"
       },
       "correct": "A",
-      "key_concept": "Legal holds should preserve relevant data proportionately, guided by a data map, while respecting employees' privacy.",
-      "pre_read": "Notice the demand reaches personal messaging. Ask what the firm must know before it can argue for any scope.",
-      "correct_explanation": "Preservation must cover relevant data, in proportion to the case, and respect employees' privacy. The CISO should first map which systems actually hold relevant data so counsel can propose a defensible, proportionate scope at the meeting. Accepting every demand looks cooperative, but it may sweep in irrelevant personal data, breach privacy rules and impose costs the court would not require.",
+      "key_concept": "A policy exception is a time-bound risk acceptance that needs an owner, an expiry date and periodic review.",
+      "pre_read": "Ask what happens to a risk accepted years ago when nobody looks at it again.",
+      "correct_explanation": "An exception is a temporary risk acceptance, approved for conditions at a point in time. Without expiry dates or periodic review, risks accepted years ago keep running unchecked as threats, systems and compensating controls change, and nobody re-confirms that management still accepts them. A missing requester is a record-keeping gap, but stale acceptance of a live risk is the greater exposure.",
       "wrong_explanations": {
-        "B": "Over-preserving personal messages can breach privacy rules and impose large costs. Good faith is shown by a reasoned scope, not total acceptance.",
-        "C": "Refusing to engage ignores the court's order to confer and risks an unfavorable scope being imposed.",
-        "D": "Pausing a legal hold risks destroying relevant evidence, which can lead to court sanctions for spoliation."
+        "B": "Recording the requester helps traceability, but the larger problem is that nobody has re-examined whether the accepted risks are still acceptable.",
+        "C": "Some exceptions are normal in any policy framework. Their number alone does not prove the policy is unworkable.",
+        "D": "Exceptions are an internal risk management matter; external reporting is not the control that keeps accepted risks current."
       },
       "tips": [
-        "Eliminate: C ignores the order to confer, and D risks destroying evidence the firm must keep.",
-        "Final two: A beats B because a hold should be proportionate and privacy-aware, not as wide as the other side asks.",
-        "Exam cue: in preservation disputes, know where relevant data lives before agreeing to or refusing any scope."
+        "Eliminate: C assumes exceptions prove a bad policy, and D points to an outside party rather than internal risk ownership.",
+        "Final two: A beats B because unreviewed risk acceptance is a live exposure, while a missing requester is a record-keeping gap.",
+        "Exam cue: exceptions and risk acceptances need an owner, an expiry date and periodic review."
       ],
-      "_provenance": "Authored from concept: 'Legal hold scope dispute resolution in class-action context'. Public sources: FRCP, Sedona, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Legal hold scope dispute resolution in class-action context'. Public sources: FRCP, Sedona, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5A1.",
       "style_version": 2
     },
     {
@@ -8461,39 +8461,38 @@
     {
       "id": "d5_229",
       "domain": 5,
-      "subtopic": "Consent Management Lifecycle",
-      "difficulty": "application",
-      "bloom_level": "Application",
+      "subtopic": "Password Spraying. Lockout Limits",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
       "related_concepts": [
-        "consent",
-        "GDPR",
-        "privacy",
-        "Planet49",
-        "opt-in"
+        "Password spraying",
+        "Account lockout",
+        "Cross-account detection",
+        "Multifactor authentication"
       ],
-      "framework_ref": "GDPR Article 7 (Conditions for Consent); Planet49 v. Bundesverband CJEU (2019) — Pre-Ticked Boxes Invalid; EDPB Guidelines 05/2020 on consent",
-      "question": "A consumer app asks users to accept marketing, analytics and data sharing through one tick box at sign-up. Which change should the data protection officer recommend as BEST?",
+      "framework_ref": "MITRE ATT&CK T1110.003 (Brute Force: Password Spraying); NIST SP 800-63B (Digital Identity Guidelines: Authentication and Lifecycle Management)",
+      "question": "An IS auditor finds accounts lock after five failed sign-ins, yet attackers compromised 40 accounts by trying one common password against thousands of usernames. Which weakness did the attack exploit MOST?",
       "options": {
-        "A": "Pre-tick the box so users can untick it if they wish",
-        "B": "Keep one box but add a link to a detailed privacy notice",
-        "C": "Ask for separate consent for each purpose of processing",
-        "D": "Treat continued use of the app as the user's consent"
+        "A": "Passwords are stored without strong hashing on the server",
+        "B": "The lockout threshold of five attempts is set too high",
+        "C": "Lockout counts failures per account, not across many accounts",
+        "D": "Usernames were visible to attackers on the public website"
       },
       "correct": "C",
-      "key_concept": "GDPR consent must be a specific, informed and unambiguous opt-in for each purpose, not bundled, pre-ticked or implied.",
-      "pre_read": "Notice three purposes share one box. Ask whether users can agree to one purpose without agreeing to all.",
-      "correct_explanation": "Under GDPR Articles 4(11) and 7, consent must be freely given, specific, informed and unambiguous, and bundling unrelated purposes into one tick box fails that test. Asking separately for each purpose lets users agree to some uses and refuse others, and each consent can be withdrawn on its own. A clearer notice improves information, but it does not fix consent that is still bundled.",
+      "key_concept": "Password spraying keeps each account under the lockout threshold; defenses need cross-account detection and multifactor authentication.",
+      "pre_read": "Count how many failures each single account saw.",
+      "correct_explanation": "Password spraying tries one or two common passwords against many accounts, so each account sees only a single failure and never reaches the lockout threshold. The control's blind spot is that it counts failures per account. Lowering the threshold is the runner-up, but one attempt per account stays under any sensible limit; defenses need cross-account detection and stronger authentication such as multifactor.",
       "wrong_explanations": {
-        "A": "Pre-ticked boxes are not valid consent under GDPR, as the EU Court of Justice confirmed in the Planet49 case.",
-        "B": "A better notice helps users understand, but consent stays bundled across purposes, so it is still not specific.",
-        "D": "Continued use is not a clear affirmative act. GDPR consent requires an active opt-in for each purpose."
+        "A": "Spraying guesses passwords through the live sign-in page; how hashes are stored on the server plays no part.",
+        "B": "Each account saw only one failed attempt, so even a much lower threshold would not have triggered.",
+        "D": "Usernames are often easy to guess from email formats; hiding them is weak protection and was not the control that failed."
       },
       "tips": [
-        "Eliminate: A relies on pre-ticked boxes, and D treats continued use as consent; GDPR rejects both.",
-        "Final two: C beats B because consent must be specific to each purpose; a better notice leaves it bundled.",
-        "Exam cue: valid consent is a clear, separate opt-in per purpose that is as easy to withdraw as to give."
+        "Eliminate: A concerns stored hashes in an online attack, and D relies on hiding usernames that are easy to guess.",
+        "Final two: C beats B because one attempt per account never trips any threshold; the gap is per-account counting.",
+        "Exam cue: few attempts spread across many accounts signal password spraying; look for cross-account detection and multifactor authentication."
       ],
-      "_provenance": "Authored from concept: 'Consent Management Lifecycle'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): corrected the GDPR consent article citation and the opt-in wording.",
+      "_provenance": "Authored from concept: 'Consent Management Lifecycle'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): corrected the GDPR consent article citation and the opt-in wording. Rebalanced (Oct 2026): re-angled from 2A6 Privacy Program and Principles to 5B2.",
       "style_version": 2
     },
     {
@@ -8917,39 +8916,38 @@
     {
       "id": "d5_241",
       "domain": 5,
-      "subtopic": "Long-Dwell APT Discovered Post-M&A",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
+      "subtopic": "IoT Asset Inventory",
+      "difficulty": "application",
+      "bloom_level": "Application",
       "related_concepts": [
-        "M&A due diligence",
-        "long-dwell APT",
-        "contain-first",
-        "exposure-window-close",
-        "Marriott Starwood"
+        "IoT asset inventory",
+        "Medical device security",
+        "Device ownership",
+        "Asset discovery"
       ],
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27002:2022 Control 5.26 (Response to Information Security Incidents); ISO/IEC 27002:2022 Control 5.28 (Collection of Evidence)",
-      "question": "A firm discovers an attacker has had access for four years to a recently acquired subsidiary's reservation database holding guests' passport and payment card data. What should the CISO do FIRST?",
+      "framework_ref": "CIS Controls v8 Control 1 (Inventory and Control of Enterprise Assets); NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline); NIST SP 800-53 Rev 5 CM-8 (System Component Inventory)",
+      "question": "A hospital's IS auditor finds no one can say how many network-connected medical and building devices exist across its sites. What should the auditor recommend FIRST?",
       "options": {
-        "A": "Pursue a warranty claim against the seller of the subsidiary",
-        "B": "Isolate the subsidiary's systems and preserve forensic images",
-        "C": "Keep monitoring the attacker quietly to map their full access",
-        "D": "Notify every guest before any containment work begins"
+        "A": "Install endpoint security software on every connected device",
+        "B": "Discover and inventory connected devices with their owners",
+        "C": "Replace older connected devices with newer secure models",
+        "D": "Run penetration tests against the main device networks"
       },
       "correct": "B",
-      "key_concept": "With an attacker still inside systems holding sensitive data, containment with evidence preserved comes before legal claims or notification.",
-      "pre_read": "Notice the attacker may still be active near passport and card data. Ask what limits further harm first.",
-      "correct_explanation": "The attacker may still be taking passport and card data, so the first step is to isolate the affected systems while preserving forensic images for scope, regulators and any legal claim. Quiet monitoring can help map an intruder, but after four years of access to highly sensitive data, each extra day adds real harm to guests, so containment comes first.",
+      "key_concept": "An inventory of connected devices, with owners, is the foundation for patching, segmenting and monitoring IoT.",
+      "pre_read": "Ask which step every other IoT control depends on.",
+      "correct_explanation": "Devices that nobody knows about cannot be patched, segmented, monitored or assigned an owner, so an inventory recording each device's owner and location is the foundation for every other IoT control. Penetration testing is the runner-up; it reveals weaknesses, but only in the networks and devices testers are pointed at, and nobody can act on the results without knowing who owns each device.",
       "wrong_explanations": {
-        "A": "A claim against the seller may follow, but it does nothing to stop current data loss. Legal remedies come after containment.",
-        "C": "Watching the attacker lets data theft continue. With highly sensitive data at stake, containment outweighs extra intelligence.",
-        "D": "Notifying before the scope is known gives guests incomplete information while the attacker still has access. Contain first."
+        "A": "Many medical and building devices cannot run security software, and installing it presumes you already know which devices exist.",
+        "C": "Replacing devices without knowing what exists or which carry risk is expensive guesswork and could disrupt patient care.",
+        "D": "Testing finds weaknesses only where testers look; without an inventory and owners, unknown devices stay untested and findings go unassigned."
       },
       "tips": [
-        "Eliminate: A pursues a legal remedy while data loss continues, and D announces before the attacker is cut off.",
-        "Final two: B beats C because ongoing theft of passport and card data outweighs the value of watching the attacker.",
-        "Exam cue: sensitive data still at risk means contain now while preserving evidence; quiet scoping fits only when nothing valuable is leaving."
+        "Eliminate: A assumes devices can run agents, and C spends money before anyone knows what exists.",
+        "Final two: B beats D because testing covers only known targets; the inventory comes first and makes every later control possible.",
+        "Exam cue: you cannot protect what you do not know you have; asset inventory comes first."
       ],
-      "_provenance": "Authored from concept: 'Long-dwell APT discovered post-M&A integration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Marriott/Starwood 2018-2020 tonal echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'Long-dwell APT discovered post-M&A integration'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: Marriott/Starwood 2018-2020 tonal echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9.",
       "style_version": 2
     },
     {
@@ -9487,77 +9485,75 @@
     {
       "id": "d5_256",
       "domain": 5,
-      "subtopic": "Board-Tier Cybersecurity Incident Escalation Criteria",
+      "subtopic": "ISO/IEC 27001 Statement of Applicability. Exclusions",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "board escalation",
-        "SEC 8-K",
-        "Caremark",
-        "material incident",
-        "governance"
+        "Statement of Applicability",
+        "Risk treatment",
+        "Control exclusions",
+        "ISMS documentation"
       ],
-      "framework_ref": "SEC Form 8-K Item 1.05 (Cybersecurity Disclosure Rule, December 2023); SEC Reg S-K Item 106 (Cybersecurity Risk Management, Strategy, Governance, and Incident Disclosure)",
-      "question": "One material incident reached the board after 11 days, while a minor one reached it within four hours. Which escalation rule should the chief risk officer propose as BEST?",
+      "framework_ref": "ISO/IEC 27001:2022 Clause 6.1.3 (Information Security Risk Treatment); ISO/IEC 27001:2022 Annex A",
+      "question": "During an ISO/IEC 27001 readiness review, an IS auditor finds the Statement of Applicability excludes 14 Annex A controls with no reasons recorded. Which conclusion is MOST appropriate?",
       "options": {
-        "A": "Escalate incidents meeting agreed materiality criteria within 24 hours",
-        "B": "Escalate incidents once root-cause analysis is complete",
-        "C": "Leave escalation decisions to the CISO's own personal judgment",
-        "D": "Escalate every incident rated high severity to the board"
+        "A": "Control selection cannot be shown to follow the risk treatment process",
+        "B": "The excluded controls must be implemented before certification can proceed",
+        "C": "The organization has chosen too narrow a scope for its ISMS",
+        "D": "The Statement of Applicability should be replaced by a control checklist"
       },
       "correct": "A",
-      "key_concept": "Board escalation should follow defined business-impact criteria with time limits; technical severity alone does not measure materiality.",
-      "pre_read": "Notice both errors: too slow for a material incident, too fast for a minor one. Ask which rule fixes both.",
-      "correct_explanation": "The problem is inconsistency in both directions, so the board needs a rule tied to business impact. Defined materiality criteria with a time limit send serious incidents up fast and keep minor ones at management level, and they also support public disclosure deadlines. Escalating every high-severity incident is clear, but technical severity does not equal business materiality, so the board would still see noise.",
+      "key_concept": "A Statement of Applicability may exclude controls, but each exclusion must be justified through the risk treatment process.",
+      "pre_read": "Ask whether the problem is the exclusion itself or the missing reason behind it.",
+      "correct_explanation": "ISO/IEC 27001 lets an organization exclude Annex A controls, but the Statement of Applicability must justify each exclusion, normally by tracing it to the risk assessment and treatment decisions. With no reasons recorded, the auditor cannot show that control selection was risk based. Saying the controls must be implemented goes too far: justified exclusions are acceptable, so the gap is the missing rationale, not the exclusion itself.",
       "wrong_explanations": {
-        "B": "Root-cause analysis can take weeks. Waiting for it repeats the 11-day delay for material incidents.",
-        "C": "Personal discretion caused the inconsistency. Without defined criteria, escalation still varies from incident to incident.",
-        "D": "Technical severity is not business materiality. A high-severity incident on a minor system would still reach the board, repeating the over-escalation problem."
+        "B": "Exclusions are permitted when the risk assessment justifies them. The finding is the missing rationale, so forcing every control in would ignore risk-based selection.",
+        "C": "Scope defines which parts of the organization the ISMS covers. Unexplained control exclusions point to weak risk treatment, not a scope error.",
+        "D": "A generic checklist would cut the link between risks and controls. The Statement of Applicability is a required ISMS document to fix, not replace."
       },
       "tips": [
-        "Eliminate: C keeps the discretion that caused the inconsistency, and B builds in the same delay.",
-        "Final two: A beats D because materiality measures business impact, while severity is technical and still floods the board.",
-        "Exam cue: board escalation is about business impact; pick criteria tied to materiality, with a clear time limit."
+        "Eliminate: C confuses control exclusions with ISMS scope, and D discards a document the standard requires.",
+        "Final two: A beats B because exclusions are allowed when justified; the real gap is that no risk-based reason was recorded.",
+        "Exam cue: when a security framework allows tailoring, look for a documented, risk-based justification rather than demanding every control."
       ],
-      "_provenance": "Authored from concept: 'Board-tier cybersecurity incident escalation criteria; CISO + Risk Officer + Audit Committee tier-1 escalation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Board-tier cybersecurity incident escalation criteria; CISO + Risk Officer + Audit Committee tier-1 escalation'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1.",
       "style_version": 2
     },
     {
       "id": "d5_257",
       "domain": 5,
-      "subtopic": "Cyber-Insurance Ransomware-Coverage Claim Defense",
+      "subtopic": "DNS Tunneling. Detection",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
       "related_concepts": [
-        "cyber insurance",
-        "war exclusion",
-        "Merck v. ACE",
-        "chain-of-custody-first",
-        "claim defense"
+        "DNS tunneling",
+        "Covert channels",
+        "Data exfiltration",
+        "DNS monitoring"
       ],
-      "framework_ref": "ISO/IEC 27002:2022 Control 5.28 (Collection of Evidence); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); Lloyd's Market Bulletin Y5381 (War Exclusion)",
-      "question": "A cyber insurer denied a $24 million ransomware claim under its war exclusion, and the forensic data is still held only by the response vendor. What should the firm's general counsel do FIRST?",
+      "framework_ref": "MITRE ATT&CK T1071.004 (Application Layer Protocol: DNS); NIST SP 800-53 Rev 5 SI-4 (System Monitoring)",
+      "question": "An IS auditor learns an infected server may be smuggling data out by encoding it in DNS requests to one external domain. Which control would BEST detect this activity?",
       "options": {
-        "A": "Accept a quick reduced settlement to keep the relationship",
-        "B": "Preserve the forensic evidence with a documented chain of custody",
-        "C": "Commission an independent expert report that rebuts the insurer's attribution",
-        "D": "Withhold the forensic evidence from the insurer for leverage"
+        "A": "Block all outbound web browsing traffic from the infected server",
+        "B": "Monitor name lookups for abnormal length, volume and destinations",
+        "C": "Run a full antivirus scan on the infected server every week",
+        "D": "Review firewall logs for outbound connections that were blocked"
       },
       "correct": "B",
-      "key_concept": "Any dispute that turns on forensic facts depends on evidence whose integrity can be proven; preserve it before arguing from it.",
-      "pre_read": "Notice the claim turns on what the forensic evidence shows. Ask what must be true of that evidence for any argument to hold.",
-      "correct_explanation": "The dispute turns on who carried out the attack, which only the forensic evidence can show, and that evidence still sits with a vendor. Securing it now under a documented chain of custody proves it was not altered, so any later argument stands. An expert rebuttal report is the natural next move, but it is only as strong as the evidence behind it.",
+      "key_concept": "DNS tunneling hides data in permitted name lookups; detecting it means analyzing DNS requests for unusual length, volume and destinations.",
+      "pre_read": "Ask whether the hidden traffic would ever be blocked or look like web browsing.",
+      "correct_explanation": "DNS tunneling hides data inside name lookups, which most firewalls allow freely, so the traffic never appears as a blocked or web connection. Analyzing lookups for unusual length, high volume or concentration on one domain reveals the encoding pattern; routing all lookups through internal resolvers makes that analysis possible. Reviewing blocked firewall connections is the runner-up, but tunneled lookups are permitted traffic and never get blocked.",
       "wrong_explanations": {
-        "A": "Settling early gives up a potentially valid claim before the facts are established.",
-        "C": "An expert report built on evidence without a chain of custody can be challenged. Preservation must come first.",
-        "D": "Withholding evidence from the insurer can breach the policy's cooperation duties and weakens the claim."
+        "A": "Blocking web browsing leaves DNS untouched, so a tunnel over name lookups keeps working.",
+        "C": "Antivirus may miss custom tunneling tools, and a weekly scan does not watch the traffic that carries the data out.",
+        "D": "Tunneled DNS requests are allowed traffic, so they never appear among blocked connections in firewall logs."
       },
       "tips": [
-        "Eliminate: A gives up the claim before the facts are known, and D risks breaching the duty to cooperate.",
-        "Final two: B beats C because an expert's rebuttal is only as strong as evidence whose integrity is proven.",
-        "Exam cue: when a dispute depends on forensic facts, secure the evidence's integrity before building arguments on it."
+        "Eliminate: A blocks the wrong protocol, and C looks for files rather than watching the traffic.",
+        "Final two: B beats D because tunneled lookups are permitted traffic; only analysis of the lookups themselves reveals them.",
+        "Exam cue: covert channels hide in allowed protocols, so detection means analyzing the content and pattern of permitted traffic."
       ],
-      "_provenance": "Authored from concept: 'Cyber-insurance ransomware-coverage dispute; claim-defense forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem states the forensic data is still held only by the vendor, so preservation is clearly FIRST.",
+      "_provenance": "Authored from concept: 'Cyber-insurance ransomware-coverage dispute; claim-defense forensics'. Public sources only (NIST, ISO, ISACA, OWASP, regulatory frameworks). Echo: No real-world echo. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem states the forensic data is still held only by the vendor, so preservation is clearly FIRST. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5B2.",
       "style_version": 2
     },
     {
@@ -9708,32 +9704,38 @@
     {
       "id": "d5_262",
       "domain": 5,
-      "subtopic": "Privileged Credential Leak. Comprehensive Response",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-53 Rev 5 IA-5 (Authenticator Management); NIST SP 800-53 Rev 5 IR-4 (Incident Handling)",
-      "question": "A database root password exposed in a public repository was rotated within minutes. What should the security manager do FIRST?",
+      "subtopic": "Logic Bomb. Preventive Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Logic bomb",
+        "Malicious insider code",
+        "Independent code review",
+        "Change control"
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.32 (Change Management); NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); COBIT 2019 BAI06 (Managed IT Changes)",
+      "question": "An IS auditor finds that a programmer, months before resigning, planted code that deleted payroll records on a set date. Which control would BEST have prevented this?",
       "options": {
-        "A": "Review database logs for use during the exposure window",
-        "B": "Delete the commit from the public repository's history",
-        "C": "Notify every customer that their records were breached",
-        "D": "Remove the engineer's access to every company code repository"
+        "A": "Independent code review before changes reach production",
+        "B": "Disabling the programmer's accounts on his last day",
+        "C": "Daily backups of the payroll database to offline storage",
+        "D": "Antivirus scanning of the payroll servers each night"
       },
       "correct": "A",
-      "key_concept": "After rotating an exposed credential, review access logs for any use during the exposure window.",
-      "pre_read": "Notice the password is already rotated. Ask what remains unknown about the minutes it was exposed.",
-      "correct_explanation": "Rotation stops future use of the password, but someone may have used it before rotation, so the next step is to review database access logs for that window. Deleting the commit is good hygiene, but the secret is already useless and may already be copied; removing it does not answer whether it was used.",
+      "key_concept": "A logic bomb hides in approved code and fires on a trigger; independent review within change control prevents it.",
+      "pre_read": "Notice the code was planted months before he left. Ask what would have caught it then.",
+      "correct_explanation": "A logic bomb is malicious code planted inside a legitimate program and triggered later by a date or event. Because it runs under the application's own authority, the best prevention is change control that requires independent review and approval of code before it reaches production. Disabling the programmer's accounts is the runner-up; it is essential at exit, but the planted code fires whether or not his accounts still work.",
       "wrong_explanations": {
-        "B": "The password is already rotated; removing the commit does not reveal whether it was used.",
-        "C": "Notifying every customer before checking for actual use may be premature and inaccurate.",
-        "D": "Removing the engineer's access punishes rather than investigates whether data was accessed."
+        "B": "Prompt removal of access is essential, but the code was already in production and runs under the application's authority, not his account.",
+        "C": "Offline backups support recovery after the deletion; they do not stop the planted code from running.",
+        "D": "Antivirus looks for known malware and will not recognize custom code hidden inside an approved business program."
       },
       "tips": [
-        "Eliminate: C notifies before evidence, and D punishes rather than investigates.",
-        "Final two: A beats B because the key question is whether the password was used, not whether it is still visible.",
-        "Exam cue: after rotating an exposed secret, check for its use during the exposure window."
+        "Eliminate: C restores data after the damage, and D looks for known malware rather than custom code.",
+        "Final two: A beats B because the planted code runs without the programmer's login; only review before release catches it.",
+        "Exam cue: for a logic bomb or back door, the preventive control is independent code review within change control."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in credential-leak response — BEST = rotate + remove + audit + customer notify + secrets-management hardening; FIRST = rotate only'. Paired companion to d5_039. Public sources: NIST SP 800-61, CIS Controls v8, GDPR Article 33. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in credential-leak response — BEST = rotate + remove + audit + customer notify + secrets-management hardening; FIRST = rotate only'. Paired companion to d5_039. Public sources: NIST SP 800-61, CIS Controls v8, GDPR Article 33. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026). Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): simplified the stem.",
       "style_version": 2
     },
     {
@@ -9863,156 +9865,186 @@
     {
       "id": "d5_267",
       "domain": 5,
-      "subtopic": "Phishing Initial Access, Credential Compromise, and Full Incident Response",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-53 Rev 5 AU-6 (Audit Record Review, Analysis, and Reporting); GDPR Article 34 (Data Subject Notification)",
-      "question": "A help-desk analyst's account, which can view 1.3 million customer records, was phished and is now disabled. What should the incident manager establish FIRST to decide on customer notification?",
+      "subtopic": "Data Diddling. Input Controls",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Data diddling",
+        "Input controls",
+        "Independent verification",
+        "Source documents"
+      ],
+      "framework_ref": "NIST SP 800-53 Rev 5 SI-10 (Information Input Validation); COBIT 2019 DSS06 (Managed Business Process Controls)",
+      "question": "An IS auditor finds a warehouse clerk altered quantities on delivery notes before keying them, and the system accepted the false figures. Which control would BEST address this?",
       "options": {
-        "A": "Whether the analyst completed phishing awareness training",
-        "B": "How many customers the account could reach in total",
-        "C": "Whether the phishing site is still online",
-        "D": "Which records the attacker's sessions actually accessed"
+        "A": "Encrypt the inventory database so stored figures cannot be read",
+        "B": "Log every change made to inventory records after they are saved",
+        "C": "Give warehouse clerks read-only access to the inventory system",
+        "D": "Match keyed quantities to independently confirmed receiving counts"
       },
       "correct": "D",
-      "key_concept": "Breach scope for notification comes from evidence of records actually accessed; potential reach is a fallback when logs are insufficient.",
-      "pre_read": "Notice the account is already disabled. Ask what evidence shows whose data was really exposed.",
-      "correct_explanation": "Notification turns on whose data was actually accessed, not on what the account could reach. Reviewing the attacker's session activity in application and database logs shows which records were viewed or exported, so notices reach the right people with accurate facts. The account's total reach sounds like the safe scope, but it may alarm many unaffected customers; it is the fallback only if logs cannot show access.",
+      "key_concept": "Data diddling falsifies data before or during input, so input controls with independent verification are the BEST defense.",
+      "pre_read": "Notice when the change happened: before the data entered the system.",
+      "correct_explanation": "Data diddling changes data before or as it enters a system, so the records look legitimate once stored and later controls simply protect false figures. The defense is an input control that checks keyed quantities against an independent source, such as receiving counts made by someone else. Change logging is the runner-up; it tracks edits after saving, but the fraud happened before entry, so the log shows an ordinary input.",
       "wrong_explanations": {
-        "A": "Training history matters for lessons learned, but it says nothing about whose data was exposed.",
-        "B": "Total reach is the worst case. Notices should rest on records actually accessed, with reach used only if logs fall short.",
-        "C": "Taking the phishing site down is useful, but it does not show which customers were affected."
+        "A": "Encryption stops stored data being read, but here the false figures were entered normally, so encryption simply protects wrong data.",
+        "B": "Logs capture edits after records are saved; the alteration happened before entry, so the log shows a normal transaction.",
+        "C": "Clerks must enter data to do their jobs, so read-only access is impractical, and it would not stop altered input documents."
       },
       "tips": [
-        "Eliminate: A is a lessons-learned question, and C concerns the phishing site, not the affected customers.",
-        "Final two: D beats B because notification rests on data actually accessed; total reach is a fallback when logs cannot tell.",
-        "Exam cue: to scope a breach, follow the evidence of actual access rather than the worst-case reach."
+        "Eliminate: A protects stored data that is already wrong, and C removes the access clerks need to work.",
+        "Final two: D beats B because the change happened before entry, so only input verification catches it; logs see a normal save.",
+        "Exam cue: data diddling falsifies data before or during input, so the BEST control is input verification, not a database control."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in phishing-credential compromise — BEST = full revoke + access audit + PII impact assess + customer notify + FIDO2 hardening; FIRST = revoke only'. Paired companion to d5_119. Public sources: NIST SP 800-63B, CISA Phishing Guidance, ISACA Incident Management A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from the reset-does-not-end-sessions lesson (kept in d5_233) and from d5_278's surface: now scoping notification from evidence of actual access.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in phishing-credential compromise — BEST = full revoke + access audit + PII impact assess + customer notify + FIDO2 hardening; FIRST = revoke only'. Paired companion to d5_119. Public sources: NIST SP 800-63B, CISA Phishing Guidance, ISACA Incident Management A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from the reset-does-not-end-sessions lesson (kept in d5_233) and from d5_278's surface: now scoping notification from evidence of actual access. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): exam cue now uses the term data diddling.",
       "style_version": 2
     },
     {
       "id": "d5_268",
       "domain": 5,
-      "subtopic": "Cloud Configuration Drift on Production Security Control and Full Incident Response",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-53 Rev 5 AU-5 (Response to Audit Logging Process Failures)",
-      "question": "Console changes disabled cloud storage logging for 11 weeks on a bucket of customer files; logging is now restored. What should the incident manager do FIRST?",
+      "subtopic": "Rainbow Tables. Salting",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Rainbow tables",
+        "Password salting",
+        "Slow hashing functions",
+        "Offline cracking"
+      ],
+      "framework_ref": "OWASP Password Storage Cheat Sheet; NIST SP 800-63B (Digital Identity Guidelines: Authentication and Lifecycle Management)",
+      "question": "After a breach, an IS auditor learns most stolen customer password hashes were cracked within hours because identical passwords produced identical hashes. Which control would BEST have slowed this?",
       "options": {
-        "A": "Close the incident now that storage logging has been restored",
-        "B": "Notify every customer that their files were exposed",
-        "C": "Check other records for access during the logging gap",
-        "D": "Discipline the engineers who made the console changes"
+        "A": "Encrypting the password file with a key on the same server",
+        "B": "Requiring customers to change passwords every 90 days",
+        "C": "Adding a unique random salt to each password before hashing",
+        "D": "Switching to a faster hashing algorithm for the sign-in service"
       },
       "correct": "C",
-      "key_concept": "When security logging was disabled, scope the gap using other evidence sources before deciding on notification.",
-      "pre_read": "Notice logging is back but there was a gap. Ask what you still do not know about that period.",
-      "correct_explanation": "The first question is whether anyone accessed the files while logging was off, so the incident manager checks other records, such as provider control-plane logs or network flow data, to scope the gap. Notifying every customer is cautious, but without evidence of access it may be premature and inaccurate, and it skips the scoping notification decisions depend on.",
+      "key_concept": "A unique salt per password defeats precomputed rainbow tables and forces attackers to crack each hash separately.",
+      "pre_read": "Notice identical passwords gave identical hashes. Ask what makes every stored hash unique.",
+      "correct_explanation": "Identical hashes for identical passwords let attackers use precomputed rainbow tables and crack many accounts at once. A unique random salt per password makes every hash different, so precomputed tables are useless and each password must be attacked separately; a deliberately slow hashing function adds further cost. Encrypting the file is the runner-up, but with the key on the same server, attackers who take the file usually take the key.",
       "wrong_explanations": {
-        "A": "Restoring logging stops future blind spots but says nothing about access during the gap.",
-        "B": "Notifying everyone before scoping may be inaccurate and skips the evidence notification depends on.",
-        "D": "Discipline addresses individuals and does not answer whether data was accessed."
+        "A": "Attackers who steal the file from a server usually reach the key on that server too, so the protection adds little.",
+        "B": "Rotation affects future passwords, not the hashes already stolen, and users often make predictable changes that crack just as easily.",
+        "D": "Faster hashing helps the attacker test guesses more quickly; password storage needs deliberately slow functions."
       },
       "tips": [
-        "Eliminate: A ignores the blind spot, and D focuses on blame rather than impact.",
-        "Final two: C beats B because notification decisions depend on scoping the gap first.",
-        "Exam cue: when primary logs are missing, scope the gap from secondary evidence before deciding on notification."
+        "Eliminate: B changes future passwords without protecting stolen hashes, and D speeds up the attacker's guessing.",
+        "Final two: C beats A because salting defeats precomputed tables, while a key stored beside the file is likely stolen with it.",
+        "Exam cue: identical hashes for identical passwords signal missing salt and exposure to rainbow tables."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in cloud config drift — BEST = IaC rollback + CloudTrail audit + access assessment + IaC-only change enforcement + drift-detection monitoring; FIRST = rollback only'. Paired companion to d5_154. Public sources: AWS Well-Architected Framework, NIST SP 800-204C, CIS AWS Benchmark. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_154 (revert first under attack): now continuous drift detection. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in cloud config drift — BEST = IaC rollback + CloudTrail audit + access assessment + IaC-only change enforcement + drift-detection monitoring; FIRST = rollback only'. Paired companion to d5_154. Public sources: AWS Well-Architected Framework, NIST SP 800-204C, CIS AWS Benchmark. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_154 (revert first under attack): now continuous drift detection. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2.",
       "style_version": 2
     },
     {
       "id": "d5_269",
       "domain": 5,
-      "subtopic": "SaaS Customer Material Data Breach, Notification, and Full Incident Response",
+      "subtopic": "Enterprise Wireless. Server Certificate Validation",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "framework_ref": "GDPR Article 33 (Notification of Personal Data Breach to Supervisory Authority); ISO/IEC 27002:2022 Control 5.22 (Monitoring, Review and Change Management of Supplier Services); COBIT 2019 APO10 (Managed Vendors)",
-      "question": "A bank learns from news reports that its payroll SaaS provider suffered a breach, but the provider has sent no notice. What should the bank's CISO do FIRST?",
+      "related_concepts": [
+        "WPA2/WPA3-Enterprise",
+        "Server certificate validation",
+        "Evil twin access point",
+        "Credential capture"
+      ],
+      "framework_ref": "NIST SP 800-153 (Guidelines for Securing WLANs); NIST SP 800-97 (Establishing Wireless Robust Security Networks: A Guide to IEEE 802.11i)",
+      "question": "An IS auditor finds company laptops join the enterprise wireless network without validating the authentication server's certificate. Which risk is MOST significant?",
       "options": {
-        "A": "Terminate the provider's contract for failing to give notice",
-        "B": "Ask the provider whether the bank's data was exposed",
-        "C": "Wait for the provider's formal notice before taking action",
-        "D": "Tell employees that their payroll data was breached"
+        "A": "Wireless traffic will travel between laptops and access points unencrypted",
+        "B": "A fake access point could capture staff network credentials",
+        "C": "Laptops may connect more slowly during peak office hours",
+        "D": "The wireless controller could fail and stop all connections"
       },
       "correct": "B",
-      "key_concept": "An organization stays accountable for data its providers hold and must act promptly to learn whether that data was affected.",
-      "pre_read": "Notice the provider has not given notice. Ask who is accountable for the payroll data.",
-      "correct_explanation": "The bank remains accountable for its employees' payroll data even though a provider holds it, and its own notice duties may start once it becomes aware of a likely breach. Asking the provider at once whether bank data was exposed gives the facts needed to act. Waiting for formal notice seems orderly, but the provider is already silent, and the bank's own deadlines may be running.",
+      "key_concept": "Enterprise wireless clients must verify the authentication server, or a look-alike access point can harvest their credentials.",
+      "pre_read": "Ask who the laptop is trusting when it signs in, and how it knows.",
+      "correct_explanation": "When laptops skip server certificate validation, they will authenticate to any access point advertising the company network name. An attacker can set up a look-alike access point with a fake authentication server and capture staff credentials for later use. Unencrypted traffic is the runner-up but is wrong: links to genuine access points are still encrypted; the flaw is trusting an impostor during sign-in.",
       "wrong_explanations": {
-        "A": "Terminating mid-incident cuts off the information the bank needs and does not protect the exposed data.",
-        "C": "The provider has already stayed silent. Waiting passively may let the bank's own notification deadlines pass.",
-        "D": "Exposure is not yet confirmed. Telling employees their data was breached before checking is premature and may be wrong."
+        "A": "Traffic with genuine access points is still encrypted. The weakness lies in who the laptop trusts during sign-in, not in the encryption itself.",
+        "C": "Certificate validation has no meaningful effect on speed, and slow connections are a performance issue, not the security risk here.",
+        "D": "Controller failure is an availability concern unrelated to whether laptops verify who they are authenticating to."
       },
       "tips": [
-        "Eliminate: A cuts off the source of facts, and D announces a breach that is not yet confirmed.",
-        "Final two: B beats C because the data owner stays accountable and must seek the facts; waiting leaves its own clock running.",
-        "Exam cue: outsourcing a service never outsources accountability for the data; the owner must act on its own."
+        "Eliminate: C and D are performance and availability issues that certificate validation does not affect.",
+        "Final two: B beats A because the flaw lets an impostor collect credentials, while traffic with genuine access points stays encrypted.",
+        "Exam cue: an 'evil twin' access point works when clients skip server certificate validation, so clients must verify the network as it verifies them."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in B2B SaaS breach notification — BEST = customer notify + own-regulator filings + forensic completion + patch + relationship management; FIRST = customer notify only'. Paired companion to d5_173. Public sources: GDPR Article 33, SEC cybersecurity disclosure rules, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_173 (provider notifying clients): now the data owner's duty when a provider stays silent.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in B2B SaaS breach notification — BEST = customer notify + own-regulator filings + forensic completion + patch + relationship management; FIRST = customer notify only'. Paired companion to d5_173. Public sources: GDPR Article 33, SEC cybersecurity disclosure rules, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_173 (provider notifying clients): now the data owner's duty when a provider stays silent. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): exam cue now uses the term evil twin.",
       "style_version": 2
     },
     {
       "id": "d5_270",
       "domain": 5,
-      "subtopic": "Zero-Day Vulnerability Mitigation and Full Incident Response",
+      "subtopic": "Pass-the-Hash. Why Password Strength Fails",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "framework_ref": "NIST SP 800-53 Rev 5 RA-10 (Threat Hunting); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-40 Rev 4 (Guide to Enterprise Patch Management Planning)",
-      "question": "A flaw in a firm's VPN appliances was exploited worldwide for nine days before the vendor's patch, which the firm has now applied to every appliance. What should the CISO do FIRST?",
+      "related_concepts": [
+        "Pass-the-hash",
+        "Credential reuse",
+        "Lateral movement",
+        "Privileged credential exposure"
+      ],
+      "framework_ref": "MITRE ATT&CK T1550.002 (Use Alternate Authentication Material: Pass the Hash); NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
+      "question": "Attackers moved between servers by reusing stolen password hashes, and management plans to double minimum password length in response. Which IS auditor conclusion is MOST appropriate?",
       "options": {
-        "A": "Hunt for compromise that occurred before the patch",
-        "B": "Monitor the appliances closely for any new exploit attempts",
-        "C": "Close the incident because every appliance is now patched",
-        "D": "Replace the appliances with another vendor's product"
+        "A": "Password length is irrelevant because the stolen hash itself is replayed",
+        "B": "Longer passwords help because stolen hashes become much slower to crack",
+        "C": "The attack shows the hashing algorithm on the servers is broken",
+        "D": "The attackers must have found passwords stored as plain text"
       },
       "correct": "A",
-      "key_concept": "Patching closes a vulnerability but does not evict attackers; hunt for compromise during the window it was exploited.",
-      "pre_read": "Notice the flaw was exploited for nine days before the patch. Ask what the patch cannot undo.",
-      "correct_explanation": "Nine days of worldwide exploitation means attackers may already have entered and planted backdoors or stolen credentials, and a patch closes the hole without removing them. Hunting for indicators of compromise from the exposure window shows whether the firm was breached. Watching for new exploit attempts sounds vigilant, but the patch already blocks those; the open question is what happened before it.",
+      "key_concept": "Pass-the-hash replays the stolen hash itself, so password strength does not help; limit hash exposure and detect reuse.",
+      "pre_read": "Ask whether the attacker ever needed to know the password.",
+      "correct_explanation": "In a pass-the-hash attack, the attacker never cracks the password; the stolen hash is presented directly to authenticate, so password length makes no difference. Effective controls limit where privileged hashes are exposed, such as unique local administrator passwords on every machine and privileged sign-ins only from dedicated admin workstations, and monitor for hash reuse across servers. Longer passwords are the runner-up: they slow offline cracking, but this attack never needs to crack anything.",
       "wrong_explanations": {
-        "B": "The patch now blocks new attempts. Watching for them ignores intrusions that may have happened during the nine days.",
-        "C": "Patching closes the flaw but does not remove an attacker who entered before it was applied.",
-        "D": "Changing vendors is a long-term decision that does nothing about a compromise that may already exist."
+        "B": "Length does slow offline cracking, but pass-the-hash presents the stolen hash directly, so the password's strength is never tested.",
+        "C": "The algorithm may be sound; the attack reuses the hash as a credential rather than reversing it.",
+        "D": "Pass-the-hash works with properly hashed passwords; it abuses how the protocol accepts hashes, not plain-text storage."
       },
       "tips": [
-        "Eliminate: C assumes patching removes intruders, and D is a long-term choice that ignores possible compromise.",
-        "Final two: A beats B because the patch already blocks new attempts; the risk now is an intrusion from before it.",
-        "Exam cue: after a flaw was exploited in the wild, patching is not the end; check for compromise during the exposure window."
+        "Eliminate: C and D blame how passwords are stored, but the attack works without reversing or reading any password.",
+        "Final two: A beats B because the attacker replays the hash itself, so cracking resistance never comes into play.",
+        "Exam cue: for pass-the-hash, look for unique local admin passwords, admin-only workstations for privileged sign-ins and monitoring for hash reuse, not stronger passwords."
       ],
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in zero-day mitigation — BEST = compensating controls + monitoring + vendor patch engagement + patch deployment + SBOM monitoring policy review; FIRST = compensating controls only'. Paired companion to d5_137. Public sources: NIST SP 800-40, CISA KEV catalog, CIS Controls v8. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_195 (block exposure until patch): now hunting for compromise from before the patch.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in zero-day mitigation — BEST = compensating controls + monitoring + vendor patch engagement + patch deployment + SBOM monitoring policy review; FIRST = compensating controls only'. Paired companion to d5_137. Public sources: NIST SP 800-40, CISA KEV catalog, CIS Controls v8. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_195 (block exposure until patch): now hunting for compromise from before the patch. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2. Rebalance review (Oct 2026): made B a plausible runner-up, broke the A/B mirror and named the real controls.",
       "style_version": 2
     },
     {
       "id": "d5_271",
       "domain": 5,
-      "subtopic": "Ransomware Detection in EDR. Primary Consideration",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); #StopRansomware Guide (CISA, FBI, NSA, MS-ISAC, 2023); MITRE ATT&CK Framework Impact tactic (T1486 Data Encrypted for Impact)",
-      "question": "Ransomware is actively encrypting a shared file server, and about 7% of files are already locked. What should the CISO treat as the PRIMARY consideration when choosing the immediate response?",
+      "subtopic": "Salami Technique. Detection",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Salami technique",
+        "Rounding fraud",
+        "Independent recalculation",
+        "Reconciliation"
+      ],
+      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 MEA02 (Managed System of Internal Control)",
+      "question": "An IS auditor suspects a programmer diverts fractions of a cent from interest rounding across thousands of accounts into one account. Which control would BEST detect this?",
       "options": {
-        "A": "Meeting regulatory deadlines for reporting the service outage",
-        "B": "Capturing memory from the server before anything is changed",
-        "C": "Keeping the file server available to the engineering staff",
-        "D": "Stopping the encryption and its spread without delay"
+        "A": "Require two approvals for every large funds transfer",
+        "B": "Review the programmer's access rights to the production systems",
+        "C": "Ask customers to report unexpected interest amounts",
+        "D": "Recalculate interest independently and reconcile it to the ledger"
       },
       "correct": "D",
-      "key_concept": "While destruction is under way, halting it outweighs evidence capture; every minute adds more unrecoverable data and wider spread.",
-      "pre_read": "Notice the encryption is still running. Ask which consideration loses more value with every minute of delay.",
-      "correct_explanation": "Each minute of active encryption locks more files and gives the malware more chance to spread to other systems, so halting it dominates the immediate decision. Capturing memory is valuable for investigation, and good responders try to do it quickly, but it must not delay isolation while data is being destroyed. Evidence can still be collected from the isolated server.",
+      "key_concept": "Salami attacks steal amounts too small to notice; independent recalculation and reconciliation detect them.",
+      "pre_read": "Notice each theft is tiny. Ask which control looks at the totals rather than single transactions.",
+      "correct_explanation": "In a salami attack each theft is too small for anyone to notice, so controls built around large amounts or customer complaints miss it. Independently recalculating interest and reconciling it to the ledger exposes the small differences that add up, and shows where they went. Reviewing the programmer's access is the runner-up; it may reduce opportunity, but it does not detect diversions already running in the code.",
       "wrong_explanations": {
-        "A": "Regulatory reporting matters, but its deadlines run in hours or days. It does not drive the next few minutes.",
-        "B": "Memory capture helps investigators, but delaying isolation to collect it lets the malware lock more files and spread further.",
-        "C": "An infected server cannot be kept usable safely. Keeping it online lets the encryption continue."
+        "A": "Approval thresholds target large transfers, while a salami attack moves amounts far too small to trigger them.",
+        "B": "Access review limits future opportunity but cannot reveal diversions already coded into the interest calculation.",
+        "C": "Customers rarely notice a fraction of a cent, which is exactly why this technique goes undetected for so long."
       },
       "tips": [
-        "Eliminate: A works on a slower clock than active encryption, and C keeps an infected server running.",
-        "Final two: D beats B because active destruction outweighs evidence capture; isolate first, collect evidence from the isolated server.",
-        "Exam cue: while damage is still happening, containment speed wins. Investigation needs come second."
+        "Eliminate: A watches for large transfers, and C relies on customers spotting amounts too small to notice.",
+        "Final two: D beats B because independent recalculation detects the diversion, while an access review only limits future opportunity.",
+        "Exam cue: tiny, repeated diversions point to a salami technique; recalculation and reconciliation detect them."
       ],
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY vs FIRST/BEST in ransomware response — PRIMARY = the dominant audit consideration/principle that drives the recommendation; FIRST = containment action; BEST = full sequence'. Paired companion to d5_057 and d5_261. Public sources: ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, CISA Stop Ransomware Guide, MITRE ATT&CK T1486. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY vs FIRST/BEST in ransomware response — PRIMARY = the dominant audit consideration/principle that drives the recommendation; FIRST = containment action; BEST = full sequence'. Paired companion to d5_057 and d5_261. Public sources: ISACA Incident Management Audit/Assurance Program, NIST SP 800-61 Rev 2, CISA Stop Ransomware Guide, MITRE ATT&CK T1486. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5B2.",
       "style_version": 2
     },
     {
@@ -10142,32 +10174,38 @@
     {
       "id": "d5_276",
       "domain": 5,
-      "subtopic": "Container Escape Detection",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); NIST SP 800-190 (Application Container Security Guide); MITRE ATT&CK T1611 (Escape to Host)",
-      "question": "A container in the build cluster escaped to its host node, which also runs the deployment job holding production cloud keys. What should the incident manager treat as the PRIMARY concern when scoping the incident?",
+      "subtopic": "IoT Procurement Security Requirements",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "IoT procurement",
+        "Default credentials",
+        "Firmware updates",
+        "Secure by design"
+      ],
+      "framework_ref": "NIST SP 800-213 (IoT Device Cybersecurity Guidance for the Federal Government); NIST IR 8259A (IoT Device Cybersecurity Capability Core Baseline); NIST SP 800-53 Rev 5 SA-4 (Acquisition Process)",
+      "question": "An IS auditor finds newly bought IP cameras shipped with default passwords and no way to update their firmware. Which control would BEST prevent this from recurring?",
       "options": {
-        "A": "Whether the image scanner should have caught the known flaw",
-        "B": "How many unused image versions remain in the container registry",
-        "C": "Whether workloads and credentials on that node are now compromised",
-        "D": "Whether runtime alert rules were tuned to reduce false alarms"
+        "A": "Change default passwords on each camera during installation",
+        "B": "Place all cameras on an isolated network segment",
+        "C": "Require security criteria from suppliers before purchase",
+        "D": "Scan the camera network monthly for known vulnerabilities"
       },
       "correct": "C",
-      "key_concept": "Scope follows the attacker's reach: an escape to the host exposes every workload and credential on that node.",
-      "pre_read": "Notice the escape reached the host. Ask what else the attacker can now touch, rather than how the flaw got in.",
-      "correct_explanation": "An escape gives the attacker the host node, and from there every workload on it, including the deployment job and its production cloud keys. Scoping must therefore start from what the attacker can now reach. Whether the image scanner missed the flaw is an important root-cause question, but it explains how the attacker got in, not how far the damage extends, and it belongs in the post-incident review.",
+      "key_concept": "For IoT, building security requirements such as unique credentials and supported updates into procurement is the strongest preventive control.",
+      "pre_read": "Notice that one weakness can be fixed after delivery and one cannot. Ask which control stops both.",
+      "correct_explanation": "Default passwords can be changed, but a device with no firmware update path stays vulnerable for life, and no installation step fixes that. Setting security requirements, such as unique credentials and supported updates, before purchase stops weak devices entering the estate. Changing passwords at installation is the runner-up: it is necessary hygiene but leaves the unpatchable firmware and depends on every installer remembering.",
       "wrong_explanations": {
-        "A": "The scanner gap is a root-cause finding for the lessons-learned review. It does not tell responders how far the attacker has reached.",
-        "B": "Registry hygiene is a general housekeeping concern with no bearing on the scope of this live compromise.",
-        "D": "Alert tuning matters for future detection, but the alert already fired. It does not define the incident's scope."
+        "A": "Changing passwords at installation is needed, but it relies on every installer and cannot fix firmware that will never receive patches.",
+        "B": "Segmentation limits damage from weak devices already installed, but it does not stop the organization from buying more of them.",
+        "D": "Scanning finds known flaws after deployment; it cannot patch devices with no update mechanism or prevent future weak purchases."
       },
       "tips": [
-        "Eliminate: B is registry housekeeping, and D concerns alert tuning after the alert already worked.",
-        "Final two: C beats A because scoping asks how far the attacker reached; how the flaw got in is a later root-cause question.",
-        "Exam cue: during scoping, follow the blast radius. Root-cause questions belong to the post-incident review."
+        "Eliminate: B contains devices already bought, and D detects flaws after deployment without preventing either problem.",
+        "Final two: C beats A because purchase requirements stop both weaknesses, while changing passwords cannot fix firmware that never updates.",
+        "Exam cue: for IoT, the strongest preventive control is building security requirements into procurement."
       ],
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY in container escape — PRIMARY = dominant audit consideration (node-and-cluster blast radius); FIRST = action (isolate pod + node); BEST = sequence (isolate + hunt + forensics + patch + notify)'. Paired companion to d5_098 and d5_266. Public sources: NIST SP 800-190, MITRE ATT&CK T1611 (Escape to Host), CIS Kubernetes Benchmark, ISACA Incident Management and Response Audit/Assurance Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): surface details changed from d5_266 (now a CI build node holding production cloud keys).",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY in container escape — PRIMARY = dominant audit consideration (node-and-cluster blast radius); FIRST = action (isolate pod + node); BEST = sequence (isolate + hunt + forensics + patch + notify)'. Paired companion to d5_098 and d5_266. Public sources: NIST SP 800-190, MITRE ATT&CK T1611 (Escape to Host), CIS Kubernetes Benchmark, ISACA Incident Management and Response Audit/Assurance Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): surface details changed from d5_266 (now a CI build node holding production cloud keys). Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A9. Rebalance review (Oct 2026): removed the stem echo of the key.",
       "style_version": 2
     },
     {
@@ -10478,6 +10516,265 @@
         "Exam cue: zero trust means continuous verification; a change in identity or device state changes access."
       ],
       "_provenance": "Authored from concept: 'Zero Trust core principles NIST 800-207'. Foundational recall tier. Public sources: NIST SP 800-207. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem says access needs no authentication at all, so it cannot be read as single sign-on. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
+      "style_version": 2
+    },
+    {
+      "id": "d5_287",
+      "domain": 5,
+      "subtopic": "DLP Detection Methods. Exact Data Matching",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Exact data matching",
+        "Pattern matching",
+        "False positives",
+        "Structured data"
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention)",
+      "question": "A retailer's data loss prevention (DLP) rules use number patterns to find customer data, producing thousands of false alerts on order numbers. Which detection method is BEST for the security manager to adopt?",
+      "options": {
+        "A": "Add more keyword patterns describing what customer records contain",
+        "B": "Inspect only outgoing files larger than a set size threshold",
+        "C": "Match content against fingerprints of the actual customer database",
+        "D": "Switch off alerts and review the DLP logs once a month"
+      },
+      "correct": "C",
+      "key_concept": "Exact data matching recognizes the real records through fingerprints, cutting false positives that pattern rules produce on look-alike values.",
+      "pre_read": "Ask whether the rule should guess what data looks like or recognize the data itself.",
+      "correct_explanation": "Pattern rules match anything that looks like a sensitive number, so order numbers and other look-alikes trigger alerts. Exact data matching compares content against hashed fingerprints of the real customer records, so it flags actual customer data with far fewer false positives. Adding more keyword patterns is the runner-up; it may catch more, but it still guesses at what the data looks like rather than recognizing it.",
+      "wrong_explanations": {
+        "A": "More patterns still guess at what customer data looks like, so look-alike values keep triggering false alerts.",
+        "B": "Size limits miss small leaks, such as a single message holding hundreds of customer records.",
+        "D": "Monthly log review delays response to real leaks by weeks and does nothing to reduce false matches."
+      },
+      "tips": [
+        "Eliminate: B ignores small leaks, and D delays response without improving detection.",
+        "Final two: C beats A because fingerprints recognize the real records, while more patterns keep guessing at look-alikes.",
+        "Exam cue: when DLP floods with false positives on structured data, prefer exact data matching over broader patterns."
+      ],
+      "_provenance": "Authored from concept: 'DLP Detection Methods. Exact Data Matching'. Original Aurivan item (Oct 2026), written for CISA topic 5A5. Rebalance review (Oct 2026): smoothed the stem wording and spelled out DLP.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_288",
+      "domain": 5,
+      "subtopic": "DLP Coverage. Encrypted Web Traffic",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "TLS inspection",
+        "Network DLP visibility",
+        "Web upload channel",
+        "Inspection policy exemptions"
+      ],
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
+      "question": "An IS auditor finds the network DLP tool cannot see file uploads to websites because almost all web traffic is encrypted. Which recommendation is BEST?",
+      "options": {
+        "A": "Block all uploads from company devices to any website",
+        "B": "Ask staff to label confidential files before uploading them",
+        "C": "Rely on the email DLP rules to cover web uploads",
+        "D": "Decrypt and inspect web traffic at the proxy under policy"
+      },
+      "correct": "D",
+      "key_concept": "Network DLP can inspect only what it can read; governed decryption at the proxy restores visibility of encrypted uploads.",
+      "pre_read": "Ask what the DLP tool must be able to do before any rule can work.",
+      "correct_explanation": "Network DLP can only inspect what it can read, so encrypted uploads pass unchecked. Decrypting web traffic at the proxy, under an approved policy that exempts sensitive categories such as personal banking or health sites, restores visibility for DLP rules. Asking staff to label files is the runner-up; labels help DLP decide, but the tool still cannot read encrypted uploads, and a careless or malicious user simply skips the label.",
+      "wrong_explanations": {
+        "A": "Blocking every upload stops legitimate business use of web services and would be unworkable for most teams.",
+        "B": "Labels help DLP decide, but the tool still cannot read encrypted traffic, and a malicious user simply leaves files unlabeled.",
+        "C": "Email rules inspect email only; they have no view of files sent through encrypted web sessions."
+      },
+      "tips": [
+        "Eliminate: A blocks legitimate work outright, and C applies a control to the wrong channel.",
+        "Final two: D beats B because DLP must be able to read traffic to inspect it; labeled files still pass encrypted and unseen.",
+        "Exam cue: a monitoring control is only as good as its visibility; close encryption blind spots under a governed policy."
+      ],
+      "_provenance": "Authored from concept: 'DLP Coverage. Encrypted Web Traffic'. Original Aurivan item (Oct 2026), written for CISA topic 5A5.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_289",
+      "domain": 5,
+      "subtopic": "DLP Effectiveness. Audit Evidence",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "DLP testing",
+        "Audit evidence reliability",
+        "Seeded test data",
+        "Control effectiveness"
+      ],
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention)",
+      "question": "Management asks an IS auditor for assurance that the DLP program actually stops sensitive data leaving the company. Which evidence is MOST reliable?",
+      "options": {
+        "A": "Results of planned test transfers using seeded sample records",
+        "B": "The vendor's statement of the tool's detection accuracy",
+        "C": "The number of alerts the DLP console raised last quarter",
+        "D": "Confirmation from the security team that rules are enabled"
+      },
+      "correct": "A",
+      "key_concept": "Evidence the auditor generates by testing, such as seeded test transfers, is more reliable than counts, claims or confirmations.",
+      "pre_read": "Ask which evidence shows what DLP actually stops in this environment.",
+      "correct_explanation": "The most reliable evidence comes from the auditor's own test: sending seeded sample data through email, web, USB and cloud channels shows directly which transfers DLP blocks or flags and which escape. Alert counts are the runner-up; they show the tool is active, but a high number can mean noise and a low number can mean blind spots, so neither proves leaks are stopped.",
+      "wrong_explanations": {
+        "B": "Vendor claims describe the product in general, not how the organization configured and deployed it here.",
+        "C": "Alert volume shows activity, not effectiveness; many alerts may be noise, and few may mean channels go unmonitored.",
+        "D": "Statements from the team that runs the tool are indirect evidence and do not show that rules catch real data."
+      },
+      "tips": [
+        "Eliminate: B describes the product rather than this deployment, and D relies on the operators vouching for their own tool.",
+        "Final two: A beats C because a controlled test proves what DLP stops, while alert counts only show the tool is busy.",
+        "Exam cue: evidence the auditor generates through testing is more reliable than counts, claims or confirmations."
+      ],
+      "_provenance": "Authored from concept: 'DLP Effectiveness. Audit Evidence'. Original Aurivan item (Oct 2026), written for CISA topic 5A5.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_290",
+      "domain": 5,
+      "subtopic": "DLP Data Discovery. Remediation",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "DLP discovery scanning",
+        "Data at rest",
+        "Data owner decisions",
+        "Card data storage"
+      ],
+      "framework_ref": "PCI DSS v4.0 Requirement 3 (Protect Stored Account Data); ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention)",
+      "question": "A data loss prevention (DLP) discovery scan finds 12,000 unencrypted card numbers in spreadsheets on a file share open to all staff. What should the security manager do FIRST?",
+      "options": {
+        "A": "Delete the spreadsheets from the file share immediately",
+        "B": "Restrict access to the share and notify the data owner",
+        "C": "Encrypt the whole file server with full-disk encryption",
+        "D": "Retrain staff on the rules for handling and storing card data"
+      },
+      "correct": "B",
+      "key_concept": "When discovery finds sensitive data in the wrong place, restrict access first; the data owner then decides how to remediate.",
+      "pre_read": "Ask what stops the exposure now without taking a decision that belongs to someone else.",
+      "correct_explanation": "The immediate risk is that every employee can open the card data, so the first step limits access to the share; the data owner then decides whether to delete, tokenize or move the files under retention rules. Deleting the spreadsheets at once is the runner-up; it removes exposure but may destroy records the business needs, and that decision belongs to the owner, not the security manager.",
+      "wrong_explanations": {
+        "A": "Immediate deletion may destroy records the business or law requires, and the decision on the data belongs to its owner.",
+        "C": "Full-disk encryption protects against stolen disks, but staff browsing the open share still see the card numbers.",
+        "D": "Training shapes future behavior, but it does not close the open share, so the card data stays visible to every employee."
+      },
+      "tips": [
+        "Eliminate: C protects against disk theft rather than open access, and D changes future behavior while the share stays open.",
+        "Final two: B beats A because limiting access stops the exposure without destroying records whose fate the owner must decide.",
+        "Exam cue: when discovery finds sensitive data in the wrong place, restrict access first, then let the owner decide remediation."
+      ],
+      "_provenance": "Authored from concept: 'DLP Data Discovery. Remediation'. Original Aurivan item (Oct 2026), written for CISA topic 5A5. Rebalance review (Oct 2026): option D now falls on the principle, not on absolute wording.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_291",
+      "domain": 5,
+      "subtopic": "Registration Authority. Identity Proofing",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Registration authority",
+        "Identity proofing",
+        "Certificate issuance",
+        "Trust in PKI"
+      ],
+      "framework_ref": "NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure); NIST SP 800-53 Rev 5 IA-12 (Identity Proofing)",
+      "question": "An IS auditor reviews an internal PKI and finds the registration authority issues user certificates to anyone who emails a request. Which concern is MOST significant?",
+      "options": {
+        "A": "Certificates may expire before users remember to renew them",
+        "B": "Requests are not encrypted while traveling by email",
+        "C": "Certificates may bind keys to identities nobody verified",
+        "D": "Users may request more certificates than they actually need"
+      },
+      "correct": "C",
+      "key_concept": "A certificate is only as trustworthy as the registration authority's identity check before it is issued.",
+      "pre_read": "Ask what a certificate promises to everyone who relies on it.",
+      "correct_explanation": "A certificate is only as trustworthy as the identity check behind it. If the registration authority issues certificates to anyone who emails a request, an impostor can obtain a certificate in another person's name, and every system that trusts the PKI will accept it. Unencrypted requests are the runner-up, but a request carries the public key, which is not secret; missing identity proofing is the real weakness.",
+      "wrong_explanations": {
+        "A": "Expiry is a routine lifecycle matter handled by renewal reminders; it does not let an impostor obtain a trusted certificate.",
+        "B": "A certificate request contains the public key, which is meant to be shared, so sending it unencrypted exposes no secret.",
+        "D": "Extra certificates add overhead, but the greater danger is certificates issued to people whose identity nobody checked."
+      },
+      "tips": [
+        "Eliminate: A is a routine renewal matter, and D is an efficiency issue rather than a trust failure.",
+        "Final two: C beats B because the request carries only a public key, while unchecked identity lets an impostor gain trust.",
+        "Exam cue: in PKI, trust rests on the registration authority's identity proofing before any certificate is issued."
+      ],
+      "_provenance": "Authored from concept: 'Registration Authority. Identity Proofing'. Original Aurivan item (Oct 2026), written for CISA topic 5A7.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_292",
+      "domain": 5,
+      "subtopic": "Key Escrow. Signing vs Encryption Keys",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "related_concepts": [
+        "Key escrow",
+        "Non-repudiation",
+        "Digital signature keys",
+        "Encryption key recovery"
+      ],
+      "framework_ref": "NIST SP 800-57 Part 1 Rev 5 (Recommendation for Key Management); NIST SP 800-53 Rev 5 AU-10 (Non-repudiation)",
+      "question": "An IS auditor finds the PKI keeps escrow copies of employees' private keys used for signing contracts, as well as their encryption keys. Which concern is MOST significant?",
+      "options": {
+        "A": "Escrowed encryption keys could let administrators read stored files",
+        "B": "The escrow database will need more storage as staff grow",
+        "C": "Employees may forget the passwords protecting their private keys",
+        "D": "Signers could deny contracts because others hold their signing keys"
+      },
+      "correct": "D",
+      "key_concept": "Escrow encryption keys for data recovery, but never signing keys; only the signer may hold those, or non-repudiation fails.",
+      "pre_read": "Ask which key type the organization ever needs to recover, and which it should never copy.",
+      "correct_explanation": "Non-repudiation depends on only the signer holding the signing private key. Once copies sit in escrow, an employee can plausibly argue that someone else signed, weakening the evidential value of every signed contract. Escrowing encryption keys is the runner-up concern, but it is accepted practice so the organization can recover encrypted data under controlled access; a lost signing key is simply replaced, not recovered.",
+      "wrong_explanations": {
+        "A": "Escrowing encryption keys is normal practice for recovering data; under proper access controls it is expected, not the main concern.",
+        "B": "Storage growth is a routine capacity matter and has no bearing on the trust placed in signatures.",
+        "C": "Forgotten passwords are an operational issue handled by recovery or reissue; they do not undermine signatures already made."
+      },
+      "tips": [
+        "Eliminate: B is a capacity matter, and C is a routine support issue unrelated to signature trust.",
+        "Final two: D beats A because escrowed signing keys undermine non-repudiation, while escrowing encryption keys is normal for recovery.",
+        "Exam cue: escrow encryption keys for recovery, but never signing keys; only the signer may hold those."
+      ],
+      "_provenance": "Authored from concept: 'Key Escrow. Signing vs Encryption Keys'. Original Aurivan item (Oct 2026), written for CISA topic 5A7.",
+      "style_version": 2
+    },
+    {
+      "id": "d5_293",
+      "domain": 5,
+      "subtopic": "Relying on External PKI. Certification Practice Statement",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "related_concepts": [
+        "Certification practice statement",
+        "Third-party certificate authority",
+        "Relying party",
+        "Digital signatures"
+      ],
+      "framework_ref": "IETF RFC 3647 (Internet X.509 Public Key Infrastructure Certificate Policy and Certification Practices Framework); NIST SP 800-32 (Introduction to Public Key Technology and the Federal PKI Infrastructure)",
+      "question": "A bank plans to accept invoices digitally signed with certificates from a trading partner's certificate authority. Which document should the IS auditor review FIRST?",
+      "options": {
+        "A": "The CA's certification practice statement and identity checks",
+        "B": "The partner's latest annual financial statements and credit rating",
+        "C": "The bank's own internal certificate renewal schedule",
+        "D": "A sample of signed invoices the partner has already sent"
+      },
+      "correct": "A",
+      "key_concept": "Before relying on an outside PKI, review its certification practice statement for identity, key and revocation controls.",
+      "pre_read": "Ask what a valid signature can and cannot prove about the certificate behind it.",
+      "correct_explanation": "Relying on another organization's certificates means trusting how its certificate authority checks identities, protects its keys and handles revocation. The certification practice statement describes those practices, so it is the first thing to review before accepting signatures. Sampling signed invoices is the runner-up; it shows signatures validate technically, but a valid signature proves nothing if the CA issues certificates without proper identity checks.",
+      "wrong_explanations": {
+        "B": "Financial health matters for credit decisions, but it says nothing about whether the partner's certificates can be trusted.",
+        "C": "The bank's own renewal schedule concerns its internal certificates, not the trustworthiness of the partner's authority.",
+        "D": "Valid signatures show the mechanics work, but they cannot reveal whether the CA verified identities before issuing certificates."
+      },
+      "tips": [
+        "Eliminate: B tests creditworthiness, and C looks at the bank's own certificates instead of the partner's.",
+        "Final two: A beats D because trust depends on the CA's practices; a valid signature cannot show how identities were checked.",
+        "Exam cue: before relying on an outside PKI, review its certification practice statement for identity, key and revocation controls."
+      ],
+      "_provenance": "Authored from concept: 'Relying on External PKI. Certification Practice Statement'. Original Aurivan item (Oct 2026), written for CISA topic 5A7.",
       "style_version": 2
     }
   ]
