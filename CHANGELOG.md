@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.51.1] — Privacy policy update
+
+### Improved
+- The privacy policy now covers the mobile app.
+
 ## [v10.51] — Fewer repeats, clearer sources
 
 ### Improved

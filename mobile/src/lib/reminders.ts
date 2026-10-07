@@ -39,10 +39,29 @@ export function initNotifications() {
   });
 }
 
+/** The Android channel our reminders post to (Settings → Notifications shows its name). */
+export const REMINDER_CHANNEL_ID = 'reminders';
+
+/**
+ * Android only: make sure the "Study reminders" channel exists.
+ * Android 8+ files every notification under a channel the user can mute
+ * on its own, and Android 13+ only shows the permission prompt once a
+ * channel exists. So we create it BEFORE asking and before scheduling.
+ * Safe to call repeatedly: Android keeps the existing channel.
+ */
+async function ensureAndroidChannel(N: NotificationsModule) {
+  if (Platform.OS !== 'android') return;
+  await N.setNotificationChannelAsync(REMINDER_CHANNEL_ID, {
+    name: 'Study reminders',
+    importance: N.AndroidImportance.DEFAULT,
+  });
+}
+
 /** Ask permission (iOS shows a system prompt once). Returns true if allowed. */
 export async function ensurePermission(): Promise<boolean> {
   const N = notifications();
   if (!N) return false;
+  await ensureAndroidChannel(N);
   const current = await N.getPermissionsAsync();
   if (current.granted) return true;
   const asked = await N.requestPermissionsAsync();
@@ -53,13 +72,15 @@ export async function ensurePermission(): Promise<boolean> {
 export async function scheduleDailyReminder(hour: number, minute: number, certName: string) {
   const N = notifications();
   if (!N) return;
+  await ensureAndroidChannel(N);
   await N.cancelAllScheduledNotificationsAsync();
   await N.scheduleNotificationAsync({
     content: {
       title: 'Time for a quick session',
       body: `10 ${certName} questions keep your streak alive. You've got this.`,
     },
-    trigger: { type: N.SchedulableTriggerInputTypes.DAILY, hour, minute },
+    // channelId is ignored on iOS; on Android it files the reminder under "Study reminders".
+    trigger: { type: N.SchedulableTriggerInputTypes.DAILY, hour, minute, channelId: REMINDER_CHANNEL_ID },
   });
 }
 

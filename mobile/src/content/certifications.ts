@@ -16,8 +16,11 @@
 import { domainPalette } from '../theme/tokens';
 import type { Certification, DomainTone } from './types';
 
-const ISACA_TM = (name: string) =>
-  `Not affiliated with or endorsed by ISACA®. ${name}® is a registered trademark of ISACA.`;
+// Use registered: false for marks we can't confirm are registered yet (plain "trademark", no ®).
+const ISACA_TM = (name: string, registered = true) =>
+  registered
+    ? `Not affiliated with or endorsed by ISACA®. ${name}® is a registered trademark of ISACA.`
+    : `Not affiliated with or endorsed by ISACA®. ${name} is a trademark of ISACA.`;
 
 const ISACA_MINDSET =
   'Think like a risk-focused advisor: protect the business, follow governance, ' +
@@ -103,7 +106,7 @@ export const CERTIFICATIONS: Certification[] = [
     mindset:
       'Think like a senior auditor applied to AI: governance, accountability, ' +
       'and evidence over hype. ' + ISACA_MINDSET,
-    trademarkNotice: ISACA_TM('AAIA'),
+    trademarkNotice: ISACA_TM('AAIA', false),
     status: 'coming_soon',
     exam: {
       questions: 90,
