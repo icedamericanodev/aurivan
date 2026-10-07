@@ -64,3 +64,32 @@ author batch ──► harness ──► blind tester + domain auditor ──►
    (cd mobile && npm run check)
    ```
 6. **Ship** one domain per PR. The maintainer spot-checks it before the next domain starts.
+
+## Quality gate (maintainer rule, Oct 2026: content quality comes before speed)
+
+Every question must leave learners less confused and more likely to pass. A domain
+ships only after ALL of these, in order:
+
+1. **Author** in batches through the harness until it reports 0 errors.
+2. **Alignment read:** `scripts/print_alignment.py`. Every "why-X-wrong" and tip letter must match its option.
+3. **Two blind testers** answer every item without the key. Every miss is triaged as tester error, ambiguous or wrong key.
+4. **Two expert reviewers read EVERY item** against the 8-test learner-impact brief:
+   - an ISACA examiner (`cisa-d{N}-standards-auditor`), for authenticity, one best answer, accuracy and originality;
+   - a learner Q&A reviewer (`cisa-pedagogy-checker`), for full-statement options, no confusion, explanations that teach and tips that transfer.
+
+   The brief's tests:
+   1. full plain-statement options
+   2. ISACA authenticity and correct auditor/management roles
+   3. exactly one best answer
+   4. no confusion traps; the stem holds every fact the answer needs
+   5. the explanation teaches why the key wins and the runner-up loses
+   6. tips that transfer to unseen questions
+   7. accuracy and currency
+   8. original wording
+5. **Citation check** with `cisa-citation-provenance-checker`.
+6. **Merge and apply the fixes:** one editor per domain reconciles the two reviews, applies every BLOCKER and MAJOR plus the clear MINORs, and re-runs every gate.
+7. **De-cue pass:** no word family, length or "balanced option" pattern predicts the key.
+8. **Blind re-test** of every edited item. Any remaining ambiguity is fixed. An answer key that two reviewers dispute after one fix attempt goes to the maintainer.
+
+Never show the total question count, of the bank or of a domain, anywhere a learner can see it.
+
