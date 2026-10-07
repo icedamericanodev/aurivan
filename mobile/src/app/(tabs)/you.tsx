@@ -7,18 +7,24 @@
  * setting with Settings → Appearance.
  * Mindset growth (Phase 5b): under the stats, only when the learner picks the
  * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
+ * Share progress: opens a preview of a share card (components/shareCard.tsx)
+ * with one honest number (engine/shareCard.ts picks it).
  */
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { DomainRings, ringsSpoken } from '../../components/journey';
 import { MindsetGrowthCard } from '../../components/moments';
-import { Bookmark, ICON_STROKE, NotebookPen, Settings } from '../../components/icons';
+import { Bookmark, ICON_STROKE, NotebookPen, Settings, Share2 } from '../../components/icons';
+import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
-import { BigNum, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
+import { dayKey } from '../../engine/streak';
 import { shortDate } from '../../lib/format';
 import { useMindsetGrowth } from '../../lib/moments';
 import { useActiveCert } from '../../lib/useActiveCert';
+import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -31,6 +37,10 @@ export default function You() {
   const openMistakes = Object.values(progress.mistakes).filter((m) => !m.resolved).length;
   const values = readiness.domains.map((d) => (d.answered ? d.mastery : null));
   const growth = useMindsetGrowth(cert.id, progress);
+  // Share card: the study days come from the saved streak (last 14 study days).
+  const recentDays = useProgress((s) => s.streak.recentDays);
+  // The day the sheet was opened (read in the tap handler, not during render). null = closed.
+  const [shareDay, setShareDay] = useState<string | null>(null);
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
 
   return (
@@ -70,6 +80,15 @@ export default function You() {
             <Stat key="c" value={String(streak)} label="day streak" color={c.clay} />,
           ]}
         </StatRow>
+        <Button
+          kind="secondary"
+          label="Share progress"
+          onPress={() => setShareDay(dayKey(Date.now()))}
+          accessibilityHint="Opens a preview of a progress card you can share"
+          icon={(col) => <Share2 size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
+          iconLeading
+          style={{ marginTop: space.xl }}
+        />
         {growth.show && (
           <View style={{ marginTop: space.xl }}>
             <MindsetGrowthCard earlyIn10={growth.earlyIn10} lateIn10={growth.lateIn10} line={growth.line} spoken={growth.spoken} />
@@ -113,6 +132,25 @@ export default function You() {
         )}
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
       </Enter>
+
+      {/* Mounted only while open, so the card's numbers are always fresh. */}
+      {shareDay && (
+        <ShareProgressSheet
+          visible
+          onClose={() => setShareDay(null)}
+          cert={cert}
+          readiness={readiness}
+          input={{
+            certName: cert.name,
+            issuer: cert.issuer,
+            streak,
+            recentDays: recentDays ?? [],
+            today: shareDay,
+            answered,
+            range,
+          }}
+        />
+      )}
     </Screen>
   );
 }
