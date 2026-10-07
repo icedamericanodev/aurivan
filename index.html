@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.53</span>
+    <span class="bank-pill" id="versionPill">v10.53.1</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.53';
+const APP_VERSION = 'v10.53.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6695,7 +6695,7 @@ function sanitizeIllustrationSvg(s) {
 
 function renderItemBody(raw, domainId, searchQ) {
   if (!raw || typeof raw !== 'object') {
-    return '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
+    return '<p class="notes-summary" style="color:var(--muted);font-style:italic">More on this topic is coming soon.</p>';
   }
 
   // Tracker: mark fields as already rendered so generic pass skips them
@@ -6817,7 +6817,7 @@ function renderItemBody(raw, domainId, searchQ) {
     html += '<button class="notes-practice-link" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">'
       + '&#9654; Practice questions for Domain ' + domainId + '</button>';
   }
-  return html || '<p class="notes-summary" style="color:var(--muted);font-style:italic">Detailed content in the CISA Review Manual.</p>';
+  return html || '<p class="notes-summary" style="color:var(--muted);font-style:italic">More on this topic is coming soon.</p>';
 }
 
 // ── MAIN RENDER ──
@@ -12088,6 +12088,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Current sources',
+    items: [
+      { cat: 'fixed', text: 'A few payment-card and digital-identity questions now cite the current editions of those standards.' },
+      { cat: 'improved', text: 'Topic notes no longer send you to an outside study guide for more detail.' }
+    ]
+  },
+  {
+    version: 'v10.53',
     title: 'Every exam topic covered',
     items: [
       { cat: 'improved', text: 'Practice now covers every topic in the official CISA exam outline, in proportion to how much it matters on the exam.' },

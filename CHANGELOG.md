@@ -4,6 +4,14 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.53.1] — Current sources
+
+### Fixed
+- A few payment-card and digital-identity questions now cite the current editions of those standards.
+
+### Improved
+- Topic notes no longer send you to an outside study guide for more detail.
+
 ## [v10.53] — Every exam topic covered
 
 ### New

@@ -1922,3 +1922,4 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - MITRE ATT&CK T1071.004 (Application Layer Protocol: DNS)
 - MITRE ATT&CK T1550.002 (Use Alternate Authentication Material: Pass the Hash)
 - IETF RFC 3647 (Internet X.509 Public Key Infrastructure Certificate Policy and Certification Practices Framework)
+- PCI DSS v4.0.1
