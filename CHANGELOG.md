@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.50] — Information protection questions, exam-style
+
+### Improved
+- Protection of Information Assets questions are now short and direct, like the real exam, with every answer choice written as a plain, complete sentence.
+- Each of those questions was reviewed by exam experts and now comes with tips on ruling out two choices and picking between the final two.
+
 ## [v10.49] — Operations and resilience questions, exam-style
 
 ### Improved
