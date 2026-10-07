@@ -30,6 +30,21 @@ describe('lessons', () => {
     expect(lessonPreparing('cisa', 'd4_082')?.id).toBe('cisa-l-d4-rpo-rto');
     expect(lessonPreparing('cisa', 'no_such_id')).toBeUndefined();
   });
+  it('are numbered 1, 2, 3… inside each domain', () => {
+    // A clean order keeps the Learn list and "Up next" predictable.
+    for (const c of CERTIFICATIONS) {
+      for (const d of c.domains) {
+        const orders = lessonsFor(c.id, d.id).map((l) => l.order);
+        expect(orders).toEqual(orders.map((_, i) => i + 1));
+      }
+    }
+  });
+  it('do not share an answer-key pattern', () => {
+    // A learner doing lessons back to back must not spot "B, D, A" again.
+    const patterns = all.map((l) => l.scenes.flatMap((s) => (s.type === 'check' ? [s.correctIndex] : [])).join(','));
+    const repeats = patterns.filter((p, i) => patterns.indexOf(p) !== i);
+    expect(repeats).toEqual([]);
+  });
   it('next lesson prefers the weakest domain', () => {
     expect(nextLesson('cisa', [], '4')?.domainId).toBe('4');
     expect(nextLesson('cisa', lessonsFor('cisa').map((l) => l.id))).toBeUndefined();
@@ -42,7 +57,7 @@ describe('lessons', () => {
  * check question, where they mirror real exam stems.
  */
 const ACRONYMS = new Set([
-  'APO', 'BAI', 'CIO', 'CISA', 'COBIT', 'DSS', 'EDM', 'HR', 'IA', 'ID', 'IEC', 'IS', 'ISACA', 'ISO', 'IT',
+  'APO', 'BAI', 'BIA', 'CIO', 'CISA', 'CISO', 'COBIT', 'CSF', 'DSS', 'EDM', 'HR', 'IA', 'ID', 'IEC', 'IS', 'ISACA', 'ISO', 'IT',
   'ITAF', 'MEA', 'MFA', 'NIST', 'PIN', 'RPO', 'RTO', 'SMS', 'SP',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);

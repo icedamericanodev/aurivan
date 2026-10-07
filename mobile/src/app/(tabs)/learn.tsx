@@ -1,5 +1,5 @@
 /**
- * Learn — three-minute motion lessons.
+ * Learn — short motion lessons (3–5 minutes each).
  * Spec: DESIGN_SYSTEM.md §11 "Learn":
  *   forest "Up next" lesson cover (domain dot + short name, the full lesson
  *   title, "3 min · 7 scenes", Start lesson, a branch drawn per domain) →
@@ -53,7 +53,7 @@ export default function Learn() {
     <Screen>
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
-        <T v="meta" style={{ marginTop: space.xs }}>Three-minute lessons, one idea each.</T>
+        <T v="meta" style={{ marginTop: space.xs }}>Short lessons, one idea each.</T>
       </Enter>
 
       <Enter i={1} style={{ marginTop: 18 }}>
