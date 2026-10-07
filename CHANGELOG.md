@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.53] — Every exam topic covered
+
+### New
+- New questions on policies and procedures, enterprise architecture, post-implementation review, business impact analysis, operational logs, attack methods and more.
+
+### Improved
+- Practice now covers every topic in the official CISA exam outline, in proportion to how much it matters on the exam.
+- Fewer repeats: lessons that were asked many times now make room for topics you had too little practice on.
+
 ## [v10.52] — Sharper questions
 
 ### Improved

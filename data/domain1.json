@@ -2,7 +2,7 @@
   "domain": 1,
   "title": "Information Systems Auditing Process",
   "weight": "18%",
-  "count": 186,
+  "count": 188,
   "questions": [
     {
       "id": "d1_001",
@@ -1181,38 +1181,38 @@
     {
       "id": "d1_033",
       "domain": 1,
-      "subtopic": "Risk Treatment Options",
+      "subtopic": "Engagement Types. Advisory vs Assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Management decides not to patch a legacy ERP flaw because the outage would cost far more than the expected loss, and the CIO signs the decision. Which risk response BEST describes this?",
+      "question": "Management asks IS audit for control input on a new claims system before go-live, then to audit it next year. What should the IS audit manager do FIRST?",
       "options": {
-        "A": "Risk avoidance",
-        "B": "Risk mitigation",
-        "C": "Risk acceptance",
-        "D": "Risk transfer"
+        "A": "Begin the pre-go-live review using the standard IS audit program",
+        "B": "Decline the review so next year's audit stays independent",
+        "C": "Agree in writing that it is advisory, with stated limits",
+        "D": "Assign the same auditors to both engagements for continuity"
       },
       "correct": "C",
-      "key_concept": "Risk acceptance is a formal, documented decision by an authorized owner to tolerate a known risk, usually when treatment costs exceed benefits.",
-      "pre_read": "Ask whether the risk still exists after the decision. If the activity continues unchanged, it was not avoided.",
-      "correct_explanation": "Risk acceptance is a documented, approved decision to tolerate a known risk because treating it costs more than the benefit. The CIO sign-off and the cost comparison mark it as formal acceptance. Avoidance would mean stopping the activity that creates the risk, such as retiring the ERP component, yet the system keeps running with the flaw.",
+      "key_concept": "Advisory and assurance engagements differ in purpose and reporting; agreeing the type, scope and limits up front protects later audit independence.",
+      "pre_read": "Notice IS audit will audit the same system next year. Ask what must be settled before any pre-go-live work begins.",
+      "correct_explanation": "Before any work starts, the manager should agree in writing that the pre-go-live review is advisory, stating its scope, its limits and that management keeps every decision. That protects next year's assurance audit from self-review. Declining outright is the runner-up, but it loses early, low-cost control input; advisory work is allowed when the engagement type, terms and safeguards are defined up front.",
       "wrong_explanations": {
-        "A": "Avoidance removes the risk by ending the activity that causes it. The ERP keeps running, so the exposure remains.",
-        "B": "Mitigation means adding or strengthening controls to reduce the risk. Management chose not to act.",
-        "D": "Transfer shifts the impact to a third party, such as an insurer or vendor. Nothing is shifted outside the organization here."
+        "A": "Starting with an audit program before agreeing the engagement type leaves scope, limits and reporting unclear, so the review could later be mistaken for assurance.",
+        "B": "Declining is overly cautious. Advisory work before go-live is allowed when its terms and independence safeguards are agreed in advance.",
+        "D": "Reusing the advising auditors on the later audit creates a self-review threat; continuity does not outweigh objectivity."
       },
       "tips": [
-        "Eliminate: B needs new or stronger controls, and D needs a third party to bear the impact; neither appears here.",
-        "Final two: C beats A because the vulnerable system stays in use; avoidance would end the activity, not tolerate it.",
-        "Exam cue: a signed decision to live with a known risk after weighing cost is acceptance."
+        "Eliminate: A starts work with no agreed engagement type, and D has auditors later audit their own advice.",
+        "Final two: C beats B because advisory work is allowed once its terms and safeguards are defined; declining wastes early input.",
+        "Exam cue: when audit is asked to review something it will later audit, settle advisory versus assurance terms first."
       ],
-      "framework_ref": "ISO/IEC 31000:2018 (Risk Management); COBIT 2019 (APO12 Managed Risk)",
+      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 13.3 (Engagement Objectives and Scope); ISACA IT Audit Standard 1003 (Auditor Objectivity); ISACA IT Audit Standard 1001 (Audit Charter)",
       "related_concepts": [
-        "Risk treatment options",
-        "Risk acceptance",
-        "Risk register",
-        "Residual risk"
+        "Advisory engagement",
+        "Assurance engagement",
+        "Self-review threat",
+        "Engagement terms"
       ],
-      "_provenance": "Authored from concept: 'risk acceptance — formal management decision not to act with sign-off'. Public source: ISO/IEC 31000 + COBIT 2019. All scenario specifics (auto manufacturer, legacy ERP vulnerability, 4-day outage, $40M cost) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'risk acceptance — formal management decision not to act with sign-off'. Public source: ISO/IEC 31000 + COBIT 2019. All scenario specifics (auto manufacturer, legacy ERP vulnerability, 4-day outage, $40M cost) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A5 Enterprise Risk Management to 1A2.",
       "style_version": 2
     },
     {
@@ -4547,77 +4547,75 @@
     {
       "id": "d1_123",
       "domain": 1,
-      "subtopic": "IT General Controls. Logical Access (Provisioning, Review, Deprovisioning)",
+      "subtopic": "Engagement Types. Agreed-Upon Procedures vs Opinion",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor is evaluating the design of logical access controls for a payments application. Which of the following is MOST important?",
+      "question": "A regulator engages an IS auditor to perform agreed-upon procedures on a bank's user access reviews. What should the auditor's report MOST appropriately contain?",
       "options": {
-        "A": "Owner-approved, least-privilege provisioning of every new access request",
-        "B": "Quarterly access reviews performed by the system owners",
-        "C": "Identical baseline access granted to all staff regardless of role",
-        "D": "Leavers removed during the annual access recertification cycle"
+        "A": "The procedures performed and the factual findings, without an opinion",
+        "B": "An overall opinion on whether the access controls are effective",
+        "C": "Negative assurance that nothing suggests the access controls are ineffective",
+        "D": "The auditor's judgment on whether the procedures were sufficient"
       },
       "correct": "A",
-      "key_concept": "Preventive access control at the point of grant, owner-approved and least-privilege, outranks detective reviews that find excess access later.",
-      "pre_read": "Notice the stem asks about design. Separate options that prevent excess access from those that only find it later.",
-      "correct_explanation": "Good access design prevents excess rights from being granted at all. Owner-approved, least-privilege provisioning is a preventive control: it stops the problem at the moment access is given. Periodic reviews are detective; they only find excess access after it exists and may already have been misused. When judging design, a preventive control at the source outranks a later check.",
+      "key_concept": "Agreed-upon procedures reports state procedures and factual findings only; they give no opinion or assurance, unlike examinations or reviews.",
+      "pre_read": "Notice the engagement type named in the stem. Ask what level of assurance, if any, that type allows.",
+      "correct_explanation": "In an agreed-upon procedures engagement, the engaging party agrees which procedures suit its purpose, and the auditor reports what was done and what was found. The report gives no opinion and no assurance, leaving users to draw their own conclusions. Negative assurance is the runner-up, but it is limited assurance from a review engagement, which this engagement does not provide.",
       "wrong_explanations": {
-        "B": "Periodic reviews are valuable but purely detective. Without authorized least-privilege provisioning, excess access exists until the next review.",
-        "C": "Uniform access ignores job need and directly violates least privilege, creating excessive access and segregation-of-duties conflicts.",
-        "D": "Removing leavers only annually leaves orphaned accounts active for months. Deprovisioning must be timely, triggered by the leaver event."
+        "B": "An opinion requires an examination engagement with criteria and sufficient evidence. Agreed-upon procedures do not support an overall conclusion.",
+        "C": "Negative assurance belongs to review engagements. Agreed-upon procedures report findings only and give no assurance of any level.",
+        "D": "The engaging party, here the regulator, agrees the procedures suit its purpose; the auditor does not judge their sufficiency."
       },
       "tips": [
-        "Eliminate: C violates least privilege outright, and D leaves departed users' access active for up to a year.",
-        "Final two: A beats B because preventing excess access at the point of grant is stronger than detecting it later.",
-        "Exam cue: when a question asks about control design, prefer the preventive control at the source over a detective review."
+        "Eliminate: B gives an opinion that needs an examination, and D shifts the sufficiency judgment to the auditor.",
+        "Final two: A beats C because agreed-upon procedures give no assurance; negative assurance is limited assurance from a review.",
+        "Exam cue: agreed-upon procedures report facts found with no conclusion; examinations give opinions; reviews give limited assurance."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 DSS05 (Managed Security Services); NIST SP 800-53 Rev 5 AC-2 (Account Management); NIST SP 800-53 Rev 5 AC-6 (Least Privilege)",
+      "framework_ref": "AICPA AT-C 215 (Agreed-Upon Procedures Engagements, as revised by SSAE 19); IAASB ISRS 4400 (Revised); ISACA IT Audit Standard 1401 (Reporting)",
       "related_concepts": [
-        "Logical access control",
-        "Least privilege",
-        "Access review",
-        "Deprovisioning",
-        "Segregation of duties"
+        "Agreed-upon procedures",
+        "Examination engagement",
+        "Review engagement",
+        "Levels of assurance"
       ],
-      "_provenance": "Authored from concept: 'logical-access lifecycle - provisioning + review + deprovisioning + SoD, distinct from automated-without-authorization / equal-baseline / annual-deprovisioning approaches'. Public source: COBIT 2019 DSS05. All scenario specifics (online travel-booking platform, booking-and-payments system) invented for this question. Distinct from d1_104 (change management) and d1_067 (IS-specific controls scenario). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'logical-access lifecycle - provisioning + review + deprovisioning + SoD, distinct from automated-without-authorization / equal-baseline / annual-deprovisioning approaches'. Public source: COBIT 2019 DSS05. All scenario specifics (online travel-booking platform, booking-and-payments system) invented for this question. Distinct from d1_104 (change management) and d1_067 (IS-specific controls scenario). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5A3 Identity and Access Management to 1A2. Cross-domain review (Oct 2026): convention fix.",
       "style_version": 2
     },
     {
       "id": "d1_124",
       "domain": 1,
-      "subtopic": "Risk Analysis. Treatment Selection (Multi-Control Trade-offs)",
+      "subtopic": "SOC Report Types. Type 1 vs Type 2 Reliance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "Management chose to insure a high-impact robotic collision risk instead of buying $3M sensors that reduce likelihood. What is the MOST important consideration for the IS auditor?",
+      "question": "An IS auditor must conclude on a SaaS provider's controls across the past year, but only a SOC 2 Type 1 report is available. What is the BEST course of action?",
       "options": {
-        "A": "Whether residual risk falls within the organization's risk appetite",
-        "B": "Whether the insurance premium is below the expected annual loss",
-        "C": "Whether the auditor would have selected the same treatment",
-        "D": "Whether peer companies typically insure this kind of risk"
+        "A": "Obtain other evidence that the controls operated throughout the year",
+        "B": "Accept management's written assertion that the controls operated year-round",
+        "C": "Rely on the Type 1 report once its scope matches the services",
+        "D": "Report the provider's controls as ineffective for the whole year"
       },
       "correct": "A",
-      "key_concept": "A risk treatment is judged by whether the resulting residual risk is within appetite; cost comparison informs the choice but does not decide it.",
-      "pre_read": "Insurance moves financial loss but does not stop collisions. Ask what risk remains after the choice and who accepts it.",
-      "correct_explanation": "Management owns the treatment decision; the auditor evaluates whether the residual risk after that choice sits within the organization's risk appetite. Insurance transfers financial loss but leaves the likelihood of collisions, and non-insured impacts like downtime or safety, unchanged. A premium below expected loss is a sound cost test, but it ignores those remaining exposures and so cannot alone justify the choice.",
+      "key_concept": "A SOC 2 Type 1 report covers control design at a point in time; a Type 2 adds operating effectiveness over a period.",
+      "pre_read": "Notice the conclusion covers a whole year. Ask whether a point-in-time report can show controls operated over that period.",
+      "correct_explanation": "A Type 1 report describes control design at a single date, so it cannot show the controls operated effectively across the year. The auditor needs further evidence of operation, such as a Type 2 report or the auditor's own tests. Confirming the Type 1 scope is useful, but a correctly scoped point-in-time report still says nothing about operation over the period.",
       "wrong_explanations": {
-        "B": "A favorable cost comparison does not show that uninsured impacts, such as downtime or safety, remain within appetite.",
-        "C": "Selecting a treatment is management's responsibility. The auditor evaluates the decision against appetite, not against personal preference.",
-        "D": "Peer practice can inform context, but each organization's appetite and exposure determine whether a treatment is acceptable."
+        "B": "A management assertion is not independent evidence. The provider's own claim cannot replace tested evidence of operating effectiveness.",
+        "C": "Scope matters, but even a well-scoped Type 1 shows design at one date only, not operation across the period.",
+        "D": "Missing period evidence is not proof of failure. Concluding the controls are ineffective without testing them is unsupported."
       },
       "tips": [
-        "Eliminate: C substitutes the auditor's preference for management's decision, and D relies on peer practice instead of this entity's appetite.",
-        "Final two: A beats B because the deciding test is residual risk against appetite; cost-benefit is an input, not the verdict.",
-        "Exam cue: when judging any risk response, compare the residual risk with risk appetite."
+        "Eliminate: B relies on the provider's own claim, and D concludes failure without any evidence of it.",
+        "Final two: A beats C because a Type 1 shows design at one date; correct scope cannot turn it into period evidence.",
+        "Exam cue: a conclusion about a period needs Type 2 or equivalent evidence; Type 1 supports only design at a date."
       ],
-      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 (Risk Management)",
+      "framework_ref": "AICPA SSAE 18; AICPA SOC for Service Organizations framework; ISACA IT Audit Standard 1205 (Evidence)",
       "related_concepts": [
-        "Risk treatment selection",
-        "Accept / Reduce / Transfer / Avoid",
-        "Risk tolerance",
-        "Residual risk",
-        "Cost-benefit analysis"
+        "SOC 2 Type 1",
+        "SOC 2 Type 2",
+        "Operating effectiveness",
+        "Point-in-time evidence"
       ],
-      "_provenance": "Authored from concept: 'risk treatment selection - alignment to risk characteristics and risk tolerance, distinct from single-dimension cost / technology / auditor-agreement criteria'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (warehouse robotics, robotic-arm collision risk, four specific treatments with specific costs) invented for this question. Distinct from d1_033 (risk treatment options definition). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'risk treatment selection - alignment to risk characteristics and risk tolerance, distinct from single-dimension cost / technology / auditor-agreement criteria'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (warehouse robotics, robotic-arm collision risk, four specific treatments with specific costs) invented for this question. Distinct from d1_033 (risk treatment options definition). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A5 Enterprise Risk Management to 1A2.",
       "style_version": 2
     },
     {
@@ -5878,39 +5876,38 @@
     {
       "id": "d1_158",
       "domain": 1,
-      "subtopic": "Risk Treatment. Specific Scenario Applied",
-      "difficulty": "analysis",
-      "bloom_level": "Analysis",
-      "question": "Management faces an $850K expected annual fraud loss; new controls cost $500K once plus $300K yearly and cut losses to $80K; insurance costs $620K yearly. Which treatment is MOST defensible?",
+      "subtopic": "Engagement Types. Compliance vs Operational vs Financial",
+      "difficulty": "application",
+      "bloom_level": "Application",
+      "question": "The board asks IS audit whether the company meets a new data-resilience regulation's IT requirements. Which type of engagement is MOST appropriate?",
       "options": {
-        "A": "Accept the risk, as it needs no upfront spending",
-        "B": "Transfer the risk through the $620K yearly insurance policy",
-        "C": "Reduce the risk with the new fraud-detection controls",
-        "D": "Avoid the risk by discontinuing the affected rewards program"
+        "A": "An operational audit of IT resilience and service delivery efficiency",
+        "B": "A financial audit of IT spending against the approved budget",
+        "C": "A compliance audit against each requirement in the regulation",
+        "D": "A self-assessment by IT management against the regulation"
       },
       "correct": "C",
-      "key_concept": "Risk treatment is chosen by cost-benefit and residual risk across years, not by the lowest first-year outlay.",
-      "pre_read": "Compare recurring costs with the yearly loss avoided. Then ask which option actually reduces the underlying risk.",
-      "correct_explanation": "Reducing the risk cuts expected loss by $770K a year for $300K of running cost, so the $500K upfront spend pays back in about a year against acceptance and about two years against insurance, and residual risk falls sharply. Insurance avoids capital outlay, but it costs more each year than the controls and leaves the weakness in place.",
+      "key_concept": "Compliance audits test conformity with laws, regulations or contracts as criteria; operational audits test efficiency and effectiveness of operations.",
+      "pre_read": "Notice the board's exact question. Decide whether it asks about meeting rules or about running IT well.",
+      "correct_explanation": "The board's question is whether the company conforms to a specific regulation, so a compliance audit that uses the regulation's requirements as audit criteria answers it directly. An operational audit is tempting because resilience is operational, but it judges efficiency and effectiveness against management's goals; a resilient, efficient operation can still miss a mandatory legal requirement.",
       "wrong_explanations": {
-        "A": "Acceptance costs about $850K every year with no improvement; avoiding upfront spending is not a cost-benefit argument.",
-        "B": "Insurance costs $620K a year versus $380K for controls plus residual loss, so it overtakes the $500K upfront cost within about two years and leaves the weakness in place.",
-        "D": "Ending the program removes the risk but also its business benefits; avoidance suits risks that cannot be reduced economically."
+        "A": "An operational audit measures efficiency and effectiveness against business goals, not conformity with each legal requirement the board asked about.",
+        "B": "A financial audit addresses financial information. Comparing IT spending to budget says nothing about meeting the regulation.",
+        "D": "A self-assessment by IT management is not independent, so it cannot give the board objective assurance."
       },
       "tips": [
-        "Eliminate: A keeps paying the full loss every year, and D gives up the program's benefits when cheaper treatments exist.",
-        "Final two: C beats B because controls plus residual loss cost $240K a year less than insurance, recovering the upfront spend in about two years.",
-        "Exam cue: compare annual cost against loss reduction, and prefer the treatment that lowers residual risk rather than only financing it."
+        "Eliminate: B looks at money rather than regulatory conformity, and D lets IT management grade its own work.",
+        "Final two: C beats A because the question is conformity with set rules; operational audits judge efficiency against business goals.",
+        "Exam cue: match the engagement to the question asked; meeting a rule means compliance, running well means operational."
       ],
-      "framework_ref": "ISACA Risk IT Framework; ISO/IEC 31000:2018 (Risk Management)",
+      "framework_ref": "ISACA IT Audit Standard 1008 (Criteria); ISACA IT Audit Standard 1203 (Engagement Planning)",
       "related_concepts": [
-        "Risk treatment selection",
-        "Cost-benefit analysis",
-        "Break-even analysis",
-        "Residual risk",
-        "Opportunity cost"
+        "Compliance audit",
+        "Operational audit",
+        "Financial audit",
+        "Audit criteria"
       ],
-      "_provenance": "Authored from concept: 'risk treatment specific scenario applied - cost-benefit math with one-time + ongoing + loss-reduction + break-even + residual'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (commercial bakery, customer-loyalty program, four-option cost-benefit) invented for this question. Distinct from d1_033 (treatment options definition) and d1_124 (multi-control trade-offs). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'risk treatment specific scenario applied - cost-benefit math with one-time + ongoing + loss-reduction + break-even + residual'. Public source: ISACA Risk IT + ISO 31000. All scenario specifics (commercial bakery, customer-loyalty program, four-option cost-benefit) invented for this question. Distinct from d1_033 (treatment options definition) and d1_124 (multi-control trade-offs). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 2A5 Enterprise Risk Management to 1A2.",
       "style_version": 2
     },
     {
@@ -6930,6 +6927,80 @@
       ],
       "framework_ref": "AICPA AU-C 530 (Audit Sampling); ISACA ITAF Guideline 2208 (Information Technology Audit Sampling)",
       "_provenance": "Authored from concept: 'Attribute vs variable sampling methods'. Foundational recall tier addressing the bank's recall-tier shortage (was 10%, target 20%). Public sources: AICPA AU-C 530 (Audit Sampling); ISACA ITAF section 2208 (Sampling); AICPA Audit Guide: Audit Sampling. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
+      "style_version": 2
+    },
+    {
+      "id": "d1_187",
+      "domain": 1,
+      "subtopic": "SOC Report Types. Carve-Out vs Inclusive Method",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "A payroll provider's SOC 1 Type 2 report uses the carve-out method for its data center subservice organization. What is the MOST appropriate next step for the user entity's IS auditor?",
+      "options": {
+        "A": "Rely on the report, since carved-out controls were also tested",
+        "B": "Obtain assurance over the subservice organization's controls",
+        "C": "Reject the report and test the provider's controls directly",
+        "D": "Confirm that complementary user entity controls are in place"
+      },
+      "correct": "B",
+      "key_concept": "The carve-out method excludes a subservice organization's controls from a SOC report, so user auditors need separate assurance over them.",
+      "pre_read": "Notice the method named in the stem. Ask which controls the service auditor did not test.",
+      "correct_explanation": "Under the carve-out method, the provider's report describes the data center's services but excludes its controls, which the service auditor did not test. The user auditor must obtain assurance over them another way, such as the data center's own SOC 1 report. The inclusive method would have tested them within this report. Checking complementary user entity controls is also needed, but it covers the client's side and leaves the data center gap open.",
+      "wrong_explanations": {
+        "A": "Carve-out means the subservice controls were excluded from scope and not tested, so relying on the report leaves them unassured.",
+        "C": "The report remains valid for the provider's own controls. Rejecting it wastes reliable evidence and ignores the actual gap.",
+        "D": "Complementary user entity controls cover the client's own responsibilities. They do nothing to address the excluded data center controls."
+      },
+      "tips": [
+        "Eliminate: A assumes untested carved-out controls were covered, and C discards a valid report over a fixable gap.",
+        "Final two: B beats D because the gap is the excluded data center; user-side controls cannot fill it.",
+        "Exam cue: carve-out means the subservice controls are excluded and untested; inclusive means this report tested them too."
+      ],
+      "framework_ref": "AICPA SSAE 18; AICPA SOC for Service Organizations framework; ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Carve-out method",
+        "Inclusive method",
+        "Subservice organization",
+        "Complementary user entity controls"
+      ],
+      "_provenance": "Authored from concept: 'carve-out method and user auditor reliance on subservice organization controls'. Original Aurivan item (Oct 2026), written for CISA topic 1A2.",
+      "style_version": 2
+    },
+    {
+      "id": "d1_188",
+      "domain": 1,
+      "subtopic": "Engagement Types. Maturity Assessment vs Assurance Audit",
+      "difficulty": "analysis",
+      "bloom_level": "Analysis",
+      "question": "The audit committee wants assurance that key cybersecurity controls operate, and the CISO offers a consultant's capability maturity assessment instead. Which recommendation from the IS auditor is BEST?",
+      "options": {
+        "A": "Accept the maturity assessment as equivalent independent assurance",
+        "B": "Have the consultant sign an assurance opinion on the ratings",
+        "C": "Re-perform the consultant's scoring of the key control processes",
+        "D": "Plan an assurance audit testing how the key controls operate"
+      },
+      "correct": "D",
+      "key_concept": "Maturity assessments rate process capability against a model; assurance audits test whether controls operate, and only the latter gives assurance.",
+      "pre_read": "Notice the committee wants assurance that controls work. Ask whether a maturity rating tests that.",
+      "correct_explanation": "A capability maturity assessment rates how well processes are defined and managed against a model; it does not test whether specific controls operated. Only an assurance engagement with control testing answers the committee's question. Re-performing the scoring makes the ratings more reliable, but a verified maturity level is still not evidence that the key controls actually worked.",
+      "wrong_explanations": {
+        "A": "A maturity rating measures process capability against a model. Treating it as assurance overstates what was tested.",
+        "B": "Signing an opinion does not create evidence. The ratings were never based on testing whether controls operated.",
+        "C": "Validating the scores improves the ratings' reliability but still measures process capability, not whether controls operated."
+      },
+      "tips": [
+        "Eliminate: A treats a capability rating as assurance, and B adds a signature without adding any testing.",
+        "Final two: D beats C because only control testing shows operation; a verified maturity score still rates process capability.",
+        "Exam cue: maturity assessments say how capable a process is; assurance audits say whether controls worked."
+      ],
+      "framework_ref": "COBIT 2019 Performance Management; ISACA IT Audit Standard 1205 (Evidence)",
+      "related_concepts": [
+        "Capability maturity assessment",
+        "Assurance engagement",
+        "Control testing",
+        "COBIT performance management"
+      ],
+      "_provenance": "Authored from concept: 'capability maturity assessment versus assurance audit'. Original Aurivan item (Oct 2026), written for CISA topic 1A2.",
       "style_version": 2
     }
   ]
