@@ -1153,26 +1153,26 @@
       "subtopic": "Key Performance Indicator (KPI). Definition",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IT steering committee wants to know whether a service desk improvement objective is being achieved. Which metric should the IS auditor recommend as MOST appropriate?",
+      "question": "A service desk's stated goal is higher user satisfaction, but its only KPI is tickets closed per day. What should the IS auditor recommend as MOST appropriate?",
       "options": {
-        "A": "A key risk indicator signalling rising exposure to service failure",
-        "B": "A key control indicator confirming ticket controls operate as designed",
-        "C": "A key performance indicator tracking progress against the target",
-        "D": "An activity count of staff hours logged by the service desk"
+        "A": "Raise the daily ticket-closure target to speed up user service",
+        "B": "Replace the KPI with a set of key risk indicators",
+        "C": "Add a KPI that measures user satisfaction directly",
+        "D": "Report ticket closures by priority level and user group"
       },
       "correct": "C",
-      "key_concept": "A KPI shows how well an objective is being achieved; KRIs signal risk exposure and control indicators show whether controls operate.",
-      "pre_read": "Notice the committee asks about achieving an objective. Match the metric type to that question before reading the options.",
-      "correct_explanation": "A key performance indicator measures how effectively an objective is being achieved, so it answers the committee's question directly. A key control indicator is also a structured metric, but it shows whether controls are operating as designed. Controls can run perfectly while the improvement objective is still missed, so a control indicator cannot tell the committee whether the goal is being met.",
+      "key_concept": "A KPI should measure achievement of the stated objective; activity counts can rise while the outcome worsens.",
+      "pre_read": "Compare what the goal says with what the KPI counts.",
+      "correct_explanation": "A KPI should measure progress toward the stated goal, and here the goal is satisfaction, so a KPI measuring satisfaction directly is needed. Breaking closures down by priority adds detail, but it still measures activity, not the outcome the service desk is meant to achieve, and can even reward closing tickets fast rather than well.",
       "wrong_explanations": {
-        "A": "A KRI warns of growing exposure to a risk. It does not show progress toward a performance objective.",
-        "B": "A control indicator shows whether controls work. Controls can operate well while the improvement objective is still missed.",
-        "D": "Hours logged measure effort consumed, not results. More hours can mean less effective service."
+        "A": "A higher closure target pushes activity further and can lower satisfaction.",
+        "B": "Key risk indicators signal exposure; they do not measure goal achievement.",
+        "D": "More detail on closures is still an activity measure, not the satisfaction outcome."
       },
       "tips": [
-        "Eliminate: A measures risk exposure, and D measures effort, not achievement.",
-        "Final two: C beats B because the committee asks about objective achievement; a control indicator measures control operation, not results.",
-        "Exam cue: objective achievement means KPI, risk exposure means KRI, control operation means control indicator."
+        "Eliminate: A doubles down on activity, and B swaps in risk metrics for a performance goal.",
+        "Final two: C beats D because the KPI must measure the goal itself, not more detail on activity.",
+        "Exam cue: a good KPI measures the outcome the objective names; activity counts are not performance."
       ],
       "framework_ref": "COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring); COBIT 2019 (Goals Cascade and Performance Management)",
       "related_concepts": [
@@ -1181,7 +1181,7 @@
         "Objective achievement",
         "Performance management"
       ],
-      "_provenance": "Authored from concept: 'KPI definition - measures objective achievement, distinct from KRI (risk) / KCI (control) / volume (activity)'. Public source: COBIT 2019 + ISACA IT Performance Monitoring. All scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'KPI definition - measures objective achievement, distinct from KRI (risk) / KCI (control) / volume (activity)'. Public source: COBIT 2019 + ISACA IT Performance Monitoring. All scenario specifics invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -2006,35 +2006,35 @@
       "subtopic": "IT Steering Committee. Definition and Purpose",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor reviews the charter of a new IT steering committee. Which stated responsibility BEST reflects the committee's PRIMARY purpose?",
+      "question": "An IT steering committee must decide whether to approve a new customer-portal project. Which information is MOST important for its decision?",
       "options": {
-        "A": "Monitoring the day-to-day delivery of individual IT projects",
-        "B": "Reviewing weekly help desk tickets and incident counts",
-        "C": "Prioritizing IT investments against enterprise strategy",
-        "D": "Obtaining external expert validation of the IT roadmap"
+        "A": "A detailed technical design of the proposed portal",
+        "B": "An IT cost estimate for building and running the portal",
+        "C": "A business case linking benefits to strategic goals",
+        "D": "Profiles of the project team members to be assigned"
       },
       "correct": "C",
-      "key_concept": "An IT steering committee is a cross-functional senior body that prioritizes IT investment and keeps IT aligned with enterprise strategy.",
-      "pre_read": "Think about who sits on the committee and why. Ask which duty needs senior business and IT leaders together.",
-      "correct_explanation": "The steering committee brings senior business and IT leaders together to set priorities, allocate investment and keep IT aligned with enterprise strategy. Monitoring projects is close, because committees do track major programs, but day-to-day delivery belongs to project management; the committee's distinctive value is deciding which investments best serve the business.",
+      "key_concept": "Steering committees approve investments on business cases that link costs and benefits to strategic goals.",
+      "pre_read": "Ask what a steering committee is deciding, and which document shows value as well as cost.",
+      "correct_explanation": "The steering committee prioritizes investments by value to the business, so it needs a business case that weighs costs against benefits and ties them to strategic goals. A cost estimate is essential, but on its own it shows only what the project takes, not what it returns or whether it advances the strategy.",
       "wrong_explanations": {
-        "A": "Day-to-day project tracking is a project management duty. The committee oversees the portfolio and steps in on major issues.",
-        "B": "Ticket and incident counts are operational metrics reviewed by IT service management, not a senior alignment body.",
-        "D": "External validation may inform the roadmap, but the committee's role is internal prioritization and alignment."
+        "A": "Technical design detail is for architects; it does not show business value.",
+        "B": "Costs alone cannot show whether the investment is worthwhile or aligned to strategy.",
+        "D": "Team profiles matter for delivery, not for deciding whether to invest."
       },
       "tips": [
-        "Eliminate: B is operational service reporting, and D describes an outside advisory body, not the committee's purpose.",
-        "Final two: C beats A because the committee aligns and prioritizes investment; day-to-day delivery is a management task.",
-        "Exam cue: steering committee answers point to alignment, prioritization and investment, never to operational detail."
+        "Eliminate: A is technical detail, and D concerns delivery, not the investment decision.",
+        "Final two: C beats B because investment decisions weigh benefits and alignment, not cost alone.",
+        "Exam cue: steering committees decide on business cases; cost, design and staffing are inputs."
       ],
-      "framework_ref": "COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance); COBIT 2019 APO05 (Managed Portfolio); COBIT 2019 APO02 (Managed Strategy)",
+      "framework_ref": "COBIT 2019 EDM02 (Ensured Benefits Delivery); COBIT 2019 APO05 (Managed Portfolio); COBIT 2019 APO02 (Managed Strategy)",
       "related_concepts": [
         "IT Steering Committee",
         "Cross-functional governance",
         "IT investment prioritization",
         "IT-business alignment"
       ],
-      "_provenance": "Authored from concept: 'IT Steering Committee foundational definition - cross-functional senior alignment body, distinct from d2_003 (application tier) which addressed proper composition design'. Public source: COBIT 2019 + ISACA EGIT. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'IT Steering Committee foundational definition - cross-functional senior alignment body, distinct from d2_003 (application tier) which addressed proper composition design'. Public source: COBIT 2019 + ISACA EGIT. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -3340,35 +3340,35 @@
       "subtopic": "Auditing IT Governance Implementation. Deep Dive",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor finds a well-designed IT governance framework, but minutes, strategy refreshes and risk reports show most required steps were skipped for years. What should the auditor BEST report?",
+      "question": "An IS auditor must determine whether a documented IT governance framework operates in practice. Which evidence is MOST persuasive?",
       "options": {
-        "A": "An overall finding that governance operates in form, not substance",
-        "B": "Separate findings for each lapse, with no overall conclusion",
-        "C": "A satisfactory opinion, since the governance design is sound",
-        "D": "Informal verbal feedback to the CIO instead of a written report"
+        "A": "Minutes recording committee decisions and their follow-up",
+        "B": "The board-approved charters for each governance committee",
+        "C": "Interviews with the CIO about how governance works day to day",
+        "D": "A consultant's report rating the framework's design"
       },
       "correct": "A",
-      "key_concept": "When several lapses share one cause, the auditor reports the pattern, here governance that operates in form only, supported by evidence for each lapse.",
-      "pre_read": "Look past the separate symptoms. Ask what single conclusion the board needs about whether governance actually works.",
-      "correct_explanation": "Several lapses with one cause show governance operating in form only. Reporting that as the main finding, supported by evidence for each lapse, tells the board its governance is not effective and drives a root-cause response. Separate findings are accurate and each needs action, but listing them without an overall conclusion invites piecemeal fixes and hides the systemic failure.",
+      "key_concept": "Evidence that governance operates comes from records of decisions and follow-up, not from charters or design reviews.",
+      "pre_read": "Notice the question is about practice, not design. Ask which evidence shows governance actually happening.",
+      "correct_explanation": "Governance in practice shows up as decisions made and acted on, so minutes that record decisions and their follow-up are direct evidence of operation. Approved charters are necessary, but they show only that the framework was designed and authorized, not that the committees meet, decide and track their actions.",
       "wrong_explanations": {
-        "B": "Each lapse is real, but reporting them only separately hides their common cause and leads to symptom-level fixes.",
-        "C": "Good design does not prove effective operation. The evidence shows the framework is not working in practice.",
-        "D": "Material governance gaps must be reported in writing to those charged with governance, not handled informally."
+        "B": "Charters show design and authority, not whether committees actually meet and decide.",
+        "C": "Interviews with management are the weakest evidence and need corroboration.",
+        "D": "A design rating says nothing about whether the framework is followed."
       },
       "tips": [
-        "Eliminate: C ignores evidence of ineffective operation and D avoids the required written report.",
-        "Final two: A beats B because a shared root cause is a systemic finding the board must see, not a list of separate lapses.",
-        "Exam cue: when many issues share one cause, the auditor reports the pattern and its root cause, with each issue as evidence."
+        "Eliminate: C relies on testimony, and D rates design rather than operation.",
+        "Final two: A beats B because operating evidence shows decisions taken; charters show only design.",
+        "Exam cue: to test whether governance works, look for evidence of decisions and follow-up, not documents describing it."
       ],
-      "framework_ref": "ISACA IT Audit Standard 1401 (Reporting); ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
+      "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
       "related_concepts": [
         "Governance audit",
         "Design vs implementation",
         "Pattern findings",
         "Root cause analysis"
       ],
-      "_provenance": "Authored from concept: 'Auditing IT Governance Implementation analysis - design-implementation gap synthesis, complements d2_010 (governance design vs implementation divergence at lower complexity)'. Public source: ITAF 1202 + COBIT 2019 EDM01. All scenario specifics (manufacturing conglomerate four-finding pattern) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Auditing IT Governance Implementation analysis - design-implementation gap synthesis, complements d2_010 (governance design vs implementation divergence at lower complexity)'. Public source: ITAF 1202 + COBIT 2019 EDM01. All scenario specifics (manufacturing conglomerate four-finding pattern) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -4598,26 +4598,26 @@
       "subtopic": "Strategic Plan Execution Mid-Cycle Pivot",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "Halfway through a three-year IT strategy, new data-residency rules and market shifts affect two of its three pillars. What should the IS auditor recommend FIRST?",
+      "question": "Midway through a three-year IT strategy, the board approves a structured mid-cycle review. Which input should MOST shape the revised IT priorities?",
       "options": {
-        "A": "Continue the approved strategy unchanged until its end",
-        "B": "Run a structured mid-cycle review and seek board endorsement",
-        "C": "Replace the strategy with a fresh three-year plan",
-        "D": "Hold the changes for the next annual planning refresh"
+        "A": "The IT department's preferred technology roadmap",
+        "B": "The enterprise's updated business objectives",
+        "C": "Last year's IT budget allocations by department",
+        "D": "Major vendors' published product release schedules"
       },
       "correct": "B",
-      "key_concept": "Material change mid-cycle calls for a structured strategy review: keep what works, reset what changed, and obtain board endorsement.",
-      "pre_read": "Notice that only two pillars are affected and the change is material. Ask which option responds now without discarding sound work.",
-      "correct_explanation": "Material changes to requirements and the market mean the strategy's assumptions no longer hold for two pillars. A structured mid-cycle review keeps on-track work, corrects or rescopes what changed, and gets board endorsement with a traceable rationale. Waiting for the annual refresh feels orderly, but it lets affected pillars keep spending against outdated assumptions while new regulatory obligations approach.",
+      "key_concept": "IT strategy reviews re-align IT priorities to updated business objectives; technology roadmaps inform feasibility, not direction.",
+      "pre_read": "Ask what the IT strategy exists to serve, and which input represents it.",
+      "correct_explanation": "IT strategy exists to support the business, so a mid-cycle review re-aligns IT priorities to the enterprise's updated objectives. IT's own technology roadmap is a valuable input on what is feasible, but letting it drive priorities puts technology preferences ahead of business needs, the misalignment strategic reviews are meant to prevent.",
       "wrong_explanations": {
-        "A": "Ignoring material change keeps funding work built on outdated assumptions. Strategy must stay aligned with business and regulatory reality.",
-        "C": "A full restart discards the pillar that is on track and wastes progress. Only the affected elements need to be reset.",
-        "D": "Waiting for the scheduled refresh delays a response to changes that are already material and time-sensitive, so affected pillars keep drifting."
+        "A": "A technology roadmap informs feasibility but should not set priorities ahead of business objectives.",
+        "C": "Past budget allocations reflect old priorities, not the changes the review addresses.",
+        "D": "Vendor release plans serve vendors' goals, not the enterprise's."
       },
       "tips": [
-        "Eliminate: A ignores material change, and C throws away the pillar that is still on track.",
-        "Final two: B beats D because governance responds to material change when it occurs, not when the calendar says.",
-        "Exam cue: when conditions change materially mid-plan, prefer a structured, board-endorsed review over waiting, ignoring or starting over."
+        "Eliminate: C looks backward at old priorities, and D follows vendors' agendas.",
+        "Final two: B beats A because IT priorities follow business objectives; the roadmap only informs feasibility.",
+        "Exam cue: in IT strategy questions, business objectives drive priorities; IT and vendor plans are inputs."
       ],
       "framework_ref": "COBIT 2019 APO02 (Managed Strategy); COBIT 2019 EDM01 (Ensured Governance Framework Setting and Maintenance)",
       "related_concepts": [
@@ -4626,7 +4626,7 @@
         "Strategic planning",
         "Material change response"
       ],
-      "_provenance": "Authored from concept: 'Strategic plan execution mid-cycle pivot - distinct from d2_085 (single-trigger update synthesis at lower complexity)'. Public source: COBIT 2019 APO02. All scenario specifics (retailer 3-pillar strategy, three material changes, mixed-progress pillars) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Strategic plan execution mid-cycle pivot - distinct from d2_085 (single-trigger update synthesis at lower complexity)'. Public source: COBIT 2019 APO02. All scenario specifics (retailer 3-pillar strategy, three material changes, mixed-progress pillars) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6117,35 +6117,35 @@
       "subtopic": "Privacy + Security + Compliance Integrated Audit",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS audit team plans one cycle covering HIPAA privacy, HIPAA security and state insurance rules, where many controls serve several regulations. Which audit design is BEST?",
+      "question": "A health insurer's controls map to HIPAA and state insurance rules, but no one tracks new or changed regulations. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Test shared controls once, mapping results to each regulation",
-        "B": "Merge the three areas into one enterprise compliance audit and opinion",
-        "C": "Run three separate audits in sequence, one for each area",
-        "D": "Postpone the audit until the team has twice the time"
+        "A": "Assign an owner to track regulatory change and update control mappings",
+        "B": "Rely on the external auditors to flag regulatory changes each year",
+        "C": "Review the control mappings when a regulator issues a finding",
+        "D": "Ask each IT team to follow regulations relevant to its own systems"
       },
       "correct": "A",
-      "key_concept": "Integrated audits test shared controls once, map results to each regulation and add regulation-specific tests where controls are unique.",
-      "pre_read": "Look for the design that is efficient yet still answers each regulator's requirements separately.",
-      "correct_explanation": "An integrated audit tests each shared control once and maps the result to every regulation it supports, adds regulation-specific tests where controls are unique and reports in sections each regulator can use, all prioritized by risk. Merging everything into one compliance audit is efficient, but a single blended opinion obscures regulation-specific gaps and does not give each regulator the assessment it expects.",
+      "key_concept": "Management needs an owned process to identify regulatory change and update control mappings before non-compliance occurs.",
+      "pre_read": "Notice the mapping exists but nothing keeps it current. Ask who should own that job.",
+      "correct_explanation": "Compliance is sustained only if regulatory change is identified and reflected in controls, so management assigns an owner to track changes and update the control mappings. Leaving each IT team to follow its own regulations spreads the work, but it gives no single view and lets changes that span several systems fall through the gaps.",
       "wrong_explanations": {
-        "B": "Blending areas into one opinion hides regulation-specific gaps and gives regulators no assessment against their own requirements.",
-        "C": "Sequential audits retest shared controls three times, duplicating effort and burdening control owners.",
-        "D": "Postponing delays assurance the audit committee needs; scoping by risk is the answer to limited resources."
+        "B": "External auditors give assurance; tracking regulation is management's responsibility.",
+        "C": "Waiting for regulator findings means non-compliance is discovered only after it occurs.",
+        "D": "Decentralized tracking lacks a single view and misses changes that affect several systems."
       },
       "tips": [
-        "Eliminate: C retests shared controls repeatedly, and D delays coverage instead of prioritizing by risk.",
-        "Final two: A beats B because mapping shared tests to each regulation keeps efficiency without hiding regulation-specific gaps.",
-        "Exam cue: when controls overlap across requirements, test once and map many, but report against each requirement."
+        "Eliminate: B hands a management duty to external auditors, and C reacts only after non-compliance.",
+        "Final two: A beats D because one accountable owner gives a complete, consistent view of change.",
+        "Exam cue: sustained compliance needs an owned process for spotting regulatory change and updating controls."
       ],
-      "framework_ref": "IIA Global Internal Audit Standards (2024), Standard 9.4 (Internal Audit Plan); ISACA IT Audit Standard 1008 (Criteria); ISACA IT Audit Standard 1205 (Evidence)",
+      "framework_ref": "COBIT 2019 MEA03 (Managed Compliance with External Requirements); ISO/IEC 27002:2022 Control 5.31 (Legal, Statutory, Regulatory and Contractual Requirements)",
       "related_concepts": [
         "Integrated audit",
         "Shared-control testing",
         "Multi-regulation audit",
         "ITAF 1202"
       ],
-      "_provenance": "Authored from concept: 'Privacy + Security + Compliance integrated audit, complements d2_050 (multi-sector regulatory mapping audit-design)'. Public source: ITAF 1202 + IIA 2010. All scenario specifics (health insurer, three domains, 8-week window, 4 auditors) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Privacy + Security + Compliance integrated audit, complements d2_050 (multi-sector regulatory mapping audit-design)'. Public source: ITAF 1202 + IIA 2010. All scenario specifics (health insurer, three domains, 8-week window, 4 auditors) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6450,35 +6450,35 @@
       "subtopic": "Quantum Computing Readiness. Cryptographic Migration",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A bank faces harvest-now, decrypt-later risk, though large quantum computers may be years away. Which cryptographic approach should the IS auditor recommend to the audit committee as BEST?",
+      "question": "A bank's post-quantum migration plan exists, but no executive owns it and progress is never reported. What should the IS auditor recommend to the audit committee as BEST?",
       "options": {
-        "A": "Defer migration until a relevant quantum computer is demonstrated",
-        "B": "Replace every system's cryptography with post-quantum algorithms within a year",
-        "C": "Rely on technology vendors to ship post-quantum upgrades in products",
-        "D": "Inventory cryptography and migrate the highest-risk data first"
+        "A": "Defer the plan until a relevant quantum computer actually exists",
+        "B": "Let each system owner migrate on its own separate timetable",
+        "C": "Rely on technology vendors to ship quantum-safe upgrades",
+        "D": "Assign an executive owner and report progress to the board"
       },
       "correct": "D",
-      "key_concept": "Post-quantum readiness starts with a cryptographic inventory and a risk-tiered, staged migration that builds crypto-agility, prioritizing long-lived sensitive data.",
-      "pre_read": "Notice the harvest-now, decrypt-later threat already exists. Ask which approach acts on risk now without an unmanageable all-at-once change.",
-      "correct_explanation": "Data captured today can be decrypted once quantum capability arrives, so long-lived sensitive data is already exposed. An inventory of where and how cryptography is used, followed by a risk-tiered migration starting with the highest-risk data, addresses that exposure in a controlled way. Relying on vendors covers part of the estate, but the bank still owns the risk, its in-house applications and the inventory needed to know what remains.",
+      "key_concept": "Long-running security programs need an accountable executive owner and regular board reporting to stay funded and on track.",
+      "pre_read": "Notice the plan exists but nobody owns it. Ask what governance element is missing.",
+      "correct_explanation": "A long, cross-system migration needs governance: a named executive accountable for delivery and regular progress reporting to the board, so slippage is visible and funded. Letting system owners migrate independently spreads the work, but no one sees the whole picture, priorities conflict, and the systems protecting long-lived data may move last.",
       "wrong_explanations": {
-        "A": "Harvest-now, decrypt-later means today's captured data is already at risk. Waiting for a demonstration is too late.",
-        "B": "Replacing all cryptography within a year is unrealistic for a bank and risks outages from untested change.",
-        "C": "Vendor upgrades help, but the bank remains accountable and must still find and migrate its own cryptography."
+        "A": "Harvest-now, decrypt-later risk exists today, so waiting lets exposure grow.",
+        "B": "Uncoordinated migration hides overall progress and can leave the riskiest systems for last.",
+        "C": "Vendors cover only their products, not the bank's own systems and priorities."
       },
       "tips": [
-        "Eliminate: A ignores data already being harvested, and B is an infeasible big-bang change.",
-        "Final two: D beats C because the bank keeps accountability and needs its own inventory and priorities, not just vendor roadmaps.",
-        "Exam cue: for an emerging long-horizon threat, prefer inventory plus risk-tiered, staged migration over waiting, rushing or delegating."
+        "Eliminate: A ignores harvest-now risk, and C hands the bank's accountability to vendors.",
+        "Final two: D beats B because accountability and board reporting keep a cross-system program on track.",
+        "Exam cue: when a plan exists but stalls, look for missing ownership and oversight, not a new plan."
       ],
-      "framework_ref": "NIST PQC Standards (FIPS 203/204/205); NIST SP 800-208 (Stateful Hash-Based Signature Schemes); CISA Post-Quantum Cryptography Initiative",
+      "framework_ref": "COBIT 2019 BAI01 (Managed Programs); COBIT 2019 EDM05 (Ensured Stakeholder Engagement); Quantum-Readiness: Migration to Post-Quantum Cryptography (CISA, NSA, NIST, 2023)",
       "related_concepts": [
         "Post-quantum cryptography",
         "Cryptographic agility",
         "Harvest-now-decrypt-later",
         "Hybrid classical-PQC"
       ],
-      "_provenance": "Authored from concept: 'Quantum computing readiness cryptographic migration - cryptographic agility staged approach, no prior D2 coverage'. Public source: NIST PQC Standards + CISA PQC Initiative. All scenario specifics (multinational bank, current crypto stack, threat landscape) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Quantum computing readiness cryptographic migration - cryptographic agility staged approach, no prior D2 coverage'. Public source: NIST PQC Standards + CISA PQC Initiative. All scenario specifics (multinational bank, current crypto stack, threat landscape) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6740,29 +6740,29 @@
       "subtopic": "Multi-Jurisdiction Privacy Program Scaling. Governance",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A privacy team keeping separate notices, consent flows and data-subject request rules for 14 jurisdictions is overwhelmed by exceptions. What should the IS auditor recommend to the Chief Privacy Officer as BEST?",
+      "question": "A privacy program has a global baseline, but country teams add unreviewed local exceptions; some reflect local law, others weaken the baseline. What should the IS auditor recommend to the Chief Privacy Officer as BEST?",
       "options": {
-        "A": "Comply with the single strictest regime and treat it as sufficient",
-        "B": "Form a board privacy committee to approve each cross-border transfer",
-        "C": "Adopt a global baseline with a mapped layer for jurisdiction exceptions",
-        "D": "Keep separate per-jurisdiction programs and add staff to clear the backlog"
+        "A": "Remove the local exceptions and apply the baseline everywhere",
+        "B": "Let each country team set its own privacy baseline",
+        "C": "Require central approval and a register of local exceptions",
+        "D": "Have internal audit review the local exceptions each year"
       },
       "correct": "C",
-      "key_concept": "A scalable privacy program sets a global baseline and maps genuinely local requirements as a controlled exception layer.",
-      "pre_read": "Notice the team is overwhelmed by local variations. Ask which design reduces duplication but still respects requirements that differ.",
-      "correct_explanation": "Most privacy requirements overlap, so a global baseline removes most duplicated work. A mapped exception layer then handles the obligations that genuinely differ, such as local consent ages or transfer rules. Complying with the single strictest regime is a popular shortcut, but no one law covers every other law's specific requirements, so gaps remain in some jurisdictions.",
+      "key_concept": "A global privacy baseline needs centrally approved, registered exceptions so local variations meet legal need without weakening it.",
+      "pre_read": "Notice the exceptions are added without review. Ask who should control them, and when.",
+      "correct_explanation": "A global baseline works only if exceptions are genuinely required by local law and controlled, so each one is approved centrally against that test and recorded in a register. An annual audit review would surface weak exceptions, but audit gives assurance after the fact; it is not the management control that should stop them being added.",
       "wrong_explanations": {
-        "A": "No single regime contains every other jurisdiction's specific obligations, so relying on one leaves compliance gaps.",
-        "B": "Approving individual transfers is an operational task. A board committee doing it adds delay without fixing the design.",
-        "D": "More staff on the same fragmented design treats the symptom, and the burden grows with each new jurisdiction."
+        "A": "Some local laws impose rules the baseline lacks, so exceptions cannot simply be removed.",
+        "B": "Separate baselines fragment the program and remove the consistency the baseline provides.",
+        "D": "Audit review is assurance after the fact, not the management control over exceptions."
       },
       "tips": [
-        "Eliminate: B pushes operational approvals up to the board, and D adds people to a design that does not scale.",
-        "Final two: C beats A because a mapped exception layer covers local differences that a single strictest regime misses.",
-        "Exam cue: for many overlapping regulations, prefer a common baseline plus mapped exceptions over one-size-fits-all or fully separate programs."
+        "Eliminate: A ignores genuine local legal requirements, and B fragments the program.",
+        "Final two: C beats D because management must control exceptions as they arise; audit only reviews later.",
+        "Exam cue: a baseline-plus-exceptions design needs a controlled exception process owned by management."
       ],
       "framework_ref": "ISO/IEC 27701:2019 (Privacy Information Management); NIST Privacy Framework v1.0; GDPR; CCPA/CPRA; LGPD; PIPL; PIPEDA; UK-GDPR",
-      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in multi-jurisdiction privacy governance — BEST = global baseline + Privacy Governance Council + board KPIs + regulatory-triggered review; FIRST = baseline only'. Paired companion to d2_066. Public sources: GDPR, EDPB Guidelines, ISO/IEC 27701, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DSAR.",
+      "_provenance": "Authored from concept: 'Precision-word BEST vs FIRST in multi-jurisdiction privacy governance — BEST = global baseline + Privacy Governance Council + board KPIs + regulatory-triggered review; FIRST = baseline only'. Paired companion to d2_066. Public sources: GDPR, EDPB Guidelines, ISO/IEC 27701, ISACA Privacy A/A Program. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out DSAR. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -6771,29 +6771,29 @@
       "subtopic": "Capacity and Growth Planning. Multi-Factor Decision",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor reviews capacity planning at a SaaS provider growing 35% a year with shifting regional peaks. What should the auditor treat as the PRIMARY consideration?",
+      "question": "A SaaS provider's capacity forecasts are validated, but extra capacity can be funded only through an annual budget set a year ahead. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Uptime requirements of the most demanding jurisdiction served",
-        "B": "Capacity decisions driven by validated demand forecasts",
-        "C": "Statistical accuracy of each regional forecasting model",
-        "D": "Minimizing idle infrastructure spend while keeping a peak-load buffer"
+        "A": "Cut forecast growth to fit within the approved budget",
+        "B": "Release capacity funding in stages as forecasts change",
+        "C": "Buy a full year's peak capacity at the start of each budget",
+        "D": "Let teams exceed the budget and seek approval afterward"
       },
       "correct": "B",
-      "key_concept": "Capacity planning is judged first on whether it follows business demand; model accuracy, cost and service levels are inputs to that decision.",
-      "pre_read": "Notice growth and shifting peaks are business facts. Ask which consideration links capacity to where the business is going.",
-      "correct_explanation": "Capacity exists to support business demand, and this provider's demand is growing fast and shifting by region. The primary consideration is whether capacity decisions follow validated business-demand forecasts. Statistical accuracy of the forecasting models matters, but a precise model built on historical usage alone can still miss growth and product changes; accuracy serves the business link rather than replacing it.",
+      "key_concept": "Capacity funding should be released through governed mechanisms that track validated demand, not fixed annual budgets alone.",
+      "pre_read": "Notice the forecast is sound but the funding cycle is rigid. Ask which fix aligns money with demand.",
+      "correct_explanation": "Capacity must follow demand, so funding needs a governed mechanism, such as pre-approved tranches released when forecasts cross agreed points, rather than a fixed annual figure. Buying a full year's peak up front avoids shortfalls, but it ties up money in idle capacity for months and still fails if growth outruns the forecast.",
       "wrong_explanations": {
-        "A": "No regulatory uptime mandate is stated, and anchoring on the strictest jurisdiction can overbuild everywhere else.",
-        "C": "Model accuracy is a technical input. A precise model can still miss growth if it is not tied to business demand.",
-        "D": "Cost efficiency is a constraint, not the anchor. Minimizing spend first risks shortfalls during rapid growth."
+        "A": "Changing the forecast to fit the budget hides the demand instead of meeting it.",
+        "C": "Up-front peak purchases waste money on idle capacity and still miss unforecast growth.",
+        "D": "Spending first and approving later bypasses financial governance."
       },
       "tips": [
-        "Eliminate: A assumes a mandate that is not stated, and D puts cost ahead of the demand capacity must serve.",
-        "Final two: B beats C because business alignment comes before technical precision in a governance review.",
-        "Exam cue: when asked for the PRIMARY consideration in IT planning, choose alignment with business needs over technical or cost measures."
+        "Eliminate: A falsifies demand to fit the budget, and D bypasses approval controls.",
+        "Final two: B beats C because governed, staged funding tracks demand without idle spend.",
+        "Exam cue: when governance processes lag business change, adapt the process rather than the facts."
       ],
-      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); ITIL 4 Capacity and Performance Management",
-      "_provenance": "Authored from concept: 'Precision-word PRIMARY in capacity-planning governance — anchor consideration is validated business-demand, contrasted with technical-craft (model accuracy), efficiency (cost-of-headroom), and compliance (SLA) framings'. Paired companion to d2_045 (FIRST) and d2_181 (BEST). Public sources: COBIT 2019 BAI04, ITIL 4 Capacity and Performance Management, ISO/IEC 20000-1. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "framework_ref": "COBIT 2019 BAI04 (Managed Availability and Capacity); COBIT 2019 APO06 (Managed Budget and Costs)",
+      "_provenance": "Authored from concept: 'Precision-word PRIMARY in capacity-planning governance — anchor consideration is validated business-demand, contrasted with technical-craft (model accuracy), efficiency (cost-of-headroom), and compliance (SLA) framings'. Paired companion to d2_045 (FIRST) and d2_181 (BEST). Public sources: COBIT 2019 BAI04, ITIL 4 Capacity and Performance Management, ISO/IEC 20000-1. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -6957,29 +6957,29 @@
       "subtopic": "Three Lines Model. Roles and Responsibilities",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An audit committee wants independent assurance over governance, risk management and internal control. Under the IIA Three Lines Model, which role is BEST placed to provide it?",
+      "question": "The chief risk officer asks internal audit to run the IT risk management process until a new risk manager is hired. What is the IS auditor's GREATEST concern?",
       "options": {
-        "A": "Second-line risk management and compliance functions",
-        "B": "First-line operational management that owns the risks",
-        "C": "The external auditor that opines on the financial statements",
-        "D": "Internal audit, the third line reporting to the committee"
+        "A": "The risk register may lack enough detail on IT risks",
+        "B": "The risk function may lose budget for the vacant post",
+        "C": "Audit staff may lack specialist IT risk skills",
+        "D": "Audit would later be assuring a process it operated"
       },
       "correct": "D",
-      "key_concept": "In the Three Lines Model, internal audit is the third line: independent of management and accountable to the governing body for objective assurance.",
-      "pre_read": "Notice the word independent and the broad scope. Ask which role sits outside management yet covers governance, risk and control.",
-      "correct_explanation": "The Three Lines Model gives internal audit the third-line role: independent, objective assurance to the governing body over governance, risk management and internal control. Its independence comes from reporting functionally to the audit committee. Second-line risk and compliance functions also oversee risk and are close to the subject, but they are part of management and so cannot give independent assurance.",
+      "key_concept": "Internal audit should not operate second-line risk management; doing so impairs its objectivity when it later provides assurance.",
+      "pre_read": "Ask which line of the Three Lines Model the task belongs to, and what that means for audit.",
+      "correct_explanation": "Under the Three Lines Model, internal audit gives independent assurance over risk management, so running the second-line process itself would mean auditing its own work. A skills gap is a real practical risk, but it could be closed through training or support, whereas the loss of objectivity cannot be fixed while audit operates the process.",
       "wrong_explanations": {
-        "A": "Second-line functions provide expertise and oversight, but they sit within management and are not independent of it.",
-        "B": "First-line management owns and manages risk. It cannot independently assure its own controls.",
-        "C": "The external auditor's opinion covers the financial statements, not the organization's wider governance, risk and control."
+        "A": "Register detail is a quality issue for the risk function to fix, not the main threat.",
+        "B": "Budget for the post is a management matter and does not affect assurance.",
+        "C": "Skills can be developed or supplemented; independence lost by operating the process cannot."
       },
       "tips": [
-        "Eliminate: B owns the risks it would be assuring, and C's scope is limited to the financial statements.",
-        "Final two: D beats A because only the third line is independent of management; the second line still sits within it.",
-        "Exam cue: when a question asks for independent assurance to the governing body, the answer is internal audit as the third line."
+        "Eliminate: A and B are management issues that do not touch audit's role.",
+        "Final two: D beats C because operating a process destroys objectivity; skills gaps can be closed.",
+        "Exam cue: when audit is asked to perform first- or second-line work, the main concern is independence."
       ],
       "framework_ref": "IIA Three Lines Model (2020 update of the Three Lines of Defense Model)",
-      "_provenance": "Authored from concept: 'Three Lines Model roles - operational, risk and compliance, internal audit'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: IIA Three Lines Model 2020 position paper. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Three Lines Model roles - operational, risk and compliance, internal audit'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: IIA Three Lines Model 2020 position paper. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6988,29 +6988,29 @@
       "subtopic": "KPI vs KRI. Performance and Risk Indicators",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "Management wants an early warning when vendor risk approaches appetite. Which metric is BEST suited as a key risk indicator?",
+      "question": "A vendor-risk KRI has exceeded its threshold for three months, yet no one has acted. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Average cost of each vendor onboarding completed this quarter",
-        "B": "Share of critical vendors with overdue security assessments",
-        "C": "Total losses from vendor incidents over the past year",
-        "D": "Progress toward the board's vendor-consolidation target"
+        "A": "Raise the threshold so breaches occur less often",
+        "B": "Link each KRI threshold to an owner and escalation",
+        "C": "Replace the KRI with a measure of past vendor losses",
+        "D": "Report the KRI to the board more often than quarterly"
       },
       "correct": "B",
-      "key_concept": "A key risk indicator is a forward-looking signal of rising exposure against appetite; KPIs measure performance, and loss data looks backward.",
-      "pre_read": "Notice the words early warning. Ask which metric rises before a loss happens rather than after.",
-      "correct_explanation": "A key risk indicator gives early warning that exposure is rising toward appetite. The share of critical vendors with overdue security assessments increases before any incident occurs, so management can act in time. Total losses from vendor incidents is clearly a risk measure, which makes it tempting, but it is a lagging indicator that reports harm only after it has already happened.",
+      "key_concept": "KRI thresholds need assigned owners and defined escalation so a breach leads to timely risk response.",
+      "pre_read": "Notice the KRI works but nothing happens. Ask what is missing between signal and action.",
+      "correct_explanation": "A KRI only reduces risk if a breach triggers a response, so each threshold needs a named owner and a defined escalation and action. Reporting it to the board more often raises visibility, but without an owner obliged to act, the board simply sees the same unaddressed breach more frequently.",
       "wrong_explanations": {
-        "A": "Onboarding cost measures process efficiency, which makes it a performance indicator rather than a signal of risk exposure.",
-        "C": "Past losses show risk that has already materialized. They are lagging and give no early warning.",
-        "D": "Progress toward a board-set consolidation target tracks performance against a plan, not rising exposure to risk."
+        "A": "Raising the threshold hides the warning instead of responding to the risk.",
+        "C": "Loss measures look backward and remove the early warning a KRI provides.",
+        "D": "More frequent reporting adds visibility but still assigns no one to act."
       },
       "tips": [
-        "Eliminate: A and D measure efficiency or progress, which makes them KPIs rather than risk indicators.",
-        "Final two: B beats C because a KRI must warn before loss, while incident losses only confirm it afterwards.",
-        "Exam cue: a KRI is leading and tied to risk appetite; a KPI measures performance; loss data is lagging."
+        "Eliminate: A hides the breach, and C swaps an early warning for a lagging measure.",
+        "Final two: B beats D because ownership and escalation create action; more reporting only adds visibility.",
+        "Exam cue: a KRI threshold is useful only when a breach triggers a defined owner and response."
       ],
       "framework_ref": "ISACA Risk IT Framework, 2nd Edition; COBIT 2019 APO12 (Managed Risk); COBIT 2019 MEA01 (Managed Performance and Conformance Monitoring)",
-      "_provenance": "Authored from concept: 'KPI vs KRI definitions and distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA Risk IT Framework 2nd Edition; COBIT 2019 Performance Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'KPI vs KRI definitions and distinctions'. Foundational recall tier addressing the bank's recall-tier shortage. Public sources: ISACA Risk IT Framework 2nd Edition; COBIT 2019 Performance Management. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     }
   ]

@@ -4391,35 +4391,35 @@
       "subtopic": "System Interface. Silent Record Loss Detection",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor finds a sales interface dropped 4,800 orders over 11 days after a vendor patch, while the job reported success every run. Which control would have BEST detected the failure?",
+      "question": "After a vendor patch went straight to production, a sales interface dropped orders for 11 days while its job reported success. Which control should the IS auditor identify as BEST to have prevented it?",
       "options": {
-        "A": "Have sales staff spot-check a weekly sample of orders",
-        "B": "Obtain the vendor's written warranty that future patches are defect-free",
-        "C": "Alert operations whenever the interface job ends with an error",
-        "D": "Balance record counts and control totals between sender and receiver"
+        "A": "Sales staff spot-checking a weekly sample of orders",
+        "B": "A vendor warranty that patches are free of defects",
+        "C": "Alerts whenever the interface job ends with an error",
+        "D": "Regression testing of interfaces before patches are applied"
       },
       "correct": "D",
-      "key_concept": "Interface completeness controls balance record counts and control totals between sender and receiver each run, catching silent data loss.",
-      "pre_read": "Notice the job reported success while orders disappeared. Ask which control compares what was sent with what arrived.",
-      "correct_explanation": "The failure was silent: the job completed normally while records disappeared, so only a control comparing what was sent with what arrived would catch it. Record counts and control totals balanced every run detect dropped or altered records within one cycle. Alerting on job errors is useful, but this job never errored, so the alert would have stayed quiet for all 11 days.",
+      "key_concept": "Patches should pass regression testing of dependent interfaces before production, since silent failures are not caught by job status.",
+      "pre_read": "Notice the job reported success throughout. Ask which control acts before the patch reaches production.",
+      "correct_explanation": "Regression testing exercises the interface after the patch but before production, catching a change that silently drops records before any order is lost. Job error alerts are a useful control, but this job reported success every run, so an error alert would never have fired.",
       "wrong_explanations": {
-        "A": "Weekly sampling may miss a small drop rate entirely and finds losses days late, after orders have gone unfulfilled.",
-        "B": "A warranty shifts blame after a failure but does not detect dropped records; the organization still needs its own interface control.",
-        "C": "The job completed without errors while dropping records, so an error alert would not have fired during the 11 days."
+        "A": "Weekly spot checks detect after the fact and may miss dropped orders entirely.",
+        "B": "A warranty offers a remedy after failure; it does not stop defects reaching production.",
+        "C": "The job reported success, so an error-based alert would not have fired."
       },
       "tips": [
-        "Eliminate: A samples weekly and finds losses late, and B relies on a warranty instead of a control.",
-        "Final two: D beats C because the job reported success; only sender-receiver balancing reveals silently dropped records.",
-        "Exam cue: for interfaces, completeness is proven by matching counts and totals at both ends, not by job status."
+        "Eliminate: A detects late and partially, and B is a contractual remedy, not a control.",
+        "Final two: D beats C because testing before release prevents the loss; error alerts miss a job that reports success.",
+        "Exam cue: patches change behavior, so test dependent interfaces before production rather than relying on job status."
       ],
-      "framework_ref": "COBIT 2019 DSS06 (Managed Business Process Controls); COBIT 2019 DSS01 (Managed Operations); ITIL 4 Monitoring and Event Management practice",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 Change Enablement practice",
       "related_concepts": [
         "Interface control totals",
         "Record-count balancing",
         "Silent data loss",
         "Job monitoring"
       ],
-      "_provenance": "Authored from concept: 'Interface cascade into month-end close — SOX governance and materiality framework'. Public sources: SEC, PCAOB, COSO, ISACA. Scenario specifics (retail chain $1.8B, 2.3% drop rate, 4,800 orders, $12.4M, 11-day undetected, vendor patch encoding bug, 3 business days to close) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit.",
+      "_provenance": "Authored from concept: 'Interface cascade into month-end close — SOX governance and materiality framework'. Public sources: SEC, PCAOB, COSO, ISACA. Scenario specifics (retail chain $1.8B, 2.3% drop rate, 4,800 orders, $12.4M, 11-day undetected, vendor patch encoding bug, 3 business days to close) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Re-angled to D4 operations/resilience after domain audit. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -5872,28 +5872,28 @@
       "subtopic": "Scheduling Overrun Causing Customer Impact",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A nightly batch overrun has blocked customer online access for 11 days, and adding compute has not helped. What should the IS auditor recommend FIRST?",
+      "question": "A nightly batch overran into online hours for 11 days before customers complained. Which control should the IS auditor recommend to BEST detect such overruns earlier?",
       "options": {
-        "A": "Add further compute capacity to the batch servers",
-        "B": "Notify customers and keep the current batch schedule",
-        "C": "Start the planned 90-day re-architecture of the batch scheduler",
-        "D": "Apply a parallel-run workaround and open a problem record"
+        "A": "Weekly review of batch job completion logs by operations staff",
+        "B": "Tracking of customer complaints about online access",
+        "C": "An annual review of batch capacity against the plan",
+        "D": "Alerts when batch jobs pass their completion deadline"
       },
       "correct": "D",
-      "key_concept": "Restore service with a workaround first, and log a problem record so root cause is still investigated and fixed.",
-      "pre_read": "Notice customers are blocked now and extra compute already failed. Ask what restores service quickly without abandoning the root cause.",
-      "correct_explanation": "Customers are affected every day, so the first priority is a workaround that restores the online window, such as splitting the batch into parallel runs. Opening a problem record ensures the underlying causes are still analyzed and fixed. The 90-day re-architecture may be the right permanent fix, but starting it first leaves customers blocked for months while the structural work proceeds.",
+      "key_concept": "Job scheduling should alert when batch jobs miss completion deadlines, so overruns are caught before online service is affected.",
+      "pre_read": "Compare how quickly each control would notice the overrun with how quickly customers are affected.",
+      "correct_explanation": "An alert tied to each job's completion deadline flags an overrun on the first night, before online service starts. Weekly log review is a genuine detective control, but it could leave up to a week of customer impact before anyone notices, which is too slow for jobs that block online access every morning.",
       "wrong_explanations": {
-        "A": "Extra compute has already failed to help, so more of it repeats an ineffective action.",
-        "B": "Communication is useful, but keeping the schedule unchanged leaves customers blocked with no fix in sight.",
-        "C": "Re-architecture may be the permanent fix, but it leaves the customer outage running for months."
+        "A": "Weekly review could leave days of customer impact before the overrun is noticed.",
+        "B": "Customer complaints detect the problem only after customers are already affected.",
+        "C": "An annual capacity review is far too infrequent to catch a nightly overrun."
       },
       "tips": [
-        "Eliminate: A repeats what already failed, and B communicates without fixing anything.",
-        "Final two: D beats C because service is restored first, while the problem record still drives the root-cause fix.",
-        "Exam cue: restore service before root cause, but look for the option that still commits to finding the root cause."
+        "Eliminate: B relies on customers to detect failures, and C runs once a year.",
+        "Final two: D beats A because a deadline alert fires the same night; weekly review leaves days of impact.",
+        "Exam cue: detective controls should fire on the time scale of the harm; nightly jobs need same-night alerts."
       ],
-      "framework_ref": "ITIL 4 Incident Management practice; ITIL 4 Problem Management practice; COBIT 2019 DSS01 (Managed Operations); COBIT 2019 DSS03 (Managed Problems)",
+      "framework_ref": "COBIT 2019 DSS01 (Managed Operations); ITIL 4 Monitoring and Event Management practice",
       "related_concepts": [
         "Batch window overrun",
         "Job parallelization",
@@ -5901,7 +5901,7 @@
         "Pre-deployment load testing",
         "Customer comms during outage"
       ],
-      "_provenance": "Authored from concept: 'Scheduling overrun cascading into customer impact — multi-track operational response'. Public sources: ISACA, AXELOS, Fed SR 11-7. Scenario specifics (nationwide auto insurance $4.2B, 340K renewals/night, 5-hour window, 11-day overrun pattern, 14% volume increase, 2.3min/policy model impact) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Scheduling overrun cascading into customer impact — multi-track operational response'. Public sources: ISACA, AXELOS, Fed SR 11-7. Scenario specifics (nationwide auto insurance $4.2B, 340K renewals/night, 5-hour window, 11-day overrun pattern, 14% volume increase, 2.3min/policy model impact) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -5948,28 +5948,28 @@
       "subtopic": "Network Segmentation Breach via Admin VLAN",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An attacker used misconfigured ACLs to reach the cardholder data zone, and the path is now blocked at the firewall. What should the IS auditor recommend FIRST?",
+      "question": "An attacker reached the cardholder data zone through an admin VLAN ACL change made without review, now fixed. Which control should the IS auditor recommend as BEST to prevent recurrence?",
       "options": {
-        "A": "Capture forensic images and logs of the affected segments",
-        "B": "Rebuild the ACLs at once through an emergency change",
-        "C": "Restore the cardholder systems from the latest backups",
-        "D": "Tell customers that no card data was exposed"
+        "A": "Peer review and connectivity testing of each network rule change",
+        "B": "A quarterly review of the firewall and ACL rule sets",
+        "C": "A written attestation from the network equipment vendor",
+        "D": "Limiting ACL changes to the most experienced network engineer"
       },
       "correct": "A",
-      "key_concept": "Once the threat is contained, preserve evidence before changing affected systems; rebuilding first can destroy what investigators and assessors need.",
-      "pre_read": "Notice the attacker's path is already blocked. Ask what would be lost if systems were changed before anything else.",
-      "correct_explanation": "With the path already blocked at the firewall, the immediate threat is contained, so the next step is to preserve evidence. Forensic images and logs show what the attacker accessed, which drives notification and assessor decisions. Rebuilding the ACLs through an emergency change is good practice, but doing it first overwrites the very configuration and traces that investigators need.",
+      "key_concept": "Network rule changes need peer review and post-change testing so configuration errors are caught before they expose sensitive zones.",
+      "pre_read": "Notice the root cause was an unreviewed change. Ask which control acts on each change rather than afterward.",
+      "correct_explanation": "The exposure came from an unreviewed change, so the lasting fix sits in change management: each network rule change gets peer review before release and a connectivity test after it, catching errors before they open a path. A quarterly rule-set review is useful, but it is detective and periodic, so a bad change could leave the zone exposed for months before anyone notices.",
       "wrong_explanations": {
-        "B": "The rebuild is needed, but with containment in place it can wait briefly; changing first destroys evidence of the attacker's path.",
-        "C": "Restoring overwrites compromised systems before evidence is taken, and the backups themselves may be affected.",
-        "D": "Claiming no exposure before forensics finish is unsupported and could mislead customers and regulators."
+        "B": "Periodic reviews find bad rules only after they have been live, possibly for months.",
+        "C": "A vendor attestation says nothing about how this network's rules are changed.",
+        "D": "One engineer working without review can still make errors, and it creates a key-person dependency."
       },
       "tips": [
-        "Eliminate: C overwrites evidence on possibly tainted backups, and D makes a claim with no evidence behind it.",
-        "Final two: A beats B because, once contained, evidence must be preserved before systems are changed.",
-        "Exam cue: after containment, preserve evidence first; eradication and rebuild come next."
+        "Eliminate: C relies on a vendor's word, and D concentrates changes in one person without review.",
+        "Final two: A beats B because reviewing and testing each change prevents the error; a quarterly review finds it later.",
+        "Exam cue: when an incident traces to a bad configuration change, fix the change process, not just the rule."
       ],
-      "framework_ref": "PCI DSS v4.0.1 Requirement 12.10 (Incident Response); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27037 (Guidelines for Identification, Collection, Acquisition and Preservation of Digital Evidence); State breach-notification laws (e.g., NY SHIELD Act, CA Civ Code §1798.82)",
+      "framework_ref": "ISO/IEC 27002:2022 Control 8.32 (Change Management); COBIT 2019 BAI06 (Managed IT Changes); ISO/IEC 27002:2022 Control 8.22 (Segregation of Networks)",
       "related_concepts": [
         "PCI DSS Req 12.10",
         "Lateral movement detection",
@@ -5977,7 +5977,7 @@
         "Marketplace seller communications",
         "Forensics-informed risk decision"
       ],
-      "_provenance": "Authored from concept: 'Network segmentation breach with PCI exposure — multi-track CISO response'. Public sources: PCI SSC, NIST, state AGs. Scenario specifics (e-commerce platform $820M, admin VLAN compromise via phishing 8 days ago, 1.4M customers PCI exposed, $3M/day revenue, marketplace seller dependency) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Network segmentation breach with PCI exposure — multi-track CISO response'. Public sources: PCI SSC, NIST, state AGs. Scenario specifics (e-commerce platform $820M, admin VLAN compromise via phishing 8 days ago, 1.4M customers PCI exposed, $3M/day revenue, marketplace seller dependency) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -5986,26 +5986,26 @@
       "subtopic": "Backup Media. Documentation and Cataloging",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor evaluates the catalog for a backup tape library stored partly with an offsite vendor. Which control BEST ensures the catalog stays complete and accurate?",
+      "question": "An IS auditor finds the backup catalog for an offsite tape library is stored only on the backup server it describes. Which control is MOST important?",
       "options": {
-        "A": "Treat the offsite vendor's inventory list as the master record",
-        "B": "Reconcile the catalog to physical and vendor counts monthly",
-        "C": "Count the media held at the offsite vendor once each year",
-        "D": "Label every cartridge with its content and retention date"
+        "A": "Print the catalog after every backup run for the operations team",
+        "B": "Keep a current catalog copy offsite with the backup media",
+        "C": "Rebuild the catalog by scanning every tape after a disaster",
+        "D": "Store the catalog on a second disk in the same backup server"
       },
       "correct": "B",
-      "key_concept": "A backup catalog stays accurate through frequent reconciliation across the backup software, physical media and vendor records, so lost or misfiled media surface quickly.",
-      "pre_read": "Notice records exist in more than one place. Ask which control detects differences between them soonest.",
-      "correct_explanation": "Media records live in the backup software, on site and at the vendor, so the catalog stays reliable only if these sources are regularly compared. A monthly three-way reconciliation detects missing, misplaced or mislabeled cartridges quickly. An annual count of offsite media is a real control, but a lost cartridge could go unnoticed for up to a year and it ignores media held on site.",
+      "key_concept": "Backup catalogs must be kept current offsite with the media, or recovery may stall while tapes are identified.",
+      "pre_read": "Ask what happens to the catalog if the backup server itself is destroyed.",
+      "correct_explanation": "If the backup server is lost, the catalog showing what each tape holds is lost with it, so a current copy must be stored offsite with the media. Rebuilding the catalog by scanning tapes is possible, but it can take days during a disaster, adding delay that could push recovery beyond its RTO.",
       "wrong_explanations": {
-        "A": "Relying on the vendor's list cedes the record to a third party and provides no independent check.",
-        "C": "An annual count detects discrepancies too late and covers only the offsite portion of the library.",
-        "D": "Labels identify each cartridge but do not confirm that the catalog and actual holdings agree."
+        "A": "Printouts kept onsite are lost in the same event and quickly go out of date.",
+        "C": "Scanning every tape is slow and may push recovery past its RTO.",
+        "D": "A second disk in the same server is lost with that server."
       },
       "tips": [
-        "Eliminate: A gives up independent control of the record, and D identifies media without checking the catalog.",
-        "Final two: B beats C because frequent reconciliation across all sources finds missing media sooner than a yearly offsite count.",
-        "Exam cue: when records sit in several places, look for regular reconciliation between them."
+        "Eliminate: A and D keep the copy where the same event destroys it.",
+        "Final two: B beats C because an offsite copy is ready immediately; rebuilding from tapes takes days.",
+        "Exam cue: recovery depends on catalogs, keys and runbooks too; store them offsite with the backups."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 MP-4 (Media Storage); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems; ISO/IEC 27040 (Storage Security)",
       "related_concepts": [
@@ -6015,7 +6015,7 @@
         "Retention disposition",
         "Audit trail"
       ],
-      "_provenance": "Authored from concept: 'Backup media documentation per NIST SP 800-34 and ISO/IEC 27040'. Public sources: NIST, ISO/IEC, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Backup media documentation per NIST SP 800-34 and ISO/IEC 27040'. Public sources: NIST, ISO/IEC, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6100,26 +6100,26 @@
       "subtopic": "Problem Management. Root Cause Analysis Methodology",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds the same storage outage has recurred three times, and each incident was closed after a restart. What should the auditor recommend as BEST?",
+      "question": "A problem team's root cause analysis of a storage outage stops at 'operator error'. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Open a problem record to find the underlying cause",
-        "B": "Automate the restart so service recovers faster next time",
-        "C": "Close the incidents and measure recurrence risk over another quarter",
-        "D": "Replace the storage array with a newer vendor model"
+        "A": "Find why the process allowed the operator's error",
+        "B": "Retrain the operator and close the problem record",
+        "C": "Remove the operator's access to storage systems",
+        "D": "Automate restarts so the outage recovers faster next time"
       },
       "correct": "A",
-      "key_concept": "Recurring incidents call for problem management: a structured root cause analysis with corrective action, not a faster workaround or an unproven replacement.",
-      "pre_read": "Notice the outage keeps recurring after restarts. Ask which option finds out why.",
-      "correct_explanation": "Three recurrences show the restart is a workaround, not a fix. Opening a problem record and applying a structured technique, such as 5-Whys or a fishbone analysis, identifies the underlying cause and drives a corrective action that prevents further outages. Automating the restart shortens each outage, which is helpful, but it institutionalizes the workaround and leaves the cause unknown and the outages continuing.",
+      "key_concept": "Root cause analysis should look past human error to the process, tool or procedure weaknesses that allowed it.",
+      "pre_read": "Notice where the analysis stopped. Ask whether 'operator error' explains why the outage could happen.",
+      "correct_explanation": "Human error is rarely a root cause; continuing the analysis asks why the process, tooling or procedures let the error happen, which finds the fix that stops anyone repeating it. Retraining the operator is a reasonable action, but closing the record on it treats the symptom and leaves the same trap for the next person.",
       "wrong_explanations": {
-        "B": "Faster recovery reduces impact, but the outage keeps happening because nobody has found out why.",
-        "C": "Measuring recurrence for another quarter accepts further business impact when the pattern is already clear.",
-        "D": "Replacing hardware before diagnosis may spend money without fixing a cause that lies elsewhere."
+        "B": "Retraining one person leaves the process weakness that allowed the error for others.",
+        "C": "Removing access punishes the individual without fixing the underlying weakness.",
+        "D": "Faster recovery is a workaround that leaves the cause in place."
       },
       "tips": [
-        "Eliminate: C waits a quarter for more harm, and D buys a solution before the cause is known.",
-        "Final two: A beats B because finding the root cause stops recurrence, while automation only speeds the workaround.",
-        "Exam cue: repeated incidents with the same symptom point to problem management and root cause analysis."
+        "Eliminate: C punishes rather than fixes, and D speeds recovery without addressing cause.",
+        "Final two: A beats B because the systemic cause must be found; retraining one person treats a symptom.",
+        "Exam cue: when root cause analysis ends at human error, keep asking why the process allowed it."
       ],
       "framework_ref": "ITIL 4 Problem Management practice; ISO/IEC 20000-1:2018 (Service Management System); COBIT 2019 DSS03 (Managed Problems)",
       "related_concepts": [
@@ -6129,7 +6129,7 @@
         "Corrective vs preventive actions",
         "Root cause vs symptom"
       ],
-      "_provenance": "Authored from concept: 'Problem management RCA per ITIL 4 and ISO/IEC 20000-1'. Public sources: AXELOS, ISO/IEC, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): actor clarified: the IS auditor finds the recurrence.",
+      "_provenance": "Authored from concept: 'Problem management RCA per ITIL 4 and ISO/IEC 20000-1'. Public sources: AXELOS, ISO/IEC, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): actor clarified: the IS auditor finds the recurrence. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6252,26 +6252,26 @@
       "subtopic": "Utility Programs. Governance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor finds powerful disk and registry utilities installed on all production servers and usable by any administrator. Which control BEST reduces the risk?",
+      "question": "An IS auditor reviews three months of utility-program logs on production database servers. Which finding should concern the auditor MOST?",
       "options": {
-        "A": "Restrict utilities to approved roles and log every use",
-        "B": "Include utilities in the annual privileged access review",
-        "C": "Remove every utility and rely on vendor diagnostic support",
-        "D": "Keep open access since administrators are already vetted"
+        "A": "A data-editing utility changed records with no change ticket",
+        "B": "A disk utility was run during a scheduled maintenance window",
+        "C": "Utility sessions were logged under named administrator accounts",
+        "D": "A diagnostic utility was run twice on the same server"
       },
       "correct": "A",
-      "key_concept": "Utility programs can bypass application controls, so access is limited to approved roles with logged use; outright bans or annual reviews alone are weaker.",
-      "pre_read": "Notice any administrator can use the tools. Ask which option limits who can use them and records what they do.",
-      "correct_explanation": "Utilities can bypass normal application controls, so the risk lies in who can run them and whether use is traceable. Restricting each utility to approved roles applies least privilege, and logging creates accountability for every use. Adding utilities to an annual access review is a sound detective step, but misuse could go unseen for up to a year and the tools stay open to every administrator meanwhile.",
+      "key_concept": "Utilities can alter production data outside application controls, so unauthorized utility changes to records are a priority concern.",
+      "pre_read": "Ask which utility activity could change production data without any application control seeing it.",
+      "correct_explanation": "Data-editing utilities bypass application controls and audit trails, so an unticketed change to production records could be an unauthorized or fraudulent alteration that no application log captured. A disk utility run in a maintenance window looks like routine utility use, because scheduled windows exist for such work, and that run does not show any record was changed without authority.",
       "wrong_explanations": {
-        "B": "An annual review is detective and infrequent; it leaves broad access in place and misuse unseen for months.",
-        "C": "Removing every tool impairs legitimate maintenance and incident response, and slows diagnosis when outages occur.",
-        "D": "Vetting does not justify unrestricted access; least privilege still applies to trusted administrators."
+        "B": "Running utilities in an approved maintenance window is the expected, controlled practice.",
+        "C": "Logging under named accounts is a good control that supports accountability.",
+        "D": "Repeated diagnostic runs alter no data and are not, on their own, a concern."
       },
       "tips": [
-        "Eliminate: C harms operations, and D ignores least privilege for trusted staff.",
-        "Final two: A beats B because restricting and logging use prevents and records misuse, while an annual review finds it late.",
-        "Exam cue: for powerful tools, prefer restricted, logged access over both bans and after-the-fact reviews."
+        "Eliminate: C describes a good control, and D shows harmless diagnostic activity.",
+        "Final two: A beats B because an untracked change to production data bypasses every application control.",
+        "Exam cue: utilities matter most when they change production data outside change control and application audit trails."
       ],
       "framework_ref": "NIST SP 800-53 Rev 5 CM-7 (Least Functionality); NIST SP 800-53 Rev 5 AC-6 (Least Privilege); ISO/IEC 27002:2022 Control 8.18 (Use of Privileged Utility Programs); CIS Controls v8 Control 2 (Inventory and Control of Software Assets)",
       "related_concepts": [
@@ -6281,7 +6281,7 @@
         "Diagnostic vs change utilities",
         "Session recording"
       ],
-      "_provenance": "Authored from concept: 'Utility program governance per NIST SP 800-53 CM-7 and AC-6'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Utility program governance per NIST SP 800-53 CM-7 and AC-6'. Public sources: NIST, ISACA, CIS. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -6442,26 +6442,26 @@
       "subtopic": "BCP Audit. Evaluation of Offsite Storage (Deeper)",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "An IS auditor must confirm that backups held at an offsite facility can support recovery within the RTO. Which test provides the BEST evidence?",
+      "question": "An IS auditor finds a bank's offsite backup vault is 3 km from the data centre, on the same river floodplain. Which concern is MOST significant?",
       "options": {
-        "A": "Review the storage vendor's SOC 2 report on the facility",
-        "B": "Confirm the recovery plan is documented and approved",
-        "C": "Reconcile offsite media inventory to backup catalog records",
-        "D": "Restore sample backups from offsite and time the recovery"
+        "A": "The vault is too far away for rapid tape retrieval",
+        "B": "The vault may lack climate control for long tape storage",
+        "C": "The vault's contract does not include annual price caps",
+        "D": "The vault shares the primary site's regional hazards"
       },
       "correct": "D",
-      "key_concept": "Recoverability is proven by restoring from offsite media and timing the result against the RTO; inventories and documents show existence, not usability.",
-      "pre_read": "Notice the objective names the RTO. Ask which test both proves the data is usable and measures time.",
-      "correct_explanation": "The objective is recovery within the RTO, so the best evidence is an actual restore from offsite media, timed against that objective and checked for integrity. Reconciling the offsite inventory to the catalog confirms the right media are stored, which is necessary, but it shows existence, not that the data is readable or can be restored fast enough.",
+      "key_concept": "Offsite backup storage must be far enough away that one regional event cannot affect both the primary site and backups.",
+      "pre_read": "Notice where the vault sits relative to the data centre. Ask what a single flood would do.",
+      "correct_explanation": "Offsite storage exists so one event cannot destroy both production and backups, and a vault on the same floodplain could flood with the data centre. Climate control matters for media life, but it is a condition management can fix, whereas shared exposure to one flood defeats the purpose of storing copies offsite.",
       "wrong_explanations": {
-        "A": "A facility SOC 2 report covers storage controls, not whether the firm's data can be restored in time.",
-        "B": "Plan documentation shows design, not that recovery from offsite media actually works within the RTO.",
-        "C": "Inventory reconciliation confirms media are present, not that they are readable or restorable within the RTO."
+        "A": "Three kilometres allows quick retrieval; distance here is too short, not too long.",
+        "B": "Climate control matters for media, but it does not defeat the vault's purpose.",
+        "C": "Price caps are a commercial matter with no effect on recoverability."
       },
       "tips": [
-        "Eliminate: A covers the facility, and B covers documents, not recovery itself.",
-        "Final two: D beats C because only a timed restore proves usability and speed, while reconciliation proves presence.",
-        "Exam cue: when the objective is recovery time, the best evidence is a timed recovery test."
+        "Eliminate: A has the distance problem backward, and C is a commercial issue.",
+        "Final two: D beats B because a shared flood risk can destroy both copies at once.",
+        "Exam cue: offsite storage must not share the primary site's hazards; check distance and regional risks."
       ],
       "framework_ref": "ISACA IT Business Continuity/Disaster Recovery Audit Program; ISACA IT Audit Standard 1205 (Evidence); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
@@ -6471,7 +6471,7 @@
         "Dependency sequencing",
         "Recovery team execution"
       ],
-      "_provenance": "Authored from concept: 'Offsite recovery validation per ISACA BC Audit Program and NIST SP 800-34'. Public sources: ISACA, NIST, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Offsite recovery validation per ISACA BC Audit Program and NIST SP 800-34'. Public sources: ISACA, NIST, ISO. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -6518,26 +6518,26 @@
       "subtopic": "Major Incident Multi-Stakeholder Coordination",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "In hour 14 of a major outage, five executives are pushing conflicting recovery and communication actions. What should the COO do FIRST?",
+      "question": "In hour 14 of a major outage, executives keep interrupting the response team for updates. What should the incident commander do FIRST?",
       "options": {
-        "A": "Start a forensic review before any further recovery decisions",
-        "B": "Let each executive run their own workstream in parallel",
-        "C": "Appoint one incident commander with defined decision rights",
-        "D": "Direct the CMO to brief customers and regulators right away"
+        "A": "Let executives join the technical bridge call directly",
+        "B": "Stop updating executives until recovery is complete",
+        "C": "Provide scheduled updates through one executive liaison",
+        "D": "Have each engineer brief executives whenever asked"
       },
       "correct": "C",
-      "key_concept": "In a major incident with competing stakeholders, establish unified command and decision rights first; coordinated recovery and communication follow from it.",
-      "pre_read": "Notice the problem is conflicting direction, not a missing action. Ask what must exist before the actions can be coordinated.",
-      "correct_explanation": "The outage is prolonged because executives are pulling in different directions. Appointing one incident commander with clear decision rights creates a single point of coordination, so recovery, workarounds and communications are sequenced rather than contested. Briefing customers and regulators is urgent and valuable, but if it starts before command is set, messages may contradict recovery decisions and need retracting later.",
+      "key_concept": "Major incident management separates stakeholder communication from technical response through scheduled updates by a single liaison.",
+      "pre_read": "Notice what the interruptions are doing to the response. Ask how executives can stay informed without causing them.",
+      "correct_explanation": "A single liaison giving updates on a set schedule keeps executives informed while protecting the response team's focus, so recovery is not slowed by repeated interruptions. Letting executives join the technical bridge gives them real-time information, but it invites side questions and direction that distract responders and blur who makes decisions.",
       "wrong_explanations": {
-        "A": "Halting recovery for a forensic review prolongs the outage when no one has reported signs of an attack.",
-        "B": "Independent workstreams are exactly what is causing the conflict; they need one point of coordination.",
-        "D": "Communication matters, but without unified command messages may conflict with recovery decisions and need correction."
+        "A": "Executives on the bridge call distract responders and can blur decision rights.",
+        "B": "Silence leaves executives unable to make business decisions or handle stakeholders.",
+        "D": "Ad hoc briefings by engineers are the interruptions that slow recovery."
       },
       "tips": [
-        "Eliminate: A halts recovery without cause, and B keeps the conflict that is causing the delay.",
-        "Final two: C beats D because unified command must exist before communication and recovery can be coordinated.",
-        "Exam cue: when stakeholders conflict in a crisis, set up command and decision rights before choosing actions."
+        "Eliminate: B cuts executives off, and D keeps the interruptions going.",
+        "Final two: C beats A because a liaison informs executives without distracting responders.",
+        "Exam cue: in major incidents, separate stakeholder updates from technical response through a set cadence and liaison."
       ],
       "framework_ref": "ITIL 4 Incident Management practice; FEMA Incident Command System (ICS); ISO 22320:2018 (Emergency Management — Guidelines for Incident Management); NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management)",
       "related_concepts": [
@@ -6547,7 +6547,7 @@
         "Parallel workstreams",
         "Pre-chartered post-incident review"
       ],
-      "_provenance": "Authored from concept: 'Major incident multi-stakeholder coordination per FEMA ICS adapted for IT'. Public sources: NIST, FEMA, AXELOS, ISACA. Scenario specifics (managed-care insurance $6.8B, 4.1M members, schema change corruption, hour 14, multi-stakeholder positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; explanation wording matches option D. Blind re-check clarity fix (Oct 2026).",
+      "_provenance": "Authored from concept: 'Major incident multi-stakeholder coordination per FEMA ICS adapted for IT'. Public sources: NIST, FEMA, AXELOS, ISACA. Scenario specifics (managed-care insurance $6.8B, 4.1M members, schema change corruption, hour 14, multi-stakeholder positions) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker; explanation wording matches option D. Blind re-check clarity fix (Oct 2026). Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -6822,26 +6822,26 @@
       "subtopic": "Application Resiliency Patterns",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A payments service keeps calling a failing fraud-check service, exhausting its threads and spreading the outage. Which control should the IS auditor recommend as MOST effective?",
+      "question": "A payments service uses circuit breakers to isolate failing dependencies. Which evidence BEST shows the IS auditor that these resilience patterns work?",
       "options": {
-        "A": "Circuit breakers that halt calls to the failing service",
-        "B": "Retries with exponential backoff applied to every failed call",
-        "C": "Higher service credits in the fraud-check vendor's contract",
-        "D": "Redundant power feeds for the hosting data centre"
+        "A": "Controlled fault-injection tests that simulate dependency failures",
+        "B": "Architecture diagrams showing where each of the circuit breakers sits",
+        "C": "Developer statements that breakers are configured correctly",
+        "D": "Uptime reports from the past quarter showing no outages"
       },
       "correct": "A",
-      "key_concept": "A circuit breaker isolates a failing dependency so callers degrade gracefully instead of failing with it.",
-      "pre_read": "Notice the outage spreads through repeated calls. Ask which control stops the calls rather than spacing them out.",
-      "correct_explanation": "The outage spreads because the caller keeps waiting on a dependency that cannot answer. A circuit breaker stops those calls after a failure threshold, frees the threads and lets the payments service degrade gracefully. Backoff spaces out retries, but every failed call still holds resources and adds load to the struggling service, so the cascade continues more slowly.",
+      "key_concept": "Resilience patterns are best evidenced by controlled fault-injection tests that show systems degrade gracefully under failure.",
+      "pre_read": "Ask which evidence shows the pattern working when something actually fails.",
+      "correct_explanation": "Fault-injection tests deliberately fail dependencies under controlled conditions and show whether breakers trip and the service degrades gracefully, which is direct evidence of operation. Architecture diagrams show the design intent, but they cannot show that breaker thresholds, timeouts and fallbacks actually behave as designed under real failure.",
       "wrong_explanations": {
-        "B": "Backoff spaces out retries, but the calls still tie up threads and add load to a failing service, so the cascade continues.",
-        "C": "Service credits compensate after the outage. They do not stop one failing dependency from taking down the caller.",
-        "D": "The failure is in an application dependency, not facility power. More power redundancy does not stop the cascade."
+        "B": "Diagrams show design intent, not that the breakers trip correctly under failure.",
+        "C": "Developer assertions are unverified testimony, the weakest form of evidence.",
+        "D": "A quarter without outages may simply mean no dependency failed during that period."
       },
       "tips": [
-        "Eliminate: C is a contractual remedy, and D addresses facility power rather than an application dependency.",
-        "Final two: A beats B because stopping calls to a failed dependency contains the cascade, while retries keep feeding it.",
-        "Exam cue: when one failing component drags others down, prefer the control that isolates it over one that keeps retrying."
+        "Eliminate: C relies on testimony, and D may reflect luck rather than resilience.",
+        "Final two: A beats B because testing failure shows operation; diagrams show only design.",
+        "Exam cue: resilience is proven by controlled failure testing, not by designs or quiet periods."
       ],
       "framework_ref": "AWS Well-Architected Framework (Reliability Pillar); Microsoft Azure Architecture Center: Circuit Breaker Pattern; Principles of Chaos Engineering (principlesofchaos.org)",
       "related_concepts": [
@@ -6851,7 +6851,7 @@
         "Chaos engineering",
         "Graceful degradation"
       ],
-      "_provenance": "Authored from concept: 'Application resiliency patterns per AWS Well-Architected and Netflix Chaos Engineering'. Public sources: AWS, Microsoft, Netflix, OWASP. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Application resiliency patterns per AWS Well-Architected and Netflix Chaos Engineering'. Public sources: AWS, Microsoft, Netflix, OWASP. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -7772,28 +7772,28 @@
       "subtopic": "Vendor Contract Dispute Mid-Renewal",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "A hospital network's EHR vendor proposes a 38% renewal increase; the offer expires in 21 days and migration would take three years. What should the IS auditor recommend the COO do FIRST?",
+      "question": "A hospital's EHR vendor is in a renewal dispute and hints it may withdraw support. What should the IS auditor recommend the COO ensure FIRST to protect patient care?",
       "options": {
-        "A": "Accept the renewal to avoid any clinical service disruption",
-        "B": "Analyze total cost of ownership and benchmark market pricing",
-        "C": "Issue an RFP and begin migration to a competing system",
-        "D": "Refer the negotiation decision to the board for its direction"
+        "A": "Service credits paid when availability targets are missed",
+        "B": "Tested downtime procedures for clinical work without the EHR",
+        "C": "A cap on annual increases in the licence price",
+        "D": "Board approval of the renewal before the offer expires"
       },
       "correct": "B",
-      "key_concept": "Vendor decisions need facts first: total cost of ownership and market benchmarks give the negotiating position and the basis for any governance decision.",
-      "pre_read": "Notice the word FIRST. Before anyone decides, ask what information the decision-makers still lack.",
-      "correct_explanation": "No decision-maker can judge a 38% increase without knowing total cost of ownership and what comparable contracts cost. That analysis, under COBIT APO10 vendor management, supports negotiation on specific elements and frames any board discussion. Referring the matter to the board is reasonable for a contract this size, but sending it up before the analysis exists asks the board to decide without evidence.",
+      "key_concept": "Critical services need tested downtime procedures so essential work continues if a key system or vendor fails.",
+      "pre_read": "Ask what clinicians would do tomorrow if the EHR stopped working.",
+      "correct_explanation": "If support is withdrawn and the EHR fails, clinicians must keep treating patients, so tested downtime procedures, such as paper records and read-only data copies, protect care whatever happens in the dispute. Service credits compensate for missed availability, but they pay money after an outage rather than keeping clinical work going during one.",
       "wrong_explanations": {
-        "A": "Accepting without analysis concedes the increase and gives up all leverage, when the deadline still allows a short review.",
-        "C": "A three-year EHR migration carries major clinical risk. Committing to it before analysis turns a pricing dispute into an operational gamble.",
-        "D": "Board engagement may follow, but escalating before cost and benchmark analysis exists asks the board to decide without evidence."
+        "A": "Credits compensate after an outage; they do not keep clinical work going.",
+        "C": "Price caps limit cost, not the risk of losing system support.",
+        "D": "Board approval addresses the renewal decision, not continuity if support stops."
       },
       "tips": [
-        "Eliminate: A concedes without analysis, and C commits to a high-risk migration before the facts are known.",
-        "Final two: B beats D because the board needs cost and benchmark evidence before it can decide well.",
-        "Exam cue: when FIRST is asked about a major decision, gather and analyze the facts before escalating."
+        "Eliminate: C addresses cost, and D addresses the renewal decision, not continuity.",
+        "Final two: B beats A because downtime procedures keep care running; credits only compensate afterward.",
+        "Exam cue: when a critical system's support is at risk, ensure tested manual workarounds before negotiating terms."
       ],
-      "framework_ref": "COBIT 2019 APO10 (Managed Vendors); ISO/IEC 27036-1:2021 (Cybersecurity — Supplier Relationships — Overview and Concepts); HHS HIPAA Business Associate Agreement 45 CFR §164.504(e)",
+      "framework_ref": "COBIT 2019 DSS04 (Managed Continuity); ISO 22301:2019 Clause 8.5 (Exercise Programme); NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
       "related_concepts": [
         "TCO analysis",
         "Vendor benchmarking",
@@ -7801,7 +7801,7 @@
         "Multi-year price lock",
         "Migration risk assessment"
       ],
-      "_provenance": "Authored from concept: 'Critical-vendor contract dispute mid-renewal multi-track response'. Public sources: ISACA, OCC/FRB/FDIC, HHS. Scenario specifics (regional healthcare $1.4B, 8 hospitals, EHR vendor $42M→$58M renewal, $85M migration project, clinical-risk during transition, 21-day proposal expiry) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Critical-vendor contract dispute mid-renewal multi-track response'. Public sources: ISACA, OCC/FRB/FDIC, HHS. Scenario specifics (regional healthcare $1.4B, 8 hospitals, EHR vendor $42M→$58M renewal, $85M migration project, clinical-risk during transition, 21-day proposal expiry) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -7924,28 +7924,28 @@
       "subtopic": "Post-Acquisition IT Integration Failure",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "After a failed all-at-once integration cutover, point-of-sale, inventory and payroll systems are broken, and the first rollback attempt failed. What should the CEO do FIRST?",
+      "question": "Service has been restored after a failed integration cutover whose first rollback attempt also failed. What should the CEO require FIRST before rescheduling the cutover?",
       "options": {
-        "A": "Retry the rollback with a larger vendor team",
-        "B": "Appoint one incident commander to triage and set priorities",
-        "C": "Give external consultants authority over the rollback decision",
-        "D": "Force forward by fixing each broken function in turn"
+        "A": "A new cutover date agreed with the integration vendor",
+        "B": "A post-incident review of why the rollback plan failed",
+        "C": "A larger vendor team for the next cutover attempt",
+        "D": "Board re-approval of the original cutover plan unchanged"
       },
       "correct": "B",
-      "key_concept": "In a multi-front crisis, a single incident command structure must set priorities before teams commit to rollback or force-forward actions.",
-      "pre_read": "Count the broken systems and competing options. Ask what has to exist before anyone can choose between them sensibly.",
-      "correct_explanation": "Several critical functions are failing and the first recovery attempt already failed, so uncoordinated action is the main danger. A single incident commander can triage by business impact, put payroll ahead of lower priorities and decide between rollback and force-forward with facts. Retrying the rollback sounds like restoring a known state, but the method already failed once, and repeating it without diagnosis risks more damage.",
+      "key_concept": "Post-incident reviews identify why changes and rollbacks failed, so lessons shape the next attempt before it is scheduled.",
+      "pre_read": "Notice that both the cutover and the rollback failed. Ask what must be understood before trying again.",
+      "correct_explanation": "A post-incident review finds why the cutover and its rollback both failed, so the next plan, including a tested rollback, is built on those lessons. A new date with the vendor feels like progress, but rescheduling before understanding the failure invites the same outcome, this time with the business already knowing the fallback does not work.",
       "wrong_explanations": {
-        "A": "Repeating a failed rollback with more people, before anyone understands why it failed, can deepen data damage.",
-        "C": "Consultants can advise, but decision authority over the business's recovery must stay with management.",
-        "D": "Fixing functions one by one ignores business impact. Payroll and sales may wait behind lower-priority repairs."
+        "A": "A new date without understanding the failure risks repeating it.",
+        "C": "More staff does not fix a flawed plan or an untested rollback.",
+        "D": "Re-approving the failed approach ignores the evidence that it did not work."
       },
       "tips": [
-        "Eliminate: C hands management's decision to outsiders, and D works through repairs without business-impact priorities.",
-        "Final two: B beats A because coordinated command and triage must come before repeating a recovery method that already failed.",
-        "Exam cue: when several systems fail at once, establish command and priorities before choosing technical fixes."
+        "Eliminate: C adds people to a flawed plan, and D re-approves what already failed.",
+        "Final two: B beats A because lessons learned must shape the next plan before any date is set.",
+        "Exam cue: after a failed change or recovery, review why it failed before trying again."
       ],
-      "framework_ref": "FEMA Incident Command System (ICS); COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI06 (Managed IT Changes)",
+      "framework_ref": "COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning); COBIT 2019 BAI06 (Managed IT Changes); ITIL 4 Change Enablement practice",
       "related_concepts": [
         "Big Bang cutover",
         "Rollback feasibility",
@@ -7953,7 +7953,7 @@
         "Payroll continuity workaround",
         "M&A IT integration risk"
       ],
-      "_provenance": "Authored from concept: 'Post-acquisition IT integration failure multi-track response'. Public sources: ISACA, FEMA, ISO. Scenario specifics ($5.2B + $1.8B retail acquisition, 14 months post-close, Big Bang cutover, POS/inventory/payroll/returns broken, rollback failed, $45M+ revenue at risk) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Blind re-check clarity fix (Oct 2026).",
+      "_provenance": "Authored from concept: 'Post-acquisition IT integration failure multi-track response'. Public sources: ISACA, FEMA, ISO. Scenario specifics ($5.2B + $1.8B retail acquisition, 14 months post-close, Big Bang cutover, POS/inventory/payroll/returns broken, rollback failed, $45M+ revenue at risk) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): stem names the decision-maker directly. Blind re-check clarity fix (Oct 2026). Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction. Final cross-domain polish (Oct 2026).",
       "style_version": 2
     },
     {
@@ -9804,29 +9804,29 @@
       "subtopic": "RTO vs RPO. Recovery Objectives",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An IS auditor finds that a customer database has a 15-minute RPO, but its backups run only nightly. Which conclusion is MOST appropriate?",
+      "question": "A BIA sets an eight-hour RTO for order processing, but the business says it cannot survive more than six hours down. Which conclusion should the IS auditor reach as MOST appropriate?",
       "options": {
-        "A": "The RPO should be relaxed to match the nightly backup cycle",
-        "B": "The backups suffice provided the media are stored offsite",
-        "C": "Potential data loss exceeds what the business has accepted",
-        "D": "Restoration will take longer than the agreed time objective"
+        "A": "The RTO is acceptable because it was formally approved",
+        "B": "Recovery testing should be scheduled more often",
+        "C": "The RTO exceeds the maximum tolerable downtime",
+        "D": "The RPO should be shortened to compensate"
       },
       "correct": "C",
-      "key_concept": "RPO sets the maximum tolerable data loss; backup or replication frequency must be at least as frequent as the RPO.",
-      "pre_read": "Notice the two time figures. Ask what a gap between them puts at risk: data, or recovery speed?",
-      "correct_explanation": "A 15-minute RPO means the business accepts losing at most 15 minutes of data. Nightly backups could lose up to a full day, so potential data loss far exceeds the accepted level and the gap should be reported. The concern about restoration taking longer confuses RPO with RTO: backup frequency sets how much data is lost, not how long recovery takes.",
+      "key_concept": "The RTO must be shorter than the maximum tolerable downtime, or recovery completes after the business has failed.",
+      "pre_read": "Compare the eight-hour RTO with the six hours the business can survive.",
+      "correct_explanation": "Maximum tolerable downtime is the point beyond which the business cannot survive, so the RTO must be shorter than it, leaving time to resume work. An eight-hour RTO against six hours of tolerable downtime means recovery would finish too late. More frequent testing is useful, but it tests a target that is already wrong.",
       "wrong_explanations": {
-        "A": "The RPO is a business decision from the BIA. The auditor reports the gap; relaxing the objective is management's call, not the auditor's conclusion.",
-        "B": "Offsite storage protects backups from site loss but does nothing about the nightly frequency that causes the gap.",
-        "D": "This confuses RPO with RTO. Backup frequency drives potential data loss, not the time needed to restore."
+        "A": "Approval does not make an RTO valid if it exceeds what the business can survive.",
+        "B": "More testing checks a flawed target; it does not correct it.",
+        "D": "RPO limits data loss; it does not shorten the time to recover."
       },
       "tips": [
-        "Eliminate: A has the auditor change a business objective, and B fixes media location, not backup frequency.",
-        "Final two: C beats D because RPO measures data loss; restoration time belongs to the RTO.",
-        "Exam cue: RPO points backward to data lost, RTO points forward to downtime; match the gap to the right one."
+        "Eliminate: A relies on approval over substance, and D confuses data loss with downtime.",
+        "Final two: C beats B because the target itself is wrong; testing more often does not fix it.",
+        "Exam cue: the RTO must always sit inside the maximum tolerable downtime, with a margin to resume work."
       ],
       "framework_ref": "ISO 22301:2019 Security and resilience — Business continuity management systems; NIST SP 800-34 Rev 1 Contingency Planning Guide for Federal Information Systems",
-      "_provenance": "Authored from concept: 'RPO definition per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019, NIST SP 800-34 Rev 1. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'RPO definition per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019, NIST SP 800-34 Rev 1. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -9835,29 +9835,29 @@
       "subtopic": "BIA. Business Impact Analysis",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "A business continuity manager must choose recovery strategies for a new payments platform. Which activity should be completed FIRST?",
+      "question": "During a BIA, every department rates all of its processes as critical. What should the business continuity manager do as the BEST next step?",
       "options": {
-        "A": "A business impact analysis of the supported processes",
-        "B": "Drafting step-by-step recovery procedures for staff",
-        "C": "Setting the platform's RTO and RPO with IT operations",
-        "D": "Choosing between a hot site and a warm site"
+        "A": "Rank processes enterprise-wide against defined impact criteria",
+        "B": "Accept the ratings because departments know their processes",
+        "C": "Fund recovery for every process at the critical tier",
+        "D": "Let IT decide criticality from system usage statistics"
       },
       "correct": "A",
-      "key_concept": "The BIA comes before strategy: it identifies critical processes and impact over time, which then set the recovery objectives.",
-      "pre_read": "Notice the manager wants to choose strategies. Ask what input those strategies and their recovery targets depend on.",
-      "correct_explanation": "Recovery strategies must be driven by business impact, so the BIA comes first: it identifies the critical processes the platform supports and how impact grows over time. Recovery objectives are outputs of that analysis. Setting the RTO and RPO with IT operations sounds like the right first move, but without the BIA the targets reflect technical preference rather than business need.",
+      "key_concept": "A BIA ranks processes against defined, enterprise-wide impact criteria so recovery priorities and funding reflect real business impact.",
+      "pre_read": "Notice every process is rated critical. Ask what a BIA is supposed to produce from those ratings.",
+      "correct_explanation": "A BIA must set recovery priorities, so processes are ranked across the enterprise against defined impact criteria, such as financial, regulatory and customer impact over time, with senior management agreeing the result. Accepting departmental ratings respects local knowledge, but when everything is critical nothing is prioritized, and recovery funding cannot be allocated sensibly.",
       "wrong_explanations": {
-        "B": "Procedures implement a chosen strategy. Drafting them first means documenting a recovery approach that has not yet been justified.",
-        "C": "RTO and RPO come out of the BIA. Setting them with IT alone bases targets on technical preference, not business impact.",
-        "D": "Site selection is itself a strategy choice and depends on recovery objectives that have not been set."
+        "B": "Departments know their processes, but self-rated criticality without shared criteria cannot set priorities.",
+        "C": "Funding everything at the top tier is unaffordable and ignores real differences in impact.",
+        "D": "Usage statistics measure activity, not business impact over time."
       },
       "tips": [
-        "Eliminate: B documents procedures for an undecided strategy, and D picks the strategy before knowing the need.",
-        "Final two: A beats C because recovery objectives come from the BIA; setting them with IT first skips business impact.",
-        "Exam cue: in continuity planning, BIA before objectives, objectives before strategy, strategy before procedures."
+        "Eliminate: C ignores cost and real impact differences, and D swaps business impact for usage.",
+        "Final two: A beats B because shared criteria create real priorities; self-ratings make everything critical.",
+        "Exam cue: BIA priorities come from defined impact criteria applied consistently, agreed by senior management."
       ],
       "framework_ref": "ISO 22301:2019 clause 8.2.2; NIST SP 800-34 Rev 1 Section 3.2; ISACA CISA Review Manual, 28th Edition, Chapter 4 (Information Systems Operations and Business Resilience)",
-      "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'BIA primary purpose per ISO 22301:2019 and NIST SP 800-34 Rev 1'. Foundational recall tier. Public sources: ISO 22301:2019 clause 8.2.2, NIST SP 800-34 Rev 1 Section 3.2. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {
@@ -9897,29 +9897,29 @@
       "subtopic": "ITIL Incident Management. Service Restoration",
       "difficulty": "foundational",
       "bloom_level": "Foundational",
-      "question": "An incident manager restores a failed payment service with a workaround, but the root cause is still unknown. What is the BEST next step under ITIL 4?",
+      "question": "A service desk closes incidents as soon as a fix is applied, and 18% are later reopened. What should the IS auditor recommend as BEST?",
       "options": {
-        "A": "Raise an emergency change to replace the suspect component",
-        "B": "Ask the service owner to renegotiate the SLA target",
-        "C": "Close the incident and raise a problem record",
-        "D": "Keep the incident open until the root cause is confirmed"
+        "A": "Measure agents on the number of incidents closed each day",
+        "B": "Reopen every closed incident automatically after 24 hours",
+        "C": "Confirm restoration with the user before closing incidents",
+        "D": "Track the reopen rate monthly without changing closure steps"
       },
       "correct": "C",
-      "key_concept": "Incident management restores service; root-cause work moves to problem management so it is tracked, not skipped.",
-      "pre_read": "Notice that service is already restored. Ask which practice owns the unanswered question that remains.",
-      "correct_explanation": "In ITIL 4, incident management aims to restore normal service quickly, and that is done. The unknown cause is handed to problem management through a problem record, so investigation is tracked rather than lost. Keeping the incident open looks thorough, but it mixes the two practices, distorts incident metrics and leaves root-cause work without the owner and method problem management provides.",
+      "key_concept": "Incidents should be closed only after restoration is confirmed with the user, so failed fixes are not recorded as resolved.",
+      "pre_read": "Notice when the service desk closes incidents. Ask what the 18% reopen rate says about that moment.",
+      "correct_explanation": "Under ITIL 4, an incident is resolved when service is restored, and confirming that with the user before closure stops fixes that did not work from being recorded as successes. Tracking the reopen rate gives management visibility, but it measures the failure without changing the closure step that causes it.",
       "wrong_explanations": {
-        "A": "Replacing a component without a confirmed cause is guesswork, and an emergency change is unjustified once service is restored.",
-        "B": "Renegotiating the SLA does nothing about the cause of the failure and is unrelated to closing out this incident.",
-        "D": "Root-cause analysis belongs to problem management. Holding the incident open blurs the practices and skews incident metrics."
+        "A": "Rewarding closure counts encourages even faster, less verified closures.",
+        "B": "Automatic reopening creates noise and still records unverified fixes as resolved.",
+        "D": "Monitoring the rate shows the problem but leaves its cause in place."
       },
       "tips": [
-        "Eliminate: A changes a component on a guess, and B changes the target instead of addressing the failure.",
-        "Final two: C beats D because root cause moves to problem management; the incident closes once service is restored.",
-        "Exam cue: restore service before root cause, but never skip root cause; hand it to problem management."
+        "Eliminate: A rewards the behavior causing reopens, and B adds noise without verification.",
+        "Final two: C beats D because confirming restoration fixes the cause; tracking only measures it.",
+        "Exam cue: incidents close when service is confirmed restored, not when a fix is merely applied."
       ],
       "framework_ref": "ITIL 4 Foundation, Incident Management practice",
-      "_provenance": "Authored from concept: 'ITIL 4 Incident Management goal and definition'. Foundational recall tier. Public sources: ITIL 4 Foundation publication. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'ITIL 4 Incident Management goal and definition'. Foundational recall tier. Public sources: ITIL 4 Foundation publication. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): re-angled or clarified to remove duplication/contradiction.",
       "style_version": 2
     },
     {

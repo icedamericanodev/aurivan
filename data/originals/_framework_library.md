@@ -1896,3 +1896,8 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-218 (Secure Software Development Framework (SSDF) Version 1.1)
 - Scrum Guide 2020 (Schwaber and Sutherland)
 - ISACA IT Business Continuity/Disaster Recovery Audit Program
+- IETF RFC 7489 (Domain-based Message Authentication, Reporting, and Conformance (DMARC))
+- MITRE ATT&CK T1557.002 (Adversary-in-the-Middle: ARP Cache Poisoning)
+- NIST SP 800-177 Rev 1 (Trustworthy Email)
+- NIST SP 800-53 Rev 5 AU-5 (Response to Audit Logging Process Failures)
+- ISO/IEC 27002:2022 Control 8.32 (Change Management)
