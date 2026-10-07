@@ -83,6 +83,11 @@ def check(q):
         errs.append("options must be exactly A–D")
         return errs, warns
     ol = {k: words(v) for k, v in opts.items()}
+    # Options are full, plain statements a learner can read aloud: no "+" lists,
+    # arrows or slash shorthand, which read like notes rather than exam choices.
+    for k, v in opts.items():
+        if re.search(r"\s\+\s|→|->|\w/\w+/\w", v):
+            errs.append(f"option {k} uses shorthand ('+', arrow or a/b/c): write it as a full statement")
     if max(ol.values()) > MAX_OPTION:
         errs.append(f"option over {MAX_OPTION}w: {ol}")
     if c not in opts:
