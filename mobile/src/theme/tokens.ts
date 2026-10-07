@@ -126,10 +126,10 @@ export const brand: { light: BrandTone; dark: BrandTone } = {
   dark: { ring: '#A9D9BA', honey: '#E9C46A', needle: '#F3F1EA', word: '#F3F1EA', leaf: '#A9D9BA' },
 };
 
-/** Pillar glyphs (welcome + About): a line in accentText over a leaf fill. */
+/** Pillar glyph leaf fill (welcome + About). The line colour is the theme's accentText. */
 export const pillarGlyph = {
-  light: { stroke: '#24603F', fill: '#A9D9BA' },
-  dark: { stroke: '#93CFAA', fill: '#2E5440' },
+  light: { fill: '#A9D9BA' },
+  dark: { fill: '#2E5440' },
 } as const;
 
 /**

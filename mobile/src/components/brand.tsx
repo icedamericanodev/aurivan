@@ -85,7 +85,7 @@ type Tone = 'light' | 'dark';
 export function BrandMark({ size = 48, tone = 'light' }: { size?: number; tone?: Tone }) {
   const id = useSvgId();
   return (
-    <View accessible accessibilityRole="image" accessibilityLabel="Aurivan logo" style={{ width: size, height: size }}>
+    <View accessible accessibilityRole="image" accessibilityLabel="Aurivan" style={{ width: size, height: size }}>
       {/* The viewBox crops the 200 grid to the mark's own square. */}
       <Svg width={size} height={size} viewBox="24 24 152 152">
         <MarkPaths tone={brand[tone]} id={id} />
@@ -145,7 +145,9 @@ export function BrandLockup({ tone = 'light', height = 32, decorative = false }:
  * Decorative: the pillar's title next to it says the same thing.
  */
 export function PillarGlyph({ kind, size = 24, isDark }: { kind: PillarGlyphKind; size?: number; isDark: boolean }) {
-  const { stroke, fill } = isDark ? pillarGlyph.dark : pillarGlyph.light;
+  const { c } = useTheme();
+  const stroke = c.accentText; // same green as row icons and links, so the two can't drift
+  const { fill } = isDark ? pillarGlyph.dark : pillarGlyph.light;
   const line = { fill: 'none', stroke, strokeWidth: 1.75, strokeLinecap: 'round' } as const;
   const leaf = { fill, stroke, strokeWidth: 1.5, strokeLinejoin: 'round' } as const;
   return (

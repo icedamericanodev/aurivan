@@ -13,8 +13,8 @@
  */
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { BackHandler, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 import { BrandLockup, PillarList } from '../components/brand';
@@ -41,14 +41,26 @@ export default function Onboarding() {
   const [preset, setPreset] = useState<number>(3);
   const [footerH, setFooterH] = useState(120);
 
-  // Welcome: full-bleed forest panel (it runs up under the status bar, so it
-  // pads itself by the top inset), then the pillars on the page.
+  // Android's back button steps back through onboarding; on the welcome step
+  // it does the default (onboarding is the first screen, so the app closes).
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (step === 0) return false;
+      setStep(step === 2 ? 1 : 0);
+      return true;
+    });
+    return () => sub.remove();
+  }, [step]);
+
+  // Welcome: forest panel, then the pillars on the page. A fixed forest strip
+  // sits behind the status bar (outside the scroll view), so the light
+  // status-bar icons stay readable when the panel scrolls away.
   const welcome = (
     <Enter key="s0">
       <View
         style={{
           backgroundColor: c.forest,
-          paddingTop: insets.top + space.xl,
+          paddingTop: space.xl,
           paddingHorizontal: space.gutter,
           paddingBottom: space.xxl,
           borderBottomLeftRadius: radius.lg,
@@ -161,6 +173,7 @@ export default function Onboarding() {
     <SafeAreaView edges={step === 0 ? ['bottom'] : ['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Light status-bar icons over the forest panel; the app's default returns on step 1. */}
       {step === 0 && <StatusBar style="light" />}
+      {step === 0 && <View style={{ height: insets.top, backgroundColor: c.forest }} />}
       {step === 0 ? (
         <ScrollView contentContainerStyle={{ paddingBottom: footerH + space.xl }}>{welcome}</ScrollView>
       ) : (

@@ -167,8 +167,8 @@ export default function Settings() {
       {/* Our vision: the same promise as the welcome screen (content/brand.ts). */}
       <BrandLockup tone={isDark ? 'dark' : 'light'} height={28} />
       <Gap h={space.lg} />
-      <T v="caption" color={c.accentText}>Our vision</T>
-      <T v="hero" accessibilityRole="header" style={{ marginTop: space.xs }}>{TAGLINE}</T>
+      <T v="caption" color={c.accentText} accessibilityRole="header">Our vision</T>
+      <T v="hero" style={{ marginTop: space.xs }}>{TAGLINE}</T>
       <T v="quote" color={c.ink2} style={{ marginTop: space.xs }}>{VISION_LINE}</T>
       <Gap h={space.lg} />
       <PillarList look="rows" />

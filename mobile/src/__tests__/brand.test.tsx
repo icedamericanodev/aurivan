@@ -8,6 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
+import { BackHandler } from 'react-native';
 import { PILLARS, TAGLINE, VISION_LINE } from '../content/brand';
 import Onboarding from '../app/onboarding';
 import Settings from '../app/settings';
@@ -63,8 +64,13 @@ function pngColorType(file: string): number {
 }
 
 describe('store icons', () => {
-  it.each(['icon.png', 'icon-dark.png', 'icon-tinted.png'])('%s has no alpha channel', (f) => {
+  // Apple rejects an app icon with an alpha channel; the light and tinted icons must be opaque RGB.
+  it.each(['icon.png', 'icon-tinted.png'])('%s has no alpha channel', (f) => {
     expect(pngColorType(f)).toBe(2);
+  });
+  // The iOS 18 dark icon is the opposite: a transparent background lets iOS draw its own dark backdrop.
+  it('icon-dark.png has a transparent background', () => {
+    expect(pngColorType('icon-dark.png')).toBe(6);
   });
 });
 
@@ -117,6 +123,31 @@ describe('welcome screen', () => {
     expect(allText()).not.toContain(TAGLINE);
     press('Back');
     expect(allText()).toContain(TAGLINE);
+  });
+
+  it("Android's back button steps back through onboarding instead of closing the app", () => {
+    // Keep the most recently registered back handler (it is re-registered on every step).
+    let handler: (() => boolean | null | undefined) | undefined;
+    type BackListener = Parameters<typeof BackHandler.addEventListener>[1];
+    const spy = jest.spyOn(BackHandler, 'addEventListener').mockImplementation((_e, h: BackListener) => {
+      handler = () => h({} as Parameters<BackListener>[0]);
+      return { remove: () => {} };
+    });
+    mount(<Onboarding />);
+    expect(handler!()).toBe(false); // welcome: default behaviour
+    press('Start my plan');
+    press('Continue');
+    let handled: boolean | null | undefined;
+    act(() => {
+      handled = handler!();
+    });
+    expect(handled).toBe(true);
+    expect(allText()).toContain('Which exam are you preparing for?');
+    act(() => {
+      handler!();
+    });
+    expect(allText()).toContain(TAGLINE);
+    spy.mockRestore();
   });
 });
 
