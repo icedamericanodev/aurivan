@@ -153,7 +153,8 @@ export const useProgress = create<ProgressState>()(
           // Mock exams record answers but don't reschedule reviews mid-exam.
           let review = cp.review;
           if (opts?.schedule !== false) {
-            const next = nextReview(cp.review[questionId], correct, confidence, now);
+            // Coach me answers get the shorter, no-promotion schedule (srs.ts).
+            const next = nextReview(cp.review[questionId], correct, confidence, now, opts?.assisted === true);
             review = { ...cp.review };
             if (next) review[questionId] = next;
             else delete review[questionId];

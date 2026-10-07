@@ -100,7 +100,8 @@ export function ReadinessRow({
   const stacked = useFontScale() >= LARGE_TEXT;
   const meta = range.enough
     ? 'likely readiness, weighted by the blueprint'
-    : `Readiness appears after ${range.answered + range.needed} answers. ${range.answered} so far.`;
+    : // A countdown, not a moving target: `needed` never goes up after an answer.
+      `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
   return (
     <View
       accessible

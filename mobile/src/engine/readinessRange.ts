@@ -27,7 +27,7 @@
  *      the domain's sample size becomes n_eff = n − assisted × (1 − ASSISTED_WEIGHT),
  *      and p̃ uses the half-weighted credit. Fewer effective answers = a wider,
  *      more honest range. The centre is already half-weighted (readiness.ts).
- *   5. Below RANGE_MIN_ANSWERS answers in total we show "Not enough data yet"
+ *   5. Below RANGE_MIN_ANSWERS answers in total (assisted first answers count half) we show "Not enough data yet"
  *      instead of a range.
  *
  * Example: 200 answers spread over the five CISA domains at ~70% gives
@@ -56,10 +56,12 @@ export function effectiveAnswers(dm: DomainMastery): number {
 
 export function readinessRange(cert: Certification, readiness: Readiness): ReadinessRange {
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
-  // The "enough data" gate also counts assisted answers at half.
-  const effective = readiness.domains.reduce((s, d) => s + effectiveAnswers(d), 0);
-  if (effective < RANGE_MIN_ANSWERS) {
-    return { enough: false, answered, needed: Math.ceil(RANGE_MIN_ANSWERS - effective) };
+  // The "enough data" gate counts assisted answers at half (unlockWeight in
+  // readiness.ts). It only ever grows, so `needed` is a countdown that never
+  // goes back up after an answer.
+  const unlocked = readiness.domains.reduce((s, d) => s + d.unlockAnswers, 0);
+  if (unlocked < RANGE_MIN_ANSWERS) {
+    return { enough: false, answered, needed: Math.ceil(RANGE_MIN_ANSWERS - unlocked) };
   }
   const totalWeight = cert.domains.reduce((s, d) => s + d.weight, 0) || 1;
   let variance = 0;

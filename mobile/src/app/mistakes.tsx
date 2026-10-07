@@ -25,7 +25,7 @@ import { findQuestion } from '../content/loader';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
-import { slipCoach, SLIP_COACH_MIN, type DrillGame, type SlipInput } from '../engine/slipCoach';
+import { slipCoach, type DrillGame, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -119,7 +119,7 @@ export default function Mistakes() {
           </View>
         ) : (
           <T v="meta" style={{ marginTop: space.lg }}>
-            {`Your pattern appears after ${SLIP_COACH_MIN} tagged mistakes. ${pattern.needed} to go.`}
+            {`Tag ${pattern.needed} more ${pattern.needed === 1 ? 'mistake' : 'mistakes'} to see your pattern.`}
           </T>
         )}
 

@@ -38,6 +38,17 @@ export function answerCredit(rec: AnswerRecord): number {
   return rec.lastAssisted ? ASSISTED_WEIGHT : 1;
 }
 
+/**
+ * How much one answered question counts toward UNLOCKING the readiness range
+ * (the "N more answers" countdown). An assisted answer counts half; a second
+ * answer (two halves, or any clean answer) makes the question count whole.
+ * This can only grow as you answer, so the countdown never jumps back up,
+ * even when a question you once answered cleanly is redone with a hint.
+ */
+export function unlockWeight(rec: AnswerRecord): number {
+  return rec.attempts <= 1 && rec.lastAssisted ? ASSISTED_WEIGHT : 1;
+}
+
 export interface DomainMastery {
   domainId: string;
   answered: number; // unique questions answered
@@ -46,6 +57,8 @@ export interface DomainMastery {
   credit: number;
   /** Unique questions whose LAST answer was assisted (Coach me). */
   assisted: number;
+  /** Σ unlockWeight: answers counted toward unlocking the range (assisted = half). */
+  unlockAnswers: number;
   accuracy: number | null; // mastered / answered, null if none
   mastery: number; // 0..1, sample-size adjusted
 }
@@ -61,7 +74,7 @@ export function domainMastery(
   cert: Certification,
   answers: Record<string, AnswerRecord>,
 ): DomainMastery[] {
-  const zero = () => ({ answered: 0, mastered: 0, credit: 0, assisted: 0 });
+  const zero = () => ({ answered: 0, mastered: 0, credit: 0, assisted: 0, unlockAnswers: 0 });
   const tally = new Map<string, ReturnType<typeof zero>>();
   for (const [id, rec] of Object.entries(answers)) {
     const d = domainOf(id);
@@ -70,6 +83,7 @@ export function domainMastery(
     if (rec.lastCorrect) t.mastered += 1;
     t.credit += answerCredit(rec);
     if (rec.lastAssisted) t.assisted += 1;
+    t.unlockAnswers += unlockWeight(rec);
     tally.set(d, t);
   }
   return cert.domains.map((dom) => {
@@ -80,6 +94,7 @@ export function domainMastery(
       mastered: t.mastered,
       credit: t.credit,
       assisted: t.assisted,
+      unlockAnswers: t.unlockAnswers,
       // Accuracy stays the plain "how many did I get right" share.
       accuracy: t.answered ? t.mastered / t.answered : null,
       // Mastery (what readiness is built from) uses the half-weighted credit.

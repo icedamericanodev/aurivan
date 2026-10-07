@@ -20,15 +20,18 @@ import {
   BackHandler,
   Dimensions,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   View,
+  findNodeHandle,
   useWindowDimensions,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LeafSmall } from '../components/glyphs';
 import { ArrowRight, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
 import {
   ConfidenceRow,
@@ -95,6 +98,10 @@ export default function SessionScreen() {
   const scrollRef = useRef<ScrollView>(null);
   const scrollY = useRef(0);
   const vineRef = useRef<View>(null);
+  // Coach me: the first line of the hint, and a flag saying "the learner just
+  // tapped Coach me, so move the screen reader there once the hint appears".
+  const hintRef = useRef<View>(null);
+  const focusHint = useRef(false);
 
   const qid = active?.questionIds[active.index];
   const q = useMemo(() => (active && qid ? findQuestion(active.certId, qid) : undefined), [active, qid]);
@@ -125,6 +132,20 @@ export default function SessionScreen() {
     }, 450);
     return () => clearTimeout(t);
   }, [answeredHere, qid]);
+
+  // After Coach me is tapped, the hint mounts (and fades in for 200ms).
+  // Then move screen-reader focus onto it, so VoiceOver / TalkBack read the
+  // hint straight away instead of staying on a button that has vanished.
+  useEffect(() => {
+    // Native only: findNodeHandle does not exist on web (the screenshot build).
+    if (!coached || !focusHint.current || Platform.OS === 'web') return;
+    focusHint.current = false;
+    const t = setTimeout(() => {
+      const tag = hintRef.current ? findNodeHandle(hintRef.current) : null;
+      if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [coached, qid]);
 
   // Mock-exam clock: tick every second; auto-submit at zero.
   useEffect(() => {
@@ -261,8 +282,10 @@ export default function SessionScreen() {
 
   const openCoach = () => {
     haptic.selection();
+    // Focus moves to the hint once it mounts (effect above); it ends with the
+    // "Counts half" line, so no separate announcement is needed.
+    focusHint.current = true;
     useSession.getState().markCoached(qid);
-    AccessibilityInfo.announceForAccessibility('Hint shown. This answer counts half toward readiness.');
   };
 
   const optionState = (display: Letter): OptionState => (selected === display ? 'selected' : 'idle');
@@ -371,33 +394,38 @@ export default function SessionScreen() {
                   accessibilityRole="button"
                   accessibilityLabel="Coach me"
                   accessibilityHint="Shows a hint. Your answer then counts half toward readiness."
-                  accessibilityState={{ expanded: false }}
                   onPress={openCoach}
                   hitSlop={4}
                   style={({ pressed }) => ({ alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1, marginTop: space.xs })}
                 >
-                  <Row gap={space.xs}>
+                  <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
                     <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
                     <T v="label" color={c.accentText}>Coach me</T>
+                    {/* Said up front, so nobody taps it by accident and is surprised. */}
+                    <T v="meta">A hint counts half.</T>
                   </Row>
                 </Pressable>
               )}
               {coached && (
                 <Rise>
-                  <View
-                    accessibilityLabel="Coach hint"
-                    style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md }}
-                  >
+                  <View style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md }}>
+                    {/* hintRef = the first hint line; screen-reader focus lands here. */}
                     {hintWord && (
-                      <T v="small" color={c.ink}>{`Priority word: ${hintWord}. Let it decide.`}</T>
+                      <View ref={hintRef} accessible>
+                        <T v="small" color={c.ink}>{`Priority word: ${hintWord}. Let it decide.`}</T>
+                      </View>
                     )}
                     {hintTip && (
-                      <>
-                        <T v="caption" color={c.tip} style={{ marginTop: hintWord ? space.sm : 0 }}>{tipParts(hintTip, 0).label}</T>
-                        <T v="body" color={c.ink2}>{renderText(tipParts(hintTip, 0).body, perm)}</T>
-                      </>
+                      <View ref={hintWord ? undefined : hintRef} accessible style={{ marginTop: hintWord ? space.sm : 0 }}>
+                        {/* Same 16pt outline leaf as the vine's Eliminate node (spec §10.2). */}
+                        <Row gap={space.xs} style={{ marginBottom: 3 }}>
+                          <LeafSmall color={c.tip} />
+                          <T v="caption" color={c.tip}>{tipParts(hintTip, 0).label}</T>
+                        </Row>
+                        <T v="small" color={c.ink}>{renderText(tipParts(hintTip, 0).body, perm)}</T>
+                      </View>
                     )}
-                    <T v="meta" style={{ marginTop: space.xs }}>Assisted. This answer counts half toward readiness.</T>
+                    <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>
                   </View>
                 </Rise>
               )}
@@ -426,7 +454,7 @@ export default function SessionScreen() {
               <>
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
                 <Verdict correct={response.correct} coach={coach} />
-                {response.assisted && <T v="meta" style={{ marginTop: space.xs }}>Assisted · counts half toward readiness</T>}
+                {response.assisted && <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (

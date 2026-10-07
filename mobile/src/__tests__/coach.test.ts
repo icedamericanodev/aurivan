@@ -12,6 +12,8 @@ import { ASSISTED_WEIGHT, answerCredit, computeReadiness, type AnswerRecord } fr
 import { readinessRange, RANGE_MIN_ANSWERS } from '../engine/readinessRange';
 import { patternsOf, slipCoach, SLIP_COACH_MIN, type SlipInput } from '../engine/slipCoach';
 import { eliminateTip } from '../engine/tips';
+import { lastWholeWordIndex } from '../engine/games/priorityLens';
+import { DAY_MS, INTERVAL_DAYS, nextReview } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
 
@@ -211,5 +213,88 @@ describe('Coach me in the stores', () => {
     const a = useSession.getState().active!;
     expect(a.coached).toBeUndefined();
     expect(a.responses.d1_001.assisted).toBeUndefined();
+  });
+});
+
+// ── Review fixes: countdown, spaced review, whole-word highlight ─────────
+describe('readiness countdown never jumps back up', () => {
+  beforeEach(() => useProgress.getState().resetCert('cisa'));
+
+  const neededNow = () => {
+    const r = readinessRange(cisa, computeReadiness(cisa, selectCert(useProgress.getState(), 'cisa').answers));
+    return r.enough ? 0 : r.needed;
+  };
+
+  it('each answer (clean, assisted, wrong, or a redo) never increases "N more answers"', () => {
+    const { recordAnswer } = useProgress.getState();
+    // A fixed, varied script: new questions, redos, clean to assisted and back.
+    const ids = Array.from({ length: 30 }, (_, i) => `d${(i % 5) + 1}_${String(i).padStart(3, '0')}`);
+    let before = neededNow();
+    expect(before).toBe(RANGE_MIN_ANSWERS);
+    for (let step = 0; step < 200; step++) {
+      const id = ids[(step * 7) % ids.length];
+      const assisted = step % 3 === 0;
+      recordAnswer('cisa', id, step % 4 !== 0, 'sure', { assisted });
+      const after = neededNow();
+      expect(after).toBeLessThanOrEqual(before);
+      before = after;
+    }
+  });
+
+  it('redoing a clean answer with Coach me does not raise the countdown', () => {
+    const { recordAnswer } = useProgress.getState();
+    recordAnswer('cisa', 'd1_001', true, 'sure');
+    const before = neededNow();
+    recordAnswer('cisa', 'd1_001', true, 'sure', { assisted: true });
+    expect(neededNow()).toBe(before);
+  });
+
+  it('an assisted first answer counts half: two of them take one off the count', () => {
+    const { recordAnswer } = useProgress.getState();
+    recordAnswer('cisa', 'd1_001', true, 'sure', { assisted: true });
+    recordAnswer('cisa', 'd1_002', true, 'sure', { assisted: true });
+    expect(neededNow()).toBe(RANGE_MIN_ANSWERS - 1);
+  });
+});
+
+describe('spaced review after Coach me', () => {
+  const now = 1_000_000;
+  const inBox2 = { box: 2, dueAt: now, lastSeen: now - DAY_MS, reps: 1 };
+
+  it('an assisted correct answer stays in its box (shorter wait than a clean promotion)', () => {
+    const clean = nextReview(inBox2, true, 'sure', now)!;
+    const assisted = nextReview(inBox2, true, 'sure', now, true)!;
+    expect(clean.box).toBe(3);
+    expect(assisted.box).toBe(2);
+    expect(assisted.dueAt).toBe(now + INTERVAL_DAYS[2] * DAY_MS);
+    expect(assisted.dueAt).toBeLessThan(clean.dueAt);
+  });
+
+  it('an assisted correct answer never graduates a Box 5 question', () => {
+    expect(nextReview({ box: 5, dueAt: now, lastSeen: now, reps: 4 }, true, 'sure', now)).toBeNull();
+    expect(nextReview({ box: 5, dueAt: now, lastSeen: now, reps: 4 }, true, 'sure', now, true)?.box).toBe(5);
+  });
+
+  it('the store passes the assisted flag through to the schedule', () => {
+    useProgress.getState().resetCert('cisa');
+    const { recordAnswer } = useProgress.getState();
+    recordAnswer('cisa', 'd1_001', false, 'sure'); // missed → Box 1
+    recordAnswer('cisa', 'd1_001', true, 'sure', { assisted: true });
+    expect(selectCert(useProgress.getState(), 'cisa').review.d1_001.box).toBe(1);
+    recordAnswer('cisa', 'd1_001', true, 'sure');
+    expect(selectCert(useProgress.getState(), 'cisa').review.d1_001.box).toBe(2);
+  });
+});
+
+describe('priority-word highlight matches whole words only', () => {
+  it('skips the word inside a longer word', () => {
+    expect(lastWholeWordIndex('What is MOST likely, ALMOST always?', 'MOST')).toBe(8);
+    expect(lastWholeWordIndex('MOSTLY fine', 'MOST')).toBe(-1);
+    expect(lastWholeWordIndex('BEST', 'BEST')).toBe(0);
+    expect(lastWholeWordIndex('', 'BEST')).toBe(-1);
+  });
+
+  it('picks the last whole-word match', () => {
+    expect(lastWholeWordIndex('FIRST, then FIRST.', 'FIRST')).toBe(12);
   });
 });
