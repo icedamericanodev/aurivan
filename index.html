@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.50</span>
+    <span class="bank-pill" id="versionPill">v10.51</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.50';
+const APP_VERSION = 'v10.51';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12088,6 +12088,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Fewer repeats, clearer sources',
+    items: [
+      { cat: 'improved', text: 'Practice now repeats itself less: questions that taught the same lesson twice now each teach something new, and no two questions give conflicting advice.' },
+      { cat: 'improved', text: 'The standard behind each answer now points to the current edition of the ISACA audit standards.' }
+    ]
+  },
+  {
+    version: 'v10.50',
     title: 'Information protection questions, exam-style',
     items: [
       { cat: 'improved', text: 'Protection of Information Assets questions are now short and direct, like the real exam, with every answer choice written as a plain, complete sentence.' },

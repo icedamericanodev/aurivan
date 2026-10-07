@@ -24,32 +24,17 @@ Sub-bullets and free-text content are ignored by the linter.
 
 - ISACA IT Audit Standard 1001 (Audit Charter)
 - ISACA IT Audit Standard 1002 (Organizational Independence)
-- ISACA IT Audit Standard 1003 (Auditor's Professional Independence)
 - ISACA IT Audit Standard 1004 (Reasonable Expectation)
 - ISACA IT Audit Standard 1005 (Due Professional Care)
 - ISACA IT Audit Standard 1006 (Proficiency)
 - ISACA IT Audit Standard 1007 (Assertions)
 - ISACA IT Audit Standard 1008 (Criteria)
-- ISACA IT Audit Standard 1201 (Engagement Planning)
-- ISACA IT Audit Standard 1202 (Risk Assessment in Planning)
-- ISACA IT Audit Standard 1203 (Performance and Supervision)
-- ISACA IT Audit Standard 1204 (Materiality)
 - ISACA IT Audit Standard 1205 (Evidence)
 - ISACA IT Audit Standard 1206 (Using the Work of Other Experts)
 - ISACA IT Audit Standard 1207 (Irregularities and Illegal Acts)
-- ISACA IT Audit Standard 1208 (Audit Documentation)
 - ISACA IT Audit Standard 1401 (Reporting)
 - ISACA IT Audit Standard 1402 (Follow-up Activities)
-- ISACA IT Audit Standards on Internal Controls
-- ISACA IT Audit Standards on Separation of Duties Within IT
-- ISACA IT Audit Standards on IT Governance Audits
-- ISACA IT Audit Standards on Risk Management
-- ISACA IT Audit Standards on Outsourcing
-- ISACA IT Audit Standards on Information Security
-- ISACA IT Audit Standards on Cloud Computing
-- Standard 1203 (Performance and Supervision)
 - Standard 1401 (Reporting)
-- ITAF Standard 1202 (Risk Assessment in Planning)
 
 ## ITAF — Performance Standards (colloquial topical references)
 
@@ -58,92 +43,19 @@ grouped by topic. When a specific mandatory standard (1201–1208) covers the
 same topic, prefer the specific standard; ITAF Performance Standards on X is
 acceptable when the reference is to the broader topical body of guidance.
 
-- ITAF Performance Standards
-- ITAF Performance Standards on Audit Planning
-- ITAF Performance Standards on Engagement Planning
-- ITAF Performance Standards on Risk Assessment
-- ITAF Performance Standards on Engagement Conduct
-- ITAF Performance Standards on Performance and Supervision
-- ITAF Performance Standards on Materiality
-- ITAF Performance Standards on Evidence
-- ITAF Performance Standards on Documentation
-- ITAF Performance Standards on Communication of Results
-- ITAF Performance Standards on Reporting
-- ITAF Performance Standards on Follow-up Activities
-- ITAF Performance Standards on Fraud Risk
-- ITAF Performance Standards on Application Audits
-- ITAF Performance Standards on Control Evaluation
-- ITAF Performance Standards on Audit Techniques
-- ITAF Performance Standards on Continuous Auditing
-- ITAF Performance Standards on Sampling
-- ITAF Performance Standards on Independence
-- ITAF Performance Standards on IT Governance
-- ITAF Performance Standards on Governance, Risk, and Compliance
-- ITAF Performance Standards on Audit of IT Governance
-- ITAF Performance Standards on Performance Monitoring
-- ITAF Performance Standards on IT Vendor Management
-- ITAF Performance Standards on IT HR Controls
-- ITAF Performance Standards on Change Management
-- ITAF Performance Standards on Quality Assurance
-- ITAF Performance Standards on IT Strategy
-- ITAF Performance Standards on SoD
-- ITAF Performance Standards on Outsourcing
-- ITAF Performance Standards on Cloud
-- ITAF Performance Standards on Data Privacy
-- ITAF Performance Standards on Project Management
-- ITAF Performance Standards on Operations Management
-- ITAF Performance Standards on Capacity Management
-- ITAF Performance Standards on Network Management
-- ITAF Performance Standards on Quality Management
-- ITAF Performance Standards on Operational Excellence
-- ITAF Performance Standards on Information Security
-- ITAF Performance Standards on Information Security Management
-- ITAF Performance Standards on IT Investment
-- ITAF Performance Standards on Third-Party Service Delivery
-- ITAF Performance Standards on Performance Optimization
-- ITAF Performance Standards on Privacy Audits
-- ITAF Performance Standards on Multi-Jurisdiction
-- ITAF Performance Standards on Transborder Data
-- ITAF Performance Standards on Cloud Audits
-- ITAF Performance Standards on Capacity Planning
-- ITAF Performance Standards on Sourcing
-- ITAF Performance Standards on Data Governance
-- ITAF Performance Standards on InfoSec Operations
-- ITAF Performance Standards on InfoSec Operations and Reporting
-- ITAF Performance Standards on Network Audit
-- ITAF Performance Standards on EGIT
-- ITAF Performance Standards on EGIT Good Practices
-- ITAF Performance Standards on Senior Management Roles
-- ITAF Performance Standards on IT Org Roles
 
 ## ITAF — General Standards
 
-- ITAF General Standards on Independence
-- ITAF General Standards on Quality
-- ITAF General Standards on Professional Ethics
-- ITAF General Standards on Proficiency
-- ITAF General Standards on Audit Charter
-- ITAF General Standards on IT Governance
-- ITAF General Standards on Governance
-- ITAF General Standards on Risk Management
 
 ## ITAF — Tools and Techniques
 
-- ITAF Tools and Techniques on Sampling
-- ITAF Tools and Techniques on Continuous Auditing
-- ITAF Tools and Techniques on CAATs
-- ITAF Tools and Techniques on Audit Techniques
 
 ## ITAF — Reporting Standards
 
 - ITAF Reporting Standards
-- ITAF Reporting Standards on Modified Opinions
 
 ## ITAF — Topical Guidance (non-standards)
 
-- ITAF guidance on AI in IS Audit
-- ITAF guidance on Continuous Auditing
-- ITAF guidance on Cloud Computing
 
 ## ISACA Other Frameworks and Codes
 
@@ -617,15 +529,11 @@ sub-references like "(Managed Risk) and APO12.03").
 - CISA #StopRansomware guidance
 
 ## D4 batch 5 additions
-- ISACA DRP Audit Program
 - Interagency Guidance on Third-Party Relationships: Risk Management (OCC/FRB/FDIC, 2023, superseding OCC Bulletin 2013-29)
 - FFIEC Business Continuity Management Booklet
 - NAIC Cybersecurity Insurance Guidance
 - BCI Good Practice Guidelines
 - ISO 27031 (ICT Readiness for Business Continuity)
-- ISACA Backup and Recovery Audit Program
-- ISACA BCP Audit Program
-- ISACA DRP Audit Program
 
 ## D4 batch 2 additions
 - RFC 3022 (Network Address Translation)
@@ -647,8 +555,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - HSCC Healthcare and Public Health Sector Coordinating Council guidance
 - Härder & Reuter (1983) ACID Formalization
 - INCITS T11 (FCoE specifications)
-- ISACA Database Management Audit/Assurance Program
-- ISACA IT Application Controls Audit/Assurance Program
 - ISO 22301 (Security and Resilience — Business Continuity Management Systems)
 - ISO 22301 Clause 8.4 (Business Continuity Procedures)
 - ISO 22301 Clause 8.5 (Exercise Programme)
@@ -696,9 +602,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - FDA Drug and Medical Device Shortage Guidance
 - FTC Antitrust Safety Zones for Healthcare Crisis Coordination
 - HIPAA Business Associate Agreement 45 CFR §164.504(e)
-- ISACA Business Continuity Audit/Assurance Program
 - ISACA Cloud Computing Management Audit/Assurance Program
-- ISACA M&A IT Audit/Assurance Program
 - ISO 22301 Clause 10.2 (Continual Improvement)
 - ISO 22301 Clause 7.3 (Awareness)
 - ISO 22301 Clause 8.2 (BIA and Risk Assessment)
@@ -733,14 +637,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - FFIEC Call Report Instructions
 - Federal Reserve SR 11-7 (Model Risk Management)
 - IEEE 802.1Q (VLAN Switching)
-- ISACA EUC Audit/Assurance Program
-- ISACA IT Asset Management Audit/Assurance Program
 - ISACA IT Change Management Audit/Assurance Program
-- ISACA IT Operations Audit/Assurance Program
-- ISACA Network Perimeter Security Audit/Assurance Program
-- ISACA Privileged Access Management Audit/Assurance Program
-- ISACA Software Asset Management Audit/Assurance Program
-- ISACA Source Code Management Audit/Assurance Program
 - ISO 55001 (Asset Management — Management Systems)
 - ISO/IEC 19770-1 (Software Asset Management)
 - ITIL 4 Change Enablement
@@ -787,9 +684,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - FFIEC Vendor Management Guidance
 - HHS HIPAA Security Rule (45 CFR §164.308)
 - HIPAA HHS Breach Notification Rule (45 CFR §§ 164.400-414)
-- ISACA Enterprise Architecture Audit/Assurance Program
-- ISACA IT Vendor Management Audit/Assurance Program
-- ISACA Incident Management and Response Audit/Assurance Program
 - ISO/IEC 20000-1 (Information Technology — Service Management)
 - ITIL 4 Continual Improvement Management
 - ITIL 4 Problem Management
@@ -849,9 +743,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - FEMA Crisis Communication best practices
 - FINRA Rule 4570 (Custodian of Books and Records)
 - HHS HIPAA Business Associate Agreement 45 CFR §164.504(e)
-- ISACA IT Audit Standards on Reporting
 - ISACA Identity and Access Management Audit/Assurance Program
-- ISACA SOX Audit/Assurance Program
 - ISO 19011 (Guidelines for Auditing Management Systems)
 - Kaplan & Norton Balanced Scorecard framework
 - NIST SP 800-53 Rev 5 PM-12 (Insider Threat Program)
@@ -886,10 +778,8 @@ sub-references like "(Managed Risk) and APO12.03").
 - IRS / State Tax Authority Audit Procedures
 - ISACA Audit Committee / Board Cyber Engagement Guidance
 - ISACA Auditing Artificial Intelligence (IT Audit and Assurance Program)
-- ISACA IT Audit Standards on Communication of Results
 - ISACA Information Security Management Audit/Assurance Program
 - ISACA Privacy Audit/Assurance Program
-- ISACA Project Management Audit/Assurance Program
 - ISACA e-Discovery Audit guidance
 - MITRE ATT&CK (Container Matrix)
 - MITRE ATT&CK T1558.001 (Golden Ticket)
@@ -942,11 +832,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - HHS HIPAA Security Rule 45 CFR §164.310 (Physical Safeguards)
 - HHS HIPAA Security Rule 45 CFR §164.316 (Documentation and Retention)
 - IIA Standards on Internal Audit (2440 Disseminating Results, 2450 Overall Opinions)
-- ISACA Auditing Artificial Intelligence Audit Program
-- ISACA Data Center Audit/Assurance Program
-- ISACA Fraud Risk Management Audit/Assurance Program
 - ISACA Internal Audit Code of Ethics
-- ISACA Risk Management Audit/Assurance Program
 - ISO 22320 (Emergency Management)
 - ISO/IEC 11770-2 (Key Management)
 - ISO/IEC 27001 Annex A.11 (Physical and Environmental Security)
@@ -1085,12 +971,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Gartner IGA Magic Quadrant
 - IAPP CIPM Body of Knowledge
 - IEEE 802.1X (Port-Based Network Access Control)
-- ISACA Data Classification Audit/Assurance Program
-- ISACA Data Loss Prevention Audit/Assurance Program
-- ISACA Endpoint Security Audit/Assurance Program
-- ISACA Insider Threat Audit/Assurance Program
-- ISACA Network Access Control Audit/Assurance Program
-- ISACA Network Security Audit/Assurance Program
 - ISO/IEC 27001:2022 Annex A.5.12 (Classification of information)
 - ISO/IEC 27001:2022 Annex A.5.15 (Access control)
 - ISO/IEC 27001:2022 Annex A.8.12 (Data leakage prevention)
@@ -1132,11 +1012,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - IETF RFC 8555 (ACME Protocol)
 - IETF RFC 8996 (Deprecating TLS 1.0 and 1.1)
 - IETF RFC 9162 (Certificate Transparency Version 2.0)
-- ISACA Cloud Cryptography Audit/Assurance Program
-- ISACA Cryptography Audit/Assurance Program
-- ISACA Database Security Audit/Assurance Program
-- ISACA Digital Signature Audit/Assurance Program
-- ISACA PKI Audit/Assurance Program
 - ISO/IEC 18033 (Encryption algorithms)
 - Microsoft BitLocker Recovery Key Documentation
 - Microsoft Trusted Root Program
@@ -1183,8 +1058,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - IEEE 802.11i (WPA2)
 - IEEE 802.11w (Protected Management Frames)
 - ISACA Mobile Device Security Audit/Assurance Program
-- ISACA Virtualization Audit/Assurance Program
-- ISACA Web Application Security Audit/Assurance Program
 - Intel Side Channel Vulnerabilities Documentation
 - MDN Web Docs HTTP Headers
 - MITRE ATT&CK Framework T1611 (Escape to Host)
@@ -1231,10 +1104,7 @@ sub-references like "(Managed Risk) and APO12.03").
 - Gartner Magic Quadrant for Security Awareness Computer-Based Training
 - HHS OCR HIPAA Breach Notification Rule
 - HIPAA Security Rule §164.308 and §164.402
-- ISACA Information Security Audit/Assurance Program
 - ISACA Information Systems Audit/Assurance Standards
-- ISACA Security Awareness Audit/Assurance Program
-- ISACA Software Supply Chain Audit/Assurance Program
 - KnowBe4 PhishER + Cofense PhishMe Behavioral Metrics
 - KnowBe4 Security Awareness Methodology
 - LOLBAS Project (Living Off The Land Binaries and Scripts)
@@ -1277,11 +1147,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - HIPAA Security Rule §164.312(b) (Audit Controls)
 - HackerOne / Bugcrowd Vendor Methodologies
 - IDC Worldwide MSSP Survey
-- ISACA Application Security Audit/Assurance Program
-- ISACA Outsourcing IT Audit/Assurance Program
-- ISACA Penetration Testing Audit/Assurance Program
-- ISACA SOC Audit/Assurance Program
-- ISACA Vulnerability Management Audit/Assurance Program
 - ISO/IEC 27001:2022 Annex A.5.34 (Privacy and protection of PII)
 - ISO/IEC 27001:2022 Annex A.8.15 (Logging)
 - ISO/IEC 29147 (Coordinated Vulnerability Disclosure)
@@ -1333,8 +1198,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Gartner CSPM Market Guide
 - Gartner NDR Market Guide
 - HashiCorp Terraform Documentation
-- ISACA Cloud Security Audit/Assurance Program
-- ISACA Compliance Audit/Assurance Program
 - ISO/IEC 27001:2022 Annex A
 - MITRE ATT&CK T1611 (Escape to Host)
 - MITRE CTID Adversary Emulation Library
@@ -1380,11 +1243,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - HIPAA Security Rule §164.308(a)(6)
 - ISACA Audit Recommendation Framework
 - ISACA Crisis Communications Guidance
-- ISACA Cyber Insurance Audit/Assurance Program
-- ISACA Information Sharing Audit/Assurance Program
-- ISACA Third-Party Risk Audit/Assurance Program
-- ISACA Threat Intelligence Audit/Assurance Program
-- ISACA Vendor Management Audit/Assurance Program
 - ISO/IEC 27035 (Information Security Incident Management)
 - ITIL 4 Major Incident Management
 - Mandiant / CrowdStrike / Kroll / Stroz Friedberg Retainer Methodologies
@@ -1433,11 +1291,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Google SRE Blameless Postmortems Methodology
 - ICS-CERT Incident Handling Guidance
 - IEC 62443 (Industrial Communication Networks Security)
-- ISACA Cloud Forensics Audit/Assurance Program
-- ISACA Forensics Audit/Assurance Program
-- ISACA International Forensics Audit/Assurance Program
-- ISACA Network Forensics Audit/Assurance Program
-- ISACA OT Security Audit/Assurance Program
 - ISACA Workforce Development Guidance
 - ISO/IEC 27037 (Digital Evidence Handling)
 - Mutual Legal Assistance Treaties
@@ -1466,7 +1319,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Federal Rules of Civil Procedure (FRCP) Rule 26 (Disclosure of Expert Testimony)
 - ISO/IEC 27043 (Information Technology — Incident Investigation Principles and Processes)
 - SANS FOR518 (Mac and iOS Forensic Analysis and Incident Response)
-- ISACA Internet of Things (IoT) Audit/Assurance Program
 - ISO/IEC 17025:2017 (General Requirements for Testing and Calibration Laboratories)
 - ASCLD/LAB Digital Forensics Module
 - ANAB (ANSI National Accreditation Board)
@@ -1476,7 +1328,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - OFAC Advisory on Potential Sanctions Risks for Facilitating Ransomware Payments
 - HHS 405(d) Health Industry Cybersecurity Practices (HICP)
 - Gartner Cybersecurity Budget Benchmarking Research
-- ISACA Malware Analysis Audit/Assurance Program
 - ISACA Cybersecurity Audit/Assurance Program
 - ENISA Good Practices for Internet of Things and Smart Infrastructures Security
 - ANAB ISO/IEC 17025 Forensic Testing Accreditation
@@ -1486,7 +1337,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - Australia Notifiable Data Breaches Scheme (Privacy Act 1988 Part IIIC)
 - 21 CFR Part 11 (Electronic Records and Electronic Signatures)
 - SEC + FINRA Rules on Material Non-Public Information (MNPI)
-- ISACA Auditing Cybersecurity Awareness Programs Audit/Assurance Program
 - GDPR Article 4(12) (Personal Data Breach Definition)
 - ENISA Personal Data Breach Notification Guidelines
 - RFC 8996 (Deprecating TLS 1.0/1.1)
@@ -1496,7 +1346,6 @@ sub-references like "(Managed Risk) and APO12.03").
 - GAPP Principle 3 (Choice & Consent)
 - Kirkpatrick Four-Level Training Evaluation Model
 - PCI DSS v4.0.1 Requirement 3.7 (Key Management Documentation)
-- ISACA Vendor Risk Management Audit/Assurance Program
 - FedRAMP IR-4 (Incident Handling)
 - OWASP ASVS
 - GDPR Article 7 (Conditions for Consent)
@@ -1523,12 +1372,10 @@ sub-references like "(Managed Risk) and APO12.03").
 - UCC §4A-204 (Wire Transfer Refund and Customer Duty)
 - FFIEC IT Examination Handbook — Wholesale Payment Systems
 - FinCEN Advisory FIN-2016-A003 (Business Email Compromise)
-- ISACA Financial Services Audit/Assurance Program
 - ISACA Ransomware Audit Program
 - NIST SP 800-209 (Storage Infrastructure Security)
 - Caremark / Marchand Fiduciary Duty Doctrine
 - Merck v. ACE American Insurance (NJ Superior Court 2021; War Exclusion Litigation)
-- ISACA M&A Audit/Assurance Program
 - BACKUP-IMMUTABILITY-FIRST principle (ransomware recovery: verify immutable + recent + complete + offline-isolated backups BEFORE ransom decision, restoration attempt, or insurance engagement; distinct from RESTORE-FIRST and TRUSTED-BASELINE-RESTORE)
 - NIST FIPS 203/204/205 (Post-Quantum Cryptography Standards)
 - IEC 62443-3-3 (Industrial Communication Networks Security)
@@ -1540,19 +1387,15 @@ sub-references like "(Managed Risk) and APO12.03").
 - GDPR Article 48 (Transfers Not Authorised by Union Law)
 - Hague Convention on Taking of Evidence Abroad in Civil or Commercial Matters
 - NIST SP 800-53 Rev 5 (Security and Privacy Controls for Information Systems)
-- ISACA IT Audit Standard 1207 (Irregularity and Illegal Acts)
 - ISO/IEC 27036-2 (Information Security for Supplier Relationships)
 - FCC Customer Proprietary Network Information (CPNI) Rules 47 CFR §64.2011
-- ISACA Cyber Insurance Audit Program
 - ISO/IEC 27040:2024 (Storage Security)
 
 ## Canonical citations added during pre-launch cleanup
 - COSO Internal Control - Integrated Framework (2013)
 - EU-US Data Privacy Framework (2023)
 - IIA Quality Assessment and Improvement Program (QAIP)
-- ISACA Business Continuity Management Audit/Assurance Program
 - ISACA Outsourced IT Environments Audit/Assurance Program
-- ISACA Software Development Life Cycle Audit/Assurance Program
 - Sarbanes-Oxley Act Section 802 (Records Retention / Criminal Penalties for Altering Documents)
 - GDPR Article 56 (One-Stop-Shop / Lead Supervisory Authority)
 - SEC Reg S-K Item 106 (Cybersecurity Risk Management, Strategy, Governance, and Incident Disclosure)
@@ -1578,11 +1421,6 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - ISACA CISA Review Manual, Domain 3 third-party software acquisition guidance
 - ISACA DevOps audit and assurance guidance
 - ISACA IS Audit and Assurance Standards
-- ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Continuous Auditing
-- ISACA IT Audit Standard 1205 (Evidence) and ITAF Tools and Techniques on Sampling
-- ISACA IT Audit Standards on Audit Function Management
-- ISACA IT Audit Standards on CSA
-- ISACA IT Audit Standards on Control Classifications
 - ISACA IT Audit and Assurance Standards / ITAF
 - ISACA ITAF 4th Edition Tools and Techniques (Audit Sampling)
 - ISACA ITAF 4th Edition Tools and Techniques (Use of CAATs)
@@ -1595,43 +1433,8 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 ### ITAF
 - ITAF (Information Technology Assurance Framework) — Standards and Guidelines layering
 - ITAF (Information Technology Assurance Framework) — Standards layer authority
-- ITAF General ISACA IT Audit Standard 1006 (Proficiency)
 - ITAF General Standards
-- ITAF General Standards layer
-- ITAF General Standards on Audit Charter and Reporting Line
-- ITAF General Standards on Audit Methodology
-- ITAF General Standards on Audit Quality Assurance
-- ITAF General Standards on Compliance with Multiple Frameworks
-- ITAF General Standards on Control Self-Assessment
-- ITAF General Standards on Proficiency, Due Care, and Documentation
-- ITAF General Standards on the IS Audit Function
-- ITAF Performance Standards on Agile Auditing
-- ITAF Performance Standards on Audit Documentation
-- ITAF Performance Standards on Audit Evidence
-- ITAF Performance Standards on Audit Objectives
-- ITAF Performance Standards on Audit Programs
-- ITAF Performance Standards on Audit Reporting
-- ITAF Performance Standards on Audit Reports
-- ITAF Performance Standards on CAATs and Data Analytics
-- ITAF Performance Standards on Engagement Resource Management
-- ITAF Performance Standards on Engagement Scope
-- ITAF Performance Standards on External Experts
-- ITAF Performance Standards on Follow-up
-- ITAF Performance Standards on Framework Selection
-- ITAF Performance Standards on IT General Controls
-- ITAF Performance Standards on Integrated Audits
-- ITAF Performance Standards on Logical Access
-- ITAF Performance Standards on Materiality and Risk
-- ITAF Performance Standards on Regulatory Compliance
-- ITAF Performance Standards on Resource Management
-- ITAF Performance Standards on Risk Treatment
-- ITAF Performance Standards on Special-Purpose Reports
-- ITAF Performance Standards on Testing
-- ITAF Performance Standards on Third-Party Audit Reports (SOC 2)
 - ITAF Tools and Techniques (Information Technology Assurance Framework)
-- ITAF Tools and Techniques on CAATs and Continuous Auditing
-- ITAF Tools and Techniques on Risk Assessment Techniques
-- ITAF section 1001
 - ITAF — IT Audit Framework (ISACA)
 
 ### IIA
@@ -2059,3 +1862,42 @@ questions (v10.0/v10.1), and miscellaneous additions from v9.8-v10.2 polish.
 - NIST SP 800-53 Rev 5 PE-14(2) (Monitoring with Alarms and Notifications)
 - NIST SP 800-53 Rev 5 RA-3 (Risk Assessment)
 - NIST SP 800-53 Rev 5 SI-4(13) (Analyze Traffic and Event Patterns)
+
+## Added with the ITAF 4th-edition citation pass (Oct 2026)
+
+- ISACA IT Audit Standard 1003 (Auditor Objectivity)
+- ISACA IT Audit Standard 1201 (Risk Assessment in Planning)
+- ISACA IT Audit Standard 1202 (Audit Scheduling)
+- ISA 320 (Materiality in Planning and Performing an Audit)
+- ISACA IT Audit Standard 1204 (Performance and Supervision)
+- ISACA ITAF Guideline 2208 (Information Technology Audit Sampling)
+- ISACA IT Audit Standard 1203 (Engagement Planning)
+- COBIT 2019 (Control Categories)
+- IIA GTAG: Continuous Auditing and Monitoring, 3rd Edition (2025)
+- ISACA Auditing Artificial Intelligence (white paper, 2018)
+- COBIT 2019 (APO01 Managed I&T Management Framework)
+- ISACA Code of Professional Ethics (disclosure of significant facts and objectivity)
+- COBIT 2019 (APO12 Managed Risk)
+- COBIT 2019 (Control Objectives and Practices)
+- AICPA AU-C 530 (Audit Sampling) (analogous guidance)
+- AICPA Peer Review Standards (analogous in public accounting practice)
+- ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)
+- COBIT 2019 (Management Objectives)
+- AICPA reporting standards (analogous)
+- COBIT 2019 (Management Objectives across DSS, BAI, APO domains)
+- HIPAA Privacy Rule (45 CFR Part 164)
+- GLBA Safeguards Rule (16 CFR Part 314)
+- NIST SP 800-53 (Defense in Depth Concept)
+- HIPAA Security Rule (45 CFR Part 164)
+- AICPA Trust Services Criteria (TSC 2017, revised)
+- ISACA Systems Development and Project Management Audit Program
+- UK Corporate Governance Code (2024), Provision 24 (Audit Committee)
+- GDPR Article 33(2) (Processor Notification to Controller)
+- NIST SP 800-218 (Secure Software Development Framework (SSDF) Version 1.1)
+- Scrum Guide 2020 (Schwaber and Sutherland)
+- ISACA IT Business Continuity/Disaster Recovery Audit Program
+- IETF RFC 7489 (Domain-based Message Authentication, Reporting, and Conformance (DMARC))
+- MITRE ATT&CK T1557.002 (Adversary-in-the-Middle: ARP Cache Poisoning)
+- NIST SP 800-177 Rev 1 (Trustworthy Email)
+- NIST SP 800-53 Rev 5 AU-5 (Response to Audit Logging Process Failures)
+- ISO/IEC 27002:2022 Control 8.32 (Change Management)
