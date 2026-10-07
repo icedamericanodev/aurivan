@@ -50,7 +50,7 @@ export function ReadinessRing({ score, size = 120, label = 'ready' }: { score: n
       style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
     >
       <Svg width={size} height={size} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
-        <Circle cx={size / 2} cy={size / 2} r={r} stroke={c.surface2} strokeWidth={stroke} fill="none" />
+        <Circle cx={size / 2} cy={size / 2} r={r} stroke={c.soft} strokeWidth={stroke} fill="none" />
         <AnimatedCircle
           cx={size / 2}
           cy={size / 2}
@@ -107,18 +107,18 @@ export function DomainRoute({
                   borderRadius: radius.pill,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: done ? c.accent : current ? c.surface2 : c.surface,
+                  backgroundColor: done ? c.accent : current ? c.soft : c.raised,
                   borderWidth: current ? 3 : 1,
-                  borderColor: done ? c.accent : current ? c.accent : c.border,
+                  borderColor: done ? c.accent : current ? c.accent : c.line,
                 }}
               >
                 {done ? (
-                  <Check size={ICON_SIZE.row} color={c.ink} strokeWidth={ICON_STROKE} />
+                  <Check size={ICON_SIZE.row} color={c.bg} strokeWidth={ICON_STROKE} />
                 ) : (
-                  <T v="label" num color={current ? c.accentText : c.text2} maxFontSizeMultiplier={1.3}>{d.id}</T>
+                  <T v="label" num color={current ? c.accentText : c.ink2} maxFontSizeMultiplier={1.3}>{d.id}</T>
                 )}
               </View>
-              {!last && <View style={{ width: 2, flex: 1, backgroundColor: done ? c.accent : c.border }} />}
+              {!last && <View style={{ width: 2, flex: 1, backgroundColor: done ? c.accent : c.line }} />}
             </View>
             <View style={{ flex: 1, paddingBottom: space.md }}>
               <T v="label">{d.short}</T>
@@ -156,12 +156,12 @@ export function WeekStrip({ days }: { days: boolean[] }) {
                 borderRadius: radius.pill,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: studied ? c.clay : c.surface2,
+                backgroundColor: studied ? c.clay : c.soft,
                 borderWidth: i === 6 ? 2 : 0,
                 borderColor: c.accent,
               }}
             >
-              {studied && <Check size={ICON_SIZE.inline} color={c.ink} strokeWidth={ICON_STROKE} />}
+              {studied && <Check size={ICON_SIZE.inline} color={c.bg} strokeWidth={ICON_STROKE} />}
             </View>
             <T v="meta">{DAY_LETTERS[dow]}</T>
           </View>

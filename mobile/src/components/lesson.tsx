@@ -21,7 +21,7 @@ const enterUp = (i = 0) => FadeInUp.duration(BASE).delay(i * STEP).reduceMotion(
 function Heading({ children }: { children: string }) {
   return (
     <Animated.View entering={enter(0)}>
-      <T v="title">{children}</T>
+      <T v="headline">{children}</T>
       <Gap h={space.lg} />
     </Animated.View>
   );
@@ -35,7 +35,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Animated.View entering={FadeIn.duration(BASE).reduceMotion(ReduceMotion.System)}>
-            <T v="eyebrow">{scene.kicker}</T>
+            <T v="caption">{scene.kicker}</T>
           </Animated.View>
           <Gap h={space.md} />
           <Animated.View entering={enter(1)}>
@@ -43,7 +43,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
           </Animated.View>
           <Gap h={space.lg} />
           <Animated.View entering={enter(2)}>
-            <T v="body" color={c.text2}>{scene.subtitle}</T>
+            <T v="body" color={c.ink2}>{scene.subtitle}</T>
           </Animated.View>
         </View>
       );
@@ -62,7 +62,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
       return (
         <View>
           <Animated.View entering={enter(0)}>
-            <T v="eyebrow">Real-life analogy</T>
+            <T v="caption">Real-life analogy</T>
           </Animated.View>
           <Gap h={space.sm} />
           <Heading>{scene.heading}</Heading>
@@ -84,13 +84,13 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
               <View
                 style={{
                   borderRadius: radius.md,
-                  borderColor: i === 0 ? c.accent : c.border,
+                  borderColor: i === 0 ? c.accent : c.line,
                   borderWidth: i === 0 ? 2 : 1,
-                  backgroundColor: i === 0 ? c.surface2 : c.surface,
+                  backgroundColor: i === 0 ? c.soft : c.raised,
                   padding: space.md,
                 }}
               >
-                <T v="label" color={i === 0 ? c.accentText : c.text}>{layer.label}</T>
+                <T v="label" color={i === 0 ? c.accentText : c.ink}>{layer.label}</T>
                 <T v="meta">{layer.note}</T>
               </View>
             </Animated.View>
@@ -116,7 +116,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
                     width: 28,
                     height: 28,
                     borderRadius: radius.pill,
-                    backgroundColor: c.surface2,
+                    backgroundColor: c.soft,
                     borderWidth: 1,
                     borderColor: c.accent,
                     alignItems: 'center',
@@ -125,7 +125,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
                 >
                   <T v="label" num color={c.accentText} maxFontSizeMultiplier={1.3}>{String(i + 1)}</T>
                 </View>
-                {i < scene.steps.length - 1 && <View style={{ width: 2, flex: 1, minHeight: 18, backgroundColor: c.border }} />}
+                {i < scene.steps.length - 1 && <View style={{ width: 2, flex: 1, minHeight: 18, backgroundColor: c.line }} />}
               </View>
               <View style={{ flex: 1, paddingBottom: space.lg }}>
                 <T v="label">{step.label}</T>
@@ -148,7 +148,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
           {[scene.left, scene.right].map((side, i) => (
             <Animated.View key={side.title} entering={enter(i + 1)} style={{ marginBottom: space.md }}>
               <Card style={{ borderColor: i === 0 ? c.accent : c.clay }}>
-                <T v="title" color={i === 0 ? c.accentText : c.clayText}>{side.title}</T>
+                <T v="headline" color={i === 0 ? c.accentText : c.clay}>{side.title}</T>
                 <Gap h={space.sm} />
                 {side.points.map((p) => (
                   <T key={p}>•  {p}</T>
@@ -168,18 +168,18 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
       return (
         <View>
           <Animated.View entering={enter(0)}>
-            <T v="eyebrow" color={c.warning}>The trap</T>
+            <T v="caption" color={c.tip}>The trap</T>
           </Animated.View>
           <Gap h={space.sm} />
           <Heading>{scene.heading}</Heading>
           <Animated.View entering={enter(1)}>
-            <Card style={{ backgroundColor: c.warningBg, borderColor: c.warningBg }}>
-              <T color={c.warning}>{scene.trap}</T>
+            <Card style={{ backgroundColor: c.tipBg, borderColor: c.tipBg }}>
+              <T color={c.tip}>{scene.trap}</T>
             </Card>
           </Animated.View>
           <Gap />
           <Animated.View entering={enter(2)}>
-            <T v="label" color={c.text2}>Why it’s wrong</T>
+            <T v="label" color={c.ink2}>Why it’s wrong</T>
             <Gap h={space.xs} />
             <T>{scene.why}</T>
           </Animated.View>
@@ -190,11 +190,11 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Animated.View entering={enter(0)}>
-            <T v="eyebrow">Exam-day shortcut</T>
+            <T v="caption">Exam-day shortcut</T>
           </Animated.View>
           <Gap h={space.md} />
           <Animated.View entering={enterUp(1)}>
-            <T v="title">{scene.body}</T>
+            <T v="headline">{scene.body}</T>
           </Animated.View>
         </View>
       );
@@ -218,16 +218,16 @@ function CheckScene({
   return (
     <View>
       <Animated.View entering={enter(0)}>
-        <T v="eyebrow">Quick check</T>
+        <T v="caption">Quick check</T>
         <Gap h={space.sm} />
-        <T v="title">{scene.question}</T>
+        <T v="headline">{scene.question}</T>
         <Gap />
       </Animated.View>
       {scene.options.map((opt, i) => {
         const isRight = i === scene.correctIndex;
         const state = !done ? 'idle' : isRight ? 'right' : i === picked ? 'wrong' : 'dim';
-        const border = state === 'right' ? c.correct : state === 'wrong' ? c.wrong : c.border;
-        const bg = state === 'right' ? c.correctBg : state === 'wrong' ? c.wrongBg : c.surface;
+        const border = state === 'right' ? c.correct : state === 'wrong' ? c.wrong : c.line;
+        const bg = state === 'right' ? c.correctBg : state === 'wrong' ? c.wrongBg : c.raised;
         return (
           <Animated.View key={opt} entering={enter(i + 1)}>
             <Pressable
@@ -250,7 +250,7 @@ function CheckScene({
                 backgroundColor: bg,
               }}
             >
-              <T color={state === 'dim' ? c.muted : c.text}>{`${state === 'right' ? '✓ ' : state === 'wrong' ? '✗ ' : ''}${opt}`}</T>
+              <T color={state === 'dim' ? c.muted : c.ink}>{`${state === 'right' ? '✓ ' : state === 'wrong' ? '✗ ' : ''}${opt}`}</T>
             </Pressable>
           </Animated.View>
         );
@@ -261,7 +261,7 @@ function CheckScene({
           <T v="label" color={picked === scene.correctIndex ? c.correct : c.wrong}>
             {picked === scene.correctIndex ? 'Correct.' : 'Not quite.'}
           </T>
-          <T color={c.text2}>{scene.explanation}</T>
+          <T color={c.ink2}>{scene.explanation}</T>
         </Animated.View>
       )}
     </View>

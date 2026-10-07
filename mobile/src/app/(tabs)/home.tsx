@@ -11,7 +11,7 @@ import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
 import { ActionRow, DomainRoute, ReadinessRing, WeekStrip } from '../../components/journey';
 import {
   BookOpen,
-  Flame,
+  Sprig,
   Gamepad2,
   ICON_STROKE,
   RotateCcw,
@@ -71,23 +71,23 @@ export default function Journey() {
     <Screen>
       <Animated.View entering={enter(0)}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="eyebrow" num>{`${j.cert.name} · ${countdown}`}</T>
+          <T v="caption" num>{`${j.cert.name} · ${countdown}`}</T>
           {j.streak > 0 && (
             <Row gap={space.xs} style={{ minHeight: 24 }}>
-              <Flame size={ICON_SIZE.inline} color={c.clayText} strokeWidth={ICON_STROKE} />
-              <T v="label" num color={c.clayText} accessibilityLabel={`${j.streak}-day streak`}>{String(j.streak)}</T>
+              <Sprig size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />
+              <T v="label" num color={c.clay} accessibilityLabel={`${j.streak}-day streak`}>{String(j.streak)}</T>
             </Row>
           )}
         </Row>
         <Gap h={space.sm} />
-        <T v="display">{j.plan.length ? 'Today’s plan' : 'Well done.'}</T>
+        <T v="display">{j.plan.length ? 'Today' : 'Well done.'}</T>
       </Animated.View>
       <Gap />
 
       {active && !active.finishedAt && (
         <Animated.View entering={enter(1)}>
           <Card onPress={() => router.push('/session')} accessibilityLabel="Resume your session" emphasis>
-            <T v="title">Resume: {active.title}</T>
+            <T v="headline">Resume: {active.title}</T>
             <T v="meta" num>Question {active.index + 1} of {active.questionIds.length}</T>
           </Card>
           <Gap />
@@ -100,8 +100,8 @@ export default function Journey() {
           <Row gap={space.lg}>
             <ReadinessRing score={j.readiness.score} />
             <View style={{ flex: 1 }}>
-              <T v="eyebrow">Stage</T>
-              <T v="title">{j.stageLabel}</T>
+              <T v="caption">Stage</T>
+              <T v="headline">{j.stageLabel}</T>
               <Gap h={space.sm} />
               <ProgressBar value={j.stageProgress} color={c.clay} height={6} />
               <Gap h={space.sm} />
@@ -120,7 +120,7 @@ export default function Journey() {
       <Animated.View entering={enter(3)}>
         {j.plan.length === 0 ? (
           <Card>
-            <T v="title">Exam done. How did it go?</T>
+            <T v="headline">Exam done. How did it go?</T>
             <T v="meta">Set a new date to plan what’s next.</T>
             <Gap h={space.md} />
             <Button kind="secondary" label="Open settings" onPress={() => router.push('/settings')} />
@@ -132,9 +132,9 @@ export default function Journey() {
               if (i === 0) {
                 return (
                   <View key={i} style={{ marginBottom: j.plan.length > 1 ? space.sm : 0 }}>
-                    <T v="eyebrow">Start here</T>
+                    <T v="caption">Start here</T>
                     <Gap h={space.xs} />
-                    <T v="title">{title}</T>
+                    <T v="headline">{title}</T>
                     {subtitle && <T v="meta">{subtitle}</T>}
                     <Gap h={space.md} />
                     <Button label="Start" onPress={() => runPlanItem(item, j.cert.id)} accessibilityHint={title} />
@@ -161,8 +161,8 @@ export default function Journey() {
           <Animated.View entering={enter(4)}>
             <Card style={{ borderColor: c.clay }}>
               <Row gap={space.sm}>
-                <Sparkles size={ICON_SIZE.row} color={c.clayText} strokeWidth={ICON_STROKE} />
-                <T v="title" color={c.clayText}>Exam-ready</T>
+                <Sparkles size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />
+                <T v="headline" color={c.clay}>Exam-ready</T>
               </Row>
               <T v="body">Above target in every domain. Short sessions keep it warm until exam day.</T>
             </Card>
@@ -174,7 +174,7 @@ export default function Journey() {
       {/* Domain route */}
       <Animated.View entering={enter(5)}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="title">Your route</T>
+          <T v="headline">Your route</T>
           <Pill label={`${j.cert.domains.length} domains`} />
         </Row>
         <Gap h={space.md} />
@@ -190,7 +190,7 @@ export default function Journey() {
       {/* Week strip */}
       <Animated.View entering={enter(6)}>
         <Card>
-          <T v="title">This week</T>
+          <T v="headline">This week</T>
           <T v="meta">One rest day a week keeps your streak.</T>
           <Gap h={space.md} />
           <WeekStrip days={j.week} />

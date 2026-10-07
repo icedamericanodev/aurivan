@@ -29,12 +29,12 @@ export default function You() {
         <Row>
           <Stat value={String(answered)} label="answered" />
           <Stat value={answered ? `${Math.round((mastered / answered) * 100)}%` : '—'} label="accuracy" color={c.accentText} />
-          <Stat value={String(streak)} label="day streak" color={c.clayText} />
+          <Stat value={String(streak)} label="day streak" color={c.clay} />
         </Row>
       </Card>
       <Gap />
 
-      <T v="title">Study tools</T>
+      <T v="headline">Study tools</T>
       <Gap h={space.sm} />
       <Card style={{ paddingVertical: space.xs }}>
         <ActionRow
@@ -47,7 +47,7 @@ export default function You() {
         <ActionRow
           icon={icon(Bookmark)}
           title="Saved questions"
-          subtitle={progress.bookmarks.length ? 'Practise your own revision set' : 'Tap ☆ Save on any question'}
+          subtitle={progress.bookmarks.length ? 'Practise your own revision set' : 'Tap the bookmark on any question'}
           right={progress.bookmarks.length ? String(progress.bookmarks.length) : undefined}
           onPress={() => guardedStart(() => startBookmarks(cert.id), () => router.push('/session'))}
         />
@@ -55,7 +55,7 @@ export default function You() {
       </Card>
       <Gap />
 
-      <T v="title">By domain</T>
+      <T v="headline">By domain</T>
       <Gap h={space.sm} />
       {cert.domains.map((d) => {
         const dm = readiness.domains.find((x) => x.domainId === d.id)!;
@@ -72,18 +72,18 @@ export default function You() {
       })}
 
       <Gap h={space.sm} />
-      <T v="title">Mock exams</T>
+      <T v="headline">Mock exams</T>
       <Gap h={space.sm} />
       {progress.mocks.length === 0 ? (
         <Card>
-          <T v="meta">No mocks yet. Journey will suggest one.</T>
+          <T v="meta">No mocks yet. Today will suggest one.</T>
         </Card>
       ) : (
         progress.mocks.slice(0, 10).map((m) => (
           <Card key={m.id} style={{ marginBottom: space.sm }}>
             <Row style={{ justifyContent: 'space-between' }}>
               <View>
-                <T v="title" num>{`${Math.round((m.correct / m.total) * 100)}%`}</T>
+                <T v="headline" num>{`${Math.round((m.correct / m.total) * 100)}%`}</T>
                 <T v="meta" num>{`${shortDate(m.finishedAt)} · ${m.total} questions`}</T>
               </View>
               <T v="meta" num>{`${m.minutesUsed} min`}</T>

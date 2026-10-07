@@ -27,7 +27,7 @@ export default function LessonPlayer() {
   if (!lesson) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.lg, justifyContent: 'center' }}>
-        <T v="title" center>This lesson isn’t available.</T>
+        <T v="headline" center>This lesson isn’t available.</T>
         <Gap />
         <Button label="Back" onPress={() => router.back()} />
       </SafeAreaView>
@@ -75,7 +75,7 @@ export default function LessonPlayer() {
                 flex: 1,
                 height: 4,
                 borderRadius: radius.pill,
-                backgroundColor: i <= index ? c.accent : c.surface2,
+                backgroundColor: i <= index ? c.accent : c.soft,
               }}
             />
           ))}
@@ -95,7 +95,7 @@ export default function LessonPlayer() {
         )}
       </ScrollView>
 
-      <View style={{ padding: space.lg, borderTopWidth: 1, borderTopColor: c.border, backgroundColor: c.surface }}>
+      <View style={{ padding: space.lg, borderTopWidth: 1, borderTopColor: c.line, backgroundColor: c.raised }}>
         <Row gap={space.sm}>
           <Button
             kind="secondary"

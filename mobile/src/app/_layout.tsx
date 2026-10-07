@@ -1,12 +1,18 @@
 /**
  * Root layout — runs once when the app opens.
  * 1. Keeps the splash screen up while fonts and saved progress load.
- *    One family (Plus Jakarta Sans) in three weights: 400, 600, 700.
+ *    Grove v2 uses two families (docs/mobile/DESIGN_SYSTEM.md §1):
+ *    Fraunces 400 / 400 italic / 500 for reading moments and numbers,
+ *    Figtree 400 / 500 / 600 for everything you tap or scan.
  * 2. Wraps every screen in a navigation "stack" (screens slide in/out).
  */
-import { PlusJakartaSans_400Regular } from '@expo-google-fonts/plus-jakarta-sans/400Regular';
-import { PlusJakartaSans_600SemiBold } from '@expo-google-fonts/plus-jakarta-sans/600SemiBold';
-import { PlusJakartaSans_700Bold } from '@expo-google-fonts/plus-jakarta-sans/700Bold';
+// Per-weight imports so only these six font files are bundled.
+import { Figtree_400Regular } from '@expo-google-fonts/figtree/400Regular';
+import { Figtree_500Medium } from '@expo-google-fonts/figtree/500Medium';
+import { Figtree_600SemiBold } from '@expo-google-fonts/figtree/600SemiBold';
+import { Fraunces_400Regular } from '@expo-google-fonts/fraunces/400Regular';
+import { Fraunces_400Regular_Italic } from '@expo-google-fonts/fraunces/400Regular_Italic';
+import { Fraunces_500Medium } from '@expo-google-fonts/fraunces/500Medium';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,6 +20,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { initNotifications } from '../lib/reminders';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Grain } from '../components/ui';
 import { useHydrated } from '../store/useHydrated';
 import { useTheme } from '../theme/useTheme';
 
@@ -24,9 +31,12 @@ initNotifications();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    PlusJakartaSans_400Regular,
-    PlusJakartaSans_600SemiBold,
-    PlusJakartaSans_700Bold,
+    Fraunces_400Regular,
+    Fraunces_400Regular_Italic,
+    Fraunces_500Medium,
+    Figtree_400Regular,
+    Figtree_500Medium,
+    Figtree_600SemiBold,
   });
   const hydrated = useHydrated();
   const { c, isDark } = useTheme();
@@ -60,6 +70,8 @@ export default function RootLayout() {
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
       </Stack>
+      {/* Paper grain over every screen (touch-through, hidden from screen readers). */}
+      <Grain />
     </SafeAreaProvider>
   );
 }

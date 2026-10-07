@@ -72,7 +72,7 @@ export default function Practice() {
       </Card>
       <Gap />
 
-      <T v="title">Build a set</T>
+      <T v="headline">Build a set</T>
       <Gap h={space.sm} />
       {/* One horizontal row per facet: domain, difficulty, size. */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={facetScroll} contentContainerStyle={facetRow}>
@@ -114,13 +114,13 @@ export default function Practice() {
       <Gap h={space.xl} />
 
       <Row style={{ justifyContent: 'space-between' }}>
-        <T v="title">Mock exams</T>
+        <T v="headline">Mock exams</T>
         <Timer size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
       </Row>
       <Gap h={space.sm} />
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="title">Mini mock</T>
+          <T v="headline">Mini mock</T>
           <Pill label={`${miniMinutes} min`} />
         </Row>
         <T v="meta" num>{`${mini} questions at exam pace. Feedback at the end.`}</T>
@@ -130,7 +130,7 @@ export default function Practice() {
       <Gap h={space.sm} />
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
-          <T v="title">Full mock</T>
+          <T v="headline">Full mock</T>
           <Pill label={`${cert.exam.minutes / 60} hrs`} />
         </Row>
         <T v="meta" num>{`${cert.exam.questions} questions, weighted like the real ${cert.name}.`}</T>

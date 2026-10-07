@@ -38,12 +38,12 @@ export default function Learn() {
             <Row style={{ justifyContent: 'space-between' }}>
               <Row gap={space.sm}>
                 <DomainDot domain={d} />
-                <T v="eyebrow" num>{`Domain ${d.id} · ${d.weight}%`}</T>
+                <T v="caption" num>{`Domain ${d.id} · ${d.weight}%`}</T>
               </Row>
               <T v="meta" num>{`${done}/${lessons.length} lessons`}</T>
             </Row>
             <Gap h={space.xs} />
-            <T v="title">{d.name}</T>
+            <T v="headline">{d.name}</T>
             <Gap h={space.sm} />
             <ProgressBar value={mastery} color={domainColor(d.tone, isDark)} height={4} />
             <Gap h={space.md} />
@@ -54,7 +54,7 @@ export default function Learn() {
                   key={l.id}
                   onPress={() => router.push(`/lesson/${l.id}`)}
                   accessibilityLabel={`${l.title}, ${l.minutes} minutes${isDone ? ', completed' : ''}`}
-                  style={{ backgroundColor: c.surface2, borderColor: c.surface2, padding: space.md, marginBottom: space.sm }}
+                  style={{ backgroundColor: c.soft, borderColor: c.soft, padding: space.md, marginBottom: space.sm }}
                 >
                   <Row gap={space.md}>
                     <View
@@ -64,13 +64,13 @@ export default function Learn() {
                         borderRadius: radius.pill,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: isDone ? c.accent : c.surface,
+                        backgroundColor: isDone ? c.accent : c.raised,
                         borderWidth: isDone ? 0 : 1,
                         borderColor: c.accent,
                       }}
                     >
                       {isDone ? (
-                        <Check size={ICON_SIZE.inline} color={c.ink} strokeWidth={ICON_STROKE} />
+                        <Check size={ICON_SIZE.inline} color={c.bg} strokeWidth={ICON_STROKE} />
                       ) : (
                         <T v="label" color={c.accentText}>▶</T>
                       )}

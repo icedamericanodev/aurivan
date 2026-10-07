@@ -63,8 +63,8 @@ export default function Mistakes() {
       {topSlip && (
         <>
           <Card emphasis>
-            <T v="eyebrow">Your pattern</T>
-            <T v="title" num>{`${topSlip.label} · ${topSlip.n}`}</T>
+            <T v="caption">Your pattern</T>
+            <T v="headline" num>{`${topSlip.label} · ${topSlip.n}`}</T>
             <T v="meta">{topSlip.coach}</T>
           </Card>
           <Gap />
@@ -87,14 +87,14 @@ export default function Mistakes() {
       )}
 
       <Row style={{ justifyContent: 'space-between' }}>
-        <T v="title" num>{showFixed ? 'All mistakes' : `${open.length} open`}</T>
+        <T v="headline" num>{showFixed ? 'All mistakes' : `${open.length} open`}</T>
         <Chip label={showFixed ? 'Hide fixed' : 'Show fixed'} selected={showFixed} onPress={() => setShowFixed(!showFixed)} />
       </Row>
       <Gap h={space.sm} />
 
       {entries.length === 0 ? (
         <Card>
-          <T v="title">Nothing here yet</T>
+          <T v="headline">Nothing here yet</T>
           <T v="meta">Missed questions land here.</T>
         </Card>
       ) : (
@@ -103,18 +103,18 @@ export default function Mistakes() {
           if (!q) return null;
           return (
             <Card key={id} style={{ marginBottom: space.md }}>
-              <T v="eyebrow" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
+              <T v="caption" num>{`${m.resolved ? 'Fixed · ' : ''}${shortDate(m.at)}`}</T>
               <Gap h={space.xs} />
               <T v="body">{q.stem.length > 160 ? `${q.stem.slice(0, 160)}…` : q.stem}</T>
               <Gap h={space.md} />
               {m.picked && (
                 <>
-                  <T v="eyebrow" color={c.wrong}>✗ Your answer</T>
+                  <T v="caption" color={c.wrong}>✗ Your answer</T>
                   <T v="meta" numberOfLines={2}>{q.options[m.picked]}</T>
                   <Gap h={space.sm} />
                 </>
               )}
-              <T v="eyebrow" color={c.correct}>✓ Best answer</T>
+              <T v="caption" color={c.correct}>✓ Best answer</T>
               <T v="meta" numberOfLines={2}>{q.options[q.correct]}</T>
               {!m.resolved && (
                 <>

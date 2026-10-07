@@ -58,7 +58,7 @@ export default function CalibratedSprint() {
           setResults([]);
         }}
       >
-        <T v="title">Your calibration</T>
+        <T v="headline">Your calibration</T>
         <Gap h={space.sm} />
         {calibration(results).map((b) => (
           <View key={b.stake} style={{ marginBottom: space.md }}>
@@ -70,7 +70,7 @@ export default function CalibratedSprint() {
             <ProgressBar value={b.accuracy ?? 0} color={b.stake === 3 ? c.accent : c.clay} height={6} />
           </View>
         ))}
-        <T color={c.text2}>{VERDICT_COPY[verdict]}</T>
+        <T color={c.ink2}>{VERDICT_COPY[verdict]}</T>
       </RoundEnd>
     );
   }
@@ -115,7 +115,7 @@ export default function CalibratedSprint() {
           />
         ) : (
           <View>
-            <T v="label" center color={stake ? c.accentText : c.text2}>
+            <T v="label" center color={stake ? c.accentText : c.ink2}>
               {stake ? 'Now choose your answer' : 'Stake first: how sure will you be?'}
             </T>
             <Gap h={space.sm} />

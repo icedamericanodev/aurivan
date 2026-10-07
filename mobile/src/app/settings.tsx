@@ -77,7 +77,7 @@ export default function Settings() {
       <T v="display">Settings</T>
       <Gap />
 
-      <T v="title">Certification</T>
+      <T v="headline">Certification</T>
       <Gap h={space.sm} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         {CERTIFICATIONS.map((x) => (
@@ -95,7 +95,7 @@ export default function Settings() {
       </View>
       <Gap />
 
-      <T v="title">Appearance</T>
+      <T v="headline">Appearance</T>
       <Gap h={space.sm} />
       <Row gap={space.sm}>
         {THEMES.map((t) => (
@@ -104,7 +104,7 @@ export default function Settings() {
       </Row>
       <Gap />
 
-      <T v="title">Daily goal</T>
+      <T v="headline">Daily goal</T>
       <Gap h={space.sm} />
       <Row gap={space.sm}>
         {GOALS.map((g) => (
@@ -116,7 +116,7 @@ export default function Settings() {
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
           <View style={{ flex: 1 }}>
-            <T v="title">Daily reminder</T>
+            <T v="headline">Daily reminder</T>
             <T v="meta">
               {remindersSupported
                 ? `Every day at ${String(s.reminder.hour).padStart(2, '0')}:${String(s.reminder.minute).padStart(2, '0')}`
@@ -133,7 +133,7 @@ export default function Settings() {
         <Gap h={space.md} />
         <Row style={{ justifyContent: 'space-between' }}>
           <View style={{ flex: 1 }}>
-            <T v="title">Shuffle answer options</T>
+            <T v="headline">Shuffle answer options</T>
             <T v="meta">Stops you memorising letters.</T>
           </View>
           <Toggle accessibilityLabel="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} />
@@ -144,7 +144,7 @@ export default function Settings() {
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
       <Gap h={space.xl} />
 
-      <T v="title">About</T>
+      <T v="headline">About</T>
       <Gap h={space.sm} />
       <T v="meta">
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.

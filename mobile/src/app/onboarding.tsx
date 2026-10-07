@@ -37,7 +37,7 @@ export default function Onboarding() {
   if (step === 1) {
     return (
       <Screen>
-        <T v="eyebrow">Aurivan · Master modern risk</T>
+        <T v="caption">Aurivan · Master modern risk</T>
         <Gap h={space.sm} />
         <T v="display">Which exam are you preparing for?</T>
         <Gap h={space.sm} />
@@ -54,15 +54,15 @@ export default function Onboarding() {
               style={{
                 marginBottom: space.md,
                 // Selected = 2px ink border (green never means "selected").
-                borderColor: selected ? c.text : c.border,
+                borderColor: selected ? c.ink : c.line,
                 borderWidth: selected ? 2 : 1,
               }}
             >
               <Row style={{ justifyContent: 'space-between' }}>
-                <T v="title" color={available ? c.text : c.muted}>{selected ? `✓ ${cert.name}` : cert.name}</T>
+                <T v="headline" color={available ? c.ink : c.muted}>{selected ? `✓ ${cert.name}` : cert.name}</T>
                 {!available && <Pill label="Coming soon" />}
               </Row>
-              <T v="meta" color={available ? c.text2 : c.muted}>{cert.fullName}</T>
+              <T v="meta" color={available ? c.ink2 : c.muted}>{cert.fullName}</T>
             </Card>
           );
         })}

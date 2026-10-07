@@ -60,12 +60,12 @@ export default function Play() {
               </IconTile>
               <View style={{ flex: 1 }}>
                 <Row style={{ justifyContent: 'space-between' }}>
-                  <T v="title">{g.name}</T>
+                  <T v="headline">{g.name}</T>
                   <T v="meta" num>{best !== undefined ? `Best ${best}` : '2 min'}</T>
                 </Row>
                 <T v="meta">{g.hook}</T>
                 <Gap h={space.xs} />
-                <T v="eyebrow">{g.skill}</T>
+                <T v="caption">{g.skill}</T>
               </View>
             </Row>
           </Card>

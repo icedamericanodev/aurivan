@@ -52,7 +52,7 @@ export function GameFrame({
   const { c } = useTheme();
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <View style={{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderBottomWidth: 1, borderBottomColor: c.border }}>
+      <View style={{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderBottomWidth: 1, borderBottomColor: c.line }}>
         <Row style={{ justifyContent: 'space-between' }}>
           <Pressable
             accessibilityRole="button"
@@ -72,7 +72,7 @@ export function GameFrame({
       </View>
       <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl }}>{children}</ScrollView>
       {footer && (
-        <View style={{ padding: space.lg, borderTopWidth: 1, borderTopColor: c.border, backgroundColor: c.surface, gap: space.sm }}>
+        <View style={{ padding: space.lg, borderTopWidth: 1, borderTopColor: c.line, backgroundColor: c.raised, gap: space.sm }}>
           {footer}
         </View>
       )}
@@ -89,7 +89,7 @@ export function QuestionHead({ q }: { q: PackQuestion }) {
           <Gap h={space.md} />
         </>
       )}
-      <T v="title">{q.stem}</T>
+      <T v="headline">{q.stem}</T>
       <Gap />
     </Animated.View>
   );
@@ -117,7 +117,7 @@ export function RoundEnd({
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.xl, flexGrow: 1, justifyContent: 'center' }}>
         <Animated.View entering={ZoomIn.duration(320).reduceMotion(ReduceMotion.System)}>
-          <T v="eyebrow" center>Round complete</T>
+          <T v="caption" center>Round complete</T>
           <Gap h={space.sm} />
           <T v="display" num center>{`${score}`}</T>
           <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${best}` : ''}`}</T>

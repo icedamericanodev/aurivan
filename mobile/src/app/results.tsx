@@ -6,7 +6,8 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, DomainDot, Gap, ProgressBar, Row, Screen, Stat, T } from '../components/ui';
+import { OptionCard } from '../components/quiz';
+import { Button, DomainDot, Gap, ProgressBar, Row, Screen, Section, Stat, T } from '../components/ui';
 import { domainColor, getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
@@ -27,7 +28,7 @@ export default function Results() {
   if (!active || !score) {
     return (
       <Screen>
-        <T v="title">No results to show.</T>
+        <T v="hero">No results to show.</T>
         <Gap />
         <Button label="Back to Home" onPress={() => router.replace('/home')} />
       </Screen>
@@ -52,29 +53,23 @@ export default function Results() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <T v="eyebrow">{active.title}</T>
-      <Gap h={space.sm} />
-      <T v="display">{pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}</T>
-      <Gap />
-      <Card>
-        <Row>
-          <Stat value={`${pct}%`} label="score" color={pct >= 75 ? c.correct : pct >= 60 ? c.warning : c.wrong} />
-          <Stat value={`${score.correct}/${denominator}`} label="correct" />
-          <Stat value={String(missed.length)} label="to review" />
-        </Row>
-        {active.mode === 'mock' && (
-          <>
-            <Gap h={space.md} />
-            <T v="meta" center>
-              Practice scores are not scaled exam scores. {cert.exam.passingNote}
-            </T>
-          </>
-        )}
-      </Card>
-      <Gap />
+      <T v="meta">{active.title}</T>
+      <Gap h={space.xs} />
+      <T v="display" accessibilityRole="header">{pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}</T>
+      {/* Stat row: no box, hairlines above and below (spec §6 "Stat tile"). */}
+      <Row gap={space.xl} style={{ marginTop: space.xl, paddingVertical: space.lg, borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }}>
+        <Stat value={`${pct}%`} label="score" color={pct >= 75 ? c.correct : pct >= 60 ? c.tip : c.wrong} />
+        <Stat value={`${score.correct}/${denominator}`} label="correct" />
+        <Stat value={String(missed.length)} label="to review" />
+      </Row>
+      {active.mode === 'mock' && (
+        <T v="meta" style={{ marginTop: space.md }}>
+          Practice scores are not scaled exam scores. {cert.exam.passingNote}
+        </T>
+      )}
 
-      <T v="title">By domain</T>
-      <Gap h={space.sm} />
+      <Section title="By domain" />
+      <Gap h={space.md} />
       {cert.domains
         .filter((d) => score.byDomain[d.id])
         .map((d) => {
@@ -104,8 +99,7 @@ export default function Results() {
       <Button kind="secondary" label="Done" onPress={done} />
       <Gap />
 
-      <T v="title">Review answers</T>
-      <Gap h={space.sm} />
+      <Section title="Review answers" />
       {active.questionIds.map((id, i) => {
         const q = findQuestion(active.certId, id);
         const perm = active.perms[id];
@@ -115,36 +109,46 @@ export default function Results() {
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
+        const correctDisplay = originalToDisplay(q.correct, perm);
         return (
-          <Pressable key={id} accessibilityRole="button" accessibilityLabel={`Question ${i + 1}, ${status}. Tap to ${open ? 'collapse' : 'expand'}`} onPress={() => setOpenId(open ? null : id)}>
-            <Card style={{ marginBottom: space.sm }}>
+          // A list row with a hairline below, not a card (spec §5).
+          <View key={id} style={{ borderBottomWidth: 1, borderBottomColor: c.line }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ expanded: open }}
+              accessibilityLabel={`Question ${i + 1}, ${status}. Tap to ${open ? 'collapse' : 'expand'}`}
+              onPress={() => setOpenId(open ? null : id)}
+              style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
+            >
               <Row style={{ justifyContent: 'space-between' }}>
-                <T v="label" num>{`Q${i + 1}`}</T>
+                <T v="label" num>{`Question ${i + 1}`}</T>
                 <T v="label" color={color}>{status}</T>
               </Row>
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
-              {open && (
-                <>
-                  <Gap h={space.sm} />
-                  {r && !r.correct && picked && (
-                    <T color={c.wrong}>Your answer ({r.display}): {q.options[picked]}</T>
-                  )}
-                  <T color={c.correct}>Best answer ({originalToDisplay(q.correct, perm)}): {q.options[q.correct]}</T>
-                  <Gap h={space.sm} />
-                  <T v="body" color={c.text2}>{renderText(q.explanation, perm)}</T>
-                  {trapTip(q) !== '' && (
-                    <>
-                      <Gap h={space.sm} />
-                      <T v="meta">
-                        {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
-                        {renderText(trapTip(q), perm)}
-                      </T>
-                    </>
-                  )}
-                </>
-              )}
-            </Card>
-          </Pressable>
+            </Pressable>
+            {open && (
+              <View style={{ paddingBottom: space.lg }}>
+                {r && !r.correct && picked && (
+                  <OptionCard
+                    letter={r.display}
+                    text={q.options[picked] ?? ''}
+                    state="wrong"
+                    tag={`Your answer · ${r.display}`}
+                    note={q.wrongExplanations[picked] ? renderText(q.wrongExplanations[picked]!, perm) : undefined}
+                  />
+                )}
+                <OptionCard letter={correctDisplay} text={q.options[q.correct] ?? ''} state="correct" tag={`Best answer · ${correctDisplay}`} />
+                <T v="headline">{`Why ${correctDisplay}`}</T>
+                <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
+                {trapTip(q) !== '' && (
+                  <T v="small" color={c.ink2}>
+                    {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
+                    {renderText(trapTip(q), perm)}
+                  </T>
+                )}
+              </View>
+            )}
+          </View>
         );
       })}
     </Screen>

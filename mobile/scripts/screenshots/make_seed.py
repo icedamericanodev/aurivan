@@ -35,9 +35,16 @@ ids = [i for i in os.environ.get("SHOT_QUESTIONS", "d1_010,d1_008,d1_053").split
 session = {"state": {"active": {"id": "demo", "mode": "practice", "certId": "cisa", "title": "Practice · IS Audit",
            "questionIds": ids, "perms": {i: ["A", "B", "C", "D"] for i in ids}, "index": 0, "responses": {},
            "flagged": [], "startedAt": now}}, "version": 1}
-# The shoot script answers each sample correctly, so it needs the keys.
+# The shoot script answers the samples, so it needs the letters to tap.
+# The FIRST sample picks the runner-up named in its "Final two:" tip, so the
+# shots show the wrong-answer path ("Not quite", your answer + why); the
+# rest are answered correctly. Questions without a Final two tip pick the key.
+import re
 bank = {q["id"]: q for d in range(1, 6) for q in json.loads((GEN / f"d{d}.json").read_text())}
-shot_keys = ",".join(bank[i]["correct"] for i in ids)
+def runner_up(q):
+    tip = next((t for t in q["tips"] if t.startswith("Final two:")), "")
+    return next((l for l in re.findall(r"\{\{([A-D])\}\}", tip) if l != q["correct"]), q["correct"])
+shot_keys = ",".join(runner_up(bank[i]) if n == 0 else bank[i]["correct"] for n, i in enumerate(ids))
 Path(sys.argv[1]).write_text(json.dumps({"__shotKeys": shot_keys,
                                          "aurivan.progress.v1": json.dumps(progress),
                                          "aurivan.settings.v1": json.dumps(settings),

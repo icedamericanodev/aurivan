@@ -54,7 +54,7 @@ export default function PriorityLens() {
           setPick(null);
         }}
       >
-        <T center color={c.text2}>
+        <T center color={c.ink2}>
           Before reading the options, find the priority word. It tells you which of several true answers the examiner wants.
         </T>
       </RoundEnd>
@@ -101,7 +101,7 @@ export default function PriorityLens() {
           />
         ) : !word ? (
           <>
-            <T v="label" center color={c.text2}>Step 1: which word decides this?</T>
+            <T v="label" center color={c.ink2}>Step 1: which word decides this?</T>
             <Row gap={space.sm} style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               {choices.map((w) => (
                 <Chip key={w} label={w} selected={false} onPress={() => setWord(w)} />

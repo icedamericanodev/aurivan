@@ -1,4 +1,4 @@
-import { tipParts } from '../engine/tips';
+import { runnerUp, tipParts } from '../engine/tips';
 
 describe('tipParts', () => {
   it('uses the v2 prefix as the label and strips it from the body', () => {
@@ -10,5 +10,18 @@ describe('tipParts', () => {
     expect(tipParts('Trap is B: tempting.', 0)).toEqual({ label: 'The trap', body: 'Trap is B: tempting.' });
     expect(tipParts('x', 3).label).toBe('One more thing');
     expect(tipParts('x', 7).label).toBe('Tip');
+  });
+});
+
+describe('runnerUp', () => {
+  const tips = ['Eliminate: {{A}} and {{D}} miss it.', 'Final two: {{B}} beats {{C}} because …', 'Exam cue: stop it first.'];
+  it('names the other option in the Final two tip (original letters)', () => {
+    expect(runnerUp(tips, 'B')).toBe('C');
+  });
+  it('works when the key is mentioned second', () => {
+    expect(runnerUp(['Final two: {{D}} beats {{B}} …'], 'B')).toBe('D');
+  });
+  it('is undefined for older tips without a Final two line', () => {
+    expect(runnerUp(['Trap is B: tempting.'], 'A')).toBeUndefined();
   });
 });

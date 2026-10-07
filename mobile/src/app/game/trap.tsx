@@ -43,7 +43,7 @@ export default function TrapSpotter() {
           setAnswerPick(null);
         }}
       >
-        <T center color={c.text2}>
+        <T center color={c.ink2}>
           Most wrong answers on the real exam are true statements that are not the BEST response. Naming the trap is half the work.
         </T>
       </RoundEnd>
@@ -103,7 +103,7 @@ export default function TrapSpotter() {
             }}
           />
         ) : (
-          <T v="label" center color={phase === 'trap' ? c.warning : c.accentText}>
+          <T v="label" center color={phase === 'trap' ? c.tip : c.accentText}>
             {phase === 'trap' ? 'Step 1: tap the trap' : 'Step 2: tap the BEST answer'}
           </T>
         )
