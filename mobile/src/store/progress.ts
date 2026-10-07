@@ -10,6 +10,7 @@ import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import type { AnswerRecord } from '../engine/readiness';
+import type { ThinkingSlip } from '../engine/slipCoach';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { persistStorage } from './storage';
@@ -23,14 +24,16 @@ export interface MockResult {
   byDomain: Record<string, { total: number; correct: number }>;
 }
 
-/** Why a learner missed a question — tagged by them in the Mistake Journal. */
-export type ThinkingSlip = 'role' | 'priority' | 'tech-first' | 'symptom' | 'misread' | 'knowledge';
+// The slip tags now live in the engine (slip coach); re-exported for screens.
+export type { ThinkingSlip };
 
 export interface MistakeEntry {
   picked?: Letter; // ORIGINAL letter chosen (undefined for a skipped mock item)
   at: number;
   slip?: ThinkingSlip;
   resolved?: boolean; // answered correctly since — the mistake is fixed
+  /** How sure the learner said they were (optional: older saves have none). */
+  confidence?: Confidence;
 }
 
 export type GameId = 'trap' | 'sprint' | 'priority';
@@ -93,12 +96,13 @@ interface ProgressState {
     questionId: string,
     correct: boolean,
     confidence?: Confidence,
-    opts?: { schedule?: boolean },
+    /** schedule: false for mock exams. assisted: answered after "Coach me". */
+    opts?: { schedule?: boolean; assisted?: boolean },
   ) => void;
   /** Put questions into review (due now) WITHOUT counting them as answered. */
   queueForReview: (certId: string, questionIds: string[]) => void;
   toggleBookmark: (certId: string, questionId: string) => void;
-  recordMistake: (certId: string, questionId: string, picked?: Letter) => void;
+  recordMistake: (certId: string, questionId: string, picked?: Letter, confidence?: Confidence) => void;
   tagMistake: (certId: string, questionId: string, slip: ThinkingSlip) => void;
   completeLesson: (certId: string, lessonId: string) => void;
   recordGame: (certId: string, game: GameId, score: number) => void;
@@ -142,6 +146,8 @@ export const useProgress = create<ProgressState>()(
               correctCount: (prev?.correctCount ?? 0) + (correct ? 1 : 0),
               lastCorrect: correct,
               lastAt: now,
+              // Only written when true, so clean answers keep the old shape.
+              ...(opts?.assisted ? { lastAssisted: true } : {}),
             },
           };
           // Mock exams record answers but don't reschedule reviews mid-exam.
@@ -190,11 +196,11 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, bookmarks } } };
         }),
 
-      recordMistake: (certId, questionId, picked) =>
+      recordMistake: (certId, questionId, picked, confidence) =>
         set((s) => {
           const cp = normalize(s.byCert[certId]);
           const prev = cp.mistakes[questionId];
-          const entry: MistakeEntry = { picked, at: Date.now(), slip: prev?.slip, resolved: false };
+          const entry: MistakeEntry = { picked, at: Date.now(), slip: prev?.slip, resolved: false, ...(confidence ? { confidence } : {}) };
           return { byCert: { ...s.byCert, [certId]: { ...cp, mistakes: { ...cp.mistakes, [questionId]: entry } } } };
         }),
 
@@ -242,6 +248,8 @@ export const useProgress = create<ProgressState>()(
       name: 'aurivan.progress.v1',
       storage: persistStorage,
       // v2: the single `day` plan became `days`, keyed by cert id.
+      // Phase 5a added only OPTIONAL fields (AnswerRecord.lastAssisted,
+      // MistakeEntry.confidence), so no version bump: old saves load as-is.
       version: 2,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

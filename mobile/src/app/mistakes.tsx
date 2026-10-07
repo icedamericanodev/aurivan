@@ -7,6 +7,10 @@
  * transfers to questions they've never seen. Answering a question correctly
  * later marks its mistake fixed.
  *
+ * "Your pattern" (the slip coach, engine/slipCoach.ts): once 5+ mistakes
+ * are tagged, it names the most frequent slip and offers the mini-game
+ * that drills it in one tap. Below 5, a quiet line says when it appears.
+ *
  * Nothing open → the seedling empty state (spec §11), with teaching tags
  * that preview the trap types that will be filed here.
  */
@@ -16,23 +20,31 @@ import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
-import { BigNum, Button, Chip, Gap, PushedHeader, Row, Section, T } from '../components/ui';
+import { Button, Chip, Gap, PushedHeader, Section, T } from '../components/ui';
 import { findQuestion } from '../content/loader';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
+import { slipCoach, SLIP_COACH_MIN, type DrillGame, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-const SLIPS: { id: ThinkingSlip; label: string; coach: string }[] = [
-  { id: 'role', label: 'Wrong role', coach: 'Ask who you are in the question: auditor, manager or board?' },
-  { id: 'priority', label: 'Missed FIRST/BEST', coach: 'Find the priority word before reading the options.' },
-  { id: 'tech-first', label: 'Tech before governance', coach: 'Policy, ownership and approval usually come before tools.' },
-  { id: 'symptom', label: 'Fixed the symptom', coach: 'Prefer the option that removes the root cause.' },
-  { id: 'misread', label: 'Misread', coach: 'Slow down on the last line of the stem.' },
-  { id: 'knowledge', label: 'Didn’t know it', coach: 'A content gap. A lesson or review will close it.' },
+const SLIPS: { id: ThinkingSlip; label: string }[] = [
+  { id: 'role', label: 'Wrong role' },
+  { id: 'priority', label: 'Missed FIRST/BEST' },
+  { id: 'tech-first', label: 'Tech before governance' },
+  { id: 'symptom', label: 'Fixed the symptom' },
+  { id: 'misread', label: 'Misread' },
+  { id: 'knowledge', label: 'Didn’t know it' },
 ];
+
+/** The mini-game each slip pattern opens (names match the Play tab). */
+const GAME_NAME: Record<DrillGame, string> = {
+  trap: 'Trap Spotter',
+  priority: 'Priority Lens',
+  sprint: 'Calibrated Sprint',
+};
 
 export default function Mistakes() {
   const { c } = useTheme();
@@ -51,8 +63,17 @@ export default function Mistakes() {
   );
   const open = Object.entries(progress.mistakes).filter(([, m]) => !m.resolved);
   const fixedCount = Object.keys(progress.mistakes).length - open.length;
-  const slipCounts = SLIPS.map((s) => ({ ...s, n: open.filter(([, m]) => m.slip === s.id).length })).filter((s) => s.n > 0);
-  const topSlip = [...slipCounts].sort((a, b) => b.n - a.n)[0];
+  // The slip coach reads EVERY tagged mistake (fixed ones too: a habit is
+  // still a habit), joined with its question for the runner-up and
+  // priority-word checks. Letters stay ORIGINAL letters throughout.
+  const pattern = useMemo(() => {
+    const inputs: SlipInput[] = [];
+    for (const [id, m] of Object.entries(progress.mistakes)) {
+      const q = findQuestion(cert.id, id);
+      if (q) inputs.push({ slip: m.slip, picked: m.picked, confidence: m.confidence, correct: q.correct, tips: q.tips, stem: q.stem });
+    }
+    return slipCoach(inputs);
+  }, [cert.id, progress.mistakes]);
 
   if (entries.length === 0) {
     return (
@@ -73,15 +94,33 @@ export default function Mistakes() {
         <PushedHeader title="Mistake journal" onBack={() => router.back()} />
         <T v="meta" style={{ marginTop: space.sm }}>Tag why you slipped. Find your pattern.</T>
 
-        {topSlip && (
+        {pattern.ready ? (
+          // Not a card: a green left rule, like the key idea (spec §5).
           <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
             <T v="caption" color={c.accentText}>Your pattern</T>
-            <Row gap={space.sm} style={{ marginTop: 2 }}>
-              <BigNum value={String(topSlip.n)} size={22} />
-              <T v="headline" style={{ flexShrink: 1 }}>{topSlip.label}</T>
-            </Row>
-            <T v="small" color={c.ink}>{topSlip.coach}</T>
+            <T v="headline" accessibilityRole="header" style={{ marginTop: 2 }}>{pattern.title}</T>
+            <T v="small" color={c.ink}>{pattern.coach}</T>
+            <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
+            <Gap h={space.md} />
+            {pattern.game ? (
+              <Button
+                kind="secondary"
+                label={`Drill it: ${GAME_NAME[pattern.game]}`}
+                accessibilityHint="Opens the mini-game that trains this slip"
+                onPress={() => router.push(`/game/${pattern.game}`)}
+              />
+            ) : (
+              open.length > 0 && <Button
+                kind="secondary"
+                label="Review these mistakes"
+                onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
+              />
+            )}
           </View>
+        ) : (
+          <T v="meta" style={{ marginTop: space.lg }}>
+            {`Your pattern appears after ${SLIP_COACH_MIN} tagged mistakes. ${pattern.needed} to go.`}
+          </T>
         )}
 
         <Section title={showFixed ? 'All mistakes' : `${open.length} open`} />

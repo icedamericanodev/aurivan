@@ -150,10 +150,25 @@ export function T({
 }
 
 /** A question stem: Fraunces 21/30, stepping down to 20/29 for long stems. */
-export function Stem({ children, color }: { children: string; color?: string }) {
+export function Stem({ children, color, highlight }: { children: string; color?: string; highlight?: string | null }) {
+  const { c } = useTheme();
+  const style = children.length > STEM_LONG_CHARS ? stemLong : undefined;
+  // Coach me: mark the LAST capitalised priority word (the question sentence
+  // comes last). Colour plus a tinted background, so it is not colour alone;
+  // the session screen also names the word in text for screen readers.
+  const at = highlight ? children.lastIndexOf(highlight) : -1;
+  if (!highlight || at < 0) {
+    return (
+      <T v="stem" color={color} style={style}>
+        {children}
+      </T>
+    );
+  }
   return (
-    <T v="stem" color={color} style={children.length > STEM_LONG_CHARS ? stemLong : undefined}>
-      {children}
+    <T v="stem" color={color} style={style}>
+      {children.slice(0, at)}
+      <Text style={{ color: c.tip, backgroundColor: c.tipBg, textDecorationLine: 'underline' }}>{highlight}</Text>
+      {children.slice(at + highlight.length)}
     </T>
   );
 }
