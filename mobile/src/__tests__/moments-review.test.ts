@@ -5,10 +5,6 @@
  *   3. a submitted mock logs readiness once, after the whole batch.
  * (Mindset-growth statistics are tested in moments.test.ts and moments.qa.test.ts.)
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import { getAllQuestions } from '../content/loader';
 import { newDayPlan, replanDay } from '../engine/dayPlan';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
@@ -20,6 +16,12 @@ import { finishSession } from '../lib/finishSession';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
 import { useSettings } from '../store/settings';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 const readiness = { score: 0.5, domains: [], focusDomainId: undefined } as never;
 

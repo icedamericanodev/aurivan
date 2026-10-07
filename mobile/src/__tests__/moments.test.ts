@@ -3,10 +3,6 @@
  * date maths (time zones, midnight, daylight saving), the mindset growth
  * thresholds, and old saves loading without the new optional field.
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCertification } from '../content/certifications';
 import { daysToExam, eveReminders, examMoment, EVE_REMINDER, paceLine, topSlips } from '../engine/examDay';
@@ -15,6 +11,12 @@ import { firstTries, GROWTH_MIN_Z, GROWTH_WINDOW, mindsetGrowth, twoProportionZ,
 import { createRng } from '../engine/random';
 import type { SlipInput } from '../engine/slipCoach';
 import { selectCert, useProgress } from '../store/progress';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 const cisa = getCertification('cisa')!;
 

@@ -4,10 +4,6 @@
  * readiness maths at the edges, mock exams across a reload, and the
  * priority-word highlight against the real bank.
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCertification } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
@@ -19,6 +15,12 @@ import { displayToOriginal, isCorrect, originalToDisplay, renderText, type Permu
 import { patternsOf, slipCoach, type SlipInput } from '../engine/slipCoach';
 import { eliminateTip, runnerUp } from '../engine/tips';
 import { useSession, type ActiveSession } from '../store/session';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 const cisa = getCertification('cisa')!;
 const TIPS = ['Eliminate: {{A}} and {{D}}.', 'Final two: {{B}} beats {{C}}.'];

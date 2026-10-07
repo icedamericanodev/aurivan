@@ -2,10 +2,6 @@
  * Phase 5a: the slip coach ("Your pattern") and Coach me (assisted answers
  * at half weight), plus saved-progress compatibility for both.
  */
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCertification } from '../content/certifications';
 import { ASSISTED_WEIGHT, answerCredit, computeReadiness, type AnswerRecord } from '../engine/readiness';
@@ -16,6 +12,12 @@ import { lastWholeWordIndex } from '../engine/games/priorityLens';
 import { DAY_MS, INTERVAL_DAYS, nextReview } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
+
+// Use the library's in-memory mock. babel-jest hoists jest.mock() above the
+// imports, so it still takes effect before any module loads AsyncStorage.
+jest.mock('@react-native-async-storage/async-storage', () =>
+  jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 const cisa = getCertification('cisa')!;
 

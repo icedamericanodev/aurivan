@@ -91,7 +91,8 @@ export default function SessionScreen() {
   const [selected, setSelected] = useState<Letter | null>(null);
   const [confidence, setConfidence] = useState<Confidence | undefined>();
   const [navOpen, setNavOpen] = useState(false);
-  const [now, setNow] = useState(Date.now());
+  // Lazy initialiser: read the clock once on mount, not on every render.
+  const [now, setNow] = useState(() => Date.now());
   // Layout bookkeeping for the sticky footer and the vine reveal.
   const [footerH, setFooterH] = useState(120);
   const [vineVisible, setVineVisible] = useState(false);
@@ -111,13 +112,21 @@ export default function SessionScreen() {
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
 
-  // Reset the local picker whenever the question changes.
-  useEffect(() => {
+  // Reset the local picker whenever the question changes (and on first
+  // render, so a resumed mock shows its saved pick). This is React's
+  // "adjust state when a prop changes" pattern: compare with the question we
+  // last reset for and update during render, instead of in an effect.
+  // `null` is a "never reset yet" marker (qid itself is a string or undefined).
+  const [resetFor, setResetFor] = useState<string | undefined | null>(null);
+  if (resetFor !== qid) {
+    setResetFor(qid);
     setSelected(isMock && response ? response.display : null);
     setConfidence(undefined);
     setVineVisible(false);
+  }
+  // Scrolling is a side effect on a native view, so it stays in an effect.
+  useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qid]);
 
   // After an answer, if the vine is already on screen (short questions),
@@ -278,6 +287,11 @@ export default function SessionScreen() {
     }
   };
 
+  // "Latest callback" ref: the hardware back handler (registered once above)
+  // always calls the newest `leave`. It must be set here, after the early
+  // return, because `leave` needs the loaded session; it is only read in the
+  // back-button event, never during render, so the rule's concern does not apply.
+  // eslint-disable-next-line react-hooks/refs
   leaveRef.current = leave;
 
   const openCoach = () => {

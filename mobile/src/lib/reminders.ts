@@ -21,6 +21,8 @@ export const remindersSupported = !(isRunningInExpoGo() && Platform.OS === 'andr
 let cached: NotificationsModule | null = null;
 function notifications(): NotificationsModule | null {
   if (!remindersSupported) return null;
+  // Lazy require on purpose: a top-level import crashes Expo Go on Android.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   if (!cached) cached = require('expo-notifications') as NotificationsModule;
   return cached;
 }
