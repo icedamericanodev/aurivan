@@ -2608,6 +2608,17 @@ header {
 .notes-figure svg, .notes-figure img {
   max-width: 100%; height: auto; display: block; margin: 0 auto;
 }
+/* Keep diagrams at a readable size: not huge on desktop, and on phones
+   scroll sideways rather than shrink labels to ~4px. */
+.notes-figure svg { max-width: min(100%, 640px); }
+@media (max-width: 600px) {
+  .notes-figure { overflow-x: auto; padding: 10px; }
+  .notes-figure svg { min-width: 440px; max-width: none; }
+  .notes-group-header { flex-wrap: wrap; }
+  .notes-group-right { width: 100%; justify-content: flex-end; }
+}
+/* Dark mode: accent-filled label text was 2.4:1 on the figure background. */
+[data-theme="dark"] .notes-figure svg text[fill="var(--accent-fill)"] { fill: var(--brand-light); }
 .notes-figcaption {
   font-size: 10px; color: var(--muted); margin-top: 8px;
   font-style: italic; line-height: 1.5;
