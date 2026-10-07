@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.53.1</span>
+    <span class="bank-pill" id="versionPill">v10.54</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.53.1';
+const APP_VERSION = 'v10.54';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12109,6 +12109,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'New topic notes',
+    items: [
+      { cat: 'new', text: 'The Topics notes are rewritten from scratch in plain language and follow every topic in the official CISA exam outline.' },
+      { cat: 'improved', text: 'Each topic now tells you how ISACA expects you to think about it and which trap to avoid.' },
+      { cat: 'improved', text: 'Topics you already marked as reviewed stay marked.' }
+    ]
+  },
+  {
+    version: 'v10.53.1',
     title: 'Current sources',
     items: [
       { cat: 'fixed', text: 'A few payment-card and digital-identity questions now cite the current editions of those standards.' },
