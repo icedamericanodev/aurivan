@@ -5588,29 +5588,29 @@
     {
       "id": "d2_151",
       "domain": 2,
-      "subtopic": "Quality Certification. Scope Verification",
+      "subtopic": "Quality Certification. Process vs Product Assurance",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "A vendor's ISO 9001 certificate covers only its Manila delivery center, yet it cites the certificate for all services provided to a bank. What should the IS auditor verify FIRST?",
+      "question": "A software vendor tells a bank that its ISO 9001 certificate proves its releases will be free of defects. Which conclusion is MOST appropriate for the IS auditor?",
       "options": {
-        "A": "Whether the vendor's quality manual is reviewed every year",
-        "B": "Whether the vendor's CEO signed its quality policy",
-        "C": "Which sites and services actually deliver the bank's work",
-        "D": "Whether the certificate is still within its validity period"
+        "A": "The certificate makes the bank's acceptance testing unnecessary",
+        "B": "The certificate shows the vendor's releases meet ISO quality levels",
+        "C": "It shows a managed quality process, not proven release quality",
+        "D": "It is reliable evidence if the certifying body is accredited"
       },
       "correct": "C",
-      "key_concept": "ISO 9001 certifies a quality management system, and only within its stated scope; confirm the services relied on fall inside that scope.",
-      "pre_read": "Compare what the certificate covers with what the bank actually relies on.",
-      "correct_explanation": "A certificate gives assurance only for the scope it states. Because this one covers a single delivery center, the auditor first needs to know which sites and services handle the bank's work; anything outside the certified scope gains no assurance from it. Checking that the certificate is current matters too, but a valid certificate still says nothing about services delivered outside its scope.",
+      "key_concept": "ISO 9001 certifies a quality management system within its scope; it does not guarantee the quality of a vendor's products.",
+      "pre_read": "Separate what a management-system certificate examines from what the vendor claims it proves.",
+      "correct_explanation": "ISO 9001 certifies that a quality management system exists and operates within its scope; it does not test or guarantee the quality of any product. The bank still needs its own acceptance testing and contractual quality criteria. Accreditation of the certifying body is the runner-up: it makes the certificate more credible, but a credible certificate still covers the process, not the releases.",
       "wrong_explanations": {
-        "A": "Manual review is an internal practice. It does not show whether the bank's services fall within the certified scope.",
-        "B": "A signed policy shows management commitment. It gives no evidence about which services the certificate actually covers.",
-        "D": "Validity matters, but a current certificate still covers only the Manila center. Out-of-scope services gain no assurance from it."
+        "A": "Certification of the vendor's process does not test the bank's requirements. The bank still needs its own acceptance testing.",
+        "B": "ISO 9001 sets no product quality levels. It certifies how quality is managed, not the results releases achieve.",
+        "D": "Accreditation makes the certificate more credible, but even a credible certificate covers the management system, not the quality of releases."
       },
       "tips": [
-        "Eliminate: A and B check internal documents that say nothing about the certificate's coverage.",
-        "Final two: C beats D because a certificate assures only its stated scope; validity cannot extend it to other sites.",
-        "Exam cue: when a third party cites a certification, check its scope first, then its validity and the issuing body."
+        "Eliminate: A drops the bank's own testing, and B credits ISO 9001 with product quality levels it does not set.",
+        "Final two: C beats D because accreditation adds credibility, yet the certificate still covers the process, not the product.",
+        "Exam cue: a management-system certificate shows a process is managed; it never guarantees the quality of any output."
       ],
       "framework_ref": "ISO 9001:2015; COBIT 2019 APO10 (Managed Vendors); COBIT 2019 APO11 (Managed Quality)",
       "related_concepts": [
@@ -5619,7 +5619,7 @@
         "Vendor assurance",
         "Third-party quality"
       ],
-      "_provenance": "Authored from concept: 'SOAR governance tiered automation - severity-driven tiers, no prior D2 coverage'. Public source: ISACA Security Operations + NIST SP 800-61. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B4 to 2B4. Rebalance review (Oct 2026): key concept now notes ISO 9001 certifies a management system.",
+      "_provenance": "Authored from concept: 'SOAR governance tiered automation - severity-driven tiers, no prior D2 coverage'. Public source: ISACA Security Operations + NIST SP 800-61. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B4 to 2B4. Rebalance review (Oct 2026): key concept now notes ISO 9001 certifies a management system. Cross-domain review (Oct 2026): duplicate fix.",
       "style_version": 2
     },
     {
@@ -6476,29 +6476,29 @@
     {
       "id": "d2_175",
       "domain": 2,
-      "subtopic": "IT Policy Ownership. Auditor Advisory Role",
+      "subtopic": "IT Policy Development. Stakeholder Consultation",
       "difficulty": "application",
       "bloom_level": "Application",
-      "question": "The CIO asks the IS auditor to write the company's new access control policy because the auditor knows the requirements best. Which response is MOST appropriate?",
+      "question": "IT security drafted a new access control policy without consulting HR, legal or the business units that must apply it. Which risk is GREATEST for the IS auditor to raise?",
       "options": {
-        "A": "Write and approve the policy yourself to make sure it is audit-ready",
-        "B": "Advise on content while management drafts, owns and approves it",
-        "C": "Refuse to comment until the policy is finished and audited",
-        "D": "Write the policy and ask the CISO to sign it as owner"
+        "A": "The policy may be published later than planned",
+        "B": "Users may find the policy unworkable and bypass it",
+        "C": "The auditor may need more time to review the draft",
+        "D": "IT security may lack authority to enforce the policy"
       },
       "correct": "B",
-      "key_concept": "The auditor may advise on policy, but management must draft, own and approve it to preserve audit independence.",
-      "pre_read": "Separate giving advice from doing management's work, and ask what the auditor would later have to audit.",
-      "correct_explanation": "Auditors may advise on policy content, because consulting input does not impair independence as long as management makes the decisions. Management must draft, own and approve the policy so that accountability sits with those who run the controls. Writing it and having the CISO sign looks like management ownership, but the auditor would later be auditing their own work, creating a self-review threat.",
+      "key_concept": "Policies should be drafted with input from the functions that must apply them, so the rules are workable and followed.",
+      "pre_read": "Notice who was left out of drafting. Ask what happens when those people must follow the rules.",
+      "correct_explanation": "A policy only works if the people who must apply it can do so. Drafting without HR, legal and business input risks rules that clash with real processes, so staff route around them and the policy fails in practice. Lack of authority is the runner-up, but IT security may properly draft a policy; its authority comes later, from top-management approval.",
       "wrong_explanations": {
-        "A": "Writing and approving the policy makes the auditor part of management. The auditor could not later evaluate it objectively.",
-        "C": "Independence does not bar advice. Refusing all input withholds useful expertise that auditors may provide without taking decisions.",
-        "D": "A management signature does not change who wrote it. Auditing a policy the auditor authored is a self-review threat."
+        "A": "A later publication date is a scheduling issue. It does not make the policy less effective once issued.",
+        "C": "Audit review time is not the concern; the risk lies in how the policy will work for those who apply it.",
+        "D": "A function may draft a policy; authority comes from top-management approval, which is still ahead. Missing stakeholder input is the gap now."
       },
       "tips": [
-        "Eliminate: A makes the auditor approve policy, and C refuses advice that independence allows.",
-        "Final two: B beats D because the auditor may advise but must not author; a CISO's signature does not remove the self-review threat.",
-        "Exam cue: auditors recommend and advise; management designs, writes, owns and approves policies and controls."
+        "Eliminate: A is a scheduling point, and C is about the auditor's workload, not the policy.",
+        "Final two: B beats D because drafting by IT security is normal and authority comes at approval, but missing stakeholder input makes rules unworkable.",
+        "Exam cue: policies that skip consultation with those who must apply them invite workarounds; look for stakeholder input before approval."
       ],
       "framework_ref": "ISACA IT Audit Standard 1002 (Organizational Independence); ISACA Code of Professional Ethics (Independence); COBIT 2019 APO01 (Managed I&T Management Framework)",
       "related_concepts": [
@@ -6507,7 +6507,7 @@
         "Self-review threat",
         "Advisory role"
       ],
-      "_provenance": "Authored from concept: 'Audit function restructuring - phased multi-element evolution, complements d2_009 (audit role boundaries), d2_010 (governance audit), d2_165 (integrated audit)'. Public source: IIA Standards 1300-1330. All scenario specifics (regional health insurer, 35 auditors, current-state mix, audit-committee dissatisfaction) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out CAE. Rebalanced (Oct 2026): re-angled from 1A1 to 2A3.",
+      "_provenance": "Authored from concept: 'Audit function restructuring - phased multi-element evolution, complements d2_009 (audit role boundaries), d2_010 (governance audit), d2_165 (integrated audit)'. Public source: IIA Standards 1300-1330. All scenario specifics (regional health insurer, 35 auditors, current-state mix, audit-committee dissatisfaction) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): spelled out CAE. Rebalanced (Oct 2026): re-angled from 1A1 to 2A3. Cross-domain review (Oct 2026): duplicate fix.",
       "style_version": 2
     },
     {

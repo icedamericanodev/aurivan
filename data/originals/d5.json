@@ -20,28 +20,28 @@
         "Management endorsement"
       ],
       "framework_ref": "ISO/IEC 27001:2022 Clause 5.2 (Policy); ISO/IEC 27002:2022 Control 5.1 (Policies for Information Security); COBIT 2019 APO01 (Managed I&T Management Framework)",
-      "question": "An IS auditor reviews a newly issued information security policy. Which finding should concern the auditor MOST?",
+      "question": "An IS auditor reviews a newly issued information security policy that the board approved. Which finding should concern the auditor MOST?",
       "options": {
         "A": "The policy does not name the firewall products in use",
-        "B": "The policy was issued without approval from senior management",
+        "B": "The policy assigns no responsibilities for protecting information",
         "C": "The policy does not state how often it will be reviewed",
         "D": "The policy leaves server configuration steps to separate standards"
       },
       "correct": "B",
-      "key_concept": "An information security policy gets its authority from senior management approval; it stays high level and leaves technical detail to standards.",
-      "pre_read": "Ask which finding means the policy has no force at all, and which ones are fixable gaps or good practice.",
-      "correct_explanation": "A policy draws its authority from management. Without senior management approval, staff and system owners have no mandate to follow it, and every standard beneath it lacks backing. ISO/IEC 27001 makes top management responsible for establishing the policy. A missing review interval is a real gap that lets the policy go stale, but it can be fixed at the next revision, while an unapproved policy has no force today.",
+      "key_concept": "An information security policy needs management approval and must assign responsibilities for protecting information, or no one acts on it.",
+      "pre_read": "Notice the board has already approved the policy. Ask which finding means no one will act on it.",
+      "correct_explanation": "Board approval gives the policy authority, but a policy only drives action when it says who is responsible for what. With no roles assigned, owners, custodians and users can each assume someone else protects the information, so nothing is implemented or enforced. A missing review interval is a real gap that lets the policy go stale later, but it can be fixed at the next revision.",
       "wrong_explanations": {
         "A": "Naming products would itself be a mistake. A policy should be technology-neutral so it survives tool changes; product detail belongs in standards.",
-        "C": "A defined review cycle matters and its absence should be fixed, but the policy still carries authority while its content remains current.",
+        "C": "A review cycle should be added, but its absence risks staleness later; missing responsibilities mean nobody acts on the policy now.",
         "D": "This is the correct document hierarchy. Policies state intent, and lower-level standards and procedures hold the configuration detail."
       },
       "tips": [
         "Eliminate: A describes detail a policy should leave out, and D describes the proper split between policy and standards.",
-        "Final two: B beats C because a policy without management approval has no authority, while a missing review cycle only risks it going stale later.",
-        "Exam cue: for policy questions, management endorsement comes first; content and upkeep matter once the policy carries authority."
+        "Final two: B beats C because a policy with no assigned responsibilities is not acted on now, while a missing review cycle only risks staleness later.",
+        "Exam cue: an approved policy still needs defined roles and responsibilities; authority without accountability produces no action."
       ],
-      "_provenance": "Authored from concept: 'Information security policy canonical characteristics per ISO 27001 and NIST SP 800-12'. Public sources: ISO/IEC, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'Information security policy canonical characteristics per ISO 27001 and NIST SP 800-12'. Public sources: ISO/IEC, ISACA, NIST. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Cross-domain review (Oct 2026): duplicate fix.",
       "style_version": 2
     },
     {
@@ -4732,14 +4732,14 @@
       "question": "During an incident investigation, an IS auditor finds firewall, server and database logs disagree on event times by up to 40 minutes. Which control BEST addresses this?",
       "options": {
         "A": "Extend log retention on every system to two full years",
-        "B": "Synchronize all system clocks to one authoritative time source",
+        "B": "Synchronize all system clocks to common authoritative time sources",
         "C": "Have analysts adjust timestamps by hand during each investigation",
         "D": "Send every system's logs to a central store for correlation"
       },
       "correct": "B",
-      "key_concept": "Log correlation and incident timelines need every system's clock synchronized to one authoritative time source.",
+      "key_concept": "Log correlation and incident timelines need every system's clock synchronized to a common authoritative time source.",
       "pre_read": "Notice the logs disagree on time. Ask which option fixes the timestamps rather than only collecting or keeping them.",
-      "correct_explanation": "Event timelines depend on every log using the same clock. Synchronizing all systems to one authoritative time source makes timestamps comparable, so investigators can show what happened in what order and the logs hold up as evidence. Sending logs to a central store helps correlation, but it gathers the same mismatched timestamps, so events still cannot be reliably ordered.",
+      "correct_explanation": "Event timelines depend on every log using the same clock. Synchronizing all systems to a common authoritative time source makes timestamps comparable, so investigators can show what happened in what order and the logs hold up as evidence. Sending logs to a central store helps correlation, but it gathers the same mismatched timestamps, so events still cannot be reliably ordered.",
       "wrong_explanations": {
         "A": "Longer retention keeps more logs, but their timestamps would still disagree, so events still could not be ordered.",
         "C": "Manual adjustment is guesswork, varies between analysts and alters the evidence, weakening it in any later dispute.",
@@ -4750,7 +4750,7 @@
         "Final two: B beats D because synchronized clocks fix timestamps at the source, while a central store only gathers the mismatched times.",
         "Exam cue: logs are evidence only if they can be trusted and put in order; fix integrity and timing at the source."
       ],
-      "_provenance": "Authored from concept: 'Log management strategic framework'. Public sources: NIST, CIS, ISO, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from tamper-resistant log storage (duplicate of d5_088) to clock synchronization.",
+      "_provenance": "Authored from concept: 'Log management strategic framework'. Public sources: NIST, CIS, ISO, PCI Council. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled from tamper-resistant log storage (duplicate of d5_088) to clock synchronization. Cross-domain review (Oct 2026): convention fix.",
       "style_version": 2
     },
     {
@@ -7393,28 +7393,28 @@
         "Configuration drift"
       ],
       "framework_ref": "ISO/IEC 27001:2022 Clause 9.1 (Monitoring, Measurement, Analysis and Evaluation); ISO/IEC 27002:2022 Control 5.36 (Compliance with Policies, Rules and Standards for Information Security)",
-      "question": "An IS auditor finds a hardening standard approved for all servers, but no one measures how many servers actually conform to it. Which recommendation is BEST?",
+      "question": "Monthly scans report 96% of servers conform to the hardening standard, and the nonconforming 4% are mostly internet-facing. Which conclusion is MOST appropriate for the IS auditor?",
       "options": {
-        "A": "Rewrite the standard so it covers fewer server settings",
-        "B": "Require each administrator to confirm conformance once a year",
-        "C": "Remind administrators of the standard in annual awareness training",
-        "D": "Scan servers regularly and report conformance rates to management"
+        "A": "The high overall rate shows the standard is working well",
+        "B": "Scans should run weekly rather than monthly",
+        "C": "Administrators need refresher training on the standard",
+        "D": "The overall rate hides risk concentrated on exposed systems"
       },
       "correct": "D",
-      "key_concept": "A security standard needs objective, regular measurement of conformance, reported to management, to show it is followed.",
-      "pre_read": "Ask which option produces objective evidence that servers meet the standard.",
-      "correct_explanation": "A standard only reduces risk if systems follow it, and management can only know that through measurement. Regular automated scans give objective conformance rates, show drift over time and let management act on exceptions. Annual self-confirmation by administrators is the runner-up, but it relies on the people being measured, happens rarely and produces no independent evidence of the actual settings.",
+      "key_concept": "Conformance metrics should be weighted by asset criticality and exposure, because an overall rate can hide gaps on the riskiest systems.",
+      "pre_read": "Notice which servers make up the 4%. Ask whether the overall rate reflects where the risk actually sits.",
+      "correct_explanation": "An average treats every server alike, but risk is not spread evenly: the few nonconforming servers are the ones attackers can reach directly. A high overall rate can therefore coexist with the highest exposure, so conformance should be reported by asset criticality and exposure. Reading 96% as proof the standard works is the runner-up, but it judges the metric, not the risk it hides.",
       "wrong_explanations": {
-        "A": "Narrowing the standard lowers the bar without telling anyone whether servers meet it. The missing element is measurement, not a shorter document.",
-        "B": "Self-attestation is weak evidence because administrators confirm their own work, and a yearly cycle misses drift in between.",
-        "C": "Training may improve knowledge of the standard, but it produces no evidence of whether servers actually conform."
+        "A": "A high average hides where the gaps sit. Here the nonconforming servers are the most exposed, so the risk is high.",
+        "B": "More frequent scans would report the same pattern sooner; they do not address the gaps concentrated on exposed servers.",
+        "C": "Training may help, but nothing suggests a knowledge gap, and it would not show where the risk is concentrated."
       },
       "tips": [
-        "Eliminate: A weakens the standard instead of measuring it, and C raises awareness without producing any evidence.",
-        "Final two: D beats B because independent, regular measurement is stronger evidence than administrators confirming their own work.",
-        "Exam cue: a policy or standard without a metric is unverified; look for objective, repeatable measurement reported to management."
+        "Eliminate: B changes scan timing without addressing where the gaps sit, and C assumes a knowledge gap the stem never shows.",
+        "Final two: D beats A because an overall rate can look healthy while the exposed servers carry the gaps.",
+        "Exam cue: weigh security metrics by asset exposure and criticality; an average can hide risk concentrated where it matters most."
       ],
-      "_provenance": "Authored from concept: 'Post-incident forensic lessons learned framework'. Public sources: Google SRE, ISACA, NIST, ITIL. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_170 (blameless reviews): now lessons-learned actions tracked to closure. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1.",
+      "_provenance": "Authored from concept: 'Post-incident forensic lessons learned framework'. Public sources: Google SRE, ISACA, NIST, ITIL. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Learner-impact review (Oct 2026): re-angled away from d5_170 (blameless reviews): now lessons-learned actions tracked to closure. Rebalanced (Oct 2026): re-angled from 5B5 Security Incident Response Management to 5A1. Cross-domain review (Oct 2026): duplicate fix.",
       "style_version": 2
     },
     {
@@ -8096,28 +8096,28 @@
         "Periodic review"
       ],
       "framework_ref": "ISO/IEC 27002:2022 Control 5.36 (Compliance with Policies, Rules and Standards for Information Security); COBIT 2019 APO12 (Managed Risk)",
-      "question": "An IS auditor reviews the security exception register and finds 40 exceptions approved years ago with no expiry date or review. Which concern is MOST significant?",
+      "question": "An IS auditor finds each of 40 approved security exceptions lists a compensating control, but no one has checked that those controls exist. Which concern is MOST significant?",
       "options": {
-        "A": "Accepted risks may no longer match current threats or controls",
-        "B": "The register does not record who requested each exception",
-        "C": "Exceptions show the security policy is too strict to follow",
+        "A": "Residual risk may exceed what management believed it accepted",
+        "B": "Exception approvals have not been reported to the security committee",
+        "C": "Exception requests were submitted by email instead of a form",
         "D": "Approved exceptions should have been reported to external auditors"
       },
       "correct": "A",
-      "key_concept": "A policy exception is a time-bound risk acceptance that needs an owner, an expiry date and periodic review.",
-      "pre_read": "Ask what happens to a risk accepted years ago when nobody looks at it again.",
-      "correct_explanation": "An exception is a temporary risk acceptance, approved for conditions at a point in time. Without expiry dates or periodic review, risks accepted years ago keep running unchecked as threats, systems and compensating controls change, and nobody re-confirms that management still accepts them. A missing requester is a record-keeping gap, but stale acceptance of a live risk is the greater exposure.",
+      "key_concept": "An exception's residual risk depends on its compensating control, so that control must be verified as operating, not just recorded.",
+      "pre_read": "Notice what each approval relied on. Ask what happens to the accepted risk if that control is missing.",
+      "correct_explanation": "Management approved each exception on the assumption that its compensating control would hold the residual risk at an acceptable level. If nobody has confirmed those controls exist and operate, the real exposure may be far greater than the risk management believed it accepted. Unreported approvals weaken oversight, but telling a committee about controls nobody has verified would repeat the same false assurance.",
       "wrong_explanations": {
-        "B": "Recording the requester helps traceability, but the larger problem is that nobody has re-examined whether the accepted risks are still acceptable.",
-        "C": "Some exceptions are normal in any policy framework. Their number alone does not prove the policy is unworkable.",
-        "D": "Exceptions are an internal risk management matter; external reporting is not the control that keeps accepted risks current."
+        "B": "Committee reporting adds oversight, but it would pass on the same unverified assumption that the compensating controls work.",
+        "C": "The submission channel is an administrative detail; it does not affect how much risk the exceptions actually leave open.",
+        "D": "Exceptions are an internal risk matter; external auditors are not the control that confirms compensating controls work."
       },
       "tips": [
-        "Eliminate: C assumes exceptions prove a bad policy, and D points to an outside party rather than internal risk ownership.",
-        "Final two: A beats B because unreviewed risk acceptance is a live exposure, while a missing requester is a record-keeping gap.",
-        "Exam cue: exceptions and risk acceptances need an owner, an expiry date and periodic review."
+        "Eliminate: C is an administrative detail, and D points to an outside party rather than internal verification.",
+        "Final two: A beats B because unverified compensating controls leave the real risk unknown; reporting them only spreads the assumption.",
+        "Exam cue: an exception approved on a compensating control is only as safe as that control; look for evidence it operates."
       ],
-      "_provenance": "Authored from concept: 'Legal hold scope dispute resolution in class-action context'. Public sources: FRCP, Sedona, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5A1.",
+      "_provenance": "Authored from concept: 'Legal hold scope dispute resolution in class-action context'. Public sources: FRCP, Sedona, ISACA. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. Rebalanced (Oct 2026): re-angled from 5B6 Evidence Collection and Forensics to 5A1. Cross-domain review (Oct 2026): duplicate fix.",
       "style_version": 2
     },
     {
