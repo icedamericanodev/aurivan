@@ -55,6 +55,14 @@ await page.waitForTimeout(1500);
 for (let q = 0; q < keys.length; q++) {
   const n = q === 0 ? '' : `-q${q + 1}`;
   await page.screenshot({ path: `${out}/11-question${n}.png` });
+  // Coach me on the first sample: the hint + highlighted priority word.
+  // That answer is then "assisted" (half weight), shown on results.
+  if (q === 0) {
+    await page.getByRole('button', { name: 'Coach me', exact: true }).click();
+    await page.waitForTimeout(700);
+    await page.screenshot({ path: `${out}/11b-coach-me.png` });
+    console.log('shot coach me');
+  }
   await page.getByLabel(new RegExp(`^Option ${keys[q]}:`)).first().click();
   await page.getByText('Check answer', { exact: true }).click();
   await page.waitForTimeout(1200);
@@ -92,6 +100,12 @@ await page.mouse.move(196, 500);
 await page.mouse.wheel(0, 700);
 await page.waitForTimeout(600);
 await page.screenshot({ path: `${out}/19b-results-review.png` });
+// The assisted mark: scroll to the review list (first row = the coached answer).
+await page.getByText('Review answers', { exact: true }).scrollIntoViewIfNeeded();
+await page.mouse.wheel(0, 200);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/19c-results-assisted.png` });
+console.log('shot results assisted');
 // Clearing card: today's plan, all done.
 await edit('aurivan.progress.v1', `
   const d = new Date(); const p = (n) => String(n).padStart(2, '0');
@@ -106,6 +120,16 @@ await shot('20-clearing', '/home');
 // Saved questions, with a few bookmarks (row opens the question; bookmark removes).
 await edit('aurivan.progress.v1', "v.state.byCert.cisa.bookmarks = ['d4_250', 'd4_190', 'd1_010'];");
 await shot('17b-saved', '/saved');
+// Slip coach: "Your pattern" with 5+ tagged mistakes (the seed tags most of
+// them), then the quiet line when fewer than 5 are tagged.
+await edit('aurivan.progress.v1', `
+  const m = v.state.byCert.cisa.mistakes; const ids = Object.keys(m);
+  ids.forEach((id, i) => { m[id].resolved = false; if (i < 8) m[id].slip = i < 5 ? 'priority' : 'role'; });`);
+await shot('25-your-pattern', '/mistakes');
+await edit('aurivan.progress.v1', `
+  const m = v.state.byCert.cisa.mistakes;
+  Object.keys(m).forEach((id, i) => { if (i >= 2) delete m[id].slip; });`);
+await shot('25b-pattern-quiet', '/mistakes');
 // Empty mistake journal.
 await edit('aurivan.progress.v1', 'v.state.byCert.cisa.mistakes = {};');
 await shot('21-mistakes-empty', '/mistakes');

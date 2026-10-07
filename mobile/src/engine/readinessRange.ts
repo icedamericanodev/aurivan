@@ -23,7 +23,11 @@
  *   4. The range is the centre ± 1.28 · SE (an 80% interval: honest without
  *      being so wide it is useless), never narrower than ±2 points, rounded
  *      outwards to whole percent and clamped to 0–100.
- *   5. Below RANGE_MIN_ANSWERS answers in total we show "Not enough data yet"
+ *   Assisted answers (Coach me) carry HALF the evidence of a clean answer:
+ *      the domain's sample size becomes n_eff = n − assisted × (1 − ASSISTED_WEIGHT),
+ *      and p̃ uses the half-weighted credit. Fewer effective answers = a wider,
+ *      more honest range. The centre is already half-weighted (readiness.ts).
+ *   5. Below RANGE_MIN_ANSWERS answers in total (assisted first answers count half) we show "Not enough data yet"
  *      instead of a range.
  *
  * Example: 200 answers spread over the five CISA domains at ~70% gives
@@ -32,7 +36,7 @@
  * Pure TypeScript: no React, no storage.
  */
 import type { Certification } from '../content/types';
-import { MIN_SAMPLE, type Readiness } from './readiness';
+import { ASSISTED_WEIGHT, MIN_SAMPLE, type DomainMastery, type Readiness } from './readiness';
 
 /** Below this many answers in total, readiness says "Not enough data yet". */
 export const RANGE_MIN_ANSWERS = 40;
@@ -45,18 +49,27 @@ export type ReadinessRange =
   | { enough: false; answered: number; needed: number }
   | { enough: true; answered: number; low: number; high: number; centre: number };
 
+/** A domain's effective sample size: each assisted answer counts as half an answer. */
+export function effectiveAnswers(dm: DomainMastery): number {
+  return dm.answered - dm.assisted * (1 - ASSISTED_WEIGHT);
+}
+
 export function readinessRange(cert: Certification, readiness: Readiness): ReadinessRange {
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
-  if (answered < RANGE_MIN_ANSWERS) {
-    return { enough: false, answered, needed: RANGE_MIN_ANSWERS - answered };
+  // The "enough data" gate counts assisted answers at half (unlockWeight in
+  // readiness.ts). It only ever grows, so `needed` is a countdown that never
+  // goes back up after an answer.
+  const unlocked = readiness.domains.reduce((s, d) => s + d.unlockAnswers, 0);
+  if (unlocked < RANGE_MIN_ANSWERS) {
+    return { enough: false, answered, needed: Math.ceil(RANGE_MIN_ANSWERS - unlocked) };
   }
   const totalWeight = cert.domains.reduce((s, d) => s + d.weight, 0) || 1;
   let variance = 0;
   for (const dm of readiness.domains) {
     const w = (cert.domains.find((d) => d.id === dm.domainId)?.weight ?? 0) / totalWeight;
-    const n = dm.answered;
-    if (n === 0) continue;
-    const p = (dm.mastered + 1) / (n + 2);
+    const n = effectiveAnswers(dm);
+    if (n <= 0) continue;
+    const p = (dm.credit + 1) / (dm.answered + 2);
     const se = Math.sqrt(n * p * (1 - p)) / Math.max(n, MIN_SAMPLE);
     variance += (w * se) ** 2;
   }

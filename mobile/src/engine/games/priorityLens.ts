@@ -23,6 +23,22 @@ export function priorityWord(stem: string): PriorityWord | null {
   return found;
 }
 
+/**
+ * Where `word` last appears in `text` as a whole word, or -1.
+ * "MOST" must not match inside "ALMOST" or "MOSTLY", so we check that the
+ * characters on either side are not letters or digits (a word boundary).
+ */
+export function lastWholeWordIndex(text: string, word: string): number {
+  if (!word) return -1;
+  const isWordChar = (ch: string | undefined) => ch !== undefined && /[A-Za-z0-9_]/.test(ch);
+  let at = text.lastIndexOf(word);
+  while (at >= 0) {
+    if (!isWordChar(text[at - 1]) && !isWordChar(text[at + word.length])) return at;
+    at = at === 0 ? -1 : text.lastIndexOf(word, at - 1);
+  }
+  return -1;
+}
+
 export function priorityPool(pool: PackQuestion[]): PackQuestion[] {
   return pool.filter((q) => priorityWord(q.stem) !== null);
 }

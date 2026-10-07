@@ -7,6 +7,10 @@
  * not just guessing), it moves up a box and comes back later:
  *   Box 1 → now, Box 2 → 1 day, Box 3 → 3 days, Box 4 → 7 days, Box 5 → 16 days.
  * Answer it correctly from Box 5 and it "graduates" out of the queue.
+ *
+ * Coach me (assisted answers): a right answer after a hint is real progress,
+ * but it is weaker evidence, so it does NOT move the question up a box. It
+ * stays in its box and comes back after that box's (shorter) interval.
  */
 export type Confidence = 'sure' | 'unsure' | 'guessing';
 
@@ -25,12 +29,15 @@ export const DAY_MS = 86_400_000;
  * Work out the new review entry after an answer.
  * Returns `null` when the question should NOT be in the queue
  * (never missed, or just graduated).
+ * `assisted` = answered after Coach me: a correct answer is re-spaced at the
+ * same box instead of promoted, so it comes back sooner.
  */
 export function nextReview(
   current: ReviewEntry | undefined,
   correct: boolean,
   confidence: Confidence | undefined,
   now: number,
+  assisted = false,
 ): ReviewEntry | null {
   if (!correct) {
     // Wrong → back to Box 1, due right away.
@@ -39,8 +46,9 @@ export function nextReview(
   // Correct, but it was never in the queue → nothing to schedule.
   if (!current) return null;
 
-  if (confidence === 'guessing') {
-    // A lucky guess does not earn a promotion — re-space at the same box.
+  if (confidence === 'guessing' || assisted) {
+    // A lucky guess, or a right answer after a hint, does not earn a
+    // promotion — re-space at the same box (a shorter wait than promoting).
     return {
       ...current,
       dueAt: now + INTERVAL_DAYS[current.box] * DAY_MS,

@@ -4,6 +4,11 @@
  * PRACTICE / REVIEW: pick → (confidence) → Submit → instant feedback,
  * explanation, why your pick was wrong, then tips one at a time.
  *
+ * COACH ME (practice / review only): before answering, a quiet control
+ * shows the question's "Eliminate" tip and marks the stem's priority word
+ * (FIRST, BEST…). An answer given after that is "assisted" and counts at
+ * half weight toward readiness (engine/readiness.ts).
+ *
  * MOCK: pick (changeable) → Next. Timer, flags, and a navigator grid.
  * No feedback until you submit the whole exam — just like the real thing.
  */
@@ -15,16 +20,19 @@ import {
   BackHandler,
   Dimensions,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   View,
+  findNodeHandle,
   useWindowDimensions,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowRight, Bookmark, BookmarkCheck, ICON_STROKE, X } from '../components/icons';
+import { LeafSmall } from '../components/glyphs';
+import { ArrowRight, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
 import {
   ConfidenceRow,
   FEEDBACK_DELAY,
@@ -45,7 +53,8 @@ import { findQuestion } from '../content/loader';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
 import type { Confidence } from '../engine/srs';
-import { runnerUp } from '../engine/tips';
+import { priorityWord } from '../engine/games/priorityLens';
+import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { shortSubtopic } from '../lib/format';
 import { selectCert, useProgress } from '../store/progress';
@@ -89,12 +98,18 @@ export default function SessionScreen() {
   const scrollRef = useRef<ScrollView>(null);
   const scrollY = useRef(0);
   const vineRef = useRef<View>(null);
+  // Coach me: the first line of the hint, and a flag saying "the learner just
+  // tapped Coach me, so move the screen reader there once the hint appears".
+  const hintRef = useRef<View>(null);
+  const focusHint = useRef(false);
 
   const qid = active?.questionIds[active.index];
   const q = useMemo(() => (active && qid ? findQuestion(active.certId, qid) : undefined), [active, qid]);
   const perm = active && qid ? active.perms[qid] : undefined;
   const response = active && qid ? active.responses[qid] : undefined;
   const isMock = active?.mode === 'mock';
+  // Coach me was opened for this question (never in mock exams).
+  const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
 
   // Reset the local picker whenever the question changes.
   useEffect(() => {
@@ -117,6 +132,20 @@ export default function SessionScreen() {
     }, 450);
     return () => clearTimeout(t);
   }, [answeredHere, qid]);
+
+  // After Coach me is tapped, the hint mounts (and fades in for 200ms).
+  // Then move screen-reader focus onto it, so VoiceOver / TalkBack read the
+  // hint straight away instead of staying on a button that has vanished.
+  useEffect(() => {
+    // Native only: findNodeHandle does not exist on web (the screenshot build).
+    if (!coached || !focusHint.current || Platform.OS === 'web') return;
+    focusHint.current = false;
+    const t = setTimeout(() => {
+      const tag = hintRef.current ? findNodeHandle(hintRef.current) : null;
+      if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [coached, qid]);
 
   // Mock-exam clock: tick every second; auto-submit at zero.
   useEffect(() => {
@@ -192,10 +221,12 @@ export default function SessionScreen() {
     if (ok) haptic.success();
     else haptic.error();
     AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
-    answer(qid, { display: selected, correct: ok, confidence });
-    recordAnswer(active.certId, qid, ok, confidence);
-    // File every miss in the Mistake Journal, with the ORIGINAL letter picked.
-    if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm));
+    // Answers after Coach me are "assisted": half weight toward readiness.
+    answer(qid, { display: selected, correct: ok, confidence, ...(coached ? { assisted: true } : {}) });
+    recordAnswer(active.certId, qid, ok, confidence, { assisted: coached });
+    // File every miss in the Mistake Journal, with the ORIGINAL letter picked
+    // (and how sure they felt, for the slip coach's "over-confident" pattern).
+    if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
     // Start the answer screen at the top, so the verdict is the first thing seen.
     scrollRef.current?.scrollTo({ y: 0, animated: false });
   };
@@ -249,6 +280,14 @@ export default function SessionScreen() {
 
   leaveRef.current = leave;
 
+  const openCoach = () => {
+    haptic.selection();
+    // Focus moves to the hint once it mounts (effect above); it ends with the
+    // "Counts half" line, so no separate announcement is needed.
+    focusHint.current = true;
+    useSession.getState().markCoached(qid);
+  };
+
   const optionState = (display: Letter): OptionState => (selected === display ? 'selected' : 'idle');
 
   // ── answer-screen facts (all compared on ORIGINAL letters) ───────────
@@ -267,6 +306,11 @@ export default function SessionScreen() {
   const lowTime = isMock && remaining < 5 * 60_000;
   const largeText = fontScale >= LARGE_TEXT;
   const confidenceInScroll = fontScale >= HUGE_TEXT;
+  // Coach me content: the Eliminate tip (letters mapped to what's on screen)
+  // and the stem's capitalised priority word.
+  const hintTip = eliminateTip(q.tips);
+  const hintWord = priorityWord(q.stem);
+  const canCoach = !isMock && Boolean(hintTip || hintWord);
   const metaLine = [domain?.short, shortSubtopic(q.subtopic), `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
 
   // The vine draws itself the first time it scrolls into view: on each
@@ -342,8 +386,49 @@ export default function SessionScreen() {
                 </>
               )}
               <View style={{ marginTop: 10 }}>
-                <Stem>{q.stem}</Stem>
+                <Stem highlight={coached ? hintWord : null}>{q.stem}</Stem>
               </View>
+              {/* Coach me: a quiet text control; once opened, the hint stays for this question. */}
+              {canCoach && !coached && (
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Coach me"
+                  accessibilityHint="Shows a hint. Your answer then counts half toward readiness."
+                  onPress={openCoach}
+                  hitSlop={4}
+                  style={({ pressed }) => ({ alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', opacity: pressed ? 0.7 : 1, marginTop: space.xs })}
+                >
+                  <Row gap={space.xs} style={{ flexWrap: 'wrap' }}>
+                    <Lightbulb size={ICON_SIZE.inline} color={c.accentText} strokeWidth={ICON_STROKE} />
+                    <T v="label" color={c.accentText}>Coach me</T>
+                    {/* Said up front, so nobody taps it by accident and is surprised. */}
+                    <T v="meta">A hint counts half.</T>
+                  </Row>
+                </Pressable>
+              )}
+              {coached && (
+                <Rise>
+                  <View style={{ marginTop: space.md, borderLeftWidth: 3, borderLeftColor: c.tip, paddingLeft: space.md }}>
+                    {/* hintRef = the first hint line; screen-reader focus lands here. */}
+                    {hintWord && (
+                      <View ref={hintRef} accessible>
+                        <T v="small" color={c.ink}>{`Priority word: ${hintWord}. Let it decide.`}</T>
+                      </View>
+                    )}
+                    {hintTip && (
+                      <View ref={hintWord ? undefined : hintRef} accessible style={{ marginTop: hintWord ? space.sm : 0 }}>
+                        {/* Same 16pt outline leaf as the vine's Eliminate node (spec §10.2). */}
+                        <Row gap={space.xs} style={{ marginBottom: 3 }}>
+                          <LeafSmall color={c.tip} />
+                          <T v="caption" color={c.tip}>{tipParts(hintTip, 0).label}</T>
+                        </Row>
+                        <T v="small" color={c.ink}>{renderText(tipParts(hintTip, 0).body, perm)}</T>
+                      </View>
+                    )}
+                    <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>
+                  </View>
+                </Rise>
+              )}
               {/* One radio group, so screen readers say "1 of 4" and the checked state. */}
               <View accessibilityRole="radiogroup" accessibilityLabel="Answer options" style={{ marginTop: space.gutter }}>
                 {displayLetters.map((d) => (
@@ -369,6 +454,7 @@ export default function SessionScreen() {
               <>
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
                 <Verdict correct={response.correct} coach={coach} />
+                {response.assisted && <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (

@@ -19,6 +19,7 @@ export { default as Flag } from 'lucide-react-native/icons/flag';
 export { default as Gamepad2 } from 'lucide-react-native/icons/gamepad-2';
 export { default as Gauge } from 'lucide-react-native/icons/gauge';
 export { default as Library } from 'lucide-react-native/icons/library';
+export { default as Lightbulb } from 'lucide-react-native/icons/lightbulb';
 export { default as ListChecks } from 'lucide-react-native/icons/list-checks';
 export { default as Lock } from 'lucide-react-native/icons/lock';
 export { default as NotebookPen } from 'lucide-react-native/icons/notebook-pen';

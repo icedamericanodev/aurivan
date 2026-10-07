@@ -9,7 +9,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { OptionCard } from '../components/quiz';
 import { DomainRings } from '../components/journey';
-import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T } from '../components/ui';
+import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
@@ -121,6 +121,8 @@ export default function Results() {
         if (!q || !perm) return null;
         const r = active.responses[id];
         const status = !r ? '○ Skipped' : r.correct ? '✓ Correct' : '✗ Missed';
+        // Answered after Coach me: a small mark, since it counts half toward readiness.
+        const assisted = Boolean(r?.assisted);
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
@@ -131,13 +133,16 @@ export default function Results() {
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ expanded: open }}
-              accessibilityLabel={`Question ${i + 1}, ${status}. Tap to ${open ? 'collapse' : 'expand'}`}
+              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}. Tap to ${open ? 'collapse' : 'expand'}`}
               onPress={() => setOpenId(open ? null : id)}
               style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
             >
               <Row style={{ justifyContent: 'space-between' }}>
                 <T v="label" num>{`Question ${i + 1}`}</T>
-                <T v="label" color={color}>{status}</T>
+                <Row gap={space.sm} style={{ flexShrink: 1, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  {assisted && <Tag label="Assisted" />}
+                  <T v="label" color={color}>{status}</T>
+                </Row>
               </Row>
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
             </Pressable>

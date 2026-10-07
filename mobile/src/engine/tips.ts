@@ -33,3 +33,13 @@ export function runnerUp(tips: string[], correct: string): string | undefined {
   const letters = [...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]);
   return letters.find((l) => l !== correct);
 }
+
+/**
+ * The "Eliminate:" tip (exam-style v2), used by Coach me before answering.
+ * Returns the tip WITH its prefix, still holding {{X}} ORIGINAL-letter
+ * tokens: pass it through renderText(tip, perm) before showing it.
+ * Undefined for older tips without an "Eliminate:" line.
+ */
+export function eliminateTip(tips: string[]): string | undefined {
+  return tips.find((t) => /^Eliminate:/.test(t));
+}

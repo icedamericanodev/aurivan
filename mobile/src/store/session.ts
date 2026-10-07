@@ -18,6 +18,8 @@ export interface Response {
   display: Letter; // what the learner tapped
   correct: boolean;
   confidence?: Confidence;
+  /** Answered after "Coach me" showed a hint. Optional: older sessions have none. */
+  assisted?: boolean;
 }
 
 export interface ActiveSession {
@@ -30,6 +32,8 @@ export interface ActiveSession {
   index: number;
   responses: Record<string, Response>;
   flagged: string[];
+  /** Question ids where the learner opened "Coach me" (optional for older saves). */
+  coached?: string[];
   startedAt: number;
   deadline?: number; // epoch ms — mock exams only
   finishedAt?: number; // set when the learner finishes / submits
@@ -41,6 +45,8 @@ interface SessionState {
   answer: (questionId: string, r: Response) => void;
   goTo: (index: number) => void;
   toggleFlag: (questionId: string) => void;
+  /** Remember that Coach me was opened, so a reload keeps the hint (and the half weight). */
+  markCoached: (questionId: string) => void;
   finish: () => void;
   clear: () => void;
 }
@@ -65,6 +71,13 @@ export const useSession = create<SessionState>()(
             ? f.filter((id) => id !== questionId)
             : [...f, questionId];
           return { active: { ...s.active, flagged } };
+        }),
+      markCoached: (questionId) =>
+        set((s) => {
+          if (!s.active || s.active.mode === 'mock') return s; // never in mock exams
+          const coached = s.active.coached ?? [];
+          if (coached.includes(questionId)) return s;
+          return { active: { ...s.active, coached: [...coached, questionId] } };
         }),
       finish: () =>
         set((s) => (s.active ? { active: { ...s.active, finishedAt: Date.now() } } : s)),

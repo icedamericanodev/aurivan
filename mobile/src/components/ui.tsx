@@ -31,6 +31,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { domainColor } from '../content/certifications';
 import type { DomainInfo } from '../content/types';
+import { lastWholeWordIndex } from '../engine/games/priorityLens';
 import {
   font,
   forestHighlight,
@@ -150,10 +151,27 @@ export function T({
 }
 
 /** A question stem: Fraunces 21/30, stepping down to 20/29 for long stems. */
-export function Stem({ children, color }: { children: string; color?: string }) {
+export function Stem({ children, color, highlight }: { children: string; color?: string; highlight?: string | null }) {
+  const { c } = useTheme();
+  const style = children.length > STEM_LONG_CHARS ? stemLong : undefined;
+  // Coach me: mark the LAST capitalised priority word, matched as a whole
+  // word (so "MOST" never lights up inside "ALMOST"). Tip colour plus a
+  // heavier weight: the weight change is the non-colour cue, and the hint
+  // text below also names the word. No underline or background, so it never
+  // looks like a link or like an answered (tinted) state.
+  const at = highlight ? lastWholeWordIndex(children, highlight) : -1;
+  if (!highlight || at < 0) {
+    return (
+      <T v="stem" color={color} style={style}>
+        {children}
+      </T>
+    );
+  }
   return (
-    <T v="stem" color={color} style={children.length > STEM_LONG_CHARS ? stemLong : undefined}>
-      {children}
+    <T v="stem" color={color} style={style}>
+      {children.slice(0, at)}
+      <Text style={{ color: c.tip, fontFamily: font.serif500 }}>{highlight}</Text>
+      {children.slice(at + highlight.length)}
     </T>
   );
 }
