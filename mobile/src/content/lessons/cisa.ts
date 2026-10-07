@@ -26,7 +26,7 @@ export const CISA_LESSONS: Lesson[] = [
     scenes: [
       {
         type: 'title',
-        kicker: 'DOMAIN 1 · AUDIT PROCESS',
+        kicker: 'Domain 1 · Audit process',
         title: 'The audit charter',
         subtitle: 'Why the person who approves the audit function matters more than the person who writes its rules.',
       },
@@ -45,8 +45,8 @@ export const CISA_LESSONS: Lesson[] = [
         heading: 'The reporting lines',
         layers: [
           { label: 'Board / audit committee', note: 'Approves the charter and receives audit results' },
-          { label: 'Chief audit executive', note: 'Reports FUNCTIONALLY to the audit committee' },
-          { label: 'Senior management', note: 'Handles ADMINISTRATIVE matters only (budget, HR)' },
+          { label: 'Chief audit executive', note: 'Reports functionally to the audit committee' },
+          { label: 'Senior management', note: 'Handles administrative matters only (budget, HR)' },
           { label: 'IT and the business', note: 'The areas being audited — never the approver' },
         ],
         caption: 'Independence flows from the top layer down, not from the area being audited.',
@@ -59,7 +59,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'When a question asks who should APPROVE the charter or where audit should REPORT, look for the audit committee or board — never the function being audited.',
+        body: 'When a question asks who should approve the charter or where audit should report, look for the audit committee or board — never the function being audited.',
       },
       {
         type: 'check',
@@ -84,7 +84,7 @@ export const CISA_LESSONS: Lesson[] = [
     scenes: [
       {
         type: 'title',
-        kicker: 'DOMAIN 2 · GOVERNANCE',
+        kicker: 'Domain 2 · Governance',
         title: 'Governance vs management',
         subtitle: 'One sets direction. The other makes it happen. The exam tests whether you can tell them apart.',
       },
@@ -124,7 +124,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'tip',
-        body: 'Ask: is this deciding WHAT and WHY (governance), or HOW (management)? Questions about risk appetite, strategic alignment and accountability point to governance.',
+        body: 'Ask: is this deciding what and why (governance), or how (management)? Questions about risk appetite, strategic alignment and accountability point to governance.',
       },
       {
         type: 'check',
@@ -154,7 +154,7 @@ export const CISA_LESSONS: Lesson[] = [
     scenes: [
       {
         type: 'title',
-        kicker: 'DOMAIN 3 · ACQUISITION & DEVELOPMENT',
+        kicker: 'Domain 3 · Acquisition and development',
         title: 'Change control',
         subtitle: 'Most outages and many frauds start with an unreviewed change. Here is the path a safe change takes.',
       },
@@ -218,7 +218,7 @@ export const CISA_LESSONS: Lesson[] = [
     scenes: [
       {
         type: 'title',
-        kicker: 'DOMAIN 4 · OPERATIONS & RESILIENCE',
+        kicker: 'Domain 4 · Operations and resilience',
         title: 'RPO and RTO',
         subtitle: 'Two numbers decide how a business recovers from disaster. Mixing them up is one of the most common exam errors.',
       },
@@ -227,11 +227,11 @@ export const CISA_LESSONS: Lesson[] = [
         heading: 'Looking back vs looking forward',
         left: {
           title: 'RPO — Recovery Point Objective',
-          points: ['How much DATA you can afford to lose', 'Measured back in time from the incident', 'Drives backup and replication frequency'],
+          points: ['How much data you can afford to lose', 'Measured back in time from the incident', 'Drives backup and replication frequency'],
         },
         right: {
           title: 'RTO — Recovery Time Objective',
-          points: ['How long the SERVICE can be down', 'Measured forward from the incident', 'Drives recovery site and staffing choices'],
+          points: ['How long the service can be down', 'Measured forward from the incident', 'Drives recovery site and staffing choices'],
         },
       },
       {
@@ -254,7 +254,7 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'trap',
         heading: 'The exam trap',
         trap: '“A hot site will reduce the RPO.”',
-        why: 'A hot site shortens recovery TIME (RTO). How much data you lose depends on how recently it was copied — that is RPO, fixed by backup and replication frequency.',
+        why: 'A hot site shortens recovery time (RTO). How much data you lose depends on how recently it was copied — that is RPO, fixed by backup and replication frequency.',
       },
       {
         type: 'tip',
@@ -283,7 +283,7 @@ export const CISA_LESSONS: Lesson[] = [
     scenes: [
       {
         type: 'title',
-        kicker: 'DOMAIN 5 · PROTECTION OF ASSETS',
+        kicker: 'Domain 5 · Protection of assets',
         title: 'Authentication factors',
         subtitle: 'Two passwords are not two factors. Here is how to spot genuine multi-factor authentication.',
       },
@@ -291,11 +291,11 @@ export const CISA_LESSONS: Lesson[] = [
         type: 'stack',
         heading: 'The three factor types',
         layers: [
-          { label: 'Something you KNOW', note: 'Password, PIN, security answer' },
-          { label: 'Something you HAVE', note: 'Hardware token, phone authenticator, smart card' },
-          { label: 'Something you ARE', note: 'Fingerprint, face, other biometrics' },
+          { label: 'Something you know', note: 'Password, PIN, security answer' },
+          { label: 'Something you have', note: 'Hardware token, phone authenticator, smart card' },
+          { label: 'Something you are', note: 'Fingerprint, face, other biometrics' },
         ],
-        caption: 'Multi-factor means at least two DIFFERENT types.',
+        caption: 'Multi-factor means at least two different types.',
       },
       {
         type: 'analogy',
@@ -315,7 +315,7 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         type: 'check',
-        question: 'Which combination is TRUE multi-factor authentication?',
+        question: 'Which combination is true multi-factor authentication?',
         options: ['Password and PIN', 'Password and hardware token', 'PIN and security question', 'Two different passwords'],
         correctIndex: 1,
         explanation: 'A password (know) plus a hardware token (have) combines two different factor types. The others use only knowledge factors.',

@@ -1,201 +1,168 @@
 /**
- * Journey — "where am I, and what's my one next step?"
+ * Today — "what is my one next step, and how am I growing?"
+ * Spec: docs/mobile/DESIGN_SYSTEM.md §11 "Today" and "Daily clearing card".
  *
- * Top to bottom: countdown + stage, readiness ring, today's plan (tap to
- * start), the domain route, and a calm week strip. One accent-filled
- * element per screen: the first plan item.
+ * Top to bottom:
+ *   meta row   weekday · days to exam | sprig streak (serif numeral)
+ *   "Today"
+ *   forest     "Start here" + leaf marks for the plan, the current item, Start
+ *   readiness  mono growth rings + the honest range ("62–70%") + italic stage
+ *   Also today the rest of the plan (real, unshortened titles)
+ *
+ * When every plan item is done, the forest panel becomes the clearing card
+ * (today's numbers + how readiness moved) and "Tomorrow" previews what's next.
  */
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { View } from 'react-native';
-import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
-import { ActionRow, DomainRoute, ReadinessRing, WeekStrip } from '../../components/journey';
-import {
-  BookOpen,
-  Flame,
-  Gamepad2,
-  ICON_STROKE,
-  RotateCcw,
-  Sparkles,
-  Target,
-  Timer,
-} from '../../components/icons';
-import { Button, Card, Gap, ICON_SIZE, Pill, ProgressBar, Row, Screen, T } from '../../components/ui';
-import type { PlanItem } from '../../engine/planner';
+import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
+import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
+import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T } from '../../components/ui';
+import { currentIndex, itemMinutes, planComplete } from '../../engine/dayPlan';
 import { runPlanItem } from '../../lib/actions';
+import { haptic } from '../../lib/haptics';
 import { useJourney } from '../../lib/useJourney';
+import { useProgress } from '../../store/progress';
 import { useSession } from '../../store/session';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const enter = (i: number) => FadeInDown.duration(320).delay(i * 80).reduceMotion(ReduceMotion.System);
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-function planIcon(item: PlanItem, color: string) {
-  const p = { size: ICON_SIZE.row, color, strokeWidth: ICON_STROKE };
-  switch (item.kind) {
-    case 'review':
-      return <RotateCcw {...p} />;
-    case 'lesson':
-      return <BookOpen {...p} />;
-    case 'practice':
-      return <Target {...p} />;
-    case 'game':
-      return <Gamepad2 {...p} />;
-    case 'mock':
-      return <Timer {...p} />;
-  }
+function countdown(daysLeft: number | null): string {
+  if (daysLeft === null) return 'No exam date set';
+  if (daysLeft < 0) return 'Exam done';
+  if (daysLeft === 0) return 'Exam day';
+  return `${daysLeft} day${daysLeft === 1 ? '' : 's'} to exam`;
 }
 
-function planTitle(item: PlanItem): { title: string; subtitle?: string } {
-  switch (item.kind) {
-    case 'review':
-      return { title: `Review ${item.count} due`, subtitle: 'Due for review' };
-    case 'lesson':
-      return { title: item.title, subtitle: 'Lesson · about 3 minutes' };
-    case 'practice':
-      return { title: item.label, subtitle: 'Practice' };
-    case 'game':
-      return { title: item.label, subtitle: 'Play' };
-    case 'mock':
-      return { title: item.label, subtitle: 'Timed, at real exam pace' };
-  }
-}
-
-export default function Journey() {
+export default function Today() {
   const { c } = useTheme();
   const j = useJourney();
   const active = useSession((s) => s.active);
-  const countdown =
-    j.daysLeft === null ? 'No exam date' : j.daysLeft < 0 ? 'Exam done' : `${j.daysLeft} day${j.daysLeft === 1 ? '' : 's'}`;
+  const markCelebrated = useProgress((s) => s.markCelebrated);
+  const plan = j.dayPlan;
+  const allDone = planComplete(plan);
+  const cur = currentIndex(plan);
+  const playIcon = (color: string) => <Play size={ICON_SIZE.inline} color={color} strokeWidth={ICON_STROKE} />;
+
+  // The clearing's one success tap, once a day (respects the Haptics setting).
+  useEffect(() => {
+    if (allDone && !plan.celebrated) {
+      haptic.success();
+      markCelebrated(j.cert.id);
+    }
+  }, [allDone, plan.celebrated, markCelebrated, j.cert.id]);
+
+  // "Also today": an unfinished session first, then the plan items still to do.
+  const resume = active && !active.finishedAt ? active : null;
+  const rest = plan.items.map((item, i) => ({ item, i })).filter(({ i }) => !plan.done[i] && i !== cur);
+  const alsoCount = rest.length + (resume ? 1 : 0);
+  // Tomorrow = a preview of the live plan (the next two items).
+  const tomorrow = j.plan.slice(0, 2);
 
   return (
     <Screen>
-      <Animated.View entering={enter(0)}>
-        <Row style={{ justifyContent: 'space-between' }}>
-          <T v="eyebrow" num>{`${j.cert.name} · ${countdown}`}</T>
+      <Enter i={0}>
+        <Row style={{ justifyContent: 'space-between', minHeight: 24 }}>
+          <T v="meta" num>{`${WEEKDAYS[new Date().getDay()]} · ${countdown(j.daysLeft)}`}</T>
           {j.streak > 0 && (
             <Row gap={space.xs} style={{ minHeight: 24 }}>
-              <Flame size={ICON_SIZE.inline} color={c.clayText} strokeWidth={ICON_STROKE} />
-              <T v="label" num color={c.clayText} accessibilityLabel={`${j.streak}-day streak`}>{String(j.streak)}</T>
+              <Sprig size={ICON_SIZE.row} color={c.clay} strokeWidth={ICON_STROKE} />
+              <BigNum value={String(j.streak)} size={20} color={c.clay} accessibilityLabel={`${j.streak}-day streak`} />
             </Row>
           )}
         </Row>
-        <Gap h={space.sm} />
-        <T v="display">{j.plan.length ? 'Today’s plan' : 'Well done.'}</T>
-      </Animated.View>
-      <Gap />
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Today</T>
+      </Enter>
 
-      {active && !active.finishedAt && (
-        <Animated.View entering={enter(1)}>
-          <Card onPress={() => router.push('/session')} accessibilityLabel="Resume your session" emphasis>
-            <T v="title">Resume: {active.title}</T>
-            <T v="meta" num>Question {active.index + 1} of {active.questionIds.length}</T>
-          </Card>
-          <Gap />
-        </Animated.View>
+      <Enter i={1} style={{ marginTop: space.lg }}>
+        {plan.items.length === 0 ? (
+          <HeroPanel
+            caption={j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan'}
+            title="How did it go?"
+            meta="Set a new date to plan what’s next."
+            action={{ label: 'Open settings', onPress: () => router.push('/settings'), icon: (col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} /> }}
+          />
+        ) : allDone ? (
+          <HeroPanel
+            caption="Today’s clearing"
+            captionExtra={<PlanLeaves done={plan.done} />}
+            title={clearingTitle(plan)}
+            art="clearing"
+            wideTitle
+          >
+            <ClearingBody plan={plan} readiness={j.readiness} range={j.range} cert={j.cert} />
+          </HeroPanel>
+        ) : (
+          <HeroPanel
+            caption="Start here"
+            captionExtra={<PlanLeaves done={plan.done} />}
+            title={planText(plan.items[cur]).title}
+            meta={planText(plan.items[cur]).meta}
+            action={{ label: 'Start', onPress: () => runPlanItem(plan.items[cur], j.cert.id), icon: playIcon, hint: planText(plan.items[cur]).title }}
+          />
+        )}
+      </Enter>
+
+      {!allDone && (
+        <Enter i={2}>
+          <ReadinessRow cert={j.cert} readiness={j.readiness} range={j.range} stage={j.stageLine} />
+        </Enter>
       )}
 
-      {/* Hero: readiness + journey stage */}
-      <Animated.View entering={enter(2)}>
-        <Card>
-          <Row gap={space.lg}>
-            <ReadinessRing score={j.readiness.score} />
-            <View style={{ flex: 1 }}>
-              <T v="eyebrow">Stage</T>
-              <T v="title">{j.stageLabel}</T>
-              <Gap h={space.sm} />
-              <ProgressBar value={j.stageProgress} color={c.clay} height={6} />
-              <Gap h={space.sm} />
-              <T v="meta">
-                {j.readiness.reliable
-                  ? 'Weighted by the official exam blueprint.'
-                  : 'Readiness firms up as you practise every domain.'}
-              </T>
+      <Enter i={3}>
+        {allDone ? (
+          <>
+            {tomorrow.length > 0 && (
+              <>
+                <Section title="Tomorrow" meta={`about ${tomorrow.reduce((n, t) => n + itemMinutes(t), 0)} min`} />
+                {tomorrow.map((item, k) => (
+                  <ListRow
+                    key={k}
+                    icon={planIcon(item, c.accentText)}
+                    title={planText(item).title}
+                    subtitle={planText(item).short}
+                    last={k === tomorrow.length - 1}
+                  />
+                ))}
+              </>
+            )}
+            <View style={{ alignSelf: 'flex-start', marginTop: space.sm, marginLeft: -space.sm }}>
+              <Button
+                kind="ghost"
+                label="Keep going anyway"
+                onPress={() => (j.plan[0] ? runPlanItem(j.plan[0], j.cert.id) : router.push('/practice'))}
+              />
             </View>
-          </Row>
-        </Card>
-      </Animated.View>
-      <Gap />
-
-      {/* Today's plan */}
-      <Animated.View entering={enter(3)}>
-        {j.plan.length === 0 ? (
-          <Card>
-            <T v="title">Exam done. How did it go?</T>
-            <T v="meta">Set a new date to plan what’s next.</T>
-            <Gap h={space.md} />
-            <Button kind="secondary" label="Open settings" onPress={() => router.push('/settings')} />
-          </Card>
+          </>
         ) : (
-          <Card>
-            {j.plan.map((item, i) => {
-              const { title, subtitle } = planTitle(item);
-              if (i === 0) {
-                return (
-                  <View key={i} style={{ marginBottom: j.plan.length > 1 ? space.sm : 0 }}>
-                    <T v="eyebrow">Start here</T>
-                    <Gap h={space.xs} />
-                    <T v="title">{title}</T>
-                    {subtitle && <T v="meta">{subtitle}</T>}
-                    <Gap h={space.md} />
-                    <Button label="Start" onPress={() => runPlanItem(item, j.cert.id)} accessibilityHint={title} />
-                  </View>
-                );
-              }
-              return (
-                <ActionRow
+          alsoCount > 0 && (
+            <>
+              <Section title="Also today" meta={`${alsoCount} more`} />
+              {resume && (
+                <ListRow
+                  icon={<Play size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                  title={`Resume: ${resume.title}`}
+                  subtitle={`Question ${resume.index + 1} of ${resume.questionIds.length}`}
+                  onPress={() => router.push('/session')}
+                  last={rest.length === 0}
+                />
+              )}
+              {rest.map(({ item, i }, k) => (
+                <ListRow
                   key={i}
                   icon={planIcon(item, c.accentText)}
-                  title={title}
-                  subtitle={subtitle}
+                  title={planText(item).title}
+                  subtitle={planText(item).short}
                   onPress={() => runPlanItem(item, j.cert.id)}
+                  last={k === rest.length - 1}
                 />
-              );
-            })}
-          </Card>
+              ))}
+            </>
+          )
         )}
-      </Animated.View>
-      <Gap />
-
-      {j.stage === 'ready' && (
-        <>
-          <Animated.View entering={enter(4)}>
-            <Card style={{ borderColor: c.clay }}>
-              <Row gap={space.sm}>
-                <Sparkles size={ICON_SIZE.row} color={c.clayText} strokeWidth={ICON_STROKE} />
-                <T v="title" color={c.clayText}>Exam-ready</T>
-              </Row>
-              <T v="body">Above target in every domain. Short sessions keep it warm until exam day.</T>
-            </Card>
-          </Animated.View>
-          <Gap />
-        </>
-      )}
-
-      {/* Domain route */}
-      <Animated.View entering={enter(5)}>
-        <Row style={{ justifyContent: 'space-between' }}>
-          <T v="title">Your route</T>
-          <Pill label={`${j.cert.domains.length} domains`} />
-        </Row>
-        <Gap h={space.md} />
-        <DomainRoute
-          domains={j.cert.domains}
-          mastery={j.readiness.domains}
-          focusId={j.focus?.id}
-          onPress={(domainId) => router.push({ pathname: '/(tabs)/learn', params: { domain: domainId } })}
-        />
-      </Animated.View>
-      <Gap />
-
-      {/* Week strip */}
-      <Animated.View entering={enter(6)}>
-        <Card>
-          <T v="title">This week</T>
-          <T v="meta">One rest day a week keeps your streak.</T>
-          <Gap h={space.md} />
-          <WeekStrip days={j.week} />
-        </Card>
-      </Animated.View>
+      </Enter>
     </Screen>
   );
 }

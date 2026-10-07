@@ -9,6 +9,7 @@ import { findQuestion } from '../content/loader';
 import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
+import { logActivity } from './activity';
 
 export interface SessionScore {
   total: number;
@@ -71,4 +72,22 @@ export function finishSession() {
     progress.recordMock(s.certId, result);
   }
   useSession.getState().finish();
+  // Tick off today's plan (review / practice / mock) and add the minutes spent.
+  const score = scoreSession(s);
+  const endedAt = Math.min(Date.now(), s.deadline ?? Infinity);
+  // Answered questions per domain, so a domain-focused plan item only counts its own domain.
+  const answeredByDomain: Record<string, number> = {};
+  for (const id of s.questionIds) {
+    const q = findQuestion(s.certId, id);
+    if (q && s.responses[id]) answeredByDomain[q.domainId] = (answeredByDomain[q.domainId] ?? 0) + 1;
+  }
+  logActivity(s.certId, {
+    kind: 'session',
+    mode: s.mode,
+    answered: score.answered,
+    total: s.questionIds.length,
+    byDomain: answeredByDomain,
+    // Capped, so a session left open overnight doesn't claim hours of study.
+    minutes: Math.min(Math.max(1, Math.round((endedAt - s.startedAt) / 60_000)), s.questionIds.length * 3),
+  });
 }

@@ -17,6 +17,7 @@ import {
 } from '../../engine/games/priorityLens';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
+import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
@@ -54,7 +55,7 @@ export default function PriorityLens() {
           setPick(null);
         }}
       >
-        <T center color={c.text2}>
+        <T center color={c.ink2}>
           Before reading the options, find the priority word. It tells you which of several true answers the examiner wants.
         </T>
       </RoundEnd>
@@ -74,7 +75,10 @@ export default function PriorityLens() {
     setScore((s) => s + gained);
     progress.recordAnswer(cert.id, q.id, ok);
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
-    if (i === round.length - 1) progress.recordGame(cert.id, 'priority', score + gained);
+    if (i === round.length - 1) {
+      progress.recordGame(cert.id, 'priority', score + gained);
+      logGame(cert.id, 'priority');
+    }
   };
 
   const stateFor = (d: Letter): OptionState => {
@@ -101,7 +105,7 @@ export default function PriorityLens() {
           />
         ) : !word ? (
           <>
-            <T v="label" center color={c.text2}>Step 1: which word decides this?</T>
+            <T v="label" center color={c.ink2}>Step 1: which word decides this?</T>
             <Row gap={space.sm} style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               {choices.map((w) => (
                 <Chip key={w} label={w} selected={false} onPress={() => setWord(w)} />

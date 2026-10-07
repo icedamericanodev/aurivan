@@ -13,4 +13,10 @@ export const config = {
   /** Supabase (Phase 3: accounts + sync). Publishable values only. */
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '',
+  /**
+   * Month the question bank was last reviewed, shown in the trust line under
+   * every answer ("Original · Reviewed Oct 2026"). Update it with each
+   * content review.
+   */
+  contentReviewed: 'Oct 2026',
 };

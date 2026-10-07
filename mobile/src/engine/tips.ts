@@ -19,3 +19,17 @@ export function tipParts(tip: string, index: number): { label: string; body: str
   }
   return { label: LEGACY_LABELS[index] ?? 'Tip', body: tip };
 }
+
+/**
+ * The "runner-up": the other option named in the "Final two:" tip
+ * (e.g. "Final two: {{B}} beats {{C}} …" with key B → C). Letters are
+ * ORIGINAL letters, read from the {{X}} tokens before any shuffling, so
+ * compare them with the original letter the learner picked.
+ * Returns undefined for older tips that have no "Final two:" line.
+ */
+export function runnerUp(tips: string[], correct: string): string | undefined {
+  const finalTwo = tips.find((t) => /^Final two:/.test(t));
+  if (!finalTwo) return undefined;
+  const letters = [...finalTwo.matchAll(/\{\{([A-D])\}\}/g)].map((m) => m[1]);
+  return letters.find((l) => l !== correct);
+}

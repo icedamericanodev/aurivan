@@ -1,31 +1,26 @@
 /**
- * Settings — certification, appearance, study goal, reminders, data,
- * and the legal notices required for store review.
+ * Settings — certification, appearance, study goal, reminders, haptics,
+ * data, and the legal notices required for store review. Groups are
+ * sections with hairline rows, not cards (spec §5).
  */
 import Constants from 'expo-constants';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { Alert, Linking, Pressable, View } from 'react-native';
-import { Button, Card, Chip, Gap, Row, Screen, T, Toggle } from '../components/ui';
+import { Alert, Linking, View } from 'react-native';
+import { ThemeSwitch } from '../components/themeSwitch';
+import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, T, ToggleRow } from '../components/ui';
 import { CERTIFICATIONS } from '../content/certifications';
 import { config } from '../lib/config';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../lib/reminders';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { useSettings, type ThemePref } from '../store/settings';
+import { useSettings } from '../store/settings';
 import { space } from '../theme/tokens';
-import { useTheme } from '../theme/useTheme';
 
-const THEMES: { label: string; value: ThemePref }[] = [
-  { label: 'System', value: 'system' },
-  { label: 'Dark', value: 'dark' },
-  { label: 'Light', value: 'light' },
-];
 const GOALS = [10, 20, 40];
 
 export default function Settings() {
-  const { c } = useTheme();
   const { cert } = useActiveCert();
   const s = useSettings();
   const resetCert = useProgress((p) => p.resetCert);
@@ -63,21 +58,16 @@ export default function Settings() {
       },
     ]);
 
+  const reminderText = remindersSupported
+    ? `Every day at ${String(s.reminder.hour).padStart(2, '0')}:${String(s.reminder.minute).padStart(2, '0')}`
+    : 'Available in the installed app, not Expo Go on Android.';
+
   return (
     <Screen edges={['top', 'bottom']}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Back"
-        onPress={() => router.back()}
-        style={{ minHeight: 48, minWidth: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
-      >
-        <T v="label" color={c.accentText}>‹ Back</T>
-      </Pressable>
-      <Gap h={space.sm} />
-      <T v="display">Settings</T>
-      <Gap />
+      {/* Same pushed header as Saved and Mistakes: the title lives in the bar. */}
+      <PushedHeader title="Settings" onBack={() => router.back()} />
 
-      <T v="title">Certification</T>
+      <Section title="Certification" />
       <Gap h={space.sm} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
         {CERTIFICATIONS.map((x) => (
@@ -93,58 +83,36 @@ export default function Settings() {
           />
         ))}
       </View>
-      <Gap />
 
-      <T v="title">Appearance</T>
+      {/* Same setting as the switch at the top of You: they always agree. */}
+      <Section title="Appearance" />
       <Gap h={space.sm} />
-      <Row gap={space.sm}>
-        {THEMES.map((t) => (
-          <Chip key={t.value} label={t.label} selected={s.theme === t.value} onPress={() => s.setTheme(t.value)} />
-        ))}
-      </Row>
-      <Gap />
+      <ThemeSwitch />
 
-      <T v="title">Daily goal</T>
+      <Section title="Daily goal" />
       <Gap h={space.sm} />
-      <Row gap={space.sm}>
-        {GOALS.map((g) => (
-          <Chip key={g} label={`${g} / day`} selected={s.dailyGoal === g} onPress={() => s.setDailyGoal(g)} />
-        ))}
-      </Row>
-      <Gap />
+      <Segmented
+        accessibilityLabel="Daily goal"
+        value={s.dailyGoal}
+        onChange={s.setDailyGoal}
+        options={GOALS.map((g) => ({ value: g, numeral: String(g), label: 'a day', spoken: `${g} questions a day` }))}
+      />
 
-      <Card>
-        <Row style={{ justifyContent: 'space-between' }}>
-          <View style={{ flex: 1 }}>
-            <T v="title">Daily reminder</T>
-            <T v="meta">
-              {remindersSupported
-                ? `Every day at ${String(s.reminder.hour).padStart(2, '0')}:${String(s.reminder.minute).padStart(2, '0')}`
-                : 'Available in the installed app, not Expo Go on Android.'}
-            </T>
-          </View>
-          <Toggle
-            accessibilityLabel="Daily study reminder"
-            value={remindersSupported && s.reminder.enabled}
-            disabled={busy || !remindersSupported}
-            onValueChange={toggleReminder}
-          />
-        </Row>
-        <Gap h={space.md} />
-        <Row style={{ justifyContent: 'space-between' }}>
-          <View style={{ flex: 1 }}>
-            <T v="title">Shuffle answer options</T>
-            <T v="meta">Stops you memorising letters.</T>
-          </View>
-          <Toggle accessibilityLabel="Shuffle answer options" value={s.shuffleOptions} onValueChange={s.setShuffle} />
-        </Row>
-      </Card>
-      <Gap />
+      <Section title="Study" />
+      <ToggleRow
+        title="Daily reminder"
+        subtitle={reminderText}
+        value={remindersSupported && s.reminder.enabled}
+        disabled={busy || !remindersSupported}
+        onValueChange={toggleReminder}
+      />
+      <ToggleRow title="Shuffle answer options" subtitle="Stops you memorising letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
+      <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
 
-      <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
       <Gap h={space.xl} />
+      <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
 
-      <T v="title">About</T>
+      <Section title="About" />
       <Gap h={space.sm} />
       <T v="meta">
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.
@@ -155,10 +123,10 @@ export default function Settings() {
       ))}
       <Gap h={space.sm} />
       {config.privacyUrl !== '' && (
-        <Button kind="ghost" label="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} />
+        <Button kind="ghost" label="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} style={{ alignSelf: 'flex-start' }} />
       )}
       {config.termsUrl !== '' && (
-        <Button kind="ghost" label="Terms of use" onPress={() => Linking.openURL(config.termsUrl)} />
+        <Button kind="ghost" label="Terms of use" onPress={() => Linking.openURL(config.termsUrl)} style={{ alignSelf: 'flex-start' }} />
       )}
     </Screen>
   );

@@ -24,7 +24,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 PRIORITY_WORDS = ["BEST", "FIRST", "MOST", "PRIMARY", "GREATEST", "LEAST", "MAIN", "STRONGEST"]
-ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "committee", "firm", "owner", "officer", "manager"]
+ACTOR_WORDS = ["auditor", "audit", "management", "board", "organization", "committee", "firm", "owner", "officer", "manager",
+               "director", "ciso", "cio", "cto", "ceo", "cfo", "coo", "cae", "dpo", "team", "lead"]
 LONE_ABSOLUTES = ["always", "never", "all", "in full", "inherently", "per se", "only", "guarantees?"]
 STOP = set("the a an of to and or for in on by with is are be that this which what who its it as at from not".split())
 
@@ -83,6 +84,11 @@ def check(q):
         errs.append("options must be exactly A–D")
         return errs, warns
     ol = {k: words(v) for k, v in opts.items()}
+    # Options are full, plain statements a learner can read aloud: no "+" lists,
+    # arrows or slash shorthand, which read like notes rather than exam choices.
+    for k, v in opts.items():
+        if re.search(r"\s\+\s|→|->|\w/\w+/\w", v):
+            errs.append(f"option {k} uses shorthand ('+', arrow or a/b/c): write it as a full statement")
     if max(ol.values()) > MAX_OPTION:
         errs.append(f"option over {MAX_OPTION}w: {ol}")
     if c not in opts:

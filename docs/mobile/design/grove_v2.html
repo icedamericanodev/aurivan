@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Aurivan · Grove v2</title>
+<link rel="stylesheet" href="common.css">
+<style>
+@font-face{font-family:'FrauncesS';src:url(fonts/Fraunces_400Regular_Italic.ttf);font-weight:400;font-style:italic}
+/* ---------- tokens (contrast.py reads the .light{} / .dark{} blocks) ---------- */
+.light{--bg:#F3F1EA;--raised:#FFFFFF;--ink:#17231B;--ink2:#465349;--muted:#5E6A61;--line:#DFDCD1;--soft:#E6EBE2;--control:#7D897F;--track:#E2E0D6;
+ --forest:#1E4A34;--onForest:#F3F1EA;--onForest2:#C9DACD;--forestLine:#3A6B51;--sap:#A9D9BA;--forestTrack:#2F5C44;
+ --accent:#2B6E4A;--accentText:#24603F;--btn:#1E4A34;--onBtn:#F7F5EF;--pill:#F3F1EA;--onPill:#17231B;--clay:#9A4F26;
+ --correct:#1D6A43;--correctBg:#E0EDE2;--wrong:#A3333D;--wrongBg:#F7E3E1;--tip:#7A5100;--tipBg:#F3EAD3;
+ --dom0:#3F7F96;--dom1:#4E8A3E;--dom2:#B0802C;--dom3:#86689C;--dom4:#5E7482;--grainOp:.05;--grainInk:#3a2f1c;
+ --shadow:0 1px 2px rgba(23,35,27,.05),0 2px 8px rgba(23,35,27,.04)}
+.dark{--bg:#111613;--raised:#1A211C;--ink:#ECEFE8;--ink2:#B4BFB6;--muted:#97A39A;--line:#29322B;--soft:#202A23;--control:#66736A;--track:#2A332C;
+ --forest:#21432F;--onForest:#EEF2EA;--onForest2:#BCD2C2;--forestLine:#3C6B51;--sap:#A9D9BA;--forestTrack:#2E5440;
+ --accent:#7FC39C;--accentText:#93CFAA;--btn:#A9D9BA;--onBtn:#0F1F16;--pill:#EEF2EA;--onPill:#0F1F16;--clay:#E9A07A;
+ --correct:#8AD6A8;--correctBg:#173022;--wrong:#FF9CA6;--wrongBg:#3A1A1D;--tip:#E9C46A;--tipBg:#2C2715;
+ --dom0:#72B4CB;--dom1:#8CC474;--dom2:#DDB066;--dom3:#B99DCD;--dom4:#9AAFBB;--grainOp:.06;--grainInk:#ffffff;
+ --shadow:none}
+.phone{--fs:1;font-family:'FigtreeS',sans-serif}
+.phone.fs16{--fs:1.6}.phone.fs20{--fs:2}
+/* paper grain: in RN this is a 256px noise PNG tiled at --grainOp (no dependency) */
+.grain{position:absolute;inset:0;pointer-events:none;opacity:var(--grainOp);z-index:6;mix-blend-mode:normal}
+.scr{position:absolute;top:50px;left:0;right:0;bottom:0;overflow:hidden;padding:0 20px;z-index:2}
+.scr.tabbed{bottom:84px}
+/* ---------- type (sizes scale with --fs; caps per spec) ---------- */
+.display{font:500 calc(36px*min(var(--fs),1.3))/1.17 'FrauncesS';letter-spacing:-.6px}
+.t-hero{font:500 calc(28px*min(var(--fs),1.3))/1.22 'FrauncesS';letter-spacing:-.4px}
+.t-stem{font:400 calc(21px*var(--fs))/1.43 'FrauncesS';letter-spacing:-.1px}
+.t-stem.long{font-size:calc(20px*var(--fs))}
+.t-quote{font:italic 400 calc(18px*var(--fs))/1.45 'FrauncesS'}
+.t-head{font:600 calc(17px*var(--fs))/1.41 'FigtreeS';letter-spacing:-.1px}
+.t-label{font:600 calc(16px*var(--fs))/1.375 'FigtreeS'}
+.t-body{font:400 calc(16px*var(--fs))/1.5 'FigtreeS'}
+.t-small{font:400 calc(15px*var(--fs))/1.47 'FigtreeS';color:var(--ink2)}
+.t-meta{font:500 calc(14px*var(--fs))/1.43 'FigtreeS';color:var(--ink2)}
+.t-cap{font:600 calc(13px*var(--fs))/1.38 'FigtreeS';letter-spacing:.1px}
+.num{font-variant-numeric:tabular-nums}
+.serifnum{font-family:'FrauncesS';font-weight:500;letter-spacing:-.02em}
+/* ---------- shared bits ---------- */
+.top{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.streak{display:flex;gap:4px;align-items:center;color:var(--clay);font:500 calc(20px*min(var(--fs),1.3))/1 'FrauncesS'}
+.hero{background:var(--forest);color:var(--onForest);border-radius:24px;padding:20px 22px 22px;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.hero .bot{position:absolute;right:-18px;top:-14px;color:var(--forestLine)}
+.hero .rel{position:relative}
+.hero .lbl{color:var(--onForest2);display:flex;align-items:center;gap:10px}
+.hero .meta{color:var(--onForest2);font:500 calc(14px*var(--fs))/1.43 'FigtreeS';margin-top:6px}
+.leaves{display:inline-flex;gap:3px;color:var(--sap)}
+.pillbtn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:24px;background:var(--pill);color:var(--onPill);font:600 calc(16px*var(--fs))/1.2 'FigtreeS';margin-top:18px}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:30px 0 2px}
+.lrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:0}
+.ico{width:40px;height:40px;border-radius:20px;background:var(--soft);display:grid;place-items:center;color:var(--accentText);flex:none}
+.lrow .tx{flex:1;min-width:0}
+.chev{color:var(--muted);flex:none}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;border-top:1px solid var(--line);background:var(--bg);display:flex;justify-content:space-around;padding-top:8px;z-index:3}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font:600 calc(11px*min(var(--fs),1.2))/1.27 'FigtreeS';width:70px}
+.tab.on{color:var(--ink)}.tab.on svg{color:var(--accentText)}
+.tab .dotx{width:4px;height:4px;border-radius:2px;background:transparent;margin-top:1px}
+.tab.on .dotx{background:var(--accent)}
+/* readiness */
+.ready{display:flex;align-items:center;gap:18px;margin-top:22px}
+.ax .hero .t-hero{max-width:none!important}
+.ax .ready{flex-direction:column;align-items:flex-start;gap:10px}
+.bignum{font:500 calc(52px*min(var(--fs),1.3))/1 'FrauncesS';letter-spacing:-1.4px}
+.bignum sup{font-size:.48em;vertical-align:.78em;letter-spacing:0;margin-left:2px}
+.stage{font:italic 400 calc(19px*var(--fs))/1.3 'FrauncesS';margin-top:6px}
+/* question */
+.qbar{display:flex;align-items:center;gap:12px;height:52px}
+.ib{width:44px;height:44px;display:grid;place-items:center;color:var(--ink);margin-left:-10px;flex:none}
+.ib.r{margin:0 -10px 0 0;color:var(--ink2)}
+.prog{flex:1;display:flex;gap:3px}.prog i{flex:1;height:4px;border-radius:2px;background:var(--track)}.prog i.on{background:var(--accent)}.prog i.cur{background:var(--ink2)}
+.qmeta{display:flex;align-items:center;gap:8px;margin-top:12px}
+.dot{width:8px;height:8px;border-radius:4px;flex:none}
+.opts{margin-top:20px;display:flex;flex-direction:column;gap:10px;padding-bottom:120px}
+.opt{display:flex;gap:14px;align-items:flex-start;background:var(--raised);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);border:1.5px solid transparent}
+.dark .opt{border-color:var(--line)}
+.k{width:calc(30px*min(var(--fs),1.6));height:calc(30px*min(var(--fs),1.6));border-radius:50%;border:1.5px solid var(--control);display:grid;place-items:center;font:600 calc(14px*var(--fs))/1 'FigtreeS';color:var(--ink2);flex:none;margin-top:-3px}
+.opt .t-body{line-height:1.42}
+.opt.sel{border:2px solid var(--ink);padding:13.5px 15.5px}
+.opt.sel .k{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.opt.ok{background:var(--correctBg);border-color:transparent;box-shadow:none}
+.opt.ok .k{background:var(--correct);border-color:var(--correct);color:var(--bg)}
+.opt.bad{background:var(--wrongBg);border-color:transparent;box-shadow:none}
+.opt.bad .k{background:var(--wrong);border-color:var(--wrong);color:var(--bg)}
+.opt .note{display:block;margin-top:6px;font:400 calc(15px*var(--fs))/1.47 'FigtreeS';color:var(--ink)}
+.opt .tagl{display:block;font:600 13px/18px 'FigtreeS';margin-bottom:2px}
+.foot{position:absolute;left:0;right:0;bottom:0;padding:22px 20px 34px;background:linear-gradient(to bottom,transparent,var(--bg) 30%);z-index:3}
+.btn{min-height:56px;border-radius:28px;background:var(--btn);color:var(--onBtn);display:flex;align-items:center;justify-content:center;gap:8px;font:600 calc(17px*min(var(--fs),1.6))/1.2 'FigtreeS'}
+.btn2{min-height:52px;border-radius:26px;border:1.5px solid var(--control);color:var(--ink);display:flex;align-items:center;justify-content:center;font:600 16px/1 'FigtreeS'}
+/* feedback: verdict + vine */
+.verdict{display:flex;align-items:center;gap:12px;margin-top:12px}
+.mark{width:38px;height:38px;display:grid;place-items:center;flex:none;position:relative}
+.mark svg.leafm{position:absolute;inset:0}
+.vine{position:relative;margin-top:24px;padding-left:34px}
+.vine:before{content:'';position:absolute;left:10px;top:12px;bottom:18px;width:1.5px;background:var(--accent);opacity:.55;border-radius:1px}
+.node{position:relative;padding-bottom:18px}
+.node .lf{position:absolute;left:-34px;top:0;width:22px;height:22px;display:grid;place-items:center;background:var(--bg)}
+.node .t-cap{display:block;margin-bottom:3px}
+.node .t-small{color:var(--ink)}
+.node.key .t-quote{color:var(--ink)}
+.c-acc{color:var(--accentText)}.c-tip{color:var(--tip)}.c-ink2{color:var(--ink2)}
+.srcrow{display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line);margin-top:4px}
+/* learn */
+.sub{margin-top:4px}
+.lnum{width:40px;flex:none;text-align:left}
+.status{width:28px;height:28px;border-radius:14px;display:grid;place-items:center;flex:none}
+.status.done{background:var(--accent);color:var(--bg)}
+.status.next{border:1.5px solid var(--control);color:var(--ink2)}
+/* practice */
+.chips{display:flex;gap:8px;margin-top:12px;white-space:nowrap;overflow:hidden;margin-right:-20px;mask-image:linear-gradient(to right,#000 85%,transparent)}
+.chip{height:40px;padding:0 16px;border-radius:20px;border:1.5px solid var(--control);display:inline-flex;align-items:center;gap:6px;font:600 15px/1 'FigtreeS';color:var(--ink);flex:none}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.seg{display:flex;margin-top:12px;border-radius:22px;background:var(--soft);padding:3px;gap:3px}
+.seg span{flex:1;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:5px;color:var(--ink2);font:500 13px/1 'FigtreeS'}
+.seg span b{font:500 20px/1 'FrauncesS';color:var(--ink)}
+.seg span.on{background:var(--raised);box-shadow:var(--shadow)}
+.dark .seg span.on{background:#2C372F}
+.lead{width:52px;flex:none;line-height:1}
+.lead b{display:block;font:500 26px/1 'FrauncesS';letter-spacing:-.5px}
+.lead small{font:500 12px/16px 'FigtreeS';color:var(--ink2)}
+.trail{text-align:right;flex:none}
+.trail b{display:block;font:500 22px/1 'FrauncesS'}
+/* you */
+.ringbox{position:relative;flex:none}
+.ringbox .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.legend{flex:1;display:flex;flex-direction:column;gap:9px}
+.legend div{display:flex;align-items:center;gap:9px}
+.legend .nm{flex:1;font:500 14px/18px 'FigtreeS'}
+.legend .pc{font:500 17px/1 'FrauncesS'}
+.stats{display:flex;margin-top:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div{flex:1;padding:16px 0 14px;text-align:left}
+.stats div+div{border-left:1px solid var(--line);padding-left:16px}
+.stats b{display:block;font:500 34px/1 'FrauncesS';letter-spacing:-.8px}
+.stats b sup{font-size:.5em;vertical-align:.7em}
+/* empty */
+.pbar{display:flex;align-items:center;height:52px;justify-content:space-between}
+.illo{display:grid;place-items:center;margin-top:46px;color:var(--accent)}
+.tagrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.tg{height:32px;padding:0 12px;border-radius:16px;background:var(--soft);display:inline-flex;align-items:center;font:500 14px/1 'FigtreeS';color:var(--ink2)}
+.tg .dot{margin-right:7px;background:var(--clay);width:6px;height:6px}
+/* clearing */
+.cstats{display:flex;margin-top:18px;gap:0}
+.cstats div{flex:1}
+.cstats div+div{border-left:1px solid var(--forestTrack);padding-left:14px}
+.cstats b{display:block;font:500 30px/1 'FrauncesS';letter-spacing:-.6px;color:var(--onForest)}
+.cstats span{font:500 13px/18px 'FigtreeS';color:var(--onForest2)}
+.grew{display:flex;align-items:center;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--forestTrack)}
+/* page */
+.page{max-width:none}
+.row{gap:36px}
+.note2{font:400 14px/1.45 'FigtreeS';opacity:.9;margin:-6px 0 14px;max-width:1500px}
+</style></head><body>
+<div class="page">
+ <h1>Aurivan · Grove v2</h1>
+ <p class="sub" style="font:400 16px/1.5 'FigtreeS';opacity:.92;margin-top:6px;max-width:1500px">Five signatures on top of v1: <b>growth rings</b> for readiness (one ring per domain, thicker = heavier on the exam), <b>botanical line art</b> on the forest panel and empty states, <b>Fraunces numerals and an italic coaching voice</b>, the <b>vine reveal</b> on the answer screen (key idea and tips as leaves on one stem), and <b>warm paper with grain</b>. Real content: d4_250 (long stem, runner-up trap picked).</p>
+ <div id="rows"></div>
+</div>
+
+<!-- ===================== TODAY ===================== -->
+<template id="today">
+<div class="phone">{{SB}}<div class="scr tabbed">
+ <div class="top"><span class="t-meta num">Thursday · 38 days to exam</span><span class="streak num">{{sprig:20}}6</span></div>
+ <div class="display" style="margin-top:4px">Today</div>
+ <div class="hero" style="margin-top:16px"><div class="bot" data-botany="frond"></div>
+  <div class="rel">
+   <div class="t-cap lbl">Start here <span class="leaves">{{LEAF:on}}{{LEAF}}{{LEAF}}</span></div>
+   <div class="t-hero" style="margin-top:8px;max-width:230px">Review 20 due</div>
+   <div class="meta">About 12 minutes · questions you missed</div>
+   <div class="pillbtn">{{play:16}}Start</div>
+  </div>
+ </div>
+ <div class="ready">
+  <div data-ring="today"></div>
+  <div style="flex:1">
+   <div class="bignum num">70<sup>%</sup></div>
+   <div class="t-meta" style="margin-top:4px">ready, weighted by the blueprint</div>
+   <div class="stage">Stage 3 · Make it stick</div>
+  </div>
+ </div>
+ <div class="sec"><span class="t-head">Also today</span><span class="t-meta">2 more</span></div>
+ <div class="lrow"><div class="ico">{{book}}</div><div class="tx"><div class="t-label">Authentication factors: what makes MFA real</div><div class="t-meta">Lesson · 3 min</div></div><span class="chev">{{chev:18}}</span></div>
+ <div class="lrow"><div class="ico">{{game}}</div><div class="tx"><div class="t-label">Trap Spotter</div><div class="t-meta">Game · 2 min</div></div><span class="chev">{{chev:18}}</span></div>
+</div>
+{{TABS:0}}
+</div>
+</template>
+
+<!-- ===================== QUESTION ===================== -->
+<template id="question">
+<div class="phone">{{SB}}<div class="scr">
+ <div class="qbar"><span class="ib">{{x:24}}</span><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="cur"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="ib r">{{bookmark:22}}</span></div>
+ <div class="qmeta"><span class="dot" style="background:var(--dom3)"></span><span class="t-meta">IS Operations · Job scheduling · 4 of 10</span></div>
+ <div class="t-stem long" style="margin-top:10px">An IS auditor confirms a whistleblower’s claim that, during the ongoing year-end close, operators are running ad hoc batch jobs that post journal entries outside the scheduler’s approval workflow. What should the auditor recommend FIRST?</div>
+ <div class="opts">
+  <div class="opt"><span class="k">A</span><span class="t-body">Have operators document each ad hoc run and its purpose after close</span></div>
+  <div class="opt"><span class="k">B</span><span class="t-body">Block job submission outside the scheduler’s approved queue now</span></div>
+  <div class="opt sel"><span class="k">C</span><span class="t-body">Review the ad hoc runs for unauthorized entries before close</span></div>
+  <div class="opt"><span class="k">D</span><span class="t-body">Rely on the external auditors’ year-end testing to cover it</span></div>
+ </div>
+</div>
+<div class="foot"><div class="btn">Check answer</div></div>
+</div>
+</template>
+
+<!-- ===================== FEEDBACK (top) ===================== -->
+<template id="fb1">
+<div class="phone">{{SB}}<div class="scr">
+ <div class="qbar"><span class="ib">{{x:24}}</span><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="ib r">{{bookmark:22}}</span></div>
+ <div class="verdict">{{MARK:wrong}}<span class="t-hero" style="color:var(--wrong)">Not quite</span></div>
+ <div class="t-meta" style="margin:4px 0 0 50px">You picked the runner-up. That’s the trap.</div>
+ <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+  <div class="opt bad"><span class="k">{{x:16:2.5}}</span><span class="t-body"><span class="tagl" style="color:var(--wrong)">Your answer · C</span>Review the ad hoc runs for unauthorized entries before close<span class="note">With the bypass still open, new unapproved runs keep adding entries faster than they can be checked.</span></span></div>
+  <div class="opt ok"><span class="k">{{check:16:2.5}}</span><span class="t-body"><span class="tagl" style="color:var(--correct)">Best answer · B</span>Block job submission outside the scheduler’s approved queue now</span></div>
+ </div>
+ <div class="t-head" style="margin-top:22px">Why B</div>
+ <p class="t-body" style="margin-top:4px">While the bypass stays open, every new ad hoc run adds unapproved entries to the close, so the first step is to force all job submissions through the scheduler’s approval path. Any review then works on a fixed population.</p>
+</div>
+<div class="foot"><div class="btn">Next question{{arrow:18}}</div></div>
+</div>
+</template>
+
+<!-- ===================== FEEDBACK (scrolled to tips) ===================== -->
+<template id="fb2">
+<div class="phone">{{SB}}<div class="scr">
+ <div class="qbar" style="position:relative;z-index:2;background:var(--bg)"><span class="ib">{{x:24}}</span><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="ib r">{{bookmark:22}}</span></div>
+ <div style="margin-top:-18px">
+ <p class="t-body" style="color:var(--ink)">first step is to force all job submissions through the scheduler’s approval path. Any review then works on a fixed population.</p>
+ <div class="vine">
+  <div class="node key"><span class="lf">{{LEAFB:accent}}</span><span class="t-cap c-acc">Key idea</span><p class="t-quote">Production jobs run only through the scheduler’s approved path; when a bypass is active, close it before assessing its impact.</p></div>
+  <div class="node"><span class="lf">{{LEAFS:tip}}</span><span class="t-cap c-tip">Eliminate</span><p class="t-small">A documents the bypass without stopping it, and D hands the organization’s control duty to external auditors.</p></div>
+  <div class="node"><span class="lf">{{LEAFS:ink2}}</span><span class="t-cap c-ink2">Final two</span><p class="t-small">B beats C because closing the bypass fixes the population; reviewing first lets new unapproved runs keep arriving.</p></div>
+  <div class="node" style="padding-bottom:6px"><span class="lf">{{LEAFS:accent}}</span><span class="t-cap c-acc">Exam cue</span><p class="t-small">When a control bypass is still happening, stop the bypass first, then assess what already got through.</p></div>
+ </div>
+ <div class="srcrow"><span class="t-meta">Code d4_250 · COBIT DSS01</span><span class="t-cap c-acc" style="font-size:14px">Report an issue</span></div>
+ </div>
+</div>
+<div class="foot"><div class="btn">Next question{{arrow:18}}</div></div>
+</div>
+</template>
+
+<!-- ===================== LEARN ===================== -->
+<template id="learn">
+<div class="phone">{{SB}}<div class="scr tabbed">
+ <div class="display" style="margin-top:20px">Learn</div>
+ <div class="t-meta sub">Three-minute lessons, one idea each.</div>
+ <div class="hero" style="margin-top:18px;padding-top:18px"><div class="bot" data-botany="branch" style="right:-10px;top:-6px"></div>
+  <div class="rel">
+   <div class="t-cap lbl"><span class="dot" style="background:var(--dom1)"></span>Up next · IT Governance</div>
+   <div class="t-hero" style="margin-top:8px;max-width:250px">Governance vs management: directing vs doing</div>
+   <div class="meta">3 min · 7 scenes</div>
+   <div class="pillbtn">{{play:16}}Start lesson</div>
+  </div>
+ </div>
+ <div class="sec"><span class="t-head">By domain</span><span class="t-meta">1 of 5 done</span></div>
+ <div class="lrow"><span class="lnum serifnum c-ink2" style="font-size:22px">1</span><div class="tx"><div class="t-label">The audit charter: who the auditor answers to</div><div class="t-meta"><span class="dot" style="display:inline-block;background:var(--dom0);margin-right:6px"></span>IS Audit · done</div></div><span class="status done">{{check:16:2.5}}</span></div>
+ <div class="lrow"><span class="lnum serifnum c-ink2" style="font-size:22px">2</span><div class="tx"><div class="t-label">Governance vs management: directing vs doing</div><div class="t-meta"><span class="dot" style="display:inline-block;background:var(--dom1);margin-right:6px"></span>IT Governance · up next</div></div><span class="status next">{{play:12}}</span></div>
+ <div class="lrow"><span class="lnum serifnum c-ink2" style="font-size:22px">3</span><div class="tx"><div class="t-label">Change control: why developers don’t ship to production</div><div class="t-meta"><span class="dot" style="display:inline-block;background:var(--dom2);margin-right:6px"></span>IS Acquisition · 3 min</div></div><span class="status next">{{play:12}}</span></div>
+ <div class="lrow"><span class="lnum serifnum c-ink2" style="font-size:22px">4</span><div class="tx"><div class="t-label">RPO and RTO: the two clocks of recovery</div><div class="t-meta"><span class="dot" style="display:inline-block;background:var(--dom3);margin-right:6px"></span>IS Operations · 3 min</div></div><span class="status next">{{play:12}}</span></div>
+</div>
+{{TABS:1}}
+</div>
+</template>
+
+<!-- ===================== PRACTICE ===================== -->
+<template id="practice">
+<div class="phone">{{SB}}<div class="scr tabbed">
+ <div class="display" style="margin-top:20px">Practice</div>
+ <div class="t-meta sub">Every option explained, every trap named.</div>
+ <div class="hero" style="margin-top:18px;padding:18px 22px 20px"><div class="bot" data-botany="frond2"></div>
+  <div class="rel">
+   <div class="t-cap lbl">Quick 10</div>
+   <div class="t-hero" style="margin-top:6px">Ten mixed questions</div>
+   <div class="meta">New material first · about 12 min</div>
+   <div class="pillbtn">{{play:16}}Start</div>
+  </div>
+ </div>
+ <div style="margin-top:8px">
+  <div class="lrow"><div class="ico">{{review}}</div><div class="tx"><div class="t-label">Spaced review</div><div class="t-meta">Missed questions, due now</div></div><div class="trail"><b class="num">59</b><span class="t-meta" style="font-size:12px">due</span></div><span class="chev">{{chev:18}}</span></div>
+  <div class="lrow"><div class="ico">{{target}}</div><div class="tx"><div class="t-label">Weak area: Info Protection</div><div class="t-meta">Most points to gain</div></div><span class="chev">{{chev:18}}</span></div>
+ </div>
+ <div class="sec" style="margin-top:22px"><span class="t-head">Build a set</span></div>
+ <div class="chips"><span class="chip on">{{check:14:2.5}}All domains</span><span class="chip">IS Audit</span><span class="chip">IT Governance</span><span class="chip">IS Acquisition</span></div>
+ <div class="seg"><span class="on"><b>10</b>questions</span><span><b>20</b>questions</span><span><b>50</b>questions</span></div>
+ <div class="sec" style="margin-top:24px"><span class="t-head">Mock exams</span>{{clock:18}}</div>
+ <div class="lrow"><div class="lead"><b class="num">50</b><small>questions</small></div><div class="tx"><div class="t-label">Mini mock</div><div class="t-meta">80 min · feedback at the end</div></div><span class="chev">{{chev:18}}</span></div>
+</div>
+{{TABS:2}}
+</div>
+</template>
+
+<!-- ===================== YOU ===================== -->
+<template id="you">
+<div class="phone">{{SB}}<div class="scr tabbed">
+ <div class="display" style="margin-top:20px">You</div>
+ <div style="display:flex;gap:20px;align-items:center;margin-top:18px">
+  <div class="ringbox" data-ring="you"><div class="c"><div><div class="serifnum num" style="font-size:30px;line-height:1">70<sup style="font-size:15px;vertical-align:12px">%</sup></div><div class="t-cap c-ink2" style="font-size:12px;margin-top:2px">ready</div></div></div></div>
+  <div class="legend">
+   <div><span class="dot" style="background:var(--dom4)"></span><span class="nm">Info Protection</span><span class="pc num">65</span></div>
+   <div><span class="dot" style="background:var(--dom3)"></span><span class="nm">IS Operations</span><span class="pc num">68</span></div>
+   <div><span class="dot" style="background:var(--dom2)"></span><span class="nm">IS Acquisition</span><span class="pc num">70</span></div>
+   <div><span class="dot" style="background:var(--dom1)"></span><span class="nm">IT Governance</span><span class="pc num">63</span></div>
+   <div><span class="dot" style="background:var(--dom0)"></span><span class="nm">IS Audit</span><span class="pc num">88</span></div>
+  </div>
+ </div>
+ <p class="t-meta" style="margin-top:14px">Rings read from the outside in. Thicker rings weigh more on the exam.</p>
+ <div class="stats">
+  <div><b class="num">200</b><span class="t-meta">answered</span></div>
+  <div><b class="num">71<sup>%</sup></b><span class="t-meta">accuracy</span></div>
+  <div><b class="num" style="color:var(--clay)">6</b><span class="t-meta">day streak</span></div>
+ </div>
+ <div class="sec" style="margin-top:24px"><span class="t-head">Study tools</span></div>
+ <div class="lrow"><div class="ico">{{note}}</div><div class="tx"><div class="t-label">Mistake journal</div><div class="t-meta">Every miss, tagged</div></div><div class="trail"><b class="num">59</b><span class="t-meta" style="font-size:12px">open</span></div><span class="chev">{{chev:18}}</span></div>
+ <div class="lrow"><div class="ico">{{bookmark}}</div><div class="tx"><div class="t-label">Saved questions</div><div class="t-meta">Your own revision set</div></div><span class="chev">{{chev:18}}</span></div>
+</div>
+{{TABS:4}}
+</div>
+</template>
+
+<!-- ===================== EMPTY: Mistake journal ===================== -->
+<template id="empty">
+<div class="phone">{{SB}}<div class="scr">
+ <div class="pbar"><span class="ib">{{back:24}}</span><span class="t-label">Mistake journal</span><span style="width:34px"></span></div>
+ <div class="illo" data-botany="seedling"></div>
+ <div class="t-hero" style="text-align:center;margin-top:22px">Nothing open right now</div>
+ <p class="t-body c-ink2" style="text-align:center;margin:8px 12px 0">Every question you miss lands here, tagged by the trap that caught you.</p>
+ <div class="tagrow"><span class="tg"><span class="dot"></span>Missed FIRST/BEST</span><span class="tg"><span class="dot"></span>Wrong role</span><span class="tg"><span class="dot"></span>Fixed the symptom</span></div>
+</div>
+<div class="foot"><div class="btn">Practise 10 questions</div><div class="t-label c-acc" style="text-align:center;margin-top:14px;font-size:16px">See cleared mistakes</div></div>
+</div>
+</template>
+
+<!-- ===================== CLEARING (plan complete) ===================== -->
+<template id="clearing">
+<div class="phone">{{SB}}<div class="scr tabbed">
+ <div class="top"><span class="t-meta num">Thursday · 38 days to exam</span><span class="streak num">{{sprig:20}}7</span></div>
+ <div class="display" style="margin-top:4px">Today</div>
+ <div class="hero" style="margin-top:16px;padding-bottom:20px"><div class="bot" data-botany="clearing" style="right:-24px;top:-20px"></div>
+  <div class="rel">
+   <div class="t-cap lbl">Today’s clearing <span class="leaves">{{LEAF:on}}{{LEAF:on}}{{LEAF:on}}</span></div>
+   <div class="t-hero" style="margin-top:8px">Three of three, done.</div>
+   <div class="cstats"><div><b class="num">31</b><span>questions</span></div><div><b class="num">82<sup style="font-size:15px;vertical-align:12px">%</sup></b><span>correct</span></div><div><b class="num">24</b><span>minutes</span></div></div>
+   <div class="grew"><div data-ring="mini"></div><div><div style="font:500 17px/1.3 'FrauncesS';color:var(--onForest)">Readiness grew to 72%</div><div class="meta" style="margin-top:2px">IS Operations ring +4</div></div></div>
+  </div>
+ </div>
+ <div class="sec"><span class="t-head">Tomorrow</span><span class="t-meta">about 15 min</span></div>
+ <div class="lrow"><div class="ico">{{review}}</div><div class="tx"><div class="t-label">Review 12 due</div><div class="t-meta">Spaced review</div></div></div>
+ <div class="lrow"><div class="ico">{{book}}</div><div class="tx"><div class="t-label">RPO and RTO: the two clocks of recovery</div><div class="t-meta">Lesson · 3 min</div></div></div>
+ <div class="t-label c-acc" style="margin-top:14px">Keep going anyway</div>
+</div>
+{{TABS:0}}
+</div>
+</template>
+
+<script src="common.js"></script>
+<script>
+// extra icons (custom tab glyphs: sprout = Journey, rings = You; sprig = streak)
+Object.assign(P,{
+ sprout:'<path d="M12 21v-8.5"/><path d="M12 12.5C12 8.6 9.6 6.2 5 6.2c0 3.9 2.6 6.3 7 6.3z"/><path d="M12 10.5c0-3.6 2.5-6.1 7-6.1 0 3.8-2.6 6.1-7 6.1z"/><path d="M7.5 21h9"/>',
+ rings:'<path d="M12 2.2c5.6 0 9.9 4.3 9.7 9.9-.2 5.3-4.5 9.8-9.9 9.7C6.5 21.7 2.2 17.4 2.3 12 2.4 6.6 6.6 2.2 12 2.2z"/><path d="M12 6.4c3.2 0 5.7 2.4 5.6 5.7-.1 3.1-2.6 5.6-5.7 5.5-3.1-.1-5.5-2.6-5.4-5.7.1-3 2.5-5.5 5.5-5.5z"/><circle cx="12" cy="12" r="1.6"/>',
+ sprig:'<path d="M11 21c.2-5 1.5-9.4 5-13"/><path d="M12.2 14.5C8.6 15 5.6 13.4 4.6 10c3.6-.6 6.6.9 7.6 4.5z" fill="currentColor" fill-opacity=".22"/><path d="M14.5 10.5c-.6-3.6 1-6.6 4.9-8 .6 3.7-1.2 6.8-4.9 8z" fill="currentColor" fill-opacity=".22"/>',
+ note:'<path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.4 5.6a2.1 2.1 0 1 0-3-3l-5.4 5.4-1 4 4-1z"/>',
+ back:'<path d="m15 18-6-6 6-6"/>'
+});
+const DOMS=[{w:18,v:.88},{w:18,v:.63},{w:12,v:.70},{w:26,v:.68},{w:26,v:.65}];
+// Growth rings: one wobbly ring per domain, inner = D1. Thickness = exam weight. Arc = mastery.
+function ringSVG(size,{k,r0,gap,pith=true,track='var(--track)',tones=true,mono}){
+ const c=size/2;let r=r0,out='';
+ const R=(rm,t)=>rm*(1+0.022*Math.sin(3*t+0.6)+0.012*Math.sin(5*t+1.9)+0.008*Math.sin(8*t));
+ const pathFor=(rm,a0,a1)=>{let d='';const n=Math.max(12,Math.ceil((a1-a0)/(Math.PI*2)*120));for(let i=0;i<=n;i++){const t=a0+(a1-a0)*i/n;const rr=R(rm,t);d+=(i?'L':'M')+(c+rr*Math.cos(t)).toFixed(2)+','+(c+rr*Math.sin(t)).toFixed(2)}return d};
+ DOMS.forEach((d,i)=>{const w=d.w*k,rm=r+w/2,a0=-Math.PI/2;
+  out+=`<path d="${pathFor(rm,0,Math.PI*2)}Z" fill="none" stroke="${track}" stroke-width="${w}"/>`;
+  out+=`<path d="${pathFor(rm,a0,a0+Math.PI*2*d.v)}" fill="none" stroke="${mono||`var(--dom${i})`}" stroke-width="${w}" stroke-linecap="round"/>`;
+  r+=w+gap});
+ if(pith)out+=`<circle cx="${c}" cy="${c}" r="${r0*0.32}" fill="${mono||'var(--accent)'}"/>`;
+ return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="display:block">${out}</svg>`;
+}
+// Botanical line art: leaves on a curved stem, single 1.5 stroke.
+function leaf(x,y,L,W,a){const c=Math.cos(a),s=Math.sin(a),P=(u,v)=>[(x+u*c-v*s).toFixed(1),(y+u*s+v*c).toFixed(1)].join(',');
+ return `M${x.toFixed(1)},${y.toFixed(1)} Q${P(L*.42,-W)} ${P(L,0)} Q${P(L*.42,W)} ${x.toFixed(1)},${y.toFixed(1)} M${P(L*.12,0)} L${P(L*.78,0)}`}
+function frond({w,h,p0,p1,pc,n,len,wid,ang,alt=false,taper=.75,sw=1.5}){
+ const B=(t)=>[(1-t)**2*p0[0]+2*(1-t)*t*pc[0]+t*t*p1[0],(1-t)**2*p0[1]+2*(1-t)*t*pc[1]+t*t*p1[1]];
+ const T=(t)=>[2*(1-t)*(pc[0]-p0[0])+2*t*(p1[0]-pc[0]),2*(1-t)*(pc[1]-p0[1])+2*t*(p1[1]-pc[1])];
+ let d=`M${p0} Q${pc} ${p1}`;
+ for(let i=1;i<=n;i++){const t=i/(n+1),[x,y]=B(t),[tx,ty]=T(t),base=Math.atan2(ty,tx),L=len*(1-t*taper),W=wid*(1-t*taper*.8);
+  const sides=alt?[i%2?1:-1]:[1,-1];for(const sd of sides)d+=' '+leaf(x,y,L,W,base+sd*ang)}
+ const[tx,ty]=T(1);d+=' '+leaf(p1[0],p1[1],len*(1-taper)*1.1,wid*.35,Math.atan2(ty,tx));
+ return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+}
+const BOT={
+ frond:()=>frond({w:190,h:230,p0:[185,236],p1:[70,20],pc:[120,140],n:9,len:46,wid:10,ang:1.0}),
+ frond2:()=>frond({w:170,h:190,p0:[180,196],p1:[60,10],pc:[90,130],n:8,len:40,wid:9,ang:.95}),
+ branch:()=>frond({w:160,h:250,p0:[170,250],p1:[88,6],pc:[96,150],n:7,len:44,wid:14,ang:.85,alt:true,taper:.5}),
+ clearing:()=>frond({w:200,h:250,p0:[200,250],p1:[62,22],pc:[150,110],n:11,len:44,wid:9,ang:1.05}),
+ seedling:()=>{const s=(d)=>`<path d="${d}"/>`;let d='M80,150 C80,128 80,112 82,96 '+leaf(82,98,44,15,-2.55)+' '+leaf(82,92,50,16,-0.5)+' '+leaf(81,124,22,7,-2.2);
+  return `<svg width="170" height="176" viewBox="0 0 170 176" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/><path d="M28 151 Q80 143 136 151" /><path d="M46 160 Q80 155 116 160" opacity=".55"/><path d="M62 168 Q80 165 100 168" opacity=".3"/></svg>`}
+};
+const leafG=(on)=>`<svg width="11" height="13" viewBox="0 0 11 13"><path d="M5.5 12.5C1.5 9.5 1 5 5.5 .8 10 5 9.5 9.5 5.5 12.5z" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="1.2"/></svg>`;
+const leafS=(c)=>`<svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 15C3 11.5 2.5 5.5 8 1c5.5 4.5 5 10.5 0 14z" fill="var(--${c})" fill-opacity=".18" stroke="var(--${c})" stroke-width="1.4"/><path d="M8 4.5v8.5" stroke="var(--${c})" stroke-width="1.2"/></svg>`;
+const leafB=(c)=>`<svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 21C3.5 16 3 7.5 11 1c8 6.5 7.5 15 0 20z" fill="var(--${c})"/><path d="M11 6v11" stroke="var(--bg)" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+const MARK=(k)=>{const col=k==='wrong'?'var(--wrong)':'var(--correct)';return `<span class="mark"><svg class="leafm" width="38" height="38" viewBox="0 0 38 38"><path d="M35.5 2.5V19A16.5 16.5 0 1 1 19 2.5z" fill="${col}"/></svg><span style="position:relative;color:var(--bg)">${ic(k==='wrong'?'x':'check',20,2.5)}</span></span>`};
+const TABS=(on)=>{const t=[['sprout','Journey'],['book','Learn'],['target','Practice'],['game','Play'],['rings','You']];
+ return `<div class="tabs">${t.map(([i,l],n)=>`<div class="tab${n===on?' on':''}">${ic(i,24)}${l}<span class="dotx"></span></div>`).join('')}</div>`};
+const GRAIN=`<svg class="grain" width="390" height="844"><filter id="gn"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .2  0 0 0 0 .17  0 0 0 0 .1  0 0 0 1.6 -.55"/></filter><rect width="100%" height="100%" filter="url(#gn)"/></svg>`;
+function render(id){return document.getElementById(id).innerHTML
+ .replace(/\{\{TABS:(\d)\}\}/g,(m,n)=>TABS(+n))
+ .replace(/\{\{MARK:(\w+)\}\}/g,(m,k)=>MARK(k))
+ .replace(/\{\{LEAF(?::(\w+))?\}\}/g,(m,o)=>leafG(o))
+ .replace(/\{\{LEAFS:(\w+)\}\}/g,(m,c)=>leafS(c))
+ .replace(/\{\{LEAFB:(\w+)\}\}/g,(m,c)=>leafB(c))
+ .replace(/\{\{(\w+)(?::(\d+))?(?::([\d.]+))?\}\}/g,(m,n,s,sw)=>n==='SB'?SB:ic(n,s?+s:20,sw));}
+const ROWS=[
+ ['Light',[['today','light'],['question','light'],['fb1','light'],['fb2','light']]],
+ ['',[['learn','light'],['practice','light'],['you','light'],['empty','light']]],
+ ['Dark',[['today','dark'],['question','dark'],['fb1','dark'],['fb2','dark']]],
+ ['',[['learn','dark'],['practice','dark'],['you','dark'],['empty','dark']]],
+ ['Edge cases · daily clearing (plan complete) · large text',[['clearing','light'],['clearing','dark'],['question','light','fs16 ax'],['today','dark','fs16 ax']]],
+];
+const host=document.getElementById('rows');
+for(const[label,items] of ROWS){
+ if(label)host.insertAdjacentHTML('beforeend',`<div class="rowlabel">${label}</div>`);
+ if(label.startsWith('Edge'))host.insertAdjacentHTML('beforeend',`<p class="note2">3 and 4 are rendered at iOS “Larger Text” ×1.6. Titles and numerals cap at ×1.3, body and stems scale fully, tab labels cap at ×1.2 (long-press shows the large-content viewer). The readiness row stacks; the option badge grows with its letter.</p>`);
+ const row=document.createElement('div');row.className='row';row.style.marginBottom='36px';
+ for(const[id,mode,extra] of items){
+  const w=document.createElement('div');w.innerHTML=render(id);const p=w.firstElementChild;
+  p.classList.add(mode);if(extra)extra.split(' ').forEach(c=>p.classList.add(c));
+  p.insertAdjacentHTML('afterbegin',GRAIN);p.insertAdjacentHTML('beforeend','<div class="home-ind"></div>');
+  p.querySelectorAll('[data-botany]').forEach(e=>e.insertAdjacentHTML('afterbegin',BOT[e.dataset.botany]()));
+  p.querySelectorAll('[data-ring]').forEach(e=>{const t=e.dataset.ring;
+   const svg=t==='you'?ringSVG(172,{k:.36,r0:34,gap:4.2,pith:false}):t==='today'?ringSVG(104,{k:.24,r0:13,gap:3,mono:'var(--accent)'}):ringSVG(48,{k:.13,r0:5,gap:1.2,pith:true,track:'var(--forestTrack)',mono:'var(--sap)'});
+   e.insertAdjacentHTML('afterbegin',svg)});
+  row.appendChild(p)}
+ host.appendChild(row)}
+</script>
+</body></html>

@@ -1,13 +1,16 @@
 /**
- * Results — score, per-domain breakdown, and a question-by-question
+ * Results — score rings per domain (Grove v2 growth rings in domain tones,
+ * replacing the old ring and bars), the stat row, and a question-by-question
  * review (your answer vs the best answer). "Practise what I missed"
  * turns mistakes straight into a new session.
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Button, Card, DomainDot, Gap, ProgressBar, Row, Screen, Stat, T } from '../components/ui';
-import { domainColor, getCertification } from '../content/certifications';
+import { OptionCard } from '../components/quiz';
+import { DomainRings } from '../components/journey';
+import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T } from '../components/ui';
+import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
 import { scoreSession } from '../lib/finishSession';
@@ -18,7 +21,7 @@ import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 export default function Results() {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   const active = useSession((s) => s.active);
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -27,9 +30,9 @@ export default function Results() {
   if (!active || !score) {
     return (
       <Screen>
-        <T v="title">No results to show.</T>
+        <T v="hero">No results to show.</T>
         <Gap />
-        <Button label="Back to Home" onPress={() => router.replace('/home')} />
+        <Button label="Back to Today" onPress={() => router.replace('/home')} />
       </Screen>
     );
   }
@@ -50,62 +53,68 @@ export default function Results() {
     else router.replace('/home');
   };
 
+  const values = cert.domains.map((d) => {
+    const b = score.byDomain[d.id];
+    return b ? b.correct / b.total : null;
+  });
+  const minutes = Math.max(1, Math.round(((active.finishedAt ?? active.startedAt) - active.startedAt) / 60_000));
+
   return (
     <Screen edges={['top', 'bottom']}>
-      <T v="eyebrow">{active.title}</T>
-      <Gap h={space.sm} />
-      <T v="display">{pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}</T>
-      <Gap />
-      <Card>
-        <Row>
-          <Stat value={`${pct}%`} label="score" color={pct >= 75 ? c.correct : pct >= 60 ? c.warning : c.wrong} />
-          <Stat value={`${score.correct}/${denominator}`} label="correct" />
-          <Stat value={String(missed.length)} label="to review" />
-        </Row>
+      <Enter i={0}>
+        <T v="meta">{active.title}</T>
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>
+          {pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}
+        </T>
+      </Enter>
+
+      {/* Score rings in domain tones (spec §10.1, Results 200): arc = this session's score per domain. */}
+      <Enter i={1} style={{ marginTop: space.xl }}>
+        <DomainRings
+          cert={cert}
+          values={values}
+          legendValue={(i) => {
+            const b = score.byDomain[cert.domains[i].id];
+            return b ? `${b.correct}/${b.total}` : '–';
+          }}
+          accessibilityLabel={`Score ${pct} percent. ${cert.domains
+            .map((d) => (score.byDomain[d.id] ? `${d.short} ${score.byDomain[d.id].correct} of ${score.byDomain[d.id].total}` : null))
+            .filter(Boolean)
+            .join(', ')}.`}
+          center={
+            <View style={{ alignItems: 'center' }}>
+              <BigNum value={String(pct)} pct size={30} />
+              <T v="caption" color={c.ink2}>score</T>
+            </View>
+          }
+        />
+        <T v="meta" style={{ marginTop: 14 }}>Each ring is a domain in this session. Thicker rings weigh more on the exam.</T>
+      </Enter>
+
+      <Enter i={2} style={{ marginTop: space.xl }}>
+        <StatRow>
+          {[
+            <Stat key="a" value={`${score.correct}/${denominator}`} label="correct" />,
+            <Stat key="b" value={String(missed.length)} label="to review" />,
+            <Stat key="c" value={String(minutes)} label="minutes" />,
+          ]}
+        </StatRow>
         {active.mode === 'mock' && (
+          <T v="meta" style={{ marginTop: space.md }}>
+            Practice scores are not scaled exam scores. {cert.exam.passingNote}
+          </T>
+        )}
+        <Gap h={space.xl} />
+        {missed.length > 0 && (
           <>
-            <Gap h={space.md} />
-            <T v="meta" center>
-              Practice scores are not scaled exam scores. {cert.exam.passingNote}
-            </T>
+            <Button label={`Practise the ${missed.length} I missed`} onPress={practiseMissed} />
+            <Gap h={space.sm} />
           </>
         )}
-      </Card>
-      <Gap />
+        <Button kind="secondary" label="Done" onPress={done} />
+      </Enter>
 
-      <T v="title">By domain</T>
-      <Gap h={space.sm} />
-      {cert.domains
-        .filter((d) => score.byDomain[d.id])
-        .map((d) => {
-          const b = score.byDomain[d.id];
-          return (
-            <View key={d.id} style={{ marginBottom: space.md }}>
-              <Row style={{ justifyContent: 'space-between' }}>
-                <Row gap={space.sm}>
-                  <DomainDot domain={d} />
-                  <T v="meta">{d.short}</T>
-                </Row>
-                <T v="meta" num>{`${b.correct}/${b.total}`}</T>
-              </Row>
-              <Gap h={space.xs} />
-              <ProgressBar value={b.correct / b.total} color={domainColor(d.tone, isDark)} height={6} />
-            </View>
-          );
-        })}
-
-      {missed.length > 0 && (
-        <>
-          <Gap h={space.sm} />
-          <Button label={`Practise the ${missed.length} I missed`} onPress={practiseMissed} />
-        </>
-      )}
-      <Gap h={space.sm} />
-      <Button kind="secondary" label="Done" onPress={done} />
-      <Gap />
-
-      <T v="title">Review answers</T>
-      <Gap h={space.sm} />
+      <Section title="Review answers" />
       {active.questionIds.map((id, i) => {
         const q = findQuestion(active.certId, id);
         const perm = active.perms[id];
@@ -115,36 +124,46 @@ export default function Results() {
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
+        const correctDisplay = originalToDisplay(q.correct, perm);
         return (
-          <Pressable key={id} accessibilityRole="button" accessibilityLabel={`Question ${i + 1}, ${status}. Tap to ${open ? 'collapse' : 'expand'}`} onPress={() => setOpenId(open ? null : id)}>
-            <Card style={{ marginBottom: space.sm }}>
+          // A list row with a hairline below, not a card (spec §5).
+          <View key={id} style={{ borderBottomWidth: 1, borderBottomColor: c.line }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ expanded: open }}
+              accessibilityLabel={`Question ${i + 1}, ${status}. Tap to ${open ? 'collapse' : 'expand'}`}
+              onPress={() => setOpenId(open ? null : id)}
+              style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
+            >
               <Row style={{ justifyContent: 'space-between' }}>
-                <T v="label" num>{`Q${i + 1}`}</T>
+                <T v="label" num>{`Question ${i + 1}`}</T>
                 <T v="label" color={color}>{status}</T>
               </Row>
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
-              {open && (
-                <>
-                  <Gap h={space.sm} />
-                  {r && !r.correct && picked && (
-                    <T color={c.wrong}>Your answer ({r.display}): {q.options[picked]}</T>
-                  )}
-                  <T color={c.correct}>Best answer ({originalToDisplay(q.correct, perm)}): {q.options[q.correct]}</T>
-                  <Gap h={space.sm} />
-                  <T v="body" color={c.text2}>{renderText(q.explanation, perm)}</T>
-                  {trapTip(q) !== '' && (
-                    <>
-                      <Gap h={space.sm} />
-                      <T v="meta">
-                        {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
-                        {renderText(trapTip(q), perm)}
-                      </T>
-                    </>
-                  )}
-                </>
-              )}
-            </Card>
-          </Pressable>
+            </Pressable>
+            {open && (
+              <View style={{ paddingBottom: space.lg }}>
+                {r && !r.correct && picked && (
+                  <OptionCard
+                    letter={r.display}
+                    text={q.options[picked] ?? ''}
+                    state="wrong"
+                    tag={`Your answer · ${r.display}`}
+                    note={q.wrongExplanations[picked] ? renderText(q.wrongExplanations[picked]!, perm) : undefined}
+                  />
+                )}
+                <OptionCard letter={correctDisplay} text={q.options[q.correct] ?? ''} state="correct" tag={`Best answer · ${correctDisplay}`} />
+                <T v="headline">{`Why ${correctDisplay}`}</T>
+                <T v="body" style={{ marginBottom: space.sm }}>{renderText(q.explanation, perm)}</T>
+                {trapTip(q) !== '' && (
+                  <T v="small" color={c.ink2}>
+                    {trapTip(q).startsWith('Final two:') ? '' : 'Trap: '}
+                    {renderText(trapTip(q), perm)}
+                  </T>
+                )}
+              </View>
+            )}
+          </View>
         );
       })}
     </Screen>

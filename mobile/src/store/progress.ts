@@ -8,6 +8,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
+import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import type { AnswerRecord } from '../engine/readiness';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
@@ -73,6 +74,19 @@ interface ProgressState {
   byCert: Record<string, CertProgress>;
   streak: Streak;
   today: { day: string; answered: number };
+  /**
+   * Today's frozen plan per certification (engine/dayPlan.ts), keyed by cert
+   * id, so switching certs and back keeps the ticks. A cert has no entry
+   * until Today is first shown for it.
+   */
+  days: Record<string, DayPlan>;
+
+  /** Store the plan the first time Today is shown on a new day. */
+  startDay: (plan: DayPlan) => void;
+  /** Log a finished session / lesson / game. Returns true when it ticked off a plan item. */
+  logActivity: (certId: string, a: Activity) => boolean;
+  /** The clearing card has celebrated today (haptic plays once a day). */
+  markCelebrated: (certId: string) => void;
 
   recordAnswer: (
     certId: string,
@@ -94,10 +108,27 @@ interface ProgressState {
 
 export const useProgress = create<ProgressState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       byCert: {},
       streak: { current: 0, best: 0, lastDay: null },
       today: { day: '', answered: 0 },
+      days: {},
+
+      startDay: (plan) => set((s) => ({ days: { ...s.days, [plan.certId]: plan } })),
+      logActivity: (certId, a) => {
+        // A plan from an earlier day is never ticked (lib/activity.ts starts
+        // today's plan first, so activity after midnight still counts).
+        const cur = get().days[certId];
+        if (!cur || cur.day !== dayKey(Date.now())) return false;
+        const { plan, ticked } = logDayActivity(cur, a);
+        if (plan !== cur) set((s) => ({ days: { ...s.days, [certId]: plan } }));
+        return ticked;
+      },
+      markCelebrated: (certId) =>
+        set((s) => {
+          const cur = s.days[certId];
+          return cur ? { days: { ...s.days, [certId]: { ...cur, celebrated: true } } } : s;
+        }),
 
       recordAnswer: (certId, questionId, correct, confidence, opts) =>
         set((s) => {
@@ -127,10 +158,14 @@ export const useProgress = create<ProgressState>()(
             mistakes = { ...mistakes, [questionId]: { ...mistakes[questionId], resolved: true } };
           }
           const day = dayKey(now);
+          // Today's clearing card counts answers for this cert's plan, today only.
+          const cur = s.days[certId];
+          const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
           return {
             byCert: { ...s.byCert, [certId]: { ...cp, answers, review, mistakes } },
             streak: bumpStreak(s.streak, now),
             today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
+            days,
           };
         }),
 
@@ -180,6 +215,7 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, lessonsDone: [...cp.lessonsDone, lessonId] } } };
         }),
 
+
       recordGame: (certId, game, score) =>
         set((s) => {
           const cp = normalize(s.byCert[certId]);
@@ -196,11 +232,33 @@ export const useProgress = create<ProgressState>()(
         }),
 
       resetCert: (certId) =>
-        set((s) => ({ byCert: { ...s.byCert, [certId]: emptyCert() } })),
+        set((s) => {
+          const days = { ...s.days };
+          delete days[certId];
+          return { byCert: { ...s.byCert, [certId]: emptyCert() }, days };
+        }),
     }),
-    { name: 'aurivan.progress.v1', storage: persistStorage, version: 1 },
+    {
+      name: 'aurivan.progress.v1',
+      storage: persistStorage,
+      // v2: the single `day` plan became `days`, keyed by cert id.
+      version: 2,
+      migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
+    },
   ),
 );
+
+/**
+ * Upgrade an older save. Version 1 had at most one plan in `day` (or none,
+ * before Grove); it moves into `days` under its own cert id. Exported for tests.
+ */
+export function migrateProgress(persisted: unknown): Record<string, unknown> {
+  const old = (persisted ?? {}) as Record<string, unknown> & { day?: DayPlan | null; days?: Record<string, DayPlan> };
+  const { day, ...rest } = old;
+  const days: Record<string, DayPlan> = { ...(old.days ?? {}) };
+  if (day && typeof day === 'object' && day.certId && !days[day.certId]) days[day.certId] = day;
+  return { ...rest, days };
+}
 
 /** Read one certification's progress (never undefined). */
 export function selectCert(s: ProgressState, certId: string): CertProgress {

@@ -15,7 +15,7 @@ ISACA mindset picks one.
 |---|---|
 | `question` | ≤ 35 words, at most 2 sentences (harness-checked), ends with `?`, contains a CAPITALISED priority word. Names who acts (IS auditor, audit firm, management…). Keeps at least one concrete fact the candidate must weigh. |
 | `scenario_context` | **Removed.** Fold the one fact that matters into the stem. |
-| `options` A–D | ≤ 12 words each, grammatically parallel. By words, the key is never uniquely the longest, and its length is 0.67–1.5× the distractor average. By characters, the key is at most 8 longer than the longest distractor, and is the longest option in 15–30% of a domain (chance is 25%; too few is a reverse tell). Test-wise candidates pick the longest answer. |
+| `options` A–D | ≤ 12 words each, grammatically parallel, each a **full plain statement** a learner can read aloud: no "+" lists, arrows or a/b/c shorthand (harness-checked). By words, the key is never uniquely the longest, and its length is 0.67–1.5× the distractor average. By characters, the key is at most 8 longer than the longest distractor, and is the longest option in 15–30% of a domain (chance is 25%; too few is a reverse tell). Test-wise candidates pick the longest answer. |
 | `correct_explanation` | 40–75 words. Why the key wins, then why the runner-up loses. |
 | `wrong_explanations` | One per distractor, ≤ 30 words. Never call a distractor "true". |
 | `tips` | Exactly 3, in this order (below). |
@@ -53,6 +53,7 @@ author batch ──► harness ──► blind tester + domain auditor ──►
 1. **Author.** An agent rewrites a batch of about 25 questions into a scratch file.
 2. **Harness.** `python3 scripts/lint_exam_style_v2.py --file <batch>`. The author loops until it reports 0 errors, then reviews each warning by judgement.
 3. **Review.** `qa-question-tester` answers blind, and `cisa-d{N}-standards-auditor` checks keys, the final two and wording.
+   Also run an **alignment read**: print the batch with `python3 scripts/print_alignment.py --file <batch>` and have an agent confirm each "why-X-wrong" line and tip letter describes the option under that letter. Blind testers cannot see this error (only distractors move, so the key still reads right), and word-overlap lint cannot catch it reliably.
 4. **Fix.** Apply every FIX, then re-run the harness.
 5. **Merge** into `data/originals/d{N}.json`, then run all the gates:
    ```bash

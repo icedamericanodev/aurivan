@@ -7,27 +7,56 @@
  * MOCK: pick (changeable) → Next. Timer, flags, and a navigator grid.
  * No feedback until you submit the whole exam — just like the real thing.
  */
-import * as Haptics from 'expo-haptics';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Alert, BackHandler, Modal, Pressable, ScrollView, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  Alert,
+  BackHandler,
+  Dimensions,
+  Modal,
+  Pressable,
+  ScrollView,
+  View,
+  useWindowDimensions,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ConfidenceRow, OptionCard, ResultBanner, ScenarioBlock, TipsReveal, TrustCard, type OptionState } from '../components/quiz';
+import { ArrowRight, Bookmark, BookmarkCheck, ICON_STROKE, X } from '../components/icons';
+import {
+  ConfidenceRow,
+  FEEDBACK_DELAY,
+  OptionCard,
+  Rise,
+  ScenarioBlock,
+  StickyFooter,
+  TrustLine,
+  Verdict,
+  Vine,
+  type OptionState,
+} from '../components/quiz';
+import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
-import { Button, Card, Gap, Pill, Row, T } from '../components/ui';
+import { Button, Gap, ICON_SIZE, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
 import type { Confidence } from '../engine/srs';
+import { runnerUp } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
+import { shortSubtopic } from '../lib/format';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { radius, space } from '../theme/tokens';
+import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Stable empty array: a new [] on every render would make the store re-render forever.
 const NO_BOOKMARKS: string[] = [];
+/** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
+const HUGE_TEXT = 1.6;
 
 function formatClock(ms: number) {
   const total = Math.max(0, Math.floor(ms / 1000));
@@ -46,11 +75,20 @@ export default function SessionScreen() {
   const recordAnswer = useProgress((s) => s.recordAnswer);
   const toggleBookmark = useProgress((s) => s.toggleBookmark);
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
+  const { fontScale } = useWindowDimensions();
+  // Reduce Motion: the navigator sheet appears without sliding.
+  const reduceMotion = useReducedMotion();
 
   const [selected, setSelected] = useState<Letter | null>(null);
   const [confidence, setConfidence] = useState<Confidence | undefined>();
   const [navOpen, setNavOpen] = useState(false);
   const [now, setNow] = useState(Date.now());
+  // Layout bookkeeping for the sticky footer and the vine reveal.
+  const [footerH, setFooterH] = useState(120);
+  const [vineVisible, setVineVisible] = useState(false);
+  const scrollRef = useRef<ScrollView>(null);
+  const scrollY = useRef(0);
+  const vineRef = useRef<View>(null);
 
   const qid = active?.questionIds[active.index];
   const q = useMemo(() => (active && qid ? findQuestion(active.certId, qid) : undefined), [active, qid]);
@@ -62,8 +100,23 @@ export default function SessionScreen() {
   useEffect(() => {
     setSelected(isMock && response ? response.display : null);
     setConfidence(undefined);
+    setVineVisible(false);
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qid]);
+
+  // After an answer, if the vine is already on screen (short questions),
+  // draw it without waiting for a scroll.
+  const answeredHere = Boolean(qid && active?.responses[qid]) && active?.mode !== 'mock';
+  useEffect(() => {
+    if (!answeredHere) return;
+    const t = setTimeout(() => {
+      vineRef.current?.measureInWindow((_x, y) => {
+        if (y < Dimensions.get('window').height - 40) setVineVisible(true);
+      });
+    }, 450);
+    return () => clearTimeout(t);
+  }, [answeredHere, qid]);
 
   // Mock-exam clock: tick every second; auto-submit at zero.
   useEffect(() => {
@@ -101,12 +154,12 @@ export default function SessionScreen() {
   if (!active || !q || !perm || !qid) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.lg, justifyContent: 'center' }}>
-        <T v="title" center>
+        <T v="hero" center>
           {active ? 'This session can’t continue. Its questions were updated.' : 'No session in progress.'}
         </T>
         <Gap />
         <Button
-          label="Back to Home"
+          label="Back to Today"
           onPress={() => {
             useSession.getState().clear();
             router.replace('/home');
@@ -126,7 +179,7 @@ export default function SessionScreen() {
   // ── actions ──────────────────────────────────────────────────────────
   const pick = (letter: Letter) => {
     if (submitted) return;
-    Haptics.selectionAsync().catch(() => {});
+    haptic.selection();
     setSelected(letter);
     if (isMock) {
       answer(qid, { display: letter, correct: isCorrect(q, letter, perm) });
@@ -136,12 +189,15 @@ export default function SessionScreen() {
   const submit = () => {
     if (!selected) return;
     const ok = isCorrect(q, selected, perm);
-    Haptics.notificationAsync(ok ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error).catch(() => {});
+    if (ok) haptic.success();
+    else haptic.error();
     AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
     answer(qid, { display: selected, correct: ok, confidence });
     recordAnswer(active.certId, qid, ok, confidence);
     // File every miss in the Mistake Journal, with the ORIGINAL letter picked.
     if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm));
+    // Start the answer screen at the top, so the verdict is the first thing seen.
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
   };
 
   const next = () => {
@@ -168,7 +224,7 @@ export default function SessionScreen() {
 
   const leave = () => {
     if (isMock) {
-      Alert.alert('Pause exam?', 'Your answers are saved. The clock keeps running — resume from Home.', [
+      Alert.alert('Pause exam?', 'Your answers are saved. The clock keeps running — resume from Today.', [
         { text: 'Stay', style: 'cancel' },
         { text: 'Pause', onPress: () => router.replace('/home') },
       ]);
@@ -193,127 +249,191 @@ export default function SessionScreen() {
 
   leaveRef.current = leave;
 
-  const optionState = (display: Letter): OptionState => {
-    if (!submitted) return selected === display ? 'selected' : 'idle';
-    const original = displayToOriginal(display, perm);
-    if (original === q.correct) return 'correct';
-    if (response?.display === display) return 'wrong';
-    return 'dimmed';
-  };
+  const optionState = (display: Letter): OptionState => (selected === display ? 'selected' : 'idle');
 
+  // ── answer-screen facts (all compared on ORIGINAL letters) ───────────
   const pickedOriginal = response ? displayToOriginal(response.display, perm) : undefined;
   const whyWrong = pickedOriginal && pickedOriginal !== q.correct ? q.wrongExplanations[pickedOriginal] : undefined;
+  const correctDisplay = originalToDisplay(q.correct, perm);
+  const coach = !response
+    ? ''
+    : response.correct
+      ? 'Clean read.'
+      : pickedOriginal && pickedOriginal === runnerUp(q.tips, q.correct)
+        ? 'You picked the runner-up. That’s the trap.'
+        : 'Check the role in the stem.';
   const flagged = active.flagged.includes(qid);
   const saved = bookmarks.includes(qid);
   const lowTime = isMock && remaining < 5 * 60_000;
+  const largeText = fontScale >= LARGE_TEXT;
+  const confidenceInScroll = fontScale >= HUGE_TEXT;
+  const metaLine = [domain?.short, shortSubtopic(q.subtopic), `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
+
+  // The vine draws itself the first time it scrolls into view: on each
+  // scroll we ask where it sits on screen (measureInWindow works on phones
+  // and on the web build alike).
+  const checkVine = () => {
+    if (vineVisible || !vineRef.current) return;
+    vineRef.current.measureInWindow((_x, y) => {
+      if (y < Dimensions.get('window').height - 40) setVineVisible(true);
+    });
+  };
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    scrollY.current = e.nativeEvent.contentOffset.y;
+    checkVine();
+  };
 
   // ── render ───────────────────────────────────────────────────────────
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      {/* Header */}
-      <View style={{ paddingHorizontal: space.lg, paddingVertical: space.sm, borderBottomWidth: 1, borderBottomColor: c.border }}>
-        <Row style={{ justifyContent: 'space-between' }}>
-          <Pressable accessibilityRole="button" accessibilityLabel={isMock ? 'Pause exam' : 'End session'} onPress={leave} hitSlop={12}>
-            <T v="label" color={c.accentText}>{isMock ? 'Pause' : 'End'}</T>
-          </Pressable>
-          <T v="label" num>
-            {active.index + 1} / {total}
+      {/* Header: 52pt bar — close · progress segments · save (or the mock clock) */}
+      <Row gap={space.md} style={{ minHeight: 52, paddingHorizontal: space.gutter }}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={isMock ? 'Pause exam' : 'End session'}
+          onPress={leave}
+          style={{ width: 44, height: 44, marginLeft: -10, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <X size={ICON_SIZE.bar} color={c.ink} strokeWidth={ICON_STROKE} />
+        </Pressable>
+        <SegmentBar total={total} done={Object.keys(active.responses).length} current={active.index} />
+        {isMock ? (
+          <T v="label" num color={lowTime ? c.wrong : c.ink} accessibilityLabel={`Time remaining ${formatClock(remaining)}`}>
+            {formatClock(remaining)}
           </T>
-          {isMock ? (
-            <T v="label" num color={lowTime ? c.wrong : c.text} accessibilityLabel={`Time remaining ${formatClock(remaining)}`}>
-              ⏱ {formatClock(remaining)}
-            </T>
-          ) : (
-            <Pressable accessibilityRole="button" accessibilityLabel={saved ? 'Remove from saved' : 'Save question'} onPress={() => toggleBookmark(active.certId, qid)} hitSlop={12}>
-              <T v="label" color={c.accentText}>{saved ? '★ Saved' : '☆ Save'}</T>
-            </Pressable>
-          )}
-        </Row>
-      </View>
-
-      <ScrollView contentContainerStyle={{ padding: space.lg, paddingBottom: space.xxl }}>
-        <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-          {domain && <Pill label={domain.short} domain={domain} />}
-          <Pill label={q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)} />
-          {flagged && <Pill label="⚑ Flagged" color={c.warning} />}
-        </Row>
-        <Gap h={space.md} />
-        {q.scenario && (
-          <>
-            <ScenarioBlock text={q.scenario} />
-            <Gap h={space.md} />
-          </>
-        )}
-        <T v="title">{q.stem}</T>
-        <Gap />
-
-        {displayLetters.map((d) => (
-          <OptionCard
-            key={d}
-            letter={d}
-            text={q.options[displayToOriginal(d, perm)] ?? ''}
-            state={optionState(d)}
-            onPress={() => pick(d)}
-            disabled={submitted}
-          />
-        ))}
-
-        {/* Feedback (practice/review only) */}
-        {submitted && response && (
-          <>
-            <Gap h={space.sm} />
-            <ResultBanner correct={response.correct} />
-            <Gap h={space.md} />
-            {whyWrong && (
-              <>
-                <Card style={{ borderColor: c.wrong }}>
-                  <T v="label" color={c.wrong}>Why {response.display} is tempting but wrong</T>
-                  <Gap h={space.xs} />
-                  <T>{renderText(whyWrong, perm)}</T>
-                </Card>
-                <Gap h={space.md} />
-              </>
+        ) : (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={saved ? 'Remove from saved' : 'Save question'}
+            accessibilityState={{ selected: saved }}
+            onPress={() => toggleBookmark(active.certId, qid)}
+            style={{ width: 44, height: 44, marginRight: -10, alignItems: 'center', justifyContent: 'center' }}
+          >
+            {saved ? (
+              <BookmarkCheck size={22} color={c.accentText} strokeWidth={ICON_STROKE} />
+            ) : (
+              <Bookmark size={22} color={c.ink2} strokeWidth={ICON_STROKE} />
             )}
-            <Card>
-              <T v="label" color={c.correct}>Why {originalToDisplay(q.correct, perm)} is the best answer</T>
-              <Gap h={space.xs} />
-              <T>{renderText(q.explanation, perm)}</T>
-              {q.keyConcept && (
+          </Pressable>
+        )}
+      </Row>
+
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          ref={scrollRef}
+          onScroll={onScroll}
+          scrollEventThrottle={32}
+          // Pad by the sticky footer + 24, so option D / the last tip never sits under it.
+          contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}
+        >
+          {!submitted ? (
+            <>
+              {/* Question */}
+              <Row gap={space.sm} style={{ marginTop: space.md, alignItems: 'flex-start' }}>
+                <View style={{ flex: 1 }}>
+                  {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
+                </View>
+                {flagged && <T v="caption" color={c.tip}>Flagged</T>}
+              </Row>
+              {q.scenario && (
                 <>
                   <Gap h={space.md} />
-                  <T v="eyebrow">Key concept</T>
-                  <T v="body" color={c.text2}>{q.keyConcept}</T>
+                  <ScenarioBlock text={q.scenario} />
                 </>
               )}
-              <TrustCard questionId={q.id} reference={q.reference} onReport={() => reportIssue(q.id, cert.name)} />
-            </Card>
-            <Gap h={space.md} />
-            <TipsReveal key={qid} tips={q.tips.map((t) => renderText(t, perm))} />
-          </>
-        )}
-      </ScrollView>
+              <View style={{ marginTop: 10 }}>
+                <Stem>{q.stem}</Stem>
+              </View>
+              {/* One radio group, so screen readers say "1 of 4" and the checked state. */}
+              <View accessibilityRole="radiogroup" accessibilityLabel="Answer options" style={{ marginTop: space.gutter }}>
+                {displayLetters.map((d) => (
+                  <OptionCard
+                    key={d}
+                    letter={d}
+                    text={q.options[displayToOriginal(d, perm)] ?? ''}
+                    state={optionState(d)}
+                    onPress={() => pick(d)}
+                  />
+                ))}
+              </View>
+              {/* Very large text: the confidence chips live here, under option D,
+                  so the sticky footer stays small enough to leave room for the question. */}
+              {!isMock && selected && confidenceInScroll && (
+                <View style={{ marginTop: space.md }}>
+                  <ConfidenceRow value={confidence} onChange={setConfidence} />
+                </View>
+              )}
+            </>
+          ) : (
+            response && (
+              <>
+                {/* Answer: verdict → your pick → best answer → why → vine → trust */}
+                <Verdict correct={response.correct} coach={coach} />
+                <Rise delay={FEEDBACK_DELAY.rows}>
+                  <View style={{ marginTop: space.lg }}>
+                    {!response.correct && pickedOriginal && (
+                      <OptionCard
+                        letter={response.display}
+                        text={q.options[pickedOriginal] ?? ''}
+                        state="wrong"
+                        tag={`Your answer · ${response.display}`}
+                        note={whyWrong ? renderText(whyWrong, perm) : undefined}
+                      />
+                    )}
+                    <OptionCard
+                      letter={correctDisplay}
+                      text={q.options[q.correct] ?? ''}
+                      state="correct"
+                      tag={`Best answer · ${correctDisplay}`}
+                    />
+                  </View>
+                </Rise>
+                <Rise delay={FEEDBACK_DELAY.why}>
+                  <T v="headline" accessibilityRole="header" style={{ marginTop: 12 }}>{`Why ${correctDisplay}`}</T>
+                  <T v="body" style={{ marginTop: space.xs }}>{renderText(q.explanation, perm)}</T>
+                </Rise>
+                <View ref={vineRef} collapsable={false} onLayout={checkVine}>
+                  <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
+                </View>
+                <TrustLine questionId={q.id} reference={q.reference} onReport={() => reportIssue(q.id, cert.name)} />
+              </>
+            )
+          )}
+        </ScrollView>
 
-      {/* Bottom action bar — within thumb reach */}
-      <View style={{ padding: space.lg, paddingBottom: space.md, borderTopWidth: 1, borderTopColor: c.border, backgroundColor: c.surface, gap: space.md }}>
-        {isMock ? (
-          <Row gap={space.sm}>
-            <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={() => goTo(active.index - 1)} style={{ paddingHorizontal: space.lg }} />
-            <Button kind="secondary" label={flagged ? '⚑ Unflag' : '⚐ Flag'} onPress={() => toggleFlag(qid)} />
-            <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={() => setNavOpen(true)} style={{ paddingHorizontal: space.lg }} />
-            <Button label={isLast ? 'Finish' : 'Next ›'} onPress={next} style={{ flex: 1 }} />
-          </Row>
-        ) : submitted ? (
-          <Button label={isLast ? 'See results' : 'Next question'} onPress={next} />
-        ) : (
-          <>
-            {selected && <ConfidenceRow value={confidence} onChange={setConfidence} />}
-            <Button label="Submit answer" onPress={submit} disabled={!selected} />
-          </>
-        )}
+        {/* Sticky bottom action, within thumb reach */}
+        <StickyFooter onHeight={setFooterH}>
+          {isMock ? (
+            // Wraps at large text; Next then takes a full row of its own.
+            <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
+              <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={() => goTo(active.index - 1)} style={{ paddingHorizontal: space.lg }} />
+              <Button
+                kind="secondary"
+                label={flagged ? '⚑ Unflag' : '⚐ Flag'}
+                accessibilityLabel={flagged ? 'Unflag question' : 'Flag question'}
+                selected={flagged}
+                onPress={() => toggleFlag(qid)}
+                style={{ paddingHorizontal: space.lg }}
+              />
+              <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={() => setNavOpen(true)} style={{ paddingHorizontal: space.lg }} />
+              <Button label={isLast ? 'Finish' : 'Next'} onPress={next} style={largeText ? { flexBasis: '100%' } : { flex: 1 }} />
+            </Row>
+          ) : submitted ? (
+            <Button
+              label={isLast ? 'See results' : 'Next question'}
+              onPress={next}
+              icon={(color) => <ArrowRight size={18} color={color} strokeWidth={ICON_STROKE} />}
+            />
+          ) : (
+            <>
+              {selected && !confidenceInScroll && <ConfidenceRow value={confidence} onChange={setConfidence} />}
+              <Button label="Check answer" onPress={submit} disabled={!selected} />
+            </>
+          )}
+        </StickyFooter>
       </View>
-
       {/* Mock navigator */}
-      <Modal visible={navOpen} animationType="slide" presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
+      <Modal visible={navOpen} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
           <ScrollView contentContainerStyle={{ padding: space.lg }}>
             <Row style={{ justifyContent: 'space-between' }}>
@@ -331,7 +451,8 @@ export default function SessionScreen() {
                   <Pressable
                     key={id}
                     accessibilityRole="button"
-                    accessibilityLabel={`Question ${i + 1}, ${done ? 'answered' : 'not answered'}${flag ? ', flagged' : ''}`}
+                    accessibilityLabel={`Question ${i + 1}, ${done ? 'answered' : 'not answered'}${flag ? ', flagged' : ''}${current ? ', current' : ''}`}
+                    accessibilityState={{ selected: current }}
                     onPress={() => {
                       goTo(i);
                       setNavOpen(false);
@@ -344,12 +465,12 @@ export default function SessionScreen() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderWidth: current ? 2 : 1,
-                      borderColor: current ? c.accent : flag ? c.warning : c.border,
+                      borderColor: current ? c.accent : flag ? c.tip : c.line,
                       // Answered = ink fill (never green: green means "correct").
-                      backgroundColor: done ? c.text : c.surface,
+                      backgroundColor: done ? c.ink : c.raised,
                     }}
                   >
-                    <T v="label" num color={done ? c.surface : c.text}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
+                    <T v="label" num color={done ? c.raised : c.ink}>{`${flag ? '⚑' : ''}${done ? '●' : '○'}${i + 1}`}</T>
                   </Pressable>
                 );
               })}

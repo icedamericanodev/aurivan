@@ -1,17 +1,20 @@
 /**
- * Lesson player — one scene at a time, a progress rail at the top, and
+ * Lesson player — one scene at a time, segmented progress at the top, and
  * thumb-reach Back / Next at the bottom. Ends on a quick check; finishing
- * marks the lesson done and feeds the journey.
+ * marks the lesson done, ticks it off today's plan and feeds the journey.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import type { BotanyKind } from '../../components/glyphs';
 import { SceneView } from '../../components/lesson';
-import { Button, Gap, Row, T } from '../../components/ui';
+import { Button, Gap, PushedHeader, Row, SegmentBar, T } from '../../components/ui';
+import { getCertification } from '../../content/certifications';
 import { findLesson } from '../../content/lessons';
+import { logLesson } from '../../lib/activity';
 import { useProgress } from '../../store/progress';
-import { radius, space } from '../../theme/tokens';
+import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 export default function LessonPlayer() {
@@ -26,8 +29,8 @@ export default function LessonPlayer() {
 
   if (!lesson) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.lg, justifyContent: 'center' }}>
-        <T v="title" center>This lesson isn’t available.</T>
+      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, padding: space.gutter, justifyContent: 'center' }}>
+        <T v="headline" center>This lesson isn’t available.</T>
         <Gap />
         <Button label="Back" onPress={() => router.back()} />
       </SafeAreaView>
@@ -37,6 +40,7 @@ export default function LessonPlayer() {
   const scene = lesson.scenes[index];
   const isLast = index === lesson.scenes.length - 1;
   const canFinish = scene.type !== 'check' || checked;
+  const tone = getCertification(lesson.certId)?.domains.find((d) => d.id === lesson.domainId)?.tone ?? 0;
 
   const next = () => {
     if (!isLast) {
@@ -44,72 +48,38 @@ export default function LessonPlayer() {
       return;
     }
     completeLesson(lesson.certId, lesson.id);
+    logLesson(lesson.certId, lesson.id);
     router.back();
   };
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      {/* Progress rail: one segment per scene */}
-      <View style={{ paddingHorizontal: space.lg, paddingTop: space.sm }}>
-        <Row style={{ justifyContent: 'space-between' }}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Close lesson"
-            onPress={() => router.back()}
-            style={{ minHeight: 48, minWidth: 48, justifyContent: 'center' }}
-          >
-            <T v="label" color={c.accentText}>Close</T>
-          </Pressable>
-          <T v="meta" num>{`${lesson.minutes} min · ${index + 1}/${lesson.scenes.length}`}</T>
-        </Row>
-        <Gap h={space.sm} />
-        <View
-          accessibilityRole="progressbar"
-          accessibilityValue={{ min: 1, max: lesson.scenes.length, now: index + 1 }}
-          style={{ flexDirection: 'row', gap: space.xs }}
-        >
-          {lesson.scenes.map((_, i) => (
-            <View
-              key={i}
-              style={{
-                flex: 1,
-                height: 4,
-                borderRadius: radius.pill,
-                backgroundColor: i <= index ? c.accent : c.surface2,
-              }}
-            />
-          ))}
-        </View>
+      <View style={{ paddingHorizontal: space.gutter }}>
+        <PushedHeader
+          icon="close"
+          onBack={() => router.back()}
+          center={<SegmentBar total={lesson.scenes.length} done={index} current={index} />}
+          right={<T v="meta" num accessibilityLabel={`Scene ${index + 1} of ${lesson.scenes.length}`}>{`${index + 1}/${lesson.scenes.length}`}</T>}
+        />
       </View>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: space.xl }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: space.xl, paddingBottom: space.xl }}>
         {/* key forces each scene to re-mount, replaying its entrance animation */}
-        <SceneView key={index} scene={scene} onCheck={() => setChecked(true)} />
+        <SceneView key={index} scene={scene} onCheck={() => setChecked(true)} art={`branch${tone % 5}` as BotanyKind} />
         {isLast && (
           <>
             <Gap h={space.xl} />
-            <T v="meta">
+            <T v="meta" color={c.muted}>
               {`${lesson.provenance} Last reviewed ${lesson.lastReviewed}. Sources: ${lesson.references.join('; ')}.`}
             </T>
           </>
         )}
       </ScrollView>
 
-      <View style={{ padding: space.lg, borderTopWidth: 1, borderTopColor: c.border, backgroundColor: c.surface }}>
+      <View style={{ paddingHorizontal: space.gutter, paddingVertical: space.md, backgroundColor: c.bg }}>
         <Row gap={space.sm}>
-          <Button
-            kind="secondary"
-            label="Back"
-            disabled={index === 0}
-            onPress={() => setIndex(Math.max(0, index - 1))}
-            style={{ flex: 1 }}
-          />
-          <Button
-            label={isLast ? 'Finish lesson' : 'Next'}
-            disabled={!canFinish}
-            onPress={next}
-            style={{ flex: 2 }}
-          />
+          <Button kind="secondary" label="Back" disabled={index === 0} onPress={() => setIndex(Math.max(0, index - 1))} style={{ flex: 1 }} />
+          <Button label={isLast ? 'Finish lesson' : 'Next'} disabled={!canFinish} onPress={next} style={{ flex: 2 }} />
         </Row>
       </View>
     </SafeAreaView>
