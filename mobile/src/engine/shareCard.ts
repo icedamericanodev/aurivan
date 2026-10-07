@@ -93,7 +93,8 @@ export function shareOptions(input: ShareInput): ShareHeadline[] {
       value: String(streak),
       label: 'day study streak',
       note: null,
-      spoken: `A ${streak}-day ${certName} study streak.`,
+      // The streak is global (any study counts), not per certification, so no cert name here.
+      spoken: `A ${streak}-day study streak.`,
     });
   }
   const days = daysStudied(input.recentDays, input.today);
@@ -117,15 +118,24 @@ export function shareOptions(input: ShareInput): ShareHeadline[] {
       spoken: `${answered} ${certName} ${word}.`,
     });
   }
-  out.push({
-    kind: 'start',
-    value: null,
-    label: `Starting my ${certName} prep`,
-    note: null,
-    spoken: `Starting my ${certName} prep.`,
-  });
   // Belt and braces: drop anything that ever reads like a pass claim.
-  return out.filter((h) => [h.value ?? '', h.label, h.note ?? '', h.spoken].every(isHonestShareText));
+  const honest = out.filter(isHonestHeadline);
+  // `start` is ALWAYS the last option, so callers can rely on options[0] existing.
+  // If the cert name itself ever trips the guard, use a version without it.
+  const start = startHeadline(certName);
+  honest.push(isHonestHeadline(start) ? start : startHeadline(null));
+  return honest;
+}
+
+/** True when every word of a headline passes the honesty guard. */
+function isHonestHeadline(h: ShareHeadline): boolean {
+  return [h.value ?? '', h.label, h.note ?? '', h.spoken].every(isHonestShareText);
+}
+
+/** The no-number fallback headline (with or without the cert name). */
+function startHeadline(certName: string | null): ShareHeadline {
+  const text = certName ? `Starting my ${certName} prep` : 'Starting my exam prep';
+  return { kind: 'start', value: null, label: text, note: null, spoken: `${text}.` };
 }
 
 /** The default headline: the first honest option. */

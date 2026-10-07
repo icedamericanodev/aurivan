@@ -189,7 +189,7 @@ kill %1
 - Mobile agents: `mobile-app-engineer`, `mobile-qa-tester`, `mobile-ux-reviewer`,
   `mobile-security-auditor`, `app-store-compliance-reviewer`. Multi-cert content
   agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
-  `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`.
+  `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups).
 
 ## Branching + GitHub
 

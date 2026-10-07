@@ -36,7 +36,7 @@ manager) evaluated the options independently. All three picked **React Native
 | Navigation | **Expo Router** | 1 ✅ | Every file in `src/app/` is a screen |
 | State + offline storage | **Zustand** + AsyncStorage | 1 ✅ | Remembers progress on the phone |
 | Reminders | **expo-notifications** (local) | 1 ✅ | Daily study nudge, no server |
-| Share cards | **react-native-view-shot** 5.1.0 + React Native `Share` | 5 ✅ | Turns the share card into a PNG. Native module: no config plugin (autolinked), but it **needs a new dev build** (`eas build --profile development`) before it works on a phone. iOS shares the image; Android shares the same sentence as text, because RN `Share` is text-only there (image sharing on Android would need `expo-sharing`, not installed) |
+| Share cards | **react-native-view-shot** 5.1.0 + **expo-sharing** ~57.0 (owner-approved) | 5 ✅ | view-shot turns the fixed 320 × 400 pt card into a 1080 × 1350 PNG; expo-sharing opens the system share sheet with that image on **both iOS and Android** (RN `Share` is text-only on Android). Where expo-sharing is unavailable (web) the same honest sentence is shared as text. Both are native modules: no config plugin needed for sending shares (expo-sharing's plugin only sets up *receiving* shares, which we don't do), but they **need a new dev build** (`eas build --profile development`) before they work on a phone |
 | Tests | **Jest** (`jest-expo`) | 1 ✅ | Proves the grading/SRS/readiness logic is right |
 | Builds & store upload | **EAS Build + EAS Submit** | 1 | Builds iOS in the cloud — no Mac needed |
 | Instant fixes | **EAS Update** | 1 | Ship JS/content fixes without store review |
