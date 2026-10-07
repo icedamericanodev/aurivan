@@ -6259,7 +6259,7 @@
       "correct": "A",
       "key_concept": "Utilities can alter production data outside application controls, so unauthorized utility changes to records are a priority concern.",
       "pre_read": "Ask which utility activity could change production data without any application control seeing it.",
-      "correct_explanation": "Data-editing utilities bypass application controls and audit trails, so an unticketed change to production records could be an unauthorized or fraudulent alteration that no application log captured. A disk utility run in a maintenance window looks like routine utility use, because scheduled windows exist for such work, and that run does not show any record was changed without authority.",
+      "correct_explanation": "Data-editing utilities bypass application controls and audit trails, so an unticketed change to production records could be an unauthorized or fraudulent alteration that no application log captured. A disk utility run in a scheduled window is expected, controlled work and shows no unauthorized change to records.",
       "wrong_explanations": {
         "B": "Running utilities in an approved maintenance window is the expected, controlled practice.",
         "C": "Logging under named accounts is a good control that supports accountability.",
@@ -6441,7 +6441,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor finds a bank's offsite backup vault is 3 km from the data centre, on the same river floodplain. Which concern is MOST significant?",
       "options": {
-        "A": "The vault is too far away for rapid tape retrieval",
+        "A": "The vault is close enough for staff to reach within an hour",
         "B": "The vault may lack climate control for long tape storage",
         "C": "The vault's contract does not include annual price caps",
         "D": "The vault shares the primary site's regional hazards"
@@ -6451,12 +6451,12 @@
       "pre_read": "Notice where the vault sits relative to the data centre. Ask what a single flood would do.",
       "correct_explanation": "Offsite storage exists so one event cannot destroy both production and backups, and a vault on the same floodplain could flood with the data centre. Climate control matters for media life, but it is a condition management can fix, whereas shared exposure to one flood defeats the purpose of storing copies offsite.",
       "wrong_explanations": {
-        "A": "Three kilometres allows quick retrieval; distance here is too short, not too long.",
+        "A": "Being reachable within an hour helps quick restores; nearness is only a problem when it means sharing the same hazards.",
         "B": "Climate control matters for media, but it does not defeat the vault's purpose.",
         "C": "Price caps are a commercial matter with no effect on recoverability."
       },
       "tips": [
-        "Eliminate: A has the distance problem backward, and C is a commercial issue.",
+        "Eliminate: A treats easy access as the flaw, and C is a commercial issue.",
         "Final two: D beats B because a shared flood risk can destroy both copies at once.",
         "Exam cue: offsite storage must not share the primary site's hazards; check distance and regional risks."
       ],
