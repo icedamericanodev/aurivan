@@ -1,5 +1,4 @@
 {
-  "//": "Owner: before any store build, set EXPO_PUBLIC_PRIVACY_URL, EXPO_PUBLIC_TERMS_URL and EXPO_PUBLIC_FEEDBACK_EMAIL for the production environment with `eas env:create` (public values, never secrets). Do not add them here as empty strings: eas.json env values override EAS environment variables, and an empty value hides the matching link in Settings.",
   "cli": {
     "version": ">= 16.0.0",
     "appVersionSource": "remote"
@@ -19,7 +18,8 @@
     },
     "production": {
       "channel": "production",
-      "autoIncrement": true
+      "autoIncrement": true,
+      "environment": "production"
     }
   },
   "submit": {

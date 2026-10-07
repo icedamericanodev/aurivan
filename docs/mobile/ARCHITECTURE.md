@@ -142,6 +142,11 @@ Freemium with in-app subscriptions (product panel recommendation):
 2. **Original content only** — ship only questions with `_provenance` records.
 3. **Privacy** — live privacy-policy URL (`EXPO_PUBLIC_PRIVACY_URL`), Apple
    privacy label + Google Data safety form matching every SDK added.
+   Before any store build, set `EXPO_PUBLIC_PRIVACY_URL`, `EXPO_PUBLIC_TERMS_URL`
+   and `EXPO_PUBLIC_FEEDBACK_EMAIL` in the EAS **production** environment with
+   `eas env:create` (public values, never secrets). Don't put them in
+   `eas.json`: its `env` values override EAS variables, an empty value hides the
+   matching link in Settings, and `eas.json` rejects comment keys like `"//"`.
 4. **Account deletion** — required the moment accounts exist (Phase 3).
 5. **Paywall disclosures** — price, period, renewal terms, Restore, Terms + Privacy links.
 6. **No "guaranteed pass"** claims anywhere. Readiness is always worded as an
