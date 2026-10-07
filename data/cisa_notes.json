@@ -498,7 +498,7 @@
               "legacy_ids": [
                 "1.6.2"
               ],
-              "summary": "Sample size grows when you want more confidence, when you expect more errors, and when you can tolerate fewer. Population size has surprisingly little effect once it is large. Even a good sample can mislead, which is sampling risk. Precise terms: confidence level, tolerable deviation rate, expected deviation rate, and the risks of incorrect acceptance (overreliance) and incorrect rejection.",
+              "summary": "Sample size grows when you want more confidence, when you expect more errors, and when you can tolerate fewer. Population size has surprisingly little effect once it is large. Even a good sample can mislead, which is sampling risk. Precise terms: confidence level, tolerable deviation rate, expected deviation rate; the risks of overreliance and underreliance in tests of controls; and the risks of incorrect acceptance and incorrect rejection in substantive tests.",
               "key_point": "Overreliance, concluding a control works when it does not, is the more dangerous error because it gives false assurance.",
               "exam_tip": "If the sample deviation rate clearly exceeds the tolerable rate, do not rely on the control. If it falls in between, extend or redesign the sample before concluding."
             }
@@ -741,7 +741,7 @@
               "id": "1B6.3",
               "name": "External Quality Assessments",
               "legacy_ids": [],
-              "summary": "Even a careful team can share blind spots. An outside assessor brings a fresh, independent view of whether the function conforms to standards. Precise term: external quality assessment, performed at least once every five years by a qualified assessor independent of the organization.",
+              "summary": "Even a careful team can share blind spots. An outside assessor brings a fresh, independent view of whether the function conforms to standards. Precise term: external quality assessment, which IIA standards require at least once every five years, performed by a qualified assessor independent of the organization.",
               "key_point": "Self-assessment alone gives the audit committee unverified assurance. A periodic independent external assessment is required.",
               "exam_tip": "An assessor from inside the organization, even from another department, is not external."
             },
@@ -1620,7 +1620,8 @@
               ],
               "exam_tip": "A lessons-learned document filed away and never read is a common distractor. The better answer makes the lessons searchable and part of how the next project is planned."
             }
-          ]
+          ],
+          "summary": "Every system starts as a project. Clear roles, an approved charter, a realistic schedule and honest cost tracking keep it on course, with the business owning the decisions."
         },
         {
           "topic_id": "3A2",
@@ -1693,7 +1694,8 @@
               ],
               "exam_tip": "An escrow agreement on paper is not assurance. The stronger answer verifies the deposit. Also beware choosing the cheapest bid without scoring it against the requirements."
             }
-          ]
+          ],
+          "summary": "Before money is committed, the organization proves the idea is worth it and workable, and compares real options, including doing nothing."
         },
         {
           "topic_id": "3A3",
@@ -1754,7 +1756,7 @@
                 "SAST": "Static application security testing. Scans source code without running it; best on every pull request.",
                 "SCA": "Software composition analysis. Finds known vulnerabilities and license issues in open-source components; run on every build.",
                 "Pipeline evidence": "Tamper-evident logs linking each deployment to its approval, tests and scans.",
-                "DORA metrics": "Deployment frequency and lead time (speed) paired with change failure rate and time to restore (stability)."
+                "DORA metrics": "Deployment frequency and lead time for changes (speed) paired with change failure rate and failed deployment recovery time, formerly time to restore service (stability)."
               },
               "key_point": "Automated gates that block deployment on failed tests or scans give consistent, preventive assurance on every build. A well-built pipeline also produces the change evidence auditors need.",
               "common_mistakes": [
@@ -1775,7 +1777,8 @@
               ],
               "exam_tip": "When asked how to prove every requirement was built and tested, the answer is the traceability matrix. Code from a tool skipping review is a trap."
             }
-          ]
+          ],
+          "summary": "How a system is built shapes how it is controlled. Each development method fits different requirements and risk, and every one still needs evidence."
         },
         {
           "topic_id": "3A4",
@@ -1851,7 +1854,8 @@
               ],
               "exam_tip": "Logs stored only on the server they describe, editable by its admins, are a classic weak answer. For lineage, automated capture beats hand-written documentation."
             }
-          ]
+          ],
+          "summary": "Controls are cheapest and strongest when they are designed in from the start, based on the risks the system and its data carry."
         },
         {
           "topic_id": "3B1",
@@ -1931,7 +1935,8 @@
               ],
               "exam_tip": "Under deadline pressure, the right answer ships a fully tested smaller scope with documented risk acceptance; skipping or shortening testing quietly is wrong. Certification is the technical evaluation; accreditation is management accepting residual risk."
             }
-          ]
+          ],
+          "summary": "Testing proves a system is ready. Each level and type of test answers a different question, and go-live rests on evidence that agreed criteria were met."
         },
         {
           "topic_id": "3B2",
@@ -2000,7 +2005,8 @@
               ],
               "exam_tip": "An SBOM lists components; it does not by itself fix vulnerabilities. Strong-copyleft licenses can oblige you to release your own code, so licenses are tracked, scanned before merge, and copyleft components isolated."
             }
-          ]
+          ],
+          "summary": "Every change to a live system is tracked, approved and reversible, and every component is known and verified."
         },
         {
           "topic_id": "3B3",
@@ -2056,7 +2062,8 @@
               ],
               "exam_tip": "Decommissioning the legacy system right after go-live, before final reconciliation sign-off and archiving, is the trap. So is migrating systems one by one without knowing their dependencies."
             }
-          ]
+          ],
+          "summary": "Moving to a new system is where data quietly goes missing. Cutover, conversion and infrastructure steps each need controls and proof."
         },
         {
           "topic_id": "3B4",
@@ -2110,7 +2117,8 @@
               ],
               "exam_tip": "An answer that has the auditor or IT fix the benefit shortfall is a trap. So is a report with no named owners or dates."
             }
-          ]
+          ],
+          "summary": "After the system settles in, the organization checks whether the promised benefits arrived and the designed controls work."
         }
       ],
       "key_terminologies": {
@@ -2404,7 +2412,7 @@
             {
               "id": "4A7.2",
               "name": "Handling Incidents in Sequence",
-              "summary": "When something abnormal happens, the order of steps matters. You first notice and record it, then stop it from spreading, then remove the cause, then restore normal operation, and finally learn from it. Jumping straight to the fix while the problem is still spreading makes the damage bigger. Precise term: incident handling lifecycle, the ordered stages of detection, containment, eradication, recovery and post-incident review.",
+              "summary": "When something abnormal happens, the order of steps matters. You first notice and record it, then stop it from spreading, then remove the cause, then restore normal operation, and finally learn from it. Jumping straight to the fix while the problem is still spreading makes the damage bigger. Precise term: incident handling lifecycle, which starts with preparation and then runs through detection, containment, eradication, recovery and post-incident review.",
               "illustration": {
                 "svg": "<svg viewBox='0 0 580 100' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Incident handling lifecycle: detect, contain, eradicate, recover, lessons learned'><rect x='8' y='24' width='90' height='44' rx='4' fill='var(--accent-fill)'/><text x='53' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Detection</text><rect x='120' y='24' width='104' height='44' rx='4' fill='var(--accent-fill)'/><text x='172' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Containment</text><rect x='246' y='24' width='98' height='44' rx='4' fill='var(--accent-fill)'/><text x='295' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Eradication</text><rect x='366' y='24' width='82' height='44' rx='4' fill='var(--accent-fill)'/><text x='407' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Recovery</text><rect x='470' y='24' width='102' height='44' rx='4' fill='var(--accent-fill)'/><text x='521' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Lessons learned</text><line x1='100' y1='46' x2='111' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M111,42 L118,46 L111,50 Z' fill='var(--text2)'/><line x1='226' y1='46' x2='237' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M237,42 L244,46 L237,50 Z' fill='var(--text2)'/><line x1='346' y1='46' x2='357' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M357,42 L364,46 L357,50 Z' fill='var(--text2)'/><line x1='450' y1='46' x2='461' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M461,42 L468,46 L461,50 Z' fill='var(--text2)'/></svg>",
                 "caption": "The incident lifecycle runs left to right. Containment sits before eradication on purpose, and the closing lessons-learned review is the step that stops the next incident but is the one most often skipped."
@@ -2436,9 +2444,7 @@
               "summary": "Every change to production (code, settings, schedules, infrastructure) should be requested, assessed, approved, tested and recorded. The person who wrote a change should not be the one who moves it into production. Emergencies still happen, so there is a faster route with checks afterwards. Precise term: change management (also called change enablement), the process that assesses and authorizes each change to production.",
               "key_point": "No unauthorized change reaches production. Separate development from deployment, require a tested backout plan, and review emergency changes independently soon after they are made.",
               "exam_tip": "Trap: \"it was urgent, so no approval was needed.\" Emergency changes may skip prior approval, but they still need independent review and approval shortly after implementation.",
-              "common_mistakes": [
-                "When a release causes harm and a validated prior version exists, back it out through emergency change first; investigate root cause afterwards."
-              ],
+              "common_mistakes": "[\"Investigating root cause while a harmful release stays live, when a validated prior version could be restored at once through an emergency change.\"]",
               "legacy_ids": [
                 "4.8.3"
               ]
@@ -2619,8 +2625,8 @@
               "name": "Recovery Objectives: RTO, RPO, MTD and MBCO",
               "summary": "The BIA turns impact into concrete targets. One says how much data the business can afford to lose, one says how fast service must be back, and one says the point at which the outage becomes intolerable. Supporting systems must recover at least as fast as the processes that rely on them. Precise term: recovery time objective (RTO), the target time to restore a process after disruption; recovery point objective (RPO), the maximum data loss measured in time.",
               "illustration": {
-                "svg": "<svg viewBox='0 0 500 148' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='RPO is the data-loss window before a disruption; RTO is the downtime window after it, until service is restored'><line x1='20' y1='80' x2='480' y2='80' stroke='var(--text2)' stroke-width='1.5'/><line x1='250' y1='30' x2='250' y2='112' stroke='var(--text2)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='250' y='24' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DISRUPTION</text><rect x='40' y='60' width='110' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='95' y='84' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Last backup</text><rect x='350' y='60' width='120' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='410' y='84' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Service restored</text><line x1='150' y1='116' x2='248' y2='116' stroke='var(--text2)' stroke-width='1.5'/><line x1='252' y1='116' x2='350' y2='116' stroke='var(--text2)' stroke-width='1.5'/><text x='200' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>RPO — data lost</text><text x='301' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>RTO — downtime</text></svg>",
-                "caption": "RPO and RTO on one timeline. RPO is the stretch between the last good backup and the disruption, the data you lose; RTO is the stretch from the disruption until service is back."
+                "svg": "<svg viewBox='0 0 500 148' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The data lost between the last backup and a disruption must not exceed the RPO; the downtime until service is restored must not exceed the RTO'><line x1='20' y1='80' x2='480' y2='80' stroke='var(--text2)' stroke-width='1.5'/><line x1='250' y1='30' x2='250' y2='112' stroke='var(--text2)' stroke-width='1.5' stroke-dasharray='3 3'/><text x='250' y='24' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>DISRUPTION</text><rect x='40' y='60' width='110' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='95' y='84' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Last backup</text><rect x='350' y='60' width='120' height='40' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='410' y='84' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Service restored</text><line x1='150' y1='116' x2='248' y2='116' stroke='var(--text2)' stroke-width='1.5'/><line x1='252' y1='116' x2='350' y2='116' stroke='var(--text2)' stroke-width='1.5'/><text x='200' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Data lost ≤ RPO</text><text x='301' y='134' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>Downtime ≤ RTO</text></svg>",
+                "caption": "RPO and RTO on one timeline. The data written since the last good backup is lost, and that gap must not exceed the RPO; the time from the disruption until service is back must not exceed the RTO."
               },
               "categories": {
                 "RPO": "Maximum tolerable data loss, measured in time before the event.",
@@ -2782,7 +2788,7 @@
               "id": "4B5.2",
               "name": "Invocation and Recovery Procedures",
               "summary": "When disaster strikes, someone must decide to switch to recovery mode, quickly and with clear authority. Then the team follows written procedures that a trained alternate could carry out step by step, because the usual experts may be unavailable. Systems come back in an order set by business priority and technical dependencies. Precise term: invocation, the formal decision to activate the disaster recovery plan.",
-              "key_point": "Use measurable invocation criteria and a named authority with a backup. When the criteria are met, that person acts on the playbook without waiting for consensus or later ratification.",
+              "key_point": "Use measurable invocation criteria and a named authority with a backup. When the criteria are met, that person acts on the playbook at once; no consensus or after-the-fact executive ratification is needed.",
               "exam_tip": "Trap: adding up every system's recovery time to get the total. Total recovery time follows the critical path through dependencies, and shared infrastructure such as identity and networking is restored first so critical applications can run.",
               "legacy_ids": []
             },
@@ -2815,7 +2821,7 @@
         "Release management": "Coordinating, testing and rolling out a package of already-approved changes.",
         "Patch management": "Finding, testing, approving, installing and checking vendor fixes in order of risk.",
         "Incident": "An unplanned interruption or drop in the quality of a service.",
-        "Problem": "The unknown underlying cause of one or more incidents.",
+        "Problem": "The cause, or potential cause, of one or more incidents.",
         "Known error": "A problem whose cause is understood and has a documented workaround but no permanent fix yet.",
         "Service level agreement (SLA)": "A written agreement setting measurable service targets, reporting and remedies.",
         "End-user computing (EUC)": "Spreadsheets, scripts and small apps built and run by business users outside IT development.",
@@ -2872,7 +2878,7 @@
               "name": "Frameworks and certifiable standards",
               "summary": "Frameworks give an organization a ready-made structure for its security program so it does not start from a blank page. Some, such as ISO/IEC 27001, define a management system that an accredited body can certify. Others, such as the NIST Cybersecurity Framework (CSF) 2.0, are voluntary and describe outcomes to aim for. Precise term: a control framework (certifiable standard versus voluntary outcome-based framework).",
               "categories": {
-                "ISO/IEC 27001": "Requirements for an information security management system (ISMS). Certifiable, but only for the scope stated on the certificate.",
+                "ISO/IEC 27001": "Requirements for an information security management system (ISMS), current edition ISO/IEC 27001:2022, whose Annex A lists 93 controls in four themes. Certifiable, but only for the scope stated on the certificate.",
                 "ISO/IEC 27002": "Guidance on implementing security controls. Not certifiable on its own.",
                 "NIST CSF 2.0": "Voluntary, outcome-based framework with six functions: Govern, Identify, Protect, Detect, Respond, Recover. Uses profiles (current and target) and tiers.",
                 "COBIT": "Governance and management framework for enterprise IT, including security-related objectives."
@@ -2922,7 +2928,7 @@
               "name": "Privacy principles and acceptable use",
               "summary": "Security protects data from misuse; privacy decides what personal data may be collected and how it may be used at all. Common principles include collecting only what a stated purpose needs, not reusing data for unrelated purposes, and honoring people's rights to see their data. Separately, an acceptable use policy tells everyone who uses company systems what they may and may not do. Precise terms: privacy principles (such as purpose limitation and data minimization) and the acceptable use policy (AUP).",
               "key_point": "Privacy rules limit the purpose, not just the access. Under laws such as the GDPR, data collected for one purpose cannot simply be reused for a new, incompatible one, and data should not be collected for an undefined future use.",
-              "exam_tip": "Trap: assuming encryption makes a cross-border transfer of personal data lawful. Encryption protects the data in transit, but the transfer still needs a legal basis, such as an adequacy decision or standard contractual clauses. Also, an AUP applies to contractors and temporary staff too, and each user should acknowledge it.",
+              "exam_tip": "Trap: assuming encryption makes a cross-border transfer of personal data lawful. Encryption protects the data in transit, but the transfer still needs a valid transfer mechanism, such as an adequacy decision or standard contractual clauses. Also, an AUP applies to contractors and temporary staff too, and each user should acknowledge it.",
               "legacy_ids": []
             }
           ]
