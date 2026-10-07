@@ -128,6 +128,7 @@ After any commit that touches `index.html` (styles, components, copy), invoke
 | `cisa-pedagogy-checker` | Wrong-answer explanations + tips teach the principle | After authoring a batch of questions |
 | `cisa-ux-reviewer` | Design tokens, brand consistency, WCAG AA, mobile reflow, IA | After UI-touching commits |
 | `cisa-citation-*` | Fabricated / mis-attributed framework_ref | At Stage 2.5 of authoring |
+| `cisa-cross-domain-reviewer` | Contradictions, near-duplicates and drift ACROSS domains | After any domain rewrite; final gate before a bank release |
 
 The UX reviewer reads `design-notes/MASTER_HANDOFF.md` as locked source of
 truth and flags deviations from the variant selections table. Findings are
@@ -230,8 +231,20 @@ Fix-and-push is automatic; only major issues are escalated.
    For question changes, send sample questions from the changed domain with
    `SHOT_QUESTIONS=d2_010,d2_045 npm run shots` (question, answer and tips).
 6. Tell the maintainer the PR is green and reviewed, in a short summary of
-   what was found and fixed. **Merging stays the maintainer's call**
-   ("merge PR N") unless they say otherwise.
+   what was found and fixed.
+7. **Autonomous loop (maintainer rule, 2026-10-07).** The maintainer said:
+   "make it loop, you don't need to ask me — spin the expert agents to review
+   and go ahead; just ask me if it's really significant." So:
+   - Once reviews are clean, CI is green and the PR is mergeable, **squash-merge
+     it yourself**, do the post-merge branch hygiene, and start the next item of
+     the plan without waiting to be asked.
+   - Pick the next step yourself from the plan and the open follow-ups. If an
+     expert agent a task needs doesn't exist, create it in `.claude/agents/`.
+   - Still stop and ask for anything on the "major" list in step 4 (product,
+     design or content direction, disputed keys, security/privacy/data loss,
+     store/legal, costs, out of scope).
+   - Keep sending screenshots and a short summary at each handoff, so the
+     maintainer can follow along and interrupt.
 
 ### Post-merge branch hygiene (CRITICAL — avoids recurring squash-merge conflicts)
 
