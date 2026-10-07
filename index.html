@@ -5027,7 +5027,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.51.1</span>
+    <span class="bank-pill" id="versionPill">v10.51.2</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5391,7 +5391,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.51.1';
+const APP_VERSION = 'v10.51.2';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -12088,6 +12088,13 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Privacy policy: share cards',
+    items: [
+      { cat: 'improved', text: 'The privacy policy now explains how sharing your progress works in the mobile app.' }
+    ]
+  },
+  {
+    version: 'v10.51.1',
     title: 'Privacy policy update',
     items: [
       { cat: 'improved', text: 'The privacy policy now covers the mobile app.' }

@@ -565,7 +565,7 @@ export function Stat({ value, label, color, pct }: { value: string; label: strin
   return (
     <View accessible accessibilityLabel={`${value}${pct ? ' percent' : ''} ${label}`}>
       <BigNum value={value} pct={pct} size={34} color={color} />
-      <T v="meta" style={{ marginTop: space.xs }}>{label}</T>
+      <T v="meta" style={{ marginTop: space.xs, textAlign: 'center' }}>{label}</T>
     </View>
   );
 }
@@ -681,7 +681,8 @@ const styles = StyleSheet.create({
 
 /**
  * A row of stats with hairlines above, below and between (spec §11 "You").
- * At large text sizes it becomes a vertical list so numbers never squeeze.
+ * Each stat is centred in its cell. At large text sizes the row becomes a
+ * vertical, left-aligned list so numbers never squeeze.
  */
 export function StatRow({ children, style }: { children: ReactNode[]; style?: StyleProp<ViewStyle> }) {
   const { c } = useTheme();
@@ -694,8 +695,9 @@ export function StatRow({ children, style }: { children: ReactNode[]; style?: St
           key={i}
           style={[
             { paddingTop: space.lg, paddingBottom: 14 },
-            !stacked && { flex: 1 },
-            i > 0 && (stacked ? { borderTopWidth: 1, borderTopColor: c.line } : { borderLeftWidth: 1, borderLeftColor: c.line, paddingLeft: space.lg }),
+            // Side by side, each stat sits centred in its cell; stacked, it reads as a left-aligned list.
+            !stacked && { flex: 1, alignItems: 'center', paddingHorizontal: space.sm },
+            i > 0 && (stacked ? { borderTopWidth: 1, borderTopColor: c.line } : { borderLeftWidth: 1, borderLeftColor: c.line }),
           ]}
         >
           {child}
