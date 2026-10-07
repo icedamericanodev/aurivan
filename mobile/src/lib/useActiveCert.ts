@@ -40,9 +40,9 @@ export function useActiveCert() {
   }, []);
 
   const readiness = useMemo(() => computeReadiness(cert, progress.answers), [cert, progress.answers]);
-  // Reading the clock during render is deliberate here: a re-render (for
-  // example after answering) should count reviews that fell due since the
-  // last foreground, without waiting for the next AppState change.
+  // Reading the clock here is deliberate: when the review queue changes (for
+  // example after answering), the recount includes reviews that fell due
+  // since the last foreground, without waiting for the next AppState change.
   const dueCount = useMemo(
     // eslint-disable-next-line react-hooks/purity -- see the comment above
     () => dueIds(progress.review, Math.max(now, Date.now())).length,
