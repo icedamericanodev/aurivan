@@ -164,7 +164,8 @@ export default function Settings() {
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.
       </T>
       <Gap h={space.sm} />
-      {CERTIFICATIONS.filter((x) => x.status === 'available').map((x) => (
+      {/* Every certification named anywhere in the app (coming-soon chips too) needs its trademark notice. */}
+      {CERTIFICATIONS.map((x) => (
         <T key={x.id} v="meta">{x.trademarkNotice}</T>
       ))}
       <Gap h={space.sm} />

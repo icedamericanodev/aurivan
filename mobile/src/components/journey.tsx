@@ -82,6 +82,9 @@ export function ReadinessFigure({ range, size = 52 }: { range: ReadinessRange; s
   return <BigNum value={rangeLabel(range)} pct size={size} />;
 }
 
+/** Shown with the readiness range: it is a study estimate, not a promise of a pass. */
+export const ESTIMATE_NOTE = 'A study estimate, not a prediction of your exam result.';
+
 // ── Readiness row on Today (spec §11 "Today") ─────────────────────────
 // Rings 104 (monochrome) + range + meta + italic stage. Stacks at large text.
 export function ReadinessRow({
@@ -99,13 +102,14 @@ export function ReadinessRow({
   const { c } = useTheme();
   const stacked = useFontScale() >= LARGE_TEXT;
   const meta = range.enough
-    ? 'likely readiness, weighted by the blueprint'
+    ? // An ESTIMATE, never a prediction (app-store review: no outcome claims).
+      'estimated readiness, weighted by the blueprint'
     : // A countdown, not a moving target: `needed` never goes up after an answer.
       `${range.needed} more ${range.needed === 1 ? 'answer' : 'answers'} until your readiness range`;
   return (
     <View
       accessible
-      accessibilityLabel={`Readiness ${rangeSpoken(range)}. ${range.enough ? 'Weighted by the exam blueprint.' : meta} ${stage}.`}
+      accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${range.enough ? `Weighted by the exam blueprint. ${ESTIMATE_NOTE}` : meta} ${stage}.`}
       style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 }}
     >
       <GrowthRings
@@ -118,6 +122,8 @@ export function ReadinessRow({
       <View style={{ flex: stacked ? undefined : 1 }}>
         <ReadinessFigure range={range} />
         <T v="meta" style={{ marginTop: 4 }}>{meta}</T>
+        {/* One quiet line, only once there is a range to explain. */}
+        {range.enough && <T v="meta" style={{ marginTop: 2 }}>{ESTIMATE_NOTE}</T>}
         <T v="stage" style={{ marginTop: 6 }}>{stage}</T>
       </View>
     </View>

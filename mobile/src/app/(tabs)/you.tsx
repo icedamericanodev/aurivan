@@ -46,12 +46,13 @@ export default function You() {
         <DomainRings
           cert={cert}
           values={values}
-          accessibilityLabel={`Readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.`}
+          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.`}
           center={
             range.enough ? (
               <View style={{ alignItems: 'center' }}>
                 <BigNum value={rangeLabel(range)} pct size={20} />
-                <T v="caption" color={c.ink2}>ready</T>
+                {/* "estimate", not "ready": the range is a study estimate, not a prediction. */}
+                <T v="caption" color={c.ink2}>estimate</T>
               </View>
             ) : (
               <T v="caption" color={c.ink2} center style={{ maxWidth: 72 }}>Not enough data yet</T>

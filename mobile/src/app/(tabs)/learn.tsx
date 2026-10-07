@@ -29,7 +29,10 @@ export default function Learn() {
 
   const lessons = lessonsFor(cert.id);
   const done = (id: string) => progress.lessonsDone.includes(id);
-  const upNext = nextLesson(cert.id, progress.lessonsDone, domain ?? readiness.focusDomainId ?? undefined);
+  // Only trust ?domain= if it names a real domain of this exam; anything else
+  // (a typo, an old link, another cert's id) falls back to the focus domain.
+  const knownDomain = cert.domains.some((d) => d.id === domain) ? domain : undefined;
+  const upNext = nextLesson(cert.id, progress.lessonsDone, knownDomain ?? readiness.focusDomainId ?? undefined);
   const upDomain = upNext ? cert.domains.find((d) => d.id === upNext.domainId) : undefined;
   const doneCount = lessons.filter((l) => done(l.id)).length;
   const play = (col: string, size: number = ICON_SIZE.inline) => <Play size={size} color={col} strokeWidth={ICON_STROKE} />;

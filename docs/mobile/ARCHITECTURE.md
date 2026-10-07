@@ -144,7 +144,15 @@ Freemium with in-app subscriptions (product panel recommendation):
    privacy label + Google Data safety form matching every SDK added.
 4. **Account deletion** — required the moment accounts exist (Phase 3).
 5. **Paywall disclosures** — price, period, renewal terms, Restore, Terms + Privacy links.
-6. **No "guaranteed pass"** claims anywhere.
+6. **No "guaranteed pass"** claims anywhere. Readiness is always worded as an
+   estimate ("estimated readiness", "A study estimate, not a prediction of
+   your exam result."), never a prediction.
+7. **Android backup (decision, 2026-10)** — `android.allowBackup` is `true` on
+   purpose. The app stores only study progress and settings (no accounts,
+   no secrets), and a restore onto a new phone saves learners from starting
+   over. Revisit if the app ever stores tokens or personal data on device.
+8. **Tablets** — `ios.supportsTablet` is `false` for v1 (no iPad layouts or
+   iPad screenshots yet).
 
 Run the `app-store-compliance-reviewer` agent before every submission.
 
