@@ -16,10 +16,13 @@ export function shortDate(ms: number): string {
  * "Year-End Close. Job Scheduling Control Bypass" → "Year-end close".
  * Keeps acronyms (BCM, IS) and drops a dangling "and"/"of"/"the".
  */
+const DANGLING = /^(and|or|of|the|a|an|for|to|in|on|at|by|with|from|into|during|after|before|under|over|within|via|&|vs\.?)$/i;
+
 export function shortSubtopic(subtopic: string): string {
   const first = subtopic.split(/\.\s+/)[0] ?? '';
   const words = first.split(/\s+/).filter(Boolean).slice(0, 3);
-  while (words.length > 1 && /^(and|of|the|for|to|in|&|vs\.?)$/i.test(words[words.length - 1])) words.pop();
+  // Never end on a joining word ("Brand crisis during" → "Brand crisis").
+  while (words.length > 1 && DANGLING.test(words[words.length - 1])) words.pop();
   const isAcronym = (w: string) => /^[A-Z0-9]{2,}/.test(w);
   return words
     .map((w, i) => {

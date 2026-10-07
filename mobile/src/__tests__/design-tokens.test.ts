@@ -163,6 +163,9 @@ describe('shortSubtopic', () => {
   it('keeps acronyms and drops a dangling "and"', () => {
     expect(shortSubtopic('BCM Exercise Types and Progression')).toBe('BCM exercise types');
     expect(shortSubtopic('Risk and Controls Mapping')).toBe('Risk and controls');
+    // Question bank topic headers: no dangling preposition.
+    expect(shortSubtopic('Brand Crisis During Ransomware Outage')).toBe('Brand crisis');
+    expect(shortSubtopic('Database Encryption at Rest')).toBe('Database encryption');
   });
 });
 

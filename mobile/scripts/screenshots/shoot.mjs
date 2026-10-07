@@ -29,6 +29,24 @@ for (const [name, path] of routes) {
   await page.screenshot({ path: `${out}/${name}.png` });
   console.log('shot', name);
 }
+const shot0 = async (name, path) => {
+  await page.goto('http://127.0.0.1:8093' + path, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1800);
+  await page.screenshot({ path: `${out}/${name}.png` });
+  console.log('shot', name);
+};
+// Question bank: the domain list, a domain (All), the Missed filter, and the
+// seedling empty state (Saved: the seed has no bookmarks yet at this point).
+await shot0('23-bank', '/bank');
+await shot0('24-bank-domain', '/bank/4');
+await page.getByRole('button', { name: 'Missed', exact: true }).click();
+await page.waitForTimeout(700);
+await page.screenshot({ path: `${out}/24b-bank-missed.png` });
+await page.getByRole('button', { name: 'Saved', exact: true }).click();
+await page.waitForTimeout(700);
+await page.screenshot({ path: `${out}/24c-bank-empty.png` });
+console.log('shot question bank');
+
 // Each sample question: the question, the answer screen, and the vine (key idea + tips).
 // The first sample is answered with its runner-up (wrong), the rest correctly (make_seed.py).
 const keys = (seed.__shotKeys || 'D').split(',');
