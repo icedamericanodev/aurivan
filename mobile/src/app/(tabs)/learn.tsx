@@ -1,18 +1,21 @@
 /**
- * Learn — three-minute motion lessons.
+ * Learn — short motion lessons (3–5 minutes each).
  * Spec: DESIGN_SYSTEM.md §11 "Learn":
  *   forest "Up next" lesson cover (domain dot + short name, the full lesson
  *   title, "3 min · 7 scenes", Start lesson, a branch drawn per domain) →
- *   "By domain" list: serif order numeral · title · domain dot + state ·
- *   status circle (done ✓ / available ▶).
+ *   "By domain": one collapsible group per domain (domain dot · short name
+ *   · "2 of 7 done" · chevron), then its rows: serif order numeral · title ·
+ *   state · status circle (done ✓ / available ▶).
+ * Grouping keeps the list short when there are ~40 lessons: only the group
+ * holding "Up next" starts open; the learner can open any other group.
  * Opening with ?domain=4 (e.g. from Today) puts that domain's next lesson
- * on the cover.
+ * on the cover, and so opens that group.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback } from 'react';
-import { View } from 'react-native';
-import { Check, ICON_STROKE, Play } from '../../components/icons';
-import { BigNum, DomainDot, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T } from '../../components/ui';
+import { useCallback, useState } from 'react';
+import { Pressable, View } from 'react-native';
+import { Check, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
+import { BigNum, DomainDot, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, Section, T } from '../../components/ui';
 import { domainColor } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -21,7 +24,7 @@ import { useTheme } from '../../theme/useTheme';
 import type { BotanyKind } from '../../components/glyphs';
 
 export default function Learn() {
-  const { c } = useTheme();
+  const { c, isDark } = useTheme();
   const { cert, progress, readiness } = useActiveCert();
   const { domain } = useLocalSearchParams<{ domain?: string }>();
   // Learn is a tab, so the param would stick; clear it when the learner leaves.
@@ -35,13 +38,22 @@ export default function Learn() {
   const upNext = nextLesson(cert.id, progress.lessonsDone, knownDomain ?? readiness.focusDomainId ?? undefined);
   const upDomain = upNext ? cert.domains.find((d) => d.id === upNext.domainId) : undefined;
   const doneCount = lessons.filter((l) => done(l.id)).length;
+  // One group per domain that has lessons, in domain order (lessonsFor is sorted).
+  const groups = cert.domains
+    .map((d) => ({ domain: d, items: lessons.filter((l) => l.domainId === d.id) }))
+    .filter((grp) => grp.items.length > 0);
+  // Groups the learner has opened or closed by hand. Any group they have not
+  // touched is open only if it holds "Up next", so the list stays short.
+  const [toggled, setToggled] = useState<Record<string, boolean>>({});
+  const isOpenGroup = (domainId: string) => toggled[domainId] ?? domainId === upNext?.domainId;
+  const toggleGroup = (domainId: string) => setToggled((t) => ({ ...t, [domainId]: !isOpenGroup(domainId) }));
   const play = (col: string, size: number = ICON_SIZE.inline) => <Play size={size} color={col} strokeWidth={ICON_STROKE} />;
 
   return (
     <Screen>
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
-        <T v="meta" style={{ marginTop: space.xs }}>Three-minute lessons, one idea each.</T>
+        <T v="meta" style={{ marginTop: space.xs }}>Short lessons, one idea each.</T>
       </Enter>
 
       <Enter i={1} style={{ marginTop: 18 }}>
@@ -62,48 +74,84 @@ export default function Learn() {
 
       <Enter i={2}>
         <Section title="By domain" meta={`${doneCount} of ${lessons.length} done`} />
-        {lessons.map((l, i) => {
-          const d = cert.domains.find((x) => x.id === l.domainId)!;
-          const isDone = done(l.id);
-          const isNext = upNext?.id === l.id;
-          const state = isDone ? 'done' : isNext ? 'up next' : `${l.minutes} min`;
+        {groups.map(({ domain: d, items }, g) => {
+          const groupDone = items.filter((l) => done(l.id)).length;
+          const isOpen = isOpenGroup(d.id);
+          const lastGroup = g === groups.length - 1;
+          const progressText = groupDone === items.length ? 'All done' : `${groupDone} of ${items.length} done`;
           return (
-            <ListRow
-              key={l.id}
-              lead={
-                // minWidth (not width) so "10" and large text never clip (spec: lead 40).
-                <View style={{ minWidth: 40 }}>
-                  <BigNum value={String(i + 1)} size={22} color={c.ink2} />
-                </View>
-              }
-              title={l.title}
-              subtitle={
-                <Row gap={6}>
+            <View key={d.id}>
+              {/* Group header: tap to show or hide this domain's lessons. */}
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ expanded: isOpen }}
+                accessibilityLabel={`${d.name}, ${items.length} ${items.length === 1 ? 'lesson' : 'lessons'}, ${progressText}`}
+                accessibilityHint={isOpen ? 'Hides these lessons' : 'Shows these lessons'}
+                onPress={() => toggleGroup(d.id)}
+                style={({ pressed }) => ({
+                  minHeight: 56,
+                  paddingVertical: space.md,
+                  justifyContent: 'center',
+                  backgroundColor: pressed ? c.soft : 'transparent',
+                  // A hairline between groups; none under an open header (its rows follow).
+                  borderBottomWidth: isOpen || lastGroup ? 0 : 1,
+                  borderBottomColor: c.line,
+                })}
+              >
+                <Row gap={space.sm}>
                   <DomainDot domain={d} />
-                  <T v="meta" style={{ flexShrink: 1 }}>{`${d.short} · ${state}`}</T>
+                  <T v="label" style={{ flex: 1 }}>{d.short}</T>
+                  <T v="meta" num>{progressText}</T>
+                  {/* Chevron points down when open, right when closed. */}
+                  <View style={{ transform: [{ rotate: isOpen ? '0deg' : '-90deg' }] }}>
+                    <ChevronDown size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
+                  </View>
                 </Row>
-              }
-              chevron={false}
-              trailing={
-                <View
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: radius.pill,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: isDone ? c.accent : 'transparent',
-                    borderWidth: isDone ? 0 : 1.5,
-                    borderColor: c.control,
-                  }}
-                >
-                  {isDone ? <Check size={16} color={c.bg} strokeWidth={2.5} /> : play(c.ink2, 12)}
+                <View style={{ marginTop: space.sm, marginLeft: space.lg }}>
+                  <ProgressBar value={items.length ? groupDone / items.length : 0} color={domainColor(d.tone, isDark)} height={3} />
                 </View>
-              }
-              accessibilityLabel={`Lesson ${i + 1}: ${l.title}, ${d.short}, ${state}`}
-              onPress={() => router.push(`/lesson/${l.id}`)}
-              last={i === lessons.length - 1}
-            />
+              </Pressable>
+              {isOpen &&
+                items.map((l, i) => {
+                  const isDone = done(l.id);
+                  const isNext = upNext?.id === l.id;
+                  const state = isDone ? 'done' : isNext ? 'up next' : `${l.minutes} min`;
+                  return (
+                    <ListRow
+                      key={l.id}
+                      lead={
+                        // minWidth (not width) so "10" and large text never clip (spec: lead 40).
+                        <View style={{ minWidth: 40 }}>
+                          <BigNum value={String(i + 1)} size={22} color={c.ink2} />
+                        </View>
+                      }
+                      title={l.title}
+                      subtitle={state}
+                      chevron={false}
+                      trailing={
+                        <View
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: radius.pill,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: isDone ? c.accent : 'transparent',
+                            borderWidth: isDone ? 0 : 1.5,
+                            borderColor: c.control,
+                          }}
+                        >
+                          {isDone ? <Check size={16} color={c.bg} strokeWidth={2.5} /> : play(c.ink2, 12)}
+                        </View>
+                      }
+                      accessibilityLabel={`${d.short} lesson ${i + 1}: ${l.title}, ${state}`}
+                      onPress={() => router.push(`/lesson/${l.id}`)}
+                      // Keep the hairline under the last row unless it is the last group.
+                      last={lastGroup && i === items.length - 1}
+                    />
+                  );
+                })}
+            </View>
           );
         })}
         <T v="meta" style={{ marginTop: space.md }}>More lessons are on the way.</T>

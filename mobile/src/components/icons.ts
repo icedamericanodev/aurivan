@@ -10,6 +10,7 @@ export { default as BookmarkCheck } from 'lucide-react-native/icons/bookmark-che
 export { default as Clock } from 'lucide-react-native/icons/clock';
 export { default as Brain } from 'lucide-react-native/icons/brain';
 export { default as Check } from 'lucide-react-native/icons/check';
+export { default as ChevronDown } from 'lucide-react-native/icons/chevron-down';
 export { default as ChevronLeft } from 'lucide-react-native/icons/chevron-left';
 export { default as ChevronRight } from 'lucide-react-native/icons/chevron-right';
 export { default as Compass } from 'lucide-react-native/icons/compass';

@@ -12,8 +12,11 @@ import { SceneView } from '../../components/lesson';
 import { Button, Gap, PushedHeader, Row, SegmentBar, T } from '../../components/ui';
 import { getCertification } from '../../content/certifications';
 import { findLesson } from '../../content/lessons';
+import { createRng } from '../../engine/random';
+import { makeCheckPermutation, type Permutation } from '../../engine/shuffle';
 import { logLesson } from '../../lib/activity';
 import { useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -24,6 +27,14 @@ export default function LessonPlayer() {
   const completeLesson = useProgress((s) => s.completeLesson);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState(false);
+  const shuffleOn = useSettings((s) => s.shuffleOptions);
+  // One option order per check, made ONCE when the lesson opens (useState's
+  // initialiser runs only on the first render). Going Back and Next re-mounts
+  // a check, but it keeps this same order for the whole viewing.
+  const [perms] = useState<(Permutation | undefined)[]>(() => {
+    const rng = shuffleOn ? createRng(Date.now()) : null;
+    return (lesson?.scenes ?? []).map((s) => (s.type === 'check' ? makeCheckPermutation(s.options.length, rng) : undefined));
+  });
   // Moving between scenes re-mounts the check unanswered, so reset the gate
   // too. Done in the same event as the move (not in an effect) so there is
   // no extra render with a stale gate.
@@ -71,7 +82,7 @@ export default function LessonPlayer() {
 
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: space.gutter, paddingTop: space.xl, paddingBottom: space.xl }}>
         {/* key forces each scene to re-mount, replaying its entrance animation */}
-        <SceneView key={index} scene={scene} onCheck={() => setChecked(true)} art={`branch${tone % 5}` as BotanyKind} />
+        <SceneView key={index} scene={scene} onCheck={() => setChecked(true)} perm={perms[index]} art={`branch${tone % 5}` as BotanyKind} />
         {isLast && (
           <>
             <Gap h={space.xl} />

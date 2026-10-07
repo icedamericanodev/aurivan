@@ -35,6 +35,45 @@ const shot0 = async (name, path) => {
   await page.screenshot({ path: `${out}/${name}.png` });
   console.log('shot', name);
 };
+// Learn, scrolled to the "By domain" list.
+await shot0('02b-learn-list', '/learn');
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 500);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/02b-learn-list.png` });
+// Lessons: a middle scene, the "How ISACA thinks" scene, and a check with its
+// feedback. Scenes are 0-based indexes; `answer` is the option text to tap.
+const lessonShots = [
+  { id: 'cisa-l-d4-bia', name: '03b-lesson-bia', middle: 3, isaca: 4, check: 7, answer: 'Complete a BIA to set recovery priorities and targets' },
+  { id: 'cisa-l-d1-risk-planning', name: '03c-lesson-risk', middle: 3, isaca: 4, check: 8, answer: 'Payroll, because a failure there would do the most harm' },
+];
+for (const l of lessonShots) {
+  await page.goto(`http://127.0.0.1:8093/lesson/${l.id}`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1200);
+  let at = 0;
+  const goTo = async (to) => {
+    while (at < to) {
+      const next = page.getByRole('button', { name: 'Next', exact: true });
+      // Next stays locked on a check until it is answered: tap option A to pass it.
+      if (await next.isDisabled()) { await page.getByLabel(/^Option A:/).first().click(); await page.waitForTimeout(500); }
+      await next.click(); at++; await page.waitForTimeout(350);
+    }
+    await page.waitForTimeout(1200); // let the scene's entrance animation finish
+  };
+  await goTo(l.middle);
+  await page.screenshot({ path: `${out}/${l.name}-scene.png` });
+  await goTo(l.isaca);
+  await page.screenshot({ path: `${out}/${l.name}-isaca.png` });
+  await goTo(l.check);
+  await page.screenshot({ path: `${out}/${l.name}-check.png` });
+  await page.getByText(l.answer, { exact: true }).click();
+  await page.waitForTimeout(900);
+  await page.mouse.move(196, 500);
+  await page.mouse.wheel(0, 800);
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: `${out}/${l.name}-feedback.png` });
+  console.log('shot lesson', l.id);
+}
 // Settings → About: the brand vision (lockup, tagline, four pillars).
 await shot0('16b-settings-about', '/settings');
 await page.getByText('Our vision', { exact: true }).scrollIntoViewIfNeeded();

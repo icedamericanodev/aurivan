@@ -4,6 +4,15 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.54] — New topic notes
+
+### New
+- The Topics notes are rewritten from scratch in plain language and follow every topic in the official CISA exam outline.
+
+### Improved
+- Each topic now tells you how ISACA expects you to think about it and which trap to avoid.
+- Topics you already marked as reviewed stay marked.
+
 ## [v10.53.1] — Current sources
 
 ### Fixed

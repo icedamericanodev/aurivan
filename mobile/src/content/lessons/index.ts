@@ -19,3 +19,11 @@ export function nextLesson(certId: string, done: string[], preferDomainId?: stri
   const open = lessonsFor(certId).filter((l) => !done.includes(l.id));
   return open.find((l) => l.domainId === preferDomainId) ?? open[0];
 }
+
+/**
+ * The lesson that prepares a learner for this bank question, if any.
+ * Used to offer "Review the lesson" after a missed question.
+ */
+export function lessonPreparing(certId: string, questionId: string): Lesson | undefined {
+  return lessonsFor(certId).find((l) => l.prepares?.includes(questionId));
+}

@@ -59,3 +59,33 @@ export function renderText(text: string | undefined, perm: Permutation): string 
 export function isCorrect(q: PackQuestion, displayChoice: Letter, perm: Permutation): boolean {
   return displayToOriginal(displayChoice, perm) === q.correct;
 }
+
+/*
+ * Lesson checks use the SAME letter mapping as practice questions. A check
+ * stores its options as a plain list and its key as `correctIndex`, so
+ * index 0 is ORIGINAL letter A, index 1 is B, and so on.
+ */
+
+/** The original letters of a list of `count` options: 3 → ['A','B','C']. */
+export function lettersFor(count: number): Letter[] {
+  return LETTERS.slice(0, Math.max(0, Math.min(count, LETTERS.length)));
+}
+
+/**
+ * A permutation for a lesson check with `count` options. Pass `rng: null`
+ * when the learner has turned shuffling off; the order then stays as written.
+ */
+export function makeCheckPermutation(count: number, rng: Rng | null): Permutation {
+  const letters = lettersFor(count);
+  return rng ? shuffled(letters, rng) : letters;
+}
+
+/** The ORIGINAL letter of a check's correct answer (correctIndex 2 → 'C'). */
+export function checkCorrectLetter(correctIndex: number): Letter {
+  return LETTERS[correctIndex];
+}
+
+/** True when a DISPLAY choice on a lesson check is right, graded on the ORIGINAL letter. */
+export function isCheckCorrect(correctIndex: number, displayChoice: Letter, perm: Permutation): boolean {
+  return displayToOriginal(displayChoice, perm) === checkCorrectLetter(correctIndex);
+}
