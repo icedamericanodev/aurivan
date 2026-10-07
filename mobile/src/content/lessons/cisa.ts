@@ -643,6 +643,122 @@ export const CISA_LESSONS: Lesson[] = [
     ],
   },
 
+  // ───────────────────────────── Domain 3 ─────────────────────────────
+  {
+    id: 'cisa-l-d3-pir',
+    certId: 'cisa',
+    domainId: '3',
+    order: 1,
+    title: 'After go-live: the post-implementation review',
+    minutes: 5,
+    provenance: PROVENANCE,
+    references: [
+      'COBIT 2019 BAI07 (Managed IT Change Acceptance and Transitioning)',
+      'COBIT 2019 EDM02 (Ensured Benefits Delivery)',
+      'COBIT 2019 MEA02 (Managed System of Internal Control)',
+    ],
+    outlineVersion: OUTLINE,
+    lastReviewed: REVIEWED,
+    topics: ['3B4', '3B1'],
+    prepares: ['d3_066', 'd3_092', 'd3_088'],
+    scenes: [
+      {
+        type: 'title',
+        kicker: 'Domain 3 · Post-implementation review',
+        title: 'After go-live: the post-implementation review',
+        subtitle: 'Go-live is not the finish line. How do you check that a new system did what it promised?',
+      },
+      {
+        type: 'idea',
+        heading: 'The core idea',
+        body: 'Go-live is the day a new system starts running the real business. A post-implementation review, held months later, asks three things. Do the controls (the safeguards built into the system) work as designed? Did the promised benefits arrive? What lessons should future projects use?',
+      },
+      {
+        type: 'analogy',
+        heading: 'A new heat pump and its promised savings',
+        body: 'You buy a heat pump because the installer promised lower energy bills. Before you switch it on, an inspector confirms it is safe to run. You judge the savings after a full season of bills, not after one night. And you do not ask the installer to grade their own work.',
+      },
+      {
+        type: 'flow',
+        heading: 'From go-live readiness to lessons learned',
+        steps: [
+          { label: 'Readiness check', note: 'Before go-live, accountable owners sign off agreed criteria, with open issues listed' },
+          { label: 'Go live', note: 'The system starts running real business' },
+          { label: 'Stabilize', note: 'Early fixes settle and normal operation builds up real data, often over months' },
+          {
+            label: 'Independent review',
+            note: 'Controls, benefits against the business case (the approved reason for the spend), and lessons',
+          },
+          { label: 'Act and follow up', note: 'Management fixes what was found; the auditor checks it closed' },
+        ],
+        caption: 'Lessons feed back into how future projects are planned and approved.',
+      },
+      {
+        type: 'idea',
+        heading: 'How ISACA thinks',
+        body: 'Two rules apply: the reviewer must be independent, and the business owns the results. As the IS (information systems) auditor, you check that the reviewer did not build or deliver the system. You report and recommend; management decides and acts. The sponsor (the leader who funded the project and promised its benefits) owns any shortfall. Then you follow up.',
+      },
+      {
+        type: 'trap',
+        heading: 'The timing trap',
+        trap: '“Review it in week one, while the team still remembers everything.”',
+        why: 'Week one shows start-up problems, not benefits. The review needs normal operation long enough to produce real results. Fresh memories still matter, so record the team’s lessons at project close, and hold the review once the data exists.',
+      },
+      {
+        type: 'trap',
+        heading: 'The readiness trap',
+        trap: '“The vendor says the system is ready, so it can go live.”',
+        why: 'A supplier’s word is not evidence, and the vendor does not own the risk. Go-live rests on agreed readiness criteria signed off by the accountable business and IT owners, with open issues visible and any remaining risk formally accepted.',
+      },
+      {
+        type: 'tip',
+        body: 'Exam questions open with a short scenario, called the stem. If the stem asks when to review, look for stable operation first. If it asks who should review, pick someone who did not build it. If it asks who fixes a benefit shortfall, pick the business owner, not the auditor or IT.',
+      },
+      {
+        type: 'check',
+        question:
+          'A retailer’s new inventory system went live two weeks ago, and daily fixes are still going in. The sponsor asks the IS auditor to start the post-implementation review now. What is the BEST response?',
+        options: [
+          'Agree a later date, once fixes slow and results are measurable',
+          'Start now, while the project team is still together',
+          'Replace the review with more testing of the daily fixes',
+          'Skip the review, because users signed acceptance before go-live',
+        ],
+        correctIndex: 0,
+        explanation:
+          'With fixes still landing, the data shows start-up noise, not benefits or settled controls. Starting now is tempting because the team is still together, but their lessons can be recorded at project close. More testing checks the fixes, not whether the system delivers value.',
+      },
+      {
+        type: 'check',
+        question:
+          'A new claims system is live and stable. Management must choose who leads its post-implementation review. Which choice should the IS auditor consider BEST?',
+        options: [
+          'The project manager, who knows the delivery best',
+          'The software vendor, who knows the product best',
+          'The lead developer, now moved to the support team',
+          'A reviewer who had no role in building or delivering it',
+        ],
+        correctIndex: 3,
+        explanation:
+          'The review judges whether the project succeeded, so the reviewer must not grade their own work. The project manager is tempting because they know the history, but they have a stake in a good verdict. The vendor and the developer share that stake.',
+      },
+      {
+        type: 'check',
+        question:
+          'A post-implementation review finds a new self-service portal cut call volumes far less than its business case promised. What should the IS auditor recommend as BEST?',
+        options: [
+          'The IS auditor redesigns the portal to raise its use',
+          'The sponsor owns a fix plan, and the auditor follows up',
+          'IT adds features until the promised target is met',
+          'Report the shortfall to senior management and close the review',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The sponsor promised the benefit, so the sponsor owns the plan to close the gap, and the auditor later checks it worked. Reporting and closing is tempting, but a finding with no owner rarely gets fixed. Redesigning the portal would break the auditor’s independence, and adding features assumes the cause is technical.',
+      },
+    ],
+  },
+
   // ───────────────────────────── Domain 4 ─────────────────────────────
   {
     id: 'cisa-l-d4-bia',
