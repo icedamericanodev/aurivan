@@ -69,6 +69,8 @@ export default function RootLayout() {
         <Stack.Screen name="game/priority" options={{ animation: 'fade_from_bottom' }} />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
+        <Stack.Screen name="saved" />
+        <Stack.Screen name="caught-up" />
       </Stack>
       {/* Paper grain over every screen (touch-through, hidden from screen readers). */}
       <Grain />

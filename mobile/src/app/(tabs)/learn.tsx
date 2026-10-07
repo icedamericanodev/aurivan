@@ -1,96 +1,110 @@
 /**
- * Learn — domains and their motion lessons. Opening from the Journey route
- * (?domain=4) scrolls the learner straight to that domain.
+ * Learn — three-minute motion lessons.
+ * Spec: DESIGN_SYSTEM.md §11 "Learn":
+ *   forest "Up next" lesson cover (domain dot + short name, the full lesson
+ *   title, "3 min · 7 scenes", Start lesson, a branch drawn per domain) →
+ *   "By domain" list: serif order numeral · title · domain dot + state ·
+ *   status circle (done ✓ / available ▶).
+ * Opening with ?domain=4 (e.g. from Today) puts that domain's next lesson
+ * on the cover.
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
 import { View } from 'react-native';
-import { Check, ICON_STROKE, Lock } from '../../components/icons';
-import { Card, DomainDot, Gap, ICON_SIZE, Pill, ProgressBar, Row, Screen, T } from '../../components/ui';
+import { Check, ICON_STROKE, Play } from '../../components/icons';
+import { BigNum, DomainDot, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T } from '../../components/ui';
 import { domainColor } from '../../content/certifications';
-import { lessonsFor } from '../../content/lessons';
+import { lessonsFor, nextLesson } from '../../content/lessons';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+import type { BotanyKind } from '../../components/glyphs';
 
 export default function Learn() {
-  const { c, isDark } = useTheme();
+  const { c } = useTheme();
   const { cert, progress, readiness } = useActiveCert();
   const { domain } = useLocalSearchParams<{ domain?: string }>();
-  // Put the requested domain first, keep the rest in blueprint order.
-  const match = cert.domains.find((d) => d.id === domain);
-  const domains = match ? [match, ...cert.domains.filter((d) => d !== match)] : cert.domains;
   // Learn is a tab, so the param would stick; clear it when the learner leaves.
   useFocusEffect(useCallback(() => () => router.setParams({ domain: undefined }), []));
 
+  const lessons = lessonsFor(cert.id);
+  const done = (id: string) => progress.lessonsDone.includes(id);
+  const upNext = nextLesson(cert.id, progress.lessonsDone, domain ?? readiness.focusDomainId ?? undefined);
+  const upDomain = upNext ? cert.domains.find((d) => d.id === upNext.domainId) : undefined;
+  const doneCount = lessons.filter((l) => done(l.id)).length;
+  const play = (col: string, size: number = ICON_SIZE.inline) => <Play size={size} color={col} strokeWidth={ICON_STROKE} />;
+
   return (
     <Screen>
-      <T v="display">Learn</T>
-      <T v="meta">Three-minute lessons, one idea each.</T>
-      <Gap />
+      <Enter i={0}>
+        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
+        <T v="meta" style={{ marginTop: space.xs }}>Three-minute lessons, one idea each.</T>
+      </Enter>
 
-      {domains.map((d) => {
-        const lessons = lessonsFor(cert.id, d.id);
-        const done = lessons.filter((l) => progress.lessonsDone.includes(l.id)).length;
-        const mastery = readiness.domains.find((x) => x.domainId === d.id)?.mastery ?? 0;
-        return (
-          <Card key={d.id} emphasis={d.id === domain} style={{ marginBottom: space.md }}>
-            <Row style={{ justifyContent: 'space-between' }}>
-              <Row gap={space.sm}>
-                <DomainDot domain={d} />
-                <T v="caption" num>{`Domain ${d.id} · ${d.weight}%`}</T>
-              </Row>
-              <T v="meta" num>{`${done}/${lessons.length} lessons`}</T>
-            </Row>
-            <Gap h={space.xs} />
-            <T v="headline">{d.name}</T>
-            <Gap h={space.sm} />
-            <ProgressBar value={mastery} color={domainColor(d.tone, isDark)} height={4} />
-            <Gap h={space.md} />
-            {lessons.map((l) => {
-              const isDone = progress.lessonsDone.includes(l.id);
-              return (
-                <Card
-                  key={l.id}
-                  onPress={() => router.push(`/lesson/${l.id}`)}
-                  accessibilityLabel={`${l.title}, ${l.minutes} minutes${isDone ? ', completed' : ''}`}
-                  style={{ backgroundColor: c.soft, borderColor: c.soft, padding: space.md, marginBottom: space.sm }}
+      <Enter i={1} style={{ marginTop: 18 }}>
+        {upNext && upDomain ? (
+          <HeroPanel
+            // On the dark forest panel the brighter (dark-mode) domain tone reads best.
+            captionLead={<View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: domainColor(upDomain.tone, true) }} />}
+            caption={`Up next · ${upDomain.short}`}
+            title={upNext.title}
+            meta={`${upNext.minutes} min · ${upNext.scenes.length} scenes`}
+            art={`branch${upDomain.tone % 5}` as BotanyKind}
+            action={{ label: 'Start lesson', icon: (col) => play(col), hint: upNext.title, onPress: () => router.push(`/lesson/${upNext.id}`) }}
+          />
+        ) : (
+          <HeroPanel caption="All caught up" title="Every lesson done" meta="More lessons are on the way." art="branch1" />
+        )}
+      </Enter>
+
+      <Enter i={2}>
+        <Section title="By domain" meta={`${doneCount} of ${lessons.length} done`} />
+        {lessons.map((l, i) => {
+          const d = cert.domains.find((x) => x.id === l.domainId)!;
+          const isDone = done(l.id);
+          const isNext = upNext?.id === l.id;
+          const state = isDone ? 'done' : isNext ? 'up next' : `${l.minutes} min`;
+          return (
+            <ListRow
+              key={l.id}
+              lead={
+                <View style={{ width: 28 }}>
+                  <BigNum value={String(i + 1)} size={22} color={c.ink2} />
+                </View>
+              }
+              title={l.title}
+              subtitle={
+                <Row gap={6}>
+                  <DomainDot domain={d} />
+                  <T v="meta" style={{ flexShrink: 1 }}>{`${d.short} · ${state}`}</T>
+                </Row>
+              }
+              chevron={false}
+              trailing={
+                <View
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: radius.pill,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: isDone ? c.accent : 'transparent',
+                    borderWidth: isDone ? 0 : 1.5,
+                    borderColor: c.control,
+                  }}
                 >
-                  <Row gap={space.md}>
-                    <View
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: radius.pill,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: isDone ? c.accent : c.raised,
-                        borderWidth: isDone ? 0 : 1,
-                        borderColor: c.accent,
-                      }}
-                    >
-                      {isDone ? (
-                        <Check size={ICON_SIZE.inline} color={c.bg} strokeWidth={ICON_STROKE} />
-                      ) : (
-                        <T v="label" color={c.accentText}>▶</T>
-                      )}
-                    </View>
-                    <View style={{ flex: 1 }}>
-                      <T v="label">{l.title}</T>
-                      <T v="meta" num>{`${l.minutes} min · ${l.scenes.length} scenes`}</T>
-                    </View>
-                  </Row>
-                </Card>
-              );
-            })}
-            <Row gap={space.sm} style={{ marginTop: space.xs }}>
-              <Lock size={ICON_SIZE.inline} color={c.muted} strokeWidth={ICON_STROKE} />
-              <T v="meta">More lessons coming.</T>
-            </Row>
-          </Card>
-        );
-      })}
-      <Pill label="Original content · reviewed against public frameworks" />
+                  {isDone ? <Check size={16} color={c.bg} strokeWidth={2.5} /> : play(c.ink2, 12)}
+                </View>
+              }
+              accessibilityLabel={`Lesson ${i + 1}: ${l.title}, ${d.short}, ${state}`}
+              onPress={() => router.push(`/lesson/${l.id}`)}
+              last={i === lessons.length - 1}
+            />
+          );
+        })}
+        <T v="meta" style={{ marginTop: space.md }}>More lessons are on the way.</T>
+        <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>Original content, reviewed against public frameworks.</T>
+      </Enter>
     </Screen>
   );
 }

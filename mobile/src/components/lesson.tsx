@@ -1,48 +1,74 @@
 /**
  * Lesson scene templates — one animated layout per scene type.
  *
- * Motion rules (docs/mobile/PRODUCT_VISION.md §7): calm, 180–320ms,
- * ease-out, things build up in order so the eye follows the idea.
- * Every animation respects the phone's Reduce Motion setting.
+ * Grove v2 (DESIGN_SYSTEM.md §11 "Learn", §2): the lesson title is `hero`,
+ * scene prose is the serif `stem` style (you sit and read it), the takeaway
+ * is the italic `quote` on a green rule, and checks reuse the quiz
+ * OptionCard. No cards around content; tinted blocks only for the trap.
+ *
+ * Motion: lessons are explainers, so parts build up in reading order
+ * (240ms fade + rise, 120ms apart). Every animation respects Reduce Motion.
  */
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
-import Animated, { FadeIn, FadeInDown, FadeInUp, ReduceMotion } from 'react-native-reanimated';
+import { View } from 'react-native';
+import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
+import { LETTERS, type Letter } from '../content/types';
 import type { Scene } from '../content/lessons/types';
+import { haptic } from '../lib/haptics';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Card, Gap, T } from './ui';
+import { Botany, type BotanyKind } from './glyphs';
+import { OptionCard, type OptionState } from './quiz';
+import { BigNum, Gap, Stem, T } from './ui';
 
-const BASE = 320;
-const STEP = 140;
+const BASE = 240;
+const STEP = 120;
 const enter = (i = 0) => FadeInDown.duration(BASE).delay(i * STEP).reduceMotion(ReduceMotion.System);
-const enterUp = (i = 0) => FadeInUp.duration(BASE).delay(i * STEP).reduceMotion(ReduceMotion.System);
 
 function Heading({ children }: { children: string }) {
   return (
     <Animated.View entering={enter(0)}>
-      <T v="headline">{children}</T>
-      <Gap h={space.lg} />
+      <T v="headline" accessibilityRole="header">{children}</T>
+      <Gap h={space.md} />
     </Animated.View>
   );
 }
 
-export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct: boolean) => void }) {
+/** Scene prose: the serif reading style. */
+function Prose({ children }: { children: string }) {
+  return <Stem>{children}</Stem>;
+}
+
+export function SceneView({
+  scene,
+  onCheck,
+  art,
+}: {
+  scene: Scene;
+  onCheck?: (correct: boolean) => void;
+  /** The domain's branch, drawn on the title scene. */
+  art?: BotanyKind;
+}) {
   const { c } = useTheme();
 
   switch (scene.type) {
     case 'title':
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Animated.View entering={FadeIn.duration(BASE).reduceMotion(ReduceMotion.System)}>
-            <T v="caption">{scene.kicker}</T>
+          {art && (
+            <Animated.View entering={enter(0)} accessible={false} importantForAccessibility="no-hide-descendants" style={{ alignSelf: 'flex-end', marginRight: -space.lg, marginBottom: -60, opacity: 0.9 }}>
+              <Botany kind={art} color={c.accent} />
+            </Animated.View>
+          )}
+          <Animated.View entering={enter(1)}>
+            <T v="caption" color={c.accentText}>{scene.kicker}</T>
+          </Animated.View>
+          <Gap h={space.sm} />
+          <Animated.View entering={enter(2)}>
+            <T v="hero" accessibilityRole="header">{scene.title}</T>
           </Animated.View>
           <Gap h={space.md} />
-          <Animated.View entering={enter(1)}>
-            <T v="display">{scene.title}</T>
-          </Animated.View>
-          <Gap h={space.lg} />
-          <Animated.View entering={enter(2)}>
+          <Animated.View entering={enter(3)}>
             <T v="body" color={c.ink2}>{scene.subtitle}</T>
           </Animated.View>
         </View>
@@ -53,7 +79,7 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
         <View>
           <Heading>{scene.heading}</Heading>
           <Animated.View entering={enter(1)}>
-            <T>{scene.body}</T>
+            <Prose>{scene.body}</Prose>
           </Animated.View>
         </View>
       );
@@ -62,15 +88,12 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
       return (
         <View>
           <Animated.View entering={enter(0)}>
-            <T v="caption">Real-life analogy</T>
+            <T v="caption" color={c.accentText}>Real-life analogy</T>
           </Animated.View>
-          <Gap h={space.sm} />
+          <Gap h={space.xs} />
           <Heading>{scene.heading}</Heading>
-          <Animated.View
-            entering={enter(1)}
-            style={{ borderLeftWidth: 3, borderLeftColor: c.clay, paddingLeft: space.lg }}
-          >
-            <T>{scene.body}</T>
+          <Animated.View entering={enter(1)} style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.lg }}>
+            <Prose>{scene.body}</Prose>
           </Animated.View>
         </View>
       );
@@ -80,24 +103,23 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
         <View>
           <Heading>{scene.heading}</Heading>
           {scene.layers.map((layer, i) => (
-            <Animated.View key={layer.label} entering={enter(i + 1)} style={{ marginBottom: space.sm }}>
-              <View
-                style={{
-                  borderRadius: radius.md,
-                  borderColor: i === 0 ? c.accent : c.line,
-                  borderWidth: i === 0 ? 2 : 1,
-                  backgroundColor: i === 0 ? c.soft : c.raised,
-                  padding: space.md,
-                }}
-              >
-                <T v="label" color={i === 0 ? c.accentText : c.ink}>{layer.label}</T>
+            <Animated.View
+              key={layer.label}
+              entering={enter(i + 1)}
+              style={{ flexDirection: 'row', gap: 14, paddingVertical: 13, borderBottomWidth: i < scene.layers.length - 1 ? 1 : 0, borderBottomColor: c.line }}
+            >
+              <View style={{ width: 28 }}>
+                <BigNum value={String(i + 1)} size={22} color={i === 0 ? c.accentText : c.ink2} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <T v="label">{layer.label}</T>
                 <T v="meta">{layer.note}</T>
               </View>
             </Animated.View>
           ))}
           {scene.caption && (
             <Animated.View entering={enter(scene.layers.length + 1)}>
-              <Gap h={space.sm} />
+              <Gap h={space.md} />
               <T v="meta">{scene.caption}</T>
             </Animated.View>
           )}
@@ -110,24 +132,13 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
           <Heading>{scene.heading}</Heading>
           {scene.steps.map((step, i) => (
             <Animated.View key={step.label} entering={enter(i + 1)} style={{ flexDirection: 'row', gap: space.md }}>
-              <View style={{ alignItems: 'center', width: 28 }}>
-                <View
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: radius.pill,
-                    backgroundColor: c.soft,
-                    borderWidth: 1,
-                    borderColor: c.accent,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <T v="label" num color={c.accentText} maxFontSizeMultiplier={1.3}>{String(i + 1)}</T>
+              <View style={{ alignItems: 'center', width: 32 }}>
+                <View style={{ width: 32, height: 32, borderRadius: radius.pill, backgroundColor: c.soft, alignItems: 'center', justifyContent: 'center' }}>
+                  <BigNum value={String(i + 1)} size={17} color={c.accentText} />
                 </View>
-                {i < scene.steps.length - 1 && <View style={{ width: 2, flex: 1, minHeight: 18, backgroundColor: c.line }} />}
+                {i < scene.steps.length - 1 && <View style={{ width: 1.5, flex: 1, minHeight: 18, backgroundColor: c.accent, opacity: 0.55 }} />}
               </View>
-              <View style={{ flex: 1, paddingBottom: space.lg }}>
+              <View style={{ flex: 1, paddingBottom: space.lg, paddingTop: 4 }}>
                 <T v="label">{step.label}</T>
                 <T v="meta">{step.note}</T>
               </View>
@@ -146,14 +157,16 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
         <View>
           <Heading>{scene.heading}</Heading>
           {[scene.left, scene.right].map((side, i) => (
-            <Animated.View key={side.title} entering={enter(i + 1)} style={{ marginBottom: space.md }}>
-              <Card style={{ borderColor: i === 0 ? c.accent : c.clay }}>
-                <T v="headline" color={i === 0 ? c.accentText : c.clay}>{side.title}</T>
-                <Gap h={space.sm} />
-                {side.points.map((p) => (
-                  <T key={p}>•  {p}</T>
-                ))}
-              </Card>
+            <Animated.View
+              key={side.title}
+              entering={enter(i + 1)}
+              style={{ borderLeftWidth: 3, borderLeftColor: i === 0 ? c.accent : c.control, paddingLeft: space.lg, marginBottom: space.xl }}
+            >
+              <T v="headline" color={i === 0 ? c.accentText : c.ink}>{side.title}</T>
+              <Gap h={space.xs} />
+              {side.points.map((p) => (
+                <T key={p} v="body">{`·  ${p}`}</T>
+              ))}
             </Animated.View>
           ))}
           {scene.caption && (
@@ -170,18 +183,17 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
           <Animated.View entering={enter(0)}>
             <T v="caption" color={c.tip}>The trap</T>
           </Animated.View>
-          <Gap h={space.sm} />
+          <Gap h={space.xs} />
           <Heading>{scene.heading}</Heading>
-          <Animated.View entering={enter(1)}>
-            <Card style={{ backgroundColor: c.tipBg, borderColor: c.tipBg }}>
-              <T color={c.tip}>{scene.trap}</T>
-            </Card>
+          {/* Trap warnings are the one tinted block in a lesson (spec §5). */}
+          <Animated.View entering={enter(1)} style={{ backgroundColor: c.tipBg, borderRadius: radius.md, padding: space.lg }}>
+            <Prose>{scene.trap}</Prose>
           </Animated.View>
-          <Gap />
+          <Gap h={space.xl} />
           <Animated.View entering={enter(2)}>
-            <T v="label" color={c.ink2}>Why it’s wrong</T>
+            <T v="headline">Why it’s wrong</T>
             <Gap h={space.xs} />
-            <T>{scene.why}</T>
+            <T v="body">{scene.why}</T>
           </Animated.View>
         </View>
       );
@@ -190,11 +202,12 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Animated.View entering={enter(0)}>
-            <T v="caption">Exam-day shortcut</T>
+            <T v="caption" color={c.accentText}>Exam-day shortcut</T>
           </Animated.View>
           <Gap h={space.md} />
-          <Animated.View entering={enterUp(1)}>
-            <T v="headline">{scene.body}</T>
+          {/* The takeaway: the coach's italic voice on a green rule, like Key idea. */}
+          <Animated.View entering={enter(1)} style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.lg }}>
+            <T v="quote">{scene.body}</T>
           </Animated.View>
         </View>
       );
@@ -204,64 +217,48 @@ export function SceneView({ scene, onCheck }: { scene: Scene; onCheck?: (correct
   }
 }
 
-function CheckScene({
-  scene,
-  onCheck,
-}: {
-  scene: Extract<Scene, { type: 'check' }>;
-  onCheck?: (correct: boolean) => void;
-}) {
+function CheckScene({ scene, onCheck }: { scene: Extract<Scene, { type: 'check' }>; onCheck?: (correct: boolean) => void }) {
   const { c } = useTheme();
   const [picked, setPicked] = useState<number | null>(null);
   const done = picked !== null;
+  const right = picked === scene.correctIndex;
 
   return (
     <View>
       <Animated.View entering={enter(0)}>
-        <T v="caption">Quick check</T>
+        <T v="caption" color={c.accentText}>Quick check</T>
         <Gap h={space.sm} />
-        <T v="headline">{scene.question}</T>
-        <Gap />
+        <Stem>{scene.question}</Stem>
+        <Gap h={space.xl} />
       </Animated.View>
       {scene.options.map((opt, i) => {
+        // Lesson checks are not shuffled, so the letter IS the original position.
+        const letter = LETTERS[i] as Letter;
         const isRight = i === scene.correctIndex;
-        const state = !done ? 'idle' : isRight ? 'right' : i === picked ? 'wrong' : 'dim';
-        const border = state === 'right' ? c.correct : state === 'wrong' ? c.wrong : c.line;
-        const bg = state === 'right' ? c.correctBg : state === 'wrong' ? c.wrongBg : c.raised;
+        const state: OptionState = !done ? 'idle' : isRight ? 'correct' : i === picked ? 'wrong' : 'dimmed';
         return (
           <Animated.View key={opt} entering={enter(i + 1)}>
-            <Pressable
-              accessibilityRole="radio"
-              accessibilityState={{ checked: picked === i, disabled: done }}
-              accessibilityLabel={`${opt}${state === 'right' ? ', correct' : state === 'wrong' ? ', incorrect' : ''}`}
+            <OptionCard
+              letter={letter}
+              text={opt}
+              state={state}
               disabled={done}
               onPress={() => {
                 setPicked(i);
+                if (isRight) haptic.success();
+                else haptic.error();
                 onCheck?.(isRight);
               }}
-              style={{
-                minHeight: 56,
-                justifyContent: 'center',
-                padding: space.md,
-                marginBottom: space.sm,
-                borderRadius: radius.md,
-                borderWidth: state === 'idle' || state === 'dim' ? 1 : 2,
-                borderColor: border,
-                backgroundColor: bg,
-              }}
-            >
-              <T color={state === 'dim' ? c.muted : c.ink}>{`${state === 'right' ? '✓ ' : state === 'wrong' ? '✗ ' : ''}${opt}`}</T>
-            </Pressable>
+            />
           </Animated.View>
         );
       })}
       {done && (
-        <Animated.View entering={enter(0)}>
+        <Animated.View entering={enter(0)} accessibilityLiveRegion="polite">
           <Gap h={space.sm} />
-          <T v="label" color={picked === scene.correctIndex ? c.correct : c.wrong}>
-            {picked === scene.correctIndex ? 'Correct.' : 'Not quite.'}
-          </T>
-          <T color={c.ink2}>{scene.explanation}</T>
+          <T v="hero" color={right ? c.correct : c.wrong}>{right ? 'Correct' : 'Not quite'}</T>
+          <Gap h={space.xs} />
+          <T v="body">{scene.explanation}</T>
         </Animated.View>
       )}
     </View>

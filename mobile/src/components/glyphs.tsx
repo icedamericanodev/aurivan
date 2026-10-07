@@ -12,7 +12,22 @@
  *
  * Colours always come in as props (palette tokens); nothing here is hard-coded.
  */
-import { useMemo } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useMemo } from 'react';
+import { View } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  Easing,
+  ReduceMotion,
+  useAnimatedProps,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 type GlyphProps = { size?: number; color: string; strokeWidth?: number };
@@ -145,15 +160,210 @@ export const BOTANY = {
   clearing: { w: 200, h: 250, p0: [200, 250], p1: [62, 22], pc: [150, 110], n: 11, len: 44, wid: 9, ang: 1.05 },
 } satisfies Record<string, FrondSpec>;
 
-export type BotanyKind = keyof typeof BOTANY;
+/**
+ * Lesson-cover branches, one variant per domain tone (spec §10.3: "5 presets,
+ * no images"): the same alternate-leaf branch with a different leaf angle,
+ * taper and leaf count, so each domain's cover has its own silhouette.
+ */
+export const BRANCHES: FrondSpec[] = [
+  BOTANY.branch,
+  { ...BOTANY.branch, ang: 0.7, taper: 0.4, n: 8 },
+  { ...BOTANY.branch, ang: 1.0, taper: 0.6, alt: false, n: 5, wid: 11 },
+  { ...BOTANY.branch, ang: 0.9, taper: 0.35, pc: [130, 150], n: 6 },
+  { ...BOTANY.branch, ang: 0.78, taper: 0.55, pc: [70, 140], n: 7, len: 40 },
+];
 
-/** Decorative line art (hidden from screen readers). */
-export function Botany({ kind = 'frond', color }: { kind?: BotanyKind; color: string }) {
-  const spec: FrondSpec = BOTANY[kind];
+export type BotanyKind = keyof typeof BOTANY | 'branch0' | 'branch1' | 'branch2' | 'branch3' | 'branch4';
+
+function specFor(kind: BotanyKind): FrondSpec {
+  const m = /^branch(\d)$/.exec(kind);
+  return m ? BRANCHES[Number(m[1]) % BRANCHES.length] : BOTANY[kind as keyof typeof BOTANY];
+}
+
+/**
+ * Decorative line art (hidden from screen readers). With `sway`, the frond
+ * rocks ±1.5° over 4 s from its stem base, only while the screen is focused
+ * and never under Reduce Motion (spec §10.3).
+ */
+export function Botany({ kind = 'frond', color, sway = false }: { kind?: BotanyKind; color: string; sway?: boolean }) {
+  const spec = specFor(kind);
   const d = useMemo(() => frondPath(spec), [spec]);
-  return (
+  const reduce = useReducedMotion();
+  const angle = useSharedValue(0);
+  useFocusEffect(
+    useCallback(() => {
+      if (!sway || reduce) return;
+      angle.set(
+        withRepeat(
+        withSequence(
+          withTiming(1.5, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+          withTiming(-1.5, { duration: 4000, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+          ),
+          -1,
+        ),
+      );
+      // Paused when the screen loses focus (off-screen).
+      return () => {
+        cancelAnimation(angle);
+        angle.set(0);
+      };
+    }, [sway, reduce, angle]),
+  );
+  const style = useAnimatedStyle(() => ({ transform: [{ rotate: `${angle.value}deg` }] }));
+  const art = (
     <Svg width={spec.w} height={spec.h} viewBox={`0 0 ${spec.w} ${spec.h}`} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
       <Path d={d} />
     </Svg>
+  );
+  if (!sway) return art;
+  // Rotate around the stem base (bottom-right), like a frond in a breeze.
+  const origin = `${((spec.p0[0] / spec.w) * 100).toFixed(0)}% ${((spec.p0[1] / spec.h) * 100).toFixed(0)}%`;
+  return <Animated.View style={[{ transformOrigin: origin }, style]}>{art}</Animated.View>;
+}
+
+/** The empty-state seedling (spec §10.3): stem, two seed leaves, one true leaf, fading soil. */
+export function Seedling({ color, size = 170 }: { color: string; size?: number }) {
+  const d = useMemo(
+    () => `M80,150 C80,128 80,112 82,96 ${leafPath(82, 98, 44, 15, -2.55)} ${leafPath(82, 92, 50, 16, -0.5)} ${leafPath(81, 124, 22, 7, -2.2)}`,
+    [],
+  );
+  return (
+    <Svg width={size} height={(size * 176) / 170} viewBox="0 0 170 176" fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <Path d={d} />
+      <Path d="M28 151 Q80 143 136 151" />
+      <Path d="M46 160 Q80 155 116 160" opacity={0.55} />
+      <Path d="M62 168 Q80 165 100 168" opacity={0.3} />
+    </Svg>
+  );
+}
+
+// ── Growth rings: readiness as a tree cross-section (spec §10.1) ─────────
+/**
+ * One ring per domain, inner = Domain 1 → outer = last domain. Ring
+ * thickness ∝ exam weight; arc length = mastery (0–1) from 12 o'clock,
+ * clockwise. All rings share one gentle wobble so they read as wood.
+ */
+export type RingTone = 'mono' | 'domains' | 'sap';
+export const RING_PRESETS = {
+  today: { size: 104, k: 0.24, r0: 13, gap: 3, pith: true },
+  /** You and Results: a wider core (38, mockup 34) so a range like "62–70%" fits inside; thinner rings keep it ~178pt. */
+  you: { size: 172, k: 0.32, r0: 38, gap: 3.6, pith: false },
+  mini: { size: 48, k: 0.13, r0: 5, gap: 1.2, pith: true },
+} as const;
+export type RingPreset = keyof typeof RING_PRESETS;
+
+const wobble = (rm: number, t: number) => rm * (1 + 0.022 * Math.sin(3 * t + 0.6) + 0.012 * Math.sin(5 * t + 1.9) + 0.008 * Math.sin(8 * t));
+
+/** SVG path for a wobbly ring arc and its length (for the grow animation). */
+export function ringArc(c: number, rm: number, a0: number, a1: number): { d: string; length: number } {
+  const n = Math.max(12, Math.ceil(((a1 - a0) / (Math.PI * 2)) * 120));
+  let d = '';
+  let length = 0;
+  let prev: [number, number] | null = null;
+  for (let i = 0; i <= n; i++) {
+    const t = a0 + ((a1 - a0) * i) / n;
+    const r = wobble(rm, t);
+    const p: [number, number] = [c + r * Math.cos(t), c + r * Math.sin(t)];
+    d += `${i ? 'L' : 'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`;
+    if (prev) length += Math.hypot(p[0] - prev[0], p[1] - prev[1]);
+    prev = p;
+  }
+  return { d, length };
+}
+
+/** Each ring's stroke width and mid radius, inner → outer, plus its full track path. */
+function ringGeometry(weights: number[], k: number, r0: number, gap: number, c: number) {
+  const out: { w: number; rm: number; track: string }[] = [];
+  let r = r0;
+  for (const wt of weights) {
+    const w = wt * k;
+    out.push({ w, rm: r + w / 2, track: ringArc(c, r + w / 2, 0, Math.PI * 2).d });
+    r += w + gap;
+  }
+  return out;
+}
+
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+// Rings grow on the first view of each day only (spec §10.1), per preset.
+const grownOn: Partial<Record<string, string>> = {};
+const todayKey = () => new Date().toDateString();
+
+export function GrowthRings({
+  preset,
+  mastery,
+  weights,
+  colors,
+  track,
+  accessibilityLabel,
+}: {
+  preset: RingPreset;
+  /** 0..1 per domain, blueprint order (inner → outer). */
+  mastery: number[];
+  weights: number[];
+  /** One colour per ring (domain tones), or a single colour for all. */
+  colors: string[] | string;
+  track: string;
+  accessibilityLabel?: string;
+}) {
+  const { k, r0, gap, pith } = RING_PRESETS[preset];
+  // The box fits the outer ring plus its wobble (+4.2% at most), so nothing clips.
+  const outer = r0 + weights.reduce((s, w) => s + w * k, 0) + gap * Math.max(0, weights.length - 1);
+  const size = Math.max(RING_PRESETS[preset].size, Math.ceil(outer * 1.045) * 2 + 2);
+  const c = size / 2;
+  const rings = useMemo(() => ringGeometry(weights, k, r0, gap, c), [weights, k, r0, gap, c]);
+  const arcs = useMemo(
+    () => rings.map((ring, i) => ringArc(c, ring.rm, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0.001, Math.min(1, mastery[i] ?? 0)))),
+    [rings, mastery, c],
+  );
+  const animate = grownOn[preset] !== todayKey();
+  useEffect(() => {
+    grownOn[preset] = todayKey();
+  }, [preset]);
+  const colorAt = (i: number) => (typeof colors === 'string' ? colors : colors[i % colors.length]);
+  return (
+    <View accessible={Boolean(accessibilityLabel)} accessibilityRole="image" accessibilityLabel={accessibilityLabel} style={{ width: size, height: size }}>
+      <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {rings.map((ring, i) => (
+          <Path key={`t${i}`} d={`${ring.track}Z`} fill="none" stroke={track} strokeWidth={ring.w} />
+        ))}
+        {rings.map((ring, i) =>
+          // Nothing yet in this domain: just the track, no stray round-cap dot.
+          (mastery[i] ?? 0) <= 0 ? null : (
+          <RingArc
+            key={`a${i}`}
+            d={arcs[i].d}
+            length={arcs[i].length}
+            width={ring.w}
+            color={colorAt(i)}
+            animate={animate}
+            // Outer ring first, 60ms apart.
+            delay={(rings.length - 1 - i) * 60}
+          />
+          ),
+        )}
+        {pith && <Circle cx={c} cy={c} r={r0 * 0.32} fill={colorAt(0)} />}
+      </Svg>
+    </View>
+  );
+}
+
+function RingArc({ d, length, width, color, animate, delay }: { d: string; length: number; width: number; color: string; animate: boolean; delay: number }) {
+  const p = useSharedValue(animate ? 0 : 1);
+  useEffect(() => {
+    if (!animate) return;
+    p.value = withDelay(delay, withTiming(1, { duration: 600, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System }));
+  }, [animate, delay, p]);
+  const props = useAnimatedProps(() => ({ strokeDashoffset: length * (1 - p.value) }));
+  return (
+    <AnimatedPath
+      d={d}
+      fill="none"
+      stroke={color}
+      strokeWidth={width}
+      strokeLinecap="round"
+      strokeDasharray={`${length} ${length}`}
+      animatedProps={props}
+    />
   );
 }

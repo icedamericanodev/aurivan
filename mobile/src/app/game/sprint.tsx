@@ -21,6 +21,7 @@ import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import type { Confidence } from '../../engine/srs';
+import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
@@ -67,7 +68,7 @@ export default function CalibratedSprint() {
               <T v="meta" num>{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% of ${b.answered}`}</T>
             </Row>
             <Gap h={space.xs} />
-            <ProgressBar value={b.accuracy ?? 0} color={b.stake === 3 ? c.accent : c.clay} height={6} />
+            <ProgressBar value={b.accuracy ?? 0} color={b.stake === 3 ? c.accent : c.ink2} height={6} />
           </View>
         ))}
         <T color={c.ink2}>{VERDICT_COPY[verdict]}</T>
@@ -87,7 +88,10 @@ export default function CalibratedSprint() {
     setResults(next);
     progress.recordAnswer(cert.id, q.id, ok, STAKE_CONFIDENCE[stake]);
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
-    if (i === round.length - 1) progress.recordGame(cert.id, 'sprint', sprintScore(next));
+    if (i === round.length - 1) {
+      progress.recordGame(cert.id, 'sprint', sprintScore(next));
+      logGame(cert.id, 'sprint');
+    }
   };
 
   const stateFor = (d: Letter): OptionState => {

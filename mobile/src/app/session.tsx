@@ -7,7 +7,6 @@
  * MOCK: pick (changeable) → Next. Timer, flags, and a navigator grid.
  * No feedback until you submit the whole exam — just like the real thing.
  */
-import * as Haptics from 'expo-haptics';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -36,6 +35,7 @@ import {
   Vine,
   type OptionState,
 } from '../components/quiz';
+import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
 import { Button, Gap, ICON_SIZE, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
@@ -172,7 +172,7 @@ export default function SessionScreen() {
   // ── actions ──────────────────────────────────────────────────────────
   const pick = (letter: Letter) => {
     if (submitted) return;
-    Haptics.selectionAsync().catch(() => {});
+    haptic.selection();
     setSelected(letter);
     if (isMock) {
       answer(qid, { display: letter, correct: isCorrect(q, letter, perm) });
@@ -182,7 +182,8 @@ export default function SessionScreen() {
   const submit = () => {
     if (!selected) return;
     const ok = isCorrect(q, selected, perm);
-    Haptics.notificationAsync(ok ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error).catch(() => {});
+    if (ok) haptic.success();
+    else haptic.error();
     AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
     answer(qid, { display: selected, correct: ok, confidence });
     recordAnswer(active.certId, qid, ok, confidence);
@@ -277,7 +278,7 @@ export default function SessionScreen() {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Header: 52pt bar — close · progress segments · save (or the mock clock) */}
-      <Row gap={space.md} style={{ height: 52, paddingHorizontal: space.gutter }}>
+      <Row gap={space.md} style={{ minHeight: 52, paddingHorizontal: space.gutter }}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={isMock ? 'Pause exam' : 'End session'}

@@ -1,212 +1,242 @@
 /**
- * Journey building blocks: readiness ring, domain route, week strip and
- * tappable rows. Calm motion only (the ring tweens; nothing loops).
+ * Today / You / Results building blocks (Grove v2, DESIGN_SYSTEM.md §10–11):
+ * - ReadinessRow: mono growth rings + the honest readiness RANGE + stage line.
+ * - DomainRings: rings in domain tones with a legend (You, Results).
+ * - ClearingCard: the forest panel shown when the day's plan is done.
+ * - Plan helpers: icon, title and meta line for each plan item.
+ *
+ * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
+ * never promises a pass: it describes mastery, weighted by the blueprint.
  */
-import { useEffect, type ReactNode } from 'react';
-import { Pressable, View } from 'react-native';
-import Animated, {
-  Easing,
-  ReduceMotion,
-  useAnimatedProps,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
-import type { DomainInfo } from '../content/types';
-import type { DomainMastery } from '../engine/readiness';
-import { radius, space } from '../theme/tokens';
+import type { ReactNode } from 'react';
+import { Text, View } from 'react-native';
+import { domainColor } from '../content/certifications';
+import type { Certification } from '../content/types';
+import { biggestGrowth, clearingTitle, dayAccuracy, itemMinutes, type DayPlan } from '../engine/dayPlan';
+import type { PlanItem } from '../engine/planner';
+import type { Readiness } from '../engine/readiness';
+import { rangeLabel, rangeSpoken, type ReadinessRange } from '../engine/readinessRange';
+import { grewLine, LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Check, ChevronRight, ICON_STROKE } from './icons';
-import { ICON_SIZE, IconTile, T } from './ui';
+import { GrowthRings, PlanLeaf } from './glyphs';
+import { BookOpen, Gamepad2, ICON_STROKE, RotateCcw, Target, Timer } from './icons';
+import { BigNum, DomainDot, ICON_SIZE, Row, T, useFontScale } from './ui';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+// ── Plan items: icon, title, meta ─────────────────────────────────────
+export function planIcon(item: PlanItem, color: string): ReactNode {
+  const p = { size: ICON_SIZE.row, color, strokeWidth: ICON_STROKE };
+  switch (item.kind) {
+    case 'review':
+      return <RotateCcw {...p} />;
+    case 'lesson':
+      return <BookOpen {...p} />;
+    case 'practice':
+      return <Target {...p} />;
+    case 'game':
+      return <Gamepad2 {...p} />;
+    case 'mock':
+      return <Timer {...p} />;
+  }
+}
 
-// ── Readiness ring ────────────────────────────────────────────────────
-export function ReadinessRing({ score, size = 120, label = 'ready' }: { score: number; size?: number; label?: string }) {
+/** Real, unshortened titles (spec §11: 2 lines allowed) and one short meta line. */
+export function planText(item: PlanItem): { title: string; meta: string; short: string } {
+  const mins = itemMinutes(item);
+  switch (item.kind) {
+    case 'review':
+      return { title: `Review ${item.count} due`, meta: `About ${mins} minutes · questions you missed`, short: 'Spaced review' };
+    case 'lesson':
+      return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
+    case 'practice':
+      return { title: item.label, meta: `About ${mins} minutes · new material first`, short: `Practice · ${mins} min` };
+    case 'game':
+      // Planner labels read "Trap Spotter · 2 min"; the row shows the name only.
+      return { title: item.label.split(' · ')[0], meta: `Game · ${mins} min`, short: `Game · ${mins} min` };
+    case 'mock':
+      return { title: item.label.split(' · ')[0], meta: `${item.questions} questions at exam pace`, short: `Mock · ${item.questions} questions` };
+  }
+}
+
+/** The plan's leaf marks on the forest panel: filled = done, outline = to do. */
+export function PlanLeaves({ done }: { done: boolean[] }) {
   const { c } = useTheme();
-  const stroke = 10;
-  const r = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * r;
-  const progress = useSharedValue(0);
-
-  useEffect(() => {
-    progress.value = withTiming(Math.max(0, Math.min(100, score)) / 100, {
-      duration: 500,
-      easing: Easing.bezier(0.16, 1, 0.3, 1),
-      reduceMotion: ReduceMotion.System,
-    });
-  }, [score, progress]);
-
-  const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: circumference * (1 - progress.value),
-  }));
-
   return (
     <View
       accessible
-      accessibilityRole="progressbar"
-      accessibilityLabel={`Exam readiness ${score} percent`}
-      accessibilityValue={{ min: 0, max: 100, now: score }}
-      style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
+      accessibilityLabel={`${done.filter(Boolean).length} of ${done.length} done`}
+      style={{ flexDirection: 'row', gap: 3 }}
     >
-      <Svg width={size} height={size} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
-        <Circle cx={size / 2} cy={size / 2} r={r} stroke={c.soft} strokeWidth={stroke} fill="none" />
-        <AnimatedCircle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          stroke={c.accent}
-          strokeWidth={stroke}
-          strokeLinecap="round"
-          fill="none"
-          strokeDasharray={circumference}
-          animatedProps={animatedProps}
-        />
-      </Svg>
-      <T v="display" num maxFontSizeMultiplier={1.3}>
-        {`${score}%`}
-      </T>
-      <T v="meta" maxFontSizeMultiplier={1.3}>{label}</T>
+      {done.map((d, i) => (
+        <PlanLeaf key={i} color={c.sap} filled={d} />
+      ))}
     </View>
   );
 }
 
-// ── Domain route: one node per domain, joined by a line ──────────────
-export function DomainRoute({
-  domains,
-  mastery,
-  focusId,
-  onPress,
+// ── Readiness number: "62–70%" or "Not enough data yet" ───────────────
+export function ReadinessFigure({ range, size = 52 }: { range: ReadinessRange; size?: 52 | 34 | 24 }) {
+  const { c } = useTheme();
+  if (!range.enough) {
+    return <T v={size === 52 ? 'hero' : 'headline'} color={c.ink}>Not enough data yet</T>;
+  }
+  return <BigNum value={rangeLabel(range)} pct size={size} />;
+}
+
+// ── Readiness row on Today (spec §11 "Today") ─────────────────────────
+// Rings 104 (monochrome) + range + meta + italic stage. Stacks at large text.
+export function ReadinessRow({
+  cert,
+  readiness,
+  range,
+  stage,
 }: {
-  domains: DomainInfo[];
-  mastery: DomainMastery[];
-  focusId?: string | null;
-  onPress?: (domainId: string) => void;
+  cert: Certification;
+  readiness: Readiness;
+  range: ReadinessRange;
+  /** e.g. "Stage 3 · Make it stick" */
+  stage: string;
 }) {
   const { c } = useTheme();
-  return (
-    <View>
-      {domains.map((d, i) => {
-        const m = mastery.find((x) => x.domainId === d.id)?.mastery ?? 0;
-        const done = m >= 0.7;
-        const current = !done && d.id === focusId;
-        const last = i === domains.length - 1;
-        return (
-          <Pressable
-            key={d.id}
-            accessibilityRole="button"
-            accessibilityLabel={`Domain ${d.id}, ${d.name}, ${Math.round(m * 100)} percent${done ? ', on track' : current ? ', your focus' : ''}`}
-            onPress={() => onPress?.(d.id)}
-            style={{ flexDirection: 'row', gap: space.md, minHeight: 56 }}
-          >
-            <View style={{ alignItems: 'center', width: 36 }}>
-              <View
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: radius.pill,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: done ? c.accent : current ? c.soft : c.raised,
-                  borderWidth: current ? 3 : 1,
-                  borderColor: done ? c.accent : current ? c.accent : c.line,
-                }}
-              >
-                {done ? (
-                  <Check size={ICON_SIZE.row} color={c.bg} strokeWidth={ICON_STROKE} />
-                ) : (
-                  <T v="label" num color={current ? c.accentText : c.ink2} maxFontSizeMultiplier={1.3}>{d.id}</T>
-                )}
-              </View>
-              {!last && <View style={{ width: 2, flex: 1, backgroundColor: done ? c.accent : c.line }} />}
-            </View>
-            <View style={{ flex: 1, paddingBottom: space.md }}>
-              <T v="label">{d.short}</T>
-              <T v="meta" num>
-                {`${Math.round(m * 100)}% · ${d.weight}% of exam${current ? ' · focus now' : ''}`}
-              </T>
-            </View>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
-// ── Week strip: 7 calm dots, no red, no guilt ─────────────────────────
-const DAY_LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-export function WeekStrip({ days }: { days: boolean[] }) {
-  const { c } = useTheme();
-  const today = new Date().getDay();
+  const stacked = useFontScale() >= LARGE_TEXT;
+  const meta = range.enough
+    ? 'likely readiness, weighted by the blueprint'
+    : `Readiness appears after ${range.answered + range.needed} answers. ${range.answered} so far.`;
   return (
     <View
       accessible
-      accessibilityLabel={`Studied ${days.filter(Boolean).length} of the last 7 days`}
-      style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+      accessibilityLabel={`Readiness ${rangeSpoken(range)}. ${range.enough ? 'Weighted by the exam blueprint.' : meta} ${stage}.`}
+      style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 10 : 18, marginTop: 22 }}
     >
-      {days.map((studied, i) => {
-        const dow = (today - (6 - i) + 7) % 7;
-        return (
-          <View key={i} style={{ alignItems: 'center', gap: space.xs }}>
-            <View
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: radius.pill,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: studied ? c.clay : c.soft,
-                borderWidth: i === 6 ? 2 : 0,
-                borderColor: c.accent,
-              }}
-            >
-              {studied && <Check size={ICON_SIZE.inline} color={c.bg} strokeWidth={ICON_STROKE} />}
-            </View>
-            <T v="meta">{DAY_LETTERS[dow]}</T>
-          </View>
-        );
-      })}
-    </View>
-  );
-}
-
-// ── Row: icon + text + chevron, 56px tall, whole row tappable ─────────
-export function ActionRow({
-  icon,
-  title,
-  subtitle,
-  right,
-  onPress,
-}: {
-  icon?: ReactNode;
-  title: string;
-  subtitle?: string;
-  right?: string;
-  onPress?: () => void;
-}) {
-  const { c } = useTheme();
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={[title, subtitle, right].filter(Boolean).join(', ')}
-      onPress={onPress}
-      style={({ pressed }) => ({
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: space.md,
-        minHeight: 56,
-        paddingVertical: space.sm,
-        opacity: pressed ? 0.7 : 1,
-      })}
-    >
-      {icon && <IconTile>{icon}</IconTile>}
-      <View style={{ flex: 1 }}>
-        <T v="label">{title}</T>
-        {subtitle && <T v="meta">{subtitle}</T>}
+      <GrowthRings
+        preset="today"
+        mastery={readiness.domains.map((d) => d.mastery)}
+        weights={cert.domains.map((d) => d.weight)}
+        colors={c.accent}
+        track={c.track}
+      />
+      <View style={{ flex: stacked ? undefined : 1 }}>
+        <ReadinessFigure range={range} />
+        <T v="meta" style={{ marginTop: 4 }}>{meta}</T>
+        <T v="stage" style={{ marginTop: 6 }}>{stage}</T>
       </View>
-      {right && <T v="meta" num>{right}</T>}
-      <ChevronRight size={ICON_SIZE.row} color={c.muted} strokeWidth={ICON_STROKE} />
-    </Pressable>
+    </View>
   );
 }
+
+// ── Rings in domain tones + legend (You, Results) ─────────────────────
+/**
+ * `values` are 0..1 per domain (blueprint order), or null for "not started".
+ * The legend lists domains OUTSIDE-IN, matching the rings visually.
+ */
+export function DomainRings({
+  cert,
+  values,
+  center,
+  legendValue,
+  accessibilityLabel,
+}: {
+  cert: Certification;
+  values: (number | null)[];
+  center: ReactNode;
+  /** Legend text per domain; defaults to a whole percent. */
+  legendValue?: (i: number) => string;
+  accessibilityLabel: string;
+}) {
+  const { c, isDark } = useTheme();
+  const stacked = useFontScale() >= LARGE_TEXT;
+  const tones = cert.domains.map((d) => domainColor(d.tone, isDark));
+  const label = (i: number) => legendValue?.(i) ?? (values[i] === null ? '–' : String(Math.round((values[i] ?? 0) * 100)));
+  return (
+    <View style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: space.lg }}>
+      <View accessible accessibilityRole="image" accessibilityLabel={accessibilityLabel}>
+        <GrowthRings
+          preset="you"
+          mastery={values.map((v) => v ?? 0)}
+          weights={cert.domains.map((d) => d.weight)}
+          colors={tones}
+          track={c.track}
+        />
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+          {center}
+        </View>
+      </View>
+      <View style={{ flex: stacked ? undefined : 1, gap: 9, alignSelf: stacked ? 'stretch' : undefined }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        {[...cert.domains.keys()].reverse().map((i) => (
+          <Row key={cert.domains[i].id} gap={9}>
+            <DomainDot domain={cert.domains[i]} />
+            <T v="meta" color={c.ink} style={{ flex: 1 }}>{cert.domains[i].short}</T>
+            <BigNum value={label(i)} size={17} />
+          </Row>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/** Spoken summary for rings: "IS Audit 88, IT Governance 63, …". */
+export function ringsSpoken(cert: Certification, values: (number | null)[]): string {
+  return cert.domains
+    .map((d, i) => `${d.short} ${values[i] === null ? 'not started' : Math.round((values[i] ?? 0) * 100)}`)
+    .join(', ');
+}
+
+// ── Clearing card (spec §11 "Daily clearing card") ────────────────────
+export function ClearingBody({
+  plan,
+  readiness,
+  range,
+  cert,
+}: {
+  plan: DayPlan;
+  readiness: Readiness;
+  range: ReadinessRange;
+  cert: Certification;
+}) {
+  const { c } = useTheme();
+  const acc = dayAccuracy(plan);
+  const grew = biggestGrowth(plan, readiness);
+  const grewDomain = grew ? cert.domains.find((d) => d.id === grew.domainId) : undefined;
+  // Never a negative framing: "grew to" when up, "holding at" otherwise.
+  const line = range.enough
+    ? `Readiness ${readiness.score > plan.start.score ? 'grew to' : 'holding at'} ${rangeLabel(range)}%`
+    : 'Readiness takes shape as you answer';
+  const stats: [string, string, boolean][] = [
+    [String(plan.answered), 'questions', false],
+    [acc === null ? '–' : String(acc), 'correct', acc !== null],
+    [String(plan.minutes), 'minutes', false],
+  ];
+  return (
+    <>
+      <View style={{ flexDirection: 'row', marginTop: 18 }}>
+        {stats.map(([v, l, pct], i) => (
+          <View
+            key={l}
+            accessible
+            accessibilityLabel={`${v}${pct ? ' percent' : ''} ${l}`}
+            style={[{ flex: 1 }, i > 0 && { borderLeftWidth: 1, borderLeftColor: c.forestTrack, paddingLeft: 14 }]}
+          >
+            <BigNum value={v} pct={pct} size={30} color={c.onForest} />
+            <T v="caption" color={c.onForest2} style={{ marginTop: 2 }}>{l}</T>
+          </View>
+        ))}
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 18, paddingTop: 16, borderTopWidth: 1, borderTopColor: c.forestTrack }}>
+        <GrowthRings
+          preset="mini"
+          mastery={readiness.domains.map((d) => d.mastery)}
+          weights={cert.domains.map((d) => d.weight)}
+          colors={c.sap}
+          track={c.forestTrack}
+        />
+        <View style={{ flex: 1 }}>
+          <Text maxFontSizeMultiplier={2} style={[grewLine, { color: c.onForest }]}>{line}</Text>
+          <T v="meta" color={c.onForest2} style={{ marginTop: 2 }}>
+            {grewDomain && grew ? `${grewDomain.short} ring +${grew.points}` : 'Every answer feeds the rings'}
+          </T>
+        </View>
+      </View>
+    </>
+  );
+}
+
+export { clearingTitle };

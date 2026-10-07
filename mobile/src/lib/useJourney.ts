@@ -3,12 +3,14 @@
  * computed from their real progress. Every screen that shows "what next"
  * reads from here, so the advice is consistent everywhere.
  */
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { getDomain } from '../content/certifications';
 import { lessonsFor, nextLesson } from '../content/lessons';
-import { journeyStage, STAGE_LABEL, stageProgress } from '../engine/journey';
+import { newDayPlan } from '../engine/dayPlan';
+import { journeyStage, STAGE_LABEL, STAGE_ORDER, stageProgress } from '../engine/journey';
+import { readinessRange } from '../engine/readinessRange';
 import { todaysPlan } from '../engine/planner';
-import { weekStrip } from '../engine/streak';
+import { dayKey, weekStrip } from '../engine/streak';
 import { useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import { useActiveCert } from './useActiveCert';
@@ -18,6 +20,8 @@ export function useJourney() {
   const { cert, progress, readiness, dueCount, daysLeft } = active;
   const dailyGoal = useSettings((s) => s.dailyGoal);
   const streakState = useProgress((s) => s.streak);
+  const storedDay = useProgress((s) => s.day);
+  const startDay = useProgress((s) => s.startDay);
 
   const derived = useMemo(() => {
     const lessons = lessonsFor(cert.id);
@@ -44,6 +48,9 @@ export function useJourney() {
     return {
       stage,
       stageLabel: STAGE_LABEL[stage],
+      /** "Stage 3 · Make it stick" — the italic coach line under readiness. */
+      stageLine: `Stage ${STAGE_ORDER.indexOf(stage) + 1} · ${STAGE_LABEL[stage]}`,
+      range: readinessRange(cert, readiness),
       stageProgress: stageProgress(stage),
       plan,
       focus,
@@ -52,5 +59,19 @@ export function useJourney() {
       week: weekStrip(streakState, Date.now()),
     };
   }, [cert, progress, readiness, dueCount, daysLeft, dailyGoal, streakState]);
-  return { ...active, ...derived };
+
+  // Today's plan is frozen the first time Today is shown each day, so items
+  // can be ticked off (engine/dayPlan.ts). Until it is stored, show the live one.
+  const today = dayKey(Date.now());
+  const dayValid = storedDay && storedDay.day === today && storedDay.certId === cert.id;
+  const fresh = useMemo(
+    () => (dayValid ? null : newDayPlan(today, cert.id, derived.plan, readiness)),
+    [dayValid, today, cert.id, derived.plan, readiness],
+  );
+  useEffect(() => {
+    if (fresh) startDay(fresh);
+  }, [fresh, startDay]);
+  const dayPlan = dayValid ? storedDay : fresh!;
+
+  return { ...active, ...derived, dayPlan };
 }

@@ -11,7 +11,7 @@
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
  */
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import {
   Image,
   Platform,
@@ -20,30 +20,38 @@ import {
   StyleSheet,
   Switch,
   Text,
+  useWindowDimensions,
   View,
   type StyleProp,
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
+import Animated, { Easing, ReduceMotion, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { domainColor } from '../content/certifications';
 import type { DomainInfo } from '../content/types';
 import {
   font,
   forestHighlight,
   grainOp,
+  LARGE_TEXT,
   maxScale,
+  numeralUnit,
+  percentSup,
   radius,
   raisedShadow,
+  serifNumeral,
   space,
   STEM_LONG_CHARS,
   stemLong,
   type,
+  type NumeralSize,
   type TypeVariant,
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Botany, type BotanyKind } from './glyphs';
-import { Check, ChevronRight, ICON_STROKE } from './icons';
+import { Botany, Seedling, type BotanyKind } from './glyphs';
+import { Check, ChevronLeft, ChevronRight, ICON_STROKE, X } from './icons';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -207,7 +215,7 @@ export function Button({
       ]}
     >
       {iconLeading && icon?.(look.fg)}
-      <Text maxFontSizeMultiplier={1.6} style={[isForest || isGhost ? type.label : styles.buttonLabel, { color: look.fg }]}>
+      <Text maxFontSizeMultiplier={maxScale.label} style={[isForest || isGhost ? type.label : styles.buttonLabel, { color: look.fg, flexShrink: 1, textAlign: 'center' }]}>
         {label}
       </Text>
       {!iconLeading && icon?.(look.fg)}
@@ -262,40 +270,65 @@ export function Card({
 // ── HeroPanel: the forest panel with botanical line art (spec §6) ─────
 export function HeroPanel({
   caption,
+  captionLead,
   captionExtra,
   title,
   meta,
   action,
   art = 'frond',
+  sway = true,
+  children,
   style,
+  titleLabel,
+  wideTitle,
 }: {
   caption?: string;
-  /** Anything after the caption on the same line (e.g. plan leaf marks). */
+  /** Before the caption on the same line (e.g. a domain dot). */
+  captionLead?: ReactNode;
+  /** After the caption on the same line (e.g. plan leaf marks). */
   captionExtra?: ReactNode;
   title: string;
   meta?: string;
   action?: { label: string; onPress: () => void; icon?: (color: string) => ReactNode; hint?: string };
   art?: BotanyKind;
+  /** Gentle frond sway while the screen is focused (off under Reduce Motion). */
+  sway?: boolean;
+  /** Extra content under the title (e.g. the clearing card's stats). */
+  children?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  /** Spoken title, when it differs from the visible one. */
+  titleLabel?: string;
+  /** Let a short title use the full width (art there is low and sparse). */
+  wideTitle?: boolean;
 }) {
   const { c } = useTheme();
+  const large = useFontScale() >= LARGE_TEXT;
   return (
     <Card variant="forest" style={style}>
       {/* Decorative art bleeds off the top-right; screen readers skip it. */}
-      <View style={styles.heroArt} accessible={false} importantForAccessibility="no-hide-descendants">
-        <Botany kind={art} color={c.forestLine} />
+      <View style={[styles.heroArt, styles.noTouch]} accessible={false} importantForAccessibility="no-hide-descendants">
+        <Botany kind={art} color={c.forestLine} sway={sway} />
       </View>
       {caption && (
-        <Row gap={space.sm + 2}>
+        <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
+          {captionLead}
           <T v="caption" color={c.onForest2}>{caption}</T>
           {captionExtra}
         </Row>
       )}
-      {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250). */}
-      <T v="hero" color={c.onForest} accessibilityRole="header" style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 ? 250 : undefined }}>
+      {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
+          longer titles, or large text, run full width over the low-contrast art. */}
+      <T
+        v="hero"
+        color={c.onForest}
+        accessibilityRole="header"
+        accessibilityLabel={titleLabel}
+        style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
+      >
         {title}
       </T>
       {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6 }}>{meta}</T>}
+      {children}
       {action && (
         <Button
           kind="forest"
@@ -326,25 +359,30 @@ export function IconCircle({ children }: { children: ReactNode }) {
   const { c } = useTheme();
   return <View style={[styles.iconCircle, { backgroundColor: c.soft }]}>{children}</View>;
 }
-/** Old name, kept so unredesigned screens still compile. */
-export const IconTile = IconCircle;
 
 // ── ListRow: icon circle · title/subtitle · trailing · chevron, hairline below
 export function ListRow({
   icon,
+  lead,
   title,
   subtitle,
   trailing,
   onPress,
   last,
   chevron = true,
+  dim,
   accessibilityLabel,
   accessibilityHint,
 }: {
   icon?: ReactNode;
+  /** A leading serif numeral block instead of an icon (e.g. "50 / questions"). */
+  lead?: ReactNode;
   title: string;
-  subtitle?: string;
+  /** A string, or a node (e.g. a domain dot + text). */
+  subtitle?: string | ReactNode;
   trailing?: ReactNode;
+  /** Row text in `muted` (locked lessons). */
+  dim?: boolean;
   onPress?: () => void;
   /** The last row in a list has no hairline. */
   last?: boolean;
@@ -356,9 +394,10 @@ export function ListRow({
   const body = (
     <>
       {icon && <IconCircle>{icon}</IconCircle>}
+      {lead}
       <View style={{ flex: 1, minWidth: 0 }}>
-        <T v="label">{title}</T>
-        {subtitle && <T v="meta">{subtitle}</T>}
+        <T v="label" color={dim ? c.muted : undefined}>{title}</T>
+        {typeof subtitle === 'string' ? <T v="meta" color={dim ? c.muted : undefined}>{subtitle}</T> : subtitle}
       </View>
       {trailing}
       {onPress && chevron && <ChevronRight size={18} color={c.muted} strokeWidth={ICON_STROKE} />}
@@ -370,7 +409,7 @@ export function ListRow({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel ?? (subtitle ? `${title}, ${subtitle}` : title)}
+      accessibilityLabel={accessibilityLabel ?? (typeof subtitle === 'string' ? `${title}, ${subtitle}` : title)}
       accessibilityHint={accessibilityHint}
       onPress={onPress}
       style={({ pressed }) => [styles.listRow, pressed && { backgroundColor: c.soft }]}
@@ -444,31 +483,6 @@ export function Tag({ label, domain, color }: { label: string; domain?: DomainIn
   );
 }
 
-// ── Pill: small, non-interactive label on a soft fill ────────────────
-// Sentence case. `domain` shows the domain's colour as a dot next to
-// readable text, because domain tones are never used AS text.
-export function Pill({
-  label,
-  color,
-  bg,
-  domain,
-  accessibilityLabel,
-}: {
-  label: string;
-  color?: string;
-  bg?: string;
-  domain?: DomainInfo;
-  accessibilityLabel?: string;
-}) {
-  const { c } = useTheme();
-  return (
-    <View style={[styles.pill, { backgroundColor: bg ?? c.soft }]}>
-      {domain && <DomainDot domain={domain} />}
-      <T v="meta" accessibilityLabel={accessibilityLabel} color={color ?? c.ink2}>{label}</T>
-    </View>
-  );
-}
-
 // ── Chip: selectable filter (spec §6) ─────────────────────────────────
 // Selected = ink fill + bg label + leading ✓ (shape AND colour, never green).
 export function Chip({ label, selected, onPress }: { label: string; selected: boolean; onPress: () => void }) {
@@ -525,10 +539,10 @@ export function Toggle({
 }
 
 // ── Stat tile: no box. Serif number + meta label, stacked ─────────────
-export function Stat({ value, label, color }: { value: string; label: string; color?: string }) {
+export function Stat({ value, label, color, pct }: { value: string; label: string; color?: string; pct?: boolean }) {
   return (
-    <View style={{ flex: 1 }}>
-      <T v="stat" color={color}>{value}</T>
+    <View accessible accessibilityLabel={`${value}${pct ? ' percent' : ''} ${label}`}>
+      <BigNum value={value} pct={pct} size={34} color={color} />
       <T v="meta" style={{ marginTop: space.xs }}>{label}</T>
     </View>
   );
@@ -557,6 +571,18 @@ export function Gap({ h = space.lg }: { h?: number }) {
 const styles = StyleSheet.create({
   screenPad: { paddingHorizontal: space.gutter, paddingTop: space.lg, paddingBottom: space.xxxl * 2 },
   num: { fontVariant: ['tabular-nums'] },
+  bigNum: { flexDirection: 'row', alignItems: 'flex-start' },
+  pushed: { flexDirection: 'row', alignItems: 'center', minHeight: 52, gap: space.sm },
+  pushedIcon: { width: 44, minHeight: 44, justifyContent: 'center' },
+  tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
+  teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
+  teachDot: { width: 6, height: 6, borderRadius: 3 },
+  seg2: { borderRadius: 22, padding: 3, gap: 3 },
+  segItem: { minHeight: 40, borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, paddingHorizontal: space.sm },
+  chipScroll: { gap: space.sm, paddingVertical: 4, paddingRight: space.xxxl },
+  chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, paddingVertical: 4 },
+  chipFade: { position: 'absolute', right: 0, top: 0, bottom: 0 },
+  numUnit: { marginTop: 1 },
   noTouch: { pointerEvents: 'none' },
   button: {
     minHeight: 56, // spec: 56 tall, a comfortable thumb target (WCAG 2.5.8)
@@ -615,15 +641,6 @@ const styles = StyleSheet.create({
   segTrack: { flex: 1, height: 4, borderRadius: 2, overflow: 'hidden' },
   dot: { width: 8, height: 8, borderRadius: radius.pill },
   tag: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  pill: {
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 7,
-    borderRadius: radius.pill,
-    paddingHorizontal: space.md,
-    minHeight: 32,
-  },
   chip: {
     minHeight: 40,
     borderRadius: radius.pill,
@@ -638,3 +655,283 @@ const styles = StyleSheet.create({
   tabLabel: { alignItems: 'center', gap: 1 },
   tabDot: { width: 4, height: 4, borderRadius: 2 },
 });
+
+/**
+ * A row of stats with hairlines above, below and between (spec §11 "You").
+ * At large text sizes it becomes a vertical list so numbers never squeeze.
+ */
+export function StatRow({ children, style }: { children: ReactNode[]; style?: StyleProp<ViewStyle> }) {
+  const { c } = useTheme();
+  const stacked = useFontScale() >= LARGE_TEXT;
+  const items = children.filter(Boolean);
+  return (
+    <View style={[{ flexDirection: stacked ? 'column' : 'row', borderTopWidth: 1, borderBottomWidth: 1, borderColor: c.line }, style]}>
+      {items.map((child, i) => (
+        <View
+          key={i}
+          style={[
+            { paddingTop: space.lg, paddingBottom: 14 },
+            !stacked && { flex: 1 },
+            i > 0 && (stacked ? { borderTopWidth: 1, borderTopColor: c.line } : { borderLeftWidth: 1, borderLeftColor: c.line, paddingLeft: space.lg }),
+          ]}
+        >
+          {child}
+        </View>
+      ))}
+    </View>
+  );
+}
+
+// ── Serif numerals (spec §10.4) ───────────────────────────────────────
+/**
+ * A Fraunces numeral with an optional raised % ("70" + a small, lifted "%").
+ * Sizes: 52 = readiness / results, 34 = stats, 17–30 inline.
+ * Numbers cap at ×1.3 text size: a fixed shape holds them.
+ */
+export function BigNum({
+  value,
+  pct,
+  size,
+  color,
+  accessibilityLabel,
+}: {
+  value: string;
+  pct?: boolean;
+  size: NumeralSize | 34 | 52;
+  color?: string;
+  accessibilityLabel?: string;
+}) {
+  const { c } = useTheme();
+  const fg = color ?? c.ink;
+  return (
+    <View style={styles.bigNum} accessible={Boolean(accessibilityLabel)} accessibilityLabel={accessibilityLabel}>
+      <Text maxFontSizeMultiplier={1.3} style={[serifNumeral(size), styles.num, { color: fg }]}>{value}</Text>
+      {pct && <Text maxFontSizeMultiplier={1.3} style={[percentSup(size), { color: fg, marginLeft: 2 }]}>%</Text>}
+    </View>
+  );
+}
+
+/** Figtree 12/16 unit under or beside a serif numeral ("due", "questions"). */
+export function Unit({ children, color }: { children: string; color?: string }) {
+  const { c } = useTheme();
+  return <Text maxFontSizeMultiplier={2} style={[numeralUnit, styles.numUnit, { color: color ?? c.ink2 }]}>{children}</Text>;
+}
+
+/** Right-aligned count in a list row: serif 22 numeral over a unit ("59 / due"). */
+export function Trail({ value, unit, color }: { value: string; unit: string; color?: string }) {
+  return (
+    <View style={{ alignItems: 'flex-end' }}>
+      <BigNum value={value} size={22} color={color} />
+      <Unit>{unit}</Unit>
+    </View>
+  );
+}
+
+/** Lead numeral for mock rows: serif 26 over a unit ("50 / questions"). */
+export function Lead({ value, unit }: { value: string; unit: string }) {
+  return (
+    <View style={{ minWidth: 52 }}>
+      <BigNum value={value} size={26} />
+      <Unit>{unit}</Unit>
+    </View>
+  );
+}
+
+// ── Motion: content fade-in (spec §8) ─────────────────────────────────
+/**
+ * Fade + 8pt rise, 240ms ease-out, staggered 40ms per group (max 4 groups).
+ * Under Reduce Motion it simply appears.
+ */
+export function Enter({ i = 0, children, style }: { i?: number; children: ReactNode; style?: StyleProp<ViewStyle> }) {
+  const p = useSharedValue(0);
+  useEffect(() => {
+    p.value = withDelay(
+      Math.min(i, 3) * 40,
+      withTiming(1, { duration: 240, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System }),
+    );
+  }, [i, p]);
+  const anim = useAnimatedStyle(() => ({ opacity: p.value, transform: [{ translateY: (1 - p.value) * 8 }] }));
+  return <Animated.View style={[anim, style]}>{children}</Animated.View>;
+}
+
+/** The phone's text-size multiplier (1 = default, 2 = 200%). */
+export function useFontScale(): number {
+  return useWindowDimensions().fontScale;
+}
+
+// ── Pushed-screen header (spec §6 "Header") ───────────────────────────
+// 52pt bar: a 44pt back (‹) or close (X) button, a centred title, a right slot.
+export function PushedHeader({
+  title,
+  onBack,
+  icon = 'back',
+  right,
+  center,
+}: {
+  title?: string;
+  onBack: () => void;
+  icon?: 'back' | 'close';
+  right?: ReactNode;
+  /** Replaces the title (e.g. a progress bar). */
+  center?: ReactNode;
+}) {
+  const { c } = useTheme();
+  const Icon = icon === 'back' ? ChevronLeft : X;
+  return (
+    <View style={styles.pushed}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={icon === 'back' ? 'Back' : 'Close'}
+        onPress={onBack}
+        hitSlop={4}
+        style={[styles.pushedIcon, { marginLeft: -10, alignItems: 'center' }]}
+      >
+        <Icon size={ICON_SIZE.bar} color={c.ink} strokeWidth={ICON_STROKE} />
+      </Pressable>
+      {/* A custom centre (progress bar) stretches; a title is centred. */}
+      <View style={{ flex: 1, alignItems: center ? 'stretch' : 'center' }}>
+        {center ?? (title ? <T v="label" accessibilityRole="header" numberOfLines={1}>{title}</T> : null)}
+      </View>
+      <View style={[styles.pushedIcon, { marginRight: -10, alignItems: 'center' }]}>{right}</View>
+    </View>
+  );
+}
+
+// ── Empty state: a seedling, not a sad face (spec §11 "Empty state") ──
+export function EmptyState({
+  title,
+  body,
+  tags,
+  compact,
+}: {
+  title: string;
+  body: string;
+  /** Teaching tags: the trap types that will appear here. */
+  tags?: string[];
+  /** Smaller seedling, for an empty list inside a busier screen. */
+  compact?: boolean;
+}) {
+  const { c } = useTheme();
+  return (
+    <View style={{ alignItems: 'center', marginTop: compact ? space.sm : 46 }}>
+      <View accessible={false} importantForAccessibility="no-hide-descendants">
+        <Seedling color={c.accent} size={compact ? 96 : 170} />
+      </View>
+      <T v={compact ? 'headline' : 'hero'} center accessibilityRole="header" style={{ marginTop: compact ? space.xs : 22 }}>{title}</T>
+      <T v={compact ? 'meta' : 'body'} color={c.ink2} center style={{ marginTop: space.sm, marginHorizontal: space.md }}>{body}</T>
+      {tags && tags.length > 0 && (
+        <View style={styles.tagRow}>
+          {tags.map((t) => (
+            <View key={t} style={[styles.teachTag, { backgroundColor: c.soft }]}>
+              <View style={[styles.teachDot, { backgroundColor: c.clay }]} />
+              <T v="meta">{t}</T>
+            </View>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
+// ── Segmented control (spec §11 "Practice") ───────────────────────────
+// `soft` track, the selected segment `raised` (+ soft shadow in light mode).
+// Numeral options show a Fraunces 20 numeral + a small unit. Stacks into a
+// column at large text sizes instead of squeezing.
+export function Segmented<V extends string | number>({
+  options,
+  value,
+  onChange,
+  accessibilityLabel,
+}: {
+  options: { value: V; label: string; numeral?: string; icon?: (color: string) => ReactNode; spoken?: string }[];
+  value: V;
+  onChange: (v: V) => void;
+  accessibilityLabel: string;
+}) {
+  const { c, isDark } = useTheme();
+  const stacked = useFontScale() >= LARGE_TEXT;
+  return (
+    <View accessibilityRole="radiogroup" accessibilityLabel={accessibilityLabel} style={[styles.seg2, { backgroundColor: c.soft, flexDirection: stacked ? 'column' : 'row' }]}>
+      {options.map((o) => {
+        const on = o.value === value;
+        return (
+          <Pressable
+            key={String(o.value)}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: on }}
+            accessibilityLabel={o.spoken ?? (o.numeral ? `${o.numeral} ${o.label}` : o.label)}
+            onPress={() => onChange(o.value)}
+            style={[
+              styles.segItem,
+              !stacked && { flex: 1 },
+              // Dark mode: a lifted surface instead of a shadow.
+              on && { backgroundColor: isDark ? c.line : c.raised },
+              on && !isDark && raisedShadow,
+            ]}
+          >
+            {o.icon?.(on ? c.ink : c.ink2)}
+            {o.numeral ? (
+              <>
+                <BigNum value={o.numeral} size={20} />
+                <Unit color={on ? c.ink : c.ink2}>{o.label}</Unit>
+              </>
+            ) : (
+              <T v="caption" color={on ? c.ink : c.ink2}>{o.label}</T>
+            )}
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+// ── ChipRow: one scrolling line of chips with a fade at the right edge ─
+// At large text sizes the chips wrap instead of scrolling (spec §10.7).
+export function ChipRow({ children }: { children: ReactNode }) {
+  const { c } = useTheme();
+  const wrap = useFontScale() >= LARGE_TEXT;
+  if (wrap) return <View style={styles.chipWrap}>{children}</View>;
+  return (
+    <View style={{ marginRight: -space.gutter }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
+        {children}
+      </ScrollView>
+      {/* Right-edge fade hints that the row scrolls. */}
+      <Svg width={56} height="100%" style={[styles.chipFade, styles.noTouch]}>
+        <Defs>
+          <LinearGradient id="chipFade" x1="0" y1="0" x2="1" y2="0">
+            <Stop offset="0" stopColor={c.bg} stopOpacity={0} />
+            <Stop offset="1" stopColor={c.bg} stopOpacity={1} />
+          </LinearGradient>
+        </Defs>
+        <Rect x="0" y="0" width="56" height="100%" fill="url(#chipFade)" />
+      </Svg>
+    </View>
+  );
+}
+
+// ── Toggle row: a list row with a switch on the right ─────────────────
+export function ToggleRow({
+  title,
+  subtitle,
+  value,
+  onValueChange,
+  disabled,
+  last,
+}: {
+  title: string;
+  subtitle?: string;
+  value: boolean;
+  onValueChange: (v: boolean) => void;
+  disabled?: boolean;
+  last?: boolean;
+}) {
+  return (
+    <ListRow
+      title={title}
+      subtitle={subtitle}
+      last={last}
+      trailing={<Toggle accessibilityLabel={title} value={value} disabled={disabled} onValueChange={onValueChange} />}
+    />
+  );
+}

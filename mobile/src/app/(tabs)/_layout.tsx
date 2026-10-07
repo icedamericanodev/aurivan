@@ -6,12 +6,13 @@
  *
  * Active tab = green icon + ink label + a small dot under the label, so the
  * state isn't shown by colour alone. Today and You use custom glyphs
- * (sprout, growth rings); the others stay Lucide.
+ * (sprout, growth rings); the others stay Lucide. Practice is a checklist,
+ * not a target: a target's concentric circles looked like the You rings.
  */
 import { Tabs } from 'expo-router';
 import type { ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BookOpen, Gamepad2, ICON_STROKE, Rings, Sprout, Target } from '../../components/icons';
+import { BookOpen, Gamepad2, ICON_STROKE, ListChecks, Rings, Sprout } from '../../components/icons';
 import { ICON_SIZE, TAB_BAR_HEIGHT, TabLabel } from '../../components/ui';
 import { useTheme } from '../../theme/useTheme';
 
@@ -49,7 +50,7 @@ export default function TabsLayout() {
       {/* Route stays "home" so existing links keep working; the tab reads "Today". */}
       <Tabs.Screen name="home" options={{ title: 'Today', tabBarLabel: label('Today'), tabBarIcon: icon(Sprout) }} />
       <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarLabel: label('Learn'), tabBarIcon: icon(BookOpen as Glyph) }} />
-      <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarIcon: icon(Target as Glyph) }} />
+      <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarIcon: icon(ListChecks as Glyph) }} />
       <Tabs.Screen name="play" options={{ title: 'Play', tabBarLabel: label('Play'), tabBarIcon: icon(Gamepad2 as Glyph) }} />
       <Tabs.Screen name="you" options={{ title: 'You', tabBarLabel: label('You'), tabBarIcon: icon(Rings) }} />
     </Tabs>

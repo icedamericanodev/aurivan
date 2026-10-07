@@ -217,3 +217,25 @@ export const maxScale: Record<TypeVariant, number> = {
 export const optionText: TextStyle = { lineHeight: 23 };
 /** The letter inside an option badge: Figtree 600 14 (spec §6 "Option row"). */
 export const badgeLetter: TextStyle = { fontFamily: font.sans600, fontSize: 14, lineHeight: 18 };
+
+/**
+ * Serif numeral system (spec §10.4): every number a learner reads as an
+ * achievement or a quantity is Fraunces 500. Inline sizes: 17 (ring legend),
+ * 20 (streak, segmented control), 22 (row counts, lesson numerals),
+ * 26 (mock lead numerals), 30 (clearing stats). `number` 52 and `stat` 34
+ * are full type variants above.
+ */
+export type NumeralSize = 17 | 20 | 22 | 24 | 26 | 30;
+export function serifNumeral(size: NumeralSize | 34 | 52): TextStyle {
+  return { fontFamily: font.serif500, fontSize: size, lineHeight: Math.round(size * 1.08), letterSpacing: size >= 30 ? -0.6 : -0.3 };
+}
+/** The unit under or after a serif numeral ("due", "questions"): Figtree 500 12/16. */
+export const numeralUnit: TextStyle = { fontFamily: font.sans500, fontSize: 12, lineHeight: 16 };
+/** The raised % after a serif numeral: ~0.48em of the numeral. */
+export function percentSup(size: number): TextStyle {
+  return { fontFamily: font.serif500, fontSize: Math.round(size * 0.48), lineHeight: Math.round(size * 0.6) };
+}
+/** Clearing-card readiness line: Fraunces italic 17 (the coach's voice). */
+export const grewLine: TextStyle = { fontFamily: font.serif400Italic, fontSize: 17, lineHeight: 22 };
+/** Large text: at this font scale rows stack and chips wrap (spec §10.7). */
+export const LARGE_TEXT = 1.3;

@@ -11,6 +11,7 @@ import { LETTERS, type Letter } from '../../content/types';
 import { buildTrapRound, scoreTrapPick, trapLetter, trapTip } from '../../engine/games/trapSpotter';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, originalToDisplay, renderText } from '../../engine/shuffle';
+import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
@@ -67,7 +68,10 @@ export default function TrapSpotter() {
       setScore((s) => s + result.points);
       progress.recordAnswer(cert.id, q.id, result.correct);
       if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
-      if (i === round.length - 1) progress.recordGame(cert.id, 'trap', score + result.points);
+      if (i === round.length - 1) {
+        progress.recordGame(cert.id, 'trap', score + result.points);
+        logGame(cert.id, 'trap');
+      }
     }
   };
 

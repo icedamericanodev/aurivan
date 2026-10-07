@@ -28,3 +28,32 @@ describe('lessons', () => {
     expect(nextLesson('cisa', lessonsFor('cisa').map((l) => l.id))).toBeUndefined();
   });
 });
+
+/**
+ * Sentence case (DESIGN_SYSTEM.md §2): no uppercase labels or shouting in
+ * lessons. Allowed: acronyms, and exam keywords (FIRST, BEST…) inside a
+ * check question, where they mirror real exam stems.
+ */
+const ACRONYMS = new Set([
+  'APO', 'BAI', 'CIO', 'CISA', 'COBIT', 'DSS', 'EDM', 'HR', 'IA', 'ID', 'IEC', 'IS', 'ISACA', 'ISO', 'IT',
+  'ITAF', 'MEA', 'MFA', 'NIST', 'PIN', 'RPO', 'RTO', 'SMS', 'SP',
+]);
+const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
+const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));
+
+describe('lesson copy is sentence case', () => {
+  it.each(all.map((l) => [l.id, l] as const))('%s has no uppercase labels', (_id, l) => {
+    const loud: string[] = [];
+    for (const s of l.scenes) {
+      for (const [key, value] of Object.entries(s)) {
+        const texts = JSON.stringify(value).match(/"[^"]*"/g) ?? [];
+        for (const t of texts) {
+          const words = capsWords(t);
+          const allowed = s.type === 'check' && key === 'question' ? words.filter((w) => !EXAM_KEYWORDS.has(w)) : words;
+          loud.push(...allowed);
+        }
+      }
+    }
+    expect(loud).toEqual([]);
+  });
+});

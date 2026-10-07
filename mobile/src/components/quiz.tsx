@@ -13,7 +13,6 @@
  *              when it scrolls into view (static under Reduce Motion).
  *   Trust    – "Original · Reviewed Oct 2026 · Report issue".
  */
-import * as Haptics from 'expo-haptics';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Pressable, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
@@ -31,6 +30,7 @@ import type { Letter } from '../content/types';
 import type { Confidence } from '../engine/srs';
 import { tipParts } from '../engine/tips';
 import { config } from '../lib/config';
+import { haptic } from '../lib/haptics';
 import { shortReference } from '../lib/format';
 import { badgeLetter, optionText, radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -243,7 +243,7 @@ export function Vine({ keyIdea, tips, visible }: { keyIdea?: string; tips: strin
   useEffect(() => {
     if (!visible) return;
     // The one haptic on the vine: a light tick as the Key idea leaf appears.
-    if (keyIdea) Haptics.selectionAsync().catch(() => {});
+    if (keyIdea) haptic.selection();
     if (reduce) return;
     grow.value = withTiming(1, { duration: STEM_MS, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.System });
   }, [visible, reduce, keyIdea, grow]);

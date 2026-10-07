@@ -8,6 +8,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
+import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import type { AnswerRecord } from '../engine/readiness';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
@@ -73,6 +74,15 @@ interface ProgressState {
   byCert: Record<string, CertProgress>;
   streak: Streak;
   today: { day: string; answered: number };
+  /** Today's frozen plan and what was done (engine/dayPlan.ts). Null until Today is first shown. */
+  day: DayPlan | null;
+
+  /** Store the plan the first time Today is shown on a new day. */
+  startDay: (plan: DayPlan) => void;
+  /** Log a finished session / lesson / game. Returns true when it ticked off a plan item. */
+  logActivity: (certId: string, a: Activity) => boolean;
+  /** The clearing card has celebrated today (haptic plays once a day). */
+  markCelebrated: () => void;
 
   recordAnswer: (
     certId: string,
@@ -94,10 +104,21 @@ interface ProgressState {
 
 export const useProgress = create<ProgressState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       byCert: {},
       streak: { current: 0, best: 0, lastDay: null },
       today: { day: '', answered: 0 },
+      day: null,
+
+      startDay: (day) => set({ day }),
+      logActivity: (certId, a) => {
+        const cur = get().day;
+        if (!cur || cur.certId !== certId || cur.day !== dayKey(Date.now())) return false;
+        const { plan, ticked } = logDayActivity(cur, a);
+        if (plan !== cur) set({ day: plan });
+        return ticked;
+      },
+      markCelebrated: () => set((s) => (s.day ? { day: { ...s.day, celebrated: true } } : s)),
 
       recordAnswer: (certId, questionId, correct, confidence, opts) =>
         set((s) => {
@@ -127,10 +148,13 @@ export const useProgress = create<ProgressState>()(
             mistakes = { ...mistakes, [questionId]: { ...mistakes[questionId], resolved: true } };
           }
           const day = dayKey(now);
+          // Today's clearing card counts answers for the active day plan only.
+          const plan = s.day && s.day.day === day && s.day.certId === certId ? logAnswer(s.day, correct) : s.day;
           return {
             byCert: { ...s.byCert, [certId]: { ...cp, answers, review, mistakes } },
             streak: bumpStreak(s.streak, now),
             today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
+            day: plan,
           };
         }),
 
@@ -180,6 +204,7 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, lessonsDone: [...cp.lessonsDone, lessonId] } } };
         }),
 
+
       recordGame: (certId, game, score) =>
         set((s) => {
           const cp = normalize(s.byCert[certId]);
@@ -196,7 +221,7 @@ export const useProgress = create<ProgressState>()(
         }),
 
       resetCert: (certId) =>
-        set((s) => ({ byCert: { ...s.byCert, [certId]: emptyCert() } })),
+        set((s) => ({ byCert: { ...s.byCert, [certId]: emptyCert() }, day: s.day?.certId === certId ? null : s.day })),
     }),
     { name: 'aurivan.progress.v1', storage: persistStorage, version: 1 },
   ),
