@@ -68,7 +68,8 @@ export default function Learn() {
             <ListRow
               key={l.id}
               lead={
-                <View style={{ width: 28 }}>
+                // minWidth (not width) so "10" and large text never clip (spec: lead 40).
+                <View style={{ minWidth: 40 }}>
                   <BigNum value={String(i + 1)} size={22} color={c.ink2} />
                 </View>
               }

@@ -51,7 +51,7 @@ export function ScenarioBlock({ text }: { text: string }) {
       <Gap h={space.xs} />
       <T v="body" color={c.ink2}>{long && !open ? `${text.slice(0, 200).trimEnd()}…` : text}</T>
       {long && (
-        <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 48, justifyContent: 'center' }}>
+        <Pressable accessibilityRole="button" accessibilityState={{ expanded: open }} onPress={() => setOpen(!open)} hitSlop={8} style={{ minHeight: 48, justifyContent: 'center' }}>
           <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read full scenario'}</T>
         </Pressable>
       )}
@@ -97,7 +97,8 @@ export function OptionCard({
   const selected = state === 'selected';
   // The badge grows with very large text so the letter still fits (spec §10.7).
   const badge = 30 * Math.min(Math.max(fontScale, 1), 1.6);
-  const suffix = state === 'correct' ? ', best answer' : state === 'wrong' ? ', your answer, incorrect' : selected ? ', selected' : '';
+  // No ", selected" here: the radio's checked state already announces it.
+  const suffix = state === 'correct' ? ', best answer' : state === 'wrong' ? ', your answer, incorrect' : '';
   const tagColor = state === 'correct' ? c.correct : state === 'wrong' ? c.wrong : c.ink2;
 
   const rowStyle = {
@@ -199,7 +200,9 @@ export function Verdict({ correct, coach }: { correct: boolean; coach: string })
   }, [scale]);
   const leafStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
   return (
-    <View accessible accessibilityRole="header" accessibilityLiveRegion="polite" accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. ${coach}`}>
+    // No live region: the session screen already calls announceForAccessibility,
+    // so a live region would make screen readers say the verdict twice.
+    <View accessible accessibilityRole="header" accessibilityLabel={`${correct ? 'Correct' : 'Not quite'}. ${coach}`}>
       <Row gap={space.md} style={{ marginTop: space.md }}>
         <Animated.View style={[{ width: 38, height: 38 }, leafStyle]}>
           <VerdictLeaf color={color} />

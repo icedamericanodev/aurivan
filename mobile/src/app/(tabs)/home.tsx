@@ -50,9 +50,9 @@ export default function Today() {
   useEffect(() => {
     if (allDone && !plan.celebrated) {
       haptic.success();
-      markCelebrated();
+      markCelebrated(j.cert.id);
     }
-  }, [allDone, plan.celebrated, markCelebrated]);
+  }, [allDone, plan.celebrated, markCelebrated, j.cert.id]);
 
   // "Also today": an unfinished session first, then the plan items still to do.
   const resume = active && !active.finishedAt ? active : null;

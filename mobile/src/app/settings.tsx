@@ -64,8 +64,8 @@ export default function Settings() {
 
   return (
     <Screen edges={['top', 'bottom']}>
-      <PushedHeader onBack={() => router.back()} />
-      <T v="display" accessibilityRole="header">Settings</T>
+      {/* Same pushed header as Saved and Mistakes: the title lives in the bar. */}
+      <PushedHeader title="Settings" onBack={() => router.back()} />
 
       <Section title="Certification" />
       <Gap h={space.sm} />

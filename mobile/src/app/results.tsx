@@ -32,7 +32,7 @@ export default function Results() {
       <Screen>
         <T v="hero">No results to show.</T>
         <Gap />
-        <Button label="Back to Home" onPress={() => router.replace('/home')} />
+        <Button label="Back to Today" onPress={() => router.replace('/home')} />
       </Screen>
     );
   }

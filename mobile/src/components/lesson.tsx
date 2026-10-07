@@ -54,23 +54,37 @@ export function SceneView({
   switch (scene.type) {
     case 'title':
       return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          {art && (
-            <Animated.View entering={enter(0)} accessible={false} importantForAccessibility="no-hide-descendants" style={{ alignSelf: 'flex-end', marginRight: -space.lg, marginBottom: -60, opacity: 0.9 }}>
-              <Botany kind={art} color={c.accent} />
+        // Upper-middle, not dead centre: a 1 : 2 split of the spare height puts
+        // the title about a third of the way down. The frond is anchored to the
+        // text block (absolute, above its right edge), so it balances the title
+        // without pushing it down the page.
+        <View style={{ flex: 1 }}>
+          {/* minHeight leaves room for the frond on short screens. */}
+          <View style={{ flex: 1, minHeight: 150 }} />
+          <View>
+            {art && (
+              <Animated.View
+                entering={enter(0)}
+                accessible={false}
+                importantForAccessibility="no-hide-descendants"
+                style={{ position: 'absolute', right: -space.lg, bottom: '100%', marginBottom: -70, opacity: 0.9 }}
+              >
+                <Botany kind={art} color={c.accent} />
+              </Animated.View>
+            )}
+            <Animated.View entering={enter(1)}>
+              <T v="caption" color={c.accentText}>{scene.kicker}</T>
             </Animated.View>
-          )}
-          <Animated.View entering={enter(1)}>
-            <T v="caption" color={c.accentText}>{scene.kicker}</T>
-          </Animated.View>
-          <Gap h={space.sm} />
-          <Animated.View entering={enter(2)}>
-            <T v="hero" accessibilityRole="header">{scene.title}</T>
-          </Animated.View>
-          <Gap h={space.md} />
-          <Animated.View entering={enter(3)}>
-            <T v="body" color={c.ink2}>{scene.subtitle}</T>
-          </Animated.View>
+            <Gap h={space.sm} />
+            <Animated.View entering={enter(2)}>
+              <T v="hero" accessibilityRole="header">{scene.title}</T>
+            </Animated.View>
+            <Gap h={space.md} />
+            <Animated.View entering={enter(3)}>
+              <T v="body" color={c.ink2}>{scene.subtitle}</T>
+            </Animated.View>
+          </View>
+          <View style={{ flex: 2 }} />
         </View>
       );
 

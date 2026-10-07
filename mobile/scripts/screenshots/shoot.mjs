@@ -78,11 +78,16 @@ await page.screenshot({ path: `${out}/19b-results-review.png` });
 await edit('aurivan.progress.v1', `
   const d = new Date(); const p = (n) => String(n).padStart(2, '0');
   const day = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
-  v.state.day = { day, certId: 'cisa',
+  // Day plans are stored per cert (progress store v2).
+  v.state.days = { ...(v.state.days || {}) }; delete v.state.day;
+  v.state.days.cisa = { day, certId: 'cisa',
     items: [{ kind: 'review', count: 20 }, { kind: 'lesson', lessonId: 'cisa-l-d5-mfa', title: 'Authentication factors: what makes MFA real' }, { kind: 'game', gameId: 'trap', label: 'Trap Spotter · 2 min' }],
     done: [true, true, true], start: { score: 62, domains: { '1': .74, '2': .66, '3': .55, '4': .58, '5': .6 } },
     answered: 31, correct: 25, minutes: 24, celebrated: true };`);
 await shot('20-clearing', '/home');
+// Saved questions, with a few bookmarks (row opens the question; bookmark removes).
+await edit('aurivan.progress.v1', "v.state.byCert.cisa.bookmarks = ['d4_250', 'd4_190', 'd1_010'];");
+await shot('17b-saved', '/saved');
 // Empty mistake journal.
 await edit('aurivan.progress.v1', 'v.state.byCert.cisa.mistakes = {};');
 await shot('21-mistakes-empty', '/mistakes');

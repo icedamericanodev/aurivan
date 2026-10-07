@@ -10,6 +10,7 @@
  * not a target: a target's concentric circles looked like the You rings.
  */
 import { Tabs } from 'expo-router';
+import { PlatformPressable } from 'expo-router/react-navigation';
 import type { ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BookOpen, Gamepad2, ICON_STROKE, ListChecks, Rings, Sprout } from '../../components/icons';
@@ -25,6 +26,17 @@ const icon = (G: Glyph) =>
 const label = (text: string) =>
   function Label({ focused }: { focused: boolean }) {
     return <TabLabel label={text} focused={focused} />;
+  };
+
+/**
+ * The tab button itself carries the iOS Large Content Viewer: with very
+ * large text, long-pressing a tab shows its name enlarged. It has to be on
+ * the pressable (the element that gets the touch), not the inner label.
+ */
+type TabButtonProps = React.ComponentProps<typeof PlatformPressable>;
+const tabButton = (text: string) =>
+  function TabButton(props: TabButtonProps) {
+    return <PlatformPressable {...props} accessibilityShowsLargeContentViewer accessibilityLargeContentTitle={text} />;
   };
 
 export default function TabsLayout() {
@@ -48,11 +60,11 @@ export default function TabsLayout() {
       }}
     >
       {/* Route stays "home" so existing links keep working; the tab reads "Today". */}
-      <Tabs.Screen name="home" options={{ title: 'Today', tabBarLabel: label('Today'), tabBarIcon: icon(Sprout) }} />
-      <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarLabel: label('Learn'), tabBarIcon: icon(BookOpen as Glyph) }} />
-      <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarIcon: icon(ListChecks as Glyph) }} />
-      <Tabs.Screen name="play" options={{ title: 'Play', tabBarLabel: label('Play'), tabBarIcon: icon(Gamepad2 as Glyph) }} />
-      <Tabs.Screen name="you" options={{ title: 'You', tabBarLabel: label('You'), tabBarIcon: icon(Rings) }} />
+      <Tabs.Screen name="home" options={{ title: 'Today', tabBarLabel: label('Today'), tabBarButton: tabButton('Today'), tabBarIcon: icon(Sprout) }} />
+      <Tabs.Screen name="learn" options={{ title: 'Learn', tabBarLabel: label('Learn'), tabBarButton: tabButton('Learn'), tabBarIcon: icon(BookOpen as Glyph) }} />
+      <Tabs.Screen name="practice" options={{ title: 'Practice', tabBarLabel: label('Practice'), tabBarButton: tabButton('Practice'), tabBarIcon: icon(ListChecks as Glyph) }} />
+      <Tabs.Screen name="play" options={{ title: 'Play', tabBarLabel: label('Play'), tabBarButton: tabButton('Play'), tabBarIcon: icon(Gamepad2 as Glyph) }} />
+      <Tabs.Screen name="you" options={{ title: 'You', tabBarLabel: label('You'), tabBarButton: tabButton('You'), tabBarIcon: icon(Rings) }} />
     </Tabs>
   );
 }

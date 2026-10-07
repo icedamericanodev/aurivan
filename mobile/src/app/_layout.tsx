@@ -19,6 +19,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { initNotifications } from '../lib/reminders';
+import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Grain } from '../components/ui';
 import { useHydrated } from '../store/useHydrated';
@@ -40,6 +41,9 @@ export default function RootLayout() {
   });
   const hydrated = useHydrated();
   const { c, isDark } = useTheme();
+  // Reduce Motion (system setting): screens appear without sliding or rising.
+  const reduceMotion = useReducedMotion();
+  const rise = reduceMotion ? 'none' : 'fade_from_bottom';
   // If a font fails to load we still start (system font fallback) rather than hang.
   const ready = (fontsLoaded || Boolean(fontError)) && hydrated;
 
@@ -56,6 +60,8 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: c.bg },
+          // Undefined = the platform's default push animation.
+          animation: reduceMotion ? 'none' : undefined,
         }}
       >
         <Stack.Screen name="(tabs)" />
@@ -63,10 +69,10 @@ export default function RootLayout() {
         {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
         <Stack.Screen name="session" options={{ gestureEnabled: false }} />
         <Stack.Screen name="results" options={{ gestureEnabled: false }} />
-        <Stack.Screen name="lesson/[id]" options={{ animation: 'fade_from_bottom' }} />
-        <Stack.Screen name="game/trap" options={{ animation: 'fade_from_bottom' }} />
-        <Stack.Screen name="game/sprint" options={{ animation: 'fade_from_bottom' }} />
-        <Stack.Screen name="game/priority" options={{ animation: 'fade_from_bottom' }} />
+        <Stack.Screen name="lesson/[id]" options={{ animation: rise }} />
+        <Stack.Screen name="game/trap" options={{ animation: rise }} />
+        <Stack.Screen name="game/sprint" options={{ animation: rise }} />
+        <Stack.Screen name="game/priority" options={{ animation: rise }} />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />

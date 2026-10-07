@@ -15,7 +15,7 @@ import { makePermutation, type Permutation } from '../engine/shuffle';
 import { useProgress, type GameId } from '../store/progress';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { ScenarioBlock } from './quiz';
+import { ScenarioBlock, StickyFooter } from './quiz';
 import { Seedling } from './glyphs';
 import { BigNum, Button, Enter, Gap, PushedHeader, SegmentBar, Stem, T } from './ui';
 
@@ -52,6 +52,8 @@ export function GameFrame({
   footer?: ReactNode;
 }) {
   const { c } = useTheme();
+  // Measured height of the sticky footer, so the scroll can clear it.
+  const [footerH, setFooterH] = useState(footer ? 120 : 0);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Pushed header: close · round progress · live score (Figtree tabular: it changes as you watch). */}
@@ -64,10 +66,17 @@ export function GameFrame({
         />
         <T v="meta" num>{`${title} · ${Math.min(index + 1, total)} of ${total}`}</T>
       </View>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: space.xxl }}>
-        <Enter key={index}>{children}</Enter>
-      </ScrollView>
-      {footer && <View style={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: space.md, gap: space.sm, backgroundColor: c.bg }}>{footer}</View>}
+      <View style={{ flex: 1 }}>
+        {/* Pad by the sticky footer + 24 (spec §11), so the last option is never under it. */}
+        <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: footer ? footerH + space.xl : space.xxl }}>
+          <Enter key={index}>{children}</Enter>
+        </ScrollView>
+        {footer && (
+          <StickyFooter onHeight={setFooterH}>
+            <View style={{ gap: space.sm }}>{footer}</View>
+          </StickyFooter>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -152,7 +161,7 @@ export function RevealCard({ tone, title, body }: { tone: 'good' | 'bad' | 'info
         <Gap h={space.xs} />
         <T v="small" numberOfLines={long && !open ? 5 : undefined}>{body}</T>
         {long && (
-          <Pressable accessibilityRole="button" onPress={() => setOpen(!open)} style={{ minHeight: 48, justifyContent: 'center' }}>
+          <Pressable accessibilityRole="button" accessibilityState={{ expanded: open }} onPress={() => setOpen(!open)} style={{ minHeight: 48, justifyContent: 'center' }}>
             <T v="label" color={c.accentText}>{open ? 'Show less' : 'Read full explanation'}</T>
           </Pressable>
         )}

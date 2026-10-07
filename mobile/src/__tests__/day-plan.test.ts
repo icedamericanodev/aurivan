@@ -35,8 +35,9 @@ describe('day plan', () => {
     const review = items[0];
     expect(activityMatches(review, { kind: 'session', mode: 'review', answered: 15, total: 20, minutes: 9 })).toBe(false);
     expect(activityMatches(review, { kind: 'session', mode: 'review', answered: 16, total: 20, minutes: 9 })).toBe(true);
-    // Fewer questions in the session than planned: 80% of what was there.
-    expect(activityMatches(review, { kind: 'session', mode: 'review', answered: 4, total: 5, minutes: 3 })).toBe(true);
+    // A short session does not finish a bigger item on its own: the target is
+    // 80% of the PLANNED count, not of the session size.
+    expect(activityMatches(review, { kind: 'session', mode: 'review', answered: 4, total: 5, minutes: 3 })).toBe(false);
     // Wrong mode never counts.
     expect(activityMatches(review, { kind: 'session', mode: 'practice', answered: 20, total: 20, minutes: 9 })).toBe(false);
   });
@@ -83,5 +84,38 @@ describe('day plan', () => {
     expect(itemMinutes({ kind: 'practice', count: 10, label: '' })).toBe(12);
     expect(itemMinutes(items[1])).toBe(3);
     expect(itemMinutes(items[2])).toBe(2);
+  });
+
+  it('adds up answers across sessions the same day', () => {
+    let p = newDayPlan('2026-10-07', 'cisa', items, empty);
+    let r = logActivity(p, { kind: 'session', mode: 'review', answered: 10, total: 10, minutes: 6 });
+    expect(r.ticked).toBe(false);
+    expect(r.plan.credit?.[0]).toBe(10);
+    p = r.plan;
+    r = logActivity(p, { kind: 'session', mode: 'review', answered: 6, total: 6, minutes: 4 });
+    expect(r.ticked).toBe(true); // 16 of 20 = 80%
+    expect(r.plan.done).toEqual([true, false, false]);
+  });
+
+  it('a plan saved before credit existed still accumulates', () => {
+    const { credit: _drop, ...old } = newDayPlan('d', 'cisa', items, empty);
+    const r = logActivity(old, { kind: 'session', mode: 'review', answered: 16, total: 16, minutes: 9 });
+    expect(r.ticked).toBe(true);
+  });
+
+  it('a domain-focused item only counts answers from that domain', () => {
+    const focus: PlanItem[] = [{ kind: 'practice', domainId: '4', count: 10, label: '10 questions · D4' }];
+    const p = newDayPlan('d', 'cisa', focus, empty);
+    const other = logActivity(p, {
+      kind: 'session', mode: 'practice', answered: 10, total: 10, minutes: 6, byDomain: { '1': 10 },
+    });
+    expect(other.ticked).toBe(false);
+    expect(other.plan.credit?.[0]).toBe(0);
+    const mixed = logActivity(other.plan, {
+      kind: 'session', mode: 'practice', answered: 10, total: 10, minutes: 6, byDomain: { '4': 8, '2': 2 },
+    });
+    expect(mixed.ticked).toBe(true);
+    // No per-domain breakdown: a domain item gets no credit.
+    expect(activityMatches(focus[0], { kind: 'session', mode: 'practice', answered: 10, total: 10, minutes: 6 })).toBe(false);
   });
 });

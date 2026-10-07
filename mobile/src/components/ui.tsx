@@ -171,6 +171,7 @@ export function Button({
   iconLeading,
   accessibilityHint,
   accessibilityLabel,
+  selected,
 }: {
   label: string;
   onPress: () => void;
@@ -183,6 +184,8 @@ export function Button({
   accessibilityHint?: string;
   /** Spoken name when the visible label is a symbol (e.g. "‹"). */
   accessibilityLabel?: string;
+  /** For toggle buttons (e.g. Flag): announced as "selected" when on. */
+  selected?: boolean;
 }) {
   const { c } = useTheme();
   // Each kind = fill · border · label colour (spec §6 "Button").
@@ -201,7 +204,7 @@ export function Button({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ disabled }}
+      accessibilityState={{ disabled, selected }}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}
@@ -553,7 +556,8 @@ export function Stat({ value, label, color, pct }: { value: string; label: strin
 export function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   const { c } = useTheme();
   return (
-    <View style={styles.tabLabel} accessibilityShowsLargeContentViewer accessibilityLargeContentTitle={label}>
+    // The Large Content Viewer props live on the tab BUTTON ((tabs)/_layout.tsx).
+    <View style={styles.tabLabel}>
       <T v="tab" color={focused ? c.ink : c.muted}>{label}</T>
       <View style={[styles.tabDot, { backgroundColor: focused ? c.accent : 'transparent' }]} />
     </View>
@@ -837,6 +841,9 @@ export function EmptyState({
 // `soft` track, the selected segment `raised` (+ soft shadow in light mode).
 // Numeral options show a Fraunces 20 numeral + a small unit. Stacks into a
 // column at large text sizes instead of squeezing.
+/** Dark-mode fill for the selected segment (DESIGN_SYSTEM.md, Practice screen). */
+const SEG_ON_DARK = '#2C372F';
+
 export function Segmented<V extends string | number>({
   options,
   value,
@@ -864,8 +871,13 @@ export function Segmented<V extends string | number>({
             style={[
               styles.segItem,
               !stacked && { flex: 1 },
-              // Dark mode: a lifted surface instead of a shadow.
-              on && { backgroundColor: isDark ? c.line : c.raised },
+              // Selected = ink (spec §5): a 1.5px ink outline makes the choice
+              // clear in both modes (fill alone was ~1.1:1, failing WCAG 1.4.11).
+              // Fill: `raised` + shadow in light, the spec's lifted #2C372F in dark.
+              // Unselected keeps a transparent border of the same width so nothing jumps.
+              on
+                ? { backgroundColor: isDark ? SEG_ON_DARK : c.raised, borderWidth: 1.5, borderColor: c.ink }
+                : { borderWidth: 1.5, borderColor: 'transparent' },
               on && !isDark && raisedShadow,
             ]}
           >

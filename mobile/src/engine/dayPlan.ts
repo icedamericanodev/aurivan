@@ -25,10 +25,24 @@ export interface DayPlan {
   minutes: number;
   /** The clearing haptic plays once per day. */
   celebrated?: boolean;
+  /**
+   * Questions credited to each review/practice item so far today, summed
+   * across sessions (so two 10-question sessions can finish a 20-question
+   * item). Optional: plans saved before this field existed start at zero.
+   */
+  credit?: number[];
 }
 
 export type Activity =
-  | { kind: 'session'; mode: 'practice' | 'review' | 'mock'; answered: number; total: number; minutes: number }
+  | {
+      kind: 'session';
+      mode: 'practice' | 'review' | 'mock';
+      answered: number;
+      total: number;
+      minutes: number;
+      /** Answered questions per domain id, so a domain-focused item only counts its own domain. */
+      byDomain?: Record<string, number>;
+    }
   | { kind: 'lesson'; lessonId: string; minutes: number }
   | { kind: 'game'; gameId: string; minutes: number };
 
@@ -54,14 +68,36 @@ export function newDayPlan(day: string, certId: string, items: PlanItem[], readi
   };
 }
 
-/** Does this activity complete this plan item? */
-export function activityMatches(item: PlanItem, a: Activity): boolean {
+/** Questions needed to finish a review/practice item: 80% of the PLANNED count (never the session size). */
+export function itemTarget(item: PlanItem): number {
+  if (item.kind !== 'review' && item.kind !== 'practice') return 0;
+  return Math.max(1, Math.ceil(item.count * SESSION_DONE_SHARE));
+}
+
+/**
+ * How many of this activity's answers count toward this item.
+ * Only sessions of the same mode count; a domain-focused item only counts
+ * answers from that domain (a session without a per-domain breakdown gives
+ * a domain item nothing, to stay honest).
+ */
+export function sessionCredit(item: PlanItem, a: Activity): number {
+  if (item.kind !== 'review' && item.kind !== 'practice') return 0;
+  if (a.kind !== 'session' || a.mode !== item.kind) return 0;
+  const domainId = item.kind === 'practice' ? item.domainId : undefined;
+  if (domainId) return Math.max(0, a.byDomain?.[domainId] ?? 0);
+  return Math.max(0, a.answered);
+}
+
+/**
+ * Does this activity, on its own, complete this plan item?
+ * (logActivity also adds up answers from earlier sessions the same day.)
+ */
+export function activityMatches(item: PlanItem, a: Activity, already = 0): boolean {
   switch (item.kind) {
     case 'review':
     case 'practice': {
-      if (a.kind !== 'session' || a.mode !== item.kind) return false;
-      const target = Math.min(item.count, Math.max(a.total, 1));
-      return a.answered >= Math.ceil(target * SESSION_DONE_SHARE);
+      const got = sessionCredit(item, a);
+      return got > 0 && already + got >= itemTarget(item);
     }
     case 'mock':
       return a.kind === 'session' && a.mode === 'mock' && a.answered > 0;
@@ -73,16 +109,31 @@ export function activityMatches(item: PlanItem, a: Activity): boolean {
 }
 
 /**
- * Log an activity: adds its minutes and ticks the FIRST unticked matching item.
- * Returns the same object when nothing changed (cheap for the store).
+ * Log an activity: adds its minutes, banks session answers toward the first
+ * unticked matching review/practice item, and ticks the FIRST unticked item
+ * it completes. Returns the same object when nothing changed (cheap for the store).
  */
 export function logActivity(plan: DayPlan, a: Activity): { plan: DayPlan; ticked: boolean } {
-  const i = plan.items.findIndex((item, k) => !plan.done[k] && activityMatches(item, a));
   const minutes = plan.minutes + Math.max(0, Math.round(a.minutes));
-  if (i < 0) return { plan: minutes === plan.minutes ? plan : { ...plan, minutes }, ticked: false };
+  const credit = plan.items.map((_, k) => plan.credit?.[k] ?? 0);
+  // A review/practice session banks its answers on the first open item of
+  // the same kind, and ticks it once the day's total reaches the target.
+  const bank = plan.items.findIndex((item, k) => !plan.done[k] && sessionCredit(item, a) > 0);
+  let i: number;
+  if (bank >= 0) {
+    credit[bank] += sessionCredit(plan.items[bank], a);
+    i = credit[bank] >= itemTarget(plan.items[bank]) ? bank : -1;
+  } else {
+    // Lessons, games and mocks tick the first open item they match.
+    i = plan.items.findIndex((item, k) => !plan.done[k] && activityMatches(item, a));
+  }
+  if (i < 0) {
+    if (bank < 0 && minutes === plan.minutes) return { plan, ticked: false };
+    return { plan: { ...plan, minutes, credit }, ticked: false };
+  }
   const done = plan.done.slice();
   done[i] = true;
-  return { plan: { ...plan, done, minutes }, ticked: true };
+  return { plan: { ...plan, done, minutes, credit }, ticked: true };
 }
 
 export function logAnswer(plan: DayPlan, correct: boolean): DayPlan {

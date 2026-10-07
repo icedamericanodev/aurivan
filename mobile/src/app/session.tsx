@@ -18,9 +18,11 @@ import {
   Pressable,
   ScrollView,
   View,
+  useWindowDimensions,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowRight, Bookmark, BookmarkCheck, ICON_STROKE, X } from '../components/icons';
 import {
@@ -48,11 +50,13 @@ import { finishSession } from '../lib/finishSession';
 import { shortSubtopic } from '../lib/format';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
-import { radius, space } from '../theme/tokens';
+import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
 // Stable empty array: a new [] on every render would make the store re-render forever.
 const NO_BOOKMARKS: string[] = [];
+/** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
+const HUGE_TEXT = 1.6;
 
 function formatClock(ms: number) {
   const total = Math.max(0, Math.floor(ms / 1000));
@@ -71,6 +75,9 @@ export default function SessionScreen() {
   const recordAnswer = useProgress((s) => s.recordAnswer);
   const toggleBookmark = useProgress((s) => s.toggleBookmark);
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
+  const { fontScale } = useWindowDimensions();
+  // Reduce Motion: the navigator sheet appears without sliding.
+  const reduceMotion = useReducedMotion();
 
   const [selected, setSelected] = useState<Letter | null>(null);
   const [confidence, setConfidence] = useState<Confidence | undefined>();
@@ -152,7 +159,7 @@ export default function SessionScreen() {
         </T>
         <Gap />
         <Button
-          label="Back to Home"
+          label="Back to Today"
           onPress={() => {
             useSession.getState().clear();
             router.replace('/home');
@@ -217,7 +224,7 @@ export default function SessionScreen() {
 
   const leave = () => {
     if (isMock) {
-      Alert.alert('Pause exam?', 'Your answers are saved. The clock keeps running — resume from Home.', [
+      Alert.alert('Pause exam?', 'Your answers are saved. The clock keeps running — resume from Today.', [
         { text: 'Stay', style: 'cancel' },
         { text: 'Pause', onPress: () => router.replace('/home') },
       ]);
@@ -258,6 +265,8 @@ export default function SessionScreen() {
   const flagged = active.flagged.includes(qid);
   const saved = bookmarks.includes(qid);
   const lowTime = isMock && remaining < 5 * 60_000;
+  const largeText = fontScale >= LARGE_TEXT;
+  const confidenceInScroll = fontScale >= HUGE_TEXT;
   const metaLine = [domain?.short, shortSubtopic(q.subtopic), `${active.index + 1} of ${total}`].filter(Boolean).join(' · ');
 
   // The vine draws itself the first time it scrolls into view: on each
@@ -335,7 +344,8 @@ export default function SessionScreen() {
               <View style={{ marginTop: 10 }}>
                 <Stem>{q.stem}</Stem>
               </View>
-              <View style={{ marginTop: space.gutter }}>
+              {/* One radio group, so screen readers say "1 of 4" and the checked state. */}
+              <View accessibilityRole="radiogroup" accessibilityLabel="Answer options" style={{ marginTop: space.gutter }}>
                 {displayLetters.map((d) => (
                   <OptionCard
                     key={d}
@@ -346,6 +356,13 @@ export default function SessionScreen() {
                   />
                 ))}
               </View>
+              {/* Very large text: the confidence chips live here, under option D,
+                  so the sticky footer stays small enough to leave room for the question. */}
+              {!isMock && selected && confidenceInScroll && (
+                <View style={{ marginTop: space.md }}>
+                  <ConfidenceRow value={confidence} onChange={setConfidence} />
+                </View>
+              )}
             </>
           ) : (
             response && (
@@ -387,11 +404,19 @@ export default function SessionScreen() {
         {/* Sticky bottom action, within thumb reach */}
         <StickyFooter onHeight={setFooterH}>
           {isMock ? (
-            <Row gap={space.sm}>
+            // Wraps at large text; Next then takes a full row of its own.
+            <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
               <Button kind="secondary" label="‹" accessibilityLabel="Previous question" disabled={active.index === 0} onPress={() => goTo(active.index - 1)} style={{ paddingHorizontal: space.lg }} />
-              <Button kind="secondary" label={flagged ? '⚑ Unflag' : '⚐ Flag'} onPress={() => toggleFlag(qid)} style={{ paddingHorizontal: space.lg }} />
+              <Button
+                kind="secondary"
+                label={flagged ? '⚑ Unflag' : '⚐ Flag'}
+                accessibilityLabel={flagged ? 'Unflag question' : 'Flag question'}
+                selected={flagged}
+                onPress={() => toggleFlag(qid)}
+                style={{ paddingHorizontal: space.lg }}
+              />
               <Button kind="secondary" label="▦" accessibilityLabel="Question navigator" onPress={() => setNavOpen(true)} style={{ paddingHorizontal: space.lg }} />
-              <Button label={isLast ? 'Finish' : 'Next'} onPress={next} style={{ flex: 1 }} />
+              <Button label={isLast ? 'Finish' : 'Next'} onPress={next} style={largeText ? { flexBasis: '100%' } : { flex: 1 }} />
             </Row>
           ) : submitted ? (
             <Button
@@ -401,14 +426,14 @@ export default function SessionScreen() {
             />
           ) : (
             <>
-              {selected && <ConfidenceRow value={confidence} onChange={setConfidence} />}
+              {selected && !confidenceInScroll && <ConfidenceRow value={confidence} onChange={setConfidence} />}
               <Button label="Check answer" onPress={submit} disabled={!selected} />
             </>
           )}
         </StickyFooter>
       </View>
       {/* Mock navigator */}
-      <Modal visible={navOpen} animationType="slide" presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
+      <Modal visible={navOpen} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
           <ScrollView contentContainerStyle={{ padding: space.lg }}>
             <Row style={{ justifyContent: 'space-between' }}>
@@ -426,7 +451,8 @@ export default function SessionScreen() {
                   <Pressable
                     key={id}
                     accessibilityRole="button"
-                    accessibilityLabel={`Question ${i + 1}, ${done ? 'answered' : 'not answered'}${flag ? ', flagged' : ''}`}
+                    accessibilityLabel={`Question ${i + 1}, ${done ? 'answered' : 'not answered'}${flag ? ', flagged' : ''}${current ? ', current' : ''}`}
+                    accessibilityState={{ selected: current }}
                     onPress={() => {
                       goTo(i);
                       setNavOpen(false);
