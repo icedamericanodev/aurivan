@@ -153,6 +153,9 @@ export default function Onboarding() {
             </Pressable>
           );
         })}
+        <T v="meta" color={c.muted} style={{ marginTop: space.md }}>
+          Not affiliated with or endorsed by ISACA® or ISC2®. Exam names are trademarks of their owners.
+        </T>
       </Enter>
     ) : (
       <Enter key="s2">
