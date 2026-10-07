@@ -112,9 +112,15 @@ interface ProgressState {
     questionId: string,
     correct: boolean,
     confidence?: Confidence,
-    /** schedule: false for mock exams. assisted: answered after "Coach me". */
-    opts?: { schedule?: boolean; assisted?: boolean },
+    /**
+     * schedule: false for mock exams. assisted: answered after "Coach me".
+     * logReadiness: false while recording a batch (a submitted mock); call
+     * logReadinessNow once after the batch, so a mid-batch low never counts.
+     */
+    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean },
   ) => void;
+  /** Log today's readiness lower bound from the saved answers (after a batch). */
+  logReadinessNow: (certId: string) => void;
   /** Put questions into review (due now) WITHOUT counting them as answered. */
   queueForReview: (certId: string, questionIds: string[]) => void;
   toggleBookmark: (certId: string, questionId: string) => void;
@@ -190,13 +196,21 @@ export const useProgress = create<ProgressState>()(
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
           // Exam-ready hold: log the new readiness lower bound for today, so a
           // dip during the day resets the 7-day hold (engine/examReady.ts).
-          const moments = withReadiness(cp.moments, certId, answers, day);
+          const moments = opts?.logReadiness === false ? cp.moments : withReadiness(cp.moments, certId, answers, day);
           return {
             byCert: { ...s.byCert, [certId]: { ...cp, answers, review, mistakes, ...(moments ? { moments } : {}) } },
             streak: bumpStreak(s.streak, now),
             today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
             days,
           };
+        }),
+
+      logReadinessNow: (certId) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const moments = withReadiness(cp.moments, certId, cp.answers, dayKey(Date.now()));
+          if (moments === cp.moments) return s; // nothing changed: no save
+          return { byCert: { ...s.byCert, [certId]: { ...cp, ...(moments ? { moments } : {}) } } };
         }),
 
       queueForReview: (certId, questionIds) =>

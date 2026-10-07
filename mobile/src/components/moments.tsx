@@ -19,6 +19,7 @@ import type { Readiness } from '../engine/readiness';
 import { LARGE_TEXT, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { GrowthRings, PlanLeaf } from './glyphs';
+import { ringsSpoken } from './journey';
 import { Check, ICON_STROKE, Timer } from './icons';
 import { HeroPanel, ICON_SIZE, Row, T, useFontScale } from './ui';
 
@@ -39,8 +40,9 @@ export function ExamReadyPanel({
     <HeroPanel
       caption="A quiet milestone"
       // Two short lines, each clear of the frond art.
-      title={'You’re ready.\nKeep it light.'}
-      titleLabel="You're ready. Keep it light."
+      // Never implies a pass (brand rule): it names what held, not an outcome.
+      title={'Your readiness is holding.\nKeep it light.'}
+      titleLabel="Your readiness is holding. Keep it light."
       art="clearing"
       sway={false}
       action={{
@@ -69,12 +71,15 @@ export function ExamReadyPanel({
           weights={cert.domains.map((d) => d.weight)}
           colors={c.sap}
           track={c.forestTrack}
-          accessibilityLabel="Your growth rings, filled in"
+          // Same spoken summary as the rings on You: "IS Audit 88, IT Governance 63, …".
+          accessibilityLabel={`Readiness rings. ${ringsSpoken(cert, readiness.domains.map((d) => (d.answered ? d.mastery : null)))}.`}
         />
-        <View style={{ flex: stacked ? undefined : 1 }}>
+        {/* Side by side, the text column stops at 250pt so it never runs under the frond art. */}
+        <View style={stacked ? undefined : { flex: 1, maxWidth: 250 }}>
           <T v="small" color={c.onForest}>{held}</T>
-          <T v="meta" color={c.onForest2} style={{ marginTop: 6 }}>
-            Until exam day: a short review most days, and one timed mock a week.
+          {/* `small`, not `meta`: spec §2 caps meta lines at 6 words. */}
+          <T v="small" color={c.onForest2} style={{ marginTop: 6 }}>
+            Light review most days, one mock a week.
           </T>
         </View>
       </View>
@@ -95,11 +100,17 @@ export function ExamEveCard({
 }) {
   const { c } = useTheme();
   const eve = moment === 'eve';
+  const caption = eve ? 'Exam eve' : 'Exam day';
+  const title = eve ? 'Tomorrow. You’ve done the work.' : 'Good luck today.';
   return (
     <View style={{ borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
-      <T v="caption" color={c.accentText}>{eve ? 'Exam eve' : 'Exam day'}</T>
-      <T v="hero" accessibilityRole="header" style={{ marginTop: 2 }}>
-        {eve ? 'Tomorrow. You’ve done the work.' : 'Good luck today.'}
+      {/* The caption is read as part of the heading below, so it is hidden here. */}
+      <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        <T v="caption" color={c.accentText}>{caption}</T>
+      </View>
+      {/* `stem`, one step below `hero`: Today already has its one hero (the forest panel). */}
+      <T v="stem" accessibilityRole="header" accessibilityLabel={`${caption}. ${title}`} style={{ marginTop: 2 }}>
+        {title}
       </T>
 
       {eve && reminders && (
@@ -138,12 +149,30 @@ export function ExamEveCard({
 }
 
 // ── 3. Mindset growth (You) ────────────────────────────────────────────
-/** Ten small dots, `n` of them filled: "4 in 10" as a picture (decorative). */
-function TenDots({ n, color, track }: { n: number; color: string; track: string }) {
+/** Dot size and the outline on empty dots (pt). */
+const DOT = 9;
+const DOT_RING = 1.5;
+
+/**
+ * Ten small dots, `n` of them filled: "4 in 10" as a picture (decorative;
+ * the card's label says it in words). Empty dots are an outline in the same
+ * colour, so they stay visible on paper in light and dark.
+ */
+function TenDots({ n, color }: { n: number; color: string }) {
   return (
     <View style={{ flexDirection: 'row', gap: 5 }}>
       {Array.from({ length: 10 }, (_, i) => (
-        <View key={i} style={{ width: 9, height: 9, borderRadius: 5, backgroundColor: i < n ? color : track }} />
+        <View
+          key={i}
+          style={{
+            width: DOT,
+            height: DOT,
+            borderRadius: DOT / 2,
+            borderWidth: DOT_RING,
+            borderColor: color,
+            backgroundColor: i < n ? color : 'transparent',
+          }}
+        />
       ))}
     </View>
   );
@@ -181,7 +210,9 @@ export function MindsetGrowthCard({
             style={{ flexDirection: stacked ? 'column' : 'row', alignItems: stacked ? 'flex-start' : 'center', gap: stacked ? 4 : space.md }}
           >
             <T v="meta" style={{ minWidth: stacked ? undefined : 92 }}>{label}</T>
-            <TenDots n={n} color={c.ink2} track={c.track} />
+            <TenDots n={n} color={c.ink2} />
+            {/* The number, in words, at the end of the row. */}
+            <T v="meta">{`${n} in 10`}</T>
           </View>
         ))}
       </View>

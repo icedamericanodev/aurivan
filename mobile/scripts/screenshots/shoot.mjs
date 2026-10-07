@@ -136,16 +136,22 @@ await edit('aurivan.progress.v1', `
 await shot('26-exam-ready', '/home', 2400);
 // Dismissed from here on (it shows once per cert).
 await edit('aurivan.progress.v1', 'v.state.byCert.cisa.moments.readySeenAt = Date.now();');
-// Exam eve (exam tomorrow), then exam day.
+// Exam eve (exam tomorrow), then exam day. Changing the date in Settings
+// rebuilds today's plan; here the stored plan is dropped to the same effect.
 await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(1)};`);
+await edit('aurivan.progress.v1', 'if (v.state.days) delete v.state.days.cisa;');
 await shot('27-exam-eve', '/home');
 await page.mouse.move(196, 500);
 await page.mouse.wheel(0, 500);
 await page.waitForTimeout(600);
 await page.screenshot({ path: `${out}/27b-exam-eve-scrolled.png` });
 await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(0)};`);
+await edit('aurivan.progress.v1', 'if (v.state.days) delete v.state.days.cisa;');
 await shot('28-exam-day', '/home');
+// Settings: the exam-date control (presets + day/week steps), date set.
+await shot('30-settings-exam-date', '/settings');
 await edit('aurivan.settings.v1', `v.state.examDates.cisa = ${keyIn(38)};`);
+await edit('aurivan.progress.v1', 'if (v.state.days) delete v.state.days.cisa;');
 // Mindset growth (You): first-try answers from make_seed.py (__growth); the
 // demo's other answers count as re-answered, so the windows are the seeded ones.
 await edit('aurivan.progress.v1', `

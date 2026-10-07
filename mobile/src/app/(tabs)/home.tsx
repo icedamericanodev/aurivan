@@ -14,7 +14,7 @@
  *
  * Signature moments (Phase 5b, components/moments.tsx):
  *   - the day before the exam / exam day: a calm card above the panel;
- *   - "You're ready" (readiness lower bound ≥ 80% for 7 days): the forest
+ *   - "Your readiness is holding" (lower bound ≥ 80% for 7 days): the forest
  *     panel, once per cert, until dismissed. Its plan item moves to "Also today".
  */
 import { router } from 'expo-router';
@@ -101,7 +101,8 @@ export default function Today() {
             caption={j.daysLeft !== null && j.daysLeft < 0 ? 'Exam done' : 'Plan'}
             title="How did it go?"
             meta="Set a new date to plan what’s next."
-            action={{ label: 'Open settings', onPress: () => router.push('/settings'), icon: (col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} /> }}
+            // Settings opens with "Exam date" near the top, right under Certification.
+            action={{ label: 'Set exam date', onPress: () => router.push('/settings'), icon: (col) => <Settings size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} /> }}
           />
         ) : allDone ? (
           <HeroPanel

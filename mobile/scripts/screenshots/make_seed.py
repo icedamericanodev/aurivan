@@ -45,15 +45,16 @@ def runner_up(q):
     tip = next((t for t in q["tips"] if t.startswith("Final two:")), "")
     return next((l for l in re.findall(r"\{\{([A-D])\}\}", tip) if l != q["correct"]), q["correct"])
 # Mindset growth (You): 120 first-try answers on unseen questions, 60 in the
-# first weeks (30–16 days ago, 4 in 10 picked the runner-up) and 60 lately
-# (last 6 days, 2 in 10). Applied by shoot.mjs just before that shot.
+# first weeks (36–22 days ago, 4 in 10 picked the runner-up) and 60 lately
+# (last 6 days, 2 in 10): the windows are 14+ days apart, as the card needs.
+# Applied by shoot.mjs just before that shot.
 used = set(answers)
 fresh = [q for q in bank.values() if q["id"] not in used][:120]
 growth = {"answers": {}, "mistakes": {}}
 for n, q in enumerate(fresh):
     early = n < 60
     k = n if early else n - 60
-    t = now - (30 - k * 14 / 60) * day if early else now - (6 - k * 6 / 60) * day
+    t = now - (36 - k * 14 / 60) * day if early else now - (6 - k * 6 / 60) * day
     ru = k % 10 < (4 if early else 2)
     growth["answers"][q["id"]] = {"attempts": 1, "correctCount": 0 if ru else 1, "lastCorrect": not ru, "lastAt": int(t)}
     if ru: growth["mistakes"][q["id"]] = {"picked": runner_up(q), "at": int(t), "resolved": False}

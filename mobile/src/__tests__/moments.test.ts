@@ -11,7 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCertification } from '../content/certifications';
 import { daysToExam, eveReminders, examMoment, EVE_REMINDER, paceLine, topSlips } from '../engine/examDay';
 import { examReadyDue, LOG_KEEP_DAYS, logReadinessDay, readyHoldDays, shiftDay, type ReadinessDay } from '../engine/examReady';
-import { firstTries, GROWTH_WINDOW, mindsetGrowth, type FirstTry } from '../engine/mindsetGrowth';
+import { firstTries, GROWTH_MIN_Z, GROWTH_WINDOW, mindsetGrowth, twoProportionZ, type FirstTry } from '../engine/mindsetGrowth';
+import { createRng } from '../engine/random';
 import type { SlipInput } from '../engine/slipCoach';
 import { selectCert, useProgress } from '../store/progress';
 
@@ -184,13 +185,19 @@ describe('exam eve reminders (top slips)', () => {
 describe('mindset growth', () => {
   const DAY = 86_400_000;
   const now = Date.UTC(2026, 9, 7);
-  /** `n` first tries spread over `days` days ending now, `rate` share runner-up, in two halves. */
+  /**
+   * `n` first tries over `days` days ending now, `rate` share runner-up, in two
+   * halves: the first half in the first quarter of the span, the second half
+   * in the last quarter (so at 30 days the windows are 15 days apart).
+   */
   function history(early: number, late: number, days = 30, n = 2 * GROWTH_WINDOW): FirstTry[] {
+    const span = days * DAY;
     return Array.from({ length: n }, (_, i) => {
       const half = i < n / 2;
       const k = half ? i : i - n / 2;
       const rate = half ? early : late;
-      return { at: now - days * DAY + (i * (days * DAY)) / n, runnerUp: k < Math.round(rate * (n / 2)) };
+      const start = half ? now - span : now - span / 4;
+      return { at: start + (k * (span / 4)) / (n / 2), runnerUp: k < Math.round(rate * (n / 2)) };
     });
   }
 
@@ -216,8 +223,61 @@ describe('mindset growth', () => {
     expect(mindsetGrowth(history(0.3, 0.3), now).show).toBe(false);
   });
 
-  it('a drop of exactly 10 points shows', () => {
-    expect(mindsetGrowth(history(0.3, 0.2), now).show).toBe(true);
+  it('a 10-point drop shows only when it is bigger than chance (z ≥ 1.64)', () => {
+    expect(twoProportionZ(15, 50, 10, 50)).toBeLessThan(GROWTH_MIN_Z); // 3 → 2 in 10: z ≈ 1.15
+    expect(mindsetGrowth(history(0.3, 0.2), now)).toEqual({ show: false, reason: 'no-improvement' });
+    expect(twoProportionZ(5, 50, 0, 50)).toBeGreaterThanOrEqual(GROWTH_MIN_Z); // 1 → 0 in 10: z ≈ 2.29
+    expect(mindsetGrowth(history(0.1, 0), now).show).toBe(true);
+  });
+
+  it('z is 0 when there is no spread at all, so it never counts as growth', () => {
+    expect(twoProportionZ(0, 50, 0, 50)).toBe(0);
+    expect(twoProportionZ(50, 50, 50, 50)).toBe(0);
+  });
+
+  it('the late window must start 14+ days after the early window ends', () => {
+    // 40 days of history, but the windows are only 10 days apart.
+    const tries = history(0.4, 0.2, 40).map((t, i) => (i < GROWTH_WINDOW ? { ...t, at: t.at + 15 * DAY } : t));
+    expect(mindsetGrowth(tries, now)).toEqual({ show: false, reason: 'too-soon' });
+    expect(mindsetGrowth(history(0.4, 0.2, 40), now).show).toBe(true);
+  });
+
+  it('with NO real change, the EXACT chance of "growth" is under 5% at every runner-up rate', () => {
+    // Enumerate every (early, late) count pair for two windows of 50 at rate p
+    // and add up the binomial probability of the pairs that would show the card.
+    const n = GROWTH_WINDOW;
+    const logFact = [0];
+    for (let i = 1; i <= n; i++) logFact[i] = logFact[i - 1] + Math.log(i);
+    const pmf = (k: number, p: number) => Math.exp(logFact[n] - logFact[k] - logFact[n - k] + k * Math.log(p) + (n - k) * Math.log(1 - p));
+    // Which (early, late) counts show the card, asked of the real function
+    // (windows 30 days apart; only the counts matter, not the order).
+    const window = (hits: number, from: number): FirstTry[] =>
+      Array.from({ length: n }, (_, i) => ({ at: from + i * 3_600_000, runnerUp: i < hits }));
+    const shows: boolean[][] = [];
+    for (let e = 0; e <= n; e++) {
+      shows[e] = [];
+      for (let l = 0; l <= n; l++) shows[e][l] = mindsetGrowth([...window(e, now - 40 * DAY), ...window(l, now - 5 * DAY)], now).show;
+    }
+    expect(GROWTH_MIN_Z).toBeGreaterThanOrEqual(1.64);
+    for (let p = 0.02; p < 0.99; p += 0.01) {
+      let chance = 0;
+      for (let e = 0; e <= n; e++) for (let l = 0; l <= n; l++) if (shows[e][l]) chance += pmf(e, p) * pmf(l, p);
+      expect(chance).toBeLessThan(0.05);
+    }
+  });
+
+  it('with NO real change, a seeded simulation shows "growth" to under 5% of learners', () => {
+    for (const p of [0.1, 0.2, 0.3, 0.5]) {
+      const rng = createRng(Math.round(p * 1000));
+      let shows = 0;
+      const N = 2000;
+      for (let t = 0; t < N; t++) {
+        // 100 first tries over 60 days at a CONSTANT runner-up rate p.
+        const tries: FirstTry[] = Array.from({ length: 100 }, (_, i) => ({ at: now - 60 * DAY + i * 0.6 * DAY, runnerUp: rng() < p }));
+        if (mindsetGrowth(tries, now).show) shows++;
+      }
+      expect(shows / N).toBeLessThan(0.05);
+    }
   });
 
   it('says "fewer than 1 in 10" rather than "0 in 10"', () => {

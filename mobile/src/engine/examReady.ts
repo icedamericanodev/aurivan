@@ -96,7 +96,12 @@ export function readyHoldDays(log: ReadinessDay[], today: string): number {
   return held;
 }
 
-/** True when the one-time exam-ready panel should show on Today. */
-export function examReadyDue(log: ReadinessDay[] | undefined, today: string, seen: boolean): boolean {
-  return !seen && readyHoldDays(log ?? [], today) >= READY_DAYS;
+/**
+ * True when the one-time exam-ready panel should show on Today.
+ * `examSoon` = it is the exam eve or exam day: the panel waits (those days
+ * belong to the calm exam card), and since it was never dismissed it can
+ * still show later.
+ */
+export function examReadyDue(log: ReadinessDay[] | undefined, today: string, seen: boolean, examSoon = false): boolean {
+  return !seen && !examSoon && readyHoldDays(log ?? [], today) >= READY_DAYS;
 }

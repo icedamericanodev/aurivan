@@ -7,7 +7,8 @@
 import type { Stage } from './journey';
 
 export type PlanItem =
-  | { kind: 'review'; count: number }
+  /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
+  | { kind: 'review'; count: number; label?: string }
   | { kind: 'lesson'; lessonId: string; title: string }
   | { kind: 'practice'; domainId?: string; count: number; label: string }
   | { kind: 'game'; gameId: 'trap' | 'sprint' | 'priority'; label: string }
@@ -23,7 +24,26 @@ export interface PlanInput {
   examQuestions: number; // full mock length for this certification
 }
 
+/** The most the exam eve asks for: a light review, never a cram. */
+export const EVE_MAX = 10;
+/** Exam day: an optional warm-up only. */
+export const WARM_UP = 5;
+
 export function todaysPlan(p: PlanInput): PlanItem[] {
+  // The day before the exam and exam day are for rest, not cramming
+  // (the eve card says "Rest tonight rather than cram"; the plan must agree).
+  // Eve: ONE light item, due reviews if any, else practice. No game, no mock.
+  if (p.daysLeft === 1) {
+    const label = `Light review · up to ${EVE_MAX}`;
+    return p.dueReviews > 0
+      ? [{ kind: 'review', count: Math.min(p.dueReviews, EVE_MAX), label }]
+      : [{ kind: 'practice', count: EVE_MAX, label }];
+  }
+  // Exam day: only an optional five-question warm-up.
+  if (p.daysLeft === 0) {
+    return [{ kind: 'practice', count: WARM_UP, label: `Optional warm-up · ${WARM_UP} questions` }];
+  }
+
   const plan: PlanItem[] = [];
   const practiceCount = Math.max(5, Math.min(p.dailyGoal, 20));
 

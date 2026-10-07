@@ -16,24 +16,13 @@ import { Check } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
 import { CERTIFICATIONS } from '../content/certifications';
-import { dayKey } from '../engine/streak';
+import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
 import { useSettings } from '../store/settings';
 import { radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
-// Exam date presets avoid a native date-picker dependency for v1.
-const PRESETS: { label: string; months?: number }[] = [
-  { label: 'In 1 month', months: 1 },
-  { label: 'In 2 months', months: 2 },
-  { label: 'In 3 months', months: 3 },
-  { label: 'Not sure yet' },
-];
-
-function dateInMonths(m: number): string {
-  const d = new Date();
-  d.setMonth(d.getMonth() + m);
-  return dayKey(d.getTime()); // local calendar date, not UTC
-}
+// Exam date presets (shared with Settings) avoid a native date-picker dependency.
+const PRESETS = EXAM_DATE_PRESETS;
 
 export default function Onboarding() {
   const { c, isDark } = useTheme();
@@ -133,7 +122,7 @@ export default function Onboarding() {
               label="Start studying"
               onPress={() => {
                 const m = PRESETS[preset].months;
-                complete(certId, m ? dateInMonths(m) : undefined);
+                complete(certId, m ? dateInMonths(m, Date.now()) : undefined);
                 router.replace('/home');
               }}
             />

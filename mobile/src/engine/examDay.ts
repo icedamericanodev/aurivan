@@ -18,6 +18,45 @@ import { dayKey, daysBetween } from './streak';
 
 export type ExamMoment = 'eve' | 'day';
 
+// ── Choosing the exam date (onboarding and Settings share these) ───────
+/** Quick presets; they avoid a native date-picker dependency. */
+export const EXAM_DATE_PRESETS: { label: string; months?: number }[] = [
+  { label: 'In 1 month', months: 1 },
+  { label: 'In 2 months', months: 2 },
+  { label: 'In 3 months', months: 3 },
+  { label: 'Not sure yet' },
+];
+
+/** The local calendar date `months` from `now`, as "YYYY-MM-DD". */
+export function dateInMonths(months: number, now: number): string {
+  const d = new Date(now);
+  d.setMonth(d.getMonth() + months);
+  return dayKey(d.getTime()); // local calendar date, not UTC
+}
+
+/** Move a "YYYY-MM-DD" date by `days` (negative = earlier). Calendar maths, no time zone. */
+export function addDays(date: string, days: number): string {
+  const [y, m, d] = date.split('-').map(Number);
+  const t = new Date(Date.UTC(y, m - 1, d + days));
+  return `${t.getUTCFullYear()}-${String(t.getUTCMonth() + 1).padStart(2, '0')}-${String(t.getUTCDate()).padStart(2, '0')}`;
+}
+
+/**
+ * Which preset matches a saved date (so its chip shows as selected):
+ * no date → "Not sure yet"; a date no preset gives (after stepping by a day) → -1.
+ */
+export function presetIndexFor(date: string | undefined, now: number): number {
+  if (!date) return EXAM_DATE_PRESETS.findIndex((p) => p.months === undefined);
+  return EXAM_DATE_PRESETS.findIndex((p) => p.months !== undefined && dateInMonths(p.months, now) === date);
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+/** "12 Jan 2027" for a "YYYY-MM-DD" date (same short style as the rest of the app). */
+export function examDateLabel(date: string): string {
+  const [y, m, d] = date.split('-').map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+}
+
 /** Whole calendar days from `today` to the exam date (null = no date set). */
 export function daysToExam(examDate: string | undefined, today: string): number | null {
   if (!examDate || !/^\d{4}-\d{2}-\d{2}$/.test(examDate)) return null;

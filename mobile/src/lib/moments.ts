@@ -50,9 +50,10 @@ export function useTodayMoments({
     noteReadiness(cert.id, today, low);
   }, [noteReadiness, cert.id, today, low]);
 
-  const ready = examReadyDue(progress.moments?.readiness, today, Boolean(progress.moments?.readySeenAt));
   // `today` is a key; noon of that day is a safe timestamp for the date maths.
   const moment = examMoment(examDate, new Date(`${today}T12:00:00`).getTime());
+  // On the eve and exam day the ready panel stays hidden (the exam card speaks).
+  const ready = examReadyDue(progress.moments?.readiness, today, Boolean(progress.moments?.readySeenAt), moment !== null);
   const eve = useMemo(
     () => (moment === 'eve' ? eveReminders(slipInputs(cert.id, progress.mistakes)) : null),
     [moment, cert.id, progress.mistakes],
