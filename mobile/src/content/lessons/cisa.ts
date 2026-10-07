@@ -23,6 +23,8 @@ export const CISA_LESSONS: Lesson[] = [
     references: ['ITAF Standard 1001 — Audit Charter', 'ITAF Standard 1002 — Organisational Independence'],
     outlineVersion: OUTLINE,
     lastReviewed: '2026-10-06',
+    topics: ['1A1'],
+    prepares: ['d1_001'],
     scenes: [
       {
         type: 'title',
@@ -81,6 +83,8 @@ export const CISA_LESSONS: Lesson[] = [
     references: ['COBIT 2019 Framework — governance (EDM) and management (APO, BAI, DSS, MEA) objectives'],
     outlineVersion: OUTLINE,
     lastReviewed: '2026-10-06',
+    topics: ['2A2'],
+    prepares: ['d2_001'],
     scenes: [
       {
         type: 'title',
@@ -151,6 +155,7 @@ export const CISA_LESSONS: Lesson[] = [
     references: ['ISO/IEC 27001:2022 Annex A 8.32 — Change management', 'ISO/IEC 27001:2022 Annex A 8.31 — Separation of environments'],
     outlineVersion: OUTLINE,
     lastReviewed: '2026-10-06',
+    topics: ['4A8', '3B2'],
     scenes: [
       {
         type: 'title',
@@ -215,6 +220,8 @@ export const CISA_LESSONS: Lesson[] = [
     references: ['NIST SP 800-34 Rev. 1 — Contingency Planning Guide', 'ISO 22301:2019 — Business continuity management'],
     outlineVersion: OUTLINE,
     lastReviewed: '2026-10-06',
+    topics: ['4B5'],
+    prepares: ['d4_082'],
     scenes: [
       {
         type: 'title',
@@ -280,6 +287,8 @@ export const CISA_LESSONS: Lesson[] = [
     references: ['NIST SP 800-63B — Digital Identity Guidelines: Authentication', 'NIST SP 800-53 Rev. 5 — IA-2 Identification and Authentication'],
     outlineVersion: OUTLINE,
     lastReviewed: '2026-10-06',
+    topics: ['5A3'],
+    prepares: ['d5_024'],
     scenes: [
       {
         type: 'title',

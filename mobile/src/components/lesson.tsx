@@ -4,7 +4,8 @@
  * Grove v2 (DESIGN_SYSTEM.md §11 "Learn", §2): the lesson title is `hero`,
  * scene prose is the serif `stem` style (you sit and read it), the takeaway
  * is the italic `quote` on a green rule, and checks reuse the quiz
- * OptionCard. No cards around content; tinted blocks only for the trap.
+ * OptionCard. Check options are shuffled like practice questions and graded
+ * on the ORIGINAL letter (engine/shuffle.ts). No cards around content; tinted blocks only for the trap.
  *
  * Motion: lessons are explainers, so parts build up in reading order
  * (240ms fade + rise, 120ms apart). Every animation respects Reduce Motion.
@@ -12,8 +13,9 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
-import { LETTERS, type Letter } from '../content/types';
 import type { Scene } from '../content/lessons/types';
+import { displayToOriginal, isCheckCorrect, lettersFor, renderText, type Permutation } from '../engine/shuffle';
+import { LETTERS, type Letter } from '../content/types';
 import { haptic } from '../lib/haptics';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -43,9 +45,15 @@ export function SceneView({
   scene,
   onCheck,
   art,
+  perm,
 }: {
   scene: Scene;
   onCheck?: (correct: boolean) => void;
+  /**
+   * Check scenes only: the option order to show. The player makes it once
+   * per viewing, so going Back and Next shows the same order.
+   */
+  perm?: Permutation;
   /** The domain's branch, drawn on the title scene. */
   art?: BotanyKind;
 }) {
@@ -227,15 +235,26 @@ export function SceneView({
       );
 
     case 'check':
-      return <CheckScene scene={scene} onCheck={onCheck} />;
+      return <CheckScene scene={scene} onCheck={onCheck} perm={perm ?? lettersFor(scene.options.length)} />;
   }
 }
 
-function CheckScene({ scene, onCheck }: { scene: Extract<Scene, { type: 'check' }>; onCheck?: (correct: boolean) => void }) {
+function CheckScene({
+  scene,
+  onCheck,
+  perm,
+}: {
+  scene: Extract<Scene, { type: 'check' }>;
+  onCheck?: (correct: boolean) => void;
+  perm: Permutation;
+}) {
   const { c } = useTheme();
-  const [picked, setPicked] = useState<number | null>(null);
+  // `picked` is the DISPLAY letter the learner tapped.
+  const [picked, setPicked] = useState<Letter | null>(null);
   const done = picked !== null;
-  const right = picked === scene.correctIndex;
+  const right = picked !== null && isCheckCorrect(scene.correctIndex, picked, perm);
+  // Display slots A, B, C… in order; perm says which original option sits in each.
+  const displayLetters = lettersFor(scene.options.length);
 
   return (
     <View>
@@ -245,11 +264,13 @@ function CheckScene({ scene, onCheck }: { scene: Extract<Scene, { type: 'check' 
         <Stem>{scene.question}</Stem>
         <Gap h={space.xl} />
       </Animated.View>
-      {scene.options.map((opt, i) => {
-        // Lesson checks are not shuffled, so the letter IS the original position.
-        const letter = LETTERS[i] as Letter;
-        const isRight = i === scene.correctIndex;
-        const state: OptionState = !done ? 'idle' : isRight ? 'correct' : i === picked ? 'wrong' : 'dimmed';
+      {displayLetters.map((letter, i) => {
+        // Look up the ORIGINAL option behind this display letter (shuffled like practice).
+        const original = displayToOriginal(letter, perm);
+        const opt = scene.options[LETTERS.indexOf(original)] ?? '';
+        // Grade on the ORIGINAL letter, never on the display position.
+        const isRight = isCheckCorrect(scene.correctIndex, letter, perm);
+        const state: OptionState = !done ? 'idle' : isRight ? 'correct' : letter === picked ? 'wrong' : 'dimmed';
         return (
           <Animated.View key={opt} entering={enter(i + 1)}>
             <OptionCard
@@ -258,7 +279,7 @@ function CheckScene({ scene, onCheck }: { scene: Extract<Scene, { type: 'check' 
               state={state}
               disabled={done}
               onPress={() => {
-                setPicked(i);
+                setPicked(letter);
                 if (isRight) haptic.success();
                 else haptic.error();
                 onCheck?.(isRight);
@@ -272,7 +293,8 @@ function CheckScene({ scene, onCheck }: { scene: Extract<Scene, { type: 'check' 
           <Gap h={space.sm} />
           <T v="hero" color={right ? c.correct : c.wrong}>{right ? 'Correct' : 'Not quite'}</T>
           <Gap h={space.xs} />
-          <T v="body">{scene.explanation}</T>
+          {/* renderText maps any {{X}} letter reference to what is on screen. */}
+          <T v="body">{renderText(scene.explanation, perm)}</T>
         </Animated.View>
       )}
     </View>

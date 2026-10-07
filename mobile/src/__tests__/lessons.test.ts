@@ -1,6 +1,9 @@
 /** Lesson integrity — every lesson must be well-formed and trustworthy. */
+import fs from 'fs';
+import path from 'path';
 import { CERTIFICATIONS } from '../content/certifications';
-import { lessonsFor, nextLesson } from '../content/lessons';
+import { lessonPreparing, lessonsFor, nextLesson } from '../content/lessons';
+import { getAllQuestions } from '../content/loader';
 
 const all = CERTIFICATIONS.flatMap((c) => lessonsFor(c.id));
 
@@ -22,6 +25,10 @@ describe('lessons', () => {
         expect(s.correctIndex).toBeLessThan(s.options.length);
       }
     }
+  });
+  it('finds the lesson that prepares a bank question', () => {
+    expect(lessonPreparing('cisa', 'd4_082')?.id).toBe('cisa-l-d4-rpo-rto');
+    expect(lessonPreparing('cisa', 'no_such_id')).toBeUndefined();
   });
   it('next lesson prefers the weakest domain', () => {
     expect(nextLesson('cisa', [], '4')?.domainId).toBe('4');
@@ -55,5 +62,56 @@ describe('lesson copy is sentence case', () => {
       }
     }
     expect(loud).toEqual([]);
+  });
+});
+
+/**
+ * Lesson metadata and check quality (lessons expansion plan §4).
+ * - `topics` codes must be real codes from the official outline, parsed from
+ *   the `- 1A1 Title` lines of docs/content/CISA_ECO.md.
+ * - `prepares` ids must exist in the bundled question bank.
+ * - Checks must not teach "always pick B", and options stay short.
+ */
+
+const ECO_FILE = path.join(__dirname, '../../../docs/content/CISA_ECO.md');
+const ECO_CODES = new Set(
+  [...fs.readFileSync(ECO_FILE, 'utf8').matchAll(/^- ([1-5][AB]\d{1,2}) \S/gm)].map((m) => m[1]),
+);
+const OUTLINE_FILES: Record<string, Set<string>> = { cisa: ECO_CODES };
+const MAX_OPTION_WORDS = 12;
+
+describe('lesson metadata', () => {
+  it('parses the CISA outline from first topic to last', () => {
+    // Guards the parser: if the file format changes, this fails loudly
+    // instead of silently accepting no codes.
+    expect(ECO_CODES.size).toBeGreaterThanOrEqual(55);
+    for (const code of ['1A1', '2B4', '3B4', '4A11', '4B1', '5B6']) expect(ECO_CODES.has(code)).toBe(true);
+  });
+
+  it.each(all.map((l) => [l.id, l] as const))('%s topics and prepares are real', (_id, l) => {
+    const outline = OUTLINE_FILES[l.certId];
+    for (const code of l.topics ?? []) {
+      expect(code).toMatch(/^[1-5][AB]\d{1,2}$/);
+      // A cert without an outline file yet cannot carry topics.
+      expect(outline?.has(code) ? code : `${code} (not in outline)`).toBe(code);
+    }
+    const bankIds = new Set(getAllQuestions(l.certId).map((q) => q.id));
+    for (const id of l.prepares ?? []) {
+      expect(bankIds.has(id) ? id : `${id} (not in content pack)`).toBe(id);
+    }
+  });
+
+  it.each(all.map((l) => [l.id, l] as const))('%s checks are well-balanced', (_id, l) => {
+    const checks = l.scenes.filter((s) => s.type === 'check');
+    // With two or more checks, the keys must not all sit at the same letter.
+    if (checks.length >= 2) expect(new Set(checks.map((s) => s.correctIndex)).size).toBeGreaterThan(1);
+    for (const s of checks) {
+      expect(s.options.length).toBeGreaterThanOrEqual(2);
+      expect(s.options.length).toBeLessThanOrEqual(4); // letters A–D only
+      for (const opt of s.options) {
+        const words = opt.trim().split(/\s+/).length;
+        expect(words > MAX_OPTION_WORDS ? `${opt} (${words} words)` : opt).toBe(opt);
+      }
+    }
   });
 });

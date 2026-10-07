@@ -6473,7 +6473,28 @@ function buildConceptsData() {
       };
     })
   };
+  migrateTopicTicks(CONCEPTS_DATA);
   return CONCEPTS_DATA;
+}
+
+// When the notes were rewritten (v10.54) subtopic ids changed. Each new
+// subtopic lists the old ids it replaces in legacy_ids; carry a learner's
+// "reviewed" ticks over so no progress is lost. Idempotent: it only adds
+// ticks, and saves only when it added one.
+function migrateTopicTicks(data) {
+  var reviewed = getTopicReviewedSet();
+  var changed = false;
+  data.domains.forEach(function(dom) {
+    dom.groups.forEach(function(g) {
+      g.items.forEach(function(it) {
+        var legacy = (it.raw && it.raw.legacy_ids) || [];
+        if (!reviewed[it.id] && legacy.some(function(old) { return reviewed[old]; })) {
+          reviewed[it.id] = true; changed = true;
+        }
+      });
+    });
+  });
+  if (changed) { try { saveState(); } catch (e) {} }
 }
 
 // ── PROGRESS HELPERS ──
@@ -6560,7 +6581,7 @@ function flattenForSearch(val) {
   if (typeof val === 'string') return val + ' ';
   if (typeof val === 'number' || typeof val === 'boolean') return String(val) + ' ';
   if (Array.isArray(val)) return val.map(flattenForSearch).join(' ');
-  if (typeof val === 'object') return Object.keys(val).map(function(k){ return k + ' ' + flattenForSearch(val[k]); }).join(' ');
+  if (typeof val === 'object') return Object.keys(val).filter(function(k){ return k !== 'legacy_ids'; }).map(function(k){ return k + ' ' + flattenForSearch(val[k]); }).join(' ');
   return '';
 }
 
@@ -6700,7 +6721,7 @@ function renderItemBody(raw, domainId, searchQ) {
 
   // Tracker: mark fields as already rendered so generic pass skips them
   var done = { id:1, name:1, topic_id:1, topic_name:1, subtopics:1,
-               discussion:1, illustration:1, common_mistakes:1 };
+               discussion:1, illustration:1, common_mistakes:1, legacy_ids:1 };
   var html = '';
 
   // ── 1. Summary at top, no label (the headline of the subtopic) ──

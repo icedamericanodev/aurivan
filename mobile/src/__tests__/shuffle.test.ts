@@ -2,7 +2,10 @@ import type { PackQuestion } from '../content/types';
 import { createRng } from '../engine/random';
 import {
   displayToOriginal,
+  isCheckCorrect,
   isCorrect,
+  lettersFor,
+  makeCheckPermutation,
   makePermutation,
   originalToDisplay,
   renderText,
@@ -43,5 +46,40 @@ describe('option shuffling', () => {
     const perm = ['C', 'A', 'D', 'B'] as const; // display A shows original C
     const out = renderText('Trap is {{B}}. A sample of 25 is small; Annex A applies.', [...perm]);
     expect(out).toBe('Trap is D. A sample of 25 is small; Annex A applies.');
+  });
+});
+
+describe('lesson check shuffling', () => {
+  it('maps option counts to original letters', () => {
+    expect(lettersFor(3)).toEqual(['A', 'B', 'C']);
+    expect(lettersFor(4)).toEqual(['A', 'B', 'C', 'D']);
+    expect(lettersFor(9)).toEqual(['A', 'B', 'C', 'D']); // never more letters than exist
+  });
+
+  it('keeps the written order when shuffling is off', () => {
+    expect(makeCheckPermutation(4, null)).toEqual(['A', 'B', 'C', 'D']);
+  });
+
+  it('is a permutation, and the same seed gives the same order', () => {
+    const a = makeCheckPermutation(4, createRng(7));
+    expect([...a].sort()).toEqual(['A', 'B', 'C', 'D']);
+    expect(makeCheckPermutation(4, createRng(7))).toEqual(a);
+  });
+
+  it('grades on the original letter, wherever the answer is displayed', () => {
+    for (let seed = 1; seed < 50; seed++) {
+      const perm = makeCheckPermutation(4, createRng(seed));
+      for (let correctIndex = 0; correctIndex < 4; correctIndex++) {
+        // Exactly one display letter is correct: the one showing the key.
+        const right = (['A', 'B', 'C', 'D'] as const).filter((d) => isCheckCorrect(correctIndex, d, perm));
+        expect(right).toEqual([originalToDisplay(lettersFor(4)[correctIndex], perm)]);
+      }
+    }
+  });
+
+  it('moves the key off one fixed letter across seeds', () => {
+    const shown = new Set<string>();
+    for (let seed = 1; seed < 40; seed++) shown.add(originalToDisplay('B', makeCheckPermutation(4, createRng(seed))));
+    expect(shown.size).toBeGreaterThan(1);
   });
 });

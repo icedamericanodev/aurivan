@@ -32,7 +32,7 @@ import {
 import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
-import { ArrowRight, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
+import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
 import {
   ConfidenceRow,
   FEEDBACK_DELAY,
@@ -47,8 +47,9 @@ import {
 } from '../components/quiz';
 import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
-import { Button, Gap, ICON_SIZE, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
+import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
 import { getCertification, getDomain } from '../content/certifications';
+import { lessonPreparing } from '../content/lessons';
 import { findQuestion } from '../content/loader';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
@@ -316,6 +317,8 @@ export default function SessionScreen() {
         ? 'You picked the runner-up. That’s the trap.'
         : 'Check the role in the stem.';
   const flagged = active.flagged.includes(qid);
+  // Cross-link: after a miss, offer the lesson written to prepare for this question.
+  const reviewLesson = response && !response.correct ? lessonPreparing(active.certId, q.id) : undefined;
   const saved = bookmarks.includes(qid);
   const lowTime = isMock && remaining < 5 * 60_000;
   const largeText = fontScale >= LARGE_TEXT;
@@ -495,6 +498,19 @@ export default function SessionScreen() {
                 <View ref={vineRef} collapsable={false} onLayout={checkVine}>
                   <Vine key={qid} keyIdea={q.keyConcept} tips={q.tips.map((t) => renderText(t, perm))} visible={vineVisible} />
                 </View>
+                {reviewLesson && (
+                  // Only after a miss, and only if a lesson lists this question in `prepares`.
+                  <ListRow
+                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    title={`Review the lesson: ${reviewLesson.title}`}
+                    subtitle={`${reviewLesson.minutes} min lesson`}
+                    accessibilityLabel={`Review the lesson: ${reviewLesson.title}, ${reviewLesson.minutes} minutes`}
+                    accessibilityHint="Opens the lesson. Come back here when you finish."
+                    onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
+                    // TrustLine below draws its own top rule, so skip this row's hairline.
+                    last
+                  />
+                )}
                 <TrustLine questionId={q.id} reference={q.reference} onReport={() => reportIssue(q.id, cert.name)} />
               </>
             )

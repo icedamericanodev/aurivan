@@ -35,5 +35,17 @@ export interface Lesson {
   references: string[];
   outlineVersion: string; // exam outline the lesson was checked against
   lastReviewed: string; // YYYY-MM-DD
+  /**
+   * Official exam outline codes this lesson teaches, e.g. ['4B1'].
+   * Optional. For CISA, every code must appear in docs/content/CISA_ECO.md
+   * (lessons.test.ts checks this).
+   */
+  topics?: string[];
+  /**
+   * Question-bank ids this lesson prepares a learner for, e.g. ['d4_082'].
+   * Optional. Lesson checks must be PARALLEL to these items, never copies.
+   * Used to offer "Review the lesson" when one of them is missed.
+   */
+  prepares?: string[];
   scenes: Scene[];
 }
