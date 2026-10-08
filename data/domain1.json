@@ -667,9 +667,9 @@
       "subtopic": "Sampling Risk and Conclusion",
       "difficulty": "analysis",
       "bloom_level": "Analysis",
-      "question": "An IS auditor tests 25 of 6,800 privileged-access transactions and finds 2 failures (8%) against a 1% tolerable rate. What is the auditor's MOST appropriate next step?",
+      "question": "An IS auditor tests 60 of 6,800 privileged-access transactions and finds 6 failures (10%) against a 5% tolerable rate. What is the auditor's MOST appropriate next step?",
       "options": {
-        "A": "Pass the control, since just two items failed",
+        "A": "Pass the control, since just six items failed",
         "B": "Conclude the control is not operating effectively",
         "C": "Expand the sample to refine the deviation-rate estimate before concluding",
         "D": "Ask the audit committee to raise the tolerable rate"
@@ -677,15 +677,15 @@
       "correct": "B",
       "key_concept": "When the sample deviation rate clearly exceeds the tolerable rate, the auditor cannot rely on the control and evaluates the deviations' cause.",
       "pre_read": "Compare the sample rate with the tolerable rate. Ask whether more testing could realistically change the conclusion.",
-      "correct_explanation": "An 8% sample deviation rate against a 1% tolerable rate means the auditor cannot rely on the control, whatever allowance is made for sampling risk. The auditor concludes it is not operating effectively, evaluates the cause and nature of the deviations, and adjusts substantive work. Extending suits results near the threshold; even a far larger sample would almost certainly leave the upper deviation limit above 1%.",
+      "correct_explanation": "A 10% sample deviation rate against a 5% tolerable rate means the auditor cannot rely on the control, whatever allowance is made for sampling risk. The auditor concludes it is not operating effectively, evaluates the cause and nature of the deviations, and adjusts substantive work. Extending suits results near the threshold; even a far larger sample would almost certainly leave the upper deviation limit above 5%.",
       "wrong_explanations": {
-        "A": "Two failures in 25 is an 8% rate, eight times the tolerable rate. Absolute counts are not the test.",
-        "C": "Extension helps when results are borderline. With 8% against 1%, more items would only delay an inevitable conclusion.",
+        "A": "Six failures in 60 is a 10% rate, double the tolerable rate. Absolute counts are not the test.",
+        "C": "Extension helps when results are borderline. With 10% against 5%, more items would only delay an inevitable conclusion.",
         "D": "Tolerable rates are set before testing from risk. Changing them to fit results undermines the whole test."
       },
       "tips": [
         "Eliminate: A judges by raw count, not rate, and D moves the threshold to fit the result.",
-        "Final two: B beats C because extending a sample helps only near the threshold; 8% against 1% is already conclusive.",
+        "Final two: B beats C because extending a sample helps only near the threshold; 10% against 5% is already conclusive.",
         "Exam cue: if the sample rate already exceeds the tolerable rate by a wide margin, conclude rather than keep sampling."
       ],
       "framework_ref": "ISACA IT Audit Standard 1205 (Evidence); ISACA ITAF Guideline 2208 (Information Technology Audit Sampling); AICPA AU-C 530 (Audit Sampling)",
@@ -695,7 +695,7 @@
         "Sample size determination",
         "Audit deadline pressure"
       ],
-      "_provenance": "Authored from concept: 'sampling risk — expand sample when apparent failures dramatically exceed threshold from a small base'. Public source: ISACA IT Audit Standard 1205 + AICPA AU-C 530. All scenario specifics (manufacturing, 6,800 transactions, 25-sample, 2-failure, 4-week deadline, 1% threshold) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: key deliberately changed to 'conclude not effective' because the rate is far above tolerable; d1_128 carries the borderline extend case.",
+      "_provenance": "Authored from concept: 'sampling risk — expand sample when apparent failures dramatically exceed threshold from a small base'. Public source: ISACA IT Audit Standard 1205 + AICPA AU-C 530. All scenario specifics (manufacturing, 6,800 transactions, 60-sample, 6-failure, 4-week deadline, 5% threshold) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem. v2: key deliberately changed to 'conclude not effective' because the rate is far above tolerable; d1_128 carries the borderline extend case. Oct 2026 fix: sample 25 to 60 and tolerable rate 1% to 5%, because a sample of 25 cannot support a 1% tolerable rate (about 59 items are needed for 5% at 95% confidence).",
       "style_version": 2
     },
     {
@@ -2992,7 +2992,7 @@
         "Final two: A beats C because general controls govern the whole environment; reconciling a data flow checks specific processing.",
         "Exam cue: general controls cover access, change, operations and infrastructure; anything tied to specific transactions is an application control."
       ],
-      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); COBIT 2019 DSS06 (Managed Business Process Controls); ISACA CISA Review Manual, 28th Edition, Chapter 1 (Information System Auditing Process)",
+      "framework_ref": "COBIT 2019 DSS05 (Managed Security Services); COBIT 2019 BAI06 (Managed IT Changes); COBIT 2019 DSS06 (Managed Business Process Controls)",
       "related_concepts": [
         "General IT controls",
         "Application controls",
@@ -3000,7 +3000,7 @@
         "Change management",
         "Control classification"
       ],
-      "_provenance": "Authored from concept: 'general IT controls vs application controls - environment-wide scope vs application-specific scope'. Public source: ISACA Risk IT + ITAF. All scenario specifics (copper-mining, ore-grading, truck-dispatch, capital-equipment purchases) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'general IT controls vs application controls - environment-wide scope vs application-specific scope'. Public source: COBIT 2019 DSS05, BAI06 and DSS06 (Oct 2026: Review Manual citation replaced with public COBIT objectives). All scenario specifics (copper-mining, ore-grading, truck-dispatch, capital-equipment purchases) invented for this question. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
     {

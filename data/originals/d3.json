@@ -2657,14 +2657,14 @@
       "question": "Management wants to assess the software delivery performance of its DevOps teams. Which set of measures is MOST appropriate?",
       "options": {
         "A": "Lines of code, story points and commits per developer",
-        "B": "Deployment frequency, lead time, change failure rate, restore time",
+        "B": "Deployment frequency, lead time, change failure rate, recovery time",
         "C": "Defect density, test coverage, review approvals and build success",
         "D": "Meeting hours, staff tenure, satisfaction scores and license usage"
       },
       "correct": "B",
-      "key_concept": "The DORA four key metrics pair throughput (deployment frequency, lead time) with stability (change failure rate, time to restore).",
+      "key_concept": "The DORA four key metrics pair throughput (deployment frequency, lead time) with stability (change failure rate, failed deployment recovery time, formerly time to restore).",
       "pre_read": "Ask which measures show both how fast and how safely changes reach users.",
-      "correct_explanation": "Delivery performance is best measured by outcomes that balance speed and stability: how often the team deploys, how long a change takes to reach production, how often changes fail, and how quickly service is restored. Defect density and coverage describe code quality inside the pipeline, but they do not show whether value reaches users quickly and reliably.",
+      "correct_explanation": "Delivery performance is best measured by outcomes that balance speed and stability: how often the team deploys, how long a change takes to reach production, how often changes fail, and how quickly the team recovers from a failed deployment. Defect density and coverage describe code quality inside the pipeline, but they do not show whether value reaches users quickly and reliably.",
       "wrong_explanations": {
         "A": "Output counts reward activity, are easy to game and say nothing about how reliably changes reach production.",
         "C": "These are internal quality signals. They can all look good while releases remain slow or failure-prone in production.",
@@ -2675,14 +2675,14 @@
         "Final two: B beats C because delivery performance is judged by end-to-end speed and stability, not internal quality proxies.",
         "Exam cue: for performance measures, prefer outcome metrics that balance throughput and stability over activity counts."
       ],
-      "framework_ref": "DORA Four Key Metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, MTTR); DORA / Accelerate (DevOps Research and Assessment)",
+      "framework_ref": "DORA / Accelerate (DevOps Research and Assessment)",
       "related_concepts": [
         "DORA",
         "Four Key Metrics",
         "Software delivery performance",
         "Accelerate"
       ],
-      "_provenance": "Authored from concept: 'DORA Four Key Metrics per DORA / Accelerate research'. Public sources: DORA, Accelerate book. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
+      "_provenance": "Authored from concept: 'DORA Four Key Metrics per DORA / Accelerate research'. Public sources: DORA, Accelerate book. Oct 2026: fourth metric renamed to DORA's current 'failed deployment recovery time' (formerly time to restore service / MTTR). Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
       "style_version": 2
     },
     {

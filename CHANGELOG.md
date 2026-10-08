@@ -4,6 +4,13 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v11.0.1] — Small fixes
+
+### Fixed
+- A sampling question now uses numbers that are statistically sound.
+- A DevOps question uses the current name for the recovery-time metric.
+- The answer line after you check a question now reads evenly.
+
 ## [v11] — A fresh look and new study notes
 
 ### New
