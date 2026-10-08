@@ -68,7 +68,7 @@ export default function Learn() {
             action={{ label: 'Start lesson', icon: (col) => play(col), hint: upNext.title, onPress: () => router.push(`/lesson/${upNext.id}`) }}
           />
         ) : (
-          <HeroPanel caption="All caught up" title="Every lesson done" meta="More lessons are on the way." art="branch1" />
+          <HeroPanel caption="All caught up" title="Every lesson done" meta="Every exam topic covered. Revisit any lesson anytime." art="branch1" />
         )}
       </Enter>
 
@@ -154,7 +154,7 @@ export default function Learn() {
             </View>
           );
         })}
-        <T v="meta" style={{ marginTop: space.md }}>More lessons are on the way.</T>
+        <T v="meta" style={{ marginTop: space.md }}>One lesson for every topic in the CISA exam outline.</T>
         <T v="meta" color={c.muted} style={{ marginTop: space.xs }}>Original content, reviewed against public frameworks.</T>
       </Enter>
     </Screen>
