@@ -2885,7 +2885,7 @@ export const CISA_LESSONS: Lesson[] = [
           'The supplier may charge more for faster delivery of parts',
           'IT may break the four-hour promise whenever hardware fails',
           'The business may not truly need a four-hour restore',
-          'The SLA may not set penalties for any missed targets',
+          'The supplier contract may lack penalties matching the four-hour promise',
         ],
         correctIndex: 1,
         explanation:
@@ -3237,7 +3237,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'No nearby copy exists to meet the four-hour restore target',
           'Tapes may be damaged on the long road trip to the vault',
-          'The vault is too far away for staff to inspect it often',
+          'The four-hour target was set without the vault provider’s sign-off',
           'A regional disaster could still reach a vault 250 miles away',
         ],
         correctIndex: 0,
@@ -3694,11 +3694,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Confirm the backups are clean and the entry point is closed',
           'Restore the most critical server first to cut downtime',
           'Prepare a press statement before systems come back online',
-          'Install new antivirus software, then restore',
+          'Check last night’s backup jobs logged success before restoring',
         ],
         correctIndex: 0,
         explanation:
-          'Restoring infected backups, or restoring while the way in is still open, brings the attack straight back. Restoring the most critical server first is right once it is safe, but speed does not make it safe, and new antivirus may not close the entry point. Keep copies of the affected servers as evidence before rebuilding.',
+          'Restoring infected backups, or restoring while the way in is still open, brings the attack straight back. Restoring the most critical server first is right once it is safe, but speed does not make it safe, and a backup job that logged success can still hold infected files. Keep copies of the affected servers as evidence before rebuilding.',
       },
     ],
   },
@@ -3905,7 +3905,7 @@ export const CISA_LESSONS: Lesson[] = [
           'A firewall rule letting only finance laptops reach the share',
           'A web application firewall placed in front of the file server',
           'An intrusion detection alert for any attempt on the flaw',
-          'A weekly scan for signs of attack until the patch lands',
+          'An alert whenever a non-finance laptop tries to reach the share',
         ],
         correctIndex: 0,
         explanation:
@@ -4492,7 +4492,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'A SIEM’s rules link firewall, server and remote-access events, but server clocks drift up to 20 minutes from the others. Which risk is GREATEST?',
         options: [
-          'Log storage costs keep rising as data volumes grow',
+          'Linked events may be stored without the source device’s name',
           'Related events seem too far apart for rules to link',
           'Analysts receive far more alerts than they can handle',
           'Reports show managers the wrong times for some events',
@@ -4588,7 +4588,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'An IS auditor reviews a forensic team’s procedure for seized drives. Which practice would MOST weaken the evidence if challenged in court?',
         options: [
-          'Image copies are stored in two secure locations',
+          'Seized drives are imaged with a hardware write-blocker attached',
           'Analysts open files straight from the seized drive',
           'Each handover is signed by both analysts involved',
           'Each image is hashed with a current, accepted algorithm',
