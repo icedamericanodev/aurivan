@@ -16,11 +16,11 @@ export interface Pillar {
 }
 
 export const TAGLINE = 'Master Modern Risk.';
-export const VISION_LINE = 'Grow your judgement, one ring at a time.';
+export const VISION_LINE = 'Grow your judgment, one ring at a time.';
 
 export const PILLARS: readonly Pillar[] = [
   { glyph: 'path', title: 'See the path', body: 'Know what to study next, and why it matters.' },
   { glyph: 'roots', title: 'Grow deep roots', body: 'Learn the principle behind every answer, not just the key.' },
   { glyph: 'seasons', title: 'Grow with the seasons', body: 'Your plan adjusts when your week or the frameworks change.' },
-  { glyph: 'tall', title: 'Stand tall', body: 'Build the judgement your team and clients rely on.' },
+  { glyph: 'tall', title: 'Stand tall', body: 'Build the judgment your team and clients rely on.' },
 ];

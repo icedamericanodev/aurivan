@@ -52,7 +52,7 @@ auditor,cybersecurity,governance,risk,controls,compliance,quiz,certification,stu
 ```
 Master Modern Risk.
 
-Aurivan helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgement the exam rewards, one ring at a time.
+Aurivan helps IT auditors, security and risk professionals prepare for the CISA® exam in short, calm sessions that fit around work. Every answer teaches the principle behind it, so you grow the judgment the exam rewards, one ring at a time.
 
 PRACTICE THAT TEACHES
 • Original practice questions across all 5 CISA domains
@@ -143,7 +143,7 @@ Use the App Store description above unchanged. Play indexes the full description
 | 3 | Question with tips revealed | Learn the why behind answers | 5 |
 | 4 | Readiness range | An honest readiness estimate | 4 |
 | 5 | Mistakes / spaced review | Every miss becomes a lesson | 5 |
-| 6 | Games (Play tab) | Sharpen your exam judgement | 4 |
+| 6 | Games (Play tab) | Sharpen your exam judgment | 4 |
 
 Screenshots must not show a question count. Use demo data (`npm run shots`) and check that no screen shows the bank size.
 

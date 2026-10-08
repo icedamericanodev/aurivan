@@ -1,3 +1,10 @@
+> **Superseded on 2026-10-08.** The web app moved to the mobile app's
+> **Grove** design system and the **True North** logo, so web and mobile look
+> like one product. The source of truth is now
+> [`docs/mobile/DESIGN_SYSTEM.md`](../docs/mobile/DESIGN_SYSTEM.md) (tokens in
+> `mobile/src/theme/tokens.ts`). This file is kept as history only; its
+> navy/blue variant locks no longer apply.
+
 # MASTER HANDOFF — Aurivan v9.0
 > Single source of truth for Claude Code.
 > This file supersedes HANDOFF.md.

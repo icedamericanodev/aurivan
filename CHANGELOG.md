@@ -4,6 +4,18 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v11] — A fresh look and new study notes
+
+### New
+- Aurivan has a calm new forest-green look and a new logo, matching the mobile app.
+- The Topics notes are rebuilt so every concept reads the same way: a one-line definition, why it matters, how it works, a real example, how ISACA thinks, and the exam traps to avoid.
+- Side-by-side comparisons for easily confused ideas, such as RPO and RTO or the types of audit opinion.
+- More exam topics are covered, including RAID and clustering, database integrity, intrusion detection, malware and web attacks, and penetration test types.
+
+### Improved
+- Topics starts collapsed, diagrams are readable on phones, and search finds acronyms such as RPO first.
+- Topics you marked as reviewed stay marked, and now stay marked after you reload the page.
+
 ## [v10.55.1] — Tidier Topics page
 
 ### Fixed

@@ -12,7 +12,7 @@ work without rediscovering the layout.
 | `index.html` | The entire app — HTML, CSS, and inline JS in one file (~8.7k lines) |
 | `data/domain{1..5}.json` | **Generated.** Per-domain question banks. Don't edit by hand. |
 | `data/tips_overrides/d{1..5}.json` | **Hand-authored.** Per-question tips, keyed by question ID. Source of truth for tips. |
-| `data/cisa_notes.json` | Topics-tab content (summaries, analogies, key terms per domain) |
+| `data/cisa_notes.json` | Topics notes (web Topics tab + mobile Study notes). Schema v2: `docs/content/NOTES_SCHEMA_V2.md`; lint with `scripts/lint_notes.py` |
 | `data/cisa_concepts.json` | Orphan file kept in sync for hygiene; not loaded by the app |
 | `data/glossary.json` | Glossary tab data |
 | `scripts/convert_test_bank.py` | Idempotent converter: xlsm + tips overrides → `data/domain{N}.json` |
@@ -130,7 +130,9 @@ After any commit that touches `index.html` (styles, components, copy), invoke
 | `cisa-citation-*` | Fabricated / mis-attributed framework_ref | At Stage 2.5 of authoring |
 | `cisa-cross-domain-reviewer` | Contradictions, near-duplicates and drift ACROSS domains | After any domain rewrite; final gate before a bank release |
 
-The UX reviewer reads `design-notes/MASTER_HANDOFF.md` as locked source of
+The UX reviewer reads `docs/mobile/DESIGN_SYSTEM.md` (Grove, shared by web and
+mobile since v11) as the source of truth; `design-notes/MASTER_HANDOFF.md` is
+history. Earlier text: it read MASTER_HANDOFF as locked source of
 truth and flags deviations from the variant selections table. Findings are
 tiered HARD ERROR / PRECISION / OBSERVATION — apply HARD ERRORS inline
 before merge.
@@ -190,6 +192,8 @@ kill %1
   `mobile-security-auditor`, `app-store-compliance-reviewer`. Multi-cert content
   agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
   `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups).
+  Notes and web: `cisa-notes-curator` (notes structure and rewrites), `learner-reader`
+  (first-time candidate read-through), `web-app-engineer` (index.html).
 
 ## Branching + GitHub
 

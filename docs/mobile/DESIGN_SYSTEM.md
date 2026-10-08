@@ -350,7 +350,7 @@ over the i). Two fixed tones that do not follow the theme: `light` on paper,
 `brand` and `pillarGlyph` in `theme/tokens.ts`.
 
 **Vision (Set A "Rings").** Copy lives only in `content/brand.ts`.
-Tagline "Master Modern Risk." · line "Grow your judgement, one ring at a time."
+Tagline "Master Modern Risk." · line "Grow your judgment, one ring at a time."
 · pillars See the path / Grow deep roots / Grow with the seasons / Stand tall.
 Shown on the welcome screen (onboarding step 0, the screen's one forest panel)
 and in Settings → About ("Our vision"). The share card carries the dark lockup.
