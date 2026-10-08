@@ -387,8 +387,8 @@
       "bloom_level": "Application",
       "question": "An IS auditor finds a material spreadsheet that calculates loan loss reserves is edited by several analysts. Which control MOST reduces the risk of undetected formula errors?",
       "options": {
-        "A": "Independent review and approval of each formula change",
-        "B": "Password protection required to open the spreadsheet",
+        "A": "Independent review of each change to the spreadsheet logic",
+        "B": "A policy limiting spreadsheet edit access to approved analysts",
         "C": "A daily backup copy saved to a network drive",
         "D": "Monthly reasonableness review of the final reserve figure"
       },
@@ -397,7 +397,7 @@
       "pre_read": "Ask where formula errors enter. Prefer the control acting at that point over one that checks the result.",
       "correct_explanation": "Formula errors enter when someone edits the logic. Requiring independent review and approval of each change stops errors before they reach the reported reserve, as change control does for formal systems. A monthly reasonableness review is a useful detective check, but it only catches errors large enough to distort the total; a wrong formula can still produce a plausible figure.",
       "wrong_explanations": {
-        "B": "Password protection limits who opens the file, but the analysts making edits are already authorized, so their errors pass unchecked.",
+        "B": "The errors come from analysts who are already approved editors, so an access policy leaves their formula changes unchecked.",
         "C": "Backups support recovery of the file. They preserve wrong formulas just as faithfully as correct ones.",
         "D": "A reasonableness check catches errors big enough to look wrong. A flawed formula can still produce a plausible but misstated reserve."
       },
@@ -945,7 +945,7 @@
       "options": {
         "A": "Compare the job schedule with approved business requirements",
         "B": "Review the failed-job log for the past quarter's batch runs",
-        "C": "Interview the scheduler administrator about job dependencies",
+        "C": "Obtain the scheduler owner's written confirmation of job dependencies",
         "D": "Measure nightly jobs executed against the capacity plan"
       },
       "correct": "A",
@@ -954,11 +954,11 @@
       "correct_explanation": "Comparing the schedule with approved business requirements tests whether the right jobs run, in the right order, at the right time, which is the scheduler's purpose. A failed-job log is useful operational evidence, but it shows only what broke; a job that runs successfully yet was never authorized, or runs in the wrong sequence, never appears there.",
       "wrong_explanations": {
         "B": "Failure logs show jobs that broke, not whether successful jobs were authorized or correctly sequenced against business needs.",
-        "C": "An interview is testimonial evidence from the person who runs the scheduler, so it is weaker than comparing records with requirements.",
+        "C": "Written confirmation is a representation from the person who runs the scheduler, so it is weaker evidence than comparing records with requirements.",
         "D": "Measuring jobs against the capacity plan addresses performance planning, not whether the jobs themselves are correct and authorized."
       },
       "tips": [
-        "Eliminate: C relies on testimony from the scheduler owner, and D measures capacity rather than job correctness.",
+        "Eliminate: C relies on the scheduler owner's own representation, and D measures capacity rather than job correctness.",
         "Final two: A beats B because a baseline of approved requirements reveals unauthorized or mis-sequenced jobs that run without failing.",
         "Exam cue: the best evidence compares what happens with an approved baseline; exception logs show only what broke."
       ],
@@ -1092,7 +1092,7 @@
       "question": "An IS auditor finds that developers can run a raw-disk editing utility on production servers without approval. Which control is MOST appropriate?",
       "options": {
         "A": "Log each developer's utility sessions for monthly review",
-        "B": "Uninstall administrative utilities from every production server",
+        "B": "Uninstall every admin and recovery utility under a hardening policy",
         "C": "Limit the utility to named administrators via approved requests",
         "D": "Share one utility password with the support team for emergencies"
       },
@@ -1102,7 +1102,7 @@
       "correct_explanation": "Powerful utilities can bypass application controls, so access should be preventive: limited to named administrators, granted through an approved request, and kept separate from developer roles. Logging developer sessions for monthly review is a sensible detective layer, but it still lets developers alter production data directly and finds misuse weeks after the damage is done.",
       "wrong_explanations": {
         "A": "Monthly log review detects misuse after it happens and leaves developers with direct production access, so segregation of duties is still broken.",
-        "B": "Removing the tools blocks legitimate support and recovery work, so administrators would look for riskier workarounds.",
+        "B": "A policy does not make removal wise. Removing every admin and recovery tool blocks legitimate support work, so administrators would look for riskier workarounds.",
         "D": "A shared password removes individual accountability and widens access instead of restricting it."
       },
       "tips": [
@@ -1279,7 +1279,7 @@
         "A": "Forward the existing application logs to a write-once archive",
         "B": "Retain OS and database logs under a retention policy",
         "C": "Raise the verbosity level of application logging",
-        "D": "Keep every log from every system indefinitely"
+        "D": "Keep every system's logs indefinitely under a management-approved policy"
       },
       "correct": "B",
       "key_concept": "Log management needs coverage across layers, including OS and database, retained under a defined policy before integrity measures matter.",
@@ -1288,10 +1288,10 @@
       "wrong_explanations": {
         "A": "Write-once storage protects the integrity of application logs, but the OS and database evidence is still overwritten daily.",
         "C": "More application detail does not capture privileged OS or database activity, so the coverage gap remains.",
-        "D": "Keeping everything forever ignores retention policy, cost and privacy limits, and makes review harder."
+        "D": "Management approval does not fix the design: keeping everything forever ignores cost and privacy limits, and makes review harder."
       },
       "tips": [
-        "Eliminate: C adds detail to a source already kept, and D drops any retention policy.",
+        "Eliminate: C adds detail to a source already kept, and D keeps everything forever, ignoring cost and privacy.",
         "Final two: B beats A because the stated gap is missing log sources, and integrity protection for existing logs does not close it.",
         "Exam cue: coverage gaps need more log sources, not stronger protection of the sources already kept."
       ],
@@ -1389,7 +1389,7 @@
       "options": {
         "A": "Support cloud migration, since its first-year cost is lowest",
         "B": "Replace like-for-like, since it carries the least transition risk",
-        "C": "Commission an independent benchmark before considering either option",
+        "C": "Escalate the CIO-CTO dispute to the CEO for a ruling",
         "D": "Have management compare each option's lifetime cost and risk"
       },
       "correct": "D",
@@ -1399,10 +1399,10 @@
       "wrong_explanations": {
         "A": "First-year cost ignores lifetime cost, migration risk and data residency limits, so it is not a sound basis.",
         "B": "Lower transition risk is one factor, but choosing before comparing lifetime costs and risks pre-empts management's evaluation.",
-        "C": "An outside benchmark adds cost and delay, and management would still need to compare lifetime cost and risk itself."
+        "C": "Escalating for a ruling before lifetime cost and risk are compared yields an uninformed decision; the analysis must come before the choice."
       },
       "tips": [
-        "Eliminate: A judges on first-year cost alone, and C wastes the planning window before support ends.",
+        "Eliminate: A judges on first-year cost alone, and C seeks a ruling before any analysis exists.",
         "Final two: D beats B because management needs a structured comparison first; endorsing one option now skips the analysis.",
         "Exam cue: when executives disagree on a solution, the auditor recommends a structured comparison and leaves the decision to management."
       ],
@@ -1797,7 +1797,7 @@
       "bloom_level": "Application",
       "question": "An IS auditor finds each application team changes its own load balancer settings and TLS certificates directly in production. Which recommendation is BEST?",
       "options": {
-        "A": "Replace the load balancers with DNS round-robin records",
+        "A": "Log each change for team lead approval after release",
         "B": "Bring load balancer changes under formal change management",
         "C": "Turn off health checks to reduce configuration complexity",
         "D": "Set automated alerts for upcoming certificate expiry dates"
@@ -1807,12 +1807,12 @@
       "pre_read": "Name the core finding before choosing: is it a technical gap or uncontrolled change to production?",
       "correct_explanation": "The finding is uncontrolled change: each team alters shared production infrastructure directly. Formal change management, with a standard configuration baseline, adds review, testing, approval and rollback for every load balancer and certificate change. Automated expiry alerts are worthwhile for certificate lifecycle, but they address only one symptom and leave teams free to make unreviewed changes to shared devices.",
       "wrong_explanations": {
-        "A": "DNS round-robin lacks health checks and session handling, so it lowers resilience instead of governing change.",
+        "A": "Approval after release within the same team is neither preventive nor independent, so changes stay uncontrolled.",
         "C": "Health checks remove failed servers from rotation; disabling them invites outages.",
         "D": "Expiry alerts cover one certificate risk but leave direct, unreviewed configuration changes in production unchanged."
       },
       "tips": [
-        "Eliminate: A swaps in a weaker technology, and C removes the health checks that keep service available.",
+        "Eliminate: A approves changes after release within the same team, and C removes the health checks that keep service available.",
         "Final two: B beats D because the core finding is uncontrolled change, and expiry alerts fix only one certificate symptom.",
         "Exam cue: when teams change production directly, the answer is usually change control against a baseline, not a narrower technical fix."
       ],
@@ -2170,7 +2170,7 @@
         "A": "Report the quantified gap and option costs to management",
         "B": "Direct IT to start the modernization program without delay",
         "C": "Advise keeping the platform and reserving funds for service credits",
-        "D": "Defer reporting until customers formally complain"
+        "D": "Defer reporting until management's annual risk review"
       },
       "correct": "A",
       "key_concept": "The auditor quantifies the gap between commitments and capability and the cost of options; management makes the investment decision.",
@@ -2179,10 +2179,10 @@
       "wrong_explanations": {
         "B": "Auditors advise rather than direct; launching a costly program also bypasses management's cost-benefit decision.",
         "C": "Budgeting for breaches accepts a contract shortfall indefinitely and ignores the aging platform's support risk.",
-        "D": "Delaying the report hides a measurable breach already visible in the availability data from management."
+        "D": "Waiting for the annual cycle hides a measurable breach, already visible in the availability data, from management now."
       },
       "tips": [
-        "Eliminate: C budgets for breaches instead of addressing them, and D withholds a gap already measured.",
+        "Eliminate: C budgets for breaches instead of addressing them, and D holds back a gap already measured.",
         "Final two: A beats B because the auditor informs management's decision; directing IT oversteps the auditor's role.",
         "Exam cue: the IS auditor recommends and reports; management decides and directs. Reject options where the auditor takes management's job."
       ],
@@ -2575,7 +2575,7 @@
       "bloom_level": "Application",
       "question": "A business continuity manager is assigning recovery tiers to processes during the BIA. Which basis is BEST?",
       "options": {
-        "A": "Technical complexity of each supporting IT system",
+        "A": "Technical complexity, as approved by the IT steering committee",
         "B": "Impact over time, confirmed by each process owner",
         "C": "Equal priority for every process to avoid subjectivity",
         "D": "Cost of recovering each process's supporting systems"
@@ -2585,7 +2585,7 @@
       "pre_read": "The stem places you in the BIA. Ask what the BIA measures before any recovery solution is costed.",
       "correct_explanation": "A BIA ranks processes by how quickly financial, regulatory, customer and reputational impact grows during a disruption, and process owners confirm those ratings. Recovery cost is a legitimate input, but it belongs to strategy selection after criticality is known. Tiering by cost would downgrade vital processes simply because protecting them is expensive.",
       "wrong_explanations": {
-        "A": "System complexity affects recovery effort, not how much the business suffers when the process stops.",
+        "A": "Committee approval does not change the basis. System complexity affects recovery effort, not how much the business suffers when the process stops.",
         "C": "Treating everything as equal prevents prioritization and wastes recovery investment on low-impact processes.",
         "D": "Cost informs the choice of recovery strategy after the BIA; using it to set tiers reverses the order."
       },
@@ -2651,7 +2651,7 @@
       "options": {
         "A": "Step-by-step recovery procedures for each application",
         "B": "Server and network configurations for the recovery site",
-        "C": "Line-item budget figures for the next fiscal year",
+        "C": "Line-item budget figures approved by the CFO for next year",
         "D": "Management's mandate on scope and accountability"
       },
       "correct": "D",
@@ -2661,7 +2661,7 @@
       "wrong_explanations": {
         "A": "Detailed procedures belong in recovery plans and runbooks, which change more often than policy.",
         "B": "Infrastructure configurations are technical design details for DR documentation, not governance content.",
-        "C": "Annual budget detail changes yearly and belongs in funding processes, not in the policy itself."
+        "C": "Even with CFO approval, annual budget detail changes yearly and belongs in funding processes, not in the policy itself."
       },
       "tips": [
         "Eliminate: B is technical design detail, and C is annual budget data that changes every year.",
@@ -2871,21 +2871,21 @@
       "question": "Three executives dispute the BIA criticality tier of the mobile banking app, each citing different evidence. What is the IS auditor's BEST recommendation for resolving it?",
       "options": {
         "A": "Reconcile the evidence and let the executive committee decide",
-        "B": "Adopt the risk officer's tier because regulators expect it",
+        "B": "Defer to the CIO, as the app's technology owner",
         "C": "Adopt the CFO's tier because past outages cost little revenue",
-        "D": "Have the IS auditor assign the tier as an independent party"
+        "D": "Let the IS auditor assign the tier as an independent party"
       },
       "correct": "A",
       "key_concept": "BIA criticality is a business decision: evidence is reconciled and accountable management sets the tier, while the auditor advises.",
       "pre_read": "Ask who owns a BIA decision. Separate the option that informs the decision from the one that takes it over.",
       "correct_explanation": "Criticality tiers drive recovery investment, so accountable management must decide them using all the evidence. Reconciling revenue, customer and regulatory data and escalating to the executive committee gives a documented, owned decision. Letting the IS auditor assign the tier sounds objective, but it makes the auditor own a management decision and impairs the independence needed to audit the result later.",
       "wrong_explanations": {
-        "B": "Regulatory expectations matter, but adopting one stakeholder's view ignores the revenue and customer evidence the others raised.",
+        "B": "The CIO owns the technology, not the business impact, and one executive's ruling discards the revenue and customer evidence others raised.",
         "C": "A single past outage is narrow evidence. Adopting the CFO's view alone ignores regulatory and customer-impact inputs.",
         "D": "The auditor advises; management decides. Setting the tier would make the auditor responsible for a decision they may later have to audit."
       },
       "tips": [
-        "Eliminate: B and C each adopt one stakeholder's view and discard the others' evidence.",
+        "Eliminate: B hands a business decision to IT, and C adopts one stakeholder's view and discards the others' evidence.",
         "Final two: A beats D because management owns criticality decisions; the auditor advises and must stay independent.",
         "Exam cue: when an option has the auditor make a business decision, reject it; the auditor advises, management decides."
       ],
@@ -2909,7 +2909,7 @@
         "A": "Leadership by the CIO, since remote working enables the rest",
         "B": "Outsourcing the plan to a continuity consultancy for expertise",
         "C": "A cross-functional steering group owning one integrated plan",
-        "D": "Postponing the plan until the next outbreak shows real needs"
+        "D": "Separate executive approval of each workstream's own plan"
       },
       "correct": "C",
       "key_concept": "Continuity for a broad threat such as a pandemic needs integrated, cross-functional ownership because the workstreams depend on each other.",
@@ -2918,10 +2918,10 @@
       "wrong_explanations": {
         "A": "IT is an enabler, not the business priority. CIO-led governance risks ranking remote work above patient care and supply continuity.",
         "B": "Consultants can help, but accountability for continuity cannot be outsourced; management must own the plan.",
-        "D": "Waiting for an outbreak leaves the organization unprepared when absenteeism and supply shocks arrive."
+        "D": "Separate approvals leave four disconnected plans; nobody owns the dependencies between clinical, IT, supply and HR responses."
       },
       "tips": [
-        "Eliminate: B outsources accountability that management must keep, and D leaves the hospital unprepared.",
+        "Eliminate: B outsources accountability that management must keep, and D approves four separate plans, leaving gaps between them.",
         "Final two: C beats A because integrated ownership protects patient care, while IT-led governance puts an enabler first.",
         "Exam cue: when a threat spans many functions, prefer cross-functional ownership over handing control to one department."
       ],
@@ -3598,7 +3598,7 @@
       "bloom_level": "Analysis",
       "question": "A BIA update rates six more systems at a 4-hour RTO, but DR capacity is funded only for the original 12 this year. What is the IS auditor's BEST recommendation?",
       "options": {
-        "A": "Lengthen the six systems' RTOs to fit the funded capacity",
+        "A": "Lengthen the six systems' RTOs with the CIO's approval",
         "B": "Have the risk owner formally accept the gap with manual workarounds",
         "C": "Cut the DR testing budget to fund the six extra systems",
         "D": "Rely on the DR provider's best-effort recovery terms for the six systems"
@@ -3608,7 +3608,7 @@
       "pre_read": "Notice that no budget exists this year. Ask how an unfixable gap should be owned and contained meanwhile.",
       "correct_explanation": "With no funding this year, the gap cannot be closed now, so it must be owned: the risk owner formally accepts it, interim manual workarounds limit the impact, and funding is requested for the next cycle. Best-effort recovery sounds pragmatic, but it carries no capacity commitment, so in a wide disruption the six systems may not recover while other clients compete.",
       "wrong_explanations": {
-        "A": "RTOs come from business impact, not available budget; stretching them hides an unaccepted continuity risk.",
+        "A": "RTOs come from business impact, not budget, and the CIO is not the risk owner; stretching them hides an unaccepted continuity risk.",
         "C": "Untested recovery is unreliable; cutting testing weakens assurance for all 18 systems to cover six.",
         "D": "Best-effort terms carry no capacity commitment, so in a wide disruption the six systems may not recover in time."
       },
@@ -4236,9 +4236,9 @@
       "bloom_level": "Application",
       "question": "After a disaster recovery test, the test director is compiling the observations. Which results format MOST helps management ensure the gaps get fixed?",
       "options": {
-        "A": "Gaps logged with root cause, owner and due date",
+        "A": "Findings logged with root cause, owner and due date",
         "B": "A pass or fail verdict for each test objective",
-        "C": "A narrative of highlights circulated to participants",
+        "C": "A narrative of highlights sent to the steering committee",
         "D": "Photographs and attendance sheets from the exercise"
       },
       "correct": "A",
@@ -4247,7 +4247,7 @@
       "correct_explanation": "Remediation happens when each gap has a root cause, a named owner and a due date that management can track and the next test can confirm. A pass or fail verdict per objective is a sound part of reporting, showing which objectives were met, but on its own it gives management nothing to assign, chase or verify, so failed objectives can recur unchanged.",
       "wrong_explanations": {
         "B": "Verdicts show what failed, but without root cause, owner and date nothing is assigned, so the gaps may recur.",
-        "C": "A narrative may engage participants, but it lacks structure for tracking remediation and is not aimed at management.",
+        "C": "A narrative informs the committee, but without root causes, owners or dates it gives no structure for tracking remediation.",
         "D": "Photos and attendance prove the exercise happened. They say nothing about what went wrong or who will fix it."
       },
       "tips": [
@@ -4315,7 +4315,7 @@
         "A": "Rebuild the corrupted indexes directly in production right away",
         "B": "Have management weigh each path's data loss against the deadline",
         "C": "Restore the older backup now to protect the filing deadline",
-        "D": "Have the CFO attest that restored backup data is complete"
+        "D": "Obtain the CFO's attestation that the restored backup is complete"
       },
       "correct": "B",
       "key_concept": "When recovery paths trade data loss against a deadline, the auditor sets out the impacts and management, as risk owner, decides.",
@@ -4324,7 +4324,7 @@
       "wrong_explanations": {
         "A": "Repairing a corrupted production database without a tested procedure or change control risks further damage and destroys evidence.",
         "C": "This commits to 36 hours of data loss in a statutory filing before the accountable owner has weighed it against a late, complete filing.",
-        "D": "An attestation cannot make 36-hour-old data complete. Signing it would give the regulator false assurance."
+        "D": "An attestation cannot make 36-hour-old data complete. Giving it would offer the regulator false assurance."
       },
       "tips": [
         "Eliminate: A bypasses change control on a damaged system, and D asks for an attestation that cannot be true.",
@@ -4768,7 +4768,7 @@
       "options": {
         "A": "Statements drafted by legal once an incident is classified",
         "B": "Named, trained spokespersons using pre-approved message templates",
-        "C": "A rule of no external comment until root cause is known",
+        "C": "Executive approval of statements once root cause is known",
         "D": "Permission for any employee to respond on social media"
       },
       "correct": "B",
@@ -4777,7 +4777,7 @@
       "correct_explanation": "Named spokespersons and pre-approved templates let the organization speak quickly, consistently and with one voice in the first hours, when silence fuels speculation. Legal review matters, but drafting statements only after an incident is classified pushes the first message back by hours and leaves the organization improvising under pressure. Preparation done before the event is what makes rapid, accurate communication possible.",
       "wrong_explanations": {
         "A": "Legal input is valuable, but starting drafts after classification wastes the critical early hours. Templates should already be legally reviewed before any event.",
-        "C": "Root cause can take days or weeks. Silence that long lets rumors define the story and damages stakeholder trust.",
+        "C": "Root cause can take days or weeks. Holding statements until then lets rumors define the story and damages stakeholder trust.",
         "D": "Uncoordinated posts create conflicting messages and may disclose sensitive details. Crisis communication needs a single, controlled voice."
       },
       "tips": [
@@ -4880,7 +4880,7 @@
       "bloom_level": "Application",
       "question": "A business continuity manager wants continuity thinking to become part of routine decisions across the organization. Which initiative would be MOST effective?",
       "options": {
-        "A": "Annual signed acknowledgment that staff have read the plan",
+        "A": "Annual management confirmation that staff have read the plan",
         "B": "Restricting plan details to the continuity team to avoid alarm",
         "C": "Continuity checks built into project and change approvals",
         "D": "An organization-wide awareness campaign with posters and e-learning"
@@ -4890,7 +4890,7 @@
       "pre_read": "The stem says routine decisions. Which option changes how work is approved rather than what people are told?",
       "correct_explanation": "Building continuity checks into project and change approvals makes resilience a normal step in how the organization decides, so new systems, suppliers and processes are assessed before they go live. An awareness campaign is useful and common, but it raises recognition without changing how decisions are made. Embedding requires continuity to appear inside everyday processes, not alongside them.",
       "wrong_explanations": {
-        "A": "A signed acknowledgment proves receipt of a document. It does not show understanding, and it changes no business decision.",
+        "A": "A confirmation proves receipt of a document. It does not show understanding, and it changes no business decision.",
         "B": "Hiding the plan prevents the people who must act from knowing their roles, the opposite of embedding continuity.",
         "D": "Posters and e-learning raise general awareness, but they do not put continuity into the approvals where decisions are actually made."
       },
@@ -5336,7 +5336,7 @@
         "A": "NAT at each site boundary to hide overlapping address ranges",
         "B": "Central IP address management with one allocation plan",
         "C": "Readdressing every site with public IPv4 address ranges",
-        "D": "Larger DHCP scopes at each site to avoid exhaustion"
+        "D": "Larger DHCP scopes approved by each site owner to avoid exhaustion"
       },
       "correct": "B",
       "key_concept": "Centrally governed IP address management prevents overlapping ranges at source, before interconnection makes conflicts costly.",
@@ -5345,7 +5345,7 @@
       "wrong_explanations": {
         "A": "NAT can make overlapping ranges work, but it adds complexity and hides the conflict rather than governing allocation.",
         "C": "Public IPv4 space is scarce and unnecessary for internal hosts. Private ranges are appropriate when centrally allocated.",
-        "D": "Larger DHCP scopes address local exhaustion, not overlap between sites. They could even make conflicts more likely."
+        "D": "Local approval of larger DHCP scopes addresses exhaustion at one site, not overlap between sites, and could even make conflicts more likely."
       },
       "tips": [
         "Eliminate: C misuses scarce public addresses, and D solves local exhaustion rather than overlap.",
@@ -5374,7 +5374,7 @@
         "A": "Replacement of every server at the vendor-recommended age",
         "B": "An annual report of unsupported assets to IT finance",
         "C": "Risk-based exception approval by the business system owner",
-        "D": "Extended hardware cover from a third-party maintainer"
+        "D": "IT finance approval of extended third-party hardware cover"
       },
       "correct": "C",
       "key_concept": "Running unsupported hardware is a risk decision that the accountable business owner must formally approve, based on criticality and cost.",
@@ -5383,7 +5383,7 @@
       "wrong_explanations": {
         "A": "Uniform replacement by age ignores criticality and cost. It wastes capital on low-risk assets and allows no justified extensions.",
         "B": "A report creates visibility but no decision. Without accountable approval, the risk is tolerated by default rather than accepted.",
-        "D": "Third-party cover may supply parts, but it does not restore vendor patches or firmware updates, and it decides nothing about risk."
+        "D": "Finance approving third-party cover buys parts, but it restores no vendor patches and leaves the risk decision with the wrong party."
       },
       "tips": [
         "Eliminate: A ignores criticality and cost, and D buys parts support without addressing the decision or patching.",
@@ -5601,8 +5601,8 @@
       "options": {
         "A": "Give the bot its own least-privilege account with a named owner",
         "B": "Rotate the clerk's password monthly and store it in a vault",
-        "C": "Let the bot keep the clerk's access while she remains employed",
-        "D": "Have the clerk review the bot's postings each week"
+        "C": "Let the bot keep the clerk's access with finance manager approval",
+        "D": "Require the clerk to review the bot's postings each week"
       },
       "correct": "A",
       "key_concept": "RPA bots need their own identities, least-privilege rights and an accountable business owner, so their actions are traceable and controllable.",
@@ -5610,7 +5610,7 @@
       "correct_explanation": "A bot running under a person's login cannot be told apart from that person, so its actions lack accountability and it inherits all of the clerk's rights. A dedicated bot account with only the rights its task needs, and a named business owner, fixes both. Weekly review by the clerk is a useful detective check, but it leaves the shared identity in place, and she reviews activity done under her own login.",
       "wrong_explanations": {
         "B": "Vaulting and rotating the password protects the credential, but the bot and the clerk still share one identity, so actions stay unattributable.",
-        "C": "Tying the bot to one employee's access breaks when she leaves and lets the bot use rights its task never needed.",
+        "C": "Approval does not fix the shared identity: the bot keeps a person's full rights, and its actions stay unattributable.",
         "D": "Review is detective only, and the clerk would be reviewing activity performed under her own login, which weakens independence."
       },
       "tips": [
@@ -5676,7 +5676,7 @@
         "A": "Recertify repository access quarterly with engineering leads",
         "B": "Require approved peer review before any merge to that branch",
         "C": "Back up the release branch nightly to a second region",
-        "D": "Track commit volume per developer on a shared team dashboard"
+        "D": "Report commit volume per developer to engineering management monthly"
       },
       "correct": "B",
       "key_concept": "Branch protection with independent, approved review prevents unauthorized or unreviewed code from reaching release; access reviews and backups do not.",
@@ -5685,7 +5685,7 @@
       "wrong_explanations": {
         "A": "Recertification keeps the access list current but does nothing to stop an authorized developer merging unreviewed code.",
         "C": "Backups protect availability of the code base, not the integrity of what is merged into release.",
-        "D": "Commit volume is a productivity measure; it gives no assurance that changes were reviewed or authorized."
+        "D": "Commit volume is a productivity measure; reporting it to management gives no assurance that changes were reviewed or authorized."
       },
       "tips": [
         "Eliminate: C addresses availability, and D measures productivity rather than code integrity.",
@@ -6169,7 +6169,7 @@
         "A": "Accuracy of first-contact resolution figures in monthly desk reports",
         "B": "Escalation of security-related calls to the incident response team",
         "C": "Average handle time recorded for each desk agent",
-        "D": "Formatting consistency of knowledge base articles"
+        "D": "Management approval of knowledge base formatting standards"
       },
       "correct": "B",
       "key_concept": "The help desk often hears of security incidents first; failing to escalate those calls lets attacks continue unnoticed.",
@@ -6178,7 +6178,7 @@
       "wrong_explanations": {
         "A": "Overstated resolution figures mislead management about service quality, but they do not leave an active security incident uncontained.",
         "C": "Handle time is an efficiency metric with little bearing on control risk.",
-        "D": "Article formatting is a usability matter, not a control weakness with meaningful risk."
+        "D": "Article formatting is a usability matter; approving its standards addresses no control weakness with meaningful risk."
       },
       "tips": [
         "Eliminate: C is an efficiency metric, and D is a cosmetic usability issue.",
@@ -6205,7 +6205,7 @@
       "question": "An IS auditor finds engineers make firewall rule changes directly in production and document them afterward. Which control is MOST important to recommend?",
       "options": {
         "A": "Back up firewall configurations to a secure repository",
-        "B": "Document the full network topology in a current diagram",
+        "B": "Maintain a CIO-approved diagram of the current network topology",
         "C": "Approve and test firewall rule changes before they are made",
         "D": "Review the firewall change logs each week for unauthorized edits"
       },
@@ -6215,7 +6215,7 @@
       "correct_explanation": "Changes made first and documented later mean a flawed or unauthorized firewall rule takes effect before anyone checks it. Requiring approval and testing before implementation stops bad rules from reaching production. A weekly review of change logs adds detection, but a harmful rule could expose systems for up to a week before anyone notices, and the review depends on logs being complete.",
       "wrong_explanations": {
         "A": "Backups help recover a configuration, but they do not stop unapproved rule changes going live.",
-        "B": "A topology diagram supports understanding of the network, not authorization of rule changes.",
+        "B": "An approved diagram supports understanding of the network, not authorization of individual rule changes.",
         "D": "Weekly log review detects issues after a harmful rule may already have exposed systems."
       },
       "tips": [
@@ -6396,7 +6396,7 @@
       "options": {
         "A": "Review affected SLAs with service owners before design approval",
         "B": "Update the SLA documents to match performance after migration",
-        "C": "Apply one uniform SLA target to every consolidated service",
+        "C": "Set one uniform, CIO-mandated SLA target across services",
         "D": "Let architects and service managers set targets separately"
       },
       "correct": "A",
@@ -6405,7 +6405,7 @@
       "correct_explanation": "Consolidation can change latency, capacity and recovery capability, so affected SLAs must shape the design before it is approved. Reviewing them with service owners at that stage lets the design meet committed service levels or forces an informed trade-off. Updating SLA documents after migration keeps records current, but it simply accepts whatever performance results, which can break commitments the business relies on.",
       "wrong_explanations": {
         "B": "Rewriting SLAs after migration lets the architecture dictate service levels instead of business needs shaping the design.",
-        "C": "Uniform targets ignore differing criticality, overspending on minor services and underserving critical ones.",
+        "C": "Uniform targets ignore differing criticality, and service levels are agreed with business owners, not mandated by IT alone.",
         "D": "Separate target-setting invites designs that cannot meet agreed service levels."
       },
       "tips": [
@@ -6509,9 +6509,9 @@
       "question": "In hour 14 of a major outage, executives keep interrupting the response team for updates. What should the incident commander do FIRST?",
       "options": {
         "A": "Let executives join the technical bridge call directly",
-        "B": "Stop updating executives until recovery is complete",
+        "B": "Formally escalate the interruptions to senior leadership to stop them",
         "C": "Provide scheduled updates through one executive liaison",
-        "D": "Have each engineer brief executives whenever asked"
+        "D": "Allow each engineer to brief executives whenever asked"
       },
       "correct": "C",
       "key_concept": "Major incident management separates stakeholder communication from technical response through scheduled updates by a single liaison.",
@@ -6519,11 +6519,11 @@
       "correct_explanation": "A single liaison giving updates on a set schedule keeps executives informed while protecting the response team's focus, so recovery is not slowed by repeated interruptions. Letting executives join the technical bridge gives them real-time information, but it invites side questions and direction that distract responders and blur who makes decisions.",
       "wrong_explanations": {
         "A": "Executives on the bridge call distract responders and can blur decision rights.",
-        "B": "Silence leaves executives unable to make business decisions or handle stakeholders.",
+        "B": "The commander can fix this at operational level; escalating to senior leadership adds delay while the interruptions continue.",
         "D": "Ad hoc briefings by engineers are the interruptions that slow recovery."
       },
       "tips": [
-        "Eliminate: B cuts executives off, and D keeps the interruptions going.",
+        "Eliminate: B escalates what the commander can fix, and D keeps the interruptions going.",
         "Final two: C beats A because a liaison informs executives without distracting responders.",
         "Exam cue: in major incidents, separate stakeholder updates from technical response through a set cadence and liaison."
       ],
@@ -6890,7 +6890,7 @@
       "options": {
         "A": "Engineer documentation of each change in its ticket after deployment",
         "B": "Independent review and approval of each change soon after deployment",
-        "C": "Routing of every fix through the next scheduled CAB meeting",
+        "C": "Full CAB approval of each fix before it is deployed",
         "D": "Tracking of engineer response times for each emergency fix"
       },
       "correct": "B",
@@ -6899,11 +6899,11 @@
       "correct_explanation": "Emergency changes skip normal approval, so control must return through independent review soon afterwards: someone other than the implementer confirms the change was needed, authorized and correctly made. Engineer documentation creates a record, but a record written by the person who made the change is self-review and gives no independent assurance that the change was appropriate.",
       "wrong_explanations": {
         "A": "Self-documentation creates a record but no independent check. The implementer's own notes cannot confirm the change was justified or correct.",
-        "C": "Waiting for the next scheduled meeting defeats the purpose of an emergency path when production is down.",
+        "C": "Requiring full prior CAB approval defeats the purpose of an emergency path when production is down; control shifts to prompt review afterward.",
         "D": "Response time measures speed, not whether emergency changes were justified, authorized or correct."
       },
       "tips": [
-        "Eliminate: C defeats the purpose of an emergency path, and D measures speed rather than control.",
+        "Eliminate: C holds every fix for full CAB approval while production is down, and D measures speed rather than control.",
         "Final two: B beats A because an independent reviewer gives assurance that the implementer's own record cannot.",
         "Exam cue: emergency changes may skip prior approval but never skip control; look for independent review after the fact."
       ],
@@ -7308,7 +7308,7 @@
         "A": "Fail over workloads for the customers who are demanding it",
         "B": "Invoke failover now and brief the CIO once it completes",
         "C": "Escalate to the CIO now for an immediate failover decision",
-        "D": "Have the CIO wait for the provider's four-hour update"
+        "D": "Escalate to the CIO after the provider's four-hour update"
       },
       "correct": "C",
       "key_concept": "When an outage will exceed the RTO, the invocation decision must be made quickly by the authority the plan names.",
@@ -7799,7 +7799,7 @@
       "options": {
         "A": "Issue an AI acceptable-use rule and provide an approved alternative tool",
         "B": "Permanently block every generative AI website at the corporate web proxy",
-        "C": "Survey staff to measure how widely the tool is being used",
+        "C": "Survey usage and report results to the steering committee",
         "D": "Ask the tool's provider to delete the uploaded client documents"
       },
       "correct": "A",
@@ -7808,7 +7808,7 @@
       "correct_explanation": "Staff use the tool because it meets a real need, so the first step is governance that covers both sides: a clear rule on what data may go into AI tools, and a sanctioned tool with proper data protections. Blocking public AI sites may help as a stopgap, but on its own, and made permanent, it pushes staff to personal devices, so the leakage continues out of sight.",
       "wrong_explanations": {
         "B": "A permanent blanket ban drives use to personal devices, hiding the risk, and ignores the legitimate need behind the behavior.",
-        "C": "Measuring usage has value later, but client data keeps leaving while the survey runs.",
+        "C": "Measuring and reporting usage has value later, but client data keeps leaving while the survey runs.",
         "D": "A free public tool usually offers no contractual deletion commitment, and asking does not stop further uploads."
       },
       "tips": [
@@ -9337,7 +9337,7 @@
       "bloom_level": "Analysis",
       "question": "An IS auditor confirms a whistleblower's claim that, during the ongoing year-end close, operators are running ad hoc batch jobs that post journal entries outside the scheduler's approval workflow. What should the auditor recommend FIRST?",
       "options": {
-        "A": "Have operators document each ad hoc run and its purpose after close",
+        "A": "Seek controller approval for each ad hoc run after close",
         "B": "Block job submission outside the scheduler's approved queue now",
         "C": "Review the ad hoc runs for unauthorized entries before close",
         "D": "Rely on the external auditors' year-end testing to cover it"
@@ -9347,12 +9347,12 @@
       "pre_read": "Notice the bypass is still happening during close. Ask which step stops the problem growing.",
       "correct_explanation": "While the bypass stays open, every new ad hoc run adds unapproved entries to the close, so the first step is to force all job submissions through the scheduler's approval path. Any review then works on a fixed population. Reviewing runs before close is essential, but doing it while operators keep bypassing the workflow means new unapproved entries arrive faster than they are checked.",
       "wrong_explanations": {
-        "A": "After-the-fact notes do not stop the bypass, and operators documenting their own unapproved runs give weak evidence.",
+        "A": "Approval after close does not stop the bypass, and unapproved entries keep posting through year-end into the statements.",
         "C": "Review is needed, but with the bypass still open, new unapproved runs keep adding entries faster than they can be checked.",
         "D": "External testing is not the organization's control; relying on it lets unapproved postings continue through close and into the statements."
       },
       "tips": [
-        "Eliminate: A documents the bypass without stopping it, and D hands the organization's control duty to external auditors.",
+        "Eliminate: A approves the bypass after close without stopping it, and D hands the organization's control duty to external auditors.",
         "Final two: B beats C because closing the bypass fixes the population; reviewing first lets new unapproved runs keep arriving.",
         "Exam cue: when a control bypass is still happening, stop the bypass first, then assess what already got through."
       ],
@@ -9524,7 +9524,7 @@
       "bloom_level": "Analysis",
       "question": "A production system runs on an unsupported OS behind network isolation and compensating controls; replacing it costs $8M and 18 months. What is the BEST recommendation the IS auditor should give the CTO?",
       "options": {
-        "A": "Compress validation so the system is replaced within six months",
+        "A": "Mandate full replacement within six months using compressed validation testing",
         "B": "Obtain formal management risk acceptance with a funded exit plan",
         "C": "Continue operating the system under its existing compensating controls",
         "D": "Leave the system off the insurer's renewal risk questionnaire"
@@ -9534,7 +9534,7 @@
       "pre_read": "Notice the controls already exist. Ask what is still missing: who owns the residual risk, and when does it end?",
       "correct_explanation": "Isolation and compensating controls reduce but do not remove the risk of an unpatchable OS. Management, as risk owner, should formally accept the residual risk and commit funding and dates to replace the system, which also gives regulators and the insurer an accurate position. Continuing under existing controls keeps the system safe today but leaves the risk unowned and with no end date.",
       "wrong_explanations": {
-        "A": "Compressing validation of the replacement risks errors and compliance failures in production. Speed does not justify skipping testing.",
+        "A": "A mandate does not make skipped testing safe; compressed validation risks errors and compliance failures in production.",
         "C": "The controls help, but without formal acceptance and an exit plan the risk has no accountable owner and no end date.",
         "D": "Omitting a known risk from an insurance application is misrepresentation and could void cover when it is needed."
       },
@@ -9564,7 +9564,7 @@
       "options": {
         "A": "Risk-assess the tool and bring it under IT governance",
         "B": "Order the team to stop using the tool and delete its data",
-        "C": "Accept the tool as is because it supports daily work",
+        "C": "Accept the tool as is with the sales director's approval",
         "D": "Discipline the managers who bought it without IT review"
       },
       "correct": "A",
@@ -9573,11 +9573,11 @@
       "correct_explanation": "The tool meets a genuine business need, so the right response is to evaluate its security, contract and data handling, then sanction and secure it or replace it with an approved option. An immediate ban removes the risk on paper, but it disrupts daily sales work, may lose customer records, and teaches staff to hide the next tool rather than disclose it.",
       "wrong_explanations": {
         "B": "An abrupt ban disrupts work, risks losing customer records and pushes future tools further out of sight.",
-        "C": "Accepting it unreviewed leaves customer data under unknown security and contract terms.",
+        "C": "Approval without assessment leaves customer data under unknown security and contract terms.",
         "D": "Discipline assigns blame but does not manage the risk to customer data, and it discourages disclosure of other tools."
       },
       "tips": [
-        "Eliminate: C accepts unknown risk, and D punishes people without managing the data.",
+        "Eliminate: C approves the tool without assessing its risk, and D punishes people without managing the data.",
         "Final two: A beats B because assessment lets the business keep a needed tool safely; a ban disrupts work and drives tools into hiding.",
         "Exam cue: when shadow IT meets a real need, assess it, then sanction or replace it; blocking is a last resort."
       ],
@@ -9600,7 +9600,7 @@
       "question": "During a Sev-1 outage, each decision waits 30 minutes for a satellite call to executives, though the incident plan names an incident commander. What is the BEST recommendation the IS auditor should give the COO?",
       "options": {
         "A": "Keep routing each decision to executives by satellite call",
-        "B": "Pause major recovery actions until executives can reconvene",
+        "B": "Pause major recovery actions until the executive committee reconvenes",
         "C": "Let a senior manager decide alone and brief executives after closure",
         "D": "Let the incident commander decide, with hourly executive updates"
       },
@@ -9610,7 +9610,7 @@
       "correct_explanation": "The plan already pre-delegates authority to an incident commander, so invoking it removes the 30-minute delay while hourly updates keep executives informed and able to intervene. That is how ITIL incident practice and incident command are meant to work. Letting a senior manager decide alone also restores speed, but it bypasses the defined role and leaves executives blind until the incident closes.",
       "wrong_explanations": {
         "A": "Per-decision approval by satellite is the cause of the delay. Continuing it extends the outage and the revenue loss.",
-        "B": "Pausing recovery during a customer-facing outage maximizes business impact. Restoration should continue under delegated authority.",
+        "B": "Pausing recovery for a committee during a customer-facing outage maximizes business impact. Restoration should continue under delegated authority.",
         "C": "Speed returns, but decisions bypass the plan's defined role and executives get no visibility until after closure."
       },
       "tips": [

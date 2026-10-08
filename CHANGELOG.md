@@ -4,6 +4,11 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.55] — Fairer answer choices
+
+### Improved
+- Wrong answers in many operations and security questions now sound just as professional as the right one, so you win by judgment, not by spotting the most official-sounding option.
+
 ## [v10.54] — New topic notes
 
 ### New
