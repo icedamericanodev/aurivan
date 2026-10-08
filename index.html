@@ -4810,19 +4810,29 @@ header {
 .gt-pill:hover { opacity: .92; }
 @media (max-width: 600px) { .gt-panel-title { padding-right: 40px; } }
 
-/* Intro: overview + analogy, clamped on phones */
-.gt-intro { margin-bottom: 20px; }
+/* Intro: overview + analogy, collapsed to two lines until opened (state remembered) */
+.gt-intro { margin-bottom: 16px; }
 .gt-intro-p { font: 400 16px/24px var(--f-sans); color: var(--text); max-width: 68ch; }
-.gt-intro-analogy { margin-top: 16px; border-left: 3px solid var(--accent); padding-left: 16px; }
-.gt-intro-more { display: none; }
-@media (max-width: 600px) {
-  .gt-intro:not(.open) .gt-intro-inner { max-height: 96px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
-  .gt-intro-more { display: inline-flex; }
+.gt-intro-analogy { margin-top: 16px; border-left: 3px solid var(--accent); padding-left: 16px; max-width: 68ch; }
+.gt-intro:not(.open) .gt-intro-inner { max-height: 48px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 40%, transparent); mask-image: linear-gradient(#000 40%, transparent); }
+.gt-intro-more { display: inline-flex; }
+/* Topic map: one compact chip row per part; each chip jumps to its topic */
+.gt-mapchips { margin: 0 0 18px; display: grid; gap: 6px; }
+.gt-mapchips-row { display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+.gt-mapchips-row::-webkit-scrollbar { display: none; }
+.gt-part { flex-shrink: 0; font: 600 13px/18px var(--f-sans); color: var(--text2); margin-right: 4px; white-space: nowrap; }
+.gt-mapchip {
+  flex-shrink: 0; max-width: 220px; min-height: 36px; padding: 0 12px; border-radius: 999px; cursor: pointer; position: relative;
+  background: var(--surface2); border: 0; color: var(--text); font: 500 14px/20px var(--f-sans);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.gt-map { margin-top: 16px; }
-.gt-map-part { margin-top: 8px; }
-.gt-map-h { font: 600 15px/22px var(--f-sans); color: var(--text); }
-.gt-map-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0 14px; }
+.gt-mapchip::after { content: ''; position: absolute; inset: -4px 0; }
+.gt-mapchip:hover { background: var(--border); }
+.gt-mapchips-row { -webkit-mask-image: linear-gradient(to right, #000 88%, transparent); mask-image: linear-gradient(to right, #000 88%, transparent); padding-right: 40px; }
+@media (min-width: 601px) {
+  .gt-panel-row { margin-bottom: 0; }
+  .gt-pill { position: absolute; right: 22px; bottom: 22px; }
+}
 .gt-link { background: none; border: 0; padding: 0; min-height: 44px; color: var(--accent-text); font: 600 15px/22px var(--f-sans); cursor: pointer; text-align: left; }
 .gt-link:hover { text-decoration: underline; }
 
@@ -4974,30 +4984,37 @@ summary.gt-icon-btn::-webkit-details-marker { display: none; }
 .gt-table td { padding: 10px 12px; vertical-align: top; border-top: 1px solid var(--border); }
 .gt-table tbody th { border-top: 1px solid var(--border); }
 @media (max-width: 600px) {
-  /* Phones: 3+ column tables become one card per row; the row label stays as the card title */
+  /* Phones: 3+ column tables become one compact card per row: the row label
+     as a small heading, then one tight "Column: value" line per column. */
   .gt-table:not(.gt-table-stack) { min-width: 0; }
   .gt-table-stack, .gt-table-stack tbody, .gt-table-stack tr, .gt-table-stack th, .gt-table-stack td { display: block; width: 100%; min-width: 0; }
   .gt-table-stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .gt-table-stack tbody tr { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: 16px; padding: 12px 14px; margin-bottom: 10px; }
-  .gt-table-stack tbody th { border: 0; padding: 0 0 6px; font: 600 16px/22px var(--f-sans); }
-  .gt-table-stack td { border: 0; border-top: 1px solid var(--border); padding: 6px 0; }
-  .gt-table-stack td::before { content: attr(data-col); display: block; font: 600 13px/18px var(--f-sans); color: var(--text2); }
+  .gt-table-stack tbody tr { background: var(--surface); border: 1px solid var(--raised-outline); box-shadow: var(--shadow); border-radius: 12px; padding: 8px 12px; margin-bottom: 8px; }
+  .gt-table-stack tbody th { border: 0; padding: 0 0 2px; font: 600 13px/18px var(--f-sans); color: var(--text2); }
+  .gt-table-stack td { border: 0; padding: 1px 0; font: 400 15px/21px var(--f-sans); }
+  .gt-table-stack td::before { content: attr(data-col) ': '; font-weight: 600; color: var(--text); }
+}
 }
 .gt-figure { margin: 20px 0 0; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: 68ch; }
 /* Diagram colours: filled boxes keep a dark green behind white labels in both
    themes; labels drawn straight on the page use the AA text green. */
-.gt-figure { --accent-fill: #2B6E4A; }
-.gt-figure svg text[fill="var(--accent-fill)"] { fill: var(--accent-text); }
-.gt-figure svg text { font-family: var(--f-sans); }
-.gt-fig-frame { position: relative; }
-.gt-fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: thin; }
-.gt-fig-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.gt-fig-inner { width: var(--fig-w, 100%); max-width: none; }
-.gt-fig-inner svg, .gt-fig-inner img { display: block; width: 100%; height: auto; }
-.gt-fig-frame.is-wide:not(.at-end)::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 48px; pointer-events: none; background: linear-gradient(to right, transparent, var(--bg)); }
-.gt-fig-hint { display: none; align-items: center; gap: 2px; font: 500 13px/18px var(--f-sans); color: var(--text2); margin-top: 6px; }
-.gt-figure.is-wide .gt-fig-hint { display: flex; }
-.gt-figure figcaption { font: 500 14px/20px var(--f-sans); color: var(--text2); margin-top: 8px; }
+.gt-figure, .gt-zoom { --accent-fill: #2B6E4A; }
+.gt-figure svg text[fill="var(--accent-fill)"], .gt-zoom svg text[fill="var(--accent-fill)"] { fill: var(--accent-text); }
+.gt-figure svg text, .gt-zoom svg text { font-family: var(--f-sans); }
+.gt-fig-fit svg, .gt-fig-fit img { display: block; width: 100%; height: auto; max-width: 560px; }
+.gt-fig-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.gt-figure figcaption { font: 500 14px/20px var(--f-sans); color: var(--text2); flex: 1 1 220px; }
+.gt-fig-zoom { min-height: 44px; padding: 0 16px; font-size: 15px; }
+.gt-fig-zoom .ico, .gt-zoom-close .ico { display: inline-block; }
+.gt-zoom { position: fixed; inset: 0; z-index: 400; background: var(--bg); display: flex; flex-direction: column; }
+.gt-zoom-bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.gt-zoom-title { flex: 1; min-width: 0; font: 600 15px/20px var(--f-sans); color: var(--text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.gt-zoom-close { min-height: 44px; padding: 0 16px; }
+.gt-zoom-scroll { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 20px; touch-action: auto; }
+.gt-zoom-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.gt-zoom-inner svg, .gt-zoom-inner img { display: block; width: 100%; height: auto; }
+.gt-zoom-hint { font: 500 13px/18px var(--f-sans); color: var(--text2); padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); }
+body.gt-zoom-open { overflow: hidden; }
 .gt-example { background: var(--surface2); border-radius: 16px; padding: 16px; font: 400 15px/22px var(--f-sans); color: var(--text); }
 .gt-rule { border-left: 3px solid var(--accent); padding-left: 16px; margin-top: 22px; }
 .gt-rule .gt-cap { color: var(--accent-text); }
@@ -5050,7 +5067,16 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
 /* Phones: Topics opens on its own content, not the shared dashboard. */
 @media (max-width: 600px) {
   body[data-tab="topics"] .mindset-strip, body[data-tab="topics"] .stats-row, body[data-tab="topics"] #studyRecCard,
-  body[data-tab="topics"] #readinessCard, body[data-tab="topics"] .pwa-banner, body[data-tab="topics"] #welcome-banner { display: none !important; }
+  body[data-tab="topics"] #readinessCard, body[data-tab="topics"] .pwa-banner, body[data-tab="topics"] #welcome-banner,
+  body[data-tab="about"] .mindset-strip, body[data-tab="about"] .stats-row, body[data-tab="about"] #studyRecCard,
+  body[data-tab="about"] #readinessCard, body[data-tab="about"] .pwa-banner, body[data-tab="about"] #welcome-banner { display: none !important; }
+}
+/* Domain switcher: all five fit on desktop (number above name). */
+.gt-seg-top { display: inline-flex; align-items: center; }
+@media (min-width: 601px) {
+  .gt-seg { overflow: visible; }
+  .gt-seg-btn { flex: 1 1 0; min-width: 0; flex-direction: column; gap: 0; min-height: 56px; padding: 6px 8px; }
+  .gt-seg-name { margin-left: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 18px; }
 }
 /* GROVE-LAYER-END */
 </style>
@@ -5376,7 +5402,7 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
 {"cat":"The CISA exam","q":"What format are the questions?","a":"Every question is multiple choice with four options and one best answer. The wording often asks for the BEST, FIRST, or MOST appropriate choice."},
 {"cat":"The CISA exam","q":"Do I need work experience to be certified?","a":"CISA certification requires relevant verified work experience in addition to passing the exam. Requirements can change, so always confirm the current rules on ISACA's official website."},
 {"cat":"The CISA exam","q":"Where do I register for the exam?","a":"Registration, fees, scheduling, and eligibility are all handled by ISACA. Confirm the current details on ISACA's official website — this app does not manage exam registration."},
-{"cat":"Study strategy","q":"How should I use this app to prepare?","a":"Practise one domain at a time, read the explanation for every question, let the Review queue resurface your misses, and use Mock Exams to rehearse timing as your test date approaches."},
+{"cat":"Study strategy","q":"How should I use this app to prepare?","a":"Practice one domain at a time, read the explanation for every question, let the Review queue resurface your misses, and use Mock Exams to rehearse timing as your test date approaches."},
 {"cat":"Study strategy","q":"What is spaced repetition?","a":"It means reviewing material at increasing intervals — questions you struggle with come back sooner, and ones you know come back later. The Review queue does this for you automatically."},
 {"cat":"Study strategy","q":"Why do questions ask for the BEST, FIRST, or MOST answer?","a":"CISA questions often have several defensible options. The wording asks for the single best, first, or most appropriate one — so train yourself to compare all four options against ISACA priorities, not just spot a correct-looking answer."},
 {"cat":"Study strategy","q":"How do I think like an ISACA auditor?","a":"An auditor assesses, recommends, and reports — they do not fix or operate the systems they review. Favour governance, risk-based reasoning, and understanding a situation before acting. The tips after each question reinforce this mindset."},
@@ -5920,7 +5946,9 @@ var S_DEFAULTS = {
   answeredIds: {},
   glossMastered: {},
   topicReviewed: {},
-  topicTicksSchema: 0, // 2 once ticks were moved to the notes-v2 subtopic ids
+  // 2 = ticks already use notes-v2 subtopic ids. New profiles start at 2; a
+  // save from before v11 has no value, reads as 0 and is migrated once.
+  topicTicksSchema: 2,
   lastOpenedSubtopic: {},
   confidenceLog: [],
   sessionHistory: [],
@@ -6175,9 +6203,10 @@ function saveState() {
 
 function loadState() {
   var id = getActiveProfileId();
-  if (!id) return;
+  // No saved state yet: this profile's ticks are already v2 ids.
+  if (!id) { S.topicTicksSchema = 2; return; }
   var profiles = getProfiles();
-  if (!profiles[id] || !profiles[id].state) return;
+  if (!profiles[id] || !profiles[id].state) { S.topicTicksSchema = 2; return; }
   var saved = normalizeImportedState(profiles[id].state) || {};
   var fields = ["score","ds","streak","bookmarks","answeredIds","missedQuestions",
                 "confidenceLog","sessionHistory","review","selectedDomain","diff",
@@ -6736,9 +6765,12 @@ function humanLabel(key) {
 function topicSearchTokens(q) {
   return String(q || '').toLowerCase().split(/\s+/).filter(Boolean).slice(0, 8);
 }
+// \b only works next to a letter or digit, so ".net" or "c++" get no boundary there.
+function topicWordStart(tok) { return /^\w/.test(tok) ? '\\b' : ''; }
+function topicWordEnd(tok) { return /\w$/.test(tok) ? '\\b' : ''; }
 function topicTokenRe(tok, flags) {
   var esc = tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp((tok.length <= 4 ? '\\b' : '') + esc, flags || 'i');
+  return new RegExp((tok.length <= 4 ? topicWordStart(tok) : '') + esc, flags || 'i');
 }
 // Escape `s` and wrap every token match in <mark>.
 function highlightText(s, tokens) {
@@ -6791,7 +6823,7 @@ function scoreTopicItem(it, tokens) {
   for (var i = 0; i < tokens.length; i++) {
     var tok = tokens[i];
     var esc = tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var whole = new RegExp('\\b' + esc + '\\b', 'i');
+    var whole = new RegExp(topicWordStart(tok) + esc + topicWordEnd(tok), 'i');
     var start = topicTokenRe(tok);
     var upper = /^[a-z]{2,5}$/.test(tok) ? new RegExp('\\b' + esc.toUpperCase() + 's?\\b') : null;
     var sc = 0;
@@ -6808,7 +6840,7 @@ function topicSnippet(it, tokens) {
   var body = topicSearchText(Object.assign({}, it.raw, { name: '' })).replace(/\s+/g, ' ').trim();
   var best = -1;
   tokens.forEach(function(tok) {
-    var m = body.match(new RegExp('\\b' + tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')) || body.match(topicTokenRe(tok));
+    var m = body.match(new RegExp(topicWordStart(tok) + tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')) || body.match(topicTokenRe(tok));
     if (m && (best < 0 || m.index < best)) best = m.index;
   });
   if (best < 0) return '';
@@ -6847,39 +6879,66 @@ function gtFigure(illustration) {
   var ills = Array.isArray(illustration) ? illustration : [illustration];
   return ills.map(function(ill) {
     if (!ill || typeof ill !== 'object') return '';
-    var inner = '', style = '';
-    if (gtStr(ill.svg)) {
-      inner = sanitizeIllustrationSvg(ill.svg);
-      // Draw the diagram big enough that its smallest label is at least 12px
-      // (labels are authored at 7.5 to 13 units). If that is wider than the
-      // screen, the frame scrolls sideways with an edge fade and a hint.
-      var vb = inner.match(/viewBox=['"][\d.\s-]+?\s([\d.]+)\s+([\d.]+)['"]/);
-      var sizes = (inner.match(/font-size=['"]([\d.]+)/g) || []).map(function(x) { return parseFloat(x.replace(/[^\d.]/g, '')); });
-      var minFs = sizes.length ? Math.min.apply(null, sizes) : 12;
-      if (vb) style = ' style="--fig-w:' + Math.round(parseFloat(vb[1]) * Math.max(1, 12 / minFs)) + 'px"';
-    } else if (gtStr(ill.img)) inner = '<img src="' + escapeHtml(ill.img) + '" loading="lazy" alt="' + escapeHtml(ill.alt || ill.caption || '') + '">';
+    var inner = '';
+    if (gtStr(ill.svg)) inner = sanitizeIllustrationSvg(ill.svg);
+    else if (gtStr(ill.img)) inner = '<img src="' + escapeHtml(ill.img) + '" loading="lazy" alt="' + escapeHtml(ill.alt || ill.caption || '') + '">';
     if (!inner) return '';
+    // The whole diagram always fits the column; "Enlarge" opens it full screen.
     return '<figure class="gt-figure">'
-      + '<div class="gt-fig-frame"><div class="gt-fig-scroll" tabindex="0" role="group" aria-label="Diagram" onscroll="gtFigScroll(this)"><div class="gt-fig-inner"' + style + '>' + inner + '</div></div></div>'
-      + '<p class="gt-fig-hint" aria-hidden="true">Scroll sideways to see the whole diagram ' + ico('chevron', 14) + '</p>'
-      + (gtStr(ill.caption) ? '<figcaption>' + escapeHtml(ill.caption) + '</figcaption>' : '') + '</figure>';
+      + '<div class="gt-fig-fit">' + inner + '</div>'
+      + '<div class="gt-fig-bar">'
+      + (gtStr(ill.caption) ? '<figcaption>' + escapeHtml(ill.caption) + '</figcaption>' : '<span></span>')
+      + '<button type="button" class="gt-btn-secondary gt-fig-zoom" onclick="gtOpenFigure(this)">' + ico('search', 18) + '<span>Tap to enlarge</span></button>'
+      + '</div></figure>';
   }).join('');
 }
-// Mark diagram frames that overflow (so the fade + hint show), and drop the
-// right-edge fade once the learner has scrolled to the end.
-function gtFigScroll(el) {
-  var frame = el.parentNode;
-  frame.classList.toggle('at-end', el.scrollLeft + el.clientWidth >= el.scrollWidth - 2);
+
+// Full-screen diagram viewer. The diagram is drawn at twice its authored
+// size (or wider, so the smallest label is at least 16px) inside a scroll
+// area; the browser's own pinch-zoom still works. Esc or Close returns focus.
+var gtFigReturn = null;
+function gtOpenFigure(btn) {
+  var fig = btn.closest('.gt-figure');
+  var src = fig && fig.querySelector('.gt-fig-fit > svg, .gt-fig-fit > img');
+  if (!src) return;
+  gtCloseFigure();
+  gtFigReturn = btn;
+  var clone = src.cloneNode(true);
+  var w = 900;
+  if (src.tagName.toLowerCase() === 'svg' && src.viewBox && src.viewBox.baseVal && src.viewBox.baseVal.width) {
+    var sizes = [].map.call(src.querySelectorAll('text'), function(t) { return parseFloat(t.getAttribute('font-size')) || 12; });
+    var minFs = sizes.length ? Math.min.apply(null, sizes) : 12;
+    w = Math.round(src.viewBox.baseVal.width * Math.max(2, 16 / minFs));
+  }
+  var cap = fig.querySelector('figcaption');
+  var ov = document.createElement('div');
+  ov.className = 'gt-zoom';
+  ov.id = 'gtZoom';
+  ov.setAttribute('role', 'dialog');
+  ov.setAttribute('aria-modal', 'true');
+  ov.setAttribute('aria-label', cap ? 'Diagram: ' + cap.textContent : 'Diagram');
+  ov.innerHTML = '<div class="gt-zoom-bar"><p class="gt-zoom-title">' + escapeHtml(cap ? cap.textContent : 'Diagram') + '</p>'
+    + '<button type="button" class="gt-btn-secondary gt-zoom-close" onclick="gtCloseFigure()">' + ico('x', 18) + '<span>Close</span></button></div>'
+    + '<div class="gt-zoom-scroll" tabindex="0" aria-label="Diagram, scroll to explore"><div class="gt-zoom-inner" style="width:' + w + 'px"></div></div>'
+    + '<p class="gt-zoom-hint">Scroll or pinch to explore. Press Esc to close.</p>';
+  ov.querySelector('.gt-zoom-inner').appendChild(clone);
+  document.body.appendChild(ov);
+  document.body.classList.add('gt-zoom-open');
+  ov.querySelector('.gt-zoom-close').focus();
 }
-function gtMarkWideFigures(root) {
-  (root || document).querySelectorAll('.gt-fig-scroll').forEach(function(el) {
-    var wide = el.scrollWidth > el.clientWidth + 2;
-    el.parentNode.classList.toggle('is-wide', wide);
-    el.closest('.gt-figure').classList.toggle('is-wide', wide);
-    gtFigScroll(el);
-  });
+function gtCloseFigure() {
+  var ov = document.getElementById('gtZoom');
+  if (!ov) return;
+  ov.remove();
+  document.body.classList.remove('gt-zoom-open');
+  if (gtFigReturn && document.body.contains(gtFigReturn)) gtFigReturn.focus();
+  gtFigReturn = null;
 }
-window.addEventListener('resize', function() { gtMarkWideFigures(document.getElementById('topicsArea')); });
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('gtZoom')) return;
+  if (e.key === 'Escape') { e.preventDefault(); gtCloseFigure(); }
+  else if (e.key === 'Tab') { e.preventDefault(); var f = document.querySelector('#gtZoom .gt-zoom-close, #gtZoom .gt-zoom-scroll'); var all = document.querySelectorAll('#gtZoom .gt-zoom-close, #gtZoom .gt-zoom-scroll'); var i = [].indexOf.call(all, document.activeElement); (all[(i + 1) % all.length] || f).focus(); }
+});
 
 // Plain-value renderer for v1 fields we have no special place for.
 function gtValue(val, t) {
@@ -6906,7 +6965,7 @@ function gtFooter(itemId, domainId) {
   return '<div class="gt-foot">'
     + '<button class="gt-btn-secondary gt-read-btn" aria-pressed="' + done + '" onclick="event.stopPropagation();toggleConceptReviewed(\'' + escapeHtml(itemId) + '\')">'
     + ico('check', 18) + '<span>' + (done ? 'Read' : 'Mark as read') + '</span></button>'
-    + (domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practise Domain ' + domainId + ' questions ' + ico('chevron', 16) + '</button>' : '')
+    + (domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practice Domain ' + domainId + ' questions ' + ico('chevron', 16) + '</button>' : '')
     + '</div>';
 }
 
@@ -7102,8 +7161,8 @@ function renderTopics() {
         var inf = DI[String(dom.domain_id)];
         var on = dom.domain_id === d;
         return '<button class="gt-seg-btn" role="tab" aria-selected="' + on + '" onclick="setTopicDomain(\'' + dom.domain_id + '\')">'
-          + '<span class="dom-dot" style="background:' + inf.color + '"></span>'
-          + '<span class="gt-seg-num">D' + dom.domain_id + '</span><span class="gt-seg-name">' + escapeHtml(inf.short) + '</span></button>';
+          + '<span class="gt-seg-top"><span class="dom-dot" style="background:' + inf.color + '"></span>'
+          + '<span class="gt-seg-num">D' + dom.domain_id + '</span></span><span class="gt-seg-name">' + escapeHtml(inf.short) + '</span></button>';
       }).join('')
     + '</div></div>';
 
@@ -7114,28 +7173,34 @@ function renderTopics() {
     + '<h3 class="gt-panel-title" id="gtPanelTitle">' + escapeHtml(domainData.domain_name) + '</h3>'
     + '<div class="gt-panel-row">' + gtRingSvg(domProg.pct)
     + '<p class="gt-panel-meta" id="gtPanelMeta">' + domainData.groups.length + ' topics &middot; <span class="gt-num">' + domProg.done + '</span> of ' + totalItems + ' read</p></div>'
-    + '<button class="gt-pill" onclick="startTopicPractice(\'' + d + '\')">' + ico('play', 16) + 'Practise Domain ' + d + '</button>'
+    + '<button class="gt-pill" onclick="startTopicPractice(\'' + d + '\')">' + ico('play', 16) + 'Practice Domain ' + d + '</button>'
     + '</section>';
 
-  // ── Intro: overview + analogy (+ v2 topic map). Short on phones. ──
+  // ── Intro: overview + analogy, two lines until opened (remembered) ──
+  if (topicState.introOpen === undefined) {
+    try { topicState.introOpen = localStorage.getItem('aurivan_topics_intro_open') === '1'; } catch (e) { topicState.introOpen = false; }
+  }
   var introOpen = !!topicState.introOpen;
   var introInner = '';
   if (domainData.summary) introInner += '<p class="gt-intro-p">' + escapeHtml(domainData.summary) + '</p>';
   if (domainData.real_life_analogy) introInner += '<div class="gt-intro-analogy"><p class="gt-cap-inline">Think of it this way</p><p class="gt-quote">' + escapeHtml(domainData.real_life_analogy) + '</p></div>';
-  if (Array.isArray(domainData.parts) && domainData.parts.length) {
+  var introHtml = introInner
+    ? '<div class="gt-intro' + (introOpen ? ' open' : '') + '" id="gtIntro"><div class="gt-intro-inner" id="gtIntroInner">' + introInner + '</div>'
+      + '<button class="gt-btn-ghost gt-intro-more" aria-expanded="' + introOpen + '" aria-controls="gtIntroInner" onclick="toggleDomainSummary()">' + (introOpen ? 'Show less' : 'Read the domain overview') + '</button></div>'
+    : '';
+  // ── Topic map (v2 parts): compact chips that jump to each topic ──
+  var mapHtml = '';
+  if (!searchQ && Array.isArray(domainData.parts) && domainData.parts.length) {
     var names = {};
     domainData.groups.forEach(function(g) { names[g.group_id] = g.group_title; });
-    introInner += '<div class="gt-map"><p class="gt-cap-inline">Topic map</p>' + domainData.parts.map(function(p) {
-      return '<div class="gt-map-part"><p class="gt-map-h">Part ' + escapeHtml(p.part || '') + ' &middot; ' + escapeHtml(p.name || '') + '</p><ul class="gt-map-list">'
+    mapHtml = '<nav class="gt-mapchips" aria-label="Topic map">' + domainData.parts.map(function(p) {
+      return '<div class="gt-mapchips-row"><span class="gt-part">Part ' + escapeHtml(p.part || '') + ' &middot; ' + escapeHtml(p.name || '') + '</span>'
         + (p.topic_ids || []).map(function(id) {
-            return '<li><button class="gt-link" onclick="openTopicGroup(\'' + escapeHtml(String(id)) + '\')">' + escapeHtml(names[id] || id) + '</button></li>';
-          }).join('') + '</ul></div>';
-    }).join('') + '</div>';
+            var nm = names[id] || id;
+            return '<button class="gt-mapchip" title="' + escapeHtml(nm) + '" onclick="openTopicGroup(\'' + escapeHtml(String(id)) + '\')">' + escapeHtml(nm) + '</button>';
+          }).join('') + '</div>';
+    }).join('') + '</nav>';
   }
-  var introHtml = introInner
-    ? '<div class="gt-intro' + (introOpen ? ' open' : '') + '" id="gtIntro"><div class="gt-intro-inner">' + introInner + '</div>'
-      + '<button class="gt-btn-ghost gt-intro-more" aria-expanded="' + introOpen + '" aria-controls="gtIntro" onclick="toggleDomainSummary()">' + (introOpen ? 'Show less' : 'Read more') + '</button></div>'
-    : '';
 
   // ── Continue reading ──
   var continueHtml = '';
@@ -7211,7 +7276,8 @@ function renderTopics() {
       var readMin = estimateReadMinutes({ s: g.group_summary, items: g.items.map(function(i){ return topicSearchText(i.raw); }) });
       var bodyHtml = '';
       if (isOpen) {
-        if (g.group_summary) bodyHtml += '<p class="gt-group-about">' + escapeHtml(g.group_summary) + '</p>';
+        // One intro layer per topic: the "You should be able to" list, else the overview.
+        if (!(Array.isArray(g.can_do) && g.can_do.length) && g.group_summary) bodyHtml += '<p class="gt-group-about">' + escapeHtml(g.group_summary) + '</p>';
         if (Array.isArray(g.can_do) && g.can_do.length) {
           bodyHtml += '<div class="gt-cando"><p class="gt-cap-inline">You should be able to</p><ul class="gt-list">'
             + g.can_do.map(function(x) { return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul></div>';
@@ -7231,12 +7297,11 @@ function renderTopics() {
   }
 
   area.innerHTML = '<div class="gt">'
-    + headHtml + tabsHtml + panelHtml + introHtml + continueHtml + toolbarHtml
+    + headHtml + tabsHtml + panelHtml + introHtml + mapHtml + continueHtml + toolbarHtml
     + '<div id="notesGroupsArea" class="gt-groups">' + listHtml + '</div>'
     + renderDomainGlossary(domainData)
     + renderMasterTips()
     + '</div>';
-  gtMarkWideFigures(area);
 
   if (topicState.focusSearch) {
     topicState.focusSearch = false;
@@ -7320,7 +7385,6 @@ function setTopicDomain(domain) {
   topicState.search = '';
   topicState.filter = 'all';
   topicState.openItems = {};
-  topicState.introOpen = false;
   renderTopics();
   var area = document.getElementById('topicsArea');
   if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -7351,11 +7415,12 @@ function openTopicGroup(groupId) {
 // The domain intro is clamped on phones; this expands it.
 function toggleDomainSummary() {
   topicState.introOpen = !topicState.introOpen;
+  try { localStorage.setItem('aurivan_topics_intro_open', topicState.introOpen ? '1' : '0'); } catch (e) {}
   var el = document.getElementById('gtIntro');
   if (!el) return;
   el.classList.toggle('open', topicState.introOpen);
   var b = el.querySelector('.gt-intro-more');
-  if (b) { b.textContent = topicState.introOpen ? 'Show less' : 'Read more'; b.setAttribute('aria-expanded', String(topicState.introOpen)); }
+  if (b) { b.textContent = topicState.introOpen ? 'Show less' : 'Read the domain overview'; b.setAttribute('aria-expanded', String(topicState.introOpen)); }
 }
 
 function jumpToSubtopic(itemId) {
@@ -7369,6 +7434,9 @@ function jumpToSubtopic(itemId) {
   });
   if (!groupKey) return;
   topicState.search = '';
+  // A filter that hides this note would make the jump do nothing.
+  var isRead = !!getTopicReviewedSet()[itemId];
+  if ((topicState.filter === 'reviewed' && !isRead) || (topicState.filter === 'unreviewed' && isRead)) topicState.filter = 'all';
   topicState.openGroups[groupKey] = true;
   topicState.openItems[itemId] = true;
   renderTopics();
@@ -7430,7 +7498,6 @@ function toggleNotesItem(itemId) {
       body.dataset.rendered = '1';
     }
   }
-  if (isOpen && body) gtMarkWideFigures(body);
   if (isOpen) {
     var dom2 = parseInt(topicState.domain) || 1;
     if (!S.lastOpenedSubtopic) S.lastOpenedSubtopic = {};
@@ -7946,9 +8013,9 @@ function setTimerDuration(mins) {
 function updateTimerDisplay() {
   var area = document.getElementById('timerCtrlArea');
   if (!area) return;
-  var html = '<span class="ctrl-label" title="Session timer counts down for your whole domain session. Auto = 1 minute per remaining question.">Timer</span>'
+  var html = '<span class="ctrl-label" title="Session timer counts down for your whole domain session. Auto = exam pace, up to 4 hours.">Timer</span>'
     + '<button class="ctrl-btn' + (!S.timerEnabled ? ' active' : '') + '" onclick="S.timerEnabled=false;S.domainTimerActive=false;clearAllTimers();updateTimerDisplay()" title="No timer — practice at your own pace">OFF</button>'
-    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 0 ? ' active' : '') + '" onclick="setTimerDuration(0)" title="Auto: 1 minute per question you have not answered yet">Auto</button>'
+    + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 0 ? ' active' : '') + '" onclick="setTimerDuration(0)" title="Auto: exam pace for the questions you have not answered yet, up to 4 hours">Auto</button>'
     + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 15 ? ' active' : '') + '" onclick="setTimerDuration(15)" title="15 minute session">15min</button>'
     + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 30 ? ' active' : '') + '" onclick="setTimerDuration(30)" title="30 minute session">30min</button>'
     + '<button class="ctrl-btn' + (S.timerEnabled && S.timerSeconds === 60 ? ' active' : '') + '" onclick="setTimerDuration(60)" title="60 minute session">60min</button>';
@@ -7972,7 +8039,9 @@ function startDomainTimer() {
   var remaining = bankCount - coveredCount;
   var totalMins;
   if (S.timerSeconds === 0) {
-    totalMins = remaining > 0 ? remaining : bankCount; // 1 min per question
+    // 1.6 min per unanswered question (the real exam's pace), capped at the
+    // real exam's 4 hours so the countdown never reveals the bank size.
+    totalMins = Math.round(Math.min(remaining > 0 ? remaining : bankCount, 150) * 1.6);
   } else {
     totalMins = S.timerSeconds;
   }
@@ -8826,7 +8895,8 @@ function renderQuestion(q) {
   var subtopicHtml = q.subtopic ? '<span class="q-subtopic-tag">' + escapeHtml(q.subtopic) + '</span>' : '';
 
   // One-time confidence tooltip (first question only) — Decision 5
-  var showConfTip = !localStorage.getItem('aurivan_conf_tip_seen');
+  var showConfTip = false;
+  try { showConfTip = !localStorage.getItem('aurivan_conf_tip_seen'); } catch (e) {}
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
         + '<span>Rate your confidence — this affects how often the question resurfaces in your review queue.</span>'
