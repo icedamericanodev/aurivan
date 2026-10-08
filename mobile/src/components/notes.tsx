@@ -7,11 +7,19 @@
  * "How ISACA thinks" is the key-idea recipe (3px accent rule + italic
  * quote, never a card); exam traps are the one tinted block (tipBg).
  */
-import { Component, useMemo, type ReactNode } from 'react';
-import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
-import { parse, SvgAst, type JsxAST } from 'react-native-svg';
+import { Component, useId, useMemo, useState, type ReactNode } from 'react';
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
+import Svg, { Defs, LinearGradient, parse, Rect, Stop, SvgAst, type JsxAST } from 'react-native-svg';
 import type { NoteCompare, NoteIllustration, NoteSubtopic, NoteTerm } from '../content/notes/types';
-import { svgSize, themeSvg } from '../engine/notesSvg';
+import { svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
 import { font, LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Check } from './icons';
@@ -88,29 +96,77 @@ export function TermList({ items }: { items: NoteTerm[] }) {
   );
 }
 
-// ── Compare table ──────────────────────────────────────────────────────
+// ── Sideways scroller with an edge fade ────────────────────────────────
 /**
- * Side-by-side table that scrolls sideways. At large text sizes it stacks
- * instead: one block per row, each column's cell under its name, so text
- * never squeezes into narrow cells.
+ * A horizontal scroller for content wider than the column. A paper-coloured
+ * fade on the right edge says "there is more this way"; it disappears once
+ * the learner reaches the end. Bleeds into the right gutter like ChipRow.
+ */
+export function SideScroll({ children, contentWidth }: { children: ReactNode; contentWidth: number }) {
+  const { c } = useTheme();
+  const column = useColumnWidth();
+  const [atEnd, setAtEnd] = useState(false);
+  const id = `fade${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    setAtEnd(contentOffset.x + layoutMeasurement.width >= contentSize.width - 8);
+  };
+  return (
+    <View style={{ marginRight: -space.gutter }}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator
+        onScroll={onScroll}
+        scrollEventThrottle={64}
+        contentContainerStyle={{ paddingRight: space.gutter }}
+      >
+        {children}
+      </ScrollView>
+      {!atEnd && contentWidth > column && (
+        <Svg width={48} height="100%" style={styles.fade} pointerEvents="none">
+          <Defs>
+            <LinearGradient id={id} x1="0" y1="0" x2="1" y2="0">
+              <Stop offset="0" stopColor={c.bg} stopOpacity={0} />
+              <Stop offset="1" stopColor={c.bg} stopOpacity={0.95} />
+            </LinearGradient>
+          </Defs>
+          <Rect x="0" y="0" width="48" height="100%" fill={`url(#${id})`} />
+        </Svg>
+      )}
+    </View>
+  );
+}
+
+// ── Compare table ──────────────────────────────────────────────────────
+/** Narrowest a table column may be before the table stacks instead. */
+const TABLE_LABEL_W = 100;
+const TABLE_MIN_COL_W = 120;
+
+/**
+ * Side by side only when every column fits the screen (so the row labels
+ * never scroll out of view): usually 2 columns on a phone, 3 on wider
+ * screens. Otherwise, and always at large text sizes, each row becomes a
+ * bordered block: the row label, then each column's name and cell.
  * Screen readers get one stop per row: "Status. Standards: Mandatory. …".
  */
 export function CompareTable({ compare }: { compare: NoteCompare }) {
   const { c } = useTheme();
   const column = useColumnWidth();
-  const stacked = useFontScale() >= LARGE_TEXT;
+  const large = useFontScale() >= LARGE_TEXT;
+  const n = compare.columns.length;
+  const fits = TABLE_LABEL_W + n * TABLE_MIN_COL_W <= column;
   const rowLabel = (r: NoteCompare['rows'][number]) =>
     `${r.label}. ${r.cells.map((cell, i) => `${compare.columns[i]}: ${cell}`).join('. ')}`;
 
-  if (stacked) {
+  if (large || !fits) {
     return (
-      <View>
-        {compare.rows.map((r, i) => (
+      <View style={{ gap: space.md }}>
+        {compare.rows.map((r) => (
           <View
             key={r.label}
             accessible
             accessibilityLabel={rowLabel(r)}
-            style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 0 : 1, borderTopColor: c.line }}
+            style={{ borderWidth: 1, borderColor: c.line, borderRadius: radius.md, padding: space.lg }}
           >
             <T v="label">{r.label}</T>
             {r.cells.map((cell, j) => (
@@ -125,55 +181,40 @@ export function CompareTable({ compare }: { compare: NoteCompare }) {
     );
   }
 
-  // Widths: a label column, then equal columns at least 130 wide.
-  const labelW = 112;
-  const colW = Math.max(130, Math.floor((column - labelW) / compare.columns.length));
-  const tableW = labelW + colW * compare.columns.length;
-  const scrolls = tableW > column;
+  const colW = Math.floor((column - TABLE_LABEL_W) / n);
   const cell = { paddingVertical: space.sm, paddingRight: space.md };
   return (
     <View>
-      {scrolls && <T v="meta" style={{ marginBottom: space.xs }}>Scroll sideways to see every column.</T>}
-      <View style={{ marginRight: -space.gutter }}>
-        <ScrollView horizontal showsHorizontalScrollIndicator contentContainerStyle={{ paddingRight: space.gutter }}>
-          <View style={{ width: tableW }}>
-            {/* Header row: each row's spoken label already names the columns. */}
-            <View
-              accessible={false}
-              importantForAccessibility="no-hide-descendants"
-              style={{ flexDirection: 'row', borderBottomWidth: 1.5, borderBottomColor: c.control }}
-            >
-              <View style={[cell, { width: labelW }]} />
-              {compare.columns.map((col) => (
-                <View key={col} style={[cell, { width: colW }]}>
-                  <T v="label">{col}</T>
-                </View>
-              ))}
-            </View>
-            {compare.rows.map((r, i) => (
-              <View
-                key={r.label}
-                accessible
-                accessibilityLabel={rowLabel(r)}
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: i === compare.rows.length - 1 ? 0 : 1,
-                  borderBottomColor: c.line,
-                }}
-              >
-                <View style={[cell, { width: labelW }]}>
-                  <T v="caption">{r.label}</T>
-                </View>
-                {r.cells.map((text, j) => (
-                  <View key={j} style={[cell, { width: colW }]}>
-                    <T v="small">{text}</T>
-                  </View>
-                ))}
-              </View>
-            ))}
+      {/* Header row: each row's spoken label already names the columns. */}
+      <View
+        accessible={false}
+        importantForAccessibility="no-hide-descendants"
+        style={{ flexDirection: 'row', borderBottomWidth: 1.5, borderBottomColor: c.control }}
+      >
+        <View style={[cell, { width: TABLE_LABEL_W }]} />
+        {compare.columns.map((col) => (
+          <View key={col} style={[cell, { width: colW }]}>
+            <T v="label">{col}</T>
           </View>
-        </ScrollView>
+        ))}
       </View>
+      {compare.rows.map((r, i) => (
+        <View
+          key={r.label}
+          accessible
+          accessibilityLabel={rowLabel(r)}
+          style={{ flexDirection: 'row', borderBottomWidth: i === compare.rows.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+        >
+          <View style={[cell, { width: TABLE_LABEL_W }]}>
+            <T v="caption">{r.label}</T>
+          </View>
+          {r.cells.map((text, j) => (
+            <View key={j} style={[cell, { width: colW }]}>
+              <T v="small">{text}</T>
+            </View>
+          ))}
+        </View>
+      ))}
     </View>
   );
 }
@@ -207,19 +248,21 @@ export function parseIllustration(svg: string, palette: Parameters<typeof themeS
 }
 
 /**
- * A diagram, scaled to the content width with its proportions kept.
- * With large text it is drawn larger and scrolls sideways. A screen reader
- * hears its description once (the SVG's aria-label); the caption below is
- * normal text that grows with the phone's text size.
+ * A diagram, drawn large enough that its smallest label is at least 13pt
+ * (engine/notesSvg.ts → svgSize). Most diagrams are then wider than the
+ * phone, so they scroll sideways with an edge fade and a one-line hint.
+ * A screen reader hears its description once (the SVG's aria-label); the
+ * caption below is normal text that grows with the phone's text size.
  */
 export function IllustrationView({ illustration, onSection }: { illustration: NoteIllustration; onSection?: ReactNode }) {
   const { c } = useTheme();
   const column = useColumnWidth();
   const fontScale = useFontScale();
   const ast = useMemo(() => parseIllustration(illustration.svg, c), [illustration.svg, c]);
+  const minFont = useMemo(() => svgMinFontSize(illustration.svg), [illustration.svg]);
   if (!ast) return null;
-  const zoom = fontScale >= LARGE_TEXT ? fontScale : 1;
-  const size = svgSize(illustration, column, zoom);
+  const size = svgSize(illustration, column, { minFont, fontScale });
+  const scrolls = size.width > column;
   const drawing = (
     <View
       accessible
@@ -233,17 +276,16 @@ export function IllustrationView({ illustration, onSection }: { illustration: No
   return (
     <DrawingBoundary>
       {onSection}
-      {size.width > column ? (
-        <View style={{ marginRight: -space.gutter }}>
-          <ScrollView horizontal contentContainerStyle={{ paddingRight: space.gutter }}>{drawing}</ScrollView>
-        </View>
-      ) : (
-        drawing
-      )}
+      {scrolls && <T v="meta" style={{ marginBottom: space.xs }}>Scroll sideways to see the whole diagram.</T>}
+      {scrolls ? <SideScroll contentWidth={size.width}>{drawing}</SideScroll> : drawing}
       {illustration.caption && <T v="meta" style={{ marginTop: space.sm }}>{illustration.caption}</T>}
     </DrawingBoundary>
   );
 }
+
+const styles = StyleSheet.create({
+  fade: { position: 'absolute', right: 0, top: 0, bottom: 0 },
+});
 
 // ── The whole page ─────────────────────────────────────────────────────
 

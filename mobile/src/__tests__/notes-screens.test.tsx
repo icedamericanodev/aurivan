@@ -12,7 +12,7 @@
  * `act(() => store.action())` — use braces.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions } from 'react-native';
+import { AccessibilityInfo, Dimensions } from 'react-native';
 import { NoteBody } from '../components/notes';
 import { clearNotesCache, findNote, getNotes } from '../content/notes';
 import type { NoteSubtopic } from '../content/notes/types';
@@ -104,10 +104,10 @@ const press = (label: string) =>
   act(() => {
     pressable(label).props.onPress();
   });
-const setFontScale = (fontScale: number) => {
+const setFontScale = (fontScale: number, width = 390) => {
   const w = Dimensions.get('window');
   act(() => {
-    Dimensions.set({ window: { ...w, width: 390, fontScale }, screen: { ...w, width: 390, fontScale } });
+    Dimensions.set({ window: { ...w, width, fontScale }, screen: { ...w, width, fontScale } });
   });
 };
 
@@ -164,21 +164,48 @@ describe('NoteBody: every section renders', () => {
     expect(allText()).toContain('Illustration');
     expect(allText()).toContain(ill.caption!);
     expect(allText()).toContain('Analogy and memory aid');
+    // Its 11-unit labels need more than the phone's width to reach 13pt: it scrolls.
+    expect(allText()).toContain('Scroll sideways to see the whole diagram.');
+    const drawn = image[0].props.style as { width: number };
+    expect(drawn.width).toBeGreaterThan(350);
   });
 
-  it('stacks the compare table at large text, side by side otherwise', () => {
+  // Side by side shows the column names once, in a header row hidden from
+  // screen readers; stacked repeats them in every row block.
+  const timesShown = (word: string) => allText().split(word).length - 1;
+  const remount = (el: React.ReactElement) => {
+    act(() => {
+      r?.unmount();
+    });
+    mount(el);
+  };
+
+  it('stacks a 3-column table on a phone (row labels never scroll away)', () => {
     const n = note('4B1.2');
     mount(<NoteBody note={n} />);
-    expect(allText()).toContain('Scroll sideways to see every column.');
-    act(() => {
-      r!.unmount();
-    });
-    setFontScale(2);
-    mount(<NoteBody note={n} />);
-    expect(allText()).not.toContain('Scroll sideways');
+    expect(timesShown('RTO:')).toBe(0);
+    expect(timesShown('Smaller value means')).toBe(1);
+    // Every row's cells sit under their column name (4 rows → "MTD" 4 times plus mentions in the text).
+    expect(timesShown('MTD')).toBeGreaterThanOrEqual(4);
     // One screen-reader stop per row, naming each column.
     const rows = root().findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('Measured.'));
     expect(rows[0].props.accessibilityLabel).toContain('RPO: Backward from the disruption');
+  });
+
+  it('shows a table side by side when it fits: 2 columns on a phone, 3 on a wide screen', () => {
+    const n = note('4B1.2');
+    const two = { columns: ['RPO', 'RTO'], rows: n.compare!.rows.map((x) => ({ label: x.label, cells: x.cells.slice(0, 2) })) };
+    const headerRows = () =>
+      root().findAll((x) => typeof x.type === 'string' && x.props.importantForAccessibility === 'no-hide-descendants' && x.props.style?.flexDirection === 'row');
+    mount(<NoteBody note={{ ...n, compare: two }} />);
+    expect(headerRows()).toHaveLength(1);
+    setFontScale(1, 800);
+    remount(<NoteBody note={n} />);
+    expect(headerRows()).toHaveLength(1);
+    // Large text stacks even on a wide screen.
+    setFontScale(2, 800);
+    remount(<NoteBody note={n} />);
+    expect(headerRows()).toHaveLength(0);
   });
 
   it('skips a drawing that cannot be parsed, without crashing', () => {
@@ -213,7 +240,9 @@ describe('screens', () => {
     expect(mockPush).toHaveBeenCalledWith('/notes/1');
   });
 
-  it('notes home search finds a note and opens it', () => {
+  it('notes home search finds a note, announces the count, and opens it', () => {
+    jest.useFakeTimers();
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     mount(<NotesHome />);
     const input = root().findAll((n) => n.props.accessibilityLabel === 'Search the study notes' && n.props.onChangeText)[0];
     act(() => {
@@ -221,6 +250,10 @@ describe('screens', () => {
     });
     expect(allText()).toContain('Results');
     expect(allText()).toContain('ITAF: Standards, Guidelines, and Tools and Techniques');
+    act(() => {
+      jest.advanceTimersByTime(800);
+    });
+    expect(announce).toHaveBeenLastCalledWith('1 result');
     const hit = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('ITAF') && n.props.onPress)[0];
     act(() => {
       hit.props.onPress();
@@ -230,6 +263,12 @@ describe('screens', () => {
       input.props.onChangeText('zzzz nothing');
     });
     expect(allText()).toContain('No matches');
+    act(() => {
+      jest.advanceTimersByTime(800);
+    });
+    expect(announce).toHaveBeenLastCalledWith('No matches');
+    announce.mockRestore();
+    jest.useRealTimers();
   });
 
   it('domain screen: hero, parts, topic overview, can-do list, subtopic rows', () => {
@@ -242,6 +281,11 @@ describe('screens', () => {
     expect(text).not.toContain('Part A'); // Part A has no topics in the fixture
     expect(text).toContain('You should be able to');
     expect(text).toContain('Tell RPO from RTO in a scenario');
+    // The overview is clamped to 3 lines in the panel, with a More toggle.
+    const overview = root().findAll((n) => n.props.numberOfLines === 3);
+    expect(overview.length).toBeGreaterThan(0);
+    press('Show the full overview');
+    expect(root().findAll((n) => n.props.numberOfLines === 3)).toHaveLength(0);
     press('Recovery Objectives: RPO, RTO, MTD and MBCO, not read yet');
     expect(mockPush).toHaveBeenCalledWith('/notes/subtopic/4B1.2');
     // The domain glossary folds open.
@@ -277,6 +321,8 @@ describe('screens', () => {
 describe('Learn: the Study notes entry', () => {
   it('shows with notes and opens the notes', () => {
     mount(<Learn />);
+    expect(allText()).toContain('Lessons and study notes');
+    expect(allText()).toContain('Lessons by domain');
     expect(allText()).toContain('Study notes');
     press('Study notes, Every exam topic in plain English');
     expect(mockPush).toHaveBeenCalledWith('/notes');
@@ -286,7 +332,16 @@ describe('Learn: the Study notes entry', () => {
     mockNotesOn = false;
     clearNotesCache();
     mount(<Learn />);
-    expect(allText()).not.toContain('Study notes');
-    expect(allText()).toContain('By domain'); // the lessons are still there
+    expect(allText()).not.toContain('Study notes,');
+    expect(root().findAll((n) => n.props.accessibilityLabel?.startsWith?.('Study notes,'))).toHaveLength(0);
+    expect(allText()).toContain('Lessons by domain'); // the lessons are still there
+  });
+
+  it('notes home shows a friendly empty screen when the pack is empty', () => {
+    mockNotesOn = false;
+    clearNotesCache();
+    mount(<NotesHome />);
+    expect(allText()).toContain('Notes are on the way');
+    expect(allText()).not.toContain('By domain');
   });
 });

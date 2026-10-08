@@ -629,7 +629,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonGhost: {
-    minHeight: 44,
+    minHeight: 48, // 48pt touch target (was 44)
     borderWidth: 0,
     paddingHorizontal: space.sm,
     flexDirection: 'row',
@@ -678,7 +678,7 @@ const styles = StyleSheet.create({
   chipLabel: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20 },
   tabLabel: { alignItems: 'center', gap: 1 },
   search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
-  searchClear: { width: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
+  searchClear: { width: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
   tabDot: { width: 4, height: 4, borderRadius: 2 },
 });
 
@@ -948,7 +948,7 @@ export function ChipRow({ children }: { children: ReactNode }) {
 
 // ── SearchField: a rounded text box for searching (Study notes) ───────
 // Body type, so typed text grows with the phone's text size (×2 cap).
-// 48pt tall minimum; a ✕ button (44pt) clears it when there is text.
+// 48pt tall minimum; a ✕ button (48pt) clears it when there is text.
 export function SearchField({
   value,
   onChangeText,

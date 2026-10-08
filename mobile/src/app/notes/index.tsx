@@ -7,8 +7,9 @@
  * content/certifications.ts, the single source of exam facts.
  */
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { AccessibilityInfo, View } from 'react-native';
+import { EmptyScreen } from '../../components/emptyScreen';
 import { ReadMark } from '../../components/notes';
 import { DomainDot, EmptyState, Enter, ListRow, PushedHeader, Screen, SearchField, Section, T } from '../../components/ui';
 import { getNotes, noteSubtopics } from '../../content/notes';
@@ -30,6 +31,27 @@ export default function NotesHome() {
   const hits = useMemo(() => searchNotes(getNotes(cert.id), query), [cert.id, query]);
   const searching = query.trim().length >= 2;
   const total = noteSubtopics(cert.id).length;
+  const resultsLine = hits.length === 0 ? 'No matches' : `${hits.length}${hits.length === 30 ? ' or more' : ''} ${hits.length === 1 ? 'result' : 'results'}`;
+
+  // Screen readers hear how many results there are once typing pauses
+  // (debounced, so it doesn't talk over every keystroke).
+  useEffect(() => {
+    if (!searching) return;
+    const t = setTimeout(() => AccessibilityInfo.announceForAccessibility(resultsLine), 700);
+    return () => clearTimeout(t);
+  }, [searching, resultsLine, query]);
+
+  // No notes in this app build (e.g. the notes pack is empty): say so plainly.
+  if (domains.length === 0) {
+    return (
+      <EmptyScreen
+        header="Study notes"
+        title="Notes are on the way"
+        body="Study notes for this exam aren't in the app yet. Lessons and practice are ready now."
+        primary={{ label: 'Back to Learn', onPress: () => router.replace('/learn') }}
+      />
+    );
+  }
 
   return (
     <Screen edges={['top', 'bottom']}>

@@ -2,8 +2,10 @@
  * Study notes, one domain.
  *
  * Forest hero (the screen's one brand panel): domain dot · "26% of the
- * exam", the domain name, its overview and real-life analogy, and how much
- * the learner has read. Below: the topics grouped by outline Part (A/B).
+ * exam", the domain name, how much the learner has read, and the overview
+ * clamped to 3 lines with a "More" toggle, so the first topic shows on the
+ * first screen. The real-life analogy follows as plain text under the
+ * panel. Below: the topics grouped by outline Part (A/B).
  * Each topic shows its overview, a "You should be able to" list, and its
  * subtopics with a read mark. The domain's key terms fold away at the end.
  */
@@ -30,6 +32,7 @@ export default function NotesDomain() {
   const { domain: domainId } = useLocalSearchParams<{ domain: string }>();
   const { cert, progress } = useActiveCert();
   const [termsOpen, setTermsOpen] = useState(false);
+  const [overviewOpen, setOverviewOpen] = useState(false);
   const info = cert.domains.find((d) => d.id === domainId);
   const notes = info ? noteDomain(cert.id, info.id) : undefined;
 
@@ -67,15 +70,33 @@ export default function NotesDomain() {
           sway={false}
           wideTitle
         >
-          {notes.overview ? <T v="small" color={c.onForest} style={{ marginTop: space.md }}>{notes.overview}</T> : null}
-          {notes.analogy ? (
-            <View style={{ marginTop: space.md }}>
-              <T v="caption" color={c.onForest2}>Think of it like this</T>
-              <T v="small" color={c.onForest2} style={{ marginTop: 2 }}>{notes.analogy}</T>
-            </View>
+          {notes.overview ? (
+            <>
+              {/* Clamped to 3 lines; screen readers still hear the whole overview. */}
+              <T v="small" color={c.onForest} numberOfLines={overviewOpen ? undefined : 3} style={{ marginTop: space.md }}>
+                {notes.overview}
+              </T>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ expanded: overviewOpen }}
+                accessibilityLabel={overviewOpen ? 'Show less of the overview' : 'Show the full overview'}
+                onPress={() => setOverviewOpen(!overviewOpen)}
+                hitSlop={4}
+                style={{ minHeight: 48, justifyContent: 'center', alignSelf: 'flex-start' }}
+              >
+                <T v="label" color={c.onForest}>{overviewOpen ? 'Less' : 'More'}</T>
+              </Pressable>
+            </>
           ) : null}
         </HeroPanel>
       </Enter>
+
+      {notes.analogy ? (
+        <Enter i={1} style={{ marginTop: space.xl }}>
+          <T v="caption" color={c.accentText}>Think of it like this</T>
+          <T v="body" color={c.ink2} style={{ marginTop: space.xs }}>{notes.analogy}</T>
+        </Enter>
+      ) : null}
 
       <Enter i={1}>
         {groups.map((g) => (

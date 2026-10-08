@@ -64,7 +64,7 @@ export default function Learn() {
     <Screen>
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
-        <T v="meta" style={{ marginTop: space.xs }}>Short lessons, one idea each.</T>
+        <T v="meta" style={{ marginTop: space.xs }}>Lessons and study notes</T>
       </Enter>
 
       <Enter i={1} style={{ marginTop: 18 }}>
@@ -98,7 +98,7 @@ export default function Learn() {
       )}
 
       <Enter i={showNotes ? 3 : 2}>
-        <Section title="By domain" meta={`${doneCount} of ${lessons.length} done`} />
+        <Section title="Lessons by domain" meta={`${doneCount} of ${lessons.length} done`} />
         {groups.map(({ domain: d, items }, g) => {
           const groupDone = items.filter((l) => done(l.id)).length;
           const isOpen = isOpenGroup(d.id);

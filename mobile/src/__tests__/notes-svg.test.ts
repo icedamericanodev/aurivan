@@ -9,8 +9,8 @@
 import fs from 'fs';
 import path from 'path';
 import { parse } from 'react-native-svg';
-import { SVG_VAR_TOKENS, svgSize, themeSvg } from '../engine/notesSvg';
-import { dark, light } from '../theme/tokens';
+import { MIN_LABEL_PT, SVG_VAR_TOKENS, svgMinFontSize, svgSize, themeSvg } from '../engine/notesSvg';
+import { dark, light, type Palette } from '../theme/tokens';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { prepareIllustration } = require('../../scripts/notes-pack.cjs') as {
@@ -70,13 +70,40 @@ describe('themeSvg', () => {
   });
 });
 
-describe('svgSize', () => {
-  it('fits the column and keeps proportions', () => {
-    expect(svgSize({ width: 460, height: 150 }, 350)).toEqual({ width: 350, height: 114 });
+describe('accent-fill by role', () => {
+  const svg =
+    "<svg viewBox='0 0 100 50'><rect fill='var(--accent-fill)' stroke='var(--accent-fill)'/>" +
+    "<text fill='var(--accent-fill)'>A</text><g fill='var(--accent-fill)'><circle r='2'/></g>" +
+    "<line stroke='var(--accent-fill)'/></svg>";
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('%s: text → accentText, box fill → forest, marks → accent', (_n, p) => {
+    const out = themeSvg(svg, p, FONTS);
+    expect(out).toContain(`<text fill='${p.accentText}'>`);
+    expect(out).toContain(`<rect fill='${p.forest}' stroke='${p.accent}'/>`);
+    expect(out).toContain(`<g fill='${p.accent}'>`);
+    expect(out).toContain(`<line stroke='${p.accent}'/>`);
   });
-  it('grows with large text, at most twice the column', () => {
-    expect(svgSize({ width: 100, height: 50 }, 300, 1.5)).toEqual({ width: 450, height: 225 });
-    expect(svgSize({ width: 100, height: 50 }, 300, 3)).toEqual({ width: 600, height: 300 });
+});
+
+describe('svgSize: smallest label at least 13pt', () => {
+  it('reads the smallest text size (default 16)', () => {
+    expect(svgMinFontSize("<svg><text font-size='11'>a</text><text font-size='7.5'>b</text></svg>")).toBe(7.5);
+    expect(svgMinFontSize('<svg><text>a</text></svg>')).toBe(16);
+  });
+  it('fits the column when labels are already big enough', () => {
+    expect(svgSize({ width: 300, height: 100 }, 350, { minFont: 16 })).toEqual({ width: 350, height: 117, labelPt: 18.7 });
+  });
+  it('zooms small labels to 13pt, wider than the column (it scrolls)', () => {
+    const s1 = svgSize({ width: 460, height: 150 }, 353, { minFont: 7.5 });
+    expect(s1.labelPt).toBeGreaterThanOrEqual(MIN_LABEL_PT);
+    expect(s1.width).toBe(797);
+    expect(s1.height).toBe(260);
+  });
+  it('grows with large text (to ×1.5) and never past 4 columns', () => {
+    expect(svgSize({ width: 600, height: 50 }, 300, { minFont: 10, fontScale: 2 }).labelPt).toBe(19.5);
+    expect(svgSize({ width: 600, height: 50 }, 300, { minFont: 1 }).width).toBe(1200);
   });
 });
 
@@ -117,4 +144,102 @@ describe('every illustration in data/cisa_notes.json parses after theming', () =
     // Today's diagrams are all simple and valid; a rejection means a broken drawing landed.
     expect(rejected).toEqual([]);
   });
+
+  it('every label reaches 13pt once zoomed (except the width cap)', () => {
+    for (const ill of all) {
+      const r = prepareIllustration(ill);
+      if (!r.ok) continue;
+      const v = r.value as unknown as { svg: string; width: number; height: number };
+      const size = svgSize(v, 353, { minFont: svgMinFontSize(v.svg) });
+      if (size.width < 353 * 4) expect(size.labelPt).toBeGreaterThanOrEqual(MIN_LABEL_PT);
+    }
+  });
+
+  it.each([
+    ['light', light],
+    ['dark', dark],
+  ] as const)('%s: every text label has 4.5:1 contrast with what it sits on', (_n, palette) => {
+    const failures: string[] = [];
+    let checked = 0;
+    for (const ill of all) {
+      const r = prepareIllustration(ill);
+      if (!r.ok) continue;
+      for (const f of textContrast(themeSvg(r.value!.svg, palette, FONTS), palette)) {
+        checked += 1;
+        if (f.ratio < 4.5) failures.push(`"${f.text}" ${f.fg} on ${f.bg}: ${f.ratio.toFixed(2)}`);
+      }
+    }
+    expect(checked).toBeGreaterThan(all.length); // every diagram has labels
+    expect(failures).toEqual([]);
+  });
+
+  it('the checker catches the old bug: forest text on the dark background', () => {
+    const [f] = textContrast(`<svg><text x='5' y='9' font-size='11' fill='${dark.forest}'>A</text></svg>`, dark);
+    expect(f.bg).toBe(dark.bg);
+    expect(f.ratio).toBeLessThan(2);
+    // …and white text on its forest box passes.
+    const [g] = textContrast(
+      `<svg><rect x='0' y='0' width='50' height='20' fill='${dark.forest}'/><text x='5' y='14' font-size='11' fill='${dark.onForest}'>B</text></svg>`,
+      dark,
+    );
+    expect(g.bg).toBe(dark.forest);
+    expect(g.ratio).toBeGreaterThan(4.5);
+  });
 });
+
+// ── Contrast helpers (WCAG 2.x relative luminance) ──────────────────────
+function luminance(hex: string): number {
+  const h = hex.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((x) => x + x).join('') : h;
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16) / 255).map((v) =>
+    v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4,
+  );
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+function contrast(a: string, b: string): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+/**
+ * For each <text>, find what is drawn under it: the LAST filled rect or
+ * circle before it (document order) that contains the middle of the text's
+ * baseline-anchored glyphs; else the page background (`bg`). Groups pass
+ * their fill down to children. Our diagrams have no transforms or opacity.
+ */
+function textContrast(svg: string, palette: Palette): { text: string; fg: string; bg: string; ratio: number }[] {
+  const num = (attrs: string, name: string) => Number((new RegExp(`\\b${name}=['"]([-\\d.]+)`).exec(attrs) || [])[1] ?? 0);
+  const attr = (attrs: string, name: string) => (new RegExp(`\\b${name}=['"]([^'"]+)`).exec(attrs) || [])[1];
+  const shapes: { hit: (x: number, y: number) => boolean; fill: string }[] = [];
+  const groupFill: (string | undefined)[] = [];
+  const out: { text: string; fg: string; bg: string; ratio: number }[] = [];
+  const TAG = /<(\/?)([a-zA-Z]+)\b([^>]*?)(\/?)>([^<]*)/g;
+  let m: RegExpExecArray | null;
+  while ((m = TAG.exec(svg))) {
+    const [, closing, tag, attrs, self, inner] = m;
+    const inherited = groupFill.filter(Boolean).slice(-1)[0];
+    if (tag === 'g') {
+      if (closing) groupFill.pop();
+      else if (!self) groupFill.push(attr(attrs, 'fill'));
+      continue;
+    }
+    if (closing) continue;
+    const fill = attr(attrs, 'fill') ?? inherited;
+    if (tag === 'rect' && fill && fill !== 'none') {
+      const [x, y, w, h] = ['x', 'y', 'width', 'height'].map((n) => num(attrs, n));
+      shapes.push({ fill, hit: (px, py) => px >= x && px <= x + w && py >= y && py <= y + h });
+    } else if (tag === 'circle' && fill && fill !== 'none') {
+      const [cx, cy, rr] = ['cx', 'cy', 'r'].map((n) => num(attrs, n));
+      shapes.push({ fill, hit: (px, py) => (px - cx) ** 2 + (py - cy) ** 2 <= rr * rr });
+    } else if (tag === 'text') {
+      const size = num(attrs, 'font-size') || 16;
+      const px = num(attrs, 'x');
+      const py = num(attrs, 'y') - size * 0.35; // middle of a capital letter
+      const under = [...shapes].reverse().find((sh) => sh.hit(px, py));
+      const fg = fill ?? palette.ink;
+      const bg = under?.fill ?? palette.bg;
+      out.push({ text: inner.trim(), fg, bg, ratio: contrast(fg, bg) });
+    }
+  }
+  return out;
+}

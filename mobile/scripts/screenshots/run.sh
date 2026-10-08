@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Screenshot harness: web-export the app, seed demo data, capture key screens.
-# Usage (from mobile/): bash scripts/screenshots/run.sh [out_dir] [dark|light]
+# Usage (from mobile/): [SHOTS=notes] bash scripts/screenshots/run.sh [out_dir] [dark|light]
 # Needs Playwright (preinstalled in Claude cloud sessions; locally: npx playwright install chromium).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -15,5 +15,10 @@ trap 'kill $SERVER 2>/dev/null; rm -rf "$TMP"' EXIT
 sleep 1
 if [ -d /opt/node-tools/node_modules/playwright ]; then export PLAYWRIGHT_REQUIRE_FROM=/opt/node-tools/node_modules/; fi
 if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome; fi
-node scripts/screenshots/shoot.mjs "$TMP/seed.json" "$OUT"
+# SHOTS=notes captures the Study notes screens instead (shoot_notes.mjs).
+if [ "${SHOTS:-}" = notes ]; then
+  node scripts/screenshots/shoot_notes.mjs "$TMP/seed.json" "$OUT" "$THEME"
+else
+  node scripts/screenshots/shoot.mjs "$TMP/seed.json" "$OUT"
+fi
 echo "Screenshots in $OUT"
