@@ -951,13 +951,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A company buys breach insurance and then cancels its planned data encryption project. What should concern the IS auditor MOST?',
         options: [
           'The insurance premium may rise next year',
-          'The policy may exclude losses from unencrypted data',
+          'The insurer may take several weeks to pay a claim',
           'Insurance cannot transfer fines or lost customer trust',
           'The insurer may ask to review the company’s controls',
         ],
         correctIndex: 2,
         explanation:
-          'Transfer moves part of the financial impact; the company still owns the breach, the fines and its customers’ trust. A policy exclusion is a real concern worth checking, but even a full payout would leave that harm in place.',
+          'Transfer moves part of the financial impact; the company still owns the breach, the fines and its customers’ trust. A slow payout is tempting because it hurts cash flow, but even a full, prompt payout would leave that harm in place.',
       },
       {
         type: 'check',
@@ -2788,11 +2788,11 @@ export const CISA_LESSONS: Lesson[] = [
           'It was built in an older version of the spreadsheet software',
           'It is stored on a shared drive with other finance files',
           'Nobody reviews or tests formula changes before it is used',
-          'The analyst built it without IT’s approval or a formal project',
+          'The analyst is the one person who knows how to run it',
         ],
         correctIndex: 2,
         explanation:
-          'The spreadsheet decides real payments, so an unchecked formula error pays people wrongly every month. End-user computing needs an owner, a risk rating and reviewed changes. Missing IT approval is tempting because it sounds like shadow IT, but approval alone would not catch a broken formula; change review would.',
+          'The spreadsheet decides real payments, so an unchecked formula error pays people wrongly every month. End-user computing needs an owner, a risk rating and reviewed changes. Relying on one analyst is tempting because it is a real key-person risk, but it delays a run rather than paying people wrongly; change review catches a broken formula.',
       },
     ],
   },
