@@ -3608,7 +3608,7 @@ header {
 }
 .cl-older-body .cl-version:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
 .cl-close {
-  margin-top:20px;width:100%;padding:12px;border-radius:10px;
+  margin-top:20px;width:100%;min-height:44px;padding:12px;border-radius:10px;
   background:var(--ink);color:var(--ink-fg);border:none;
   font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight: 600;
   cursor:pointer;transition:var(--tr);
@@ -12192,7 +12192,7 @@ function buildMockAnswerKey(answers) {
 
     // Explanation
     if (a.q.correct_explanation) {
-      html += '<div style="font-size:13px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:10px;margin-top:8px">'
+      html += '<div style="font-size:13px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:var(--surface);border-radius:10px;margin-top:8px">'
         + '<strong style="color:var(--correct)">Why ' + escapeHtml(correctAns) + ' is correct:</strong> ' + escapeHtml(mapLettersInText(a.q.correct_explanation, shuffle))
         + '</div>';
     }
