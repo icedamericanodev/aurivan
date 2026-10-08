@@ -58,7 +58,7 @@
       "options": {
         "A": "Align the security program with the NIST Cybersecurity Framework",
         "B": "Commission an external penetration test of internet-facing systems",
-        "C": "Assess IT service processes against an ITIL maturity model",
+        "C": "Have the board approve and publish the security policy",
         "D": "Certify the management system against ISO/IEC 27001 requirements"
       },
       "correct": "D",
@@ -68,10 +68,10 @@
       "wrong_explanations": {
         "A": "The NIST Cybersecurity Framework is voluntary and risk-focused. It offers no formal certification, so alignment cannot give customers certifiable assurance.",
         "B": "A penetration test gives a point-in-time technical view of some systems. It says nothing about whether the whole management system works.",
-        "C": "ITIL addresses IT service management, not information security management, and a maturity assessment is not a certification."
+        "C": "A board-approved policy shows intent, but it is self-declared. Customers get no independent, certifiable evidence that the management system works."
       },
       "tips": [
-        "Eliminate: B is a narrow technical test, and C covers service management rather than security management.",
+        "Eliminate: B is a narrow technical test, and C is a self-declared policy that gives customers no independent assurance.",
         "Final two: D beats A because only ISO/IEC 27001 offers accredited certification of the whole management system, while framework alignment stays self-declared.",
         "Exam cue: when the stem asks for certifiable or third-party assurance, look for a standard with an accredited certification scheme."
       ],
@@ -243,7 +243,7 @@
       "framework_ref": "NIST SP 800-53 Rev 5 CM-6 (Configuration Settings); CIS Controls v8 Control 4 (Secure Configuration of Enterprise Assets); COBIT 2019 BAI10 (Managed Configuration)",
       "question": "A security manager uses CIS Benchmarks as configuration baselines, but a legacy payroll server cannot support one required setting without breaking its application. What is the BEST approach?",
       "options": {
-        "A": "Remove the setting from the baseline for every server",
+        "A": "Have management approve removing the setting from every server's baseline",
         "B": "Leave the server noncompliant until its next hardware refresh",
         "C": "Move the server onto an isolated network segment",
         "D": "Approve a documented exception with a compensating control"
@@ -253,12 +253,12 @@
       "pre_read": "Ask which option keeps the deviation visible and accepted by someone accountable, rather than only reducing it technically.",
       "correct_explanation": "Baselines need a managed exception path. Documenting the exception, having the risk owner accept it, and adding a compensating control keeps the deviation visible, approved and reviewed. Isolating the server may well be the right compensating control, but done alone it is an undocumented technical fix: nobody formally accepts the residual risk, and the deviation disappears from the baseline record.",
       "wrong_explanations": {
-        "A": "Dropping the setting for every server weakens the whole estate to accommodate one legacy system.",
+        "A": "Approval does not make the change sound. Dropping the setting for every server weakens the whole estate to accommodate one legacy system.",
         "B": "Waiting for a refresh leaves an unrecorded, unaccepted gap for an unknown period.",
         "C": "Isolation may reduce the risk, but without a documented, approved exception nobody accepts the residual risk and the gap is untracked."
       },
       "tips": [
-        "Eliminate: A weakens every server for one exception, and B leaves an unmanaged gap with no end date.",
+        "Eliminate: A weakens every server for one exception, approved or not, and B leaves an unmanaged gap with no end date.",
         "Final two: D beats C because a governed exception records and accepts the risk, while isolation alone is an untracked technical workaround.",
         "Exam cue: when a system cannot meet a standard, look for a documented, approved exception with compensating controls."
       ],
@@ -282,7 +282,7 @@
       "question": "An IS auditor finds that one accounts payable clerk can create new vendors and approve payments to them. Which recommendation BEST addresses this risk?",
       "options": {
         "A": "Require multi-factor authentication for the clerk's system login",
-        "B": "Review a monthly report of payments to newly created vendors",
+        "B": "Have a manager approve a monthly report of new-vendor payments",
         "C": "Assign vendor creation and payment approval to different staff",
         "D": "Encrypt the vendor master file stored in the database"
       },
@@ -292,12 +292,12 @@
       "correct_explanation": "Creating a vendor and approving payments to it are incompatible duties: together they let one person set up a fictitious supplier and pay it. Separating the duties prevents that fraud path at the source. A monthly report of payments to new vendors is a useful detective control, but it finds problems only after money has left and relies on someone acting on the report.",
       "wrong_explanations": {
         "A": "Stronger authentication confirms who the clerk is. It does not limit what the clerk is authorized to do.",
-        "B": "A monthly review is detective. It finds fictitious vendors after payment, while the conflicting access remains in place.",
+        "B": "A manager's monthly sign-off is still detective. It finds fictitious vendors after payment, while the conflicting access remains in place.",
         "D": "Encryption protects data confidentiality. It does nothing about one person holding both incompatible duties."
       },
       "tips": [
         "Eliminate: A strengthens authentication and D protects confidentiality; neither removes the conflicting duties.",
-        "Final two: C beats B because separating the duties prevents the fraud, while a monthly report only detects it afterwards.",
+        "Final two: C beats B because separating the duties prevents the fraud, while a manager's monthly review only detects it afterwards.",
         "Exam cue: when one person holds incompatible duties, prefer removing the conflict over adding a later review."
       ],
       "_provenance": "Authored from concept: 'Access standards canonical principles'. Public sources: ISACA, NIST, ISO/IEC. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
@@ -472,7 +472,7 @@
       "options": {
         "A": "Walk-in visitors are admitted without approval from any employee",
         "B": "Visitor departure times are often missing from the paper sign-in log",
-        "C": "Visitors wait in reception until their host collects them",
+        "C": "The facilities manager approves the visitor policy each year",
         "D": "Visitor badges are a different color from employee badges"
       },
       "correct": "A",
@@ -481,7 +481,7 @@
       "correct_explanation": "Visitor control starts with authorization: a named employee should approve each visit in advance and take responsibility for the visitor. Admitting walk-ins with no approval lets anyone reach a site holding payment systems. Missing departure times weaken the record and make investigations harder, but those visitors were still approved and hosted, so the risk is smaller than letting unapproved strangers in.",
       "wrong_explanations": {
         "B": "An incomplete log is a detective weakness that hampers investigation. The visitors were still authorized on arrival.",
-        "C": "Holding visitors in reception until the host arrives is good practice that keeps them out of secure areas.",
+        "C": "Annual approval of the visitor policy by an accountable manager is good governance, not a weakness.",
         "D": "Distinct badge colors are good practice, letting staff spot visitors and challenge them in restricted areas."
       },
       "tips": [
@@ -548,7 +548,7 @@
         "A": "Staff watch the camera feeds live during nights and weekends",
         "B": "Guards on duty can delete recorded footage without approval",
         "C": "Camera clocks drift several minutes from the badge system",
-        "D": "Recordings are kept for sixty days before being overwritten"
+        "D": "Management approved a sixty-day retention period for recordings"
       },
       "correct": "B",
       "key_concept": "Camera recordings must be protected from alteration or deletion, especially by the people they monitor, to remain reliable evidence.",
@@ -557,10 +557,10 @@
       "wrong_explanations": {
         "A": "Live monitoring at high-risk times is a reasonable, cost-aware design. It is not a weakness on its own.",
         "C": "Clock drift complicates matching events, but the footage is intact and the offset can be measured and corrected.",
-        "D": "Sixty days is within common retention practice and leaves time to review incidents before footage is overwritten."
+        "D": "Sixty days is within common retention practice, was formally approved, and leaves time to review incidents before footage is overwritten."
       },
       "tips": [
-        "Eliminate: A describes sensible targeted monitoring, and D describes a common retention period.",
+        "Eliminate: A describes sensible targeted monitoring, and D describes a common, approved retention period.",
         "Final two: B beats C because deletable footage destroys the evidence itself, while clock drift only makes it harder to correlate.",
         "Exam cue: when monitoring records are evidence, protecting them from change by the people being monitored outranks convenience issues."
       ],
@@ -1177,7 +1177,7 @@
       "question": "An IS auditor reviews a just-in-time access tool that grants elevated rights for four hours at a time. Which finding is MOST significant?",
       "options": {
         "A": "Four hours exceeds the time most administrative tasks need",
-        "B": "The dashboard does not show elevation trends for each team",
+        "B": "The quarterly elevation report goes to the CISO, not the board",
         "C": "Requesters can approve their own requests for elevated rights",
         "D": "The request form uses free text rather than structured drop-down lists"
       },
@@ -1187,11 +1187,11 @@
       "correct_explanation": "Just-in-time access relies on an independent approver to confirm each elevation is justified. Self-approval removes that check entirely, so anyone with requester rights can grant themselves privilege at will, and the expiry only limits how long each self-granted session lasts. A four-hour window may be longer than needed, but that is tuning within a control that still works.",
       "wrong_explanations": {
         "A": "A shorter window would tighten least privilege, but the time limit still works. Tuning it matters less than restoring independent approval.",
-        "B": "Missing trend reporting is a management information gap. It does not let anyone obtain privilege improperly.",
+        "B": "Reporting elevation trends to the CISO is a sensible level. It is a reporting-line choice and does not let anyone obtain privilege improperly.",
         "D": "Free-text requests make justifications harder to analyze, but they do not remove the approval check."
       },
       "tips": [
-        "Eliminate: B is a reporting gap, and D is a form-design detail; neither lets anyone gain privilege improperly.",
+        "Eliminate: B is a reporting-line choice, and D is a form-design detail; neither lets anyone gain privilege improperly.",
         "Final two: C beats A because self-approval removes the control's independent check, while a long window only loosens a control that still functions.",
         "Exam cue: a broken approval step outranks a loose parameter; first ask whether the control's key check still happens at all."
       ],
@@ -1215,7 +1215,7 @@
       "options": {
         "A": "Shorten the vault's rotation interval from ninety to thirty days",
         "B": "Assign an accountable owner who confirms each account is needed",
-        "C": "Disable the ownerless service accounts immediately to cut exposure",
+        "C": "Ask the CISO to approve disabling the ownerless accounts now",
         "D": "Convert the service accounts into named interactive user accounts"
       },
       "correct": "B",
@@ -1224,12 +1224,12 @@
       "correct_explanation": "Credential handling is already controlled; the gap is accountability. Without an owner, nobody can confirm what each account does, how much access it needs, or when it should be retired, so recertification and decommissioning cannot happen. Disabling the accounts at once looks decisive, but with no one knowing their purpose it risks breaking production systems that depend on them.",
       "wrong_explanations": {
         "A": "Credentials are already vaulted and rotated. A shorter interval adds little while the real gap, that nobody is accountable for the accounts, remains.",
-        "C": "Disabling accounts of unknown purpose may stop critical processes and cause outages. Owners must first confirm which accounts are still needed.",
+        "C": "CISO approval does not reveal what each account does. Disabling accounts of unknown purpose may stop critical processes; owners must first confirm which are needed.",
         "D": "Interactive logins on service accounts increase risk and break automation. Service accounts should stay non-interactive with narrow scope."
       },
       "tips": [
         "Eliminate: A tightens a credential control that already works, and D makes the accounts riskier by allowing interactive logins.",
-        "Final two: B beats C because an owner must confirm purpose before access is removed; disabling unknown accounts blindly risks outages.",
+        "Final two: B beats C because an owner must confirm purpose before access is removed; approving blind shutdowns still risks outages.",
         "Exam cue: no owner means no one can decide; when assets lack accountability, assigning ownership comes before reviewing or removing them."
       ],
       "_provenance": "Authored from concept: 'Service-account management framework at scale'. Public sources: NIST, ISACA, CIS, cloud-provider documentation. No legacy bank citation. Exam-style v2 rewrite (Oct 2026): shortened to ISACA item format; scenario folded into a 1–2 sentence stem.",
@@ -1586,7 +1586,7 @@
         "A": "Endpoint data loss prevention enforcing policy on each laptop",
         "B": "Network data loss prevention inspecting traffic at the internet gateway",
         "C": "A web application firewall placed in front of the client portal",
-        "D": "Quarterly scans of file shares to locate confidential client files"
+        "D": "Quarterly owner reviews of file shares to locate confidential client files"
       },
       "correct": "A",
       "key_concept": "Endpoint data loss prevention controls removable media and local actions on the device itself, including when it is off the corporate network.",
@@ -1595,7 +1595,7 @@
       "wrong_explanations": {
         "B": "Gateway inspection covers traffic leaving through the network. A file copied to a USB drive, especially off-network, never passes the gateway.",
         "C": "A web application firewall protects the portal against web attacks. It has no view of files staff copy on their laptops.",
-        "D": "Discovery scans find where confidential data is stored. They do not block it being copied to removable media."
+        "D": "Owner reviews find where confidential data is stored. They do not block it being copied to removable media."
       },
       "tips": [
         "Eliminate: C protects a web application from attacks, and D locates stored data without stopping any copying.",
@@ -1880,7 +1880,7 @@
       "question": "A new data loss prevention rule blocks every outbound email containing account numbers, including legitimate customer statements sent from the billing system. Which change should the security manager make to BEST fix this?",
       "options": {
         "A": "Change the rule so it alerts without blocking any outbound email",
-        "B": "Disable the rule until business complaints stop",
+        "B": "Disable the rule until the business owner approves a replacement",
         "C": "Allow approved senders and channels while still blocking others",
         "D": "Train staff to remove account numbers from customer statements"
       },
@@ -1890,11 +1890,11 @@
       "correct_explanation": "The rule detects the right data but lacks context, and the legitimate source is already known: the billing system. Allowing that approved sender and channel lets statements through while still blocking account numbers leaving by any other route. Switching to alert-only also stops the disruption, but a precise fix is available, so giving up prevention for every email, including genuine leaks, is unnecessary.",
       "wrong_explanations": {
         "A": "Alert-only mode ends the false blocking but also lets real leaks out, leaving only after-the-fact alerts for every email.",
-        "B": "Disabling the rule removes protection entirely and lets complaints, not risk, decide when it returns.",
+        "B": "Disabling the rule removes all protection while a replacement awaits approval, so real leaks go unblocked in the meantime.",
         "D": "Customers need their account numbers on statements. Changing a legitimate business process to suit a poorly tuned rule is backwards."
       },
       "tips": [
-        "Eliminate: B removes protection entirely, and D changes legitimate business to suit a poorly tuned rule.",
+        "Eliminate: B removes protection entirely while awaiting approval, and D changes legitimate business to suit a poorly tuned rule.",
         "Final two: C beats A because context keeps blocking genuine leaks while releasing approved mail; alert-only gives up prevention everywhere.",
         "Exam cue: when a preventive control blocks legitimate traffic from a known source, add context such as sender or channel instead of weakening the whole control."
       ],
@@ -3026,7 +3026,7 @@
       "framework_ref": "NIST SP 800-125 (Guide to Security for Full Virtualization Technologies); NIST SP 800-125A Rev 1 (Hypervisor Platform Security Recommendations)",
       "question": "An IS auditor reviews the security of a private cloud running about 900 virtual machines. Which finding should concern the auditor MOST?",
       "options": {
-        "A": "Virtual machine templates are reviewed annually rather than every quarter",
+        "A": "Virtual machine templates are approved by their owner annually, not quarterly",
         "B": "Virtual machine snapshots are kept on the production storage array",
         "C": "Virtual machines from different business units run on the same hosts",
         "D": "The hypervisor management console is reachable from the office network"
@@ -3036,7 +3036,7 @@
       "pre_read": "Ask which single weakness would let one person control all 900 virtual machines at once.",
       "correct_explanation": "Whoever reaches the management console can start, copy or reconfigure every virtual machine, so exposing it to the general office network puts the whole platform at risk. Sharing hosts between business units is normal in virtualization; the hypervisor is designed to isolate guests, and that isolation is maintained through patching and hardening.",
       "wrong_explanations": {
-        "A": "Annual template review is a modest cadence choice. Templates are still reviewed, and the gap does not expose any running system.",
+        "A": "Annual owner approval of templates is a modest cadence choice. Templates are still reviewed, and the gap does not expose any running system.",
         "B": "Keeping snapshots on production storage is mainly an availability and recovery concern, not a direct path to compromising the platform.",
         "C": "Running units on shared hosts is normal virtualization design; hypervisor isolation separates the guests, so this alone is not a control failure."
       },
@@ -3176,7 +3176,7 @@
       "options": {
         "A": "Shut down the forty unlisted APIs today, before any review is done",
         "B": "Assign each unlisted API an owner and route it through the gateway",
-        "C": "Confirm that the listed APIs enforce the current transport encryption settings",
+        "C": "Have owners approve the encryption settings of the listed APIs",
         "D": "Extend the website's annual vulnerability scan to the listed APIs"
       },
       "correct": "B",
@@ -3185,7 +3185,7 @@
       "correct_explanation": "Unlisted APIs bypass the gateway's authentication, rate limiting and logging, and nobody is accountable for them. Assigning owners and bringing them under the gateway restores control while keeping legitimate integrations working. Shutting all forty down today is decisive, but without knowing who uses them it may break partner or mobile services; the owner should decide what to retire.",
       "wrong_explanations": {
         "A": "A blanket shutdown before anyone knows what the APIs serve may break legitimate partner or mobile services; owners should decide which to retire.",
-        "C": "Checking encryption on listed APIs looks only at the controlled ones and ignores the forty that bypass the gateway.",
+        "C": "Owner approval of encryption on listed APIs covers only the controlled ones and ignores the forty that bypass the gateway.",
         "D": "Extending a website scan to listed APIs misses the unlisted ones, and generic web scans miss API-specific authorization flaws."
       },
       "tips": [
@@ -4102,7 +4102,7 @@
         "A": "Deploy behavior analytics across every employee account",
         "B": "Start monitoring quietly so that suspects are not alerted",
         "C": "Agree a lawful monitoring policy with legal and HR",
-        "D": "Ask IT staff to choose which employees to watch closely"
+        "D": "Have the IT manager approve which employees to watch closely"
       },
       "correct": "C",
       "key_concept": "Employee monitoring needs a lawful, documented policy agreed with legal and HR before tools are deployed; policy comes before technology.",
@@ -4111,10 +4111,10 @@
       "wrong_explanations": {
         "A": "Analytics may be the right tool, but deploying it before scope and legal basis are set risks unlawful monitoring and unusable evidence.",
         "B": "Covert monitoring without a policy or notice can breach privacy and employment law and taint any evidence collected.",
-        "D": "Letting IT pick targets has no defined criteria or authority and invites bias and abuse of monitoring powers."
+        "D": "An IT manager's approval sets no defined criteria or legal authority, and it invites bias and abuse of monitoring powers."
       },
       "tips": [
-        "Eliminate: B monitors covertly with no legal basis, and D lets IT pick targets without criteria or authority.",
+        "Eliminate: B monitors covertly with no legal basis, and D lets an IT manager pick targets without criteria or legal authority.",
         "Final two: C beats A because the policy and legal basis must exist before any monitoring tool is switched on.",
         "Exam cue: when a security program affects employee privacy, policy and legal approval come before technology."
       ],
@@ -4285,7 +4285,7 @@
       "question": "Staff install a free scanning app on company-managed phones that requests access to contacts, location and microphone. Which control is BEST for the security manager to implement?",
       "options": {
         "A": "Warn staff about risky apps in the next awareness session",
-        "B": "Block every app not developed by the company itself",
+        "B": "Have the board approve banning every third-party app",
         "C": "Remove the scanning app from each phone by hand",
         "D": "Allow only vetted apps through the device management catalog"
       },
@@ -4295,11 +4295,11 @@
       "correct_explanation": "Apps that request far more permissions than their function needs can harvest data from managed phones. Vetting apps against security criteria and distributing only approved ones through the device management catalog stops risky apps before installation and covers every future app. Awareness training is the runner-up; it helps staff spot warning signs, but it relies on each person's judgment and enforces nothing.",
       "wrong_explanations": {
         "A": "Awareness helps, but it depends on every user judging permissions correctly, and nothing stops the next risky install.",
-        "B": "Banning all third-party apps blocks legitimate tools the business needs; vetting manages the risk without stopping useful work.",
+        "B": "A board-approved ban still blocks legitimate tools the business needs, and the decision belongs at operational level; vetting manages the risk without stopping useful work.",
         "C": "Removing one app by hand fixes today's case only, and nothing prevents staff installing the next risky app."
       },
       "tips": [
-        "Eliminate: B blocks useful apps along with risky ones, and C cleans up one app without preventing the next.",
+        "Eliminate: B blocks useful apps along with risky ones, even with board approval, and C cleans up one app without preventing the next.",
         "Final two: D beats A because vetting enforces the rule on every device, while training relies on each user's judgment.",
         "Exam cue: on managed mobile devices, prefer enforced controls such as vetted app catalogs over user judgment."
       ],
@@ -4544,7 +4544,7 @@
       "question": "An IS auditor finds developers can mark static analysis findings as false positives with no one else reviewing them. Which control BEST addresses this?",
       "options": {
         "A": "Run the static analysis tool on every commit instead of nightly",
-        "B": "Replace the static analysis tool with another vendor's product",
+        "B": "Have management approve replacing the tool with another vendor's product",
         "C": "Train developers to recognize genuine false positives",
         "D": "Require security team approval for each suppressed finding"
       },
@@ -4554,7 +4554,7 @@
       "correct_explanation": "Developers dismissing findings in their own code with no review is a segregation of duties gap: real vulnerabilities can be suppressed unnoticed. Requiring security team approval for each suppression adds an independent check. Training improves judgment, but the same people would still decide alone on findings in their own code, so the independence gap remains.",
       "wrong_explanations": {
         "A": "Scanning more often produces findings sooner, but developers could still dismiss them with no review.",
-        "B": "Any tool produces findings that can be suppressed. Changing vendors leaves the unreviewed suppression process unchanged.",
+        "B": "Any tool produces findings that can be suppressed. Approving a vendor change leaves the unreviewed suppression process unchanged.",
         "C": "Better judgment helps, but developers would still decide alone on their own code's findings, leaving the independence gap open."
       },
       "tips": [
@@ -4657,7 +4657,7 @@
         "A": "Review the previous night's alerts each morning in-house",
         "B": "Hire enough in-house analysts to staff three daily shifts",
         "C": "Use a managed provider that escalates to in-house staff",
-        "D": "Leave monitoring to the core banking software vendor"
+        "D": "Have the board approve leaving monitoring to the core banking vendor"
       },
       "correct": "C",
       "key_concept": "A hybrid security operations model buys round-the-clock coverage from a provider while the in-house team keeps context and accountability.",
@@ -4666,7 +4666,7 @@
       "wrong_explanations": {
         "A": "Next-morning review leaves overnight attacks running for hours, so it does not meet the round-the-clock requirement.",
         "B": "Full in-house shifts achieve coverage but at a cost far out of proportion for a small credit union.",
-        "D": "A software vendor's alerts cover only its own product, and the credit union would give up oversight of its monitoring."
+        "D": "Board approval does not widen the core banking vendor's view. Its alerts cover only its own product, leaving other systems unmonitored."
       },
       "tips": [
         "Eliminate: A leaves nights unwatched, and D hands monitoring to a vendor that only sees its own product.",
@@ -5432,7 +5432,7 @@
       "question": "An IS auditor finds that the SOC's 320 detection rules have no named owners and have not been reviewed since they were deployed. Which practice should the auditor recommend as BEST?",
       "options": {
         "A": "Assign each rule an owner who reviews its accuracy quarterly",
-        "B": "Raise every rule's alert threshold to lower alert volume",
+        "B": "Have the SOC manager approve raising every rule's alert threshold",
         "C": "Delete rules older than two years and rebuild them from scratch",
         "D": "Have the SIEM vendor review the full rule set annually"
       },
@@ -5441,12 +5441,12 @@
       "pre_read": "Notice two gaps: no owners and no reviews. Ask which option fixes both with internal accountability.",
       "correct_explanation": "Detection rules decay as log sources, systems and attacker techniques change, so unowned rules silently stop working or flood analysts. Naming an owner for each rule and reviewing its accuracy quarterly creates accountability and a cadence matched to change. An annual vendor review adds expertise, but the vendor does not own the firm's risk, and a yearly cycle lets broken rules persist for months.",
       "wrong_explanations": {
-        "B": "Raising thresholds across the board hides real attacks along with noise and ignores each rule's actual accuracy.",
+        "B": "Manager approval does not make a blanket change sound. Raising every threshold hides real attacks along with noise and ignores each rule's accuracy.",
         "C": "Age alone does not show a rule is broken; rebuilding wholesale discards working detections and creates gaps.",
         "D": "A vendor review is external and yearly. It leaves no internal owner accountable and lets broken rules persist for months."
       },
       "tips": [
-        "Eliminate: B suppresses alerts blindly, and C discards rules by age rather than performance.",
+        "Eliminate: B suppresses alerts blindly, even with approval, and C discards rules by age rather than performance.",
         "Final two: A beats D because accountability for detection stays in-house, and quarterly reviews catch decay sooner.",
         "Exam cue: for controls that decay, such as detection rules, look for a named owner and a regular review cycle."
       ],
@@ -5690,7 +5690,7 @@
       "framework_ref": "NIST SP 800-53 Rev 5 CM-3 (Configuration Change Control); NIST SP 800-53 Rev 5 CM-2 (Baseline Configuration); NIST SP 800-128 (Guide for Security-Focused Configuration Management)",
       "question": "A rule blocking internet SSH to admin servers was deleted through the cloud console without a change ticket 12 minutes ago, and external connection attempts have begun. What should the CISO do FIRST?",
       "options": {
-        "A": "Convene executives to agree a response before any action",
+        "A": "Escalate to the executive committee before taking any action",
         "B": "Ask the engineer who made the change about the business need",
         "C": "Leave the change in place to preserve it as forensic evidence",
         "D": "Restore the rule immediately from the approved code baseline"
@@ -5700,7 +5700,7 @@
       "pre_read": "Notice the change bypassed change control and attackers are already probing. Ask what closes the exposure fastest.",
       "correct_explanation": "The change bypassed change control, removed a preventive control and is already drawing external connection attempts, so the exposure must close now. Restoring the rule from the approved baseline takes minutes and is easily reversed if a legitimate need emerges. Asking the engineer is a fair step, but it keeps admin servers exposed while the engineer is located and questioned.",
       "wrong_explanations": {
-        "A": "Waiting for an executive meeting delays a routine, reversible fix while attackers continue probing.",
+        "A": "Waiting for an executive committee delays a routine, reversible fix while attackers continue probing.",
         "B": "Asking first keeps admin servers exposed to live attempts. An unticketed change has no approval, so reverting first is justified.",
         "C": "Cloud audit logs already record the change, so evidence survives a revert; leaving the port open invites compromise."
       },
@@ -5988,7 +5988,7 @@
       "options": {
         "A": "Whether management approved it and aligned it with security policy",
         "B": "Whether monitoring tools run the latest software versions",
-        "C": "Whether each past incident has its own separate written procedure",
+        "C": "Whether each past incident has its own owner-approved written procedure",
         "D": "Whether playbooks exist for the most likely attack scenarios"
       },
       "correct": "A",
@@ -5997,7 +5997,7 @@
       "correct_explanation": "A plan carries authority only if management has approved it and it fits the security policy and risk assessment that define what must be protected. Checking this first confirms the plan is the right baseline before testing its detail. Playbooks matter, but reviewing them first risks assessing procedures that management never endorsed or that miss the organization's priorities.",
       "wrong_explanations": {
         "B": "Tool versions are a technical detail, not a test of whether the plan is governed and fit for purpose.",
-        "C": "A procedure for each past incident creates an unmanageable plan and ignores new threats. Plans rely on a framework and playbooks instead.",
+        "C": "Owner approval does not fix the design. A procedure for each past incident creates an unmanageable plan and ignores new threats.",
         "D": "Playbook review is a later step. Without approval and policy alignment, the auditor may assess procedures that lack authority or miss key risks."
       },
       "tips": [
@@ -6209,7 +6209,7 @@
       "question": "During past incidents, executives drafted customer and public statements from scratch, and legal counsel reviewed none of them. Which control should management adopt to BEST address this?",
       "options": {
         "A": "No external communication until the incident is fully resolved",
-        "B": "The same full technical report sent to each audience",
+        "B": "The same full technical report, approved by the CIO, for each audience",
         "C": "Pre-approved message templates for each audience, with legal review",
         "D": "One designated and media-trained spokesperson for every public statement"
       },
@@ -6219,7 +6219,7 @@
       "correct_explanation": "The weaknesses are improvised content and no legal check, which risk inaccurate statements, missed regulatory requirements and admissions that create liability. Templates prepared for each audience and pre-approved by legal fix both problems before an incident starts. A single spokesperson gives a consistent voice, but that person would still be improvising unreviewed messages under pressure.",
       "wrong_explanations": {
         "A": "Silence until resolution leaves customers uninformed and can breach notification duties. It does not fix unreviewed messaging.",
-        "B": "One technical report for everyone may disclose sensitive detail and confuse non-technical readers. Messages should suit each audience.",
+        "B": "CIO approval does not make one report suit everyone. It may disclose sensitive detail, confuse non-technical readers and still skip legal review.",
         "D": "A spokesperson gives one consistent voice, but the content would still be drafted under pressure without legal review."
       },
       "tips": [
@@ -6469,7 +6469,7 @@
       "options": {
         "A": "Close the cheapest and fastest gaps first to show progress",
         "B": "Prioritize gaps by business risk and agree the plan with management",
-        "C": "Reach Tier 4 (Adaptive) across the organization within a year",
+        "C": "Have the board mandate Tier 4 (Adaptive) organization-wide within a year",
         "D": "Buy tools that cover the largest number of categories with gaps"
       },
       "correct": "B",
@@ -6478,7 +6478,7 @@
       "correct_explanation": "The profile gap shows where the organization falls short of its target. The roadmap should rank those gaps by the risk they pose to business objectives, with management agreeing priorities and funding. Fixing the cheapest gaps first shows quick progress, but it can leave the highest-risk gaps open for months; cost and speed matter only after risk sets the order.",
       "wrong_explanations": {
         "A": "Quick wins help momentum, but ordering work by ease rather than risk can leave the most dangerous gaps open longest.",
-        "C": "The target profile, not the top tier, sets the goal. Tiers describe how rigorous risk practices are, not a required maturity level; forcing Tier 4 ignores risk appetite.",
+        "C": "The target profile, not the top tier, sets the goal. Tiers describe rigor, not a required level; a board mandate for Tier 4 ignores risk appetite.",
         "D": "Tools bought to tick categories may miss the riskiest gaps; the framework describes outcomes, not a product shopping list."
       },
       "tips": [
@@ -6985,7 +6985,7 @@
       "framework_ref": "NIST SP 800-61 Rev 3 (Incident Response Recommendations and Considerations for Cybersecurity Risk Management); ISO/IEC 27002:2022 Control 5.25 (Assessment and Decision on Information Security Events); COBIT 2019 DSS02 (Managed Service Requests and Incidents)",
       "question": "After an acquisition, the two companies rank incident severity differently, so the same breach could be escalated and reported differently. What should the combined CISO do FIRST?",
       "options": {
-        "A": "Keep both incident plans separate until the brands fully merge",
+        "A": "Keep both incident plans separate until the board approves the brand merger",
         "B": "Impose the acquirer's full incident plan on the acquired company now",
         "C": "Agree one severity scale and escalation path for both companies",
         "D": "Outsource incident response for both companies to a managed provider"
@@ -6995,12 +6995,12 @@
       "pre_read": "Notice the risk is inconsistent escalation of the same breach. Ask which step fixes that while respecting both companies' obligations.",
       "correct_explanation": "Different severity scales mean the same breach could trigger different escalation and regulatory notification decisions. Agreeing one severity scale and escalation path closes that gap quickly and gives a base for merging playbooks in phases and testing them. Imposing the acquirer's plan sounds decisive, but on day one it can drop the acquired company's regulators, contacts and contractual notice duties.",
       "wrong_explanations": {
-        "A": "Separate plans leave the inconsistency in place indefinitely, so a shared incident could be escalated and reported two different ways.",
+        "A": "Tying the fix to the board's brand decision leaves the inconsistency in place, so a shared incident could be escalated and reported two ways.",
         "B": "A day-one cutover can drop the acquired company's own regulators, contacts and contractual notice duties before they are mapped.",
         "D": "Outsourcing transfers activity, not accountability, and the provider would still face two conflicting severity scales."
       },
       "tips": [
-        "Eliminate: A leaves the conflict unresolved, and D hands the same conflict to a third party.",
+        "Eliminate: A waits on an unrelated board decision and leaves the conflict unresolved, and D hands the same conflict to a third party.",
         "Final two: C beats B because a shared severity scale fixes escalation now, while a day-one cutover may drop acquired-company obligations.",
         "Exam cue: in mergers, harmonize definitions first and migrate in phases rather than forcing an instant cutover."
       ],
@@ -7579,7 +7579,7 @@
       "options": {
         "A": "Add the password requirements to the annual awareness training program",
         "B": "Discipline teams that do not follow the guideline",
-        "C": "Ask each team to document its own password rules",
+        "C": "Let each team's manager approve its own password rules",
         "D": "Move the requirements into a mandatory standard under the policy"
       },
       "correct": "D",
@@ -7589,7 +7589,7 @@
       "wrong_explanations": {
         "A": "Training raises awareness, but the requirements would still sit in an advisory document that teams are free not to follow.",
         "B": "Guidelines are advisory, so punishing noncompliance is unfair and hard to defend. The requirement must first be made mandatory.",
-        "C": "Letting each team set its own rules creates inconsistent protection and moves further from a single enforceable requirement."
+        "C": "Manager-approved team rules create inconsistent protection and move further from a single enforceable requirement."
       },
       "tips": [
         "Eliminate: A adds training but leaves the rules optional, and C splits one requirement into many team versions.",
@@ -8817,7 +8817,7 @@
       "options": {
         "A": "Rotate the production encryption keys to brand-new key versions",
         "B": "Suspend development work until a forensic review has ended",
-        "C": "Close the finding because the logs show no misuse",
+        "C": "Have management approve closing the finding since logs show no misuse",
         "D": "Remove the developers' decrypt permission from the key policy"
       },
       "correct": "D",
@@ -8827,7 +8827,7 @@
       "wrong_explanations": {
         "A": "New key versions inherit the same key policy, so developers keep decrypt rights. Rotation does not remove the access that caused the finding.",
         "B": "Halting all development is disproportionate and does not itself remove the decrypt permission that creates the risk.",
-        "C": "Logs cover only 12 of 14 months, and no evidence of misuse is not evidence of none. The access must still be removed."
+        "C": "Approval cannot fix the evidence: logs cover only 12 of 14 months, and no evidence of misuse is not evidence of none. The access must still go."
       },
       "tips": [
         "Eliminate: C treats incomplete logs as proof, and B halts the business without removing the faulty permission.",
@@ -9159,7 +9159,7 @@
         "A": "Authorize every service-to-service request against an explicit policy",
         "B": "Return to perimeter segmentation using internal network zones",
         "C": "Require stronger authentication for each workload's own service identity",
-        "D": "Rotate the workload credentials on a quarterly schedule"
+        "D": "Have each service owner approve quarterly rotation of its workload credentials"
       },
       "correct": "A",
       "key_concept": "Zero trust means each request is authorized by policy; proving identity alone does not decide what a service may reach.",
@@ -9168,7 +9168,7 @@
       "wrong_explanations": {
         "B": "Perimeter zones trust everything inside them, which is the implicit-trust model that enabled the lateral movement.",
         "C": "The compromised workload already authenticated successfully. Stronger authentication does not limit what an authenticated service may call.",
-        "D": "Scheduled rotation does not stop an attacker using a workload's current credentials, and the gap was authorization."
+        "D": "Owner-approved rotation still lets an attacker use a workload's current credentials, and the gap was authorization, not credential age."
       },
       "tips": [
         "Eliminate: D leaves current credentials usable and misses authorization, and B returns to inside-equals-trusted thinking.",
@@ -10570,7 +10570,7 @@
       "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); NIST SP 800-53 Rev 5 SC-7 (Boundary Protection)",
       "question": "An IS auditor finds the network DLP tool cannot see file uploads to websites because almost all web traffic is encrypted. Which recommendation is BEST?",
       "options": {
-        "A": "Block all uploads from company devices to any website",
+        "A": "Have the board approve blocking every upload to any website",
         "B": "Ask staff to label confidential files before uploading them",
         "C": "Rely on the email DLP rules to cover web uploads",
         "D": "Decrypt and inspect web traffic at the proxy under policy"
@@ -10580,12 +10580,12 @@
       "pre_read": "Ask what the DLP tool must be able to do before any rule can work.",
       "correct_explanation": "Network DLP can only inspect what it can read, so encrypted uploads pass unchecked. Decrypting web traffic at the proxy, under an approved policy that exempts sensitive categories such as personal banking or health sites, restores visibility for DLP rules. Asking staff to label files is the runner-up; labels help DLP decide, but the tool still cannot read encrypted uploads, and a careless or malicious user simply skips the label.",
       "wrong_explanations": {
-        "A": "Blocking every upload stops legitimate business use of web services and would be unworkable for most teams.",
+        "A": "Board approval does not make a blanket block workable. It stops legitimate business use of web services for most teams.",
         "B": "Labels help DLP decide, but the tool still cannot read encrypted traffic, and a malicious user simply leaves files unlabeled.",
         "C": "Email rules inspect email only; they have no view of files sent through encrypted web sessions."
       },
       "tips": [
-        "Eliminate: A blocks legitimate work outright, and C applies a control to the wrong channel.",
+        "Eliminate: A blocks legitimate work outright, even with board approval, and C applies a control to the wrong channel.",
         "Final two: D beats B because DLP must be able to read traffic to inspect it; labeled files still pass encrypted and unseen.",
         "Exam cue: a monitoring control is only as good as its visibility; close encryption blind spots under a governed policy."
       ],
@@ -10647,7 +10647,7 @@
         "A": "Delete the spreadsheets from the file share immediately",
         "B": "Restrict access to the share and notify the data owner",
         "C": "Encrypt the whole file server with full-disk encryption",
-        "D": "Retrain staff on the rules for handling and storing card data"
+        "D": "Ask the board to approve retraining staff on card data rules"
       },
       "correct": "B",
       "key_concept": "When discovery finds sensitive data in the wrong place, restrict access first; the data owner then decides how to remediate.",
@@ -10656,10 +10656,10 @@
       "wrong_explanations": {
         "A": "Immediate deletion may destroy records the business or law requires, and the decision on the data belongs to its owner.",
         "C": "Full-disk encryption protects against stolen disks, but staff browsing the open share still see the card numbers.",
-        "D": "Training shapes future behavior, but it does not close the open share, so the card data stays visible to every employee."
+        "D": "Board-approved training shapes future behavior, but it does not close the open share, so the card data stays visible to every employee."
       },
       "tips": [
-        "Eliminate: C protects against disk theft rather than open access, and D changes future behavior while the share stays open.",
+        "Eliminate: C protects against disk theft rather than open access, and D escalates future training while the share stays open.",
         "Final two: B beats A because limiting access stops the exposure without destroying records whose fate the owner must decide.",
         "Exam cue: when discovery finds sensitive data in the wrong place, restrict access first, then let the owner decide remediation."
       ],
