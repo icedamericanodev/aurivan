@@ -1583,7 +1583,7 @@
       "framework_ref": "ISO/IEC 27002:2022 Control 8.12 (Data Leakage Prevention); NIST SP 800-53 Rev 5 MP-7 (Media Use); CIS Controls v8 Control 3 (Data Protection)",
       "question": "A data owner is concerned that staff copy confidential client files to USB drives on laptops used away from the corporate network. Which control BEST addresses this?",
       "options": {
-        "A": "Endpoint data loss prevention enforcing policy on each laptop",
+        "A": "Endpoint data loss prevention enforcing policy on each device",
         "B": "Network data loss prevention inspecting traffic at the internet gateway",
         "C": "A web application firewall placed in front of the client portal",
         "D": "Quarterly owner reviews of file shares to locate confidential client files"
@@ -3026,9 +3026,9 @@
       "framework_ref": "NIST SP 800-125 (Guide to Security for Full Virtualization Technologies); NIST SP 800-125A Rev 1 (Hypervisor Platform Security Recommendations)",
       "question": "An IS auditor reviews the security of a private cloud running about 900 virtual machines. Which finding should concern the auditor MOST?",
       "options": {
-        "A": "Virtual machine templates are approved by their owner annually, not quarterly",
+        "A": "Virtual machine templates are reviewed annually rather than quarterly",
         "B": "Virtual machine snapshots are kept on the production storage array",
-        "C": "Virtual machines from different business units run on the same hosts",
+        "C": "Hosts run workloads from different business units side by side",
         "D": "The hypervisor management console is reachable from the office network"
       },
       "correct": "D",
@@ -3036,7 +3036,7 @@
       "pre_read": "Ask which single weakness would let one person control all 900 virtual machines at once.",
       "correct_explanation": "Whoever reaches the management console can start, copy or reconfigure every virtual machine, so exposing it to the general office network puts the whole platform at risk. Sharing hosts between business units is normal in virtualization; the hypervisor is designed to isolate guests, and that isolation is maintained through patching and hardening.",
       "wrong_explanations": {
-        "A": "Annual owner approval of templates is a modest cadence choice. Templates are still reviewed, and the gap does not expose any running system.",
+        "A": "Annual template review is a modest cadence choice. Templates are still reviewed, and the gap does not expose any running system.",
         "B": "Keeping snapshots on production storage is mainly an availability and recovery concern, not a direct path to compromising the platform.",
         "C": "Running units on shared hosts is normal virtualization design; hypervisor isolation separates the guests, so this alone is not a control failure."
       },
@@ -6987,7 +6987,7 @@
       "options": {
         "A": "Keep both incident plans separate until full integration is approved",
         "B": "Impose the acquirer's full incident plan on the acquired company now",
-        "C": "Agree one severity scale and escalation path for both companies",
+        "C": "Agree one incident rating scheme and reporting route for both companies",
         "D": "Outsource incident response for both companies to a managed provider"
       },
       "correct": "C",
