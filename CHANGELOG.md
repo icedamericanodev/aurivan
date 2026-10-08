@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v10.55.1] — Tidier Topics page
+
+### Fixed
+- The Domain Overview card and the Expand All and Collapse All buttons on the Topics page now match the rest of the page, in light and dark mode.
+- An emergency-change question now spells out "change board" instead of using an abbreviation.
+
 ## [v10.55] — Fairer answer choices
 
 ### Improved
