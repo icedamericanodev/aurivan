@@ -235,7 +235,7 @@ body::before {
 /* ── DOMAIN WEIGHT BADGE ── */
 .dc-weight {
   display: inline-block; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; letter-spacing: 0;
+  font-size: 13px; font-weight: 600; letter-spacing: 0;
   padding: 2px 7px; border-radius: 100px;
   background: rgba(0,0,0,0.08); color: inherit; margin-top: 2px;
 }
@@ -248,7 +248,7 @@ body::before {
 /* ── REMOTE BANK LOAD STATE ── */
 .dc-loading {
   display: inline-block; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; letter-spacing: 0;
+  font-size: 13px; font-weight: 600; letter-spacing: 0;
   padding: 1px 6px; border-radius: 100px; margin-left: 4px;
   background: rgba(43,110,74,0.12); color: var(--accent);
   animation: dcLoadingPulse 1.4s ease-in-out infinite;
@@ -266,7 +266,7 @@ body::before {
   border-radius: 12px; animation: slideUp 0.3s ease both;
 }
 .subtopic-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--muted);
   margin-right: 4px;
@@ -274,7 +274,7 @@ body::before {
 .subtopic-pick-divider {
   position: relative;
   display: inline-flex; align-items: center;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--muted);
   padding-left: 12px;
@@ -289,11 +289,11 @@ body::before {
   cursor: help;
 }
 .subtopic-chip {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   padding: 5px 11px; border-radius: 100px; border: 1.5px solid var(--border2);
   background: var(--surface2); color: var(--text2); cursor: pointer;
   transition: var(--tr); font-weight: 600; letter-spacing: 0; text-transform: capitalize;
-  white-space: nowrap; max-width: 100%;
+  white-space: normal; overflow-wrap: anywhere; text-align: left; max-width: 100%;
 }
 .subtopic-chip:hover { border-color: var(--accent); color: var(--accent); }
 .subtopic-chip.active { background: var(--btn); border-color: var(--accent-fill); color: var(--on-btn); }
@@ -315,7 +315,7 @@ body::before {
 /* Browse-all expander */
 .subtopic-expand-btn {
   margin-left: auto;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0;
   padding: 5px 12px; border-radius: 100px;
   background: transparent; border: 1.5px dashed var(--border2);
@@ -375,7 +375,7 @@ body::before {
 }
 .subtopic-cat-header {
   display: flex; align-items: center; gap: 8px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--accent);
   font-weight: 600;
@@ -385,7 +385,7 @@ body::before {
 }
 .subtopic-cat-name { flex: 1; }
 .subtopic-cat-count {
-  font-size: 12px; letter-spacing: 0;
+  font-size: 13px; letter-spacing: 0;
   color: var(--muted);
   background: var(--surface2);
   padding: 2px 8px;
@@ -427,13 +427,13 @@ body::before {
 
 /* ── CONFIDENCE FIRST ── */
 .conf-step-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; margin-bottom: 8px;
   display: flex; align-items: center; gap: 8px;
 }
 .conf-step-num {
   width: 20px; height: 20px; border-radius: 50%; display: flex;
-  align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
 }
 .conf-step-label.step1 { color: var(--accent); }
 .conf-step-label.step1 .conf-step-num { background: var(--btn); color: var(--on-btn); }
@@ -464,7 +464,7 @@ body::before {
 .mock-confirm-row strong { color:var(--text);font-weight: 600; }
 .mock-confirm-warn {
   background:var(--warning-light);border:2px solid var(--warning);border-radius:10px;
-  padding:10px 14px;font-size:12px;color:var(--warning-strong);font-weight:600;margin:14px 0;
+  padding:10px 14px;font-size:13px;color:var(--warning-strong);font-weight:600;margin:14px 0;
 }
 .mock-confirm-btns { display:flex;gap:10px;margin-top:4px; }
 .mock-confirm-btn {
@@ -485,14 +485,14 @@ body::before {
 .mock-resume-text { font-size:13px;font-weight:600;color:var(--warning);line-height:1.5; }
 .mock-resume-btn {
   padding:8px 16px;border-radius:8px;background:var(--tip-fill);border:none;
-  color: var(--on-fill);font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight: 600;
+  color: var(--on-fill);font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight: 600;
   cursor:pointer;transition:var(--tr);flex-shrink:0;
 }
 .mock-resume-btn:hover { opacity:0.9; }
 
 /* ── ISACA DISCLAIMER ── */
 .isaca-disclaimer {
-  text-align:center;font-family:Figtree,system-ui,sans-serif;font-size:12px;
+  text-align:center;font-family:Figtree,system-ui,sans-serif;font-size:13px;
   letter-spacing:0;color:var(--muted);padding:16px 0 4px;
   border-top:1px solid var(--border);margin-top:40px;line-height:1.8;
 }
@@ -516,10 +516,10 @@ body::before {
   background:var(--surface);border:2px solid var(--border2);border-radius:12px;padding:12px 14px;
 }
 .empty-first-step-num {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight: 600;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight: 600;
   letter-spacing:0;text-transform: none;color:var(--accent);margin-bottom:6px;
 }
-.empty-first-step-text { font-size:12px;color:var(--text2);font-weight:500;line-height:1.6; }
+.empty-first-step-text { font-size:13px;color:var(--text2);font-weight:500;line-height:1.6; }
 
 
 /* â”€â”€ HEADER â”€â”€ */
@@ -535,7 +535,7 @@ header {
 .brand-mark { color: var(--text); flex-shrink: 0; height: 46px; width: auto; }
 .logo-text { display: flex; flex-direction: column; min-width: 0; }
 .logo-eyebrow {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--accent-fill);
   font-weight: 600; margin-bottom: 3px;
 }
@@ -549,7 +549,7 @@ header {
   color: transparent;
 }
 .logo-tagline {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   color: var(--accent2-fill); letter-spacing: 0; margin-top: 5px;
   text-transform: none;
 }
@@ -579,12 +579,12 @@ header {
   padding: 9px 12px; border-radius: 10px;
   background: none; border: none; width: 100%; text-align: left;
   cursor: pointer; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; color: var(--text2); transition: var(--tr);
+  font-size: 13px; font-weight: 600; color: var(--text2); transition: var(--tr);
 }
 .hdr-menu-item:hover, .hdr-menu-item:focus-visible { background: var(--ink); color: var(--accent); outline: none; }
 .hdr-menu-divider { height: 1px; background: var(--border2); margin: 4px 0; }
 .hdr-menu-pill {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   padding: 4px 12px; border-radius: 100px;
   background: var(--ink); color: var(--ink-fg);
@@ -602,7 +602,7 @@ header {
   .brand-word { font-size: 25px; }
 }
 .bank-pill {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   padding: 6px 14px; border-radius: 100px;
   background: var(--ink); color: var(--ink-fg);
@@ -617,7 +617,7 @@ header {
   overflow: hidden; animation: slideUp 0.5s 0.1s ease both;
 }
 .ms-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--accent2);
   flex-shrink: 0;
 }
@@ -678,7 +678,7 @@ header {
 .stat-num.warn { color: var(--warning); }
 .stat-num.bad { color: var(--wrong); }
 .stat-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 
@@ -709,7 +709,7 @@ header {
 .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .tab-badge {
   background: var(--btn); color: var(--on-btn); border-radius: 100px;
-  font-size: 12px; padding: 2px 6px; font-weight: 600;
+  font-size: 13px; padding: 2px 6px; font-weight: 600;
 }
 
 /* ── MOBILE BOTTOM NAVIGATION (v10.35) ── */
@@ -731,7 +731,7 @@ header {
   -webkit-tap-highlight-color: transparent;
 }
 .bnav-icon { font-size: 19px; line-height: 1; }
-.bnav-label { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; }
+.bnav-label { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
 .bnav-item.active { color: var(--accent); }
 .bnav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; border-radius: 8px; }
 
@@ -756,7 +756,7 @@ header {
   background: var(--border2); margin: 8px auto 6px;
 }
 .more-sheet-title {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   padding: 8px 8px 6px;
 }
@@ -773,7 +773,7 @@ header {
 .more-item .more-ico { font-size: 17px; width: 24px; text-align: center; flex-shrink: 0; }
 .more-item .more-badge {
   margin-left: auto; background: var(--btn); color: var(--on-btn);
-  border-radius: 100px; font-size: 12px; padding: 2px 8px; font-weight: 600;
+  border-radius: 100px; font-size: 13px; padding: 2px 8px; font-weight: 600;
 }
 .more-divider { height: 1px; background: var(--border2); margin: 6px 4px; }
 
@@ -783,7 +783,7 @@ header {
   border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
 }
 .home-hero-eyebrow {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 .home-hero-title { font-size: 20px; font-weight: 600; color: var(--text); margin: 4px 0 14px; }
@@ -797,7 +797,7 @@ header {
 .home-cta:hover { filter: brightness(1.08); }
 .home-cta.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
 .home-section-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin: 18px 4px 8px;
 }
@@ -813,7 +813,7 @@ header {
 }
 .home-domain-fill { height: 100%; border-radius: 100px; }
 .home-domain-pct {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   font-weight: 600; color: var(--text2); width: 42px; text-align: right; flex-shrink: 0;
 }
 
@@ -828,7 +828,7 @@ header {
 
 /* â”€â”€ SECTION LABEL â”€â”€ */
 .section-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
 }
@@ -840,6 +840,7 @@ header {
   margin-bottom: 28px; animation: slideUp 0.5s 0.25s ease both;
 }
 @media(max-width:700px){.domain-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:420px){.domain-grid{grid-template-columns:repeat(2,1fr);}}
 
 .domain-card {
   border-radius: 14px; padding: 14px 10px; cursor: pointer;
@@ -870,7 +871,7 @@ header {
 .domain-card[data-d="5"] .dc-num{color: var(--text2);}
 
 .dc-name {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--text2);
   display: block; margin-bottom: 6px; line-height: 1.4; transition: color var(--tr);
 }
@@ -879,7 +880,7 @@ header {
   display: block; margin-bottom: 1px; transition: color var(--tr);
 }
 .dc-tried {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   color: var(--muted); transition: color var(--tr);
 }
 .dc-stats {
@@ -888,12 +889,12 @@ header {
 }
 .dc-stat-pair { display: inline-flex; align-items: baseline; gap: 4px; }
 .dc-stat-key {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--muted); font-weight: 600; opacity: 0.75;
 }
 .dc-stat-val {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   font-weight: 600; color: var(--text);
 }
 .dc-stat-divider {
@@ -901,7 +902,7 @@ header {
   background: var(--border2); align-self: center;
 }
 .dc-stat-empty {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   color: var(--muted);
 }
 .domain-card:hover .dc-stat-key,.domain-card.selected .dc-stat-key,
@@ -925,14 +926,14 @@ header {
 }
 .ctrl-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .ctrl-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin-right: 2px;
 }
 .ctrl-btn {
   background: var(--surface); border: 2px solid var(--border2);
   border-radius: 100px; padding: 6px 14px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   color: var(--muted); cursor: pointer; transition: var(--tr);
 }
 .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--surface2); }
@@ -965,7 +966,7 @@ header {
 .timer-digits.ok { color: var(--correct); }
 .timer-digits.warn { color: var(--warning); }
 .timer-digits.urgent { color: var(--wrong); animation: urgentPulse 0.5s ease infinite; }
-.timer-sub { font-family: Figtree,system-ui,sans-serif; font-size: 12px; letter-spacing: 0; text-transform: none; color: rgba(255,255,255,0.5); }
+.timer-sub { font-family: Figtree,system-ui,sans-serif; font-size: 13px; letter-spacing: 0; text-transform: none; color: rgba(255,255,255,0.5); }
 .timer-track { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
 .timer-fill { height: 100%; border-radius: 3px; transition: width 1s linear, background 0.3s; }
 
@@ -982,12 +983,12 @@ header {
   background: var(--surface2);
 }
 .q-tag {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   padding: 5px 12px; border-radius: 100px; font-weight: 500;
 }
 .diff-tag {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   padding: 4px 10px; border-radius: 100px; border: 1.5px solid;
 }
 .diff-tag.foundational { color: var(--text2); border-color: var(--d1-border); background: var(--d1-light); }
@@ -998,11 +999,11 @@ header {
 .diff-tag.hard { color: var(--text2); border-color: var(--d5-border); background: var(--d5-light); }
 .diff-tag.expert { color: var(--accent); border-color: var(--accent); background: rgba(43,110,74,0.10); }
 .q-subtopic-tag {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   color: var(--muted); letter-spacing: 0;
 }
 .q-meta { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.q-num { font-family: Figtree,system-ui,sans-serif; font-size: 12px; color: var(--muted); }
+.q-num { font-family: Figtree,system-ui,sans-serif; font-size: 13px; color: var(--muted); }
 .bk-btn {
   background: var(--surface); border: 2px solid var(--border2);
   border-radius: 8px; width: 32px; height: 32px;
@@ -1025,7 +1026,7 @@ header {
 .sc-label {
   display: block;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--accent);
@@ -1062,7 +1063,7 @@ header {
     gap: 6px;
     margin-top: 6px;
     font-family: Figtree,system-ui,sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0;
     text-transform: none;
     color: var(--accent);
@@ -1127,7 +1128,7 @@ header {
 
 .exp-block { display: flex; flex-direction: column; gap: 10px; }
 .exp-heading {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--accent);
   display: flex; align-items: center; gap: 8px;
 }
@@ -1139,7 +1140,7 @@ header {
   display: inline-flex; align-items: center; gap: 5px;
   background: var(--d2-light); border: 1.5px solid var(--d2-border);
   border-radius: 100px; padding: 4px 12px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--text2);
 }
 
@@ -1175,11 +1176,11 @@ header {
   position: relative; display: flex; gap: 12px; align-items: flex-start;
   padding: 14px 16px 14px 18px; border-radius: 12px;
   border: 1.5px solid var(--border); background: var(--surface);
-  font-size: 12.5px; line-height: 1.6; color: var(--text2);
+  font-size: 13px; line-height: 1.6; color: var(--text2);
   border-left-width: 4px;
 }
 .tip-card .tip-num {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; opacity: 0.9; flex-shrink: 0;
   width: 18px; text-align: right; padding-top: 1px;
 }
@@ -1208,7 +1209,7 @@ header {
 .tips-seq { display: flex; flex-direction: column; gap: 10px; }
 .tips-seq-counter {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--muted);
@@ -1231,8 +1232,8 @@ header {
 }
 .seq-num {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
-  color: var(--muted);
+  font-size: 13px; font-weight: 600;
+  color: var(--text2);
   flex-shrink: 0; width: 22px;
 }
 .seq-tip.unlocked .seq-num { opacity: 0.9; }
@@ -1244,7 +1245,7 @@ header {
 .seq-tip.unlocked .seq-dot { background: currentColor; }
 .seq-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none;
   color: var(--muted);
   transition: color var(--tr);
@@ -1253,7 +1254,7 @@ header {
 .seq-lock {
   margin-left: auto;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   color: var(--muted);
 }
@@ -1266,7 +1267,7 @@ header {
 .seq-hint {
   margin-top: 6px; padding-left: 32px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; color: var(--muted); font-style: italic;
+  font-size: 13px; color: var(--muted); font-style: italic;
 }
 /* Tip-type colors (drives currentColor for dot, label, principle link) */
 .seq-tip.seq-trap.unlocked    { color: var(--warning-strong); background: rgba(122,81,0,.07); border-color: rgba(122,81,0,.30); }
@@ -1276,7 +1277,7 @@ header {
   display: inline-block;
   margin-top: 4px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   color: var(--muted);
   background: none; border: none; cursor: pointer;
@@ -1304,7 +1305,7 @@ header {
 }
 .tips-section-legend {
   display: flex; gap: 10px; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0; text-transform: none;
+  font-size: 13px; letter-spacing: 0; text-transform: none;
   color: var(--muted);
 }
 .tips-section-legend span { display: inline-flex; align-items: center; gap: 4px; }
@@ -1318,13 +1319,13 @@ header {
   border: 2px solid var(--warning); border-radius: 14px; padding: 18px 20px;
 }
 .tips-head {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--warning);
   margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
 }
 .tips-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
 .tips-list li {
-  font-size: 12.5px; line-height: 1.6; color: var(--text2); font-weight: 500;
+  font-size: 13px; line-height: 1.6; color: var(--text2); font-weight: 500;
   padding-left: 18px; position: relative;
 }
 .tips-list li::before {
@@ -1359,7 +1360,7 @@ header {
 .mock-chip {
   display: flex; align-items: center; gap: 6px; padding: 7px 14px;
   border-radius: 100px; border: 2px solid var(--border2);
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   background: var(--surface2); font-weight: 500;
 }
 .mock-start {
@@ -1379,11 +1380,11 @@ header {
 }
 .mock-score {
   font-family: Fraunces,Georgia,serif; font-size: 72px; font-weight: 500;
-  line-height: 1; margin-bottom: 8px;
+  line-height: 1; margin-bottom: 8px; color: var(--on-forest);
 }
 .mock-score-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
-  letter-spacing: 0; text-transform: none; color: rgba(255,255,255,0.5);
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
+  letter-spacing: 0; text-transform: none; color: var(--on-forest2);
   margin-bottom: 16px;
 }
 .pass-chip {
@@ -1412,7 +1413,7 @@ header {
 .bk-item:hover { border-color: var(--warning); transform: translateX(4px); box-shadow: var(--shadow); }
 .bk-item-text { font-size: 13px; line-height: 1.6; color: var(--text2); flex: 1; font-weight: 500; }
 .bk-d-tag { font-family: Fraunces,Georgia,serif; font-size: 16px; font-weight: 500; flex-shrink: 0; }
-.no-bk { font-family: Figtree,system-ui,sans-serif; font-size: 12px; color: var(--muted); text-align: center; padding: 32px; }
+.no-bk { font-family: Figtree,system-ui,sans-serif; font-size: 13px; color: var(--muted); text-align: center; padding: 32px; }
 
 /* â”€â”€ WEAK SPOTS â”€â”€ */
 .ws-panel {
@@ -1421,7 +1422,7 @@ header {
 }
 .ws-title { font-family: Fraunces,Georgia,serif; font-size: 20px; font-weight: 500; margin-bottom: 20px; }
 .ws-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.ws-label { font-family: Figtree,system-ui,sans-serif; font-size: 12px; width: 80px; flex-shrink: 0; font-weight: 500; }
+.ws-label { font-family: Figtree,system-ui,sans-serif; font-size: 13px; width: 80px; flex-shrink: 0; font-weight: 500; }
 .ws-track { flex: 1; height: 10px; background: var(--border2); border-radius: 5px; overflow: hidden; }
 .ws-fill { height: 100%; border-radius: 5px; transition: width 0.8s ease; }
 .ws-pct { font-family: Fraunces,Georgia,serif; font-size: 16px; font-weight: 500; width: 48px; text-align: right; }
@@ -1431,11 +1432,11 @@ header {
   display: flex; align-items: center; gap: 14px;
 }
 .ws-rec-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-.ws-rec-sub { font-size: 12px; color: var(--muted); }
+.ws-rec-sub { font-size: 13px; color: var(--muted); }
 .ws-prac-btn {
   margin-left: auto; background: transparent; border: 2px solid var(--accent);
   border-radius: 8px; padding: 7px 14px; color: var(--accent);
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   font-weight: 600; cursor: pointer; transition: var(--tr); flex-shrink: 0;
 }
 .ws-prac-btn:hover { background: var(--btn); color: var(--on-btn); }
@@ -1484,7 +1485,7 @@ header {
 }
 .welcome-banner .wb-close:hover { color: var(--text); background: var(--surface2); }
 @media (max-width: 600px) {
-  .welcome-banner { font-size: 12px; padding: 10px 12px; }
+  .welcome-banner { font-size: 13px; padding: 10px 12px; }
 }
 
 /* ── COOKIE CONSENT BANNER ── */
@@ -1570,7 +1571,7 @@ header {
 }
 .empty-state .es-chip {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   padding: 6px 12px;
   border-radius: 8px;
   background: var(--surface2);
@@ -1631,7 +1632,7 @@ header {
 }
 .exam-prompt .ep-body {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; color: var(--text2);
+  font-size: 13px; color: var(--text2);
 }
 .exam-prompt .ep-input {
   font-family: Figtree,system-ui,sans-serif;
@@ -1649,7 +1650,7 @@ header {
   border: none; border-radius: 8px;
   padding: 9px 16px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   cursor: pointer;
   transition: var(--tr);
   min-height: 38px;
@@ -1679,7 +1680,7 @@ header {
 }
 .exam-countdown .ec-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0;
+  font-size: 13px; letter-spacing: 0;
   text-transform: none;
   color: var(--text2);
 }
@@ -1691,7 +1692,7 @@ header {
   padding: 4px 10px;
   border-radius: 100px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0;
+  font-size: 13px; letter-spacing: 0;
   color: var(--muted);
   transition: var(--tr);
 }
@@ -1714,7 +1715,7 @@ header {
 }
 .session-start .ss-sub {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; color: var(--text2);
+  font-size: 13px; color: var(--text2);
 }
 .session-start .ss-row {
   display: flex; align-items: center; gap: 12px;
@@ -1723,7 +1724,7 @@ header {
 }
 .session-start .ss-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0;
+  font-size: 13px; letter-spacing: 0;
   text-transform: none;
   color: var(--muted);
   flex-shrink: 0;
@@ -1739,7 +1740,7 @@ header {
   padding: 8px 14px;
   border-radius: 100px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   cursor: pointer;
   transition: var(--tr);
   min-height: 38px;
@@ -1762,7 +1763,7 @@ header {
   border: 1px solid var(--border);
   color: var(--text);
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   padding: 8px 28px 8px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -1780,7 +1781,7 @@ header {
 .session-debrief .sd-head { margin-bottom: 14px; }
 .session-debrief .sd-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0;
+  font-size: 13px; letter-spacing: 0;
   text-transform: none;
   color: var(--brand-teal);
   margin-bottom: 4px;
@@ -1827,13 +1828,13 @@ header {
   background: var(--surface); border: 2px solid var(--border2);
   border-radius: 100px; padding: 5px 12px 5px 6px;
   cursor: pointer; transition: var(--tr); font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; color: var(--text2);
+  font-size: 13px; font-weight: 600; color: var(--text2);
 }
 .profile-btn:hover { border-color: var(--accent); color: var(--accent); }
 .profile-avatar {
   width: 24px; height: 24px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 500; color: #fff; flex-shrink: 0;
+  font-size: 13px; font-weight: 500; color: #fff; flex-shrink: 0;
   font-family: Fraunces,Georgia,serif;
 }
 .profile-overlay {
@@ -1874,14 +1875,14 @@ header {
   color: var(--text); margin-bottom: 2px;
 }
 .profile-card-meta {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; color: var(--muted); text-transform: none;
 }
 .profile-card-stats {
   display: flex; gap: 12px; margin-top: 6px;
 }
 .profile-card-stat {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; color: var(--muted);
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; color: var(--muted);
 }
 .profile-card-stat strong {
   font-family: Fraunces,Georgia,serif; font-size: 14px; font-weight: 500;
@@ -1895,7 +1896,7 @@ header {
 }
 .profile-action-btn:hover { border-color: var(--wrong); color: var(--wrong); background: var(--wrong-light); }
 .profile-active-badge {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--accent);
   background: rgba(43,110,74,0.1); border: 1.5px solid var(--accent);
   border-radius: 100px; padding: 2px 8px; flex-shrink: 0;
@@ -1921,7 +1922,7 @@ header {
 .profile-create-btn:hover { background: var(--accent); }
 .profile-divider {
   display: flex; align-items: center; gap: 10px; margin: 16px 0;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 .profile-divider::before, .profile-divider::after {
@@ -1931,7 +1932,7 @@ header {
 .profile-io-btn {
   flex: 1; padding: 10px; border-radius: 10px; border: 2px solid var(--border2);
   background: var(--surface); font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer;
   transition: var(--tr); display: flex; align-items: center; justify-content: center; gap: 6px;
 }
 .profile-io-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -1947,7 +1948,7 @@ header {
 }
 .profile-save-notice {
   background: var(--correct-light); border: 2px solid var(--correct);
-  border-radius: 10px; padding: 10px 14px; font-size: 12px;
+  border-radius: 10px; padding: 10px 14px; font-size: 13px;
   color: var(--correct); font-weight: 600; text-align: center; margin-bottom: 14px;
   display: flex; align-items: center; gap: 8px; justify-content: center;
 }
@@ -1964,12 +1965,12 @@ header {
   font-family: Fraunces,Georgia,serif; font-size: 17px; font-weight: 500;
   line-height: 1.2; margin-bottom: 3px;
 }
-.resume-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.resume-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .resume-actions { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
 .resume-btn {
   padding: 9px 12px; border-radius: 10px; border: 2px solid var(--border2);
   background: var(--surface2); color: var(--text2);
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   cursor: pointer; transition: var(--tr);
 }
 .resume-btn.primary { background: var(--ink); border-color: var(--ink); color: var(--ink-fg); }
@@ -1993,7 +1994,7 @@ header {
   background: rgba(43,110,74,0.18);
 }
 .topic-kicker {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--accent2);
   margin-bottom: 8px;
 }
@@ -2018,7 +2019,7 @@ header {
 }
 .topic-progress-label {
   display: block; margin-top: 5px; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--muted);
+  font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 .topic-shell {
   display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 16px;
@@ -2036,11 +2037,11 @@ header {
 .topic-domain-btn.active { border-color: var(--topic-color); box-shadow: inset 4px 0 0 var(--topic-color); }
 .topic-domain-top {
   display: flex; justify-content: space-between; gap: 8px; align-items: center;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 .topic-domain-name {
-  display: block; margin-top: 6px; font-size: 12px; font-weight: 600; line-height: 1.35;
+  display: block; margin-top: 6px; font-size: 13px; font-weight: 600; line-height: 1.35;
 }
 .topic-mini-bar {
   height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; margin-top: 10px;
@@ -2058,7 +2059,7 @@ header {
   display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
 }
 .topic-pill {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; border-radius: 100px;
   padding: 4px 10px; background: var(--surface); border: 1.5px solid var(--border2); color: var(--text2);
 }
@@ -2075,7 +2076,7 @@ header {
 .topic-action {
   border: 2px solid var(--border2); border-radius: 10px; padding: 10px 14px;
   background: var(--surface); color: var(--text); cursor: pointer;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   transition: var(--tr);
 }
 .topic-action.primary { background: var(--topic-color); border-color: var(--topic-color); color: #fff; }
@@ -2107,7 +2108,7 @@ header {
   display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-bottom: 12px;
 }
 .topic-list-item {
-  font-size: 12px; line-height: 1.55; color: var(--text);
+  font-size: 13px; line-height: 1.55; color: var(--text);
   background: var(--surface2); border: 1.5px solid var(--border2);
   border-radius: 10px; padding: 9px 12px; font-weight: 600;
   transition: border-color .18s, background .18s;
@@ -2125,24 +2126,24 @@ header {
 }
 .topic-study-box.full { grid-column: 1 / -1; }
 .topic-study-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--text2);
   margin-bottom: 8px;
 }
 .topic-study-box ul { margin-left: 16px; display: grid; gap: 6px; }
 .topic-study-box li {
-  font-size: 12px; line-height: 1.55; color: var(--text); font-weight: 600;
+  font-size: 13px; line-height: 1.55; color: var(--text); font-weight: 600;
 }
 .topic-term-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .topic-term {
   border-radius: 100px; padding: 4px 10px; background: var(--surface);
   border: 1.5px solid var(--border2); color: var(--text);
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
 }
 .topic-exam-note {
   border-left: 3px solid var(--topic-color); padding: 10px 14px;
   background: var(--surface2); border-radius: 0 10px 10px 0;
-  font-size: 12.5px; line-height: 1.65; color: var(--text); font-weight: 600;
+  font-size: 13px; line-height: 1.65; color: var(--text); font-weight: 600;
 }
 @media(max-width:760px){
   .topic-progress-row { grid-template-columns: 1fr; }
@@ -2194,7 +2195,7 @@ header {
 }
 .new-chapter-header-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .new-chapter-num {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--accent);
   flex-shrink: 0;
 }
@@ -2204,10 +2205,10 @@ header {
 }
 .new-chapter-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .new-chapter-stats {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; color: var(--muted);
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; color: var(--muted);
   text-align: right;
 }
-.new-chapter-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 12px; }
+.new-chapter-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 13px; }
 .new-chapter-header.ch-open .new-chapter-chevron { transform: rotate(180deg); }
 
 .new-chapter-body {
@@ -2324,7 +2325,7 @@ header {
 
 /* v10.12 — deeper topic content: discussion, illustration, case study, mistakes */
 .notes-discussion {
-  font-size: 12px; line-height: 1.7; color: var(--text2);
+  font-size: 13px; line-height: 1.7; color: var(--text2);
   margin-bottom: 12px;
 }
 
@@ -2449,7 +2450,7 @@ header {
 }
 .pl-sub {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0;
+  font-size: 13px; letter-spacing: 0;
   text-transform: none;
   color: var(--muted);
   margin-bottom: 12px;
@@ -2505,15 +2506,15 @@ header {
 }
 .pl-item-code {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   color: var(--text);
   letter-spacing: 0.02em;
   line-height: 1.25;
 }
 .pl-item-domain {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 13px;
+  color: var(--text2);
   letter-spacing: 0;
   text-transform: none;
   margin-top: 2px;
@@ -2521,7 +2522,7 @@ header {
 .pl-no-match {
   padding: 20px 18px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   text-align: center;
   font-style: italic;
@@ -2545,14 +2546,14 @@ header {
   font-family: Figtree,system-ui,sans-serif;
 }
 .pl-domain-chip {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   padding: 4px 10px;
   border-radius: 100px;
   font-weight: 600;
 }
 .pl-counter {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   letter-spacing: 0;
 }
@@ -2579,7 +2580,7 @@ header {
   border: 1px solid var(--border);
   color: var(--text2);
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   padding: 8px 12px;
   border-radius: 8px;
@@ -2594,7 +2595,7 @@ header {
 .pl-section { margin-bottom: 22px; }
 .pl-section-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--muted);
@@ -2637,10 +2638,10 @@ header {
 }
 .pl-qcount strong {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--accent);
 }
-.pl-qcount-dot { color: var(--accent); font-size: 12px; }
+.pl-qcount-dot { color: var(--accent); font-size: 13px; }
 
 /* Mobile: stack list above detail */
 @media (max-width: 760px) {
@@ -2685,7 +2686,7 @@ header {
 .gloss-hero-left { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .gloss-eyebrow {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none;
   color: var(--accent-fill); margin-bottom: 10px;
 }
@@ -2721,14 +2722,14 @@ header {
 }
 .gloss-progress-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none;
   color: var(--muted);
   margin-top: 4px;
 }
 .gloss-mastered-count {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none;
   color: var(--muted);
 }
@@ -2768,7 +2769,7 @@ header {
 .faq-search:focus { border-color: var(--accent); background-color: var(--surface); }
 .faq-search::placeholder { color: var(--muted); font-weight: 400; }
 .faq-cat-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin: 22px 4px 8px;
 }
@@ -2781,7 +2782,7 @@ header {
   font-size: 14px; font-weight: 600; color: var(--text); transition: var(--tr);
 }
 .faq-q:hover, .faq-q:focus-visible { color: var(--accent); outline: none; }
-.faq-q-chev { margin-left: auto; flex-shrink: 0; font-size: 12px; color: var(--muted); transition: transform var(--tr); }
+.faq-q-chev { margin-left: auto; flex-shrink: 0; font-size: 13px; color: var(--muted); transition: transform var(--tr); }
 .faq-item.open .faq-q-chev { transform: rotate(180deg); }
 .faq-a {
   display: none; padding: 0 14px 14px;
@@ -2794,7 +2795,7 @@ header {
 .gloss-mode-btn {
   padding: 10px 16px; border: 2px solid var(--border2); background: var(--surface2);
   border-radius: 10px; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer;
   transition: var(--tr); display: flex; align-items: center; gap: 6px;
 }
 .gloss-mode-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -2805,14 +2806,14 @@ header {
   display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
 }
 .gloss-filter-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin-right: 6px;
 }
 .gloss-chip {
   padding: 6px 12px; border: 2px solid var(--border2); background: var(--surface2);
   border-radius: 100px; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; color: var(--text2); cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer;
   transition: var(--tr);
 }
 .gloss-chip:hover { border-color: var(--accent); color: var(--accent); }
@@ -2826,7 +2827,7 @@ header {
 .gloss-chip.d5.active { background: var(--clay); border-color: var(--clay); }
 
 .gloss-count {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin: 6px 0 12px; display: flex; align-items: center; gap: 10px;
   flex-wrap: wrap;
@@ -2835,7 +2836,7 @@ header {
 .gloss-count-clear {
   background: none; border: 1.5px solid var(--border2); border-radius: 100px;
   padding: 3px 10px; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; letter-spacing: 0; text-transform: none;
+  font-size: 13px; font-weight: 600; letter-spacing: 0; text-transform: none;
   color: var(--muted); cursor: pointer; transition: var(--tr);
 }
 .gloss-count-clear:hover { border-color: var(--accent); color: var(--accent); }
@@ -2850,7 +2851,7 @@ header {
 .gloss-letter {
   flex: 1; min-width: 22px; padding: 5px 4px; border-radius: 6px;
   background: transparent; border: none; cursor: pointer;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   color: var(--muted); transition: var(--tr); text-align: center;
   letter-spacing: 0;
 }
@@ -2896,11 +2897,11 @@ header {
 .gloss-card-acronym {
   background: var(--surface2); border: 1.5px solid var(--border2);
   border-radius: 6px; padding: 2px 7px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; color: var(--accent);
 }
 .gloss-card-domain {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; padding: 2px 7px;
   border-radius: 6px; flex-shrink: 0;
 }
@@ -2911,7 +2912,7 @@ header {
 .gloss-card-domain.d5 { background: var(--d5-light); color: var(--text2); border: 1.5px solid var(--d5-border); }
 .gloss-card-domain.d0 { background: var(--surface2); color: var(--muted); border: 1.5px solid var(--border2); }
 .gloss-card-def {
-  font-size: 12.5px; line-height: 1.6; color: var(--text2);
+  font-size: 13px; line-height: 1.6; color: var(--text2);
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2920,7 +2921,7 @@ header {
   width: 24px; height: 24px; border: 2px solid var(--border2);
   border-radius: 50%; background: var(--surface2); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; transition: var(--tr); color: var(--muted);
+  font-size: 13px; transition: var(--tr); color: var(--muted);
 }
 .gloss-card-master-btn:hover { border-color: var(--correct); color: var(--correct); }
 .gloss-card.mastered .gloss-card-master-btn {
@@ -2956,7 +2957,7 @@ header {
   display: inline-block; margin-top: 8px;
   background: var(--btn); color: var(--on-btn);
   border-radius: 100px; padding: 3px 12px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0;
 }
 .gloss-detail-close {
@@ -2967,7 +2968,7 @@ header {
 .gloss-detail-close:hover { color: var(--text); }
 .gloss-detail-body { padding: 22px 26px 26px; }
 .gloss-detail-section-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin-bottom: 8px;
 }
@@ -2983,7 +2984,7 @@ header {
   display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
 }
 .gloss-detail-meta-pill {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; padding: 4px 10px;
   border-radius: 100px; border: 1.5px solid var(--border2);
   background: var(--surface2); color: var(--text2);
@@ -2994,7 +2995,7 @@ header {
 .gloss-detail-btn {
   flex: 1; padding: 11px 16px; border-radius: 10px;
   border: 2px solid var(--border2); background: var(--surface2);
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   color: var(--text); cursor: pointer; transition: var(--tr);
   display: flex; align-items: center; justify-content: center; gap: 6px;
 }
@@ -3014,7 +3015,7 @@ header {
   text-align: center; margin-bottom: 16px;
 }
 .flashcard-progress {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin-bottom: 18px;
 }
@@ -3029,7 +3030,7 @@ header {
 .flashcard.flipped { background: var(--surface2); border-color: var(--accent); }
 .flashcard-side-label {
   position: absolute; top: 14px; left: 16px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 .flashcard-domain-tag {
@@ -3043,10 +3044,10 @@ header {
 .flashcard-front-acronym {
   background: var(--btn); color: var(--on-btn); border-radius: 100px;
   padding: 4px 14px; font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; letter-spacing: 0; margin-bottom: 14px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0; margin-bottom: 14px;
 }
 .flashcard-tap-hint {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--muted);
   margin-top: 20px;
 }
@@ -3055,7 +3056,7 @@ header {
   margin-bottom: 14px; max-width: 100%; text-align: left;
 }
 .flashcard-back-scope {
-  font-size: 12.5px; line-height: 1.7; color: var(--text2);
+  font-size: 13px; line-height: 1.7; color: var(--text2);
   background: var(--surface); border-left: 3px solid var(--d2);
   padding: 10px 14px; border-radius: 0 8px 8px 0; text-align: left;
   max-width: 100%;
@@ -3174,7 +3175,7 @@ header {
 .conf-btn {
   padding:10px 18px;border-radius:10px;border:2px solid var(--border2);
   background:var(--surface);font-family:Figtree,system-ui,sans-serif;
-  font-size:12px;font-weight: 600;cursor:pointer;transition:var(--tr);
+  font-size:13px;font-weight: 600;cursor:pointer;transition:var(--tr);
   display:flex;align-items:center;gap:6px;color:var(--text2);
 }
 .conf-btn:hover {transform:translateY(-2px);box-shadow:var(--shadow);}
@@ -3197,7 +3198,7 @@ header {
   border-color:var(--wrong);background:var(--wrong-light);color:var(--wrong-strong);
 }
 .conf-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);text-align:center;margin-top:12px;
   margin-bottom:4px;
 }
@@ -3215,7 +3216,7 @@ header {
   border-radius: 10px;
   padding: 10px 36px 10px 14px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12.5px; line-height: 1.55; color: var(--text2);
+  font-size: 13px; line-height: 1.55; color: var(--text2);
   margin-bottom: 14px;
   position: relative;
 }
@@ -3262,7 +3263,7 @@ header {
 }
 .dp-cov-fill {height:100%;border-radius:2px;transition:width 0.6s ease;}
 .dp-cov-text {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted);
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);
   flex-shrink:0;
 }
 
@@ -3283,7 +3284,7 @@ header {
   text-align:center;margin-bottom:6px;
 }
 .summary-sub {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);text-align:center;margin-bottom:24px;
 }
 .summary-big-score {
@@ -3291,7 +3292,7 @@ header {
   text-align:center;line-height:1;margin-bottom:4px;
 }
 .summary-score-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);text-align:center;margin-bottom:24px;
 }
 .summary-grid {
@@ -3306,14 +3307,14 @@ header {
   display:block;line-height:1;margin-bottom:4px;
 }
 .summary-stat-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);
 }
 .summary-domain-row {
   display:flex;align-items:center;gap:12px;margin-bottom:10px;
 }
 .summary-domain-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;width:80px;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;width:80px;
   flex-shrink:0;font-weight:500;
 }
 .summary-domain-track {
@@ -3325,7 +3326,7 @@ header {
   width:40px;text-align:right;
 }
 .summary-section-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);margin-bottom:12px;margin-top:20px;
   display:flex;align-items:center;gap:8px;
 }
@@ -3350,7 +3351,7 @@ header {
   display:block;margin-bottom:2px;
 }
 .summary-conf-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);
 }
 .summary-close {
@@ -3373,14 +3374,14 @@ header {
 .review-incorrect-btn:hover {transform:translateY(-2px);box-shadow:var(--shadow);}
 .review-incorrect-btn .incorrect-count {
   background:var(--wrong-fill);color: var(--on-fill);padding:2px 8px;border-radius:100px;
-  font-size:12px;font-weight: 600;
+  font-size:13px;font-weight: 600;
 }
 
 /* SESSION SUMMARY BUTTON */
 .session-btn {
   background:none;border:2px solid var(--border2);border-radius:10px;
   padding:8px 16px;font-family:Figtree,system-ui,sans-serif;
-  font-size:12px;font-weight: 600;color:var(--muted);cursor:pointer;
+  font-size:13px;font-weight: 600;color:var(--muted);cursor:pointer;
   transition:var(--tr);display:flex;align-items:center;gap:6px;
 }
 .session-btn:hover {border-color:var(--accent);color:var(--accent);}
@@ -3401,7 +3402,7 @@ header {
   margin-bottom:16px;display:flex;align-items:center;gap:8px;
 }
 .flag-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;color:var(--muted);margin-bottom:6px;display:block;
 }
 .flag-select {
@@ -3482,7 +3483,7 @@ header {
 }
 .tc-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--accent2);
@@ -3491,7 +3492,7 @@ header {
 }
 .tc-scenario {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text2);
   line-height: 1.55;
   margin-bottom: 10px;
@@ -3510,7 +3511,7 @@ header {
   border: 1px solid var(--border2);
   border-radius: 100px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text2);
 }
@@ -3543,12 +3544,12 @@ header {
 }
 .cl-version:last-child {border-bottom:none;}
 .cl-ver-label {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:500;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:500;
   color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:8px;
 }
 .cl-ver-label .cl-latest {
   background:var(--btn);color: var(--on-btn);padding:2px 8px;border-radius:100px;
-  font-size:12px;letter-spacing:0;
+  font-size:13px;letter-spacing:0;
 }
 .cl-items {list-style:none;display:flex;flex-direction:column;gap:8px;}
 .cl-items li {
@@ -3559,7 +3560,7 @@ header {
 .cl-cat {
   display:inline-block;flex-shrink:0;
   font-family:Figtree,system-ui,sans-serif;
-  font-size:12px;font-weight: 600;letter-spacing:0;text-transform: none;
+  font-size:13px;font-weight: 600;letter-spacing:0;text-transform: none;
   padding:3px 8px;border-radius:4px;
   margin-top:2px;line-height:1;
 }
@@ -3581,7 +3582,7 @@ header {
   cursor: pointer;
   padding: 12px 16px;
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   font-weight: 600;
@@ -3595,7 +3596,7 @@ header {
 .cl-older > summary::-webkit-details-marker { display: none; }
 .cl-older > summary::after {
   content: "\25BE";
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   transition: transform 0.2s ease;
 }
@@ -3614,7 +3615,7 @@ header {
 }
 .cl-close:hover {background:var(--accent);}
 .whats-new-btn {
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;
   text-transform: none;padding:6px 14px;border-radius:100px;
   border:2px solid var(--border2);background:var(--surface);
   color:var(--muted);cursor:pointer;transition:var(--tr);
@@ -3625,7 +3626,7 @@ header {
 /* ── FEEDBACK MODAL ── */
 .fb-row { margin-bottom:16px; }
 .fb-label {
-  display:block;font-family:Figtree,system-ui,sans-serif;font-size:12px;
+  display:block;font-family:Figtree,system-ui,sans-serif;font-size:13px;
   letter-spacing:0;text-transform: none;color:var(--muted);
   font-weight:600;margin-bottom:8px;
 }
@@ -3633,7 +3634,7 @@ header {
 .fb-type {
   flex:1;min-width:90px;padding:10px 12px;border-radius:10px;
   border:2px solid var(--border2);background:var(--surface2);
-  font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:600;
+  font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:600;
   color:var(--muted);cursor:pointer;transition:var(--tr);
   display:flex;align-items:center;justify-content:center;gap:6px;
 }
@@ -3653,12 +3654,12 @@ header {
 }
 .fb-textarea { min-height:120px;line-height:1.5;font-family:inherit; }
 .fb-helper {
-  font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5;
+  font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;
 }
 .fb-helper a { color:var(--accent);text-decoration:none; }
 .fb-helper a:hover { text-decoration:underline; }
 .fb-checkrow {
-  display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);
   cursor:pointer;user-select:none;
 }
 .fb-checkrow input { cursor:pointer;accent-color:var(--accent); }
@@ -3685,7 +3686,7 @@ header {
 }
 .study-rec-icon { font-size: 22px; flex-shrink: 0; }
 .study-rec-title {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--muted);
 }
 .study-rec-headline {
@@ -3701,7 +3702,7 @@ header {
 }
 .study-rec-step-num {
   width: 20px; height: 20px; border-radius: 50%;
-  background: var(--ink); color: var(--ink-fg); font-size: 12px;
+  background: var(--ink); color: var(--ink-fg); font-size: 13px;
   font-weight: 600; display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 1px;
   font-family: Figtree,system-ui,sans-serif;
@@ -3709,7 +3710,7 @@ header {
 .study-rec-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
 .study-rec-btn {
   padding: 8px 16px; border-radius: 10px; border: 2px solid var(--border2);
-  background: var(--surface2); color: var(--text); font-size: 12px;
+  background: var(--surface2); color: var(--text); font-size: 13px;
   font-weight: 600; cursor: pointer; transition: var(--tr);
   font-family: Figtree,system-ui,sans-serif;
 }
@@ -3732,7 +3733,7 @@ header {
   padding: 14px 18px; margin-bottom: 14px;
 }
 .mindset-alert-title {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: var(--warning);
   margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
 }
@@ -3744,7 +3745,7 @@ header {
   display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;
 }
 .mindset-vs-pill {
-  padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: 100px; font-size: 13px; font-weight: 600;
   font-family: Figtree,system-ui,sans-serif; letter-spacing: 0;
 }
 .mindset-vs-pill.wrong { background: var(--wrong-light); color: var(--wrong); border: 1.5px solid var(--wrong); }
@@ -3753,7 +3754,7 @@ header {
 /* ── TOPIC READ TIME + RESET ── */
 .topic-read-time {
   display: inline-flex; align-items: center; gap: 4px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--muted); background: var(--surface2);
   border: 1.5px solid var(--border); border-radius: 100px;
@@ -3761,7 +3762,7 @@ header {
 }
 .topic-reset-btn {
   padding: 8px 16px; border-radius: 10px; border: 2px solid var(--border2);
-  background: transparent; color: var(--muted); font-size: 12px;
+  background: transparent; color: var(--muted); font-size: 13px;
   font-weight: 600; cursor: pointer; transition: var(--tr);
   font-family: Figtree,system-ui,sans-serif; letter-spacing: 0;
   text-transform: none;
@@ -3780,7 +3781,7 @@ header {
 .pwa-banner-text strong { display: block; font-family: Fraunces,Georgia,serif; font-size: 16px; margin-bottom: 2px; }
 .pwa-install-btn {
   padding: 9px 18px; border-radius: 10px; background: var(--btn);
-  border: none; color: var(--on-btn); font-size: 12px; font-weight: 600;
+  border: none; color: var(--on-btn); font-size: 13px; font-weight: 600;
   cursor: pointer; font-family: Figtree,system-ui,sans-serif;
   flex-shrink: 0; transition: var(--tr);
 }
@@ -3803,14 +3804,14 @@ header {
 .readiness-section { display: flex; flex-direction: column; gap: 3px; }
 .readiness-section.main { flex: 1; min-width: 180px; }
 .readiness-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none; color: rgba(255,255,255,0.45);
 }
 .readiness-value {
   font-family: Fraunces,Georgia,serif; font-size: 30px; font-weight: 500;
   line-height: 1; color: #fff;
 }
-.readiness-sub { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 500; margin-top: 1px; }
+.readiness-sub { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 500; margin-top: 1px; }
 .readiness-bar-wrap {
   flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 6px;
 }
@@ -3833,12 +3834,12 @@ header {
 .readiness-set-btn {
   padding: 7px 14px; border-radius: 8px; background: var(--btn);
   border: none; color: var(--on-btn); font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--tr);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--tr);
 }
 .readiness-set-btn:hover { opacity: 0.88; }
 .readiness-clear-btn {
   background: none; border: none; color: rgba(255,255,255,0.4);
-  font-size: 12px; cursor: pointer; font-family: Figtree,system-ui,sans-serif;
+  font-size: 13px; cursor: pointer; font-family: Figtree,system-ui,sans-serif;
   text-decoration: underline; padding: 0;
 }
 .readiness-clear-btn:hover { color: rgba(255,255,255,0.7); }
@@ -3860,7 +3861,7 @@ header {
 .train-ws-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(43,110,74,0.4); opacity: 0.95; }
 .train-ws-badge {
   background: rgba(255,255,255,0.25); padding: 3px 10px; border-radius: 100px;
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0;
 }
 
@@ -3871,7 +3872,7 @@ header {
   border-radius: 12px;
 }
 .bk-tag-chip {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   padding: 4px 10px; border-radius: 100px; border: 1.5px solid var(--border2);
   background: var(--surface2); color: var(--text2); cursor: pointer;
   transition: var(--tr); letter-spacing: 0; text-transform: none;
@@ -3885,7 +3886,7 @@ header {
 .bk-tag-chip.reference { border-color: var(--d2); color: var(--text2); }
 .bk-tag-chip.reference.active { background: var(--btn); color: var(--on-btn); }
 .bk-item-tag {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   padding: 2px 7px; border-radius: 100px; letter-spacing: 0;
   text-transform: none; flex-shrink: 0;
 }
@@ -3895,7 +3896,7 @@ header {
 .bk-drill-btn {
   padding: 9px 18px; border-radius: 10px; background: var(--ink);
   border: none; color: var(--on-forest); font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--tr);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--tr);
   display: flex; align-items: center; gap: 7px;
 }
 .bk-drill-btn:hover { background: var(--accent); transform: translateY(-1px); }
@@ -3929,9 +3930,9 @@ header {
 .pacing-icon { font-size: 18px; flex-shrink: 0; }
 .pacing-info { flex: 1; }
 .pacing-info strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
-.pacing-info span { font-size: 12px; color: var(--muted); font-family: Figtree,system-ui,sans-serif; }
+.pacing-info span { font-size: 13px; color: var(--muted); font-family: Figtree,system-ui,sans-serif; }
 .pacing-badge {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   padding: 3px 10px; border-radius: 100px;
 }
 .pacing-badge.ok { background: var(--correct-light); color: var(--correct); }
@@ -3944,12 +3945,12 @@ header {
   border-radius: 12px; padding: 14px 18px; margin-top: 16px;
 }
 .mock-advisory-title {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px; font-weight: 600;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: 0; text-transform: none; color: var(--warning);
   margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
 }
 .mock-advisory-item {
-  font-size: 12.5px; color: var(--text2); font-weight: 600;
+  font-size: 13px; color: var(--text2); font-weight: 600;
   padding: 6px 0; border-bottom: 1px solid rgba(122,81,0,0.15);
   line-height: 1.5;
 }
@@ -3975,7 +3976,7 @@ header {
   pointer-events: none;
 }
 .notify-eyebrow {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--accent); font-weight: 600; margin-bottom: 8px;
 }
@@ -4034,7 +4035,7 @@ header {
   background: var(--correct-fill); color: var(--on-fill);
 }
 .notify-interests-label {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--muted); font-weight: 600; margin-bottom: 8px;
 }
@@ -4042,7 +4043,7 @@ header {
   display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
 }
 .notify-chip {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   padding: 6px 14px; border-radius: 100px;
   border: 1.5px solid var(--border2);
   background: var(--surface); color: var(--text2); cursor: pointer;
@@ -4053,7 +4054,7 @@ header {
   background: var(--btn); border-color: var(--accent); color: var(--on-btn);
 }
 .notify-trust {
-  font-size: 12px; color: var(--muted); font-style: italic;
+  font-size: 13px; color: var(--muted); font-style: italic;
 }
 .notify-msg {
   margin-top: 10px; font-size: 13px; font-weight: 600;
@@ -4070,11 +4071,11 @@ header {
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
   border-radius: 12px;
-  font-size: 12.5px; line-height: 1.7;
+  font-size: 13px; line-height: 1.7;
   color: var(--text2);
 }
 .legal-disclaimer-head {
-  font-family: Figtree,system-ui,sans-serif; font-size: 12px;
+  font-family: Figtree,system-ui,sans-serif; font-size: 13px;
   letter-spacing: 0; text-transform: none;
   color: var(--accent); font-weight: 600; margin-bottom: 10px;
 }
@@ -4142,7 +4143,7 @@ header {
 .brand-card > * { position: relative; z-index: 1; }
 .brand-card-eyebrow {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--accent-fill);
@@ -4208,7 +4209,7 @@ header {
   margin-bottom: 2px;
 }
 .brand-pillar-sub {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text2);
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -4219,7 +4220,7 @@ header {
 }
 .brand-coverage-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--muted);
@@ -4233,7 +4234,7 @@ header {
 }
 .brand-chip {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   padding: 6px 14px;
   border-radius: 100px;
   border: 1.5px solid var(--border2);
@@ -4250,7 +4251,7 @@ header {
 .brand-chip.soon::after {
   content: 'soon';
   margin-left: 6px;
-  font-size: 12px;
+  font-size: 13px;
   padding: 1px 6px;
   border-radius: 100px;
   background: rgba(43,110,74,0.12);
@@ -4274,7 +4275,7 @@ header {
 }
 .mission-item-label {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px; letter-spacing: 0; text-transform: none;
+  font-size: 13px; letter-spacing: 0; text-transform: none;
   font-weight: 600; margin-bottom: 8px;
 }
 .mission-item.vision .mission-item-label { color: var(--accent-fill); }
@@ -4310,7 +4311,7 @@ header {
 .tipjar-text { min-width: 0; }
 .tipjar-eyebrow {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   color: var(--accent2-fill);
@@ -4360,7 +4361,7 @@ header {
 }
 .tipjar-meta {
   font-family: Figtree,system-ui,sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   letter-spacing: 0;
   margin: 0;
@@ -4391,7 +4392,7 @@ header {
   margin-bottom: 3px;
 }
 .support-inline-card-desc {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text2);
   line-height: 1.5;
 }
@@ -4552,7 +4553,7 @@ header {
 #bottomNav { background: var(--bg); border-top: 1px solid var(--border); box-shadow: none; }
 .bnav-item { color: var(--muted); gap: 2px; min-height: 60px; position: relative; }
 .bnav-icon { font-size: 0; height: 24px; }
-.bnav-label { font: 600 12px/14px var(--f-sans); letter-spacing: 0; }
+.bnav-label { font: 600 13px/16px var(--f-sans); letter-spacing: 0; }
 .bnav-item.active { color: var(--text); }
 .bnav-item.active .bnav-icon { color: var(--accent-text); }
 .bnav-item.active::after { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); position: absolute; bottom: 5px; left: 50%; margin-left: -2px; }
@@ -5078,6 +5079,28 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
   .gt-seg-btn { flex: 1 1 0; min-width: 0; flex-direction: column; gap: 0; min-height: 56px; padding: 6px 8px; }
   .gt-seg-name { margin-left: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 18px; }
 }
+/* Mock results: the score header is the screen's one forest panel. */
+body[data-mock-results="1"] #readinessCard { display: none; }
+.rv-mark { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; vertical-align: middle; }
+.rv-mark.ok { background: var(--correct-fill); color: var(--on-fill); }
+.rv-mark.no { background: var(--wrong-fill); color: var(--on-fill); }
+.rv-mark .ico { width: 14px; height: 14px; }
+.ico-up { transform: rotate(180deg); }
+.faq-q-chev { display: inline-flex; font-size: 0; }
+.dc-loading, .domain-card:hover .dc-loading, .domain-card.selected .dc-loading { background: var(--surface2); color: var(--text2); }
+.study-rec-dismiss, .ep-skip, .consent-close, .conf-tip button { display: inline-flex; align-items: center; justify-content: center; }
+/* Phones: every control is at least 44px tall (WCAG 2.5.5 target size). */
+@media (max-width: 600px) {
+  .profile-btn, .exam-mode-btn, .hdr-icon-btn, .study-rec-btn, .readiness-set-btn, .readiness-date-input, .ep-set, .ep-input,
+  .ss-chip, .ss-select, .ctrl-btn, .subtopic-chip, .subtopic-expand-btn, .act-btn, .conf-tip button, .study-rec-dismiss,
+  .ep-skip, .consent-close, .legal-disclaimer a, .legal-link-btn, .tipjar-btn, .home-cta, .pwa-install-btn, .pwa-dismiss-btn,
+  .ws-prac-btn, .mock-chip, .resume-btn, .bk-tag-chip, .gloss-chip, .fb-type, .flag-btn, .fb-btn, .session-btn { min-height: 44px; }
+  .session-start .ss-chip, .session-start .ss-select, .exam-prompt .ep-set, .exam-prompt .ep-input, .ep-set, .ep-input,
+  .mock-resume-btn, .pl-search, .pl-nav-btn, .gloss-mode-btn, .gloss-card-master-btn { min-height: 44px !important; }
+  .gloss-card-master-btn, .pl-nav-btn { min-width: 44px; }
+  .conf-tip button, .study-rec-dismiss, .ep-skip, .consent-close, .pwa-dismiss-btn { min-width: 44px; }
+  .legal-disclaimer a, .legal-link-btn { display: inline-flex; align-items: center; }
+}
 /* GROVE-LAYER-END */
 </style>
 </head>
@@ -5092,7 +5115,7 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
   <div class="consent-actions">
     <button type="button" class="consent-btn decline" onclick="setConsent(false)">Decline</button>
     <button type="button" id="consent-accept" class="consent-btn accept" onclick="setConsent(true)">Accept</button>
-    <button type="button" id="consent-close" class="consent-close" onclick="dismissConsentBanner()" aria-label="Close without changing your choice" hidden>&times;</button>
+    <button type="button" id="consent-close" class="consent-close" onclick="dismissConsentBanner()" aria-label="Close without changing your choice" hidden><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
 </div>
 
@@ -5102,7 +5125,7 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
 <div id="welcome-banner" class="welcome-banner" hidden>
   <span class="wb-dot" aria-hidden="true"></span>
   <span class="wb-text">Welcome to Aurivan — <strong>no account needed.</strong> Progress saves automatically in your browser.</span>
-  <button class="wb-close" onclick="dismissWelcomeBanner()" aria-label="Dismiss welcome banner">&times;</button>
+  <button class="wb-close" onclick="dismissWelcomeBanner()" aria-label="Dismiss welcome banner"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 </div>
 
 <!-- HEADER -->
@@ -5154,7 +5177,7 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
 <div id="pwaBanner" class="pwa-banner">
   <div class="pwa-banner-text"><strong>Install Aurivan</strong>Add to your home screen to study offline, anywhere.</div>
   <button class="pwa-install-btn" onclick="triggerPwaInstall()">Install App</button>
-  <button class="pwa-dismiss-btn" onclick="dismissPwaBanner()" title="Dismiss">&#x2715;</button>
+  <button class="pwa-dismiss-btn" onclick="dismissPwaBanner()" title="Dismiss" aria-label="Dismiss install banner"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 </div>
 
 <!-- DAILY STUDY RECOMMENDATION -->
@@ -5190,7 +5213,7 @@ button.principle-link { background: none; border: 0; border-bottom: 1px dashed c
 
   <div class="controls-row">
     <div class="ctrl-group">
-      <span class="ctrl-label" title="Foundational=Recall, Application=Scenario, Analysis=Best Judgment (CISA is mostly Application + Analysis)">Difficulty <span style="border-bottom:1px dashed var(--border2);cursor:help;font-size:12px" role="img" aria-label="Show help" tabindex="0">?</span></span>
+      <span class="ctrl-label" title="Foundational=Recall, Application=Scenario, Analysis=Best Judgment (CISA is mostly Application + Analysis)">Difficulty <span style="border-bottom:1px dashed var(--border2);cursor:help;font-size:13px" role="img" aria-label="Show help" tabindex="0">?</span></span>
       <button class="ctrl-btn active" data-diff="any" onclick="setDiff(this,'any')">Any</button>
       <button class="ctrl-btn" data-diff="foundational" onclick="setDiff(this,'foundational')" title="Foundational: Knowledge recall">Foundational</button>
       <button class="ctrl-btn" data-diff="application" onclick="setDiff(this,'application')" title="Application: Scenario-based judgment">Application</button>
@@ -5968,7 +5991,7 @@ S.current = null;
 var PROFILES_KEY = "cisa_profiles_v1";    // stores {id: profileObj}
 var ACTIVE_KEY   = "cisa_active_profile"; // stores active profile id
 
-var PROFILE_COLORS = ['#e8521a','#2563eb','#7c3aed','#059669','#db2777','#d97706'];
+var PROFILE_COLORS = ['#3F7F96','#4E8A3E','#B0802C','#86689C','#5E7482','#2B6E4A'];
 
 function genProfileId() {
   var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -6428,7 +6451,7 @@ function buildProfilePanelHTML() {
         + '</div>'
         + (isActive ? '<span class="profile-active-badge">Active</span>' : '')
         + '<div class="profile-actions">'
-        + '<button class="profile-action-btn" title="Delete profile" onclick="event.stopPropagation();deleteProfile(\'' + pid + '\')">&#10005;</button>'
+        + '<button class="profile-action-btn" title="Delete profile" onclick="event.stopPropagation();deleteProfile(\'' + pid + '\')">' + ico('x', 18) + '</button>'
         + '</div>'
         + '</div>';
     });
@@ -6437,7 +6460,7 @@ function buildProfilePanelHTML() {
   return '<div class="profile-modal">'
     + '<div class="profile-modal-header">'
     + '<div class="profile-modal-title">Profiles</div>'
-    + '<button class="profile-modal-close" onclick="closeProfilePanel()">&#10005;</button>'
+    + '<button class="profile-modal-close" onclick="closeProfilePanel()" aria-label="Close">' + ico('x', 18) + '</button>'
     + '</div>'
     + '<div class="profile-modal-body">'
     + '<div class="profile-save-notice">Progress auto-saves to your browser &mdash; no server, no account needed</div>'
@@ -6486,7 +6509,7 @@ function renderProfileList() {
         + '</div>'
         + (isActive ? '<span class="profile-active-badge">Active</span>' : '')
         + '<div class="profile-actions">'
-        + '<button class="profile-action-btn" title="Delete" onclick="event.stopPropagation();deleteProfile(\'' + pid + '\')">&#10005;</button>'
+        + '<button class="profile-action-btn" title="Delete" onclick="event.stopPropagation();deleteProfile(\'' + pid + '\')">' + ico('x', 18) + '</button>'
         + '</div>'
         + '</div>';
     });
@@ -6717,7 +6740,7 @@ function renderTopicsError(err) {
   if (!area) return;
   var msg = (err && err.message) ? escapeHtml(err.message) : 'Network error';
   area.innerHTML = '<div style="text-align:center;padding:60px 24px;color:var(--muted)">'
-    + '<div style="font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px">Topics content not loaded</div>'
+    + '<div style="font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:500;color:var(--text);margin-bottom:8px">Topics content not loaded</div>'
     + '<div style="font-size:13px;line-height:1.7;margin-bottom:20px">'
     + 'Make sure <code>data/cisa_notes.json</code> exists in your GitHub repo.<br>'
     + 'Error: <code>' + msg + '</code>'
@@ -7750,6 +7773,7 @@ function switchTab(t) {
   saveState();
   // Lets CSS drop the shared dashboard above Topics on phones.
   document.body.setAttribute('data-tab', t);
+  document.body.removeAttribute('data-mock-results');
   document.querySelectorAll('.nav-tab').forEach(function(x){
     x.classList.toggle('active', x.id === 'tab-' + t);
   });
@@ -7908,7 +7932,7 @@ function renderHome() {
 
   html += '<div class="home-section-label">Support Aurivan</div>';
   html += '<div class="home-domain-row">'
-    + '<span class="home-domain-name">&#9749; Aurivan is free, with no ads or paywall &mdash; a small tip funds new questions and features.</span>'
+    + '<span class="home-domain-name">Aurivan is free, with no ads or paywall &mdash; a small tip funds new questions and features.</span>'
     + '<button class="home-cta" style="min-height:44px;padding:0 16px" onclick="openSupport()">Support</button>'
     + '</div>';
 
@@ -7964,7 +7988,7 @@ function renderFAQ() {
       body += '<div class="faq-item' + (isOpen ? ' open' : '') + '">'
         + '<button class="faq-q" onclick="toggleFaqItem(' + o.i + ')" aria-expanded="' + isOpen + '" aria-controls="' + aId + '">'
         + '<span>' + renderText(o.item.q, raw) + '</span>'
-        + '<span class="faq-q-chev" aria-hidden="true">&#9662;</span>'
+        + '<span class="faq-q-chev" aria-hidden="true">' + ico('chevron-down', 18) + '</span>'
         + '</button>'
         + '<div class="faq-a" id="' + aId + '" role="region">' + renderText(o.item.a, raw) + '</div>'
         + '</div>';
@@ -8653,7 +8677,7 @@ function renderExamCountdown() {
         + '</div>'
         + '<input type="date" id="exam-date-input" aria-label="Exam date" class="ep-input" min="' + todayIso + '">'
         + '<button class="ep-set" onclick="setExamDate()">Set</button>'
-        + '<button class="ep-skip" onclick="dismissExamPrompt()" aria-label="Dismiss">&times;</button>'
+        + '<button class="ep-skip" onclick="dismissExamPrompt()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>';
     return;
   }
@@ -8900,7 +8924,7 @@ function renderQuestion(q) {
   var confTipHtml = showConfTip
     ? '<div id="conf-tip" class="conf-tip">'
         + '<span>Rate your confidence — this affects how often the question resurfaces in your review queue.</span>'
-        + '<button onclick="dismissConfTip()" aria-label="Dismiss">&times;</button>'
+        + '<button onclick="dismissConfTip()" aria-label="Dismiss">' + ico('x', 18) + '</button>'
       + '</div>'
     : '';
 
@@ -8932,7 +8956,7 @@ function renderQuestion(q) {
     + '</div>'
     + '<div class="result-panel" id="rPanel"></div>'
     + '</div>'
-    + '<div style="text-align:center;margin-top:10px;font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted);letter-spacing:0">'
+    + '<div style="text-align:center;margin-top:10px;font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);letter-spacing:0">'
     + 'Keys: <strong>A&#8211;D</strong> Answer &middot; <strong>1</strong> Sure / <strong>2</strong> Edu.Guess / <strong>3</strong> Guessing &middot; <strong>Enter</strong> Submit / Next'
     + '</div>';
   // Reset transient state for fresh question
@@ -9241,7 +9265,7 @@ function renderWeakSpots() {
       + '<span class="ws-label">' + '<span class="dom-dot" style="background:' + r.info.color + '"></span>' + 'D' + r.d + ' ' + r.info.short + '</span>'
       + '<div class="ws-track"><div class="ws-fill" style="width:' + (r.pct||0) + '%;background:' + r.bc + '"></div></div>'
       + '<span class="ws-pct" style="color:' + r.bc + '">' + (r.pct!==null?r.pct+'%':'--') + '</span>'
-      + '<span style="font-size:12px;color:var(--muted);width:90px;text-align:right">' + r.tag + '</span>'
+      + '<span style="font-size:13px;color:var(--muted);width:90px;text-align:right">' + r.tag + '</span>'
       + '</div>';
   }).join('');
 
@@ -9255,11 +9279,11 @@ function renderWeakSpots() {
           + '<button class="ws-prac-btn" onclick="selectDomain(' + r.d + ');switchTab(\x27practice\x27)">Practice &rarr;</button>'
           + '</div>';
       }).join('')
-    : '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--correct);text-align:center;padding:16px">All attempted domains at 75%+! Keep going!</div>';
+    : '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--correct);text-align:center;padding:16px">All attempted domains at 75%+! Keep going!</div>';
 
   area.innerHTML = '<button class="train-ws-btn" onclick="startWeakSpotsDrill()">Train My Weak Spots <span class="train-ws-badge">20 Questions</span></button>'
     + '<div class="ws-panel"><div class="ws-title">Domain Performance</div>' + rowsHtml
-    + '<div style="margin-top:24px;font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:14px">Recommendations</div>'
+    + '<div style="margin-top:24px;font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:14px">Recommendations</div>'
     + recsHtml + '</div>';
 }
 
@@ -9372,6 +9396,7 @@ function planMockAllocation(total) {
 }
 
 function renderMockSetup() {
+  document.body.removeAttribute('data-mock-results');
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
 
   // If any domain bank is still being fetched, show a loading card
@@ -9404,7 +9429,7 @@ function renderMockSetup() {
     var domTotal = plan[d].analysis + plan[d].application + plan[d].foundational;
     return '<div class="mock-chip">'
       + '<span class="dom-dot" style="background:' + i.color + '"></span>' + '<span style="font-weight:600">D' + d + '</span> ' + i.weight + '%'
-      + '<br><span style="font-size:12px;opacity:0.7">' + domTotal + ' Q · '
+      + '<br><span style="font-size:13px;opacity:0.7">' + domTotal + ' Q · '
       + plan[d].analysis + 'A/' + plan[d].application + 'M/' + plan[d].foundational + 'F</span>'
       + '</div>';
   }).join('');
@@ -9414,8 +9439,8 @@ function renderMockSetup() {
     var bd = color ? color + '-border' : 'border2';
     var fg = color ? color : 'text';
     return '<div style="background:var(--' + bg + ');border:2px solid var(--' + bd + ');border-radius:12px;padding:14px 20px;text-align:center;min-width:90px">'
-      + '<div style="font-family:Fraunces,Georgia,serif;font-size:26px;font-weight:600;color:var(--' + fg + ')">' + value + '</div>'
-      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--' + (color ? fg : 'muted') + ');margin-top:2px">' + label + '</div>'
+      + '<div style="font-family:Fraunces,Georgia,serif;font-size:26px;font-weight:500;color:var(--' + fg + ')">' + value + '</div>'
+      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--' + (color ? fg : 'muted') + ');margin-top:2px">' + label + '</div>'
       + '</div>';
   }
 
@@ -9540,6 +9565,7 @@ function startMock() {
 }
 
 function showMockQuestion() {
+  document.body.removeAttribute('data-mock-results');
   clearAllTimers();
   var q = S.mockQueue[S.mockCurrent];
   var tot = S.mockQueue.length;
@@ -9589,8 +9615,8 @@ function showMockQuestion() {
 
   document.getElementById('mockArea').innerHTML =
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
-    + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted);letter-spacing:0;text-transform: none">CISA Simulation &mdash; Blueprint Mix</span>'
-    + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted)">Q' + cur + ' of ' + tot + '</span>'
+    + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);letter-spacing:0;text-transform: none">CISA Simulation &mdash; Blueprint Mix</span>'
+    + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted)">Q' + cur + ' of ' + tot + '</span>'
     + '</div>'
     + '<div style="height:6px;background:var(--border2);border-radius:3px;margin-bottom:20px;overflow:hidden">'
     + '<div style="height:100%;width:' + progressPct + '%;background:var(--accent);border-radius:3px;transition:width 0.4s ease"></div></div>'
@@ -9599,7 +9625,7 @@ function showMockQuestion() {
     + '<div class="q-header">'
     + '<span class="q-tag">' + '<span class="dom-dot" style="background:' + info.color + '"></span>' + 'D' + q.domain + ' &middot; ' + info.short + '</span>'
     + '<span class="diff-tag ' + (/^[a-z-]+$/.test(q.difficulty || '') ? q.difficulty : 'application') + '">' + escapeHtml(q.bloom_level||'Application') + '</span>'
-    + '<div class="q-meta"><span style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted)">No explanations in mock mode</span></div>'
+    + '<div class="q-meta"><span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted)">No explanations in mock mode</span></div>'
     + '</div>'
     + '<div class="q-body">'
     + (q.scenario_context && !(window.S && S.examMode) ? '<div class="scenario-block"><div class="sc-label">Scenario</div><p class="sc-text" id="sc-text-' + q.id + '">' + escapeHtml(q.scenario_context) + '</p><button class="sc-expand-btn" id="sc-btn-' + q.id + '" onclick="expandScenario(\'' + q.id + '\')">Read scenario ▾</button></div>' : '')
@@ -9692,6 +9718,7 @@ function selectMockAnswer(chosen, _ignoredCorrect) {
 }
 
 function showMockResults() {
+  document.body.setAttribute('data-mock-results', '1');
   clearAllTimers();
   if (S.mockTotalTimerInt) { clearInterval(S.mockTotalTimerInt); S.mockTotalTimerInt = null; }
   var answers = S.mockAnswers;
@@ -9720,19 +9747,19 @@ function showMockResults() {
     return '<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">'
       + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--text2);width:110px;font-weight:500;display:inline-flex;align-items:center;gap:6px">' + '<span class="dom-dot" style="background:' + dc + '"></span>' + 'D' + d + ' ' + DI[d].short + '</span>'
       + '<div style="flex:1;height:10px;background:var(--border2);border-radius:5px;overflow:hidden"><div style="height:100%;width:' + dp + '%;background:' + bc + ';border-radius:5px"></div></div>'
-      + '<span style="font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:600;color:' + bc + ';width:44px;text-align:right">' + pctLabel + '</span>'
+      + '<span style="font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:500;color:' + bc + ';width:44px;text-align:right">' + pctLabel + '</span>'
       + '</div>';
   }).join('');
 
   document.getElementById('mockArea').innerHTML =
     '<div class="mock-results-card">'
     + '<div class="mock-results-header">'
-    + '<div class="mock-score" style="color:' + pc + '">' + pct + '%</div>'
+    + '<div class="mock-score">' + pct + '%</div>'
     + '<div class="mock-score-label">' + cor + ' of ' + tot + ' correct</div>'
     + '<span class="pass-chip ' + (passed?'pass':'fail') + '">' + (passed?'PASS &mdash; Exam Ready':'Keep Practicing') + '</span>'
     + '</div>'
     + '<div style="padding:24px 28px">'
-    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:16px">Domain Breakdown</div>'
+    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:16px">Domain Breakdown</div>'
     + bdHtml
     + buildMockAdvisory(db)
     + '<div class="support-inline-card">'
@@ -9740,7 +9767,7 @@ function showMockResults() {
     + '<div class="support-inline-card-title">Found this mock helpful?</div>'
     + '<div class="support-inline-card-desc">Aurivan is free, with no ads or paywall. A small tip keeps it that way and funds new questions.</div>'
     + '</div>'
-    + '<button class="act-btn" onclick="openSupport()" style="white-space:nowrap">&#9749; Support Aurivan</button>'
+    + '<button class="act-btn" onclick="openSupport()" style="white-space:nowrap">' + ico('heart', 18) + ' Support Aurivan</button>'
     + '</div>'
     + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
     + '<button class="act-btn secondary" onclick="renderMockSetup()">Retake Mock</button>'
@@ -9748,7 +9775,7 @@ function showMockResults() {
     + '<button class="act-btn primary" onclick="switchTab(\x27weakspots\x27)">View Weak Spots &rarr;</button>'
     + '</div>'
     + '<div style="margin-top:28px">'
-    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px">Answer Key<span style=\x27flex:1;height:1px;background:var(--border2)\x27></span></div>'
+    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px">Answer Key<span style=\x27flex:1;height:1px;background:var(--border2)\x27></span></div>'
     + buildMockAnswerKey(answers)
     + '</div>'
     + '</div></div>';
@@ -9806,7 +9833,7 @@ function renderOnboardStep() {
       + ' style="width:100%;box-sizing:border-box;padding:12px 16px;border-radius:12px;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:16px;font-family:inherit;outline:none;transition:border-color .2s;"'
       + ' onkeydown="if(event.key===\'Enter\')onboardCreateProfile()">'
       + '</div>'
-      + '<p style="font-size:12px;color:var(--text2);margin:6px 0 0;text-align:center;">Stored only in your browser \u2014 nothing sent anywhere</p>'
+      + '<p style="font-size:13px;color:var(--text2);margin:6px 0 0;text-align:center;">Stored only in your browser \u2014 nothing sent anywhere</p>'
       + '</div>'
       + '<div class="onboard-footer">'
       + '<button class="onboard-skip" onclick="nextOnboardStep()">Skip for now</button>'
@@ -10084,7 +10111,7 @@ function highlightSearch(text, q) {
   var parts = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   parts.forEach(function(p){
     var re = new RegExp('(' + p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-    safe = safe.replace(re, '<mark style="background:rgba(59,130,246,0.25);color:inherit;padding:0 2px;border-radius:3px">$1</mark>');
+    safe = safe.replace(re, '<mark>$1</mark>');
   });
   return safe;
 }
@@ -10203,7 +10230,7 @@ function renderPrincipleDetail() {
       + '<section class="pl-section"><h3 class="pl-section-label">Definition</h3><p class="pl-def">' + escapeHtml(p.definition) + '</p></section>'
       + '<section class="pl-section"><h3 class="pl-section-label">Applies when</h3><ul class="pl-applies">' + appliesHtml + '</ul></section>'
       + '<section class="pl-section"><h3 class="pl-section-label">Distinct from</h3><p class="pl-distinct">' + distinctHtml + '</p></section>'
-      + '<section class="pl-section"><h3 class="pl-section-label">Example questions</h3><div class="pl-qcount"><span class="pl-qcount-dot">●</span>' + p.qCount + ' questions tagged <strong>' + p.id + '</strong></div></section>'
+      + '<section class="pl-section"><h3 class="pl-section-label">Example questions</h3><div class="pl-qcount"><span class="pl-qcount-dot">●</span>Practice questions are tagged <strong>' + p.id + '</strong></div></section>'
     + '</div>';
   // Update list active state + progress bar
   renderPrinciplesList();
@@ -10525,7 +10552,7 @@ function renderFlashcardArea() {
   }
 
   html += '</div>'
-    + '<div style="margin-top:14px;font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:600;letter-spacing:0;text-transform: none;color:var(--muted)">'
+    + '<div style="margin-top:14px;font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:0;text-transform: none;color:var(--muted)">'
     +   'Shortcuts: Space = flip / Right arrow = next / K = know / R = review'
     + '</div>'
     + '</div>';
@@ -10728,7 +10755,7 @@ function renderSubtopicFilter() {
     ? '<span class="subtopic-pick-label" title="Your 5 weakest subtopics based on practice history">Weak spots</span>'
     : '<span class="subtopic-pick-label">Quick pick</span>';
   var expandBtn = '<button class="subtopic-expand-btn" onclick="toggleSubtopicExpand()">'
-    + (subtopicFilterExpanded ? 'Hide all &#9650;' : 'Browse all (' + subtopics.length + ') &#9660;')
+    + (subtopicFilterExpanded ? 'Hide all ' + ico('chevron-down', 16, 'ico ico-up') : 'Browse all (' + subtopics.length + ') ' + ico('chevron-down', 16))
     + '</button>';
 
   // Active filter chip (highlighted, removable) — shown when filter NOT in topPicks
@@ -10737,7 +10764,7 @@ function renderSubtopicFilter() {
     activeChip = '<button class="subtopic-chip active selected-elsewhere"'
       + ' onclick="setSubtopicFilter(null)"'
       + ' title="Click to clear">'
-      + escapeHtml(activeSubtopic.replace(/-/g, ' ')) + ' &times;</button>';
+      + escapeHtml(activeSubtopic.replace(/-/g, ' ')) + ' ' + ico('x', 16) + '</button>';
   }
 
   // Expanded view: search + categorized chip groups
@@ -10775,7 +10802,7 @@ function renderSubtopicFilter() {
         + '<input type="text" class="subtopic-search" id="subtopicSearchInput" aria-label="Search subtopics" placeholder="Search subtopics&hellip;"'
         + ' value="' + escapeHtml(subtopicFilterSearch) + '"'
         + ' oninput="filterSubtopicSearch(this.value)">'
-        + (search ? '<button class="subtopic-search-clear" onclick="filterSubtopicSearch(\'\')" title="Clear search">&times;</button>' : '')
+        + (search ? '<button class="subtopic-search-clear" onclick="filterSubtopicSearch(\'\')" title="Clear search" aria-label="Clear search">' + ico('x', 18) + '</button>' : '')
       + '</div>'
       + groupsHtml
       + noMatch
@@ -10886,7 +10913,7 @@ function renderReadinessCard() {
       var dateDisp = new Date(examDateStr + 'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
       daysHtml = '<div class="readiness-section"><div class="readiness-label">Days Until Exam</div><div class="readiness-value" style="color:' + dColor + '">' + diffDays + '</div><div class="readiness-sub">' + dateDisp + '</div></div>';
     }
-    dateInputHtml = '<div class="readiness-section" style="align-items:flex-end"><button class="readiness-clear-btn" onclick="clearExamDate()">&#x2715; Clear date</button></div>';
+    dateInputHtml = '<div class="readiness-section" style="align-items:flex-end"><button class="readiness-clear-btn" onclick="clearExamDate()">Clear date</button></div>';
   } else {
     daysHtml = '<div class="readiness-section" style="flex:0"><div class="readiness-label">Exam Date</div><div class="readiness-sub" style="color:var(--on-forest2);font-size:16px;margin-top:2px">Not set</div></div>';
     dateInputHtml = '<div class="readiness-date-area"><input type="text" class="readiness-date-input" id="examDateInput" aria-label="Exam date, as YYYY-MM-DD" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"><button class="readiness-set-btn" onclick="saveExamDateFromInput()">Set Date</button></div>';
@@ -10896,7 +10923,7 @@ function renderReadinessCard() {
   if (readiness !== null) {
     var rColor = readiness >= 75 ? 'var(--sap)' : readiness >= 50 ? 'var(--on-forest)' : 'var(--on-forest)';
     var rLabel = readiness >= 75 ? 'Exam Ready' : readiness >= 60 ? 'Getting There' : readiness >= 45 ? 'Keep Practicing' : 'Early Stage';
-    readinessHtml = '<div class="readiness-bar-wrap"><div class="readiness-label">Weighted Readiness</div><div class="readiness-value" style="color:' + rColor + '">' + readiness + '%</div><div class="readiness-bar-track"><div class="readiness-bar-fill" style="width:' + readiness + '%;background:' + rColor + '"></div></div><div class="readiness-sub">' + rLabel + ' &mdash; ' + totalAnswered + ' questions answered</div></div>';
+    readinessHtml = '<div class="readiness-bar-wrap"><div class="readiness-label">Weighted Readiness</div><div class="readiness-value" style="color:' + rColor + '">' + readiness + '%</div><div class="readiness-bar-track"><div class="readiness-bar-fill" style="width:' + readiness + '%;background:' + rColor + '"></div></div><div class="readiness-sub">' + rLabel + ' &mdash; ' + totalAnswered + (totalAnswered === 1 ? ' question' : ' questions') + ' answered</div></div>';
   } else {
     readinessHtml = '<div class="readiness-bar-wrap"><div class="readiness-label">Weighted Readiness</div><div class="readiness-value" style="color:var(--on-forest2)">--</div><div class="readiness-sub" style="color:var(--on-forest2)">Answer questions to build your score</div></div>';
   }
@@ -10906,7 +10933,7 @@ function renderReadinessCard() {
     var st = S.ds[d] || {t:0,c:0};
     var pct = st.t > 0 ? Math.round((st.c/st.t)*100) : null;
     var c = pct === null ? 'var(--on-forest2)' : pct >= 75 ? 'var(--sap)' : pct >= 50 ? 'var(--on-forest)' : 'var(--on-forest)';
-    domainMini += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--on-forest2);letter-spacing:0">D' + d + '</div><div style="font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:500;color:' + c + '">' + (pct !== null ? pct + '%' : '--') + '</div></div>';
+    domainMini += '<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--on-forest2);letter-spacing:0">D' + d + '</div><div style="font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:500;color:' + c + '">' + (pct !== null ? pct + '%' : '--') + '</div></div>';
   });
   domainMini += '</div>';
 
@@ -10945,7 +10972,7 @@ function renderPacingFeedbackHtml() {
   var msg = overSec <= 0
     ? "You're within exam pace of 1.6 min/Q. Great discipline!"
     : 'Avg ' + avgMin + ' min/Q vs 1.6 min target. On a 150-Q exam you\'d finish ~' + Math.round(Math.abs(overSec) * sessionPacingData.length / 60) + ' min over time.';
-  return '<div class="pacing-feedback"><div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Pacing Feedback (' + sessionPacingData.length + ' questions)</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min / question average</strong><span>CISA target: 1.6 min/Q (240 min ÷ 150 Q)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div style="font-size:12px;color:var(--text2);line-height:1.6;font-weight:500;margin-top:8px">' + msg + '</div></div>';
+  return '<div class="pacing-feedback"><div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Pacing Feedback (' + sessionPacingData.length + ' questions)</div><div class="pacing-row"><div class="pacing-info"><strong>' + avgMin + ' min / question average</strong><span>CISA target: 1.6 min/Q (240 min ÷ 150 Q)</span></div><div class="pacing-badge ' + badgeClass + '">' + badgeLabel + '</div></div><div style="font-size:13px;color:var(--text2);line-height:1.6;font-weight:500;margin-top:8px">' + msg + '</div></div>';
 }
 
 // ── PHASE 2: TRAIN WEAK SPOTS ──
@@ -11023,7 +11050,7 @@ function renderBookmarks() {
     return;
   }
 
-  var filterBar = '<div class="bk-tag-bar"><span style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--muted);margin-right:4px">Filter</span>'
+  var filterBar = '<div class="bk-tag-bar"><span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-right:4px">Filter</span>'
     + '<button class="bk-tag-chip' + (bkActiveTagFilter==='all'?' active':'') + '" data-filter="all" onclick="bkFilterClick(this)">All (' + bks.length + ')</button>';
   BK_TAG_OPTIONS.forEach(function(t) {
     var cnt = bks.filter(function(b){ return b.tag === t.value; }).length;
@@ -11150,7 +11177,7 @@ function buildMockAdvisory(domainStats) {
   advisories.sort(function(a,b){ return (b.weight*(75-b.pct)) - (a.weight*(75-a.pct)); });
 
   if (!advisories.length) {
-    return '<div style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:12px;padding:14px 18px;margin-top:16px"><div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--correct);margin-bottom:6px">&#10003; Strong Performance</div><div style="font-size:13px;color:var(--text2);font-weight:600">All domains at 75%+ accuracy &#8212; you\'re exam-ready across the board.</div></div>';
+    return '<div style="background:var(--correct-light);border:2px solid var(--correct-light);border-radius:12px;padding:14px 18px;margin-top:16px"><div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--correct);margin-bottom:6px">&#10003; Strong Performance</div><div style="font-size:13px;color:var(--text2);font-weight:600">All domains at 75%+ accuracy &#8212; you\'re exam-ready across the board.</div></div>';
   }
 
   var items = advisories.map(function(a) {
@@ -11208,7 +11235,7 @@ function buildStudyRecommendation() {
 
   if (totalAnswered === 0) {
     // Brand new user
-    icon = '&#127891;';
+    icon = '';
     headline = 'Welcome! Start with the audit mindset.';
     steps = [
       'Read the Topics tab — start with Domain 1 (Audit Process, ' + DI["1"].weight + '% of the exam)',
@@ -11221,7 +11248,7 @@ function buildStudyRecommendation() {
     ];
   } else if (topDomain.acc === null) {
     // High-weight domain never attempted
-    icon = '&#127919;';
+    icon = '';
     headline = 'D' + topDomain.d + ' ' + topDomain.name + ' is untouched — and it\'s ' + topDomain.weight + '% of the exam.';
     steps = [
       'Read the D' + topDomain.d + ' topic card to build context before answering',
@@ -11234,7 +11261,7 @@ function buildStudyRecommendation() {
     ];
   } else if (topDomain.acc < 60) {
     // Seriously weak domain
-    icon = '&#128308;';
+    icon = '';
     headline = 'D' + topDomain.d + ' is at ' + topDomain.acc + '% — below the 75% passing threshold.';
     steps = topicsUnreviewed > 0
       ? [
@@ -11253,7 +11280,7 @@ function buildStudyRecommendation() {
     ];
   } else if (topDomain.acc < 75) {
     // Getting there
-    icon = '&#128993;';
+    icon = '';
     headline = 'D' + topDomain.d + ' is at ' + topDomain.acc + '% — almost at the 75% target.';
     steps = [
       'Drill 15 more D' + topDomain.d + ' questions to push past 75%',
@@ -11266,7 +11293,7 @@ function buildStudyRecommendation() {
     ];
   } else if (daysLeft !== null && daysLeft <= 7 && daysLeft > 0) {
     // Exam imminent
-    icon = '&#9889;';
+    icon = '';
     headline = daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' to exam — final sprint mode.';
     steps = [
       'Take a full 150-question mock exam to calibrate',
@@ -11279,7 +11306,7 @@ function buildStudyRecommendation() {
     ];
   } else {
     // All domains 75%+ — maintenance mode
-    icon = '&#9989;';
+    icon = '';
     headline = 'Strong across all domains. Keep the momentum.';
     steps = [
       'Take a mock exam to simulate real exam conditions',
@@ -11321,7 +11348,7 @@ function renderStudyRec() {
   }).join('');
 
   card.innerHTML = '<div class="study-rec-card">'
-    + '<button class="study-rec-dismiss" onclick="dismissStudyRec()" title="Dismiss for today">&#x2715;</button>'
+    + '<button class="study-rec-dismiss" onclick="dismissStudyRec()" title="Dismiss for today" aria-label="Dismiss for today">' + ico('x', 18) + '</button>'
     + '<div class="study-rec-header">'
     + '<div class="study-rec-icon">' + rec.icon + '</div>'
     + '<div><div class="study-rec-title">Today\'s Study Focus</div>'
@@ -11645,8 +11672,8 @@ function showFilterComplete() {
     + '<div class="empty-title" style="color:var(--correct)">Filter Complete!</div>'
     + '<div class="empty-sub" style="margin-bottom:4px"><strong>' + filterLabel + '</strong></div>'
     + '<div class="empty-sub">' + domainLabel + ' \u2014 every question answered</div>'
-    + '<div style="margin-top:16px;font-family:Fraunces,Georgia,serif;font-size:40px;font-weight:600;color:' + pctColor + '">' + pct + '%</div>'
-    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted);margin-bottom:20px">accuracy on ' + domainLabel + ' overall</div>'
+    + '<div style="margin-top:16px;font-family:Fraunces,Georgia,serif;font-size:40px;font-weight:500;color:' + pctColor + '">' + pct + '%</div>'
+    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);margin-bottom:20px">accuracy on ' + domainLabel + ' overall</div>'
     + '<div style="margin-top:8px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
     + '<button class="act-btn primary" onclick="clearFilterAndContinue()" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Continue (all sub-topics)</button>'
     + '<button class="act-btn secondary" onclick="showSessionSummary()">View Summary</button>'
@@ -11679,13 +11706,13 @@ function showDomainComplete(d) {
   var missedListHtml = '';
   if (domMissed.length > 0) {
     missedListHtml = '<div style="margin-top:20px;text-align:left">'
-      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Incorrect Answers to Review (' + domMissed.length + ')</div>';
+      + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--muted);margin-bottom:10px">Incorrect Answers to Review (' + domMissed.length + ')</div>';
     for (var i = 0; i < domMissed.length; i++) {
       var mq = domMissed[i];
       var qNum = getQuestionNumber(mq);
       missedListHtml += '<div style="background:var(--wrong-light);border:2px solid var(--wrong);border-radius:10px;padding:12px 16px;margin-bottom:8px;cursor:pointer;transition:all 0.2s ease" onclick="reviewSpecificMissed(\x27' + d + '\x27,' + i + ')" onmouseover="this.style.transform=\x27translateX(4px)\x27" onmouseout="this.style.transform=\x27none\x27">'
         + '<div style="display:flex;align-items:center;gap:10px">'
-        + '<span style="font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:600;color:var(--wrong)">#' + qNum + '</span>'
+        + '<span style="font-family:Fraunces,Georgia,serif;font-size:16px;font-weight:500;color:var(--wrong)">#' + qNum + '</span>'
         + '<span style="font-size:16px;color:var(--text2);font-weight:500;line-height:1.5">' + mq.question.substring(0, 100) + (mq.question.length > 100 ? '...' : '') + '</span>'
         + '</div></div>';
     }
@@ -11696,8 +11723,8 @@ function showDomainComplete(d) {
     + '<div class="empty-icon"></div>'
     + '<div class="empty-title" style="color:var(--correct)">Domain ' + d + ' Complete!</div>'
     + '<div class="empty-sub">You have answered every question in ' + info.name + '</div>'
-    + '<div style="margin-top:16px;font-family:Fraunces,Georgia,serif;font-size:48px;font-weight:600;color:' + pctColor + '">' + pct + '%</div>'
-    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted);margin-bottom:20px">' + st.c + ' of ' + st.t + ' correct</div>'
+    + '<div style="margin-top:16px;font-family:Fraunces,Georgia,serif;font-size:48px;font-weight:500;color:' + pctColor + '">' + pct + '%</div>'
+    + '<div style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted);margin-bottom:20px">' + st.c + ' of ' + st.t + ' correct</div>'
     + missedListHtml
     + '<div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
     + '<button class="act-btn primary" onclick="restartAndShowBtn(\x27' + d + '\x27)" style="background:var(--btn);border-color:var(--btn);color:var(--on-btn)">Restart Domain</button>'
@@ -11954,7 +11981,7 @@ function showSessionSummary() {
       + '<span class="summary-focus-text"><strong>Focus next session on Domain ' + weakestDomain + ': ' + wInfo.name + '</strong> \u2014 currently at ' + weakestPct + '%. Target 75%+ for exam readiness.</span>'
       + '</div>';
   } else {
-    focusHtml = '<div class="summary-focus"><span class="summary-focus-icon">\u2705</span>'
+    focusHtml = '<div class="summary-focus">'
       + '<span class="summary-focus-text"><strong>All attempted domains at 75%+!</strong> Keep building coverage across all domains.</span></div>';
   }
 
@@ -11977,11 +12004,11 @@ function showSessionSummary() {
 
   var confCards = '<div class="summary-conf-row">'
     + '<div class="summary-conf-card"><span class="summary-conf-num" style="color:var(--correct)">' + confSure + '</span><span class="summary-conf-label">Sure</span>'
-    + (confSure > 0 ? '<div style="font-size:12px;color:var(--muted);margin-top:4px">' + Math.round((confSureCorrect/confSure)*100) + '% correct</div>' : '') + '</div>'
+    + (confSure > 0 ? '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + Math.round((confSureCorrect/confSure)*100) + '% correct</div>' : '') + '</div>'
     + '<div class="summary-conf-card"><span class="summary-conf-num" style="color:var(--warning)">' + confEdu + '</span><span class="summary-conf-label">Edu. Guess</span>'
-    + (confEdu > 0 ? '<div style="font-size:12px;color:var(--muted);margin-top:4px">' + Math.round((confEduCorrect/confEdu)*100) + '% correct</div>' : '') + '</div>'
+    + (confEdu > 0 ? '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + Math.round((confEduCorrect/confEdu)*100) + '% correct</div>' : '') + '</div>'
     + '<div class="summary-conf-card"><span class="summary-conf-num" style="color:var(--wrong)">' + confGuess + '</span><span class="summary-conf-label">Guessing</span>'
-    + (confGuess > 0 ? '<div style="font-size:12px;color:var(--muted);margin-top:4px">' + Math.round((confGuessCorrect/confGuess)*100) + '% correct</div>' : '') + '</div>'
+    + (confGuess > 0 ? '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + Math.round((confGuessCorrect/confGuess)*100) + '% correct</div>' : '') + '</div>'
     + '</div>';
 
   var modal = document.getElementById("changelogModal");
@@ -12115,12 +12142,11 @@ function buildMockAnswerKey(answers) {
   for (var i = 0; i < answers.length; i++) {
     var a = answers[i];
     if (!a.q) continue;
-    var qNum = getQuestionNumber(a.q);
     var info = DI[String(a.q.domain)];
     var isCorrect = a.ok;
     var borderColor = isCorrect ? 'var(--correct-light)' : 'var(--wrong)';
     var bgColor = isCorrect ? 'var(--correct-light)' : 'var(--wrong-light)';
-    var statusIcon = isCorrect ? '\u2705' : '\u274c';
+    var statusIcon = '<span class="rv-mark ' + (isCorrect ? 'ok' : 'no') + '" role="img" aria-label="' + (isCorrect ? 'Correct' : 'Incorrect') + '">' + ico(isCorrect ? 'check' : 'x', 16) + '</span>';
     // a.chosen is the DISPLAY letter the candidate clicked; a.correct is the
     // ORIGINAL correct letter from the JSON. Translate the original correct
     // letter to its display position via the snapshotted shuffle so the
@@ -12131,16 +12157,16 @@ function buildMockAnswerKey(answers) {
 
     html += '<div style="background:' + bgColor + ';border:2px solid ' + borderColor + ';border-radius:12px;padding:14px 16px;margin-bottom:8px">'
       + '<div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="toggleMockDetail(' + i + ')">'
-      + '<span style="font-size:14px">' + statusIcon + '</span>'
-      + '<span class="dom-dot" style="background:' + info.color + '"></span>' + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--text)">D' + a.q.domain + ' #' + qNum + '</span>'
-      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:12px;color:var(--muted)">' + escapeHtml(a.q.subtopic || '') + '</span>'
+      + statusIcon
+      + '<span class="dom-dot" style="background:' + info.color + '"></span>' + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--text)">Q' + (i + 1) + ' &middot; D' + a.q.domain + '</span>'
+      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;color:var(--muted)">' + escapeHtml(a.q.subtopic || '') + '</span>'
       + '<span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
-      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:500">' + (isCorrect ? '' : 'You: <strong style=\"color:var(--wrong)\">' + userAns + '</strong> Correct: <strong style=\"color:var(--correct)\">' + correctAns + '</strong>') + '</span>'
-      + '<span style="font-size:12px;color:var(--muted);transition:transform 0.2s" id="mockChevron' + i + '">\u25bc</span>'
+      + '<span style="font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:500">' + (isCorrect ? '' : 'You: <strong style=\"color:var(--wrong)\">' + userAns + '</strong> Correct: <strong style=\"color:var(--correct)\">' + correctAns + '</strong>') + '</span>'
+      + '<span style="color:var(--muted);transition:transform 0.2s;display:inline-flex" id="mockChevron' + i + '" aria-hidden="true">' + ico('chevron-down', 18) + '</span>'
       + '</span>'
       + '</div>'
       + '<div id="mockDetail' + i + '" style="display:none;margin-top:12px">'
-      + '<div style="font-family:Fraunces,Georgia,serif;font-size:13px;font-weight:600;line-height:1.7;margin-bottom:10px;color:var(--text)">' + escapeHtml(a.q.question) + '</div>';
+      + '<div style="font-family:Fraunces,Georgia,serif;font-size:13px;font-weight:500;line-height:1.7;margin-bottom:10px;color:var(--text)">' + escapeHtml(a.q.question) + '</div>';
 
     // Show all 4 options in the SAME display order the candidate saw,
     // mapping each display position back to its original letter for
@@ -12157,21 +12183,21 @@ function buildMockAnswerKey(answers) {
         : isThisChosen
           ? 'background:var(--wrong-light);border:2px solid var(--wrong);'
           : 'background:var(--surface2);border:2px solid var(--border);';
-      var optIcon = isThisCorrect ? '\u2705 ' : isThisChosen && !isThisCorrect ? '\u274c ' : '';
+      var optIcon = isThisCorrect ? '<span class="rv-mark ok" role="img" aria-label="Correct answer">' + ico('check', 14) + '</span> ' : isThisChosen && !isThisCorrect ? '<span class="rv-mark no" role="img" aria-label="Your answer">' + ico('x', 14) + '</span> ' : '';
       html += '<div style="' + optStyle + 'border-radius:10px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px">'
-        + '<span style="font-family:Fraunces,Georgia,serif;font-size:13px;font-weight:600;flex-shrink:0;margin-top:1px">' + optIcon + displayL + '</span>'
-        + '<span style="font-size:12.5px;line-height:1.6;color:var(--text2)">' + escapeHtml(optText) + '</span>'
+        + '<span style="font-family:Fraunces,Georgia,serif;font-size:13px;font-weight:500;flex-shrink:0;margin-top:1px">' + optIcon + displayL + '</span>'
+        + '<span style="font-size:13px;line-height:1.6;color:var(--text2)">' + escapeHtml(optText) + '</span>'
         + '</div>';
     }
 
     // Explanation
     if (a.q.correct_explanation) {
-      html += '<div style="font-size:12.5px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:10px;margin-top:8px">'
+      html += '<div style="font-size:13px;line-height:1.7;color:var(--text2);font-weight:500;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:10px;margin-top:8px">'
         + '<strong style="color:var(--correct)">Why ' + escapeHtml(correctAns) + ' is correct:</strong> ' + escapeHtml(mapLettersInText(a.q.correct_explanation, shuffle))
         + '</div>';
     }
     if (a.q.framework_ref) {
-      html += '<div style="margin-top:6px"><span style="display:inline-flex;align-items:center;gap:5px;background:var(--d2-light);border:1.5px solid var(--d2-border);border-radius:100px;padding:3px 10px;font-family:Figtree,system-ui,sans-serif;font-size:12px;letter-spacing:0;text-transform: none;color:var(--d2)">' + escapeHtml(a.q.framework_ref) + '</span></div>';
+      html += '<div style="margin-top:6px"><span style="display:inline-flex;align-items:center;gap:5px;background:var(--d2-light);border:1.5px solid var(--d2-border);border-radius:100px;padding:3px 10px;font-family:Figtree,system-ui,sans-serif;font-size:13px;letter-spacing:0;text-transform: none;color:var(--d2)">' + escapeHtml(a.q.framework_ref) + '</span></div>';
     }
 
     html += '</div></div>';
@@ -12640,7 +12666,7 @@ const CHANGELOG = [
     version: 'v10.8',
     title: 'Final authenticity sweep: D2 wrong-answer parity + long-scenario trims',
     items: [
-      { cat: 'improved', text: 'Rewrote wrong-answer options on 22 Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.' },
+      { cat: 'improved', text: 'Rewrote wrong-answer options on Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.' },
       { cat: 'improved', text: 'Trimmed 25 question scenarios (3 Domain 2, 22 Domain 4) that ran over 150 words. ISACA\'s typical exam stem is 20-50 words with an 80-word ceiling; trimming these to ≤100 words while preserving every fact the correct answer depends on brings the bank closer to the compact stem style candidates will face on the real exam.' },
       { cat: 'fixed', text: 'A Domain 2 cloud-shared-responsibility question (d2_014) used the absolute word "always" in its correct option. Even when factually accurate, ISACA prohibits absolute words because they let candidates eliminate by spotting absolutes. Reworded with the graded language ISACA actually uses.' }
     ]
@@ -12649,7 +12675,7 @@ const CHANGELOG = [
     version: 'v10.7',
     title: 'Authenticity pass complete: D5 wrong-answer options now require real reasoning',
     items: [
-      { cat: 'improved', text: 'Rewrote wrong-answer options on 147 Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the 126 Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.' },
+      { cat: 'improved', text: 'Rewrote wrong-answer options on Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.' },
       { cat: 'improved', text: 'Each rewritten Domain 5 wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.' },
       { cat: 'improved', text: 'Combined effect of v10.6 and v10.7: zero Type-1 structural giveaways remain anywhere in the bank. The independent ISACA-authenticity auditor moves Domain 4 and Domain 5 from HIGH first-time-pass risk to LOW risk.' }
     ]
@@ -12658,10 +12684,10 @@ const CHANGELOG = [
     version: 'v10.6',
     title: 'Authenticity pass: D4 wrong-answer options now require real reasoning',
     items: [
-      { cat: 'improved', text: 'Rewrote wrong-answer options on 126 Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.' },
+      { cat: 'improved', text: 'Rewrote wrong-answer options on Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.' },
       { cat: 'fixed', text: 'Twenty-seven wrong-answer options across Domain 1, Domain 2, and Domain 3 used absolute words ("always", "never", "common", "rarely") that real ISACA exam options avoid. Each is now phrased with the graded language ISACA actually uses ("typically", "generally", "in most cases", "standard"), so candidates can\'t eliminate by spotting absolutes — they have to evaluate the audit reasoning.' },
       { cat: 'fixed', text: 'Three Domain 3 explanations had drifted into first-person voice ("we", "our"). Reframed to the third-person voice ISACA uses ("the organization", "the IS auditor", "management").' },
-      { cat: 'fixed', text: 'Three Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.' }
+      { cat: 'fixed', text: 'Some Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.' }
     ]
   },
   {
@@ -12679,9 +12705,9 @@ const CHANGELOG = [
   },
   {
     version: 'v10.4',
-    title: 'Pre-launch polish: 30 new recall questions + accessibility fixes',
+    title: 'Pre-launch polish: new recall questions + accessibility fixes',
     items: [
-      { cat: 'new', text: '30 new foundational recall questions added across all 5 domains (6 per domain). The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.' },
+      { cat: 'new', text: 'New foundational recall questions added across all 5 domains. The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.' },
       { cat: 'fixed', text: 'Accessibility fixes for color contrast in light mode. The confidence-rating buttons after answering (Sure / Educated / Guessing), the wrong-answer tip-type labels (TRAP / MINDSET / EXAM-DAY), and the mock-exam-in-progress warning banner now meet WCAG AA (4.5:1) instead of the previous 1.93–3.34:1.' },
       { cat: 'fixed', text: 'Mobile tap targets on the header hamburger menu, session-start chips, control buttons, and study-recommendation dismiss are now at least 44×44 pixels at 375px width, matching the 44px target for one-handed use.' },
       { cat: 'fixed', text: 'Changelog category chip colors no longer leak reserved tones (pink for Fixed, purple for New in dark mode). Fixed is now red; New in dark mode is now light blue.' },
@@ -12694,16 +12720,16 @@ const CHANGELOG = [
     items: [
       { cat: 'fixed', text: 'A Domain 2 supply-chain incident question (d2_172) had a wrong-answer explanation that critiqued a deadline that was not actually in the option text. The explanation now addresses what the option actually says — that an "updated vendor-vetting checklist" is administrative compensation, not systemic prevention against the next compromised dependency.' },
       { cat: 'improved', text: 'Four wait-passive wrong-answer options across D1 and D2 (audit-committee escalation, trading-floor surveillance, privacy operationalization, mid-cycle risk treatment) no longer use the over-recycled "Wait for the next meeting" framing — they now describe a plausible deferral with stated justification, which still fails the urgency principle but no longer telegraphs the trap with a single word.' },
-      { cat: 'improved', text: 'Ten Domain 4 questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero — a counting tell introduced by the previous polish pass. The 30 affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.' },
+      { cat: 'improved', text: 'Some Domain 4 questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero — a counting tell introduced by the previous polish pass. The affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.' },
       { cat: 'improved', text: 'Twelve Domain 5 BEST/PRIMARY companions (d5_261-270, d5_275, d5_276) had a generic tip-2 phrase repeated across the set. Each tip-2 now anchors to the scenario-specific dominant clock or principle (encryption clock for ransomware, irreversible-loss clock for BEC, parallel-track notification clocks for SaaS B2B, build-time-vs-runtime confusion for container escape) so candidates learn what makes THIS scenario distinctive, not a phrase to memorize.' },
       { cat: 'fixed', text: 'A GDPR breach-notification question (d3_096) had the correct option presume Article 33(1) notification was required without acknowledging the risk-based exemption gate. The option now explicitly conducts the risk assessment first and notifies only if the breach is likely to risk data subjects.' }
     ]
   },
   {
     version: 'v10.2',
-    title: 'Sharper wrong-answer options across 36 questions',
+    title: 'Sharper wrong-answer options',
     items: [
-      { cat: 'improved', text: 'Replaced over-recycled wrong-answer phrasing on 50 options across 36 questions in D1, D2, D3, and D4. Wrong options that used to read like "Endorse the CIO\'s position" or "Trust the vendor\'s report" — phrasings learners eventually spot on sight — now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.' },
+      { cat: 'improved', text: 'Replaced over-recycled wrong-answer phrasing on options in D1, D2, D3, and D4. Wrong options that used to read like "Endorse the CIO\'s position" or "Trust the vendor\'s report" — phrasings learners eventually spot on sight — now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.' },
       { cat: 'improved', text: 'Wrong-answer explanations for these 50 options were rewritten to name the actual failure mode (audit independence, evidence sufficiency, root-cause priority, business-risk anchoring, structured evaluation) so you learn the principle being tested rather than the cue word that gives the trap away.' }
     ]
   },
@@ -12711,7 +12737,7 @@ const CHANGELOG = [
     version: 'v10.1',
     title: 'Precision-word triplets: same scenario, three different correct answers',
     items: [
-      { cat: 'new', text: '12 new questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word — PRIMARY or MOST IMPORTANT — produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.' },
+      { cat: 'new', text: 'New questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word — PRIMARY or MOST IMPORTANT — produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.' },
       { cat: 'new', text: 'PRIMARY questions ask the dominant audit consideration or lens (e.g., ransomware PRIMARY = encryption-progress clock; insider exfiltration PRIMARY = fiduciary duty to clients). MOST IMPORTANT questions ask the non-negotiable factor — the one element that, if absent, makes the entire response moot (e.g., phishing-credential MOST IMPORTANT = verified revocation completeness; SaaS B2B breach MOST IMPORTANT = own-regulator clock satisfied).' },
       { cat: 'improved', text: 'Every triplet member explicitly names its two companions in the explanation, so a candidate who saw the same scenario three times across the bank can compare exactly how the precision word changed the correct answer each time.' }
     ]
@@ -12720,7 +12746,7 @@ const CHANGELOG = [
     version: 'v10.0',
     title: 'New: paired precision-word questions teach FIRST vs BEST as judgment, not memorization',
     items: [
-      { cat: 'new', text: '12 new companion questions added across Domains 2 and 5. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design — FIRST is a single containment action, BEST is the full well-sequenced response — so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.' },
+      { cat: 'new', text: 'New companion questions added across Domains 2 and 5. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design — FIRST is a single containment action, BEST is the full well-sequenced response — so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.' },
       { cat: 'new', text: 'Pair examples: ransomware detection (FIRST = isolate via EDR; BEST = isolate + forensic + threat-hunt + notify + restore + harden), insider exfiltration (FIRST = revoke access; BEST = revoke + forensic + legal hold + investigate + client notify), and multi-jurisdiction privacy governance (FIRST = baseline; BEST = baseline + Privacy Governance Council + board KPIs + regulatory-triggered review).' },
       { cat: 'improved', text: 'Each BEST companion explicitly names its FIRST counterpart in the explanation, so a candidate who answered the FIRST version one way and the BEST version differently can see exactly what the precision word changed.' }
     ]
@@ -12729,7 +12755,7 @@ const CHANGELOG = [
     version: 'v9.9',
     title: 'Harder distractors, round 2 — another 80 structural giveaways eliminated',
     items: [
-      { cat: 'improved', text: 'Rewrote distractors for 80 more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Cumulatively, 160 questions across the two passes now have genuinely challenging wrong options.' },
+      { cat: 'improved', text: 'Rewrote distractors for more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Across the two passes, these questions now have genuinely challenging wrong options.' },
       { cat: 'improved', text: 'Each rewritten distractor matches the correct option’s compound format and fails for a specific teachable reason — wrong priority order, missing critical element, wrong scope, wrong framing, or including a harmful element — so candidates must reason about content rather than pattern-match on format.' },
       { cat: 'improved', text: 'Wrong-answer explanations for these 240 new options name the failure mode and tie it back to ISACA principles (independence, evidence over assumption, prevention over correction, root cause over symptoms, business risk over compliance).' }
     ]
@@ -12738,7 +12764,7 @@ const CHANGELOG = [
     version: 'v9.8',
     title: 'Harder distractors — 80 structural giveaways eliminated across D2, D4, D5',
     items: [
-      { cat: 'improved', text: 'Rewrote all three distractors for 80 Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.' },
+      { cat: 'improved', text: 'Rewrote all three distractors for Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.' },
       { cat: 'improved', text: 'Three Domain 2 governance-scenario distractors received the same treatment. Each wrong option now describes a coherent but flawed multi-element approach rather than a single-dimension oversimplification.' },
       { cat: 'improved', text: 'Wrong-answer explanations for all 240 rewritten options now explain the specific failure mode — why the compound-looking distractor is still wrong — rather than just dismissing a simplistic option.' }
     ]
@@ -12759,7 +12785,7 @@ const CHANGELOG = [
     items: [
       { cat: 'fixed', text: 'One Domain 4 question on offsite-recovery validation had its keyed answer pointed at the wrong option after a prior shuffle. The keyed answer, the wrong-answer explanations, and the trap-naming tip now all point at the right option.' },
       { cat: 'fixed', text: 'Six Domain 4 explanations referenced the wrong option letter when describing the trap (for example, the explanation said "Option A (refuse)" when the "refuse" option was actually C). All six now name the option they describe.' },
-      { cat: 'fixed', text: 'Three Domain 4 questions had garbled wording where "IT\'s" or "it\'s been" was rendered as "It is" by an earlier prose pass. The original meaning has been restored.' },
+      { cat: 'fixed', text: 'Some Domain 4 questions had garbled wording where "IT\'s" or "it\'s been" was rendered as "It is" by an earlier prose pass. The original meaning has been restored.' },
       { cat: 'fixed', text: 'Repaired 41 mis-grouped parentheses across 29 Domain 4 explanation lists. Numbered governance and recovery checklists now read cleanly instead of running adjacent items together.' },
       { cat: 'improved', text: 'Added closing audit-mindset sentences to six Domain 4 incident-and-resilience scenarios so the principle being tested (compensating controls, business alignment, evidence over assumptions) is named, not just demonstrated.' }
     ]
@@ -12768,10 +12794,10 @@ const CHANGELOG = [
     version: 'v9.5',
     title: 'Domain 2 audit pass — distinct answer options and sharper governance teaching',
     items: [
-      { cat: 'fixed', text: 'Two Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.' },
+      { cat: 'fixed', text: 'Some Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.' },
       { cat: 'fixed', text: 'Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one Domain 2 stem.' },
       { cat: 'fixed', text: 'Cleaned up a doubled phrase in a Domain 2 citation ("ISACA IT Audit ISACA IT Audit Standard 1207") and a doubled "Article 25" parenthetical in an EDPB citation.' },
-      { cat: 'improved', text: 'Added closing audit-mindset sentences to 15 Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.' },
+      { cat: 'improved', text: 'Added closing audit-mindset sentences to Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.' },
       { cat: 'improved', text: 'Trimmed three Domain 2 correct-answer options that were noticeably longer than their distractors so the right answer is no longer detectable by length alone.' }
     ]
   },
@@ -12822,8 +12848,8 @@ const CHANGELOG = [
     version: 'v9.0',
     title: 'Rebuilt from source',
     items: [
-      { cat: 'new', text: '1,004 original questions, authored directly from ISACA, NIST, and ISO standards. No exam-bank citations in the chain. Every question traces to a primary source document.' },
-      { cat: 'new', text: '401 analysis-tier questions now include scenario context — an 80–160 word incident brief rendered before the question stem, formatted to separate context → question → options as distinct reading phases.' },
+      { cat: 'new', text: 'Original questions across all five domains, authored directly from ISACA, NIST, and ISO standards. No exam-bank citations in the chain. Every question traces to a primary source document.' },
+      { cat: 'new', text: 'Analysis-tier questions now include scenario context — an 80–160 word incident brief rendered before the question stem, formatted to separate context → question → options as distinct reading phases.' },
       { cat: 'new', text: '3 tips per question — revealed after you answer: the trap (what the distractors exploit), the mindset (the underlying principle), and the exam-day shortcut (the pattern to memorize). Unlock in sequence or skip entirely.' },
       { cat: 'new', text: 'Principles Library — 15 single-focus auditor-mindset principles with definitions, trigger conditions, and links to every question that tests them. New tab between Topics and Glossary.' },
       { cat: 'improved', text: 'Still free, still no account. Nothing changed about that.' }

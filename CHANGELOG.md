@@ -321,7 +321,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.8] — Final authenticity sweep: D2 wrong-answer parity + long-scenario trims
 
 ### Improved
-- Rewrote wrong-answer options on 22 Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.
+- Rewrote wrong-answer options on Domain 2 governance questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. The previous releases fixed this pattern in Domains 4 and 5; this pass closes the same gap in Domain 2. Every question in the bank with a compound correct answer now has compound wrong answers in matching format.
 - Trimmed 25 question scenarios (3 Domain 2, 22 Domain 4) that ran over 150 words. ISACA's typical exam stem is 20-50 words with an 80-word ceiling; trimming these to ≤100 words while preserving every fact the correct answer depends on brings the bank closer to the compact stem style candidates will face on the real exam.
 
 ### Fixed
@@ -330,19 +330,19 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.7] — Authenticity pass complete: D5 wrong-answer options now require real reasoning
 
 ### Improved
-- Rewrote wrong-answer options on 147 Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the 126 Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.
+- Rewrote wrong-answer options on Domain 5 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. Combined with the Domain 4 questions fixed in the previous release, every question in the bank where the correct answer used a compound format now has all three wrong answers in the same compound format — eliminating the last structural giveaway in the bank.
 - Each rewritten Domain 5 wrong answer fails for a specific teachable reason: containment-first violations, evidence-preservation gaps, regulator-clock ignorance, defense-in-depth shortcuts, least-privilege violations, harvest-now-decrypt-later misframings, or scope inversions. The wrong-answer explanations name the failure mode (such as "PERIMETER-TRUST INVERSION", "ECB-AS-ACCEPTABLE", "NOTIFY-FIRST when CONTAINMENT-FIRST is the principle") so candidates learn the audit pattern, not the format.
 - Combined effect of v10.6 and v10.7: zero Type-1 structural giveaways remain anywhere in the bank. The independent ISACA-authenticity auditor moves Domain 4 and Domain 5 from HIGH first-time-pass risk to LOW risk.
 
 ## [v10.6] — Authenticity pass: D4 wrong-answer options now require real reasoning
 
 ### Improved
-- Rewrote wrong-answer options on 126 Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.
+- Rewrote wrong-answer options on Domain 4 questions where the correct option was a multi-step compound list while the wrong options were single-concept partial approaches. A test-savvy candidate could pick the correct answer by format alone. Every wrong option now uses the same compound format and fails for a specific teachable reason (wrong priority order, missing critical element, wrong framing, harmful inclusion, wrong scope) so the question requires genuine audit reasoning to answer.
 
 ### Fixed
 - Twenty-seven wrong-answer options across Domain 1, Domain 2, and Domain 3 used absolute words ("always", "never", "common", "rarely") that real ISACA exam options avoid. Each is now phrased with the graded language ISACA actually uses ("typically", "generally", "in most cases", "standard"), so candidates can't eliminate by spotting absolutes — they have to evaluate the audit reasoning.
 - Three Domain 3 explanations had drifted into first-person voice ("we", "our"). Reframed to the third-person voice ISACA uses ("the organization", "the IS auditor", "management").
-- Three Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.
+- Some Domain 1 questions had scenario contexts over 150 words. Trimmed to under 100 words while preserving every fact relevant to the audit decision — closer to the compact stems ISACA actually writes.
 
 ## [v10.5] — Polish release: cleaner citations, smaller What's New, sharper recall tips
 
@@ -359,10 +359,10 @@ For internal/technical history, see git log and PR descriptions.
 - Domain 3 chip color now matches the canonical D3 amber token instead of an older orange. Theme transitions limited to surface colors to remove a redundant universal-selector rule.
 - Question card on mobile (375px) padding tightened so the submit button stays above the fold on questions with the longest compound options.
 
-## [v10.4] — Pre-launch polish: 30 new recall questions + accessibility fixes
+## [v10.4] — Pre-launch polish: new recall questions + accessibility fixes
 
 ### New
-- 30 new foundational recall questions added across all 5 domains (6 per domain). The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.
+- New foundational recall questions added across all 5 domains. The bank had been heavily weighted toward scenario-and-analysis questions; the new recall items cover ITAF standards, IIA Standards, SOC reports, CAATs, COBIT 2019, ISO/IEC 38500, ITIL 4, the Three Lines Model, KPI vs KRI, SDLC, Scrum, CI/CD, UAT, change types, source-code escrow, RTO/RPO, BIA, hot sites, RAID 1, the CIA triad, AAA, authentication factors, cryptography, access-control models, and Zero Trust. Each ships with mnemonic, disambiguation, and exam-shortcut tips.
 
 ### Fixed
 - Accessibility fixes for color contrast in light mode. The confidence-rating buttons after answering (Sure / Educated / Guessing), the wrong-answer tip-type labels (TRAP / MINDSET / EXAM-DAY), and the mock-exam-in-progress warning banner now meet WCAG AA (4.5:1) instead of the previous 1.93–3.34:1.
@@ -380,19 +380,19 @@ For internal/technical history, see git log and PR descriptions.
 
 ### Improved
 - Four wait-passive wrong-answer options across D1 and D2 (audit-committee escalation, trading-floor surveillance, privacy operationalization, mid-cycle risk treatment) no longer use the over-recycled "Wait for the next meeting" framing — they now describe a plausible deferral with stated justification, which still fails the urgency principle but no longer telegraphs the trap with a single word.
-- Ten Domain 4 questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero — a counting tell introduced by the previous polish pass. The 30 affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.
+- Some Domain 4 questions had wrong-answer options that contained multiple literal "skip X" tokens while correct options had zero — a counting tell introduced by the previous polish pass. The affected options now state lesser substitutes as the asserted approach ("dashboard as baseline" instead of "skip baseline metrics") so candidates have to evaluate the reasoning rather than count.
 - Twelve Domain 5 BEST/PRIMARY companions (d5_261-270, d5_275, d5_276) had a generic tip-2 phrase repeated across the set. Each tip-2 now anchors to the scenario-specific dominant clock or principle (encryption clock for ransomware, irreversible-loss clock for BEC, parallel-track notification clocks for SaaS B2B, build-time-vs-runtime confusion for container escape) so candidates learn what makes THIS scenario distinctive, not a phrase to memorize.
 
-## [v10.2] — Sharper wrong-answer options across 36 questions
+## [v10.2] — Sharper wrong-answer options
 
 ### Improved
-- Replaced over-recycled wrong-answer phrasing on 50 options across 36 questions in D1, D2, D3, and D4. Wrong options that used to read like "Endorse the CIO's position" or "Trust the vendor's report" — phrasings learners eventually spot on sight — now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.
+- Replaced over-recycled wrong-answer phrasing on options in D1, D2, D3, and D4. Wrong options that used to read like "Endorse the CIO's position" or "Trust the vendor's report" — phrasings learners eventually spot on sight — now describe realistic-looking-but-still-wrong audit positions with compensating elements like documented legal sign-off, scheduled re-review, or SOC reliance. The wrong answer is still wrong; you just have to evaluate the reasoning instead of spotting a forbidden word.
 - Wrong-answer explanations for these 50 options were rewritten to name the actual failure mode (audit independence, evidence sufficiency, root-cause priority, business-risk anchoring, structured evaluation) so you learn the principle being tested rather than the cue word that gives the trap away.
 
 ## [v10.1] — Precision-word triplets: same scenario, three different correct answers
 
 ### New
-- 12 new questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word — PRIMARY or MOST IMPORTANT — produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.
+- New questions extend the FIRST/BEST pairs shipped in v10.0 into complete triplets. For each scenario, candidates now see how a third precision word — PRIMARY or MOST IMPORTANT — produces a third, different correct answer. The triplet teaches that the precision word is the entire discriminator, not the scenario.
 - PRIMARY questions ask the dominant audit consideration or lens (e.g., ransomware PRIMARY = encryption-progress clock; insider exfiltration PRIMARY = fiduciary duty to clients). MOST IMPORTANT questions ask the non-negotiable factor — the one element that, if absent, makes the entire response moot (e.g., phishing-credential MOST IMPORTANT = verified revocation completeness; SaaS B2B breach MOST IMPORTANT = own-regulator clock satisfied).
 
 ### Improved
@@ -401,7 +401,7 @@ For internal/technical history, see git log and PR descriptions.
 ## [v10.0] — Paired precision-word questions: FIRST vs BEST as judgment, not memorization
 
 ### New
-- 12 new companion questions added across Domains 2 and 5. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design — FIRST is a single containment action, BEST is the full well-sequenced response — so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.
+- New companion questions added across Domains 2 and 5. Each pairs an existing FIRST-action question with a BEST-overall-response counterpart using the same scenario. The correct answer is different by design — FIRST is a single containment action, BEST is the full well-sequenced response — so candidates learn that the precision word is the actual discriminator, not a tip-following shortcut.
 - Pair examples: ransomware detection (FIRST = isolate via EDR; BEST = isolate + forensic + threat-hunt + notify + restore + harden), insider exfiltration (FIRST = revoke access; BEST = revoke + forensic + legal hold + investigate + client notify), and multi-jurisdiction privacy governance (FIRST = baseline; BEST = baseline + Privacy Governance Council + board KPIs + regulatory-triggered review).
 
 ### Improved
@@ -410,14 +410,14 @@ For internal/technical history, see git log and PR descriptions.
 ## [v9.9] — Harder distractors, round 2: another 80 structural giveaways eliminated
 
 ### Improved
-- Rewrote distractors for 80 more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Cumulatively, 160 questions across the two passes now have genuinely challenging wrong options.
+- Rewrote distractors for more Domain 2, 4, and 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Across the two passes, these questions now have genuinely challenging wrong options.
 - Each rewritten distractor matches the correct option's compound format and fails for a specific teachable reason — wrong priority order, missing critical element, wrong scope, wrong framing, or including a harmful element — so candidates must reason about content rather than pattern-match on format.
 - Wrong-answer explanations for these 240 new options name the failure mode and tie it back to ISACA principles (independence, evidence over assumption, prevention over correction, root cause over symptoms, business risk over compliance).
 
 ## [v9.8] — Harder distractors: 80 structural giveaways eliminated across D2, D4, D5
 
 ### Improved
-- Rewrote all three distractors for 80 Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.
+- Rewrote all three distractors for Domain 4 and Domain 5 questions where the correct answer was the only compound multi-step option and every wrong answer was a single-concept partial approach. Each distractor is now a plausible compound alternative that fails for a specific, teachable reason — wrong priority, missing a critical element, wrong framing, or wrong scope.
 - Three Domain 2 governance-scenario distractors received the same treatment. Each wrong option now describes a coherent but flawed multi-element approach rather than a single-dimension oversimplification.
 - Wrong-answer explanations for all 240 rewritten options now explain the specific failure mode — why the compound-looking distractor is still wrong — rather than just dismissing a simplistic option.
 
@@ -436,7 +436,7 @@ For internal/technical history, see git log and PR descriptions.
 ### Fixed
 - One Domain 4 question on offsite-recovery validation had its keyed answer pointed at the wrong option after a prior shuffle. The keyed answer, the wrong-answer explanations, and the trap-naming tip now all point at the right option.
 - Six Domain 4 explanations referenced the wrong option letter when describing the trap (for example, the explanation said "Option A (refuse)" when the "refuse" option was actually C). All six now name the option they describe.
-- Three Domain 4 questions had garbled wording where "IT's" or "it's been" was rendered as "It is" by an earlier prose pass. The original meaning has been restored.
+- Some Domain 4 questions had garbled wording where "IT's" or "it's been" was rendered as "It is" by an earlier prose pass. The original meaning has been restored.
 - Repaired 41 mis-grouped parentheses across 29 Domain 4 explanation lists. Numbered governance and recovery checklists now read cleanly instead of running adjacent items together.
 
 ### Improved
@@ -445,12 +445,12 @@ For internal/technical history, see git log and PR descriptions.
 ## [v9.5] — Domain 2 audit pass: distinct answer options and sharper governance teaching
 
 ### Fixed
-- Two Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.
+- Some Domain 2 governance-scenario questions had two answer options that described almost the same approach. Each option now represents a genuinely distinct choice, so the keyed answer is clearly the best one.
 - Fixed a typography slip where the COSO Internal Control framework name was rendered with a semicolon instead of a dash in one Domain 2 stem.
 - Cleaned up a doubled phrase in a Domain 2 citation ("ISACA IT Audit ISACA IT Audit Standard 1207") and a doubled "Article 25" parenthetical in an EDPB citation.
 
 ### Improved
-- Added closing audit-mindset sentences to 15 Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.
+- Added closing audit-mindset sentences to Domain 2 governance questions so the principle being tested (independence, governance over operations, business alignment) is named, not just demonstrated.
 - Trimmed three Domain 2 correct-answer options that were noticeably longer than their distractors so the right answer is no longer detectable by length alone.
 
 ## [v9.4] — Domain 1 audit pass: explanation accuracy and cleaner citations
