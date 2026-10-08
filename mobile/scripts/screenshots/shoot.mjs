@@ -41,11 +41,31 @@ await page.mouse.move(196, 500);
 await page.mouse.wheel(0, 500);
 await page.waitForTimeout(600);
 await page.screenshot({ path: `${out}/02b-learn-list.png` });
+// Further down: the rest of the domains, each with its lesson count.
+await page.mouse.wheel(0, 500);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/02c-learn-list-more.png` });
+// All domains at a glance: close the open domain so every lesson count shows.
+await shot0('02d-learn-domains', '/learn');
+// The open group's header shares its wrapper with that group's lesson rows.
+const openHeader = await page.evaluate(() =>
+  [...document.querySelectorAll('button[aria-label*=" lesson"]')]
+    .find((b) => / lessons?, /.test(b.getAttribute('aria-label')) && b.parentElement.children.length > 1)
+    ?.getAttribute('aria-label'));
+if (openHeader) await page.getByLabel(openHeader, { exact: true }).click();
+await page.waitForTimeout(600);
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 500);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/02d-learn-domains.png` });
 // Lessons: a middle scene, the "How ISACA thinks" scene, and a check with its
 // feedback. Scenes are 0-based indexes; `answer` is the option text to tap.
 const lessonShots = [
   { id: 'cisa-l-d4-bia', name: '03b-lesson-bia', middle: 3, isaca: 4, check: 7, answer: 'Complete a BIA to set recovery priorities and targets' },
   { id: 'cisa-l-d1-risk-planning', name: '03c-lesson-risk', middle: 3, isaca: 4, check: 8, answer: 'Payroll, because a failure there would do the most harm' },
+  // Phase 2 samples: a stack scene and a flow scene.
+  { id: 'cisa-l-d5-cloud', name: '03d-lesson-cloud', middle: 3, isaca: 5, check: 8, answer: 'Excess access to the firm’s data may go unnoticed' },
+  { id: 'cisa-l-d3-release', name: '03e-lesson-release', middle: 3, isaca: 4, check: 7, answer: 'A failing build could reach customers with no one checking it' },
 ];
 for (const l of lessonShots) {
   await page.goto(`http://127.0.0.1:8093/lesson/${l.id}`, { waitUntil: 'networkidle' });
