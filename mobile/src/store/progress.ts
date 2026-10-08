@@ -60,6 +60,11 @@ export interface CertProgress {
   lessonsDone: string[];
   mistakes: Record<string, MistakeEntry>;
   gameBest: Partial<Record<GameId, number>>;
+  /**
+   * Study notes the learner marked as read: subtopic ids like "4B1.2".
+   * Added with Study notes; older saves have none and `normalize` fills [].
+   */
+  notesRead: string[];
   /** Phase 5b: optional, see CertMoments. */
   moments?: CertMoments;
 }
@@ -72,6 +77,7 @@ const emptyCert = (): CertProgress => ({
   lessonsDone: [],
   mistakes: {},
   gameBest: {},
+  notesRead: [],
 });
 
 /**
@@ -127,6 +133,8 @@ interface ProgressState {
   recordMistake: (certId: string, questionId: string, picked?: Letter, confidence?: Confidence) => void;
   tagMistake: (certId: string, questionId: string, slip: ThinkingSlip) => void;
   completeLesson: (certId: string, lessonId: string) => void;
+  /** Mark a study-notes subtopic read (true) or unread (false). */
+  setNoteRead: (certId: string, subtopicId: string, read: boolean) => void;
   recordGame: (certId: string, game: GameId, score: number) => void;
   recordMock: (certId: string, result: MockResult) => void;
   /** Log today's readiness lower bound (null = not enough data) for the exam-ready hold. */
@@ -259,6 +267,14 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, lessonsDone: [...cp.lessonsDone, lessonId] } } };
         }),
 
+      setNoteRead: (certId, subtopicId, read) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const has = cp.notesRead.includes(subtopicId);
+          if (has === read) return s; // already in that state: no save
+          const notesRead = read ? [...cp.notesRead, subtopicId] : cp.notesRead.filter((id) => id !== subtopicId);
+          return { byCert: { ...s.byCert, [certId]: { ...cp, notesRead } } };
+        }),
 
       recordGame: (certId, game, score) =>
         set((s) => {
@@ -308,6 +324,7 @@ export const useProgress = create<ProgressState>()(
       // Phase 5a added only OPTIONAL fields (AnswerRecord.lastAssisted,
       // MistakeEntry.confidence), so no version bump: old saves load as-is.
       // Phase 5b added one more optional field (CertProgress.moments): same.
+      // Study notes added CertProgress.notesRead; `normalize` gives old saves [].
       version: 2,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

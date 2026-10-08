@@ -109,6 +109,18 @@ xlsm (maintainer only) ────────┼─► scripts/convert_test_ba
                                │                                          ▼
                                │                     mobile/src/content/generated/cisa/d{N}.json
 ```
+**Study notes.** The same builder reads `data/cisa_notes.json` through
+`mobile/scripts/notes-pack.cjs` (CommonJS so Jest can test it) and writes
+`src/content/generated/cisa/notes.json` (types: `src/content/notes/types.ts`).
+It only accepts `schema_version: 2` (`docs/content/NOTES_SCHEMA_V2.md`); a v1
+file gives an empty pack and the Learn → Study notes entry hides itself. Bad
+illustrations or compare tables are dropped with a warning; a subtopic missing
+a required field, or a duplicate subtopic id, fails the build. Diagram colours
+are CSS variables, which `react-native-svg` cannot resolve, so
+`src/engine/notesSvg.ts` swaps them for the current theme's tokens at render
+time (light and dark). Read ticks live in the progress store (`notesRead`,
+subtopic ids). Routes: `notes/index`, `notes/[domain]`, `notes/subtopic/[id]`.
+
 The mobile builder renames fields, drops author-only fields (`_provenance`),
 validates every answer key, and marks real option-letter references as
 `{{B}}` tokens so tips stay correct after shuffling — while words like

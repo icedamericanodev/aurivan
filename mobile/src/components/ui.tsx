@@ -20,6 +20,7 @@ import {
   StyleSheet,
   Switch,
   Text,
+  TextInput,
   useWindowDimensions,
   View,
   type StyleProp,
@@ -676,6 +677,8 @@ const styles = StyleSheet.create({
   },
   chipLabel: { fontFamily: font.sans600, fontSize: 15, lineHeight: 20 },
   tabLabel: { alignItems: 'center', gap: 1 },
+  search: { minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, paddingLeft: space.lg, flexDirection: 'row', alignItems: 'center' },
+  searchClear: { width: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   tabDot: { width: 4, height: 4, borderRadius: 2 },
 });
 
@@ -939,6 +942,50 @@ export function ChipRow({ children }: { children: ReactNode }) {
         </Defs>
         <Rect x="0" y="0" width="56" height="100%" fill="url(#chipFade)" />
       </Svg>
+    </View>
+  );
+}
+
+// ── SearchField: a rounded text box for searching (Study notes) ───────
+// Body type, so typed text grows with the phone's text size (×2 cap).
+// 48pt tall minimum; a ✕ button (44pt) clears it when there is text.
+export function SearchField({
+  value,
+  onChangeText,
+  placeholder,
+  accessibilityLabel,
+}: {
+  value: string;
+  onChangeText: (v: string) => void;
+  placeholder: string;
+  accessibilityLabel: string;
+}) {
+  const { c, isDark } = useTheme();
+  return (
+    <View style={[styles.search, { backgroundColor: c.raised, borderColor: isDark ? c.line : c.control }]}>
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor={c.muted}
+        accessibilityLabel={accessibilityLabel}
+        maxFontSizeMultiplier={maxScale.body}
+        autoCorrect={false}
+        autoCapitalize="none"
+        returnKeyType="search"
+        clearButtonMode="never"
+        style={[type.body, { flex: 1, color: c.ink, paddingVertical: space.md }]}
+      />
+      {value.length > 0 && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Clear search"
+          onPress={() => onChangeText('')}
+          style={styles.searchClear}
+        >
+          <X size={ICON_SIZE.row} color={c.ink2} strokeWidth={ICON_STROKE} />
+        </Pressable>
+      )}
     </View>
   );
 }

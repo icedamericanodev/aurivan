@@ -1,0 +1,258 @@
+{
+  "title": "Aurivan CISA Topic Notes (test fixture)",
+  "source": "Test fixture built from the two gold-standard v2 samples. Not affiliated with or endorsed by ISACA.",
+  "description": "Fixture for mobile notes tests.",
+  "schema_version": 2,
+  "domains": [
+    {
+      "domain_number": 4,
+      "domain_name": "Information Systems Operations and Business Resilience",
+      "exam_weight": "26%",
+      "overview": "Domain 4 is about keeping IT running day to day and recovering when it stops.",
+      "analogy": "A hospital runs routine care every day and also drills for emergencies, so a power cut does not stop surgery.",
+      "parts": [
+        {
+          "part": "A",
+          "name": "Information Systems Operations",
+          "topic_ids": []
+        },
+        {
+          "part": "B",
+          "name": "Business Resilience",
+          "topic_ids": [
+            "4B1"
+          ]
+        }
+      ],
+      "topics": [
+        {
+          "topic_id": "4B1",
+          "topic_name": "Business Impact Analysis",
+          "overview": "How the business decides what to recover first and how fast.",
+          "can_do": [
+            "Tell RPO from RTO in a scenario",
+            "Explain who sets recovery targets"
+          ],
+          "subtopics": [
+            {
+              "id": "4B1.2",
+              "name": "Recovery Objectives: RPO, RTO, MTD and MBCO",
+              "legacy_ids": [
+                "4.12"
+              ],
+              "definition": "Recovery objectives are the business's limits for a disruption: the data it can lose, the downtime it can bear, and the minimum service it needs.",
+              "why_it_matters": "These numbers decide how often data is copied, which recovery site is bought and how much continuity costs. If they are wrong or never approved, the recovery plan can pass every test and still fail the business.",
+              "how_it_works": [
+                "The business impact analysis (BIA) shows how harm grows, hour by hour, when each process stops.",
+                "Business owners set the maximum tolerable downtime (MTD): the point where the outage causes severe or lasting harm.",
+                "They set the recovery time objective (RTO) inside the MTD, leaving time to check data and clear the backlog after systems return.",
+                "They set the recovery point objective (RPO) from how much recent work the business can afford to redo or lose.",
+                "Systems and suppliers that a process depends on get targets at least as tight as the process itself.",
+                "Management approves the targets, weighing the cost of tighter numbers against the impact, and accepts the remaining risk."
+              ],
+              "compare": {
+                "columns": [
+                  "RPO",
+                  "RTO",
+                  "MTD"
+                ],
+                "rows": [
+                  {
+                    "label": "Question it answers",
+                    "cells": [
+                      "How much data can we lose?",
+                      "How fast must service be back?",
+                      "When does the outage become intolerable?"
+                    ]
+                  },
+                  {
+                    "label": "Measured",
+                    "cells": [
+                      "Backward from the disruption to the last good copy",
+                      "Forward from the disruption to restored service",
+                      "Forward from the disruption; the outer limit"
+                    ]
+                  },
+                  {
+                    "label": "What meets it",
+                    "cells": [
+                      "Backup frequency and replication",
+                      "Recovery site, staff and procedures",
+                      "Not met directly; RTO must fit inside it"
+                    ]
+                  },
+                  {
+                    "label": "Smaller value means",
+                    "cells": [
+                      "More frequent copies, higher cost",
+                      "Faster site and more readiness, higher cost",
+                      "A more critical process"
+                    ]
+                  }
+                ]
+              },
+              "example": "A regional bank's BIA gives its payments process an MTD of 8 hours, an RTO of 4 hours and an RPO of 15 minutes. The IS auditor finds the payments database is backed up only once a night, so up to a day of transactions could be lost. The auditor reports the gap; the head of payments decides whether to fund replication or formally accept the risk.",
+              "isaca_rule": "The business sets recovery targets through the BIA, and IT designs a solution to meet them, not the reverse. The auditor checks that the targets are approved, consistent with each other and with dependencies, and proven by testing. Management decides how to close any gap.",
+              "exam_traps": [
+                {
+                  "trap": "A hot site will improve the RPO.",
+                  "why": "A hot site shortens downtime, which is RTO. Data loss depends on how recently data was copied, so only more frequent backups or replication improve the RPO."
+                },
+                {
+                  "trap": "IT should set the RTO to what the current infrastructure can achieve.",
+                  "why": "Targets come from business impact, not from current capability. If IT cannot meet a target, that is a gap to report, not a reason to loosen the target."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Business impact analysis (BIA)",
+                  "definition": "The study that ranks processes by how quickly and how badly a disruption harms the business."
+                },
+                {
+                  "term": "Minimum business continuity objective (MBCO)",
+                  "definition": "The reduced level of service the business accepts during a disruption until normal operations return."
+                },
+                {
+                  "term": "Replication",
+                  "definition": "Copying data to a second location continuously or at short intervals, which keeps the RPO small."
+                }
+              ],
+              "memory_aid": "RPO looks back at the Point you restore to; RTO looks ahead to the Time you are running again."
+            }
+          ]
+        }
+      ],
+      "key_terminologies": {
+        "BIA": "A study of how a disruption harms each business process.",
+        "MTD": "The longest outage the business can bear."
+      }
+    },
+    {
+      "domain_number": 1,
+      "domain_name": "Information System Auditing Process",
+      "exam_weight": "18%",
+      "overview": "Domain 1 is about how an IS audit is planned, run and reported.",
+      "analogy": "An inspector follows a published code, plans the visit, gathers evidence and writes a report the owner acts on.",
+      "parts": [
+        {
+          "part": "A",
+          "name": "Planning",
+          "topic_ids": [
+            "1A1"
+          ]
+        },
+        {
+          "part": "B",
+          "name": "Execution",
+          "topic_ids": []
+        }
+      ],
+      "topics": [
+        {
+          "topic_id": "1A1",
+          "topic_name": "IS Audit Standards, Guidelines, Functions, and Codes of Ethics",
+          "overview": "The rules every IS auditor works under.",
+          "can_do": [
+            "Tell a standard from a guideline"
+          ],
+          "subtopics": [
+            {
+              "id": "1A1.1",
+              "name": "ITAF: Standards, Guidelines, and Tools and Techniques",
+              "legacy_ids": [
+                "1.1.1",
+                "1.1.2",
+                "1.1.4"
+              ],
+              "definition": "ITAF (the IT Audit Framework) is ISACA's professional rulebook for IS audit and assurance work, in three layers ranked by how binding they are.",
+              "why_it_matters": "It tells the auditor what must happen on every engagement and what can be adapted. Many exam questions turn on which layer a requirement belongs to.",
+              "how_it_works": [
+                "Standards are mandatory minimum requirements for ISACA members and certification holders on every audit and assurance engagement.",
+                "Standards are grouped as general (such as the audit charter, independence, objectivity and proficiency), performance (such as planning, supervision and evidence) and reporting (reporting and follow-up).",
+                "Guidelines explain how to apply the standards. They are not mandatory, but the auditor considers them and must be able to justify any departure.",
+                "Tools and techniques are informational aids, such as sample audit programs and white papers, that the auditor tailors to each engagement."
+              ],
+              "compare": {
+                "columns": [
+                  "Standards",
+                  "Guidelines",
+                  "Tools and techniques"
+                ],
+                "rows": [
+                  {
+                    "label": "Status",
+                    "cells": [
+                      "Mandatory",
+                      "Advisory",
+                      "Informational"
+                    ]
+                  },
+                  {
+                    "label": "Can the auditor depart?",
+                    "cells": [
+                      "No",
+                      "Yes, with a documented reason",
+                      "Yes; adapt freely"
+                    ]
+                  },
+                  {
+                    "label": "Example",
+                    "cells": [
+                      "The requirement for an approved audit charter",
+                      "Guidance on applying audit sampling",
+                      "An ISACA audit program for change management"
+                    ]
+                  }
+                ]
+              },
+              "illustration": {
+                "svg": "<svg viewBox='0 0 460 150' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='ISACA pronouncements by authority: standards are mandatory, guidelines are recommended, tools and techniques are examples'><rect x='20' y='18' width='420' height='34' rx='4' fill='var(--accent-fill)'/><text x='230' y='39' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='#ffffff'>Standards — mandatory</text><rect x='20' y='60' width='420' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='230' y='81' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Guidelines — recommended</text><rect x='20' y='102' width='420' height='34' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='230' y='123' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='11' font-weight='700' fill='var(--text)'>Tools and techniques — examples</text></svg>",
+                "caption": "The three ITAF layers, from most to least binding. Only the top layer is compulsory."
+              },
+              "example": "During a payroll audit, the CFO asks the audit manager to skip documenting evidence to save time. The manager refuses because evidence requirements come from a standard. The team does choose to test all 40 new hires instead of sampling as a guideline describes, and it records that reason in the working papers.",
+              "isaca_rule": "Standards are the floor on every engagement; time, cost or a client's request cannot remove them. Guidelines call for judgment: consider them, and document the reason for any departure.",
+              "exam_traps": [
+                {
+                  "trap": "Guidelines are optional, so the auditor can ignore them without explanation.",
+                  "why": "Guidelines are not mandatory, but the auditor is expected to consider them and justify any departure."
+                },
+                {
+                  "trap": "A well-documented reason allows the auditor to depart from a standard.",
+                  "why": "A justified departure applies only to guidelines. Standards are minimum requirements and cannot be set aside."
+                }
+              ],
+              "key_terms": [
+                {
+                  "term": "Audit program",
+                  "definition": "A step-by-step list of procedures for auditing a subject; ISACA publishes examples as tools."
+                },
+                {
+                  "term": "Due professional care",
+                  "definition": "Applying the skill, diligence and skepticism expected of a competent auditor."
+                },
+                {
+                  "term": "Professional judgment",
+                  "definition": "Applying training and experience to decide what is appropriate when the rules leave room for choice."
+                }
+              ],
+              "analogy": "Learning to drive works the same way: traffic laws are compulsory, the instructor's advice is strongly recommended, and practice routes are samples you adapt.",
+              "memory_aid": "Must, should, could: standards must be followed, guidelines should be considered, tools could be used."
+            }
+          ]
+        }
+      ],
+      "key_terminologies": {
+        "ITAF": "ISACA's IT audit framework."
+      }
+    }
+  ],
+  "cross_domain_connections": [
+    {
+      "connection": "BIA and audit planning",
+      "note": "Both rank by risk."
+    }
+  ],
+  "exam_strategy_tips": [
+    "Read the last sentence of the stem first."
+  ]
+}
