@@ -174,6 +174,18 @@ describe('lesson checks are fair', () => {
     }
   });
 
+  // Test-wise learners cross out options with extreme words ("only", "always"…).
+  // If several wrong options carry one, that trick finds the key, so at most
+  // one option per check may use an absolute word.
+  it.each(all.map((l) => [l.id, l] as const))('%s has no key guessable by absolute words', (_id, l) => {
+    const ABSOLUTE = /\b(always|never|only|every|all|none|nobody|no one)\b/i;
+    for (const s of l.scenes) {
+      if (s.type !== 'check') continue;
+      const flagged = s.options.filter((o) => ABSOLUTE.test(o));
+      expect(flagged.length > 1 ? `${s.question} (${flagged.length} options use absolute words)` : 'ok').toBe('ok');
+    }
+  });
+
   it.each(all.map((l) => [l.id, l] as const))('%s does not copy a bank question', (_id, l) => {
     const bank = new Map(getAllQuestions(l.certId).map((q) => [q.id, q]));
     for (const s of l.scenes) {

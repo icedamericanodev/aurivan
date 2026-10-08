@@ -507,21 +507,21 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'At a small branch, one clerk both enters and approves customer refunds, and duties cannot be split. Which compensating control should the IS auditor consider BEST?',
         options: [
-          'Lock the refund screen after three failed logins by any person',
+          'The IT security team reapproves the clerk’s refund access quarterly',
           'A regional manager checks each week’s refunds against receipts',
-          'Have the clerk keep a signed log of every refund issued',
-          'Retrain the clerk every year on refund policy and its limits',
+          'The clerk signs a daily log of the refunds she issued',
+          'Retrain the clerk yearly on refund policy and its limits',
         ],
         correctIndex: 1,
         explanation:
-          'The risk is one person acting unchecked, and a reviewer outside the process addresses exactly that, even though the review is detective. The login lockout is tempting because it blocks problems up front, but it stops outsiders, not the clerk, so it covers a different risk. A log the clerk keeps is the clerk checking their own work.',
+          'The risk is one person acting unchecked, and a reviewer outside the process addresses exactly that, even though the review is detective. Quarterly access reapproval is tempting because it looks like oversight, but it only confirms the clerk holds both duties; it never checks a refund. A log the clerk keeps is the clerk checking their own work.',
       },
       {
         type: 'check',
         question:
           'Two employees worked together to steal funds, despite payment controls that passed every test this year. The board asks the IS auditor whether the controls failed. What is the MOST appropriate response?',
         options: [
-          'The controls failed, since any fraud proves a design flaw',
+          'The controls failed, since they did not stop the theft',
           'Collusion can defeat sound controls, so failure is unproven',
           'The testing was flawed, since the controls let fraud through',
           'Fraud is a people issue, so controls are not relevant here',
@@ -604,13 +604,13 @@ export const CISA_LESSONS: Lesson[] = [
           'An IS auditor is assigned a new audit of a hospital’s patient-records system. A colleague offers last year’s test steps so fieldwork can start tomorrow. What should the auditor do FIRST?',
         options: [
           'Agree what this audit should answer, then set its boundaries',
-          'Reuse last year’s test steps after a quick review for changes',
+          'Have the audit manager approve reusing last year’s test steps',
           'Start testing access controls, usually the riskiest area',
           'Ask the system owner which areas need testing this year',
         ],
         correctIndex: 0,
         explanation:
-          'Objectives come first: they say what this audit must answer, and the scope and steps follow from them. Reusing last year’s steps is tempting because it saves time, but they answered last year’s objectives, which may no longer fit.',
+          'Objectives come first: they say what this audit must answer, and the scope and steps follow from them. Reusing last year’s steps is tempting because it saves time, and a manager’s approval makes it look sound, but those steps answered last year’s objectives, which may no longer fit.',
       },
       {
         type: 'check',
@@ -619,12 +619,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'A data analytics tool that both auditors were required to use',
           'A shared folder where each auditor could see the other’s work',
-          'Hiring auditors with the same certification for both sites',
+          'The audit manager signs off both sets of work papers afterward',
           'A common audit program listing the planned test procedures',
         ],
         correctIndex: 3,
         explanation:
-          'The audit program sets out the planned procedures, so both auditors run the same tests and a reviewer can compare each against the plan. The shared folder is tempting because each could see the other’s work, but seeing it afterward is not agreeing in advance on what to test.',
+          'The audit program sets out the planned procedures, so both auditors run the same tests and a reviewer can compare each against the plan. The shared folder is tempting because each could see the other’s work, but seeing it afterward is not agreeing in advance on what to test. A manager’s sign-off after fieldwork comes too late to make the tests match.',
       },
       {
         type: 'check',
@@ -633,12 +633,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The chief audit executive, who heads the audit function',
           'The buyer’s manager, who has line authority over the buyer',
-          'The supplier, to confirm that each of the orders was genuine',
+          'The HR director, who handles staff misconduct cases',
           'The police, since the payments may well amount to a crime',
         ],
         correctIndex: 0,
         explanation:
-          'Possible fraud goes up the audit line under the agreed procedure, so people with authority decide how to investigate and evidence is protected. The buyer’s manager is tempting because they manage the buyer, but they are close to him and could tip him off. Contacting the supplier or the police is not the auditor’s call.',
+          'Possible fraud goes up the audit line under the agreed procedure, so people with authority decide how to investigate and evidence is protected. The buyer’s manager is tempting because they manage the buyer, but they are close to him and could tip him off. Going to HR or the police is not the auditor’s call; those steps are decided after escalation.',
       },
     ],
   },
@@ -712,11 +712,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Agree, since the IT director owns the backup process and its fix',
           'Send it to the director now and to the committee later',
           'Issue it through the normal route to the audit committee',
-          'Remove the finding once the backup jobs have been fixed',
+          'Send it to the CIO, who oversees the IT director, instead',
         ],
         correctIndex: 2,
         explanation:
-          'The report goes to the body that oversees audit, whatever the audited area prefers, because severe findings must reach those who hold management to account. Sending it to the director first is tempting because she will lead the fix, but it lets the audited area control what the committee sees.',
+          'The report goes to the body that oversees audit, whatever the audited area prefers, because severe findings must reach those who hold management to account. Sending it to the director first is tempting because she will lead the fix, but it lets the audited area control what the committee sees. The CIO is senior, yet still management, so the committee would not see the finding.',
       },
       {
         type: 'check',
@@ -740,7 +740,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Qualified fits, because each finding is listed separately',
           'Adverse fits better, as problems reach nearly every area',
           'A disclaimer fits better, because the results are so poor',
-          'Qualified fits, provided management accepts every finding',
+          'Qualified fits, provided management accepts each finding',
         ],
         correctIndex: 1,
         explanation:
@@ -1050,7 +1050,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Accept the teams’ view, since guidelines are optional advice',
           'Test against it as a standard and report the skipped backups',
           'Ask each team to write its own backup procedure first',
-          'Rewrite the document as a formal policy before any testing',
+          'Rewrite the document as a formal policy, then test it',
         ],
         correctIndex: 1,
         explanation:
@@ -1062,8 +1062,8 @@ export const CISA_LESSONS: Lesson[] = [
           'A retailer has new duties under three privacy and consumer laws. Each compliance team is designing its own separate control tests. What should the IS auditor recommend as BEST?',
         options: [
           'Let each compliance team keep and run its own control tests',
-          'Apply the strictest of the three laws to every process and market',
-          'Ask outside lawyers to confirm compliance once every year',
+          'Apply the strictest of the three laws across the business',
+          'Ask outside lawyers to confirm compliance each year',
           'Link each duty to an owned control, shared where possible',
         ],
         correctIndex: 3,
@@ -1159,13 +1159,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A customer asks a retailer for a copy of all data it holds about her. Staff search five systems and cannot be sure they found everything. What root cause should the IS auditor report?',
         options: [
           'Nobody has listed what customer data is held, and where',
-          'Staff were never properly trained to search all five systems',
+          'Staff were not properly trained to search the five systems',
           'The five systems use different search tools and file formats',
-          'There is no fixed deadline for answering such requests',
+          'The privacy officer has not approved a request-handling procedure',
         ],
         correctIndex: 0,
         explanation:
-          'If no one has listed what personal data is held and where, every request becomes a hunt, and nothing else in the program can be relied on. Training is tempting because staff struggled, but even skilled searchers cannot find data that no one has recorded.',
+          'If no one has listed what personal data is held and where, every request becomes a hunt, and nothing else in the program can be relied on. Training is tempting because staff struggled, but even skilled searchers cannot find data that no one has recorded. An approved procedure would say how to search, not where the data is.',
       },
       {
         type: 'check',
@@ -1175,25 +1175,25 @@ export const CISA_LESSONS: Lesson[] = [
           'The system administrator who looks after the HR system',
           'The sales manager’s own line manager, who knows the need',
           'The head of HR, who answers for how salary data is used',
-          'The IS auditor, to keep the decision independent',
+          'The CISO, who sets the company’s access control policy',
         ],
         correctIndex: 2,
         explanation:
-          'The business leader accountable for salary data approves access to it. The administrator is the custodian who applies that decision; setting access up is not the same as deciding who should have it. The line manager is tempting because they know why access is wanted, but they can confirm the need, not grant access to data they do not own.',
+          'The business leader accountable for salary data approves access to it. The administrator is the custodian who applies that decision; setting access up is not the same as deciding who should have it. The line manager is tempting because they know why access is wanted, but they can confirm the need, not grant access to data they do not own. The CISO sets the rules for access, not who may see salary data.',
       },
       {
         type: 'check',
         question:
           'A company labels all cloud data “confidential” and all data on its own in-house servers “internal”. What is the GREATEST weakness the IS auditor should report?',
         options: [
-          'Cloud storage often costs more than in-house storage',
+          'Data owners last reviewed the labels three years ago',
           'The labels differ from those in a common industry scheme',
           'Levels follow where data is stored, not how sensitive it is',
           'Staff might not know which of their systems are cloud-based',
         ],
         correctIndex: 2,
         explanation:
-          'Classification should grade data by the impact if it were disclosed or altered, so sensitive data is protected wherever it sits. Under this scheme, a customer file in-house would be only “internal”, while a public price list in the cloud would be “confidential”. Staff confusion is tempting because it is real, but fixing it would still leave the levels wrong.',
+          'Classification should grade data by the impact if it were disclosed or altered, so sensitive data is protected wherever it sits. Under this scheme, a customer file in-house would be only “internal”, while a public price list in the cloud would be “confidential”. Staff confusion is tempting because it is real, but fixing it would still leave the levels wrong. A fresh review by the owners would apply the same wrong rule.',
       },
     ],
   },
@@ -1273,14 +1273,14 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Procurement uses one short checklist for every supplier, from the office coffee vendor to the core banking platform. What should the IS auditor recommend as BEST?',
         options: [
-          'Lengthen the checklist and apply it to every supplier',
+          'Lengthen the checklist so it covers more risk areas',
           'Go deeper on suppliers the business cannot run without',
           'Let each business unit choose its own supplier checks',
-          'Have an outside firm run the checklist for all suppliers',
+          'Have an outside firm run the current checklist instead',
         ],
         correctIndex: 1,
         explanation:
-          'Effort should follow criticality: deep checks for core services, light ones for low-risk suppliers. A longer checklist for everyone is tempting because it feels thorough, but it wastes effort on the coffee vendor and may still not go deep enough for the core platform. An outside firm running a shallow checklist is still shallow.',
+          'Effort should follow criticality: deep checks for core services, light ones for low-risk suppliers. A longer checklist is tempting because it feels thorough, but used for everyone it wastes effort on the coffee vendor and may still not go deep enough for the core platform. An outside firm running a shallow checklist is still shallow.',
       },
       {
         type: 'check',
@@ -1289,12 +1289,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Add stricter outage penalties to the contract at renewal',
           'A named bank manager reviews each report and acts on misses',
-          'Ask the provider for a concise executive summary each month',
+          'The vendor committee approves a revised SLA with tighter targets',
           'Move the data center to a provider with a better record',
         ],
         correctIndex: 1,
         explanation:
-          'The warning signs were in the reports; nobody at the bank owned reading them and acting. Outsourcing moved the work, not the accountability. Stricter penalties are tempting, but penalties do nothing if no one notices the misses. A new provider would face the same blind spot.',
+          'The warning signs were in the reports; nobody at the bank owned reading them and acting. Outsourcing moved the work, not the accountability. Stricter penalties or tighter approved targets are tempting, but neither works if no one notices the misses. A new provider would face the same blind spot.',
       },
       {
         type: 'check',
@@ -1387,12 +1387,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'A newcomer in each role may uncover problems left hidden',
           'Rotation builds broader skills, which lifts staff morale over time',
-          'Most audit standards require rotation for all payments staff',
-          'Rotation lowers costs because fewer specialists are needed',
+          'Audit standards require rotation for payments staff',
+          'The HR policy the board approved already calls for rotation',
         ],
         correctIndex: 0,
         explanation:
-          'Rotation is a fraud and error control: a fresh person doing the job sees what the last one may have hidden. Broader skills are tempting because they are a real benefit, but they are a side effect, not why auditors recommend it. The manager still decides; the auditor explains the risk.',
+          'Rotation is a fraud and error control: a fresh person doing the job sees what the last one may have hidden. Broader skills are tempting because they are a real benefit, but they are a side effect, not why auditors recommend it. Pointing to a policy says who requires rotation, not why it works. The manager still decides; the auditor explains the risk.',
       },
       {
         type: 'check',
@@ -1402,11 +1402,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Staff need more courses before phishing results can improve',
           'The phishing tests are too hard to show real progress yet',
           'The measure counts training activity, not fewer mistakes',
-          'The training platform is too dated to change staff behavior',
+          'Senior management has not yet approved the completion target',
         ],
         correctIndex: 2,
         explanation:
-          'Completions measure effort. The goal is fewer mistakes, and that has not moved, so a useful KPI must track the outcome itself. More courses is tempting because training clearly matters, but it pushes harder on a measure that has already shown it does not track the goal.',
+          'Completions measure effort. The goal is fewer mistakes, and that has not moved, so a useful KPI must track the outcome itself. More courses is tempting because training clearly matters, but it pushes harder on a measure that has already shown it does not track the goal. Approving the completion target would only endorse the wrong measure.',
       },
       {
         type: 'check',
@@ -1416,11 +1416,11 @@ export const CISA_LESSONS: Lesson[] = [
           'More testing leaves the cause of the defects untouched',
           'Doubling the testing will delay each release by several weeks',
           'Testers may still miss defects that show only in production',
-          'The extra testing may exceed this year’s IT budget',
+          'The IT steering committee has not yet approved the plan',
         ],
         correctIndex: 0,
         explanation:
-          'Rising defects point to the process that makes them. Quality assurance fixes that process through standards, reviews and training; more end-of-cycle testing is quality control, which only catches defects after they are made. Delay is tempting because it is a real cost, but it is a side effect, not the reason the plan fails.',
+          'Rising defects point to the process that makes them. Quality assurance fixes that process through standards, reviews and training; more end-of-cycle testing is quality control, which only catches defects after they are made. Delay is tempting because it is a real cost, but it is a side effect, not the reason the plan fails. Committee approval would not make the plan reach the cause.',
       },
     ],
   },
@@ -1734,12 +1734,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Add testers so defects from changing needs are caught early',
           'Let developers build the loan types they think are most common',
-          'Appoint a new project manager to speed up delivery',
-          'Have the business owners agree and sign off the loan requirements',
+          'Have the IT director decide which loan types are in scope',
+          'Have business owners agree and sign off the loan requirements',
         ],
         correctIndex: 3,
         explanation:
-          'Building on unagreed requirements risks a system that misses business needs, so the business must settle and approve what it needs before more is built. Extra testers are tempting because they catch defects, but they would test against requirements nobody has agreed, so they cannot find the real gap.',
+          'Building on unagreed requirements risks a system that misses business needs, so the business must settle and approve what it needs before more is built. Extra testers are tempting because they catch defects, but they would test against requirements nobody has agreed. The IT director can end the debate, but IT does not own the business need.',
       },
       {
         type: 'check',
@@ -2069,7 +2069,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Pipeline gates block failed builds of a mobile banking app, but any developer can switch a gate off. What is the GREATEST risk?',
         options: [
           'A failing build could reach customers with no one checking it',
-          'Every build may take longer while the gates run their full tests',
+          'Builds may take longer while the gates run their full tests',
           'Developers may write fewer automated tests over time to save effort',
           'Gate settings may drift apart between the test and live pipelines',
         ],
@@ -2084,12 +2084,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The release’s code was not tested thoroughly enough before deployment',
           'Server logs were not reviewed often enough to spot the change',
-          'Operations needs more administrators on duty during each release',
+          'The change board approved the release without a rollback plan',
           'Server settings were left out of the controlled baseline',
         ],
         correctIndex: 3,
         explanation:
-          'A release is defined by everything it needs to run as approved, including settings. Settings outside the baseline can change without review, so tested code meets an untested environment. Blaming log review is tempting because it adds oversight, but reviews are detective: the bad setting ran before anyone looked.',
+          'A release is defined by everything it needs to run as approved, including settings. Settings outside the baseline can change without review, so tested code meets an untested environment. Blaming log review is tempting because it adds oversight, but reviews are detective: the bad setting ran before anyone looked. A rollback plan speeds recovery but does not stop the change.',
       },
       {
         type: 'check',
@@ -2097,13 +2097,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A change advisory board’s meetings run for hours because members rewrite each team’s deployment scripts. What should the IS auditor recommend as BEST?',
         options: [
           'Add senior developers to the board so scripts are rewritten faster',
-          'Have the board also carry out the deployments it rewrites',
+          'Have the CIO chair the board to keep meetings on schedule',
           'Send script fixes back to the teams; the board decides on approval',
           'Let teams approve their own changes to save the board’s time',
         ],
         correctIndex: 2,
         explanation:
-          'The board’s value is an independent view of risk and readiness before approval; rewriting scripts makes it part of the work it should judge. Adding developers is tempting because meetings would go faster, but it treats the symptom and deepens the conflict. Self-approval removes the independent check entirely.',
+          'The board’s value is an independent view of risk and readiness before approval; rewriting scripts makes it part of the work it should judge. Adding developers is tempting because meetings would go faster, but it treats the symptom and deepens the conflict. A senior chair may shorten meetings, yet the board would still do the teams’ work. Self-approval removes the independent check entirely.',
       },
     ],
   },
@@ -2187,9 +2187,9 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'After converting billing accounts, record counts match between the old and new systems, but total balances differ by a small unexplained amount. What is the MOST appropriate conclusion?',
         options: [
-          'The conversion succeeded, since every record arrived in the new system',
+          'The conversion succeeded, since the record counts match exactly',
           'The difference is too small to matter and can be written off',
-          'The old system’s totals were probably wrong all along',
+          'The old system’s totals were probably wrong to begin with',
           'Values inside some records may be wrong; accuracy is unproven',
         ],
         correctIndex: 3,
@@ -2204,7 +2204,7 @@ export const CISA_LESSONS: Lesson[] = [
           'Go live once ninety percent of the planned test cases have passed',
           'Let the vendor decide on the night whether go-live should proceed',
           'Revert if a significant gap is still unexplained by a set hour',
-          'Go live only when all project staff are on site for support',
+          'Go live once the full project team is on site for support',
         ],
         correctIndex: 2,
         explanation:
@@ -2218,11 +2218,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Every store runs the same simple process, with a tested fallback',
           'Stores differ widely, but the vendor promises a smooth switch',
           'The cutover falls on the busiest holiday sales weekend of the year',
-          'No rehearsal is planned, so the go-live date can stay fixed',
+          'The steering committee has signed off the cutover date',
         ],
         correctIndex: 0,
         explanation:
-          'Big-bang suits uniform, simple operations where a failure can be reversed quickly, because it avoids temporary links between old and new. The vendor’s promise is tempting, but when stores differ widely, one failure hits many different processes at once; a phased cutover limits that damage.',
+          'Big-bang suits uniform, simple operations where a failure can be reversed quickly, because it avoids temporary links between old and new. The vendor’s promise is tempting, but when stores differ widely, one failure hits many different processes at once; a phased cutover limits that damage. Committee sign-off settles the date, not whether one cutover suits the stores.',
       },
     ],
   },
@@ -2531,10 +2531,10 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Developers can release their own fixes, including urgent patches, straight to production. Management proposes logging every change they make. What should the IS auditor recommend as BEST?',
         options: [
-          'Log every developer change and review the logs monthly',
+          'Log each developer change and have a manager review it monthly',
           'Remove developer production access; use a separate release role',
           'Have developers review each other’s code before release',
-          'Allow patches only during scheduled maintenance windows',
+          'Restrict patches to scheduled maintenance windows',
         ],
         correctIndex: 1,
         explanation:
@@ -2658,20 +2658,20 @@ export const CISA_LESSONS: Lesson[] = [
           'The head of retail operations, who owns the checkout process',
           'The IT security manager, who will monitor the isolated terminals',
           'The IS auditor, who first reported the end-of-support gap',
-          'The terminal vendor, whose support for the system is ending',
+          'The CIO, who approved the nine-month replacement plan',
         ],
         correctIndex: 0,
         explanation:
-          'Risk is accepted by the business owner who bears the impact, at a level with authority over it, and here that is whoever owns checkout. The security manager is tempting because they run the interim controls, but running a control is not owning the risk. The auditor reports the gap and never accepts it.',
+          'Risk is accepted by the business owner who bears the impact, at a level with authority over it, and here that is whoever owns checkout. The security manager is tempting because they run the interim controls, but running a control is not owning the risk. The CIO approved the fix, not the business risk while it waits. The auditor reports the gap and never accepts it.',
       },
       {
         type: 'check',
         question:
           'A business unit owns 500 licenses for a design tool. Discovery finds it installed on 640 computers. What should the IS auditor recommend FIRST?',
         options: [
-          'Uninstall the tool from every computer today',
+          'Uninstall the tool today from the computers over the limit',
           'Wait until the vendor raises the gap in a formal license audit',
-          'Buy 140 more licenses today so every install is covered at once',
+          'Buy 140 more licenses today so the installs are covered',
           'Confirm the true gap against all entitlements and actual use',
         ],
         correctIndex: 3,
@@ -2760,11 +2760,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Several jobs failed last month and were rerun successfully',
           'The scheduler runs on hardware bought five years ago',
           'Ten scheduled jobs have no request or owner on record',
-          'Jobs run overnight rather than during normal business hours',
+          'Rerun approvals come from the shift lead, not the job owner',
         ],
         correctIndex: 2,
         explanation:
-          'Jobs nobody asked for or owns can move or change data without any business owner knowing. The rerun failures are tempting, but they were caught and fixed; an unapproved job may never appear in any failure log.',
+          'Jobs nobody asked for or owns can move or change data without any business owner knowing. The rerun failures are tempting, but they were caught and fixed; an unapproved job may never appear in any failure log. Shift-lead approval of reruns is a minor gap, since those jobs are known and owned.',
       },
       {
         type: 'check',
@@ -2992,12 +2992,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Engineers restored service before diagnosing what had failed',
           'The service desk took too long to close the first incident',
-          'Users were not told about the first outage or its cause',
+          'The change board did not approve the workaround beforehand',
           'No problem record was opened to find and remove the cause',
         ],
         correctIndex: 3,
         explanation:
-          'Restoring service was right; stopping there was not. A problem record keeps the cause on someone’s list after the incident closes. Blaming the early restore is tempting, but restoring service first is correct incident practice; the gap is the missing follow-through.',
+          'Restoring service was right; stopping there was not. A problem record keeps the cause on someone’s list after the incident closes. Blaming the early restore is tempting, but restoring service first is correct incident practice; the gap is the missing follow-through. Change board approval of the workaround would not have found the cause either.',
       },
       {
         type: 'check',
@@ -3007,11 +3007,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Nobody now owns finding and applying a permanent fix',
           'Agents may apply the workaround without telling users first',
           'The known-error entry may be too technical for new agents',
-          'Printer incidents may be logged under the wrong category',
+          'The service desk manager did not approve the known-error entry',
         ],
         correctIndex: 0,
         explanation:
-          'A known error is a problem whose cause is known but not yet permanently fixed, so the problem stays open until the fix is made or formally declined. Closing it at the workaround stage leaves the fault to recur indefinitely. Technical wording is tempting as a concern because agents must use the entry, but it is a usability issue, not a missing fix.',
+          'A known error is a problem whose cause is known but not yet permanently fixed, so the problem stays open until the fix is made or formally declined. Closing it at the workaround stage leaves the fault to recur indefinitely. Technical wording is tempting as a concern because agents must use the entry, but it is a usability issue, not a missing fix. Approving the entry makes the workaround official; it still fixes nothing.',
       },
       {
         type: 'check',
@@ -3109,25 +3109,25 @@ export const CISA_LESSONS: Lesson[] = [
           'The logs take more storage than this year’s budget allowed',
           'No named person reviews the firewall logs or their alerts',
           'Log times are recorded in one time zone, not local time',
-          'Application logs hold more detail than the firewall logs do',
+          'The IT manager, not the business, set the retention period',
         ],
         correctIndex: 1,
         explanation:
-          'Collecting and protecting logs detects nothing until someone reviews them, so an unowned log is evidence nobody uses. The storage overrun is tempting because it is a real cost, but it does not let an attack go unseen. One shared time zone is good practice, not a weakness.',
+          'Collecting and protecting logs detects nothing until someone reviews them, so an unowned log is evidence nobody uses. The storage overrun is tempting because it is a real cost, but it does not let an attack go unseen. Who set the retention period matters, yet a year of protected logs still helps no one if nobody reads them. One shared time zone is good practice, not a weakness.',
       },
       {
         type: 'check',
         question:
           'Who is MOST appropriate to decide how long a hospital keeps the access logs for its patient-records system?',
         options: [
-          'The storage team, based on how much disk space is free',
+          'The compliance officer, applying the regulator’s minimum period',
           'The IS auditor, as an independent party with log expertise',
           'The records owner, with legal and compliance input',
-          'The log tool vendor, using its default retention settings',
+          'The CISO, who runs the logging and monitoring program',
         ],
         correctIndex: 2,
         explanation:
-          'Retention is a business and legal decision: the owner of the records, advised by legal and compliance, sets it for each log type. The storage team is tempting because it manages the space, but cost should not decide how long evidence is kept. The auditor checks the decision and does not make it.',
+          'Retention is a business and legal decision: the owner of the records, advised by legal and compliance, sets it for each log type. The compliance officer is tempting because the regulator sets a floor, but a minimum is one input, and the owner may need the logs for longer. The CISO runs the logging, not the records. The auditor checks the decision and does not make it.',
       },
       {
         type: 'check',
@@ -3221,14 +3221,14 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'A firm takes a full backup each Sunday night and an incremental backup on each other night. Its database fails on Thursday morning. Which sets give the MOST complete restore?',
         options: [
-          'Only Sunday’s full backup',
-          'The Monday, Tuesday and Wednesday incrementals only',
+          'Sunday’s full backup, which holds the whole database',
+          'The Monday, Tuesday and Wednesday incrementals, applied in order',
           'Sunday’s full plus the Monday, Tuesday and Wednesday incrementals',
-          'Sunday’s full backup plus only the latest incremental, from Wednesday night',
+          'Sunday’s full backup plus the latest incremental, from Wednesday night',
         ],
         correctIndex: 2,
         explanation:
-          'Each incremental holds only the changes since the backup before it, so every one since Sunday is needed, in order. Using only Wednesday’s is tempting, but that is how a differential works; here Monday’s and Tuesday’s changes would be lost.',
+          'Each incremental holds just the changes since the backup before it, so every one since Sunday is needed, in order, on top of the full backup. Using Wednesday’s alone is tempting, but that is how a differential works; here Monday’s and Tuesday’s changes would be lost.',
       },
       {
         type: 'check',
@@ -3249,8 +3249,8 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Which evidence BEST shows that backup tapes held in the offsite vault could actually be used after a disaster?',
         options: [
-          'A count showing every catalogued tape is present in the vault',
-          'Backup job logs showing every job completed successfully',
+          'A count showing the catalogued tapes are present in the vault',
+          'Backup job logs showing the jobs completed successfully',
           'The vault provider’s physical security certificate, renewed this year',
           'A successful test restore from a tape recalled from the vault',
         ],
@@ -3338,34 +3338,34 @@ export const CISA_LESSONS: Lesson[] = [
           'Exercise findings have no owner or deadline for fixing them',
           'The exercises are walkthroughs rather than full interruption tests',
           'Staff contact details change too often to keep the list current',
-          'The continuity team, not outsiders, ran both of the exercises',
+          'Senior management did not sign off the first exercise report',
         ],
         correctIndex: 0,
         explanation:
-          'A test is only useful if what it finds gets fixed, so a repeat finding points to no owner and no follow-up. Moving to a full interruption test is tempting because it is more realistic, but a bigger test would find the same stale list. Frequent changes are the reason the list needs an owner, not an excuse.',
+          'A test is only useful if what it finds gets fixed, so a repeat finding points to no owner and no follow-up. Moving to a full interruption test is tempting because it is more realistic, but a bigger test would find the same stale list. Signing off the report would accept the finding without assigning anyone to fix it. Frequent changes are the reason the list needs an owner, not an excuse.',
       },
       {
         type: 'check',
         question: 'Who is MOST appropriate to approve a company-wide business continuity policy?',
         options: [
           'The IT disaster recovery manager, who writes the recovery steps',
-          'The IS auditor, after checking that the policy is complete',
-          'Each department head, for their own area only',
-          'Senior management, as the body accountable for the whole enterprise',
+          'The IS auditor, who reviewed the policy for completeness',
+          'The department heads, who own the critical processes',
+          'Senior management, which sets direction for the company',
         ],
         correctIndex: 3,
         explanation:
-          'A continuity policy is a governance document, so senior management, accountable for the whole enterprise, approves it. The recovery manager is tempting because they know the detail, but procedures sit below the policy; the mandate must come from the top. The auditor reviews the policy and never approves it.',
+          'A continuity policy is a governance document, so senior management, which answers for the whole company, approves it. The recovery manager is tempting because they know the detail, but procedures sit below the policy; the mandate must come from the top. Department heads own their processes, not the company-wide mandate. The auditor reviews the policy and does not approve it.',
       },
       {
         type: 'check',
         question:
           'A continuity plan names five alternates who may declare a disaster, but sets no criteria for declaring one. What is the GREATEST risk?',
         options: [
-          'Too many people will need training on the plan every year',
+          'Too many people will need yearly training on the plan',
           'Alternates may declare too late, too early or inconsistently',
           'The lead executive may feel her own authority has been reduced',
-          'The plan may need rewriting every time an alternate leaves',
+          'The plan may need rewriting whenever an alternate leaves',
         ],
         correctIndex: 1,
         explanation:
@@ -3462,9 +3462,9 @@ export const CISA_LESSONS: Lesson[] = [
           'A hospital’s IT service desk approves any request for access to patient records, provided a manager asks. Which change BEST strengthens this control?',
         options: [
           'Have the owner of patient records approve each request',
-          'Log every access request in the service desk tool',
+          'Log each access request in the service desk tool',
           'Train service desk staff on privacy regulations',
-          'Require every manager’s request to be in writing',
+          'Require each manager’s request to be in writing',
         ],
         correctIndex: 0,
         explanation:
@@ -3559,7 +3559,7 @@ export const CISA_LESSONS: Lesson[] = [
           'A password plus the employee’s date of birth',
           'A PIN plus a staff smart card in a card reader',
           'A fingerprint scan followed by a face scan',
-          'A strong password sent only over an encrypted link',
+          'A long, strong password sent over an encrypted link',
         ],
         correctIndex: 1,
         explanation:
@@ -3573,11 +3573,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Security keys that refuse to respond to look-alike sites',
           'Authenticator app codes that change every thirty seconds',
           'Blocking sign-ins from outside the home country',
-          'A second password stored in a password manager',
+          'Phishing awareness training, approved by the CISO, for finance staff',
         ],
         correctIndex: 0,
         explanation:
-          'A security key will not answer a page at the wrong address, so a fake page gets nothing to relay. App codes are tempting because they change quickly, but a code typed into a fake page can still be passed on within seconds.',
+          'A security key will not answer a page at the wrong address, so a fake page gets nothing to relay. App codes are tempting because they change quickly, but a code typed into a fake page can still be passed on within seconds. Training helps, but convincing fake pages still fool trained staff.',
       },
       {
         type: 'check',
@@ -3585,13 +3585,13 @@ export const CISA_LESSONS: Lesson[] = [
           'Three database administrators share one powerful account protected by MFA. A key table was deleted overnight. Which weakness should concern the IS auditor MOST?',
         options: [
           'One of them could lose the shared MFA token',
-          'The account password may be shorter than policy',
+          'The data owner has not reapproved the account’s access this year',
           'The table may not have been backed up recently',
           'The deletion cannot be tied to a single person',
         ],
         correctIndex: 3,
         explanation:
-          'Logs show the account, not the person, so nobody can be held to account for the deletion. A lost token is tempting because MFA is the visible control, but MFA proves a token holder signed in, not which of the three. A recent backup would restore the table but still name no one.',
+          'Logs show the account, not the person, so nobody can be held to account for the deletion. A lost token is tempting because MFA is the visible control, but MFA proves a token holder signed in, not which of the three. A missed access review is a gap, but a reapproved shared account still names no one. A recent backup would restore the table but name no one either.',
       },
     ],
   },
@@ -3776,12 +3776,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'It lacks senior management approval, so it lacks authority',
           'Its firewall settings will date quickly and need frequent edits',
-          'It does not cover how often passwords must change',
-          'It has not yet been communicated to all staff',
+          'The IS audit team did not review it before it was issued',
+          'It has not yet been communicated to staff',
         ],
         correctIndex: 0,
         explanation:
-          'Without senior management or board approval, business units can treat the policy as IT’s opinion. The dated firewall settings are tempting because they are a real flaw, but settings belong in a standard and are easy to move. Telling all staff comes later: sharing an unauthorized policy only spreads IT’s opinion further.',
+          'Without senior management or board approval, business units can treat the policy as IT’s opinion. The dated firewall settings are tempting because they are a real flaw, but settings belong in a standard and are easy to move. Auditors assess a policy; they do not clear it before issue. Telling staff comes later: sharing an unauthorized policy only spreads IT’s opinion further.',
       },
       {
         type: 'check',
@@ -3888,7 +3888,7 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Smart thermostats that cannot run security software share a network segment with finance laptops. Which recommendation BEST reduces the risk to finance systems?',
         options: [
-          'Change every thermostat’s default administrator password',
+          'Change the thermostats’ default administrator passwords',
           'Isolate the thermostats on their own filtered network',
           'Ask the vendor to add antivirus to the thermostats',
           'Scan the finance laptops for malware more often',
@@ -3917,13 +3917,13 @@ export const CISA_LESSONS: Lesson[] = [
           'Staff want to read company email on their personal phones, which also hold their family photos. Which control BEST protects company data if a phone is lost?',
         options: [
           'A rule that staff set a six-digit phone passcode',
-          'Banning personal phones from the office wireless network',
+          'A signed staff agreement to protect company data on phones',
           'A separate, managed work area that IT can erase remotely',
           'A rule that staff report any lost phone within one hour',
         ],
         correctIndex: 2,
         explanation:
-          'A managed work area keeps company data apart, so IT can erase it without touching personal photos. A passcode is tempting and worth having, but a short code can be guessed or watched, and it gives no way to remove the data. Quick reporting helps only if there is something IT can then erase.',
+          'A managed work area keeps company data apart, so IT can erase it without touching personal photos. A passcode is tempting and worth having, but a short code can be guessed or watched, and it gives no way to remove the data. A signed agreement sets expectations but cannot remove data from a lost phone. Quick reporting helps only if there is something IT can then erase.',
       },
     ],
   },
@@ -4016,13 +4016,13 @@ export const CISA_LESSONS: Lesson[] = [
           'Data owners have classified a retailer’s sensitive data. DLP rules are set to start blocking next week, but nobody has checked how often they flag normal work. What should happen FIRST?',
         options: [
           'Run the rules without blocking and correct the false alarms',
-          'Train all staff on the new rules before any blocking starts',
+          'Train staff on the new rules before the blocking starts next week',
           'Start blocking on email now and other channels later',
-          'Turn on the vendor’s default rules for every channel',
+          'Replace the rules with the vendor’s tested default set',
         ],
         correctIndex: 0,
         explanation:
-          'Untuned rules can block legitimate work, and staff then look for ways around the tool. Training staff is tempting and useful, but it cannot fix rules that flag normal work. Starting with email only shrinks the disruption, because the rules are still untested.',
+          'Untuned rules can block legitimate work, and staff then look for ways around the tool. Training staff is tempting and useful, but it cannot fix rules that flag normal work. Starting with email only shrinks the disruption, because the rules are still untested. Vendor defaults are tested elsewhere, not on this retailer’s normal work.',
       },
       {
         type: 'check',
@@ -4030,13 +4030,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A developer wants to store user passwords with a very fast hash so sign-ins feel instant. Which approach should the IS auditor consider BEST?',
         options: [
           'Keep the fast hash but lock each account after five failures',
-          'Keep the fast hash but require much longer passwords',
+          'Keep the fast hash if the CISO signs a risk acceptance',
           'Salt each password and use a hash that is costly to compute',
           'Keep the fast hash and store it on an isolated server',
         ],
         correctIndex: 2,
         explanation:
-          'A costly, salted hash makes each guess expensive for an attacker, while one sign-in barely notices. Account lockout is tempting, but it only stops guessing on the live sign-in page. Attackers who steal the password file guess offline, where no lockout applies.',
+          'A costly, salted hash makes each guess expensive for an attacker, while one sign-in barely notices. Account lockout is tempting, but it only stops guessing on the live sign-in page. Attackers who steal the password file guess offline, where no lockout applies. A signed risk acceptance does not make a weak design that is easy to fix any safer.',
       },
       {
         type: 'check',
@@ -4046,11 +4046,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Use a longer public key so the backups stay even safer',
           'Use a symmetric key for the data, guarded by the public key',
           'Hash the backups instead, since hashing runs much faster',
-          'Skip encryption on the nights when the backup job runs late',
+          'Ask the change board to approve a longer nightly backup window',
         ],
         correctIndex: 1,
         explanation:
-          'Symmetric encryption is built for bulk data, and the public key only needs to protect the small symmetric key. A longer public key is tempting because it sounds stronger, but it makes the slow step slower. Hashing is fast but one-way, so the backups could never be restored.',
+          'Symmetric encryption is built for bulk data, and the public key only needs to protect the small symmetric key. A longer public key is tempting because it sounds stronger, but it makes the slow step slower. Hashing is fast but one-way, so the backups could never be restored. An approved longer window treats the symptom and keeps the wrong design.',
       },
     ],
   },
@@ -4132,13 +4132,13 @@ export const CISA_LESSONS: Lesson[] = [
           'Partner connections failed for a day when a certificate nobody knew about expired. Each team buys and tracks its own certificates. Which control would BEST prevent a repeat?',
         options: [
           'Monitoring partner connections for failed sign-ins',
-          'One shared certificate covering many servers, so fewer exist',
-          'Moving every certificate to one public certificate authority',
+          'A CISO-approved policy requiring teams to renew on time',
+          'Moving the certificates to one public certificate authority',
           'One register of all certificates, owners and renewal dates',
         ],
         correctIndex: 3,
         explanation:
-          'You cannot renew a certificate you do not know exists, so one register with owners and dates prevents the surprise. Monitoring connections is tempting, but it only tells you after partners are already cut off. A single provider still does not tell anyone what exists or when it expires.',
+          'You cannot renew a certificate you do not know exists, so one register with owners and dates prevents the surprise. Monitoring connections is tempting, but it only tells you after partners are already cut off. A policy to renew on time fails for a certificate nobody knows about. A single provider still does not tell anyone what exists or when it expires.',
       },
       {
         type: 'check',
@@ -4159,9 +4159,9 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'A developer who could copy the code-signing private key has left on bad terms. What should the IS auditor recommend as BEST to protect customers?',
         options: [
-          'Change all the build server’s administrator passwords today',
+          'Change the build server’s administrator passwords today',
           'Revoke the certificate and sign with a new, guarded key',
-          'Scan all past releases for any signs of hidden malware',
+          'Scan past releases for signs of hidden malware',
           'Publish each release’s hash value on the download page',
         ],
         correctIndex: 1,
@@ -4257,14 +4257,14 @@ export const CISA_LESSONS: Lesson[] = [
         question:
           'Hypervisor administrators’ actions are logged, but the same administrators review those logs monthly. What should the IS auditor recommend as BEST against hidden misuse?',
         options: [
-          'Keep the logs for seven years instead of one',
+          'The infrastructure manager signs off each monthly self-review',
           'Have the administrators review each other’s logs every month',
           'Add more detail to the hypervisor log entries',
           'Move log review to another team, using tamper-proof logs',
         ],
         correctIndex: 3,
         explanation:
-          'Nobody should be the only check on their own work: another team, reading logs the administrators cannot alter, would see what they might hide. Peer review is tempting because it adds a second person, but peers share the same power and could cover for each other. More detail helps only if someone independent reads it.',
+          'Nobody should be the only check on their own work: another team, reading logs the administrators cannot alter, would see what they might hide. Peer review is tempting because it adds a second person, but peers share the same power and could cover for each other. A manager’s sign-off still rests on what the administrators chose to report. More detail helps only if someone independent reads it.',
       },
       {
         type: 'check',
@@ -4375,7 +4375,7 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'The testing firm was hired without a competitive bid',
           'Testers might cause outages on internet-facing systems',
-          'The test is run only once each year, not quarterly',
+          'The test is run once a year, not quarterly',
           'Attack paths inside the network get no testing at all',
         ],
         correctIndex: 3,
@@ -4389,12 +4389,12 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Assign each flaw to someone, with a due date and recheck',
           'Scan every week so the flaws are reported sooner',
-          'Switch to a different, more accurate vulnerability scanner',
+          'Have the CISO approve each scan report before it is filed',
           'Send each monthly scan report to the board',
         ],
         correctIndex: 0,
         explanation:
-          'The scans already find the flaws; nothing makes anyone fix them. Weekly scanning is tempting because it sounds more rigorous, but it only reports the same unfixed flaws more often. A new scanner would find the same flaws and leave them unfixed too.',
+          'The scans already find the flaws; nothing makes anyone fix them. Weekly scanning is tempting because it sounds more rigorous, but it only reports the same unfixed flaws more often. CISO approval or a copy to the board looks like oversight, yet approving a report fixes nothing.',
       },
     ],
   },
@@ -4479,13 +4479,13 @@ export const CISA_LESSONS: Lesson[] = [
           'A lawful policy covers monitoring of staff email. The security chief now wants to scan staff chat too, using the same tool. What should happen FIRST?',
         options: [
           'Extend monitoring to chat, since a policy already exists',
-          'Turn on chat monitoring for privileged users only',
-          'Ask the tool vendor whether chat monitoring is legal',
+          'Turn on chat monitoring for privileged users first',
+          'Have the CISO approve chat scanning under the email policy',
           'Have legal, HR and privacy approve an updated policy',
         ],
         correctIndex: 3,
         explanation:
-          'Each new kind of monitoring needs its own lawful basis, so the policy must be updated and approved before the tool is switched on. Relying on the existing policy is tempting because monitoring is already approved, but it covers email, not chat. Starting with privileged users still monitors people without an agreed basis.',
+          'Each new kind of monitoring needs its own lawful basis, so the policy must be updated and approved by legal, HR and privacy before the tool is switched on. Relying on the existing policy is tempting because monitoring is already approved, but it covers email, not chat. A CISO’s approval does not extend it. Starting with privileged users still monitors people without an agreed basis.',
       },
       {
         type: 'check',
@@ -4605,11 +4605,11 @@ export const CISA_LESSONS: Lesson[] = [
           'Name her in the report and recommend disciplinary action',
           'Remove the finding until she admits taking the data',
           'State that her account ran the export, then corroborate',
-          'Add more log extracts to the report’s appendix',
+          'Have the audit committee approve the wording before issue',
         ],
         correctIndex: 2,
         explanation:
-          'The logs prove which account was used, not who was at the keyboard; a stolen or shared password fits the same facts. Naming her is tempting because the logs look clear, but it goes beyond the evidence and would not survive a challenge.',
+          'The logs prove which account was used, not who was at the keyboard; a stolen or shared password fits the same facts. Naming her is tempting because the logs look clear, but it goes beyond the evidence and would not survive a challenge. Committee approval would not fix a claim the evidence cannot support.',
       },
     ],
   },
