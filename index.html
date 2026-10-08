@@ -2413,6 +2413,37 @@ header {
 }
 .notes-analogy-box strong { color: #fff; }
 
+/* Domain Overview card (collapsible plain-language summary of the domain) */
+.notes-domain-summary-card {
+  margin-bottom: 14px; padding: 14px 18px; border-radius: 14px;
+  border: 2px solid var(--border2); border-left: 4px solid var(--accent);
+  background: var(--surface); cursor: pointer; transition: border-color 0.2s, background 0.15s;
+}
+.notes-domain-summary-card:hover { background: var(--surface2); }
+.notes-domain-summary-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-blue);
+}
+[data-theme="dark"] .notes-domain-summary-label { color: var(--brand-light); }
+.notes-domain-summary-text {
+  margin-top: 8px; font-size: 14px; line-height: 1.65; color: var(--text2);
+}
+.notes-domain-summary-toggle {
+  margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 700; color: var(--muted);
+}
+
+/* Expand All / Collapse All row (matches the filter pills) */
+.notes-expand-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.notes-expand-btn {
+  padding: 5px 14px; border-radius: 100px; font-size: 11px; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: var(--tr);
+  border: 2px solid var(--border2); background: var(--surface2); color: var(--text2);
+  letter-spacing: 0.04em; min-height: 32px;
+}
+.notes-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
+.notes-expand-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* Filter row for topics */
 .notes-filter-row {
   display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
@@ -2426,6 +2457,10 @@ header {
 }
 .notes-filter-btn:hover { border-color: var(--accent); color: var(--accent); }
 .notes-filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.notes-filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .notes-expand-btn, .notes-filter-btn { min-height: 44px; }
+}
 
 /* Topic group (was chapter) */
 .notes-group {
@@ -5038,7 +5073,7 @@ header::after {
     </div>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v10.55</span>
+    <span class="bank-pill" id="versionPill">v10.55.1</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5402,7 +5437,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v10.55';
+const APP_VERSION = 'v10.55.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -6953,7 +6988,7 @@ function renderTopics() {
   // -- Domain Summary Card --
   var summaryOpen = topicState.summaryOpen !== false;
   var summaryHtml = domainData.summary
-    ? '<div class="notes-domain-summary-card" onclick="toggleDomainSummary()" tabindex="0" role="button" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDomainSummary();}">'
+    ? '<div class="notes-domain-summary-card" onclick="toggleDomainSummary()" tabindex="0" role="button" aria-expanded="' + summaryOpen + '" onkeypress="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDomainSummary();}">'
       + '<div class="notes-domain-summary-label">&#128218; Domain Overview</div>'
       + '<div class="notes-domain-summary-text" id="notesSummaryText" style="' + (summaryOpen ? '' : 'display:none') + '">' + escapeHtml(domainData.summary) + '</div>'
       + '<div class="notes-domain-summary-toggle">' + (summaryOpen ? '&#9650; Hide' : '&#9660; Show') + '</div>'
@@ -6962,7 +6997,7 @@ function renderTopics() {
 
   // -- Expand/Collapse All row --
   var expandRowHtml = '<div class="notes-expand-row">'
-    + '<button class="notes-expand-btn" onclick="expandAllGroups()">&#9660; Expand All</button>&nbsp;'
+    + '<button class="notes-expand-btn" onclick="expandAllGroups()">&#9660; Expand All</button>'
     + '<button class="notes-expand-btn" onclick="collapseAllGroups()">&#9650; Collapse All</button>'
     + '</div>';
 
@@ -7260,6 +7295,7 @@ function toggleDomainSummary() {
   var tog = card && card.querySelector('.notes-domain-summary-toggle');
   if (text) text.style.display = (topicState.summaryOpen !== false) ? '' : 'none';
   if (tog) tog.textContent = (topicState.summaryOpen !== false) ? '▲ Hide' : '▼ Show';
+  if (card) card.setAttribute('aria-expanded', String(topicState.summaryOpen !== false));
 }
 
 
@@ -12120,6 +12156,14 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Tidier Topics page',
+    items: [
+      { cat: 'fixed', text: 'The Domain Overview card and the Expand All and Collapse All buttons on the Topics page now match the rest of the page, in light and dark mode.' },
+      { cat: 'fixed', text: 'An emergency-change question now spells out "change board" instead of using an abbreviation.' }
+    ]
+  },
+  {
+    version: 'v10.55',
     title: 'Fairer answer choices',
     items: [
       { cat: 'improved', text: 'Wrong answers in many operations and security questions now sound just as professional as the right one, so you win by judgment, not by spotting the most official-sounding option.' }

@@ -6890,7 +6890,7 @@
       "options": {
         "A": "Engineer documentation of each change in its ticket after deployment",
         "B": "Independent review and approval of each change soon after deployment",
-        "C": "Full CAB approval of each fix before it is deployed",
+        "C": "Full change board approval of each fix before it is deployed",
         "D": "Tracking of engineer response times for each emergency fix"
       },
       "correct": "B",
@@ -6899,11 +6899,11 @@
       "correct_explanation": "Emergency changes skip normal approval, so control must return through independent review soon afterwards: someone other than the implementer confirms the change was needed, authorized and correctly made. Engineer documentation creates a record, but a record written by the person who made the change is self-review and gives no independent assurance that the change was appropriate.",
       "wrong_explanations": {
         "A": "Self-documentation creates a record but no independent check. The implementer's own notes cannot confirm the change was justified or correct.",
-        "C": "Requiring full prior CAB approval defeats the purpose of an emergency path when production is down; control shifts to prompt review afterward.",
+        "C": "Requiring full prior change board approval defeats the purpose of an emergency path when production is down; control shifts to prompt review afterward.",
         "D": "Response time measures speed, not whether emergency changes were justified, authorized or correct."
       },
       "tips": [
-        "Eliminate: C holds every fix for full CAB approval while production is down, and D measures speed rather than control.",
+        "Eliminate: C holds every fix for full change board approval while production is down, and D measures speed rather than control.",
         "Final two: B beats A because an independent reviewer gives assurance that the implementer's own record cannot.",
         "Exam cue: emergency changes may skip prior approval but never skip control; look for independent review after the fact."
       ],
