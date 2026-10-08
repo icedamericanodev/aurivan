@@ -166,7 +166,8 @@ def lint_sub(r, s, topic_id, seen_terms):
                     r.err(where, f"types[{i}] must have exactly term and meaning")
                 else:
                     terms_here.append(t["term"])
-    norm = [t.lower().strip() for t in terms_here]
+    # "Run book" and "Runbook", "Critical path (batch)" and "critical path": same term
+    norm = [re.sub(r"[\s\-]+", "", re.sub(r"\s*\(.*?\)", "", t.lower())).strip() for t in terms_here]
     dup = {t for t in norm if norm.count(t) > 1}
     if dup:
         r.warn(where, f"term appears in more than one place: {sorted(dup)}")
