@@ -5135,7 +5135,7 @@ body[data-mock-results="1"] #readinessCard { display: none; }
     <span class="logo-tagline">Free CISA&reg; exam prep</span>
   </div>
   <div class="header-right">
-    <span class="bank-pill" id="versionPill">v11</span>
+    <span class="bank-pill" id="versionPill">v11.0.1</span>
     <button class="profile-btn" id="profileBtn" onclick="showProfilePanel()">
       <div class="profile-avatar" id="profileAvatar" style="background:var(--accent)">?</div>
       <span id="profileBtnLabel">Profile</span>
@@ -5531,7 +5531,7 @@ const MOCK_TIER_LABEL = { analysis: 'Hard / Analysis', application: 'Moderate / 
 // Single source of truth for the app version. The header pill renders this
 // value, and the LATEST entry in the What's New modal must match it. Bumping
 // the version here is the only place to change it.
-const APP_VERSION = 'v11';
+const APP_VERSION = 'v11.0.1';
 const FEEDBACK_EMAIL = 'certprep.support@gmail.com';
 
 // Feedback is delivered via a Google Form whose responses land in the
@@ -9183,7 +9183,7 @@ function showResult(chosen, correct, timeout) {
   var mindsetAlertHtml = (!ok && !timeout && !inExamMode) ? buildMindsetAlertHtml(q, chosenOrig) : '';
   p.innerHTML =
     mindsetAlertHtml
-    + '<div class="verdict ' + vc + '"><span class="verdict-icon" aria-hidden="true">' + vi + '</span>' + vt + '</div>'
+    + '<div class="verdict ' + vc + '"><span class="verdict-icon" aria-hidden="true">' + vi + '</span><span>' + vt + '</span></div>'
     + metaRow
     + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p></div>'
     + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'
@@ -12254,6 +12254,15 @@ function buildTripletCompanionsHtml(q) {
 const CHANGELOG = [
   {
     version: APP_VERSION,
+    title: 'Small fixes',
+    items: [
+      { cat: 'fixed', text: 'A sampling question now uses numbers that are statistically sound.' },
+      { cat: 'fixed', text: 'A DevOps question uses the current name for the recovery-time metric.' },
+      { cat: 'fixed', text: 'The answer line after you check a question now reads evenly.' }
+    ]
+  },
+  {
+    version: 'v11',
     title: 'A fresh look and new study notes',
     items: [
       { cat: 'new', text: 'Aurivan has a calm new forest-green look and a new logo, matching the mobile app.' },
