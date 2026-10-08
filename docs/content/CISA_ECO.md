@@ -72,7 +72,7 @@ number, part letter, topic number. Scripts parse this file.
 - 4A2 IT Asset Management
 - 4A3 Job Scheduling and Production Process Automation
 - 4A4 System Interfaces
-- 4A5 End-User Computing and Shadow IT
+- 4A5 Shadow IT and End-User Computing
 - 4A6 Systems Availability and Capacity Management
 - 4A7 Problem and Incident Management
 - 4A8 IT Change, Configuration, and Patch Management
@@ -113,8 +113,8 @@ number, part letter, topic number. Scripts parse this file.
 - 1A1: some sources drop "Functions" (that is the 2019 title).
 - 2A3: "IT Policies, Standards, Procedures, and Guidelines" (2024) vs
   "... and Processes" in older copies.
-- 4A5: "End-User Computing and Shadow IT" vs "Shadow IT and End-User
-  Computing".
+- 4A5: the 2024 Candidate Guide lists "Shadow IT and End-User Computing";
+  some copies reverse it.
 - 5A1: some sources omit "Policies".
 
 ## App name differences (cosmetic)

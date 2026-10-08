@@ -10,14 +10,20 @@
  * holding "Up next" starts open; the learner can open any other group.
  * Opening with ?domain=4 (e.g. from Today) puts that domain's next lesson
  * on the cover, and so opens that group.
+ *
+ * Study notes: one row under the cover opens the notes (every exam topic
+ * in plain English). It hides itself while the app has no notes (the
+ * notes pack stays empty until the v2 notes land).
  */
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Check, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
+import { BookOpen, Check, ChevronDown, ICON_STROKE, Play } from '../../components/icons';
 import { BigNum, DomainDot, Enter, HeroPanel, ICON_SIZE, ListRow, ProgressBar, Row, Screen, Section, T } from '../../components/ui';
 import { domainColor } from '../../content/certifications';
 import { lessonsFor, nextLesson } from '../../content/lessons';
+import { hasNotes, noteSubtopics } from '../../content/notes';
+import { readCount } from '../../engine/notesSearch';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { radius, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -48,12 +54,17 @@ export default function Learn() {
   const isOpenGroup = (domainId: string) => toggled[domainId] ?? domainId === upNext?.domainId;
   const toggleGroup = (domainId: string) => setToggled((t) => ({ ...t, [domainId]: !isOpenGroup(domainId) }));
   const play = (col: string, size: number = ICON_SIZE.inline) => <Play size={size} color={col} strokeWidth={ICON_STROKE} />;
+  // Study notes progress: "3 of 120 read" (hidden when there are no notes).
+  const showNotes = hasNotes(cert.id);
+  const noteIds = showNotes ? noteSubtopics(cert.id).map((s) => s.id) : [];
+  const notesRead = readCount(noteIds, progress.notesRead);
+  const notesState = notesRead === 0 ? 'Every exam topic in plain English' : `${notesRead} of ${noteIds.length} read`;
 
   return (
     <Screen>
       <Enter i={0}>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Learn</T>
-        <T v="meta" style={{ marginTop: space.xs }}>Short lessons, one idea each.</T>
+        <T v="meta" style={{ marginTop: space.xs }}>Lessons and study notes</T>
       </Enter>
 
       <Enter i={1} style={{ marginTop: 18 }}>
@@ -72,8 +83,22 @@ export default function Learn() {
         )}
       </Enter>
 
-      <Enter i={2}>
-        <Section title="By domain" meta={`${doneCount} of ${lessons.length} done`} />
+      {showNotes && (
+        <Enter i={2} style={{ marginTop: space.md }}>
+          <ListRow
+            icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+            title="Study notes"
+            subtitle={notesState}
+            accessibilityLabel={`Study notes, ${notesState}`}
+            accessibilityHint="Opens the notes for every exam topic"
+            onPress={() => router.push('/notes')}
+            last
+          />
+        </Enter>
+      )}
+
+      <Enter i={showNotes ? 3 : 2}>
+        <Section title="Lessons by domain" meta={`${doneCount} of ${lessons.length} done`} />
         {groups.map(({ domain: d, items }, g) => {
           const groupDone = items.filter((l) => done(l.id)).length;
           const isOpen = isOpenGroup(d.id);
