@@ -9183,7 +9183,7 @@ function showResult(chosen, correct, timeout) {
   var mindsetAlertHtml = (!ok && !timeout && !inExamMode) ? buildMindsetAlertHtml(q, chosenOrig) : '';
   p.innerHTML =
     mindsetAlertHtml
-    + '<div class="verdict ' + vc + '"><span class="verdict-icon" aria-hidden="true">' + vi + '</span>' + vt + '</div>'
+    + '<div class="verdict ' + vc + '"><span class="verdict-icon" aria-hidden="true">' + vi + '</span><span>' + vt + '</span></div>'
     + metaRow
     + '<div class="exp-block"><div class="exp-heading">Why the correct answer is right</div><p class="exp-body">' + escapeHtml(mapLettersInText(q.correct_explanation, shuffle)) + '</p></div>'
     + '<div class="exp-block"><div class="exp-heading">Option-by-option breakdown</div><div class="opt-breakdown">' + breakdownHtml + '</div></div>'

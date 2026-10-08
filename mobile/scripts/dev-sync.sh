@@ -117,8 +117,8 @@ watch_github() {
 
     # New or edited questions: rebuild the question pack. The dev server sees
     # the regenerated files and refreshes the app on its own.
-    if echo "$CHANGED" | grep -qE '^data/domain[0-9]+\.json$|^mobile/scripts/build-content\.mjs$'; then
-      echo "  Questions changed: rebuilding the question pack."
+    if echo "$CHANGED" | grep -qE '^data/domain[0-9]+\.json$|^data/cisa_notes\.json$|^mobile/scripts/(build-content\.mjs|notes-pack\.cjs)$'; then
+      echo "  Questions or study notes changed: rebuilding the content pack."
       npm run --silent content
     fi
 
