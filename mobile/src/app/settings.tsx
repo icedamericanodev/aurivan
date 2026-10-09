@@ -11,7 +11,7 @@ import { BrandLockup, PillarList } from '../components/brand';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, T, ToggleRow } from '../components/ui';
 import { TAGLINE, VISION_LINE } from '../content/brand';
-import { CERTIFICATIONS } from '../content/certifications';
+import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { changeExamDate } from '../lib/activity';
@@ -177,10 +177,9 @@ export default function Settings() {
         Aurivan v{Constants.expoConfig?.version ?? '1.0.0'} · Original practice questions written for exam preparation. Progress is stored only on this device.
       </T>
       <Gap h={space.sm} />
-      {/* Every certification named anywhere in the app (coming-soon chips too) needs its trademark notice. */}
-      {CERTIFICATIONS.map((x) => (
-        <T key={x.id} v="meta">{x.trademarkNotice}</T>
-      ))}
+      {/* Every certification named anywhere in the app (coming-soon chips too) needs its trademark notice;
+          one combined line instead of five near-identical ones. */}
+      <T v="meta">{combinedTrademarkNotice(CERTIFICATIONS)}</T>
       <Gap h={space.sm} />
       {config.privacyUrl !== '' && (
         <Button kind="ghost" label="Privacy policy" onPress={() => Linking.openURL(config.privacyUrl)} style={{ alignSelf: 'flex-start' }} />
