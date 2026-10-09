@@ -15,6 +15,8 @@
  *   6. Builds the study-notes pack (<cert>/notes.json) from
  *      ../data/cisa_notes.json via notes-pack.cjs. Only schema v2 is used;
  *      a v1 file gives an empty pack, so Study notes stays hidden.
+ *      Each subtopic's `practice_ids` is checked against the questions
+ *      written in step 5: an unknown or other-domain id fails the build.
  *
  * WHEN IT RUNS: automatically after `npm install` (postinstall), and any
  * time you run `npm run content`. The output folder is gitignored because
@@ -184,9 +186,10 @@ function validate(q) {
 /**
  * Write <cert>/notes.json. A missing or v1 notes file gives an EMPTY pack
  * (the Study notes entry hides itself), never a failed build.
+ * `questions` = this cert's questions (to check the "Practice this concept" ids).
  * Returns the index.ts line for this cert's notes loader.
  */
-function buildNotes(pack, certDir) {
+function buildNotes(pack, certDir, questions) {
   let raw = null;
   if (pack.notes && fs.existsSync(pack.notes)) {
     try {
@@ -196,7 +199,7 @@ function buildNotes(pack, certDir) {
       process.exitCode = 1;
     }
   }
-  const { pack: notes, problems, warnings, skipped } = buildNotesPack(raw, pack.certId);
+  const { pack: notes, problems, warnings, skipped } = buildNotesPack(raw, pack.certId, { questions });
   for (const w of warnings) console.warn(`! notes ${w}`);
   for (const p of problems) console.error(`✗ notes ${p}`);
   if (problems.length) process.exitCode = 1;
@@ -228,6 +231,7 @@ function main() {
     const certDir = path.join(OUT_ROOT, pack.certId);
     fs.mkdirSync(certDir, { recursive: true });
     indexLines.push(`  ${pack.certId}: {`);
+    const certQuestions = []; // every question written, for the notes' practice ids
     for (const d of pack.domains) {
       const src = pack.source(d);
       if (!fs.existsSync(src)) {
@@ -245,11 +249,12 @@ function main() {
         }
       }
       fs.writeFileSync(path.join(certDir, `d${d}.json`), JSON.stringify(questions));
+      certQuestions.push(...questions);
       indexLines.push(`    '${d}': () => require('./${pack.certId}/d${d}.json') as PackQuestion[],`);
       total += questions.length;
     }
     indexLines.push('  },');
-    notesLines.push(buildNotes(pack, certDir));
+    notesLines.push(buildNotes(pack, certDir, certQuestions));
   }
   indexLines.push('};', '');
   // Study notes: one lazily parsed pack per certification.

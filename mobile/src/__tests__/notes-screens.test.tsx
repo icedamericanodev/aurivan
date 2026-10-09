@@ -5,7 +5,8 @@
  * - Every section of a subtopic renders, in light and dark, with the table
  *   both side by side and stacked (large text); a broken drawing is skipped.
  * - Notes home, a domain, and a subtopic render; "Mark as read" saves;
- *   "Practice this domain" starts a session; search finds a note.
+ *   "Practice this domain" starts a session; "Practice this concept"
+ *   starts exactly the note's questions; search finds a note.
  * - The Learn tab shows the Study notes row only when there are notes.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
@@ -309,6 +310,46 @@ describe('screens', () => {
     expect(s.title).toBe('IS Operations practice');
     expect(s.questionIds.every((q) => q.startsWith('d4_'))).toBe(true);
     expect(mockPush).toHaveBeenCalledWith('/session');
+  });
+
+  it('subtopic screen: Practice this concept starts exactly the note\'s questions', () => {
+    mockParams = { id: '4B1.2' };
+    mount(<NoteSubtopicScreen />);
+    // Helper line names the set size (never the bank size).
+    expect(allText()).toContain('3 questions that test this idea.');
+    const btn = pressable('Practice this concept');
+    expect(btn.props.accessibilityRole).toBe('button');
+    expect(btn.props.accessibilityHint).toBe('Starts 3 questions on Recovery Objectives: RPO, RTO, MTD and MBCO');
+    press('Practice this concept');
+    const s = useSession.getState().active!;
+    expect(s.mode).toBe('practice');
+    expect(s.title).toBe('Recovery Objectives: RPO, RTO, MTD and MBCO');
+    expect(s.questionIds).toEqual(['d4_005', 'd4_020', 'd4_062']);
+    expect(mockPush).toHaveBeenCalledWith('/session');
+  });
+
+  it('subtopic screen: a removed question id is skipped; no ids means no button', () => {
+    // A later content update removed one question: it is filtered out.
+    const n = note('4B1.2');
+    const saved = n.practiceIds;
+    n.practiceIds = ['d4_005', 'd4_999'];
+    try {
+      mockParams = { id: '4B1.2' };
+      mount(<NoteSubtopicScreen />);
+      expect(allText()).toContain('1 question that tests this idea.');
+      press('Practice this concept');
+      expect(useSession.getState().active!.questionIds).toEqual(['d4_005']);
+    } finally {
+      n.practiceIds = saved;
+    }
+    act(() => {
+      r?.unmount();
+    });
+    // 1A1.1 lists no questions: only the domain practice is offered.
+    mockParams = { id: '1A1.1' };
+    mount(<NoteSubtopicScreen />);
+    expect(pressable('Practice this concept')).toBeUndefined();
+    expect(pressable('Practice this domain')).toBeDefined();
   });
 
   it('subtopic screen: an unknown id shows a friendly empty state', () => {

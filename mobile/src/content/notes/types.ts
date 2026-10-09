@@ -55,6 +55,13 @@ export interface NoteSubtopic {
   keyTerms: NoteTerm[];
   analogy?: string;
   memoryAid?: string;
+  /**
+   * Bank question ids that test exactly this idea ("d4_012"), all from this
+   * domain. Drives the "Practice this concept" button; absent when none.
+   * The build checks every id exists, so the list is trustworthy, but the
+   * screen still drops any id a later content update removed.
+   */
+  practiceIds?: string[];
 }
 
 /** One outline topic (e.g. 4B1) and its subtopics, foundation first. */

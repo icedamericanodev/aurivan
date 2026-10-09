@@ -5,17 +5,22 @@
  * section in its fixed order (components/notes.tsx → NoteBody). At the end:
  *   - "Mark as read": a toggle saved on the phone (progress store,
  *     `notesRead`, keyed by subtopic id like "4B1.2");
+ *   - "Practice this concept" (only when the note lists questions in
+ *     `practiceIds`): exactly those questions, as a normal practice
+ *     session, so answers count toward progress and spaced review;
  *   - "Practice this domain": 10 questions from this domain;
  *   - "Next: …": the next subtopic in reading order, so a learner can
  *     keep going without stepping back to the list.
  */
 import { router, useLocalSearchParams } from 'expo-router';
+import { View } from 'react-native';
 import { Check, ICON_STROKE } from '../../../components/icons';
 import { NoteBody } from '../../../components/notes';
 import { Button, Enter, Gap, ICON_SIZE, PushedHeader, Screen, Tag, T } from '../../../components/ui';
 import { EmptyScreen } from '../../../components/emptyScreen';
+import { findQuestion } from '../../../content/loader';
 import { findNote, noteDomain, noteSubtopics } from '../../../content/notes';
-import { guardedStart, startPractice } from '../../../lib/sessions';
+import { guardedStart, startFromIds, startPractice } from '../../../lib/sessions';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
 import { space } from '../../../theme/tokens';
@@ -53,6 +58,13 @@ export default function NoteSubtopicScreen() {
       () => router.push('/session'),
     );
 
+  // "Practice this concept": the questions this note lists, minus any a
+  // content update removed. Empty → no button (most notes have some).
+  const conceptIds = (note.practiceIds ?? []).filter((q) => findQuestion(cert.id, q));
+  const n = conceptIds.length;
+  const practiseConcept = () =>
+    guardedStart(() => startFromIds(cert.id, conceptIds, note.name), () => router.push('/session'));
+
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title={domain.short} onBack={goBack} />
@@ -77,7 +89,23 @@ export default function NoteSubtopicScreen() {
           iconLeading
           onPress={() => setNoteRead(cert.id, note.id, !isRead)}
         />
+        {n > 0 && (
+          // The helper line sits right under its button, so they read as one.
+          <View style={{ gap: space.xs }}>
+            <Button
+              label="Practice this concept"
+              accessibilityHint={`Starts ${n} ${n === 1 ? 'question' : 'questions'} on ${note.name}`}
+              onPress={practiseConcept}
+            />
+            <T v="meta" style={{ textAlign: 'center' }}>
+              {`${n} ${n === 1 ? 'question that tests' : 'questions that test'} this idea. Answers count toward your progress.`}
+            </T>
+          </View>
+        )}
+        {/* One primary action per screen: the domain set steps back when
+            the concept set is there. */}
         <Button
+          kind={n > 0 ? 'secondary' : 'primary'}
           label="Practice this domain"
           accessibilityHint={`Starts 10 questions from ${domain.name}`}
           onPress={practise}

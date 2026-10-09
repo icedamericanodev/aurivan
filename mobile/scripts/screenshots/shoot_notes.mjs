@@ -1,5 +1,6 @@
 // Study notes screenshots (393x852 @2x): Learn entry, notes home, Domain 4,
-// a subtopic with a compare table + diagram (4B1.2), a long subtopic (1A2.4),
+// a subtopic with a compare table + diagram (4B1.2) and its "Practice this
+// concept" button + the session it opens, a long subtopic (1A2.4),
 // and search results for "RPO". Usage: node shoot_notes.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=notes bash scripts/screenshots/run.sh <out> <dark|light>
 import { createRequire } from 'module';
@@ -39,6 +40,13 @@ await scrollBy(700); await snap('n03b-domain4-topics');
 await open('/notes/subtopic/4B1.2'); await snap('n04-4B1.2-top');
 await scrollTo('Compare'); await snap('n04b-4B1.2-compare');
 await scrollTo('Illustration'); await snap('n04c-4B1.2-diagram');
+// The end of the note: "Practice this concept" + helper, then the session it opens.
+await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('n04d-4B1.2-practice');
+// The demo seed has an unfinished session (that would ask "Replace it?"), so drop it first.
+await page.evaluate(() => localStorage.removeItem('aurivan.session.v1'));
+await open('/notes/subtopic/4B1.2'); await page.mouse.wheel(0, 20000); await page.waitForTimeout(700);
+await page.getByRole('button', { name: 'Practice this concept' }).click();
+await page.waitForTimeout(1800); await snap('n04e-4B1.2-concept-session');
 await open('/notes/subtopic/1A2.4'); await snap('n05-1A2.4-top');
 for (let i = 1; i <= 4; i++) { await scrollBy(700); await snap(`n05${'bcde'[i - 1]}-1A2.4-scroll${i}`); }
 await page.mouse.wheel(0, 20000); await page.waitForTimeout(700); await snap('n05f-1A2.4-end');
