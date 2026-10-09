@@ -4,6 +4,19 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v11.1] — Practice what you just read
+
+### New
+- Every Topics note now has a Practice this concept button that quizzes you on just that idea.
+- New study notes on AI governance, IT checks during mergers and acquisitions, ESG data, and machine-learning systems.
+
+### Improved
+- The study notes were reviewed by exam experts: wording now matches how ISACA phrases the exam, and examples are fresh scenarios.
+- Notes across all five domains now agree on who can accept risk, who approves changes and when an auditor must step aside.
+
+### Fixed
+- A risk-appetite question now matches the study notes on who may keep risk above appetite.
+
 ## [v11.0.1] — Small fixes
 
 ### Fixed
