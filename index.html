@@ -4585,7 +4585,7 @@ header {
 .home-cta.secondary, .act-btn, .resume-btn, .study-rec-btn, .mock-confirm-btn.cancel, .fb-btn.cancel, .flag-btn.cancel, .session-btn {
   background: transparent; color: var(--text); border: 1.5px solid var(--control); border-radius: 999px; font-family: var(--f-sans); font-weight: 600;
 }
-.home-cta.secondary:hover, .act-btn:hover, .study-rec-btn:hover, .session-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--text2); transform: none; box-shadow: none; }
+.home-cta.secondary:hover, .act-btn:hover, .act-btn.secondary:hover, .study-rec-btn:hover, .session-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--text2); transform: none; box-shadow: none; }
 .submit-btn { min-height: 56px; font-size: 17px; }
 .submit-btn:disabled { background: var(--surface2); color: var(--muted); border-color: var(--surface2); opacity: 1; }
 .ctrl-btn, .mock-chip, .ss-chip, .session-start .ss-chip, .subtopic-chip, .fb-type, .gloss-chip, .bk-tag-chip, .notes-filter-btn {
@@ -5034,17 +5034,19 @@ body.gt-zoom-open { overflow: hidden; }
 .gt-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
 /* "Practice this concept": the subtopic's own short question set */
 .gt-practice {
-  display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-top: 22px; max-width: 68ch;
-  background: var(--surface2); border-radius: 16px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-top: 24px; max-width: 68ch;
+  background: var(--surface2); border-radius: 16px; padding: 12px 16px;
 }
 .gt-practice-btn {
   display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 999px; cursor: pointer;
   background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn); font: 600 16px/22px var(--f-sans);
 }
 .gt-practice-btn:hover { opacity: .92; }
-.gt-practice-sub { font: 500 14px/20px var(--f-sans); color: var(--text2); margin: 0; }
+.gt-practice-sub { flex: 1 1 220px; font: 500 14px/20px var(--f-sans); color: var(--text2); margin: 0; }
+.gt-foot-next { margin-top: 12px; }
 @media (max-width: 600px) {
-  .gt-practice { flex-direction: column; align-items: stretch; }
+  .gt-practice { flex-direction: column; align-items: stretch; gap: 4px; }
+  .gt-practice-sub { flex: none; }
   .gt-practice-btn { justify-content: center; }
   .gt-practice-sub { text-align: center; }
 }
@@ -5056,10 +5058,15 @@ body.gt-zoom-open { overflow: hidden; }
 .cp-strip-t { flex: 1 1 200px; min-width: 0; margin: 0; font: 600 15px/20px var(--f-sans); color: var(--text); }
 .cp-strip-k { display: block; font: 600 13px/18px var(--f-sans); color: var(--accent-text); }
 .cp-strip-n { font: 500 14px/20px var(--f-sans); color: var(--text2); white-space: nowrap; }
+.cp-strip .gt-btn-ghost { margin-left: -4px; min-height: 48px; }
+.cp-strip-t:focus { outline: none; }
+.cp-strip-t:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .cp-done { margin-bottom: 0; }
+.cp-done:focus { outline: none; }
 .cp-done .sd-label { color: var(--accent-text); }
 .cp-done .sd-name { font: 600 16px/22px var(--f-sans); color: var(--text); margin: 0 0 10px; }
 .cp-done .act-btn { min-height: 48px; padding: 0 20px; font-size: 15px; }
+@media (max-width: 600px) { .cp-done .sd-actions .act-btn { width: 100%; justify-content: center; text-align: center; } }
 @media (max-width: 600px) {
   .gt-title { font-size: 32px; line-height: 38px; }
   .gt-body { padding-left: 0; }
@@ -7012,13 +7019,17 @@ function gtValue(val, t) {
   }
   return '';
 }
-function gtFooter(itemId, domainId) {
+// Footer order (matches the mobile app): Mark as read, then the optional
+// "Practice this concept" block, then the domain-practice link.
+function gtFooter(itemId, domainId, practiceHtml) {
   var done = !!getTopicReviewedSet()[itemId];
+  var domainBtn = domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practice Domain ' + domainId + ' questions ' + ico('chevron', 16) + '</button>' : '';
   return '<div class="gt-foot">'
     + '<button class="gt-btn-secondary gt-read-btn" aria-pressed="' + done + '" onclick="event.stopPropagation();toggleConceptReviewed(\'' + escapeHtml(itemId) + '\')">'
     + ico('check', 18) + '<span>' + (done ? 'Read' : 'Mark as read') + '</span></button>'
-    + (domainId ? '<button class="gt-btn-ghost" onclick="event.stopPropagation();startTopicPractice(\'' + domainId + '\')">Practice Domain ' + domainId + ' questions ' + ico('chevron', 16) + '</button>' : '')
-    + '</div>';
+    + (practiceHtml ? '' : domainBtn)
+    + '</div>'
+    + (practiceHtml ? practiceHtml + (domainBtn ? '<div class="gt-foot gt-foot-next">' + domainBtn + '</div>' : '') : '');
 }
 
 // v2 body, in the documented order.
@@ -7122,7 +7133,7 @@ function renderItemBody(raw, domainId, searchQ, itemId) {
   var t = topicSearchTokens(searchQ);
   var html = gtStr(raw.definition) ? renderItemBodyV2(raw, domainId, t) : renderItemBodyV1(raw, domainId, t);
   if (!html) html = '<p class="gt-p gt-muted">More on this topic is coming soon.</p>';
-  return html + gtPracticeBlock(raw, itemId || raw.id || '', domainId) + gtFooter(itemId || raw.id || '', domainId);
+  return html + gtFooter(itemId || raw.id || '', domainId, gtPracticeBlock(raw, itemId || raw.id || '', domainId));
 }
 
 // ── "Practice this concept" (practice_ids on a subtopic) ──
@@ -7153,7 +7164,7 @@ function gtPracticeBlock(raw, itemId, domainId) {
   return '<div class="gt-practice">'
     + '<button type="button" class="gt-practice-btn" aria-describedby="gtps-' + idE + '" onclick="event.stopPropagation();startConceptPractice(\'' + idE + '\')">'
     + ico('play', 16) + '<span>Practice this concept</span></button>'
-    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' quick question' : ' quick questions') + ' on this idea</p>'
+    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' question that tests' : ' questions that test') + ' this concept. Answers count toward your progress.</p>'
     + '</div>';
 }
 
@@ -7707,6 +7718,17 @@ var conceptPracticeMode = false;
 var conceptPracticeList = [];
 var conceptPracticeIndex = 0;
 var conceptPracticeCtx = null; // { itemId, name, domain, answered, correct }
+var conceptPracticeDone = false; // the end card is showing
+
+// Smooth scrolling, unless the learner asked the OS for reduced motion.
+function cpScrollBehavior() {
+  return (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth';
+}
+function cpScrollTo(el) {
+  if (!el) return;
+  var top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 20;
+  window.scrollTo({ top: Math.max(0, top), behavior: cpScrollBehavior() });
+}
 
 function findTopicItem(itemId) {
   var data = buildConceptsData();
@@ -7737,7 +7759,7 @@ function startConceptPractice(itemId) {
     return;
   }
   var qs = conceptPracticeQuestions(found.item.raw, d);
-  if (!qs.length) { showToast('No practice questions for this idea yet', 'info', 2200); return; }
+  if (!qs.length) { showToast('No practice questions for this concept yet', 'info', 2200); return; }
   for (var i = qs.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
     var tmp = qs[i]; qs[i] = qs[j]; qs[j] = tmp;
@@ -7752,11 +7774,14 @@ function startConceptPractice(itemId) {
   var genBtn = document.querySelector('.gen-btn');
   if (genBtn) genBtn.style.display = 'flex';
   showNextConcept();
+  // Focus moves with the learner: start on the strip naming the concept.
+  var title = document.getElementById('cpStripTitle');
+  if (title) title.focus({ preventScroll: true });
 }
 
 function conceptStripHtml(ctx, pos, total) {
   return '<div class="cp-strip" id="cpStrip">'
-    + '<p class="cp-strip-t"><span class="cp-strip-k">Practicing this concept</span>' + escapeHtml(ctx.name) + '</p>'
+    + '<p class="cp-strip-t" id="cpStripTitle" tabindex="-1"><span class="cp-strip-k">Practicing this concept</span>' + escapeHtml(ctx.name) + '</p>'
     + '<span class="cp-strip-n">' + pos + ' of ' + total + '</span>'
     + '<button type="button" class="gt-btn-ghost" onclick="backToConceptTopic()">Back to topic</button>'
     + '</div>';
@@ -7773,15 +7798,11 @@ function showNextConcept() {
   S.current = q;
   S.qn++;
   saveState();
-  document.getElementById('genBtnText').textContent = 'Next question (' + (conceptPracticeIndex + 1) + '/' + total + ')';
+  document.getElementById('genBtnText').textContent = 'Next question'; // the strip shows "N of M"
   renderQuestion(q);
   area.insertAdjacentHTML('afterbegin', conceptStripHtml(ctx, conceptPracticeIndex + 1, total));
   if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
-  setTimeout(function() {
-    var rect = area.getBoundingClientRect();
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    window.scrollTo({ top: scrollTop + rect.top - 20, behavior: 'smooth' });
-  }, 100);
+  setTimeout(function() { cpScrollTo(area); }, 100);
 }
 
 // Called once per graded practice question (answer or timeout).
@@ -7798,12 +7819,13 @@ function showConceptPracticeDone() {
   if (!ctx || !area) return;
   var total = conceptPracticeList.length;
   var idE = escapeHtml(ctx.itemId);
+  conceptPracticeDone = true;
   var note = ctx.answered < total
     ? 'You answered ' + ctx.answered + ' of ' + total + '.'
-    : (ctx.correct === total ? 'All correct. This idea is sticking.' : 'Reread the notes for this idea, then try the set again.');
-  area.innerHTML = '<div class="session-debrief cp-done">'
+    : (ctx.correct === total ? 'All correct. This concept is sticking.' : 'Reread the notes for this concept, then try the set again.');
+  area.innerHTML = '<div class="session-debrief cp-done" id="cpDone" tabindex="-1" role="region" aria-labelledby="cpDoneTitle">'
     + '<div class="sd-head">'
-    + '<div class="sd-label">Concept practice complete</div>'
+    + '<div class="sd-label" id="cpDoneTitle" role="heading" aria-level="2">Concept practice complete</div>'
     + '<p class="sd-name">' + escapeHtml(ctx.name) + '</p>'
     + '<div class="sd-score"><span class="sd-num">' + ctx.correct + '</span><span class="sd-of">/ ' + total + ' correct</span></div>'
     + '<div class="sd-pct">' + escapeHtml(note) + '</div>'
@@ -7813,7 +7835,13 @@ function showConceptPracticeDone() {
     + '<button type="button" class="act-btn secondary" onclick="startConceptPractice(\'' + idE + '\')">Practice again</button>'
     + '<button type="button" class="act-btn secondary" onclick="backToPractice();if(sessionGoal===null)showSessionStart();">Keep practicing</button>'
     + '</div></div>';
+  // The end card's own buttons are the next step; hide the big Start button.
   document.getElementById('genBtnText').textContent = 'Start Practice';
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'none';
+  var card = document.getElementById('cpDone');
+  cpScrollTo(card);
+  card.focus({ preventScroll: true });
 }
 
 // Return to the subtopic the set came from, opened and scrolled into view.
@@ -7824,13 +7852,26 @@ function backToConceptTopic() {
   topicState.domain = ctx.domain;
   switchTab('topics');
   jumpToSubtopic(ctx.itemId);
+  // Focus the subtopic's row so keyboard users land where they left off.
+  var row = document.getElementById('ni-' + ctx.itemId);
+  var rowBtn = row && row.querySelector('.gt-row-btn');
+  if (rowBtn) rowBtn.focus({ preventScroll: true });
 }
 
 // Leaving the set (tab switch, profile switch, reset): drop the mode flag.
 function resetConceptPractice() {
+  var wasOn = conceptPracticeMode || conceptPracticeDone;
   conceptPracticeMode = false;
+  conceptPracticeDone = false;
   var strip = document.getElementById('cpStrip');
   if (strip) strip.remove();
+  var done = document.getElementById('cpDone');
+  if (done) done.remove();
+  if (!wasOn) return;
+  var label = document.getElementById('genBtnText');
+  if (label) label.textContent = 'Start Practice';
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = '';
 }
 
 
@@ -10185,6 +10226,15 @@ document.addEventListener('keydown', function(e) {
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
 
   var key = e.key.toUpperCase();
+  // Answer shortcuts belong to the screen showing the question: practice keys
+  // only on Practice, mock keys only on Mock, so a hidden practice question is
+  // never answered from another tab.
+  var onPractice = S.activeTab === 'practice';
+  var onMock = S.activeTab === 'mock';
+  // Enter/Space on a focused control (a link, "Back to topic", Next…) is that
+  // control's own click; only answers, confidence and Submit use the shortcut.
+  var ctl = e.target && e.target.closest ? e.target.closest('button, a[href], summary, [role="button"]') : null;
+  var ownsKey = !!ctl && !ctl.matches('.opt, .conf-btn, #submitBtn');
 
   // A/B/C/D â€” select answer option (Phase 2b: options stay enabled until submit)
   if (['A','B','C','D'].indexOf(key) !== -1) {
@@ -10192,7 +10242,7 @@ document.addEventListener('keydown', function(e) {
     if (rPanelShowing) return; // don't grab keys after grading
     // Practice options — pickAnswer is bound via onclick on each .opt
     var opts = document.querySelectorAll('.opts:not([id="mOpts"]) .opt:not(:disabled)');
-    if (opts.length > 0) {
+    if (onPractice && opts.length > 0) {
       var idx = ['A','B','C','D'].indexOf(key);
       if (opts[idx]) {
         opts[idx].click();
@@ -10201,7 +10251,7 @@ document.addEventListener('keydown', function(e) {
     }
     // Mock exam options
     var mOpts = document.querySelectorAll('#mOpts .opt:not(:disabled)');
-    if (mOpts.length > 0) {
+    if (onMock && mOpts.length > 0) {
       var midx = ['A','B','C','D'].indexOf(key);
       if (mOpts[midx]) {
         mOpts[midx].click();
@@ -10212,12 +10262,14 @@ document.addEventListener('keydown', function(e) {
   }
 
   // 1/2/3 â€” confidence shortcuts (Sure/Educated/Guessing)
-  if (key === '1') { var cb = document.querySelector('.conf-btn[data-conf="sure"]'); if (cb && !cb.disabled) { cb.click(); e.preventDefault(); } }
-  if (key === '2') { var cb2 = document.querySelector('.conf-btn[data-conf="educated"]'); if (cb2 && !cb2.disabled) { cb2.click(); e.preventDefault(); } }
-  if (key === '3') { var cb3 = document.querySelector('.conf-btn[data-conf="guessing"]'); if (cb3 && !cb3.disabled) { cb3.click(); e.preventDefault(); } }
+  if (onPractice) {
+    if (key === '1') { var cb = document.querySelector('.conf-btn[data-conf="sure"]'); if (cb && !cb.disabled) { cb.click(); e.preventDefault(); } }
+    if (key === '2') { var cb2 = document.querySelector('.conf-btn[data-conf="educated"]'); if (cb2 && !cb2.disabled) { cb2.click(); e.preventDefault(); } }
+    if (key === '3') { var cb3 = document.querySelector('.conf-btn[data-conf="guessing"]'); if (cb3 && !cb3.disabled) { cb3.click(); e.preventDefault(); } }
+  }
 
   // Enter/Space â€” Submit (Phase 2b) OR Next Question
-  if (key === 'ENTER' || e.key === ' ') {
+  if (onPractice && !ownsKey && (key === 'ENTER' || e.key === ' ')) {
     var rPanel = document.getElementById('rPanel');
     if (rPanel && rPanel.classList.contains('show')) {
       e.preventDefault();
