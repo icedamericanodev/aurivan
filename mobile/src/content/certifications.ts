@@ -107,6 +107,7 @@ export const CERTIFICATIONS: Certification[] = [
       'Think like a senior auditor applied to AI: governance, accountability, ' +
       'and evidence over hype. ' + ISACA_MINDSET,
     trademarkNotice: ISACA_TM('AAIA', false),
+    trademarkRegistered: false,
     status: 'coming_soon',
     exam: {
       questions: 90,
@@ -167,4 +168,39 @@ export const DEFAULT_CERT_ID = 'cisa';
  */
 export function domainColor(tone: DomainTone, isDark: boolean): string {
   return (isDark ? domainPalette.dark : domainPalette.light)[tone];
+}
+
+const ISSUER_MARK: Record<Certification['issuer'], string> = { ISACA: 'ISACA®', ISC2: 'ISC2' };
+const ISSUER_OWNER: Record<Certification['issuer'], string> = { ISACA: 'ISACA', ISC2: 'ISC2, Inc.' };
+
+/** Ends a sentence without doubling a period ("ISC2, Inc." stays as is). */
+const sentence = (s: string) => (s.endsWith('.') ? s : `${s}.`);
+
+/** "A", "A and B", "A, B and C" (or "or"). */
+function joinList(items: string[], word: 'and' | 'or' = 'and'): string {
+  if (items.length <= 1) return items.join('');
+  return `${items.slice(0, -1).join(', ')} ${word} ${items[items.length - 1]}`;
+}
+
+/**
+ * One combined notice for every certification the app names, grouped by owner:
+ * "Aurivan is not affiliated with or endorsed by ISACA® or ISC2. CISA®, CISM® and
+ * CRISC® are registered trademarks of ISACA. AAIA is a trademark of ISACA. …"
+ * Same legal content as each cert's own notice, without repeating it per cert.
+ */
+export function combinedTrademarkNotice(certs: Certification[] = CERTIFICATIONS): string {
+  const issuers = [...new Set(certs.map((c) => c.issuer))];
+  const parts = [`Aurivan is not affiliated with or endorsed by ${joinList(issuers.map((i) => ISSUER_MARK[i]), 'or')}.`];
+  for (const issuer of issuers) {
+    const own = certs.filter((c) => c.issuer === issuer);
+    const registered = own.filter((c) => c.trademarkRegistered !== false).map((c) => `${c.name}®`);
+    const plain = own.filter((c) => c.trademarkRegistered === false).map((c) => c.name);
+    if (registered.length) {
+      parts.push(sentence(`${joinList(registered)} ${registered.length > 1 ? 'are registered trademarks' : 'is a registered trademark'} of ${ISSUER_OWNER[issuer]}`));
+    }
+    if (plain.length) {
+      parts.push(sentence(`${joinList(plain)} ${plain.length > 1 ? 'are trademarks' : 'is a trademark'} of ${ISSUER_OWNER[issuer]}`));
+    }
+  }
+  return parts.join(' ');
 }

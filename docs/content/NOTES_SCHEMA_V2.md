@@ -51,6 +51,7 @@ v2 fixes the structure, not just the wording.
 | | `id` | `"4B1.2"` | Topic code, then a running number. Keep existing ids; new ones continue the sequence |
 | | `name` | string | Title Case, a noun phrase (not a question) |
 | | `legacy_ids` | string[] | Keep as is (it carries learners' reviewed ticks over). New subtopics: `[]` |
+| | `practice_ids` | string[] | Optional. Bank question ids (`d4_012`) that test this concept; drives the "Practice this concept" button. Same domain only, each question under one subtopic, never shown as a count of the bank. Omit when empty |
 | 1 | `definition` | string | **In one line.** 12–30 words, the term first, plain English, jargon glossed |
 | 2 | `why_it_matters` | string | 1–2 sentences on the risk or business purpose, at most 45 words |
 | 3 | `how_it_works` | string[3–6] | One idea per bullet, parallel grammar, at most 30 words each |
@@ -71,6 +72,9 @@ Target length: 180–380 words per subtopic, counting every text field except
 - **Original wording only.** Never copy or closely paraphrase the ISACA Review
   Manual, QAE or other prep material. Public framework names may be explained in
   our own words.
+- **Examples must not retell a bank question.** Teach the same rule with a fresh
+  scenario (different industry, roles and numbers), so practice questions still test
+  reasoning, not recall. `lint_notes.py` warns above 0.25 word overlap.
 - **Agree with the reviewed question bank** (`data/originals/d{N}.json`). Grep it
   for the rule you teach.
 - **The auditor recommends and reports; management decides and owns the risk.**

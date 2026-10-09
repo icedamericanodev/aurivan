@@ -49,6 +49,18 @@ describe('session lifecycle', () => {
     expect(selectCert(useProgress.getState(), 'cisa').mocks[0].minutesUsed).toBe(60);
   });
 
+  it('a custom set (e.g. "Practice this concept") holds exactly the given questions, in order', () => {
+    const s = startFromIds('cisa', ['d4_062', 'd4_005', 'gone_001', 'd4_005', 'd4_020'], 'Recovery objectives')!;
+    // Missing ids dropped, the repeat asked once, nothing else added.
+    expect(s.questionIds).toEqual(['d4_062', 'd4_005', 'd4_020']);
+    expect(Object.keys(s.perms).sort()).toEqual(['d4_005', 'd4_020', 'd4_062']);
+    // Plain practice mode: the session screen records each answer to
+    // progress + spaced review exactly as for any other practice.
+    expect(s.mode).toBe('practice');
+    expect(s.deadline).toBeUndefined();
+    expect(s.title).toBe('Recovery objectives');
+  });
+
   it('early-ended practice scores domains on answered questions only', () => {
     const ids = getAllQuestions('cisa').slice(0, 10).map((q) => q.id);
     startFromIds('cisa', ids, 'Practice');

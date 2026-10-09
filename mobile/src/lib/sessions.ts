@@ -66,9 +66,15 @@ export function startReview(certId: string, limit = 30) {
   return newSession('review', certId, 'Review', ids);
 }
 
-/** Practise an exact list of questions (saved questions, missed ones…). */
+/**
+ * Practise an exact list of questions (saved questions, missed ones, the
+ * questions behind a study note…). Same 'practice' mode as any other
+ * practice, so grading, progress and spaced review all work as usual.
+ * Order is kept; a repeated id is asked once; ids that no longer exist
+ * are dropped by newSession (null when none are left).
+ */
 export function startFromIds(certId: string, ids: string[], title: string) {
-  return newSession('practice', certId, title, [...ids]);
+  return newSession('practice', certId, title, [...new Set(ids)]);
 }
 
 export function startBookmarks(certId: string) {

@@ -191,9 +191,11 @@ kill %1
 - Mobile agents: `mobile-app-engineer`, `mobile-qa-tester`, `mobile-ux-reviewer`,
   `mobile-security-auditor`, `app-store-compliance-reviewer`. Multi-cert content
   agents: `isaca-concept-reviewer`, `isaca-mindset-coach`, `qa-question-tester`,
-  `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups).
+  `cert-blueprint-researcher`. Product/marketing: `product-manager`, `growth-marketer`, `brand-logo-designer` (logo, icon, splash, lockups). Learning and motivation: `behavioral-scientist` (habits, nudges, rewards, pacing), `learning-game-designer` (brain games, names, badges).
   Notes and web: `cisa-notes-curator` (notes structure and rewrites), `learner-reader`
-  (first-time candidate read-through), `web-app-engineer` (index.html).
+  (first-time candidate read-through), `web-app-engineer` (index.html),
+  `notes-application-tester` (do the notes let a learner answer the bank?),
+  `isaca-language-reviewer` (ISACA terminology and exam phrasing).
 
 ## Branching + GitHub
 

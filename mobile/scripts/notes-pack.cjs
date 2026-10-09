@@ -17,6 +17,11 @@
  *      src/content/certifications.ts), legacy_ids (web-only tick carry-over).
  *   4. Checks every illustration. An SVG that is not simple, well-formed
  *      and safe is DROPPED with a warning (the screen just skips it).
+ *   5. Carries `practice_ids` (the bank questions that test a subtopic) as
+ *      `practiceIds`. When the build passes the question ids it just wrote,
+ *      every practice id must exist and belong to the subtopic's domain;
+ *      a bad id is a PROBLEM (the build fails), because a "Practice this
+ *      concept" button that opens the wrong questions would mislead.
  */
 
 // Elements our diagrams may use. Anything else (script, image, foreignObject,
@@ -90,8 +95,44 @@ function prepareIllustration(ill) {
 const str = (v) => (typeof v === 'string' ? v.trim() : '');
 const strList = (v) => (Array.isArray(v) ? v.map(str).filter(Boolean) : []);
 
+/**
+ * Check a subtopic's `practice_ids` and return the clean list (may be empty).
+ * `questionDomains` is a Map of question id → domain id ("d4_012" → "4"),
+ * or null when the caller has no question list (then only the shape is checked).
+ * Bad ids go to `problems`: the build fails rather than ship a broken link.
+ */
+function preparePracticeIds(raw, domainId, where, questionDomains, problems) {
+  if (raw == null) return [];
+  if (!Array.isArray(raw)) {
+    problems.push(`${where}: practice_ids must be a list of question ids`);
+    return [];
+  }
+  const out = [];
+  for (const item of raw) {
+    const id = str(item);
+    if (!id) {
+      problems.push(`${where}: practice_ids has an empty or non-text entry`);
+      continue;
+    }
+    if (out.includes(id)) continue; // a repeat would ask the same question twice
+    if (questionDomains) {
+      const qDomain = questionDomains.get(id);
+      if (qDomain === undefined) {
+        problems.push(`${where}: practice id ${id} is not in the question bank`);
+        continue;
+      }
+      if (qDomain !== domainId) {
+        problems.push(`${where}: practice id ${id} is from domain ${qDomain}, not domain ${domainId}`);
+        continue;
+      }
+    }
+    out.push(id);
+  }
+  return out;
+}
+
 /** One subtopic → app shape. `problems` = fatal (subtopic skipped); `warnings` = a part dropped. */
-function toSubtopic(s, domainId, topicId, problems, warnings) {
+function toSubtopic(s, domainId, topicId, problems, warnings, questionDomains) {
   const id = str(s && s.id);
   const where = id || `${topicId}.?`;
   const sub = {
@@ -150,6 +191,9 @@ function toSubtopic(s, domainId, topicId, problems, warnings) {
   }
   if (str(s.analogy)) sub.analogy = str(s.analogy);
   if (str(s.memory_aid)) sub.memoryAid = str(s.memory_aid);
+  // Optional: omitted when empty, so the screen simply hides the button.
+  const practiceIds = preparePracticeIds(s.practice_ids, domainId, where, questionDomains, problems);
+  if (practiceIds.length) sub.practiceIds = practiceIds;
   return sub;
 }
 
@@ -187,10 +231,17 @@ function emptyPack(certId) {
  * Build the notes pack from the raw notes file.
  * Returns { pack, problems, warnings, skipped } where `skipped` names why
  * the pack is empty (e.g. "schema v1"), or null.
+ *
+ * `opts.questions` (optional): the cert's questions as [{ id, domainId }]
+ * (the content pack). When given, every `practice_ids` entry is checked
+ * against it. build-content.mjs always passes it; tests may leave it out.
  */
-function buildNotesPack(raw, certId = 'cisa') {
+function buildNotesPack(raw, certId = 'cisa', opts = {}) {
   const problems = [];
   const warnings = [];
+  const questionDomains = Array.isArray(opts.questions)
+    ? new Map(opts.questions.map((q) => [String(q.id), String(q.domainId)]))
+    : null;
   if (!raw || typeof raw !== 'object' || raw.schema_version !== 2) {
     const v = raw && typeof raw === 'object' && raw.schema_version != null ? raw.schema_version : 1;
     return { pack: emptyPack(certId), problems, warnings, skipped: `schema v${v}` };
@@ -202,7 +253,7 @@ function buildNotesPack(raw, certId = 'cisa') {
       const topics = (Array.isArray(d.topics) ? d.topics : []).map((t) => {
         const topicId = str(t && t.topic_id);
         const subtopics = (Array.isArray(t.subtopics) ? t.subtopics : [])
-          .map((s) => toSubtopic(s || {}, domainId, topicId, problems, warnings))
+          .map((s) => toSubtopic(s || {}, domainId, topicId, problems, warnings, questionDomains))
           .filter(Boolean);
         return {
           id: topicId,

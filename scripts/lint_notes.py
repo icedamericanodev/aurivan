@@ -19,7 +19,7 @@ ECO = ROOT / "docs" / "content" / "CISA_ECO.md"
 
 REQUIRED_SUB = ["id", "name", "definition", "why_it_matters", "how_it_works",
                 "example", "isaca_rule", "exam_traps", "key_terms"]
-OPTIONAL_SUB = ["legacy_ids", "compare", "types", "illustration", "analogy", "memory_aid"]
+OPTIONAL_SUB = ["legacy_ids", "practice_ids", "compare", "types", "illustration", "analogy", "memory_aid"]
 V1_FIELDS = ["summary", "key_point", "exam_tip", "common_mistakes", "categories"]
 EMOJI = re.compile("[\U0001F300-\U0001FAFF☀-➿]")
 BRITISH = re.compile(r"\b(\w+is(e|ed|es|ing|ation)|colour\w*|behaviour\w*|centre\w*|"
@@ -41,8 +41,37 @@ BRITISH_OK = {"raise", "raised", "raises", "raising", "advise", "advised", "advi
               "advertise", "advertised", "advertises", "advertising", "apprise", "apprised",
               "premised", "noises", "praised", "rises", "wisest", "wiser"}
 
+PRACTICE_SEEN = {}
+_BANK = None
+def bank_ids():
+    """Question ids in data/domain{1..5}.json (practice_ids must point at these)."""
+    global _BANK
+    if _BANK is None:
+        _BANK = set()
+        for n in range(1, 6):
+            f = ROOT / "data" / f"domain{n}.json"
+            if f.exists():
+                _BANK |= {q["id"] for q in json.loads(f.read_text())["questions"]}
+    return _BANK
+
 def words(s):
     return len(re.findall(r"[A-Za-z0-9][A-Za-z0-9'’/-]*", s or ""))
+
+EX_STOP = set("a an and are as at be by for from has have in is it its of on or that the their this to was were with "
+               "which what who will would should can may must not no than then there these they into over per each any "
+               "all most more less also when while if but so such only".split())
+EXAMPLE_OVERLAP_MAX = 0.25  # an example this close to a bank question gives the practice answer away
+
+def content_words(s):
+    return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in EX_STOP and len(w) > 2}
+
+def bank_items(n):
+    path = ROOT / "data" / "originals" / f"d{n}.json"
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text())
+    data = data["questions"] if isinstance(data, dict) else data
+    return [(q["id"], content_words(q["question"] + " " + q["options"][q["correct"]])) for q in data]
 
 def eco_codes():
     codes = []
@@ -87,6 +116,22 @@ def lint_sub(r, s, topic_id, seen_terms):
     for f in s:
         if f not in REQUIRED_SUB + OPTIONAL_SUB:
             r.err(where, f"unknown field '{f}'")
+    pids = s.get("practice_ids")
+    if pids is not None:
+        bank = bank_ids()
+        if not isinstance(pids, list) or not pids:
+            r.err(where, "practice_ids must be a non-empty list (omit it when there are none)")
+        else:
+            dom = "d" + str(s.get("id", "?"))[0] + "_"
+            for q in pids:
+                if q not in bank:
+                    r.err(where, f"practice_ids: {q} is not in the question bank")
+                elif not q.startswith(dom):
+                    r.err(where, f"practice_ids: {q} is from another domain")
+                elif q in PRACTICE_SEEN:
+                    r.err(where, f"practice_ids: {q} is also under {PRACTICE_SEEN[q]}")
+                else:
+                    PRACTICE_SEEN[q] = where
     if not str(s.get("id", "")).startswith(topic_id + "."):
         r.err(where, f"id does not start with {topic_id}.")
     name = s.get("name", "")
@@ -220,6 +265,7 @@ def lint_domain(r, dom, codes):
     if part_ids and part_ids != got and not dom.get("partial"):
         r.err(where, "parts.topic_ids do not list the topics in order")
     seen_terms, ids = {}, set()
+    bank = bank_items(n)
     for t in dom.get("topics", []):
         tw = t.get("topic_id", "?")
         for f in ["topic_id", "topic_name", "overview", "can_do", "subtopics"]:
@@ -238,6 +284,11 @@ def lint_domain(r, dom, codes):
                 r.err(s.get("id"), "duplicate id")
             ids.add(s.get("id"))
             lint_sub(r, s, tw, seen_terms)
+            ex = content_words(s.get("example", ""))
+            if ex and bank:
+                score, qid = max((len(ex & w) / max(1, len(ex | w)), q) for q, w in bank)
+                if score >= EXAMPLE_OVERLAP_MAX:
+                    r.warn(s.get("id"), f"example retells bank question {qid} (overlap {score:.2f}); use a fresh scenario")
     return len(ids)
 
 def main(argv):

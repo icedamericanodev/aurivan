@@ -6,12 +6,15 @@
  *   working and the Study notes entry hides itself until v2 lands.
  * - A v2 file gives typed, camelCase data; broken optional parts
  *   (illustration, compare table) are dropped, never fatal.
+ * - `practice_ids` reach the app as `practiceIds`; an id that is not in
+ *   the question bank (or is from another domain) is a build problem.
  * - The generated pack on disk matches what the pipeline makes from
  *   ../data/cisa_notes.json today.
  */
 import fs from 'fs';
 import path from 'path';
 import { generatedNotes } from '../content/generated';
+import { getAllQuestions } from '../content/loader';
 import type { NotesPack, NoteSubtopic } from '../content/notes/types';
 import { normalize, readCount, searchNotes, snippetAround } from '../engine/notesSearch';
 import fixture from './fixtures/notes-v2.json';
@@ -19,7 +22,11 @@ import fixture from './fixtures/notes-v2.json';
 // CommonJS on purpose (see the file header), so Jest loads it untransformed.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const notesPack = require('../../scripts/notes-pack.cjs') as {
-  buildNotesPack: (raw: unknown, certId?: string) => { pack: NotesPack; problems: string[]; warnings: string[]; skipped: string | null };
+  buildNotesPack: (
+    raw: unknown,
+    certId?: string,
+    opts?: { questions?: { id: string; domainId: string }[] },
+  ) => { pack: NotesPack; problems: string[]; warnings: string[]; skipped: string | null };
   prepareIllustration: (ill: unknown) => { ok: boolean; reason?: string; value?: NonNullable<NoteSubtopic['illustrations']>[number] };
 };
 const { buildNotesPack, prepareIllustration } = notesPack;
@@ -176,14 +183,53 @@ describe('notes pipeline: bad illustrations are dropped, not fatal', () => {
   });
 });
 
+describe('notes pipeline: practice ids ("Practice this concept")', () => {
+  // The real question bank, as build-content.mjs passes it.
+  const questions = getAllQuestions('cisa').map((q) => ({ id: q.id, domainId: q.domainId }));
+
+  it('carries practice_ids through as practiceIds, and omits them when absent', () => {
+    const r = buildNotesPack(clone(fixture), 'cisa', { questions });
+    expect(r.problems).toEqual([]);
+    expect(sub(r.pack, '4B1.2').practiceIds).toEqual(['d4_005', 'd4_020', 'd4_062']);
+    expect(sub(r.pack, '1A1.1')).not.toHaveProperty('practiceIds');
+    expect(JSON.stringify(r.pack)).not.toMatch(/practice_ids/);
+  });
+
+  it('rejects an id that is not in the question bank (the build fails)', () => {
+    const raw = clone(fixture);
+    raw.domains[0].topics[0].subtopics[0].practice_ids = ['d4_005', 'd4_999'];
+    const r = buildNotesPack(raw, 'cisa', { questions });
+    expect(r.problems).toEqual(['4B1.2: practice id d4_999 is not in the question bank']);
+    // The good id stays, the bad one never reaches the app.
+    expect(sub(r.pack, '4B1.2').practiceIds).toEqual(['d4_005']);
+  });
+
+  it('rejects an id from another domain, a non-list and blank entries', () => {
+    const raw = clone(fixture);
+    raw.domains[0].topics[0].subtopics[0].practice_ids = ['d1_021', '', 'd4_005', 'd4_005'];
+    raw.domains[1].topics[0].subtopics[0].practice_ids = 'd1_021';
+    const r = buildNotesPack(raw, 'cisa', { questions });
+    // Domains are built in number order, so domain 1's problem comes first.
+    expect(r.problems).toEqual([
+      '1A1.1: practice_ids must be a list of question ids',
+      '4B1.2: practice id d1_021 is from domain 1, not domain 4',
+      '4B1.2: practice_ids has an empty or non-text entry',
+    ]);
+    // A repeated id is kept once (it would otherwise be asked twice).
+    expect(sub(r.pack, '4B1.2').practiceIds).toEqual(['d4_005']);
+  });
+});
+
 describe('the generated notes pack matches the source file', () => {
   it('src/content/generated/cisa/notes.json is what the pipeline makes from ../data/cisa_notes.json', () => {
     const src = path.join(__dirname, '..', '..', '..', 'data', 'cisa_notes.json');
     const raw = fs.existsSync(src) ? JSON.parse(fs.readFileSync(src, 'utf8')) : null;
-    const expected = buildNotesPack(raw).pack;
+    // Same inputs as the build: the notes plus the question bank (for practice ids).
+    const opts = { questions: getAllQuestions('cisa').map((q) => ({ id: q.id, domainId: q.domainId })) };
+    const expected = buildNotesPack(raw, 'cisa', opts).pack;
     expect(generatedNotes.cisa()).toEqual(expected);
     // While the source is v1 the pack is empty; once v2 lands it must build cleanly.
-    if (raw?.schema_version === 2) expect(buildNotesPack(raw).problems).toEqual([]);
+    if (raw?.schema_version === 2) expect(buildNotesPack(raw, 'cisa', opts).problems).toEqual([]);
     else expect(expected.domains).toEqual([]);
   });
 });

@@ -68,6 +68,8 @@ export interface Certification {
   /** The "how the examiner thinks" lens, e.g. ISACA vs ISC2 manager mindset. */
   mindset: string;
   trademarkNotice: string;
+  /** False when we can't confirm the mark is registered (plain "trademark", no ®). Defaults to true. */
+  trademarkRegistered?: boolean;
   status: CertStatus;
   exam: ExamFormat;
   domains: DomainInfo[];
