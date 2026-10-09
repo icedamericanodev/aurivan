@@ -51,6 +51,7 @@ v2 fixes the structure, not just the wording.
 | | `id` | `"4B1.2"` | Topic code, then a running number. Keep existing ids; new ones continue the sequence |
 | | `name` | string | Title Case, a noun phrase (not a question) |
 | | `legacy_ids` | string[] | Keep as is (it carries learners' reviewed ticks over). New subtopics: `[]` |
+| | `practice_ids` | string[] | Optional. Bank question ids (`d4_012`) that test this concept; drives the "Practice this concept" button. Same domain only, each question under one subtopic, never shown as a count of the bank. Omit when empty |
 | 1 | `definition` | string | **In one line.** 12–30 words, the term first, plain English, jargon glossed |
 | 2 | `why_it_matters` | string | 1–2 sentences on the risk or business purpose, at most 45 words |
 | 3 | `how_it_works` | string[3–6] | One idea per bullet, parallel grammar, at most 30 words each |

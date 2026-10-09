@@ -19,7 +19,7 @@ ECO = ROOT / "docs" / "content" / "CISA_ECO.md"
 
 REQUIRED_SUB = ["id", "name", "definition", "why_it_matters", "how_it_works",
                 "example", "isaca_rule", "exam_traps", "key_terms"]
-OPTIONAL_SUB = ["legacy_ids", "compare", "types", "illustration", "analogy", "memory_aid"]
+OPTIONAL_SUB = ["legacy_ids", "practice_ids", "compare", "types", "illustration", "analogy", "memory_aid"]
 V1_FIELDS = ["summary", "key_point", "exam_tip", "common_mistakes", "categories"]
 EMOJI = re.compile("[\U0001F300-\U0001FAFF☀-➿]")
 BRITISH = re.compile(r"\b(\w+is(e|ed|es|ing|ation)|colour\w*|behaviour\w*|centre\w*|"
@@ -40,6 +40,19 @@ BRITISH_OK = {"raise", "raised", "raises", "raising", "advise", "advised", "advi
               "sunrise", "otherwise", "clockwise", "crosswise", "lengthwise", "streetwise",
               "advertise", "advertised", "advertises", "advertising", "apprise", "apprised",
               "premised", "noises", "praised", "rises", "wisest", "wiser"}
+
+PRACTICE_SEEN = {}
+_BANK = None
+def bank_ids():
+    """Question ids in data/domain{1..5}.json (practice_ids must point at these)."""
+    global _BANK
+    if _BANK is None:
+        _BANK = set()
+        for n in range(1, 6):
+            f = ROOT / "data" / f"domain{n}.json"
+            if f.exists():
+                _BANK |= {q["id"] for q in json.loads(f.read_text())["questions"]}
+    return _BANK
 
 def words(s):
     return len(re.findall(r"[A-Za-z0-9][A-Za-z0-9'’/-]*", s or ""))
@@ -103,6 +116,22 @@ def lint_sub(r, s, topic_id, seen_terms):
     for f in s:
         if f not in REQUIRED_SUB + OPTIONAL_SUB:
             r.err(where, f"unknown field '{f}'")
+    pids = s.get("practice_ids")
+    if pids is not None:
+        bank = bank_ids()
+        if not isinstance(pids, list) or not pids:
+            r.err(where, "practice_ids must be a non-empty list (omit it when there are none)")
+        else:
+            dom = "d" + str(s.get("id", "?"))[0] + "_"
+            for q in pids:
+                if q not in bank:
+                    r.err(where, f"practice_ids: {q} is not in the question bank")
+                elif not q.startswith(dom):
+                    r.err(where, f"practice_ids: {q} is from another domain")
+                elif q in PRACTICE_SEEN:
+                    r.err(where, f"practice_ids: {q} is also under {PRACTICE_SEEN[q]}")
+                else:
+                    PRACTICE_SEEN[q] = where
     if not str(s.get("id", "")).startswith(topic_id + "."):
         r.err(where, f"id does not start with {topic_id}.")
     name = s.get("name", "")
