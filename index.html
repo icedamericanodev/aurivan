@@ -5032,6 +5032,34 @@ body.gt-zoom-open { overflow: hidden; }
 .gt-note { font: 400 15px/22px var(--f-sans); color: var(--text2); }
 .gt-note-label { display: block; font: 600 13px/18px var(--f-sans); color: var(--text2); margin-bottom: 2px; }
 .gt-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+/* "Practice this concept": the subtopic's own short question set */
+.gt-practice {
+  display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-top: 22px; max-width: 68ch;
+  background: var(--surface2); border-radius: 16px; padding: 14px 16px;
+}
+.gt-practice-btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 999px; cursor: pointer;
+  background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn); font: 600 16px/22px var(--f-sans);
+}
+.gt-practice-btn:hover { opacity: .92; }
+.gt-practice-sub { font: 500 14px/20px var(--f-sans); color: var(--text2); margin: 0; }
+@media (max-width: 600px) {
+  .gt-practice { flex-direction: column; align-items: stretch; }
+  .gt-practice-btn { justify-content: center; }
+  .gt-practice-sub { text-align: center; }
+}
+/* Strip above a "Practice this concept" question, and its end card */
+.cp-strip {
+  display: flex; align-items: center; gap: 4px 12px; flex-wrap: wrap; margin-bottom: 12px; padding: 8px 8px 8px 16px;
+  background: var(--surface2); border-radius: 16px;
+}
+.cp-strip-t { flex: 1 1 200px; min-width: 0; margin: 0; font: 600 15px/20px var(--f-sans); color: var(--text); }
+.cp-strip-k { display: block; font: 600 13px/18px var(--f-sans); color: var(--accent-text); }
+.cp-strip-n { font: 500 14px/20px var(--f-sans); color: var(--text2); white-space: nowrap; }
+.cp-done { margin-bottom: 0; }
+.cp-done .sd-label { color: var(--accent-text); }
+.cp-done .sd-name { font: 600 16px/22px var(--f-sans); color: var(--text); margin: 0 0 10px; }
+.cp-done .act-btn { min-height: 48px; padding: 0 20px; font-size: 15px; }
 @media (max-width: 600px) {
   .gt-title { font-size: 32px; line-height: 38px; }
   .gt-body { padding-left: 0; }
@@ -6305,6 +6333,7 @@ function switchProfile(id) {
   // Rebuild queues and re-render
   missedReviewMode = false;
   reviewQueueMode = false;
+  resetConceptPractice();
   buildQueues();
   renderDomainGrid();
   updateStats();
@@ -7093,7 +7122,39 @@ function renderItemBody(raw, domainId, searchQ, itemId) {
   var t = topicSearchTokens(searchQ);
   var html = gtStr(raw.definition) ? renderItemBodyV2(raw, domainId, t) : renderItemBodyV1(raw, domainId, t);
   if (!html) html = '<p class="gt-p gt-muted">More on this topic is coming soon.</p>';
-  return html + gtFooter(itemId || raw.id || '', domainId);
+  return html + gtPracticeBlock(raw, itemId || raw.id || '', domainId) + gtFooter(itemId || raw.id || '', domainId);
+}
+
+// ── "Practice this concept" (practice_ids on a subtopic) ──
+// The ids name questions in the subtopic's own domain. Unknown ids are
+// skipped, so a stale id never breaks the set; no ids left = no button.
+function conceptPracticeIds(raw) {
+  var ids = (raw && Array.isArray(raw.practice_ids)) ? raw.practice_ids : [];
+  var seen = {};
+  return ids.filter(function(id) {
+    if (typeof id !== 'string' || !id || seen[id]) return false;
+    seen[id] = true;
+    return true;
+  });
+}
+function conceptPracticeQuestions(raw, domainId) {
+  var byId = {};
+  (QB[String(domainId)] || []).forEach(function(q) { if (q && q.id) byId[q.id] = q; });
+  return conceptPracticeIds(raw).map(function(id) { return byId[id]; }).filter(Boolean);
+}
+function gtPracticeBlock(raw, itemId, domainId) {
+  if (!itemId || !domainId) return '';
+  // While the bank is still loading, count the ids that name this domain.
+  var n = isQBReady(domainId)
+    ? conceptPracticeQuestions(raw, domainId).length
+    : conceptPracticeIds(raw).filter(function(id) { return id.indexOf('d' + domainId + '_') === 0; }).length;
+  if (!n) return '';
+  var idE = escapeHtml(itemId);
+  return '<div class="gt-practice">'
+    + '<button type="button" class="gt-practice-btn" aria-describedby="gtps-' + idE + '" onclick="event.stopPropagation();startConceptPractice(\'' + idE + '\')">'
+    + ico('play', 16) + '<span>Practice this concept</span></button>'
+    + '<p class="gt-practice-sub" id="gtps-' + idE + '">' + n + (n === 1 ? ' quick question' : ' quick questions') + ' on this idea</p>'
+    + '</div>';
 }
 
 // Decorative botanical frond for the forest panel (spec §10.3): one stroke,
@@ -7638,6 +7699,140 @@ function startTopicPractice(domain) {
   nextQ();
 }
 
+// ── PRACTICE THIS CONCEPT (a subtopic's practice_ids) ──
+// Runs like the review queue: the normal practice question card, grading,
+// explanations, tips and option shuffle, over a fixed short list. nextQ()
+// steps through the list; the end card offers a way back to the subtopic.
+var conceptPracticeMode = false;
+var conceptPracticeList = [];
+var conceptPracticeIndex = 0;
+var conceptPracticeCtx = null; // { itemId, name, domain, answered, correct }
+
+function findTopicItem(itemId) {
+  var data = buildConceptsData();
+  for (var i = 0; i < data.domains.length; i++) {
+    var dom = data.domains[i];
+    for (var j = 0; j < dom.groups.length; j++) {
+      var it = dom.groups[j].items.find(function(x) { return x.id === itemId; });
+      if (it) return { item: it, domain: String(dom.domain_id) };
+    }
+  }
+  return null;
+}
+
+function startConceptPractice(itemId) {
+  var found = findTopicItem(itemId);
+  if (!found) return;
+  var d = found.domain;
+  if (isQBLoading(d)) {
+    showToast('Loading questions…', 'info', 1500);
+    var onDone = function(ev) {
+      if (!ev.detail || String(ev.detail.domain) !== d) return;
+      document.removeEventListener('qb:domain-loaded', onDone);
+      document.removeEventListener('qb:domain-error', onDone);
+      startConceptPractice(itemId);
+    };
+    document.addEventListener('qb:domain-loaded', onDone);
+    document.addEventListener('qb:domain-error', onDone);
+    return;
+  }
+  var qs = conceptPracticeQuestions(found.item.raw, d);
+  if (!qs.length) { showToast('No practice questions for this idea yet', 'info', 2200); return; }
+  for (var i = qs.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = qs[i]; qs[i] = qs[j]; qs[j] = tmp;
+  }
+  clearAllTimers();
+  switchTab('practice');      // clears the other replay modes…
+  conceptPracticeMode = true; // …so set ours after the tab switch
+  conceptPracticeList = qs;
+  conceptPracticeIndex = 0;
+  conceptPracticeCtx = { itemId: itemId, name: found.item.name, domain: d, answered: 0, correct: 0 };
+  hideSessionStart();
+  var genBtn = document.querySelector('.gen-btn');
+  if (genBtn) genBtn.style.display = 'flex';
+  showNextConcept();
+}
+
+function conceptStripHtml(ctx, pos, total) {
+  return '<div class="cp-strip" id="cpStrip">'
+    + '<p class="cp-strip-t"><span class="cp-strip-k">Practicing this concept</span>' + escapeHtml(ctx.name) + '</p>'
+    + '<span class="cp-strip-n">' + pos + ' of ' + total + '</span>'
+    + '<button type="button" class="gt-btn-ghost" onclick="backToConceptTopic()">Back to topic</button>'
+    + '</div>';
+}
+
+function showNextConcept() {
+  clearAllTimers();
+  var ctx = conceptPracticeCtx;
+  var area = document.getElementById('qArea');
+  if (!ctx || !area) return;
+  var total = conceptPracticeList.length;
+  if (conceptPracticeIndex >= total) { showConceptPracticeDone(); return; }
+  var q = conceptPracticeList[conceptPracticeIndex];
+  S.current = q;
+  S.qn++;
+  saveState();
+  document.getElementById('genBtnText').textContent = 'Next question (' + (conceptPracticeIndex + 1) + '/' + total + ')';
+  renderQuestion(q);
+  area.insertAdjacentHTML('afterbegin', conceptStripHtml(ctx, conceptPracticeIndex + 1, total));
+  if (S.timerEnabled && !S.domainTimerActive) startDomainTimer();
+  setTimeout(function() {
+    var rect = area.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    window.scrollTo({ top: scrollTop + rect.top - 20, behavior: 'smooth' });
+  }, 100);
+}
+
+// Called once per graded practice question (answer or timeout).
+function onConceptPracticeAnswer(ok) {
+  if (!conceptPracticeMode || !conceptPracticeCtx) return;
+  conceptPracticeCtx.answered++;
+  if (ok) conceptPracticeCtx.correct++;
+}
+
+function showConceptPracticeDone() {
+  var ctx = conceptPracticeCtx;
+  var area = document.getElementById('qArea');
+  conceptPracticeMode = false;
+  if (!ctx || !area) return;
+  var total = conceptPracticeList.length;
+  var idE = escapeHtml(ctx.itemId);
+  var note = ctx.answered < total
+    ? 'You answered ' + ctx.answered + ' of ' + total + '.'
+    : (ctx.correct === total ? 'All correct. This idea is sticking.' : 'Reread the notes for this idea, then try the set again.');
+  area.innerHTML = '<div class="session-debrief cp-done">'
+    + '<div class="sd-head">'
+    + '<div class="sd-label">Concept practice complete</div>'
+    + '<p class="sd-name">' + escapeHtml(ctx.name) + '</p>'
+    + '<div class="sd-score"><span class="sd-num">' + ctx.correct + '</span><span class="sd-of">/ ' + total + ' correct</span></div>'
+    + '<div class="sd-pct">' + escapeHtml(note) + '</div>'
+    + '</div>'
+    + '<div class="sd-actions">'
+    + '<button type="button" class="act-btn primary" onclick="backToConceptTopic()">Back to topic</button>'
+    + '<button type="button" class="act-btn secondary" onclick="startConceptPractice(\'' + idE + '\')">Practice again</button>'
+    + '<button type="button" class="act-btn secondary" onclick="backToPractice();if(sessionGoal===null)showSessionStart();">Keep practicing</button>'
+    + '</div></div>';
+  document.getElementById('genBtnText').textContent = 'Start Practice';
+}
+
+// Return to the subtopic the set came from, opened and scrolled into view.
+function backToConceptTopic() {
+  var ctx = conceptPracticeCtx;
+  clearAllTimers();
+  if (!ctx) { switchTab('topics'); return; }
+  topicState.domain = ctx.domain;
+  switchTab('topics');
+  jumpToSubtopic(ctx.itemId);
+}
+
+// Leaving the set (tab switch, profile switch, reset): drop the mode flag.
+function resetConceptPractice() {
+  conceptPracticeMode = false;
+  var strip = document.getElementById('cpStrip');
+  if (strip) strip.remove();
+}
+
 
 
 // Legacy helpers for TOPIC_SUMMARY-based code (readiness card, study rec)
@@ -7769,6 +7964,7 @@ function switchTab(t) {
   // re-sets reviewQueueMode AFTER its own switchTab('practice') call.
   reviewQueueMode = false;
   missedReviewMode = false;
+  resetConceptPractice();
   S.activeTab = t;
   saveState();
   // Lets CSS drop the shared dashboard above Topics on phones.
@@ -8338,6 +8534,11 @@ function nextQ() {
     showNextMissed();
     return;
   }
+  if (conceptPracticeMode) {
+    conceptPracticeIndex++;
+    showNextConcept();
+    return;
+  }
   // If the selected domain is still being fetched and its queue is empty,
   // show a friendly loading screen instead of "All Questions Complete".
   var sel = S.selectedDomain;
@@ -8398,6 +8599,7 @@ function onPracticeTimeout() {
     S.answeredIds[d][S.current.id] = true;
   }
   S.sessionHistory.push({domain:d,correct:false,confidence:"none",question:S.current.question.substring(0,80)});
+  onConceptPracticeAnswer(false);
   updateStats();
   renderDomainGrid();
   showResult(null, correctDisplay, true);
@@ -9076,7 +9278,9 @@ function selectAnswer(chosen, _ignoredCorrect) {
   saveState();
   renderReadinessCard();
   try { renderStudyRec(); } catch(e) {}
-  try { onAnswerSubmittedForSession(ok); } catch(e) {} // Decision 9
+  // A "Practice this concept" set keeps its own score, apart from a goal session.
+  if (conceptPracticeMode) onConceptPracticeAnswer(ok);
+  else { try { onAnswerSubmittedForSession(ok); } catch(e) {} } // Decision 9
 }
 
 // ── SHOW RESULT ──
@@ -9951,6 +10155,7 @@ function doResetProgress() {
   S.diff = "any";
   missedReviewMode = false;
   reviewQueueMode = false;
+  resetConceptPractice();
   buildQueues();
   renderDomainGrid();
   updateStats();
@@ -11925,6 +12130,7 @@ function showNextReview() {
 function backToPractice() {
   missedReviewMode = false;
   reviewQueueMode = false;
+  resetConceptPractice();
   document.getElementById("genBtnText").textContent = "Start Practice";
   var genBtn = document.querySelector('.gen-btn');
   if (genBtn) genBtn.style.display = 'flex';
