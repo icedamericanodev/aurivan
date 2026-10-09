@@ -52,7 +52,7 @@ import {
   type TypeVariant,
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Botany, Seedling, type BotanyKind } from './glyphs';
+import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
 import { Check, ChevronLeft, ChevronRight, ICON_STROKE, X } from './icons';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
@@ -328,41 +328,57 @@ export function HeroPanel({
   const large = useFontScale() >= LARGE_TEXT;
   return (
     <Card variant="forest" style={style}>
-      {/* Decorative art bleeds off the top-right; screen readers skip it. */}
-      <View style={[styles.heroArt, styles.noTouch]} accessible={false} importantForAccessibility="no-hide-descendants">
-        <Botany kind={art} color={c.forestLine} sway={sway} />
-      </View>
-      {caption && (
-        <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-          {captionLead}
-          <T v="caption" color={c.onForest2}>{caption}</T>
-          {captionExtra}
-        </Row>
-      )}
-      {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
-          longer titles, or large text, run full width over the low-contrast art. */}
-      <T
-        v="hero"
-        color={c.onForest}
-        accessibilityRole="header"
-        accessibilityLabel={titleLabel}
-        style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
+      {/* Two layers, so the text can never disappear behind the art (the
+          Android "empty green block" on Play):
+          1. ART: its own absolutely-filled layer that does the rounded
+             clipping, with the drawing in a box of EXPLICIT size. The panel
+             itself no longer clips, so the title and button never share a
+             clipping parent with a rotating (swaying) SVG.
+          2. CONTENT: zIndex 1, always drawn above the art on every platform.
+          Decorative art bleeds off the top-right; screen readers skip it. */}
+      <View
+        testID="hero-art"
+        style={[StyleSheet.absoluteFill, styles.heroArtClip, styles.noTouch]}
+        accessible={false}
+        importantForAccessibility="no-hide-descendants"
       >
-        {title}
-      </T>
-      {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6 }}>{meta}</T>}
-      {children}
-      {action && (
-        <Button
-          kind="forest"
-          label={action.label}
-          onPress={action.onPress}
-          accessibilityHint={action.hint}
-          icon={action.icon}
-          iconLeading
-          style={{ marginTop: 18, alignSelf: 'flex-start' }}
-        />
-      )}
+        <View style={[styles.heroArt, botanySize(art)]}>
+          <Botany kind={art} color={c.forestLine} sway={sway} />
+        </View>
+      </View>
+      <View testID="hero-content" style={styles.heroContent}>
+        {caption && (
+          <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
+            {captionLead}
+            <T v="caption" color={c.onForest2}>{caption}</T>
+            {captionExtra}
+          </Row>
+        )}
+        {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
+            longer titles, or large text, run full width over the low-contrast art. */}
+        <T
+          v="hero"
+          color={c.onForest}
+          accessibilityRole="header"
+          accessibilityLabel={titleLabel}
+          style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
+        >
+          {title}
+        </T>
+        {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6 }}>{meta}</T>}
+        {children}
+        {action && (
+          <Button
+            kind="forest"
+            label={action.label}
+            onPress={action.onPress}
+            accessibilityHint={action.hint}
+            icon={action.icon}
+            iconLeading
+            style={{ marginTop: 18, alignSelf: 'flex-start' }}
+          />
+        )}
+      </View>
     </Card>
   );
 }
@@ -639,10 +655,14 @@ const styles = StyleSheet.create({
   },
   buttonLabel: { fontFamily: font.sans600, fontSize: 17, lineHeight: 22 },
   card: { borderRadius: radius.md, borderWidth: 1.5, padding: space.lg },
-  forest: { borderRadius: radius.lg, padding: 22, overflow: 'hidden' },
+  // No overflow:'hidden' here: the art layer clips itself (heroArtClip), so
+  // the panel's text is never inside a clipping parent with a rotating SVG.
+  forest: { borderRadius: radius.lg, padding: 22 },
   // Dark mode: 1px inner top highlight so the panel separates from `bg`.
   forestLift: { borderTopWidth: 1, borderTopColor: forestHighlight },
+  heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
+  heroContent: { zIndex: 1 },
   section: {
     flexDirection: 'row',
     justifyContent: 'space-between',
