@@ -44,6 +44,22 @@ BRITISH_OK = {"raise", "raised", "raises", "raising", "advise", "advised", "advi
 def words(s):
     return len(re.findall(r"[A-Za-z0-9][A-Za-z0-9'’/-]*", s or ""))
 
+EX_STOP = set("a an and are as at be by for from has have in is it its of on or that the their this to was were with "
+               "which what who will would should can may must not no than then there these they into over per each any "
+               "all most more less also when while if but so such only".split())
+EXAMPLE_OVERLAP_MAX = 0.30  # an example this close to a bank question gives the practice answer away
+
+def content_words(s):
+    return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in EX_STOP and len(w) > 2}
+
+def bank_items(n):
+    path = ROOT / "data" / "originals" / f"d{n}.json"
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text())
+    data = data["questions"] if isinstance(data, dict) else data
+    return [(q["id"], content_words(q["question"] + " " + q["options"][q["correct"]])) for q in data]
+
 def eco_codes():
     codes = []
     for line in ECO.read_text().splitlines():
@@ -220,6 +236,7 @@ def lint_domain(r, dom, codes):
     if part_ids and part_ids != got and not dom.get("partial"):
         r.err(where, "parts.topic_ids do not list the topics in order")
     seen_terms, ids = {}, set()
+    bank = bank_items(n)
     for t in dom.get("topics", []):
         tw = t.get("topic_id", "?")
         for f in ["topic_id", "topic_name", "overview", "can_do", "subtopics"]:
@@ -238,6 +255,11 @@ def lint_domain(r, dom, codes):
                 r.err(s.get("id"), "duplicate id")
             ids.add(s.get("id"))
             lint_sub(r, s, tw, seen_terms)
+            ex = content_words(s.get("example", ""))
+            if ex and bank:
+                score, qid = max((len(ex & w) / max(1, len(ex | w)), q) for q, w in bank)
+                if score >= EXAMPLE_OVERLAP_MAX:
+                    r.warn(s.get("id"), f"example retells bank question {qid} (overlap {score:.2f}); use a fresh scenario")
     return len(ids)
 
 def main(argv):
