@@ -4098,19 +4098,19 @@
               "definition": "Legal and regulatory compliance means meeting the mandatory duties that laws, regulators and binding contracts place on how an organization uses and protects information.",
               "why_it_matters": "Outside rules decide what data may be kept, for how long, who may see it and what must be reported. Breaking them brings fines, lost licenses and lost trust.",
               "how_it_works": [
-                "Laws and regulations apply because of where the organization operates, which sector it is in and whose data it holds.",
+                "Laws and regulations apply based on where the organization operates, its sector and whose data it holds.",
                 "Industry standards, such as the Payment Card Industry Data Security Standard (PCI DSS), often bind through contracts rather than law.",
                 "Regulators can inspect, demand evidence and penalize, so each obligation needs proof of compliance.",
-                "Mandatory obligations are funded and treated before optional improvements when budgets are ranked.",
+                "Mandatory obligations are funded before optional improvements when budgets are ranked.",
                 "The board stays accountable for compliance even when legal, compliance or IT teams do the work.",
-                "When a regulator investigates, counsel coordinates: preserve evidence, review what is produced and cooperate within the requested scope and deadline."
+                "When a regulator investigates, counsel coordinates: preserve evidence, review what is produced, and meet the requested scope and deadline."
               ],
               "example": "A retailer takes card payments online and plans to store card numbers for one-click checkout. Its merchant agreement requires PCI DSS, though no law names that standard, and the chief information officer treated it as optional. The IS auditor reports that the contract makes the standard binding and recommends that management add it to the compliance plan.",
               "isaca_rule": "Mandatory obligations are not open to a cost trade-off. Management decides how to comply, not whether to comply, and the board stays accountable. The IS auditor verifies that every applicable obligation is identified and treated, and reports gaps without ruling on legal questions.",
               "exam_traps": [
                 {
                   "trap": "The fine is smaller than the cost of compliance, so accepting the risk is reasonable.",
-                  "why": "Mandatory law is not a risk to buy out with a fine. It ranks ahead of discretionary spending, and penalties often bring reputation damage beyond the fine."
+                  "why": "Mandatory law is not a risk to buy out with a fine. It ranks ahead of discretionary spending, and penalties often bring reputation damage too."
                 },
                 {
                   "trap": "When a regulator opens an investigation, hand over every record at once to show full cooperation.",
@@ -4794,21 +4794,21 @@
               "name": "Governing Artificial Intelligence and Emerging Technology",
               "legacy_ids": [],
               "definition": "Artificial intelligence (AI) governance is the board-approved policy, ownership, inventory and monitoring that keep an organization's AI use lawful, fair, explainable and within risk appetite.",
-              "why_it_matters": "AI models can make biased, opaque or wrong decisions at scale. The organization stays accountable for those decisions, even when a vendor built the model.",
+              "why_it_matters": "AI models can make biased, opaque or wrong decisions at scale, and the organization answers for them even when a vendor built the model.",
               "how_it_works": [
                 "The board approves an AI policy and risk appetite, and each model or AI service has a named business owner.",
-                "An inventory lists every AI use, including vendor and embedded AI, ranked by its impact on people and the business.",
+                "An inventory lists every AI use, including vendor and embedded AI, ranked by impact on people and the business.",
                 "Higher-impact uses get an impact assessment before deployment, covering data sources, bias, explainability and human oversight.",
                 "Deployed models are monitored for drift and for outcomes by population group, with thresholds that trigger review.",
                 "Frameworks such as ISO/IEC 42001 and the National Institute of Standards and Technology (NIST) AI Risk Management Framework structure the program.",
                 "Laws such as the European Union (EU) AI Act add duties, such as human oversight, for high-risk uses."
               ],
               "example": "A staffing agency uses a vendor's AI tool to rank job applicants. Older applicants rarely reach interviews, yet no one owns the tool, it appears in no inventory, and results were never checked by age. The IS auditor recommends an independent review of the rankings, a named business owner, an inventory entry and outcome monitoring under a board-approved AI policy.",
-              "isaca_rule": "Govern AI like any other high-impact process: business ownership, an inventory, assessment before use and outcome monitoring after. Accountability for AI decisions stays with the organization, even when the model comes from a vendor. Fix governance gaps FIRST, before technical tuning.",
+              "isaca_rule": "Govern AI like any high-impact process: business ownership, an inventory, assessment before use and outcome monitoring after. The organization stays accountable for AI decisions, even with a vendor's model. Fix governance gaps FIRST, before technical tuning.",
               "exam_traps": [
                 {
                   "trap": "Retrain the model immediately when biased outcomes are found.",
-                  "why": "Retraining before diagnosing the cause may repeat the bias and leaves ownership and monitoring gaps in place. Assess the harm independently and fix governance first."
+                  "why": "Retraining before diagnosing the cause may repeat the bias and leaves ownership and monitoring gaps open. Assess the harm independently and fix governance first."
                 },
                 {
                   "trap": "A vendor-supplied AI model makes the vendor accountable for its decisions.",
@@ -4818,7 +4818,7 @@
               "key_terms": [
                 {
                   "term": "Model drift",
-                  "definition": "A decline in a model's accuracy as real-world data moves away from the data it was trained on."
+                  "definition": "A decline in a model's accuracy as real-world data drifts away from its training data."
                 },
                 {
                   "term": "Explainability",
@@ -4826,7 +4826,7 @@
                 },
                 {
                   "term": "AI inventory",
-                  "definition": "A maintained register of every AI model and AI-enabled service in use, with owner, purpose and risk rating."
+                  "definition": "A maintained register of every AI model and AI-enabled service, with owner, purpose and risk rating."
                 }
               ]
             }
@@ -5356,8 +5356,8 @@
               "definition": "A risk management program is the continuous cycle of identifying, assessing, responding to and monitoring risk, run against a board-approved risk appetite with named owners.",
               "why_it_matters": "One-off risk exercises age quickly. A living program lets leaders see emerging risks in time and spend on the ones that matter.",
               "how_it_works": [
-                "A board-approved risk charter or policy sets the appetite, roles and accountability for the program.",
-                "Identification starts from critical business processes and their supporting assets, then the threats and vulnerabilities facing each; risks are rated for likelihood and impact before and after controls.",
+                "A board-approved risk policy sets the appetite, roles and accountability for the program.",
+                "Identification starts from critical business processes and their assets, then the threats and vulnerabilities facing each; risks are rated for likelihood and impact before and after controls.",
                 "Each risk has a named owner who chooses a response and tracks it to completion.",
                 "The register records ratings, owners, responses, status and an audit trail of decisions.",
                 "Monitoring repeats the cycle; a serious new risk is registered and treated when it appears, not at the next annual review."
@@ -5367,7 +5367,7 @@
                 "caption": "The core cycle: find the risk, size it, decide what to do, then keep watching. The loop repeats because risk keeps moving."
               },
               "example": "A port authority paid consultants to build an IT risk register that rates 85 risks. A year later, no risk has a treatment plan, no manager updates the register, and the board approved a crane-control system without consulting it. The IS auditor reports that the register gives false assurance and recommends an internal program owner and a response for each risk.",
-              "isaca_rule": "Risk management adds value only when identified risks are treated and monitored, and when risk information changes business decisions. Expertise can be bought in, but accountability for the program cannot be outsourced.",
+              "isaca_rule": "Risk management adds value only when risks are treated and monitored and risk information shapes business decisions. Expertise can be bought in; accountability for the program cannot be outsourced.",
               "exam_traps": [
                 {
                   "trap": "A full register of rated risks shows a mature program.",
@@ -5375,7 +5375,7 @@
                 },
                 {
                   "trap": "A serious new risk can wait for the next annual assessment.",
-                  "why": "Risk management is continuous. A high-impact emerging risk is registered, given an owner and treated as soon as it is known."
+                  "why": "Risk management is continuous. A high-impact emerging risk is registered, owned and treated as soon as it is known."
                 }
               ],
               "key_terms": [
@@ -5385,11 +5385,11 @@
                 },
                 {
                   "term": "Inherent risk",
-                  "definition": "The level of risk before any controls or other responses are applied."
+                  "definition": "Risk before any controls or other responses are applied."
                 },
                 {
                   "term": "Residual risk",
-                  "definition": "The risk left after responses are applied; it must fit within risk appetite, or be treated further unless the board approves an exception."
+                  "definition": "The risk left after responses; it must fit within appetite, or be treated further unless the board approves an exception."
                 },
                 {
                   "term": "Risk owner",
@@ -5397,7 +5397,7 @@
                 },
                 {
                   "term": "ISO 31000",
-                  "definition": "The international standard giving principles and a process for managing any type of risk; it guides practice and is not certifiable."
+                  "definition": "The international standard giving principles and a process for managing any risk; it is guidance and is not certifiable."
                 }
               ],
               "practice_ids": [
@@ -5418,11 +5418,11 @@
                 "2A5.2"
               ],
               "definition": "Risk appetite is the board's overall stance on how much risk to take for the enterprise's objectives; tolerances set measurable limits within it, below risk capacity.",
-              "why_it_matters": "Without agreed limits, every manager decides alone how much risk is acceptable. Clear limits tell staff when they may proceed and when they must escalate.",
+              "why_it_matters": "Without agreed limits, each manager decides alone what risk is acceptable. Clear limits tell staff when to proceed and when to escalate.",
               "how_it_works": [
-                "The board states its appetite in broad terms linked to strategy, such as moderate risk to grow online sales.",
-                "Senior management or the board turns appetite into tolerances: measurable limits for specific risks, such as maximum outage hours a year.",
-                "Risk capacity is the most loss the organization could absorb, and appetite must sit well below it.",
+                "The board states appetite broadly, linked to strategy, such as moderate risk to grow online sales.",
+                "Senior management or the board sets tolerances within appetite: measurable limits for specific risks, such as maximum yearly outage hours.",
+                "Risk capacity is the most loss the organization can absorb; appetite must sit well below it.",
                 "Risk within appetite can be accepted by the risk owner or senior management under delegated authority; tolerance breaches go to senior management.",
                 "Risk above appetite must be treated until it fits; senior management cannot accept it alone, and keeping it needs a board-approved exception."
               ],
@@ -5475,12 +5475,12 @@
                   }
                 ]
               },
-              "example": "A hospital group's board has set a low appetite for patient-data exposure. The head of radiology wants to keep a faster but unvetted overseas scan-reading service and offers to sign off the risk. The IS auditor reports that the exposure exceeds appetite and the department head lacks authority, and recommends escalation to senior management to treat it.",
-              "isaca_rule": "Authority to accept rises with the risk: owners accept within tolerance, senior management decides tolerance breaches within appetite, and risk above appetite is treated until it fits. Only the board, which set the appetite, can approve keeping it as an exception. Auditors never accept risk.",
+              "example": "A hospital group's board has set a low appetite for patient-data exposure. The head of radiology wants to keep an unvetted overseas scan-reading service and offers to sign off the risk. The IS auditor reports that the exposure exceeds appetite and the department head lacks authority, and recommends escalation to senior management for treatment.",
+              "isaca_rule": "Authority to accept rises with the risk: owners accept within tolerance, senior management decides tolerance breaches within appetite, and risk above appetite is treated until it fits or the board approves an exception. The IS auditor never accepts risk.",
               "exam_traps": [
                 {
-                  "trap": "A limit of four hours of outage a year is the board's risk appetite.",
-                  "why": "A measurable limit for one specific risk is a tolerance. Appetite is the broad statement of how much risk the organization will take."
+                  "trap": "A four-hour yearly outage limit is the board's risk appetite.",
+                  "why": "A measurable limit for one specific risk is a tolerance. Appetite is the broad statement of how much risk to take."
                 },
                 {
                   "trap": "The CIO, or senior management alone, can sign off risk above appetite to keep a project moving.",
@@ -5490,11 +5490,11 @@
               "key_terms": [
                 {
                   "term": "Formal risk acceptance",
-                  "definition": "A documented decision, by someone with authority for that level of risk, to live with a risk, with reasons and a review date."
+                  "definition": "A documented decision, by someone with authority for that risk level, to keep a risk, with reasons and a review date."
                 },
                 {
                   "term": "Concentration risk",
-                  "definition": "Exposure created by depending heavily on one provider, location, technology or customer."
+                  "definition": "Exposure from heavy dependence on one provider, location, technology or customer."
                 },
                 {
                   "term": "Appetite exception",
@@ -5998,10 +5998,10 @@
                 "2A6.4"
               ],
               "definition": "Data subject rights let people see, correct, erase or move their personal data; transborder data flow rules control when that data may leave a country.",
-              "why_it_matters": "Mishandled requests and unlawful transfers are among the most visible privacy failures. Releasing data to an impostor turns a rights request into a breach.",
+              "why_it_matters": "Mishandled requests and unlawful transfers are highly visible privacy failures. Releasing data to an impostor turns a rights request into a breach.",
               "how_it_works": [
                 "Log each request, verify the requester's identity, and answer within the legal deadline.",
-                "When two laws apply to one request, meet both sets of duties and the shorter deadline, and document the basis.",
+                "When two laws apply, meet both sets of duties and the shorter deadline, and document the basis.",
                 "Erasure has limits: data a law requires keeping is retained, restricted, and erased when the duty ends.",
                 "Transfers out of the European Union (EU) need a valid mechanism, such as an adequacy decision (including EU-US Data Privacy Framework for certified US firms) or standard contractual clauses (SCCs).",
                 "With SCCs, the organization sending the data documents a transfer impact assessment of the destination country's laws.",
@@ -6037,7 +6037,7 @@
                 "svg": "<svg viewBox='0 0 340 174' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Handling a data subject request: log it, verify the requester identity, respond by the legal deadline'><rect x='20' y='8' width='300' height='38' rx='4' fill='var(--accent-fill)'/><text x='170' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Log the request</text><line x1='170' y1='48' x2='170' y2='59' stroke='var(--text2)' stroke-width='1.5'/><path d='M166,59 L170,66 L174,59 Z' fill='var(--text2)'/><rect x='20' y='68' width='300' height='38' rx='4' fill='var(--accent-fill)'/><text x='170' y='92' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Verify identity</text><line x1='170' y1='108' x2='170' y2='119' stroke='var(--text2)' stroke-width='1.5'/><path d='M166,119 L170,126 L174,119 Z' fill='var(--text2)'/><rect x='20' y='128' width='300' height='38' rx='4' fill='var(--accent-fill)'/><text x='170' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Respond by the deadline</text></svg>",
                 "caption": "A rights request in three steps: log it, confirm the requester's identity, and answer within the legal time limit."
               },
-              "example": "A German car-rental company sends customer records to a call center in India under SCCs. India has no EU adequacy decision, and nobody has assessed whether local law lets authorities reach the data. The IS auditor traces sampled transfers, confirms the flows, and reports the missing transfer impact assessment (TIA) as a gap for the privacy officer to fix.",
+              "example": "A German car-rental company sends customer records to a call center in India under SCCs. India has no EU adequacy decision, and nobody has assessed whether local law lets authorities reach the data. The IS auditor traces sampled transfers and reports the missing transfer impact assessment (TIA) as a gap for the privacy officer to fix.",
               "isaca_rule": "Verify identity before releasing personal data, meet every applicable law's duties, and respect legal retention limits on erasure. For transfers, the mechanism must be valid and proven by tracing actual data flows.",
               "exam_traps": [
                 {
@@ -6052,7 +6052,7 @@
               "key_terms": [
                 {
                   "term": "Adequacy decision",
-                  "definition": "A European Commission ruling that a country, or a scheme such as the EU-US Data Privacy Framework, protects personal data adequately for free transfer."
+                  "definition": "A European Commission ruling that a country or certified scheme protects personal data adequately, allowing free transfer."
                 },
                 {
                   "term": "Standard contractual clauses (SCCs)",
@@ -6923,12 +6923,12 @@
                 "2B2.3"
               ],
               "definition": "Third-party oversight is the customer's ongoing checking of a vendor's performance, controls and risk after signing, through to a controlled exit.",
-              "why_it_matters": "Vendor risk changes after the contract starts: finances weaken, staff turn over, breaches happen. Oversight that stops at signing misses the warning signs.",
+              "why_it_matters": "Vendor risk changes after the contract starts: finances weaken, staff turn over, breaches happen. Oversight that stops at signing misses warning signs.",
               "how_it_works": [
-                "The customer measures service itself and reconciles the results to the service level agreement (SLA), rather than relying on the vendor's reports.",
-                "System and Organization Controls (SOC) reports from an independent service auditor show vendor controls; check their scope, period, exceptions and the customer-side controls they assume.",
+                "The customer measures service itself against the service level agreement (SLA) rather than relying on vendor reports.",
+                "System and Organization Controls (SOC) reports from an independent auditor show vendor controls; check scope, period, exceptions and the customer-side controls they assume.",
                 "Independent signals, such as security ratings and financial monitoring, trigger reassessment between scheduled reviews.",
-                "Repeated incidents prompt a full risk re-tiering and escalating responses, up to exit readiness.",
+                "Repeated incidents prompt full risk re-tiering and escalating responses, up to exit readiness.",
                 "After a vendor breach, the customer invokes the contract's notice and cooperation terms while starting its own response.",
                 "Offboarding keeps service running, enforces data return and verified deletion, and removes vendor access."
               ],
@@ -6970,7 +6970,7 @@
                 ]
               },
               "example": "A university's student-information provider has missed SLA targets for nine months, suffered ransomware and lost two senior engineers. The registrar, IT security and procurement each tracked one issue. The IS auditor recommends one combined risk reassessment of the provider and escalating responses, from a remediation plan to tested exit readiness, owned by the vendor management office.",
-              "isaca_rule": "Verify vendor performance with customer-side measurement and independent assurance, not self-reporting. A SOC report covers the vendor's controls for one scope and period, not how its service or model performs on your data. Accountability never leaves the customer.",
+              "isaca_rule": "Verify vendor performance with customer-side measurement and independent assurance, not self-reporting. A SOC report covers vendor controls for one scope and period, not how its service or model performs on your data. Accountability never leaves the customer.",
               "exam_traps": [
                 {
                   "trap": "Request the vendor's SOC 3 report to rely on its controls.",
@@ -6984,7 +6984,7 @@
               "key_terms": [
                 {
                   "term": "Bridge letter",
-                  "definition": "A letter from the service organization's management covering the gap between a SOC report's end date and the date the customer needs."
+                  "definition": "A service organization's management letter covering the gap between a SOC report's end date and the date the customer needs."
                 },
                 {
                   "term": "Offboarding",
@@ -6996,7 +6996,7 @@
                 },
                 {
                   "term": "Complementary user entity controls (CUECs)",
-                  "definition": "Controls the customer must run itself for the provider's controls, described in a SOC report, to work as intended."
+                  "definition": "Controls a SOC report assumes the customer runs itself so the provider's controls work as intended."
                 }
               ],
               "practice_ids": [
@@ -7023,7 +7023,7 @@
               "how_it_works": [
                 "The split of duties moves with the service model, but the customer always keeps its data, identities and configuration choices.",
                 "Approved configuration baselines are enforced and checked continuously, not just at deployment.",
-                "Organizations using several cloud providers apply one control layer across them: common identity, cost tags on every resource, and policy as code.",
+                "Organizations using several clouds apply one control layer across them: common identity, cost tags on every resource and policy as code.",
                 "A cloud center of excellence (CCoE) sets standards and guardrails, meaning preset limits, while teams manage their own use within them.",
                 "Migration is decided per application by value and risk: retire, retain, rehost (move as is), replatform (adjust slightly), refactor (rebuild for the cloud) or repurchase (replace with SaaS).",
                 "Data residency needs are enforced per region, backed by transfer safeguards and a ready exit option."
@@ -7074,11 +7074,11 @@
                 "caption": "Moving from IaaS to SaaS, the provider manages more of the stack. The customer's share shrinks but never disappears."
               },
               "example": "An engineering consultancy runs teams on two public clouds. Each team has its own identity setup, a third of resources lack cost tags, and a storage bucket stayed public for weeks. The IS auditor recommends common identity, mandatory tags and policy-as-code guardrails across both clouds, checked continuously against an approved baseline, which the cloud center of excellence implements.",
-              "isaca_rule": "The customer keeps accountability for its data, access and configuration in every service model. It must continuously show that its configurations stay within an approved baseline, using one control layer across providers.",
+              "isaca_rule": "The customer stays accountable for its data, access and configuration in every service model, and must continuously show that configurations stay within an approved baseline, using one control layer across providers.",
               "exam_traps": [
                 {
                   "trap": "In software as a service, the provider is responsible for who can access the customer's data.",
-                  "why": "The provider secures the platform, but the customer still decides and reviews user access, configuration and data use in every service model."
+                  "why": "The provider secures the platform; the customer still decides and reviews user access, configuration and data use."
                 },
                 {
                   "trap": "Documenting the shared responsibility split is enough cloud risk management.",
@@ -7092,7 +7092,7 @@
                 },
                 {
                   "term": "Cloud center of excellence (CCoE)",
-                  "definition": "A cross-functional team that sets cloud standards, guardrails and good practice for the organization."
+                  "definition": "A cross-functional team that sets cloud standards, guardrails and good practice."
                 },
                 {
                   "term": "Policy as code",
