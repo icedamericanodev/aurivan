@@ -73,7 +73,7 @@ Target length: 180–380 words per subtopic, counting every text field except
   our own words.
 - **Examples must not retell a bank question.** Teach the same rule with a fresh
   scenario (different industry, roles and numbers), so practice questions still test
-  reasoning, not recall. `lint_notes.py` warns above 0.30 word overlap.
+  reasoning, not recall. `lint_notes.py` warns above 0.25 word overlap.
 - **Agree with the reviewed question bank** (`data/originals/d{N}.json`). Grep it
   for the rule you teach.
 - **The auditor recommends and reports; management decides and owns the risk.**

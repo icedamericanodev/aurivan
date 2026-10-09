@@ -47,7 +47,7 @@ def words(s):
 EX_STOP = set("a an and are as at be by for from has have in is it its of on or that the their this to was were with "
                "which what who will would should can may must not no than then there these they into over per each any "
                "all most more less also when while if but so such only".split())
-EXAMPLE_OVERLAP_MAX = 0.30  # an example this close to a bank question gives the practice answer away
+EXAMPLE_OVERLAP_MAX = 0.25  # an example this close to a bank question gives the practice answer away
 
 def content_words(s):
     return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w not in EX_STOP and len(w) > 2}
