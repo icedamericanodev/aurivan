@@ -1922,7 +1922,7 @@
                 "Start from inherent risk: the exposure if no controls existed.",
                 "Judge how much the controls in place reduce likelihood or impact, based on testing rather than descriptions.",
                 "Compare the remaining risk with the organization's risk appetite, the amount of risk it is willing to take.",
-                "Management responds to residual risk above appetite: mitigate it further, transfer (share) it, avoid the activity, or formally accept it.",
+                "Management treats residual risk above appetite by mitigating, transferring (sharing) or avoiding it; keeping it needs a board-approved exception.",
                 "The auditor evaluates and reports residual risk and recommends action; management decides and owns the risk.",
                 "Untested or failing controls mean residual risk is closer to inherent risk than management may think."
               ],
@@ -1930,8 +1930,8 @@
                 "svg": "<svg viewBox='0 0 460 120' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Controls reduce inherent risk to a smaller residual risk that remains'><rect x='14' y='38' width='130' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='79' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Inherent risk</text><rect x='174' y='38' width='112' height='46' rx='4' fill='var(--accent-fill)'/><text x='230' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Controls</text><rect x='316' y='38' width='130' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='381' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Residual risk</text><line x1='146' y1='61' x2='165' y2='61' stroke='var(--text2)' stroke-width='1.5'/><path d='M165,57 L172,61 L165,65 Z' fill='var(--text2)'/><line x1='288' y1='61' x2='307' y2='61' stroke='var(--text2)' stroke-width='1.5'/><path d='M307,57 L314,61 L307,65 Z' fill='var(--text2)'/><text x='79' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>risk before controls</text><text x='230' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>what they remove</text><text x='381' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>the risk that remains</text></svg>",
                 "caption": "Controls bring inherent risk down to residual risk. Some risk remains, and management decides whether to accept it."
               },
-              "example": "An IS auditor at an insurer finds that weak password settings on the claims system leave residual risk above the stated appetite. The IT director asks the auditor to sign off that the risk is acceptable so the project can close. The auditor declines, reports the residual risk and recommends that the claims business owner take the acceptance decision to senior management.",
-              "isaca_rule": "Residual risk never reaches zero, and accepting it is a documented management decision by someone with authority. The auditor evaluates, reports and recommends; the auditor never accepts risk on the organization's behalf.",
+              "example": "An IS auditor at an insurer finds that weak password settings on the claims system leave residual risk above the stated appetite. The IT director asks the auditor to sign off that the risk is acceptable so the project can close. The auditor declines, reports the residual risk and recommends that the claims business owner treat it, or seek a board-approved exception to keep it.",
+              "isaca_rule": "Residual risk never reaches zero. Within appetite, an authorized manager accepts it in a documented decision; above appetite, it is treated, or kept only by board-approved exception. The auditor evaluates, reports and recommends, and never accepts risk.",
               "exam_traps": [
                 {
                   "trap": "The auditor can accept residual risk on behalf of the business.",
@@ -3544,12 +3544,12 @@
                 "Recommendation: propose a fix aimed at the root cause; management decides how to carry it out.",
                 "Write every finding in the same neutral, factual tone, whatever the seniority of the people involved."
               ],
-              "example": "An IS auditor finds that 14 of 40 leavers kept network access for over 30 days. Tracing the cause, she learns that human resources emails leaver notices to one administrator, who was on extended leave. She recommends an automatic feed from the human resources system with a named backup owner, rather than just a one-off cleanup of the 14 accounts.",
+              "example": "At a seed wholesaler, an IS auditor finds that 12 of 50 sampled price changes lack a sales manager's approval. Tracing the cause, she learns the system saves a buyer's price change at once while the approval request waits in a queue nobody watches after 5 p.m. She recommends making approval a required step before any price takes effect, rather than only reversing the 12 changes.",
               "isaca_rule": "Findings rest on evidence and target root causes. The auditor recommends; management decides and implements. If management's own monitoring missed a failure the auditor found, report that as a separate finding, because the process meant to catch it did not work.",
               "exam_traps": [
                 {
                   "trap": "Recommending removal of the specific exceptions found is enough.",
-                  "why": "Cleaning up the exceptions treats the symptom. Unless the root cause is fixed, the same gap reappears next quarter."
+                  "why": "Cleanup treats the symptom. Remove live exposures first, but unless the root cause is also fixed, the same gap reappears next quarter."
                 },
                 {
                   "trap": "Drop a finding from the report because management fixed it before fieldwork ended.",
@@ -3771,11 +3771,11 @@
                 "Escalate repeated pressure to drop or soften a finding to the audit committee; decline a single request first and offer to review the facts.",
                 "Plan follow-up by risk: verify critical findings early and report their status to the committee; give lower ratings lighter, later checks.",
                 "Follow-up independently tests that each agreed action was implemented and works; it neither relies on management's word nor repeats the whole audit.",
-                "If management accepts a risk instead of fixing it, confirm the right level of management approved it and report it to the committee.",
+                "If management accepts a risk rather than fixing it, confirm it is within appetite and properly approved, and report it to the committee.",
                 "Treat findings that recur year after year as failed remediation: analyze the root cause and escalate for accountability."
               ],
               "example": "During follow-up, an IS auditor finds that a high-rated backup finding the IT manager marked closed was fixed on only two of five servers, after being reported in each of the two previous years. The chief audit executive reopens it, analyzes why remediation keeps failing, and reports the repeat finding and its root cause to the audit committee.",
-              "isaca_rule": "Severity sets the timing: urgent risks go to governance now, not at the next meeting. Follow-up is independent verification scaled to risk. Management may accept a risk, but the audit committee must know, and repeated failure to fix is itself a finding to escalate.",
+              "isaca_rule": "Severity sets the timing: urgent risks go to governance now, not at the next meeting. Follow-up is independent verification scaled to risk. Management may accept a risk within appetite, but the audit committee must know, and repeated failure to fix is a finding to escalate.",
               "exam_traps": [
                 {
                   "trap": "Accept management's statement that all findings are fixed and close them.",
@@ -4033,7 +4033,7 @@
         "Reasonable assurance": "A high but not absolute level of confidence, reflecting the limits of any control system.",
         "Key control": "A control whose failure would leave a significant risk uncovered, so the auditor relies on it and tests it first.",
         "Compensating control": "An alternative control that reduces the same risk when the preferred control is impractical; a review-type substitute works only if the reviewer is independent.",
-        "Residual risk": "The risk left after controls are applied, which management, not the auditor, decides whether to accept.",
+        "Residual risk": "The risk left after controls are applied; management, never the auditor, accepts it within appetite, and only the board can approve keeping it above appetite.",
         "SOC report": "A System and Organization Controls report: a service auditor's report on a service provider's controls.",
         "Integrated audit": "One engagement that combines IT, financial and operational audit work, linking IT weaknesses to business impact.",
         "Sufficient and appropriate evidence": "Enough evidence (sufficient) that is relevant and reliable (appropriate) to support a conclusion.",
@@ -4436,7 +4436,7 @@
                     "cells": [
                       "Board members plus expert advisers",
                       "Senior business and IT managers",
-                      "Independent directors, at least one with financial expertise"
+                      "Independent directors, usually including a financial expert"
                     ]
                   },
                   {
@@ -4454,7 +4454,7 @@
                 "caption": "Two committees sit at board level: the IT strategy committee advises on direction, and the audit committee oversees audit. The IT steering committee belongs to management and ranks projects."
               },
               "example": "A hospital network's steering committee charter says the committee reviews project status, but it has no power to stop or reorder projects, and the same overruns repeat every quarter. The IS auditor recommends adding decision rights and an escalation path to the executive team, and reports the finding to the audit committee. The chief executive amends the charter.",
-              "isaca_rule": "Each decision belongs to one chartered body with clear decision rights and an escalation path, and each outcome has one Accountable role. A committee that only reviews, without authority to act, gives the look of governance without its effect.",
+              "isaca_rule": "Each decision belongs to one chartered body with clear decision rights and an escalation path, and each outcome has one Accountable role. A committee that only reviews, without authority to act, gives the look of governance without its effect; lapses across a whole charter are one systemic finding.",
               "exam_traps": [
                 {
                   "trap": "The IT strategy committee prioritizes projects and allocates resources.",
@@ -4705,8 +4705,8 @@
                   "definition": "A measure of what people actually do, such as phishing report rates, rather than which training they finished."
                 },
                 {
-                  "term": "Delegation",
-                  "definition": "Handing a task and the authority to do it to someone else, while the delegator stays accountable."
+                  "term": "Security risk review",
+                  "definition": "A regular management review, often monthly, that feeds incidents and control indicators into risk treatment decisions, keeping the program effective between audits."
                 }
               ]
             },
@@ -5640,7 +5640,7 @@
                 "svg": "<svg viewBox='0 0 344 120' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='The four risk responses: accept, avoid, transfer, mitigate'><rect x='8' y='8' width='160' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='88' y='29' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Accept</text><text x='88' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>Within appetite</text><rect x='176' y='8' width='160' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='256' y='29' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Avoid</text><text x='256' y='47' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>Stop the activity</text><rect x='8' y='64' width='160' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='88' y='85' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Transfer</text><text x='88' y='103' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>Insure or contract</text><rect x='176' y='64' width='160' height='48' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='256' y='85' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='var(--text)'>Mitigate</text><text x='256' y='103' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='12' font-weight='600' fill='var(--text2)'>Add controls</text></svg>",
                 "caption": "The four responses. Mitigate is also called reduce. Whatever is left after the choice is residual risk."
               },
-              "example": "A water utility plans to let a contractor run pumping stations remotely through a tool that supports neither multifactor authentication nor logging. No available control brings the risk within the board's appetite, and the operations director proposes insurance and accepting the rest. The IS auditor recommends presenting avoidance options to senior management, because insurance would not prevent the harm.",
+              "example": "A water utility plans to let a contractor run pumping stations remotely through a tool that supports neither multi-factor authentication nor logging. No available control brings the risk within the board's appetite, and the operations director proposes insurance and accepting the rest. The IS auditor recommends presenting avoidance options to senior management, because insurance would not prevent the harm.",
               "isaca_rule": "Match the response to the risk. When no control or insurance brings a risk within appetite, avoid it rather than accept it. Transfer moves money, not accountability. Under budget limits, treat mandatory obligations first and escalate unfunded risk above tolerance for a documented senior management decision.",
               "exam_traps": [
                 {
@@ -5713,7 +5713,7 @@
                   }
                 ]
               },
-              "example": "A hotel group has four weeks to review a boutique booking-platform company it wants to buy. The seller's data room is thin, and the platform runs on an operating system that lost vendor support last year. The IS auditor recommends concentrating on the booking platform, payment-card compliance and license transfers, and agreeing deal-breaker criteria with the board's deal committee before it votes.",
+              "example": "A bus-tour operator has four weeks to review a small online ticketing company it wants to buy. The seller's data room is thin, and the platform runs on an operating system that lost vendor support last year. The IS auditor recommends concentrating on the ticketing platform, payment-card compliance and license transfers, and agreeing deal-breaker criteria with the board's deal committee before it votes.",
               "isaca_rule": "IT due diligence is risk-based: go deep where critical systems, regulated data and known incidents sit, agree deal-breakers up front, and verify rather than rely on the seller's or adviser's claims. The buyer stays accountable for the IT risk it acquires.",
               "exam_traps": [
                 {
@@ -6016,7 +6016,7 @@
                 "d2_164"
               ],
               "definition": "Data subject rights let people see, correct, erase or move their personal data; transborder data flow rules control when that data may leave a country.",
-              "why_it_matters": "Mishandled requests and unlawful transfers are highly visible privacy failures. Releasing data to an impostor turns a rights request into a breach.",
+              "why_it_matters": "Mishandled requests and unlawful transfers are visible privacy failures. Releasing data to an impostor turns a rights request into a breach.",
               "how_it_works": [
                 "Log each request, verify the requester's identity, and answer within the legal deadline.",
                 "When two laws apply, meet both sets of duties and the shorter deadline, and document the basis.",
@@ -6055,7 +6055,7 @@
                 "svg": "<svg viewBox='0 0 340 174' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Handling a data subject request: log it, verify the requester identity, respond by the legal deadline'><rect x='20' y='8' width='300' height='38' rx='4' fill='var(--accent-fill)'/><text x='170' y='32' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Log the request</text><line x1='170' y1='48' x2='170' y2='59' stroke='var(--text2)' stroke-width='1.5'/><path d='M166,59 L170,66 L174,59 Z' fill='var(--text2)'/><rect x='20' y='68' width='300' height='38' rx='4' fill='var(--accent-fill)'/><text x='170' y='92' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Verify identity</text><line x1='170' y1='108' x2='170' y2='119' stroke='var(--text2)' stroke-width='1.5'/><path d='M166,119 L170,126 L174,119 Z' fill='var(--text2)'/><rect x='20' y='128' width='300' height='38' rx='4' fill='var(--accent-fill)'/><text x='170' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='13' font-weight='700' fill='#ffffff'>Respond by the deadline</text></svg>",
                 "caption": "A rights request in three steps: log it, confirm the requester's identity, and answer within the legal time limit."
               },
-              "example": "A German car-rental company sends customer records to a call center in India under SCCs. India has no EU adequacy decision, and nobody has assessed whether local law lets authorities reach the data. The IS auditor traces sampled transfers and reports the missing transfer impact assessment (TIA) as a gap for the privacy officer to fix.",
+              "example": "A German car-rental company sends customer records to a call center in India under SCCs. India has no EU adequacy decision, and nobody has assessed whether local law lets authorities reach the data. The IS auditor traces sampled transfers and reports the missing transfer impact assessment (TIA) for the privacy officer to fix.",
               "isaca_rule": "Verify identity before releasing personal data, meet every applicable law's duties, and respect legal retention limits on erasure. For transfers, the mechanism must be valid and proven by tracing actual data flows.",
               "exam_traps": [
                 {
@@ -6082,7 +6082,7 @@
                 },
                 {
                   "term": "Data residency",
-                  "definition": "A requirement that data be stored and processed within a named country or region."
+                  "definition": "A rule that data stay in a named country or region; resolve conflicts by designing a compliant architecture and matching contract terms to it."
                 }
               ]
             }
@@ -6520,12 +6520,12 @@
                   }
                 ]
               },
-              "example": "An IS auditor compares a manufacturer's HR leaver list with active network accounts. Fourteen former staff still have working accounts, including a dismissed engineer with remote access, because HR emails IT a leaver list once a month. The auditor reports the gap, recommends an automated HR-to-IT feed with same-day disabling, and recommends that management review the engineer's account for activity after departure.",
-              "isaca_rule": "Access ends when employment or the role ends, not when paperwork catches up. Involuntary terminations need access removed at or before notice. The IS auditor tests by matching HR records to active accounts.",
+              "example": "A ferry operator will dismiss a network engineer at a Friday afternoon meeting, and IT has been told to remove his access on Monday. The IS auditor recommends disabling his remote and privileged access at or before the meeting, collecting his laptop and token there, and changing shared passwords he knew. The HR director agrees to the new timing.",
+              "isaca_rule": "Access ends when employment or the role ends, not when paperwork catches up; involuntary terminations need removal at or before notice. Leaver accounts found active are disabled and checked for misuse first, then the HR-to-IT trigger is fixed. The IS auditor tests by matching HR records to active accounts.",
               "exam_traps": [
                 {
                   "trap": "Removing a leaver's access is an HR paperwork task that can follow the monthly cycle.",
-                  "why": "Late revocation is one of the most common real control failures. Access must end on departure, through a timely HR-to-IT trigger."
+                  "why": "Late revocation is among the most common control failures. Access must end on departure, through a timely HR-to-IT trigger."
                 },
                 {
                   "trap": "Background checks should be identical, and as deep as possible, for everyone.",
@@ -6566,11 +6566,11 @@
                 "d2_167"
               ],
               "definition": "IT financial management plans, funds, allocates and tracks IT spending, so money goes where it creates the most business value at an acceptable risk.",
-              "why_it_matters": "Spending can rise while value falls. Without business cases, portfolio discipline and cost transparency, IT funds the loudest request instead of the most valuable one.",
+              "why_it_matters": "Spending can rise while value falls. Without business cases, portfolio discipline and cost transparency, IT funds the loudest request not the most valuable.",
               "how_it_works": [
                 "Each business case states life-cycle costs (total cost of ownership), quantified benefits, risks, alternatives and success measures, modeling each outcome when a known uncertainty drives value.",
                 "Portfolio management ranks investments as a set, often in three tiers, each with a funding range: run (keep services going), grow (expand the business) and transform (create new business).",
-                "Material mid-year changes go back to the body that approved the portfolio, with items re-ranked by risk and value.",
+                "Material mid-year changes return to the body that approved the portfolio, re-ranked by risk and value.",
                 "Mandated cuts follow risk and value, protecting regulatory and critical services and documenting the risks accepted.",
                 "Cost allocation shows business units what they consume, and FinOps (cloud financial operations) applies the same discipline to cloud spending.",
                 "Value is reported as realized business benefits, not money spent or projects delivered."
@@ -6618,8 +6618,8 @@
               ],
               "key_terms": [
                 {
-                  "term": "Business case",
-                  "definition": "The justification for an investment: costs, quantified benefits, risks, alternatives and success measures."
+                  "term": "Integrated IT management",
+                  "definition": "Linking cost, vendor, capacity and investment decisions through shared inputs and one accountable forum, so no practice decides alone."
                 },
                 {
                   "term": "IT portfolio management",
@@ -6627,7 +6627,7 @@
                 },
                 {
                   "term": "FinOps",
-                  "definition": "A cloud cost practice that tags spending, allocates it to the teams that use it and makes them accountable for it."
+                  "definition": "A cloud cost practice that tags spending, allocates it to the teams using it and holds them accountable."
                 },
                 {
                   "term": "Benefits realization",
@@ -6656,7 +6656,7 @@
                 "Funding is released in stages as validated forecasts change, rather than fixed a year ahead.",
                 "When teams dispute a shared resource, a governance forum with defined decision rights settles it."
               ],
-              "example": "At an online grocery chain, the storage team plans next year's capacity by extending last year's growth line, while marketing prepares to launch in three new cities. Two teams also dispute who gets a spare database cluster. The IS auditor recommends planning from business-validated demand forecasts and giving a cross-team forum clear decision rights over shared capacity. The chief technology officer agrees.",
+              "example": "A regional garden-center chain will open 40 new stores next year, but its IT service desk plans staffing by copying this year's headcount, and two teams dispute who gets a shared contractor pool. The IS auditor recommends staffing from business-validated demand forecasts and giving a cross-team forum clear decision rights over shared resources. The chief technology officer agrees.",
               "isaca_rule": "Capacity follows business demand and value. Plan from validated forecasts, act on thresholds before limits are hit, and settle contested resources in an accountable forum, not by whoever escalates loudest.",
               "exam_traps": [
                 {
@@ -8538,12 +8538,12 @@
                 "d3_126"
               ],
               "definition": "Agile development delivers working software in short, repeated cycles and adjusts to feedback; Scrum and Kanban are two common ways to organize that work.",
-              "why_it_matters": "Agile reduces the risk of building the wrong thing, but its speed can erode documentation and control checks. The IS auditor must know what evidence an agile team should still produce.",
+              "why_it_matters": "Agile reduces the risk of building the wrong thing, but its speed can erode documentation and control checks. The IS auditor must know what evidence agile teams still owe.",
               "how_it_works": [
-                "The product owner keeps a prioritized product backlog of user stories describing what users need.",
+                "The product owner keeps a prioritized backlog of user stories describing user needs.",
                 "Scrum runs fixed-length sprints, and each sprint contains four events: Sprint Planning, Daily Scrum, Sprint Review and Sprint Retrospective.",
                 "Kanban pulls work continuously across a board and caps work in progress (WIP) at each stage.",
-                "Teams size stories relative to each other; velocity supports forecasts only after it stabilizes over several sprints.",
+                "Teams size stories relative to each other; velocity (work completed per sprint) supports forecasts only after it stabilizes over several sprints.",
                 "Documentation is lean but sufficient: design and control decisions are recorded well enough to maintain and audit the system.",
                 "Security and privacy requirements are checked at sprint planning and verified within the sprint, not left to a final review."
               ],
@@ -8587,7 +8587,7 @@
                 "svg": "<svg viewBox='0 0 492 210' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Waterfall runs phases in a strict cascade; Agile runs short repeating sprints'><rect x='10' y='24' width='222' height='178' rx='6' fill='none' stroke='var(--accent-fill)' stroke-width='1.5' stroke-dasharray='5 3'/><text x='121' y='18' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>WATERFALL</text><rect x='22' y='40' width='94' height='24' rx='4' fill='var(--accent-fill)'/><text x='69' y='56' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Requirements</text><rect x='48' y='72' width='94' height='24' rx='4' fill='var(--accent-fill)'/><text x='95' y='88' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Design</text><rect x='74' y='104' width='94' height='24' rx='4' fill='var(--accent-fill)'/><text x='121' y='120' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Build</text><rect x='100' y='136' width='94' height='24' rx='4' fill='var(--accent-fill)'/><text x='147' y='152' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Test</text><rect x='126' y='168' width='94' height='24' rx='4' fill='var(--accent-fill)'/><text x='173' y='184' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Deploy</text><text x='121' y='196' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='7.5' font-weight='600' fill='var(--text2)'>Each phase finishes before the next begins</text><rect x='242' y='24' width='240' height='178' rx='6' fill='none' stroke='var(--accent-fill)' stroke-width='1.5' stroke-dasharray='5 3'/><text x='362' y='18' text-anchor='middle' font-family='JetBrains Mono, monospace' font-size='7.5' font-weight='700' fill='var(--accent-fill)' letter-spacing='0.08em'>AGILE</text><rect x='254' y='108' width='58' height='28' rx='4' fill='var(--accent-fill)'/><text x='283' y='126' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Plan</text><rect x='334' y='108' width='58' height='28' rx='4' fill='var(--accent-fill)'/><text x='363' y='126' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Build</text><rect x='414' y='108' width='58' height='28' rx='4' fill='var(--accent-fill)'/><text x='443' y='126' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9' font-weight='700' fill='#ffffff'>Review</text><line x1='314' y1='122' x2='325' y2='122' stroke='var(--text2)' stroke-width='1.5'/><path d='M325,118 L332,122 L325,126 Z' fill='var(--text2)'/><line x1='394' y1='122' x2='405' y2='122' stroke='var(--text2)' stroke-width='1.5'/><path d='M405,118 L412,122 L405,126 Z' fill='var(--text2)'/><path d='M443,108 C443,66 283,66 283,108' fill='none' stroke='var(--text2)' stroke-width='1.5'/><path d='M279,100 L283,109 L287,100 Z' fill='var(--text2)'/><text x='362' y='58' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='7.5' font-weight='600' fill='var(--text2)'>each sprint repeats</text><text x='362' y='168' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='7.5' font-weight='600' fill='var(--text2)'>Short iterations — requirements can evolve</text></svg>",
                 "caption": "Waterfall moves through each stage once, in order. Agile repeats a short plan, build and review loop, so requirements can change between loops."
               },
-              "example": "A media company's Scrum team marks a story done once the product owner accepts its demo. In ten sampled stories touching subscriber payment data, the IS auditor finds no record of security testing or code review for six. She recommends adding security tests, peer review and updated design notes to the team's Definition of Done, so every increment carries that evidence.",
+              "example": "A media company's Scrum team marks a story done once the product owner accepts its demo. In ten sampled stories touching subscriber payment data, the IS auditor finds no record of security testing or code review for six. She recommends adding security tests, peer review and updated design notes to the Definition of Done, so every increment carries that evidence.",
               "isaca_rule": "Agile changes how evidence is produced, not whether it exists. Just-enough documentation must still record design and control decisions, and regulated projects can stay agile when stage gates, signed baselines and traceability provide the evidence the IS auditor needs.",
               "exam_traps": [
                 {
@@ -8596,17 +8596,17 @@
                 },
                 {
                   "trap": "One sprint's velocity is a sound basis for a delivery date.",
-                  "why": "Velocity varies until a team settles. Forecasts become reliable only after velocity stabilizes over several sprints."
+                  "why": "Velocity varies until a team settles; forecasts become reliable only after it stabilizes over several sprints."
                 }
               ],
               "key_terms": [
                 {
                   "term": "User story",
-                  "definition": "A short description of a feature from the user's point of view, with criteria for when it is done."
+                  "definition": "A short description of a feature from the user's point of view, with acceptance criteria."
                 },
                 {
-                  "term": "Velocity",
-                  "definition": "The amount of work, usually in story points, a team completes per sprint."
+                  "term": "Written decision record",
+                  "definition": "Decisions written down for distributed teams in every time zone; with rotating meeting hours, no site is always left out."
                 },
                 {
                   "term": "Definition of Done",
@@ -8839,12 +8839,12 @@
                 "Monitor live performance for drift, with alert thresholds and agreed retraining triggers.",
                 "Keep human review for high-impact decisions, and record which model version made each decision."
               ],
-              "example": "A lender's data science team retrains its credit-scoring model monthly and pushes each version straight to production from a notebook. The chief risk officer cannot say which version scored any declined applicant. The IS auditor recommends independent validation before each release, deployment through the change pipeline, and a record of the model version used for every decision.",
+              "example": "A hospital's data science team retrains its sepsis-alert model monthly and pushes each version straight to production from a notebook. The chief medical officer cannot say which version flagged any patient. The IS auditor recommends independent validation before each release, deployment through the change pipeline, and a record of the model version behind every alert.",
               "isaca_rule": "Treat a model, its training data and its monitoring as controlled system components. Each model needs a business owner, independent validation before release, normal change control and live drift monitoring. The IS auditor gives assurance on these controls; management owns the model and its outcomes.",
               "exam_traps": [
                 {
-                  "trap": "A model that passed validation at launch needs no further checks.",
-                  "why": "Real-world data shifts over time, so accuracy and fairness can decay. Drift monitoring with agreed retraining triggers keeps the model within its approved limits."
+                  "trap": "The data scientists who built a model can validate it themselves before release.",
+                  "why": "Builders test their own assumptions. Independent validation of accuracy, fairness and limits finds what the team cannot see in its own work."
                 },
                 {
                   "trap": "Data scientists can push retrained models to production because retraining is not a code change.",
@@ -9136,7 +9136,7 @@
                 "Assign who reviews which events and how often, so logs are used, not just kept.",
                 "Capture data lineage automatically as data pipelines run, recording where each item came from and how it changed."
               ],
-              "example": "A drug maker's lab system logs result changes locally, and lab administrators can delete log entries. After a disputed test result, nobody can prove who changed it. The IS auditor recommends sending logs in real time to a central, write-protected store, synchronizing clocks and removing the shared 'labadmin' account so every change is tied to a named person.",
+              "example": "At the design review for a pharmacy chain's new dispensing system, the draft logging plan records only sign-ins, and each till will use one shared 'counter' account. The IS auditor recommends logging every override and price change against individual sign-ins, and sending events to a central store that pharmacists and administrators cannot alter. The product owner updates the requirements.",
               "isaca_rule": "Logs are evidence only if they are complete, centrally collected, time-synchronized, protected from alteration and tied to individual identities. Design them in with the application, and capture lineage automatically instead of documenting it by hand.",
               "exam_traps": [
                 {
@@ -9354,8 +9354,8 @@
               ],
               "key_terms": [
                 {
-                  "term": "Code coverage",
-                  "definition": "The share of code lines or paths executed by a test suite."
+                  "term": "Defect density",
+                  "definition": "Defects found per thousand lines of code; a rise may reflect better testing or worse code, so analyze root causes before concluding."
                 },
                 {
                   "term": "Mutation testing",
@@ -9591,7 +9591,7 @@
                 },
                 {
                   "term": "Formal risk acceptance",
-                  "definition": "A documented decision by the accountable owner to retain a known risk rather than mitigate it first."
+                  "definition": "A documented decision by an owner with authority for that risk level to retain a known risk."
                 },
                 {
                   "term": "Cutover rehearsal",
@@ -9648,7 +9648,7 @@
               ],
               "key_terms": [
                 {
-                  "term": "Configuration item (CI)",
+                  "term": "Configuration item",
                   "definition": "Any component that must be controlled to keep a system working, such as code, a design or a build script."
                 },
                 {
@@ -10202,7 +10202,7 @@
                 },
                 {
                   "term": "Post-project review",
-                  "definition": "A review held at project closure of how the project itself was run; unlike a PIR, it does not measure realized benefits."
+                  "definition": "A review at project closure of how the project was run, also called a project closure review; unlike a PIR, it does not measure benefits."
                 }
               ]
             },
@@ -10227,7 +10227,7 @@
                 "Report a missing benefit baseline as a finding, because benefits cannot be proven without one.",
                 "Treat user workarounds as signs of a missing or broken control, and rate the resulting risk.",
                 "Find out why adoption is low before recommending fixes such as training.",
-                "Make sure the reviewer is independent: not on the delivery team and not an IS auditor who designed the controls; advisory input alone does not impair independence."
+                "Make sure the reviewer is independent: not on the delivery team, and not an IS auditor who designed or advised on the controls under review."
               ],
               "example": "A rail operator plans to have the IS auditor who designed its rostering system's approval controls lead their post-implementation review. The chief audit executive (CAE) assigns an IS auditor who had no part in the project. Testing approvals on live rosters, the new reviewer finds two supervisor override paths that skip approval entirely and reports them to the operations director for remediation.",
               "isaca_rule": "The IS auditor's distinct contribution is assurance that controls work in real use and that benefits rest on objective evidence. Workarounds and low adoption are symptoms whose causes come first, and no reviewer judges their own work.",
@@ -10282,7 +10282,7 @@
                 "Follow up to confirm that actions were taken and worked."
               ],
               "example": "Nine months after a post-implementation review of a property tax system, four of six agreed actions are overdue, and the revenue director now calls the missing refund-approval control 'not worth fixing'. The IS auditor confirms each action's status and reports the overdue items. Because the accepted risk exceeds the stated risk appetite, the chief audit executive (CAE) raises it with senior management and then the audit committee.",
-              "isaca_rule": "Benefits realization is a business responsibility: the sponsor who promised the benefits owns the plan to close a shortfall. The IS auditor recommends and follows up; management decides, acts, and accepts any residual risk it chooses not to mitigate.",
+              "isaca_rule": "Benefits realization is a business responsibility: the sponsor who promised the benefits owns the plan to close a shortfall. The IS auditor recommends and follows up; management decides and acts, and may accept residual risk only within appetite.",
               "exam_traps": [
                 {
                   "trap": "IT should own the plan to close a benefit shortfall.",
@@ -10330,7 +10330,7 @@
         "Regression testing": "Re-running existing tests to confirm a change did not break functions that already worked.",
         "Configuration management": "Identifying and controlling every component of a system so the approved version of each is always known.",
         "Change advisory board (CAB)": "A group that assesses the risk, impact and readiness of significant changes and advises the change authority.",
-        "Rollback plan": "Tested, time-bound steps, also called a back-out plan, to return to a working state, including data and configuration, if a release fails.",
+        "Rollback plan": "Tested, time-bound steps, also called a backout plan, to return to a working state, including data and configuration, if a release fails.",
         "Software bill of materials (SBOM)": "An inventory of the components, versions and dependencies inside a piece of software.",
         "Cutover": "The switch of users and work from an old system to a new one.",
         "Data conversion": "Moving and transforming data from an old system's format into a new system's format.",
@@ -10696,7 +10696,7 @@
                 "Configuration scans compare each server with its baseline and flag drift for follow-up.",
                 "File integrity monitoring (FIM) alerts on any change to system files compared with a known-good copy.",
                 "Utilities such as disk editors and data loaders are limited to named administrators, used through approved requests and logged.",
-                "Where a server class cannot meet the baseline, management approves a documented, expiring exception with compensating controls."
+                "Where a server class cannot meet the baseline, the asset owner accepts a documented, expiring exception with compensating controls."
               ],
               "compare": {
                 "columns": [
@@ -10743,7 +10743,7 @@
               "exam_traps": [
                 {
                   "trap": "Hardening caused outages, so roll the whole fleet back to vendor default settings.",
-                  "why": "That replaces one risk with a greater one. Tailor the baseline to each server class, and handle the rest through documented exceptions with compensating controls that management formally accepts."
+                  "why": "That replaces one risk with a greater one. Tailor the baseline per server class, and handle the rest through documented exceptions with compensating controls that the asset owner formally accepts."
                 },
                 {
                   "trap": "Developers need utilities on production for support, so logging their use is enough.",
@@ -10761,7 +10761,7 @@
                 },
                 {
                   "term": "Default account",
-                  "definition": "An account a vendor ships with a known name or password; it should be disabled or changed before use."
+                  "definition": "An account a vendor ships with a known name or password; disable or change it before use."
                 }
               ]
             },
@@ -10851,7 +10851,7 @@
                 },
                 {
                   "term": "Residual risk",
-                  "definition": "The risk that remains after controls are applied; above appetite, management must treat it or formally accept it."
+                  "definition": "The risk that remains after controls are applied; above appetite, it must be treated unless the board approves an exception."
                 },
                 {
                   "term": "Warranty",
@@ -11876,12 +11876,12 @@
                 "d4_257"
               ],
               "definition": "The incident handling sequence is the order for an operational incident: detect and record, limit spreading damage, restore service, then review; root cause analysis belongs to problem management.",
-              "why_it_matters": "Under pressure, teams often chase the root cause while users stay down. The right order limits harm and restores service fast, and clear decision rights stop the response waiting on executives.",
+              "why_it_matters": "Under pressure, teams chase the root cause while users stay down. The right order limits harm and restores service fast, and clear decision rights stop the response waiting on executives.",
               "how_it_works": [
                 "Detection: the event is logged with a timestamp, classified and prioritized.",
                 "Containment: if damage is still spreading, stop the spread, for example by taking a failing server out of service.",
                 "Restoration: service returns by fix or workaround and is checked with users; the root cause goes to problem management.",
-                "Security incidents differ: contain the attack and remove the attacker's foothold before restoring service, as 5B5.1 explains.",
+                "Security incidents differ: independent responders, never a party on the attack path, contain the attack and remove the foothold before restoring service.",
                 "Review: a blameless post-incident review records what happened and why, before corrective actions are chosen.",
                 "An incident commander holds pre-delegated decisions; a liaison sends executives scheduled updates and users a status notice, so the desk is not flooded."
               ],
@@ -11894,7 +11894,7 @@
               "exam_traps": [
                 {
                   "trap": "Find the root cause before restoring service, so the fix is permanent.",
-                  "why": "Users stay down while the cause is investigated. Restore service first, by workaround if needed, and open a problem record for root cause analysis."
+                  "why": "Users stay down meanwhile. Restore service first, by workaround if needed, and open a problem record for root cause analysis."
                 },
                 {
                   "trap": "Every major decision during an outage should wait for the executive team.",
@@ -12036,7 +12036,7 @@
               "definition": "Change management is the process that records, assesses, approves and reviews every change to production, so only authorized, tested changes go live.",
               "why_it_matters": "Unauthorized or untested changes are a leading cause of outages and security gaps. The process also shows auditors and regulators that production is controlled.",
               "how_it_works": [
-                "Each change is requested, assessed for risk and impact, approved by the change authority, tested and recorded.",
+                "Each change, including system retirement, is requested, assessed for risk and impact on dependent systems, approved, tested and recorded.",
                 "Higher-risk changes go to the change advisory board (CAB) for review before the change authority approves them.",
                 "Developers have no standing production access; pipeline separation of authors and deployers is covered in 3B2.2.",
                 "Every change has a tested backout plan to restore the prior state.",
@@ -12050,7 +12050,7 @@
                 },
                 {
                   "term": "Normal change",
-                  "meaning": "Assessed and approved one by one, by the CAB when the risk is higher."
+                  "meaning": "Assessed one by one and approved by the change authority, after CAB review when the risk is higher."
                 },
                 {
                   "term": "Emergency change",
@@ -12065,7 +12065,7 @@
                   "why": "Emergency changes may skip prior approval, but they still need documentation, independent review and approval soon after implementation."
                 },
                 {
-                  "trap": "Send every routine, pre-tested desktop patch to the CAB for approval.",
+                  "trap": "Send every routine, pre-tested desktop patch to the CAB for review.",
                   "why": "Standard changes are pre-approved under a documented procedure. Routing each to the CAB wastes its time; review the procedure and sample its results instead."
                 }
               ],
@@ -12088,7 +12088,7 @@
                 },
                 {
                   "term": "Emergency (firecall) ID",
-                  "definition": "A temporary privileged account issued for an urgent fix, with every action logged and reviewed afterward, then disabled."
+                  "definition": "Temporary privileged access, also called break-glass, issued for an urgent fix, logged, reviewed afterward, then disabled."
                 }
               ]
             },
@@ -12376,7 +12376,7 @@
                 "svg": "<svg viewBox='0 0 450 100' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Log management: collect logs, store them securely, monitor and analyze them'><rect x='8' y='24' width='84' height='44' rx='4' fill='var(--accent-fill)'/><text x='50' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Collect</text><rect x='114' y='24' width='108' height='44' rx='4' fill='var(--accent-fill)'/><text x='168' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Store securely</text><rect x='244' y='24' width='88' height='44' rx='4' fill='var(--accent-fill)'/><text x='288' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Monitor</text><rect x='354' y='24' width='88' height='44' rx='4' fill='var(--accent-fill)'/><text x='398' y='50' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='9.5' font-weight='700' fill='#ffffff'>Analyze</text><line x1='94' y1='46' x2='105' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M105,42 L112,46 L105,50 Z' fill='var(--text2)'/><line x1='224' y1='46' x2='235' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M235,42 L242,46 L235,50 Z' fill='var(--text2)'/><line x1='334' y1='46' x2='345' y2='46' stroke='var(--text2)' stroke-width='1.5'/><path d='M345,42 L352,46 L345,50 Z' fill='var(--text2)'/></svg>",
                 "caption": "The log pipeline: collect from every layer, store where they cannot be altered, then monitor and analyze. Skipping the last two steps means the logs detect nothing."
               },
-              "example": "A card issuer uses a software-as-a-service (SaaS) customer-service platform whose vendor keeps activity logs for seven days. The issuer's rules require one year for records of agent access to card data. The IS auditor recommends exporting those logs daily to the issuer's own log store and adding retention terms to the contract. The vendor manager arranges both.",
+              "example": "A card issuer uses a software as a service (SaaS) customer-service platform whose vendor keeps activity logs for seven days. The issuer's rules require one year for records of agent access to card data. The IS auditor recommends exporting those logs daily to the issuer's own log store and adding retention terms to the contract. The vendor manager arranges both.",
               "isaca_rule": "Coverage first, then retention, then protection. Every layer logs, privileged actions tie to a named person, clocks agree, and each log type is kept as long as law and business require. Capture what is needed and mask what is sensitive.",
               "exam_traps": [
                 {
@@ -13501,14 +13501,14 @@
                 "d4_239"
               ],
               "definition": "Operational resilience is the ability to keep delivering critical services when any resource they rely on fails, including people, suppliers and operational technology (OT).",
-              "why_it_matters": "Plans often protect servers but forget that one expert can leave, a sole supplier can fail or a plant control system can stop, halting a critical process just as surely.",
+              "why_it_matters": "Plans often protect servers but forget that an expert can leave, a sole supplier fail or a plant control system stop, halting a critical process just as surely.",
               "how_it_works": [
                 "Plan for impacts, not causes: losing staff, a site, technology or a supplier is handled the same way, whatever triggered it.",
                 "Fix key-person dependency by cross-training a second person and rehearsing the task; documents alone do not create capability.",
                 "Capture leaving staff's knowledge in reviewed procedures before they go, as a bridge to successors.",
-                "Require critical suppliers to show evidence of tested recovery, or arrange an alternate source.",
+                "Require critical suppliers to show tested recovery, or qualify an alternate source in advance.",
                 "Include OT, such as SCADA (supervisory control and data acquisition) systems running production lines, in the enterprise plan with its own recovery and safety steps.",
-                "Give broad threats, such as a pandemic, one integrated plan under a cross-functional steering committee, because the workstreams depend on each other."
+                "Give broad threats, such as a pandemic, one integrated plan under a cross-functional steering committee, as their workstreams interlock."
               ],
               "compare": {
                 "columns": [
@@ -13544,7 +13544,7 @@
                 ]
               },
               "example": "A city government keeps separate continuity plans for floods, cyberattacks, strikes and pandemics, with conflicting contacts and steps. During a heatwave, none applies cleanly. The IS auditor recommends organizing plans around impacts, such as loss of staff, site, technology or a supplier, whatever the cause. The city manager assigns the rewrite to the continuity steering committee.",
-              "isaca_rule": "Every resource a critical service needs must have a tested fallback. Capability lives in trained people and proven arrangements, not in documents or contracts. In any OT incident, the safety of people and plant comes before production and before forensics.",
+              "isaca_rule": "Every resource a critical service needs must have a tested fallback. Capability lives in trained people and proven arrangements, not in documents or contracts. In any OT incident, the safety of people and plant comes before production and forensics.",
               "exam_traps": [
                 {
                   "trap": "During an OT incident, keep production running or collect forensic evidence first.",
@@ -13552,7 +13552,7 @@
                 },
                 {
                   "trap": "A detailed procedure document removes the risk of relying on one engineer.",
-                  "why": "Documents help, but capability is proven only when a second trained person has actually performed the task in a rehearsal."
+                  "why": "Documents help, but capability is proven only when a second trained person has performed the task in rehearsal."
                 }
               ],
               "key_terms": [
@@ -13565,8 +13565,8 @@
                   "definition": "The only provider of a product or service a process needs, with no qualified alternative."
                 },
                 {
-                  "term": "Cross-training",
-                  "definition": "Teaching a second person a critical task and proving it through practice."
+                  "term": "Supplier workaround",
+                  "definition": "The continuity plan's tested manual process during a supplier outage; its security controls, such as card-data protection, still apply."
                 }
               ]
             }
@@ -13605,7 +13605,7 @@
                 "Grandfather-father-son rotation keeps daily, weekly and monthly sets, giving long retention without buying media for every backup.",
                 "The 3-2-1 rule keeps three copies of data, on two types of media, with one copy offsite; the newer 3-2-1-1-0 adds one immutable or offline copy and zero restore errors.",
                 "Fast disk backups serve everyday restores; at least one immutable or offline copy, managed with separate administrator credentials, stays out of ransomware's reach.",
-                "Retention must outlast the time it may take to notice silent corruption, or every remaining copy may already be bad."
+                "Retention must outlast silent corruption's detection time; if every copy is bad, query the data to scope the damage."
               ],
               "compare": {
                 "columns": [
@@ -13893,7 +13893,7 @@
                 },
                 {
                   "term": "Key escrow",
-                  "definition": "A protected copy of encryption keys held by a trusted party, so backups can be decrypted if the original key is lost."
+                  "definition": "A protected copy of encryption keys held by a trusted party; if keys are lost, preserve failed devices and pursue recovery before irreversible steps."
                 },
                 {
                   "term": "Clean restore point",
@@ -14022,26 +14022,26 @@
                 "d4_093",
                 "d4_129"
               ],
-              "definition": "Plan contents are the practical parts that let people act in a crisis: who decides, when the plan starts, how the organization communicates and what supplies it needs.",
-              "why_it_matters": "A plan with good procedures still fails if nobody knows who may declare a disruption or speak for the organization. Delays and mixed messages can cause more harm than the event itself.",
+              "definition": "Plan contents are the parts that let people act in a crisis: who decides, when the plan starts, how the organization communicates and what supplies it needs.",
+              "why_it_matters": "A plan with good procedures still fails if nobody knows who may declare a disruption or speak for the organization. Delays and mixed messages can do more harm than the event.",
               "how_it_works": [
                 "Name a decision owner for each area, with clear limits and at least one trained alternate.",
                 "Set measurable activation criteria, so a named alternate can act without waiting for one unavailable executive.",
                 "Prepare crisis communications before any incident: named, trained spokespersons and pre-approved message templates.",
-                "Keep current call trees for staff, suppliers, regulators and customers, and plan copies offline and offsite, reachable when systems are down.",
+                "Keep current call trees for staff, suppliers, regulators and customers, and plan copies offline and offsite, reachable when systems fail.",
                 "Hold reserves of critical supplies away from the main site, and qualify an alternate supplier.",
-                "Treat insurance as a complement that offsets financial loss, never as a substitute for recovery capability."
+                "Treat insurance as a complement that offsets financial loss, never a substitute for recovery."
               ],
               "example": "Ransomware encrypts a regional insurer's file servers, including the only copy of its continuity plan and call tree. Managers spend the first hours rebuilding contact lists from memory. The IS auditor recommends current offline and printed copies of the plan and contacts with each team lead and at the alternate site. The continuity manager updates the distribution list.",
               "isaca_rule": "People's safety always comes first. Crisis decisions never hinge on one person: the plan names who decides what, with alternates, limits and measurable triggers. Communications and critical supplies are prepared before the event.",
               "exam_traps": [
                 {
                   "trap": "Comprehensive insurance coverage lets management reduce the continuity budget.",
-                  "why": "Insurance repays part of the financial loss but cannot restore operations, customers or reputation. It complements a continuity plan, never replaces it."
+                  "why": "Insurance repays part of the financial loss but cannot restore operations, customers or reputation. It complements continuity planning, never replaces it."
                 },
                 {
                   "trap": "Listing every senior executive as a decision maker gives the plan strong authority.",
-                  "why": "Without a named owner and limits for each decision area, decisions are delayed or contested. Specific, delegated authority lets people act."
+                  "why": "Without a named owner and limits per decision area, decisions are delayed or contested. Specific, delegated authority lets people act."
                 }
               ],
               "key_terms": [
@@ -14059,7 +14059,7 @@
                 },
                 {
                   "term": "Business interruption insurance",
-                  "definition": "Coverage for lost profit and continuing costs during a disruption; it funds recovery but does not perform it."
+                  "definition": "Coverage for lost profit and continuing costs during a disruption; if a claim is denied for control gaps, gather control evidence before settling or suing."
                 }
               ]
             },
@@ -14777,7 +14777,7 @@
                 "d5_183"
               ],
               "definition": "Data roles split security duties: the data owner classifies data and approves access, the data custodian applies the required controls, and users follow the handling rules.",
-              "why_it_matters": "Protection fits the data's value only when the person who understands that value decides; when administrators or the security team decide, controls drift from business need.",
+              "why_it_matters": "Protection fits data's value only when someone who understands that value decides; 2A7 sets owners and the scheme, and this subtopic shows how security roles apply them.",
               "how_it_works": [
                 "First inventory information assets and name an owner for each; the organization then approves one scheme, such as public, internal, confidential and restricted.",
                 "Each level has handling rules for storage, encryption, sharing, labeling, retention and disposal.",
@@ -14862,7 +14862,7 @@
                 },
                 {
                   "term": "Standard contractual clauses",
-                  "definition": "Approved contract terms that let personal data leave the EU when no adequacy decision covers the destination."
+                  "definition": "EU-approved terms binding an importer to protect transferred personal data, backed by the exporter's transfer impact assessment."
                 },
                 {
                   "term": "Privacy impact assessment (PIA)",
@@ -15501,7 +15501,7 @@
                 },
                 {
                   "term": "Emergency (break-glass) access",
-                  "definition": "A sealed high-privilege account for urgent fixes; each use is logged, independently reviewed afterward and its password then changed."
+                  "definition": "A sealed high-privilege account for urgent fixes, also called a firecall ID; each use is logged, independently reviewed and its password changed."
                 },
                 {
                   "term": "Privileged account",
@@ -17993,7 +17993,7 @@
                   }
                 ]
               },
-              "example": "An online pharmacy sees thousands of successful customer logins from unusual locations, using correct passwords leaked from other websites. The product owner proposes stricter password complexity rules. The IS auditor explains that complexity cannot help when the password is already correct, and recommends multi-factor authentication for customers plus screening new passwords against lists of known breached passwords.",
+              "example": "An online pharmacy sees thousands of successful customer logins from unusual locations, using correct passwords leaked from other websites. The product owner proposes stricter password complexity rules. The IS auditor explains that complexity cannot help when the password is already correct, and recommends MFA for customers plus screening new passwords against known breached passwords.",
               "isaca_rule": "Match the control to how the attack works, not to the word password. Limit where powerful credentials are exposed, require MFA, and end active sessions when an account is compromised. Least privilege shrinks what any one stolen account can do.",
               "exam_traps": [
                 {
@@ -18001,8 +18001,8 @@
                   "why": "Spraying tries one password per account, so no sensible threshold is ever reached. Detection across accounts and MFA close the gap."
                 },
                 {
-                  "trap": "Typing a matching number into my sign-in app stops a fake login page from passing my sign-in on.",
-                  "why": "The fake page shows the user the real number and forwards the user's approval. Only keys bound to the genuine site, such as FIDO2 security keys, resist this relay."
+                  "trap": "Number matching in my sign-in app stops a fake login page from relaying my sign-in.",
+                  "why": "The fake page shows the user the real number and forwards their approval. Only site-bound keys, such as FIDO2 security keys, resist this relay."
                 }
               ],
               "key_terms": [
@@ -18013,6 +18013,10 @@
                 {
                   "term": "Phishing-resistant authentication",
                   "definition": "Sign-in methods, such as FIDO2 security keys, that check the real site's address, so a fake page cannot relay them."
+                },
+                {
+                  "term": "Golden Ticket",
+                  "definition": "A forged Kerberos ticket signed with the stolen krbtgt key; resetting that password twice, with replication between, invalidates every forged ticket."
                 }
               ]
             },
@@ -18616,7 +18620,7 @@
                 },
                 {
                   "term": "Retention period",
-                  "definition": "How long logs must be kept, set by investigation needs, regulation and contracts."
+                  "definition": "How long logs are kept, set by law, business need and intrusion detection times."
                 }
               ]
             },
