@@ -316,15 +316,16 @@ describe('screens', () => {
     mockParams = { id: '4B1.2' };
     mount(<NoteSubtopicScreen />);
     // Helper line names the set size (never the bank size).
-    expect(allText()).toContain('3 questions that test this idea.');
+    expect(allText()).toContain('3 questions that test this concept.');
     const btn = pressable('Practice this concept');
     expect(btn.props.accessibilityRole).toBe('button');
-    expect(btn.props.accessibilityHint).toBe('Starts 3 questions on Recovery Objectives: RPO, RTO, MTD and MBCO');
+    expect(btn.props.accessibilityHint).toBe('Starts a practice set on Recovery Objectives: RPO, RTO, MTD and MBCO');
     press('Practice this concept');
     const s = useSession.getState().active!;
     expect(s.mode).toBe('practice');
     expect(s.title).toBe('Recovery Objectives: RPO, RTO, MTD and MBCO');
-    expect(s.questionIds).toEqual(['d4_005', 'd4_020', 'd4_062']);
+    // Same questions, in a shuffled order.
+    expect([...s.questionIds].sort()).toEqual(['d4_005', 'd4_020', 'd4_062']);
     expect(mockPush).toHaveBeenCalledWith('/session');
   });
 
@@ -336,7 +337,7 @@ describe('screens', () => {
     try {
       mockParams = { id: '4B1.2' };
       mount(<NoteSubtopicScreen />);
-      expect(allText()).toContain('1 question that tests this idea.');
+      expect(allText()).toContain('1 question that tests this concept.');
       press('Practice this concept');
       expect(useSession.getState().active!.questionIds).toEqual(['d4_005']);
     } finally {

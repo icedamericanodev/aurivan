@@ -20,6 +20,7 @@ import { Button, Enter, Gap, ICON_SIZE, PushedHeader, Screen, Tag, T } from '../
 import { EmptyScreen } from '../../../components/emptyScreen';
 import { findQuestion } from '../../../content/loader';
 import { findNote, noteDomain, noteSubtopics } from '../../../content/notes';
+import { createRng, shuffled } from '../../../engine/random';
 import { guardedStart, startFromIds, startPractice } from '../../../lib/sessions';
 import { useActiveCert } from '../../../lib/useActiveCert';
 import { useProgress } from '../../../store/progress';
@@ -63,7 +64,11 @@ export default function NoteSubtopicScreen() {
   const conceptIds = (note.practiceIds ?? []).filter((q) => findQuestion(cert.id, q));
   const n = conceptIds.length;
   const practiseConcept = () =>
-    guardedStart(() => startFromIds(cert.id, conceptIds, note.name), () => router.push('/session'));
+    guardedStart(
+      // Shuffled each time, so a repeat run does not replay the same order.
+      () => startFromIds(cert.id, shuffled(conceptIds, createRng(Date.now())), note.name),
+      () => router.push('/session'),
+    );
 
   return (
     <Screen edges={['top', 'bottom']}>
@@ -94,11 +99,11 @@ export default function NoteSubtopicScreen() {
           <View style={{ gap: space.xs }}>
             <Button
               label="Practice this concept"
-              accessibilityHint={`Starts ${n} ${n === 1 ? 'question' : 'questions'} on ${note.name}`}
+              accessibilityHint={`Starts a practice set on ${note.name}`}
               onPress={practiseConcept}
             />
-            <T v="meta" style={{ textAlign: 'center' }}>
-              {`${n} ${n === 1 ? 'question that tests' : 'questions that test'} this idea. Answers count toward your progress.`}
+            <T v="meta" center>
+              {`${n} ${n === 1 ? 'question that tests' : 'questions that test'} this concept. Answers count toward your progress.`}
             </T>
           </View>
         )}
