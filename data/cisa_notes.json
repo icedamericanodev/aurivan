@@ -1928,7 +1928,7 @@
               ],
               "illustration": {
                 "svg": "<svg viewBox='0 0 460 120' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Controls reduce inherent risk to a smaller residual risk that remains'><rect x='14' y='38' width='130' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='79' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Inherent risk</text><rect x='174' y='38' width='112' height='46' rx='4' fill='var(--accent-fill)'/><text x='230' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='#ffffff'>Controls</text><rect x='316' y='38' width='130' height='46' rx='4' fill='var(--surface)' stroke='var(--border2)' stroke-width='1'/><text x='381' y='65' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='10' font-weight='700' fill='var(--text)'>Residual risk</text><line x1='146' y1='61' x2='165' y2='61' stroke='var(--text2)' stroke-width='1.5'/><path d='M165,57 L172,61 L165,65 Z' fill='var(--text2)'/><line x1='288' y1='61' x2='307' y2='61' stroke='var(--text2)' stroke-width='1.5'/><path d='M307,57 L314,61 L307,65 Z' fill='var(--text2)'/><text x='79' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>risk before controls</text><text x='230' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>what they remove</text><text x='381' y='104' text-anchor='middle' font-family='Plus Jakarta Sans, Segoe UI, sans-serif' font-size='8' font-weight='600' fill='var(--text2)'>the risk that remains</text></svg>",
-                "caption": "Controls bring inherent risk down to residual risk. Some risk remains, and management decides whether to accept it."
+                "caption": "Controls bring inherent risk down to residual risk. Some risk remains; within appetite, management decides whether to accept it."
               },
               "example": "An IS auditor at an insurer finds that weak password settings on the claims system leave residual risk above the stated appetite. The IT director asks the auditor to sign off that the risk is acceptable so the project can close. The auditor declines, reports the residual risk and recommends that the claims business owner treat it, or seek a board-approved exception to keep it.",
               "isaca_rule": "Residual risk never reaches zero. Within appetite, an authorized manager accepts it in a documented decision; above appetite, it is treated, or kept only by board-approved exception. The auditor evaluates, reports and recommends, and never accepts risk.",
@@ -1945,7 +1945,7 @@
               "key_terms": [
                 {
                   "term": "Risk acceptance",
-                  "definition": "A documented decision by an authorized manager to live with a residual risk, with reasons and a review date."
+                  "definition": "A documented decision by an authorized manager to live with a residual risk within appetite, with reasons and a review date."
                 },
                 {
                   "term": "Risk owner",
@@ -9397,7 +9397,7 @@
                 "Sociability testing confirms the new system can share the production environment without harming existing systems or being harmed by them.",
                 "Alpha testing uses internal users at the developer's site; beta testing gives a near-final version to selected real users.",
                 "Recovery testing deliberately causes failures, such as stopping a server, to confirm the system fails safely and restores as designed.",
-                "Record results against targets; each miss becomes a defect to fix or a risk for management to accept."
+                "Record results against targets; each miss becomes a defect to fix or a risk for an authorized owner to accept within appetite."
               ],
               "types": [
                 {
@@ -9534,12 +9534,12 @@
                 "d3_129"
               ],
               "definition": "Go-live readiness is the evidence-based decision that a system may enter production, made by accountable owners against acceptance criteria agreed before testing started.",
-              "why_it_matters": "Deadline pressure pushes teams to launch untested or broken systems. Signed criteria and visible risks keep the decision with the people who own the consequences.",
+              "why_it_matters": "Deadline pressure pushes teams to launch untested or broken systems. Signed criteria and visible risks keep the decision with those who own the consequences.",
               "how_it_works": [
                 "Agree on measurable acceptance criteria, tied to business requirements, with the business owner before testing.",
-                "Rehearse the cutover in stages, covering technical and business steps, and confirm users are trained and support teams are ready before go-live.",
+                "Rehearse the cutover in stages, covering technical and business steps, and confirm users are trained and support is ready before go-live.",
                 "Collect sign-offs on a readiness checklist: testers certify that controls meet requirements, and a senior official accredits the system, accepting residual risk and exceptions.",
-                "Fix high-risk findings before go-live, or have the accountable risk owner formally accept them.",
+                "Fix high-risk findings before go-live. Within appetite, the risk owner or senior management may accept them; above appetite, they need a board-approved exception.",
                 "If user acceptance testing (UAT) misses its exit criteria, defer go-live; any deviation is decided and documented by the steering committee.",
                 "Under a fixed deadline, release a fully tested smaller scope and defer the rest with documented risk acceptance."
               ],
@@ -9572,8 +9572,8 @@
                   }
                 ]
               },
-              "example": "A home-care provider plans to launch a visit-scheduling system on Monday. UAT is signed, but the readiness checklist shows only 40% of coordinators trained and no help desk scripts. The project director wants to train after launch. The IS auditor reports the gap against the agreed readiness criteria to the steering committee, which decides to delay or formally accept the risk.",
-              "isaca_rule": "Go-live rests on readiness criteria signed off by accountable owners, with exceptions visible. High-risk issues are fixed first or formally accepted by the risk owner. The IS auditor recommends and reports; management makes the go-live decision.",
+              "example": "A home-care provider plans to launch a visit-scheduling system on Monday. UAT is signed, but the readiness checklist shows only 40% of coordinators trained and no help desk scripts. The project director wants to train after launch. The IS auditor reports the gap against the agreed criteria to the steering committee, which decides to delay or formally accept the risk.",
+              "isaca_rule": "Go-live rests on readiness criteria signed off by accountable owners, with exceptions visible. High-risk issues are fixed first or accepted only within appetite, by an owner with authority. The IS auditor recommends and reports; management makes the go-live decision.",
               "exam_traps": [
                 {
                   "trap": "The IS auditor should block go-live when serious issues remain.",
@@ -9581,7 +9581,7 @@
                 },
                 {
                   "trap": "To meet a fixed deadline, shorten testing across the whole release.",
-                  "why": "Quietly cutting testing hides risk. Ship a fully tested smaller scope and defer the rest with documented risk acceptance."
+                  "why": "Quietly cutting testing hides risk. Ship a smaller, fully tested scope instead."
                 }
               ],
               "key_terms": [
@@ -9595,7 +9595,7 @@
                 },
                 {
                   "term": "Cutover rehearsal",
-                  "definition": "A practice run of the switch-over steps, used to find and fix problems before the real event."
+                  "definition": "A practice run of the switch-over steps, used to find and fix problems beforehand."
                 }
               ]
             }
@@ -10782,14 +10782,14 @@
                 "d4_255"
               ],
               "definition": "Hardware maintenance keeps equipment reliable through monitoring and planned repair; end of support (EOS) is the date a vendor stops providing fixes, parts and help.",
-              "why_it_matters": "Failing or unsupported hardware causes outages and leaves known security flaws open. Each month past end of support raises the risk, and only management can decide to accept it.",
+              "why_it_matters": "Failing or unsupported hardware causes outages and leaves known security flaws open. Each month past end of support raises the risk, and only management can accept it, within appetite.",
               "how_it_works": [
-                "Telemetry, the health data devices report, is trended so failing parts are replaced in planned windows, not during an outage.",
+                "Telemetry, the health data devices report, is trended so failing parts are replaced in planned windows, not during outages.",
                 "Maintenance contracts and warranties are tracked against each asset, and expiry dates feed the refresh plan.",
                 "Capacity forecasts and warranty dates feed one total cost of ownership (TCO) decision about when to refresh.",
                 "Hardware reviews give most attention to unsupported components that run critical services.",
                 "When replacement cannot finish before end of support, extended support or compensating controls cover the gap.",
-                "The accountable business owner formally accepts the residual risk, tied to a funded, dated replacement plan."
+                "Within appetite, the business owner or senior management formally accepts the residual risk, tied to a funded, dated replacement plan."
               ],
               "compare": {
                 "columns": [
@@ -10827,17 +10827,17 @@
                     "cells": [
                       "Secure disposal of the old item",
                       "A dated exit plan",
-                      "Formal risk acceptance by the business owner"
+                      "Formal acceptance within appetite by the business owner"
                     ]
                   }
                 ]
               },
               "example": "A port operator's crane-control servers run as redundant pairs, so the infrastructure manager has skipped preventive maintenance for two years. Both servers in one pair now show warnings from the same aging fan model. The IS auditor explains that redundancy limits the impact of one failure but does not slow wear, and recommends restoring planned maintenance. The operations director funds it.",
-              "isaca_rule": "Running unsupported hardware is a business risk decision, not an IT convenience. The IS auditor verifies that the owner formally accepted the risk, that interim controls exist and that a funded replacement date is set. A future plan does not reduce today's exposure.",
+              "isaca_rule": "Running unsupported hardware is a business risk decision, not an IT convenience. The IS auditor verifies that an authorized owner accepted the risk within appetite, that interim controls exist and that a funded replacement date is set. A future plan does not reduce today's exposure.",
               "exam_traps": [
                 {
                   "trap": "Servers are redundant, so preventive maintenance can wait.",
-                  "why": "Redundancy reduces the impact of a failure, not how often failures happen. Trend monitoring and planned replacement reduce the failure rate itself."
+                  "why": "Redundancy reduces the impact of a failure, not how often failures happen. Trend monitoring and planned replacement reduce the failure rate."
                 },
                 {
                   "trap": "A replacement project is approved, so the end-of-support risk is handled.",
@@ -10847,11 +10847,11 @@
               "key_terms": [
                 {
                   "term": "Preventive maintenance",
-                  "definition": "Scheduled servicing and part replacement done before failure, based on age, usage or health data."
+                  "definition": "Scheduled servicing and part replacement before failure, based on age, usage or health data."
                 },
                 {
                   "term": "Residual risk",
-                  "definition": "The risk that remains after controls are applied; above appetite, it must be treated unless the board approves an exception."
+                  "definition": "The risk left after controls are applied; above appetite, it must be treated unless the board approves an exception."
                 },
                 {
                   "term": "Warranty",
@@ -12193,7 +12193,7 @@
                 "Patches are ranked by risk: flaws being actively exploited on exposed systems come first, ahead of raw severity scores.",
                 "Testing is shortened for urgent patches but never removed, and each deployment has a rollback plan.",
                 "Scans verify that each patch is actually installed.",
-                "When a patch must wait, compensating controls cover the gap and the business owner accepts the risk for a set period.",
+                "When a patch must wait, compensating controls cover the gap and the business owner accepts the risk, within appetite, for a set period.",
                 "Internal risk acceptance cannot override an outside mandate, so a regulator's own exception process is used instead."
               ],
               "illustration": {
@@ -12201,7 +12201,7 @@
                 "caption": "The patch cycle: identify, test, approve, deploy and verify. Testing protects production, but it must not become a reason to leave an exploitable flaw open."
               },
               "example": "A school district's patch report shows a critical browser fix deployed to all 3,000 staff laptops. The IS auditor asks for verification scans and finds the fix installed on only 61 percent, because laptops kept off the network never received it. She recommends confirming installs by scan and following up every unpatched device. The IT director assigns an owner.",
-              "isaca_rule": "Patch by real risk, not by raw score or vendor order. Urgency shortens testing but never removes it. A patch that must wait needs compensating controls and documented, time-bound acceptance by the accountable owner.",
+              "isaca_rule": "Patch by real risk, not by raw score or vendor order. Urgency shortens testing but never removes it. A patch that must wait needs compensating controls and documented, time-bound acceptance by the accountable owner within appetite.",
               "exam_traps": [
                 {
                   "trap": "Patch strictly in order of severity score.",
@@ -13139,7 +13139,7 @@
                 "The recovery time objective (RTO) sits inside the MTD, leaving time to verify data and clear the backlog.",
                 "The recovery point objective (RPO) reflects how much recent work the business can lose.",
                 "Supporting systems and suppliers need targets at least as tight as the process.",
-                "Management sets targets where combined outage and recovery costs are lowest, within the MTD, approves them and accepts the residual risk."
+                "Management sets targets where combined outage and recovery costs are lowest, inside the MTD, approves them and accepts the residual risk within appetite."
               ],
               "compare": {
                 "columns": [
@@ -14762,7 +14762,7 @@
                 },
                 {
                   "term": "Risk acceptance",
-                  "definition": "A documented decision by an accountable owner to accept a known residual risk for a set period."
+                  "definition": "A documented decision by an accountable owner to accept a known residual risk within appetite for a set period."
                 }
               ]
             },
@@ -15414,16 +15414,16 @@
                 "d5_263"
               ],
               "definition": "The identity lifecycle manages each account from creation to removal, adjusting access as people join, change roles or leave, and confirming it through periodic recertification.",
-              "why_it_matters": "Access that is never removed piles up quietly. Movers who keep old rights and leavers whose accounts stay active are among the most common audit findings and a frequent route to fraud.",
+              "why_it_matters": "Access that is never removed piles up. Movers who keep old rights and leavers whose accounts stay active are among the most common audit findings and a frequent route to fraud.",
               "how_it_works": [
                 "Joiners get access only after an approved request and completed security awareness training, triggered from human resources (HR) records.",
                 "Movers gain the new role's rights and lose the old ones in the same change.",
-                "Leavers lose access on their last day, or sooner for a risky exit; security learns of resignations as soon as notice is given.",
+                "Leavers lose access on their last day, or sooner for a risky exit; security learns of resignations when notice is given.",
                 "Business owners recertify access on a risk-tiered cycle, with privileged access reviewed more often.",
                 "Every service account has a named owner who confirms its purpose, scope and continued need.",
-                "Reconciling accounts with HR records finds orphan accounts that no current employee owns."
+                "Reconciling accounts with HR records finds orphan accounts; disable live ones and check them for misuse first, then fix the HR-to-IT feed."
               ],
-              "example": "A credit union's IS auditor matches active core banking accounts against HR records. She finds 12 accounts of staff who left months ago and several tellers who kept branch manager rights after transfers. The IT manager traces the leavers to a manual HR email that IT often missed. The IS auditor recommends an automated HR-driven removal feed plus risk-tiered recertification by branch managers.",
+              "example": "A credit union's IS auditor matches active core banking accounts against HR records. She finds 12 accounts of staff who left months ago and several tellers who kept branch manager rights after transfers. The IT manager traces the leavers to a manual HR email that IT often missed. The IS auditor recommends disabling those accounts and checking them for misuse now, then an automated HR-driven removal feed plus risk-tiered recertification by branch managers.",
               "isaca_rule": "Access must follow the person's current role. Movers lose old rights, leavers lose all rights promptly, and business owners, not IT, confirm that the remaining access is still needed. Every account, including service accounts, needs an accountable owner.",
               "exam_traps": [
                 {
@@ -15432,7 +15432,7 @@
                 },
                 {
                   "trap": "Adding the new rights when someone transfers is enough.",
-                  "why": "Without removing old rights, the mover collects access across roles, known as privilege creep, which breaks least privilege and can break segregation of duties."
+                  "why": "Without removing old rights, the mover accumulates privilege creep, breaking least privilege and possibly segregation of duties."
                 }
               ],
               "key_terms": [
