@@ -2886,7 +2886,7 @@ export const CISA_LESSONS: Lesson[] = [
         ],
         correctIndex: 1,
         explanation:
-          'An SLA is only as strong as the agreements behind it. If parts can take 24 hours, a hardware failure can break the four-hour promise however hard IT works. Questioning whether four hours is needed is tempting, but the business set that target; the gap is in the supplier terms that should support it.',
+          'An SLA is only as strong as the agreements behind it. If parts can take 24 hours, a hardware failure can break the four-hour promise however hard IT works. Questioning whether four hours is needed is tempting, but the business set that target; the gap is in the supplier terms that should support it. Penalties don’t close it either: they pay out after the promise is broken, but the parts still take 24 hours.',
       },
       {
         type: 'check',
