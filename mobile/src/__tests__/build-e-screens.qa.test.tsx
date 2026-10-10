@@ -121,7 +121,7 @@ describe('Timer: Practice’s Timed switch ("Your path and Build a set")', () =>
   // timed (and the other way round: default off + switch on = untimed).
   // practice.tsx startPath pushes /guided without the switch, and
   // startGuidedStep has no `timed` option, so the default always wins.
-  it.failing('reaches a Guided step opened from the hero', () => {
+  it('reaches a Guided step opened from the hero', () => {
     useSettings.setState({ practiceTimer: true, studyMode: 'guided' });
     mount(<Practice />);
     flipTimed(false);

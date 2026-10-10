@@ -96,7 +96,7 @@ export default function Practice() {
       : undefined;
   const startPath = () => {
     if (mode === 'guided') {
-      router.push({ pathname: '/guided', params: pathDomain ? { domain: pathDomain.id } : {} });
+      router.push({ pathname: '/guided', params: { ...(pathDomain ? { domain: pathDomain.id } : {}), timed: timed ? '1' : '0' } });
       return;
     }
     guardedStart(() => startStudy(cert.id, { mode, domainId: pathDomain?.id, count: pathSize, timed }), open);
