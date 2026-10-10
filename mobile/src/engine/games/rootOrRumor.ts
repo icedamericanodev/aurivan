@@ -12,8 +12,13 @@
  * - The content filter (`cleanStatement`) runs on the bundled notes when the
  *   game first loads, and the content-pack tests run it at build time on CI:
  *   no questions, 8–30 words, a whole sentence (capital letter, full stop),
- *   no "e.g." / "i.e." fragments, and no line that leans on the one before
- *   ("It…", "These…"), because a statement must stand alone.
+ *   no "e.g." / "i.e." fragments, no line that leans on the one before
+ *   ("It…", "These…"), and no line that needs its heading (a colon label
+ *   like "Criteria: …", or a subject it never names like "the work" or
+ *   "Reviewers"), because a statement must stand alone. Rumors written as
+ *   instructions ("Run the PIA after go-live.") are left out: a myth should
+ *   read as a belief. A short denylist (DENY_CARDS) drops the last few
+ *   known-vague lines.
  * - A round pairs a Rumor and a Root from the SAME subtopic wherever it
  *   can, so the topic alone gives nothing away. About half are each.
  * - Tiers: Seedling = one domain per round; Sapling = mixed domains;
@@ -107,11 +112,91 @@ export function leansBack(text: string): boolean {
 }
 
 /**
- * The build filter: a whole, standalone sentence of 8–30 words, with no
- * question, no "e.g." / "i.e." fragment and nothing that leans on an
- * earlier line.
+ * Verbs that open an instruction ("Collect inputs: …", "Run a separate
+ * compliance audit for each regulation."). Used for colon labels and for
+ * Rumors written as instructions (content review of Root or Rumor).
  */
-export function cleanStatement(text: string): boolean {
+export const IMPERATIVE_VERBS: ReadonlySet<string> = new Set(
+  (
+    'Absorb Accept Add Address Agree Apply Approve Ask Assess Avoid Base Begin Build Buy Capture Check Choose Classify Collect Combine ' +
+    'Compare Confirm Consider Copy Count Decide Define Delay Delete Deploy Design Do Document Drop Encrypt Ensure Erase Escalate Evaluate ' +
+    'Expand Factory-reset File Find Finish Fix Focus Follow Get Give Hand Harden Have Hire Hold Identify Increase Inspect Install Interview ' +
+    'Keep Learn Leave Let Link Log Look Map Match Measure Monitor Name Obtain Observe Perform Pick Plan Prefer Proceed Pull Rank Read ' +
+    'Re-image Recalculate Reconcile Record Recover Reissue Reject Release Rely Reperform Report Request Require Restore Retain Retrain Review Roll ' +
+    'Rotate Run Sample Score Seek Send Set Shut Size Start State Store Switch Tell Test Tie Trace Track Train Treat Turn Use Validate ' +
+    'Verify Wait Write'
+  ).split(' '),
+);
+
+const firstWord = (text: string) => text.trim().split(/\s+/)[0].replace(/[^A-Za-z-]/g, '');
+
+/** A second word that shows the first is a noun subject ("Design can start…"). */
+const SUBJECT_NEXT = /^(can|cannot|is|are|was|were|will|must|should|may|might|could|would|has|does)$/;
+
+/** "re-image" → "Re-image": the verb list is capitalised. */
+const cap = (w: string) => w.charAt(0).toUpperCase() + w.slice(1);
+
+/**
+ * The line is an instruction: it opens with an instruction verb ("Run the
+ * PIA after go-live…"), not a noun ("Design can start…"), or a lead clause
+ * is followed by one ("When a lawsuit looms, keep all company email…").
+ */
+export function startsImperative(text: string): boolean {
+  const t = text.trim();
+  const [, second = ''] = t.split(/\s+/);
+  if (IMPERATIVE_VERBS.has(firstWord(t)) && !SUBJECT_NEXT.test(second)) return true;
+  const lead = /^(When|If|Once|After|Before|During|Until|While)\b[^,;]*, ([a-z-]+) /.exec(t);
+  return Boolean(lead && IMPERATIVE_VERBS.has(cap(lead[2])));
+}
+
+/**
+ * A list item that needs its heading: the text before the first colon is 3
+ * words or fewer AND is a single word ("Criteria: …", "Detection: …") or
+ * starts with a verb ("Collect inputs: …", "Identify the gap: …").
+ * Kept: "Erasure has limits: …", "Classification comes first: …".
+ */
+export function colonLabel(text: string): boolean {
+  const i = text.indexOf(':');
+  if (i < 0) return false;
+  const words = text.slice(0, i).trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0 || words.length > 3) return false;
+  return words.length === 1 || IMPERATIVE_VERBS.has(words[0]);
+}
+
+/**
+ * A subject the line never names, so it only makes sense under its note
+ * heading: "If the work is inadequate…", "…evaluate the work…" (not "the
+ * work of…"), "Give each life-cycle stage…" (not "each stage of…"),
+ * "The facilitator asks…", "Reviewers sample…".
+ */
+export function unnamedSubject(text: string): boolean {
+  const t = text.trim();
+  if (/^(If|When|Once|After|Before) the \w+ (is|are|arrives?)\b/.test(t)) return true;
+  if (/\bthe work\b(?! of)/i.test(t)) return true;
+  if (/\beach (technique|stage|life-cycle stage|step|type|method)\b(?! of)/i.test(t)) return true;
+  if (/^(The facilitator|Reviewers)\b/.test(t)) return true;
+  return false;
+}
+
+/**
+ * Known-vague lines the rules above don't catch, by card id (content review,
+ * root_sample4): "Management sets targets…" (which targets?), "One
+ * authoritative… source holds the current documents" (which documents?),
+ * "Reviewers sample completed engagements…" (which reviewers?).
+ */
+export const DENY_CARDS: ReadonlySet<string> = new Set([
+  'root:4B1.2:2kku2i', // "Management sets targets where combined outage and recovery costs are lowest…"
+  'root:2A3.3:kz7n4r', // "One authoritative, version-controlled source holds the current documents…"
+  'root:1B6.2:zp9vq9', // "Reviewers sample completed engagements…" (also caught by unnamedSubject)
+]);
+
+/**
+ * The build filter: a whole, standalone sentence of 8–30 words, with no
+ * question, no "e.g." / "i.e." fragment, nothing that leans on an earlier
+ * line, and no heading it needs (a colon label or an unnamed subject).
+ * A Rumor (`kind`) is also never an instruction: a myth reads as a belief.
+ */
+export function cleanStatement(text: string, kind?: StatementKind): boolean {
   const t = text.trim();
   const n = wordCount(t);
   if (n < MIN_WORDS || n > MAX_WORDS) return false;
@@ -123,6 +208,9 @@ export function cleanStatement(text: string): boolean {
   // Unbalanced brackets or quotes mean a cut-off line.
   if ((t.match(/\(/g) ?? []).length !== (t.match(/\)/g) ?? []).length) return false;
   if ((t.match(/"/g) ?? []).length % 2 !== 0) return false;
+  // Lines that only make sense under their heading (content review).
+  if (colonLabel(t) || unnamedSubject(t)) return false;
+  if (kind === 'rumor' && startsImperative(t)) return false;
   return true;
 }
 
@@ -146,9 +234,9 @@ export function statementsFromNotes(pack: NotesPack | null | undefined): Stateme
         const base = { subtopicId: s.id, subtopicName: s.name, topicId: t.id, domainId: d.id };
         const add = (kind: StatementKind, text: string, why?: string) => {
           const clean = text.trim().replace(/\s+/g, ' ');
-          if (!cleanStatement(clean)) return;
+          if (!cleanStatement(clean, kind)) return;
           const id = `${kind}:${s.id}:${textHash(clean)}`;
-          if (seen.has(id)) return;
+          if (seen.has(id) || DENY_CARDS.has(id)) return;
           seen.add(id);
           out.push({ id, kind, text: clean, ...base, ...(why ? { why: why.trim() } : {}) });
         };

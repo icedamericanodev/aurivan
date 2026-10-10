@@ -24,6 +24,8 @@ import {
 import {
   buildRumorRound,
   cleanStatement,
+  colonLabel,
+  DENY_CARDS,
   firstSentence,
   isRightTap,
   longestRun,
@@ -31,9 +33,11 @@ import {
   RUMOR_MIN_POOL,
   rumorScore,
   rumorStatements,
+  startsImperative,
   statementsFromNotes,
   tapTitle,
   textHash,
+  unnamedSubject,
   whyChoices,
 } from '../engine/games/rootOrRumor';
 import { indexOutline, outlineFromNotes } from '../engine/outline';
@@ -72,6 +76,60 @@ describe('Root or Rumor: the content filter', () => {
     expect(cleanStatement('Identify key controls first, meaning those whose failure would leave a significant risk uncovered.')).toBe(true);
     expect(cleanStatement('Devices that cannot protect themselves are segmented and allowed only the traffic they need.')).toBe(true);
   });
+  it('rule 1: drops colon labels (a single word, or a verb, of 3 words or fewer before the colon)', () => {
+    // The real lines from the content review.
+    expect(colonLabel('Collect inputs: quality review results, stakeholder surveys, lessons learned from engagements and performance measures.')).toBe(true);
+    expect(colonLabel('Identify the gap: which preferred control is missing and which risk it leaves open.')).toBe(true);
+    expect(colonLabel('Criteria: state what should happen, drawn from a policy, standard, regulation or contract.')).toBe(true);
+    expect(colonLabel('Detection: the event is logged with a timestamp, classified and prioritized.')).toBe(true);
+    expect(cleanStatement('Criteria: state what should happen, drawn from a policy, standard, regulation or contract.')).toBe(false);
+    // Kept: a real subject and verb before the colon, or a long lead-in.
+    expect(colonLabel('Erasure has limits: data a law requires keeping is retained, restricted, and erased when the duty ends.')).toBe(false);
+    expect(colonLabel('Classification comes first: it drives proportionate protection, DLP rules and retention.')).toBe(false);
+    expect(colonLabel('Security incidents differ: independent responders, never a party on the attack path, contain the attack.')).toBe(false);
+    expect(colonLabel('The audit charter sets three things: purpose, authority and responsibility.')).toBe(false);
+    expect(colonLabel('No colon in this line at all.')).toBe(false);
+  });
+  it('rule 2: drops subjects the line never names', () => {
+    expect(unnamedSubject('If the work is inadequate, do not rely on it; require correction or perform added procedures.')).toBe(true);
+    expect(unnamedSubject('When the report arrives, the auditor reads it before relying on any finding.')).toBe(true);
+    expect(unnamedSubject('Document how the work was used and why it was judged reliable.')).toBe(true);
+    expect(unnamedSubject('Give each life-cycle stage its own procedures, then combine the results into one conclusion.')).toBe(true);
+    expect(unnamedSubject('Each technique hides in a different place: in arithmetic, in input data or inside approved program code.')).toBe(true);
+    expect(unnamedSubject("The facilitator asks open questions, records the group's views and any dissent.")).toBe(true);
+    expect(unnamedSubject('Reviewers must not have worked on the engagements they review.')).toBe(true);
+    // Kept: the subject is named.
+    expect(unnamedSubject('The auditor relies on the work of other auditors only after checking their competence.')).toBe(false);
+    expect(unnamedSubject('Test each stage of the life cycle against its own control objectives.')).toBe(false);
+    expect(unnamedSubject('If the auditor finds fraud indicators, escalate to the audit committee promptly.')).toBe(false);
+  });
+  it('rule 3: a Rumor written as an instruction is left out; a Root may be one', () => {
+    const run = 'Run a separate compliance audit for each regulation in the organization.';
+    expect(startsImperative(run)).toBe(true);
+    expect(cleanStatement(run, 'rumor')).toBe(false);
+    expect(cleanStatement(run, 'root')).toBe(true);
+    expect(startsImperative('Management treats residual risk above appetite by mitigating it.')).toBe(false);
+    // A noun in the verb's spelling is a subject, not an instruction.
+    expect(startsImperative('Design can start before the business approves the requirements, to save time.')).toBe(false);
+    expect(startsImperative('Design the target architecture and launch migration projects immediately.')).toBe(true);
+    expect(startsImperative('Clean results from a DAST scan that never signs in show the application is secure.')).toBe(false);
+    // An instruction after a lead clause is still an instruction.
+    expect(startsImperative('When a lawsuit looms, keep all company email forever to be safe.')).toBe(true);
+    expect(startsImperative('When a custody gap is challenged, re-image the device with witnesses and discard the first image.')).toBe(true);
+    expect(startsImperative('When a regulator asks for older logs, the retention policy is updated first.')).toBe(false);
+    const rumors = rumorStatements(getNotes('cisa')).filter((x) => x.kind === 'rumor');
+    expect(rumors.some((x) => startsImperative(x.text))).toBe(false);
+  });
+  it('rule 4: the denylisted cards never reach a round', () => {
+    const ids = new Set(rumorStatements(getNotes('cisa')).map((x) => x.id));
+    expect(DENY_CARDS.size).toBe(3);
+    for (const id of DENY_CARDS) expect(ids.has(id)).toBe(false);
+    // The denylist names real lines: without it, the first two would play.
+    const p = getNotes('cisa')!;
+    const sub = p.domains.flatMap((d) => d.topics.flatMap((t) => t.subtopics)).find((x) => x.id === '4B1.2')!;
+    const line = sub.howItWorks.find((l) => l.startsWith('Management sets targets'))!;
+    expect(DENY_CARDS.has(`root:4B1.2:${textHash(line.trim().replace(/\s+/g, ' '))}`)).toBe(true);
+  });
   it('reads the first sentence of a rule', () => {
     expect(firstSentence('Standards are the floor. Guidelines call for judgment.')).toBe('Standards are the floor.');
     expect(firstSentence('One sentence only.')).toBe('One sentence only.');
@@ -79,7 +137,7 @@ describe('Root or Rumor: the content filter', () => {
   it('the real notes give plenty of clean statements of both kinds, every one passing the filter', () => {
     const all = rumorStatements(getNotes('cisa'));
     expect(all.length).toBeGreaterThan(RUMOR_MIN_POOL * 10);
-    expect(all.every((s) => cleanStatement(s.text))).toBe(true);
+    expect(all.every((s) => cleanStatement(s.text, s.kind))).toBe(true);
     expect(all.filter((s) => s.kind === 'rumor').every((s) => s.why)).toBe(true);
     expect(all.filter((s) => s.kind === 'root').length).toBeGreaterThan(500);
     expect(all.filter((s) => s.kind === 'rumor').length).toBeGreaterThan(300);
