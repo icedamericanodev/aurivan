@@ -2,7 +2,7 @@ import { getAllQuestions } from '../content/loader';
 import type { PackQuestion } from '../content/types';
 import { calibration, calibrationVerdict, sprintScore } from '../engine/games/calibration';
 import { priorityPool, priorityWord, wordChoices } from '../engine/games/priorityLens';
-import { buildTrapRound, scoreTrapPick, trapLetter, trapPool, trapTip } from '../engine/games/trapSpotter';
+import { buildTrapRound, closedInStep2, scoreTrapPick, snareStep, snareWhy, trapLetter, trapPool, trapTip } from '../engine/games/trapSpotter';
 import { createRng } from '../engine/random';
 
 const bank = getAllQuestions('cisa');
@@ -30,6 +30,28 @@ describe('Trap Spotter', () => {
     const v2 = bank.filter((x) => x.tips.some((t) => t.startsWith('Final two:')));
     expect(v2.length).toBeGreaterThan(150);
     for (const x of v2) expect(trapLetter(x)).not.toBeNull();
+  });
+  it('picking the BEST answer as the snare is never a dead end', () => {
+    const q = {
+      tips: ['Final two: {{D}} beats {{B}} because …'],
+      correct: 'D',
+      options: { A: 'a', B: 'b', C: 'c', D: 'd' },
+      wrongExplanations: { B: 'B misses the owner.' },
+    } as unknown as PackQuestion;
+    expect(snareStep(q, 'D')).toBe('key');
+    expect(snareStep(q, 'B')).toBe('spotted');
+    expect(snareStep(q, 'A')).toBe('missed');
+    // The best answer stays open in step 2, so it can still be chosen…
+    expect(closedInStep2(q, 'D')).toEqual([]);
+    // …and choosing it scores the answer point (the snare point is lost).
+    expect(scoreTrapPick(q, 'D', 'D')).toEqual({ spotted: false, correct: true, points: 1 });
+    // A wrong snare pick is still closed: you named it as a trap.
+    expect(closedInStep2(q, 'A')).toEqual(['A']);
+  });
+  it('explains the snare with its own wrong-answer note first', () => {
+    const q = { tips: ['Final two: {{D}} beats {{B}} because …'], correct: 'D', options: { B: 'b', D: 'd' }, wrongExplanations: { B: 'B misses the owner.' } } as unknown as PackQuestion;
+    expect(snareWhy(q)).toBe('B misses the owner.');
+    expect(snareWhy({ ...q, wrongExplanations: {} })).toBe(trapTip(q));
   });
   it('builds a round of unique questions', () => {
     const ids = buildTrapRound(bank, createRng(3), 5);

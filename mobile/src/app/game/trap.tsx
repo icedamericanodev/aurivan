@@ -1,6 +1,8 @@
 /**
  * Snare Spotter (id `trap`) — tap the snare first, then the best answer.
- * 5 questions · 2 points each (spot the trap, then get it right).
+ * 5 questions · 2 points each (spot the snare, then get it right).
+ * If the learner taps the BEST answer as the snare, the screen says so at
+ * once and they carry on: the best answer is never closed in step 2.
  */
 import { useState } from 'react';
 import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
@@ -8,7 +10,7 @@ import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, T } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
-import { buildTrapRound, scoreTrapPick, trapLetter, trapTip } from '../../engine/games/trapSpotter';
+import { buildTrapRound, closedInStep2, scoreTrapPick, snareStep, snareWhy, trapLetter, trapTip } from '../../engine/games/trapSpotter';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, originalToDisplay, renderText } from '../../engine/shuffle';
 import { snareMiss, type RecapMiss } from '../../engine/games/recap';
@@ -50,7 +52,7 @@ export default function TrapSpotter() {
         }}
       >
         <T center color={c.ink2}>
-          Most wrong answers on the real exam are true statements that are not the BEST response. Naming the trap is half the work.
+          Most wrong answers on the real exam are true statements that are not the BEST response. Naming the snare is half the work.
         </T>
       </RoundEnd>
     );
@@ -61,6 +63,11 @@ export default function TrapSpotter() {
   const trapOriginal = trapLetter(q)!;
   const revealed = answerPick !== null;
   const phase = trapPick === null ? 'trap' : !revealed ? 'answer' : 'reveal';
+  // What the step-1 tap was. 'key' = the learner tapped the BEST answer as the
+  // snare: say so at once and carry on (it used to be disabled in step 2,
+  // which made the question impossible and scored 0 with no explanation).
+  const step = trapPick ? snareStep(q, displayToOriginal(trapPick, perm)) : null;
+  const closed = trapPick ? closedInStep2(q, displayToOriginal(trapPick, perm)) : [];
 
   const pick = (display: Letter) => {
     if (phase === 'trap') {
@@ -73,7 +80,9 @@ export default function TrapSpotter() {
       setScore((s) => s + result.points);
       const miss = snareMiss(q, result.spotted, result.correct, (t) => renderText(t, perm));
       if (miss) setMisses((m) => [...m, miss]);
-      progress.recordAnswer(cert.id, q.id, result.correct);
+      // Once we've said which option is best, a right answer is assisted
+      // (half credit in readiness, no box promotion), like Coach me.
+      progress.recordAnswer(cert.id, q.id, result.correct, undefined, step === 'key' ? { assisted: true } : undefined);
       if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
       if (i === round.length - 1) {
         progress.recordGame(cert.id, 'trap', score + result.points);
@@ -90,7 +99,7 @@ export default function TrapSpotter() {
       return 'dimmed';
     }
     if (phase === 'trap') return 'idle';
-    return display === trapPick ? 'dimmed' : 'idle';
+    return closed.includes(orig) ? 'dimmed' : 'idle';
   };
 
   const result = revealed
@@ -115,19 +124,29 @@ export default function TrapSpotter() {
           />
         ) : (
           <T v="label" center color={phase === 'trap' ? c.tip : c.accentText}>
-            {phase === 'trap' ? 'Step 1: tap the trap' : 'Step 2: tap the BEST answer'}
+            {phase === 'trap' ? 'Step 1: tap the snare' : 'Step 2: tap the BEST answer'}
           </T>
         )
       }
     >
       <QuestionHead q={q} />
+      {phase === 'answer' && step === 'key' && (
+        <>
+          <RevealCard
+            tone="info"
+            title="That’s the best answer, not the snare"
+            body="A snare is a wrong option built to look right, the one that almost beats the best answer. You found the best one instead. Tap it as your answer to carry on."
+          />
+          <Gap h={space.md} />
+        </>
+      )}
       {letters.map((d) => (
         <OptionCard
           key={d}
           letter={d}
           text={q.options[displayToOriginal(d, perm)] ?? ''}
           state={stateFor(d)}
-          disabled={phase === 'reveal' || (phase === 'answer' && d === trapPick)}
+          disabled={phase === 'reveal' || (phase === 'answer' && closed.includes(displayToOriginal(d, perm)))}
           onPress={() => pick(d)}
         />
       ))}
@@ -138,10 +157,11 @@ export default function TrapSpotter() {
             tone={result.spotted ? 'good' : 'bad'}
             title={
               result.spotted
-                ? `Trap spotted: ${originalToDisplay(trapOriginal, perm)}`
-                : `The trap was ${originalToDisplay(trapOriginal, perm)}, not ${trapPick}`
+                ? `Snare spotted: ${originalToDisplay(trapOriginal, perm)}`
+                : `The snare was ${originalToDisplay(trapOriginal, perm)}, not ${trapPick}`
             }
-            body={renderText(trapTip(q), perm)}
+            // Snare-specific first: why THIS option loses, then the Final two line.
+            body={renderText(snareWhy(q) === trapTip(q) ? trapTip(q) : `${snareWhy(q)}\n\n${trapTip(q)}`, perm)}
           />
           <Gap h={space.sm} />
           <RevealCard

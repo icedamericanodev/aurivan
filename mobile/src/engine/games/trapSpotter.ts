@@ -44,6 +44,34 @@ export function buildTrapRound(pool: PackQuestion[], rng: Rng, size = 5): string
     .map((q) => q.id);
 }
 
+/**
+ * What the step-1 tap was (ORIGINAL letters):
+ * - 'spotted': the real snare;
+ * - 'key':     the BEST answer itself. Not a snare: the screen says so at
+ *              once and the learner continues (never a silent dead end);
+ * - 'missed':  another wrong option.
+ */
+export type SnareStep = 'spotted' | 'key' | 'missed';
+export function snareStep(q: PackQuestion, trapPick: Letter): SnareStep {
+  if (trapPick === q.correct) return 'key';
+  return trapPick === trapLetter(q) ? 'spotted' : 'missed';
+}
+
+/**
+ * Options closed in step 2 (ORIGINAL letters). A wrong snare pick is
+ * closed (you named it as a trap); the BEST answer is NEVER closed, so
+ * picking it as the snare can't make the question impossible to get right.
+ */
+export function closedInStep2(q: PackQuestion, trapPick: Letter): Letter[] {
+  return trapPick === q.correct ? [] : [trapPick];
+}
+
+/** Why the snare loses: its own wrong-answer note first, else the trap tip. */
+export function snareWhy(q: PackQuestion): string {
+  const t = trapLetter(q);
+  return (t && q.wrongExplanations[t]) || trapTip(q);
+}
+
 /** Points: 1 for spotting the trap, 1 for then choosing the best answer. */
 export function scoreTrapPick(q: PackQuestion, trapPick: Letter, answerPick: Letter) {
   const spotted = trapPick === trapLetter(q);
