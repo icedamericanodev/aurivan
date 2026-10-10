@@ -2,6 +2,9 @@
 // summary (You), the Milestones screen, a Results screen with its one
 // milestone moment, Play with level leaves, Field notes, and each new game
 // (Field Guide, Canopy Call, Stepping Stones): a round and its end screen.
+// Review fixes: Field Guide's static wrong-pair state, and Canopy Call round
+// ends with a level change ("You've grown to Sapling", "Back to Sapling") and
+// with a milestone moment (never both on one round end).
 // Usage: node shoot_milestones.mjs <seed.json> <out> <suffix>
 // Run via: SHOTS=milestones bash scripts/screenshots/run.sh <out> <dark|light>
 import { createRequire } from 'module';
@@ -124,6 +127,18 @@ const grown = {
   await page.context().close();
 }
 
+/** Tap a tile after centring it, so the sticky footer never covers it. */
+const tap = async (locator) => {
+  await locator.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  try {
+    await locator.click({ timeout: 3000 });
+  } catch {
+    // Still covered (the footer grows while a term is picked): press it from the keyboard.
+    await locator.focus();
+    await locator.page().keyboard.press('Enter');
+  }
+};
+
 /** The term shown on a "Term k of 4: …" tile. */
 const termOf = (label) => label.replace(/^Term \d of \d: /, '').replace(/, (selected|matched)$/, '');
 
@@ -142,12 +157,17 @@ const termOf = (label) => label.replace(/^Term \d of \d: /, '').replace(/, (sele
       // One slip on the first board, so the recap has a miss.
       if (b === 0 && k === 1) {
         const other = termOf(await page.getByRole('button', { name: /^Term 2 of 4: / }).first().getAttribute('aria-label'));
-        await tile.click();
-        await page.getByRole('button', { name: new RegExp(`^Meaning \\d of 4: ${escapeRe(meaning.get(other).slice(0, 30))}`) }).first().click();
-        await page.waitForTimeout(300);
+        await tap(tile);
+        await page.waitForTimeout(150);
+        await snap(page, 'f06f-field-term-picked');
+        await tap(page.getByRole('button', { name: new RegExp(`^Meaning \\d of 4: ${escapeRe(meaning.get(other).slice(0, 30))}`) }).first());
+        // The static wrong state lasts ~900 ms: catch it.
+        await page.waitForTimeout(150);
+        await snap(page, 'f06g-field-wrong-pair');
+        await page.waitForTimeout(900);
       }
-      await tile.click();
-      await page.getByRole('button', { name: new RegExp(`^Meaning \\d of 4: ${escapeRe(meaning.get(term).slice(0, 30))}`) }).first().click();
+      await tap(tile);
+      await tap(page.getByRole('button', { name: new RegExp(`^Meaning \\d of 4: ${escapeRe(meaning.get(term).slice(0, 30))}`) }).first());
       await page.waitForTimeout(250);
       if (b === 0 && k === 2) await snap(page, 'f06c-field-matching');
     }
@@ -195,6 +215,59 @@ function escapeRe(s) {
   await snap(page, 'f07d-canopy-end');
   await scrollTo(page, page.getByText('Where your calls went').first(), 200);
   await snap(page, 'f07e-canopy-confusion');
+  await page.context().close();
+}
+
+// ── 7b. Canopy Call round ends: a level change, or a milestone (never both) ──
+/** Play a whole Canopy Call round: 'right', 'wrong', or 'mixed' (3 of 10 wrong). */
+async function playCanopy(page, mode) {
+  await page.getByRole('button', { name: 'Start' }).click();
+  await page.waitForTimeout(900);
+  for (let k = 0; k < 10; k++) {
+    const text = await page.locator('body').innerText();
+    const card = roles.cards.find((c) => text.includes(c.decision));
+    const key = roles.roles.find((r) => r.id === card.role).label;
+    const wantKey = mode === 'right' || (mode === 'mixed' && k % 3 !== 1);
+    const rows = page.getByRole('radio', { name: /^Role \d of \d: / });
+    const n = await rows.count();
+    let target = null;
+    for (let j = 0; j < n; j++) {
+      if ((await rows.nth(j).getAttribute('aria-label')).endsWith(key) === wantKey) { target = rows.nth(j); break; }
+    }
+    await (target ?? rows.first()).click();
+    await page.waitForTimeout(350);
+    await page.getByText(k === 9 ? 'See results' : 'Next decision', { exact: true }).click();
+    await page.waitForTimeout(450);
+  }
+  await page.waitForTimeout(700);
+}
+const doneBackfill = { backfill: { at: now - DAY, count: 0, seen: true } };
+{
+  // One strong Seedling round already: this one grows the level. A milestone is
+  // also waiting, and stays queued (one celebration per round end).
+  const page = await newPage({ gameGrowth: { canopy: { tier: 'seedling', up: 1, down: 0 } }, milestones: { earned: { 'rooted:10': now - DAY }, queue: ['rooted:10'], ...doneBackfill, days: 12 } });
+  await open(page, '/game/canopy');
+  await playCanopy(page, 'right');
+  await scrollTo(page, page.getByText(/You’ve grown to/).first(), 300);
+  await snap(page, 'f07f-canopy-level-up');
+  await page.context().close();
+}
+{
+  // Two weak Heartwood rounds in a row step it back, framed as practice.
+  const page = await newPage({ gameGrowth: { canopy: { tier: 'heartwood', up: 0, down: 1 } }, milestones: { earned: {}, ...doneBackfill } });
+  await open(page, '/game/canopy');
+  await playCanopy(page, 'wrong');
+  await scrollTo(page, page.getByText(/^Back to /).first(), 300);
+  await snap(page, 'f07g-canopy-step-back');
+  await page.context().close();
+}
+{
+  // No level change: the waiting milestone gets its one quiet moment here.
+  const page = await newPage({ milestones: { earned: { 'rooted:10': now - DAY }, queue: ['rooted:10'], ...doneBackfill, days: 12 } });
+  await open(page, '/game/canopy');
+  await playCanopy(page, 'mixed');
+  await scrollTo(page, page.getByText('Rooted', { exact: false }).first(), 260);
+  await snap(page, 'f07h-canopy-milestone');
   await page.context().close();
 }
 
