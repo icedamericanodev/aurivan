@@ -29,6 +29,7 @@ import {
   currentGuidedTopic,
   guidedStep,
   inOrderSession,
+  lastAnsweredIndex,
   lastUnassisted,
   nextTopic,
   tailSize,
@@ -259,6 +260,41 @@ describe('Smart: ordering', () => {
       }
     }
   });
+  it('fuzz: the weak-run rule only breaks when the opener made it impossible', () => {
+    const reasons: OrderItem['reason'][] = ['due', 'new', 'refresher'];
+    let checked = 0;
+    for (let seed = 0; seed < 3000; seed++) {
+      const rng = createRng(seed);
+      const n = 3 + Math.floor(rng() * 18);
+      // Mostly weak spots, so the rule is under pressure; each its own subtopic
+      // (the subtopic rule never forces a weak spot here).
+      const list: OrderItem[] = Array.from({ length: n }, (_, k) => ({
+        id: `q${k}`,
+        group: `g${k}`,
+        reason: rng() < 0.72 ? 'weak' : reasons[Math.floor(rng() * 3)],
+        likely: rng() < 0.2,
+      }));
+      // Only inputs some order could keep to runs of 3 (the rest can't be helped).
+      const w = list.filter((x) => x.reason === 'weak').length;
+      if (w > MAX_WEAK_RUN * (n - w + 1)) continue;
+      checked++;
+      const out = orderSmart(list, createRng(seed + 1));
+      expect(out).toHaveLength(n);
+      let run = 0;
+      let worst = 0;
+      for (const x of out) {
+        run = x.reason === 'weak' ? run + 1 : 0;
+        worst = Math.max(worst, run);
+      }
+      if (worst <= MAX_WEAK_RUN) continue;
+      // A violation is allowed only when no order could avoid it after the opener.
+      const after = out.slice(1);
+      const weak = after.filter((x) => x.reason === 'weak').length;
+      const capacity = MAX_WEAK_RUN - (out[0].reason === 'weak' ? 1 : 0) + MAX_WEAK_RUN * (after.length - weak);
+      expect({ seed, impossible: weak > capacity }).toEqual({ seed, impossible: true });
+    }
+    expect(checked).toBeGreaterThan(1000);
+  });
   it('opens with a likely success: a refresher, else a strong subtopic', () => {
     for (let s = 0; s < 20; s++) {
       expect(orderSmart(items([['a', 'weak'], ['b', 'due'], ['c', 'refresher'], ['d', 'new']]), createRng(s))[0].reason).toBe('refresher');
@@ -392,9 +428,20 @@ describe('In order', () => {
     expect(first.slice(0, 8).map((i) => i.id)).toEqual(walk.slice(0, 8).map((w) => w.id));
     const resumed = inOrderSession(topics, walk, walk[7].id, 10, {}, createRng(1));
     expect(resumed.slice(0, 8).map((i) => i.id)).toEqual(walk.slice(8, 16).map((w) => w.id));
-    // An unknown cursor (a removed question) starts over; the end wraps round.
+    // An unknown cursor with nothing answered starts over; the end wraps round.
     expect(inOrderSession(topics, walk, 'gone', 10, {}, createRng(1))[0].id).toBe(walk[0].id);
     expect(inOrderSession(topics, walk, walk[walk.length - 1].id, 10, {}, createRng(1))[0].id).toBe(walk[0].id);
+  });
+  it('a saved place removed in a content update resumes after the most recently answered walk question', () => {
+    const { topics, find } = fixture();
+    const walk = walkOrder(topics, (id) => Boolean(find(id)));
+    // Answered up to walk[11] (the newest), with an older answer further on.
+    const answers: Record<string, AnswerRecord> = { [walk[20].id]: rec(true, 9) };
+    walk.slice(0, 12).forEach((w, k) => (answers[w.id] = rec(true, 5 - k / 100)));
+    const s = inOrderSession(topics, walk, 'd9_removed', 10, answers, createRng(1));
+    expect(s[0].id).toBe(walk[12].id);
+    expect(lastAnsweredIndex(walk, answers)).toBe(11);
+    expect(lastAnsweredIndex(walk, {})).toBe(-1);
   });
   it('every session ends with a 2–3 question mixed review tail from earlier topics', () => {
     const { topics, find } = fixture();

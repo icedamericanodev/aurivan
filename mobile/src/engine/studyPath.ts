@@ -186,10 +186,25 @@ export function walkOrder(topics: OutlineTopic[], exists: (id: string) => boolea
   return topics.flatMap((t) => topicQuestionIds(t).filter(exists).map((id) => ({ id, topicId: t.id })));
 }
 
+/** The walk position of the most recently answered walk question (-1 = none answered). */
+export function lastAnsweredIndex(walk: WalkItem[], answers: Record<string, AnswerRecord>): number {
+  let best = -1;
+  let bestAt = -Infinity;
+  walk.forEach((w, k) => {
+    const r = answers[w.id];
+    if (r && r.lastAt > bestAt) {
+      best = k;
+      bestAt = r.lastAt;
+    }
+  });
+  return best;
+}
+
 /**
  * One In order session: the next questions along the walk after `cursor`
- * (the last walk question answered; none or unknown = the start, and the
- * walk wraps round at the end), then the mixed tail.
+ * (the last walk question answered; none = the start; a cursor no longer in
+ * the walk = after the most recently answered walk question; the walk wraps
+ * round at the end), then the mixed tail.
  *
  * Tail sources, in order: topics BEFORE where this session starts; on the
  * very first pass (nothing before), topics of this session other than its
@@ -206,7 +221,11 @@ export function inOrderSession(
   if (!walk.length) return [];
   const tailN = Math.min(tailSize(count), Math.max(0, count - 1));
   const steps = Math.min(count - tailN, walk.length);
-  const start = (walk.findIndex((w) => w.id === cursor) + 1) % walk.length;
+  // The saved question may be gone (removed in a content update): then carry
+  // on after the walk question answered most recently, not from the top.
+  let at = walk.findIndex((w) => w.id === cursor);
+  if (at < 0 && cursor !== undefined) at = lastAnsweredIndex(walk, answers);
+  const start = (at + 1) % walk.length;
   const main: WalkItem[] = [];
   for (let k = 0; k < steps; k++) main.push(walk[(start + k) % walk.length]);
   const inSession = new Set(main.map((w) => w.id));

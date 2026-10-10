@@ -356,8 +356,10 @@ export interface OrderItem {
  *    as the last one and does not make a 4th weak spot in a row. Among those,
  *    take one from the subtopic with the most questions still waiting (so
  *    the end of the session isn't left with one subtopic twice in a row).
- * If no question satisfies both rules (a tiny or one-subtopic pool), the
- * subtopic rule is kept first, then the weak-run rule, then anything.
+ * The weak-run rule looks ahead: when the weak spots still waiting could no
+ * longer be split into runs of 3 by the other questions left, a weak spot
+ * goes next. If no question satisfies both rules (a tiny or one-subtopic
+ * pool), the subtopic rule is kept first, then the weak-run rule, then anything.
  */
 export function orderSmart(items: OrderItem[], rng: Rng): OrderItem[] {
   const rest = shuffled(items, rng);
@@ -372,7 +374,13 @@ export function orderSmart(items: OrderItem[], rng: Rng): OrderItem[] {
     const left = new Map<string, number>();
     for (const x of rest) left.set(x.group, (left.get(x.group) ?? 0) + 1);
     const okGroup = (x: OrderItem) => !last || x.group !== last.group;
-    const okRun = (x: OrderItem) => x.reason !== 'weak' || run < MAX_WEAK_RUN;
+    // Look ahead (code review): every non-weak question left can split the
+    // weak spots into runs of at most 3. If spending a non-weak one now would
+    // leave too few separators for the weak spots still waiting, a weak spot
+    // must go here instead.
+    const weakLeft = rest.filter((x) => x.reason === 'weak').length;
+    const mustWeak = run < MAX_WEAK_RUN && weakLeft > MAX_WEAK_RUN * (rest.length - weakLeft);
+    const okRun = (x: OrderItem) => (x.reason === 'weak' ? run < MAX_WEAK_RUN : !mustWeak);
     const pickFrom = (pred: (x: OrderItem) => boolean) => {
       let best = -1;
       for (let k = 0; k < rest.length; k++) {
