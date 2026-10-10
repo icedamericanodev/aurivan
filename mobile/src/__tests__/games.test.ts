@@ -6,7 +6,7 @@ import {
   calibrationVerdict,
   expectedPoints,
   FOOTING_CONFIDENCE,
-  footingChip,
+  footingPayoff,
   footingSpoken,
   FOOTINGS,
   maxScore,
@@ -132,8 +132,8 @@ describe('Sure Footing scoring', () => {
     expect(FOOTING_CONFIDENCE).toEqual({ guess: 'guessing', lean: 'unsure', sure: 'sure' });
   });
   it('labels chips with their points and says them in words', () => {
-    expect(footingChip('sure')).toBe('Sure · +3 / −5');
-    expect(footingChip('guess')).toBe('Guess · +1 / 0');
+    expect(footingPayoff('sure')).toBe('+3 if right · −5 if wrong');
+    expect(footingPayoff('guess')).toBe('+1 if right · 0 if wrong');
     expect(footingSpoken('lean')).toBe('Lean: plus 2 if right, minus 1 if wrong');
     expect(signed(-5)).toBe('−5');
   });
@@ -159,7 +159,7 @@ describe('Sure Footing scoring', () => {
     const copy = [
       ...Object.values(VERDICT_COPY),
       ...Object.values(PAYOFF).map((p) => p.label),
-      ...FOOTINGS.map(footingChip),
+      ...FOOTINGS.map(footingPayoff),
       ...FOOTINGS.map(footingSpoken),
       fs.readFileSync(path.join(__dirname, '../app/game/sprint.tsx'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, ''),
     ].join(' ');

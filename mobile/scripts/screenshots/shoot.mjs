@@ -281,7 +281,7 @@ for (let attempt = 0; attempt < 16; attempt++) {
 await shot('34-sure-footing-chips', '/game/sprint', 1500);
 const gotIt = page.getByText('Got it', { exact: true });
 if (await gotIt.count()) { await gotIt.click(); await page.waitForTimeout(600); }
-await page.getByText('Sure · +3 / −5', { exact: true }).click();
+await page.getByRole('radio', { name: /^Sure:/ }).click();
 await page.waitForTimeout(500);
 await page.screenshot({ path: `${out}/34-sure-footing-chips.png` });
 // Signpost: play a whole round (meaning, then option A), ending on the recap.

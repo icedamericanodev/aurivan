@@ -42,10 +42,10 @@ export function signed(n: number): string {
   return n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0';
 }
 
-/** Chip text, e.g. "Sure · +3 / −5". */
-export function footingChip(f: Footing): string {
+/** The points line under the choice, e.g. "+3 if right · −5 if wrong" (never on the pill itself). */
+export function footingPayoff(f: Footing): string {
   const p = PAYOFF[f];
-  return `${p.label} · ${signed(p.right)} / ${signed(p.wrong)}`;
+  return `${signed(p.right)} if right · ${signed(p.wrong)} if wrong`;
 }
 
 /** Chip text read aloud, e.g. "Sure: plus 3 if right, minus 5 if wrong". */

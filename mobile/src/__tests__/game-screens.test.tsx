@@ -161,16 +161,21 @@ describe('Sure Footing: rules and chips', () => {
     expect(allText()).toContain('How Sure Footing scores');
   });
 
-  it('labels the chips Guess, Lean and Sure with their points, and scores Sure −5 on a miss', () => {
+  it('offers Guess, Lean and Sure as one radio group, shows the points once, and scores Sure −5 on a miss', () => {
     useSettings.setState({ gameRulesSeen: ['sprint'] });
     mount(<SureFooting />);
-    expect(allText()).toContain('Sure · +3 / −5');
     // The game's own words only (question content may say "high-stakes").
-    const chips = root().findAll((n) => n.props.accessibilityRole === 'button' && /^(Guess|Lean|Sure)\b/.test(String(n.props.accessibilityLabel)));
-    expect(chips.length).toBeGreaterThanOrEqual(3);
+    const group = root().findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'How sure are you?');
+    expect(group.length).toBeGreaterThan(0);
+    const chips = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'radio' && /^(Guess|Lean|Sure)\b/.test(String(n.props.accessibilityLabel)));
+    expect(chips.length).toBe(3);
+    for (const c of chips) expect(c.props.accessibilityState).toEqual({ checked: false });
+    // Pills show the word only; no points until one is chosen.
+    expect(allText()).not.toContain('if wrong');
     for (const c of chips) expect(String(c.props.accessibilityLabel)).not.toMatch(/\b(bet|stake)/i);
     expect(allText()).toContain('First: how sure are you?');
     press('Sure: plus 3 if right, minus 5 if wrong');
+    expect(allText()).toContain('+3 if right · −5 if wrong');
     const wrong = options().find((o) => o.props.text !== currentAny().options[currentAny().correct])!;
     tap(wrong);
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Score -5').length).toBeGreaterThan(0);

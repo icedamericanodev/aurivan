@@ -10,14 +10,14 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
-import { Button, Chip, Gap, ProgressBar, Row, T, useFontScale } from '../../components/ui';
+import { Button, Gap, ProgressBar, Segmented, T, useFontScale } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
 import {
   calibration,
   calibrationVerdict,
   FOOTING_CONFIDENCE,
-  footingChip,
+  footingPayoff,
   footingSpoken,
   FOOTINGS,
   maxScore,
@@ -196,11 +196,17 @@ function SureFooting() {
               {footing ? 'Now choose your answer' : 'First: how sure are you?'}
             </T>
             <Gap h={space.sm} />
-            <Row gap={space.sm} style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              {FOOTINGS.map((f) => (
-                <Chip key={f} label={footingChip(f)} accessibilityLabel={footingSpoken(f)} selected={footing === f} onPress={() => setFooting(f)} />
-              ))}
-            </Row>
+            {/* A radio group (one choice, spoken as "radio, checked"); stacks at large text. */}
+            <Segmented
+              accessibilityLabel="How sure are you?"
+              value={footing}
+              onChange={setFooting}
+              options={FOOTINGS.map((f) => ({ value: f, label: PAYOFF[f].label, spoken: footingSpoken(f) }))}
+            />
+            {footing && (
+              // The points, once, for the chosen level (they never go on the pill).
+              <T v="meta" num center style={{ marginTop: space.xs }}>{footingPayoff(footing)}</T>
+            )}
           </View>
         )
       }
