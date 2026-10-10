@@ -17,6 +17,7 @@ import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan }
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
+import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
@@ -364,23 +365,18 @@ export const useProgress = create<ProgressState>()(
       // The game recap added CertProgress.gameRecent; `normalize` gives old saves {}.
       // Build C added only OPTIONAL fields (AnswerRecord.ms / lastConfidence,
       // CertProgress.mastery): no version bump, old saves load as-is.
-      version: 2,
+      version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },
   ),
 );
 
 /**
- * Upgrade an older save. Version 1 had at most one plan in `day` (or none,
- * before Grove); it moves into `days` under its own cert id. Exported for tests.
+ * Upgrade an older save (v1's single `day` plan → `days`). The rule lives in
+ * engine/saveMigrations.ts so a restored backup is upgraded the same way;
+ * re-exported here for existing imports and tests.
  */
-export function migrateProgress(persisted: unknown): Record<string, unknown> {
-  const old = (persisted ?? {}) as Record<string, unknown> & { day?: DayPlan | null; days?: Record<string, DayPlan> };
-  const { day, ...rest } = old;
-  const days: Record<string, DayPlan> = { ...(old.days ?? {}) };
-  if (day && typeof day === 'object' && day.certId && !days[day.certId]) days[day.certId] = day;
-  return { ...rest, days };
-}
+export { migrateProgress };
 
 /**
  * The cert's moments with today's readiness lower bound logged. Returns
@@ -398,6 +394,11 @@ function withReadiness(
   const log = moments?.readiness ?? [];
   const next = logReadinessDay(log, day, range.enough ? range.low : null);
   return next === log ? moments : { ...moments, readiness: next };
+}
+
+/** A cert's progress with every list and map present (a restored backup may leave some out). */
+export function completeCert(cp: Partial<CertProgress>): CertProgress {
+  return { ...emptyCert(), ...cp };
 }
 
 /** Read one certification's progress (never undefined). */
