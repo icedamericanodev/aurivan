@@ -13,7 +13,12 @@ const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `
 
 export type PlanItem =
   /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
-  | { kind: 'review'; count: number; label?: string }
+  /**
+   * `capped`: more were due than one session asks (REVIEW_SESSION_CAP), so
+   * Today says "reviews come 20 at a time". Written only when true (older
+   * saves and uncapped items keep the old shape).
+   */
+  | { kind: 'review'; count: number; label?: string; capped?: boolean }
   | { kind: 'lesson'; lessonId: string; title: string }
   | { kind: 'practice'; domainId?: string; count: number; label: string }
   /** `label` is saved with the day's plan; screens show the registry name, so old labels never show an old name. */
@@ -104,7 +109,8 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
 
   // Spaced reviews always come first when due — they are the cheapest wins.
   if (p.dueReviews > 0 && p.stage !== 'afterExam') {
-    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, REVIEW_SESSION_CAP) });
+    const capped = p.dueReviews > REVIEW_SESSION_CAP;
+    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, REVIEW_SESSION_CAP), ...(capped ? { capped } : {}) });
   }
   return plan.slice(0, 4);
 }

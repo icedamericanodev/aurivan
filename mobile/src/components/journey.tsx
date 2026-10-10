@@ -8,7 +8,7 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted by the blueprint.
  */
-import { REVIEW_CAP_LINE, REVIEW_SESSION_CAP, REVIEW_UNIT } from '../engine/srs';
+import { REVIEW_CAP_LINE, REVIEW_UNIT } from '../engine/srs';
 import { gameTitle } from '../engine/games/registry';
 import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
@@ -49,7 +49,8 @@ export function planText(item: PlanItem): { title: string; meta: string; short: 
       // Same word as Practice and You ("due"); at the cap, say the rest wait.
       return {
         title: item.label ?? `Review ${item.count} ${REVIEW_UNIT}`,
-        meta: `About ${mins} minutes · ${item.count >= REVIEW_SESSION_CAP ? REVIEW_CAP_LINE.toLowerCase() : 'questions you missed'}`,
+        // The cap line only when MORE than 20 were due (exactly 20 fits one session).
+        meta: `About ${mins} minutes · ${item.capped ? REVIEW_CAP_LINE.toLowerCase() : 'questions to revisit'}`,
         short: 'Spaced review',
       };
     case 'lesson':

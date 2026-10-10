@@ -30,6 +30,7 @@ import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import { router } from 'expo-router';
 import * as registry from '../engine/games/registry';
+import { planText } from '../components/journey';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -226,5 +227,13 @@ describe('Play when no game is playable for this exam', () => {
     });
     expect(router.push).toHaveBeenCalledWith('/practice');
     spy.mockRestore();
+  });
+});
+
+describe("Today's review card: the cap line only when more than 20 are due", () => {
+  it('exactly 20 (fits one session) says "questions to revisit"; capped says reviews come 20 at a time', () => {
+    expect(planText({ kind: 'review', count: 20 }).meta).toBe('About 24 minutes · questions to revisit');
+    expect(planText({ kind: 'review', count: 20, capped: true }).meta).toBe('About 24 minutes · reviews come 20 at a time');
+    expect(planText({ kind: 'review', count: 20 }).title).toBe('Review 20 due');
   });
 });

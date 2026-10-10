@@ -63,7 +63,8 @@ export function startPractice(
 /** The Spaced review row's subtitle, the same on Practice and You. */
 export function reviewSubtitle(dueCount: number): string {
   if (!dueCount) return 'All caught up';
-  return dueCount > REVIEW_SESSION_CAP ? `${REVIEW_CAP_LINE}, most overdue first` : 'Missed questions, due now';
+  // "to revisit", not "missed": the queue also holds lucky guesses and shaky right answers.
+  return dueCount > REVIEW_SESSION_CAP ? `${REVIEW_CAP_LINE}, most overdue first` : 'Questions to revisit';
 }
 
 /** Due reviews, most overdue first: at most one session's worth (REVIEW_SESSION_CAP, 20). */

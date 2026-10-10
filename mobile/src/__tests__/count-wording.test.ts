@@ -21,13 +21,17 @@ describe('review queue wording', () => {
     expect(REVIEW_SESSION_CAP).toBe(20);
     expect(REVIEW_CAP_LINE).toBe('Reviews come 20 at a time');
     expect(reviewSubtitle(55)).toBe('Reviews come 20 at a time, most overdue first');
-    expect(reviewSubtitle(12)).toBe('Missed questions, due now');
+    expect(reviewSubtitle(12)).toBe('Questions to revisit');
+    expect(reviewSubtitle(20)).toBe('Questions to revisit'); // exactly 20 fits one session
     expect(reviewSubtitle(0)).toBe('All caught up');
   });
 
   it("Today's review item and the review session share the same cap", () => {
     const plan = todaysPlan({ stage: 'practice', dueReviews: 55, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
-    expect(plan[0]).toEqual({ kind: 'review', count: REVIEW_SESSION_CAP });
+    expect(plan[0]).toEqual({ kind: 'review', count: REVIEW_SESSION_CAP, capped: true });
+    // Exactly 20 due fits one session: not capped, so no cap line on Today.
+    const twenty = todaysPlan({ stage: 'practice', dueReviews: 20, dailyGoal: 20, daysLeft: 40, examQuestions: 150 });
+    expect(twenty[0]).toEqual({ kind: 'review', count: 20 });
     // Seed 55 due reviews: one session asks 20 of them (it used to ask 30).
     const review: Record<string, ReviewEntry> = {};
     const ids = getAllQuestions('cisa').slice(0, 55).map((q) => q.id);
