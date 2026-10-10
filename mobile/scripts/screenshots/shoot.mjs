@@ -270,7 +270,11 @@ for (let attempt = 0; attempt < 16; attempt++) {
     await page.getByLabel(/^Option A:/).first().click();
     await page.waitForTimeout(900);
     await page.mouse.move(196, 500);
-    await page.mouse.wheel(0, 900);
+    // The answer rows: best ✓, the snare tagged "Snare" (tip tone).
+    await page.mouse.wheel(0, 420);
+    await page.waitForTimeout(600);
+    await page.screenshot({ path: `${out}/32c-snare-answer-rows.png` });
+    await page.mouse.wheel(0, 480);
     await page.waitForTimeout(700);
     await page.screenshot({ path: `${out}/32b-snare-feedback.png` });
     console.log('shot snare feedback');
