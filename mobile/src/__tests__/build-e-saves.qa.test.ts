@@ -205,19 +205,19 @@ describe('a 1.4 save in 1.5', () => {
     expect(startStudy('cisa', { mode: 'inOrder', count: 10 })!.questionIds[0]).not.toBe('d1_010');
   });
 
-  // BUG (Minor): restoring a backup that has no study defaults (any 1.4
+  // FIXED (was Minor): restoring a backup that has no study defaults (any 1.4
   // file, or a 1.5 learner who never picked a mode) keeps THIS phone's
   // studyMode / studyDomain / studySize. writeAll (lib/backup.ts) spreads
   // the initial settings, where these keys are undefined; JSON drops
   // undefined keys, and persist's rehydrate MERGES the saved row into the
   // live state, so the old values survive. The same makes "Undo restore"
   // keep the restored backup's mode. (paceOffer has had the same gap since 1.4.)
-  it.failing('restoring a backup without study defaults clears them (the phone takes the backup’s state)', async () => {
+  it('restoring a backup without study defaults clears them (the phone takes the backup’s state)', async () => {
     await restoreBackup(await oldFileOnNewPhone());
     expect(useSettings.getState()).toMatchObject({ studyMode: undefined, studyDomain: undefined, studySize: undefined });
   });
 
-  it.failing('"Undo restore" puts the study defaults back as they were (none)', async () => {
+  it('"Undo restore" puts the study defaults back as they were (none)', async () => {
     await loadSave(SETTINGS_1_4, PROGRESS_1_4);
     useBackup.setState({ lastBackupAt: null, undo: null });
     // A backup that has a mode, restored onto a phone that never chose one.
