@@ -19,6 +19,24 @@ export interface SessionScore {
   byDomain: Record<string, { total: number; correct: number }>;
 }
 
+/** The most minutes any session may claim: one day (the backup file's range too). */
+export const MAX_SESSION_MINUTES = 1440;
+
+/**
+ * Minutes a session used, the ONE figure Results, mock history and today's
+ * plan all show (Build D C1/C3), always 1..1440:
+ * - an UNTIMED mock has no clock and may sit paused for days, so its time
+ *   is the answer times added up (plus unanswered visits);
+ * - everything else is wall time to the end, never past a deadline.
+ */
+export function minutesUsed(s: ActiveSession, now = Date.now()): number {
+  const ms =
+    s.mode === 'mock' && !s.deadline
+      ? [...Object.values(s.responses).map((r) => r.ms ?? 0), ...Object.values(s.visitMs ?? {})].reduce((a, b) => a + b, 0)
+      : Math.min(s.finishedAt ?? now, s.deadline ?? Infinity) - s.startedAt;
+  return Math.min(MAX_SESSION_MINUTES, Math.max(1, Math.round(ms / 60_000)));
+}
+
 /**
  * The pacing panel's numbers for a mock (engine/pace.ts mockPacing): time
  * used vs allowed, median time, checkpoints, unanswered, the last 10% of the
@@ -100,7 +118,7 @@ export function finishSession() {
       finishedAt: endedAt,
       total: score.total,
       correct: score.correct,
-      minutesUsed: Math.max(1, Math.round((endedAt - s.startedAt) / 60_000)),
+      minutesUsed: minutesUsed({ ...s, finishedAt: endedAt }),
       byDomain: score.byDomain,
       timing: s.timing ?? 'standard',
       ...(pacing.allowedMinutes !== null ? { minutesAllowed: pacing.allowedMinutes } : {}),
@@ -110,7 +128,8 @@ export function finishSession() {
     };
     progress.recordMock(s.certId, result);
   }
-  useSession.getState().finish();
+  // A mock reopened after its deadline ended AT the deadline: Results and the pacing panel agree.
+  useSession.getState().finish(Math.min(Date.now(), s.deadline ?? Infinity));
   // Tick off today's plan (review / practice / mock) and add the minutes spent.
   const score = scoreSession(s);
   const endedAt = Math.min(Date.now(), s.deadline ?? Infinity);
@@ -127,6 +146,6 @@ export function finishSession() {
     total: s.questionIds.length,
     byDomain: answeredByDomain,
     // Capped, so a session left open overnight doesn't claim hours of study.
-    minutes: Math.min(Math.max(1, Math.round((endedAt - s.startedAt) / 60_000)), s.questionIds.length * 3),
+    minutes: Math.min(minutesUsed({ ...s, finishedAt: endedAt }), s.questionIds.length * 3),
   });
 }

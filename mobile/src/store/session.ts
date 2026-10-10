@@ -82,7 +82,8 @@ interface SessionState {
   addVisitTime: (questionId: string, ms: number) => void;
   /** Save the mock's pace checks (engine/pace.ts dueCheckpoints). */
   setCheckpoints: (checkpoints: Checkpoint[]) => void;
-  finish: () => void;
+  /** End the session. `endedAt`: when it really ended (a mock past its deadline ended AT it). */
+  finish: (endedAt?: number) => void;
   clear: () => void;
 }
 
@@ -130,8 +131,8 @@ export const useSession = create<SessionState>()(
           if (coached.includes(questionId)) return s;
           return { active: { ...s.active, coached: [...coached, questionId] } };
         }),
-      finish: () =>
-        set((s) => (s.active ? { active: { ...s.active, finishedAt: Date.now() } } : s)),
+      finish: (endedAt) =>
+        set((s) => (s.active ? { active: { ...s.active, finishedAt: endedAt ?? Date.now() } } : s)),
       clear: () => set({ active: null }),
     }),
     { name: 'aurivan.session.v1', storage: persistStorage, version: 1 },

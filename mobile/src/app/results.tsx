@@ -21,7 +21,7 @@ import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
 import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
-import { scoreSession, sessionPacing } from '../lib/finishSession';
+import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { startFromIds } from '../lib/sessions';
 import { useSession } from '../store/session';
@@ -69,7 +69,8 @@ export default function Results() {
   });
   // One pace line for every practice / review session (Build C answer times).
   const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
-  const minutes = Math.max(1, Math.round(((active.finishedAt ?? active.startedAt) - active.startedAt) / 60_000));
+  // The same figure the mock history and pacing panel use (never past a deadline; untimed = answer time).
+  const minutes = minutesUsed(active, active.finishedAt ?? active.startedAt);
 
   return (
     <Screen edges={['top', 'bottom']}>

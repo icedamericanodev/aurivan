@@ -10,6 +10,7 @@ import { persist } from 'zustand/middleware';
 import { getCertification } from '../content/certifications';
 import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
+import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
 import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
@@ -224,7 +225,8 @@ export const useProgress = create<ProgressState>()(
               ...(opts?.assisted ? { lastAssisted: true } : {}),
               // Build C quiet data: both describe THIS answer, so they are
               // left out (not carried over) when this answer has none.
-              ...(typeof opts?.ms === 'number' && Number.isFinite(opts.ms) ? { ms: Math.max(0, Math.round(opts.ms)) } : {}),
+              // Clamped to the answer clock's cap, so a record never breaks a backup.
+              ...(typeof opts?.ms === 'number' && Number.isFinite(opts.ms) ? { ms: Math.min(MAX_ANSWER_MS, Math.max(0, Math.round(opts.ms))) } : {}),
               ...(confidence ? { lastConfidence: confidence } : {}),
             },
           };

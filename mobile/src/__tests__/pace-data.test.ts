@@ -96,7 +96,8 @@ describe('finishing a mock keeps its pacing', () => {
     const cp = selectCert(useProgress.getState(), 'cisa');
     expect(cp.mocks[0].timing).toBe('untimed');
     expect(cp.mocks[0].minutesAllowed).toBeUndefined();
-    expect(cp.mocks[0].minutesUsed).toBe(200);
+    // Untimed: the answer time (40 s + 50 s), not 200 minutes of wall time (C1).
+    expect(cp.mocks[0].minutesUsed).toBe(2);
     // Readiness reads the answer records: the untimed answers are there.
     for (const id of ids) expect(cp.answers[id]).toMatchObject({ attempts: 1, lastCorrect: true });
     expect(pacingStats(cp.mocks).mocks).toBe(0);
@@ -186,6 +187,9 @@ describe('backups carry the pace data', () => {
   const mock = { id: 'm1', finishedAt: T0, total: 50, correct: 30, minutesUsed: 70, byDomain: {} };
   const progress = (mocks: unknown[]) => ({ byCert: { cisa: { mocks } }, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 } });
   const read = (s: unknown, p: unknown) => readBackup(JSON.stringify(buildBackup({ settings: s, progress: p }, { now: T0, appVersion: '1.4.0' })), ['cisa']);
+  /** A file written by hand (not by this app, so nothing is fitted): what a damaged or hostile file looks like. */
+  const readRaw = (s: unknown, p: unknown) =>
+    readBackup(JSON.stringify({ app: 'aurivan', schema: 1, exportedAt: '', appVersion: '1.4.0', stores: { settings: { version: 1, state: s }, progress: { version: 2, state: p } } }), ['cisa']);
 
   it('round trip: study defaults and mock pacing survive', () => {
     const paced = { ...mock, timing: 'plus25', minutesAllowed: 100, medianSec: 84, unanswered: 2, checkpoints: [0.05, -0.3, 0.12] };
@@ -201,8 +205,8 @@ describe('backups carry the pace data', () => {
   });
 
   it('bad pace values are refused', () => {
-    expect(() => read(settings, progress([{ ...mock, timing: 'turbo' }]))).toThrow('bad-data');
-    expect(() => read(settings, progress([{ ...mock, unanswered: 51 }]))).toThrow('bad-data');
-    expect(() => read({ ...settings, paceOffer: 'maybe' }, progress([]))).toThrow('bad-data');
+    expect(() => readRaw(settings, progress([{ ...mock, timing: 'turbo' }]))).toThrow('bad-data');
+    expect(() => readRaw(settings, progress([{ ...mock, unanswered: 51 }]))).toThrow('bad-data');
+    expect(() => readRaw({ ...settings, paceOffer: 'maybe' }, progress([]))).toThrow('bad-data');
   });
 });
