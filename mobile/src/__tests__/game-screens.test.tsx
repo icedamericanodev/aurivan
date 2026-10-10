@@ -23,6 +23,7 @@ import { useSettings } from '../store/settings';
 import TrapSpotter from '../app/game/trap';
 import * as registry from '../engine/games/registry';
 import SureFooting from '../app/game/sprint';
+import Signpost from '../app/game/priority';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -241,6 +242,26 @@ describe('Sure Footing rules panel', () => {
     // …and the question scrolls back up to the panel.
     expect(scrollTo).toHaveBeenCalledWith({ y: 0, animated: false });
     focus.mockRestore();
+  });
+});
+
+describe('Signpost step 1', () => {
+  it('asks its question as a heading above the four meanings; the footer copy is hidden from screen readers', () => {
+    mount(<Signpost />);
+    const prompt = 'Step 1: what does this question ask for?';
+    const heading = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityRole === 'header' && n.children.includes(prompt));
+    expect(heading).toHaveLength(1);
+    // The footer copy: inside a container hidden from VoiceOver and TalkBack.
+    const copies = root().findAll((n) => typeof n.type === 'string' && n.children.includes(prompt));
+    const hidden = copies.filter((n) => {
+      for (let p = n.parent; p; p = p.parent) if (p.props.importantForAccessibility === 'no-hide-descendants' && p.props.accessibilityElementsHidden) return true;
+      return false;
+    });
+    expect(copies).toHaveLength(2);
+    expect(hidden).toHaveLength(1);
+    // The heading comes before the first meaning button.
+    const text = allText();
+    expect(text.indexOf(prompt)).toBeLessThan(text.indexOf('The step that must come before the others'));
   });
 });
 

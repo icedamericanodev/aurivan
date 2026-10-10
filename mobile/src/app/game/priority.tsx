@@ -123,9 +123,13 @@ function Signpost() {
             }}
           />
         ) : (
-          <T v="label" center color={ask ? c.accentText : c.ink2}>
-            {ask ? 'Step 2: answer with that in mind' : 'Step 1: what does this question ask for?'}
-          </T>
+          // A visual reminder only: screen readers get the prompt as a heading
+          // above the choices (step 1) or from the reveal (step 2).
+          <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            <T v="label" center color={ask ? c.accentText : c.ink2}>
+              {ask ? 'Step 2: answer with that in mind' : 'Step 1: what does this question ask for?'}
+            </T>
+          </View>
         )
       }
     >
@@ -133,6 +137,8 @@ function Signpost() {
       <QuestionHead q={q} highlight={ask ? actual : null} />
       {!ask && (
         <View style={{ gap: space.sm }}>
+          {/* The question for step 1, read right before its four answers. */}
+          <T v="headline" accessibilityRole="header">Step 1: what does this question ask for?</T>
           {choices.map((a) => (
             <Button key={a} kind="secondary" label={ASK_LABEL[a]} onPress={() => setAsk(a)} />
           ))}
