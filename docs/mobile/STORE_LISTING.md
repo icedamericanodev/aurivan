@@ -82,7 +82,7 @@ STAND TALL ON EXAM DAY
 
 MADE FOR REAL LIFE
 • Works offline, on the commute or between meetings
-• No account and no sign-up. No data collected. Your progress stays on your phone.
+• No account and no sign-up. No data collected. Your progress stays on your phone, and a backup file you save yourself moves it to a new one.
 • Light and dark Grove themes, designed for easy reading
 
 A NOTE ON READINESS
@@ -155,7 +155,7 @@ Screenshots must not show a question count. Use demo data (`npm run shots`) and 
 Thank you for reviewing Aurivan.
 
 - No login or account is needed. There is nothing to sign in to, so no demo account is required.
-- All study data (progress, settings, exam date) is stored only on the device. The app collects no data and has no analytics or ads.
+- All study data (progress, settings, exam date) is stored only on the device. The app collects no data and has no analytics or ads. Settings → Your data lets the user save a backup file through the system share sheet and restore it with the system file picker; the app never uploads it.
 - The app works fully offline.
 
 To reach a mock exam:
