@@ -207,6 +207,31 @@ export function daylightScore(r: DaylightRound): number {
   return right + (finishedInBudget(r) ? 1 : 0);
 }
 
+/**
+ * Right answers a round needs for Sure-Footed Pace (4 of 5): pace alone
+ * isn't the skill, so tapping fast at random never earns it.
+ */
+export const PACE_RIGHT = 4;
+
+/**
+ * Daylight's skill step, per question: answered before the light set AND
+ * right. (Answering in time but wrong is speed, not exam pace.) This is
+ * what moves the game's level.
+ */
+export function daylightHits(r: DaylightRound): boolean[] {
+  return r.ids.map((id) => r.answers[id]?.correct === true);
+}
+
+/**
+ * A round that counts toward Sure-Footed Pace: played at Sapling or
+ * Heartwood, every question answered inside the light, and at least
+ * PACE_RIGHT of DAYLIGHT_SIZE right (scaled for other round sizes).
+ */
+export function atSurePace(r: DaylightRound): boolean {
+  const need = Math.ceil((PACE_RIGHT / DAYLIGHT_SIZE) * r.ids.length);
+  return r.tier !== 'seedling' && finishedInBudget(r) && daylightHits(r).filter(Boolean).length >= need;
+}
+
 export function daylightMax(size: number): number {
   return size + 1;
 }

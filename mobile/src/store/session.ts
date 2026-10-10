@@ -82,6 +82,11 @@ export interface ActiveSession {
   path?: { mode: StudyMode; scope: string; topicId?: string };
   reasons?: Record<string, PathReason>;
   support?: boolean;
+  /**
+   * Build F: the one milestone this session celebrates on Results (a mark
+   * key from engine/milestones.ts). Optional: most sessions have none.
+   */
+  milestone?: string;
   finishedAt?: number; // set when the learner finishes / submits
 }
 
@@ -99,6 +104,8 @@ interface SessionState {
   setCheckpoints: (checkpoints: Checkpoint[]) => void;
   /** End the session. `endedAt`: when it really ended (a mock past its deadline ended AT it). */
   finish: (endedAt?: number) => void;
+  /** Build F: the milestone this finished session shows on Results. */
+  setMilestone: (key: string) => void;
   clear: () => void;
 }
 
@@ -148,6 +155,7 @@ export const useSession = create<SessionState>()(
         }),
       finish: (endedAt) =>
         set((s) => (s.active ? { active: { ...s.active, finishedAt: endedAt ?? Date.now() } } : s)),
+      setMilestone: (key) => set((s) => (s.active ? { active: { ...s.active, milestone: key } } : s)),
       clear: () => set({ active: null }),
     }),
     { name: 'aurivan.session.v1', storage: persistStorage, version: 1 },

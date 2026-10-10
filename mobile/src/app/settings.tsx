@@ -99,7 +99,7 @@ export default function Settings() {
   const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
-    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions and mock history for this exam. It cannot be undone. Save a backup first if you might want it back.', [
+    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions, mock history, milestones and game levels for this exam. It cannot be undone. Save a backup first if you might want it back.', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Reset',

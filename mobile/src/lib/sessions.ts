@@ -260,9 +260,10 @@ export function guardedStart(
   let current = useSession.getState().active;
   // A timed mock whose time ran out while the app was closed is already
   // over: record it (at its deadline) instead of offering to discard it, so
-  // the learner's answers are never thrown away.
+  // the learner's answers are never thrown away. Its Results are never
+  // shown, so any milestone it earns stays queued for the next session.
   if (current && !current.finishedAt && current.mode === 'mock' && current.deadline && Date.now() >= current.deadline) {
-    finishSession();
+    finishSession({ celebrate: false });
     current = useSession.getState().active;
   }
   if (current && !current.finishedAt) {

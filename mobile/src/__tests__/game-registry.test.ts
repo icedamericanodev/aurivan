@@ -6,6 +6,8 @@
 import { getAllQuestions } from '../content/loader';
 import { getNotes } from '../content/notes';
 import { itemMinutes } from '../engine/dayPlan';
+import { getRoleDeck, getStepSequences } from '../content/games';
+import { playableGames } from '../lib/games';
 import { GAME_ORDER, GAMES, gameInfo, gameMinutes, gameTitle, isPlayable, roundMinutes } from '../engine/games/registry';
 import { MINUTES_PER_QUESTION } from '../engine/pace';
 import { todaysPlan } from '../engine/planner';
@@ -15,8 +17,10 @@ const bank = getAllQuestions('cisa');
 
 describe('game registry', () => {
   it('keeps the saved-progress ids forever', () => {
-    // Build D added Daylight, Build E Root or Rumor and Call It First, at the end; earlier ids never change.
-    expect(GAME_ORDER).toEqual(['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit']);
+    // Build D added Daylight, Build E Root or Rumor and Call It First, Build F
+    // the content games, each at the end; earlier ids never change.
+    expect(GAME_ORDER.slice(0, 6)).toEqual(['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit']);
+    expect(GAME_ORDER.slice(6)).toEqual(['field', 'canopy', 'stones'].filter((id) => id in GAMES));
     for (const id of GAME_ORDER) expect(GAMES[id].id).toBe(id);
   });
 
@@ -38,8 +42,9 @@ describe('game registry', () => {
   it('works the length out from the round size, at the normal study pace', () => {
     for (const g of Object.values(GAMES)) {
       // Exceptions: Daylight's length is its time budget (daylight.test.ts);
-      // Root or Rumor plays one-line statements, not questions (root-or-rumor.test.ts).
-      if (g.id !== 'daylight' && g.id !== 'rumor') expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
+      // Root or Rumor plays one-line statements, not questions (root-or-rumor.test.ts);
+      // Build F's Field Guide, Canopy Call and Stepping Stones play short cards, not questions.
+      if (!['daylight', 'rumor', 'field', 'canopy', 'stones'].includes(g.id)) expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
       // The old "about two minutes" claim was not honest for 5+ full exam items.
       expect(g.minutes).toBeGreaterThan(2);
     }
@@ -48,8 +53,11 @@ describe('game registry', () => {
   });
 
   it('offers every game for CISA, and hides a game whose pool is too small', () => {
-    // Root or Rumor counts the study notes' statements, so it needs the notes pack.
-    for (const id of GAME_ORDER) expect(isPlayable(id, bank, getNotes('cisa'))).toBe(true);
+    // Root or Rumor counts the study notes' statements, so it needs the notes
+    // pack; Build F's deck games need the cert's decks (content/games).
+    const decks = { roles: getRoleDeck('cisa'), steps: getStepSequences('cisa') };
+    for (const id of GAME_ORDER) expect(isPlayable(id, bank, getNotes('cisa'), decks)).toBe(true);
+    expect(playableGames('cisa')).toEqual(GAME_ORDER);
     expect(isPlayable('rumor', bank)).toBe(false);
     expect(isPlayable('trap', bank.slice(0, 3))).toBe(false);
     expect(isPlayable('sprint', [])).toBe(false);

@@ -12,16 +12,18 @@ import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
+import { noteRound, type GameGrowth, type RoundOutcome, type TierChange } from '../engine/games/growth';
 import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
+import { afterAnswer, afterCard, type CertMilestones } from '../engine/milestones';
 import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
-import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
+import { MAX_BOX, nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
 import { persistStorage } from './storage';
 
@@ -58,6 +60,11 @@ export interface MistakeEntry {
   resolved?: boolean; // answered correctly since — the mistake is fixed
   /** How sure the learner said they were (optional: older saves have none). */
   confidence?: Confidence;
+  /**
+   * Build F: this mistake was fixed on a LATER day, unassisted (Loop Closed
+   * counts it once). Written only when true; a new miss starts a fresh entry.
+   */
+  fixedLater?: boolean;
 }
 
 // Game ids live in the registry (engine/games/registry.ts); re-exported for screens.
@@ -116,6 +123,19 @@ export interface CertProgress {
    * readiness or mastery. Optional: older saves have none.
    */
   cards?: Record<string, ReviewEntry>;
+  /**
+   * Build F: each game's level (Seedling → Sapling → Heartwood) and its last
+   * skill-step results (engine/games/growth.ts). Optional: older saves have
+   * none, and every game starts at Seedling.
+   */
+  gameGrowth?: Partial<Record<GameId, GameGrowth>>;
+  /**
+   * Build F: milestone badges earned (never removed), the queue of ones
+   * waiting for their quiet moment, and the few counters that can't be
+   * worked out later (engine/milestones.ts). Optional: older saves have none
+   * and get a one-time back-fill at launch (lib/milestones.ts).
+   */
+  milestones?: CertMilestones;
 }
 
 export interface StudyPathState {
@@ -206,6 +226,17 @@ interface ProgressState {
   setPathCursor: (certId: string, mode: keyof StudyPathState, scope: string, value: string) => void;
   /** Build E: a Root or Rumor answer on a note card (spaced like a question; never readiness). */
   recordCard: (certId: string, cardId: string, correct: boolean) => void;
+  /** Build F: a finished game round moves the game's level (engine/games/growth.ts). Returns the change. */
+  noteGameRound: (certId: string, game: GameId, outcome: RoundOutcome) => TierChange;
+  /**
+   * Build F: change a cert's milestones (lib/milestones.ts does the rules).
+   * `update` gets the current milestones and progress and returns the new
+   * milestones, plus any mistakes to mark as fixed on a later day.
+   */
+  updateMilestones: (
+    certId: string,
+    update: (m: CertMilestones | undefined, cp: CertProgress) => { milestones: CertMilestones; fixedLater?: string[] } | null,
+  ) => void;
 }
 
 export const useProgress = create<ProgressState>()(
@@ -246,6 +277,10 @@ export const useProgress = create<ProgressState>()(
               lastAt: now,
               // Only written when true, so clean answers keep the old shape.
               ...(opts?.assisted ? { lastAssisted: true } : {}),
+              // Build F: a game answer is marked, so milestones can skip it.
+              // Like lastAssisted, the record is rebuilt each answer, so a
+              // later non-game answer drops the flag again.
+              ...(opts?.mastery === false ? { lastGame: true } : {}),
               // Build C quiet data: both describe THIS answer, so they are
               // left out (not carried over) when this answer has none.
               // Clamped to the answer clock's cap, so a record never breaks a backup.
@@ -255,6 +290,7 @@ export const useProgress = create<ProgressState>()(
           };
           // Mock exams record answers but don't reschedule reviews mid-exam.
           let review = cp.review;
+          const before = cp.review[questionId];
           if (opts?.schedule !== false) {
             // Coach me answers get the shorter, no-promotion schedule (srs.ts).
             const next = nextReview(cp.review[questionId], correct, confidence, now, opts?.assisted === true);
@@ -267,6 +303,25 @@ export const useProgress = create<ProgressState>()(
           if (correct && mistakes[questionId] && !mistakes[questionId].resolved) {
             mistakes = { ...mistakes, [questionId]: { ...mistakes[questionId], resolved: true } };
           }
+          // Build F milestone counters (engine/milestones.ts): study days,
+          // long-gap recalls, fixes on a later day, graduations, "sure"
+          // answers and game misses. Coach me and game answers never count
+          // toward the mastery badges.
+          const logged = mistakes[questionId];
+          const ms = afterAnswer(cp.milestones, {
+            questionId,
+            correct,
+            assisted: opts?.assisted === true,
+            game: opts?.mastery === false,
+            confidence,
+            at: now,
+            prevLastAt: prev?.lastAt,
+            openMistakeAt: logged && !logged.fixedLater ? logged.at : undefined,
+            // Right again from the last box: nextReview took it out of the queue.
+            graduated: opts?.schedule !== false && correct && Boolean(before && before.box >= MAX_BOX) && !review[questionId],
+          });
+          if (ms.fixedLater) mistakes = { ...mistakes, [questionId]: { ...mistakes[questionId], fixedLater: true } };
+          const milestones = ms.milestones;
           const day = dayKey(now);
           // Mastery date per subtopic: unassisted correct answers on two
           // different days (engine/mastery.ts). Games pass mastery: false.
@@ -283,7 +338,7 @@ export const useProgress = create<ProgressState>()(
           return {
             byCert: {
               ...s.byCert,
-              [certId]: { ...cp, answers, review, mistakes, ...(moments ? { moments } : {}), ...(mastery ? { mastery } : {}) },
+              [certId]: { ...cp, answers, review, mistakes, milestones, ...(moments ? { moments } : {}), ...(mastery ? { mastery } : {}) },
             },
             // An answer stamped on an EARLIER day than the latest study day
             // (an expired mock opened later) never rewinds the streak or today.
@@ -401,10 +456,35 @@ export const useProgress = create<ProgressState>()(
           const now = Date.now();
           const cp = normalize(s.byCert[certId]);
           const cards = { ...cp.cards };
-          const next = nextReview(cards[cardId], correct, undefined, now);
+          const prevCard = cards[cardId];
+          const next = nextReview(prevCard, correct, undefined, now);
           if (next) cards[cardId] = next;
           else delete cards[cardId];
-          return { byCert: { ...s.byCert, [certId]: { ...cp, cards } } };
+          // Build F: a missed card got right on a later day is a game miss fixed (Back on the Path).
+          const milestones = afterCard(cp.milestones, cardId, correct, now);
+          return { byCert: { ...s.byCert, [certId]: { ...cp, cards, ...(milestones ? { milestones } : {}) } } };
+        }),
+
+      noteGameRound: (certId, game, outcome) => {
+        const cp = normalize(get().byCert[certId]);
+        const { growth, change } = noteRound(cp.gameGrowth?.[game], outcome);
+        set((s) => {
+          const cur = normalize(s.byCert[certId]);
+          return { byCert: { ...s.byCert, [certId]: { ...cur, gameGrowth: { ...cur.gameGrowth, [game]: growth } } } };
+        });
+        return change;
+      },
+
+      updateMilestones: (certId, update) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          const r = update(cp.milestones, cp);
+          if (!r || (r.milestones === cp.milestones && !r.fixedLater?.length)) return s;
+          let mistakes = cp.mistakes;
+          for (const id of r.fixedLater ?? []) {
+            if (mistakes[id] && !mistakes[id].fixedLater) mistakes = { ...mistakes, [id]: { ...mistakes[id], fixedLater: true } };
+          }
+          return { byCert: { ...s.byCert, [certId]: { ...cp, mistakes, milestones: r.milestones } } };
         }),
 
       resetCert: (certId) =>
@@ -413,7 +493,12 @@ export const useProgress = create<ProgressState>()(
           delete days[certId];
           // "Shows once per certification": a reset keeps the dismissed flag.
           const seen = s.byCert[certId]?.moments?.readySeenAt;
-          const fresh: CertProgress = seen ? { ...emptyCert(), moments: { readySeenAt: seen } } : emptyCert();
+          // Build F: a reset is a fresh start for milestones too. The launch
+          // back-fill is marked as already done (nothing found, summary seen),
+          // so it never runs again and re-awards from older data.
+          const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
+          const base: CertProgress = { ...emptyCert(), milestones };
+          const fresh: CertProgress = seen ? { ...base, moments: { readySeenAt: seen } } : base;
           return { byCert: { ...s.byCert, [certId]: fresh }, days };
         }),
     }),
@@ -429,6 +514,8 @@ export const useProgress = create<ProgressState>()(
       // Build C added only OPTIONAL fields (AnswerRecord.ms / lastConfidence,
       // CertProgress.mastery): no version bump, old saves load as-is.
       // Build E added only OPTIONAL fields (CertProgress.studyPath / cards): same.
+      // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones,
+      // AnswerRecord.lastGame): same.
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

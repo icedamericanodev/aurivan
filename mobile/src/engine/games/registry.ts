@@ -5,8 +5,8 @@
  *
  * IDs are forever. Saved progress (best scores, history, plan items) is
  * keyed on `trap`, `sprint`, `priority`, `daylight` (Build D), `rumor` and
- * `callit` (Build E), so a rename is a display change
- * only: never change an id.
+ * `callit` (Build E), `field`, `canopy` and `stones` (Build F), so a rename
+ * is a display change only: never change an id.
  *
  * Plain English for the founder:
  * - `size`     how many questions one round asks.
@@ -16,16 +16,26 @@
  *              the game is shown at all (future certs with small banks).
  *              It is never shown to learners as a number.
  */
+import type { RoleDeck, StepSequence } from '../../content/games';
 import type { NotesPack } from '../../content/notes/types';
 import type { PackQuestion } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../pace';
 import { CALL_SIZE, callPool } from './callItFirst';
+import { CANOPY_MIN_POOL, CANOPY_SIZE } from './canopyCall';
+import { STONES_MIN_POOL, STONES_PER_ROUND } from './steppingStones';
 import { DAYLIGHT_MINUTES, DAYLIGHT_SIZE, daylightPool } from './daylight';
+import { FIELD_MIN_POOL, FIELD_SIZE, fieldTerms } from './fieldGuide';
 import { RUMOR_MIN_POOL, RUMOR_SIZE, rumorStatements } from './rootOrRumor';
 import { priorityPool } from './priorityLens';
 import { trapPool } from './trapSpotter';
 
-export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight' | 'rumor' | 'callit';
+export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight' | 'rumor' | 'callit' | 'field' | 'canopy' | 'stones';
+
+/** Build F: a certification's game decks (content/games), for games that play them. */
+export interface GameContent {
+  roles?: RoleDeck | null;
+  steps?: readonly StepSequence[];
+}
 
 export interface GameInfo {
   id: GameId;
@@ -47,6 +57,8 @@ export interface GameInfo {
    * not questions: this counts them, and `minPool` applies to that count.
    */
   notesPool?: (notes: NotesPack | null | undefined) => number;
+  /** Deck-based games (Build F: Canopy Call, Stepping Stones) count their deck instead. */
+  contentPool?: (content: GameContent) => number;
 }
 
 /** An honest round length: questions × the normal study pace, at least 1 minute. */
@@ -118,10 +130,49 @@ export const GAMES: Record<GameId, GameInfo> = {
     size: CALL_SIZE,
     pool: callPool,
   }),
+  // Build F. Field Guide plays the notes' key terms: 3 boards of 4 pairs,
+  // about 6 seconds a pair plus reading, so a few minutes.
+  field: make({
+    id: 'field',
+    name: 'Field Guide',
+    tagline: 'Match each term to what it means.',
+    skill: 'Exact meanings',
+    size: FIELD_SIZE,
+    minutes: 3,
+    minPool: FIELD_MIN_POOL,
+    pool: () => [],
+    notesPool: (notes) => fieldTerms(notes).length,
+  }),
+  // Canopy Call plays the reviewed roles deck: 10 one-line decisions,
+  // about 5 seconds each plus a one-line why.
+  canopy: make({
+    id: 'canopy',
+    name: 'Canopy Call',
+    tagline: 'Choose who has the authority to decide.',
+    skill: 'The right level of authority',
+    size: CANOPY_SIZE,
+    minutes: 3,
+    minPool: CANOPY_MIN_POOL,
+    pool: () => [],
+    contentPool: (c) => c.roles?.cards.length ?? 0,
+  }),
+  // Stepping Stones: 3 processes of 4–6 steps, placed by tapping, each
+  // followed by its step notes: about a minute each.
+  stones: make({
+    id: 'stones',
+    name: 'Stepping Stones',
+    tagline: 'Put each process in the right order.',
+    skill: 'What comes first',
+    size: STONES_PER_ROUND,
+    minutes: 3,
+    minPool: STONES_MIN_POOL,
+    pool: () => [],
+    contentPool: (c) => c.steps?.length ?? 0,
+  }),
 };
 
 /** Display order on Play (the first is the featured hero). */
-export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit'];
+export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit', 'field', 'canopy', 'stones'];
 
 /** A game's info by id, or undefined for an unknown id (e.g. from a newer save). */
 export function gameInfo(id: string): GameInfo | undefined {
@@ -144,10 +195,11 @@ export function gameTitle(id: string, savedLabel: string): string {
 
 /**
  * True when this certification has enough content for the game: questions,
- * or note statements for a note-based game (pass the cert's notes pack).
+ * note statements for a note-based game (pass the cert's notes pack), or a
+ * deck for a deck-based game (pass the cert's game content).
  */
-export function isPlayable(id: GameId, questions: PackQuestion[], notes?: NotesPack | null): boolean {
+export function isPlayable(id: GameId, questions: PackQuestion[], notes?: NotesPack | null, content?: GameContent): boolean {
   const g = GAMES[id];
-  const size = g.notesPool ? g.notesPool(notes) : g.pool(questions).length;
+  const size = g.contentPool ? g.contentPool(content ?? {}) : g.notesPool ? g.notesPool(notes) : g.pool(questions).length;
   return size >= g.minPool;
 }

@@ -19,7 +19,7 @@ import { signpostMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
-import { logGame } from '../../lib/activity';
+import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -46,6 +46,9 @@ function Signpost() {
   const [ask, setAsk] = useState<Ask | null>(null);
   const [pick, setPick] = useState<Letter | null>(null);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
+  // Build F: each deciding word read right (the skill step), and FIRST ones read right.
+  const [reads, setReads] = useState<{ id: string; right: boolean; first: boolean }[]>([]);
+  const [news, setNews] = useState<RoundNews | null>(null);
   const progress = useProgress.getState();
   // Quiet data (Build C): time from the question appearing to the answer.
   const readClock = useAnswerClock(round[i] ? `${i}:${round[i].q.id}` : undefined);
@@ -63,11 +66,14 @@ function Signpost() {
         score={score}
         max={round.length * 2}
         misses={misses}
+        news={news}
         onAgain={() => {
           restart();
           setI(0);
           setScore(0);
           setMisses([]);
+          setReads([]);
+          setNews(null);
           setAsk(null);
           setPick(null);
         }}
@@ -98,9 +104,19 @@ function Signpost() {
     // Game answers never count toward the subtopic mastery date (mastery: false).
     progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false });
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
+    const nextReads = [...reads, { id: q.id, right: readRight, first: actual === 'FIRST' }];
+    setReads(nextReads);
     if (i === round.length - 1) {
-      progress.recordGame(cert.id, 'priority', score + gained);
-      logGame(cert.id, 'priority');
+      setNews(
+        finishGameRound(cert.id, 'priority', {
+          score: score + gained,
+          rate: nextReads.filter((r) => r.right).length / round.length,
+          tier: startingTier(cert.id, 'priority'),
+          hits: nextReads.map((r) => r.right),
+          // Signpost Reader's rolling window: every FIRST question, read right or not.
+          windows: { signposts: nextReads.filter((r) => r.first).map((r) => ({ id: r.id, ok: r.right })) },
+        }),
+      );
     }
   };
 

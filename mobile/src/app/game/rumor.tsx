@@ -40,8 +40,9 @@ import {
   type Statement,
   type StatementKind,
 } from '../../engine/games/rootOrRumor';
+import type { WindowHit } from '../../engine/milestones';
 import { createRng } from '../../engine/random';
-import { logGame } from '../../lib/activity';
+import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { LARGE_TEXT, space } from '../../theme/tokens';
@@ -62,7 +63,11 @@ function RootOrRumor() {
   const large = useFontScale() >= LARGE_TEXT;
   const { cert, progress } = useActiveCert();
   const all = useMemo(() => rumorStatements(getNotes(cert.id)), [cert.id]);
-  const [tier, setTier] = useState<RumorTier>('seedling');
+  // Build F: the picker starts on the learner's own level for this game.
+  const [tier, setTier] = useState<RumorTier>(() => startingTier(cert.id, 'rumor'));
+  const [news, setNews] = useState<RoundNews | null>(null);
+  // Every rumor this round and whether it was cleared (Myth Clearer's rolling window).
+  const [myths, setMyths] = useState<WindowHit[]>([]);
   const [round, setRound] = useState<Statement[] | null>(null);
   const [i, setI] = useState(0);
   const [taps, setTaps] = useState<boolean[]>([]);
@@ -85,6 +90,8 @@ function RootOrRumor() {
     setWhysRight(0);
     setWhysAsked(0);
     setMisses([]);
+    setNews(null);
+    setMyths([]);
   };
 
   if (!round) {
@@ -98,6 +105,7 @@ function RootOrRumor() {
         onTier={setTier}
         tierName={RUMOR_TIER_NAME}
         tierLine={RUMOR_TIER_LINE}
+        level={startingTier(cert.id, 'rumor')}
         onStart={start}
       />
     );
@@ -109,7 +117,7 @@ function RootOrRumor() {
     const again = readAgain(progress.cards).filter((sub) => touched.has(sub));
     const nameOf = (sub: string) => round.find((s) => s.subtopicId === sub)?.subtopicName ?? sub;
     return (
-      <RoundEnd certId={cert.id} game="rumor" score={score} max={round.length} misses={misses} reviewNote={MISS_LINE} onAgain={start}>
+      <RoundEnd certId={cert.id} game="rumor" score={score} max={round.length} misses={misses} reviewNote={MISS_LINE} onAgain={start} news={news}>
         <T v="small" num>{`Longest run of right calls: ${longestRun(taps)}`}</T>
         {whysAsked > 0 && <T v="small" num style={{ marginTop: space.xs }}>{`“Why?” right: ${whysRight} of ${whysAsked}`}</T>}
         {again.length > 0 && (
@@ -165,9 +173,21 @@ function RootOrRumor() {
       // hears nothing at all (UX review H1).
       AccessibilityInfo.announceForAccessibility(`${tapVerdict(kind, ok)} Why is it a myth? Pick the reason.`);
     }
+    // Only rumors (exam myths) go in Myth Clearer's window; roots don't.
+    const mythHits = s.kind === 'rumor' ? [...myths, { id: s.id, ok }] : myths;
+    setMyths(mythHits);
     if (i === round.length - 1) {
-      useProgress.getState().recordGame(cert.id, 'rumor', score + (ok ? 1 : 0));
-      logGame(cert.id, 'rumor');
+      const allTaps = [...taps, ok];
+      const n = finishGameRound(cert.id, 'rumor', {
+        score: score + (ok ? 1 : 0),
+        rate: rumorScore(allTaps) / round.length,
+        tier,
+        hits: allTaps,
+        windows: { myths: mythHits },
+      });
+      setNews(n);
+      // The level moved: "Play again" starts on the new level, not the old one.
+      if (n.change) setTier(n.tier);
     }
   };
 

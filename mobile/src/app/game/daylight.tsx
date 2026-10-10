@@ -26,7 +26,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
+import { GameFrame, LevelNote, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { ICON_STROKE, Pause, Play, Sunrise } from '../../components/icons';
 import { PaceStrip } from '../../components/pace';
 import { OptionCard, type OptionState } from '../../components/quiz';
@@ -43,9 +43,11 @@ import {
   lowLight,
   lowLightLine,
   tierCanExtend,
+  atSurePace,
   canFlag,
   currentItem,
   DAYLIGHT_TIERS,
+  daylightHits,
   daylightMax,
   daylightPace,
   daylightScore,
@@ -69,7 +71,7 @@ import { durationSpoken, durationText, formatClock, spokenClock, spokenClockCoar
 import { moveFocus, sayLater } from '../../lib/a11y';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
-import { logGame } from '../../lib/activity';
+import { finishGameRound, type RoundNews } from '../../lib/gameRounds';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -98,7 +100,11 @@ function Daylight() {
   // The app's suggestion, from the learner's recent answer times (Build C `ms`).
   const suggested = useMemo(() => suggestTier(Object.values(progress.answers), cert.exam), [progress.answers, cert.exam]);
   const [tier, setTier] = useState<DaylightTier | null>(null);
-  const chosen = tier ?? suggested;
+  // Build F: once the learner has played, their own level is the starting
+  // light; before that, the suggestion from their answer times.
+  const level = progress.gameGrowth?.daylight?.tier;
+  const chosen = tier ?? level ?? suggested;
+  const [news, setNews] = useState<RoundNews | null>(null);
   const [state, setState] = useState<DaylightRound | null>(null);
   // Each visit to a question gets its own clock key (a parked one comes back fresh, keeping its time).
   const [visit, setVisit] = useState(0);
@@ -150,13 +156,24 @@ function Daylight() {
     fed.current = true;
     const p = useProgress.getState();
     if (state.timedOut.length) p.queueForReview(cert.id, state.timedOut);
-    p.recordGame(cert.id, 'daylight', daylightScore(state));
-    logGame(cert.id, 'daylight');
+    // The skill step is exam pace: each question answered before the light
+    // set AND right (engine daylightHits), so speed alone never grows the level.
+    const hits = daylightHits(state);
+    const n = finishGameRound(cert.id, 'daylight', {
+      score: daylightScore(state),
+      rate: hits.filter(Boolean).length / Math.max(1, state.ids.length),
+      tier: state.tier,
+      hits,
+      // Sure-Footed Pace: inside the light at Sapling pace or faster, with 4 of 5 right.
+      counts: { paceRounds: atSurePace(state) ? 1 : 0 },
+    });
+    setNews(n);
   }, [state, cert.id]);
 
   const begin = () => {
     said.current = [];
     fed.current = false;
+    setNews(null);
     setMisses([]);
     setReveal(null);
     setPaused(false);
@@ -198,7 +215,11 @@ function Daylight() {
           <T v="meta" num center style={{ marginTop: space.sm }}>
             {`${sec} s a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
           </T>
-          <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
+          {level ? (
+            <LevelNote level={level} />
+          ) : (
+            <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
+          )}
           <Gap h={space.xl} />
           <Button label="Start" onPress={begin} icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
         </ScrollView>
@@ -220,6 +241,7 @@ function Daylight() {
         score={daylightScore(state)}
         max={daylightMax(state.ids.length)}
         misses={misses}
+        news={news}
         onAgain={() => {
           restart();
           setState(null);

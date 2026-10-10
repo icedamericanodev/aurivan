@@ -4,13 +4,13 @@
  * Games stay full-screen and calm.
  */
 import { router } from 'expo-router';
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
-import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
+import Animated, { FadeIn, ReduceMotion, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { findQuestion, getAllQuestions } from '../content/loader';
-import { getNotes } from '../content/notes';
-import { GAMES, isPlayable } from '../engine/games/registry';
+import { findQuestion } from '../content/loader';
+import { GAMES } from '../engine/games/registry';
+import { canPlay } from '../lib/games';
 import { useActiveCert } from '../lib/useActiveCert';
 import { EmptyScreen } from './emptyScreen';
 import type { Letter, PackQuestion } from '../content/types';
@@ -18,12 +18,15 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { radius, space } from '../theme/tokens';
+import { optionText, radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
-import { Seedling } from './glyphs';
-import { Info, ICON_STROKE, Play as PlayIcon } from './icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Section, SegmentBar, Segmented, Stem, T } from './ui';
+import { Seedling, TierLeaf } from './glyphs';
+import { MilestoneMomentView, TierTag } from './milestones';
+import { tierChangeLine, type GameTier } from '../engine/games/growth';
+import type { RoundNews } from '../lib/gameRounds';
+import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T } from './ui';
 
 /** A fixed list of questions + one shuffle each, created once per round. */
 export function useRound(certId: string, build: (rngSeed: number) => string[]) {
@@ -157,11 +160,18 @@ export function RoundEnd({
   children,
   onAgain,
   reviewNote,
+  news,
 }: {
   certId: string;
   game: GameId;
   score: number;
   max: number;
+  /**
+   * Build F: what else this round changed (lib/gameRounds.ts): a new
+   * personal best (a text line), the game's level moving, and at most ONE
+   * milestone moment. Left out = none of these.
+   */
+  news?: RoundNews | null;
   /** This round's misses, in question order. */
   misses?: RecapMiss[];
   children?: ReactNode;
@@ -198,8 +208,24 @@ export function RoundEnd({
                 <T v="label" num center>{recent.map(scoreText).join('  ·  ')}</T>
               </View>
             )}
+            {news?.best && (
+              <T v="meta" center color={c.accentText} style={{ marginTop: space.sm }}>New personal best</T>
+            )}
+            {news && tierChangeLine(news.change, news.tier) && (
+              <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <View accessible={false} importantForAccessibility="no-hide-descendants">
+                  <TierLeaf tier={news.tier} color={c.accentText} rib={c.bg} />
+                </View>
+                <T v="small" center style={{ flexShrink: 1 }}>{tierChangeLine(news.change, news.tier)!}</T>
+              </Row>
+            )}
           </View>
         </Enter>
+        {news?.moment && (
+          <View style={{ marginTop: space.xl }}>
+            <MilestoneMomentView moment={news.moment} once={`round:${game}:${score}:${news.moment.key}`} />
+          </View>
+        )}
         <Gap h={space.xl} />
         {misses.length > 0 && (
           <View style={{ marginBottom: space.lg }}>
@@ -245,8 +271,11 @@ export function GameIntro<V extends string>({
   tierName,
   tierLine,
   onStart,
+  level,
 }: {
   game: GameId;
+  /** Build F: the learner's own level for this game (the picker starts on it). */
+  level?: GameTier;
   icon: (color: string) => ReactNode;
   rules: string;
   tiers: V[];
@@ -279,10 +308,29 @@ export function GameIntro<V extends string>({
           options={tiers.map((t) => ({ value: t, label: tierName[t], spoken: `${tierName[t]}. ${tierLine[t]}` }))}
         />
         <T v="meta" center style={{ marginTop: space.sm }}>{tierLine[tier]}</T>
+        {level && <LevelNote level={level} />}
         <Gap h={space.xl} />
         <Button label="Start" onPress={onStart} icon={(col) => <PlayIcon size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/**
+ * "Your level: Sapling" under a level picker (Build F): the leaf and the
+ * name, plus how it grows. Rounds at your level move it; any level can be tried.
+ */
+export function LevelNote({ level }: { level: GameTier }) {
+  const { c } = useTheme();
+  const how = level === 'heartwood' ? 'The top level.' : 'Two strong rounds in a row at your level grow it.';
+  return (
+    <View accessible accessibilityLabel={`Your level: ${level === 'seedling' ? 'Seedling' : level === 'sapling' ? 'Sapling' : 'Heartwood'}. ${how}`} style={{ marginTop: space.md, alignItems: 'center' }}>
+      <Row gap={space.sm} style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+        <T v="meta">Your level:</T>
+        <TierTag tier={level} />
+      </Row>
+      <T v="meta" center color={c.ink2} style={{ marginTop: 2 }}>{how}</T>
+    </View>
   );
 }
 
@@ -323,6 +371,135 @@ export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad'
   );
 }
 
+export type TileState = 'idle' | 'selected' | 'matched' | 'correct' | 'wrong' | 'dimmed';
+
+/**
+ * Build F: one tappable item in Field Guide (a term or a meaning), Canopy
+ * Call (a role) and Stepping Stones (a stone): a raised row like an answer
+ * option, 48pt+, text that wraps at any size. Selected = 2px ink border
+ * (never green); matched / correct = correctBg with ✓; wrong = wrongBg with
+ * ✗ (shape AND colour). `shake` changes when a wrong pair is tried: the tile
+ * shakes once (about 160 ms), and not at all under Reduce Motion (the
+ * screen also shows a short static 'wrong' state, so the cue never relies
+ * on motion). `spoken` is the full screen-reader name ("Term 2 of 4:
+ * Snapshot"); the selected / checked state is announced by the role.
+ *
+ * Screen-reader focus (UX review H2): a tile that was ever tappable stays
+ * the SAME Pressable after an answer. `locked` disables it in place; it is
+ * never swapped for a View, which would rebuild the native view and drop
+ * the learner's focus. In a radio group (`radio`), `checked` marks the
+ * learner's pick. `pressRef` lets a screen move focus to a tile.
+ * A tile that can never be tapped (a given first step, a Heartwood path
+ * step) gets a flat look: `soft` fill, no shadow (UX review P5).
+ */
+export function MatchTile({
+  text,
+  lead,
+  state,
+  onPress,
+  spoken,
+  hint,
+  shake = 0,
+  radio,
+  locked,
+  checked,
+  pressRef,
+}: {
+  /** One choice of several in a radio group (Canopy Call, the recall and missing-step picks). */
+  radio?: boolean;
+  text: string;
+  /** A short mark before the text: "1", "2"… for a stone's place. */
+  lead?: string;
+  state: TileState;
+  onPress?: () => void;
+  spoken: string;
+  hint?: string;
+  shake?: number;
+  /** Answered or settled: still the same element, but no longer tappable. */
+  locked?: boolean;
+  /** Radio only: this is the learner's pick. */
+  checked?: boolean;
+  /** For moving screen-reader focus to this tile (Stepping Stones). */
+  pressRef?: Ref<View>;
+}) {
+  const { c, isDark } = useTheme();
+  const x = useSharedValue(0);
+  useEffect(() => {
+    if (!shake) return;
+    const step = (to: number) => withTiming(to, { duration: 40, reduceMotion: ReduceMotion.System });
+    x.value = withSequence(step(-6), step(6), step(-3), step(0));
+  }, [shake, x]);
+  const moved = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
+  const interactive = onPress !== undefined || Boolean(radio);
+  // Never tappable and nothing to show: the flat "given" look, so it doesn't pass for a stone you can move.
+  const flat = !interactive && state === 'idle';
+  const look = {
+    idle: { bg: flat ? c.soft : c.raised, border: isDark && !flat ? c.line : 'transparent', fg: c.ink },
+    selected: { bg: c.raised, border: c.ink, fg: c.ink },
+    matched: { bg: c.correctBg, border: 'transparent', fg: c.ink },
+    correct: { bg: c.correctBg, border: 'transparent', fg: c.ink },
+    wrong: { bg: c.wrongBg, border: 'transparent', fg: c.ink },
+    dimmed: { bg: c.raised, border: isDark ? c.line : 'transparent', fg: c.muted },
+  }[state];
+  const tinted = state === 'matched' || state === 'correct' || state === 'wrong';
+  const mark = state === 'matched' || state === 'correct' ? Check : state === 'wrong' ? X : null;
+  const markColor = state === 'wrong' ? c.wrong : c.correct;
+  // The ✓ / ✗ sits in the top-right corner, so a long single word ("Independence")
+  // in a narrow column keeps the full width and never pushes the mark out.
+  const body = (
+    <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm, paddingRight: mark ? 14 : 0 }}>
+      {lead ? (
+        <T v="label" num color={c.ink2} style={{ minWidth: 18 }}>
+          {lead}
+        </T>
+      ) : null}
+      <T v="body" color={look.fg} style={[optionText, { flex: 1 }]}>
+        {text}
+      </T>
+      {mark ? (
+        <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', top: -6, right: -8 }}>
+          {mark === Check ? <Check size={16} color={markColor} strokeWidth={2.5} /> : <X size={16} color={markColor} strokeWidth={2.5} />}
+        </View>
+      ) : null}
+    </View>
+  );
+  const box = {
+    minHeight: 48,
+    justifyContent: 'center' as const,
+    borderRadius: radius.md,
+    borderWidth: state === 'selected' ? 2 : 1.5,
+    borderColor: look.border,
+    backgroundColor: look.bg,
+    paddingVertical: state === 'selected' ? 11.5 : 12,
+    paddingHorizontal: state === 'selected' ? 13.5 : 14,
+    marginBottom: space.sm,
+    ...(!isDark && !tinted && !flat ? raisedShadow : null),
+  };
+  const off = Boolean(locked) || !onPress;
+  return (
+    <Animated.View style={moved}>
+      {interactive ? (
+        <Pressable
+          ref={pressRef}
+          accessibilityRole={radio ? 'radio' : 'button'}
+          accessibilityLabel={spoken}
+          accessibilityHint={off ? undefined : hint}
+          accessibilityState={radio ? { checked: Boolean(checked), disabled: off } : { selected: state === 'selected', disabled: off }}
+          disabled={off}
+          onPress={onPress}
+          style={({ pressed }) => [box, pressed && !off && { opacity: 0.85 }]}
+        >
+          {body}
+        </Pressable>
+      ) : (
+        <View ref={pressRef} accessible accessibilityLabel={spoken} style={box}>
+          {body}
+        </View>
+      )}
+    </Animated.View>
+  );
+}
+
 /**
  * A game this certification can't play yet (too few suitable questions,
  * registry minPool). Calm, no numbers (never reveal a bank size).
@@ -341,7 +518,7 @@ export function GameUnavailable({ game }: { game: GameId }) {
 /** Renders the game, or GameUnavailable when this certification's pool is too small. */
 export function PlayableGate({ game, children }: { game: GameId; children: ReactNode }) {
   const { cert } = useActiveCert();
-  const ok = useMemo(() => isPlayable(game, getAllQuestions(cert.id), getNotes(cert.id)), [game, cert.id]);
+  const ok = useMemo(() => canPlay(cert.id, game), [game, cert.id]);
   return ok ? <>{children}</> : <GameUnavailable game={game} />;
 }
 

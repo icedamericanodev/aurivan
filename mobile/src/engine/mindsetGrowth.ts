@@ -64,6 +64,9 @@ export interface GrowthQuestion {
  * First-try answers, oldest first. `lookup` returns the question (or
  * undefined when it is no longer in the bank). `picked` in mistakes is an
  * ORIGINAL letter, compared with the ORIGINAL runner-up letter.
+ * A first try made in a game (`lastGame`) is skipped: a game's cue (Priority
+ * Lens names the deciding word) can steer the pick, so it isn't the
+ * learner's own reading (behaviour review, Build F).
  */
 export function firstTries(
   answers: Record<string, AnswerRecord>,
@@ -72,7 +75,7 @@ export function firstTries(
 ): FirstTry[] {
   const out: FirstTry[] = [];
   for (const [id, rec] of Object.entries(answers)) {
-    if (rec.attempts !== 1) continue;
+    if (rec.attempts !== 1 || rec.lastGame) continue;
     const q = lookup(id);
     if (!q) continue;
     const ru = runnerUp(q.tips, q.correct);

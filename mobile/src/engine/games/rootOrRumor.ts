@@ -391,13 +391,15 @@ export function tapVerdict(tap: StatementKind, right: boolean): string {
 export const READ_AGAIN_AT = 2;
 
 /**
- * Subtopics to read again: those with 2 or more cards whose last answer was
- * wrong (box 1). Card ids carry their subtopic ("rumor:4B1.2:…").
+ * Subtopics to read again: those with 2 or more Root or Rumor cards whose
+ * last answer was wrong (box 1). Card ids carry their subtopic
+ * ("rumor:4B1.2:…"). Other games' cards (Build F) are not statements.
  */
 export function readAgain(cards: Record<string, ReviewEntry> | undefined, at = READ_AGAIN_AT): string[] {
   const missed = new Map<string, number>();
   for (const [id, e] of Object.entries(cards ?? {})) {
     if (e.box !== 1) continue;
+    if (!id.startsWith('rumor:') && !id.startsWith('root:')) continue;
     const sub = id.split(':')[1];
     if (sub) missed.set(sub, (missed.get(sub) ?? 0) + 1);
   }

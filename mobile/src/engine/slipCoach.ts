@@ -57,7 +57,8 @@ export const PATTERN_COPY: Record<SlipPattern, SlipCoachCopy> = {
   'runner-up': { title: 'You often pick the runner-up', coach: 'Two options look right. Say why the best one wins before you tap.', game: 'trap' },
   priority: { title: 'You miss FIRST/BEST priority words', coach: 'Find the priority word before you read the options.', game: 'priority' },
   overconfident: { title: 'You miss when you feel sure', coach: 'A sure answer still deserves one more read of the stem.', game: 'sprint' },
-  role: { title: 'You answer from the wrong role', coach: 'Ask who you are in the question: auditor, manager or board?', game: 'trap' },
+  // Build F: the role pattern drills in Canopy Call ("who has the authority to decide?").
+  role: { title: 'You answer from the wrong role', coach: 'Ask who you are in the question: auditor, manager or board?', game: 'canopy' },
   'tech-first': { title: 'You reach for tech before governance', coach: 'Policy, ownership and approval usually come before tools.', game: 'trap' },
   symptom: { title: 'You fix the symptom, not the cause', coach: 'Prefer the option that removes the root cause.', game: 'trap' },
   misread: { title: 'You misread the stem', coach: 'Slow down on the last line of the stem.', game: 'priority' },

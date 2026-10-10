@@ -16,6 +16,7 @@ import { LETTERS, type Letter } from '../../content/types';
 import {
   calibration,
   calibrationVerdict,
+  wellJudged,
   FOOTING_CONFIDENCE,
   FOOTING_DESC,
   footingPayoff,
@@ -35,7 +36,7 @@ import { GAMES } from '../../engine/games/registry';
 import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
-import { logGame } from '../../lib/activity';
+import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
@@ -105,6 +106,7 @@ function SureFooting() {
   const [pick, setPick] = useState<Letter | null>(null);
   const [results, setResults] = useState<SprintResult[]>([]);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
+  const [news, setNews] = useState<RoundNews | null>(null);
   // Rules: open on the very first play; afterwards behind the info button.
   const seen = useSettings((s) => s.gameRulesSeen.includes('sprint'));
   const markRulesSeen = useSettings((s) => s.markRulesSeen);
@@ -131,10 +133,12 @@ function SureFooting() {
         score={score}
         max={maxScore(round.length)}
         misses={misses}
+        news={news}
         onAgain={() => {
           restart();
           setI(0);
           setMisses([]);
+          setNews(null);
           setFooting(null);
           setPick(null);
           setResults([]);
@@ -180,8 +184,18 @@ function SureFooting() {
     progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing], { ms: rulesOpen ? undefined : readClock(), mastery: false });
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
     if (i === round.length - 1) {
-      progress.recordGame(cert.id, 'sprint', sprintScore(next));
-      logGame(cert.id, 'sprint');
+      // The skill step is an honest level (calibration.ts wellJudged); the
+      // round's verdict feeds Even Keel ("well calibrated" rounds in a row).
+      const judged = next.map(wellJudged);
+      setNews(
+        finishGameRound(cert.id, 'sprint', {
+          score: sprintScore(next),
+          rate: judged.filter(Boolean).length / next.length,
+          tier: startingTier(cert.id, 'sprint'),
+          hits: judged,
+          good: calibrationVerdict(next) === 'calibrated',
+        }),
+      );
     }
   };
 

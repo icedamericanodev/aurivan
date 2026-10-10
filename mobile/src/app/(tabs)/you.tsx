@@ -9,13 +9,16 @@
  * tempting runner-up less often than in their first weeks (engine/mindsetGrowth.ts).
  * Share progress: opens a preview of a share card (components/shareCard.tsx)
  * with one honest number (engine/shareCard.ts picks it).
+ * Build F: "Milestones" and "Field notes" rows under Study tools, and ONE
+ * quiet line the first time after the launch back-fill ("You'd already
+ * earned 4 milestones.") instead of a burst of celebrations.
  */
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { DomainRings, ringsSpoken } from '../../components/journey';
 import { MindsetGrowthCard } from '../../components/moments';
-import { Bookmark, ICON_STROKE, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
+import { Bookmark, ICON_STROKE, Leaf, MilestoneIcon, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
@@ -25,11 +28,15 @@ import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
 import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
 import { shortDate } from '../../lib/format';
+import { MILESTONES } from '../../engine/milestones';
+import { backfillLine, seeBackfill } from '../../lib/milestones';
 import { useMindsetGrowth } from '../../lib/moments';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
+
+const MILESTONE_IDS = new Set<string>(MILESTONES.map((b) => b.id));
 
 export default function You() {
   const { c } = useTheme();
@@ -47,6 +54,21 @@ export default function You() {
   // The day the sheet was opened (read in the tap handler, not during render). null = closed.
   const [shareDay, setShareDay] = useState<string | null>(null);
   const icon = (G: typeof Settings) => <G size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />;
+  // Build F: milestones earned (badges, not leaves) and the one-time back-fill line.
+  const earnedMarks = Object.keys(progress.milestones?.earned ?? {});
+  const milestoneCount = new Set(earnedMarks.map((k) => k.split(':')[0]).filter((b) => MILESTONE_IDS.has(b))).size;
+  // The back-fill line shows ONCE (code review): kept in state for this
+  // visit, and marked seen right away, like the Milestones screen does.
+  const backfill = progress.milestones?.backfill;
+  // Keyed by when the back-fill ran, so a later one (a restore from an older
+  // backup while this tab is open) shows its own line. Set during render:
+  // React's pattern for state that follows a change in the store.
+  const [kept, setKept] = useState<{ at: number; line: string | null } | null>(null);
+  if (backfill && !backfill.seen && kept?.at !== backfill.at) setKept({ at: backfill.at, line: backfillLine(backfill.count) });
+  const summary = kept?.line ?? null;
+  useEffect(() => {
+    if (backfill && !backfill.seen) seeBackfill(cert.id);
+  }, [backfill, cert.id]);
 
   return (
     <Screen>
@@ -102,6 +124,17 @@ export default function You() {
       </Enter>
 
       <Enter i={3}>
+        {summary && (
+          // Once, after the launch back-fill: one calm line, not a burst of moments.
+          // Only the text is grouped for screen readers; the button stays its own stop (UX review H1).
+          <View style={{ marginTop: space.xl, borderLeftWidth: 3, borderLeftColor: c.accent, paddingLeft: space.md }}>
+            <View accessible accessibilityLabel={`From your study so far. ${summary}`}>
+              <T v="caption" color={c.accentText}>From your study so far</T>
+              <T v="quote" style={{ marginTop: 4 }}>{summary}</T>
+            </View>
+            <Button kind="ghost" label="See your milestones" onPress={() => router.push('/milestones')} style={{ alignSelf: 'flex-start' }} />
+          </View>
+        )}
         <Section title="Study tools" style={{ marginTop: space.xl }} />
         {/* The review queue: same word ("due") and same cap line as Today and Practice. */}
         <ListRow
@@ -128,6 +161,21 @@ export default function You() {
           trailing={progress.bookmarks.length ? <Trail value={String(progress.bookmarks.length)} unit="saved" /> : undefined}
           accessibilityLabel={`Saved questions, ${progress.bookmarks.length} saved`}
           onPress={() => router.push('/saved')}
+        />
+        <ListRow
+          icon={icon(MilestoneIcon)}
+          title="Milestones"
+          subtitle="What you’ve mastered, and what’s next"
+          trailing={milestoneCount ? <Trail value={String(milestoneCount)} unit="earned" /> : undefined}
+          accessibilityLabel={`Milestones, ${milestoneCount ? `${milestoneCount} earned` : 'none yet'}. What you've mastered, and what's next`}
+          onPress={() => router.push('/milestones')}
+        />
+        <ListRow
+          icon={icon(Leaf)}
+          title="Field notes"
+          subtitle="Game levels and skill leaves"
+          accessibilityLabel="Field notes. Game levels and skill leaves"
+          onPress={() => router.push('/field-notes')}
           last
         />
 

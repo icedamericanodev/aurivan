@@ -9,6 +9,10 @@
  * replacing the old ring and bars), the stat row, and a question-by-question
  * review (your answer vs the best answer). "Practice what I missed"
  * turns mistakes straight into a new session.
+ *
+ * Build F: when this session earned a milestone, ONE quiet moment sits under
+ * the stats (components/milestones.tsx): no confetti, one success haptic,
+ * static with Reduce Motion. Any others earned wait for later sessions.
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -16,6 +20,7 @@ import { Pressable, View } from 'react-native';
 import { OptionCard } from '../components/quiz';
 import { DomainRings } from '../components/journey';
 import { PacingPanel } from '../components/pace';
+import { MilestoneMomentView } from '../components/milestones';
 import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
@@ -23,6 +28,7 @@ import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuf
 import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
 import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
+import { momentFor } from '../lib/milestones';
 import { startFromIds } from '../lib/sessions';
 import { useSession } from '../store/session';
 import { space } from '../theme/tokens';
@@ -36,6 +42,10 @@ export default function Results() {
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
   // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
   const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
+  // The one milestone this session celebrates (lib/finishSession.ts picked it).
+  const certId = active?.certId;
+  const milestoneKey = active?.milestone;
+  const moment = useMemo(() => (certId && milestoneKey ? momentFor(certId, milestoneKey) : null), [certId, milestoneKey]);
 
   if (!active || !score) {
     return (
@@ -139,6 +149,17 @@ export default function Results() {
         {pacing && (
           <View style={{ marginTop: space.md }}>
             <PacingPanel pacing={pacing} cert={cert} />
+          </View>
+        )}
+        {moment && (
+          <View style={{ marginTop: space.xl }}>
+            <MilestoneMomentView moment={moment} once={active.id} />
+            <Button
+              kind="ghost"
+              label={moment.kind === 'skill' ? 'See your field notes' : 'See your milestones'}
+              onPress={() => router.push(moment.kind === 'skill' ? '/field-notes' : '/milestones')}
+              style={{ alignSelf: 'flex-start', marginTop: space.xs }}
+            />
           </View>
         )}
         <Gap h={space.xl} />

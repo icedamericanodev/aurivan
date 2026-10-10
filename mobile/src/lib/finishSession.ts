@@ -11,6 +11,7 @@ import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
 import { logActivity } from './activity';
+import { celebrateNext, checkMilestones } from './milestones';
 
 export interface SessionScore {
   total: number;
@@ -82,7 +83,13 @@ export function scoreSession(s: ActiveSession): SessionScore {
   return { total: s.questionIds.length, answered, correct, byDomain };
 }
 
-export function finishSession() {
+/**
+ * `celebrate: false` saves any milestone now earned but leaves it QUEUED:
+ * for a session that ends without the learner seeing Results (an expired
+ * mock recorded when they start something else), so the moment isn't
+ * spent on a screen nobody sees.
+ */
+export function finishSession(opts: { celebrate?: boolean } = {}) {
   const s = useSession.getState().active;
   if (!s || s.finishedAt) return;
   if (s.mode === 'mock') {
@@ -148,4 +155,10 @@ export function finishSession() {
     // Capped, so a session left open overnight doesn't claim hours of study.
     minutes: Math.min(minutesUsed({ ...s, finishedAt: endedAt }), s.questionIds.length * 3),
   });
+  // Build F: save any milestone now earned, and give THIS session at most one
+  // quiet moment on Results (the rest wait in the queue for later sessions).
+  checkMilestones(s.certId, { finished: true });
+  if (opts.celebrate === false) return;
+  const moment = celebrateNext(s.certId);
+  if (moment) useSession.getState().setMilestone(moment.key);
 }

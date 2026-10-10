@@ -20,6 +20,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
 import { pruneUndo } from '../lib/backup';
+import { ensureBackfill } from '../lib/milestones';
+import { useProgress } from '../store/progress';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -66,6 +68,15 @@ export default function RootLayout() {
     pruneUndo();
   }, [hydrated]);
 
+  // Build F: once per certification (an older save, a new cert, or a restore
+  // from an older backup), find the milestones the saved data already shows.
+  // They are saved quietly with ONE summary line, never a burst of moments.
+  const activeCertId = useSettings((s) => s.activeCertId);
+  const needsBackfill = useProgress((s) => !s.byCert[activeCertId]?.milestones?.backfill);
+  useEffect(() => {
+    if (hydrated && needsBackfill) ensureBackfill(activeCertId);
+  }, [hydrated, needsBackfill, activeCertId]);
+
   if (!ready) return null;
 
   return (
@@ -94,7 +105,14 @@ export default function RootLayout() {
         {/* Build E: two note- and principle-based games, and the Guided step. */}
         <Stack.Screen name="game/rumor" options={{ animation: rise }} />
         <Stack.Screen name="game/callit" options={{ animation: rise }} />
+        {/* Build F: three content games. */}
+        <Stack.Screen name="game/field" options={{ animation: rise }} />
+        <Stack.Screen name="game/canopy" options={{ animation: rise }} />
+        <Stack.Screen name="game/stones" options={{ animation: rise }} />
         <Stack.Screen name="guided" />
+        {/* Build F: You → Milestones and You → Field notes. */}
+        <Stack.Screen name="milestones" />
+        <Stack.Screen name="field-notes" />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />
