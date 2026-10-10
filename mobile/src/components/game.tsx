@@ -6,7 +6,7 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
-import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
+import Animated, { FadeIn, ReduceMotion, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { findQuestion } from '../content/loader';
 import { GAMES } from '../engine/games/registry';
@@ -18,14 +18,14 @@ import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
 import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
-import { radius, space } from '../theme/tokens';
+import { optionText, radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { Seedling, TierLeaf } from './glyphs';
 import { MilestoneMomentView, TierTag } from './milestones';
 import { tierChangeLine, type GameTier } from '../engine/games/growth';
 import type { RoundNews } from '../lib/gameRounds';
-import { Info, ICON_STROKE, Play as PlayIcon } from './icons';
+import { Check, Info, ICON_STROKE, Play as PlayIcon, X } from './icons';
 import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T } from './ui';
 
 /** A fixed list of questions + one shuffle each, created once per round. */
@@ -367,6 +367,106 @@ export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad'
           </Pressable>
         )}
       </View>
+    </Animated.View>
+  );
+}
+
+export type TileState = 'idle' | 'selected' | 'matched' | 'correct' | 'wrong' | 'dimmed';
+
+/**
+ * Build F: one tappable item in Field Guide (a term or a meaning) and
+ * Stepping Stones (a stone): a raised row like an answer option, 48pt+,
+ * text that wraps at any size. Selected = 2px ink border (never green);
+ * matched / correct = correctBg with ✓; wrong = wrongBg with ✗ (shape AND
+ * colour). `shake` changes when a wrong pair is tried: the tile shakes once
+ * (about 160 ms), and not at all under Reduce Motion. `spoken` is the full
+ * screen-reader name ("Term 2 of 4: Snapshot, selected").
+ */
+export function MatchTile({
+  text,
+  lead,
+  state,
+  onPress,
+  spoken,
+  hint,
+  shake = 0,
+}: {
+  text: string;
+  /** A short mark before the text: "1", "2"… for a stone's place. */
+  lead?: string;
+  state: TileState;
+  onPress?: () => void;
+  spoken: string;
+  hint?: string;
+  shake?: number;
+}) {
+  const { c, isDark } = useTheme();
+  const x = useSharedValue(0);
+  useEffect(() => {
+    if (!shake) return;
+    const step = (to: number) => withTiming(to, { duration: 40, reduceMotion: ReduceMotion.System });
+    x.value = withSequence(step(-6), step(6), step(-3), step(0));
+  }, [shake, x]);
+  const moved = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
+  const look = {
+    idle: { bg: c.raised, border: isDark ? c.line : 'transparent', fg: c.ink },
+    selected: { bg: c.raised, border: c.ink, fg: c.ink },
+    matched: { bg: c.correctBg, border: 'transparent', fg: c.ink },
+    correct: { bg: c.correctBg, border: 'transparent', fg: c.ink },
+    wrong: { bg: c.wrongBg, border: 'transparent', fg: c.ink },
+    dimmed: { bg: c.raised, border: isDark ? c.line : 'transparent', fg: c.muted },
+  }[state];
+  const tinted = state === 'matched' || state === 'correct' || state === 'wrong';
+  const mark = state === 'matched' || state === 'correct' ? Check : state === 'wrong' ? X : null;
+  const markColor = state === 'wrong' ? c.wrong : c.correct;
+  const body = (
+    <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}>
+      {lead ? (
+        <T v="label" num color={c.ink2} style={{ minWidth: 18 }}>
+          {lead}
+        </T>
+      ) : null}
+      <T v="body" color={look.fg} style={[optionText, { flex: 1 }]}>
+        {text}
+      </T>
+      {mark ? (
+        <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ paddingTop: 2 }}>
+          {mark === Check ? <Check size={18} color={markColor} strokeWidth={2.5} /> : <X size={18} color={markColor} strokeWidth={2.5} />}
+        </View>
+      ) : null}
+    </View>
+  );
+  const box = {
+    minHeight: 48,
+    justifyContent: 'center' as const,
+    borderRadius: radius.md,
+    borderWidth: state === 'selected' ? 2 : 1.5,
+    borderColor: look.border,
+    backgroundColor: look.bg,
+    paddingVertical: state === 'selected' ? 11.5 : 12,
+    paddingHorizontal: state === 'selected' ? 13.5 : 14,
+    marginBottom: space.sm,
+    ...(!isDark && !tinted ? raisedShadow : null),
+  };
+  return (
+    <Animated.View style={moved}>
+      {onPress ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={spoken}
+          accessibilityHint={hint}
+          accessibilityState={{ selected: state === 'selected', disabled: state === 'matched' }}
+          disabled={state === 'matched'}
+          onPress={onPress}
+          style={({ pressed }) => [box, pressed && { opacity: 0.85 }]}
+        >
+          {body}
+        </Pressable>
+      ) : (
+        <View accessible accessibilityLabel={spoken} style={box}>
+          {body}
+        </View>
+      )}
     </Animated.View>
   );
 }

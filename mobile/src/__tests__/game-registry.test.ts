@@ -15,8 +15,10 @@ const bank = getAllQuestions('cisa');
 
 describe('game registry', () => {
   it('keeps the saved-progress ids forever', () => {
-    // Build D added Daylight, Build E Root or Rumor and Call It First, at the end; earlier ids never change.
-    expect(GAME_ORDER).toEqual(['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit']);
+    // Build D added Daylight, Build E Root or Rumor and Call It First, Build F
+    // the content games, each at the end; earlier ids never change.
+    expect(GAME_ORDER.slice(0, 6)).toEqual(['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit']);
+    expect(GAME_ORDER.slice(6)).toEqual(['field', 'canopy', 'stones'].filter((id) => id in GAMES));
     for (const id of GAME_ORDER) expect(GAMES[id].id).toBe(id);
   });
 
@@ -38,8 +40,9 @@ describe('game registry', () => {
   it('works the length out from the round size, at the normal study pace', () => {
     for (const g of Object.values(GAMES)) {
       // Exceptions: Daylight's length is its time budget (daylight.test.ts);
-      // Root or Rumor plays one-line statements, not questions (root-or-rumor.test.ts).
-      if (g.id !== 'daylight' && g.id !== 'rumor') expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
+      // Root or Rumor plays one-line statements, not questions (root-or-rumor.test.ts);
+      // Build F's Field Guide, Canopy Call and Stepping Stones play short cards, not questions.
+      if (!['daylight', 'rumor', 'field', 'canopy', 'stones'].includes(g.id)) expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
       // The old "about two minutes" claim was not honest for 5+ full exam items.
       expect(g.minutes).toBeGreaterThan(2);
     }

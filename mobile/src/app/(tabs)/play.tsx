@@ -15,7 +15,7 @@
 import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { View } from 'react-native';
-import { Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
+import { BookA, Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
 import { TierLeaf } from '../../components/glyphs';
 import { TierTag } from '../../components/milestones';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T, Trail } from '../../components/ui';
@@ -27,7 +27,15 @@ import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const ICONS: Record<GameId, typeof Crosshair> = { trap: Crosshair, sprint: Scale, priority: Sparkles, daylight: Sunrise, rumor: SproutIcon, callit: EyeOff };
+const ICONS: Record<GameId, typeof Crosshair> = {
+  trap: Crosshair,
+  sprint: Scale,
+  priority: Sparkles,
+  daylight: Sunrise,
+  rumor: SproutIcon,
+  callit: EyeOff,
+  field: BookA,
+};
 
 export default function Play() {
   const { c } = useTheme();

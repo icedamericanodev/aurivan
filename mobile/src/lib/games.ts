@@ -4,13 +4,14 @@
  * its study notes and (Build F) its game decks. Every screen that lists or
  * links a game asks here, so a game is hidden the same way everywhere.
  */
+import { getRoleDeck, getStepSequences } from '../content/games';
 import { getAllQuestions } from '../content/loader';
 import { getNotes } from '../content/notes';
 import { GAME_ORDER, isPlayable, type GameId } from '../engine/games/registry';
 
 /** True when this cert has enough content for the game. */
 export function canPlay(certId: string, id: GameId): boolean {
-  return isPlayable(id, getAllQuestions(certId), getNotes(certId));
+  return isPlayable(id, getAllQuestions(certId), getNotes(certId), { roles: getRoleDeck(certId), steps: getStepSequences(certId) });
 }
 
 /** The games this cert can play, in Play's order. */
