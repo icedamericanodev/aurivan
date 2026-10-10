@@ -337,7 +337,9 @@ export default function SessionScreen() {
 
   const leave = () => {
     if (isMock) {
-      Alert.alert('Pause exam?', 'Your answers are saved. The clock keeps running — resume from Today.', [
+      // An untimed mock has no clock to keep running.
+      const body = active.deadline ? 'Your answers are saved. The clock keeps running — resume from Today.' : 'Your answers are saved. Resume from Today.';
+      Alert.alert('Pause exam?', body, [
         { text: 'Stay', style: 'cancel' },
         { text: 'Pause', onPress: () => router.replace('/home') },
       ]);
