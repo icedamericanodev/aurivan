@@ -16,13 +16,13 @@ import {
   VERDICT_COPY,
   type Footing,
 } from '../engine/games/calibration';
-import { priorityPool, priorityWord, wordChoices } from '../engine/games/priorityLens';
+import { ASK_FOR, ASK_LABEL, askChoices, ASKS, PRIORITY_WORDS, priorityPool, priorityWord } from '../engine/games/priorityLens';
 import { buildTrapRound, closedInStep2, scoreTrapPick, snareStep, snareWhy, trapLetter, trapPool, trapTip } from '../engine/games/trapSpotter';
 import { createRng } from '../engine/random';
 
 const bank = getAllQuestions('cisa');
 
-describe('Trap Spotter', () => {
+describe('Snare Spotter', () => {
   it('finds a trap letter in most of the real bank, never the correct answer', () => {
     const pool = trapPool(bank);
     expect(pool.length / bank.length).toBeGreaterThan(0.6);
@@ -74,7 +74,7 @@ describe('Trap Spotter', () => {
   });
 });
 
-describe('Priority Lens', () => {
+describe('Signpost (priority words)', () => {
   it('detects capitalised priority words, preferring the last one', () => {
     expect(priorityWord('What should the auditor do FIRST?')).toBe('FIRST');
     expect(priorityWord('Which is the most common issue?')).toBeNull();
@@ -83,11 +83,22 @@ describe('Priority Lens', () => {
   it('has a real pool to play from', () => {
     expect(priorityPool(bank).length).toBeGreaterThan(200);
   });
-  it('offers 4 distinct choices including the answer', () => {
-    const c = wordChoices('FIRST', createRng(9));
-    expect(c).toHaveLength(4);
-    expect(new Set(c).size).toBe(4);
-    expect(c).toContain('FIRST');
+  it('step 1 offers four meanings, never the capital word itself', () => {
+    const c = askChoices(createRng(9));
+    expect([...c].sort()).toEqual([...ASKS].sort());
+    for (const a of c) for (const w of PRIORITY_WORDS) expect(ASK_LABEL[a].toUpperCase()).not.toMatch(new RegExp(`\\b${w}\\b`));
+  });
+  it('every priority word asks for exactly one of the offered meanings', () => {
+    for (const w of PRIORITY_WORDS) expect(ASKS).toContain(ASK_FOR[w]);
+    expect(ASK_FOR.FIRST).toBe('sequence');
+    expect(ASK_FOR.MOST).toBe(ASK_FOR.GREATEST);
+  });
+  it('drops LEAST and MAIN, which never occur in the bank', () => {
+    expect(PRIORITY_WORDS).not.toContain('LEAST' as never);
+    expect(PRIORITY_WORDS).not.toContain('MAIN' as never);
+    expect(bank.some((q) => /\b(LEAST|MAIN)\b/.test(q.stem))).toBe(false);
+    // Every question in the game's pool has a word the game understands.
+    for (const q of priorityPool(bank)) expect(ASK_FOR[priorityWord(q.stem)!]).toBeDefined();
   });
 });
 
@@ -147,10 +158,10 @@ describe('Sure Footing scoring', () => {
   });
 });
 
-describe('Priority Lens choice positions', () => {
-  it('the right word does not sit in a fixed chip across rounds', () => {
+describe('Signpost choice positions', () => {
+  it('the right meaning does not sit in a fixed place across rounds', () => {
     const positions = new Set<number>();
-    for (let seed = 1; seed <= 20; seed++) positions.add(wordChoices('FIRST', createRng(seed * 31)).indexOf('FIRST'));
+    for (let seed = 1; seed <= 20; seed++) positions.add(askChoices(createRng(seed * 31)).indexOf('sequence'));
     expect(positions.size).toBeGreaterThan(1);
   });
 });

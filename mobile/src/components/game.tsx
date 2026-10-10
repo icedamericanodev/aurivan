@@ -98,7 +98,8 @@ export function GameFrame({
   );
 }
 
-export function QuestionHead({ q }: { q: PackQuestion }) {
+/** The stem; `highlight` marks a priority word (tip colour + heavier weight) once it is in play. */
+export function QuestionHead({ q, highlight }: { q: PackQuestion; highlight?: string | null }) {
   return (
     <View>
       {q.scenario && (
@@ -107,7 +108,7 @@ export function QuestionHead({ q }: { q: PackQuestion }) {
           <Gap h={space.md} />
         </>
       )}
-      <Stem>{q.stem}</Stem>
+      <Stem highlight={highlight}>{q.stem}</Stem>
       <Gap h={space.xl} />
     </View>
   );
