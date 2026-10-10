@@ -89,9 +89,16 @@ afterEach(() => {
   r = undefined;
 });
 
+/** The mode picker sits behind the "Your path" row under the hero (practice redesign). */
+const openPath = () =>
+  act(() => {
+    root().findAll((n) => String(n.props.accessibilityLabel).startsWith('Your path:') && typeof n.props.onPress === 'function')[0].props.onPress();
+  });
+
 describe('Practice: the mode picker', () => {
   it('suggests by stage, saves the choice, and the hero follows it', () => {
     mount(<Practice />);
+    openPath();
     // A new learner is diagnosing: Random is suggested and selected.
     expect(radio(/^Random/).props.accessibilityState).toEqual({ checked: true });
     expect(String(radio(/^Random/).props.accessibilityLabel)).toContain('Suggested');
@@ -109,6 +116,7 @@ describe('Practice: the mode picker', () => {
   it('Guided hides the size choice and opens the step screen', () => {
     useSettings.setState({ studyMode: 'guided' });
     mount(<Practice />);
+    openPath();
     expect(allText()).toContain('Guided goes one topic at a time');
     expect(allText()).toContain('Next topic:');
   });
