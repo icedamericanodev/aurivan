@@ -14,7 +14,8 @@ import { buildBackup, readBackup } from '../engine/backup';
 import { originalToDisplay } from '../engine/shuffle';
 import { pacingStats, timingOf } from '../engine/pace';
 import { finishSession, sessionPacing } from '../lib/finishSession';
-import { startMock, startPractice } from '../lib/sessions';
+import { Alert } from 'react-native';
+import { guardedStart, startMock, startPractice } from '../lib/sessions';
 import { selectCert, useProgress, type MockResult } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -112,6 +113,32 @@ describe('finishing a mock keeps its pacing', () => {
   });
 });
 
+describe('starting something new over an expired mock', () => {
+  it('records the mock at its deadline instead of asking to discard it', () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    startMock('cisa', 50);
+    answerMock(0, true, 60_000);
+    jest.setSystemTime(T0 + 3 * 60 * MIN); // the 80 minutes ran out while the app was closed
+    const started = jest.fn();
+    guardedStart(() => startPractice('cisa', { count: 10 }), started);
+    expect(alert).not.toHaveBeenCalled();
+    expect(started).toHaveBeenCalled();
+    const [m] = selectCert(useProgress.getState(), 'cisa').mocks;
+    expect(m).toMatchObject({ finishedAt: T0 + 80 * MIN, minutesUsed: 80, unanswered: 49 });
+    expect(active().mode).toBe('practice');
+    alert.mockRestore();
+  });
+
+  it('a mock still inside its time is still protected by the question', () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    startMock('cisa', 50);
+    guardedStart(() => startPractice('cisa', { count: 10 }), jest.fn());
+    expect(alert).toHaveBeenCalledWith('Replace your unfinished session?', expect.any(String), expect.any(Array));
+    expect(active().mode).toBe('mock');
+    alert.mockRestore();
+  });
+});
+
 describe('timed practice', () => {
   it('counts up only: no deadline, never submitted for the learner', () => {
     startPractice('cisa', { count: 10, timed: true });
@@ -130,6 +157,20 @@ describe('the "Practice at exam pace?" answer', () => {
     useSettings.setState({ paceOffer: undefined });
     useSettings.getState().answerPaceOffer('accepted');
     expect(useSettings.getState()).toMatchObject({ paceOffer: 'accepted', practiceTimer: true });
+  });
+});
+
+describe('choosing in Settings answers the offer too (C5)', () => {
+  it('switching the timer on or off in Settings means the card never asks', () => {
+    useSettings.setState({ practiceTimer: false, paceOffer: undefined });
+    useSettings.getState().setPracticeTimer(true);
+    expect(useSettings.getState()).toMatchObject({ practiceTimer: true, paceOffer: 'accepted' });
+    useSettings.setState({ practiceTimer: false, paceOffer: undefined });
+    useSettings.getState().setPracticeTimer(false);
+    expect(useSettings.getState().paceOffer).toBe('dismissed');
+    // An earlier answer is kept.
+    useSettings.getState().setPracticeTimer(true);
+    expect(useSettings.getState().paceOffer).toBe('dismissed');
   });
 });
 

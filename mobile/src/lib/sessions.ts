@@ -15,6 +15,7 @@ import { dueIds, REVIEW_CAP_LINE, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession, type SessionMode } from '../store/session';
 import { useSettings } from '../store/settings';
+import { finishSession } from './finishSession';
 
 function newSession(
   mode: SessionMode,
@@ -136,7 +137,14 @@ export function guardedStart(
     Alert.alert('Nothing to practice yet', 'Try a different filter, or answer a few questions first.'),
 ) {
   const launch = () => (start() ? onStarted() : onEmpty());
-  const current = useSession.getState().active;
+  let current = useSession.getState().active;
+  // A timed mock whose time ran out while the app was closed is already
+  // over: record it (at its deadline) instead of offering to discard it, so
+  // the learner's answers are never thrown away.
+  if (current && !current.finishedAt && current.mode === 'mock' && current.deadline && Date.now() >= current.deadline) {
+    finishSession();
+    current = useSession.getState().active;
+  }
   if (current && !current.finishedAt) {
     Alert.alert(
       'Replace your unfinished session?',

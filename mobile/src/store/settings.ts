@@ -82,7 +82,9 @@ export const useSettings = create<SettingsState>()(
       setHaptics: (haptics) => set({ haptics }),
       markRulesSeen: (gameId) =>
         set((s) => (s.gameRulesSeen.includes(gameId) ? s : { gameRulesSeen: [...s.gameRulesSeen, gameId] })),
-      setPracticeTimer: (practiceTimer) => set({ practiceTimer }),
+      // Choosing in Settings answers the one-time offer too, so the card never
+      // asks about something the learner already decided (C5).
+      setPracticeTimer: (practiceTimer) => set((s) => ({ practiceTimer, paceOffer: s.paceOffer ?? (practiceTimer ? 'accepted' : 'dismissed') })),
       answerPaceOffer: (choice) => set(choice === 'accepted' ? { paceOffer: choice, practiceTimer: true } : { paceOffer: choice }),
     }),
     { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
