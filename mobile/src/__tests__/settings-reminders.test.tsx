@@ -6,6 +6,7 @@
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
  */
+import { Alert } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { useSettings } from '../store/settings';
 import Settings from '../app/settings';
@@ -123,5 +124,39 @@ describe('Settings → Study reminder', () => {
       hour.props.onAccessibilityAction({ nativeEvent: { actionName: 'increment' } });
     });
     expect(useSettings.getState().reminder.hour).toBe(20);
+  });
+  // QA Build 1: the denied path, turning off, and turning back on.
+  const reminderSwitch = () => root().findAll((n) => typeof n.props.onValueChange === 'function' && n.props.title === 'Study reminder')[0];
+  const flip = async (on: boolean) => {
+    await act(async () => {
+      await reminderSwitch().props.onValueChange(on);
+    });
+  };
+
+  it('permission denied: explains where to allow it, stays off, schedules nothing', async () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    mockEnsure.mockResolvedValueOnce(false);
+    await flip(true);
+    expect(alert).toHaveBeenCalledWith('Notifications are off', expect.stringContaining('phone settings'));
+    expect(useSettings.getState().reminder.enabled).toBe(false);
+    expect(reminderSwitch().props.value).toBe(false);
+    expect(mockSchedule).not.toHaveBeenCalled();
+    alert.mockRestore();
+  });
+
+  it('turning off cancels ours and keeps the chosen time and days; turning back on restores them', async () => {
+    press('Hour later');
+    press('Sunday');
+    await flip(true);
+    await flip(false);
+    expect(mockCancel).toHaveBeenCalledTimes(1);
+    expect(useSettings.getState().reminder).toMatchObject({ enabled: false, hour: 20, days: [1, 2, 3, 4, 5, 6] });
+    expect(allText()).toContain('Mon, Tue, Wed, Thu, Fri, Sat at 20:00');
+    mockSchedule.mockClear();
+    await flip(true);
+    expect(mockEnsure).toHaveBeenCalledTimes(2);
+    expect(mockSchedule).toHaveBeenCalledTimes(1);
+    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 20, minute: 0, days: [1, 2, 3, 4, 5, 6] }), 'CISA');
+    expect(useSettings.getState().reminder.enabled).toBe(true);
   });
 });
