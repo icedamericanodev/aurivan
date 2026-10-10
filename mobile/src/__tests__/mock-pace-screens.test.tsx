@@ -96,6 +96,7 @@ beforeEach(() => {
   );
   Object.defineProperty(AppState, 'currentState', { value: 'active' as AppStateStatus, configurable: true });
   announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+  announce.mockClear(); // a spy can outlive restoreAllMocks: start each test with no calls
   useProgress.getState().resetCert('cisa');
   useSession.getState().clear();
   useSettings.setState({ theme: 'light', activeCertId: 'cisa' });

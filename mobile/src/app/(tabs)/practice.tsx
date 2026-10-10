@@ -4,16 +4,22 @@
  *   forest "Quick 10" → Spaced review / Weak area rows → "Build a set"
  *   (domain chips, serif segmented size, difficulty chips, Start) →
  *   "Mock exams" rows with a lead serif numeral.
+ *
+ * Build D: a "Timed" switch (count-up timer, never a countdown) for Quick 10
+ * and Build a set, starting from Settings → Study defaults; and, once, a
+ * "Practice at exam pace?" card close to the exam (engine/pace.ts).
  */
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { AccessibilityInfo, View } from 'react-native';
 import { Crosshair, ICON_STROKE, Library, Play, RotateCcw } from '../../components/icons';
-import { Button, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, Trail } from '../../components/ui';
+import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
-import { MINUTES_PER_QUESTION } from '../../engine/dayPlan';
+import { examPaceSeconds, MINUTES_PER_QUESTION, shouldOfferTimer } from '../../engine/pace';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { guardedStart, reviewSubtitle, startPractice, startReview } from '../../lib/sessions';
-import { useActiveCert } from '../../lib/useActiveCert';
+import { useJourney } from '../../lib/useJourney';
+import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
@@ -27,7 +33,19 @@ const DIFFS: { label: string; value?: Difficulty }[] = [
 
 export default function Practice() {
   const { c } = useTheme();
-  const { cert, readiness, dueCount } = useActiveCert();
+  const { cert, readiness, dueCount, daysLeft, stage } = useJourney();
+  // Timed practice: starts from the Study default; this screen's switch can
+  // change it for the next start without touching the default.
+  const timerDefault = useSettings((s) => s.practiceTimer);
+  const paceOffer = useSettings((s) => s.paceOffer);
+  const [timedHere, setTimedHere] = useState<boolean | null>(null);
+  const timed = timedHere ?? timerDefault;
+  const offer = shouldOfferTimer({ daysLeft, stage, answered: paceOffer !== undefined, timerOn: timerDefault });
+  const answerOffer = (choice: 'accepted' | 'dismissed') => {
+    useSettings.getState().answerPaceOffer(choice);
+    setTimedHere(null);
+    if (choice === 'accepted') AccessibilityInfo.announceForAccessibility('Timed practice is on. Change it any time in Settings.');
+  };
   const [domainId, setDomainId] = useState<string | undefined>(undefined);
   const [count, setCount] = useState<number>(10);
   const [diff, setDiff] = useState(0);
@@ -45,21 +63,45 @@ export default function Practice() {
         <T v="meta" style={{ marginTop: space.xs }}>Every option explained, every trap named.</T>
       </Enter>
 
+      {offer && (
+        // Offered ONCE (behavioural review §2): close to the exam or at the
+        // mock / ready stage. Never switched on without the learner's tap.
+        <Enter i={1} style={{ marginTop: 18 }}>
+          <Card>
+            <T v="headline" accessibilityRole="header">Practice at exam pace?</T>
+            <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
+              {`The exam gives you about ${Math.round(examPaceSeconds(cert.exam))} s a question. A timer counts up while you answer, never down, and stops while you read the explanation.`}
+            </T>
+            <Gap h={space.md} />
+            <View style={{ gap: space.sm }}>
+              <Button label="Turn on Timed" onPress={() => answerOffer('accepted')} />
+              <Button kind="ghost" label="Not now" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
+            </View>
+          </Card>
+        </Enter>
+      )}
+
       <Enter i={1} style={{ marginTop: 18 }}>
         <HeroPanel
           caption="Quick 10"
           title="Ten mixed questions"
-          meta={`New material first · about ${Math.round(10 * MINUTES_PER_QUESTION)} min`}
+          meta={`New material first · about ${Math.round(10 * MINUTES_PER_QUESTION)} min${timed ? ' · timed' : ''}`}
           art="frond2"
           wideTitle
           action={{
             label: 'Start',
             icon: (col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />,
             hint: 'Ten mixed questions',
-            onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), open),
+            onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10', timed }), open),
           }}
         />
         <Gap h={space.sm} />
+        <ToggleRow
+          title="Timed"
+          subtitle="Quick 10 and Build a set. Counts up while you answer; never a countdown."
+          value={timed}
+          onValueChange={setTimedHere}
+        />
         <ListRow
           icon={icon(RotateCcw)}
           title="Spaced review"
@@ -111,11 +153,11 @@ export default function Practice() {
         <Gap h={space.md} />
         <Button
           kind="secondary"
-          label={`Start ${count} questions`}
+          label={`Start ${count} questions${timed ? ', timed' : ''}`}
           onPress={() => {
             const domain = cert.domains.find((d) => d.id === domainId);
             guardedStart(
-              () => startPractice(cert.id, { count, domainId, difficulty: DIFFS[diff].value, title: domain ? domain.name : 'Custom set' }),
+              () => startPractice(cert.id, { count, domainId, difficulty: DIFFS[diff].value, title: domain ? domain.name : 'Custom set', timed }),
               open,
             );
           }}

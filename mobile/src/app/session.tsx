@@ -11,6 +11,10 @@
  *
  * MOCK: pick (changeable) → Next. Timer, flags, and a navigator grid.
  * No feedback until you submit the whole exam — just like the real thing.
+ * TIMED PRACTICE (Build D, opt-in): the same strip counts UP from the
+ * answer clocks: it stops while the explanation shows, never counts down,
+ * never submits; past 2:00 on one question a soft cue appears.
+ *
  * Build D: the clock lives in the shared PaceStrip under the header (or
  * "Clock hidden" / "Untimed", chosen on the start sheet), with a pace line
  * that changes only at the 25 / 50 / 75% checks (engine/pace.ts).
@@ -49,7 +53,7 @@ import {
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
-import { dueCheckpoints, formatClock, mockPace, paceMessage, spokenClock, statusOf } from '../engine/pace';
+import { dueCheckpoints, formatClock, mockPace, paceMessage, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClock, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
@@ -119,6 +123,24 @@ export default function SessionScreen() {
   // (the last answer's time plus visits that ended without an answer), so
   // going back and answering adds to it instead of replacing it.
   const [visitBase, setVisitBase] = useState<number | undefined>(undefined);
+  // Timed practice: the running time on the current question, refreshed
+  // once a second from the same answer clock (no second timing system).
+  const timedPractice = !isMock && Boolean(active?.timed);
+  const answering = !response; // false once submitted: the explanation is showing
+  const [curMs, setCurMs] = useState(0);
+  useEffect(() => {
+    if (!timedPractice || !answering) return;
+    const t = setInterval(() => setCurMs(readClock()), 1000);
+    return () => clearInterval(t);
+  }, [timedPractice, answering, qid, readClock]);
+  // The soft cue is announced once per question.
+  const cueSaidFor = useRef<string | undefined>(undefined);
+  const cueNow = timedPractice && answering && softCue(curMs);
+  useEffect(() => {
+    if (!cueNow || cueSaidFor.current === qid) return;
+    cueSaidFor.current = qid;
+    AccessibilityInfo.announceForAccessibility(SOFT_CUE_LINE);
+  }, [cueNow, qid]);
   // Mock exams: did this visit end with a tap on an option? If not, its time
   // is kept in the session store when the learner moves on (effect below).
   const pickedThisVisit = useRef(false);
@@ -141,6 +163,7 @@ export default function SessionScreen() {
     setResetFor(qid);
     setSelected(isMock && response ? response.display : null);
     setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
+    setCurMs(0);
     setConfidence(undefined);
     setVineVisible(false);
   }
@@ -372,8 +395,19 @@ export default function SessionScreen() {
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
   const lastCheck = active.checkpoints?.[active.checkpoints.length - 1];
+  // Timed practice: answered questions' times plus the one on screen (none
+  // while the explanation shows, so the clock stands still there).
+  const practiceMs = timedPractice
+    ? practiceElapsedMs(Object.values(active.responses).map((r) => r.ms), submitted ? null : curMs)
+    : 0;
   const strip: PaceStripProps | null = !isMock
-    ? null
+    ? timedPractice
+      ? {
+          clock: { text: formatClock(practiceMs), spoken: `Session time ${spokenClock(practiceMs)}${submitted ? ', paused' : ''}` },
+          clockUnit: submitted ? 'paused' : undefined,
+          line: cueNow ? { text: SOFT_CUE_LINE, tone: 'cue' } : null,
+        }
+      : null
     : !active.deadline
       ? { clock: 'untimed' }
       : {

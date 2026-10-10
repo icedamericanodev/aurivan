@@ -1,6 +1,9 @@
 /**
  * Build D: a timed mock shows a Pacing panel (components/pace.tsx) under
  * the stats; an untimed one is labelled and says pacing stats skip it.
+ * Practice and review always show one pace line ("Median 74 s per
+ * question · exam pace 96 s"), and a question that went wrong fast or ran
+ * long but right gets a coaching tag. Coaching, never a penalty.
  *
  * Results — score rings per domain (Grove v2 growth rings in domain tones,
  * replacing the old ring and bars), the stat row, and a question-by-question
@@ -17,7 +20,7 @@ import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { TIMING_LABEL } from '../engine/pace';
+import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
 import { scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { startFromIds } from '../lib/sessions';
@@ -64,6 +67,8 @@ export default function Results() {
     const b = score.byDomain[d.id];
     return b ? b.correct / b.total : null;
   });
+  // One pace line for every practice / review session (Build C answer times).
+  const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
   const minutes = Math.max(1, Math.round(((active.finishedAt ?? active.startedAt) - active.startedAt) / 60_000));
 
   return (
@@ -112,6 +117,9 @@ export default function Results() {
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
           </T>
         )}
+        {active.mode !== 'mock' && paceText && (
+          <T v="meta" num style={{ marginTop: space.md }}>{paceText}</T>
+        )}
         {active.mode === 'mock' && !active.deadline && (
           <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>
         )}
@@ -139,6 +147,8 @@ export default function Results() {
         const status = !r ? '○ Skipped' : r.correct ? '✓ Correct' : '✗ Missed';
         // Answered after Coach me: a small mark, since it counts half toward readiness.
         const assisted = Boolean(r?.assisted);
+        // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
+        const coaching = r ? coachingTag(r.correct, r.ms) : null;
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
@@ -149,7 +159,7 @@ export default function Results() {
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ expanded: open }}
-              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}. Tap to ${open ? 'collapse' : 'expand'}`}
+              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}${coaching ? `, ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''}. Tap to ${open ? 'collapse' : 'expand'}`}
               onPress={() => setOpenId(open ? null : id)}
               style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
             >
@@ -157,9 +167,11 @@ export default function Results() {
                 <T v="label" num>{`Question ${i + 1}`}</T>
                 <Row gap={space.sm} style={{ flexShrink: 1, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                   {assisted && <Tag label="Assisted" />}
+                  {coaching && <Tag label={COACHING[coaching].tag} />}
                   <T v="label" color={color}>{status}</T>
                 </Row>
               </Row>
+              {coaching && <T v="meta" style={{ marginTop: space.xs }}>{COACHING[coaching].line}</T>}
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
             </Pressable>
             {open && (

@@ -1,6 +1,6 @@
 /**
  * Settings — certification, exam date, appearance, study goal, reminders, haptics,
- * your data (backup, restore, reset), and the legal notices required for store review. Groups are
+ * study defaults (the practice timer), your data (backup, restore, reset), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
 import Constants from 'expo-constants';
@@ -237,6 +237,16 @@ export default function Settings() {
       )}
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
       <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+
+      {/* Study defaults (Build D): what Practice starts with. Practice timer only for now. */}
+      <Section title="Study defaults" />
+      <ToggleRow
+        title="Timed practice"
+        subtitle="Quick 10 and Build a set start with a timer that counts up while you answer. Never a countdown. Off by default."
+        value={s.practiceTimer}
+        onValueChange={s.setPracticeTimer}
+        last
+      />
 
       {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
       <YourData />
