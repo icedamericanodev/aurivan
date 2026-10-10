@@ -256,10 +256,14 @@ Badges that INFORM about mastery (behaviour review §4, games review §5).
 `engine/milestones.ts` holds the 15 milestones and the 7 game skill badges,
 each with one plain rule shown before it is earned; `lib/milestones.ts`
 works out the facts from saved progress.
-- **Rules.** Coach me answers never count (the facts read only answers
-  whose last try had no hint), and game answers never count toward the
-  mastery badges. No badge rewards raw counts, minutes, taps or a share of
-  the bank. Once earned, a mark (a badge, a Firm Footing leaf per domain, a
+- **Rules.** Coach me answers and game answers never count: the facts
+  read only answers whose last try had no hint and wasn't in a game
+  (`AnswerRecord.lastGame`, written for `mastery: false` answers; older
+  saves have none and read as "not a game"). No badge rewards raw counts,
+  minutes, taps or a share of the bank: Myth Clearer (20 of the last 25)
+  and Signpost Reader (8 of the last 10 FIRST questions) are rolling
+  windows of DIFFERENT items, Long Memory counts each question once, and
+  Sure-Footed Pace needs 4 of 5 right as well as pace. Once earned, a mark (a badge, a Firm Footing leaf per domain, a
   Rooted tier of 10 / 30 / 60 study days) is never removed.
 - **Data.** Most badges are DERIVED: domain mastery from unassisted answers,
   the Build E topic-clear rule (lesson done + 4 of the last 5 unassisted
@@ -267,29 +271,40 @@ works out the facts from saved progress.
   every pace check within 10%), the mindset-growth card, tagged mistakes.
   The progress store keeps only what can't be worked out later, in an
   optional `milestones` map per cert: `earned` (mark → time), the
-  celebration `queue`, the `backfill` summary, counters (long-gap recalls,
-  later-day fixes, graduations, game misses fixed, rumors cleared, FIRST
-  words read, Daylight rounds at pace), the last 50 unassisted non-game
-  "sure" answers, game misses waiting to be fixed, and cumulative study
+  celebration `queue`, the `backfill` summary, counters (long-gap recalls
+  with the questions counted, later-day fixes, graduations, game misses
+  fixed, Daylight rounds at pace), the rolling `myths` / `signposts`
+  windows, the last 50 unassisted non-game "sure" answers, game misses
+  (questions and note cards, each with its miss day) waiting to be fixed
+  on a later day, and cumulative study
   days with the day the learner came back after a week away. A logged
   mistake fixed on a later day gets `fixedLater`, so it counts once.
 - **Moments.** `finishSession` (and every game's round end, through
   `lib/gameRounds.ts`) saves new marks and queues them; the screen that
   just ended shows at most ONE (Results: `session.milestone`; a game: the
-  round news), with one success haptic, static under Reduce Motion, no
-  confetti and no notification. The rest wait for later sessions.
+  round news; never after a level-up, which is that round's one
+  celebration), with one success haptic, static under Reduce Motion, no
+  confetti and no notification. The rest wait for later sessions, and so
+  does a mark from an expired mock recorded without its Results
+  (`finishSession({ celebrate: false })`).
 - **Back-fill.** Once per cert (`_layout.tsx`, also after a restore from an
-  older backup), `ensureBackfill` infers what older saves still show
-  (later-day fixes, "sure" answers, visible study days, a return after a
-  week), saves those marks QUIETLY and keeps one count for the summary
-  line on You and Milestones ("You'd already earned 4 milestones.").
+  older backup; `checkMilestones` runs it first as a guard),
+  `ensureBackfill` infers what the cert's own saved data still shows
+  (later-day fixes, "sure" answers, visible study days), saves those marks
+  QUIETLY and keeps one count for the summary line on You and Milestones
+  ("You'd already earned 4 milestones.", shown once). It never reads the
+  streak's recent days (shared by every exam, kept by Reset) and never
+  awards Fresh Start (earned live only). Reset leaves an empty record with
+  the back-fill marked done.
 - **Backup.** Every new field goes through the checker and its fit mode.
   On restore `keepSupportedMarks` drops any mark the restored data could
-  not have earned (`markSupported`: the plain necessary conditions), and
+  not have earned (`markSupported`: the plain necessary conditions),
+  checked BEFORE retired question ids are trimmed, and
   the queue keeps earned marks only. The always-restorable property test
   generates milestones, game levels and every new card kind.
 - **Game levels.** `engine/games/growth.ts`: each game moves Seedling →
-  Sapling → Heartwood after 2 rounds in a row at 80%+ on its skill step,
+  Sapling → Heartwood after 2 rounds in a row at 80%+ on its skill step
+  (Daylight's: in time AND right),
   and back one level after 2 rounds under 50% ("Back to Sapling for a few
   rounds"). Only rounds played at the learner's level move it. Stored as
   optional `gameGrowth` per game, with the last 30 skill-step results (Snare
