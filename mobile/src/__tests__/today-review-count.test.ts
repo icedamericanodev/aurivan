@@ -69,11 +69,10 @@ describe("Today's review item", () => {
     expect(useSession.getState().active!.questionIds).toHaveLength(5);
   });
 
-  // KNOWN BUG (QA Build 1): the plan is frozen at 08:00 with "Review 5 due";
-  // four more reviews fall due at 12:00; at 13:00 the same card starts a
-  // 9-question session. Flip `it.failing` to `it` once the card and the
-  // session agree (see lib/actions.ts runPlanItem, case 'review').
-  it.failing('still asks the number on the card after more reviews fall due later the same day', () => {
+  // Was a known bug (QA Build 1): the plan was frozen at 08:00 with "Review
+  // 5 due", four more fell due at 12:00, and at 13:00 the card started a
+  // 9-question session. Fixed: the session asks the card's count.
+  it('still asks the number on the card after more reviews fall due later the same day', () => {
     seed(5, 4);
     ensureTodayPlan('cisa');
     const item = todayReview();
@@ -83,14 +82,9 @@ describe("Today's review item", () => {
     expect(useSession.getState().active!.questionIds).toHaveLength(item.count);
   });
 
-  // KNOWN BUG (QA Build 1): the card still says "Review 3 due" after those
-  // reviews were done elsewhere (e.g. from Practice → Spaced review, or
-  // answered right in a practice set). Tapping it shows "Nothing to
-  // practice yet · Try a different filter, or answer a few questions
-  // first", which is the wrong message for a cleared queue. Practice and
-  // You open the "caught up" screen instead. Flip `it.failing` to `it`
-  // once runPlanItem passes the same empty handler (lib/actions.ts).
-  it.failing('an emptied queue opens "caught up", like the Practice and You rows', () => {
+  // Was a known bug (QA Build 1): after the queue was cleared elsewhere, the
+  // card showed "Nothing to practice yet". Fixed: it opens "caught up".
+  it('an emptied queue opens "caught up", like the Practice and You rows', () => {
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     seed(3, 0);
     ensureTodayPlan('cisa');
