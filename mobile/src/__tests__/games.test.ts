@@ -16,7 +16,8 @@ import {
   VERDICT_COPY,
   type Footing,
 } from '../engine/games/calibration';
-import { ASK_FOR, ASK_LABEL, askChoices, ASKS, PRIORITY_WORDS, priorityPool, priorityWord } from '../engine/games/priorityLens';
+import { acceptedAsks, ASK_FOR, ASK_LABEL, ASK_MEANING, askChoices, ASKS, meaningFor, PRIORITY_WORDS, priorityPool, priorityWord } from '../engine/games/priorityLens';
+import { signpostMiss } from '../engine/games/recap';
 import { buildTrapRound, closedInStep2, scoreTrapPick, snareStep, snareWhy, trapLetter, trapPool, trapTip } from '../engine/games/trapSpotter';
 import { createRng } from '../engine/random';
 
@@ -163,5 +164,24 @@ describe('Signpost choice positions', () => {
     const positions = new Set<number>();
     for (let seed = 1; seed <= 20; seed++) positions.add(askChoices(createRng(seed * 31)).indexOf('sequence'));
     expect(positions.size).toBeGreaterThan(1);
+  });
+});
+
+describe('Signpost: "MOST appropriate" asks for the best fit', () => {
+  const real = bank.find((q) => /\bMOST appropriate\b/.test(q.stem) && priorityWord(q.stem) === 'MOST')!;
+  it('accepts best fit first (and degree), on a real bank stem', () => {
+    expect(real).toBeDefined();
+    expect(acceptedAsks(real.stem)).toEqual(['best-fit', 'degree']);
+    expect(meaningFor(real.stem)).toBe(`MOST appropriate works like BEST. ${ASK_MEANING['best-fit']}`);
+  });
+  it('handles appropriately and suitable, and leaves plain MOST alone', () => {
+    expect(acceptedAsks('Which control is MOST appropriately placed?')).toEqual(['best-fit', 'degree']);
+    expect(acceptedAsks('Which option is MOST suitable here?')).toEqual(['best-fit', 'degree']);
+    expect(acceptedAsks('Which risk is MOST significant?')).toEqual(['degree']);
+    expect(acceptedAsks('What should the auditor do FIRST?')).toEqual(['sequence']);
+    expect(acceptedAsks('no priority word')).toEqual([]);
+  });
+  it('the recap coaches "MOST appropriate" like BEST', () => {
+    expect(signpostMiss(real, false, true)!.why).toBe(meaningFor(real.stem));
   });
 });

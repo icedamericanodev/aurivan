@@ -77,6 +77,42 @@ export const ASK_LABEL: Record<Ask, string> = {
 
 export const ASKS: Ask[] = ['sequence', 'best-fit', 'degree', 'purpose'];
 
+/**
+ * The meanings accepted as right for this stem, best first.
+ * Usually one: the word's own (FIRST → sequence). But "MOST appropriate",
+ * "MOST appropriately" and "MOST suitable" (common in the bank) ask for
+ * the best FIT, like BEST, not the strongest effect. For those, best-fit
+ * comes first and degree is accepted too, since the word is still MOST.
+ */
+export function acceptedAsks(stem: string): Ask[] {
+  const word = priorityWord(stem);
+  if (!word) return [];
+  return fitWord(stem) ? ['best-fit', 'degree'] : [ASK_FOR[word]];
+}
+
+/** "appropriate" in "…is MOST appropriate?" (also appropriately / suitable), else null. */
+export function fitWord(stem: string): string | null {
+  if (priorityWord(stem) !== 'MOST') return null;
+  const m = /^\s+(appropriate|appropriately|suitable)\b/i.exec(stem.slice(lastWholeWordIndex(stem, 'MOST') + 4));
+  return m ? m[1].toLowerCase() : null;
+}
+
+/** What each meaning wants from the learner (coaching copy for the reveal and the recap). */
+export const ASK_MEANING: Record<Ask, string> = {
+  sequence: 'Sequence matters: pick the step that must happen before all the others.',
+  'best-fit': 'Several options work: pick the one that fully addresses the risk at the right level.',
+  degree: 'Compare degree: pick the option with the strongest effect on what is asked.',
+  purpose: 'Pick the main purpose or main reason, not a side benefit.',
+};
+
+/** The coaching line for this stem: the word's own line, or "MOST appropriate works like BEST…". */
+export function meaningFor(stem: string): string {
+  const word = priorityWord(stem);
+  if (!word) return '';
+  const fit = fitWord(stem);
+  return fit ? `MOST ${fit} works like BEST. ${ASK_MEANING['best-fit']}` : PRIORITY_MEANING[word];
+}
+
 /** Step 1's four choices, shuffled so the right one moves around. */
 export function askChoices(rng: Rng): Ask[] {
   return shuffled(ASKS, rng);

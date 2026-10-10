@@ -14,7 +14,7 @@
  * passed in already rendered for the round's shuffle (engine/shuffle.ts).
  */
 import type { Letter, PackQuestion } from '../../content/types';
-import { PRIORITY_MEANING, priorityWord } from './priorityLens';
+import { meaningFor, priorityWord } from './priorityLens';
 import { trapLetter } from './trapSpotter';
 
 /** How many round scores we keep per game (the save stays tiny). */
@@ -99,7 +99,8 @@ export function signpostMiss(q: PackQuestion, readRight: boolean, answerCorrect:
     questionId: q.id,
     stem: clip(q.stem),
     tag: word ? `Signpost word: ${word}` : 'Signpost word',
-    why: word ? PRIORITY_MEANING[word] : firstSentence(q.explanation),
+    // From the first accepted meaning: "MOST appropriate" coaches like BEST.
+    why: word ? meaningFor(q.stem) : firstSentence(q.explanation),
     answerWrong: !answerCorrect,
   };
 }

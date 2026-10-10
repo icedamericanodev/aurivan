@@ -14,7 +14,7 @@ import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, T } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
-import { ASK_FOR, ASK_LABEL, askChoices, buildPriorityRound, PRIORITY_MEANING, priorityWord, type Ask } from '../../engine/games/priorityLens';
+import { acceptedAsks, ASK_LABEL, askChoices, buildPriorityRound, meaningFor, priorityWord, type Ask } from '../../engine/games/priorityLens';
 import { signpostMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
@@ -70,7 +70,9 @@ export default function Signpost() {
   const { q, perm } = item;
   const letters = LETTERS.slice(0, perm.length);
   const answered = pick !== null;
-  const readRight = ask === ASK_FOR[actual];
+  // "MOST appropriate" accepts best fit (and degree): engine acceptedAsks.
+  const accepted = acceptedAsks(q.stem);
+  const readRight = ask !== null && accepted.includes(ask);
   const cue = q.tips.find((t) => t.startsWith('Exam cue:'));
 
   const choose = (d: Letter) => {
@@ -131,8 +133,8 @@ export default function Signpost() {
         <>
           <RevealCard
             tone={readRight ? 'good' : 'bad'}
-            title={readRight ? `${actual}: you read it right` : `${actual} asks for: ${ASK_LABEL[ASK_FOR[actual]].toLowerCase()}`}
-            body={PRIORITY_MEANING[actual]}
+            title={readRight ? `${actual}: you read it right` : `${actual} asks for: ${ASK_LABEL[accepted[0]].toLowerCase()}`}
+            body={meaningFor(q.stem)}
           />
           <Gap h={space.md} />
         </>
