@@ -16,7 +16,8 @@ export function runPlanItem(item: PlanItem, certId: string) {
       // open "caught up" (as the Practice and You rows do), not an error.
       return guardedStart(() => startReview(certId, item.count), openSession, () => router.push('/caught-up'));
     case 'lesson':
-      return router.push(`/lesson/${item.lessonId}`);
+      // The id goes in as a route param, never pasted into the path.
+      return router.push({ pathname: '/lesson/[id]', params: { id: item.lessonId } });
     case 'practice':
       return guardedStart(
         () => startPractice(certId, { count: item.count, domainId: item.domainId, title: item.label }),

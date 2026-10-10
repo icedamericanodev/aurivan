@@ -17,16 +17,24 @@
  * Pure TypeScript: no React, no storage, no files. lib/backup.ts does the
  * file picking, sharing and writing to the stores.
  */
+import { MAX_ANSWER_MS } from './answerClock';
 import type { Confidence } from './srs';
 import { examDateLabel } from './examDay';
+import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
 
 export const BACKUP_APP = 'aurivan';
 /** The file format version. Bump it (and add a step to FILE_MIGRATIONS) if the envelope changes. */
 export const BACKUP_SCHEMA = 1;
-/** Biggest file we will read: 5 MB. A real backup is far smaller. */
-export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
+/** Biggest file we will read: 1 MB. A real backup is far smaller (a whole CISA bank answered is ~200 KB). */
+export const MAX_BACKUP_BYTES = 1024 * 1024;
+/**
+ * Biggest progress store we will write, in characters of JSON. Android keeps
+ * each saved store in one database row, and a row over 2 MB can't be read
+ * back, so a restore must never write one near that size.
+ */
+export const MAX_PROGRESS_CHARS = 1_500_000;
 /** How long "Undo restore" stays available after a restore. */
 export const UNDO_DAYS = 7;
 const DAY_MS = 24 * 3_600_000;
@@ -34,9 +42,9 @@ const DAY_MS = 24 * 3_600_000;
 // ── Caps: no list or map in a backup may be longer than these ────────────
 // Generous next to real use (the store itself keeps at most 50 mocks), but
 // small enough that a hostile file can't make the phone churn.
-const MAX_IDS = 50_000; // answers, reviews, mistakes, bookmarks
+const MAX_IDS = 5_000; // answers, reviews, mistakes, bookmarks (per cert)
 const MAX_SMALL = 5_000; // lessons done, notes read, mastery
-const MAX_LIST = 200; // mocks, plan items, recent days, readiness log
+const MAX_LIST = 200; // mocks, recent days, readiness log
 const MAX_KEY = 120; // any id or map key
 const MAX_TEXT = 500; // any label
 
@@ -53,14 +61,14 @@ export type BackupErrorCode =
 
 /** What the learner reads for each problem. Calm, plain, and always says nothing changed. */
 export const BACKUP_ERROR_COPY: Record<BackupErrorCode, string> = {
-  'too-big': 'This file is too big to be an Aurivan backup. Nothing was changed.',
+  'too-big': 'This file is too big to be an Aurivan backup. Pick the file that starts with “aurivan-backup”. Nothing was changed.',
   'not-json': 'This file isn’t an Aurivan backup. Pick the file that starts with “aurivan-backup”. Nothing was changed.',
   'not-aurivan': 'This file isn’t an Aurivan backup. Pick the file that starts with “aurivan-backup”. Nothing was changed.',
   newer: 'This backup was made by a newer version of Aurivan. Update the app, then try again. Nothing was changed.',
-  'unknown-schema': 'This backup’s format isn’t one Aurivan knows. Nothing was changed.',
+  'unknown-schema': 'This backup’s format isn’t one Aurivan knows. Update the app, then try again. Nothing was changed.',
   'unknown-cert': 'This backup has progress for an exam this version of Aurivan doesn’t know. Update the app, then try again. Nothing was changed.',
-  'bad-data': 'Part of this backup is damaged, so it can’t be restored. Nothing was changed.',
-  unreadable: 'Aurivan couldn’t open that file. Nothing was changed.',
+  'bad-data': 'Part of this backup is damaged, so it can’t be restored. Try an older backup if you have one. Nothing was changed.',
+  unreadable: 'Aurivan couldn’t open that file. Try again, or move the file to Files or Downloads first. Nothing was changed.',
 };
 
 export class BackupError extends Error {
@@ -88,9 +96,37 @@ const int = (min: number, max: number): Check<number> => (x, at) =>
   typeof x === 'number' && Number.isInteger(x) && x >= min && x <= max ? x : bad(at);
 const count = int(0, 10_000_000);
 const str = (max = MAX_TEXT): Check<string> => (x, at) => (typeof x === 'string' && x.length <= max ? x : bad(at));
+/** A number in [min, max] (scores, minutes, readiness). */
+const range = (min: number, max: number): Check<number> => (x, at) =>
+  typeof x === 'number' && Number.isFinite(x) && x >= min && x <= max ? x : bad(at);
+/** Add a rule across fields ("correct ≤ total") to a checker. */
+function rule<T>(check: Check<T>, ok: (v: T) => boolean): Check<T> {
+  return (x, at) => {
+    const v = check(x, at);
+    return ok(v) ? v : bad(at);
+  };
+}
+// Dates and times must fall between 2000 and 2100: a real study history
+// can't be outside that, and it keeps arithmetic on them sane.
+const YEAR_MIN = 2000;
+const YEAR_MAX = 2100;
+/** A moment (epoch ms) between 2000 and 2100. */
+const ts = range(Date.UTC(YEAR_MIN, 0, 1), Date.UTC(YEAR_MAX, 11, 31));
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-/** A calendar day "YYYY-MM-DD". */
-const date: Check<string> = (x, at) => (typeof x === 'string' && DATE_RE.test(x) ? x : bad(at));
+/** A REAL calendar day "YYYY-MM-DD" (no 31 Feb), years 2000–2100. */
+const date: Check<string> = (x, at) => {
+  if (typeof x !== 'string' || !DATE_RE.test(x)) return bad(at);
+  const [y, m, d] = x.split('-').map(Number);
+  const back = new Date(Date.UTC(y, m - 1, d));
+  const real = back.getUTCFullYear() === y && back.getUTCMonth() === m - 1 && back.getUTCDate() === d;
+  return real && y >= YEAR_MIN && y <= YEAR_MAX ? x : bad(at);
+};
+/** The daily goal choices in Settings; any other number is moved to the nearest one. */
+export const DAILY_GOALS = [10, 20, 40] as const;
+const dailyGoal: Check<number> = (x, at) => {
+  const n = num(x, at);
+  return DAILY_GOALS.reduce((best, g) => (Math.abs(g - n) < Math.abs(best - n) ? g : best), DAILY_GOALS[0] as number);
+};
 function oneOf<V extends string>(...values: V[]): Check<V> {
   return (x, at) => (values.includes(x as V) ? (x as V) : bad(at));
 }
@@ -157,24 +193,33 @@ const LETTER = oneOf('A', 'B', 'C', 'D');
 const SLIP = oneOf('role', 'priority', 'tech-first', 'symptom', 'misread', 'knowledge');
 const id = str(MAX_KEY);
 
-const answerRecord = obj(
-  { attempts: count, correctCount: count, lastCorrect: bool, lastAt: num },
-  { lastAssisted: bool, ms: int(0, 24 * 3_600_000), lastConfidence: CONFIDENCE },
+const answerRecord = rule(
+  obj(
+    { attempts: count, correctCount: count, lastCorrect: bool, lastAt: ts },
+    { lastAssisted: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE },
+  ),
+  (a) => a.correctCount <= a.attempts,
 );
-const reviewEntry = obj({ box: int(0, 100), dueAt: num, lastSeen: num, reps: count });
-const tally = obj({ total: count, correct: count });
-const mockResult = obj({
-  id,
-  finishedAt: num,
-  total: count,
-  correct: count,
-  minutesUsed: num,
-  byDomain: map(tally, 50),
-});
-const mistakeEntry = obj({ at: num }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE });
-const readinessDay = obj({ day: date, min: nullable(num), last: nullable(num) });
-const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: num });
-const subtopicMastery = obj({ firstDay: date }, { masteredAt: date });
+const reviewEntry = obj({ box: int(0, 100), dueAt: ts, lastSeen: ts, reps: count });
+const tally = rule(obj({ total: count, correct: count }), (t) => t.correct <= t.total);
+const mockResult = rule(
+  obj({
+    id,
+    finishedAt: ts,
+    total: count,
+    correct: count,
+    minutesUsed: range(0, 1440),
+    byDomain: map(tally, 50),
+  }),
+  (m) => m.correct <= m.total,
+);
+const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE });
+const percent = range(0, 100);
+const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(percent) });
+const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts });
+const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date });
+/** A game score: Sure Footing can go below zero (a wrong "Sure" is −5). */
+const gameScore = range(-1000, 100_000);
 
 const certProgress = obj(
   {},
@@ -185,27 +230,13 @@ const certProgress = obj(
     mocks: list(mockResult, MAX_LIST),
     lessonsDone: list(id, MAX_SMALL),
     mistakes: map(mistakeEntry, MAX_IDS),
-    gameBest: map(num, 50),
-    gameRecent: map(list(num, 50), 50),
+    gameBest: map(gameScore, 50),
+    gameRecent: map(list(gameScore, 50), 50),
     notesRead: list(id, MAX_SMALL),
     moments,
     mastery: map(subtopicMastery, MAX_SMALL),
   },
 );
-
-/** One of Today's plan items: the shape depends on `kind` (engine/planner.ts PlanItem). */
-const PLAN_ITEMS = {
-  review: obj({ kind: oneOf('review'), count }, { label: str(), capped: bool }),
-  lesson: obj({ kind: oneOf('lesson'), lessonId: id, title: str() }),
-  practice: obj({ kind: oneOf('practice'), count, label: str() }, { domainId: str(10) }),
-  game: obj({ kind: oneOf('game'), gameId: oneOf('trap', 'sprint', 'priority'), label: str() }),
-  mock: obj({ kind: oneOf('mock'), questions: count, label: str() }),
-};
-const planItem = (x: unknown, at: string) => {
-  const kind = isObj(x) ? x.kind : undefined;
-  const check = typeof kind === 'string' && Object.prototype.hasOwnProperty.call(PLAN_ITEMS, kind) ? PLAN_ITEMS[kind as keyof typeof PLAN_ITEMS] : null;
-  return check ? check(x, at) : bad(`${at}.kind`);
-};
 
 const streak = obj(
   { current: count, best: count, lastDay: nullable(date) },
@@ -222,7 +253,7 @@ function settingsCheck(certKey: Check<string>) {
       examDates: map<string | undefined>(date, 50, certKey),
       theme: oneOf('system', 'dark', 'light'),
       shuffleOptions: bool,
-      dailyGoal: int(1, 1000),
+      dailyGoal,
       reminder: obj({ enabled: bool, hour: int(0, 23), minute: int(0, 59) }, { days: list(int(0, 6), 7) }),
       haptics: bool,
       gameRulesSeen: list(str(40), 50),
@@ -230,29 +261,18 @@ function settingsCheck(certKey: Check<string>) {
   );
 }
 
+/**
+ * Today's frozen plans (`days`) are NOT part of a restore: the planner builds
+ * today's plan again from the restored progress. So they are not read at
+ * all (an unknown key, dropped), and nothing in a file can steer navigation.
+ */
 function progressCheck(certKey: Check<string>) {
-  const dayPlan = obj(
-    {
-      day: date,
-      certId: certKey,
-      items: list(planItem, 30),
-      done: list(bool, 30),
-      start: obj({ score: num, domains: map(num, 50) }),
-      answered: count,
-      correct: count,
-      minutes: num,
-    },
-    { celebrated: bool, credit: list(num, 30) },
-  );
-  return obj(
-    {
-      byCert: map(certProgress, 50, certKey),
-      streak,
-      // "" before the first answer ever, otherwise a calendar day.
-      today: obj({ day: (x, at) => (x === '' ? '' : date(x, at)), answered: count }),
-    },
-    { days: map(dayPlan, 50, certKey) },
-  );
+  return obj({
+    byCert: map(certProgress, 50, certKey),
+    streak,
+    // "" before the first answer ever, otherwise a calendar day.
+    today: obj({ day: (x, at) => (x === '' ? '' : date(x, at)), answered: count }),
+  });
 }
 
 export type BackupSettings = ReturnType<ReturnType<typeof settingsCheck>>;
@@ -358,22 +378,105 @@ function readStore(blob: unknown, current: number, upgrade: ((state: unknown) =>
   return version < current && upgrade ? upgrade(blob.state) : blob.state;
 }
 
+/** The ids that exist in this app's content for one cert (built once by the caller). */
+export interface KnownIds {
+  questions: ReadonlySet<string>;
+  lessons: ReadonlySet<string>;
+  /** Study-notes subtopic ids ("4B1.2"): notes read and mastery dates. */
+  notes: ReadonlySet<string>;
+}
+
+function keepKeys<T>(m: Record<string, T> | undefined, keep: ReadonlySet<string>): Record<string, T> | undefined {
+  if (!m) return m;
+  const out: Record<string, T> = {};
+  for (const [k, v] of Object.entries(m)) if (keep.has(k)) out[k] = v;
+  return out;
+}
+const keepIds = (l: string[] | undefined, keep: ReadonlySet<string>) => l?.filter((x) => keep.has(x));
+
+/**
+ * Keep only ids that exist in the app's content: answers, reviews, mistakes
+ * and bookmarks by question id; lessons done by lesson id; notes read and
+ * mastery dates by note id. Anything else in a file (a removed question, or
+ * made-up ids) is dropped, so it can never pile up on the phone.
+ */
+export function keepKnownIds(progress: BackupProgress, known: (certId: string) => KnownIds): BackupProgress {
+  const byCert: BackupProgress['byCert'] = {};
+  for (const [certId, cp] of Object.entries(progress.byCert)) {
+    const k = known(certId);
+    const next = { ...cp };
+    if (cp.answers) next.answers = keepKeys(cp.answers, k.questions);
+    if (cp.review) next.review = keepKeys(cp.review, k.questions);
+    if (cp.mistakes) next.mistakes = keepKeys(cp.mistakes, k.questions);
+    if (cp.bookmarks) next.bookmarks = keepIds(cp.bookmarks, k.questions);
+    if (cp.lessonsDone) next.lessonsDone = keepIds(cp.lessonsDone, k.lessons);
+    if (cp.notesRead) next.notesRead = keepIds(cp.notesRead, k.notes);
+    if (cp.mastery) next.mastery = keepKeys(cp.mastery, k.notes);
+    byCert[certId] = next;
+  }
+  return { ...progress, byCert };
+}
+
 /**
  * Read a backup file's text. Returns the two stores, checked and upgraded,
  * or throws a BackupError. Never changes anything.
  *
  * `knownCertIds`: the certifications this app knows; any other id in the
- * file (a cert key, the active cert, a plan's cert) rejects the whole file.
+ * file (a cert key, the active cert, an exam date) rejects the whole file.
+ * `known`: when given, ids that don't exist in the content are dropped
+ * (keepKnownIds).
  */
-export function readBackup(text: string, knownCertIds: readonly string[]): BackupData {
+export function readBackup(
+  text: string,
+  knownCertIds: readonly string[],
+  known?: (certId: string) => KnownIds,
+  /** This app's version ("1.3.0"): a file from a newer app is told to update. */
+  thisApp?: string,
+): BackupData {
   if (utf8Bytes(text) > MAX_BACKUP_BYTES) throw new BackupError('too-big');
+  // Some editors and cloud drives add an invisible byte-order mark at the start.
+  const body = text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
   let raw: unknown;
   try {
-    raw = JSON.parse(text);
+    raw = JSON.parse(body);
   } catch {
-    throw new BackupError('not-json');
+    // Cut off half-way (a failed download or sync) but clearly ours: say it
+    // is damaged, not "not an Aurivan backup" (the learner DID pick ours).
+    const ours = body.trimStart().startsWith('{') && /"app"\s*:\s*"aurivan"/.test(body);
+    throw new BackupError(ours ? 'bad-data' : 'not-json');
   }
   if (!isObj(raw) || raw.app !== BACKUP_APP) throw new BackupError('not-aurivan');
+  const fileApp = typeof raw.appVersion === 'string' ? raw.appVersion : '';
+  // Made by a newer MINOR or major version: it may hold data this app would
+  // silently drop, so ask the learner to update first.
+  if (thisApp && compareVersions(fileApp, thisApp, 2) > 0) throw new BackupError('newer', 'appVersion');
+  try {
+    return readChecked(raw, knownCertIds, known);
+  } catch (e) {
+    // Anything this app can't read in a file from a newer app (even a patch
+    // release) is most likely new data, not damage: say "update the app".
+    if (e instanceof BackupError && e.code === 'bad-data' && thisApp && compareVersions(fileApp, thisApp) > 0) {
+      throw new BackupError('newer', e.where);
+    }
+    throw e;
+  }
+}
+
+/**
+ * Compare "1.4.0" with "1.3.2": positive when `a` is newer. `parts` = how many
+ * levels count (2 = major.minor). Anything unreadable counts as 0.
+ */
+export function compareVersions(a: string, b: string, parts = 3): number {
+  const pa = a.split('.').map((x) => parseInt(x, 10) || 0);
+  const pb = b.split('.').map((x) => parseInt(x, 10) || 0);
+  for (let i = 0; i < parts; i++) {
+    const d = (pa[i] ?? 0) - (pb[i] ?? 0);
+    if (d !== 0) return d;
+  }
+  return 0;
+}
+
+function readChecked(raw: Record<string, unknown>, knownCertIds: readonly string[], known?: (certId: string) => KnownIds): BackupData {
   const schema = raw.schema;
   if (typeof schema !== 'number' || !Number.isInteger(schema) || schema < 1) throw new BackupError('unknown-schema');
   if (schema > BACKUP_SCHEMA) throw new BackupError('newer', 'schema');
@@ -386,7 +489,10 @@ export function readBackup(text: string, knownCertIds: readonly string[]): Backu
     return x;
   };
   const settings = settingsCheck(certKey)(readStore(file.stores.settings, SETTINGS_VERSION, null, 'settings'), 'settings');
-  const progress = progressCheck(certKey)(readStore(file.stores.progress, PROGRESS_VERSION, migrateProgress, 'progress'), 'progress');
+  const checked = progressCheck(certKey)(readStore(file.stores.progress, PROGRESS_VERSION, migrateProgress, 'progress'), 'progress');
+  const progress = known ? keepKnownIds(checked, known) : checked;
+  // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
+  if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');
   const exportedAt = typeof file.exportedAt === 'string' && file.exportedAt.length <= 40 ? file.exportedAt : '';
   return { settings, progress, exportedAt };
 }
@@ -398,29 +504,64 @@ export interface BackupSummary {
   answered: string;
   lastStudied: string;
   bestStreak: string;
+  /** "Weekdays at 7:30 AM", or "Off". */
+  reminder: string;
 }
+
+/** The parts of the two stores the preview reads (a backup's, or the phone's). */
+export interface SummaryInput {
+  settings: {
+    activeCertId: string;
+    examDates?: Record<string, string | undefined>;
+    reminder?: { enabled: boolean; hour: number; minute: number; days?: number[] };
+  };
+  progress: {
+    byCert: Record<string, { answers?: Record<string, unknown>; lessonsDone?: string[] }>;
+    streak: { best: number; lastDay: string | null };
+  };
+}
+
+const answeredIn = (d: SummaryInput) => Object.keys(d.progress.byCert[d.settings.activeCertId]?.answers ?? {}).length;
 
 /**
  * What a learner needs to decide: which exam, its date, how much they've
- * answered, when they last studied, and their best streak. Never the bank
- * size ("of 1,000"). `certName` turns a cert id into its name ("CISA").
+ * answered, when they last studied, their best streak and their reminder.
+ * Never the bank size ("of 1,000"). `certName` turns a cert id into its name.
+ * `locale` is only for tests (the reminder time is in the phone's format).
  */
-export function summarize(
-  data: { settings: { activeCertId: string; examDates?: Record<string, string | undefined> }; progress: { byCert: Record<string, { answers?: Record<string, unknown> }>; streak: { best: number; lastDay: string | null } } },
-  certName: (id: string) => string,
-): BackupSummary {
+export function summarize(data: SummaryInput, certName: (id: string) => string, locale?: string): BackupSummary {
   const certId = data.settings.activeCertId;
   const examDate = data.settings.examDates?.[certId];
-  const answered = Object.keys(data.progress.byCert[certId]?.answers ?? {}).length;
+  const answered = answeredIn(data);
   const best = data.progress.streak.best;
   const lastDay = data.progress.streak.lastDay;
+  const reminder = data.settings.reminder;
   return {
     exam: certName(certId),
     examDate: examDate && DATE_RE.test(examDate) ? examDateLabel(examDate) : 'Not set',
     answered: answered === 1 ? '1 question' : `${answered} questions`,
     lastStudied: lastDay && DATE_RE.test(lastDay) ? examDateLabel(lastDay) : 'Not yet',
     bestStreak: best === 1 ? '1 day' : `${best} days`,
+    reminder: reminder?.enabled ? reminderSummary(reminder, locale) : 'Off',
   };
+}
+
+/** True when the phone has no study history yet (a new install): nothing to lose, nothing to undo. */
+export function isFresh(phone: SummaryInput): boolean {
+  const certs = Object.values(phone.progress.byCert);
+  const any = certs.some((cp) => Object.keys(cp.answers ?? {}).length > 0 || (cp.lessonsDone ?? []).length > 0);
+  return !any && !phone.progress.streak.lastDay;
+}
+
+/**
+ * True when the backup looks OLDER than the phone: fewer answers, or a
+ * last study day before the phone's. The preview then warns before replacing.
+ */
+export function isBehind(phone: SummaryInput, backup: SummaryInput): boolean {
+  if (answeredIn(backup) < answeredIn(phone)) return true;
+  const a = backup.progress.streak.lastDay;
+  const b = phone.progress.streak.lastDay;
+  return Boolean(b && (!a || a < b));
 }
 
 export interface PreviewRow {
@@ -439,6 +580,7 @@ export function previewRows(now: BackupSummary, backup: BackupSummary): PreviewR
     ['Questions answered', 'answered'],
     ['Last studied', 'lastStudied'],
     ['Best streak', 'bestStreak'],
+    ['Study reminder', 'reminder'],
   ];
   return rows.map(([label, k]) => ({ label, now: now[k], backup: backup[k], changes: now[k] !== backup[k] }));
 }
@@ -455,7 +597,11 @@ export function undoExpiresAt(snap: UndoSnapshot): number {
   return snap.takenAt + UNDO_DAYS * DAY_MS;
 }
 
-/** Undo is offered for 7 days after a restore (and never for a snapshot "from the future"). */
+/**
+ * Undo is offered until 7 days after the restore. A snapshot that looks
+ * "from the future" (the phone's clock moved back) is still offered: it is
+ * only dropped once `now` reaches its expiry.
+ */
 export function undoAvailable(snap: UndoSnapshot | null | undefined, now: number): snap is UndoSnapshot {
-  return Boolean(snap) && now >= snap!.takenAt && now < undoExpiresAt(snap!);
+  return Boolean(snap) && now < undoExpiresAt(snap!);
 }

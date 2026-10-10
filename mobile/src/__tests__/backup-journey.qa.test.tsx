@@ -421,7 +421,7 @@ describe('restore validation: nothing changes and the message is clear', () => {
   // with “aurivan-backup”" — but the learner DID pick that file. It should say
   // the backup is damaged. engine/backup.ts readBackup maps every JSON.parse
   // failure to 'not-json'.
-  it.failing('a cut-off Aurivan backup says it is damaged, not that it is not a backup', async () => {
+  it('a cut-off Aurivan backup says it is damaged, not that it is not a backup', async () => {
     const good = await phoneWithBackup();
     const text = JSON.stringify(good);
     const shown = await tryRestore(text.slice(0, Math.floor(text.length / 2)));
@@ -433,7 +433,7 @@ describe('restore validation: nothing changes and the message is clear', () => {
   // the project's usual way to add optional data — is called "damaged". The file
   // says which app version made it (appVersion 1.4.0 > 1.3.0), so the learner
   // should be told to update the app.
-  it.failing('a backup from a newer app with a value this version does not know says "update the app"', async () => {
+  it('a backup from a newer app with a value this version does not know says "update the app"', async () => {
     const good = await phoneWithBackup();
     const newer = JSON.parse(JSON.stringify(good));
     newer.appVersion = '1.4.0';

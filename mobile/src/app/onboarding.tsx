@@ -22,9 +22,11 @@ import { Seedling } from '../components/glyphs';
 import { Check } from '../components/icons';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Enter, Gap, T } from '../components/ui';
+import { DataMessage, RestorePreview } from '../components/yourData';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS } from '../content/certifications';
 import { dateInMonths, EXAM_DATE_PRESETS } from '../engine/examDay';
+import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { useSettings } from '../store/settings';
 import { radius, raisedShadow, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -40,6 +42,9 @@ export default function Onboarding() {
   const [certId, setCertId] = useState('cisa');
   const [preset, setPreset] = useState<number>(3);
   const [footerH, setFooterH] = useState(120);
+  // Restore from a backup (shared with Settings → Your data). Success
+  // finishes onboarding and goes straight to Today.
+  const restore = useRestoreFlow({ onboard: true, onRestored: () => router.replace('/home') });
 
   // Android's back button steps back through onboarding; on the welcome step
   // it does the default (onboarding is the first screen, so the app closes).
@@ -186,7 +191,19 @@ export default function Onboarding() {
       )}
       <StickyFooter onHeight={setFooterH}>
         {step === 0 ? (
-          <Button label="Start my plan" onPress={() => setStep(1)} />
+          <>
+            {/* A bad file's message sits right above the buttons, where the learner is looking. */}
+            {restore.message && <DataMessage message={restore.message} />}
+            <Button label="Start my plan" onPress={() => setStep(1)} disabled={restore.busy !== null} />
+            {/* Moving phones: restore here instead of setting up again. */}
+            <Button
+              kind="ghost"
+              label={restore.busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
+              accessibilityHint="Studied on another phone? Pick your Aurivan backup file to bring your progress here."
+              disabled={restore.busy !== null}
+              onPress={restore.pick}
+            />
+          </>
         ) : step === 1 ? (
           <>
             <Button label="Continue" onPress={() => setStep(2)} />
@@ -206,6 +223,7 @@ export default function Onboarding() {
           </>
         )}
       </StickyFooter>
+      <RestorePreview ready={restore.ready} busy={restore.busy === 'restore'} onConfirm={restore.confirm} onCancel={restore.cancel} />
     </SafeAreaView>
   );
 }

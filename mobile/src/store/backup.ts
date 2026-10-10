@@ -17,6 +17,12 @@ interface BackupState {
   lastBackupAt: number | null;
   /** The snapshot from before the last restore (null when none, or after an undo). */
   undo: UndoSnapshot | null;
+  /**
+   * When the backup that was last restored had been saved (epoch ms), so
+   * Settings can say "Restored from a backup saved on …" instead of "No
+   * backup file yet". Null when none (or after an undo). Optional in old saves.
+   */
+  restoredSavedAt?: number | null;
 
   setLastBackup: (at: number) => void;
   setUndo: (snap: UndoSnapshot | null) => void;
@@ -27,6 +33,7 @@ export const useBackup = create<BackupState>()(
     (set) => ({
       lastBackupAt: null,
       undo: null,
+      restoredSavedAt: null,
       setLastBackup: (lastBackupAt) => set({ lastBackupAt }),
       setUndo: (undo) => set({ undo }),
     }),

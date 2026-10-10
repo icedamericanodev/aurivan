@@ -19,6 +19,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
+import { pruneUndo } from '../lib/backup';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -61,6 +62,8 @@ export default function RootLayout() {
     const { reminder, activeCertId } = useSettings.getState();
     if (reminder.enabled) scheduleReminders(reminder, getCertification(activeCertId)?.name ?? 'your exam').catch(() => {});
     else cancelReminders().catch(() => {});
+    // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
+    pruneUndo();
   }, [hydrated]);
 
   if (!ready) return null;

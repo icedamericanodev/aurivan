@@ -7,22 +7,31 @@
  * or AirDrop. Nothing is uploaded by the app: no account, no server.
  *
  * Restore: the learner picks a file (expo-document-picker); engine/backup.ts
- * checks it; the screen shows what will change and asks first. Only then do
- * we keep ONE snapshot of the current data (for "Undo restore", 7 days),
- * replace the two stores, and put reminders back the way the backup has them.
+ * checks it and drops ids the app doesn't have; the screen shows what will
+ * change and asks first. Then, in ONE storage write (AsyncStorage.multiSet):
+ * the undo snapshot, the new settings and progress, and the end of any
+ * paused session. Only after that write succeeds are the stores reloaded
+ * from storage and success reported. Reminders are then put back the way
+ * the backup has them.
  *
  * Works fully offline.
  */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import * as DocumentPicker from 'expo-document-picker';
-import { File, Paths } from 'expo-file-system';
+import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
 import { CERTIFICATIONS, getCertification } from '../content/certifications';
+import { lessonsFor } from '../content/lessons';
+import { getAllQuestions } from '../content/loader';
+import { noteSubtopics } from '../content/notes';
 import {
   BackupError,
   backupFileName,
   buildBackup,
+  isBehind,
+  isFresh,
   MAX_BACKUP_BYTES,
   readBackup,
   summarize,
@@ -33,9 +42,12 @@ import {
   type BackupProgress,
   type BackupSettings,
   type BackupSummary,
+  type KnownIds,
+  type UndoSnapshot,
 } from '../engine/backup';
 import { useBackup } from '../store/backup';
 import { completeCert, useProgress } from '../store/progress';
+import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
@@ -45,6 +57,7 @@ const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
 type ProgressData = Pick<ReturnType<typeof useProgress.getState>, (typeof PROGRESS_KEYS)[number]>;
+type CertData = ProgressData['byCert'][string];
 
 function pick<S, K extends keyof S>(state: S, keys: readonly K[]): Pick<S, K> {
   const out = {} as Pick<S, K>;
@@ -55,16 +68,44 @@ function pick<S, K extends keyof S>(state: S, keys: readonly K[]): Pick<S, K> {
 const settingsData = (): SettingsData => pick(useSettings.getState(), SETTINGS_KEYS);
 const progressData = (): ProgressData => pick(useProgress.getState(), PROGRESS_KEYS);
 
-// Compile-time guard: what the stores hold must fit what the backup checker
-// accepts. If a store field changes type, `npm run typecheck` fails here
-// until engine/backup.ts is updated to match.
+// Compile-time guards, both directions. If a store field changes type,
+// `npm run typecheck` fails here until engine/backup.ts is updated to match.
+// Store → backup: everything the stores hold is something the checker accepts.
 const _settingsFits = (s: SettingsData): BackupSettings => s;
 const _progressFits = (p: ProgressData): BackupProgress => p;
-void _settingsFits;
-void _progressFits;
+// Backup → store: everything the checker lets through has the store's types
+// (fields may be missing; applyData fills them from the store defaults).
+const _settingsBack = (s: BackupSettings): Partial<SettingsData> => s;
+const _certBack = (c: BackupProgress['byCert'][string]): Partial<CertData> => c;
+const _progressBack = (p: Omit<BackupProgress, 'byCert'>): Partial<Omit<ProgressData, 'byCert'>> => p;
+void [_settingsFits, _progressFits, _settingsBack, _certBack, _progressBack];
 
 const certName = (id: string) => getCertification(id)?.name ?? id;
-const appVersion = () => Constants.expoConfig?.version ?? '0.0.0';
+/**
+ * This app's version, or undefined when the build doesn't say (the web build
+ * has no expoConfig version). Unknown means "don't compare": the "made by a
+ * newer version" check must never refuse every file because of a missing value.
+ */
+const knownAppVersion = (): string | undefined => Constants.expoConfig?.version || undefined;
+const appVersion = () => knownAppVersion() ?? 'unknown';
+
+/**
+ * The ids that exist in this app for a cert: questions, lessons and study
+ * notes. Built once per cert (Sets), then reused for every check.
+ */
+const knownCache = new Map<string, KnownIds>();
+export function knownIds(certId: string): KnownIds {
+  let k = knownCache.get(certId);
+  if (!k) {
+    k = {
+      questions: new Set(getAllQuestions(certId).map((q) => q.id)),
+      lessons: new Set(lessonsFor(certId).map((l) => l.id)),
+      notes: new Set(noteSubtopics(certId).map((n) => n.id)),
+    };
+    knownCache.set(certId, k);
+  }
+  return k;
+}
 
 /** The file for the learner's data right now. */
 export function currentBackup(now = Date.now()): BackupFile {
@@ -81,13 +122,31 @@ export function backupSummary(data: BackupData): BackupSummary {
   return summarize(data, certName);
 }
 
+// ── Old backup files in the cache ────────────────────────────────────────
+const BACKUP_NAME = /^aurivan-backup-.*\.json$/;
+/**
+ * Delete backup files we wrote to the app's cache more than an hour ago.
+ * (Not right after sharing: some share targets read the file a little later.)
+ * Called when Your data opens and after a reset. Native only; never throws.
+ */
+export function sweepBackupFiles(now = Date.now()) {
+  if (Platform.OS === 'web') return;
+  try {
+    for (const item of new Directory(Paths.cache).list()) {
+      if (item instanceof File && BACKUP_NAME.test(item.name) && (item.lastModified ?? 0) < now - 3_600_000) item.delete();
+    }
+  } catch {
+    // A cache we can't list is not the learner's problem.
+  }
+}
+
 // ── Save a backup ────────────────────────────────────────────────────────
 export type SaveOutcome = 'shared' | 'unavailable';
 
 /**
  * Write the backup file and open the share sheet. Resolves once the sheet
- * closes. "Last backup" is set then (we can't see where the learner saved it,
- * or whether they cancelled, so closing the sheet counts).
+ * closes. We can't see where the learner saved it (or whether they
+ * cancelled), so the screen says "Backup file made", not "saved".
  */
 export async function saveBackup(now = Date.now()): Promise<SaveOutcome> {
   const text = JSON.stringify(currentBackup(now));
@@ -115,16 +174,44 @@ export async function saveBackup(now = Date.now()): Promise<SaveOutcome> {
 }
 
 // ── Restore: pick and read a file (changes nothing) ──────────────────────
-export type PickOutcome =
-  | { kind: 'cancel' }
-  | { kind: 'error'; code: BackupErrorCode }
-  | { kind: 'ok'; data: BackupData; now: BackupSummary; backup: BackupSummary };
+export interface ReadyToRestore {
+  kind: 'ok';
+  data: BackupData;
+  now: BackupSummary;
+  backup: BackupSummary;
+  /** The phone has no study history (the welcome screen then shows the "fresh" preview, without undo). */
+  fresh: boolean;
+  /** The backup looks older than the phone (fewer answers or an earlier last study day). */
+  behind: boolean;
+  /** A quiz is paused on this phone; restoring ends it. */
+  pausedSession: boolean;
+}
+export type PickOutcome = { kind: 'cancel' } | { kind: 'error'; code: BackupErrorCode } | ReadyToRestore;
+
+const hasPausedSession = () => {
+  const a = useSession.getState().active;
+  return Boolean(a && !a.finishedAt);
+};
 
 /** Read and check a backup's text. Never changes anything. Exported for tests. */
-export function checkBackupText(text: string): { kind: 'error'; code: BackupErrorCode } | { kind: 'ok'; data: BackupData; now: BackupSummary; backup: BackupSummary } {
+export function checkBackupText(text: string): { kind: 'error'; code: BackupErrorCode } | ReadyToRestore {
   try {
-    const data = readBackup(text, CERTIFICATIONS.map((c) => c.id));
-    return { kind: 'ok', data, now: currentSummary(), backup: backupSummary(data) };
+    const data = readBackup(
+      text,
+      CERTIFICATIONS.map((c) => c.id),
+      knownIds,
+      knownAppVersion(),
+    );
+    const phone = { settings: settingsData(), progress: progressData() };
+    return {
+      kind: 'ok',
+      data,
+      now: currentSummary(),
+      backup: backupSummary(data),
+      fresh: isFresh(phone),
+      behind: isBehind(phone, data),
+      pausedSession: hasPausedSession(),
+    };
   } catch (e) {
     return { kind: 'error', code: e instanceof BackupError ? e.code : 'bad-data' };
   }
@@ -141,35 +228,108 @@ export async function pickBackup(): Promise<PickOutcome> {
   }
   if (result.canceled || !result.assets?.length) return { kind: 'cancel' };
   const asset = result.assets[0];
-  // Size first: never read a huge file into memory.
-  if (typeof asset.size === 'number' && asset.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
-  let text: string;
   try {
-    if (asset.file) {
-      // Web: the browser's File object.
-      if (asset.file.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
-      text = await asset.file.text();
-    } else {
-      const file = new File(asset.uri);
-      if (file.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
-      text = await file.text();
+    // Size first: never read a huge file into memory.
+    if (typeof asset.size === 'number' && asset.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
+    let text: string;
+    try {
+      if (asset.file) {
+        // Web: the browser's File object.
+        if (asset.file.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
+        text = await asset.file.text();
+      } else {
+        const file = new File(asset.uri);
+        if (file.size > MAX_BACKUP_BYTES) return { kind: 'error', code: 'too-big' };
+        text = await file.text();
+      }
+    } catch {
+      return { kind: 'error', code: 'unreadable' };
     }
-  } catch {
-    return { kind: 'error', code: 'unreadable' };
+    return checkBackupText(text);
+  } finally {
+    // The picker copied the file into our cache: delete that copy (never
+    // the learner's own file, which lives outside our cache).
+    if (!asset.file && Platform.OS !== 'web') {
+      try {
+        if (asset.uri.startsWith(Paths.cache.uri)) {
+          const copy = new File(asset.uri);
+          if (copy.exists) copy.delete();
+        }
+      } catch {
+        // Best effort; the hourly sweep and the OS clear the cache too.
+      }
+    }
   }
-  return checkBackupText(text);
 }
 
-// ── Restore: replace the stores ──────────────────────────────────────────
-/** Put backup data into the two stores (saved to the phone by the stores themselves). */
-function applyData(data: { settings: BackupSettings; progress: BackupProgress }) {
-  // Start from each store's defaults, so a field the backup leaves out is
-  // reset (not kept from before): a restore REPLACES, it never mixes.
-  const settingsDefaults = pick(useSettings.getInitialState(), SETTINGS_KEYS);
-  useSettings.setState({ ...settingsDefaults, ...data.settings });
+// ── Restore: replace the stores, in one write ────────────────────────────
+type PersistedStore = { persist: { getOptions: () => { name?: string; version?: number }; rehydrate: () => Promise<void> | void; hasHydrated: () => boolean; onFinishHydration: (fn: () => void) => () => void } };
+const STORES: PersistedStore[] = [useSettings, useProgress, useSession, useBackup];
+
+/** Resolves once every store has loaded from the phone (a restore must not race the first load). */
+export async function whenHydrated(): Promise<void> {
+  await Promise.all(
+    STORES.map((s) =>
+      s.persist.hasHydrated()
+        ? undefined
+        : new Promise<void>((resolve) => {
+            const off = s.persist.onFinishHydration(() => {
+              off();
+              resolve();
+            });
+          }),
+    ),
+  );
+}
+
+/** One storage row, in the exact shape zustand's persist saves: `{ state, version }`. */
+function row(store: PersistedStore, state: unknown): [string, string] {
+  const { name, version } = store.persist.getOptions();
+  return [name!, JSON.stringify({ state, version: version ?? 0 })];
+}
+
+/** The four rows as they are on the phone now (to put back if a write fails). */
+function currentRows(): [string, string][] {
+  const backup = useBackup.getState();
+  return [
+    row(useSettings, settingsData()),
+    row(useProgress, progressData()),
+    row(useSession, { active: useSession.getState().active }),
+    row(useBackup, { lastBackupAt: backup.lastBackupAt, undo: backup.undo, restoredSavedAt: backup.restoredSavedAt ?? null }),
+  ];
+}
+
+/**
+ * Write settings, progress, an ended session and the undo snapshot in ONE
+ * AsyncStorage.multiSet, then reload the stores from storage.
+ * - Fields the backup leaves out go back to the store defaults: a restore
+ *   REPLACES, it never mixes.
+ * - `onboarded` is the phone's (a file can't skip or redo onboarding);
+ *   the welcome screen passes true.
+ * - Today's plans are not restored: the planner rebuilds today's plan.
+ * If the write fails, the old rows are written back and it throws.
+ */
+async function writeAll(
+  data: { settings: BackupSettings; progress: BackupProgress },
+  opts: { onboarded: boolean; undo: UndoSnapshot | null; restoredSavedAt: number | null },
+) {
+  const settings = { ...pick(useSettings.getInitialState(), SETTINGS_KEYS), ...data.settings, onboarded: opts.onboarded };
   const byCert: ProgressData['byCert'] = {};
   for (const [id, cp] of Object.entries(data.progress.byCert)) byCert[id] = completeCert(cp);
-  useProgress.setState({ ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: data.progress.days ?? {} });
+  const progress = { ...pick(useProgress.getInitialState(), PROGRESS_KEYS), ...data.progress, byCert, days: {} };
+  const before = currentRows();
+  try {
+    await AsyncStorage.multiSet([
+      row(useSettings, settings),
+      row(useProgress, progress),
+      row(useSession, { active: null }), // a paused quiz belongs to the old data
+      row(useBackup, { lastBackupAt: useBackup.getState().lastBackupAt, undo: opts.undo, restoredSavedAt: opts.restoredSavedAt }),
+    ]);
+  } catch (e) {
+    await AsyncStorage.multiSet(before).catch(() => {});
+    throw e;
+  }
+  for (const s of STORES) await s.persist.rehydrate();
 }
 
 /** How reminders ended up after a restore or undo. */
@@ -197,14 +357,46 @@ export async function reapplyReminders(): Promise<ReminderOutcome> {
   return 'on';
 }
 
+export type RestoreOutcome =
+  | { kind: 'ok'; reminders: ReminderOutcome }
+  /** The phone's own data couldn't be copied for Undo, so nothing was replaced. */
+  | { kind: 'no-snapshot' }
+  /** The write failed; the old data was put back. */
+  | { kind: 'failed' };
+
 /**
- * Replace the learner's data with a checked backup. First keeps ONE
- * snapshot of what is there now, so "Undo restore" can bring it back.
+ * Replace the learner's data with a checked backup.
+ * - Settings: first keeps ONE snapshot of what is there now (for "Undo
+ *   restore"), after checking that snapshot could itself be restored.
+ * - `fresh` (the phone has no progress yet): nothing to keep, so no snapshot.
+ * - `onboard` (from the welcome screen): `onboarded` becomes true, so the
+ *   learner lands on Today. Otherwise the phone's own `onboarded` is kept.
  */
-export async function restoreBackup(data: BackupData, now = Date.now()): Promise<ReminderOutcome> {
-  useBackup.getState().setUndo({ takenAt: now, file: currentBackup(now) });
-  applyData(data);
-  return reapplyReminders().catch((): ReminderOutcome => 'off');
+export async function restoreBackup(
+  data: BackupData,
+  options: number | { now?: number; fresh?: boolean; onboard?: boolean } = {},
+): Promise<RestoreOutcome> {
+  // A bare number is "now" (the first version's signature, still used by tests).
+  const opts = typeof options === 'number' ? { now: options } : options;
+  const now = opts.now ?? Date.now();
+  await whenHydrated();
+  let undo: UndoSnapshot | null = useBackup.getState().undo;
+  if (!opts.fresh) {
+    const file = currentBackup(now);
+    if (checkBackupText(JSON.stringify(file)).kind !== 'ok') return { kind: 'no-snapshot' };
+    undo = { takenAt: now, file };
+  }
+  try {
+    const saved = Date.parse(data.exportedAt);
+    await writeAll(data, {
+      onboarded: opts.onboard ? true : useSettings.getState().onboarded,
+      undo,
+      restoredSavedAt: Number.isFinite(saved) ? saved : now,
+    });
+  } catch {
+    return { kind: 'failed' };
+  }
+  return { kind: 'ok', reminders: await reapplyReminders().catch((): ReminderOutcome => 'off') };
 }
 
 /** True while "Undo restore" should be offered. */
@@ -212,25 +404,37 @@ export function canUndo(now = Date.now()): boolean {
   return undoAvailable(useBackup.getState().undo, now);
 }
 
-/**
- * Bring back the data from just before the last restore (within 7 days),
- * then forget the snapshot. Returns null when there is nothing to undo.
- */
-export async function undoRestore(now = Date.now()): Promise<ReminderOutcome | null> {
+export type UndoOutcome =
+  | { kind: 'ok'; reminders: ReminderOutcome }
+  /** No snapshot, or it is more than 7 days old. */
+  | { kind: 'none' }
+  /** The snapshot didn't pass the checks (it is dropped). */
+  | { kind: 'invalid' }
+  | { kind: 'failed' };
+
+/** Bring back the data from just before the last restore (within 7 days), then forget the snapshot. */
+export async function undoRestore(now = Date.now()): Promise<UndoOutcome> {
+  await whenHydrated();
   const snap = useBackup.getState().undo;
   if (!undoAvailable(snap, now)) {
     if (snap) useBackup.getState().setUndo(null); // expired: tidy it away
-    return null;
+    return { kind: 'none' };
   }
   // The snapshot is our own file, but it is read through the same checks.
   const checked = checkBackupText(JSON.stringify(snap.file));
-  if (checked.kind !== 'ok') return null;
-  applyData(checked.data);
-  useBackup.getState().setUndo(null);
-  return reapplyReminders().catch((): ReminderOutcome => 'off');
+  if (checked.kind !== 'ok') {
+    useBackup.getState().setUndo(null);
+    return { kind: 'invalid' };
+  }
+  try {
+    await writeAll(checked.data, { onboarded: useSettings.getState().onboarded, undo: null, restoredSavedAt: null });
+  } catch {
+    return { kind: 'failed' };
+  }
+  return { kind: 'ok', reminders: await reapplyReminders().catch((): ReminderOutcome => 'off') };
 }
 
-/** Drop an expired snapshot (called when Settings opens), so it never lingers. */
+/** Drop an expired snapshot (once the stores have loaded at launch), so it never lingers. */
 export function pruneUndo(now = Date.now()) {
   const snap = useBackup.getState().undo;
   if (snap && !undoAvailable(snap, now)) useBackup.getState().setUndo(null);

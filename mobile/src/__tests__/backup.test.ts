@@ -104,9 +104,10 @@ const settingsData = () => {
   const s = useSettings.getState();
   return { onboarded: s.onboarded, activeCertId: s.activeCertId, examDates: s.examDates, theme: s.theme, shuffleOptions: s.shuffleOptions, dailyGoal: s.dailyGoal, reminder: s.reminder, haptics: s.haptics, gameRulesSeen: s.gameRulesSeen };
 };
+/** Progress without today's plans (`days`): a restore never brings those back. */
 const progressData = () => {
   const p = useProgress.getState();
-  return { byCert: p.byCert, streak: p.streak, today: p.today, days: p.days };
+  return { byCert: p.byCert, streak: p.streak, today: p.today };
 };
 
 /** Back to a brand-new install. */
@@ -159,12 +160,16 @@ describe('round trip', () => {
     const text = mockFiles.get(mockShared[0])!;
 
     freshInstall();
+    // The new phone went through the welcome screen (onboarded is the phone's own, never the file's).
+    useSettings.setState({ onboarded: true });
     const read = checkBackupText(text);
     expect(read.kind).toBe('ok');
     if (read.kind !== 'ok') return;
     await restoreBackup(read.data, NOW);
     expect(settingsData()).toEqual(before.settings);
     expect(progressData()).toEqual(before.progress);
+    // Today's plan is rebuilt by the planner, never taken from a file.
+    expect(useProgress.getState().days).toEqual({});
   });
 
   it('the file holds the envelope and both stores, and nothing about the device', () => {
@@ -233,8 +238,10 @@ describe('a bad file is refused and changes nothing', () => {
   });
 
   it('bad JSON', () => {
-    expect(codeOf('{"app":"aurivan",')).toBe('not-json');
+    expect(codeOf('{"apps":[1,2')).toBe('not-json');
     expect(codeOf('')).toBe('not-json');
+    // Cut off, but clearly ours: "damaged", not "not an Aurivan backup".
+    expect(codeOf('{"app":"aurivan",')).toBe('bad-data');
   });
 
   it('wrong types, anywhere in the file', () => {
@@ -244,7 +251,14 @@ describe('a bad file is refused and changes nothing', () => {
       (f) => ((f.stores.settings.state as unknown as Record<string, unknown>).theme = 'neon'),
       (f) => ((f.stores.settings.state as unknown as Record<string, unknown>).reminder = { enabled: true, hour: 25, minute: 0 }),
       (f) => ((f.stores.progress.state as unknown as Record<string, unknown>).byCert = []),
-      (f) => ((f.stores.progress.state.days!.cisa.items as unknown[]).push({ kind: 'teleport' })),
+      (f) => (f.stores.progress.state.byCert.cisa.mocks![0].correct = 99), // more right than asked
+      (f) => (Object.values(f.stores.progress.state.byCert.cisa.answers!)[0].correctCount = 9), // more right than tries
+      (f) => (f.stores.settings.state.examDates = { cisa: '2026-02-31' }), // no such day
+      (f) => (f.stores.settings.state.examDates = { cisa: '1999-12-01' }), // before 2000
+      (f) => (Object.values(f.stores.progress.state.byCert.cisa.answers!)[0].lastAt = Date.UTC(2150, 0, 1)),
+      (f) => (f.stores.progress.state.byCert.cisa.mocks![0].minutesUsed = 5000),
+      (f) => (f.stores.progress.state.byCert.cisa.moments = { readiness: [{ day: '2026-10-01', min: 140, last: 50 }] }),
+      (f) => (f.stores.progress.state.byCert.cisa.gameBest = { trap: 1e9 }),
       (f) => ((f.stores as unknown as Record<string, unknown>).settings = 'nope'),
     ];
     for (const change of cases) {
@@ -268,7 +282,7 @@ describe('a bad file is refused and changes nothing', () => {
 
   it('caps every list, and refuses prototype keys', () => {
     const f = good();
-    f.stores.progress.state.byCert.cisa.bookmarks = Array.from({ length: 50_001 }, (_, i) => `d1_${i}`);
+    f.stores.progress.state.byCert.cisa.bookmarks = Array.from({ length: 5_001 }, (_, i) => `d1_${i}`);
     expect(codeOf(JSON.stringify(f))).toBe('bad-data');
     const text = JSON.stringify(good()).replace('"answers":{', '"answers":{"__proto__":{"attempts":1,"correctCount":1,"lastCorrect":true,"lastAt":1},');
     expect(codeOf(text)).toBe('bad-data');
@@ -311,9 +325,11 @@ describe('the preview', () => {
     freshInstall();
     const read = checkBackupText(JSON.stringify(file));
     if (read.kind !== 'ok') throw new Error(read.code);
-    expect(read.backup).toEqual({ exam: 'CISA', examDate: '1 Dec 2026', answered: '3 questions', lastStudied: '10 Oct 2026', bestStreak: '1 day' });
+    expect(read.backup).toMatchObject({ exam: 'CISA', examDate: '1 Dec 2026', answered: '3 questions', lastStudied: '10 Oct 2026', bestStreak: '1 day' });
+    expect(read.backup.reminder).toMatch(/^Weekdays at 7:30/);
+    expect(read.now.reminder).toBe('Off');
     const rows = previewRows(read.now, read.backup);
-    expect(rows.map((r) => r.label)).toEqual(['Exam', 'Exam date', 'Questions answered', 'Last studied', 'Best streak']);
+    expect(rows.map((r) => r.label)).toEqual(['Exam', 'Exam date', 'Questions answered', 'Last studied', 'Best streak', 'Study reminder']);
     expect(rows.find((r) => r.label === 'Exam')!.changes).toBe(false); // CISA → CISA
     expect(rows.find((r) => r.label === 'Questions answered')).toMatchObject({ now: '0 questions', changes: true });
   });
@@ -355,7 +371,7 @@ describe('undo restore', () => {
   it('brings back exactly what was there before, once', async () => {
     const before = await restoreOther();
     expect(canUndo(NOW + DAY)).toBe(true);
-    expect(await undoRestore(NOW + DAY)).not.toBeNull();
+    expect(await undoRestore(NOW + DAY)).toMatchObject({ kind: 'ok' });
     expect(settingsData()).toEqual(before.settings);
     expect(progressData()).toEqual(before.progress);
     // ONE snapshot: used up.
@@ -368,7 +384,7 @@ describe('undo restore', () => {
     const restored = progressData();
     expect(canUndo(NOW + UNDO_DAYS * DAY - 1)).toBe(true);
     expect(canUndo(NOW + UNDO_DAYS * DAY)).toBe(false);
-    expect(await undoRestore(NOW + UNDO_DAYS * DAY)).toBeNull();
+    expect(await undoRestore(NOW + UNDO_DAYS * DAY)).toEqual({ kind: 'none' });
     expect(progressData()).toEqual(restored);
     expect(useBackup.getState().undo).toBeNull();
   });
@@ -399,7 +415,7 @@ describe('reminders after a restore', () => {
   }
 
   it('are scheduled the way the backup has them, without asking again', async () => {
-    expect(await restoreWithReminder({ enabled: true, hour: 7, minute: 30, days: [1, 3, 5] })).toBe('on');
+    expect(await restoreWithReminder({ enabled: true, hour: 7, minute: 30, days: [1, 3, 5] })).toEqual({ kind: 'ok', reminders: 'on' });
     expect([...mockScheduled.keys()].sort()).toEqual([weeklyId(1), weeklyId(3), weeklyId(5)].sort());
     expect(mockScheduled.get(weeklyId(1))!.trigger).toMatchObject({ type: 'weekly', hour: 7, minute: 30 });
     expect(mockPermission.asked).toBe(0); // already allowed: no prompt
@@ -407,13 +423,13 @@ describe('reminders after a restore', () => {
 
   it('ask for permission only when it is missing; a "no" turns the switch off', async () => {
     Object.assign(mockPermission, { granted: false, grantOnAsk: true });
-    expect(await restoreWithReminder({ enabled: true, hour: 19, minute: 0 })).toBe('on');
+    expect(await restoreWithReminder({ enabled: true, hour: 19, minute: 0 })).toEqual({ kind: 'ok', reminders: 'on' });
     expect(mockPermission.asked).toBe(1);
     expect([...mockScheduled.keys()]).toEqual([DAILY_ID]);
 
     mockScheduled.clear();
     Object.assign(mockPermission, { granted: false, grantOnAsk: false, asked: 0 });
-    expect(await restoreWithReminder({ enabled: true, hour: 19, minute: 0 })).toBe('blocked');
+    expect(await restoreWithReminder({ enabled: true, hour: 19, minute: 0 })).toEqual({ kind: 'ok', reminders: 'blocked' });
     expect(useSettings.getState().reminder.enabled).toBe(false);
     expect(mockScheduled.size).toBe(0);
   });
@@ -421,7 +437,7 @@ describe('reminders after a restore', () => {
   it('a backup with reminders off clears ours and never asks', async () => {
     mockScheduled.set(DAILY_ID, { identifier: DAILY_ID });
     Object.assign(mockPermission, { granted: false });
-    expect(await restoreWithReminder({ enabled: false, hour: 19, minute: 0 })).toBe('off');
+    expect(await restoreWithReminder({ enabled: false, hour: 19, minute: 0 })).toEqual({ kind: 'ok', reminders: 'off' });
     expect(mockScheduled.size).toBe(0);
     expect(mockPermission.asked).toBe(0);
   });
@@ -429,7 +445,7 @@ describe('reminders after a restore', () => {
 
 // ── Older formats ────────────────────────────────────────────────────────
 describe('older formats are upgraded', () => {
-  it('a backup whose progress store is version 1 (one `day` plan) loads as `days`', () => {
+  it('a backup whose progress store is version 1 (one `day` plan) is upgraded (and its plan not restored)', () => {
     studiedLearner();
     const f = JSON.parse(JSON.stringify(currentBackup(NOW))) as BackupFile;
     const state = f.stores.progress.state as unknown as Record<string, unknown>;
@@ -438,8 +454,11 @@ describe('older formats are upgraded', () => {
     state.day = plan;
     f.stores.progress.version = 1;
     const data = readBackup(JSON.stringify(f), CERTS);
-    expect(data.progress.days?.cisa).toEqual(plan);
+    expect(plan).toBeTruthy();
+    // Upgraded (day → days), then today's plans are left out like any backup's.
     expect('day' in data.progress).toBe(false);
+    expect('days' in data.progress).toBe(false);
+    expect(Object.keys(data.progress.byCert.cisa.answers!)).toHaveLength(3);
   });
 
   it('file-format upgrades run step by step to the current schema', () => {
@@ -451,5 +470,169 @@ describe('older formats are upgraded', () => {
     expect(migrateFile({ schema: 1, a: 1 }, steps, 2)).toEqual({ schema: 2, a: 1, b: 1 });
     // A gap in the steps is an unknown schema, never a guess.
     expect(() => migrateFile({ schema: 1 }, {}, 2)).toThrow(BackupError);
+  });
+});
+
+// ── Review fixes (security, code, UX) ────────────────────────────────────
+describe('hardening from the reviews', () => {
+  const fileOf = () => JSON.parse(JSON.stringify(currentBackup(NOW))) as BackupFile;
+
+  it('keeps only ids that exist in the app (questions, lessons, notes)', () => {
+    studiedLearner();
+    const f = fileOf();
+    const cp = f.stores.progress.state.byCert.cisa;
+    const real = Object.keys(cp.answers!)[0];
+    cp.answers!.d9_999 = { ...cp.answers![real] };
+    cp.review!.made_up = { box: 1, dueAt: NOW, lastSeen: NOW, reps: 1 };
+    cp.bookmarks = [...cp.bookmarks!, 'nope'];
+    cp.lessonsDone = [...cp.lessonsDone!, 'cisa-l-fake'];
+    cp.notesRead = [...cp.notesRead!, '9Z9.9'];
+    cp.mastery = { ...cp.mastery, '9Z9.9': { firstDay: '2026-10-01' } };
+    const read = checkBackupText(JSON.stringify(f));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    const out = read.data.progress.byCert.cisa;
+    expect(out.answers).toHaveProperty(real);
+    expect(out.answers).not.toHaveProperty('d9_999');
+    expect(out.review).not.toHaveProperty('made_up');
+    expect(out.bookmarks).not.toContain('nope');
+    expect(out.lessonsDone).toEqual(['cisa-l-d1-engagement']);
+    expect(out.notesRead).toEqual(['4B1.2']);
+    expect(Object.keys(out.mastery!)).toEqual(['4B1.2']);
+  });
+
+  it('a daily goal outside 10 / 20 / 40 moves to the nearest; mastery may carry firstAt', () => {
+    studiedLearner();
+    const f = fileOf();
+    f.stores.settings.state.dailyGoal = 33;
+    f.stores.progress.state.byCert.cisa.mastery = { '4B1.2': { firstDay: '2026-10-01', firstAt: NOW - 9 * DAY } };
+    const data = readBackup(JSON.stringify(f), CERTS);
+    expect(data.settings.dailyGoal).toBe(40);
+    expect(data.progress.byCert.cisa.mastery!['4B1.2'].firstAt).toBe(NOW - 9 * DAY);
+  });
+
+  it('a file over the new 1 MB cap is refused, even when every list is within its own cap', () => {
+    studiedLearner();
+    const f = fileOf();
+    // Few keys, long values: ~1.3 MB. (The 1.5 M-character progress cap is a second guard behind this one.)
+    f.stores.progress.state.byCert.cisa.mocks = Array.from({ length: 200 }, (_, i) => ({
+      id: `m${i}`.padEnd(120, 'x'),
+      finishedAt: NOW,
+      total: 10,
+      correct: 5,
+      minutesUsed: 10,
+      byDomain: Object.fromEntries(Array.from({ length: 50 }, (_, d) => [`${d}`.padEnd(100, 'd'), { total: 1, correct: 1 }])),
+    }));
+    expect(utf8Bytes(JSON.stringify(f))).toBeGreaterThan(MAX_BACKUP_BYTES);
+    expect(() => readBackup(JSON.stringify(f), CERTS)).toThrow(expect.objectContaining({ code: 'too-big' }));
+  });
+
+  it('strips an invisible byte-order mark before reading', () => {
+    studiedLearner();
+    expect(readBackup('﻿' + JSON.stringify(fileOf()), CERTS).settings.activeCertId).toBe('cisa');
+  });
+
+  it('a file from a newer minor version asks to update; a newer patch only when it can’t be read', () => {
+    studiedLearner();
+    const minor = { ...fileOf(), appVersion: '1.4.0' };
+    expect(() => readBackup(JSON.stringify(minor), CERTS, undefined, '1.3.0')).toThrow(expect.objectContaining({ code: 'newer' }));
+    const patch = { ...fileOf(), appVersion: '1.3.5' };
+    expect(readBackup(JSON.stringify(patch), CERTS, undefined, '1.3.0').settings.activeCertId).toBe('cisa');
+    (patch.stores.settings.state as unknown as Record<string, unknown>).theme = 'sepia';
+    expect(() => readBackup(JSON.stringify(patch), CERTS, undefined, '1.3.0')).toThrow(expect.objectContaining({ code: 'newer' }));
+    // An older or equal app's file with the same problem is just damaged.
+    const older = { ...patch, appVersion: '1.3.0' };
+    expect(() => readBackup(JSON.stringify(older), CERTS, undefined, '1.3.0')).toThrow(expect.objectContaining({ code: 'bad-data' }));
+  });
+
+  it('a file can’t skip or redo onboarding: the phone keeps its own `onboarded`', async () => {
+    studiedLearner();
+    const f = fileOf();
+    f.stores.settings.state.onboarded = false;
+    const read = checkBackupText(JSON.stringify(f));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    expect(useSettings.getState().onboarded).toBe(true);
+    // The welcome screen's restore finishes onboarding.
+    useSettings.setState({ onboarded: false });
+    await restoreBackup(read.data, { now: NOW, onboard: true });
+    expect(useSettings.getState().onboarded).toBe(true);
+  });
+
+  it('writes everything in ONE multiSet; if it fails, the old data is written back and nothing changes', async () => {
+    const multiSet = (jest.requireMock('@react-native-async-storage/async-storage') as { multiSet: jest.Mock }).multiSet;
+    studiedLearner();
+    const file = currentBackup(NOW);
+    freshInstall();
+    useSettings.setState({ onboarded: true });
+    useProgress.getState().recordAnswer('cisa', 'd1_001', true);
+    const before = { settings: settingsData(), progress: progressData() };
+    const read = checkBackupText(JSON.stringify(file));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    const first = multiSet.mock.calls.length;
+    multiSet.mockImplementationOnce(async () => {
+      throw new Error('disk full');
+    });
+    expect(await restoreBackup(read.data, NOW)).toEqual({ kind: 'failed' });
+    const calls = multiSet.mock.calls.slice(first).map(([rows]) => (rows as [string, string][]).map(([k]) => k).sort());
+    expect(calls[0]).toEqual(['aurivan.backup.v1', 'aurivan.progress.v1', 'aurivan.session.v1', 'aurivan.settings.v1']);
+    expect(calls).toHaveLength(2); // the failed write, then the old rows back
+    expect(settingsData()).toEqual(before.settings);
+    expect(progressData()).toEqual(before.progress);
+    expect(useBackup.getState().undo).toBeNull();
+  });
+
+  it('refuses to restore when the phone’s own data couldn’t be undone to', async () => {
+    studiedLearner();
+    const read = checkBackupText(JSON.stringify(currentBackup(NOW)));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    // Damage this phone's own data (a mock with more right than asked).
+    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, mocks: [{ id: 'x', finishedAt: NOW, total: 1, correct: 5, minutesUsed: 1, byDomain: {} }] } } }));
+    const before = progressData();
+    expect(await restoreBackup(read.data, NOW)).toEqual({ kind: 'no-snapshot' });
+    expect(progressData()).toEqual(before);
+  });
+
+  it('a damaged undo snapshot is "invalid", not "expired"; a future-dated one is still offered', async () => {
+    studiedLearner();
+    const read = checkBackupText(JSON.stringify(currentBackup(NOW)));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    // The clock moved back a day: still offered, not deleted.
+    expect(canUndo(NOW - DAY)).toBe(true);
+    pruneUndo(NOW - DAY);
+    expect(useBackup.getState().undo).not.toBeNull();
+    // Damage the snapshot.
+    const snap = useBackup.getState().undo!;
+    useBackup.setState({ undo: { ...snap, file: { ...snap.file, app: 'other' as 'aurivan' } } });
+    expect(await undoRestore(NOW + DAY)).toEqual({ kind: 'invalid' });
+    expect(useBackup.getState().undo).toBeNull();
+  });
+
+  it('remembers when the restored backup was saved, and forgets it on undo', async () => {
+    studiedLearner();
+    const file = currentBackup(NOW - 3 * DAY);
+    const read = checkBackupText(JSON.stringify(file));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    expect(useBackup.getState().restoredSavedAt).toBe(NOW - 3 * DAY);
+    await undoRestore(NOW + 1000);
+    expect(useBackup.getState().restoredSavedAt).toBeNull();
+  });
+});
+
+describe('when the app does not know its own version', () => {
+  it('never refuses a file as "newer" (the web build has no version)', () => {
+    const constants = jest.requireMock('expo-constants') as { default: { expoConfig: { version?: string } } };
+    studiedLearner();
+    const text = JSON.stringify({ ...currentBackup(NOW), appVersion: '9.9.9' });
+    const saved = constants.default.expoConfig.version;
+    constants.default.expoConfig.version = undefined;
+    try {
+      expect(checkBackupText(text).kind).toBe('ok');
+      // Files made then say "unknown", which any app can compare safely.
+      expect(currentBackup(NOW).appVersion).toBe('unknown');
+    } finally {
+      constants.default.expoConfig.version = saved;
+    }
   });
 });

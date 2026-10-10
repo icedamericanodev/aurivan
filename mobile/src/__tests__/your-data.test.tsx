@@ -13,12 +13,15 @@
  */
 import { Alert, Dimensions } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { YourData } from '../components/yourData';
+import { Button } from '../components/ui';
+import { RestorePreview, YourData } from '../components/yourData';
+import { useRestoreFlow } from '../lib/useRestoreFlow';
 import { getAllQuestions } from '../content/loader';
 import { BACKUP_ERROR_COPY } from '../engine/backup';
 import { currentBackup } from '../lib/backup';
 import { selectCert, useProgress } from '../store/progress';
 import { useBackup } from '../store/backup';
+import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -123,7 +126,14 @@ function oldPhoneBackup(): string {
   return text;
 }
 
+/** This phone has studied a little (one answer), so the preview compares. */
+function thisPhoneStudied() {
+  useProgress.getState().recordAnswer('cisa', getAllQuestions('cisa')[10].id, true);
+}
+
 beforeEach(() => {
+  // Messages are announced ~600 ms later (useRestoreFlow): fake timers keep that inside the test.
+  jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
   setFontScale(1);
   mockFiles.clear();
   useSettings.setState({ ...useSettings.getInitialState(), onboarded: true, theme: 'light' });
@@ -135,6 +145,9 @@ afterEach(() => {
     r?.unmount();
   });
   r = undefined;
+  useSession.getState().clear();
+  jest.clearAllTimers();
+  jest.useRealTimers();
 });
 
 const render = () =>
@@ -145,9 +158,12 @@ const render = () =>
 describe('Settings → Your data', () => {
   it('says when the last backup was saved', async () => {
     render();
-    expect(allText()).toContain('Last backup: never');
+    expect(allText()).toContain('No backup file yet');
     await press('Save a backup');
-    expect(allText()).toMatch(/Last backup: \d{1,2} [A-Z][a-z]{2} \d{4}/);
+    // "Made", not "saved": the share sheet can't tell us where it went.
+    expect(allText()).toMatch(/Last backup file made: \d{1,2} [A-Z][a-z]{2} \d{4}/);
+    expect(allText()).toContain('Backup file ready');
+    expect(allText()).toContain('If you saved it, you’re set.');
   });
 
   it('every action is a labelled button with a hint', () => {
@@ -172,40 +188,46 @@ describe('Settings → Your data', () => {
 
   it('a good file shows what will change; Cancel changes nothing', async () => {
     pickFile(oldPhoneBackup());
+    thisPhoneStudied();
     render();
     await press('Restore from a backup');
     const text = allText();
     expect(text).toContain('Restore this backup?');
-    for (const label of ['Exam', 'Exam date', 'Questions answered', 'Last studied', 'Best streak']) expect(text).toContain(label);
+    for (const label of ['Exam', 'Exam date', 'Questions answered', 'Last studied', 'Best streak', 'Study reminder']) expect(text).toContain(label);
     expect(text).toContain('1 Dec 2026');
     expect(text).toContain('4 questions');
     // Never the size of the bank.
     expect(text).not.toContain(String(getAllQuestions('cisa').length));
     await press('Cancel');
     expect(allText()).not.toContain('Restore this backup?');
-    expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(0);
+    expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(1);
   });
 
   it('"Replace my progress" restores, says so, and offers Undo restore', async () => {
     pickFile(oldPhoneBackup());
+    thisPhoneStudied();
     render();
     await press('Restore from a backup');
     const confirm = button('Replace my progress');
     // Destructive style (danger) and a 56pt-high button (Button recipe).
     expect(confirm.props.accessibilityRole).toBe('button');
+    expect(confirm.props.accessibilityHint).toBe('Replaces the progress on this phone with the backup. You can undo this for 7 days.');
     await press('Replace my progress');
     expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(4);
     expect(useSettings.getState().examDates.cisa).toBe('2026-12-01');
     expect(allText()).toContain('Restored');
     expect(allText()).toContain('Undo restore');
-    // Undo asks first, then puts the fresh phone back.
+    // The header now names the backup that was restored.
+    expect(allText()).toMatch(/Restored from a backup saved on \d{1,2} [A-Z][a-z]{2} \d{4}/);
+    // Undo asks first (and says what is lost), then puts this phone's data back.
     const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     await press('Undo restore');
+    expect(alert.mock.calls[0][1]).toMatch(/Anything you studied since then will be replaced\.$/);
     const buttons = alert.mock.calls[0][2]!;
     await act(async () => {
       await buttons.find((b) => b.style === 'destructive')!.onPress!();
     });
-    expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(0);
+    expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(1);
     expect(allText()).toContain('Restore undone');
     expect(allText()).not.toContain('Available until');
     alert.mockRestore();
@@ -213,14 +235,75 @@ describe('Settings → Your data', () => {
 
   it('at 200% text the preview rows stack instead of squeezing side by side', async () => {
     pickFile(oldPhoneBackup());
+    thisPhoneStudied();
     setFontScale(2);
     render();
     await press('Restore from a backup');
     const rows = root().findAll((n) => (n.type as unknown) === 'View' && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.includes('On this phone:'));
-    expect(rows).toHaveLength(5);
+    expect(rows).toHaveLength(6);
     const pairs = root().findAll((n) => (n.type as unknown) === 'View' && n.props.style?.flexDirection === 'column' && n.props.style?.gap !== undefined);
-    expect(pairs.length).toBeGreaterThanOrEqual(5);
+    expect(pairs.length).toBeGreaterThanOrEqual(6);
+    // The "Your data" header stacks too (title over meta).
+    const header = root().findAll((n) => (n.type as unknown) === 'View' && n.props.style?.some?.((x: { flexDirection?: string }) => x?.flexDirection === 'column'));
+    expect(header.length).toBeGreaterThan(0);
     // Each row is ONE screen-reader stop that says both values.
     expect(rows[0].props.accessibilityLabel).toMatch(/^Exam\. On this phone: CISA\. In the backup: CISA\. No change\.$/);
+  });
+
+  it('Settings on a phone with no progress still compares and keeps Undo (fresh is for the welcome screen)', async () => {
+    pickFile(oldPhoneBackup());
+    render();
+    await press('Restore from a backup');
+    expect(allText()).toContain('This phone');
+    await press('Replace my progress');
+    expect(useBackup.getState().undo).not.toBeNull();
+  });
+
+  it('the welcome screen gets the fresh preview: backup values only, "Restore my progress", no undo, onboarding done', async () => {
+    const text = oldPhoneBackup();
+    useSettings.setState({ onboarded: false });
+    pickFile(text);
+    function Welcome() {
+      const f = useRestoreFlow({ onboard: true });
+      return (
+        <>
+          <Button kind="ghost" label="Restore from a backup" onPress={f.pick} />
+          <RestorePreview ready={f.ready} busy={f.busy === 'restore'} onConfirm={f.confirm} onCancel={f.cancel} />
+        </>
+      );
+    }
+    act(() => {
+      r = create(<Welcome />);
+    });
+    await press('Restore from a backup');
+    const shown = allText();
+    expect(shown).toContain('This puts the progress from your backup on this phone.');
+    expect(shown).not.toContain('This phone');
+    expect(button('Replace my progress')).toBeUndefined();
+    await press('Restore my progress');
+    expect(Object.keys(selectCert(useProgress.getState(), 'cisa').answers)).toHaveLength(4);
+    expect(useBackup.getState().undo).toBeNull();
+    expect(useSettings.getState().onboarded).toBe(true);
+  });
+
+  it('an older backup is flagged before replacing newer progress', async () => {
+    const text = oldPhoneBackup(); // 4 answers
+    for (const q of getAllQuestions('cisa').slice(20, 30)) useProgress.getState().recordAnswer('cisa', q.id, true); // this phone: 10
+    pickFile(text);
+    render();
+    await press('Restore from a backup');
+    expect(allText()).toContain('This backup is older than this phone. Restoring it replaces the newer progress here.');
+  });
+
+  it('a paused quiz on this phone: the preview says it will end, and the restore ends it', async () => {
+    const text = oldPhoneBackup();
+    thisPhoneStudied();
+    useSession.getState().start({ id: 's', mode: 'practice', certId: 'cisa', title: 'x', questionIds: ['d1_001'], perms: { d1_001: ['A', 'B', 'C', 'D'] }, index: 0, responses: {}, flagged: [], startedAt: Date.now() });
+    pickFile(text);
+    render();
+    await press('Restore from a backup');
+    expect(allText()).toContain('Your paused session will end.');
+    await press('Replace my progress');
+    expect(useSession.getState().active).toBeNull();
   });
 });

@@ -4,11 +4,13 @@
  * onboarding screen at someone who already finished it.
  */
 import { useEffect, useState } from 'react';
+import { useBackup } from './backup';
 import { useProgress } from './progress';
 import { useSession } from './session';
 import { useSettings } from './settings';
 
-const stores = [useSettings, useProgress, useSession];
+// useBackup too: the undo snapshot must be loaded before anything can restore.
+const stores = [useSettings, useProgress, useSession, useBackup];
 
 export function useHydrated(): boolean {
   const [ready, setReady] = useState(() => stores.every((s) => s.persist.hasHydrated()));

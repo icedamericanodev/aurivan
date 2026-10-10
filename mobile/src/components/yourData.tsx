@@ -1,100 +1,67 @@
 /**
  * Settings → Your data: save a backup file, restore from one, and undo a
- * restore for 7 days (lib/backup.ts does the work).
+ * restore for 7 days (lib/backup.ts does the work; lib/useRestoreFlow.ts
+ * runs pick → preview → confirm, shared with the welcome screen).
  *
  * The restore is never a surprise: after the learner picks a file we show a
  * preview of what will change (exam, exam date, questions answered, last
- * studied, best streak; never the bank size) and wait for "Replace my
- * progress". A bad file shows one calm message and changes nothing.
+ * studied, best streak, study reminder; never the bank size) and wait for
+ * "Replace my progress". A bad file shows one calm message and changes nothing.
  *
- * Confirmations and messages are drawn in the screen (not system alerts),
- * so they read the same on iOS, Android and the web build, and stay
- * readable at 200% text: every row stacks at large text sizes.
+ * The preview and the messages are drawn in the screen, so they read the
+ * same on iOS, Android and the web build, and stay readable at 200% text
+ * (every row stacks at large sizes). Undo asks first with a system alert,
+ * like Reset.
  */
 import { useEffect, useState } from 'react';
-import { AccessibilityInfo, Alert, Modal, ScrollView, View } from 'react-native';
+import { Alert, Modal, ScrollView, View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BACKUP_ERROR_COPY, previewRows, UNDO_DAYS, undoAvailable, undoExpiresAt } from '../engine/backup';
+import { previewRows, UNDO_DAYS, undoAvailable, undoExpiresAt } from '../engine/backup';
 import { examDateLabel } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
-import { pickBackup, pruneUndo, restoreBackup, saveBackup, undoRestore, type PickOutcome, type ReminderOutcome } from '../lib/backup';
-import { haptic } from '../lib/haptics';
+import { pruneUndo, saveBackup, sweepBackupFiles, undoRestore, type ReadyToRestore } from '../lib/backup';
+import { reminderLine, useRestoreFlow, type FlowMessage } from '../lib/useRestoreFlow';
 import { useBackup } from '../store/backup';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Button, Gap, Section, T, useFontScale } from './ui';
 
-type Busy = null | 'save' | 'pick' | 'restore' | 'undo';
-type Message = { tone: 'ok' | 'problem'; title: string; text: string };
-type Ready = Extract<PickOutcome, { kind: 'ok' }>;
-
 /** "6 Oct 2026" for a timestamp, in the phone's local time. */
 const dateOf = (ms: number) => examDateLabel(dayKey(ms));
-
-/** One extra sentence about reminders after a restore or undo. */
-function reminderLine(r: ReminderOutcome): string {
-  if (r === 'on') return ' Your study reminder is set again.';
-  if (r === 'blocked') return ' Reminders are off because notifications aren’t allowed for Aurivan. You can turn them on under Study.';
-  return '';
-}
 
 export function YourData() {
   const { c } = useTheme();
   const lastBackupAt = useBackup((s) => s.lastBackupAt);
+  const restoredSavedAt = useBackup((s) => s.restoredSavedAt ?? null);
   const undo = useBackup((s) => s.undo);
-  // "Now" is read once per visit (render stays pure).
+  // "Now" is read once per visit (render stays pure). A snapshot taken
+  // during this visit is still offered: undoAvailable only checks expiry.
   const [now] = useState(() => Date.now());
-  const [busy, setBusy] = useState<Busy>(null);
-  const [message, setMessage] = useState<Message | null>(null);
-  const [preview, setPreview] = useState<Ready | null>(null);
-  // A restore made during this visit is newer than `now`: count from whichever is later.
-  const canUndo = undoAvailable(undo, Math.max(now, undo?.takenAt ?? 0));
+  const flow = useRestoreFlow();
+  const { busy, setBusy, message, say } = flow;
+  const canUndo = undoAvailable(undo, now);
 
-  // An undo snapshot older than 7 days is dropped when Settings opens.
-  useEffect(() => pruneUndo(), []);
-
-  const say = (m: Message) => {
-    setMessage(m);
-    AccessibilityInfo.announceForAccessibility(`${m.title}. ${m.text}`);
-  };
+  // Tidy up when Settings opens: an expired undo snapshot, and backup files
+  // we made more than an hour ago in the app's cache.
+  useEffect(() => {
+    pruneUndo();
+    sweepBackupFiles();
+  }, []);
 
   const save = async () => {
-    setMessage(null);
+    flow.setMessage(null);
     setBusy('save');
     try {
       const out = await saveBackup();
-      if (out === 'unavailable') say({ tone: 'problem', title: 'Can’t save here', text: 'This device can’t open the share sheet, so no backup was saved.' });
+      // The share sheet can't tell us whether the file was really saved, so the copy says "if".
+      if (out === 'shared') {
+        say({ tone: 'ok', title: 'Backup file ready', text: 'If you saved it, you’re set. On a new phone, choose “Restore from a backup” and pick this file.' });
+      } else {
+        say({ tone: 'problem', title: 'Can’t share from here', text: 'This device can’t open the share sheet, so no backup file was made.' });
+      }
     } catch {
-      say({ tone: 'problem', title: 'Backup not saved', text: 'Something went wrong while saving. Please try again.' });
-    } finally {
-      setBusy(null);
-    }
-  };
-
-  const pick = async () => {
-    setMessage(null);
-    setBusy('pick');
-    try {
-      const out = await pickBackup();
-      if (out.kind === 'error') say({ tone: 'problem', title: 'Couldn’t restore', text: BACKUP_ERROR_COPY[out.code] });
-      else if (out.kind === 'ok') setPreview(out);
-    } finally {
-      setBusy(null);
-    }
-  };
-
-  const confirmRestore = async () => {
-    if (!preview) return;
-    setBusy('restore');
-    try {
-      const r = await restoreBackup(preview.data);
-      setPreview(null);
-      haptic.success();
-      say({ tone: 'ok', title: 'Restored', text: `Your progress from the backup is on this phone now. You can undo this for ${UNDO_DAYS} days.${reminderLine(r)}` });
-    } catch {
-      setPreview(null);
-      say({ tone: 'problem', title: 'Couldn’t restore', text: BACKUP_ERROR_COPY['bad-data'] });
+      say({ tone: 'problem', title: 'Backup not made', text: 'Something went wrong while making the backup file. Please try again.' });
     } finally {
       setBusy(null);
     }
@@ -102,28 +69,48 @@ export function YourData() {
 
   const confirmUndo = () => {
     if (!undo) return;
-    Alert.alert('Undo the restore?', `Your progress goes back to how it was on ${dateOf(undo.takenAt)}, before the restore.`, [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Undo restore',
-        style: 'destructive',
-        onPress: async () => {
-          setBusy('undo');
-          try {
-            const r = await undoRestore();
-            if (r === null) say({ tone: 'problem', title: 'Nothing to undo', text: 'The restore can only be undone for 7 days.' });
-            else say({ tone: 'ok', title: 'Restore undone', text: `Your progress is back to how it was before.${reminderLine(r)}` });
-          } finally {
-            setBusy(null);
-          }
+    Alert.alert(
+      'Undo the restore?',
+      `Your progress goes back to how it was on ${dateOf(undo.takenAt)}, before the restore. Anything you studied since then will be replaced.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Undo restore',
+          style: 'destructive',
+          onPress: async () => {
+            setBusy('undo');
+            try {
+              const r = await undoRestore();
+              if (r.kind === 'ok') say({ tone: 'ok', title: 'Restore undone', text: `Your progress is back to how it was before.${reminderLine(r.reminders)}` });
+              else if (r.kind === 'none') say({ tone: 'problem', title: 'Nothing to undo', text: `A restore can only be undone for ${UNDO_DAYS} days.` });
+              else if (r.kind === 'invalid') {
+                say({ tone: 'problem', title: 'Can’t undo', text: 'The copy kept from before the restore is damaged, so it can’t be used. Your progress stays as it is now.' });
+              } else {
+                say({ tone: 'problem', title: 'Undo didn’t finish', text: 'Something went wrong while saving, so your progress was put back as it was. Please try again.' });
+              }
+            } finally {
+              setBusy(null);
+            }
+          },
         },
-      },
-    ]);
+      ],
+    );
   };
 
   return (
     <>
-      <Section title="Your data" meta={lastBackupAt ? `Last backup: ${dateOf(lastBackupAt)}` : 'Last backup: never'} />
+      {/* "Made", not "saved": the share sheet can't tell us where the file went.
+          After a restore (and no newer file made), the restored backup is the learner's latest copy. */}
+      <Section
+        title="Your data"
+        meta={
+          restoredSavedAt && (!lastBackupAt || restoredSavedAt > lastBackupAt)
+            ? `Restored from a backup saved on ${dateOf(restoredSavedAt)}`
+            : lastBackupAt
+              ? `Last backup file made: ${dateOf(lastBackupAt)}`
+              : 'No backup file yet'
+        }
+      />
       <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
         Your progress is kept only on this phone. A backup file keeps it safe and moves it to a new phone. You choose where the file goes.
       </T>
@@ -141,7 +128,7 @@ export function YourData() {
         label={busy === 'pick' ? 'Opening…' : 'Restore from a backup'}
         accessibilityHint="Choose a backup file. You will see what changes before anything is replaced."
         disabled={busy !== null}
-        onPress={pick}
+        onPress={flow.pick}
       />
       {/* The result first ("Restored… you can undo"), then the undo it mentions. */}
       {message && <DataMessage message={message} />}
@@ -153,35 +140,41 @@ export function YourData() {
             accessibilityHint={`Puts back your progress from before the restore. Available until ${dateOf(undoExpiresAt(undo))}.`}
             disabled={busy !== null}
             onPress={confirmUndo}
-            style={{ alignSelf: 'flex-start' }}
+            // Ghost buttons pad their label; pull it back so it lines up with the text below.
+            style={{ alignSelf: 'flex-start', marginLeft: -space.sm }}
           />
           <T v="meta">{`Available until ${dateOf(undoExpiresAt(undo))}.`}</T>
         </View>
       )}
-      <RestorePreview ready={preview} busy={busy === 'restore'} onConfirm={confirmRestore} onCancel={() => setPreview(null)} />
+      <RestorePreview ready={flow.ready} busy={busy === 'restore'} onConfirm={flow.confirm} onCancel={flow.cancel} />
     </>
   );
 }
 
-/** The result of an action: a tinted feedback block (spec §5: tinted blocks are feedback only). */
-function DataMessage({ message }: { message: Message }) {
+/**
+ * The result of an action: a tinted feedback block (spec §5: tinted blocks
+ * are feedback only). Announced once by useRestoreFlow, so it is not a live
+ * region (that would read it twice).
+ */
+export function DataMessage({ message }: { message: FlowMessage }) {
   const { c } = useTheme();
   const ok = message.tone === 'ok';
   return (
-    <View
-      accessible
-      accessibilityLiveRegion="polite"
-      style={{ marginTop: space.md, padding: space.md, borderRadius: radius.md, backgroundColor: ok ? c.correctBg : c.tipBg }}
-    >
+    <View accessible style={{ marginTop: space.md, padding: space.md, borderRadius: radius.md, backgroundColor: ok ? c.correctBg : c.tipBg }}>
       <T v="caption" color={ok ? c.correct : c.tip}>{message.title}</T>
-      <T v="small" color={c.ink} style={{ marginTop: 2 }}>{message.text}</T>
+      <T v="small" color={c.ink} style={{ marginTop: space.xs }}>{message.text}</T>
     </View>
   );
 }
 
 /**
- * The restore preview: what is on this phone now, next to what the backup
- * would put back, then "Replace my progress" (destructive) or Cancel.
+ * The restore preview.
+ * - Normal: what is on this phone now next to what the backup would put
+ *   back, then "Replace my progress" (destructive) or Cancel. A warning
+ *   when the backup looks older than the phone, and a line when a paused
+ *   quiz will end.
+ * - Fresh (the welcome screen, when the phone has no progress yet): only
+ *   the backup's values, and a primary "Restore my progress"; no undo.
  */
 export function RestorePreview({
   ready,
@@ -189,7 +182,7 @@ export function RestorePreview({
   onConfirm,
   onCancel,
 }: {
-  ready: Ready | null;
+  ready: ReadyToRestore | null;
   busy: boolean;
   onConfirm: () => void;
   onCancel: () => void;
@@ -199,42 +192,80 @@ export function RestorePreview({
   const large = useFontScale() >= LARGE_TEXT;
   const rows = ready ? previewRows(ready.now, ready.backup) : [];
   const saved = ready ? Date.parse(ready.data.exportedAt) : NaN;
+  const fresh = ready?.fresh === true;
   return (
-    <Modal visible={ready !== null} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={onCancel}>
+    // While the restore is saving, swipe-down and Back do nothing.
+    <Modal visible={ready !== null} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
       <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }}>
           <T v="display" accessibilityRole="header">Restore this backup?</T>
           {Number.isFinite(saved) && <T v="meta" style={{ marginTop: space.xs }}>{`Saved on ${dateOf(saved)}`}</T>}
           <T v="body" color={c.ink2} style={{ marginTop: space.md }}>
-            {`The progress on this phone will be replaced by the backup. You can undo this for ${UNDO_DAYS} days.`}
+            {fresh
+              ? 'This puts the progress from your backup on this phone.'
+              : `The progress on this phone will be replaced by the backup. You can undo this for ${UNDO_DAYS} days.`}
           </T>
+          {ready?.behind && !fresh && (
+            <View accessible style={{ marginTop: space.md, padding: space.md, borderRadius: radius.md, backgroundColor: c.tipBg }}>
+              <T v="caption" color={c.tip}>Older backup</T>
+              <T v="small" color={c.ink} style={{ marginTop: space.xs }}>
+                {`This backup is older than this phone. Restoring it replaces the newer progress here. You can undo this for ${UNDO_DAYS} days.`}
+              </T>
+            </View>
+          )}
+          {ready?.pausedSession && (
+            <T v="small" color={c.ink} style={{ marginTop: space.md }}>Your paused session will end.</T>
+          )}
           <Gap h={space.lg} />
           {rows.map((row, i) => (
             <View
               key={row.label}
               accessible
-              accessibilityLabel={`${row.label}. On this phone: ${row.now}. In the backup: ${row.backup}.${row.changes ? '' : ' No change.'}`}
+              accessibilityLabel={
+                fresh
+                  ? `${row.label}: ${row.backup}.`
+                  : `${row.label}. On this phone: ${row.now}. In the backup: ${row.backup}.${row.changes ? '' : ' No change.'}`
+              }
               style={{ paddingVertical: space.md, borderTopWidth: i === 0 ? 1 : 0, borderBottomWidth: 1, borderColor: c.line }}
             >
               <T v="label">{row.label}</T>
-              {/* Side by side on a normal phone; stacked at large text so nothing is cut off. */}
-              <View style={{ flexDirection: large ? 'column' : 'row', gap: large ? space.xs : space.md, marginTop: space.xs }}>
-                <View style={{ flex: large ? undefined : 1 }}>
-                  <T v="meta">This phone</T>
-                  <T v="body" color={c.ink2}>{row.now}</T>
+              {fresh ? (
+                <T v="body" color={c.ink} style={{ marginTop: space.xs }}>{row.backup}</T>
+              ) : (
+                // Side by side on a normal phone; stacked at large text so nothing is cut off.
+                <View style={{ flexDirection: large ? 'column' : 'row', gap: large ? space.xs : space.md, marginTop: space.xs }}>
+                  <View style={{ flex: large ? undefined : 1 }}>
+                    <T v="meta">This phone</T>
+                    <T v="body" color={c.ink2}>{row.now}</T>
+                  </View>
+                  <View style={{ flex: large ? undefined : 1 }}>
+                    <T v="meta">Backup</T>
+                    {/* A value that changes is drawn in ink and bold; one that stays says so. */}
+                    <T v={row.changes ? 'label' : 'body'} color={row.changes ? c.ink : c.ink2}>
+                      {row.changes ? row.backup : `${row.backup} (same)`}
+                    </T>
+                  </View>
                 </View>
-                <View style={{ flex: large ? undefined : 1 }}>
-                  <T v="meta">Backup</T>
-                  {/* A value that changes is drawn in ink and bold; one that stays says so. */}
-                  <T v={row.changes ? 'label' : 'body'} color={row.changes ? c.ink : c.ink2}>
-                    {row.changes ? row.backup : `${row.backup} (same)`}
-                  </T>
-                </View>
-              </View>
+              )}
             </View>
           ))}
           <Gap h={space.xl} />
-          <Button kind="danger" label={busy ? 'Restoring…' : 'Replace my progress'} disabled={busy} onPress={onConfirm} />
+          {fresh ? (
+            <Button
+              label={busy ? 'Restoring…' : 'Restore my progress'}
+              accessibilityHint="Puts the progress from the backup on this phone."
+              disabled={busy}
+              onPress={onConfirm}
+            />
+          ) : (
+            <Button
+              kind="danger"
+              label={busy ? 'Restoring…' : 'Replace my progress'}
+              accessibilityHint={`Replaces the progress on this phone with the backup. You can undo this for ${UNDO_DAYS} days.`}
+              disabled={busy}
+              onPress={onConfirm}
+            />
+          )}
           <Gap h={space.sm} />
           <Button kind="secondary" label="Cancel" disabled={busy} onPress={onCancel} />
         </ScrollView>
