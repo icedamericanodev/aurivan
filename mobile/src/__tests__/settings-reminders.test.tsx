@@ -92,7 +92,8 @@ afterEach(() => {
 describe('Settings → Study reminder', () => {
   it('shows every day at 19:00 by default (an old save without days)', () => {
     expect(allText()).toContain(`Every day at ${localTime(19, 0)}`);
-    expect(allText()).toContain('At most one reminder a day.');
+    // Off by default: the time and day choices wait for the switch.
+    expect(allText()).toContain('Applies when reminders are on.');
   });
 
   it('changing time and days while off saves, and asks nothing', () => {
@@ -216,5 +217,11 @@ describe('Settings → Study reminder', () => {
     });
     expect(chip('Monday').props.accessibilityHint).toBe('At least one day stays on. Use the switch to stop reminders.');
     expect(chip('Tuesday').props.accessibilityState).toMatchObject({ checked: false });
+  });
+
+  it('says "At most one reminder a day" once reminders are on', async () => {
+    await flip(true);
+    expect(allText()).toContain('At most one reminder a day.');
+    expect(allText()).not.toContain('Applies when reminders are on.');
   });
 });

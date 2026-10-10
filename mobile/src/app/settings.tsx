@@ -224,7 +224,8 @@ export default function Settings() {
               );
             })}
           </View>
-          <T v="meta">At most one reminder a day. Turn it off any time.</T>
+          {/* While off, say these choices wait for the switch (nothing is scheduled yet). */}
+          <T v="meta">{s.reminder.enabled ? 'At most one reminder a day. Turn it off any time.' : 'Applies when reminders are on. At most one a day.'}</T>
         </View>
       )}
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
