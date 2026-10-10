@@ -19,6 +19,7 @@ import { Bookmark, ICON_STROKE, NotebookPen, RotateCcw, Settings, Share2 } from 
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
 import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { pacingStats, pacingStatsLine, TIMING_LABEL } from '../../engine/pace';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
@@ -33,6 +34,8 @@ import { useTheme } from '../../theme/useTheme';
 export default function You() {
   const { c } = useTheme();
   const { cert, readiness, progress, streak, dueCount } = useActiveCert();
+  // One quiet line on pacing across timed mocks (engine/pace.ts; untimed mocks never count).
+  const pacingLine = pacingStatsLine(pacingStats(progress.mocks));
   const range = readinessRange(cert, readiness);
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
@@ -137,11 +140,14 @@ export default function You() {
               key={m.id}
               lead={<Lead value={`${Math.round((m.correct / m.total) * 100)}%`} unit="score" />}
               title={`${m.total} questions`}
-              subtitle={`${shortDate(m.finishedAt)} · ${m.minutesUsed} min`}
+              // Extra time and untimed mocks are labelled in history (older results were standard).
+              subtitle={`${shortDate(m.finishedAt)} · ${m.minutesUsed} min${m.timing && m.timing !== 'standard' ? ` · ${TIMING_LABEL[m.timing].toLowerCase()}` : ''}`}
               last={i === all.length - 1}
             />
           ))
         )}
+        {/* Pacing across timed mocks only (untimed ones are left out). */}
+        {pacingLine && <T v="meta" style={{ marginTop: space.md }}>{pacingLine}</T>}
         <T v="meta" center style={{ marginTop: space.xl }}>{cert.trademarkNotice}</T>
       </Enter>
 

@@ -4,7 +4,7 @@
  * journal all read from here, so a rename never drifts between screens.
  *
  * IDs are forever. Saved progress (best scores, history, plan items) is
- * keyed on `trap`, `sprint` and `priority`, so a rename is a display change
+ * keyed on `trap`, `sprint`, `priority` and `daylight` (Build D), so a rename is a display change
  * only: never change an id.
  *
  * Plain English for the founder:
@@ -17,10 +17,11 @@
  */
 import type { PackQuestion } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../pace';
+import { DAYLIGHT_MINUTES, DAYLIGHT_SIZE, daylightPool } from './daylight';
 import { priorityPool } from './priorityLens';
 import { trapPool } from './trapSpotter';
 
-export type GameId = 'trap' | 'sprint' | 'priority';
+export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight';
 
 export interface GameInfo {
   id: GameId;
@@ -44,9 +45,10 @@ export function roundMinutes(size: number): number {
   return Math.max(1, Math.round(size * MINUTES_PER_QUESTION));
 }
 
-const make = (g: Omit<GameInfo, 'minutes' | 'minPool'> & { minPool?: number }): GameInfo => ({
+const make = (g: Omit<GameInfo, 'minutes' | 'minPool'> & { minPool?: number; minutes?: number }): GameInfo => ({
   ...g,
-  minutes: roundMinutes(g.size),
+  // A timed game (Daylight) passes its time budget instead of the study-pace estimate.
+  minutes: g.minutes ?? roundMinutes(g.size),
   // Two full rounds' worth by default, so rounds don't repeat straight away.
   minPool: g.minPool ?? g.size * 2,
 });
@@ -76,10 +78,20 @@ export const GAMES: Record<GameId, GameInfo> = {
     size: 5,
     pool: priorityPool,
   }),
+  // Build D: the round has ONE time budget, so its length is that budget.
+  daylight: make({
+    id: 'daylight',
+    name: 'Daylight',
+    tagline: 'Answer at exam pace.',
+    skill: 'Pacing',
+    size: DAYLIGHT_SIZE,
+    minutes: DAYLIGHT_MINUTES,
+    pool: daylightPool,
+  }),
 };
 
 /** Display order on Play (the first is the featured hero). */
-export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority'];
+export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight'];
 
 /** A game's info by id, or undefined for an unknown id (e.g. from a newer save). */
 export function gameInfo(id: string): GameInfo | undefined {

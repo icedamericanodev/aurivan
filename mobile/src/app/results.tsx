@@ -1,4 +1,10 @@
 /**
+ * Build D: a timed mock shows a Pacing panel (components/pace.tsx) under
+ * the stats; an untimed one is labelled and says pacing stats skip it.
+ * Practice and review always show one pace line ("Median 74 s per
+ * question · exam pace 96 s"), and a question that went wrong fast or ran
+ * long but right gets a coaching tag. Coaching, never a penalty.
+ *
  * Results — score rings per domain (Grove v2 growth rings in domain tones,
  * replacing the old ring and bars), the stat row, and a question-by-question
  * review (your answer vs the best answer). "Practice what I missed"
@@ -9,11 +15,13 @@ import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { OptionCard } from '../components/quiz';
 import { DomainRings } from '../components/journey';
+import { PacingPanel } from '../components/pace';
 import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { scoreSession } from '../lib/finishSession';
+import { COACHING, coachingTag, practicePaceLine, TIMING_LABEL } from '../engine/pace';
+import { minutesUsed, scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { startFromIds } from '../lib/sessions';
 import { useSession } from '../store/session';
@@ -26,6 +34,8 @@ export default function Results() {
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
+  // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
+  const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
 
   if (!active || !score) {
     return (
@@ -57,12 +67,16 @@ export default function Results() {
     const b = score.byDomain[d.id];
     return b ? b.correct / b.total : null;
   });
-  const minutes = Math.max(1, Math.round(((active.finishedAt ?? active.startedAt) - active.startedAt) / 60_000));
+  // One pace line for every practice / review session (Build C answer times).
+  const paceText = practicePaceLine(active.questionIds.map((id) => active.responses[id]?.ms), cert.exam);
+  // The same figure the mock history and pacing panel use (never past a deadline; untimed = answer time).
+  const minutes = minutesUsed(active, active.finishedAt ?? active.startedAt);
 
   return (
     <Screen edges={['top', 'bottom']}>
       <Enter i={0}>
-        <T v="meta">{active.title}</T>
+        {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
+        <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : active.title}</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>
           {pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}
         </T>
@@ -104,6 +118,17 @@ export default function Results() {
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
           </T>
         )}
+        {active.mode !== 'mock' && paceText && (
+          <T v="meta" num style={{ marginTop: space.md }}>{paceText}</T>
+        )}
+        {active.mode === 'mock' && !active.deadline && (
+          <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>
+        )}
+        {pacing && (
+          <View style={{ marginTop: space.md }}>
+            <PacingPanel pacing={pacing} cert={cert} />
+          </View>
+        )}
         <Gap h={space.xl} />
         {missed.length > 0 && (
           <>
@@ -123,6 +148,8 @@ export default function Results() {
         const status = !r ? '○ Skipped' : r.correct ? '✓ Correct' : '✗ Missed';
         // Answered after Coach me: a small mark, since it counts half toward readiness.
         const assisted = Boolean(r?.assisted);
+        // Coaching (engine/pace.ts): only on a fast miss or a long, right answer.
+        const coaching = r ? coachingTag(r.correct, r.ms) : null;
         const color = !r ? c.muted : r.correct ? c.correct : c.wrong;
         const open = openId === id;
         const picked = r ? displayToOriginal(r.display, perm) : undefined;
@@ -133,7 +160,8 @@ export default function Results() {
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ expanded: open }}
-              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}. Tap to ${open ? 'collapse' : 'expand'}`}
+              // One sentence each; the coaching line ends with its own full stop (O2).
+              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}.${coaching ? ` ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
               onPress={() => setOpenId(open ? null : id)}
               style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
             >
@@ -141,9 +169,11 @@ export default function Results() {
                 <T v="label" num>{`Question ${i + 1}`}</T>
                 <Row gap={space.sm} style={{ flexShrink: 1, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                   {assisted && <Tag label="Assisted" />}
+                  {coaching && <Tag label={COACHING[coaching].tag} />}
                   <T v="label" color={color}>{status}</T>
                 </Row>
               </Row>
+              {coaching && <T v="meta" style={{ marginTop: space.xs }}>{COACHING[coaching].line}</T>}
               <T v="body" style={{ marginTop: space.xs }}>{open ? q.stem : `${q.stem.slice(0, 110)}${q.stem.length > 110 ? '…' : ''}`}</T>
             </Pressable>
             {open && (

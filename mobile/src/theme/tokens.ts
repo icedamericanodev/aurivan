@@ -36,7 +36,7 @@ export interface Palette {
   sap: string; // leaf marks and the mini ring on forest
   pill: string; // on-forest pill button fill
   onPill: string; // label on the pill button
-  clay: string; // streak only
+  clay: string; // streak + calm attention (pace behind, 2-min cue, last 5 min). Never for errors.
   correct: string;
   correctBg: string;
   wrong: string;

@@ -81,7 +81,7 @@ const press = (label: string) => act(() => { btn(label).props.onPress(); });
 const cards = () => root().findAllByType(OptionCard);
 const picked = () => cards().filter((n) => n.props.state === 'selected').length;
 const clockLabel = () =>
-  root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Time remaining'))[0]
+  root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Time left'))[0]
     .props.accessibilityLabel as string;
 
 beforeEach(() => {
@@ -149,7 +149,8 @@ describe('mock exam: clock, resume, navigator', () => {
     expect(clockLabel()).not.toBe(start);
     expect(useSession.getState().active!.finishedAt).toBeUndefined();
     act(() => { jest.advanceTimersByTime(ms + 1000); });
-    expect(clockLabel()).toBe('Time remaining 00:00');
+    // Build D: the clock lives in the pace strip, read as words with the pace line.
+    expect(clockLabel()).toMatch(/^Time left 0 seconds\./);
     expect(useSession.getState().active!.finishedAt).toBeDefined();
     expect(mockReplace).toHaveBeenCalledWith('/results');
     expect(mockReplace).toHaveBeenCalledTimes(1);

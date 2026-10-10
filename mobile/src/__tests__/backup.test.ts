@@ -585,8 +585,11 @@ describe('hardening from the reviews', () => {
     studiedLearner();
     const read = checkBackupText(JSON.stringify(currentBackup(NOW)));
     if (read.kind !== 'ok') throw new Error(read.code);
-    // Damage this phone's own data (a mock with more right than asked).
-    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, mocks: [{ id: 'x', finishedAt: NOW, total: 1, correct: 5, minutesUsed: 1, byDomain: {} }] } } }));
+    // Damage this phone's own data with a wrong TYPE. (Out-of-range numbers
+    // and broken totals are now fitted at export, Build D C1; a type error
+    // can't be fitted, so the snapshot check must still catch it.)
+    const damaged = { id: 'x', finishedAt: NOW, total: 1, correct: 1, minutesUsed: 'long' as unknown as number, byDomain: {} };
+    useProgress.setState((s) => ({ byCert: { ...s.byCert, cisa: { ...s.byCert.cisa, mocks: [damaged] } } }));
     const before = progressData();
     expect(await restoreBackup(read.data, NOW)).toEqual({ kind: 'no-snapshot' });
     expect(progressData()).toEqual(before);

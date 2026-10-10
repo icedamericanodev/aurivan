@@ -129,9 +129,19 @@ changes nothing. Restores wait for every store to finish loading (the backup
 store is part of the launch hydration gate), and an expired snapshot is
 dropped at launch.
 
-### Quiet data (mobile 1.3, not shown yet)
-Collected now because it can't be back-filled, for the timer and mastery
-badges planned next. Each answer record keeps `ms` (time to answer, with time
+Since mobile 1.4 the app can never write a backup it would refuse to
+restore: `buildBackup` first runs the phone's own data through the SAME
+checker in a "fit" mode (`fitForBackup`), which clamps numbers into range,
+cuts lists and maps to their caps and repairs broken totals; wrong types
+still fail, and the undo-snapshot check still catches them. A property-style
+test (`backup-always-restorable.test.ts`) exports 200 random plausible
+states and checks each one restores. The write sites are fixed too:
+`minutesUsed` (one helper, 1..1440; an untimed mock counts its answer
+time) and answer `ms` (capped at 30 minutes).
+
+### Quiet data (mobile 1.3)
+Collected because it can't be back-filled. Since mobile 1.4 the answer times
+feed the pace features below; `masteredAt` waits for the mastery badges. Each answer record keeps `ms` (time to answer, with time
 in the background left out: `engine/answerClock.ts` + `lib/useAnswerClock.ts`)
 and `lastConfidence`. Each study-notes subtopic gets a permanent `masteredAt`
 the first time it has unassisted correct answers on two different days at
@@ -141,6 +151,36 @@ exam's end, and a mock visit that ends without an answer still counts toward
 that question's time. Questions map
 to notes subtopics through the notes' `practiceIds`. All optional: old saves
 load unchanged. It stays on the phone (and in the learner's own backup file).
+
+### Pace (mobile 1.4)
+Every pacing number comes from ONE pure module, `engine/pace.ts`, and from
+the certification's exam facts, never a number typed on a screen: exam pace
+= minutes / questions (CISA 96 s), target pace keeps 15 minutes back to
+revisit flags (90 s). Plan estimates keep their own 1.2-minute study pace.
+- **Mocks** start from `app/mock-start.tsx`: Standard, +25%, +50% (ISACA
+  accommodations, WCAG 2.2.1) or Untimed (no deadline), plus "Hide the
+  clock". The session keeps `timing`, `hideClock` and the pace `checkpoints`
+  (25 / 50 / 75% of the time, each judged once at its own moment by
+  `dueCheckpoints`). Results show a pacing panel (`mockPacing`), and the
+  saved `MockResult` keeps timing, minutes allowed, median seconds,
+  unanswered and the checkpoint deviations. Untimed mocks are labelled and
+  left out of `pacingStats`; readiness still counts their answers.
+- **Practice timer** (off by default; Settings → Study defaults; offered
+  once by a card close to the exam): counts UP from the Build C answer
+  clocks (`practiceElapsedMs`), so it stops while the explanation shows and
+  never submits anything. A soft cue appears past 2:00 on one question.
+- **Results** always show "Median N s per question · exam pace 96 s" for
+  practice, and coaching tags on fast misses and long right answers.
+- **Daylight** (`engine/games/daylight.ts`): 5 questions, one time budget,
+  tiers as multiples of the exam pace. Timed-out questions go to review
+  through `queueForReview` (not counted as answered).
+- One shared component, `components/pace.tsx` (`PaceStrip`), draws the
+  clock and pace line for all three, and both clocks reuse
+  `lib/useAnswerClock.ts` (no second timing system). All new fields are
+  optional, so 1.3 saves, sessions and backups load unchanged.
+- Starting something new over a timed mock whose time already ran out
+  records that mock at its deadline first (`guardedStart`), instead of
+  offering to discard the learner's answers.
 
 ### The content pipeline
 ```

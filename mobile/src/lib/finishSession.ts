@@ -6,6 +6,7 @@
  *   fed into spaced review.
  */
 import { findQuestion } from '../content/loader';
+import { mockPacing, type MockPacing } from '../engine/pace';
 import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
@@ -16,6 +17,47 @@ export interface SessionScore {
   answered: number;
   correct: number;
   byDomain: Record<string, { total: number; correct: number }>;
+}
+
+/** The most minutes any session may claim: one day (the backup file's range too). */
+export const MAX_SESSION_MINUTES = 1440;
+
+/**
+ * Minutes a session used, the ONE figure Results, mock history and today's
+ * plan all show (Build D C1/C3), always 1..1440:
+ * - an UNTIMED mock has no clock and may sit paused for days, so its time
+ *   is the answer times added up (plus unanswered visits);
+ * - everything else is wall time to the end, never past a deadline.
+ */
+export function minutesUsed(s: ActiveSession, now = Date.now()): number {
+  const ms =
+    s.mode === 'mock' && !s.deadline
+      ? [...Object.values(s.responses).map((r) => r.ms ?? 0), ...Object.values(s.visitMs ?? {})].reduce((a, b) => a + b, 0)
+      : Math.min(s.finishedAt ?? now, s.deadline ?? Infinity) - s.startedAt;
+  return Math.min(MAX_SESSION_MINUTES, Math.max(1, Math.round(ms / 60_000)));
+}
+
+/**
+ * The pacing panel's numbers for a mock (engine/pace.ts mockPacing): time
+ * used vs allowed, median time, checkpoints, unanswered, the last 10% of the
+ * time vs the rest, and the slowest domain. Pure: it reads the session only.
+ */
+export function sessionPacing(s: ActiveSession): MockPacing {
+  const endedAt = Math.min(s.finishedAt ?? Date.now(), s.deadline ?? Infinity);
+  const answers = [];
+  for (const id of s.questionIds) {
+    const r = s.responses[id];
+    const q = findQuestion(s.certId, id);
+    if (r && q) answers.push({ correct: r.correct, ms: r.ms, at: r.at, domainId: q.domainId });
+  }
+  return mockPacing({
+    startedAt: s.startedAt,
+    endedAt,
+    allowedMs: s.deadline ? s.deadline - s.startedAt : null,
+    total: s.questionIds.length,
+    answers,
+    checkpoints: s.checkpoints,
+  });
 }
 
 /** Pure scoring of a session (unanswered mock questions count as wrong). */
@@ -68,17 +110,26 @@ export function finishSession() {
     // If the learner reopens the app after the deadline, the exam ended AT
     // the deadline — not now.
     const endedAt = Math.min(Date.now(), s.deadline ?? Infinity);
+    // Build D: pacing kept on the result for history and pacing stats.
+    // Untimed mocks are labelled, and pacing stats leave them out.
+    const pacing = sessionPacing({ ...s, finishedAt: endedAt });
     const result: MockResult = {
       id: s.id,
       finishedAt: endedAt,
       total: score.total,
       correct: score.correct,
-      minutesUsed: Math.max(1, Math.round((endedAt - s.startedAt) / 60_000)),
+      minutesUsed: minutesUsed({ ...s, finishedAt: endedAt }),
       byDomain: score.byDomain,
+      timing: s.timing ?? 'standard',
+      ...(pacing.allowedMinutes !== null ? { minutesAllowed: pacing.allowedMinutes } : {}),
+      ...(pacing.medianSec !== null ? { medianSec: pacing.medianSec } : {}),
+      unanswered: pacing.unanswered,
+      ...(pacing.checkpoints.length ? { checkpoints: pacing.checkpoints.map((c) => c.deviation) } : {}),
     };
     progress.recordMock(s.certId, result);
   }
-  useSession.getState().finish();
+  // A mock reopened after its deadline ended AT the deadline: Results and the pacing panel agree.
+  useSession.getState().finish(Math.min(Date.now(), s.deadline ?? Infinity));
   // Tick off today's plan (review / practice / mock) and add the minutes spent.
   const score = scoreSession(s);
   const endedAt = Math.min(Date.now(), s.deadline ?? Infinity);
@@ -95,6 +146,6 @@ export function finishSession() {
     total: s.questionIds.length,
     byDomain: answeredByDomain,
     // Capped, so a session left open overnight doesn't claim hours of study.
-    minutes: Math.min(Math.max(1, Math.round((endedAt - s.startedAt) / 60_000)), s.questionIds.length * 3),
+    minutes: Math.min(minutesUsed({ ...s, finishedAt: endedAt }), s.questionIds.length * 3),
   });
 }

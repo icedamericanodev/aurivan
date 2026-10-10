@@ -10,6 +10,7 @@ import { persist } from 'zustand/middleware';
 import { getCertification } from '../content/certifications';
 import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
+import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
 import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
@@ -17,6 +18,7 @@ import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan }
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
+import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
@@ -30,6 +32,20 @@ export interface MockResult {
   correct: number;
   minutesUsed: number;
   byDomain: Record<string, { total: number; correct: number }>;
+  /**
+   * Build D pacing, all optional (older results have none, and were standard):
+   * - timing: standard, +25%, +50% or untimed. Untimed mocks are labelled
+   *   "untimed" and left out of pacing stats; readiness counts them as usual.
+   * - minutesAllowed: the time the mock allowed (none when untimed).
+   * - medianSec: median seconds per answered question.
+   * - unanswered: questions with no answer when it ended.
+   * - checkpoints: the signed deviation at each pace check (+0.15 = 15% slow).
+   */
+  timing?: MockTiming;
+  minutesAllowed?: number;
+  medianSec?: number;
+  unanswered?: number;
+  checkpoints?: number[];
 }
 
 // The slip tags now live in the engine (slip coach); re-exported for screens.
@@ -209,7 +225,8 @@ export const useProgress = create<ProgressState>()(
               ...(opts?.assisted ? { lastAssisted: true } : {}),
               // Build C quiet data: both describe THIS answer, so they are
               // left out (not carried over) when this answer has none.
-              ...(typeof opts?.ms === 'number' && Number.isFinite(opts.ms) ? { ms: Math.max(0, Math.round(opts.ms)) } : {}),
+              // Clamped to the answer clock's cap, so a record never breaks a backup.
+              ...(typeof opts?.ms === 'number' && Number.isFinite(opts.ms) ? { ms: Math.min(MAX_ANSWER_MS, Math.max(0, Math.round(opts.ms))) } : {}),
               ...(confidence ? { lastConfidence: confidence } : {}),
             },
           };

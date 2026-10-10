@@ -50,6 +50,7 @@ export function GameFrame({
   footer,
   onInfo,
   infoOpen,
+  strip,
 }: {
   title: string;
   index: number;
@@ -60,6 +61,8 @@ export function GameFrame({
   /** Shows a 48pt "How scoring works" button in the header. */
   onInfo?: () => void;
   infoOpen?: boolean;
+  /** Fixed under the header, outside the scroll: Daylight's pace strip (components/pace.tsx). */
+  strip?: ReactNode;
 }) {
   const { c } = useTheme();
   // Measured height of the sticky footer, so the scroll can clear it.
@@ -92,6 +95,7 @@ export function GameFrame({
           )}
         </View>
       </View>
+      {strip}
       <View style={{ flex: 1 }}>
         {/* Pad by the sticky footer + 24 (spec §11), so the last option is never under it. */}
         <ScrollView ref={scrollRef} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: footer ? footerH + space.xl : space.xxl }}>

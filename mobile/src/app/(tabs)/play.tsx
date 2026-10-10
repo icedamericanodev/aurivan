@@ -10,7 +10,7 @@
  */
 import { router } from 'expo-router';
 import { useMemo } from 'react';
-import { Crosshair, ICON_STROKE, Play as PlayIcon, Scale, Sparkles } from '../../components/icons';
+import { Crosshair, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, Sunrise } from '../../components/icons';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Screen, Section, T, Trail } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
@@ -19,7 +19,7 @@ import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const ICONS: Record<GameId, typeof Crosshair> = { trap: Crosshair, sprint: Scale, priority: Sparkles };
+const ICONS: Record<GameId, typeof Crosshair> = { trap: Crosshair, sprint: Scale, priority: Sparkles, daylight: Sunrise };
 
 export default function Play() {
   const { c } = useTheme();

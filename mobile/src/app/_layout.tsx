@@ -84,10 +84,13 @@ export default function RootLayout() {
         {/* No swipe-back inside a quiz: an accidental swipe must not lose an exam. */}
         <Stack.Screen name="session" options={{ gestureEnabled: false }} />
         <Stack.Screen name="results" options={{ gestureEnabled: false }} />
+        {/* Mock start sheet: timing and "hide the clock", before every mock. */}
+        <Stack.Screen name="mock-start" options={{ animation: rise }} />
         <Stack.Screen name="lesson/[id]" options={{ animation: rise }} />
         <Stack.Screen name="game/trap" options={{ animation: rise }} />
         <Stack.Screen name="game/sprint" options={{ animation: rise }} />
         <Stack.Screen name="game/priority" options={{ animation: rise }} />
+        <Stack.Screen name="game/daylight" options={{ animation: rise }} />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />

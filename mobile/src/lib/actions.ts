@@ -4,7 +4,7 @@
  */
 import { router } from 'expo-router';
 import type { PlanItem } from '../engine/planner';
-import { guardedStart, startMock, startPractice, startReview } from './sessions';
+import { guardedStart, startPractice, startReview } from './sessions';
 
 const openSession = () => router.push('/session');
 
@@ -26,6 +26,7 @@ export function runPlanItem(item: PlanItem, certId: string) {
     case 'game':
       return router.push(`/game/${item.gameId}`);
     case 'mock':
-      return guardedStart(() => startMock(certId, item.questions), openSession);
+      // The start sheet first (timing and "hide the clock"); it starts the session.
+      return router.push({ pathname: '/mock-start', params: { questions: String(item.questions) } });
   }
 }
