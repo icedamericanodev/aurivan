@@ -69,8 +69,11 @@ export function OptionCard({
   onPress,
   disabled,
   tag,
+  tagTone,
   note,
 }: {
+  /** Colour the tag in the trap-warning tone (e.g. "Snare"), whatever the row's state. */
+  tagTone?: 'tip';
   letter: Letter;
   text: string;
   state: OptionState;
@@ -99,7 +102,7 @@ export function OptionCard({
   const badge = 30 * Math.min(Math.max(fontScale, 1), 1.6);
   // No ", selected" here: the radio's checked state already announces it.
   const suffix = state === 'correct' ? ', best answer' : state === 'wrong' ? ', your answer, incorrect' : '';
-  const tagColor = state === 'correct' ? c.correct : state === 'wrong' ? c.wrong : c.ink2;
+  const tagColor = tagTone === 'tip' ? c.tip : state === 'correct' ? c.correct : state === 'wrong' ? c.wrong : c.ink2;
 
   const rowStyle = {
     flexDirection: 'row' as const,

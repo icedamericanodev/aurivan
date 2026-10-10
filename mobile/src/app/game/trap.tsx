@@ -100,15 +100,27 @@ function TrapSpotter() {
     }
   };
 
+  // Reveal: the best answer ✓, the learner's own wrong pick ✗, and the real
+  // snare TAGGED "Snare" in the tip tone (not a red ✗: it wasn't their answer).
   const stateFor = (display: Letter): OptionState => {
     const orig = displayToOriginal(display, perm);
     if (phase === 'reveal') {
       if (orig === q.correct) return 'correct';
-      if (orig === trapOriginal) return 'wrong';
+      if (display === answerPick) return 'wrong';
       return 'dimmed';
     }
     if (phase === 'trap') return 'idle';
     return closed.includes(orig) ? 'dimmed' : 'idle';
+  };
+
+  const tagFor = (display: Letter): { tag?: string; tagTone?: 'tip' } => {
+    if (phase !== 'reveal') return {};
+    const orig = displayToOriginal(display, perm);
+    const mine = display === answerPick && orig !== q.correct;
+    if (orig === trapOriginal) return { tag: mine ? 'Snare · your answer' : 'Snare', tagTone: 'tip' };
+    if (mine) return { tag: 'Your answer' };
+    if (orig === q.correct) return { tag: 'Best answer' };
+    return {};
   };
 
   const result = revealed
@@ -155,6 +167,7 @@ function TrapSpotter() {
           letter={d}
           text={q.options[displayToOriginal(d, perm)] ?? ''}
           state={stateFor(d)}
+          {...tagFor(d)}
           disabled={phase === 'reveal' || (phase === 'answer' && closed.includes(displayToOriginal(d, perm)))}
           onPress={() => pick(d)}
         />

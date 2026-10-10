@@ -136,6 +136,26 @@ describe('Snare Spotter: picking the best answer as the snare', () => {
     expect(selectCert(useProgress.getState(), 'cisa').answers[q.id].lastAssisted).toBe(true);
   });
 
+  it('the answer screen marks your wrong pick ✗, tags the real snare "Snare" (tip tone, no ✗), and the best ✓', () => {
+    const q = current();
+    const snare = trapLetter(q)!;
+    const other = (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && l !== snare && q.options[l])!;
+    tap(optionWith(q.options[snare]!)); // step 1: spotted
+    tap(optionWith(q.options[other]!)); // step 2: a wrong answer that is NOT the snare
+    expect(optionWith(q.options[other]!).props).toMatchObject({ state: 'wrong', tag: 'Your answer' });
+    expect(optionWith(q.options[snare]!).props).toMatchObject({ state: 'dimmed', tag: 'Snare', tagTone: 'tip' });
+    expect(optionWith(q.options[q.correct]!).props).toMatchObject({ state: 'correct', tag: 'Best answer' });
+  });
+
+  it('taking the snare as your answer: one row says "Snare · your answer"', () => {
+    const q = current();
+    const snare = trapLetter(q)!;
+    const other = (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && l !== snare && q.options[l])!;
+    tap(optionWith(q.options[other]!)); // step 1: missed the snare
+    tap(optionWith(q.options[snare]!)); // step 2: fell for it
+    expect(optionWith(q.options[snare]!).props).toMatchObject({ state: 'wrong', tag: 'Snare · your answer', tagTone: 'tip' });
+  });
+
   it('a wrong (non-best) snare pick is still closed in step 2', () => {
     const q = current();
     const other = (['A', 'B', 'C', 'D'] as const).find((l) => l !== q.correct && l !== trapLetter(q) && q.options[l])!;
