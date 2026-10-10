@@ -147,6 +147,8 @@ export default function NotesDomain() {
                   <Button
                     kind="secondary"
                     label="Practice this topic"
+                    // Several of these buttons sit on one page: name the topic (UX review P4).
+                    accessibilityLabel={`Practice this topic: ${t.name}`}
                     accessibilityHint={`Starts a practice set mixing every part of ${t.name}`}
                     onPress={() => practiseTopic(t)}
                     style={{ marginTop: space.md }}

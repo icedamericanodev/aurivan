@@ -510,8 +510,10 @@ export default function SessionScreen() {
           {!submitted ? (
             <>
               {/* Question */}
-              <Row gap={space.sm} style={{ marginTop: space.md, alignItems: 'flex-start' }}>
-                <View style={{ flex: 1 }}>
+              {/* Large text: the row wraps, the domain tag takes the full width and
+                  "Flagged" / the reason tag drop under it (UX review P3). */}
+              <Row gap={space.sm} style={{ marginTop: space.md, alignItems: 'flex-start', flexWrap: largeText ? 'wrap' : 'nowrap' }}>
+                <View style={largeText ? { flexBasis: '100%' } : { flex: 1 }}>
                   {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
                 </View>
                 {flagged && <T v="caption" color={c.tip}>Flagged</T>}

@@ -8,24 +8,29 @@
  * - Call It First (UX review P5, P6; code review): principle cards are never
  *   spoken as "best answer", the step-1 caption doesn't repeat the card's
  *   tag, and the answer time counts only the time the options were shown.
+ * - Session (UX review P3): at large text the reason-tag row wraps and the
+ *   domain tag takes the full width.
+ * - Notes domain page (UX review P4): "Practice this topic" names its topic.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
  */
 import { router } from 'expo-router';
-import { AccessibilityInfo, AppState, type AppStateStatus } from 'react-native';
+import { AccessibilityInfo, AppState, Dimensions, type AppStateStatus } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import Results from '../app/results';
-import RootOrRumor from '../app/game/rumor';
 import CallItFirst from '../app/game/callit';
+import RootOrRumor from '../app/game/rumor';
+import NotesDomain from '../app/notes/[domain]';
+import Results from '../app/results';
+import SessionScreen from '../app/session';
 import { OptionCard } from '../components/quiz';
-import { selectCert } from '../store/progress';
+import { Tag } from '../components/ui';
 import { getNotes } from '../content/notes';
 import { rumorStatements, type Statement } from '../engine/games/rootOrRumor';
 import { finishSession } from '../lib/finishSession';
 import { scopeTopics } from '../lib/outline';
-import { startGuidedStep } from '../lib/sessions';
-import { useProgress } from '../store/progress';
+import { startGuidedStep, startStudy } from '../lib/sessions';
+import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 
@@ -64,10 +69,12 @@ jest.mock('../components/icons', () => {
   });
 });
 let mockCanDismiss = true;
+let mockParams: Record<string, string> = {};
 jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), dismissTo: jest.fn(), canGoBack: () => true, canDismiss: () => mockCanDismiss },
   useFocusEffect: jest.fn(),
-  useLocalSearchParams: () => ({}),
+  useLocalSearchParams: () => mockParams,
+  useNavigation: () => ({ addListener: () => () => {} }),
 }));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
@@ -94,6 +101,7 @@ const press = (label: string) =>
 
 beforeEach(() => {
   mockCanDismiss = true;
+  mockParams = {};
   jest.mocked(router.dismissTo).mockClear();
   jest.mocked(router.replace).mockClear();
   useProgress.getState().resetCert('cisa');
@@ -252,5 +260,43 @@ describe('Call It First: principle cards, the step-1 caption, and the answer tim
     expect(answers).toHaveLength(1);
     expect(answers[0].ms).toBeGreaterThanOrEqual(4_500);
     expect(answers[0].ms).toBeLessThan(6_000);
+  });
+});
+
+describe('Session: the reason-tag row at large text', () => {
+  const setScale = (fontScale: number) => {
+    const w = Dimensions.get('window');
+    act(() => {
+      Dimensions.set({ window: { ...w, fontScale }, screen: { ...w, fontScale } });
+    });
+  };
+  afterEach(() => setScale(1));
+  /** The View holding the domain Tag, and the row around it. */
+  const tagBox = () => root().findAllByType(Tag)[0].parent!;
+  const flat = (st: unknown) => Object.assign({}, ...[st].flat(3).filter(Boolean)) as Record<string, unknown>;
+
+  it('wraps at large text, with the domain tag on its own full-width line; one line at 100%', () => {
+    startStudy('cisa', { mode: 'smart', count: 10 });
+    expect(Object.keys(useSession.getState().active!.reasons ?? {}).length).toBeGreaterThan(0);
+    setScale(2);
+    mount(<SessionScreen />);
+    expect(flat(tagBox().props.style)).toMatchObject({ flexBasis: '100%' });
+    expect(root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Why this question: ')).length).toBeGreaterThan(0);
+    setScale(1);
+    mount(<SessionScreen />);
+    expect(flat(tagBox().props.style)).toMatchObject({ flex: 1 });
+  });
+});
+
+describe('Notes domain page: "Practice this topic" names its topic', () => {
+  it('each button is spoken with its topic name', () => {
+    mockParams = { domain: '4' };
+    mount(<NotesDomain />);
+    const buttons = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Practice this topic: ') && typeof n.props.onPress === 'function');
+    // (Each Button and its Pressable both carry the label: count distinct ones.)
+    const labels = new Set(buttons.map((b) => b.props.accessibilityLabel as string));
+    const names = scopeTopics('cisa', '4').map((t) => `Practice this topic: ${t.name}`);
+    expect(labels.size).toBeGreaterThan(1);
+    expect([...labels].every((l) => names.includes(l))).toBe(true);
   });
 });
