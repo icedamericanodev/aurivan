@@ -219,8 +219,9 @@ describe('journey 1: full mock at Standard', () => {
     unmount();
     mount(<Results />);
     const l = labels();
-    expect(l).toContain('Time used: 4 h of 4 h');
-    expect(l).toContain('Pace checks: 25%: 30 min behind · 50%: 15 min ahead · 75%: 42 min behind');
+    // Review fix P7: the panel's values are spoken in words (the screen still shows "4 h of 4 h").
+    expect(l).toContain('Time used: 4 hours of 4 hours');
+    expect(l).toContain('Pace checks: 25 percent: 30 minutes behind; 50 percent: 15 minutes ahead; 75 percent: 42 minutes behind');
     expect(l).toContain('Unanswered when time ran out: 60');
     expect(l).toContain('240 minutes');
     // The You tab's pacing line counts this timed mock.
@@ -251,7 +252,8 @@ describe('journey 2: mini mock at +50% with "Hide the clock"', () => {
     expect(strip().clock).toBe('hidden');
 
     tick(25 * MIN + 30 * S); // 4.5 minutes left
-    expect(strip().line).toEqual({ text: 'Less than 5 minutes left.', tone: 'cue' });
+    // Review fix P4: the hidden-clock warning uses the calm 'soon' tone (clock icon, clay).
+    expect(strip().line).toEqual({ text: 'Less than 5 minutes left.', tone: 'soon' });
     tick(2 * MIN);
     expect(announce.mock.calls.filter(([t]) => t === 'Less than 5 minutes left.')).toHaveLength(1);
     expect(active().finishedAt).toBeUndefined();
@@ -266,7 +268,7 @@ describe('journey 2: mini mock at +50% with "Hide the clock"', () => {
     unmount();
     mount(<Results />);
     expect(allText()).toContain('Mini mock · +50% time');
-    expect(labels()).toContain('Time used: 2 h of 2 h');
+    expect(labels()).toContain('Time used: 2 hours of 2 hours');
     expect(labels()).toContain('Unanswered when time ran out: 20');
   });
 });
@@ -365,7 +367,7 @@ describe('journey 4: app killed mid-mock, reopened later', () => {
     expect(m.checkpoints).toHaveLength(3);
     unmount();
     mount(<Results />);
-    expect(labels()).toContain('Time used: 1 h 20 min of 1 h 20 min');
+    expect(labels()).toContain('Time used: 1 hour 20 minutes of 1 hour 20 minutes');
     expect(labels()).toContain('Unanswered when time ran out: 47');
   });
 
@@ -404,7 +406,8 @@ describe('journey 5: timed practice', () => {
     tick(119 * S);
     expect(strip().line).toBeNull();
     tick(2 * S);
-    expect(strip().line).toEqual({ text: 'Over 2 minutes. Consider flagging this one.', tone: 'cue' });
+    // Review fix U-H1: practice has no Flag button, so the cue speaks about the exam, in the 'soon' tone.
+    expect(strip().line).toEqual({ text: 'Over 2 minutes on this one. On the exam, flag it and move on.', tone: 'soon' });
     // Waiting much longer submits nothing.
     tick(70 * S); // 3:11 on this question
     expect(Object.keys(active().responses)).toHaveLength(0);
@@ -431,7 +434,8 @@ describe('journey 5: timed practice', () => {
     unmount();
     mount(<Results />);
     expect(allText()).toContain('Median 50 s per question · exam pace 96 s');
-    expect(allText()).toContain('Slow and right');
+    // Review fix O2: the tag was renamed from "Slow and right".
+    expect(allText()).toContain('Took its time');
   });
 });
 
@@ -456,11 +460,10 @@ describe('journey 6: the "Practice at exam pace?" card', () => {
     expect(allText()).not.toContain('Practice at exam pace?');
   });
 
-  // BUG (minor): the card asks "Turn on Timed?" while the Timed switch on the
-  // same screen is already on (the learner flipped it for this visit).
-  // practice.tsx passes `timerOn: timerDefault` instead of the switch's
-  // value, and "Not now" then resets the switch (setTimedHere(null)), turning
-  // off a timer the learner had just switched on.
+  // QA B3 (fixed in 5265d03): the card used to ask "Turn on Timed?" while the
+  // Timed switch on the same screen was already on, because practice.tsx
+  // checked the default instead of the switch; and the dismiss button then
+  // reset the switch. Now the card reads the switch, and only accepting resets it.
   it('the card hides while the Timed switch on the screen is on', () => {
     useSettings.setState({ examDates: { cisa: dayKey(T0 + 14 * DAY) } });
     mount(<Practice />);
