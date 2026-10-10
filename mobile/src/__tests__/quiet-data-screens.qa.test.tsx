@@ -259,7 +259,7 @@ describe('answer time: mock exam (no feedback, revisits allowed)', () => {
   // answer", and the commit says "a mock adds up every visit to a question".
   // Cause: session.tsx only writes `ms` inside pick(); the time of a visit is
   // dropped when the question changes without a pick.
-  it.failing('a first visit without an answer still counts when the learner comes back and answers', () => {
+  it('a first visit without an answer still counts when the learner comes back and answers', () => {
     startMock('cisa', 3);
     mount(<SessionScreen />);
     const q = qidAt(0);
@@ -392,7 +392,7 @@ describe('masteredAt: two different days, unassisted, not games', () => {
   // Cause: lib/finishSession.ts records mock answers with recordAnswer, which
   // uses Date.now() (store/progress.ts:196), not the exam's end time (endedAt,
   // which finishSession already computes for the mock result).
-  it.failing('an expired mock reopened two days later does not create mastery from one day of answers', () => {
+  it('an expired mock reopened two days later does not create mastery from one day of answers', () => {
     practiceOne(ids[0]); // Monday 09:00
     const s = startMock('cisa', 3)!;
     const swapped = { ...s, questionIds: [ids[1], ...s.questionIds.slice(1)], perms: { ...s.perms, [ids[1]]: ['A', 'B', 'C', 'D'] as const } };

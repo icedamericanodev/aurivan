@@ -175,26 +175,64 @@ describe('answer record: time and confidence', () => {
   });
 });
 
+// ── An answer stamped earlier (an expired mock opened later) ─────────────
+describe('recordAnswer `at`', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: T0 + 2 * DAY }); // Wednesday
+    useProgress.getState().resetCert('cisa');
+    useProgress.setState({ streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 } });
+  });
+  afterEach(() => jest.useRealTimers());
+
+  it('uses that time for the record, and never rewinds the streak or today', () => {
+    const { recordAnswer } = useProgress.getState();
+    recordAnswer('cisa', 'd1_001', true); // Wednesday, now
+    expect(useProgress.getState().streak.lastDay).toBe('2026-10-07');
+    recordAnswer('cisa', 'd1_002', true, undefined, { at: T0 }); // Monday's mock
+    expect(selectCert(useProgress.getState(), 'cisa').answers.d1_002.lastAt).toBe(T0);
+    expect(useProgress.getState().streak.lastDay).toBe('2026-10-07');
+    expect(useProgress.getState().today).toEqual({ day: '2026-10-07', answered: 1 });
+  });
+});
+
 // ── masteredAt: the rule (pure) ──────────────────────────────────────────
 describe('subtopic mastery date (rule)', () => {
+  const at = (day: number, hour: number, min = 0) => new Date(2026, 9, day, hour, min).getTime();
+
   it('needs unassisted correct answers on two different days', () => {
-    const one = noteCleanCorrect(undefined, '2026-10-05');
-    expect(one).toEqual({ firstDay: '2026-10-05' });
-    expect(noteCleanCorrect(one, '2026-10-05')).toBe(one); // same day: nothing new
-    expect(noteCleanCorrect(one, '2026-10-07')).toEqual({ firstDay: '2026-10-05', masteredAt: '2026-10-07' });
+    const one = noteCleanCorrect(undefined, '2026-10-05', at(5, 9));
+    expect(one).toEqual({ firstDay: '2026-10-05', firstAt: at(5, 9) });
+    expect(noteCleanCorrect(one, '2026-10-05', at(5, 20))).toBe(one); // same day: nothing new
+    expect(noteCleanCorrect(one, '2026-10-07', at(7, 9))).toEqual({ firstDay: '2026-10-05', firstAt: at(5, 9), masteredAt: '2026-10-07' });
+  });
+
+  it('across midnight is not two days: it also needs 12 hours between the answers', () => {
+    const late = noteCleanCorrect(undefined, '2026-10-05', at(5, 23, 50));
+    // 20 minutes later, just after midnight: a new calendar day, but not spaced.
+    expect(noteCleanCorrect(late, '2026-10-06', at(6, 0, 10))).toBe(late);
+    // 11:59 later: still not.
+    expect(noteCleanCorrect(late, '2026-10-06', at(6, 11, 49))).toBe(late);
+    // 12 hours later: mastered on that day.
+    expect(noteCleanCorrect(late, '2026-10-06', at(6, 11, 50))?.masteredAt).toBe('2026-10-06');
+  });
+
+  it('an entry saved before `firstAt` existed uses the day rule alone', () => {
+    const old = { firstDay: '2026-10-05' };
+    expect(noteCleanCorrect(old, '2026-10-06', at(6, 0, 5))?.masteredAt).toBe('2026-10-06');
   });
 
   it('is permanent once set', () => {
     const done = { firstDay: '2026-10-05', masteredAt: '2026-10-07' };
-    expect(noteCleanCorrect(done, '2026-10-20')).toBe(done);
+    expect(noteCleanCorrect(done, '2026-10-20', at(20, 9))).toBe(done);
   });
 
   it('wrong or assisted answers change nothing', () => {
     const map = { x: { firstDay: '2026-10-05' } };
-    expect(recordMastery(map, 'x', '2026-10-06', { correct: false, assisted: false })).toBe(map);
-    expect(recordMastery(map, 'x', '2026-10-06', { correct: true, assisted: true })).toBe(map);
-    expect(recordMastery(map, undefined, '2026-10-06', { correct: true, assisted: false })).toBe(map);
-    expect(recordMastery(map, 'x', '2026-10-06', { correct: true, assisted: false })?.x.masteredAt).toBe('2026-10-06');
+    const t = at(6, 9);
+    expect(recordMastery(map, 'x', '2026-10-06', { correct: false, assisted: false }, t)).toBe(map);
+    expect(recordMastery(map, 'x', '2026-10-06', { correct: true, assisted: true }, t)).toBe(map);
+    expect(recordMastery(map, undefined, '2026-10-06', { correct: true, assisted: false }, t)).toBe(map);
+    expect(recordMastery(map, 'x', '2026-10-06', { correct: true, assisted: false }, t)?.x.masteredAt).toBe('2026-10-06');
   });
 });
 
@@ -227,7 +265,7 @@ describe('subtopic mastery date (store)', () => {
     const { recordAnswer } = useProgress.getState();
     recordAnswer('cisa', q1.id, true, 'sure');
     recordAnswer('cisa', q2.id, true, 'sure'); // same day: still one day
-    expect(mastery()).toEqual({ firstDay: '2026-10-05' });
+    expect(mastery()).toEqual({ firstDay: '2026-10-05', firstAt: T0 });
     jest.setSystemTime(T0 + 2 * DAY);
     recordAnswer('cisa', q3.id, true);
     expect(mastery()?.masteredAt).toBe('2026-10-07');
@@ -253,7 +291,7 @@ describe('subtopic mastery date (store)', () => {
     jest.setSystemTime(T0 + DAY);
     recordAnswer('cisa', q2.id, true, 'sure', { assisted: true });
     recordAnswer('cisa', q3.id, true, 'sure', { mastery: false });
-    expect(mastery()).toEqual({ firstDay: '2026-10-05' });
+    expect(mastery()).toEqual({ firstDay: '2026-10-05', firstAt: T0 });
   });
 });
 

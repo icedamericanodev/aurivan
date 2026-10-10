@@ -117,9 +117,21 @@ export default function SessionScreen() {
   // Quiet data (Build C): time on this question, background time excluded.
   // Keyed on the question, so it restarts each time a question is shown.
   const readClock = useAnswerClock(qid);
-  // Mock exams: the time already spent on this question in earlier visits,
-  // so going back and changing an answer adds to it instead of replacing it.
+  // Mock exams: the time already spent on this question in earlier visits
+  // (the last answer's time plus visits that ended without an answer), so
+  // going back and answering adds to it instead of replacing it.
   const [visitBase, setVisitBase] = useState<number | undefined>(undefined);
+  // Mock exams: did this visit end with a tap on an option? If not, its time
+  // is kept in the session store when the learner moves on (effect below).
+  const pickedThisVisit = useRef(false);
+  useEffect(() => {
+    if (!isMock || !qid) return;
+    pickedThisVisit.current = false;
+    return () => {
+      // Runs before the clock restarts for the next question, so this reads this visit's time.
+      if (!pickedThisVisit.current) useSession.getState().addVisitTime(qid, readClock());
+    };
+  }, [isMock, qid, readClock]);
 
   // Reset the local picker whenever the question changes (and on first
   // render, so a resumed mock shows its saved pick). This is React's
@@ -130,7 +142,7 @@ export default function SessionScreen() {
   if (resetFor !== qid) {
     setResetFor(qid);
     setSelected(isMock && response ? response.display : null);
-    setVisitBase(isMock ? response?.ms : undefined);
+    setVisitBase(isMock ? (response?.ms ?? 0) + (active?.visitMs?.[qid ?? ''] ?? 0) : undefined);
     setConfidence(undefined);
     setVineVisible(false);
   }
@@ -230,6 +242,7 @@ export default function SessionScreen() {
     haptic.selection();
     setSelected(letter);
     if (isMock) {
+      pickedThisVisit.current = true;
       answer(qid, { display: letter, correct: isCorrect(q, letter, perm), ms: addMs(visitBase, readClock()) });
     }
   };

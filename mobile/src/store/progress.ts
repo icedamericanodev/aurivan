@@ -145,8 +145,10 @@ interface ProgressState {
      * ms: time to answer (engine/answerClock.ts), kept on the answer record.
      * mastery: false for game answers, which never count toward the
      * subtopic mastery date (engine/mastery.ts).
+     * at: when the answer was given (default now). A mock submitted after its
+     * deadline passes the exam's end, so days and mastery use that time.
      */
-    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean },
+    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number },
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
@@ -193,7 +195,7 @@ export const useProgress = create<ProgressState>()(
 
       recordAnswer: (certId, questionId, correct, confidence, opts) =>
         set((s) => {
-          const now = Date.now();
+          const now = opts?.at ?? Date.now();
           const cp = normalize(s.byCert[certId]);
           const prev = cp.answers[questionId];
           const answers = {
@@ -231,7 +233,7 @@ export const useProgress = create<ProgressState>()(
           const mastery =
             opts?.mastery === false
               ? cp.mastery
-              : recordMastery(cp.mastery, subtopicOfQuestion(certId, questionId), day, { correct, assisted: opts?.assisted === true });
+              : recordMastery(cp.mastery, subtopicOfQuestion(certId, questionId), day, { correct, assisted: opts?.assisted === true }, now);
           // Today's clearing card counts answers for this cert's plan, today only.
           const cur = s.days[certId];
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
@@ -243,8 +245,10 @@ export const useProgress = create<ProgressState>()(
               ...s.byCert,
               [certId]: { ...cp, answers, review, mistakes, ...(moments ? { moments } : {}), ...(mastery ? { mastery } : {}) },
             },
-            streak: bumpStreak(s.streak, now),
-            today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
+            // An answer stamped on an EARLIER day than the latest study day
+            // (an expired mock opened later) never rewinds the streak or today.
+            streak: s.streak.lastDay && day < s.streak.lastDay ? s.streak : bumpStreak(s.streak, now),
+            today: s.today.day && day < s.today.day ? s.today : { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
             days,
           };
         }),

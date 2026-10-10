@@ -8,6 +8,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
+import { addMs } from '../engine/answerClock';
 import type { Confidence } from '../engine/srs';
 import type { Permutation } from '../engine/shuffle';
 import { persistStorage } from './storage';
@@ -40,6 +41,12 @@ export interface ActiveSession {
   flagged: string[];
   /** Question ids where the learner opened "Coach me" (optional for older saves). */
   coached?: string[];
+  /**
+   * Mock exams: time (ms) from visits that ended WITHOUT an answer (read it,
+   * moved on). The next answer to that question adds it in, then it is
+   * cleared. Optional: older sessions have none.
+   */
+  visitMs?: Record<string, number>;
   startedAt: number;
   deadline?: number; // epoch ms — mock exams only
   finishedAt?: number; // set when the learner finishes / submits
@@ -53,6 +60,8 @@ interface SessionState {
   toggleFlag: (questionId: string) => void;
   /** Remember that Coach me was opened, so a reload keeps the hint (and the half weight). */
   markCoached: (questionId: string) => void;
+  /** A mock visit ended with no answer: keep its time for the eventual answer. */
+  addVisitTime: (questionId: string, ms: number) => void;
   finish: () => void;
   clear: () => void;
 }
@@ -63,11 +72,22 @@ export const useSession = create<SessionState>()(
       active: null,
       start: (active) => set({ active }),
       answer: (questionId, r) =>
-        set((s) =>
-          s.active
-            ? { active: { ...s.active, responses: { ...s.active.responses, [questionId]: r } } }
-            : s,
-        ),
+        set((s) => {
+          if (!s.active) return s;
+          // Any unanswered-visit time is now part of this answer's `ms` (session.tsx).
+          let visitMs = s.active.visitMs;
+          if (visitMs?.[questionId] !== undefined) {
+            visitMs = { ...visitMs };
+            delete visitMs[questionId];
+          }
+          return { active: { ...s.active, responses: { ...s.active.responses, [questionId]: r }, ...(visitMs ? { visitMs } : {}) } };
+        }),
+      addVisitTime: (questionId, ms) =>
+        set((s) => {
+          if (!s.active || s.active.finishedAt || ms <= 0) return s;
+          const prev = s.active.visitMs?.[questionId] ?? 0;
+          return { active: { ...s.active, visitMs: { ...s.active.visitMs, [questionId]: addMs(prev, ms) } } };
+        }),
       goTo: (index) => set((s) => (s.active ? { active: { ...s.active, index } } : s)),
       toggleFlag: (questionId) =>
         set((s) => {
