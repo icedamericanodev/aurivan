@@ -12,6 +12,7 @@ import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
+import { noteRound, type GameGrowth, type RoundOutcome, type TierChange } from '../engine/games/growth';
 import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
@@ -116,6 +117,12 @@ export interface CertProgress {
    * readiness or mastery. Optional: older saves have none.
    */
   cards?: Record<string, ReviewEntry>;
+  /**
+   * Build F: each game's level (Seedling → Sapling → Heartwood) and its last
+   * skill-step results (engine/games/growth.ts). Optional: older saves have
+   * none, and every game starts at Seedling.
+   */
+  gameGrowth?: Partial<Record<GameId, GameGrowth>>;
 }
 
 export interface StudyPathState {
@@ -206,6 +213,8 @@ interface ProgressState {
   setPathCursor: (certId: string, mode: keyof StudyPathState, scope: string, value: string) => void;
   /** Build E: a Root or Rumor answer on a note card (spaced like a question; never readiness). */
   recordCard: (certId: string, cardId: string, correct: boolean) => void;
+  /** Build F: a finished game round moves the game's level (engine/games/growth.ts). Returns the change. */
+  noteGameRound: (certId: string, game: GameId, outcome: RoundOutcome) => TierChange;
 }
 
 export const useProgress = create<ProgressState>()(
@@ -407,6 +416,16 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, cards } } };
         }),
 
+      noteGameRound: (certId, game, outcome) => {
+        const cp = normalize(get().byCert[certId]);
+        const { growth, change } = noteRound(cp.gameGrowth?.[game], outcome);
+        set((s) => {
+          const cur = normalize(s.byCert[certId]);
+          return { byCert: { ...s.byCert, [certId]: { ...cur, gameGrowth: { ...cur.gameGrowth, [game]: growth } } } };
+        });
+        return change;
+      },
+
       resetCert: (certId) =>
         set((s) => {
           const days = { ...s.days };
@@ -429,6 +448,7 @@ export const useProgress = create<ProgressState>()(
       // Build C added only OPTIONAL fields (AnswerRecord.ms / lastConfidence,
       // CertProgress.mastery): no version bump, old saves load as-is.
       // Build E added only OPTIONAL fields (CertProgress.studyPath / cards): same.
+      // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones): same.
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

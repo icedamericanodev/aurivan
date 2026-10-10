@@ -18,6 +18,7 @@
  * file picking, sharing and writing to the stores.
  */
 import { MAX_ANSWER_MS } from './answerClock';
+import { GAME_TIERS, HITS_CAP, type GameTier } from './games/growth';
 import type { Confidence } from './srs';
 import type { MockTiming } from './pace';
 import { examDateLabel } from './examDay';
@@ -267,6 +268,12 @@ const subtopicMastery = obj({ firstDay: date }, { firstAt: ts, masteredAt: date 
 /** A game score: Sure Footing can go below zero (a wrong "Sure" is −5). */
 const gameScore = range(-1000, 100_000);
 
+/** Build F: a game's level and its last skill-step results (engine/games/growth.ts). */
+const gameGrowth = obj(
+  { tier: oneOf<GameTier>(...GAME_TIERS), up: int(0, 100), down: int(0, 100) },
+  { hits: list(bool, HITS_CAP), run: count },
+);
+
 const certProgress = obj(
   {},
   {
@@ -284,6 +291,8 @@ const certProgress = obj(
     // Build E: where In order / Guided stopped (per scope), and the Root or Rumor note cards.
     studyPath: obj({}, { inOrder: map(id, 50), guided: map(id, 50) }),
     cards: map(reviewEntry, MAX_IDS),
+    // Build F: game levels.
+    gameGrowth: map(gameGrowth, 50),
   },
 );
 

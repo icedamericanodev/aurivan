@@ -120,6 +120,16 @@ describe('export: every state the phone can hold reads back', () => {
       gameBest: { trap: n(10), sprint: pick([-40, 14, 2_000_000]), daylight: n(7) },
       gameRecent: { sprint: Array.from({ length: n(70) }, () => pick([-5000, 3, 9])) },
       notesRead: [],
+      // Build F: game levels with their hit history and verdict runs (any length the
+      // store could hold, plus an older build's over-long list and huge counts).
+      ...(rng() < 0.7
+        ? {
+            gameGrowth: {
+              trap: { tier: pick(['seedling', 'sapling', 'heartwood'] as const), up: n(3), down: n(3), hits: Array.from({ length: n(45) }, () => rng() < 0.5) },
+              sprint: { tier: 'sapling' as const, up: pick([0, 2, 500]), down: 0, run: pick([0, 3, 2_000_000_000]) },
+            },
+          }
+        : {}),
     };
   }
 
