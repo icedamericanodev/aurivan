@@ -15,7 +15,7 @@ import { EmptyScreen } from './emptyScreen';
 import type { Letter, PackQuestion } from '../content/types';
 import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
-import { lastScores, reviewLine, trendSpoken, type RecapMiss } from '../engine/games/recap';
+import { lastScores, reviewLine, runningScore, scoreSpoken, scoreText, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -77,7 +77,8 @@ export function GameFrame({
           icon="close"
           onBack={() => router.back()}
           center={<SegmentBar total={total} done={Math.min(index, total)} current={index} />}
-          right={<T v="label" num accessibilityLabel={`Score ${score}`}>{String(score)}</T>}
+          // The running score never shows below 0 (display only; the recap shows the real total).
+          right={<T v="label" num accessibilityLabel={`Score ${runningScore(score)}`}>{String(runningScore(score))}</T>}
         />
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: onInfo ? 48 : undefined }}>
           <T v="meta" num style={{ flexShrink: 1 }}>{`${title} · ${Math.min(index + 1, total)} of ${total}`}</T>
@@ -164,13 +165,13 @@ export function RoundEnd({
             </View>
             <T v="caption" center color={c.accentText}>Round complete</T>
             <Gap h={space.sm} />
-            <BigNum value={String(score)} size={52} accessibilityLabel={`Score ${score} out of ${max}`} />
-            <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${best}` : ''}`}</T>
+            <BigNum value={scoreText(score)} size={52} accessibilityLabel={`Score ${scoreSpoken(score)} out of ${max}`} />
+            <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${scoreText(best)}` : ''}`}</T>
             {recent.length > 1 && (
               // Figtree tabular, oldest → newest: a quiet trend, not a chart.
               <View accessible accessibilityLabel={trendSpoken(recent, best)} style={{ marginTop: space.sm, alignItems: 'center' }}>
                 <T v="caption" center>{`Last ${recent.length} rounds`}</T>
-                <T v="label" num center>{recent.join('  ·  ')}</T>
+                <T v="label" num center>{recent.map(scoreText).join('  ·  ')}</T>
               </View>
             )}
           </View>

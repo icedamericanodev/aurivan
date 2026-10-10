@@ -236,7 +236,8 @@ describe('Sure Footing: a whole round to the recap', () => {
 
   it('all wrong on Sure: −40, eight misses, the over-confidence note, and all eight due now', () => {
     const played = play(() => 'Sure', false);
-    expect(hasLabel('Score -40 out of 24')).toBe(true);
+    expect(hasLabel('Score minus 40 out of 24')).toBe(true);
+    expect(allText()).toContain('−40'); // a real minus sign, not a hyphen
     expect(allText()).toContain('What caught you');
     expect(allText()).toContain(REVIEW_LINE);
     expect(allText()).toContain('Some of your Sure answers missed.');

@@ -183,7 +183,8 @@ describe('Sure Footing: rules and chips', () => {
     expect(allText()).toContain('+3 if right · −5 if wrong');
     const wrong = options().find((o) => o.props.text !== currentAny().options[currentAny().correct])!;
     tap(wrong);
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Score -5').length).toBeGreaterThan(0);
+    // −5 on the first question: the running score shows 0 (display only, never negative).
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Score 0').length).toBeGreaterThan(0);
   });
 
   it('at 200% text the rules rows wrap: the points drop under the label, left-aligned', () => {

@@ -32,11 +32,32 @@ export function lastScores(history: readonly number[] | undefined, n = TREND_SHO
   return (history ?? []).slice(-n);
 }
 
+/**
+ * A score as shown: a REAL minus sign for a negative score ("−5", the same
+ * sign signed() uses), plain digits otherwise (no "+" on a score).
+ */
+export function scoreText(n: number): string {
+  return n < 0 ? `−${Math.abs(n)}` : String(n);
+}
+
+/** A score as read aloud: "minus 5" (some screen readers skip a lone "−"). */
+export function scoreSpoken(n: number): string {
+  return n < 0 ? `minus ${Math.abs(n)}` : String(n);
+}
+
+/**
+ * The running score shown DURING a round never drops below 0 (Sure Footing
+ * can go negative). Display only: the real total is kept and shown on the recap.
+ */
+export function runningScore(n: number): number {
+  return Math.max(0, n);
+}
+
 /** How the trend is read aloud: "Your last 3 rounds: 4, 6, 7. Best 8." */
 export function trendSpoken(scores: readonly number[], best: number | undefined): string {
-  if (scores.length === 0) return best === undefined ? '' : `Best ${best}.`;
+  if (scores.length === 0) return best === undefined ? '' : `Best ${scoreSpoken(best)}.`;
   const rounds = scores.length === 1 ? 'Your last round' : `Your last ${scores.length} rounds`;
-  return `${rounds}: ${scores.join(', ')}.${best === undefined ? '' : ` Best ${best}.`}`;
+  return `${rounds}: ${scores.map(scoreSpoken).join(', ')}.${best === undefined ? '' : ` Best ${scoreSpoken(best)}.`}`;
 }
 
 /** The first sentence of a text (or the text cut at a word, with "…"), for one-line reasons. */

@@ -19,6 +19,9 @@ import {
   signpostMiss,
   snareMiss,
   trendSpoken,
+  runningScore,
+  scoreSpoken,
+  scoreText,
 } from '../engine/games/recap';
 import { priorityWord, PRIORITY_MEANING } from '../engine/games/priorityLens';
 import { trapLetter, trapPool } from '../engine/games/trapSpotter';
@@ -115,6 +118,15 @@ describe('score history', () => {
   it('reads aloud as a plain sentence', () => {
     expect(trendSpoken([4, 6, 7], 8)).toBe('Your last 3 rounds: 4, 6, 7. Best 8.');
     expect(trendSpoken([5], undefined)).toBe('Your last round: 5.');
+    expect(trendSpoken([-5, 3], -5)).toBe('Your last 2 rounds: minus 5, 3. Best minus 5.');
+  });
+
+  it('shows negative scores with a real minus, and never shows a running score below 0', () => {
+    expect(scoreText(-40)).toBe('−40');
+    expect(scoreText(12)).toBe('12');
+    expect(scoreSpoken(-40)).toBe('minus 40');
+    expect(runningScore(-5)).toBe(0);
+    expect(runningScore(7)).toBe(7);
   });
 
   it('an old save with a best score but no history still loads, then grows a history', async () => {

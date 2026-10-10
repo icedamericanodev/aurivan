@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { Crosshair, ICON_STROKE, Play as PlayIcon, Scale, Sparkles } from '../../components/icons';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Screen, Section, T, Trail } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
+import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAME_ORDER, GAMES, isPlayable, type GameId } from '../../engine/games/registry';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
@@ -49,7 +50,7 @@ export default function Play() {
           <HeroPanel
             caption={`${featured.skill} · about ${featured.minutes} min`}
             title={featured.name}
-            meta={best(featured.id) !== undefined ? `${featured.tagline} Best ${best(featured.id)}.` : featured.tagline}
+            meta={best(featured.id) !== undefined ? `${featured.tagline} Best ${scoreText(best(featured.id)!)}.` : featured.tagline}
             art="frond"
             action={{
               label: 'Play',
@@ -73,8 +74,8 @@ export default function Play() {
                 icon={<Icon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                 title={g.name}
                 subtitle={g.tagline}
-                trailing={b !== undefined ? <Trail value={String(b)} unit="best" /> : undefined}
-                accessibilityLabel={`${g.name}. ${g.tagline} About ${g.minutes} minutes.${b !== undefined ? ` Best score ${b}.` : ''}`}
+                trailing={b !== undefined ? <Trail value={scoreText(b)} unit="best" /> : undefined}
+                accessibilityLabel={`${g.name}. ${g.tagline} About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`}
                 onPress={() => router.push(`/game/${g.id}`)}
                 last={i === others.length - 1}
               />
