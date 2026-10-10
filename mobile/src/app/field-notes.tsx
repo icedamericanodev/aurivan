@@ -25,10 +25,12 @@ import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 
+// Only rounds played at the learner's own level move it (engine/games/growth.ts),
+// and the top level is just a fact, never a warning (behaviour review).
 const HOW: Record<'seedling' | 'sapling' | 'heartwood', string> = {
-  seedling: 'Two rounds in a row at 80% grow it to Sapling.',
-  sapling: 'Two rounds in a row at 80% grow it to Heartwood.',
-  heartwood: 'The top level. Keep it sharp.',
+  seedling: 'Two rounds in a row at 80% or more, at your level, grow it to Sapling.',
+  sapling: 'Two rounds in a row at 80% or more, at your level, grow it to Heartwood.',
+  heartwood: 'The top level.',
 };
 
 export default function FieldNotes() {
@@ -61,7 +63,7 @@ export default function FieldNotes() {
             </View>
           );
         })}
-        <T v="meta" style={{ marginTop: space.sm }}>Two rounds in a row under 50% step back one level for a few rounds.</T>
+        <T v="meta" style={{ marginTop: space.sm }}>Two rounds in a row under 50% at your level move it back one level. Two strong rounds grow it again.</T>
 
         <Section title="Pressed leaves" meta={`${skills.filter((v) => v.earned.length).length} of ${skills.length}`} />
         {skills.map((v, k) => {

@@ -173,12 +173,21 @@ describe('You', () => {
     mount(<You />);
     expect(labels()).toEqual(expect.arrayContaining(['Milestones, 2 earned. What you\'ve mastered, and what\'s next', 'Field notes. Game levels and skill leaves']));
     expect(allText()).toContain('You’d already earned 2 milestones.');
+    // Shown once: You marks it seen, and the line stays for this visit.
+    expect(cp().milestones!.backfill!.seen).toBe(true);
+    expect(allText()).toContain('You’d already earned 2 milestones.');
+    // Only the text is grouped for screen readers; the button stays reachable on its own (UX review H1).
+    const group = r!.root.findAll((n) => n.props.accessible === true && typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.includes('already earned'));
+    expect(group.length).toBeGreaterThan(0);
+    for (const g of group) expect(g.findAll((n) => n.props.label === 'See your milestones')).toHaveLength(0);
+    expect(r!.root.findAll((n) => n.props.label === 'See your milestones').length).toBeGreaterThan(0);
   });
 
-  it('shows no summary when the back-fill found nothing', () => {
+  it('shows no summary when the back-fill found nothing, and says "none yet"', () => {
     ensureBackfill('cisa', T0);
     mount(<You />);
     expect(allText()).not.toContain('already earned');
+    expect(labels()).toContain('Milestones, none yet. What you\'ve mastered, and what\'s next');
   });
 });
 
@@ -187,8 +196,8 @@ describe('Field notes', () => {
     useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { trap: { tier: 'sapling', up: 0, down: 0 } } } } });
     mount(<FieldNotes />);
     const text = allText();
-    expect(labels()).toContain('Snare Spotter. Level: Sapling. Two rounds in a row at 80% grow it to Heartwood.');
-    expect(labels()).toContain('Signpost. Level: Seedling. Two rounds in a row at 80% grow it to Sapling.');
+    expect(labels()).toContain('Snare Spotter. Level: Sapling. Two rounds in a row at 80% or more, at your level, grow it to Heartwood.');
+    expect(labels()).toContain('Signpost. Level: Seedling. Two rounds in a row at 80% or more, at your level, grow it to Sapling.');
     for (const b of SKILL_BADGES) expect(text).toContain(b.rule);
   });
 });

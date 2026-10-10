@@ -61,7 +61,7 @@ export default function Milestones() {
 
         <Section title="Earned" meta={earned.length ? `${earned.length} of ${views.length}` : undefined} />
         {earned.length === 0 ? (
-          <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>None yet. Your first is close: see below.</T>
+          <T v="small" color={c.ink2} style={{ marginTop: space.sm }}>None yet. The nearest ones are below, with what each needs.</T>
         ) : (
           earned.map((v, k) => {
             const leaves = earnedLine(v);
