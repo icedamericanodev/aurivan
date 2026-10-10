@@ -180,7 +180,7 @@ await edit('aurivan.progress.v1', `
   // Day plans are stored per cert (progress store v2).
   v.state.days = { ...(v.state.days || {}) }; delete v.state.day;
   v.state.days.cisa = { day, certId: 'cisa',
-    items: [{ kind: 'review', count: 20 }, { kind: 'lesson', lessonId: 'cisa-l-d5-mfa', title: 'Authentication factors: what makes MFA real' }, { kind: 'game', gameId: 'trap', label: 'Trap Spotter · 2 min' }],
+    items: [{ kind: 'review', count: 20 }, { kind: 'lesson', lessonId: 'cisa-l-d5-mfa', title: 'Authentication factors: what makes MFA real' }, { kind: 'game', gameId: 'trap', label: 'Snare Spotter · 6 min' }],
     done: [true, true, true], start: { score: 62, domains: { '1': .74, '2': .66, '3': .55, '4': .58, '5': .6 } },
     answered: 31, correct: 25, minutes: 24, celebrated: true };`);
 await shot('20-clearing', '/home');
@@ -257,6 +257,61 @@ await shot('25b-pattern-quiet', '/mistakes');
 // Empty mistake journal.
 await edit('aurivan.progress.v1', 'v.state.byCert.cisa.mistakes = {};');
 await shot('21-mistakes-empty', '/mistakes');
+// ── Build 1: Play uplift + calm settings ─────────────────────────────
+// Snare Spotter: tap the BEST answer as the snare (rounds are random, so
+// retry until step 1 says "That's the best answer, not the snare").
+for (let attempt = 0; attempt < 16; attempt++) {
+  await page.goto('http://127.0.0.1:8093/game/trap', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1200);
+  await page.getByLabel(/^Option A:/).first().click();
+  await page.waitForTimeout(700);
+  if (await page.getByText('That’s the best answer, not the snare').count()) {
+    await page.screenshot({ path: `${out}/32-snare-best-picked.png` });
+    await page.getByLabel(/^Option A:/).first().click();
+    await page.waitForTimeout(900);
+    await page.mouse.move(196, 500);
+    await page.mouse.wheel(0, 900);
+    await page.waitForTimeout(700);
+    await page.screenshot({ path: `${out}/32b-snare-feedback.png` });
+    console.log('shot snare feedback');
+    break;
+  }
+}
+// Sure Footing: the rules (first play) were 08-sprint; now the chips.
+await shot('34-sure-footing-chips', '/game/sprint', 1500);
+const gotIt = page.getByText('Got it', { exact: true });
+if (await gotIt.count()) { await gotIt.click(); await page.waitForTimeout(600); }
+await page.getByRole('radio', { name: /^Sure:/ }).click();
+await page.waitForTimeout(500);
+await page.screenshot({ path: `${out}/34-sure-footing-chips.png` });
+// Signpost: play a whole round (meaning, then option A), ending on the recap.
+await page.goto('http://127.0.0.1:8093/game/priority', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1200);
+await page.screenshot({ path: `${out}/36-signpost-step1.png` });
+for (let k = 0; k < 5; k++) {
+  await page.getByText('The step that must come before the others', { exact: true }).click();
+  await page.waitForTimeout(500);
+  await page.getByLabel(/^Option A:/).first().click();
+  await page.waitForTimeout(600);
+  await page.getByText(k < 4 ? 'Next question' : 'See results', { exact: true }).click();
+  await page.waitForTimeout(800);
+}
+await page.waitForTimeout(800);
+await page.screenshot({ path: `${out}/33-game-recap.png` });
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 700);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/33b-game-recap-misses.png` });
+console.log('shot game recap');
+// Settings: reminders on, weekdays at 07:30 (seeded: no permission prompt on web).
+await edit('aurivan.settings.v1', 'v.state.reminder = { enabled: true, hour: 7, minute: 30, days: [1, 2, 3, 4, 5] };');
+await shot('35-settings-reminders', '/settings');
+await page.getByText('Study reminder', { exact: true }).scrollIntoViewIfNeeded();
+await page.mouse.move(196, 500);
+await page.mouse.wheel(0, 420);
+await page.waitForTimeout(600);
+await page.screenshot({ path: `${out}/35-settings-reminders.png` });
+console.log('shot settings reminders');
 // Onboarding (last: it marks the learner as new).
 await edit('aurivan.settings.v1', 'v.state.onboarded = false;');
 // 22: the welcome (lockup, tagline, pillars); 22b: the exam; 22c: the date.

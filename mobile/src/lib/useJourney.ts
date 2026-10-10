@@ -11,7 +11,9 @@ import { AppState } from 'react-native';
 import { getDomain } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { lessonsFor, nextLesson } from '../content/lessons';
+import { getAllQuestions } from '../content/loader';
 import { newDayPlan } from '../engine/dayPlan';
+import { isPlayable } from '../engine/games/registry';
 import { journeyStage, STAGE_LABEL, STAGE_ORDER, stageProgress } from '../engine/journey';
 import type { Readiness } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
@@ -56,6 +58,8 @@ export function buildJourney(i: JourneyInput) {
     nextLesson: upNext ? { id: upNext.id, title: upNext.title } : undefined,
     daysLeft,
     examQuestions: cert.exam.questions,
+    // Today never plans a game this certification can't play (registry minPool).
+    playable: (id) => isPlayable(id, getAllQuestions(cert.id)),
   });
   return {
     stage,

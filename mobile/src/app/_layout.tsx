@@ -18,7 +18,9 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { initNotifications } from '../lib/reminders';
+import { getCertification } from '../content/certifications';
+import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
+import { useSettings } from '../store/settings';
 import { useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Grain } from '../components/ui';
@@ -50,6 +52,16 @@ export default function RootLayout() {
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => {});
   }, [ready]);
+
+  // Once saved settings have loaded: if reminders are on, re-apply them;
+  // if they are off, clear any of ours left behind (e.g. an older
+  // version's untagged reminder). Never asks for permission.
+  useEffect(() => {
+    if (!hydrated) return;
+    const { reminder, activeCertId } = useSettings.getState();
+    if (reminder.enabled) scheduleReminders(reminder, getCertification(activeCertId)?.name ?? 'your exam').catch(() => {});
+    else cancelReminders().catch(() => {});
+  }, [hydrated]);
 
   if (!ready) return null;
 

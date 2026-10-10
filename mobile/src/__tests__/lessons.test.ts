@@ -63,6 +63,8 @@ const ACRONYMS = new Set([
   // Added with the Phase 2 lessons.
   'CA', 'CRL', 'CUEC', 'DAST', 'DLP', 'DMZ', 'EDR', 'KCI', 'KPI', 'KRI', 'MDM', 'OCSP', 'PKI', 'SAST', 'SIEM', 'SLA', 'SOC',
   'WAF',
+  // Added with the expert-reviewed flow fixes: change advisory board.
+  'CAB',
 ]);
 const EXAM_KEYWORDS = new Set(['FIRST', 'BEST', 'MOST', 'GREATEST', 'PRIMARY', 'LEAST', 'NOT', 'MAIN']);
 const capsWords = (text: string) => (text.match(/\b[A-Z]{2,}\b/g) ?? []).filter((w) => !ACRONYMS.has(w));

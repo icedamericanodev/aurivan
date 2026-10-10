@@ -180,6 +180,23 @@ function specFor(kind: BotanyKind): FrondSpec {
   return m ? BRANCHES[Number(m[1]) % BRANCHES.length] : BOTANY[kind as keyof typeof BOTANY];
 }
 
+/** The drawing's box in points, so a parent can size its art slot exactly (no "size from children"). */
+export function botanySize(kind: BotanyKind): { width: number; height: number } {
+  const spec = specFor(kind);
+  return { width: spec.w, height: spec.h };
+}
+
+/**
+ * The sway pivot (the stem base) in POINTS, e.g. "185px 236px".
+ * Points, not percentages: a percentage pivot is resolved against the view's
+ * measured size, and on Android the first frames can be applied before
+ * layout. A pixel pivot is the same on every platform from the first frame.
+ */
+export function swayOrigin(kind: BotanyKind): string {
+  const spec = specFor(kind);
+  return `${Math.round(spec.p0[0])}px ${Math.round(spec.p0[1])}px`;
+}
+
 /**
  * Decorative line art (hidden from screen readers). With `sway`, the frond
  * rocks ±1.5° over 4 s from its stem base, only while the screen is focused
@@ -218,8 +235,11 @@ export function Botany({ kind = 'frond', color, sway = false }: { kind?: BotanyK
   );
   if (!sway) return art;
   // Rotate around the stem base (bottom-right), like a frond in a breeze.
-  const origin = `${((spec.p0[0] / spec.w) * 100).toFixed(0)}% ${((spec.p0[1] / spec.h) * 100).toFixed(0)}%`;
-  return <Animated.View style={[{ transformOrigin: origin }, style]}>{art}</Animated.View>;
+  // Explicit width/height + a pixel pivot: the rotating view never depends on
+  // measuring its child first (Android hardening, see HeroPanel in ui.tsx).
+  return (
+    <Animated.View style={[{ width: spec.w, height: spec.h, transformOrigin: swayOrigin(kind) }, style]}>{art}</Animated.View>
+  );
 }
 
 /** The empty-state seedling (spec §10.3): stem, two seed leaves, one true leaf, fading soil. */

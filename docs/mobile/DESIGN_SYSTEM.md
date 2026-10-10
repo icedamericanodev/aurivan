@@ -181,6 +181,11 @@ Colour rules
 **Chip / tag**
 - filter chip: height 40 (hitSlop to 48), radius pill, 1.5px `control`, `label` 15. Selected: `ink` fill, `bg` label, leading ✓.
 - tag (non-interactive): no fill; `meta` with a domain dot ("● IS Audit · Analysis · 1 of 3").
+- checkbox chip (`checkbox`): for independent on/off choices (reminder days). Same look as a filter chip; spoken as checkbox, checked / not checked, with a full name ("Remind on Monday" for "Mon") and an optional hint.
+
+**IconButton** (`ui.tsx`): 48pt round target (above the 44pt minimum) holding one 24 icon in `ink` (`muted` when disabled); pressed = `soft` fill. Always has a spoken `label`. State props: `selected` for on/off toggles, `expanded` for a button that shows or hides a panel (the game info button), `disabled`. Never a square tile.
+
+**Stepper** (`ui.tsx`): `caption` label above `−  value  +`: two 48pt IconButtons around a `label` numeral (tabular, min width 48). Screen readers get ONE adjustable control (`spokenLabel`, e.g. "Reminder hour", value spoken in full, e.g. "7:00 PM"); the inner buttons are hidden from them, and only increment / decrement are handled. Used in pairs for a time (hour, then minutes in 15-minute steps), in the phone's own time format ("7 PM" / "19"). No date-picker dependency.
 
 **List row**: 40 icon circle (`soft`, icon 20 `accentText`), title `label`, subtitle `meta`, trailing chevron 18 `muted`, min height 64, hairline below.
 
@@ -188,9 +193,9 @@ Colour rules
 
 **Stat tile**: no box. `number` value + `meta` label, stacked and centred in its cell, in a row of 3 separated by hairlines. At large text sizes the row becomes a left-aligned vertical list.
 
-**Hero panel**: `forest`, radius 24, padding 22, `caption` in `onForest2`, `hero` in `onForest`, `meta` in `onForest2`, on-forest button; **botanical line art** (§10.3, 1.5 stroke `forestLine`) bleeding off the top-right, replacing v1's topographic ellipses. Title may wrap to 3 lines; reserve the right 110pt for art only while the title is ≤ 2 lines (`maxWidth: 250`), otherwise text runs full width over the art (art is decorative and low-contrast).
+**Hero panel**: `forest`, radius 24, padding 22, `caption` in `onForest2`, `hero` in `onForest`, `meta` in `onForest2`, on-forest button; **botanical line art** (§10.3, 1.5 stroke `forestLine`) bleeding off the top-right, replacing v1's topographic ellipses. Title may wrap to 3 lines; reserve the right 110pt for art only while the title is ≤ 2 lines (`maxWidth: 250`), otherwise text runs full width over the art (art is decorative and low-contrast). The `meta` line keeps the same `maxWidth: 250` (it wraps rather than running under the art), except with `wideTitle` or large text. Build: the art sits in its own absolutely-filled layer that does the rounded clipping, in a box of explicit size with a pivot in points; the text and button sit in a layer above it (zIndex 1). The panel itself doesn't clip (Android blank-panel fix).
 
-**Header**: tab screens = 14px top meta line (countdown left, streak right) + `display` title, no nav bar. Pushed screens = 52pt bar: 44 hit icon left (X or ‹), centred progress or title `label`, icon right. No bottom border; content scroll reveals a 1px `line` only after scrolling (optional).
+**Header**: tab screens = 14px top meta line (countdown left, streak right) + `display` title, no nav bar. **Today and You** put a Settings gear on the title row (`ScreenTitle`): an `IconButton` with Lucide `settings` 24, spoken "Settings" with the hint "Exam date, reminders and more", aligned to the gutter edge (the 48pt target overhangs by 10). The Settings row under You stays. Pushed screens = 52pt bar: 44 hit icon left (X or ‹), centred progress or title `label`, icon right. No bottom border; content scroll reveals a 1px `line` only after scrolling (optional).
 
 **Tab bar**: height 56 + safe area, `bg` fill, 1px `line` top border, 5 tabs, icons 24 stroke 1.75, label `tab`. Inactive `muted`; active label `ink` + icon `accentText` + **4px `accent` dot under the label** (v2, so active state isn't colour-only). **Custom glyphs (v2):** Journey = sprout, You = growth rings; Learn/Practice/Play stay Lucide.
 
@@ -315,6 +320,18 @@ All behind `ReduceMotion.System`; haptics respect the Settings toggle.
 ---
 
 ## 11. Component recipes for the extra screens (v2)
+
+**Game frame** (Play's games): `PushedHeader` with ✕, a segment bar per question and the running score (Figtree tabular, never shown below 0 during a round; the recap shows the real total with a true minus "−5") → a `meta` title line ("Sure Footing · 3 of 8") that may carry a 48pt info `IconButton` ("How scoring works", `expanded` state) on the right → content in a scroll padded for the sticky footer. Opening the info panel scrolls to the top and moves screen-reader focus to its heading. A game an exam can't play yet (too few questions) shows an Empty state "This game is on the way" with "Go to Practice"; Play shows "Games are on the way" when none can be played. Never a number.
+
+**Game rules block** (Sure Footing): no card. `headline` heading "How Sure Footing scores" → `small` `ink2` intro → hairline rows, one per level: `label` name left, points right ("+3 right · −5 wrong", tabular) and a `meta` description below ("You would put your name to it."). Each row is one screen-reader stop that speaks points and description. Rows wrap; at ×1.3+ the points drop under the name, left-aligned. Secondary "Got it". Shown on the first play (it counts as seen once the learner answers), then behind the info button; it closes when moving to the next question. The level choice itself is a `Segmented` radio group (Guess / Lean / Sure, no points on the pills, nothing selected at first), with the chosen level's points once underneath as a centred `meta` line ("+3 if right · −5 if wrong"). No betting words ("bet", "stake").
+
+**Round recap** (every game's end): seedling 96 → `caption` "Round complete" in `accentText` → `number` 52 score → `meta` "out of 24 · best 14" → when there are 2+ rounds, `caption` "Last 5 rounds" over a tabular `label` row "4 · 6 · 5 · 7 · 8" (one spoken sentence: "Your last 5 rounds: …. Best 8.") → "What caught you" `headline` → one hairline row per miss: `meta` stem start (≈90 chars), `caption` tag in `tip` ("Snare: …" / "Signpost word: FIRST"), one `small` line on why → `meta` "Missed questions are in your review." when any answer was wrong → the game's own note → primary "Play again", ghost "Done". Negative scores use a true minus.
+
+**Snare Spotter reveal**: the best answer ✓ tagged "Best answer"; the learner's own wrong pick ✗ tagged "Your answer"; the real snare tagged "Snare" in the `tip` tone, never a ✗ unless it was their answer ("Snare · your answer"). Tapping the best answer in step 1 shows a `tipBg` block "That's the best answer, not the snare" naming the letter; the answer then earns no point and reads "Best answer: B (shown above)".
+
+**Signpost step 1**: stem (priority word not marked yet) → `headline` heading "Step 1: what does this question ask for?" → four stacked secondary buttons, one per meaning (never the capital word). The footer repeats the step as a visual reminder only (hidden from screen readers). After a choice, the word is marked in the stem and a feedback block explains what it asks for ("MOST appropriate works like BEST").
+
+**Settings → Study reminder**: `ToggleRow` "Study reminder" with the summary subtitle ("Weekdays at 7:30 AM") → two Steppers (Hour, Minutes) side by side, wrapping at large text → `caption` "Days" → seven checkbox chips Mon–Sun (wrap) → `meta` "At most one reminder a day. Turn it off any time." (or, while off, "Applies when reminders are on. At most one a day."). Permission is asked only when the switch is turned on; controls are disabled while it saves.
 
 **Daily clearing card** (Today, when all plan items are done; replaces "Well done.")
 - `forest` panel, tall frond art. Caption "Today's clearing" + 3 filled `sap` leaf marks. `hero` "Three of three, done." (count-aware: "Two of two, done.").

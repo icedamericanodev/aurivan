@@ -52,8 +52,8 @@ import {
   type TypeVariant,
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
-import { Botany, Seedling, type BotanyKind } from './glyphs';
-import { Check, ChevronLeft, ChevronRight, ICON_STROKE, X } from './icons';
+import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
+import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -328,42 +328,176 @@ export function HeroPanel({
   const large = useFontScale() >= LARGE_TEXT;
   return (
     <Card variant="forest" style={style}>
-      {/* Decorative art bleeds off the top-right; screen readers skip it. */}
-      <View style={[styles.heroArt, styles.noTouch]} accessible={false} importantForAccessibility="no-hide-descendants">
-        <Botany kind={art} color={c.forestLine} sway={sway} />
-      </View>
-      {caption && (
-        <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
-          {captionLead}
-          <T v="caption" color={c.onForest2}>{caption}</T>
-          {captionExtra}
-        </Row>
-      )}
-      {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
-          longer titles, or large text, run full width over the low-contrast art. */}
-      <T
-        v="hero"
-        color={c.onForest}
-        accessibilityRole="header"
-        accessibilityLabel={titleLabel}
-        style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
+      {/* Two layers, so the text can never disappear behind the art (the
+          Android "empty green block" on Play):
+          1. ART: its own absolutely-filled layer that does the rounded
+             clipping, with the drawing in a box of EXPLICIT size. The panel
+             itself no longer clips, so the title and button never share a
+             clipping parent with a rotating (swaying) SVG.
+          2. CONTENT: zIndex 1, always drawn above the art on every platform.
+          Decorative art bleeds off the top-right; screen readers skip it. */}
+      <View
+        testID="hero-art"
+        style={[StyleSheet.absoluteFill, styles.heroArtClip, styles.noTouch]}
+        accessible={false}
+        importantForAccessibility="no-hide-descendants"
       >
-        {title}
-      </T>
-      {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6 }}>{meta}</T>}
-      {children}
-      {action && (
-        <Button
-          kind="forest"
-          label={action.label}
-          onPress={action.onPress}
-          accessibilityHint={action.hint}
-          icon={action.icon}
-          iconLeading
-          style={{ marginTop: 18, alignSelf: 'flex-start' }}
+        <View style={[styles.heroArt, botanySize(art)]}>
+          <Botany kind={art} color={c.forestLine} sway={sway} />
+        </View>
+      </View>
+      <View testID="hero-content" style={styles.heroContent}>
+        {caption && (
+          <Row gap={space.sm} style={{ flexWrap: 'wrap' }}>
+            {captionLead}
+            <T v="caption" color={c.onForest2}>{caption}</T>
+            {captionExtra}
+          </Row>
+        )}
+        {/* While the title fits in 2 lines it stays clear of the art (maxWidth 250);
+            longer titles, or large text, run full width over the low-contrast art. */}
+        <T
+          v="hero"
+          color={c.onForest}
+          accessibilityRole="header"
+          accessibilityLabel={titleLabel}
+          style={{ marginTop: caption ? space.sm : 0, maxWidth: title.length <= 34 && !large && !wideTitle ? 250 : undefined }}
+        >
+          {title}
+        </T>
+        {/* The meta line keeps clear of the art too (it wraps instead), except
+            with wideTitle or large text, where it runs full width like the title. */}
+        {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6, maxWidth: !large && !wideTitle ? 250 : undefined }}>{meta}</T>}
+        {children}
+        {action && (
+          <Button
+            kind="forest"
+            label={action.label}
+            onPress={action.onPress}
+            accessibilityHint={action.hint}
+            icon={action.icon}
+            iconLeading
+            style={{ marginTop: 18, alignSelf: 'flex-start' }}
+          />
+        )}
+      </View>
+    </Card>
+  );
+}
+
+// ── IconButton: a 48pt round button holding one icon ──────────────────
+// For header actions (Settings gear, "How it scores"). The icon is visual;
+// `label` is what a screen reader says. 48pt meets the 44pt minimum with room.
+export function IconButton({
+  label,
+  onPress,
+  icon,
+  hint,
+  selected,
+  expanded,
+  disabled,
+}: {
+  label: string;
+  onPress: () => void;
+  /** Draw the icon in the colour given (ink, or muted when disabled). */
+  icon: (color: string) => ReactNode;
+  hint?: string;
+  /** For a toggle (on/off). */
+  selected?: boolean;
+  /** For a button that shows or hides a panel (e.g. "How scoring works"): spoken as expanded / collapsed. */
+  expanded?: boolean;
+  disabled?: boolean;
+}) {
+  const { c } = useTheme();
+  const state = {
+    ...(selected === undefined ? {} : { selected }),
+    ...(expanded === undefined ? {} : { expanded }),
+    ...(disabled ? { disabled } : {}),
+  };
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityHint={hint}
+      accessibilityState={Object.keys(state).length ? state : undefined}
+      onPress={onPress}
+      disabled={disabled}
+      style={({ pressed }) => [styles.iconButton, pressed && { backgroundColor: c.soft }]}
+    >
+      {icon(disabled ? c.muted : c.ink)}
+    </Pressable>
+  );
+}
+
+// ── Stepper: − value + for small numbers (the reminder time) ─────────
+// No date-picker dependency: two of these make a calm hour/minute picker.
+// Touch: two 48pt buttons. Screen readers: ONE adjustable control (swipe
+// up or down on iOS; the increment/decrement actions on Android) that
+// speaks its name and value; the inner buttons are hidden from them, so
+// Android also has a single stop.
+export function Stepper({
+  label,
+  value,
+  spoken,
+  onDec,
+  onInc,
+  disabled,
+  spokenLabel,
+}: {
+  /** While true (e.g. a reminder change is being saved), taps are ignored. */
+  disabled?: boolean;
+  /** "Hour" / "Minutes": the caption, and the buttons' names ("Hour later"). */
+  label: string;
+  /** What a screen reader calls the control, e.g. "Reminder hour" (defaults to `label`). */
+  spokenLabel?: string;
+  value: string;
+  /** What a screen reader says for the value, e.g. "7 PM". */
+  spoken?: string;
+  onDec: () => void;
+  onInc: () => void;
+}) {
+  const { c } = useTheme();
+  return (
+    <View
+      accessible
+      accessibilityRole="adjustable"
+      accessibilityLabel={spokenLabel ?? label}
+      accessibilityValue={{ text: spoken ?? value }}
+      accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
+      accessibilityState={disabled ? { disabled } : undefined}
+      onAccessibilityAction={(e) => {
+        if (disabled) return;
+        if (e.nativeEvent.actionName === 'increment') onInc();
+        else if (e.nativeEvent.actionName === 'decrement') onDec();
+      }}
+      style={{ alignItems: 'center' }}
+    >
+      <T v="caption">{label}</T>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        <IconButton label={`${label} earlier`} onPress={onDec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <T v="label" num center style={{ minWidth: 48, color: c.ink }}>{value}</T>
+        <IconButton label={`${label} later`} onPress={onInc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+      </View>
+    </View>
+  );
+}
+
+// ── ScreenTitle: a tab screen's display title, with an optional Settings gear ──
+// The gear (S1) makes Settings one tap away from Today and You instead of
+// the last row under You. 48pt target, spoken as "Settings".
+export function ScreenTitle({ title, settings }: { title: string; settings?: () => void }) {
+  return (
+    <View style={styles.screenTitle}>
+      <T v="display" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
+      {settings && (
+        <IconButton
+          label="Settings"
+          hint="Exam date, reminders and more"
+          onPress={settings}
+          icon={(col) => <SettingsIcon size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
         />
       )}
-    </Card>
+    </View>
   );
 }
 
@@ -508,13 +642,33 @@ export function Tag({ label, domain, color }: { label: string; domain?: DomainIn
 
 // ── Chip: selectable filter (spec §6) ─────────────────────────────────
 // Selected = ink fill + bg label + leading ✓ (shape AND colour, never green).
-export function Chip({ label, selected, onPress }: { label: string; selected: boolean; onPress: () => void }) {
+export function Chip({
+  label,
+  selected,
+  onPress,
+  accessibilityLabel,
+  accessibilityHint,
+  disabled,
+  checkbox,
+}: {
+  label: string;
+  selected: boolean;
+  onPress: () => void;
+  /** Spoken name when the visible label is short (e.g. "Remind on Monday" for "Mon"). */
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
+  disabled?: boolean;
+  /** One of several independent on/off choices (e.g. reminder days): spoken as checkbox, checked / not checked. */
+  checkbox?: boolean;
+}) {
   const { c } = useTheme();
   return (
     <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      accessibilityLabel={label} // the ✓ is visual; "selected" state is spoken
+      accessibilityRole={checkbox ? 'checkbox' : 'button'}
+      accessibilityState={{ ...(checkbox ? { checked: selected } : { selected }), ...(disabled ? { disabled } : {}) }}
+      disabled={disabled}
+      accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; the state is spoken
       onPress={onPress}
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
       style={({ pressed }) => [
@@ -639,10 +793,16 @@ const styles = StyleSheet.create({
   },
   buttonLabel: { fontFamily: font.sans600, fontSize: 17, lineHeight: 22 },
   card: { borderRadius: radius.md, borderWidth: 1.5, padding: space.lg },
-  forest: { borderRadius: radius.lg, padding: 22, overflow: 'hidden' },
+  // No overflow:'hidden' here: the art layer clips itself (heroArtClip), so
+  // the panel's text is never inside a clipping parent with a rotating SVG.
+  forest: { borderRadius: radius.lg, padding: 22 },
   // Dark mode: 1px inner top highlight so the panel separates from `bg`.
   forestLift: { borderTopWidth: 1, borderTopColor: forestHighlight },
+  screenTitle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm, marginTop: space.xs, marginRight: -10 },
+  iconButton: { width: 48, height: 48, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
+  heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
+  heroContent: { zIndex: 1 },
   section: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -875,7 +1035,8 @@ export function Segmented<V extends string | number>({
   accessibilityLabel,
 }: {
   options: { value: V; label: string; numeral?: string; icon?: (color: string) => ReactNode; spoken?: string }[];
-  value: V;
+  /** null = nothing chosen yet (e.g. Sure Footing before each answer). */
+  value: V | null;
   onChange: (v: V) => void;
   accessibilityLabel: string;
 }) {

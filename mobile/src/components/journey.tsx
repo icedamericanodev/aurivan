@@ -8,6 +8,8 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted by the blueprint.
  */
+import { REVIEW_CAP_LINE, REVIEW_UNIT } from '../engine/srs';
+import { gameTitle } from '../engine/games/registry';
 import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 import { domainColor } from '../content/certifications';
@@ -44,14 +46,20 @@ export function planText(item: PlanItem): { title: string; meta: string; short: 
   const mins = itemMinutes(item);
   switch (item.kind) {
     case 'review':
-      return { title: item.label ?? `Review ${item.count} due`, meta: `About ${mins} minutes · questions you missed`, short: 'Spaced review' };
+      // Same word as Practice and You ("due"); at the cap, say the rest wait.
+      return {
+        title: item.label ?? `Review ${item.count} ${REVIEW_UNIT}`,
+        // The cap line only when MORE than 20 were due (exactly 20 fits one session).
+        meta: `About ${mins} minutes · ${item.capped ? REVIEW_CAP_LINE.toLowerCase() : 'questions to revisit'}`,
+        short: 'Spaced review',
+      };
     case 'lesson':
       return { title: item.title, meta: `Lesson · ${mins} min`, short: `Lesson · ${mins} min` };
     case 'practice':
       return { title: item.label, meta: `About ${mins} minutes · new material first`, short: `Practice · ${mins} min` };
     case 'game':
-      // Planner labels read "Trap Spotter · 2 min"; the row shows the name only.
-      return { title: item.label.split(' · ')[0], meta: `Game · ${mins} min`, short: `Game · ${mins} min` };
+      // Registry name by id: a plan saved before a rename shows today's name.
+      return { title: gameTitle(item.gameId, item.label), meta: `Game · about ${mins} min`, short: `Game · ${mins} min` };
     case 'mock':
       return { title: item.label.split(' · ')[0], meta: `${item.questions} questions at exam pace`, short: `Mock · ${item.questions} questions` };
   }

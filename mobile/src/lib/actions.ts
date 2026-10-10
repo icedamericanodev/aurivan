@@ -11,8 +11,10 @@ const openSession = () => router.push('/session');
 export function runPlanItem(item: PlanItem, certId: string) {
   switch (item.kind) {
     case 'review':
-      // A labelled review is the exam eve's light review: stop at its count.
-      return guardedStart(() => startReview(certId, item.label ? item.count : undefined), openSession);
+      // The card says "Review N due": the session asks exactly N, even if more
+      // fell due since the plan was made. If the queue was cleared elsewhere,
+      // open "caught up" (as the Practice and You rows do), not an error.
+      return guardedStart(() => startReview(certId, item.count), openSession, () => router.push('/caught-up'));
     case 'lesson':
       return router.push(`/lesson/${item.lessonId}`);
     case 'practice':

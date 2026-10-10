@@ -11,7 +11,8 @@ import { Crosshair, ICON_STROKE, Library, Play, RotateCcw } from '../../componen
 import { Button, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../../engine/dayPlan';
-import { guardedStart, startMock, startPractice, startReview } from '../../lib/sessions';
+import { REVIEW_UNIT } from '../../engine/srs';
+import { guardedStart, reviewSubtitle, startMock, startPractice, startReview } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -62,9 +63,9 @@ export default function Practice() {
         <ListRow
           icon={icon(RotateCcw)}
           title="Spaced review"
-          subtitle={dueCount ? 'Missed questions, due now' : 'All caught up'}
-          trailing={dueCount ? <Trail value={String(dueCount)} unit="due" /> : undefined}
-          accessibilityLabel={`Spaced review, ${dueCount ? `${dueCount} due` : 'all caught up'}`}
+          subtitle={reviewSubtitle(dueCount)}
+          trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
+          accessibilityLabel={`Spaced review, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
           onPress={() => guardedStart(() => startReview(cert.id), open, () => router.push('/caught-up'))}
         />
         {focus && (

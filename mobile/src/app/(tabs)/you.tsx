@@ -15,12 +15,14 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { DomainRings, ringsSpoken } from '../../components/journey';
 import { MindsetGrowthCard } from '../../components/moments';
-import { Bookmark, ICON_STROKE, NotebookPen, Settings, Share2 } from '../../components/icons';
+import { Bookmark, ICON_STROKE, NotebookPen, RotateCcw, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
-import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
+import { REVIEW_UNIT } from '../../engine/srs';
 import { dayKey } from '../../engine/streak';
+import { guardedStart, reviewSubtitle, startReview } from '../../lib/sessions';
 import { shortDate } from '../../lib/format';
 import { useMindsetGrowth } from '../../lib/moments';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -30,7 +32,7 @@ import { useTheme } from '../../theme/useTheme';
 
 export default function You() {
   const { c } = useTheme();
-  const { cert, readiness, progress, streak } = useActiveCert();
+  const { cert, readiness, progress, streak, dueCount } = useActiveCert();
   const range = readinessRange(cert, readiness);
   const answered = readiness.domains.reduce((s, d) => s + d.answered, 0);
   const mastered = readiness.domains.reduce((s, d) => s + d.mastered, 0);
@@ -46,7 +48,7 @@ export default function You() {
   return (
     <Screen>
       <Enter i={0}>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>You</T>
+        <ScreenTitle title="You" settings={() => router.push('/settings')} />
         <View style={{ marginTop: space.md }}>
           <ThemeSwitch />
         </View>
@@ -98,10 +100,20 @@ export default function You() {
 
       <Enter i={3}>
         <Section title="Study tools" style={{ marginTop: space.xl }} />
+        {/* The review queue: same word ("due") and same cap line as Today and Practice. */}
+        <ListRow
+          icon={icon(RotateCcw)}
+          title="Spaced review"
+          subtitle={reviewSubtitle(dueCount)}
+          trailing={dueCount ? <Trail value={String(dueCount)} unit={REVIEW_UNIT} /> : undefined}
+          accessibilityLabel={`Spaced review, ${dueCount ? `${dueCount} ${REVIEW_UNIT}. ${reviewSubtitle(dueCount)}` : 'all caught up'}`}
+          onPress={() => guardedStart(() => startReview(cert.id), () => router.push('/session'), () => router.push('/caught-up'))}
+        />
         <ListRow
           icon={icon(NotebookPen)}
           title="Mistake journal"
-          subtitle="Every miss, tagged"
+          // "open" = logged misses not yet fixed: a different list from the review queue.
+          subtitle="Misses not yet fixed, tagged"
           trailing={openMistakes ? <Trail value={String(openMistakes)} unit="open" /> : undefined}
           accessibilityLabel={`Mistake journal, ${openMistakes} open`}
           onPress={() => router.push('/mistakes')}

@@ -1,4 +1,5 @@
 /** The frozen daily plan: ticking items off and the clearing card numbers. */
+import { GAMES } from '../engine/games/registry';
 import { getCertification } from '../content/certifications';
 import {
   activityMatches,
@@ -83,7 +84,8 @@ describe('day plan', () => {
   it('estimates minutes per item', () => {
     expect(itemMinutes({ kind: 'practice', count: 10, label: '' })).toBe(12);
     expect(itemMinutes(items[1])).toBe(3);
-    expect(itemMinutes(items[2])).toBe(2);
+    // A game's length comes from its round size (engine/games/registry.ts).
+    expect(itemMinutes(items[2])).toBe(GAMES.trap.minutes);
   });
 
   it('adds up answers across sessions the same day', () => {

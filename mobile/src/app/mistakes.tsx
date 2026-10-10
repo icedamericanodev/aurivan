@@ -21,11 +21,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
 import { StickyFooter } from '../components/quiz';
 import { Button, Chip, Gap, PushedHeader, Section, T } from '../components/ui';
-import { findQuestion } from '../content/loader';
+import { findQuestion, getAllQuestions } from '../content/loader';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
-import { slipCoach, type DrillGame, type SlipInput } from '../engine/slipCoach';
+import { GAMES, isPlayable } from '../engine/games/registry';
+import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -38,13 +39,6 @@ const SLIPS: { id: ThinkingSlip; label: string }[] = [
   { id: 'misread', label: 'Misread' },
   { id: 'knowledge', label: 'Didn’t know it' },
 ];
-
-/** The mini-game each slip pattern opens (names match the Play tab). */
-const GAME_NAME: Record<DrillGame, string> = {
-  trap: 'Trap Spotter',
-  priority: 'Priority Lens',
-  sprint: 'Calibrated Sprint',
-};
 
 export default function Mistakes() {
   const { c } = useTheme();
@@ -82,7 +76,7 @@ export default function Mistakes() {
         title="Nothing open right now"
         body="Every question you miss lands here, tagged by the trap that caught you."
         tags={['Missed FIRST/BEST', 'Wrong role', 'Fixed the symptom']}
-        primary={{ label: 'Practise 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
+        primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
         secondary={fixedCount > 0 ? { label: 'See cleared mistakes', onPress: () => setShowFixed(true) } : undefined}
       />
     );
@@ -102,10 +96,11 @@ export default function Mistakes() {
             <T v="small" color={c.ink}>{pattern.coach}</T>
             <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
             <Gap h={space.md} />
-            {pattern.game ? (
+            {/* "Drill it" only when that game can be played for this exam (registry minPool). */}
+            {pattern.game && isPlayable(pattern.game, getAllQuestions(cert.id)) ? (
               <Button
                 kind="secondary"
-                label={`Drill it: ${GAME_NAME[pattern.game]}`}
+                label={`Drill it: ${GAMES[pattern.game].name}`}
                 accessibilityHint="Opens the mini-game that trains this slip"
                 onPress={() => router.push(`/game/${pattern.game}`)}
               />
@@ -167,7 +162,7 @@ export default function Mistakes() {
       {open.length > 0 && (
         <StickyFooter onHeight={setFooterH}>
           <Button
-            label={`Practise ${Math.min(open.length, 20)} open mistakes`}
+            label={`Practice ${Math.min(open.length, 20)} open mistakes`}
             onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
           />
         </StickyFooter>

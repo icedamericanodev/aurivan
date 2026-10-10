@@ -8,7 +8,7 @@ import {
   ensurePermission,
   initNotifications,
   remindersSupported,
-  scheduleDailyReminder,
+  scheduleReminders,
 } from '../lib/reminders';
 
 // babel-jest hoists these jest.mock() calls above the import, so the
@@ -27,7 +27,7 @@ describe('reminders in Expo Go on Android', () => {
   it('never loads expo-notifications, so nothing throws', async () => {
     expect(() => initNotifications()).not.toThrow();
     await expect(ensurePermission()).resolves.toBe(false);
-    await expect(scheduleDailyReminder(19, 0, 'CISA')).resolves.toBeUndefined();
+    await expect(scheduleReminders({ enabled: true, hour: 19, minute: 0 }, 'CISA')).resolves.toBeUndefined();
     await expect(cancelReminders()).resolves.toBeUndefined();
   });
 });

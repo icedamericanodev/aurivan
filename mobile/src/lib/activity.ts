@@ -5,7 +5,8 @@
  */
 import { getCertification } from '../content/certifications';
 import type { Activity } from '../engine/dayPlan';
-import { GAME_MINUTES, LESSON_MINUTES, newDayPlan, replanDay } from '../engine/dayPlan';
+import { LESSON_MINUTES, newDayPlan, replanDay } from '../engine/dayPlan';
+import { gameMinutes } from '../engine/games/registry';
 import { computeReadiness } from '../engine/readiness';
 import { dueIds } from '../engine/srs';
 import { dayKey } from '../engine/streak';
@@ -74,4 +75,4 @@ export const logLesson = (certId: string, lessonId: string) =>
   logActivity(certId, { kind: 'lesson', lessonId, minutes: LESSON_MINUTES });
 
 export const logGame = (certId: string, gameId: string) =>
-  logActivity(certId, { kind: 'game', gameId, minutes: GAME_MINUTES });
+  logActivity(certId, { kind: 'game', gameId, minutes: gameMinutes(gameId) });
