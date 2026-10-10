@@ -9,14 +9,24 @@ import { router } from 'expo-router';
 import { Alert, Linking, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
 import { ThemeSwitch } from '../components/themeSwitch';
-import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, T, ToggleRow } from '../components/ui';
+import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
 import { dayKey } from '../engine/streak';
 import { changeExamDate } from '../lib/activity';
 import { config } from '../lib/config';
-import { cancelReminders, ensurePermission, remindersSupported, scheduleDailyReminder } from '../lib/reminders';
+import {
+  DAY_CHIPS,
+  formatTime,
+  MINUTE_STEP,
+  reminderDays,
+  reminderSummary,
+  stepTime,
+  toggleDay,
+  type ReminderPrefs,
+} from '../engine/reminders';
+import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from '../lib/reminders';
 import { useActiveCert } from '../lib/useActiveCert';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
@@ -51,6 +61,7 @@ export default function Settings() {
     changeExamDate(cert.id, next < dayKey(now) ? dayKey(now) : next);
   };
 
+  // Permission is asked ONLY here, when the learner turns reminders on.
   const toggleReminder = async (enabled: boolean) => {
     setBusy(true);
     try {
@@ -59,7 +70,7 @@ export default function Settings() {
           Alert.alert('Notifications are off', 'Allow notifications for Aurivan in your phone settings to get reminders.');
           return;
         }
-        await scheduleDailyReminder(s.reminder.hour, s.reminder.minute, cert.name);
+        await scheduleReminders({ ...s.reminder, enabled: true }, cert.name);
       } else {
         await cancelReminders();
       }
@@ -68,6 +79,13 @@ export default function Settings() {
       setBusy(false);
     }
   };
+  // Time or days changed: save, and if reminders are on, replace ours (no new prompt).
+  const updateReminder = (next: ReminderPrefs) => {
+    s.setReminder(next);
+    if (next.enabled) scheduleReminders(next, cert.name).catch(() => {});
+  };
+  const moveTime = (deltaMinutes: number) => updateReminder({ ...s.reminder, ...stepTime(s.reminder.hour, s.reminder.minute, deltaMinutes) });
+  const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
     Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions and mock history for this exam. It cannot be undone.', [
@@ -82,9 +100,7 @@ export default function Settings() {
       },
     ]);
 
-  const reminderText = remindersSupported
-    ? `Every day at ${String(s.reminder.hour).padStart(2, '0')}:${String(s.reminder.minute).padStart(2, '0')}`
-    : 'Available in the installed app, not Expo Go on Android.';
+  const reminderText = remindersSupported ? reminderSummary(s.reminder) : 'Available in the installed app, not Expo Go on Android.';
 
   return (
     <Screen edges={['top', 'bottom']}>
@@ -150,12 +166,45 @@ export default function Settings() {
 
       <Section title="Study" />
       <ToggleRow
-        title="Daily reminder"
+        title="Study reminder"
         subtitle={reminderText}
         value={remindersSupported && s.reminder.enabled}
         disabled={busy || !remindersSupported}
         onValueChange={toggleReminder}
       />
+      {remindersSupported && (
+        // Time and days. You can set them before turning reminders on; nothing is asked until then.
+        <View style={{ paddingVertical: space.md, gap: space.md }}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.xl }}>
+            <Stepper
+              label="Hour"
+              value={String(s.reminder.hour).padStart(2, '0')}
+              spoken={formatTime(s.reminder.hour, s.reminder.minute)}
+              onDec={() => moveTime(-60)}
+              onInc={() => moveTime(60)}
+            />
+            <Stepper
+              label="Minutes"
+              value={String(s.reminder.minute).padStart(2, '0')}
+              spoken={formatTime(s.reminder.hour, s.reminder.minute)}
+              onDec={() => moveTime(-MINUTE_STEP)}
+              onInc={() => moveTime(MINUTE_STEP)}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
+            {DAY_CHIPS.map((d) => (
+              <Chip
+                key={d.day}
+                label={d.short}
+                accessibilityLabel={d.long}
+                selected={days.includes(d.day)}
+                onPress={() => updateReminder({ ...s.reminder, days: toggleDay(s.reminder.days, d.day) })}
+              />
+            ))}
+          </View>
+          <T v="meta">At most one reminder a day. Turn it off any time.</T>
+        </View>
+      )}
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorising letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
       <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
 

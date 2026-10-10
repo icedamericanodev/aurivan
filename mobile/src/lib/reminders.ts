@@ -1,5 +1,6 @@
 /**
- * Daily study reminder — a LOCAL notification scheduled on the phone.
+ * Study reminders — LOCAL notifications scheduled on the phone, at the
+ * learner's time and days (the rules live in engine/reminders.ts).
  * No server, no push tokens, no personal data leaves the device.
  *
  * WHY THE LIBRARY IS LOADED LAZILY: inside Expo Go on Android, merely
@@ -12,6 +13,7 @@
  */
 import { isRunningInExpoGo } from 'expo';
 import { Platform } from 'react-native';
+import { isStudyReminder, reminderCopy, reminderPlan, type ReminderPrefs } from '../engine/reminders';
 
 type NotificationsModule = typeof import('expo-notifications');
 
@@ -68,22 +70,44 @@ export async function ensurePermission(): Promise<boolean> {
   return asked.granted;
 }
 
-/** Replace any existing reminder with one at hour:minute every day. */
-export async function scheduleDailyReminder(hour: number, minute: number, certName: string) {
+/**
+ * Cancel OUR study reminders only: the ids in engine/reminders.ts, plus the
+ * first version's reminder (scheduled without an id; recognised by its
+ * title). Never "cancel everything": other notifications are left alone.
+ */
+async function cancelOurs(N: NotificationsModule) {
+  const scheduled = await N.getAllScheduledNotificationsAsync();
+  for (const req of scheduled) {
+    if (isStudyReminder(req)) await N.cancelScheduledNotificationAsync(req.identifier);
+  }
+}
+
+/**
+ * Replace our reminders with the learner's choice: at most one a day, at
+ * their time, on their days (engine/reminders.ts reminderPlan). Does NOT ask
+ * for permission: Settings asks only when the learner turns reminders on.
+ */
+export async function scheduleReminders(prefs: ReminderPrefs, certName: string) {
   const N = notifications();
   if (!N) return;
   await ensureAndroidChannel(N);
-  await N.cancelAllScheduledNotificationsAsync();
-  await N.scheduleNotificationAsync({
-    content: {
-      title: 'Time for a quick session',
-      body: `10 ${certName} questions keep your streak alive. You've got this.`,
-    },
-    // channelId is ignored on iOS; on Android it files the reminder under "Study reminders".
-    trigger: { type: N.SchedulableTriggerInputTypes.DAILY, hour, minute, channelId: REMINDER_CHANNEL_ID },
-  });
+  await cancelOurs(N);
+  const content = reminderCopy(certName);
+  for (const r of reminderPlan(prefs)) {
+    await N.scheduleNotificationAsync({
+      identifier: r.id,
+      content,
+      // channelId is ignored on iOS; on Android it files the reminder under "Study reminders".
+      trigger:
+        r.kind === 'daily'
+          ? { type: N.SchedulableTriggerInputTypes.DAILY, hour: r.hour, minute: r.minute, channelId: REMINDER_CHANNEL_ID }
+          : { type: N.SchedulableTriggerInputTypes.WEEKLY, weekday: r.weekday, hour: r.hour, minute: r.minute, channelId: REMINDER_CHANNEL_ID },
+    });
+  }
 }
 
+/** Turn study reminders off (ours only). */
 export async function cancelReminders() {
-  await notifications()?.cancelAllScheduledNotificationsAsync();
+  const N = notifications();
+  if (N) await cancelOurs(N);
 }

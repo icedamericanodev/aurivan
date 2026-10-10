@@ -53,7 +53,7 @@ import {
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
-import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Settings as SettingsIcon, X } from './icons';
+import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Minus, Plus, Settings as SettingsIcon, X } from './icons';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -412,6 +412,46 @@ export function IconButton({
     >
       {icon(c.ink)}
     </Pressable>
+  );
+}
+
+// ── Stepper: − value + for small numbers (the reminder time) ─────────
+// No date-picker dependency: two of these make a calm hour/minute picker.
+// Touch: two 48pt buttons. Screen readers: ONE adjustable control (swipe
+// up/down on iOS, volume keys or actions on Android) that speaks its value.
+export function Stepper({
+  label,
+  value,
+  spoken,
+  onDec,
+  onInc,
+}: {
+  /** "Hour" / "Minutes": the caption and the spoken name. */
+  label: string;
+  value: string;
+  /** What a screen reader says for the value, e.g. "7 PM". */
+  spoken?: string;
+  onDec: () => void;
+  onInc: () => void;
+}) {
+  const { c } = useTheme();
+  return (
+    <View
+      accessible
+      accessibilityRole="adjustable"
+      accessibilityLabel={label}
+      accessibilityValue={{ text: spoken ?? value }}
+      accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
+      onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'increment' ? onInc() : onDec())}
+      style={{ alignItems: 'center' }}
+    >
+      <T v="caption">{label}</T>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
+        <IconButton label={`${label} earlier`} onPress={onDec} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <T v="label" num center style={{ minWidth: 36, color: c.ink }}>{value}</T>
+        <IconButton label={`${label} later`} onPress={onInc} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+      </View>
+    </View>
   );
 }
 
