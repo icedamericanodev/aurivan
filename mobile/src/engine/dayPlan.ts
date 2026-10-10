@@ -10,8 +10,13 @@
  *
  * Pure TypeScript: no React, no storage. The progress store persists it.
  */
+import { gameMinutes } from './games/registry';
+import { MINUTES_PER_QUESTION } from './pace';
 import type { PlanItem } from './planner';
 import type { Readiness } from './readiness';
+
+// Re-exported so existing imports keep working; the value lives in pace.ts.
+export { MINUTES_PER_QUESTION };
 
 export interface DayPlan {
   day: string; // "YYYY-MM-DD", local calendar day
@@ -48,10 +53,7 @@ export type Activity =
 
 /** A session counts toward a plan item once 80% of the planned questions are answered. */
 export const SESSION_DONE_SHARE = 0.8;
-/** Rough pace used for "about N min" estimates (CISA items take ~70 s each). */
-export const MINUTES_PER_QUESTION = 1.2;
 export const LESSON_MINUTES = 3;
-export const GAME_MINUTES = 2;
 
 export function newDayPlan(day: string, certId: string, items: PlanItem[], readiness: Readiness): DayPlan {
   const domains: Record<string, number> = {};
@@ -197,6 +199,7 @@ export function itemMinutes(item: PlanItem): number {
     case 'lesson':
       return LESSON_MINUTES;
     case 'game':
-      return GAME_MINUTES;
+      // From the game's round size (engine/games/registry.ts), not a fixed guess.
+      return gameMinutes(item.gameId);
   }
 }

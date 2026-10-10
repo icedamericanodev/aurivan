@@ -180,7 +180,7 @@ await edit('aurivan.progress.v1', `
   // Day plans are stored per cert (progress store v2).
   v.state.days = { ...(v.state.days || {}) }; delete v.state.day;
   v.state.days.cisa = { day, certId: 'cisa',
-    items: [{ kind: 'review', count: 20 }, { kind: 'lesson', lessonId: 'cisa-l-d5-mfa', title: 'Authentication factors: what makes MFA real' }, { kind: 'game', gameId: 'trap', label: 'Trap Spotter · 2 min' }],
+    items: [{ kind: 'review', count: 20 }, { kind: 'lesson', lessonId: 'cisa-l-d5-mfa', title: 'Authentication factors: what makes MFA real' }, { kind: 'game', gameId: 'trap', label: 'Snare Spotter · 6 min' }],
     done: [true, true, true], start: { score: 62, domains: { '1': .74, '2': .66, '3': .55, '4': .58, '5': .6 } },
     answered: 31, correct: 25, minutes: 24, celebrated: true };`);
 await shot('20-clearing', '/home');

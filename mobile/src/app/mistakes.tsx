@@ -25,7 +25,8 @@ import { findQuestion } from '../content/loader';
 import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
-import { slipCoach, type DrillGame, type SlipInput } from '../engine/slipCoach';
+import { GAMES } from '../engine/games/registry';
+import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -38,13 +39,6 @@ const SLIPS: { id: ThinkingSlip; label: string }[] = [
   { id: 'misread', label: 'Misread' },
   { id: 'knowledge', label: 'Didn’t know it' },
 ];
-
-/** The mini-game each slip pattern opens (names match the Play tab). */
-const GAME_NAME: Record<DrillGame, string> = {
-  trap: 'Trap Spotter',
-  priority: 'Priority Lens',
-  sprint: 'Calibrated Sprint',
-};
 
 export default function Mistakes() {
   const { c } = useTheme();
@@ -105,7 +99,7 @@ export default function Mistakes() {
             {pattern.game ? (
               <Button
                 kind="secondary"
-                label={`Drill it: ${GAME_NAME[pattern.game]}`}
+                label={`Drill it: ${GAMES[pattern.game].name}`}
                 accessibilityHint="Opens the mini-game that trains this slip"
                 onPress={() => router.push(`/game/${pattern.game}`)}
               />

@@ -4,14 +4,19 @@
  * done, and how close the exam is. Never more than ~4 items: one screen,
  * one clear next step, no guilt.
  */
+import { GAMES, type GameId } from './games/registry';
 import type { Stage } from './journey';
+
+/** A game's plan label: its registry name and honest length (e.g. "Snare Spotter · 6 min"). */
+const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `${GAMES[gameId].name} · ${GAMES[gameId].minutes} min` });
 
 export type PlanItem =
   /** `label` is optional: older saved plans have none, and Today then says "Review N due". */
   | { kind: 'review'; count: number; label?: string }
   | { kind: 'lesson'; lessonId: string; title: string }
   | { kind: 'practice'; domainId?: string; count: number; label: string }
-  | { kind: 'game'; gameId: 'trap' | 'sprint' | 'priority'; label: string }
+  /** `label` is saved with the day's plan; screens show the registry name, so old labels never show an old name. */
+  | { kind: 'game'; gameId: GameId; label: string }
   | { kind: 'mock'; questions: number; label: string };
 
 export interface PlanInput {
@@ -68,7 +73,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
         label: p.focusDomain ? `${practiceCount} questions · ${p.focusDomain.short}` : `${practiceCount} mixed questions`,
       });
       if (p.nextLesson) plan.push({ kind: 'lesson', lessonId: p.nextLesson.id, title: p.nextLesson.title });
-      plan.push({ kind: 'game', gameId: 'trap', label: 'Trap Spotter · 2 min' });
+      plan.push(gameItem('trap'));
       break;
     case 'mock': {
       const mini = Math.round(p.examQuestions / 3);
@@ -76,12 +81,12 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
       break;
     }
     case 'ready':
-      plan.push({ kind: 'game', gameId: 'sprint', label: 'Calibrated Sprint · check your confidence' });
+      plan.push(gameItem('sprint'));
       plan.push({ kind: 'practice', count: 10, label: '10 mixed questions to stay sharp' });
       break;
     case 'examDay':
       plan.push({ kind: 'practice', count: 10, label: 'Light review · 10 questions' });
-      plan.push({ kind: 'game', gameId: 'priority', label: 'Priority Lens · read like the examiner' });
+      plan.push(gameItem('priority'));
       break;
     case 'afterExam':
       break;

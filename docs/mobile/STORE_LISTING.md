@@ -72,9 +72,9 @@ GROW DEEP ROOTS
 • A question bank you can browse by domain and topic
 
 GAMES THAT BUILD EXAM SKILL
-• Trap Spotter: find the answer built to fool you
-• Priority Lens: read FIRST, BEST and MOST like an examiner
-• Calibrated Sprint: stake your confidence and learn to trust it
+• Snare Spotter: find the answer built to fool you, then the best one
+• Signpost: read the word that decides which true answer wins
+• Sure Footing: rate how sure you are, and learn when to trust it
 
 STAND TALL ON EXAM DAY
 • Full mock exams weighted like the real exam, plus shorter mini mocks

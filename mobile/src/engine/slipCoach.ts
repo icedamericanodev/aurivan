@@ -20,6 +20,7 @@
  *
  * Pure TypeScript: no React, no storage.
  */
+import type { GameId } from './games/registry';
 import { priorityWord } from './games/priorityLens';
 import type { Confidence } from './srs';
 import { runnerUp } from './tips';
@@ -30,8 +31,8 @@ export type ThinkingSlip = 'role' | 'priority' | 'tech-first' | 'symptom' | 'mis
 /** The patterns the coach can name. */
 export type SlipPattern = 'runner-up' | 'priority' | 'overconfident' | Exclude<ThinkingSlip, 'priority'>;
 
-/** The mini-games (same ids as the progress store's GameId). */
-export type DrillGame = 'trap' | 'priority' | 'sprint';
+/** The mini-games: the registry's ids (names live in engine/games/registry.ts). */
+export type DrillGame = GameId;
 
 /** Tagged mistakes needed before the coach names a pattern. */
 export const SLIP_COACH_MIN = 5;

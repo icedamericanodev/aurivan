@@ -1,5 +1,5 @@
 /**
- * Trap Spotter — tap the trap first, then the best answer.
+ * Snare Spotter (id `trap`) — tap the snare first, then the best answer.
  * 5 questions · 2 points each (spot the trap, then get it right).
  */
 import { useState } from 'react';
@@ -11,13 +11,14 @@ import { LETTERS, type Letter } from '../../content/types';
 import { buildTrapRound, scoreTrapPick, trapLetter, trapTip } from '../../engine/games/trapSpotter';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, originalToDisplay, renderText } from '../../engine/shuffle';
+import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const SIZE = 5;
+const SIZE = GAMES.trap.size;
 
 export default function TrapSpotter() {
   const { c } = useTheme();
@@ -92,7 +93,7 @@ export default function TrapSpotter() {
 
   return (
     <GameFrame
-      title="Trap Spotter"
+      title={GAMES.trap.name}
       index={i}
       total={round.length}
       score={score}

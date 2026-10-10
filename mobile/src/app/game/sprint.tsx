@@ -1,6 +1,6 @@
 /**
- * Calibrated Sprint — 8 questions, stake 1–3 chips before answering.
- * The end screen shows accuracy per stake: are your sure answers really sure?
+ * Sure Footing (id `sprint`) — say how sure you are, then answer.
+ * The end screen shows accuracy per confidence level: are your sure answers really sure?
  */
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -21,13 +21,14 @@ import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import type { Confidence } from '../../engine/srs';
+import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const SIZE = 8;
+const SIZE = GAMES.sprint.size;
 const STAKE_CONFIDENCE: Record<Stake, Confidence> = { 1: 'guessing', 2: 'unsure', 3: 'sure' };
 
 export default function CalibratedSprint() {
@@ -103,7 +104,7 @@ export default function CalibratedSprint() {
 
   return (
     <GameFrame
-      title="Calibrated Sprint"
+      title={GAMES.sprint.name}
       index={i}
       total={round.length}
       score={score}

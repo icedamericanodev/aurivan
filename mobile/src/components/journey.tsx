@@ -8,6 +8,7 @@
  * Readiness is always a range ("62–70%") or "Not enough data yet". The copy
  * never promises a pass: it describes mastery, weighted by the blueprint.
  */
+import { gameTitle } from '../engine/games/registry';
 import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 import { domainColor } from '../content/certifications';
@@ -50,8 +51,8 @@ export function planText(item: PlanItem): { title: string; meta: string; short: 
     case 'practice':
       return { title: item.label, meta: `About ${mins} minutes · new material first`, short: `Practice · ${mins} min` };
     case 'game':
-      // Planner labels read "Trap Spotter · 2 min"; the row shows the name only.
-      return { title: item.label.split(' · ')[0], meta: `Game · ${mins} min`, short: `Game · ${mins} min` };
+      // Registry name by id: a plan saved before a rename shows today's name.
+      return { title: gameTitle(item.gameId, item.label), meta: `Game · about ${mins} min`, short: `Game · ${mins} min` };
     case 'mock':
       return { title: item.label.split(' · ')[0], meta: `${item.questions} questions at exam pace`, short: `Mock · ${item.questions} questions` };
   }

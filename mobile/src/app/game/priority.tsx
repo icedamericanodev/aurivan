@@ -1,6 +1,6 @@
 /**
- * Priority Lens — name the word that decides the question, learn what the
- * examiner wants from it, then answer. 5 questions · 2 points each.
+ * Signpost (id `priority`) — name what the deciding word asks for, then
+ * answer. 5 questions · 2 points each.
  */
 import { useMemo, useState } from 'react';
 import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
@@ -17,13 +17,14 @@ import {
 } from '../../engine/games/priorityLens';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
+import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const SIZE = 5;
+const SIZE = GAMES.priority.size;
 
 export default function PriorityLens() {
   const { c } = useTheme();
@@ -89,7 +90,7 @@ export default function PriorityLens() {
 
   return (
     <GameFrame
-      title="Priority Lens"
+      title={GAMES.priority.name}
       index={i}
       total={round.length}
       score={score}

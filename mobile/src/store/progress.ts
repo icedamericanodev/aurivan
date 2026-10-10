@@ -10,6 +10,7 @@ import { persist } from 'zustand/middleware';
 import { getCertification } from '../content/certifications';
 import type { Letter } from '../content/types';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
+import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
@@ -39,7 +40,8 @@ export interface MistakeEntry {
   confidence?: Confidence;
 }
 
-export type GameId = 'trap' | 'sprint' | 'priority';
+// Game ids live in the registry (engine/games/registry.ts); re-exported for screens.
+export type { GameId };
 
 /**
  * Signature moments (Phase 5b). OPTIONAL on purpose: saves from before 5b
