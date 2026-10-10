@@ -4,6 +4,12 @@ All notable user-facing changes to this app. The in-app **What's New** modal mir
 
 For internal/technical history, see git log and PR descriptions.
 
+## [v11.1.1] — Clearer change approvals
+
+### Fixed
+- The change management notes now agree that a change is approved twice: once before it is built, and again for release once testing is done.
+- The risk appetite notes now say a projected breach of risk capacity goes straight to the board, and a firewall question no longer says the advisory board approves changes.
+
 ## [v11.1] — Practice what you just read
 
 ### New

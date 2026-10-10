@@ -5483,7 +5483,7 @@
                     "cells": [
                       "Treat the risk; only the board can approve an exception",
                       "Escalate to senior management to decide",
-                      "Survival is at stake; the board acts at once"
+                      "Survival is at stake; a projected breach goes to the board at once."
                     ]
                   }
                 ]
@@ -9680,8 +9680,8 @@
               "why_it_matters": "Most production failures follow a change. A developer who can approve or deploy their own code can slip in errors or fraud unnoticed.",
               "how_it_works": [
                 "Log each change as a request linked to its requirement, stating purpose, impact and a rollback plan.",
-                "Build the change once in the pipeline after an independent peer review, with automated tests and security scans as gates that block a failing build.",
-                "The change advisory board (CAB) assesses risk and readiness of significant changes and advises the change authority, who approves on attached evidence.",
+                "After independent peer review, build the change once in the pipeline; automated tests and security scans block any failing build.",
+                "The change authority authorizes significant changes to proceed after assessment, then approves their release on attached test and scan evidence; the change advisory board (CAB) advises on both.",
                 "Deploy through the pipeline or by operations staff, never by the code's author.",
                 "Coordinate releases across teams by risk tier, using interface contracts to catch cross-team breaks before release.",
                 "Once live, changes follow operational change control (4A8.1), with its standard, normal and emergency routes."
@@ -12036,12 +12036,12 @@
               "definition": "Change management is the process that records, assesses, approves and reviews every change to production, so only authorized, tested changes go live.",
               "why_it_matters": "Unauthorized or untested changes are a leading cause of outages and security gaps. The process also shows auditors and regulators that production is controlled.",
               "how_it_works": [
-                "Each change, including system retirement, is requested, assessed for risk and impact on dependent systems, approved, tested and recorded.",
-                "Higher-risk changes go to the change advisory board (CAB) for review before the change authority approves them.",
+                "Every change, even system retirement, is requested, assessed for risk and dependent-system impact, and authorized to proceed; then built, tested, approved for release on evidence, and recorded.",
+                "Higher-risk changes get change advisory board (CAB) review before each approval.",
                 "Developers have no standing production access; pipeline separation of authors and deployers is covered in 3B2.2.",
                 "Every change has a tested backout plan to restore the prior state.",
                 "Emergency changes take a faster route, with independent review and approval soon after implementation.",
-                "The IS auditor traces changes found in production back to approved requests, not only requests forward to production."
+                "The IS auditor traces production changes back to approved requests, not only requests forward to production."
               ],
               "types": [
                 {
@@ -12050,7 +12050,7 @@
                 },
                 {
                   "term": "Normal change",
-                  "meaning": "Assessed one by one and approved by the change authority, after CAB review when the risk is higher."
+                  "meaning": "Assessed one by one and authorized to proceed, then approved for release on test evidence by the change authority, after CAB review when the risk is higher."
                 },
                 {
                   "term": "Emergency change",
