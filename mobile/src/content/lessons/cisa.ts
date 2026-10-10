@@ -567,6 +567,7 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'You pick the destination before you decide which roads you will use and which you will avoid, and both come before the turn-by-turn directions. Directions written with no destination look busy but lead nowhere. In an audit, the destination is the objective, the roads are the scope, and the directions are the audit program.',
       },
       {
+        // Expert review fix (2026-10): supervisors review work papers as evidence arrives, not only at the end.
         type: 'flow',
         heading: 'From objective to sign-off',
         steps: [
@@ -574,7 +575,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Scope', note: 'The systems, time period and locations covered' },
           { label: 'Audit program', note: 'The planned procedures, step by step, written before testing starts' },
           { label: 'Fieldwork', note: 'Tests performed and recorded in work papers, the audit’s record of evidence' },
-          { label: 'Supervisory review', note: 'A senior auditor checks the evidence supports each conclusion' },
+          { label: 'Supervisory review', note: 'A senior auditor reviews work papers as evidence arrives and confirms each conclusion is supported before reporting' },
         ],
         caption: 'Each step rests on the one before it. A program written before the objectives has nothing to anchor it.',
       },
@@ -1122,11 +1123,12 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'A museum first needs a catalog of what it holds. Each collection has a curator who decides who may handle it: rare manuscripts stay in the reading room, posters can go out on loan. The building staff look after the shelves and locks, but they follow the curator’s rules; they do not set them.',
       },
       {
+        // Expert review fix (2026-10): the privacy lead owns the program; data-set owners are named in the inventory.
         type: 'flow',
         heading: 'Building a privacy program',
         steps: [
-          { label: 'Assign accountability', note: 'A named privacy lead, and a business owner for each data set' },
-          { label: 'Inventory the data', note: 'What personal data you hold, why, where, and who receives it' },
+          { label: 'Assign accountability', note: 'A named privacy lead, with board support, owns the program' },
+          { label: 'Inventory the data', note: 'What personal data you hold, why, where, who receives it, and each set’s business owner' },
           { label: 'Classify by impact', note: 'A few levels, set by the harm if the data leaks or is altered' },
           { label: 'Apply handling rules', note: 'Access, encryption, retention and disposal to match each level' },
           { label: 'Review and refresh', note: 'Update the inventory as systems and purposes change' },
@@ -2032,21 +2034,17 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'The approved recipe lists every ingredient, amount and oven setting. A cook cannot quietly change the salt: changes go to the head chef, are tasted, and the book is updated. A recipe that fixes the ingredients but not the oven setting can still produce a burnt dish.',
       },
       {
+        // Expert review fix (2026-10): real release order. Automated gates run BEFORE the approval, which is given on the attached evidence.
         type: 'flow',
-        heading: 'How an approved release reaches production',
+        heading: 'How a release reaches production',
         steps: [
-          { label: 'Configuration items', note: 'Everything the release needs to run: code, designs, settings and scripts' },
-          { label: 'Baseline', note: 'The approved, frozen set of those items; changing any one needs approval' },
-          {
-            label: 'Change advisory board',
-            note: 'Judges the risk, impact and readiness of significant changes; it does not do the work',
-          },
-          {
-            label: 'Automated gates',
-            note: 'Checks in the automated build-and-deploy chain (pipeline) that block a release when tests or security scans (automatic checks for known weaknesses) fail',
-          },
+          { label: 'Log the change request', note: 'Linked to its requirement, with purpose, impact and a rollback plan' },
+          { label: 'Peer review, build once', note: 'An independent reviewer checks the code; the pipeline builds it once' },
+          { label: 'Pass automated gates', note: 'Automated tests and security scans (automatic checks for known weaknesses) block any failing build' },
+          { label: 'Approve on attached evidence', note: 'CAB advises on significant changes; the change authority decides' },
+          { label: 'Deploy, never by the author', note: 'Through the pipeline or by operations staff, never by the person who wrote the code' },
         ],
-        caption: 'Any item left out of the baseline can change after testing, without anyone approving it.',
+        caption: 'Configuration items, everything the release needs (code, designs, settings, scripts), sit in an approved, frozen baseline. Any item left out can change after testing, without approval.',
       },
       {
         type: 'idea',
@@ -2098,7 +2096,8 @@ export const CISA_LESSONS: Lesson[] = [
         options: [
           'Add senior developers to the board so scripts are rewritten faster',
           'Have the CIO chair the board to keep meetings on schedule',
-          'Send script fixes back to the teams; the board decides on approval',
+          // Expert review fix (2026-10): the CAB advises; the change authority decides (matches the flow above).
+          'Send script fixes back to the teams; the board advises on approval',
           'Let teams approve their own changes to save the board’s time',
         ],
         correctIndex: 2,
@@ -2263,17 +2262,14 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'A triage nurse does not treat patients in arrival order, or by whose case looks most interesting. They ask how quickly each condition gets worse and treat the fastest-worsening first. A BIA triages business processes the same way: by how fast the harm grows.',
       },
       {
+        // Expert review fix (2026-10): ranking and targets merged; senior management approves the BIA results.
         type: 'flow',
         heading: 'What the BIA produces',
         steps: [
           { label: 'Identify processes', note: 'And the systems, people and suppliers they depend on' },
           { label: 'Assess impact over time', note: 'Financial, legal, customer and safety harm per hour or day' },
-          {
-            // Review fix: the RTO fits inside the maximum downtime; the RPO is about data, not time down.
-            label: 'Set recovery targets',
-            note: 'The longest outage the business can survive (maximum tolerable downtime), a recovery time (RTO) inside it, and how much data it can lose (RPO). More on both next lesson',
-          },
-          { label: 'Rank criticality', note: 'Recovery tiers confirmed by each process owner' },
+          { label: 'Rank and set targets', note: 'Enterprise-wide criteria rank processes into tiers, each with a longest survivable outage (maximum tolerable downtime), a recovery time (RTO) inside it, and how much data it can lose (RPO). More on both next lesson' },
+          { label: 'Senior management approves', note: 'Approved results become the agreed basis for recovery priorities and spending' },
           { label: 'Feed the strategy', note: 'Recovery options are chosen only after this' },
         ],
         caption: 'The BIA comes before any recovery strategy or plan.',
@@ -2498,17 +2494,18 @@ export const CISA_LESSONS: Lesson[] = [
       },
       {
         // Review fix: normal vs emergency changes folded into the caption (one structure scene).
+        // Expert review fix (2026-10): two approval points: authorize the build, then approve the release on test evidence. The CAB advises; the change authority decides.
         type: 'flow',
         heading: 'The life of a change',
         steps: [
           { label: 'Request', note: 'Documented, with a business reason' },
-          { label: 'Assess and approve', note: 'Impact and risk reviewed by the change advisory board (the group that approves changes)' },
+          { label: 'Assess and authorize build', note: 'Risk and impact assessed; the change authority, advised by the change advisory board (CAB) on higher-risk changes, authorizes work to proceed' },
           { label: 'Build and test', note: 'Outside production, with code kept in version control (a tracked history of every edit)' },
-          { label: 'Release', note: 'Moved to production by someone other than the developer' },
+          { label: 'Approve release on evidence', note: 'The change authority approves deployment on the attached test results, not the developer’s word' },
+          { label: 'Released by non-developer', note: 'Moved to production by someone other than the developer' },
           { label: 'Review', note: 'Confirm it worked and matches the approved setup (the configuration baseline)' },
         ],
-        caption:
-          'Emergencies bend the order, not the rules: an urgent fix may go in first, but it is logged at the time and independently reviewed and approved soon after.',
+        caption: 'Emergencies bend the order, not the rules: an urgent fix may go in first, but it is logged at the time and independently reviewed and approved soon after.',
       },
       {
         type: 'idea',
@@ -2606,13 +2603,13 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'Purchase receipts show which books the library bought, not which were lost, lent or donated. So staff walk the shelves and correct the catalog. An asset register built only from purchase orders is the pile of receipts. Discovery scans, tools that search the network for every connected device, are the shelf walk.',
       },
       {
+        // Expert review fix (2026-10): discover and maintain merged into one ongoing step.
         type: 'flow',
         heading: 'The asset life cycle',
         steps: [
           { label: 'Acquire', note: 'Approved and recorded with a named owner' },
           { label: 'Deploy', note: 'Assigned and set up to an approved configuration' },
-          { label: 'Discover and reconcile', note: 'Regular scans compared with the register, and gaps followed up' },
-          { label: 'Maintain', note: 'Support contracts, patches and license use tracked' },
+          { label: 'Maintain and reconcile', note: 'Support, patches and licenses tracked; discovery scans compared with the register, and gaps followed up' },
           { label: 'Retire', note: 'Data securely wiped, record closed' },
         ],
         caption: 'Discovery keeps the register honest. Comparing it with the register turns a scan into a control.',
@@ -2831,16 +2828,16 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'A cinema adds screenings and staff for opening night, not for an average Tuesday. It also promises the film starts at 7:30. Planning for the rush is capacity management. The promised start time, measured and reported, is the service level.',
       },
       {
+        // Expert review fix (2026-10): OLAs and contracts back the SLA; capacity planning runs alongside, so it moved to the caption.
         type: 'flow',
         heading: 'The service level cycle',
         steps: [
           { label: 'Agree targets', note: 'Business need sets the numbers, measured as users experience the service' },
-          { label: 'Support them', note: 'Internal teams and suppliers commit to targets that support the SLA' },
-          { label: 'Plan capacity', note: 'Forecast peaks and growth, and act before limits are reached' },
+          { label: 'Back them with OLAs and contracts', note: 'Internal operational level agreements (OLAs) and supplier contracts are set to support the SLA' },
           { label: 'Measure and report', note: 'End to end, over the hours the business needs the service' },
           { label: 'Review and improve', note: 'Breaches trigger root cause analysis, not blame' },
         ],
-        caption: 'A target nobody can measure is a hope, not a control.',
+        caption: 'Capacity planning runs alongside: forecast peaks and growth, and act before limits are reached. A target nobody can measure is a hope, not a control.',
       },
       {
         type: 'idea',
@@ -3296,6 +3293,7 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'A ship has the captain’s rules for emergencies, a list of which compartments matter most, lifeboats sized for everyone aboard, and drills before trouble comes. Everyone knows who gives the order to abandon ship, and who gives it if the captain is hurt. People come first, then the cargo.',
       },
       {
+        // Expert review fix (2026-10): training comes before testing.
         type: 'flow',
         heading: 'The continuity life cycle',
         steps: [
@@ -3303,10 +3301,7 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Business impact analysis', note: 'Which processes matter most, and how fast they must return' },
           { label: 'Strategy', note: 'Recovery options chosen to meet those targets at sensible cost' },
           { label: 'Plan', note: 'Roles, decision authority, contacts and procedures' },
-          {
-            label: 'Test and maintain',
-            note: 'Tabletop walkthroughs (talking a scenario through) first, then larger tests; fix what tests find and update after major changes',
-          },
+          { label: 'Train, test and maintain', note: 'Train people on their roles, then test, starting with simple checks; fix gaps and update after major changes' },
         ],
         caption: 'Each step feeds the next. Skipping ahead builds plans on guesses.',
       },
@@ -4090,20 +4085,17 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'The passport office checks who you are before issuing one, and border staff trust it because they trust the office. If it is stolen, you report it and it goes on a cancelled list. That only helps if border staff check the list, and if you renew before it expires.',
       },
       {
+        // Expert review fix (2026-10): Request added first; revocation can happen at any point, so it moved to the caption.
         type: 'flow',
         heading: 'A certificate’s life',
         steps: [
+          { label: 'Request', note: 'The holder generates a key pair and submits a certificate request' },
           { label: 'Verify', note: 'A registration authority checks the requester’s identity' },
           { label: 'Issue', note: 'The CA signs the certificate' },
           { label: 'Use', note: 'Systems check the signature, expiry date and revocation status every time' },
           { label: 'Renew', note: 'Before expiry; you can only renew certificates you know about' },
-          {
-            label: 'Revoke',
-            note: 'If the key is lost or stolen, or the holder leaves; published in a certificate revocation list (CRL) or by an online status service (OCSP, Online Certificate Status Protocol)',
-          },
         ],
-        caption:
-          'The root CA is the top authority every certificate traces back to. It is usually kept offline, with its key in a hardware security module, a tamper-resistant device for keys.',
+        caption: 'Revocation withdraws trust early, at any point, if the key is lost or stolen or the holder leaves. It is published in a certificate revocation list (CRL) or by an online status service (OCSP, Online Certificate Status Protocol), and relying systems must check it. The root CA is the top authority every certificate traces back to. It is usually kept offline, with its key in a hardware security module, a tamper-resistant device for keys.',
       },
       {
         type: 'idea',
@@ -4434,6 +4426,7 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'A smoke detector that is never tested may have a flat battery, and you find out during the fire. Detection rules fail the same quiet way: systems change, rules stop matching, and nothing looks wrong. Pressing the test button (for rules, a simulated attack) is the real proof it still works.',
       },
       {
+        // Expert review fix (2026-10): rule testing runs alongside the cycle, so it moved to the caption.
         type: 'flow',
         heading: 'From logs to action',
         steps: [
@@ -4441,8 +4434,8 @@ export const CISA_LESSONS: Lesson[] = [
           { label: 'Correlate', note: 'Detection rules link related events across sources' },
           { label: 'Triage', note: 'Analysts sort each alert by urgency; noisy rules get tuned' },
           { label: 'Respond', note: 'Confirmed attacks go to incident response' },
-          { label: 'Test and review', note: 'Simulated attacks prove rules still fire; each rule has an owner' },
         ],
+        caption: 'Simulated attacks regularly prove each rule still fires, and every rule has a named owner.',
       },
       {
         type: 'idea',
@@ -4539,20 +4532,17 @@ export const CISA_LESSONS: Lesson[] = [
         body: 'Officers photograph and bag items before anyone moves them, and each bag is signed for whenever it changes hands. If someone tidies the room first, the evidence may still be true, but nobody can prove it was not changed.',
       },
       {
+        // Expert review fix (2026-10): isolate but keep the device powered; capture memory before any shutdown.
         type: 'flow',
         heading: 'Collecting evidence in order',
         steps: [
-          { label: 'Start the custody log', note: 'From the moment of collection, record who holds each item, when and why' },
-          { label: 'Capture volatile data', note: 'Memory and live connections first; shutting down erases them' },
-          {
-            label: 'Copy the whole disk',
-            note: 'An exact copy, called an image, made through a write-blocker, a device that stops any change to the original',
-          },
+          { label: 'Isolate, keep it powered', note: 'Cut the network but leave it running, if isolation is safe; note its connections; custody record starts now' },
+          { label: 'Capture volatile data', note: 'Memory and running processes; a shutdown erases them' },
+          { label: 'Copy the whole disk', note: 'An exact copy, called an image, made through a write-blocker, a device that stops any change to the original' },
           { label: 'Hash the image', note: 'A hash, a digital fingerprint, proves the copy matches the original' },
           { label: 'Analyze a copy', note: 'Work on copies of the image, never on the original' },
         ],
-        caption:
-          'Collect what disappears fastest first: the order of volatility. Bring legal in early, alongside these steps, never as a reason to delay them.',
+        caption: 'Collect what disappears fastest first: the order of volatility. Bring legal in early, alongside these steps, never as a reason to delay them.',
       },
       {
         type: 'idea',
