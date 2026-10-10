@@ -1,8 +1,13 @@
 /**
- * Snare Spotter screen: the dead end is gone. Tapping the BEST answer as
+ * Game screens, rendered against the real stores.
+ *
+ * Snare Spotter: the dead end is gone. Tapping the BEST answer as
  * the snare used to disable it in step 2, so the question could not be
  * answered and scored 0 with no explanation. Now the screen says it is
  * the best answer, keeps it open, and a right answer still scores.
+ *
+ * Sure Footing: the scoring rules show on the first play, then live
+ * behind the info button; the chips say their points.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
@@ -15,6 +20,7 @@ import { trapLetter, trapPool } from '../engine/games/trapSpotter';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import TrapSpotter from '../app/game/trap';
+import SureFooting from '../app/game/sprint';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -73,18 +79,29 @@ const current = (): PackQuestion => {
   const shown = new Set(options().map((o) => o.props.text as string));
   return trapPool(getAllQuestions('cisa')).find((q) => Object.values(q.options).every((t) => shown.has(t!)))!;
 };
+/** The question on screen, from the whole bank (Sure Footing draws from all of it). */
+const currentAny = (): PackQuestion => {
+  const shown = new Set(options().map((o) => o.props.text as string));
+  return getAllQuestions('cisa').find((q) => Object.values(q.options).every((t) => shown.has(t!)))!;
+};
 const optionWith = (text: string) => options().find((o) => o.props.text === text)!;
 const tap = (o: ReactTestInstance) =>
   act(() => {
     o.props.onPress();
   });
 
+const mount = (el: React.ReactElement) =>
+  act(() => {
+    r = create(el);
+  });
+const press = (label: string) =>
+  act(() => {
+    root().findAll((n) => n.props.accessibilityLabel === label && typeof n.props.onPress === 'function')[0].props.onPress();
+  });
+
 beforeEach(() => {
   useProgress.getState().resetCert('cisa');
-  useSettings.setState({ theme: 'light', activeCertId: 'cisa' });
-  act(() => {
-    r = create(<TrapSpotter />);
-  });
+  useSettings.setState({ theme: 'light', activeCertId: 'cisa', gameRulesSeen: [] });
 });
 afterEach(() => {
   act(() => {
@@ -94,6 +111,8 @@ afterEach(() => {
 });
 
 describe('Snare Spotter: picking the best answer as the snare', () => {
+  beforeEach(() => mount(<TrapSpotter />));
+
   it('explains it, keeps the best answer open, and still scores a right answer', () => {
     const q = current();
     const best = q.options[q.correct]!;
@@ -115,5 +134,33 @@ describe('Snare Spotter: picking the best answer as the snare', () => {
     expect(allText()).not.toContain('That’s the best answer, not the snare');
     expect(optionWith(q.options[other]!).props.disabled).toBe(true);
     expect(optionWith(q.options[q.correct]!).props.disabled).toBe(false);
+  });
+});
+
+describe('Sure Footing: rules and chips', () => {
+  it('shows the rules on the first play, then only behind the info button', () => {
+    mount(<SureFooting />);
+    expect(allText()).toContain('How Sure Footing scores');
+    press('Got it');
+    expect(allText()).not.toContain('How Sure Footing scores');
+    expect(useSettings.getState().gameRulesSeen).toContain('sprint');
+    act(() => {
+      r!.unmount();
+    });
+    mount(<SureFooting />);
+    expect(allText()).not.toContain('How Sure Footing scores');
+    press('How scoring works');
+    expect(allText()).toContain('How Sure Footing scores');
+  });
+
+  it('labels the chips Guess, Lean and Sure with their points, and scores Sure −5 on a miss', () => {
+    useSettings.setState({ gameRulesSeen: ['sprint'] });
+    mount(<SureFooting />);
+    expect(allText()).toContain('Sure · +3 / −5');
+    expect(allText()).not.toMatch(/stake/i);
+    press('Sure: plus 3 if right, minus 5 if wrong');
+    const wrong = options().find((o) => o.props.text !== currentAny().options[currentAny().correct])!;
+    tap(wrong);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Score -5').length).toBeGreaterThan(0);
   });
 });

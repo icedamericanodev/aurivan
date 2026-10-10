@@ -18,7 +18,8 @@ import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { Seedling } from './glyphs';
-import { BigNum, Button, Enter, Gap, PushedHeader, SegmentBar, Stem, T } from './ui';
+import { Info, ICON_STROKE } from './icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, SegmentBar, Stem, T } from './ui';
 
 /** A fixed list of questions + one shuffle each, created once per round. */
 export function useRound(certId: string, build: (rngSeed: number) => string[]) {
@@ -44,6 +45,8 @@ export function GameFrame({
   score,
   children,
   footer,
+  onInfo,
+  infoOpen,
 }: {
   title: string;
   index: number;
@@ -51,6 +54,9 @@ export function GameFrame({
   score: number;
   children: ReactNode;
   footer?: ReactNode;
+  /** Shows a 48pt "How scoring works" button in the header. */
+  onInfo?: () => void;
+  infoOpen?: boolean;
 }) {
   const { c } = useTheme();
   // Measured height of the sticky footer, so the scroll can clear it.
@@ -65,7 +71,17 @@ export function GameFrame({
           center={<SegmentBar total={total} done={Math.min(index, total)} current={index} />}
           right={<T v="label" num accessibilityLabel={`Score ${score}`}>{String(score)}</T>}
         />
-        <T v="meta" num>{`${title} · ${Math.min(index + 1, total)} of ${total}`}</T>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: onInfo ? 48 : undefined }}>
+          <T v="meta" num style={{ flexShrink: 1 }}>{`${title} · ${Math.min(index + 1, total)} of ${total}`}</T>
+          {onInfo && (
+            <IconButton
+              label="How scoring works"
+              selected={infoOpen}
+              onPress={onInfo}
+              icon={(col) => <Info size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
+            />
+          )}
+        </View>
       </View>
       <View style={{ flex: 1 }}>
         {/* Pad by the sticky footer + 24 (spec §11), so the last option is never under it. */}

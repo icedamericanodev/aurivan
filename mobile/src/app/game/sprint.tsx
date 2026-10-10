@@ -1,48 +1,97 @@
 /**
  * Sure Footing (id `sprint`) — say how sure you are, then answer.
- * The end screen shows accuracy per confidence level: are your sure answers really sure?
+ * Guess +1 / 0 · Lean +2 / −1 · Sure +3 / −5: the honest choice scores best
+ * (engine/games/calibration.ts explains the maths). The rules show on the
+ * first play and behind the info button. The end screen shows accuracy per
+ * confidence level: are your Sure answers really sure?
+ * Copy rule: no betting words ("bet", "stake") anywhere.
  */
 import { useState } from 'react';
 import { View } from 'react-native';
 import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
-import { Chip, Gap, ProgressBar, Row, T, Button } from '../../components/ui';
+import { Button, Chip, Gap, ProgressBar, Row, T } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
 import {
   calibration,
   calibrationVerdict,
+  FOOTING_CONFIDENCE,
+  footingChip,
+  footingSpoken,
+  FOOTINGS,
+  maxScore,
+  PAYOFF,
+  points,
+  signed,
   sprintScore,
   VERDICT_COPY,
+  type Footing,
   type SprintResult,
-  type Stake,
 } from '../../engine/games/calibration';
+import { pickMiss, type RecapMiss } from '../../engine/games/recap';
+import { GAMES } from '../../engine/games/registry';
 import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
-import type { Confidence } from '../../engine/srs';
-import { pickMiss, type RecapMiss } from '../../engine/games/recap';
-import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
+import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 const SIZE = GAMES.sprint.size;
-const STAKE_CONFIDENCE: Record<Stake, Confidence> = { 1: 'guessing', 2: 'unsure', 3: 'sure' };
 
-export default function CalibratedSprint() {
+/** The scoring rules: shown on the first play, and behind the info button. */
+function SureFootingRules({ onDone }: { onDone: () => void }) {
+  const { c } = useTheme();
+  return (
+    <View accessibilityLiveRegion="polite" style={{ marginBottom: space.lg }}>
+      <T v="headline" accessibilityRole="header">How Sure Footing scores</T>
+      <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
+        Before each answer, say how sure you are. Pick the one that matches how sure you really feel: over many questions, honest
+        confidence scores best.
+      </T>
+      {FOOTINGS.map((f, k) => (
+        <View
+          key={f}
+          accessible
+          accessibilityLabel={footingSpoken(f)}
+          style={{ paddingVertical: 10, borderBottomWidth: k === FOOTINGS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+        >
+          <Row style={{ justifyContent: 'space-between' }}>
+            <T v="label">{PAYOFF[f].label}</T>
+            <T v="label" num>{`${signed(PAYOFF[f].right)} right · ${signed(PAYOFF[f].wrong)} wrong`}</T>
+          </Row>
+          <T v="meta">{f === 'guess' ? 'Less than an even chance.' : f === 'lean' ? 'Probably right, not certain.' : 'You would put your name to it.'}</T>
+        </View>
+      ))}
+      <Gap h={space.sm} />
+      <Button kind="secondary" label="Got it" onPress={onDone} />
+    </View>
+  );
+}
+
+export default function SureFooting() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const { round, restart } = useRound(cert.id, (seed) =>
     buildPracticeQueue(getAllQuestions(cert.id), selectCert(useProgress.getState(), cert.id).answers, SIZE, createRng(seed)),
   );
   const [i, setI] = useState(0);
-  const [stake, setStake] = useState<Stake | null>(null);
+  const [footing, setFooting] = useState<Footing | null>(null);
   const [pick, setPick] = useState<Letter | null>(null);
   const [results, setResults] = useState<SprintResult[]>([]);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
+  // Rules: open on the very first play; afterwards behind the info button.
+  const seen = useSettings((s) => s.gameRulesSeen.includes('sprint'));
+  const markRulesSeen = useSettings((s) => s.markRulesSeen);
+  const [rulesOpen, setRulesOpen] = useState(!seen);
+  const closeRules = () => {
+    setRulesOpen(false);
+    markRulesSeen('sprint');
+  };
   const progress = useProgress.getState();
   const score = sprintScore(results);
 
@@ -53,27 +102,27 @@ export default function CalibratedSprint() {
         certId={cert.id}
         game="sprint"
         score={score}
-        max={round.length * 3}
+        max={maxScore(round.length)}
         misses={misses}
         onAgain={() => {
           restart();
           setI(0);
           setMisses([]);
-          setStake(null);
+          setFooting(null);
           setPick(null);
           setResults([]);
         }}
       >
-        <T v="headline">Your calibration</T>
+        <T v="headline">How sure you were</T>
         <Gap h={space.sm} />
         {calibration(results).map((b) => (
-          <View key={b.stake} style={{ marginBottom: space.md }}>
+          <View key={b.footing} style={{ marginBottom: space.md }}>
             <Row style={{ justifyContent: 'space-between' }}>
-              <T v="label">{`Stake ${b.stake} (${STAKE_CONFIDENCE[b.stake]})`}</T>
-              <T v="meta" num>{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% of ${b.answered}`}</T>
+              <T v="label">{PAYOFF[b.footing].label}</T>
+              <T v="meta" num>{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% right of ${b.answered}`}</T>
             </Row>
             <Gap h={space.xs} />
-            <ProgressBar value={b.accuracy ?? 0} color={b.stake === 3 ? c.accent : c.ink2} height={6} />
+            <ProgressBar value={b.accuracy ?? 0} color={b.footing === 'sure' ? c.accent : c.ink2} height={6} />
           </View>
         ))}
         <T color={c.ink2}>{VERDICT_COPY[verdict]}</T>
@@ -86,15 +135,17 @@ export default function CalibratedSprint() {
   const answered = pick !== null;
 
   const choose = (display: Letter) => {
-    if (!stake || answered) return;
+    if (!footing || answered) return;
     const ok = isCorrect(q, display, perm);
     setPick(display);
-    const next = [...results, { questionId: q.id, stake, correct: ok }];
+    const next = [...results, { questionId: q.id, footing, correct: ok }];
     setResults(next);
     const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
     if (miss) setMisses((m) => [...m, miss]);
-    progress.recordAnswer(cert.id, q.id, ok, STAKE_CONFIDENCE[stake]);
-    if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
+    // Guess / Lean / Sure are the practice confidence levels, so spaced
+    // review treats a lucky Guess like a lucky guess anywhere else.
+    progress.recordAnswer(cert.id, q.id, ok, FOOTING_CONFIDENCE[footing]);
+    if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm), FOOTING_CONFIDENCE[footing]);
     if (i === round.length - 1) {
       progress.recordGame(cert.id, 'sprint', sprintScore(next));
       logGame(cert.id, 'sprint');
@@ -107,6 +158,7 @@ export default function CalibratedSprint() {
     return d === pick ? 'wrong' : 'dimmed';
   };
   const ok = answered && isCorrect(q, pick!, perm);
+  const gained = answered && footing ? points(footing, ok) : 0;
 
   return (
     <GameFrame
@@ -114,31 +166,34 @@ export default function CalibratedSprint() {
       index={i}
       total={round.length}
       score={score}
+      onInfo={() => (rulesOpen ? closeRules() : setRulesOpen(true))}
+      infoOpen={rulesOpen}
       footer={
         answered ? (
           <Button
-            label={i === round.length - 1 ? 'See calibration' : 'Next question'}
+            label={i === round.length - 1 ? 'See how sure you were' : 'Next question'}
             onPress={() => {
               setI(i + 1);
-              setStake(null);
+              setFooting(null);
               setPick(null);
             }}
           />
         ) : (
           <View>
-            <T v="label" center color={stake ? c.accentText : c.ink2}>
-              {stake ? 'Now choose your answer' : 'Stake first: how sure will you be?'}
+            <T v="label" center color={footing ? c.accentText : c.ink2}>
+              {footing ? 'Now choose your answer' : 'First: how sure are you?'}
             </T>
             <Gap h={space.sm} />
-            <Row gap={space.sm} style={{ justifyContent: 'center' }}>
-              {([1, 2, 3] as Stake[]).map((s) => (
-                <Chip key={s} label={`Stake ${s}`} selected={stake === s} onPress={() => setStake(s)} />
+            <Row gap={space.sm} style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+              {FOOTINGS.map((f) => (
+                <Chip key={f} label={footingChip(f)} accessibilityLabel={footingSpoken(f)} selected={footing === f} onPress={() => setFooting(f)} />
               ))}
             </Row>
           </View>
         )
       }
     >
+      {rulesOpen && <SureFootingRules onDone={closeRules} />}
       <QuestionHead q={q} />
       {letters.map((d) => (
         <OptionCard
@@ -146,16 +201,20 @@ export default function CalibratedSprint() {
           letter={d}
           text={q.options[displayToOriginal(d, perm)] ?? ''}
           state={stateFor(d)}
-          disabled={!stake || answered}
+          disabled={!footing || answered}
           onPress={() => choose(d)}
         />
       ))}
-      {answered && (
+      {answered && footing && (
         <>
           <Gap h={space.sm} />
           <RevealCard
             tone={ok ? 'good' : 'bad'}
-            title={ok ? `+${stake}` : `−${stake} · best answer ${originalToDisplay(q.correct, perm)}`}
+            title={
+              ok
+                ? `${signed(gained)} · ${PAYOFF[footing].label}, and right`
+                : `${signed(gained)} · ${PAYOFF[footing].label} · best answer ${originalToDisplay(q.correct, perm)}`
+            }
             body={renderText(q.explanation, perm)}
           />
         </>

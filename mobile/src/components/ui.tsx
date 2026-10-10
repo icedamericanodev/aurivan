@@ -383,6 +383,38 @@ export function HeroPanel({
   );
 }
 
+// ── IconButton: a 48pt round button holding one icon ──────────────────
+// For header actions (Settings gear, "How it scores"). The icon is visual;
+// `label` is what a screen reader says. 48pt meets the 44pt minimum with room.
+export function IconButton({
+  label,
+  onPress,
+  icon,
+  hint,
+  selected,
+}: {
+  label: string;
+  onPress: () => void;
+  /** Draw the icon in the colour given (ink). */
+  icon: (color: string) => ReactNode;
+  hint?: string;
+  selected?: boolean;
+}) {
+  const { c } = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityHint={hint}
+      accessibilityState={selected === undefined ? undefined : { selected }}
+      onPress={onPress}
+      style={({ pressed }) => [styles.iconButton, pressed && { backgroundColor: c.soft }]}
+    >
+      {icon(c.ink)}
+    </Pressable>
+  );
+}
+
 // ── Section: headline + optional meta on the right ────────────────────
 export function Section({ title, meta, style }: { title: string; meta?: string; style?: StyleProp<ViewStyle> }) {
   return (
@@ -524,13 +556,24 @@ export function Tag({ label, domain, color }: { label: string; domain?: DomainIn
 
 // ── Chip: selectable filter (spec §6) ─────────────────────────────────
 // Selected = ink fill + bg label + leading ✓ (shape AND colour, never green).
-export function Chip({ label, selected, onPress }: { label: string; selected: boolean; onPress: () => void }) {
+export function Chip({
+  label,
+  selected,
+  onPress,
+  accessibilityLabel,
+}: {
+  label: string;
+  selected: boolean;
+  onPress: () => void;
+  /** Spoken name when the visible label has symbols (e.g. "Sure · +3 / −5"). */
+  accessibilityLabel?: string;
+}) {
   const { c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected }}
-      accessibilityLabel={label} // the ✓ is visual; "selected" state is spoken
+      accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; "selected" state is spoken
       onPress={onPress}
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
       style={({ pressed }) => [
@@ -660,6 +703,7 @@ const styles = StyleSheet.create({
   forest: { borderRadius: radius.lg, padding: 22 },
   // Dark mode: 1px inner top highlight so the panel separates from `bg`.
   forestLift: { borderTopWidth: 1, borderTopColor: forestHighlight },
+  iconButton: { width: 48, height: 48, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },

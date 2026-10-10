@@ -1,6 +1,21 @@
 import { getAllQuestions } from '../content/loader';
 import type { PackQuestion } from '../content/types';
-import { calibration, calibrationVerdict, sprintScore } from '../engine/games/calibration';
+import {
+  bestFooting,
+  calibration,
+  calibrationVerdict,
+  expectedPoints,
+  FOOTING_CONFIDENCE,
+  footingChip,
+  footingSpoken,
+  FOOTINGS,
+  maxScore,
+  PAYOFF,
+  signed,
+  sprintScore,
+  VERDICT_COPY,
+  type Footing,
+} from '../engine/games/calibration';
 import { priorityPool, priorityWord, wordChoices } from '../engine/games/priorityLens';
 import { buildTrapRound, closedInStep2, scoreTrapPick, snareStep, snareWhy, trapLetter, trapPool, trapTip } from '../engine/games/trapSpotter';
 import { createRng } from '../engine/random';
@@ -76,18 +91,59 @@ describe('Priority Lens', () => {
   });
 });
 
-describe('Calibrated Sprint', () => {
-  const r = (stake: 1 | 2 | 3, correct: boolean) => ({ questionId: 'x', stake, correct });
-  it('wins and loses the stake', () => {
-    expect(sprintScore([r(3, true), r(2, false), r(1, true)])).toBe(2);
+describe('Sure Footing scoring', () => {
+  const r = (footing: Footing, correct: boolean) => ({ questionId: 'x', footing, correct });
+  it('pays Guess +1/0, Lean +2/−1, Sure +3/−5', () => {
+    expect(PAYOFF.guess).toMatchObject({ right: 1, wrong: 0 });
+    expect(PAYOFF.lean).toMatchObject({ right: 2, wrong: -1 });
+    expect(PAYOFF.sure).toMatchObject({ right: 3, wrong: -5 });
+    expect(sprintScore([r('sure', true), r('lean', false), r('guess', true), r('sure', false), r('guess', false)])).toBe(3 - 1 + 1 - 5 + 0);
+    expect(maxScore(8)).toBe(24);
   });
-  it('flags over-confidence when 3-chip bets miss', () => {
-    const res = [r(3, false), r(3, false), r(3, true), r(1, true)];
+  it('makes the honest choice the best-scoring one (crossovers at 50% and 80%)', () => {
+    expect(bestFooting(0.3)).toBe('guess');
+    expect(bestFooting(0.49)).toBe('guess');
+    expect(bestFooting(0.5)).toBe('guess'); // a tie goes to the humbler level
+    expect(bestFooting(0.51)).toBe('lean');
+    expect(bestFooting(0.79)).toBe('lean');
+    expect(bestFooting(0.8)).toBe('lean');
+    expect(bestFooting(0.81)).toBe('sure');
+    expect(expectedPoints('guess', 0.5)).toBeCloseTo(expectedPoints('lean', 0.5));
+    expect(expectedPoints('lean', 0.8)).toBeCloseTo(expectedPoints('sure', 0.8));
+  });
+  it('no longer rewards always choosing the top level', () => {
+    // Under the old ±stake rule, "always 3" won for anyone right over 50%.
+    expect(expectedPoints('sure', 0.6)).toBeLessThan(expectedPoints('lean', 0.6));
+    expect(expectedPoints('sure', 0.7)).toBeLessThan(expectedPoints('lean', 0.7));
+  });
+  it('maps levels to the practice confidence, so a lucky Guess is re-tested', () => {
+    expect(FOOTING_CONFIDENCE).toEqual({ guess: 'guessing', lean: 'unsure', sure: 'sure' });
+  });
+  it('labels chips with their points and says them in words', () => {
+    expect(footingChip('sure')).toBe('Sure · +3 / −5');
+    expect(footingChip('guess')).toBe('Guess · +1 / 0');
+    expect(footingSpoken('lean')).toBe('Lean: plus 2 if right, minus 1 if wrong');
+    expect(signed(-5)).toBe('−5');
+  });
+  it('flags over-confidence when Sure answers miss', () => {
+    const res = [r('sure', false), r('sure', false), r('sure', true), r('guess', true)];
     expect(calibrationVerdict(res)).toBe('overconfident');
     expect(calibration(res)[2].accuracy).toBeCloseTo(1 / 3);
   });
   it('needs enough data before judging', () => {
-    expect(calibrationVerdict([r(2, true)])).toBe('not-enough-data');
+    expect(calibrationVerdict([r('lean', true)])).toBe('not-enough-data');
+  });
+  it('never uses betting words in its copy or on its screen', () => {
+    const fs = jest.requireActual('fs') as typeof import('fs');
+    const path = jest.requireActual('path') as typeof import('path');
+    const copy = [
+      ...Object.values(VERDICT_COPY),
+      ...Object.values(PAYOFF).map((p) => p.label),
+      ...FOOTINGS.map(footingChip),
+      ...FOOTINGS.map(footingSpoken),
+      fs.readFileSync(path.join(__dirname, '../app/game/sprint.tsx'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, ''),
+    ].join(' ');
+    expect(copy).not.toMatch(/\b(bet|bets|betting|stake|stakes|wager)\b/i);
   });
 });
 
