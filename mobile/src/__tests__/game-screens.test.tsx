@@ -77,12 +77,15 @@ const options = () => root().findAllByType(OptionCard);
 /** The question on screen: the snare question whose options are the ones shown. */
 const current = (): PackQuestion => {
   const shown = new Set(options().map((o) => o.props.text as string));
-  return trapPool(getAllQuestions('cisa')).find((q) => Object.values(q.options).every((t) => shown.has(t!)))!;
+  const text = allText();
+  return trapPool(getAllQuestions('cisa')).find((q) => text.includes(q.stem) && Object.values(q.options).every((t) => shown.has(t!)))!;
 };
 /** The question on screen, from the whole bank (Sure Footing draws from all of it). */
 const currentAny = (): PackQuestion => {
   const shown = new Set(options().map((o) => o.props.text as string));
-  return getAllQuestions('cisa').find((q) => Object.values(q.options).every((t) => shown.has(t!)))!;
+  // Match the stem too: a few bank questions share the same option texts.
+  const text = allText();
+  return getAllQuestions('cisa').find((q) => text.includes(q.stem) && Object.values(q.options).every((t) => shown.has(t!)))!;
 };
 const optionWith = (text: string) => options().find((o) => o.props.text === text)!;
 const tap = (o: ReactTestInstance) =>
@@ -157,7 +160,11 @@ describe('Sure Footing: rules and chips', () => {
     useSettings.setState({ gameRulesSeen: ['sprint'] });
     mount(<SureFooting />);
     expect(allText()).toContain('Sure · +3 / −5');
-    expect(allText()).not.toMatch(/stake/i);
+    // The game's own words only (question content may say "high-stakes").
+    const chips = root().findAll((n) => n.props.accessibilityRole === 'button' && /^(Guess|Lean|Sure)\b/.test(String(n.props.accessibilityLabel)));
+    expect(chips.length).toBeGreaterThanOrEqual(3);
+    for (const c of chips) expect(String(c.props.accessibilityLabel)).not.toMatch(/\b(bet|stake)/i);
+    expect(allText()).toContain('First: how sure are you?');
     press('Sure: plus 3 if right, minus 5 if wrong');
     const wrong = options().find((o) => o.props.text !== currentAny().options[currentAny().correct])!;
     tap(wrong);
