@@ -10,6 +10,7 @@ import { persist } from 'zustand/middleware';
 import { getCertification } from '../content/certifications';
 import type { Letter } from '../content/types';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
+import { pushScore } from '../engine/games/recap';
 import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
@@ -63,6 +64,12 @@ export interface CertProgress {
   mistakes: Record<string, MistakeEntry>;
   gameBest: Partial<Record<GameId, number>>;
   /**
+   * The last few round scores per game, oldest first, capped
+   * (engine/games/recap.ts HISTORY_CAP). Added with the round recap; older
+   * saves have none and `normalize` fills {}.
+   */
+  gameRecent: Partial<Record<GameId, number[]>>;
+  /**
    * Study notes the learner marked as read: subtopic ids like "4B1.2".
    * Added with Study notes; older saves have none and `normalize` fills [].
    */
@@ -79,6 +86,7 @@ const emptyCert = (): CertProgress => ({
   lessonsDone: [],
   mistakes: {},
   gameBest: {},
+  gameRecent: {},
   notesRead: [],
 });
 
@@ -282,7 +290,8 @@ export const useProgress = create<ProgressState>()(
         set((s) => {
           const cp = normalize(s.byCert[certId]);
           const best = Math.max(cp.gameBest[game] ?? -Infinity, score);
-          return { byCert: { ...s.byCert, [certId]: { ...cp, gameBest: { ...cp.gameBest, [game]: best } } } };
+          const gameRecent = { ...cp.gameRecent, [game]: pushScore(cp.gameRecent[game], score) };
+          return { byCert: { ...s.byCert, [certId]: { ...cp, gameBest: { ...cp.gameBest, [game]: best }, gameRecent } } };
         }),
 
       recordMock: (certId, result) =>
@@ -327,6 +336,7 @@ export const useProgress = create<ProgressState>()(
       // MistakeEntry.confidence), so no version bump: old saves load as-is.
       // Phase 5b added one more optional field (CertProgress.moments): same.
       // Study notes added CertProgress.notesRead; `normalize` gives old saves [].
+      // The game recap added CertProgress.gameRecent; `normalize` gives old saves {}.
       version: 2,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

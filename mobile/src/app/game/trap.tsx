@@ -11,6 +11,7 @@ import { LETTERS, type Letter } from '../../content/types';
 import { buildTrapRound, scoreTrapPick, trapLetter, trapTip } from '../../engine/games/trapSpotter';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, originalToDisplay, renderText } from '../../engine/shuffle';
+import { snareMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -28,6 +29,7 @@ export default function TrapSpotter() {
   const [score, setScore] = useState(0);
   const [trapPick, setTrapPick] = useState<Letter | null>(null); // DISPLAY letters
   const [answerPick, setAnswerPick] = useState<Letter | null>(null);
+  const [misses, setMisses] = useState<RecapMiss[]>([]);
   const progress = useProgress.getState();
 
   if (i >= round.length) {
@@ -37,10 +39,12 @@ export default function TrapSpotter() {
         game="trap"
         score={score}
         max={round.length * 2}
+        misses={misses}
         onAgain={() => {
           restart();
           setI(0);
           setScore(0);
+          setMisses([]);
           setTrapPick(null);
           setAnswerPick(null);
         }}
@@ -67,6 +71,8 @@ export default function TrapSpotter() {
       setAnswerPick(display);
       const result = scoreTrapPick(q, displayToOriginal(trapPick!, perm), displayToOriginal(display, perm));
       setScore((s) => s + result.points);
+      const miss = snareMiss(q, result.spotted, result.correct, (t) => renderText(t, perm));
+      if (miss) setMisses((m) => [...m, miss]);
       progress.recordAnswer(cert.id, q.id, result.correct);
       if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
       if (i === round.length - 1) {

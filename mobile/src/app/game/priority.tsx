@@ -17,6 +17,7 @@ import {
 } from '../../engine/games/priorityLens';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
+import { signpostMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -34,6 +35,7 @@ export default function PriorityLens() {
   const [score, setScore] = useState(0);
   const [word, setWord] = useState<PriorityWord | null>(null);
   const [pick, setPick] = useState<Letter | null>(null);
+  const [misses, setMisses] = useState<RecapMiss[]>([]);
   const progress = useProgress.getState();
 
   const item = round[i];
@@ -48,10 +50,12 @@ export default function PriorityLens() {
         game="priority"
         score={score}
         max={round.length * 2}
+        misses={misses}
         onAgain={() => {
           restart();
           setI(0);
           setScore(0);
+          setMisses([]);
           setWord(null);
           setPick(null);
         }}
@@ -74,6 +78,8 @@ export default function PriorityLens() {
     setPick(d);
     const gained = (wordRight ? 1 : 0) + (ok ? 1 : 0);
     setScore((s) => s + gained);
+    const miss = signpostMiss(q, wordRight, ok);
+    if (miss) setMisses((m) => [...m, miss]);
     progress.recordAnswer(cert.id, q.id, ok);
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
     if (i === round.length - 1) {

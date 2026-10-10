@@ -12,6 +12,7 @@ import { findQuestion } from '../content/loader';
 import type { Letter, PackQuestion } from '../content/types';
 import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
+import { lastScores, reviewLine, trendSpoken, type RecapMiss } from '../engine/games/recap';
 import { useProgress, type GameId } from '../store/progress';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
@@ -96,12 +97,20 @@ export function QuestionHead({ q }: { q: PackQuestion }) {
   );
 }
 
-/** End-of-round summary: a serif score, your best, and what to do next. */
+/**
+ * End-of-round summary, shared by every game:
+ * - a serif score, with your last 5 round scores beside your best;
+ * - "What caught you": each miss with its snare or deciding word and one
+ *   line on why (engine/games/recap.ts);
+ * - "Missed questions are in your review." when any answer was wrong;
+ * - the game's own note (children), then Play again / Done.
+ */
 export function RoundEnd({
   certId,
   game,
   score,
   max,
+  misses = [],
   children,
   onAgain,
 }: {
@@ -109,11 +118,17 @@ export function RoundEnd({
   game: GameId;
   score: number;
   max: number;
+  /** This round's misses, in question order. */
+  misses?: RecapMiss[];
   children?: ReactNode;
   onAgain: () => void;
 }) {
   const { c } = useTheme();
   const best = useProgress((s) => s.byCert[certId]?.gameBest?.[game]);
+  // Older saves have no history: `?.` keeps them loading (shows best only).
+  const history = useProgress((s) => s.byCert[certId]?.gameRecent?.[game]);
+  const recent = lastScores(history);
+  const review = reviewLine(misses);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.gutter, flexGrow: 1, justifyContent: 'center' }}>
@@ -126,9 +141,34 @@ export function RoundEnd({
             <Gap h={space.sm} />
             <BigNum value={String(score)} size={52} accessibilityLabel={`Score ${score} out of ${max}`} />
             <T v="meta" num center>{`out of ${max}${best !== undefined ? ` · best ${best}` : ''}`}</T>
+            {recent.length > 1 && (
+              // Figtree tabular, oldest → newest: a quiet trend, not a chart.
+              <View accessible accessibilityLabel={trendSpoken(recent, best)} style={{ marginTop: space.sm, alignItems: 'center' }}>
+                <T v="caption" center>{`Last ${recent.length} rounds`}</T>
+                <T v="label" num center>{recent.join('  ·  ')}</T>
+              </View>
+            )}
           </View>
         </Enter>
         <Gap h={space.xl} />
+        {misses.length > 0 && (
+          <View style={{ marginBottom: space.lg }}>
+            <T v="headline" accessibilityRole="header">What caught you</T>
+            {misses.map((m, k) => (
+              <View
+                key={m.questionId}
+                accessible
+                accessibilityLabel={`${m.stem} ${m.tag}. ${m.why}`}
+                style={{ paddingVertical: 13, borderBottomWidth: k === misses.length - 1 ? 0 : 1, borderBottomColor: c.line }}
+              >
+                <T v="meta">{m.stem}</T>
+                <T v="caption" color={c.tip} style={{ marginTop: space.xs }}>{m.tag}</T>
+                <T v="small" style={{ marginTop: 2 }}>{m.why}</T>
+              </View>
+            ))}
+            {review && <T v="meta" style={{ marginTop: space.sm }}>{review}</T>}
+          </View>
+        )}
         {children}
         <Gap />
         <Button label="Play again" onPress={onAgain} />

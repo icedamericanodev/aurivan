@@ -21,6 +21,7 @@ import { buildPracticeQueue } from '../../engine/queue';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import type { Confidence } from '../../engine/srs';
+import { pickMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -41,6 +42,7 @@ export default function CalibratedSprint() {
   const [stake, setStake] = useState<Stake | null>(null);
   const [pick, setPick] = useState<Letter | null>(null);
   const [results, setResults] = useState<SprintResult[]>([]);
+  const [misses, setMisses] = useState<RecapMiss[]>([]);
   const progress = useProgress.getState();
   const score = sprintScore(results);
 
@@ -52,9 +54,11 @@ export default function CalibratedSprint() {
         game="sprint"
         score={score}
         max={round.length * 3}
+        misses={misses}
         onAgain={() => {
           restart();
           setI(0);
+          setMisses([]);
           setStake(null);
           setPick(null);
           setResults([]);
@@ -87,6 +91,8 @@ export default function CalibratedSprint() {
     setPick(display);
     const next = [...results, { questionId: q.id, stake, correct: ok }];
     setResults(next);
+    const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
+    if (miss) setMisses((m) => [...m, miss]);
     progress.recordAnswer(cert.id, q.id, ok, STAKE_CONFIDENCE[stake]);
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
     if (i === round.length - 1) {
