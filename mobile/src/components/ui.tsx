@@ -392,6 +392,7 @@ export function IconButton({
   icon,
   hint,
   selected,
+  expanded,
   disabled,
 }: {
   label: string;
@@ -399,11 +400,18 @@ export function IconButton({
   /** Draw the icon in the colour given (ink, or muted when disabled). */
   icon: (color: string) => ReactNode;
   hint?: string;
+  /** For a toggle (on/off). */
   selected?: boolean;
+  /** For a button that shows or hides a panel (e.g. "How scoring works"): spoken as expanded / collapsed. */
+  expanded?: boolean;
   disabled?: boolean;
 }) {
   const { c } = useTheme();
-  const state = { ...(selected === undefined ? {} : { selected }), ...(disabled ? { disabled } : {}) };
+  const state = {
+    ...(selected === undefined ? {} : { selected }),
+    ...(expanded === undefined ? {} : { expanded }),
+    ...(disabled ? { disabled } : {}),
+  };
   return (
     <Pressable
       accessibilityRole="button"

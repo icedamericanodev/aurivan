@@ -157,8 +157,12 @@ describe('Sure Footing: rules and chips', () => {
     });
     mount(<SureFooting />);
     expect(allText()).not.toContain('How Sure Footing scores');
+    const info = () => root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'How scoring works')[0];
+    // It shows/hides a panel, so it is "collapsed" / "expanded", not "selected".
+    expect(info().props.accessibilityState).toEqual({ expanded: false });
     press('How scoring works');
     expect(allText()).toContain('How Sure Footing scores');
+    expect(info().props.accessibilityState).toEqual({ expanded: true });
   });
 
   it('offers Guess, Lean and Sure as one radio group, shows the points once, and scores Sure −5 on a miss', () => {

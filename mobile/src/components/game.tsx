@@ -79,7 +79,7 @@ export function GameFrame({
           {onInfo && (
             <IconButton
               label="How scoring works"
-              selected={infoOpen}
+              expanded={Boolean(infoOpen)}
               onPress={onInfo}
               icon={(col) => <Info size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
             />
