@@ -135,6 +135,48 @@ const heroStart = (page) => page.getByRole('button', { name: /^(Start|Open step)
   await page.context().close();
 }
 
+// ── 6b. Root or Rumor: Heartwood's "Why?" step and its reveal; a missed myth ──
+// Statements are random: tap until one is a Rumor (a Root just moves on).
+{
+  const page = await newPage();
+  await open(page, '/game/rumor');
+  await page.getByLabel(/^Heartwood\./).first().click();
+  await page.getByRole('button', { name: 'Start' }).click();
+  await page.waitForTimeout(900);
+  for (let k = 0; k < 11; k++) {
+    await page.getByRole('button', { name: 'Rumor, an exam myth' }).click();
+    await page.waitForTimeout(700);
+    if (await page.getByText('Why is it a myth? Pick the reason.').count()) {
+      await snap(page, 'e11b-rumor-why-step');
+      await page.getByLabel(/^Option A/).first().click();
+      await page.waitForTimeout(900);
+      await snap(page, 'e11c-rumor-why-reveal');
+      break;
+    }
+    await page.getByRole('button', { name: 'Next statement' }).click();
+    await page.waitForTimeout(500);
+  }
+  await page.context().close();
+}
+{
+  const page = await newPage();
+  await open(page, '/game/rumor');
+  await page.getByLabel(/^Sapling\./).first().click();
+  await page.getByRole('button', { name: 'Start' }).click();
+  await page.waitForTimeout(900);
+  for (let k = 0; k < 11; k++) {
+    await page.getByRole('button', { name: 'Root, a sound principle' }).click();
+    await page.waitForTimeout(700);
+    if (await page.getByText('This one is a Rumor: a myth the exam counts on').count()) {
+      await snap(page, 'e11d-rumor-missed-myth');
+      break;
+    }
+    await page.getByRole('button', { name: 'Next statement' }).click();
+    await page.waitForTimeout(500);
+  }
+  await page.context().close();
+}
+
 // ── 7. Call It First: step 1 (principle cards, options hidden), step 2 ──
 {
   const page = await newPage();
