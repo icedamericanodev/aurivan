@@ -63,6 +63,8 @@ export interface StepSequence {
   steps: StepItem[];
   caption: string;
   tier: GameTier;
+  /** The exam domain ("1".."5"), for interleaving rounds. */
+  domainId: string;
   /** The study note it comes from (authored sequences). */
   subtopicId?: string;
   /** The lesson it comes from (lesson flows). */
@@ -164,7 +166,7 @@ export function getStepSequences(certId: string): StepSequence[] {
   const out: StepSequence[] = [];
   if (raw) {
     for (const s of raw.sequences().sequences) {
-      out.push({ id: s.id, title: s.title, steps: s.steps, caption: s.caption, tier: s.tier, subtopicId: s.subtopicId });
+      out.push({ id: s.id, title: s.title, steps: s.steps, caption: s.caption, tier: s.tier, domainId: s.subtopicId.charAt(0), subtopicId: s.subtopicId });
     }
     const lessons = lessonsFor(certId);
     for (const f of raw.flows().flows) {
@@ -178,6 +180,7 @@ export function getStepSequences(certId: string): StepSequence[] {
         steps: scene.steps,
         caption: scene.caption ?? '',
         tier: tierForSteps(scene.steps.length),
+        domainId: lesson.domainId,
         lessonId: lesson.id,
       });
     }
