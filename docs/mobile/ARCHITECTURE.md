@@ -102,27 +102,43 @@ tap option ─► session.tsx ─► engine/shuffle.isCorrect (grades on ORIGINA
 ```
 
 ### Backup and restore (mobile 1.3)
-Settings → Your data saves ONE JSON file: `{ app: 'aurivan', schema: 1,
-exportedAt, appVersion, stores: { settings, progress } }`, each store as its
-saved `{ version, state }`. No device ids, no personal data beyond what the
-stores already hold. `engine/backup.ts` (pure, tested) reads a file as
-untrusted input: 5 MB cap, `JSON.parse` in try/catch, app and schema checks,
-known cert ids only, a small hand-written type checker with capped lists and
-maps, unknown keys dropped. Older formats upgrade step by step
-(`FILE_MIGRATIONS`, and each store's own migration from
-`engine/saveMigrations.ts`). The screen previews what changes and asks first;
-`lib/backup.ts` then keeps ONE snapshot for "Undo restore" (7 days, in
-`store/backup.ts`, which a restore never overwrites), replaces both stores
-and re-applies reminders (permission asked only if reminders are on and it
-is missing). A bad file changes nothing.
+Settings → Your data (and the welcome screen) save and restore ONE JSON file:
+`{ app: 'aurivan', schema: 1, exportedAt, appVersion, stores: { settings,
+progress } }`, each store as its saved `{ version, state }`. No device ids, no
+personal data beyond what the stores already hold. `engine/backup.ts` (pure,
+tested) reads a file as untrusted input: 1 MB cap, a leading byte-order mark
+stripped, `JSON.parse` in try/catch (a cut-off file of ours is called damaged,
+not foreign), app and schema checks, a file from a newer app version asks the
+learner to update, known cert ids only, a small hand-written type checker
+(real dates and times between 2000 and 2100, scores and minutes in range,
+`correct ≤ total`), capped lists and maps (5,000 per map), unknown keys
+dropped. Ids that don't exist in the app's content (questions, lessons, notes)
+are dropped, and a progress store over 1.5 M characters is refused, so Android
+can always read the saved row back. Today's frozen plans (`days`) are never
+restored: the planner rebuilds today's plan. The phone keeps its own
+`onboarded` (the welcome screen's restore sets it). Older formats upgrade step
+by step (`FILE_MIGRATIONS`, and each store's own migration from
+`engine/saveMigrations.ts`). The screen previews what changes and asks first.
+`lib/backup.ts` then checks that the phone's own data could be restored for
+Undo, and writes the undo snapshot (ONE, 7 days, in `store/backup.ts`), the new
+settings and progress, and the end of any paused quiz in ONE
+`AsyncStorage.multiSet`. Only then are the stores reloaded and success
+reported; a failed write puts the old rows back. Reminders are re-applied
+(permission asked only if reminders are on and it is missing). A bad file
+changes nothing. Restores wait for every store to finish loading (the backup
+store is part of the launch hydration gate), and an expired snapshot is
+dropped at launch.
 
 ### Quiet data (mobile 1.3, not shown yet)
 Collected now because it can't be back-filled, for the timer and mastery
 badges planned next. Each answer record keeps `ms` (time to answer, with time
 in the background left out: `engine/answerClock.ts` + `lib/useAnswerClock.ts`)
 and `lastConfidence`. Each study-notes subtopic gets a permanent `masteredAt`
-the first time it has unassisted correct answers on two different days
-(`engine/mastery.ts`; games and Coach me answers never count). Questions map
+the first time it has unassisted correct answers on two different days at
+least 12 hours apart (`engine/mastery.ts`; games and Coach me answers never
+count). A mock submitted after its deadline stamps its answers with the
+exam's end, and a mock visit that ends without an answer still counts toward
+that question's time. Questions map
 to notes subtopics through the notes' `practiceIds`. All optional: old saves
 load unchanged. It stays on the phone (and in the learner's own backup file).
 
