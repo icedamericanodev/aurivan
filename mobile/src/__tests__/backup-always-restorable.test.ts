@@ -17,6 +17,7 @@ import { getAllQuestions } from '../content/loader';
 import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { readBackup } from '../engine/backup';
 import { createRng } from '../engine/random';
+import { dayKey } from '../engine/streak';
 import { originalToDisplay } from '../engine/shuffle';
 import { checkBackupText, currentBackup } from '../lib/backup';
 import { finishSession, MAX_SESSION_MINUTES } from '../lib/finishSession';
@@ -127,6 +128,35 @@ describe('export: every state the phone can hold reads back', () => {
             gameGrowth: {
               trap: { tier: pick(['seedling', 'sapling', 'heartwood'] as const), up: n(3), down: n(3), hits: Array.from({ length: n(45) }, () => rng() < 0.5) },
               sprint: { tier: 'sapling' as const, up: pick([0, 2, 500]), down: 0, run: pick([0, 3, 2_000_000_000]) },
+            },
+          }
+        : {}),
+      // Build F: milestones (earned marks, the queue, counters, sure answers,
+      // game misses, study days) and note cards of every Build F kind.
+      ...(rng() < 0.7
+        ? {
+            milestones: {
+              earned: Object.fromEntries(
+                ['first-foothold', 'firm-footing:4', 'rooted:10', 'rooted:60', 'graduate', 'whole-grove', 'snare-wise'].filter(() => rng() < 0.5).map((k) => [k, T0 - n(90) * DAY]),
+              ),
+              ...(rng() < 0.5 ? { queue: ['rooted:10', 'graduate'] } : {}),
+              ...(rng() < 0.5 ? { backfill: { at: T0 - n(30) * DAY, count: n(15), ...(rng() < 0.5 ? { seen: true } : {}) } } : {}),
+              counts: { longRecall: n(40), graduated: pick([0, 50, 3_000_000_000]), loopFixed: n(12), gameFixes: n(12), mythsCleared: n(30), signpostFirst: n(12), paceRounds: n(4) },
+              sure: Array.from({ length: n(70) }, () => rng() < 0.8),
+              gameMisses: Object.fromEntries(Array.from({ length: n(6) }, () => [pick(ids), dayKey(T0 - n(20) * DAY)])),
+              days: n(100),
+              lastDay: dayKey(T0 - n(5) * DAY),
+              ...(rng() < 0.3 ? { returnedOn: dayKey(T0) } : {}),
+            },
+          }
+        : {}),
+      ...(rng() < 0.5
+        ? {
+            cards: {
+              'role:1A1.3:r001': { box: 1, dueAt: T0, lastSeen: T0, reps: 1 },
+              'seq:1A3.1:s001': { box: 2, dueAt: T0 + DAY, lastSeen: T0, reps: 2 },
+              'flow:cisa-l-d1-engagement': { box: 1, dueAt: T0, lastSeen: T0, reps: 1 },
+              'kt:D4:abc123': { box: pick([1, 3, 400]), dueAt: T0, lastSeen: T0, reps: 1 },
             },
           }
         : {}),

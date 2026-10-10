@@ -11,6 +11,7 @@ import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
 import { logActivity } from './activity';
+import { celebrateNext, checkMilestones } from './milestones';
 
 export interface SessionScore {
   total: number;
@@ -148,4 +149,9 @@ export function finishSession() {
     // Capped, so a session left open overnight doesn't claim hours of study.
     minutes: Math.min(minutesUsed({ ...s, finishedAt: endedAt }), s.questionIds.length * 3),
   });
+  // Build F: save any milestone now earned, and give THIS session at most one
+  // quiet moment on Results (the rest wait in the queue for later sessions).
+  checkMilestones(s.certId, { finished: true });
+  const moment = celebrateNext(s.certId);
+  if (moment) useSession.getState().setMilestone(moment.key);
 }

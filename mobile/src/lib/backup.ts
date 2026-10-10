@@ -101,6 +101,7 @@ export function knownIds(certId: string): KnownIds {
       questions: new Set(getAllQuestions(certId).map((q) => q.id)),
       lessons: new Set(lessonsFor(certId).map((l) => l.id)),
       notes: new Set(noteSubtopics(certId).map((n) => n.id)),
+      domains: new Set((getCertification(certId)?.domains ?? []).map((d) => d.id)),
     };
     knownCache.set(certId, k);
   }

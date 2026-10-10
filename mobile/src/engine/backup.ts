@@ -19,6 +19,7 @@
  */
 import { MAX_ANSWER_MS } from './answerClock';
 import { GAME_TIERS, HITS_CAP, type GameTier } from './games/growth';
+import { keepSupported, SURE_WINDOW, type CounterId } from './milestones';
 import type { Confidence } from './srs';
 import type { MockTiming } from './pace';
 import { examDateLabel } from './examDay';
@@ -260,7 +261,7 @@ const mockResult = rule(
   (m) => m.correct <= m.total && (m.unanswered ?? 0) <= m.total,
   (m) => ({ ...m, correct: Math.min(m.correct, m.total), ...(m.unanswered !== undefined ? { unanswered: Math.min(m.unanswered, m.total) } : {}) }),
 );
-const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE });
+const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE, fixedLater: bool });
 const percent = range(0, 100);
 const readinessDay = obj({ day: date, min: nullable(percent), last: nullable(percent) });
 const moments = obj({}, { readiness: list(readinessDay, MAX_LIST * 2), readySeenAt: ts });
@@ -272,6 +273,34 @@ const gameScore = range(-1000, 100_000);
 const gameGrowth = obj(
   { tier: oneOf<GameTier>(...GAME_TIERS), up: int(0, 100), down: int(0, 100) },
   { hits: list(bool, HITS_CAP), run: count },
+);
+
+/**
+ * Build F milestones (engine/milestones.ts). Earned marks are checked again
+ * after reading: a mark the restored data can't support is dropped
+ * (keepSupported), and the celebration queue keeps earned marks only.
+ */
+const COUNTERS: Record<CounterId, Check<number>> = {
+  longRecall: count,
+  graduated: count,
+  loopFixed: count,
+  gameFixes: count,
+  mythsCleared: count,
+  signpostFirst: count,
+  paceRounds: count,
+};
+const milestones = obj(
+  { earned: map(ts, 200) },
+  {
+    queue: list(id, 50),
+    backfill: obj({ at: ts, count }, { seen: bool }),
+    counts: obj({}, COUNTERS),
+    sure: list(bool, SURE_WINDOW),
+    gameMisses: map(date, MAX_IDS),
+    days: count,
+    lastDay: date,
+    returnedOn: date,
+  },
 );
 
 const certProgress = obj(
@@ -291,8 +320,9 @@ const certProgress = obj(
     // Build E: where In order / Guided stopped (per scope), and the Root or Rumor note cards.
     studyPath: obj({}, { inOrder: map(id, 50), guided: map(id, 50) }),
     cards: map(reviewEntry, MAX_IDS),
-    // Build F: game levels.
+    // Build F: game levels and milestones.
     gameGrowth: map(gameGrowth, 50),
+    milestones,
   },
 );
 
@@ -477,6 +507,8 @@ export interface KnownIds {
   lessons: ReadonlySet<string>;
   /** Study-notes subtopic ids ("4B1.2"): notes read and mastery dates. */
   notes: ReadonlySet<string>;
+  /** Domain ids ("4"): Field Guide cards for a domain's key terms ("kt:D4:…"). Optional. */
+  domains?: ReadonlySet<string>;
 }
 
 function keepKeys<T>(m: Record<string, T> | undefined, keep: ReadonlySet<string>): Record<string, T> | undefined {
@@ -492,6 +524,20 @@ function keepValues(m: Record<string, string>, keep: ReadonlySet<string>): Recor
 /** The study-note subtopic inside a card id ("rumor:4B1.2:k3f9" → "4B1.2"). */
 export function cardSubtopic(cardId: string): string {
   return cardId.split(':')[1] ?? '';
+}
+
+/**
+ * True when a note card still has something in the app to belong to:
+ * - "flow:<lessonId>" (Stepping Stones, a lesson's flow) → the lesson;
+ * - "kt:D4:<hash>" (Field Guide, a domain key term) → the domain;
+ * - anything else ("rumor:4B1.2:…", "role:1A1.3:r001", "seq:1A3.1:s001",
+ *   "kt:4B1.2:…") → its study-notes subtopic.
+ */
+export function cardKnown(cardId: string, k: KnownIds): boolean {
+  const [kind, owner = ''] = cardId.split(':');
+  if (kind === 'flow') return k.lessons.has(owner);
+  if (/^D\d+$/.test(owner)) return k.domains?.has(owner.slice(1)) ?? false;
+  return k.notes.has(owner);
 }
 
 /**
@@ -514,9 +560,24 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
     if (cp.mastery) next.mastery = keepKeys(cp.mastery, k.notes);
     // In order's place is a question id: a removed question just starts that scope over.
     if (cp.studyPath?.inOrder) next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };
-    // Note cards ("rumor:4B1.2:…") keep only cards whose study note still exists.
-    if (cp.cards) next.cards = Object.fromEntries(Object.entries(cp.cards).filter(([key]) => k.notes.has(cardSubtopic(key))));
+    // Note cards ("rumor:4B1.2:…") keep only cards whose note, lesson or domain still exists.
+    if (cp.cards) next.cards = Object.fromEntries(Object.entries(cp.cards).filter(([key]) => cardKnown(key, k)));
+    // Game misses waiting to be fixed are question ids.
+    if (cp.milestones?.gameMisses) next.milestones = { ...cp.milestones, gameMisses: keepKeys(cp.milestones.gameMisses, k.questions) };
     byCert[certId] = next;
+  }
+  return { ...progress, byCert };
+}
+
+/**
+ * Build F: each cert keeps only the milestone marks its restored data could
+ * have earned (engine/milestones.ts markSupported). A restored badge never
+ * claims more than the data shows.
+ */
+export function keepSupportedMarks(progress: BackupProgress): BackupProgress {
+  const byCert: BackupProgress['byCert'] = {};
+  for (const [certId, cp] of Object.entries(progress.byCert)) {
+    byCert[certId] = cp.milestones ? { ...cp, milestones: keepSupported(cp.milestones, cp) } : cp;
   }
   return { ...progress, byCert };
 }
@@ -594,7 +655,7 @@ function readChecked(raw: Record<string, unknown>, knownCertIds: readonly string
   };
   const settings = settingsCheck(certKey)(readStore(file.stores.settings, SETTINGS_VERSION, null, 'settings'), 'settings');
   const checked = progressCheck(certKey)(readStore(file.stores.progress, PROGRESS_VERSION, migrateProgress, 'progress'), 'progress');
-  const progress = known ? keepKnownIds(checked, known) : checked;
+  const progress = keepSupportedMarks(known ? keepKnownIds(checked, known) : checked);
   // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
   if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');
   const exportedAt = typeof file.exportedAt === 'string' && file.exportedAt.length <= 40 ? file.exportedAt : '';

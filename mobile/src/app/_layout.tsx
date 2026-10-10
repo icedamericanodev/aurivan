@@ -20,6 +20,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
 import { pruneUndo } from '../lib/backup';
+import { ensureBackfill } from '../lib/milestones';
+import { useProgress } from '../store/progress';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -65,6 +67,15 @@ export default function RootLayout() {
     // An "Undo restore" snapshot older than 7 days is dropped once, at launch.
     pruneUndo();
   }, [hydrated]);
+
+  // Build F: once per certification (an older save, a new cert, or a restore
+  // from an older backup), find the milestones the saved data already shows.
+  // They are saved quietly with ONE summary line, never a burst of moments.
+  const activeCertId = useSettings((s) => s.activeCertId);
+  const needsBackfill = useProgress((s) => !s.byCert[activeCertId]?.milestones?.backfill);
+  useEffect(() => {
+    if (hydrated && needsBackfill) ensureBackfill(activeCertId);
+  }, [hydrated, needsBackfill, activeCertId]);
 
   if (!ready) return null;
 
