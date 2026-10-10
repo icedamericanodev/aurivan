@@ -1,6 +1,6 @@
 /**
  * Settings — certification, exam date, appearance, study goal, reminders, haptics,
- * data, and the legal notices required for store review. Groups are
+ * your data (backup, restore, reset), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
 import Constants from 'expo-constants';
@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { Alert, Linking, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
 import { ThemeSwitch } from '../components/themeSwitch';
+import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
@@ -230,6 +231,9 @@ export default function Settings() {
       )}
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
       <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+
+      {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
+      <YourData />
 
       <Gap h={space.xl} />
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />
