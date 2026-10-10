@@ -145,6 +145,14 @@ describe('Sure Footing scoring', () => {
   it('needs enough data before judging', () => {
     expect(calibrationVerdict([r('lean', true)])).toBe('not-enough-data');
   });
+  it('calls under-confidence when more than half of at least 3 guesses were right', () => {
+    // 2 of 3 guesses right (67%): above the 50% Lean line.
+    expect(calibrationVerdict([r('guess', true), r('guess', true), r('guess', false)])).toBe('underconfident');
+    // Exactly half is not enough.
+    expect(calibrationVerdict([r('guess', true), r('guess', true), r('guess', false), r('guess', false)])).toBe('calibrated');
+    // Fewer than 3 guesses: no under-confidence call, even if all right.
+    expect(calibrationVerdict([r('guess', true), r('guess', true), r('sure', true)])).toBe('calibrated');
+  });
   it('never uses betting words in its copy or on its screen', () => {
     const fs = jest.requireActual('fs') as typeof import('fs');
     const path = jest.requireActual('path') as typeof import('path');

@@ -104,6 +104,9 @@ export function calibration(results: SprintResult[]): CalibrationBand[] {
   });
 }
 
+/** Guesses needed before "you knew more than you thought" is said. */
+export const UNDER_MIN_GUESSES = 3;
+
 export type CalibrationVerdict = 'overconfident' | 'underconfident' | 'calibrated' | 'not-enough-data';
 
 /** Plain-language verdict for the end screen. */
@@ -116,7 +119,9 @@ export function calibrationVerdict(results: SprintResult[]): CalibrationVerdict 
   const lo = acc(low);
   // Sure should be right more than 80% of the time to be worth it.
   if (hi !== null && hi < 0.8) return 'overconfident';
-  if (lo !== null && lo > 0.8) return 'underconfident';
+  // Guess is for under 50%. Right on more than half of at least 3 guesses
+  // means the learner knew more than they said (the Lean line is 50%).
+  if (low.length >= UNDER_MIN_GUESSES && lo !== null && lo > 0.5) return 'underconfident';
   return 'calibrated';
 }
 
