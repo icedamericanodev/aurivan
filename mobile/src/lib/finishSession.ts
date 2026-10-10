@@ -45,13 +45,17 @@ export function finishSession() {
   if (!s || s.finishedAt) return;
   if (s.mode === 'mock') {
     const progress = useProgress.getState();
+    // If the learner reopens the app after the deadline, the exam ended AT
+    // the deadline, not now: answers are stamped with that time (days, streak, mastery).
+    const examEnd = Math.min(Date.now(), s.deadline ?? Infinity);
     const skipped: string[] = [];
     for (const id of s.questionIds) {
       const r = s.responses[id];
       if (r) {
         // Readiness is logged ONCE after the batch (below), not after each of
         // up to 150 answers: a low partway through must not reset the hold.
-        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false });
+        // ms: the time this question took, added up over every visit (session.tsx).
+        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false, ms: r.ms, at: examEnd });
         if (!r.correct) progress.recordMistake(s.certId, id, displayToOriginal(r.display, s.perms[id]));
       }
       else skipped.push(id);

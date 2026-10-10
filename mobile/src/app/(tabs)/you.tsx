@@ -125,8 +125,8 @@ export default function You() {
           trailing={progress.bookmarks.length ? <Trail value={String(progress.bookmarks.length)} unit="saved" /> : undefined}
           accessibilityLabel={`Saved questions, ${progress.bookmarks.length} saved`}
           onPress={() => router.push('/saved')}
+          last
         />
-        <ListRow icon={icon(Settings)} title="Settings" subtitle="Exam, reminders, haptics" onPress={() => router.push('/settings')} last />
 
         <Section title="Mock exams" />
         {progress.mocks.length === 0 ? (

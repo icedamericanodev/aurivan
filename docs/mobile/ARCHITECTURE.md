@@ -37,6 +37,7 @@ manager) evaluated the options independently. All three picked **React Native
 | State + offline storage | **Zustand** + AsyncStorage | 1 ✅ | Remembers progress on the phone |
 | Reminders | **expo-notifications** (local) | 1 ✅ | Daily study nudge, no server |
 | Share cards | **react-native-view-shot** 5.1.0 + **expo-sharing** ~57.0 (owner-approved) | 5 ✅ | view-shot turns the fixed 320 × 400 pt card into a 1080 × 1350 PNG; expo-sharing opens the system share sheet with that image on **both iOS and Android** (RN `Share` is text-only on Android). Where expo-sharing is unavailable (web) the same honest sentence is shared as text. Both are native modules: no config plugin needed for sending shares (expo-sharing's plugin only sets up *receiving* shares, which we don't do), but they **need a new dev build** (`eas build --profile development`) before they work on a phone |
+| Backup files | **expo-file-system** ~57.0 + **expo-document-picker** ~57.0 (mobile 1.3) | 1 ✅ | Settings → Your data. file-system writes `aurivan-backup-YYYY-MM-DD.json` to the app's cache, and expo-sharing hands it to Files, Drive, email or AirDrop; document-picker lets the learner choose a backup to restore. No account, no server, works offline. Both are native modules with no config plugin needed, but they **need a new dev build** |
 | Tests | **Jest** (`jest-expo`) | 1 ✅ | Proves the grading/SRS/readiness logic is right |
 | Builds & store upload | **EAS Build + EAS Submit** | 1 | Builds iOS in the cloud — no Mac needed |
 | Instant fixes | **EAS Update** | 1 | Ship JS/content fixes without store review |
@@ -99,6 +100,47 @@ tap option ─► session.tsx ─► engine/shuffle.isCorrect (grades on ORIGINA
                                  ├─ engine/srs    → review queue
                                  └─ streak/today  → Home
 ```
+
+### Backup and restore (mobile 1.3)
+Settings → Your data (and the welcome screen) save and restore ONE JSON file:
+`{ app: 'aurivan', schema: 1, exportedAt, appVersion, stores: { settings,
+progress } }`, each store as its saved `{ version, state }`. No device ids, no
+personal data beyond what the stores already hold. `engine/backup.ts` (pure,
+tested) reads a file as untrusted input: 1 MB cap, a leading byte-order mark
+stripped, `JSON.parse` in try/catch (a cut-off file of ours is called damaged,
+not foreign), app and schema checks, a file from a newer app version asks the
+learner to update, known cert ids only, a small hand-written type checker
+(real dates and times between 2000 and 2100, scores and minutes in range,
+`correct ≤ total`), capped lists and maps (5,000 per map), unknown keys
+dropped. Ids that don't exist in the app's content (questions, lessons, notes)
+are dropped, and a progress store over 1.5 M characters is refused, so Android
+can always read the saved row back. Today's frozen plans (`days`) are never
+restored: the planner rebuilds today's plan. The phone keeps its own
+`onboarded` (the welcome screen's restore sets it). Older formats upgrade step
+by step (`FILE_MIGRATIONS`, and each store's own migration from
+`engine/saveMigrations.ts`). The screen previews what changes and asks first.
+`lib/backup.ts` then checks that the phone's own data could be restored for
+Undo, and writes the undo snapshot (ONE, 7 days, in `store/backup.ts`), the new
+settings and progress, and the end of any paused quiz in ONE
+`AsyncStorage.multiSet`. Only then are the stores reloaded and success
+reported; a failed write puts the old rows back. Reminders are re-applied
+(permission asked only if reminders are on and it is missing). A bad file
+changes nothing. Restores wait for every store to finish loading (the backup
+store is part of the launch hydration gate), and an expired snapshot is
+dropped at launch.
+
+### Quiet data (mobile 1.3, not shown yet)
+Collected now because it can't be back-filled, for the timer and mastery
+badges planned next. Each answer record keeps `ms` (time to answer, with time
+in the background left out: `engine/answerClock.ts` + `lib/useAnswerClock.ts`)
+and `lastConfidence`. Each study-notes subtopic gets a permanent `masteredAt`
+the first time it has unassisted correct answers on two different days at
+least 12 hours apart (`engine/mastery.ts`; games and Coach me answers never
+count). A mock submitted after its deadline stamps its answers with the
+exam's end, and a mock visit that ends without an answer still counts toward
+that question's time. Questions map
+to notes subtopics through the notes' `practiceIds`. All optional: old saves
+load unchanged. It stays on the phone (and in the learner's own backup file).
 
 ### The content pipeline
 ```
@@ -169,6 +211,10 @@ Freemium with in-app subscriptions (product panel recommendation):
    purpose. The app stores only study progress and settings (no accounts,
    no secrets), and a restore onto a new phone saves learners from starting
    over. Revisit if the app ever stores tokens or personal data on device.
+   Since mobile 1.3 the learner can also save their own backup file
+   (Settings → Your data), which works across iOS and Android. The file goes
+   only where the learner sends it, so the store data-safety answers stay
+   "no data collected".
 8. **Tablets** — `ios.supportsTablet` is `false` for v1 (no iPad layouts or
    iPad screenshots yet).
 

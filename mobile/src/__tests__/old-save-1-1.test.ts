@@ -1,5 +1,8 @@
 /**
  * QA Build 1: a learner updating from mobile 1.1 keeps everything.
+ * (The blobs use the shapes 1.1 really saved: correctCount, finishedAt, a
+ * 10 / 20 / 40 daily goal. old-saves-backup.qa.test.ts also takes such a
+ * save through a backup and a restore.)
  *
  * The saved blobs below have the exact 1.1 shapes: settings with a
  * reminder that has no `days` and no `gameRulesSeen`; progress with no
@@ -46,7 +49,7 @@ const OLD_SETTINGS = {
     examDates: { cisa: '2026-12-01' },
     theme: 'dark',
     shuffleOptions: false,
-    dailyGoal: 30,
+    dailyGoal: 40, // the shipped choices are 10 / 20 / 40
     reminder: { enabled: true, hour: 19, minute: 0 },
     haptics: false,
   },
@@ -61,10 +64,10 @@ const oldItems = [
   { kind: 'game', gameId: 'priority', label: 'Priority Lens · read like the examiner' },
 ];
 const OLD_CISA = {
-  answers: { d1_001: { attempts: 2, correct: 1, lastCorrect: true, lastAt: 1_780_000_000_000 } },
+  answers: { d1_001: { attempts: 2, correctCount: 1, lastCorrect: true, lastAt: 1_780_000_000_000 } },
   review: { d1_002: { box: 2, dueAt: 1_780_100_000_000, lastSeen: 1_780_000_000_000, reps: 2 } },
   bookmarks: ['d2_010'],
-  mocks: [{ id: 'mock-1', at: 1_780_000_000_000, total: 150, correct: 101 }],
+  mocks: [{ id: 'mock-1', finishedAt: 1_780_000_000_000, total: 150, correct: 101, minutesUsed: 212, byDomain: { '1': { total: 27, correct: 19 } } }],
   lessonsDone: ['cisa-l-d1-engagement'],
   mistakes: { d1_002: { picked: 'B', at: 1_780_000_000_000, resolved: false, confidence: 'sure' } },
   gameBest: { trap: 8, sprint: 11, priority: 9 },
@@ -102,7 +105,7 @@ beforeAll(async () => {
 describe('updating from 1.1', () => {
   it('keeps every setting, and the new fields get safe defaults', () => {
     const s = useSettings.getState();
-    expect(s).toMatchObject({ onboarded: true, activeCertId: 'cisa', theme: 'dark', shuffleOptions: false, dailyGoal: 30, haptics: false });
+    expect(s).toMatchObject({ onboarded: true, activeCertId: 'cisa', theme: 'dark', shuffleOptions: false, dailyGoal: 40, haptics: false });
     expect(s.examDates).toEqual({ cisa: '2026-12-01' });
     expect(s.reminder).toEqual({ enabled: true, hour: 19, minute: 0 });
     // Rules not seen yet: Sure Footing shows them once.

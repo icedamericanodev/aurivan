@@ -207,9 +207,9 @@ describe('Settings gear in the Today and You headers', () => {
     expect(row.length).toBeGreaterThan(0);
   });
 
-  it('You keeps its Settings row too', () => {
+  it('You reaches Settings through the gear only (no duplicate Study tools row)', () => {
     mount(<You />);
-    expect(root().findAll((n) => n.props.title === 'Settings').length).toBeGreaterThan(0);
+    expect(root().findAll((n) => n.props.title === 'Settings').length).toBe(0);
   });
 });
 

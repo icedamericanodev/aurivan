@@ -20,6 +20,7 @@ import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import { logGame } from '../../lib/activity';
+import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
@@ -46,6 +47,8 @@ function Signpost() {
   const [pick, setPick] = useState<Letter | null>(null);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const progress = useProgress.getState();
+  // Quiet data (Build C): time from the question appearing to the answer.
+  const readClock = useAnswerClock(round[i] ? `${i}:${round[i].q.id}` : undefined);
 
   const item = round[i];
   const actual = item ? priorityWord(item.q.stem)! : null;
@@ -92,7 +95,8 @@ function Signpost() {
     setScore((s) => s + gained);
     const miss = signpostMiss(q, readRight, ok);
     if (miss) setMisses((m) => [...m, miss]);
-    progress.recordAnswer(cert.id, q.id, ok);
+    // Game answers never count toward the subtopic mastery date (mastery: false).
+    progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false });
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
     if (i === round.length - 1) {
       progress.recordGame(cert.id, 'priority', score + gained);

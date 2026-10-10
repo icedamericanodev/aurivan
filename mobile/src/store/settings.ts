@@ -5,6 +5,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { DEFAULT_CERT_ID } from '../content/certifications';
 import { DEFAULT_REMINDER, type ReminderPrefs } from '../engine/reminders';
+import { SETTINGS_VERSION } from '../engine/saveMigrations';
 import { persistStorage } from './storage';
 
 export type ThemePref = 'system' | 'dark' | 'light';
@@ -67,6 +68,6 @@ export const useSettings = create<SettingsState>()(
       markRulesSeen: (gameId) =>
         set((s) => (s.gameRulesSeen.includes(gameId) ? s : { gameRulesSeen: [...s.gameRulesSeen, gameId] })),
     }),
-    { name: 'aurivan.settings.v1', storage: persistStorage, version: 1 },
+    { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
   ),
 );

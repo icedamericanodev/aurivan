@@ -8,6 +8,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { getCertification } from '../content/certifications';
+import { subtopicOfQuestion } from '../content/notes';
 import type { Letter } from '../content/types';
 import { logReadinessDay, type ReadinessDay } from '../engine/examReady';
 import { pushScore } from '../engine/games/recap';
@@ -15,6 +16,8 @@ import type { GameId } from '../engine/games/registry';
 import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan } from '../engine/dayPlan';
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
+import { recordMastery, type SubtopicMastery } from '../engine/mastery';
+import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
 import { bumpStreak, dayKey, type Streak } from '../engine/streak';
@@ -76,6 +79,13 @@ export interface CertProgress {
   notesRead: string[];
   /** Phase 5b: optional, see CertMoments. */
   moments?: CertMoments;
+  /**
+   * Build C: when each subtopic was first mastered (engine/mastery.ts), keyed
+   * by the study-notes subtopic id ("4B1.2", content/notes subtopicOfQuestion).
+   * Questions no note lists are not counted. Optional: older saves have none, and nothing
+   * shows it yet (the mastery badges come later). Never unset by answers.
+   */
+  mastery?: Record<string, SubtopicMastery>;
 }
 
 const emptyCert = (): CertProgress => ({
@@ -132,8 +142,13 @@ interface ProgressState {
      * schedule: false for mock exams. assisted: answered after "Coach me".
      * logReadiness: false while recording a batch (a submitted mock); call
      * logReadinessNow once after the batch, so a mid-batch low never counts.
+     * ms: time to answer (engine/answerClock.ts), kept on the answer record.
+     * mastery: false for game answers, which never count toward the
+     * subtopic mastery date (engine/mastery.ts).
+     * at: when the answer was given (default now). A mock submitted after its
+     * deadline passes the exam's end, so days and mastery use that time.
      */
-    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean },
+    opts?: { schedule?: boolean; assisted?: boolean; logReadiness?: boolean; ms?: number; mastery?: boolean; at?: number },
   ) => void;
   /** Log today's readiness lower bound from the saved answers (after a batch). */
   logReadinessNow: (certId: string) => void;
@@ -180,7 +195,7 @@ export const useProgress = create<ProgressState>()(
 
       recordAnswer: (certId, questionId, correct, confidence, opts) =>
         set((s) => {
-          const now = Date.now();
+          const now = opts?.at ?? Date.now();
           const cp = normalize(s.byCert[certId]);
           const prev = cp.answers[questionId];
           const answers = {
@@ -192,6 +207,10 @@ export const useProgress = create<ProgressState>()(
               lastAt: now,
               // Only written when true, so clean answers keep the old shape.
               ...(opts?.assisted ? { lastAssisted: true } : {}),
+              // Build C quiet data: both describe THIS answer, so they are
+              // left out (not carried over) when this answer has none.
+              ...(typeof opts?.ms === 'number' && Number.isFinite(opts.ms) ? { ms: Math.max(0, Math.round(opts.ms)) } : {}),
+              ...(confidence ? { lastConfidence: confidence } : {}),
             },
           };
           // Mock exams record answers but don't reschedule reviews mid-exam.
@@ -209,6 +228,12 @@ export const useProgress = create<ProgressState>()(
             mistakes = { ...mistakes, [questionId]: { ...mistakes[questionId], resolved: true } };
           }
           const day = dayKey(now);
+          // Mastery date per subtopic: unassisted correct answers on two
+          // different days (engine/mastery.ts). Games pass mastery: false.
+          const mastery =
+            opts?.mastery === false
+              ? cp.mastery
+              : recordMastery(cp.mastery, subtopicOfQuestion(certId, questionId), day, { correct, assisted: opts?.assisted === true }, now);
           // Today's clearing card counts answers for this cert's plan, today only.
           const cur = s.days[certId];
           const days = cur && cur.day === day ? { ...s.days, [certId]: logAnswer(cur, correct) } : s.days;
@@ -216,9 +241,14 @@ export const useProgress = create<ProgressState>()(
           // dip during the day resets the 7-day hold (engine/examReady.ts).
           const moments = opts?.logReadiness === false ? cp.moments : withReadiness(cp.moments, certId, answers, day);
           return {
-            byCert: { ...s.byCert, [certId]: { ...cp, answers, review, mistakes, ...(moments ? { moments } : {}) } },
-            streak: bumpStreak(s.streak, now),
-            today: { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
+            byCert: {
+              ...s.byCert,
+              [certId]: { ...cp, answers, review, mistakes, ...(moments ? { moments } : {}), ...(mastery ? { mastery } : {}) },
+            },
+            // An answer stamped on an EARLIER day than the latest study day
+            // (an expired mock opened later) never rewinds the streak or today.
+            streak: s.streak.lastDay && day < s.streak.lastDay ? s.streak : bumpStreak(s.streak, now),
+            today: s.today.day && day < s.today.day ? s.today : { day, answered: s.today.day === day ? s.today.answered + 1 : 1 },
             days,
           };
         }),
@@ -337,23 +367,20 @@ export const useProgress = create<ProgressState>()(
       // Phase 5b added one more optional field (CertProgress.moments): same.
       // Study notes added CertProgress.notesRead; `normalize` gives old saves [].
       // The game recap added CertProgress.gameRecent; `normalize` gives old saves {}.
-      version: 2,
+      // Build C added only OPTIONAL fields (AnswerRecord.ms / lastConfidence,
+      // CertProgress.mastery): no version bump, old saves load as-is.
+      version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },
   ),
 );
 
 /**
- * Upgrade an older save. Version 1 had at most one plan in `day` (or none,
- * before Grove); it moves into `days` under its own cert id. Exported for tests.
+ * Upgrade an older save (v1's single `day` plan → `days`). The rule lives in
+ * engine/saveMigrations.ts so a restored backup is upgraded the same way;
+ * re-exported here for existing imports and tests.
  */
-export function migrateProgress(persisted: unknown): Record<string, unknown> {
-  const old = (persisted ?? {}) as Record<string, unknown> & { day?: DayPlan | null; days?: Record<string, DayPlan> };
-  const { day, ...rest } = old;
-  const days: Record<string, DayPlan> = { ...(old.days ?? {}) };
-  if (day && typeof day === 'object' && day.certId && !days[day.certId]) days[day.certId] = day;
-  return { ...rest, days };
-}
+export { migrateProgress };
 
 /**
  * The cert's moments with today's readiness lower bound logged. Returns
@@ -371,6 +398,11 @@ function withReadiness(
   const log = moments?.readiness ?? [];
   const next = logReadinessDay(log, day, range.enough ? range.low : null);
   return next === log ? moments : { ...moments, readiness: next };
+}
+
+/** A cert's progress with every list and map present (a restored backup may leave some out). */
+export function completeCert(cp: Partial<CertProgress>): CertProgress {
+  return { ...emptyCert(), ...cp };
 }
 
 /** Read one certification's progress (never undefined). */

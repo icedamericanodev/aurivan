@@ -1,6 +1,6 @@
 /**
  * Settings — certification, exam date, appearance, study goal, reminders, haptics,
- * data, and the legal notices required for store review. Groups are
+ * your data (backup, restore, reset), and the legal notices required for store review. Groups are
  * sections with hairline rows, not cards (spec §5).
  */
 import Constants from 'expo-constants';
@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { Alert, Linking, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
 import { ThemeSwitch } from '../components/themeSwitch';
+import { YourData } from '../components/yourData';
 import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
@@ -29,6 +30,8 @@ import {
 } from '../engine/reminders';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from '../lib/reminders';
 import { useActiveCert } from '../lib/useActiveCert';
+import { sweepBackupFiles } from '../lib/backup';
+import { useBackup } from '../store/backup';
 import { useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -95,7 +98,7 @@ export default function Settings() {
   const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
-    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions and mock history for this exam. It cannot be undone.', [
+    Alert.alert(`Reset ${cert.name} progress?`, 'This deletes your answers, reviews, saved questions and mock history for this exam. It cannot be undone. Save a backup first if you might want it back.', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Reset',
@@ -103,6 +106,10 @@ export default function Settings() {
         onPress: () => {
           resetCert(cert.id);
           clearSession();
+          // A reset is a fresh start: an old "Undo restore" no longer applies,
+          // and old backup files in the app's cache are tidied away.
+          useBackup.getState().setUndo(null);
+          sweepBackupFiles();
         },
       },
     ]);
@@ -230,6 +237,9 @@ export default function Settings() {
       )}
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
       <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
+
+      {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
+      <YourData />
 
       <Gap h={space.xl} />
       <Button kind="danger" label={`Reset ${cert.name} progress`} onPress={confirmReset} />

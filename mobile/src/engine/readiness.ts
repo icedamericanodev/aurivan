@@ -15,6 +15,7 @@
  * it is not yet proof you could do it alone on exam day.
  */
 import type { Certification } from '../content/types';
+import type { Confidence } from './srs';
 
 export interface AnswerRecord {
   attempts: number;
@@ -27,6 +28,18 @@ export interface AnswerRecord {
    * load as "not assisted" (no migration needed).
    */
   lastAssisted?: boolean;
+  /**
+   * Time to answer the LAST attempt, in ms (engine/answerClock.ts): from the
+   * question being shown to the answer being committed, without background
+   * time. Optional: older saves and answers without a clock have none.
+   */
+  ms?: number;
+  /**
+   * How sure the learner said they were on the LAST attempt (practice
+   * confidence chips, or the Sure Footing level mapped to the same scale).
+   * Optional: absent when no rating was given, and in older saves.
+   */
+  lastConfidence?: Confidence;
 }
 
 /** How much an assisted answer counts toward readiness (half). */

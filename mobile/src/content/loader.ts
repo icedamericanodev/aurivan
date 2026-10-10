@@ -30,15 +30,17 @@ export function getAllQuestions(certId: string): PackQuestion[] {
   return domains.flatMap((d) => getDomainQuestions(certId, d));
 }
 
+/** id → question, per cert, built once (a mock submit looks up 150 at a time). */
+const byId = new Map<string, Map<string, PackQuestion>>();
+
 /** Look up one question by id, e.g. when resuming a review. */
 export function findQuestion(certId: string, id: string): PackQuestion | undefined {
-  // Ids look like "d4_217": the number after "d" is the domain.
-  const domainId = /^d(\d+)_/.exec(id)?.[1];
-  if (domainId) {
-    const found = getDomainQuestions(certId, domainId).find((q) => q.id === id);
-    if (found) return found;
+  let index = byId.get(certId);
+  if (!index) {
+    index = new Map(getAllQuestions(certId).map((q) => [q.id, q]));
+    byId.set(certId, index);
   }
-  return getAllQuestions(certId).find((q) => q.id === id);
+  return index.get(id);
 }
 
 /** True when this certification has questions inside the app. */

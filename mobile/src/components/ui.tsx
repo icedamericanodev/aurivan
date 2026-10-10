@@ -503,10 +503,12 @@ export function ScreenTitle({ title, settings }: { title: string; settings?: () 
 
 // ── Section: headline + optional meta on the right ────────────────────
 export function Section({ title, meta, style }: { title: string; meta?: string; style?: StyleProp<ViewStyle> }) {
+  // Large text: the meta drops under the title instead of squeezing beside it.
+  const large = useFontScale() >= LARGE_TEXT;
   return (
-    <View style={[styles.section, style]}>
+    <View style={[styles.section, large && styles.sectionStacked, style]}>
       <T v="headline" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
-      {meta && <T v="meta">{meta}</T>}
+      {meta && <T v="meta" style={{ flexShrink: 1 }}>{meta}</T>}
     </View>
   );
 }
@@ -803,6 +805,7 @@ const styles = StyleSheet.create({
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },
   heroContent: { zIndex: 1 },
+  sectionStacked: { flexDirection: 'column', alignItems: 'flex-start', gap: 2 },
   section: {
     flexDirection: 'row',
     justifyContent: 'space-between',
