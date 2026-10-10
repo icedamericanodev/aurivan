@@ -4,6 +4,7 @@
  * the Mistake journal.
  */
 import { getAllQuestions } from '../content/loader';
+import { getNotes } from '../content/notes';
 import { itemMinutes } from '../engine/dayPlan';
 import { GAME_ORDER, GAMES, gameInfo, gameMinutes, gameTitle, isPlayable, roundMinutes } from '../engine/games/registry';
 import { MINUTES_PER_QUESTION } from '../engine/pace';
@@ -14,8 +15,8 @@ const bank = getAllQuestions('cisa');
 
 describe('game registry', () => {
   it('keeps the saved-progress ids forever', () => {
-    // Build D added Daylight at the end; the first three never change.
-    expect(GAME_ORDER).toEqual(['trap', 'sprint', 'priority', 'daylight']);
+    // Build D added Daylight, Build E Root or Rumor and Call It First, at the end; earlier ids never change.
+    expect(GAME_ORDER).toEqual(['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit']);
     for (const id of GAME_ORDER) expect(GAMES[id].id).toBe(id);
   });
 
@@ -36,8 +37,9 @@ describe('game registry', () => {
 
   it('works the length out from the round size, at the normal study pace', () => {
     for (const g of Object.values(GAMES)) {
-      // Daylight is the exception: its length is its time budget (daylight.test.ts).
-      if (g.id !== 'daylight') expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
+      // Exceptions: Daylight's length is its time budget (daylight.test.ts);
+      // Root or Rumor plays one-line statements, not questions (root-or-rumor.test.ts).
+      if (g.id !== 'daylight' && g.id !== 'rumor') expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
       // The old "about two minutes" claim was not honest for 5+ full exam items.
       expect(g.minutes).toBeGreaterThan(2);
     }
@@ -46,7 +48,9 @@ describe('game registry', () => {
   });
 
   it('offers every game for CISA, and hides a game whose pool is too small', () => {
-    for (const id of GAME_ORDER) expect(isPlayable(id, bank)).toBe(true);
+    // Root or Rumor counts the study notes' statements, so it needs the notes pack.
+    for (const id of GAME_ORDER) expect(isPlayable(id, bank, getNotes('cisa'))).toBe(true);
+    expect(isPlayable('rumor', bank)).toBe(false);
     expect(isPlayable('trap', bank.slice(0, 3))).toBe(false);
     expect(isPlayable('sprint', [])).toBe(false);
   });

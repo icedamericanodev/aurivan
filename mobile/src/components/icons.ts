@@ -40,6 +40,9 @@ export { default as Sunset } from 'lucide-react-native/icons/sunset';
 export { default as Pause } from 'lucide-react-native/icons/pause';
 export { default as Moon } from 'lucide-react-native/icons/moon';
 export { default as Sparkles } from 'lucide-react-native/icons/sparkles';
+// Build E games: Root or Rumor (a sprout: roots) and Call It First (options hidden).
+export { default as SproutIcon } from 'lucide-react-native/icons/sprout';
+export { default as EyeOff } from 'lucide-react-native/icons/eye-off';
 export { default as Target } from 'lucide-react-native/icons/target';
 export { default as Timer } from 'lucide-react-native/icons/timer';
 export { default as UserRound } from 'lucide-react-native/icons/user-round';

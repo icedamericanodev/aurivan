@@ -12,6 +12,7 @@ import { getDomain } from '../content/certifications';
 import type { Certification } from '../content/types';
 import { lessonsFor, nextLesson } from '../content/lessons';
 import { getAllQuestions } from '../content/loader';
+import { getNotes } from '../content/notes';
 import { newDayPlan } from '../engine/dayPlan';
 import { isPlayable } from '../engine/games/registry';
 import { journeyStage, STAGE_LABEL, STAGE_ORDER, stageProgress } from '../engine/journey';
@@ -59,7 +60,7 @@ export function buildJourney(i: JourneyInput) {
     daysLeft,
     examQuestions: cert.exam.questions,
     // Today never plans a game this certification can't play (registry minPool).
-    playable: (id) => isPlayable(id, getAllQuestions(cert.id)),
+    playable: (id) => isPlayable(id, getAllQuestions(cert.id), getNotes(cert.id)),
   });
   return {
     stage,
