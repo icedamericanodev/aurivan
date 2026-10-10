@@ -248,7 +248,7 @@ function RootOrRumor() {
           <RevealCard
             tone={right ? 'good' : 'bad'}
             title={tapTitle(s, Boolean(right))}
-            body={s.kind === 'rumor' ? (s.why ?? '') : `From ${s.subtopicName}. A true principle you can lean on in the exam.`}
+            body={s.kind === 'rumor' ? (s.why ?? '') : 'A true principle you can lean on in the exam.'}
           />
           {s.kind === 'root' && (
             <Button

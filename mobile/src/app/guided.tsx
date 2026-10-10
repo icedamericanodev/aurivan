@@ -74,8 +74,8 @@ export default function GuidedStep() {
 
   const clearLine = status.clear
     ? 'Topic clear. Move on whenever you like; it comes back in Smart as a refresher.'
-    : `To clear it: ${status.studied ? 'the lesson is done' : lessons.length ? 'finish the lesson' : 'read its notes'}, and get ${CLEAR_RIGHT} of your last ${CLEAR_OF} answers here right${
-        status.answered ? ` (now ${status.right} of ${status.answered})` : ''
+    : `${status.studied ? `${lessons.length ? 'Lesson' : 'Notes'} done. To clear it,` : `To clear it, ${lessons.length ? 'finish the lesson' : 'read its notes'} and`} get ${CLEAR_RIGHT} of your last ${CLEAR_OF} answers here right${
+        status.answered ? ` (so far ${status.right} of ${status.answered})` : ''
       }. You can move on at any time.`;
 
   return (
