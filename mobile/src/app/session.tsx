@@ -45,6 +45,7 @@ import {
   Vine,
   type OptionState,
 } from '../components/quiz';
+import { addMs } from '../engine/answerClock';
 import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
@@ -58,6 +59,7 @@ import { priorityWord } from '../engine/games/priorityLens';
 import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
 import { shortSubtopic } from '../lib/format';
+import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { LARGE_TEXT, radius, space } from '../theme/tokens';
@@ -112,6 +114,12 @@ export default function SessionScreen() {
   const isMock = active?.mode === 'mock';
   // Coach me was opened for this question (never in mock exams).
   const coached = !isMock && Boolean(qid && active?.coached?.includes(qid));
+  // Quiet data (Build C): time on this question, background time excluded.
+  // Keyed on the question, so it restarts each time a question is shown.
+  const readClock = useAnswerClock(qid);
+  // Mock exams: the time already spent on this question in earlier visits,
+  // so going back and changing an answer adds to it instead of replacing it.
+  const [visitBase, setVisitBase] = useState<number | undefined>(undefined);
 
   // Reset the local picker whenever the question changes (and on first
   // render, so a resumed mock shows its saved pick). This is React's
@@ -122,6 +130,7 @@ export default function SessionScreen() {
   if (resetFor !== qid) {
     setResetFor(qid);
     setSelected(isMock && response ? response.display : null);
+    setVisitBase(isMock ? response?.ms : undefined);
     setConfidence(undefined);
     setVineVisible(false);
   }
@@ -221,7 +230,7 @@ export default function SessionScreen() {
     haptic.selection();
     setSelected(letter);
     if (isMock) {
-      answer(qid, { display: letter, correct: isCorrect(q, letter, perm) });
+      answer(qid, { display: letter, correct: isCorrect(q, letter, perm), ms: addMs(visitBase, readClock()) });
     }
   };
 
@@ -231,9 +240,11 @@ export default function SessionScreen() {
     if (ok) haptic.success();
     else haptic.error();
     AccessibilityInfo.announceForAccessibility(ok ? 'Correct' : 'Not quite. Explanation below.');
+    // Time from the question appearing to "Check answer" (background excluded).
+    const ms = readClock();
     // Answers after Coach me are "assisted": half weight toward readiness.
-    answer(qid, { display: selected, correct: ok, confidence, ...(coached ? { assisted: true } : {}) });
-    recordAnswer(active.certId, qid, ok, confidence, { assisted: coached });
+    answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}) });
+    recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
     // File every miss in the Mistake Journal, with the ORIGINAL letter picked
     // (and how sure they felt, for the slip coach's "over-confident" pattern).
     if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);

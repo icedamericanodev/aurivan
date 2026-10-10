@@ -16,6 +16,7 @@ import { displayToOriginal, originalToDisplay, renderText } from '../../engine/s
 import { snareMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { logGame } from '../../lib/activity';
+import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
 import { space } from '../../theme/tokens';
@@ -42,6 +43,8 @@ function TrapSpotter() {
   const [answerPick, setAnswerPick] = useState<Letter | null>(null);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const progress = useProgress.getState();
+  // Quiet data (Build C): time from the question appearing to the final answer.
+  const readClock = useAnswerClock(round[i] ? `${i}:${round[i].q.id}` : undefined);
 
   if (i >= round.length) {
     return (
@@ -91,7 +94,8 @@ function TrapSpotter() {
       if (miss) setMisses((m) => [...m, miss]);
       // Once we've said which option is best, a right answer is assisted
       // (half credit in readiness, no box promotion), like Coach me.
-      progress.recordAnswer(cert.id, q.id, result.correct, undefined, step === 'key' ? { assisted: true } : undefined);
+      // Game answers never count toward the subtopic mastery date (mastery: false).
+      progress.recordAnswer(cert.id, q.id, result.correct, undefined, { assisted: step === 'key', ms: readClock(), mastery: false });
       if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
       if (i === round.length - 1) {
         progress.recordGame(cert.id, 'trap', score + result.points);

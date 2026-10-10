@@ -51,7 +51,8 @@ export function finishSession() {
       if (r) {
         // Readiness is logged ONCE after the batch (below), not after each of
         // up to 150 answers: a low partway through must not reset the hold.
-        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false });
+        // ms: the time this question took, added up over every visit (session.tsx).
+        progress.recordAnswer(s.certId, id, r.correct, r.confidence, { logReadiness: false, ms: r.ms });
         if (!r.correct) progress.recordMistake(s.certId, id, displayToOriginal(r.display, s.perms[id]));
       }
       else skipped.push(id);

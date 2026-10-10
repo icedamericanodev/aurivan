@@ -20,6 +20,12 @@ export interface Response {
   confidence?: Confidence;
   /** Answered after "Coach me" showed a hint. Optional: older sessions have none. */
   assisted?: boolean;
+  /**
+   * Time to answer in ms, background time excluded (engine/answerClock.ts).
+   * Mock exams add up every visit until the last change of answer.
+   * Optional: older sessions have none.
+   */
+  ms?: number;
 }
 
 export interface ActiveSession {
