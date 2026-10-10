@@ -13,6 +13,7 @@
  * `act(() => store.action())` — use braces.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
+import { Dimensions, StyleSheet } from 'react-native';
 import { OptionCard } from '../components/quiz';
 import { getAllQuestions } from '../content/loader';
 import type { PackQuestion } from '../content/types';
@@ -169,5 +170,34 @@ describe('Sure Footing: rules and chips', () => {
     const wrong = options().find((o) => o.props.text !== currentAny().options[currentAny().correct])!;
     tap(wrong);
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Score -5').length).toBeGreaterThan(0);
+  });
+
+  it('at 200% text the rules rows wrap: the points drop under the label, left-aligned', () => {
+    const w = Dimensions.get('window');
+    const rowOf = () => {
+      const payoff = root().findAll((n) => typeof n.type === 'string' && n.children.includes('+3 right · −5 wrong'))[0];
+      let p = payoff.parent;
+      while (p && !(typeof p.type === 'string' && StyleSheet.flatten(p.props.style)?.flexWrap)) p = p.parent;
+      return { row: StyleSheet.flatten(p!.props.style), text: StyleSheet.flatten(payoff.props.style) };
+    };
+    // Jest's default screen reports fontScale 2: start from 100%.
+    act(() => {
+      Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
+    });
+    mount(<SureFooting />);
+    expect(rowOf().row).toMatchObject({ flexDirection: 'row', flexWrap: 'wrap' });
+    expect(rowOf().text.flexShrink).toBe(1);
+    act(() => {
+      r!.unmount();
+    });
+    act(() => {
+      Dimensions.set({ window: { ...w, fontScale: 2 }, screen: { ...w, fontScale: 2 } });
+    });
+    mount(<SureFooting />);
+    expect(rowOf().row).toMatchObject({ flexDirection: 'column', alignItems: 'flex-start' });
+    expect(rowOf().text.textAlign).not.toBe('right');
+    act(() => {
+      Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
+    });
   });
 });

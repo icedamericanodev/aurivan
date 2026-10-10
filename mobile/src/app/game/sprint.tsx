@@ -7,10 +7,10 @@
  * Copy rule: no betting words ("bet", "stake") anywhere.
  */
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
-import { Button, Chip, Gap, ProgressBar, Row, T } from '../../components/ui';
+import { Button, Chip, Gap, ProgressBar, Row, T, useFontScale } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { LETTERS, type Letter } from '../../content/types';
 import {
@@ -38,7 +38,7 @@ import { logGame } from '../../lib/activity';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { selectCert, useProgress } from '../../store/progress';
 import { useSettings } from '../../store/settings';
-import { space } from '../../theme/tokens';
+import { LARGE_TEXT, space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
 const SIZE = GAMES.sprint.size;
@@ -46,6 +46,7 @@ const SIZE = GAMES.sprint.size;
 /** The scoring rules: shown on the first play, and behind the info button. */
 function SureFootingRules({ onDone }: { onDone: () => void }) {
   const { c } = useTheme();
+  const large = useFontScale() >= LARGE_TEXT;
   return (
     <View accessibilityLiveRegion="polite" style={{ marginBottom: space.lg }}>
       <T v="headline" accessibilityRole="header">How Sure Footing scores</T>
@@ -60,10 +61,11 @@ function SureFootingRules({ onDone }: { onDone: () => void }) {
           accessibilityLabel={footingSpoken(f)}
           style={{ paddingVertical: 10, borderBottomWidth: k === FOOTINGS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
         >
-          <Row style={{ justifyContent: 'space-between' }}>
-            <T v="label">{PAYOFF[f].label}</T>
-            <T v="label" num>{`${signed(PAYOFF[f].right)} right · ${signed(PAYOFF[f].wrong)} wrong`}</T>
-          </Row>
+          {/* Wraps at large text: the payoff drops under the label, left-aligned. */}
+          <View style={[styles.pair, large && styles.pairLarge]}>
+            <T v="label" style={styles.shrink}>{PAYOFF[f].label}</T>
+            <T v="label" num style={[styles.shrink, !large && styles.right]}>{`${signed(PAYOFF[f].right)} right · ${signed(PAYOFF[f].wrong)} wrong`}</T>
+          </View>
           <T v="meta">{f === 'guess' ? 'Less than an even chance.' : f === 'lean' ? 'Probably right, not certain.' : 'You would put your name to it.'}</T>
         </View>
       ))}
@@ -94,6 +96,7 @@ export default function SureFooting() {
   };
   const progress = useProgress.getState();
   const score = sprintScore(results);
+  const large = useFontScale() >= LARGE_TEXT;
 
   if (i >= round.length) {
     const verdict = calibrationVerdict(results);
@@ -117,10 +120,10 @@ export default function SureFooting() {
         <Gap h={space.sm} />
         {calibration(results).map((b) => (
           <View key={b.footing} style={{ marginBottom: space.md }}>
-            <Row style={{ justifyContent: 'space-between' }}>
-              <T v="label">{PAYOFF[b.footing].label}</T>
-              <T v="meta" num>{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% right of ${b.answered}`}</T>
-            </Row>
+            <View style={[styles.pair, large && styles.pairLarge]}>
+              <T v="label" style={styles.shrink}>{PAYOFF[b.footing].label}</T>
+              <T v="meta" num style={[styles.shrink, !large && styles.right]}>{b.accuracy === null ? '—' : `${Math.round(b.accuracy * 100)}% right of ${b.answered}`}</T>
+            </View>
             <Gap h={space.xs} />
             <ProgressBar value={b.accuracy ?? 0} color={b.footing === 'sure' ? c.accent : c.ink2} height={6} />
           </View>
@@ -222,3 +225,12 @@ export default function SureFooting() {
     </GameFrame>
   );
 }
+
+// Label + value on one line; at large text the row wraps and the value
+// sits under the label, left-aligned (spec §10.7 reflow).
+const styles = StyleSheet.create({
+  pair: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', columnGap: space.md, rowGap: 2 },
+  pairLarge: { flexDirection: 'column', alignItems: 'flex-start' },
+  shrink: { flexShrink: 1 },
+  right: { textAlign: 'right' },
+});
