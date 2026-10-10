@@ -29,6 +29,7 @@ import Practice from '../app/(tabs)/practice';
 import Today from '../app/(tabs)/home';
 import You from '../app/(tabs)/you';
 import { router } from 'expo-router';
+import * as registry from '../engine/games/registry';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -208,5 +209,22 @@ describe('Settings gear in the Today and You headers', () => {
   it('You keeps its Settings row too', () => {
     mount(<You />);
     expect(root().findAll((n) => n.props.title === 'Settings').length).toBeGreaterThan(0);
+  });
+});
+
+describe('Play when no game is playable for this exam', () => {
+  it('shows a calm empty state with a way to Practice, and no game or numbers', () => {
+    const spy = jest.spyOn(registry, 'isPlayable').mockReturnValue(false);
+    (router.push as jest.Mock).mockClear();
+    mount(<Play />);
+    expect(textOf(root())).toContain('Games are on the way');
+    expect(byTestId('hero-content')).toHaveLength(0);
+    expect(textOf(root())).not.toMatch(/\d+ (questions|more)/);
+    const go = root().findAll((n) => n.props.accessibilityLabel === 'Go to Practice' && typeof n.props.onPress === 'function')[0];
+    act(() => {
+      go.props.onPress();
+    });
+    expect(router.push).toHaveBeenCalledWith('/practice');
+    spy.mockRestore();
   });
 });

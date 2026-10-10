@@ -8,7 +8,7 @@
  */
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
+import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Chip, Gap, ProgressBar, Row, T, useFontScale } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
@@ -75,7 +75,16 @@ function SureFootingRules({ onDone }: { onDone: () => void }) {
   );
 }
 
-export default function SureFooting() {
+/** The route: the game, or a calm "on the way" screen when this exam can't play it. */
+export default function SureFootingScreen() {
+  return (
+    <PlayableGate game="sprint">
+      <SureFooting />
+    </PlayableGate>
+  );
+}
+
+function SureFooting() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const { round, restart } = useRound(cert.id, (seed) =>

@@ -8,7 +8,10 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { findQuestion } from '../content/loader';
+import { findQuestion, getAllQuestions } from '../content/loader';
+import { GAMES, isPlayable } from '../engine/games/registry';
+import { useActiveCert } from '../lib/useActiveCert';
+import { EmptyScreen } from './emptyScreen';
 import type { Letter, PackQuestion } from '../content/types';
 import { createRng } from '../engine/random';
 import { makePermutation, type Permutation } from '../engine/shuffle';
@@ -225,6 +228,28 @@ export function RevealCard({ tone, title, body }: { tone: 'good' | 'bad' | 'info
       </View>
     </Animated.View>
   );
+}
+
+/**
+ * A game this certification can't play yet (too few suitable questions,
+ * registry minPool). Calm, no numbers (never reveal a bank size).
+ */
+export function GameUnavailable({ game }: { game: GameId }) {
+  return (
+    <EmptyScreen
+      header={GAMES[game].name}
+      title="This game is on the way"
+      body="It needs more practice questions for this exam first. Practice is ready in the meantime."
+      primary={{ label: 'Go to Practice', onPress: () => router.replace('/practice') }}
+    />
+  );
+}
+
+/** Renders the game, or GameUnavailable when this certification's pool is too small. */
+export function PlayableGate({ game, children }: { game: GameId; children: ReactNode }) {
+  const { cert } = useActiveCert();
+  const ok = useMemo(() => isPlayable(game, getAllQuestions(cert.id)), [game, cert.id]);
+  return ok ? <>{children}</> : <GameUnavailable game={game} />;
 }
 
 export type { Letter };

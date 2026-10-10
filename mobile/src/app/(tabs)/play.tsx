@@ -11,7 +11,7 @@
 import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { Crosshair, ICON_STROKE, Play as PlayIcon, Scale, Sparkles } from '../../components/icons';
-import { Enter, HeroPanel, ICON_SIZE, ListRow, Screen, Section, T, Trail } from '../../components/ui';
+import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Screen, Section, T, Trail } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
 import { GAME_ORDER, GAMES, isPlayable, type GameId } from '../../engine/games/registry';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -35,6 +35,14 @@ export default function Play() {
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Play</T>
         <T v="meta" style={{ marginTop: space.xs }}>Short games. Missed questions go to your review.</T>
       </Enter>
+
+      {!featured && (
+        // No game has enough questions for this exam yet: say so calmly, no numbers.
+        <Enter i={1}>
+          <EmptyState title="Games are on the way" body="Games arrive once this exam has enough practice questions for them. Practice is ready in the meantime." />
+          <Button label="Go to Practice" onPress={() => router.push('/practice')} style={{ marginTop: space.xl }} />
+        </Enter>
+      )}
 
       {featured && (
         <Enter i={1} style={{ marginTop: 18 }}>

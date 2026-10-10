@@ -9,7 +9,7 @@
  */
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
+import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, T } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
@@ -27,7 +27,16 @@ import { useTheme } from '../../theme/useTheme';
 
 const SIZE = GAMES.priority.size;
 
-export default function Signpost() {
+/** The route: the game, or a calm "on the way" screen when this exam can't play it. */
+export default function SignpostScreen() {
+  return (
+    <PlayableGate game="priority">
+      <Signpost />
+    </PlayableGate>
+  );
+}
+
+function Signpost() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const { round, seed, restart } = useRound(cert.id, (seed) => buildPriorityRound(getAllQuestions(cert.id), createRng(seed), SIZE));

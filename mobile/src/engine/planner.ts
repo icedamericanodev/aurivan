@@ -28,6 +28,11 @@ export interface PlanInput {
   nextLesson?: { id: string; title: string };
   daysLeft: number | null;
   examQuestions: number; // full mock length for this certification
+  /**
+   * Whether a game has enough questions for this certification
+   * (registry isPlayable). Optional: leaving it out treats every game as playable.
+   */
+  playable?: (id: GameId) => boolean;
 }
 
 /** The most the exam eve asks for: a light review, never a cram. */
@@ -51,6 +56,10 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
   }
 
   const plan: PlanItem[] = [];
+  // A game is only planned when it can be played (small banks hide it).
+  const addGame = (id: GameId) => {
+    if (!p.playable || p.playable(id)) plan.push(gameItem(id));
+  };
   const practiceCount = Math.max(5, Math.min(p.dailyGoal, 20));
 
   switch (p.stage) {
@@ -74,7 +83,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
         label: p.focusDomain ? `${practiceCount} questions · ${p.focusDomain.short}` : `${practiceCount} mixed questions`,
       });
       if (p.nextLesson) plan.push({ kind: 'lesson', lessonId: p.nextLesson.id, title: p.nextLesson.title });
-      plan.push(gameItem('trap'));
+      addGame('trap');
       break;
     case 'mock': {
       const mini = Math.round(p.examQuestions / 3);
@@ -82,12 +91,12 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
       break;
     }
     case 'ready':
-      plan.push(gameItem('sprint'));
+      addGame('sprint');
       plan.push({ kind: 'practice', count: 10, label: '10 mixed questions to stay sharp' });
       break;
     case 'examDay':
       plan.push({ kind: 'practice', count: 10, label: 'Light review · 10 questions' });
-      plan.push(gameItem('priority'));
+      addGame('priority');
       break;
     case 'afterExam':
       break;

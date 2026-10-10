@@ -21,6 +21,7 @@ import { trapLetter, trapPool } from '../engine/games/trapSpotter';
 import { selectCert, useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import TrapSpotter from '../app/game/trap';
+import * as registry from '../engine/games/registry';
 import SureFooting from '../app/game/sprint';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -202,5 +203,16 @@ describe('Sure Footing: rules and chips', () => {
     act(() => {
       Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
     });
+  });
+});
+
+describe('a game this exam cannot play', () => {
+  it('shows "on the way" with a way to Practice instead of an empty round', () => {
+    const spy = jest.spyOn(registry, 'isPlayable').mockReturnValue(false);
+    mount(<TrapSpotter />);
+    expect(allText()).toContain('This game is on the way');
+    expect(options()).toHaveLength(0);
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Go to Practice').length).toBeGreaterThan(0);
+    spy.mockRestore();
   });
 });

@@ -74,6 +74,18 @@ describe('renames reach every touch-point', () => {
     expect(gameTitle('future', 'Root or Rumor · 5 min')).toBe('Root or Rumor');
   });
 
+  it('Today never plans a game this exam cannot play', () => {
+    const base = { dueReviews: 0, dailyGoal: 20, daysLeft: 40, examQuestions: 150 };
+    for (const stage of ['practice', 'ready', 'examDay'] as const) {
+      const none = todaysPlan({ ...base, stage, playable: () => false });
+      expect(none.some((p) => p.kind === 'game')).toBe(false);
+    }
+    // Only the playable game is kept.
+    const ready = todaysPlan({ ...base, stage: 'ready', playable: (id) => id !== 'sprint' });
+    expect(ready.some((p) => p.kind === 'game')).toBe(false);
+    expect(todaysPlan({ ...base, stage: 'practice', playable: (id) => id === 'trap' }).some((p) => p.kind === 'game')).toBe(true);
+  });
+
   it("the slip coach's drills are all real games", () => {
     for (const copy of Object.values(PATTERN_COPY)) {
       if (copy.game) expect(gameInfo(copy.game)).toBeDefined();

@@ -5,7 +5,7 @@
  * once and they carry on: the best answer is never closed in step 2.
  */
 import { useState } from 'react';
-import { GameFrame, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
+import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, T } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
@@ -23,7 +23,16 @@ import { useTheme } from '../../theme/useTheme';
 
 const SIZE = GAMES.trap.size;
 
-export default function TrapSpotter() {
+/** The route: the game, or a calm "on the way" screen when this exam can't play it. */
+export default function TrapSpotterScreen() {
+  return (
+    <PlayableGate game="trap">
+      <TrapSpotter />
+    </PlayableGate>
+  );
+}
+
+function TrapSpotter() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const { round, restart } = useRound(cert.id, (seed) => buildTrapRound(getAllQuestions(cert.id), createRng(seed), SIZE));
