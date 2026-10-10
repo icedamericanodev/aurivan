@@ -4,7 +4,7 @@
  * Games stay full-screen and calm.
  */
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -64,6 +64,11 @@ export function GameFrame({
   const { c } = useTheme();
   // Measured height of the sticky footer, so the scroll can clear it.
   const [footerH, setFooterH] = useState(footer ? 120 : 0);
+  // Opening the info panel mid-question: scroll up to it (it sits at the top).
+  const scrollRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    if (infoOpen) scrollRef.current?.scrollTo({ y: 0, animated: false });
+  }, [infoOpen]);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Pushed header: close · round progress · live score (Figtree tabular: it changes as you watch). */}
@@ -88,7 +93,7 @@ export function GameFrame({
       </View>
       <View style={{ flex: 1 }}>
         {/* Pad by the sticky footer + 24 (spec §11), so the last option is never under it. */}
-        <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: footer ? footerH + space.xl : space.xxl }}>
+        <ScrollView ref={scrollRef} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingTop: space.md, paddingBottom: footer ? footerH + space.xl : space.xxl }}>
           <Enter key={index}>{children}</Enter>
         </ScrollView>
         {footer && (

@@ -312,12 +312,10 @@ describe('Signpost: step 1 and a whole round to the recap', () => {
 });
 
 describe('Sure Footing: rules on the first play only', () => {
-  // KNOWN BUG (QA Build 1): the rules are only marked seen by "Got it" (or
-  // the info button). A learner who plays the whole first round without
-  // tapping it keeps the rules panel above every question, and sees it
-  // again on the next play. Flip `it.failing` to `it` once the rules count
-  // as seen when the first answer is given (app/game/sprint.tsx).
-  it.failing('a first round played without tapping "Got it" still counts as seeing the rules', () => {
+  // Was a known bug (QA Build 1): only "Got it" marked the rules seen, so a
+  // learner who never tapped it kept the panel above every question.
+  // Fixed: the first answer counts, and the panel closes on Next.
+  it('a first round played without tapping "Got it" still counts as seeing the rules', () => {
     useSettings.setState({ gameRulesSeen: [] });
     mount(<SureFooting />);
     expect(allText()).toContain('How Sure Footing scores');

@@ -6,8 +6,8 @@
  * confidence level: are your Sure answers really sure?
  * Copy rule: no betting words ("bet", "stake") anywhere.
  */
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, StyleSheet, View } from 'react-native';
 import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
 import { OptionCard, type OptionState } from '../../components/quiz';
 import { Button, Gap, ProgressBar, Segmented, T, useFontScale } from '../../components/ui';
@@ -17,6 +17,7 @@ import {
   calibration,
   calibrationVerdict,
   FOOTING_CONFIDENCE,
+  FOOTING_DESC,
   footingPayoff,
   footingSpoken,
   FOOTINGS,
@@ -44,12 +45,19 @@ import { useTheme } from '../../theme/useTheme';
 const SIZE = GAMES.sprint.size;
 
 /** The scoring rules: shown on the first play, and behind the info button. */
-function SureFootingRules({ onDone }: { onDone: () => void }) {
+function SureFootingRules({ onDone, focus }: { onDone: () => void; focus?: boolean }) {
   const { c } = useTheme();
+  // Opened from the info button mid-question: move screen-reader focus to the heading.
+  const headRef = useRef<View>(null);
+  useEffect(() => {
+    if (focus && headRef.current) AccessibilityInfo.sendAccessibilityEvent(headRef.current, 'focus');
+  }, [focus]);
   const large = useFontScale() >= LARGE_TEXT;
   return (
     <View accessibilityLiveRegion="polite" style={{ marginBottom: space.lg }}>
-      <T v="headline" accessibilityRole="header">How Sure Footing scores</T>
+      <View ref={headRef} accessible accessibilityRole="header" accessibilityLabel="How Sure Footing scores">
+        <T v="headline">How Sure Footing scores</T>
+      </View>
       <T v="small" color={c.ink2} style={{ marginTop: space.xs }}>
         Before each answer, say how sure you are. Pick the one that matches how sure you really feel: over many questions, honest
         confidence scores best.
@@ -58,7 +66,8 @@ function SureFootingRules({ onDone }: { onDone: () => void }) {
         <View
           key={f}
           accessible
-          accessibilityLabel={footingSpoken(f)}
+          // The points AND when to choose it, in one stop.
+          accessibilityLabel={`${footingSpoken(f)}. ${FOOTING_DESC[f]}`}
           style={{ paddingVertical: 10, borderBottomWidth: k === FOOTINGS.length - 1 ? 0 : 1, borderBottomColor: c.line }}
         >
           {/* Wraps at large text: the payoff drops under the label, left-aligned. */}
@@ -66,7 +75,7 @@ function SureFootingRules({ onDone }: { onDone: () => void }) {
             <T v="label" style={styles.shrink}>{PAYOFF[f].label}</T>
             <T v="label" num style={[styles.shrink, !large && styles.right]}>{`${signed(PAYOFF[f].right)} right · ${signed(PAYOFF[f].wrong)} wrong`}</T>
           </View>
-          <T v="meta">{f === 'guess' ? 'Less than an even chance.' : f === 'lean' ? 'Probably right, not certain.' : 'You would put your name to it.'}</T>
+          <T v="meta">{FOOTING_DESC[f]}</T>
         </View>
       ))}
       <Gap h={space.sm} />
@@ -99,6 +108,8 @@ function SureFooting() {
   const seen = useSettings((s) => s.gameRulesSeen.includes('sprint'));
   const markRulesSeen = useSettings((s) => s.markRulesSeen);
   const [rulesOpen, setRulesOpen] = useState(!seen);
+  // True when opened from the info button (not on first play): focus the heading.
+  const [rulesFromInfo, setRulesFromInfo] = useState(false);
   const closeRules = () => {
     setRulesOpen(false);
     markRulesSeen('sprint');
@@ -150,6 +161,9 @@ function SureFooting() {
     if (!footing || answered) return;
     const ok = isCorrect(q, display, perm);
     setPick(display);
+    // Answering counts as having seen the rules (they were on screen), so
+    // the next play starts without them even if "Got it" was never tapped.
+    markRulesSeen('sprint');
     const next = [...results, { questionId: q.id, footing, correct: ok }];
     setResults(next);
     const miss = pickMiss(q, displayToOriginal(display, perm), ok, (t) => renderText(t, perm));
@@ -178,7 +192,13 @@ function SureFooting() {
       index={i}
       total={round.length}
       score={score}
-      onInfo={() => (rulesOpen ? closeRules() : setRulesOpen(true))}
+      onInfo={() => {
+        if (rulesOpen) closeRules();
+        else {
+          setRulesFromInfo(true);
+          setRulesOpen(true);
+        }
+      }}
       infoOpen={rulesOpen}
       footer={
         answered ? (
@@ -186,6 +206,8 @@ function SureFooting() {
             label={i === round.length - 1 ? 'See how sure you were' : 'Next question'}
             onPress={() => {
               setI(i + 1);
+              // The rules don't follow the learner to the next question.
+              setRulesOpen(false);
               setFooting(null);
               setPick(null);
             }}
@@ -211,7 +233,7 @@ function SureFooting() {
         )
       }
     >
-      {rulesOpen && <SureFootingRules onDone={closeRules} />}
+      {rulesOpen && <SureFootingRules onDone={closeRules} focus={rulesFromInfo} />}
       <QuestionHead q={q} />
       {letters.map((d) => (
         <OptionCard

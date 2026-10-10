@@ -13,7 +13,7 @@
  * `act(() => store.action())` — use braces.
  */
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
-import { Dimensions, StyleSheet } from 'react-native';
+import { AccessibilityInfo, Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { OptionCard } from '../components/quiz';
 import { getAllQuestions } from '../content/loader';
 import type { PackQuestion } from '../content/types';
@@ -212,6 +212,35 @@ describe('Sure Footing: rules and chips', () => {
     act(() => {
       Dimensions.set({ window: { ...w, fontScale: 1 }, screen: { ...w, fontScale: 1 } });
     });
+  });
+});
+
+describe('Sure Footing rules panel', () => {
+  it('each rule row is one stop with the points AND when to choose it', () => {
+    mount(<SureFooting />);
+    const row = root().findAll((n) => typeof n.type === 'string' && String(n.props.accessibilityLabel).startsWith('Sure: plus 3'));
+    expect(row[0].props.accessibilityLabel).toBe('Sure: plus 3 if right, minus 5 if wrong. You would put your name to it.');
+  });
+
+  it('opened from the info button mid-question, screen-reader focus moves to its heading', () => {
+    useSettings.setState({ gameRulesSeen: ['sprint'] });
+    const focus = jest.spyOn(AccessibilityInfo, 'sendAccessibilityEvent').mockImplementation(() => {});
+    // Refs on host views are null in the test renderer unless we hand it a fake native node.
+    act(() => {
+      r = create(<SureFooting />, { createNodeMock: () => ({}) });
+    });
+    expect(allText()).not.toContain('How Sure Footing scores');
+    // The game's ScrollView (Jest's mock instance): spy on its scrollTo.
+    const scrollTo = jest.spyOn(root().findByType(ScrollView).instance as { scrollTo: (o: object) => void }, 'scrollTo');
+    focus.mockClear();
+    press('How scoring works');
+    expect(focus).toHaveBeenCalledTimes(1);
+    const [target, event] = focus.mock.calls[0] as unknown as [{ props: { accessibilityLabel: string } }, string];
+    expect(event).toBe('focus');
+    expect(target.props.accessibilityLabel).toBe('How Sure Footing scores');
+    // …and the question scrolls back up to the panel.
+    expect(scrollTo).toHaveBeenCalledWith({ y: 0, animated: false });
+    focus.mockRestore();
   });
 });
 

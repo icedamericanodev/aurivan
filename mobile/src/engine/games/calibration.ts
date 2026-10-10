@@ -34,6 +34,13 @@ export const PAYOFF: Record<Footing, { label: string; right: number; wrong: numb
   sure: { label: 'Sure', right: 3, wrong: -5 },
 };
 
+/** When each level is the honest choice (rules rows, read aloud with the points). */
+export const FOOTING_DESC: Record<Footing, string> = {
+  guess: 'Less than an even chance.',
+  lean: 'Probably right, not certain.',
+  sure: 'You would put your name to it.',
+};
+
 /** The same confidence the practice screen records, so spaced review treats them alike. */
 export const FOOTING_CONFIDENCE: Record<Footing, Confidence> = { guess: 'guessing', lean: 'unsure', sure: 'sure' };
 
