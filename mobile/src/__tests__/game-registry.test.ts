@@ -14,7 +14,8 @@ const bank = getAllQuestions('cisa');
 
 describe('game registry', () => {
   it('keeps the saved-progress ids forever', () => {
-    expect(GAME_ORDER).toEqual(['trap', 'sprint', 'priority']);
+    // Build D added Daylight at the end; the first three never change.
+    expect(GAME_ORDER).toEqual(['trap', 'sprint', 'priority', 'daylight']);
     for (const id of GAME_ORDER) expect(GAMES[id].id).toBe(id);
   });
 
@@ -35,7 +36,8 @@ describe('game registry', () => {
 
   it('works the length out from the round size, at the normal study pace', () => {
     for (const g of Object.values(GAMES)) {
-      expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
+      // Daylight is the exception: its length is its time budget (daylight.test.ts).
+      if (g.id !== 'daylight') expect(g.minutes).toBe(Math.max(1, Math.round(g.size * MINUTES_PER_QUESTION)));
       // The old "about two minutes" claim was not honest for 5+ full exam items.
       expect(g.minutes).toBeGreaterThan(2);
     }

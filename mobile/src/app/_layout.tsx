@@ -90,6 +90,7 @@ export default function RootLayout() {
         <Stack.Screen name="game/trap" options={{ animation: rise }} />
         <Stack.Screen name="game/sprint" options={{ animation: rise }} />
         <Stack.Screen name="game/priority" options={{ animation: rise }} />
+        <Stack.Screen name="game/daylight" options={{ animation: rise }} />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />
