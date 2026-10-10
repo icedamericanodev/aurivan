@@ -8,6 +8,7 @@ import { getCertification } from '../content/certifications';
 import { getAllQuestions } from '../content/loader';
 import {
   answerCurrent,
+  atSurePace,
   averageSeconds,
   budgetGone,
   buildDaylightRound,
@@ -21,6 +22,7 @@ import {
   tierCanExtend,
   DAYLIGHT_MINUTES,
   DAYLIGHT_SIZE,
+  daylightHits,
   daylightMax,
   daylightPace,
   daylightScore,
@@ -260,5 +262,31 @@ describe('end screen: where time went', () => {
     expect(slowestItem(r)).toEqual({ id: 'b', seconds: 140 });
     expect(averageSeconds(newDaylightRound(IDS, 'sapling', 96))).toBeNull();
     expect(slowestItem(newDaylightRound(IDS, 'sapling', 96))).toBeNull();
+  });
+});
+
+describe('Build F review: pace only counts with right answers', () => {
+  const S = 1000;
+  const ids = ['a', 'b', 'c', 'd', 'e'];
+  const play = (tier: 'seedling' | 'sapling' | 'heartwood', results: boolean[]) => {
+    let r = newDaylightRound(ids, tier, 96);
+    for (const ok of results) r = answerCurrent(r, ok, 10 * S);
+    return results.length < ids.length ? setLight(r) : r;
+  };
+
+  it('the level score counts a question only when it is in time AND right', () => {
+    expect(daylightHits(play('sapling', [true, false, true, true, false]))).toEqual([true, false, true, true, false]);
+    // Timed out: not a hit, even though nothing was marked wrong.
+    expect(daylightHits(play('sapling', [true, true]))).toEqual([true, true, false, false, false]);
+  });
+
+  it('Sure-Footed Pace needs 4 of 5 right, inside the light, at Sapling or faster', () => {
+    expect(atSurePace(play('sapling', [true, true, true, true, false]))).toBe(true);
+    expect(atSurePace(play('heartwood', [true, true, true, true, true]))).toBe(true);
+    // Fast random taps: on pace but only 3 right.
+    expect(atSurePace(play('heartwood', [true, false, true, false, true]))).toBe(false);
+    // Seedling never counts; nor does a round the light set on.
+    expect(atSurePace(play('seedling', [true, true, true, true, true]))).toBe(false);
+    expect(atSurePace(play('sapling', [true, true, true, true]))).toBe(false);
   });
 });

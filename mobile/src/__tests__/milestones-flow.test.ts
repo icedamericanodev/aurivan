@@ -13,7 +13,8 @@ import { checkBackupText, currentBackup } from '../lib/backup';
 import { finishSession } from '../lib/finishSession';
 import { backfillLine, celebrateNext, checkMilestones, ensureBackfill, milestoneFacts, momentFor, seeBackfill } from '../lib/milestones';
 import { certOutline, topicLessons } from '../lib/outline';
-import { startFromIds } from '../lib/sessions';
+import { Alert } from 'react-native';
+import { guardedStart, startFromIds, startMock, startPractice } from '../lib/sessions';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -222,6 +223,21 @@ describe('one celebration per session', () => {
     answer(d4[31]);
     finishSession();
     expect(useSession.getState().active!.milestone).toBeUndefined();
+  });
+
+  it('an expired mock recorded by guardedStart keeps its milestone queued (its Results are never shown)', () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    ensureBackfill('cisa', T0); // app launch: nothing found
+    d4.slice(0, 20).forEach((id) => answer(id));
+    startMock('cisa', 50);
+    jest.setSystemTime(T0 + 6 * 3_600_000); // the time ran out while the app was closed
+    guardedStart(() => startPractice('cisa', { count: 5 }), jest.fn());
+    expect(cp().milestones!.earned['first-foothold']).toBeDefined();
+    expect(cp().milestones!.queue).toEqual(expect.arrayContaining(['first-foothold']));
+    // The next finished session gets the moment.
+    finishSession();
+    expect(useSession.getState().active!.milestone).toBe('first-foothold');
+    alert.mockRestore();
   });
 
   it('celebrateNext on an empty queue is null', () => {
