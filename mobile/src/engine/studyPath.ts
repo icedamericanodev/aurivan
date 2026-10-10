@@ -71,22 +71,36 @@ export function topicStatus(topic: OutlineTopic, studied: boolean, answers: Reco
 }
 
 /**
- * The topic Guided is on: from the saved cursor (or the start), the first
- * topic that isn't clear yet. When every topic from there on is clear, the
- * first uncleared one from the start; when all are clear, the cursor's topic.
+ * The topic Guided is on.
+ * - With a saved cursor: that topic, even when it is clear. The cursor only
+ *   moves when the learner presses "Next topic" or a Guided step clears the
+ *   topic (lib/sessions.ts advancePath), so "Next topic: B" always lands on
+ *   B (QA Build E).
+ * - With no cursor yet: the first topic that isn't clear (else the first).
  */
 export function currentGuidedTopic(topics: OutlineTopic[], cursor: string | undefined, isClear: (t: OutlineTopic) => boolean): OutlineTopic | undefined {
   if (!topics.length) return undefined;
-  const from = Math.max(0, topics.findIndex((t) => t.id === cursor));
-  for (let k = from; k < topics.length; k++) if (!isClear(topics[k])) return topics[k];
-  for (let k = 0; k < from; k++) if (!isClear(topics[k])) return topics[k];
-  return topics[from];
+  const saved = topics.find((t) => t.id === cursor);
+  if (saved) return saved;
+  return topics.find((t) => !isClear(t)) ?? topics[0];
 }
 
-/** The topic after this one (wraps to the first), for "Next topic". Never gated on a score. */
-export function nextTopic(topics: OutlineTopic[], current: OutlineTopic | undefined): OutlineTopic | undefined {
+/**
+ * The topic "Next topic" moves to. Never gated on a score.
+ * With `isClear`: the next topic after this one that isn't clear yet
+ * (wrapping round); when every other topic is clear, simply the next one.
+ * Without it: simply the next one (wrapping). Never the current topic,
+ * unless the scope has only one topic.
+ */
+export function nextTopic(topics: OutlineTopic[], current: OutlineTopic | undefined, isClear?: (t: OutlineTopic) => boolean): OutlineTopic | undefined {
   if (!topics.length) return undefined;
   const k = current ? topics.findIndex((t) => t.id === current.id) : -1;
+  if (isClear) {
+    for (let step = 1; step < topics.length; step++) {
+      const t = topics[(k + step + topics.length) % topics.length];
+      if (t.id !== current?.id && !isClear(t)) return t;
+    }
+  }
   return topics[(k + 1) % topics.length];
 }
 

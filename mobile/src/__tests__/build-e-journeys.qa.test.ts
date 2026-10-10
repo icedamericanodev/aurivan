@@ -304,10 +304,10 @@ describe('Guided: step 1, 2 and 3, topic clear, and Next topic', () => {
     expect(current().id).toBe(t2.id);
   });
 
-  // BUG (Minor): the button says "Next topic: <B>" but, when B is already
+  // FIXED (was Minor): the button said "Next topic: <B>" but, when B was already
   // clear, Guided lands on the first uncleared topic AFTER B (C). The label
   // and the announcement name a topic the learner never sees.
-  it.failing('"Next topic" lands on the topic the button names', () => {
+  it('"Next topic" lands on the topic the button names', () => {
     const [a, b] = all;
     // B (the second topic) is clear: lesson done, 5 right.
     useProgress.getState().completeLesson('cisa', topicLessons('cisa', b.id)[0].id);
@@ -319,10 +319,10 @@ describe('Guided: step 1, 2 and 3, topic clear, and Next topic', () => {
     expect(current().id).toBe(named.id);
   });
 
-  // BUG (Minor): when every topic after the current one is clear, "Next
+  // FIXED (was Minor): when every topic after the current one was clear, "Next
   // topic" saves the next topic, Guided skips the clear ones, wraps round
   // and comes back to the SAME topic: the button does nothing.
-  it.failing('when "Next topic" is offered, pressing it always leaves the current topic', () => {
+  it('when "Next topic" is offered, pressing it always leaves the current topic', () => {
     const d1 = scopeTopics('cisa', '1');
     const isClear1 = (t: OutlineTopic) => t.id !== d1[0].id || guidedStatus('cisa', t, cp()).clear;
     const here = currentGuidedTopic(d1, undefined, isClear1)!;

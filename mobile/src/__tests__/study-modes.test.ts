@@ -364,10 +364,23 @@ describe('Guided', () => {
     // Moving on from an uncleared topic is always allowed.
     expect(nextTopic(topics, topics[1])?.id).toBe('2A1');
     expect(nextTopic(topics, topics[3])?.id).toBe('1A1');
-    // Everything after the cursor clear: back to the first uncleared.
+    // The saved topic wins even when it is clear: "Next topic" lands where it says.
     for (const t of topics) clear.add(t.id);
     clear.delete('1A2');
-    expect(currentGuidedTopic(topics, '2A2', isClear)?.id).toBe('1A2');
+    expect(currentGuidedTopic(topics, '2A2', isClear)?.id).toBe('2A2');
+    // An unknown saved topic (removed in a content update): the first uncleared.
+    expect(currentGuidedTopic(topics, 'gone', isClear)?.id).toBe('1A2');
+  });
+  it('"Next topic" with isClear names the next uncleared topic, never the current one', () => {
+    const { topics } = fixture();
+    const clear = new Set(['1A2', '2A1']);
+    const isClear = (t: OutlineTopic) => clear.has(t.id);
+    expect(nextTopic(topics, topics[0], isClear)?.id).toBe('2A2'); // skips the clear 1A2 and 2A1
+    expect(nextTopic(topics, topics[3], isClear)?.id).toBe('1A1'); // wraps round
+    // Every other topic clear: simply the next one, still not the current topic.
+    for (const t of topics) clear.add(t.id);
+    clear.delete('1A1');
+    expect(nextTopic(topics, topics[0], isClear)?.id).toBe('1A2');
   });
 });
 

@@ -117,6 +117,39 @@ describe('study-mode sessions', () => {
     expect(s.questionIds.slice(5).every((id) => s.reasons?.[id] === 'mixed')).toBe(true);
   });
 
+  it('Guided moves its saved topic on once a step clears it, and only then', () => {
+    const topics = scopeTopics('cisa', '1');
+    const [t0, t1] = topics;
+    useProgress.getState().setPathCursor('cisa', 'guided', '1', t0.id);
+    const s = startGuidedStep('cisa', t0.id, '1')!;
+    const own = s.questionIds.filter((id) => !s.reasons?.[id]);
+    // Not clear yet (no lesson): answers keep Guided on this topic.
+    for (const id of own) {
+      useProgress.getState().recordAnswer('cisa', id, true, 'sure');
+      advancePath(s, id);
+    }
+    expect(cp().studyPath?.guided?.['1']).toBe(t0.id);
+    // The lesson makes it clear; the next answer on the step moves Guided on.
+    useProgress.getState().completeLesson('cisa', 'cisa-l-d1-charter');
+    advancePath(s, own[0]);
+    expect(cp().studyPath?.guided?.['1']).toBe(t1.id);
+    // A step whose topic the learner has since left never moves the saved topic.
+    useProgress.getState().setPathCursor('cisa', 'guided', '1', topics[3].id);
+    advancePath(s, own[1]);
+    expect(cp().studyPath?.guided?.['1']).toBe(topics[3].id);
+  });
+
+  it('a Guided step takes the Timed choice it is given, else the Study default', () => {
+    const t = scopeTopics('cisa')[1];
+    useSettings.setState({ practiceTimer: true });
+    expect(startGuidedStep('cisa', t.id, undefined, false)!.timed).toBeUndefined();
+    useSession.getState().clear();
+    expect(startGuidedStep('cisa', t.id)!.timed).toBe(true);
+    useSession.getState().clear();
+    useSettings.setState({ practiceTimer: false });
+    expect(startGuidedStep('cisa', t.id, undefined, true)!.timed).toBe(true);
+  });
+
   it('Build a set topic chips: only that topic’s questions', () => {
     const topic = scopeTopics('cisa', '4')[0];
     const ids = new Set(topicQuestionIds(topic));

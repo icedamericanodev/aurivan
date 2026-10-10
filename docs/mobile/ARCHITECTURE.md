@@ -208,7 +208,11 @@ turns the notes (Build C `practiceIds`) into one ordered topic list
   step: its lesson (or notes), 5 questions foundational-first, 3 interleaved
   from earlier topics. Clear = lesson done (or every note read when the
   topic has no lesson) AND 4 of the last 5 unassisted answers right, read
-  from the answer records (no new data). "Next topic" is never locked.
+  from the answer records (no new data). "Next topic" is never locked: it
+  names the next uncleared topic and Guided lands exactly there (the saved
+  topic always wins). Guided moves on by itself when a step clears its
+  topic (`advancePath`). The screen takes `?timed=1|0` from Practice's
+  Timed switch and from Results (left out = the Study default).
 - **In order**: walks the outline from a saved place and ENDS every session
   with a 2–3 question mixed review tail from earlier topics (blocked-only
   practice is a fluency illusion). The place moves on each answer to a walk

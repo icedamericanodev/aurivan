@@ -12,8 +12,9 @@ import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
 import { buildSmart } from '../engine/smartMix';
 import { MODE_INFO, randomMix, scopeKey, type PathItem, type PathReason, type StudyMode } from '../engine/studyModes';
-import { guidedStep, inOrderSession, walkOrder } from '../engine/studyPath';
-import { certOutline, questionExists, scopeTopics } from './outline';
+import { guidedStep, inOrderSession, nextTopic, walkOrder } from '../engine/studyPath';
+import type { OutlineTopic } from '../engine/outline';
+import { certOutline, guidedStatus, questionExists, scopeTopics } from './outline';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
 import { dueIds, REVIEW_CAP_LINE, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
@@ -139,16 +140,41 @@ export function startStudy(certId: string, opts: { mode: Exclude<StudyMode, 'gui
 }
 
 /**
- * After an answer: In order remembers the place, so the next session
- * carries on after this question. The mixed review tail never moves it.
+ * After an answer (the answer is already recorded):
+ * - In order remembers the place, so the next session carries on after
+ *   this question.
+ * - Guided moves on by itself once the step's topic is clear: the saved
+ *   topic becomes the next one that isn't clear (Guided otherwise stays on
+ *   the saved topic, so "Next topic" lands where it says).
+ * The mixed review tail never moves either.
  */
 export function advancePath(session: ActiveSession, questionId: string) {
-  if (session.path?.mode !== 'inOrder' || session.reasons?.[questionId] === 'mixed') return;
-  useProgress.getState().setPathCursor(session.certId, 'inOrder', session.path.scope, questionId);
+  const path = session.path;
+  if (!path || session.reasons?.[questionId] === 'mixed') return;
+  const progress = useProgress.getState();
+  if (path.mode === 'inOrder') {
+    progress.setPathCursor(session.certId, 'inOrder', path.scope, questionId);
+    return;
+  }
+  if (path.mode !== 'guided' || !path.topicId) return;
+  const cp = selectCert(progress, session.certId);
+  // Only while Guided is saved on this topic. (No saved topic: Guided
+  // already shows the first uncleared one; the learner may have moved on.)
+  if (cp.studyPath?.guided?.[path.scope] !== path.topicId) return;
+  const topics = scopeTopics(session.certId, path.scope === 'all' ? undefined : path.scope);
+  const topic = topics.find((t) => t.id === path.topicId);
+  const isClear = (t: OutlineTopic) => guidedStatus(session.certId, t, cp).clear;
+  if (!topic || !isClear(topic)) return;
+  const next = nextTopic(topics, topic, isClear);
+  if (next && next.id !== topic.id) progress.setPathCursor(session.certId, 'guided', path.scope, next.id);
 }
 
-/** One Guided step on a topic: 5 questions on it, then 3 mixed from earlier topics. */
-export function startGuidedStep(certId: string, topicId: string, domainId?: string) {
+/**
+ * One Guided step on a topic: 5 questions on it, then 3 mixed from earlier
+ * topics. `timed` left out = the Study default; Practice's Timed switch
+ * reaches it through the Guided screen's `timed` route param.
+ */
+export function startGuidedStep(certId: string, topicId: string, domainId?: string, timed?: boolean) {
   const topics = scopeTopics(certId, domainId);
   const topic = topics.find((t) => t.id === topicId);
   if (!topic) return null;
@@ -156,6 +182,7 @@ export function startGuidedStep(certId: string, topicId: string, domainId?: stri
   return newSession('practice', certId, `Guided · ${topic.name}`, items.map((i) => i.id), {
     path: { mode: 'guided', scope: scopeKey(domainId), topicId },
     reasons: reasonsOf(items),
+    ...(timed !== undefined ? { timed } : {}),
   });
 }
 
