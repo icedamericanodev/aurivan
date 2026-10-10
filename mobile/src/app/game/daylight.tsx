@@ -215,7 +215,7 @@ function Daylight() {
         <View style={{ marginTop: space.sm, gap: space.xs }}>
           <T v="small" num>{`Light used: ${formatClock(lightUsed)} of ${formatClock(state.budgetMs)}${inBudget ? ' · finished in time, +1' : ''}`}</T>
           {avg !== null && <T v="small" num>{`Average ${avg} s a question · your light gave ${state.perItemSec} s`}</T>}
-          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} s on “${clip(slowQ.stem, 70)}”`}</T>}
+          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} s on “${clip(slowQ.stem, 70).replace(/[.,;:?!]…$/, '…')}”`}</T>}
         </View>
         {state.timedOut.length > 0 && (
           <View style={{ marginTop: space.lg }}>

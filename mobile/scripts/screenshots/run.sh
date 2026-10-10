@@ -19,10 +19,14 @@ if [ -d /opt/node-tools/node_modules/playwright ]; then export PLAYWRIGHT_REQUIR
 if [ -x /opt/pw-browsers/chromium-1194/chrome-linux/chrome ]; then export CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome; fi
 # SHOTS=notes captures the Study notes screens instead (shoot_notes.mjs);
 # SHOTS=data captures Settings → Your data: backup, restore preview, errors (shoot_data.mjs).
+# SHOTS=pace captures the Build D timer screens: mock start sheet, pace checks,
+# pacing results, timed practice, Study defaults and Daylight (shoot_pace.mjs).
 if [ "${SHOTS:-}" = notes ]; then
   node scripts/screenshots/shoot_notes.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = data ]; then
   node scripts/screenshots/shoot_data.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = pace ]; then
+  node scripts/screenshots/shoot_pace.mjs "$TMP/seed.json" "$OUT" "$THEME"
 else
   node scripts/screenshots/shoot.mjs "$TMP/seed.json" "$OUT"
 fi
