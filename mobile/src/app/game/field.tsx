@@ -6,18 +6,21 @@
  *    board), Sapling (one topic: near neighbours), Heartwood (recall).
  * 2. Three boards. Seedling / Sapling: tap a term, then its meaning (or the
  *    other way round): no dragging. A right pair turns green with a ✓ and
- *    stays; a wrong pair shakes once (static with Reduce Motion) and both
- *    stay open to try again. A pair right on the first try scores a point
+ *    stays; a wrong pair shakes once (none with Reduce Motion), and both
+ *    tiles show a static ✗ for about a second with "Not a match. Try
+ *    again." in the footer, then stay open to try again. A pair right on the first try scores a point
  *    and is marked "first try". Heartwood: one meaning at a time; pick its
  *    term from six.
- *    At large text the two lists stack (terms, then meanings).
+ *    At large text, or when a term has a long single word (over 12
+ *    letters: "Microsegmentation"), the two lists stack (terms, then
+ *    meanings), so no word breaks mid-word in a narrow column.
  * 3. The shared round end: missed terms with their meaning, "Missed terms
  *    come back in a later round.", the level line and at most one badge.
  * Each term is a review card (never readiness, never mastery).
  */
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { AccessibilityInfo, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { View } from 'react-native';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
 import { BookA } from '../../components/icons';
 import { Button, Gap, Row, Stem, T, useFontScale } from '../../components/ui';
@@ -36,6 +39,7 @@ import {
 import type { RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
+import { sayLater } from '../../lib/a11y';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -51,6 +55,10 @@ export default function FieldGuideScreen() {
 }
 
 const MISS_LINE = 'Missed terms come back in a later round.';
+/** How long a wrong pair shows its static ✗ (UX review H4). */
+const MISS_MS = 900;
+/** A single word longer than this can't fit the narrow Terms column whole. */
+const LONG_WORD = 12;
 
 function FieldGuide() {
   const { c } = useTheme();
@@ -67,6 +75,12 @@ function FieldGuide() {
   // Terms tried wrongly at least once on this board (no "first try" point).
   const [slipped, setSlipped] = useState<number[]>([]);
   const [shake, setShake] = useState<{ term: number; def: number; n: number } | null>(null);
+  // A wrong pair, shown as a static ✗ on both tiles for MISS_MS (works with Reduce Motion).
+  const [miss, setMiss] = useState<{ term: number; def: number } | null>(null);
+  const missTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (missTimer.current) clearTimeout(missTimer.current);
+  }, []);
   // Heartwood: which meaning of the board, and the pick.
   const [k, setK] = useState(0);
   const [pick, setPick] = useState<string | null>(null);
@@ -81,6 +95,7 @@ function FieldGuide() {
     setMatched([]);
     setSlipped([]);
     setShake(null);
+    setMiss(null);
     setK(0);
     setPick(null);
   };
@@ -138,14 +153,15 @@ function FieldGuide() {
   };
   const finishIfLast = (nextFirsts: boolean[]) => {
     if (nextFirsts.length < total) return;
-    setNews(
-      finishGameRound(cert.id, 'field', {
-        score: fieldScore(nextFirsts),
-        rate: fieldScore(nextFirsts) / total,
-        tier: round.tier,
-        hits: nextFirsts,
-      }),
-    );
+    const news = finishGameRound(cert.id, 'field', {
+      score: fieldScore(nextFirsts),
+      rate: fieldScore(nextFirsts) / total,
+      tier: round.tier,
+      hits: nextFirsts,
+    });
+    setNews(news);
+    // The level moved: "Play again" starts on the new level, not the old one.
+    if (news.change) setTier(news.tier);
   };
 
   // ── Seedling / Sapling: match the pairs ─────────────────────────────────
@@ -155,14 +171,19 @@ function FieldGuide() {
       setMatched((m) => [...m, term]);
       setSelTerm(null);
       setSelDef(null);
-      AccessibilityInfo.announceForAccessibility(`Matched: ${board.terms[term].term}${first ? ', first try' : ''}.`);
+      setMiss(null);
+      // After a short pause, so the tapped tile's own new label isn't cut off.
+      sayLater(`Matched: ${board.terms[term].term}${first ? ', first try' : ''}.`);
       finishIfLast(settle(term, first));
     } else {
       setSlipped((s) => (s.includes(term) ? s : [...s, term]));
       setShake((x) => ({ term, def, n: (x?.n ?? 0) + 1 }));
       setSelTerm(null);
       setSelDef(null);
-      AccessibilityInfo.announceForAccessibility('Not a match. Both stay open: try again.');
+      setMiss({ term, def });
+      if (missTimer.current) clearTimeout(missTimer.current);
+      missTimer.current = setTimeout(() => setMiss(null), MISS_MS);
+      sayLater('Not a match. Both stay open: try again.');
     }
   };
   const tapTerm = (i: number) => {
@@ -175,8 +196,8 @@ function FieldGuide() {
     if (selTerm !== null) return tryPair(selTerm, i);
     setSelDef(selDef === i ? null : i);
   };
-  const termState = (i: number): TileState => (matched.includes(i) ? 'matched' : selTerm === i ? 'selected' : 'idle');
-  const defState = (i: number): TileState => (matched.includes(i) ? 'matched' : selDef === i ? 'selected' : 'idle');
+  const termState = (i: number): TileState => (matched.includes(i) ? 'matched' : miss?.term === i ? 'wrong' : selTerm === i ? 'selected' : 'idle');
+  const defState = (i: number): TileState => (matched.includes(i) ? 'matched' : miss?.def === i ? 'wrong' : selDef === i ? 'selected' : 'idle');
   const boardDone = round.tier === 'heartwood' ? k >= n : matched.length === n;
 
   const next = () => {
@@ -186,9 +207,13 @@ function FieldGuide() {
 
   if (round.tier !== 'heartwood') {
     const topicName = round.tier === 'sapling' ? board.terms[0]?.topicName : undefined;
+    // Stack the lists at large text, or when a term has a word too long for the narrow column.
+    const longWord = board.terms.some((t) => t.term.split(/\s+/).some((w) => w.length > LONG_WORD));
+    const stack = large || longWord;
+    // Matched tiles stay tappable elements (tapTerm / tapDef ignore them); the label says "matched".
     const termsCol = (
       <View accessibilityRole="list" style={{ flex: 1 }}>
-        <T v="caption" color={c.ink2} style={{ marginBottom: space.xs }}>Terms</T>
+        <T v="caption" color={c.ink2} accessibilityRole="header" style={{ marginBottom: space.xs }}>Terms</T>
         {board.terms.map((t, i) => (
           <MatchTile
             key={t.id}
@@ -196,7 +221,7 @@ function FieldGuide() {
             state={termState(i)}
             onPress={() => tapTerm(i)}
             shake={shake?.term === i ? shake.n : 0}
-            spoken={itemSpoken('Term', i, n, t.term, { selected: selTerm === i, matched: matched.includes(i) })}
+            spoken={itemSpoken('Term', i, n, t.term, { matched: matched.includes(i) })}
             hint={matched.includes(i) ? undefined : 'Then tap its meaning.'}
           />
         ))}
@@ -204,7 +229,7 @@ function FieldGuide() {
     );
     const defsCol = (
       <View accessibilityRole="list" style={{ flex: 1 }}>
-        <T v="caption" color={c.ink2} style={{ marginBottom: space.xs }}>Meanings</T>
+        <T v="caption" color={c.ink2} accessibilityRole="header" style={{ marginBottom: space.xs }}>Meanings</T>
         {board.defOrder.map((ti, j) => (
           <MatchTile
             key={board.terms[ti].id}
@@ -212,7 +237,8 @@ function FieldGuide() {
             state={defState(ti)}
             onPress={() => tapDef(ti)}
             shake={shake?.def === ti ? shake.n : 0}
-            spoken={itemSpoken('Meaning', j, n, board.terms[ti].definition, { selected: selDef === ti, matched: matched.includes(ti) })}
+            spoken={itemSpoken('Meaning', j, n, board.terms[ti].definition, { matched: matched.includes(ti) })}
+            hint={matched.includes(ti) ? undefined : selTerm !== null ? `Matches it to ${board.terms[selTerm].term}.` : 'Then tap its term.'}
           />
         ))}
       </View>
@@ -227,15 +253,19 @@ function FieldGuide() {
           boardDone ? (
             <Button label={lastBoard ? 'See results' : 'Next board'} onPress={next} />
           ) : (
-            <T v="label" center color={c.accentText}>Tap a term, then what it means.</T>
+            // Says what just happened and what to do next, in words (UX review H4, P4):
+            // the selected term may have scrolled away when the lists are stacked.
+            <T v="label" center color={c.accentText}>
+              {miss ? 'Not a match. Try again.' : selTerm !== null ? `Now tap what “${board.terms[selTerm].term}” means.` : 'Tap a term, then what it means.'}
+            </T>
           )
         }
       >
         <T v="caption" color={c.accentText}>{`Board ${b + 1} of ${round.boards.length}`}</T>
         {topicName ? <T v="meta" style={{ marginTop: space.xs }}>{`One topic: ${topicName}`}</T> : null}
         <Gap h={space.md} />
-        {/* Side by side when it fits; stacked (terms first) at large text. */}
-        {large ? (
+        {/* Side by side when it fits; stacked (terms first) at large text or with a long word. */}
+        {stack ? (
           <View>
             {termsCol}
             <Gap h={space.md} />
@@ -299,7 +329,9 @@ function FieldGuide() {
             key={ch.id}
             text={ch.term}
             state={choiceState(ch.id)}
-            onPress={pick === null ? () => choose(ch.id) : undefined}
+            onPress={() => choose(ch.id)}
+            locked={pick !== null}
+            checked={ch.id === pick}
             radio
             spoken={`Choice ${j + 1} of ${choices.length}: ${ch.term}${pick !== null && ch.id === term.id ? ', the term' : pick === ch.id ? ', your pick' : ''}`}
           />

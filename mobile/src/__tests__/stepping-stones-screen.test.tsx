@@ -48,6 +48,13 @@ jest.mock('expo-router', () => ({
   router: { push: jest.fn(), replace: jest.fn(), back: jest.fn(), canGoBack: () => true },
   useFocusEffect: jest.fn(),
 }));
+// Focus and announcements (UX review H3, P1): record where focus is sent and what is said.
+const mockFocus: unknown[] = [];
+const mockSaid: string[] = [];
+jest.mock('../lib/a11y', () => ({
+  moveFocus: (ref: unknown) => mockFocus.push(ref),
+  sayLater: (text: string) => mockSaid.push(text),
+}));
 jest.mock('react-native-safe-area-context', () => {
   const { View } = jest.requireActual('react-native');
   return { SafeAreaView: View, useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }) };
@@ -74,12 +81,16 @@ const current = () => {
 };
 
 beforeEach(() => {
+  // Fake timers: placing a stone announces and moves focus after a short pause (lib/a11y.ts).
+  jest.useFakeTimers();
   useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
   useSettings.setState({ onboarded: true, activeCertId: 'cisa' });
 });
 afterEach(() => {
   act(() => r?.unmount());
   r = undefined;
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
 });
 
 it('Seedling: the first step given, tap to place, tap again to take back, check and explain', () => {
@@ -140,4 +151,34 @@ it('Heartwood: which step is missing, from three', () => {
   expect(choices).toHaveLength(3);
   press(choices.find((n) => n.props.accessibilityLabel.endsWith(seq.steps[k].label))!);
   expect(allText()).toContain('Found the missing step');
+});
+
+it('placing and taking back move screen-reader focus on purpose, and speak after the tap', () => {
+  mockFocus.length = 0;
+  mockSaid.length = 0;
+  act(() => {
+    r = create(<SteppingStones />);
+  });
+  pressLabel('Start');
+  const seq = current();
+  // The element focus is sent to, by its spoken name (the test renderer's View is a component instance).
+  const focusName = () => (mockFocus[mockFocus.length - 1] as { current: { props?: { accessibilityLabel?: string } } | null }).current?.props?.accessibilityLabel;
+  // Place the 2nd step: focus goes to the next stone still to place.
+  placeStone(seq.steps[1].label);
+  expect(mockSaid).toEqual([`Placed 2nd: ${seq.steps[1].label}.`]);
+  expect(focusName()).toMatch(/^Place next: /);
+  // Take it back: focus follows the stone back under "Stones".
+  press(buttons().find((n) => n.props.accessibilityLabel === `Step 2: ${seq.steps[1].label}. Tap to take it back.`)!);
+  expect(mockSaid[mockSaid.length - 1]).toBe(`Taken back: ${seq.steps[1].label}.`);
+  expect(focusName()).toBe(`Place next: ${seq.steps[1].label}`);
+  // Place all three: focus lands on "Check the order".
+  for (const k of [1, 2, 3]) placeStone(seq.steps[k].label);
+  expect(focusName()).toBe('Check the order');
+  // Checking says nothing itself: the reveal card announces "Perfect path" once.
+  const before = mockSaid.length;
+  pressLabel('Check the order');
+  expect(mockSaid.length).toBe(before);
+  // Placed stones stay the same tappable element after the check, locked.
+  const placed = buttons().find((n) => (n.props.accessibilityLabel as string).startsWith('Step 2: '))!;
+  expect(placed.props.accessibilityState).toEqual(expect.objectContaining({ disabled: true }));
 });

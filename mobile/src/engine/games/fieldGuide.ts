@@ -105,9 +105,13 @@ export function termsFromNotes(pack: NotesPack | null | undefined): FieldTerm[] 
     if (!term || !definition || leaks(term, definition)) return;
     const key = term.toLowerCase();
     // A term repeated across subtopics is kept once (its first note), and two
-    // terms never share one definition (the match would be ambiguous).
-    if (seenTerm.has(key) || seenDef.has(definition.toLowerCase())) return;
-    seenTerm.add(key);
+    // terms never share one definition (the match would be ambiguous). The
+    // repeat check ignores a bracketed abbreviation, so "Segregation of
+    // duties (SoD)" and "Segregation of duties" are one term (code review).
+    // The card id still hashes the full term, so saved cards keep their ids.
+    const same = bare(term).toLowerCase();
+    if (seenTerm.has(same) || seenDef.has(definition.toLowerCase())) return;
+    seenTerm.add(same);
     seenDef.add(definition.toLowerCase());
     out.push({ id: `kt:${owner}:${textHash(key)}`, term, definition, ...base });
   };
@@ -232,7 +236,11 @@ export function fieldScore(firstTries: readonly boolean[]): number {
   return firstTries.filter(Boolean).length;
 }
 
-/** The spoken name of a board item: "Term 2 of 4: Snapshot, selected". */
-export function itemSpoken(kind: 'Term' | 'Meaning', k: number, n: number, text: string, state: { selected?: boolean; matched?: boolean }): string {
-  return `${kind} ${k + 1} of ${n}: ${text}${state.matched ? ', matched' : state.selected ? ', selected' : ''}`;
+/**
+ * The spoken name of a board item: "Term 2 of 4: Snapshot, matched". No
+ * "selected" here: the tile's accessibilityState already says it, and
+ * saying it twice reads "selected, selected" (UX review P2).
+ */
+export function itemSpoken(kind: 'Term' | 'Meaning', k: number, n: number, text: string, state: { matched?: boolean }): string {
+  return `${kind} ${k + 1} of ${n}: ${text}${state.matched ? ', matched' : ''}`;
 }

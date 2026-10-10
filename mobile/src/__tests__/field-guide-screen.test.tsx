@@ -70,12 +70,16 @@ const defOf = new Map(fieldTerms(getNotes('cisa')).map((t) => [t.term, t.definit
 const cp = () => selectCert(useProgress.getState(), 'cisa');
 
 beforeEach(() => {
+  // Fake timers: the wrong-pair state clears after 900 ms, and announcements wait a moment (sayLater).
+  jest.useFakeTimers();
   useProgress.setState({ byCert: {}, streak: { current: 0, best: 0, lastDay: null }, today: { day: '', answered: 0 }, days: {} });
   useSettings.setState({ onboarded: true, activeCertId: 'cisa' });
 });
 afterEach(() => {
   act(() => r?.unmount());
   r = undefined;
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
 });
 
 /** The term text of a "Term k of 4: …" tile. */
@@ -94,13 +98,24 @@ it('matches by tapping (term, then meaning), and a slip costs the first-try poin
   const t1 = termText(terms[0]);
   const t2 = termText(terms[1]);
   press(terms[0]);
-  expect(byLabel(/^Term 1 of 4: .*, selected$/)).toHaveLength(1);
+  // "Selected" is the tile's state, not part of its name (never "selected, selected").
+  expect(byLabel(/^Term 1 of 4: /)[0].props.accessibilityState).toEqual(expect.objectContaining({ selected: true }));
+  expect(byLabel(/selected/)).toHaveLength(0);
+  expect(allText()).toContain(`Now tap what “${t1}” means.`);
+  // The meanings say what a tap will do while a term is picked.
+  expect(meaningFor(t2).props.accessibilityHint).toBe(`Matches it to ${t1}.`);
   press(meaningFor(t2));
   expect(byLabel(/, matched$/)).toHaveLength(0);
+  // A wrong pair: a static ✗ on both tiles and a line in words, not only a shake.
+  expect(allText()).toContain('Not a match. Try again.');
+  act(() => jest.advanceTimersByTime(900));
+  expect(allText()).toContain('Tap a term, then what it means.');
   // Then right: meaning first, term second works too.
   press(meaningFor(t1));
   press(byLabel(/^Term 1 of 4: /)[0]);
   expect(byLabel(/^Term 1 of 4: .*, matched$/)).toHaveLength(1);
+  // A matched tile isn't "dimmed": it stays enabled, and its name carries "matched".
+  expect(byLabel(/^Term 1 of 4: .*, matched$/)[0].props.accessibilityState).toEqual(expect.objectContaining({ disabled: false }));
   // A missed first try is a card due again, never a question answer.
   const card = Object.entries(cp().cards ?? {}).find(([k]) => k.startsWith('kt:'))!;
   expect(card[1].box).toBe(1);

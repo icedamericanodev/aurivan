@@ -19,6 +19,7 @@ import {
   termsFromNotes,
 } from '../engine/games/fieldGuide';
 import { GAMES, isPlayable } from '../engine/games/registry';
+import { textHash } from '../engine/games/rootOrRumor';
 import { createRng } from '../engine/random';
 
 const notes = getNotes('cisa')!;
@@ -80,6 +81,33 @@ describe('the term pool', () => {
     expect(termsFromNotes(pack).map((t) => t.term)).toEqual(['Walkthrough']);
   });
 
+  it('a term with and without its bracketed abbreviation is one term; card ids hash the full term', () => {
+    const pack: NotesPack = {
+      ...notes,
+      domains: [
+        {
+          ...notes.domains[0],
+          topics: [
+            {
+              ...notes.domains[0].topics[0],
+              subtopics: notes.domains[0].topics[0].subtopics.slice(0, 1).map((s) => ({
+                ...s,
+                keyTerms: [
+                  { term: 'Segregation of duties (SoD)', definition: 'Splitting a task so no one person controls it end to end.' },
+                  { term: 'Segregation of duties', definition: 'No single person can both make and approve a change.' },
+                ],
+              })),
+            },
+          ],
+          keyTerms: [],
+        },
+      ],
+    };
+    const got = termsFromNotes(pack);
+    expect(got.map((t) => t.term)).toEqual(['Segregation of duties (SoD)']);
+    expect(got[0].id).toBe(`kt:${notes.domains[0].topics[0].subtopics[0].id}:${textHash('segregation of duties (sod)')}`);
+  });
+
   it('the registry offers it from the notes pool, never without notes', () => {
     expect(GAMES.field.name).toBe('Field Guide');
     expect(GAMES.field.tagline).toBe('Match each term to what it means.');
@@ -135,7 +163,7 @@ describe('rounds', () => {
 
   it('scores first-try pairs only, and speaks each item with its place and state', () => {
     expect(fieldScore([true, false, true, true])).toBe(3);
-    expect(itemSpoken('Term', 1, 4, 'Snapshot', { selected: true })).toBe('Term 2 of 4: Snapshot, selected');
+    expect(itemSpoken('Term', 1, 4, 'Snapshot', {})).toBe('Term 2 of 4: Snapshot');
     expect(itemSpoken('Meaning', 0, 4, 'A copy.', { matched: true })).toBe('Meaning 1 of 4: A copy., matched');
   });
 });

@@ -123,3 +123,26 @@ it('Heartwood offers five roles and asks who acts first', () => {
   expect(byLabel(/^Role \d of 5: /)).toHaveLength(5);
   expect(allText()).toContain('Who acts first?');
 });
+
+it('after the level grows, "Play again" plays the NEW level (code review)', () => {
+  // One strong round at Sapling already: the next strong one grows it to Heartwood.
+  useProgress.setState({ byCert: { cisa: { ...cp(), gameGrowth: { canopy: { tier: 'sapling', up: 1, down: 0 } } } } });
+  act(() => {
+    r = create(<CanopyCall />);
+  });
+  pressLabel('Start');
+  for (let k = 0; k < 10; k++) {
+    const card = current();
+    const rows = byLabel(/^Role \d of \d: /);
+    // A locked radio keeps its element after the answer, and the pick reads as checked.
+    const target = rows.find((n) => n.props.accessibilityLabel.endsWith(roleLabel(card.role)))!;
+    press(target);
+    const after = byLabel(/^Role \d of \d: /).find((n) => n.props.accessibilityLabel.includes(roleLabel(card.role)))!;
+    expect(after.props.accessibilityState).toEqual(expect.objectContaining({ checked: true, disabled: true }));
+    pressLabel(k === 9 ? 'See results' : 'Next decision');
+  }
+  expect(cp().gameGrowth?.canopy?.tier).toBe('heartwood');
+  expect(allText()).toContain('You’ve grown to Heartwood.');
+  pressLabel('Play again');
+  expect(byLabel(/^Role \d of 5: /)).toHaveLength(5);
+});

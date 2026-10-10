@@ -13,8 +13,8 @@
  *    level line and at most one badge. Each process is a review card.
  */
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { AccessibilityInfo, View } from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { View } from 'react-native';
 import { GameFrame, GameIntro, MatchTile, PlayableGate, RevealCard, RoundEnd, type TileState } from '../../components/game';
 import { Footprints } from '../../components/icons';
 import { Button, Gap, Section, T } from '../../components/ui';
@@ -35,6 +35,7 @@ import {
   type StonesTier,
 } from '../../engine/games/steppingStones';
 import { createRng } from '../../engine/random';
+import { moveFocus, sayLater } from '../../lib/a11y';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -65,6 +66,16 @@ function SteppingStones() {
   const [hits, setHits] = useState<boolean[]>([]);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const [news, setNews] = useState<RoundNews | null>(null);
+  // Screen-reader focus (UX review H3): each stone's element under "Stones",
+  // and the "Check the order" button, so focus can move after a tap.
+  const stoneRefs = useRef<Record<number, View | null>>({});
+  const checkRef = useRef<View>(null);
+  /** A ref read at focus time (the stone may only mount after this render). */
+  const stoneRef = (step: number) => ({
+    get current() {
+      return stoneRefs.current[step] ?? null;
+    },
+  });
 
   const start = () => {
     const seed = Date.now();
@@ -121,33 +132,41 @@ function SteppingStones() {
     setHits(nextHits);
     if (!perfect) setMisses((m) => [...m, { questionId: seq.id, stem: seq.title, tag, why: seq.caption, answerWrong: true }]);
     if (last) {
-      setNews(
-        finishGameRound(cert.id, 'stones', {
-          score: nextScore,
-          rate: nextHits.filter(Boolean).length / Math.max(1, nextHits.length),
-          tier: round.tier,
-          hits: nextHits,
-        }),
-      );
+      const news = finishGameRound(cert.id, 'stones', {
+        score: nextScore,
+        rate: nextHits.filter(Boolean).length / Math.max(1, nextHits.length),
+        tier: round.tier,
+        hits: nextHits,
+      });
+      setNews(news);
+      // The level moved: "Play again" starts on the new level, not the old one.
+      if (news.change) setTier(news.tier);
     }
   };
 
+  // The tapped stone moves lists, so focus would land anywhere: move it on
+  // purpose, and announce after a short pause so the move isn't cut off.
   const place = (step: number) => {
     if (checked || placed.includes(step)) return;
     const next = [...placed, step];
     setPlaced(next);
-    AccessibilityInfo.announceForAccessibility(`Placed ${ordinal(item.given + next.length)}: ${seq.steps[step].label}.`);
+    sayLater(`Placed ${ordinal(item.given + next.length)}: ${seq.steps[step].label}.`);
+    // Next stone still to place, or "Check the order" when the path is full.
+    const rest = item.shown.filter((s) => !next.includes(s));
+    moveFocus(rest.length ? stoneRef(rest[0]) : checkRef);
   };
   const unplace = (step: number) => {
     if (checked) return;
     setPlaced(placed.filter((s) => s !== step));
-    AccessibilityInfo.announceForAccessibility(`Taken back: ${seq.steps[step].label}.`);
+    sayLater(`Taken back: ${seq.steps[step].label}.`);
+    // The stone is back under "Stones": follow it there.
+    moveFocus(stoneRef(step));
   };
   const check = () => {
     const r = checkPath(item, placed);
     setChecked(r);
+    // No announcement here: the RevealCard announces its own title ("Perfect path").
     settle(pathPoints(r.right, r.perfect), r.marks.map((m) => m.right), r.perfect, `${r.right} of ${n - item.given} steps in place`);
-    AccessibilityInfo.announceForAccessibility(r.perfect ? 'Perfect path.' : `${r.right} of ${n - item.given} steps in place.`);
   };
   const choose = (k: number) => {
     if (!item.missing || pick !== null) return;
@@ -200,7 +219,7 @@ function SteppingStones() {
               accessibilityLabel={`Step ${k + 1} is missing`}
               style={{ minHeight: 48, borderRadius: radius.md, borderWidth: 1.5, borderStyle: 'dashed', borderColor: c.control, padding: 12, marginBottom: space.sm, justifyContent: 'center' }}
             >
-              <T v="label" color={c.ink2}>{`${k + 1}  · missing`}</T>
+              <T v="label" color={c.ink2}>{`${k + 1} · missing`}</T>
             </View>
           ) : (
             <MatchTile key={k} lead={String(k + 1)} text={s.label} state="idle" spoken={`Step ${k + 1}: ${s.label}`} />
@@ -213,7 +232,9 @@ function SteppingStones() {
               key={label}
               text={label}
               state={state(k)}
-              onPress={pick === null ? () => choose(k) : undefined}
+              onPress={() => choose(k)}
+              locked={pick !== null}
+              checked={k === pick}
               radio
               spoken={`Choice ${k + 1} of ${m.choices.length}: ${label}${pick !== null && k === m.correct ? ', the missing step' : pick === k ? ', your pick' : ''}`}
             />
@@ -243,7 +264,7 @@ function SteppingStones() {
         done ? (
           <Button label={last ? 'See results' : 'Next process'} onPress={next} />
         ) : pathFull ? (
-          <Button label="Check the order" onPress={check} />
+          <Button ref={checkRef} label="Check the order" onPress={check} />
         ) : (
           <T v="label" center color={c.accentText}>{`Tap the ${ordinal(item.given + placed.length + 1)} step`}</T>
         )
@@ -264,7 +285,8 @@ function SteppingStones() {
             lead={String(pos)}
             text={mark && !mark.right ? `${seq.steps[step].label} · goes ${ordinal(mark.goes)}` : seq.steps[step].label}
             state={mark ? (mark.right ? 'correct' : 'wrong') : 'idle'}
-            onPress={checked ? undefined : () => unplace(step)}
+            onPress={() => unplace(step)}
+            locked={!!checked}
             spoken={
               mark
                 ? `Step ${pos}: ${seq.steps[step].label}, ${mark.right ? 'right place' : `wrong place, it goes ${ordinal(mark.goes)}`}`
@@ -287,7 +309,16 @@ function SteppingStones() {
         <>
           <Section title="Stones" />
           {unplacedStones.map((step) => (
-            <MatchTile key={step} text={seq.steps[step].label} state="idle" onPress={() => place(step)} spoken={`Place next: ${seq.steps[step].label}`} />
+            <MatchTile
+              key={step}
+              text={seq.steps[step].label}
+              state="idle"
+              onPress={() => place(step)}
+              pressRef={(r) => {
+                stoneRefs.current[step] = r;
+              }}
+              spoken={`Place next: ${seq.steps[step].label}`}
+            />
           ))}
         </>
       )}

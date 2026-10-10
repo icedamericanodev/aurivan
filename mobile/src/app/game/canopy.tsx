@@ -132,7 +132,10 @@ function CanopyCall() {
     setAnswers(next);
     if (i === round.items.length - 1) {
       const hits = next.map(isRightRole);
-      setNews(finishGameRound(cert.id, 'canopy', { score: canopyScore(next), rate: canopyScore(next) / next.length, tier: round.tier, hits }));
+      const news = finishGameRound(cert.id, 'canopy', { score: canopyScore(next), rate: canopyScore(next) / next.length, tier: round.tier, hits });
+      setNews(news);
+      // The level moved: "Play again" starts on the new level, not the old one.
+      if (news.change) setTier(news.tier);
     }
   };
   const stateFor = (role: string): TileState => {
@@ -161,7 +164,10 @@ function CanopyCall() {
         )
       }
     >
-      <T v="caption" color={c.accentText}>{card.tier === 'heartwood' ? 'Who acts first?' : 'Who has the authority to decide?'}</T>
+      {/* A header, so iOS (no radio-group role) still hears the question before the roles (UX review P9). */}
+      <T v="caption" color={c.accentText} accessibilityRole="header">
+        {card.tier === 'heartwood' ? 'Who acts first?' : 'Who has the authority to decide?'}
+      </T>
       <Gap h={space.sm} />
       <Stem>{card.decision}</Stem>
       <Gap h={space.lg} />
@@ -171,7 +177,9 @@ function CanopyCall() {
             key={role}
             text={label(role)}
             state={stateFor(role)}
-            onPress={answered ? undefined : () => choose(role)}
+            onPress={() => choose(role)}
+            locked={answered}
+            checked={role === pick}
             radio
             spoken={`Role ${k + 1} of ${item.chips.length}: ${label(role)}${answered && role === card.role ? ', decides' : answered && role === pick ? ', your pick' : ''}`}
           />

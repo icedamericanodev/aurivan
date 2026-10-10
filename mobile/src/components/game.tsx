@@ -4,7 +4,7 @@
  * Games stay full-screen and calm.
  */
 import { router } from 'expo-router';
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -374,13 +374,23 @@ export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad'
 export type TileState = 'idle' | 'selected' | 'matched' | 'correct' | 'wrong' | 'dimmed';
 
 /**
- * Build F: one tappable item in Field Guide (a term or a meaning) and
- * Stepping Stones (a stone): a raised row like an answer option, 48pt+,
- * text that wraps at any size. Selected = 2px ink border (never green);
- * matched / correct = correctBg with ✓; wrong = wrongBg with ✗ (shape AND
- * colour). `shake` changes when a wrong pair is tried: the tile shakes once
- * (about 160 ms), and not at all under Reduce Motion. `spoken` is the full
- * screen-reader name ("Term 2 of 4: Snapshot, selected").
+ * Build F: one tappable item in Field Guide (a term or a meaning), Canopy
+ * Call (a role) and Stepping Stones (a stone): a raised row like an answer
+ * option, 48pt+, text that wraps at any size. Selected = 2px ink border
+ * (never green); matched / correct = correctBg with ✓; wrong = wrongBg with
+ * ✗ (shape AND colour). `shake` changes when a wrong pair is tried: the tile
+ * shakes once (about 160 ms), and not at all under Reduce Motion (the
+ * screen also shows a short static 'wrong' state, so the cue never relies
+ * on motion). `spoken` is the full screen-reader name ("Term 2 of 4:
+ * Snapshot"); the selected / checked state is announced by the role.
+ *
+ * Screen-reader focus (UX review H2): a tile that was ever tappable stays
+ * the SAME Pressable after an answer. `locked` disables it in place; it is
+ * never swapped for a View, which would rebuild the native view and drop
+ * the learner's focus. In a radio group (`radio`), `checked` marks the
+ * learner's pick. `pressRef` lets a screen move focus to a tile.
+ * A tile that can never be tapped (a given first step, a Heartwood path
+ * step) gets a flat look: `soft` fill, no shadow (UX review P5).
  */
 export function MatchTile({
   text,
@@ -391,6 +401,9 @@ export function MatchTile({
   hint,
   shake = 0,
   radio,
+  locked,
+  checked,
+  pressRef,
 }: {
   /** One choice of several in a radio group (Canopy Call, the recall and missing-step picks). */
   radio?: boolean;
@@ -402,6 +415,12 @@ export function MatchTile({
   spoken: string;
   hint?: string;
   shake?: number;
+  /** Answered or settled: still the same element, but no longer tappable. */
+  locked?: boolean;
+  /** Radio only: this is the learner's pick. */
+  checked?: boolean;
+  /** For moving screen-reader focus to this tile (Stepping Stones). */
+  pressRef?: Ref<View>;
 }) {
   const { c, isDark } = useTheme();
   const x = useSharedValue(0);
@@ -411,8 +430,11 @@ export function MatchTile({
     x.value = withSequence(step(-6), step(6), step(-3), step(0));
   }, [shake, x]);
   const moved = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
+  const interactive = onPress !== undefined || Boolean(radio);
+  // Never tappable and nothing to show: the flat "given" look, so it doesn't pass for a stone you can move.
+  const flat = !interactive && state === 'idle';
   const look = {
-    idle: { bg: c.raised, border: isDark ? c.line : 'transparent', fg: c.ink },
+    idle: { bg: flat ? c.soft : c.raised, border: isDark && !flat ? c.line : 'transparent', fg: c.ink },
     selected: { bg: c.raised, border: c.ink, fg: c.ink },
     matched: { bg: c.correctBg, border: 'transparent', fg: c.ink },
     correct: { bg: c.correctBg, border: 'transparent', fg: c.ink },
@@ -451,24 +473,26 @@ export function MatchTile({
     paddingVertical: state === 'selected' ? 11.5 : 12,
     paddingHorizontal: state === 'selected' ? 13.5 : 14,
     marginBottom: space.sm,
-    ...(!isDark && !tinted ? raisedShadow : null),
+    ...(!isDark && !tinted && !flat ? raisedShadow : null),
   };
+  const off = Boolean(locked) || !onPress;
   return (
     <Animated.View style={moved}>
-      {onPress ? (
+      {interactive ? (
         <Pressable
+          ref={pressRef}
           accessibilityRole={radio ? 'radio' : 'button'}
           accessibilityLabel={spoken}
-          accessibilityHint={hint}
-          accessibilityState={radio ? { checked: state === 'selected' } : { selected: state === 'selected', disabled: state === 'matched' }}
-          disabled={state === 'matched'}
+          accessibilityHint={off ? undefined : hint}
+          accessibilityState={radio ? { checked: Boolean(checked), disabled: off } : { selected: state === 'selected', disabled: off }}
+          disabled={off}
           onPress={onPress}
-          style={({ pressed }) => [box, pressed && { opacity: 0.85 }]}
+          style={({ pressed }) => [box, pressed && !off && { opacity: 0.85 }]}
         >
           {body}
         </Pressable>
       ) : (
-        <View accessible accessibilityLabel={spoken} accessibilityRole={radio ? 'radio' : undefined} accessibilityState={radio ? { checked: false, disabled: true } : undefined} style={box}>
+        <View ref={pressRef} accessible accessibilityLabel={spoken} style={box}>
           {body}
         </View>
       )}

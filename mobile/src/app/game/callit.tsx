@@ -64,7 +64,8 @@ function CallItFirst() {
   const [news, setNews] = useState<RoundNews | null>(null);
   // The skill step per question: the principle named (Heartwood: the answer itself).
   const [steps, setSteps] = useState<boolean[]>([]);
-  const [round, setRound] = useState<{ items: CallItem[]; perms: Record<string, Permutation>; seed: number } | null>(null);
+  // The round keeps the level it is played at, so a level change at its end never changes it mid-screen (code review).
+  const [round, setRound] = useState<{ items: CallItem[]; perms: Record<string, Permutation>; seed: number; tier: CallTier } | null>(null);
   const [i, setI] = useState(0);
   const [phase, setPhase] = useState<Phase>('principle');
   const [cardPick, setCardPick] = useState<number | null>(null);
@@ -112,16 +113,16 @@ function CallItFirst() {
       const qq = findQuestion(cert.id, it.id);
       if (qq) perms[it.id] = makePermutation(qq, rng);
     }
-    setRound({ items, perms, seed });
+    setRound({ items, perms, seed, tier });
     setI(0);
     setScore(0);
     setMisses([]);
     setNews(null);
     setSteps([]);
-    resetItem();
+    resetItem(tier);
   };
-  const resetItem = () => {
-    setPhase(tier === 'heartwood' ? 'think' : 'principle');
+  const resetItem = (t: CallTier) => {
+    setPhase(t === 'heartwood' ? 'think' : 'principle');
     setThinkLeft(Math.ceil(THINK_MS / 1000));
     setCardPick(null);
     setAnswer(null);
@@ -148,7 +149,7 @@ function CallItFirst() {
 
   if (i >= round.items.length || !item || !q || !perm) {
     return (
-      <RoundEnd certId={cert.id} game="callit" score={score} max={callMax(tier, round.items.length)} misses={misses} onAgain={() => start(Date.now())} news={news}>
+      <RoundEnd certId={cert.id} game="callit" score={score} max={callMax(round.tier, round.items.length)} misses={misses} onAgain={() => start(Date.now())} news={news}>
         <T color={c.ink2}>
           On exam day, read the stem, name the principle in your head, then look for the option that matches it. The options are written to pull you off course.
         </T>
@@ -172,13 +173,13 @@ function CallItFirst() {
     const ok = isCorrect(q, display, perm);
     setAnswer(display);
     setPhase('reveal');
-    const pts = callPoints(tier, principleRight, ok);
+    const pts = callPoints(round.tier, principleRight, ok);
     setScore((s) => s + pts);
     const p = useProgress.getState();
     // A hint (the pre-read line) makes the answer assisted; never a mastery date.
     p.recordAnswer(cert.id, q.id, ok, undefined, answerOptions(hint, readClock()));
     if (!ok) p.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
-    const principleMissed = tier !== 'heartwood' && !principleRight;
+    const principleMissed = round.tier !== 'heartwood' && !principleRight;
     if (!ok || principleMissed) {
       setMisses((m) => [
         ...m,
@@ -191,17 +192,18 @@ function CallItFirst() {
         },
       ]);
     }
-    const nextSteps = [...steps, tier === 'heartwood' ? ok : principleRight];
+    const nextSteps = [...steps, round.tier === 'heartwood' ? ok : principleRight];
     setSteps(nextSteps);
     if (i === round.items.length - 1) {
-      setNews(
-        finishGameRound(cert.id, 'callit', {
-          score: score + pts,
-          rate: nextSteps.filter(Boolean).length / round.items.length,
-          tier,
-          hits: nextSteps,
-        }),
-      );
+      const news = finishGameRound(cert.id, 'callit', {
+        score: score + pts,
+        rate: nextSteps.filter(Boolean).length / round.items.length,
+        tier: round.tier,
+        hits: nextSteps,
+      });
+      setNews(news);
+      // The level moved: "Play again" starts on the new level, not the old one.
+      if (news.change) setTier(news.tier);
     }
   };
 
@@ -231,7 +233,7 @@ function CallItFirst() {
             label={i === round.items.length - 1 ? 'See results' : 'Next question'}
             onPress={() => {
               setI(i + 1);
-              resetItem();
+              resetItem(round.tier);
             }}
           />
         ) : (
@@ -282,7 +284,7 @@ function CallItFirst() {
       )}
 
       {/* Step 1: the three principle cards (they stay, marked, once picked). */}
-      {tier !== 'heartwood' && (
+      {round.tier !== 'heartwood' && (
         <View accessibilityRole="radiogroup" accessibilityLabel="Which principle does it test?">
           {/* Not "The principle": the card's own tag already says it (UX review P6). */}
           {phase !== 'principle' && <T v="caption" style={{ marginBottom: space.xs }}>Step 1 · your call</T>}
@@ -307,7 +309,7 @@ function CallItFirst() {
       {/* Step 2: the options appear. */}
       {(phase === 'answer' || phase === 'reveal') && (
         <View style={{ marginTop: space.lg }} onLayout={(e) => setOptionsY(e.nativeEvent.layout.y)}>
-          {tier !== 'heartwood' && (
+          {round.tier !== 'heartwood' && (
             <T v="caption" color={principleRight ? c.correct : c.accentText} style={{ marginBottom: space.sm }}>
               {principleRight ? 'Principle named. Now find the option that matches it.' : 'The principle is marked above. Now find the option that matches it.'}
             </T>
