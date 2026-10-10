@@ -8,7 +8,9 @@ OUT="${1:-screenshots}"; THEME="${2:-dark}"; TMP="$(mktemp -d)"
 mkdir -p "$OUT"
 # Rebuild the question pack first so shots never show stale questions.
 node scripts/build-content.mjs >/dev/null
-EXPO_OFFLINE=1 npx expo export --platform web --output-dir "$TMP/web" >/dev/null
+# --clear: Metro caches the inlined app manifest, so without it the web build can
+# report an old app.json (an old version and colours) in Settings → About and backups.
+EXPO_OFFLINE=1 npx expo export --platform web --clear --output-dir "$TMP/web" >/dev/null
 python3 scripts/screenshots/make_seed.py "$TMP/seed.json" "$THEME"
 python3 scripts/screenshots/serve_spa.py "$TMP/web" & SERVER=$!
 trap 'kill $SERVER 2>/dev/null; rm -rf "$TMP"' EXIT
