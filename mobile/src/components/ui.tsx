@@ -430,7 +430,9 @@ export function IconButton({
 // ── Stepper: − value + for small numbers (the reminder time) ─────────
 // No date-picker dependency: two of these make a calm hour/minute picker.
 // Touch: two 48pt buttons. Screen readers: ONE adjustable control (swipe
-// up/down on iOS, volume keys or actions on Android) that speaks its value.
+// up or down on iOS; the increment/decrement actions on Android) that
+// speaks its name and value; the inner buttons are hidden from them, so
+// Android also has a single stop.
 export function Stepper({
   label,
   value,
@@ -438,11 +440,14 @@ export function Stepper({
   onDec,
   onInc,
   disabled,
+  spokenLabel,
 }: {
   /** While true (e.g. a reminder change is being saved), taps are ignored. */
   disabled?: boolean;
-  /** "Hour" / "Minutes": the caption and the spoken name. */
+  /** "Hour" / "Minutes": the caption, and the buttons' names ("Hour later"). */
   label: string;
+  /** What a screen reader calls the control, e.g. "Reminder hour" (defaults to `label`). */
+  spokenLabel?: string;
   value: string;
   /** What a screen reader says for the value, e.g. "7 PM". */
   spoken?: string;
@@ -454,7 +459,7 @@ export function Stepper({
     <View
       accessible
       accessibilityRole="adjustable"
-      accessibilityLabel={label}
+      accessibilityLabel={spokenLabel ?? label}
       accessibilityValue={{ text: spoken ?? value }}
       accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
       accessibilityState={disabled ? { disabled } : undefined}
@@ -466,9 +471,9 @@ export function Stepper({
       style={{ alignItems: 'center' }}
     >
       <T v="caption">{label}</T>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <IconButton label={`${label} earlier`} onPress={onDec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
-        <T v="label" num center style={{ minWidth: 36, color: c.ink }}>{value}</T>
+        <T v="label" num center style={{ minWidth: 48, color: c.ink }}>{value}</T>
         <IconButton label={`${label} later`} onPress={onInc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
       </View>
     </View>

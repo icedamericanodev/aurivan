@@ -18,7 +18,8 @@ import { changeExamDate } from '../lib/activity';
 import { config } from '../lib/config';
 import {
   DAY_CHIPS,
-  formatTime,
+  localHour,
+  localTime,
   MINUTE_STEP,
   reminderDays,
   reminderSummary,
@@ -183,18 +184,21 @@ export default function Settings() {
         // Time and days. You can set them before turning reminders on; nothing is asked until then.
         <View style={{ paddingVertical: space.md, gap: space.md }}>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.xl }}>
+            {/* Shown and spoken in the phone's time format ("7 PM" / "19", "7:00 PM"). */}
             <Stepper
               label="Hour"
-              value={String(s.reminder.hour).padStart(2, '0')}
-              spoken={formatTime(s.reminder.hour, s.reminder.minute)}
+              spokenLabel="Reminder hour"
+              value={localHour(s.reminder.hour)}
+              spoken={localTime(s.reminder.hour, s.reminder.minute)}
               disabled={busy}
               onDec={() => moveTime(-60)}
               onInc={() => moveTime(60)}
             />
             <Stepper
               label="Minutes"
+              spokenLabel="Reminder minutes"
               value={String(s.reminder.minute).padStart(2, '0')}
-              spoken={formatTime(s.reminder.hour, s.reminder.minute)}
+              spoken={localTime(s.reminder.hour, s.reminder.minute)}
               disabled={busy}
               onDec={() => moveTime(-MINUTE_STEP)}
               onInc={() => moveTime(MINUTE_STEP)}

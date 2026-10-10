@@ -107,7 +107,7 @@ describe('updating from 1.1', () => {
     expect(s.reminder).toEqual({ enabled: true, hour: 19, minute: 0 });
     // Rules not seen yet: Sure Footing shows them once.
     expect(s.gameRulesSeen).toEqual([]);
-    expect(reminderSummary(s.reminder)).toBe('Every day at 19:00');
+    expect(reminderSummary(s.reminder, 'en-GB')).toBe('Every day at 19:00');
   });
 
   it('keeps every bit of progress, and adds an empty score history', () => {

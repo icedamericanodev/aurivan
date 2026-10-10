@@ -50,9 +50,23 @@ export function toggleDay(days: readonly number[] | undefined, day: Weekday): We
   return cur.length === 1 ? cur : cur.filter((d) => d !== day);
 }
 
-/** "19:00": 24-hour time, as the reminder has always shown it. */
+/** "19:00": fixed 24-hour time (stable ids, logs and tests; not shown to learners). */
 export function formatTime(hour: number, minute: number): string {
   return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+/**
+ * The time in the phone's own format: "7:00 PM" in the US, "19:00" in
+ * most of Europe. This is what Settings shows and speaks. `locale` is only
+ * for tests; the app passes nothing (the device locale).
+ */
+export function localTime(hour: number, minute: number, locale?: string): string {
+  return new Date(2000, 0, 1, hour, minute).toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
+}
+
+/** Just the hour in the phone's format: "7 PM" or "19" (the hour stepper's value). */
+export function localHour(hour: number, locale?: string): string {
+  return new Date(2000, 0, 1, hour, 0).toLocaleTimeString(locale, { hour: 'numeric' });
 }
 
 /** Move a time by whole hours or minutes, wrapping around midnight. */
@@ -74,9 +88,9 @@ export function daysSummary(days: readonly number[] | undefined): string {
   return DAY_CHIPS.filter((c) => d.includes(c.day)).map((c) => c.short).join(', ');
 }
 
-/** One line for Settings: "Every day at 19:00". */
-export function reminderSummary(r: ReminderPrefs): string {
-  return `${daysSummary(r.days)} at ${formatTime(r.hour, r.minute)}`;
+/** One line for Settings: "Every day at 7:00 PM" (in the phone's time format). */
+export function reminderSummary(r: ReminderPrefs, locale?: string): string {
+  return `${daysSummary(r.days)} at ${localTime(r.hour, r.minute, locale)}`;
 }
 
 // ── What to schedule ─────────────────────────────────────────────────────

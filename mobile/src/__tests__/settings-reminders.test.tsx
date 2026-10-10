@@ -10,6 +10,7 @@ import { Alert } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import { useSettings } from '../store/settings';
 import Settings from '../app/settings';
+import { localTime } from '../engine/reminders';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -90,7 +91,7 @@ afterEach(() => {
 
 describe('Settings → Study reminder', () => {
   it('shows every day at 19:00 by default (an old save without days)', () => {
-    expect(allText()).toContain('Every day at 19:00');
+    expect(allText()).toContain(`Every day at ${localTime(19, 0)}`);
     expect(allText()).toContain('At most one reminder a day.');
   });
 
@@ -100,7 +101,7 @@ describe('Settings → Study reminder', () => {
     press('Remind on Saturday');
     press('Remind on Sunday');
     expect(useSettings.getState().reminder).toMatchObject({ hour: 20, minute: 15, days: [1, 2, 3, 4, 5] });
-    expect(allText()).toContain('Weekdays at 20:15');
+    expect(allText()).toContain(`Weekdays at ${localTime(20, 15)}`);
     expect(mockEnsure).not.toHaveBeenCalled();
     expect(mockSchedule).not.toHaveBeenCalled();
   });
@@ -118,8 +119,18 @@ describe('Settings → Study reminder', () => {
   });
 
   it('the time is one adjustable control for screen readers', () => {
-    const hour = root().findAll((n) => n.props.accessibilityRole === 'adjustable' && n.props.accessibilityLabel === 'Hour')[0];
-    expect(hour.props.accessibilityValue).toEqual({ text: '19:00' });
+    const hour = root().findAll((n) => n.props.accessibilityRole === 'adjustable' && n.props.accessibilityLabel === 'Reminder hour')[0];
+    // Spoken in the phone's own time format ("7:00 PM" in the US).
+    expect(hour.props.accessibilityValue).toEqual({ text: localTime(19, 0) });
+    // Only increment and decrement are handled; other actions do nothing.
+    act(() => {
+      hour.props.onAccessibilityAction({ nativeEvent: { actionName: 'activate' } });
+    });
+    expect(useSettings.getState().reminder.hour).toBe(19);
+    // The +/− buttons are hidden from screen readers: the adjustable is the one stop.
+    let p = root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === 'Hour later')[0].parent;
+    while (p && p.props.importantForAccessibility !== 'no-hide-descendants') p = p.parent;
+    expect(p).toBeTruthy();
     act(() => {
       hour.props.onAccessibilityAction({ nativeEvent: { actionName: 'increment' } });
     });
@@ -151,7 +162,7 @@ describe('Settings → Study reminder', () => {
     await flip(false);
     expect(mockCancel).toHaveBeenCalledTimes(1);
     expect(useSettings.getState().reminder).toMatchObject({ enabled: false, hour: 20, days: [1, 2, 3, 4, 5, 6] });
-    expect(allText()).toContain('Mon, Tue, Wed, Thu, Fri, Sat at 20:00');
+    expect(allText()).toContain(`Mon, Tue, Wed, Thu, Fri, Sat at ${localTime(20, 0)}`);
     mockSchedule.mockClear();
     await flip(true);
     expect(mockEnsure).toHaveBeenCalledTimes(2);

@@ -8,6 +8,8 @@ import {
   daysSummary,
   DEFAULT_REMINDER,
   formatTime,
+  localHour,
+  localTime,
   isStudyReminder,
   LEGACY_TITLE,
   REMINDER_IDS,
@@ -23,13 +25,14 @@ import {
 describe('reminder days and time', () => {
   it('defaults to every day at 19:00, off', () => {
     expect(DEFAULT_REMINDER).toEqual({ enabled: false, hour: 19, minute: 0, days: ALL_DAYS });
-    expect(reminderSummary(DEFAULT_REMINDER)).toBe('Every day at 19:00');
+    expect(reminderSummary(DEFAULT_REMINDER, 'en-US')).toBe('Every day at 7:00 PM');
+    expect(reminderSummary(DEFAULT_REMINDER, 'en-GB')).toBe('Every day at 19:00');
   });
 
   it('an old save without days means every day', () => {
     const old = { enabled: true, hour: 8, minute: 30 };
     expect(reminderDays(undefined)).toEqual(ALL_DAYS);
-    expect(reminderSummary(old)).toBe('Every day at 08:30');
+    expect(reminderSummary(old, 'en-US')).toBe('Every day at 8:30 AM');
     expect(reminderPlan(old)).toEqual([{ id: DAILY_ID, kind: 'daily', hour: 8, minute: 30 }]);
   });
 
@@ -53,6 +56,9 @@ describe('reminder days and time', () => {
     expect(stepTime(23, 45, 15)).toEqual({ hour: 0, minute: 0 });
     expect(stepTime(0, 0, -15)).toEqual({ hour: 23, minute: 45 });
     expect(formatTime(7, 5)).toBe('07:05');
+    expect(localTime(19, 0, 'en-US')).toBe('7:00 PM');
+    expect(localHour(19, 'en-US')).toBe('7 PM');
+    expect(localHour(19, 'en-GB')).toBe('19');
   });
 });
 
