@@ -56,6 +56,13 @@ export default function Results() {
     router.replace('/home');
   };
 
+  // Build E: a Guided step goes back to its step screen (topic clear, or next topic).
+  const guidedScope = active.path?.mode === 'guided' ? active.path.scope : null;
+  const backToGuided = () => {
+    clear();
+    router.replace({ pathname: '/guided', params: guidedScope && guidedScope !== 'all' ? { domain: guidedScope } : {} });
+  };
+
   const practiseMissed = () => {
     const ids = [...missed];
     clear();
@@ -133,6 +140,12 @@ export default function Results() {
         {missed.length > 0 && (
           <>
             <Button label={`Practice the ${missed.length} I missed`} onPress={practiseMissed} />
+            <Gap h={space.sm} />
+          </>
+        )}
+        {guidedScope && (
+          <>
+            <Button kind={missed.length ? 'secondary' : 'primary'} label="Back to your Guided step" onPress={backToGuided} />
             <Gap h={space.sm} />
           </>
         )}

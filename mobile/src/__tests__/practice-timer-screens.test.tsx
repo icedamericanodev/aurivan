@@ -199,9 +199,9 @@ describe('Practice: the Timed switch and the one-time offer', () => {
     mount(<Practice />);
     expect(toggleValue('Timed')).toBe(true);
     act(() => {
-      find('Start')[0].props.onPress(); // Quick 10
+      find('Start')[0].props.onPress(); // the hero: your study path (Build E)
     });
-    expect(active()).toMatchObject({ title: 'Quick 10', timed: true });
+    expect(active()).toMatchObject({ title: 'Random · All domains', timed: true });
     unmount();
     useSession.getState().clear();
     useSettings.setState({ practiceTimer: false });

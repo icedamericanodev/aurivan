@@ -10,6 +10,7 @@ import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
 import { addMs } from '../engine/answerClock';
 import type { Checkpoint, MockTiming } from '../engine/pace';
+import type { PathReason, StudyMode } from '../engine/studyModes';
 import type { Confidence } from '../engine/srs';
 import type { Permutation } from '../engine/shuffle';
 import { persistStorage } from './storage';
@@ -67,6 +68,20 @@ export interface ActiveSession {
   hideClock?: boolean;
   checkpoints?: Checkpoint[];
   timed?: boolean;
+  /**
+   * Build E study modes, all optional (older sessions have none):
+   * - path: which mode built this session and its scope ("all" or a domain
+   *   id); Guided also keeps its topic. In order moves its saved place on
+   *   each answer to a walk question (not the mixed tail).
+   * - reasons: why each question is here (Smart: due / weak / new /
+   *   refresher; In order and Guided: "mixed" for the review tail). Shown
+   *   as a small tag on the question.
+   * - support: Smart's rolling accuracy is under 55%, so a missed weak-spot
+   *   question offers its study note.
+   */
+  path?: { mode: StudyMode; scope: string; topicId?: string };
+  reasons?: Record<string, PathReason>;
+  support?: boolean;
   finishedAt?: number; // set when the learner finishes / submits
 }
 

@@ -582,6 +582,52 @@ export function ListRow({
   );
 }
 
+// ── RadioRow: one choice in a radio list (Build E mode picker) ─────────
+// A 22pt ring (ink outline, ink dot when chosen: shape AND colour), the
+// `label` title, a `meta` line under it and an optional `caption` badge
+// ("Suggested") in accentText. The whole row is the 64pt touch target and
+// is spoken as a radio with its checked state. Wrap the rows in a View
+// with accessibilityRole="radiogroup".
+export function RadioRow({
+  title,
+  subtitle,
+  checked,
+  onPress,
+  badge,
+  last,
+}: {
+  title: string;
+  subtitle?: string;
+  checked: boolean;
+  onPress: () => void;
+  /** A short word beside the title, e.g. "Suggested". */
+  badge?: string;
+  last?: boolean;
+}) {
+  const { c } = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked }}
+      accessibilityLabel={[title, badge, subtitle].filter(Boolean).join('. ')}
+      onPress={onPress}
+      style={({ pressed }) => [styles.listRow, pressed && { backgroundColor: c.soft }]}
+    >
+      <View style={[styles.radio, { borderColor: checked ? c.ink : c.control }]}>
+        {checked && <View style={[styles.radioDot, { backgroundColor: c.ink }]} />}
+      </View>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: space.sm }}>
+          <T v="label">{title}</T>
+          {badge ? <T v="caption" color={c.accentText}>{badge}</T> : null}
+        </View>
+        {subtitle ? <T v="meta">{subtitle}</T> : null}
+      </View>
+      {!last && <View style={[styles.hairline, { left: 36, backgroundColor: c.line }]} />}
+    </Pressable>
+  );
+}
+
 // ── ProgressBar: 0..1 ─────────────────────────────────────────────────
 export function ProgressBar({ value, color, height = 8 }: { value: number; color?: string; height?: number }) {
   const { c } = useTheme();
@@ -830,6 +876,8 @@ const styles = StyleSheet.create({
   },
   listRow: { flexDirection: 'row', alignItems: 'center', gap: 14, minHeight: 64, paddingVertical: 13 },
   hairline: { position: 'absolute', right: 0, bottom: 0, height: 1 },
+  radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
+  radioDot: { width: 10, height: 10, borderRadius: 5 },
   segRow: { flex: 1, flexDirection: 'row', gap: 3 },
   seg: { flex: 1, height: 4, borderRadius: 2 },
   segTrack: { flex: 1, height: 4, borderRadius: 2, overflow: 'hidden' },

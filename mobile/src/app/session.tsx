@@ -61,12 +61,15 @@ import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '
 import { getCertification, getDomain } from '../content/certifications';
 import { lessonPreparing } from '../content/lessons';
 import { findQuestion } from '../content/loader';
+import { findNote, subtopicOfQuestion } from '../content/notes';
+import { REASON_LABEL } from '../engine/studyModes';
 import { LETTERS, type Letter } from '../content/types';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../engine/shuffle';
 import type { Confidence } from '../engine/srs';
 import { priorityWord } from '../engine/games/priorityLens';
 import { eliminateTip, runnerUp, tipParts } from '../engine/tips';
 import { finishSession } from '../lib/finishSession';
+import { advancePath } from '../lib/sessions';
 import { shortSubtopic } from '../lib/format';
 import { useAnswerClock } from '../lib/useAnswerClock';
 import { selectCert, useProgress } from '../store/progress';
@@ -306,6 +309,8 @@ export default function SessionScreen() {
     // Answers after Coach me are "assisted": half weight toward readiness.
     answer(qid, { display: selected, correct: ok, confidence, ms, ...(coached ? { assisted: true } : {}) });
     recordAnswer(active.certId, qid, ok, confidence, { assisted: coached, ms });
+    // In order (Build E): remember the place (never from the mixed tail).
+    advancePath(active, qid);
     // File every miss in the Mistake Journal, with the ORIGINAL letter picked
     // (and how sure they felt, for the slip coach's "over-confident" pattern).
     if (!ok) useProgress.getState().recordMistake(active.certId, qid, displayToOriginal(selected, perm), confidence);
@@ -393,6 +398,13 @@ export default function SessionScreen() {
   const flagged = active.flagged.includes(qid);
   // Cross-link: after a miss, offer the lesson written to prepare for this question.
   const reviewLesson = response && !response.correct ? lessonPreparing(active.certId, q.id) : undefined;
+  // Build E: why this question is here ("Weak spot", "Mixed review"…), and
+  // Smart's support offer: below 55% recent accuracy, a missed weak spot
+  // offers its study note (worked example first, then retrieval).
+  const reason = active.reasons?.[qid];
+  const supportNote =
+    response && !response.correct && active.support && reason === 'weak' && !reviewLesson ? subtopicOfQuestion(active.certId, qid) : undefined;
+  const supportName = supportNote ? findNote(active.certId, supportNote)?.name : undefined;
   const saved = bookmarks.includes(qid);
   const lowTime = isMock && remaining < LOW_TIME_MS;
   // The shared pace strip (components/pace.tsx): mock clock and pace line.
@@ -503,6 +515,11 @@ export default function SessionScreen() {
                   {domain ? <Tag label={metaLine} domain={domain} /> : <T v="meta">{metaLine}</T>}
                 </View>
                 {flagged && <T v="caption" color={c.tip}>Flagged</T>}
+                {reason && (
+                  <T v="caption" color={c.accentText} accessibilityLabel={`Why this question: ${REASON_LABEL[reason]}`}>
+                    {REASON_LABEL[reason]}
+                  </T>
+                )}
               </Row>
               {q.scenario && (
                 <>
@@ -616,6 +633,16 @@ export default function SessionScreen() {
                     accessibilityHint="Opens the lesson. Come back here when you finish."
                     onPress={() => router.push(`/lesson/${reviewLesson.id}`)}
                     // TrustLine below draws its own top rule, so skip this row's hairline.
+                    last
+                  />
+                )}
+                {supportNote && supportName && (
+                  <ListRow
+                    icon={<BookOpen size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
+                    title={`Read the note: ${supportName}`}
+                    subtitle="A short read, then try more like this"
+                    accessibilityHint="Opens the study note. Come back here when you finish."
+                    onPress={() => router.push(`/notes/subtopic/${encodeURIComponent(supportNote)}`)}
                     last
                   />
                 )}

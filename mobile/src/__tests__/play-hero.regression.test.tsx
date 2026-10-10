@@ -179,7 +179,8 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     mount(<Practice />);
     expect(byTestId('hero-art')).toHaveLength(1);
     const [content] = byTestId('hero-content');
-    expect(textOf(content)).toContain('Ten mixed questions');
+    // Build E: the hero starts the learner's study path (a new learner: Random, 10 questions).
+    expect(textOf(content)).toContain('10 mixed questions');
   });
 });
 

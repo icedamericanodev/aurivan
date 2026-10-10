@@ -7,7 +7,9 @@
  * first screen. The real-life analogy follows as plain text under the
  * panel. Below: the topics grouped by outline Part (A/B).
  * Each topic shows its overview, a "You should be able to" list, and its
- * subtopics with a read mark. The domain's key terms fold away at the end.
+ * subtopics with a read mark, then "Practice this topic" (Build E): the
+ * questions of all its subtopics, interleaved (engine/studyModes.ts). The
+ * domain's key terms fold away at the end.
  */
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -15,7 +17,11 @@ import { Pressable, View } from 'react-native';
 import { EmptyScreen } from '../../components/emptyScreen';
 import { ChevronDown, ICON_STROKE } from '../../components/icons';
 import { Bullets, ReadMark, TermList } from '../../components/notes';
-import { Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T } from '../../components/ui';
+import { Button, Enter, HeroPanel, ICON_SIZE, ListRow, PushedHeader, Row, Screen, Section, T } from '../../components/ui';
+import { findQuestion } from '../../content/loader';
+import { createRng } from '../../engine/random';
+import { interleaveTopic } from '../../engine/studyModes';
+import { guardedStart, startFromIds } from '../../lib/sessions';
 import { domainColor } from '../../content/certifications';
 import { noteDomain, noteSubtopics } from '../../content/notes';
 import type { NoteTopic } from '../../content/notes/types';
@@ -41,6 +47,14 @@ export default function NotesDomain() {
   }
 
   const read = progress.notesRead;
+  // "Practice this topic": every subtopic's listed questions (that still
+  // exist), interleaved and capped. No questions → no button.
+  const topicIds = (t: NoteTopic) => t.subtopics.map((st) => (st.practiceIds ?? []).filter((q) => findQuestion(cert.id, q)));
+  const practiseTopic = (t: NoteTopic) =>
+    guardedStart(
+      () => startFromIds(cert.id, interleaveTopic(topicIds(t), createRng(Date.now())), t.name),
+      () => router.push('/session'),
+    );
   const ids = noteSubtopics(cert.id, info.id).map((s) => s.id);
   const done = readCount(ids, read);
 
@@ -129,6 +143,15 @@ export default function NotesDomain() {
                     );
                   })}
                 </View>
+                {topicIds(t).some((l) => l.length > 0) && (
+                  <Button
+                    kind="secondary"
+                    label="Practice this topic"
+                    accessibilityHint={`Starts a practice set mixing every part of ${t.name}`}
+                    onPress={() => practiseTopic(t)}
+                    style={{ marginTop: space.md }}
+                  />
+                )}
               </View>
             ))}
           </View>

@@ -24,6 +24,7 @@ import { examDateLabel } from './examDay';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
 import { dayKey } from './streak';
+import { SESSION_SIZES, type StudyMode } from './studyModes';
 
 export const BACKUP_APP = 'aurivan';
 /** The file format version. Bump it (and add a step to FILE_MIGRATIONS) if the envelope changes. */
@@ -151,6 +152,11 @@ const dailyGoal: Check<number> = (x, at) => {
   const n = num(x, at);
   return DAILY_GOALS.reduce((best, g) => (Math.abs(g - n) < Math.abs(best - n) ? g : best), DAILY_GOALS[0] as number);
 };
+/** Build E session sizes: any other number is moved to the nearest one (like the daily goal). */
+const studySize: Check<number> = (x, at) => {
+  const n = num(x, at);
+  return SESSION_SIZES.reduce((best, g) => (Math.abs(g - n) < Math.abs(best - n) ? g : best), SESSION_SIZES[0] as number);
+};
 function oneOf<V extends string>(...values: V[]): Check<V> {
   return (x, at) => (values.includes(x as V) ? (x as V) : bad(at));
 }
@@ -275,6 +281,9 @@ const certProgress = obj(
     notesRead: list(id, MAX_SMALL),
     moments,
     mastery: map(subtopicMastery, MAX_SMALL),
+    // Build E: where In order / Guided stopped (per scope), and the Root or Rumor note cards.
+    studyPath: obj({}, { inOrder: map(id, 50), guided: map(id, 50) }),
+    cards: map(reviewEntry, MAX_IDS),
   },
 );
 
@@ -299,6 +308,10 @@ function settingsCheck(certKey: Check<string>) {
       gameRulesSeen: list(str(40), 50),
       practiceTimer: bool,
       paceOffer: oneOf('accepted', 'dismissed'),
+      // Build E study defaults (optional).
+      studyMode: oneOf<StudyMode>('smart', 'guided', 'inOrder', 'random'),
+      studyDomain: str(10),
+      studySize,
     },
   );
 }
@@ -464,6 +477,13 @@ function keepKeys<T>(m: Record<string, T> | undefined, keep: ReadonlySet<string>
   return out;
 }
 const keepIds = (l: string[] | undefined, keep: ReadonlySet<string>) => l?.filter((x) => keep.has(x));
+function keepValues(m: Record<string, string>, keep: ReadonlySet<string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(m).filter(([, v]) => keep.has(v)));
+}
+/** The study-note subtopic inside a card id ("rumor:4B1.2:k3f9" → "4B1.2"). */
+export function cardSubtopic(cardId: string): string {
+  return cardId.split(':')[1] ?? '';
+}
 
 /**
  * Keep only ids that exist in the app's content: answers, reviews, mistakes
@@ -483,6 +503,10 @@ export function keepKnownIds(progress: BackupProgress, known: (certId: string) =
     if (cp.lessonsDone) next.lessonsDone = keepIds(cp.lessonsDone, k.lessons);
     if (cp.notesRead) next.notesRead = keepIds(cp.notesRead, k.notes);
     if (cp.mastery) next.mastery = keepKeys(cp.mastery, k.notes);
+    // In order's place is a question id: a removed question just starts that scope over.
+    if (cp.studyPath?.inOrder) next.studyPath = { ...cp.studyPath, inOrder: keepValues(cp.studyPath.inOrder, k.questions) };
+    // Note cards ("rumor:4B1.2:…") keep only cards whose study note still exists.
+    if (cp.cards) next.cards = Object.fromEntries(Object.entries(cp.cards).filter(([key]) => k.notes.has(cardSubtopic(key))));
     byCert[certId] = next;
   }
   return { ...progress, byCert };

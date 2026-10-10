@@ -91,6 +91,10 @@ export default function RootLayout() {
         <Stack.Screen name="game/sprint" options={{ animation: rise }} />
         <Stack.Screen name="game/priority" options={{ animation: rise }} />
         <Stack.Screen name="game/daylight" options={{ animation: rise }} />
+        {/* Build E: two note- and principle-based games, and the Guided step. */}
+        <Stack.Screen name="game/rumor" options={{ animation: rise }} />
+        <Stack.Screen name="game/callit" options={{ animation: rise }} />
+        <Stack.Screen name="guided" />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />
