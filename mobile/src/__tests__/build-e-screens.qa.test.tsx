@@ -151,8 +151,8 @@ describe('Root or Rumor: score, feedback, Read again, no readiness', () => {
       const tapRoot = ok ? s.kind === 'root' : s.kind !== 'root';
       press(tapRoot ? 'Root, a sound principle' : 'Rumor, an exam myth');
       // Heartwood is not used here, so the reveal comes straight away.
-      // (Longest line first: "Root: a sound principle" is inside "This one is a Root…".)
-      const line = ['This one is a Root: a sound principle', 'Root: a sound principle', 'Rumor: myth spotted', 'That is the myth the exam counts on.'].find((t) => allText().includes(t));
+      // (Longest lines first: "Root: a sound principle" is inside "This one is a Root…".)
+      const line = ['This one is a Root: a sound principle', 'Root: a sound principle', 'This one is a Rumor: a myth the exam counts on', 'Rumor: myth spotted'].find((t) => allText().includes(t));
       feedback.push(`${s.kind}:${ok ? 'right' : 'wrong'}:${line}`);
       expect(allText()).toContain(ok ? '· right' : '· not quite');
       press(k === 11 ? 'See results' : 'Next statement');
@@ -181,7 +181,7 @@ describe('Root or Rumor: score, feedback, Read again, no readiness', () => {
     mount(<RootOrRumor />);
     press('Start');
     const fb = playRound(() => false);
-    for (const f of fb) expect(f).toMatch(/^root:wrong:This one is a Root: a sound principle$|^rumor:wrong:That is the myth the exam counts on\.$/);
+    for (const f of fb) expect(f).toMatch(/^root:wrong:This one is a Root: a sound principle$|^rumor:wrong:This one is a Rumor: a myth the exam counts on$/); // UX review P7 copy
     expect(root().findAll((n) => n.props.accessibilityLabel === 'Score 0 out of 12').length).toBeGreaterThan(0);
     expect(allText()).toContain('Missed statements come back in a later round.');
     // A Seedling round pairs a Root and a Rumor per subtopic: 2 misses there.

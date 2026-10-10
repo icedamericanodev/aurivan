@@ -14,7 +14,7 @@
  */
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { AccessibilityInfo, View } from 'react-native';
 import { GameFrame, GameIntro, PlayableGate, RevealCard, RoundEnd } from '../../components/game';
 import { BookOpen, ICON_STROKE, SproutIcon } from '../../components/icons';
 import { OptionCard, type OptionState } from '../../components/quiz';
@@ -34,6 +34,7 @@ import {
   rumorScore,
   rumorStatements,
   tapTitle,
+  tapVerdict,
   whyChoices,
   type RumorTier,
   type Statement,
@@ -160,6 +161,9 @@ function RootOrRumor() {
     if (tier === 'heartwood' && s.kind === 'rumor' && s.why) {
       setWhy(whyChoices(s, all, createRng(Date.now())));
       setWhysAsked((n) => n + 1);
+      // The buttons give way to the Why step: say so, or a screen reader user
+      // hears nothing at all (UX review H1).
+      AccessibilityInfo.announceForAccessibility(`${tapVerdict(kind, ok)} Why is it a myth? Pick the reason.`);
     }
     if (i === round.length - 1) {
       useProgress.getState().recordGame(cert.id, 'rumor', score + (ok ? 1 : 0));
@@ -229,7 +233,7 @@ function RootOrRumor() {
         <T v="caption" color={right ? c.correct : c.wrong}>{`You said ${tap === 'root' ? 'Root' : 'Rumor'} · ${right ? 'right' : 'not quite'}`}</T>
       )}
       {asking && why && (
-        <View style={{ marginTop: space.md }}>
+        <View accessibilityRole="radiogroup" accessibilityLabel="Why is it a myth?" style={{ marginTop: space.md }}>
           {why.choices.map((text, k) => (
             <OptionCard key={k} letter={LETTERS[k]} text={text} state="idle" onPress={() => pickWhy(k)} />
           ))}
@@ -248,9 +252,12 @@ function RootOrRumor() {
           <RevealCard
             tone={right ? 'good' : 'bad'}
             title={tapTitle(s, Boolean(right))}
+            // The verdict too: on Heartwood the "You said" line was shown before the Why step.
+            spoken={tap ? `${tapVerdict(tap, Boolean(right))} ${tapTitle(s, Boolean(right))}` : undefined}
             body={s.kind === 'rumor' ? (s.why ?? '') : 'A true principle you can lean on in the exam.'}
           />
-          {s.kind === 'root' && (
+          {/* The note: always for a Root; for a Rumor when it caught the learner (UX review O4). */}
+          {(s.kind === 'root' || !right) && (
             <Button
               kind="ghost"
               label="Read the note"

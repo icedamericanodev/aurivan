@@ -373,10 +373,18 @@ export function whyChoices(rumor: Statement, all: Statement[], rng: Rng): { choi
   return { choices, correct: choices.indexOf(real) };
 }
 
-/** The feedback title after a tap (games review §3.1 copy). */
+/**
+ * The feedback title after a tap (games review §3.1 copy). A wrong tap names
+ * what the statement really is, the same way for both kinds (UX review P7).
+ */
 export function tapTitle(s: Statement, right: boolean): string {
-  if (s.kind === 'rumor') return right ? 'Rumor: myth spotted' : 'That is the myth the exam counts on.';
+  if (s.kind === 'rumor') return right ? 'Rumor: myth spotted' : 'This one is a Rumor: a myth the exam counts on';
   return right ? 'Root: a sound principle' : 'This one is a Root: a sound principle';
+}
+
+/** What the learner said, as spoken: "You said Rumor, right." / "You said Root, not quite." */
+export function tapVerdict(tap: StatementKind, right: boolean): string {
+  return `You said ${tap === 'root' ? 'Root' : 'Rumor'}, ${right ? 'right' : 'not quite'}.`;
 }
 
 /** The number of missed cards that triggers "Read again" for a subtopic. */

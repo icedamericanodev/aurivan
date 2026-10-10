@@ -36,6 +36,7 @@ import {
   startsImperative,
   statementsFromNotes,
   tapTitle,
+  tapVerdict,
   textHash,
   unnamedSubject,
   whyChoices,
@@ -224,7 +225,9 @@ describe('Root or Rumor: rounds', () => {
     expect(isRightTap(s, 'root')).toBe(false);
     expect(rumorScore([true, false, true, true])).toBe(3);
     expect(longestRun([true, true, false, true, true, true, false])).toBe(3);
-    expect(tapTitle(s, false)).toBe('That is the myth the exam counts on.');
+    expect(tapTitle(s, false)).toBe('This one is a Rumor: a myth the exam counts on');
+    expect(tapVerdict('rumor', true)).toBe('You said Rumor, right.');
+    expect(tapVerdict('root', false)).toBe('You said Root, not quite.');
   });
   it('Heartwood "Why?": the real reason plus 2 sibling reasons', () => {
     const rumor = all.find((x) => x.kind === 'rumor')!;

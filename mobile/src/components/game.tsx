@@ -279,14 +279,20 @@ export function GameIntro<V extends string>({
  * are for feedback only). Long explanations clamp to 5 lines with a 48pt
  * "Read full explanation" toggle; the title is announced to screen readers.
  */
-export function RevealCard({ tone, title, body }: { tone: 'good' | 'bad' | 'info'; title: string; body: string }) {
+/**
+ * The verdict card after an answer. `spoken`: what a screen reader hears when
+ * it appears (default: the title), e.g. the verdict AND the title when the
+ * step that came before it left the learner with no other cue (UX review H1).
+ */
+export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad' | 'info'; title: string; body: string; spoken?: string }) {
   const { c } = useTheme();
   const [open, setOpen] = useState(false);
   const look = tone === 'good' ? { fg: c.correct, bg: c.correctBg } : tone === 'bad' ? { fg: c.wrong, bg: c.wrongBg } : { fg: c.tip, bg: c.tipBg };
   const long = body.length > 280;
+  const say = spoken ?? title;
   useEffect(() => {
-    AccessibilityInfo.announceForAccessibility(title);
-  }, [title]);
+    AccessibilityInfo.announceForAccessibility(say);
+  }, [say]);
   return (
     <Animated.View entering={FadeIn.duration(240).reduceMotion(ReduceMotion.System)}>
       <View style={{ backgroundColor: look.bg, borderRadius: radius.md, padding: space.lg }}>

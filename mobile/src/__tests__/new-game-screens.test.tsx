@@ -98,7 +98,7 @@ describe('Root or Rumor screen', () => {
     expect(pressable('Rumor, an exam myth').length).toBeGreaterThan(0);
     for (let k = 0; k < 12; k++) {
       press(k % 2 ? 'Rumor, an exam myth' : 'Root, a sound principle');
-      expect(allText()).toMatch(/Root: a sound principle|This one is a Root|Rumor: myth spotted|That is the myth the exam counts on/);
+      expect(allText()).toMatch(/Root: a sound principle|This one is a Root|Rumor: myth spotted|This one is a Rumor: a myth the exam counts on/);
       press(k === 11 ? 'See results' : 'Next statement');
     }
     expect(allText()).toContain('Round complete');
