@@ -37,6 +37,7 @@ manager) evaluated the options independently. All three picked **React Native
 | State + offline storage | **Zustand** + AsyncStorage | 1 ✅ | Remembers progress on the phone |
 | Reminders | **expo-notifications** (local) | 1 ✅ | Daily study nudge, no server |
 | Share cards | **react-native-view-shot** 5.1.0 + **expo-sharing** ~57.0 (owner-approved) | 5 ✅ | view-shot turns the fixed 320 × 400 pt card into a 1080 × 1350 PNG; expo-sharing opens the system share sheet with that image on **both iOS and Android** (RN `Share` is text-only on Android). Where expo-sharing is unavailable (web) the same honest sentence is shared as text. Both are native modules: no config plugin needed for sending shares (expo-sharing's plugin only sets up *receiving* shares, which we don't do), but they **need a new dev build** (`eas build --profile development`) before they work on a phone |
+| Backup files | **expo-file-system** ~57.0 + **expo-document-picker** ~57.0 (mobile 1.3) | 1 ✅ | Settings → Your data. file-system writes `aurivan-backup-YYYY-MM-DD.json` to the app's cache, and expo-sharing hands it to Files, Drive, email or AirDrop; document-picker lets the learner choose a backup to restore. No account, no server, works offline. Both are native modules with no config plugin needed, but they **need a new dev build** |
 | Tests | **Jest** (`jest-expo`) | 1 ✅ | Proves the grading/SRS/readiness logic is right |
 | Builds & store upload | **EAS Build + EAS Submit** | 1 | Builds iOS in the cloud — no Mac needed |
 | Instant fixes | **EAS Update** | 1 | Ship JS/content fixes without store review |
@@ -99,6 +100,31 @@ tap option ─► session.tsx ─► engine/shuffle.isCorrect (grades on ORIGINA
                                  ├─ engine/srs    → review queue
                                  └─ streak/today  → Home
 ```
+
+### Backup and restore (mobile 1.3)
+Settings → Your data saves ONE JSON file: `{ app: 'aurivan', schema: 1,
+exportedAt, appVersion, stores: { settings, progress } }`, each store as its
+saved `{ version, state }`. No device ids, no personal data beyond what the
+stores already hold. `engine/backup.ts` (pure, tested) reads a file as
+untrusted input: 5 MB cap, `JSON.parse` in try/catch, app and schema checks,
+known cert ids only, a small hand-written type checker with capped lists and
+maps, unknown keys dropped. Older formats upgrade step by step
+(`FILE_MIGRATIONS`, and each store's own migration from
+`engine/saveMigrations.ts`). The screen previews what changes and asks first;
+`lib/backup.ts` then keeps ONE snapshot for "Undo restore" (7 days, in
+`store/backup.ts`, which a restore never overwrites), replaces both stores
+and re-applies reminders (permission asked only if reminders are on and it
+is missing). A bad file changes nothing.
+
+### Quiet data (mobile 1.3, not shown yet)
+Collected now because it can't be back-filled, for the timer and mastery
+badges planned next. Each answer record keeps `ms` (time to answer, with time
+in the background left out: `engine/answerClock.ts` + `lib/useAnswerClock.ts`)
+and `lastConfidence`. Each study-notes subtopic gets a permanent `masteredAt`
+the first time it has unassisted correct answers on two different days
+(`engine/mastery.ts`; games and Coach me answers never count). Questions map
+to notes subtopics through the notes' `practiceIds`. All optional: old saves
+load unchanged. It stays on the phone (and in the learner's own backup file).
 
 ### The content pipeline
 ```
@@ -169,6 +195,10 @@ Freemium with in-app subscriptions (product panel recommendation):
    purpose. The app stores only study progress and settings (no accounts,
    no secrets), and a restore onto a new phone saves learners from starting
    over. Revisit if the app ever stores tokens or personal data on device.
+   Since mobile 1.3 the learner can also save their own backup file
+   (Settings → Your data), which works across iOS and Android. The file goes
+   only where the learner sends it, so the store data-safety answers stay
+   "no data collected".
 8. **Tablets** — `ios.supportsTablet` is `false` for v1 (no iPad layouts or
    iPad screenshots yet).
 
