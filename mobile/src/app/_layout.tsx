@@ -107,6 +107,7 @@ export default function RootLayout() {
         <Stack.Screen name="game/callit" options={{ animation: rise }} />
         {/* Build F: three content games. */}
         <Stack.Screen name="game/field" options={{ animation: rise }} />
+        <Stack.Screen name="game/canopy" options={{ animation: rise }} />
         <Stack.Screen name="guided" />
         {/* Build F: You → Milestones and You → Field notes. */}
         <Stack.Screen name="milestones" />

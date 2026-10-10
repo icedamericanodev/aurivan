@@ -6,6 +6,8 @@
 import { getAllQuestions } from '../content/loader';
 import { getNotes } from '../content/notes';
 import { itemMinutes } from '../engine/dayPlan';
+import { getRoleDeck, getStepSequences } from '../content/games';
+import { playableGames } from '../lib/games';
 import { GAME_ORDER, GAMES, gameInfo, gameMinutes, gameTitle, isPlayable, roundMinutes } from '../engine/games/registry';
 import { MINUTES_PER_QUESTION } from '../engine/pace';
 import { todaysPlan } from '../engine/planner';
@@ -51,8 +53,11 @@ describe('game registry', () => {
   });
 
   it('offers every game for CISA, and hides a game whose pool is too small', () => {
-    // Root or Rumor counts the study notes' statements, so it needs the notes pack.
-    for (const id of GAME_ORDER) expect(isPlayable(id, bank, getNotes('cisa'))).toBe(true);
+    // Root or Rumor counts the study notes' statements, so it needs the notes
+    // pack; Build F's deck games need the cert's decks (content/games).
+    const decks = { roles: getRoleDeck('cisa'), steps: getStepSequences('cisa') };
+    for (const id of GAME_ORDER) expect(isPlayable(id, bank, getNotes('cisa'), decks)).toBe(true);
+    expect(playableGames('cisa')).toEqual(GAME_ORDER);
     expect(isPlayable('rumor', bank)).toBe(false);
     expect(isPlayable('trap', bank.slice(0, 3))).toBe(false);
     expect(isPlayable('sprint', [])).toBe(false);

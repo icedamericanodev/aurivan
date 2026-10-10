@@ -15,7 +15,7 @@
 import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { View } from 'react-native';
-import { BookA, Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
+import { BookA, TreeDeciduous, Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
 import { TierLeaf } from '../../components/glyphs';
 import { TierTag } from '../../components/milestones';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T, Trail } from '../../components/ui';
@@ -35,6 +35,7 @@ const ICONS: Record<GameId, typeof Crosshair> = {
   rumor: SproutIcon,
   callit: EyeOff,
   field: BookA,
+  canopy: TreeDeciduous,
 };
 
 export default function Play() {

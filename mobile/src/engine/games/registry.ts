@@ -21,13 +21,14 @@ import type { NotesPack } from '../../content/notes/types';
 import type { PackQuestion } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../pace';
 import { CALL_SIZE, callPool } from './callItFirst';
+import { CANOPY_MIN_POOL, CANOPY_SIZE } from './canopyCall';
 import { DAYLIGHT_MINUTES, DAYLIGHT_SIZE, daylightPool } from './daylight';
 import { FIELD_MIN_POOL, FIELD_SIZE, fieldTerms } from './fieldGuide';
 import { RUMOR_MIN_POOL, RUMOR_SIZE, rumorStatements } from './rootOrRumor';
 import { priorityPool } from './priorityLens';
 import { trapPool } from './trapSpotter';
 
-export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight' | 'rumor' | 'callit' | 'field';
+export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight' | 'rumor' | 'callit' | 'field' | 'canopy';
 
 /** Build F: a certification's game decks (content/games), for games that play them. */
 export interface GameContent {
@@ -141,10 +142,23 @@ export const GAMES: Record<GameId, GameInfo> = {
     pool: () => [],
     notesPool: (notes) => fieldTerms(notes).length,
   }),
+  // Canopy Call plays the reviewed roles deck: 10 one-line decisions,
+  // about 5 seconds each plus a one-line why.
+  canopy: make({
+    id: 'canopy',
+    name: 'Canopy Call',
+    tagline: 'Choose who has the authority to decide.',
+    skill: 'The right level of authority',
+    size: CANOPY_SIZE,
+    minutes: 3,
+    minPool: CANOPY_MIN_POOL,
+    pool: () => [],
+    contentPool: (c) => c.roles?.cards.length ?? 0,
+  }),
 };
 
 /** Display order on Play (the first is the featured hero). */
-export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit', 'field'];
+export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit', 'field', 'canopy'];
 
 /** A game's info by id, or undefined for an unknown id (e.g. from a newer save). */
 export function gameInfo(id: string): GameInfo | undefined {
