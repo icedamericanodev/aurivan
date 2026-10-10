@@ -70,21 +70,27 @@ export default function Settings() {
           Alert.alert('Notifications are off', 'Allow notifications for Aurivan in your phone settings to get reminders.');
           return;
         }
-        await scheduleReminders({ ...s.reminder, enabled: true }, cert.name);
+        // Read the CURRENT choice after the permission prompt, not the one
+        // captured when the switch was tapped (the learner may have changed it).
+        await scheduleReminders({ ...useSettings.getState().reminder, enabled: true }, cert.name);
       } else {
         await cancelReminders();
       }
-      s.setReminder({ ...s.reminder, enabled });
+      useSettings.getState().setReminder({ ...useSettings.getState().reminder, enabled });
     } finally {
       setBusy(false);
     }
   };
-  // Time or days changed: save, and if reminders are on, replace ours (no new prompt).
-  const updateReminder = (next: ReminderPrefs) => {
-    s.setReminder(next);
+  // Time or days changed: save, and if reminders are on, replace ours (no new
+  // prompt). Changes always start from the saved state, so quick taps stack;
+  // lib/reminders.ts runs the re-schedules one at a time, last one wins.
+  const updateReminder = (change: (r: ReminderPrefs) => Partial<ReminderPrefs>) => {
+    const cur = useSettings.getState().reminder;
+    const next = { ...cur, ...change(cur) };
+    useSettings.getState().setReminder(next);
     if (next.enabled) scheduleReminders(next, cert.name).catch(() => {});
   };
-  const moveTime = (deltaMinutes: number) => updateReminder({ ...s.reminder, ...stepTime(s.reminder.hour, s.reminder.minute, deltaMinutes) });
+  const moveTime = (deltaMinutes: number) => updateReminder((r) => stepTime(r.hour, r.minute, deltaMinutes));
   const days = reminderDays(s.reminder.days);
 
   const confirmReset = () =>
@@ -181,6 +187,7 @@ export default function Settings() {
               label="Hour"
               value={String(s.reminder.hour).padStart(2, '0')}
               spoken={formatTime(s.reminder.hour, s.reminder.minute)}
+              disabled={busy}
               onDec={() => moveTime(-60)}
               onInc={() => moveTime(60)}
             />
@@ -188,6 +195,7 @@ export default function Settings() {
               label="Minutes"
               value={String(s.reminder.minute).padStart(2, '0')}
               spoken={formatTime(s.reminder.hour, s.reminder.minute)}
+              disabled={busy}
               onDec={() => moveTime(-MINUTE_STEP)}
               onInc={() => moveTime(MINUTE_STEP)}
             />
@@ -199,7 +207,8 @@ export default function Settings() {
                 label={d.short}
                 accessibilityLabel={d.long}
                 selected={days.includes(d.day)}
-                onPress={() => updateReminder({ ...s.reminder, days: toggleDay(s.reminder.days, d.day) })}
+                disabled={busy}
+                onPress={() => updateReminder((r) => ({ days: toggleDay(r.days, d.day) }))}
               />
             ))}
           </View>

@@ -47,14 +47,12 @@ describe('reminders: one at a time', () => {
     expect([...mockScheduled.keys()].sort()).toEqual(WEEKDAYS.map((d) => weeklyId(d as 1)).sort());
   });
 
-  // KNOWN BUG (QA Build 1): reminders on Mon–Sat. The learner taps Sun
-  // (now every day: ONE daily reminder) and then Sat (now Sun–Fri: six
-  // weekly ones) before the first re-schedule finishes. Both calls list the
-  // old reminders, both cancel, then BOTH schedule: the daily one survives
-  // next to the six weekly ones, so Sun–Fri get two notifications. Flip
-  // `it.failing` to `it` once scheduleReminders runs one call at a time
-  // and the last choice wins (lib/reminders.ts).
-  it.failing('two quick changes end with only the LAST choice scheduled', async () => {
+  // Was a known bug (QA Build 1): reminders on Mon–Sat. The learner taps
+  // Sun (now every day: ONE daily reminder) and then Sat (now Sun–Fri: six
+  // weekly ones) before the first re-schedule finishes. Both calls listed
+  // the old reminders, both cancelled, then BOTH scheduled. Fixed: changes
+  // run one at a time and the last choice wins (lib/reminders.ts).
+  it('two quick changes end with only the LAST choice scheduled', async () => {
     await scheduleReminders({ enabled: true, hour: 19, minute: 0, days: [1, 2, 3, 4, 5, 6] }, 'CISA');
     const first = scheduleReminders({ enabled: true, hour: 19, minute: 0, days: EVERY_DAY }, 'CISA');
     const second = scheduleReminders({ enabled: true, hour: 19, minute: 0, days: [0, 1, 2, 3, 4, 5] }, 'CISA');
@@ -62,15 +60,37 @@ describe('reminders: one at a time', () => {
     expect([...mockScheduled.keys()].sort()).toEqual([0, 1, 2, 3, 4, 5].map((d) => weeklyId(d as 1)).sort());
   });
 
-  // KNOWN BUG (QA Build 1): the learner moves the time, then turns reminders
-  // off straight away. The off switch's cancel lists what is scheduled
-  // BEFORE the time change has scheduled its reminder, so that reminder
-  // survives: the switch says off, yet a notification still arrives.
-  it.failing('turning reminders off right after a change leaves nothing scheduled', async () => {
+  // Was a known bug (QA Build 1): the learner moves the time, then turns
+  // reminders off straight away; the off switch's cancel ran before the
+  // change had scheduled, so a reminder survived. Fixed by the same queue.
+  it('turning reminders off right after a change leaves nothing scheduled', async () => {
     await scheduleReminders({ enabled: true, hour: 19, minute: 0, days: EVERY_DAY }, 'CISA');
     const change = scheduleReminders({ enabled: true, hour: 20, minute: 0, days: EVERY_DAY }, 'CISA');
     const off = cancelReminders();
     await Promise.all([change, off]);
     expect([...mockScheduled.keys()]).toEqual([]);
   });
+
+  it('a day chip tapped off and on quickly, many times, never gives two reminders on one day', async () => {
+    await scheduleReminders({ enabled: true, hour: 19, minute: 0, days: [1, 2, 3, 4, 5, 6] }, 'CISA');
+    const taps: Promise<void>[] = [];
+    for (let k = 0; k < 6; k++) {
+      taps.push(scheduleReminders({ enabled: true, hour: 19, minute: 0, days: k % 2 ? [1, 2, 3, 4, 5, 6] : EVERY_DAY }, 'CISA'));
+    }
+    await Promise.all(taps);
+    const ids = [...mockScheduled.keys()];
+    // A daily reminder never sits next to weekly ones (that would be two on one day).
+    expect(ids.includes(DAILY_ID) && ids.length > 1).toBe(false);
+    expect(ids.sort()).toEqual([1, 2, 3, 4, 5, 6].map((d) => weeklyId(d as 1)).sort());
+  });
+
+  it('a chip change then the off switch, back to back, leaves nothing scheduled', async () => {
+    await scheduleReminders({ enabled: true, hour: 19, minute: 0, days: EVERY_DAY }, 'CISA');
+    const chip = scheduleReminders({ enabled: true, hour: 19, minute: 0, days: WEEKDAYS }, 'CISA');
+    const off = cancelReminders();
+    await Promise.all([chip, off]);
+    expect(mockScheduled.size).toBe(0);
+  });
+
+
 });

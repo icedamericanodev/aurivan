@@ -392,25 +392,29 @@ export function IconButton({
   icon,
   hint,
   selected,
+  disabled,
 }: {
   label: string;
   onPress: () => void;
-  /** Draw the icon in the colour given (ink). */
+  /** Draw the icon in the colour given (ink, or muted when disabled). */
   icon: (color: string) => ReactNode;
   hint?: string;
   selected?: boolean;
+  disabled?: boolean;
 }) {
   const { c } = useTheme();
+  const state = { ...(selected === undefined ? {} : { selected }), ...(disabled ? { disabled } : {}) };
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={hint}
-      accessibilityState={selected === undefined ? undefined : { selected }}
+      accessibilityState={Object.keys(state).length ? state : undefined}
       onPress={onPress}
+      disabled={disabled}
       style={({ pressed }) => [styles.iconButton, pressed && { backgroundColor: c.soft }]}
     >
-      {icon(c.ink)}
+      {icon(disabled ? c.muted : c.ink)}
     </Pressable>
   );
 }
@@ -425,7 +429,10 @@ export function Stepper({
   spoken,
   onDec,
   onInc,
+  disabled,
 }: {
+  /** While true (e.g. a reminder change is being saved), taps are ignored. */
+  disabled?: boolean;
   /** "Hour" / "Minutes": the caption and the spoken name. */
   label: string;
   value: string;
@@ -442,14 +449,19 @@ export function Stepper({
       accessibilityLabel={label}
       accessibilityValue={{ text: spoken ?? value }}
       accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
-      onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'increment' ? onInc() : onDec())}
+      accessibilityState={disabled ? { disabled } : undefined}
+      onAccessibilityAction={(e) => {
+        if (disabled) return;
+        if (e.nativeEvent.actionName === 'increment') onInc();
+        else if (e.nativeEvent.actionName === 'decrement') onDec();
+      }}
       style={{ alignItems: 'center' }}
     >
       <T v="caption">{label}</T>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.xs }}>
-        <IconButton label={`${label} earlier`} onPress={onDec} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <IconButton label={`${label} earlier`} onPress={onDec} disabled={disabled} icon={(col) => <Minus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
         <T v="label" num center style={{ minWidth: 36, color: c.ink }}>{value}</T>
-        <IconButton label={`${label} later`} onPress={onInc} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
+        <IconButton label={`${label} later`} onPress={onInc} disabled={disabled} icon={(col) => <Plus size={ICON_SIZE.row} color={col} strokeWidth={ICON_STROKE} />} />
       </View>
     </View>
   );
@@ -620,18 +632,21 @@ export function Chip({
   selected,
   onPress,
   accessibilityLabel,
+  disabled,
 }: {
   label: string;
   selected: boolean;
   onPress: () => void;
-  /** Spoken name when the visible label has symbols (e.g. "Sure · +3 / −5"). */
+  /** Spoken name when the visible label has symbols. */
   accessibilityLabel?: string;
+  disabled?: boolean;
 }) {
   const { c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ selected }}
+      accessibilityState={{ selected, ...(disabled ? { disabled } : {}) }}
+      disabled={disabled}
       accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; "selected" state is spoken
       onPress={onPress}
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target

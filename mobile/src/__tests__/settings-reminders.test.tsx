@@ -159,4 +159,38 @@ describe('Settings → Study reminder', () => {
     expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 20, minute: 0, days: [1, 2, 3, 4, 5, 6] }), 'CISA');
     expect(useSettings.getState().reminder.enabled).toBe(true);
   });
+
+  it('turning on reads the LATEST time and days after the permission prompt, not the ones from the tap', async () => {
+    let allow: (v: boolean) => void = () => {};
+    mockEnsure.mockImplementationOnce(() => new Promise<boolean>((res) => (allow = res)));
+    let pending: Promise<void> = Promise.resolve();
+    act(() => {
+      pending = reminderSwitch().props.onValueChange(true);
+    });
+    // While the prompt is open, the learner's earlier change lands in the store.
+    act(() => {
+      useSettings.getState().setReminder({ ...useSettings.getState().reminder, hour: 6, days: [1, 2, 3, 4, 5] });
+    });
+    await act(async () => {
+      allow(true);
+      await pending;
+    });
+    expect(mockSchedule).toHaveBeenLastCalledWith(expect.objectContaining({ enabled: true, hour: 6, days: [1, 2, 3, 4, 5] }), 'CISA');
+    expect(useSettings.getState().reminder).toMatchObject({ enabled: true, hour: 6, days: [1, 2, 3, 4, 5] });
+  });
+
+  it('time and day controls are disabled while the switch is being saved', async () => {
+    let allow: (v: boolean) => void = () => {};
+    mockEnsure.mockImplementationOnce(() => new Promise<boolean>((res) => (allow = res)));
+    let pending: Promise<void> = Promise.resolve();
+    act(() => {
+      pending = reminderSwitch().props.onValueChange(true);
+    });
+    const disabled = root().findAll((n) => typeof n.props.onPress === 'function' && n.props.disabled === true && /later|earlier|Monday/.test(String(n.props.accessibilityLabel)));
+    expect(disabled.length).toBeGreaterThan(0);
+    await act(async () => {
+      allow(true);
+      await pending;
+    });
+  });
 });

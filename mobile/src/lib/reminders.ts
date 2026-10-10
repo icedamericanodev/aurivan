@@ -71,6 +71,21 @@ export async function ensurePermission(): Promise<boolean> {
 }
 
 /**
+ * One change at a time. Every schedule/cancel joins this queue, so two
+ * quick taps (or a tap and the off switch) can't interleave their
+ * list → cancel → schedule steps. Without it both calls could list the same
+ * old reminders and BOTH schedule, leaving two reminders on one day, or a
+ * reminder left behind after turning reminders off. The last call wins.
+ */
+let queue: Promise<unknown> = Promise.resolve();
+function oneAtATime<T>(task: () => Promise<T>): Promise<T> {
+  const run = queue.then(task, task);
+  // Keep the queue going even if a step failed.
+  queue = run.catch(() => undefined);
+  return run;
+}
+
+/**
  * Cancel OUR study reminders only: the ids in engine/reminders.ts, plus the
  * first version's reminder (scheduled without an id; recognised by its
  * title). Never "cancel everything": other notifications are left alone.
@@ -90,6 +105,10 @@ async function cancelOurs(N: NotificationsModule) {
 export async function scheduleReminders(prefs: ReminderPrefs, certName: string) {
   const N = notifications();
   if (!N) return;
+  return oneAtATime(() => replaceOurs(N, prefs, certName));
+}
+
+async function replaceOurs(N: NotificationsModule, prefs: ReminderPrefs, certName: string) {
   await ensureAndroidChannel(N);
   await cancelOurs(N);
   const content = reminderCopy(certName);
@@ -109,5 +128,5 @@ export async function scheduleReminders(prefs: ReminderPrefs, certName: string) 
 /** Turn study reminders off (ours only). */
 export async function cancelReminders() {
   const N = notifications();
-  if (N) await cancelOurs(N);
+  if (N) await oneAtATime(() => cancelOurs(N));
 }
