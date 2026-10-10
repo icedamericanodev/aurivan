@@ -14,7 +14,7 @@ export default function CaughtUp() {
       title="All caught up"
       body="Questions you miss come back here just before you would forget them."
       primary={{
-        label: 'Practise 10 questions',
+        label: 'Practice 10 questions',
         onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), () => router.replace('/session')),
       }}
     />

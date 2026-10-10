@@ -1,7 +1,7 @@
 /**
  * Results — score rings per domain (Grove v2 growth rings in domain tones,
  * replacing the old ring and bars), the stat row, and a question-by-question
- * review (your answer vs the best answer). "Practise what I missed"
+ * review (your answer vs the best answer). "Practice what I missed"
  * turns mistakes straight into a new session.
  */
 import { router } from 'expo-router';
@@ -107,7 +107,7 @@ export default function Results() {
         <Gap h={space.xl} />
         {missed.length > 0 && (
           <>
-            <Button label={`Practise the ${missed.length} I missed`} onPress={practiseMissed} />
+            <Button label={`Practice the ${missed.length} I missed`} onPress={practiseMissed} />
             <Gap h={space.sm} />
           </>
         )}

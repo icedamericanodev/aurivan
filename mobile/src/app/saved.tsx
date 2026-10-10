@@ -32,7 +32,7 @@ export default function Saved() {
         header="Saved questions"
         title="Nothing saved yet"
         body="Tap the bookmark on any question to build your own revision set."
-        primary={{ label: 'Practise 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), open) }}
+        primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), open) }}
       />
     );
   }
@@ -82,7 +82,7 @@ export default function Saved() {
         ))}
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
-        <Button label={`Practise ${saved.length} saved`} onPress={() => guardedStart(() => startBookmarks(cert.id), open)} />
+        <Button label={`Practice ${saved.length} saved`} onPress={() => guardedStart(() => startBookmarks(cert.id), open)} />
       </StickyFooter>
     </SafeAreaView>
   );

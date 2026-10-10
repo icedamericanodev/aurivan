@@ -6,6 +6,7 @@
  */
 import { GAMES, type GameId } from './games/registry';
 import type { Stage } from './journey';
+import { REVIEW_SESSION_CAP } from './srs';
 
 /** A game's plan label: its registry name and honest length (e.g. "Snare Spotter · 6 min"). */
 const gameItem = (gameId: GameId): PlanItem => ({ kind: 'game', gameId, label: `${GAMES[gameId].name} · ${GAMES[gameId].minutes} min` });
@@ -94,7 +95,7 @@ export function todaysPlan(p: PlanInput): PlanItem[] {
 
   // Spaced reviews always come first when due — they are the cheapest wins.
   if (p.dueReviews > 0 && p.stage !== 'afterExam') {
-    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, 20) });
+    plan.unshift({ kind: 'review', count: Math.min(p.dueReviews, REVIEW_SESSION_CAP) });
   }
   return plan.slice(0, 4);
 }

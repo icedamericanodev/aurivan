@@ -4,7 +4,7 @@
  * Header: the domain, the learner's own progress, and filter chips
  * (All · Not yet answered · Missed · Saved). Below: every question that
  * passes the filter, grouped under short topic names. Tap a question to
- * answer it on its own; "Practise these" starts a session from the list
+ * answer it on its own; "Practice these" starts a session from the list
  * (up to 20, random order). Both use the normal session machinery, so
  * grading on ORIGINAL letters and the answer/tips screens are unchanged.
  *
@@ -132,7 +132,7 @@ export default function BankDomain() {
       {hasItems && (
         <StickyFooter onHeight={setFooterH}>
           <Button
-            label="Practise these"
+            label="Practice these"
             accessibilityHint="Up to 20 questions from this list, in a random order"
             onPress={() =>
               guardedStart(

@@ -199,6 +199,12 @@ describe('Settings gear in the Today and You headers', () => {
     expect(router.push).toHaveBeenCalledWith('/settings');
   });
 
+  it('You shows the review queue with the same word as Today and Practice', () => {
+    mount(<You />);
+    const row = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Spaced review'));
+    expect(row.length).toBeGreaterThan(0);
+  });
+
   it('You keeps its Settings row too', () => {
     mount(<You />);
     expect(root().findAll((n) => n.props.title === 'Settings').length).toBeGreaterThan(0);

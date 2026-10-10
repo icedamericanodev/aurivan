@@ -76,7 +76,7 @@ export default function Mistakes() {
         title="Nothing open right now"
         body="Every question you miss lands here, tagged by the trap that caught you."
         tags={['Missed FIRST/BEST', 'Wrong role', 'Fixed the symptom']}
-        primary={{ label: 'Practise 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
+        primary={{ label: 'Practice 10 questions', onPress: () => guardedStart(() => startPractice(cert.id, { count: 10, title: 'Quick 10' }), openSession) }}
         secondary={fixedCount > 0 ? { label: 'See cleared mistakes', onPress: () => setShowFixed(true) } : undefined}
       />
     );
@@ -161,7 +161,7 @@ export default function Mistakes() {
       {open.length > 0 && (
         <StickyFooter onHeight={setFooterH}>
           <Button
-            label={`Practise ${Math.min(open.length, 20)} open mistakes`}
+            label={`Practice ${Math.min(open.length, 20)} open mistakes`}
             onPress={() => guardedStart(() => startFromIds(cert.id, open.slice(0, 20).map(([id]) => id), 'Mistake journal'), openSession)}
           />
         </StickyFooter>

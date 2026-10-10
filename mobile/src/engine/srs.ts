@@ -24,6 +24,18 @@ export interface ReviewEntry {
   reps: number; // how many times it was reviewed
 }
 
+/**
+ * The most due reviews one session asks (Today's plan item and the Spaced
+ * review row both start a session of at most this many). The rest wait for
+ * the next session; the screens say so in one line (REVIEW_CAP_LINE).
+ */
+export const REVIEW_SESSION_CAP = 20;
+/** One plain line explaining the cap, used on Today, Practice and You. */
+export const REVIEW_CAP_LINE = `Reviews come ${REVIEW_SESSION_CAP} at a time`;
+
+/** The trailing unit for the review queue count: one word everywhere ("55 due"). */
+export const REVIEW_UNIT = 'due';
+
 export const INTERVAL_DAYS: Record<number, number> = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 16 };
 export const MAX_BOX = 5;
 export const DAY_MS = 86_400_000;

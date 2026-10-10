@@ -155,7 +155,8 @@ export default function Settings() {
       <Gap h={space.sm} />
       <ThemeSwitch />
 
-      <Section title="Daily goal" />
+      {/* Says what the number counts: questions (testers read "20 a day" as unclear). */}
+      <Section title="Daily goal" meta="Questions a day" />
       <Gap h={space.sm} />
       <Segmented
         accessibilityLabel="Daily goal"

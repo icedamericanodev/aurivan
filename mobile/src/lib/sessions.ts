@@ -10,7 +10,7 @@ import { buildMockExam } from '../engine/blueprint';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
-import { dueIds } from '../engine/srs';
+import { dueIds, REVIEW_CAP_LINE, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
 import { useSession, type ActiveSession, type SessionMode } from '../store/session';
 import { useSettings } from '../store/settings';
@@ -60,7 +60,14 @@ export function startPractice(
   return newSession('practice', certId, opts.title ?? 'Practice', ids);
 }
 
-export function startReview(certId: string, limit = 30) {
+/** The Spaced review row's subtitle, the same on Practice and You. */
+export function reviewSubtitle(dueCount: number): string {
+  if (!dueCount) return 'All caught up';
+  return dueCount > REVIEW_SESSION_CAP ? `${REVIEW_CAP_LINE}, most overdue first` : 'Missed questions, due now';
+}
+
+/** Due reviews, most overdue first: at most one session's worth (REVIEW_SESSION_CAP, 20). */
+export function startReview(certId: string, limit = REVIEW_SESSION_CAP) {
   const review = selectCert(useProgress.getState(), certId).review;
   const ids = dueIds(review, Date.now()).slice(0, limit);
   return newSession('review', certId, 'Review', ids);
@@ -104,7 +111,7 @@ export function guardedStart(
   start: () => ActiveSession | null,
   onStarted: () => void,
   onEmpty: () => void = () =>
-    Alert.alert('Nothing to practise yet', 'Try a different filter, or answer a few questions first.'),
+    Alert.alert('Nothing to practice yet', 'Try a different filter, or answer a few questions first.'),
 ) {
   const launch = () => (start() ? onStarted() : onEmpty());
   const current = useSession.getState().active;
