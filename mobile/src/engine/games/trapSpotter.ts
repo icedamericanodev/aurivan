@@ -72,9 +72,14 @@ export function snareWhy(q: PackQuestion): string {
   return (t && q.wrongExplanations[t]) || trapTip(q);
 }
 
-/** Points: 1 for spotting the trap, 1 for then choosing the best answer. */
+/**
+ * Points: 1 for spotting the trap, 1 for then choosing the best answer.
+ * If step 1 tapped the best answer, the screen has REVEALED it, so the
+ * answer step earns nothing (it still counts as answered, assisted).
+ */
 export function scoreTrapPick(q: PackQuestion, trapPick: Letter, answerPick: Letter) {
   const spotted = trapPick === trapLetter(q);
   const correct = answerPick === q.correct;
-  return { spotted, correct, points: (spotted ? 1 : 0) + (correct ? 1 : 0) };
+  const revealed = trapPick === q.correct;
+  return { spotted, correct, points: (spotted ? 1 : 0) + (correct && !revealed ? 1 : 0) };
 }

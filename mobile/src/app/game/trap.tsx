@@ -135,7 +135,7 @@ export default function TrapSpotter() {
           <RevealCard
             tone="info"
             title="That’s the best answer, not the snare"
-            body="A snare is a wrong option built to look right, the one that almost beats the best answer. You found the best one instead. Tap it as your answer to carry on."
+            body={`You picked ${trapPick}, the best one. A snare is a wrong option built to look right, the one that almost beats the best answer. Tap ${trapPick} as your answer to carry on.`}
           />
           <Gap h={space.md} />
         </>
@@ -166,7 +166,13 @@ export default function TrapSpotter() {
           <Gap h={space.sm} />
           <RevealCard
             tone={result.correct ? 'good' : 'bad'}
-            title={result.correct ? 'Best answer: correct' : `Best answer: ${originalToDisplay(q.correct, perm)}`}
+            title={
+              step === 'key'
+                ? `Best answer: ${originalToDisplay(q.correct, perm)} (shown above)`
+                : result.correct
+                  ? 'Best answer: correct'
+                  : `Best answer: ${originalToDisplay(q.correct, perm)}`
+            }
             body={renderText(q.explanation, perm)}
           />
         </>

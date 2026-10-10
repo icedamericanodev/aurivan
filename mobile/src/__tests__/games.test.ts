@@ -59,8 +59,8 @@ describe('Snare Spotter', () => {
     expect(snareStep(q, 'A')).toBe('missed');
     // The best answer stays open in step 2, so it can still be chosen…
     expect(closedInStep2(q, 'D')).toEqual([]);
-    // …and choosing it scores the answer point (the snare point is lost).
-    expect(scoreTrapPick(q, 'D', 'D')).toEqual({ spotted: false, correct: true, points: 1 });
+    // …but it was revealed, so it earns no points (it still counts as answered).
+    expect(scoreTrapPick(q, 'D', 'D')).toEqual({ spotted: false, correct: true, points: 0 });
     // A wrong snare pick is still closed: you named it as a trap.
     expect(closedInStep2(q, 'A')).toEqual(['A']);
   });

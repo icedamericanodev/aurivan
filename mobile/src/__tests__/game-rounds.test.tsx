@@ -165,9 +165,9 @@ describe('Snare Spotter: a whole round to the recap', () => {
     expect(cisa().gameRecent.trap).toEqual([0]);
   });
 
-  it('the best answer named as the snare every time: still answerable, 1 point each, assisted, no review line', () => {
+  it('the best answer named as the snare every time: still answerable, 0 points (it was revealed), assisted, no review line', () => {
     const played = playRound((q) => ({ snare: q.correct, answer: q.correct }));
-    expect(hasLabel('Score 5 out of 10')).toBe(true);
+    expect(hasLabel('Score 0 out of 10')).toBe(true);
     // Every snare was missed (so each is listed), but no ANSWER was wrong.
     expect(allText()).toContain('What caught you');
     expect(allText()).not.toContain(REVIEW_LINE);
@@ -185,9 +185,10 @@ describe('Snare Spotter: a whole round to the recap', () => {
       tap(optionWith(q.options[q.correct]!));
       press(k === 4 ? 'See results' : 'Next question');
     }
-    expect(cisa().gameRecent.trap).toEqual([10, 5]);
+    // Second round: the best answer named as the snare each time, so it was revealed: 0 points.
+    expect(cisa().gameRecent.trap).toEqual([10, 0]);
     expect(allText()).toContain('Last 2 rounds');
-    expect(hasLabel('Your last 2 rounds: 10, 5. Best 10.')).toBe(true);
+    expect(hasLabel('Your last 2 rounds: 10, 0. Best 10.')).toBe(true);
   });
 });
 

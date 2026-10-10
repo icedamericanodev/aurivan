@@ -117,16 +117,19 @@ afterEach(() => {
 describe('Snare Spotter: picking the best answer as the snare', () => {
   beforeEach(() => mount(<TrapSpotter />));
 
-  it('explains it, keeps the best answer open, and still scores a right answer', () => {
+  it('explains it, keeps the best answer open, and scores 0 because it was revealed', () => {
     const q = current();
     const best = q.options[q.correct]!;
     tap(optionWith(best));
     expect(allText()).toContain('That’s the best answer, not the snare');
+    const shownAs = optionWith(best).props.letter as string;
+    expect(allText()).toContain(`You picked ${shownAs}, the best one.`);
     // Not a dead end: the best answer can still be chosen in step 2.
     expect(optionWith(best).props.disabled).toBe(false);
     tap(optionWith(best));
-    expect(root().findAll((n) => n.props.accessibilityLabel === 'Score 1').length).toBeGreaterThan(0);
-    expect(allText()).toContain('Best answer: correct');
+    expect(root().findAll((n) => n.props.accessibilityLabel === 'Score 0').length).toBeGreaterThan(0);
+    expect(allText()).toContain(`Best answer: ${shownAs} (shown above)`);
+    expect(allText()).not.toContain('Best answer: correct');
     // We told them which option was best, so the answer counts as assisted.
     expect(selectCert(useProgress.getState(), 'cisa').answers[q.id].lastAssisted).toBe(true);
   });
