@@ -237,3 +237,22 @@ describe("Today's review card: the cap line only when more than 20 are due", () 
     expect(planText({ kind: 'review', count: 20 }).title).toBe('Review 20 due');
   });
 });
+
+describe('hero meta line keeps clear of the art', () => {
+  const metaOf = () => {
+    const [content] = byTestId('hero-content');
+    // The second text under the title: the meta line (onForest2), not the caption or title.
+    const texts = content.findAll((n) => typeof n.type === 'string' && typeof n.children[0] === 'string' && /Find the answer built to fool you/.test(n.children.join('')));
+    return StyleSheet.flatten(texts[0].props.style);
+  };
+  it('at normal text it wraps inside 250pt, like the title', () => {
+    setFontScale(1);
+    mount(<Play />);
+    expect(metaOf().maxWidth).toBe(250);
+  });
+  it('at large text it runs full width', () => {
+    setFontScale(2);
+    mount(<Play />);
+    expect(metaOf().maxWidth).toBeUndefined();
+  });
+});

@@ -365,7 +365,9 @@ export function HeroPanel({
         >
           {title}
         </T>
-        {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6 }}>{meta}</T>}
+        {/* The meta line keeps clear of the art too (it wraps instead), except
+            with wideTitle or large text, where it runs full width like the title. */}
+        {meta && <T v="meta" color={c.onForest2} style={{ marginTop: 6, maxWidth: !large && !wideTitle ? 250 : undefined }}>{meta}</T>}
         {children}
         {action && (
           <Button
