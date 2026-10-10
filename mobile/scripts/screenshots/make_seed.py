@@ -21,7 +21,9 @@ for dn, rate in {1: .82, 2: .74, 3: .61, 4: .70, 5: .66}.items():
             review[q["id"]] = {"box": 1, "dueAt": now - 3600000, "lastSeen": t, "reps": 1}
 days = [dk(now - i * day) for i in (6, 5, 4, 2, 1, 0)]
 progress = {"state": {"byCert": {"cisa": {"answers": answers, "review": review, "bookmarks": [], "mocks": [],
-            "lessonsDone": ["cisa-l-d1-charter"], "mistakes": mistakes, "gameBest": {"trap": 7, "sprint": 14}}},
+            "lessonsDone": ["cisa-l-d1-charter"], "mistakes": mistakes, "gameBest": {"trap": 7, "sprint": 14, "priority": 7},
+            # The last few round scores (the round recap's "Last 5 rounds" trend).
+            "gameRecent": {"trap": [3, 5, 4, 7], "sprint": [6, 9, 4, 14], "priority": [4, 6, 5, 7]}}},
             "streak": {"current": 6, "best": 9, "lastDay": days[-1], "restDay": dk(now - 3 * day), "recentDays": days},
             "today": {"day": days[-1], "answered": 12}}, "version": 1}
 theme = sys.argv[2] if len(sys.argv) > 2 else "dark"

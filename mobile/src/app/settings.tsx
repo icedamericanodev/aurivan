@@ -206,7 +206,7 @@ export default function Settings() {
           <T v="meta">At most one reminder a day. Turn it off any time.</T>
         </View>
       )}
-      <ToggleRow title="Shuffle answer options" subtitle="Stops you memorising letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
+      <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
       <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
 
       <Gap h={space.xl} />
