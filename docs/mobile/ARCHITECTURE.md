@@ -85,6 +85,8 @@ mobile/
     │   ├── smartMix.ts        #   Smart mode (mobile 1.5)
     │   ├── studyPath.ts       #   Guided + In order (mobile 1.5)
     │   ├── studyModes.ts      #   mode names, suggestion, Random, topic practice
+    │   ├── milestones.ts      #   badges: rules, counters, back-fill (mobile 1.6)
+    │   └── games/growth.ts    #   game levels Seedling → Heartwood (mobile 1.6)
     │   └── streak.ts
     ├── store/                 # WHAT the learner did: progress, settings, session
     ├── lib/                   # glue: session factory, reminders, config
@@ -145,7 +147,8 @@ time) and answer `ms` (capped at 30 minutes).
 
 ### Quiet data (mobile 1.3)
 Collected because it can't be back-filled. Since mobile 1.4 the answer times
-feed the pace features below; `masteredAt` waits for the mastery badges. Each answer record keeps `ms` (time to answer, with time
+feed the pace features below; since mobile 1.6 `masteredAt`, `lastConfidence`
+and the pace data feed the milestones (below). Each answer record keeps `ms` (time to answer, with time
 in the background left out: `engine/answerClock.ts` + `lib/useAnswerClock.ts`)
 and `lastConfidence`. Each study-notes subtopic gets a permanent `masteredAt`
 the first time it has unassisted correct answers on two different days at
@@ -247,6 +250,78 @@ near-copies, and the pre-read hint makes the answer assisted. `related`
 holds concept names, not ids, so near-topic decoys are matched by name and
 topic. Both use `GameIntro` (Seedling / Sapling / Heartwood), the shared
 recap and the minPool guard.
+
+### Milestones and game levels (mobile 1.6)
+Badges that INFORM about mastery (behaviour review §4, games review §5).
+`engine/milestones.ts` holds the 15 milestones and the 7 game skill badges,
+each with one plain rule shown before it is earned; `lib/milestones.ts`
+works out the facts from saved progress.
+- **Rules.** Coach me answers never count (the facts read only answers
+  whose last try had no hint), and game answers never count toward the
+  mastery badges. No badge rewards raw counts, minutes, taps or a share of
+  the bank. Once earned, a mark (a badge, a Firm Footing leaf per domain, a
+  Rooted tier of 10 / 30 / 60 study days) is never removed.
+- **Data.** Most badges are DERIVED: domain mastery from unassisted answers,
+  the Build E topic-clear rule (lesson done + 4 of the last 5 unassisted
+  right), Build D mock pacing (full timed mock with nothing unanswered;
+  every pace check within 10%), the mindset-growth card, tagged mistakes.
+  The progress store keeps only what can't be worked out later, in an
+  optional `milestones` map per cert: `earned` (mark → time), the
+  celebration `queue`, the `backfill` summary, counters (long-gap recalls,
+  later-day fixes, graduations, game misses fixed, rumors cleared, FIRST
+  words read, Daylight rounds at pace), the last 50 unassisted non-game
+  "sure" answers, game misses waiting to be fixed, and cumulative study
+  days with the day the learner came back after a week away. A logged
+  mistake fixed on a later day gets `fixedLater`, so it counts once.
+- **Moments.** `finishSession` (and every game's round end, through
+  `lib/gameRounds.ts`) saves new marks and queues them; the screen that
+  just ended shows at most ONE (Results: `session.milestone`; a game: the
+  round news), with one success haptic, static under Reduce Motion, no
+  confetti and no notification. The rest wait for later sessions.
+- **Back-fill.** Once per cert (`_layout.tsx`, also after a restore from an
+  older backup), `ensureBackfill` infers what older saves still show
+  (later-day fixes, "sure" answers, visible study days, a return after a
+  week), saves those marks QUIETLY and keeps one count for the summary
+  line on You and Milestones ("You'd already earned 4 milestones.").
+- **Backup.** Every new field goes through the checker and its fit mode.
+  On restore `keepSupportedMarks` drops any mark the restored data could
+  not have earned (`markSupported`: the plain necessary conditions), and
+  the queue keeps earned marks only. The always-restorable property test
+  generates milestones, game levels and every new card kind.
+- **Game levels.** `engine/games/growth.ts`: each game moves Seedling →
+  Sapling → Heartwood after 2 rounds in a row at 80%+ on its skill step,
+  and back one level after 2 rounds under 50% ("Back to Sapling for a few
+  rounds"). Only rounds played at the learner's level move it. Stored as
+  optional `gameGrowth` per game, with the last 30 skill-step results (Snare
+  Spotter's last 10 snares) and a run of "well calibrated" Sure Footing
+  rounds. Game intros start on the learner's level; Play shows it as a
+  leaf and a word.
+- **Screens.** You → Milestones (earned, the 3 closest with rule and
+  progress, the rest with rules), You → Field notes (levels and pressed
+  leaves), the Results moment and the round-end lines.
+
+**Games (mobile 1.6).** Three content games, all in the registry with the
+minPool guard (`isPlayable` now also counts a cert's decks from
+`content/games`; `lib/games.ts` asks it for every screen):
+- *Field Guide* (`engine/games/fieldGuide.ts`): the notes' subtopic and
+  domain key terms, deduped, with a leak filter (a definition repeating
+  the term's head word or acronym is left out). 3 boards of 4: tap a term,
+  then its meaning; first-try pairs score. Seedling mixes topics, Sapling
+  keeps one topic, Heartwood recalls the term from 6. Cards `kt:<subtopic>:…`
+  or `kt:D<domain>:…`.
+- *Canopy Call* (`engine/games/canopyCall.ts`): the two-expert reviewed
+  roles deck (`content/games/cisa/roles.json`, copied verbatim). 10
+  decisions; a card's `exclude_chips` are never offered; levels play the
+  deck's card tiers; the end screen shows confusion pairs. The slip
+  coach's "wrong role" pattern drills here. Cards `role:<subtopic>:<id>`.
+- *Stepping Stones* (`engine/games/steppingStones.ts`): the 28 reviewed
+  sequences plus the lesson flows ordered as shipped (`flows.json`; JML
+  excluded; steps read from the lesson). 3 processes; tap to place, tap a
+  placed stone to take it back; Heartwood finds the missing step. Cards
+  `seq:<subtopic>:<id>` or `flow:<lesson>` (a restore keeps a card while its
+  note, lesson or domain exists: `cardKnown`).
+Games never count toward mastery or readiness: these three only write
+review cards. Odd Leaf Out (games review §3.6) is not built.
 
 ### The content pipeline
 ```
