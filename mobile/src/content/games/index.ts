@@ -10,9 +10,11 @@
  * - `cisa/sequences.json` is the Stepping Stones deck: short processes whose
  *   steps have a strict order (also two-expert reviewed).
  * - `cisa/flows.json` lists the lesson "flow" scenes the reviewers checked.
- *   Only flows whose order was strict AS SHIPPED (`orderedAsShipped`) join
- *   Stepping Stones; their steps are read from the lesson itself, so a lesson
- *   fix shows up in the game too. Joiner / mover / leaver stays a list.
+ *   Flows whose order was strict as shipped (`orderedAsShipped`) join
+ *   Stepping Stones, and so do the ones whose lesson has since been
+ *   corrected to the reviewed order (`orderedNow`, with a `note` on what
+ *   changed). Their steps are read from the lesson itself, so a lesson fix
+ *   shows up in the game too. Joiner / mover / leaver stays a list.
  * - Each step list gets a tier from its length (4 steps Seedling, 5 Sapling,
  *   6 Heartwood) unless the deck gives one.
  *
@@ -98,6 +100,15 @@ export interface FlowAudit {
   heading: string;
   ordered: boolean;
   orderedAsShipped: boolean;
+  /** The lesson was later corrected to the reviewed strict order (the six flows fixed in Build F). */
+  orderedNow?: boolean;
+  /** What was corrected, for the next reviewer. */
+  note?: string;
+}
+
+/** A flow plays in Stepping Stones when its order is strict, as shipped or as corrected since. */
+export function flowPlays(f: FlowAudit): boolean {
+  return f.ordered && (f.orderedAsShipped || f.orderedNow === true);
 }
 interface RawFlows {
   version: number;
@@ -156,7 +167,7 @@ export function flowAudit(certId: string): FlowAudit[] {
 const seqCache = new Map<string, StepSequence[]>();
 /**
  * Every Stepping Stones process for a cert: the authored sequences, then the
- * lesson flows whose order was strict as shipped. A flow whose lesson or
+ * lesson flows whose order is strict (flowPlays). A flow whose lesson or
  * heading can no longer be found is skipped (never a broken round).
  */
 export function getStepSequences(certId: string): StepSequence[] {
@@ -170,7 +181,7 @@ export function getStepSequences(certId: string): StepSequence[] {
     }
     const lessons = lessonsFor(certId);
     for (const f of raw.flows().flows) {
-      if (!f.orderedAsShipped) continue;
+      if (!flowPlays(f)) continue;
       const lesson = lessons.find((l) => l.id === f.lessonId);
       const scene = lesson?.scenes.find((sc) => sc.type === 'flow' && sc.heading === f.heading);
       if (!lesson || !scene || scene.type !== 'flow') continue;

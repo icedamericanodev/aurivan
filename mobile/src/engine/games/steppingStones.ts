@@ -4,8 +4,11 @@
  *
  * Plain English for the founder:
  * - A round is 3 processes from the reviewed decks: the 28 authored
- *   sequences plus the lesson flows whose order was strict as shipped
- *   (content/games). Every FIRST question rewards knowing what comes before what.
+ *   sequences plus the lesson flows whose order is strict, as shipped or as
+ *   corrected since (content/games). Every FIRST question rewards knowing
+ *   what comes before what.
+ * - A process never plays below its own deck tier: one the reviewers marked
+ *   Heartwood stays at Heartwood (code review, Build F).
  * - The steps ("stones") are shuffled. The learner TAPS them in order to
  *   build the path, and taps a placed stone to take it back. No dragging.
  *   When every stone is placed, "Check the order" marks each one; a stone in
@@ -48,10 +51,17 @@ export function stonesCardId(seq: StepSequence): string {
   return seq.lessonId ? `flow:${seq.lessonId}` : `seq:${seq.subtopicId}:${seq.id}`;
 }
 
-/** The processes a level plays: Seedling the 4-step ones, Sapling and Heartwood the longer ones; topped up if short. */
+const RANK: Record<StonesTier, number> = { seedling: 0, sapling: 1, heartwood: 2 };
+
+/**
+ * The processes a level plays: only those whose deck tier is this level or
+ * easier (the deck tier is a floor), then Seedling the 4-step ones, Sapling
+ * and Heartwood the longer ones; topped up from the other length if short.
+ */
 export function stonesPool(all: readonly StepSequence[], tier: StonesTier, size = STONES_PER_ROUND): StepSequence[] {
-  const short = all.filter((s) => s.steps.length <= 4);
-  const long = all.filter((s) => s.steps.length >= 5);
+  const allowed = all.filter((s) => RANK[s.tier] <= RANK[tier]);
+  const short = allowed.filter((s) => s.steps.length <= 4);
+  const long = allowed.filter((s) => s.steps.length >= 5);
   const own = tier === 'seedling' ? short : long;
   return own.length >= size ? own : [...own, ...(tier === 'seedling' ? long : short)];
 }

@@ -315,8 +315,10 @@ minPool guard (`isPlayable` now also counts a cert's decks from
   deck's card tiers; the end screen shows confusion pairs. The slip
   coach's "wrong role" pattern drills here. Cards `role:<subtopic>:<id>`.
 - *Stepping Stones* (`engine/games/steppingStones.ts`): the 28 reviewed
-  sequences plus the lesson flows ordered as shipped (`flows.json`; JML
-  excluded; steps read from the lesson). 3 processes; tap to place, tap a
+  sequences plus the lesson flows with a strict order, as shipped or as
+  corrected in the lesson since (`flows.json` `orderedNow`, the six fixed
+  in 1.6; JML excluded; steps read from the lesson). A process never plays
+  below its deck tier. 3 processes; tap to place, tap a
   placed stone to take it back; Heartwood finds the missing step. Cards
   `seq:<subtopic>:<id>` or `flow:<lesson>` (a restore keeps a card while its
   note, lesson or domain exists: `cardKnown`).

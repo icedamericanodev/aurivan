@@ -3,7 +3,7 @@
  * Stepping Stones sequences (sequences.json) and the audited lesson flows
  * (flows.json) load, and every id they point at exists in the app.
  */
-import { flowAudit, getRoleDeck, getStepSequences, shortRole, tierForSteps } from '../content/games';
+import { flowAudit, flowPlays, getRoleDeck, getStepSequences, shortRole, tierForSteps } from '../content/games';
 import { findLesson } from '../content/lessons';
 import { findNote } from '../content/notes';
 
@@ -81,13 +81,37 @@ describe('Stepping Stones (sequences.json + audited lesson flows)', () => {
     }
   });
 
-  it('adds only the lesson flows whose order was strict as shipped; JML is left out', () => {
+  it('adds the lesson flows whose order is strict, as shipped or as corrected since; JML is left out', () => {
     const audit = flowAudit('cisa');
     expect(audit).toHaveLength(19);
-    const wanted = audit.filter((f) => f.orderedAsShipped).map((f) => f.lessonId);
+    const wanted = audit.filter((f) => f.orderedAsShipped || f.orderedNow).map((f) => f.lessonId);
     expect(flows.map((f) => f.lessonId).sort()).toEqual([...wanted].sort());
+    // The six flows corrected in the lessons after the review, each with a note.
+    const corrected = audit.filter((f) => f.orderedNow);
+    expect(corrected.map((f) => f.lessonId).sort()).toEqual(
+      ['cisa-l-d3-release', 'cisa-l-d4-assets', 'cisa-l-d4-bia', 'cisa-l-d4-capacity-sla', 'cisa-l-d5-monitoring', 'cisa-l-d5-pki'],
+    );
+    for (const f of corrected) {
+      expect(f.ordered).toBe(true);
+      expect(f.orderedAsShipped).toBe(false);
+      expect(f.note).toMatch(/^Corrected in the lesson/);
+    }
     expect(flows.some((f) => f.lessonId === 'cisa-l-d5-access')).toBe(false);
     expect(audit.find((f) => f.lessonId === 'cisa-l-d5-access')!.ordered).toBe(false);
+  });
+
+  it('every flow that plays resolves to its lesson’s flow scene, with the same steps', () => {
+    for (const f of flowAudit('cisa').filter(flowPlays)) {
+      const lesson = findLesson(f.lessonId)!;
+      const scene = lesson.scenes.find((sc) => sc.type === 'flow' && sc.heading === f.heading);
+      expect(scene).toBeDefined();
+      const seq = flows.find((x) => x.lessonId === f.lessonId)!;
+      expect(seq).toBeDefined();
+      if (scene?.type === 'flow') expect(seq.steps).toEqual(scene.steps);
+      // A flow is a strict order: at least 4 steps, no repeated label.
+      expect(seq.steps.length).toBeGreaterThanOrEqual(4);
+      expect(new Set(seq.steps.map((x) => x.label)).size).toBe(seq.steps.length);
+    }
   });
 
   it('every audited flow still matches a flow scene in its lesson (none silently skipped)', () => {

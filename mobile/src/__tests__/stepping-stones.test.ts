@@ -31,6 +31,16 @@ describe('the pool', () => {
     expect(stonesPool(all, 'seedling').length).toBeGreaterThanOrEqual(STONES_PER_ROUND * 2);
   });
 
+  it('a process never plays below its deck tier (Heartwood stays Heartwood)', () => {
+    const rank = { seedling: 0, sapling: 1, heartwood: 2 };
+    for (const tier of TIERS) expect(stonesPool(all, tier).every((s) => rank[s.tier] <= rank[tier])).toBe(true);
+    const hw = all.filter((s) => s.tier === 'heartwood');
+    expect(hw.length).toBeGreaterThan(0);
+    expect(stonesPool(all, 'heartwood')).toEqual(expect.arrayContaining(hw));
+    // Sapling still has plenty to play.
+    expect(stonesPool(all, 'sapling').length).toBeGreaterThanOrEqual(STONES_PER_ROUND * 2);
+  });
+
   it('JML (a list, not a sequence) is never played', () => {
     for (const tier of TIERS) expect(stonesPool(all, tier).some((s) => s.lessonId === 'cisa-l-d5-access')).toBe(false);
   });
