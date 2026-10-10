@@ -1,0 +1,765 @@
+{
+  "version": 1,
+  "roles": [
+    {
+      "id": "board",
+      "label": "Board of directors"
+    },
+    {
+      "id": "audit_committee",
+      "label": "Audit committee"
+    },
+    {
+      "id": "senior_management",
+      "label": "Senior management"
+    },
+    {
+      "id": "steering_committee",
+      "label": "Steering committee"
+    },
+    {
+      "id": "risk_owner",
+      "label": "Risk owner (process or business owner)"
+    },
+    {
+      "id": "data_owner",
+      "label": "Data owner"
+    },
+    {
+      "id": "custodian",
+      "label": "Custodian (IT, data custodian or system administrator)"
+    },
+    {
+      "id": "information_security",
+      "label": "Information security (CISO or security function)"
+    },
+    {
+      "id": "is_auditor",
+      "label": "IS auditor"
+    },
+    {
+      "id": "change_authority",
+      "label": "Change authority (the CAB advises)"
+    }
+  ],
+  "cards": [
+    {
+      "id": "r001",
+      "decision": "Approve the IS audit charter",
+      "role": "audit_committee",
+      "exclude_chips": [
+        "board"
+      ],
+      "why": "The charter gives audit its authority, so it is approved above the people audited: by the audit committee, for the board.",
+      "auditor_move": "The CAE drafts the charter; if the CIO approved it, report that first.",
+      "subtopicId": "1A1.3",
+      "tier": "seedling"
+    },
+    {
+      "id": "r002",
+      "decision": "Approve the risk-based annual audit plan",
+      "role": "audit_committee",
+      "why": "The audit committee approves the plan and its resources, so the managers being audited cannot steer what gets audited.",
+      "auditor_move": "When risk changes, re-rank the plan and seek committee approval again.",
+      "subtopicId": "1A3.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r003",
+      "decision": "Receive the formal IS audit report",
+      "role": "audit_committee",
+      "why": "The report goes to the governance body audit reports to; managers who must fix the issues get copies.",
+      "auditor_move": "Never address it to the CISO who will fix the finding.",
+      "subtopicId": "1B5.3",
+      "tier": "seedling"
+    },
+    {
+      "id": "r004",
+      "decision": "Review the audit function's budget and staffing",
+      "role": "audit_committee",
+      "why": "Committee review of audit's resources stops the managers being audited from starving the function of people or money.",
+      "subtopicId": "1A1.4",
+      "tier": "seedling"
+    },
+    {
+      "id": "r005",
+      "decision": "Oversee the chief audit executive as audit's functional reporting line",
+      "role": "audit_committee",
+      "why": "Functional reporting to the audit committee protects independence; a senior executive handles only day-to-day administration.",
+      "subtopicId": "1A1.5",
+      "tier": "seedling"
+    },
+    {
+      "id": "r006",
+      "decision": "Agree on the scope of audit's external quality assessment and receive its results",
+      "role": "audit_committee",
+      "why": "The CAE agrees on the assessor's scope and independence with the audit committee, then reports the results and actions to it.",
+      "subtopicId": "1B6.3",
+      "tier": "seedling"
+    },
+    {
+      "id": "r007",
+      "decision": "Set the enterprise's risk appetite",
+      "role": "board",
+      "why": "Appetite is the board's broad stance on how much risk to take; management sets measurable limits within it.",
+      "subtopicId": "2A5.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r008",
+      "decision": "Approve keeping a risk that exceeds appetite",
+      "role": "board",
+      "why": "Above appetite, risk is treated until it fits. Only the board, which set the appetite, can approve an exception.",
+      "auditor_move": "Report the excess; recommend treatment or a board-approved exception.",
+      "subtopicId": "2A5.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r009",
+      "decision": "Approve the information security strategy",
+      "role": "board",
+      "why": "The board approves the security strategy and sets acceptable information risk; the CISO designs and runs the program.",
+      "subtopicId": "2A2.5",
+      "tier": "seedling"
+    },
+    {
+      "id": "r010",
+      "decision": "Approve the enterprise AI policy and AI risk appetite",
+      "role": "board",
+      "why": "AI is governed like any high-impact process: a board-approved policy and appetite, then a named business owner per model.",
+      "auditor_move": "Recommend fixing governance gaps before any technical tuning.",
+      "subtopicId": "2A2.7",
+      "tier": "seedling"
+    },
+    {
+      "id": "r011",
+      "decision": "Approve the risk policy that sets roles and accountability for risk management",
+      "role": "board",
+      "why": "A board-approved risk policy gives the program its appetite, roles and accountability; consultants can help build it but never own it.",
+      "subtopicId": "2A5.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r012",
+      "decision": "Set the enterprise's IT direction and IT risk limits",
+      "role": "board",
+      "why": "Setting direction and risk limits is governance; executives then plan and run IT, and the steering committee then ranks projects within it.",
+      "subtopicId": "2A2.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r013",
+      "decision": "Decide a tolerance breach that is still within appetite",
+      "role": "senior_management",
+      "why": "Tolerance breaches escalate to senior management to decide; the appetite itself stays the board's call.",
+      "subtopicId": "2A5.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r014",
+      "decision": "Approve the business impact analysis (BIA) results",
+      "role": "senior_management",
+      "exclude_chips": [
+        "steering_committee"
+      ],
+      "why": "The BIA is a business document; senior management approves it before recovery strategies are chosen or funded.",
+      "auditor_move": "Evaluate the method and evidence; never set criticality yourself.",
+      "subtopicId": "4B1.3",
+      "tier": "seedling"
+    },
+    {
+      "id": "r015",
+      "decision": "Authorize a penetration test in writing",
+      "role": "senior_management",
+      "why": "Written management authorization, scope and rules of engagement come first; they separate a lawful test from an attack.",
+      "subtopicId": "5B3.3",
+      "tier": "seedling"
+    },
+    {
+      "id": "r016",
+      "decision": "Accredit a new system, accepting its residual risk to operate",
+      "role": "senior_management",
+      "why": "Accreditation is a management decision by an authorized senior official; testers only certify that controls meet requirements.",
+      "auditor_move": "Report the gaps; approving or blocking go-live would impair independence.",
+      "subtopicId": "3B1.5",
+      "tier": "seedling"
+    },
+    {
+      "id": "r017",
+      "decision": "Set the enterprise sourcing strategy for core systems",
+      "role": "senior_management",
+      "exclude_chips": [
+        "steering_committee"
+      ],
+      "why": "Outsourcing moves the work, never the accountability. Management makes the sourcing call after weighing risks beyond cost.",
+      "auditor_move": "Check the analysis covers data location, lost knowledge and exit, then leave the choice to management.",
+      "subtopicId": "2B2.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r018",
+      "decision": "Commit sponsorship and resources to launch the BCP program",
+      "role": "senior_management",
+      "why": "Senior management commitment and an approved policy start the program and set its scope, objectives and accountabilities.",
+      "subtopicId": "4B4.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r019",
+      "decision": "Approve the incident response plan",
+      "role": "senior_management",
+      "why": "The plan draws its authority from management approval and alignment with security policy and risk, before procedures are refined.",
+      "auditor_move": "Check the plan's approval before its details.",
+      "subtopicId": "5B5.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r020",
+      "decision": "Approve a scope and budget change beyond the project manager's limits",
+      "role": "steering_committee",
+      "why": "The steering committee decides what exceeds the project manager's limits; its members must be able to commit money and people.",
+      "subtopicId": "3A1.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r021",
+      "decision": "Rank competing IT projects and settle resource conflicts",
+      "role": "steering_committee",
+      "why": "The IT steering committee, a management body, prioritizes projects; the board-level IT strategy committee only advises on direction.",
+      "subtopicId": "2A2.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r022",
+      "decision": "Decide a go-live deviation from agreed UAT exit criteria",
+      "role": "steering_committee",
+      "why": "When UAT misses its exit criteria, go-live is deferred; any deviation is decided and documented by the steering committee.",
+      "auditor_move": "Report the gap against the agreed criteria; do not block go-live.",
+      "subtopicId": "3B1.5",
+      "tier": "seedling"
+    },
+    {
+      "id": "r023",
+      "decision": "Confirm the development method before approving the project plan",
+      "role": "steering_committee",
+      "why": "The method shapes cost, control and evidence, so the steering committee confirms it before approving the plan.",
+      "auditor_move": "Recommend the method that fits the requirements; the committee decides.",
+      "subtopicId": "3A3.1",
+      "tier": "seedling"
+    },
+    {
+      "id": "r024",
+      "decision": "Choose build, buy or subscribe for an approved project at its feasibility gate",
+      "role": "steering_committee",
+      "why": "The steering committee decides once a total cost comparison, including exit costs and requirements fit, is on the table.",
+      "auditor_move": "Recommend a full cost-of-ownership comparison before the decision.",
+      "subtopicId": "3A2.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r025",
+      "decision": "Approve a rebaselined plan after a major scope change",
+      "role": "steering_committee",
+      "why": "Scope changes need impact analysis first; the steering committee approves them after seeing the cost and schedule impact.",
+      "auditor_move": "Check the minutes show the impact was seen before approval.",
+      "subtopicId": "3A1.2",
+      "tier": "seedling"
+    },
+    {
+      "id": "r026",
+      "decision": "Classify the loyalty-program member data",
+      "role": "data_owner",
+      "why": "The owner knows the data's business value and legal duties, so the owner assigns the classification level.",
+      "auditor_move": "No named owner? Recommend naming one before any labeling starts.",
+      "subtopicId": "5A1.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r027",
+      "decision": "Approve a request to view customer loan applications",
+      "role": "data_owner",
+      "why": "The data owner approves access against business need; custodians then grant it as directed.",
+      "subtopicId": "2A7.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r028",
+      "decision": "Approve the rules that map legacy fields into a new system",
+      "role": "data_owner",
+      "why": "Mapping decides what converted data means to the business, so the data owner approves it, not IT alone.",
+      "subtopicId": "3B3.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r029",
+      "decision": "Lower a report's classification so it can be shared more widely",
+      "role": "data_owner",
+      "why": "Only the data owner sets or changes a level; users follow the label and ask the owner when it looks wrong.",
+      "subtopicId": "5A1.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r030",
+      "decision": "Approve which fields an analysts' database view will show",
+      "role": "data_owner",
+      "why": "The owner decides what the view exposes; the database administrator builds and grants it under change control.",
+      "subtopicId": "4A11.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r031",
+      "decision": "Approve the risk assessment before moving patient records to a public cloud",
+      "role": "data_owner",
+      "why": "The data owner stays accountable for the records wherever they sit, so the owner approves the move's risk assessment.",
+      "subtopicId": "5A8.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r032",
+      "decision": "Approve using a production data extract in a test environment",
+      "role": "data_owner",
+      "why": "Test data is controlled like any sensitive data set: owner approval, restricted access, masking and deletion after testing.",
+      "subtopicId": "3B1.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r033",
+      "decision": "Run nightly backups of loan files as the owner directs",
+      "role": "custodian",
+      "why": "Custodians store and protect data as the owner directs; how backups are run is a custodian task.",
+      "subtopicId": "2A7.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r034",
+      "decision": "Configure access rights and encryption to match a data set's classification",
+      "role": "custodian",
+      "why": "Custodians, such as system and database administrators, apply the controls the owner's classification requires.",
+      "subtopicId": "5A1.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r035",
+      "decision": "Grant an approved database view to analysts under change control",
+      "role": "custodian",
+      "why": "The database administrator builds and grants the view; the data owner has already decided what it may show.",
+      "subtopicId": "4A11.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r036",
+      "decision": "Remove access rights the business owner did not recertify",
+      "role": "custodian",
+      "why": "Owners judge business need; IT carries out the removals, because it administers the accounts.",
+      "subtopicId": "5A3.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r037",
+      "decision": "Store and protect a client's records as a contracted cloud provider",
+      "role": "custodian",
+      "why": "A provider that stores data is a custodian under contract; ownership and accountability stay with the business.",
+      "auditor_move": "Recommend naming a business owner, with the provider as custodian.",
+      "subtopicId": "2A7.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r038",
+      "decision": "Purge retired laptop drives with a verified secure-erase command",
+      "role": "custodian",
+      "why": "IT, as custodian, sanitizes media by the method the data's sensitivity requires and records each drive on a certificate.",
+      "subtopicId": "4A2.3",
+      "tier": "sapling"
+    },
+    {
+      "id": "r039",
+      "decision": "Disable vendor default administrator accounts on new servers",
+      "role": "custodian",
+      "why": "Custodians harden systems to the approved baseline; the infrastructure team owns fixing the drift.",
+      "subtopicId": "4A1.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r040",
+      "decision": "Accept a residual risk in the claims process that sits within tolerance",
+      "role": "risk_owner",
+      "why": "Authority rises with risk: owners accept within tolerance, senior management decides breaches, and the board decides above appetite.",
+      "auditor_move": "Verify a documented, dated acceptance; never accept it yourself.",
+      "subtopicId": "2A5.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r041",
+      "decision": "Accept the residual risk of a dated baseline exception for a server",
+      "role": "risk_owner",
+      "why": "A baseline gap needs a formal exception: documented, risk-accepted by the asset owner, with an expiry date and compensating control.",
+      "auditor_move": "Test that the compensating control actually operates.",
+      "subtopicId": "5A1.3",
+      "tier": "sapling"
+    },
+    {
+      "id": "r042",
+      "decision": "Accept a 30-day patch delay, within tolerance, with compensating controls",
+      "role": "risk_owner",
+      "why": "When a patch must wait, the business owner accepts the time-bound risk; internal acceptance cannot waive a regulator's deadline.",
+      "subtopicId": "4A8.3",
+      "tier": "sapling"
+    },
+    {
+      "id": "r043",
+      "decision": "Approve user acceptance testing (UAT) results against agreed criteria",
+      "role": "risk_owner",
+      "why": "UAT is the business's acceptance: the business owner, not the developers, approves results against criteria agreed in advance.",
+      "subtopicId": "3B1.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r044",
+      "decision": "Commit to the action, owner and due date for an audit finding",
+      "role": "risk_owner",
+      "why": "Management owns remediation and gives the planned action, owner and date; the auditor recommends and later verifies.",
+      "auditor_move": "Record management's response beside the finding, then follow up by risk.",
+      "subtopicId": "1B5.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r045",
+      "decision": "Run a control self-assessment of the process's own controls",
+      "role": "risk_owner",
+      "why": "In a CSA, process owners and staff evaluate their own controls; audit may facilitate, and still tests key controls itself.",
+      "subtopicId": "1A2.5",
+      "tier": "sapling"
+    },
+    {
+      "id": "r046",
+      "decision": "Approve system requirements as the design baseline",
+      "role": "risk_owner",
+      "why": "Business owners approve the requirements, which become the baseline for design, build and testing.",
+      "auditor_move": "Check traceability from each requirement to a test.",
+      "subtopicId": "3A3.5",
+      "tier": "sapling"
+    },
+    {
+      "id": "r047",
+      "decision": "Test management's continuous monitoring before relying on it",
+      "role": "is_auditor",
+      "why": "Monitoring is a management control; the auditor tests that it works, then adjusts other testing. Never rely on it untested.",
+      "subtopicId": "1B4.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r048",
+      "decision": "Evaluate the BIA method and the evidence behind its ratings",
+      "role": "is_auditor",
+      "why": "The auditor evaluates method and evidence and advises, but never sets criticality; owners and senior management do.",
+      "subtopicId": "4B1.3",
+      "tier": "sapling"
+    },
+    {
+      "id": "r049",
+      "decision": "Verify that agreed remediation actions were implemented and work",
+      "role": "is_auditor",
+      "why": "Follow-up independently tests each action, scaled to risk; management's word that it is fixed is not evidence.",
+      "subtopicId": "1B5.5",
+      "tier": "sapling"
+    },
+    {
+      "id": "r050",
+      "decision": "Advise on control requirements during system design",
+      "role": "is_auditor",
+      "why": "Early advice is expected and cheapest; independence comes from not designing, building or approving the system.",
+      "subtopicId": "3A1.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r051",
+      "decision": "Design and run continuous auditing routines",
+      "role": "is_auditor",
+      "why": "Continuous auditing is built and run by the audit function for independent assurance; continuous monitoring belongs to management.",
+      "subtopicId": "1B4.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r052",
+      "decision": "Disclose a past role in the audited system before fieldwork",
+      "role": "is_auditor",
+      "why": "The auditor discloses the threat before work starts; audit management then judges it and reassigns or adds safeguards.",
+      "subtopicId": "1A1.5",
+      "tier": "sapling"
+    },
+    {
+      "id": "r053",
+      "decision": "Design the classification scheme and monitor compliance with it",
+      "role": "information_security",
+      "why": "Security designs the scheme, advises and monitors, but does not own business data. Owners classify; custodians implement.",
+      "subtopicId": "5A1.4",
+      "tier": "sapling"
+    },
+    {
+      "id": "r054",
+      "decision": "Design and run the information security program",
+      "role": "information_security",
+      "why": "The CISO designs and runs the program and reports to senior management; accountability stays with the board and senior management.",
+      "subtopicId": "2A2.5",
+      "tier": "sapling"
+    },
+    {
+      "id": "r055",
+      "decision": "Receive laptop-encryption compliance reports as the security policy owner",
+      "role": "information_security",
+      "why": "Compliance monitoring reports gaps to the policy owner, here the CISO, who keeps the policy current and enforced.",
+      "subtopicId": "5A1.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r056",
+      "decision": "Monitor and challenge IT operations' handling of security risk",
+      "role": "information_security",
+      "why": "Security is a second-line function: it sets frameworks, monitors and challenges the first line, but it is not independent assurance.",
+      "subtopicId": "2A2.3",
+      "tier": "sapling"
+    },
+    {
+      "id": "r057",
+      "decision": "Own, test and retire SIEM correlation rules",
+      "role": "information_security",
+      "why": "Detection decays unless someone owns it; security operations treats rules as code, tests them with simulated attacks and retires stale ones.",
+      "subtopicId": "5B4.2",
+      "tier": "sapling"
+    },
+    {
+      "id": "r058",
+      "decision": "Approve a high-risk production change after CAB review",
+      "role": "change_authority",
+      "why": "The change advisory board (CAB) reviews higher-risk changes and advises; the change authority approves.",
+      "auditor_move": "Trace changes found in production back to approved requests.",
+      "subtopicId": "4A8.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r059",
+      "decision": "Approve deploying a peer-reviewed firewall rule change to production",
+      "role": "change_authority",
+      "why": "Firewall rules are production changes: peer review checks the rule against default-deny, then the change authority approves it.",
+      "subtopicId": "5A4.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r060",
+      "decision": "Approve a change to the production job schedule",
+      "role": "change_authority",
+      "why": "Schedulers do not approve their own production schedule changes; independent approval through change control keeps duties separate.",
+      "subtopicId": "4A3.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r061",
+      "decision": "Approve releasing a retrained machine learning model to production",
+      "role": "change_authority",
+      "why": "A model is a controlled component: validated independently, then released through normal change control with a tested way back.",
+      "subtopicId": "3A3.6",
+      "tier": "sapling"
+    },
+    {
+      "id": "r062",
+      "decision": "Approve the production change that decommissions a legacy server",
+      "role": "change_authority",
+      "why": "Retirement is a change like any other: requested, assessed for impact on dependent systems, approved and recorded.",
+      "subtopicId": "4A8.1",
+      "tier": "sapling"
+    },
+    {
+      "id": "r063",
+      "decision": "Ransomware starts encrypting shared files during fieldwork. First move: isolate the host.",
+      "role": "information_security",
+      "why": "Containment is the response team's job under management's authority; the auditor never touches the affected system.",
+      "auditor_move": "Alert the incident manager at once; evaluate the response afterward.",
+      "subtopicId": "5B5.1",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r064",
+      "decision": "Server restarts fail and mining malware is found. First: contain it and remove the foothold.",
+      "role": "information_security",
+      "why": "Security incidents differ from outages: independent security responders contain and eradicate before service is restored.",
+      "auditor_move": "Recommend that triage flag signs of compromise and route them to security.",
+      "subtopicId": "4A7.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r065",
+      "decision": "A certificate authority never used before issued a certificate for the checkout domain. First: request revocation.",
+      "role": "information_security",
+      "why": "A rogue certificate must lose trust at once; the security team requests revocation and investigates instead of waiting for misuse.",
+      "auditor_move": "Recommend revoking now; waiting for misuse is not a control.",
+      "subtopicId": "5A7.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r066",
+      "decision": "The IT director asks audit to sign off an above-appetite risk. First: decline and report it.",
+      "role": "is_auditor",
+      "why": "Accepting risk is a management role that would impair independence; the auditor reports and recommends treatment or a board exception.",
+      "subtopicId": "1A4.7",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r067",
+      "decision": "A buyer approves invoices for vendors sharing a staff home address. First: document and escalate to the CAE.",
+      "role": "is_auditor",
+      "why": "The auditor records the facts, secures the logs and escalates under the fraud procedure; authorized investigators decide what follows.",
+      "auditor_move": "Never confront the buyer or widen the sample before escalating.",
+      "subtopicId": "1B3.5",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r068",
+      "decision": "A former vendor still receives a nightly loyalty-data export. First: recommend suspending it and report the exposure.",
+      "role": "is_auditor",
+      "why": "With no business approval for the job, the auditor recommends closing the bypass at once and reports to the privacy officer, who decides.",
+      "subtopicId": "4A3.1",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r069",
+      "decision": "Fraud red flags point at senior management, with a regulator deadline. First: receive the escalation.",
+      "role": "audit_committee",
+      "why": "When management may be implicated, escalate promptly above it, to the audit committee and legal counsel.",
+      "auditor_move": "Preserve the evidence with a chain of custody; do not investigate alone.",
+      "subtopicId": "1B3.5",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r070",
+      "decision": "The CFO presses the CAE a third time to drop a planned audit. First: receive the escalation.",
+      "role": "audit_committee",
+      "why": "The audit committee protects audit independence, so repeated management pressure goes to it once the CAE has declined.",
+      "auditor_move": "Decline the first request and explain the risk rating.",
+      "subtopicId": "1A1.4",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r071",
+      "decision": "A critical finding with a legal deadline surfaces between meetings. First: receive it now.",
+      "role": "audit_committee",
+      "why": "Severity sets the timing: critical issues go to the audit committee chair at once, not at the next scheduled meeting.",
+      "subtopicId": "1B5.5",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r072",
+      "decision": "A department head offers to sign off a patient-data risk above appetite. First: direct its treatment.",
+      "role": "senior_management",
+      "why": "The department head lacks authority; senior management directs treatment, and only the board could approve keeping the excess.",
+      "auditor_move": "Report that the risk exceeds appetite and recommend escalation.",
+      "subtopicId": "2A5.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r073",
+      "decision": "The revenue director calls an overdue refund-approval fix 'not worth fixing', though the risk exceeds appetite. First escalation point?",
+      "role": "senior_management",
+      "exclude_chips": [
+        "audit_committee"
+      ],
+      "why": "The CAE raises above-appetite accepted risk with senior management first, then with the audit committee.",
+      "auditor_move": "Confirm each action's status and report the overdue items.",
+      "subtopicId": "3B4.3",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r074",
+      "decision": "End-of-support servers cannot be replaced in time, and the risk exceeds appetite. Approve keeping them.",
+      "role": "board",
+      "why": "Above appetite, the risk must be treated; only a board-approved exception can keep it until the servers are replaced.",
+      "auditor_move": "Verify interim controls and a funded, dated replacement plan.",
+      "subtopicId": "2A5.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r075",
+      "decision": "Projected losses from an outage would exceed the enterprise's risk capacity. First: decide, outside the normal cycle, how much loss the enterprise will carry.",
+      "role": "board",
+      "why": "Breaching risk capacity puts survival at stake, so the board acts at once rather than waiting for the normal cycle.",
+      "subtopicId": "2A5.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r076",
+      "decision": "The vendor asks for six more weeks, beyond the project manager's authority. First: decide the extension.",
+      "role": "steering_committee",
+      "why": "Issues beyond the project manager's limits go to the steering committee, whose members can commit money and people.",
+      "auditor_move": "Confirm the minutes record a decision.",
+      "subtopicId": "3A1.1",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r077",
+      "decision": "An emergency fix went live overnight with no prior approval. Next working day: review and approve it.",
+      "role": "change_authority",
+      "why": "Urgency changes the route, not the need: emergency changes get independent review and approval soon after implementation.",
+      "subtopicId": "4A8.1",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r078",
+      "decision": "A pricing change arrives marked 'tested' with no results attached. First: withhold approval.",
+      "role": "change_authority",
+      "why": "The change authority approves only on attached evidence; the author's word is not evidence.",
+      "auditor_move": "Recommend the pipeline block deployment until test evidence is attached.",
+      "subtopicId": "3B2.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r079",
+      "decision": "IT says the hosting vendor now owns migrated student records. Who stays accountable for them?",
+      "role": "data_owner",
+      "why": "Ownership follows business accountability, not storage location; outsourcing creates a custodian, never a new owner.",
+      "subtopicId": "2A7.1",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r080",
+      "decision": "Conversion reconciliation is done the day before go-live. Sign off acceptance of the converted data.",
+      "role": "data_owner",
+      "why": "The data owner reviews the reconciliation results and accepts the converted data; IT runs the load but cannot accept it.",
+      "auditor_move": "Recommend full count-and-total reconciliation, not spot checks.",
+      "subtopicId": "3B3.2",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r081",
+      "decision": "A bad script overwrote 40,000 addresses. Choose between restore paths that trade data loss against time.",
+      "role": "data_owner",
+      "why": "When recovery paths trade data loss against time, the data owner decides, because the business bears the impact.",
+      "auditor_move": "Report each path's impact; leave the choice to the owner.",
+      "subtopicId": "4A11.4",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r082",
+      "decision": "The owner has chosen the recovery path after a bad script. Run the point-in-time restore.",
+      "role": "custodian",
+      "why": "The database administrator restores the backup, rolls the log forward and verifies; the data owner already chose the path.",
+      "subtopicId": "4A11.4",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r083",
+      "decision": "Leavers' accounts are still active months after they left. First: disable them.",
+      "role": "custodian",
+      "why": "IT administers accounts, so it disables orphan accounts at once and checks them for misuse; the HR feed is fixed next.",
+      "subtopicId": "5A3.4",
+      "tier": "heartwood"
+    },
+    {
+      "id": "r084",
+      "decision": "A continuous-auditing alert flags rapid cashier voids at night. First: the manager who runs the cashier process decides whether to freeze the cashier's till access.",
+      "role": "risk_owner",
+      "why": "Operational responses, such as freezing an account, belong to the manager with authority to act, not to audit.",
+      "auditor_move": "Call the manager with authority and preserve the evidence.",
+      "subtopicId": "1B4.2",
+      "tier": "heartwood"
+    }
+  ]
+}
