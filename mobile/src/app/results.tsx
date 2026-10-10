@@ -160,7 +160,8 @@ export default function Results() {
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ expanded: open }}
-              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}${coaching ? `, ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''}. Tap to ${open ? 'collapse' : 'expand'}`}
+              // One sentence each; the coaching line ends with its own full stop (O2).
+              accessibilityLabel={`Question ${i + 1}, ${status}${assisted ? ', assisted' : ''}.${coaching ? ` ${COACHING[coaching].tag}: ${COACHING[coaching].line}` : ''} Tap to ${open ? 'collapse' : 'expand'}`}
               onPress={() => setOpenId(open ? null : id)}
               style={({ pressed }) => ({ paddingVertical: 13, minHeight: 64, opacity: pressed ? 0.7 : 1 })}
             >

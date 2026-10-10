@@ -148,6 +148,17 @@ export function paceMessage(v: Pick<PaceVerdict, 'status' | 'minutes'>): string 
   return 'On pace';
 }
 
+/**
+ * The short form for the fixed strip at very large text (P6): the full
+ * advice is still announced and shown elsewhere, but a strip that takes
+ * half the screen would hide the question.
+ */
+export function paceShort(v: Pick<PaceVerdict, 'status' | 'minutes'>): string {
+  if (v.status === 'behind') return `About ${v.minutes} min behind`;
+  if (v.status === 'ahead') return 'Ahead of pace';
+  return 'On pace';
+}
+
 /** One pace check, as saved in the session. */
 export interface Checkpoint {
   /** Share of the time allowed (0.25, 0.5 or 0.75). */
@@ -221,6 +232,29 @@ export function spokenClock(ms: number): string {
   return parts.filter(Boolean).join(' ');
 }
 
+/**
+ * A clock read aloud only as often as it changes meaningfully (U-H2): whole
+ * minutes from a minute up ("1 hour 20 minutes"), then 10-second steps
+ * ("30 seconds or less"). The strip's label uses this, so a screen reader
+ * isn't handed a new sentence every second.
+ */
+export function spokenClockCoarse(ms: number): string {
+  const sec = Math.max(0, Math.floor(ms / 1000));
+  if (sec >= 60) return durationSpoken(Math.floor(sec / 60));
+  const step = Math.ceil(sec / 10) * 10;
+  return step === 0 ? '0 seconds' : `${step} seconds or less`;
+}
+
+/** Minutes read aloud: "1 hour 20 minutes", "4 hours", "1 minute" (P7: never "1 h"). */
+export function durationSpoken(minutes: number): string {
+  const total = Math.max(0, Math.round(minutes));
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  const part = (n: number, unit: string) => `${n} ${unit}${n === 1 ? '' : 's'}`;
+  if (h === 0) return part(m, 'minute');
+  return m === 0 ? part(h, 'hour') : `${part(h, 'hour')} ${part(m, 'minute')}`;
+}
+
 /** Minutes as "3 h 31 min", "4 h" or "45 min". */
 export function durationText(minutes: number): string {
   const total = Math.max(0, Math.round(minutes));
@@ -264,7 +298,8 @@ export function practicePaceLine(ms: readonly (number | undefined)[], exam: Exam
 
 /** Practice timer: after this long on ONE question, a soft cue appears. */
 export const SOFT_CUE_MS = 2 * 60_000;
-export const SOFT_CUE_LINE = 'Over 2 minutes. Consider flagging this one.';
+// Practice has no Flag button, so the cue speaks about the exam (U-H1).
+export const SOFT_CUE_LINE = 'Over 2 minutes on this one. On the exam, flag it and move on.';
 
 /** True once the current question has run past the soft cue (2:00). */
 export function softCue(ms: number): boolean {
@@ -288,8 +323,8 @@ export type CoachingTag = 'fast-wrong' | 'slow-right';
 
 /** Coaching, not penalties: what each tag says on Results. */
 export const COACHING: Record<CoachingTag, { tag: string; line: string }> = {
-  'fast-wrong': { tag: 'Fast and wrong', line: 'Slow down on the stem.' },
-  'slow-right': { tag: 'Slow and right', line: 'You knew it; trust the first pass.' },
+  'fast-wrong': { tag: 'Quick pick', line: 'Slow down on the stem.' },
+  'slow-right': { tag: 'Took its time', line: 'You knew it; trust the first pass.' },
 };
 
 /**

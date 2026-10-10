@@ -53,7 +53,7 @@ import {
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
-import { dueCheckpoints, formatClock, mockPace, paceMessage, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClock, statusOf } from '../engine/pace';
+import { dueCheckpoints, formatClock, mockPace, paceMessage, paceShort, practiceElapsedMs, SOFT_CUE_LINE, softCue, spokenClockCoarse, statusOf } from '../engine/pace';
 import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
@@ -226,14 +226,14 @@ export default function SessionScreen() {
     }
   }, [isMock, now, active]);
 
-  // Clock hidden: say once when the last 5 minutes start (the deadline still applies).
+  // Say once when the last 5 minutes start, clock shown or hidden (P4).
   const lowAnnounced = useRef(false);
   const lowNow = isMock && Boolean(active?.deadline) && !active?.finishedAt && remaining > 0 && remaining < LOW_TIME_MS;
   useEffect(() => {
     if (!lowNow || lowAnnounced.current) return;
     lowAnnounced.current = true;
-    if (active?.hideClock) AccessibilityInfo.announceForAccessibility('Less than 5 minutes left.');
-  }, [lowNow, active?.hideClock]);
+    AccessibilityInfo.announceForAccessibility('Less than 5 minutes left.');
+  }, [lowNow]);
   useEffect(() => {
     if (isMock && active?.deadline && !active.finishedAt && remaining <= 0) {
       finishSession(); // the finishedAt effect below navigates to /results
@@ -405,22 +405,29 @@ export default function SessionScreen() {
   const strip: PaceStripProps | null = !isMock
     ? timedPractice
       ? {
-          clock: { text: formatClock(practiceMs), spoken: `Session time ${spokenClock(practiceMs)}${submitted ? ', paused' : ''}` },
-          clockUnit: submitted ? 'paused' : undefined,
-          line: cueNow ? { text: SOFT_CUE_LINE, tone: 'cue' } : null,
+          // Spoken in whole minutes (U-H2), so the label doesn't change every second.
+          clock: { text: formatClock(practiceMs), spoken: `Session time ${spokenClockCoarse(practiceMs)}${submitted ? ', paused' : ' so far'}` },
+          clockUnit: submitted ? 'paused' : 'so far',
+          // Practice has no Flag button: the cue talks about the exam, clock icon in clay (U-H1).
+          line: cueNow ? { text: SOFT_CUE_LINE, tone: 'soon' } : null,
         }
       : null
     : !active.deadline
       ? { clock: 'untimed' }
       : {
-          clock: active.hideClock ? 'hidden' : { text: formatClock(remaining), spoken: `Time left ${spokenClock(remaining)}`, low: lowTime },
+          clock: active.hideClock ? 'hidden' : { text: formatClock(remaining), spoken: `Time left ${spokenClockCoarse(remaining)}`, low: lowTime },
           clockUnit: 'left',
           line:
             active.hideClock && lowTime
-              ? { text: 'Less than 5 minutes left.', tone: 'cue' }
+              ? { text: 'Less than 5 minutes left.', tone: 'soon' }
               : lastCheck
-                ? { text: paceMessage({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }), tone: statusOf(lastCheck.deviation) }
+                ? {
+                    text: paceMessage({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }),
+                    tone: statusOf(lastCheck.deviation),
+                  }
                 : { text: 'Pace checks at 25, 50 and 75% of the time.', tone: 'note' },
+          // The strip shows this at very large text instead of the full advice (P6).
+          lineShort: lastCheck && !(active.hideClock && lowTime) ? paceShort({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }) : undefined,
         };
   const largeText = fontScale >= LARGE_TEXT;
   const confidenceInScroll = fontScale >= HUGE_TEXT;

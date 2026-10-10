@@ -152,10 +152,13 @@ describe('timed practice session', () => {
     expect(strip().clock.text).toBe('00:00');
     tick(45 * S);
     expect(strip().clock.text).toBe('00:45');
+    expect(strip().clockUnit).toBe('so far'); // P1
     answerFirst();
     // The explanation is open: the clock stands still, however long they read.
     const atSubmit = strip().clock.text;
     expect(strip().clockUnit).toBe('paused');
+    // Spoken in whole minutes, not a new sentence every second (U-H2).
+    expect(strip().clock.spoken).toBe('Session time 50 seconds or less, paused');
     tick(10 * MIN);
     expect(strip().clock.text).toBe(atSubmit);
     // Next question: it carries on from the total so far.
@@ -174,9 +177,10 @@ describe('timed practice session', () => {
     tick(119 * S);
     expect(strip().line).toBeNull();
     tick(2 * S);
-    expect(strip().line).toEqual({ text: 'Over 2 minutes. Consider flagging this one.', tone: 'cue' });
+    // Practice has no Flag button: the cue talks about the exam (U-H1).
+    expect(strip().line).toEqual({ text: 'Over 2 minutes on this one. On the exam, flag it and move on.', tone: 'soon' });
     tick(60 * S);
-    expect(announce.mock.calls.filter(([t]) => t === 'Over 2 minutes. Consider flagging this one.')).toHaveLength(1);
+    expect(announce.mock.calls.filter(([t]) => t === 'Over 2 minutes on this one. On the exam, flag it and move on.')).toHaveLength(1);
     // Answered: the cue goes (the explanation is not timed).
     answerFirst();
     expect(strip().line).toBeNull();
@@ -210,17 +214,42 @@ describe('Practice: the Timed switch and the one-time offer', () => {
     expect(useSettings.getState().practiceTimer).toBe(false);
   });
 
+  it('a new Study default wins over the screen\'s last flip (C6)', () => {
+    useSettings.setState({ practiceTimer: true });
+    mount(<Practice />);
+    toggle('Timed', false); // off for this visit
+    expect(toggleValue('Timed')).toBe(false);
+    // The default changes in Settings (true → false → true): the switch follows each change.
+    act(() => {
+      useSettings.getState().setPracticeTimer(false);
+    });
+    act(() => {
+      useSettings.getState().setPracticeTimer(true);
+    });
+    expect(toggleValue('Timed')).toBe(true);
+  });
+
+  it('"No thanks" leaves a switch the learner turned on alone (QA B3)', () => {
+    useSettings.setState({ examDates: { cisa: dayKey(T0 + 10 * DAY) } });
+    mount(<Practice />);
+    expect(allText()).toContain('Practice at exam pace?');
+    press('No thanks');
+    toggle('Timed', true);
+    expect(toggleValue('Timed')).toBe(true);
+    expect(useSettings.getState().practiceTimer).toBe(false);
+  });
+
   it('far from the exam: no offer', () => {
     useSettings.setState({ examDates: { cisa: dayKey(T0 + 60 * DAY) } });
     mount(<Practice />);
     expect(allText()).not.toContain('Practice at exam pace?');
   });
 
-  it('21 days out: offered; "Not now" hides it for good and keeps the timer off', () => {
+  it('21 days out: offered; "No thanks" hides it for good and keeps the timer off', () => {
     useSettings.setState({ examDates: { cisa: dayKey(T0 + 21 * DAY) } });
     mount(<Practice />);
     expect(allText()).toContain('Practice at exam pace?');
-    press('Not now');
+    press('No thanks');
     expect(allText()).not.toContain('Practice at exam pace?');
     expect(useSettings.getState()).toMatchObject({ paceOffer: 'dismissed', practiceTimer: false });
     // A later visit (or a later day, closer still): never again.
@@ -264,11 +293,14 @@ describe('Results: pace line and coaching tags', () => {
     mount(<Results />);
     const text = allText();
     expect(text).toContain('Median 74 s per question · exam pace 96 s');
-    expect(text).toContain('Fast and wrong');
+    expect(text).toContain('Quick pick');
     expect(text).toContain('Slow down on the stem.');
-    expect(text).toContain('Slow and right');
+    expect(text).toContain('Took its time');
     expect(text).toContain('You knew it; trust the first pass.');
     const rows = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 3,'));
-    expect(rows[0].props.accessibilityLabel).not.toMatch(/Fast|Slow/);
+    expect(rows[0].props.accessibilityLabel).not.toMatch(/Quick pick|Took its time/);
+    // One full stop between sentences, never two (O2).
+    const q1 = root().findAll((n) => typeof n.props.accessibilityLabel === 'string' && n.props.accessibilityLabel.startsWith('Question 1,'))[0];
+    expect(q1.props.accessibilityLabel).toBe('Question 1, ✗ Missed. Quick pick: Slow down on the stem. Tap to expand');
   });
 });

@@ -23,12 +23,16 @@ import {
   mockPace,
   mockPacing,
   paceMessage,
+  paceShort,
   paceVerdict,
+  spokenClockCoarse,
+  durationSpoken,
   pacingStats,
   pacingStatsLine,
   practiceElapsedMs,
   practicePaceLine,
   shouldOfferTimer,
+  SOFT_CUE_LINE,
   softCue,
   spokenClock,
   statusOf,
@@ -206,7 +210,7 @@ describe('practice results line and coaching tags', () => {
     expect(coachingTag(false, 29 * S)).toBe('fast-wrong');
     expect(coachingTag(false, 30 * S)).toBeNull();
     expect(coachingTag(true, 10 * S)).toBeNull(); // fast and RIGHT is fine
-    expect(COACHING['fast-wrong']).toEqual({ tag: 'Fast and wrong', line: 'Slow down on the stem.' });
+    expect(COACHING['fast-wrong']).toEqual({ tag: 'Quick pick', line: 'Slow down on the stem.' });
   });
 
   it('slow and right: over 3 minutes and right', () => {
@@ -330,3 +334,34 @@ describe('numbers on screen', () => {
     expect(medianSeconds([1500, undefined, 2500])).toBe(2);
   });
 });
+
+describe('review fixes: spoken and short forms', () => {
+  it('the strip speaks whole minutes, then 10-second steps (U-H2)', () => {
+    expect(spokenClockCoarse(80 * 60 * S + 59 * S)).toBe('1 hour 20 minutes');
+    expect(spokenClockCoarse(4 * 60 * S + 59 * S)).toBe('4 minutes');
+    expect(spokenClockCoarse(60 * S)).toBe('1 minute');
+    expect(spokenClockCoarse(59 * S)).toBe('60 seconds or less');
+    expect(spokenClockCoarse(21 * S)).toBe('30 seconds or less');
+    expect(spokenClockCoarse(0)).toBe('0 seconds');
+    // Every second inside a step reads the same.
+    expect(new Set([121, 135, 179].map((x) => spokenClockCoarse(x * S))).size).toBe(1);
+  });
+
+  it('durations in words (P7)', () => {
+    expect(durationSpoken(80)).toBe('1 hour 20 minutes');
+    expect(durationSpoken(240)).toBe('4 hours');
+    expect(durationSpoken(61)).toBe('1 hour 1 minute');
+    expect(durationSpoken(1)).toBe('1 minute');
+  });
+
+  it('short pace lines for very large text (P6)', () => {
+    expect(paceShort({ status: 'behind', minutes: 6 })).toBe('About 6 min behind');
+    expect(paceShort({ status: 'ahead', minutes: 3 })).toBe('Ahead of pace');
+    expect(paceShort({ status: 'onPace', minutes: 0 })).toBe('On pace');
+  });
+
+  it('the practice cue speaks about the exam, not a Flag button practice lacks (U-H1)', () => {
+    expect(SOFT_CUE_LINE).toBe('Over 2 minutes on this one. On the exam, flag it and move on.');
+  });
+});
+

@@ -117,9 +117,11 @@ describe('mock start sheet', () => {
     mockParams.questions = '50';
     mount(<MockStart />);
     const radios = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
-    expect(radios.map((n) => n.props.accessibilityLabel.split(',')[0])).toEqual(['Standard time', '+25% time', '+50% time', 'Untimed']);
+    expect(radios.map((n) => n.props.accessibilityLabel.split(/[,.]/)[0])).toEqual(['Standard time', '+25% time', '+50% time', 'Untimed']);
     expect(radios.map((n) => n.props.accessibilityState.checked)).toEqual([true, false, false, false]);
-    expect(radios[1].props.accessibilityLabel).toContain('1 h 40 min');
+    // Lengths in words (P7), and no stray ", ." on the Untimed row (P10).
+    expect(radios[1].props.accessibilityLabel).toContain('1 hour 40 minutes');
+    expect(radios[3].props.accessibilityLabel).toBe('Untimed. No clock. Left out of your pacing stats.');
   });
 
   it('+50% with the clock hidden starts a mock with 6 hours and checkpoints only', () => {
@@ -181,6 +183,9 @@ describe('mock pace line', () => {
     mount(<SessionScreen />);
     tick(76 * MIN);
     expect(strip().clock.low).toBe(true);
+    // Said once, clock shown or hidden (P4); and the label speaks minutes, not seconds (U-H2).
+    expect(announce.mock.calls.filter(([t]) => t === 'Less than 5 minutes left.')).toHaveLength(1);
+    expect(strip().clock.spoken).toBe('Time left 4 minutes');
   });
 
   it('hidden clock: no numbers, the deadline still applies, the last 5 minutes are said once', () => {
@@ -188,7 +193,7 @@ describe('mock pace line', () => {
     mount(<SessionScreen />);
     expect(strip().clock).toBe('hidden');
     tick(76 * MIN);
-    expect(strip().line).toEqual({ text: 'Less than 5 minutes left.', tone: 'cue' });
+    expect(strip().line).toEqual({ text: 'Less than 5 minutes left.', tone: 'soon' });
     expect(announce.mock.calls.filter(([t]) => t === 'Less than 5 minutes left.')).toHaveLength(1);
     tick(5 * MIN);
     expect(active().finishedAt).toBeDefined();
@@ -218,8 +223,9 @@ describe('results', () => {
     });
     mount(<Results />);
     const labels = root().findAll((n) => typeof n.props.accessibilityLabel === 'string').map((n) => n.props.accessibilityLabel as string);
-    expect(labels).toContain('Time used: 30 min of 1 h 20 min');
-    expect(labels).toContain('Median per question: 60 s');
+    // Spoken in words (P7); the screen shows "30 min of 1 h 20 min".
+    expect(labels).toContain('Time used: 30 minutes of 1 hour 20 minutes');
+    expect(labels).toContain('Median per question: 60 seconds');
     expect(labels).toContain('Unanswered at submit: 48');
   });
 

@@ -10,14 +10,15 @@
  * "Practice at exam pace?" card close to the exam (engine/pace.ts).
  */
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { AccessibilityInfo, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { AccessibilityInfo, View, type Switch } from 'react-native';
 import { Crosshair, ICON_STROKE, Library, Play, RotateCcw } from '../../components/icons';
 import { Button, Card, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow, Screen, Section, Segmented, T, ToggleRow, Trail } from '../../components/ui';
 import type { Difficulty } from '../../content/types';
 import { examPaceSeconds, MINUTES_PER_QUESTION, shouldOfferTimer } from '../../engine/pace';
 import { REVIEW_UNIT } from '../../engine/srs';
 import { guardedStart, reviewSubtitle, startPractice, startReview } from '../../lib/sessions';
+import { moveFocus } from '../../lib/a11y';
 import { useJourney } from '../../lib/useJourney';
 import { useSettings } from '../../store/settings';
 import { space } from '../../theme/tokens';
@@ -39,12 +40,25 @@ export default function Practice() {
   const timerDefault = useSettings((s) => s.practiceTimer);
   const paceOffer = useSettings((s) => s.paceOffer);
   const [timedHere, setTimedHere] = useState<boolean | null>(null);
+  // A new default (changed in Settings) wins over this screen's last flip (C6).
+  // React's "adjust state when a value changes" pattern, during render.
+  const [defaultSeen, setDefaultSeen] = useState(timerDefault);
+  if (defaultSeen !== timerDefault) {
+    setDefaultSeen(timerDefault);
+    setTimedHere(null);
+  }
   const timed = timedHere ?? timerDefault;
-  const offer = shouldOfferTimer({ daysLeft, stage, answered: paceOffer !== undefined, timerOn: timerDefault });
+  const timedRef = useRef<Switch>(null);
+  // The switch's current value, not just the default: no offer while it is already on (QA B3).
+  const offer = shouldOfferTimer({ daysLeft, stage, answered: paceOffer !== undefined, timerOn: timed });
   const answerOffer = (choice: 'accepted' | 'dismissed') => {
     useSettings.getState().answerPaceOffer(choice);
-    setTimedHere(null);
+    // Accepting turns the default on, so the switch follows it; "No thanks"
+    // leaves the switch exactly as the learner set it (QA B3).
+    if (choice === 'accepted') setTimedHere(null);
     if (choice === 'accepted') AccessibilityInfo.announceForAccessibility('Timed practice is on. Change it any time in Settings.');
+    // The card is gone: land on the Timed switch, not on nothing (P9).
+    moveFocus(timedRef);
   };
   const [domainId, setDomainId] = useState<string | undefined>(undefined);
   const [count, setCount] = useState<number>(10);
@@ -74,8 +88,9 @@ export default function Practice() {
             </T>
             <Gap h={space.md} />
             <View style={{ gap: space.sm }}>
-              <Button label="Turn on Timed" onPress={() => answerOffer('accepted')} />
-              <Button kind="ghost" label="Not now" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
+              {/* Secondary, not primary: an offer, never a push (P3). */}
+              <Button kind="secondary" label="Turn on Timed" onPress={() => answerOffer('accepted')} />
+              <Button kind="ghost" label="No thanks" accessibilityHint="Hides this card. You can turn the timer on in Settings." onPress={() => answerOffer('dismissed')} />
             </View>
           </Card>
         </Enter>
@@ -97,6 +112,7 @@ export default function Practice() {
         />
         <Gap h={space.sm} />
         <ToggleRow
+          ref={timedRef}
           title="Timed"
           subtitle="Quick 10 and Build a set. Counts up while you answer; never a countdown."
           value={timed}

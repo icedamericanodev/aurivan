@@ -11,7 +11,7 @@
  * things you choose between; one forest panel per screen; tinted blocks
  * only for feedback.
  */
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, type ReactNode, type Ref } from 'react';
 import {
   Image,
   Platform,
@@ -192,7 +192,10 @@ export function Button({
   accessibilityHint,
   accessibilityLabel,
   selected,
+  ref,
 }: {
+  /** For moving screen-reader focus here (lib/a11y.ts moveFocus). */
+  ref?: Ref<View>;
   label: string;
   onPress: () => void;
   kind?: ButtonKind;
@@ -223,6 +226,7 @@ export function Button({
   const isGhost = kind === 'ghost';
   return (
     <Pressable
+      ref={ref}
       accessibilityRole="button"
       accessibilityState={{ disabled, selected }}
       accessibilityHint={accessibilityHint}
@@ -695,7 +699,9 @@ export function Toggle({
   onValueChange,
   disabled,
   accessibilityLabel,
+  ref,
 }: {
+  ref?: Ref<Switch>;
   value: boolean;
   onValueChange: (v: boolean) => void;
   disabled?: boolean;
@@ -705,6 +711,7 @@ export function Toggle({
   const webOnly = Platform.OS === 'web' ? ({ activeThumbColor: c.onBtn } as object) : {};
   return (
     <Switch
+      ref={ref}
       accessibilityLabel={accessibilityLabel}
       value={value}
       disabled={disabled}
@@ -1162,6 +1169,7 @@ export function ToggleRow({
   onValueChange,
   disabled,
   last,
+  ref,
 }: {
   title: string;
   subtitle?: string;
@@ -1169,13 +1177,15 @@ export function ToggleRow({
   onValueChange: (v: boolean) => void;
   disabled?: boolean;
   last?: boolean;
+  /** The switch itself, for moving screen-reader focus to it. */
+  ref?: Ref<Switch>;
 }) {
   return (
     <ListRow
       title={title}
       subtitle={subtitle}
       last={last}
-      trailing={<Toggle accessibilityLabel={title} value={value} disabled={disabled} onValueChange={onValueChange} />}
+      trailing={<Toggle ref={ref} accessibilityLabel={title} value={value} disabled={disabled} onValueChange={onValueChange} />}
     />
   );
 }

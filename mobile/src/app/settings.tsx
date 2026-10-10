@@ -242,7 +242,7 @@ export default function Settings() {
       <Section title="Study defaults" />
       <ToggleRow
         title="Timed practice"
-        subtitle="Quick 10 and Build a set start with a timer that counts up while you answer. Never a countdown. Off by default."
+        subtitle="Quick 10 and Build a set start with a timer that counts up while you answer. Never a countdown."
         value={s.practiceTimer}
         onValueChange={s.setPracticeTimer}
         last

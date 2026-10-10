@@ -461,7 +461,7 @@ describe('journey 6: the "Practice at exam pace?" card', () => {
   // practice.tsx passes `timerOn: timerDefault` instead of the switch's
   // value, and "Not now" then resets the switch (setTimedHere(null)), turning
   // off a timer the learner had just switched on.
-  it.failing('the card hides while the Timed switch on the screen is on', () => {
+  it('the card hides while the Timed switch on the screen is on', () => {
     useSettings.setState({ examDates: { cisa: dayKey(T0 + 14 * DAY) } });
     mount(<Practice />);
     act(() => {

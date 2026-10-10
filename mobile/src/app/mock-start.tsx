@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { ICON_STROKE, Play } from '../components/icons';
 import { Button, Gap, ICON_SIZE, PushedHeader, Screen, Section, T, ToggleRow } from '../components/ui';
-import { durationText, mockPace, MOCK_TIMINGS, TIMING_LABEL, type MockTiming } from '../engine/pace';
+import { durationSpoken, durationText, mockPace, MOCK_TIMINGS, TIMING_LABEL, type MockTiming } from '../engine/pace';
 import { guardedStart, startMock } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
 import { space } from '../theme/tokens';
@@ -29,13 +29,31 @@ const TIMING_NOTE: Record<MockTiming, string> = {
 };
 
 /** A radio row: the whole row is the 48pt+ target; the dot shows the choice by shape, not colour alone. */
-function TimingRow({ label, detail, note, selected, onPress, last }: { label: string; detail: string; note: string; selected: boolean; onPress: () => void; last?: boolean }) {
+function TimingRow({
+  label,
+  detail,
+  detailSpoken,
+  note,
+  selected,
+  onPress,
+  last,
+}: {
+  label: string;
+  detail: string;
+  /** The length read aloud ("1 hour 40 minutes"); empty for Untimed. */
+  detailSpoken: string;
+  note: string;
+  selected: boolean;
+  onPress: () => void;
+  last?: boolean;
+}) {
   const { c } = useTheme();
   return (
     <Pressable
       accessibilityRole="radio"
       accessibilityState={{ checked: selected }}
-      accessibilityLabel={`${label}, ${detail}. ${note}`}
+      // No stray ", ." when a row has no length (Untimed, P10).
+      accessibilityLabel={`${label}${detailSpoken ? `, ${detailSpoken}` : ''}. ${note}`}
       onPress={onPress}
       style={({ pressed }) => ({
         flexDirection: 'row',
@@ -72,9 +90,9 @@ export default function MockStart() {
   const [timing, setTiming] = useState<MockTiming>('standard');
   const [hideClock, setHideClock] = useState(false);
   const pace = mockPace(cert.exam, questions, timing);
-  const detail = (t: MockTiming) => {
+  const detail = (t: MockTiming, say = false) => {
     const m = mockPace(cert.exam, questions, t).minutesAllowed;
-    return m === null ? '' : durationText(m);
+    return m === null ? '' : say ? durationSpoken(m) : durationText(m);
   };
 
   const start = () =>
@@ -86,7 +104,12 @@ export default function MockStart() {
   return (
     <Screen edges={['top', 'bottom']}>
       <PushedHeader title={full ? 'Full mock' : 'Mini mock'} onBack={() => router.back()} icon="close" />
-      <T v="meta" num style={{ marginTop: space.xs }}>
+      <T
+        v="meta"
+        num
+        style={{ marginTop: space.xs }}
+        accessibilityLabel={`${questions} questions, ${pace.minutesAllowed === null ? 'no time limit' : durationSpoken(pace.minutesAllowed)}, feedback at the end`}
+      >
         {`${questions} questions · ${pace.minutesAllowed === null ? 'no time limit' : durationText(pace.minutesAllowed)} · feedback at the end`}
       </T>
 
@@ -97,6 +120,7 @@ export default function MockStart() {
             key={t}
             label={TIMING_LABEL[t]}
             detail={detail(t)}
+            detailSpoken={detail(t, true)}
             note={TIMING_NOTE[t]}
             selected={timing === t}
             onPress={() => setTiming(t)}
