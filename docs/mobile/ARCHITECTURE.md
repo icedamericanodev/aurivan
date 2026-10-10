@@ -129,6 +129,16 @@ changes nothing. Restores wait for every store to finish loading (the backup
 store is part of the launch hydration gate), and an expired snapshot is
 dropped at launch.
 
+Since mobile 1.4 the app can never write a backup it would refuse to
+restore: `buildBackup` first runs the phone's own data through the SAME
+checker in a "fit" mode (`fitForBackup`), which clamps numbers into range,
+cuts lists and maps to their caps and repairs broken totals; wrong types
+still fail, and the undo-snapshot check still catches them. A property-style
+test (`backup-always-restorable.test.ts`) exports 200 random plausible
+states and checks each one restores. The write sites are fixed too:
+`minutesUsed` (one helper, 1..1440; an untimed mock counts its answer
+time) and answer `ms` (capped at 30 minutes).
+
 ### Quiet data (mobile 1.3)
 Collected because it can't be back-filled. Since mobile 1.4 the answer times
 feed the pace features below; `masteredAt` waits for the mastery badges. Each answer record keeps `ms` (time to answer, with time
@@ -168,6 +178,9 @@ revisit flags (90 s). Plan estimates keep their own 1.2-minute study pace.
   clock and pace line for all three, and both clocks reuse
   `lib/useAnswerClock.ts` (no second timing system). All new fields are
   optional, so 1.3 saves, sessions and backups load unchanged.
+- Starting something new over a timed mock whose time already ran out
+  records that mock at its deadline first (`guardedStart`), instead of
+  offering to discard the learner's answers.
 
 ### The content pipeline
 ```

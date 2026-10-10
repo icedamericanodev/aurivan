@@ -161,7 +161,10 @@ const responses = (n, sec, at, right = (i) => i % 10 < 7) =>
   await pass(page, 800, true);
   await snap(page, 'p08b-daylight-answer');
   await page.getByRole('button', { name: 'Next question' }).click();
-  await pass(page, 400_000, true);
+  // The light's last 10%: the visible "About a minute of light left." line.
+  await pass(page, 325_000, true);
+  await snap(page, 'p08c-daylight-low-light');
+  await pass(page, 80_000, true);
   await pass(page, 1500, true);
   await snap(page, 'p09-daylight-end');
   await scrollTo(page, 'The light set before these', 110, true);
