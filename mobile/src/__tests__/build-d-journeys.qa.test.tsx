@@ -17,8 +17,8 @@
  *    the light setting; the score and end screen.
  * 8. Saves: a 1.3 mock session and backups with the new fields.
  *
- * Bugs found are pinned with `it.failing` (they flip to failures once fixed,
- * so the fixer turns them into plain `it`).
+ * Bugs still open are pinned with `it.failing` (they flip to failures once
+ * fixed, so the fixer turns them into plain `it`).
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
@@ -300,12 +300,11 @@ describe('journey 3: untimed mock', () => {
     expect(labels().some((t) => t.startsWith('Time used'))).toBe(false);
   });
 
-  // BUG: an untimed mock has no deadline, so `minutesUsed` is wall time with
-  // no cap. Paused overnight (the dialog invites it: "Resume from Today"),
-  // it passes the backup checker's 1440-minute limit, and then the learner's
-  // OWN backup file is refused as "damaged", and Restore can't take its
-  // undo snapshot. lib/finishSession.ts: minutesUsed is uncapped for untimed.
-  it.failing('an untimed mock resumed the next day can still be backed up and restored', () => {
+  // Found in QA (fixed in e6904f4): an untimed mock has no deadline, so its
+  // minutesUsed was uncapped wall time. Resumed the next day it passed the
+  // backup checker's 1440-minute limit, and the learner's OWN backup was
+  // refused as "damaged" (and Restore could not take its undo snapshot).
+  it('an untimed mock resumed the next day can still be backed up and restored', () => {
     startMock('cisa', 50, { timing: 'untimed' });
     mount(<SessionScreen />);
     answerAndNext();
@@ -370,11 +369,10 @@ describe('journey 4: app killed mid-mock, reopened later', () => {
     expect(labels()).toContain('Unanswered when time ran out: 47');
   });
 
-  // BUG: the store's finish() stamps finishedAt = now, so a mock reopened
-  // after its deadline shows "140 minutes" in the Results stat row, right
-  // above a pacing panel saying "1 h 20 min of 1 h 20 min" (and the saved
-  // result says 80). results.tsx:72 reads finishedAt without the deadline cap.
-  it.failing('reopened after the deadline: the Results "minutes" stat agrees with the time allowed', () => {
+  // Found in QA (fixed in e6904f4): finish() stamped finishedAt = now, so a
+  // mock reopened after its deadline showed "140 minutes" in the Results
+  // stat row, above a pacing panel saying "1 h 20 min of 1 h 20 min".
+  it('reopened after the deadline: the Results "minutes" stat agrees with the time allowed', () => {
     startMock('cisa', 50);
     mount(<SessionScreen />);
     answerAndNext();
