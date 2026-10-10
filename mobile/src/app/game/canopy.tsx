@@ -172,6 +172,7 @@ function CanopyCall() {
             text={label(role)}
             state={stateFor(role)}
             onPress={answered ? undefined : () => choose(role)}
+            radio
             spoken={`Role ${k + 1} of ${item.chips.length}: ${label(role)}${answered && role === card.role ? ', decides' : answered && role === pick ? ', your pick' : ''}`}
           />
         ))}

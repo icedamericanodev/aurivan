@@ -214,6 +214,7 @@ function SteppingStones() {
               text={label}
               state={state(k)}
               onPress={pick === null ? () => choose(k) : undefined}
+              radio
               spoken={`Choice ${k + 1} of ${m.choices.length}: ${label}${pick !== null && k === m.correct ? ', the missing step' : pick === k ? ', your pick' : ''}`}
             />
           ))}

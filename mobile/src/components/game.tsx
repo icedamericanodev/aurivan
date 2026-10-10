@@ -390,7 +390,10 @@ export function MatchTile({
   spoken,
   hint,
   shake = 0,
+  radio,
 }: {
+  /** One choice of several in a radio group (Canopy Call, the recall and missing-step picks). */
+  radio?: boolean;
   text: string;
   /** A short mark before the text: "1", "2"… for a stone's place. */
   lead?: string;
@@ -419,8 +422,10 @@ export function MatchTile({
   const tinted = state === 'matched' || state === 'correct' || state === 'wrong';
   const mark = state === 'matched' || state === 'correct' ? Check : state === 'wrong' ? X : null;
   const markColor = state === 'wrong' ? c.wrong : c.correct;
+  // The ✓ / ✗ sits in the top-right corner, so a long single word ("Independence")
+  // in a narrow column keeps the full width and never pushes the mark out.
   const body = (
-    <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm }}>
+    <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: space.sm, paddingRight: mark ? 14 : 0 }}>
       {lead ? (
         <T v="label" num color={c.ink2} style={{ minWidth: 18 }}>
           {lead}
@@ -430,8 +435,8 @@ export function MatchTile({
         {text}
       </T>
       {mark ? (
-        <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ paddingTop: 2 }}>
-          {mark === Check ? <Check size={18} color={markColor} strokeWidth={2.5} /> : <X size={18} color={markColor} strokeWidth={2.5} />}
+        <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', top: -6, right: -8 }}>
+          {mark === Check ? <Check size={16} color={markColor} strokeWidth={2.5} /> : <X size={16} color={markColor} strokeWidth={2.5} />}
         </View>
       ) : null}
     </View>
@@ -452,10 +457,10 @@ export function MatchTile({
     <Animated.View style={moved}>
       {onPress ? (
         <Pressable
-          accessibilityRole="button"
+          accessibilityRole={radio ? 'radio' : 'button'}
           accessibilityLabel={spoken}
           accessibilityHint={hint}
-          accessibilityState={{ selected: state === 'selected', disabled: state === 'matched' }}
+          accessibilityState={radio ? { checked: state === 'selected' } : { selected: state === 'selected', disabled: state === 'matched' }}
           disabled={state === 'matched'}
           onPress={onPress}
           style={({ pressed }) => [box, pressed && { opacity: 0.85 }]}
@@ -463,7 +468,7 @@ export function MatchTile({
           {body}
         </Pressable>
       ) : (
-        <View accessible accessibilityLabel={spoken} style={box}>
+        <View accessible accessibilityLabel={spoken} accessibilityRole={radio ? 'radio' : undefined} accessibilityState={radio ? { checked: false, disabled: true } : undefined} style={box}>
           {body}
         </View>
       )}

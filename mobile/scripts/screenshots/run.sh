@@ -31,6 +31,10 @@ elif [ "${SHOTS:-}" = practice ]; then
   # The Practice tab: first screen, whole tab, Guided, the path chooser and
   # Build a set opened, approximate 200% text (shoot_practice.mjs).
   node scripts/screenshots/shoot_practice.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = milestones ]; then
+  # Build F: back-fill summary, Milestones, a Results milestone, Play levels,
+  # Field notes, and each new game's round and end (shoot_milestones.mjs).
+  node scripts/screenshots/shoot_milestones.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = paths ]; then
   # Build E: mode picker, Smart reason tag, Guided step, In order tail,
   # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).

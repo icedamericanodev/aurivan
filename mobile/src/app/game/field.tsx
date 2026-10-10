@@ -300,6 +300,7 @@ function FieldGuide() {
             text={ch.term}
             state={choiceState(ch.id)}
             onPress={pick === null ? () => choose(ch.id) : undefined}
+            radio
             spoken={`Choice ${j + 1} of ${choices.length}: ${ch.term}${pick !== null && ch.id === term.id ? ', the term' : pick === ch.id ? ', your pick' : ''}`}
           />
         ))}

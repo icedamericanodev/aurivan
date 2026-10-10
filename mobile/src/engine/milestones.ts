@@ -184,7 +184,12 @@ export const BADGES: BadgeDef[] = [
   { id: 'dress-rehearsal', kind: 'milestone', name: 'Dress Rehearsal', rule: 'Finish a full, timed mock with every question answered.' },
   { id: 'on-pace', kind: 'milestone', name: 'On Pace', rule: `Finish a timed mock with every pace check within ${Math.round(PACE_TOLERANCE * 100)}% of the target.` },
   { id: 'mindset-shift', kind: 'milestone', name: 'Mindset Shift', rule: 'Pick the tempting runner-up clearly less often than in your first weeks.' },
-  { id: 'rooted', kind: 'milestone', name: 'Rooted', rule: `Study on ${ROOTED_DAYS.join(', ')} days in all. Days add up; they don’t need to be in a row.` },
+  {
+    id: 'rooted',
+    kind: 'milestone',
+    name: 'Rooted',
+    rule: `Study on ${ROOTED_DAYS[0]} days in all, then ${ROOTED_DAYS[1]}, then ${ROOTED_DAYS[2]}. Days add up; they don’t need to be in a row.`,
+  },
   { id: 'fresh-start', kind: 'milestone', name: 'Fresh Start', rule: `Come back after ${FRESH_GAP_DAYS} days or more away and finish a session.` },
   // Skill badges: "pressed leaves" in You → Field notes.
   { id: 'snare-wise', kind: 'skill', name: 'Snare-wise', rule: `Spot the snare in ${SNARE_RIGHT} of your last ${SNARE_WINDOW} ${g('trap')} questions.` },
