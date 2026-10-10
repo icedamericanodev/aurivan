@@ -38,6 +38,8 @@ const scrollTo = async (page, locator, top = 110) => {
   if (box) { await page.mouse.move(196, 500); await page.mouse.wheel(0, box.y - top); }
   await page.waitForTimeout(700);
 };
+/** Practice's "Your path" row opens the mode picker in place. */
+const openPath = async (page) => { await page.getByRole('button', { name: /^Your path/ }).first().click(); await page.waitForTimeout(500); };
 /** The hero's start button (Start / Open step). */
 const heroStart = (page) => page.getByRole('button', { name: /^(Start|Open step)$/ }).first();
 
@@ -46,7 +48,8 @@ const heroStart = (page) => page.getByRole('button', { name: /^(Start|Open step)
   const page = await newPage();
   await open(page, '/practice');
   await snap(page, 'e01-practice-hero');
-  await scrollTo(page, page.getByText('Choose your path', { exact: true }).first(), 90);
+  await openPath(page);
+  await scrollTo(page, page.getByRole('button', { name: /^Your path/ }).first(), 90);
   await snap(page, 'e02-mode-picker');
   await page.getByRole('radio', { name: /^Smart/ }).click();
   await page.waitForTimeout(400);
@@ -71,7 +74,7 @@ const heroStart = (page) => page.getByRole('button', { name: /^(Start|Open step)
 {
   const page = await newPage();
   await open(page, '/practice');
-  await scrollTo(page, page.getByText('Choose your path', { exact: true }).first(), 90);
+  await openPath(page);
   await page.getByRole('radio', { name: /^Guided/ }).click();
   await page.waitForTimeout(400);
   await open(page, '/practice');
@@ -88,7 +91,7 @@ const heroStart = (page) => page.getByRole('button', { name: /^(Start|Open step)
 {
   const page = await newPage();
   await open(page, '/practice');
-  await scrollTo(page, page.getByText('Choose your path', { exact: true }).first(), 90);
+  await openPath(page);
   await page.getByRole('radio', { name: /^In order/ }).click();
   await page.waitForTimeout(400);
   await open(page, '/practice');
