@@ -4,7 +4,8 @@
  * journal all read from here, so a rename never drifts between screens.
  *
  * IDs are forever. Saved progress (best scores, history, plan items) is
- * keyed on `trap`, `sprint`, `priority` and `daylight` (Build D), so a rename is a display change
+ * keyed on `trap`, `sprint`, `priority`, `daylight` (Build D), `rumor` and
+ * `callit` (Build E), so a rename is a display change
  * only: never change an id.
  *
  * Plain English for the founder:
@@ -15,13 +16,16 @@
  *              the game is shown at all (future certs with small banks).
  *              It is never shown to learners as a number.
  */
+import type { NotesPack } from '../../content/notes/types';
 import type { PackQuestion } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../pace';
+import { CALL_SIZE, callPool } from './callItFirst';
 import { DAYLIGHT_MINUTES, DAYLIGHT_SIZE, daylightPool } from './daylight';
+import { RUMOR_MIN_POOL, RUMOR_SIZE, rumorStatements } from './rootOrRumor';
 import { priorityPool } from './priorityLens';
 import { trapPool } from './trapSpotter';
 
-export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight';
+export type GameId = 'trap' | 'sprint' | 'priority' | 'daylight' | 'rumor' | 'callit';
 
 export interface GameInfo {
   id: GameId;
@@ -38,6 +42,11 @@ export interface GameInfo {
   minPool: number;
   /** The questions this game can use. */
   pool: (questions: PackQuestion[]) => PackQuestion[];
+  /**
+   * Note-based games (Root or Rumor) play statements from the study notes,
+   * not questions: this counts them, and `minPool` applies to that count.
+   */
+  notesPool?: (notes: NotesPack | null | undefined) => number;
 }
 
 /** An honest round length: questions × the normal study pace, at least 1 minute. */
@@ -88,10 +97,31 @@ export const GAMES: Record<GameId, GameInfo> = {
     minutes: DAYLIGHT_MINUTES,
     pool: daylightPool,
   }),
+  // Build E. Root or Rumor plays note statements (about 5 s each plus a
+  // short reveal), so its honest length is a few minutes, not 12 questions' worth.
+  rumor: make({
+    id: 'rumor',
+    name: 'Root or Rumor',
+    tagline: 'Tell a sound principle from an exam myth.',
+    skill: 'Rejecting exam myths',
+    size: RUMOR_SIZE,
+    minutes: 4,
+    minPool: RUMOR_MIN_POOL,
+    pool: () => [],
+    notesPool: (notes) => rumorStatements(notes).length,
+  }),
+  callit: make({
+    id: 'callit',
+    name: 'Call It First',
+    tagline: 'Name the principle before you see the options.',
+    skill: 'Answering before the options',
+    size: CALL_SIZE,
+    pool: callPool,
+  }),
 };
 
 /** Display order on Play (the first is the featured hero). */
-export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight'];
+export const GAME_ORDER: GameId[] = ['trap', 'sprint', 'priority', 'daylight', 'rumor', 'callit'];
 
 /** A game's info by id, or undefined for an unknown id (e.g. from a newer save). */
 export function gameInfo(id: string): GameInfo | undefined {
@@ -112,7 +142,12 @@ export function gameTitle(id: string, savedLabel: string): string {
   return gameInfo(id)?.name ?? savedLabel.split(' · ')[0];
 }
 
-/** True when this certification has enough questions for the game. */
-export function isPlayable(id: GameId, questions: PackQuestion[]): boolean {
-  return GAMES[id].pool(questions).length >= GAMES[id].minPool;
+/**
+ * True when this certification has enough content for the game: questions,
+ * or note statements for a note-based game (pass the cert's notes pack).
+ */
+export function isPlayable(id: GameId, questions: PackQuestion[], notes?: NotesPack | null): boolean {
+  const g = GAMES[id];
+  const size = g.notesPool ? g.notesPool(notes) : g.pool(questions).length;
+  return size >= g.minPool;
 }

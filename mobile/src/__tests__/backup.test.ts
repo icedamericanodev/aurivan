@@ -199,6 +199,20 @@ describe('round trip', () => {
     await restoreBackup(read.data, NOW);
     expect(useSettings.getState().haptics).toBe(true);
   });
+
+  it('a restore replaces optional settings too: ones the backup has none of are cleared on this phone', async () => {
+    studiedLearner();
+    const file = currentBackup(NOW); // no study defaults, no pace-offer answer
+    expect(JSON.stringify(file)).not.toMatch(/studyMode|studyDomain|studySize|paceOffer/);
+    useSettings.setState({ studyMode: 'inOrder', studyDomain: '3', studySize: 50, paceOffer: 'dismissed' });
+    const read = checkBackupText(JSON.stringify(file));
+    if (read.kind !== 'ok') throw new Error(read.code);
+    await restoreBackup(read.data, NOW);
+    expect(useSettings.getState()).toMatchObject({ studyMode: undefined, studyDomain: undefined, studySize: undefined, paceOffer: undefined });
+    // Undo puts this phone's own choices back.
+    expect((await undoRestore(NOW)).kind).toBe('ok');
+    expect(useSettings.getState()).toMatchObject({ studyMode: 'inOrder', studyDomain: '3', studySize: 50, paceOffer: 'dismissed' });
+  });
 });
 
 // ── Bad files ────────────────────────────────────────────────────────────

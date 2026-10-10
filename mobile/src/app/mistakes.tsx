@@ -26,6 +26,7 @@ import { shortDate } from '../lib/format';
 import { guardedStart, startFromIds, startPractice } from '../lib/sessions';
 import { useActiveCert } from '../lib/useActiveCert';
 import { GAMES, isPlayable } from '../engine/games/registry';
+import { getNotes } from '../content/notes';
 import { slipCoach, type SlipInput } from '../engine/slipCoach';
 import { useProgress, type ThinkingSlip } from '../store/progress';
 import { space } from '../theme/tokens';
@@ -97,7 +98,7 @@ export default function Mistakes() {
             <T v="meta" num style={{ marginTop: space.xs }}>{`Seen in ${pattern.count} of ${pattern.tagged} tagged mistakes`}</T>
             <Gap h={space.md} />
             {/* "Drill it" only when that game can be played for this exam (registry minPool). */}
-            {pattern.game && isPlayable(pattern.game, getAllQuestions(cert.id)) ? (
+            {pattern.game && isPlayable(pattern.game, getAllQuestions(cert.id), getNotes(cert.id)) ? (
               <Button
                 kind="secondary"
                 label={`Drill it: ${GAMES[pattern.game].name}`}

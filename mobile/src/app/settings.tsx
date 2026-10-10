@@ -10,7 +10,8 @@ import { Alert, Linking, View } from 'react-native';
 import { BrandLockup, PillarList } from '../components/brand';
 import { ThemeSwitch } from '../components/themeSwitch';
 import { YourData } from '../components/yourData';
-import { Button, Chip, Gap, PushedHeader, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
+import { Button, Chip, Gap, PushedHeader, RadioRow, Screen, Section, Segmented, Stepper, T, ToggleRow } from '../components/ui';
+import { MODE_INFO, STUDY_MODES } from '../engine/studyModes';
 import { TAGLINE, VISION_LINE } from '../content/brand';
 import { CERTIFICATIONS, combinedTrademarkNotice } from '../content/certifications';
 import { addDays, dateInMonths, EXAM_DATE_PRESETS, examDateLabel, presetIndexFor } from '../engine/examDay';
@@ -238,15 +239,34 @@ export default function Settings() {
       <ToggleRow title="Shuffle answer options" subtitle="Stops you memorizing letters." value={s.shuffleOptions} onValueChange={s.setShuffle} />
       <ToggleRow title="Haptics" subtitle="Gentle taps when you answer." value={s.haptics} onValueChange={s.setHaptics} last />
 
-      {/* Study defaults (Build D): what Practice starts with. Practice timer only for now. */}
+      {/* Study defaults: what practice starts with. Build D: the timer.
+          Build E: the default study mode (the same choice Practice remembers). */}
       <Section title="Study defaults" />
       <ToggleRow
         title="Timed practice"
-        subtitle="Quick 10 and Build a set start with a timer that counts up while you answer. Never a countdown."
+        subtitle="Every practice session starts with a timer that counts up while you answer. Never a countdown. Practice's own switch can change it for one set."
         value={s.practiceTimer}
         onValueChange={s.setPracticeTimer}
-        last
       />
+      <T v="caption" style={{ marginTop: space.lg }}>Default mode</T>
+      <View accessibilityRole="radiogroup" accessibilityLabel="Default study mode">
+        <RadioRow
+          title="Follow my stage"
+          subtitle="The app suggests a mode as you progress: Random, then Guided, then Smart."
+          checked={!s.studyMode}
+          onPress={() => s.setStudyMode(undefined)}
+        />
+        {STUDY_MODES.map((m, i) => (
+          <RadioRow
+            key={m}
+            title={MODE_INFO[m].name}
+            subtitle={MODE_INFO[m].why}
+            checked={s.studyMode === m}
+            onPress={() => s.setStudyMode(m)}
+            last={i === STUDY_MODES.length - 1}
+          />
+        ))}
+      </View>
 
       {/* Backup and restore (Build C): save a file, restore one, undo for 7 days. Free, offline, no account. */}
       <YourData />

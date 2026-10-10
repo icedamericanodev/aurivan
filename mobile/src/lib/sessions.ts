@@ -10,6 +10,11 @@ import { buildMockExam } from '../engine/blueprint';
 import { mockPace, type MockTiming } from '../engine/pace';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
+import { buildSmart } from '../engine/smartMix';
+import { MODE_INFO, randomMix, scopeKey, type PathItem, type PathReason, type StudyMode } from '../engine/studyModes';
+import { guidedStep, inOrderSession, nextTopic, walkOrder } from '../engine/studyPath';
+import type { OutlineTopic } from '../engine/outline';
+import { certOutline, guidedStatus, questionExists, scopeTopics } from './outline';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
 import { dueIds, REVIEW_CAP_LINE, REVIEW_SESSION_CAP } from '../engine/srs';
 import { selectCert, useProgress } from '../store/progress';
@@ -17,14 +22,22 @@ import { useSession, type ActiveSession, type SessionMode } from '../store/sessi
 import { useSettings } from '../store/settings';
 import { finishSession } from './finishSession';
 
+/**
+ * Every non-mock session starts timed when Settings → Study defaults →
+ * Practice timer is on (owner request, Build E): Today's plan, review,
+ * "Practice this concept / topic", Saved, Mistakes, Bank and the study
+ * modes. A caller passing `timed` explicitly (Practice's own Timed switch)
+ * overrides it for that session. Mocks never use it: they keep the start sheet.
+ */
 function newSession(
   mode: SessionMode,
   certId: string,
   title: string,
   ids: string[],
-  extra: Partial<ActiveSession> = {},
+  { timed: askTimed, ...extra }: Partial<ActiveSession> = {},
 ): ActiveSession | null {
   const now = Date.now();
+  const timed = mode !== 'mock' && (askTimed ?? useSettings.getState().practiceTimer);
   const rng = createRng(now);
   const shuffle = useSettings.getState().shuffleOptions;
   const perms: Record<string, Permutation> = {};
@@ -47,6 +60,7 @@ function newSession(
     flagged: [],
     startedAt: now,
     ...extra,
+    ...(timed ? { timed: true } : {}),
   };
   useSession.getState().start(session);
   return session;
@@ -54,16 +68,122 @@ function newSession(
 
 /**
  * `timed`: the count-up practice timer (Build D). It never sets a deadline:
- * practice is never submitted for the learner.
+ * practice is never submitted for the learner. Left out = the Study default.
+ * `ids`: only these questions (Build a set's topic chips).
  */
 export function startPractice(
   certId: string,
-  opts: { count: number; domainId?: string; difficulty?: Difficulty; title?: string; timed?: boolean },
+  opts: { count: number; domainId?: string; difficulty?: Difficulty; title?: string; timed?: boolean; ids?: string[] },
 ) {
-  const pool = filterPool(getAllQuestions(certId), opts);
+  const only = opts.ids ? new Set(opts.ids) : null;
+  const pool = filterPool(getAllQuestions(certId), opts).filter((q) => !only || only.has(q.id));
   const answers = selectCert(useProgress.getState(), certId).answers;
   const ids = buildPracticeQueue(pool, answers, opts.count, createRng(Date.now()));
-  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed ? { timed: true } : {});
+  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed !== undefined ? { timed: opts.timed } : {});
+}
+
+/** The title of a study-mode session: "Smart · All domains", "In order · Governance". */
+function pathTitle(certId: string, mode: StudyMode, domainId?: string): string {
+  const d = domainId ? getCertification(certId)?.domains.find((x) => x.id === domainId) : undefined;
+  return `${MODE_INFO[mode].name} · ${d ? d.short : 'All domains'}`;
+}
+
+const reasonsOf = (items: PathItem[]) => {
+  const out: Record<string, PathReason> = {};
+  for (const i of items) if (i.reason) out[i.id] = i.reason;
+  return out;
+};
+
+/**
+ * Start a Smart, In order or Random session (Build E) for any domain or all.
+ * Guided starts from its step screen instead (startGuidedStep). `timed`
+ * left out = the Study default; Practice passes its own switch.
+ */
+export function startStudy(certId: string, opts: { mode: Exclude<StudyMode, 'guided'>; domainId?: string; count: number; timed?: boolean }) {
+  const cert = getCertification(certId);
+  if (!cert) return null;
+  const now = Date.now();
+  const rng = createRng(now);
+  const cp = selectCert(useProgress.getState(), certId);
+  const pool = filterPool(getAllQuestions(certId), { domainId: opts.domainId });
+  const weights = Object.fromEntries(cert.domains.map((d) => [d.id, d.weight]));
+  const scope = scopeKey(opts.domainId);
+  let items: PathItem[];
+  let support = false;
+  if (opts.mode === 'smart') {
+    const plan = buildSmart({
+      pool,
+      answers: cp.answers,
+      review: cp.review,
+      domainWeights: weights,
+      subtopicOf: certOutline(certId).subtopicOf,
+      count: opts.count,
+      dailyGoal: useSettings.getState().dailyGoal,
+      now,
+      rng,
+    });
+    items = plan.items;
+    support = plan.support;
+  } else if (opts.mode === 'inOrder') {
+    const topics = scopeTopics(certId, opts.domainId);
+    const walk = walkOrder(topics, questionExists(certId));
+    items = inOrderSession(topics, walk, cp.studyPath?.inOrder?.[scope], opts.count, cp.answers, rng);
+  } else {
+    items = randomMix(pool, weights, opts.count, rng);
+  }
+  return newSession('practice', certId, pathTitle(certId, opts.mode, opts.domainId), items.map((i) => i.id), {
+    path: { mode: opts.mode, scope },
+    reasons: reasonsOf(items),
+    ...(support ? { support: true } : {}),
+    ...(opts.timed !== undefined ? { timed: opts.timed } : {}),
+  });
+}
+
+/**
+ * After an answer (the answer is already recorded):
+ * - In order remembers the place, so the next session carries on after
+ *   this question.
+ * - Guided moves on by itself once the step's topic is clear: the saved
+ *   topic becomes the next one that isn't clear (Guided otherwise stays on
+ *   the saved topic, so "Next topic" lands where it says).
+ * The mixed review tail never moves either.
+ */
+export function advancePath(session: ActiveSession, questionId: string) {
+  const path = session.path;
+  if (!path || session.reasons?.[questionId] === 'mixed') return;
+  const progress = useProgress.getState();
+  if (path.mode === 'inOrder') {
+    progress.setPathCursor(session.certId, 'inOrder', path.scope, questionId);
+    return;
+  }
+  if (path.mode !== 'guided' || !path.topicId) return;
+  const cp = selectCert(progress, session.certId);
+  // Only while Guided is saved on this topic. (No saved topic: Guided
+  // already shows the first uncleared one; the learner may have moved on.)
+  if (cp.studyPath?.guided?.[path.scope] !== path.topicId) return;
+  const topics = scopeTopics(session.certId, path.scope === 'all' ? undefined : path.scope);
+  const topic = topics.find((t) => t.id === path.topicId);
+  const isClear = (t: OutlineTopic) => guidedStatus(session.certId, t, cp).clear;
+  if (!topic || !isClear(topic)) return;
+  const next = nextTopic(topics, topic, isClear);
+  if (next && next.id !== topic.id) progress.setPathCursor(session.certId, 'guided', path.scope, next.id);
+}
+
+/**
+ * One Guided step on a topic: 5 questions on it, then 3 mixed from earlier
+ * topics. `timed` left out = the Study default; Practice's Timed switch
+ * reaches it through the Guided screen's `timed` route param.
+ */
+export function startGuidedStep(certId: string, topicId: string, domainId?: string, timed?: boolean) {
+  const topics = scopeTopics(certId, domainId);
+  const topic = topics.find((t) => t.id === topicId);
+  if (!topic) return null;
+  const items = guidedStep(topics, topic, (id) => findQuestion(certId, id), selectCert(useProgress.getState(), certId).answers, createRng(Date.now()));
+  return newSession('practice', certId, `Guided · ${topic.name}`, items.map((i) => i.id), {
+    path: { mode: 'guided', scope: scopeKey(domainId), topicId },
+    reasons: reasonsOf(items),
+    ...(timed !== undefined ? { timed } : {}),
+  });
 }
 
 /** The Spaced review row's subtitle, the same on Practice and You. */

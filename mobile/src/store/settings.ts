@@ -6,6 +6,7 @@ import { persist } from 'zustand/middleware';
 import { DEFAULT_CERT_ID } from '../content/certifications';
 import { DEFAULT_REMINDER, type ReminderPrefs } from '../engine/reminders';
 import { SETTINGS_VERSION } from '../engine/saveMigrations';
+import type { StudyMode } from '../engine/studyModes';
 import { persistStorage } from './storage';
 
 export type ThemePref = 'system' | 'dark' | 'light';
@@ -33,6 +34,19 @@ interface SettingsState {
    * Unset = not answered yet. Once set, the card never shows again.
    */
   paceOffer?: 'accepted' | 'dismissed';
+  /**
+   * Build E study defaults, all optional (older saves have none):
+   * - studyMode: the mode the learner last chose on Practice (also Settings →
+   *   Study defaults → Default mode). Unset = follow the app's suggestion for
+   *   the journey stage (engine/studyModes.ts suggestedMode). Once set, it
+   *   always wins over the suggestion.
+   * - studyDomain: the last domain chip ("1".."5"); unset = All domains. A
+   *   domain the active cert doesn't have reads as All domains.
+   * - studySize: the last session size (10, 20 or 50).
+   */
+  studyMode?: StudyMode;
+  studyDomain?: string;
+  studySize?: number;
 
   completeOnboarding: (certId: string, examDate?: string) => void;
   setActiveCert: (certId: string) => void;
@@ -46,6 +60,11 @@ interface SettingsState {
   setPracticeTimer: (v: boolean) => void;
   /** Answer the "Practice at exam pace?" card: accepting turns the timer default on. */
   answerPaceOffer: (choice: 'accepted' | 'dismissed') => void;
+  /** Save the study mode (undefined = back to "follow my stage"). */
+  setStudyMode: (mode: StudyMode | undefined) => void;
+  /** Save the domain chip (undefined = All domains). */
+  setStudyDomain: (domainId: string | undefined) => void;
+  setStudySize: (n: number) => void;
 }
 
 export const useSettings = create<SettingsState>()(
@@ -86,6 +105,11 @@ export const useSettings = create<SettingsState>()(
       // asks about something the learner already decided (C5).
       setPracticeTimer: (practiceTimer) => set((s) => ({ practiceTimer, paceOffer: s.paceOffer ?? (practiceTimer ? 'accepted' : 'dismissed') })),
       answerPaceOffer: (choice) => set(choice === 'accepted' ? { paceOffer: choice, practiceTimer: true } : { paceOffer: choice }),
+      // Build E: the last choice on Practice is remembered. JSON drops an
+      // undefined key, so "unset" saves as no key at all (older shape).
+      setStudyMode: (studyMode) => set({ studyMode }),
+      setStudyDomain: (studyDomain) => set({ studyDomain }),
+      setStudySize: (studySize) => set({ studySize }),
     }),
     { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
   ),

@@ -71,6 +71,7 @@ export function OptionCard({
   tag,
   tagTone,
   note,
+  spokenSuffix,
 }: {
   /** Colour the tag in the trap-warning tone (e.g. "Snare"), whatever the row's state. */
   tagTone?: 'tip';
@@ -84,6 +85,12 @@ export function OptionCard({
   tag?: string;
   /** A note under the text, e.g. why this option is wrong. */
   note?: string;
+  /**
+   * What a screen reader hears after the text instead of ", best answer" /
+   * ", your answer, incorrect", for rows that aren't answer options (Call It
+   * First's principle cards: ", the principle"). It replaces the spoken tag too.
+   */
+  spokenSuffix?: string;
 }) {
   const { c, isDark } = useTheme();
   const { fontScale } = useWindowDimensions();
@@ -101,7 +108,7 @@ export function OptionCard({
   // The badge grows with very large text so the letter still fits (spec §10.7).
   const badge = 30 * Math.min(Math.max(fontScale, 1), 1.6);
   // No ", selected" here: the radio's checked state already announces it.
-  const suffix = state === 'correct' ? ', best answer' : state === 'wrong' ? ', your answer, incorrect' : '';
+  const suffix = spokenSuffix ?? (state === 'correct' ? ', best answer' : state === 'wrong' ? ', your answer, incorrect' : '');
   const tagColor = tagTone === 'tip' ? c.tip : state === 'correct' ? c.correct : state === 'wrong' ? c.wrong : c.ink2;
 
   const rowStyle = {
@@ -149,7 +156,7 @@ export function OptionCard({
       </View>
     </>
   );
-  const label = `${tag ? `${tag}: ` : `Option ${letter}: `}${text}${suffix}${note ? `. ${note}` : ''}`;
+  const label = `${tag && spokenSuffix === undefined ? `${tag}: ` : `Option ${letter}: `}${text}${suffix}${note ? `. ${note}` : ''}`;
   if (!onPress) {
     return (
       <View accessible accessibilityLabel={label} style={rowStyle}>

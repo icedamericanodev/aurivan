@@ -42,3 +42,14 @@ export function shortReference(reference: string): string {
   const first = reference.split(';')[0] ?? '';
   return first.replace(/\s*\([^)]*\)/g, '').trim();
 }
+
+/**
+ * A topic name short enough for a chip: the part before the first comma,
+ * cut at a word near 28 characters ("IS Audit Standards…"). Screen readers
+ * get the full name from the chip's label.
+ */
+export function shortTopic(name: string, max = 28): string {
+  const head = name.split(',')[0].trim();
+  const short = head.length <= max ? head : `${head.slice(0, head.lastIndexOf(' ', max)).trimEnd()}…`;
+  return short === name ? name : short.endsWith('…') ? short : `${short}…`;
+}

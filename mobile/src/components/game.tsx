@@ -9,6 +9,7 @@ import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { findQuestion, getAllQuestions } from '../content/loader';
+import { getNotes } from '../content/notes';
 import { GAMES, isPlayable } from '../engine/games/registry';
 import { useActiveCert } from '../lib/useActiveCert';
 import { EmptyScreen } from './emptyScreen';
@@ -21,8 +22,8 @@ import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
 import { Seedling } from './glyphs';
-import { Info, ICON_STROKE } from './icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, SegmentBar, Stem, T } from './ui';
+import { Info, ICON_STROKE, Play as PlayIcon } from './icons';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Section, SegmentBar, Segmented, Stem, T } from './ui';
 
 /** A fixed list of questions + one shuffle each, created once per round. */
 export function useRound(certId: string, build: (rngSeed: number) => string[]) {
@@ -51,6 +52,7 @@ export function GameFrame({
   onInfo,
   infoOpen,
   strip,
+  scrollToY,
 }: {
   title: string;
   index: number;
@@ -63,6 +65,12 @@ export function GameFrame({
   infoOpen?: boolean;
   /** Fixed under the header, outside the scroll: Daylight's pace strip (components/pace.tsx). */
   strip?: ReactNode;
+  /**
+   * Scroll so this point of the content (a y measured with onLayout inside
+   * `children`) sits near the top, e.g. Call It First's options appearing
+   * below the fold. Null / left out = leave the scroll alone.
+   */
+  scrollToY?: number | null;
 }) {
   const { c } = useTheme();
   // Measured height of the sticky footer, so the scroll can clear it.
@@ -72,6 +80,11 @@ export function GameFrame({
   useEffect(() => {
     if (infoOpen) scrollRef.current?.scrollTo({ y: 0, animated: false });
   }, [infoOpen]);
+  useEffect(() => {
+    // `children` sit under the content's top padding (space.md); leave a little
+    // air above. No animation: it moves the page once, calmly, under any motion setting.
+    if (scrollToY != null) scrollRef.current?.scrollTo({ y: Math.max(0, scrollToY + space.md - space.lg), animated: false });
+  }, [scrollToY]);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Pushed header: close · round progress · live score (Figtree tabular: it changes as you watch). */}
@@ -143,6 +156,7 @@ export function RoundEnd({
   misses = [],
   children,
   onAgain,
+  reviewNote,
 }: {
   certId: string;
   game: GameId;
@@ -152,13 +166,19 @@ export function RoundEnd({
   misses?: RecapMiss[];
   children?: ReactNode;
   onAgain: () => void;
+  /**
+   * The line under the misses, for games whose misses aren't questions
+   * (Root or Rumor: "Missed statements come back in a later round.").
+   * Left out = the usual "Missed questions are in your review." rule.
+   */
+  reviewNote?: string;
 }) {
   const { c } = useTheme();
   const best = useProgress((s) => s.byCert[certId]?.gameBest?.[game]);
   // Older saves have no history: `?.` keeps them loading (shows best only).
   const history = useProgress((s) => s.byCert[certId]?.gameRecent?.[game]);
   const recent = lastScores(history);
-  const review = reviewLine(misses);
+  const review = reviewNote !== undefined ? (misses.length ? reviewNote : null) : reviewLine(misses);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView contentContainerStyle={{ padding: space.gutter, flexGrow: 1, justifyContent: 'center' }}>
@@ -210,18 +230,81 @@ export function RoundEnd({
 }
 
 /**
+ * A game's first screen (Build E games, after Daylight's pattern): pushed
+ * header → line icon → skill caption → tagline as the hero → the rules →
+ * "Pick your level" Seedling / Sapling / Heartwood (spoken with what each
+ * tier means) and one meta line on the chosen tier → primary "Start".
+ */
+export function GameIntro<V extends string>({
+  game,
+  icon,
+  rules,
+  tiers,
+  tier,
+  onTier,
+  tierName,
+  tierLine,
+  onStart,
+}: {
+  game: GameId;
+  icon: (color: string) => ReactNode;
+  rules: string;
+  tiers: V[];
+  tier: V;
+  onTier: (t: V) => void;
+  tierName: Record<V, string>;
+  tierLine: Record<V, string>;
+  onStart: () => void;
+}) {
+  const { c } = useTheme();
+  const g = GAMES[game];
+  return (
+    <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
+      <View style={{ paddingHorizontal: space.gutter }}>
+        <PushedHeader icon="close" onBack={() => router.back()} title={g.name} />
+      </View>
+      <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxl }}>
+        <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ alignItems: 'center' }}>
+          {icon(c.accent)}
+        </View>
+        <T v="caption" center color={c.accentText} style={{ marginTop: space.sm }}>{`${g.skill} · about ${g.minutes} min`}</T>
+        <T v="hero" center accessibilityRole="header" style={{ marginTop: space.xs }}>{g.tagline}</T>
+        <T v="body" color={c.ink2} style={{ marginTop: space.md }}>{rules}</T>
+        <Section title="Pick your level" />
+        <Gap h={space.sm} />
+        <Segmented
+          accessibilityLabel="Pick your level"
+          value={tier}
+          onChange={onTier}
+          options={tiers.map((t) => ({ value: t, label: tierName[t], spoken: `${tierName[t]}. ${tierLine[t]}` }))}
+        />
+        <T v="meta" center style={{ marginTop: space.sm }}>{tierLine[tier]}</T>
+        <Gap h={space.xl} />
+        <Button label="Start" onPress={onStart} icon={(col) => <PlayIcon size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+/**
  * Reveal block after each answer: a tinted feedback block (spec §5: tints
  * are for feedback only). Long explanations clamp to 5 lines with a 48pt
  * "Read full explanation" toggle; the title is announced to screen readers.
  */
-export function RevealCard({ tone, title, body }: { tone: 'good' | 'bad' | 'info'; title: string; body: string }) {
+/**
+ * The verdict card after an answer. `spoken`: what a screen reader hears when
+ * it appears (default: the title), e.g. the verdict AND the title when the
+ * step that came before it left the learner with no other cue (UX review H1).
+ */
+export function RevealCard({ tone, title, body, spoken }: { tone: 'good' | 'bad' | 'info'; title: string; body: string; spoken?: string }) {
   const { c } = useTheme();
   const [open, setOpen] = useState(false);
   const look = tone === 'good' ? { fg: c.correct, bg: c.correctBg } : tone === 'bad' ? { fg: c.wrong, bg: c.wrongBg } : { fg: c.tip, bg: c.tipBg };
   const long = body.length > 280;
+  const say = spoken ?? title;
   useEffect(() => {
-    AccessibilityInfo.announceForAccessibility(title);
-  }, [title]);
+    AccessibilityInfo.announceForAccessibility(say);
+  }, [say]);
   return (
     <Animated.View entering={FadeIn.duration(240).reduceMotion(ReduceMotion.System)}>
       <View style={{ backgroundColor: look.bg, borderRadius: radius.md, padding: space.lg }}>
@@ -258,7 +341,7 @@ export function GameUnavailable({ game }: { game: GameId }) {
 /** Renders the game, or GameUnavailable when this certification's pool is too small. */
 export function PlayableGate({ game, children }: { game: GameId; children: ReactNode }) {
   const { cert } = useActiveCert();
-  const ok = useMemo(() => isPlayable(game, getAllQuestions(cert.id)), [game, cert.id]);
+  const ok = useMemo(() => isPlayable(game, getAllQuestions(cert.id), getNotes(cert.id)), [game, cert.id]);
   return ok ? <>{children}</> : <GameUnavailable game={game} />;
 }
 

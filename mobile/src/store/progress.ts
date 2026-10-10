@@ -102,6 +102,25 @@ export interface CertProgress {
    * shows it yet (the mastery badges come later). Never unset by answers.
    */
   mastery?: Record<string, SubtopicMastery>;
+  /**
+   * Build E: where the resumable study modes stopped, per scope ("all" or a
+   * domain id). inOrder = the last walk question answered (the next session
+   * starts after it); guided = the topic Guided is on ("4B1"). Optional:
+   * older saves have none and start at the beginning.
+   */
+  studyPath?: StudyPathState;
+  /**
+   * Build E: spaced review for note statements (Root or Rumor), keyed by a
+   * stable card id like "rumor:4B1.2:k3f9a1" (engine/games/rootOrRumor.ts).
+   * Same Leitner rules as questions (srs.nextReview). Cards never feed
+   * readiness or mastery. Optional: older saves have none.
+   */
+  cards?: Record<string, ReviewEntry>;
+}
+
+export interface StudyPathState {
+  inOrder?: Record<string, string>;
+  guided?: Record<string, string>;
 }
 
 const emptyCert = (): CertProgress => ({
@@ -183,6 +202,10 @@ interface ProgressState {
   /** The learner closed the "You're ready" panel; it never shows again for this cert. */
   dismissReady: (certId: string) => void;
   resetCert: (certId: string) => void;
+  /** Build E: save where In order / Guided stopped for a scope ("all" or a domain id). */
+  setPathCursor: (certId: string, mode: keyof StudyPathState, scope: string, value: string) => void;
+  /** Build E: a Root or Rumor answer on a note card (spaced like a question; never readiness). */
+  recordCard: (certId: string, cardId: string, correct: boolean) => void;
 }
 
 export const useProgress = create<ProgressState>()(
@@ -365,6 +388,25 @@ export const useProgress = create<ProgressState>()(
           return { byCert: { ...s.byCert, [certId]: { ...cp, moments: { ...cp.moments, readySeenAt: Date.now() } } } };
         }),
 
+      setPathCursor: (certId, mode, scope, value) =>
+        set((s) => {
+          const cp = normalize(s.byCert[certId]);
+          if (cp.studyPath?.[mode]?.[scope] === value) return s; // no change: no save
+          const studyPath: StudyPathState = { ...cp.studyPath, [mode]: { ...cp.studyPath?.[mode], [scope]: value } };
+          return { byCert: { ...s.byCert, [certId]: { ...cp, studyPath } } };
+        }),
+
+      recordCard: (certId, cardId, correct) =>
+        set((s) => {
+          const now = Date.now();
+          const cp = normalize(s.byCert[certId]);
+          const cards = { ...cp.cards };
+          const next = nextReview(cards[cardId], correct, undefined, now);
+          if (next) cards[cardId] = next;
+          else delete cards[cardId];
+          return { byCert: { ...s.byCert, [certId]: { ...cp, cards } } };
+        }),
+
       resetCert: (certId) =>
         set((s) => {
           const days = { ...s.days };
@@ -386,6 +428,7 @@ export const useProgress = create<ProgressState>()(
       // The game recap added CertProgress.gameRecent; `normalize` gives old saves {}.
       // Build C added only OPTIONAL fields (AnswerRecord.ms / lastConfidence,
       // CertProgress.mastery): no version bump, old saves load as-is.
+      // Build E added only OPTIONAL fields (CertProgress.studyPath / cards): same.
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

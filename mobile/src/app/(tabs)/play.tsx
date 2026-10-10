@@ -10,23 +10,25 @@
  */
 import { router } from 'expo-router';
 import { useMemo } from 'react';
-import { Crosshair, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, Sunrise } from '../../components/icons';
+import { Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
 import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Screen, Section, T, Trail } from '../../components/ui';
 import { getAllQuestions } from '../../content/loader';
+import { getNotes } from '../../content/notes';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
 import { GAME_ORDER, GAMES, isPlayable, type GameId } from '../../engine/games/registry';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
 
-const ICONS: Record<GameId, typeof Crosshair> = { trap: Crosshair, sprint: Scale, priority: Sparkles, daylight: Sunrise };
+const ICONS: Record<GameId, typeof Crosshair> = { trap: Crosshair, sprint: Scale, priority: Sparkles, daylight: Sunrise, rumor: SproutIcon, callit: EyeOff };
 
 export default function Play() {
   const { c } = useTheme();
   const { cert, progress } = useActiveCert();
   // A game whose question pool is too small for this certification is not
   // offered at all (never explained with a number: no bank-size leaks).
-  const games = useMemo(() => GAME_ORDER.filter((id) => isPlayable(id, getAllQuestions(cert.id))).map((id) => GAMES[id]), [cert.id]);
+  // Note-based games (Root or Rumor) count the cert's study notes instead.
+  const games = useMemo(() => GAME_ORDER.filter((id) => isPlayable(id, getAllQuestions(cert.id), getNotes(cert.id))).map((id) => GAMES[id]), [cert.id]);
   const [featured, ...others] = games;
   const best = (id: GameId) => progress.gameBest[id];
 

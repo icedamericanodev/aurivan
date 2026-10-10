@@ -27,6 +27,14 @@ elif [ "${SHOTS:-}" = data ]; then
   node scripts/screenshots/shoot_data.mjs "$TMP/seed.json" "$OUT" "$THEME"
 elif [ "${SHOTS:-}" = pace ]; then
   node scripts/screenshots/shoot_pace.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = practice ]; then
+  # The Practice tab: first screen, whole tab, Guided, the path chooser and
+  # Build a set opened, approximate 200% text (shoot_practice.mjs).
+  node scripts/screenshots/shoot_practice.mjs "$TMP/seed.json" "$OUT" "$THEME"
+elif [ "${SHOTS:-}" = paths ]; then
+  # Build E: mode picker, Smart reason tag, Guided step, In order tail,
+  # Practice this topic, Root or Rumor and Call It First (shoot_paths.mjs).
+  node scripts/screenshots/shoot_paths.mjs "$TMP/seed.json" "$OUT" "$THEME"
 else
   node scripts/screenshots/shoot.mjs "$TMP/seed.json" "$OUT"
 fi

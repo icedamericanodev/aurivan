@@ -52,7 +52,7 @@ import { useSettings } from '../store/settings';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
-const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer'] as const;
+const SETTINGS_KEYS = ['onboarded', 'activeCertId', 'examDates', 'theme', 'shuffleOptions', 'dailyGoal', 'reminder', 'haptics', 'gameRulesSeen', 'practiceTimer', 'paceOffer', 'studyMode', 'studyDomain', 'studySize'] as const;
 const PROGRESS_KEYS = ['byCert', 'streak', 'today', 'days'] as const;
 
 type SettingsData = Pick<ReturnType<typeof useSettings.getState>, (typeof SETTINGS_KEYS)[number]>;
@@ -329,6 +329,12 @@ async function writeAll(
     await AsyncStorage.multiSet(before).catch(() => {});
     throw e;
   }
+  // Rehydrating MERGES each saved row into the live state, and JSON drops
+  // undefined keys, so a value the backup doesn't have (e.g. no study mode)
+  // would survive from this phone. Set the full state first, every key
+  // included, so the phone takes the backup's state exactly (QA Build E).
+  useSettings.setState(settings);
+  useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();
 }
 
