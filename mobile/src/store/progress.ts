@@ -17,6 +17,7 @@ import { logActivity as logDayActivity, logAnswer, type Activity, type DayPlan }
 import { computeReadiness, type AnswerRecord } from '../engine/readiness';
 import { readinessRange } from '../engine/readinessRange';
 import { recordMastery, type SubtopicMastery } from '../engine/mastery';
+import type { MockTiming } from '../engine/pace';
 import { migrateProgress, PROGRESS_VERSION } from '../engine/saveMigrations';
 import type { ThinkingSlip } from '../engine/slipCoach';
 import { nextReview, type Confidence, type ReviewEntry } from '../engine/srs';
@@ -30,6 +31,20 @@ export interface MockResult {
   correct: number;
   minutesUsed: number;
   byDomain: Record<string, { total: number; correct: number }>;
+  /**
+   * Build D pacing, all optional (older results have none, and were standard):
+   * - timing: standard, +25%, +50% or untimed. Untimed mocks are labelled
+   *   "untimed" and left out of pacing stats; readiness counts them as usual.
+   * - minutesAllowed: the time the mock allowed (none when untimed).
+   * - medianSec: median seconds per answered question.
+   * - unanswered: questions with no answer when it ended.
+   * - checkpoints: the signed deviation at each pace check (+0.15 = 15% slow).
+   */
+  timing?: MockTiming;
+  minutesAllowed?: number;
+  medianSec?: number;
+  unanswered?: number;
+  checkpoints?: number[];
 }
 
 // The slip tags now live in the engine (slip coach); re-exported for screens.

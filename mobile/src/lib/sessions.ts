@@ -7,6 +7,7 @@ import { getCertification } from '../content/certifications';
 import { findQuestion, getAllQuestions } from '../content/loader';
 import type { Difficulty } from '../content/types';
 import { buildMockExam } from '../engine/blueprint';
+import { mockPace, type MockTiming } from '../engine/pace';
 import { buildPracticeQueue, filterPool } from '../engine/queue';
 import { createRng } from '../engine/random';
 import { identityPermutation, makePermutation, type Permutation } from '../engine/shuffle';
@@ -50,14 +51,18 @@ function newSession(
   return session;
 }
 
+/**
+ * `timed`: the count-up practice timer (Build D). It never sets a deadline:
+ * practice is never submitted for the learner.
+ */
 export function startPractice(
   certId: string,
-  opts: { count: number; domainId?: string; difficulty?: Difficulty; title?: string },
+  opts: { count: number; domainId?: string; difficulty?: Difficulty; title?: string; timed?: boolean },
 ) {
   const pool = filterPool(getAllQuestions(certId), opts);
   const answers = selectCert(useProgress.getState(), certId).answers;
   const ids = buildPracticeQueue(pool, answers, opts.count, createRng(Date.now()));
-  return newSession('practice', certId, opts.title ?? 'Practice', ids);
+  return newSession('practice', certId, opts.title ?? 'Practice', ids, opts.timed ? { timed: true } : {});
 }
 
 /** The Spaced review row's subtitle, the same on Practice and You. */
@@ -90,15 +95,31 @@ export function startBookmarks(certId: string) {
   return startFromIds(certId, ids, 'Saved questions');
 }
 
-/** Full mock (real exam length) or a mini mock (e.g. 50 questions). */
-export function startMock(certId: string, questions?: number) {
+/** The options on the mock start sheet (app/mock-start.tsx). */
+export interface MockOptions {
+  /** Standard (default), +25%, +50% or untimed (engine/pace.ts). */
+  timing?: MockTiming;
+  /** "Hide the clock (checkpoints only)". The deadline still applies. */
+  hideClock?: boolean;
+}
+
+/**
+ * Full mock (real exam length) or a mini mock (e.g. 50 questions). The time
+ * allowed comes from the cert's exam facts, stretched for extra time; an
+ * untimed mock has no deadline at all.
+ */
+export function startMock(certId: string, questions?: number, opts: MockOptions = {}) {
   const cert = getCertification(certId);
   if (!cert) return null;
   const total = questions ?? cert.exam.questions;
-  const minutes = Math.round((cert.exam.minutes / cert.exam.questions) * total);
+  const timing = opts.timing ?? 'standard';
+  const { minutesAllowed } = mockPace(cert.exam, total, timing);
   const ids = buildMockExam(cert, getAllQuestions(certId), createRng(Date.now()), total);
   return newSession('mock', certId, total === cert.exam.questions ? 'Full mock exam' : 'Mini mock', ids, {
-    deadline: Date.now() + minutes * 60_000,
+    ...(minutesAllowed !== null ? { deadline: Date.now() + minutesAllowed * 60_000 } : {}),
+    timing,
+    // Hiding the clock only makes sense when there is one.
+    ...(opts.hideClock && minutesAllowed !== null ? { hideClock: true } : {}),
   });
 }
 

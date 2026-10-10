@@ -6,6 +6,7 @@
  *   fed into spaced review.
  */
 import { findQuestion } from '../content/loader';
+import { mockPacing, type MockPacing } from '../engine/pace';
 import { displayToOriginal } from '../engine/shuffle';
 import { useProgress, type MockResult } from '../store/progress';
 import { useSession, type ActiveSession } from '../store/session';
@@ -16,6 +17,29 @@ export interface SessionScore {
   answered: number;
   correct: number;
   byDomain: Record<string, { total: number; correct: number }>;
+}
+
+/**
+ * The pacing panel's numbers for a mock (engine/pace.ts mockPacing): time
+ * used vs allowed, median time, checkpoints, unanswered, the last 10% of the
+ * time vs the rest, and the slowest domain. Pure: it reads the session only.
+ */
+export function sessionPacing(s: ActiveSession): MockPacing {
+  const endedAt = Math.min(s.finishedAt ?? Date.now(), s.deadline ?? Infinity);
+  const answers = [];
+  for (const id of s.questionIds) {
+    const r = s.responses[id];
+    const q = findQuestion(s.certId, id);
+    if (r && q) answers.push({ correct: r.correct, ms: r.ms, at: r.at, domainId: q.domainId });
+  }
+  return mockPacing({
+    startedAt: s.startedAt,
+    endedAt,
+    allowedMs: s.deadline ? s.deadline - s.startedAt : null,
+    total: s.questionIds.length,
+    answers,
+    checkpoints: s.checkpoints,
+  });
 }
 
 /** Pure scoring of a session (unanswered mock questions count as wrong). */
@@ -68,6 +92,9 @@ export function finishSession() {
     // If the learner reopens the app after the deadline, the exam ended AT
     // the deadline — not now.
     const endedAt = Math.min(Date.now(), s.deadline ?? Infinity);
+    // Build D: pacing kept on the result for history and pacing stats.
+    // Untimed mocks are labelled, and pacing stats leave them out.
+    const pacing = sessionPacing({ ...s, finishedAt: endedAt });
     const result: MockResult = {
       id: s.id,
       finishedAt: endedAt,
@@ -75,6 +102,11 @@ export function finishSession() {
       correct: score.correct,
       minutesUsed: Math.max(1, Math.round((endedAt - s.startedAt) / 60_000)),
       byDomain: score.byDomain,
+      timing: s.timing ?? 'standard',
+      ...(pacing.allowedMinutes !== null ? { minutesAllowed: pacing.allowedMinutes } : {}),
+      ...(pacing.medianSec !== null ? { medianSec: pacing.medianSec } : {}),
+      unanswered: pacing.unanswered,
+      ...(pacing.checkpoints.length ? { checkpoints: pacing.checkpoints.map((c) => c.deviation) } : {}),
     };
     progress.recordMock(s.certId, result);
   }

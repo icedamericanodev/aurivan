@@ -19,6 +19,7 @@
  */
 import { MAX_ANSWER_MS } from './answerClock';
 import type { Confidence } from './srs';
+import type { MockTiming } from './pace';
 import { examDateLabel } from './examDay';
 import { reminderSummary } from './reminders';
 import { migrateProgress, PROGRESS_VERSION, SETTINGS_VERSION } from './saveMigrations';
@@ -203,15 +204,26 @@ const answerRecord = rule(
 const reviewEntry = obj({ box: int(0, 100), dueAt: ts, lastSeen: ts, reps: count });
 const tally = rule(obj({ total: count, correct: count }), (t) => t.correct <= t.total);
 const mockResult = rule(
-  obj({
-    id,
-    finishedAt: ts,
-    total: count,
-    correct: count,
-    minutesUsed: range(0, 1440),
-    byDomain: map(tally, 50),
-  }),
-  (m) => m.correct <= m.total,
+  obj(
+    {
+      id,
+      finishedAt: ts,
+      total: count,
+      correct: count,
+      minutesUsed: range(0, 1440),
+      byDomain: map(tally, 50),
+    },
+    // Build D pacing (optional: older results have none).
+    {
+      timing: oneOf<MockTiming>('standard', 'plus25', 'plus50', 'untimed'),
+      minutesAllowed: range(0, 1440),
+      medianSec: range(0, MAX_ANSWER_MS / 1000),
+      unanswered: count,
+      // Signed share of the time off target; "ahead" can be well below −1.
+      checkpoints: list(range(-1000, 1), 10),
+    },
+  ),
+  (m) => m.correct <= m.total && (m.unanswered ?? 0) <= m.total,
 );
 const mistakeEntry = obj({ at: ts }, { picked: LETTER, slip: SLIP, resolved: bool, confidence: CONFIDENCE });
 const percent = range(0, 100);
@@ -257,6 +269,8 @@ function settingsCheck(certKey: Check<string>) {
       reminder: obj({ enabled: bool, hour: int(0, 23), minute: int(0, 59) }, { days: list(int(0, 6), 7) }),
       haptics: bool,
       gameRulesSeen: list(str(40), 50),
+      practiceTimer: bool,
+      paceOffer: oneOf('accepted', 'dismissed'),
     },
   );
 }

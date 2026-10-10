@@ -23,6 +23,16 @@ interface SettingsState {
   haptics: boolean;
   /** Games whose rules the learner has already seen (shown once, then behind an info button). */
   gameRulesSeen: string[];
+  /**
+   * Study defaults (Build D): the practice timer's starting state on Quick 10
+   * and Build a set. Off by default; never switched on without the learner.
+   */
+  practiceTimer: boolean;
+  /**
+   * The one-time "Practice at exam pace?" card: how the learner answered it.
+   * Unset = not answered yet. Once set, the card never shows again.
+   */
+  paceOffer?: 'accepted' | 'dismissed';
 
   completeOnboarding: (certId: string, examDate?: string) => void;
   setActiveCert: (certId: string) => void;
@@ -33,6 +43,9 @@ interface SettingsState {
   setReminder: (r: SettingsState['reminder']) => void;
   setHaptics: (v: boolean) => void;
   markRulesSeen: (gameId: string) => void;
+  setPracticeTimer: (v: boolean) => void;
+  /** Answer the "Practice at exam pace?" card: accepting turns the timer default on. */
+  answerPaceOffer: (choice: 'accepted' | 'dismissed') => void;
 }
 
 export const useSettings = create<SettingsState>()(
@@ -50,6 +63,8 @@ export const useSettings = create<SettingsState>()(
       haptics: true,
       // Older saves have no key: persist merges this default in (rules show once).
       gameRulesSeen: [],
+      // Older saves have no key: persist merges this default in (timer off).
+      practiceTimer: false,
 
       completeOnboarding: (certId, examDate) =>
         set((s) => ({
@@ -67,6 +82,8 @@ export const useSettings = create<SettingsState>()(
       setHaptics: (haptics) => set({ haptics }),
       markRulesSeen: (gameId) =>
         set((s) => (s.gameRulesSeen.includes(gameId) ? s : { gameRulesSeen: [...s.gameRulesSeen, gameId] })),
+      setPracticeTimer: (practiceTimer) => set({ practiceTimer }),
+      answerPaceOffer: (choice) => set(choice === 'accepted' ? { paceOffer: choice, practiceTimer: true } : { paceOffer: choice }),
     }),
     { name: 'aurivan.settings.v1', storage: persistStorage, version: SETTINGS_VERSION },
   ),

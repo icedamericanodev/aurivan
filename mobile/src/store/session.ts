@@ -9,6 +9,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Letter } from '../content/types';
 import { addMs } from '../engine/answerClock';
+import type { Checkpoint, MockTiming } from '../engine/pace';
 import type { Confidence } from '../engine/srs';
 import type { Permutation } from '../engine/shuffle';
 import { persistStorage } from './storage';
@@ -27,6 +28,12 @@ export interface Response {
    * Optional: older sessions have none.
    */
   ms?: number;
+  /**
+   * When this answer was given (mock exams: the last change), epoch ms.
+   * Build D uses it for "accuracy in the last 10% of the time". Optional:
+   * older sessions have none.
+   */
+  at?: number;
 }
 
 export interface ActiveSession {
@@ -48,7 +55,18 @@ export interface ActiveSession {
    */
   visitMs?: Record<string, number>;
   startedAt: number;
-  deadline?: number; // epoch ms — mock exams only
+  deadline?: number; // epoch ms — timed mock exams only (an untimed mock has none)
+  /**
+   * Build D, all optional (older sessions have none):
+   * - timing: the mock's timing option (none = standard, as before Build D);
+   * - hideClock: the learner chose "checkpoints only"; the deadline still applies;
+   * - checkpoints: the pace checks recorded so far (engine/pace.ts), each once;
+   * - timed: a practice session with the count-up timer on (never a deadline).
+   */
+  timing?: MockTiming;
+  hideClock?: boolean;
+  checkpoints?: Checkpoint[];
+  timed?: boolean;
   finishedAt?: number; // set when the learner finishes / submits
 }
 
@@ -62,6 +80,8 @@ interface SessionState {
   markCoached: (questionId: string) => void;
   /** A mock visit ended with no answer: keep its time for the eventual answer. */
   addVisitTime: (questionId: string, ms: number) => void;
+  /** Save the mock's pace checks (engine/pace.ts dueCheckpoints). */
+  setCheckpoints: (checkpoints: Checkpoint[]) => void;
   finish: () => void;
   clear: () => void;
 }
@@ -88,6 +108,8 @@ export const useSession = create<SessionState>()(
           const prev = s.active.visitMs?.[questionId] ?? 0;
           return { active: { ...s.active, visitMs: { ...s.active.visitMs, [questionId]: addMs(prev, ms) } } };
         }),
+      setCheckpoints: (checkpoints) =>
+        set((s) => (s.active && !s.active.finishedAt ? { active: { ...s.active, checkpoints } } : s)),
       goTo: (index) => set((s) => (s.active ? { active: { ...s.active, index } } : s)),
       toggleFlag: (questionId) =>
         set((s) => {
