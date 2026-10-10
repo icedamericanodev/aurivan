@@ -81,6 +81,10 @@ mobile/
     │   ├── readiness.ts       #   blueprint-weighted readiness score
     │   ├── blueprint.ts       #   mock exam builder
     │   ├── queue.ts           #   practice question picker
+    │   ├── outline.ts         #   notes → ordered topic list (study modes)
+    │   ├── smartMix.ts        #   Smart mode (mobile 1.5)
+    │   ├── studyPath.ts       #   Guided + In order (mobile 1.5)
+    │   ├── studyModes.ts      #   mode names, suggestion, Random, topic practice
     │   └── streak.ts
     ├── store/                 # WHAT the learner did: progress, settings, session
     ├── lib/                   # glue: session factory, reminders, config
@@ -181,6 +185,62 @@ revisit flags (90 s). Plan estimates keep their own 1.2-minute study pace.
 - Starting something new over a timed mock whose time already ran out
   records that mock at its deadline first (`guardedStart`), instead of
   offering to discard the learner's answers.
+
+### Choose your path (mobile 1.5)
+Four study modes, each for any domain or "All domains" (`engine/studyModes.ts`
+holds the names, one-line whys and the stage suggestion). They all group
+questions by the study-notes subtopic, through `engine/outline.ts`, which
+turns the notes (Build C `practiceIds`) into one ordered topic list
+(`lib/outline.ts` caches it per cert).
+- **Smart** (`engine/smartMix.ts`, behaviour review §3): 30% due reviews
+  (50% when the backlog is over 2× the daily goal), 40% weak spots drawn by
+  `blueprintWeight × (1 − mastery) + exploreBonus` (mastery = credit /
+  max(answered, 5), answers over 30 days count half, +0.15 under 3
+  answers), 20% new from the most under-sampled domain, 10% refreshers
+  (right 14+ days ago, not in review); a short bucket passes its gap on.
+  Order: never two from one subtopic in a row, at most 3 weak spots in a
+  row, open with a likely success. Over the last 10 answers, above 85%
+  prefers analysis items; below 55% prefers foundational ones and a missed
+  weak spot offers its note. Each question carries a reason tag.
+- **Guided** (`engine/studyPath.ts`, `app/guided.tsx`): one outline topic per
+  step: its lesson (or notes), 5 questions foundational-first, 3 interleaved
+  from earlier topics. Clear = lesson done (or every note read when the
+  topic has no lesson) AND 4 of the last 5 unassisted answers right, read
+  from the answer records (no new data). "Next topic" is never locked.
+- **In order**: walks the outline from a saved place and ENDS every session
+  with a 2–3 question mixed review tail from earlier topics (blocked-only
+  practice is a fluency illusion). The place moves on each answer to a walk
+  question (`advancePath`), never on the tail.
+- **Random**: blueprint-weighted across the chosen domains; seen items included.
+- **Practice this topic** (notes domain page) interleaves a topic's
+  subtopics; Build a set gets topic chips.
+- Saved: settings `studyMode` (unset = follow the stage: diagnose → Random,
+  learn → Guided, later → Smart; the learner's choice always wins),
+  `studyDomain`, `studySize`; progress `studyPath.inOrder` / `.guided` per
+  scope. All optional and checked by the backup checker (its fit mode
+  included); a restored In order place whose question no longer exists is
+  dropped, so the scope starts over.
+- **Timer default everywhere**: with Settings → Study defaults → Timed
+  practice on, every non-mock session (review, Today's plan, concept, topic,
+  saved, mistakes, bank, the modes) starts timed (`newSession`). Practice's
+  own switch still overrides one set; mocks keep their start sheet.
+
+**Games (mobile 1.5).** *Root or Rumor* (`engine/games/rootOrRumor.ts`) plays
+one-line statements from the notes: Rumors are the exam traps; Roots are the
+first sentence of "How ISACA thinks" and "How it works" lines, kept only
+when they are whole standalone sentences of 8–30 words (no questions, no
+e.g. fragments, nothing that leans on the line before; the filter runs on
+the bundled notes at load and on CI). Each statement is a review *card*
+(progress `cards`, same Leitner rules, never readiness or mastery; restored
+cards for notes that no longer exist are dropped). The registry counts its
+pool from the notes (`notesPool`). *Call It First*
+(`engine/games/callItFirst.ts`) shows the stem, asks for the principle from 3
+keyConcepts, then shows the options; a keyConcept that repeats over 60% of
+the key option's words leaves that question out, decoys are never
+near-copies, and the pre-read hint makes the answer assisted. `related`
+holds concept names, not ids, so near-topic decoys are matched by name and
+topic. Both use `GameIntro` (Seedling / Sapling / Heartwood), the shared
+recap and the minPool guard.
 
 ### The content pipeline
 ```
