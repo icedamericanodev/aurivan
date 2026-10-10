@@ -100,7 +100,10 @@ export const useSession = create<SessionState>()(
             visitMs = { ...visitMs };
             delete visitMs[questionId];
           }
-          return { active: { ...s.active, responses: { ...s.active.responses, [questionId]: r }, ...(visitMs ? { visitMs } : {}) } };
+          // `at` (Build D): stamped here, when the answer is saved, for the
+          // "last 10% of the time" line on mock results.
+          const response = { at: Date.now(), ...r };
+          return { active: { ...s.active, responses: { ...s.active.responses, [questionId]: response }, ...(visitMs ? { visitMs } : {}) } };
         }),
       addVisitTime: (questionId, ms) =>
         set((s) => {

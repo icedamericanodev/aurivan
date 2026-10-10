@@ -12,7 +12,7 @@ import { Button, Chip, ChipRow, Enter, Gap, HeroPanel, ICON_SIZE, Lead, ListRow,
 import type { Difficulty } from '../../content/types';
 import { MINUTES_PER_QUESTION } from '../../engine/dayPlan';
 import { REVIEW_UNIT } from '../../engine/srs';
-import { guardedStart, reviewSubtitle, startMock, startPractice, startReview } from '../../lib/sessions';
+import { guardedStart, reviewSubtitle, startPractice, startReview } from '../../lib/sessions';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -129,14 +129,15 @@ export default function Practice() {
           title="Mini mock"
           subtitle={`${miniMinutes} min · feedback at the end`}
           accessibilityLabel={`Mini mock, ${mini} questions, ${miniMinutes} minutes, feedback at the end`}
-          onPress={() => guardedStart(() => startMock(cert.id, mini), open)}
+          // The start sheet first: timing (standard, extra time, untimed) and "hide the clock".
+          onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(mini) } })}
         />
         <ListRow
           lead={<Lead value={String(cert.exam.questions)} unit="questions" />}
           title="Full mock"
           subtitle={`${hours} hours · weighted like the real ${cert.name}`}
           accessibilityLabel={`Full mock, ${cert.exam.questions} questions, ${hours} hours`}
-          onPress={() => guardedStart(() => startMock(cert.id), open)}
+          onPress={() => router.push({ pathname: '/mock-start', params: { questions: String(cert.exam.questions) } })}
           last
         />
         <Gap h={space.sm} />

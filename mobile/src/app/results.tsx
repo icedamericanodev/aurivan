@@ -1,4 +1,7 @@
 /**
+ * Build D: a timed mock shows a Pacing panel (components/pace.tsx) under
+ * the stats; an untimed one is labelled and says pacing stats skip it.
+ *
  * Results — score rings per domain (Grove v2 growth rings in domain tones,
  * replacing the old ring and bars), the stat row, and a question-by-question
  * review (your answer vs the best answer). "Practice what I missed"
@@ -9,11 +12,13 @@ import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { OptionCard } from '../components/quiz';
 import { DomainRings } from '../components/journey';
+import { PacingPanel } from '../components/pace';
 import { BigNum, Button, Enter, Gap, Row, Screen, Section, Stat, StatRow, T, Tag } from '../components/ui';
 import { getCertification } from '../content/certifications';
 import { findQuestion } from '../content/loader';
 import { displayToOriginal, originalToDisplay, renderText } from '../engine/shuffle';
-import { scoreSession } from '../lib/finishSession';
+import { TIMING_LABEL } from '../engine/pace';
+import { scoreSession, sessionPacing } from '../lib/finishSession';
 import { trapTip } from '../engine/games/trapSpotter';
 import { startFromIds } from '../lib/sessions';
 import { useSession } from '../store/session';
@@ -26,6 +31,8 @@ export default function Results() {
   const clear = useSession((s) => s.clear);
   const [openId, setOpenId] = useState<string | null>(null);
   const score = useMemo(() => (active ? scoreSession(active) : null), [active]);
+  // Mock pacing: time used, median, checks, unanswered, last 10%, slowest domain.
+  const pacing = useMemo(() => (active?.mode === 'mock' && active.deadline ? sessionPacing(active) : null), [active]);
 
   if (!active || !score) {
     return (
@@ -62,7 +69,8 @@ export default function Results() {
   return (
     <Screen edges={['top', 'bottom']}>
       <Enter i={0}>
-        <T v="meta">{active.title}</T>
+        {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
+        <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : active.title}</T>
         <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>
           {pct >= 75 ? 'Strong work.' : pct >= 60 ? 'Getting there.' : 'Every miss is a lesson.'}
         </T>
@@ -103,6 +111,14 @@ export default function Results() {
           <T v="meta" style={{ marginTop: space.md }}>
             Practice scores are not scaled exam scores. {cert.exam.passingNote}
           </T>
+        )}
+        {active.mode === 'mock' && !active.deadline && (
+          <T v="meta" style={{ marginTop: space.sm }}>Untimed mock: your answers count toward readiness, and pacing stats leave it out.</T>
+        )}
+        {pacing && (
+          <View style={{ marginTop: space.md }}>
+            <PacingPanel pacing={pacing} cert={cert} />
+          </View>
         )}
         <Gap h={space.xl} />
         {missed.length > 0 && (

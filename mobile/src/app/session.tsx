@@ -11,6 +11,9 @@
  *
  * MOCK: pick (changeable) → Next. Timer, flags, and a navigator grid.
  * No feedback until you submit the whole exam — just like the real thing.
+ * Build D: the clock lives in the shared PaceStrip under the header (or
+ * "Clock hidden" / "Untimed", chosen on the start sheet), with a pace line
+ * that changes only at the 25 / 50 / 75% checks (engine/pace.ts).
  */
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -46,6 +49,8 @@ import {
   type OptionState,
 } from '../components/quiz';
 import { addMs } from '../engine/answerClock';
+import { dueCheckpoints, formatClock, mockPace, paceMessage, spokenClock, statusOf } from '../engine/pace';
+import { PaceStrip, type PaceStripProps } from '../components/pace';
 import { haptic } from '../lib/haptics';
 import { reportIssue } from '../lib/report';
 import { Button, Gap, ICON_SIZE, ListRow, Row, SegmentBar, Stem, T, Tag } from '../components/ui';
@@ -70,15 +75,8 @@ const NO_BOOKMARKS: string[] = [];
 /** At this text size the confidence chips move out of the sticky footer (spec §10.7). */
 const HUGE_TEXT = 1.6;
 
-function formatClock(ms: number) {
-  const total = Math.max(0, Math.floor(ms / 1000));
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  const mm = String(m).padStart(2, '0');
-  const ss = String(s).padStart(2, '0');
-  return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
-}
+/** The mock clock's last stretch: shown in clay (never the error colour). */
+const LOW_TIME_MS = 5 * 60_000;
 
 export default function SessionScreen() {
   const { c } = useTheme();
@@ -186,6 +184,33 @@ export default function SessionScreen() {
   }, [isMock, active?.deadline, active?.finishedAt]);
 
   const remaining = active?.deadline ? active.deadline - now : 0;
+
+  // Pace checks at 25 / 50 / 75% of the time (engine/pace.ts). Each is
+  // recorded ONCE in the session (so a reload keeps the line) and announced
+  // once to screen readers. "Done" = answered or flagged (parked).
+  useEffect(() => {
+    if (!isMock || !active?.deadline || active.finishedAt) return;
+    const cert0 = getCertification(active.certId);
+    if (!cert0) return;
+    const done = active.questionIds.filter((id) => active.responses[id] || active.flagged.includes(id)).length;
+    const { targetSec } = mockPace(cert0.exam, active.questionIds.length, active.timing ?? 'standard');
+    const before = active.checkpoints ?? [];
+    const next = dueCheckpoints(before, active.deadline - active.startedAt, now - active.startedAt, done, targetSec);
+    if (next.length > before.length) {
+      useSession.getState().setCheckpoints(next);
+      const last = next[next.length - 1];
+      AccessibilityInfo.announceForAccessibility(`Pace check. ${paceMessage({ status: statusOf(last.deviation), minutes: last.minutes })}`);
+    }
+  }, [isMock, now, active]);
+
+  // Clock hidden: say once when the last 5 minutes start (the deadline still applies).
+  const lowAnnounced = useRef(false);
+  const lowNow = isMock && Boolean(active?.deadline) && !active?.finishedAt && remaining > 0 && remaining < LOW_TIME_MS;
+  useEffect(() => {
+    if (!lowNow || lowAnnounced.current) return;
+    lowAnnounced.current = true;
+    if (active?.hideClock) AccessibilityInfo.announceForAccessibility('Less than 5 minutes left.');
+  }, [lowNow, active?.hideClock]);
   useEffect(() => {
     if (isMock && active?.deadline && !active.finishedAt && remaining <= 0) {
       finishSession(); // the finishedAt effect below navigates to /results
@@ -344,7 +369,23 @@ export default function SessionScreen() {
   // Cross-link: after a miss, offer the lesson written to prepare for this question.
   const reviewLesson = response && !response.correct ? lessonPreparing(active.certId, q.id) : undefined;
   const saved = bookmarks.includes(qid);
-  const lowTime = isMock && remaining < 5 * 60_000;
+  const lowTime = isMock && remaining < LOW_TIME_MS;
+  // The shared pace strip (components/pace.tsx): mock clock and pace line.
+  const lastCheck = active.checkpoints?.[active.checkpoints.length - 1];
+  const strip: PaceStripProps | null = !isMock
+    ? null
+    : !active.deadline
+      ? { clock: 'untimed' }
+      : {
+          clock: active.hideClock ? 'hidden' : { text: formatClock(remaining), spoken: `Time left ${spokenClock(remaining)}`, low: lowTime },
+          clockUnit: 'left',
+          line:
+            active.hideClock && lowTime
+              ? { text: 'Less than 5 minutes left.', tone: 'cue' }
+              : lastCheck
+                ? { text: paceMessage({ status: statusOf(lastCheck.deviation), minutes: lastCheck.minutes }), tone: statusOf(lastCheck.deviation) }
+                : { text: 'Pace checks at 25, 50 and 75% of the time.', tone: 'note' },
+        };
   const largeText = fontScale >= LARGE_TEXT;
   const confidenceInScroll = fontScale >= HUGE_TEXT;
   // Coach me content: the Eliminate tip (letters mapped to what's on screen)
@@ -383,9 +424,8 @@ export default function SessionScreen() {
         </Pressable>
         <SegmentBar total={total} done={Object.keys(active.responses).length} current={active.index} />
         {isMock ? (
-          <T v="label" num color={lowTime ? c.wrong : c.ink} accessibilityLabel={`Time remaining ${formatClock(remaining)}`}>
-            {formatClock(remaining)}
-          </T>
+          // The clock moved to the pace strip below; this keeps the bar centred.
+          <View style={{ width: 44, marginRight: -10 }} />
         ) : (
           <Pressable
             accessibilityRole="button"
@@ -402,6 +442,7 @@ export default function SessionScreen() {
           </Pressable>
         )}
       </Row>
+      {strip && <PaceStrip {...strip} />}
 
       <View style={{ flex: 1 }}>
         <ScrollView
