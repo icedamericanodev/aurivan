@@ -52,6 +52,7 @@ export function GameFrame({
   onInfo,
   infoOpen,
   strip,
+  scrollToY,
 }: {
   title: string;
   index: number;
@@ -64,6 +65,12 @@ export function GameFrame({
   infoOpen?: boolean;
   /** Fixed under the header, outside the scroll: Daylight's pace strip (components/pace.tsx). */
   strip?: ReactNode;
+  /**
+   * Scroll so this point of the content (a y measured with onLayout inside
+   * `children`) sits near the top, e.g. Call It First's options appearing
+   * below the fold. Null / left out = leave the scroll alone.
+   */
+  scrollToY?: number | null;
 }) {
   const { c } = useTheme();
   // Measured height of the sticky footer, so the scroll can clear it.
@@ -73,6 +80,11 @@ export function GameFrame({
   useEffect(() => {
     if (infoOpen) scrollRef.current?.scrollTo({ y: 0, animated: false });
   }, [infoOpen]);
+  useEffect(() => {
+    // `children` sit under the content's top padding (space.md); leave a little
+    // air above. No animation: it moves the page once, calmly, under any motion setting.
+    if (scrollToY != null) scrollRef.current?.scrollTo({ y: Math.max(0, scrollToY + space.md - space.lg), animated: false });
+  }, [scrollToY]);
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Pushed header: close · round progress · live score (Figtree tabular: it changes as you watch). */}

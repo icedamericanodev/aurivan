@@ -5,15 +5,21 @@
  * - Root or Rumor (UX review H1, P7, O4): the Heartwood Why step is
  *   announced and grouped, the reveal is spoken with the verdict, and a
  *   missed myth offers its note.
+ * - Call It First (UX review P5, P6; code review): principle cards are never
+ *   spoken as "best answer", the step-1 caption doesn't repeat the card's
+ *   tag, and the answer time counts only the time the options were shown.
  *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
  */
 import { router } from 'expo-router';
-import { AccessibilityInfo } from 'react-native';
+import { AccessibilityInfo, AppState, type AppStateStatus } from 'react-native';
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer';
 import Results from '../app/results';
 import RootOrRumor from '../app/game/rumor';
+import CallItFirst from '../app/game/callit';
+import { OptionCard } from '../components/quiz';
+import { selectCert } from '../store/progress';
 import { getNotes } from '../content/notes';
 import { rumorStatements, type Statement } from '../engine/games/rootOrRumor';
 import { finishSession } from '../lib/finishSession';
@@ -186,5 +192,65 @@ describe('Root or Rumor: what a screen reader hears, and the note after a missed
     toRumor();
     press('Rumor, an exam myth');
     expect(root().findAll((n) => n.props.label === 'Read the note')).toHaveLength(0);
+  });
+});
+
+describe('Call It First: principle cards, the step-1 caption, and the answer time', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+  const cards = () =>
+    root()
+      .findAllByType(OptionCard)
+      .filter((n) => n.props.spokenSuffix !== undefined);
+  const labelOf = (n: ReactTestInstance) => n.findAll((x) => typeof x.props.accessibilityLabel === 'string' && x.props.accessibilityLabel.startsWith('Option '))[0].props.accessibilityLabel as string;
+
+  it('principle cards say "the principle" / "your pick, not the principle", never "best answer"; the caption is "Step 1 · your call"', () => {
+    mount(<CallItFirst />);
+    press('Start');
+    const first = root()
+      .findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Which principle does it test?')[0]
+      .findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
+    expect(first).toHaveLength(3);
+    act(() => {
+      first[0].props.onPress();
+    });
+    const spoken = cards().map(labelOf);
+    expect(spoken.length).toBeGreaterThanOrEqual(1);
+    expect(spoken.some((l) => /, (your pick, )?the principle$/.test(l))).toBe(true);
+    expect(spoken.every((l) => /, (your pick, )?(not )?the principle$/.test(l) && !l.includes('best answer'))).toBe(true);
+    // Picked a decoy: both cards stay; picked the principle: one card says so.
+    expect(spoken.length === 2 ? spoken.some((l) => l.endsWith(', your pick, not the principle')) : spoken[0].endsWith(', your pick, the principle')).toBe(true);
+    expect(allText()).toContain('Step 1 · your call');
+  });
+
+  it('the answer time leaves out step 1: 30 s naming the principle, 5 s on the options = about 5 s', () => {
+    jest.useFakeTimers({ now: Date.UTC(2026, 9, 10, 9) });
+    // The app is in front (the clock pauses in the background).
+    jest.spyOn(AppState, 'addEventListener').mockImplementation(() => ({ remove: () => {} }) as ReturnType<typeof AppState.addEventListener>);
+    Object.defineProperty(AppState, 'currentState', { value: 'active' as AppStateStatus, configurable: true });
+    mount(<CallItFirst />);
+    press('Start');
+    act(() => {
+      jest.advanceTimersByTime(30_000);
+    });
+    const pick = root().findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
+    act(() => {
+      pick[0].props.onPress();
+    });
+    act(() => {
+      jest.advanceTimersByTime(5_000);
+    });
+    const opts = root()
+      .findAll((n) => n.props.accessibilityRole === 'radiogroup' && n.props.accessibilityLabel === 'Answer options')[0]
+      .findAll((n) => n.props.accessibilityRole === 'radio' && typeof n.props.onPress === 'function');
+    act(() => {
+      opts[0].props.onPress();
+    });
+    const answers = Object.values(selectCert(useProgress.getState(), 'cisa').answers);
+    expect(answers).toHaveLength(1);
+    expect(answers[0].ms).toBeGreaterThanOrEqual(4_500);
+    expect(answers[0].ms).toBeLessThan(6_000);
   });
 });

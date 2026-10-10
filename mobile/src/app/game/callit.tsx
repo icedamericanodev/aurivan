@@ -36,6 +36,7 @@ import { clip, firstSentence, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
+import { moveFocus } from '../../lib/a11y';
 import { logGame } from '../../lib/activity';
 import { certOutline } from '../../lib/outline';
 import { useAnswerClock } from '../../lib/useAnswerClock';
@@ -69,16 +70,22 @@ function CallItFirst() {
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const [thinkLeft, setThinkLeft] = useState(0);
   const thinkRef = useRef<View>(null);
+  // Where the options start in the scroll (step 2 scrolls them into view).
+  const [optionsY, setOptionsY] = useState<number | null>(null);
 
   const item = round?.items[i];
   const q = item ? findQuestion(cert.id, item.id) : undefined;
   const perm = item && round ? round.perms[item.id] : undefined;
-  // Time from the question appearing to the answer (Build C quiet data).
-  const readClock = useAnswerClock(round && item ? `${round.seed}:${i}:${item.id}` : undefined);
+  // Time to answer (Build C quiet data). Held during step 1 and the think
+  // pause: only the time with the options on screen counts (code review).
+  const readClock = useAnswerClock(round && item ? `${round.seed}:${i}:${item.id}` : undefined, phase === 'principle' || phase === 'think');
 
   // Heartwood: a 10-second think with the options hidden, counted down in whole seconds.
   useEffect(() => {
     if (phase !== 'think') return;
+    // The options are hidden: put screen-reader focus on the pause card, so
+    // the learner hears why nothing can be picked yet (UX review O4).
+    moveFocus(thinkRef);
     const until = Date.now() + THINK_MS;
     const t = setInterval(() => {
       const left = until - Date.now();
@@ -113,6 +120,7 @@ function CallItFirst() {
     setCardPick(null);
     setAnswer(null);
     setHint(false);
+    setOptionsY(null);
   };
 
   if (!round) {
@@ -200,6 +208,8 @@ function CallItFirst() {
       index={i}
       total={round.items.length}
       score={score}
+      // Step 2: the options appear below the cards; bring them into view.
+      scrollToY={phase === 'answer' ? optionsY : null}
       footer={
         phase === 'reveal' ? (
           <Button
@@ -259,12 +269,21 @@ function CallItFirst() {
       {/* Step 1: the three principle cards (they stay, marked, once picked). */}
       {tier !== 'heartwood' && (
         <View accessibilityRole="radiogroup" accessibilityLabel="Which principle does it test?">
-          {phase !== 'principle' && <T v="caption" style={{ marginBottom: space.xs }}>The principle</T>}
+          {/* Not "The principle": the card's own tag already says it (UX review P6). */}
+          {phase !== 'principle' && <T v="caption" style={{ marginBottom: space.xs }}>Step 1 · your call</T>}
           {item.cards.map((text, k) =>
             phase === 'principle' ? (
               <OptionCard key={k} letter={LETTERS[k]} text={text} state="idle" onPress={() => pickCard(k)} />
             ) : k === item.correct || k === cardPick ? (
-              <OptionCard key={k} letter={LETTERS[k]} text={text} state={cardState(k)} tag={k === item.correct ? 'The principle' : 'Your pick'} />
+              <OptionCard
+                key={k}
+                letter={LETTERS[k]}
+                text={text}
+                state={cardState(k)}
+                tag={k === item.correct ? 'The principle' : 'Your pick'}
+                // A principle card is not the answer: never "best answer" (UX review P5).
+                spokenSuffix={k === item.correct ? (k === cardPick ? ', your pick, the principle' : ', the principle') : ', your pick, not the principle'}
+              />
             ) : null,
           )}
         </View>
@@ -272,7 +291,7 @@ function CallItFirst() {
 
       {/* Step 2: the options appear. */}
       {(phase === 'answer' || phase === 'reveal') && (
-        <View style={{ marginTop: space.lg }}>
+        <View style={{ marginTop: space.lg }} onLayout={(e) => setOptionsY(e.nativeEvent.layout.y)}>
           {tier !== 'heartwood' && (
             <T v="caption" color={principleRight ? c.correct : c.accentText} style={{ marginBottom: space.sm }}>
               {principleRight ? 'Principle named. Now find the option that matches it.' : 'The principle is marked above. Now find the option that matches it.'}
