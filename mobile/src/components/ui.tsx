@@ -640,22 +640,28 @@ export function Chip({
   selected,
   onPress,
   accessibilityLabel,
+  accessibilityHint,
   disabled,
+  checkbox,
 }: {
   label: string;
   selected: boolean;
   onPress: () => void;
-  /** Spoken name when the visible label has symbols. */
+  /** Spoken name when the visible label is short (e.g. "Remind on Monday" for "Mon"). */
   accessibilityLabel?: string;
+  accessibilityHint?: string;
   disabled?: boolean;
+  /** One of several independent on/off choices (e.g. reminder days): spoken as checkbox, checked / not checked. */
+  checkbox?: boolean;
 }) {
   const { c } = useTheme();
   return (
     <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ selected, ...(disabled ? { disabled } : {}) }}
+      accessibilityRole={checkbox ? 'checkbox' : 'button'}
+      accessibilityState={{ ...(checkbox ? { checked: selected } : { selected }), ...(disabled ? { disabled } : {}) }}
       disabled={disabled}
-      accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; "selected" state is spoken
+      accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel ?? label} // the ✓ is visual; the state is spoken
       onPress={onPress}
       hitSlop={4} // 40pt chip + 4pt each side = 48pt touch target
       style={({ pressed }) => [

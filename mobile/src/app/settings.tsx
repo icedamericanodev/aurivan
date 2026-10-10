@@ -200,17 +200,25 @@ export default function Settings() {
               onInc={() => moveTime(MINUTE_STEP)}
             />
           </View>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm }}>
-            {DAY_CHIPS.map((d) => (
-              <Chip
-                key={d.day}
-                label={d.short}
-                accessibilityLabel={d.long}
-                selected={days.includes(d.day)}
-                disabled={busy}
-                onPress={() => updateReminder((r) => ({ days: toggleDay(r.days, d.day) }))}
-              />
-            ))}
+          <T v="caption">Days</T>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: -space.sm }}>
+            {DAY_CHIPS.map((d) => {
+              const on = days.includes(d.day);
+              // The last day left can't be turned off: say why, and point to the switch.
+              const last = on && days.length === 1;
+              return (
+                <Chip
+                  key={d.day}
+                  checkbox
+                  label={d.short}
+                  accessibilityLabel={`Remind on ${d.long}`}
+                  accessibilityHint={last ? 'At least one day stays on. Use the switch to stop reminders.' : undefined}
+                  selected={on}
+                  disabled={busy}
+                  onPress={() => updateReminder((r) => ({ days: toggleDay(r.days, d.day) }))}
+                />
+              );
+            })}
           </View>
           <T v="meta">At most one reminder a day. Turn it off any time.</T>
         </View>

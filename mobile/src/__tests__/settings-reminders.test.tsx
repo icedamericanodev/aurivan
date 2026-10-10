@@ -97,8 +97,8 @@ describe('Settings → Study reminder', () => {
   it('changing time and days while off saves, and asks nothing', () => {
     press('Hour later');
     press('Minutes later');
-    press('Saturday');
-    press('Sunday');
+    press('Remind on Saturday');
+    press('Remind on Sunday');
     expect(useSettings.getState().reminder).toMatchObject({ hour: 20, minute: 15, days: [1, 2, 3, 4, 5] });
     expect(allText()).toContain('Weekdays at 20:15');
     expect(mockEnsure).not.toHaveBeenCalled();
@@ -146,7 +146,7 @@ describe('Settings → Study reminder', () => {
 
   it('turning off cancels ours and keeps the chosen time and days; turning back on restores them', async () => {
     press('Hour later');
-    press('Sunday');
+    press('Remind on Sunday');
     await flip(true);
     await flip(false);
     expect(mockCancel).toHaveBeenCalledTimes(1);
@@ -186,11 +186,24 @@ describe('Settings → Study reminder', () => {
     act(() => {
       pending = reminderSwitch().props.onValueChange(true);
     });
-    const disabled = root().findAll((n) => typeof n.props.onPress === 'function' && n.props.disabled === true && /later|earlier|Monday/.test(String(n.props.accessibilityLabel)));
+    const disabled = root().findAll((n) => typeof n.props.onPress === 'function' && n.props.disabled === true && /later|earlier|Remind on Monday/.test(String(n.props.accessibilityLabel)));
     expect(disabled.length).toBeGreaterThan(0);
     await act(async () => {
       allow(true);
       await pending;
     });
+  });
+
+  it('day chips are checkboxes named "Remind on …", under a "Days" caption; the last day explains itself', () => {
+    expect(allText()).toContain('Days');
+    const chip = (day: string) => root().findAll((n) => typeof n.type === 'string' && n.props.accessibilityLabel === `Remind on ${day}`)[0];
+    expect(chip('Monday').props.accessibilityRole).toBe('checkbox');
+    expect(chip('Monday').props.accessibilityState).toMatchObject({ checked: true });
+    expect(chip('Monday').props.accessibilityHint).toBeUndefined();
+    act(() => {
+      useSettings.getState().setReminder({ ...useSettings.getState().reminder, days: [1] });
+    });
+    expect(chip('Monday').props.accessibilityHint).toBe('At least one day stays on. Use the switch to stop reminders.');
+    expect(chip('Tuesday').props.accessibilityState).toMatchObject({ checked: false });
   });
 });
