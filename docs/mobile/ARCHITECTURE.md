@@ -193,10 +193,12 @@ questions by the study-notes subtopic, through `engine/outline.ts`, which
 turns the notes (Build C `practiceIds`) into one ordered topic list
 (`lib/outline.ts` caches it per cert).
 - **Smart** (`engine/smartMix.ts`, behaviour review §3): 30% due reviews
-  (50% when the backlog is over 2× the daily goal), 40% weak spots drawn by
+  (50% when the backlog in the session's scope is over 2× the daily goal;
+  a due question is always tagged Due), 40% weak spots drawn by
   `blueprintWeight × (1 − mastery) + exploreBonus` (mastery = credit /
   max(answered, 5), answers over 30 days count half, +0.15 under 3
-  answers), 20% new from the most under-sampled domain, 10% refreshers
+  answers; a pick from a subtopic never answered is tagged New, not Weak
+  spot), 20% new from the most under-sampled domain, 10% refreshers
   (right 14+ days ago, not in review); a short bucket passes its gap on.
   Order: never two from one subtopic in a row, at most 3 weak spots in a
   row, open with a likely success. Over the last 10 answers, above 85%

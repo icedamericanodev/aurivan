@@ -152,6 +152,45 @@ describe('Smart: slot mix', () => {
     expect(plan.items.filter((i) => i.reason === 'due' || i.reason === 'refresher')).toHaveLength(0);
   });
 
+  it('never calls a never-answered subtopic a "Weak spot": it is tagged New', () => {
+    const { questions, index } = fixture();
+    for (let seed = 1; seed <= 5; seed++) {
+      const plan = buildSmart({ pool: questions, answers: {}, review: {}, domainWeights: { '1': 50, '2': 50 }, subtopicOf: index.subtopicOf, count: 10, dailyGoal: 20, now: NOW, rng: createRng(seed) });
+      expect(plan.items.filter((i) => i.reason === 'weak')).toEqual([]);
+      expect(plan.items.every((i) => i.reason === 'new')).toBe(true);
+    }
+  });
+
+  it('a question that is due is always tagged Due, even past the Due share', () => {
+    const { questions, index } = fixture();
+    const answers: Record<string, AnswerRecord> = {};
+    const review: Record<string, ReviewEntry> = {};
+    // Every question in domain 1 is a due review; the pool is domain 1 only.
+    const pool = questions.filter((q) => q.domainId === '1');
+    for (const q of pool) {
+      answers[q.id] = rec(false, 2);
+      review[q.id] = { box: 1, dueAt: NOW - 1000, lastSeen: NOW - 2 * DAY_MS, reps: 1 };
+    }
+    const plan = buildSmart({ pool, answers, review, domainWeights: { '1': 50, '2': 50 }, subtopicOf: index.subtopicOf, count: 10, dailyGoal: 50, now: NOW, rng: createRng(4) });
+    expect(plan.items).toHaveLength(10);
+    expect(plan.items.every((i) => i.reason === 'due')).toBe(true);
+  });
+
+  it('counts the backlog inside the session scope only', () => {
+    const { questions, index } = fixture();
+    const answers: Record<string, AnswerRecord> = {};
+    const review: Record<string, ReviewEntry> = {};
+    // 16 due in domain 1 (more than twice a goal of 5); the session is domain 2.
+    for (const q of questions.filter((x) => x.domainId === '1')) {
+      answers[q.id] = rec(false, 2);
+      review[q.id] = { box: 1, dueAt: NOW - 1000, lastSeen: NOW - 2 * DAY_MS, reps: 1 };
+    }
+    const d2 = questions.filter((q) => q.domainId === '2');
+    const run = (r: Record<string, ReviewEntry>) =>
+      buildSmart({ pool: d2, answers, review: r, domainWeights: { '1': 50, '2': 50 }, subtopicOf: index.subtopicOf, count: 10, dailyGoal: 5, now: NOW, rng: createRng(5) }).items;
+    expect(run(review)).toEqual(run({}));
+  });
+
   it('never re-asks a question waiting in review before it is due', () => {
     const { questions, index } = fixture();
     const review: Record<string, ReviewEntry> = {};

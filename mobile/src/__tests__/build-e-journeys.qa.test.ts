@@ -132,11 +132,11 @@ describe('a new learner (no data) runs every mode on All and on each domain', ()
     }
   });
 
-  // BUG (Major): a learner with no answers sees "Weak spot" on most Smart
+  // FIXED (was Major): a learner with no answers saw "Weak spot" on most Smart
   // questions. With nothing due, the Due slots fall through to the weak
   // bucket, and every untouched subtopic has mastery 0, so 8 of 10 never-seen
   // questions are tagged "Weak spot" (2 are "New").
-  it.failing('Smart never calls a question a "Weak spot" before the learner has answered anything', () => {
+  it('Smart never calls a question a "Weak spot" before the learner has answered anything', () => {
     for (const scope of [undefined, '2']) {
       for (let seed = 1; seed <= 5; seed++) {
         const plan = smart({ pool: poolOf(scope), count: 10, rng: createRng(seed) });
@@ -201,11 +201,11 @@ describe('Smart with history', () => {
     expect([10, 20, 50].map((c) => dueTagged(40, c))).toEqual([3, 6, 15]);
   });
 
-  // BUG (Minor): the backlog is counted across ALL domains, even when the
+  // FIXED (was Minor): the backlog was counted across ALL domains, even when the
   // session is for one domain. A learner with 100 reviews due in domain 1
   // who studies domain 5 (nothing due there) gets the 50% due split, so the
   // empty due slots spill into Weak spot and "New" shrinks from 2 to 1.
-  it.failing('a backlog in another domain does not change a one-domain Smart session', () => {
+  it('a backlog in another domain does not change a one-domain Smart session', () => {
     const answers: Record<string, AnswerRecord> = {};
     const review: Record<string, ReviewEntry> = {};
     for (const q of bank.filter((x) => x.domainId === '1').slice(0, 100)) {
@@ -218,12 +218,12 @@ describe('Smart with history', () => {
     expect(withBacklog.items).toEqual(without.items);
   });
 
-  // BUG (Minor): the Weak-spot bucket can take a question that is DUE for
+  // FIXED (was Minor): the Weak-spot bucket could take a question that is DUE for
   // review and tag it "Weak spot" (smartMix.ts pickWeak's own comment says
   // "last answer wrong (not queued)"). The due cap then means nothing: here
   // every question in scope is due, the session is all reviews, but half of
   // them say "Weak spot".
-  it.failing('a question due for review is always tagged Due, never Weak spot', () => {
+  it('a question due for review is always tagged Due, never Weak spot', () => {
     const pool = topicQuestionIds(topics.find((t) => t.domainId === '2')!)
       .map(find)
       .filter((q): q is PackQuestion => Boolean(q));

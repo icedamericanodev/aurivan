@@ -4,14 +4,17 @@
  * Plain English for the founder. A Smart session of N questions is filled
  * from four "buckets":
  *   - Due (30%): spaced reviews that are due, most overdue first. If the
- *     review backlog is more than twice the daily goal, this rises to 50%.
+ *     review backlog (due reviews in the session's scope) is more than twice
+ *     the daily goal, this rises to 50%.
  *   - Weak spot (40%): subtopics are drawn at random, but a subtopic is more
  *     likely to be drawn the more the exam weighs it and the less the
  *     learner has shown they know it:
  *         weight = blueprintWeight × (1 − mastery) + exploreBonus
  *     mastery = credit / max(answered, 5) (a Coach-me answer is half credit),
  *     where answers older than 30 days count half; exploreBonus = 0.15 while
- *     a subtopic has fewer than 3 answers.
+ *     a subtopic has fewer than 3 answers. A question drawn from a subtopic
+ *     the learner has never answered is tagged "New", not "Weak spot", and a
+ *     question that is due is left to the Due bucket (always tagged "Due").
  *   - New (20%): unseen questions from the domain that is most
  *     under-sampled compared with the blueprint.
  *   - Refresher (10%): questions answered right at least 14 days ago that
@@ -203,6 +206,10 @@ export function buildSmart(input: SmartInput): SmartPlan {
 
   // Weak spot: draw a subtopic by weight, then its most useful question:
   // last answer wrong (not queued), then unseen, then the oldest right one.
+  // A question that is DUE belongs to the Due bucket only, so its tag always
+  // says "Due" (QA Build E): the Weak-spot bucket never takes one.
+  const isDue = (id: string) => Boolean(review[id]) && review[id].dueAt <= now;
+  const weakOk = (q: PackQuestion) => free(q.id) && !waiting(q.id) && !isDue(q.id);
   const statusRank = (q: PackQuestion) => {
     const r = answers[q.id];
     if (r && !r.lastCorrect) return 0;
@@ -216,7 +223,7 @@ export function buildSmart(input: SmartInput): SmartPlan {
       const open: [string, number][] = [];
       for (const [g, qs] of groups) {
         if (used.has(g)) continue;
-        if (!qs.some((q) => free(q.id) && !waiting(q.id))) continue;
+        if (!qs.some(weakOk)) continue;
         const bw = (input.domainWeights[qs[0].domainId] ?? 0) / totalWeight;
         const w = weakWeight(bw, mastery.get(g) ?? 0, answeredIn.get(g) ?? 0);
         if (w > 0) open.push([g, w]);
@@ -229,12 +236,14 @@ export function buildSmart(input: SmartInput): SmartPlan {
       }
       const g = draw(open, rng);
       used.add(g);
-      const cands = shuffled(groups.get(g)!.filter((q) => free(q.id) && !waiting(q.id)), rng).sort(
+      const cands = shuffled(groups.get(g)!.filter(weakOk), rng).sort(
         (a, b) => statusRank(a) - statusRank(b) || (answers[a.id]?.lastAt ?? 0) - (answers[b.id]?.lastAt ?? 0),
       );
       const q = byTarget(cands)[0];
       if (!q) continue;
-      take(q.id, 'weak');
+      // A subtopic the learner has never answered isn't a weak spot yet: the
+      // explore bonus still draws it, but the tag says "New" (QA Build E).
+      take(q.id, answeredIn.get(g) ? 'weak' : 'new');
       got++;
     }
     return got;
@@ -296,7 +305,9 @@ export function buildSmart(input: SmartInput): SmartPlan {
   };
 
   const pickers: Record<SmartBucket, (n: number) => number> = { due: pickDue, weak: pickWeak, new: pickNew, refresher: pickRefresher };
-  const want = slotCounts(count, dueIds(review, now).length, input.dailyGoal);
+  // The backlog is counted inside the session's scope only: reviews due in
+  // another domain don't change a one-domain session (QA Build E).
+  const want = slotCounts(count, dueList.length, input.dailyGoal);
   // Fill in order; a short bucket passes its gap to the next one. After the
   // refresher bucket, any gap goes round again (weak, then new).
   let carry = 0;
