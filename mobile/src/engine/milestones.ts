@@ -8,7 +8,9 @@
  *   No mystery badges, no rarity, no leaderboards.
  * - Rules, from the behaviour review:
  *   1. Answers given after "Coach me" never count. Neither do game answers
- *      for the mastery badges (games never count toward mastery).
+ *      for the mastery badges (games never count toward mastery): an answer
+ *      record whose LAST answer came from a game (`lastGame`) is skipped by
+ *      every milestone worked out from the saved answers.
  *   2. No badge for raw question counts, minutes, taps or "% of the bank"
  *      (that would also leak the bank size). The diagnostic's 20 questions
  *      are the one fixed number, and it is the diagnostic itself.
@@ -24,8 +26,10 @@
  * Pure TypeScript: no React, no storage.
  */
 import { GAMES } from './games/registry';
+import { DAYLIGHT_SIZE, PACE_RIGHT } from './games/daylight';
 import { share } from './games/growth';
 import { DIAGNOSTIC_SIZE, DOMAIN_TARGET, MOCK_DOMAIN_FLOOR } from './journey';
+import { CLEAR_RIGHT } from './studyPath';
 import { CHECKPOINTS, PACE_TOLERANCE, type MockTiming } from './pace';
 import { domainOf, type AnswerRecord } from './readiness';
 import type { Confidence } from './srs';
@@ -50,8 +54,12 @@ export const FRESH_GAP_DAYS = 7;
 export const SNARE_WINDOW = 10;
 export const SNARE_RIGHT = 8;
 export const KEEL_ROUNDS = 3;
-export const SIGNPOST_FIRSTS = 10;
-export const MYTHS = 25;
+// Rolling windows (behaviour review Build F): the LAST N different items,
+// so playing the same few again and again can't add up to a badge.
+export const SIGNPOST_WINDOW = 10;
+export const SIGNPOST_RIGHT = 8;
+export const MYTH_WINDOW = 25;
+export const MYTH_RIGHT = 20;
 export const PACE_ROUNDS = 3;
 export const GAME_FIXES = 10;
 
@@ -79,7 +87,17 @@ export type SkillBadgeId = 'snare-wise' | 'even-keel' | 'signpost-reader' | 'myt
 export type BadgeId = MilestoneId | SkillBadgeId;
 
 /** The quiet counters the store keeps (they only ever go up). */
-export type CounterId = 'longRecall' | 'graduated' | 'loopFixed' | 'gameFixes' | 'mythsCleared' | 'signpostFirst' | 'paceRounds';
+export type CounterId = 'longRecall' | 'graduated' | 'loopFixed' | 'gameFixes' | 'paceRounds';
+
+/** The rolling windows the store keeps: the last N different items, oldest first. */
+export type WindowId = 'myths' | 'signposts';
+/** One item's latest result in a rolling window. */
+export interface WindowHit {
+  id: string;
+  ok: boolean;
+}
+/** How many different items each window keeps. */
+export const WINDOW_SIZE: Record<WindowId, number> = { myths: MYTH_WINDOW, signposts: SIGNPOST_WINDOW };
 
 /** What the progress store saves per certification (all optional for old saves). */
 export interface CertMilestones {
@@ -92,8 +110,20 @@ export interface CertMilestones {
   counts?: Partial<Record<CounterId, number>>;
   /** The last SURE_WINDOW unassisted, non-game "sure" answers, oldest first (true = right). */
   sure?: boolean[];
+  /** Long Memory: the questions already counted (each counts once). At most LONG_RECALLS. */
+  longIds?: string[];
+  /** Myth Clearer: the last MYTH_WINDOW different rumors (note cards) and whether each was cleared. */
+  myths?: WindowHit[];
+  /** Signpost Reader: the last SIGNPOST_WINDOW different FIRST questions and whether the word was read right. */
+  signposts?: WindowHit[];
   /** Questions missed in a game, waiting to be fixed later outside games: id → day missed. */
   gameMisses?: Record<string, string>;
+  /**
+   * Note cards missed in a game (Root or Rumor, Field Guide, Canopy Call,
+   * Stepping Stones), waiting to be fixed on a later day: card id → day
+   * missed. Kept until the fix, so a same-day "Play again" doesn't lose it.
+   */
+  cardMisses?: Record<string, string>;
   /** Study days for this certification (cumulative), and the last day counted. */
   days?: number;
   lastDay?: string;
@@ -111,9 +141,11 @@ export interface MockFacts {
 
 /** Every number the rules read, worked out by lib/milestones.ts. */
 export interface MilestoneFacts {
-  /** Unique questions whose last answer was given without Coach me. */
+  /** Unique questions whose last answer was given without Coach me, outside games. */
   cleanAnswered: number;
   topicsClear: number;
+  /** The topic closest to clear (Topic Clear's progress line); none when no topic exists. */
+  topicBest?: { right: number; studied: boolean };
   /** Per domain, from unassisted answers only. */
   domains: { id: string; short: string; answered: number; mastery: number }[];
   loopFixed: number;
@@ -132,8 +164,8 @@ export interface MilestoneFacts {
   gamesTotal: number;
   snareHits: readonly boolean[];
   keelRun: number;
-  signpostFirst: number;
-  mythsCleared: number;
+  signposts: readonly WindowHit[];
+  myths: readonly WindowHit[];
   paceRounds: number;
   gameFixes: number;
 }
@@ -194,9 +226,19 @@ export const BADGES: BadgeDef[] = [
   // Skill badges: "pressed leaves" in You → Field notes.
   { id: 'snare-wise', kind: 'skill', name: 'Snare-wise', rule: `Spot the snare in ${SNARE_RIGHT} of your last ${SNARE_WINDOW} ${g('trap')} questions.` },
   { id: 'even-keel', kind: 'skill', name: 'Even Keel', rule: `${g('sprint')} says “well calibrated” ${KEEL_ROUNDS} rounds in a row.` },
-  { id: 'signpost-reader', kind: 'skill', name: 'Signpost Reader', rule: `Read the deciding word right in ${SIGNPOST_FIRSTS} FIRST questions in ${g('priority')}.` },
-  { id: 'myth-clearer', kind: 'skill', name: 'Myth Clearer', rule: `Clear ${MYTHS} rumors in ${g('rumor')}.` },
-  { id: 'sure-footed-pace', kind: 'skill', name: 'Sure-Footed Pace', rule: `Finish ${PACE_ROUNDS} ${g('daylight')} rounds at Sapling pace or faster, inside the light.` },
+  {
+    id: 'signpost-reader',
+    kind: 'skill',
+    name: 'Signpost Reader',
+    rule: `Read the deciding word right in ${SIGNPOST_RIGHT} of your last ${SIGNPOST_WINDOW} different FIRST questions in ${g('priority')}.`,
+  },
+  { id: 'myth-clearer', kind: 'skill', name: 'Myth Clearer', rule: `Clear ${MYTH_RIGHT} of your last ${MYTH_WINDOW} different rumors in ${g('rumor')}.` },
+  {
+    id: 'sure-footed-pace',
+    kind: 'skill',
+    name: 'Sure-Footed Pace',
+    rule: `Finish ${PACE_ROUNDS} ${g('daylight')} rounds at Sapling pace or faster, inside the light, with ${PACE_RIGHT} of ${DAYLIGHT_SIZE} right.`,
+  },
   { id: 'whole-grove', kind: 'skill', name: 'Whole Grove', rule: 'Play every game at least once.' },
   { id: 'back-on-path', kind: 'skill', name: 'Back on the Path', rule: `Fix ${GAME_FIXES} game misses later: right on a later day, in review or a later round.` },
 ];
@@ -220,6 +262,18 @@ const one = (b: BadgeId, met: boolean, progress: number, detail: string): MarkSt
   { key: b, badge: b, label: badgeDef(b)!.name, met, progress: met ? 1 : progress, detail },
 ];
 
+/**
+ * A rolling-window badge (Snare-wise style): only once the window is full,
+ * and then `need` of the last `size` right. Half the bar fills while the
+ * window fills, the rest with the right count.
+ */
+function windowMark(b: BadgeId, hits: readonly WindowHit[], size: number, need: number, played: string, right: string): MarkState[] {
+  const last = hits.slice(-size);
+  const ok = last.filter((h) => h.ok).length;
+  const full = last.length >= size;
+  return one(b, full && ok >= need, full ? frac(ok, need) : frac(last.length, size) * 0.5, full ? `${ok} of your last ${size} ${right}` : of(last.length, size, played));
+}
+
 /** Know What You Know: the right-share of the last SURE_WINDOW sure answers. */
 export function sureShare(sure: readonly boolean[]): { n: number; right: number } {
   const last = sure.slice(-SURE_WINDOW);
@@ -242,7 +296,21 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const out: MarkState[] = [];
   const firstFoothold = f.cleanAnswered >= DIAGNOSTIC_SIZE;
   out.push(...one('first-foothold', firstFoothold, frac(f.cleanAnswered, DIAGNOSTIC_SIZE), of(f.cleanAnswered, DIAGNOSTIC_SIZE, 'answered without a hint')));
-  out.push(...one('topic-clear', f.topicsClear >= 1, 0, f.topicsClear >= 1 ? 'A topic is clear' : 'No topic clear yet'));
+  // Topic Clear: how close the nearest topic is (its lesson, and right answers out of the 4 needed).
+  const tb = f.topicBest;
+  const tbRight = Math.min(tb?.right ?? 0, CLEAR_RIGHT);
+  out.push(
+    ...one(
+      'topic-clear',
+      f.topicsClear >= 1,
+      tb ? (tbRight + (tb.studied ? 1 : 0)) / (CLEAR_RIGHT + 1) : 0,
+      f.topicsClear >= 1
+        ? 'A topic is clear'
+        : tb
+          ? `Closest topic: ${tbRight} of ${CLEAR_RIGHT} right · lesson ${tb.studied ? 'done' : 'not done yet'}`
+          : 'No topic clear yet',
+    ),
+  );
   out.push(...one('ten-topics', f.topicsClear >= TEN_TOPICS, frac(f.topicsClear, TEN_TOPICS), of(f.topicsClear, TEN_TOPICS, 'topics clear')));
   for (const d of f.domains) {
     const met = d.answered >= FIRM_ANSWERS && d.mastery >= FIRM_MASTERY - 1e-9;
@@ -294,8 +362,8 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     ),
   );
   out.push(...one('even-keel', f.keelRun >= KEEL_ROUNDS, frac(f.keelRun, KEEL_ROUNDS), of(f.keelRun, KEEL_ROUNDS, 'rounds in a row')));
-  out.push(...one('signpost-reader', f.signpostFirst >= SIGNPOST_FIRSTS, frac(f.signpostFirst, SIGNPOST_FIRSTS), of(f.signpostFirst, SIGNPOST_FIRSTS, 'FIRST questions read right')));
-  out.push(...one('myth-clearer', f.mythsCleared >= MYTHS, frac(f.mythsCleared, MYTHS), of(f.mythsCleared, MYTHS, 'rumors cleared')));
+  out.push(...windowMark('signpost-reader', f.signposts, SIGNPOST_WINDOW, SIGNPOST_RIGHT, 'FIRST questions played', 'FIRST questions read right'));
+  out.push(...windowMark('myth-clearer', f.myths, MYTH_WINDOW, MYTH_RIGHT, 'rumors played', 'rumors cleared'));
   out.push(...one('sure-footed-pace', f.paceRounds >= PACE_ROUNDS, frac(f.paceRounds, PACE_ROUNDS), of(f.paceRounds, PACE_ROUNDS, 'rounds')));
   out.push(
     ...one('whole-grove', f.gamesTotal > 0 && f.gamesPlayed >= f.gamesTotal, frac(f.gamesPlayed, f.gamesTotal), of(f.gamesPlayed, f.gamesTotal, 'games played')),
@@ -400,7 +468,11 @@ export function afterAnswer(prev: CertMilestones | undefined, a: AnswerEvent): {
   let fixedLater = false;
   const clean = !a.game && !a.assisted;
   if (clean && a.correct) {
-    if (a.prevLastAt !== undefined && a.at - a.prevLastAt >= LONG_GAP_DAYS * DAY_MS) m = bump(m, 'longRecall');
+    // Long Memory counts QUESTIONS, so each question counts once (the rule says "25 questions").
+    const longIds = m.longIds ?? [];
+    if (a.prevLastAt !== undefined && a.at - a.prevLastAt >= LONG_GAP_DAYS * DAY_MS && !longIds.includes(a.questionId) && longIds.length < LONG_RECALLS) {
+      m = bump({ ...m, longIds: [...longIds, a.questionId] }, 'longRecall');
+    }
     if (a.openMistakeAt !== undefined && day > dayKey(a.openMistakeAt)) {
       m = bump(m, 'loopFixed');
       fixedLater = true;
@@ -420,13 +492,40 @@ export function afterAnswer(prev: CertMilestones | undefined, a: AnswerEvent): {
   return { milestones: m, fixedLater };
 }
 
-/** A missed note card (box 1) answered right on a later day: a game miss fixed. */
-export function afterCard(prev: CertMilestones | undefined, wasMissed: boolean, missedAt: number | undefined, correct: boolean, at: number): CertMilestones | undefined {
-  if (!wasMissed || !correct || missedAt === undefined || dayKey(at) <= dayKey(missedAt)) return prev;
-  return bump(prev ?? { earned: {} }, 'gameFixes');
+/**
+ * A note card answer in a game (Back on the Path). A miss remembers its day
+ * (the first miss, until fixed); the first right answer on a LATER day is a
+ * game miss fixed, even when a same-day right answer already moved the card
+ * on in review. Same object when nothing changed.
+ */
+export function afterCard(prev: CertMilestones | undefined, cardId: string, correct: boolean, at: number): CertMilestones | undefined {
+  const day = dayKey(at);
+  const missedOn = prev?.cardMisses?.[cardId];
+  if (!correct) {
+    if (missedOn || Object.keys(prev?.cardMisses ?? {}).length >= GAME_MISSES_CAP) return prev;
+    const m = prev ?? { earned: {} };
+    return { ...m, cardMisses: { ...m.cardMisses, [cardId]: day } };
+  }
+  if (!prev || !missedOn || day <= missedOn) return prev;
+  const cardMisses = { ...prev.cardMisses };
+  delete cardMisses[cardId];
+  return bump({ ...prev, cardMisses }, 'gameFixes');
 }
 
-/** Add a counter (game rounds: rumors cleared, FIRST words read, Daylight rounds at pace). */
+/**
+ * Add a round's results to a rolling window: each item keeps only its latest
+ * result (a repeat moves to the end), and only the last N different items
+ * stay. Same object when there is nothing to add.
+ */
+export function addToWindow(prev: CertMilestones | undefined, id: WindowId, hits: readonly WindowHit[]): CertMilestones | undefined {
+  if (!hits.length) return prev;
+  const m = prev ?? { earned: {} };
+  let list = m[id] ?? [];
+  for (const h of hits) list = [...list.filter((x) => x.id !== h.id), { id: h.id, ok: h.ok }];
+  return { ...m, [id]: list.slice(-WINDOW_SIZE[id]) };
+}
+
+/** Add a counter (game rounds: Daylight rounds at pace). */
 export function addCount(prev: CertMilestones | undefined, id: CounterId, by: number): CertMilestones | undefined {
   if (!(by > 0)) return prev;
   return bump(prev ?? { earned: {} }, id, Math.round(by));
@@ -451,46 +550,47 @@ export function takeNext(m: CertMilestones | undefined): { key?: string; milesto
 
 // ── Back-fill at launch ──────────────────────────────────────────────────
 
-/** The saved data a back-fill reads (a cert's progress plus the streak's days). */
+/** The saved data a back-fill reads (one cert's own progress only). */
 export interface BackfillInput {
   answers: Record<string, AnswerRecord>;
   mistakes: Record<string, { at: number; resolved?: boolean; fixedLater?: boolean }>;
   mocks: { finishedAt: number }[];
   mastery?: Record<string, { firstDay: string; masteredAt?: string }>;
-  recentDays?: readonly string[];
 }
 
 /**
  * Work out, once, what older saves can still tell us:
  * - mistakes already fixed on a later day (resolved, and the last answer was
- *   right, unassisted, on a later day than the miss) — a lower bound;
- * - the last 50 unassisted "sure" answers (each question's last answer);
- * - the study days we can still see (answers, mocks, mastery dates, the
- *   streak's recent days) — again a lower bound, never an overcount;
- * - whether any gap of a week or more was followed by more study.
+ *   right, unassisted, outside a game, on a later day than the miss) — a
+ *   lower bound;
+ * - the last 50 unassisted, non-game "sure" answers (each question's last answer);
+ * - the study days we can still see in THIS cert's data (answers, mocks,
+ *   mastery dates) — again a lower bound, never an overcount. The streak's
+ *   recent days are left out on purpose: they are shared by every exam and
+ *   survive a Reset, so they could hand back days the learner cleared.
  * Answer counts that were never kept (long gaps, graduations) start at 0.
+ * Fresh Start is never back-filled: a gap in old data can't show the
+ * learner came back and finished a session, so it is earned live only.
  */
-export function inferFromSaves(i: BackfillInput): { loopFixed: string[]; sure: boolean[]; days: string[]; returned: boolean } {
+export function inferFromSaves(i: BackfillInput): { loopFixed: string[]; sure: boolean[]; days: string[] } {
   const loopFixed: string[] = [];
   for (const [id, m] of Object.entries(i.mistakes)) {
     const a = i.answers[id];
-    if (m.resolved && !m.fixedLater && a && a.lastCorrect && !a.lastAssisted && dayKey(a.lastAt) > dayKey(m.at)) loopFixed.push(id);
+    if (m.resolved && !m.fixedLater && a && a.lastCorrect && !a.lastAssisted && !a.lastGame && dayKey(a.lastAt) > dayKey(m.at)) loopFixed.push(id);
   }
   const sure = Object.values(i.answers)
-    .filter((a) => a.lastConfidence === 'sure' && !a.lastAssisted)
+    .filter((a) => a.lastConfidence === 'sure' && !a.lastAssisted && !a.lastGame)
     .sort((a, b) => a.lastAt - b.lastAt)
     .slice(-SURE_WINDOW)
     .map((a) => a.lastCorrect);
-  const days = new Set<string>(i.recentDays ?? []);
+  const days = new Set<string>();
   for (const a of Object.values(i.answers)) days.add(dayKey(a.lastAt));
   for (const m of i.mocks) days.add(dayKey(m.finishedAt));
   for (const s of Object.values(i.mastery ?? {})) {
     days.add(s.firstDay);
     if (s.masteredAt) days.add(s.masteredAt);
   }
-  const sorted = [...days].sort();
-  const returned = sorted.some((d, k) => k > 0 && daysBetween(sorted[k - 1], d) >= FRESH_GAP_DAYS);
-  return { loopFixed, sure, days: sorted, returned };
+  return { loopFixed, sure, days: [...days].sort() };
 }
 
 // ── Restore: a badge must be backed by the data it came from ─────────────
@@ -504,7 +604,7 @@ export interface MarkEvidence {
   notesRead?: string[];
   gameBest?: Record<string, unknown>;
   gameGrowth?: Record<string, { hits?: boolean[] } | undefined>;
-  milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days'>;
+  milestones?: Pick<CertMilestones, 'counts' | 'sure' | 'days' | 'myths' | 'signposts'>;
 }
 
 /**
@@ -555,9 +655,9 @@ export function markSupported(key: string, e: MarkEvidence): boolean {
     case 'even-keel':
       return e.gameBest?.sprint !== undefined;
     case 'signpost-reader':
-      return c('signpostFirst') >= SIGNPOST_FIRSTS;
+      return (e.milestones?.signposts?.length ?? 0) >= SIGNPOST_WINDOW;
     case 'myth-clearer':
-      return c('mythsCleared') >= MYTHS;
+      return (e.milestones?.myths?.length ?? 0) >= MYTH_WINDOW;
     case 'sure-footed-pace':
       return c('paceRounds') >= PACE_ROUNDS;
     case 'whole-grove':

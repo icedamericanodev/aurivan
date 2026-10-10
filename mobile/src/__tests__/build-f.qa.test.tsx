@@ -188,13 +188,15 @@ function save15(): { cert: CertProgress; streak: { current: number; best: number
     streak: { current: 12, best: 12, lastDay: dayKey(at(1)), recentDays: Array.from({ length: 12 }, (_, k) => dayKey(at(12 - k))) },
   };
 }
-/** The 11 marks (10 milestones: Firm Footing has two leaves) that 1.5 save shows. */
+/**
+ * The 10 marks (9 milestones: Firm Footing has two leaves) that 1.5 save shows.
+ * Fresh Start is earned live only (code review Build F): old data can't show a return AND a finished session.
+ */
 const EXPECTED_MARKS = [
   'dress-rehearsal',
   'firm-footing:1',
   'firm-footing:4',
   'first-foothold',
-  'fresh-start',
   'know-what-you-know',
   'loop-closed',
   'on-pace',
@@ -213,11 +215,11 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     const n = ensureBackfill('cisa', T0);
     const m = cp().milestones!;
     expect(Object.keys(m.earned).sort()).toEqual(EXPECTED_MARKS);
-    // Firm Footing's two leaves count once: 10 milestones, not 11.
-    expect(n).toBe(10);
-    expect(badgeCount(Object.keys(m.earned))).toBe(10);
-    expect(m.backfill).toEqual({ at: T0, count: 10 });
-    expect(backfillLine(n!)).toBe('You’d already earned 10 milestones.');
+    // Firm Footing's two leaves count once: 9 milestones, not 10.
+    expect(n).toBe(9);
+    expect(badgeCount(Object.keys(m.earned))).toBe(9);
+    expect(m.backfill).toEqual({ at: T0, count: 9 });
+    expect(backfillLine(n!)).toBe('You’d already earned 9 milestones.');
     // Quiet: nothing queued for a moment.
     expect(m.queue ?? []).toEqual([]);
     // Coach me answers (all of D5) never earned a leaf.
@@ -259,8 +261,8 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
       r = create(<Milestones />);
     });
     const text = allText();
-    expect(text).toContain('You’d already earned 10 milestones.');
-    expect(text).toContain('10 of 15');
+    expect(text).toContain('You’d already earned 9 milestones.');
+    expect(text).toContain('9 of 15');
     expect(text).toContain('Firm Footing · IS Audit, IS Operations');
     expect(text).toContain('Rooted · 10 days');
     // The screen's own data, checked against the rules.
@@ -269,7 +271,7 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
     const next = nearest(views.filter((v) => v.earned.length === 0 || v.next));
     const nextIds = next.map((v) => v.def.id);
     const ahead = views.filter((v) => v.earned.length === 0 && !nextIds.includes(v.def.id)).map((v) => v.def.id);
-    expect(earned).toHaveLength(10);
+    expect(earned).toHaveLength(9);
     expect(next).toHaveLength(3);
     // Closest first.
     const progress = next.map((v) => v.next!.progress);
@@ -287,6 +289,8 @@ describe('Journey 1: a 1.5 learner upgrades', () => {
 
 describe('Journey 2: earning a badge', () => {
   it('appears once on Results; a second badge in the same session waits for the next session', () => {
+    // What app/_layout.tsx does at launch (a new learner: nothing found).
+    ensureBackfill('cisa', T0);
     startFromIds('cisa', d4.slice(0, 20), 'Twenty');
     d4.slice(0, 20).forEach((id) => useProgress.getState().recordAnswer('cisa', id, true));
     finishSession();
@@ -335,7 +339,7 @@ describe('Journey 2: earning a badge', () => {
   // BUG: the Milestones screen says "game answers don't count toward
   // milestones", but game answers (recorded with mastery: false) count as
   // clean answers for First Foothold, Firm Footing, Whole Map and Topic Clear.
-  it.failing('game answers (Daylight, Trap Spotter, Priority Lens, Sure Footing) never earn a milestone', () => {
+  it('game answers (Daylight, Trap Spotter, Priority Lens, Sure Footing) never earn a milestone', () => {
     d4.slice(0, 20).forEach((id) => useProgress.getState().recordAnswer('cisa', id, true, undefined, { mastery: false }));
     checkMilestones('cisa', { finished: true });
     expect(cp().milestones?.earned['first-foothold']).toBeUndefined();
@@ -349,7 +353,10 @@ describe('Journey 3: reset and restore', () => {
     ensureBackfill('cisa', T0);
     finishGameRound('cisa', 'canopy', { score: 9, rate: 0.9, tier: 'seedling' });
     useProgress.getState().resetCert('cisa');
-    expect(cp().milestones).toBeUndefined();
+    // A reset leaves an empty record with the back-fill marked done (nothing found, seen).
+    expect(cp().milestones?.earned).toEqual({});
+    expect(cp().milestones?.queue).toBeUndefined();
+    expect(cp().milestones?.backfill).toEqual({ at: expect.any(Number), count: 0, seen: true });
     expect(cp().gameGrowth).toBeUndefined();
   });
 
@@ -357,13 +364,14 @@ describe('Journey 3: reset and restore', () => {
   // and reads the streak's recent days, which a reset keeps. A learner who
   // studied 10+ of the last 14 days gets Rooted back at once, with the line
   // "You'd already earned 1 milestone." (lib/milestones.ts ensureBackfill).
-  it.failing('after a reset, the back-fill finds nothing (no Rooted from the kept streak)', () => {
+  it('after a reset, the back-fill finds nothing (no Rooted from the kept streak)', () => {
     upgrade();
     ensureBackfill('cisa', T0);
     useProgress.getState().resetCert('cisa');
     // What app/_layout.tsx does when it sees no back-fill mark.
+    // The reset marked the back-fill as done, so it doesn't run at all (null) and finds nothing.
     const n = ensureBackfill('cisa', T0);
-    expect(n).toBe(0);
+    expect(n ?? 0).toBe(0);
     expect(cp().milestones?.earned ?? {}).toEqual({});
     expect(cp().milestones?.days ?? 0).toBe(0);
   });
@@ -384,7 +392,7 @@ describe('Journey 3: reset and restore', () => {
     expect(out.kind).toBe('ok');
     expect(cp().milestones).toBeUndefined();
     // app/_layout.tsx: no back-fill mark → back-fill again.
-    expect(ensureBackfill('cisa', T0)).toBe(10);
+    expect(ensureBackfill('cisa', T0)).toBe(9);
     expect(Object.keys(cp().milestones!.earned).sort()).toEqual(EXPECTED_MARKS);
     expect(cp().milestones!.queue ?? []).toEqual([]);
     expect(cp().milestones!.counts?.loopFixed).toBe(10); // not doubled
@@ -407,7 +415,7 @@ describe('Journey 3: reset and restore', () => {
     const back = read.data.progress.byCert.cisa.milestones!;
     expect(Object.keys(back.earned).sort()).toEqual(EXPECTED_MARKS);
     expect(back.queue).toEqual(['firm-footing:4']);
-    expect(back.backfill).toEqual(expect.objectContaining({ count: 10 }));
+    expect(back.backfill).toEqual(expect.objectContaining({ count: 9 }));
     await restoreBackup(read.data, { now: T0 });
     expect(Object.keys(cp().milestones!.earned).sort()).toEqual(EXPECTED_MARKS);
     // The back-fill already ran for this data: it does not run (or speak) again.
@@ -499,7 +507,7 @@ describe('Journey 5a: Field Guide on the real notes', () => {
   // once) moves to box 2, so a right answer on a LATER day no longer counts
   // as a game miss fixed (Back on the Path). Question misses keep their miss
   // day until fixed on a later day; card misses lose it (store/progress.ts recordCard).
-  it.failing('Back on the Path: a missed term, right again the same day and then on a later day, counts as fixed', () => {
+  it('Back on the Path: a missed term, right again the same day and then on a later day, counts as fixed', () => {
     const t = all[0];
     useProgress.getState().recordCard('cisa', t.id, false); // missed
     jest.setSystemTime(T0 + 60_000);

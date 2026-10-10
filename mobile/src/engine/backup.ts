@@ -19,7 +19,7 @@
  */
 import { MAX_ANSWER_MS } from './answerClock';
 import { GAME_TIERS, HITS_CAP, type GameTier } from './games/growth';
-import { keepSupported, SURE_WINDOW, type CounterId } from './milestones';
+import { keepSupported, LONG_RECALLS, MYTH_WINDOW, SIGNPOST_WINDOW, SURE_WINDOW, type CounterId } from './milestones';
 import type { Confidence } from './srs';
 import type { MockTiming } from './pace';
 import { examDateLabel } from './examDay';
@@ -165,10 +165,15 @@ function oneOf<V extends string>(...values: V[]): Check<V> {
 function nullable<T>(check: Check<T>): Check<T | null> {
   return (x, at) => (x === null ? null : check(x, at));
 }
-function list<T>(check: Check<T>, max: number): Check<T[]> {
+/**
+ * A list of at most `max` items. When fitting the phone's own data for
+ * export, an over-long list is cut to `max`: by default the FIRST items
+ * (stores that keep newest-first), or with `keep: 'newest'` the LAST items
+ * (rolling windows kept oldest-first, like game hits and "sure" answers).
+ */
+function list<T>(check: Check<T>, max: number, keep: 'first' | 'newest' = 'first'): Check<T[]> {
   return (x, at) => {
-    // Fitting: keep the first `max` (stores keep newest-first or capped lists already).
-    if (fitting && Array.isArray(x) && x.length > max) x = x.slice(0, max);
+    if (fitting && Array.isArray(x) && x.length > max) x = keep === 'newest' ? x.slice(-max) : x.slice(0, max);
     if (!Array.isArray(x) || x.length > max) return bad(at);
     return x.map((v, i) => check(v, `${at}[${i}]`));
   };
@@ -231,7 +236,7 @@ const id = str(MAX_KEY);
 const answerRecord = rule(
   obj(
     { attempts: count, correctCount: count, lastCorrect: bool, lastAt: ts },
-    { lastAssisted: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE },
+    { lastAssisted: bool, lastGame: bool, ms: int(0, MAX_ANSWER_MS), lastConfidence: CONFIDENCE },
   ),
   (a) => a.correctCount <= a.attempts,
   (a) => ({ ...a, correctCount: Math.min(a.correctCount, a.attempts) }),
@@ -272,7 +277,7 @@ const gameScore = range(-1000, 100_000);
 /** Build F: a game's level and its last skill-step results (engine/games/growth.ts). */
 const gameGrowth = obj(
   { tier: oneOf<GameTier>(...GAME_TIERS), up: int(0, 100), down: int(0, 100) },
-  { hits: list(bool, HITS_CAP), run: count },
+  { hits: list(bool, HITS_CAP, 'newest'), run: count },
 );
 
 /**
@@ -285,18 +290,22 @@ const COUNTERS: Record<CounterId, Check<number>> = {
   graduated: count,
   loopFixed: count,
   gameFixes: count,
-  mythsCleared: count,
-  signpostFirst: count,
   paceRounds: count,
 };
+/** One item in a rolling window (Myth Clearer, Signpost Reader). */
+const windowHit = obj({ id, ok: bool });
 const milestones = obj(
   { earned: map(ts, 200) },
   {
     queue: list(id, 50),
     backfill: obj({ at: ts, count }, { seen: bool }),
     counts: obj({}, COUNTERS),
-    sure: list(bool, SURE_WINDOW),
+    sure: list(bool, SURE_WINDOW, 'newest'),
+    longIds: list(id, LONG_RECALLS),
+    myths: list(windowHit, MYTH_WINDOW, 'newest'),
+    signposts: list(windowHit, SIGNPOST_WINDOW, 'newest'),
     gameMisses: map(date, MAX_IDS),
+    cardMisses: map(date, MAX_IDS),
     days: count,
     lastDay: date,
     returnedOn: date,
@@ -655,7 +664,11 @@ function readChecked(raw: Record<string, unknown>, knownCertIds: readonly string
   };
   const settings = settingsCheck(certKey)(readStore(file.stores.settings, SETTINGS_VERSION, null, 'settings'), 'settings');
   const checked = progressCheck(certKey)(readStore(file.stores.progress, PROGRESS_VERSION, migrateProgress, 'progress'), 'progress');
-  const progress = keepSupportedMarks(known ? keepKnownIds(checked, known) : checked);
+  // Badges are checked against the data AS BACKED UP, before ids the bank
+  // no longer has are trimmed: a genuine badge earned on a question that
+  // was later retired must not be dropped (code review, Build F).
+  const supported = keepSupportedMarks(checked);
+  const progress = known ? keepKnownIds(supported, known) : supported;
   // Never write a store row Android can't read back (see MAX_PROGRESS_CHARS).
   if (JSON.stringify(progress).length > MAX_PROGRESS_CHARS) throw new BackupError('too-big', 'progress');
   const exportedAt = typeof file.exportedAt === 'string' && file.exportedAt.length <= 40 ? file.exportedAt : '';

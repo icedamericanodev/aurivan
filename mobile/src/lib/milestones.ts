@@ -32,33 +32,47 @@ import {
   type MilestoneFacts,
 } from '../engine/milestones';
 import { domainMastery, type AnswerRecord } from '../engine/readiness';
+import { CLEAR_RIGHT } from '../engine/studyPath';
 import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { playableGames } from './games';
 import { certOutline, guidedStatus } from './outline';
 
+/** True when an answer can count toward milestones: no Coach me hint, not given in a game. */
+export function isCleanAnswer(a: AnswerRecord): boolean {
+  return !a.lastAssisted && !a.lastGame;
+}
+
 /** The numbers the badge rules read, from one cert's saved progress. */
-export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: number; finished?: boolean; returned?: boolean }): MilestoneFacts | null {
+export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: number; finished?: boolean }): MilestoneFacts | null {
   const cert = getCertification(certId);
   if (!cert) return null;
-  // Coach me answers never count: only answers whose last try had no hint.
+  // Coach me answers and game answers never count: only answers whose last
+  // try had no hint and wasn't in a game. Every badge worked out from the
+  // saved answers reads this `clean` set (or a copy of the progress with it).
   const clean: Record<string, AnswerRecord> = {};
-  for (const [id, a] of Object.entries(cp.answers)) if (!a.lastAssisted) clean[id] = a;
+  for (const [id, a] of Object.entries(cp.answers)) if (isCleanAnswer(a)) clean[id] = a;
+  const cleanCp: CertProgress = { ...cp, answers: clean };
   const domains = domainMastery(cert, clean).map((d) => ({
     id: d.domainId,
     short: cert.domains.find((x) => x.id === d.domainId)?.short ?? d.domainId,
     answered: d.answered,
     mastery: d.mastery,
   }));
-  const topicsClear = certOutline(certId).topics.filter((t) => guidedStatus(certId, t, cp).clear).length;
+  // Topic Clear: each topic's status from clean answers, and the closest one for the progress line.
+  const statuses = certOutline(certId).topics.map((t) => guidedStatus(certId, t, cleanCp));
+  const topicsClear = statuses.filter((s) => s.clear).length;
+  const score = (s: { right: number; studied: boolean }) => Math.min(s.right, CLEAR_RIGHT) + (s.studied ? 1 : 0);
+  const best = statuses.reduce<(typeof statuses)[number] | undefined>((b, s) => (!b || score(s) > score(b) ? s : b), undefined);
   const m = cp.milestones;
   const counts = m?.counts ?? {};
   const games = playableGames(certId);
   const played = games.filter((id) => cp.gameBest[id] !== undefined || (cp.gameRecent[id]?.length ?? 0) > 0).length;
-  const growth = mindsetGrowth(firstTries(cp.answers, cp.mistakes, (id) => findQuestion(certId, id)), opts.now);
+  const growth = mindsetGrowth(firstTries(clean, cp.mistakes, (id) => findQuestion(certId, id)), opts.now);
   return {
     cleanAnswered: Object.keys(clean).length,
     topicsClear,
+    ...(best ? { topicBest: { right: best.right, studied: best.studied } } : {}),
     domains,
     loopFixed: counts.loopFixed ?? 0,
     slipsTagged: Object.values(cp.mistakes).filter((x) => x.slip).length,
@@ -69,14 +83,15 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     fullMockSize: cert.exam.questions,
     mindsetShift: growth.show,
     studyDays: m?.days ?? 0,
-    // Fresh Start: back after a week or more away, and a session just finished today.
-    freshStart: Boolean(opts.returned) || (Boolean(opts.finished) && Boolean(m?.returnedOn) && m?.returnedOn === dayKey(opts.now)),
+    // Fresh Start: back after a week or more away, and a session just finished
+    // today. Live only: the back-fill never awards it.
+    freshStart: Boolean(opts.finished) && Boolean(m?.returnedOn) && m?.returnedOn === dayKey(opts.now),
     gamesPlayed: played,
     gamesTotal: games.length,
     snareHits: cp.gameGrowth?.trap?.hits ?? [],
     keelRun: cp.gameGrowth?.sprint?.run ?? 0,
-    signpostFirst: counts.signpostFirst ?? 0,
-    mythsCleared: counts.mythsCleared ?? 0,
+    signposts: m?.signposts ?? [],
+    myths: m?.myths ?? [],
     paceRounds: counts.paceRounds ?? 0,
     gameFixes: counts.gameFixes ?? 0,
   };
@@ -94,6 +109,10 @@ export function marksFor(certId: string, cp: CertProgress, now = Date.now()) {
  */
 export function checkMilestones(certId: string, opts: { finished?: boolean; now?: number } = {}): string[] {
   const now = opts.now ?? Date.now();
+  // The launch back-fill must come first (app/_layout.tsx runs it at launch;
+  // this is a guard). Otherwise a session finished before it would queue a
+  // whole older history as moments, instead of one quiet summary line.
+  ensureBackfill(certId, now);
   let fresh: string[] = [];
   useProgress.getState().updateMilestones(certId, (m, cp) => {
     const facts = milestoneFacts(certId, cp, { now, finished: opts.finished });
@@ -148,7 +167,8 @@ export function ensureBackfill(certId: string, now = Date.now()): number | null 
       mistakes: cp.mistakes,
       mocks: cp.mocks,
       mastery: cp.mastery,
-      recentDays: useProgress.getState().streak.recentDays,
+      // No streak.recentDays: they are shared by every exam and survive a
+      // Reset, so they could hand back Rooted days the learner cleared.
     });
     const base: CertMilestones = m ?? { earned: {} };
     const lastSeen = inferred.days[inferred.days.length - 1];
@@ -160,7 +180,7 @@ export function ensureBackfill(certId: string, now = Date.now()): number | null 
       days: Math.max(base.days ?? 0, inferred.days.length),
       ...(lastSeen || base.lastDay ? { lastDay: [lastSeen, base.lastDay].filter(Boolean).sort().pop() } : {}),
     };
-    const facts = milestoneFacts(certId, { ...cp, milestones: merged }, { now, returned: inferred.returned });
+    const facts = milestoneFacts(certId, { ...cp, milestones: merged }, { now });
     const keys = facts ? newlyMet(allMarks(facts), merged.earned) : [];
     // The summary speaks of milestones (You → Milestones); skill leaves are saved quietly too.
     found = badgeCount(keys.filter((k) => badgeDef(markBadge(k))?.kind === 'milestone'));

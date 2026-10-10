@@ -92,8 +92,16 @@ describe('export: every state the phone can hold reads back', () => {
         lastAt: T0 - n(400) * DAY,
         // Daylight extended many times, or an old build that never capped.
         ...(rng() < 0.7 ? { ms: pick([0, 1, 45_000, MAX_ANSWER_MS, MAX_ANSWER_MS + 1, 3 * 3_600_000, 12.7 * 1000]) } : {}),
+        // Build F: the last answer came from a game (skipped by milestones).
+        ...(rng() < 0.3 ? { lastGame: true as const } : {}),
       };
     }
+    // Logged mistakes, some already fixed on a later day (Loop Closed).
+    const mistakes: CertProgress['mistakes'] = {};
+    for (const qid of Object.keys(answers).slice(0, n(10))) {
+      mistakes[qid] = { at: T0 - n(30) * DAY, ...(rng() < 0.5 ? { resolved: true } : {}), ...(rng() < 0.5 ? { fixedLater: true } : {}) };
+    }
+    const hitsOf = (len: number) => Array.from({ length: len }, (_, k) => ({ id: `card${k}`, ok: rng() < 0.8 }));
     const mocks: MockResult[] = Array.from({ length: n(8) }, (_, i) => {
       const total = pick([12, 50, 150]);
       return {
@@ -117,7 +125,7 @@ describe('export: every state the phone can hold reads back', () => {
       bookmarks: [],
       mocks,
       lessonsDone: [],
-      mistakes: {},
+      mistakes,
       gameBest: { trap: n(10), sprint: pick([-40, 14, 2_000_000]), daylight: n(7) },
       gameRecent: { sprint: Array.from({ length: n(70) }, () => pick([-5000, 3, 9])) },
       notesRead: [],
@@ -141,9 +149,14 @@ describe('export: every state the phone can hold reads back', () => {
               ),
               ...(rng() < 0.5 ? { queue: ['rooted:10', 'graduate'] } : {}),
               ...(rng() < 0.5 ? { backfill: { at: T0 - n(30) * DAY, count: n(15), ...(rng() < 0.5 ? { seen: true } : {}) } } : {}),
-              counts: { longRecall: n(40), graduated: pick([0, 50, 3_000_000_000]), loopFixed: n(12), gameFixes: n(12), mythsCleared: n(30), signpostFirst: n(12), paceRounds: n(4) },
+              counts: { longRecall: n(40), graduated: pick([0, 50, 3_000_000_000]), loopFixed: n(12), gameFixes: n(12), paceRounds: n(4) },
+              // Rolling windows and Long Memory's counted ids (an older build's
+              // over-long lists too: export keeps the newest).
+              ...(rng() < 0.6 ? { myths: hitsOf(pick([0, 3, 25, 40])), signposts: hitsOf(pick([0, 10, 18])) } : {}),
+              ...(rng() < 0.5 ? { longIds: Object.keys(answers).slice(0, n(26)) } : {}),
               sure: Array.from({ length: n(70) }, () => rng() < 0.8),
               gameMisses: Object.fromEntries(Array.from({ length: n(6) }, () => [pick(ids), dayKey(T0 - n(20) * DAY)])),
+              ...(rng() < 0.5 ? { cardMisses: { 'kt:D4:abc123': dayKey(T0 - n(5) * DAY), 'role:1A1.3:r001': dayKey(T0) } } : {}),
               days: n(100),
               lastDay: dayKey(T0 - n(5) * DAY),
               ...(rng() < 0.3 ? { returnedOn: dayKey(T0) } : {}),
@@ -178,6 +191,22 @@ describe('export: every state the phone can hold reads back', () => {
     const read = restorable();
     if (read.kind !== 'ok') throw new Error(read.code);
     expect(read.data.progress.byCert.cisa.mocks![0]).toEqual({ ...good.mocks[0], minutesUsed: MAX_SESSION_MINUTES });
+  });
+
+  it('over-long rolling windows export their NEWEST results', () => {
+    const cert = randomCert(3);
+    const sure = [...Array.from({ length: 30 }, () => false), ...Array.from({ length: 50 }, () => true)];
+    const myths = Array.from({ length: 40 }, (_, k) => ({ id: `r${k}`, ok: k >= 15 }));
+    cert.milestones = { earned: {}, sure, myths };
+    cert.gameGrowth = { trap: { tier: 'seedling', up: 0, down: 0, hits: [...Array.from({ length: 20 }, () => false), ...Array.from({ length: 30 }, () => true)] } };
+    useProgress.setState({ byCert: { cisa: cert } });
+    const read = restorable();
+    if (read.kind !== 'ok') throw new Error(read.code);
+    const back = read.data.progress.byCert.cisa;
+    expect(back.milestones!.sure).toEqual(Array.from({ length: 50 }, () => true));
+    expect(back.milestones!.myths).toHaveLength(25);
+    expect(back.milestones!.myths![0].id).toBe('r15');
+    expect(back.gameGrowth!.trap!.hits).toEqual(Array.from({ length: 30 }, () => true));
   });
 
   it('an old 1.1-shaped save (no new fields) exports and restores', () => {

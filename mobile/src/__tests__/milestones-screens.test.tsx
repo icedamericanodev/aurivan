@@ -106,6 +106,7 @@ describe('Results: one quiet moment', () => {
   }
 
   it('shows ONE milestone with its rule, buzzes once, and never twice on re-render', () => {
+    ensureBackfill('cisa', T0); // app launch: a new learner's back-fill finds nothing
     finishTwenty();
     mount(<Results />);
     const text = allText();

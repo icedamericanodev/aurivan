@@ -47,7 +47,7 @@ function Signpost() {
   const [pick, setPick] = useState<Letter | null>(null);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   // Build F: each deciding word read right (the skill step), and FIRST ones read right.
-  const [reads, setReads] = useState<{ right: boolean; first: boolean }[]>([]);
+  const [reads, setReads] = useState<{ id: string; right: boolean; first: boolean }[]>([]);
   const [news, setNews] = useState<RoundNews | null>(null);
   const progress = useProgress.getState();
   // Quiet data (Build C): time from the question appearing to the answer.
@@ -104,7 +104,7 @@ function Signpost() {
     // Game answers never count toward the subtopic mastery date (mastery: false).
     progress.recordAnswer(cert.id, q.id, ok, undefined, { ms: readClock(), mastery: false });
     if (!ok) progress.recordMistake(cert.id, q.id, displayToOriginal(d, perm));
-    const nextReads = [...reads, { right: readRight, first: actual === 'FIRST' }];
+    const nextReads = [...reads, { id: q.id, right: readRight, first: actual === 'FIRST' }];
     setReads(nextReads);
     if (i === round.length - 1) {
       setNews(
@@ -113,8 +113,8 @@ function Signpost() {
           rate: nextReads.filter((r) => r.right).length / round.length,
           tier: startingTier(cert.id, 'priority'),
           hits: nextReads.map((r) => r.right),
-          // Signpost Reader: FIRST questions whose deciding word was read right.
-          counts: { signpostFirst: nextReads.filter((r) => r.right && r.first).length },
+          // Signpost Reader's rolling window: every FIRST question, read right or not.
+          windows: { signposts: nextReads.filter((r) => r.first).map((r) => ({ id: r.id, ok: r.right })) },
         }),
       );
     }

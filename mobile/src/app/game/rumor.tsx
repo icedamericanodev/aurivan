@@ -40,6 +40,7 @@ import {
   type Statement,
   type StatementKind,
 } from '../../engine/games/rootOrRumor';
+import type { WindowHit } from '../../engine/milestones';
 import { createRng } from '../../engine/random';
 import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -65,8 +66,8 @@ function RootOrRumor() {
   // Build F: the picker starts on the learner's own level for this game.
   const [tier, setTier] = useState<RumorTier>(() => startingTier(cert.id, 'rumor'));
   const [news, setNews] = useState<RoundNews | null>(null);
-  // Rumors tapped as Rumor this round (Myth Clearer).
-  const [cleared, setCleared] = useState(0);
+  // Every rumor this round and whether it was cleared (Myth Clearer's rolling window).
+  const [myths, setMyths] = useState<WindowHit[]>([]);
   const [round, setRound] = useState<Statement[] | null>(null);
   const [i, setI] = useState(0);
   const [taps, setTaps] = useState<boolean[]>([]);
@@ -90,7 +91,7 @@ function RootOrRumor() {
     setWhysAsked(0);
     setMisses([]);
     setNews(null);
-    setCleared(0);
+    setMyths([]);
   };
 
   if (!round) {
@@ -172,19 +173,21 @@ function RootOrRumor() {
       // hears nothing at all (UX review H1).
       AccessibilityInfo.announceForAccessibility(`${tapVerdict(kind, ok)} Why is it a myth? Pick the reason.`);
     }
-    const myth = ok && s.kind === 'rumor' ? 1 : 0;
-    setCleared((n) => n + myth);
+    // Only rumors (exam myths) go in Myth Clearer's window; roots don't.
+    const mythHits = s.kind === 'rumor' ? [...myths, { id: s.id, ok }] : myths;
+    setMyths(mythHits);
     if (i === round.length - 1) {
       const allTaps = [...taps, ok];
-      setNews(
-        finishGameRound(cert.id, 'rumor', {
-          score: score + (ok ? 1 : 0),
-          rate: rumorScore(allTaps) / round.length,
-          tier,
-          hits: allTaps,
-          counts: { mythsCleared: cleared + myth },
-        }),
-      );
+      const n = finishGameRound(cert.id, 'rumor', {
+        score: score + (ok ? 1 : 0),
+        rate: rumorScore(allTaps) / round.length,
+        tier,
+        hits: allTaps,
+        windows: { myths: mythHits },
+      });
+      setNews(n);
+      // The level moved: "Play again" starts on the new level, not the old one.
+      if (n.change) setTier(n.tier);
     }
   };
 

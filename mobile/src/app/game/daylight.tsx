@@ -43,9 +43,11 @@ import {
   lowLight,
   lowLightLine,
   tierCanExtend,
+  atSurePace,
   canFlag,
   currentItem,
   DAYLIGHT_TIERS,
+  daylightHits,
   daylightMax,
   daylightPace,
   daylightScore,
@@ -154,19 +156,18 @@ function Daylight() {
     fed.current = true;
     const p = useProgress.getState();
     if (state.timedOut.length) p.queueForReview(cert.id, state.timedOut);
-    // The skill step is pace: each question answered before the light set.
-    const inTime = state.ids.map((id) => Boolean(state.answers[id]));
-    const atPace = state.tier !== 'seedling' && finishedInBudget(state);
-    setNews(
-      finishGameRound(cert.id, 'daylight', {
-        score: daylightScore(state),
-        rate: inTime.filter(Boolean).length / Math.max(1, state.ids.length),
-        tier: state.tier,
-        hits: inTime,
-        // Sure-Footed Pace: a round finished inside the light at Sapling pace or faster.
-        counts: { paceRounds: atPace ? 1 : 0 },
-      }),
-    );
+    // The skill step is exam pace: each question answered before the light
+    // set AND right (engine daylightHits), so speed alone never grows the level.
+    const hits = daylightHits(state);
+    const n = finishGameRound(cert.id, 'daylight', {
+      score: daylightScore(state),
+      rate: hits.filter(Boolean).length / Math.max(1, state.ids.length),
+      tier: state.tier,
+      hits,
+      // Sure-Footed Pace: inside the light at Sapling pace or faster, with 4 of 5 right.
+      counts: { paceRounds: atSurePace(state) ? 1 : 0 },
+    });
+    setNews(n);
   }, [state, cert.id]);
 
   const begin = () => {

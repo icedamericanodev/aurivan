@@ -89,6 +89,60 @@ describe('assisted (Coach me) answers never count', () => {
   });
 });
 
+describe('game answers never count toward milestones (lastGame)', () => {
+  it('20 game answers do not earn First Foothold; the record carries lastGame', () => {
+    d4.slice(0, 20).forEach((id) => answer(id, true, { game: true }));
+    expect(cp().answers[d4[0]].lastGame).toBe(true);
+    expect(facts().cleanAnswered).toBe(0);
+    expect(met()).not.toContain('first-foothold');
+  });
+
+  it('a later answer outside a game drops the flag, so it counts again', () => {
+    answer(d4[0], true, { game: true });
+    answer(d4[0]);
+    expect('lastGame' in cp().answers[d4[0]]).toBe(false);
+    expect(facts().cleanAnswered).toBe(1);
+  });
+
+  it('closes the Coach me leak: a hinted answer then a game answer is still not clean', () => {
+    answer(d4[0], true, { assisted: true });
+    answer(d4[0], true, { game: true });
+    expect(cp().answers[d4[0]].lastAssisted).toBeUndefined();
+    expect(facts().cleanAnswered).toBe(0);
+  });
+
+  it('Firm Footing and Topic Clear skip game answers', () => {
+    d4.slice(0, 20).forEach((id) => answer(id, true, { game: true }));
+    expect(facts().domains.find((d) => d.id === '4')!.answered).toBe(0);
+    const topic = certOutline('cisa').topics.find((t) => topicLessons('cisa', t.id).length && t.subtopics.flatMap((s) => s.questionIds).length >= 5)!;
+    useProgress.getState().completeLesson('cisa', topicLessons('cisa', topic.id)[0].id);
+    topic.subtopics
+      .flatMap((s) => s.questionIds)
+      .slice(0, 5)
+      .forEach((id, k) => {
+        jest.setSystemTime(T0 + k * 1000);
+        answer(id, true, { game: true });
+      });
+    expect(facts().topicsClear).toBe(0);
+  });
+
+  it('Topic Clear shows the closest topic’s progress before it is earned', () => {
+    const topic = certOutline('cisa').topics.find((t) => topicLessons('cisa', t.id).length && t.subtopics.flatMap((s) => s.questionIds).length >= 5)!;
+    useProgress.getState().completeLesson('cisa', topicLessons('cisa', topic.id)[0].id);
+    topic.subtopics
+      .flatMap((s) => s.questionIds)
+      .slice(0, 3)
+      .forEach((id, k) => {
+        jest.setSystemTime(T0 + k * 1000);
+        answer(id);
+      });
+    const mark = allMarks(facts()).find((m) => m.key === 'topic-clear')!;
+    expect(mark.met).toBe(false);
+    expect(mark.detail).toBe('Closest topic: 3 of 4 right · lesson done');
+    expect(mark.progress).toBeCloseTo(4 / 5);
+  });
+});
+
 describe('counters through the store', () => {
   it('Loop Closed: a logged miss fixed the next day counts once; same-day or hinted fixes do not', () => {
     const [a, b] = d4;
@@ -145,6 +199,7 @@ describe('one celebration per session', () => {
   it('Results gets ONE milestone; the rest wait for later sessions', () => {
     // 20 clean, right answers in one domain on a full mock-free day: First
     // Foothold and Firm Footing (domain 4) are both met at once.
+    ensureBackfill('cisa', T0); // app launch: a new learner's back-fill finds nothing
     startFromIds('cisa', d4.slice(0, 20), 'Twenty');
     d4.slice(0, 20).forEach((id) => answer(id));
     finishSession();
@@ -237,6 +292,22 @@ describe('back-fill at launch', () => {
     expect(cp().milestones!.backfill!.seen).toBe(true);
   });
 
+  it('a Reset after 12 study days does not hand Rooted back (the streak’s days are not read)', () => {
+    for (let k = 0; k < 12; k++) {
+      jest.setSystemTime(T0 + k * DAY);
+      answer(d4[k]);
+    }
+    checkMilestones('cisa');
+    expect(cp().milestones!.earned['rooted:10']).toBeDefined();
+    expect(useProgress.getState().streak.recentDays?.length ?? 0).toBeGreaterThan(0);
+    useProgress.getState().resetCert('cisa');
+    // The reset marked the back-fill as done: it doesn't run again (null) and finds nothing.
+    expect(ensureBackfill('cisa') ?? 0).toBe(0);
+    expect(cp().milestones?.backfill).toEqual({ at: expect.any(Number), count: 0, seen: true });
+    expect(cp().milestones?.earned?.['rooted:10']).toBeUndefined();
+    expect(cp().milestones?.days ?? 0).toBe(0);
+  });
+
   it('a brand-new learner back-fills nothing and gets no summary', () => {
     expect(ensureBackfill('cisa', T0)).toBe(0);
     expect(backfillLine(0)).toBeNull();
@@ -268,6 +339,20 @@ describe('backup and restore', () => {
     expect(back.earned.graduate).toBeUndefined();
     expect(back.earned['made-up']).toBeUndefined();
     expect(back.queue).not.toContain('rooted:60');
+  });
+
+  it('a genuine badge survives a restore into a newer bank that retired some of its questions', () => {
+    d4.slice(0, 20).forEach((id) => answer(id));
+    checkMilestones('cisa');
+    expect(cp().milestones!.earned['first-foothold']).toBeDefined();
+    const file = JSON.stringify(currentBackup(Date.now()));
+    // The newer bank no longer has 5 of those 20 questions.
+    const all = new Set(getDomainQuestions('cisa', '4').map((q) => q.id));
+    d4.slice(0, 5).forEach((id) => all.delete(id));
+    const known = () => ({ questions: all, lessons: new Set<string>(), notes: new Set<string>() });
+    const data = readBackup(file, ['cisa'], known);
+    expect(Object.keys(data.progress.byCert.cisa.answers!)).toHaveLength(15);
+    expect(data.progress.byCert.cisa.milestones!.earned['first-foothold']).toBeDefined();
   });
 
   it('note cards of every game kind restore while their note, lesson or domain exists', () => {

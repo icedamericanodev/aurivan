@@ -29,6 +29,13 @@ export interface AnswerRecord {
    */
   lastAssisted?: boolean;
   /**
+   * Build F: true when the LAST answer came from a game (the store writes it
+   * when a game records with `mastery: false`). Milestones never count these:
+   * games re-show items soon after their explanation, so recognising an
+   * answer there isn't mastery. Optional: older saves load as "not a game".
+   */
+  lastGame?: boolean;
+  /**
    * Time to answer the LAST attempt, in ms (engine/answerClock.ts): from the
    * question being shown to the answer being committed, without background
    * time. Optional: older saves and answers without a clock have none.

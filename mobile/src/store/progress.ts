@@ -277,6 +277,10 @@ export const useProgress = create<ProgressState>()(
               lastAt: now,
               // Only written when true, so clean answers keep the old shape.
               ...(opts?.assisted ? { lastAssisted: true } : {}),
+              // Build F: a game answer is marked, so milestones can skip it.
+              // Like lastAssisted, the record is rebuilt each answer, so a
+              // later non-game answer drops the flag again.
+              ...(opts?.mastery === false ? { lastGame: true } : {}),
               // Build C quiet data: both describe THIS answer, so they are
               // left out (not carried over) when this answer has none.
               // Clamped to the answer clock's cap, so a record never breaks a backup.
@@ -457,7 +461,7 @@ export const useProgress = create<ProgressState>()(
           if (next) cards[cardId] = next;
           else delete cards[cardId];
           // Build F: a missed card got right on a later day is a game miss fixed (Back on the Path).
-          const milestones = afterCard(cp.milestones, prevCard?.box === 1, prevCard?.lastSeen, correct, now);
+          const milestones = afterCard(cp.milestones, cardId, correct, now);
           return { byCert: { ...s.byCert, [certId]: { ...cp, cards, ...(milestones ? { milestones } : {}) } } };
         }),
 
@@ -489,7 +493,12 @@ export const useProgress = create<ProgressState>()(
           delete days[certId];
           // "Shows once per certification": a reset keeps the dismissed flag.
           const seen = s.byCert[certId]?.moments?.readySeenAt;
-          const fresh: CertProgress = seen ? { ...emptyCert(), moments: { readySeenAt: seen } } : emptyCert();
+          // Build F: a reset is a fresh start for milestones too. The launch
+          // back-fill is marked as already done (nothing found, summary seen),
+          // so it never runs again and re-awards from older data.
+          const milestones: CertMilestones = { earned: {}, backfill: { at: Date.now(), count: 0, seen: true } };
+          const base: CertProgress = { ...emptyCert(), milestones };
+          const fresh: CertProgress = seen ? { ...base, moments: { readySeenAt: seen } } : base;
           return { byCert: { ...s.byCert, [certId]: fresh }, days };
         }),
     }),
@@ -505,7 +514,8 @@ export const useProgress = create<ProgressState>()(
       // Build C added only OPTIONAL fields (AnswerRecord.ms / lastConfidence,
       // CertProgress.mastery): no version bump, old saves load as-is.
       // Build E added only OPTIONAL fields (CertProgress.studyPath / cards): same.
-      // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones): same.
+      // Build F added only OPTIONAL fields (CertProgress.gameGrowth / milestones,
+      // AnswerRecord.lastGame): same.
       version: PROGRESS_VERSION,
       migrate: (persisted) => migrateProgress(persisted) as unknown as ProgressState,
     },

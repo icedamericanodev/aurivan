@@ -5,6 +5,7 @@
  */
 import {
   addCount,
+  addToWindow,
   afterAnswer,
   afterCard,
   allMarks,
@@ -47,8 +48,8 @@ function facts(over: Partial<MilestoneFacts> = {}): MilestoneFacts {
     gamesTotal: 9,
     snareHits: [],
     keelRun: 0,
-    signpostFirst: 0,
-    mythsCleared: 0,
+    signposts: [],
+    myths: [],
     paceRounds: 0,
     gameFixes: 0,
     ...over,
@@ -188,10 +189,17 @@ describe('each skill badge: positive and negative', () => {
   it('Even Keel, Signpost Reader, Myth Clearer, Sure-Footed Pace, Back on the Path', () => {
     expect(met(facts({ keelRun: 3 }))).toContain('even-keel');
     expect(met(facts({ keelRun: 2 }))).not.toContain('even-keel');
-    expect(met(facts({ signpostFirst: 10 }))).toContain('signpost-reader');
-    expect(met(facts({ signpostFirst: 9 }))).not.toContain('signpost-reader');
-    expect(met(facts({ mythsCleared: 25 }))).toContain('myth-clearer');
-    expect(met(facts({ mythsCleared: 24 }))).not.toContain('myth-clearer');
+    const win = (n: number, right: number) => Array.from({ length: n }, (_, i) => ({ id: `x${i}`, ok: i < right }));
+    // Signpost Reader: 8 of the last 10 FIRST questions, once 10 are played.
+    expect(met(facts({ signposts: win(10, 8) }))).toContain('signpost-reader');
+    expect(met(facts({ signposts: win(10, 7) }))).not.toContain('signpost-reader');
+    expect(met(facts({ signposts: win(9, 9) }))).not.toContain('signpost-reader');
+    // Myth Clearer: 20 of the last 25 rumors, once 25 are played.
+    expect(met(facts({ myths: win(25, 20) }))).toContain('myth-clearer');
+    expect(met(facts({ myths: win(25, 19) }))).not.toContain('myth-clearer');
+    expect(met(facts({ myths: win(24, 24) }))).not.toContain('myth-clearer');
+    // Only the LAST 25 count: an old run of right answers then misses doesn't.
+    expect(met(facts({ myths: [...win(25, 25), ...win(10, 0).map((h) => ({ ...h, id: `y${h.id}` }))] }))).not.toContain('myth-clearer');
     expect(met(facts({ paceRounds: 3 }))).toContain('sure-footed-pace');
     expect(met(facts({ paceRounds: 2 }))).not.toContain('sure-footed-pace');
     expect(met(facts({ gameFixes: 10 }))).toContain('back-on-path');
@@ -257,10 +265,19 @@ describe('the counters (afterAnswer): Coach me and games never count', () => {
   });
 
   it('a missed note card got right on a later day is a game miss fixed', () => {
-    expect(afterCard(undefined, true, T0 - DAY, true, T0)?.counts?.gameFixes).toBe(1);
-    expect(afterCard(undefined, true, T0 - 3_600_000, true, T0)).toBeUndefined();
-    expect(afterCard(undefined, false, T0 - DAY, true, T0)).toBeUndefined();
-    expect(afterCard(undefined, true, T0 - DAY, false, T0)).toBeUndefined();
+    const missed = afterCard(undefined, 'kt:D4:a', false, T0 - DAY);
+    expect(missed?.cardMisses).toEqual({ 'kt:D4:a': dayKey(T0 - DAY) });
+    // A second miss keeps the FIRST miss day.
+    expect(afterCard(missed, 'kt:D4:a', false, T0)).toBe(missed);
+    // Right the same day: not yet a fix, and the miss is kept.
+    expect(afterCard(afterCard(undefined, 'kt:D4:a', false, T0), 'kt:D4:a', true, T0 + 60_000)?.cardMisses?.['kt:D4:a']).toBe(dayKey(T0));
+    // Right on a later day: fixed once, and forgotten.
+    const fixed = afterCard(missed, 'kt:D4:a', true, T0)!;
+    expect(fixed.counts?.gameFixes).toBe(1);
+    expect(fixed.cardMisses).toEqual({});
+    expect(afterCard(fixed, 'kt:D4:a', true, T0 + DAY)).toBe(fixed);
+    // Never missed: nothing to fix.
+    expect(afterCard(undefined, 'kt:D4:b', true, T0)).toBeUndefined();
   });
 
   it('study days add up; a week or more away marks a return', () => {
@@ -276,8 +293,29 @@ describe('the counters (afterAnswer): Coach me and games never count', () => {
   });
 
   it('addCount only adds positive amounts', () => {
-    expect(addCount(undefined, 'mythsCleared', 3)?.counts?.mythsCleared).toBe(3);
-    expect(addCount(undefined, 'mythsCleared', 0)).toBeUndefined();
+    expect(addCount(undefined, 'paceRounds', 3)?.counts?.paceRounds).toBe(3);
+    expect(addCount(undefined, 'paceRounds', 0)).toBeUndefined();
+  });
+
+  it('addToWindow keeps each item once (latest result last) and only the last N', () => {
+    let m = addToWindow(undefined, 'signposts', [{ id: 'a', ok: true }, { id: 'b', ok: false }]);
+    m = addToWindow(m, 'signposts', [{ id: 'a', ok: false }]);
+    expect(m?.signposts).toEqual([{ id: 'b', ok: false }, { id: 'a', ok: false }]);
+    expect(addToWindow(m, 'signposts', [])).toBe(m);
+    const many = Array.from({ length: 40 }, (_, i) => ({ id: `r${i}`, ok: true }));
+    const w = addToWindow(undefined, 'myths', many)!.myths!;
+    expect(w).toHaveLength(25);
+    expect(w[0].id).toBe('r15');
+  });
+
+  it('Long Memory counts each question once', () => {
+    const base = { questionId: 'q1', correct: true, assisted: false, game: false, at: T0, prevLastAt: T0 - 8 * DAY, graduated: false };
+    const once = afterAnswer(undefined, base).milestones;
+    const twice = afterAnswer(once, { ...base, at: T0 + 9 * DAY, prevLastAt: T0 }).milestones;
+    expect(twice.counts?.longRecall).toBe(1);
+    const other = afterAnswer(twice, { ...base, questionId: 'q2', at: T0 + 9 * DAY, prevLastAt: T0 }).milestones;
+    expect(other.counts?.longRecall).toBe(2);
+    expect(other.longIds).toEqual(['q1', 'q2']);
   });
 });
 
@@ -352,16 +390,25 @@ describe('back-fill inference from older saves', () => {
     expect(r.sure.every(Boolean)).toBe(true);
   });
 
-  it('counts the study days it can still see, and a return after a week away', () => {
+  it('counts the study days this exam’s own data can still show', () => {
     const r = inferFromSaves({
       answers: { q1: a(T0), q2: a(T0 - 10 * DAY) },
       mistakes: {},
       mocks: [{ finishedAt: T0 - 11 * DAY }],
       mastery: { '1A1.1': { firstDay: dayKey(T0 - 11 * DAY), masteredAt: dayKey(T0) } },
-      recentDays: [dayKey(T0 - DAY)],
     });
-    expect(r.days).toEqual([dayKey(T0 - 11 * DAY), dayKey(T0 - 10 * DAY), dayKey(T0 - DAY), dayKey(T0)]);
-    expect(r.returned).toBe(true);
-    expect(inferFromSaves({ answers: { q1: a(T0), q2: a(T0 - DAY) }, mistakes: {}, mocks: [] }).returned).toBe(false);
+    expect(r.days).toEqual([dayKey(T0 - 11 * DAY), dayKey(T0 - 10 * DAY), dayKey(T0)]);
+    // Fresh Start is live only: the back-fill never reports a return.
+    expect('returned' in r).toBe(false);
+  });
+
+  it('skips game answers (lastGame) for fixed mistakes and "sure" answers', () => {
+    const r = inferFromSaves({
+      answers: { q1: a(T0, { lastGame: true }), q2: a(T0, { lastConfidence: 'sure', lastGame: true }), q3: a(T0, { lastConfidence: 'sure' }) },
+      mistakes: { q1: { at: T0 - DAY, resolved: true } },
+      mocks: [],
+    });
+    expect(r.loopFixed).toEqual([]);
+    expect(r.sure).toEqual([true]);
   });
 });

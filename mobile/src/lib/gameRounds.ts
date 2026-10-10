@@ -4,16 +4,18 @@
  * 1. the score (best + the last-rounds trend: recordGame);
  * 2. the game's level (engine/games/growth.ts): the round's skill-step
  *    share, played at which level, and each skill-step result;
- * 3. the skill-badge counters this round adds (rumors cleared, FIRST words
- *    read, Daylight rounds at pace);
+ * 3. the skill-badge counters and rolling windows this round adds
+ *    (Daylight rounds at pace; the rumors and FIRST questions played);
  * 4. today's plan (logGame);
  * 5. milestones: anything now earned is saved, and the round end shows at
- *    most ONE (the rest wait in the queue, like Results).
+ *    most ONE celebration in all (behaviour review §4): when the level just
+ *    grew, that line IS the moment and every milestone stays queued for a
+ *    later session; otherwise one milestone (the rest wait, like Results).
  * The round end reads what changed from the returned RoundNews.
  */
 import { growthTier, type GameTier, type TierChange } from '../engine/games/growth';
 import type { GameId } from '../engine/games/registry';
-import { addCount, type CounterId } from '../engine/milestones';
+import { addCount, addToWindow, type CounterId, type WindowHit, type WindowId } from '../engine/milestones';
 import { selectCert, useProgress } from '../store/progress';
 import { logGame } from './activity';
 import { celebrateNext, checkMilestones, type MilestoneMoment } from './milestones';
@@ -30,6 +32,8 @@ export interface GameRoundResult {
   good?: boolean;
   /** Skill-badge counters this round adds. */
   counts?: Partial<Record<CounterId, number>>;
+  /** Rolling-window results this round adds (each item's id and whether it was right). */
+  windows?: Partial<Record<WindowId, WindowHit[]>>;
 }
 
 /** What the round end shows besides the score. */
@@ -50,9 +54,13 @@ export function finishGameRound(certId: string, game: GameId, r: GameRoundResult
   for (const [id, by] of Object.entries(r.counts ?? {}) as [CounterId, number][]) {
     if (by > 0) p.updateMilestones(certId, (m) => ({ milestones: addCount(m, id, by)! }));
   }
+  for (const [id, hits] of Object.entries(r.windows ?? {}) as [WindowId, WindowHit[]][]) {
+    if (hits.length) p.updateMilestones(certId, (m) => ({ milestones: addToWindow(m, id, hits)! }));
+  }
   logGame(certId, game);
   checkMilestones(certId, { finished: true });
-  const moment = celebrateNext(certId);
+  // Never two celebrations at once: a level-up line and a milestone don't stack.
+  const moment = change === 'up' ? null : celebrateNext(certId);
   const tier = growthTier(selectCert(useProgress.getState(), certId).gameGrowth?.[game]);
   return { change, tier, best: before !== undefined && r.score > before, moment };
 }
