@@ -14,6 +14,11 @@ import {
   canExtend,
   canFlag,
   currentItem,
+  daylightLine,
+  lowLight,
+  lowLightLine,
+  MAX_EXTENDS,
+  tierCanExtend,
   DAYLIGHT_MINUTES,
   DAYLIGHT_SIZE,
   daylightMax,
@@ -29,6 +34,7 @@ import {
   suggestTier,
   tierSeconds,
 } from '../engine/games/daylight';
+import { MAX_ANSWER_MS } from '../engine/answerClock';
 import { GAME_ORDER, GAMES, isPlayable } from '../engine/games/registry';
 import { createRng } from '../engine/random';
 
@@ -50,9 +56,9 @@ describe('tiers come from the exam pace', () => {
   });
 
   it('only Seedling can be extended', () => {
-    expect(canExtend('seedling')).toBe(true);
-    expect(canExtend('sapling')).toBe(false);
-    expect(canExtend('heartwood')).toBe(false);
+    expect(tierCanExtend('seedling')).toBe(true);
+    expect(tierCanExtend('sapling')).toBe(false);
+    expect(tierCanExtend('heartwood')).toBe(false);
   });
 });
 
@@ -74,27 +80,62 @@ describe('the registry', () => {
 
 describe('one shared budget', () => {
   it('5 × the tier: 8 minutes at Sapling, 10 at Seedling', () => {
-    expect(newDaylightRound(IDS, 96).budgetMs).toBe(480 * S);
-    expect(newDaylightRound(IDS, 120).budgetMs).toBe(600 * S);
+    expect(newDaylightRound(IDS, 'sapling', 96).budgetMs).toBe(480 * S);
+    expect(newDaylightRound(IDS, 'seedling', 120).budgetMs).toBe(600 * S);
   });
 
   it('the budget is gone at, not before, its end', () => {
-    const r = newDaylightRound(IDS, 96);
+    const r = newDaylightRound(IDS, 'sapling', 96);
     expect(budgetGone(r, 479 * S)).toBe(false);
     expect(budgetGone(r, 480 * S)).toBe(true);
   });
 
   it('Seedling: "Add a minute" grows the budget; other tiers and finished rounds stay', () => {
-    const r = newDaylightRound(IDS, 120);
-    expect(extendBudget(r, 'seedling').budgetMs).toBe(660 * S);
-    expect(extendBudget(r, 'sapling')).toBe(r);
-    expect(extendBudget(setLight(r), 'seedling').budgetMs).toBe(600 * S);
+    const r = newDaylightRound(IDS, 'seedling', 120);
+    expect(extendBudget(r).budgetMs).toBe(660 * S);
+    const sapling = newDaylightRound(IDS, 'sapling', 96);
+    expect(canExtend(sapling)).toBe(false);
+    expect(extendBudget(sapling)).toBe(sapling);
+    expect(extendBudget(setLight(r)).budgetMs).toBe(600 * S);
+  });
+
+  it(`at most ${MAX_EXTENDS} minutes can be added, then the button goes`, () => {
+    let r = newDaylightRound(IDS, 'seedling', 120);
+    for (let k = 0; k < MAX_EXTENDS + 5; k++) r = extendBudget(r);
+    expect(r.extends).toBe(MAX_EXTENDS);
+    expect(r.budgetMs).toBe((600 + MAX_EXTENDS * 60) * S);
+    expect(canExtend(r)).toBe(false);
+  });
+
+  it('the tier is locked at the start: a new suggestion never changes what the round allows (C2)', () => {
+    const r = newDaylightRound(IDS, 'seedling', 120);
+    // The suggestion is recomputed as answers come in; the round never asks
+    // for it again: canExtend / extendBudget read the round's own tier.
+    expect(r.tier).toBe('seedling');
+    expect(canExtend(r)).toBe(true);
+    expect(extendBudget(r).extends).toBe(1);
+    const h = newDaylightRound(IDS, 'heartwood', 80);
+    expect(canExtend(h)).toBe(false);
+  });
+
+  it('the light always sets, even for a budget past the 30-minute answer-clock cap', () => {
+    const r = { ...newDaylightRound(IDS, 'seedling', 120), budgetMs: 40 * 60 * S };
+    expect(budgetGone(r, MAX_ANSWER_MS - 1)).toBe(false);
+    expect(budgetGone(r, MAX_ANSWER_MS)).toBe(true);
+  });
+
+  it('answer times are capped at 30 minutes, however long a question was parked', () => {
+    let r = newDaylightRound(['a', 'b'], 'seedling', 120);
+    r = flagCurrent(r, 25 * 60 * S);
+    r = answerCurrent(r, true, S); // b
+    r = answerCurrent(r, true, 20 * 60 * S); // a: 25 + 20 min
+    expect(r.answers.a.ms).toBe(MAX_ANSWER_MS);
   });
 });
 
 describe('flag & move on', () => {
   it('parks the current question at the back; it comes back at the end with its time kept', () => {
-    let r = newDaylightRound(IDS, 96);
+    let r = newDaylightRound(IDS, 'sapling', 96);
     r = flagCurrent(r, 40 * S);
     expect(currentItem(r)).toBe('b');
     expect(r.queue).toEqual(['b', 'c', 'd', 'e', 'a']);
@@ -107,7 +148,7 @@ describe('flag & move on', () => {
   });
 
   it('is not offered on the last question left', () => {
-    let r = newDaylightRound(['a', 'b'], 96);
+    let r = newDaylightRound(['a', 'b'], 'sapling', 96);
     expect(canFlag(r)).toBe(true);
     r = answerCurrent(r, true, S);
     expect(canFlag(r)).toBe(false);
@@ -117,7 +158,7 @@ describe('flag & move on', () => {
 
 describe('when the light sets', () => {
   it('unanswered questions are revealed, not failed; no bonus', () => {
-    let r = newDaylightRound(IDS, 96);
+    let r = newDaylightRound(IDS, 'sapling', 96);
     r = answerCurrent(r, true, 100 * S);
     r = flagCurrent(r, 60 * S); // b parked
     r = answerCurrent(r, false, 90 * S); // c
@@ -136,7 +177,7 @@ describe('when the light sets', () => {
 
 describe('scoring', () => {
   it('+1 per correct answer, +1 for finishing within the budget', () => {
-    let r = newDaylightRound(IDS, 96);
+    let r = newDaylightRound(IDS, 'sapling', 96);
     for (const ok of [true, true, false, true, true]) r = answerCurrent(r, ok, 60 * S);
     expect(finishedInBudget(r)).toBe(true);
     expect(daylightScore(r)).toBe(5);
@@ -144,14 +185,14 @@ describe('scoring', () => {
   });
 
   it('a perfect round in time scores the max', () => {
-    let r = newDaylightRound(IDS, 80);
+    let r = newDaylightRound(IDS, 'heartwood', 80);
     for (let k = 0; k < IDS.length; k++) r = answerCurrent(r, true, 70 * S);
     expect(daylightScore(r)).toBe(daylightMax(IDS.length));
   });
 });
 
 describe('pace line', () => {
-  const r0 = newDaylightRound(IDS, 96);
+  const r0 = newDaylightRound(IDS, 'sapling', 96);
   it('never "behind" while still inside the first question’s share', () => {
     expect(daylightPace(r0, 100 * S)).toBe('onPace');
     expect(daylightPace(r0, 106 * S)).toBe('behind'); // past 96 s + 10%
@@ -163,6 +204,20 @@ describe('pace line', () => {
     expect(daylightPace(r, 60 * S)).toBe('ahead');
     expect(daylightPace(r, 180 * S)).toBe('onPace');
     expect(daylightPace(r, 320 * S)).toBe('behind');
+  });
+
+  it('on the last question there is nothing to flag: "Behind pace." alone (O5)', () => {
+    expect(daylightLine('behind', true)).toBe('Behind pace. Flag & move on if one is stuck.');
+    expect(daylightLine('behind', false)).toBe('Behind pace.');
+    expect(daylightLine('onPace', false)).toBe('On pace');
+  });
+
+  it('the last 10% of light shows a warning, with "add a minute" only where allowed (P12)', () => {
+    const seed = newDaylightRound(IDS, 'seedling', 120); // 600 s
+    expect(lowLight(seed, 539 * S)).toBe(false);
+    expect(lowLight(seed, 540 * S)).toBe(true);
+    expect(lowLightLine(seed)).toBe('About a minute of light left. You can add a minute.');
+    expect(lowLightLine(r0)).toBe('About a minute of light left.');
   });
 
   it('spoken marks: half the light, then 10% left, each once', () => {
@@ -197,13 +252,13 @@ describe('the suggested tier', () => {
 
 describe('end screen: where time went', () => {
   it('average seconds and the slowest question', () => {
-    let r = newDaylightRound(IDS, 96);
+    let r = newDaylightRound(IDS, 'sapling', 96);
     r = answerCurrent(r, true, 60 * S);
     r = answerCurrent(r, true, 140 * S);
     r = answerCurrent(r, false, 40 * S);
     expect(averageSeconds(r)).toBe(80);
     expect(slowestItem(r)).toEqual({ id: 'b', seconds: 140 });
-    expect(averageSeconds(newDaylightRound(IDS, 96))).toBeNull();
-    expect(slowestItem(newDaylightRound(IDS, 96))).toBeNull();
+    expect(averageSeconds(newDaylightRound(IDS, 'sapling', 96))).toBeNull();
+    expect(slowestItem(newDaylightRound(IDS, 'sapling', 96))).toBeNull();
   });
 });

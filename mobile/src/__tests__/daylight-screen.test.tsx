@@ -211,6 +211,8 @@ describe('a round', () => {
     for (const id of queued) expect(c.answers[id]).toBeUndefined();
     // The round is saved once.
     expect(c.gameRecent.daylight).toHaveLength(1);
+    // Announcements wait ~350 ms so they don't cut off the tap's feedback (P8).
+    tick(S);
     expect(announce).toHaveBeenCalledWith('The light has set. Unanswered questions are shown, not marked wrong.');
   });
 
@@ -232,6 +234,11 @@ describe('a round', () => {
     act(() => {
       root().findAll((n) => n.props.accessibilityHint === 'Reads the pace aloud.' && typeof n.props.onPress === 'function')[0].props.onPress();
     });
+    expect(announce).not.toHaveBeenCalledWith('Light left 10 minutes. On pace');
+    act(() => {
+      jest.advanceTimersByTime(400);
+    });
+    // Tap-to-hear keeps the precise time; the strip's own label speaks whole minutes.
     expect(announce).toHaveBeenCalledWith('Light left 10 minutes. On pace');
   });
 });

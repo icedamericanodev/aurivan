@@ -14,11 +14,18 @@
  * - Tiers (the learner picks; the app suggests one from their recent pace):
  *   Seedling 1.25 × exam pace (CISA 120 s), Sapling 1 × (96 s),
  *   Heartwood 5/6 × (80 s, which banks time for review on the real exam).
- *   Seedling can be extended a minute at a time (WCAG 2.2.1).
+ *   Seedling can be extended a minute at a time, up to MAX_EXTENDS times.
+ *
+ * WCAG 2.2.1 (Timing Adjustable): a time limit is what this game trains,
+ * so the budget is "essential" to the activity (the exception in 2.2.1).
+ * Even so the learner can pause at any time, pick the slowest tier, extend
+ * Seedling, and is warned with about 10% of the light left; and nothing is
+ * lost when the light sets (unanswered questions are shown, not failed).
  *
  * Pure TypeScript: no React, no storage, no clock. The screen passes times in.
  */
 import type { PackQuestion } from '../../content/types';
+import { addMs, MAX_ANSWER_MS } from '../answerClock';
 import { examPaceSeconds, median, PACE_TOLERANCE, type ExamFacts, type PaceStatus } from '../pace';
 import { shuffled, type Rng } from '../random';
 
@@ -42,9 +49,11 @@ export function tierSeconds(tier: DaylightTier, exam: ExamFacts): number {
  */
 export const DAYLIGHT_MINUTES = Math.round((DAYLIGHT_SIZE * examPaceSeconds({ questions: 150, minutes: 240 })) / 60);
 
-/** Seedling only: each "Add a minute" adds this much to the budget. */
+/** Seedling only: each "Add a minute" adds this much to the budget, at most MAX_EXTENDS times. */
 export const EXTEND_MS = 60_000;
-export function canExtend(tier: DaylightTier): boolean {
+export const MAX_EXTENDS = 10;
+/** Whether a tier offers "Add a minute" at all (the picker's wording). */
+export function tierCanExtend(tier: DaylightTier): boolean {
   return tier === 'seedling';
 }
 
@@ -90,6 +99,10 @@ export interface DaylightAnswer {
 
 export interface DaylightRound {
   ids: string[];
+  /** The tier, locked when the round starts (a changed suggestion never changes it). */
+  tier: DaylightTier;
+  /** How many minutes were added (Seedling, at most MAX_EXTENDS). */
+  extends: number;
   /** The whole round's time budget (ms); Seedling can grow it. */
   budgetMs: number;
   /** Seconds per question for the chosen tier. */
@@ -107,9 +120,11 @@ export interface DaylightRound {
   timedOut: string[];
 }
 
-export function newDaylightRound(ids: string[], perItemSec: number): DaylightRound {
+export function newDaylightRound(ids: string[], tier: DaylightTier, perItemSec: number): DaylightRound {
   return {
     ids: [...ids],
+    tier,
+    extends: 0,
     budgetMs: ids.length * perItemSec * 1000,
     perItemSec,
     queue: [...ids],
@@ -139,7 +154,8 @@ export function flagCurrent(r: DaylightRound, visitMs: number): DaylightRound {
     ...r,
     queue: [...r.queue.slice(1), id],
     flagged: r.flagged.includes(id) ? r.flagged : [...r.flagged, id],
-    spentMs: { ...r.spentMs, [id]: (r.spentMs[id] ?? 0) + Math.max(0, visitMs) },
+    // addMs: capped at the answer clock's 30 minutes, like every answer time.
+    spentMs: { ...r.spentMs, [id]: addMs(r.spentMs[id], visitMs) },
   };
 }
 
@@ -148,7 +164,7 @@ export function answerCurrent(r: DaylightRound, correct: boolean, visitMs: numbe
   const id = currentItem(r);
   if (!id) return r;
   const spentMs = { ...r.spentMs };
-  const ms = (spentMs[id] ?? 0) + Math.max(0, visitMs);
+  const ms = addMs(spentMs[id], visitMs);
   delete spentMs[id];
   const queue = r.queue.slice(1);
   return { ...r, queue, spentMs, answers: { ...r.answers, [id]: { correct, ms } }, over: queue.length === 0 };
@@ -160,15 +176,24 @@ export function setLight(r: DaylightRound): DaylightRound {
   return { ...r, over: true, timedOut: [...r.queue], queue: [] };
 }
 
-/** Seedling: add a minute to the budget. Other tiers (or a finished round) don't change. */
-export function extendBudget(r: DaylightRound, tier: DaylightTier, ms = EXTEND_MS): DaylightRound {
-  if (r.over || !canExtend(tier)) return r;
-  return { ...r, budgetMs: r.budgetMs + ms };
+/** "Add a minute" is offered: a Seedling round, still running, under MAX_EXTENDS. */
+export function canExtend(r: DaylightRound): boolean {
+  return !r.over && tierCanExtend(r.tier) && r.extends < MAX_EXTENDS;
 }
 
-/** True when the time used has reached the budget. */
+/** Seedling: add a minute to the budget. Anything else (or past the limit) doesn't change. */
+export function extendBudget(r: DaylightRound, ms = EXTEND_MS): DaylightRound {
+  if (!canExtend(r)) return r;
+  return { ...r, budgetMs: r.budgetMs + ms, extends: r.extends + 1 };
+}
+
+/**
+ * True when the light has set. The round clock (an answer clock) stops
+ * counting at MAX_ANSWER_MS, so a budget past that sets at the cap: the
+ * light can always set.
+ */
 export function budgetGone(r: DaylightRound, usedMs: number): boolean {
-  return usedMs >= r.budgetMs;
+  return usedMs >= Math.min(r.budgetMs, MAX_ANSWER_MS);
 }
 
 /** Every question answered before the light set. */
@@ -207,6 +232,19 @@ export const DAYLIGHT_LINE: Record<PaceStatus, string> = {
   behind: 'Behind pace. Flag & move on if one is stuck.',
   ahead: 'Ahead of pace.',
 };
+
+/** The pace line; on the last question left there is nothing to flag, so "behind" says just that. */
+export function daylightLine(status: PaceStatus, flaggable: boolean): string {
+  return status === 'behind' && !flaggable ? 'Behind pace.' : DAYLIGHT_LINE[status];
+}
+
+/** The light's last 10%: a visible warning (and the spoken one). */
+export function lowLight(r: DaylightRound, usedMs: number): boolean {
+  return !r.over && usedMs >= r.budgetMs * 0.9;
+}
+export function lowLightLine(r: DaylightRound): string {
+  return `About a minute of light left.${canExtend(r) ? ' You can add a minute.' : ''}`;
+}
 
 /** Spoken pace announcements: at half the budget, and with 10% left. Each once per round. */
 export type PaceMark = 'half' | 'tenthLeft';

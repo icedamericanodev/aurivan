@@ -10,16 +10,20 @@
  *    shown with their answers, not marked wrong, and go to review without
  *    counting as answered.
  *
- * Accessibility (WCAG 2.2.1): Pause stops the light (the question is hidden
- * while paused); Seedling can add a minute at a time; the pace is announced
- * at half time and with 10% left, and on request (tap the strip). No red,
- * no pulsing; Reduce Motion steps the pace bar.
+ * Accessibility (WCAG 2.2.1): the time limit IS the skill being trained, so
+ * it falls under 2.2.1's "essential" exception; even so, Pause stops the
+ * light (the question is hidden while paused), Seedling can add a minute
+ * (up to 10 times), and with 10% of the light left a visible line says so
+ * ("About a minute of light left. You can add a minute."). The pace is
+ * announced at half time and with 10% left, and on request (tap the strip).
+ * Focus moves to Resume after Pause, and back to the strip after Resume.
+ * No red, no pulsing; Reduce Motion steps the pace bar.
  *
  * Both clocks reuse the answer clock (lib/useAnswerClock.ts): one for the
  * round's budget, one per question visit. Background time never counts.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { GameFrame, PlayableGate, QuestionHead, RevealCard, RoundEnd, useRound } from '../../components/game';
@@ -35,9 +39,12 @@ import {
   budgetGone,
   buildDaylightRound,
   canExtend,
+  daylightLine,
+  lowLight,
+  lowLightLine,
+  tierCanExtend,
   canFlag,
   currentItem,
-  DAYLIGHT_LINE,
   DAYLIGHT_TIERS,
   daylightMax,
   daylightPace,
@@ -58,7 +65,8 @@ import {
 } from '../../engine/games/daylight';
 import { clip, pickMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
-import { durationText, formatClock, spokenClock } from '../../engine/pace';
+import { durationSpoken, durationText, formatClock, spokenClock, spokenClockCoarse } from '../../engine/pace';
+import { moveFocus, sayLater } from '../../lib/a11y';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, originalToDisplay, renderText } from '../../engine/shuffle';
 import { logGame } from '../../lib/activity';
@@ -77,8 +85,10 @@ export default function DaylightScreen() {
   );
 }
 
-/** Announce once, after a short delay so it doesn't cut off the tap's own feedback. */
-const say = (text: string) => AccessibilityInfo.announceForAccessibility(text);
+/** Announce after ~350 ms, so it doesn't cut off the tap's own feedback (P8). */
+const say = (text: string) => sayLater(text);
+/** A stem cut for one line, without a full stop before the "…" (O4). */
+const clipStem = (stem: string, max = 70) => clip(stem, max).replace(/[.,;:?!]…$/, '…');
 
 function Daylight() {
   const { c } = useTheme();
@@ -95,6 +105,9 @@ function Daylight() {
   // After an answer: the question just answered and the letter tapped (the light waits meanwhile).
   const [reveal, setReveal] = useState<{ id: string; display: Letter } | null>(null);
   const [paused, setPaused] = useState(false);
+  // Focus targets: Resume after Pause, the strip after Resume (P9).
+  const resumeRef = useRef<View>(null);
+  const stripRef = useRef<View>(null);
   const [used, setUsed] = useState(0);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
   const said = useRef<PaceMark[]>([]);
@@ -123,8 +136,8 @@ function Daylight() {
       const due = paceMarksDue(state, now, said.current);
       if (due.length) {
         said.current = [...said.current, ...due];
-        const line = DAYLIGHT_LINE[daylightPace(state, now)];
-        say(due.includes('tenthLeft') ? `${spokenClock(state.budgetMs - now)} of light left. ${line}` : `Half the light is gone. ${line}`);
+        const line = daylightLine(daylightPace(state, now), canFlag(state));
+        say(due.includes('tenthLeft') ? `${spokenClock(state.budgetMs - now)} of light left. ${lowLightLine(state)}` : `Half the light is gone. ${line}`);
       }
     }, 1000);
     return () => clearInterval(t);
@@ -149,7 +162,8 @@ function Daylight() {
     setPaused(false);
     setUsed(0);
     setVisit(0);
-    setState(newDaylightRound(items.map((x) => x.q.id), tierSeconds(chosen, cert.exam)));
+    // The tier is locked into the round here (C2): a new suggestion can't change it mid-round.
+    setState(newDaylightRound(items.map((x) => x.q.id), chosen, tierSeconds(chosen, cert.exam)));
   };
 
   // ── 1. Pick a light ────────────────────────────────────────────────────
@@ -182,7 +196,7 @@ function Daylight() {
             }))}
           />
           <T v="meta" num center style={{ marginTop: space.sm }}>
-            {`${sec} s a question · ${durationText(Math.round((items.length * sec) / 60))} of light${canExtend(chosen) ? ' · you can add time' : ''}`}
+            {`${sec} s a question · ${durationText(Math.round((items.length * sec) / 60))} of light${tierCanExtend(chosen) ? ' · you can add time' : ''}`}
           </T>
           <T v="meta" center style={{ marginTop: space.xs }}>{`Suggested: ${TIER_NAME[suggested]}, from your recent answer times.`}</T>
           <Gap h={space.xl} />
@@ -213,9 +227,15 @@ function Daylight() {
       >
         <T v="headline" accessibilityRole="header">This is where time went</T>
         <View style={{ marginTop: space.sm, gap: space.xs }}>
-          <T v="small" num>{`Light used: ${formatClock(lightUsed)} of ${formatClock(state.budgetMs)}${inBudget ? ' · finished in time, +1' : ''}`}</T>
+          <T
+            v="small"
+            num
+            accessibilityLabel={`Light used: ${durationSpoken(Math.round(lightUsed / 60_000))} of ${durationSpoken(Math.round(state.budgetMs / 60_000))}${inBudget ? '. Finished in time, plus 1' : ''}`}
+          >
+            {`Light used: ${formatClock(lightUsed)} of ${formatClock(state.budgetMs)}${inBudget ? ' · finished in time, +1' : ''}`}
+          </T>
           {avg !== null && <T v="small" num>{`Average ${avg} s a question · your light gave ${state.perItemSec} s`}</T>}
-          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} s on “${clip(slowQ.stem, 70).replace(/[.,;:?!]…$/, '…')}”`}</T>}
+          {slow && slowQ && <T v="small">{`Slowest: ${slow.seconds} s on “${clipStem(slowQ.stem)}”`}</T>}
         </View>
         {state.timedOut.length > 0 && (
           <View style={{ marginTop: space.lg }}>
@@ -232,7 +252,7 @@ function Daylight() {
                   accessibilityLabel={`${it.q.stem} Best answer ${best}: ${it.q.options[it.q.correct] ?? ''}`}
                   style={{ paddingVertical: 12, borderBottomWidth: k === state.timedOut.length - 1 ? 0 : 1, borderBottomColor: c.line }}
                 >
-                  <T v="meta">{clip(it.q.stem)}</T>
+                  <T v="meta">{clipStem(it.q.stem, 90)}</T>
                   <T v="small" style={{ marginTop: space.xs }}>{`Best answer ${best}: ${it.q.options[it.q.correct] ?? ''}`}</T>
                 </View>
               );
@@ -253,6 +273,8 @@ function Daylight() {
   const answered = Object.keys(state.answers).length;
   const remaining = Math.max(0, state.budgetMs - used);
   const status = daylightPace(state, used);
+  // The light's last 10%: a visible line too, not only an announcement (P12).
+  const low = lowLight(state, used);
   const right = Object.values(state.answers).filter((a) => a.correct).length;
 
   const pick = (display: Letter) => {
@@ -289,11 +311,20 @@ function Daylight() {
   const lastAnswer = state.answers[q.id];
   const strip = (
     <PaceStrip
-      clock={{ text: formatClock(remaining), spoken: `Light left ${spokenClock(remaining)}` }}
+      ref={stripRef}
+      // Spoken in whole minutes (U-H2); the precise time is for tap-to-hear only.
+      clock={{ text: formatClock(remaining), spoken: `Light left ${spokenClockCoarse(remaining)}` }}
       clockUnit="left"
-      line={paused ? { text: 'Paused. The light holds.', tone: 'note' } : { text: DAYLIGHT_LINE[status], tone: status }}
+      line={
+        paused
+          ? { text: 'Paused. The light holds.', tone: 'note' }
+          : low
+            ? { text: lowLightLine(state), tone: 'soon' }
+            : { text: daylightLine(status, canFlag(state)), tone: status }
+      }
+      lineShort={!paused && !low && status === 'behind' ? 'Behind pace' : undefined}
       bar={{ done: answered / state.ids.length, used: used / state.budgetMs }}
-      onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : DAYLIGHT_LINE[status]}`)}
+      onRequest={() => say(`Light left ${spokenClock(remaining)}. ${paused ? 'Paused.' : low ? lowLightLine(state) : daylightLine(status, canFlag(state))}`)}
     />
   );
 
@@ -315,10 +346,12 @@ function Daylight() {
           />
         ) : paused ? (
           <Button
+            ref={resumeRef}
             label="Resume"
             onPress={() => {
               setPaused(false);
               say('Resumed.');
+              moveFocus(stripRef);
             }}
             icon={(col) => <Play size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
           />
@@ -331,18 +364,19 @@ function Daylight() {
                 setUsed(readRound());
                 setPaused(true);
                 say('Paused. The light holds.');
+                moveFocus(resumeRef);
               }}
               icon={(col) => <Pause size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />}
               style={large ? { flexBasis: '100%' } : { flex: 1 }}
             />
             {canFlag(state) && <Button kind="secondary" label="Flag & move on" onPress={flag} style={large ? { flexBasis: '100%' } : { flex: 1 }} />}
-            {canExtend(chosen) && (
+            {canExtend(state) && (
               <Button
                 kind="ghost"
                 label="Add a minute"
                 accessibilityHint="Seedling only: adds a minute of light."
                 onPress={() => {
-                  setState(extendBudget(state, chosen));
+                  setState(extendBudget(state));
                   say('A minute of light added.');
                 }}
                 style={{ flexBasis: '100%' }}
