@@ -810,8 +810,10 @@ const styles = StyleSheet.create({
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: space.sm, marginTop: 18 },
   teachTag: { minHeight: 32, paddingHorizontal: space.md, borderRadius: radius.pill, flexDirection: 'row', alignItems: 'center', gap: 7 },
   teachDot: { width: 6, height: 6, borderRadius: 3 },
-  seg2: { borderRadius: 22, padding: 3, gap: 3 },
-  segItem: { minHeight: 40, borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, paddingHorizontal: space.sm },
+  // Track radius 25 = the 44pt pills' 22 + the 3pt inset, so the curves stay concentric.
+  seg2: { borderRadius: 25, padding: 3, gap: 3 },
+  // 44 tall + a 2pt hitSlop all round = a 48pt touch target (P9).
+  segItem: { minHeight: 44, borderRadius: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, paddingHorizontal: space.sm },
   chipScroll: { gap: space.sm, paddingVertical: 4, paddingRight: space.xxxl },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, paddingVertical: 4 },
   chipFade: { position: 'absolute', right: 0, top: 0, bottom: 0 },
@@ -1085,6 +1087,8 @@ export function EmptyState({
 // column at large text sizes instead of squeezing.
 /** Dark-mode fill for the selected segment (DESIGN_SYSTEM.md, Practice screen). */
 const SEG_ON_DARK = '#2C372F';
+/** 44pt segment + 2pt each side = 48pt to the finger (the 3pt track gap keeps neighbours apart). */
+export const SEG_HIT_SLOP = 2;
 
 export function Segmented<V extends string | number>({
   options,
@@ -1111,6 +1115,7 @@ export function Segmented<V extends string | number>({
             accessibilityState={{ checked: on }}
             accessibilityLabel={o.spoken ?? (o.numeral ? `${o.numeral} ${o.label}` : o.label)}
             onPress={() => onChange(o.value)}
+            hitSlop={SEG_HIT_SLOP}
             style={[
               styles.segItem,
               !stacked && { flex: 1 },
