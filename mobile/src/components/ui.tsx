@@ -53,7 +53,7 @@ import {
 } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { Botany, botanySize, Seedling, type BotanyKind } from './glyphs';
-import { Check, ChevronLeft, ChevronRight, ICON_STROKE, X } from './icons';
+import { Check, ChevronLeft, ChevronRight, ICON_STROKE, Settings as SettingsIcon, X } from './icons';
 
 /** Icon sizes: inline with text, in rows/circles, and in the tab bar/header. */
 export const ICON_SIZE = { inline: 16, row: 20, bar: 24 } as const;
@@ -415,6 +415,25 @@ export function IconButton({
   );
 }
 
+// ── ScreenTitle: a tab screen's display title, with an optional Settings gear ──
+// The gear (S1) makes Settings one tap away from Today and You instead of
+// the last row under You. 48pt target, spoken as "Settings".
+export function ScreenTitle({ title, settings }: { title: string; settings?: () => void }) {
+  return (
+    <View style={styles.screenTitle}>
+      <T v="display" accessibilityRole="header" style={{ flexShrink: 1 }}>{title}</T>
+      {settings && (
+        <IconButton
+          label="Settings"
+          hint="Exam date, reminders and more"
+          onPress={settings}
+          icon={(col) => <SettingsIcon size={ICON_SIZE.bar} color={col} strokeWidth={ICON_STROKE} />}
+        />
+      )}
+    </View>
+  );
+}
+
 // ── Section: headline + optional meta on the right ────────────────────
 export function Section({ title, meta, style }: { title: string; meta?: string; style?: StyleProp<ViewStyle> }) {
   return (
@@ -703,6 +722,7 @@ const styles = StyleSheet.create({
   forest: { borderRadius: radius.lg, padding: 22 },
   // Dark mode: 1px inner top highlight so the panel separates from `bg`.
   forestLift: { borderTopWidth: 1, borderTopColor: forestHighlight },
+  screenTitle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space.sm, marginTop: space.xs, marginRight: -10 },
   iconButton: { width: 48, height: 48, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
   heroArtClip: { borderRadius: radius.lg, overflow: 'hidden', zIndex: 0 },
   heroArt: { position: 'absolute', right: -18, top: -14 },

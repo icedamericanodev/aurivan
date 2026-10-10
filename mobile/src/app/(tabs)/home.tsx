@@ -23,7 +23,7 @@ import { View } from 'react-native';
 import { ExamEveCard, ExamReadyPanel } from '../../components/moments';
 import { ClearingBody, clearingTitle, PlanLeaves, planIcon, planText, ReadinessRow } from '../../components/journey';
 import { ICON_STROKE, Play, Settings, Sprig } from '../../components/icons';
-import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T } from '../../components/ui';
+import { BigNum, Button, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, ScreenTitle, Section, T } from '../../components/ui';
 import { currentIndex, itemMinutes, planComplete } from '../../engine/dayPlan';
 import { runPlanItem } from '../../lib/actions';
 import { haptic } from '../../lib/haptics';
@@ -84,7 +84,7 @@ export default function Today() {
             </Row>
           )}
         </Row>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>Today</T>
+        <ScreenTitle title="Today" settings={() => router.push('/settings')} />
       </Enter>
 
       {moments.moment && (

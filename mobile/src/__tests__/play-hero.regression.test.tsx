@@ -13,6 +13,9 @@
  * that keeps the content visible, plus the content itself, in light, dark
  * and at 200% text.
  *
+ * Also here (same tab-screen setup): the Settings gear in the Today and You
+ * headers (S1).
+ *
  * Gotcha (see session-screen.regression.test.tsx): never write
  * `act(() => store.action())` — use braces.
  */
@@ -23,6 +26,9 @@ import { useProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import Play from '../app/(tabs)/play';
 import Practice from '../app/(tabs)/practice';
+import Today from '../app/(tabs)/home';
+import You from '../app/(tabs)/you';
+import { router } from 'expo-router';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -172,5 +178,29 @@ describe('Play hero renders its content (Android blank-hero regression)', () => 
     expect(byTestId('hero-art')).toHaveLength(1);
     const [content] = byTestId('hero-content');
     expect(textOf(content)).toContain('Ten mixed questions');
+  });
+});
+
+describe('Settings gear in the Today and You headers', () => {
+  it.each([
+    ['Today', Today],
+    ['You', You],
+  ] as const)('%s: a 48pt button spoken as "Settings" opens Settings', (_name, Screen) => {
+    (router.push as jest.Mock).mockClear();
+    mount(<Screen />);
+    const gear = root().findAll((n) => n.props.accessibilityLabel === 'Settings' && n.props.accessibilityRole === 'button' && typeof n.props.onPress === 'function');
+    expect(gear.length).toBe(1);
+    const style = StyleSheet.flatten(typeof gear[0].props.style === 'function' ? gear[0].props.style({ pressed: false }) : gear[0].props.style);
+    expect(style.width).toBeGreaterThanOrEqual(44);
+    expect(style.height).toBeGreaterThanOrEqual(44);
+    act(() => {
+      gear[0].props.onPress();
+    });
+    expect(router.push).toHaveBeenCalledWith('/settings');
+  });
+
+  it('You keeps its Settings row too', () => {
+    mount(<You />);
+    expect(root().findAll((n) => n.props.title === 'Settings').length).toBeGreaterThan(0);
   });
 });

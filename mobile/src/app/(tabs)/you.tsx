@@ -18,7 +18,7 @@ import { MindsetGrowthCard } from '../../components/moments';
 import { Bookmark, ICON_STROKE, NotebookPen, Settings, Share2 } from '../../components/icons';
 import { ShareProgressSheet } from '../../components/shareCard';
 import { ThemeSwitch } from '../../components/themeSwitch';
-import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, Section, Stat, StatRow, T, Trail } from '../../components/ui';
+import { BigNum, Button, EmptyState, Enter, ICON_SIZE, Lead, ListRow, Screen, ScreenTitle, Section, Stat, StatRow, T, Trail } from '../../components/ui';
 import { rangeLabel, rangeSpoken, readinessRange } from '../../engine/readinessRange';
 import { dayKey } from '../../engine/streak';
 import { shortDate } from '../../lib/format';
@@ -46,7 +46,7 @@ export default function You() {
   return (
     <Screen>
       <Enter i={0}>
-        <T v="display" accessibilityRole="header" style={{ marginTop: space.xs }}>You</T>
+        <ScreenTitle title="You" settings={() => router.push('/settings')} />
         <View style={{ marginTop: space.md }}>
           <ThemeSwitch />
         </View>
