@@ -143,6 +143,8 @@ export function YourData() {
         disabled={busy !== null}
         onPress={pick}
       />
+      {/* The result first ("Restored… you can undo"), then the undo it mentions. */}
+      {message && <DataMessage message={message} />}
       {canUndo && undo && (
         <View style={{ marginTop: space.sm }}>
           <Button
@@ -156,7 +158,6 @@ export function YourData() {
           <T v="meta">{`Available until ${dateOf(undoExpiresAt(undo))}.`}</T>
         </View>
       )}
-      {message && <DataMessage message={message} />}
       <RestorePreview ready={preview} busy={busy === 'restore'} onConfirm={confirmRestore} onCancel={() => setPreview(null)} />
     </>
   );
