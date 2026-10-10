@@ -106,6 +106,9 @@ export default function RootLayout() {
         <Stack.Screen name="game/rumor" options={{ animation: rise }} />
         <Stack.Screen name="game/callit" options={{ animation: rise }} />
         <Stack.Screen name="guided" />
+        {/* Build F: You → Milestones and You → Field notes. */}
+        <Stack.Screen name="milestones" />
+        <Stack.Screen name="field-notes" />
         <Stack.Screen name="mistakes" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="saved" />

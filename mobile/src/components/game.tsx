@@ -8,9 +8,9 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { findQuestion, getAllQuestions } from '../content/loader';
-import { getNotes } from '../content/notes';
-import { GAMES, isPlayable } from '../engine/games/registry';
+import { findQuestion } from '../content/loader';
+import { GAMES } from '../engine/games/registry';
+import { canPlay } from '../lib/games';
 import { useActiveCert } from '../lib/useActiveCert';
 import { EmptyScreen } from './emptyScreen';
 import type { Letter, PackQuestion } from '../content/types';
@@ -21,9 +21,12 @@ import { useProgress, type GameId } from '../store/progress';
 import { radius, space } from '../theme/tokens';
 import { useTheme } from '../theme/useTheme';
 import { ScenarioBlock, StickyFooter } from './quiz';
-import { Seedling } from './glyphs';
+import { Seedling, TierLeaf } from './glyphs';
+import { MilestoneMomentView, TierTag } from './milestones';
+import { tierChangeLine, type GameTier } from '../engine/games/growth';
+import type { RoundNews } from '../lib/gameRounds';
 import { Info, ICON_STROKE, Play as PlayIcon } from './icons';
-import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Section, SegmentBar, Segmented, Stem, T } from './ui';
+import { BigNum, Button, Enter, Gap, ICON_SIZE, IconButton, PushedHeader, Row, Section, SegmentBar, Segmented, Stem, T } from './ui';
 
 /** A fixed list of questions + one shuffle each, created once per round. */
 export function useRound(certId: string, build: (rngSeed: number) => string[]) {
@@ -157,11 +160,18 @@ export function RoundEnd({
   children,
   onAgain,
   reviewNote,
+  news,
 }: {
   certId: string;
   game: GameId;
   score: number;
   max: number;
+  /**
+   * Build F: what else this round changed (lib/gameRounds.ts): a new
+   * personal best (a text line), the game's level moving, and at most ONE
+   * milestone moment. Left out = none of these.
+   */
+  news?: RoundNews | null;
   /** This round's misses, in question order. */
   misses?: RecapMiss[];
   children?: ReactNode;
@@ -198,8 +208,24 @@ export function RoundEnd({
                 <T v="label" num center>{recent.map(scoreText).join('  ·  ')}</T>
               </View>
             )}
+            {news?.best && (
+              <T v="meta" center color={c.accentText} style={{ marginTop: space.sm }}>New personal best</T>
+            )}
+            {news && tierChangeLine(news.change, news.tier) && (
+              <Row gap={space.sm} style={{ marginTop: space.sm, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <View accessible={false} importantForAccessibility="no-hide-descendants">
+                  <TierLeaf tier={news.tier} color={c.accentText} rib={c.bg} />
+                </View>
+                <T v="small" center style={{ flexShrink: 1 }}>{tierChangeLine(news.change, news.tier)!}</T>
+              </Row>
+            )}
           </View>
         </Enter>
+        {news?.moment && (
+          <View style={{ marginTop: space.xl }}>
+            <MilestoneMomentView moment={news.moment} once={`round:${game}:${score}:${news.moment.key}`} />
+          </View>
+        )}
         <Gap h={space.xl} />
         {misses.length > 0 && (
           <View style={{ marginBottom: space.lg }}>
@@ -245,8 +271,11 @@ export function GameIntro<V extends string>({
   tierName,
   tierLine,
   onStart,
+  level,
 }: {
   game: GameId;
+  /** Build F: the learner's own level for this game (the picker starts on it). */
+  level?: GameTier;
   icon: (color: string) => ReactNode;
   rules: string;
   tiers: V[];
@@ -279,10 +308,29 @@ export function GameIntro<V extends string>({
           options={tiers.map((t) => ({ value: t, label: tierName[t], spoken: `${tierName[t]}. ${tierLine[t]}` }))}
         />
         <T v="meta" center style={{ marginTop: space.sm }}>{tierLine[tier]}</T>
+        {level && <LevelNote level={level} />}
         <Gap h={space.xl} />
         <Button label="Start" onPress={onStart} icon={(col) => <PlayIcon size={ICON_SIZE.inline} color={col} strokeWidth={ICON_STROKE} />} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/**
+ * "Your level: Sapling" under a level picker (Build F): the leaf and the
+ * name, plus how it grows. Rounds at your level move it; any level can be tried.
+ */
+export function LevelNote({ level }: { level: GameTier }) {
+  const { c } = useTheme();
+  const how = level === 'heartwood' ? 'The top level.' : 'Two strong rounds in a row at your level grow it.';
+  return (
+    <View accessible accessibilityLabel={`Your level: ${level === 'seedling' ? 'Seedling' : level === 'sapling' ? 'Sapling' : 'Heartwood'}. ${how}`} style={{ marginTop: space.md, alignItems: 'center' }}>
+      <Row gap={space.sm} style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+        <T v="meta">Your level:</T>
+        <TierTag tier={level} />
+      </Row>
+      <T v="meta" center color={c.ink2} style={{ marginTop: 2 }}>{how}</T>
+    </View>
   );
 }
 
@@ -341,7 +389,7 @@ export function GameUnavailable({ game }: { game: GameId }) {
 /** Renders the game, or GameUnavailable when this certification's pool is too small. */
 export function PlayableGate({ game, children }: { game: GameId; children: ReactNode }) {
   const { cert } = useActiveCert();
-  const ok = useMemo(() => isPlayable(game, getAllQuestions(cert.id), getNotes(cert.id)), [game, cert.id]);
+  const ok = useMemo(() => canPlay(cert.id, game), [game, cert.id]);
   return ok ? <>{children}</> : <GameUnavailable game={game} />;
 }
 

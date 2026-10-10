@@ -44,6 +44,14 @@ export { default as Sparkles } from 'lucide-react-native/icons/sparkles';
 export { default as SproutIcon } from 'lucide-react-native/icons/sprout';
 export { default as EyeOff } from 'lucide-react-native/icons/eye-off';
 export { default as Target } from 'lucide-react-native/icons/target';
+// Build F: Milestones (You), Field notes (You), and the three new games:
+// Field Guide (a book of terms), Canopy Call (a tree: layers of authority),
+// Stepping Stones (footprints along a path).
+export { default as MilestoneIcon } from 'lucide-react-native/icons/milestone';
+export { default as Leaf } from 'lucide-react-native/icons/leaf';
+export { default as BookA } from 'lucide-react-native/icons/book-a';
+export { default as TreeDeciduous } from 'lucide-react-native/icons/tree-deciduous';
+export { default as Footprints } from 'lucide-react-native/icons/footprints';
 export { default as Timer } from 'lucide-react-native/icons/timer';
 export { default as UserRound } from 'lucide-react-native/icons/user-round';
 export { default as X } from 'lucide-react-native/icons/x';

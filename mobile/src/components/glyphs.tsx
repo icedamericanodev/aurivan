@@ -103,6 +103,32 @@ export function PlanLeaf({ color, filled }: { color: string; filled?: boolean })
   );
 }
 
+/**
+ * Build F game levels: one leaf, three stages, so the level reads by SHAPE
+ * as well as by its text label (never colour alone).
+ * - Seedling: a small sprout (stem + one outline leaf).
+ * - Sapling: a full outline leaf with its midrib.
+ * - Heartwood: the same leaf, filled.
+ * Also the "pressed leaf" of a skill badge: filled = earned, outline = not yet.
+ */
+export function TierLeaf({ tier, color, size = 16, rib }: { tier: 'seedling' | 'sapling' | 'heartwood'; color: string; size?: number; rib?: string }) {
+  if (tier === 'seedling') {
+    return (
+      <Svg width={size} height={size} viewBox="0 0 16 16">
+        <Path d="M8 15V9" stroke={color} strokeWidth={1.4} strokeLinecap="round" />
+        <Path d="M8 9.5C8 6.5 9.8 4.5 13 4.3c0 3-1.9 5-5 5.2z" fill={color} fillOpacity={0.18} stroke={color} strokeWidth={1.3} strokeLinejoin="round" />
+      </Svg>
+    );
+  }
+  const filled = tier === 'heartwood';
+  return (
+    <Svg width={size} height={size} viewBox="0 0 16 16">
+      <Path d="M8 15C3 11.5 2.5 5.5 8 1c5.5 4.5 5 10.5 0 14z" fill={color} fillOpacity={filled ? 1 : 0.18} stroke={color} strokeWidth={1.4} />
+      <Path d="M8 4.5v8.5" stroke={filled ? (rib ?? 'transparent') : color} strokeWidth={1.2} />
+    </Svg>
+  );
+}
+
 // ── Botanical line art ──────────────────────────────────────────────────
 type Pt = [number, number];
 interface FrondSpec {

@@ -37,7 +37,7 @@ import { GAMES } from '../../engine/games/registry';
 import { createRng } from '../../engine/random';
 import { displayToOriginal, isCorrect, makePermutation, originalToDisplay, renderText, type Permutation } from '../../engine/shuffle';
 import { moveFocus } from '../../lib/a11y';
-import { logGame } from '../../lib/activity';
+import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { certOutline } from '../../lib/outline';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
@@ -59,7 +59,11 @@ function CallItFirst() {
   const { c } = useTheme();
   const { cert } = useActiveCert();
   const bank = useMemo(() => getAllQuestions(cert.id), [cert.id]);
-  const [tier, setTier] = useState<CallTier>('seedling');
+  // Build F: the picker starts on the learner's own level for this game.
+  const [tier, setTier] = useState<CallTier>(() => startingTier(cert.id, 'callit'));
+  const [news, setNews] = useState<RoundNews | null>(null);
+  // The skill step per question: the principle named (Heartwood: the answer itself).
+  const [steps, setSteps] = useState<boolean[]>([]);
   const [round, setRound] = useState<{ items: CallItem[]; perms: Record<string, Permutation>; seed: number } | null>(null);
   const [i, setI] = useState(0);
   const [phase, setPhase] = useState<Phase>('principle');
@@ -112,6 +116,8 @@ function CallItFirst() {
     setI(0);
     setScore(0);
     setMisses([]);
+    setNews(null);
+    setSteps([]);
     resetItem();
   };
   const resetItem = () => {
@@ -134,6 +140,7 @@ function CallItFirst() {
         onTier={setTier}
         tierName={CALL_TIER_NAME}
         tierLine={CALL_TIER_LINE}
+        level={startingTier(cert.id, 'callit')}
         onStart={() => start(Date.now())}
       />
     );
@@ -141,7 +148,7 @@ function CallItFirst() {
 
   if (i >= round.items.length || !item || !q || !perm) {
     return (
-      <RoundEnd certId={cert.id} game="callit" score={score} max={callMax(tier, round.items.length)} misses={misses} onAgain={() => start(Date.now())}>
+      <RoundEnd certId={cert.id} game="callit" score={score} max={callMax(tier, round.items.length)} misses={misses} onAgain={() => start(Date.now())} news={news}>
         <T color={c.ink2}>
           On exam day, read the stem, name the principle in your head, then look for the option that matches it. The options are written to pull you off course.
         </T>
@@ -184,9 +191,17 @@ function CallItFirst() {
         },
       ]);
     }
+    const nextSteps = [...steps, tier === 'heartwood' ? ok : principleRight];
+    setSteps(nextSteps);
     if (i === round.items.length - 1) {
-      p.recordGame(cert.id, 'callit', score + pts);
-      logGame(cert.id, 'callit');
+      setNews(
+        finishGameRound(cert.id, 'callit', {
+          score: score + pts,
+          rate: nextSteps.filter(Boolean).length / round.items.length,
+          tier,
+          hits: nextSteps,
+        }),
+      );
     }
   };
 

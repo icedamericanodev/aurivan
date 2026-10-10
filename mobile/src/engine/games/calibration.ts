@@ -111,6 +111,18 @@ export function calibration(results: SprintResult[]): CalibrationBand[] {
   });
 }
 
+/**
+ * Build F: Sure Footing's skill step, per answer. An answer is WELL JUDGED
+ * unless it was a miss marked Sure (over-confident) or a hit marked Guess
+ * (under-confident). Lean is always an honest middle. The round's share of
+ * well-judged answers moves the game's level (engine/games/growth.ts).
+ */
+export function wellJudged(r: Pick<SprintResult, 'footing' | 'correct'>): boolean {
+  if (r.footing === 'sure') return r.correct;
+  if (r.footing === 'guess') return !r.correct;
+  return true;
+}
+
 /** Guesses needed before "you knew more than you thought" is said. */
 export const UNDER_MIN_GUESSES = 3;
 

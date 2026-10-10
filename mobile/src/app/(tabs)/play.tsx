@@ -7,15 +7,22 @@
  * Names, taglines, skills and round lengths all come from the game registry
  * (engine/games/registry.ts), so this screen, the game screens, Today's plan
  * and the Mistake journal always agree. Only the icons live here (they are UI).
+ *
+ * Build F: every game shows the learner's level (Seedling / Sapling /
+ * Heartwood) as a leaf glyph AND its name, never colour alone. No
+ * leaderboards, no play counts.
  */
 import { router } from 'expo-router';
 import { useMemo } from 'react';
+import { View } from 'react-native';
 import { Crosshair, EyeOff, ICON_STROKE, Play as PlayIcon, Scale, Sparkles, SproutIcon, Sunrise } from '../../components/icons';
-import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Screen, Section, T, Trail } from '../../components/ui';
-import { getAllQuestions } from '../../content/loader';
-import { getNotes } from '../../content/notes';
+import { TierLeaf } from '../../components/glyphs';
+import { TierTag } from '../../components/milestones';
+import { Button, EmptyState, Enter, HeroPanel, ICON_SIZE, ListRow, Row, Screen, Section, T, Trail } from '../../components/ui';
+import { GAME_TIER_NAME, growthTier } from '../../engine/games/growth';
 import { scoreSpoken, scoreText } from '../../engine/games/recap';
-import { GAME_ORDER, GAMES, isPlayable, type GameId } from '../../engine/games/registry';
+import { GAMES, type GameId } from '../../engine/games/registry';
+import { playableGames } from '../../lib/games';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { space } from '../../theme/tokens';
 import { useTheme } from '../../theme/useTheme';
@@ -28,9 +35,11 @@ export default function Play() {
   // A game whose question pool is too small for this certification is not
   // offered at all (never explained with a number: no bank-size leaks).
   // Note-based games (Root or Rumor) count the cert's study notes instead.
-  const games = useMemo(() => GAME_ORDER.filter((id) => isPlayable(id, getAllQuestions(cert.id), getNotes(cert.id))).map((id) => GAMES[id]), [cert.id]);
+  const games = useMemo(() => playableGames(cert.id).map((id) => GAMES[id]), [cert.id]);
   const [featured, ...others] = games;
   const best = (id: GameId) => progress.gameBest[id];
+  // Each game's level (Build F): Seedling until it has been played.
+  const level = (id: GameId) => growthTier(progress.gameGrowth?.[id]);
 
   return (
     <Screen>
@@ -51,6 +60,17 @@ export default function Play() {
         <Enter i={1} style={{ marginTop: 18 }}>
           <HeroPanel
             caption={`${featured.skill} · about ${featured.minutes} min`}
+            captionExtra={
+              // The level on forest: the leaf in sap, its name in text.
+              <Row gap={6} style={{ flexWrap: 'wrap' }}>
+                <View accessible={false} importantForAccessibility="no-hide-descendants">
+                  <TierLeaf tier={level(featured.id)} color={c.sap} rib={c.forest} />
+                </View>
+                <T v="caption" color={c.onForest2} accessibilityLabel={`Your level: ${GAME_TIER_NAME[level(featured.id)]}`}>
+                  {GAME_TIER_NAME[level(featured.id)]}
+                </T>
+              </Row>
+            }
             title={featured.name}
             meta={best(featured.id) !== undefined ? `${featured.tagline} Best ${scoreText(best(featured.id)!)}.` : featured.tagline}
             art="frond"
@@ -75,9 +95,16 @@ export default function Play() {
                 key={g.id}
                 icon={<Icon size={ICON_SIZE.row} color={c.accentText} strokeWidth={ICON_STROKE} />}
                 title={g.name}
-                subtitle={g.tagline}
+                subtitle={
+                  <View>
+                    <T v="meta">{g.tagline}</T>
+                    <View style={{ marginTop: 2 }}>
+                      <TierTag tier={level(g.id)} />
+                    </View>
+                  </View>
+                }
                 trailing={b !== undefined ? <Trail value={scoreText(b)} unit="best" /> : undefined}
-                accessibilityLabel={`${g.name}. ${g.tagline} About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`}
+                accessibilityLabel={`${g.name}. ${g.tagline} Your level: ${GAME_TIER_NAME[level(g.id)]}. About ${g.minutes} minutes.${b !== undefined ? ` Best score ${scoreSpoken(b)}.` : ''}`}
                 onPress={() => router.push(`/game/${g.id}`)}
                 last={i === others.length - 1}
               />

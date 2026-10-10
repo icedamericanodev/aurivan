@@ -15,7 +15,7 @@ import { createRng } from '../../engine/random';
 import { displayToOriginal, originalToDisplay, renderText } from '../../engine/shuffle';
 import { snareMiss, type RecapMiss } from '../../engine/games/recap';
 import { GAMES } from '../../engine/games/registry';
-import { logGame } from '../../lib/activity';
+import { finishGameRound, startingTier, type RoundNews } from '../../lib/gameRounds';
 import { useAnswerClock } from '../../lib/useAnswerClock';
 import { useActiveCert } from '../../lib/useActiveCert';
 import { useProgress } from '../../store/progress';
@@ -42,6 +42,9 @@ function TrapSpotter() {
   const [trapPick, setTrapPick] = useState<Letter | null>(null); // DISPLAY letters
   const [answerPick, setAnswerPick] = useState<Letter | null>(null);
   const [misses, setMisses] = useState<RecapMiss[]>([]);
+  // Build F: each snare spotted (the skill step), and what the round end shows.
+  const [hits, setHits] = useState<boolean[]>([]);
+  const [news, setNews] = useState<RoundNews | null>(null);
   const progress = useProgress.getState();
   // Quiet data (Build C): time from the question appearing to the final answer.
   const readClock = useAnswerClock(round[i] ? `${i}:${round[i].q.id}` : undefined);
@@ -54,11 +57,14 @@ function TrapSpotter() {
         score={score}
         max={round.length * 2}
         misses={misses}
+        news={news}
         onAgain={() => {
           restart();
           setI(0);
           setScore(0);
           setMisses([]);
+          setHits([]);
+          setNews(null);
           setTrapPick(null);
           setAnswerPick(null);
         }}
@@ -97,9 +103,18 @@ function TrapSpotter() {
       // Game answers never count toward the subtopic mastery date (mastery: false).
       progress.recordAnswer(cert.id, q.id, result.correct, undefined, { assisted: step === 'key', ms: readClock(), mastery: false });
       if (!result.correct) progress.recordMistake(cert.id, q.id, displayToOriginal(display, perm));
+      const nextHits = [...hits, result.spotted];
+      setHits(nextHits);
       if (i === round.length - 1) {
-        progress.recordGame(cert.id, 'trap', score + result.points);
-        logGame(cert.id, 'trap');
+        // Snare Spotter has no level picker: the round counts at the learner's level.
+        setNews(
+          finishGameRound(cert.id, 'trap', {
+            score: score + result.points,
+            rate: nextHits.filter(Boolean).length / round.length,
+            tier: startingTier(cert.id, 'trap'),
+            hits: nextHits,
+          }),
+        );
       }
     }
   };
