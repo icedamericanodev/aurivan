@@ -218,6 +218,9 @@ function RootOrRumor() {
       }
     >
       <T v="caption" color={c.accentText}>Sound principle, or exam myth?</T>
+      {/* The note it comes from, as context. Each subtopic in a round has
+          both a Root and a Rumor, so the heading gives nothing away. */}
+      <T v="meta" style={{ marginTop: space.xs }}>{`From the note: ${s.subtopicName}`}</T>
       <Gap h={space.sm} />
       <Stem>{s.text}</Stem>
       <Gap h={space.lg} />

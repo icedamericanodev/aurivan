@@ -77,8 +77,39 @@ export function firstSentence(text: string): string {
 const LEANS_ON = /^(It|Its|This|These|That|Those|They|Their|Such|And|But|Or|So|Because|Also|Here|Then)\b/;
 
 /**
+ * Back-references inside a line, found by the 40-statement content checks:
+ * "also" ("…also works online"), a trailing "too" ("…are tested too."), an
+ * outline code ("…are in 3B2.3"), an instruction whose object is "it"
+ * ("Mitigate (reduce) it by…"), "this / these / those + noun" mid-line
+ * ("…repeats this improvement loop"; "those who / whose / that" is fine),
+ * "to that risk", "both" with no "and" ("When both are low"), "below" /
+ * "above" pointing at the page, and a "them" with no plural noun before it ("Rely on legal counsel to
+ * interpret them"). Any of these means the line needs the one before it.
+ */
+export function leansBack(text: string): boolean {
+  if (/\balso\b/i.test(text)) return true;
+  if (/\btoo[.,;]/i.test(text)) return true;
+  if (/\b\d[AB]\d+(\.\d+)?\b/.test(text)) return true;
+  if (/^\W*[A-Za-z]+(\s+\([^)]*\))?\s+it\b/.test(text)) return true;
+  if (/\b(this|these|those)\b(?!\s+(who|whose|that|which)\b)/i.test(text)) return true;
+  // "…traceable to that risk": a preposition + "that" + noun points back.
+  if (/\b(to|of|for|in|on|at|with|from|by|against) that\s+(?!is|are|was|were|has|have|can|will|would|could|may|must|might)[a-z]+/i.test(text)) return true;
+  // "When both are low": "both" without "X and Y" right after it names something earlier.
+  if (/\bboth\b(?!(\s+[\w-]+){1,4}\s+and\b)/i.test(text)) return true;
+  // "…the six types below)" / "…listed above.": a pointer to the page.
+  if (/\b(below|above)\s*[).,;:]/i.test(text)) return true;
+  const them = text.search(/\bthem\b/i);
+  if (them >= 0) {
+    const before = text.slice(0, them).split(/\s+/).map((w) => w.replace(/[^A-Za-z]/g, ''));
+    if (!before.some((w) => w.length > 3 && /s$/i.test(w) && !/ss$/i.test(w))) return true;
+  }
+  return false;
+}
+
+/**
  * The build filter: a whole, standalone sentence of 8–30 words, with no
- * question and no "e.g." / "i.e." fragment.
+ * question, no "e.g." / "i.e." fragment and nothing that leans on an
+ * earlier line.
  */
 export function cleanStatement(text: string): boolean {
   const t = text.trim();
@@ -88,7 +119,7 @@ export function cleanStatement(text: string): boolean {
   if (!/^[A-Z]/.test(t)) return false;
   if (!/\.$/.test(t)) return false;
   if (/\b(e\.g|i\.e)\./i.test(t)) return false;
-  if (LEANS_ON.test(t)) return false;
+  if (LEANS_ON.test(t) || leansBack(t)) return false;
   // Unbalanced brackets or quotes mean a cut-off line.
   if ((t.match(/\(/g) ?? []).length !== (t.match(/\)/g) ?? []).length) return false;
   if ((t.match(/"/g) ?? []).length % 2 !== 0) return false;

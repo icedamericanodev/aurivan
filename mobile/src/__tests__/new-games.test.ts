@@ -54,6 +54,24 @@ describe('Root or Rumor: the content filter', () => {
     expect(cleanStatement(`${'word '.repeat(31)}end.`)).toBe(false); // over 30 words
     expect(cleanStatement('Controls such as reviews and sign-off act before the event happens')).toBe(false); // no full stop
   });
+  it('drops lines that lean on the line before (found by the content spot-check)', () => {
+    // The real failures from the 40-statement checks.
+    expect(cleanStatement('Rely on legal counsel to interpret them; the auditor tests against agreed requirements, not a personal reading of the law.')).toBe(false);
+    expect(cleanStatement('The plan-do-check-act (PDCA) cycle repeats this improvement loop over time.')).toBe(false);
+    expect(cleanStatement('The integrated test facility (ITF) also works online; choose it when running separate test data is impractical.')).toBe(false);
+    expect(cleanStatement('Encryption keys and their escrow copies are tested too, because an encrypted backup without its key cannot be restored.')).toBe(false);
+    expect(cleanStatement('A release goes live only after results are reviewed; rollout methods such as canary releases are in 3B2.3.')).toBe(false);
+    expect(cleanStatement('Mitigate (reduce) it by adding or improving controls that lower likelihood or impact.')).toBe(false);
+    expect(cleanStatement('Use threat modeling, such as STRIDE (named from the six threat types below), to find attacks.')).toBe(false);
+    expect(cleanStatement('Write objectives that are specific, testable and traceable to that risk or requirement.')).toBe(false);
+    expect(cleanStatement('When both are low, accept higher detection risk and test less, but never skip substantive work.')).toBe(false);
+    expect(cleanStatement('Management treats residual risk above appetite by mitigating, transferring or avoiding it.')).toBe(true);
+    expect(cleanStatement('Confirm that both preparer and reviewer are different people before relying on the control.')).toBe(true);
+    // Fine: "them" after a plural noun, "those whose", "such as".
+    expect(cleanStatement('Guidelines are not mandatory, but the auditor considers them and must justify any departure.')).toBe(true);
+    expect(cleanStatement('Identify key controls first, meaning those whose failure would leave a significant risk uncovered.')).toBe(true);
+    expect(cleanStatement('Devices that cannot protect themselves are segmented and allowed only the traffic they need.')).toBe(true);
+  });
   it('reads the first sentence of a rule', () => {
     expect(firstSentence('Standards are the floor. Guidelines call for judgment.')).toBe('Standards are the floor.');
     expect(firstSentence('One sentence only.')).toBe('One sentence only.');
@@ -73,7 +91,7 @@ describe('Root or Rumor: the content filter', () => {
 
 /** A small pack: 2 domains × 4 subtopics, each with 2 roots and 2 rumors. */
 function pack(): NotesPack {
-  const line = (d: string, s: number, k: number, kind: string) => `In domain ${d} subtopic ${s} the ${kind} statement number ${k} reads like this sentence.`;
+  const line = (d: string, s: number, k: number, kind: string) => `In domain ${d} subtopic ${s} the ${kind} statement number ${k} reads like a plain sentence.`;
   return {
     certId: 'x',
     schemaVersion: 2,
