@@ -36,7 +36,7 @@ import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
 } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
+import { PageTurn, Pop, useMotion } from '../components/motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LeafSmall } from '../components/glyphs';
 import { ArrowRight, BookOpen, Bookmark, BookmarkCheck, ICON_STROKE, Lightbulb, X } from '../components/icons';
@@ -93,12 +93,15 @@ export default function SessionScreen() {
   const toggleBookmark = useProgress((s) => s.toggleBookmark);
   const bookmarks = useProgress((s) => (active ? selectCert(s, active.certId).bookmarks : NO_BOOKMARKS));
   const { fontScale } = useWindowDimensions();
-  // Reduce Motion: the navigator sheet appears without sliding.
-  const reduceMotion = useReducedMotion();
+  // Reduce Motion: the navigator sheet fades in instead of sliding.
+  const { reduced: reduceMotion } = useMotion();
 
   const [selected, setSelected] = useState<Letter | null>(null);
   const [confidence, setConfidence] = useState<Confidence | undefined>();
   const [navOpen, setNavOpen] = useState(false);
+  // Counts taps that SAVE a question, so the bookmark pops only for that tap
+  // (never when moving to a question that was already saved).
+  const [savedTaps, setSavedTaps] = useState(0);
   // Lazy initialiser: read the clock once on mount, not on every render.
   const [now, setNow] = useState(() => Date.now());
   // Layout bookkeeping for the sticky footer and the vine reveal.
@@ -170,10 +173,9 @@ export default function SessionScreen() {
     setConfidence(undefined);
     setVineVisible(false);
   }
-  // Scrolling is a side effect on a native view, so it stays in an effect.
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ y: 0, animated: false });
-  }, [qid]);
+  // Back to the top for each new question: PageTurn calls this at the swap,
+  // while neither page is visible, so the jump is never seen.
+  const scrollToTop = useCallback(() => scrollRef.current?.scrollTo({ y: 0, animated: false }), []);
 
   // After an answer, if the vine is already on screen (short questions),
   // draw it without waiting for a scroll.
@@ -486,14 +488,23 @@ export default function SessionScreen() {
             accessibilityRole="button"
             accessibilityLabel={saved ? 'Remove from saved' : 'Save question'}
             accessibilityState={{ selected: saved }}
-            onPress={() => toggleBookmark(active.certId, qid)}
+            onPress={() => {
+              if (!saved) {
+                haptic.light();
+                setSavedTaps((n) => n + 1);
+              }
+              toggleBookmark(active.certId, qid);
+            }}
             style={{ width: 44, height: 44, marginRight: -10, alignItems: 'center', justifyContent: 'center' }}
           >
-            {saved ? (
-              <BookmarkCheck size={22} color={c.accentText} strokeWidth={ICON_STROKE} />
-            ) : (
-              <Bookmark size={22} color={c.ink2} strokeWidth={ICON_STROKE} />
-            )}
+            {/* Saving pops the filled mark in (a small leaf spring); un-saving just swaps it. */}
+            <Pop trigger={savedTaps}>
+              {saved ? (
+                <BookmarkCheck size={22} color={c.accentText} strokeWidth={ICON_STROKE} />
+              ) : (
+                <Bookmark size={22} color={c.ink2} strokeWidth={ICON_STROKE} />
+              )}
+            </Pop>
           </Pressable>
         )}
       </Row>
@@ -507,6 +518,10 @@ export default function SessionScreen() {
           // Pad by the sticky footer + 24, so option D / the last tip never sits under it.
           contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}
         >
+          {/* Question to question is a page turn (spec §8): the old one drifts out
+              the way you're going, the new one arrives from the other side
+              (Previous in a mock turns back). The header and footer stay still. */}
+          <PageTurn id={active.index} onSwap={scrollToTop}>
           {!submitted ? (
             <>
               {/* Question */}
@@ -598,7 +613,8 @@ export default function SessionScreen() {
               <>
                 {/* Answer: verdict → your pick → best answer → why → vine → trust */}
                 <Verdict correct={response.correct} coach={coach} />
-                {response.assisted && <T v="meta" style={{ marginTop: space.xs }}>Assisted. Counts half toward readiness.</T>}
+                {/* Lined up with the coach line above it (left 50, under "Correct"). */}
+                {response.assisted && <T v="meta" style={{ marginTop: space.xs, marginLeft: 50 }}>Assisted. Counts half toward readiness.</T>}
                 <Rise delay={FEEDBACK_DELAY.rows}>
                   <View style={{ marginTop: space.lg }}>
                     {!response.correct && pickedOriginal && (
@@ -661,6 +677,7 @@ export default function SessionScreen() {
               </>
             )
           )}
+          </PageTurn>
         </ScrollView>
 
         {/* Sticky bottom action, within thumb reach */}
@@ -695,7 +712,7 @@ export default function SessionScreen() {
         </StickyFooter>
       </View>
       {/* Mock navigator */}
-      <Modal visible={navOpen} animationType={reduceMotion ? 'none' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
+      <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
           <ScrollView contentContainerStyle={{ padding: space.lg }}>
             <Row style={{ justifyContent: 'space-between' }}>

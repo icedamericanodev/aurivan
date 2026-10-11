@@ -18,10 +18,11 @@
  *           default in Settings.
  */
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyScreen } from '../components/emptyScreen';
+import { PageTurn } from '../components/motion';
 import { Check, ICON_STROKE, Play } from '../components/icons';
 import { ReadMark } from '../components/notes';
 import { StickyFooter } from '../components/quiz';
@@ -59,6 +60,10 @@ export default function GuidedStep() {
   const { domain: domainParam, timed: timedRaw } = useLocalSearchParams<{ domain?: string; timed?: string }>();
   const timed = timedParam(timedRaw);
   const [footerH, setFooterH] = useState(120);
+  // "Next topic" turns the page (spec §8): the new topic arrives from the
+  // right, read from the top (the scroll resets while nothing is visible).
+  const scrollRef = useRef<ScrollView>(null);
+  const scrollToTop = useCallback(() => scrollRef.current?.scrollTo({ y: 0, animated: false }), []);
   const { cert, progress } = useActiveCert();
   const scopeDomain = cert.domains.find((d) => d.id === domainParam);
   const topics = scopeTopics(cert.id, scopeDomain?.id);
@@ -108,8 +113,9 @@ export default function GuidedStep() {
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
+      <ScrollView ref={scrollRef} contentContainerStyle={{ paddingHorizontal: space.gutter, paddingBottom: footerH + space.xl }}>
       <PushedHeader title="Guided" onBack={goBack} />
+      <PageTurn id={topic.id} direction={1} onSwap={scrollToTop}>
       <Enter i={0}>
         {domain ? <Tag domain={domain} label={`${topic.id} · ${domain.short}`} /> : <T v="meta">{topic.id}</T>}
         <T v="hero" accessibilityRole="header" style={{ marginTop: space.sm }}>{topic.name}</T>
@@ -175,6 +181,7 @@ export default function GuidedStep() {
           </>
         )}
       </Enter>
+      </PageTurn>
       </ScrollView>
       <StickyFooter onHeight={setFooterH}>
         <Button
