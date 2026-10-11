@@ -4,6 +4,7 @@
  */
 import { CERTIFICATIONS } from '../content/certifications';
 import { getAllQuestions, hasContent } from '../content/loader';
+import { FIRM_DEEP_ANSWERS } from '../engine/milestones';
 import { optionLetters } from '../engine/shuffle';
 
 for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
@@ -48,3 +49,18 @@ for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available')) {
     });
   });
 }
+
+// Mobile 1.11 (badges_game.md §9.4): Firm Footing · 80% needs 40 of a domain's
+// answers. Each available cert's bank must hold at least twice that per domain,
+// or the tier would be out of reach (it would have to leave that cert's catalogue).
+describe('the bank supports every badge tier', () => {
+  it('every domain of every available cert has 2 × 40 questions or more', () => {
+    for (const cert of CERTIFICATIONS.filter((c) => c.status === 'available' && hasContent(c.id))) {
+      const all = getAllQuestions(cert.id);
+      for (const d of cert.domains) {
+        const n = all.filter((q) => q.domainId === d.id).length;
+        expect([cert.id, d.id, n >= 2 * FIRM_DEEP_ANSWERS]).toEqual([cert.id, d.id, true]);
+      }
+    }
+  });
+});

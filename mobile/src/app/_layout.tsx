@@ -24,7 +24,7 @@ import { useEffect } from 'react';
 import { getCertification } from '../content/certifications';
 import { pruneUndo } from '../lib/backup';
 import { initCaseSeen } from '../lib/badges';
-import { ensureBackfill, syncPlanters } from '../lib/milestones';
+import { ensureBackfill, ensureCatalog, syncPlanters } from '../lib/milestones';
 import { useProgress } from '../store/progress';
 import { cancelReminders, initNotifications, scheduleReminders } from '../lib/reminders';
 import { useSettings } from '../store/settings';
@@ -86,8 +86,11 @@ export default function RootLayout() {
   // Mobile 1.10, after the back-fill: badges already held never show the
   // "new" dot; only ones earned from now on can. And a set completed before
   // planters existed saves its planter now (idempotent: nothing new, no write).
+  // Mobile 1.11 first: badges filled in under the older catalogue earn what
+  // their study already shows under this one (new tiers, Took Root), quietly, once.
   useEffect(() => {
     if (!hydrated) return;
+    ensureCatalog(activeCertId);
     initCaseSeen(activeCertId);
     syncPlanters(activeCertId);
   }, [hydrated, activeCertId]);

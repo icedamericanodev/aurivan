@@ -16,6 +16,7 @@ import {
   inferFromSaves,
   isDressRehearsal,
   isOnPace,
+  LONG_LADDER,
   MILESTONES,
   nearest,
   newlyMet,
@@ -58,7 +59,7 @@ function facts(over: Partial<MilestoneFacts> = {}): MilestoneFacts {
 const met = (f: MilestoneFacts) => allMarks(f).filter((m) => m.met).map((m) => m.key);
 
 describe('the badge set', () => {
-  it('has the 15 milestones and the 7 skill badges, each with a plain rule', () => {
+  it('has the 16 milestones (Took Root since 1.11) and the 7 skill badges, each with a plain rule', () => {
     expect(MILESTONES.map((b) => b.name)).toEqual([
       'First Foothold',
       'Topic Clear',
@@ -74,6 +75,7 @@ describe('the badge set', () => {
       'On Pace',
       'Mindset Shift',
       'Rooted',
+      'Took Root',
       'Fresh Start',
     ]);
     expect(SKILL_BADGES.map((b) => b.name)).toEqual(['Snare-wise', 'Even Keel', 'Signpost Reader', 'Myth Clearer', 'Sure-Footed Pace', 'Whole Grove', 'Back on the Path']);
@@ -109,7 +111,8 @@ describe('each milestone: positive and negative', () => {
     expect(met(f(19, 1))).not.toContain('firm-footing:4');
     expect(met(f(40, 0.69))).not.toContain('firm-footing:4');
     const marks = allMarks(f(20, 0.7)).filter((m) => m.badge === 'firm-footing');
-    expect(marks.map((m) => m.label)).toEqual(['Firm Footing · IS Ops']);
+    // Mobile 1.11: each leaf has its 80% Stretch tier beside it.
+    expect(marks.map((m) => m.label)).toEqual(['Firm Footing · IS Ops', 'Firm Footing · IS Ops · 80%']);
   });
 
   it('Whole Map: every domain at 65% or more', () => {
@@ -360,8 +363,10 @@ describe('the Milestones screen data', () => {
     expect(near[2].next!.detail).toBe('25 of 30 study days');
   });
 
-  it('progress lines never show a bank size', () => {
-    for (const m of allMarks(facts({ cleanAnswered: 900, studyDays: 3 }))) expect(m.detail).not.toMatch(/of \d{3,}/);
+  it('progress lines never show a bank size (the only 3-digit target is Long Memory’s own top tier)', () => {
+    for (const m of allMarks(facts({ cleanAnswered: 900, studyDays: 3 }))) {
+      for (const n of m.detail.match(/of (\d{3,})/g) ?? []) expect(n).toBe(`of ${LONG_LADDER[2]}`);
+    }
   });
 
   it('badgeCount counts Firm Footing leaves once', () => {

@@ -5,6 +5,7 @@
  * with one summary, badges are never revoked, and a backup carries them —
  * a restored badge the data can't support is dropped.
  */
+import { CATALOG_VERSION } from '../engine/badgeCatalog';
 import { getDomainQuestions } from '../content/loader';
 import { readBackup } from '../engine/backup';
 import { allMarks } from '../engine/milestones';
@@ -411,7 +412,8 @@ describe('planters for sets completed before 1.10 (code review B2)', () => {
       byCert: {
         cisa: {
           ...cp(),
-          milestones: { earned: { 'rooted:10': T0 - 50 * DAY, 'rooted:30': T0 - 30 * DAY, 'rooted:60': T0 - 2 * DAY }, days: 70, backfill: { at: T0 - 60 * DAY, count: 0, seen: true } },
+          // Filled for this catalogue already (mobile 1.11), so only checkMilestones and syncPlanters are under test.
+          milestones: { earned: { 'rooted:10': T0 - 50 * DAY, 'rooted:30': T0 - 30 * DAY, 'rooted:60': T0 - 2 * DAY }, days: 70, backfill: { at: T0 - 60 * DAY, count: 0, seen: true }, catalog: CATALOG_VERSION },
         },
       },
       streak: st.streak,

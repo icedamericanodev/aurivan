@@ -50,7 +50,7 @@ import { completeCert, useProgress } from '../store/progress';
 import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
-import { syncPlanters } from './milestones';
+import { ensureCatalog, syncPlanters } from './milestones';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
 
 // ── The data in each store (no actions) ──────────────────────────────────
@@ -355,8 +355,12 @@ async function writeAll(
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();
   // A backup from 1.9 already ran its back-fill, so the launch effect never
-  // revisits it: a set it holds complete gets its planter here.
-  for (const id of Object.keys(useProgress.getState().byCert)) syncPlanters(id);
+  // revisits it: a set it holds complete gets its planter here. A backup from
+  // 1.10 has the older badge catalogue: its new tiers fill in quietly first.
+  for (const id of Object.keys(useProgress.getState().byCert)) {
+    ensureCatalog(id);
+    syncPlanters(id);
+  }
 }
 
 /** How reminders ended up after a restore or undo. */

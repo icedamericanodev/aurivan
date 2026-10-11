@@ -145,7 +145,25 @@ describe('export: every state the phone can hold reads back', () => {
         ? {
             milestones: {
               earned: Object.fromEntries(
-                ['first-foothold', 'firm-footing:4', 'rooted:10', 'rooted:60', 'graduate', 'whole-grove', 'snare-wise'].filter(() => rng() < 0.5).map((k) => [k, T0 - n(90) * DAY]),
+                [
+                  'first-foothold',
+                  'firm-footing:4',
+                  'rooted:10',
+                  'rooted:60',
+                  'graduate',
+                  'whole-grove',
+                  'snare-wise',
+                  // Mobile 1.11: the tiers and Took Root (kept or dropped on restore, never refused).
+                  'whole-map',
+                  'long-memory:75',
+                  'long-memory:150',
+                  'dress-rehearsal:2',
+                  'dress-rehearsal:3',
+                  'firm-footing:4:80',
+                  'took-root',
+                ]
+                  .filter(() => rng() < 0.5)
+                  .map((k) => [k, T0 - n(90) * DAY]),
               ),
               ...(rng() < 0.5 ? { queue: ['rooted:10', 'graduate'] } : {}),
               ...(rng() < 0.5 ? { backfill: { at: T0 - n(30) * DAY, count: n(15), ...(rng() < 0.5 ? { seen: true } : {}) } } : {}),
@@ -153,7 +171,8 @@ describe('export: every state the phone can hold reads back', () => {
               // Rolling windows and Long Memory's counted ids (an older build's
               // over-long lists too: export keeps the newest).
               ...(rng() < 0.6 ? { myths: hitsOf(pick([0, 3, 25, 40])), signposts: hitsOf(pick([0, 10, 18])) } : {}),
-              ...(rng() < 0.5 ? { longIds: Object.keys(answers).slice(0, n(26)) } : {}),
+              // Up to the 150 Long Memory now keeps (mobile 1.11), and past it.
+              ...(rng() < 0.5 ? { longIds: Object.keys(answers).slice(0, pick([n(26), 150, 170])) } : {}),
               sure: Array.from({ length: n(70) }, () => rng() < 0.8),
               gameMisses: Object.fromEntries(Array.from({ length: n(6) }, () => [pick(ids), dayKey(T0 - n(20) * DAY)])),
               ...(rng() < 0.5 ? { cardMisses: { 'kt:D4:abc123': dayKey(T0 - n(5) * DAY), 'role:1A1.3:r001': dayKey(T0) } } : {}),
@@ -162,6 +181,9 @@ describe('export: every state the phone can hold reads back', () => {
               ...(rng() < 0.3 ? { returnedOn: dayKey(T0) } : {}),
               // Mobile 1.10: completed sets' planters (kept or dropped on restore, never refused).
               ...(rng() < 0.5 ? { planters: { rooted: T0 - n(20) * DAY, groundwork: T0, examDay: T0 - DAY } } : {}),
+              // Mobile 1.11: the catalogue version filled in, and its one line.
+              ...(rng() < 0.5 ? { catalog: pick([1, 2]) } : {}),
+              ...(rng() < 0.5 ? { catalogFill: { at: T0 - n(9) * DAY, count: n(4), ...(rng() < 0.5 ? { seen: true } : {}) } } : {}),
             },
           }
         : {}),

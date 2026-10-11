@@ -62,15 +62,23 @@ export const MYTH_WINDOW = 25;
 export const MYTH_RIGHT = 20;
 export const PACE_ROUNDS = 3;
 export const GAME_FIXES = 10;
-// The higher tiers planned for the next release (badges_game.md §2.3, slice
-// C). Nothing earns them yet; they are here so a restored backup is checked
-// against the RIGHT evidence for each tier (markSupported), never tier 1's.
-/** Firm Footing · 80%: its answers (a Stretch tier, after Whole Map). */
+// The higher tiers (mobile 1.11, badges_game.md §2.3, slice C). Each tier is
+// its own mark, earned once and kept; a restored backup is checked against
+// the RIGHT evidence for each tier (markSupported), never tier 1's.
+/** Firm Footing · 80%: a Stretch tier, opening once Whole Map is earned. */
+export const FIRM_DEEP = 0.8;
+/** Firm Footing · 80%: its answers. */
 export const FIRM_DEEP_ANSWERS = 40;
-/** Long Memory's tiers beyond the first (25): 75, then 150. */
+/** Long Memory's tiers beyond the first (25): 75, then 150 (a Stretch tier). */
 export const LONG_TIERS = [75, 150] as const;
-/** Dress Rehearsal's tiers beyond the first: 2 and 3 spaced mocks. */
+/** Long Memory's three tiers, lowest first. The question list it keeps stops at the top one. */
+export const LONG_LADDER = [LONG_RECALLS, ...LONG_TIERS] as const;
+/** Long Memory's question list stops at its top tier (it stopped at 25 before 1.11). */
+export const LONG_IDS_CAP = LONG_LADDER[LONG_LADDER.length - 1];
+/** Dress Rehearsal's tiers beyond the first: 2 and 3 spaced mocks (3 is a Stretch tier). */
 export const DRESS_TIERS = [2, 3] as const;
+/** Dress Rehearsal · 2 and · 3: each full mock this many days or more after the one before. */
+export const DRESS_GAP_DAYS = 7;
 
 const DAY_MS = 86_400_000;
 
@@ -89,6 +97,7 @@ export type MilestoneId =
   | 'on-pace'
   | 'mindset-shift'
   | 'rooted'
+  | 'took-root'
   | 'fresh-start';
 
 export type SkillBadgeId = 'snare-wise' | 'even-keel' | 'signpost-reader' | 'myth-clearer' | 'sure-footed-pace' | 'whole-grove' | 'back-on-path';
@@ -119,7 +128,11 @@ export interface CertMilestones {
   counts?: Partial<Record<CounterId, number>>;
   /** The last SURE_WINDOW unassisted, non-game "sure" answers, oldest first (true = right). */
   sure?: boolean[];
-  /** Long Memory: the questions already counted (each counts once). At most LONG_RECALLS. */
+  /**
+   * Long Memory: the questions already counted (each counts once). At most
+   * 150 (the top tier) since mobile 1.11; it stopped at 25 before, so the
+   * count for the higher tiers starts from there (never inflated).
+   */
   longIds?: string[];
   /** Myth Clearer: the last MYTH_WINDOW different rumors (note cards) and whether each was cleared. */
   myths?: WindowHit[];
@@ -144,11 +157,22 @@ export interface CertMilestones {
    * later gains a badge never takes a planter back.
    */
   planters?: Record<string, number>;
+  /**
+   * Mobile 1.11: the badge catalogue version this cert's badges were last
+   * filled in for (badgeCatalog.ts CATALOG_VERSION). A newer catalogue (new
+   * tiers, Took Root) earns what the saved study already shows, ONCE and
+   * quietly, with one summary line (`catalogFill`).
+   */
+  catalog?: number;
+  /** That one-time fill: when it ran, how many badges it found, and whether its line was seen. */
+  catalogFill?: { at: number; count: number; seen?: boolean };
 }
 
 /** A mock result, as far as the milestones need it. */
 export interface MockFacts {
   total: number;
+  /** When it ended (Dress Rehearsal's spaced tiers). Optional for older test data. */
+  finishedAt?: number;
   timing?: MockTiming;
   unanswered?: number;
   checkpoints?: number[];
@@ -178,6 +202,18 @@ export interface MilestoneFacts {
    * its badge is "gated": it says when it opens, never an empty bar.
    */
   mindsetData?: boolean;
+  /**
+   * Mobile 1.11: when Whole Map was earned (none: not yet). Firm Footing ·
+   * 80% and Dress Rehearsal · 2 and · 3 open then, and only mocks finished
+   * from then on count toward the spaced Dress Rehearsals.
+   */
+  wholeMapAt?: number;
+  /**
+   * Mobile 1.11, Took Root: the topic closest to taking root, as the share
+   * (0..1) of its parts (subtopics with questions) mastered, i.e. answered
+   * right without a hint on two different days. 1 = a whole topic took root.
+   */
+  tookRoot?: number;
   studyDays: number;
   freshStart: boolean;
   // Skill badges.
@@ -208,6 +244,8 @@ export interface MarkState {
   met: boolean;
   progress: number;
   detail: string;
+  /** This mark's own rule, when a higher tier's differs from its badge's ("Get 75 questions right…"). */
+  rule?: string;
 }
 
 const g = (id: keyof typeof GAMES) => GAMES[id].name;
@@ -242,6 +280,12 @@ export const BADGES: BadgeDef[] = [
     kind: 'milestone',
     name: 'Rooted',
     rule: `Study on ${ROOTED_DAYS[0]} days in all, then ${ROOTED_DAYS[1]}, then ${ROOTED_DAYS[2]}. Days add up; they don’t need to be in a row.`,
+  },
+  {
+    id: 'took-root',
+    kind: 'milestone',
+    name: 'Took Root',
+    rule: 'Make one whole topic stick: every part of it answered right, without a hint, on two different days.',
   },
   { id: 'fresh-start', kind: 'milestone', name: 'Fresh Start', rule: `Come back after ${FRESH_GAP_DAYS} days or more away and finish a session.` },
   // Skill badges: "pressed leaves" in You → Field notes.
@@ -312,6 +356,16 @@ export function isOnPace(m: MockFacts): boolean {
   return m.timing !== 'untimed' && cps.length >= CHECKPOINTS.length && cps.every((d) => Math.abs(d) <= PACE_TOLERANCE + 1e-9);
 }
 
+/**
+ * A spaced chain (Dress Rehearsal · 2 and · 3): the times, oldest first, each
+ * DRESS_GAP_DAYS or more after the last one kept (taken greedily).
+ */
+export function spacedChain(times: readonly number[]): number[] {
+  const chain: number[] = [];
+  for (const t of [...times].sort((a, b) => a - b)) if (!chain.length || t - chain[chain.length - 1] >= DRESS_GAP_DAYS * DAY_MS) chain.push(t);
+  return chain;
+}
+
 /** Every badge's marks, in display order. */
 export function allMarks(f: MilestoneFacts): MarkState[] {
   const out: MarkState[] = [];
@@ -348,10 +402,41 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
   const wholeMap = f.domains.length > 0 && atFloor === f.domains.length;
   const mapProgress = f.domains.length ? f.domains.reduce((s, d) => s + frac(d.mastery, WHOLE_MAP_FLOOR), 0) / f.domains.length : 0;
   out.push(...one('whole-map', wholeMap, mapProgress, `${atFloor} of ${f.domains.length} domains at ${pct(WHOLE_MAP_FLOOR)}`));
+  // The tiers that open once Whole Map is earned (or is met right now).
+  const mapOpen = f.wholeMapAt !== undefined || wholeMap;
+  // Firm Footing · 80% (a Stretch tier), one per domain.
+  for (const d of f.domains) {
+    const met = mapOpen && d.answered >= FIRM_DEEP_ANSWERS && d.mastery >= FIRM_DEEP - 1e-9;
+    out.push({
+      key: `firm-footing:${d.id}:80`,
+      badge: 'firm-footing',
+      label: `Firm Footing · ${d.short} · 80%`,
+      met,
+      progress: met ? 1 : Math.min(frac(d.answered, FIRM_DEEP_ANSWERS), frac(d.mastery, FIRM_DEEP)),
+      detail: `${pct(d.mastery)} mastery · ${of(d.answered, FIRM_DEEP_ANSWERS, 'answered')}`,
+      rule: `Reach ${pct(FIRM_DEEP)} mastery in this domain, with ${FIRM_DEEP_ANSWERS} or more of its questions answered. Opens once every domain is at ${pct(WHOLE_MAP_FLOOR)}.`,
+    });
+  }
   out.push(...one('loop-closed', f.loopFixed >= LOOP_FIXES, frac(f.loopFixed, LOOP_FIXES), of(f.loopFixed, LOOP_FIXES, 'fixed')));
   out.push(...one('slip-spotter', f.slipsTagged >= SLIP_TAGS, frac(f.slipsTagged, SLIP_TAGS), of(f.slipsTagged, SLIP_TAGS, 'tagged')));
-  out.push(...one('long-memory', f.longRecall >= LONG_RECALLS, frac(f.longRecall, LONG_RECALLS), of(f.longRecall, LONG_RECALLS, 'remembered')));
+  // Long Memory · 25, · 75, · 150: each tier its own mark ("long-memory" stays 25).
+  LONG_LADDER.forEach((n, i) => {
+    const met = f.longRecall >= n;
+    out.push({
+      key: i === 0 ? 'long-memory' : `long-memory:${n}`,
+      badge: 'long-memory',
+      label: `Long Memory · ${n} recalls`,
+      met,
+      progress: met ? 1 : frac(f.longRecall, n),
+      detail: of(f.longRecall, n, 'remembered'),
+      ...(i > 0 ? { rule: `Get ${n} questions right, without a hint, a week or more after you last saw them.` } : {}),
+    });
+  });
   out.push(...one('graduate', f.graduated >= GRADUATES, frac(f.graduated, GRADUATES), of(f.graduated, GRADUATES, 'graduated')));
+  // Took Root: a whole topic, every part right without a hint on two different days.
+  const root = Math.max(0, Math.min(1, f.tookRoot ?? 0));
+  const rootMet = root >= 1 - 1e-9;
+  out.push(...one('took-root', rootMet, root, rootMet ? 'A topic took root' : root > 0 ? `Closest topic: ${pct(root)} rooted` : 'No topic rooted yet'));
   const s = sureShare(f.sure);
   const kwyk = s.n >= SURE_MIN && s.right >= SURE_RIGHT - 1e-9;
   out.push(
@@ -363,7 +448,22 @@ export function allMarks(f: MilestoneFacts): MarkState[] {
     ),
   );
   const dress = f.mocks.some((m) => isDressRehearsal(m, f.fullMockSize));
-  out.push(...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet'));
+  out.push({ ...one('dress-rehearsal', dress, 0, dress ? 'Done' : 'Not yet')[0], label: 'Dress Rehearsal · 1 mock' });
+  // Dress Rehearsal · 2 and · 3: full mocks finished once Whole Map is earned,
+  // each a week or more after the one before (none before Whole Map counts).
+  const chain = mapOpen ? spacedChain(f.mocks.filter((m) => isDressRehearsal(m, f.fullMockSize) && m.finishedAt !== undefined && m.finishedAt >= (f.wholeMapAt ?? 0)).map((m) => m.finishedAt!)) : [];
+  for (const n of DRESS_TIERS) {
+    const met = chain.length >= n;
+    out.push({
+      key: `dress-rehearsal:${n}`,
+      badge: 'dress-rehearsal',
+      label: `Dress Rehearsal · ${n} mocks`,
+      met,
+      progress: met ? 1 : frac(chain.length, n),
+      detail: met ? 'Done' : `${Math.min(chain.length, n)} of ${n} full mocks, a week apart`,
+      rule: `Finish ${n} full, timed mocks with every question answered, each ${DRESS_GAP_DAYS} days or more after the one before, once every domain is at ${pct(WHOLE_MAP_FLOOR)}.`,
+    });
+  }
   const onPace = f.mocks.some(isOnPace);
   out.push(...one('on-pace', onPace, 0, onPace ? 'Done' : 'Not yet'));
   out.push(...one('mindset-shift', f.mindsetShift, 0, f.mindsetShift ? 'Done' : 'Not yet'));
@@ -491,7 +591,7 @@ export function afterAnswer(prev: CertMilestones | undefined, a: AnswerEvent): {
   if (clean && a.correct) {
     // Long Memory counts QUESTIONS, so each question counts once (the rule says "25 questions").
     const longIds = m.longIds ?? [];
-    if (a.prevLastAt !== undefined && a.at - a.prevLastAt >= LONG_GAP_DAYS * DAY_MS && !longIds.includes(a.questionId) && longIds.length < LONG_RECALLS) {
+    if (a.prevLastAt !== undefined && a.at - a.prevLastAt >= LONG_GAP_DAYS * DAY_MS && !longIds.includes(a.questionId) && longIds.length < LONG_IDS_CAP) {
       m = bump({ ...m, longIds: [...longIds, a.questionId] }, 'longRecall');
     }
     if (a.openMistakeAt !== undefined && day > dayKey(a.openMistakeAt)) {
@@ -644,8 +744,6 @@ export interface MarkEvidence {
 /** Keys that open only once Whole Map is earned (badges_game.md §2.3): Firm Footing · 80% and Dress Rehearsal · 2 / · 3. */
 const afterWholeMap = (key: string) => /^firm-footing:[^:]+:80$/.test(key) || /^dress-rehearsal:\d+$/.test(key);
 
-/** A week, in ms: Dress Rehearsal's tiers need each full mock 7 days or more after the one before. */
-const DRESS_GAP_MS = 7 * 86_400_000;
 
 /**
  * Dress Rehearsal's chain (badges_game.md §2.3): the full, timed, fully
@@ -662,9 +760,7 @@ export function dressChain(mocks: readonly unknown[], fullSize: number): number[
     const timing = typeof m.timing === 'string' ? (m.timing as MockTiming) : undefined;
     if (isDressRehearsal({ total: m.total, timing, unanswered }, fullSize)) at.push(m.finishedAt);
   }
-  const chain: number[] = [];
-  for (const t of at.sort((a, b) => a - b)) if (!chain.length || t - chain[chain.length - 1] >= DRESS_GAP_MS) chain.push(t);
-  return chain;
+  return spacedChain(at);
 }
 
 /**

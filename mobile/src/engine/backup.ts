@@ -20,7 +20,7 @@
 import { getCertification } from '../content/certifications';
 import { MAX_ANSWER_MS } from './answerClock';
 import { GAME_TIERS, HITS_CAP, type GameTier } from './games/growth';
-import { keepSupported, LONG_RECALLS, MYTH_WINDOW, SIGNPOST_WINDOW, SURE_WINDOW, type CounterId } from './milestones';
+import { keepSupported, LONG_IDS_CAP, MYTH_WINDOW, SIGNPOST_WINDOW, SURE_WINDOW, type CounterId } from './milestones';
 import type { Confidence } from './srs';
 import type { MockTiming } from './pace';
 import { examDateLabel } from './examDay';
@@ -303,7 +303,8 @@ const milestones = obj(
     backfill: obj({ at: ts, count }, { seen: bool }),
     counts: obj({}, COUNTERS),
     sure: list(bool, SURE_WINDOW, 'newest'),
-    longIds: list(id, LONG_RECALLS),
+    // Mobile 1.11: Long Memory's tiers go to 150 (it stopped at 25 before).
+    longIds: list(id, LONG_IDS_CAP),
     myths: list(windowHit, MYTH_WINDOW, 'newest'),
     signposts: list(windowHit, SIGNPOST_WINDOW, 'newest'),
     gameMisses: map(date, MAX_IDS),
@@ -314,6 +315,9 @@ const milestones = obj(
     // Mobile 1.10: completed badge sets (their planters). Kept only when the
     // restored badges complete the set (engine/milestones.ts keepSupported).
     planters: map(ts, 20),
+    // Mobile 1.11: the catalogue version filled in, and its one summary line.
+    catalog: int(0, 100),
+    catalogFill: obj({ at: ts, count }, { seen: bool }),
   },
 );
 

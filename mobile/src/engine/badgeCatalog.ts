@@ -28,14 +28,17 @@ import { GAMES, type GameId } from './games/registry';
 import { DIAGNOSTIC_SIZE, MOCK_DOMAIN_FLOOR, type Stage } from './journey';
 import {
   badgeDef,
+  DRESS_GAP_DAYS,
   FIRM_ANSWERS,
+  FIRM_DEEP,
   FIRM_MASTERY,
   FRESH_GAP_DAYS,
   GRADUATES,
   LONG_GAP_DAYS,
-  LONG_RECALLS,
+  LONG_LADDER,
   LOOP_FIXES,
   markBadge,
+  DRESS_TIERS,
   ROOTED_DAYS,
   SLIP_TAGS,
   SURE_MIN,
@@ -64,6 +67,7 @@ export const BADGE_SET: Record<BadgeId, SetId> = {
   'long-memory': 'evergreen',
   graduate: 'evergreen',
   'loop-closed': 'evergreen',
+  'took-root': 'evergreen',
   'know-what-you-know': 'judgement',
   'slip-spotter': 'judgement',
   'mindset-shift': 'judgement',
@@ -90,6 +94,7 @@ const BADGE_ORDER: BadgeId[] = [
   'long-memory',
   'graduate',
   'loop-closed',
+  'took-root',
   'know-what-you-know',
   'slip-spotter',
   'mindset-shift',
@@ -119,6 +124,8 @@ export interface CaseDomain {
   /** Blueprint weight, in percent. */
   weight: number;
   tone: number;
+  /** Firm Footing's own emblem for this domain (components/medallion.tsx), when the exam has one. */
+  emblem?: string;
 }
 
 export interface SetInfo {
@@ -184,8 +191,22 @@ export function setInfo(id: SetId, exam: ExamFacts, domainCount: number): SetInf
 }
 
 // ── Copy and effort (badges_game.md §3 and §8) ───────────────────────────
-/** What a badge needs that isn't the rule itself. */
-export type Gate = 'mindsetData';
+/**
+ * What a badge needs that isn't the rule itself: Mindset Shift needs enough
+ * answers to judge; the Stretch tiers and the spaced mocks open once Whole
+ * Map is earned (every domain at the floor).
+ */
+export type Gate = 'mindsetData' | 'wholeMap';
+
+/**
+ * The badge catalogue's version (mobile 1.11 = 2: the tiers and Took Root).
+ * A cert whose badges were filled in for an older one earns what its saved
+ * study already shows, once and quietly (lib/milestones.ts ensureCatalog).
+ */
+export const CATALOG_VERSION = 2;
+
+/** The words a Stretch tier always carries (never only a colour or a ring). */
+export const STRETCH = 'Stretch: beyond exam need';
 
 /** Graduate's shortest path: right on each review box's interval, then once more from the last box. */
 const GRADUATE_MIN_DAYS = Object.entries(INTERVAL_DAYS)
@@ -243,6 +264,16 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       };
     case 'firm-footing': {
       const name = domain?.short ?? 'this domain';
+      if (key.endsWith(':80')) {
+        return {
+          howTo: 'A stretch. Breadth wins exams, so keep the other domains moving too.',
+          unlock: `${Math.round(FIRM_DEEP * 100)}% in ${name}: depth beyond what the exam needs.`,
+          effort: `${STRETCH}. The exam needs breadth more than one strong domain.`,
+          skill: `Went deep in ${name}`,
+          minDays: 0,
+          gate: 'wholeMap',
+        };
+      }
       return {
         howTo: domain
           ? `${name} is ${domain.weight}% of the exam. Practise it in Smart until ${Math.round(FIRM_MASTERY * 100)}% holds.`
@@ -258,23 +289,26 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         howTo: 'Your weakest domain is the shortest path. Study for this opens it.',
         unlock: `Every domain is at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%. Time to rehearse with mocks.`,
         effort: `Needs every domain at ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% at the same time.`,
-        skill: 'Covered every exam domain',
+        skill: `Reached ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% in every exam domain in practice`,
         minDays: 0,
       };
-    case 'long-memory':
+    case 'long-memory': {
+      const n = Number(key.split(':')[1]) || LONG_LADDER[0];
+      const top = n === LONG_LADDER[LONG_LADDER.length - 1];
       return {
         howTo: 'Spaced review brings questions back after a gap. Answer them cold, without Coach me.',
-        unlock: `You recalled ${LONG_RECALLS} questions a week or more after you last saw them. That’s what holds on exam day.`,
-        effort: `Needs at least ${LONG_GAP_DAYS + 1} days: a recall counts a week after you last saw the question.`,
-        skill: 'Remembers answers weeks later',
+        unlock: `You recalled ${n} questions a week or more after you last saw them. That’s what holds on exam day.`,
+        effort: `Needs at least ${LONG_GAP_DAYS + 1} days: a recall counts a week after you last saw the question.${top ? ` ${STRETCH}.` : ''}`,
+        skill: 'Recalls answers a week or more later',
         minDays: LONG_GAP_DAYS + 1,
       };
+    }
     case 'graduate':
       return {
         howTo: 'Keep up with review. Each right answer moves a question a box further on.',
         unlock: `${GRADUATES === 50 ? 'Fifty' : GRADUATES} questions graduated: you’ve shown them again and again, weeks apart.`,
         effort: 'Needs several weeks: a question graduates from the last review box.',
-        skill: `Graduated ${GRADUATES} questions from review`,
+        skill: `Moved ${GRADUATES} questions through spaced review`,
         minDays: GRADUATE_MIN_DAYS,
       };
     case 'loop-closed':
@@ -285,12 +319,20 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         skill: 'Turns mistakes into knowledge',
         minDays: 2,
       };
+    case 'took-root':
+      return {
+        howTo: 'Clear a topic, then come back to it on another day. Review brings it back.',
+        unlock: 'A whole topic took root: every part of it right, on two different days.',
+        effort: 'Needs 2 days or more: every part right on two different days.',
+        skill: 'Made a whole topic stick',
+        minDays: 2,
+      };
     case 'know-what-you-know':
       return {
         howTo: 'Mark “sure” only when you’d bet on it. Honest confidence is the skill.',
         unlock: 'When you say sure, you’re right. That’s calibration, and it saves time on the exam.',
         effort: `Needs ${SURE_MIN} or more “sure” answers.`,
-        skill: 'Knows when I’m sure',
+        skill: 'Knows when to be sure',
         minDays: 0,
       };
     case 'slip-spotter':
@@ -310,20 +352,37 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
         minDays: GROWTH_MIN_DAYS + 1,
         gate: 'mindsetData',
       };
-    case 'dress-rehearsal':
+    case 'dress-rehearsal': {
+      const n = Number(key.split(':')[1]) || 1;
+      if (n === 1) {
+        return {
+          howTo: `Block out ${hours}, or pause and finish later. Answer every question; guessing is free.`,
+          unlock: 'A full sitting, every question answered. Exam day will feel familiar.',
+          effort: `Needs a full mock: ${exam.questions} questions, ${hours}, which you can pause.`,
+          skill: 'Sat a full timed practice exam',
+          minDays: 0,
+        };
+      }
+      // Each spaced mock is a week after the last: 2 need 8 days, 3 need 15.
+      const days = (n - 1) * DRESS_GAP_DAYS + 1;
+      const top = n === DRESS_TIERS[DRESS_TIERS.length - 1];
       return {
-        howTo: `Block out ${hours}, or pause and finish later. Answer every question; guessing is free.`,
-        unlock: 'A full sitting, every question answered. Exam day will feel familiar.',
-        effort: `Needs a full mock: ${exam.questions} questions, ${hours}, which you can pause.`,
-        skill: 'Sat a full timed practice exam',
-        minDays: 0,
+        howTo: `Sit another full mock ${DRESS_GAP_DAYS} days or more after your last one. Mocks from before every domain reached ${Math.round(MOCK_DOMAIN_FLOOR * 100)}% don’t count here.`,
+        unlock: top
+          ? `${NUMBER_WORD[n]} full sittings, each a week apart. That’s all the rehearsal the exam needs.`
+          : `${NUMBER_WORD[n]} full sittings, a week apart. The exam’s length won’t surprise you.`,
+        effort: `Needs at least ${days} days and ${n} full mocks.${top ? ` ${STRETCH}.` : ''}`,
+        skill: `Sat ${n} full timed practice exams, a week apart`,
+        minDays: days,
+        gate: 'wholeMap',
       };
+    }
     case 'on-pace':
       return {
         howTo: 'Flag anything past 2 minutes and move on. The pace checks keep you honest.',
         unlock: 'On pace at every check. You know the rhythm now.',
         effort: 'Needs one timed mock. A mini mock counts.',
-        skill: 'Kept exam pace',
+        skill: 'Kept exam pace in a practice mock',
         minDays: 0,
       };
     case 'rooted': {
@@ -340,6 +399,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
       return {
         howTo: '',
         unlock: 'Welcome back. Picking up again is the skill.',
+        // Never shareable (and never a goal): a moment, not an achievement.
         effort: 'A moment, never a goal.',
         skill: '',
         minDays: FRESH_GAP_DAYS + 1,
@@ -406,6 +466,7 @@ function copyFor(key: string, badge: BadgeId, exam: ExamFacts, domain?: CaseDoma
 /** The gate's line (no progress bar while gated: "Opens when…", never an empty bar). */
 export const GATE_LINE: Record<Gate, string> = {
   mindsetData: `Opens after ${GROWTH_WINDOW * 2} first tries spread over ${GROWTH_MIN_DAYS / 7} weeks or more.`,
+  wholeMap: `Opens when every domain reaches ${Math.round(MOCK_DOMAIN_FLOOR * 100)}%.`,
 };
 
 /** Mock badges are earnable any time, but suggested only once every domain is at the floor. */
@@ -422,10 +483,21 @@ export interface CaseMark {
   set: SetId;
   /** "Firm Footing · IS Operations", "Rooted · 30 days", or the badge name. */
   name: string;
-  /** The grid caption (≤ 2 lines): "IS Operations", "30 days", or the badge name. */
+  /** The grid caption (≤ 2 lines): "IS Operations", "Rooted · 30 days", or the badge name. */
   caption: string;
-  /** Rooted's tier (1, 2, 3): labelled by number, never a metal. */
+  /**
+   * A tiered badge's step (Rooted, Long Memory, Dress Rehearsal, Firm Footing):
+   * 1, 2 or 3, with its metal; always printed and spoken with its number.
+   */
   tier?: number;
+  /** How many tiers its ladder has (3; Firm Footing: 2). */
+  tiers?: number;
+  /** The tier in words: "30 days", "75 recalls", "2 mocks", "80%". */
+  tierLabel?: string;
+  /** The marks of one ladder share this ("rooted", "firm-footing:4"); the sheet shows them together. */
+  ladder?: string;
+  /** A Stretch tier: beyond what the exam needs. Never in its set's core count, never suggested while the core is open. */
+  stretch?: boolean;
   status: MarkStatus;
   earnedAt?: number;
   /** 0..1, how close (1 once earned). */
@@ -440,7 +512,7 @@ export interface CaseMark {
   effort: string;
   skill: string;
   minDays: number;
-  /** Firm Footing's domain (its weight and tone dot). */
+  /** Firm Footing's domain (its weight, tone dot and emblem). */
   domain?: CaseDomain;
   /** Counted in its set's "n of m" (false: an earned mark the catalogue no longer lists). */
   counted: boolean;
@@ -451,11 +523,13 @@ export interface CaseMark {
 export interface SetView {
   info: SetInfo;
   marks: CaseMark[];
-  /** Counted marks earned / counted marks. */
+  /** Core marks earned / core marks (Stretch tiers are counted on their own). */
   earned: number;
   total: number;
-  /** When the last counted mark was earned, once every one is. */
+  /** When the last core mark was earned, once every one is. */
   completeAt?: number;
+  /** The set's Stretch row: earned / total (0 / 0 when it has none). */
+  stretch: { earned: number; total: number };
 }
 
 export interface CaseInput {
@@ -473,22 +547,62 @@ function domainRank(domains: readonly CaseDomain[]): Map<string, number> {
   return new Map(sorted.map((x, k) => [x.d.id, k]));
 }
 
+/** A tiered key's step: which ladder, which tier of how many, its words, and whether it is a Stretch tier. */
+interface TierInfo {
+  tier: number;
+  tiers: number;
+  tierLabel: string;
+  ladder: string;
+  stretch: boolean;
+}
+
+/** The tier a key names (none for a badge with one mark, or a key no version defines). */
+export function tierOf(key: string): TierInfo | undefined {
+  const [badge, part, extra] = key.split(':');
+  const n = Number(part);
+  const isNum = part !== undefined && String(n) === part;
+  switch (badge) {
+    case 'rooted': {
+      const i = (ROOTED_DAYS as readonly number[]).indexOf(n);
+      return isNum && extra === undefined && i >= 0 ? { tier: i + 1, tiers: ROOTED_DAYS.length, tierLabel: `${n} days`, ladder: 'rooted', stretch: false } : undefined;
+    }
+    case 'long-memory': {
+      // "long-memory" is 25; only 75 and 150 take a part ("long-memory:25" is no key, as markSupported says).
+      const count = part === undefined ? LONG_LADDER[0] : isNum && extra === undefined && n !== LONG_LADDER[0] ? n : NaN;
+      const i = (LONG_LADDER as readonly number[]).indexOf(count);
+      return i >= 0 ? { tier: i + 1, tiers: LONG_LADDER.length, tierLabel: `${count} recalls`, ladder: 'long-memory', stretch: i === LONG_LADDER.length - 1 } : undefined;
+    }
+    case 'dress-rehearsal': {
+      const count = part === undefined ? 1 : isNum && extra === undefined && (DRESS_TIERS as readonly number[]).includes(n) ? n : NaN;
+      if (!(count >= 1)) return undefined;
+      return { tier: count, tiers: 1 + DRESS_TIERS.length, tierLabel: count === 1 ? '1 mock' : `${count} mocks`, ladder: 'dress-rehearsal', stretch: count === DRESS_TIERS[DRESS_TIERS.length - 1] };
+    }
+    case 'firm-footing': {
+      if (!part || (extra !== undefined && extra !== '80')) return undefined;
+      const deep = extra === '80';
+      return { tier: deep ? 2 : 1, tiers: 2, tierLabel: deep ? `${Math.round(FIRM_DEEP * 100)}%` : `${Math.round(FIRM_MASTERY * 100)}%`, ladder: `firm-footing:${part}`, stretch: deep };
+    }
+    default:
+      return undefined;
+  }
+}
+
 /**
- * Does the case show this earned key? Every key the catalogue lists (plain
- * badges, a Firm Footing leaf, a Rooted tier), and an earned plain or Firm
- * Footing key the list no longer has. A higher-tier key this version doesn't
- * define yet (e.g. "long-memory:75" from a newer backup) is kept, but not
- * shown, so it is never counted on You or lights the "new" dot.
+ * Does the case show this earned key? Exactly the keys some catalogue mark
+ * has: plain badges, a Firm Footing leaf (70%) and its 80% Stretch tier, a
+ * Rooted tier, Long Memory's 75 and 150, Dress Rehearsal's 2 and 3, Took
+ * Root, plus an earned plain or Firm Footing key the list no longer has (a
+ * dropped domain). Anything else (a key from a newer version, a malformed
+ * one) is kept, but never shown, counted on You, or lights the "new" dot.
+ * It accepts the same key shapes as engine/milestones.ts markSupported.
  */
 export function caseKey(key: string): boolean {
   const parts = key.split(':');
   const def = badgeDef(markBadge(key));
-  if (!def) return false;
-  // Rooted is only ever a tier ("rooted:10"); a bare key was never earned.
+  if (!def || parts.some((p) => p === '')) return false;
   if (parts.length === 1) return def.id !== 'rooted';
-  if (parts.length !== 2) return false;
-  if (def.id === 'firm-footing') return parts[1] !== '';
-  return def.id === 'rooted' && (ROOTED_DAYS as readonly number[]).some((n) => String(n) === parts[1]);
+  if (parts.length > 3) return false;
+  return tierOf(key) !== undefined;
 }
 
 /** Every medallion on the case, in shelf order, with its state, copy and effort. */
@@ -496,69 +610,64 @@ export function caseMarks(input: CaseInput): CaseMark[] {
   const { marks, earned = {}, domains, exam } = input;
   const rank = domainRank(domains);
   const byId = new Map(domains.map((d) => [d.id, d]));
+  const wholeMap = earned['whole-map'] !== undefined;
   const out: CaseMark[] = [];
-  for (const m of marks) {
-    const badge = m.badge;
-    const def = badgeDef(badge);
-    if (!def) continue;
-    const domainId = badge === 'firm-footing' ? m.key.split(':')[1] : undefined;
+  /** The shared parts of a mark, earned or not. */
+  const base = (key: string, badge: BadgeId, name: string, rule: string, at: number | undefined) => {
+    const def = badgeDef(badge)!;
+    const domainId = badge === 'firm-footing' ? key.split(':')[1] : undefined;
     const domain = domainId ? byId.get(domainId) : undefined;
-    const copy = copyFor(m.key, badge, exam, domain);
+    const copy = copyFor(key, badge, exam, domain);
+    const t = tierOf(key);
+    // Firm Footing's leaves sort by domain weight, its Stretch row after them; ladders by tier.
+    const within = domainId !== undefined ? (t?.stretch ? 50 : 0) + (rank.get(domainId) ?? 40) : (t?.tier ?? 0);
+    return {
+      copy,
+      domain,
+      fields: {
+        key,
+        badge,
+        set: BADGE_SET[badge],
+        name,
+        caption: domain ? domain.short : t ? `${def.name} · ${t.tierLabel}` : def.name,
+        ...(t ? { tier: t.tier, tiers: t.tiers, tierLabel: t.tierLabel, ladder: t.ladder } : {}),
+        ...(t?.stretch ? { stretch: true } : {}),
+        rule,
+        howTo: copy.howTo,
+        unlock: copy.unlock,
+        effort: copy.effort,
+        skill: copy.skill,
+        minDays: copy.minDays,
+        ...(domain ? { domain } : {}),
+        order: BADGE_ORDER.indexOf(badge) * 100 + within,
+        ...(at !== undefined ? { earnedAt: at } : {}),
+      },
+    };
+  };
+  for (const m of marks) {
+    if (!badgeDef(m.badge)) continue;
     const at = earned[m.key];
-    const gated = copy.gate === 'mindsetData' && !input.mindsetData && at === undefined;
-    const tierN = badge === 'rooted' ? Number(m.key.split(':')[1]) : undefined;
-    const tier = tierN !== undefined ? (ROOTED_DAYS as readonly number[]).indexOf(tierN) + 1 || undefined : undefined;
-    const status: MarkStatus = at !== undefined ? 'earned' : gated ? 'gated' : m.progress > 0 ? 'started' : 'open';
+    const { copy, domain, fields } = base(m.key, m.badge, m.label, m.rule ?? badgeDef(m.badge)!.rule, at);
+    const gate = at !== undefined ? undefined : copy.gate === 'mindsetData' && !input.mindsetData ? 'mindsetData' : copy.gate === 'wholeMap' && !wholeMap ? 'wholeMap' : undefined;
+    const status: MarkStatus = at !== undefined ? 'earned' : gate ? 'gated' : m.progress > 0 ? 'started' : 'open';
     out.push({
-      key: m.key,
-      badge,
-      set: BADGE_SET[badge],
-      name: m.label,
-      caption: domain ? domain.short : tierN !== undefined ? `${def.name} · ${tierN} days` : def.name,
-      ...(tier ? { tier } : {}),
+      ...fields,
       status,
-      ...(at !== undefined ? { earnedAt: at } : {}),
-      progress: at !== undefined ? 1 : gated ? 0 : m.progress,
-      detail: at !== undefined ? '' : gated ? GATE_LINE.mindsetData : markDetail(m, domain),
-      rule: def.rule,
-      ...(gated ? { gateLine: GATE_LINE.mindsetData } : {}),
-      howTo: copy.howTo,
-      unlock: copy.unlock,
-      effort: copy.effort,
-      skill: copy.skill,
-      minDays: copy.minDays,
-      ...(domain ? { domain } : {}),
+      progress: at !== undefined ? 1 : gate ? 0 : m.progress,
+      detail: at !== undefined ? '' : gate ? GATE_LINE[gate] : markDetail(m, domain),
+      ...(gate ? { gateLine: GATE_LINE[gate] } : {}),
       counted: true,
-      order: BADGE_ORDER.indexOf(badge) * 100 + (domainId !== undefined ? (rank.get(domainId) ?? 50) : (tier ?? 0)),
     });
   }
   // An earned mark the list no longer has (a domain the exam dropped) still
-  // shows, earned, in its badge's set: once earned, a badge stays. Tier keys
-  // this version doesn't define yet are left for the version that does.
+  // shows, earned, in its badge's set: once earned, a badge stays. Keys this
+  // version doesn't define are left for the version that does.
   for (const [key, at] of Object.entries(earned)) {
     if (out.some((m) => m.key === key)) continue;
     const def = badgeDef(markBadge(key));
     if (!def || !caseKey(key)) continue;
-    const copy = copyFor(key, def.id, exam);
-    out.push({
-      key,
-      badge: def.id,
-      set: BADGE_SET[def.id],
-      name: def.name,
-      caption: def.name,
-      status: 'earned',
-      earnedAt: at,
-      progress: 1,
-      detail: '',
-      rule: def.rule,
-      howTo: copy.howTo,
-      unlock: copy.unlock,
-      effort: copy.effort,
-      skill: copy.skill,
-      minDays: copy.minDays,
-      counted: false,
-      order: BADGE_ORDER.indexOf(def.id) * 100 + 99,
-    });
+    const { fields } = base(key, def.id, def.name, def.rule, at);
+    out.push({ ...fields, caption: def.name, status: 'earned', progress: 1, detail: '', counted: false, order: BADGE_ORDER.indexOf(def.id) * 100 + 99 });
   }
   return out.sort((a, b) => a.order - b.order);
 }
@@ -570,7 +679,8 @@ function markDetail(m: MarkState, domain?: CaseDomain): string {
     // Already at 70% but short of answers: the answers are what's left.
     const [mastery, answered] = m.detail.split(' · ');
     const pctNow = Number(mastery.replace('% mastery', ''));
-    const target = Math.round(FIRM_MASTERY * 100);
+    // Each tier against its own target: 70%, or 80% for the Stretch tier.
+    const target = Math.round((m.key.endsWith(':80') ? FIRM_DEEP : FIRM_MASTERY) * 100);
     return pctNow >= target ? `${answered} · at ${target}%+` : `${mastery.replace(' mastery', '')} → ${target}% · ${answered}`;
   }
   return m.detail;
@@ -581,15 +691,17 @@ export function caseSets(marks: readonly CaseMark[], exam: ExamFacts, domainCoun
   return SET_ORDER.map((id) => {
     const info = setInfo(id, exam, domainCount);
     const mine = marks.filter((m) => m.set === id);
-    const counted = mine.filter((m) => m.counted);
-    const earned = counted.filter((m) => m.status === 'earned');
-    const complete = counted.length > 0 && earned.length === counted.length;
+    const core = mine.filter((m) => m.counted && !m.stretch);
+    const stretch = mine.filter((m) => m.counted && m.stretch);
+    const earned = core.filter((m) => m.status === 'earned');
+    const complete = core.length > 0 && earned.length === core.length;
     return {
       info,
       marks: mine,
       earned: earned.length,
-      total: counted.length,
+      total: core.length,
       ...(complete ? { completeAt: Math.max(...earned.map((m) => m.earnedAt!)) } : {}),
+      stretch: { earned: stretch.filter((m) => m.status === 'earned').length, total: stretch.length },
     };
   });
 }
@@ -600,6 +712,23 @@ export function setCountLine(s: SetView): string | undefined {
   return s.completeAt !== undefined ? `${s.earned} of ${s.total} · Complete` : `${s.earned} of ${s.total}`;
 }
 
+/** A set's Stretch row caption: "Stretch · beyond exam need · 1 of 5" (none when it has no Stretch tiers). */
+export function stretchLine(s: SetView): string | undefined {
+  if (!s.info.counter || s.stretch.total === 0) return undefined;
+  return `Stretch · beyond exam need · ${s.stretch.earned} of ${s.stretch.total}`;
+}
+
+/**
+ * A set that was complete (it gave its planter) and has since gained badges
+ * (a newer version added a tier or Took Root): "New in Evergreen: 2 more to
+ * earn". The planter it gave stays. None otherwise.
+ */
+export function grownLine(s: SetView, planters: Record<string, number> | undefined): string | undefined {
+  if (!s.info.counted || planters?.[s.info.id] === undefined || s.completeAt !== undefined) return undefined;
+  const more = s.total - s.earned;
+  return more > 0 ? `New in ${s.info.name}: ${more} more to earn` : undefined;
+}
+
 /**
  * The ONE mark that completed a set: the last earned. Two marks earned in the
  * same session share that time, so the later one in catalogue order takes it
@@ -607,7 +736,7 @@ export function setCountLine(s: SetView): string | undefined {
  */
 export function completingMark(s: SetView): string | undefined {
   if (!s.info.counted || s.completeAt === undefined) return undefined;
-  const last = s.marks.filter((m) => m.counted && m.status === 'earned' && m.earnedAt === s.completeAt);
+  const last = s.marks.filter((m) => m.counted && !m.stretch && m.status === 'earned' && m.earnedAt === s.completeAt);
   return last.sort((a, b) => b.order - a.order)[0]?.key;
 }
 
@@ -652,9 +781,9 @@ export function passesFilter(m: CaseMark, f: CaseFilter): boolean {
  * - recent: earned newest first, then the rest in shelf order;
  * - closest: open marks by progress (gated last), then the earned ones;
  * - effort: least to most minimum days, then shelf order.
- * Closest and Effort rank the exam's own (counted) badges first, then Field
- * notes and Moments: a game skill never outranks a study badge there, and
- * Whole Grove never pulls study (behaviour review §2a).
+ * Closest and Effort rank the exam's own (counted) core badges first, then
+ * its Stretch tiers, then Field notes and Moments: a game skill or a Stretch
+ * tier never outranks what the exam needs (behaviour review §2a, §2b).
  */
 export function sortMarks(marks: readonly CaseMark[], sort: Exclude<CaseSort, 'set'>): CaseMark[] {
   const list = marks.filter(onCase);
@@ -662,7 +791,8 @@ export function sortMarks(marks: readonly CaseMark[], sort: Exclude<CaseSort, 's
   if (sort === 'recent') {
     return list.sort((a, b) => Number(earned(b)) - Number(earned(a)) || (b.earnedAt ?? 0) - (a.earnedAt ?? 0) || a.order - b.order);
   }
-  const game = (m: CaseMark) => (COUNTED_SETS.includes(m.set) ? 0 : 1);
+  // The exam's core badges first, then its Stretch tiers, then Field notes and Moments.
+  const game = (m: CaseMark) => (COUNTED_SETS.includes(m.set) ? (m.stretch ? 1 : 0) : 2);
   if (sort === 'closest') {
     const rank = (m: CaseMark) => (earned(m) ? 2 : m.status === 'gated' ? 1 : 0);
     return list.sort(
@@ -722,10 +852,18 @@ export const hasWholeMap = (marks: readonly CaseMark[]) => marks.some((m) => m.b
 export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): NextForExam {
   if (stage === 'afterExam') return { nearest: [] };
   const wholeMap = hasWholeMap(marks);
-  const ok = marks.filter((m) => suggestable(m, stage, daysLeft, wholeMap));
-  const find = (badge: BadgeId) => ok.find((m) => m.badge === badge);
+  // A Stretch tier waits while any core badge of its set is open: depth never
+  // jumps the queue ahead of what the exam needs (behaviour review §2b).
+  const coreOpen = new Set(marks.filter((m) => m.counted && !m.stretch && m.status !== 'earned').map((m) => m.set));
+  const ok = marks.filter((m) => suggestable(m, stage, daysLeft, wholeMap) && !(m.stretch && coreOpen.has(m.set)));
+  // Slot 1 is "Best for your exam": never a Stretch tier (beyond exam need).
+  // Those can still be among the nearest, once their set's core is done.
+  const core = ok.filter((m) => !m.stretch);
+  const find = (badge: BadgeId) => core.find((m) => m.badge === badge);
+  const findKey = (key: string) => core.find((m) => m.key === key);
   const firmFooting = () => {
-    const leaves = ok.filter((m) => m.badge === 'firm-footing' && m.domain);
+    // The 70% leaves only: an 80% Stretch leaf is never "best for your exam".
+    const leaves = ok.filter((m) => m.badge === 'firm-footing' && m.domain && !m.stretch);
     // Largest blueprint weight × gap to 70%; ties go to the heavier domain (then the catalogue order).
     const score = (m: CaseMark) => (m.domain!.weight / 100) * Math.max(0, FIRM_MASTERY - (mastery[m.domain!.id] ?? 0));
     return [...leaves].sort((a, b) => score(b) - score(a) || b.domain!.weight - a.domain!.weight || a.order - b.order)[0];
@@ -733,7 +871,9 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
   const rules: (() => CaseMark | undefined)[] = [
     () => find('first-foothold'),
     firmFooting,
-    () => find('dress-rehearsal') ?? find('on-pace'),
+    // Exam Day: the first full mock, then pace, then the second spaced mock.
+    () => findKey('dress-rehearsal') ?? find('on-pace') ?? findKey('dress-rehearsal:2'),
+    // The next Long Memory tier (Stretch only once Evergreen's core is done), then Graduate.
     () => find('long-memory') ?? find('graduate'),
   ];
   // The mock rule leads at the mock stage and in the final three weeks; once
@@ -747,7 +887,8 @@ export function nextForExam({ marks, stage, daysLeft, mastery }: NextInput): Nex
   // Slots 2–3: the nearest by progress, one per badge, never slot 1's badge.
   const used = new Set<BadgeId>(best ? [best.badge] : []);
   const nearest: CaseMark[] = [];
-  for (const m of [...ok].sort((a, b) => b.progress - a.progress || a.order - b.order)) {
+  // The core before any Stretch tier, then the nearest by progress.
+  for (const m of [...ok].sort((a, b) => Number(Boolean(a.stretch)) - Number(Boolean(b.stretch)) || b.progress - a.progress || a.order - b.order)) {
     if (nearest.length >= 2) break;
     if (used.has(m.badge)) continue;
     used.add(m.badge);
@@ -806,6 +947,9 @@ export function studyTarget(m: CaseMark, weakest?: string): StudyTarget | null {
     case 'graduate':
     case 'back-on-path':
       return { kind: 'review' };
+    case 'took-root':
+      // A topic clear today; review brings it back on another day.
+      return { kind: 'guided' };
     case 'loop-closed':
     case 'slip-spotter':
       return { kind: 'mistakes' };
@@ -851,6 +995,7 @@ export function spokenDetail(detail: string): string {
  */
 export function markSpoken(m: CaseMark, setName: string, date?: string): string {
   const parts = [m.name];
+  if (m.stretch) parts.push('Stretch, beyond exam need');
   if (m.status === 'earned') parts.push(date ? `Earned ${date}` : 'Earned');
   else parts.push('Not yet');
   parts.push(m.rule.replace(/\.$/, ''));
@@ -872,9 +1017,18 @@ export function setSpoken(s: SetView): string {
  * `quietAt`) were already held, so they are never new, even when the
  * back-fill ran after the case was last viewed (a restore of an older backup).
  */
-export function hasNewSince(earned: Record<string, number> | undefined, seenAt: number | undefined, quietAt?: number): boolean {
+export function hasNewSince(earned: Record<string, number> | undefined, seenAt: number | undefined, quiet: readonly number[] = []): boolean {
   if (seenAt === undefined) return false;
-  return Object.entries(earned ?? {}).some(([key, at]) => at > seenAt && at !== quietAt && caseKey(key));
+  return Object.entries(earned ?? {}).some(([key, at]) => at > seenAt && !quiet.includes(at) && caseKey(key));
+}
+
+/**
+ * The times badges were saved QUIETLY for a cert: the first back-fill and
+ * the catalogue fill. A badge stamped with one of them was already held
+ * then ("By 11 Oct"), so it is never "new" and never dated as if earned that day.
+ */
+export function quietTimes(m: { backfill?: { at: number }; catalogFill?: { at: number } } | undefined): number[] {
+  return [m?.backfill?.at, m?.catalogFill?.at].filter((x): x is number => typeof x === 'number');
 }
 
 /** How many badges the case shows as earned (You's count): a key it doesn't show is never counted. */

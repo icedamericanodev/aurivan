@@ -18,10 +18,14 @@
  *   unlock line ("what you can now do"), and whether it completed its set;
  *   a completed set's planter is saved (the plant shows it in Phase 4);
  *   with Settings → Show badges off, no moment is taken from the queue.
+ * - Mobile 1.11 (tiers and Took Root): `ensureCatalog` runs once per cert
+ *   after the back-fill. Whatever the saved study already earns under the
+ *   newer catalogue (a higher tier, Took Root) is saved QUIETLY, with one
+ *   summary line on the case, never a burst of moments.
  */
 import { getCertification } from '../content/certifications';
 import type { Certification } from '../content/types';
-import { BADGE_SET, caseMarks, caseSets, completeSets, completingMark, setInfo, type CaseMark, type SetId, type SetView } from '../engine/badgeCatalog';
+import { BADGE_SET, CATALOG_VERSION, caseMarks, caseSets, completeSets, completingMark, setInfo, type CaseMark, type SetId, type SetView } from '../engine/badgeCatalog';
 import { findQuestion } from '../content/loader';
 import { firstTries, mindsetGrowth } from '../engine/mindsetGrowth';
 import {
@@ -43,11 +47,31 @@ import { dayKey } from '../engine/streak';
 import { selectCert, useProgress, type CertProgress } from '../store/progress';
 import { useSettings } from '../store/settings';
 import { playableGames } from './games';
-import { certOutline, guidedStatus } from './outline';
+import { certOutline, guidedStatus, questionExists } from './outline';
 
 /** True when an answer can count toward milestones: no Coach me hint, not given in a game. */
 export function isCleanAnswer(a: AnswerRecord): boolean {
   return !a.lastAssisted && !a.lastGame;
+}
+
+/**
+ * Took Root's progress: the topic closest to taking root, as the share of its
+ * parts mastered (a subtopic with questions in the pack, answered right
+ * without a hint on two different days: engine/mastery.ts masteredAt).
+ * 1 = every part of some topic. Game answers and Coach me answers never set
+ * a mastery date, so they never count here either.
+ */
+export function tookRootShare(certId: string, mastery: CertProgress['mastery']): number {
+  const exists = questionExists(certId);
+  let best = 0;
+  for (const t of certOutline(certId).topics) {
+    const parts = t.subtopics.filter((s) => s.questionIds.some(exists));
+    if (!parts.length) continue;
+    const done = parts.filter((s) => Boolean(mastery?.[s.id]?.masteredAt)).length;
+    best = Math.max(best, done / parts.length);
+    if (best >= 1) break;
+  }
+  return best;
 }
 
 /** The numbers the badge rules read, from one cert's saved progress. */
@@ -91,6 +115,8 @@ export function milestoneFacts(certId: string, cp: CertProgress, opts: { now: nu
     mindsetShift: growth.show,
     // Enough first tries, far enough apart, to be judged at all (the badge is gated until then).
     mindsetData: growth.show || growth.reason === 'no-improvement',
+    ...(m?.earned['whole-map'] !== undefined ? { wholeMapAt: m.earned['whole-map'] } : {}),
+    tookRoot: tookRootShare(certId, cp.mastery),
     studyDays: m?.days ?? 0,
     // Fresh Start: back after a week or more away, and a session just finished
     // today. Live only: the back-fill never awards it.
@@ -114,7 +140,7 @@ export function marksFor(certId: string, cp: CertProgress, now = Date.now()) {
 
 /** A cert's domains and exam, as the badge case reads them. */
 const caseContext = (cert: Certification) => ({
-  domains: cert.domains.map((d) => ({ id: d.id, short: d.short, weight: d.weight, tone: d.tone })),
+  domains: cert.domains.map((d) => ({ id: d.id, short: d.short, weight: d.weight, tone: d.tone, ...(d.emblem ? { emblem: d.emblem } : {}) })),
   exam: { questions: cert.exam.questions, minutes: cert.exam.minutes },
 });
 
@@ -182,10 +208,12 @@ export function syncPlanters(certId: string, now = Date.now()): SetId[] | null {
  */
 export function checkMilestones(certId: string, opts: { finished?: boolean; now?: number } = {}): string[] {
   const now = opts.now ?? Date.now();
-  // The launch back-fill must come first (app/_layout.tsx runs it at launch;
-  // this is a guard). Otherwise a session finished before it would queue a
-  // whole older history as moments, instead of one quiet summary line.
+  // The launch back-fill and catalogue fill must come first (app/_layout.tsx
+  // runs them at launch; this is a guard). Otherwise a session finished
+  // before them would queue a whole older history as moments, instead of
+  // one quiet summary line.
   ensureBackfill(certId, now);
+  ensureCatalog(certId, now);
   let fresh: string[] = [];
   const cert = getCertification(certId);
   useProgress.getState().updateMilestones(certId, (m, cp) => {
@@ -217,9 +245,12 @@ export interface MilestoneMoment {
   tierUp?: boolean;
   /** The one "Next:" line for Results (the best next badge for the exam), if any. */
   next?: string;
-  /** For the medallion: Rooted's tier (1–3), Firm Footing's domain leaf. */
+  /** For the medallion: a tiered badge's tier (1–3), Firm Footing's domain leaf and emblem. */
   tier?: number;
   domain?: { index: number; count: number };
+  emblem?: string;
+  /** A Stretch tier (beyond exam need): said with its name. */
+  stretch?: boolean;
 }
 
 /** The moment for a saved mark key (Results reads it back from the session). */
@@ -250,6 +281,8 @@ export function momentFor(certId: string, key: string, next?: string): Milestone
     ...(next ? { next } : {}),
     ...(mark?.tier ? { tier: mark.tier } : {}),
     ...(mark?.domain ? { domain: { index: cert.domains.findIndex((d) => d.id === mark.domain!.id), count: cert.domains.length } } : {}),
+    ...(mark?.domain?.emblem ? { emblem: mark.domain.emblem } : {}),
+    ...(mark?.stretch ? { stretch: true } : {}),
   };
 }
 
@@ -309,10 +342,52 @@ export function ensureBackfill(certId: string, now = Date.now()): number | null 
     const earned = earn(merged, keys, now, false);
     const cert = getCertification(certId);
     const planted = facts && cert ? withPlanters(earned, caseFromFacts(cert, facts, earned.earned).sets) : earned;
-    const milestones = { ...planted, backfill: { at: now, count: found } };
+    // The back-fill reads the current catalogue, so there is nothing for the catalogue fill to add.
+    const milestones = { ...planted, backfill: { at: now, count: found }, catalog: CATALOG_VERSION };
     return { milestones, fixedLater: inferred.loopFixed };
   });
   return found;
+}
+
+/**
+ * Once per cert, for a cert whose badges were filled in under an older
+ * catalogue (mobile 1.10 or a 1.10 backup): earn what the saved study already
+ * shows under this one (a higher tier, Took Root) QUIETLY, stamped with one
+ * time (so each reads "By 11 Oct", never "new"), and keep ONE summary line.
+ * Higher tiers start from honest data: Long Memory's count stopped at 25
+ * before, so Long Memory · 75 is never earned here from older recalls.
+ * Returns how many badges it found, or null when there was nothing to do.
+ */
+export function ensureCatalog(certId: string, now = Date.now()): number | null {
+  const m0 = selectCert(useProgress.getState(), certId).milestones;
+  // Nothing yet (the back-fill comes first), or already filled for this catalogue.
+  if (!m0?.backfill || (m0.catalog ?? 0) >= CATALOG_VERSION) return null;
+  const cert = getCertification(certId);
+  let found: number | null = null;
+  useProgress.getState().updateMilestones(certId, (m, cp) => {
+    if (!m?.backfill || (m.catalog ?? 0) >= CATALOG_VERSION) return null;
+    const facts = milestoneFacts(certId, cp, { now });
+    if (!facts || !cert) return null;
+    const keys = newlyMet(allMarks(facts), m.earned);
+    found = keys.length;
+    const earned = earn(m, keys, now, false);
+    const planted = withPlanters(earned, caseFromFacts(cert, facts, earned.earned).sets);
+    return { milestones: { ...planted, catalog: CATALOG_VERSION, ...(keys.length ? { catalogFill: { at: now, count: keys.length } } : {}) } };
+  });
+  return found;
+}
+
+/** The learner has seen the catalogue fill's line (it shows once). */
+export function seeCatalogFill(certId: string) {
+  useProgress.getState().updateMilestones(certId, (m) =>
+    m?.catalogFill && !m.catalogFill.seen ? { milestones: { ...m, catalogFill: { ...m.catalogFill, seen: true } } } : null,
+  );
+}
+
+/** "Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned 2 more." (null: nothing to say). */
+export function catalogFillLine(count: number): string | null {
+  if (count <= 0) return null;
+  return `Badges now have higher tiers, plus a new one: Took Root. Your study so far already earned ${count} more.`;
 }
 
 /** The learner has seen the back-fill summary (it shows once). */
