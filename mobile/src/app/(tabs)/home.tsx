@@ -108,10 +108,13 @@ export default function Today() {
   // The clearing (T2): once a day, when you come back to it. It plays in full
   // (≤ 1.2 s, a tap skips it) the first few times, then shortened; static
   // with Reduce Motion. Its words are the same in every mode, and spoken once.
+  // Keyed by the plan's day: Today stays mounted overnight, and tomorrow's
+  // clearing is a new occasion.
   const clearing = useCelebration(
     'clearing',
     allDone && focused && !plan.celebrated,
     `Today’s clearing. ${clearingTitle(plan)} ${clearingLine(plan, j.readiness, j.range)}.`,
+    `${cert}:${plan.day}`,
   );
   // The clearing's one success tap, once a day (respects the Haptics setting),
   // as it comes into view (not while Results is still on top).
@@ -121,8 +124,9 @@ export default function Today() {
       markCelebrated(j.cert.id);
     }
   }, [allDone, focused, plan.celebrated, markCelebrated, j.cert.id]);
-  // The exam-ready moment (T3): the rings grow and the frond breathes once.
-  const ready = useCelebration('exam-ready', showReady && focused, 'A quiet milestone. Your readiness is holding.');
+  // The exam-ready moment (T3): the rings grow and the frond breathes once,
+  // once EVER per cert (saved): later launches show the panel still, unannounced.
+  const ready = useCelebration('exam-ready', showReady && focused, 'A quiet milestone. Your readiness is holding.', `exam-ready:${cert}`, true);
   // Any touch on Today ends a moment at once (it never blocks the next tap).
   const live = !clearing.settled || !ready.settled;
   const skipAll = () => {

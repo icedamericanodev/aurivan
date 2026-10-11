@@ -44,6 +44,7 @@ import { getAllQuestions, getDomainQuestions } from '../content/loader';
 import { getCertification } from '../content/certifications';
 import { buildBankList, type BankFilter } from '../engine/bank';
 import { DAY_MS } from '../engine/srs';
+import { flushSayLaterForTest } from '../lib/a11y';
 import { checkBackupText, currentBackup, restoreBackup } from '../lib/backup';
 import { finishSession } from '../lib/finishSession';
 import { shortSubtopic } from '../lib/format';
@@ -210,6 +211,15 @@ const layout = (props: ReactTestInstance['props'], l: { y?: number; height?: num
   act(() => props.onLayout({ nativeEvent: { layout: { x: 0, y: l.y ?? 0, width: 390, height: l.height ?? 100 } } }));
 
 let say: jest.SpyInstance;
+/**
+ * The screen-reader announcements so far. Celebration and milestone lines are
+ * said after a short pause (lib/a11y.ts sayLater, so a screen change doesn't
+ * cut them off): the waiting ones are said first.
+ */
+const heard = () => {
+  flushSayLaterForTest();
+  return say;
+};
 beforeEach(() => {
   const w = Dimensions.get('window');
   act(() => {
@@ -373,11 +383,11 @@ describe('J2 practice session → Results', () => {
       mount(<Results />);
     }
 
-    it('is announced and buzzes at once, but moves only after the rings settle AND it is scrolled into view', () => {
+    it('is announced at once, but moves (with its one success tap) only after the rings settle AND it is scrolled into view', () => {
       openWithMilestone(3);
-      const words = say.mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone: First Foothold'));
+      const words = heard().mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone: First Foothold'));
       expect(words).toHaveLength(1);
-      expect(mockSuccess).toHaveBeenCalledTimes(1);
+      expect(mockSuccess).not.toHaveBeenCalled();
       expect(moment().props.inView).toBe(false);
       // A 700pt screen; the moment's top is at 500 + 300 = 800, below the fold.
       layout(scroller().props, { height: 700 });
@@ -390,10 +400,11 @@ describe('J2 practice session → Results', () => {
       act(() => scroller().props.onScroll({ nativeEvent: { contentOffset: { x: 0, y: 200 }, layoutMeasurement: { width: 390, height: 700 } } }));
       expect(moment().props.inView).toBe(true);
       expect(useSeen.getState().moments.milestone).toBe(1);
+      expect(mockSuccess).toHaveBeenCalledTimes(1);
       // In full (the session's one full celebration): the leaf pops.
       expect(byName('Pop').some((p) => p.props.trigger === 1)).toBe(true);
       // …and its words are not spoken a second time.
-      expect(say.mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone: First Foothold'))).toHaveLength(1);
+      expect(heard().mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone: First Foothold'))).toHaveLength(1);
     });
 
     it('already on screen: it still waits for the rings to settle first', () => {
@@ -436,7 +447,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     expect(growingArcs()).toBe(0);
     // Short still has its words, spoken.
     expect(allText()).toContain('Today’s clearing');
-    expect(say.mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(2);
+    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(2);
   });
 
   it('at most one FULL celebration per app session: after a milestone played in full, the clearing is short', () => {
@@ -483,7 +494,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     mount(<Today />);
     expect(useSeen.getState().moments.clearing).toBe(1);
     expect(mockSuccess).toHaveBeenCalledTimes(1);
-    expect(say.mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(1);
+    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(1);
     expect(movingDigits()).toBe(0);
   });
 
@@ -491,7 +502,7 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
   // reset, so with Today left open across midnight (useJourney rolls over to the
   // new day's plan by design) the NEXT day's clearing is never picked: no
   // announcement for screen-reader users, not counted for fatigue, no motion.
-  it.failing('Today left open overnight: the next day’s clearing is still announced and counted', () => {
+  it('Today left open overnight: the next day’s clearing is still announced and counted', () => {
     jest.useFakeTimers({ now: new Date(2026, 9, 12, 23, 58, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
     setMockReducedMotion(false);
     clearToday();
@@ -509,12 +520,12 @@ describe('J3 finishing the day’s plan (the clearing)', () => {
     setFocus(true);
     expect(useProgress.getState().days.cisa!.celebrated).toBe(true); // the haptic part ran…
     expect(useSeen.getState().moments.clearing).toBe(2); // …but the moment itself never started
-    expect(say.mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(2);
+    expect(heard().mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(2);
   });
 });
 
 describe('J3b the exam-ready moment (T3)', () => {
-  const readyLine = () => say.mock.calls.filter(([t]) => String(t) === 'A quiet milestone. Your readiness is holding.').length;
+  const readyLine = () => heard().mock.calls.filter(([t]) => String(t) === 'A quiet milestone. Your readiness is holding.').length;
   const readyRings = () => r!.root.findAllByType(GrowthRings)[0].props.grow as { play: boolean };
 
   it('plays once when it first shows; a revisit (blur → focus) is still; Reduce Motion is static with the same words', () => {
@@ -545,7 +556,7 @@ describe('J3b the exam-ready moment (T3)', () => {
   // replays it: in full for launches 1–3, then short on every launch after,
   // its line re-announced each time, and it spends the session's ONE full
   // celebration, so a milestone on Results that session is always short.
-  it.failing('a later app launch (panel not dismissed) shows it still: no replay, no second announcement', () => {
+  it('a later app launch (panel not dismissed) shows it still: no replay, no second announcement', () => {
     setMockReducedMotion(false);
     seed(60);
     mockMoments.ready = true;
@@ -649,7 +660,7 @@ describe('J5 Reduce Motion (system and in-app)', () => {
     mount(<Today />);
     act(() => r!.root.findAll((n) => n.type === View && typeof n.props.onTouchStart === 'function')[0].props.onTouchStart({ nativeEvent: {} }));
     const words = spoken();
-    const line = say.mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today’s clearing.'));
+    const line = heard().mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today’s clearing.'));
     unmount();
     return { words, line };
   }
@@ -665,13 +676,13 @@ describe('J5 Reduce Motion (system and in-app)', () => {
       act(() => {
         useProgress.setState((s) => ({ days: { ...s.days, cisa: { ...s.days.cisa!, celebrated: false } } }));
       });
-      say.mockClear();
+      heard().mockClear();
       mockSuccess.mockClear();
       reduce(way);
       mount(<Today />);
       expect(clearing().mode).toBe('static');
       expect(spoken()).toEqual(full.words);
-      expect(say.mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today’s clearing.'))).toBe(full.line);
+      expect(heard().mock.calls.map(([t]) => String(t)).find((t) => t.startsWith('Today’s clearing.'))).toBe(full.line);
       expect(movingDigits()).toBe(0);
       expect(growingArcs()).toBe(0);
       expect(byName('LeafFall').every((n) => n.children.length === 0)).toBe(true);
@@ -957,10 +968,10 @@ describe('J9 Reset and restore vs the seen store', () => {
     });
     mockSuccess.mockClear();
     mockLight.mockClear();
-    say.mockClear();
+    heard().mockClear(); // what was said before the reset (some of it after its pause)
     setFocus(true);
     expect(allText()).not.toContain('Today’s clearing');
-    expect(say).not.toHaveBeenCalledWith(expect.stringMatching(/^Today’s clearing\./));
+    expect(heard()).not.toHaveBeenCalledWith(expect.stringMatching(/^Today’s clearing\./));
     expect(mockSuccess).not.toHaveBeenCalled();
     expect(mockLight).not.toHaveBeenCalled();
     expect(growingArcs()).toBe(0);
@@ -993,11 +1004,98 @@ describe('J9 Reset and restore vs the seen store', () => {
       await restoreBackup((ready as Extract<typeof ready, { kind: 'ok' }>).data, { fresh: true });
     });
     mockSuccess.mockClear();
-    say.mockClear();
+    heard().mockClear(); // what was said before the restore (some of it after its pause)
     setFocus(true);
     expect(allText()).not.toContain('Today’s clearing');
-    expect(say).not.toHaveBeenCalledWith(expect.stringMatching(/^Today’s clearing\./));
+    expect(heard()).not.toHaveBeenCalledWith(expect.stringMatching(/^Today’s clearing\./));
     expect(mockSuccess).not.toHaveBeenCalled();
     expect(useSeen.getState().moments.clearing).toBe(1);
+  });
+});
+
+// ── Review fixes (PR #39) on the real screens ─────────────────────────────
+describe('Review fixes on the real screens', () => {
+  const ringsLabel = () => r!.root.findAll((n) => typeof n.type === 'string' && n.props.accessible && /^Estimated readiness/.test(n.props.accessibilityLabel ?? ''))[0].props.accessibilityLabel as string;
+
+  it('You: the "+N" tags are spoken with the rings ("Since you last looked: IT Governance up 9"), and only after a real rise', () => {
+    setMockReducedMotion(false);
+    seed(60);
+    mount(<You />);
+    expect(ringsLabel()).not.toContain('Since you last looked');
+    setFocus(false);
+    const seen = useSeen.getState().values['you:rings:cisa'];
+    answerIn('2', 40, 20, true);
+    setFocus(true);
+    const now = useSeen.getState().values['you:rings:cisa'];
+    expect(ringsLabel()).toContain(`Since you last looked: ${CISA.domains[1].short} up ${now[1] - seen[1]}.`);
+    // A revisit with nothing new: the line is gone with the tags.
+    setFocus(false);
+    setFocus(true);
+    expect(ringsLabel()).not.toContain('Since you last looked');
+  });
+
+  it('a restore to more progress is not shown as growth earned since the last look (no "+N", nothing spoken)', async () => {
+    setMockReducedMotion(false);
+    seed(60);
+    answerIn('2', 40, 20, true);
+    const file = currentBackup();
+    act(() => {
+      useProgress.getState().resetCert('cisa');
+    });
+    seed(10);
+    mount(<You />);
+    setFocus(false);
+    const ready = checkBackupText(JSON.stringify(file));
+    await act(async () => {
+      await restoreBackup((ready as Extract<typeof ready, { kind: 'ok' }>).data, { fresh: true });
+    });
+    expect(useSeen.getState().values['you:rings:cisa']).toBeUndefined();
+    setFocus(true);
+    expect(plusTags()).toEqual([]);
+    expect(growingArcs()).toBe(0);
+    expect(ringsLabel()).not.toContain('Since you last looked');
+  });
+
+  it('Today: a cold relaunch the same day does not count up again (the day’s first view is saved)', () => {
+    jest.useFakeTimers({ now: new Date(2026, 9, 12, 9, 0, 0), doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
+    setMockReducedMotion(false);
+    seed(60);
+    mount(<Today />);
+    expect(growingArcs()).toBeGreaterThan(0);
+    unmount();
+    resetCelebrationsForTest(); // a new launch: memory is fresh, saved stores are kept
+    mount(<Today />);
+    expect(growingArcs()).toBe(0);
+    expect(movingDigits()).toBe(0);
+  });
+
+  it('Results: a new scroll drag ends a playing milestone moment at once', () => {
+    jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate', 'queueMicrotask'] });
+    setMockReducedMotion(false);
+    finishPractice(1); // below 60%: nothing to wait for, in view = plays
+    act(() => {
+      useSession.getState().setMilestone('first-foothold');
+    });
+    mount(<Results />);
+    const scroller = r!.root.findAll((n) => n.type === ScrollView && typeof n.props.onLayout === 'function')[0];
+    for (const n of r!.root.findAll((x) => typeof x.type === 'string' && typeof x.props.onLayout === 'function')) layout(n.props, { y: 0, height: 900 });
+    const cel = () => r!.root.findByType(MilestoneMomentView).findAll((n) => n.props.celebration !== undefined)[0].props.celebration as { mode: string; settled: boolean };
+    expect(cel()).toMatchObject({ mode: 'full', settled: false });
+    expect(mockSuccess).toHaveBeenCalledTimes(1); // its one tap, with the motion
+    act(() => scroller.props.onScrollBeginDrag());
+    expect(cel().settled).toBe(true);
+  });
+
+  it('Today’s due count and the caught-up line leave out questions the bank no longer has', () => {
+    const now = Date.now();
+    act(() => {
+      const cp = useProgress.getState().byCert.cisa!;
+      useProgress.setState((s) => ({
+        byCert: { ...s.byCert, cisa: { ...cp, review: { ...cp.review, d9_retired: { box: 1, dueAt: now - 1000, lastSeen: now - DAY_MS, reps: 1 } } } },
+      }));
+    });
+    mount(<You />);
+    expect(allText()).not.toMatch(/Questions to revisit/);
+    expect(spoken().some((l) => l === 'Spaced review, all caught up')).toBe(true);
   });
 });

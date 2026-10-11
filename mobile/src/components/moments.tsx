@@ -63,7 +63,8 @@ export function ExamReadyPanel({
       titleLabel="Your readiness is holding. Keep it light."
       art="clearing"
       sway={false}
-      breathe={full}
+      // One breath while the moment plays; a tap (settled) stops it upright.
+      breathe={full && !celebration?.settled}
       action={{
         label: 'Show today’s plan',
         onPress: onDismiss,

@@ -12,10 +12,11 @@
  * in), and only one celebration plays in full per session. Reduce Motion:
  * the block fades in still, with the same words.
  */
-import { useEffect, useState, type ReactNode } from 'react';
-import { AccessibilityInfo, View } from 'react-native';
+import { useEffect, useState, type MutableRefObject, type ReactNode } from 'react';
+import { View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { GAME_TIER_NAME, type GameTier } from '../engine/games/growth';
+import { sayLater } from '../lib/a11y';
 import { haptic } from '../lib/haptics';
 import type { MilestoneMoment } from '../lib/milestones';
 import { motion, space } from '../theme/tokens';
@@ -24,7 +25,9 @@ import { LeafBig, TierLeaf } from './glyphs';
 import { Celebrate, LeafFall, Pop, useCelebration, useMotion } from './motion';
 import { Row, T } from './ui';
 
-/** Moments already buzzed and announced (per session or round), so a re-render never repeats them. */
+/** Moments already announced (per session or round), so a re-render never repeats them. */
+const announced = new Set<string>();
+/** Moments whose success tap has played (it comes with the motion, once). */
 const buzzed = new Set<string>();
 
 /** The pressed leaf's column: the leaf on top, the drifting leaves below it. */
@@ -39,14 +42,17 @@ export function MilestoneMomentView({
   moment,
   once,
   inView = true,
+  skipRef,
 }: {
   moment: MilestoneMoment;
   once: string;
   /**
    * The moment's motion waits until it is on screen (Results: below the
-   * stats). The haptic and the announcement don't wait.
+   * stats), and its success tap comes with it. The announcement doesn't wait.
    */
   inView?: boolean;
+  /** Filled with this moment's skip, for its screen (Results: a new scroll drag ends it). */
+  skipRef?: MutableRefObject<(() => void) | null>;
 }) {
   const { c } = useTheme();
   const { reduced } = useMotion();
@@ -54,16 +60,31 @@ export function MilestoneMomentView({
   const spoken = `${caption}: ${moment.label}. ${moment.rule}`;
   const k = `${once}:${moment.key}`;
   // A moment seen before (a revisit) is simply shown.
-  const [fresh] = useState(() => !buzzed.has(k));
-  const celebration = useCelebration('milestone', fresh && inView);
+  const [fresh] = useState(() => !announced.has(k));
+  const celebration = useCelebration('milestone', fresh && inView, undefined, k);
   const full = celebration.mode === 'full';
   const [height, setHeight] = useState(0);
+  // Announced as the screen opens (a screen-reader user hears it without
+  // scrolling to it), after a short pause so the screen change doesn't cut it off.
   useEffect(() => {
-    if (buzzed.has(k)) return;
+    if (announced.has(k)) return;
+    announced.add(k);
+    sayLater(spoken);
+  }, [k, spoken]);
+  // The one success tap, as the moment plays (in any mode), not seconds before it.
+  useEffect(() => {
+    if (celebration.run === 0 || buzzed.has(k)) return;
     buzzed.add(k);
     haptic.success();
-    AccessibilityInfo.announceForAccessibility(spoken);
-  }, [k, spoken]);
+  }, [celebration.run, k]);
+  const { skip } = celebration;
+  useEffect(() => {
+    if (!skipRef) return;
+    skipRef.current = skip;
+    return () => {
+      skipRef.current = null;
+    };
+  }, [skipRef, skip]);
   return (
     <Animated.View entering={FadeIn.duration(reduced ? motion.dur.reduced : 240).reduceMotion(ReduceMotion.Never)}>
       <Celebrate celebration={celebration}>

@@ -18,6 +18,7 @@
  *   content is mounted (and readable) from the first frame.
  * - Nothing blocks input: every animation can be interrupted by the next tap.
  */
+import * as Router from 'expo-router';
 import { useFocusEffect } from 'expo-router';
 import {
   createContext,
@@ -61,6 +62,7 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
+import { sayLater } from '../lib/a11y';
 import { useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
 import { motion } from '../theme/tokens';
@@ -161,25 +163,25 @@ const snap = (to: number) => withTiming(to, { duration: 0, reduceMotion: ReduceM
 
 // ── useOncePerDay ──────────────────────────────────────────────────────
 // Signature growth plays on the first view of the day only; after that a
-// screen shows its end state. Kept in memory: a new app launch on the same
-// day may play it once more, which is fine.
+// screen shows its end state. useOncePerDay is kept in memory (a new app
+// launch on the same day may play it once more, which is fine for a screen
+// that is opened on purpose); a surface's first VIEW of the day (useGrowth:
+// Today, You) is saved in the seen store, so a cold relaunch never replays it.
 const seenOn: Record<string, string> = {};
 const todayKey = () => new Date().toDateString();
 
-/** Has `key` not been seen yet today? (Reads only; claimFirstView marks it.) */
+/** Has `key`'s first view of the day not been used yet? (Saved across launches; reads only.) */
 export function isFirstViewToday(key: string): boolean {
-  return seenOn[key] !== todayKey();
+  return useSeen.getState().days[key] !== todayKey();
 }
 
 /**
  * True the first time `key` is asked about today, false after that (marks it
- * at once). The non-hook form, for a decision taken when a screen comes into
- * view rather than when it mounts (useGrowth).
+ * at once, saved across launches). The non-hook form, for a decision taken
+ * when a screen comes into view rather than when it mounts (useGrowth).
  */
 export function claimFirstView(key: string): boolean {
-  const first = seenOn[key] !== todayKey();
-  seenOn[key] = todayKey();
-  return first;
+  return useSeen.getState().claimDay(key, todayKey());
 }
 
 /** True the first time `key` mounts today (stable for the component's life). */
@@ -190,9 +192,10 @@ export function useOncePerDay(key: string): boolean {
   }, [key]);
   return first;
 }
-/** Tests: forget what was seen. */
+/** Tests: forget what was seen today (in memory and the saved first views). */
 export function resetOncePerDayForTest() {
   for (const k of Object.keys(seenOn)) delete seenOn[k];
+  useSeen.setState({ days: {} });
 }
 
 // ── Page arrivals (PageTurn → FadeIn) ──────────────────────────────────
@@ -684,13 +687,41 @@ export const useCelebrationSettled = () => useContext(CelebrateContext).settled;
  */
 export type CelebrationMode = 'full' | 'short' | 'static';
 
-// App-session state (in memory: a new launch is a new session).
+// App-session state (in memory). A session is one launch, or the time since
+// the app came back after more than SESSION_GAP_MS in the background: Today
+// can stay mounted for days, and tomorrow's clearing deserves its full form.
 let sessionFull = false; // one celebration in full per session
 let spentMs = 0; // decorative motion played so far this session
+let backgroundAt: number | null = null;
+let watchingSession = false;
+/** Away this long (in the background), the app starts a new celebration session. */
+export const SESSION_GAP_MS = 30 * 60_000;
+
+function newSession() {
+  sessionFull = false;
+  spentMs = 0;
+}
+
+/** One AppState listener for the whole app (started by the first celebration hook). */
+function watchSession() {
+  if (watchingSession) return;
+  watchingSession = true;
+  AppState.addEventListener('change', (state) => {
+    if (state !== 'active') {
+      backgroundAt ??= Date.now();
+      return;
+    }
+    if (backgroundAt !== null && Date.now() - backgroundAt > SESSION_GAP_MS) newSession();
+    backgroundAt = null;
+  });
+}
 
 /**
  * Spend decorative motion from the session budget (≤ 3 s in all,
  * behavioural review §2). False = over budget: play the short or static form.
+ * Only celebrations are charged. Informational growth (a number rolling to
+ * what changed, a ring growing to its value) is not decoration: it is the
+ * news itself, and it is never charged (DESIGN_SYSTEM.md §8.9).
  */
 export function claimDecor(ms: number): boolean {
   if (spentMs + ms > motion.celebrate.sessionMs) return false;
@@ -700,8 +731,8 @@ export function claimDecor(ms: number): boolean {
 
 /** Tests: a fresh app session (no celebration yet, nothing spent). */
 export function resetCelebrationsForTest() {
-  sessionFull = false;
-  spentMs = 0;
+  newSession();
+  backgroundAt = null;
 }
 
 /**
@@ -715,8 +746,8 @@ export function pickCelebration(kind: string, reduced: boolean): { mode: Celebra
   const first = times === 0;
   if (reduced) return { mode: 'static', first };
   if (sessionFull || times >= motion.celebrate.fullTimes || !claimDecor(motion.dur.celebrate)) {
-    claimDecor(motion.dur.short);
-    return { mode: 'short', first };
+    // Even the short form is decoration: past the budget, the end state just shows.
+    return { mode: claimDecor(motion.dur.short) ? 'short' : 'static', first };
   }
   sessionFull = true;
   return { mode: 'full', first };
@@ -736,22 +767,36 @@ export interface Celebration {
 
 /**
  * One celebration of `kind`, played when `run` turns true (the screen is in
- * view and the moment is due), decided once: see CelebrationMode. `line` is
- * the moment in words, announced once to screen readers (in every mode).
+ * view and the moment is due), decided once per occasion: see
+ * CelebrationMode. `id` names the occasion (the clearing passes the plan's
+ * day): a screen that stays mounted plays the next occasion too, and never
+ * the same one twice. With `once`, the occasion plays once EVER (saved in the
+ * seen store): later launches show it still, unannounced. `line` is the
+ * moment in words, announced once per occasion to screen readers (in every
+ * mode), after a short pause so a screen change doesn't cut it off.
  * Never blocks input: buttons inside keep working, and any touch skips.
  */
-export function useCelebration(kind: string, run: boolean, line?: string): Celebration {
+export function useCelebration(kind: string, run: boolean, line?: string, id: string = '', once = false): Celebration {
   const { reduced } = useMotion();
   const [state, setState] = useState<{ mode: CelebrationMode; first: boolean; settled: boolean; run: number }>({ mode: 'static', first: false, settled: true, run: 0 });
-  const started = useRef(false);
+  // The occasion that started (or was found already played), so it never starts twice.
+  const started = useRef<string | null>(null);
   // Before paint, so the parts never flash their end state first.
   useLayoutEffect(() => {
-    if (!run || started.current) return;
-    started.current = true;
+    watchSession();
+    if (!run || started.current === id) return;
+    started.current = id;
+    if (once) {
+      const seen = useSeen.getState();
+      if (seen.moments[id]) return; // played on an earlier launch: shown still
+      seen.played(id);
+    }
     const { mode, first } = pickCelebration(kind, reduced);
+    // Deliberately in a layout effect: the start is decided before paint, so the parts never flash their end state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState((s) => ({ mode, first, settled: mode !== 'full', run: s.run + 1 }));
-    if (line) AccessibilityInfo.announceForAccessibility(line);
-  }, [run, kind, reduced, line]);
+    if (line) sayLater(line);
+  }, [run, id, once, kind, reduced, line]);
   // A full moment has simply ended after its 1.2 s: a later tap is not a skip.
   useEffect(() => {
     if (state.settled) return;
@@ -766,13 +811,24 @@ export function useCelebration(kind: string, run: boolean, line?: string): Celeb
  * The frame of a celebration: everything inside reads whether it is settled
  * (and jumps to its end state when it is), and any touch inside skips it
  * (the touch still reaches the button under it). 'short' cross-fades the
- * whole block in over 200 ms instead of playing its parts.
+ * whole block in over 200 ms instead of playing its parts, when the block is
+ * new on screen; a block that was already drawn (the milestone scrolled
+ * into view, the clearing under Results) never blinks out: it brightens a
+ * little instead, like the reduced form of a change.
  */
 export function Celebrate({ celebration, style, children }: { celebration: Celebration; style?: StyleProp<ViewStyle>; children: ReactNode }) {
   const { mode, run, settled, skip } = celebration;
   const o = useSharedValue(1);
+  // True from the frame after the first paint (a layout effect's re-render is still before it).
+  const painted = useRef(false);
+  useEffect(() => {
+    const f = requestAnimationFrame(() => {
+      painted.current = true;
+    });
+    return () => cancelAnimationFrame(f);
+  }, []);
   useLayoutEffect(() => {
-    if (mode === 'short' && run > 0) o.set(withSequence(snap(0), tween(1, 'short')));
+    if (mode === 'short' && run > 0) o.set(withSequence(snap(painted.current ? BRIGHTEN_FROM : 0), tween(1, 'short')));
   }, [mode, run, o]);
   const anim = useAnimatedStyle(() => ({ opacity: o.value }));
   return (
@@ -783,6 +839,9 @@ export function Celebrate({ celebration, style, children }: { celebration: Celeb
     </CelebrateContext.Provider>
   );
 }
+
+/** A change on something already drawn: it dips to this and brightens back (never a blink out). */
+const BRIGHTEN_FROM = 0.55;
 
 // ── LeafFall: the rare T3 moment (a milestone) ─────────────────────────
 // A leaf on the vine's 16 grid, drawn small (10 × 12): a lens with a point.
@@ -866,9 +925,18 @@ function FallingLeaf({ i, n, width, height, color }: { i: number; n: number; wid
 }
 
 // ── Growth you can see (M3): what went up since it was last shown ──────
-/** A tab screen's focus as state (a pushed screen is simply `true`). */
+// The navigator's focus at the very first render. Test files that mock
+// expo-router without it start unfocused, as the focus effect below decides.
+const useFocusedAtMount: () => boolean = (Router as { useIsFocused?: () => boolean }).useIsFocused ?? (() => false);
+
+/**
+ * A tab screen's focus as state. It starts from the navigator's own answer,
+ * so a screen that mounts in view decides its growth in the first frame
+ * (never one frame of the final values, then a snap back to grow).
+ */
 export function useScreenFocus(): boolean {
-  const [focused, setFocused] = useState(false);
+  const atMount = useFocusedAtMount();
+  const [focused, setFocused] = useState(atMount);
   useFocusEffect(
     useCallback(() => {
       setFocused(true);
@@ -885,6 +953,11 @@ export interface Growth {
   from: number[];
   /** Changes each time a growth starts (restart key). */
   run: number;
+  /**
+   * The growth starts from what the learner last SAW here (a real rise since
+   * the last look), not the day's count-up from 0: only then is a "+N" earned.
+   */
+  since?: boolean;
 }
 
 /**
@@ -902,10 +975,12 @@ export function useGrowth(key: string, values: number[], { active = true, firstO
   const sig = values.join(',');
   const [state, setState] = useState<{ at: string; g: Growth }>(() => ({ at: '', g: { play: false, from: values, run: 0 } }));
   // Decided while rendering (React's "adjust state when a prop changes"), so
-  // the very first frame on view already starts from the old values.
+  // the first frame after focus already starts from the old values. Out of
+  // view, nothing plays (a session on top changes the numbers after every
+  // answer: no growth may run on a hidden screen).
   const at = `${active ? 1 : 0}|${key}|${sig}`;
   if (state.at !== at) {
-    const g = active ? decideGrowth(key, values, firstOfDay, state.g) : state.g;
+    const g = active ? decideGrowth(key, values, firstOfDay, state.g) : { ...state.g, play: false };
     setState({ at, g });
   }
   // Then what is on view is remembered, and the day's first view is used up.
@@ -922,20 +997,34 @@ function decideGrowth(key: string, now: number[], firstOfDay: boolean, was: Grow
   const comparable = Boolean(last) && last.length === now.length;
   const rose = comparable && now.some((v, i) => v > last[i]);
   const fell = comparable && now.some((v, i) => v < last[i]);
-  if (rose) return { play: true, from: now.map((v, i) => Math.min(v, last[i])), run: was.run + 1 };
+  if (rose) return { play: true, from: now.map((v, i) => Math.min(v, last[i])), run: was.run + 1, since: true };
   if (firstOfDay && isFirstViewToday(`growth:${key}`) && !fell && now.some((v) => v > 0)) {
-    return { play: true, from: now.map(() => 0), run: was.run + 1 };
+    return { play: true, from: now.map(() => 0), run: was.run + 1, since: false };
   }
-  return { play: false, from: now, run: was.run };
+  return { play: false, from: now, run: was.run, since: false };
 }
 
 // ── RollingNumber: an odometer for numerals (M3) ───────────────────────
 // Each digit is a clipped column (blank, 0–9, 0–9) that slides on translateY:
 // one Text per column, on the UI thread, no re-render per frame and no JS
-// timer. Digits finish right to left, 30 ms apart. The final characters are
-// laid out (invisibly) first, so the width never jitters while it rolls.
-const BLANK = ' ';
+// timer per frame. Digits finish right to left, 30 ms apart. The final
+// characters are laid out (invisibly) first, so the width never jitters
+// while it rolls. The rows sit `ROLL.gap` apart (a blank band between two
+// digits) inside a window trimmed to the digits' own band, so a frame caught
+// mid-roll shows one digit leaving and the next arriving, never two glyphs
+// stacked. When the roll has ended it is plain text again.
+const BLANK = ' '; // a no-break space: the blank row keeps its height
 const COLUMN = [BLANK, ...'01234567890123456789'].join('\n');
+/**
+ * Odometer geometry, as shares of the font size: the blank gap between rows,
+ * and how far the window is trimmed in from the line box (top and bottom),
+ * which leaves the numeral's figures (cap height to baseline) whole. `dip`:
+ * between two rows the column dims by up to this much (most at half way),
+ * so the slivers of a digit leaving and one arriving read as motion, not
+ * as stray marks; at every row it is fully opaque again. It adds no flicker:
+ * half way, the window already shows mostly the blank gap.
+ */
+export const ROLL = { gap: 0.42, trim: 0.07, dip: 0.6 };
 
 type Slot = { digit: true; to: number; from: number | null } | { digit: false; ch: string };
 

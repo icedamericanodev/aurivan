@@ -89,8 +89,17 @@ export default function You() {
   const rangeGrowth = useGrowth(`you:range:${cert.id}`, range.enough ? [range.low, range.high] : [], { active: focused, firstOfDay: true });
   const accuracy = answered ? Math.round((mastered / answered) * 100) : 0;
   const stats = useGrowth(`you:stats:${cert.id}`, [answered, accuracy, streak], { active: focused });
-  // "+4" only for what went up since a real last look (not the day's count-up from 0).
-  const sinceLook = rings.play && !rings.from.every((v) => v === 0);
+  // "+4" only for what went up since a real last look (not the day's count-up
+  // from 0; a first rise from all zeros does count).
+  const sinceLook = rings.play && rings.since === true;
+  // The same "+4"s in words: the legend is hidden from screen readers, so the rings' label says them.
+  const grewSpoken = sinceLook
+    ? cert.domains
+        .map((d, i) => ({ d, up: ringValues[i] - rings.from[i] }))
+        .filter((x) => x.up > 0)
+        .map((x) => `${x.d.short} up ${x.up}`)
+        .join(', ')
+    : '';
   const statRoll = (k: number, from: string) => ({ play: stats.play, from, run: stats.run, delay: motion.dur.select + k * motion.stagger.stat });
 
   return (
@@ -108,7 +117,7 @@ export default function You() {
           values={values}
           grow={{ play: rings.play, from: rings.from.map((v) => v / 100), run: rings.run }}
           delta={sinceLook ? (i) => ringValues[i] - rings.from[i] : undefined}
-          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.`}
+          accessibilityLabel={`Estimated readiness ${rangeSpoken(range)}. ${ringsSpoken(cert, values)}.${grewSpoken ? ` Since you last looked: ${grewSpoken}.` : ''}`}
           center={
             range.enough ? (
               <View style={{ alignItems: 'center' }}>

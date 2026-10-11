@@ -47,6 +47,7 @@ import {
 } from '../engine/backup';
 import { useBackup } from '../store/backup';
 import { completeCert, useProgress } from '../store/progress';
+import { useSeen } from '../store/seen';
 import { useSession } from '../store/session';
 import { useSettings } from '../store/settings';
 import { cancelReminders, ensurePermission, remindersSupported, scheduleReminders } from './reminders';
@@ -342,6 +343,9 @@ async function writeAll(
   // undefined keys, so a value the backup doesn't have (e.g. no study mode)
   // would survive from this phone. Set the full state first, every key
   // included, so the phone takes the backup's state exactly (QA Build E).
+  // First, forget the numbers each screen last showed: restored progress is
+  // not growth earned since the last look, so nothing shows "+N" for it.
+  useSeen.getState().forgetValues();
   useSettings.setState(settings);
   useProgress.setState(progress);
   for (const s of STORES) await s.persist.rehydrate();

@@ -15,6 +15,7 @@ import Results from '../app/results';
 import { MilestoneMomentView } from '../components/milestones';
 import { resetCelebrationsForTest, resetOncePerDayForTest, setSystemReducedMotionForTest } from '../components/motion';
 import { getAllQuestions } from '../content/loader';
+import { flushSayLaterForTest } from '../lib/a11y';
 import { finishSession } from '../lib/finishSession';
 import { startFromIds } from '../lib/sessions';
 import { useProgress } from '../store/progress';
@@ -104,6 +105,7 @@ describe('Today’s clearing (T2)', () => {
     mount(<Today />);
     expect(allText()).toContain('Today’s clearing');
     expect(columns().length).toBeGreaterThan(0); // the day's numbers rolled
+    flushSayLaterForTest(); // spoken after a short pause (a screen change must not cut it off)
     expect(say.mock.calls.filter(([t]) => String(t).startsWith('Today’s clearing.'))).toHaveLength(1);
     expect(mockSuccess).toHaveBeenCalledTimes(1);
     expect(useProgress.getState().days.cisa!.celebrated).toBe(true);
@@ -189,12 +191,13 @@ describe('You: what went up since the last look', () => {
 });
 
 describe('the milestone moment', () => {
-  it('waits until it is on screen to move; its haptic and words do not wait', () => {
+  it('waits until it is on screen to move, its haptic with it; its words do not wait', () => {
     setMockReducedMotion(false);
     const say = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
     const moment = { key: 'rooted:10', kind: 'milestone' as const, label: 'Rooted · 10 days', rule: 'Study on 10 days in all.' };
     mount(<MilestoneMomentView moment={moment as never} once="s1" inView={false} />);
-    expect(mockSuccess).toHaveBeenCalledTimes(1);
+    expect(mockSuccess).not.toHaveBeenCalled();
+    flushSayLaterForTest();
     expect(say.mock.calls.filter(([t]) => String(t).startsWith('A quiet milestone'))).toHaveLength(1);
     expect(useSeen.getState().moments.milestone).toBeUndefined(); // not played yet
     act(() => {

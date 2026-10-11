@@ -15,7 +15,7 @@
  * static with Reduce Motion. Any others earned wait for later sessions.
  */
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { OptionCard, TrustLine } from '../components/quiz';
 import { useReportFlow } from '../components/support';
@@ -65,11 +65,23 @@ export default function Results() {
   // The milestone moment plays when it is scrolled into view, not off-screen.
   const [statsY, setStatsY] = useState<number | null>(null);
   const [momentY, setMomentY] = useState<number | null>(null);
-  const [view, setView] = useState({ y: 0, h: 0 });
   const [momentSeen, setMomentSeen] = useState(false);
+  // The scroll position lives in a ref: a scroll event never re-renders the
+  // screen (a mock's review list is long); only the moment being seen does.
+  const view = useRef({ y: 0, h: 0 });
   // Latched: once its top is 96pt into the screen, it has been seen.
-  if (!momentSeen && statsY !== null && momentY !== null && view.h > 0 && statsY + momentY < view.y + view.h - 96) setMomentSeen(true);
-  const watch = (y: number, h: number) => setView({ y, h });
+  const check = useCallback(() => {
+    const { y, h } = view.current;
+    if (statsY !== null && momentY !== null && h > 0 && statsY + momentY < y + h - 96) setMomentSeen(true);
+  }, [statsY, momentY]);
+  const watch = (y: number, h: number) => {
+    view.current = { y, h };
+    check();
+  };
+  // Laid out after the last scroll event (or with no scroll at all): check again.
+  useEffect(check, [check]);
+  // A new drag skips a playing moment to its end (motion.md §2.7: any tap or scroll).
+  const skipMoment = useRef<(() => void) | null>(null);
   // One signature at a time: the moment also waits for the rings to settle.
   const growing = Boolean(firstLook && score && active && Math.round((score.correct / (active.mode === 'mock' ? score.total : Math.max(score.answered, 1))) * 100) >= 60);
   const [ringsDone, setRingsDone] = useState(!growing);
@@ -134,7 +146,7 @@ export default function Results() {
   const at = motion.dur.select;
 
   return (
-    <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined}>
+    <Screen edges={['top', 'bottom']} onScroll={moment && !momentSeen ? watch : undefined} onScrollBeginDrag={moment ? () => skipMoment.current?.() : undefined}>
       <Enter i={0}>
         {/* Extra time and untimed mocks say so (standard time is the norm, so it isn't named). */}
         <T v="meta">{active.mode === 'mock' && active.timing && active.timing !== 'standard' ? `${active.title} · ${TIMING_LABEL[active.timing].toLowerCase()}` : active.title}</T>
@@ -209,7 +221,7 @@ export default function Results() {
             // Its place in the stats block (whose own top is statsY in the scroll).
             onLayout={(e) => setMomentY(e.nativeEvent.layout.y)}
           >
-            <MilestoneMomentView moment={moment} once={active.id} inView={momentSeen && ringsDone} />
+            <MilestoneMomentView moment={moment} once={active.id} inView={momentSeen && ringsDone} skipRef={skipMoment} />
             <Button
               kind="ghost"
               label={moment.kind === 'skill' ? 'See your field notes' : 'See your milestones'}

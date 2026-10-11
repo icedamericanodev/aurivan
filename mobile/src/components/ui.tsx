@@ -92,12 +92,15 @@ export function Screen({
   scroll = true,
   edges = ['top'],
   onScroll,
+  onScrollBeginDrag,
 }: {
   children: ReactNode;
   scroll?: boolean;
   edges?: ('top' | 'bottom')[];
   /** The scroll offset and the visible height (something below the fold waits until it is seen). */
   onScroll?: (y: number, height: number) => void;
+  /** The learner starts a new drag (a moment on the screen skips to its end). */
+  onScrollBeginDrag?: () => void;
 }) {
   const { c } = useTheme();
   const [viewH, setViewH] = useState(0);
@@ -111,6 +114,7 @@ export function Screen({
       } : undefined}
       onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y, viewH || e.nativeEvent.layoutMeasurement.height) : undefined}
       scrollEventThrottle={onScroll ? 32 : undefined}
+      onScrollBeginDrag={onScrollBeginDrag}
     >
       {children}
     </ScrollView>

@@ -13,7 +13,7 @@
  * Colours always come in as props (palette tokens); nothing here is hard-coded.
  */
 import { useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 import Animated, {
   cancelAnimation,
@@ -264,7 +264,11 @@ export function Botany({ kind = 'frond', color, sway = false, breathe = false }:
         withTiming(0, { duration: motion.dur.celebrate / 2, easing: Easing.inOut(Easing.sin), reduceMotion: ReduceMotion.Never }),
       ),
     );
-    return () => cancelAnimation(angle);
+    // Ended early (a tap skips the moment): upright at once, never left tilted.
+    return () => {
+      cancelAnimation(angle);
+      angle.set(0);
+    };
   }, [breathe, sway, reduce, angle]);
   const style = useAnimatedStyle(() => ({ transform: [{ rotate: `${angle.value}deg` }] }));
   const art = (
@@ -525,12 +529,18 @@ function RingArc({
   // Inside a celebration that was skipped or has ended: drawn in full now.
   const settled = useCelebrationSettled();
   const p = useSharedValue(animate ? start : 1);
-  useEffect(() => {
+  // The growth that last started: a new one starts only when `run` changes
+  // (a new start value alone, e.g. mastery moving while the screen is hidden, never replays it).
+  const startedRun = useRef<number | null>(null);
+  // Before paint, so a returning screen never shows the full arc for a frame and then snaps back.
+  useLayoutEffect(() => {
     if (!animate || settled || start >= 1) {
       cancelAnimation(p);
       p.set(1);
       return;
     }
+    if (startedRun.current === run) return;
+    startedRun.current = run;
     p.set(withSequence(withTiming(start, { duration: 0, reduceMotion: ReduceMotion.Never }), withDelay(delay, withTiming(1, { duration: motion.dur.grow, easing: Easing.out(Easing.cubic), reduceMotion: ReduceMotion.Never }))));
   }, [animate, settled, start, run, delay, p]);
   // At (almost) 0 the dash is empty but its round cap would still draw a dot: hide it until it grows.

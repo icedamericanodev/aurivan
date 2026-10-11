@@ -42,10 +42,11 @@ import { Path } from 'react-native-svg';
 import { GrowthRings } from '../components/glyphs';
 import { PlanLeaves } from '../components/journey';
 import { BigNum, Stepper } from '../components/ui';
+import { flushSayLaterForTest } from '../lib/a11y';
 import * as haptics from '../lib/haptics';
 import { SEEN_MAX_KEYS, useSeen } from '../store/seen';
 import { useSettings } from '../store/settings';
-import { motion, serifNumeral } from '../theme/tokens';
+import { motion, serifNumeral, type as typeScale } from '../theme/tokens';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -280,6 +281,9 @@ describe('celebrations', () => {
     mount(<Moment />);
     expect(cel!.mode).toBe('full');
     expect(cel!.settled).toBe(false);
+    // After a short pause (a screen change must not cut it off).
+    expect(say).not.toHaveBeenCalled();
+    flushSayLaterForTest();
     expect(say).toHaveBeenCalledTimes(1);
     // Six to eight leaves at most, while it runs.
     const leaves = () => r!.root.findAll((n) => n.props.accessibilityElementsHidden === true && typeof n.type === 'string' && n.props.style && StyleSheet.flatten(n.props.style).overflow === 'hidden');
