@@ -199,7 +199,7 @@ export function ShareProgressSheet({
 
   return (
     <Modal visible={visible} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={onClose}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xxxl }}>
           <Row style={{ justifyContent: 'space-between' }}>
             <T v="hero" accessibilityRole="header">Share progress</T>

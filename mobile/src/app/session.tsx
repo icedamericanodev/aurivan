@@ -741,7 +741,7 @@ export default function SessionScreen() {
       </View>
       {/* Mock navigator */}
       <Modal visible={navOpen} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={() => setNavOpen(false)}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: c.raised2 }}>
           <ScrollView contentContainerStyle={{ padding: space.lg }}>
             <Row style={{ justifyContent: 'space-between' }}>
               <T v="display">Questions</T>

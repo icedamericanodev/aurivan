@@ -16,7 +16,8 @@ import type { TextStyle } from 'react-native';
 
 export interface Palette {
   bg: string; // screen background (warm paper / forest night)
-  raised: string; // option rows, sheets, inputs
+  raised: string; // option rows, inputs
+  raised2: string; // the second surface tier: page sheets (one step above the screen behind them)
   soft: string; // icon circles, pressed rows, tags
   line: string; // hairlines, dark-mode option outline
   control: string; // idle chip / checkbox outlines (≥3:1)
@@ -29,6 +30,7 @@ export interface Palette {
   btn: string; // primary button fill
   onBtn: string; // text on the primary button
   forest: string; // the hero panel
+  forestTop: string; // the forest panel's lit top edge (a vertical gradient down to `forest`; = forest in light)
   onForest: string; // text on forest
   onForest2: string; // secondary text on forest
   forestLine: string; // botanical line art on forest (decorative)
@@ -48,6 +50,7 @@ export interface Palette {
 export const light: Palette = {
   bg: '#F3F1EA',
   raised: '#FFFFFF',
+  raised2: '#F8F7F2',
   soft: '#E6EBE2',
   line: '#DFDCD1',
   control: '#7D897F',
@@ -60,6 +63,7 @@ export const light: Palette = {
   btn: '#1E4A34',
   onBtn: '#F7F5EF',
   forest: '#1E4A34',
+  forestTop: '#1E4A34',
   onForest: '#F3F1EA',
   onForest2: '#C9DACD',
   forestLine: '#3A6B51',
@@ -79,6 +83,7 @@ export const light: Palette = {
 export const dark: Palette = {
   bg: '#111613',
   raised: '#1A211C',
+  raised2: '#1B231E',
   soft: '#202A23',
   line: '#29322B',
   control: '#66736A',
@@ -91,6 +96,7 @@ export const dark: Palette = {
   btn: '#A9D9BA',
   onBtn: '#0F1F16',
   forest: '#21432F',
+  forestTop: '#285139',
   onForest: '#EEF2EA',
   onForest2: '#BCD2C2',
   forestLine: '#3C6B51',
@@ -134,9 +140,11 @@ export const pillarGlyph = {
 
 /**
  * Paper grain overlay opacity (spec §10.5). Never higher: at 5% the weakest
- * text pair (muted on bg) still passes 4.7:1.
+ * text pair (muted on bg) still passes 4.7:1. Dark is 4.5% (mobile 1.9; was
+ * 6%): white specks over the forest night read as dust, and every light-on-
+ * dark pair gains contrast with less of them.
  */
-export const grainOp = { light: 0.05, dark: 0.06 } as const;
+export const grainOp = { light: 0.05, dark: 0.045 } as const;
 
 /** 1px inner top highlight on the dark forest panel, so it lifts off `bg`. */
 export const forestHighlight = 'rgba(255,255,255,0.06)';

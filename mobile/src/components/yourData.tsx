@@ -196,7 +196,7 @@ export function RestorePreview({
   return (
     // While the restore is saving, swipe-down and Back do nothing.
     <Modal visible={ready !== null} animationType={reduceMotion ? 'fade' : 'slide'} presentationStyle="pageSheet" onRequestClose={busy ? () => {} : onCancel}>
-      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.bg }}>
+      <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: c.raised2 }}>
         <ScrollView contentContainerStyle={{ padding: space.gutter, paddingBottom: space.xl }}>
           <T v="display" accessibilityRole="header">Restore this backup?</T>
           {Number.isFinite(saved) && <T v="meta" style={{ marginTop: space.xs }}>{`Saved on ${dateOf(saved)}`}</T>}

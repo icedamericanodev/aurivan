@@ -62,9 +62,18 @@ describe('palettes', () => {
     expect(dark.btn).toBe('#A9D9BA'); // dark primary button is light mint
   });
 
-  it('keeps the paper grain faint (5% light, 6% dark)', () => {
+  it('keeps the paper grain faint (5% light, 4.5% dark since mobile 1.9)', () => {
     expect(grainOp.light).toBeLessThanOrEqual(0.05);
-    expect(grainOp.dark).toBeLessThanOrEqual(0.06);
+    expect(grainOp.dark).toBeLessThanOrEqual(0.045);
+  });
+
+  it('dark depth (mobile 1.9): sheets sit one tier above the screen, the forest panel is lit from the top', () => {
+    // Dark: bg < raised2 (sheets) and the panel's top edge is lighter than its body.
+    expect(luminance(dark.raised2)).toBeGreaterThan(luminance(dark.bg));
+    expect(luminance(dark.forestTop)).toBeGreaterThan(luminance(dark.forest));
+    // Light: the sheet is a lifted paper; the forest panel stays flat (no gradient layer).
+    expect(luminance(light.raised2)).toBeGreaterThan(luminance(light.bg));
+    expect(light.forestTop).toBe(light.forest);
   });
 });
 
@@ -89,10 +98,16 @@ const TEXT_PAIRS: [keyof Palette, keyof Palette][] = [
   ['correct', 'bg'], ['wrong', 'bg'], ['tip', 'tipBg'],
   // Also used by the app: muted on raised (dimmed options), meta on tinted rows.
   ['muted', 'raised'], ['ink2', 'correctBg'], ['ink2', 'wrongBg'],
+  // Mobile 1.9 dark depth: everything a page sheet shows on raised2, and the
+  // forest panel's text on its lit top edge (forestTop).
+  ['ink', 'raised2'], ['ink2', 'raised2'], ['muted', 'raised2'], ['accentText', 'raised2'],
+  ['wrong', 'raised2'], ['tip', 'raised2'], ['clay', 'raised2'],
+  ['onForest', 'forestTop'], ['onForest2', 'forestTop'], ['sap', 'forestTop'],
 ];
 // Non-text pairs (controls, rings, the ✓/✗ badge): WCAG 1.4.11 needs 3:1.
 const NON_TEXT_PAIRS: [keyof Palette, keyof Palette][] = [
   ['control', 'bg'], ['accent', 'track'], ['accent', 'bg'], ['sap', 'forestTrack'], ['ink', 'raised'],
+  ['control', 'raised2'],
 ];
 
 describe.each([
@@ -110,6 +125,22 @@ describe.each([
   });
   it('muted on bg survives the grain worst case (≥ 4.7:1)', () => {
     expect(contrast(p.muted, p.bg)).toBeGreaterThanOrEqual(4.7);
+  });
+});
+
+describe('dark grain worst case (a full white speck under a glyph)', () => {
+  const speck = (hex: string) => {
+    const mix = [1, 3, 5].map((i) => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - grainOp.dark) + 255 * grainOp.dark));
+    return `#${mix.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+  };
+  it.each([
+    ['muted', 'bg'],
+    ['ink2', 'bg'],
+    ['onForest2', 'forest'],
+    ['onForest2', 'forestTop'],
+    ['sap', 'forestTop'],
+  ] as [keyof Palette, keyof Palette][])('%s on %s still passes AA', (fg, bg) => {
+    expect(contrast(dark[fg], speck(dark[bg]))).toBeGreaterThanOrEqual(4.5);
   });
 });
 
